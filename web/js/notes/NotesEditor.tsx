@@ -24,9 +24,8 @@ function useActionMenu(): ActionMenuTuple {
 
     const onKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 
-        // TODO: filter the list input based on what the user has typed
-        // TODO: up/down arrows to select the right item
-        // TODO: click away listener so that if I select another item this will go away
+        // TODO: when I hit 'enter' the action should execute and the menu should be dismissed
+        // TODO: filter the list input based on what the user has typed after the /
         // TODO: we can do editing.view.focus()
         // TODO: we can call ref.focus() (on the element) to select the current items
         // and we can use that to navigate through them.
@@ -50,6 +49,7 @@ function useActionMenu(): ActionMenuTuple {
 
                 break;
             case 'Escape':
+            case 'Enter':
             case 'Backspace':
             case 'Delete':
             case 'ArrowLeft':

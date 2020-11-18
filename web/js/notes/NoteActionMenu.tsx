@@ -25,10 +25,10 @@ export const NoteActionMenu = React.memo((props: IProps) => {
     const items: ReadonlyArray<IMenuItem> = React.useMemo(() =>
         [
 
-            {text: "Embed", action: NULL_FUNCTION},
-            {text: "Tomorrow", action: NULL_FUNCTION},
-            {text: "Today", action: NULL_FUNCTION},
-            {text: "Yesterday", action: NULL_FUNCTION}
+            {text: "Embed", action: () => console.log('Embed')},
+            {text: "Tomorrow", action: () => console.log('Tomorrow')},
+            {text: "Today", action: () => console.log('Today')},
+            {text: "Yesterday", action: () => console.log('Yesterday')}
 
         ], [])
 
@@ -36,12 +36,20 @@ export const NoteActionMenu = React.memo((props: IProps) => {
         readonly id: number;
     }
 
+    const executeCurrentAction = React.useCallback(() => {
+
+        if (selectedMenuItemRef.current !== undefined) {
+            items[selectedMenuItemRef.current].action();
+        }
+
+    }, [items, selectedMenuItemRef])
+
     const handleClick = React.useCallback((id: number) => {
 
         setSelectedMenuItem(undefined);
-        items[id].action();
+        executeCurrentAction();
 
-    }, [items, setSelectedMenuItem]);
+    }, [executeCurrentAction, setSelectedMenuItem]);
 
     const NoteMenuItem = (props: NoteMenuItemProps) => {
 
@@ -96,12 +104,20 @@ export const NoteActionMenu = React.memo((props: IProps) => {
                 event.stopPropagation();
                 break;
 
+            case 'Enter':
+
+                executeCurrentAction();
+
+                event.preventDefault();
+                event.stopPropagation();
+                break;
+
             default:
                 break;
 
         }
 
-    }, [items.length, selectedMenuItemRef, setSelectedMenuItem]);
+    }, [executeCurrentAction, items.length, selectedMenuItemRef, setSelectedMenuItem]);
 
 
     useComponentDidMount(() => {
