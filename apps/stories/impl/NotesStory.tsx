@@ -6,7 +6,7 @@ import {INote, NotesStoreProvider, useNotesCallbacks} from '../../../web/js/note
 import {NotesRoot} from "../../../web/js/notes/NotesRoot";
 
 export const [NoteMenuSelectedStoreProvider, useNoteMenuSelectedStore, useNoteMenuSelectedListener] =
-    createRXJSStore<string | undefined>();
+    createRXJSStore<number | undefined>();
 
 const notes: ReadonlyArray<INote> = [
     {
