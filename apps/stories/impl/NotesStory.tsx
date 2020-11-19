@@ -20,7 +20,8 @@ const notes: ReadonlyArray<INote> = [
         content: 'World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world\'s countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.',
         items: [
             '103',
-            '104'
+            '104',
+            '105'
         ]
     },
     {
@@ -32,9 +33,17 @@ const notes: ReadonlyArray<INote> = [
         content: 'Axis Powers: Germany, Italy, Japan',
     },
     {
-        id: '104',
+        id: '105',
         content: 'Allied Powers: United States, United Kingdom, Canada, Russia',
-    }
+        items: [
+            '106'
+        ]
+    },
+    {
+        id: '106',
+        content: 'Lead by Franklin D. Roosevelt, Winston Churchill, and Joseph Stalin ',
+    },
+
 ]
 
 interface BasicNotesDataSetProps {

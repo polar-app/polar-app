@@ -129,14 +129,15 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
                 delete index[note.id];
 
                 for (const item of (note.items || [])) {
+
                     const inbound = lookupReverse(item)
                         .filter(current => current !== note.id);
 
                     if (inbound.length === 0) {
                         delete reverse[item];
+                    } else {
+                        reverse[item] = inbound
                     }
-
-                    reverse[item] = inbound
 
                 }
 
