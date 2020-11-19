@@ -1,5 +1,5 @@
 import React from "react";
-import {CKEditor5} from "../../../apps/stories/impl/ckeditor5/CKEditor5";
+import {ckeditor5, CKEditor5} from "../../../apps/stories/impl/ckeditor5/CKEditor5";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {IActionMenuItem, NoteActionMenu} from "./NoteActionMenu";
 import {NoteNavigation} from "./NoteNavigation";
@@ -25,14 +25,16 @@ const items: ReadonlyArray<IActionMenuItem> = [
 
 export const NoteEditor = React.memo((props: IProps) => {
 
+    const [editor, setEditor] = React.useState<ckeditor5.IEditor | undefined>();
+
     const handleClick = React.useCallback((event: React.MouseEvent) => {
     }, []);
 
     return (
         <NoteActionMenu items={() => items} onItem={item => console.log('got item: ', item)}>
             <div onClick={handleClick}>
-                <NoteNavigation parent={props.parent} id={props.id}>
-                    <CKEditor5 content={props.content || ''} onChange={NULL_FUNCTION} onEditor={NULL_FUNCTION}/>
+                <NoteNavigation parent={props.parent} id={props.id} editor={editor}>
+                    <CKEditor5 content={props.content || ''} onChange={NULL_FUNCTION} onEditor={setEditor}/>
                 </NoteNavigation>
             </div>
         </NoteActionMenu>

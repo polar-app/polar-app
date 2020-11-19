@@ -3,14 +3,18 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import {useComponentDidMount, useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 import {NoteIDStr, useNotesCallbacks, useNotesStore} from "./NotesStore";
 import {useRefValue} from "../hooks/ReactHooks";
+import {ckeditor5} from "../../../apps/stories/impl/ckeditor5/CKEditor5";
 
 interface IProps {
     readonly parent: NoteIDStr;
     readonly id: NoteIDStr;
+    readonly editor: ckeditor5.IEditor | undefined;
     readonly children: JSX.Element;
 }
 
 export const NoteNavigation = React.memo((props: IProps) => {
+
+    const {editor} = props;
 
     const {active} = useNotesStore(['active']);
     const activeRef = useRefValue(active);
@@ -19,6 +23,17 @@ export const NoteNavigation = React.memo((props: IProps) => {
     const handleClickAway = React.useCallback(() => {
 
     }, []);
+
+    React.useEffect(() => {
+
+        if (active === props.id) {
+            if (editor !== undefined) {
+                console.log("Focusing editor");
+                editor.editing.view.focus();
+            }
+        }
+
+    }, [active, editor, props.id]);
 
     const handleClick = React.useCallback(() => {
         setActive(props.id);
