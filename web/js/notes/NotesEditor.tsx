@@ -4,6 +4,7 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {IActionMenuItem, NoteActionMenu} from "./NoteActionMenu";
 import {NoteNavigation} from "./NoteNavigation";
 import {NoteIDStr} from "./NotesStore";
+import { deepMemo } from "../react/ReactUtils";
 
 interface IProps {
     readonly parent: NoteIDStr;
@@ -23,7 +24,7 @@ const items: ReadonlyArray<IActionMenuItem> = [
 
 ]
 
-export const NoteEditor = React.memo((props: IProps) => {
+export const NoteEditor = deepMemo((props: IProps) => {
 
     const [editor, setEditor] = React.useState<ckeditor5.IEditor | undefined>();
 

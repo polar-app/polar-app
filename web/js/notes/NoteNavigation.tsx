@@ -1,9 +1,10 @@
 import * as React from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import {useComponentDidMount, useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 import {NoteIDStr, useNotesCallbacks, useNotesStore} from "./NotesStore";
 import {useRefValue} from "../hooks/ReactHooks";
 import {ckeditor5} from "../../../apps/stories/impl/ckeditor5/CKEditor5";
+import { deepMemo } from '../react/ReactUtils';
+import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 
 interface IProps {
     readonly parent: NoteIDStr;
@@ -12,13 +13,15 @@ interface IProps {
     readonly children: JSX.Element;
 }
 
-export const NoteNavigation = React.memo((props: IProps) => {
+export const NoteNavigation = deepMemo((props: IProps) => {
 
     const {editor} = props;
 
     const {active} = useNotesStore(['active']);
     const activeRef = useRefValue(active);
     const {createNewNote, setActive, navPrev, navNext} = useNotesCallbacks();
+
+    const [ref, setRef] = React.useState<HTMLDivElement | null>(null);
 
     const handleClickAway = React.useCallback(() => {
 
@@ -59,11 +62,6 @@ export const NoteNavigation = React.memo((props: IProps) => {
 
                 break;
 
-            case 'Enter':
-                createNewNote(props.parent, props.id);
-                event.stopPropagation();
-                event.preventDefault();
-                break;
             default:
                 break;
 
@@ -71,10 +69,38 @@ export const NoteNavigation = React.memo((props: IProps) => {
 
     }, [createNewNote, navNext, navPrev, props.id, props.parent]);
 
+    const handleKeyDownCapture =  React.useCallback((event: KeyboardEvent) => {
+
+        // FIXME: allow shift + enter
+
+        if (event.key === 'Enter') {
+            console.log("FIXME: preventing enter with capture");
+            event.stopPropagation();
+            event.preventDefault();
+            createNewNote(props.parent, props.id);
+
+        }
+
+    }, []);
+
+    React.useEffect(() => {
+
+        if (ref) {
+            ref.addEventListener('keydown', handleKeyDownCapture, {capture: true})
+        }
+
+    }, [handleKeyDownCapture, ref])
+
+    useComponentWillUnmount(() => {
+        if (ref) {
+            ref.removeEventListener('keydown', handleKeyDownCapture, {capture: true})
+        }
+    });
+
     return (
         <ClickAwayListener onClickAway={handleClickAway}>
-            <div onClick={handleClick} onKeyDown={handleKeyDown}>
-                {props.children}
+            <div ref={setRef} onClick={handleClick} onKeyDown={handleKeyDown}>
+                {ref !== null && props.children}
             </div>
         </ClickAwayListener>
     );

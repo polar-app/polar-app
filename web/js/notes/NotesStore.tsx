@@ -19,6 +19,9 @@ interface INoteBase {
      */
     readonly items?: ReadonlyArray<NoteIDStr>;
 
+    // FIXME: create and lastUpdated timestamps for notes
+    //
+
 }
 
 export interface INote extends INoteBase {
