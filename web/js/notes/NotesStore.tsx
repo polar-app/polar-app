@@ -270,7 +270,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
 }
 
-export const [NotesStoreProvider, useNotesStore, useNotesCallbacks, useNotesMutator]
+export const [NotesStoreProvider, useNotesStore, useNotesStoresCallbacks, useNotesMutator]
     = createObservableStore<INotesStore, Mutator, INotesCallbacks>({
     initialValue: initialStore,
     mutatorFactory,

@@ -2,7 +2,7 @@ import React from 'react';
 import '@ckeditor/ckeditor5-theme-lark/theme/theme.css';
 import '@ckeditor/ckeditor5-theme-lark';
 import {createRXJSStore} from "../../../web/js/react/store/RXJSStore";
-import {INote, NotesStoreProvider, useNotesCallbacks, useNotesStore} from '../../../web/js/notes/NotesStore';
+import {INote, NotesStoreProvider, useNotesStoresCallbacks, useNotesStore} from '../../../web/js/notes/NotesStore';
 import {NoteRoot} from "../../../web/js/notes/NoteRoot";
 
 export const [NoteMenuSelectedStoreProvider, useNoteMenuSelectedStore, useNoteMenuSelectedListener] =
@@ -92,7 +92,7 @@ const NotesInner = () => (
 
 const BasicNotesDataSet = (props: BasicNotesDataSetProps) => {
 
-    const {doPut} = useNotesCallbacks();
+    const {doPut} = useNotesStoresCallbacks();
 
     React.useMemo(() => doPut(notes), [doPut]);
 

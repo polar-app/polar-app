@@ -1,6 +1,6 @@
 import React from "react";
 import {deepMemo} from "../react/ReactUtils";
-import {NoteIDStr, useNotesStore, useNotesCallbacks} from "./NotesStore";
+import {NoteIDStr, useNotesStore, useNotesStoresCallbacks} from "./NotesStore";
 import {Notes} from "./Notes";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {MUIBrowserLinkStyle} from "../mui/MUIBrowserLinkStyle";
@@ -13,7 +13,7 @@ interface IProps {
 export const NoteRoot = deepMemo((props: IProps) => {
 
     const {index} = useNotesStore(['index']);
-    const {lookup} = useNotesCallbacks();
+    const {lookup} = useNotesStoresCallbacks();
 
     const note = index[props.id];
 

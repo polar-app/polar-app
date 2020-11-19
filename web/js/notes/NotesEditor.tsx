@@ -28,6 +28,8 @@ export const NoteEditor = deepMemo((props: IProps) => {
 
     const [editor, setEditor] = React.useState<ckeditor5.IEditor | undefined>();
 
+    const useNotesCa
+
     const handleClick = React.useCallback((event: React.MouseEvent) => {
     }, []);
 
