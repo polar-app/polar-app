@@ -57,7 +57,17 @@ interface INotesCallbacks {
      * Create a new note under the parent using the childRef for the
      * position of the note.
      */
-    readonly createNewNote: (parent: NoteIDStr, childRef: NoteIDStr) => void;
+    readonly createNewNote: (parent: NoteIDStr, child: NoteIDStr) => void;
+
+    /**
+     * Navigate to the previous node in the graph.
+     */
+    readonly navPrev: (parent: NoteIDStr, child: NoteIDStr) => void;
+
+    /**
+     * Navigate to the next node in the graph.
+     */
+    readonly navNext: (parent: NoteIDStr, child: NoteIDStr) => void;
 
 }
 
@@ -147,7 +157,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
         }
 
-        function createNewNote(parent: NoteIDStr, childRef: NoteIDStr) {
+        function createNewNote(parent: NoteIDStr, child: NoteIDStr) {
 
             const store = storeProvider();
             const index = {...store.index};
@@ -184,8 +194,64 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             setStore({...store, active});
         }
 
+        function doNav(delta: 'prev' | 'next',
+                       parent: NoteIDStr,
+                       child: NoteIDStr) {
+
+            const store = storeProvider();
+
+            const {active, index} = store;
+
+            if (active === undefined) {
+                return;
+            }
+
+            const parentNote = index[parent];
+
+            if (! parentNote) {
+                console.warn("No note in index for ID: ", parent);
+                return;
+            }
+
+            const items = parentNote.items || [];
+
+            const itemIndex = items.indexOf(child);
+
+            if (itemIndex === -1) {
+                console.warn("Child not in node items: ", child);
+                return;
+            }
+
+            const deltaIndex = delta === 'prev' ? -1 : 1;
+
+            const activeIndex = itemIndex + deltaIndex;
+
+            const newActive = items[activeIndex];
+
+            setStore({
+                ...store,
+                active: newActive
+            });
+
+        }
+
+        function navPrev(parent: NoteIDStr, child: NoteIDStr) {
+            doNav('prev', parent, child);
+        }
+
+        function navNext(parent: NoteIDStr, child: NoteIDStr) {
+            doNav('next', parent, child);
+        }
+
         return {
-            doPut, doDelete, lookup, lookupReverse, createNewNote, setActive
+            doPut,
+            doDelete,
+            lookup,
+            lookupReverse,
+            createNewNote,
+            setActive,
+            navPrev,
+            navNext
         };
 
     }, [setStore, storeProvider])

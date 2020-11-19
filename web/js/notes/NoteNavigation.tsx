@@ -18,7 +18,7 @@ export const NoteNavigation = React.memo((props: IProps) => {
 
     const {active} = useNotesStore(['active']);
     const activeRef = useRefValue(active);
-    const {createNewNote, setActive} = useNotesCallbacks();
+    const {createNewNote, setActive, navPrev, navNext} = useNotesCallbacks();
 
     const handleClickAway = React.useCallback(() => {
 
@@ -47,15 +47,22 @@ export const NoteNavigation = React.memo((props: IProps) => {
 
         switch (event.key) {
 
-            case 'ArrowDown':
-                event.stopPropagation();
-                event.preventDefault();
-                break;
-
             case 'ArrowUp':
                 event.stopPropagation();
                 event.preventDefault();
+
+                navPrev(props.parent, props.id);
+
                 break;
+
+            case 'ArrowDown':
+                event.stopPropagation();
+                event.preventDefault();
+
+                navNext(props.parent, props.id);
+
+                break;
+
 
             case 'Enter':
                 createNewNote(props.parent, props.id);
@@ -66,7 +73,7 @@ export const NoteNavigation = React.memo((props: IProps) => {
                 break;
         }
 
-    }, [activeRef, createNewNote, props.id, props.parent]);
+    }, [activeRef, createNewNote, navNext, navPrev, props.id, props.parent]);
 
     useComponentDidMount(() => {
         document.addEventListener('keydown', event => onKeyDownCapture(event), {capture: true});
