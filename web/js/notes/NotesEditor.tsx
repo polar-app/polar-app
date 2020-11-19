@@ -6,6 +6,7 @@ import {NoteNavigation} from "./NoteNavigation";
 import {NoteIDStr} from "./NotesStore";
 
 interface IProps {
+    readonly parent: NoteIDStr;
     readonly id: NoteIDStr;
     readonly content: string | undefined;
 }
@@ -32,7 +33,7 @@ export const NoteEditor = React.memo((props: IProps) => {
     return (
         <NoteActionMenu items={() => items} onItem={item => console.log('got item: ', item)}>
             <div onClick={handleClick}>
-                <NoteNavigation id={props.id}>
+                <NoteNavigation parent={props.parent} id={props.id}>
                     <CKEditor5 content={props.content || ''} onChange={NULL_FUNCTION} onEditor={NULL_FUNCTION}/>
                 </NoteNavigation>
             </div>

@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Provider} from "polar-shared/src/util/Providers";
 import {createObservableStore, SetStore} from "../react/store/ObservableStore";
 import {IDStr} from "polar-shared/src/util/Strings";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 export type NoteIDStr = IDStr;
 
@@ -10,6 +11,7 @@ export type ReverseNotesIndex = {[id: string /* NoteIDStr */]: ReadonlyArray<Not
 
 
 interface INoteBase {
+
     readonly id: NoteIDStr;
 
     /**
@@ -35,21 +37,34 @@ interface INotesStore {
 
     readonly reverse: ReverseNotesIndex;
 
+    /**
+     * The currently active note.
+     */
+    readonly active: NoteIDStr | undefined;
+
 }
 
 interface INotesCallbacks {
 
     readonly doPut: (notes: ReadonlyArray<INote>) => void;
     readonly doDelete: (notes: ReadonlyArray<INote>) => void;
+    readonly setActive: (active: NoteIDStr | undefined) => void;
 
     readonly lookup: (notes: ReadonlyArray<NoteIDStr>) => ReadonlyArray<INote>;
     readonly lookupReverse: (id: NoteIDStr) => ReadonlyArray<NoteIDStr>;
+
+    /**
+     * Create a new note under the parent using the childRef for the
+     * position of the note.
+     */
+    readonly createNewNote: (parent: NoteIDStr, childRef: NoteIDStr) => void;
 
 }
 
 const initialStore: INotesStore = {
     index: {},
-    reverse: {}
+    reverse: {},
+    active: undefined
 }
 
 interface Mutator {
@@ -98,7 +113,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
             }
 
-            setStore({index, reverse});
+            setStore({...store, index, reverse});
 
         }
 
@@ -127,15 +142,52 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
             }
 
-            setStore({index, reverse});
+            setStore({...store, index, reverse});
 
         }
 
+        function createNewNote(parent: NoteIDStr, childRef: NoteIDStr) {
+
+            const store = storeProvider();
+            const index = {...store.index};
+
+            const id = Hashcodes.createRandomID();
+
+            const parentNote = index[parent];
+
+            if (! parentNote) {
+                throw new Error("No parent note");
+            }
+
+            const items = parentNote.items || [];
+
+            // FIXME: insert into the right places...
+
+            const newNote: INote = {
+                id
+            }
+
+            index[parentNote.id] = {
+                ...parentNote,
+                items: [...items, id]
+            }
+
+            index[newNote.id] = newNote;
+
+            setStore({...store, index});
+
+        }
+
+        function setActive(active: NoteIDStr | undefined) {
+            const store = storeProvider();
+            setStore({...store, active});
+        }
+
         return {
-            doPut, doDelete, lookup, lookupReverse
+            doPut, doDelete, lookup, lookupReverse, createNewNote, setActive
         };
 
-    }, [storeProvider])
+    }, [setStore, storeProvider])
 
 }
 

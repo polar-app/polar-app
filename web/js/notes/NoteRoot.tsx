@@ -6,7 +6,6 @@ import {isPresent} from "polar-shared/src/Preconditions";
 
 interface IProps {
     readonly id: NoteIDStr;
-    readonly notes: ReadonlyArray<NoteIDStr>;
 }
 
 export const NoteRoot = deepMemo((props: IProps) => {
@@ -25,7 +24,19 @@ export const NoteRoot = deepMemo((props: IProps) => {
     const notes = lookup(note.items || []);
 
     return (
-        <Notes parent={props.id} notes={notes}/>
+        <div>
+
+            {note.name && (
+                <h1>{note.name}</h1>
+            )}
+
+            {note.content && (
+                <p>{note.content}</p>
+            )}
+
+            <Notes parent={props.id} notes={notes}/>
+
+        </div>
     );
 
 });

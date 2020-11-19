@@ -11,10 +11,12 @@ export const [NoteMenuSelectedStoreProvider, useNoteMenuSelectedStore, useNoteMe
 const notes: ReadonlyArray<INote> = [
     {
         id: '101',
+        name: "This is your first note",
         content: 'first note',
     },
     {
         id: '102',
+        name: "This is your second note",
         content: 'this is an item with some child items',
         items: [
             '103'
@@ -31,7 +33,7 @@ interface BasicNotesDataSetProps {
 }
 
 const NotesInner = () => (
-    <NoteRoot notes={['101', '102']}/>
+    <NoteRoot id='102'/>
 );
 
 const BasicNotesDataSet = (props: BasicNotesDataSetProps) => {

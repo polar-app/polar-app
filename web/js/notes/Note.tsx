@@ -17,7 +17,7 @@ export const Note = deepMemo((props: IProps) => {
 
     return (
         <>
-            <NoteEditor id={props.id} content={props.content}/>
+            <NoteEditor parent={props.parent} id={props.id} content={props.content}/>
             <Notes parent={props.parent} notes={notes}/>
         </>
     );
