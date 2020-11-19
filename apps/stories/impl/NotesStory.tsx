@@ -16,15 +16,24 @@ const notes: ReadonlyArray<INote> = [
     },
     {
         id: '102',
-        name: "This is your second note",
-        content: 'this is an item with some child items',
+        name: "World War II",
+        content: 'World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world\'s countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.',
         items: [
-            '103'
+            '103',
+            '104'
         ]
     },
     {
         id: '103',
-        content: 'this is the second note',
+        content: 'Lasted from 1939 to 1945',
+    },
+    {
+        id: '104',
+        content: 'Axis Powers: Germany, Italy, Japan',
+    },
+    {
+        id: '104',
+        content: 'Allied Powers: United States, United Kingdom, Canada, Russia',
     }
 ]
 

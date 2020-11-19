@@ -10,14 +10,26 @@ import BalloonEditor from "@ckeditor/ckeditor5-build-balloon";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {CKEditor5GlobalCss} from "./CKEditor5GlobalCss";
 
-interface ICKEditor5 {
+export namespace ckeditor5 {
+
+    export interface IView {
+        readonly focus: () => void;
+    }
+
+    export interface IEditing {
+        readonly view: IView;
+    }
+
+    export interface IEditor {
+        readonly editing: IEditing;
+    }
 
 }
 
 interface IProps {
     readonly content: string;
     readonly onChange: (content: string) => void;
-    readonly onEditor: (editor: ICKEditor5) => void;
+    readonly onEditor: (editor: ckeditor5.IEditor) => void;
 }
 
 export const CKEditor5 = deepMemo((props: IProps) => {

@@ -26,8 +26,6 @@ const items: ReadonlyArray<IActionMenuItem> = [
 export const NoteEditor = React.memo((props: IProps) => {
 
     const handleClick = React.useCallback((event: React.MouseEvent) => {
-        console.log("FIXME: got click: ", event.target);
-        console.log("FIXME: got click: ", event.currentTarget);
     }, []);
 
     return (
