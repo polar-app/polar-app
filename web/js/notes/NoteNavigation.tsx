@@ -1,8 +1,10 @@
 import * as React from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import {useComponentDidMount, useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
+import {NoteIDStr} from "./NotesStore";
 
 interface IProps {
+    readonly id: NoteIDStr;
     readonly children: JSX.Element;
 }
 

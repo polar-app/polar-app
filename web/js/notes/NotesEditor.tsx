@@ -3,8 +3,10 @@ import {CKEditor5} from "../../../apps/stories/impl/ckeditor5/CKEditor5";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {IActionMenuItem, NoteActionMenu} from "./NoteActionMenu";
 import {NoteNavigation} from "./NoteNavigation";
+import {NoteIDStr} from "./NotesStore";
 
 interface IProps {
+    readonly id: NoteIDStr;
     readonly content: string | undefined;
 }
 
@@ -30,7 +32,7 @@ export const NoteEditor = React.memo((props: IProps) => {
     return (
         <NoteActionMenu items={() => items} onItem={item => console.log('got item: ', item)}>
             <div onClick={handleClick}>
-                <NoteNavigation>
+                <NoteNavigation id={props.id}>
                     <CKEditor5 content={props.content || ''} onChange={NULL_FUNCTION} onEditor={NULL_FUNCTION}/>
                 </NoteNavigation>
             </div>
