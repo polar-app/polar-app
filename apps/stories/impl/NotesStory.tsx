@@ -3,7 +3,7 @@ import '@ckeditor/ckeditor5-theme-lark/theme/theme.css';
 import '@ckeditor/ckeditor5-theme-lark';
 import {createRXJSStore} from "../../../web/js/react/store/RXJSStore";
 import {INote, NotesStoreProvider, useNotesCallbacks} from '../../../web/js/notes/NotesStore';
-import {NotesRoot} from "../../../web/js/notes/NotesRoot";
+import {NoteRoot} from "../../../web/js/notes/NoteRoot";
 
 export const [NoteMenuSelectedStoreProvider, useNoteMenuSelectedStore, useNoteMenuSelectedListener] =
     createRXJSStore<number | undefined>();
@@ -31,7 +31,7 @@ interface BasicNotesDataSetProps {
 }
 
 const NotesInner = () => (
-    <NotesRoot notes={['101', '102']}/>
+    <NoteRoot notes={['101', '102']}/>
 );
 
 const BasicNotesDataSet = (props: BasicNotesDataSetProps) => {

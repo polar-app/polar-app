@@ -1,11 +1,11 @@
 import React from "react";
 import {NoteEditor} from "./NotesEditor";
-import {INote, useNotesCallbacks, useNotesStore} from "./NotesStore";
+import {INote, NoteIDStr, useNotesCallbacks, useNotesStore} from "./NotesStore";
 import {Notes} from "./Notes";
 import { deepMemo } from "../react/ReactUtils";
 
 interface IProps extends INote {
-
+    readonly parent: NoteIDStr;
 }
 
 export const Note = deepMemo((props: IProps) => {
@@ -18,7 +18,7 @@ export const Note = deepMemo((props: IProps) => {
     return (
         <>
             <NoteEditor id={props.id} content={props.content}/>
-            <Notes notes={notes}/>
+            <Notes parent={props.parent} notes={notes}/>
         </>
     );
 });
