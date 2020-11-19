@@ -8,11 +8,9 @@ export type NoteIDStr = IDStr;
 export type NotesIndex = {[id: string /* NoteIDStr */]: INote};
 export type ReverseNotesIndex = {[id: string /* NoteIDStr */]: ReadonlyArray<NoteIDStr>};
 
-export interface INote {
 
+interface INoteBase {
     readonly id: NoteIDStr;
-
-    readonly content: string;
 
     /**
      * The sub-items of this node as node IDs.
@@ -20,6 +18,27 @@ export interface INote {
     readonly items?: ReadonlyArray<NoteIDStr>;
 
 }
+
+export interface INoteWithName extends INoteBase {
+
+    readonly name: string;
+
+}
+
+export interface INoteWithContent extends INoteBase {
+
+    readonly content: string;
+
+}
+
+export interface INoteWithNameAndContent extends INoteBase {
+
+    readonly name: string;
+    readonly content: string;
+
+}
+
+export type INote = INoteWithName | INoteWithContent | INoteWithNameAndContent;
 
 interface INotesStore {
 

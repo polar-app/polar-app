@@ -21,9 +21,16 @@ const items: ReadonlyArray<IActionMenuItem> = [
 
 export const NoteEditor = React.memo((props: IProps) => {
 
+    const handleClick = React.useCallback((event: React.MouseEvent) => {
+        console.log("FIXME: got click: ", event.target);
+        console.log("FIXME: got click: ", event.currentTarget);
+    }, []);
+
     return (
         <NoteActionMenu items={() => items} onItem={item => console.log('got item: ', item)}>
-            <CKEditor5 content={props.content} onChange={NULL_FUNCTION}/>
+            <div onClick={handleClick}>
+                <CKEditor5 content={props.content} onChange={NULL_FUNCTION}/>
+            </div>
         </NoteActionMenu>
     );
 
