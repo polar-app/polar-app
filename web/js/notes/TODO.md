@@ -1,3 +1,10 @@
+
+- save the note to the store when I type ... 
+- jump to other notes
+- what about markdown support?
+- edit the main content of the note...
+- completion of nodes by name and the ability to jump to them
+
 - basic functionality v1
 
     - enter sub-nodes and have the ability to enter text there

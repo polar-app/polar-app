@@ -188,7 +188,11 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
             index[newNote.id] = newNote;
 
-            setStore({...store, index});
+            setStore({
+                ...store,
+                index,
+                active: newNote.id
+            });
 
         }
 

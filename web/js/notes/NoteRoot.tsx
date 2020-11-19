@@ -4,6 +4,7 @@ import {NoteIDStr, useNotesStore, useNotesCallbacks} from "./NotesStore";
 import {Notes} from "./Notes";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {MUIBrowserLinkStyle} from "../mui/MUIBrowserLinkStyle";
+import {NotesInbound} from "./NotesInbound";
 
 interface IProps {
     readonly id: NoteIDStr;
@@ -37,6 +38,8 @@ export const NoteRoot = deepMemo((props: IProps) => {
                 )}
 
                 <Notes parent={props.id} notes={notes}/>
+
+                <NotesInbound id={props.id}/>
 
             </div>
         </MUIBrowserLinkStyle>

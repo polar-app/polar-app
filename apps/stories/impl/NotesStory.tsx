@@ -43,6 +43,13 @@ const notes: ReadonlyArray<INote> = [
         id: '106',
         content: 'Lead by Franklin D. Roosevelt, Winston Churchill, and Joseph Stalin ',
     },
+    {
+        id: '107',
+        content: 'Germany Germany (German: Deutschland, German pronunciation: [ˈdɔʏtʃlant]), officially the Federal Republic of Germany (German: Bundesrepublik Deutschland, About this soundlisten),[e] is a country in Central and Western Europe and one of the major participants of World War II',
+        items: [
+            '102'
+        ]
+    },
 
 ]
 
