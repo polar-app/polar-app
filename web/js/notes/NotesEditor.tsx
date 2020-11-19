@@ -2,7 +2,6 @@ import React from "react";
 import {CKEditor5} from "../../../apps/stories/impl/ckeditor5/CKEditor5";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {IActionMenuItem, NoteActionMenu} from "./NoteActionMenu";
-import {useComponentDidMount} from "../hooks/ReactLifecycleHooks";
 
 interface IProps {
     readonly content: string;
