@@ -37,7 +37,7 @@ interface IProps {
 
 }
 
-export const NoteActionMenu2 = deepMemo((props: IProps) => {
+export const NoteActionMenu = deepMemo((props: IProps) => {
 
     const [position, setPosition] = React.useState<IActionMenuPosition | undefined>(undefined);
     const [, setMenuIndex, menuIndexRef] = useStateRef<number | undefined>(undefined);
