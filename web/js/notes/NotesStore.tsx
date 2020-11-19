@@ -50,7 +50,11 @@ interface INotesStore {
 interface INotesCallbacks {
 
     readonly doPut: (notes: ReadonlyArray<INote>) => void;
+
     readonly doDelete: (notes: ReadonlyArray<INote>) => void;
+
+    readonly updateNote: (id: NoteIDStr, content: string) => void;
+
     readonly setActive: (active: NoteIDStr | undefined) => void;
 
     readonly lookup: (notes: ReadonlyArray<NoteIDStr>) => ReadonlyArray<INote>;
@@ -159,6 +163,26 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             setStore({...store, index, reverse});
 
         }
+        function updateNote(id: NoteIDStr, content: string) {
+
+            const store = storeProvider();
+
+            const note = store.index[id];
+
+            if (! note) {
+                console.warn("No note for id: " + id);
+                return;
+            }
+
+            const newNote: INote = {
+                ...note,
+                content
+            };
+
+            doPut([newNote])
+
+        }
+
 
         function createNewNote(parent: NoteIDStr, child: NoteIDStr) {
 
@@ -258,6 +282,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
         return {
             doPut,
             doDelete,
+            updateNote,
             lookup,
             lookupReverse,
             createNewNote,
