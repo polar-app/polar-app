@@ -19,26 +19,12 @@ interface INoteBase {
 
 }
 
-export interface INoteWithName extends INoteBase {
+export interface INote extends INoteBase {
 
-    readonly name: string;
-
-}
-
-export interface INoteWithContent extends INoteBase {
-
-    readonly content: string;
+    readonly name?: string;
+    readonly content?: string;
 
 }
-
-export interface INoteWithNameAndContent extends INoteBase {
-
-    readonly name: string;
-    readonly content: string;
-
-}
-
-export type INote = INoteWithName | INoteWithContent | INoteWithNameAndContent;
 
 interface INotesStore {
 

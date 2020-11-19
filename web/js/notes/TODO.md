@@ -1,3 +1,10 @@
+- basic functionality v1
+
+    - enter sub-nodes and have the ability to enter text there
+    - ability to jump to a node and keep the breadcrumb path
+    -  
+
+
 - we need some sort of background saving function so that we're constantly persisting what the user types
   while they're using the app.... 
   
