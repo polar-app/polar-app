@@ -3,6 +3,7 @@ import {deepMemo} from "../react/ReactUtils";
 import {NoteIDStr, useNotesStore, useNotesCallbacks} from "./NotesStore";
 import {Notes} from "./Notes";
 import {isPresent} from "polar-shared/src/Preconditions";
+import {MUIBrowserLinkStyle} from "../mui/MUIBrowserLinkStyle";
 
 interface IProps {
     readonly id: NoteIDStr;
@@ -24,19 +25,21 @@ export const NoteRoot = deepMemo((props: IProps) => {
     const notes = lookup(note.items || []);
 
     return (
-        <div>
+        <MUIBrowserLinkStyle>
+            <div>
 
-            {note.name && (
-                <h1>{note.name}</h1>
-            )}
+                {note.name && (
+                    <h1>{note.name}</h1>
+                )}
 
-            {note.content && (
-                <p>{note.content}</p>
-            )}
+                {note.content && (
+                    <p>{note.content}</p>
+                )}
 
-            <Notes parent={props.id} notes={notes}/>
+                <Notes parent={props.id} notes={notes}/>
 
-        </div>
+            </div>
+        </MUIBrowserLinkStyle>
     );
 
 });

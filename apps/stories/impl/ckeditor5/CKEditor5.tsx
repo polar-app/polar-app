@@ -52,10 +52,10 @@ export const CKEditor5 = deepMemo((props: IProps) => {
                         props.onChange(data);
                     } }
                     onBlur={ ( event: any, editor: any ) => {
-                        console.log( 'Blur.', editor );
+                        // console.log( 'Blur.', editor );
                     } }
                     onFocus={ ( event: any, editor: any ) => {
-                        console.log( 'Focus.', editor );
+                        // console.log( 'Focus.', editor );
                     } }
                 />
             {/*</CKEditorContext>*/}
