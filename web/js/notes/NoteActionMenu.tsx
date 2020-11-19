@@ -39,7 +39,7 @@ interface IProps {
 
 export const NoteActionMenu = deepMemo((props: IProps) => {
 
-    const [position, setPosition] = React.useState<IActionMenuPosition | undefined>(undefined);
+    const [position, setPosition, positionRef] = useStateRef<IActionMenuPosition | undefined>(undefined);
     const [, setMenuIndex, menuIndexRef] = useStateRef<number | undefined>(undefined);
 
     const items = props.items();
@@ -47,7 +47,7 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
     const reset = React.useCallback(() => {
         setPosition(undefined);
         setMenuIndex(undefined);
-    }, [setMenuIndex]);
+    }, [setMenuIndex, setPosition]);
 
     const handleSelectedActionItem = React.useCallback(() => {
 
@@ -59,7 +59,7 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
         setMenuIndex(undefined);
         setPosition(undefined);
 
-    }, [items, menuIndexRef, props, setMenuIndex])
+    }, [items, menuIndexRef, props, setMenuIndex, setPosition])
 
     const onKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -84,28 +84,34 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
                 break;
         }
 
-    }, []);
+    }, [setPosition]);
+
+    const computeNextMenuID = React.useCallback(() => {
+
+        if (menuIndexRef.current === undefined) {
+            return 0;
+        }
+
+        return Math.min(items.length - 1, menuIndexRef.current + 1);
+
+    }, [items.length, menuIndexRef]);
+
+
+    const computePrevMenuID = React.useCallback(() => {
+
+        if (menuIndexRef.current === undefined) {
+            return 0;
+        }
+
+        return Math.max(0, menuIndexRef.current - 1);
+
+    }, [menuIndexRef]);
 
     const onKeyDownCapture = React.useCallback((event: KeyboardEvent) => {
 
-        function computeNextID() {
-
-            if (menuIndexRef.current === undefined) {
-                return 0;
-            }
-
-            return Math.min(items.length - 1, menuIndexRef.current + 1);
-
-        }
-
-        function computePrevID() {
-
-            if (menuIndexRef.current === undefined) {
-                return 0;
-            }
-
-            return Math.max(0, menuIndexRef.current - 1);
-
+        if (positionRef.current === undefined) {
+            // the menu is not active
+            return;
         }
 
         switch (event.key) {
@@ -121,7 +127,7 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
 
             case 'ArrowDown':
 
-                const nextID = computeNextID();
+                const nextID = computeNextMenuID();
                 setMenuIndex(nextID);
                 event.preventDefault();
                 event.stopPropagation();
@@ -129,7 +135,7 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
 
             case 'ArrowUp':
 
-                const prevID = computePrevID();
+                const prevID = computePrevMenuID();
                 setMenuIndex(prevID);
                 event.preventDefault();
                 event.stopPropagation();
@@ -147,7 +153,7 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
                 break;
         }
 
-    }, [handleSelectedActionItem, items.length, menuIndexRef, reset, setMenuIndex]);
+    }, [computeNextMenuID, computePrevMenuID, handleSelectedActionItem, positionRef, reset, setMenuIndex]);
 
     useComponentDidMount(() => {
         document.addEventListener('keydown', event => onKeyDownCapture(event), {capture: true});
