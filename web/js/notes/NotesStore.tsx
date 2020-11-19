@@ -173,17 +173,21 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
                 throw new Error("No parent note");
             }
 
-            const items = parentNote.items || [];
+            const items = [...(parentNote.items || [])];
 
-            // FIXME: insert into the right places...
+            const childIndexPosition = items.indexOf(child);
 
             const newNote: INote = {
                 id
             }
 
+            // this mutates the array under us and I don't necessarily like that
+            // but it's a copy of the original to begin with.
+            items.splice(childIndexPosition + 1, 0, newNote.id);
+
             index[parentNote.id] = {
                 ...parentNote,
-                items: [...items, id]
+                items
             }
 
             index[newNote.id] = newNote;
