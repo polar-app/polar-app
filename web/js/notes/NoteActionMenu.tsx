@@ -183,7 +183,10 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
 
     return (
 
-        <div onKeyDown={onKeyDown} onKeyUp={onKeyDown} onKeyPress={onKeyDown}>
+        <div className="NoteActionMenu"
+             onKeyDown={onKeyDown}
+             onKeyUp={onKeyDown}
+             onKeyPress={onKeyDown}>
 
             {position && (
                 <ClickAwayListener onClickAway={() => setPosition(undefined)}>

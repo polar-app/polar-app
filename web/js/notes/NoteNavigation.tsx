@@ -26,24 +26,20 @@ export const NoteNavigation = React.memo((props: IProps) => {
 
     React.useEffect(() => {
 
-        if (active === props.id) {
+        if (activeRef.current === props.id) {
             if (editor !== undefined) {
                 console.log("Focusing editor");
                 editor.editing.view.focus();
             }
         }
 
-    }, [active, editor, props.id]);
+    }, [active, activeRef, editor, props.id]);
 
     const handleClick = React.useCallback(() => {
         setActive(props.id);
     }, [props.id, setActive]);
 
-    const onKeyDownCapture = React.useCallback((event: KeyboardEvent) => {
-
-        if (activeRef.current !== props.id) {
-            return;
-        }
+    const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 
         switch (event.key) {
 
@@ -63,7 +59,6 @@ export const NoteNavigation = React.memo((props: IProps) => {
 
                 break;
 
-
             case 'Enter':
                 createNewNote(props.parent, props.id);
                 event.stopPropagation();
@@ -71,21 +66,14 @@ export const NoteNavigation = React.memo((props: IProps) => {
                 break;
             default:
                 break;
+
         }
 
-    }, [activeRef, createNewNote, navNext, navPrev, props.id, props.parent]);
-
-    useComponentDidMount(() => {
-        document.addEventListener('keydown', event => onKeyDownCapture(event), {capture: true});
-    })
-
-    useComponentWillUnmount(() => {
-        document.removeEventListener('keydown', event => onKeyDownCapture(event), {capture: true});
-    })
+    }, [createNewNote, navNext, navPrev, props.id, props.parent]);
 
     return (
         <ClickAwayListener onClickAway={handleClickAway}>
-            <div onClick={handleClick}>
+            <div onClick={handleClick} onKeyDown={handleKeyDown}>
                 {props.children}
             </div>
         </ClickAwayListener>

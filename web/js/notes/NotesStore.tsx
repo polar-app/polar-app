@@ -215,16 +215,17 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
             const items = parentNote.items || [];
 
-            const itemIndex = items.indexOf(child);
+            const childIndex = items.indexOf(child);
 
-            if (itemIndex === -1) {
+            if (childIndex === -1) {
                 console.warn("Child not in node items: ", child);
                 return;
             }
 
             const deltaIndex = delta === 'prev' ? -1 : 1;
 
-            const activeIndex = itemIndex + deltaIndex;
+            const activeIndexWithoutBound = childIndex + deltaIndex;
+            const activeIndex = Math.min(Math.max(0, activeIndexWithoutBound), items.length -1);
 
             const newActive = items[activeIndex];
 

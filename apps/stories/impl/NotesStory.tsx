@@ -2,7 +2,7 @@ import React from 'react';
 import '@ckeditor/ckeditor5-theme-lark/theme/theme.css';
 import '@ckeditor/ckeditor5-theme-lark';
 import {createRXJSStore} from "../../../web/js/react/store/RXJSStore";
-import {INote, NotesStoreProvider, useNotesCallbacks} from '../../../web/js/notes/NotesStore';
+import {INote, NotesStoreProvider, useNotesCallbacks, useNotesStore} from '../../../web/js/notes/NotesStore';
 import {NoteRoot} from "../../../web/js/notes/NoteRoot";
 
 export const [NoteMenuSelectedStoreProvider, useNoteMenuSelectedStore, useNoteMenuSelectedListener] =
@@ -50,8 +50,37 @@ interface BasicNotesDataSetProps {
     readonly children: JSX.Element;
 }
 
+const NotesStoryDebug = React.memo(() => {
+
+    const {index, active} = useNotesStore(['index', 'active']);
+
+    return (
+        <div>
+            <b>active: </b><br/>
+            <pre>
+            {JSON.stringify(active, null, '  ')}
+            </pre>
+            <b>index: </b><br/>
+            <pre>
+            {JSON.stringify(index, null, '  ')}
+            </pre>
+        </div>
+    );
+});
+
 const NotesInner = () => (
-    <NoteRoot id='102'/>
+    <div style={{display: 'flex'}}>
+        <NoteRoot id='102'/>
+        <div style={{
+                 width: '500px',
+                 fontSize: '10px',
+                 overflow: 'auto'
+             }}>
+
+            <NotesStoryDebug/>
+
+        </div>
+    </div>
 );
 
 const BasicNotesDataSet = (props: BasicNotesDataSetProps) => {
