@@ -10,9 +10,14 @@ import BalloonEditor from "@ckeditor/ckeditor5-build-balloon";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {CKEditor5GlobalCss} from "./CKEditor5GlobalCss";
 
+interface ICKEditor5 {
+
+}
+
 interface IProps {
     readonly content: string;
     readonly onChange: (content: string) => void;
+    readonly onEditor: (editor: ICKEditor5) => void;
 }
 
 export const CKEditor5 = deepMemo((props: IProps) => {
@@ -27,6 +32,7 @@ export const CKEditor5 = deepMemo((props: IProps) => {
                     onInit={ (editor: any) => {
                         // You can store the "editor" and use when it is needed.
                         console.log( 'Editor is ready to use!', editor );
+                        props.onEditor(editor);
                     } }
                     onChange={ ( event: any, editor: any ) => {
                         const data = editor.getData();
