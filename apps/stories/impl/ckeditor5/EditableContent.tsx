@@ -30,7 +30,7 @@ export const EditableContent = deepMemo((props: IProps) => {
         return (
             <ClickAwayListener onClickAway={() => setEditing((false))}>
                 <div onKeyDown={handleKeyDown}>
-                    <CKEditor5 content={content} onChange={handleChange}/>
+                    {/*<CKEditor5 content={content} onChange={handleChange}/>*/}
                 </div>
             </ClickAwayListener>
         );

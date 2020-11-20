@@ -50,8 +50,8 @@ const Notes = deepMemo((props: NoteProps) => {
 
             {props.notes.map((note) => (
                 <li key={note.id}>
-                    <CKEditor5 content={note.content}
-                               onChange={NULL_FUNCTION}/>
+                    {/*<CKEditor5 content={note.content}*/}
+                    {/*           onChange={NULL_FUNCTION}/>*/}
                      <Notes notes={note.children}/>
                 </li>))}
 

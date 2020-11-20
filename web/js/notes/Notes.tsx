@@ -20,7 +20,8 @@ export const Notes = deepMemo((props: NotesProps) => {
 
             {props.notes.map((note) => (
                 <li style={{
-                        listStyleType: 'disc'
+                        listStyleType: 'disc',
+                        // borderLeft: 'solid 1px #000000'
                     }}
                     key={note.id}>
                     <Note parent={props.parent} {...note}/>
