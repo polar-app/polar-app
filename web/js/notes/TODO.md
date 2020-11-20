@@ -1,4 +1,10 @@
 
+- node input text... 
+    - 
+
+
+- we need a way to handle link input and rendering...
+
 
 - save the note to the store when I type ... 
 - jump to other notes
@@ -37,3 +43,18 @@ temp1.commands.get('insertTable').execute();
 - if text is selected and I type it should link to it... 
 
 - I'm going to need to have 'special' notes and handle their clicking differently.
+
+
+// Applies the link to the selected content.
+// When the selection is collapsed, it creates new text wrapped in a link.
+temp1.execute( 'link', 'http://example.com' );
+
+// If there are decorators configured, the command can set their state.
+editor.execute( 'link', 'http://example.com', { linkIsExternal: true } );
+
+// Removes the link from the selection (and all decorators if present).
+editor.execute( 'unlink' );
+
+- insert table command
+
+- 

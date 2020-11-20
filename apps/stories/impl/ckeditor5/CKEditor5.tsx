@@ -20,8 +20,29 @@ export namespace ckeditor5 {
         readonly view: IView;
     }
 
+    export type SelectionPosition = any;
+
+    export interface ISelection {
+        readonly getFirstPosition: () => SelectionPosition;
+    }
+
+    export interface IDocument {
+
+    }
+
+    export interface IWriter {
+        readonly insertText: (text: string, position: SelectionPosition) => void;
+    }
+
+    // https://ckeditor.com/docs/ckeditor5/latest/builds/guides/faq.html#where-are-the-editorinserthtml-and-editorinserttext-methods-how-to-insert-some-content
+    export interface IModel {
+        readonly document: IDocument;
+        readonly change: (writer: IWriter) => void;
+    }
+
     export interface IEditor {
         readonly editing: IEditing;
+        readonly model: IModel;
     }
 
 }

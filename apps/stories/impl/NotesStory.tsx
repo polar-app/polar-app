@@ -26,7 +26,7 @@ const notes: ReadonlyArray<INote> = [
     },
     {
         id: '103',
-        content: 'Lasted from 1939 to 1945',
+        content: '<a href="https://www.example.com">Lasted</a> from 1939 to 1945',
     },
     {
         id: '104',

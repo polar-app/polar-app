@@ -24,6 +24,10 @@ const items: ReadonlyArray<IActionMenuItem> = [
 
 ]
 
+function useLinkNavigation() {
+
+}
+
 export const NoteEditor = deepMemo((props: IProps) => {
 
     const [editor, setEditor] = React.useState<ckeditor5.IEditor | undefined>();
@@ -31,6 +35,9 @@ export const NoteEditor = deepMemo((props: IProps) => {
     const {updateNote} = useNotesStoresCallbacks()
 
     const handleClick = React.useCallback((event: React.MouseEvent) => {
+        console.log("FIXME: got click");
+        event.stopPropagation();
+        event.preventDefault();
     }, []);
 
     const handleChange = React.useCallback((content: string) => {
