@@ -3,32 +3,77 @@ import TextField from '@material-ui/core/TextField';
 import {JSONRPC} from "../../../web/js/datastore/sharing/rpc/JSONRPC";
 import Button from '@material-ui/core/Button';
 
+
+interface IFlashcardRequest {
+    readonly query_text: string;
+}
+
+interface IFlashcardResponse {
+    readonly front: string;
+    readonly back: string;
+}
+
 export const AutoFlashcardsStory = () => {
 
-    const [result, setResult] = React.useState<string | undefined>(undefined);
+    const [result, setResult] = React.useState<IFlashcardResponse | undefined>(undefined);
+
+    const [duration, setDuration] = React.useState<number | undefined>(undefined);
 
     const valueRef = React.useRef("");
 
     const doExec = React.useCallback(async (query: string) => {
 
-        const response = await JSONRPC.exec('autoFlashcard', {
+        setDuration(undefined);
+        setResult(undefined);
+
+        const before = Date.now();
+
+        const response = await JSONRPC.exec<IFlashcardRequest, IFlashcardResponse>('autoFlashcard', {
             query_text: query
         })
 
-        console.log("FIXME: response: ", response);
+        const after = Date.now();
+
+        const duration = after - before;
+
+        setDuration(duration);
+        setResult(response);
 
     }, []);
 
     return (
         <div>
 
-            <TextField id="standard-basic" label="Standard" onChange={(event) => valueRef.current = event.currentTarget.value} />
+            <TextField id="standard-basic"
+                       label="Enter text"
+                       onChange={(event) => valueRef.current = event.currentTarget.value} />
 
-            {result && (
-                {result}
+            <div style={{display: 'flex'}}>
+
+                <Button size="large"
+                        variant="contained"
+                        color="primary"
+                        onClick={() => doExec(valueRef.current).catch(err => console.error(err))}>
+
+                    Generate
+
+                </Button>
+            </div>
+
+
+            {duration && (
+                <div>
+                    <b>duration: </b> {duration}
+                </div>
             )}
 
-            <Button onClick={() => doExec(valueRef.current).catch(err => console.error(err))}>Generate</Button>
+            {result && (
+                <div>
+                    <b>front: </b> {result.front} <br/>
+                    <b>back: </b> {result.back} <br/>
+                </div>
+            )}
+
         </div>
     );
 
