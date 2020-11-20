@@ -57,4 +57,11 @@ editor.execute( 'unlink' );
 
 - insert table command
 
+
+
+editor.model.change( writer => {
+    writer.insertText( 'Plain text', editor.model.document.selection.getFirstPosition() );
+} );
 - 
+
+https://github.com/ckeditor/ckeditor5-angular/issues/110

@@ -71,10 +71,14 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
 
                     const bcr = window.getSelection()!.getRangeAt(0).getBoundingClientRect();
 
-                    setPosition({
+                    const newPosition = {
                         top: bcr.bottom,
                         left: bcr.left,
-                    });
+                    };
+
+                    if (newPosition.top !== 0 && newPosition.left !== 0) {
+                        setPosition(newPosition);
+                    }
 
                 }
 
@@ -95,7 +99,6 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
         return Math.min(items.length - 1, menuIndexRef.current + 1);
 
     }, [items.length, menuIndexRef]);
-
 
     const computePrevMenuID = React.useCallback(() => {
 
