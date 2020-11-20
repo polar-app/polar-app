@@ -1,45 +1,10 @@
 import * as React from "react";
 import CKEditor from "@ckeditor/ckeditor5-react";
-import BalloonEditor from "@ckeditor/ckeditor5-build-balloon";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {CKEditor5GlobalCss} from "./CKEditor5GlobalCss";
+import { ckeditor5 } from "./CKEditor5BalloonEditor";
 
-export namespace ckeditor5 {
-
-    export interface IView {
-        readonly focus: () => void;
-    }
-
-    export interface IEditing {
-        readonly view: IView;
-    }
-
-    export type SelectionPosition = any;
-
-    export interface ISelection {
-        readonly getFirstPosition: () => SelectionPosition;
-    }
-
-    export interface IDocument {
-
-    }
-
-    export interface IWriter {
-        readonly insertText: (text: string, position: SelectionPosition) => void;
-    }
-
-    // https://ckeditor.com/docs/ckeditor5/latest/builds/guides/faq.html#where-are-the-editorinserthtml-and-editorinserttext-methods-how-to-insert-some-content
-    export interface IModel {
-        readonly document: IDocument;
-        readonly change: (writer: IWriter) => void;
-    }
-
-    export interface IEditor {
-        readonly editing: IEditing;
-        readonly model: IModel;
-    }
-
-}
 
 interface IProps {
     readonly content: string;
@@ -47,14 +12,14 @@ interface IProps {
     readonly onEditor: (editor: ckeditor5.IEditor) => void;
 }
 
-export const CKEditor5BalloonEditor = deepMemo((props: IProps) => {
+export const CKEditor5ClassicEditor = deepMemo((props: IProps) => {
     return (
         <>
             <CKEditor5GlobalCss/>
             {/*<CKEditorContext context={ Context }>*/}
 
                 <CKEditor
-                    editor={ BalloonEditor }
+                    editor={ ClassicEditor }
                     data={props.content}
                     onInit={ (editor: any) => {
                         // You can store the "editor" and use when it is needed.

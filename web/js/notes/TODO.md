@@ -3,12 +3,14 @@
 
     - DONE: click on and abort clicking a link
 
-    - editor mode vs bubble mode and the ability to switch between them
+    - DONE: editor mode vs bubble mode and the ability to switch between them
+        - I *think* we can do it but not until I do a proper ckeditor build
 
-    - try to complete AND type the input that we're reading so that I can filter the actions the user 
+    - insert a table into the ckeditor5 page
+
+    - Try to complete AND type the input that we're reading so that I can filter the actions the user 
       is taking
       
-    - insert a table into the ckeditor5 page
    
 
 - node input text... 
