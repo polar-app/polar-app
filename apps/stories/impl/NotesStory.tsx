@@ -78,15 +78,15 @@ const NotesStoryDebug = React.memo(() => {
 const NotesInner = () => (
     <div style={{display: 'flex'}}>
         <NoteRoot id='102'/>
-        <div style={{
-                 width: '500px',
-                 fontSize: '10px',
-                 overflow: 'auto'
-             }}>
+        {/*<div style={{*/}
+        {/*         width: '500px',*/}
+        {/*         fontSize: '10px',*/}
+        {/*         overflow: 'auto'*/}
+        {/*     }}>*/}
 
-            <NotesStoryDebug/>
+        {/*    <NotesStoryDebug/>*/}
 
-        </div>
+        {/*</div>*/}
     </div>
 );
 

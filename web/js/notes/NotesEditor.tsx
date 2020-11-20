@@ -6,6 +6,7 @@ import {NoteNavigation} from "./NoteNavigation";
 import {NoteIDStr, useNotesStoresCallbacks} from "./NotesStore";
 import { deepMemo } from "../react/ReactUtils";
 import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
+import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 
 interface IProps {
     readonly parent: NoteIDStr;
@@ -29,10 +30,31 @@ function useLinkNavigation() {
 
     const [ref, setRef] = React.useState<HTMLDivElement | null>(null);
 
+    const linkLoaderRef = useLinkLoaderRef();
+
     const handleClick = React.useCallback((event: MouseEvent) => {
+
+        if (event.target instanceof HTMLAnchorElement) {
+            console.log("FIXME: anchor element");
+
+            const href = event.target.getAttribute('href');
+
+            if (href !== null) {
+
+                if (href.startsWith('#')) {
+                    console.log("FIXME: inner navigation.");
+                } else {
+                    const linkLoader = linkLoaderRef.current;
+                    linkLoader(href, {newWindow: true, focus: true});
+                }
+
+            }
+
+        }
+
         event.stopPropagation();
         event.preventDefault();
-    }, []);
+    }, [linkLoaderRef]);
 
     React.useEffect(() => {
         if (ref) {

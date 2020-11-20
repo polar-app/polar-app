@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {useHistory} from 'react-router-dom';
 import {Devices} from "polar-shared/src/util/Devices";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
@@ -43,6 +44,11 @@ export function useLinkLoader(): LinkLoaderDelegate {
 
     }
 
+}
+
+export function useLinkLoaderRef() {
+    const linkLoader = useLinkLoader();
+    return React.useRef(linkLoader);
 }
 
 function createMobileLinkLoader(history: IHistory): LinkLoaderDelegate {
