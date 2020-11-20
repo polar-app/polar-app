@@ -4,7 +4,7 @@ import { AutoFlashcards } from 'polar-backend-api/src/api/AutoFlashcards';
 
 xdescribe('GPTCompletions', function() {
 
-    this.timeout(10000);
+    this.timeout(30000);
 
     it("test gpt3 fc 1", async function() {
 
