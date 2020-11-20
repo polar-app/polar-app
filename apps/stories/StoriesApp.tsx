@@ -154,7 +154,12 @@ const stories = createStoryIndex([
     {
         name: "Youtube Player",
         component: <YoutubePlayerStory/>
+    },
+    {
+        name: "Youtube Player",
+        component: <YoutubePlayerStory/>
     }
+
 
 ]);
 

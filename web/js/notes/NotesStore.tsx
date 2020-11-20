@@ -5,7 +5,6 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 export type NoteIDStr = IDStr;
-
 export type NotesIndex = {[id: string /* NoteIDStr */]: INote};
 export type ReverseNotesIndex = {[id: string /* NoteIDStr */]: ReadonlyArray<NoteIDStr>};
 
