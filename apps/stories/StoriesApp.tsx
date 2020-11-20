@@ -31,6 +31,7 @@ import { HeightFitImgStory } from './impl/HeightFitImgStory';
 import {FirestoreInitStory} from "./impl/FirestoreInitStory";
 import {ActionMenuStory} from "./impl/ActionMenuStory";
 import {YoutubePlayerStory} from "./impl/YoutubePlayerStory";
+import {AutoFlashcardsStory} from "./impl/AutoFlashcardsStory";
 
 interface IStory {
     readonly name: string;
@@ -156,10 +157,9 @@ const stories = createStoryIndex([
         component: <YoutubePlayerStory/>
     },
     {
-        name: "Youtube Player",
-        component: <YoutubePlayerStory/>
+        name: "Auto Flashcards",
+        component: <AutoFlashcardsStory/>
     }
-
 
 ]);
 

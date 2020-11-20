@@ -67,7 +67,7 @@ export const NoteNavigation = deepMemo((props: IProps) => {
 
         }
 
-    }, [createNewNote, navNext, navPrev, props.id, props.parent]);
+    }, [navNext, navPrev, props.id, props.parent]);
 
     const handleKeyDownCapture =  React.useCallback((event: KeyboardEvent) => {
 
@@ -81,7 +81,7 @@ export const NoteNavigation = deepMemo((props: IProps) => {
 
         }
 
-    }, []);
+    }, [createNewNote, props.id, props.parent]);
 
     React.useEffect(() => {
 

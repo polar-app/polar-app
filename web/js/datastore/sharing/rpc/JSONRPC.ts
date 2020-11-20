@@ -7,7 +7,8 @@ export class JSONRPC {
     public static async exec<R, V>(func: string, request: R): Promise<V> {
 
         const app = Firebase.init();
-        const user = app.auth().currentUser;
+
+        const user = await Firebase.currentUserAsync();
 
         if (! user) {
             throw new Error("User not authenticated");
