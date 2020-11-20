@@ -1,12 +1,8 @@
 import React from 'react';
 import '@ckeditor/ckeditor5-theme-lark/theme/theme.css';
 import '@ckeditor/ckeditor5-theme-lark';
-import {createRXJSStore} from "../../../web/js/react/store/RXJSStore";
 import {INote, NotesStoreProvider, useNotesStoresCallbacks, useNotesStore} from '../../../web/js/notes/NotesStore';
 import {NoteRoot} from "../../../web/js/notes/NoteRoot";
-
-export const [NoteMenuSelectedStoreProvider, useNoteMenuSelectedStore, useNoteMenuSelectedListener] =
-    createRXJSStore<number | undefined>();
 
 const notes: ReadonlyArray<INote> = [
     {
