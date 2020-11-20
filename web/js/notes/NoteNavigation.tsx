@@ -2,7 +2,7 @@ import * as React from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import {NoteIDStr, useNotesStoresCallbacks, useNotesStore} from "./NotesStore";
 import {useRefValue} from "../hooks/ReactHooks";
-import {ckeditor5} from "../../../apps/stories/impl/ckeditor5/CKEditor5";
+import {ckeditor5} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
 import { deepMemo } from '../react/ReactUtils';
 import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 

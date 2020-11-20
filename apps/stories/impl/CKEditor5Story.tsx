@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {CKEditor5} from "./ckeditor5/CKEditor5";
+import {CKEditor5BalloonEditor} from "./ckeditor5/CKEditor5BalloonEditor";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 export const CKEditor5Story = () => {
@@ -12,7 +12,7 @@ export const CKEditor5Story = () => {
 
     return (
         <div onKeyDown={handleKeyDown}>
-            <CKEditor5 content='this is the content' onChange={NULL_FUNCTION} onEditor={NULL_FUNCTION}/>
+            <CKEditor5BalloonEditor content='this is the content' onChange={NULL_FUNCTION} onEditor={NULL_FUNCTION}/>
         </div>
     )
 }

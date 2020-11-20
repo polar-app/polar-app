@@ -5,7 +5,7 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {deepMemo} from "../../web/js/react/ReactUtils";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem/MenuItem';
-import {CKEditor5} from "../stories/impl/ckeditor5/CKEditor5";
+import {CKEditor5BalloonEditor} from "../stories/impl/ckeditor5/CKEditor5BalloonEditor";
 
 // import '@ckeditor/ckeditor5-theme-lark/theme/ckeditor5-editor-classic/classiceditor.css';
 

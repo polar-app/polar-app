@@ -53,7 +53,7 @@ interface IProps {
     readonly onEditor: (editor: ckeditor5.IEditor) => void;
 }
 
-export const CKEditor5 = deepMemo((props: IProps) => {
+export const CKEditor5BalloonEditor = deepMemo((props: IProps) => {
     return (
         <>
             <CKEditor5GlobalCss/>

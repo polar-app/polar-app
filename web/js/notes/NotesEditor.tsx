@@ -1,5 +1,5 @@
 import React from "react";
-import {ckeditor5, CKEditor5} from "../../../apps/stories/impl/ckeditor5/CKEditor5";
+import {ckeditor5, CKEditor5BalloonEditor} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {IActionMenuItem, NoteActionMenu} from "./NoteActionMenu";
 import {NoteNavigation} from "./NoteNavigation";
@@ -94,7 +94,7 @@ export const NoteEditor = deepMemo((props: IProps) => {
         <NoteActionMenu items={() => items} onItem={item => console.log('got item: ', item)}>
             <div onClick={handleClick} ref={ref}>
                 <NoteNavigation parent={props.parent} id={props.id} editor={editor}>
-                    <CKEditor5 content={props.content || ''} onChange={handleChange} onEditor={setEditor}/>
+                    <CKEditor5BalloonEditor content={props.content || ''} onChange={handleChange} onEditor={setEditor}/>
                 </NoteNavigation>
             </div>
         </NoteActionMenu>
