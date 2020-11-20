@@ -1,4 +1,16 @@
 
+- make ckeditor tasks 
+
+    - click on and abort clicking a link
+
+    - try to complete AND type the input that we're reading so that I can filter the actions the user 
+      is taking
+      
+    - insert a table into the ckeditor5 page
+    
+    - editor mode vs bubble mode and the ability to switch between them
+
+
 - node input text... 
     - 
 

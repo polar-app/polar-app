@@ -5,6 +5,7 @@ import {IActionMenuItem, NoteActionMenu} from "./NoteActionMenu";
 import {NoteNavigation} from "./NoteNavigation";
 import {NoteIDStr, useNotesStoresCallbacks} from "./NotesStore";
 import { deepMemo } from "../react/ReactUtils";
+import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 
 interface IProps {
     readonly parent: NoteIDStr;
@@ -26,6 +27,27 @@ const items: ReadonlyArray<IActionMenuItem> = [
 
 function useLinkNavigation() {
 
+    const [ref, setRef] = React.useState<HTMLDivElement | null>(null);
+
+    const handleClick = React.useCallback((event: MouseEvent) => {
+        event.stopPropagation();
+        event.preventDefault();
+    }, []);
+
+    React.useEffect(() => {
+        if (ref) {
+            ref.addEventListener('click', handleClick, {capture: true})
+        }
+    }, [handleClick, ref]);
+
+    useComponentWillUnmount(() => {
+        if (ref) {
+            ref.removeEventListener('click', handleClick, {capture: true})
+        }
+    })
+
+    return setRef;
+
 }
 
 export const NoteEditor = deepMemo((props: IProps) => {
@@ -33,6 +55,8 @@ export const NoteEditor = deepMemo((props: IProps) => {
     const [editor, setEditor] = React.useState<ckeditor5.IEditor | undefined>();
 
     const {updateNote} = useNotesStoresCallbacks()
+
+    const ref = useLinkNavigation();
 
     const handleClick = React.useCallback((event: React.MouseEvent) => {
         console.log("FIXME: got click");
@@ -46,7 +70,7 @@ export const NoteEditor = deepMemo((props: IProps) => {
 
     return (
         <NoteActionMenu items={() => items} onItem={item => console.log('got item: ', item)}>
-            <div onClick={handleClick}>
+            <div onClick={handleClick} ref={ref}>
                 <NoteNavigation parent={props.parent} id={props.id} editor={editor}>
                     <CKEditor5 content={props.content || ''} onChange={handleChange} onEditor={setEditor}/>
                 </NoteNavigation>
