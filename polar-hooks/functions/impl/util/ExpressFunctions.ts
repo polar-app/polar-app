@@ -83,9 +83,9 @@ export class ExpressFunctions {
 
     public static createRPCHook<R, V>(handler: (idUser: IDUser, request: R) => Promise<V>): ExpressRequestFunction {
 
-        return (req: express.Request, res: express.Response) => {
+        return this.createHook((req: express.Request, res: express.Response) => {
             UserRequests.execute<R, V>(req, res, (idUser, request) => handler(idUser, request));
-        };
+        });
 
     }
 
