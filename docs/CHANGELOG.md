@@ -1,3 +1,6 @@
+- implemented phrase search in the PDF viewer
+- 
+
 # 2.0.83
 
 - more stores are now shallow
