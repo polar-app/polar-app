@@ -6,6 +6,7 @@ import {NoteIDStr, useNotesStoresCallbacks} from "./NotesStore";
 import { deepMemo } from "../react/ReactUtils";
 import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
+import { EditorStoreProvider, useSetEditorStore } from "./EditorStoreProvider";
 
 interface IProps {
     readonly parent: NoteIDStr;
@@ -33,6 +34,9 @@ function useLinkNavigation() {
 
     const handleClick = React.useCallback((event: MouseEvent) => {
 
+        // FIXME: this will break determinine which of the editor controls
+        // are active
+
         if (event.target instanceof HTMLAnchorElement) {
             console.log("FIXME: anchor element");
 
@@ -51,8 +55,6 @@ function useLinkNavigation() {
 
         }
 
-        event.stopPropagation();
-        event.preventDefault();
     }, [linkLoaderRef]);
 
     React.useEffect(() => {
@@ -71,19 +73,12 @@ function useLinkNavigation() {
 
 }
 
-export const NoteEditor = deepMemo((props: IProps) => {
-
-    const [editor, setEditor] = React.useState<ckeditor5.IEditor | undefined>();
+const Inner = deepMemo((props: IProps) => {
 
     const {updateNote} = useNotesStoresCallbacks()
+    const setEditor = useSetEditorStore();
 
     const ref = useLinkNavigation();
-
-    const handleClick = React.useCallback((event: React.MouseEvent) => {
-        console.log("FIXME: got click");
-        event.stopPropagation();
-        event.preventDefault();
-    }, []);
 
     const handleChange = React.useCallback((content: string) => {
         updateNote(props.id, content);
@@ -91,12 +86,24 @@ export const NoteEditor = deepMemo((props: IProps) => {
 
     return (
         <NoteActionMenu items={() => items} onItem={item => console.log('got item: ', item)}>
-            <div onClick={handleClick} ref={ref}>
-                <NoteNavigation parent={props.parent} id={props.id} editor={editor}>
+            <div ref={ref}>
+                <NoteNavigation parent={props.parent} id={props.id}>
                     <CKEditor5BalloonEditor content={props.content || ''} onChange={handleChange} onEditor={setEditor}/>
                 </NoteNavigation>
             </div>
         </NoteActionMenu>
+    );
+
+});
+
+
+
+export const NoteEditor = deepMemo((props: IProps) => {
+
+    return (
+        <EditorStoreProvider initialValue={undefined}>
+            <Inner {...props}/>
+        </EditorStoreProvider>
     );
 
 });

@@ -2,20 +2,19 @@ import * as React from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import {NoteIDStr, useNotesStoresCallbacks, useNotesStore} from "./NotesStore";
 import {useRefValue} from "../hooks/ReactHooks";
-import {ckeditor5} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
 import { deepMemo } from '../react/ReactUtils';
 import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
+import { useEditorStore } from './EditorStoreProvider';
 
 interface IProps {
     readonly parent: NoteIDStr;
     readonly id: NoteIDStr;
-    readonly editor: ckeditor5.IEditor | undefined;
     readonly children: JSX.Element;
 }
 
 export const NoteNavigation = deepMemo((props: IProps) => {
 
-    const {editor} = props;
+    const editor = useEditorStore();
 
     const {active} = useNotesStore(['active']);
     const activeRef = useRefValue(active);
@@ -33,6 +32,8 @@ export const NoteNavigation = deepMemo((props: IProps) => {
             if (editor !== undefined) {
                 console.log("Focusing editor");
                 editor.editing.view.focus();
+            } else {
+                console.log("No editor: ")
             }
         }
 
@@ -78,7 +79,6 @@ export const NoteNavigation = deepMemo((props: IProps) => {
             event.stopPropagation();
             event.preventDefault();
             createNewNote(props.parent, props.id);
-
         }
 
     }, [createNewNote, props.id, props.parent]);

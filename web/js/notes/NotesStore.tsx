@@ -237,6 +237,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             const {active, index} = store;
 
             if (active === undefined) {
+                console.warn("No currently active node");
                 return;
             }
 
