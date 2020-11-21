@@ -49,8 +49,6 @@ interface IProps {
 }
 
 
-
-// TODO: replace the text after we type it
 // TODO: do not compute a prompt if the prev or next characters are non spaces
 
 export const NoteActionMenu = deepMemo((props: IProps) => {
