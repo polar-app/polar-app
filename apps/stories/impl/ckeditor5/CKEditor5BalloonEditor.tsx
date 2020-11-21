@@ -107,7 +107,7 @@ export namespace ckeditor5 {
          */
         readonly createRange: (start: IPosition, end?: IPosition) => IRange;
         readonly document: IDocument;
-        readonly change: (writer: IWriter) => void;
+        readonly change: (writerHandler: (writer: IWriter) => void) => void;
     }
 
     export interface InsertTableCommand {
