@@ -62,7 +62,12 @@ export namespace PDFFindControllers {
 
         };
 
-        return {exec};
+        return {
+            features: {
+                phraseSearch: true,
+            },
+            exec
+        };
 
     }
 

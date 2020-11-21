@@ -85,7 +85,12 @@ export namespace EPUBFindControllers {
 
         };
 
-        return {exec};
+        return {
+            features: {
+                phraseSearch: true
+            },
+            exec
+        };
 
     }
 }
