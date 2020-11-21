@@ -37,6 +37,7 @@ function useLinkNavigation() {
                 } else {
                     const linkLoader = linkLoaderRef.current;
                     linkLoader(href, {newWindow: true, focus: true});
+                    event.stopPropagation();
                 }
 
             }

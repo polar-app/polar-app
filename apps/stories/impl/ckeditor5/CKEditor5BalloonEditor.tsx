@@ -38,8 +38,19 @@ export namespace ckeditor5 {
         readonly execute: () => void;
     }
 
+    export interface IInsertLinkCommandOpts {
+        readonly linkIsExternal: boolean;
+    }
+
+    export interface InsertLinkCommand {
+        readonly execute: (link: string, opts?: IInsertLinkCommandOpts) => void;
+    }
+
     export interface ICommands {
-        readonly get: (name: 'insertTable') => InsertTableCommand;
+
+        get(name: 'insertTable'): InsertTableCommand;
+        get(name: 'link'): InsertLinkCommand;
+
     }
 
     export interface IEditor {
