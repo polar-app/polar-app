@@ -56,7 +56,10 @@ export namespace PDFFindControllers {
                 });
             }
 
-            findController.executeCommand('find', {...opts, ...defaultOpts});
+            findController.executeCommand('find', {
+                ...defaultOpts,
+                ...opts
+            });
 
             return {opts, cancel, next, prev};
 
