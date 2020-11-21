@@ -10,6 +10,7 @@ import {useComponentDidMount, useComponentWillUnmount} from "../hooks/ReactLifec
 import {useEditorStore} from "./EditorStoreProvider";
 import {ckeditor5} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
 import { NoteIDStr } from "./NotesStore";
+import {NoteActions} from "./NoteActions";
 
 export interface IActionMenuItem {
 
@@ -46,10 +47,48 @@ interface IProps {
 
 }
 
+function computePromptFromSelection(start: number): string | undefined {
+
+    const selection = getSelection();
+
+    if (selection) {
+
+        const range = selection.getRangeAt(0)
+
+        if (range.startContainer === range.endContainer) {
+
+            // cursor detection we have to verify tha the range is over the same
+            // start and end container.
+
+            if (range.startOffset === range.endOffset) {
+
+                // we also have to verify that the start and end ranges are identical
+
+                const text = range.startContainer.nodeValue;
+
+                if (text !== null) {
+                    const end = range.startOffset;
+                    return NoteActions.computePromptFromText(text, start, end)
+                }
+
+            }
+
+        }
+
+    }
+
+    return undefined;
+
+}
+
 export const NoteActionMenu = deepMemo((props: IProps) => {
 
     const [position, setPosition, positionRef] = useStateRef<IActionMenuPosition | undefined>(undefined);
     const [, setMenuIndex, menuIndexRef] = useStateRef<number | undefined>(undefined);
+
+    const [prompt, setPrompt, promptRef] = useStateRef<string | undefined>(undefined);
+    const promptStartRef = React.useRef<number | undefined>();
+
     const editor = useEditorStore();
     const editorRef = useRefValue(editor);
 
@@ -58,16 +97,29 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
     const reset = React.useCallback(() => {
         setPosition(undefined);
         setMenuIndex(undefined);
-    }, [setMenuIndex, setPosition]);
+        promptStartRef.current = undefined;
+        setPrompt(undefined);
+    }, [setMenuIndex, setPosition, setPrompt]);
+
+
+    const promptFilterPredicate = React.useCallback((item: IActionMenuItem) => {
+        return prompt === undefined || item.text.toLowerCase().indexOf(prompt.toLowerCase()) !== -1;
+    }, [prompt]);
+
+    const itemsFilteredByPrompt = React.useMemo(() => items.filter(promptFilterPredicate), [items, promptFilterPredicate]);
+
+    const itemsFilteredByPromptRef = useRefValue(itemsFilteredByPrompt);
 
     const handleSelectedActionItem = React.useCallback(() => {
 
         if (menuIndexRef.current !== undefined) {
-            const selectedItem = items[menuIndexRef.current];
+
+            const selectedItem = itemsFilteredByPromptRef.current[menuIndexRef.current];
 
             if (editorRef.current) {
 
                 try {
+                    console.log("Executing item: " + selectedItem.text);
                     selectedItem.action(props.id, editorRef.current);
                 } catch (err) {
                     console.error("Unable to execute command: ", err);
@@ -76,12 +128,15 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
             } else {
                 console.log("no editor");
             }
+
+        } else {
+            console.log("No menuIndexRef")
         }
 
         setMenuIndex(undefined);
         setPosition(undefined);
 
-    }, [editorRef, items, menuIndexRef, props.id, setMenuIndex, setPosition])
+    }, [editorRef, itemsFilteredByPromptRef, menuIndexRef, props.id, setMenuIndex, setPosition])
 
     const onKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -91,7 +146,11 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
 
                 if (window.getSelection()?.rangeCount === 1) {
 
-                    const bcr = window.getSelection()!.getRangeAt(0).getBoundingClientRect();
+                    const range = window.getSelection()!.getRangeAt(0);
+
+                    promptStartRef.current = range.startOffset;
+
+                    const bcr = range.getBoundingClientRect();
 
                     const newPosition = {
                         top: bcr.bottom,
@@ -106,11 +165,23 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
 
                 break;
 
-            default:
+            case 'Enter':
+                // just called when the user selects the current item.
                 break;
+
+            default:
+
+                if (promptStartRef.current !== undefined) {
+                    // menuIndexRef.current = undefined;
+                    const prompt = computePromptFromSelection(promptStartRef.current);
+                    setPrompt(prompt);
+                }
+
+                break;
+
         }
 
-    }, [setPosition]);
+    }, [setPosition, setPrompt]);
 
     const computeNextMenuID = React.useCallback(() => {
 
@@ -118,9 +189,9 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
             return 0;
         }
 
-        return Math.min(items.length - 1, menuIndexRef.current + 1);
+        return Math.min(itemsFilteredByPromptRef.current.length - 1, menuIndexRef.current + 1);
 
-    }, [items.length, menuIndexRef]);
+    }, [itemsFilteredByPromptRef, menuIndexRef]);
 
     const computePrevMenuID = React.useCallback(() => {
 
@@ -224,9 +295,10 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
                            }}>
 
                         <MenuList>
-                            {items.map((current, idx) => <NoteMenuItem key={idx}
-                                                                       menuID={idx}
-                                                                       {...current}/>)}
+                            {itemsFilteredByPrompt.map((current, idx) => (
+                                <NoteMenuItem key={idx}
+                                              menuID={idx}
+                                              {...current}/>))}
                         </MenuList>
                     </Paper>
                 </ClickAwayListener>)}

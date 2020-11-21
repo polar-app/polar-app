@@ -48,12 +48,35 @@ export namespace ckeditor5 {
          */
         readonly textNode: Text | null;
 
+        /**
+         * Node directly before this position or null if this position is in text node.
+         */
+        readonly nodeBefore: Node | null;
+
+        /**
+         * Node directly after this position or null if this position is in text node.
+         */
+        readonly nodeAfter: Node | null;
+
+        /**
+         * Parent element of this position.
+         *
+         * Keep in mind that parent value is calculated when the property is
+         * accessed. If position path leads to a non-existing element, parent
+         * property will throw error.
+         *
+         * Also it is a good idea to cache parent property if it is used
+         * frequently in an algorithm (i.e. in a long loop).
+         */
+        readonly parent: Element | DocumentFragment;
+
     }
 
     // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_selection-Selection.html
     export interface ISelection {
         readonly getFirstPosition: () => ISelectionPosition | null;
         readonly getLastPosition: () => ISelectionPosition | null;
+        readonly getFirstRange: () => Range | null;
         readonly sourceElement: HTMLElement;
     }
 
