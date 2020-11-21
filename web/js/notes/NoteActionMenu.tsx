@@ -11,6 +11,7 @@ import {useEditorStore} from "./EditorStoreProvider";
 import {ckeditor5} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
 import { NoteIDStr } from "./NotesStore";
 import {NoteActions} from "./NoteActions";
+import {NoteActionSelections} from "./NoteActionSelections";
 
 export interface IActionMenuItem {
 
@@ -47,39 +48,10 @@ interface IProps {
 
 }
 
-function computePromptFromSelection(start: number): string | undefined {
 
-    const selection = getSelection();
 
-    if (selection) {
-
-        const range = selection.getRangeAt(0)
-
-        if (range.startContainer === range.endContainer) {
-
-            // cursor detection we have to verify tha the range is over the same
-            // start and end container.
-
-            if (range.startOffset === range.endOffset) {
-
-                // we also have to verify that the start and end ranges are identical
-
-                const text = range.startContainer.nodeValue;
-
-                if (text !== null) {
-                    const end = range.startOffset;
-                    return NoteActions.computePromptFromText(text, start, end)
-                }
-
-            }
-
-        }
-
-    }
-
-    return undefined;
-
-}
+// TODO: replace the text after we type it
+// TODO: do not compute a prompt if the prev or next characters are non spaces
 
 export const NoteActionMenu = deepMemo((props: IProps) => {
 
@@ -144,13 +116,13 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
 
             case '/':
 
-                if (window.getSelection()?.rangeCount === 1) {
+                const cursorRange = NoteActionSelections.computeCursorRange();
 
-                    const range = window.getSelection()!.getRangeAt(0);
+                if (cursorRange && NoteActionSelections.hasActivePrompt(cursorRange)) {
 
-                    promptStartRef.current = range.startOffset;
+                    promptStartRef.current = cursorRange.startOffset;
 
-                    const bcr = range.getBoundingClientRect();
+                    const bcr = cursorRange.getBoundingClientRect();
 
                     const newPosition = {
                         top: bcr.bottom,
@@ -172,8 +144,7 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
             default:
 
                 if (promptStartRef.current !== undefined) {
-                    // menuIndexRef.current = undefined;
-                    const prompt = computePromptFromSelection(promptStartRef.current);
+                    const prompt = NoteActionSelections.computePromptFromSelection(promptStartRef.current);
                     setPrompt(prompt);
                 }
 

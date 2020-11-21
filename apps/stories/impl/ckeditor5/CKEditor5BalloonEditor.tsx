@@ -16,7 +16,7 @@ export namespace ckeditor5 {
 
 
     // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_position-Position.html
-    export interface ISelectionPosition {
+    export interface IPosition {
 
         /**
          * Position offset converted to an index in position's parent node. It
@@ -74,8 +74,8 @@ export namespace ckeditor5 {
 
     // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_selection-Selection.html
     export interface ISelection {
-        readonly getFirstPosition: () => ISelectionPosition | null;
-        readonly getLastPosition: () => ISelectionPosition | null;
+        readonly getFirstPosition: () => IPosition | null;
+        readonly getLastPosition: () => IPosition | null;
         readonly getFirstRange: () => Range | null;
         readonly sourceElement: HTMLElement;
     }
@@ -84,12 +84,28 @@ export namespace ckeditor5 {
         readonly selection: ISelection;
     }
 
+    export interface IRange {
+
+    }
+
+    // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_writer-Writer.html
     export interface IWriter {
-        readonly insertText: (text: string, position: ISelectionPosition) => void;
+
+        /**
+         * Shortcut for Model#createRange().
+         */
+        readonly createRange: (start: IPosition, end?: IPosition) => IRange;
+        readonly insertText: (text: string, position: IPosition) => void;
+        readonly remove: (itemOrRange: IRange) => void;
     }
 
     // https://ckeditor.com/docs/ckeditor5/latest/builds/guides/faq.html#where-are-the-editorinserthtml-and-editorinserttext-methods-how-to-insert-some-content
     export interface IModel {
+
+        /**
+         * Creates a range spanning from the start position to the end position.
+         */
+        readonly createRange: (start: IPosition, end?: IPosition) => IRange;
         readonly document: IDocument;
         readonly change: (writer: IWriter) => void;
     }
@@ -138,19 +154,19 @@ export const CKEditor5BalloonEditor = deepMemo((props: IProps) => {
                     data={props.content}
                     onInit={ (editor: ckeditor5.IEditor) => {
                         // You can store the "editor" and use when it is needed.
-                        console.log( 'Editor is ready to use!', editor );
+                        // console.log( 'Editor is ready to use!', editor );
                         props.onEditor(editor);
                     } }
                     onChange={ ( event: any, editor: any ) => {
                         const data = editor.getData();
-                        console.log( { event, editor, data } );
+                        // console.log( { event, editor, data } );
                         props.onChange(data);
                     } }
                     onBlur={ ( event: any, editor: ckeditor5.IEditor ) => {
                         // console.log( 'Blur.', editor );
                     } }
                     onFocus={ ( event: any, editor: ckeditor5.IEditor ) => {
-                        console.log( 'Focus: selection: ', editor.model.document.selection );
+                        // console.log( 'Focus: selection: ', editor.model.document.selection );
                     } }
                 />
             {/*</CKEditorContext>*/}
