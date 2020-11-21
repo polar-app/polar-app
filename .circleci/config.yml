@@ -159,18 +159,7 @@ jobs:
     working_directory: ~/repo
 
     steps:
-      - checkout
-      - run:
-          name: install lerna
-          command: sudo npm install -g lerna
-
-      - run:
-          name: setup full dependencies
-          command: npm run-script purge-node-modules && npx lerna bootstrap
-
-      - run:
-          name: compile
-          command: npx lerna run compile
+      - build_setup
 
       - run:
           name: build and verify webapp
