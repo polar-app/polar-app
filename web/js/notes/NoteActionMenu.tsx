@@ -144,6 +144,17 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
 
     }, [editorRef, itemsFilteredByPromptRef, menuIndexRef, props.id, removeEditorPromptText, setMenuIndex, setMenuPosition])
 
+    const captureEditorPosition = React.useCallback(() => {
+
+        editorPositionRef.current
+            = editorRef.current?.model.document.selection.getFirstPosition() || undefined;
+
+    }, [editorRef]);
+
+    const onClick = React.useCallback(() => {
+        captureEditorPosition();
+    }, [captureEditorPosition]);
+
     const onKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 
         switch (event.key) {
@@ -191,11 +202,9 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
         }
 
         // always record the editor position each time we type a character.
-        editorPositionRef.current
-            = editorRef.current?.model.document.selection.getFirstPosition() || undefined;
+        captureEditorPosition()
 
-
-    }, [editorRef, setMenuPosition, setPrompt]);
+    }, [captureEditorPosition, setMenuPosition, setPrompt]);
 
     const computeNextMenuID = React.useCallback(() => {
 
@@ -296,7 +305,8 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
         <div className="NoteActionMenu"
              onKeyDown={onKeyDown}
              onKeyUp={onKeyDown}
-             onKeyPress={onKeyDown}>
+             onKeyPress={onKeyDown}
+             onClick={onClick}>
 
             {menuPosition && (
                 <ClickAwayListener onClickAway={() => setMenuPosition(undefined)}>
