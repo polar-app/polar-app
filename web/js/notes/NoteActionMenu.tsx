@@ -3,7 +3,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Paper from "@material-ui/core/Paper";
 import MenuList from "@material-ui/core/MenuList";
-import {useStateRef} from "../hooks/ReactHooks";
+import {useRefValue, useStateRef} from "../hooks/ReactHooks";
 import { deepMemo } from "../react/ReactUtils";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import {useComponentDidMount, useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
@@ -51,6 +51,7 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
     const [position, setPosition, positionRef] = useStateRef<IActionMenuPosition | undefined>(undefined);
     const [, setMenuIndex, menuIndexRef] = useStateRef<number | undefined>(undefined);
     const editor = useEditorStore();
+    const editorRef = useRefValue(editor);
 
     const items = props.itemsProvider("");
 
@@ -64,8 +65,14 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
         if (menuIndexRef.current !== undefined) {
             const selectedItem = items[menuIndexRef.current];
 
-            if (editor) {
-                selectedItem.action(props.id, editor);
+            if (editorRef.current) {
+
+                try {
+                    selectedItem.action(props.id, editorRef.current);
+                } catch (err) {
+                    console.error("Unable to execute command: ", err);
+                }
+
             } else {
                 console.log("no editor");
             }
@@ -74,7 +81,7 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
         setMenuIndex(undefined);
         setPosition(undefined);
 
-    }, [editor, items, menuIndexRef, props.id, setMenuIndex, setPosition])
+    }, [editorRef, items, menuIndexRef, props.id, setMenuIndex, setPosition])
 
     const onKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 

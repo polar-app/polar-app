@@ -21,7 +21,10 @@ function useItemsProvider(): ActionMenuItemProvider {
             {
                 id: 'table',
                 text: 'Table',
-                action: () => console.log('inserting table')
+                action: (id, editor) => {
+                    console.log("insertTable", editor);
+                    editor.commands.get('insertTable').execute()
+                }
             },
 
         ]

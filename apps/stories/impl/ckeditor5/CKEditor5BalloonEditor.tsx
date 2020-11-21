@@ -34,9 +34,18 @@ export namespace ckeditor5 {
         readonly change: (writer: IWriter) => void;
     }
 
+    export interface InsertTableCommand {
+        readonly execute: () => void;
+    }
+
+    export interface ICommands {
+        readonly get: (name: 'insertTable') => InsertTableCommand;
+    }
+
     export interface IEditor {
         readonly editing: IEditing;
         readonly model: IModel;
+        readonly commands: ICommands;
     }
 
 }
