@@ -30,7 +30,20 @@ const notes: ReadonlyArray<INote> = [
     },
     {
         id: '105',
-        content: 'Allied Powers: United States, United Kingdom, Canada, Russia',
+        content: 'Allied Powers: United States, United Kingdom, [[Canada]], [[Russia]]',
+        // references: [
+        //     {
+        //         start: 67,
+        //         end: 73,
+        //         name: 'Canada'
+        //     },
+        //     {
+        //         start: 79,
+        //         end: 85,
+        //         name: 'Russia'
+        //     }
+        //
+        // ],
         items: [
             '106'
         ]
