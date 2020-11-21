@@ -6,7 +6,8 @@ import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 function useAction() {
 
     return React.useCallback((newSubscription: Billing.V2Subscription) => {
-        document.location.href = `https://app.getpolarized.io/plans?plan=${newSubscription.plan.level}&interval=${newSubscription.interval}`;
+        // document.location.href = `https://app.getpolarized.io/plans?plan=${newSubscription.plan.level}&interval=${newSubscription.interval}`;
+        document.location.href = `https://app.getpolarized.io/plans#${newSubscription.interval}`;
     }, []);
 
 }
