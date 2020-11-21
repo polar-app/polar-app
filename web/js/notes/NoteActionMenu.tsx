@@ -7,6 +7,9 @@ import {useStateRef} from "../hooks/ReactHooks";
 import { deepMemo } from "../react/ReactUtils";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import {useComponentDidMount, useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
+import {useEditorStore} from "./EditorStoreProvider";
+import {ckeditor5} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
+import { NoteIDStr } from "./NotesStore";
 
 export interface IActionMenuItem {
 
@@ -15,6 +18,7 @@ export interface IActionMenuItem {
      */
     readonly id: string;
     readonly text: string;
+    readonly action: (id: NoteIDStr, editor: ckeditor5.IEditor) => void;
 
 }
 
@@ -23,17 +27,22 @@ export interface IActionMenuPosition {
     readonly left: number;
 }
 
+/**
+ * Provide a list of action items we should execute and provide a prompt to
+ * filter the results such that the set of actions is applicable to the prompt.
+ */
+export type ActionMenuItemProvider = (prompt: string) => ReadonlyArray<IActionMenuItem>;
+
 interface IProps {
+
+    readonly id: NoteIDStr;
 
     /**
      * A provider for resolving the items that the user can select form their input.
      */
-    readonly items: () => ReadonlyArray<IActionMenuItem>;
-
+    readonly itemsProvider: ActionMenuItemProvider;
 
     readonly children: JSX.Element;
-
-    readonly onItem: (item: IActionMenuItem) => void;
 
 }
 
@@ -41,8 +50,9 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
 
     const [position, setPosition, positionRef] = useStateRef<IActionMenuPosition | undefined>(undefined);
     const [, setMenuIndex, menuIndexRef] = useStateRef<number | undefined>(undefined);
+    const editor = useEditorStore();
 
-    const items = props.items();
+    const items = props.itemsProvider("");
 
     const reset = React.useCallback(() => {
         setPosition(undefined);
@@ -53,13 +63,18 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
 
         if (menuIndexRef.current !== undefined) {
             const selectedItem = items[menuIndexRef.current];
-            props.onItem(selectedItem)
+
+            if (editor) {
+                selectedItem.action(props.id, editor);
+            } else {
+                console.log("no editor");
+            }
         }
 
         setMenuIndex(undefined);
         setPosition(undefined);
 
-    }, [items, menuIndexRef, props, setMenuIndex, setPosition])
+    }, [editor, items, menuIndexRef, props.id, setMenuIndex, setPosition])
 
     const onKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 

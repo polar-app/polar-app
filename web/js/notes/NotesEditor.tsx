@@ -1,30 +1,18 @@
 import React from "react";
 import {ckeditor5, CKEditor5BalloonEditor} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
-import {IActionMenuItem, NoteActionMenu} from "./NoteActionMenu";
 import {NoteNavigation} from "./NoteNavigation";
 import {NoteIDStr, useNotesStoresCallbacks} from "./NotesStore";
 import { deepMemo } from "../react/ReactUtils";
 import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 import { EditorStoreProvider, useSetEditorStore } from "./EditorStoreProvider";
+import { NoteActionMenuForCommands } from "./NoteActionMenuForCommands";
 
 interface IProps {
     readonly parent: NoteIDStr;
     readonly id: NoteIDStr;
     readonly content: string | undefined;
 }
-
-const items: ReadonlyArray<IActionMenuItem> = [
-    {
-        id: 'today',
-        text: 'Today'
-    },
-    {
-        id: 'tomorrow',
-        text: 'Tomorrow'
-    },
-
-]
 
 function useLinkNavigation() {
 
@@ -85,13 +73,13 @@ const Inner = deepMemo((props: IProps) => {
     }, [props.id, updateNote]);
 
     return (
-        <NoteActionMenu items={() => items} onItem={item => console.log('got item: ', item)}>
+        <NoteActionMenuForCommands id={props.id}>
             <div ref={ref}>
                 <NoteNavigation parent={props.parent} id={props.id}>
                     <CKEditor5BalloonEditor content={props.content || ''} onChange={handleChange} onEditor={setEditor}/>
                 </NoteNavigation>
             </div>
-        </NoteActionMenu>
+        </NoteActionMenuForCommands>
     );
 
 });
