@@ -55,7 +55,7 @@ interface IProps {
 
 export const NoteActionMenu = deepMemo((props: IProps) => {
 
-    const [position, setPosition, positionRef] = useStateRef<IActionMenuPosition | undefined>(undefined);
+    const [menuPosition, setMenuPosition, menuPositionRef] = useStateRef<IActionMenuPosition | undefined>(undefined);
     const [, setMenuIndex, menuIndexRef] = useStateRef<number | undefined>(undefined);
 
     const [prompt, setPrompt, promptRef] = useStateRef<string | undefined>(undefined);
@@ -67,12 +67,11 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
     const items = props.itemsProvider("");
 
     const reset = React.useCallback(() => {
-        setPosition(undefined);
+        setMenuPosition(undefined);
         setMenuIndex(undefined);
         promptStartRef.current = undefined;
         setPrompt(undefined);
-    }, [setMenuIndex, setPosition, setPrompt]);
-
+    }, [setMenuIndex, setMenuPosition, setPrompt]);
 
     const promptFilterPredicate = React.useCallback((item: IActionMenuItem) => {
         return prompt === undefined || item.text.toLowerCase().indexOf(prompt.toLowerCase()) !== -1;
@@ -106,9 +105,9 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
         }
 
         setMenuIndex(undefined);
-        setPosition(undefined);
+        setMenuPosition(undefined);
 
-    }, [editorRef, itemsFilteredByPromptRef, menuIndexRef, props.id, setMenuIndex, setPosition])
+    }, [editorRef, itemsFilteredByPromptRef, menuIndexRef, props.id, setMenuIndex, setMenuPosition])
 
     const onKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -130,7 +129,7 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
                     };
 
                     if (newPosition.top !== 0 && newPosition.left !== 0) {
-                        setPosition(newPosition);
+                        setMenuPosition(newPosition);
                     }
 
                 }
@@ -152,7 +151,7 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
 
         }
 
-    }, [setPosition, setPrompt]);
+    }, [setMenuPosition, setPrompt]);
 
     const computeNextMenuID = React.useCallback(() => {
 
@@ -176,7 +175,7 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
 
     const onKeyDownCapture = React.useCallback((event: KeyboardEvent) => {
 
-        if (positionRef.current === undefined) {
+        if (menuPositionRef.current === undefined) {
             // the menu is not active
             return;
         }
@@ -220,7 +219,7 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
                 break;
         }
 
-    }, [computeNextMenuID, computePrevMenuID, handleSelectedActionItem, positionRef, reset, setMenuIndex]);
+    }, [computeNextMenuID, computePrevMenuID, handleSelectedActionItem, menuPositionRef, reset, setMenuIndex]);
 
     useComponentDidMount(() => {
         document.addEventListener('keydown', event => onKeyDownCapture(event), {capture: true});
@@ -255,14 +254,14 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
              onKeyUp={onKeyDown}
              onKeyPress={onKeyDown}>
 
-            {position && (
-                <ClickAwayListener onClickAway={() => setPosition(undefined)}>
+            {menuPosition && (
+                <ClickAwayListener onClickAway={() => setMenuPosition(undefined)}>
 
                     <Paper elevation={3}
                            style={{
                                position: 'absolute',
-                               top: position.top,
-                               left: position.left
+                               top: menuPosition.top,
+                               left: menuPosition.left
                            }}>
 
                         <MenuList>
