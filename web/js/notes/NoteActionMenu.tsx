@@ -56,6 +56,7 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
     const [menuPosition, setMenuPosition, menuPositionRef] = useStateRef<IActionMenuPosition | undefined>(undefined);
     const [, setMenuIndex, menuIndexRef] = useStateRef<number | undefined>(undefined);
 
+    const editorPositionRef = React.useRef<ckeditor5.IPosition | undefined>(undefined);
     const promptPositionRef = React.useRef<ckeditor5.IPosition | undefined>(undefined);
 
     const [prompt, setPrompt, promptRef] = useStateRef<string | undefined>(undefined);
@@ -166,8 +167,7 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
 
                         setMenuPosition(newPosition);
 
-                        promptPositionRef.current
-                            = editorRef.current?.model.document.selection.getFirstPosition() || undefined;
+                        promptPositionRef.current = editorPositionRef.current
 
                     }
 
@@ -189,6 +189,11 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
                 break;
 
         }
+
+        // always record the editor position each time we type a character.
+        editorPositionRef.current
+            = editorRef.current?.model.document.selection.getFirstPosition() || undefined;
+
 
     }, [editorRef, setMenuPosition, setPrompt]);
 
