@@ -1,6 +1,9 @@
 import * as React from "react";
 import {CKEditor} from "@ckeditor/ckeditor5-react";
-import BalloonEditor from "@ckeditor/ckeditor5-build-balloon";
+// import {ClassicEditor} from "@ckeditor/ckeditor5-build-classic";
+// import BalloonEditor from "@ckeditor/ckeditor5-build-balloon";
+import {InlineEditor} from "@ckeditor/ckeditor5-build-classic";
+
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {CKEditor5GlobalCss} from "./CKEditor5GlobalCss";
 
@@ -141,16 +144,24 @@ interface IProps {
     readonly content: string;
     readonly onChange: (content: string) => void;
     readonly onEditor: (editor: ckeditor5.IEditor) => void;
+    readonly noToolbar?: boolean;
 }
 
 export const CKEditor5BalloonEditor = deepMemo((props: IProps) => {
+
+    const toolbar = props.noToolbar ? [] : undefined;
+
     return (
         <>
             <CKEditor5GlobalCss/>
             {/*<CKEditorContext context={ Context }>*/}
 
                 <CKEditor
-                    editor={ BalloonEditor }
+                    editor={ InlineEditor }
+                    config={{
+                        // removePlugins: ['toolbar', 'ImageToolbar', 'TableToolbar'],
+                        toolbar: []
+                    }}
                     data={props.content}
                     onReady={ (editor: ckeditor5.IEditor) => {
                         // You can store the "editor" and use when it is needed.

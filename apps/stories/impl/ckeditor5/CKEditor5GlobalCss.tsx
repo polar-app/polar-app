@@ -9,11 +9,6 @@ const CKEditor5GlobalCssStyles = withStyles(() => {
         // @global is handled by jss-plugin-global.
         '@global': {
 
-            ".ck-content": {
-                // TODO needed in light mode too.
-                boxShadow: "none !important"
-            },
-
             ":root": {
 
                 "--ck-border-radius": "4px",
@@ -115,6 +110,18 @@ const CKEditor5GlobalCssStyles = withStyles(() => {
             
                 "--ck-color-link-default": "hsl(190, 100%, 75%)",
 
+            },
+
+            ".ck-content": {
+                // TODO needed in light mode too.
+                boxShadow: "none !important",
+                borderColor: `${theme.palette.background.default} !important`,
+                backgroundColor: `${theme.palette.background.default} !important`,
+                color: `${theme.palette.text.primary} !important`,
+                "> *": {
+                    backgroundColor: `${theme.palette.background.default} !important`,
+                    color: `${theme.palette.text.primary} !important`,
+                }
             },
 
         }
