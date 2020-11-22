@@ -124,7 +124,17 @@ const CKEditor5GlobalCssStyles = withStyles(() => {
                 }
             },
 
+            // force tables to not be centered
+            ".ck-content .table": {
+                margin: '1em 1em'
+            },
+            // force images to not be centered
+            ".ck-content .image": {
+                margin: '1em 1em'
+            },
+
         }
+
     };
 });
 
