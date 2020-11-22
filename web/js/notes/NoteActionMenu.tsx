@@ -10,7 +10,6 @@ import {useComponentDidMount, useComponentWillUnmount} from "../hooks/ReactLifec
 import {useEditorStore} from "./EditorStoreProvider";
 import {ckeditor5} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
 import { NoteIDStr } from "./NotesStore";
-import {NoteActions} from "./NoteActions";
 import {NoteActionSelections} from "./NoteActionSelections";
 
 export interface IActionMenuItem {
@@ -53,6 +52,8 @@ interface IProps {
 
 export const NoteActionMenu = deepMemo((props: IProps) => {
 
+    const {itemsProvider} = props;
+
     const [menuPosition, setMenuPosition, menuPositionRef] = useStateRef<IActionMenuPosition | undefined>(undefined);
     const [, setMenuIndex, menuIndexRef] = useStateRef<number | undefined>(undefined);
 
@@ -65,7 +66,8 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
     const editor = useEditorStore();
     const editorRef = useRefValue(editor);
 
-    const items = props.itemsProvider("");
+    const items = React.useMemo(() => itemsProvider(prompt || ''), [itemsProvider, prompt]);
+    const itemsRef = useRefValue(items);
 
     const reset = React.useCallback(() => {
         setMenuPosition(undefined);
@@ -74,14 +76,6 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
         setPrompt(undefined);
         promptPositionRef.current = undefined;
     }, [setMenuIndex, setMenuPosition, setPrompt]);
-
-    const promptFilterPredicate = React.useCallback((item: IActionMenuItem) => {
-        return prompt === undefined || item.text.toLowerCase().indexOf(prompt.toLowerCase()) !== -1;
-    }, [prompt]);
-
-    const itemsFilteredByPrompt = React.useMemo(() => items.filter(promptFilterPredicate), [items, promptFilterPredicate]);
-
-    const itemsFilteredByPromptRef = useRefValue(itemsFilteredByPrompt);
 
     const removeEditorPromptText = React.useCallback(() => {
 
@@ -116,7 +110,7 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
 
         if (menuIndexRef.current !== undefined) {
 
-            const selectedItem = itemsFilteredByPromptRef.current[menuIndexRef.current];
+            const selectedItem = itemsRef.current[menuIndexRef.current];
 
             if (editorRef.current) {
 
@@ -142,7 +136,7 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
         setMenuIndex(undefined);
         setMenuPosition(undefined);
 
-    }, [editorRef, itemsFilteredByPromptRef, menuIndexRef, props.id, removeEditorPromptText, setMenuIndex, setMenuPosition])
+    }, [editorRef, itemsRef, menuIndexRef, props.id, removeEditorPromptText, setMenuIndex, setMenuPosition])
 
     const captureEditorPosition = React.useCallback(() => {
 
@@ -212,9 +206,9 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
             return 0;
         }
 
-        return Math.min(itemsFilteredByPromptRef.current.length - 1, menuIndexRef.current + 1);
+        return Math.min(itemsRef.current.length - 1, menuIndexRef.current + 1);
 
-    }, [itemsFilteredByPromptRef, menuIndexRef]);
+    }, [itemsRef, menuIndexRef]);
 
     const computePrevMenuID = React.useCallback(() => {
 
@@ -319,7 +313,7 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
                            }}>
 
                         <MenuList>
-                            {itemsFilteredByPrompt.map((current, idx) => (
+                            {items.map((current, idx) => (
                                 <NoteMenuItem key={idx}
                                               menuID={idx}
                                               {...current}/>))}

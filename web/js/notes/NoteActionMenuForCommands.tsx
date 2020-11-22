@@ -6,30 +6,37 @@ import {NoteIDStr} from "./NotesStore";
 
 function useItemsProvider(): ActionMenuItemProvider {
 
-    return React.useCallback((): ReadonlyArray<IActionMenuItem> => {
-        return [
-            {
-                id: 'today',
-                text: 'Today',
-                action: NULL_FUNCTION
-            },
-            {
-                id: 'tomorrow',
-                text: 'Tomorrow',
-                action: NULL_FUNCTION
-            },
-            {
-                id: 'table',
-                text: 'Table',
-                action: (id, editor) => {
-                    console.log("insertTable", editor);
-                    editor.commands.get('insertTable').execute()
-                }
-            },
+    const items = React.useMemo((): ReadonlyArray<IActionMenuItem> => [
+        {
+            id: 'today',
+            text: 'Today',
+            action: NULL_FUNCTION
+        },
+        {
+            id: 'tomorrow',
+            text: 'Tomorrow',
+            action: NULL_FUNCTION
+        },
+        {
+            id: 'table',
+            text: 'Table',
+            action: (id, editor) => {
+                console.log("insertTable", editor);
+                editor.commands.get('insertTable').execute()
+            }
+        },
 
-        ]
+    ], []);
 
-    }, []);
+    return React.useCallback((prompt: string): ReadonlyArray<IActionMenuItem> => {
+
+        const predicate = (item: IActionMenuItem) => {
+            return prompt === undefined || item.text.toLowerCase().indexOf(prompt.toLowerCase()) !== -1;
+        };
+
+        return items.filter(predicate);
+
+    }, [items]);
 
 }
 
