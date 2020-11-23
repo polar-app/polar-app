@@ -89,6 +89,8 @@ const Inner = deepMemo((props: IProps) => {
 
     const handleChange = React.useCallback((content: string) => {
         updateNote(props.id, content);
+
+        // updateNote(props.id, WikiLinks.unescape(content));
     }, [props.id, updateNote]);
 
     return (

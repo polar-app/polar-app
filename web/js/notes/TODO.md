@@ -1,6 +1,11 @@
 
+- if we type wiki-style syntax it's not incorporated properly
+    [Canada](https://www.example.com)
 
-- what do we do about markdown double [[]] when linking. It's not supported by ckeditor5.. 
+    - it gets escapes as \\[foobar\\](https:///www.example.com)
+
+- what do we do about markdown double [[]] when linking. It's not supported by ckeditor5...
+    - 
 
 - finish up the node selection action
 
