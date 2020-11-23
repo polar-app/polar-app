@@ -7,6 +7,9 @@ import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 import { EditorStoreProvider, useSetEditorStore } from "./EditorStoreProvider";
 import { NoteActionMenuForCommands } from "./NoteActionMenuForCommands";
+import {Arrays} from "polar-shared/src/util/Arrays";
+import { useHistory, useLocation } from "react-router-dom";
+import {useRefValue} from "../hooks/ReactHooks";
 
 interface IProps {
     readonly parent: NoteIDStr;
@@ -19,6 +22,10 @@ function useLinkNavigation() {
     const [ref, setRef] = React.useState<HTMLDivElement | null>(null);
 
     const linkLoaderRef = useLinkLoaderRef();
+    const history = useHistory();
+    const historyRef = useRefValue(history);
+    const location = useLocation();
+    const locationRef = useRefValue(location);
 
     const handleClick = React.useCallback((event: MouseEvent) => {
 
@@ -26,25 +33,34 @@ function useLinkNavigation() {
         // are active
 
         if (event.target instanceof HTMLAnchorElement) {
-            console.log("FIXME: anchor element");
 
             const href = event.target.getAttribute('href');
 
             if (href !== null) {
 
                 if (href.startsWith('#')) {
-                    console.log("FIXME: inner navigation.");
+
+                    const anchor = Arrays.last(href.split("#"));
+
+                    if (anchor) {
+                        const newURL = '/apps/stories/notes/' + anchor;
+                        historyRef.current.push(newURL);
+                        event.stopPropagation();
+                        event.preventDefault();
+                    }
+
                 } else {
                     const linkLoader = linkLoaderRef.current;
                     linkLoader(href, {newWindow: true, focus: true});
                     event.stopPropagation();
+                    event.preventDefault();
                 }
 
             }
 
         }
 
-    }, [linkLoaderRef]);
+    }, [historyRef, locationRef, linkLoaderRef]);
 
     React.useEffect(() => {
         if (ref) {

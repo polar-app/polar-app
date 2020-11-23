@@ -54,9 +54,16 @@ const notes: ReadonlyArray<INote> = [
     },
     {
         id: '107',
+        name: "Germany",
         content: 'Germany Germany (German: Deutschland, German pronunciation: [ˈdɔʏtʃlant]), officially the Federal Republic of Germany (German: Bundesrepublik Deutschland, About this soundlisten),[e] is a country in Central and Western Europe and one of the major participants of World War II',
         items: [
             '102'
+        ]
+    },{
+        id: '108',
+        name: "Russia",
+        content: 'Russia stuff',
+        items: [
         ]
     },
 

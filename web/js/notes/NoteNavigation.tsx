@@ -72,7 +72,7 @@ export const NoteNavigation = deepMemo((props: IProps) => {
 
     const handleKeyDownCapture =  React.useCallback((event: KeyboardEvent) => {
 
-        // FIXME: allow shift + enter
+        // FIXME: allow shift + enter so that the user can do multiple lines themselves.
 
         if (event.key === 'Enter') {
             console.log("FIXME: preventing enter with capture");
