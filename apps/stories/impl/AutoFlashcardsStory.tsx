@@ -2,20 +2,13 @@ import * as React from 'react';
 import TextField from '@material-ui/core/TextField';
 import {JSONRPC} from "../../../web/js/datastore/sharing/rpc/JSONRPC";
 import Button from '@material-ui/core/Button';
-
-
-interface IFlashcardRequest {
-    readonly query_text: string;
-}
-
-interface IFlashcardResponse {
-    readonly front: string;
-    readonly back: string;
-}
+import {AutoFlashcards} from "polar-backend-api/src/api/AutoFlashcards";
+import AutoFlashcardRequest = AutoFlashcards.AutoFlashcardRequest;
+import AutoFlashcardResponse = AutoFlashcards.AutoFlashcardResponse;
 
 export const AutoFlashcardsStory = () => {
 
-    const [result, setResult] = React.useState<IFlashcardResponse | undefined>(undefined);
+    const [result, setResult] = React.useState<AutoFlashcardResponse | undefined>(undefined);
 
     const [duration, setDuration] = React.useState<number | undefined>(undefined);
 
@@ -28,7 +21,7 @@ export const AutoFlashcardsStory = () => {
 
         const before = Date.now();
 
-        const response = await JSONRPC.exec<IFlashcardRequest, IFlashcardResponse>('autoFlashcard', {
+        const response = await JSONRPC.exec<AutoFlashcardRequest, AutoFlashcardResponse>('autoFlashcard', {
             query_text: query
         })
 

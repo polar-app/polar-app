@@ -2,7 +2,7 @@ import React from 'react';
 import '@ckeditor/ckeditor5-theme-lark/theme/theme.css';
 import '@ckeditor/ckeditor5-theme-lark';
 import {INote, NotesStoreProvider, useNotesStoresCallbacks, useNotesStore} from '../../../web/js/notes/NotesStore';
-import {NoteRoot} from "../../../web/js/notes/NoteRoot";
+import {NotesRouter} from "../../../web/js/notes/NotesRouter";
 
 const notes: ReadonlyArray<INote> = [
     {
@@ -86,16 +86,16 @@ const NotesStoryDebug = React.memo(() => {
 
 const NotesInner = () => (
     <div style={{display: 'flex'}}>
-        <NoteRoot id='102'/>
-        <div style={{
-                 width: '500px',
-                 fontSize: '10px',
-                 overflow: 'auto'
-             }}>
+        <NotesRouter/>
+        {/*<div style={{*/}
+        {/*         width: '500px',*/}
+        {/*         fontSize: '10px',*/}
+        {/*         overflow: 'auto'*/}
+        {/*     }}>*/}
 
-            <NotesStoryDebug/>
+        {/*    <NotesStoryDebug/>*/}
 
-        </div>
+        {/*</div>*/}
     </div>
 );
 

@@ -5,9 +5,12 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 export type NoteIDStr = IDStr;
-export type NotesIndex = {[id: string /* NoteIDStr */]: INote};
-export type ReverseNotesIndex = {[id: string /* NoteIDStr */]: ReadonlyArray<NoteIDStr>};
+export type NoteNameStr = string;
 
+export type NotesIndex = {[id: string /* NoteIDStr */]: INote};
+export type NotesIndexByName = {[name: string /* NoteNameStr */]: INote};
+
+export type ReverseNotesIndex = {[id: string /* NoteIDStr */]: ReadonlyArray<NoteIDStr>};
 
 interface INoteBase {
 
@@ -25,7 +28,7 @@ interface INoteBase {
 
 export interface INote extends INoteBase {
 
-    readonly name?: string;
+    readonly name?: NoteNameStr;
     readonly content?: string;
 
 }
@@ -36,6 +39,8 @@ interface INotesStore {
      * True when we should show the active shortcuts dialog.
      */
     readonly index: NotesIndex;
+
+    readonly indexByName: NotesIndex;
 
     readonly reverse: ReverseNotesIndex;
 
@@ -79,6 +84,7 @@ interface INotesCallbacks {
 
 const initialStore: INotesStore = {
     index: {},
+    indexByName: {},
     reverse: {},
     active: undefined
 }
@@ -116,11 +122,16 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             const store = storeProvider();
 
             const index = {...store.index};
+            const indexByName = {...store.indexByName};
             const reverse = {...store.reverse};
 
             for (const note of notes) {
 
                 index[note.id] = note;
+
+                if (note.name) {
+                    indexByName[note.name] = note;
+                }
 
                 for (const item of (note.items || [])) {
                     const inbound = lookupReverse(item);
@@ -129,7 +140,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
             }
 
-            setStore({...store, index, reverse});
+            setStore({...store, index, indexByName, reverse});
 
         }
 
@@ -138,11 +149,16 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             const store = storeProvider();
 
             const index = {...store.index};
+            const indexByName = {...store.indexByName};
             const reverse = {...store.reverse};
 
             for (const note of notes) {
 
                 delete index[note.id];
+
+                if (note.name) {
+                    indexByName[note.name] = note;
+                }
 
                 for (const item of (note.items || [])) {
 
@@ -159,7 +175,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
             }
 
-            setStore({...store, index, reverse});
+            setStore({...store, index, indexByName, reverse});
 
         }
         function updateNote(id: NoteIDStr, content: string) {
@@ -181,7 +197,6 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             doPut([newNote])
 
         }
-
 
         function createNewNote(parent: NoteIDStr, child: NoteIDStr) {
 

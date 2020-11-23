@@ -6,7 +6,6 @@ import {isPresent} from "polar-shared/src/Preconditions";
 import {MUIBrowserLinkStyle} from "../mui/MUIBrowserLinkStyle";
 import {NotesInbound} from "./NotesInbound";
 import {CKEditor5BalloonEditor} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
-import {NoteNavigation} from "./NoteNavigation";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 interface IProps {
@@ -15,14 +14,14 @@ interface IProps {
 
 export const NoteRoot = deepMemo((props: IProps) => {
 
-    const {index} = useNotesStore(['index']);
+    const {index, indexByName} = useNotesStore(['index', 'indexByName']);
     const {lookup} = useNotesStoresCallbacks();
 
-    const note = index[props.id];
+    const note = index[props.id] || indexByName[props.id];
 
     if (! isPresent(note)) {
         return (
-            <div>No note</div>
+            <div>No note for id: {props.id}</div>
         );
     }
 
