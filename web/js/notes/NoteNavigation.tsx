@@ -23,7 +23,7 @@ export const NoteNavigation = deepMemo((props: IProps) => {
     const [ref, setRef] = React.useState<HTMLDivElement | null>(null);
 
     const handleClickAway = React.useCallback(() => {
-
+        // noop for now
     }, []);
 
     React.useEffect(() => {

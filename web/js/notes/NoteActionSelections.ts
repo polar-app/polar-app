@@ -37,19 +37,19 @@ export namespace NoteActionSelections {
 
     export function hasActivePrompt(range: Range): boolean {
 
-        const text = range.startContainer.nodeValue;
-
-        if (text === null) {
-            return false;
-        }
-
-        const charIndex = range.startOffset - 1;
-
-        const charAtIndex = text[charIndex];
-
-        if (charAtIndex !== '/') {
-            return false;
-        }
+        // const text = range.startContainer.nodeValue;
+        //
+        // if (text === null) {
+        //     return false;
+        // }
+        //
+        // const charIndex = range.startOffset - 1;
+        //
+        // const charAtIndex = text[charIndex];
+        //
+        // if (charAtIndex !== '/') {
+        //     return false;
+        // }
 
         // const prevSibling = Arrays.prevSibling(text, charIndex);
         //

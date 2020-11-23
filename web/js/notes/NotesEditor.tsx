@@ -1,15 +1,16 @@
 import React from "react";
-import {ckeditor5, CKEditor5BalloonEditor} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
+import {CKEditor5BalloonEditor} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
 import {NoteNavigation} from "./NoteNavigation";
 import {NoteIDStr, useNotesStoresCallbacks} from "./NotesStore";
-import { deepMemo } from "../react/ReactUtils";
+import {deepMemo} from "../react/ReactUtils";
 import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
-import { EditorStoreProvider, useSetEditorStore } from "./EditorStoreProvider";
-import { NoteActionMenuForCommands } from "./NoteActionMenuForCommands";
+import {EditorStoreProvider, useSetEditorStore} from "./EditorStoreProvider";
+import {NoteActionMenuForCommands} from "./NoteActionMenuForCommands";
 import {Arrays} from "polar-shared/src/util/Arrays";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import {useRefValue} from "../hooks/ReactHooks";
+import { NoteActionMenuForLinking } from "./NoteActionMenuForLinking";
 
 interface IProps {
     readonly parent: NoteIDStr;
@@ -24,8 +25,6 @@ function useLinkNavigation() {
     const linkLoaderRef = useLinkLoaderRef();
     const history = useHistory();
     const historyRef = useRefValue(history);
-    const location = useLocation();
-    const locationRef = useRefValue(location);
 
     const handleClick = React.useCallback((event: MouseEvent) => {
 
@@ -60,7 +59,7 @@ function useLinkNavigation() {
 
         }
 
-    }, [historyRef, locationRef, linkLoaderRef]);
+    }, [historyRef, linkLoaderRef]);
 
     React.useEffect(() => {
         if (ref) {
@@ -90,18 +89,18 @@ const Inner = deepMemo((props: IProps) => {
     }, [props.id, updateNote]);
 
     return (
-        <NoteActionMenuForCommands id={props.id}>
-            <div ref={ref}>
-                <NoteNavigation parent={props.parent} id={props.id}>
-                    <CKEditor5BalloonEditor content={props.content || ''} onChange={handleChange} onEditor={setEditor}/>
-                </NoteNavigation>
-            </div>
-        </NoteActionMenuForCommands>
+        <NoteActionMenuForLinking id={props.id}>
+            <NoteActionMenuForCommands id={props.id}>
+                <div ref={ref}>
+                    <NoteNavigation parent={props.parent} id={props.id}>
+                        <CKEditor5BalloonEditor content={props.content || ''} onChange={handleChange} onEditor={setEditor}/>
+                    </NoteNavigation>
+                </div>
+            </NoteActionMenuForCommands>
+        </NoteActionMenuForLinking>
     );
 
 });
-
-
 
 export const NoteEditor = deepMemo((props: IProps) => {
 

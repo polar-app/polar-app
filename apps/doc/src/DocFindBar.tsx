@@ -107,7 +107,7 @@ export const DocFindBar = React.memo(() => {
 
         doFind(newOpts);
 
-    }, [doFind, setMatches, opts]);
+    }, [opts, setMatches, phraseSearch, doFind]);
 
     return (
         <Collapse in={active} timeout={50}>
