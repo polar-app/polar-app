@@ -2,6 +2,8 @@ import React from "react";
 import {deepMemo} from "../react/ReactUtils";
 import { Note } from "./Note";
 import {INote, NoteIDStr} from "./NotesStore";
+import {MiddleDot} from "./MiddleDot";
+import {NoteList} from "./NoteList";
 
 interface NotesProps {
     readonly parent: NoteIDStr;
@@ -16,18 +18,21 @@ export const Notes = deepMemo((props: NotesProps) => {
 
     return (
 
-        <ul style={{flexGrow: 1}}>
+        <NoteList style={{flexGrow: 1}}>
+            <>
+                {props.notes.map((note) => (
+                    <div key={note.id}
+                         style={{
+                             display: 'flex'
+                         }}>
 
-            {props.notes.map((note) => (
-                <li style={{
-                        listStyleType: 'disc',
-                        // borderLeft: 'solid 1px #000000'
-                    }}
-                    key={note.id}>
-                    <Note parent={props.parent} {...note}/>
-                </li>))}
+                        <MiddleDot style={{fontSize: '2.25em'}}/>
 
-        </ul>
+                        <Note parent={props.parent} {...note}/>
+
+                    </div>))}
+            </>
+        </NoteList>
 
     );
 

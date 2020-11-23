@@ -30,7 +30,7 @@ const notes: ReadonlyArray<INote> = [
     },
     {
         id: '105',
-        content: 'Allied Powers: United States, United Kingdom, [[Canada]], [[Russia]]',
+        content: 'Allied Powers: United States, United Kingdom, [[Canada]], [Russia](#Russia)',
         // references: [
         //     {
         //         start: 67,
@@ -87,15 +87,15 @@ const NotesStoryDebug = React.memo(() => {
 const NotesInner = () => (
     <div style={{display: 'flex'}}>
         <NoteRoot id='102'/>
-        {/*<div style={{*/}
-        {/*         width: '500px',*/}
-        {/*         fontSize: '10px',*/}
-        {/*         overflow: 'auto'*/}
-        {/*     }}>*/}
+        <div style={{
+                 width: '500px',
+                 fontSize: '10px',
+                 overflow: 'auto'
+             }}>
 
-        {/*    <NotesStoryDebug/>*/}
+            <NotesStoryDebug/>
 
-        {/*</div>*/}
+        </div>
     </div>
 );
 
