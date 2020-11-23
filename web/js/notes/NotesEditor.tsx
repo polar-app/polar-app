@@ -29,7 +29,7 @@ function useLinkNavigation() {
 
     const handleClick = React.useCallback((event: MouseEvent) => {
 
-        // FIXME: this will break determinine which of the editor controls
+        // FIXME: this will break determine which of the editor controls
         // are active
 
         if (event.target instanceof HTMLAnchorElement) {
