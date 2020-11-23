@@ -1,4 +1,7 @@
 
+
+- what do we do about markdown double [[]] when linking. It's not supported by ckeditor5.. 
+
 - finish up the node selection action
 
 - update 'links' as they are created including when the user completes the note manually.
