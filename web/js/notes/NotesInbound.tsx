@@ -10,6 +10,7 @@ interface IProps {
 }
 
 interface InboundNoteRefProps {
+    readonly id: NoteIDStr;
     readonly name: string | undefined;
     readonly content: string | undefined;
 }
@@ -21,12 +22,17 @@ const InboundNoteRef = deepMemo((props: InboundNoteRefProps) => {
                  overflow: 'hidden',
                  whiteSpace: 'nowrap',
                  textOverflow: 'ellipsis',
-                 maxWidth: '50ch'
+                 maxWidth: '50ch',
+                 display: 'flex'
              }}>
 
             <MiddleDot/>
 
-            {props.content}
+            <div style={{
+                     marginLeft: '1em'
+                 }}>
+                {props.content || props.name}
+            </div>
 
         </div>
     )
@@ -50,6 +56,7 @@ export const NotesInbound = deepMemo((props: IProps) => {
             <UL>
                 <>
                     {inbound.map((current, idx) => <InboundNoteRef key={idx}
+                                                                   id={current.id}
                                                                    name={current.name}
                                                                    content={current.content}/>)}
                 </>

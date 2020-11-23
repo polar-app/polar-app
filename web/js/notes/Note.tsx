@@ -19,12 +19,14 @@ export const Note = deepMemo((props: IProps) => {
     return (
         <>
             <div style={{display: 'flex'}}>
+
                 <MiddleDot style={{
                                marginTop: 'auto',
                                marginBottom: 'auto'
                            }}/>
 
                 <NoteEditor parent={props.parent} id={props.id} content={props.content}/>
+                
             </div>
 
             <Notes parent={props.parent} notes={notes}/>

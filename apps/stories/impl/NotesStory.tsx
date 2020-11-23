@@ -20,7 +20,7 @@ const notes: ReadonlyArray<INote> = [
     },
     {
         id: '103',
-        content: '<a href="https://www.example.com">Lasted</a> from 1939 to 1945',
+        content: '[[Lasted]](https://www.example.com) from 1939 to 1945',
     },
     {
         id: '104',
@@ -66,6 +66,9 @@ const notes: ReadonlyArray<INote> = [
     {
         id: '110',
         content: 'Germany Germany (German: Deutschland, German pronunciation: [ˈdɔʏtʃlant]), officially the Federal Republic of Germany (German: Bundesrepublik Deutschland, About this soundlisten),[e] is a country in Central and Western Europe and one of the major participants of [[World War II]]',
+        links: [
+            '100'
+        ]
     }
 
 ]
