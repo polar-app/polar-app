@@ -24,7 +24,7 @@ export const MiddleDot = deepMemo((props: IProps) => {
     return (
         <div className={clsx(props.className, classes.root)}
              style={props.style}>
-            &#183;
+            &#x2022;
         </div>
     )
 });

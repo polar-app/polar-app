@@ -20,11 +20,11 @@ interface IProps {
     readonly children: JSX.Element;
 }
 
-export const NoteList = deepMemo((props: IProps) => {
+export const UL = deepMemo((props: IProps) => {
     const classes = useStyles();
 
     return (
-        <div className={clsx(props.className, classes.root, 'NoteList')}
+        <div className={clsx(props.className, classes.root, 'UL')}
              style={props.style}>
             {props.children}
         </div>

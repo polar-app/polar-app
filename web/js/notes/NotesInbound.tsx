@@ -2,6 +2,8 @@ import * as React from 'react';
 import { deepMemo } from '../react/ReactUtils';
 import {NoteIDStr, useNotesStore, useNotesStoresCallbacks} from "./NotesStore";
 import Box from '@material-ui/core/Box';
+import { UL } from './UL';
+import {MiddleDot} from "./MiddleDot";
 
 interface IProps {
     readonly id: NoteIDStr;
@@ -21,6 +23,8 @@ const InboundNoteRef = deepMemo((props: InboundNoteRefProps) => {
                  textOverflow: 'ellipsis',
                  maxWidth: '50ch'
              }}>
+
+            <MiddleDot/>
 
             {props.content}
 
@@ -43,10 +47,13 @@ export const NotesInbound = deepMemo((props: IProps) => {
                 <h3>All notes that reference this note:</h3>
             </Box>
 
-            {inbound.map((current, idx) => <InboundNoteRef key={idx}
-                                                           name={current.name}
-                                                           content={current.content}/>)}
-
+            <UL>
+                <>
+                    {inbound.map((current, idx) => <InboundNoteRef key={idx}
+                                                                   name={current.name}
+                                                                   content={current.content}/>)}
+                </>
+            </UL>
         </div>
     );
 });

@@ -3,6 +3,7 @@ import {NoteEditor} from "./NotesEditor";
 import {INote, NoteIDStr, useNotesStoresCallbacks, useNotesStore} from "./NotesStore";
 import {Notes} from "./Notes";
 import { deepMemo } from "../react/ReactUtils";
+import {MiddleDot} from "./MiddleDot";
 
 interface IProps extends INote {
     readonly parent: NoteIDStr;
@@ -16,9 +17,17 @@ export const Note = deepMemo((props: IProps) => {
     const notes = lookup(props.items || []);
 
     return (
-        <div style={{flexGrow: 1}} className="Note">
-            <NoteEditor parent={props.parent} id={props.id} content={props.content}/>
+        <>
+            <div style={{display: 'flex'}}>
+                <MiddleDot style={{
+                               marginTop: 'auto',
+                               marginBottom: 'auto'
+                           }}/>
+
+                <NoteEditor parent={props.parent} id={props.id} content={props.content}/>
+            </div>
+
             <Notes parent={props.parent} notes={notes}/>
-        </div>
+        </>
     );
 });
