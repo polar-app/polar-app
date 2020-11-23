@@ -16,7 +16,7 @@ export const Note = deepMemo((props: IProps) => {
     const notes = lookup(props.items || []);
 
     return (
-        <div>
+        <div style={{flexGrow: 1}} className="Note">
             <NoteEditor parent={props.parent} id={props.id} content={props.content}/>
             <Notes parent={props.parent} notes={notes}/>
         </div>

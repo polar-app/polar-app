@@ -4,7 +4,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import clsx from 'clsx';
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
         root: {
             display: 'flex',
@@ -24,7 +24,7 @@ export const NoteList = deepMemo((props: IProps) => {
     const classes = useStyles();
 
     return (
-        <div className={clsx(props.className, classes.root)}
+        <div className={clsx(props.className, classes.root, 'NoteList')}
              style={props.style}>
             {props.children}
         </div>
