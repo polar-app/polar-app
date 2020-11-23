@@ -28,6 +28,8 @@ export interface IActionMenuPosition {
     readonly left: number;
 }
 
+export type TriggerStr = string[1] | string[2];
+
 /**
  * Provide a list of action items we should execute and provide a prompt to
  * filter the results such that the set of actions is applicable to the prompt.
@@ -37,6 +39,11 @@ export type ActionMenuItemProvider = (prompt: string) => ReadonlyArray<IActionMe
 interface IProps {
 
     readonly id: NoteIDStr;
+
+    /**
+     * The trigger string (may be 1 or two characters in length);
+     */
+    readonly trigger: TriggerStr;
 
     /**
      * A provider for resolving the items that the user can select form their input.
@@ -52,7 +59,9 @@ interface IProps {
 
 export const NoteActionMenu = deepMemo((props: IProps) => {
 
-    const {itemsProvider} = props;
+    const {itemsProvider, trigger} = props;
+
+    const triggerHandler = React.useMemo(() => createTriggerHandler(trigger), [trigger]);
 
     const [menuPosition, setMenuPosition, menuPositionRef] = useStateRef<IActionMenuPosition | undefined>(undefined);
     const [, setMenuIndex, menuIndexRef] = useStateRef<number | undefined>(undefined);
@@ -149,56 +158,50 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
         captureEditorPosition();
     }, [captureEditorPosition]);
 
+
     const onKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 
-        switch (event.key) {
+        if (triggerHandler(event)) {
 
-            case '/':
+            const cursorRange = NoteActionSelections.computeCursorRange();
 
-                const cursorRange = NoteActionSelections.computeCursorRange();
+            if (cursorRange && NoteActionSelections.hasActivePrompt(cursorRange)) {
 
-                if (cursorRange && NoteActionSelections.hasActivePrompt(cursorRange)) {
+                promptStartRef.current = cursorRange.startOffset;
 
-                    promptStartRef.current = cursorRange.startOffset;
+                const bcr = cursorRange.getBoundingClientRect();
 
-                    const bcr = cursorRange.getBoundingClientRect();
+                const newPosition = {
+                    top: bcr.bottom,
+                    left: bcr.left,
+                };
 
-                    const newPosition = {
-                        top: bcr.bottom,
-                        left: bcr.left,
-                    };
+                if (newPosition.top !== 0 && newPosition.left !== 0) {
 
-                    if (newPosition.top !== 0 && newPosition.left !== 0) {
+                    setMenuPosition(newPosition);
 
-                        setMenuPosition(newPosition);
-
-                        promptPositionRef.current = editorPositionRef.current
-
-                    }
+                    promptPositionRef.current = editorPositionRef.current
 
                 }
 
-                break;
+            }
 
-            case 'Enter':
-                // just called when the user selects the current item.
-                break;
+        } else if (event.key === 'enter') {
+            // just called when the user selects the current item.
+            return;
+        } else {
 
-            default:
-
-                if (promptStartRef.current !== undefined) {
-                    const prompt = NoteActionSelections.computePromptFromSelection(promptStartRef.current);
-                    setPrompt(prompt);
-                }
-
-                break;
+            if (promptStartRef.current !== undefined) {
+                const prompt = NoteActionSelections.computePromptFromSelection(promptStartRef.current);
+                setPrompt(prompt);
+            }
 
         }
 
         // always record the editor position each time we type a character.
         captureEditorPosition()
 
-    }, [captureEditorPosition, setMenuPosition, setPrompt]);
+    }, [captureEditorPosition, setMenuPosition, setPrompt, triggerHandler]);
 
     const computeNextMenuID = React.useCallback(() => {
 
@@ -326,3 +329,29 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
 
     );
 });
+
+function createTriggerHandler(trigger: TriggerStr) {
+
+    let last: string | undefined;
+
+    return (event: React.KeyboardEvent): boolean => {
+
+        try {
+
+            switch (trigger.length) {
+                case 1:
+                    return event.key === trigger[0];
+
+                case 2:
+                    return last === trigger[0] && event.key === trigger[1];
+            }
+
+        } finally {
+            last = event.key;
+        }
+
+        return false;
+
+    }
+
+}

@@ -51,6 +51,7 @@ export const NoteActionMenuForCommands = deepMemo((props: IProps) => {
 
     return (
         <NoteActionMenu id={props.id}
+                        trigger='/'
                         itemsProvider={itemsProvider}>
 
             {props.children}
