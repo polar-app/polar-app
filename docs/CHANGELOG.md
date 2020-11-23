@@ -1,3 +1,4 @@
+- Fixed help menu in the desktop app
 - implemented phrase search in the PDF viewer
 - 
 
