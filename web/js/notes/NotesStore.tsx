@@ -12,7 +12,7 @@ export type NotesIndexByName = {[name: string /* NoteNameStr */]: INote};
 
 export type ReverseNotesIndex = {[id: string /* NoteIDStr */]: ReadonlyArray<NoteIDStr>};
 
-interface INoteBase {
+export interface INote {
 
     readonly id: NoteIDStr;
 
@@ -21,15 +21,11 @@ interface INoteBase {
      */
     readonly items?: ReadonlyArray<NoteIDStr>;
 
-    // FIXME: create and lastUpdated timestamps for notes
-    //
-
-}
-
-export interface INote extends INoteBase {
-
     readonly name?: NoteNameStr;
+
     readonly content?: string;
+
+    readonly links?: ReadonlyArray<NoteIDStr>;
 
 }
 
@@ -62,6 +58,7 @@ interface INotesCallbacks {
     readonly setActive: (active: NoteIDStr | undefined) => void;
 
     readonly lookup: (notes: ReadonlyArray<NoteIDStr>) => ReadonlyArray<INote>;
+
     readonly lookupReverse: (id: NoteIDStr) => ReadonlyArray<NoteIDStr>;
 
     /**
@@ -133,9 +130,16 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
                     indexByName[note.name] = note;
                 }
 
-                for (const item of (note.items || [])) {
-                    const inbound = lookupReverse(item);
-                    reverse[item] = [...inbound, note.id];
+                // FIXME: read the existing note, and if it's there, we have to remove the existing...
+
+                const outboundNodeIDs = [
+                    ...(note.items || []),
+                    ...(note.links || []),
+                ]
+
+                for (const outboundNodeID of outboundNodeIDs) {
+                    const inbound = lookupReverse(outboundNodeID);
+                    reverse[outboundNodeID] = [...inbound, note.id];
                 }
 
             }

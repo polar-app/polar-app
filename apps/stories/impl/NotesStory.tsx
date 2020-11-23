@@ -6,19 +6,17 @@ import {NotesRouter} from "../../../web/js/notes/NotesRouter";
 
 const notes: ReadonlyArray<INote> = [
     {
-        id: '101',
-        name: "This is your first note",
-        content: 'first note',
-    },
-    {
         id: '102',
         name: "World War II",
-        content: 'World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world\'s countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.',
         items: [
             '103',
             '104',
             '105'
         ]
+    },
+    {
+        id: '100',
+        content: 'World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world\'s countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.',
     },
     {
         id: '103',
@@ -29,21 +27,26 @@ const notes: ReadonlyArray<INote> = [
         content: 'Axis Powers: Germany, Italy, Japan',
     },
     {
+        id: '108',
+        name: "Russia",
+        items: [
+        ]
+    },
+    {
+        id: '109',
+        name: "Canada",
+        items: [
+            '111'
+        ]
+    },
+    {
+        id: '111',
+        content: 'Canada is north of the United States',
+    },
+    {
         id: '105',
-        content: 'Allied Powers: United States, United Kingdom, [[Canada]], [Russia](#Russia)',
-        // references: [
-        //     {
-        //         start: 67,
-        //         end: 73,
-        //         name: 'Canada'
-        //     },
-        //     {
-        //         start: 79,
-        //         end: 85,
-        //         name: 'Russia'
-        //     }
-        //
-        // ],
+        content: 'Allied Powers: United States, United Kingdom, [Canada](#Canada), [Russia](#Russia)',
+        links: ['109', '108'],
         items: [
             '106'
         ]
@@ -55,17 +58,15 @@ const notes: ReadonlyArray<INote> = [
     {
         id: '107',
         name: "Germany",
-        content: 'Germany Germany (German: Deutschland, German pronunciation: [ˈdɔʏtʃlant]), officially the Federal Republic of Germany (German: Bundesrepublik Deutschland, About this soundlisten),[e] is a country in Central and Western Europe and one of the major participants of World War II',
+        links: ['102'],
         items: [
-            '102'
-        ]
-    },{
-        id: '108',
-        name: "Russia",
-        content: 'Russia stuff',
-        items: [
+            '110'
         ]
     },
+    {
+        id: '110',
+        content: 'Germany Germany (German: Deutschland, German pronunciation: [ˈdɔʏtʃlant]), officially the Federal Republic of Germany (German: Bundesrepublik Deutschland, About this soundlisten),[e] is a country in Central and Western Europe and one of the major participants of [[World War II]]',
+    }
 
 ]
 
@@ -75,7 +76,7 @@ interface BasicNotesDataSetProps {
 
 const NotesStoryDebug = React.memo(() => {
 
-    const {index, active} = useNotesStore(['index', 'active']);
+    const {index, reverse, active} = useNotesStore(['index', 'reverse', 'active']);
 
     return (
         <div>
@@ -86,6 +87,10 @@ const NotesStoryDebug = React.memo(() => {
             <b>index: </b><br/>
             <pre>
             {JSON.stringify(index, null, '  ')}
+            </pre>
+            <b>reverse: </b><br/>
+            <pre>
+            {JSON.stringify(reverse, null, '  ')}
             </pre>
         </div>
     );
