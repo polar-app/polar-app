@@ -11,7 +11,6 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 interface IProps {
     readonly id: NoteIDStr;
 }
-
 export const NoteRoot = deepMemo((props: IProps) => {
 
     const {index, indexByName} = useNotesStore(['index', 'indexByName']);
@@ -24,6 +23,8 @@ export const NoteRoot = deepMemo((props: IProps) => {
             <div>No note for id: {props.id}</div>
         );
     }
+
+    const id = note?.id;
 
     const notes = lookup(note.items || []);
 
@@ -41,9 +42,9 @@ export const NoteRoot = deepMemo((props: IProps) => {
 
                     )}
 
-                <Notes parent={props.id} notes={notes}/>
+                <Notes parent={id} notes={notes}/>
 
-                <NotesInbound id={props.id}/>
+                <NotesInbound id={id}/>
 
             </div>
         </MUIBrowserLinkStyle>
