@@ -11,6 +11,7 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import { useHistory } from "react-router-dom";
 import {useRefValue} from "../hooks/ReactHooks";
 import { NoteActionMenuForLinking } from "./NoteActionMenuForLinking";
+import {WikiLinks} from "./WikiLinks";
 
 interface IProps {
     readonly parent: NoteIDStr;
@@ -84,6 +85,8 @@ const Inner = deepMemo((props: IProps) => {
 
     const ref = useLinkNavigation();
 
+    const wikiLinkContent = React.useMemo(() => WikiLinks.escape(props.content || ''), [props.content])
+
     const handleChange = React.useCallback((content: string) => {
         updateNote(props.id, content);
     }, [props.id, updateNote]);
@@ -93,7 +96,7 @@ const Inner = deepMemo((props: IProps) => {
             <NoteActionMenuForCommands id={props.id}>
                 <div ref={ref}>
                     <NoteNavigation parent={props.parent} id={props.id}>
-                        <CKEditor5BalloonEditor content={props.content || ''} onChange={handleChange} onEditor={setEditor}/>
+                        <CKEditor5BalloonEditor content={wikiLinkContent} onChange={handleChange} onEditor={setEditor}/>
                     </NoteNavigation>
                 </div>
             </NoteActionMenuForCommands>
