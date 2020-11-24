@@ -8,4 +8,5 @@ export namespace AutoFlashcardRequests {
     export async function exec(request: AutoFlashcardRequest): Promise<AutoFlashcardResponse> {
         return await JSONRPC.exec('autoFlashcard', request)
     }
+
 }
