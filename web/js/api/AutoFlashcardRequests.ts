@@ -6,6 +6,6 @@ export namespace AutoFlashcardRequests {
     import AutoFlashcardRequest = AutoFlashcards.AutoFlashcardRequest;
 
     export async function exec(request: AutoFlashcardRequest): Promise<AutoFlashcardResponse> {
-        return await JSONRPC.exec<AutoFlashcardRequest, AutoFlashcardResponse>('autoFlashcard', request)
+        return await JSONRPC.exec('autoFlashcard', request)
     }
 }
