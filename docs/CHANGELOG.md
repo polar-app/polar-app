@@ -1,3 +1,6 @@
+- Can now right click the annotation in the doc viewer to scroll the annotation
+  in the annotation sidebar.
+
 - Fixed help menu in the desktop app
 - implemented phrase search in the PDF viewer
 - 

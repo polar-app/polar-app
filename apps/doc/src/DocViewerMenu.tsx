@@ -540,6 +540,8 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
 
         const {pageNum} = highlight;
 
+        // TODO make sure the right doc panel is exposed
+
         jumpToAnnotationHandler({
             target: 'annotation-' + highlight.id,
             docID: docDescriptor.fingerprint,
