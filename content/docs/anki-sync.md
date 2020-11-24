@@ -6,9 +6,8 @@ permalink: /docs/anki-sync-for-spaced-repetition.html
 description: Polar supports native integration with Anki via the Anki Connect add-on. 
 ---
 
-# Anki and Spaced Repetition
+# Background
 
-Polar supports native integration with Anki via the [Anki Connect](https://ankiweb.net/shared/info/2055492159) add-on.
 
 This allows you to sync flashcards created from annotations directly to Anki.
 
@@ -22,6 +21,14 @@ flashcards.
 The context is important.  When using spaced repetition you don't want to forget 
 the context in the future.  You might forget about a topic or want to review
 and knowing the context is extremely important.   
+
+# Setting it up
+
+To get started, you need to add <a href="https://ankiweb.net/shared/info/2055492159">Anki Connect</a> as an add-on in Anki. See deatils in the link but in essence, all you need to do is add Anki Connect's code to your add-ons within Anki.
+
+Once that's done, you can sync all your flashcards to Anki by clicking the 'Start Anki Sync' in the top right corner of the app. Syncing only works from the desktop app, not from the webapp
+
+<img class="img-fluid" src="https://i.imgur.com/oXbpoaZ.png">
 
 # Deck mapping
 
