@@ -22,13 +22,13 @@ The context is important.  When using spaced repetition you don't want to forget
 the context in the future.  You might forget about a topic or want to review
 and knowing the context is extremely important.   
 
-# Setting it up
+# Setup
 
 To get started, you need to add <a href="https://ankiweb.net/shared/info/2055492159">Anki Connect</a> as an add-on in Anki. See deatils in the link but in essence, all you need to do is add Anki Connect's code to your add-ons within Anki.
 
 Once that's done, you can sync all your flashcards to Anki by clicking the 'Start Anki Sync' in the top right corner of the app. Syncing only works from the desktop app, not from the webapp
 
-<img class="img-fluid" src="https://i.imgur.com/oXbpoaZ.png">
+<img class="img-fluid" src="https://i.imgur.com/2EEIJAD.png">
 
 # Deck mapping
 
