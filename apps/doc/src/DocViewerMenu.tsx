@@ -596,6 +596,13 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
                                  icon={<PhotoSizeSelectLargeIcon/>}
                                  onClick={onCreateAreaHighlight}/>}
 
+                {(props.origin?.areaHighlights?.length || 0) > 0 && (
+                    <MUIMenuItem key="area-highlight-reveal-in-annotation-sidebar"
+                             text="Reveal in Annotation Sidebar"
+                             icon={<CenterFocusStrongIcon/>}
+                             onClick={onRevealAnnotation}/>
+                )}
+
                 {isPDF && (props.origin?.areaHighlights?.length || 0) > 0 &&
                     <MUIMenuItem key="delete-area-highlight"
                                  text="Delete Area Highlight"
