@@ -1,7 +1,11 @@
+- We now properly assert that the number of web captures you're making is
+  compatible with your account and show the limits in the UI.
+  
 - Can now right click the annotation in the doc viewer to scroll the annotation
   in the annotation sidebar.
 
 - Fixed help menu in the desktop app
+
 - Implemented phrase search in the PDF viewer
 
 # 2.0.83
