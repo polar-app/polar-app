@@ -4,13 +4,12 @@ import {useUserInfoContext} from "../auth_handler/UserInfoProvider";
 import {Plans} from "polar-accounts/src/Plans";
 import {AccountUpgrades} from "../../../accounts/AccountUpgrades";
 import computeStorageForPlan = AccountUpgrades.computeStorageForPlan;
-import {Percentage} from "polar-shared/src/util/ProgressTracker";
 import {Percentage100, Percentages} from "polar-shared/src/util/Percentages";
 
 export type Bytes = number;
 
 interface IAccounting {
-    readonly storage: Bytes;
+    readonly storageInBytes: Bytes;
     readonly nrWebCaptures: number;
 }
 
@@ -21,13 +20,13 @@ export function useAccounting(): IAccounting {
 
     const {data} = useDocRepoStore(['data']);
 
-    const storage = data.map(current => current.docInfo.bytes || 0)
-                        .reduce(Reducers.SUM, 0)
+    const storageInBytes = data.map(current => current.docInfo.bytes || 0)
+                               .reduce(Reducers.SUM, 0)
 
     const nrWebCaptures = data.filter(current => current.docInfo.webCapture)
                               .length;
 
-    return {storage, nrWebCaptures};
+    return {storageInBytes, nrWebCaptures};
 
 }
 
@@ -54,7 +53,7 @@ export function useAccountingUsage(): IAccountingUsage {
 
         const plan = Plans.toV2(userInfoContext?.userInfo?.subscription.plan || 'free');
 
-        const value = accounting.storage;
+        const value = accounting.storageInBytes;
         const limit = computeStorageForPlan(userInfoContext?.userInfo?.creationTime, plan);
         const usage = Percentages.calculate(value, limit);
 

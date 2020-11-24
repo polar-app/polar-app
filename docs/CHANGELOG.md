@@ -2,8 +2,7 @@
   in the annotation sidebar.
 
 - Fixed help menu in the desktop app
-- implemented phrase search in the PDF viewer
-- 
+- Implemented phrase search in the PDF viewer
 
 # 2.0.83
 

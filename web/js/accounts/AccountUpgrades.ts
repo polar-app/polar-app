@@ -48,14 +48,14 @@ export namespace AccountUpgrades {
     /**
      * Get the required plan per the amount of data being used.
      */
-    export function computeRequiredPlan(accountUsage: AccountUsage) {
+    export function computeRequiredPlan(accountUsage: AccountUsage): V2Plan {
 
         /**
          * Return true if the user is grandfathered for V2 pricing.
          */
-        function computePlan(free: number,
-                             plus: number,
-                             pro: number) {
+        function computePlanForStorageWithLevels(free: number,
+                                                 plus: number,
+                                                 pro: number) {
 
             if (accountUsage.storageInBytes < free) {
                 return V2PlanFree;
@@ -73,19 +73,29 @@ export namespace AccountUpgrades {
 
         }
 
-        function computeV2Grandfathered() {
-            return computePlan(_2GB, _50GB, _500GB);
+        function computePlanForStorage() {
+
+            function computeV2Grandfathered() {
+                return computePlanForStorageWithLevels(_2GB, _50GB, _500GB);
+            }
+
+            function computeV2() {
+                return computePlanForStorageWithLevels(_1GB, _50GB, _500GB);
+            }
+
+            if (isV2Grandfathered(accountUsage.created)) {
+                return computeV2Grandfathered();
+            } else {
+                return computeV2();
+            }
+
         }
 
-        function computeV2() {
-            return computePlan(_1GB, _50GB, _500GB);
-        }
+        // function computePlanForWebCaptures() {
+        //     accountUsage.
+        // }
 
-        if (isV2Grandfathered(accountUsage.created)) {
-            return computeV2Grandfathered();
-        } else {
-            return computeV2();
-        }
+        return computePlanForStorage();
 
     }
 
@@ -123,5 +133,10 @@ export interface AccountUsage {
      * The number of bytes of storage the user has.
      */
     readonly storageInBytes: number;
+
+    /**
+     * Number of web captures for this user.
+     */
+    readonly nrWebCaptures: number;
 
 }

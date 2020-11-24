@@ -29,7 +29,8 @@ export function useAccountUpgrader(): IAccountUpgrade | undefined {
 
     const accountUsage: AccountUsage = {
         created: userInfoContext?.userInfo?.creationTime,
-        storageInBytes: accounting.nrWebCaptures
+        storageInBytes: accounting.storageInBytes,
+        nrWebCaptures: accounting.nrWebCaptures
     }
 
     const toPlan = AccountUpgrades.computePlanRequiredForAccount(plan, accountUsage);
