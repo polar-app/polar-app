@@ -91,11 +91,20 @@ export namespace AccountUpgrades {
 
         }
 
-        // function computePlanForWebCaptures() {
-        //     accountUsage.
-        // }
+        function computePlanForWebCaptures() {
 
-        return computePlanForStorage();
+            if (accountUsage.nrWebCaptures < 250) {
+                return V2PlanFree;
+            }
+
+            return V2PlanPlus;
+
+        }
+
+        const planForStorage = computePlanForStorage();
+        const planForWebCaptures = computePlanForWebCaptures();
+
+        return Plans.max(planForStorage, planForWebCaptures);
 
     }
 

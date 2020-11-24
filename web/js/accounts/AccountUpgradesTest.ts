@@ -35,11 +35,11 @@ describe('AccountUpgrades', function() {
             assertJSON(requiredPlan, expected);
         }
 
-        doTest(V2PlanFree, {storageInBytes: Bytes.toBytes('200MB'), created}, V2PlanFree);
-        doTest(V2PlanFree, {storageInBytes: Bytes.toBytes('400MB'), created}, V2PlanFree);
-        doTest(V2PlanFree, {storageInBytes: Bytes.toBytes('900MB'), created}, V2PlanFree);
-        doTest(V2PlanFree, {storageInBytes: Bytes.toBytes('1GB'), created}, V2PlanFree);
-        doTest(V2PlanFree, {storageInBytes: Bytes.toBytes('2GB'), created}, V2PlanPlus);
+        doTest(V2PlanFree, {storageInBytes: Bytes.toBytes('200MB'), nrWebCaptures: 0, created}, V2PlanFree);
+        doTest(V2PlanFree, {storageInBytes: Bytes.toBytes('400MB'), nrWebCaptures: 0, created}, V2PlanFree);
+        doTest(V2PlanFree, {storageInBytes: Bytes.toBytes('900MB'), nrWebCaptures: 0, created}, V2PlanFree);
+        doTest(V2PlanFree, {storageInBytes: Bytes.toBytes('1GB'), nrWebCaptures: 0, created}, V2PlanFree);
+        doTest(V2PlanFree, {storageInBytes: Bytes.toBytes('2GB'), nrWebCaptures: 0, created}, V2PlanPlus);
 
     });
 
