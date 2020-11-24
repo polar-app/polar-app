@@ -43,6 +43,7 @@ const notes: ReadonlyArray<INote> = [
         id: '111',
         content: 'Canada is north of the United States',
     },
+    // FIXME: make text references NODE IDs...
     {
         id: '105',
         content: 'Allied Powers: United States, United Kingdom, [[Canada]], [[Russia]].',
