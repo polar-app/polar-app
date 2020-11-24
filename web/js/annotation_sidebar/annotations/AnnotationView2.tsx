@@ -10,6 +10,7 @@ import {ViewOrEditComment2} from '../child_annotations/comments/ViewOrEditCommen
 import {AnnotationInputView} from "../AnnotationInputView";
 import {ChildAnnotationSection2} from "../child_annotations/ChildAnnotationSection2";
 import {deepMemo} from "../../react/ReactUtils";
+import {useScrollIntoViewUsingLocation} from "../../../../apps/doc/src/annotations/ScrollIntoViewUsingLocation";
 // import {createContextMenu} from "../../../../apps/repository/js/doc_repo/MUIContextMenu2";
 // import {IDocViewerContextMenuOrigin} from "../../../../apps/doc/src/DocViewerMenu";
 // import {MUIDocDropdownMenuItems} from "../../../../apps/repository/js/doc_repo/MUIDocDropdownMenuItems";
@@ -61,6 +62,8 @@ export const AnnotationView2 = deepMemo((props: IProps) => {
 
     const { annotation } = props;
 
+    const scrollIntoViewRef = useScrollIntoViewUsingLocation();
+
     if (! isPresent(annotation.id)) {
         console.warn("No annotation id!", annotation);
         return null;
@@ -75,6 +78,7 @@ export const AnnotationView2 = deepMemo((props: IProps) => {
 
     return (
         <div key={key}
+             ref={scrollIntoViewRef}
              id={'annotation-' + annotation.id}
              className="">
             {/*<MUIHoverController>*/}
