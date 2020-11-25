@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {useAccountUpgrader} from "../../../../web/js/ui/account_upgrade/AccountUpgrader";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Billing} from "polar-accounts/src/Billing";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
+import { useHistory } from 'react-router-dom';
 
 export namespace AccountVerifiedAction {
 
@@ -14,6 +14,7 @@ export namespace AccountVerifiedAction {
 
         const accountUpgrade = useAccountUpgrader();
         const dialogs = useDialogManager();
+        const history = useHistory();
 
         return React.useCallback((delegate: () => void) => {
 
@@ -26,17 +27,18 @@ export namespace AccountVerifiedAction {
 
                 dialogs.confirm({
                     title: 'Account Upgraded Required',
+                    acceptText: "Upgrade Plan",
                     subtitle: accountUpgrade.reason === 'storage' ?
                         <StorageWarning plan={accountUpgrade.plan}/> :
                         <WebCaptureWarning plan={accountUpgrade.plan}/>,
-                    onAccept: NULL_FUNCTION
+                    onAccept: () => history.push('/plans')
                 })
 
             } else {
                 delegate();
             }
 
-        }, [accountUpgrade, dialogs]);
+        }, [accountUpgrade?.plan, accountUpgrade?.reason, accountUpgrade?.required, dialogs, history]);
 
     }
 
@@ -49,7 +51,7 @@ export namespace AccountVerifiedAction {
             <div>
                 <p>
                     You've reached the limits of your plan and need to upgrade
-                    to ${props.plan.level}
+                    to {props.plan.level}
                 </p>
 
                 <p>
@@ -58,7 +60,7 @@ export namespace AccountVerifiedAction {
 
                 <ul>
                     <li>
-                        Upgrade to ${props.plan.level} (which we'd really appreciate)
+                        Upgrade to {props.plan.level} (which we'd really appreciate)
                     </li>
                     <li>
                         Delete some of your web captures so you're lower
@@ -75,7 +77,7 @@ export namespace AccountVerifiedAction {
             <div>
                 <p>
                     You've reached the limits of your plan and need to upgrade
-                    to ${props.plan.level}
+                    to {props.plan.level}
                 </p>
 
                 <p>
@@ -84,7 +86,7 @@ export namespace AccountVerifiedAction {
 
                 <ul>
                     <li>
-                        Upgrade to ${props.plan.level} (which we'd really appreciate)
+                        Upgrade to {props.plan.level} (which we'd really appreciate)
                     </li>
                     <li>
                         Delete some of your files so that you're lower than the
