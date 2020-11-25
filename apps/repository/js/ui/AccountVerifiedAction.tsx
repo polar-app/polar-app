@@ -4,6 +4,7 @@ import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControll
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Billing} from "polar-accounts/src/Billing";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
+import {Analytics} from "../../../../web/js/analytics/Analytics";
 
 export namespace AccountVerifiedAction {
 
@@ -17,6 +18,11 @@ export namespace AccountVerifiedAction {
         return React.useCallback((delegate: () => void) => {
 
             if (accountUpgrade?.required) {
+
+                Analytics.event({
+                    category: 'account-upgrade-required',
+                    action: accountUpgrade.reason
+                });
 
                 dialogs.confirm({
                     title: 'Account Upgraded Required',

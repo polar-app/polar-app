@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {useDocRepoStore} from "../../../../../apps/repository/js/doc_repo/DocRepoStore2";
 import {Reducers} from "polar-shared/src/util/Reducers";
 import {useUserInfoContext} from "../auth_handler/UserInfoProvider";
@@ -49,7 +50,7 @@ export function useAccountingUsage(): IAccountingUsage {
     const userInfoContext = useUserInfoContext();
     const accounting = useAccounting();
 
-    function computeStorage(): BilledResource {
+    const computeStorage = React.useCallback((): BilledResource => {
 
         const plan = Plans.toV2(userInfoContext?.userInfo?.subscription.plan || 'free');
 
@@ -61,19 +62,22 @@ export function useAccountingUsage(): IAccountingUsage {
             value, limit, usage
         };
 
-    }
+    }, [accounting.storageInBytes, userInfoContext?.userInfo?.creationTime, userInfoContext?.userInfo?.subscription.plan]);
 
-    function computeWebCaptures(): BilledResource {
+    const computeWebCaptures = React.useCallback((): BilledResource => {
 
         const plan = Plans.toV2(userInfoContext?.userInfo?.subscription.plan || 'free');
 
         const value = accounting.nrWebCaptures;
         const limit = plan.level === 'free' ? 250 : undefined;
+        // const limit = 0;
 
         if (limit === undefined) {
 
             return {
-                value, limit: undefined, usage: undefined
+                value,
+                limit: undefined,
+                usage: undefined
             };
 
         } else {
@@ -86,8 +90,7 @@ export function useAccountingUsage(): IAccountingUsage {
 
         }
 
-    }
-
+    }, [accounting.nrWebCaptures, userInfoContext?.userInfo?.subscription.plan]);
 
     const storage = computeStorage();
     const webCaptures = computeWebCaptures();
