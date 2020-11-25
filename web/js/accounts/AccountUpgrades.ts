@@ -11,6 +11,7 @@ import {Plans} from "polar-accounts/src/Plans";
 import V2PlanPlus = Billing.V2PlanPlus;
 import V2PlanFree = Billing.V2PlanFree;
 import V2PlanPro = Billing.V2PlanPro;
+import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 
 const _1GB   =   1000000000;
 const _2GB   =   2000000000;
@@ -45,10 +46,15 @@ export namespace AccountUpgrades {
 
     }
 
+    export interface IRequiredPlan {
+        readonly reason: 'none' | 'storage' | 'web-captures';
+        readonly plan: V2Plan;
+    }
+
     /**
      * Get the required plan per the amount of data being used.
      */
-    export function computeRequiredPlan(accountUsage: AccountUsage): V2Plan {
+    export function computeRequiredPlan(accountUsage: AccountUsage): IRequiredPlan {
 
         /**
          * Return true if the user is grandfathered for V2 pricing.
@@ -104,7 +110,27 @@ export namespace AccountUpgrades {
         const planForStorage = computePlanForStorage();
         const planForWebCaptures = computePlanForWebCaptures();
 
-        return Plans.max(planForStorage, planForWebCaptures);
+
+        interface ILimit extends IRequiredPlan {
+            readonly planAsInt: number;
+        }
+
+        const limits: ReadonlyArray<ILimit> = [
+            {
+                plan: planForStorage,
+                reason: 'storage',
+                planAsInt: Plans.toInt(planForStorage)
+            },
+            {
+                plan: planForWebCaptures,
+                reason: 'web-captures',
+                planAsInt: Plans.toInt(planForWebCaptures)
+            }
+        ];
+
+        return arrayStream(limits)
+            .sort((a, b) => a.planAsInt - b.planAsInt)
+            .last()!;
 
     }
 
@@ -116,16 +142,19 @@ export namespace AccountUpgrades {
      * @param accountUsage The data about the machine that we're needing to upgrade
      */
     export function computePlanRequiredForAccount(currentPlan: Billing.V2Plan,
-                                                  accountUsage: AccountUsage): Billing.V2Plan {
+                                                  accountUsage: AccountUsage): IRequiredPlan {
 
         const requiredPlan = computeRequiredPlan(accountUsage);
 
-        if (Plans.toInt(currentPlan) < Plans.toInt(requiredPlan)) {
+        if (Plans.toInt(currentPlan) < Plans.toInt(requiredPlan.plan)) {
             return requiredPlan;
         }
 
         // their current plan is ok.
-        return currentPlan;
+        return {
+            reason: 'none',
+            plan: currentPlan
+        };
 
     }
 
