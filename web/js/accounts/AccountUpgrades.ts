@@ -147,7 +147,10 @@ export namespace AccountUpgrades {
         const requiredPlan = computeRequiredPlan(accountUsage);
 
         if (Plans.toInt(currentPlan) < Plans.toInt(requiredPlan.plan)) {
-            return requiredPlan;
+            return {
+                reason: requiredPlan.reason,
+                plan: requiredPlan.plan,
+            };
         }
 
         // their current plan is ok.
