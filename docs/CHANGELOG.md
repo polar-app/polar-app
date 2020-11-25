@@ -1,3 +1,5 @@
+- properly handling user authentication now.
+
 - We now properly assert that the number of web captures you're making is
   compatible with your account and show the limits in the UI.
   
