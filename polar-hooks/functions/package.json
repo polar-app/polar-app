@@ -58,7 +58,8 @@
     "stripe": "=8.119.0",
     "typescript": "3.9.5",
     "uuid": "3.3.3",
-    "yargs": "^15.3.1"
+    "yargs": "^15.3.1",
+    "@mailchimp/mailchimp_marketing": "=3.0.24"
   },
   "devDependencies": {
     "@types/chai": "4.2.11",
