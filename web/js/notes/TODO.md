@@ -1,4 +1,7 @@
 
+- ckeditor performance now really really sucks. It's what's taking 1 second to
+  render. It seems to be a regression with our custom build I think.
+
 - if we type wiki-style syntax it's not incorporated properly
     [Canada](https://www.example.com)
 
