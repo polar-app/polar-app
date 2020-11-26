@@ -15,11 +15,13 @@ import {useAnnotationMutationsContext} from "./AnnotationMutationsContext";
 import {AnnotationTagButton2} from './AnnotationTagButton2';
 import {MUIButtonBar} from "../mui/MUIButtonBar";
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import {createStyles} from "@material-ui/core";
+import {createStyles, CircularProgress} from "@material-ui/core";
 import {deepMemo} from "../react/ReactUtils";
 import {JumpToAnnotationButton} from "./buttons/JumpToAnnotationButton";
 import {MUIDocDeleteButton} from "../../../apps/repository/js/doc_repo/buttons/MUIDocDeleteButton";
 import {StandardIconButton} from "../../../apps/repository/js/doc_repo/buttons/StandardIconButton";
+import FlashAutoIcon from '@material-ui/icons/FlashAuto';
+import {useAutoFlashcardHandler} from "./AutoFlashcardHook";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -99,6 +101,38 @@ const CreateFlashcardButton = deepMemo((props: IMutableProps) => {
 
 });
 
+const CreateAutoFlashcardButton = deepMemo((props: IAnnotationProps) => {
+
+    const [status, handler] = useAutoFlashcardHandler(props.annotation);
+
+    return (
+        <StandardIconButton tooltip="Create a new flashcard"
+                            disabled={! props.mutable}
+                            size="small"
+                            onClick={handler}>
+
+            <div style={{
+                     width: '1em',
+                     // height: '1em',
+                     display: 'flex',
+                     flexDirection: 'column',
+                     alignItems: 'center'
+                 }}>
+                {status === 'idle' && (
+                    <FlashAutoIcon/>
+                )}
+
+                {status === 'waiting' && (
+                    <CircularProgress size="1em"/>
+                )}
+            </div>
+
+        </StandardIconButton>
+    );
+
+});
+
+
 interface IProps {
     readonly annotation: IDocAnnotationRef;
 }
@@ -154,6 +188,8 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
                         <CreateCommentButton mutable={doc?.mutable}/>
 
                         <CreateFlashcardButton mutable={doc?.mutable}/>
+
+                        <CreateAutoFlashcardButton mutable={doc?.mutable} annotation={annotation}/>
 
                         {! annotation.immutable &&
                             <ColorSelector role='change'

@@ -32,6 +32,7 @@ import {FirestoreInitStory} from "./impl/FirestoreInitStory";
 import {ActionMenuStory} from "./impl/ActionMenuStory";
 import {YoutubePlayerStory} from "./impl/YoutubePlayerStory";
 import {AutoFlashcardsStory} from "./impl/AutoFlashcardsStory";
+import { ProgressButtonStory } from './impl/ProgressButtonStory';
 
 interface IStory {
     readonly name: string;
@@ -159,6 +160,10 @@ const stories = createStoryIndex([
     {
         name: "Auto Flashcards",
         component: <AutoFlashcardsStory/>
+    },
+    {
+        name: "Circular Progress",
+        component: <ProgressButtonStory/>
     }
 
 ]);
