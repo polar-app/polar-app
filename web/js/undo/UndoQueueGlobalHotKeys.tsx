@@ -29,7 +29,7 @@ export const UndoQueueGlobalHotKeys = React.memo(() => {
 
     const log = useLogger();
 
-    const handleUndo = React.useCallback(async () => {
+    const handleUndo = React.useCallback(async (event: KeyboardEvent) => {
         try {
             await undo();
         } catch (e) {
@@ -37,7 +37,7 @@ export const UndoQueueGlobalHotKeys = React.memo(() => {
         }
     }, [log, undo]);
 
-    const handleRedo = React.useCallback(async () => {
+    const handleRedo = React.useCallback(async (event: KeyboardEvent) => {
         try {
             await redo();
         } catch (e) {

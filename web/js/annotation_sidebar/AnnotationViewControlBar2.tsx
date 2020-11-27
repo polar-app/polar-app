@@ -105,6 +105,8 @@ const CreateAutoFlashcardButton = deepMemo((props: IAnnotationProps) => {
 
     const [status, handler] = useAutoFlashcardHandler(props.annotation);
 
+    // FIXME: we need to look at the users account here...
+
     return (
         <StandardIconButton tooltip="Create a new flashcard"
                             disabled={! props.mutable}
