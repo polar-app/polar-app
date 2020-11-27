@@ -9,6 +9,7 @@ publish_public() {
 
     cd packages/polar-app-public
 
+    publish_pkg polar-null-package
     publish_pkg polar-accounts
     publish_pkg polar-backend-api
     publish_pkg polar-backend-shared
