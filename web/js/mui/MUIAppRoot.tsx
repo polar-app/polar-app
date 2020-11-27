@@ -8,6 +8,7 @@ import {GlobalCssMobile} from "./css/GlobalCssMobile";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles";
 import {KeyboardShortcuts} from "../keyboard_shortcuts/KeyboardShortcuts";
+import {UndoQueueProvider} from "../undo/UndoQueueProvider";
 
 interface IProps {
     readonly children: React.ReactNode;
@@ -48,7 +49,11 @@ export const MUIAppRoot = (props: IProps) => {
                         <GlobalCssSummernote/>
                         <GlobalCssMobile/>
 
-                        {props.children}
+                        <UndoQueueProvider>
+                            <>
+                                {props.children}
+                            </>
+                        </UndoQueueProvider>
 
                     </>
                 </MUIThemeTypeContext.Provider>

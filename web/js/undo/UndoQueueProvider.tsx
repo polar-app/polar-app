@@ -3,10 +3,17 @@ import {deepMemo} from "../react/ReactUtils";
 import { UndoStoreProviderDelegate } from "./UndoStore";
 import { UndoQueueGlobalHotKeys } from "./UndoQueueGlobalHotKeys";
 
-export const UndoQueueProvider = deepMemo(() => {
+interface IProps {
+    readonly children: JSX.Element;
+}
+
+export const UndoQueueProvider = deepMemo((props: IProps) => {
     return (
         <UndoStoreProviderDelegate>
-            <UndoQueueGlobalHotKeys/>
+            <>
+                {/*<UndoQueueGlobalHotKeys/>*/}
+                {props.children}
+            </>
         </UndoStoreProviderDelegate>
     );
 })
