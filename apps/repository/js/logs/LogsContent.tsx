@@ -43,7 +43,7 @@ export const LogsContent = () => {
         // noop
     })
 
-    const argsRenderable = (args: any): boolean => {
+    const argsRequireRender = (args: any): boolean => {
 
         if (isPresent(args)) {
 
@@ -97,17 +97,7 @@ export const LogsContent = () => {
 
         }
 
-        // TODO: for primitive types like strings, and numbers render them directly...
-        const RenderParams = () => {
-
-            if (argsRenderable(current.params)) {
-                return current.params.map((current: any, idx: number) => (
-                    <RenderParam key={idx} value={current}/>))
-            }
-
-            return null;
-
-        };
+        const doRenderArgs = argsRequireRender(current.params);
 
         return (
             <div style={Styles.LogMessage} className={className} key={idx}>
@@ -116,7 +106,8 @@ export const LogsContent = () => {
                 <div style={Styles.Level}>{current.level}</div>
                 <div style={Styles.LogFieldMsg}>{current.message}</div>
 
-                <RenderParams/>
+                {doRenderArgs && current.params.map((current: any, idx: number) => (
+                    <RenderParam key={idx} value={current}/>))}
 
             </div>
         );
