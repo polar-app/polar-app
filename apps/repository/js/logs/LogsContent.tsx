@@ -1,8 +1,7 @@
 import * as React from 'react';
-import {Logger} from 'polar-shared/src/logger/Logger';
-import {MemoryLogger} from '../../../../web/js/logger/MemoryLogger';
 import ReactJson from 'react-json-view';
 import {useComponentDidMount} from "../../../../web/js/hooks/ReactLifecycleHooks";
+import {ConsoleRecorder} from "polar-shared/src/util/ConsoleRecorder";
 
 class Styles {
 
@@ -33,21 +32,11 @@ class Styles {
 
 export const LogsContent = () => {
 
-    const messages = MemoryLogger.toView()
+    const messages = ConsoleRecorder.snapshot();
 
     useComponentDidMount(() => {
         // noop
     })
-
-    // public componentWillMount(): void {
-    //
-    //     this.releaser.register(
-    //         MemoryLogger.addEventListener(() => {
-    //             this.setState({messages: MemoryLogger.toView()});
-    //         })
-    //     );
-    //
-    // }
 
     const argsRenderable = (args: any): boolean => {
 
@@ -71,8 +60,7 @@ export const LogsContent = () => {
 
     };
 
-    const siblings = [...messages].reverse()
-                   .map(current => {
+    const siblings = [...messages].reverse().map((current, idx) => {
 
         let className = "";
 
@@ -86,10 +74,10 @@ export const LogsContent = () => {
 
         const RenderJSON = () => {
 
-            if (argsRenderable(current.args)) {
+            if (argsRenderable(current.params)) {
 
                 return (<div style={Styles.LogFieldArgs}>
-                    <ReactJson src={current.args} name={'args'} shouldCollapse={() => true}/>
+                    <ReactJson src={current.params} name={'args'} shouldCollapse={() => true}/>
                 </div>);
 
             }
@@ -98,10 +86,10 @@ export const LogsContent = () => {
 
         };
 
-        return <div style={Styles.LogMessage} className={className} key={current.idx}>
+        return <div style={Styles.LogMessage} className={className} key={idx}>
 
-            <div style={Styles.LogFieldTimestamp}>{current.timestamp}</div>
-            <div style={Styles.LogFieldMsg}>{current.msg}</div>
+            <div style={Styles.LogFieldTimestamp}>{current.created}</div>
+            <div style={Styles.LogFieldMsg}>{current.message}</div>
 
             <RenderJSON/>
 

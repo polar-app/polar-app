@@ -10,9 +10,13 @@ import SyncIcon from '@material-ui/icons/Sync';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import {FADiscordIcon} from "../../../../web/js/mui/MUIFontAwesome";
 import ForumIcon from '@material-ui/icons/Forum';
+import ViewHeadlineIcon from '@material-ui/icons/ViewHeadline';
+import {useHistory} from "react-router-dom";
+
 export const MoreActionsDropdown = React.memo(() => {
 
     const isElectron = AppRuntime.isElectron();
+    const history = useHistory();
 
     function onChat() {
         Nav.openLinkWithNewTab('https://discord.gg/GT8MhA6')
@@ -29,6 +33,10 @@ export const MoreActionsDropdown = React.memo(() => {
     function onStartAnkiSync() {
         AnkiSyncClient.start();
     }
+
+    const onLogs = React.useCallback(() => {
+        history.push('/logs');
+    }, []);
 
     // - overflow menu: chrome extension,  desktop app (only in webapp),
     // documentation, device (though not sure exactly why that is needed), logs
@@ -56,6 +64,10 @@ export const MoreActionsDropdown = React.memo(() => {
                 <MUIMenuItem icon={<LibraryBooksIcon/>}
                              text="Documentation"
                              onClick={onDocumentation}/>
+
+                <MUIMenuItem icon={<ViewHeadlineIcon/>}
+                             text="Logs"
+                             onClick={onLogs}/>
 
                 {isElectron && (
                     <>

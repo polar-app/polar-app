@@ -56,6 +56,7 @@ import { PHZMigrationScreen } from './migrations/PHZMigrationScreen';
 import { AddFileDropzoneRoot } from './upload/AddFileDropzoneRoot';
 import {TwoMigrationForBrowser} from "../../../../apps/repository/js/gateways/two_migration/TwoMigrationForBrowser";
 import {AnalyticsLocationListener} from "../../analytics/AnalyticsLocationListener";
+import {LogsScreen} from "../../../../apps/repository/js/logs/LogsScreen";
 
 interface IProps {
     readonly app: App;
@@ -193,16 +194,6 @@ export const RepositoryApp = (props: IProps) => {
         </AuthRequired>
     );
 
-    // const renderLogsScreen = () => {
-    //     return (
-    //         <AuthRequired authStatus={app.authStatus}>
-    //             <LogsScreen
-    //                 persistenceLayerProvider={app.persistenceLayerProvider}
-    //                 persistenceLayerController={app.persistenceLayerController}/>
-    //         </AuthRequired>
-    //     );
-    // };
-
     // const editorsPicksScreen = () => {
     //     return (
     //         <AuthRequired authStatus={authStatus}>
@@ -333,6 +324,9 @@ export const RepositoryApp = (props: IProps) => {
 
                                                                     <Route exact path="/settings"
                                                                            component={RenderSettingsScreen}/>
+
+                                                                    <Route exact path="/logs"
+                                                                           component={LogsScreen}/>
 
                                                                     <Route exact path="/device"
                                                                            component={renderDeviceScreen}/>
