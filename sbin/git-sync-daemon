@@ -1,0 +1,7 @@
+#!/bin/bash
+
+while true; do
+    echo .
+    ./sbin/git-sync
+    sleep 300
+done
