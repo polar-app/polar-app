@@ -22,8 +22,6 @@ import {
     DocMetaLookupContext
 } from "../../../../web/js/annotation_sidebar/DocMetaLookupContextProvider";
 import {IDStr} from "polar-shared/src/util/Strings";
-import {Pref} from '../../../../web/js/util/prefs/Prefs';
-import {PrefsContext} from "./PrefsContext";
 import {PrefsContext2} from "./PrefsContext2";
 
 export interface ITagsContext {
@@ -187,11 +185,9 @@ export const PersistenceLayerApp = (props: IProps) => {
                                                                     <TagDescriptorsContext.Provider value={tagDescriptorsContext}>
                                                                         <TagsProviderContext.Provider value={tagsProvider}>
                                                                             <DocMetaLookupContext.Provider value={docMetaLookupContext}>
-                                                                                <PrefsContext>
-                                                                                    <PrefsContext2>
-                                                                                        {props.children}
-                                                                                    </PrefsContext2>
-                                                                                </PrefsContext>
+                                                                                <PrefsContext2>
+                                                                                    {props.children}
+                                                                                </PrefsContext2>
                                                                             </DocMetaLookupContext.Provider>
                                                                         </TagsProviderContext.Provider>
                                                                     </TagDescriptorsContext.Provider>
