@@ -855,8 +855,6 @@ const DocRepoStoreLoader = React.memo((props: IProps) => {
         }
     }, [callbacks]);
 
-    console.log("FIXME: DocRepoStoreLoader");
-
     return (
         <TagSidebarEventForwarderContext.Provider value={tagSidebarEventForwarder}>
             {props.children}
@@ -866,8 +864,6 @@ const DocRepoStoreLoader = React.memo((props: IProps) => {
 });
 
 export const DocRepoStore2 = React.memo((props: IProps) => {
-
-    console.log("FIXME: DocRepoStore2");
 
     return (
         <DocRepoStoreProvider>

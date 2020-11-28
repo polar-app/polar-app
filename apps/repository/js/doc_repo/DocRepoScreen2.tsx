@@ -145,8 +145,6 @@ const DesktopToolbar = () => {
 
 export const DocRepoScreen2 = React.memo(() => {
 
-    console.log("FIXME: DocRepoScreen2");
-
     return (
 
         <>
