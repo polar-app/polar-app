@@ -103,10 +103,6 @@ export function useLocalCachedSnapshotSubscriber<V>(opts: CachedSnapshotSubscrib
 
     const initialValue = React.useMemo(readCacheData, [readCacheData]);
 
-    // const [value, setValue] = React.useState(initialValue);
-
-    opts.onNext(initialValue);
-
     const unsubscriberRef = React.useRef<SnapshotUnsubscriber>();
 
     const onNext = React.useCallback((snapshot: ISnapshot<V> | undefined) => {
@@ -115,6 +111,7 @@ export function useLocalCachedSnapshotSubscriber<V>(opts: CachedSnapshotSubscrib
     }, [opts, writeCacheData]);
 
     useComponentDidMount(() => {
+        opts.onNext(initialValue);
         unsubscriberRef.current = opts.subscriber(onNext, opts.onError)
     });
 

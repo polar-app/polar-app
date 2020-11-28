@@ -13,13 +13,11 @@ export const UserTagsDataLoader = React.memo((props: IProps) => {
 
     const prefs = usePrefsContext();
 
-    if (! prefs) {
-        throw new Error("No prefs");
-    }
-
-    const userTagsDB = new UserTagsDB(prefs);
-    userTagsDB.init();
-    const userTags = userTagsDB.tags();
+    const userTags = React.useMemo(() => {
+        const userTagsDB = new UserTagsDB(prefs);
+        userTagsDB.init();
+        return userTagsDB.tags();
+    }, [prefs]);
 
     const {Component} = props;
 

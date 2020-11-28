@@ -203,8 +203,7 @@ const RepoDataLoaderData = React.memo((props: IRepoDataLoaderDataProps) => {
         <PrefsContext2>
             <UserTagsDataLoader Component={Component}/>
         </PrefsContext2>
-
-    )
+    );
 
 });
 
