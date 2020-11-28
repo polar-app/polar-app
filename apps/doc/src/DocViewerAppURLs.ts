@@ -4,9 +4,9 @@ export interface DocViewerAppURL {
     readonly id: IDStr;
 }
 
-export class DocViewerAppURLs {
+export namespace DocViewerAppURLs {
 
-    public static parse(url: URLStr): DocViewerAppURL | undefined {
+    export function parse(url: URLStr): DocViewerAppURL | undefined {
 
         const regexp = ".*/doc/([^/?#]+)(#([^#/]+)?)?$";
 
@@ -20,6 +20,10 @@ export class DocViewerAppURLs {
             id: matches[1]
         };
 
+    }
+
+    export function canonicalize(url: URLStr): string {
+        return `/doc/:id`;
     }
 
 }
