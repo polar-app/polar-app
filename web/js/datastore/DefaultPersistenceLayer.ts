@@ -68,8 +68,6 @@ export class DefaultPersistenceLayer extends AbstractPersistenceLayer implements
 
         await this.doInitDatastore(errorListener, opts);
 
-        await this.doInitUserTagsDB();
-
         // TODO: we might have to put this in as part of 2.0 but I think most
         // users have migrated.
         // await this.doInitUserTagsLegacyData();
@@ -86,16 +84,6 @@ export class DefaultPersistenceLayer extends AbstractPersistenceLayer implements
         } catch (e) {
             this.initLatch.reject(e);
         }
-
-    }
-
-    private async doInitUserTagsDB() {
-
-        const prefsProvider = this.datastore.getPrefs();
-        this.userTagsDB = new UserTagsDB(prefsProvider.get());
-        this.userTagsDB.init();
-
-        log.notice("UserTagsDB now has N record: ", this.userTagsDB.tags().length);
 
     }
 

@@ -2,7 +2,6 @@ import {SubscriptionValue, useSnapshotSubscriber} from "../../../../web/js/ui/da
 import {IUserPref, UserPrefs} from "../../../../web/js/datastore/firebase/UserPrefs";
 import {useFirestore} from "../FirestoreProvider";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {DictionaryPrefs} from "../../../../web/js/util/prefs/Prefs";
 
 export function useUserPrefs(): SubscriptionValue<IUserPref> {
 

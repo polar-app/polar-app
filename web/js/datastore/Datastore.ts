@@ -171,12 +171,6 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
      */
     overview(): Promise<DatastoreOverview | undefined>;
 
-    /**
-     * Get a Prefs object that supports reading and writing key/values to a
-     * simple prefs store.
-     */
-    getPrefs(): PrefsProvider;
-
     capabilities(): DatastoreCapabilities;
 
 }

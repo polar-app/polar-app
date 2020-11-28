@@ -9,11 +9,11 @@ import Divider from '@material-ui/core/Divider';
 import {SettingToggle} from './SettingToggle';
 import {ViewDeviceInfoButton} from './ViewDeviceInfoButton';
 import {SettingSelect} from "./SettingSelect";
-import {usePrefs} from "../../persistence_layer/PrefsHook";
 import {CancelSubscriptionButton} from "../../premium/CancelSubscriptionButton";
 import {MUIButtonBar} from "../../../../../web/js/mui/MUIButtonBar";
 import Box from '@material-ui/core/Box';
 import {ManageSubscriptionButton} from "../../premium/ManageSubscriptionButton";
+import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
 
 export const PREF_PDF_DARK_MODE_OPTIONS = [
     {
@@ -33,6 +33,7 @@ export const PREF_PDF_DARK_MODE_OPTIONS = [
 export const SettingsScreen = () => {
 
     const {theme, setTheme} = useContext(MUIThemeTypeContext);
+    const prefs = usePrefsContext();
 
     const handleDarkModeToggle = (enabled: boolean) => {
 
@@ -41,8 +42,6 @@ export const SettingsScreen = () => {
         setTimeout(() => setTheme(theme), 1);
 
     };
-
-    const prefs = usePrefs().value!;
 
     return (
 

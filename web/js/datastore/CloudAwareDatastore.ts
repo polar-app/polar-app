@@ -94,7 +94,6 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
                       opts: DatastoreInitOpts = {noInitialSnapshot: false, noSync: false}): Promise<InitResult> {
 
         await this.initDelegates(errorListener);
-        await this.initPrefs();
         await this.initSnapshots(errorListener, opts);
 
         return {};
@@ -106,27 +105,6 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
             this.cloud.init(errorListener, {noInitialSnapshot: true}),
             this.local.init(errorListener)
         ]);
-    }
-
-    private async initPrefs() {
-
-        const localPrefs = this.local.getPrefs().get();
-        const cloudPrefs = this.cloud.getPrefs().get();
-
-        const doUpdate = async (source: IPersistentPrefs, target: IPersistentPrefs) => {
-
-            if (target.update(source.toPrefDict())) {
-                // TODO: firestore sometimes will lock up here when we go to write
-                // but this essentially avoids the problem for now and a commit
-                // would be redundant here anyway plus slow things down.
-                await target.commit();
-            }
-
-        };
-
-        await doUpdate(localPrefs, cloudPrefs);
-        await doUpdate(cloudPrefs, localPrefs);
-
     }
 
     private async initSnapshots(errorListener: ErrorListener,
@@ -602,24 +580,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
     }
 
-    public getPrefs(): PrefsProvider {
-
-        const onCommit = async (persistentPrefs: IPersistentPrefs) => {
-
-            // write to firebase first, then commit locally.
-
-            const localPrefs = this.local.getPrefs().get();
-            localPrefs.update(persistentPrefs.toPrefDict());
-            await localPrefs.commit();
-
-        };
-
-        return new InterceptedPrefsProvider(this.cloud.getPrefs(), onCommit);
-
-    }
-
 }
-
 
 /**
  * Represents a doc and its UUID.  The UUID is optional though as older docs

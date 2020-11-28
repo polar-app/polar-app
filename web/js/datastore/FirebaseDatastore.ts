@@ -854,51 +854,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     }
 
-    public getPrefs(): PrefsProvider {
-
-        const onCommit = async (persistentPrefs: IPersistentPrefs) => {
-            // we have to update the main copy of our prefs or else the caller doesn't see
-            // the latest version
-            this.prefs.update(persistentPrefs.toPrefDict());
-        };
-
-        class PrefsProviderImpl extends AbstractPrefsProvider {
-
-            public constructor(private readonly prefs: FirebaseDatastorePrefs) {
-                super();
-            }
-
-            public get(): IPersistentPrefs {
-                return this.prefs;
-            }
-
-            protected register(onNext: PersistentPrefsUpdatedCallback,
-                               onError: OnErrorCallback): SnapshotUnsubscriber {
-
-                const createSnapshotListener = (): SnapshotUnsubscriber => {
-
-                    const onNextUserPref: UserPrefCallback = (data) => {
-                        const prefs = FirebaseDatastorePrefs.toPersistentPrefs(data);
-                        onNext(prefs);
-                    };
-
-                    return this.prefs.onSnapshot(onNextUserPref, onError);
-
-                };
-
-                return createSnapshotListener();
-
-            }
-
-        }
-
-        const prefsProviderImpl = new PrefsProviderImpl(this.prefs);
-
-        // we now need to intercept it to update our main prefs on a commit.
-        return new InterceptedPrefsProvider(prefsProviderImpl, onCommit);
-
-    }
-
     /**
      * Create the document that we will store in for the DocMeta
      */

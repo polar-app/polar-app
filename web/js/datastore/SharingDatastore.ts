@@ -116,10 +116,6 @@ export class SharingDatastore extends AbstractDatastore implements Datastore, Wr
         return this.docMetaRefs;
     }
 
-    public getPrefs(): PrefsProvider {
-        throw this.delegate.getPrefs();
-    }
-
     public async overview(): Promise<DatastoreOverview | undefined> {
         return await this.delegate.overview();
     }
