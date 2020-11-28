@@ -167,3 +167,4 @@ export const [AnnotationSidebarStoreProvider, useAnnotationSidebarStore, useAnno
         enableShallowEquals: true
     });
 
+AnnotationSidebarStoreProvider.displayName='AnnotationSidebarStoreProvider';

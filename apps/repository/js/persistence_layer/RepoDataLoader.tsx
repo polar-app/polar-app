@@ -23,6 +23,8 @@ export class RepoDataLoader extends React.Component<IProps, IState> {
     }
 
     public render() {
+        console.log("FIXME2");
+
         return (
             <DataLoader id="repoDocMetaLoader" provider={this.subscriber} render={value => this.props.render(value)}/>
         );

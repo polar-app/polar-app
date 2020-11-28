@@ -69,11 +69,17 @@ export class PersistenceLayerWatcher extends React.Component<IProps, IState> {
 
     public render() {
 
+        console.log("FIXME1");
+
         if (this.state.persistenceLayerProvider) {
             return this.props.render(this.state.persistenceLayerProvider);
         }
 
-        return null;
+        return (
+            <div className="NoPersistenceLayer">
+
+            </div>
+        );
 
     }
 

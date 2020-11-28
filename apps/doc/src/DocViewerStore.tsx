@@ -1022,6 +1022,8 @@ export const [DocViewerStoreProviderDelegate, useDocViewerStore, useDocViewerCal
     callbacksFactory: useCallbacksFactory
 });
 
+DocViewerStoreProviderDelegate.displayName='DocViewerStoreProviderDelegate';
+
 interface IProps {
     readonly children: React.ReactElement;
 }

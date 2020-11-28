@@ -14,7 +14,7 @@ interface IProps {
     readonly children: React.ReactNode;
 }
 
-export const MUIAppRoot = (props: IProps) => {
+export const MUIAppRoot = React.memo((props: IProps) => {
 
     const usePersistedTheme = createPersistedState('theme');
     const [theme, setTheme] = usePersistedTheme<ThemeType>("dark");
@@ -61,4 +61,6 @@ export const MUIAppRoot = (props: IProps) => {
         </>
     );
 
-};
+});
+
+MUIAppRoot.displayName='MUIAppRoot';

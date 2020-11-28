@@ -64,6 +64,8 @@ export const PersistenceContext = createContextMemo<IPersistenceContext>(null!);
 export const TagsContext = createContextMemo<ITagsContext>(null!);
 export const TagDescriptorsContext = createContextMemo<ITagDescriptorsContext>(null!);
 
+TagDescriptorsContext.displayName='TagDescriptorsContext';
+
 export function usePersistenceContext() {
     return useContextMemo(PersistenceContext);
 }
@@ -125,7 +127,7 @@ export interface IProps {
      */
     readonly tagsType: TagsType;
 
-    readonly render: (props: DocRepoRenderProps) => React.ReactElement;
+    readonly children: JSX.Element;
 }
 
 /**
@@ -152,9 +154,8 @@ export const PersistenceLayerApp = (props: IProps) => {
     return (
         <RepoDocMetaManagerContext.Provider value={props.repoDocMetaManager}>
             <RepoDocMetaLoaderContext.Provider value={props.repoDocMetaLoader}>
-                <PersistenceLayerWatcher
-                    persistenceLayerManager={props.persistenceLayerManager}
-                    render={persistenceLayerProvider =>
+                <PersistenceLayerWatcher persistenceLayerManager={props.persistenceLayerManager}
+                                         render={persistenceLayerProvider =>
                         <RepoDataLoader repoDocMetaLoader={props.repoDocMetaLoader}
                                         repoDocMetaManager={props.repoDocMetaManager}
                                         render={(appTags) =>
@@ -204,13 +205,6 @@ export const PersistenceLayerApp = (props: IProps) => {
                                                         tagDescriptorsProvider
                                                     }
 
-                                                    const docRepoRenderProps: DocRepoRenderProps = {
-                                                        persistenceLayerProvider,
-                                                        docTags,
-                                                        annotationTags,
-                                                        userTags: () => userTags || []
-                                                    }
-
                                                     class DefaultDocMetaLookupContext extends BaseDocMetaLookupContext {
 
                                                         public lookup(id: IDStr) {
@@ -229,7 +223,7 @@ export const PersistenceLayerApp = (props: IProps) => {
                                                                         <TagsProviderContext.Provider value={tagsProvider}>
                                                                             <DocMetaLookupContext.Provider value={docMetaLookupContext}>
                                                                                 <PrefsContext>
-                                                                                    {props.render(docRepoRenderProps)}
+                                                                                    {props.children}
                                                                                 </PrefsContext>
                                                                             </DocMetaLookupContext.Provider>
                                                                         </TagsProviderContext.Provider>
@@ -249,3 +243,5 @@ export const PersistenceLayerApp = (props: IProps) => {
     );
 
 }
+
+PersistenceLayerApp.displayName='PersistenceLayerApp';

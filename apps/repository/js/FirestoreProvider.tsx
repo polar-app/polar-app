@@ -53,6 +53,8 @@ export const FirestoreProvider = deepMemo((props: IProps) => {
         );
     }
 
-    return null;
+    return (
+        <div className="no-firestore-provider"/>
+    );
 
 });

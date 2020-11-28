@@ -34,3 +34,5 @@ export const TwoMigrationForElectron = React.memo((props: IProps) => {
     );
 
 });
+
+TwoMigrationForElectron.displayName='TwoMigrationForElectron';

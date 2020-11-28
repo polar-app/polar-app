@@ -13,7 +13,7 @@ export class UserTagsDataLoader extends React.Component<IProps, IState> {
         const persistenceLayer = this.props.persistenceLayerProvider();
 
         if (! persistenceLayer) {
-            return null;
+            return <div className="UserTagsDataLoader.NoPersistenceLayer"/>;
         }
 
         const datastore = persistenceLayer.datastore;
@@ -44,6 +44,8 @@ export class UserTagsDataLoader extends React.Component<IProps, IState> {
         };
 
         const provider: SnapshotSubscriber<PersistentPrefs> = (onNext, onError) => prefs.subscribe(onNext, onError);
+
+        console.log("FIXME3");
 
         return (
             <DataLoader id="userTags" provider={provider} render={prefs => render(prefs)}/>

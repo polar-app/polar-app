@@ -48,6 +48,11 @@ export const PrefsContext = React.memo((props: IProps) => {
             onAccept: NULL_FUNCTION
         })
     }
+    console.log("FIXME: PrefsContext");
+
+    // FIXME: this is the bug... for some reason, the first time a user starts polar they have no prefs...
+    // FIXME: maybe ditch the datastore prefs entirely at this point in favor of a better/new system
+
 
     return (
         <PrefsContextProvider id='story'

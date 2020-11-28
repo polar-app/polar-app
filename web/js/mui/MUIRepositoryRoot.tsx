@@ -11,7 +11,6 @@ interface IProps {
 
 export const MUIRepositoryRoot = (props: IProps) => {
 
-
     return (
         <MUIAppRoot>
             <BrowserTabsStoreProvider>
@@ -29,3 +28,5 @@ export const MUIRepositoryRoot = (props: IProps) => {
     );
 
 };
+
+MUIRepositoryRoot.displayName='MUIRepositoryRoot';

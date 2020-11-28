@@ -43,10 +43,14 @@ interface IProps {
 
 export const TwoMigrationForBrowser = React.memo((props: IProps) => {
 
+    console.log("FIXME6");
+
     const [doMigration, onClose] = useMigration();
 
     if (doMigration === undefined) {
-        return null;
+        return (
+            <div className="TwoMigrationForBrowserNoMigration"/>
+        );
     }
 
     if (! doMigration) {

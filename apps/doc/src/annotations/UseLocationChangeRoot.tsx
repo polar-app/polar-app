@@ -46,3 +46,5 @@ export const UseLocationChangeRoot = deepMemo((props: IProps) => {
     return props.children;
 
 });
+
+UseLocationChangeRoot.displayName='UseLocationChangeRoot';

@@ -8,7 +8,7 @@ interface IProps {
 /**
  * Root components that are specific just to the Repository.
  */
-export const RepositoryRoot = React.memo((props: IProps) => {
+export const RepositoryRoot = React.memo((props: IProps) =>     {
     return (
         <TwoMigrationForElectron>
             {props.children}
@@ -16,3 +16,5 @@ export const RepositoryRoot = React.memo((props: IProps) => {
     );
 
 });
+
+RepositoryRoot.displayName='RepositoryRoot';

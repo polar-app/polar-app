@@ -243,4 +243,6 @@ export const MUIDialogController = React.memo((props: IProps) => {
         </>
     );
 
-}, isEqual);
+});
+
+MUIDialogController.displayName='MUIDialogController';

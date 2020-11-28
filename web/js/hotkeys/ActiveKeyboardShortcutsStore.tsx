@@ -53,3 +53,4 @@ export const [ActiveKeyboardShortcutsStoreProvider, useActiveKeyboardShortcutsSt
     callbacksFactory: useCallbacksFactory
 });
 
+ActiveKeyboardShortcutsStoreProvider.displayName='ActiveKeyboardShortcutsStoreProvider';
