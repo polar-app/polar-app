@@ -33,6 +33,7 @@ import {ActionMenuStory} from "./impl/ActionMenuStory";
 import {YoutubePlayerStory} from "./impl/YoutubePlayerStory";
 import {AutoFlashcardsStory} from "./impl/AutoFlashcardsStory";
 import { ProgressButtonStory } from './impl/ProgressButtonStory';
+import {FunctionalChildStory} from "./impl/FunctionalChildStory";
 
 interface IStory {
     readonly name: string;
@@ -164,6 +165,10 @@ const stories = createStoryIndex([
     {
         name: "Circular Progress",
         component: <ProgressButtonStory/>
+    },
+    {
+        name: 'FunctionalChildStory',
+        component: <FunctionalChildStory/>
     }
 
 ]);
