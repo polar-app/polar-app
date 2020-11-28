@@ -36,7 +36,6 @@ import {Pagemarks} from "../../../../../web/js/metadata/Pagemarks";
 import {Scrollers} from "polar-pagemarks-auto/src/Scrollers";
 import {
     usePersistenceLayerContext,
-    usePrefsContext
 } from "../../../../repository/js/persistence_layer/PersistenceLayerApp";
 import {ExtendPagemark} from "polar-pagemarks-auto/src/AutoPagemarker";
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
@@ -52,6 +51,7 @@ import {Numbers} from "polar-shared/src/util/Numbers";
 import Destination = _pdfjs.Destination;
 import {Nonces} from "polar-shared/src/util/Nonces";
 import {useStateRef} from "../../../../../web/js/hooks/ReactHooks";
+import {usePrefsContext} from "../../../../repository/js/persistence_layer/PrefsContext2";
 
 interface DocViewer {
     readonly eventBus: EventBus;
@@ -339,7 +339,7 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
         function enableAutoPagemarks() {
 
-            if (prefs.get(KnownPrefs.AUTO_PAGEMARKS) !== 'true') {
+            if (prefs.get(KnownPrefs.AUTO_PAGEMARKS).getOrElse('false') !== 'true') {
                 // only enable this via prefs now...
                 return;
             }

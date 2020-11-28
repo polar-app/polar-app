@@ -1,3 +1,5 @@
+- Now canonicalizing /doc URLs for analytics.
+
 - Link to Polar forum
 
 - Fixed a bad bug preventing repository in Safari from being snappy on login.  

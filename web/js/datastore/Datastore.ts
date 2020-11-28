@@ -18,7 +18,7 @@ import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {
     InterceptedPersistentPrefs,
     InterceptedPersistentPrefsFactory,
-    PersistentPrefs
+    IPersistentPrefs
 } from '../util/prefs/Prefs';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {Either} from '../util/Either';
@@ -982,14 +982,14 @@ export interface DatastoreInitOpts {
 
 }
 
-export type PersistentPrefsUpdatedCallback = (prefs: PersistentPrefs | undefined) => void;
+export type PersistentPrefsUpdatedCallback = (prefs: IPersistentPrefs | undefined) => void;
 
 export interface PrefsProvider {
 
     /**
      * Get the users prefs.
      */
-    get(): PersistentPrefs;
+    get(): IPersistentPrefs;
 
     subscribe(onNext: PersistentPrefsUpdatedCallback, onError?: OnErrorCallback): SnapshotUnsubscriber;
 
@@ -997,9 +997,9 @@ export interface PrefsProvider {
 
 export abstract class AbstractPrefsProvider implements PrefsProvider {
 
-    protected reactor = new SimpleReactor<PersistentPrefs | undefined>();
+    protected reactor = new SimpleReactor<IPersistentPrefs | undefined>();
 
-    public abstract get(): PersistentPrefs;
+    public abstract get(): IPersistentPrefs;
 
     /**
      * Register a callback with no event listeners for platforms like Firebase that provide listening to the underlying
@@ -1018,14 +1018,14 @@ export abstract class AbstractPrefsProvider implements PrefsProvider {
             throw new Error("No get method!");
         }
 
-        const handleOnNext = (persistentPrefs: PersistentPrefs | undefined) => {
+        const handleOnNext = (persistentPrefs: IPersistentPrefs | undefined) => {
 
             const interceptedPersistentPrefs = this.createInterceptedPersistentPrefs(persistentPrefs);
             onNext(interceptedPersistentPrefs);
 
         };
 
-        const eventListener = (persistentPrefs: PersistentPrefs | undefined) => handleOnNext(persistentPrefs);
+        const eventListener = (persistentPrefs: IPersistentPrefs | undefined) => handleOnNext(persistentPrefs);
 
         const unsubscriber = this.register(eventListener, onError);
 
@@ -1043,9 +1043,9 @@ export abstract class AbstractPrefsProvider implements PrefsProvider {
 
     }
 
-    protected createInterceptedPersistentPrefs(persistentPrefs: PersistentPrefs | undefined): InterceptedPersistentPrefs | undefined {
+    protected createInterceptedPersistentPrefs(persistentPrefs: IPersistentPrefs | undefined): InterceptedPersistentPrefs | undefined {
 
-        function isIntercepted(persistentPrefs: PersistentPrefs): boolean {
+        function isIntercepted(persistentPrefs: IPersistentPrefs): boolean {
             return (<any> persistentPrefs).__intercepted === true;
         }
 
@@ -1076,11 +1076,11 @@ export abstract class AbstractPrefsProvider implements PrefsProvider {
  */
 export class DefaultPrefsProvider extends AbstractPrefsProvider {
 
-    constructor(private readonly prefs: PersistentPrefs) {
+    constructor(private readonly prefs: IPersistentPrefs) {
         super();
     }
 
-    public get(): PersistentPrefs {
+    public get(): IPersistentPrefs {
         return this.createInterceptedPersistentPrefs(this.prefs)!;
     }
 
@@ -1092,7 +1092,7 @@ export interface DatastorePrefs {
     /**
      * The actual PersistentPrefs object that we're using.
      */
-    readonly prefs: PersistentPrefs;
+    readonly prefs: IPersistentPrefs;
 
     /**
      * An unsubscribe function used when onUpdated is provided for listening to new events.

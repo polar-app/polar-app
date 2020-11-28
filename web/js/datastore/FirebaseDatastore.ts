@@ -63,7 +63,7 @@ import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
 import {FirebaseDatastorePrefs} from "./firebase/FirebaseDatastorePrefs";
 import {UserPrefCallback} from "./firebase/UserPrefs";
-import {InterceptedPrefsProvider, PersistentPrefs} from "../util/prefs/Prefs";
+import {InterceptedPrefsProvider, IPersistentPrefs} from "../util/prefs/Prefs";
 import {
     GetFileOpts,
     NetworkLayers
@@ -856,7 +856,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     public getPrefs(): PrefsProvider {
 
-        const onCommit = async (persistentPrefs: PersistentPrefs) => {
+        const onCommit = async (persistentPrefs: IPersistentPrefs) => {
             // we have to update the main copy of our prefs or else the caller doesn't see
             // the latest version
             this.prefs.update(persistentPrefs.toPrefDict());
@@ -868,7 +868,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 super();
             }
 
-            public get(): PersistentPrefs {
+            public get(): IPersistentPrefs {
                 return this.prefs;
             }
 

@@ -38,7 +38,7 @@ import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
 import {
     DictionaryPrefs,
-    PersistentPrefs,
+    IPersistentPrefs,
     StringToPrefDict
 } from '../util/prefs/Prefs';
 import {DatastoreMutations} from './DatastoreMutations';
@@ -848,7 +848,7 @@ export class DiskPersistentPrefsBacking {
 /**
  * Prefs object just backed by a local dictionary.
  */
-export class DiskPersistentPrefs extends DictionaryPrefs implements PersistentPrefs {
+export class DiskPersistentPrefs extends DictionaryPrefs implements IPersistentPrefs {
 
     private readonly diskPrefsStore: DiskPersistentPrefsBacking;
 
@@ -870,7 +870,7 @@ class DiskPersistentPrefsProviderImpl extends AbstractPrefsProvider {
         super();
     }
 
-    public get(): PersistentPrefs {
+    public get(): IPersistentPrefs {
         return this.createInterceptedPersistentPrefs(this.backing.get())!;
     }
 

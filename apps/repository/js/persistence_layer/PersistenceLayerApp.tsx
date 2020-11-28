@@ -24,13 +24,7 @@ import {
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Pref} from '../../../../web/js/util/prefs/Prefs';
 import {PrefsContext} from "./PrefsContext";
-
-export interface IPrefsContext {
-    readonly get: (key: string) => string | undefined;
-    readonly fetch: (key: string) => Pref | undefined;
-    readonly commit: () => Promise<void>;
-    readonly set: (key: string, value: string) => void
-}
+import {PrefsContext2} from "./PrefsContext2";
 
 export interface ITagsContext {
 
@@ -80,35 +74,6 @@ export function useTagsContext() {
 
 export function useTagDescriptorsContext() {
     return useContextMemo(TagDescriptorsContext);
-}
-
-export function usePrefsContext() {
-
-    const {persistenceLayerProvider} = usePersistenceLayerContext();
-
-    const prefsContext: IPrefsContext = {
-
-        get: (key: string): string | undefined => {
-            const datastore = persistenceLayerProvider().datastore;
-            return datastore.getPrefs().get().get(key).getOrUndefined();
-        },
-        fetch: (key: string): Pref | undefined => {
-            const datastore = persistenceLayerProvider().datastore;
-            return datastore.getPrefs().get().fetch(key);
-        },
-        commit: async (): Promise<void> => {
-            const datastore = persistenceLayerProvider().datastore;
-            await datastore.getPrefs().get().commit();
-        },
-        set: (key: string, value: string): void => {
-            const datastore = persistenceLayerProvider().datastore;
-            datastore.getPrefs().get().set(key, value);
-        }
-
-    }
-
-    return prefsContext;
-
 }
 
 export type TagsType = 'documents' | 'annotations';
@@ -223,7 +188,9 @@ export const PersistenceLayerApp = (props: IProps) => {
                                                                         <TagsProviderContext.Provider value={tagsProvider}>
                                                                             <DocMetaLookupContext.Provider value={docMetaLookupContext}>
                                                                                 <PrefsContext>
-                                                                                    {props.children}
+                                                                                    <PrefsContext2>
+                                                                                        {props.children}
+                                                                                    </PrefsContext2>
                                                                                 </PrefsContext>
                                                                             </DocMetaLookupContext.Provider>
                                                                         </TagsProviderContext.Provider>

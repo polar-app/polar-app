@@ -32,7 +32,7 @@ import {
     ISODateTimeString,
     ISODateTimeStrings
 } from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {NonPersistentPrefs, PersistentPrefs} from '../util/prefs/Prefs';
+import {NonPersistentPrefs, IPersistentPrefs} from '../util/prefs/Prefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {NetworkLayer} from "polar-shared/src/datastore/IDatastore";
@@ -219,11 +219,11 @@ export class MemoryDatastore extends AbstractDatastore implements Datastore {
 
         class PrefsProviderImpl extends AbstractPrefsProvider {
 
-            constructor(private readonly prefs: PersistentPrefs) {
+            constructor(private readonly prefs: IPersistentPrefs) {
                 super();
             }
 
-            public get(): PersistentPrefs {
+            public get(): IPersistentPrefs {
                 return this.prefs;
             }
 

@@ -2,7 +2,7 @@ import * as React from "react";
 import {DataLoader} from "../../../../web/js/ui/data_loader/DataLoader";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
-import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
+import {IPersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
 import {UserTagsDB} from "../../../../web/js/datastore/UserTagsDB";
 import { SnapshotSubscriber } from "polar-shared/src/util/Snapshots";
 
@@ -27,7 +27,7 @@ export class UserTagsDataLoader extends React.Component<IProps, IState> {
             throw new Error("Prefs is missing subscribe|get function(s) from datastore: " + datastore.id);
         }
 
-        const render = (persistentPrefs: PersistentPrefs | undefined) => {
+        const render = (persistentPrefs: IPersistentPrefs | undefined) => {
 
             if (persistentPrefs) {
 
@@ -43,7 +43,7 @@ export class UserTagsDataLoader extends React.Component<IProps, IState> {
 
         };
 
-        const provider: SnapshotSubscriber<PersistentPrefs> = (onNext, onError) => prefs.subscribe(onNext, onError);
+        const provider: SnapshotSubscriber<IPersistentPrefs> = (onNext, onError) => prefs.subscribe(onNext, onError);
 
         console.log("FIXME3");
 

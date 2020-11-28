@@ -6,10 +6,10 @@ import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControll
 import * as React from "react";
 import {usePrefsSnapshotSubscriberFactory} from "./PrefsHook";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
+import {IPersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
 import {SnapshotConverter, SnapshotSubscribers} from "polar-shared/src/util/Snapshots";
 
-export const [PrefsContextProvider, usePrefsContext] = createCachedSnapshotSubscriberContext<PersistentPrefs>();
+export const [PrefsContextProvider, usePrefsContext] = createCachedSnapshotSubscriberContext<IPersistentPrefs>();
 
 interface IProps {
     readonly children: JSX.Element | React.ReactNode;
@@ -20,7 +20,7 @@ export const PrefsContext = React.memo((props: IProps) => {
     const snapshotSubscriberFactory = usePrefsSnapshotSubscriberFactory();
     const dialogs = useDialogManager();
 
-    const converter: SnapshotConverter<PersistentPrefs, ISnapshot<PersistentPrefs>> = React.useCallback((from) => {
+    const converter: SnapshotConverter<IPersistentPrefs, ISnapshot<IPersistentPrefs>> = React.useCallback((from) => {
 
         if (from === undefined) {
             return undefined;
@@ -37,7 +37,7 @@ export const PrefsContext = React.memo((props: IProps) => {
 
     const convertedSnapshotSubscriber = React.useMemo(() => {
         const snapshotSubscriber = snapshotSubscriberFactory();
-        return SnapshotSubscribers.converted<PersistentPrefs, ISnapshot<PersistentPrefs>>(snapshotSubscriber, converter);
+        return SnapshotSubscribers.converted<IPersistentPrefs, ISnapshot<IPersistentPrefs>>(snapshotSubscriber, converter);
     }, [converter, snapshotSubscriberFactory]);
 
     const onError = () => {
@@ -52,7 +52,6 @@ export const PrefsContext = React.memo((props: IProps) => {
 
     // FIXME: this is the bug... for some reason, the first time a user starts polar they have no prefs...
     // FIXME: maybe ditch the datastore prefs entirely at this point in favor of a better/new system
-
 
     return (
         <PrefsContextProvider id='story'

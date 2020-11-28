@@ -1,7 +1,7 @@
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {SwitchButton} from "../../../../../web/js/ui/SwitchButton";
 import * as React from "react";
-import {PersistentPrefs} from "../../../../../web/js/util/prefs/Prefs";
+import {IPersistentPrefs} from "../../../../../web/js/util/prefs/Prefs";
 import {FeatureToggles} from "polar-shared/src/util/FeatureToggles";
 import {PreviewWarning} from "./PreviewWarning";
 
@@ -9,7 +9,7 @@ interface IProps {
     readonly title: string;
     readonly description: string;
     readonly name: string;
-    readonly prefs: PersistentPrefs | undefined;
+    readonly prefs: IPersistentPrefs | undefined;
     readonly preview?: boolean;
     readonly defaultValue?: boolean;
 

@@ -3,6 +3,10 @@ import {LocalCache} from "./CachedSnapshotSubscriber";
 import {OnErrorCallback, SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 import firebase from 'firebase/app'
 
+/**
+ * Snapshot listener. The snapshot is only undefined on startup ad you can
+ * filter this out if necessary.
+ */
 export type OnNextCachedSnapshot<V> = (snapshot: ISnapshot<V> | undefined) => void;
 
 export type CachedSnapshotSubscriber<V> = (onNext: OnNextCachedSnapshot<V>, onError?: OnErrorCallback) => SnapshotUnsubscriber;
@@ -25,10 +29,10 @@ interface CachedFirestoreSnapshotSubscriberOpts<V> {
 export function createCachedFirestoreSnapshotSubscriber<V>(opts: CachedFirestoreSnapshotSubscriberOpts<V>) {
 
     const cacheKey = LocalCache.createKey(opts.id);
-    const initialValue = LocalCache.read<V>(cacheKey);
+    const cachedSnapshot = LocalCache.read<V>(cacheKey);
 
-    if (initialValue) {
-        opts.onNext(initialValue);
+    if (cachedSnapshot) {
+        opts.onNext(cachedSnapshot);
     }
 
     const onNext = (firestoreSnapshot: firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData> | undefined) => {

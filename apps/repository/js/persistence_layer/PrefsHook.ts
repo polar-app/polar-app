@@ -4,15 +4,15 @@ import {
     SubscriptionValue,
     useSnapshotSubscriber
 } from "../../../../web/js/ui/data_loader/UseSnapshotSubscriber";
-import {PersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
+import {IPersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
 import {usePersistenceLayerContext} from "./PersistenceLayerApp";
 import {SnapshotSubscriber, SnapshotSubscriberFactory} from 'polar-shared/src/util/Snapshots';
 
-export function usePrefsSnapshotSubscriberFactory(): SnapshotSubscriberFactory<PersistentPrefs> {
+export function usePrefsSnapshotSubscriberFactory(): SnapshotSubscriberFactory<IPersistentPrefs> {
 
     const {persistenceLayerProvider} = usePersistenceLayerContext();
 
-    return React.useCallback((): SnapshotSubscriber<PersistentPrefs> => {
+    return React.useCallback((): SnapshotSubscriber<IPersistentPrefs> => {
 
         const persistenceLayer = persistenceLayerProvider();
 
@@ -41,7 +41,7 @@ export function usePrefsSnapshotSubscriberFactory(): SnapshotSubscriberFactory<P
     }, [persistenceLayerProvider]);
 }
 
-export function usePrefs(): SubscriptionValue<PersistentPrefs> {
+export function usePrefs(): SubscriptionValue<IPersistentPrefs> {
 
     const snapshotSubscriber = usePrefsSnapshotSubscriberFactory();
 

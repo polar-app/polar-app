@@ -1,6 +1,6 @@
 import {
     DictionaryPrefs,
-    PersistentPrefs,
+    IPersistentPrefs,
     Prefs,
     StringToPrefDict
 } from "../../util/prefs/Prefs";
@@ -14,13 +14,13 @@ import {
 import {ISnapshot} from "../../snapshots/CachedSnapshotSubscriberContext";
 import {createCachedFirestoreSnapshotSubscriber} from "../../snapshots/CachedFirestoreSnapshotSubscriber";
 
-export type UserPrefCallback = (data: UserPref | undefined) => void;
+export type UserPrefCallback = (data: IUserPref | undefined) => void;
 
-export class UserPrefs {
+export namespace UserPrefs {
 
-    private static COLLECTION = 'user_pref';
+    const COLLECTION = 'user_pref';
 
-    private static async getUserID(): Promise<UserIDStr> {
+    async function getUserID(): Promise<UserIDStr> {
 
         const user = Firebase.currentUser();
 
@@ -32,10 +32,10 @@ export class UserPrefs {
 
     }
 
-    public static async get(): Promise<Prefs> {
+    export async function get(): Promise<Prefs> {
 
-        const uid  = await this.getUserID();
-        const userPref: UserPref | undefined = await Collections.getByID(this.COLLECTION, uid);
+        const uid  = await getUserID();
+        const userPref: IUserPref | undefined = await Collections.getByID(COLLECTION, uid);
 
         if (userPref) {
             return new DictionaryPrefs(userPref.value);
@@ -45,35 +45,13 @@ export class UserPrefs {
 
     }
 
-    public static onSnapshot(firestore: firebase.firestore.Firestore,
-                             uid: UserIDStr,
-                             onSnapshot: UserPrefCallback,
-                             onError?: OnErrorCallback): SnapshotUnsubscriber {
 
-        const ref = firestore.collection(this.COLLECTION).doc(uid);
+    export async function set(prefs: IPersistentPrefs) {
 
-        const handleSnapshot = (snapshot: ISnapshot<UserPref> | undefined) => {
-            if (snapshot) {
-                const data = <UserPref | undefined> snapshot.value;
-                onSnapshot(data);
-            }
-        };
+        const uid  = await getUserID();
+        const ref = await Collections.createRef(COLLECTION, uid);
 
-        return createCachedFirestoreSnapshotSubscriber<UserPref>({
-            id: 'prefs',
-            ref,
-            onNext: handleSnapshot,
-            onError
-        });
-
-    }
-
-    public static async set(prefs: PersistentPrefs) {
-
-        const uid  = await this.getUserID();
-        const ref = await Collections.createRef(this.COLLECTION, uid);
-
-        const userPref: UserPref = {
+        const userPref: IUserPref = {
             uid,
             value: prefs.toPrefDict()
         };
@@ -82,9 +60,56 @@ export class UserPrefs {
 
     }
 
+    export function onSnapshot(firestore: firebase.firestore.Firestore,
+                               uid: UserIDStr,
+                               onSnapshot: UserPrefCallback,
+                               onError?: OnErrorCallback): SnapshotUnsubscriber {
+
+        const ref = firestore.collection(COLLECTION).doc(uid);
+
+        const handleSnapshot = (snapshot: ISnapshot<IUserPref> | undefined) => {
+            if (snapshot) {
+                const data = <IUserPref | undefined> snapshot.value;
+                onSnapshot(data);
+            }
+        };
+
+        return createCachedFirestoreSnapshotSubscriber<IUserPref>({
+            id: 'prefs',
+            ref,
+            onNext: handleSnapshot,
+            onError
+        });
+
+    }
+
+    export type UserPrefCallback2 = (data: ISnapshot<IUserPref> | undefined) => void;
+
+    export function onSnapshot2(firestore: firebase.firestore.Firestore,
+                                uid: UserIDStr,
+                                onSnapshot: UserPrefCallback2,
+                                onError?: OnErrorCallback): SnapshotUnsubscriber {
+
+        const ref = firestore.collection(COLLECTION).doc(uid);
+
+        const handleSnapshot = (snapshot: ISnapshot<IUserPref> | undefined) => {
+            if (snapshot) {
+                onSnapshot(snapshot);
+            }
+        };
+
+        return createCachedFirestoreSnapshotSubscriber<IUserPref>({
+            id: 'user_prefs',
+            ref,
+            onNext: handleSnapshot,
+            onError
+        });
+
+    }
+
 }
 
-export interface UserPref {
+export interface IUserPref {
     readonly uid: UserIDStr;
     readonly value: StringToPrefDict;
 }

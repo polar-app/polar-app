@@ -44,7 +44,7 @@ import {BackendFileRefs} from './BackendFileRefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
-import {InterceptedPrefsProvider, PersistentPrefs} from "../util/prefs/Prefs";
+import {InterceptedPrefsProvider, IPersistentPrefs} from "../util/prefs/Prefs";
 import {GetFileOpts, NetworkLayer} from "polar-shared/src/datastore/IDatastore";
 
 const log = Logger.create();
@@ -113,7 +113,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         const localPrefs = this.local.getPrefs().get();
         const cloudPrefs = this.cloud.getPrefs().get();
 
-        const doUpdate = async (source: PersistentPrefs, target: PersistentPrefs) => {
+        const doUpdate = async (source: IPersistentPrefs, target: IPersistentPrefs) => {
 
             if (target.update(source.toPrefDict())) {
                 // TODO: firestore sometimes will lock up here when we go to write
@@ -604,7 +604,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
     public getPrefs(): PrefsProvider {
 
-        const onCommit = async (persistentPrefs: PersistentPrefs) => {
+        const onCommit = async (persistentPrefs: IPersistentPrefs) => {
 
             // write to firebase first, then commit locally.
 
