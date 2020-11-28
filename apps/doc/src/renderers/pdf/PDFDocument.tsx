@@ -164,7 +164,7 @@ export const PDFDocument = deepMemo((props: IProps) => {
         docViewerRef.current = createDocViewer();
 
         doLoad(docViewerRef.current)
-            .catch(err => console.error("PDFDocument: Could not load PDF: ", err));
+            .catch(err => log.error("PDFDocument: Could not load PDF: ", err));
 
     });
 

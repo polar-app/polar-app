@@ -1,3 +1,4 @@
+- finish up the node selection action
 
 - ckeditor performance now really really sucks. It's what's taking 1 second to
   render. It seems to be a regression with our custom build I think.
@@ -10,9 +11,12 @@
 - what do we do about markdown double [[]] when linking. It's not supported by ckeditor5...
     - 
 
-- finish up the node selection action
 
-- update 'links' as they are created including when the user completes the note manually.
+- update 'links' properly as they are created including when the user completes the note manually.
+    - how do I update them if the nodes are typed in manually 
+        - DO NOT update it on the action, just update the text but use a markdown parser on the result
+          to update the text
+        - plus this means we can exec these on the serverside too. 
 
 - make the note name or content but not both
 - ckeditor bubble mode working properly
