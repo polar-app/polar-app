@@ -142,5 +142,5 @@ exports.onCreateWebpackConfig = ({ actions }) => {
       net: 'empty',
       tls: 'empty'
     }
-  })
-}
+  });
+};
