@@ -72,7 +72,6 @@ import {
     OnErrorCallback,
     SnapshotUnsubscriber
 } from 'polar-shared/src/util/Snapshots';
-import { IDocMeta } from 'polar-shared/src/metadata/IDocMeta';
 
 const log = Logger.create();
 

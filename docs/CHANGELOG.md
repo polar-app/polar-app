@@ -1,3 +1,10 @@
+- Link to Polar forum
+
+- Fixed a bad bug preventing repository in Safari from being snappy on login.  
+  It was far far too latent.  Also, will speed things up for other users.  
+
+# 2.0.85
+
 - properly handling user authentication now.
 
 - We now properly assert that the number of web captures you're making is
@@ -17,7 +24,10 @@
 # 2.0.82
 
 - added support for webCapture: true through all parts of the capture process
-- AnnotationSidebarStore.tsx and FolderSidebarStore.tsx now use shallow equals for performance boost
+
+- AnnotationSidebarStore.tsx and FolderSidebarStore.tsx now use shallow equals
+  for performance boost
+
 - added support for Firestore 8.0 and new Firebase UI auth
 
 # 2.0.81
