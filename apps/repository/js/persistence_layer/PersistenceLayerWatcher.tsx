@@ -8,10 +8,11 @@ import {ListenablePersistenceLayer} from "../../../../web/js/datastore/Listenabl
 import {useComponentDidMount, useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 
 
+
+
 export interface IProps {
     readonly persistenceLayerManager: PersistenceLayerManager;
-    readonly render: (persistenceLayerProvider: ListenablePersistenceLayerProvider) => React.ReactElement;
-
+    readonly Component: React.FunctionComponent<{persistenceLayerProvider: ListenablePersistenceLayerProvider}>;
 }
 
 export interface IState {
@@ -21,6 +22,7 @@ export interface IState {
 
 export const PersistenceLayerWatcher = React.memo((props: IProps) => {
 
+    const {Component} = props;
     const unmountedRef = React.useRef(false);
     const [state, setState] = React.useState<IState>({persistenceLayerProvider: undefined});
 
@@ -65,8 +67,13 @@ export const PersistenceLayerWatcher = React.memo((props: IProps) => {
 
     });
 
+
     if (state.persistenceLayerProvider) {
-        return props.render(state.persistenceLayerProvider);
+
+        return (
+            <Component persistenceLayerProvider={state.persistenceLayerProvider}/>
+        );
+
     }
 
     return (

@@ -6,7 +6,7 @@ import {usePrefsContext} from "./PrefsContext2";
 export type UserTags = ReadonlyArray<Tag>;
 
 export interface IProps {
-    readonly render: (userTags: ReadonlyArray<Tag> | undefined) => React.ReactElement;
+    readonly Component: React.FunctionComponent<{userTags: ReadonlyArray<Tag> | undefined}>;
 }
 
 export const UserTagsDataLoader = React.memo((props: IProps) => {
@@ -21,7 +21,11 @@ export const UserTagsDataLoader = React.memo((props: IProps) => {
     userTagsDB.init();
     const userTags = userTagsDB.tags();
 
-    return props.render(userTags);
+    const {Component} = props;
+
+    return (
+        <Component userTags={userTags}/>
+    );
 
 })
 
