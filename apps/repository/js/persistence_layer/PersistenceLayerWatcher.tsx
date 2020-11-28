@@ -3,87 +3,10 @@ import {ListenablePersistenceLayerProvider, PersistenceLayerProvider} from "../.
 import {
     PersistenceLayerManager,
     PersistenceLayerManagerEvent,
-    PersistenceLayerManagerEventListener
 } from "../../../../web/js/datastore/PersistenceLayerManager";
 import {ListenablePersistenceLayer} from "../../../../web/js/datastore/ListenablePersistenceLayer";
+import {useComponentDidMount, useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 
-export class PersistenceLayerWatcher extends React.Component<IProps, IState> {
-
-    private eventListener: PersistenceLayerManagerEventListener | undefined;
-
-    private unmounted: boolean = false;
-
-    constructor(props: IProps, context: any) {
-        super(props, context);
-
-        this.state = {
-            iter: 0
-        };
-
-    }
-
-    public componentDidMount(): void {
-
-        const {persistenceLayerManager} = this.props;
-
-        const onPersistenceLayer = (persistenceLayer: ListenablePersistenceLayer) => {
-
-            this.setState({
-                iter: this.state.iter + 1,
-                persistenceLayerProvider: () => persistenceLayer
-            });
-
-        };
-
-        this.eventListener = (event: PersistenceLayerManagerEvent) => {
-
-            if (this.unmounted) {
-                console.warn("We've been unmounted");
-            }
-
-            if (event.state === 'changed') {
-                onPersistenceLayer(event.persistenceLayer);
-            }
-
-        };
-
-        if (persistenceLayerManager.state === 'changed' || persistenceLayerManager.state === 'initialized') {
-            onPersistenceLayer(persistenceLayerManager.get());
-        }
-
-        persistenceLayerManager.addEventListener(this.eventListener);
-
-        this.unmounted = false;
-
-    }
-
-    public componentWillUnmount(): void {
-
-        if (this.eventListener) {
-            this.props.persistenceLayerManager.removeEventListener(this.eventListener);
-        }
-
-        this.unmounted = true;
-
-    }
-
-    public render() {
-
-        console.log("FIXME1");
-
-        if (this.state.persistenceLayerProvider) {
-            return this.props.render(this.state.persistenceLayerProvider);
-        }
-
-        return (
-            <div className="NoPersistenceLayer">
-
-            </div>
-        );
-
-    }
-
-}
 
 export interface IProps {
     readonly persistenceLayerManager: PersistenceLayerManager;
@@ -92,7 +15,64 @@ export interface IProps {
 }
 
 export interface IState {
-    readonly iter: number;
-    readonly persistenceLayerProvider?: ListenablePersistenceLayerProvider;
+    readonly persistenceLayerProvider: ListenablePersistenceLayerProvider | undefined;
 }
 
+
+export const PersistenceLayerWatcher = React.memo((props: IProps) => {
+
+    const unmountedRef = React.useRef(false);
+    const [state, setState] = React.useState<IState>({persistenceLayerProvider: undefined});
+
+    const onPersistenceLayer = React.useCallback((persistenceLayer: ListenablePersistenceLayer) => {
+
+        setState({
+            persistenceLayerProvider: () => persistenceLayer
+        });
+
+    }, []);
+
+    const eventListener = React.useCallback((event: PersistenceLayerManagerEvent) => {
+
+        if (unmountedRef.current) {
+            console.warn("We've been unmounted");
+        }
+
+        if (event.state === 'changed') {
+            onPersistenceLayer(event.persistenceLayer);
+        }
+
+    }, [onPersistenceLayer]);
+
+    useComponentDidMount(() => {
+
+        const {persistenceLayerManager} = props;
+
+        if (persistenceLayerManager.state === 'changed' || persistenceLayerManager.state === 'initialized') {
+            onPersistenceLayer(persistenceLayerManager.get());
+        }
+
+        persistenceLayerManager.addEventListener(eventListener);
+
+        unmountedRef.current = false;
+    })
+
+    useComponentWillUnmount(() => {
+
+        props.persistenceLayerManager.removeEventListener(eventListener);
+
+        unmountedRef.current = true;
+
+    });
+
+    if (state.persistenceLayerProvider) {
+        return props.render(state.persistenceLayerProvider);
+    }
+
+    return (
+        <div className="NoPersistenceLayer">
+
+        </div>
+    );
+
+});

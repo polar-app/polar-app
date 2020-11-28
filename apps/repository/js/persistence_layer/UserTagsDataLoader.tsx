@@ -1,67 +1,27 @@
 import * as React from "react";
-import {DataLoader} from "../../../../web/js/ui/data_loader/DataLoader";
 import {Tag} from "polar-shared/src/tags/Tags";
-import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
-import {IPersistentPrefs} from "../../../../web/js/util/prefs/Prefs";
 import {UserTagsDB} from "../../../../web/js/datastore/UserTagsDB";
-import { SnapshotSubscriber } from "polar-shared/src/util/Snapshots";
+import {usePrefsContext} from "./PrefsContext2";
 
-export class UserTagsDataLoader extends React.Component<IProps, IState> {
-
-    public render() {
-
-        const persistenceLayer = this.props.persistenceLayerProvider();
-
-        if (! persistenceLayer) {
-            return <div className="UserTagsDataLoader.NoPersistenceLayer"/>;
-        }
-
-        const datastore = persistenceLayer.datastore;
-        const prefs = datastore.getPrefs();
-
-        if (! prefs) {
-            throw new Error("No prefs found from datastore: " + datastore.id);
-        }
-
-        if (! prefs.subscribe || ! prefs.get) {
-            throw new Error("Prefs is missing subscribe|get function(s) from datastore: " + datastore.id);
-        }
-
-        const render = (persistentPrefs: IPersistentPrefs | undefined) => {
-
-            if (persistentPrefs) {
-
-                const userTagsDB = new UserTagsDB(persistentPrefs);
-                userTagsDB.init();
-                const userTags = userTagsDB.tags();
-
-                return this.props.render(userTags);
-
-            } else {
-                return this.props.render(undefined);
-            }
-
-        };
-
-        const provider: SnapshotSubscriber<IPersistentPrefs> = (onNext, onError) => prefs.subscribe(onNext, onError);
-
-        console.log("FIXME3");
-
-        return (
-            <DataLoader id="userTags" provider={provider} render={prefs => render(prefs)}/>
-        );
-
-    }
-
-}
+export type UserTags = ReadonlyArray<Tag>;
 
 export interface IProps {
-    readonly persistenceLayerProvider: PersistenceLayerProvider;
     readonly render: (userTags: ReadonlyArray<Tag> | undefined) => React.ReactElement;
 }
 
-interface IState {
+export const UserTagsDataLoader = React.memo((props: IProps) => {
 
-}
+    const prefs = usePrefsContext();
 
-export type UserTags = ReadonlyArray<Tag>;
+    if (! prefs) {
+        throw new Error("No prefs");
+    }
+
+    const userTagsDB = new UserTagsDB(prefs);
+    userTagsDB.init();
+    const userTags = userTagsDB.tags();
+
+    return props.render(userTags);
+
+})
+

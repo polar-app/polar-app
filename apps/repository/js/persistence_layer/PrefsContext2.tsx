@@ -1,17 +1,16 @@
 import {
     createCachedSnapshotSubscriberContext,
-    ISnapshot
 } from "../../../../web/js/snapshots/CachedSnapshotSubscriberContext";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import * as React from "react";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {DictionaryPrefs, IPersistentPrefs, Pref, StringToPrefDict} from "../../../../web/js/util/prefs/Prefs";
-import {OnErrorCallback, SnapshotConverter, SnapshotSubscribers} from "polar-shared/src/util/Snapshots";
+import {DictionaryPrefs, IPersistentPrefs, StringToPrefDict} from "../../../../web/js/util/prefs/Prefs";
+import {OnErrorCallback} from "polar-shared/src/util/Snapshots";
 import {IUserPref, UserPrefs} from "../../../../web/js/datastore/firebase/UserPrefs";
 import {useFirestore} from "../FirestoreProvider";
 import UserPrefCallback2 = UserPrefs.UserPrefCallback2;
 
-export const [PrefsContextProvider, usePrefsContextSnapshot] = createCachedSnapshotSubscriberContext<IPersistentPrefs>();
+export const [UserPrefContextProvider, useUserPrefContextSnapshot] = createCachedSnapshotSubscriberContext<IUserPref>();
 
 interface IProps {
     readonly children: JSX.Element | React.ReactNode;
@@ -26,8 +25,8 @@ interface IProps {
  * issues).
  */
 export function usePrefsContext(): IPersistentPrefs {
-    const snapshot = usePrefsContextSnapshot();
-    return snapshot.value || SnapshotPersistentPrefs.toPersistentPrefs(undefined);
+    const snapshot = useUserPrefContextSnapshot();
+    return SnapshotPersistentPrefs.toPersistentPrefs(snapshot.value);
 }
 
 export const PrefsContext2 = React.memo((props: IProps) => {
@@ -46,48 +45,27 @@ export const PrefsContext2 = React.memo((props: IProps) => {
 
     const dialogs = useDialogManager();
 
-    const converter: SnapshotConverter<ISnapshot<IUserPref>, ISnapshot<IPersistentPrefs>> = React.useCallback((from) => {
-
-        if (from === undefined) {
-            return undefined;
-        } else {
-
-            const persistentPrefs = SnapshotPersistentPrefs.toPersistentPrefs(from.value);
-
-            return {
-                value: persistentPrefs,
-                exists: from.exists,
-                source: from.source
-            };
-
-        }
-
-    }, []);
-
-    const convertedSnapshotSubscriber = React.useMemo(() => {
-        return SnapshotSubscribers.converted<ISnapshot<IUserPref>, ISnapshot<IPersistentPrefs>>(snapshotSubscriber, converter);
-    }, [converter, snapshotSubscriber]);
-
-    const onError = () => {
+    const onError = React.useCallback(() => {
         dialogs.confirm({
             type: 'error',
             title: 'Unable to load prefs',
             subtitle: 'We were unable to load prefs. Please restart.',
             onAccept: NULL_FUNCTION
         })
-    }
+    }, [dialogs]);
 
     return (
-        <PrefsContextProvider id='prefs_context'
-                              snapshotSubscriber={convertedSnapshotSubscriber}
-                              onError={onError}
-                              filter={value => {
-                                  return value !== undefined
-                              }}>
+
+        <UserPrefContextProvider id='prefs_context'
+                                 snapshotSubscriber={snapshotSubscriber}
+                                 onError={onError}
+                                 filter={value => {
+                                     return value !== undefined
+                                 }}>
 
             {props.children}
 
-        </PrefsContextProvider>
+        </UserPrefContextProvider>
     )
 
 });
@@ -102,7 +80,7 @@ class SnapshotPersistentPrefs extends DictionaryPrefs implements IPersistentPref
         await UserPrefs.set(this);
     }
 
-    public static toPersistentPrefs(userPref: IUserPref | undefined) {
+    public static toPersistentPrefs(userPref: IUserPref | undefined): IPersistentPrefs {
 
         if (! userPref) {
             // the user has no existing prefs in the store so we have to return an empty dict

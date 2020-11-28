@@ -10,28 +10,24 @@ import {
 } from 'polar-shared/src/util/Snapshots';
 import {TagDescriptors} from "polar-shared/src/tags/TagDescriptors";
 
-export class RepoDataLoader extends React.Component<IProps, IState> {
+export type TagView = 'docs' | 'annotations';
 
-    private subscriber: SnapshotSubscriber<AppTags>;
-
-    constructor(props: any) {
-        super(props);
-
-        this.subscriber = RepoDocMetaManagerSnapshots.create(this.props.repoDocMetaLoader,
-                                                             this.props.repoDocMetaManager);
-
-    }
-
-    public render() {
-        console.log("FIXME2");
-
-        return (
-            <DataLoader id="repoDocMetaLoader" provider={this.subscriber} render={value => this.props.render(value)}/>
-        );
-
-    }
-
+export interface IProps {
+    readonly repoDocMetaLoader: RepoDocMetaLoader;
+    readonly repoDocMetaManager: RepoDocMetaManager;
+    readonly render: (appTags: AppTags | undefined) => React.ReactElement;
 }
+
+export const RepoDataLoader = React.memo((props: IProps) => {
+
+    const subscriber = React.useMemo(() => RepoDocMetaManagerSnapshots.create(props.repoDocMetaLoader, props.repoDocMetaManager),
+                                     [props.repoDocMetaLoader, props.repoDocMetaManager]);
+
+    return (
+        <DataLoader id="repoDocMetaLoader" provider={subscriber} render={value => props.render(value)}/>
+    );
+
+});
 
 function createSnapshot(repoDocMetaManager: RepoDocMetaManager): AppTags {
 
@@ -42,18 +38,6 @@ function createSnapshot(repoDocMetaManager: RepoDocMetaManager): AppTags {
     return {
         docTags, annotationTags
     };
-
-}
-
-export type TagView = 'docs' | 'annotations';
-
-export interface IProps {
-    readonly repoDocMetaLoader: RepoDocMetaLoader;
-    readonly repoDocMetaManager: RepoDocMetaManager;
-    readonly render: (appTags: AppTags | undefined) => React.ReactElement;
-}
-
-export interface IState {
 
 }
 
