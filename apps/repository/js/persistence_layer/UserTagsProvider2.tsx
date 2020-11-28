@@ -2,22 +2,19 @@ import * as React from "react";
 import {UserTag, UserTagsDB} from "../../../../web/js/datastore/UserTagsDB";
 import {ITagsContext, TagsContext} from "./PersistenceLayerApp";
 import {SubscriptionValue} from "../../../../web/js/ui/data_loader/UseSnapshotSubscriber";
-import {usePrefs} from "./PrefsHook";
+import {usePrefsContext} from "./PrefsContext2";
 
 export function useUserTags(): SubscriptionValue<ReadonlyArray<UserTag>> {
 
-    const {value, error} = usePrefs();
+    const prefs = usePrefsContext();
 
-    if (value) {
-        const userTagsDB = new UserTagsDB(value);
-        userTagsDB.init();
-        return {
-            value: userTagsDB.tags(),
-            error: undefined
-        };
-    }
+    const userTagsDB = new UserTagsDB(prefs);
+    userTagsDB.init();
 
-    return {value: undefined, error};
+    return {
+        value: userTagsDB.tags(),
+        error: undefined
+    };
 
 }
 
