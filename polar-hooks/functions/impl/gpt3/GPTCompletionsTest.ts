@@ -19,7 +19,6 @@ xdescribe('GPTCompletions', function() {
 
 	});
 
-
     it("test gpt3 fc 2", async function() {
 
         const request: AutoFlashcards.AutoFlashcardRequest = {
