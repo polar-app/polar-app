@@ -72,6 +72,7 @@ import {
     OnErrorCallback,
     SnapshotUnsubscriber
 } from 'polar-shared/src/util/Snapshots';
+import { IDocMeta } from 'polar-shared/src/metadata/IDocMeta';
 
 const log = Logger.create();
 
@@ -161,7 +162,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         // better.
 
         const query = this.firestore!
-            .collection(DatastoreCollection.DOC_INFO)
+            .collection(DatastoreCollection.DOC_META)
             .where('uid', '==', uid);
 
         type BatchIDMap = {
@@ -180,7 +181,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 const consistency = this.toConsistency(snapshot);
                 const batchID = batchIDs[consistency];
 
-                this.handleDocInfoSnapshot(snapshot, docMetaSnapshotEventListener, batchID);
+                this.handleDocMetaSnapshot(snapshot, docMetaSnapshotEventListener, batchID);
 
                 batchIDs[consistency]++;
 
@@ -1054,6 +1055,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
      * 2. Local data is added via the same code path.  The code path is remote-
      *    first but then then immediately resolved from the cache and added
      *    locally.
+     *
+     * @Deprecated
      */
     private handleDocInfoSnapshot(snapshot: firebase.firestore.QuerySnapshot,
                                   docMetaSnapshotEventListener: DocMetaSnapshotEventListener,
@@ -1192,6 +1195,105 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const toDocMetaMutationFromDocChange = (docChange: firebase.firestore.DocumentChange) => {
             const record = <RecordHolder<IDocInfo>> docChange.doc.data();
+            return docMetaMutationFromRecord(record, toMutationType(docChange.type));
+
+        };
+
+        const consistency = snapshot.metadata.fromCache ? 'written' : 'committed';
+
+        const docChanges = snapshot.docChanges();
+
+        const progressTracker = new ProgressTracker({total: docChanges.length, id: 'firebase-snapshot'});
+
+        const docChangeDocMetaMutations = docChanges.map(current => toDocMetaMutationFromDocChange(current));
+
+        const docMetaMutations = [...docChangeDocMetaMutations];
+
+        docMetaSnapshotEventListener({
+            datastore: this.id,
+            consistency,
+            progress: progressTracker.terminate(),
+            docMetaMutations,
+            batch: {
+                id: batchID,
+                terminated: true,
+            }
+        }).catch(err => log.error("Unable to dispatch event listener: ", err));
+
+        log.debug("onSnapshot... done");
+
+    }
+
+    /**
+     * Called when new data is available from Firebase so we can solve promises,
+     * add things to local stores, etc.
+     *
+     * ALL operations are done via snapshots which we create and subscribe to
+     * on init().
+     *
+     * This solves to problems:
+     *
+     * 1. The most important, is that when data is added remotely (the user is
+     *    on another machine and this machine-rejoins the network or detects
+     *    changes) then content if pulled locally and added to the local
+     *    datastore.
+     *
+     * 2. Local data is added via the same code path.  The code path is remote-
+     *    first but then then immediately resolved from the cache and added
+     *    locally.
+     */
+    private handleDocMetaSnapshot(snapshot: firebase.firestore.QuerySnapshot,
+                                  docMetaSnapshotEventListener: DocMetaSnapshotEventListener,
+                                  batchID: number) {
+
+        type DocMetaData = string | null;
+
+        const docMetaMutationFromRecord = (record: RecordHolder<DocMetaHolder>,
+                                           mutationType: MutationType = 'created') => {
+
+            const id = record.id;
+
+            const docInfo = record.value.docInfo;
+
+            const dataProvider = async (): Promise<DocMetaData> => {
+                return record.value.value;
+            };
+
+            const docMetaProvider = AsyncProviders.memoize(async () => {
+
+                if (mutationType === 'deleted') {
+                    throw new Error("Unable to read data when mutationType is 'deleted'");
+                }
+
+                const data = await dataProvider();
+
+                if (! data) {
+                    console.warn("No data for fingerprint: " + docInfo.fingerprint);
+                    return undefined;
+                }
+
+                const docMetaID = FirebaseDatastores.computeDocMetaID(docInfo.fingerprint);
+                Preconditions.assertPresent(data, `No data for docMeta with fingerprint: ${docInfo.fingerprint}, docMetaID: ${docMetaID}`);
+                return DocMetas.deserialize(data!, docInfo.fingerprint);
+
+            });
+
+            const docMetaMutation: FirebaseDocMetaMutation = {
+                id,
+                fingerprint: docInfo.fingerprint,
+                dataProvider,
+                docMetaProvider,
+                docInfoProvider: AsyncProviders.of(docInfo),
+                docMetaFileRefProvider: AsyncProviders.of(DocMetaFileRefs.createFromDocInfo(docInfo)),
+                mutationType
+            };
+
+            return docMetaMutation;
+
+        };
+
+        const toDocMetaMutationFromDocChange = (docChange: firebase.firestore.DocumentChange) => {
+            const record = <RecordHolder<DocMetaHolder>> docChange.doc.data();
             return docMetaMutationFromRecord(record, toMutationType(docChange.type));
 
         };
