@@ -1,9 +1,4 @@
 import React from 'react';
-import {
-    createObservableStore,
-    SetStore
-} from "../../../../web/js/react/store/ObservableStore";
-import {Provider} from "polar-shared/src/util/Providers";
 import {Billing} from "polar-accounts/src/Billing";
 
 interface IPricingStore {
@@ -14,49 +9,33 @@ interface IPricingCallbacks {
 
     readonly setInterval: (interval: Billing.Interval) => void;
 
-    readonly toggleInterval: () => void;
-
 }
 
-const initialStore: IPricingStore = {
-    interval: 'month'
+const StoreContext = React.createContext<IPricingStore>({interval: 'month'});
+const CallbacksContext = React.createContext<IPricingCallbacks>(null!);
+
+interface IProps {
+    readonly children: JSX.Element;
 }
 
-interface Mutator {
-
+export function usePricingStore(keys: ReadonlyArray<keyof IPricingStore>) {
+    return React.useContext(StoreContext);
 }
 
-function mutatorFactory(storeProvider: Provider<IPricingStore>,
-                        setStore: SetStore<IPricingStore>): Mutator {
-
-    return {};
-
+export function usePricingCallbacks() {
+    return React.useContext(CallbacksContext);
 }
 
-function callbacksFactory(storeProvider: Provider<IPricingStore>,
-                          setStore: (store: IPricingStore) => void,
-                          mutator: Mutator): IPricingCallbacks {
+export const PricingStoreProvider = React.memo((props: IProps) => {
 
-    function setInterval(interval: Billing.Interval) {
-        const store = storeProvider();
-        setStore({...store, interval});
-    }
+    const [interval, setInterval] = React.useState<Billing.Interval>('month');
 
-    function toggleInterval() {
-        const store = storeProvider();
-        const interval = store.interval === 'month' ? 'year' : 'month'
-        setStore({...store, interval});
-    }
+    return (
+        <StoreContext.Provider value={{interval}}>
+            <CallbacksContext.Provider value={{setInterval}}>
+                {props.children}
+            </CallbacksContext.Provider>
+        </StoreContext.Provider>
+    );
 
-    return {
-        setInterval, toggleInterval
-    };
-
-}
-export const [PricingStoreProvider, usePricingStore, usePricingCallbacks, usePricingMutator]
-    = createObservableStore<IPricingStore, Mutator, IPricingCallbacks>({
-        initialValue: initialStore,
-        mutatorFactory,
-        callbacksFactory,
-        enableShallowEquals: true
-    });
+})
