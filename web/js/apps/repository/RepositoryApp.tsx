@@ -57,6 +57,7 @@ import { AddFileDropzoneRoot } from './upload/AddFileDropzoneRoot';
 import {TwoMigrationForBrowser} from "../../../../apps/repository/js/gateways/two_migration/TwoMigrationForBrowser";
 import {AnalyticsLocationListener} from "../../analytics/AnalyticsLocationListener";
 import {LogsScreen} from "../../../../apps/repository/js/logs/LogsScreen";
+import {PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
 
 interface IProps {
     readonly app: App;
@@ -75,21 +76,22 @@ export const RepositoryDocViewerScreen = deepMemo((props: RepositoryDocViewerScr
 
     return (
         <AuthRequired>
-            <PersistenceLayerContext.Provider
-                value={{persistenceLayerProvider: props.persistenceLayerProvider}}>
-                <UserTagsProvider>
-                    <DocMetaContextProvider>
-                        <DocViewerDocMetaLookupContextProvider>
-                            <DocViewerStore>
-                                <DocFindStore>
-                                    <AnnotationSidebarStoreProvider>
-                                        <DocViewer/>
-                                    </AnnotationSidebarStoreProvider>
-                                </DocFindStore>
-                            </DocViewerStore>
-                        </DocViewerDocMetaLookupContextProvider>
-                    </DocMetaContextProvider>
-                </UserTagsProvider>
+            <PersistenceLayerContext.Provider value={{persistenceLayerProvider: props.persistenceLayerProvider}}>
+                <PrefsContext2>
+                    <UserTagsProvider>
+                        <DocMetaContextProvider>
+                            <DocViewerDocMetaLookupContextProvider>
+                                <DocViewerStore>
+                                    <DocFindStore>
+                                        <AnnotationSidebarStoreProvider>
+                                            <DocViewer/>
+                                        </AnnotationSidebarStoreProvider>
+                                    </DocFindStore>
+                                </DocViewerStore>
+                            </DocViewerDocMetaLookupContextProvider>
+                        </DocMetaContextProvider>
+                    </UserTagsProvider>
+                </PrefsContext2>
             </PersistenceLayerContext.Provider>
         </AuthRequired>
     );
