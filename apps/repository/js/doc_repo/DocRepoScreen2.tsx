@@ -17,6 +17,7 @@ import {useHistory} from "react-router-dom";
 import useLocationWithHashOnly = ReactRouters.useLocationWithHashOnly;
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import {FeedbackButton2} from "../ui/FeedbackButton2";
+import {useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 
 namespace main {
 
@@ -144,6 +145,10 @@ const DesktopToolbar = () => {
 }
 
 export const DocRepoScreen2 = React.memo(() => {
+
+    useComponentWillUnmount(() => {
+        console.log("FIXME: DocRepoScreen2: will unmount...");
+    })
 
     return (
 

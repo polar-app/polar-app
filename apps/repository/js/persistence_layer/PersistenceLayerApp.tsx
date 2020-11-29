@@ -26,6 +26,7 @@ import {
 import {IDStr} from "polar-shared/src/util/Strings";
 import {PrefsContext2} from "./PrefsContext2";
 import {AppTags} from "./AppTags";
+import {useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 
 export interface ITagsContext {
 
@@ -113,6 +114,10 @@ const UserTagsDataLoaderData = React.memo((props: IUserTagsDataLoaderDataProps) 
 
     const {repoDocMetaManager, appTags, userTags, persistenceLayerProvider} = props;
 
+    useComponentWillUnmount(() => {
+        console.log("FIXME: UserTagsDataLoaderData: will unmount...");
+    })
+
     const docTags = () => TagDescriptors.merge(appTags?.docTags(), userTags);
     const annotationTags = () => TagDescriptors.merge(appTags?.annotationTags(), userTags);
 
@@ -193,11 +198,24 @@ interface IRepoDataLoaderDataProps {
 
 const RepoDataLoaderData = React.memo((props: IRepoDataLoaderDataProps) => {
 
-    const Component = (dataProps: {userTags: ReadonlyArray<Tag> | undefined}) => (
-        <UserTagsDataLoaderData {...props} userTags={dataProps.userTags}>
-            {props.children}
-        </UserTagsDataLoaderData>
-    );
+    useComponentWillUnmount(() => {
+        console.log("FIXME: RepoDataLoaderData: will unmount...");
+    })
+
+    const Component = React.memo((dataProps: {userTags: ReadonlyArray<Tag> | undefined}) => {
+
+        // FIXMEL this is unmounting
+
+        useComponentWillUnmount(() => {
+            console.log("FIXME: RepoDataLoaderData Component: will unmount...");
+        })
+
+        return (
+            <UserTagsDataLoaderData {...props} userTags={dataProps.userTags}>
+                {props.children}
+            </UserTagsDataLoaderData>
+        );
+    });
 
     return (
         <PrefsContext2>
@@ -226,11 +244,15 @@ interface IPersistenceLayerAppDataProps {
 
 const PersistenceLayerAppData = React.memo((props: IPersistenceLayerAppDataProps) => {
 
-    const Component = (dataProps: {data: AppTags | undefined}) => (
+    useComponentWillUnmount(() => {
+        console.log("FIXME: PersistenceLayerAppData: will unmount...");
+    })
+
+    const Component = React.memo((dataProps: {data: AppTags | undefined}) => (
         <RepoDataLoaderData {...props} appTags={dataProps.data}>
             {props.children}
         </RepoDataLoaderData>
-    );
+    ));
 
     return (
         <RepoDataLoader repoDocMetaLoader={props.repoDocMetaLoader}
@@ -259,11 +281,16 @@ export interface IProps {
 
 export const PersistenceLayerApp = React.memo((props: IProps) => {
 
-    const Component = (dataProps: {persistenceLayerProvider: ListenablePersistenceLayerProvider}) => (
+    const Component = React.memo((dataProps: {persistenceLayerProvider: ListenablePersistenceLayerProvider}) => (
         <PersistenceLayerAppData {...props} persistenceLayerProvider={dataProps.persistenceLayerProvider}>
             {props.children}
         </PersistenceLayerAppData>
-    );
+    ));
+
+    useComponentWillUnmount(() => {
+        console.log("FIXME: PersistenceLayerApp: will unmount...");
+    })
+
 
     return (
         <RepoDocMetaManagerContext.Provider value={props.repoDocMetaManager}>

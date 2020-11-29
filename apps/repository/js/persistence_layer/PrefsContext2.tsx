@@ -9,6 +9,7 @@ import {OnErrorCallback} from "polar-shared/src/util/Snapshots";
 import {IUserPref, UserPrefs} from "../../../../web/js/datastore/firebase/UserPrefs";
 import {useFirestore} from "../FirestoreProvider";
 import UserPrefCallback2 = UserPrefs.UserPrefCallback2;
+import {useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 
 export const [UserPrefContextProvider, useUserPrefContextSnapshot] = createCachedSnapshotSubscriberContext<IUserPref>();
 
@@ -32,6 +33,11 @@ export function usePrefsContext(): IPersistentPrefs {
 export const PrefsContext2 = React.memo((props: IProps) => {
 
     const {firestore, uid} = useFirestore();
+    const dialogs = useDialogManager();
+
+    useComponentWillUnmount(() => {
+        console.log("FIXME: PrefsContext2: will unmount...");
+    })
 
     const snapshotSubscriber = React.useCallback((onNext: UserPrefCallback2, onError?: OnErrorCallback) => {
 
@@ -42,8 +48,6 @@ export const PrefsContext2 = React.memo((props: IProps) => {
         return UserPrefs.onSnapshot2(firestore, uid, onNext, onError);
 
     }, [firestore, uid]);
-
-    const dialogs = useDialogManager();
 
     const onError = React.useCallback(() => {
         dialogs.confirm({
