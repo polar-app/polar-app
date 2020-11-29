@@ -117,6 +117,7 @@ export namespace ckeditor5 {
         readonly createRange: (start: IPosition, end?: IPosition) => IRange;
         readonly document: IDocument;
         readonly change: (writerHandler: (writer: IWriter) => void) => void;
+        readonly createPositionAt: (itemOrPosition: IPosition, offset?: number | 'end' | 'before' | 'after') => IPosition;
     }
 
     export interface InsertTableCommand {

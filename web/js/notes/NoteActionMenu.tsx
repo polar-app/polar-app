@@ -109,12 +109,12 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
 
         editor.model.change((writer) => {
 
-            const startPosition = promptPositionRef.current;
-
-            if ( ! startPosition) {
+            if ( ! promptPositionRef.current) {
                 console.log("No start position");
                 return;
             }
+
+            const startPosition = editor.model.createPositionAt(promptPositionRef.current, -1);
 
             const endPosition = editorRef.current?.model.document.selection.getFirstPosition() || undefined;
 
