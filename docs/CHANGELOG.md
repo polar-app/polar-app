@@ -1,3 +1,8 @@
+- Added back in a logs capture system so that the user can copy their logs and
+  send them to us if they're having a bug and we need more data.
+
+- Fixed bug with prefs not always loading and then blocking the UI.
+
 - Now canonicalizing /doc URLs for analytics.
 
 - Link to Polar forum
