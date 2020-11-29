@@ -48,7 +48,8 @@ export const NotesInbound = deepMemo((props: IProps) => {
     const inbound = lookup(inboundNoteIDs);
 
     return (
-        <div>
+        <div className="NotesInbound">
+
             <Box color="text.secondary">
                 <h3>All notes that reference this note:</h3>
             </Box>

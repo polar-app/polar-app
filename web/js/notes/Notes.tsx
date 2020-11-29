@@ -18,7 +18,7 @@ export const Notes = deepMemo((props: NotesProps) => {
 
     return (
 
-        <UL style={{flexGrow: 1}}>
+        <UL style={{flexGrow: 1}} className="Notes">
             <>
                 {props.notes.map((note) => (
                     <Note key={note.id} parent={props.parent} {...note}/>))}

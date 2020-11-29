@@ -18,7 +18,8 @@ export const Note = deepMemo((props: IProps) => {
 
     return (
         <>
-            <div style={{display: 'flex'}}>
+            <div className="Note"
+                 style={{display: 'flex'}}>
 
                 <MiddleDot style={{
                                marginTop: 'auto',
@@ -26,7 +27,7 @@ export const Note = deepMemo((props: IProps) => {
                            }}/>
 
                 <NoteEditor parent={props.parent} id={props.id} content={props.content}/>
-                
+
             </div>
 
             <Notes parent={props.parent} notes={notes}/>

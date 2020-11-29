@@ -11,6 +11,8 @@
 - what do we do about markdown double [[]] when linking. It's not supported by ckeditor5...
     - 
 
+- test all markdown features...  
+
 
 - update 'links' properly as they are created including when the user completes the note manually.
     - how do I update them if the nodes are typed in manually 

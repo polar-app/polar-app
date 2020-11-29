@@ -30,7 +30,7 @@ export const NoteRoot = deepMemo((props: IProps) => {
 
     return (
         <MUIBrowserLinkStyle>
-            <div>
+            <div className="NoteRoot">
 
                 {note.name && (
                     <h1>{note.name}</h1>
@@ -38,9 +38,9 @@ export const NoteRoot = deepMemo((props: IProps) => {
 
                 {note.content && (
                     // <p>{note.content}</p>
-                    <CKEditor5BalloonEditor content={note.content || ''} onChange={NULL_FUNCTION} onEditor={NULL_FUNCTION}/>
-
-                    )}
+                    <CKEditor5BalloonEditor content={note.content || ''}
+                                            onChange={NULL_FUNCTION}
+                                            onEditor={NULL_FUNCTION}/>)}
 
                 <Notes parent={id} notes={notes}/>
 
