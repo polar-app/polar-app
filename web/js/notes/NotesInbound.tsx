@@ -4,6 +4,7 @@ import {NoteIDStr, useNotesStore, useNotesStoresCallbacks} from "./NotesStore";
 import Box from '@material-ui/core/Box';
 import { UL } from './UL';
 import {MiddleDot} from "./MiddleDot";
+import {NoteBullet} from "./ NoteBullet";
 
 interface IProps {
     readonly id: NoteIDStr;
@@ -26,7 +27,7 @@ const InboundNoteRef = deepMemo((props: InboundNoteRefProps) => {
                  display: 'flex'
              }}>
 
-            <MiddleDot/>
+            <NoteBullet target={props.id}/>
 
             <div style={{
                      marginLeft: '1em'

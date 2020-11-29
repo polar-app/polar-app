@@ -6,6 +6,7 @@ import { deepMemo } from "../react/ReactUtils";
 import {MiddleDot} from "./MiddleDot";
 import IconButton from "@material-ui/core/IconButton";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
+import {NoteBullet} from "./ NoteBullet";
 
 interface IProps extends INote {
     readonly parent: NoteIDStr;
@@ -18,8 +19,6 @@ export const Note = deepMemo((props: IProps) => {
 
     const notes = lookup(props.items || []);
 
-    const noteLinkLoader = useNoteLinkLoader();
-
     return (
         <>
             <div className="Note"
@@ -30,12 +29,7 @@ export const Note = deepMemo((props: IProps) => {
                          marginBottom: 'auto'
                      }}>
 
-                    <IconButton onClick={() => noteLinkLoader(props.id)}
-                                size="small">
-
-                        <MiddleDot/>
-
-                    </IconButton>
+                    <NoteBullet target={props.id}/>
 
                 </div>
 
