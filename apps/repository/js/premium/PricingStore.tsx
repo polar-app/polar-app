@@ -57,5 +57,6 @@ export const [PricingStoreProvider, usePricingStore, usePricingCallbacks, usePri
     = createObservableStore<IPricingStore, Mutator, IPricingCallbacks>({
         initialValue: initialStore,
         mutatorFactory,
-        callbacksFactory
+        callbacksFactory,
+        enableShallowEquals: true
     });

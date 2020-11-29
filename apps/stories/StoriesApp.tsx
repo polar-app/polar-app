@@ -34,6 +34,7 @@ import {YoutubePlayerStory} from "./impl/YoutubePlayerStory";
 import {AutoFlashcardsStory} from "./impl/AutoFlashcardsStory";
 import { ProgressButtonStory } from './impl/ProgressButtonStory';
 import {FunctionalChildStory} from "./impl/FunctionalChildStory";
+import { UnmountComponentStory } from './impl/UnmountComponentStory';
 
 interface IStory {
     readonly name: string;
@@ -169,7 +170,11 @@ const stories = createStoryIndex([
     {
         name: 'FunctionalChildStory',
         component: <FunctionalChildStory/>
-    }
+    },
+    {
+        name: 'UnmountComponentStory',
+        component: <UnmountComponentStory/>
+    },
 
 ]);
 
