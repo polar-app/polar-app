@@ -29,7 +29,11 @@ function useLocationListener() {
 
     useComponentDidMount(() => {
 
-        unsubscriberRef.current = historyRef.current.listen(location => setLocation(location));
+        if (historyRef.current) {
+            unsubscriberRef.current = historyRef.current.listen(location => setLocation(location));
+        } else {
+            console.warn("No history");
+        }
 
     });
 
@@ -100,7 +104,7 @@ export const PlanIntervalToggle = React.memo(() => {
 
     const orientation = Devices.isPhone() ? 'vertical' : 'horizontal';
 
-    const handleChange = React.useCallback((event: React.MouseEvent, newInterval: Billing.Interval | null) => {
+    const handleChange = React.useCallback((newInterval: Billing.Interval | null) => {
         activePlanHandler(newInterval || 'month');
     }, [activePlanHandler]);
 
@@ -109,20 +113,28 @@ export const PlanIntervalToggle = React.memo(() => {
 
             <ToggleButtonGroup exclusive
                                orientation={orientation}
-                               value={interval || 'month'}
-                               onChange={handleChange}>
+                               value={interval || 'month'}>
 
-                <ToggleButton className={classes.button} value="month" aria-label="bold">
+                <ToggleButton className={classes.button}
+                              value="month"
+                              onClick={() => handleChange('month')}
+                              aria-label="bold">
                     Monthly
                 </ToggleButton>
 
-                <ToggleButton className={classes.button} value="year" aria-label="bold">
+                <ToggleButton className={classes.button}
+                              value="year"
+                              onClick={() => handleChange('year')}
+                              aria-label="bold">
                     <Typography>Yearly</Typography>
                     &nbsp;&nbsp;
                     <Typography color="secondary">One Month Free</Typography>
                 </ToggleButton>
 
-                <ToggleButton className={classes.button} value="4year" aria-label="bold">
+                <ToggleButton className={classes.button}
+                              value="4year"
+                              onClick={() => handleChange('4year')}
+                              aria-label="bold">
                     <Typography>4 Years</Typography>
                     &nbsp;&nbsp;
                     <Typography color="secondary">Save Over 40%</Typography>
