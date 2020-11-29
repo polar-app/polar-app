@@ -71,6 +71,31 @@ module.exports = {
         trackingId: "UA-122721184-3",
       },
     },
+    {
+      resolve: `gatsby-plugin-amplitude-analytics`,
+      options: {
+        // Specify the API key for your Amplitude Project (required)
+        apiKey: "c1374bb8854a0e847c0d85957461b9f0",
+        // Puts tracking script in the head instead of the body (optional)
+        head: false,
+        // Prevents loading Amplitude and logging events if visitors have "Do Not Track" enabled (optional)
+        respectDNT: true,
+        // exclude: ["/preview/**", "/do-not-track/me/too/"],
+        // Override the default event types (optional)
+        eventTypes: {
+          // outboundLinkClick: 'OUTBOUND_LINK_CLICK',
+          // pageView: 'PAGE_VIEW',
+        },
+        // Amplitude JS SDK configuration options (optional)
+        amplitudeConfig: {
+          saveEvents: true,
+          includeUtm: true,
+          includeReferrer: true
+        },
+        // Specify NODE_ENVs in which the plugin should be loaded (optional)
+        environments: ["production"],
+      },
+    },
     `gatsby-plugin-sitemap`,
     {
       resolve: `gatsby-plugin-manifest`,
