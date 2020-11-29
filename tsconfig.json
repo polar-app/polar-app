@@ -34,7 +34,7 @@
         "paths": {
             "*": ["node_modules/*"]
         },
-        "lib": ["es2019", "dom"]
+        "lib": ["es2019", "es2020.string", "dom"]
 
     },
     "include": [

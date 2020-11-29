@@ -6,6 +6,11 @@ import BalloonEditor from "@ckeditor/ckeditor5-build-balloon";
 
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {CKEditor5GlobalCss} from "./CKEditor5GlobalCss";
+import {MarkdownToHTML} from "../../../../../polar-app-public/polar-markdown-parser/src/MarkdownToHTML";
+import markdown2html = MarkdownToHTML.markdown2html;
+import {HTMLStr, MarkdownStr} from "polar-shared/src/util/Strings";
+import {HTMLToMarkdown} from "../../../../../polar-app-public/polar-markdown-parser/src/HTMLToMarkdown";
+import html2markdown = HTMLToMarkdown.html2markdown;
 
 export namespace ckeditor5 {
 
@@ -150,15 +155,19 @@ export namespace ckeditor5 {
 }
 
 interface IProps {
-    readonly content: string;
-    readonly onChange: (content: string) => void;
+    readonly content: MarkdownStr;
+    readonly onChange: (content: MarkdownStr) => void;
     readonly onEditor: (editor: ckeditor5.IEditor) => void;
     readonly noToolbar?: boolean;
 }
 
 export const CKEditor5BalloonEditor = deepMemo((props: IProps) => {
 
-    const toolbar = props.noToolbar ? [] : undefined;
+    const content = React.useMemo<HTMLStr>(() => markdown2html(props.content), [props.content]);
+
+    const handleChange = React.useCallback((content: HTMLStr) => {
+        props.onChange(html2markdown(content));
+    }, [props]);
 
     return (
         <>
@@ -171,7 +180,7 @@ export const CKEditor5BalloonEditor = deepMemo((props: IProps) => {
                         // removePlugins: ['toolbar', 'ImageToolbar', 'TableToolbar'],
                         // toolbar: []
                     }}
-                    data={props.content}
+                    data={content}
                     onReady={ (editor: ckeditor5.IEditor) => {
                         // You can store the "editor" and use when it is needed.
                         // console.log( 'Editor is ready to use!', editor );
@@ -180,7 +189,7 @@ export const CKEditor5BalloonEditor = deepMemo((props: IProps) => {
                     onChange={ ( event: any, editor: any ) => {
                         const data = editor.getData();
                         // console.log( { event, editor, data } );
-                        props.onChange(data);
+                        handleChange(data);
                     } }
                     onBlur={ ( event: any, editor: ckeditor5.IEditor ) => {
                         // console.log( 'Blur.', editor );

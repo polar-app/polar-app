@@ -61,7 +61,7 @@ function useLinkNavigation() {
 
         }
 
-    }, [historyRef, linkLoaderRef]);
+    }, [linkLoaderRef, noteLinkLoader]);
 
     React.useEffect(() => {
         if (ref) {
@@ -79,12 +79,10 @@ function useLinkNavigation() {
 
 }
 
-const Inner = deepMemo((props: IProps) => {
+const NoteEditorInner = deepMemo((props: IProps) => {
 
     const {updateNote} = useNotesStoresCallbacks()
     const setEditor = useSetEditorStore();
-
-    const ref = useLinkNavigation();
 
     const wikiLinkContent = React.useMemo(() => WikiLinks.escape(props.content || ''), [props.content])
 
@@ -95,11 +93,23 @@ const Inner = deepMemo((props: IProps) => {
     }, [props.id, updateNote]);
 
     return (
+        <CKEditor5BalloonEditor content={wikiLinkContent}
+                                onChange={handleChange}
+                                onEditor={setEditor}/>
+    );
+
+})
+
+const NoteEditorWithStore = deepMemo((props: IProps) => {
+
+    const ref = useLinkNavigation();
+
+    return (
         <NoteActionMenuForLinking id={props.id}>
             <NoteActionMenuForCommands id={props.id}>
                 <div ref={ref}>
                     <NoteNavigation parent={props.parent} id={props.id}>
-                        <CKEditor5BalloonEditor content={wikiLinkContent} onChange={handleChange} onEditor={setEditor}/>
+                        <NoteEditorInner {...props}/>
                     </NoteNavigation>
                 </div>
             </NoteActionMenuForCommands>
@@ -112,7 +122,7 @@ export const NoteEditor = deepMemo((props: IProps) => {
 
     return (
         <EditorStoreProvider initialValue={undefined}>
-            <Inner {...props}/>
+            <NoteEditorWithStore {...props}/>
         </EditorStoreProvider>
     );
 
