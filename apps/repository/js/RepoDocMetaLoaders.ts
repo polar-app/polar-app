@@ -45,7 +45,6 @@ export class RepoDocMetaLoaders {
         const refreshThrottler = new Throttler(() => callback(), throttlerOpts);
 
         return repoDocMetaLoader.addEventListener(event => {
-            console.log("FIXME: got event: ", event);
             refreshThrottler.exec();
         });
 
