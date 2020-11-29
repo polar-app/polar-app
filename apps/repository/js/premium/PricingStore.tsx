@@ -12,7 +12,33 @@ interface IPricingCallbacks {
 
 }
 
-const StoreContext = React.createContext<IPricingStore>({interval: 'month'});
+function computeIntervalFromLocation(): Billing.Interval {
+
+    if (! document?.location?.href) {
+        return 'month'
+    }
+
+    if (document.location.href.endsWith('#month')) {
+        return 'month';
+    }
+
+    if (document.location.href.endsWith('#year')) {
+        return 'year';
+    }
+
+    if (document.location.href.endsWith('#4year')) {
+        return '4year';
+    }
+
+    return 'month';
+
+}
+
+const initialStore: IPricingStore = {
+    interval: computeIntervalFromLocation()
+};
+
+const StoreContext = React.createContext<IPricingStore>(initialStore);
 const CallbacksContext = React.createContext<IPricingCallbacks>({setInterval: NULL_FUNCTION});
 
 interface IProps {
@@ -29,7 +55,7 @@ export function usePricingCallbacks() {
 
 export const PricingStoreProvider = React.memo((props: IProps) => {
 
-    const [interval, setInterval] = React.useState<Billing.Interval>('month');
+    const [interval, setInterval] = React.useState<Billing.Interval>(initialStore.interval);
 
     return (
         <StoreContext.Provider value={{interval}}>

@@ -72,7 +72,7 @@ export function useActivePlanIntervalFromLocation(): Billing.Interval {
 
 function useActivePlanIntervalRouter() {
 
-    const interval = useActivePlanIntervalFromLocation();
+    const {interval} = usePricingStore(['interval']);
     const {setInterval} = usePricingCallbacks();
 
     React.useEffect(() => {
@@ -83,21 +83,17 @@ function useActivePlanIntervalRouter() {
 
 export function useActivePlanHandler() {
 
-    const history = useHistory();
+    const {setInterval} = usePricingCallbacks();
 
     return React.useCallback((interval: Billing.Interval) => {
-        history.push({
-            hash: `${interval}`
-        });
-
-    }, [history]);
+        setInterval(interval)
+    }, [setInterval]);
 
 }
 
 export const PlanIntervalToggle = React.memo(() => {
 
     const classes = useStyles();
-    useActivePlanIntervalRouter();
 
     const {interval} = usePricingStore(['interval']);
     const activePlanHandler = useActivePlanHandler();

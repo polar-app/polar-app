@@ -36,7 +36,7 @@ export const PurchaseOrChangePlanButton = deepMemo((props: IProps) => {
                         Subscriptions.isEqual(newSubscription, subscription);
 
     // true if we're BUYING a new plan...
-    const buyingNewPlan = subscription?.plan.level === 'free';
+    const buyingNewPlan = (subscription?.plan.level || 'free') === 'free';
 
     const text = buyingNewPlan ? "Purchase" : "Change Plan";
 
