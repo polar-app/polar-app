@@ -66,7 +66,6 @@ export const ExpandIcon = React.memo((props: ExpandIconProps) => {
 
     return (
         <PlusSquare className={classes.icon}
-                    style={props.style}
                     onClick={(event) => props.onNodeExpand(event, props.nodeId)}/>
     );
 }, isEqual);
