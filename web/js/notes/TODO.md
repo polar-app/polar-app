@@ -1,5 +1,9 @@
 - finish up the node selection action
 
+- the action system has the following issues
+    - we have to read FROM the text because if we don't 
+    - and the user places a mouse back down it won't resume properly
+
 - ckeditor performance now really really sucks. It's what's taking 1 second to
   render. It seems to be a regression with our custom build I think.
 

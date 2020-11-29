@@ -6,23 +6,28 @@ import {NoteIDStr} from "./NotesStore";
 
 function useItemsProvider(): ActionMenuItemProvider {
 
+    const defaultAction = () => {
+        return undefined;
+    };
+
     const items = React.useMemo((): ReadonlyArray<IActionMenuItem> => [
         {
             id: 'today',
             text: 'Today',
-            action: NULL_FUNCTION
+            action: defaultAction
         },
         {
             id: 'tomorrow',
             text: 'Tomorrow',
-            action: NULL_FUNCTION
+            action: defaultAction
         },
         {
             id: 'table',
             text: 'Table',
             action: (id, editor) => {
                 console.log("insertTable", editor);
-                editor.commands.get('insertTable').execute()
+                editor.commands.get('insertTable').execute();
+                return undefined;
             }
         },
 

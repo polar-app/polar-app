@@ -1,7 +1,6 @@
 import React from "react";
 import {ActionMenuItemProvider, IActionMenuItem, NoteActionMenu} from "./NoteActionMenu";
 import { deepMemo } from "../react/ReactUtils";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {NoteIDStr, useNotesStore} from "./NotesStore";
 import {useRefValue} from "../hooks/ReactHooks";
 
@@ -23,7 +22,11 @@ function useItemsProvider(): ActionMenuItemProvider {
             return {
                 id: key.toLowerCase(),
                 text: key,
-                action: NULL_FUNCTION
+                action: () => {
+                    return {
+                        type: 'replace'
+                    };
+                }
             }
         });
 

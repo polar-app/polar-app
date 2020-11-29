@@ -12,6 +12,18 @@ import {ckeditor5} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEd
 import { NoteIDStr } from "./NotesStore";
 import {NoteActionSelections} from "./NoteActionSelections";
 
+export interface ICommand {
+
+    /**
+     * Handle the action with the following types:
+     *
+     * replace: replace the text in the editor with the selected action text.
+     *
+     */
+    readonly type: 'replace';
+
+}
+
 export interface IActionMenuItem {
 
     /**
@@ -19,7 +31,7 @@ export interface IActionMenuItem {
      */
     readonly id: string;
     readonly text: string;
-    readonly action: (id: NoteIDStr, editor: ckeditor5.IEditor) => void;
+    readonly action: (id: NoteIDStr, editor: ckeditor5.IEditor) => ICommand | undefined;
 
 }
 
@@ -91,6 +103,7 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
         const editor = editorRef.current;
 
         if (! editor) {
+            console.warn("No editor");
             return;
         }
 
@@ -99,12 +112,14 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
             const startPosition = promptPositionRef.current;
 
             if ( ! startPosition) {
+                console.log("No start position");
                 return;
             }
 
             const endPosition = editorRef.current?.model.document.selection.getFirstPosition() || undefined;
 
             if (! endPosition) {
+                console.log("No end position");
                 return;
             }
 
@@ -114,6 +129,28 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
         })
 
     }, [editorRef]);
+
+
+    const insertEditorPromptText = React.useCallback((text: string) => {
+
+        const editor = editorRef.current;
+
+        if (! editor) {
+            console.warn("No editor");
+            return;
+        }
+
+        editor.model.change((writer) => {
+            if (promptPositionRef.current) {
+                writer.insertText(text, promptPositionRef.current);
+            }
+        })
+
+    }, [editorRef]);
+
+    const getEditorPromptText = React.useCallback(() => {
+        // noop
+    }, []);
 
     const handleSelectedActionItem = React.useCallback(() => {
 
@@ -126,9 +163,15 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
                 try {
 
                     console.log("Executing item: " + selectedItem.text);
-                    selectedItem.action(props.id, editorRef.current);
+                    const command = selectedItem.action(props.id, editorRef.current);
 
                     removeEditorPromptText();
+
+                    if (command?.type === 'replace') {
+                        const replacement = "<a href=''>cnn</a>";
+                        // insertEditorPromptText(selectedItem.text);
+                        insertEditorPromptText(replacement);
+                    }
 
                 } catch (err) {
                     console.error("Unable to execute command: ", err);
@@ -145,7 +188,8 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
         setMenuIndex(undefined);
         setMenuPosition(undefined);
 
-    }, [editorRef, itemsRef, menuIndexRef, props.id, removeEditorPromptText, setMenuIndex, setMenuPosition])
+    }, [editorRef, insertEditorPromptText, itemsRef, menuIndexRef,
+        props.id, removeEditorPromptText, setMenuIndex, setMenuPosition])
 
     const captureEditorPosition = React.useCallback(() => {
 
@@ -157,7 +201,6 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
     const onClick = React.useCallback(() => {
         captureEditorPosition();
     }, [captureEditorPosition]);
-
 
     const onKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 
