@@ -1,5 +1,6 @@
 import React from 'react';
 import {Billing} from "polar-accounts/src/Billing";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 interface IPricingStore {
     readonly interval: Billing.Interval;
@@ -12,7 +13,7 @@ interface IPricingCallbacks {
 }
 
 const StoreContext = React.createContext<IPricingStore>({interval: 'month'});
-const CallbacksContext = React.createContext<IPricingCallbacks>(null!);
+const CallbacksContext = React.createContext<IPricingCallbacks>({setInterval: NULL_FUNCTION});
 
 interface IProps {
     readonly children: JSX.Element;

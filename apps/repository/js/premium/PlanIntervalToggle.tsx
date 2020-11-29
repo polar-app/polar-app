@@ -7,7 +7,11 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Billing} from "polar-accounts/src/Billing";
 import Paper from "@material-ui/core/Paper/Paper";
 import { Devices } from "polar-shared/src/util/Devices";
-import { useLocation, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import {useComponentDidMount, useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
+import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
+import {useRefValue} from "../../../../web/js/hooks/ReactHooks";
+import {ILocation} from "../../../../web/js/react/router/ReactRouters";
 
 const useStyles = makeStyles({
   button: {
@@ -16,23 +20,46 @@ const useStyles = makeStyles({
 
 });
 
+function useLocationListener() {
+
+    const [location, setLocation] = React.useState<ILocation | undefined>();
+    const unsubscriberRef = React.useRef<SnapshotUnsubscriber>();
+    const history = useHistory();
+    const historyRef = useRefValue(history);
+
+    useComponentDidMount(() => {
+
+        unsubscriberRef.current = historyRef.current.listen(location => setLocation(location));
+
+    });
+
+    useComponentWillUnmount(() => {
+        if (unsubscriberRef.current) {
+            unsubscriberRef.current();
+        }
+    });
+
+    return location;
+
+}
+
 export function useActivePlanIntervalFromLocation(): Billing.Interval {
 
-    useLocation();
+    const location = useLocationListener();
 
     // for some reason we're not getting the hash in the location change
-    const hash = document.location.hash;
+    const hash = location?.hash;
 
     if (hash === '#4year') {
         return '4year';
     }
 
-    if (hash === '#month') {
-        return 'month';
-    }
-
     if (hash === '#year') {
         return 'year';
+    }
+
+    if (hash === '#month') {
+        return 'month';
     }
 
     return 'month';
