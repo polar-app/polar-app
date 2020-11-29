@@ -300,6 +300,9 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
     return (
 
         <div className="NoteActionMenu"
+             style={{
+                 flexGrow: 1
+             }}
              onKeyDown={onKeyDown}
              onKeyUp={onKeyDown}
              onKeyPress={onKeyDown}
