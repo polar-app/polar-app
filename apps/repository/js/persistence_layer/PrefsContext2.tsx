@@ -35,10 +35,6 @@ export const PrefsContext2 = React.memo((props: IProps) => {
     const {firestore, uid} = useFirestore();
     const dialogs = useDialogManager();
 
-    useComponentWillUnmount(() => {
-        console.log("FIXME: PrefsContext2: will unmount...");
-    })
-
     const snapshotSubscriber = React.useCallback((onNext: UserPrefCallback2, onError?: OnErrorCallback) => {
 
         if (! uid) {

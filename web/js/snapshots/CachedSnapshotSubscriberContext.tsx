@@ -102,10 +102,6 @@ export function createCachedSnapshotSubscriberContext<V>(): CachedSnapshotTuple<
 
     const Provider = React.memo((props: ProviderProps<V>) => {
 
-        useComponentWillUnmount(() => {
-            console.log("FIXME: createCachedSnapshotSubscriberContext Provider: will unmount...");
-        })
-
         const storeContext = React.useContext(context);
 
         const onNext = React.useCallback((snapshot: ISnapshot<V> | undefined) => {

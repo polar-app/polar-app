@@ -146,10 +146,6 @@ const DesktopToolbar = () => {
 
 export const DocRepoScreen2 = React.memo(() => {
 
-    useComponentWillUnmount(() => {
-        console.log("FIXME: DocRepoScreen2: will unmount...");
-    })
-
     return (
 
         <>

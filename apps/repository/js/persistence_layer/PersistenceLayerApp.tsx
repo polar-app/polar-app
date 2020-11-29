@@ -114,10 +114,6 @@ const UserTagsDataLoaderData = React.memo((props: IUserTagsDataLoaderDataProps) 
 
     const {repoDocMetaManager, appTags, userTags, persistenceLayerProvider} = props;
 
-    useComponentWillUnmount(() => {
-        console.log("FIXME: UserTagsDataLoaderData: will unmount...");
-    })
-
     const docTags = () => TagDescriptors.merge(appTags?.docTags(), userTags);
     const annotationTags = () => TagDescriptors.merge(appTags?.annotationTags(), userTags);
 
