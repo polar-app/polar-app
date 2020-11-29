@@ -3,6 +3,7 @@ import {deepMemo} from "../react/ReactUtils";
 import createStyles from "@material-ui/core/styles/createStyles";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import blue from '@material-ui/core/colors/blue';
+import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -24,6 +25,9 @@ const useStyles = makeStyles((theme) =>
 );
 
 interface IProps {
+
+    readonly style?: React.CSSProperties;
+    readonly className?: string;
     readonly children: React.ReactNode;
 }
 
@@ -35,8 +39,11 @@ export const MUIBrowserLinkStyle = deepMemo((props: IProps) => {
     const classes = useStyles();
 
     return (
-        <div className={classes.root}>
+        <div className={clsx(classes.root, props.className)}
+             style={props.style}>
+
             {props.children}
+
         </div>
     )
 

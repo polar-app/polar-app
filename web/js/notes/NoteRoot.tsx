@@ -29,7 +29,8 @@ export const NoteRoot = deepMemo((props: IProps) => {
     const notes = lookup(note.items || []);
 
     return (
-        <MUIBrowserLinkStyle>
+        <MUIBrowserLinkStyle style={{flexGrow: 1}}>
+
             <div className="NoteRoot">
 
                 {note.name && (
@@ -47,6 +48,7 @@ export const NoteRoot = deepMemo((props: IProps) => {
                 <NotesInbound id={id}/>
 
             </div>
+
         </MUIBrowserLinkStyle>
     );
 

@@ -101,8 +101,14 @@ const NotesStoryDebug = React.memo(() => {
 });
 
 const NotesInner = () => (
-    <div style={{display: 'flex'}}>
+    <div className="NotesInner"
+         style={{
+             display: 'flex',
+             flexGrow: 1
+         }}>
+
         <NotesRouter/>
+
         {/*<div style={{*/}
         {/*         width: '500px',*/}
         {/*         fontSize: '10px',*/}
