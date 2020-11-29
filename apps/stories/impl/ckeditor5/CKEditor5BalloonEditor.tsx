@@ -83,12 +83,18 @@ export namespace ckeditor5 {
         readonly sourceElement: HTMLElement;
     }
 
+    // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_document-Document.html
     export interface IDocument {
         readonly selection: ISelection;
     }
 
     export interface IRange {
 
+    }
+
+    interface IInsertTextAttributes {
+        readonly bold?: boolean;
+        readonly linkHref?: string;
     }
 
     // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_writer-Writer.html
@@ -98,7 +104,7 @@ export namespace ckeditor5 {
          * Shortcut for Model#createRange().
          */
         readonly createRange: (start: IPosition, end?: IPosition) => IRange;
-        readonly insertText: (text: string, position: IPosition) => void;
+        readonly insertText: (text: string, attributes: IInsertTextAttributes, position: IPosition) => void;
         readonly remove: (itemOrRange: IRange) => void;
     }
 

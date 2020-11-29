@@ -142,14 +142,23 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
 
         editor.model.change((writer) => {
             if (promptPositionRef.current) {
-                writer.insertText(text, promptPositionRef.current);
+                writer.insertText(text, {linkHref: `#${text}`}, promptPositionRef.current);
             }
         })
 
     }, [editorRef]);
 
     const getEditorPromptText = React.useCallback(() => {
-        // noop
+
+        const editor = editorRef.current;
+
+        if (! editor) {
+            console.warn("No editor");
+            return;
+        }
+
+        // editor.model.document.selection.
+
     }, []);
 
     const handleSelectedActionItem = React.useCallback(() => {
@@ -168,9 +177,7 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
                     removeEditorPromptText();
 
                     if (command?.type === 'replace') {
-                        const replacement = "<a href=''>cnn</a>";
-                        // insertEditorPromptText(selectedItem.text);
-                        insertEditorPromptText(replacement);
+                        insertEditorPromptText(selectedItem.text);
                     }
 
                 } catch (err) {

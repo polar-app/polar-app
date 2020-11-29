@@ -1,3 +1,5 @@
+- don't keep the [[]] IN the DOM... nail it via CSS.  
+
 - finish up the node selection action
 
 - the action system has the following issues
