@@ -77,7 +77,7 @@ export class UserTagsDB {
 
     }
 
-    public tags() {
+    public tags(): ReadonlyArray<UserTag> {
         return Object.values(this.backing);
     }
 

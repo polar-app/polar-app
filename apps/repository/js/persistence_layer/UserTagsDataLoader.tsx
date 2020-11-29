@@ -19,11 +19,7 @@ export const UserTagsDataLoader = React.memo((props: IProps) => {
         return userTagsDB.tags();
     }, [prefs]);
 
-    const {Component} = props;
-
-    return (
-        <Component userTags={userTags}/>
-    );
+    return props.Component({userTags});
 
 })
 

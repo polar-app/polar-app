@@ -111,11 +111,7 @@ export const DataLoader2 = typedMemo(function<T>(props: IProps<T>) {
         }
 
     } else {
-
-        return (
-            <Component data={state.data?.value}/>
-        );
-
+        return props.Component({data: state.data?.value});
     }
 
 });

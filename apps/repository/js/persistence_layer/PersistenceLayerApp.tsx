@@ -198,24 +198,14 @@ interface IRepoDataLoaderDataProps {
 
 const RepoDataLoaderData = React.memo((props: IRepoDataLoaderDataProps) => {
 
-    useComponentWillUnmount(() => {
-        console.log("FIXME: RepoDataLoaderData: will unmount...");
-    })
-
-    const Component = React.memo((dataProps: {userTags: ReadonlyArray<Tag> | undefined}) => {
-
-        // FIXMEL this is unmounting
-
-        useComponentWillUnmount(() => {
-            console.log("FIXME: RepoDataLoaderData Component: will unmount...");
-        })
+    const Component = (dataProps: {userTags: ReadonlyArray<Tag> | undefined}) => {
 
         return (
             <UserTagsDataLoaderData {...props} userTags={dataProps.userTags}>
                 {props.children}
             </UserTagsDataLoaderData>
         );
-    });
+    };
 
     return (
         <PrefsContext2>
@@ -244,15 +234,11 @@ interface IPersistenceLayerAppDataProps {
 
 const PersistenceLayerAppData = React.memo((props: IPersistenceLayerAppDataProps) => {
 
-    useComponentWillUnmount(() => {
-        console.log("FIXME: PersistenceLayerAppData: will unmount...");
-    })
-
-    const Component = React.memo((dataProps: {data: AppTags | undefined}) => (
+    const Component = (dataProps: {data: AppTags | undefined}) => (
         <RepoDataLoaderData {...props} appTags={dataProps.data}>
             {props.children}
         </RepoDataLoaderData>
-    ));
+    );
 
     return (
         <RepoDataLoader repoDocMetaLoader={props.repoDocMetaLoader}
@@ -281,16 +267,11 @@ export interface IProps {
 
 export const PersistenceLayerApp = React.memo((props: IProps) => {
 
-    const Component = React.memo((dataProps: {persistenceLayerProvider: ListenablePersistenceLayerProvider}) => (
+    const Component = (dataProps: {persistenceLayerProvider: ListenablePersistenceLayerProvider}) => (
         <PersistenceLayerAppData {...props} persistenceLayerProvider={dataProps.persistenceLayerProvider}>
             {props.children}
         </PersistenceLayerAppData>
-    ));
-
-    useComponentWillUnmount(() => {
-        console.log("FIXME: PersistenceLayerApp: will unmount...");
-    })
-
+    );
 
     return (
         <RepoDocMetaManagerContext.Provider value={props.repoDocMetaManager}>
