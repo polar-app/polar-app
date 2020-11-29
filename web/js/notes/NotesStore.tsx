@@ -77,6 +77,8 @@ interface INotesCallbacks {
      */
     readonly navNext: (parent: NoteIDStr, child: NoteIDStr) => void;
 
+    readonly doIndent: (id: NoteIDStr, parent: NoteIDStr) => void;
+
 }
 
 const initialStore: INotesStore = {
@@ -202,6 +204,72 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
         }
 
+        /**
+         * Based on the note's position, indent it if it has a sibling
+         */
+        function doIndent(id: NoteIDStr, parent: NoteIDStr) {
+
+            const store = storeProvider();
+
+            const index = {...store.index};
+            const note = index[id];
+
+            if (! note) {
+                console.warn("No note for id: " + id);
+                return;
+            }
+
+            const parentNote = index[parent];
+
+            if (! parentNote) {
+                console.warn("No parent note for id: " + parent);
+                return;
+            }
+
+            const parentItems = (parentNote.items || []);
+
+            // figure out the sibling index in the parent
+            const siblingIndex = parentItems.indexOf(id);
+
+            if (siblingIndex > 0) {
+
+                const newParentID = parentItems[siblingIndex - 1];
+
+                const newParentNode = index[newParentID];
+
+                // *** remove myself from my parent
+
+                function remove<T>(arr: ReadonlyArray<T>, idx: number) {
+                    const newArr = [...arr];
+                    newArr.splice(idx, 1);
+                    return newArr;
+                }
+
+                const mutatedParentNode = {
+                    ...parentNote,
+                    items: remove(parentNote.items!, siblingIndex)
+                }
+
+                // ***: add myself to my newParent
+
+                const mutatedNewParentNode = {
+                    ...newParentNode,
+                    items: [
+                        ...(newParentNode.items || []),
+                        id
+                    ]
+                }
+
+                // *** write these to the new store...
+                index[mutatedParentNode.id] = mutatedParentNode;
+                index[mutatedNewParentNode.id] = mutatedNewParentNode;
+
+                setStore({...store, index});
+
+            }
+
+        }
+
         function createNewNote(parent: NoteIDStr, child: NoteIDStr) {
 
             const store = storeProvider();
@@ -307,7 +375,8 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             createNewNote,
             setActive,
             navPrev,
-            navNext
+            navNext,
+            doIndent
         };
 
     }, [setStore, storeProvider])

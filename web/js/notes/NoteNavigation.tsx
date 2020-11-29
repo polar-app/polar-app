@@ -18,7 +18,7 @@ export const NoteNavigation = deepMemo((props: IProps) => {
 
     const {active} = useNotesStore(['active']);
     const activeRef = useRefValue(active);
-    const {createNewNote, setActive, navPrev, navNext} = useNotesStoresCallbacks();
+    const {createNewNote, setActive, navPrev, navNext, doIndent} = useNotesStoresCallbacks();
 
     const [ref, setRef] = React.useState<HTMLDivElement | null>(null);
 
@@ -80,7 +80,18 @@ export const NoteNavigation = deepMemo((props: IProps) => {
             createNewNote(props.parent, props.id);
         }
 
-    }, [createNewNote, props.id, props.parent]);
+        if (event.key === 'Tab') {
+            event.stopPropagation();
+            event.preventDefault();
+            doIndent(props.id, props.parent);
+        }
+
+        // FIXME:
+
+        // FIXME: delete should remove the node if the current node text is empty
+
+
+    }, [createNewNote, doIndent, props.id, props.parent]);
 
     React.useEffect(() => {
 
