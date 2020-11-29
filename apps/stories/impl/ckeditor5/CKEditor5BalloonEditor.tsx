@@ -1,8 +1,8 @@
 import * as React from "react";
 import {CKEditor} from "@ckeditor/ckeditor5-react";
 // import {ClassicEditor} from "@ckeditor/ckeditor5-build-classic";
-// import BalloonEditor from "@ckeditor/ckeditor5-build-balloon";
-import {InlineEditor} from "@ckeditor/ckeditor5-build-classic";
+import BalloonEditor from "@ckeditor/ckeditor5-build-balloon";
+// import {InlineEditor} from "@ckeditor/ckeditor5-build-classic";
 
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {CKEditor5GlobalCss} from "./CKEditor5GlobalCss";
@@ -166,10 +166,10 @@ export const CKEditor5BalloonEditor = deepMemo((props: IProps) => {
             {/*<CKEditorContext context={ Context }>*/}
 
                 <CKEditor
-                    editor={ InlineEditor }
+                    editor={ BalloonEditor }
                     config={{
                         // removePlugins: ['toolbar', 'ImageToolbar', 'TableToolbar'],
-                        toolbar: []
+                        // toolbar: []
                     }}
                     data={props.content}
                     onReady={ (editor: ckeditor5.IEditor) => {

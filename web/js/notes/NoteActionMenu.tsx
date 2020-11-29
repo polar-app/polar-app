@@ -132,6 +132,30 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
 
     }, [editorRef]);
 
+    const getEditorPromptText = React.useCallback(() => {
+
+        const editor = editorRef.current;
+
+        if (! editor) {
+            console.warn("No editor");
+            return;
+        }
+
+        // editor.model.document.selection.
+
+    }, [editorRef]);
+
+    const getEditorPosition = React.useCallback(() => {
+
+        return editorRef.current?.model.document.selection.getFirstPosition() || undefined;
+
+    }, [editorRef]);
+
+    const captureEditorPosition = React.useCallback(() => {
+
+        editorPositionRef.current = getEditorPosition();
+
+    }, [getEditorPosition]);
 
     const insertEditorPromptText = React.useCallback((text: string) => {
 
@@ -145,23 +169,17 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
         editor.model.change((writer) => {
             if (promptPositionRef.current) {
                 writer.insertText(text, {linkHref: `#${text}`}, promptPositionRef.current);
+
+                const currentPosition = getEditorPosition();
+
+                if (currentPosition) {
+                    writer.insertText(' ', {}, currentPosition);
+                }
+
             }
         })
 
-    }, [editorRef]);
-
-    const getEditorPromptText = React.useCallback(() => {
-
-        const editor = editorRef.current;
-
-        if (! editor) {
-            console.warn("No editor");
-            return;
-        }
-
-        // editor.model.document.selection.
-
-    }, []);
+    }, [editorRef, getEditorPosition]);
 
     const handleSelectedActionItem = React.useCallback(() => {
 
@@ -199,13 +217,6 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
 
     }, [editorRef, insertEditorPromptText, itemsRef, menuIndexRef,
         props.id, removeEditorPromptText, setMenuIndex, setMenuPosition])
-
-    const captureEditorPosition = React.useCallback(() => {
-
-        editorPositionRef.current
-            = editorRef.current?.model.document.selection.getFirstPosition() || undefined;
-
-    }, [editorRef]);
 
     const onClick = React.useCallback(() => {
         captureEditorPosition();

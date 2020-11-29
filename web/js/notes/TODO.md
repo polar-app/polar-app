@@ -1,4 +1,20 @@
-- don't keep the [[]] IN the DOM... nail it via CSS.  
+
+- MVP.1
+    - basic workflowy style outline manipulation
+        - tab indents the current item
+    - image paste and correct image size
+    - inbound links and link clicking
+    - click the bullets next to links
+- MVP.2
+    - basic backend persistence
+    - /table support
+    - exports of data? 
+
+
+
+- don't keep the [[]] IN the DOM... show it via CSS with before and after 
+
+-   
 
 - finish up the node selection action
 
