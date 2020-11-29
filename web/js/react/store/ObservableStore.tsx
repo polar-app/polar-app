@@ -222,8 +222,6 @@ interface ObservableStorePropsWithoutStore<V> {
 
 }
 
-// export type ObservableStoreProviderComponent<V> = (props: ObservableStoreProps<V>) => JSX.Element;
-
 export type ObservableStoreProviderComponent<V> = React.FunctionComponent<ObservableStoreProps<V>>;
 
 /**

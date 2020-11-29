@@ -26,7 +26,6 @@ import {
 import {IDStr} from "polar-shared/src/util/Strings";
 import {PrefsContext2} from "./PrefsContext2";
 import {AppTags} from "./AppTags";
-import {useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 
 export interface ITagsContext {
 

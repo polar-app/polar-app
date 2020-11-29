@@ -9,7 +9,6 @@ import {OnErrorCallback} from "polar-shared/src/util/Snapshots";
 import {IUserPref, UserPrefs} from "../../../../web/js/datastore/firebase/UserPrefs";
 import {useFirestore} from "../FirestoreProvider";
 import UserPrefCallback2 = UserPrefs.UserPrefCallback2;
-import {useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 
 export const [UserPrefContextProvider, useUserPrefContextSnapshot] = createCachedSnapshotSubscriberContext<IUserPref>();
 

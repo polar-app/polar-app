@@ -17,7 +17,6 @@ import {useHistory} from "react-router-dom";
 import useLocationWithHashOnly = ReactRouters.useLocationWithHashOnly;
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import {FeedbackButton2} from "../ui/FeedbackButton2";
-import {useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 
 namespace main {
 

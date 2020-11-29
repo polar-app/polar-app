@@ -118,8 +118,6 @@ export function createCachedSnapshotSubscriberContext<V>(): CachedSnapshotTuple<
             onError: props.onError
         });
 
-        const filtered = props.filter && props.filter(storeContext.current);
-
         return (
 
             <context.Provider value={initialContext}>
