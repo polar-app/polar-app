@@ -133,8 +133,8 @@ function NavBarMobile() {
 
 
   const links = Devices.isDesktop() ?
-      ["pricing", "docs", "blog", "download", "extension"] :
-      ["docs", "blog", "download", "extension"];
+      ["pricing", "docs", "blog", "download", "extension", "forum"] :
+      ["docs", "blog"];
 
   const list = (anchor) => (
     <div className={clsx(classes.list, {
@@ -290,6 +290,13 @@ function NavBarDesktop() {
                   href="/chrome-extension">
             extension
           </Button>
+
+          <Button className={classes.navChoices}
+                  color="inherit"
+                  href="https://forum.getpolarized.io">
+            forum
+          </Button>
+
         </Box>
         {breakpoints.tab ? (
           <p></p>
