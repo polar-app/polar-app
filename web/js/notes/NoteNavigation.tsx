@@ -75,7 +75,6 @@ export const NoteNavigation = deepMemo((props: IProps) => {
         // FIXME: allow shift + enter so that the user can do multiple lines themselves.
 
         if (event.key === 'Enter') {
-            console.log("FIXME: preventing enter with capture");
             event.stopPropagation();
             event.preventDefault();
             createNewNote(props.parent, props.id);

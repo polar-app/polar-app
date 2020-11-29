@@ -2,7 +2,6 @@ import React from "react";
 import {deepMemo} from "../react/ReactUtils";
 import { Note } from "./Note";
 import {INote, NoteIDStr} from "./NotesStore";
-import {MiddleDot} from "./MiddleDot";
 import {UL} from "./UL";
 
 interface NotesProps {

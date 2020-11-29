@@ -12,6 +12,7 @@ import { useHistory } from "react-router-dom";
 import {useRefValue} from "../hooks/ReactHooks";
 import { NoteActionMenuForLinking } from "./NoteActionMenuForLinking";
 import {WikiLinks} from "./WikiLinks";
+import {useNoteLinkLoader} from "./NoteLinkLoader";
 
 interface IProps {
     readonly parent: NoteIDStr;
@@ -26,6 +27,7 @@ function useLinkNavigation() {
     const linkLoaderRef = useLinkLoaderRef();
     const history = useHistory();
     const historyRef = useRefValue(history);
+    const noteLinkLoader = useNoteLinkLoader();
 
     const handleClick = React.useCallback((event: MouseEvent) => {
 
@@ -43,8 +45,7 @@ function useLinkNavigation() {
                     const anchor = Arrays.last(href.split("#"));
 
                     if (anchor) {
-                        const newURL = '/apps/stories/notes/' + anchor;
-                        historyRef.current.push(newURL);
+                        noteLinkLoader(anchor);
                         event.stopPropagation();
                         event.preventDefault();
                     }

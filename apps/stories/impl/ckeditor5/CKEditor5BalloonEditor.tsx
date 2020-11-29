@@ -117,6 +117,8 @@ export namespace ckeditor5 {
         readonly createRange: (start: IPosition, end?: IPosition) => IRange;
         readonly document: IDocument;
         readonly change: (writerHandler: (writer: IWriter) => void) => void;
+        readonly createPositionBefore: (itemOrPosition: IPosition) => IPosition;
+        readonly createPositionAfter: (itemOrPosition: IPosition) => IPosition;
         readonly createPositionAt: (itemOrPosition: IPosition, offset?: number | 'end' | 'before' | 'after') => IPosition;
     }
 
