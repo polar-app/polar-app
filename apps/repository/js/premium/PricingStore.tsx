@@ -14,6 +14,14 @@ interface IPricingCallbacks {
 
 function computeIntervalFromLocation(): Billing.Interval {
 
+    if (typeof window === 'undefined') {
+        return 'month';
+    }
+
+    if (typeof document === 'undefined') {
+        return 'month';
+    }
+
     if (! document?.location?.href) {
         return 'month'
     }

@@ -12,6 +12,9 @@
 - Fixed a bad bug preventing repository in Safari from being snappy on login.  
   It was far far too latent.  Also, will speed things up for other users.  
 
+- The PDF outliner can be expanded and collapsed and we collapse by default such
+  that only folders with depth=1 are collapsed by default.  
+
 # 2.0.85
 
 - properly handling user authentication now.
