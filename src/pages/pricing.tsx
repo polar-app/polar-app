@@ -24,11 +24,17 @@ const Pricing = () => {
                 description="POLAR - Plus at $6.99 per month for 50GB of storage."
                 lang="en"/>
 
-            <div className={classes.root}>
-                <NullChangePlanContextProvider>
-                    <PricingContent/>
-                </NullChangePlanContextProvider>
-            </div>
+            {/*<BrowserRouter>*/}
+            {/*    <Switch>*/}
+            {/*        <Route path="/pricing">*/}
+                        <div className={classes.root}>
+                            <NullChangePlanContextProvider>
+                                <PricingContent/>
+                            </NullChangePlanContextProvider>
+                        </div>
+            {/*        </Route>*/}
+            {/*    </Switch>*/}
+            {/*</BrowserRouter>*/}
         </Layout>
     );
 };
