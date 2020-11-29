@@ -50,12 +50,10 @@
     "react-dom": "=16.14.0",
     "react-helmet": "=6.1.0",
     "react-reveal": "=1.2.2",
-    "typeface-roboto": "=1.1.13",
-    "react-router-dom": "~5.2.0"
+    "typeface-roboto": "=1.1.13"
   },
   "devDependencies": {
-    "prettier": "2.1.2",
-    "@types/react-router-dom": "=5.1.5"
+    "prettier": "2.1.2"
   },
   "keywords": [
     "gatsby"

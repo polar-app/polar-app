@@ -4,6 +4,7 @@ import {NullChangePlanContextProvider} from "polar-bookshelf/apps/repository/js/
 import Layout from "../components/layout";
 import makeStyles from "@material-ui/styles/makeStyles";
 import SEO from "../components/seo";
+import {PricingStoreProvider} from "polar-bookshelf/apps/repository/js/premium/PricingStore";
 
 const useStyles = makeStyles({
     root: {
@@ -24,17 +25,13 @@ const Pricing = () => {
                 description="POLAR - Plus at $6.99 per month for 50GB of storage."
                 lang="en"/>
 
-            {/*<BrowserRouter>*/}
-            {/*    <Switch>*/}
-            {/*        <Route path="/pricing">*/}
-                        <div className={classes.root}>
-                            <NullChangePlanContextProvider>
-                                <PricingContent/>
-                            </NullChangePlanContextProvider>
-                        </div>
-            {/*        </Route>*/}
-            {/*    </Switch>*/}
-            {/*</BrowserRouter>*/}
+            <div className={classes.root}>
+                <PricingStoreProvider>
+                    <NullChangePlanContextProvider>
+                        <PricingContent/>
+                    </NullChangePlanContextProvider>
+                </PricingStoreProvider>
+            </div>
         </Layout>
     );
 };
