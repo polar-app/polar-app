@@ -11,7 +11,7 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 interface IProps {
     readonly id: NoteIDStr;
 }
-export const NoteRoot = deepMemo((props: IProps) => {
+export const NoteRoot = deepMemo(function NoteRoot(props: IProps) {
 
     const {index, indexByName} = useNotesStore(['index', 'indexByName']);
     const {lookup} = useNotesStoresCallbacks();
@@ -53,5 +53,3 @@ export const NoteRoot = deepMemo((props: IProps) => {
     );
 
 });
-
-NoteRoot.displayName='NoteRoot';
