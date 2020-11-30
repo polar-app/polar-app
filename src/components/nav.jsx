@@ -145,8 +145,8 @@ function NavBarMobile() {
         setState(__assign(__assign({}, state), (_a = {}, _a[anchor] = open, _a)));
     }; };
     var links = Devices_1.Devices.isDesktop() ?
-        ["pricing", "docs", "blog", "download", "extension"] :
-        ["docs", "blog", "download", "extension"];
+        ["pricing", "docs", "blog", "download", "extension", "forum"] :
+        ["docs", "blog"];
     var list = function (anchor) {
         var _a;
         return (<div className={clsx_1.default(classes.list, (_a = {},
@@ -248,6 +248,11 @@ function NavBarDesktop() {
           <gatsby_material_ui_components_1.Button className={classes.navChoices} color="inherit" href="/chrome-extension">
             extension
           </gatsby_material_ui_components_1.Button>
+
+          <gatsby_material_ui_components_1.Button className={classes.navChoices} color="inherit" href="https://forum.getpolarized.io">
+            forum
+          </gatsby_material_ui_components_1.Button>
+
         </core_1.Box>
         {breakpoints.tab ? (<p></p>) : (<core_1.Box style={{ marginRight: 30 }}>
             <gatsby_material_ui_components_1.Button className={classes.socialIcon} href="https://www.reddit.com/r/PolarBookshelf/" target="_blank">
