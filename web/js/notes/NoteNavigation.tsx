@@ -106,6 +106,7 @@ export const NoteNavigation = deepMemo((props: IProps) => {
     }, [handleKeyDownCapture, ref])
 
     useComponentWillUnmount(() => {
+
         if (ref) {
             ref.removeEventListener('keydown', handleKeyDownCapture, {capture: true})
         }

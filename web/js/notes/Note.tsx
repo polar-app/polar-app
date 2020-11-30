@@ -1,5 +1,5 @@
 import React from "react";
-import {NoteEditor} from "./NotesEditor";
+import {NoteEditor} from "./NoteEditor";
 import {NoteIDStr, useNotesStoresCallbacks, useNotesStore} from "./NotesStore";
 import {Notes} from "./Notes";
 import { deepMemo } from "../react/ReactUtils";
