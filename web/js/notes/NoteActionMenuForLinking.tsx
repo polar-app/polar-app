@@ -39,7 +39,7 @@ interface IProps {
     readonly children: JSX.Element;
 }
 
-export const NoteActionMenuForLinking = deepMemo((props: IProps) => {
+export const NoteActionMenuForLinking = deepMemo(function NoteActionMenuForLinking(props: IProps) {
 
     const itemsProvider = useItemsProvider();
 
@@ -55,4 +55,3 @@ export const NoteActionMenuForLinking = deepMemo((props: IProps) => {
 
 })
 
-NoteActionMenuForLinking.displayName='NoteActionMenuForLinking';

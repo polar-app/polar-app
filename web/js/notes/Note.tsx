@@ -13,7 +13,7 @@ interface IProps {
 
 }
 
-export const Note = deepMemo((props: IProps) => {
+export const Note = deepMemo(function Note(props: IProps) {
 
     useNotesStore(['index']);
     const {lookup} = useNotesStoresCallbacks();
@@ -43,4 +43,3 @@ export const Note = deepMemo((props: IProps) => {
     );
 });
 
-Note.displayName='Note';

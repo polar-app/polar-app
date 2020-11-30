@@ -49,7 +49,7 @@ interface IProps {
     readonly children: JSX.Element;
 }
 
-export const NoteActionMenuForCommands = deepMemo((props: IProps) => {
+export const NoteActionMenuForCommands = deepMemo(function NoteActionMenuForCommands(props: IProps) {
 
     const itemsProvider = useItemsProvider();
 

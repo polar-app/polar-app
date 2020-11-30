@@ -25,8 +25,6 @@ function useLinkNavigation() {
     const [ref, setRef] = React.useState<HTMLDivElement | null>(null);
 
     const linkLoaderRef = useLinkLoaderRef();
-    const history = useHistory();
-    const historyRef = useRefValue(history);
     const noteLinkLoader = useNoteLinkLoader();
 
     const handleClick = React.useCallback((event: MouseEvent) => {
@@ -79,7 +77,7 @@ function useLinkNavigation() {
 
 }
 
-function NoteEditorInner(props: IProps) {
+const NoteEditorInner = deepMemo(function NoteEditorInner(props: IProps) {
 
     const {updateNote} = useNotesStoresCallbacks()
     const setEditor = useSetEditorStore();
@@ -100,9 +98,9 @@ function NoteEditorInner(props: IProps) {
                                 onEditor={setEditor}/>
     );
 
-}
+});
 
-const NoteEditorWithStore = deepMemo((props: IProps) => {
+const NoteEditorWithStore = deepMemo(function NoteEditorWithStore(props: IProps) {
 
     const ref = useLinkNavigation();
 
@@ -120,7 +118,7 @@ const NoteEditorWithStore = deepMemo((props: IProps) => {
 
 });
 
-export const NoteEditor = deepMemo((props: IProps) => {
+export const NoteEditor = deepMemo(function NoteEditor(props: IProps) {
 
     return (
         <EditorStoreProvider initialValue={undefined}>

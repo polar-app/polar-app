@@ -69,7 +69,7 @@ interface IProps {
 
 // TODO: do not compute a prompt if the prev or next characters are non spaces
 
-export const NoteActionMenu = deepMemo((props: IProps) => {
+export const NoteActionMenu = deepMemo(function NoteActionMenu(props: IProps) {
 
     const {itemsProvider, trigger} = props;
 
@@ -395,8 +395,6 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
 
     );
 });
-
-NoteActionMenu.displayName='NoteActionMenu';
 
 function createTriggerHandler(trigger: TriggerStr) {
 

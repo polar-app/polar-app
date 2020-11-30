@@ -28,13 +28,17 @@ export const NoteNavigation = deepMemo((props: IProps) => {
 
     React.useEffect(() => {
 
-        if (activeRef.current === props.id) {
-            if (editor !== undefined) {
+        if (editor !== undefined) {
+
+            if (activeRef.current === props.id) {
                 console.log("Focusing editor");
                 editor.editing.view.focus();
             } else {
-                console.log("No editor: ")
+                // different editor
             }
+
+        } else {
+            console.log("No editor: ")
         }
 
     }, [active, activeRef, editor, props.id]);

@@ -2,12 +2,13 @@ import React from "react";
 import {MiddleDot} from "./MiddleDot";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
 import IconButton from "@material-ui/core/IconButton";
+import {deepMemo} from "../react/ReactUtils";
 
 interface IProps {
     readonly target: string;
 }
 
-export const NoteBullet = (props: IProps) => {
+export const NoteBullet = deepMemo(function NoteBullet(props: IProps) {
 
     const noteLinkLoader = useNoteLinkLoader();
 
@@ -16,7 +17,6 @@ export const NoteBullet = (props: IProps) => {
                     size="small">
             <MiddleDot/>
         </IconButton>
-    )
-}
+    );
+})
 
-NoteBullet.displayName='NoteBullet';
