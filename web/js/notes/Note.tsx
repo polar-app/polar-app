@@ -1,15 +1,16 @@
 import React from "react";
 import {NoteEditor} from "./NotesEditor";
-import {INote, NoteIDStr, useNotesStoresCallbacks, useNotesStore} from "./NotesStore";
+import {NoteIDStr, useNotesStoresCallbacks, useNotesStore} from "./NotesStore";
 import {Notes} from "./Notes";
 import { deepMemo } from "../react/ReactUtils";
-import {MiddleDot} from "./MiddleDot";
-import IconButton from "@material-ui/core/IconButton";
-import {useNoteLinkLoader} from "./NoteLinkLoader";
 import {NoteBullet} from "./ NoteBullet";
 
-interface IProps extends INote {
+interface IProps {
     readonly parent: NoteIDStr;
+    readonly id: NoteIDStr;
+    readonly content?: string;
+    readonly items?: ReadonlyArray<NoteIDStr>;
+
 }
 
 export const Note = deepMemo((props: IProps) => {

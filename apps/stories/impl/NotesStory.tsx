@@ -3,10 +3,16 @@ import '@ckeditor/ckeditor5-theme-lark/theme/theme.css';
 import '@ckeditor/ckeditor5-theme-lark';
 import {INote, NotesStoreProvider, useNotesStoresCallbacks, useNotesStore} from '../../../web/js/notes/NotesStore';
 import {NotesRouter} from "../../../web/js/notes/NotesRouter";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import { CKEditor5AppRoot } from './ckeditor5/CKEditor5AppRoot';
+
+const now = ISODateTimeStrings.create();
 
 const notes: ReadonlyArray<INote> = [
     {
         id: '102',
+        created: now,
+        updated: now,
         name: "World War II",
         items: [
             '103',
@@ -16,24 +22,34 @@ const notes: ReadonlyArray<INote> = [
     },
     {
         id: '100',
+        created: now,
+        updated: now,
         content: 'World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world\'s countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.',
     },
     {
         id: '103',
+        created: now,
+        updated: now,
         content: '[Lasted](https://www.example.com) from 1939 to 1945',
     },
     {
         id: '104',
+        created: now,
+        updated: now,
         content: 'Axis Powers: Germany, Italy, Japan',
     },
     {
         id: '108',
+        created: now,
+        updated: now,
         name: "Russia",
         items: [
         ]
     },
     {
         id: '109',
+        created: now,
+        updated: now,
         name: "Canada",
         items: [
             '111'
@@ -41,11 +57,15 @@ const notes: ReadonlyArray<INote> = [
     },
     {
         id: '111',
+        created: now,
+        updated: now,
         content: 'Canada is north of the United States',
     },
     // FIXME: make text references NODE IDs...
     {
         id: '105',
+        created: now,
+        updated: now,
         content: 'Allied Powers: United States, United Kingdom, [[Canada]], [[Russia]].',
         links: ['109', '108'],
         items: [
@@ -54,10 +74,14 @@ const notes: ReadonlyArray<INote> = [
     },
     {
         id: '106',
+        created: now,
+        updated: now,
         content: 'Lead by Franklin D. Roosevelt, Winston Churchill, and Joseph Stalin ',
     },
     {
         id: '107',
+        created: now,
+        updated: now,
         name: "Germany",
         links: ['102'],
         items: [
@@ -66,6 +90,8 @@ const notes: ReadonlyArray<INote> = [
     },
     {
         id: '110',
+        created: now,
+        updated: now,
         content: 'Germany Germany (German: Deutschland, German pronunciation: [ˈdɔʏtʃlant]), officially the Federal Republic of Germany (German: Bundesrepublik Deutschland, About this soundlisten),[e] is a country in Central and Western Europe and one of the major participants of [[World War II]]',
         links: [
             '100'
@@ -134,11 +160,13 @@ const BasicNotesDataSet = (props: BasicNotesDataSetProps) => {
 export const NotesStory = () => {
 
     return (
-        <NotesStoreProvider>
-            <BasicNotesDataSet>
-                <NotesInner/>
-            </BasicNotesDataSet>
-        </NotesStoreProvider>
+        <CKEditor5AppRoot>
+            <NotesStoreProvider>
+                <BasicNotesDataSet>
+                    <NotesInner/>
+                </BasicNotesDataSet>
+            </NotesStoreProvider>
+        </CKEditor5AppRoot>
     );
 
 }

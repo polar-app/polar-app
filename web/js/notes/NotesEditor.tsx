@@ -79,16 +79,18 @@ function useLinkNavigation() {
 
 }
 
-const NoteEditorInner = deepMemo((props: IProps) => {
+function NoteEditorInner(props: IProps) {
 
     const {updateNote} = useNotesStoresCallbacks()
     const setEditor = useSetEditorStore();
 
+    // FIXME: move this into a central location for conversion of markdown...
     const wikiLinkContent = React.useMemo(() => WikiLinks.escape(props.content || ''), [props.content])
 
     const handleChange = React.useCallback((content: string) => {
         updateNote(props.id, content);
 
+        // FIXME: add this back in...
         // updateNote(props.id, WikiLinks.unescape(content));
     }, [props.id, updateNote]);
 
@@ -98,7 +100,7 @@ const NoteEditorInner = deepMemo((props: IProps) => {
                                 onEditor={setEditor}/>
     );
 
-})
+}
 
 const NoteEditorWithStore = deepMemo((props: IProps) => {
 

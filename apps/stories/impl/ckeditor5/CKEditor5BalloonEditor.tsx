@@ -161,17 +161,17 @@ interface IProps {
     readonly noToolbar?: boolean;
 }
 
-export const CKEditor5BalloonEditor = deepMemo((props: IProps) => {
+export const CKEditor5BalloonEditor = deepMemo(function CKEditor5BalloonEditor(props: IProps) {
 
-    const content = React.useMemo<HTMLStr>(() => markdown2html(props.content), [props.content]);
+    // we only need to convert to markdown on component startup.  This component
+    // CAN NOT be reloaded during react re-renders so we have to give it the
+    // content once and then have it do callbacks.
 
-    const handleChange = React.useCallback((content: HTMLStr) => {
-        props.onChange(html2markdown(content));
-    }, [props]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const content = React.useMemo<HTMLStr>(() => markdown2html(props.content), []);
 
     return (
         <>
-            <CKEditor5GlobalCss/>
             {/*<CKEditorContext context={ Context }>*/}
 
                 <CKEditor
@@ -188,8 +188,12 @@ export const CKEditor5BalloonEditor = deepMemo((props: IProps) => {
                     } }
                     onChange={ ( event: any, editor: any ) => {
                         const data = editor.getData();
-                        // console.log( { event, editor, data } );
-                        handleChange(data);
+
+                        // WARN: do not use a hook for this because ckeditor
+                        // won't properly invoke it.
+
+                        props.onChange(html2markdown(data));
+
                     } }
                     onBlur={ ( event: any, editor: ckeditor5.IEditor ) => {
                         // console.log( 'Blur.', editor );

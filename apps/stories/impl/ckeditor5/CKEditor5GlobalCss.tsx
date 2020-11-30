@@ -2,8 +2,7 @@ import * as React from 'react';
 import withStyles from "@material-ui/core/styles/withStyles";
 import useTheme from "@material-ui/core/styles/useTheme";
 
-const CKEditor5GlobalCssStyles = withStyles(() => {
-    const theme = useTheme();
+const CKEditor5GlobalCssStyles = withStyles((theme) => {
 
     return {
         // @global is handled by jss-plugin-global.
