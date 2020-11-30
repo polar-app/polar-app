@@ -200,8 +200,11 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
                 return;
             }
 
+            const now = ISODateTimeStrings.create();
+
             const newNote: INote = {
                 ...note,
+                updated: now,
                 content
             };
 
@@ -250,8 +253,11 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
                     return newArr;
                 }
 
+                const now = ISODateTimeStrings.create();
+
                 const mutatedParentNode = {
                     ...parentNote,
+                    updated: now,
                     items: remove(parentNote.items!, siblingIndex)
                 }
 
@@ -259,6 +265,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
                 const mutatedNewParentNode = {
                     ...newParentNode,
+                    updated: now,
                     items: [
                         ...(newParentNode.items || []),
                         id
