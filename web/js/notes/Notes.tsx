@@ -22,8 +22,7 @@ export const Notes = deepMemo(function Notes(props: NotesProps) {
                 {props.notes.map((note) => (
                     <Note key={note.id}
                           parent={props.parent}
-                          id={note.id}
-                          content={note.content}/>))}
+                          id={note.id}/>))}
             </>
         </UL>
 

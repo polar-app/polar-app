@@ -9,8 +9,6 @@ import {useLifecycleTracer} from "../hooks/ReactHooks";
 interface IProps {
     readonly parent: NoteIDStr;
     readonly id: NoteIDStr;
-    readonly content?: string;
-    readonly items?: ReadonlyArray<NoteIDStr>;
 
 }
 
@@ -18,10 +16,13 @@ export const Note = deepMemo(function Note(props: IProps) {
 
     useLifecycleTracer('Note');
 
-    useNotesStore(['index']);
+    const {id} = props;
+    const {index} = useNotesStore(['index']);
     const {lookup} = useNotesStoresCallbacks();
 
-    const notes = lookup(props.items || []);
+    const note = index[id];
+
+    const notes = lookup(note.items || []);
 
     return (
         <>
@@ -37,7 +38,7 @@ export const Note = deepMemo(function Note(props: IProps) {
 
                 </div>
 
-                <NoteEditor parent={props.parent} id={props.id} content={props.content}/>
+                <NoteEditor parent={props.parent} id={props.id} />
 
             </div>
 

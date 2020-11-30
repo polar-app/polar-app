@@ -1,7 +1,7 @@
 import React from "react";
 import {CKEditor5BalloonEditor} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
 import {NoteNavigation} from "./NoteNavigation";
-import {NoteIDStr, useNotesStoresCallbacks} from "./NotesStore";
+import {NoteIDStr, useNotesStore, useNotesStoresCallbacks} from "./NotesStore";
 import {deepMemo} from "../react/ReactUtils";
 import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
@@ -16,7 +16,6 @@ import {useLifecycleTracer} from "../hooks/ReactHooks";
 interface IProps {
     readonly parent: NoteIDStr;
     readonly id: NoteIDStr;
-    readonly content: string | undefined;
 }
 
 function useLinkNavigation() {
@@ -78,11 +77,18 @@ function useLinkNavigation() {
 
 const NoteEditorInner = deepMemo(function NoteEditorInner(props: IProps) {
 
+    useLifecycleTracer('NoteEditorInner');
+
+    const {id} = props;
+    const {index} = useNotesStore(['index']);
     const {updateNote} = useNotesStoresCallbacks()
     const setEditor = useSetEditorStore();
 
+    const note = index[id];
+    const {content} = note;
+
     // FIXME: move this into a central location for conversion of markdown...
-    const wikiLinkContent = React.useMemo(() => WikiLinks.escape(props.content || ''), [props.content])
+    const wikiLinkContent = React.useMemo(() => WikiLinks.escape(content || ''), [content])
 
     const handleChange = React.useCallback((content: string) => {
         updateNote(props.id, content);
