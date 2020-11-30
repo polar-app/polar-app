@@ -16,7 +16,7 @@ export namespace GPTCompletionResponses {
         const choice = gptResponse.choices[0];
 
         function parseFront() {
-            return choice.text.substring(0, choice.text.indexOf('A: ')).trim();
+            return choice.text.substring(0, choice.text.indexOf('AAA: ')).trim();
         }
 
         function parseBack() {

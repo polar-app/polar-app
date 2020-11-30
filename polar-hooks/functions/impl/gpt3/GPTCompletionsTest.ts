@@ -6,6 +6,37 @@ xdescribe('GPTCompletions', function() {
 
     this.timeout(30000);
 
+    it("A vs AAA bug 1", async function() {
+
+        const request: AutoFlashcards.AutoFlashcardRequest = {
+            query_text: "A Borg job’s properties include its name, owner, and the number of tasks it has."
+        }
+
+        // FIXME: this is non-deterministic in results form GPT-3
+
+        assertJSON(await GPTCompletions.exec(request), {
+            "back": "Name, owner, and the number of tasks it has",
+            "front": "What is a Borg job’s properties?"
+        });
+
+    });
+
+    it("A vs AAA bug 2", async function() {
+
+        const request: AutoFlashcards.AutoFlashcardRequest = {
+            query_text: "Borg provides three main benefits: it (1) hides the details of resource management and failure handling so its users can focus on application development instead; (2) operates with very high reliability and availability, and supports applica- tions that do the same; and (3) lets us run workloads across tens of thousands of machines effectively."
+        }
+
+        // FIXME: this is non-deterministic in results form GPT-3
+
+        assertJSON(await GPTCompletions.exec(request), {
+            "back": "1. Hides the details of resource management and failure handling so its users can focus on application development instead; 2. Operates with very high reliability and availability, and supports applications that do the same; and 3. Lets us run workloads across tens of thousands of machines effectively.\n",
+            "front": "What are the three main benefits of Borg?"
+        });
+
+    });
+
+
     it("test gpt3 fc 1", async function() {
 
         const request: AutoFlashcards.AutoFlashcardRequest = {
@@ -110,8 +141,8 @@ xdescribe('GPTCompletions', function() {
         }
 
         assertJSON(await GPTCompletions.exec(request), {
-            "front": "Who invented Cold Brew coffee?",
-            "back": "Michael Scott",
+            "back": "1776",
+            "front": "When did Michael Scott invent Cold Brew coffee?"
         });
 
     });
