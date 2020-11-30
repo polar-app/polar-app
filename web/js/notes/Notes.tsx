@@ -20,7 +20,7 @@ export const Notes = deepMemo(function Notes(props: NotesProps) {
         <UL style={{flexGrow: 1}} className="Notes">
             <>
                 {props.notes.map((note) => (
-                    <Note key={`${note.id}:${note.updated}`}
+                    <Note key={note.id}
                           parent={props.parent}
                           id={note.id}
                           content={note.content}/>))}

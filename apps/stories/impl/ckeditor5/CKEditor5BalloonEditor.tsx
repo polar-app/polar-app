@@ -11,6 +11,7 @@ import markdown2html = MarkdownToHTML.markdown2html;
 import {HTMLStr, MarkdownStr} from "polar-shared/src/util/Strings";
 import {HTMLToMarkdown} from "../../../../../polar-app-public/polar-markdown-parser/src/HTMLToMarkdown";
 import html2markdown = HTMLToMarkdown.html2markdown;
+import {useLifecycleTracer} from "../../../../web/js/hooks/ReactHooks";
 
 export namespace ckeditor5 {
 
@@ -161,7 +162,9 @@ interface IProps {
     readonly noToolbar?: boolean;
 }
 
-export const CKEditor5BalloonEditor = deepMemo(function CKEditor5BalloonEditor(props: IProps) {
+export const CKEditor5BalloonEditor = React.memo(function CKEditor5BalloonEditor(props: IProps) {
+
+    useLifecycleTracer('CKEditor5BalloonEditor');
 
     // we only need to convert to markdown on component startup.  This component
     // CAN NOT be reloaded during react re-renders so we have to give it the
@@ -169,6 +172,8 @@ export const CKEditor5BalloonEditor = deepMemo(function CKEditor5BalloonEditor(p
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const content = React.useMemo<HTMLStr>(() => markdown2html(props.content), []);
+
+    console.log("FIXME: rendering");
 
     return (
         <>

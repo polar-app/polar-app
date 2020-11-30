@@ -1,5 +1,6 @@
 import * as React from "react";
 import deepEqual from "deep-equal";
+import {useComponentDidMount, useComponentWillUnmount} from "./ReactLifecycleHooks";
 
 /**
  * Calls a hook function, but then wraps it in a ref so that we can always
@@ -51,6 +52,18 @@ export function useRefValue<V>(value: V) {
     const ref = React.useRef(value);
     ref.current = value;
     return ref;
+}
+
+export function useLifecycleTracer(name: string) {
+
+    useComponentDidMount(() => {
+        console.log("componentDidMount:" + name);
+    })
+
+    useComponentWillUnmount(() => {
+        console.log("componentWillUnmount:" + name);
+    })
+
 }
 
 function pprint(value: any) {

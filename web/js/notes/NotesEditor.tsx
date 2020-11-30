@@ -8,11 +8,10 @@ import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 import {EditorStoreProvider, useSetEditorStore} from "./EditorStoreProvider";
 import {NoteActionMenuForCommands} from "./NoteActionMenuForCommands";
 import {Arrays} from "polar-shared/src/util/Arrays";
-import { useHistory } from "react-router-dom";
-import {useRefValue} from "../hooks/ReactHooks";
 import { NoteActionMenuForLinking } from "./NoteActionMenuForLinking";
 import {WikiLinks} from "./WikiLinks";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
+import {useLifecycleTracer} from "../hooks/ReactHooks";
 
 interface IProps {
     readonly parent: NoteIDStr;
@@ -102,6 +101,8 @@ const NoteEditorInner = deepMemo(function NoteEditorInner(props: IProps) {
 
 const NoteEditorWithStore = deepMemo(function NoteEditorWithStore(props: IProps) {
 
+    useLifecycleTracer('NoteEditorWithStore');
+
     const ref = useLinkNavigation();
 
     return (
@@ -119,6 +120,8 @@ const NoteEditorWithStore = deepMemo(function NoteEditorWithStore(props: IProps)
 });
 
 export const NoteEditor = deepMemo(function NoteEditor(props: IProps) {
+
+    useLifecycleTracer('NoteEditor');
 
     return (
         <EditorStoreProvider initialValue={undefined}>

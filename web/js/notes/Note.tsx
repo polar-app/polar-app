@@ -4,6 +4,7 @@ import {NoteIDStr, useNotesStoresCallbacks, useNotesStore} from "./NotesStore";
 import {Notes} from "./Notes";
 import { deepMemo } from "../react/ReactUtils";
 import {NoteBullet} from "./ NoteBullet";
+import {useLifecycleTracer} from "../hooks/ReactHooks";
 
 interface IProps {
     readonly parent: NoteIDStr;
@@ -14,6 +15,8 @@ interface IProps {
 }
 
 export const Note = deepMemo(function Note(props: IProps) {
+
+    useLifecycleTracer('Note');
 
     useNotesStore(['index']);
     const {lookup} = useNotesStoresCallbacks();
