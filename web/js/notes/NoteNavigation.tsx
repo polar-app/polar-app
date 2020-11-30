@@ -63,6 +63,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
         switch (event.domEvent.key) {
 
             case 'ArrowUp':
+                console.log('FIXME: handling ArrowUp');
                 abortEvent();
 
                 navPrev(props.parent, props.id);
@@ -70,20 +71,16 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
                 break;
 
             case 'ArrowDown':
+                console.log('FIXME: handling ArrowDown');
+
                 abortEvent();
 
                 navNext(props.parent, props.id);
 
                 break;
 
-            case 'Enter':
-                console.log("FIXME: enter");
-                abortEvent();
-
-                createNewNote(props.parent, props.id);
-                break;
-
             case 'Tab':
+                console.log('FIXME: handling Tab');
                 abortEvent();
 
                 doIndent(props.id, props.parent);
@@ -94,13 +91,22 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
         }
 
-    }, [createNewNote, doIndent, navNext, navPrev, props.id, props.parent]);
+    }, [doIndent, navNext, navPrev, props.id, props.parent]);
 
-    editor?.editing.view.document.on('keydown', (data, event) => {
-        console.log("FIXME: data: ", data);
-        console.log("FIXME: event: ", event);
-        handleKeyDown(data, event);
-    });
+    if (editor) {
+
+        editor?.editing.view.document.on('keydown', (data, event) => {
+            handleKeyDown(data, event);
+        });
+
+        (editor as any).editing.view.document.on('enter', (eventInfo: any) => {
+
+            eventInfo.stop();
+            createNewNote(props.parent, props.id);
+
+        });
+
+    }
 
     return (
         <ClickAwayListener onClickAway={handleClickAway}>

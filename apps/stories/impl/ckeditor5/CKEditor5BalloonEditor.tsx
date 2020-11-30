@@ -203,6 +203,12 @@ export const CKEditor5BalloonEditor = React.memo(function CKEditor5BalloonEditor
                         // You can store the "editor" and use when it is needed.
                         // console.log( 'Editor is ready to use!', editor );
                         props.onEditor(editor);
+
+                        // (editor as any).keystrokes.set( 'Enter', ( data: any, stop: any ) => {
+                        //     console.log( data );
+                        //     stop(); // Works like data.preventDefault() + evt.stop()
+                        // });
+
                     } }
                     onChange={ ( event: any, editor: any ) => {
                         const data = editor.getData();
