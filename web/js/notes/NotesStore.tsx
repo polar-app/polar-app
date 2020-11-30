@@ -8,10 +8,10 @@ import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/I
 export type NoteIDStr = IDStr;
 export type NoteNameStr = string;
 
-export type NotesIndex = {[id: string /* NoteIDStr */]: INote};
-export type NotesIndexByName = {[name: string /* NoteNameStr */]: INote};
+export type NotesIndex = Readonly<{[id: string /* NoteIDStr */]: INote}>;
+export type NotesIndexByName = Readonly<{[name: string /* NoteNameStr */]: INote}>;
 
-export type ReverseNotesIndex = {[id: string /* NoteIDStr */]: ReadonlyArray<NoteIDStr>};
+export type ReverseNotesIndex = Readonly<{[id: string /* NoteIDStr */]: ReadonlyArray<NoteIDStr>}>;
 
 export interface INote {
 
@@ -219,7 +219,8 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
             const store = storeProvider();
 
-            const index = {...store.index};
+            const {index} = store;
+
             const note = index[id];
 
             if (! note) {
@@ -272,17 +273,15 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
                     ]
                 }
 
-                // *** write these to the new store...
-                index[mutatedParentNode.id] = mutatedParentNode;
-                index[mutatedNewParentNode.id] = mutatedNewParentNode;
-
-                setStore({...store, index});
+                doPut([mutatedParentNode, mutatedNewParentNode]);
 
             }
 
         }
 
         function createNewNote(parent: NoteIDStr, child: NoteIDStr) {
+
+            console.log("Create new note...")
 
             const store = storeProvider();
             const index = {...store.index};
@@ -311,18 +310,13 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             // but it's a copy of the original to begin with.
             items.splice(childIndexPosition + 1, 0, newNote.id);
 
-            index[parentNote.id] = {
+            const newParentNote = {
                 ...parentNote,
-                items
+                updated: now,
+                items: [...items]
             }
 
-            index[newNote.id] = newNote;
-
-            setStore({
-                ...store,
-                index,
-                active: newNote.id
-            });
+            doPut([newParentNote, newNote]);
 
         }
 
