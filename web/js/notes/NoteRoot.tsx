@@ -53,3 +53,5 @@ export const NoteRoot = deepMemo((props: IProps) => {
     );
 
 });
+
+NoteRoot.displayName='NoteRoot';

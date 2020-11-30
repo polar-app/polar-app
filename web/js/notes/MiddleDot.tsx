@@ -28,3 +28,5 @@ export const MiddleDot = deepMemo((props: IProps) => {
         </div>
     )
 });
+
+MiddleDot.displayName='MiddleDot';

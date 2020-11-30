@@ -3,6 +3,7 @@ import {Provider} from "polar-shared/src/util/Providers";
 import {createObservableStore, SetStore} from "../react/store/ObservableStore";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 export type NoteIDStr = IDStr;
 export type NoteNameStr = string;
@@ -15,6 +16,10 @@ export type ReverseNotesIndex = {[id: string /* NoteIDStr */]: ReadonlyArray<Not
 export interface INote {
 
     readonly id: NoteIDStr;
+
+    readonly created: ISODateTimeString;
+
+    readonly updated: ISODateTimeString;
 
     /**
      * The sub-items of this node as node IDs.
@@ -287,9 +292,13 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
             const childIndexPosition = items.indexOf(child);
 
+            const now = ISODateTimeStrings.create()
+
             const newNote: INote = {
-                id
-            }
+                id,
+                created: now,
+                updated: now
+            };
 
             // this mutates the array under us and I don't necessarily like that
             // but it's a copy of the original to begin with.

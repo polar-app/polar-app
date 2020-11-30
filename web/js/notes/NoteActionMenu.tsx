@@ -396,6 +396,8 @@ export const NoteActionMenu = deepMemo((props: IProps) => {
     );
 });
 
+NoteActionMenu.displayName='NoteActionMenu';
+
 function createTriggerHandler(trigger: TriggerStr) {
 
     let last: string | undefined;

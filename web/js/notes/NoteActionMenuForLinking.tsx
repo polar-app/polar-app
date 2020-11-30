@@ -54,3 +54,5 @@ export const NoteActionMenuForLinking = deepMemo((props: IProps) => {
     );
 
 })
+
+NoteActionMenuForLinking.displayName='NoteActionMenuForLinking';

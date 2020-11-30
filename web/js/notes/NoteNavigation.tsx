@@ -116,3 +116,5 @@ export const NoteNavigation = deepMemo((props: IProps) => {
     );
 
 });
+
+NoteNavigation.displayName='NoteNavigation';

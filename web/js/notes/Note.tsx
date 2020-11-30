@@ -41,3 +41,5 @@ export const Note = deepMemo((props: IProps) => {
         </>
     );
 });
+
+Note.displayName='Note';

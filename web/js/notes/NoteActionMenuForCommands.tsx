@@ -1,7 +1,6 @@
 import React from "react";
 import {ActionMenuItemProvider, IActionMenuItem, NoteActionMenu} from "./NoteActionMenu";
 import { deepMemo } from "../react/ReactUtils";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {NoteIDStr} from "./NotesStore";
 
 function useItemsProvider(): ActionMenuItemProvider {

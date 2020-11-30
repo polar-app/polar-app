@@ -18,3 +18,5 @@ export const NoteBullet = (props: IProps) => {
         </IconButton>
     )
 }
+
+NoteBullet.displayName='NoteBullet';

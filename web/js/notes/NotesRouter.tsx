@@ -16,3 +16,5 @@ export const NotesRouter = deepMemo(() => {
     )
 
 });
+
+NotesRouter.displayName='NotesRouter';
