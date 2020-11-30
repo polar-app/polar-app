@@ -21,7 +21,7 @@ export namespace GPTCompletionResponses {
 
         function parseBack() {
 
-            const prefix = 'A: ';
+            const prefix = 'AAA: ';
 
             const prefixStart = choice.text.indexOf(prefix);
 

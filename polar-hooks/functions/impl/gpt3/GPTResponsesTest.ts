@@ -8,7 +8,7 @@ describe('GPTResponses', function() {
 
 		const completionResponse: GPTCompletionResponse = {
 			choices: [{
-				text: ' Who was president of the US in 1963?\nA: Taylor Swift\n'
+				text: ' Who was president of the US in 1963?\nAAA: Taylor Swift\n'
 			}]
 		};
 

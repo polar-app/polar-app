@@ -17,27 +17,27 @@ export namespace GPTCompletions {
 
         const prompt = `
 Text: Human life expectancy in the US is 78 years which is 2 years less than in Germany.
-Q: What is human life expectancy in the US?
-A: 78 years
+QQQ: What is human life expectancy in the US?
+AAA: 78 years
 -----
 
 The US has had 45 presidents and Dwight D. Eisenhower was president in 1955.
-Q: Who was president of the US in 1955?
-A: Dwight D. Eisenhower
+QQQ: Who was president of the US in 1955?
+AAA: Dwight D. Eisenhower
 -----
 
 Text: The United States was founded in 1776. Its population is 320 million.
-Q: When was the United States founded?
-A: 320 million
+QQQ: When was the United States founded?
+AAA: 320 million
 -----
 
 Text: Dwight D. Eisenhower was a US General and the president of the United States in 1955 and had three wives.
-Q: How many wives did Dwight D. Eisenhower have?
-A: Three
+QQQ: How many wives did Dwight D. Eisenhower have?
+AAA: Three
 -----
 
 Text: ${request.query_text.trim()}
-Q:`
+QQQ:`
 
         const body: any = {
             "max_tokens": 200,
