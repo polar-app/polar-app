@@ -5,6 +5,9 @@ import {useRefValue} from "../hooks/ReactHooks";
 import { deepMemo } from '../react/ReactUtils';
 import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 import { useEditorStore } from './EditorStoreProvider';
+import {ckeditor5} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
+import IEventData = ckeditor5.IEventData;
+import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 
 interface IProps {
     readonly parent: NoteIDStr;
@@ -12,7 +15,7 @@ interface IProps {
     readonly children: JSX.Element;
 }
 
-export const NoteNavigation = deepMemo((props: IProps) => {
+export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
     const editor = useEditorStore();
 
@@ -47,24 +50,43 @@ export const NoteNavigation = deepMemo((props: IProps) => {
         setActive(props.id);
     }, [props.id, setActive]);
 
-    const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
+    const handleKeyDown = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
 
-        switch (event.key) {
+        console.log("FIXME: ", event);
+
+        function abortEvent() {
+            event.domEvent.stopPropagation();
+            event.domEvent.preventDefault();
+            eventData.stop();
+        }
+
+        switch (event.domEvent.key) {
 
             case 'ArrowUp':
-                event.stopPropagation();
-                event.preventDefault();
+                abortEvent();
 
                 navPrev(props.parent, props.id);
 
                 break;
 
             case 'ArrowDown':
-                event.stopPropagation();
-                event.preventDefault();
+                abortEvent();
 
                 navNext(props.parent, props.id);
 
+                break;
+
+            case 'Enter':
+                console.log("FIXME: enter");
+                abortEvent();
+
+                createNewNote(props.parent, props.id);
+                break;
+
+            case 'Tab':
+                abortEvent();
+
+                doIndent(props.id, props.parent);
                 break;
 
             default:
@@ -72,54 +94,20 @@ export const NoteNavigation = deepMemo((props: IProps) => {
 
         }
 
-    }, [navNext, navPrev, props.id, props.parent]);
+    }, [createNewNote, doIndent, navNext, navPrev, props.id, props.parent]);
 
-    const handleKeyDownCapture =  React.useCallback((event: KeyboardEvent) => {
-
-        // FIXME: allow shift + enter so that the user can do multiple lines themselves.
-
-        if (event.key === 'Enter') {
-            event.stopPropagation();
-            event.preventDefault();
-            createNewNote(props.parent, props.id);
-        }
-
-        if (event.key === 'Tab') {
-            event.stopPropagation();
-            event.preventDefault();
-            doIndent(props.id, props.parent);
-        }
-
-        // FIXME:
-
-        // FIXME: delete should remove the node if the current node text is empty
-
-
-    }, [createNewNote, doIndent, props.id, props.parent]);
-
-    React.useEffect(() => {
-
-        if (ref) {
-            ref.addEventListener('keydown', handleKeyDownCapture, {capture: true})
-        }
-
-    }, [handleKeyDownCapture, ref])
-
-    useComponentWillUnmount(() => {
-
-        if (ref) {
-            ref.removeEventListener('keydown', handleKeyDownCapture, {capture: true})
-        }
+    editor?.editing.view.document.on('keydown', (data, event) => {
+        console.log("FIXME: data: ", data);
+        console.log("FIXME: event: ", event);
+        handleKeyDown(data, event);
     });
 
     return (
         <ClickAwayListener onClickAway={handleClickAway}>
-            <div ref={setRef} onClick={handleClick} onKeyDown={handleKeyDown}>
+            <div ref={setRef} onClick={handleClick}>
                 {ref !== null && props.children}
             </div>
         </ClickAwayListener>
     );
 
 });
-
-NoteNavigation.displayName='NoteNavigation';

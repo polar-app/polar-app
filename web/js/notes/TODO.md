@@ -10,6 +10,12 @@
     - /table support
     - exports of data? 
 
+- 
+- main tasks:
+    - 
+    - we should work through now is to get the workflowy-style navigation working
+    - fix images
+
 
 
 - don't keep the [[]] IN the DOM... show it via CSS with before and after 

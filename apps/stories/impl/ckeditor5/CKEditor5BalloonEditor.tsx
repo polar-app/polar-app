@@ -17,6 +17,7 @@ export namespace ckeditor5 {
 
     export interface IView {
         readonly focus: () => void;
+        readonly document: IDocument;
     }
 
     export interface IEditing {
@@ -89,9 +90,20 @@ export namespace ckeditor5 {
         readonly sourceElement: HTMLElement;
     }
 
+    export interface IKeyPressEvent {
+        readonly domEvent: KeyboardEvent;
+    }
+
+    export interface IEventData {
+        readonly stop: () => void;
+    }
+
     // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_document-Document.html
     export interface IDocument {
         readonly selection: ISelection;
+
+        readonly on: (eventName: 'keydown', handler: (data: IEventData, event: IKeyPressEvent) => void) => void;
+
     }
 
     export interface IRange {
@@ -151,6 +163,7 @@ export namespace ckeditor5 {
         readonly editing: IEditing;
         readonly model: IModel;
         readonly commands: ICommands;
+
     }
 
 }
