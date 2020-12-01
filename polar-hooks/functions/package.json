@@ -59,7 +59,8 @@
     "stripe": "=8.119.0",
     "typescript": "3.9.5",
     "uuid": "3.3.3",
-    "yargs": "^15.3.1"
+    "yargs": "^15.3.1",
+    "@amplitude/node": "^1.1.0"
   },
   "devDependencies": {
     "@types/chai": "4.2.11",
