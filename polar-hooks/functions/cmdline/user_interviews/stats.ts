@@ -1,4 +1,4 @@
-import {Stats} from "../../impl/interviews/Stats";
+import {Stats} from "../../impl/user_interviews/Stats";
 
 async function exec() {
 

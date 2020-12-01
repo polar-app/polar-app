@@ -1,5 +1,5 @@
-import {UserInterviewer} from "../../impl/interviews/UserInterviewer";
-import {FromOpts} from "../../impl/interviews/UserInterviewMessages";
+import {UserInterviewer} from "../../impl/user_interviews/UserInterviewer";
+import {FromOpts} from "../../impl/user_interviews/UserInterviewMessages";
 
 async function exec() {
 
