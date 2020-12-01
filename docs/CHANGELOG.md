@@ -1,3 +1,6 @@
+- added more aggressive sentry exception reporting in order to detect and handle
+  bugs more aggressively.
+ 
 # 2.0.86
 
 - Added back in a logs capture system so that the user can copy their logs and
