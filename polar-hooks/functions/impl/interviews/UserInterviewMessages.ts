@@ -68,7 +68,7 @@ export class StandardUserInterviewMessageFactory implements UserInterviewMessage
 
         return `Hey ${this.messageOpts.to.firstName},
 
-I'm ${this.messageOpts.from.firstName}, one of the co-founders of Polar..  
+I'm ${this.messageOpts.from.firstName}, one of the founders of Polar..  
 
 I need a favor! Could I interview you about how you use Polar?
 
@@ -113,7 +113,7 @@ export class ChurnedUserInterviewMessageFactory implements UserInterviewMessageF
 
         return `Hey ${this.messageOpts.to.firstName},
 
-I'm ${this.messageOpts.from.firstName}, the author of Polar and I need your help.  
+I'm ${this.messageOpts.from.firstName}, one of the founders of Polar and I need your help.  
 
 It looks like you tried Polar but didn't continue to use the product.
 
