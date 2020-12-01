@@ -28,34 +28,46 @@ function createDelegate(): IAnalytics {
 
 const delegate = createDelegate();
 
-export class Analytics {
+export namespace Analytics {
 
-    public static event(event: IEventArgs): void {
+    export function event(event: IEventArgs): void {
         delegate.event(event);
     }
 
-    public static event2(event: string, data?: any): void {
+    export function event2(event: string, data?: any): void {
         delegate.event2(event, data);
     }
 
-    public static identify(userId: string): void {
+    export function identify(userId: string): void {
         delegate.identify(userId);
     }
 
-    public static page(name: string): void {
+    export function page(name: string): void {
         delegate.page(name);
     }
 
-    public static traits(map: TraitsMap): void {
+    export function traits(map: TraitsMap): void {
         delegate.traits(map);
     }
 
-    public static version(version: string): void {
+    export function version(version: string): void {
         delegate.version(version);
     }
 
-    public static heartbeat(): void {
+    export function heartbeat(): void {
         delegate.heartbeat();
+    }
+
+    /**
+     * Action handler for the given delegate.
+     */
+    export function withEvent(event: IEventArgs) {
+
+        return (delegate: () => void) => {
+            Analytics.event(event);
+            delegate();
+        }
+
     }
 
 }

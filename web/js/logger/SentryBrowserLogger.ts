@@ -1,6 +1,7 @@
 import {ILogger} from 'polar-shared/src/logger/ILogger';
-
 import {captureException, init} from '@sentry/browser';
+import {Version} from "polar-shared/src/util/Version";
+import {Integrations} from "@sentry/tracing";
 
 let initialized: boolean = false;
 
@@ -15,6 +16,14 @@ function initWhenNecessary() {
         init({
             dsn: 'https://e44af9eaf40f42f096aaa00e59e276e2@o182611.ingest.sentry.io/5306375',
             // more options...
+
+            integrations: [new Integrations.BrowserTracing()],
+
+            release: Version.get(),
+            // Set tracesSampleRate to 1.0 to capture 100%
+            // of transactions for performance monitoring.
+            // We recommend adjusting this value in production
+            tracesSampleRate: 1.0,
         });
 
     } catch (e) {

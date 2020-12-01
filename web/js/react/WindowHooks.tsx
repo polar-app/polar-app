@@ -3,7 +3,6 @@ import {
     useComponentDidMount,
     useComponentWillUnmount
 } from "../hooks/ReactLifecycleHooks";
-import {Preconditions} from "polar-shared/src/Preconditions";
 
 interface WindowOpts {
     readonly win?: Window;
@@ -28,7 +27,11 @@ export function useWindowEventListener(name: WindowEventListenerName,
     };
 
     useComponentDidMount(() => {
-        winRef.current.addEventListener(name, delegate, listenerOpts);
+        if (winRef.current) {
+            winRef.current.addEventListener(name, delegate, listenerOpts);
+        } else {
+            console.warn("ComponentDidMount: No window ref")
+        }
     });
 
     useComponentWillUnmount(() => {
@@ -36,7 +39,7 @@ export function useWindowEventListener(name: WindowEventListenerName,
         if (winRef.current) {
             winRef.current.removeEventListener(name, delegate, listenerOpts);
         } else {
-            console.warn("No window ref");
+            console.warn("ComponentWillUnmount: No window ref");
         }
 
     });
