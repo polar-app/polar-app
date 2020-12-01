@@ -143,6 +143,7 @@ export interface UserInterviewMessage {
     readonly body: string;
 }
 
+// TODO: use UsersPersonas for this...
 export interface UserMeta {
     readonly firstName: string;
 }

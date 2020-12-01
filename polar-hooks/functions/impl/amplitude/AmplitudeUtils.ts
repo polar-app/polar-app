@@ -5,15 +5,19 @@ export namespace AmplitudeUtils {
 
     const client = Amplitude.init('c1374bb8854a0e847c0d85957461b9f0');
 
+    export interface IUser {
+        readonly uid?: string;
+    }
+
     export function getAmplitude() {
         return client;
     }
 
-    export function event2(event: string, data?: any): void {
+    export function event2(event: string, data?: any, user?: IUser): void {
         const standardEventProperties = createStandardEventsProperties();
         client.logEvent({
             event_type: event,
-            // user_id
+            user_id: user?.uid,
             event_properties: {
                 ...data,
                 ...standardEventProperties
