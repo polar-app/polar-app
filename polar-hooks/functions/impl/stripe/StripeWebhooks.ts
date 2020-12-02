@@ -6,6 +6,7 @@ import {Billing } from "polar-accounts/src/Billing";
 
 export namespace StripeWebhooks {
 
+    import V2PlanFree = Billing.V2PlanFree;
     export type EventType = 'customer.subscription.created' |
                             'customer.subscription.updated' |
                             'customer.subscription.deleted' |
@@ -67,7 +68,7 @@ export namespace StripeWebhooks {
     }
 
     async function doChangePlan(stripeMode: StripeMode,
-                                plan: Billing.Plan,
+                                plan: Billing.V2Plan,
                                 interval: Billing.Interval,
                                 customerID: string,
                                 subscriptionID: string | undefined) {
@@ -105,7 +106,7 @@ export namespace StripeWebhooks {
                         await doChangePlan(stripeMode, sub.plan, sub.interval, customerID, subscriptionID);
                         break;
                     case 'customer.subscription.deleted':
-                        await doChangePlan(stripeMode, 'free', 'month', customerID, subscriptionID);
+                        await doChangePlan(stripeMode, V2PlanFree, 'month', customerID, subscriptionID);
                         break;
 
                 }

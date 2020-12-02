@@ -45,7 +45,7 @@ export namespace Accounts {
 
     export async function changePlan(mode: StripeMode,
                                      customerID: string,
-                                     plan: Billing.Plan,
+                                     plan: Billing.V2Plan,
                                      interval: Billing.Interval) {
 
         const stripe = StripeUtils.getStripe(mode);

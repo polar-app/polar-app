@@ -1,11 +1,13 @@
 import {assert} from 'chai';
 import {Accounts} from "./Accounts";
+import {Billing} from "polar-accounts/src/Billing";
+import V2PlanPlus = Billing.V2PlanPlus;
 
 xdescribe('StripeWebhookFunction', function() {
 
     it("basic", async function() {
         this.timeout(5000);
-        await Accounts.changePlan('live',"cus_F9RB6dZIxRMZXj", "bronze", 'month');
+        await Accounts.changePlan('live',"cus_F9RB6dZIxRMZXj", V2PlanPlus, 'month');
 
         const account = await Accounts.get('burton@inputneuron.io');
 
