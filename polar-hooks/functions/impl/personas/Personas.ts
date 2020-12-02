@@ -1,6 +1,6 @@
 import {Arrays} from "polar-shared/src/util/Arrays";
 
-interface ILinks {
+interface IPersonaLinks {
     // the calendly for the user email for a user interview post subscription.
     readonly userInterviewForPro: string;
 }
@@ -9,8 +9,7 @@ export interface IPersona {
     readonly firstName: string;
     readonly role: 'founder',
     readonly email: string;
-    readonly links: ILinks;
-    // readonly
+    readonly links: IPersonaLinks;
 }
 
 export namespace Personas {
