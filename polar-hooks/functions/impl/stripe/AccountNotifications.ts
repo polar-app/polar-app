@@ -39,7 +39,10 @@ export namespace AccountNotifications {
                 text: body
             })
 
-            AmplitudeUtils.event2('AccountNotification.changePlan', {}, user);
+            AmplitudeUtils.event2('AccountNotification.changePlan', {
+                plan_level: to.plan.level,
+                plan_interval: to.interval
+            }, user);
 
         }
 
@@ -50,6 +53,9 @@ export namespace AccountNotifications {
 function createSubject(sub: V2Subscription, userPersona: IUserPersona): string {
     return `Hey ${userPersona.firstName}, Thanks for Buying Polar ${sub.plan.level}!`;
 }
+
+// TODO: calendly link
+//
 
 function createBody(sub: V2Subscription, persona: IPersona, userPersona: IUserPersona): string {
     return `Hey ${userPersona.firstName}!
