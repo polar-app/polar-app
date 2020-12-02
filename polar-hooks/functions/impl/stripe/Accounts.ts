@@ -45,8 +45,7 @@ export namespace Accounts {
 
     export async function changePlan(mode: StripeMode,
                                      customerID: string,
-                                     plan: Billing.V2Plan,
-                                     interval: Billing.Interval) {
+                                     to: Billing.V2Subscription) {
 
         const stripe = StripeUtils.getStripe(mode);
 
@@ -64,7 +63,7 @@ export namespace Accounts {
             throw new Error(msg);
         }
 
-        await changePlanViaEmail(email, customerID, plan, interval);
+        await changePlanViaEmail(email, customerID, to.plan, to.interval);
 
     }
 

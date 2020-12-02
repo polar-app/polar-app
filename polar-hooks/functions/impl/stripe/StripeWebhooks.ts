@@ -77,7 +77,7 @@ export namespace StripeWebhooks {
                                                           {id: customerID},
                                                           subscriptionID ? {except: subscriptionID} : undefined);
 
-        await Accounts.changePlan(stripeMode, customerID, plan, interval);
+        await Accounts.changePlan(stripeMode, customerID, {plan, interval});
 
     }
 

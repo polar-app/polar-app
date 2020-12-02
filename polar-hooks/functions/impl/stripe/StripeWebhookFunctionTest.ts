@@ -7,7 +7,7 @@ xdescribe('StripeWebhookFunction', function() {
 
     it("basic", async function() {
         this.timeout(5000);
-        await Accounts.changePlan('live',"cus_F9RB6dZIxRMZXj", V2PlanPlus, 'month');
+        await Accounts.changePlan('live',"cus_F9RB6dZIxRMZXj", {plan: V2PlanPlus, interval: 'month'});
 
         const account = await Accounts.get('burton@inputneuron.io');
 
