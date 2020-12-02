@@ -252,9 +252,5 @@ export abstract class AbstractAdvertisingPersistenceLayer extends AbstractPersis
         await this.delegate.deactivate();
     }
 
-    public getUserTagsDB(): Promise<UserTagsDB> {
-        return this.delegate.getUserTagsDB();
-    }
-
 }
 

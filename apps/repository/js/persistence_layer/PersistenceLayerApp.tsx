@@ -17,7 +17,6 @@ import {
     createContextMemo,
     useContextMemo
 } from "../../../../web/js/react/ContextMemo";
-import {PersistenceLayerMutator} from './PersistenceLayerMutator';
 import {Provider} from "polar-shared/src/util/Providers";
 import {
     BaseDocMetaLookupContext,
@@ -50,7 +49,6 @@ export interface IPersistenceLayerContext {
 export interface IPersistenceContext extends ITagsContext, IPersistenceLayerContext {
     readonly repoDocMetaLoader: RepoDocMetaLoader;
     readonly repoDocMetaManager: RepoDocMetaManager;
-    readonly persistenceLayerMutator: PersistenceLayerMutator;
     readonly persistenceLayerManager: PersistenceLayerManager;
 }
 
@@ -119,10 +117,6 @@ const UserTagsDataLoaderData = React.memo((props: IUserTagsDataLoaderDataProps) 
     const tagsProvider = props.tagsType === 'documents' ? docTags : annotationTags;
     const tagDescriptorsProvider = props.tagsType === 'documents' ? docTags : annotationTags;
 
-    const persistenceLayerMutator = new PersistenceLayerMutator(repoDocMetaManager,
-                                                                persistenceLayerProvider,
-                                                                tagsProvider);
-
     const persistenceContext: IPersistenceContext = {
         repoDocMetaLoader: props.repoDocMetaLoader,
         repoDocMetaManager: props.repoDocMetaManager,
@@ -131,9 +125,8 @@ const UserTagsDataLoaderData = React.memo((props: IUserTagsDataLoaderDataProps) 
         // docTagsProvider: docTags,
         // annotationTagsProvider: annotationTags,
         tagsProvider,
-        persistenceLayerMutator,
         persistenceLayerManager: props.persistenceLayerManager
-    }
+    };
 
     const persistenceLayerContext: IPersistenceLayerContext = {
         persistenceLayerProvider

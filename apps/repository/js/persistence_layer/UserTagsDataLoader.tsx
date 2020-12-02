@@ -23,3 +23,13 @@ export const UserTagsDataLoader = React.memo((props: IProps) => {
 
 })
 
+export function useUserTags() {
+
+    const prefs = usePrefsContext();
+
+    const userTagsDB = new UserTagsDB(prefs);
+    userTagsDB.init();
+
+    return userTagsDB;
+
+}

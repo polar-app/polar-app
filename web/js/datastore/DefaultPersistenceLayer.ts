@@ -35,7 +35,6 @@ import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {DocMetaTags} from "../metadata/DocMetaTags";
 import {UserTagsDB} from "./UserTagsDB";
 import {Latch} from "polar-shared/src/util/Latch";
-import {Analytics} from "../analytics/Analytics";
 import {GetFileOpts} from "polar-shared/src/datastore/IDatastore";
 
 const log = Logger.create();
@@ -326,17 +325,6 @@ export class DefaultPersistenceLayer extends AbstractPersistenceLayer implements
 
     public async deactivate() {
         await this.datastore.deactivate();
-    }
-
-    public async getUserTagsDB(): Promise<UserTagsDB> {
-
-        await this.initLatch.get();
-
-        if (! this.userTagsDB) {
-            throw new Error("No userTagsDB (initialized?)");
-        }
-
-        return this.userTagsDB!;
     }
 
 }

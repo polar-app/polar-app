@@ -18,7 +18,6 @@ import {FolderSelectionEvents} from "./FolderSelectionEvents";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Paths} from "polar-shared/src/util/Paths";
-import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
 import {BatchMutators} from "../BatchMutators";
 import TagID = Tags.TagID;
 import Selected = FolderSelectionEvents.Selected;
@@ -28,6 +27,7 @@ import {TRoot} from "../../../../web/js/ui/tree/TRoot";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {IAsyncTransaction} from "polar-shared/src/util/IAsyncTransaction";
 import {isPresent, Preconditions} from "polar-shared/src/Preconditions";
+import {useCreateTag, useDeleteTag} from "../persistence_layer/PersistenceLayerMutator2";
 
 export interface TagDescriptorSelected extends TagDescriptor {
     readonly selected: boolean
@@ -235,14 +235,8 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
     const dialogs = useDialogManager();
     const persistence = usePersistenceContext();
     const log = useLogger();
-
-    const persistenceLayerMutator = React.useMemo(() => {
-
-        return new PersistenceLayerMutator(repoDocMetaManager,
-                                           persistence.persistenceLayerProvider,
-                                           tagDescriptorsContext.tagDescriptorsProvider);
-
-    }, [repoDocMetaManager, persistence, tagDescriptorsContext]);
+    const createTag = useCreateTag();
+    const deleteTag = useDeleteTag();
 
     function doHookUpdate() {
 
@@ -369,12 +363,8 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
             const newTag = createNewTag();
 
             async function doHandle() {
-
-                const {persistenceLayerMutator} = persistence;
-                await persistenceLayerMutator.createTag(newTag);
-
+                await createTag(newTag);
                 dialogs.snackbar({message: `Tag '${newTag}' created successfully.`});
-
             }
 
             doHandle()
@@ -434,7 +424,7 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
                 Preconditions.assertPresent(tag, 'tag');
 
-                const deleteTagTransaction = persistenceLayerMutator.deleteTag(tag.id);
+                const deleteTagTransaction = deleteTag(tag.id);
 
                 function prepare() {
 
@@ -503,15 +493,14 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
             resetSelected
         };
 
-    }, [
+    }, [storeProvider,
         tagSidebarEventForwarder,
-        dialogs,
-        persistence,
-        log,
         mutator,
-        persistenceLayerMutator,
-        storeProvider,
-        setStore
+        setStore,
+        createTag,
+        dialogs,
+        log,
+        deleteTag
     ]);
 
 
