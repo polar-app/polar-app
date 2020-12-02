@@ -172,6 +172,31 @@ jobs:
             cat dist/public/repository-bundle.js | gzip -c > dist/public/repository-bundle.js.gz
             find dist/public/repository-bundle.js.gz -size +1300000c |tee /dev/stderr| egrep '.*'
 
+  build-site:
+    docker:
+      # specify the version you desire here
+      #
+      # all images and tags here:
+      #   https://circleci.com/docs/2.0/docker-image-tags.json
+      #
+      - image: circleci/node:14.9-buster
+
+    # Specify service dependencies here if necessary
+    # CircleCI maintains a library of pre-built images
+    # documented at https://circleci.com/docs/2.0/circleci-images/
+    # - image: circleci/mongo:3.4.4
+
+    working_directory: ~/repo
+
+    steps:
+      - build_setup
+
+      - run:
+          name: build and verify webapp
+          command: |
+            cd packages/polar-site2 && \
+            npm run-script dist
+
 executors:
   my-docker:
     docker:
@@ -198,6 +223,7 @@ workflows:
 #          executor: my-macos
 
       - build-webapp
+      - build-site
 
 #      - end2end:
 #          executor:
