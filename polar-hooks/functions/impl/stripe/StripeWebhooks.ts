@@ -68,8 +68,7 @@ export namespace StripeWebhooks {
     }
 
     async function doChangePlan(stripeMode: StripeMode,
-                                plan: Billing.V2Plan,
-                                interval: Billing.Interval,
+                                to: Billing.V2Subscription,
                                 customerID: string,
                                 subscriptionID: string | undefined) {
 
@@ -77,7 +76,7 @@ export namespace StripeWebhooks {
                                                           {id: customerID},
                                                           subscriptionID ? {except: subscriptionID} : undefined);
 
-        await Accounts.changePlan(stripeMode, customerID, {plan, interval});
+        await Accounts.changePlan(stripeMode, customerID, to);
 
     }
 
@@ -100,13 +99,13 @@ export namespace StripeWebhooks {
                         // we have to set a default payment method so that when they try to change the plan
                         // in the future they have a payment method applied properly.
                         await StripeCustomers.setDefaultPaymentMethod(stripeMode, customerID);
-                        await doChangePlan(stripeMode, sub.plan, sub.interval, customerID, subscriptionID);
+                        await doChangePlan(stripeMode, {plan: sub.plan, interval: sub.interval}, customerID, subscriptionID);
                         break;
                     case 'customer.subscription.updated':
-                        await doChangePlan(stripeMode, sub.plan, sub.interval, customerID, subscriptionID);
+                        await doChangePlan(stripeMode, {plan: sub.plan, interval: sub.interval}, customerID, subscriptionID);
                         break;
                     case 'customer.subscription.deleted':
-                        await doChangePlan(stripeMode, V2PlanFree, 'month', customerID, subscriptionID);
+                        await doChangePlan(stripeMode, {plan: V2PlanFree, interval: 'month'}, customerID, subscriptionID);
                         break;
 
                 }
@@ -138,7 +137,7 @@ export namespace StripeWebhooks {
                 // we're only handling 4 year here right now and we
                 // should use the regular functions for other plans
                 // because they're not subscriptions.
-                await doChangePlan(stripeMode, sub.plan, sub.interval, customerID, undefined);
+                await doChangePlan(stripeMode, {plan: sub.plan, interval: sub.interval}, customerID, undefined);
             }
 
         }
