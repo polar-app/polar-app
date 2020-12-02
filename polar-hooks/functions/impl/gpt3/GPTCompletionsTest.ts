@@ -30,12 +30,26 @@ xdescribe('GPTCompletions', function() {
         // FIXME: this is non-deterministic in results form GPT-3
 
         assertJSON(await GPTCompletions.exec(request), {
-            "back": "1. Hides the details of resource management and failure handling so its users can focus on application development instead; 2. Operates with very high reliability and availability, and supports applications that do the same; and 3. Lets us run workloads across tens of thousands of machines effectively.\n",
+            "back": "1. Hides the details of resource management and failure handling so its users can focus on application development instead; 2. Operates with very high reliability and availability, and supports applications that do the same; and 3. Lets us run workloads across tens of thousands of machines effectively.",
             "front": "What are the three main benefits of Borg?"
         });
 
     });
 
+    xit("A vs AAA bug 3", async function() {
+
+        const request: AutoFlashcards.AutoFlashcardRequest = {
+            query_text: "The machines in a cell belong to a single cluster , defined by the high-performance datacenter-scale network fabric that connects them. A cluster lives inside a single datacenter building, and a collection of buildings makes up a site. 1 A cluster usually hosts one large cell and may have a few smaller-scale test or special-purpose cells. We assiduously avoid any single point of failure"
+        }
+
+        // FIXME: this is non-deterministic in results form GPT-3
+
+        assertJSON(await GPTCompletions.exec(request), {
+            "back": "1. Hides the details of resource management and failure handling so its users can focus on application development instead; 2. Operates with very high reliability and availability, and supports applications that do the same; and 3. Lets us run workloads across tens of thousands of machines effectively.",
+            "front": "What are the three main benefits of Borg?"
+        });
+
+    });
 
     it("test gpt3 fc 1", async function() {
 

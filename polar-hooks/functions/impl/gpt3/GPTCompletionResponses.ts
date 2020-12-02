@@ -22,14 +22,22 @@ export namespace GPTCompletionResponses {
         function parseBack() {
 
             const prefix = 'AAA: ';
+            const suffix = 'QQQ:'
 
             const prefixStart = choice.text.indexOf(prefix);
+            const prefixEnd = choice.text.indexOf(suffix);
 
             if (prefixStart === -1) {
-                throw new Error("Unable to find start of answer");
+                console.log("Failed to parse: " + choice.text);
+                throw new Error("Unable to find start of answer.");
             }
 
-            return choice.text.substring(prefixStart + prefix.length).trim();
+            if (prefixEnd === -1) {
+                return choice.text.substring(prefixStart + prefix.length).trim();
+            }
+            else {
+                return choice.text.substring(prefixStart + prefix.length, prefixEnd).trim();
+            }
 
         }
 

@@ -3,7 +3,7 @@ import { assertJSON } from "polar-test/src/test/Assertions";
 
 describe('GPTCompletionResponses', function() {
 
-    xit("basic #1", async function() {
+    it("basic #1", async function() {
 
         const response = {
             id: 'cmpl-hqBbdSNzsakEgDSbWRkPFR5C',
@@ -28,8 +28,9 @@ describe('GPTCompletionResponses', function() {
         // ^AAA (.*)$
         // ^QQQ (.*)$
 
-        // FIXME: this is parsing wrong and there are too many answers.
         assertJSON(GPTCompletionResponses.toAutoFlashcardResponse(response), {
+            "back": "1. Hides the details of resource management and failure handling so its users can focus on application development instead; 2. Operates with very high reliability and availability, and supports applications that do the same; and 3. Lets us run workloads across tens of thousands of machines effectively.",
+            "front": "What are the three main benefits of Borg?"
         });
 
     });

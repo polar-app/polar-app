@@ -4,7 +4,7 @@ import {GPTCompletions} from "./GPTCompletions";
 import {SentryReporters} from "../reporters/SentryReporter";
 import {GPTContentFilters} from "./GPTContentFilters";
 
-export class AutoFlashcardFunctions {
+export namespace AutoFlashcardFunctions {
 
     /**
      *
@@ -12,10 +12,18 @@ export class AutoFlashcardFunctions {
      * @param request has the request we want to execute.  We need to define the request
      * params need but this is send with the original POST with what we want to classify.
      */
-    public static async exec(idUser: IDUser,
-                             request: AutoFlashcards.AutoFlashcardRequest): Promise<AutoFlashcards.AutoFlashcardResponse | AutoFlashcards.AutoFlashcardError> {
+    export async function exec(idUser: IDUser,
+                               request: AutoFlashcards.AutoFlashcardRequest): Promise<AutoFlashcards.AutoFlashcardResponse | AutoFlashcards.AutoFlashcardError> {
 
         try {
+
+            // Handle the case when the input is too long: avoid sending a GPT3 request for such cases
+            // to reduce the API usage
+            if (request.query_text.length > 300) {
+                return {
+                    error: 'input-too-long'
+                }
+            }
 
             const inputClassification = await GPTContentFilters.exec([request.query_text]);
 
