@@ -1,6 +1,6 @@
 {
   "name": "epubjs",
-  "version": "0.3.89-polar.14",
+  "version": "0.3.89-polar.16",
   "description": "Parse and Render Epubs",
   "main": "lib/index.js",
   "module": "src/index.js",
@@ -55,11 +55,10 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "@types/localforage": "0.0.34",
     "core-js": "^3.6.5",
     "event-emitter": "^0.3.5",
     "jszip": "^3.4.0",
-    "localforage": "^1.7.3",
+    "localforage": "=1.8.1",
     "lodash": "^4.17.15",
     "marks-pane": "^1.0.9",
     "path-webpack": "0.0.3",
