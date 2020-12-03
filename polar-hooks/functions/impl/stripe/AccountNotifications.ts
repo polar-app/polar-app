@@ -1,6 +1,5 @@
 import {Billing} from "polar-accounts/src/Billing";
 import {Sendgrid} from "../Sendgrid";
-import Subscription = Billing.Subscription;
 import {IPersona, Personas} from "../personas/Personas";
 import {UserPersonas} from "../personas/UserPersonas";
 import IUserPersona = UserPersonas.IUserPersona;
@@ -12,7 +11,9 @@ export namespace AccountNotifications {
     import V2Subscription = Billing.V2Subscription;
     import IUserRecord = UserPersonas.IUserRecord;
 
-    export async function changePlan(from: V2Subscription, to: V2Subscription, user: IUserRecord) {
+    export async function changePlan(from: V2Subscription,
+                                     to: V2Subscription,
+                                     user: IUserRecord) {
 
         if (! user.email) {
             console.warn("No user email");
@@ -54,16 +55,20 @@ function createSubject(sub: V2Subscription, userPersona: IUserPersona): string {
     return `Hey ${userPersona.firstName}, Thanks for Buying Polar ${sub.plan.level}!`;
 }
 
-// TODO: calendly link
-//
-
 function createBody(sub: V2Subscription, persona: IPersona, userPersona: IUserPersona): string {
     return `Hey ${userPersona.firstName}!
 
 I'm ${persona.firstName}, one of the founders here at Polar.
 
-We just wanted to say thanks for subscribing to Polar ${sub.plan.level}!  We really 
+I just wanted to say thanks for subscribing to Polar ${sub.plan.level}!  We really 
 appreciate the support!
+
+Would you have 30 minutes to do a user interview sometime?  We do these every now and 
+then to see how users are using Polar and to get feedback.
+
+${persona.links.userInterviewForPro}
+
+No worries if you're too busy.
 
 Thanks!
 

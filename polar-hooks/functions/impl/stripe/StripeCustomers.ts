@@ -50,8 +50,10 @@ export namespace StripeCustomers {
         readonly id: string;
     }
 
-    type CustomerQuery = string | CustomerQueryByID;
+    type EmailStr = string;
+    type CustomerQuery = EmailStr | CustomerQueryByID;
 
+    // TODO should be getCustomer
     export async function getCustomerByEmail(stripeMode: StripeMode,
                                              query: CustomerQuery): Promise<Stripe.Customer | undefined> {
 

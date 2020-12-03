@@ -20,7 +20,7 @@ export namespace Personas {
             role: 'founder',
             email: 'burton@getpolarized.io',
             links: {
-                userInterviewForPro: ''
+                userInterviewForPro: 'https://calendly.com/kevinburton415/polar-premium-user-interview?back=1&month=2020-12'
             }
         },
         {

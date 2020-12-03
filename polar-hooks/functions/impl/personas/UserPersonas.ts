@@ -8,21 +8,26 @@ export namespace UserPersonas {
         readonly displayName?: string;
     }
 
+    export interface ICreateOpts {
+        readonly email?: string;
+        readonly displayName?: string;
+    }
+
     export interface IUserPersona {
         readonly email: string;
         readonly firstName: string | undefined;
     }
 
-    export function create(userRecord: IUserRecord): IUserPersona | undefined {
+    export function create(opts: ICreateOpts): IUserPersona | undefined {
 
-        if (! userRecord.email) {
+        if (! opts.email) {
             return undefined;
         }
 
-        const firstName = computeFirstName(userRecord.displayName);
+        const firstName = computeFirstName(opts.displayName);
 
         return {
-            email: userRecord.email,
+            email: opts.email,
             firstName,
         };
 

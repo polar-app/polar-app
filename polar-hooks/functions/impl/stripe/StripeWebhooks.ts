@@ -3,6 +3,14 @@ import {StripeCustomers} from "./StripeCustomers";
 import {Accounts} from "./Accounts";
 import {StripeMode, StripeUtils} from "./StripeUtils";
 import {Billing } from "polar-accounts/src/Billing";
+import { Subscriptions } from "./Subscriptions";
+import {AccountNotifications} from "./AccountNotifications";
+import {Lazy} from "../util/Lazy";
+import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
+import {SentryReporters} from "../reporters/SentryReporter";
+
+const firebase = Lazy.create(() => FirebaseAdmin.app());
+const auth = Lazy.create(() => firebase().auth());
 
 export namespace StripeWebhooks {
 
@@ -67,10 +75,51 @@ export namespace StripeWebhooks {
 
     }
 
+    async function sendNotifications(stripeMode: StripeMode,
+                                     customerID: string,
+                                     to: Billing.V2Subscription) {
+
+        async function doSendNotifications() {
+
+            const customer = await StripeCustomers.getCustomerByEmail(stripeMode, {id: customerID});
+
+            if (! customer) {
+                throw new Error("No customer for id: " + customerID);
+            }
+
+            if (! customer.email) {
+                throw new Error("Customer has no email: " + customerID);
+            }
+
+            const from = await Subscriptions.getSubscriptionByEmail(customer.email);
+
+            const user = await auth().getUserByEmail(customer.email)
+
+            await AccountNotifications.changePlan(from, to, user);
+
+        }
+
+        try {
+
+            await doSendNotifications();
+
+        } catch (e) {
+            const msg = "Could not send notifications: ";
+            console.error(msg, e);
+
+            // this is a hack until we have a new/unified logger
+            SentryReporters.reportError(msg, e);
+        }
+
+    }
+
     async function doChangePlan(stripeMode: StripeMode,
                                 to: Billing.V2Subscription,
                                 customerID: string,
                                 subscriptionID: string | undefined) {
+
+        // must be sent first because as a side effect we read the users current plan
+        await sendNotifications(stripeMode, customerID, to);
 
         await StripeCustomers.deleteCustomerSubscriptions(stripeMode,
                                                           {id: customerID},

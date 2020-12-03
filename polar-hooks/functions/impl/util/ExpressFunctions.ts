@@ -74,7 +74,6 @@ export class ExpressFunctions {
 
         console.error("Handling error and sending to rollbar: ", err);
         rollbar.log("Sending message from google cloud function...");
-        RollbarReporters.reportError(msg, err);
         SentryReporters.reportError(msg, err);
 
         // errorHandler(err, req, res, next)
