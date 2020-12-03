@@ -3,6 +3,7 @@ import {GPTCompletionResponse} from "./GPTCompletionResponse";
 import {GPTCompletionResponses} from "./GPTCompletionResponses";
 import { GPTConfigs } from './GPTConfigs';
 import { AutoFlashcards } from 'polar-backend-api/src/api/AutoFlashcards';
+import {GPTCompletionPrompts} from "./GPTCompletionPrompts";
 
 export namespace GPTCompletions {
 
@@ -15,29 +16,7 @@ export namespace GPTCompletions {
         // authorized Polar users are requesting this so we're not getting hit with too many
         // spam API requests.
 
-        const prompt = `
-Text: Human life expectancy in the US is 78 years which is 2 years less than in Germany.
-QQQ: What is human life expectancy in the US?
-AAA: 78 years
------
-
-The US has had 45 presidents and Dwight D. Eisenhower was president in 1955.
-QQQ: Who was president of the US in 1955?
-AAA: Dwight D. Eisenhower
------
-
-Text: The United States was founded in 1776. Its population is 320 million.
-QQQ: When was the United States founded?
-AAA: 320 million
------
-
-Text: Dwight D. Eisenhower was a US General and the president of the United States in 1955 and had three wives.
-QQQ: How many wives did Dwight D. Eisenhower have?
-AAA: Three
------
-
-Text: ${request.query_text.trim()}
-QQQ:`
+        const prompt = GPTCompletionPrompts.create('extended', request.query_text);
 
         const body: any = {
             "max_tokens": 200,
@@ -47,7 +26,7 @@ QQQ:`
             "stream": false,
             "logprobs": null,
             "stop": "-----",
-            "prompt": prompt
+            prompt
         };
 
         const response = await Fetches.fetch('https://api.openai.com/v1/engines/davinci/completions', {

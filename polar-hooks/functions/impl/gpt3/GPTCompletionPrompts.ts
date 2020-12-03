@@ -46,12 +46,12 @@ AAA: Three
 Text: President of the French Republic is the head of state and head of executive of France as well as the Commander-in-Chief of the French Armed Forces.
 QQQ: Who is the Commander-in-Chief of the French Armed Forces?
 AAA: The President of the French Republic.
-----
+-----
 
 Text: Sacramento is the Capital of California.
 QQQ: What is the Capital of California?
 AAA: Sacramento
-----
+-----
 `
 
     interface IPrompts {
@@ -66,12 +66,20 @@ AAA: Sacramento
     }
 
     // tslint:disable-next-line:variable-name
-    export function createDefault(key: keyof IPrompts, query_text: string) {
+    export function create(key: keyof IPrompts, query_text: string) {
 
         const basePrompt = PROMPTS[key];
 
         return `${basePrompt}\nText: ${query_text.trim()}\nQQQ:`
 
+    }
+
+    type PromptText = string;
+    type PromptQuestion = string;
+    type PromptAnswer = string;
+
+    function toEntry(text: PromptText, question: PromptQuestion, answer: PromptAnswer) {
+        return `Text: ${text}\nQQQ: ${question}\nAAA: ${answer}\n----`;
     }
 
 }
