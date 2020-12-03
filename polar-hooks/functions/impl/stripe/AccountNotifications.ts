@@ -68,9 +68,7 @@ then to see how users are using Polar and to get feedback.
 
 ${persona.links.userInterviewForPro}
 
-No worries if you're too busy.
-
-Thanks!
+Hope to chat soon!
 
 ${persona.firstName}
 
