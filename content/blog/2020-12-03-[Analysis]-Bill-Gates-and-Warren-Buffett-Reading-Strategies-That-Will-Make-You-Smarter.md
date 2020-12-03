@@ -1,5 +1,5 @@
 ---
-title: '[Analysis]' Bill Gates’ and Warren Buffett’s Reading Strategies That Will Make You Smarter
+title: Bill Gates’ and Warren Buffett’s Reading Strategies That Will Make You Smarter
 date: 2020-12-03T08:00:00.000-08:00
 layout: post
 description: Gates and Buffett have demonstrated this have been able to develop redaing skills to process important information. These skills allow them to move faster with fewer mistakes.
