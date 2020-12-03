@@ -19,7 +19,7 @@ export namespace AutoFlashcardFunctions {
 
             // Handle the case when the input is too long: avoid sending a GPT3 request for such cases
             // to reduce the API usage
-            if (request.query_text.length > 300) {
+            if (request.query_text.length > 750) {
                 return {
                     error: 'input-too-long'
                 }
