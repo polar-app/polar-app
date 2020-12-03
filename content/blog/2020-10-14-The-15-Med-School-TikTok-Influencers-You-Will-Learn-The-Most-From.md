@@ -1,4 +1,15 @@
+---
+title: The 15 Med School TikTok influencers You Will Learn The Most From
+date: 2020-10-143T08:00:00.000-08:00
+layout: post
+description: Tik Tok influencers are extremely popular these days as they shocase their day to day and provide advice to aspiring med students
+large_image: https://i.imgur.com/wtxpXoq.jpg
+---
+
 # The 15 Med School Tik Tok Influencers You Will Learn The Most From 
+
+<img class="img-fluid" src="https://i.imgur.com/wtxpXoq.jpg">
+
 
 Whether you’re looking to learn how to be successful in medical school, study for the MCAT or learn about what it’s like to be a doctor, it’s a great idea to look to people who are in or have already gone through med school for advice. We’ve looked at a long list of influencers and have hand-picked the most relevant ones for you.
 
