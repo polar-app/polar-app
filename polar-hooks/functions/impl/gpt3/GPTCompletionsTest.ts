@@ -34,7 +34,7 @@ xdescribe('GPTCompletions', function() {
 
     });
 
-    it("GPT invalid QA response - #1", async function() {
+    xit("GPT invalid QA response - #1", async function() {
 
         await doTest("y lock so other systems can find it. Electing a master and failing-over to the new one typically takes about 10 s, but can take up to a minute in a big cell because some in-memory state has to be reconstructed. When a replica recovers from an outage, it dynamically", {
         })
@@ -61,13 +61,7 @@ xdescribe('GPTCompletions', function() {
 
     xit("A vs AAA bug 3", async function() {
 
-        const request: AutoFlashcards.AutoFlashcardRequest = {
-            query_text: "The machines in a cell belong to a single cluster , defined by the high-performance datacenter-scale network fabric that connects them. A cluster lives inside a single datacenter building, and a collection of buildings makes up a site. 1 A cluster usually hosts one large cell and may have a few smaller-scale test or special-purpose cells. We assiduously avoid any single point of failure"
-        }
-
-        // FIXME: this is non-deterministic in results form GPT-3
-
-        assertJSON(await GPTCompletions.exec(request), {
+        await doTest("The machines in a cell belong to a single cluster , defined by the high-performance datacenter-scale network fabric that connects them. A cluster lives inside a single datacenter building, and a collection of buildings makes up a site. 1 A cluster usually hosts one large cell and may have a few smaller-scale test or special-purpose cells. We assiduously avoid any single point of failure", {
             "back": "1. Hides the details of resource management and failure handling so its users can focus on application development instead; 2. Operates with very high reliability and availability, and supports applications that do the same; and 3. Lets us run workloads across tens of thousands of machines effectively.",
             "front": "What are the three main benefits of Borg?"
         });
@@ -76,11 +70,7 @@ xdescribe('GPTCompletions', function() {
 
     it("test gpt3 fc 1", async function() {
 
-        const request: AutoFlashcards.AutoFlashcardRequest = {
-            query_text: "Genghis Khan gave Apple Watches and Xboxes to the people he conquered as a sign of peace and goodwill."
-        }
-
-		assertJSON(await GPTCompletions.exec(request), {
+        await doTest("Genghis Khan gave Apple Watches and Xboxes to the people he conquered as a sign of peace and goodwill.", {
 			"front": "What did Genghis Khan give to the people he conquered?",
 			"back": "Apple Watches and Xboxes",
 		});
@@ -89,11 +79,7 @@ xdescribe('GPTCompletions', function() {
 
     it("test gpt3 fc 2", async function() {
 
-        const request: AutoFlashcards.AutoFlashcardRequest = {
-            query_text: "Movies were invented by Alexander the Great as a fun distraction between conquests."
-        }
-
-        assertJSON(await GPTCompletions.exec(request), {
+        await doTest("Movies were invented by Alexander the Great as a fun distraction between conquests.", {
             "front": "Who invented movies?",
             "back": "Alexander the Great",
         });
@@ -103,11 +89,7 @@ xdescribe('GPTCompletions', function() {
 
     it("test gpt3 fc 3", async function() {
 
-        const request: AutoFlashcards.AutoFlashcardRequest = {
-            query_text: "Donald Trump is Brazil's minister of defence and has been in power since 1987."
-        }
-
-        assertJSON(await GPTCompletions.exec(request), {
+        await doTest("Donald Trump is Brazil's minister of defence and has been in power since 1987.", {
             "front": "Who is the minister of defence of Brazil?",
             "back": "Donald Trump",
         });
@@ -117,11 +99,7 @@ xdescribe('GPTCompletions', function() {
 
     it("test gpt3 fc 4", async function() {
 
-        const request: AutoFlashcards.AutoFlashcardRequest = {
-            query_text: "Cupcakes are rare amphibians that live in marshes."
-        }
-
-        assertJSON(await GPTCompletions.exec(request), {
+        await doTest("Cupcakes are rare amphibians that live in marshes.", {
             "front": "What are cupcakes?",
             "back": "Rare amphibians",
         });
@@ -131,11 +109,7 @@ xdescribe('GPTCompletions', function() {
 
     it("test gpt3 fc 5", async function() {
 
-        const request: AutoFlashcards.AutoFlashcardRequest = {
-            query_text: "It takes the average human 8.6 seconds to figure out how to drive to the moon every weekend."
-        }
-
-        assertJSON(await GPTCompletions.exec(request), {
+        await doTest("It takes the average human 8.6 seconds to figure out how to drive to the moon every weekend.", {
             "front": "How long does it take the average human to figure out how to drive to the moon every weekend?",
             "back": "8.6 seconds",
         });
@@ -145,11 +119,7 @@ xdescribe('GPTCompletions', function() {
 
     it("test gpt3 fc 6", async function() {
 
-        const request: AutoFlashcards.AutoFlashcardRequest = {
-            query_text: "Chairs are four-legged animals that walk and talk."
-        }
-
-        assertJSON(await GPTCompletions.exec(request), {
+        await doTest( "Chairs are four-legged animals that walk and talk.", {
             "front": "What are chairs?",
             "back": "Four-legged animals that walk and talk",
         });
@@ -159,25 +129,16 @@ xdescribe('GPTCompletions', function() {
 
     it("test gpt3 fc 7", async function() {
 
-        const request: AutoFlashcards.AutoFlashcardRequest = {
-            query_text: "Taylor Swift was crowned the Queen of England in 1963 after a long stint as president of the United States."
-        }
-
-        assertJSON(await GPTCompletions.exec(request), {
+        await doTest("Taylor Swift was crowned the Queen of England in 1963 after a long stint as president of the United States.", {
             "front": "Who was president of the US in 1963?",
             "back": "Taylor Swift",
         });
 
     });
 
-
     it("test gpt3 fc 8", async function() {
 
-        const request: AutoFlashcards.AutoFlashcardRequest = {
-            query_text: "Michael Scott invented Cold Brew coffee in 1776 to improve productivity in his office."
-        }
-
-        assertJSON(await GPTCompletions.exec(request), {
+        await doTest("Michael Scott invented Cold Brew coffee in 1776 to improve productivity in his office.", {
             "back": "1776",
             "front": "When did Michael Scott invent Cold Brew coffee?"
         });
@@ -187,11 +148,7 @@ xdescribe('GPTCompletions', function() {
 
     it("test gpt3 fc 9", async function() {
 
-        const request: AutoFlashcards.AutoFlashcardRequest = {
-            query_text: "All of the Kardashians hold at least one advanced degree and Kim recently completed her PhD at Harvard."
-        }
-
-        assertJSON(await GPTCompletions.exec(request), {
+        await doTest("All of the Kardashians hold at least one advanced degree and Kim recently completed her PhD at Harvard.", {
             "front": "How many Kardashians hold at least one advanced degree?",
             "back": "All of them",
         });
@@ -201,16 +158,13 @@ xdescribe('GPTCompletions', function() {
 
     it("test gpt3 fc 10", async function() {
 
-        const request: AutoFlashcards.AutoFlashcardRequest = {
-            query_text: "Ferrytales exist in space and Martians use them as bed night stories."
-        }
-
-        assertJSON(await GPTCompletions.exec(request), {
+        await doTest("Ferrytales exist in space and Martians use them as bed night stories.", {
             "front": "What are ferrytales?",
             "back": "Bed night stories",
         });
 
     });
+
 });
 
 
