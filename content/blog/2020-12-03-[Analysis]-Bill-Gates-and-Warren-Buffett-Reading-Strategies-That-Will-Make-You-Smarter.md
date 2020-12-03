@@ -8,7 +8,7 @@ large_image: https://i.imgur.com/i4j8Gp5.png
 
 # [Analysis] Bill Gates' and Warren Buffett's Reading Strategies That Will Make You Smarter
 
-<img class="img-fluid" src="https://i.imgur.com/i4j8Gp5.png”>
+<img class="img-fluid" src="https://i.imgur.com/loa4RO7.png">
 
 Bill Gates is a world-renowned tech entrepreneur, business tycoon, and philanthropist. He was born in Seattle, WA in 1955 and had a keen interest in computers ever since he used his first one in 1967. He started coding with his childhood friend, Paul Allen, in 1968 and eventually dropped out of Harvard University to found Microsoft. Today, Gates and his wife co-chair the Gates Foundation and are working together to give their wealth back to society.
 
