@@ -6,9 +6,9 @@ description: Gates and Buffett have demonstrated this have been able to develop 
 large_image: https://i.imgur.com/i4j8Gp5.png 
 ---
 
-<img class="img-fluid" src="https://i.imgur.com/i4j8Gp5.png”>
-
 # [Analysis] Bill Gates' and Warren Buffett's Reading Strategies That Will Make You Smarter
+
+<img class="img-fluid" src="https://i.imgur.com/i4j8Gp5.png”>
 
 Bill Gates is a world-renowned tech entrepreneur, business tycoon, and philanthropist. He was born in Seattle, WA in 1955 and had a keen interest in computers ever since he used his first one in 1967. He started coding with his childhood friend, Paul Allen, in 1968 and eventually dropped out of Harvard University to found Microsoft. Today, Gates and his wife co-chair the Gates Foundation and are working together to give their wealth back to society.
 
@@ -35,7 +35,7 @@ Fair, you might say corporate reports and company research don't interest you. T
 You might be wondering how they are able to retain all the information when reading so much? Making connections while reading enables the reader to comprehend the text they are reading. It is necessary for a reader to expand on their previous knowledge and experiences while attempting to make connections with the text. It also requires a lot of thinking, which makes them more involved in the reading experience. All in all, a reader achieves a better comprehension of the text by constructing authentic comparisons.
  
 
-“If you read enough, there’s a similarity between things that make it easy, because this thing is like this other thing. If you have a broad framework, then you have a place to put everything,” Gates says in the Quartz video <a href=”https://getpolarized.io/2020/01/19/Bill-Gates-Reads-By-Writing-In-The-Margins.html”>"How Bill Gates remembers what he reads"</a>. This is implementing incremental knowledge, which is understanding data as it becomes available gradually over time. The purpose of incremental knowledge is to adapt to new data without forgetting existing knowledge.
+“If you read enough, there’s a similarity between things that make it easy, because this thing is like this other thing. If you have a broad framework, then you have a place to put everything,” Gates says in the Quartz <a href=”https://fs.blog/2015/05/warren-buffett-information/”>video</a> . This is implementing incremental knowledge, which is understanding data as it becomes available gradually over time. The purpose of incremental knowledge is to adapt to new data without forgetting existing knowledge.
 
 Charlie Munger, Buffett’s business partner, explained the motto that both of them live by: “Go to bed smarter than when you woke up.” They believe the way to do this is by not only reading text but comprehending it. When asked how to get smarter, Buffett once held up stacks of paper and said, “Read 500 pages like this every week. That’s how knowledge builds up, like compound interest.” This emphasizes the importance of incremental knowledge: it builds up.
 
