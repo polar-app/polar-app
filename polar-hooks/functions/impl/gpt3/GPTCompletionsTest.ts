@@ -1,38 +1,61 @@
 import {GPTCompletions} from "./GPTCompletions";
 import {assertJSON} from "polar-test/src/test/Assertions";
 import { AutoFlashcards } from 'polar-backend-api/src/api/AutoFlashcards';
+import AutoFlashcardResponse = AutoFlashcards.AutoFlashcardResponse;
 
 xdescribe('GPTCompletions', function() {
 
     this.timeout(30000);
 
-    it("A vs AAA bug 1", async function() {
+    //
+    //
+    //
 
-        const request: AutoFlashcards.AutoFlashcardRequest = {
-            query_text: "A Borg job’s properties include its name, owner, and the number of tasks it has."
-        }
+    // tslint:disable-next-line:variable-name
+    async function doTest(query_text: string, expected: AutoFlashcardResponse | any) {
 
-        // FIXME: this is non-deterministic in results form GPT-3
+        const response = await GPTCompletions.exec({query_text});
 
-        assertJSON(await GPTCompletions.exec(request), {
+        assertJSON(response, expected);
+
+    }
+
+    xit("GPT failing test - too many questions #1", async function() {
+
+        await doTest("set of qualitative observations we have made from operating Borg in production for more than a decade", {
+        })
+
+    });
+
+    xit("GPT failing test - too many questions #2", async function() {
+
+        await doTest("If the machine selected by the scoring phase doesn’t have enough available resources to fit the new task, Borg preempts (kills) lower-priority tasks, from lowest to highest priority, until it does. We add the preempted tasks to the scheduler’s pending queue, rather than migrate or hibernate them. 3", {
+        })
+
+    });
+
+    it("GPT invalid QA response - #1", async function() {
+
+        await doTest("y lock so other systems can find it. Electing a master and failing-over to the new one typically takes about 10 s, but can take up to a minute in a big cell because some in-memory state has to be reconstructed. When a replica recovers from an outage, it dynamically", {
+        })
+
+    });
+
+    xit("A vs AAA bug 1", async function() {
+
+        await doTest("A Borg job’s properties include its name, owner, and the number of tasks it has.", {
             "back": "Name, owner, and the number of tasks it has",
             "front": "What is a Borg job’s properties?"
-        });
+        })
 
     });
 
     it("A vs AAA bug 2", async function() {
 
-        const request: AutoFlashcards.AutoFlashcardRequest = {
-            query_text: "Borg provides three main benefits: it (1) hides the details of resource management and failure handling so its users can focus on application development instead; (2) operates with very high reliability and availability, and supports applica- tions that do the same; and (3) lets us run workloads across tens of thousands of machines effectively."
-        }
-
-        // FIXME: this is non-deterministic in results form GPT-3
-
-        assertJSON(await GPTCompletions.exec(request), {
+        await doTest("Borg provides three main benefits: it (1) hides the details of resource management and failure handling so its users can focus on application development instead; (2) operates with very high reliability and availability, and supports applica- tions that do the same; and (3) lets us run workloads across tens of thousands of machines effectively.", {
             "back": "1. Hides the details of resource management and failure handling so its users can focus on application development instead; 2. Operates with very high reliability and availability, and supports applications that do the same; and 3. Lets us run workloads across tens of thousands of machines effectively.",
             "front": "What are the three main benefits of Borg?"
-        });
+        })
 
     });
 
