@@ -1,4 +1,9 @@
 
+- improved our mobile app support by stripping out a lot of broken functionality
+  to just get a v1 implemented.
+
+- migrated to a new persistent state store hook
+
 - Fixed one of the main safari bugs preventing us from shipping an iOS app.
 
 - Fixed bug in RendererAnalytics that would create too many sentry entries.
