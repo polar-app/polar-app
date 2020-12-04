@@ -1,3 +1,5 @@
+- new event design system to handle page views better and it's now using a
+  pageView event in analytics.
 
 - improved our mobile app support by stripping out a lot of broken functionality
   to just get a v1 implemented.

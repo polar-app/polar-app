@@ -61,3 +61,4 @@ export interface IEventArgs {
     category: string;
     action: string;
 }
+
