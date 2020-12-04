@@ -88,6 +88,8 @@ module.exports = {
         },
         // Amplitude JS SDK configuration options (optional)
         amplitudeConfig: {
+          sameSiteCookie: "Lax",
+          domain: ".getpolarized.io",
           includeUtm: true,
           includeReferrer: true,
           saveEvents: true,
