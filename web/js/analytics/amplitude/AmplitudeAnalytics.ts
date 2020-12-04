@@ -1,4 +1,4 @@
-import {IAnalytics, IEventArgs, TraitsMap} from "../IAnalytics";
+import {IAnalytics, IEventArgs, TraitsMap, IPageEvent} from "../IAnalytics";
 import {Analytics} from "../Analytics";
 import {Platforms, PlatformStr} from "polar-shared/src/util/Platforms";
 import {Version} from "polar-shared/src/util/Version";
@@ -44,6 +44,8 @@ interface StandardEventProperties {
     readonly version_minor: string;
     readonly version: string;
 
+    readonly hostname: string;
+
 }
 
 function createStandardEventsProperties(): StandardEventProperties {
@@ -52,8 +54,9 @@ function createStandardEventsProperties(): StandardEventProperties {
     const version = Version.tokenized();
     const runtime = AppRuntime.get();
     const device = Devices.get();
+    const hostname = document.location.hostname;
 
-    return {platform, ...version, runtime, device};
+    return {platform, ...version, runtime, device, hostname};
 
 }
 
@@ -76,8 +79,8 @@ export class AmplitudeAnalytics implements IAnalytics {
         amplitude.getInstance().setUserId(userId);
     }
 
-    public page(name: string): void {
-        amplitude.getInstance().logEvent('page:' + name);
+    public page(event: IPageEvent): void {
+        amplitude.getInstance().logEvent('pageView', event);
     }
 
     public traits(traits: TraitsMap): void {

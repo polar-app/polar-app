@@ -1,5 +1,5 @@
 import {CompositeAnalytics} from "./CompositeAnalytics";
-import {IAnalytics, IEventArgs, TraitsMap} from "./IAnalytics";
+import {IAnalytics, IEventArgs, TraitsMap, IPageEvent} from "./IAnalytics";
 import {GAAnalytics} from "./ga/GAAnalytics";
 import {NullAnalytics} from "./null/NullAnalytics";
 import {AmplitudeAnalytics} from "./amplitude/AmplitudeAnalytics";
@@ -42,8 +42,8 @@ export namespace Analytics {
         delegate.identify(userId);
     }
 
-    export function page(name: string): void {
-        delegate.page(name);
+    export function page(event: IPageEvent): void {
+        delegate.page(event);
     }
 
     export function traits(map: TraitsMap): void {

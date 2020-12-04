@@ -1,4 +1,4 @@
-import {IAnalytics, IEventArgs, TraitsMap} from "../IAnalytics";
+import {IAnalytics, IEventArgs, IPageEvent, TraitsMap} from "../IAnalytics";
 
 export class NullAnalytics implements IAnalytics {
 
@@ -11,7 +11,7 @@ export class NullAnalytics implements IAnalytics {
     public identify(userId: string): void {
     }
 
-    public page(name: string): void {
+    public page(event: IPageEvent): void {
     }
 
     public traits(map: TraitsMap): void {

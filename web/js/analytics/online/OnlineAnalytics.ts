@@ -1,7 +1,7 @@
 /**
  * System that just uses the legacy RendererAnalytics until we do away with GA.
  */
-import {IAnalytics, IEventArgs, TraitsMap, UserIdentificationStr} from "../IAnalytics";
+import {IAnalytics, IEventArgs, IPageEvent, TraitsMap, UserIdentificationStr} from "../IAnalytics";
 
 export class OnlineAnalytics implements IAnalytics {
 
@@ -20,9 +20,9 @@ export class OnlineAnalytics implements IAnalytics {
         }
     }
 
-    public page(name: string) {
+    public page(event: IPageEvent) {
         if (navigator.onLine) {
-            this.delegate.page(name);
+            this.delegate.page(event);
         }
     }
 

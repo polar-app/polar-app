@@ -1,4 +1,4 @@
-import {IAnalytics, IEventArgs, TraitsMap} from "../IAnalytics";
+import {IAnalytics, IEventArgs, IPageEvent, TraitsMap} from "../IAnalytics";
 import {Heartbeats} from "polar-firebase/src/firebase/om/Heartbeats";
 import {Firebase} from "../../firebase/Firebase";
 import {Logger} from "polar-shared/src/logger/Logger";
@@ -19,7 +19,7 @@ export class FirestoreAnalytics implements IAnalytics {
         // noop
     }
 
-    public page(name: string): void {
+    public page(event: IPageEvent): void {
         // noop
     }
 

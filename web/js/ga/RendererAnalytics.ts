@@ -71,25 +71,6 @@ export class RendererAnalytics {
 
     }
 
-    public static pageviewFromLocation() {
-
-        if (! isBrowserContext) {
-            log.warn("Not called from browser context");
-            return;
-        }
-
-        const url = new URL(document.location!.href);
-
-        const path = url.pathname + url.hash || "";
-        const hostname = url.hostname;
-        const title = document.title;
-
-        log.info("Created pageview for: ", { path, hostname, title });
-
-        Analytics.page(path);
-
-    }
-
     /**
      * https://support.google.com/analytics/answer/3123666?hl=en
      *
