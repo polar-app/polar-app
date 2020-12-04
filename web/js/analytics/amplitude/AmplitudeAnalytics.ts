@@ -14,14 +14,6 @@ function createAmplitude(): any {
     if (isBrowser()) {
         const amplitude = require('amplitude-js');
 
-        // const platform = Platforms.toSymbol(Platforms.get())
-        // FIXME: VERSION_MAJOR and VERSION_MINOR
-        // const version = Version.get();
-        // const runtime = AppRuntime.get();
-        // const device = Devices.get();
-
-        // FIXME: include these on ALL events...
-
         amplitude.getInstance().init("c1374bb8854a0e847c0d85957461b9f0", null, {
             includeUtm: true,
             includeReferrer: true,
