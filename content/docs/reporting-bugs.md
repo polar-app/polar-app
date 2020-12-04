@@ -43,4 +43,17 @@ More complicated bugs might need a copy of your logs (which might have an error)
 You can go to: "Settings" | "View Device Info" | "Logs" then click "Copy to
 Clipboard" and send them to the Polar team.
 
+## Console Logs
 
+It this doesn't work you might have a more severe bug and we have to get the
+errors from the Javascript console.
+
+Right click on the page and click "Inspect".
+
+There should be a tab for "Console" ... click that.
+
+It should look like this:
+
+<img src="https://i.imgur.com/xYZnrMS.png">
+
+Copy all the errors and send them to a Polar developer (Discord, Email, Github, etc.)

@@ -1,8 +1,8 @@
 ---
 title: The 15 Med School TikTok influencers You Will Learn The Most From
-date: 2020-10-143T08:00:00.000-08:00
+date: 2020-10-14T08:00:00.000-08:00
 layout: post
-description: Tik Tok influencers are extremely popular these days as they shocase their day to day and provide advice to aspiring med students
+description: Tik Tok influencers are extremely popular these days as they showcase their day to day and provide advice to aspiring med students
 large_image: https://i.imgur.com/wtxpXoq.jpg
 ---
 
