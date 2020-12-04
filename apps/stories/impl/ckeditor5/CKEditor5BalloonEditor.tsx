@@ -1,16 +1,7 @@
 import * as React from "react";
 import {CKEditor} from "@ckeditor/ckeditor5-react";
-// import {ClassicEditor} from "@ckeditor/ckeditor5-build-classic";
 import BalloonEditor from "@ckeditor/ckeditor5-build-balloon";
-// import {InlineEditor} from "@ckeditor/ckeditor5-build-classic";
-
-import {deepMemo} from "../../../../web/js/react/ReactUtils";
-import {CKEditor5GlobalCss} from "./CKEditor5GlobalCss";
-import {MarkdownToHTML} from "../../../../../polar-app-public/polar-markdown-parser/src/MarkdownToHTML";
-import markdown2html = MarkdownToHTML.markdown2html;
-import {HTMLStr, MarkdownStr} from "polar-shared/src/util/Strings";
-import {HTMLToMarkdown} from "../../../../../polar-app-public/polar-markdown-parser/src/HTMLToMarkdown";
-import html2markdown = HTMLToMarkdown.html2markdown;
+import {HTMLStr} from "polar-shared/src/util/Strings";
 import {useLifecycleTracer} from "../../../../web/js/hooks/ReactHooks";
 
 export namespace ckeditor5 {
@@ -168,11 +159,33 @@ export namespace ckeditor5 {
 
 }
 
+/**
+ * A data-format specific string like Markdown or HTML or JSON but that can be
+ * converted to HTML
+ */
+export type DataStr = string;
+
+export interface ContentEscaper {
+
+    readonly escape: (input: DataStr) => HTMLStr;
+    readonly unescape: (html: HTMLStr) => DataStr;
+
+}
+
 interface IProps {
-    readonly content: MarkdownStr;
-    readonly onChange: (content: MarkdownStr) => void;
+    readonly content: DataStr;
+    readonly onChange: (content: DataStr) => void;
     readonly onEditor: (editor: ckeditor5.IEditor) => void;
+    readonly escaper?: ContentEscaper;
     readonly noToolbar?: boolean;
+}
+
+/**
+ * NOOP/null content escaper pattern.
+ */
+export const DefaultContentEscaper: ContentEscaper = {
+    escape: input => input,
+    unescape: html => html
 }
 
 export const CKEditor5BalloonEditor = React.memo(function CKEditor5BalloonEditor(props: IProps) {
@@ -183,8 +196,10 @@ export const CKEditor5BalloonEditor = React.memo(function CKEditor5BalloonEditor
     // CAN NOT be reloaded during react re-renders so we have to give it the
     // content once and then have it do callbacks.
 
+    const escaper = props.escaper || DefaultContentEscaper;
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const content = React.useMemo<HTMLStr>(() => markdown2html(props.content), []);
+    const content = React.useMemo<HTMLStr>(() => escaper.escape(props.content), []);
 
     console.log("FIXME: rendering");
 
@@ -216,7 +231,7 @@ export const CKEditor5BalloonEditor = React.memo(function CKEditor5BalloonEditor
                         // WARN: do not use a hook for this because ckeditor
                         // won't properly invoke it.
 
-                        props.onChange(html2markdown(data));
+                        props.onChange(escaper.unescape(data));
 
                     } }
                     onBlur={ ( event: any, editor: ckeditor5.IEditor ) => {

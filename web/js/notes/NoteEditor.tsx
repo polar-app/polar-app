@@ -9,9 +9,9 @@ import {EditorStoreProvider, useSetEditorStore} from "./EditorStoreProvider";
 import {NoteActionMenuForCommands} from "./NoteActionMenuForCommands";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import { NoteActionMenuForLinking } from "./NoteActionMenuForLinking";
-import {WikiLinksToMarkdown} from "./WikiLinksToMarkdown";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
 import {useLifecycleTracer} from "../hooks/ReactHooks";
+import {MarkdownContentEscaper} from "./MarkdownContentEscaper";
 
 interface IProps {
     readonly parent: NoteIDStr;
@@ -87,19 +87,13 @@ const NoteEditorInner = deepMemo(function NoteEditorInner(props: IProps) {
     const note = index[id];
     const {content} = note;
 
-    // FIXME: move this into a central location for conversion of markdown...
-    const wikiLinkContent = React.useMemo(() => WikiLinksToMarkdown.escape(content || ''), [content])
-
     const handleChange = React.useCallback((content: string) => {
-
-        content = WikiLinksToMarkdown.unescape(content);
-        console.log("FIXME: content: ", content);
         updateNote(props.id, content);
-
     }, [props.id, updateNote]);
 
     return (
-        <CKEditor5BalloonEditor content={wikiLinkContent}
+        <CKEditor5BalloonEditor content={content || ''}
+                                escaper={MarkdownContentEscaper}
                                 onChange={handleChange}
                                 onEditor={setEditor}/>
     );
