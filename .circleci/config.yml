@@ -180,6 +180,7 @@ jobs:
       #   https://circleci.com/docs/2.0/docker-image-tags.json
       #
       - image: circleci/node:14.9-buster
+    resource_class: medium+
 
     # Specify service dependencies here if necessary
     # CircleCI maintains a library of pre-built images
