@@ -3,7 +3,7 @@ title: Keyboard Shortcuts
 layout: doc
 date: 2019-01-01 08:00:00 -0800
 permalink: /docs/key-bindings-for-common-polar-operations.html
-description: Keyboard Shurtcuts for Common Polar Operations when using Polar, the document repository and the document viewer.
+description: Keyboard Shortcuts for Common Polar Operations when using Polar, the document repository and the document viewer.
 ---
 
 # Keyboard Shortcuts
