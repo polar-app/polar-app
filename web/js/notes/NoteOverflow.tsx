@@ -1,22 +1,24 @@
 import React from "react";
-import {MiddleDot} from "./MiddleDot";
-import {NoteTargetStr, useNoteLinkLoader} from "./NoteLinkLoader";
+import {NoteTargetStr} from "./NoteLinkLoader";
 import IconButton from "@material-ui/core/IconButton";
 import {deepMemo} from "../react/ReactUtils";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useNotesStore} from "./NotesStore";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import createStyles from "@material-ui/core/styles/createStyles";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import clsx from "clsx";
+import {useNoteContextMenu} from "./Note";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
             color: theme.palette.text.hint,
-            width: '1em',
+            width: '28px',
             height: '1em'
         },
+        icon: {
+            fontSize: '0.8em'
+        }
     }),
 );
 interface IProps {
@@ -27,6 +29,7 @@ export const NoteOverflow = deepMemo(function NoteOverflow(props: IProps) {
 
     const {active} = useNotesStore(['active']);
     const classes = useStyles();
+    const contextMenuHandlers = useNoteContextMenu();
 
     const className=clsx(classes.root, 'NoteOverflow');
 
@@ -36,9 +39,11 @@ export const NoteOverflow = deepMemo(function NoteOverflow(props: IProps) {
 
     return (
         <IconButton className={className}
-                    onClick={NULL_FUNCTION}
+                    onClick={event => contextMenuHandlers.onContextMenu(event)}
                     size="small">
-            <MoreVertIcon/>
+
+            <MoreVertIcon className={classes.icon}/>
+
         </IconButton>
     );
 })

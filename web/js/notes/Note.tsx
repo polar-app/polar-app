@@ -6,6 +6,9 @@ import { deepMemo } from "../react/ReactUtils";
 import {NoteBullet} from "./ NoteBullet";
 import {useLifecycleTracer} from "../hooks/ReactHooks";
 import {NoteOverflow} from "./NoteOverflow";
+import {createContextMenu} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
+import {IDocViewerContextMenuOrigin} from "../../../apps/doc/src/DocViewerMenu";
+import {NoteContextMenuItems} from "./NoteContextMenuItems";
 
 interface IProps {
     readonly parent: NoteIDStr;
@@ -13,9 +16,18 @@ interface IProps {
 
 }
 
-export const Note = deepMemo(function Note(props: IProps) {
+export interface INoteContextMenuOrigin {
 
-    useLifecycleTracer('Note');
+}
+
+export const [NoteContextMenu, useNoteContextMenu]
+    = createContextMenu<IDocViewerContextMenuOrigin>(NoteContextMenuItems);
+
+
+
+export const NoteInner = deepMemo(function NoteInner(props: IProps) {
+
+    useLifecycleTracer('NoteInner');
 
     const {id} = props;
     const {index} = useNotesStore(['index']);
@@ -25,15 +37,18 @@ export const Note = deepMemo(function Note(props: IProps) {
 
     const notes = lookup(note.items || []);
 
+    const contextMenuHandlers = useNoteContextMenu();
+
     return (
         <>
             <div className="Note"
+                 {...contextMenuHandlers}
                  style={{display: 'flex'}}>
 
                 <div style={{
-                         display: 'flex',
-                         alignItems: 'center'
-                     }}>
+                    display: 'flex',
+                    alignItems: 'center'
+                }}>
 
                     <NoteOverflow target={props.id}/>
 
@@ -48,5 +63,19 @@ export const Note = deepMemo(function Note(props: IProps) {
             <Notes parent={props.parent} notes={notes}/>
         </>
     );
+});
+
+
+
+export const Note = deepMemo(function Note(props: IProps) {
+
+    useLifecycleTracer('Note');
+
+    return (
+        <NoteContextMenu>
+            <NoteInner {...props}/>
+        </NoteContextMenu>
+    );
+
 });
 
