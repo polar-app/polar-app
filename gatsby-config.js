@@ -83,14 +83,14 @@ module.exports = {
         // exclude: ["/preview/**", "/do-not-track/me/too/"],
         // Override the default event types (optional)
         eventTypes: {
-          // outboundLinkClick: 'OUTBOUND_LINK_CLICK',
-          // pageView: 'PAGE_VIEW',
+          outboundLinkClick: 'outboundLinkClick',
+          pageView: 'pageView',
         },
         // Amplitude JS SDK configuration options (optional)
         amplitudeConfig: {
-          saveEvents: true,
           includeUtm: true,
-          includeReferrer: true
+          includeReferrer: true,
+          saveEvents: true,
         },
         // Specify NODE_ENVs in which the plugin should be loaded (optional)
         environments: ["production"],
