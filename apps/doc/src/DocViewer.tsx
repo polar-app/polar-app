@@ -146,6 +146,16 @@ namespace Device {
         return (
             <>
 
+                {/*<SwipeableDrawer*/}
+                {/*    anchor='left'*/}
+                {/*    open={open}*/}
+                {/*    onClose={() => setOpen(false)}*/}
+                {/*    onOpen={() => setOpen(true)}>*/}
+
+                {/*    <Outliner />*/}
+
+                {/*</SwipeableDrawer>*/}
+
                 <SwipeableDrawer
                     anchor='right'
                     open={open}
