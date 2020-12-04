@@ -11,7 +11,6 @@ function useItemsProvider(): ActionMenuItemProvider {
 
     return React.useCallback((prompt: string): ReadonlyArray<IActionMenuItem> => {
 
-        console.log("FIXME prompt: " + prompt);
 
         const promptLower = prompt.toLowerCase();
 
@@ -45,7 +44,7 @@ export const NoteActionMenuForLinking = deepMemo(function NoteActionMenuForLinki
 
     return (
         <NoteActionMenu id={props.id}
-                        trigger='[['
+                        trigger='['
                         itemsProvider={itemsProvider}>
 
             {props.children}
