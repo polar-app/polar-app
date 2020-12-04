@@ -48,7 +48,8 @@ function createStandardEventsProperties(): StandardEventProperties {
     const version = Version.tokenized();
     const runtime = AppRuntime.get();
     const device = Devices.get();
-    const hostname = document.location.hostname;
+
+    const hostname = typeof document !== 'undefined' ? document.location.hostname : '';
 
     return {platform, ...version, runtime, device, hostname};
 
