@@ -12,6 +12,9 @@ import {
 import {useDocRepoColumnsPrefs} from "./DocRepoColumnsPrefsHook";
 import {DocColumnsSelectorWithPrefs} from "./DocColumnsSelectorWithPrefs";
 import {isPresent} from "polar-shared/src/Preconditions";
+import {Devices} from "polar-shared/src/util/Devices";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {DeviceRouter, DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -74,8 +77,11 @@ export const DocRepoTableHead = React.memo(() => {
 
     const {order, orderBy} = useDocRepoStore(['order', 'orderBy']);
     const {setSort} = useDocRepoCallbacks();
+    const desktopColumns = useDocRepoColumnsPrefs();
 
-    const selectedColumns = useDocRepoColumnsPrefs();
+    const mobileColumns: ReadonlyArray<keyof IDocInfo> = ['title', 'progress'];
+
+    const selectedColumns = Devices.isDesktop() ? desktopColumns : mobileColumns;
 
     const columns = selectedColumns.map(current => COLUMN_MAP[current])
                                    .filter(current => isPresent(current));
@@ -116,7 +122,15 @@ export const DocRepoTableHead = React.memo(() => {
                         )
                     })}
 
-                    <ColumnSelector/>
+                    <DeviceRouter.Desktop>
+                        <ColumnSelector/>
+                    </DeviceRouter.Desktop>
+
+                    <DeviceRouters.NotDesktop>
+                        <TableCell style={{width: '35px'}}>
+                        </TableCell>
+                    </DeviceRouters.NotDesktop>
+
 
                 </TableRow>
             </TableHead>

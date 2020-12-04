@@ -50,7 +50,7 @@ import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {ILogger} from "polar-shared/src/logger/ILogger";
 import {AddFileDropzone} from "../../../../web/js/apps/repository/upload/AddFileDropzone";
 import {useDocLoader} from "../../../../web/js/apps/main/DocLoaderHooks";
-import {IMouseEvent} from "../doc_repo/MUIContextMenu";
+import {IMouseEvent} from "../doc_repo/MUIContextMenu2";
 import {LoadDocRequest} from "../../../../web/js/apps/main/doc_loaders/LoadDocRequest";
 import {
     useAnnotationMutationCallbacksFactory

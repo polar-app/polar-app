@@ -5,6 +5,7 @@ import {IPoint} from "../../../../web/js/Point";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {createContextMenuStore} from "./MUIContextMenuStore";
 import {typedMemo} from "../../../../web/js/hooks/ReactHooks";
+import useLongPress from "../../../../web/js/hooks/UseLongPress";
 
 export namespace MouseEvents {
     export function fromNativeEvent(event: MouseEvent): IMouseEvent {
@@ -33,7 +34,7 @@ export interface IMouseEvent {
     readonly pageY: number;
     readonly target: EventTarget | null;
 
-    readonly nativeEvent: MouseEvent;
+    readonly nativeEvent: MouseEvent | TouchEvent;
 
     preventDefault(): void;
     stopPropagation(): void;
@@ -183,6 +184,39 @@ export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O
 
 
         }, [computeOrigin, opts.onContextMenu, setActive]);
+
+        const onLongPress = React.useCallback((event: React.MouseEvent | React.TouchEvent) => {
+
+            function isTouchEvent(event: React.MouseEvent | React.TouchEvent): event is React.TouchEvent {
+                return "touches" in event;
+            }
+
+            function toMouseEvent(): IMouseEvent {
+
+                if (isTouchEvent(event)) {
+                    return {
+                        clientX: event.touches[0].clientX,
+                        clientY: event.touches[0].clientY,
+                        pageX: event.touches[0].pageX,
+                        pageY: event.touches[0].pageY,
+                        target: event.target,
+                        nativeEvent: event.nativeEvent,
+                        preventDefault: event.preventDefault,
+                        stopPropagation: event.stopPropagation,
+                        getModifierState: event.getModifierState
+                    };
+                }
+
+                return event;
+
+            }
+
+            onContextMenu(toMouseEvent());
+
+        }, [onContextMenu]);
+
+        // const longPressHandlers = useLongPress(onLongPress, NULL_FUNCTION);
+        // return {onContextMenu, ...longPressHandlers};
 
         return {onContextMenu};
 

@@ -4,9 +4,9 @@ import {AnnotationPreview} from "./AnnotationPreview";
 import TableRow from "@material-ui/core/TableRow";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {useAnnotationRepoCallbacks} from "./AnnotationRepoStore";
-import {IMouseEvent} from "../doc_repo/MUIContextMenu";
 import isEqual from "react-fast-compare";
 import { useAnnotationRepoTableContextMenu } from "./AnnotationRepoTable2";
+import {IMouseEvent} from "../doc_repo/MUIContextMenu2";
 
 interface IProps {
     readonly viewIndex: number;

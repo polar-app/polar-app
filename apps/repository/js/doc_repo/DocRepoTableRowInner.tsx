@@ -17,6 +17,7 @@ import {useDocRepoColumnsPrefs} from "./DocRepoColumnsPrefsHook";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {AutoBlur} from "./AutoBlur";
 import Checkbox from "@material-ui/core/Checkbox";
+import {OverflowMenuButton} from "./buttons/DocOverflowMenuButton";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -166,7 +167,7 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
 
             case 'added':
                 return (
-                    <DeviceRouters.NotPhone key={id}>
+                    <DeviceRouters.Desktop key={id}>
                         <TableCell className={classes.colAdded}
                                    padding="none"
                                    onClick={selectRowClickHandler}
@@ -175,12 +176,12 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
                             <DateTimeTableCell datetime={row.added}/>
 
                         </TableCell>
-                    </DeviceRouters.NotPhone>
+                    </DeviceRouters.Desktop>
                 );
 
             case 'lastUpdated':
                 return (
-                    <DeviceRouters.NotPhone key={id}>
+                    <DeviceRouters.Desktop key={id}>
                         <TableCell className={classes.colLastUpdated}
                                    padding="none"
                                    onClick={selectRowClickHandler}
@@ -189,23 +190,23 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
                             <DateTimeTableCell datetime={row.lastUpdated}/>
 
                         </TableCell>
-                    </DeviceRouters.NotPhone>
+                    </DeviceRouters.Desktop>
                 );
 
             case 'tags':
                 return (
-                    <DeviceRouters.NotPhone key={id}>
+                    <DeviceRouters.Desktop key={id}>
                         <TableCellTags contextMenuHandler={contextMenuHandler}
                                        selectRow={selectRow}
                                        viewID={row.id}
                                        tags={row.tags}/>
-                    </DeviceRouters.NotPhone>
+                    </DeviceRouters.Desktop>
                 );
 
             case 'authors':
 
                 return (
-                    <DeviceRouters.NotPhone key={id}>
+                    <DeviceRouters.Desktop key={id}>
                         <TableCell padding="none"
                                    className={classes.colAuthors}
                                    onClick={selectRowClickHandler}
@@ -214,12 +215,10 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
                             {Object.values(row.docInfo.authors || {}).join(', ')}
 
                         </TableCell>
-                    </DeviceRouters.NotPhone>
+                    </DeviceRouters.Desktop>
                 );
 
             case 'progress':
-
-
 
                 return (
                     <cells.Progress key={id}
@@ -256,7 +255,7 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
 
             {columns.map(toCell)}
 
-            <DeviceRouters.NotPhone>
+            <DeviceRouters.Desktop>
                 <TableCell align="right"
                            padding="none"
                            className={classes.colDocButtons}
@@ -268,12 +267,18 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
                                      archived={row.archived}
                                      viewID={row.id}/>
 
-                    {/*<cells.OverflowMenuButton viewID={row.id}/>*/}
-
-
 
                 </TableCell>
-            </DeviceRouters.NotPhone>
+            </DeviceRouters.Desktop>
+
+            <DeviceRouters.NotDesktop>
+                <TableCell align="right"
+                           padding="none"
+                           onClick={event => event.stopPropagation()}
+                           onDoubleClick={event => event.stopPropagation()}>
+                    <OverflowMenuButton viewID={row.id}/>
+                </TableCell>
+            </DeviceRouters.NotDesktop>
         </>
     );
 
