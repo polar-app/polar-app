@@ -23,6 +23,7 @@ const DOCS_ORDER = [
   "Tracking Policy", 0,
   "Support", 0,
   "Roadmap", 0,
+  "Reporting Bugs", 0,
 ];
 
 // let replaceWithForwardSlash = function (
