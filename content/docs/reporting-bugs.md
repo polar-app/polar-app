@@ -34,7 +34,7 @@ Polar supports the ability to record a video in-app and send it directly to the 
 
 Just click the "Send Video Feedback" button at the bottom right:
 
-https://i.imgur.com/v2fiZhW.png
+<img src="https://i.imgur.com/v2fiZhW.png">
 
 ## Sending Logs
 
