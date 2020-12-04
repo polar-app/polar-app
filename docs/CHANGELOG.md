@@ -1,3 +1,5 @@
+- amplitude using .getpolarized.io so we can track user flow across the site
+
 - new event design system to handle page views better and it's now using a
   pageView event in analytics.
 

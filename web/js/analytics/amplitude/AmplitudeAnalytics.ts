@@ -15,6 +15,8 @@ function createAmplitude(): any {
         const amplitude = require('amplitude-js');
 
         amplitude.getInstance().init("c1374bb8854a0e847c0d85957461b9f0", null, {
+            sameSiteCookie: "Lax",
+            domain: ".getpolarized.io",
             includeUtm: true,
             includeReferrer: true,
             saveEvents: true,

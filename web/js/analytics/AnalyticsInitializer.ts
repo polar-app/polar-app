@@ -8,14 +8,14 @@ import firebase from 'firebase/app'
 
 export namespace AnalyticsInitializer {
 
-   export function doInit() {
+    export function doInit() {
 
         init()
             .catch(err => console.error("Could not init analytics: ", err));
 
     }
 
-   export async function init() {
+    export async function init() {
 
         // TODO: this forces Firestore to be initialized, which I don't like and
         // this should happen somewhere else like a root component.
@@ -24,6 +24,8 @@ export namespace AnalyticsInitializer {
         initVersion();
         initAccount();
         initHeartbeat();
+
+        console.log("Analytics initialized");
 
     }
 
@@ -37,7 +39,7 @@ export namespace AnalyticsInitializer {
 
     function initAccount() {
 
-        const doUserCreated = (user: firebase.User) => {
+        const doUserTraits = (user: firebase.User) => {
 
             const doUserEmailDomain = () => {
 
@@ -78,12 +80,11 @@ export namespace AnalyticsInitializer {
 
         };
 
-        // TODO: add this back in...
         // const doPlan = async () => {
         //
         //     const account = await Accounts.get();
         //
-        //     const plan = account?.plan || 'free';
+        //     const plan = Plans.toV2(account?.plan).level;
         //
         //     Analytics.traits({plan});
         //
@@ -95,9 +96,8 @@ export namespace AnalyticsInitializer {
 
             Analytics.identify(user.uid);
 
-            doUserCreated(user);
-            // TODO: add this back in.
-            // await doPlan();
+            doUserTraits(user);
+            // doPlan().catch(err => console.log())
 
         }
 
