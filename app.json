@@ -2,7 +2,7 @@
   "expo": {
     "name": "Polar",
     "slug": "polar-mobile-app",
-    "version": "2.0.84",
+    "version": "2.0.88",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -26,7 +26,18 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "io.getpolarized.polar"
+      "permissions": [
+
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.INTERNET",
+        "android.permission.SYSTEM_ALERT_WINDOW",
+        "android.permission.WAKE_LOCK",
+        "android.permission.STORAGE",
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        
+      ],
+      "package": "io.getpolarized.polar",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
