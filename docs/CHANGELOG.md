@@ -1,3 +1,10 @@
+
+- Fixed one of the main safari bugs preventing us from shipping an iOS app.
+
+- Fixed bug in RendererAnalytics that would create too many sentry entries.
+
+# 2.0.87
+
 - Worked on 'Personas' for when users go premium
 
 - Fixed bug where tags could not be created

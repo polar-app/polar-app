@@ -125,7 +125,7 @@ const CreateAutoFlashcardButton = deepMemo((props: IAnnotationProps) => {
                 )}
 
                 {status === 'waiting' && (
-                    <CircularProgress size="1em"/>
+                    <CircularProgress size="1em" color="secondary"/>
                 )}
             </div>
 

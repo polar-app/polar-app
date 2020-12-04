@@ -84,56 +84,51 @@ export const DocRepoTable2 = deepMemo(() => {
     const [root, setRoot] = React.useState<HTMLElement | HTMLDivElement | null>();
 
     return (
-        <div style={{
-                width: '100%',
-                height: '100%'
-             }}>
 
-            <MUIElevation elevation={2}
-                          style={{
-                              width: '100%',
-                              height: '100%',
-                              display: 'flex',
-                              flexDirection: 'column'
-                          }}>
+        <MUIElevation elevation={2}
+                      style={{
+                          width: '100%',
+                          height: '100%',
+                          display: 'flex',
+                          flexDirection: 'column'
+                      }}>
 
-                <>
-                    <DocRepoTableToolbar />
+            <>
+                <DocRepoTableToolbar />
 
-                    <TableContainer ref={setRoot}
-                                    style={{
-                                        flexGrow: 1
-                                    }}>
-                        <Table
-                            stickyHeader
-                            style={{
-                                minWidth: 0,
-                                maxWidth: '100%',
-                                tableLayout: 'fixed'
-                            }}
-                            aria-labelledby="tableTitle"
-                            size={'medium'}
-                            aria-label="enhanced table">
+                <TableContainer ref={setRoot}
+                                style={{
+                                    flexGrow: 1
+                                }}>
+                    <Table
+                        stickyHeader
+                        style={{
+                            minWidth: 0,
+                            maxWidth: '100%',
+                            tableLayout: 'fixed'
+                        }}
+                        aria-labelledby="tableTitle"
+                        size={'medium'}
+                        aria-label="enhanced table">
 
-                            <DocRepoTableHead/>
+                        <DocRepoTableHead/>
 
-                            <DocRepoContextMenu>
-                                {root && (
-                                    <IntersectionList values={view}
-                                                      root={root}
-                                                      blockSize={25}
-                                                      BlockComponent={BlockComponent}
-                                                      HiddenBlockComponent={HiddenBlockComponent}
-                                                      VisibleComponent={VisibleComponent}/>)}
-                            </DocRepoContextMenu>
+                        <DocRepoContextMenu>
+                            {root && (
+                                <IntersectionList values={view}
+                                                  root={root}
+                                                  blockSize={25}
+                                                  BlockComponent={BlockComponent}
+                                                  HiddenBlockComponent={HiddenBlockComponent}
+                                                  VisibleComponent={VisibleComponent}/>)}
+                        </DocRepoContextMenu>
 
-                        </Table>
-                    </TableContainer>
-                </>
+                    </Table>
+                </TableContainer>
+            </>
 
-            </MUIElevation>
-        </div>
-    )
+        </MUIElevation>
+    );
 
 });
 
