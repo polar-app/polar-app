@@ -5,6 +5,7 @@ import {Notes} from "./Notes";
 import { deepMemo } from "../react/ReactUtils";
 import {NoteBullet} from "./ NoteBullet";
 import {useLifecycleTracer} from "../hooks/ReactHooks";
+import {NoteOverflow} from "./NoteOverflow";
 
 interface IProps {
     readonly parent: NoteIDStr;
@@ -30,9 +31,11 @@ export const Note = deepMemo(function Note(props: IProps) {
                  style={{display: 'flex'}}>
 
                 <div style={{
-                         marginTop: 'auto',
-                         marginBottom: 'auto'
+                         display: 'flex',
+                         alignItems: 'center'
                      }}>
+
+                    <NoteOverflow target={props.id}/>
 
                     <NoteBullet target={props.id}/>
 
