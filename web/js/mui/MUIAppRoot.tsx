@@ -1,4 +1,3 @@
-import createPersistedState from "use-persisted-state";
 import {MUIThemeTypeContext, ThemeType} from "./context/MUIThemeTypeContext";
 import {GlobalCss} from "./css/GlobalCss";
 import * as React from "react";
@@ -9,6 +8,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles";
 import {KeyboardShortcuts} from "../keyboard_shortcuts/KeyboardShortcuts";
 import {UndoQueueProvider} from "../undo/UndoQueueProvider";
+import useLocalStorageState from 'use-local-storage-state'
 
 interface IProps {
     readonly children: React.ReactNode;
@@ -16,8 +16,7 @@ interface IProps {
 
 export const MUIAppRoot = React.memo((props: IProps) => {
 
-    const usePersistedTheme = createPersistedState('theme');
-    const [theme, setTheme] = usePersistedTheme<ThemeType>("dark");
+    const [theme, setTheme] = useLocalStorageState<ThemeType>('theme', "dark");
 
     // TODO play responsiveFontSizes in MUI...
     const muiTheme = React.useMemo(() => createMuiTheme({
