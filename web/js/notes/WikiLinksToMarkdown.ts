@@ -1,4 +1,4 @@
-export namespace WikiLinks {
+export namespace WikiLinksToMarkdown {
 
     export function escape(markdown: string) {
         return markdown.replace(/\[\[([^\]]+)\]\]/g, (substring, args) => `[${args}](#${args})`);

@@ -168,6 +168,7 @@ export const NoteActionMenu = deepMemo(function NoteActionMenu(props: IProps) {
 
         editor.model.change((writer) => {
             if (promptPositionRef.current) {
+
                 writer.insertText(text, {linkHref: `#${text}`}, promptPositionRef.current);
 
                 const currentPosition = getEditorPosition();

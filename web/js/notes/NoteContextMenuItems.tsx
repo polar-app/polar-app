@@ -2,10 +2,9 @@ import React from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import SendIcon from '@material-ui/icons/Send';
 import { useNotesStore } from './NotesStore';
 import {Clipboards} from "../util/system/clipboard/Clipboards";
-
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 
 export const NoteContextMenuItems = React.memo(function MUIDocDropdownMenuItems() {
 
@@ -30,7 +29,7 @@ export const NoteContextMenuItems = React.memo(function MUIDocDropdownMenuItems(
 
             <MenuItem onClick={onCopyMarkdown}>
                 <ListItemIcon>
-                    <SendIcon fontSize="small"/>
+                    <FileCopyIcon fontSize="small"/>
                 </ListItemIcon>
                 <ListItemText primary="Copy Markdown"/>
             </MenuItem>

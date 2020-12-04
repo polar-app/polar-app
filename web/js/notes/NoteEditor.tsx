@@ -9,7 +9,7 @@ import {EditorStoreProvider, useSetEditorStore} from "./EditorStoreProvider";
 import {NoteActionMenuForCommands} from "./NoteActionMenuForCommands";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import { NoteActionMenuForLinking } from "./NoteActionMenuForLinking";
-import {WikiLinks} from "./WikiLinks";
+import {WikiLinksToMarkdown} from "./WikiLinksToMarkdown";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
 import {useLifecycleTracer} from "../hooks/ReactHooks";
 
@@ -88,13 +88,14 @@ const NoteEditorInner = deepMemo(function NoteEditorInner(props: IProps) {
     const {content} = note;
 
     // FIXME: move this into a central location for conversion of markdown...
-    const wikiLinkContent = React.useMemo(() => WikiLinks.escape(content || ''), [content])
+    const wikiLinkContent = React.useMemo(() => WikiLinksToMarkdown.escape(content || ''), [content])
 
     const handleChange = React.useCallback((content: string) => {
+
+        content = WikiLinksToMarkdown.unescape(content);
+        console.log("FIXME: content: ", content);
         updateNote(props.id, content);
 
-        // FIXME: add this back in...
-        // updateNote(props.id, WikiLinks.unescape(content));
     }, [props.id, updateNote]);
 
     return (
