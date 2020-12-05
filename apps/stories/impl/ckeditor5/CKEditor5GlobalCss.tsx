@@ -127,7 +127,8 @@ const CKEditor5GlobalCssStyles = withStyles((theme) => {
                 // needed because ckeditor adds its own marging and padding but I want
                 // us to be able to control that directly.
                 margin: "0px !important",
-                padding: "0px !important"
+                padding: "0px !important",
+                border: "0px !important"
 
             },
 
