@@ -117,7 +117,13 @@ const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEd
         );
     } else {
         return (
-            <div onClick={handleActivated} dangerouslySetInnerHTML={{__html: content}}/>
+            // this uses the standard ckeditor spacing and border so things
+            // don't jump around after we activate
+            <div style={{
+                    padding: "0 var(--ck-spacing-standard)",
+                    border: "1px solid transparent"
+                 }}
+                 onClick={handleActivated} dangerouslySetInnerHTML={{__html: content}}/>
         );
     }
 
