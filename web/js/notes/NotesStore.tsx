@@ -37,6 +37,8 @@ export interface INote {
 
 }
 
+export type StringSetMap = Readonly<{[key: string]: boolean}>
+
 interface INotesStore {
 
     /**
@@ -55,6 +57,11 @@ interface INotesStore {
      * The currently active note.
      */
     readonly active: NoteIDStr | undefined;
+
+    /**
+     * The nodes that are expanded.
+     */
+    readonly expanded: StringSetMap;
 
 }
 
@@ -102,13 +109,18 @@ interface INotesCallbacks {
 
     readonly doIndent: (id: NoteIDStr, parent: NoteIDStr) => void;
 
+    readonly expand: (id: NoteIDStr) => void;
+
+    readonly collapse: (id: NoteIDStr) => void;
+
 }
 
 const initialStore: INotesStore = {
     index: {},
     indexByName: {},
     reverse: {},
-    active: undefined
+    active: undefined,
+    expanded: {}
 }
 
 interface Mutator {
@@ -398,6 +410,29 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             doNav('next', parent, child);
         }
 
+        function expand(id: NoteIDStr) {
+            const store = storeProvider();
+
+            const expanded = {
+                ...store.expanded,
+                id: true
+            };
+
+            setStore({...store, expanded});
+        }
+
+        function collapse(id: NoteIDStr) {
+            const store = storeProvider();
+
+            const expanded = {
+                ...store.expanded,
+            };
+
+            delete expanded[id];
+
+            setStore({...store, expanded});
+        }
+
         return {
             doPut,
             doDelete,
@@ -408,7 +443,9 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             setActive,
             navPrev,
             navNext,
-            doIndent
+            doIndent,
+            expand,
+            collapse
         };
 
     }, [setStore, storeProvider])
