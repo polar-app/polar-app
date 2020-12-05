@@ -5,6 +5,12 @@ import {INote, NotesStoreProvider, useNotesStoreCallbacks, useNotesStore} from '
 import {NotesRouter} from "../../../web/js/notes/NotesRouter";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import { CKEditor5AppRoot } from './ckeditor5/CKEditor5AppRoot';
+import {FlashcardInputForFrontAndBack} from "../../../web/js/annotation_sidebar/child_annotations/flashcards/flashcard_input/FlashcardInputForFrontAndBack";
+import {AddContentFab} from "../../repository/js/ui/AddContentFab";
+import Fab from '@material-ui/core/Fab';
+import HelpIcon from '@material-ui/icons/Help';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
 
 const now = ISODateTimeStrings.create();
 
@@ -126,6 +132,35 @@ const NotesStoryDebug = React.memo(() => {
     );
 });
 
+const NotesStoryDebugButton = () => {
+
+    const [active, setActive] = React.useState(false);
+
+    return (
+        <>
+
+            {active && (
+                <Dialog open={active} maxWidth="xl" onClose={() => setActive(false)}>
+                    <DialogContent>
+                        <NotesStoryDebug/>
+                    </DialogContent>
+                </Dialog>
+            )}
+
+            <Fab color="primary"
+                 style={{
+                     zIndex: 10,
+                     position: 'absolute',
+                     right: '20px',
+                     bottom: '20px'
+                 }}
+                 onClick={() => setActive(true)}>
+                <HelpIcon/>
+            </Fab>
+        </>
+    )
+}
+
 const NotesInner = () => (
     <div className="NotesInner"
          style={{
@@ -134,6 +169,8 @@ const NotesInner = () => (
          }}>
 
         <NotesRouter/>
+
+        <NotesStoryDebugButton/>
 
         {/*<div style={{*/}
         {/*         width: '500px',*/}
