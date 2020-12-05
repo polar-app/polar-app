@@ -1,7 +1,7 @@
 import React from "react";
-import {CKEditor5BalloonEditor} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
+import {CKEditor5BalloonEditor, ckeditor5} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
 import {NoteNavigation} from "./NoteNavigation";
-import {NoteIDStr, useNotesStore, useNotesStoresCallbacks} from "./NotesStore";
+import {NoteIDStr, useNotesStore, useNotesStoreCallbacks} from "./NotesStore";
 import {deepMemo} from "../react/ReactUtils";
 import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
@@ -75,13 +75,62 @@ function useLinkNavigation() {
 
 }
 
+interface INoteEditorActivatorProps {
+    readonly id: NoteIDStr;
+    readonly content: string;
+    readonly onEditor: (editor: ckeditor5.IEditor) => void;
+    readonly onChange: (content: string) => void;
+}
+
+/**
+ * Handles loading the HTML the first time, when active (either via onClick or
+ * when using navigation then we turn on ckeditor and keep it on so we don't
+ * have to worry about the position / cursor being maintained.
+ *
+ * Once it's on keep it on as there's a performance benefit too.
+ */
+const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEditorActivatorProps) {
+
+    const {onEditor, onChange, id} = props;
+    const {active} = useNotesStore(['active']);
+    const {setActive} = useNotesStoreCallbacks();
+    const [activated, setActivated] = React.useState(false);
+
+    const escaper = MarkdownContentEscaper;
+
+    // TODO: add a preEscaped property to CKEditor5BalloonEditor because
+    // otherwise we're double escaping
+    const content = React.useMemo(() => escaper.escape(props.content), [escaper, props.content]);
+
+    const handleActivated = React.useCallback(() => {
+        setActive(id)
+        setActivated(true);
+    }, [id, setActive]);
+
+    if (activated || active === props.id) {
+
+        return (
+            <CKEditor5BalloonEditor content={content}
+                                    escaper={escaper}
+                                    onChange={onChange}
+                                    onEditor={onEditor}/>
+        );
+    } else {
+        return (
+            <div onClick={handleActivated} dangerouslySetInnerHTML={{__html: content}}/>
+        );
+    }
+
+
+});
+
 const NoteEditorInner = deepMemo(function NoteEditorInner(props: IProps) {
 
     useLifecycleTracer('NoteEditorInner');
 
     const {id} = props;
     const {index} = useNotesStore(['index']);
-    const {updateNote} = useNotesStoresCallbacks()
+    const {updateNote} = useNotesStoreCallbacks()
     const setEditor = useSetEditorStore();
 
     const note = index[id];
@@ -92,10 +141,10 @@ const NoteEditorInner = deepMemo(function NoteEditorInner(props: IProps) {
     }, [props.id, updateNote]);
 
     return (
-        <CKEditor5BalloonEditor content={content || ''}
-                                escaper={MarkdownContentEscaper}
-                                onChange={handleChange}
-                                onEditor={setEditor}/>
+        <NoteEditorActivator id={id}
+                             content={content || ''}
+                             onChange={handleChange}
+                             onEditor={setEditor}/>
     );
 
 });

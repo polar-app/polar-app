@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import {NoteIDStr, useNotesStoresCallbacks, useNotesStore} from "./NotesStore";
+import {NoteIDStr, useNotesStoreCallbacks, useNotesStore} from "./NotesStore";
 import {useRefValue} from "../hooks/ReactHooks";
 import { deepMemo } from '../react/ReactUtils';
 import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
@@ -21,7 +21,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
     const {active} = useNotesStore(['active']);
     const activeRef = useRefValue(active);
-    const {createNewNote, setActive, navPrev, navNext, doIndent} = useNotesStoresCallbacks();
+    const {createNewNote, setActive, navPrev, navNext, doIndent} = useNotesStoreCallbacks();
 
     const [ref, setRef] = React.useState<HTMLDivElement | null>(null);
 

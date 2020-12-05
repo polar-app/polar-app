@@ -1,7 +1,7 @@
 import React from 'react';
 import '@ckeditor/ckeditor5-theme-lark/theme/theme.css';
 import '@ckeditor/ckeditor5-theme-lark';
-import {INote, NotesStoreProvider, useNotesStoresCallbacks, useNotesStore} from '../../../web/js/notes/NotesStore';
+import {INote, NotesStoreProvider, useNotesStoreCallbacks, useNotesStore} from '../../../web/js/notes/NotesStore';
 import {NotesRouter} from "../../../web/js/notes/NotesRouter";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import { CKEditor5AppRoot } from './ckeditor5/CKEditor5AppRoot';
@@ -149,7 +149,7 @@ const NotesInner = () => (
 
 const BasicNotesDataSet = (props: BasicNotesDataSetProps) => {
 
-    const {doPut} = useNotesStoresCallbacks();
+    const {doPut} = useNotesStoreCallbacks();
 
     React.useMemo(() => doPut(notes), [doPut]);
 

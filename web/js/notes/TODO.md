@@ -1,4 +1,11 @@
 
+
+- Do the HARD input tasks first so I don't get into a swap of code.
+    - persistence of expand/collapse
+    - 
+
+
+
 - MVP.1
     - basic workflowy style outline manipulation
         - tab indents the current item
@@ -10,7 +17,10 @@
     - /table support
     - exports of data? 
 
-- 
+- The app is too slow now... 
+    - consider trying to figure out how to restore the cursor position with ckeditor5 by having a toggle.
+
+
 - main tasks:
     - 
     - we should work through now is to get the workflowy-style navigation working

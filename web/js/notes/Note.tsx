@@ -1,6 +1,6 @@
 import React from "react";
 import {NoteEditor} from "./NoteEditor";
-import {NoteIDStr, useNotesStoresCallbacks, useNotesStore} from "./NotesStore";
+import {NoteIDStr, useNotesStoreCallbacks, useNotesStore} from "./NotesStore";
 import {Notes} from "./Notes";
 import { deepMemo } from "../react/ReactUtils";
 import {NoteBullet} from "./ NoteBullet";
@@ -31,7 +31,7 @@ export const NoteInner = deepMemo(function NoteInner(props: IProps) {
 
     const {id} = props;
     const {index} = useNotesStore(['index']);
-    const {lookup} = useNotesStoresCallbacks();
+    const {lookup} = useNotesStoreCallbacks();
 
     const note = index[id];
 

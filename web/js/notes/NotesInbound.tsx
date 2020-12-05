@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { deepMemo } from '../react/ReactUtils';
-import {NoteIDStr, useNotesStore, useNotesStoresCallbacks} from "./NotesStore";
+import {NoteIDStr, useNotesStore, useNotesStoreCallbacks} from "./NotesStore";
 import Box from '@material-ui/core/Box';
 import { UL } from './UL';
 import {NoteBullet} from "./ NoteBullet";
@@ -42,7 +42,7 @@ const InboundNoteRef = deepMemo((props: InboundNoteRefProps) => {
 export const NotesInbound = deepMemo(function NotesInbound(props: IProps) {
 
     useNotesStore(['reverse', 'index']);
-    const {lookupReverse, lookup} = useNotesStoresCallbacks();
+    const {lookupReverse, lookup} = useNotesStoreCallbacks();
 
     const inboundNoteIDs = lookupReverse(props.id);
     const inbound = lookup(inboundNoteIDs);
