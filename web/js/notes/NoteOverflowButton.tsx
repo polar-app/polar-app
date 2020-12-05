@@ -23,7 +23,7 @@ interface IProps {
     readonly target: NoteTargetStr;
 }
 
-export const NoteOverflow = deepMemo(function NoteOverflow(props: IProps) {
+export const NoteOverflowButton = deepMemo(function NoteOverflow(props: IProps) {
 
     const {active} = useNotesStore(['active']);
     const classes = useStyles();
