@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
             color: theme.palette.text.hint,
+            fontSize: '1.0em',
             width: '1.0em',
             height: '1.0em'
         },
@@ -36,12 +37,10 @@ export const NoteOverflowButton = deepMemo(function NoteOverflow(props: IProps) 
     }
 
     return (
-        <NoteButton className={className}
-                    onClick={event => contextMenuHandlers.onContextMenu(event)}>
-
-            <MoreVertIcon className={classes.root}/>
-
-        </NoteButton>
+        <div>
+            <MoreVertIcon onClick={event => contextMenuHandlers.onContextMenu(event)}
+                          className={classes.root}/>
+        </div>
     );
 })
 

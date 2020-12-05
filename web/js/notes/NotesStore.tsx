@@ -109,8 +109,8 @@ interface INotesCallbacks {
 
     readonly doIndent: (id: NoteIDStr, parent: NoteIDStr) => void;
 
+    readonly toggleExpand: (id: NoteIDStr) => void;
     readonly expand: (id: NoteIDStr) => void;
-
     readonly collapse: (id: NoteIDStr) => void;
 
 }
@@ -410,13 +410,26 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             doNav('next', parent, child);
         }
 
+        function toggleExpand(id: NoteIDStr) {
+
+            const store = storeProvider();
+
+            if (store.expanded[id]) {
+                collapse(id);
+            } else {
+                expand(id);
+            }
+
+        }
+
         function expand(id: NoteIDStr) {
             const store = storeProvider();
 
             const expanded = {
                 ...store.expanded,
-                id: true
             };
+
+            expanded[id] = true;
 
             setStore({...store, expanded});
         }
@@ -444,6 +457,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             navPrev,
             navNext,
             doIndent,
+            toggleExpand,
             expand,
             collapse
         };

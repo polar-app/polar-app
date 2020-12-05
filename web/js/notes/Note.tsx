@@ -2,7 +2,7 @@ import React from "react";
 import {NoteEditor} from "./NoteEditor";
 import {NoteIDStr, useNotesStoreCallbacks, useNotesStore} from "./NotesStore";
 import {NoteItems} from "./NoteItems";
-import { deepMemo } from "../react/ReactUtils";
+import {deepMemo} from "../react/ReactUtils";
 import {NoteBulletButton} from "./NoteBulletButton";
 import {useLifecycleTracer} from "../hooks/ReactHooks";
 import {NoteOverflowButton} from "./NoteOverflowButton";
@@ -10,6 +10,8 @@ import {createContextMenu} from "../../../apps/repository/js/doc_repo/MUIContext
 import {IDocViewerContextMenuOrigin} from "../../../apps/doc/src/DocViewerMenu";
 import {NoteContextMenuItems} from "./NoteContextMenuItems";
 import useTheme from "@material-ui/core/styles/useTheme";
+import {isPresent} from "polar-shared/src/Preconditions";
+import { NoteExpandToggleButton } from "./NoteExpandToggleButton";
 
 interface IProps {
     readonly parent: NoteIDStr;
@@ -31,7 +33,7 @@ export const NoteInner = deepMemo(function NoteInner(props: IProps) {
     useLifecycleTracer('NoteInner');
 
     const {id} = props;
-    const {index} = useNotesStore(['index']);
+    const {index, expanded} = useNotesStore(['index', 'expanded']);
     const {lookup} = useNotesStoreCallbacks();
     const theme = useTheme();
 
@@ -40,6 +42,9 @@ export const NoteInner = deepMemo(function NoteInner(props: IProps) {
     const items = lookup(note.items || []);
 
     const contextMenuHandlers = useNoteContextMenu();
+
+    const hasItems = items.length > 0;
+    const isExpanded = expanded[id] === true;
 
     return (
         <>
@@ -55,10 +60,16 @@ export const NoteInner = deepMemo(function NoteInner(props: IProps) {
                 <div style={{
                          display: 'flex',
                          alignItems: 'center',
+                         width: '3em',
+                         justifyContent: 'flex-end',
                          marginRight: theme.spacing(0.5)
                      }}>
 
                     <NoteOverflowButton target={props.id}/>
+
+                    {hasItems && (
+                        <NoteExpandToggleButton id={props.id}/>
+                    )}
 
                     <NoteBulletButton target={props.id}/>
 
@@ -68,7 +79,9 @@ export const NoteInner = deepMemo(function NoteInner(props: IProps) {
 
             </div>
 
-            <NoteItems parent={props.parent} notes={items}/>
+            {isExpanded && (
+                <NoteItems parent={props.parent} notes={items}/>
+            )}
         </>
     );
 });
