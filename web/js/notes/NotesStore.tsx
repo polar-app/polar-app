@@ -72,6 +72,11 @@ interface DoPutOpts {
      */
     readonly newActive?: NoteIDStr;
 
+    /**
+     * Expand the give parent note.
+     */
+    readonly newExpand?: NoteIDStr;
+
 }
 
 interface INotesCallbacks {
@@ -158,6 +163,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             const index = {...store.index};
             const indexByName = {...store.indexByName};
             const reverse = {...store.reverse};
+            const expanded = {...store.expanded};
 
             for (const note of notes) {
 
@@ -183,7 +189,11 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
             const active = opts.newActive ? opts.newActive : store.active;
 
-            setStore({...store, index, indexByName, reverse, active});
+            if (opts.newExpand) {
+                expanded[opts.newExpand] = true;
+            }
+
+            setStore({...store, index, indexByName, reverse, active, expanded});
 
         }
 
@@ -305,7 +315,10 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
                     ]
                 }
 
-                doPut([mutatedParentNode, mutatedNewParentNode]);
+                doPut([mutatedParentNode, mutatedNewParentNode], {
+                    newActive: id,
+                    newExpand: mutatedNewParentNode.id
+                });
 
             }
 
