@@ -10,7 +10,7 @@ import {NoteActionMenuForCommands} from "./NoteActionMenuForCommands";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import { NoteActionMenuForLinking } from "./NoteActionMenuForLinking";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
-import {useLifecycleTracer} from "../hooks/ReactHooks";
+import {useLifecycleTracer, useStateRef} from "../hooks/ReactHooks";
 import {MarkdownContentEscaper} from "./MarkdownContentEscaper";
 
 interface IProps {
@@ -91,10 +91,12 @@ interface INoteEditorActivatorProps {
  */
 const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEditorActivatorProps) {
 
+    useLifecycleTracer('NoteEditorActivator');
+
     const {onEditor, onChange, id} = props;
     const {active} = useNotesStore(['active']);
     const {setActive} = useNotesStoreCallbacks();
-    const [activated, setActivated] = React.useState(false);
+    const [, setActivated, activatedRef] = useStateRef(false);
 
     const escaper = MarkdownContentEscaper;
 
@@ -108,9 +110,17 @@ const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEd
     const handleActivated = React.useCallback(() => {
         setActive(id)
         setActivated(true);
-    }, [id, setActive]);
+    }, [id, setActivated, setActive]);
 
-    if (activated || active === props.id) {
+    if (active === props.id) {
+        // there are two ways to activate this is that the user navigates to it
+        // via key bindings and then the active item changes in the store, in
+        // which case we have to turn this on and make it active OR the user
+        // clicks on it which we have a handler for.
+        activatedRef.current = true;
+    }
+
+    if (activatedRef.current) {
 
         return (
             <CKEditor5BalloonEditor content={content}

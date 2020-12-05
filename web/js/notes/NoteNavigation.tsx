@@ -34,7 +34,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
         if (editor !== undefined) {
 
             if (activeRef.current === props.id) {
-                console.log("Focusing editor");
+                // console.log("Focusing editor");
                 editor.editing.view.focus();
             } else {
                 // different editor
