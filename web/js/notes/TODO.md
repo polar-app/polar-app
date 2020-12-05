@@ -1,13 +1,12 @@
 
 
 - Do the HARD input tasks first so I don't get into a swap of code.
+    - unable to click on a new item and activate it
     - escape the content in the story text when selected
     - escape the content in the references in the bottom
     - 
-    - persistence of expand/collapse
     - the cursor should NOT be persisted when jumping between nodes
         - both ckeditor and workflowy have smart handling of this behavior
-    - multi-line nodes don't line up with the point 
 
 
 
