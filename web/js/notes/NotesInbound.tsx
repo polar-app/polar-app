@@ -3,7 +3,7 @@ import { deepMemo } from '../react/ReactUtils';
 import {NoteIDStr, useNotesStore, useNotesStoreCallbacks} from "./NotesStore";
 import Box from '@material-ui/core/Box';
 import { UL } from './UL';
-import {NoteBullet} from "./ NoteBullet";
+import {NoteBullet} from "./NoteBullet";
 
 interface IProps {
     readonly id: NoteIDStr;

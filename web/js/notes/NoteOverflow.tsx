@@ -8,17 +8,15 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import clsx from "clsx";
 import {useNoteContextMenu} from "./Note";
+import {NoteButton} from "./NoteButton";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
             color: theme.palette.text.hint,
-            width: '28px',
-            height: '1em'
+            width: '1.0em',
+            height: '1.0em'
         },
-        icon: {
-            fontSize: '0.8em'
-        }
     }),
 );
 interface IProps {
@@ -38,13 +36,12 @@ export const NoteOverflow = deepMemo(function NoteOverflow(props: IProps) {
     }
 
     return (
-        <IconButton className={className}
-                    onClick={event => contextMenuHandlers.onContextMenu(event)}
-                    size="small">
+        <NoteButton className={className}
+                    onClick={event => contextMenuHandlers.onContextMenu(event)}>
 
-            <MoreVertIcon className={classes.icon}/>
+            <MoreVertIcon className={classes.root}/>
 
-        </IconButton>
+        </NoteButton>
     );
 })
 

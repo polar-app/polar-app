@@ -2,6 +2,8 @@ import * as React from 'react';
 import useTheme from '@material-ui/core/styles/useTheme';
 
 interface IProps {
+    readonly className?: string;
+    readonly onClick: (event: React.MouseEvent) => void;
     readonly children: JSX.Element;
 }
 
@@ -15,6 +17,8 @@ export const NoteButton = React.memo(function NoteButton(props: IProps) {
     return (
         <div onMouseEnter={() => setHover(true)}
              onMouseLeave={() => setHover(false)}
+             onClick={props.onClick}
+             className={props.className}
              style={{
                  display: 'inline-block',
                  borderRadius: '1em',

@@ -1,8 +1,9 @@
 import * as React from 'react';
-import {NoteBullet} from "../../../web/js/notes/ NoteBullet";
+import {NoteBullet} from "../../../web/js/notes/NoteBullet";
 import {ArrowDown} from "../../../web/js/notes/ArrowDown";
 import {ArrowRight} from "../../../web/js/notes/ArrowRight";
 import {NoteButton} from "../../../web/js/notes/NoteButton";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 export const NotesComponentsStory = () => {
     return (
@@ -24,7 +25,7 @@ export const NotesComponentsStory = () => {
 
                 <h3>NoteButton /w ArrowRight</h3>
 
-                <NoteButton>
+                <NoteButton onClick={NULL_FUNCTION}>
                     <ArrowRight/>
                 </NoteButton>
             </div>

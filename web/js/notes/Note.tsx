@@ -3,7 +3,7 @@ import {NoteEditor} from "./NoteEditor";
 import {NoteIDStr, useNotesStoreCallbacks, useNotesStore} from "./NotesStore";
 import {Notes} from "./Notes";
 import { deepMemo } from "../react/ReactUtils";
-import {NoteBullet} from "./ NoteBullet";
+import {NoteBullet} from "./NoteBullet";
 import {useLifecycleTracer} from "../hooks/ReactHooks";
 import {NoteOverflow} from "./NoteOverflow";
 import {createContextMenu} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
