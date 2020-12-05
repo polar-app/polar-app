@@ -9,7 +9,7 @@ interface NotesProps {
     readonly notes: ReadonlyArray<INote> | undefined;
 }
 
-export const Notes = deepMemo(function Notes(props: NotesProps) {
+export const NoteItems = deepMemo(function Notes(props: NotesProps) {
 
     if ( ! props.notes) {
         return null;

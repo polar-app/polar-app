@@ -1,7 +1,7 @@
 import React from "react";
 import {deepMemo} from "../react/ReactUtils";
 import {NoteIDStr, useNotesStore, useNotesStoreCallbacks} from "./NotesStore";
-import {Notes} from "./Notes";
+import {NoteItems} from "./NoteItems";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {MUIBrowserLinkStyle} from "../mui/MUIBrowserLinkStyle";
 import {NotesInbound} from "./NotesInbound";
@@ -43,7 +43,7 @@ export const NoteRoot = deepMemo(function NoteRoot(props: IProps) {
                                             onChange={NULL_FUNCTION}
                                             onEditor={NULL_FUNCTION}/>)}
 
-                <Notes parent={id} notes={notes}/>
+                <NoteItems parent={id} notes={notes}/>
 
                 <NotesInbound id={id}/>
 
