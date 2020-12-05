@@ -52,7 +52,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
     const handleKeyDown = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
 
-        console.log("FIXME: ", event);
+        // console.log("FIXME: ", event);
 
         function abortEvent() {
             event.domEvent.stopPropagation();

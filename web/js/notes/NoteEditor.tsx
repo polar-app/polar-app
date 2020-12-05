@@ -98,6 +98,9 @@ const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEd
 
     const escaper = MarkdownContentEscaper;
 
+    // TODO: ckeditor STILL has a load delay of about 500ms so we might have to activate
+    // AFTER mount so the page is faster and more interactive.
+
     // TODO: add a preEscaped property to CKEditor5BalloonEditor because
     // otherwise we're double escaping
     const content = React.useMemo(() => escaper.escape(props.content), [escaper, props.content]);
@@ -116,15 +119,20 @@ const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEd
                                     onEditor={onEditor}/>
         );
     } else {
+
+        const placeholder = content.trim() === '' ? ' ' : content;
+
         return (
             // this uses the standard ckeditor spacing and border so things
             // don't jump around after we activate
-            <div style={{
-                    padding: "0 var(--ck-spacing-standard)",
-                    border: "1px solid transparent"
+            <div className="note-inactive"
+                 style={{
+                     padding: "0 var(--ck-spacing-standard)",
+                     border: "1px solid transparent"
                  }}
-                 onClick={handleActivated} dangerouslySetInnerHTML={{__html: content}}/>
+                 onClick={handleActivated} dangerouslySetInnerHTML={{__html: placeholder}}/>
         );
+
     }
 
 

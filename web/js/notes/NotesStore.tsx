@@ -365,6 +365,8 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             const activeIndexWithoutBound = childIndex + deltaIndex;
             const activeIndex = Math.min(Math.max(0, activeIndexWithoutBound), items.length -1);
 
+            // FIXME: if necessary, jump to the child items when they're expanded
+
             const newActive = items[activeIndex];
 
             setStore({

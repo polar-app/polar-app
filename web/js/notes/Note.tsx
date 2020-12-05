@@ -43,7 +43,10 @@ export const NoteInner = deepMemo(function NoteInner(props: IProps) {
         <>
             <div className="Note"
                  {...contextMenuHandlers}
-                 style={{display: 'flex'}}>
+                 style={{
+                     display: 'flex',
+                     alignItems: 'flex-start'
+                 }}>
 
                 <div style={{
                     display: 'flex',
