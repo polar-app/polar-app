@@ -140,6 +140,12 @@ const CKEditor5GlobalCssStyles = withStyles((theme) => {
                 margin: '1em 1em'
             },
 
+            ".ck-content > p": {
+                // don't allow ckeditor to add spacing or margin in its child p element.
+                margin: "0px !important",
+                padding: "0px !important"
+            }
+
         }
 
     };

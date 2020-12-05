@@ -9,6 +9,7 @@ import {NoteOverflow} from "./NoteOverflow";
 import {createContextMenu} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
 import {IDocViewerContextMenuOrigin} from "../../../apps/doc/src/DocViewerMenu";
 import {NoteContextMenuItems} from "./NoteContextMenuItems";
+import useTheme from "@material-ui/core/styles/useTheme";
 
 interface IProps {
     readonly parent: NoteIDStr;
@@ -32,6 +33,7 @@ export const NoteInner = deepMemo(function NoteInner(props: IProps) {
     const {id} = props;
     const {index} = useNotesStore(['index']);
     const {lookup} = useNotesStoreCallbacks();
+    const theme = useTheme();
 
     const note = index[id];
 
@@ -45,13 +47,14 @@ export const NoteInner = deepMemo(function NoteInner(props: IProps) {
                  {...contextMenuHandlers}
                  style={{
                      display: 'flex',
-                     alignItems: 'flex-start'
+                     alignItems: 'flex-start',
+                     // marginBottom: theme.spacing(1)
                  }}>
 
                 <div style={{
-                    display: 'flex',
-                    alignItems: 'center'
-                }}>
+                         display: 'flex',
+                         alignItems: 'center'
+                     }}>
 
                     <NoteOverflow target={props.id}/>
 
