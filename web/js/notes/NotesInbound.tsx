@@ -3,7 +3,7 @@ import { deepMemo } from '../react/ReactUtils';
 import {NoteIDStr, useNotesStore, useNotesStoreCallbacks} from "./NotesStore";
 import Box from '@material-ui/core/Box';
 import { UL } from './UL';
-import {NoteBullet} from "./NoteBullet";
+import {NoteBulletButton} from "./NoteBulletButton";
 
 interface IProps {
     readonly id: NoteIDStr;
@@ -26,7 +26,7 @@ const InboundNoteRef = deepMemo((props: InboundNoteRefProps) => {
                  display: 'flex'
              }}>
 
-            <NoteBullet target={props.id}/>
+            <NoteBulletButton target={props.id}/>
 
             <div style={{
                      marginLeft: '1em'

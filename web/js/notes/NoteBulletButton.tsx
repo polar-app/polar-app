@@ -8,7 +8,7 @@ interface IProps {
     readonly target: NoteTargetStr;
 }
 
-export const NoteBullet = deepMemo(function NoteBullet(props: IProps) {
+export const NoteBulletButton = deepMemo(function NoteBullet(props: IProps) {
 
     const noteLinkLoader = useNoteLinkLoader();
 

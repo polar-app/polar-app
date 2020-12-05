@@ -3,7 +3,7 @@ import {NoteEditor} from "./NoteEditor";
 import {NoteIDStr, useNotesStoreCallbacks, useNotesStore} from "./NotesStore";
 import {Notes} from "./Notes";
 import { deepMemo } from "../react/ReactUtils";
-import {NoteBullet} from "./NoteBullet";
+import {NoteBulletButton} from "./NoteBulletButton";
 import {useLifecycleTracer} from "../hooks/ReactHooks";
 import {NoteOverflowButton} from "./NoteOverflowButton";
 import {createContextMenu} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
@@ -60,7 +60,7 @@ export const NoteInner = deepMemo(function NoteInner(props: IProps) {
 
                     <NoteOverflowButton target={props.id}/>
 
-                    <NoteBullet target={props.id}/>
+                    <NoteBulletButton target={props.id}/>
 
                 </div>
 

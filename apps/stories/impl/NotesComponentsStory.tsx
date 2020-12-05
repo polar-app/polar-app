@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {NoteBullet} from "../../../web/js/notes/NoteBullet";
+import {NoteBulletButton} from "../../../web/js/notes/NoteBulletButton";
 import {ArrowDown} from "../../../web/js/notes/ArrowDown";
 import {ArrowRight} from "../../../web/js/notes/ArrowRight";
 import {NoteButton} from "../../../web/js/notes/NoteButton";
@@ -12,7 +12,7 @@ export const NotesComponentsStory = () => {
 
                 <h3>NoteBullet</h3>
 
-                <NoteBullet target='asdf'/>
+                <NoteBulletButton target='asdf'/>
 
                 <h3>ArrowDown</h3>
 
