@@ -30,6 +30,9 @@ export interface INote {
 
     readonly content?: string;
 
+    /**
+     * The linked wiki references to other notes.
+     */
     readonly links?: ReadonlyArray<NoteIDStr>;
 
 }
@@ -43,6 +46,9 @@ interface INotesStore {
 
     readonly indexByName: NotesIndex;
 
+    /**
+     * The reverse index so that we can build references to this node.
+     */
     readonly reverse: ReverseNotesIndex;
 
     /**
