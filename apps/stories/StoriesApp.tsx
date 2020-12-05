@@ -35,6 +35,7 @@ import {AutoFlashcardsStory} from "./impl/AutoFlashcardsStory";
 import { ProgressButtonStory } from './impl/ProgressButtonStory';
 import {FunctionalChildStory} from "./impl/FunctionalChildStory";
 import { UnmountComponentStory } from './impl/UnmountComponentStory';
+import {NotesComponentsStory} from "./impl/NotesComponentsStory";
 
 interface IStory {
     readonly name: string;
@@ -77,6 +78,10 @@ const stories = createStoryIndex([
     {
         name: "Notes",
         component: <NotesStory/>
+    },
+    {
+        name: "Notes Components",
+        component: <NotesComponentsStory/>
     },
     {
         name: "Reviewer",
