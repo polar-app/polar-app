@@ -48,12 +48,14 @@ export const NoteInner = deepMemo(function NoteInner(props: IProps) {
                  style={{
                      display: 'flex',
                      alignItems: 'flex-start',
-                     // marginBottom: theme.spacing(1)
+                     marginTop: theme.spacing(0.5),
+                     marginBottom: theme.spacing(0.5)
                  }}>
 
                 <div style={{
                          display: 'flex',
-                         alignItems: 'center'
+                         alignItems: 'center',
+                         marginRight: theme.spacing(0.5)
                      }}>
 
                     <NoteOverflow target={props.id}/>
