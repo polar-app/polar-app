@@ -34,7 +34,7 @@ export class FirebaseDatastores {
         log.notice("Initializing FirebaseDatastores...");
 
         // set the current version before we return
-        this.user = Firebase.currentUser();
+        this.user = await Firebase.currentUserAsync();
 
         const formatUser = (user: firebase.User | undefined) => {
 

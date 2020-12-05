@@ -22,7 +22,7 @@ export namespace UserPrefs {
 
     async function getUserID(): Promise<UserIDStr> {
 
-        const user = Firebase.currentUser();
+        const user = await Firebase.currentUserAsync();
 
         if (! user) {
             throw new Error("No user");

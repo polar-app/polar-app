@@ -2,6 +2,7 @@ import firebase from 'firebase/app'
 import 'firebase/auth';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
+import { Latch } from 'polar-shared/src/util/Latch';
 
 const log = Logger.create();
 
@@ -31,6 +32,8 @@ const PROJECTS: {[project: string]: any} = {
 export class Firebase {
 
     private static app?: firebase.app.App;
+
+    private static userLatch = new Latch<boolean>();
 
     private static user?: firebase.User | null;
 
@@ -85,21 +88,24 @@ export class Firebase {
      */
     private static startListeningForUser() {
         const auth = firebase.auth();
-        auth.onAuthStateChanged(user => this.user = user, err => console.error(err));
-    }
-
-    public static currentUser(): firebase.User | undefined {
-        Firebase.init();
-        return this.user || undefined;
+        auth.onAuthStateChanged(user => {
+            console.log("New firebase user: ", user);
+            this.userLatch.resolve(true);
+            return this.user = user;
+        }, err => {
+            console.error(err);
+        });
     }
 
     public static async currentUserAsync(): Promise<firebase.User | undefined> {
+        await this.userLatch.get();
         Firebase.init();
         return this.user || undefined;
     }
 
     public static async currentUserID(): Promise<UserIDStr | undefined> {
-        return this.currentUser()?.uid;
+        const user = await this.currentUserAsync();
+        return user?.uid;
     }
 
 }

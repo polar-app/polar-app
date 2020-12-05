@@ -22,7 +22,7 @@ export namespace AnalyticsInitializer {
         await FirestoreCollections.configure();
 
         initVersion();
-        initAccount();
+        await initAccount();
         initHeartbeat();
 
         console.log("Analytics initialized");
@@ -37,7 +37,7 @@ export namespace AnalyticsInitializer {
         Analytics.heartbeat();
     }
 
-    function initAccount() {
+    async function initAccount() {
 
         const doUserTraits = (user: firebase.User) => {
 
@@ -90,7 +90,7 @@ export namespace AnalyticsInitializer {
         //
         // };
 
-        const user = Firebase.currentUser();
+        const user = await Firebase.currentUserAsync();
 
         if (user) {
 

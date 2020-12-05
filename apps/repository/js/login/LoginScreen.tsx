@@ -21,13 +21,13 @@ export const LoginScreen = React.memo((props: IProps) => {
         document.location.href = 'https://getpolarized.io/download.html?utm_source=getpolarized.io&utm_content=login-download-button&utm_medium=site';
     }
 
-    function doInit() {
+    async function doInit() {
 
         ExternalNavigationBlock.set(false);
 
         Firebase.init();
 
-        const user = Firebase.currentUser();
+        const user = await Firebase.currentUserAsync();
 
         if (! user) {
 
@@ -49,7 +49,7 @@ export const LoginScreen = React.memo((props: IProps) => {
     }
 
     useEffect(() => {
-        doInit();
+        doInit().catch(err => console.error(err));
     });
 
     return (

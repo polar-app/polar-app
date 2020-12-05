@@ -27,7 +27,7 @@ export const FirestoreSnapshotsStory = () => {
 
         const firestore = await Firestore.getInstance();
 
-        const uid = Firebase.currentUser()?.uid;
+        const uid = await Firebase.currentUserID();
         const ref = firestore.collection('user_pref').doc(uid);
 
         ref.onSnapshot(handleSnapshot, handleError);
