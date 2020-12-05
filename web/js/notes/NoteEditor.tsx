@@ -137,8 +137,8 @@ const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEd
             // don't jump around after we activate
             <div className="note-inactive"
                  style={{
-                     padding: "0 var(--ck-spacing-standard)",
-                     border: "1px solid transparent"
+                     // padding: "0 var(--ck-spacing-standard)",
+                     // border: "1px solid transparent"
                  }}
                  onClick={handleActivated} dangerouslySetInnerHTML={{__html: placeholder}}/>
         );

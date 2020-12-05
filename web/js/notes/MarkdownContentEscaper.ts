@@ -10,7 +10,12 @@ import {WikiLinksToMarkdown} from "./WikiLinksToMarkdown";
 export const MarkdownContentEscaper: ContentEscaper = {
 
     escape: input => {
-        return markdown2html(WikiLinksToHTML.escape(input))
+
+        const markdown = markdown2html(WikiLinksToHTML.escape(input));
+
+        return markdown.replace(/^<p/, '<div')
+                       .replace(/<\/p>\n?$/, '</div>')
+
     },
     unescape: html => {
 

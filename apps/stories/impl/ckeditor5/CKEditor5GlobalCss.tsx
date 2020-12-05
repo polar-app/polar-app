@@ -117,10 +117,18 @@ const CKEditor5GlobalCssStyles = withStyles((theme) => {
                 borderColor: `${theme.palette.background.default} !important`,
                 backgroundColor: `${theme.palette.background.default} !important`,
                 color: `${theme.palette.text.primary} !important`,
+
+                // FIXME: this isn't working and it gets converted to [object]
                 "> *": {
                     backgroundColor: `${theme.palette.background.default} !important`,
                     color: `${theme.palette.text.primary} !important`,
-                }
+                },
+
+                // needed because ckeditor adds its own marging and padding but I want
+                // us to be able to control that directly.
+                margin: "0px !important",
+                padding: "0px !important"
+
             },
 
             // force tables to not be centered
