@@ -58,9 +58,18 @@ interface INotesStore {
 
 }
 
+interface DoPutOpts {
+
+    /**
+     * The new active node after the put operation.
+     */
+    readonly newActive?: NoteIDStr;
+
+}
+
 interface INotesCallbacks {
 
-    readonly doPut: (notes: ReadonlyArray<INote>) => void;
+    readonly doPut: (notes: ReadonlyArray<INote>, opts?: DoPutOpts) => void;
 
     readonly doDelete: (notes: ReadonlyArray<INote>) => void;
 
@@ -71,6 +80,9 @@ interface INotesCallbacks {
     readonly lookup: (notes: ReadonlyArray<NoteIDStr>) => ReadonlyArray<INote>;
 
     readonly lookupReverse: (id: NoteIDStr) => ReadonlyArray<NoteIDStr>;
+
+    // TODO: createNewNote should probably be called createNewActiveChildNote or
+    // something along those lines
 
     /**
      * Create a new note under the parent using the childRef for the
@@ -127,7 +139,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             return store.reverse[id] || [];
         }
 
-        function doPut(notes: ReadonlyArray<INote>) {
+        function doPut(notes: ReadonlyArray<INote>, opts: DoPutOpts = {}) {
 
             const store = storeProvider();
 
@@ -157,7 +169,9 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
             }
 
-            setStore({...store, index, indexByName, reverse});
+            const active = opts.newActive ? opts.newActive : store.active;
+
+            setStore({...store, index, indexByName, reverse, active});
 
         }
 
@@ -322,7 +336,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
                 items: [...items]
             }
 
-            doPut([newParentNote, newNote]);
+            doPut([newParentNote, newNote], {newActive: newNote.id});
 
         }
 
