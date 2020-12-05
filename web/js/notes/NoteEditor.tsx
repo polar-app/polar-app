@@ -13,11 +13,6 @@ import {useNoteLinkLoader} from "./NoteLinkLoader";
 import {useLifecycleTracer, useStateRef} from "../hooks/ReactHooks";
 import {MarkdownContentEscaper} from "./MarkdownContentEscaper";
 
-interface IProps {
-    readonly parent: NoteIDStr;
-    readonly id: NoteIDStr;
-}
-
 function useLinkNavigation() {
 
     const [ref, setRef] = React.useState<HTMLDivElement | null>(null);
@@ -192,6 +187,11 @@ const NoteEditorWithStore = deepMemo(function NoteEditorWithStore(props: IProps)
     );
 
 });
+
+interface IProps {
+    readonly parent: NoteIDStr;
+    readonly id: NoteIDStr;
+}
 
 export const NoteEditor = deepMemo(function NoteEditor(props: IProps) {
 

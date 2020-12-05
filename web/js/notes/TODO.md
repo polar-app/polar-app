@@ -1,6 +1,9 @@
 
 
 - Do the HARD input tasks first so I don't get into a swap of code.
+    - escape the content in the story text when selected
+    - escape the content in the references in the bottom
+    - 
     - persistence of expand/collapse
     - the cursor should NOT be persisted when jumping between nodes
         - both ckeditor and workflowy have smart handling of this behavior
@@ -15,9 +18,13 @@
     - inbound links and link clicking
     - click the bullets next to links
 - MVP.2
+    - multi-line notes with shift+enter
     - basic backend persistence
     - /table support
     - exports of data? 
+- MVP.3 
+    - ability to enter 'editing' mode so you can make a node multi-line
+    - 
 
 - The app is too slow now... 
     - consider trying to figure out how to restore the cursor position with ckeditor5 by having a toggle.

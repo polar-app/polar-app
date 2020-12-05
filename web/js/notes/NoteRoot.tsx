@@ -28,6 +28,8 @@ export const NoteRoot = deepMemo(function NoteRoot(props: IProps) {
 
     const notes = lookup(note.items || []);
 
+    // FIXME: CKEditor5BalloonEditor should not be used
+    // FIXME: h1 should not be used and shod we have note names PERIOD?
     return (
         <MUIBrowserLinkStyle style={{flexGrow: 1}}>
 
@@ -36,6 +38,7 @@ export const NoteRoot = deepMemo(function NoteRoot(props: IProps) {
                 {note.name && (
                     <h1>{note.name}</h1>
                 )}
+
 
                 {note.content && (
                     // <p>{note.content}</p>
