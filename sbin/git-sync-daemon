@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# TODO:
+# - we need a git incoming command
+#    https://stackoverflow.com/questions/1331385/how-can-i-see-incoming-commits-in-git
+#
+#    - THEN we need to make sure if we can pull incoming commits properly and make sure the diff applied is correct
+
 while true; do
     echo .
     ./sbin/git-sync
