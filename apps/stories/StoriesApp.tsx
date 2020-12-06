@@ -36,6 +36,7 @@ import { ProgressButtonStory } from './impl/ProgressButtonStory';
 import {FunctionalChildStory} from "./impl/FunctionalChildStory";
 import { UnmountComponentStory } from './impl/UnmountComponentStory';
 import {NotesComponentsStory} from "./impl/NotesComponentsStory";
+import { AbortedRenderStory } from './impl/AbortedRenderStory';
 
 interface IStory {
     readonly name: string;
@@ -180,6 +181,10 @@ const stories = createStoryIndex([
         name: 'UnmountComponentStory',
         component: <UnmountComponentStory/>
     },
+    {
+        name: 'AbortedRenderStory',
+        component: <AbortedRenderStory/>
+    }
 
 ]);
 

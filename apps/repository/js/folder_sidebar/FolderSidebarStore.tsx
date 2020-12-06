@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {Tag, Tags, TagStr, TagType} from "polar-shared/src/tags/Tags";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {
-    createObservableStore,
+    createObservableStore, IUseStoreHookOpts,
     SetStore, UseContextHook, UseStoreHook
 } from "../../../../web/js/react/store/ObservableStore";
 import {Provider} from "polar-shared/src/util/Providers";
@@ -506,7 +506,10 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
 }
 
-export type UseFolderSidebarStore = UseStoreHook<IFolderSidebarStore>;
+// export type UseFolderSidebarStore = UseStoreHook<IFolderSidebarStore>;
+// export type UseFolderSidebarStore = (keys: ReadonlyArray<keyof IFolderSidebarStore> | undefined) => Pick<IFolderSidebarStore, keyof IFolderSidebarStore>;
+export type UseFolderSidebarStore = <K extends keyof IFolderSidebarStore>(keys: ReadonlyArray<K> | undefined) => Pick<IFolderSidebarStore, K>;
+
 export type UseFolderSidebarCallbacks = UseContextHook<IFolderSidebarCallbacks>
 
 export function createFolderSidebarStore() {

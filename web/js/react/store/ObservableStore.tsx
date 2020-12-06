@@ -59,7 +59,7 @@ export interface ObservableStore<V> {
 export type SetStore<V> = (value: V) => void;
 export type Store<V> = [V, SetStore<V>];
 
-interface IUSeObservableStoreOpts {
+interface IUseObservableStoreOpts<V, K extends keyof V> extends IUseStoreHookOpts<V, K> {
     readonly enableShallowEquals: boolean;
 }
 
@@ -112,7 +112,7 @@ namespace Equals {
 
 export function useObservableStore<V, K extends keyof V>(context: React.Context<ObservableStore<V>>,
                                                          keys: ReadonlyArray<K> | undefined,
-                                                         opts: IUSeObservableStoreOpts): Pick<V, K> {
+                                                         opts: IUseObservableStoreOpts<V, K>): Pick<V, K> {
 
     const internalObservableStore = useContext(context) as InternalObservableStore<V>;
 
@@ -153,9 +153,16 @@ export function useObservableStore<V, K extends keyof V>(context: React.Context<
             const currValuePicked = pick(currValue, keys);
 
             if (! isEqual(currValuePicked, nextValuePicked)) {
+
+                if (opts.filter && ! opts.filter(nextValuePicked)) {
+                    // the value didn't pass the filter so don't update it...
+                    return;
+                }
+
                 // the internal current in the context is already updated.
                 // debug("values are updated: ", nextValuePicked, currValuePicked);
                 return doUpdateValue(nextValue);
+
             } else {
                 // debug("values are NOT updated: ", nextValuePicked, currValuePicked);
             }
@@ -224,11 +231,12 @@ interface ObservableStorePropsWithoutStore<V> {
 
 export type ObservableStoreProviderComponent<V> = React.FunctionComponent<ObservableStoreProps<V>>;
 
+
 /**
  * Hook to listen to store changes. Use undefined to not filter for properties
  * but we don't recommend it.
  */
-export type UseStoreHook<V> = (keys: ReadonlyArray<keyof V> | undefined) => Pick<V, keyof V>;
+export type UseStoreHook<V, K extends keyof V> = (keys: ReadonlyArray<K> | undefined, opts?: IUseStoreHookOpts<V, K>) => Pick<V, K>;
 
 export type UseContextHook<V> = () => V;
 
@@ -239,14 +247,22 @@ export interface StoreMutator {
 
 }
 
-export interface IUseStoreHooksOpts {
+/**
+ * Given a store, only render the hook it the value passes the filter.  This is
+ * an option for when we want to avoid triggering too many sub-component
+ * re-renders by filtering before RXJS is pushed.
+ */
+export type UseStoreFilter<V, K extends keyof V> = (store: Pick<V, K>) => boolean;
+
+export interface IUseStoreHookOpts<V, K extends keyof V> {
     readonly debug?: boolean;
+    readonly filter?: UseStoreFilter<V, K>;
 }
 
 export type ObservableStoreTuple<V, M extends StoreMutator, C> = [
     ObservableStoreProviderComponent<V>,
     // NOTE: it's not possible to use a type for this because V is defined in the tuple
-    <K extends keyof V>(keys: ReadonlyArray<K> | undefined, opts?: IUseStoreHooksOpts) => Pick<V, K>,
+    <K extends keyof V>(keys: ReadonlyArray<K> | undefined, opts?: IUseStoreHookOpts<V, K>) => Pick<V, K>,
     UseContextHook<C>,
     UseContextHook<M>,
 ];
@@ -354,10 +370,13 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
 
     const [storeContext,] = createObservableStoreContext<V>(store);
 
-    const useStoreHook: UseStoreHook<V> = <K extends keyof V>(keys: ReadonlyArray<K> | undefined) => {
+    const useStoreHook = <K extends keyof V>(keys: ReadonlyArray<K> | undefined,
+                                             storeHookOpts: IUseStoreHookOpts<V, K> = {}) => {
         return useObservableStore(storeContext, keys, {
-            enableShallowEquals: opts.enableShallowEquals || false
+            enableShallowEquals: opts.enableShallowEquals || false,
+            filter: storeHookOpts.filter
         });
+
     }
 
     const callbacksContext = React.createContext<ComponentCallbacksFactory<C>>(componentCallbacksFactory);
