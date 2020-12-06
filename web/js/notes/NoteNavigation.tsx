@@ -66,7 +66,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
                 console.log('FIXME: handling ArrowUp');
                 abortEvent();
 
-                navPrev(props.parent, props.id);
+                navPrev();
 
                 break;
 
@@ -75,7 +75,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
                 abortEvent();
 
-                navNext(props.parent, props.id);
+                navNext();
 
                 break;
 

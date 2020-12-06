@@ -14,7 +14,7 @@ interface IProps {
 export const NoteRoot = deepMemo(function NoteRoot(props: IProps) {
 
     const {index, indexByName} = useNotesStore(['index', 'indexByName']);
-    const {lookup} = useNotesStoreCallbacks();
+    const {lookup, setRoot} = useNotesStoreCallbacks();
 
     const note = index[props.id] || indexByName[props.id];
 
@@ -23,6 +23,10 @@ export const NoteRoot = deepMemo(function NoteRoot(props: IProps) {
             <div>No note for id: {props.id}</div>
         );
     }
+
+    React.useEffect(() => {
+        setRoot(props.id);
+    }, [props.id, setRoot])
 
     const id = note?.id;
 

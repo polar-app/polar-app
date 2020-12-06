@@ -54,6 +54,11 @@ interface INotesStore {
     readonly reverse: ReverseNotesIndex;
 
     /**
+     * The current root note
+     */
+    readonly root: NoteIDStr | undefined;
+
+    /**
      * The currently active note.
      */
     readonly active: NoteIDStr | undefined;
@@ -87,6 +92,8 @@ interface INotesCallbacks {
 
     readonly updateNote: (id: NoteIDStr, content: string) => void;
 
+    readonly setRoot: (active: NoteIDStr | undefined) => void;
+
     readonly setActive: (active: NoteIDStr | undefined) => void;
 
     readonly lookup: (notes: ReadonlyArray<NoteIDStr>) => ReadonlyArray<INote>;
@@ -105,12 +112,12 @@ interface INotesCallbacks {
     /**
      * Navigate to the previous node in the graph.
      */
-    readonly navPrev: (parent: NoteIDStr, child: NoteIDStr) => void;
+    readonly navPrev: () => void;
 
     /**
      * Navigate to the next node in the graph.
      */
-    readonly navNext: (parent: NoteIDStr, child: NoteIDStr) => void;
+    readonly navNext: () => void;
 
     readonly doIndent: (id: NoteIDStr, parent: NoteIDStr) => void;
 
@@ -124,6 +131,7 @@ const initialStore: INotesStore = {
     index: {},
     indexByName: {},
     reverse: {},
+    root: undefined,
     active: undefined,
     expanded: {}
 }
@@ -365,18 +373,21 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
         }
 
+        function setRoot(root: NoteIDStr | undefined) {
+            const store = storeProvider();
+            setStore({...store, root});
+        }
+
         function setActive(active: NoteIDStr | undefined) {
             const store = storeProvider();
             setStore({...store, active});
         }
 
-        function doNav(delta: 'prev' | 'next',
-                       parent: NoteIDStr,
-                       child: NoteIDStr) {
+        function doNav(delta: 'prev' | 'next') {
 
             const store = storeProvider();
 
-            const {active, index, expanded} = store;
+            const {active, root, index, expanded} = store;
 
             function computeLinearItemsFromExpansionTree(id: NoteIDStr, root?: boolean): ReadonlyArray<NoteIDStr> {
 
@@ -407,24 +418,29 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
             }
 
+            if (root === undefined) {
+                console.warn("No currently active root");
+                return;
+            }
+
             if (active === undefined) {
                 console.warn("No currently active node");
                 return;
             }
 
-            const parentNote = index[parent];
+            const rootNote = index[root];
 
-            if (! parentNote) {
+            if (! rootNote) {
                 console.warn("No note in index for ID: ", parent);
                 return;
             }
 
-            const items = computeLinearItemsFromExpansionTree(parentNote.id, true);
-            
-            const childIndex = items.indexOf(child);
+            const items = computeLinearItemsFromExpansionTree(root, true);
+
+            const childIndex = items.indexOf(active);
 
             if (childIndex === -1) {
-                console.warn("Child not in node items: ", child);
+                console.warn("Child not in node items: ", active);
                 return;
             }
 
@@ -442,12 +458,12 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
         }
 
-        function navPrev(parent: NoteIDStr, child: NoteIDStr) {
-            doNav('prev', parent, child);
+        function navPrev() {
+            doNav('prev');
         }
 
-        function navNext(parent: NoteIDStr, child: NoteIDStr) {
-            doNav('next', parent, child);
+        function navNext() {
+            doNav('next');
         }
 
         function toggleExpand(id: NoteIDStr) {
@@ -493,6 +509,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             lookup,
             lookupReverse,
             createNewNote,
+            setRoot,
             setActive,
             navPrev,
             navNext,

@@ -3,7 +3,7 @@ import {deepMemo} from "../react/ReactUtils";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import {NoteScreen} from "./NoteScreen";
 
-export const NotesRouter = deepMemo(() => {
+export const NotesRouter = deepMemo(function NotesRouter()  {
 
     return (
         <BrowserRouter>
@@ -16,5 +16,3 @@ export const NotesRouter = deepMemo(() => {
     )
 
 });
-
-NotesRouter.displayName='NotesRouter';

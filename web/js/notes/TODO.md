@@ -1,11 +1,10 @@
 
 
 - Do the HARD input tasks first so I don't get into a swap of code.
-    - when creating a new note, under an expanded note, we don't insert it in the right place
-    - 
+    - the linear item list is computed from the active node note the root node
+    - once the page has mounted, go ahead and render, once, all the ckeditor nodes?
     - escape the content in the story text when selected
     - escape the content in the references in the bottom
-    - 
     - the cursor should NOT be persisted when jumping between nodes
         - both ckeditor and workflowy have smart handling of this behavior
     - we're getting too many renders.  for example arrow up/down causes
