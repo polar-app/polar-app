@@ -16,8 +16,6 @@ import IEventData = ckeditor5.IEventData;
 
 function useLinkNavigation() {
 
-    const [ref, setRef] = React.useState<HTMLDivElement | null>(null);
-
     const editor = useEditorStore();
 
     const linkLoaderRef = useLinkLoaderRef();
@@ -75,8 +73,6 @@ function useLinkNavigation() {
         }
 
     }, [editor, handleEditorClick]);
-
-    return setRef;
 
 }
 
@@ -180,12 +176,12 @@ const NoteEditorWithStore = deepMemo(function NoteEditorWithStore(props: IProps)
 
     useLifecycleTracer('NoteEditorWithStore');
 
-    const ref = useLinkNavigation();
+    useLinkNavigation();
 
     return (
         <NoteActionMenuForLinking id={props.id}>
             <NoteActionMenuForCommands id={props.id}>
-                <div ref={ref}>
+                <div>
                     <NoteNavigation parent={props.parent} id={props.id}>
                         <NoteEditorInner {...props}/>
                     </NoteNavigation>
