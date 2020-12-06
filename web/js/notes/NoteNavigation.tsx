@@ -15,12 +15,29 @@ interface IProps {
     readonly children: JSX.Element;
 }
 
+/**
+ * Listen to the active note in the store and only fire when WE are active.
+ */
+function useNoteActivatedListener(id: NoteIDStr) {
+
+    const lastActiveRef = React.useRef<NoteIDStr | undefined>();
+
+    const {active} = useNotesStore(['active'], {filter: store => (lastActiveRef.current === id || store.active === id) && lastActiveRef.current !== store.active});
+
+    lastActiveRef.current = active;
+
+    return lastActiveRef.current === id;
+
+    // const {active} = useNotesStore(['active'], {filter: store => store.active === id});
+    // return active === id;
+
+}
+
 export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
     const editor = useEditorStore();
 
-    const {active} = useNotesStore(['active']);
-    const activeRef = useRefValue(active);
+    const noteActive = useNoteActivatedListener(props.id);
     const {createNewNote, setActive, navPrev, navNext, doIndent} = useNotesStoreCallbacks();
 
     const [ref, setRef] = React.useState<HTMLDivElement | null>(null);
@@ -54,7 +71,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
         if (editor !== undefined) {
 
-            if (activeRef.current === props.id) {
+            if (noteActive) {
                 editorFocus();
                 jumpToEditorStart();
 
@@ -66,7 +83,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
             console.log("No editor: ")
         }
 
-    }, [active, activeRef, editor, editorFocus, jumpToEditorStart, props.id]);
+    }, [editor, editorFocus, jumpToEditorStart, noteActive, props.id]);
 
     const handleClick = React.useCallback(() => {
         setActive(props.id);
