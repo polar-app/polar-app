@@ -8,6 +8,7 @@ import {AccountNotifications} from "./AccountNotifications";
 import {Lazy} from "../util/Lazy";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {SentryReporters} from "../reporters/SentryReporter";
+import {AmplitudeUtils} from "../amplitude/AmplitudeUtils";
 
 const firebase = Lazy.create(() => FirebaseAdmin.app());
 const auth = Lazy.create(() => firebase().auth());
@@ -113,6 +114,48 @@ export namespace StripeWebhooks {
 
     }
 
+    async function sendAnalytics(stripeMode: StripeMode,
+                                 customerID: string,
+                                 to: Billing.V2Subscription) {
+
+        async function doSendAnalytics() {
+
+            const customer = await StripeCustomers.getCustomerByEmail(stripeMode, {id: customerID});
+
+            if (! customer) {
+                throw new Error("No customer for id: " + customerID);
+            }
+
+            if (! customer.email) {
+                throw new Error("Customer has no email: " + customerID);
+            }
+            const from = await Subscriptions.getSubscriptionByEmail(customer.email);
+
+            const user = await auth().getUserByEmail(customer.email)
+
+            AmplitudeUtils.event2('planChanged', {
+                from_plan_level: from.plan.level,
+                from_plan_interval: from.interval,
+                to_plan_level: to.plan.level,
+                to_plan_interval: to.interval
+            }, user);
+
+        }
+
+        try {
+
+            await doSendAnalytics();
+
+        } catch (e) {
+            const msg = "Could not send notifications: ";
+            console.error(msg, e);
+
+            // this is a hack until we have a new/unified logger
+            SentryReporters.reportError(msg, e);
+        }
+
+    }
+
     async function doChangePlan(stripeMode: StripeMode,
                                 to: Billing.V2Subscription,
                                 customerID: string,
@@ -126,6 +169,8 @@ export namespace StripeWebhooks {
                                                           subscriptionID ? {except: subscriptionID} : undefined);
 
         await Accounts.changePlan(stripeMode, customerID, to);
+
+        await sendAnalytics(stripeMode, customerID, to);
 
     }
 
