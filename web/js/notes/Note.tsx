@@ -15,7 +15,7 @@ import { NoteExpandToggleButton } from "./NoteExpandToggleButton";
 interface IProps {
     readonly parent: NoteIDStr | undefined;
     readonly id: NoteIDStr;
-
+    readonly isExpanded?: boolean;
 }
 
 export interface INoteContextMenuOrigin {
@@ -43,7 +43,7 @@ export const NoteInner = deepMemo(function NoteInner(props: IProps) {
     const contextMenuHandlers = useNoteContextMenu();
 
     const hasItems = items.length > 0;
-    const isExpanded = expanded[id] === true;
+    const isExpanded = props.isExpanded || expanded[id] === true;
 
     return (
         <>
