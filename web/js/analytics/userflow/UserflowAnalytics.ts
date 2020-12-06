@@ -1,23 +1,22 @@
 import {IAnalytics, IEventArgs, TraitsMap, IPageEvent} from "../IAnalytics";
 import userflow from 'userflow.js'
 
-userflow.init('bmztslyu5zgujmcvna34mggj44');
+userflow.init('ct_kyip2xj7ufhz7a2v7ejnwxaaxa');
 
-let userId: string | undefined;
+// https://getuserflow.com/docs/userflow-js#track
 
 export class UserflowAnalytics implements IAnalytics {
 
-
     public event(event: IEventArgs): void {
-        // noop
+        userflow.track(event.category + '/' + event.action);
     }
 
     public event2(event: string, data?: any): void {
-        // noop
+        userflow.track(event, data)
     }
 
-    public identify(newUserId: string): void {
-        userId = newUserId;
+    public identify(userId: string): void {
+        userflow.identify(userId);
     }
 
     public page(event: IPageEvent): void {
@@ -25,13 +24,7 @@ export class UserflowAnalytics implements IAnalytics {
     }
 
     public traits(traits: TraitsMap): void {
-
-        if (userId) {
-            userflow.identify(userId, traits);
-        } else {
-            console.warn("No userId for userflow");
-        }
-
+        userflow.updateUser(traits);
     }
 
     public version(version: string) {

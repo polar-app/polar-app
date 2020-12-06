@@ -5,6 +5,8 @@
     - back arrow show jump to the end of the previous item
     - escape the content in the story text when selected
     - escape the content in the references in the bottom
+    - remove the double escape issue because the CPU time for rendering ckeditor 
+      is non-trivial
     - the cursor should NOT be persisted when jumping between nodes
         - both ckeditor and workflowy have smart handling of this behavior
     - we're getting too many renders.  for example arrow up/down causes
