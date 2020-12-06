@@ -1,7 +1,8 @@
 
 
 - Do the HARD input tasks first so I don't get into a swap of code.
-    - unable to click on a new item and activate it
+    - when creating a new note, under an expanded note, we don't insert it in the right place
+    - 
     - escape the content in the story text when selected
     - escape the content in the references in the bottom
     - 

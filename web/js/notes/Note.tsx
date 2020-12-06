@@ -80,7 +80,7 @@ export const NoteInner = deepMemo(function NoteInner(props: IProps) {
             </div>
 
             {isExpanded && (
-                <NoteItems parent={props.parent} notes={items}/>
+                <NoteItems parent={props.id} notes={items}/>
             )}
         </>
     );

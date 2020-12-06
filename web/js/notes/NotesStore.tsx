@@ -420,9 +420,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             }
 
             const items = computeLinearItemsFromExpansionTree(parentNote.id, true);
-
-            console.log("FIXME: items: ", items);
-
+            
             const childIndex = items.indexOf(child);
 
             if (childIndex === -1) {
