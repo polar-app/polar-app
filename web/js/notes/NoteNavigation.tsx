@@ -29,13 +29,35 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
         // noop for now
     }, []);
 
+    const editorFocus = React.useCallback(() => {
+        editor!.editing.view.focus();
+    }, [editor]);
+
+    const jumpToEditorStart = React.useCallback(() => {
+
+        if (! editor) {
+            return;
+        }
+
+        const doc = editor.model.document;
+
+        // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_document-Document.html#function-getRoot
+        const root = doc.getRoot();
+
+        editor.model.change((writer: any) => {
+            writer.setSelection(root, 0)
+        });
+
+    }, [editor]);
+
     React.useEffect(() => {
 
         if (editor !== undefined) {
 
             if (activeRef.current === props.id) {
-                // console.log("Focusing editor");
-                editor.editing.view.focus();
+                editorFocus();
+                jumpToEditorStart();
+
             } else {
                 // different editor
             }

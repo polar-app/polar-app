@@ -23,21 +23,18 @@ export const CKEditor5Story = () => {
 
         // https://stackoverflow.com/questions/16835365/set-cursor-to-specific-position-in-ckeditor
 
-        const editor = editorRef.current  as any;
+        const editor = editorRef.current;
 
         const doc = editor.model.document;
 
         // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_document-Document.html#function-getRoot
         const root = doc.getRoot();
 
-        const start = editor.model.createPositionAt(root, 0);
-        const end = editor.model.createPositionAt(root, 0);
-        const range = editor.model.createRange(start, end);
-
-        // editor.getSelection().selectRanges( [ range ] );
-
         editor.model.change((writer: any) => {
-            writer.setSelection(root, 0)
+            // beginning
+            // writer.setSelection(root, 0)
+            // end
+            writer.setSelection(root, 'end')
         });
 
         editor.editing.view.focus();

@@ -89,12 +89,16 @@ export namespace ckeditor5 {
         readonly stop: () => void;
     }
 
+    interface IRoot {
+
+    }
+
     // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_document-Document.html
     export interface IDocument {
         readonly selection: ISelection;
 
         readonly on: (eventName: 'keydown', handler: (data: IEventData, event: IKeyPressEvent) => void) => void;
-
+        readonly getRoot: () => IRoot;
     }
 
     export interface IRange {
@@ -113,8 +117,13 @@ export namespace ckeditor5 {
          * Shortcut for Model#createRange().
          */
         readonly createRange: (start: IPosition, end?: IPosition) => IRange;
+
         readonly insertText: (text: string, attributes: IInsertTextAttributes, position: IPosition) => void;
+
         readonly remove: (itemOrRange: IRange) => void;
+
+        readonly setSelection: (root: IRoot, position: number | 'before' | 'after' | 'end' | 'on' | 'in') => void;
+
     }
 
     // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_model-Model.html

@@ -4,6 +4,7 @@ import {createObservableStore, SetStore} from "../react/store/ObservableStore";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import { Arrays } from 'polar-shared/src/util/Arrays';
 
 export type NoteIDStr = IDStr;
 export type NoteNameStr = string;
@@ -428,10 +429,10 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
                 return;
             }
 
-            const rootNote = index[root];
+            const rootNote = Arrays.first(lookup([root]));
 
             if (! rootNote) {
-                console.warn("No note in index for ID: ", parent);
+                console.warn("No note in index for ID: ", root);
                 return;
             }
 
