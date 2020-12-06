@@ -20,9 +20,8 @@ export namespace AccountVerifiedAction {
 
             if (accountUpgrade?.required) {
 
-                Analytics.event({
-                    category: 'account-upgrade-required',
-                    action: accountUpgrade.reason
+                Analytics.event2('account-upgrade-required', {
+                    reason: accountUpgrade.reason
                 });
 
                 dialogs.confirm({

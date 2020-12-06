@@ -5,6 +5,7 @@ import {NullAnalytics} from "./null/NullAnalytics";
 import {AmplitudeAnalytics} from "./amplitude/AmplitudeAnalytics";
 import {FirestoreAnalytics} from "./firestore/FirestoreAnalytics";
 import {OnlineAnalytics} from "./online/OnlineAnalytics";
+import {UserflowAnalytics} from "./userflow/UserflowAnalytics";
 
 export function isBrowser() {
     return typeof window !== 'undefined';
@@ -17,7 +18,8 @@ function createDelegate(): IAnalytics {
             new CompositeAnalytics([
                 new AmplitudeAnalytics(),
                 new GAAnalytics(),
-                new FirestoreAnalytics()
+                new FirestoreAnalytics(),
+                // new UserflowAnalytics()
             ])
         );
     } else {
