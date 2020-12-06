@@ -7,7 +7,10 @@
     - 
     - the cursor should NOT be persisted when jumping between nodes
         - both ckeditor and workflowy have smart handling of this behavior
-
+    - we're getting too many renders.  for example arrow up/down causes
+      everything to re-render.  I might be able to add a useActiveNote(props.id)
+      which only updates when it changes to avoid actually re-rendering the
+      parent.
 
 
 - MVP.1

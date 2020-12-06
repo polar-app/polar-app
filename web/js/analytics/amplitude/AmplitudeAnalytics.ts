@@ -63,7 +63,7 @@ const standardEventProperties = createStandardEventsProperties();
 export class AmplitudeAnalytics implements IAnalytics {
 
     public event(event: IEventArgs): void {
-        amplitude.getInstance().logEvent(event.category + '/' + event.action);
+        amplitude.getInstance().logEvent(event.category + '/' + event.action, standardEventProperties);
     }
 
     public event2(event: string, data?: any): void {
@@ -75,7 +75,7 @@ export class AmplitudeAnalytics implements IAnalytics {
     }
 
     public page(event: IPageEvent): void {
-        amplitude.getInstance().logEvent('pageView', event);
+        amplitude.getInstance().logEvent('pageView', {event, ...standardEventProperties});
     }
 
     public traits(traits: TraitsMap): void {
