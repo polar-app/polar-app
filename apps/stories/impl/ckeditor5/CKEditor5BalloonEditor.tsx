@@ -213,8 +213,6 @@ export const CKEditor5BalloonEditor = React.memo(function CKEditor5BalloonEditor
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const content = React.useMemo<HTMLStr>(() => escaper.escape(props.content), []);
 
-    console.log("FIXME: rendering");
-
     return (
         <>
             {/*<CKEditorContext context={ Context }>*/}
