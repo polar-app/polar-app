@@ -97,8 +97,8 @@ export namespace ckeditor5 {
     export interface IDocument {
         readonly selection: ISelection;
 
-        readonly on: (eventName: 'keydown' | 'enter', handler: (eventData: IEventData, event: IKeyPressEvent) => void) => void;
-        readonly off: (eventName: 'keydown' | 'enter', handler: (eventData: IEventData, event: IKeyPressEvent) => void) => void;
+        readonly on: (eventName: 'keydown' | 'enter' | 'click', handler: (eventData: IEventData, event: IKeyPressEvent) => void) => void;
+        readonly off: (eventName: 'keydown' | 'enter' | 'click', handler: (eventData: IEventData, event: IKeyPressEvent) => void) => void;
 
         readonly getRoot: () => IRoot;
     }

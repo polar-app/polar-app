@@ -74,8 +74,6 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
     const handleEditorKeyDown = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
 
-        // console.log("FIXME: ", event);
-
         function abortEvent() {
             event.domEvent.stopPropagation();
             event.domEvent.preventDefault();
@@ -112,7 +110,6 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
     }, [doIndent, navNext, navPrev, props.id, props.parent]);
 
-
     const handleEditorEnter = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
         eventData.stop();
         createNewNote(props.parent, props.id);
@@ -135,6 +132,13 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
         }
 
     }, [editor, handleEditorEnter, handleEditorKeyDown]);
+
+    useComponentWillUnmount(() => {
+        if (editor) {
+            editor.editing.view.document.off('keydown', handleEditorKeyDown);
+            editor.editing.view.document.off('enter', handleEditorEnter);
+        }
+    });
 
     return (
         <ClickAwayListener onClickAway={handleClickAway}>

@@ -1,9 +1,8 @@
 
 
 - Do the HARD input tasks first so I don't get into a swap of code.
-    - get rid of all the 'capture' event code
-    - 
     - once the page has mounted, go ahead and render, once, all the ckeditor nodes?
+    - back arrow show jump to the end of the previous item
     - escape the content in the story text when selected
     - escape the content in the references in the bottom
     - the cursor should NOT be persisted when jumping between nodes

@@ -3,31 +3,39 @@ import {CKEditor5BalloonEditor, ckeditor5} from "../../../apps/stories/impl/cked
 import {NoteNavigation} from "./NoteNavigation";
 import {NoteIDStr, useNotesStore, useNotesStoreCallbacks} from "./NotesStore";
 import {deepMemo} from "../react/ReactUtils";
-import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
-import {EditorStoreProvider, useSetEditorStore} from "./EditorStoreProvider";
+import {EditorStoreProvider, useEditorStore, useSetEditorStore} from "./EditorStoreProvider";
 import {NoteActionMenuForCommands} from "./NoteActionMenuForCommands";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import { NoteActionMenuForLinking } from "./NoteActionMenuForLinking";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
 import {useLifecycleTracer, useStateRef} from "../hooks/ReactHooks";
 import {MarkdownContentEscaper} from "./MarkdownContentEscaper";
+import IKeyPressEvent = ckeditor5.IKeyPressEvent;
+import IEventData = ckeditor5.IEventData;
 
 function useLinkNavigation() {
 
     const [ref, setRef] = React.useState<HTMLDivElement | null>(null);
 
+    const editor = useEditorStore();
+
     const linkLoaderRef = useLinkLoaderRef();
     const noteLinkLoader = useNoteLinkLoader();
 
-    const handleClick = React.useCallback((event: MouseEvent) => {
+    const handleEditorClick = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
 
-        // FIXME: this will break determine which of the editor controls
-        // are active
+        function abortEvent() {
+            event.domEvent.stopPropagation();
+            event.domEvent.preventDefault();
+            eventData.stop();
+        }
 
-        if (event.target instanceof HTMLAnchorElement) {
+        const target = event.domEvent.target;
 
-            const href = event.target.getAttribute('href');
+        if (target instanceof HTMLAnchorElement) {
+
+            const href = target.getAttribute('href');
 
             if (href !== null) {
 
@@ -37,15 +45,13 @@ function useLinkNavigation() {
 
                     if (anchor) {
                         noteLinkLoader(anchor);
-                        event.stopPropagation();
-                        event.preventDefault();
+                        abortEvent();
                     }
 
                 } else {
                     const linkLoader = linkLoaderRef.current;
                     linkLoader(href, {newWindow: true, focus: true});
-                    event.stopPropagation();
-                    event.preventDefault();
+                    abortEvent();
                 }
 
             }
@@ -55,16 +61,20 @@ function useLinkNavigation() {
     }, [linkLoaderRef, noteLinkLoader]);
 
     React.useEffect(() => {
-        if (ref) {
-            ref.addEventListener('click', handleClick, {capture: true})
-        }
-    }, [handleClick, ref]);
 
-    useComponentWillUnmount(() => {
-        if (ref) {
-            ref.removeEventListener('click', handleClick, {capture: true})
+        if (editor) {
+
+            // *** off first
+            editor.editing.view.document.off('click', handleEditorClick);
+
+            // *** then on
+            editor.editing.view.document.on('click', handleEditorClick);
+
+        } else {
+            // console.warn("No editor");
         }
-    })
+
+    }, [editor, handleEditorClick]);
 
     return setRef;
 
