@@ -117,6 +117,7 @@ export namespace ckeditor5 {
         readonly remove: (itemOrRange: IRange) => void;
     }
 
+    // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_model-Model.html
     // https://ckeditor.com/docs/ckeditor5/latest/builds/guides/faq.html#where-are-the-editorinserthtml-and-editorinserttext-methods-how-to-insert-some-content
     export interface IModel {
 
