@@ -11,6 +11,8 @@ import {useEditorStore} from "./EditorStoreProvider";
 import {ckeditor5} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
 import { NoteIDStr } from "./NotesStore";
 import {NoteActionSelections} from "./NoteActionSelections";
+import IEventData = ckeditor5.IEventData;
+import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 
 export interface ICommand {
 
@@ -321,19 +323,32 @@ export const NoteActionMenu = deepMemo(function NoteActionMenu(props: IProps) {
                 event.stopPropagation();
                 break;
 
-            case 'Enter':
-
-                handleSelectedActionItem();
-
-                event.preventDefault();
-                event.stopPropagation();
-                break;
-
             default:
                 break;
         }
 
     }, [computeNextMenuID, computePrevMenuID, handleSelectedActionItem, menuPositionRef, reset, setMenuIndex]);
+
+    const handleEditorEnter = React.useCallback((eventData: IEventData) => {
+
+        if (menuPositionRef.current === undefined) {
+            // the menu is not active
+            return;
+        }
+
+        eventData.stop();
+        handleSelectedActionItem();
+
+    }, [handleSelectedActionItem, menuPositionRef]);
+
+    React.useEffect(() => {
+
+        if (editor) {
+            editor.editing.view.document.off('enter', handleEditorEnter);
+            editor.editing.view.document.on('enter', handleEditorEnter);
+        }
+
+    }, [editor, handleEditorEnter]);
 
     useComponentDidMount(() => {
         document.addEventListener('keydown', event => onKeyDownCapture(event), {capture: true});

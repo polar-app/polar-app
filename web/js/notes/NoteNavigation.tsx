@@ -66,13 +66,13 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
             console.log("No editor: ")
         }
 
-    }, [active, activeRef, editor, props.id]);
+    }, [active, activeRef, editor, editorFocus, jumpToEditorStart, props.id]);
 
     const handleClick = React.useCallback(() => {
         setActive(props.id);
     }, [props.id, setActive]);
 
-    const handleKeyDown = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
+    const handleEditorKeyDown = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
 
         // console.log("FIXME: ", event);
 
@@ -85,7 +85,6 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
         switch (event.domEvent.key) {
 
             case 'ArrowUp':
-                console.log('FIXME: handling ArrowUp');
                 abortEvent();
 
                 navPrev();
@@ -93,7 +92,6 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
                 break;
 
             case 'ArrowDown':
-                console.log('FIXME: handling ArrowDown');
 
                 abortEvent();
 
@@ -102,7 +100,6 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
                 break;
 
             case 'Tab':
-                console.log('FIXME: handling Tab');
                 abortEvent();
 
                 doIndent(props.id, props.parent);
@@ -115,20 +112,26 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
     }, [doIndent, navNext, navPrev, props.id, props.parent]);
 
-    if (editor) {
 
-        editor?.editing.view.document.on('keydown', (data, event) => {
-            handleKeyDown(data, event);
-        });
+    const handleEditorEnter = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
+        eventData.stop();
+        createNewNote(props.parent, props.id);
+    }, [createNewNote, props.id, props.parent]);
 
-        (editor as any).editing.view.document.on('enter', (eventInfo: any) => {
+    React.useEffect(() => {
 
-            eventInfo.stop();
-            createNewNote(props.parent, props.id);
+        if (editor) {
 
-        });
+            editor.editing.view.document.off('keydown', handleEditorKeyDown);
+            editor.editing.view.document.off('enter', handleEditorEnter);
 
-    }
+            editor.editing.view.document.on('keydown', handleEditorKeyDown);
+            editor.editing.view.document.on('enter', handleEditorEnter);
+        } else {
+            // console.warn("No editor");
+        }
+
+    }, [editor, handleEditorEnter, handleEditorKeyDown]);
 
     return (
         <ClickAwayListener onClickAway={handleClickAway}>

@@ -1,7 +1,8 @@
 
 
 - Do the HARD input tasks first so I don't get into a swap of code.
-    - the linear item list is computed from the active node note the root node
+    - get rid of all the 'capture' event code
+    - 
     - once the page has mounted, go ahead and render, once, all the ckeditor nodes?
     - escape the content in the story text when selected
     - escape the content in the references in the bottom
