@@ -27,14 +27,20 @@ export interface INote {
      */
     readonly items?: ReadonlyArray<NoteIDStr>;
 
-    readonly name?: NoteNameStr;
-
-    readonly content?: string;
+    readonly content: string;
 
     /**
      * The linked wiki references to other notes.
      */
     readonly links?: ReadonlyArray<NoteIDStr>;
+
+    /**
+     * There are two types of notes.  One is just an 'item' where the 'content'
+     * is the body of the item and isn't actually a unique name and then there
+     * is a 'named' note where the content is actually the name of the note and
+     * has constrained semantics (can't have a link, image, etc.
+     */
+    readonly type: 'item' | 'named';
 
 }
 
@@ -178,8 +184,8 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
                 index[note.id] = note;
 
-                if (note.name) {
-                    indexByName[note.name] = note;
+                if (note.type === 'named') {
+                    indexByName[note.content] = note;
                 }
 
                 // FIXME: read the existing note, and if it's there, we have to remove the existing...
@@ -218,8 +224,8 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
                 delete index[note.id];
 
-                if (note.name) {
-                    indexByName[note.name] = note;
+                if (note.type === 'named') {
+                    indexByName[note.content] = note;
                 }
 
                 for (const item of (note.items || [])) {
@@ -356,6 +362,8 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
             const newNote: INote = {
                 id,
+                type: 'item',
+                content: '',
                 created: now,
                 updated: now
             };

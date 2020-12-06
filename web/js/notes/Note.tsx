@@ -10,11 +10,10 @@ import {createContextMenu} from "../../../apps/repository/js/doc_repo/MUIContext
 import {IDocViewerContextMenuOrigin} from "../../../apps/doc/src/DocViewerMenu";
 import {NoteContextMenuItems} from "./NoteContextMenuItems";
 import useTheme from "@material-ui/core/styles/useTheme";
-import {isPresent} from "polar-shared/src/Preconditions";
 import { NoteExpandToggleButton } from "./NoteExpandToggleButton";
 
 interface IProps {
-    readonly parent: NoteIDStr;
+    readonly parent: NoteIDStr | undefined;
     readonly id: NoteIDStr;
 
 }

@@ -8,6 +8,7 @@ import {NotesInbound} from "./NotesInbound";
 import {CKEditor5BalloonEditor} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import { NoteEditor } from "./NoteEditor";
+import { Note } from "./Note";
 
 interface INoteTitleProps {
     readonly children: string | JSX.Element;
@@ -49,24 +50,28 @@ export const NoteRoot = deepMemo(function NoteRoot(props: IProps) {
     return (
         <MUIBrowserLinkStyle style={{flexGrow: 1}}>
 
-            <div className="NoteRoot">
+            <Note parent={undefined} id={id}/>
 
-                {note.name && (
-                    <NoteTitle>{note.name}</NoteTitle>
-                )}
+            <NotesInbound id={id}/>
+
+            {/*<div className="NoteRoot">*/}
+
+            {/*    {note.name && (*/}
+            {/*        <NoteTitle>{note.name}</NoteTitle>*/}
+            {/*    )}*/}
 
 
-                {note.content && (
-                    <NoteTitle>
-                        <NoteEditor parent={undefined} id={id}/>
-                    </NoteTitle>
-                )}
+            {/*    {note.content && (*/}
+            {/*        <NoteTitle>*/}
+            {/*            <NoteEditor parent={undefined} id={id}/>*/}
+            {/*        </NoteTitle>*/}
+            {/*    )}*/}
 
-                <NoteItems parent={id} notes={notes}/>
+            {/*    <NoteItems parent={id} notes={notes}/>*/}
 
-                <NotesInbound id={id}/>
+            {/*    <NotesInbound id={id}/>*/}
 
-            </div>
+            {/*</div>*/}
 
         </MUIBrowserLinkStyle>
     );

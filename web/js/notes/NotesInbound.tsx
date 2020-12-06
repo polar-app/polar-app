@@ -58,7 +58,7 @@ export const NotesInbound = deepMemo(function NotesInbound(props: IProps) {
                 <>
                     {inbound.map((current, idx) => <InboundNoteRef key={idx}
                                                                    id={current.id}
-                                                                   name={current.name}
+                                                                   name={current.content}
                                                                    content={current.content}/>)}
                 </>
             </UL>

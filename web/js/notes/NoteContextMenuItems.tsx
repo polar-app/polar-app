@@ -18,7 +18,7 @@ export const NoteContextMenuItems = React.memo(function MUIDocDropdownMenuItems(
 
         const note = index[active];
 
-        const markdown = note.content || note.name || '';
+        const markdown = note.content;
 
         Clipboards.getInstance().writeText(markdown);
 

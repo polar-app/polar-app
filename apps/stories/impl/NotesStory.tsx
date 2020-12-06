@@ -5,8 +5,6 @@ import {INote, NotesStoreProvider, useNotesStoreCallbacks, useNotesStore} from '
 import {NotesRouter} from "../../../web/js/notes/NotesRouter";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import { CKEditor5AppRoot } from './ckeditor5/CKEditor5AppRoot';
-import {FlashcardInputForFrontAndBack} from "../../../web/js/annotation_sidebar/child_annotations/flashcards/flashcard_input/FlashcardInputForFrontAndBack";
-import {AddContentFab} from "../../repository/js/ui/AddContentFab";
 import Fab from '@material-ui/core/Fab';
 import HelpIcon from '@material-ui/icons/Help';
 import Dialog from '@material-ui/core/Dialog';
@@ -19,7 +17,8 @@ const notes: ReadonlyArray<INote> = [
         id: '102',
         created: now,
         updated: now,
-        name: "World War II",
+        content: "World War II",
+        type: 'named',
         items: [
             '103',
             '104',
@@ -30,25 +29,29 @@ const notes: ReadonlyArray<INote> = [
         id: '100',
         created: now,
         updated: now,
+        type: 'item',
         content: 'World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world\'s countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.',
     },
     {
         id: '103',
         created: now,
         updated: now,
+        type: 'item',
         content: '[Lasted](https://www.example.com) from 1939 to 1945',
     },
     {
         id: '104',
         created: now,
         updated: now,
+        type: 'item',
         content: 'Axis Powers: Germany, Italy, Japan',
     },
     {
         id: '108',
         created: now,
         updated: now,
-        name: "Russia",
+        content: "Russia",
+        type: 'named',
         items: [
         ]
     },
@@ -56,7 +59,8 @@ const notes: ReadonlyArray<INote> = [
         id: '109',
         created: now,
         updated: now,
-        name: "Canada",
+        content: "Canada",
+        type: 'named',
         items: [
             '111'
         ]
@@ -65,6 +69,7 @@ const notes: ReadonlyArray<INote> = [
         id: '111',
         created: now,
         updated: now,
+        type: 'item',
         content: 'Canada is north of the United States',
     },
     // FIXME: make text references NODE IDs...
@@ -76,19 +81,22 @@ const notes: ReadonlyArray<INote> = [
         links: ['109', '108'],
         items: [
             '106'
-        ]
+        ],
+        type: 'item',
     },
     {
         id: '106',
         created: now,
         updated: now,
         content: 'Lead by Franklin D. Roosevelt, Winston Churchill, and Joseph Stalin ',
+        type: 'item',
     },
     {
         id: '107',
         created: now,
         updated: now,
-        name: "Germany",
+        content: "Germany",
+        type: 'named',
         links: ['102'],
         items: [
             '110'
@@ -99,6 +107,7 @@ const notes: ReadonlyArray<INote> = [
         created: now,
         updated: now,
         content: 'Germany Germany (German: Deutschland, German pronunciation: [ˈdɔʏtʃlant]), officially the Federal Republic of Germany (German: Bundesrepublik Deutschland, About this soundlisten),[e] is a country in Central and Western Europe and one of the major participants of [[World War II]]',
+        type: 'item',
         links: [
             '100'
         ]
