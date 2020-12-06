@@ -122,11 +122,14 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
         if (editor) {
 
+            // *** off first
             editor.editing.view.document.off('keydown', handleEditorKeyDown);
             editor.editing.view.document.off('enter', handleEditorEnter);
 
+            // *** then on
             editor.editing.view.document.on('keydown', handleEditorKeyDown);
             editor.editing.view.document.on('enter', handleEditorEnter);
+
         } else {
             // console.warn("No editor");
         }

@@ -289,14 +289,20 @@ export const NoteActionMenu = deepMemo(function NoteActionMenu(props: IProps) {
 
     }, [menuIndexRef]);
 
-    const onKeyDownCapture = React.useCallback((event: KeyboardEvent) => {
+    const handleEditorKeyDown = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
 
         if (menuPositionRef.current === undefined) {
             // the menu is not active
             return;
         }
 
-        switch (event.key) {
+        function abortEvent() {
+            event.domEvent.stopPropagation();
+            event.domEvent.preventDefault();
+            eventData.stop();
+        }
+
+        switch (event.domEvent.key) {
 
             case 'Escape':
             case 'Backspace':
@@ -311,23 +317,21 @@ export const NoteActionMenu = deepMemo(function NoteActionMenu(props: IProps) {
 
                 const nextID = computeNextMenuID();
                 setMenuIndex(nextID);
-                event.preventDefault();
-                event.stopPropagation();
+                abortEvent();
                 break;
 
             case 'ArrowUp':
 
                 const prevID = computePrevMenuID();
                 setMenuIndex(prevID);
-                event.preventDefault();
-                event.stopPropagation();
+                abortEvent();
                 break;
 
             default:
                 break;
         }
 
-    }, [computeNextMenuID, computePrevMenuID, handleSelectedActionItem, menuPositionRef, reset, setMenuIndex]);
+    }, [computeNextMenuID, computePrevMenuID, menuPositionRef, reset, setMenuIndex]);
 
     const handleEditorEnter = React.useCallback((eventData: IEventData) => {
 
@@ -344,20 +348,18 @@ export const NoteActionMenu = deepMemo(function NoteActionMenu(props: IProps) {
     React.useEffect(() => {
 
         if (editor) {
+
+            // *** off first
+            editor.editing.view.document.off('keydown', handleEditorKeyDown);
             editor.editing.view.document.off('enter', handleEditorEnter);
+
+            // *** then on
+            editor.editing.view.document.on('keydown', handleEditorKeyDown);
             editor.editing.view.document.on('enter', handleEditorEnter);
+
         }
 
-    }, [editor, handleEditorEnter]);
-
-    useComponentDidMount(() => {
-        document.addEventListener('keydown', event => onKeyDownCapture(event), {capture: true});
-    })
-
-    useComponentWillUnmount(() => {
-        document.removeEventListener('keydown', event => onKeyDownCapture(event), {capture: true});
-    })
-
+    }, [editor, handleEditorEnter, handleEditorKeyDown]);
 
     interface NoteMenuItemProps extends IActionMenuItem {
         readonly menuID: number;
