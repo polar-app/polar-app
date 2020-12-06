@@ -14,22 +14,19 @@ import {MarkdownContentEscaper} from "./MarkdownContentEscaper";
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 import IEventData = ckeditor5.IEventData;
 
-function useLinkNavigation() {
+interface ILinkNavigationEvent {
+    readonly abortEvent: () => void;
+    readonly target: EventTarget | null;
+}
 
-    const editor = useEditorStore();
+function useLinkNavigationEventListener() {
 
     const linkLoaderRef = useLinkLoaderRef();
     const noteLinkLoader = useNoteLinkLoader();
 
-    const handleEditorClick = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
+    return React.useCallback((event: ILinkNavigationEvent) => {
 
-        function abortEvent() {
-            event.domEvent.stopPropagation();
-            event.domEvent.preventDefault();
-            eventData.stop();
-        }
-
-        const target = event.domEvent.target;
+        const {target, abortEvent} = event;
 
         if (target instanceof HTMLAnchorElement) {
 
@@ -58,6 +55,47 @@ function useLinkNavigation() {
 
     }, [linkLoaderRef, noteLinkLoader]);
 
+}
+
+function useLinkNavigationClickHandler() {
+
+    const linkNavigationEventListener = useLinkNavigationEventListener();
+
+    return React.useCallback((event: React.MouseEvent) => {
+
+        function abortEvent() {
+            event.stopPropagation();
+            event.preventDefault();
+        }
+
+        const target = event.target;
+
+        linkNavigationEventListener({target, abortEvent});
+
+    }, [linkNavigationEventListener]);
+
+}
+
+function useLinkNavigation() {
+
+    const editor = useEditorStore();
+
+    const linkNavigationEventListener = useLinkNavigationEventListener();
+
+    const handleEditorClick = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
+
+        function abortEvent() {
+            event.domEvent.stopPropagation();
+            event.domEvent.preventDefault();
+            eventData.stop();
+        }
+
+        const target = event.domEvent.target;
+
+        linkNavigationEventListener({abortEvent, target});
+
+    }, [linkNavigationEventListener]);
+
     React.useEffect(() => {
 
         if (editor) {
@@ -75,6 +113,38 @@ function useLinkNavigation() {
     }, [editor, handleEditorClick]);
 
 }
+
+interface INoteEditorInactiveProps {
+    readonly id: NoteIDStr;
+    readonly content: string;
+    readonly onClick: (event: React.MouseEvent) => void;
+}
+
+
+const NoteEditorInactive = React.memo(function NoteEditorInactive(props: INoteEditorInactiveProps) {
+
+    const {content, onClick} = props;
+
+    const linkNavigationClickHandler = useLinkNavigationClickHandler()
+
+    const placeholder = content.trim() === '' ? '&nbsp;' : content;
+
+    const handleClick = React.useCallback((event: React.MouseEvent) => {
+        linkNavigationClickHandler(event);
+        onClick(event);
+    }, [linkNavigationClickHandler, onClick]);
+
+    return (
+        // this uses the standard ckeditor spacing and border so things
+        // don't jump around after we activate
+        <div className="note-inactive"
+             onClick={handleClick}
+             style={{
+             }}
+             dangerouslySetInnerHTML={{__html: placeholder}}/>
+    );
+
+});
 
 interface INoteEditorActivatorProps {
     readonly id: NoteIDStr;
@@ -130,15 +200,10 @@ const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEd
         );
     } else {
 
-        const placeholder = content.trim() === '' ? '&nbsp;' : content;
-
         return (
-            // this uses the standard ckeditor spacing and border so things
-            // don't jump around after we activate
-            <div className="note-inactive"
-                 style={{
-                 }}
-                 onClick={handleActivated} dangerouslySetInnerHTML={{__html: placeholder}}/>
+            <NoteEditorInactive id={id}
+                                content={content}
+                                onClick={handleActivated}/>
         );
 
     }
