@@ -376,7 +376,36 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
             const store = storeProvider();
 
-            const {active, index} = store;
+            const {active, index, expanded} = store;
+
+            function computeLinearItemsFromExpansionTree(id: NoteIDStr, root?: boolean): ReadonlyArray<NoteIDStr> {
+
+                const note = index[id];
+
+                if (! note) {
+                    console.warn("No note: ", id);
+                    return [];
+                }
+
+                const isExpanded = root === true ? true : expanded[id];
+
+                if (isExpanded) {
+                    const items = (note.items || []);
+
+                    const result = [];
+
+                    for (const item of items) {
+                        result.push(item);
+                        result.push(...computeLinearItemsFromExpansionTree(item));
+                    }
+
+                    return result;
+
+                } else {
+                    return [];
+                }
+
+            }
 
             if (active === undefined) {
                 console.warn("No currently active node");
@@ -390,7 +419,9 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
                 return;
             }
 
-            const items = parentNote.items || [];
+            const items = computeLinearItemsFromExpansionTree(parentNote.id, true);
+
+            console.log("FIXME: items: ", items);
 
             const childIndex = items.indexOf(child);
 
@@ -403,8 +434,6 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
             const activeIndexWithoutBound = childIndex + deltaIndex;
             const activeIndex = Math.min(Math.max(0, activeIndexWithoutBound), items.length -1);
-
-            // FIXME: if necessary, jump to the child items when they're expanded
 
             const newActive = items[activeIndex];
 
