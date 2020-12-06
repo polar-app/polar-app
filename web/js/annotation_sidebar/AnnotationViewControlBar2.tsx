@@ -189,7 +189,7 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
 
                         <CreateCommentButton mutable={doc?.mutable}/>
 
-                        <CreateFlashcardButton mutable={doc?.mutable}/>
+                        {/*<CreateFlashcardButton mutable={doc?.mutable}/>*/}
 
                         <CreateAutoFlashcardButton mutable={doc?.mutable} annotation={annotation}/>
 
