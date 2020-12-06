@@ -104,8 +104,6 @@ const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEd
     // TODO: ckeditor STILL has a load delay of about 500ms so we might have to activate
     // AFTER mount so the page is faster and more interactive.
 
-    // TODO: add a preEscaped property to CKEditor5BalloonEditor because
-    // otherwise we're double escaping
     const content = React.useMemo(() => escaper.escape(props.content), [escaper, props.content]);
 
     const handleActivated = React.useCallback(() => {
@@ -125,6 +123,7 @@ const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEd
 
         return (
             <CKEditor5BalloonEditor content={content}
+                                    preEscaped={true}
                                     escaper={escaper}
                                     onChange={onChange}
                                     onEditor={onEditor}/>

@@ -190,6 +190,7 @@ interface IProps {
     readonly onEditor: (editor: ckeditor5.IEditor) => void;
     readonly escaper?: ContentEscaper;
     readonly noToolbar?: boolean;
+    readonly preEscaped?: boolean
 }
 
 /**
@@ -211,7 +212,7 @@ export const CKEditor5BalloonEditor = React.memo(function CKEditor5BalloonEditor
     const escaper = props.escaper || DefaultContentEscaper;
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const content = React.useMemo<HTMLStr>(() => escaper.escape(props.content), []);
+    const content = React.useMemo<HTMLStr>(() => props.preEscaped ? props.content : escaper.escape(props.content), []);
 
     return (
         <>
