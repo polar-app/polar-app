@@ -10,7 +10,7 @@ import IEventData = ckeditor5.IEventData;
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 
 interface IProps {
-    readonly parent: NoteIDStr;
+    readonly parent: NoteIDStr | undefined;
     readonly id: NoteIDStr;
     readonly children: JSX.Element;
 }
@@ -50,7 +50,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
         editor!.editing.view.focus();
     }, [editor]);
 
-    const jumpToEditorStart = React.useCallback(() => {
+    const jumpToEditorStartPosition = React.useCallback(() => {
 
         if (! editor) {
             return;
@@ -73,8 +73,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
             if (noteActive) {
                 editorFocus();
-                jumpToEditorStart();
-
+                jumpToEditorStartPosition();
             } else {
                 // different editor
             }
@@ -83,7 +82,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
             console.log("No editor: ")
         }
 
-    }, [editor, editorFocus, jumpToEditorStart, noteActive, props.id]);
+    }, [editor, editorFocus, jumpToEditorStartPosition, noteActive, props.id]);
 
     const handleClick = React.useCallback(() => {
         setActive(props.id);
@@ -117,7 +116,10 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
             case 'Tab':
                 abortEvent();
 
-                doIndent(props.id, props.parent);
+                if (props.parent !== undefined) {
+                    doIndent(props.id, props.parent);
+                }
+
                 break;
 
             default:
@@ -129,7 +131,11 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
     const handleEditorEnter = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
         eventData.stop();
-        createNewNote(props.parent, props.id);
+
+        if (props.parent !== undefined) {
+            createNewNote(props.parent, props.id);
+        }
+
     }, [createNewNote, props.id, props.parent]);
 
     React.useEffect(() => {

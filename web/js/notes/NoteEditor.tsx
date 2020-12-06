@@ -1,5 +1,9 @@
 import React from "react";
-import {CKEditor5BalloonEditor, ckeditor5} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
+import {
+    CKEditor5BalloonEditor,
+    ckeditor5,
+    ContentEscaper
+} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
 import {NoteNavigation} from "./NoteNavigation";
 import {NoteIDStr, useNotesStore, useNotesStoreCallbacks} from "./NotesStore";
 import {deepMemo} from "../react/ReactUtils";
@@ -113,6 +117,27 @@ function useLinkNavigation() {
     }, [editor, handleEditorClick]);
 
 }
+
+// interface INoteEditorActiveProps {
+//     readonly content: string;
+//     readonly escaper?: ContentEscaper;
+//     readonly onEditor: (editor: ckeditor5.IEditor) => void;
+//     readonly onChange: (content: string) => void;
+//     readonly preEscaped?: boolean;
+// }
+//
+// const NoteEditorActive = React.memo(function NoteEditorActive(props: INoteEditorActiveProps) {
+//
+//     const {onEditor, onChange, escaper, preEscaped, content} = props;
+//
+//     return (
+//         <CKEditor5BalloonEditor content={content}
+//                                 preEscaped={true}
+//                                 escaper={escaper}
+//                                 onChange={onChange}
+//                                 onEditor={onEditor}/>
+//     );
+// });
 
 interface INoteEditorInactiveProps {
     readonly id: NoteIDStr;
@@ -257,7 +282,7 @@ const NoteEditorWithStore = deepMemo(function NoteEditorWithStore(props: IProps)
 });
 
 interface IProps {
-    readonly parent: NoteIDStr;
+    readonly parent: NoteIDStr | undefined;
     readonly id: NoteIDStr;
 }
 

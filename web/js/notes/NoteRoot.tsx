@@ -7,10 +7,22 @@ import {MUIBrowserLinkStyle} from "../mui/MUIBrowserLinkStyle";
 import {NotesInbound} from "./NotesInbound";
 import {CKEditor5BalloonEditor} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import { NoteEditor } from "./NoteEditor";
+
+interface INoteTitleProps {
+    readonly children: string | JSX.Element;
+}
+
+const NoteTitle = React.memo((props: INoteTitleProps) => {
+    return (
+        <div style={{fontSize: '1.3em'}}>{props.children}</div>
+    )
+});
 
 interface IProps {
     readonly id: NoteIDStr;
 }
+
 export const NoteRoot = deepMemo(function NoteRoot(props: IProps) {
 
     const {index, indexByName} = useNotesStore(['index', 'indexByName']);
@@ -40,15 +52,15 @@ export const NoteRoot = deepMemo(function NoteRoot(props: IProps) {
             <div className="NoteRoot">
 
                 {note.name && (
-                    <h1>{note.name}</h1>
+                    <NoteTitle>{note.name}</NoteTitle>
                 )}
 
 
                 {note.content && (
-                    // <p>{note.content}</p>
-                    <CKEditor5BalloonEditor content={note.content || ''}
-                                            onChange={NULL_FUNCTION}
-                                            onEditor={NULL_FUNCTION}/>)}
+                    <NoteTitle>
+                        <NoteEditor parent={undefined} id={id}/>
+                    </NoteTitle>
+                )}
 
                 <NoteItems parent={id} notes={notes}/>
 

@@ -1,12 +1,14 @@
 
 
 - Do the HARD input tasks first so I don't get into a swap of code.
+    - HARD: when clicking on a node for the first time when activating it the cursor jumps to the beginning
+        - the problem is that the cursor isn't placed in the right spot... to begin with and 
+          has no correlation with the jumpToEditorStart
+          
     - once the page has mounted, go ahead and render, once, all the ckeditor nodes?
-    - back arrow show jump to the end of the previous item
+    - HARD: back arrow show jump to the end of the previous item
     - escape the content in the story text when selected
     - escape the content in the references in the bottom
-    - remove the double escape issue because the CPU time for rendering ckeditor 
-      is non-trivial
     - the cursor should NOT be persisted when jumping between nodes
         - both ckeditor and workflowy have smart handling of this behavior
     - we're getting too many renders.  for example arrow up/down causes
