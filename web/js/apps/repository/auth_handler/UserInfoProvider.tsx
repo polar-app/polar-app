@@ -13,7 +13,7 @@ import { Billing } from 'polar-accounts/src/Billing';
 import V2PlanFree = Billing.V2PlanFree;
 import {Plans} from "polar-accounts/src/Plans";
 import {ISnapshot} from "../../../snapshots/CachedSnapshotSubscriberContext";
-import {Analytics} from "../../../analytics/Analytics";
+import {Analytics, useAnalytics} from "../../../analytics/Analytics";
 
 interface IUserInfoContext {
 
@@ -89,6 +89,7 @@ function useUserInfoContextSnapshotSubscriber(): SnapshotSubscriberWithID<IUserI
 export const UserInfoProvider = deepMemo((props: IProps) => {
 
     const snapshotSubscriber = useUserInfoContextSnapshotSubscriber();
+    const analytics = useAnalytics();
 
     // TODO: should we use on onError here with the dialog manager
     const {value, error} = useSnapshotSubscriber(snapshotSubscriber);
@@ -105,7 +106,7 @@ export const UserInfoProvider = deepMemo((props: IProps) => {
         const plan = Plans.toV2(value?.userInfo?.subscription.plan);
         const interval = value?.userInfo?.subscription.interval || 'month';
 
-        Analytics.traits({
+        analytics.traits({
             subscription_plan: plan.level,
             subscription_interval: interval
         });
