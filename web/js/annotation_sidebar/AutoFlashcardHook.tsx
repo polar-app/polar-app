@@ -6,6 +6,7 @@ import { AutoFlashcards } from 'polar-backend-api/src/api/AutoFlashcards';
 import {IFlashcardCreate, useAnnotationMutationsContext} from "./AnnotationMutationsContext";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {Refs} from "polar-shared/src/metadata/Refs";
+import {Analytics} from "../analytics/Analytics";
 
 export type AutoFlashcardHandlerState = 'idle' | 'waiting';
 
@@ -17,7 +18,7 @@ export function useAutoFlashcardHandler(annotation: IDocAnnotationRef): AutoFlas
 
     const log = useLogger();
     const annotationMutations = useAnnotationMutationsContext();
-    const flashcardCallback = annotationMutations.createFlashcardCallback(annotation);
+    const createFlashcard = annotationMutations.createFlashcardCallback(annotation);
 
     const [state, setState] = React.useState<AutoFlashcardHandlerState>('idle');
 
@@ -53,13 +54,15 @@ export function useAutoFlashcardHandler(annotation: IDocAnnotationRef): AutoFlas
                 parent: Refs.createRef(annotation)
             };
 
-            flashcardCallback(mutation);
+            Analytics.event2('ai-flashcard-created');
+
+            createFlashcard(mutation);
 
         } finally {
             setState('idle');
         }
 
-    }, [annotation, flashcardCallback, log]);
+    }, [annotation, createFlashcard, log]);
 
     return [state, handler];
 
