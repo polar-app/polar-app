@@ -14,14 +14,8 @@ interface INoteTitleProps {
     readonly children: string | JSX.Element;
 }
 
-const NoteTitle = React.memo((props: INoteTitleProps) => {
-    return (
-        <div style={{fontSize: '1.3em'}}>{props.children}</div>
-    )
-});
-
 interface IProps {
-    readonly id: NoteIDStr;
+    readonly target: NoteIDStr;
 }
 
 export const NoteRoot = deepMemo(function NoteRoot(props: IProps) {
@@ -29,17 +23,17 @@ export const NoteRoot = deepMemo(function NoteRoot(props: IProps) {
     const {index, indexByName} = useNotesStore(['index', 'indexByName']);
     const {lookup, setRoot} = useNotesStoreCallbacks();
 
-    const note = index[props.id] || indexByName[props.id];
+    const note = index[props.target] || indexByName[props.target];
 
     if (! isPresent(note)) {
         return (
-            <div>No note for id: {props.id}</div>
+            <div>No note for target: {props.target}</div>
         );
     }
 
     React.useEffect(() => {
-        setRoot(props.id);
-    }, [props.id, setRoot])
+        setRoot(note.id);
+    }, [note.id, setRoot])
 
     const id = note?.id;
 

@@ -14,7 +14,7 @@ export const NoteScreen = () => {
     }
 
     return (
-        <NoteRoot id={noteURL.id}/>
+        <NoteRoot target={noteURL.target}/>
     );
 
 }
