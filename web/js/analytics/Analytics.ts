@@ -30,6 +30,22 @@ function createDelegate(): IAnalytics {
 
 const delegate = createDelegate();
 
+/**
+ * Hook for analytics that isn't that complicated yet but we can add more
+ * functionality later.
+ */
+export function useAnalytics(): IAnalytics {
+    return {
+        event: Analytics.event,
+        event2: Analytics.event2,
+        identify: Analytics.identify,
+        page: Analytics.page,
+        traits: Analytics.traits,
+        version: Analytics.version,
+        heartbeat: Analytics.heartbeat
+    }
+}
+
 export namespace Analytics {
 
     export function event(event: IEventArgs): void {

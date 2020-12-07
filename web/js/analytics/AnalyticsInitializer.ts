@@ -80,25 +80,11 @@ export namespace AnalyticsInitializer {
 
         };
 
-        // const doPlan = async () => {
-        //
-        //     const account = await Accounts.get();
-        //
-        //     const plan = Plans.toV2(account?.plan).level;
-        //
-        //     Analytics.traits({plan});
-        //
-        // };
-
         const user = await Firebase.currentUserAsync();
 
         if (user) {
-
             Analytics.identify(user.uid);
-
             doUserTraits(user);
-            // doPlan().catch(err => console.log())
-
         }
 
     }

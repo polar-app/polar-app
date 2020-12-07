@@ -13,6 +13,7 @@ import { Billing } from 'polar-accounts/src/Billing';
 import V2PlanFree = Billing.V2PlanFree;
 import {Plans} from "polar-accounts/src/Plans";
 import {ISnapshot} from "../../../snapshots/CachedSnapshotSubscriberContext";
+import {Analytics} from "../../../analytics/Analytics";
 
 interface IUserInfoContext {
 
@@ -97,6 +98,18 @@ export const UserInfoProvider = deepMemo((props: IProps) => {
         // TODO: this needs to raise an error in the UI but MUIDialogController
         // is deeper in the tree
         return null;
+    }
+
+    if (value) {
+
+        const plan = Plans.toV2(value?.userInfo?.subscription.plan);
+        const interval = value?.userInfo?.subscription.interval || 'month';
+
+        Analytics.traits({
+            subscription_plan: plan.level,
+            subscription_interval: interval
+        });
+
     }
 
     return (
