@@ -46,8 +46,10 @@ export namespace AccountUpgrades {
 
     }
 
+    export type AccountUpgradeReason = 'none' | 'storage' | 'web-captures';
+
     export interface IRequiredPlan {
-        readonly reason: 'none' | 'storage' | 'web-captures';
+        readonly reason: AccountUpgradeReason;
         readonly plan: V2Plan;
     }
 

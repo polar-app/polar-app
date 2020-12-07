@@ -14,6 +14,10 @@ import {deepMemo} from "../../react/ReactUtils";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        primary: {
+            backgroundColor: theme.palette.primary.main,
+            color: theme.palette.primary.contrastText,
+        },
         danger: {
             backgroundColor: theme.palette.error.main,
             color: theme.palette.error.contrastText,
@@ -49,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export type AlertType = 'danger' | 'error' | 'warning' | 'success' | 'info' | 'none';
+export type AlertType = 'danger' | 'error' | 'warning' | 'success' | 'info' | 'none' | 'primary';
 
 export interface ConfirmDialogProps {
     readonly title: string;

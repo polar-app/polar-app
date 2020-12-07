@@ -5,10 +5,12 @@ import {Billing} from "polar-accounts/src/Billing";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import { useHistory } from 'react-router-dom';
+import {AccountUpgrades} from "../../../../web/js/accounts/AccountUpgrades";
 
 export namespace AccountVerifiedAction {
 
     import V2Plan = Billing.V2Plan;
+    import AccountUpgradeReason = AccountUpgrades.AccountUpgradeReason;
 
     export function useAccountVerifiedAction() {
 
@@ -27,9 +29,8 @@ export namespace AccountVerifiedAction {
                 dialogs.confirm({
                     title: 'Account Upgraded Required',
                     acceptText: "Upgrade Plan",
-                    subtitle: accountUpgrade.reason === 'storage' ?
-                        <StorageWarning plan={accountUpgrade.plan}/> :
-                        <WebCaptureWarning plan={accountUpgrade.plan}/>,
+                    type: 'primary',
+                    subtitle: <WarningSelector reason={accountUpgrade.reason} plan={accountUpgrade.plan}/>,
                     onAccept: () => history.push('/plans')
                 })
 
@@ -41,11 +42,32 @@ export namespace AccountVerifiedAction {
 
     }
 
-    interface IProps {
+    interface IWarningSelectorProps {
+        readonly reason: AccountUpgradeReason;
         readonly plan: V2Plan;
     }
 
-    export const WebCaptureWarning = deepMemo((props: IProps) => {
+    export const WarningSelector = React.memo((props: IWarningSelectorProps) => {
+
+        switch(props.reason) {
+
+            case "storage":
+                return <StorageWarning plan={props.plan}/>
+
+            case "web-captures":
+                return <WebCaptureWarning plan={props.plan}/>
+
+        }
+
+        return null;
+
+    });
+
+    interface IWarningProps {
+        readonly plan: V2Plan;
+    }
+
+    export const WebCaptureWarning = deepMemo((props: IWarningProps) => {
         return (
             <div>
                 <p>
@@ -71,7 +93,7 @@ export namespace AccountVerifiedAction {
         )
     });
 
-    export const StorageWarning = deepMemo((props: IProps) => {
+    export const StorageWarning = deepMemo((props: IWarningProps) => {
         return (
             <div>
                 <p>

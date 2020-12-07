@@ -22,6 +22,7 @@ import {MUIDocDeleteButton} from "../../../apps/repository/js/doc_repo/buttons/M
 import {StandardIconButton} from "../../../apps/repository/js/doc_repo/buttons/StandardIconButton";
 import FlashAutoIcon from '@material-ui/icons/FlashAuto';
 import {useAutoFlashcardHandler} from "./AutoFlashcardHook";
+import {useAIFlashcardVerifiedAction} from "../../../apps/repository/js/ui/AIFlashcardVerifiedAction";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -101,17 +102,21 @@ const CreateFlashcardButton = deepMemo((props: IMutableProps) => {
 
 });
 
-const CreateAutoFlashcardButton = deepMemo((props: IAnnotationProps) => {
+const CreateAIFlashcardButton = deepMemo((props: IAnnotationProps) => {
 
     const [status, handler] = useAutoFlashcardHandler(props.annotation);
 
-    // FIXME: we need to look at the users account here...
+    const verifiedAction = useAIFlashcardVerifiedAction();
+
+    const handleClick = React.useCallback(() => {
+        verifiedAction(() => handler());
+    }, [handler, verifiedAction]);
 
     return (
         <StandardIconButton tooltip="Create a new flashcard"
                             disabled={! props.mutable}
                             size="small"
-                            onClick={handler}>
+                            onClick={handleClick}>
 
             <div style={{
                      width: '1em',
@@ -191,7 +196,7 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
 
                         <CreateFlashcardButton mutable={doc?.mutable}/>
 
-                        {/*<CreateAutoFlashcardButton mutable={doc?.mutable} annotation={annotation}/>*/}
+                        <CreateAIFlashcardButton mutable={doc?.mutable} annotation={annotation}/>
 
                         {! annotation.immutable &&
                             <ColorSelector role='change'
