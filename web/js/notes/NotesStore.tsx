@@ -14,6 +14,16 @@ export type NotesIndexByName = Readonly<{[name: string /* NoteNameStr */]: INote
 
 export type ReverseNotesIndex = Readonly<{[id: string /* NoteIDStr */]: ReadonlyArray<NoteIDStr>}>;
 
+export type NoteContentType = 'markdown' | 'name';
+
+export interface ITypedContent<T extends NoteContentType> {
+    readonly type: T;
+    readonly content: string
+}
+
+// export type NoteContent = string | ITypedContent<'markdown'> | ITypedContent<'name'>;
+export type NoteContent = string;
+
 export interface INote {
 
     readonly id: NoteIDStr;
@@ -27,12 +37,22 @@ export interface INote {
      */
     readonly items?: ReadonlyArray<NoteIDStr>;
 
-    readonly content: string;
+    // TODO
+    //
+    // We might want to have a content object with a type so that we can
+    // have 'name' or 'markdown' as the type... but we could also support
+    // latex with this.
+    readonly content: NoteContent;
 
     /**
      * The linked wiki references to other notes.
      */
     readonly links?: ReadonlyArray<NoteIDStr>;
+
+    // FIXMEL this needs to be refactoed because
+    // the content type of the node should/could change and we need markdown/latex/etc note types
+    // but also we need the ability to do block embeds an so forth and those are a specic note type.
+    // FIXME: maybe content would be a reference to another type..
 
     /**
      * There are two types of notes.  One is just an 'item' where the 'content'

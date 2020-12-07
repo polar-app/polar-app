@@ -19,7 +19,7 @@ function createDelegate(): IAnalytics {
                 new AmplitudeAnalytics(),
                 new GAAnalytics(),
                 new FirestoreAnalytics(),
-                // new UserflowAnalytics()
+                new UserflowAnalytics()
             ])
         );
     } else {
