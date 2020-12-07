@@ -3,6 +3,7 @@ import useTheme from '@material-ui/core/styles/useTheme';
 
 interface IProps {
     readonly className?: string;
+    readonly disabled?: boolean;
     readonly onClick: (event: React.MouseEvent) => void;
     readonly children: JSX.Element;
 }
@@ -14,10 +15,40 @@ export const NoteButton = React.memo(function NoteButton(props: IProps) {
 
     const backgroundColor = hover ? theme.palette.background.paper : 'inherit'
 
+    const handleMouseEnter = React.useCallback(() => {
+
+        if (props.disabled) {
+            return;
+        }
+
+        setHover(true);
+
+    }, [props.disabled]);
+
+    const handleMouseLeave = React.useCallback(() => {
+
+        if (props.disabled) {
+            return;
+        }
+
+        setHover(false);
+
+    }, [props.disabled]);
+
+    const handleClick = React.useCallback((event: React.MouseEvent) => {
+
+        if (props.disabled) {
+            return;
+        }
+
+        props.onClick(event);
+
+    }, [props]);
+
     return (
-        <div onMouseEnter={() => setHover(true)}
-             onMouseLeave={() => setHover(false)}
-             onClick={props.onClick}
+        <div onMouseEnter={handleMouseEnter}
+             onMouseLeave={handleMouseLeave}
+             onClick={handleClick}
              className={props.className}
              style={{
                  display: 'inline-block',
