@@ -4,6 +4,9 @@ import {GPTCompletions} from "./GPTCompletions";
 import {SentryReporters} from "../reporters/SentryReporter";
 import {GPTContentFilters} from "./GPTContentFilters";
 
+const ENABLE_INPUT_TOXICITY_FILTER = false;
+const ENABLE_OUTPUT_TOXICITY_FILTER = false;
+
 export namespace AutoFlashcardFunctions {
 
     /**
@@ -25,9 +28,11 @@ export namespace AutoFlashcardFunctions {
                 }
             }
 
-            const inputClassification = await GPTContentFilters.exec([request.query_text]);
+            if (ENABLE_INPUT_TOXICITY_FILTER) {
+                const inputClassification = await GPTContentFilters.exec([request.query_text]);
 
-            GPTContentFilters.assertClassification(inputClassification);
+                GPTContentFilters.assertClassification(inputClassification);
+            }
 
             const completionResponse = await GPTCompletions.exec(request);
 
@@ -37,9 +42,11 @@ export namespace AutoFlashcardFunctions {
                 }
             }
 
-            const outputClassification = await GPTContentFilters.exec([completionResponse.front, completionResponse.back])
+            if (ENABLE_OUTPUT_TOXICITY_FILTER) {
+                const outputClassification = await GPTContentFilters.exec([completionResponse.front, completionResponse.back])
 
-            GPTContentFilters.assertClassification(outputClassification);
+                GPTContentFilters.assertClassification(outputClassification);
+            }
 
             return completionResponse;
 
