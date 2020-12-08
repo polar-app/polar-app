@@ -78,6 +78,20 @@ const useStyles = makeStyles((theme: Theme) =>
             userSelect: 'none',
             textOverflow: 'ellipsis'
         },
+        colKeywords: {
+            width: COLUMN_MAP.authors.width,
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            userSelect: 'none',
+            textOverflow: 'ellipsis'
+        },
+        colEditor: {
+            width: COLUMN_MAP.authors.width,
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            userSelect: 'none',
+            textOverflow: 'ellipsis'
+        },
         colDocButtons: {
             width: DOC_BUTTON_COLUMN_WIDTH,
         },
@@ -218,6 +232,37 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
                     </DeviceRouters.Desktop>
                 );
 
+            case 'keywords':
+
+                return (
+                    <DeviceRouters.Desktop key={id}>
+                        <TableCell padding="none"
+                                   className={classes.colKeywords}
+                                   onClick={selectRowClickHandler}
+                                   onContextMenu={contextMenuHandler}>
+
+                            {Object.values(row.docInfo.keywords || {}).join(', ')}
+
+                        </TableCell>
+                    </DeviceRouters.Desktop>
+                );
+
+            case 'editor':
+
+                return (
+                    <DeviceRouters.Desktop key={id}>
+                        <TableCell padding="none"
+                                   className={classes.colEditor}
+                                   onClick={selectRowClickHandler}
+                                   onContextMenu={contextMenuHandler}>
+
+                            {Object.values(row.docInfo.editor || {}).join(', ')}
+
+                        </TableCell>
+                    </DeviceRouters.Desktop>
+                );
+
+
             case 'progress':
 
                 return (
@@ -228,6 +273,19 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
                 );
 
             default:
+
+                function toVal(val: any) {
+
+                    if (['string', 'number'].includes(typeof val)) {
+                        return val;
+                    } else {
+                        return JSON.stringify(val);
+                    }
+
+                }
+
+                const val = toVal(row.docInfo[id]);
+
                 return (
                     <DeviceRouters.NotPhone key={id}>
                         <TableCell className={classes.colProgress}
@@ -241,7 +299,7 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
                                        textOverflow: 'ellipsis'
                                    }}>
 
-                            {row.docInfo[id]}
+                            {val}
 
                         </TableCell>
                     </DeviceRouters.NotPhone>

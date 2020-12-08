@@ -66,7 +66,6 @@ import {
     NetworkLayers
 } from "polar-shared/src/datastore/IDatastore";
 import {
-    OnErrorCallback,
     SnapshotUnsubscriber
 } from 'polar-shared/src/util/Snapshots';
 

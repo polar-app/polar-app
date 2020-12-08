@@ -37,6 +37,7 @@ import {FunctionalChildStory} from "./impl/FunctionalChildStory";
 import { UnmountComponentStory } from './impl/UnmountComponentStory';
 import {NotesComponentsStory} from "./impl/NotesComponentsStory";
 import { AbortedRenderStory } from './impl/AbortedRenderStory';
+import {ScratchStory} from "./impl/ScratchStory";
 
 interface IStory {
     readonly name: string;
@@ -60,6 +61,10 @@ function createStoryIndex(stories: ReadonlyArray<IStory>) {
 }
 
 const stories = createStoryIndex([
+    {
+        name: "Scratch",
+        component: <ScratchStory/>
+    },
     {
         name: "Doc Metadata Editor",
         component: <DocMetadataEditorStory/>

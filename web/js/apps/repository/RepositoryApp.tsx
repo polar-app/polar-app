@@ -58,6 +58,7 @@ import {TwoMigrationForBrowser} from "../../../../apps/repository/js/gateways/tw
 import {AnalyticsLocationListener} from "../../analytics/AnalyticsLocationListener";
 import {LogsScreen} from "../../../../apps/repository/js/logs/LogsScreen";
 import {PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {LoginWithCustomTokenScreen} from "../../../../apps/repository/js/login/LoginWithCustomTokenScreen";
 
 interface IProps {
     readonly app: App;
@@ -284,6 +285,10 @@ export const RepositoryApp = (props: IProps) => {
 
                                                             <Route exact path={["/login", "/login.html"]}>
                                                                 <LoginScreen/>
+                                                            </Route>
+
+                                                            <Route exact path={["/login-with-custom-token"]}>
+                                                                <LoginWithCustomTokenScreen/>
                                                             </Route>
 
                                                             <Route exact path={["/doc", "/doc/:id"]}>

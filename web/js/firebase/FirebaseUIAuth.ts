@@ -11,14 +11,14 @@ const SIGN_IN_SUCCESS_URL = 'http://localhost:8005/';
 const TOS_URL = 'https://getpolarized.io/terms-of-service.html';
 const PRIVACY_POLICY_URL = 'https://getpolarized.io/privacy-policy.html';
 
-export class FirebaseUIAuth {
+export namespace FirebaseUIAuth {
 
     /**
      * Start the login and render the login box to the given selector.
      *
      * @param opts The opts to use when authenticating.
      */
-    public static login(opts: FirebaseUIAuthOptions = {}) {
+    export function login(opts: FirebaseUIAuthOptions = {}) {
 
         console.log("Triggering Firebase UI auth: ", opts);
 
@@ -78,6 +78,7 @@ export class FirebaseUIAuth {
         }
 
         const signInOptions = computeSignInOptions();
+
 
         // FirebaseUI config.
         const uiConfig: firebaseui.auth.Config = {
@@ -164,6 +165,17 @@ export class FirebaseUIAuth {
         const ui = new firebaseui.auth.AuthUI(auth);
         // The start method will wait until the DOM is loaded.
         ui.start(containerSelector, uiConfig);
+
+    }
+
+    export async function loginWithCustomToken(customToken: string) {
+
+        Preconditions.assertPresent(firebaseui, 'firebaseui');
+        Preconditions.assertPresent(firebaseui.auth, 'firebaseui.auth');
+
+        const auth = firebase.auth();
+
+        const userCredential = await auth.signInWithCustomToken(customToken);
 
     }
 
