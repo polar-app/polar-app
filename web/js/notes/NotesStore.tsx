@@ -14,6 +14,7 @@ export type NotesIndexByName = Readonly<{[name: string /* NoteNameStr */]: INote
 
 export type ReverseNotesIndex = Readonly<{[id: string /* NoteIDStr */]: ReadonlyArray<NoteIDStr>}>;
 
+// TODO: latex, 'note-embed', 'annotation-embed'
 export type NoteContentType = 'markdown' | 'name';
 
 export interface ITypedContent<T extends NoteContentType> {
