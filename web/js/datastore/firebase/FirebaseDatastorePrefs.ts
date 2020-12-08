@@ -83,18 +83,18 @@ export class FirebaseDatastorePrefs extends DictionaryPrefs implements IPersiste
         await UserPrefs.set(this);
     }
 
-    public static toPersistentPrefs(userPref: IUserPref | undefined) {
-
-        if (! userPref) {
-            // the user has no existing prefs in the store so we have to return an empty dict
-            // which will later be written.
-            return new FirebaseDatastorePrefs({});
-        }
-
-        const dictionaryPrefs = new DictionaryPrefs(userPref.value);
-        return new FirebaseDatastorePrefs(dictionaryPrefs.toPrefDict());
-
-    }
+    // public static toPersistentPrefs(userPref: IUserPref | undefined) {
+    //
+    //     if (! userPref) {
+    //         // the user has no existing prefs in the store so we have to return an empty dict
+    //         // which will later be written.
+    //         return new FirebaseDatastorePrefs({});
+    //     }
+    //
+    //     const dictionaryPrefs = new DictionaryPrefs(userPref.value);
+    //     return new FirebaseDatastorePrefs(dictionaryPrefs.toPrefDict());
+    //
+    // }
 
 }
 

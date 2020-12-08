@@ -61,9 +61,6 @@ import {DocPermissions} from "./sharing/db/DocPermissions";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
-import {FirebaseDatastorePrefs} from "./firebase/FirebaseDatastorePrefs";
-import {UserPrefCallback} from "./firebase/UserPrefs";
-import {InterceptedPrefsProvider, IPersistentPrefs} from "../util/prefs/Prefs";
 import {
     GetFileOpts,
     NetworkLayers
@@ -93,8 +90,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     private readonly docMetaSnapshotEventDispatcher: IEventDispatcher<DocMetaSnapshotEvent> = new SimpleReactor();
 
-    private readonly prefs: FirebaseDatastorePrefs = new FirebaseDatastorePrefs();
-
     constructor() {
         super();
     }
@@ -114,8 +109,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         this.storage = firebase.storage();
 
         await FirebaseDatastores.init();
-
-        await this.prefs.init();
 
         if (opts.noInitialSnapshot) {
             log.debug("Skipping initial snapshot");
