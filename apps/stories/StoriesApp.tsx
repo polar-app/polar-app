@@ -38,6 +38,7 @@ import { UnmountComponentStory } from './impl/UnmountComponentStory';
 import {NotesComponentsStory} from "./impl/NotesComponentsStory";
 import { AbortedRenderStory } from './impl/AbortedRenderStory';
 import {ScratchStory} from "./impl/ScratchStory";
+import { ErrorBoundaryStory } from './impl/ErrorBoundaryStory';
 
 interface IStory {
     readonly name: string;
