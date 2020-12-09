@@ -66,6 +66,10 @@ const stories = createStoryIndex([
         component: <ScratchStory/>
     },
     {
+        name: "Error Boundary",
+        component: <ErrorBoundaryStory/>
+    },
+    {
         name: "Doc Metadata Editor",
         component: <DocMetadataEditorStory/>
     },
