@@ -34,7 +34,11 @@ export class MUIErrorBoundary extends React.Component<IProps, IState> {
 
         if (this.state.hasError) {
             // You can render any custom fallback UI
-            return <h1>Something went wrong.</h1>;
+            return (
+                <MUIInlineErrorDialog>
+                    <MUIErrorBoundaryMessage/>
+                </MUIInlineErrorDialog>
+            );
         }
 
         return this.props.children;
