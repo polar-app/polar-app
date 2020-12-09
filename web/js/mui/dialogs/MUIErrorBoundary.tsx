@@ -62,7 +62,7 @@ export class MUIErrorBoundary extends React.Component<IProps, IState> {
     componentDidCatch(error: Error, info: ErrorInfo ) {
         // Display fallback UI
         this.setState({err: {error, info}});
-        console.log("Caught error at React error boundary: ", error, info.componentStack);
+        console.error("Caught error at React error boundary: ", error, info.componentStack);
     }
 
     render() {

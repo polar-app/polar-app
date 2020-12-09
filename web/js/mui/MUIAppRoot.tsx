@@ -9,6 +9,7 @@ import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles";
 import {KeyboardShortcuts} from "../keyboard_shortcuts/KeyboardShortcuts";
 import {UndoQueueProvider} from "../undo/UndoQueueProvider";
 import useLocalStorageState from 'use-local-storage-state'
+import { MUIErrorBoundary } from "./dialogs/MUIErrorBoundary";
 
 interface IProps {
     readonly children: React.ReactNode;
@@ -49,9 +50,9 @@ export const MUIAppRoot = React.memo((props: IProps) => {
                         <GlobalCssMobile/>
 
                         <UndoQueueProvider>
-                            <>
+                            <MUIErrorBoundary>
                                 {props.children}
-                            </>
+                            </MUIErrorBoundary>
                         </UndoQueueProvider>
 
                     </>

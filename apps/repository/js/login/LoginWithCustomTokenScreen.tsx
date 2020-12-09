@@ -1,15 +1,9 @@
 import React, {useEffect} from 'react';
-import {Firebase} from "../../../../web/js/firebase/Firebase";
 import {
     FirebaseUIAuth,
     FirebaseUIAuthOptions
 } from "../../../../web/js/firebase/FirebaseUIAuth";
-import {ExternalNavigationBlock} from "../../../../web/js/electron/navigation/ExternalNavigationBlock";
 import Paper from '@material-ui/core/Paper';
-import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
-import {SignInSuccessURLs} from "./SignInSuccessURLs";
-import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
-import {ProviderURLs} from "./ProviderURLs";
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button';
 import {useLogger} from "../../../../web/js/mui/MUILogger";
@@ -32,7 +26,7 @@ export const LoginWithCustomTokenScreen = React.memo((props: IProps) => {
 
         doAsync().catch(err => log.error(err));
 
-    }, []);
+    }, [log]);
 
     return (
         <div style={{
