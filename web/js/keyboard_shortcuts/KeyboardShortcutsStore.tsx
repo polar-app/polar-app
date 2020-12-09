@@ -14,6 +14,7 @@ export type KeyBinding = string;
 
 export interface IBaseKeyboardShortcut {
     readonly name: string;
+    readonly icon?: React.ReactNode,
     readonly description?: string;
     readonly sequences: ReadonlyArray<KeyBinding>;
     readonly priority?: number;

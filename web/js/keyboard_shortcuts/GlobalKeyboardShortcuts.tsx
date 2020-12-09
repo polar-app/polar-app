@@ -72,6 +72,7 @@ export function keyMapWithGroup(opts: IKeyMapWithGroup): KeyMap {
         return {
             sequences: option.sequences,
             name: option.name,
+            icon: option.icon,
             description: option.description,
             priority: option.priority,
             group,

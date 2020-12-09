@@ -7,6 +7,8 @@ import { useActiveKeyboardShortcutsCallbacks, useActiveKeyboardShortcutsStore } 
 import {useKeyboardShortcutsStore} from "../../../web/js/keyboard_shortcuts/KeyboardShortcutsStore";
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import {KeySequence} from "../../../web/js/hotkeys/KeySequence";
+import {KeySequences} from "../../../web/js/hotkeys/KeySequences";
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 
 
 const ErrorRender = () => {
@@ -46,9 +48,10 @@ const ListItemRight = React.memo((props: ListItemRightProps) => {
 });
 
 interface IProps {
+    readonly icon?: React.ReactNode;
     readonly text: string;
     readonly selected?: boolean;
-    readonly sequence: string;
+    readonly sequences: ReadonlyArray<string>;
     readonly onClick: () => void;
 }
 
@@ -60,11 +63,19 @@ const ActionListItem = React.memo((props: IProps) => {
                   selected={props.selected}
                   onClick={props.onClick}
                   style={{padding: '5px'}}>
+
+            {props.icon && (
+                <ListItemIcon>
+                    {props.icon}
+                </ListItemIcon>)}
+
             {props.text}
 
+
             <ListItemRight>
-                <KeySequence sequence={props.sequence}/>
+                <KeySequences sequences={props.sequences}/>
             </ListItemRight>
+
         </ListItem>
     );
 
@@ -159,8 +170,9 @@ export const ScratchStory = () => {
                     return (
                         <ActionListItem key={key}
                                         text={shortcut.name}
+                                        icon={shortcut.icon}
                                         selected={selected}
-                                        sequence={shortcut.sequences[0]}
+                                        sequences={shortcut.sequences}
                                         onClick={NULL_FUNCTION}/>
                     );
                 })}

@@ -41,6 +41,7 @@ import {ScratchStory} from "./impl/ScratchStory";
 import { ErrorBoundaryStory } from './impl/ErrorBoundaryStory';
 import {ActiveKeyboardShortcuts} from "../../web/js/hotkeys/ActiveKeyboardShortcuts";
 import {ActiveKeyboardShortcutsStory} from "./impl/ActiveKeyboardShortcutsStory";
+import {FontAwesomeIconStory} from "./impl/FontAwesomeIconStory";
 
 interface IStory {
     readonly name: string;
@@ -67,6 +68,10 @@ const stories = createStoryIndex([
     {
         name: "Scratch",
         component: <ScratchStory/>
+    },
+    {
+        name: 'FontAwesomeIconStory',
+        component: <FontAwesomeIconStory/>
     },
     {
         name: "Active Keyboard Shortcuts",
