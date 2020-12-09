@@ -2,14 +2,11 @@ import {GPTCompletions} from "./GPTCompletions";
 import {assertJSON, equalsJSON} from "polar-test/src/test/Assertions";
 import { AutoFlashcards } from 'polar-backend-api/src/api/AutoFlashcards';
 import AutoFlashcardResponse = AutoFlashcards.AutoFlashcardResponse;
+import {Benchmark} from "polar-shared/src/util/Benchmark";
 
 xdescribe('GPTCompletions', function() {
 
-    this.timeout(30000);
-
-    //
-    //
-    //
+    this.timeout(120000);
 
     // tslint:disable-next-line:variable-name
     async function doTest(query_text: string, expected: AutoFlashcardResponse | ReadonlyArray<AutoFlashcardResponse>) {
@@ -165,6 +162,19 @@ xdescribe('GPTCompletions', function() {
             "back": "Ferrytales",
             "front": "What do Martians use as bedtime stories?"
         });
+
+    });
+
+    xit("test performance", async function() {
+
+        // TODO: rework this into Benchmark to test each call and compute some stats on the result
+
+        await Benchmark.exec(async () => {
+            await doTest("Ferrytales exist in space and Martians use them as bedtime stories.", {
+                "back": "Ferrytales",
+                "front": "What do Martians use as bedtime stories?"
+            })
+        })
 
     });
 
