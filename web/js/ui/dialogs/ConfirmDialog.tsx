@@ -78,6 +78,11 @@ export interface ConfirmDialogProps {
      */
     readonly noCancel?: boolean
 
+    /**
+     * When true, do not show the accept button.
+     */
+    readonly noAccept?: boolean
+
     // TOD: we need noCancel
 
     readonly maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | false;
@@ -164,13 +169,14 @@ export const ConfirmDialog = deepMemo((props: ConfirmDialogProps) => {
                                     {props.cancelText || 'Cancel'}
                                 </Button>}
 
-                            <Button className={palette}
-                                    onClick={handleAccept}
-                                    size="large"
-                                    variant="contained"
-                                    autoFocus={props.autoFocus}>
-                                {props.acceptText || 'Accept'}
-                            </Button>
+                            {! props.noAccept &&
+                                <Button className={palette}
+                                        onClick={handleAccept}
+                                        size="large"
+                                        variant="contained"
+                                        autoFocus={props.autoFocus}>
+                                    {props.acceptText || 'Accept'}
+                                </Button>}
 
                         </DialogActions>
                     </>
