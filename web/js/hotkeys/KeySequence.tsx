@@ -9,12 +9,12 @@ const useStyles = makeStyles((theme) =>
         root: {
             fontFamily: 'monospace',
             fontSize: '1.1em',
-            padding: '5px',
+            padding: '2px',
             borderRadius: '2px',
             border: `1px solid ${grey[500]}`,
             backgroundColor: grey[200],
             color: grey[900],
-            margin: '5px',
+            margin: '2px',
             whiteSpace: 'nowrap',
             userSelect: 'none'
         },

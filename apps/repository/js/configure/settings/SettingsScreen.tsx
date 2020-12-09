@@ -30,7 +30,7 @@ export const PREF_PDF_DARK_MODE_OPTIONS = [
     }
 ];
 
-export const SettingsScreen = () => {
+export const SettingsScreen = React.memo(() => {
 
     const {theme, setTheme} = useContext(MUIThemeTypeContext);
     const prefs = usePrefsContext();
@@ -133,5 +133,5 @@ export const SettingsScreen = () => {
 
         </DefaultPageLayout>
     );
-};
+});
 

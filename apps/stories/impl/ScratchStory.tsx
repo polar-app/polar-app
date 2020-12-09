@@ -5,6 +5,8 @@ import List from '@material-ui/core/List';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import { useActiveKeyboardShortcutsCallbacks, useActiveKeyboardShortcutsStore } from '../../../web/js/hotkeys/ActiveKeyboardShortcutsStore';
 import {useKeyboardShortcutsStore} from "../../../web/js/keyboard_shortcuts/KeyboardShortcutsStore";
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import {KeySequence} from "../../../web/js/hotkeys/KeySequence";
 
 
 const ErrorRender = () => {
@@ -25,13 +27,28 @@ const ErrorRender = () => {
 
 }
 
-interface IProps {
-
+interface ListItemRightProps {
+    readonly children: JSX.Element;
 }
+
+const ListItemRight = React.memo((props: ListItemRightProps) => {
+    return (
+        <div style={{
+                top: '50%',
+                // right: '16px',
+                right: '0px',
+                position: 'absolute',
+                transform: 'translateY(-50%)'
+             }}>
+            {props.children}
+        </div>
+    );
+});
 
 interface IProps {
     readonly text: string;
     readonly selected?: boolean;
+    readonly sequence: string;
     readonly onClick: () => void;
 }
 
@@ -44,6 +61,10 @@ const ActionListItem = React.memo((props: IProps) => {
                   onClick={props.onClick}
                   style={{padding: '5px'}}>
             {props.text}
+
+            <ListItemRight>
+                <KeySequence sequence={props.sequence}/>
+            </ListItemRight>
         </ListItem>
     );
 
@@ -134,10 +155,12 @@ export const ScratchStory = () => {
                     const selected = index === idx;
                     const key = (shortcut.group || '') + ':' + shortcut.name + ':' + selected;
 
+                    // FIXME: only the first one is shown here.
                     return (
                         <ActionListItem key={key}
                                         text={shortcut.name}
                                         selected={selected}
+                                        sequence={shortcut.sequences[0]}
                                         onClick={NULL_FUNCTION}/>
                     );
                 })}

@@ -4,9 +4,6 @@ import {ExtendedDeviceInfo} from "../repo_header/DeviceInfo";
 import Button from '@material-ui/core/Button';
 import {useHistory} from "react-router-dom";
 
-interface IProps {
-}
-
 const LogsButton = () => {
 
     const history = useHistory();
@@ -24,9 +21,9 @@ const LogsButton = () => {
 
 }
 
-export const DeviceScreen = (props: IProps) => (
+export const DeviceScreen = React.memo(() => (
 
-    <DefaultPageLayout {...props}>
+    <DefaultPageLayout>
 
         <div className=" text-lg">
 
@@ -51,4 +48,4 @@ export const DeviceScreen = (props: IProps) => (
 
     </DefaultPageLayout>
 
-);
+));

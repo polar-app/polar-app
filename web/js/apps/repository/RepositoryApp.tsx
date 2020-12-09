@@ -151,9 +151,14 @@ export const RepositoryApp = (props: IProps) => {
     });
 
     const RenderSettingsScreen = () => (
-        <Cached>
-            <SettingsScreen/>
-        </Cached>
+        <AuthRequired>
+            <PersistenceLayerApp tagsType="documents"
+                                 repoDocMetaManager={repoDocMetaManager}
+                                 repoDocMetaLoader={repoDocMetaLoader}
+                                 persistenceLayerManager={persistenceLayerManager}>
+                <SettingsScreen/>
+            </PersistenceLayerApp>
+        </AuthRequired>
     );
 
     // const renderProfileScreen = () => (
@@ -165,9 +170,7 @@ export const RepositoryApp = (props: IProps) => {
     // );
 
     const renderDeviceScreen = () => (
-        <Cached>
-            <DeviceScreen/>
-        </Cached>
+        <DeviceScreen/>
     );
 
     const RenderDefaultScreen = React.memo(() => (
