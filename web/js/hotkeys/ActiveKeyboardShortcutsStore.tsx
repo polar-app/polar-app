@@ -20,6 +20,8 @@ interface IActiveKeyboardShortcutsStore {
 
 interface IActiveKeyboardShortcutsCallbacks {
     readonly setShowActiveShortcuts: (showActiveShortcuts: boolean) => void;
+    readonly setIndex: (index: number | undefined) => void;
+    readonly setFilter: (filter: string | undefined) => void;
 }
 
 const initialStore: IActiveKeyboardShortcutsStore = {
@@ -58,7 +60,7 @@ function useCallbacksFactory(storeProvider: Provider<IActiveKeyboardShortcutsSto
         }
 
         return {
-            setShowActiveShortcuts
+            setShowActiveShortcuts, setIndex, setFilter
         };
 
     }, [setStore, storeProvider])
