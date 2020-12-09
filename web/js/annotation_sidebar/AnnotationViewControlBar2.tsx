@@ -23,6 +23,7 @@ import {StandardIconButton} from "../../../apps/repository/js/doc_repo/buttons/S
 import FlashAutoIcon from '@material-ui/icons/FlashAuto';
 import {useAutoFlashcardHandler} from "./AutoFlashcardHook";
 import {useAIFlashcardVerifiedAction} from "../../../apps/repository/js/ui/AIFlashcardVerifiedAction";
+import {FeatureToggle2} from "../ui/FeatureToggle2";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -196,7 +197,9 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
 
                         <CreateFlashcardButton mutable={doc?.mutable}/>
 
-                        <CreateAIFlashcardButton mutable={doc?.mutable} annotation={annotation}/>
+                        <FeatureToggle2 name='dev'>
+                            <CreateAIFlashcardButton mutable={doc?.mutable} annotation={annotation}/>
+                        </FeatureToggle2>
 
                         {! annotation.immutable &&
                             <ColorSelector role='change'
