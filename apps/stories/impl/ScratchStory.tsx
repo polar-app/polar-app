@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {MUIInlineErrorDialog, MUIErrorBoundaryMessage, MUIErrorBoundary} from "../../../web/js/mui/MUIErrorBoundary";
+import {MUIErrorBoundary} from "../../../web/js/mui/MUIErrorBoundary";
 
 const ErrorRender = () => {
 
@@ -20,6 +20,14 @@ const ErrorRender = () => {
 }
 
 export const ScratchStory = () => {
+
+    const occupations = [
+        'College Student',
+        'Graduate Student',
+        'Faculty',
+        'Software Engineer'
+    ];
+
     return (
 
         <MUIErrorBoundary>

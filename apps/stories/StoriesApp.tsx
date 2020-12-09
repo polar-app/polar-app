@@ -39,6 +39,8 @@ import {NotesComponentsStory} from "./impl/NotesComponentsStory";
 import { AbortedRenderStory } from './impl/AbortedRenderStory';
 import {ScratchStory} from "./impl/ScratchStory";
 import { ErrorBoundaryStory } from './impl/ErrorBoundaryStory';
+import {ActiveKeyboardShortcuts} from "../../web/js/hotkeys/ActiveKeyboardShortcuts";
+import {ActiveKeyboardShortcutsStory} from "./impl/ActiveKeyboardShortcutsStory";
 
 interface IStory {
     readonly name: string;
@@ -65,6 +67,10 @@ const stories = createStoryIndex([
     {
         name: "Scratch",
         component: <ScratchStory/>
+    },
+    {
+        name: "Active Keyboard Shortcuts",
+        component: <ActiveKeyboardShortcutsStory/>
     },
     {
         name: "Error Boundary",

@@ -9,6 +9,13 @@ interface IActiveKeyboardShortcutsStore {
      */
     readonly showActiveShortcuts: boolean;
 
+    /**
+     * The current active shortcut in the UI when the dialog is open
+     */
+    readonly index: number | undefined;
+
+    readonly filter: string | undefined;
+
 }
 
 interface IActiveKeyboardShortcutsCallbacks {
@@ -16,7 +23,9 @@ interface IActiveKeyboardShortcutsCallbacks {
 }
 
 const initialStore: IActiveKeyboardShortcutsStore = {
-    showActiveShortcuts: false
+    showActiveShortcuts: false,
+    index: undefined,
+    filter: undefined,
 }
 
 interface Mutator {
@@ -32,6 +41,16 @@ function useCallbacksFactory(storeProvider: Provider<IActiveKeyboardShortcutsSto
                              mutator: Mutator): IActiveKeyboardShortcutsCallbacks {
 
     return React.useMemo(() => {
+
+        function setIndex(index: number | undefined) {
+            const store = storeProvider();
+            setStore({...store, index});
+        }
+
+        function setFilter(filter: string | undefined) {
+            const store = storeProvider();
+            setStore({...store, filter});
+        }
 
         function setShowActiveShortcuts(showActiveShortcuts: boolean) {
             const store = storeProvider();
