@@ -1,5 +1,5 @@
 ---
-title: Microlearning - The Silent College Revolution
+title: "Microlearning - The Silent College Revolution"
 date: 2020-12-11 T08:00:00.000-08:00
 layout: post
 description: 
