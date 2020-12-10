@@ -31,9 +31,14 @@ With micro-learning, you can create a much more personalized approach, which ena
 I was often given over 50 pages to read each week and had other assignments on top of that. I was all over the place, and had no idea where the start! However, the first thing I did was to compile all my readings into one place and start from there. There were often instances where I would get stuck in the middle of the readings and forget what I read the day before. After facing this issue a couple of times, I decided to look for online tools that would help me create a personalized learning approach for this class. After trying out a few tools, I eventually went with, <a href="https://getpolarized.io/">Polar</a> 
 mostly because it had the simplest workflow organizing my readings, highlighting, and creating flashcards directly from my highlights. With my final being cumulative over the semester, I was required to know everything from the book. I knew reading each page again would be a waste of time. Instead, I decided to make flashcards for each important concept and only reviewed those before my final. And guess what. I rocked the final (keeping in mind this is considered a ‘weeder class’, this was a great accomplishment for me!)
 
+<img class="img-fluid" src="https://i.imgur.com/qrfxs0s.jpg">  
+
+
 ## 3. Aids focus and retention
 
 While studying online during COVID, many of us tend to get overwhelmed with the number of assignments and readings for classes. It can be very difficult for us to remember what we’ve heard or learned in class. There is a vast amount of <a href="https://elearningindustry.com/microlearning-increases-attention-retention-ways">scientific research</a> indicating that micro-learning helps us with attention and retention. Specifically, the <a href="https://www.shiftelearning.com/blog/numbers-dont-lie-why-bite-sized-learning-is-better-for-your-learners-and-you-too">research</a> indicates that the use of microlearning makes a person at least 17% more efficient with their work. And let me tell you something: Numbers don’t lie!
+
+<img class="img-fluid" src="https://i.imgur.com/BJhCaBT.png">  
 
 ## 4. Requires less time
 
