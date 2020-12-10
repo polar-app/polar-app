@@ -2,14 +2,11 @@
 
 - Do the HARD input tasks first so I don't get into a swap of code.
 
-    - write one pag with a bunch of ckeditors to see if we can make them
-    faster... maybe it's a plugin or something.
     
     - HARD: when clicking on a node for the first time when activating it the cursor jumps to the beginning
         - the problem is that the cursor isn't placed in the right spot... to begin with and 
           has no correlation with the jumpToEditorStart
           
-    - once the page has mounted, go ahead and render, once, all the ckeditor nodes?
     - HARD: back arrow show jump to the end of the previous item
     - escape the content in the story text when selected
     - escape the content in the references in the bottom
@@ -112,3 +109,8 @@
   
 
 https://github.com/ckeditor/ckeditor5-angular/issues/110
+
+
+    - FAIL: write one pag with a bunch of ckeditors to see if we can make them
+      faster... maybe it's a plugin or something.
+        - this doesn't work... It seems that there's an inherent performance issue

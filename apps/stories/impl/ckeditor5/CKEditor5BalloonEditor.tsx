@@ -89,7 +89,7 @@ export namespace ckeditor5 {
         readonly stop: () => void;
     }
 
-    interface IRoot {
+    interface IRootElement {
 
     }
 
@@ -100,7 +100,7 @@ export namespace ckeditor5 {
         readonly on: (eventName: 'keydown' | 'enter' | 'click', handler: (eventData: IEventData, event: IKeyPressEvent) => void) => void;
         readonly off: (eventName: 'keydown' | 'enter' | 'click', handler: (eventData: IEventData, event: IKeyPressEvent) => void) => void;
 
-        readonly getRoot: () => IRoot;
+        readonly getRoot: () => IRootElement;
     }
 
     export interface IRange {
@@ -124,7 +124,7 @@ export namespace ckeditor5 {
 
         readonly remove: (itemOrRange: IRange) => void;
 
-        readonly setSelection: (root: IRoot, position: number | 'before' | 'after' | 'end' | 'on' | 'in') => void;
+        readonly setSelection: (root: IRootElement, position: number | 'before' | 'after' | 'end' | 'on' | 'in') => void;
 
     }
 

@@ -176,6 +176,7 @@ interface INoteEditorActivatorProps {
     readonly content: string;
     readonly onEditor: (editor: ckeditor5.IEditor) => void;
     readonly onChange: (content: string) => void;
+    readonly immutable?: boolean;
 }
 
 /**
@@ -189,7 +190,7 @@ const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEd
 
     useLifecycleTracer('NoteEditorActivator');
 
-    const {onEditor, onChange, id} = props;
+    const {onEditor, onChange, id, immutable} = props;
     const {active} = useNotesStore(['active']);
     const {setActive} = useNotesStoreCallbacks();
     const [, setActivated, activatedRef] = useStateRef(false);
@@ -202,9 +203,15 @@ const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEd
     const content = React.useMemo(() => escaper.escape(props.content), [escaper, props.content]);
 
     const handleActivated = React.useCallback(() => {
+
+        if (immutable) {
+            return;
+        }
+
         setActive(id)
         setActivated(true);
-    }, [id, setActivated, setActive]);
+
+    }, [id, immutable, setActivated, setActive]);
 
     if (active === props.id) {
         // there are two ways to activate this is that the user navigates to it
@@ -261,7 +268,7 @@ const NoteEditorInner = deepMemo(function NoteEditorInner(props: IProps) {
 
 });
 
-const NoteEditorWithStore = deepMemo(function NoteEditorWithStore(props: IProps) {
+const NoteEditorWithEditorStore = deepMemo(function NoteEditorWithStore(props: IProps) {
 
     useLifecycleTracer('NoteEditorWithStore');
 
@@ -282,8 +289,17 @@ const NoteEditorWithStore = deepMemo(function NoteEditorWithStore(props: IProps)
 });
 
 interface IProps {
+
     readonly parent: NoteIDStr | undefined;
+
     readonly id: NoteIDStr;
+
+    /**
+     * Used when showing content that can't edited so that we get the normal
+     * HTML conversion but also link navigation when clicked.
+     */
+    readonly immutable?: boolean;
+
 }
 
 export const NoteEditor = deepMemo(function NoteEditor(props: IProps) {
@@ -292,7 +308,7 @@ export const NoteEditor = deepMemo(function NoteEditor(props: IProps) {
 
     return (
         <EditorStoreProvider initialValue={undefined}>
-            <NoteEditorWithStore {...props}/>
+            <NoteEditorWithEditorStore {...props}/>
         </EditorStoreProvider>
     );
 
