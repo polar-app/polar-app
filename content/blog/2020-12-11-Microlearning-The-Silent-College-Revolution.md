@@ -44,13 +44,13 @@ While studying online during COVID, many of us tend to get overwhelmed with the 
 
 You don’t need to spend 80% of your time on homework anymore! Organizing myself with a micro-learning mindset allowed me to cut down the time on assignments more than ever before. This in return, opened up time to focus on other study materials that required my attention or just to take some extra time to recover.
 
-<img class="img-fluid" src="https://i.imgur.com/XFwwKrg.jpg">  
+<img class="img-fluid" src="https://i.imgur.com/nbULIgQ.jpg">  
 
 ## 5. Reduces Mental Fatigue
 
 As students, we want to get the full student experience which is usually not just classes. Maintaining a healthy work-life balance offers a <a href="https://www.coburgbanks.co.uk/blog/candidate-tips/importance-of-maintaining-work-life-balance/">myriad of benefits</a> such as increased productivity, strong mental and physical well-being, and time for other activities/hobbies.<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6716752/">Research</a> shows that microlearning helps us reduce our mental fatigue and stress by helping the brain focus on information logically and efficiently.
 
-<img class="img-fluid" src="https://i.imgur.com/XcxMrED.jpg">  
+<img class="img-fluid" src="https://i.imgur.com/qdDH5dt.jpg">  
 
 Getting started with micro-learning:
 
