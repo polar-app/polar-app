@@ -2,7 +2,6 @@ import React from "react";
 import {
     CKEditor5BalloonEditor,
     ckeditor5,
-    ContentEscaper
 } from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
 import {NoteNavigation} from "./NoteNavigation";
 import {NoteIDStr, useNotesStore, useNotesStoreCallbacks} from "./NotesStore";
@@ -162,7 +161,7 @@ const NoteEditorInactive = React.memo(function NoteEditorInactive(props: INoteEd
     return (
         // this uses the standard ckeditor spacing and border so things
         // don't jump around after we activate
-        <div className="note-inactive"
+        <div className="NoteEditorInactive"
              onClick={handleClick}
              style={{
              }}
@@ -176,7 +175,7 @@ interface INoteEditorActivatorProps {
     readonly content: string;
     readonly onEditor: (editor: ckeditor5.IEditor) => void;
     readonly onChange: (content: string) => void;
-    readonly immutable?: boolean;
+    readonly immutable: boolean | undefined;
 }
 
 /**
@@ -205,6 +204,7 @@ const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEd
     const handleActivated = React.useCallback(() => {
 
         if (immutable) {
+            // console.log("Not activating editor (immutable)");
             return;
         }
 
@@ -221,7 +221,7 @@ const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEd
         activatedRef.current = true;
     }
 
-    if (activatedRef.current) {
+    if (activatedRef.current && ! immutable) {
 
         return (
             <CKEditor5BalloonEditor content={content}
@@ -263,6 +263,7 @@ const NoteEditorInner = deepMemo(function NoteEditorInner(props: IProps) {
         <NoteEditorActivator id={id}
                              content={content || ''}
                              onChange={handleChange}
+                             immutable={props.immutable}
                              onEditor={setEditor}/>
     );
 

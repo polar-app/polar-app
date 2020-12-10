@@ -29,7 +29,7 @@ const InboundNoteRef = deepMemo((props: InboundNoteRefProps) => {
 
             <NoteBulletButton target={props.id}/>
 
-            <NoteEditor parent={undefined} id={props.id}/>
+            <NoteEditor parent={undefined} id={props.id} immutable={true}/>
 
         </div>
     )
