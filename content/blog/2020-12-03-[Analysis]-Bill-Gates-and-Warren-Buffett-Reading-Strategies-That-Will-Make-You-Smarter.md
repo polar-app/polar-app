@@ -20,7 +20,7 @@ Over the years, they have developed a few strategies which I want to look more i
 
 ## Read As Much As You Can
 
-<img class="img-fluid" src=”https://i.imgur.com/FyUAHHR.jpg”>
+<img class="img-fluid" src="https://i.imgur.com/FyUAHHR.jpg">
 
 Normally, you would consider these men to be extremely busy (which they are); however, they both set aside a minimum of one hour a day to read.
 
