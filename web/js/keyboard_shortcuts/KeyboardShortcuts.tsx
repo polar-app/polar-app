@@ -3,7 +3,7 @@ import {deepMemo} from "../react/ReactUtils";
 import {
     IKeyboardShortcutWithHandler,
     KeyBinding,
-    KeyboardEventHandler,
+    KeyboardShortcutEventHandler,
     useKeyboardShortcutsStore,
     KeyboardEventHandlerUsingPredicate
 } from "./KeyboardShortcutsStore";
@@ -138,7 +138,7 @@ function createPredicate1(keys: ReadonlyArray<string>): KeyboardEventHandlerPred
 }
 
 
-function createHandler(sequence: KeyBinding, handler: KeyboardEventHandler): KeyboardEventHandlerUsingPredicate {
+function createHandler(sequence: KeyBinding, handler: KeyboardShortcutEventHandler): KeyboardEventHandlerUsingPredicate {
 
     function createPredicate() {
 
@@ -212,7 +212,7 @@ function isIgnorableKeyboardEvent(event: KeyboardEvent): boolean {
 }
 
 
-type SequenceToHandler = [string, KeyboardEventHandler];
+type SequenceToHandler = [string, KeyboardShortcutEventHandler];
 type SequenceToKeyboardEventHandlerPredicate = [string, KeyboardEventHandlerPredicate];
 
 export const KeyboardShortcuts = deepMemo(() => {

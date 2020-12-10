@@ -4,7 +4,7 @@ import {
     IBaseKeyboardShortcut,
     IKeyboardShortcut,
     IKeyboardShortcutWithHandler,
-    KeyboardEventHandler,
+    KeyboardShortcutEventHandler,
     useKeyboardShortcutsCallbacks
 } from "./KeyboardShortcutsStore";
 import {
@@ -13,7 +13,7 @@ import {
 } from "../hooks/ReactLifecycleHooks";
 
 export type KeyMap = {[key: string]: IKeyboardShortcut};
-export type HandlerMap = {[key: string]: KeyboardEventHandler | null};
+export type HandlerMap = {[key: string]: KeyboardShortcutEventHandler | null};
 
 interface IProps {
     readonly keyMap: KeyMap;

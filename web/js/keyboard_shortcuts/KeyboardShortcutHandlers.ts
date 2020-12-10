@@ -1,8 +1,10 @@
+import { IKeyboardShortcutEvent } from "./KeyboardShortcutsStore";
+
 export namespace KeyboardShortcutHandlers {
 
     export function withPreventDefault(delegate: () => void) {
 
-        return (event: KeyboardEvent) => {
+        return (event: IKeyboardShortcutEvent) => {
 
             if (event) {
                 event.preventDefault();

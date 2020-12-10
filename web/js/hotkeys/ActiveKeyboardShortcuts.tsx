@@ -25,7 +25,6 @@ interface ActiveKeyBindingProps extends IBaseKeyboardShortcut {
 
 }
 
-
 interface GroupRowProps {
     readonly group: string;
 }
