@@ -42,6 +42,7 @@ import { ErrorBoundaryStory } from './impl/ErrorBoundaryStory';
 import {ActiveKeyboardShortcuts} from "../../web/js/hotkeys/ActiveKeyboardShortcuts";
 import {ActiveKeyboardShortcutsStory} from "./impl/ActiveKeyboardShortcutsStory";
 import {FontAwesomeIconStory} from "./impl/FontAwesomeIconStory";
+import {CKEditor5Story2} from "./impl/CKEditor5Story2";
 
 interface IStory {
     readonly name: string;
@@ -96,6 +97,10 @@ const stories = createStoryIndex([
     {
         name: "CKEditor5",
         component: <CKEditor5Story/>
+    },
+    {
+        name: "CKEditor5 2",
+        component: <CKEditor5Story2/>
     },
     {
         name: "Notes",
