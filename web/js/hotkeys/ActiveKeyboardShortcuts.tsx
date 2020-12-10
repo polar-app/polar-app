@@ -153,7 +153,6 @@ export const ActiveKeyboardShortcutsDialog = deepMemo((props: ActiveKeyboardShor
     return (
         <Dialog fullWidth={true}
                 transitionDuration={50}
-                onKeyDown={() => console.log('press')}
                 maxWidth="lg"
                 open={true}
                 onClose={props.onClose}>
