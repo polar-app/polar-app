@@ -1,6 +1,6 @@
 ---
 title: "Microlearning - The Silent College Revolution"
-date: 2020-12-11 T08:00:00.000-08:00
+date: 2020-12-11T08:00:00.000-08:00
 layout: post
 description: 
 Use Microlearning to enhance your learning and improve your grades as a student
