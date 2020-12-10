@@ -67,7 +67,7 @@ export class AmplitudeAnalytics implements IAnalytics {
     }
 
     public event2(event: string, data?: any): void {
-        amplitude.getInstance().logEvent(event, {data, ...standardEventProperties});
+        amplitude.getInstance().logEvent(event, {...data, ...standardEventProperties});
     }
 
     public identify(userId: string): void {
@@ -75,7 +75,7 @@ export class AmplitudeAnalytics implements IAnalytics {
     }
 
     public page(event: IPageEvent): void {
-        amplitude.getInstance().logEvent('pageView', {event, ...standardEventProperties});
+        amplitude.getInstance().logEvent('pageView', {...event, ...standardEventProperties});
     }
 
     public traits(traits: TraitsMap): void {

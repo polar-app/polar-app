@@ -11,11 +11,19 @@ export class UserflowAnalytics implements IAnalytics {
 
     public event(event: IEventArgs): void {
 
+
         if (! identified) {
             return;
         }
 
-        userflow.track(event.category + '/' + event.action);
+        const eventName = event.category + '_' + event.action;
+
+        try {
+            userflow.track(eventName);
+        } catch (e) {
+            console.warn("Unable to track userflow event: " + eventName);
+        }
+
     }
 
     public event2(event: string, data?: any): void {
@@ -24,7 +32,12 @@ export class UserflowAnalytics implements IAnalytics {
             return;
         }
 
-        userflow.track(event, data)
+        try {
+            userflow.track(event, data)
+        } catch (e) {
+            console.warn("Unable to track userflow event: " + event);
+        }
+
     }
 
     public identify(userId: string): void {

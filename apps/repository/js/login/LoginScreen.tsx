@@ -10,6 +10,7 @@ import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import {SignInSuccessURLs} from "./SignInSuccessURLs";
 import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import {ProviderURLs} from "./ProviderURLs";
+import createSignInURL = SignInSuccessURLs.createSignInURL;
 
 interface IProps extends FirebaseUIAuthOptions {
 
@@ -29,9 +30,10 @@ export const LoginScreen = React.memo((props: IProps) => {
 
         const user = await Firebase.currentUserAsync();
 
+        const signInSuccessUrl = SignInSuccessURLs.get();
+
         if (! user) {
 
-            const signInSuccessUrl = SignInSuccessURLs.get();
             const providerURL = ProviderURLs.parse(document.location);
 
             const authOptions: FirebaseUIAuthOptions = {
@@ -44,6 +46,7 @@ export const LoginScreen = React.memo((props: IProps) => {
 
         } else {
             console.log("Already authenticated as " + user.email);
+            document.location.href = signInSuccessUrl
         }
 
     }
