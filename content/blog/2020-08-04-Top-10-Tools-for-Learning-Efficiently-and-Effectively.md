@@ -3,7 +3,7 @@ title: Top 10 Tools for Learning Efficiently and Effectively
 date: 2020-08-04T08:00:00.000-08:00
 layout: post
 description: Top 10 Tools for Learning Efficiently and Effectively
-large_image: https://i.imgur.com/UJmsquA.jpg
+large_image: "https://i.imgur.com/UJmsquA.jpg"
 ---
 
 <img class="img-fluid" src="https://i.imgur.com/UJmsquA.jpg">
