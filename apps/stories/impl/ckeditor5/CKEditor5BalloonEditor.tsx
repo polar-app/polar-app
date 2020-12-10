@@ -201,9 +201,39 @@ export const DefaultContentEscaper: ContentEscaper = {
     unescape: html => html
 }
 
+// Current plugins:
+//
+//     "Base64UploadAdapter",
+//     "Essentials",
+//     "Autoformat",
+//     "Bold",
+//     "Underline",
+//     "Italic",
+//     "Strikethrough",
+//     "Subscript",
+//     "Superscript",
+//     "BlockQuote",
+//     "CKFinder",
+//     "Heading",
+//     "Image",
+//     "ImageCaption",
+//     "ImageStyle",
+//     "ImageToolbar",
+//     "ImageUpload",
+//     "ImageResize",
+//     "Link",
+//     "MediaEmbed",
+//     "Paragraph",
+//     "PasteFromOffice",
+//     "Table",
+//     "TableToolbar",
+//     "TableProperties",
+//     "TableCellProperties",
+//     "TextTransformation"
+
 export const CKEditor5BalloonEditor = React.memo(function CKEditor5BalloonEditor(props: IProps) {
 
-    useLifecycleTracer('CKEditor5BalloonEditor');
+    // useLifecycleTracer('CKEditor5BalloonEditor');
 
     // we only need to convert to markdown on component startup.  This component
     // CAN NOT be reloaded during react re-renders so we have to give it the
@@ -221,8 +251,73 @@ export const CKEditor5BalloonEditor = React.memo(function CKEditor5BalloonEditor
                 <CKEditor
                     editor={ BalloonEditor }
                     config={{
-                        // removePlugins: ['toolbar', 'ImageToolbar', 'TableToolbar'],
-                        // toolbar: []
+                        toolbar: {
+                            items: [
+                                // 'heading',
+                                // '|',
+                                'bold',
+                                'italic',
+                                'blockQuote',
+                                'underline',
+                                'strikethrough',
+                                'subscript',
+                                'superscript',
+                                'link',
+                                '|',
+                                'imageUpload',
+                                'insertTable',
+                                'mediaEmbed',
+                                // 'specialcharacters'
+                                // 'undo',
+                                // 'redo'
+                            ]
+                        },
+                        image: {
+                            toolbar: [
+                                // 'imageStyle:alignLeft',
+                                // 'imageStyle:alignCenter',
+                                // 'imageStyle:alignRight',
+                                // 'imageStyle:full',
+                                // 'imageStyle:side',
+                                // '|',
+                                'imageResize',
+                                '|',
+                                'imageTextAlternative'
+                            ],
+                            styles: [
+                                // 'alignLeft',
+                                // 'alignCenter',
+                                // 'alignRight',
+                                // 'full',
+                                // 'side',
+                                // {
+                                // 	name: "alignLeft",
+                                // 	isDefault: true
+                                // },
+                                // {
+                                // 	name: "alignCenter",
+                                // },
+                                // {
+                                // 	name: "alignRight",
+                                // },
+                                // {
+                                // 	name: "full",
+                                // },
+                                // {
+                                // 	name: "side",
+                                // }
+
+                            ]
+                        },
+                        table: {
+                            contentToolbar: [
+                                'tableColumn',
+                                'tableRow',
+                                'mergeTableCells',
+                                'tableProperties',
+                                'tableCellProperties'
+                            ]
+                        },
                     }}
                     data={content}
                     onReady={ (editor: ckeditor5.IEditor) => {

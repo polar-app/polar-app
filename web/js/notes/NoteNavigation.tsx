@@ -79,7 +79,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
             }
 
         } else {
-            console.log("No editor: ")
+            // console.log("No editor: ")
         }
 
     }, [editor, editorFocus, jumpToEditorStartPosition, noteActive, props.id]);

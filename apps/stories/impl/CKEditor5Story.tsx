@@ -52,7 +52,7 @@ export const CKEditor5Story = () => {
     }, [])
 
     return (
-        <div>
+        <div style={{flexGrow: 1}}>
 
             {/*<h1>Balloon editor</h1>*/}
             <div onKeyDown={handleKeyDown}>

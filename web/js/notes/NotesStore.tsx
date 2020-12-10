@@ -465,12 +465,15 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
                 return;
             }
 
-            const items = computeLinearItemsFromExpansionTree(root, true);
+            const items = [
+                root,
+                ...computeLinearItemsFromExpansionTree(root, true)
+            ];
 
             const childIndex = items.indexOf(active);
 
             if (childIndex === -1) {
-                console.warn("Child not in node items: ", active);
+                console.warn(`Child ${active} not in note items`);
                 return;
             }
 
