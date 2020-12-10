@@ -1,10 +1,14 @@
 open AI key..
 
-API_KEY="sk-BusCRJP1w79Z4C7xH8IH7sUqCrS5ee4F2JydKy5K"
+API_KEY="sk-pYHAElnbhpnfcoN8rqbMK0gCmXLHUzpFvOwRaFtD"
 
 
 GPT_API_KEY
 
-firebase functions:config:set  polar.openai.apikey=sk-BusCRJP1w79Z4C7xH8IH7sUqCrS5ee4F2JydKy5K
 
-sk-pYHAElnbhpnfcoN8rqbMK0gCmXLHUzpFvOwRaFtD
+
+
+firebase use polar-cors && firebase functions:config:set  polar.openai.apikey=sk-pYHAElnbhpnfcoN8rqbMK0gCmXLHUzpFvOwRaFtD && firebase deploy --only functions 
+firebase use polar-cors-beta && firebase functions:config:set polar.openai.apikey=sk-pYHAElnbhpnfcoN8rqbMK0gCmXLHUzpFvOwRaFtD && firebase deploy --only functions
+
+firebase use polar-32b0f && firebase functions:config:set polar.openai.apikey=sk-pYHAElnbhpnfcoN8rqbMK0gCmXLHUzpFvOwRaFtD && firebase deploy --only functions
