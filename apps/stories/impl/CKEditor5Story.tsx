@@ -47,7 +47,6 @@ export const CKEditor5Story = () => {
     }, [editorRef]);
 
     const handleEditor = React.useCallback((editor: ckeditor5.IEditor) => {
-        console.log("FIXME: got editor: ", editor);
         editorRef.current = editor;
     }, [])
 

@@ -231,6 +231,11 @@ export const DefaultContentEscaper: ContentEscaper = {
 //     "TableCellProperties",
 //     "TextTransformation"
 
+
+// NOTES:
+//
+// - if I literally have NO plugins then it's pretty fast
+
 export const CKEditor5BalloonEditor = React.memo(function CKEditor5BalloonEditor(props: IProps) {
 
     // useLifecycleTracer('CKEditor5BalloonEditor');
@@ -251,25 +256,58 @@ export const CKEditor5BalloonEditor = React.memo(function CKEditor5BalloonEditor
                 <CKEditor
                     editor={ BalloonEditor }
                     config={{
+                        // removePlugins: [
+                        //     // "Base64UploadAdapter",
+                        //     // "Essentials",
+                        //     // "Autoformat",  /// important as it highlights elements.
+                        //     //  "Bold",
+                        //     // "Underline",
+                        //     // "Italic",
+                        //     // "Strikethrough",
+                        //     // "Paragraph",     // REQUIRED
+                        //     // "Subscript",
+                        //     // "Superscript",
+                        //     // "BlockQuote",
+                        //     "CKFinder",  // DEF not required I think...
+                        //     "Heading",   // DEF not required I think...
+                        //     // "Image",
+                        //     "ImageCaption",
+                        //     "ImageStyle",
+                        //     "ImageToolbar",
+                        //     "ImageUpload",
+                        //     "ImageResize",
+                        //     // "Link",
+                        //     "MediaEmbed",
+                        //     "PasteFromOffice",
+                        //     "Table",
+                        //     "TableToolbar",
+                        //     "TableProperties",
+                        //     "TableCellProperties",
+                        //     "TextTransformation"
+                        // ],
+                        removePlugins: [
+                            "CKFinder",
+                            "Heading"
+                        ],
                         toolbar: {
                             items: [
-                                // 'heading',
+                                // // 'heading',
+                                // // '|',
+                                // 'bold',
+                                // 'italic',
+                                // // 'blockQuote',
+                                // 'underline',
+                                // 'strikethrough',
+                                // // 'subscript',
+                                // // 'superscript',
+                                // // 'link',
                                 // '|',
-                                'bold',
-                                'italic',
-                                'blockQuote',
-                                'underline',
-                                'strikethrough',
-                                'subscript',
-                                'superscript',
-                                'link',
-                                '|',
-                                'imageUpload',
-                                'insertTable',
-                                'mediaEmbed',
-                                // 'specialcharacters'
-                                // 'undo',
-                                // 'redo'
+                                // 'imageUpload',
+                                // // 'insertTable',
+                                // // 'mediaEmbed',
+                                // // 'specialcharacters'
+                                // // 'undo',
+                                // // 'redo'
                             ]
                         },
                         image: {
