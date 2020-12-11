@@ -234,7 +234,9 @@ export const DefaultContentEscaper: ContentEscaper = {
 
 // NOTES:
 //
-// - if I literally have NO plugins then it's pretty fast
+// - if I literally have NO plugins then it's pretty fast.
+//
+// - with ALL the plugins removed, 50 items are about 2s - which is still too slow.
 
 export const CKEditor5BalloonEditor = React.memo(function CKEditor5BalloonEditor(props: IProps) {
 
@@ -287,27 +289,40 @@ export const CKEditor5BalloonEditor = React.memo(function CKEditor5BalloonEditor
                         // ],
                         removePlugins: [
                             "CKFinder",
-                            "Heading"
+                            "Heading",
+                            // "ImageCaption",
+                            // "ImageStyle",
+                            // "ImageToolbar",
+                            // "ImageUpload",
+                            // "ImageResize",
+                            "TextTransformation",
+                            "MediaEmbed",
+                            "PasteFromOffice",
+                            "Table",
+                            "TableToolbar",
+                            "TableProperties",
+                            "TableCellProperties",
+                            "TextTransformation"
                         ],
                         toolbar: {
                             items: [
-                                // // 'heading',
-                                // // '|',
-                                // 'bold',
-                                // 'italic',
-                                // // 'blockQuote',
-                                // 'underline',
-                                // 'strikethrough',
-                                // // 'subscript',
-                                // // 'superscript',
-                                // // 'link',
+                                // 'heading',
                                 // '|',
+                                'bold',
+                                'italic',
+                                'blockQuote',
+                                'underline',
+                                'strikethrough',
+                                'subscript',
+                                'superscript',
+                                'link',
+                                '|',
                                 // 'imageUpload',
-                                // // 'insertTable',
-                                // // 'mediaEmbed',
-                                // // 'specialcharacters'
-                                // // 'undo',
-                                // // 'redo'
+                                // 'insertTable',
+                                // 'mediaEmbed',
+                                // 'specialcharacters'
+                                // 'undo',
+                                // 'redo'
                             ]
                         },
                         image: {
