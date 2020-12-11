@@ -14,6 +14,19 @@ import {FieldOfStudy} from "polar-shared/src/util/FieldOfStudies";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import createStyles from "@material-ui/core/styles/createStyles";
+
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        root: {
+            fontSize: '16px',
+            minHeight: '30em',
+            display: 'flex',
+            flexDirection: 'column'
+        },
+    }),
+);
 
 export interface AcademicOccupationProfile {
     readonly occupation: AcademicOccupation;
@@ -48,6 +61,8 @@ interface IState {
 }
 
 export const ProfileConfigurator = (props: IProps) => {
+
+    const classes = useStyles();
 
     const [state, setState] = useState<IState>({
         form: {
@@ -126,12 +141,7 @@ export const ProfileConfigurator = (props: IProps) => {
     }, [props, state.form.profile]);
 
     return (
-        <div style={{
-                 minHeight: '30em',
-                 display: 'flex',
-                 flexDirection: 'column'
-             }}
-             className="">
+        <div className={classes.root}>
 
             <Box style={{flexGrow: 1}}>
 
@@ -180,7 +190,9 @@ export const ProfileConfigurator = (props: IProps) => {
                 </Box>
             </Box>
 
-            <Box style={{
+            <Box mt={1}
+                 mb={1}
+                 style={{
                      display: 'flex',
                      justifyContent: 'center'
                  }}>
