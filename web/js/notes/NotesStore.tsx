@@ -218,7 +218,10 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
                 for (const outboundNodeID of outboundNodeIDs) {
                     const inbound = lookupReverse(outboundNodeID);
-                    reverse[outboundNodeID] = [...inbound, note.id];
+
+                    if (! inbound.includes(note.id)) {
+                        reverse[outboundNodeID] = [...inbound, note.id];
+                    }
                 }
 
             }
