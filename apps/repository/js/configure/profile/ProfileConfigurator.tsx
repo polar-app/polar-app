@@ -150,7 +150,7 @@ export const ProfileConfigurator = (props: IProps) => {
                     <h2>Tell us about yourself!</h2>
 
                     <h3>
-                        <Box color="text.muted">
+                        <Box color="text.secondary">
                             We use this information to improve Polar specifically
                             for your use case when incorporating your feedback and
                             prioritizing new features.

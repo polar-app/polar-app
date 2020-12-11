@@ -2,6 +2,8 @@ import * as React from "react";
 import {Universities, University} from "polar-shared/src/util/Universities";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {isPresent} from "polar-shared/src/Preconditions";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
 // use a large limit so that the user sees a bunch of universities and then
 // realizes that they need to type for it...
@@ -75,6 +77,15 @@ interface IProps {
 
 export const UniversitySelect = (props: IProps) => {
 
+    return (
+        <Autocomplete
+            id="combo-box-demo"
+            options={[...options]}
+            getOptionLabel={(option) => option.label}
+            style={{ width: 300 }}
+            renderInput={(params) => <TextField {...params} variant="outlined" />}
+        />
+    );
     // return (
     //     <AsyncSelect
     //         isClearable
@@ -90,8 +101,6 @@ export const UniversitySelect = (props: IProps) => {
     //         // defaultValue={props.pendingTagOptions}
     //         />
     // );
-
-    return null;
 
 };
 
