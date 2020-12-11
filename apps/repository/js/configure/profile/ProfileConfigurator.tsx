@@ -4,9 +4,7 @@ import {
 import {DomainNameStr, University} from "polar-shared/src/util/Universities";
 import {default as React, useState} from "react";
 import {nullToUndefined} from "polar-shared/src/util/Nullable";
-import {URLStr} from "polar-shared/src/util/Strings";
 import {AcademicProfileConfigurator} from "./AcademicProfileConfigurator";
-import {BusinessProfileConfigurator} from "./BusinessProfileConfigurator";
 import {
     AcademicOccupation,
     BusinessOccupation,
@@ -15,50 +13,24 @@ import {
 import {FieldOfStudy} from "polar-shared/src/util/FieldOfStudies";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
 
 export interface AcademicOccupationProfile {
     readonly occupation: AcademicOccupation;
-    // readonly educationLevel: EducationLevel;
     readonly fieldOfStudy: FieldOfStudy;
     readonly university: University;
 }
 
 export interface BusinessOccupationProfile {
     readonly occupation: BusinessOccupation;
-    readonly domainOrURL: URLStr | DomainNameStr;
-    readonly domain: DomainNameStr;
+    // readonly domainOrURL: URLStr | DomainNameStr;
+    // readonly domain: DomainNameStr;
 }
-
-// TODO:
-//
-// - should we have 'personal' accounts and company ones and differentiate?
-// - does the 'domain' conflict with 'links' in the profile?
-//
-
-// - FIXME: ok.. another major probem... we should have a separate configuration
-// for their education because just because they're not a student DOES NOT mean
-// they lack a professional education.
-
-// - FIXME: ok... what about self-taught people... should we allow them to specify
-// an equivalent level of study?
-
-// - FIXME: completed level of education... if only high school we will need to have
-// that to and right now we only have universities.  And there isn't an 'other'
-// option there either.
-//
-// - FIXME: if they're pursing a masters we can't assume they received an
-//  undergraduate from that university for example.
-//
-// - FIXME: should we only have them specify their highest completed level of
-//   education.
-//
-// - FIXME: we definitely should NOT just limit the education to not include
-//   a univer¡sity in the business profile.
 
 export type OccupationProfile = AcademicOccupationProfile | BusinessOccupationProfile;
 
 interface IProps {
-    readonly onOccupationProfile: (occupationProfile: OccupationProfile) => void;
+    readonly onProfile: (occupationProfile: OccupationProfile) => void;
 }
 
 export interface FormData<T> {
@@ -80,8 +52,7 @@ export const ProfileConfigurator = (props: IProps) => {
         }
     });
 
-    const onOccupation = (occupation: Occupation | undefined) => {
-        console.log("occupation: ", occupation);
+    const onOccupation = React.useCallback((occupation: Occupation | undefined) => {
 
         const computeProgress = () => {
             switch (occupation?.type) {
@@ -107,10 +78,10 @@ export const ProfileConfigurator = (props: IProps) => {
         };
 
         setState(newState);
-    };
 
-    const onForm = (form: FormData<AcademicOccupationProfile> | FormData<BusinessOccupationProfile>) => {
-        console.log("form: "    , form);
+    }, [state]);
+
+    const onForm = React.useCallback((form: FormData<AcademicOccupationProfile> | FormData<BusinessOccupationProfile>) => {
         setState({...state, form});
 
         if (form.progress === 100) {
@@ -118,17 +89,37 @@ export const ProfileConfigurator = (props: IProps) => {
             switch (state.occupation?.type) {
 
                 case "academic":
-                    props.onOccupationProfile(form.profile as AcademicOccupationProfile);
+                    props.onProfile(form.profile as AcademicOccupationProfile);
                     break;
                 case "business":
-                    props.onOccupationProfile(form.profile as BusinessOccupationProfile);
+                    props.onProfile(form.profile as BusinessOccupationProfile);
                     break;
 
             }
 
         }
 
-    };
+    }, [props, state]);
+
+    const handleCompleted = React.useCallback(() => {
+
+        function stateToProfile(): OccupationProfile | undefined {
+
+            if (state.form.profile) {
+                return state.form.profile as OccupationProfile;
+            }
+
+            return undefined;
+
+        }
+
+        const profile = stateToProfile();
+
+        if (profile) {
+            props.onProfile(profile);
+        }
+
+    }, [props, state.form.profile]);
 
     return (
         <div style={{
@@ -183,6 +174,31 @@ export const ProfileConfigurator = (props: IProps) => {
                     {/*                                 onForm={form => onForm(form)}/>}*/}
 
                 </Box>
+            </Box>
+
+            <Box style={{
+                     display: 'flex',
+                     justifyContent: 'center'
+                 }}>
+
+                {/*<Button disabled={state.form.progress === 100}*/}
+                {/*        variant="contained"*/}
+                {/*        size="large">*/}
+
+                {/*    Skip*/}
+
+                {/*</Button>*/}
+
+                <Button disabled={state.form.progress !== 100}
+                        variant="contained"
+                        size="large"
+                        onClick={handleCompleted}
+                        color="primary">
+
+                    Let's Get Started
+
+                </Button>
+
             </Box>
 
         </div>

@@ -5,7 +5,7 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 export const ProfileStory = () => {
     return (
         <div>
-            <ProfileScreen onProfile={NULL_FUNCTION}/>
+            <ProfileScreen onProfile={profile => console.log(profile)}/>
         </div>
     );
 }

@@ -18,7 +18,7 @@ export const ProfileScreen = React.memo((props: IProps) => {
 
                 {/*<h2>Profile</h2>*/}
 
-                <ProfileConfigurator onOccupationProfile={occupationProfile => props.onProfile(occupationProfile)}/>
+                <ProfileConfigurator onProfile={occupationProfile => props.onProfile(occupationProfile)}/>
 
             </ConfigureBody>
         </DefaultPageLayout>
