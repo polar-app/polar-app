@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) =>
             fontSize: '16px',
             minHeight: '30em',
             display: 'flex',
-            flexDirection: 'column'
+            flexDirection: 'column',
         },
     }),
 );
@@ -128,21 +128,17 @@ export const ProfileConfigurator = (props: IProps) => {
     return (
         <div className={classes.root}>
 
-            <Box style={{flexGrow: 1}}>
+            <LinearProgress variant="determinate"
+                            value={state.form.progress}/>
 
-                <div className="mb-1">
-                    <LinearProgress variant="determinate"
-                                    value={state.form.progress}/>
-                </div>
+            <Box style={{flexGrow: 1}} m={1}>
 
                 <div style={{textAlign: 'center'}}>
 
                     <h2>Tell us about yourself!</h2>
 
                     <Box color="text.secondary">
-                        We use this information to improve Polar specifically
-                        for your use case when incorporating your feedback and
-                        prioritizing new features.
+                        Just a few quick questions to help us customize your profile.
                     </Box>
 
                 </div>

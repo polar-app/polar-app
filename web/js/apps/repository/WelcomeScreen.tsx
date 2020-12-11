@@ -8,6 +8,7 @@ import {useAnalytics} from "../../analytics/Analytics";
 import {Slugs} from "polar-shared/src/util/Slugs";
 import {MUIDialog} from "../../ui/dialogs/MUIDialog";
 import { useHistory } from 'react-router-dom';
+import {useComponentDidMount} from "../../hooks/ReactLifecycleHooks";
 
 export const WelcomeScreen = React.memo(() => {
 
@@ -36,11 +37,16 @@ export const WelcomeScreen = React.memo(() => {
     }, [analytics, history]);
 
     const handleClose = React.useCallback(() => {
+        analytics.event2('welcome-profile-skipped');
         history.replace('/');
-    }, [history]);
+    }, [analytics, history]);
+
+    useComponentDidMount(() => {
+        analytics.event2('welcome-screen-triggered');
+    });
 
     return (
-        <MUIDialog open={true} onClose={handleClose}>
+        <MUIDialog open={true} onClose={handleClose} maxWidth="lg">
             <ProfileConfigurator onProfile={handleProfile}/>
         </MUIDialog>
     );

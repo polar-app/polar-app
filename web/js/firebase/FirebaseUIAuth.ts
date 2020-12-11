@@ -127,8 +127,8 @@ export namespace FirebaseUIAuth {
                         console.log("New user authenticated");
                         Analytics.event2('new-user-signup');
 
-                        // TODO: handle this here by redirecting to an onboarding
-                        // page
+                        document.location.href = '/#welcome';
+                        return false;
 
                     }
 
