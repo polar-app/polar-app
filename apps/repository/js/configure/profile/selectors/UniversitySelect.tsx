@@ -75,8 +75,6 @@ interface IProps {
 
 export const UniversitySelect = (props: IProps) => {
 
-    type RawOption = IOption<University> | null;
-
     // return (
     //     <AsyncSelect
     //         isClearable

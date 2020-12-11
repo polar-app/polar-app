@@ -4,6 +4,10 @@ import {
     fieldsOfStudy,
     toFieldOfStudy
 } from "polar-shared/src/util/FieldOfStudies";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import {Arrays} from "polar-shared/src/util/Arrays";
+import FormControl from "@material-ui/core/FormControl";
 
 export interface IOption<T> {
     readonly value: T;
@@ -25,43 +29,44 @@ const options: ReadonlyArray<IOption<FieldOfStudy>>
 interface IProps {
 
     readonly placeholder?: string;
-
     readonly onSelect: (option: IOption<FieldOfStudy> | undefined) => void;
 }
 
 
-export const FieldOfStudySelect = (props: IProps) => {
+export const FieldOfStudySelect = React.memo((props: IProps) => {
 
-    type RawOption = IOption<FieldOfStudy> | string | null;
+    const handleChange = React.useCallback((event: React.ChangeEvent<{ value: unknown }>) => {
 
+        const selectedID = event.target.value as string;
 
-    const onSelect = (option: RawOption) => {
+        const option = Arrays.first(options.filter(current => current.value.id === selectedID));
 
-        if (option === null) {
+        if (option === null || option === undefined) {
             props.onSelect(undefined);
-        } else if (typeof option === 'string') {
-            props.onSelect(toOption(toFieldOfStudy(option)));
         } else {
             props.onSelect(option);
         }
 
-    };
+    }, [props]);
 
-    // return (
-    //     <CreatableSelect
-    //         isClearable
-    //         autoFocus
-    //         placeholder={props.placeholder ?? "Select a field of study..."}
-    //         options={options}
-    //         onChange={(option => onSelect(option as RawOption))}
-    //         // onKeyDown={event => props.onKeyDown(event)}
-    //         // onChange={(selectedOptions) => props.handleChange(selectedOptions as TagOption[])}
-    //         // value={props.pendingTagOptions}
-    //         // defaultValue={props.pendingTagOptions}
-    //     />
-    // );
+    return (
+        <FormControl variant="outlined">
+            <Select value={undefined}
+                    placeholder="Select field of study"
+                    style={{
+                        minWidth: '300px'
+                    }}
+                    onChange={handleChange}>
 
-    return null;
+                {options.map(current => (
+                    <MenuItem key={current.value.id}
+                              value={current.value.id}>
+                        {current.label}
+                    </MenuItem>
+                ))}
+            </Select>
+        </FormControl>
+    );
 
-};
+});
 

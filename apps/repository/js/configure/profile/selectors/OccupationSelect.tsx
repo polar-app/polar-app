@@ -8,6 +8,7 @@ import {
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { Arrays } from "polar-shared/src/util/Arrays";
+import FormControl from "@material-ui/core/FormControl";
 
 export interface IOption<T> {
     readonly value: T;
@@ -56,20 +57,22 @@ export const OccupationSelect = React.memo((props: IProps) => {
     }, [props]);
 
     return (
-        <Select value={undefined}
-                placeholder="Select occupation"
-                style={{
-                    minWidth: '300px'
-                }}
-                onChange={handleChange}>
+        <FormControl variant="outlined">
+            <Select value={undefined}
+                    placeholder="Select occupation"
+                    style={{
+                        minWidth: '300px'
+                    }}
+                    onChange={handleChange}>
 
-            {options.map(current => (
-                <MenuItem key={current.value.id}
-                          value={current.value.id}>
-                    {current.label}
-                </MenuItem>
-            ))}
-        </Select>
+                {options.map(current => (
+                    <MenuItem key={current.value.id}
+                              value={current.value.id}>
+                        {current.label}
+                    </MenuItem>
+                ))}
+            </Select>
+        </FormControl>
     );
 
 });

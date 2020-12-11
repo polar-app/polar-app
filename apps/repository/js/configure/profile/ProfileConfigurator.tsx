@@ -13,12 +13,12 @@ import {
     Occupation
 } from "polar-shared/src/util/Occupations";
 import {FieldOfStudy} from "polar-shared/src/util/FieldOfStudies";
-import {EducationLevel} from "polar-shared/src/util/EducationLevels";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import Box from "@material-ui/core/Box";
 
 export interface AcademicOccupationProfile {
     readonly occupation: AcademicOccupation;
-    readonly educationLevel: EducationLevel;
+    // readonly educationLevel: EducationLevel;
     readonly fieldOfStudy: FieldOfStudy;
     readonly university: University;
 }
@@ -145,12 +145,18 @@ export const ProfileConfigurator = (props: IProps) => {
                                     value={state.form.progress}/>
                 </div>
 
-                <div className="font-weight-bold text-xl">Tell us about yourself! </div>
+                <div style={{textAlign: 'center'}}>
 
-                <div className="text-muted text-lg mt-1 mb-1">
-                    We use this information to improve Polar specifically
-                    for your use case when incorporating your feedback and
-                    prioritizing new features.
+                    <h2>Tell us about yourself!</h2>
+
+                    <h3>
+                        <Box color="text.muted">
+                            We use this information to improve Polar specifically
+                            for your use case when incorporating your feedback and
+                            prioritizing new features.
+                        </Box>
+                    </h3>
+
                 </div>
 
                 <div className="mt-2">

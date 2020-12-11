@@ -21,7 +21,7 @@ interface IProps {
 
 }
 
-export const AcademicProfileConfigurator = (props: IProps) => {
+export const AcademicProfileConfigurator = React.memo((props: IProps) => {
 
     const onForm = (newProfile: Partial<AcademicOccupationProfile>) => {
 
@@ -37,7 +37,6 @@ export const AcademicProfileConfigurator = (props: IProps) => {
 
             const tasks = [
                 props.occupation,
-                profile.educationLevel,
                 profile.fieldOfStudy,
                 profile.university
             ];
@@ -63,44 +62,22 @@ export const AcademicProfileConfigurator = (props: IProps) => {
 
     return (
         <div>
-            <NullCollapse open={props.occupation !== undefined}>
 
-                <div className="mb-1 mt-2">
+            <div className="mb-1 mt-2">
 
-                    <div className="mb-1 font-weight-bold">
-                        At what level of education?
-                    </div>
-
-                    <div className="mt-1">
-                        <EducationLevelSelect
-                            placeholder="Bachelors, Masters, Doctorate, etc."
-                            onSelect={selected => onForm({educationLevel: nullToUndefined(selected?.value)})}/>
-                    </div>
-
+                <div className="mb-1 font-weight-bold">
+                    In what field?
                 </div>
 
-            </NullCollapse>
-
-            <NullCollapse
-                open={props.form.profile.educationLevel !== undefined}>
-
-                <div className="mb-1 mt-2">
-
-                    <div className="mb-1 font-weight-bold">
-                        In what field?
-                    </div>
-
-                    <div className="mt-1">
-                        <FieldOfStudySelect
-                            placeholder=""
-                            onSelect={selected => onForm({fieldOfStudy: nullToUndefined(selected?.value)})}/>
-                    </div>
-
+                <div className="mt-1">
+                    <FieldOfStudySelect
+                        placeholder=""
+                        onSelect={selected => onForm({fieldOfStudy: nullToUndefined(selected?.value)})}/>
                 </div>
-            </NullCollapse>
 
-            <NullCollapse open={props.form.profile.fieldOfStudy !== undefined}>
+            </div>
 
+            {props.form.profile.fieldOfStudy !== undefined && (
                 <div className="mb-1 mt-2">
 
                     <div className="mb-1 font-weight-bold">
@@ -112,8 +89,8 @@ export const AcademicProfileConfigurator = (props: IProps) => {
                         onSelect={selected => onForm({university: nullToUndefined(selected?.value)})}/>
 
                 </div>
+            )}
 
-            </NullCollapse>
         </div>
     );
-};
+});
