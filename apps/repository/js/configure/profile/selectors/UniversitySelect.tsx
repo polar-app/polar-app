@@ -79,7 +79,6 @@ export const UniversitySelect = (props: IProps) => {
 
     return (
         <Autocomplete
-            id="combo-box-demo"
             options={[...options]}
             getOptionLabel={(option) => option.label}
             style={{ width: 300 }}
