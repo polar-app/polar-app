@@ -1,4 +1,15 @@
 
+# Key Actions and Behavior that need to be tested
+  
+    - when at the end of the note, if we arrow right, then we have to go to 
+      the beginning of the next note.
+  
+    - when at the begginning of the note, if we arrow left, then we have to go
+      to the end of the previous note.
+      
+    - shift+tab needs to indent
+    - tab needs to indent the node
+
 
 - Do the HARD input tasks first so I don't get into a swap of code.
 
@@ -25,9 +36,12 @@
     - basic backend persistence
     - /table support
     - exports of data? 
+    - select multiple notes via shift+click
+    
+    
 - MVP.3 
     - ability to enter 'editing' mode so you can make a node multi-line
-    - 
+    - drag notes around...  
 
 - The app is too slow now... 
     - consider trying to figure out how to restore the cursor position with ckeditor5 by having a toggle.

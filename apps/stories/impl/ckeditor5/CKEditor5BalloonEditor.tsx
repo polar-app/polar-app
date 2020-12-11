@@ -69,7 +69,9 @@ export namespace ckeditor5 {
          * Also it is a good idea to cache parent property if it is used
          * frequently in an algorithm (i.e. in a long loop).
          */
-        readonly parent: Element | DocumentFragment;
+        readonly parent: IElement | IDocumentFragment;
+
+        readonly isTouching: (otherPosition: IPosition) => boolean;
 
     }
 
@@ -89,8 +91,22 @@ export namespace ckeditor5 {
         readonly stop: () => void;
     }
 
-    interface IRootElement {
+    export interface INode {
 
+    }
+
+    export interface IDocumentFragment {
+
+    }
+
+    export interface IElement extends INode {
+        readonly childCount: number;
+        readonly document: IDocument;
+        readonly nextSibling: INode | null;
+        readonly getChildren: () => any;
+    }
+
+    export interface IRootElement extends IElement {
     }
 
     // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_document-Document.html
@@ -140,7 +156,7 @@ export namespace ckeditor5 {
         readonly change: (writerHandler: (writer: IWriter) => void) => void;
         readonly createPositionBefore: (itemOrPosition: IPosition) => IPosition;
         readonly createPositionAfter: (itemOrPosition: IPosition) => IPosition;
-        readonly createPositionAt: (itemOrPosition: IPosition, offset?: number | 'end' | 'before' | 'after') => IPosition;
+        readonly createPositionAt: (itemOrPosition: INode | IPosition, offset?: number | 'end' | 'before' | 'after') => IPosition;
     }
 
     export interface InsertTableCommand {

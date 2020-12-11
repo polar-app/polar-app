@@ -92,6 +92,11 @@ interface INotesStore {
     readonly active: NoteIDStr | undefined;
 
     /**
+     * The position to place the cursor when we jump between items.
+     */
+    readonly activePos: NavPosition;
+
+    /**
      * The nodes that are expanded.
      */
     readonly expanded: StringSetMap;
@@ -111,6 +116,11 @@ interface DoPutOpts {
     readonly newExpand?: NoteIDStr;
 
 }
+
+/**
+ * The position to place the cursor when jumping between items.
+ */
+export type NavPosition = 'start' | 'end';
 
 interface INotesCallbacks {
 
@@ -140,12 +150,12 @@ interface INotesCallbacks {
     /**
      * Navigate to the previous node in the graph.
      */
-    readonly navPrev: () => void;
+    readonly navPrev: (pos: NavPosition) => void;
 
     /**
      * Navigate to the next node in the graph.
      */
-    readonly navNext: () => void;
+    readonly navNext: (pos: NavPosition) => void;
 
     readonly doIndent: (id: NoteIDStr, parent: NoteIDStr) => void;
 
@@ -163,6 +173,7 @@ const initialStore: INotesStore = {
     reverse: {},
     root: undefined,
     active: undefined,
+    activePos: 'start',
     expanded: {}
 }
 
@@ -436,7 +447,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             setStore({...store, active});
         }
 
-        function doNav(delta: 'prev' | 'next') {
+        function doNav(delta: 'prev' | 'next', pos: NavPosition) {
 
             const store = storeProvider();
 
@@ -509,17 +520,18 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
             setStore({
                 ...store,
-                active: newActive
+                active: newActive,
+                activePos: pos
             });
 
         }
 
-        function navPrev() {
-            doNav('prev');
+        function navPrev(pos: NavPosition) {
+            doNav('prev', pos);
         }
 
-        function navNext() {
-            doNav('next');
+        function navNext(pos: NavPosition) {
+            doNav('next', pos);
         }
 
         function toggleExpand(id: NoteIDStr) {

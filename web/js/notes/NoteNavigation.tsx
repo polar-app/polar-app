@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import {NoteIDStr, useNotesStoreCallbacks, useNotesStore} from "./NotesStore";
+import {NoteIDStr, useNotesStoreCallbacks, useNotesStore, NavPosition} from "./NotesStore";
 import {useRefValue} from "../hooks/ReactHooks";
 import { deepMemo } from '../react/ReactUtils';
 import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
@@ -8,6 +8,7 @@ import { useEditorStore } from './EditorStoreProvider';
 import {ckeditor5} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
 import IEventData = ckeditor5.IEventData;
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
+import IWriter = ckeditor5.IWriter;
 
 interface IProps {
     readonly parent: NoteIDStr | undefined;
@@ -15,21 +16,32 @@ interface IProps {
     readonly children: JSX.Element;
 }
 
+interface INoteActivated {
+    readonly id: NoteIDStr;
+    readonly activePos: NavPosition;
+}
+
 /**
  * Listen to the active note in the store and only fire when WE are active.
  */
-function useNoteActivatedListener(id: NoteIDStr) {
+function useNoteActivatedListener(id: NoteIDStr): INoteActivated | undefined {
 
     const lastActiveRef = React.useRef<NoteIDStr | undefined>();
 
-    const {active} = useNotesStore(['active'], {filter: store => (lastActiveRef.current === id || store.active === id) && lastActiveRef.current !== store.active});
+    const {active, activePos} = useNotesStore(['active', 'activePos'], {
+        filter: store => (lastActiveRef.current === id || store.active === id) && lastActiveRef.current !== store.active
+    });
 
     lastActiveRef.current = active;
 
-    return lastActiveRef.current === id;
+    if (lastActiveRef.current === id) {
+        return {
+            id,
+            activePos
+        }
+    }
 
-    // const {active} = useNotesStore(['active'], {filter: store => store.active === id});
-    // return active === id;
+    return undefined;
 
 }
 
@@ -51,7 +63,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
         editor!.editing.view.focus();
     }, [editor]);
 
-    const jumpToEditorStartPosition = React.useCallback(() => {
+    const jumpToEditorRootPosition = React.useCallback((offset: number | 'before' | 'end') => {
 
         if (! editor) {
             return;
@@ -62,11 +74,45 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
         // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_document-Document.html#function-getRoot
         const root = doc.getRoot();
 
-        editor.model.change((writer: any) => {
-            writer.setSelection(root, 0)
+        editor.model.change((writer: IWriter) => {
+            writer.setSelection(root, offset)
         });
 
     }, [editor]);
+
+    const jumpToEditorStartPosition = React.useCallback(() => {
+        jumpToEditorRootPosition(0);
+    }, [jumpToEditorRootPosition]);
+
+    const jumpToEditorEndPosition = React.useCallback(() => {
+        jumpToEditorRootPosition('end');
+    }, [jumpToEditorRootPosition]);
+
+    type CursorPosition = 'start' | 'end';
+
+    const getCursorPosition = React.useCallback((): CursorPosition | undefined => {
+
+        if (! editor) {
+            return undefined;
+        }
+
+        const root = editor.model.document.getRoot();
+        const firstPosition = editor?.model.document.selection.getFirstPosition();
+
+        const rootStart = editor.model.createPositionAt(root, 0);
+        const rootEnd = editor.model.createPositionAt(root, 'end');
+
+        if (firstPosition && firstPosition.isTouching(rootStart)) {
+            return 'start'
+        }
+
+        if (firstPosition && firstPosition.isTouching(rootEnd)) {
+            return 'end'
+        }
+
+        return undefined;
+
+    }, [editor])
 
     React.useEffect(() => {
 
@@ -74,7 +120,16 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
             if (noteActive) {
                 editorFocus();
-                jumpToEditorStartPosition();
+
+                switch (noteActive.activePos) {
+                    case "start":
+                        jumpToEditorStartPosition();
+                        break;
+                    case "end":
+                        jumpToEditorEndPosition();
+                        break;
+                }
+
             } else {
                 // different editor
             }
@@ -83,7 +138,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
             // console.log("No editor: ")
         }
 
-    }, [editor, editorFocus, jumpToEditorStartPosition, noteActive, props.id]);
+    }, [editor, editorFocus, jumpToEditorEndPosition, jumpToEditorStartPosition, noteActive, props.id]);
 
     const handleClick = React.useCallback(() => {
         setActive(props.id);
@@ -101,18 +156,26 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
             case 'ArrowUp':
                 abortEvent();
-
-                navPrev();
-
+                navPrev('start');
                 break;
 
             case 'ArrowDown':
-
                 abortEvent();
-
-                navNext();
-
+                navNext('start');
                 break;
+
+            case 'ArrowLeft':
+                if (getCursorPosition() === 'start') {
+                    navPrev('end');
+                }
+
+                break
+
+            case 'ArrowRight':
+                if (getCursorPosition() === 'end') {
+                    navNext('start');
+                }
+                break
 
             case 'Tab':
                 abortEvent();
@@ -135,7 +198,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
         }
 
-    }, [doDelete, doIndent, navNext, navPrev, noteIsEmpty, props.id, props.parent]);
+    }, [doDelete, doIndent, getCursorPosition, navNext, navPrev, noteIsEmpty, props.id, props.parent]);
 
     const handleEditorEnter = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
         eventData.stop();

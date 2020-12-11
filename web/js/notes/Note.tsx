@@ -25,8 +25,6 @@ export interface INoteContextMenuOrigin {
 export const [NoteContextMenu, useNoteContextMenu]
     = createContextMenu<IDocViewerContextMenuOrigin>(NoteContextMenuItems);
 
-
-
 export const NoteInner = deepMemo(function NoteInner(props: IProps) {
 
     useLifecycleTracer('NoteInner');
