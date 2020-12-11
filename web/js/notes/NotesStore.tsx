@@ -122,6 +122,8 @@ interface DoPutOpts {
  */
 export type NavPosition = 'start' | 'end';
 
+export type NewNotePosition = 'before' | 'after' | 'split';
+
 interface INotesCallbacks {
 
     readonly doPut: (notes: ReadonlyArray<INote>, opts?: DoPutOpts) => void;
@@ -145,7 +147,9 @@ interface INotesCallbacks {
      * Create a new note under the parent using the childRef for the
      * position of the note.
      */
-    readonly createNewNote: (parent: NoteIDStr, child: NoteIDStr) => void;
+    readonly createNewNote: (parent: NoteIDStr,
+                             child: NoteIDStr,
+                             pos: NewNotePosition) => void;
 
     /**
      * Navigate to the previous node in the graph.
@@ -394,7 +398,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
         }
 
-        function createNewNote(parent: NoteIDStr, child: NoteIDStr) {
+        function createNewNote(parent: NoteIDStr, child: NoteIDStr, pos: NewNotePosition) {
 
             console.log("Create new note...")
 
@@ -423,9 +427,22 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
                 updated: now
             };
 
+            function computeDelta() {
+                switch (pos) {
+                    case "before":
+                        return 0;
+                    case "after":
+                        return 1;
+                    case "split":
+                        return 1;
+                }
+            }
+
+            const delta = computeDelta();
+
             // this mutates the array under us and I don't necessarily like that
             // but it's a copy of the original to begin with.
-            items.splice(childIndexPosition + 1, 0, newNote.id);
+            items.splice(childIndexPosition + delta, 0, newNote.id);
 
             const newParentNote = {
                 ...parentNote,

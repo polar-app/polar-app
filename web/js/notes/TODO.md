@@ -3,6 +3,12 @@
 
     - TODO: when deleting a node, selection the previous one, and position the cursor properly.
   
+    - enter / new node creation
+  
+        - enter in the middle of a node should split it and create a new node below it.   
+        - enter at the beginning should insert a node before
+        - enter at the end should insert a node after 
+  
     - when at the end of the note, if we arrow right, then we have to go to 
       the beginning of the next note.
   

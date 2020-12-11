@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import {NoteIDStr, useNotesStoreCallbacks, useNotesStore, NavPosition} from "./NotesStore";
+import {NoteIDStr, useNotesStoreCallbacks, useNotesStore, NavPosition, NewNotePosition} from "./NotesStore";
 import {useRefValue} from "../hooks/ReactHooks";
 import { deepMemo } from '../react/ReactUtils';
 import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
@@ -203,13 +203,37 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
     }, [doDelete, doIndent, getCursorPosition, navNext, navPrev, noteIsEmpty, props.id, props.parent]);
 
     const handleEditorEnter = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
+
         eventData.stop();
 
+        // FIXME: handle meta/shift/control
+
         if (props.parent !== undefined) {
-            createNewNote(props.parent, props.id);
+
+            function computeNewNotePosition(): NewNotePosition {
+                const cursorPosition = getCursorPosition();
+
+                switch (cursorPosition) {
+
+                    case "start":
+                        return 'before';
+
+                    case "end":
+                        return 'after';
+
+                }
+
+                return 'after';
+
+            }
+
+            const pos = computeNewNotePosition();
+
+            createNewNote(props.parent, props.id, pos);
+
         }
 
-    }, [createNewNote, props.id, props.parent]);
+    }, [createNewNote, getCursorPosition, props.id, props.parent]);
 
     React.useEffect(() => {
 
