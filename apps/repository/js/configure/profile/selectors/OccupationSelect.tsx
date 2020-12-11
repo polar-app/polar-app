@@ -45,11 +45,7 @@ interface IProps {
 
 export const OccupationSelect = React.memo((props: IProps) => {
 
-    const handleChange = React.useCallback((event: React.ChangeEvent<{ value: unknown }>) => {
-
-        const selectedID = event.target.value as string;
-
-        const option = Arrays.first(options.filter(current => current.value.id === selectedID));
+    const handleChange = React.useCallback((event: React.ChangeEvent<{}>, option: IOption<Occupation> | null) => {
 
         if (option === null || option === undefined) {
             props.onSelect(undefined);
@@ -59,10 +55,10 @@ export const OccupationSelect = React.memo((props: IProps) => {
 
     }, [props]);
 
-
     return (
         <Autocomplete
             options={[...options]}
+            onChange={handleChange}
             getOptionLabel={(option) => option.label}
             style={{ width: 375 }}
             renderInput={(params) => <TextField {...params} label="What's your occupation?" variant="outlined" />}
