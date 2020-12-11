@@ -1,18 +1,10 @@
 import React from "react";
 import {deepMemo} from "../react/ReactUtils";
 import {NoteIDStr, useNotesStore, useNotesStoreCallbacks} from "./NotesStore";
-import {NoteItems} from "./NoteItems";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {MUIBrowserLinkStyle} from "../mui/MUIBrowserLinkStyle";
 import {NotesInbound} from "./NotesInbound";
-import {CKEditor5BalloonEditor} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import { NoteEditor } from "./NoteEditor";
 import { Note } from "./Note";
-
-interface INoteTitleProps {
-    readonly children: string | JSX.Element;
-}
 
 interface IProps {
     readonly target: NoteIDStr;
@@ -21,7 +13,7 @@ interface IProps {
 export const NoteRoot = deepMemo(function NoteRoot(props: IProps) {
 
     const {index, indexByName} = useNotesStore(['index', 'indexByName']);
-    const {lookup, setRoot} = useNotesStoreCallbacks();
+    const {setRoot} = useNotesStoreCallbacks();
 
     const note = index[props.target] || indexByName[props.target];
 
@@ -36,8 +28,6 @@ export const NoteRoot = deepMemo(function NoteRoot(props: IProps) {
     }, [note.id, setRoot])
 
     const id = note?.id;
-
-    const notes = lookup(note.items || []);
 
     // FIXME: CKEditor5BalloonEditor should not be used
     // FIXME: h1 should not be used and shod we have note names PERIOD?

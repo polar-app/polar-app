@@ -168,8 +168,6 @@ export namespace ckeditor5 {
         readonly createPositionBefore: (itemOrPosition: IPosition) => IPosition;
         readonly createPositionAfter: (itemOrPosition: IPosition) => IPosition;
         readonly createPositionAt: (itemOrPosition: INode | IPosition, offset?: number | 'end' | 'before' | 'after') => IPosition;
-
-
         readonly deleteContent: (selection: ISelection) => void;
         readonly getSelectedContent: (selection: ISelection) => DocumentFragment;
 

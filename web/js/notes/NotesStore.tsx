@@ -291,6 +291,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             setStore({...store, index, indexByName, reverse});
 
         }
+
         function updateNote(id: NoteIDStr, content: string) {
 
             const store = storeProvider();

@@ -1,6 +1,9 @@
 
 # Key Actions and Behavior that need to be tested
 
+    - when changing nodes, the root seems to stay the same... and the node title
+      doesn't seem to change. 
+
     - TODO: when deleting a node, selection the previous one, and position the cursor properly.
   
     - enter / new node creation
