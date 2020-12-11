@@ -116,7 +116,7 @@ interface INotesCallbacks {
 
     readonly doPut: (notes: ReadonlyArray<INote>, opts?: DoPutOpts) => void;
 
-    readonly doDelete: (notes: ReadonlyArray<INote>) => void;
+    readonly doDelete: (notes: ReadonlyArray<NoteIDStr>) => void;
 
     readonly updateNote: (id: NoteIDStr, content: string) => void;
 
@@ -152,6 +152,8 @@ interface INotesCallbacks {
     readonly toggleExpand: (id: NoteIDStr) => void;
     readonly expand: (id: NoteIDStr) => void;
     readonly collapse: (id: NoteIDStr) => void;
+
+    readonly noteIsEmpty: (id: NoteIDStr) => boolean;
 
 }
 
@@ -234,7 +236,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
         }
 
-        function doDelete(notes: ReadonlyArray<INote>) {
+        function doDelete(noteIDs: ReadonlyArray<NoteIDStr>) {
 
             const store = storeProvider();
 
@@ -242,23 +244,29 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             const indexByName = {...store.indexByName};
             const reverse = {...store.reverse};
 
-            for (const note of notes) {
+            for (const noteID of noteIDs) {
 
-                delete index[note.id];
+                const note = index[noteID];
 
-                if (note.type === 'named') {
-                    indexByName[note.content] = note;
-                }
+                if (note) {
 
-                for (const item of (note.items || [])) {
+                    delete index[noteID];
 
-                    const inbound = lookupReverse(item)
-                        .filter(current => current !== note.id);
+                    if (note.type === 'named') {
+                        indexByName[note.content] = note;
+                    }
 
-                    if (inbound.length === 0) {
-                        delete reverse[item];
-                    } else {
-                        reverse[item] = inbound
+                    for (const item of (note.items || [])) {
+
+                        const inbound = lookupReverse(item)
+                            .filter(current => current !== note.id);
+
+                        if (inbound.length === 0) {
+                            delete reverse[item];
+                        } else {
+                            reverse[item] = inbound
+                        }
+
                     }
 
                 }
@@ -358,6 +366,20 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
                 });
 
             }
+
+        }
+
+        /**
+         * Used to determine when we can delete notes.
+         */
+        function noteIsEmpty(id: NoteIDStr) {
+
+            const store = storeProvider();
+            const index = {...store.index};
+
+            const note = index[id];
+
+            return note?.content.trim() === '';
 
         }
 
@@ -550,7 +572,8 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             doIndent,
             toggleExpand,
             expand,
-            collapse
+            collapse,
+            noteIsEmpty
         };
 
     }, [setStore, storeProvider])

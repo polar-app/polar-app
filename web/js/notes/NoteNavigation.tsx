@@ -38,7 +38,8 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
     const editor = useEditorStore();
 
     const noteActive = useNoteActivatedListener(props.id);
-    const {createNewNote, setActive, navPrev, navNext, doIndent} = useNotesStoreCallbacks();
+
+    const {createNewNote, setActive, navPrev, navNext, doIndent, noteIsEmpty, doDelete} = useNotesStoreCallbacks();
 
     const [ref, setRef] = React.useState<HTMLDivElement | null>(null);
 
@@ -122,12 +123,19 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
                 break;
 
+            case 'Backspace':
+
+                if (noteIsEmpty(props.id)) {
+                    doDelete([props.id]);
+                }
+                break;
+
             default:
                 break;
 
         }
 
-    }, [doIndent, navNext, navPrev, props.id, props.parent]);
+    }, [doDelete, doIndent, navNext, navPrev, noteIsEmpty, props.id, props.parent]);
 
     const handleEditorEnter = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
         eventData.stop();
