@@ -81,7 +81,7 @@ export const UniversitySelect = (props: IProps) => {
         <Autocomplete
             options={[...options]}
             getOptionLabel={(option) => option.label}
-            style={{ width: 300 }}
+            style={{ width: 375 }}
             renderInput={(params) => <TextField {...params} label="What university?" variant="outlined" />}
         />
     );

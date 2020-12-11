@@ -10,6 +10,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { Arrays } from "polar-shared/src/util/Arrays";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
 export interface IOption<T> {
     readonly value: T;
@@ -57,23 +59,15 @@ export const OccupationSelect = React.memo((props: IProps) => {
 
     }, [props]);
 
+
     return (
-        <FormControl variant="outlined">
-
-            <Select value={undefined}
-                    style={{
-                        minWidth: '300px'
-                    }}
-                    onChange={handleChange}>
-
-                {options.map(current => (
-                    <MenuItem key={current.value.id}
-                              value={current.value.id}>
-                        {current.label}
-                    </MenuItem>
-                ))}
-            </Select>
-        </FormControl>
+        <Autocomplete
+            options={[...options]}
+            getOptionLabel={(option) => option.label}
+            style={{ width: 375 }}
+            renderInput={(params) => <TextField {...params} label="What's your occupation?" variant="outlined" />}
+        />
     );
+
 
 });

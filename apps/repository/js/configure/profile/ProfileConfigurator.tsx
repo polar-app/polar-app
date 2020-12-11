@@ -161,13 +161,10 @@ export const ProfileConfigurator = (props: IProps) => {
 
                 <div className="mt-2">
 
-                    <div className="mb-1 font-weight-bold">
-                        What's your occupation?
-                    </div>
-
                     <OccupationSelect
                         placeholder="Pick one from the list or create one if necessary."
                         onSelect={selected => onOccupation(nullToUndefined(selected?.value))}/>
+
                 </div>
 
                 {state.occupation && state.occupation.type === 'academic' &&
