@@ -76,9 +76,7 @@ export const AcademicProfileConfigurator = React.memo((props: IProps) => {
             {props.form.profile.fieldOfStudy !== undefined && (
                 <div className="mb-1 mt-2">
 
-                    <UniversitySelect
-                        placeholder="Type to search for your university..."
-                        onSelect={selected => onForm({university: nullToUndefined(selected?.value)})}/>
+                    <UniversitySelect onSelect={selected => onForm({university: nullToUndefined(selected?.value)})}/>
 
                 </div>
             )}
