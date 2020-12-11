@@ -101,6 +101,12 @@ interface INotesStore {
      */
     readonly expanded: StringSetMap;
 
+
+    /**
+     * The nodes that are selected by the user.
+     */
+    readonly selected: StringSetMap;
+
 }
 
 interface DoPutOpts {
@@ -178,7 +184,8 @@ const initialStore: INotesStore = {
     root: undefined,
     active: undefined,
     activePos: 'start',
-    expanded: {}
+    expanded: {},
+    selected: {}
 }
 
 interface Mutator {
@@ -265,12 +272,21 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
                 if (note) {
 
+                    // *** delete the note from the index
                     delete index[noteID];
 
+                    // *** delete the note from name index by name.
                     if (note.type === 'named') {
                         indexByName[note.content] = note;
                     }
 
+                    // *** delete the reverse index for all the child items
+
+                    // FIXME: what about deleting the entire tree under a note..
+                    // how does that work?
+                    //
+                    // FIXME: we don't actually delete any of the items in teh
+                    // parent node from this note so it would break navigation
                     for (const item of (note.items || [])) {
 
                         const inbound = lookupReverse(item)

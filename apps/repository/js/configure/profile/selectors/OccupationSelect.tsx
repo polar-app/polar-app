@@ -5,6 +5,9 @@ import {
     Occupation,
     Occupations
 } from "polar-shared/src/util/Occupations";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import { Arrays } from "polar-shared/src/util/Arrays";
 
 export interface IOption<T> {
     readonly value: T;
@@ -36,31 +39,37 @@ interface IProps {
 }
 
 
-export const OccupationSelect = (props: IProps) => {
+export const OccupationSelect = React.memo((props: IProps) => {
 
-    type RawOption = IOption<Occupation> | string| null;
+    const handleChange = React.useCallback((event: React.ChangeEvent<{ value: unknown }>) => {
 
-    const onSelect = (option: RawOption) => {
+        const selectedID = event.target.value as string;
 
-        if (option === null) {
+        const option = Arrays.first(options.filter(current => current.value.id === selectedID));
+
+        if (option === null || option === undefined) {
             props.onSelect(undefined);
-        } else if (typeof option === 'string') {
-            props.onSelect(toOption(Occupations.businessFromName(option)));
         } else {
             props.onSelect(option);
         }
 
-    };
+    }, [props]);
 
-    // return (
-    //     <CreatableSelect
-    //         isClearable
-    //         autoFocus
-    //         placeholder={props.placeholder ?? "Select an occupation..."}
-    //         options={options}
-    //         onChange={(option => onSelect(option as RawOption))}
-    //     />
-    // );
-    return null;
-};
+    return (
+        <Select value={undefined}
+                placeholder="Select occupation"
+                style={{
+                    minWidth: '300px'
+                }}
+                onChange={handleChange}>
 
+            {options.map(current => (
+                <MenuItem key={current.value.id}
+                          value={current.value.id}>
+                    {current.label}
+                </MenuItem>
+            ))}
+        </Select>
+    );
+
+});

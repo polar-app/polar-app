@@ -1,6 +1,10 @@
 
 # Key Actions and Behavior that need to be tested
 
+    - deleting an item doesn't compute the next active node... 
+    
+    - unable to create a new node with 'enter' when in the root node...
+
     - when changing nodes, the root seems to stay the same... and the node title
       doesn't seem to change. 
 
@@ -33,20 +37,31 @@
 - MVP.1
     - basic workflowy style outline manipulation
         - tab indents the current item
-    - image paste and correct image size
-    - inbound links and link clicking
-    - click the bullets next to links
+    - image paste
+    - inbound references
+    - DONE: click the bullets next to links to jump to a new node
+    - ckeditor activation working (2hrs)
+
 - MVP.2
-    - multi-line notes with shift+enter
+    - breadcrubs with path during navigation... 
+    - block references (ability to link to another note by just the ID)
+    - note selection via shift+ArrowUp , and shift+ArrowDown
+    - correct image size...
+    - action menu properly completed
+        - [[]] working  
+   
+- MVP.3
+    - all core roam + workflowy context + keyboard operations.
     - basic backend persistence
-    - /table support
-    - exports of data? 
-    - select multiple notes via shift+click
-    
-    
-- MVP.3 
-    - ability to enter 'editing' mode so you can make a node multi-line
+    - 
+
+- MVP.4
+    - proper handling of undo/redo
     - drag notes around...  
+    - multi-line notes with shift+enter
+        - ability to enter 'editing' mode so you can make a node multi-line    
+    - /table support
+    - exports of data
 
 - The app is too slow now... 
     - consider trying to figure out how to restore the cursor position with ckeditor5 by having a toggle.

@@ -55,8 +55,6 @@ export interface BusinessOccupationProfile {
 // - FIXME: we definitely should NOT just limit the education to not include
 //   a univer¡sity in the business profile.
 
-
-
 export type OccupationProfile = AcademicOccupationProfile | BusinessOccupationProfile;
 
 interface IProps {

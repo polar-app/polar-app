@@ -43,6 +43,7 @@ import {ActiveKeyboardShortcuts} from "../../web/js/hotkeys/ActiveKeyboardShortc
 import {ActiveKeyboardShortcutsStory} from "./impl/ActiveKeyboardShortcutsStory";
 import {FontAwesomeIconStory} from "./impl/FontAwesomeIconStory";
 import {CKEditor5Story2} from "./impl/CKEditor5Story2";
+import { ProfileStory } from './impl/ProfileStory';
 
 interface IStory {
     readonly name: string;
@@ -73,6 +74,10 @@ const stories = createStoryIndex([
     {
         name: 'FontAwesomeIconStory',
         component: <FontAwesomeIconStory/>
+    },
+    {
+        name: 'ProfileStory',
+        component: <ProfileStory/>
     },
     {
         name: "Active Keyboard Shortcuts",
