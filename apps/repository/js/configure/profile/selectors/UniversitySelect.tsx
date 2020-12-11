@@ -164,7 +164,7 @@ export const UniversitySelect = (props: IProps) => {
 
     return (
         <Autocomplete
-            style={{ width: 375 }}
+            style={{ flexGrow: 1 }}
             disableListWrap
             ListboxComponent={ListboxComponent as React.ComponentType<React.HTMLAttributes<HTMLElement>>}
             getOptionLabel={(option) => option.label}
