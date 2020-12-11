@@ -26,8 +26,8 @@ export const WelcomeScreen = React.memo(() => {
                 user_field_of_study: profile.fieldOfStudy.id,
                 user_university_id: profile.university.id,
                 user_university_name_slug: Slugs.calculate(profile.university.name),
-                user_university_domain: Slugs.calculate(profile.university.domain)
-            })
+                user_university_domain: profile.university.domain
+            });
         }
 
         analytics.event2('welcome-profile-completed');

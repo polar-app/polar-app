@@ -17,15 +17,15 @@ export const NoteRoot = deepMemo(function NoteRoot(props: IProps) {
 
     const note = index[props.target] || indexByName[props.target];
 
+    React.useEffect(() => {
+        setRoot(note.id);
+    }, [note.id, setRoot])
+
     if (! isPresent(note)) {
         return (
             <div>No note for target: {props.target}</div>
         );
     }
-
-    React.useEffect(() => {
-        setRoot(note.id);
-    }, [note.id, setRoot])
 
     const id = note?.id;
 

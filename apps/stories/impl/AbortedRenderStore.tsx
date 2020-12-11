@@ -53,7 +53,7 @@ function useCallbacksFactory(storeProvider: Provider<IAbortedRenderStore>,
             incr
         };
 
-    }, [setStore])
+    }, [setStore, storeProvider])
 
 }
 

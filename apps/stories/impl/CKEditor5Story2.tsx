@@ -15,8 +15,7 @@ export const CKEditor5Story2 = () => {
                                         content={`${idx} this is the <b>content</b> there are many like it but this one is mine.`}
                                         preEscaped={true}
                                         onChange={NULL_FUNCTION}
-                                        onEditor={NULL_FUNCTION}/>
-            )}
+                                        onEditor={NULL_FUNCTION}/>))}
 
         </div>
     )
