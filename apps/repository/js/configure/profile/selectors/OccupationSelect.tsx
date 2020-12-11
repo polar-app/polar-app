@@ -65,5 +65,4 @@ export const OccupationSelect = React.memo((props: IProps) => {
         />
     );
 
-
 });
