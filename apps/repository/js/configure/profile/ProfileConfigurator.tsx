@@ -102,6 +102,11 @@ export const ProfileConfigurator = (props: IProps) => {
 
     const onForm = React.useCallback((form: FormData<AcademicOccupationProfile> | FormData<BusinessOccupationProfile>) => {
         setState({...state, form});
+    }, [state]);
+
+    const handleCompleted = React.useCallback(() => {
+
+        const {form} = state;
 
         if (form.progress === 100) {
 
@@ -119,26 +124,6 @@ export const ProfileConfigurator = (props: IProps) => {
         }
 
     }, [props, state]);
-
-    const handleCompleted = React.useCallback(() => {
-
-        function stateToProfile(): OccupationProfile | undefined {
-
-            if (state.form.profile) {
-                return state.form.profile as OccupationProfile;
-            }
-
-            return undefined;
-
-        }
-
-        const profile = stateToProfile();
-
-        if (profile) {
-            props.onProfile(profile);
-        }
-
-    }, [props, state.form.profile]);
 
     return (
         <div className={classes.root}>
