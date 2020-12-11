@@ -142,6 +142,17 @@ export namespace ckeditor5 {
 
         readonly setSelection: (root: IRootElement, position: number | 'before' | 'after' | 'end' | 'on' | 'in') => void;
 
+        readonly createDocumentFragment: () => IDocumentFragment;
+
+        readonly split: (position: IPosition) => void;
+
+    }
+
+    export interface DeleteContentOpts {
+        readonly leaveUnmerged?: boolean;
+        readonly doNotResetEntireContent?: boolean;
+        readonly doNotAutoparagraph?: boolean;
+        readonly direction?: boolean;
     }
 
     // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_model-Model.html
@@ -157,6 +168,11 @@ export namespace ckeditor5 {
         readonly createPositionBefore: (itemOrPosition: IPosition) => IPosition;
         readonly createPositionAfter: (itemOrPosition: IPosition) => IPosition;
         readonly createPositionAt: (itemOrPosition: INode | IPosition, offset?: number | 'end' | 'before' | 'after') => IPosition;
+
+
+        readonly deleteContent: (selection: ISelection) => void;
+        readonly getSelectedContent: (selection: ISelection) => DocumentFragment;
+
     }
 
     export interface InsertTableCommand {

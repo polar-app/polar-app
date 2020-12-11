@@ -208,6 +208,14 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
         // FIXME: handle meta/shift/control
 
+        // FIXME: to split the node we need to call
+
+        // writer.split at firstPosition
+        // create a selection from the firstPosition to the end of the document root
+        // getSelectedContent on the selection
+        // deleteContent on that selection
+        // create a new node with the DocumentFragment as markdown...
+
         if (props.parent !== undefined) {
 
             function computeNewNotePosition(): NewNotePosition {
