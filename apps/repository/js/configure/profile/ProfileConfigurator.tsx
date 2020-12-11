@@ -89,7 +89,7 @@ export const ProfileConfigurator = (props: IProps) => {
                 case "academic":
                     return 25;
                 case "business":
-                    return 50;
+                    return 100;
                 default:
                     return 0;
             }
@@ -177,10 +177,10 @@ export const ProfileConfigurator = (props: IProps) => {
                                                      form={state.form as FormData<AcademicOccupationProfile>}
                                                      onForm={form => onForm(form)}/>}
 
-                    {state.occupation && state.occupation.type === 'business' &&
-                        <BusinessProfileConfigurator occupation={state.occupation}
-                                                     form={state.form as FormData<BusinessOccupationProfile>}
-                                                     onForm={form => onForm(form)}/>}
+                    {/*{state.occupation && state.occupation.type === 'business' &&*/}
+                    {/*    <BusinessProfileConfigurator occupation={state.occupation}*/}
+                    {/*                                 form={state.form as FormData<BusinessOccupationProfile>}*/}
+                    {/*                                 onForm={form => onForm(form)}/>}*/}
 
                 </Box>
             </Box>
