@@ -135,7 +135,7 @@ export const ProfileConfigurator = (props: IProps) => {
 
                 <div style={{textAlign: 'center'}}>
 
-                    <h2>Tell us about yourself!</h2>
+                    <h2>Tell us about yourself</h2>
 
                     <Box color="text.secondary">
                         Just a few quick questions to help us customize your profile.
