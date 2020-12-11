@@ -32,7 +32,7 @@ export const NoteInner = deepMemo(function NoteInner(props: IProps) {
     useLifecycleTracer('NoteInner');
 
     const {id} = props;
-    const {index, expanded} = useNotesStore(['index', 'expanded']);
+    const {index, expanded, root} = useNotesStore(['index', 'expanded', 'root']);
     const {lookup} = useNotesStoreCallbacks();
     const theme = useTheme();
 
@@ -66,7 +66,7 @@ export const NoteInner = deepMemo(function NoteInner(props: IProps) {
 
                     <NoteOverflowButton target={props.id}/>
 
-                    {hasItems && (
+                    {hasItems && id !== root && (
                         <NoteExpandToggleButton id={props.id}/>
                     )}
 
