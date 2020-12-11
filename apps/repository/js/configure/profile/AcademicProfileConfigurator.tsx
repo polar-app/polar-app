@@ -11,6 +11,7 @@ import {
     AcademicOccupation,
     Occupation
 } from "polar-shared/src/util/Occupations";
+import Box from "@material-ui/core/Box";
 
 interface IProps {
 
@@ -61,26 +62,20 @@ export const AcademicProfileConfigurator = React.memo((props: IProps) => {
     };
 
     return (
-        <div>
+        <>
 
-            <div className="mb-1 mt-2">
-
-                <div className="mt-1">
-                    <FieldOfStudySelect
-                        placeholder=""
-                        onSelect={selected => onForm({fieldOfStudy: nullToUndefined(selected?.value)})}/>
-                </div>
-
-            </div>
+            <Box m={2} style={{ flexGrow: 1 }}>
+                <FieldOfStudySelect
+                    placeholder=""
+                    onSelect={selected => onForm({fieldOfStudy: nullToUndefined(selected?.value)})}/>
+            </Box>
 
             {props.form.profile.fieldOfStudy !== undefined && (
-                <div className="mb-1 mt-2">
-
+                <Box m={2} style={{ flexGrow: 1 }}>
                     <UniversitySelect onSelect={selected => onForm({university: nullToUndefined(selected?.value)})}/>
-
-                </div>
+                </Box>
             )}
 
-        </div>
+        </>
     );
 });

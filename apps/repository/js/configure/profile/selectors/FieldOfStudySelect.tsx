@@ -45,10 +45,10 @@ export const FieldOfStudySelect = React.memo((props: IProps) => {
 
     return (
         <Autocomplete
+            style={{ flexGrow: 1 }}
             options={[...options]}
             onChange={handleChange}
             getOptionLabel={(option) => option.label}
-            style={{ width: 375 }}
             renderInput={(params) => <TextField {...params} label="Select field of study" variant="outlined" />}
         />
     );

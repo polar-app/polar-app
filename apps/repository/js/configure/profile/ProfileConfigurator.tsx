@@ -138,7 +138,7 @@ export const ProfileConfigurator = (props: IProps) => {
              }}
              className="">
 
-            <div style={{flexGrow: 1}}>
+            <Box style={{flexGrow: 1}}>
 
                 <div className="mb-1">
                     <LinearProgress variant="determinate"
@@ -149,35 +149,41 @@ export const ProfileConfigurator = (props: IProps) => {
 
                     <h2>Tell us about yourself!</h2>
 
-                    <h3>
-                        <Box color="text.secondary">
-                            We use this information to improve Polar specifically
-                            for your use case when incorporating your feedback and
-                            prioritizing new features.
-                        </Box>
-                    </h3>
+                    <Box color="text.secondary">
+                        We use this information to improve Polar specifically
+                        for your use case when incorporating your feedback and
+                        prioritizing new features.
+                    </Box>
 
                 </div>
 
-                <div className="mt-2">
+                <Box mt={3}
+                     style={{
+                         display: 'flex',
+                         flexDirection: 'column',
+                         justifyContent: 'flex-center'
+                     }}>
 
-                    <OccupationSelect
-                        placeholder="Pick one from the list or create one if necessary."
-                        onSelect={selected => onOccupation(nullToUndefined(selected?.value))}/>
+                    <Box m={2}>
 
-                </div>
+                        <OccupationSelect
+                            placeholder="Pick one from the list or create one if necessary."
+                            onSelect={selected => onOccupation(nullToUndefined(selected?.value))}/>
 
-                {state.occupation && state.occupation.type === 'academic' &&
-                    <AcademicProfileConfigurator occupation={state.occupation}
-                                                 form={state.form as FormData<AcademicOccupationProfile>}
-                                                 onForm={form => onForm(form)}/>}
+                    </Box>
 
-                {state.occupation && state.occupation.type === 'business' &&
-                    <BusinessProfileConfigurator occupation={state.occupation}
-                                                 form={state.form as FormData<BusinessOccupationProfile>}
-                                                 onForm={form => onForm(form)}/>}
+                    {state.occupation && state.occupation.type === 'academic' &&
+                        <AcademicProfileConfigurator occupation={state.occupation}
+                                                     form={state.form as FormData<AcademicOccupationProfile>}
+                                                     onForm={form => onForm(form)}/>}
 
-            </div>
+                    {state.occupation && state.occupation.type === 'business' &&
+                        <BusinessProfileConfigurator occupation={state.occupation}
+                                                     form={state.form as FormData<BusinessOccupationProfile>}
+                                                     onForm={form => onForm(form)}/>}
+
+                </Box>
+            </Box>
 
         </div>
     );
