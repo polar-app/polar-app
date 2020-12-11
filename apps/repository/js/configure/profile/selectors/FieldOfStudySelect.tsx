@@ -49,7 +49,7 @@ export const FieldOfStudySelect = React.memo((props: IProps) => {
             options={[...options]}
             onChange={handleChange}
             getOptionLabel={(option) => option.label}
-            renderInput={(params) => <TextField {...params} label="Select field of study" variant="outlined" />}
+            renderInput={(params) => <TextField {...params} label="... who studies" variant="outlined" />}
         />
     );
 

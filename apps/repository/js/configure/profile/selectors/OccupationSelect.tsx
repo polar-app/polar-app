@@ -61,7 +61,7 @@ export const OccupationSelect = React.memo((props: IProps) => {
             onChange={handleChange}
             getOptionLabel={(option) => option.label}
             style={{ flexGrow: 1 }}
-            renderInput={(params) => <TextField {...params} label="What's your occupation?" variant="outlined" />}
+            renderInput={(params) => <TextField {...params} label="I am a ... " variant="outlined" />}
         />
     );
 
