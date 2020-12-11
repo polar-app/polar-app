@@ -4,10 +4,8 @@ import {
     fieldsOfStudy,
     toFieldOfStudy
 } from "polar-shared/src/util/FieldOfStudies";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
-import {Arrays} from "polar-shared/src/util/Arrays";
-import FormControl from "@material-ui/core/FormControl";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import TextField from "@material-ui/core/TextField";
 
 export interface IOption<T> {
     readonly value: T;
@@ -35,11 +33,7 @@ interface IProps {
 
 export const FieldOfStudySelect = React.memo((props: IProps) => {
 
-    const handleChange = React.useCallback((event: React.ChangeEvent<{ value: unknown }>) => {
-
-        const selectedID = event.target.value as string;
-
-        const option = Arrays.first(options.filter(current => current.value.id === selectedID));
+    const handleChange = React.useCallback((event: React.ChangeEvent<{}>, option: IOption<FieldOfStudy> | null) => {
 
         if (option === null || option === undefined) {
             props.onSelect(undefined);
@@ -50,22 +44,13 @@ export const FieldOfStudySelect = React.memo((props: IProps) => {
     }, [props]);
 
     return (
-        <FormControl variant="outlined">
-            <Select value={undefined}
-                    placeholder="Select field of study"
-                    style={{
-                        minWidth: '300px'
-                    }}
-                    onChange={handleChange}>
-
-                {options.map(current => (
-                    <MenuItem key={current.value.id}
-                              value={current.value.id}>
-                        {current.label}
-                    </MenuItem>
-                ))}
-            </Select>
-        </FormControl>
+        <Autocomplete
+            options={[...options]}
+            onChange={handleChange}
+            getOptionLabel={(option) => option.label}
+            style={{ width: 375 }}
+            renderInput={(params) => <TextField {...params} label="Select field of study" variant="outlined" />}
+        />
     );
 
 });

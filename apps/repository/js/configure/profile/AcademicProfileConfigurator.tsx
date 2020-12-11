@@ -65,10 +65,6 @@ export const AcademicProfileConfigurator = React.memo((props: IProps) => {
 
             <div className="mb-1 mt-2">
 
-                <div className="mb-1 font-weight-bold">
-                    In what field?
-                </div>
-
                 <div className="mt-1">
                     <FieldOfStudySelect
                         placeholder=""
@@ -79,10 +75,6 @@ export const AcademicProfileConfigurator = React.memo((props: IProps) => {
 
             {props.form.profile.fieldOfStudy !== undefined && (
                 <div className="mb-1 mt-2">
-
-                    <div className="mb-1 font-weight-bold">
-                        And at what school/university?
-                    </div>
 
                     <UniversitySelect
                         placeholder="Type to search for your university..."
