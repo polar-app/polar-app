@@ -9,6 +9,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { Arrays } from "polar-shared/src/util/Arrays";
 import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
 
 export interface IOption<T> {
     readonly value: T;
@@ -58,8 +59,8 @@ export const OccupationSelect = React.memo((props: IProps) => {
 
     return (
         <FormControl variant="outlined">
+
             <Select value={undefined}
-                    placeholder="Select occupation"
                     style={{
                         minWidth: '300px'
                     }}

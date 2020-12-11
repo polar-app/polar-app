@@ -83,7 +83,7 @@ export const UniversitySelect = (props: IProps) => {
             options={[...options]}
             getOptionLabel={(option) => option.label}
             style={{ width: 300 }}
-            renderInput={(params) => <TextField {...params} variant="outlined" />}
+            renderInput={(params) => <TextField {...params} label="What university?" variant="outlined" />}
         />
     );
     // return (
