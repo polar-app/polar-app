@@ -209,8 +209,6 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
                     indexByName[note.content] = note;
                 }
 
-                // FIXME: read the existing note, and if it's there, we have to remove the existing...
-
                 const outboundNodeIDs = [
                     ...(note.items || []),
                     ...(note.links || []),
