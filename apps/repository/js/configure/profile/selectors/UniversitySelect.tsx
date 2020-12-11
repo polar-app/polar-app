@@ -9,6 +9,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { VariableSizeList, ListChildComponentProps } from "react-window";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import Typography from "@material-ui/core/Typography";
+import {nullToUndefined} from "polar-shared/src/util/Nullable";
 
 // use a large limit so that the user sees a bunch of universities and then
 // realizes that they need to type for it...
@@ -72,11 +73,6 @@ class Loader {
             .collect();
     }
 
-}
-
-interface IProps {
-    readonly placeholder?: string;
-    readonly onSelect: (option: IOption<University> | undefined) => void;
 }
 
 const LISTBOX_PADDING = 8; // px
@@ -160,18 +156,24 @@ const renderGroup = (params: AutocompleteRenderGroupParams) => [
     params.children,
 ];
 
+interface IProps {
+    readonly placeholder?: string;
+    readonly onSelect: (option: IOption<University> | undefined) => void;
+}
+
 export const UniversitySelect = (props: IProps) => {
 
     return (
         <Autocomplete
             style={{ flexGrow: 1 }}
+            onChange={(event, option) => props.onSelect(nullToUndefined(option))}
             disableListWrap
             ListboxComponent={ListboxComponent as React.ComponentType<React.HTMLAttributes<HTMLElement>>}
             getOptionLabel={(option) => option.label}
             renderGroup={renderGroup}
             options={[...options]}
             groupBy={(option) => option.value.name[0].toUpperCase()}
-            renderInput={(params) => <TextField {...params} variant="outlined" label="10,000 options" />}
+            renderInput={(params) => <TextField {...params} variant="outlined" label="... and studies at" />}
             renderOption={(option) => <Typography noWrap>{option.label}</Typography>}
         />
     )
