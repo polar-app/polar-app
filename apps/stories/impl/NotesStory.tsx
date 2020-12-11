@@ -203,16 +203,38 @@ const BasicNotesDataSet = (props: BasicNotesDataSetProps) => {
 
 }
 
+interface FixedWidthContainer {
+    readonly children: JSX.Element;
+}
+
+const FixedWidthContainer = React.memo((props: FixedWidthContainer) => {
+
+    return (
+        <div className="FixedWidthContainer"
+             style={{
+                 maxWidth: '1000px',
+                 flexGrow: 1,
+                 marginLeft: 'auto',
+                 marginRight: 'auto'
+             }}>
+            {props.children}
+        </div>
+    );
+
+});
+
 export const NotesStory = () => {
 
     return (
-        <CKEditor5AppRoot>
-            <NotesStoreProvider>
-                <BasicNotesDataSet>
-                    <NotesInner/>
-                </BasicNotesDataSet>
-            </NotesStoreProvider>
-        </CKEditor5AppRoot>
+        <FixedWidthContainer>
+            <CKEditor5AppRoot>
+                <NotesStoreProvider>
+                    <BasicNotesDataSet>
+                        <NotesInner/>
+                    </BasicNotesDataSet>
+                </NotesStoreProvider>
+            </CKEditor5AppRoot>
+        </FixedWidthContainer>
     );
 
 }

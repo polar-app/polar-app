@@ -166,6 +166,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
             case 'ArrowLeft':
                 if (getCursorPosition() === 'start') {
+                    abortEvent();
                     navPrev('end');
                 }
 
@@ -173,6 +174,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
             case 'ArrowRight':
                 if (getCursorPosition() === 'end') {
+                    abortEvent();
                     navNext('start');
                 }
                 break

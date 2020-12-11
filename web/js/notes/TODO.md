@@ -1,5 +1,7 @@
 
 # Key Actions and Behavior that need to be tested
+
+    - TODO: when deleting a node, selection the previous one, and position the cursor properly.
   
     - when at the end of the note, if we arrow right, then we have to go to 
       the beginning of the next note.
@@ -17,12 +19,6 @@
     - HARD: when clicking on a node for the first time when activating it the cursor jumps to the beginning
         - the problem is that the cursor isn't placed in the right spot... to begin with and 
           has no correlation with the jumpToEditorStart
-          
-    - HARD: back arrow show jump to the end of the previous item
-    - we're getting too many renders.  for example arrow up/down causes
-      everything to re-render.  I might be able to add a useActiveNote(props.id)
-      which only updates when it changes to avoid actually re-rendering the
-      parent.
 
 
 - MVP.1

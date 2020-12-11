@@ -447,40 +447,44 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             setStore({...store, active});
         }
 
+
+        function computeLinearItemsFromExpansionTree(id: NoteIDStr, root?: boolean): ReadonlyArray<NoteIDStr> {
+
+            const store = storeProvider();
+            const {index, expanded} = store;
+
+            const note = index[id];
+
+            if (! note) {
+                console.warn("No note: ", id);
+                return [];
+            }
+
+            const isExpanded = root === true ? true : expanded[id];
+
+            if (isExpanded) {
+                const items = (note.items || []);
+
+                const result = [];
+
+                for (const item of items) {
+                    result.push(item);
+                    result.push(...computeLinearItemsFromExpansionTree(item));
+                }
+
+                return result;
+
+            } else {
+                return [];
+            }
+
+        }
+
         function doNav(delta: 'prev' | 'next', pos: NavPosition) {
 
             const store = storeProvider();
 
-            const {active, root, index, expanded} = store;
-
-            function computeLinearItemsFromExpansionTree(id: NoteIDStr, root?: boolean): ReadonlyArray<NoteIDStr> {
-
-                const note = index[id];
-
-                if (! note) {
-                    console.warn("No note: ", id);
-                    return [];
-                }
-
-                const isExpanded = root === true ? true : expanded[id];
-
-                if (isExpanded) {
-                    const items = (note.items || []);
-
-                    const result = [];
-
-                    for (const item of items) {
-                        result.push(item);
-                        result.push(...computeLinearItemsFromExpansionTree(item));
-                    }
-
-                    return result;
-
-                } else {
-                    return [];
-                }
-
-            }
+            const {active, root} = store;
 
             if (root === undefined) {
                 console.warn("No currently active root");
