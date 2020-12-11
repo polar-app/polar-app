@@ -54,7 +54,7 @@ export interface IAnalytics {
 export type UserIdentificationStr = string;
 
 export interface TraitsMap {
-    [key: string]: string | number;
+    [key: string]: string;
 }
 
 export interface IEventArgs {

@@ -2,6 +2,7 @@ import {IAnalytics, IEventArgs, IPageEvent, TraitsMap} from "../IAnalytics";
 import {Heartbeats} from "polar-firebase/src/firebase/om/Heartbeats";
 import {Firebase} from "../../firebase/Firebase";
 import {Logger} from "polar-shared/src/logger/Logger";
+import {UserTraits} from "../../datastore/firebase/UserTraits";
 
 const log = Logger.create();
 
@@ -24,7 +25,10 @@ export class FirestoreAnalytics implements IAnalytics {
     }
 
     public traits(traits: TraitsMap): void {
-        // noop
+
+        UserTraits.write(traits)
+                  .catch(err => console.error("Failed to write traits: ", err));
+
     }
 
     public version(version: string) {
