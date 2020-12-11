@@ -59,6 +59,7 @@ import {AnalyticsLocationListener} from "../../analytics/AnalyticsLocationListen
 import {LogsScreen} from "../../../../apps/repository/js/logs/LogsScreen";
 import {PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {LoginWithCustomTokenScreen} from "../../../../apps/repository/js/login/LoginWithCustomTokenScreen";
+import {WelcomeScreen} from "./WelcomeScreen";
 
 interface IProps {
     readonly app: App;
@@ -349,6 +350,11 @@ export const RepositoryApp = (props: IProps) => {
                                                         </Switch>
 
                                                         <Switch location={ReactRouters.createLocationWithHashOnly()}>
+
+                                                            <Route path='#welcome'
+                                                                   component={() =>
+                                                                       <WelcomeScreen/>
+                                                                   }/>
 
                                                             <Route path='#account'
                                                                    component={() =>

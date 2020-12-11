@@ -29,6 +29,10 @@ export interface BusinessOccupationProfile {
 
 export type OccupationProfile = AcademicOccupationProfile | BusinessOccupationProfile;
 
+export function isAcademicOccupationProfile(profile: OccupationProfile): profile is AcademicOccupationProfile {
+    return (profile as any).fieldOfStudy !== undefined;
+}
+
 interface IProps {
     readonly onProfile: (occupationProfile: OccupationProfile) => void;
 }
