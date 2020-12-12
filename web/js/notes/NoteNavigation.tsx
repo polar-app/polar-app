@@ -337,7 +337,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
                 editor.editing.view.document.on('keydown', handleEditorKeyDown);
                 editor.editing.view.document.on('enter', handleEditorEnter);
             } else {
-                console.warn("No editor in subscribe");
+                // console.warn("No editor in subscribe");
             }
         }
 
@@ -346,23 +346,17 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
                 editor.editing.view.document.off('keydown', handleEditorKeyDown);
                 editor.editing.view.document.off('enter', handleEditorEnter);
             } else {
-                console.warn("No editor in unsubscribe");
+                // console.warn("No editor in unsubscribe");
             }
         }
 
-        if (editor) {
+        // *** off first
+        unsubscribe();
 
-            // *** off first
-            unsubscribe();
+        // *** then on
+        subscribe();
 
-            // *** then on
-            subscribe();
-
-            return unsubscribe;
-
-        } else {
-            return NULL_FUNCTION
-        }
+        return unsubscribe;
 
     }, [editor, handleEditorEnter, handleEditorKeyDown]);
 

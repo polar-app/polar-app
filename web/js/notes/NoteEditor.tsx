@@ -83,7 +83,6 @@ function useLinkNavigationClickHandler() {
 function useLinkNavigation() {
 
     const editor = useEditorStore();
-    const unmountedRef = React.useRef(false);
 
     const linkNavigationEventListener = useLinkNavigationEventListener();
 
@@ -101,34 +100,32 @@ function useLinkNavigation() {
 
     }, [linkNavigationEventListener]);
 
-
-    useComponentWillUnmount(() => {
-
-        unmountedRef.current = true;
-
-        if (editor) {
-            editor.editing.view.document.off('click', handleEditorClick);
-        }
-
-    });
-
     React.useEffect(() => {
 
-        if (unmountedRef.current) {
-            return;
+        function subscribe() {
+
+            if (editor) {
+                editor.editing.view.document.on('click', handleEditorClick);
+            } else {
+                // console.warn("No editor");
+            }
+
         }
 
-        if (editor) {
+        function unsubscribe() {
 
-            // *** off first
-            editor.editing.view.document.off('click', handleEditorClick);
+            if (editor) {
+                editor.editing.view.document.off('click', handleEditorClick);
+            } else {
+                // console.warn("No editor");
+            }
 
-            // *** then on
-            editor.editing.view.document.on('click', handleEditorClick);
-
-        } else {
-            // console.warn("No editor");
         }
+
+        unsubscribe();
+        subscribe();
+
+        return unsubscribe;
 
     }, [editor, handleEditorClick]);
 
