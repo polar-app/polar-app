@@ -1,7 +1,8 @@
 
 # Key Actions and Behavior that need to be tested
 
-    - deleting an item doesn't compute the next active node... 
+    - deleting an item doesn't compute the next active node...
+        - it also doesnt' remove itself from its parent which is a big problem top!! 
     
     - unable to create a new node with 'enter' when in the root node...
 
@@ -35,31 +36,40 @@
 
 
 - MVP.1
-    - basic workflowy style outline manipulation
+    - 4h:  basic workflowy style outline manipulation
         - tab indents the current item
-    - image paste
-    - inbound references
+    - DONE: image paste
+    - 2h: inbound references
     - DONE: click the bullets next to links to jump to a new node
-    - ckeditor activation working (2hrs)
+    - 2h: ckeditor activation working
+
+    total: 8h 
 
 - MVP.2
-    - breadcrubs with path during navigation... 
-    - block references (ability to link to another note by just the ID)
-    - note selection via shift+ArrowUp , and shift+ArrowDown
-    - correct image size...
-    - action menu properly completed
+    - 1h: breadcrubs with path during navigation... 
+    - 1h: block references (ability to link to another note by just the ID)
+    - 2h: note selection via shift+ArrowUp , and shift+ArrowDown
+    - 1h: correct image size...
+    - 2h: action menu properly completed
         - [[]] working  
    
+   total: 7h
+   
 - MVP.3
-    - all core roam + workflowy context + keyboard operations.
-    - basic backend persistence
-    - 
+    - 4h: all core roam + workflowy context + keyboard operations.
+    - 3h: basic backend persistence
+
+    total: 7h
 
 - MVP.4
-    - proper handling of undo/redo
-    - drag notes around...  
-    - multi-line notes with shift+enter
+    - 3h: proper handling of undo/redo
+    - 2h: drag notes around...  
+    - 1h: multi-line notes with shift+enter
         - ability to enter 'editing' mode so you can make a node multi-line    
+
+    - total: 6h
+    
+    
     - /table support
     - exports of data
 
