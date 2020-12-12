@@ -109,17 +109,42 @@ export namespace ckeditor5 {
     export interface IRootElement extends IElement {
     }
 
+    export interface IIterator<T> {
+        next(value?: any): IteratorResult<T>;
+        return?(value?: any): IteratorResult<T>;
+        throw?(e?: any): IteratorResult<T>;
+    }
+
+    export interface IIterable<T> {
+        [Symbol.iterator](): IIterator<T>;
+    }
+
+    // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_documentselection-DocumentSelection.html
+    export interface IDocumentSelection {
+
+        readonly rangeCount: number;
+        readonly isCollapsed: boolean;
+        readonly isBackward: boolean;
+
+        readonly getFirstPosition: () => IPosition | null;
+        readonly getLastPosition: () => IPosition | null;
+        readonly getRanges: () => IIterable<IRange>;
+    }
+
     // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_document-Document.html
     export interface IDocument {
-        readonly selection: ISelection;
+        readonly selection: IDocumentSelection;
 
-        readonly on: (eventName: 'keydown' | 'enter' | 'click', handler: (eventData: IEventData, event: IKeyPressEvent) => void) => void;
-        readonly off: (eventName: 'keydown' | 'enter' | 'click', handler: (eventData: IEventData, event: IKeyPressEvent) => void) => void;
+        readonly on: (eventName: 'keydown' | 'enter' | 'click' | string, handler: (eventData: IEventData, event: IKeyPressEvent) => void) => void;
+        readonly off: (eventName: 'keydown' | 'enter' | 'click' | string, handler: (eventData: IEventData, event: IKeyPressEvent) => void) => void;
 
         readonly getRoot: () => IRootElement;
+
     }
 
     export interface IRange {
+        readonly isCollapsed: boolean;
+        readonly isFlat: boolean;
 
     }
 
