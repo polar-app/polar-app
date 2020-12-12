@@ -1,10 +1,18 @@
 
 # Key Actions and Behavior that need to be tested
-    
+
+    - delete between new notes that are full will join them
+        - we don't need to do aything other than joion the markdown into a new / updated note
+        - we're going to have to create a selection over a range
+            - HOW?
+        - then copy it to HTML
+            - HOW?
+        - then insert the new HTML
+            - HOW? 
+            
 
     - TODO: when deleting a node, selection the previous one, and position the cursor properly.
   
-    - delete between new notes that are full will join them
     - enter / new node creation
   
         - enter in the middle of a node should split it and create a new node below it.   
@@ -31,17 +39,24 @@
 
 # BUGS
 
+    - If the selection is active, when we delete content, don't delete the note too
+        - the seleciton in either ckedoitor AND the main browser seleciton isn't
+          working and showing it's collapsed
+    
+    -  
+    
+    - can not delete the previous node if the current node has text in it... this is part of the join operation
+
+
+    - when creating NEW node references, we don't register the anchor handler so clicking on them brings up the 
+      ckeditor link handler. 
+
     - how are we going to handle copy/paste of notes and multi-selection since we're interacting with ckeditor
       AND the browser DOM.
         - one strategy is to just deal with the link clicks directly so that if the user highlights multiple nodes, 
           then we select them.
           
             - workflowy doesnt' allow you to copy partial ones... 
-
-    - when creating NEW node references, we don't register the anchor handler so clicking on them brings up the 
-      ckeditor link handler. 
-
-    - can not delete the previous node if the current node has text in it... this is part of the join operation
   
     - Deleting the first empty node in the root does not cause the root to be selected
     
