@@ -31,6 +31,9 @@
 
 # BUGS
 
+    - when creating NEW node references, we don't register the anchor handler so clicking on them brings up the 
+      ckeditor link handler. 
+
     - can not delete the previous node if the current node has text in it... this is part of the join operation
   
     - Deleting the first empty node in the root does not cause the root to be selected

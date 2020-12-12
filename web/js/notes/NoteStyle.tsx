@@ -16,8 +16,12 @@ const useStyles = makeStyles((theme) =>
                 content: "']]'",
                 color: theme.palette.text.disabled
             },
+            "& h1, h2, h3, h4, h5": {
+                lineHeight: 0
+            },
+            flexGrow: 1
+        }
 
-        },
     }),
 );
 
