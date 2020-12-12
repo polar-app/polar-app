@@ -265,11 +265,41 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
         function doDelete(deleteRequests: ReadonlyArray<DeleteNoteRequest>) {
 
+            if (deleteRequests.length === 0) {
+                return;
+            }
+
             const store = storeProvider();
 
             const index = {...store.index};
             const indexByName = {...store.indexByName};
             const reverse = {...store.reverse};
+
+            interface NextActive {
+                readonly active: NoteIDStr;
+                readonly activePos: NavPosition;
+            }
+
+            function computeNextActive(): NextActive | undefined {
+
+                const deleteRequest = deleteRequests[0];
+                const expansionTree = computeLinearItemsFromExpansionTree(deleteRequest.parent);
+
+                const currentIndex = expansionTree.indexOf(deleteRequest.id);
+
+                if (currentIndex > 0) {
+                    const nextActive = expansionTree[currentIndex - 1];
+
+                    return {
+                        active: nextActive,
+                        activePos: 'end'
+                    }
+
+                }
+
+                return undefined;
+
+            }
 
             function handleDelete(deleteRequests: ReadonlyArray<DeleteNoteRequest>) {
 
@@ -324,9 +354,10 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
             }
 
+            const nextActive = computeNextActive();
             handleDelete(deleteRequests);
 
-            setStore({...store, index, indexByName, reverse});
+            setStore({...store, index, indexByName, reverse, ...nextActive});
 
         }
 
@@ -504,7 +535,8 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
         }
 
 
-        function computeLinearItemsFromExpansionTree(id: NoteIDStr, root?: boolean): ReadonlyArray<NoteIDStr> {
+        function computeLinearItemsFromExpansionTree(id: NoteIDStr,
+                                                     root: boolean = true): ReadonlyArray<NoteIDStr> {
 
             const store = storeProvider();
             const {index, expanded} = store;
@@ -525,7 +557,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
                 for (const item of items) {
                     result.push(item);
-                    result.push(...computeLinearItemsFromExpansionTree(item));
+                    result.push(...computeLinearItemsFromExpansionTree(item, false));
                 }
 
                 return result;
@@ -561,7 +593,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
             const items = [
                 root,
-                ...computeLinearItemsFromExpansionTree(root, true)
+                ...computeLinearItemsFromExpansionTree(root)
             ];
 
             const childIndex = items.indexOf(active);
