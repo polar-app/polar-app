@@ -31,9 +31,16 @@
 
 # BUGS
 
+    - Deleting the first empty node in the root does not cause the root to be selected
+    
+
     - when changing nodes, the root seems to stay the same... and the node title
       doesn't seem to change. 
 
+# FEATURES
+    - shift+tab needs to unindent
+    - enter between a node should split it...
+    - backspace at beginning of the node should join it
 
 # MVP.1
 

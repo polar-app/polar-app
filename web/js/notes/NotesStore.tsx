@@ -386,8 +386,13 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
         }
 
+        // make the node the next sibling of its parent.
+        function doUnIndent() {
+
+        }
+
         /**
-         * Based on the note's position, indent it if it has a sibling
+         * Make the active note a child of the prev sibling.
          */
         function doIndent(id: NoteIDStr, parent: NoteIDStr) {
 
@@ -422,18 +427,18 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
                 // *** remove myself from my parent
 
-                function remove<T>(arr: ReadonlyArray<T>, idx: number) {
-                    const newArr = [...arr];
-                    newArr.splice(idx, 1);
-                    return newArr;
-                }
-
                 const now = ISODateTimeStrings.create();
+
+                function createNewItems() {
+                    const newItems = [...(parentNote.items || [])];
+                    newItems.splice(siblingIndex, 1);
+                    return newItems;
+                }
 
                 const mutatedParentNode = {
                     ...parentNote,
                     updated: now,
-                    items: remove(parentNote.items!, siblingIndex)
+                    items: createNewItems()
                 }
 
                 // ***: add myself to my newParent
