@@ -52,7 +52,6 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
     const editor = useEditorStore();
 
     const noteActive = useNoteActivatedListener(props.id);
-    const unmountedRef = React.useRef(false);
 
     const {createNewNote, setActive, navPrev, navNext, doIndent, doUnIndent, noteIsEmpty, doDelete} = useNotesStoreCallbacks();
 
@@ -332,10 +331,6 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
     }, [createNewNote, getEditorCursorPosition, props.id, props.parent]);
 
     React.useEffect(() => {
-
-        if (unmountedRef.current) {
-            return;
-        }
 
         function subscribe() {
             if (editor) {
