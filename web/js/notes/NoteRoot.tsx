@@ -5,6 +5,7 @@ import {isPresent} from "polar-shared/src/Preconditions";
 import {MUIBrowserLinkStyle} from "../mui/MUIBrowserLinkStyle";
 import {NotesInbound} from "./NotesInbound";
 import { Note } from "./Note";
+import { NoteStyle } from "./NoteStyle";
 
 interface IProps {
     readonly target: NoteIDStr;
@@ -29,35 +30,16 @@ export const NoteRoot = deepMemo(function NoteRoot(props: IProps) {
 
     const id = note?.id;
 
-    // FIXME: CKEditor5BalloonEditor should not be used
-    // FIXME: h1 should not be used and shod we have note names PERIOD?
     return (
-        <MUIBrowserLinkStyle style={{flexGrow: 1}}>
+        <NoteStyle>
+            <MUIBrowserLinkStyle style={{flexGrow: 1}}>
 
-            <Note parent={undefined} id={id} isExpanded={true}/>
+                <Note parent={undefined} id={id} isExpanded={true}/>
 
-            <NotesInbound id={id}/>
+                <NotesInbound id={id}/>
 
-            {/*<div className="NoteRoot">*/}
-
-            {/*    {note.name && (*/}
-            {/*        <NoteTitle>{note.name}</NoteTitle>*/}
-            {/*    )}*/}
-
-
-            {/*    {note.content && (*/}
-            {/*        <NoteTitle>*/}
-            {/*            <NoteEditor parent={undefined} id={id}/>*/}
-            {/*        </NoteTitle>*/}
-            {/*    )}*/}
-
-            {/*    <NoteItems parent={id} notes={notes}/>*/}
-
-            {/*    <NotesInbound id={id}/>*/}
-
-            {/*</div>*/}
-
-        </MUIBrowserLinkStyle>
+            </MUIBrowserLinkStyle>
+        </NoteStyle>
     );
 
 });
