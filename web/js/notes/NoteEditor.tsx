@@ -16,6 +16,7 @@ import {useLifecycleTracer, useStateRef} from "../hooks/ReactHooks";
 import {MarkdownContentEscaper} from "./MarkdownContentEscaper";
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 import IEventData = ckeditor5.IEventData;
+import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 
 interface ILinkNavigationEvent {
     readonly abortEvent: () => void;
@@ -82,6 +83,7 @@ function useLinkNavigationClickHandler() {
 function useLinkNavigation() {
 
     const editor = useEditorStore();
+    const unmountedRef = React.useRef(false);
 
     const linkNavigationEventListener = useLinkNavigationEventListener();
 
@@ -99,7 +101,22 @@ function useLinkNavigation() {
 
     }, [linkNavigationEventListener]);
 
+
+    useComponentWillUnmount(() => {
+
+        unmountedRef.current = true;
+
+        if (editor) {
+            editor.editing.view.document.off('click', handleEditorClick);
+        }
+
+    });
+
     React.useEffect(() => {
+
+        if (unmountedRef.current) {
+            return;
+        }
 
         if (editor) {
 
@@ -276,15 +293,15 @@ const NoteEditorWithEditorStore = deepMemo(function NoteEditorWithStore(props: I
     useLinkNavigation();
 
     return (
-        <NoteActionMenuForLinking id={props.id}>
-            <NoteActionMenuForCommands id={props.id}>
-                <div>
-                    <NoteNavigation parent={props.parent} id={props.id}>
+        // <NoteActionMenuForLinking id={props.id}>
+        //     <NoteActionMenuForCommands id={props.id}>
+        //         <div>
+        //             <NoteNavigation parent={props.parent} id={props.id}>
                         <NoteEditorInner {...props}/>
-                    </NoteNavigation>
-                </div>
-            </NoteActionMenuForCommands>
-        </NoteActionMenuForLinking>
+        //             </NoteNavigation>
+        //         </div>
+        //     </NoteActionMenuForCommands>
+        // </NoteActionMenuForLinking>
     );
 
 });

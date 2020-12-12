@@ -8,6 +8,7 @@ import {ckeditor5} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEd
 import IEventData = ckeditor5.IEventData;
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 import IWriter = ckeditor5.IWriter;
+import IPosition = ckeditor5.IPosition;
 
 interface IProps {
     readonly parent: NoteIDStr | undefined;
@@ -49,6 +50,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
     const editor = useEditorStore();
 
     const noteActive = useNoteActivatedListener(props.id);
+    const unmountedRef = React.useRef(false);
 
     const {createNewNote, setActive, navPrev, navNext, doIndent, doUnIndent, noteIsEmpty, doDelete} = useNotesStoreCallbacks();
 
@@ -89,7 +91,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
     type CursorPosition = 'start' | 'end';
 
-    const getCursorPosition = React.useCallback((): CursorPosition | undefined => {
+    const getEditorCursorPosition = React.useCallback((): CursorPosition | undefined => {
 
         if (! editor) {
             return undefined;
@@ -110,6 +112,46 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
         }
 
         return undefined;
+
+    }, [editor])
+
+
+    const getEditorHasActiveSelection = React.useCallback((): boolean => {
+
+        if (! editor) {
+            return false;
+        }
+
+        function debugPosition(position: IPosition | null) {
+
+            if (position) {
+                console.log("FIXME: parent ", position.parent);
+                console.log("FIXME: offset ", position.offset);
+
+            } else {
+                console.log("FIXME: none")
+            }
+
+        }
+
+        console.log("FIXME selection range count: " + editor.model.document.selection.rangeCount)
+        console.log("FIXME selection ranges: " , editor.model.document.selection.getRanges())
+
+        console.log("FIXME selection ranges: " , editor.model.document.selection.getRanges())
+
+        for (const range of editor.model.document.selection.getRanges()) {
+            console.log("FIXME: range is collapsed: ", range.isCollapsed)
+        }
+
+        // console.log("FIXME selection range count: " + editor.model.document.selection.)
+
+        console.log("FIXME: first position: ");
+        debugPosition(editor.model.document.selection.getFirstPosition());
+
+        console.log("FIXME: last position: ", );
+        debugPosition(editor.model.document.selection.getLastPosition());
+
+        return false;
 
     }, [editor])
 
@@ -164,38 +206,77 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
                 break;
 
             case 'ArrowLeft':
-                if (getCursorPosition() === 'start') {
+
+                if (getEditorCursorPosition() === 'start') {
                     abortEvent();
                     navPrev('end');
                 }
 
-                break
+                break;
 
             case 'ArrowRight':
-                if (getCursorPosition() === 'end') {
+
+                if (getEditorCursorPosition() === 'end') {
                     abortEvent();
                     navNext('start');
                 }
-                break
+
+                break;
 
             case 'Tab':
-                abortEvent();
 
                 if (props.parent !== undefined) {
+
+                    abortEvent();
+
                     if (event.domEvent.shiftKey) {
                         doUnIndent(props.id, props.parent);
                     } else {
                         doIndent(props.id, props.parent);
                     }
+
                 }
 
                 break;
 
             case 'Backspace':
 
-                if (props.parent !== undefined && noteIsEmpty(props.id)) {
-                    doDelete([{parent: props.parent, id: props.id}]);
+                getEditorHasActiveSelection();
+
+                function hasActiveSelection() {
+                    const selection = window.getSelection();
+
+                    if (selection) {
+
+                        if (selection.rangeCount >= 1) {
+                            const range = selection.getRangeAt(0);
+                            const contents = range.cloneContents();
+
+                            const div = document.createElement('div');
+                            div.append(contents);
+
+                            console.log("FIXME: : "+ div.innerHTML);
+
+                            return div.innerHTML.trim() !== '';
+
+                        }
+
+                    }
+
+                    return false;
+
                 }
+
+                // TODO: only do this if there aren't any modifiers I think...
+                if (props.parent !== undefined && noteIsEmpty(props.id)) {
+
+                    if (! hasActiveSelection()) {
+                        abortEvent();
+                        doDelete([{parent: props.parent, id: props.id}]);
+                    }
+
+                }
+
                 break;
 
             default:
@@ -203,7 +284,13 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
         }
 
-    }, [doDelete, doIndent, getCursorPosition, navNext, navPrev, noteIsEmpty, props.id, props.parent]);
+    }, [doDelete, doIndent, doUnIndent, getEditorCursorPosition, getEditorHasActiveSelection, navNext, navPrev, noteIsEmpty, props.id, props.parent]);
+
+    const handleEditorBackspace = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
+
+        console.log("FIXME: got backspace");
+
+    }, []);
 
     const handleEditorEnter = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
 
@@ -222,7 +309,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
         if (props.parent) {
 
             function computeNewNotePosition(): NewNotePosition {
-                const cursorPosition = getCursorPosition();
+                const cursorPosition = getEditorCursorPosition();
 
                 switch (cursorPosition) {
 
@@ -246,31 +333,42 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
             createNewNote(props.id, undefined, 'before');
         }
 
-    }, [createNewNote, getCursorPosition, props.id, props.parent]);
+    }, [createNewNote, getEditorCursorPosition, props.id, props.parent]);
 
     React.useEffect(() => {
+
+        if (unmountedRef.current) {
+            return;
+        }
 
         if (editor) {
 
             // *** off first
             editor.editing.view.document.off('keydown', handleEditorKeyDown);
             editor.editing.view.document.off('enter', handleEditorEnter);
+            editor.editing.view.document.off('Backspace', handleEditorBackspace);
 
             // *** then on
             editor.editing.view.document.on('keydown', handleEditorKeyDown);
             editor.editing.view.document.on('enter', handleEditorEnter);
+            editor.editing.view.document.on('Backspace', handleEditorBackspace);
+
 
         } else {
             // console.warn("No editor");
         }
 
-    }, [editor, handleEditorEnter, handleEditorKeyDown]);
+    }, [editor, handleEditorBackspace, handleEditorEnter, handleEditorKeyDown]);
 
     useComponentWillUnmount(() => {
+
+        unmountedRef.current = true;
+
         if (editor) {
             editor.editing.view.document.off('keydown', handleEditorKeyDown);
             editor.editing.view.document.off('enter', handleEditorEnter);
         }
+
     });
 
     return (
