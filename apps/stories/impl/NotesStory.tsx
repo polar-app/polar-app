@@ -9,6 +9,7 @@ import Fab from '@material-ui/core/Fab';
 import HelpIcon from '@material-ui/icons/Help';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
+import {CKEditor5NotesGlobalCSS} from "../../../web/js/notes/CKEditor5NotesGlobalCSS";
 
 const now = ISODateTimeStrings.create();
 
@@ -230,7 +231,10 @@ export const NotesStory = () => {
             <CKEditor5AppRoot>
                 <NotesStoreProvider>
                     <BasicNotesDataSet>
-                        <NotesInner/>
+                        <>
+                            <CKEditor5NotesGlobalCSS/>
+                            <NotesInner/>
+                        </>
                     </BasicNotesDataSet>
                 </NotesStoreProvider>
             </CKEditor5AppRoot>

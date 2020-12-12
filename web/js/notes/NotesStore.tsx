@@ -450,7 +450,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
                 const newParentItems = (newParentNode.items || []);
 
                 function createNewItems() {
-                    const newItems = [...(parentNote.items || [])];
+                    const newItems = [...newParentItems];
                     newItems.splice(newParentItems.indexOf(parent), 0, id)
                     return newItems;
                 }

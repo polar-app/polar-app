@@ -31,6 +31,7 @@
 
 # BUGS
 
+    - can not delete the previous node if the current node has text in it... this is part of the join operation
   
     - Deleting the first empty node in the root does not cause the root to be selected
     

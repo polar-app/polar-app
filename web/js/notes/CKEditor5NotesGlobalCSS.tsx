@@ -1,16 +1,18 @@
 import * as React from 'react';
 import withStyles from "@material-ui/core/styles/withStyles";
 
-const CKEditor5NotesGlobalCSS = withStyles((theme) => {
+const CKEditor5NotesGlobalCSSStyles = withStyles((theme) => {
 
     return {
 
-        ".ck-content p": {
-            margin: 0,
-            padding: 0
+        "a::before": {
+            content: "[[",
+            color: theme.palette.text.disabled,
+            textDecoration: 'none'
         }
 
     };
 
 });
 
+export const CKEditor5NotesGlobalCSS = CKEditor5NotesGlobalCSSStyles(() => null);
