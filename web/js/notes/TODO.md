@@ -31,6 +31,13 @@
 
 # BUGS
 
+    - how are we going to handle copy/paste of notes and multi-selection since we're interacting with ckeditor
+      AND the browser DOM.
+        - one strategy is to just deal with the link clicks directly so that if the user highlights multiple nodes, 
+          then we select them.
+          
+            - workflowy doesnt' allow you to copy partial ones... 
+
     - when creating NEW node references, we don't register the anchor handler so clicking on them brings up the 
       ckeditor link handler. 
 
@@ -46,7 +53,9 @@
 
     - need to support #headline I think...
         - we have to set line-height: 0 to get this to work... 
-    - the OCR in evernote is cool because it can accept and search ANYTHING you throw at it.
+        
+    - the OCR in evernote is cool because it can accept and search ANYTHING you
+      throw at it.
     
     - notion supports basic kanban boards.
         
@@ -72,6 +81,12 @@
    - .edu plans automatically qualify..?
    
    - notion gave away 1000 coupon codes... 
+   
+   - TODO: 
+        - find the paper referenced in this video: 
+        
+            https://www.youtube.com/watch?v=ukLnPbIffxE
+        
         
 
 # FEATURES
