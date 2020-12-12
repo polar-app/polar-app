@@ -50,7 +50,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
     const noteActive = useNoteActivatedListener(props.id);
 
-    const {createNewNote, setActive, navPrev, navNext, doIndent, noteIsEmpty, doDelete} = useNotesStoreCallbacks();
+    const {createNewNote, setActive, navPrev, navNext, doIndent, doUnIndent, noteIsEmpty, doDelete} = useNotesStoreCallbacks();
 
     const [ref, setRef] = React.useState<HTMLDivElement | null>(null);
 
@@ -182,7 +182,11 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
                 abortEvent();
 
                 if (props.parent !== undefined) {
-                    doIndent(props.id, props.parent);
+                    if (event.domEvent.shiftKey) {
+                        doUnIndent(props.id, props.parent);
+                    } else {
+                        doIndent(props.id, props.parent);
+                    }
                 }
 
                 break;

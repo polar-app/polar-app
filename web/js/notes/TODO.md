@@ -31,6 +31,7 @@
 
 # BUGS
 
+  
     - Deleting the first empty node in the root does not cause the root to be selected
     
 

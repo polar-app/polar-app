@@ -174,7 +174,9 @@ interface INotesCallbacks {
      */
     readonly navNext: (pos: NavPosition) => void;
 
+
     readonly doIndent: (id: NoteIDStr, parent: NoteIDStr) => void;
+    readonly doUnIndent: (id: NoteIDStr, parent: NoteIDStr) => void;
 
     readonly toggleExpand: (id: NoteIDStr) => void;
     readonly expand: (id: NoteIDStr) => void;
@@ -297,9 +299,12 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
                         activePos: 'end'
                     }
 
+                } else {
+                    return {
+                        active: deleteRequest.parent,
+                        activePos: 'end'
+                    }
                 }
-
-                return undefined;
 
             }
 
@@ -387,7 +392,83 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
         }
 
         // make the node the next sibling of its parent.
-        function doUnIndent() {
+        function doUnIndent(id: NoteIDStr, parent: NoteIDStr) {
+
+            const store = storeProvider();
+
+            const {index, root} = store;
+
+            const note = index[id];
+
+            if (! note) {
+                console.warn("No note for id: " + id);
+                return;
+            }
+
+            const parentNote = index[parent];
+
+            if (! parentNote) {
+                console.warn("No parent note for id: " + parent);
+                return;
+            }
+
+            if (! root) {
+                console.warn("No root note");
+                return;
+            }
+
+            const expansionTree = computeLinearItemsFromExpansionTree(root);
+
+            const parentIndexWithinExpansionTree = expansionTree.indexOf(parent);
+
+            const newParentID = expansionTree[parentIndexWithinExpansionTree + 1];
+
+            const newParentNode = index[newParentID];
+
+            // *** remove myself from my current parent
+
+            const now = ISODateTimeStrings.create();
+
+            function createMutatedParentNode() {
+
+                function createNewItems() {
+                    return (parentNote.items || []).filter(current => current !== id)
+                }
+
+                return {
+                    ...parentNote,
+                    updated: now,
+                    items: createNewItems()
+                }
+
+            }
+
+            const mutatedParentNode = createMutatedParentNode();
+
+            function createMutatedNewParentNode() {
+
+                const newParentItems = (newParentNode.items || []);
+
+                function createNewItems() {
+                    const newItems = [...(parentNote.items || [])];
+                    newItems.splice(newParentItems.indexOf(parent), 0, id)
+                    return newItems;
+                }
+
+                return {
+                    ...newParentNode,
+                    updated: now,
+                    items: createNewItems()
+                };
+
+            }
+
+            const mutatedNewParentNode = createMutatedNewParentNode();
+
+            doPut([mutatedParentNode, mutatedNewParentNode], {
+                newActive: id,
+                newExpand: mutatedNewParentNode.id
+            });
 
         }
 
@@ -430,7 +511,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
                 const now = ISODateTimeStrings.create();
 
                 function createNewItems() {
-                    const newItems = [...(parentNote.items || [])];
+                    const newItems = [...parentItems];
                     newItems.splice(siblingIndex, 1);
                     return newItems;
                 }
@@ -683,6 +764,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             navPrev,
             navNext,
             doIndent,
+            doUnIndent,
             toggleExpand,
             expand,
             collapse,
