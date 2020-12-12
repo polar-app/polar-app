@@ -286,12 +286,6 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
     }, [doDelete, doIndent, doUnIndent, getEditorCursorPosition, getEditorHasActiveSelection, navNext, navPrev, noteIsEmpty, props.id, props.parent]);
 
-    const handleEditorBackspace = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
-
-        console.log("FIXME: got backspace");
-
-    }, []);
-
     const handleEditorEnter = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
 
         eventData.stop();
@@ -346,19 +340,17 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
             // *** off first
             editor.editing.view.document.off('keydown', handleEditorKeyDown);
             editor.editing.view.document.off('enter', handleEditorEnter);
-            editor.editing.view.document.off('Backspace', handleEditorBackspace);
 
             // *** then on
             editor.editing.view.document.on('keydown', handleEditorKeyDown);
             editor.editing.view.document.on('enter', handleEditorEnter);
-            editor.editing.view.document.on('Backspace', handleEditorBackspace);
 
 
         } else {
             // console.warn("No editor");
         }
 
-    }, [editor, handleEditorBackspace, handleEditorEnter, handleEditorKeyDown]);
+    }, [editor, handleEditorEnter, handleEditorKeyDown]);
 
     useComponentWillUnmount(() => {
 

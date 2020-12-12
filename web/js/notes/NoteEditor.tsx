@@ -293,15 +293,15 @@ const NoteEditorWithEditorStore = deepMemo(function NoteEditorWithStore(props: I
     useLinkNavigation();
 
     return (
-        // <NoteActionMenuForLinking id={props.id}>
-        //     <NoteActionMenuForCommands id={props.id}>
-        //         <div>
-        //             <NoteNavigation parent={props.parent} id={props.id}>
+        <NoteActionMenuForLinking id={props.id}>
+            <NoteActionMenuForCommands id={props.id}>
+                <div>
+                    <NoteNavigation parent={props.parent} id={props.id}>
                         <NoteEditorInner {...props}/>
-        //             </NoteNavigation>
-        //         </div>
-        //     </NoteActionMenuForCommands>
-        // </NoteActionMenuForLinking>
+                    </NoteNavigation>
+                </div>
+            </NoteActionMenuForCommands>
+        </NoteActionMenuForLinking>
     );
 
 });
