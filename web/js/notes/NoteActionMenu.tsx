@@ -6,7 +6,6 @@ import MenuList from "@material-ui/core/MenuList";
 import {useRefValue, useStateRef} from "../hooks/ReactHooks";
 import { deepMemo } from "../react/ReactUtils";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import {useComponentDidMount, useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 import {useEditorStore} from "./EditorStoreProvider";
 import {ckeditor5} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
 import { NoteIDStr } from "./NotesStore";
@@ -347,17 +346,28 @@ export const NoteActionMenu = deepMemo(function NoteActionMenu(props: IProps) {
 
     React.useEffect(() => {
 
-        if (editor) {
+        function subscribe() {
 
-            // *** off first
-            editor.editing.view.document.off('keydown', handleEditorKeyDown);
-            editor.editing.view.document.off('enter', handleEditorEnter);
-
-            // *** then on
-            editor.editing.view.document.on('keydown', handleEditorKeyDown);
-            editor.editing.view.document.on('enter', handleEditorEnter);
+            if (editor) {
+                editor.editing.view.document.on('keydown', handleEditorKeyDown);
+                editor.editing.view.document.on('enter', handleEditorEnter);
+            }
 
         }
+
+        function unsubscribe() {
+
+            if (editor) {
+                editor.editing.view.document.off('keydown', handleEditorKeyDown);
+                editor.editing.view.document.off('enter', handleEditorEnter);
+            }
+
+        }
+
+        unsubscribe();
+        subscribe();
+
+        return unsubscribe;
 
     }, [editor, handleEditorEnter, handleEditorKeyDown]);
 
