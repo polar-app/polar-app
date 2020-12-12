@@ -319,7 +319,7 @@ export const CKEditor5BalloonEditor = React.memo(function CKEditor5BalloonEditor
                         // ],
                         removePlugins: [
                             "CKFinder",
-                            "Heading",
+                            // "Heading",
                             // "ImageCaption",
                             // "ImageStyle",
                             // "ImageToolbar",
@@ -336,8 +336,8 @@ export const CKEditor5BalloonEditor = React.memo(function CKEditor5BalloonEditor
                         ],
                         toolbar: {
                             items: [
-                                // 'heading',
-                                // '|',
+                                'heading',
+                                '|',
                                 'bold',
                                 'italic',
                                 'blockQuote',

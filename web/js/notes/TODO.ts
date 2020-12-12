@@ -59,6 +59,18 @@ export interface IBlockReferenceContent {
 
 }
 
+/**
+ * Reference to a polar annotation.  We directly extend ITextHighlight and
+ * IAnnotationHighlight here and reference the rest as inline metadata.
+ */
+export interface IAnnotationReferenceContent {
+
+    readonly type: 'annotation';
+
+    readonly id: IDStr;
+
+}
+
 export interface ILatexContent {
     readonly type: 'latex';
     readonly data: ILatexData;

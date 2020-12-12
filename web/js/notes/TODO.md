@@ -39,7 +39,43 @@
     - when changing nodes, the root seems to stay the same... and the node title
       doesn't seem to change. 
 
+# Ideas from other Note Taking Platforms 
+
+    - need to support #headline I think...
+        - we have to set line-height: 0 to get this to work... 
+    - the OCR in evernote is cool because it can accept and search ANYTHING you throw at it.
+    
+    - notion supports basic kanban boards.
+        
+    - notion's little 'drag' button is also the context menu and I actually
+      think this is a better idea
+
+    - notion has icons and covers for notes which I think is pretty slick... 
+
+    - Cornell note taking system
+       - the idea is that you put your notes on the left and questions on the right
+       - his idea is that you put the answers under bullet points
+       
+   - this is the spaced repetition timestamp
+        - https://youtu.be/ONG26-2mIHU?t=659
+       
+   - TODO: watch this too:
+   
+        - https://www.youtube.com/watch?v=ukLnPbIffxE
+   - TODO: buy a book "Make it Stick" - "The Science of Effective Learning"
+   
+   - notion supports 1000 free blocks.
+   
+   - .edu plans automatically qualify..?
+   
+   - notion gave away 1000 coupon codes... 
+        
+
 # FEATURES
+    - how do we do named notes because we need to constrain the characters here
+      because we can't accept images, video, complex formatting, etc
+        - ckeditor without formatting so that the code doesn't have to be different?
+        - either that or just <textarea> but also some characters can't be used like [ and # ... 
     - shift+tab needs to unindent
     - enter between a node should split it...
     - backspace at beginning of the node should join it
