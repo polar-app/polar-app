@@ -157,9 +157,11 @@ interface INotesCallbacks {
     /**
      * Create a new note under the parent using the childRef for the
      * position of the note.
+     * @param parent the parent note which has items that will need a new item
+     * @param child where to insert the note in reference to the child
      */
     readonly createNewNote: (parent: NoteIDStr,
-                             child: NoteIDStr,
+                             child: NoteIDStr | undefined,
                              pos: NewNotePosition) => void;
 
     /**
@@ -468,7 +470,9 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
         }
 
-        function createNewNote(parent: NoteIDStr, child: NoteIDStr, pos: NewNotePosition) {
+        function createNewNote(parent: NoteIDStr,
+                               child: NoteIDStr | undefined,
+                               pos: NewNotePosition) {
 
             console.log("Create new note...")
 
@@ -485,7 +489,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
             const items = [...(parentNote.items || [])];
 
-            const childIndexPosition = items.indexOf(child);
+            const childIndexPosition = child ? items.indexOf(child) : 0;
 
             const now = ISODateTimeStrings.create()
 

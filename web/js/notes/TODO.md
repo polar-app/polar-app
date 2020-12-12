@@ -1,20 +1,15 @@
 
 # Key Actions and Behavior that need to be tested
-
-    - deleting an item doesn't compute the next active node...
     
-    - unable to create a new node with 'enter' when in the root node...
-
-    - when changing nodes, the root seems to stay the same... and the node title
-      doesn't seem to change. 
 
     - TODO: when deleting a node, selection the previous one, and position the cursor properly.
   
+    - delete between new notes that are full will join them
     - enter / new node creation
   
         - enter in the middle of a node should split it and create a new node below it.   
-        - enter at the beginning should insert a node before
-        - enter at the end should insert a node after 
+        - DONE: enter at the beginning should insert a node before
+        - DONE: enter at the end should insert a node after 
   
     - when at the end of the note, if we arrow right, then we have to go to 
       the beginning of the next note.
@@ -34,7 +29,15 @@
           has no correlation with the jumpToEditorStart
 
 
-- MVP.1
+# BUGS
+
+    - when changing nodes, the root seems to stay the same... and the node title
+      doesn't seem to change. 
+
+
+# MVP.1
+
+
     - 4h:  basic workflowy style outline manipulation
         - tab indents the current item
     - DONE: image paste

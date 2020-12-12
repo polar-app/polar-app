@@ -215,7 +215,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
         // deleteContent on that selection
         // create a new node with the DocumentFragment as markdown...
 
-        if (props.parent !== undefined) {
+        if (props.parent) {
 
             function computeNewNotePosition(): NewNotePosition {
                 const cursorPosition = getCursorPosition();
@@ -238,6 +238,8 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
             createNewNote(props.parent, props.id, pos);
 
+        } else {
+            createNewNote(props.id, undefined, 'before');
         }
 
     }, [createNewNote, getCursorPosition, props.id, props.parent]);
