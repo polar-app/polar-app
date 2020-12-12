@@ -2,7 +2,6 @@
 # Key Actions and Behavior that need to be tested
 
     - deleting an item doesn't compute the next active node...
-        - it also doesnt' remove itself from its parent which is a big problem top!! 
     
     - unable to create a new node with 'enter' when in the root node...
 

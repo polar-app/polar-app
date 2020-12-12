@@ -130,11 +130,16 @@ export type NavPosition = 'start' | 'end';
 
 export type NewNotePosition = 'before' | 'after' | 'split';
 
+export interface DeleteNoteRequest {
+    readonly parent: NoteIDStr;
+    readonly id: NoteIDStr;
+}
+
 interface INotesCallbacks {
 
     readonly doPut: (notes: ReadonlyArray<INote>, opts?: DoPutOpts) => void;
 
-    readonly doDelete: (notes: ReadonlyArray<NoteIDStr>) => void;
+    readonly doDelete: (deleteRequests: ReadonlyArray<DeleteNoteRequest>) => void;
 
     readonly updateNote: (id: NoteIDStr, content: string) => void;
 
@@ -258,7 +263,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
         }
 
-        function doDelete(noteIDs: ReadonlyArray<NoteIDStr>) {
+        function doDelete(deleteRequests: ReadonlyArray<DeleteNoteRequest>) {
 
             const store = storeProvider();
 
@@ -266,43 +271,60 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             const indexByName = {...store.indexByName};
             const reverse = {...store.reverse};
 
-            for (const noteID of noteIDs) {
+            function handleDelete(deleteRequests: ReadonlyArray<DeleteNoteRequest>) {
 
-                const note = index[noteID];
+                for (const deleteRequest of deleteRequests) {
 
-                if (note) {
+                    const note = index[deleteRequest.id];
 
-                    // *** delete the note from the index
-                    delete index[noteID];
+                    if (note) {
 
-                    // *** delete the note from name index by name.
-                    if (note.type === 'named') {
-                        indexByName[note.content] = note;
-                    }
+                        // *** delete the id for this note from the parents items.
 
-                    // *** delete the reverse index for all the child items
+                        const parentNote = index[deleteRequest.parent];
 
-                    // FIXME: what about deleting the entire tree under a note..
-                    // how does that work?
-                    //
-                    // FIXME: we don't actually delete any of the items in teh
-                    // parent node from this note so it would break navigation
-                    for (const item of (note.items || [])) {
+                        index[parentNote.id] = {
+                            ...parentNote,
+                            items: (parentNote.items || []).filter(item => item !== deleteRequest.id)
+                        }
 
-                        const inbound = lookupReverse(item)
+                        // *** delete the note from the index
+                        delete index[deleteRequest.id];
+
+                        // *** delete the note from name index by name.
+                        if (note.type === 'named') {
+                            indexByName[note.content] = note;
+                        }
+
+                        // *** delete the reverse index for this item
+
+                        const inbound = lookupReverse(deleteRequest.id)
                             .filter(current => current !== note.id);
 
                         if (inbound.length === 0) {
-                            delete reverse[item];
+                            delete reverse[deleteRequest.id];
                         } else {
-                            reverse[item] = inbound
+                            reverse[deleteRequest.id] = inbound
                         }
+
+                        // *** now delete all children too...
+
+                        function toDeleteNoteRequest(id: NoteIDStr): DeleteNoteRequest {
+                            return {
+                                parent: note.id,
+                                id
+                            }
+                        }
+
+                        handleDelete((note.items || []).map(toDeleteNoteRequest));
 
                     }
 
                 }
 
             }
+
+            handleDelete(deleteRequests);
 
             setStore({...store, index, indexByName, reverse});
 

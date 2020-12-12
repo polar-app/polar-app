@@ -8,6 +8,7 @@ import FileCopyIcon from '@material-ui/icons/FileCopy';
 
 export const NoteContextMenuItems = React.memo(function MUIDocDropdownMenuItems() {
 
+    // TODO: selected not active is what we want to focus on...
     const {active, index} = useNotesStore(['active', 'index']);
 
     const onCopyMarkdown = React.useCallback(() => {

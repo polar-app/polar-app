@@ -189,8 +189,8 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
             case 'Backspace':
 
-                if (noteIsEmpty(props.id)) {
-                    doDelete([props.id]);
+                if (props.parent !== undefined && noteIsEmpty(props.id)) {
+                    doDelete([{parent: props.parent, id: props.id}]);
                 }
                 break;
 
