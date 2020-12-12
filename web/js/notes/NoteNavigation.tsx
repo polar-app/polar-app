@@ -101,12 +101,12 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
         const rootStart = editor.model.createPositionAt(root, 0);
         const rootEnd = editor.model.createPositionAt(root, 'end');
 
-        if (firstPosition && firstPosition.isTouching(rootStart)) {
-            return 'start'
-        }
-
         if (firstPosition && firstPosition.isTouching(rootEnd)) {
             return 'end'
+        }
+
+        if (firstPosition && firstPosition.isTouching(rootStart)) {
+            return 'start'
         }
 
         return undefined;
