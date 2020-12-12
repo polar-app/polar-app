@@ -9,6 +9,8 @@ import IEventData = ckeditor5.IEventData;
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 import IWriter = ckeditor5.IWriter;
 import IPosition = ckeditor5.IPosition;
+import { useRefValue } from '../hooks/ReactHooks';
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 interface IProps {
     readonly parent: NoteIDStr | undefined;
@@ -335,33 +337,39 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
             return;
         }
 
+        function subscribe() {
+            if (editor) {
+                editor.editing.view.document.on('keydown', handleEditorKeyDown);
+                editor.editing.view.document.on('enter', handleEditorEnter);
+            } else {
+                console.warn("No editor in subscribe");
+            }
+        }
+
+        function unsubscribe() {
+            if (editor) {
+                editor.editing.view.document.off('keydown', handleEditorKeyDown);
+                editor.editing.view.document.off('enter', handleEditorEnter);
+            } else {
+                console.warn("No editor in unsubscribe");
+            }
+        }
+
         if (editor) {
 
             // *** off first
-            editor.editing.view.document.off('keydown', handleEditorKeyDown);
-            editor.editing.view.document.off('enter', handleEditorEnter);
+            unsubscribe();
 
             // *** then on
-            editor.editing.view.document.on('keydown', handleEditorKeyDown);
-            editor.editing.view.document.on('enter', handleEditorEnter);
+            subscribe();
 
+            return unsubscribe;
 
         } else {
-            // console.warn("No editor");
+            return NULL_FUNCTION
         }
 
     }, [editor, handleEditorEnter, handleEditorKeyDown]);
-
-    useComponentWillUnmount(() => {
-
-        unmountedRef.current = true;
-
-        if (editor) {
-            editor.editing.view.document.off('keydown', handleEditorKeyDown);
-            editor.editing.view.document.off('enter', handleEditorEnter);
-        }
-
-    });
 
     return (
         <ClickAwayListener onClickAway={handleClickAway}>
