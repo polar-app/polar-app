@@ -91,19 +91,43 @@ export namespace ckeditor5 {
         readonly stop: () => void;
     }
 
-    export interface INode {
-
-    }
-
+    // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_view_documentfragment-DocumentFragment.html
     export interface IDocumentFragment {
+        readonly childCount: number;
+        readonly getChild: (index: number) => INode
+        readonly getChildren: () => Iterable<INode>;
+        readonly is: (type: NodeType) => boolean;
 
     }
 
+    export type AttributeName = string;
+    export type AttributeValue = string;
+
+    export type IAttribute = [AttributeName, AttributeValue];
+
+    export type NodeType = '$text' | 'node' | 'element' | 'documentFragment';
+
+    // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_node-Node.html
+    export interface INode {
+        readonly is: (type: NodeType) => boolean;
+    }
+
+    // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_text-Text.html
+    export interface IText extends INode {
+        readonly data: string;
+    }
+
+    // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_element-Element.html
     export interface IElement extends INode {
+        readonly name: string;
         readonly childCount: number;
         readonly document: IDocument;
         readonly nextSibling: INode | null;
-        readonly getChildren: () => any;
+
+        readonly getChild: (index: number) => INode
+        readonly getChildren: () => Iterable<INode>;
+
+        readonly getAttributes: () => IIterable<IAttribute>;
     }
 
     export interface IRootElement extends IElement {
