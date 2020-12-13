@@ -67,7 +67,7 @@ export class FirebaseDatastores {
 
     public static computeStoragePath(backend: Backend,
                                      fileRef: FileRef,
-                                     uid: UserIDStr = FirebaseDatastores.getUserID()): StoragePath {
+                                     uid: UserIDStr): StoragePath {
 
         const ext = FilePaths.toExtension(fileRef.name);
 
@@ -187,22 +187,8 @@ export class FirebaseDatastores {
     // in the future. Or, an anonymous user can link a Facebook account and then,
     // later, sign in with Facebook to continue using your app.
 
-    public static getUserID(): UserID {
-
-        const app = firebase.app();
-
-        const auth = app.auth();
-        Preconditions.assertPresent(auth, "Not authenticated (no auth)");
-
-        const user = this.user || auth.currentUser;
-        Preconditions.assertPresent(user, "Not authenticated (no user)");
-
-        return user!.uid;
-
-    }
-
     public static computeDocMetaID(fingerprint: string,
-                                   uid: UserID = FirebaseDatastores.getUserID()): FirebaseDocMetaID {
+                                   uid: UserID): FirebaseDocMetaID {
 
         return Hashcodes.createID(uid + ':' + fingerprint, 32);
 

@@ -87,6 +87,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     private primarySnapshot?: SnapshotResult;
 
+    private uid: string = '';
+
     private readonly docMetaSnapshotEventDispatcher: IEventDispatcher<DocMetaSnapshotEvent> = new SimpleReactor();
 
     constructor() {
@@ -106,6 +108,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         this.app = firebase.app();
         this.firestore = await Firestore.getInstance();
         this.storage = firebase.storage();
+        this.uid = (await Firebase.currentUserID())!;
 
         await FirebaseDatastores.init();
 
@@ -137,7 +140,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         // setup the initial snapshot so that we query for the users existing
         // data...
 
-        const uid = FirebaseDatastores.getUserID();
+        const uid = this.uid;
 
         // start synchronizing the datastore.  You MUST register your listeners
         // BEFORE calling init if you wish to listen to the full stream of
@@ -255,7 +258,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         }
 
-        const id = FirebaseDatastores.computeDocMetaID(docMetaFileRef.fingerprint);
+        const id = FirebaseDatastores.computeDocMetaID(docMetaFileRef.fingerprint, this.uid);
 
         const docInfoRef = this.firestore!
             .collection(DatastoreCollection.DOC_INFO)
@@ -297,7 +300,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
      */
     public async getDocMeta(fingerprint: string, opts: GetDocMetaOpts = {}): Promise<string | null> {
 
-        const id = FirebaseDatastores.computeDocMetaID(fingerprint);
+        const id = FirebaseDatastores.computeDocMetaID(fingerprint, this.uid);
 
         return await this.getDocMetaDirectly(id, opts);
 
@@ -307,7 +310,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const {fingerprint} = opts;
 
-        const id = FirebaseDatastores.computeDocMetaID(fingerprint);
+        const id = FirebaseDatastores.computeDocMetaID(fingerprint, this.uid);
 
         const ref = this.firestore!
             .collection(DatastoreCollection.DOC_META)
@@ -443,7 +446,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         log.debug(`writeFile: ${backend}: `, ref);
 
-        const storagePath = FirebaseDatastores.computeStoragePath(backend, ref);
+        const storagePath = FirebaseDatastores.computeStoragePath(backend, ref, this.uid);
         const pendingFileWriteKey = storagePath.path;
 
         let latch = this.pendingFileWrites[pendingFileWriteKey];
@@ -497,7 +500,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             let uploadTask: firebase.storage.UploadTask;
 
-            const uid = FirebaseDatastores.getUserID();
+            const uid = this.uid;
 
             // stick the uid into the metadata which we use for authorization of the
             // blob when not public.
@@ -636,10 +639,10 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     }
 
-    private createFileMetaID(backend: Backend, ref: FileRef) {
-        const storagePath = FirebaseDatastores.computeStoragePath(backend, ref);
-        return Hashcodes.create(storagePath.path);
-    }
+    // private createFileMetaID(backend: Backend, ref: FileRef) {
+    //     const storagePath = FirebaseDatastores.computeStoragePath(backend, ref);
+    //     return Hashcodes.create(storagePath.path);
+    // }
 
     public getFile(backend: Backend,
                    ref: FileRef,
@@ -651,7 +654,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const storage = this.storage!;
 
-        const storagePath = FirebaseDatastores.computeStoragePath(backend, ref);
+        const storagePath = FirebaseDatastores.computeStoragePath(backend, ref, this.uid);
 
         const storageRef = storage.ref().child(storagePath.path);
 
@@ -678,7 +681,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     public async containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
 
-        const storagePath = FirebaseDatastores.computeStoragePath(backend, ref);
+        const storagePath = FirebaseDatastores.computeStoragePath(backend, ref, this.uid);
 
         const storage = this.storage!;
         const storageRef = storage.ref().child(storagePath.path);
@@ -698,7 +701,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
             const storage = this.storage!;
 
-            const storagePath = FirebaseDatastores.computeStoragePath(backend, ref);
+            const storagePath = FirebaseDatastores.computeStoragePath(backend, ref, this.uid);
 
             const fileRef = storage.ref().child(storagePath.path);
             await fileRef.delete();
@@ -727,7 +730,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const datastoreMutation = opts.datastoreMutation || new DefaultDatastoreMutation();
 
-        const id = FirebaseDatastores.computeDocMetaID(fingerprint);
+        const id = FirebaseDatastores.computeDocMetaID(fingerprint, this.uid);
 
         /**
          * Create our two main doc refs.
@@ -855,7 +858,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const visibility = opts.visibility || Visibility.PRIVATE;
 
-        const uid = FirebaseDatastores.getUserID();
+        const uid = this.uid;
+
         const id = FirebaseDatastores.computeDocMetaID(docInfo.fingerprint, uid);
 
         const docMetaHolder: DocMetaHolder = {
@@ -880,7 +884,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const visibility = opts.visibility || Visibility.PRIVATE;
 
-        const uid = FirebaseDatastores.getUserID();
+        const uid = this.uid;
         const id = FirebaseDatastores.computeDocMetaID(docInfo.fingerprint, uid);
 
         const recordHolder: RecordHolder<IDocInfo> = {
@@ -899,7 +903,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         Preconditions.assertPresent(this.firestore, 'firestore');
 
-        const uid = FirebaseDatastores.getUserID();
+        const uid = this.uid;
 
         const snapshot = await this.firestore!
             .collection(DatastoreCollection.DOC_META)
@@ -1058,7 +1062,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         // both at the same time (in parallel via Promises.all)
         const createDocMetaLookup = async (useCache: boolean): Promise<DocMetaLookup> => {
 
-            const uid = FirebaseDatastores.getUserID();
+            const uid = this.uid;
 
             const query = this.firestore!
                 .collection(DatastoreCollection.DOC_META)
@@ -1119,7 +1123,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                     return undefined;
                 }
 
-                const docMetaID = FirebaseDatastores.computeDocMetaID(docInfo.fingerprint);
+                const docMetaID = FirebaseDatastores.computeDocMetaID(docInfo.fingerprint, this.uid);
                 Preconditions.assertPresent(data, `No data for docMeta with fingerprint: ${docInfo.fingerprint}, docMetaID: ${docMetaID}`);
                 return DocMetas.deserialize(data!, docInfo.fingerprint);
 
@@ -1218,7 +1222,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                     return undefined;
                 }
 
-                const docMetaID = FirebaseDatastores.computeDocMetaID(docInfo.fingerprint);
+                const docMetaID = FirebaseDatastores.computeDocMetaID(docInfo.fingerprint, this.uid);
                 Preconditions.assertPresent(data, `No data for docMeta with fingerprint: ${docInfo.fingerprint}, docMetaID: ${docMetaID}`);
                 return DocMetas.deserialize(data!, docInfo.fingerprint);
 
