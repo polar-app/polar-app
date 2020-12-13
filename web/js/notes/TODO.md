@@ -39,6 +39,9 @@
 
 # BUGS
 
+    - Try to split a node but I can't figure out how we can convert it to HTML ... 
+        I'm going to have to build my OWN function to walk the dom and convert to HTML
+
     - If the selection is active, when we delete content, don't delete the note too
         - the seleciton in either ckedoitor AND the main browser seleciton isn't
           working and showing it's collapsed
