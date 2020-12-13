@@ -39,7 +39,13 @@ export const EPUBIFrameWindowEventListener = () => {
 
         source.addEventListener('contextmenu', handleContextMenu);
 
-        unsubscriber.current = () => source.removeEventListener('contextmenu', handleContextMenu);
+        unsubscriber.current = () => {
+
+            if (source && source.removeEventListener) {
+                source.removeEventListener('contextmenu', handleContextMenu);
+            }
+
+        }
 
     });
 
