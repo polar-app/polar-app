@@ -332,13 +332,13 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
     React.useEffect(() => {
 
+        if (! editor) {
+            return;
+        }
+
         function subscribe() {
-            if (editor) {
-                editor.editing.view.document.on('keydown', handleEditorKeyDown);
-                editor.editing.view.document.on('enter', handleEditorEnter);
-            } else {
-                // console.warn("No editor in subscribe");
-            }
+            editor!.editing.view.document.on('keydown', handleEditorKeyDown);
+            editor!.editing.view.document.on('enter', handleEditorEnter);
         }
 
         function unsubscribe() {
@@ -346,14 +346,11 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
                 editor.editing.view.document.off('keydown', handleEditorKeyDown);
                 editor.editing.view.document.off('enter', handleEditorEnter);
             } else {
-                // console.warn("No editor in unsubscribe");
+                console.warn("No editor in unsubscribe");
             }
         }
 
-        // *** off first
         unsubscribe();
-
-        // *** then on
         subscribe();
 
         return unsubscribe;

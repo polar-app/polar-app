@@ -102,14 +102,12 @@ function useLinkNavigation() {
 
     React.useEffect(() => {
 
+        if (! editor) {
+            return;
+        }
+
         function subscribe() {
-
-            if (editor) {
-                editor.editing.view.document.on('click', handleEditorClick);
-            } else {
-                // console.warn("No editor");
-            }
-
+            editor!.editing.view.document.on('click', handleEditorClick);
         }
 
         function unsubscribe() {
@@ -117,7 +115,7 @@ function useLinkNavigation() {
             if (editor) {
                 editor.editing.view.document.off('click', handleEditorClick);
             } else {
-                // console.warn("No editor");
+                console.warn("No editor in unsubscribe");
             }
 
         }

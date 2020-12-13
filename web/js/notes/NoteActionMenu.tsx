@@ -346,12 +346,14 @@ export const NoteActionMenu = deepMemo(function NoteActionMenu(props: IProps) {
 
     React.useEffect(() => {
 
+        if (! editor) {
+            return;
+        }
+
         function subscribe() {
 
-            if (editor) {
-                editor.editing.view.document.on('keydown', handleEditorKeyDown);
-                editor.editing.view.document.on('enter', handleEditorEnter);
-            }
+            editor!.editing.view.document.on('keydown', handleEditorKeyDown);
+            editor!.editing.view.document.on('enter', handleEditorEnter);
 
         }
 
@@ -360,6 +362,8 @@ export const NoteActionMenu = deepMemo(function NoteActionMenu(props: IProps) {
             if (editor) {
                 editor.editing.view.document.off('keydown', handleEditorKeyDown);
                 editor.editing.view.document.off('enter', handleEditorEnter);
+            } else {
+                console.warn("No editor in unsubscribe");
             }
 
         }
