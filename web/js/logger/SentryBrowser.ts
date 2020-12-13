@@ -7,9 +7,17 @@ export namespace SentryBrowser {
 
     let initialized: boolean = false;
 
+    function isLocal() {
+        return ['localhost', '127.0.0.1'].includes(document.location.hostname);
+    }
+
     export function initWhenNecessary() {
 
         if (initialized) {
+            return;
+        }
+
+        if (isLocal()) {
             return;
         }
 
