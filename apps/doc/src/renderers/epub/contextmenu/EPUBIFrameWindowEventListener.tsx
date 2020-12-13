@@ -11,8 +11,6 @@ export const EPUBIFrameWindowEventListener = () => {
     const {onContextMenu} = useContextMenu();
     const iframe = useDocViewerIFrame();
 
-    const unsubscriber = React.useRef<Callback | undefined>(undefined);
-
     const handleContextMenu = React.useCallback((event: MouseEvent) => {
 
         onContextMenu(MouseEvents.fromNativeEvent(event))
@@ -21,25 +19,26 @@ export const EPUBIFrameWindowEventListener = () => {
 
     React.useEffect(() => {
 
-        if (unsubscriber.current) {
-            unsubscriber.current();
-        }
-
         if (! iframe) {
             console.warn("No iframe");
             return;
         }
 
-        const source = iframe.contentWindow?.document.body;
+        if (! iframe.contentWindow) {
+            console.warn("No contentWindow");
+            return;
+        }
+
+        const source = iframe.contentWindow.document.body;
 
         if (! source) {
-            console.warn("No window for iframe");
+            console.warn("No source");
             return;
         }
 
         source.addEventListener('contextmenu', handleContextMenu);
 
-        unsubscriber.current = () => {
+        return () => {
 
             if (source && source.removeEventListener) {
                 source.removeEventListener('contextmenu', handleContextMenu);
@@ -47,7 +46,7 @@ export const EPUBIFrameWindowEventListener = () => {
 
         }
 
-    });
+    }, [handleContextMenu, iframe]);
 
     return null;
 
