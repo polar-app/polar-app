@@ -39,6 +39,11 @@
 
 # BUGS
 
+    - how to split a node and create two new nodes
+    
+        - take the cursor position, then create a new position from root, 0 to the point,
+        - convert that to a Doc  Fragment
+
     - Try to split a node but I can't figure out how we can convert it to HTML ... 
         I'm going to have to build my OWN function to walk the dom and convert to HTML
 

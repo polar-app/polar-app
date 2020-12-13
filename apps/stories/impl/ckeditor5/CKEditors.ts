@@ -8,6 +8,11 @@ export namespace CKEditors {
     import INode = ckeditor5.INode;
     import IText = ckeditor5.IText;
 
+    /**
+     * @Deprecated - I don't think I need this because CKEditor will give me the
+     * raw HTML but I would need to figure out where in the HTML the anchor is
+     * located.
+     */
     export function toOuterHTML(node: INode | IElement |  IDocumentFragment): string {
 
         const buff = new StringBuffer();
