@@ -69,7 +69,13 @@ function forwardEvents(target: HTMLElement) {
 function handleLinkClicks(target: HTMLElement, linkLoader: LinkLoaderDelegate) {
 
     const iframe = target.querySelector('iframe')! as HTMLIFrameElement;
-    const links = Array.from(iframe.contentDocument!.querySelectorAll('a'));
+
+    if (! iframe.contentDocument) {
+        console.warn("No content document");
+        return;
+    }
+
+    const links = Array.from(iframe.contentDocument.querySelectorAll('a'));
 
     for (const link of links) {
 
@@ -453,9 +459,20 @@ function useEPUBResizer() {
         }
 
         function adjustIframeBody(dimensions: IDimensions) {
+
             const iframe = docViewer.querySelector(".epub-view iframe") as HTMLIFrameElement;
 
-            const body = iframe.contentDocument?.body
+            if (! iframe) {
+                console.warn("No iframe");
+                return;
+            }
+
+            if (! iframe.contentDocument) {
+                console.warn("No contentDocument");
+                return;
+            }
+
+            const body = iframe.contentDocument.body
 
             setWidth(body, dimensions);
 
@@ -463,8 +480,8 @@ function useEPUBResizer() {
             // iframe.contentDocument!.documentElement.style.padding = '0';
             // iframe.contentDocument!.body.style.padding = '5px';
 
-            iframe.contentDocument!.body.style.width = 'auto';
-            iframe.contentDocument!.body.style.height = 'auto';
+            iframe.contentDocument.body.style.width = 'auto';
+            iframe.contentDocument.body.style.height = 'auto';
 
         }
 

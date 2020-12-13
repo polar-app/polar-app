@@ -2,6 +2,7 @@
 import {IDStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {NoteIDStr} from "./NotesStore";
+import {NoteTargetStr} from "./NoteLinkLoader";
 
 export type BlockIDStr = IDStr;
 
@@ -41,7 +42,7 @@ export interface INoteContent {
     /**
      * The linked wiki references to other notes.
      */
-    readonly links?: ReadonlyArray<NoteIDStr>;
+    readonly links?: ReadonlyArray<NoteTargetStr>;
 
 }
 
@@ -65,6 +66,9 @@ export interface IBlockReferenceContent {
  */
 export interface IAnnotationReferenceContent {
 
+    // FIXME: should annotations support items?
+
+    // TODO: sort of like a block ref but to an annotation
     readonly type: 'annotation';
     readonly id: IDStr;
 
@@ -75,6 +79,19 @@ export interface ILatexContent {
     readonly data: ILatexData;
 }
 
+export interface ICodeData {
+    readonly lang: 'typescript' | 'javascript' | 'markdown' | string;
+    readonly value: string;
+}
+
+export interface ICodeContent {
+    readonly type: 'code';
+    readonly data: ICodeData;
+}
+
+// FIXME: all blocks should have items... code, latex, etc should have children/items
+// FIXME: the text of annotations should have wiki links?
+
 export interface IBlock {
 
     readonly id: BlockIDStr;
@@ -83,6 +100,6 @@ export interface IBlock {
 
     readonly updated: ISODateTimeString;
 
-    readonly content: INoteContent | IBlockReferenceContent | ILatexContent;
+    readonly content: INoteContent | IBlockReferenceContent | ILatexContent | IAnnotationReferenceContent;
 
 }
