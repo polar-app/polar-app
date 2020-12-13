@@ -11,6 +11,9 @@ import IWriter = ckeditor5.IWriter;
 import IPosition = ckeditor5.IPosition;
 import { useRefValue } from '../hooks/ReactHooks';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import IRange = ckeditor5.IRange;
+import IIterator = ckeditor5.IIterator;
+import IIterable = ckeditor5.IIterable;
 
 interface IProps {
     readonly parent: NoteIDStr | undefined;
@@ -56,6 +59,8 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
     const {createNewNote, setActive, navPrev, navNext, doIndent, doUnIndent, noteIsEmpty, doDelete} = useNotesStoreCallbacks();
 
     const [ref, setRef] = React.useState<HTMLDivElement | null>(null);
+
+    const hasActiveSelectionRef = React.useRef(false);
 
     const handleClickAway = React.useCallback(() => {
         // noop for now
@@ -117,45 +122,6 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
     }, [editor])
 
 
-    const getEditorHasActiveSelection = React.useCallback((): boolean => {
-
-        if (! editor) {
-            return false;
-        }
-
-        function debugPosition(position: IPosition | null) {
-
-            if (position) {
-                console.log("FIXME: parent ", position.parent);
-                console.log("FIXME: offset ", position.offset);
-
-            } else {
-                console.log("FIXME: none")
-            }
-
-        }
-
-        console.log("FIXME selection range count: " + editor.model.document.selection.rangeCount)
-        console.log("FIXME selection ranges: " , editor.model.document.selection.getRanges())
-
-        console.log("FIXME selection ranges: " , editor.model.document.selection.getRanges())
-
-        for (const range of editor.model.document.selection.getRanges()) {
-            console.log("FIXME: range is collapsed: ", range.isCollapsed)
-        }
-
-        // console.log("FIXME selection range count: " + editor.model.document.selection.)
-
-        console.log("FIXME: first position: ");
-        debugPosition(editor.model.document.selection.getFirstPosition());
-
-        console.log("FIXME: last position: ", );
-        debugPosition(editor.model.document.selection.getLastPosition());
-
-        return false;
-
-    }, [editor])
-
     React.useEffect(() => {
 
         if (editor !== undefined) {
@@ -185,6 +151,30 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
     const handleClick = React.useCallback(() => {
         setActive(props.id);
     }, [props.id, setActive]);
+
+    const handleEditorSelection = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
+
+        if (! editor) {
+            return;
+        }
+
+        function toArray<T>(iterable: IIterable<T>): ReadonlyArray<T> {
+
+            const result = [];
+
+            for(const value of iterable) {
+                result.push(value);
+            }
+
+            return result;
+
+        }
+
+        const range = toArray(editor.model.document.selection.getRanges())[0]
+
+        hasActiveSelectionRef.current = ! range.isCollapsed;
+
+    }, [editor]);
 
     const handleEditorKeyDown = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
 
@@ -242,39 +232,22 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
             case 'Backspace':
 
-                getEditorHasActiveSelection();
+                // TODO: backspace handling when there's an active selection
+                // doesn't work. the issue is that by the time we get the event
+                // click, the selection is removed.  One solution to fix this
+                // would be to trace EVERY key so that we know that there WAS an
+                // active selection as the we received no other key between
+                // clicking and the selection.
 
-                function hasActiveSelection() {
-                    const selection = window.getSelection();
-
-                    if (selection) {
-
-                        if (selection.rangeCount >= 1) {
-                            const range = selection.getRangeAt(0);
-                            const contents = range.cloneContents();
-
-                            const div = document.createElement('div');
-                            div.append(contents);
-
-                            console.log("FIXME: : "+ div.innerHTML);
-
-                            return div.innerHTML.trim() !== '';
-
-                        }
-
-                    }
-
-                    return false;
-
+                if (hasActiveSelectionRef.current) {
+                    return;
                 }
 
                 // TODO: only do this if there aren't any modifiers I think...
                 if (props.parent !== undefined && noteIsEmpty(props.id)) {
 
-                    if (! hasActiveSelection()) {
-                        abortEvent();
-                        doDelete([{parent: props.parent, id: props.id}]);
-                    }
+                    abortEvent();
+                    doDelete([{parent: props.parent, id: props.id}]);
 
                 }
 
@@ -285,7 +258,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
         }
 
-    }, [doDelete, doIndent, doUnIndent, getEditorCursorPosition, getEditorHasActiveSelection, navNext, navPrev, noteIsEmpty, props.id, props.parent]);
+    }, [doDelete, doIndent, doUnIndent, getEditorCursorPosition, navNext, navPrev, noteIsEmpty, props.id, props.parent]);
 
     const handleEditorEnter = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
 
@@ -337,12 +310,16 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
         }
 
         function subscribe() {
+
+
+            editor!.model.document.selection.on('change', handleEditorSelection);
             editor!.editing.view.document.on('keydown', handleEditorKeyDown);
             editor!.editing.view.document.on('enter', handleEditorEnter);
         }
 
         function unsubscribe() {
             if (editor) {
+                editor!.model.document.selection.off('change', handleEditorSelection);
                 editor.editing.view.document.off('keydown', handleEditorKeyDown);
                 editor.editing.view.document.off('enter', handleEditorEnter);
             } else {
@@ -355,7 +332,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
         return unsubscribe;
 
-    }, [editor, handleEditorEnter, handleEditorKeyDown]);
+    }, [editor, handleEditorEnter, handleEditorKeyDown, handleEditorSelection]);
 
     return (
         <ClickAwayListener onClickAway={handleClickAway}>

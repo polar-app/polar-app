@@ -129,6 +129,10 @@ export namespace ckeditor5 {
         readonly getFirstPosition: () => IPosition | null;
         readonly getLastPosition: () => IPosition | null;
         readonly getRanges: () => IIterable<IRange>;
+
+        readonly on: (eventName: 'change' | string, handler: (eventData: IEventData, event: IKeyPressEvent) => void) => void;
+        readonly off: (eventName: 'change' | string, handler: (eventData: IEventData, event: IKeyPressEvent) => void) => void;
+
     }
 
     // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_document-Document.html
