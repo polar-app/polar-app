@@ -1,2 +1,0 @@
-
-allow read, write: if request.auth.uid == resource.data.uid;
