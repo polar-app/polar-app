@@ -45,6 +45,15 @@ export function useStateRef<V>(value: V): RefStateTuple<V> {
 
 }
 
+export function useStateTraced<V>(value: V) {
+
+    useComponentWillUnmount(() => {
+        console.log("componentWillUnmount:" + name);
+    })
+
+
+}
+
 /**
  * Create a ref for the value and always update it so that inner functions can see the most recent value.
  */

@@ -320,6 +320,11 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
                         const parentNote = index[deleteRequest.parent];
 
+                        if (! parentNote) {
+                            console.warn("No parent note for ID: " + deleteRequest.parent);
+                            return;
+                        }
+
                         index[parentNote.id] = {
                             ...parentNote,
                             items: (parentNote.items || []).filter(item => item !== deleteRequest.id)
