@@ -66,7 +66,6 @@ export interface IBlockReferenceContent {
 export interface IAnnotationReferenceContent {
 
     readonly type: 'annotation';
-
     readonly id: IDStr;
 
 }

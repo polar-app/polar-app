@@ -41,10 +41,10 @@
 
     - next main tasks
         - 3h split a node so that the user can hit 'enter' to create a new one
-        - 1h join nodes when hitting backspace (that is easy)
         - 3h click the ckeditor and make sure the position/cursor is in the right spot. 
-        - 2h improve performance of node navigation by preventing everything from re-rendering
         - 2h new store model as in TODO.md
+        - 2h improve performance of node navigation by preventing everything from re-rendering
+        - 1h join nodes when hitting backspace (that is easy)
     
         ... about 10 hours to get this all done.
         
