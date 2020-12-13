@@ -1,8 +1,5 @@
 import React from "react";
-import {
-    CKEditor5BalloonEditor,
-    ckeditor5,
-} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
+import {CKEditor5BalloonEditor} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
 import {NoteNavigation} from "./NoteNavigation";
 import {NoteIDStr, useNotesStore, useNotesStoreCallbacks} from "./NotesStore";
 import {deepMemo} from "../react/ReactUtils";
