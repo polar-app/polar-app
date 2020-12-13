@@ -3,8 +3,6 @@ import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {CKEditor5GlobalCss} from "./CKEditor5GlobalCss";
-import { ckeditor5 } from "./CKEditor5BalloonEditor";
-
 
 interface IProps {
     readonly content: string;
