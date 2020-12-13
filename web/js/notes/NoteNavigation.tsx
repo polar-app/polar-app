@@ -45,8 +45,7 @@ function useNoteActivatedListener(id: NoteIDStr): INoteActivated | undefined {
 
 export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
-    const editor = useEdito
-    rStore();
+    const editor = useEditorStore();
 
     const noteActive = useNoteActivatedListener(props.id);
 
