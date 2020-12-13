@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# we have to have this as an isolated script because npm is insanely broken WRT
+# npm repositories.
