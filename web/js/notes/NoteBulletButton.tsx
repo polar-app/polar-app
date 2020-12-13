@@ -9,7 +9,7 @@ interface IProps {
     readonly target: NoteIDStr | NoteTargetStr;
 }
 
-export const NoteBulletButton = deepMemo(function NoteBullet(props: IProps) {
+export const NoteBulletButton = deepMemo(function NoteBulletButton(props: IProps) {
 
     const noteLinkLoader = useNoteLinkLoader();
     const {root} = useNotesStore(['root']);
