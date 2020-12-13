@@ -27,7 +27,7 @@ export const [NoteContextMenu, useNoteContextMenu]
 
 export const NoteInner = deepMemo(function NoteInner(props: IProps) {
 
-    useLifecycleTracer('NoteInner');
+    // useLifecycleTracer('NoteInner');
 
     const {id} = props;
     const {index, expanded, root} = useNotesStore(['index', 'expanded', 'root']);
@@ -90,7 +90,7 @@ export const NoteInner = deepMemo(function NoteInner(props: IProps) {
 
 export const Note = deepMemo(function Note(props: IProps) {
 
-    useLifecycleTracer('Note');
+    // useLifecycleTracer('Note');
 
     return (
         <NoteContextMenu>

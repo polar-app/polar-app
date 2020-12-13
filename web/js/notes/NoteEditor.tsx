@@ -199,7 +199,7 @@ interface INoteEditorActivatorProps {
  */
 const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEditorActivatorProps) {
 
-    useLifecycleTracer('NoteEditorActivator');
+    // useLifecycleTracer('NoteEditorActivator');
 
     const {onEditor, onChange, id, immutable} = props;
     const {active} = useNotesStore(['active']);
@@ -257,7 +257,7 @@ const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEd
 
 const NoteEditorInner = deepMemo(function NoteEditorInner(props: IProps) {
 
-    useLifecycleTracer('NoteEditorInner');
+    // useLifecycleTracer('NoteEditorInner');
 
     const {id} = props;
     const {index} = useNotesStore(['index']);
@@ -289,7 +289,7 @@ const NoteEditorInner = deepMemo(function NoteEditorInner(props: IProps) {
 
 const NoteEditorWithEditorStore = deepMemo(function NoteEditorWithStore(props: IProps) {
 
-    useLifecycleTracer('NoteEditorWithStore');
+    // useLifecycleTracer('NoteEditorWithStore');
 
     useLinkNavigation();
 
@@ -323,7 +323,7 @@ interface IProps {
 
 export const NoteEditor = deepMemo(function NoteEditor(props: IProps) {
 
-    useLifecycleTracer('NoteEditor');
+    // useLifecycleTracer('NoteEditor');
 
     return (
         <EditorStoreProvider initialValue={undefined}>
