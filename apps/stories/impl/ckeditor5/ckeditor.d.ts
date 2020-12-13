@@ -26,6 +26,10 @@ declare module "@ckeditor/ckeditor5-engine/src/view/treewalker" {
     // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_treewalker-TreeWalkerValueType.html
     import INode = ckeditor5.INode;
     import ITextProxy = ckeditor5.ITextProxy;
+    import IRange = ckeditor5.IRange;
+    import IPosition = ckeditor5.IPosition;
+    import IIterable = ckeditor5.IIterable;
+    import IIterator = ckeditor5.IIterator;
     export type TreeWalkerValueType = 'elementStart' | 'elementEnd' | 'character' | 'text';
 
     export interface ITreeWalkerValue {
@@ -33,16 +37,26 @@ declare module "@ckeditor/ckeditor5-engine/src/view/treewalker" {
         readonly type: TreeWalkerValueType;
     }
 
+    export type TreeWalkerDirection = 'backward' | 'forward';
+
+    export interface TreeWalkerOpts {
+        readonly direction?: TreeWalkerDirection;
+        readonly boundaries?: IRange;
+        readonly startPosition?: IPosition;
+        readonly singleCharacters?: boolean;
+        readonly shallow?: boolean;
+        readonly ignoreElementEnd?: boolean;
+    }
+
     // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_treewalker-TreeWalker.html
     //
     //
-    export interface ITreeWalker {
+    export class TreeWalker {
 
-        // TODO: how do we create one?
-        //
-        // new(): ITreeWalker;
+        constructor(opts?: TreeWalkerOpts);
 
-        readonly direction: 'backward' | 'forward';
+        readonly [Symbol.iterator]: () => IIterator<ITreeWalkerValue>
+        readonly direction: TreeWalkerDirection;
         readonly shallow: boolean;
         readonly next: () => ITreeWalkerValue;
 

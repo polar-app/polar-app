@@ -1,4 +1,3 @@
-import {ckeditor5} from "./CKEditor5BalloonEditor";
 import {StringBuffer} from "polar-shared/src/util/StringBuffer";
 
 export namespace CKEditors {
