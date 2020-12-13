@@ -1,6 +1,2 @@
-
-
-//registry.npmjs.org:_authToken=72dfd61f-7ff6-4646-ae6e-6fa2b2cb31db
-//registry.npmjs.org/:_authToken=72dfd61f-7ff6-4646-ae6e-6fa2b2cb31db
+//registry.npmjs.org/:_authToken=4c77d4f0-68b5-4b35-9507-3c9a88531bb2
 registry=https://registry.npmjs.org/
-
