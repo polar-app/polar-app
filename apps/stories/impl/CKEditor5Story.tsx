@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {ckeditor5, CKEditor5BalloonEditor} from './ckeditor5/CKEditor5BalloonEditor';
+import {CKEditor5BalloonEditor} from './ckeditor5/CKEditor5BalloonEditor';
 import Button from '@material-ui/core/Button';
 import {CKEditor5GlobalCss} from "./ckeditor5/CKEditor5GlobalCss";
 

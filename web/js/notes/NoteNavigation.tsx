@@ -1,18 +1,11 @@
 import * as React from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import {NoteIDStr, useNotesStoreCallbacks, useNotesStore, NavPosition, NewNotePosition} from "./NotesStore";
-import { deepMemo } from '../react/ReactUtils';
-import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
+import { deepMemo } from '../react/ReactUtils';import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 import { useEditorStore } from './EditorStoreProvider';
-import {ckeditor5} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
 import IEventData = ckeditor5.IEventData;
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 import IWriter = ckeditor5.IWriter;
-import IPosition = ckeditor5.IPosition;
-import { useRefValue } from '../hooks/ReactHooks';
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import IRange = ckeditor5.IRange;
-import IIterator = ckeditor5.IIterator;
 import IIterable = ckeditor5.IIterable;
 
 interface IProps {
@@ -96,6 +89,31 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
     }, [jumpToEditorRootPosition]);
 
     type CursorPosition = 'start' | 'end';
+
+
+    interface IEditorSplit {
+        readonly prefix: string;
+        readonly suffix: string;
+    }
+
+    // Split the editor at the cursor and return two HTML chunks (prefix and suffix)
+    const splitEditorAtCursor = React.useCallback((): IEditorSplit => {
+
+        if (! editor) {
+            throw new Error("No editor");
+        }
+
+        const root = editor.model.document.getRoot();
+        const firstPosition = editor?.model.document.selection.getFirstPosition();
+
+        const rootStart = editor.model.createPositionAt(root, 0);
+        const rootEnd = editor.model.createPositionAt(root, 'end');
+
+
+        return null!;
+
+    }, [editor])
+
 
     const getEditorCursorPosition = React.useCallback((): CursorPosition | undefined => {
 
