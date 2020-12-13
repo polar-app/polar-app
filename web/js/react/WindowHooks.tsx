@@ -3,6 +3,7 @@ import {
     useComponentDidMount,
     useComponentWillUnmount
 } from "../hooks/ReactLifecycleHooks";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 interface WindowOpts {
     readonly win?: Window;
@@ -10,39 +11,39 @@ interface WindowOpts {
 
 export type WindowEventListenerName = 'resize' | 'scroll' | 'contextmenu';
 
+const listenerOpts = {
+    // capture is needed for scroll to fire on window.
+    capture: true,
+
+    // passive is needed for performance improvements
+    //
+    // https://developers.google.com/web/updates/2016/06/passive-event-listeners
+    passive: true
+};
+
 export function useWindowEventListener(name: WindowEventListenerName,
                                        delegate: () => void,
                                        opts: WindowOpts = {}) {
 
     const winRef = React.useRef(opts.win || window);
 
-    const listenerOpts = {
-        // capture is needed for scroll to fire on window.
-        capture: true,
+    React.useEffect(() => {
 
-        // passive is needed for performance improvements
-        //
-        // https://developers.google.com/web/updates/2016/06/passive-event-listeners
-        passive: true
-    };
+        const win = winRef.current;
 
-    useComponentDidMount(() => {
-        if (winRef.current) {
-            winRef.current.addEventListener(name, delegate, listenerOpts);
-        } else {
-            console.warn("ComponentDidMount: No window ref")
-        }
-    });
+        if (win) {
 
-    useComponentWillUnmount(() => {
+            win.addEventListener(name, delegate, listenerOpts);
 
-        if (winRef.current) {
-            winRef.current.removeEventListener(name, delegate, listenerOpts);
-        } else {
-            console.warn("ComponentWillUnmount: No window ref");
+            return () => {
+                win.removeEventListener(name, delegate, listenerOpts);
+            }
+
         }
 
-    });
+        return NULL_FUNCTION;
+
+    }, [delegate, name, winRef])
 
 }
 
