@@ -263,13 +263,19 @@ const NoteEditorInner = deepMemo(function NoteEditorInner(props: IProps) {
     const {index} = useNotesStore(['index']);
     const {updateNote} = useNotesStoreCallbacks()
     const setEditor = useSetEditorStore();
-
-    const note = index[id];
-    const {content} = note;
-
     const handleChange = React.useCallback((content: string) => {
         updateNote(props.id, content);
     }, [props.id, updateNote]);
+
+    const note = index[id];
+
+    if (! note) {
+        // this can happen when a note is deleted but the component hasn't yet
+        // been unmounted.
+        return null;
+    }
+
+    const {content} = note;
 
     return (
         <NoteEditorActivator id={id}

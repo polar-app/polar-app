@@ -43,8 +43,6 @@
         - the seleciton in either ckedoitor AND the main browser seleciton isn't
           working and showing it's collapsed
     
-    -  
-    
     - can not delete the previous node if the current node has text in it... this is part of the join operation
 
 

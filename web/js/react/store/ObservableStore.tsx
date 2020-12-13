@@ -119,73 +119,75 @@ export function useObservableStore<V, K extends keyof V>(context: React.Context<
     const [value, setValue] = useState<V>(internalObservableStore.current);
     const valueRef = React.useRef(value);
 
-    function doUpdateValue(newValue: V) {
-        setValue(newValue);
-        valueRef.current = newValue;
-    }
+    React.useEffect(() => {
 
-    const subscriptionRef = React.useRef(internalObservableStore.subject.subscribe((nextValue) => {
+        const subscription = internalObservableStore.subject.subscribe((nextValue) => {
 
-        const currValue = valueRef.current;
-
-        if (nextValue === currValue) {
-            // we're already done as it's the same value
-            return;
-        }
-
-        function isEqual(a: Dict, b: Dict): boolean {
-            if (opts.enableShallowEquals) {
-                return Equals.shallow(a, b);
+            function doUpdateValue(newValue: V) {
+                setValue(newValue);
+                valueRef.current = newValue;
             }
-
-            return Equals.deep(a, b);
-
-        }
-
-        if (keys) {
-
-            // debug("Using keys");
-
-            // we have received an update but we're only interested in a few
-            // keys so compare them.
-
-            const nextValuePicked = pick(nextValue, keys);
-            const currValuePicked = pick(currValue, keys);
-
-            if (! isEqual(currValuePicked, nextValuePicked)) {
-
-                if (opts.filter && ! opts.filter(nextValuePicked)) {
-                    // the value didn't pass the filter so don't update it...
-                    return;
-                }
-
-                // the internal current in the context is already updated.
-                // debug("values are updated: ", nextValuePicked, currValuePicked);
-                return doUpdateValue(nextValue);
-
-            } else {
-                // debug("values are NOT updated: ", nextValuePicked, currValuePicked);
-            }
-
-        } else {
 
             const currValue = valueRef.current;
 
-            if (! isEqual(currValue, nextValue)) {
-                // we can STILL do the lazy comparison here and only
-                // update when the value has actually changed.
-                return doUpdateValue(nextValue);
+            if (nextValue === currValue) {
+                // we're already done as it's the same value
+                return;
+            }
+
+            function isEqual(a: Dict, b: Dict): boolean {
+                if (opts.enableShallowEquals) {
+                    return Equals.shallow(a, b);
+                }
+
+                return Equals.deep(a, b);
 
             }
+
+            if (keys) {
+
+                // debug("Using keys");
+
+                // we have received an update but we're only interested in a few
+                // keys so compare them.
+
+                const nextValuePicked = pick(nextValue, keys);
+                const currValuePicked = pick(currValue, keys);
+
+                if (! isEqual(currValuePicked, nextValuePicked)) {
+
+                    if (opts.filter && ! opts.filter(nextValuePicked)) {
+                        // the value didn't pass the filter so don't update it...
+                        return;
+                    }
+
+                    // the internal current in the context is already updated.
+                    // debug("values are updated: ", nextValuePicked, currValuePicked);
+                    return doUpdateValue(nextValue);
+
+                } else {
+                    // debug("values are NOT updated: ", nextValuePicked, currValuePicked);
+                }
+
+            } else {
+
+                const currValue = valueRef.current;
+
+                if (! isEqual(currValue, nextValue)) {
+                    // we can STILL do the lazy comparison here and only
+                    // update when the value has actually changed.
+                    return doUpdateValue(nextValue);
+
+                }
+            }
+
+        })
+
+        return () => {
+            subscription.unsubscribe();
         }
 
-    }));
-
-    useComponentWillUnmount(() => {
-        if (subscriptionRef.current) {
-            subscriptionRef.current.unsubscribe();
-        }
-    });
+    }, [internalObservableStore.subject, keys, opts]);
 
     // return the initial value...
     return value;
@@ -392,7 +394,7 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
         return React.useContext(mutatorContext);
     }
 
-    const ProviderComponent = (props: ObservableStoreProps<V>) => {
+    const ObservableProviderComponent = (props: ObservableStoreProps<V>) => {
 
         // FIXME: I think the problem is because we're creating ONE store object so the context is working
         // BUT it means that the store object needs to be recreated each time
@@ -416,7 +418,7 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
 
     }
 
-    return [ProviderComponent, useStoreHook, useCallbacksHook, useMutatorHook];
+    return [ObservableProviderComponent, useStoreHook, useCallbacksHook, useMutatorHook];
 
 }
 //

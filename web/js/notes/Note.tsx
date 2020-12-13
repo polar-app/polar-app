@@ -33,12 +33,15 @@ export const NoteInner = deepMemo(function NoteInner(props: IProps) {
     const {index, expanded, root} = useNotesStore(['index', 'expanded', 'root']);
     const {lookup} = useNotesStoreCallbacks();
     const theme = useTheme();
+    const contextMenuHandlers = useNoteContextMenu();
 
     const note = index[id];
 
-    const items = lookup(note.items || []);
+    if (! note) {
+        return null;
+    }
 
-    const contextMenuHandlers = useNoteContextMenu();
+    const items = lookup(note.items || []);
 
     const hasItems = items.length > 0;
     const isExpanded = props.isExpanded || expanded[id] === true;
