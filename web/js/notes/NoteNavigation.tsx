@@ -63,6 +63,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
         editor!.editing.view.focus();
     }, [editor]);
 
+    // TODO move to editor hook
     const jumpToEditorRootPosition = React.useCallback((offset: number | 'before' | 'end') => {
 
         if (! editor) {
@@ -96,6 +97,8 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
         readonly suffix: string;
     }
 
+    // TODO move to editor hook
+
     // Split the editor at the cursor and return two HTML chunks (prefix and suffix)
     const splitEditorAtCursor = React.useCallback((): IEditorSplit => {
 
@@ -114,6 +117,8 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
     }, [editor])
 
+
+    // TODO move to editor hook
 
     const getEditorCursorPosition = React.useCallback((): CursorPosition | undefined => {
 
@@ -328,8 +333,6 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
         }
 
         function subscribe() {
-
-
             editor!.model.document.selection.on('change', handleEditorSelection);
             editor!.editing.view.document.on('keydown', handleEditorKeyDown);
             editor!.editing.view.document.on('enter', handleEditorEnter);
