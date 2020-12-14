@@ -572,8 +572,6 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
                                pos: NewNotePosition,
                                split?: ISplitNote) {
 
-            console.log("Create new note...")
-
             const store = storeProvider();
             const index = {...store.index};
 
@@ -585,45 +583,85 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
                 throw new Error("No parent note");
             }
 
-            const items = [...(parentNote.items || [])];
-
-            const childIndexPosition = child ? items.indexOf(child) : 0;
-
             const now = ISODateTimeStrings.create()
 
-            const newNote: INote = {
-                id,
-                type: 'item',
-                content: split?.suffix || '',
-                created: now,
-                updated: now
-            };
+            function createNewNote(): INote {
+                return {
+                    id,
+                    type: 'item',
+                    content: split?.suffix || '',
+                    created: now,
+                    updated: now
+                };
+            }
 
-            function computeDelta() {
-                switch (pos) {
-                    case "before":
-                        return 0;
-                    case "after":
-                        return 1;
-                    case "split":
-                        return 1;
+            const newNote: INote = createNewNote();
+
+            function computeNewParentNote(): INote {
+
+                function computeDelta() {
+                    switch (pos) {
+                        case "before":
+                            return 0;
+                        case "after":
+                            return 1;
+                        case "split":
+                            return 1;
+                    }
                 }
+
+                const delta = computeDelta();
+
+                const items = [...(parentNote.items || [])];
+
+                const childIndexPosition = child ? items.indexOf(child) : 0;
+
+                const newItems = [...items];
+
+                // this mutates the array under us and I don't necessarily like that
+                // but it's a copy of the original to begin with.
+                newItems.splice(childIndexPosition + delta, 0, newNote.id);
+
+                return  {
+                    ...parentNote,
+                    updated: now,
+                    items: newItems
+                };
+
             }
 
-            const delta = computeDelta();
+            const nextParentNote = computeNewParentNote();
 
-            // this mutates the array under us and I don't necessarily like that
-            // but it's a copy of the original to begin with.
-            items.splice(childIndexPosition + delta, 0, newNote.id);
+            // we might have to mutate previous note while the new note is created if it's a split.
+            function computePrevNote(): INote | undefined {
 
-            const newParentNote = {
-                ...parentNote,
-                content: split?.prefix || parentNote.content,
-                updated: now,
-                items: [...items]
+                if (child && split) {
+
+                    const note = index[child];
+
+                    return {
+                        ...note,
+                        updated: now,
+                        content: split.prefix
+                    };
+
+                } else {
+                    return undefined;
+                }
+
             }
 
-            doPut([newParentNote, newNote], {newActive: newNote.id});
+            const prevNote = computePrevNote();
+
+            console.log("FIXME: prevNote: ", prevNote);
+
+            const mutations = [
+                    nextParentNote, newNote, prevNote
+                ]
+            .filter(current => current !== undefined)
+            .map(current => current!);
+
+            doPut(mutations, {newActive: newNote.id});
 
         }
 

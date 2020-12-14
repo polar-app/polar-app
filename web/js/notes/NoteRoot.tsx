@@ -14,13 +14,15 @@ interface IProps {
 export const NoteRoot = deepMemo(function NoteRoot(props: IProps) {
 
     const {index, indexByName} = useNotesStore(['index', 'indexByName']);
-    const {setRoot} = useNotesStoreCallbacks();
+    const {setRoot, setActive} = useNotesStoreCallbacks();
 
     const note = index[props.target] || indexByName[props.target];
 
     React.useEffect(() => {
+        // TODO: do this with one init() operation so it mutates the store just once.
         setRoot(note.id);
-    }, [note.id, setRoot])
+        setActive(note.id);
+    }, [note.id, setActive, setRoot])
 
     if (! isPresent(note)) {
         return (
