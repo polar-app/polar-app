@@ -58,7 +58,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
     const hasActiveSelectionRef = React.useRef(false);
 
     const getEditorCursorPosition = useEditorCursorPosition();
-    const handleEditorEnter = useNoteNavigationEnterHandler();
+    const handleEditorEnter = useNoteNavigationEnterHandler({parent: props.parent, id: props.id});
 
     const handleClickAway = React.useCallback(() => {
         // noop for now

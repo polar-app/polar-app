@@ -135,6 +135,11 @@ export interface DeleteNoteRequest {
     readonly id: NoteIDStr;
 }
 
+export interface ISplitNote {
+    readonly prefix: string;
+    readonly suffix: string;
+}
+
 interface INotesCallbacks {
 
     readonly doPut: (notes: ReadonlyArray<INote>, opts?: DoPutOpts) => void;
@@ -162,7 +167,8 @@ interface INotesCallbacks {
      */
     readonly createNewNote: (parent: NoteIDStr,
                              child: NoteIDStr | undefined,
-                             pos: NewNotePosition) => void;
+                             pos: NewNotePosition,
+                             split?: ISplitNote) => void;
 
     /**
      * Navigate to the previous node in the graph.
@@ -563,7 +569,8 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
         function createNewNote(parent: NoteIDStr,
                                child: NoteIDStr | undefined,
-                               pos: NewNotePosition) {
+                               pos: NewNotePosition,
+                               split?: ISplitNote) {
 
             console.log("Create new note...")
 
@@ -587,7 +594,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             const newNote: INote = {
                 id,
                 type: 'item',
-                content: '',
+                content: split?.suffix || '',
                 created: now,
                 updated: now
             };
@@ -611,6 +618,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
             const newParentNote = {
                 ...parentNote,
+                content: split?.prefix || parentNote.content,
                 updated: now,
                 items: [...items]
             }

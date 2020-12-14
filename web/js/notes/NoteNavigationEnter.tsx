@@ -3,6 +3,7 @@ import {NewNotePosition, NoteIDStr, useNotesStoreCallbacks} from "./NotesStore";
 import IEventData = ckeditor5.IEventData;
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 import {useEditorCursorPosition} from "./editor/UseEditorCursorPosition";
+import {useEditorSplitter} from "./editor/UseEditorSplitter";
 
 interface IOpts {
     readonly parent: NoteIDStr | undefined;
@@ -15,6 +16,7 @@ export function useNoteNavigationEnterHandler(opts: IOpts) {
 
     const {createNewNote} = useNotesStoreCallbacks();
     const getEditorCursorPosition = useEditorCursorPosition();
+    const editorSplitter = useEditorSplitter();
 
     return React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
 
@@ -53,15 +55,18 @@ export function useNoteNavigationEnterHandler(opts: IOpts) {
 
             const pos = computeNewNotePosition();
 
-            // FIXME: what happens when we try to split the root?
+            if (pos === 'split') {
+                const editorSplit = editorSplitter();
+                createNewNote(parent, id, pos, editorSplit);
+                return;
+            }
 
-            // FIXME: we have to split the node here first... and then pass the new node texts below...
             createNewNote(parent, id, pos);
 
         } else {
             createNewNote(id, undefined, 'before');
         }
 
-    }, [createNewNote, getEditorCursorPosition, id, parent]);
+    }, [createNewNote, editorSplitter, getEditorCursorPosition, id, parent]);
 
 }
