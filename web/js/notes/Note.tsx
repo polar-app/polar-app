@@ -1,6 +1,6 @@
 import React from "react";
 import {NoteEditor} from "./NoteEditor";
-import {NoteIDStr, useNotesStoreCallbacks, useNotesStore} from "./NotesStore";
+import {NoteIDStr, useNotesStoreCallbacks, useNotesStore, useNoteFromStore} from "./NotesStore";
 import {NoteItems} from "./NoteItems";
 import {deepMemo} from "../react/ReactUtils";
 import {NoteBulletButton} from "./NoteBulletButton";
@@ -27,15 +27,15 @@ export const [NoteContextMenu, useNoteContextMenu]
 
 export const NoteInner = deepMemo(function NoteInner(props: IProps) {
 
-    // useLifecycleTracer('NoteInner');
+    useLifecycleTracer('NoteInner');
 
     const {id} = props;
-    const {index, expanded, root} = useNotesStore(['index', 'expanded', 'root']);
+    const {expanded, root} = useNotesStore(['expanded', 'root']);
     const {lookup} = useNotesStoreCallbacks();
     const theme = useTheme();
     const contextMenuHandlers = useNoteContextMenu();
 
-    const note = index[id];
+    const note = useNoteFromStore(id);
 
     if (! note) {
         return null;
@@ -90,7 +90,7 @@ export const NoteInner = deepMemo(function NoteInner(props: IProps) {
 
 export const Note = deepMemo(function Note(props: IProps) {
 
-    // useLifecycleTracer('Note');
+    useLifecycleTracer('Note');
 
     return (
         <NoteContextMenu>

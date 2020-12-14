@@ -1,7 +1,7 @@
 import React from "react";
 import {CKEditor5BalloonEditor} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
 import {NoteNavigation} from "./NoteNavigation";
-import {NoteIDStr, useNotesStore, useNotesStoreCallbacks, INote} from "./NotesStore";
+import {NoteIDStr, useNotesStore, useNotesStoreCallbacks, INote, useNoteFromStore} from "./NotesStore";
 import {deepMemo} from "../react/ReactUtils";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 import {EditorStoreProvider, useEditorStore, useSetEditorStore} from "./EditorStoreProvider";
@@ -254,25 +254,6 @@ const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEd
 });
 
 
-export function useNote(id: NoteIDStr): INote | undefined {
-
-    const {index} = useNotesStore(['index']);
-    const [note, setNote] = React.useState<INote | undefined>();
-
-    React.useEffect(() => {
-
-        const newNote: INote | undefined = index[id] || undefined;
-
-        if (newNote !== note) {
-            setNote(newNote);
-        }
-
-    }, [id, index, note]);
-
-    return note;
-
-}
-
 const NoteEditorInner = deepMemo(function NoteEditorInner(props: IProps) {
 
     useLifecycleTracer('NoteEditorInner');
@@ -284,7 +265,7 @@ const NoteEditorInner = deepMemo(function NoteEditorInner(props: IProps) {
         updateNote(props.id, content);
     }, [props.id, updateNote]);
 
-    const note = useNote(id);
+    const note = useNoteFromStore(id);
 
     if (! note) {
         // this can happen when a note is deleted but the component hasn't yet

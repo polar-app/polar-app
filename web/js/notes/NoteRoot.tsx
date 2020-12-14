@@ -1,11 +1,12 @@
 import React from "react";
 import {deepMemo} from "../react/ReactUtils";
-import {NoteIDStr, useNotesStore, useNotesStoreCallbacks} from "./NotesStore";
+import {NoteIDStr, useNoteFromStore, useNotesStore, useNotesStoreCallbacks} from "./NotesStore";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {MUIBrowserLinkStyle} from "../mui/MUIBrowserLinkStyle";
 import {NotesInbound} from "./NotesInbound";
 import { Note } from "./Note";
 import { NoteStyle } from "./NoteStyle";
+import {useLifecycleTracer} from "../hooks/ReactHooks";
 
 interface IProps {
     readonly target: NoteIDStr;
@@ -13,18 +14,23 @@ interface IProps {
 
 export const NoteRoot = deepMemo(function NoteRoot(props: IProps) {
 
-    const {index, indexByName} = useNotesStore(['index', 'indexByName']);
+    useLifecycleTracer('NoteRoot');
+
     const {setRoot, setActive} = useNotesStoreCallbacks();
 
-    const note = index[props.target] || indexByName[props.target];
+    const note = useNoteFromStore(props.target);
 
     React.useEffect(() => {
         // TODO: do this with one init() operation so it mutates the store just once.
-        setRoot(note.id);
-        setActive(note.id);
-    }, [note.id, setActive, setRoot])
 
-    if (! isPresent(note)) {
+        if (note) {
+            setRoot(note.id);
+            setActive(note.id);
+        }
+
+    }, [note, setActive, setRoot])
+
+    if (! note) {
         return (
             <div>No note for target: {props.target}</div>
         );
