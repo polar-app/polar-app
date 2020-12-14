@@ -196,6 +196,8 @@ interface INotesCallbacks {
      */
     readonly getActive: () => INote | undefined
 
+    readonly filterNotesByName: (filter: string) => ReadonlyArray<NoteNameStr>
+
 }
 
 const initialStore: INotesStore = {
@@ -820,6 +822,17 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
         }
 
+        function filterNotesByName(filter: string): ReadonlyArray<NoteNameStr> {
+
+            const {indexByName} = storeProvider();
+
+            filter = filter.toLowerCase();
+
+            return Object.keys(indexByName)
+                         .filter(key => key.toLowerCase().indexOf(filter) !== -1);
+
+        }
+
         return {
             doPut,
             doDelete,
@@ -837,7 +850,8 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             expand,
             collapse,
             noteIsEmpty,
-            getActive
+            getActive,
+            filterNotesByName
         };
 
     }, [setStore, storeProvider])
