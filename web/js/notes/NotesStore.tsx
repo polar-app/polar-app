@@ -191,6 +191,11 @@ interface INotesCallbacks {
 
     readonly noteIsEmpty: (id: NoteIDStr) => boolean;
 
+    /**
+     * Get the currently active note.
+     */
+    readonly getActive: () => INote | undefined
+
 }
 
 const initialStore: INotesStore = {
@@ -804,6 +809,17 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             setStore({...store, expanded});
         }
 
+        function getActive(): INote | undefined {
+            const store = storeProvider();
+
+            if (store.active) {
+                return store.index[store.active] || undefined;
+            }
+
+            return undefined;
+
+        }
+
         return {
             doPut,
             doDelete,
@@ -820,7 +836,8 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
             toggleExpand,
             expand,
             collapse,
-            noteIsEmpty
+            noteIsEmpty,
+            getActive
         };
 
     }, [setStore, storeProvider])

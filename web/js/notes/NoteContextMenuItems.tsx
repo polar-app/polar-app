@@ -2,28 +2,27 @@ import React from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { useNotesStore } from './NotesStore';
+import { useNotesStore, useNotesStoreCallbacks } from './NotesStore';
 import {Clipboards} from "../util/system/clipboard/Clipboards";
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 
 export const NoteContextMenuItems = React.memo(function MUIDocDropdownMenuItems() {
 
-    // TODO: selected not active is what we want to focus on...
-    const {active, index} = useNotesStore(['active', 'index']);
+    const {getActive} = useNotesStoreCallbacks();
 
     const onCopyMarkdown = React.useCallback(() => {
 
-        if (! active) {
+        const activeNote = getActive();
+
+        if (! activeNote) {
             return;
         }
 
-        const note = index[active];
-
-        const markdown = note.content;
+        const markdown = activeNote.content;
 
         Clipboards.getInstance().writeText(markdown);
 
-    }, [active, index]);
+    }, [getActive]);
 
     return (
         <>
