@@ -7,6 +7,8 @@ import IEventData = ckeditor5.IEventData;
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 import IWriter = ckeditor5.IWriter;
 import IIterable = ckeditor5.IIterable;
+import {useEditorCursorPosition} from "./editor/UseEditorCursorPosition";
+import { useNoteNavigationEnterHandler } from './NoteNavigationEnter';
 
 interface IProps {
     readonly parent: NoteIDStr | undefined;
@@ -55,6 +57,9 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
     const hasActiveSelectionRef = React.useRef(false);
 
+    const getEditorCursorPosition = useEditorCursorPosition();
+    const handleEditorEnter = useNoteNavigationEnterHandler();
+
     const handleClickAway = React.useCallback(() => {
         // noop for now
     }, []);
@@ -89,9 +94,6 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
         jumpToEditorRootPosition('end');
     }, [jumpToEditorRootPosition]);
 
-    type CursorPosition = 'start' | 'end';
-
-
     interface IEditorSplit {
         readonly prefix: string;
         readonly suffix: string;
@@ -116,34 +118,6 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
         return null!;
 
     }, [editor])
-
-
-    // TODO move to editor hook
-
-    const getEditorCursorPosition = React.useCallback((): CursorPosition | undefined => {
-
-        if (! editor) {
-            return undefined;
-        }
-
-        const root = editor.model.document.getRoot();
-        const firstPosition = editor?.model.document.selection.getFirstPosition();
-
-        const rootStart = editor.model.createPositionAt(root, 0);
-        const rootEnd = editor.model.createPositionAt(root, 'end');
-
-        if (firstPosition && firstPosition.isTouching(rootEnd)) {
-            return 'end'
-        }
-
-        if (firstPosition && firstPosition.isTouching(rootStart)) {
-            return 'start'
-        }
-
-        return undefined;
-
-    }, [editor])
-
 
     React.useEffect(() => {
 
@@ -207,6 +181,8 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
             eventData.stop();
         }
 
+        const editorCursorPosition = getEditorCursorPosition();
+
         switch (event.domEvent.key) {
 
             case 'ArrowUp':
@@ -221,7 +197,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
             case 'ArrowLeft':
 
-                if (getEditorCursorPosition() === 'start') {
+                if (editorCursorPosition === 'start') {
                     abortEvent();
                     navPrev('end');
                 }
@@ -230,7 +206,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
             case 'ArrowRight':
 
-                if (getEditorCursorPosition() === 'end') {
+                if (editorCursorPosition === 'end') {
                     abortEvent();
                     navNext('start');
                 }
@@ -282,49 +258,6 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
         }
 
     }, [doDelete, doIndent, doUnIndent, getEditorCursorPosition, navNext, navPrev, noteIsEmpty, props.id, props.parent]);
-
-    const handleEditorEnter = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
-
-        eventData.stop();
-
-        // FIXME: handle meta/shift/control
-
-        // FIXME: to split the node we need to call
-
-        // writer.split at firstPosition
-        // create a selection from the firstPosition to the end of the document root
-        // getSelectedContent on the selection
-        // deleteContent on that selection
-        // create a new node with the DocumentFragment as markdown...
-
-        if (props.parent) {
-
-            function computeNewNotePosition(): NewNotePosition {
-                const cursorPosition = getEditorCursorPosition();
-
-                switch (cursorPosition) {
-
-                    case "start":
-                        return 'before';
-
-                    case "end":
-                        return 'after';
-
-                }
-
-                return 'after';
-
-            }
-
-            const pos = computeNewNotePosition();
-
-            createNewNote(props.parent, props.id, pos);
-
-        } else {
-            createNewNote(props.id, undefined, 'before');
-        }
-
-    }, [createNewNote, getEditorCursorPosition, props.id, props.parent]);
 
     React.useEffect(() => {
 
