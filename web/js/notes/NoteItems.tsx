@@ -33,10 +33,14 @@ export const NoteItems = deepMemo(function NoteItems(props: NotesProps) {
 
         <UL className={clsx(classes.root, 'NoteItems')}>
             <>
-                {props.notes.map((note) => (
-                    <Note key={note.id}
-                          parent={props.parent}
-                          id={note.id}/>))}
+                {props.notes.map((note) => {
+
+                    const key = note.id + note.updated;
+                    return (
+                        <Note key={key}
+                              parent={props.parent}
+                              id={note.id}/>);
+                })}
             </>
         </UL>
 

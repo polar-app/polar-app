@@ -2,6 +2,7 @@ import * as React from "react";
 import {CKEditor} from "@ckeditor/ckeditor5-react";
 import BalloonEditor from "@ckeditor/ckeditor5-build-balloon";
 import {HTMLStr} from "polar-shared/src/util/Strings";
+import {useLifecycleTracer} from "../../../../web/js/hooks/ReactHooks";
 
 /**
  * A data-format specific string like Markdown or HTML or JSON but that can be
