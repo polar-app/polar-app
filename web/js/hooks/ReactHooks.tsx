@@ -66,12 +66,14 @@ export function useRefValue<V>(value: V) {
 export function useLifecycleTracer(name: string) {
 
     useComponentDidMount(() => {
-        console.log("componentDidMount:" + name);
+        console.log("react-hook-tracer: componentDidMount: " + name);
     })
 
     useComponentWillUnmount(() => {
-        console.log("componentWillUnmount:" + name);
+        console.log("react-hook-tracer: componentWillUnmount: " + name);
     })
+
+    console.log("react-hook-tracer: render: " + name);
 
 }
 

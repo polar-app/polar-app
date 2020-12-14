@@ -2,6 +2,7 @@ import React from "react";
 import {ActionMenuItemProvider, IActionMenuItem, NoteActionMenu} from "./NoteActionMenu";
 import { deepMemo } from "../react/ReactUtils";
 import {NoteIDStr} from "./NotesStore";
+import {useLifecycleTracer} from "../hooks/ReactHooks";
 
 function useItemsProvider(): ActionMenuItemProvider {
 
@@ -50,6 +51,8 @@ interface IProps {
 }
 
 export const NoteActionMenuForCommands = deepMemo(function NoteActionMenuForCommands(props: IProps) {
+
+    useLifecycleTracer('NoteActionMenuForCommands');
 
     const itemsProvider = useItemsProvider();
 

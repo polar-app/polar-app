@@ -249,6 +249,13 @@ export interface StoreMutator {
 
 }
 
+// TODO: always use a mapper and filter but they are identity
+
+/**
+ *
+ */
+export type UseStoreMapper<V, K extends keyof V, N> = (store: Pick<V, K>) => N;
+
 /**
  * Given a store, only render the hook it the value passes the filter.  This is
  * an option for when we want to avoid triggering too many sub-component

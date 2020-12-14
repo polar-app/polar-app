@@ -9,6 +9,7 @@ import IWriter = ckeditor5.IWriter;
 import IIterable = ckeditor5.IIterable;
 import {useEditorCursorPosition} from "./editor/UseEditorCursorPosition";
 import { useNoteNavigationEnterHandler } from './NoteNavigationEnter';
+import {useLifecycleTracer} from "../hooks/ReactHooks";
 
 interface IProps {
     readonly parent: NoteIDStr | undefined;
@@ -46,6 +47,8 @@ function useNoteActivatedListener(id: NoteIDStr): INoteActivated | undefined {
 }
 
 export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
+
+    useLifecycleTracer('NoteNavigation');
 
     const editor = useEditorStore();
 

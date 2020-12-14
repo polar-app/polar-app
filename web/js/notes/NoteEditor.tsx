@@ -1,7 +1,7 @@
 import React from "react";
 import {CKEditor5BalloonEditor} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
 import {NoteNavigation} from "./NoteNavigation";
-import {NoteIDStr, useNotesStore, useNotesStoreCallbacks} from "./NotesStore";
+import {NoteIDStr, useNotesStore, useNotesStoreCallbacks, INote} from "./NotesStore";
 import {deepMemo} from "../react/ReactUtils";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 import {EditorStoreProvider, useEditorStore, useSetEditorStore} from "./EditorStoreProvider";
@@ -13,7 +13,6 @@ import {useLifecycleTracer, useStateRef} from "../hooks/ReactHooks";
 import {MarkdownContentEscaper} from "./MarkdownContentEscaper";
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 import IEventData = ckeditor5.IEventData;
-import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 
 interface ILinkNavigationEvent {
     readonly abortEvent: () => void;
@@ -156,6 +155,8 @@ interface INoteEditorInactiveProps {
 
 const NoteEditorInactive = React.memo(function NoteEditorInactive(props: INoteEditorInactiveProps) {
 
+    useLifecycleTracer('NoteEditorInactive');
+
     const {content, onClick} = props;
 
     const linkNavigationClickHandler = useLinkNavigationClickHandler()
@@ -196,7 +197,7 @@ interface INoteEditorActivatorProps {
  */
 const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEditorActivatorProps) {
 
-    // useLifecycleTracer('NoteEditorActivator');
+    useLifecycleTracer('NoteEditorActivator');
 
     const {onEditor, onChange, id, immutable} = props;
     const {active} = useNotesStore(['active']);
@@ -252,19 +253,38 @@ const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEd
 
 });
 
+
+export function useNote(id: NoteIDStr): INote | undefined {
+
+    const {index} = useNotesStore(['index']);
+    const [note, setNote] = React.useState<INote | undefined>();
+
+    React.useEffect(() => {
+
+        const newNote: INote | undefined = index[id] || undefined;
+
+        if (newNote !== note) {
+            setNote(newNote);
+        }
+
+    }, [id, index, note]);
+
+    return note;
+
+}
+
 const NoteEditorInner = deepMemo(function NoteEditorInner(props: IProps) {
 
-    // useLifecycleTracer('NoteEditorInner');
+    useLifecycleTracer('NoteEditorInner');
 
     const {id} = props;
-    const {index} = useNotesStore(['index']);
     const {updateNote} = useNotesStoreCallbacks()
     const setEditor = useSetEditorStore();
     const handleChange = React.useCallback((content: string) => {
         updateNote(props.id, content);
     }, [props.id, updateNote]);
 
-    const note = index[id];
+    const note = useNote(id);
 
     if (! note) {
         // this can happen when a note is deleted but the component hasn't yet
@@ -284,9 +304,9 @@ const NoteEditorInner = deepMemo(function NoteEditorInner(props: IProps) {
 
 });
 
-const NoteEditorWithEditorStore = deepMemo(function NoteEditorWithStore(props: IProps) {
+const NoteEditorWithEditorStore = deepMemo(function NoteEditorWithEditorStore(props: IProps) {
 
-    // useLifecycleTracer('NoteEditorWithStore');
+    useLifecycleTracer('NoteEditorWithEditorStore');
 
     useLinkNavigation();
 
@@ -320,7 +340,7 @@ interface IProps {
 
 export const NoteEditor = deepMemo(function NoteEditor(props: IProps) {
 
-    // useLifecycleTracer('NoteEditor');
+    useLifecycleTracer('NoteEditor');
 
     return (
         <EditorStoreProvider initialValue={undefined}>
