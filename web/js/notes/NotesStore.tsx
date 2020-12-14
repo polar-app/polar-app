@@ -6,6 +6,7 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import { Arrays } from 'polar-shared/src/util/Arrays';
 import {NoteTargetStr} from "./NoteLinkLoader";
+import {useLifecycleTracer} from "../hooks/ReactHooks";
 
 export type NoteIDStr = IDStr;
 export type NoteNameStr = string;
@@ -868,14 +869,17 @@ export const [NotesStoreProvider, useNotesStore, useNotesStoreCallbacks, useNote
 
 export function useNoteFromStore(target: NoteTargetStr): INote | undefined {
 
+    useLifecycleTracer('useNoteFromStore');
+
     // TODO: this would be better with the new filters and mappers in the
     // observable store
 
     const noteRef = React.useRef<INote | undefined>();
     const {index, indexByName} = useNotesStore(['index', 'indexByName'], {
         filter: (store): boolean => {
-            const nextNote = store.index[target] || store.indexByName[target]
+            const nextNote = store.index[target] || store.indexByName[target] || undefined;
             return noteRef.current?.updated !== nextNote?.updated;
+            // return false;
         }
     });
 

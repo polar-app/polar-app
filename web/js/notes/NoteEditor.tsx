@@ -261,6 +261,7 @@ const NoteEditorInner = deepMemo(function NoteEditorInner(props: IProps) {
     const {id} = props;
     const {updateNote} = useNotesStoreCallbacks()
     const setEditor = useSetEditorStore();
+
     const handleChange = React.useCallback((content: string) => {
         updateNote(props.id, content);
     }, [props.id, updateNote]);
