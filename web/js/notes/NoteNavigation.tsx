@@ -54,7 +54,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
     const noteActive = useNoteActivatedListener(props.id);
 
-    const {createNewNote, setActive, navPrev, navNext, doIndent, doUnIndent, noteIsEmpty, doDelete} = useNotesStoreCallbacks();
+    const {setActive, navPrev, navNext, doIndent, doUnIndent, noteIsEmpty, doDelete} = useNotesStoreCallbacks();
 
     const [ref, setRef] = React.useState<HTMLDivElement | null>(null);
 
