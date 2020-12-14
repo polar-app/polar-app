@@ -49,7 +49,7 @@ function useScrollSubscriber(delegate: () => void): Subscriber {
 
     const docViewerElements = useDocViewerElementsContext();
 
-    return () => {
+    return React.useCallback(() => {
 
         const docViewer = docViewerElements.getDocViewerElement();
         const viewerContainer = docViewer.querySelector('#viewerContainer');
@@ -60,15 +60,22 @@ function useScrollSubscriber(delegate: () => void): Subscriber {
 
         const listenerOpts = {passive: true};
 
-        viewerContainer!.addEventListener('scroll', handleScroll, listenerOpts);
+        if (! viewerContainer) {
+            return NULL_FUNCTION;
+        }
+
+        viewerContainer.addEventListener('scroll', handleScroll, listenerOpts);
 
         function unsubscribe () {
-            viewerContainer!.removeEventListener('scroll', handleScroll);
+
+            if (viewerContainer) {
+                viewerContainer.removeEventListener('scroll', handleScroll);
+            }
         }
 
         return unsubscribe;
 
-    }
+    }, [delegate, docViewerElements]);
 
 }
 

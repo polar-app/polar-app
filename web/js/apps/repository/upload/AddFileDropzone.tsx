@@ -155,15 +155,17 @@ export function useDragAndDropImportListener() {
 
     }, [dropHandler]);
 
-    useComponentDidMount(() => {
+    React.useEffect(() => {
+
         window.addEventListener('dragover', handleDragOver);
         window.addEventListener('drop', handleDrop);
-    });
 
-    useComponentWillUnmount(() => {
-        window.removeEventListener('dragover', handleDragOver);
-        window.removeEventListener('drop', handleDrop);
-    });
+        return () => {
+            window.removeEventListener('dragover', handleDragOver);
+            window.removeEventListener('drop', handleDrop);
+        }
+
+    }, [handleDragOver, handleDrop])
 
 }
 
@@ -208,17 +210,19 @@ export function useDragAndDropBackdropListener() {
 
     }, [setActive]);
 
-    useComponentDidMount(() => {
+    React.useEffect(() => {
+
         window.addEventListener('dragenter', onDragEnter);
         window.addEventListener('dragleave', onDragLeaveOrDrop);
         window.addEventListener('drop', onDragLeaveOrDrop);
-    });
 
-    useComponentWillUnmount(() => {
-        window.removeEventListener('dragenter', onDragEnter);
-        window.removeEventListener('dragleave', onDragLeaveOrDrop);
-        window.removeEventListener('drop', onDragLeaveOrDrop);
-    });
+        return () => {
+            window.removeEventListener('dragenter', onDragEnter);
+            window.removeEventListener('dragleave', onDragLeaveOrDrop);
+            window.removeEventListener('drop', onDragLeaveOrDrop);
+        }
+
+    }, [])
 
 }
 

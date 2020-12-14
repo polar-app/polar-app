@@ -266,20 +266,15 @@ export const KeyboardShortcuts = deepMemo(() => {
 
     }, [activeRef, keyToHandlers]);
 
-    const register = React.useCallback(() => {
+    React.useEffect(() => {
+
         window.addEventListener('keydown', handleKeyDown)
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown)
+        }
+
     }, [handleKeyDown])
-
-    const unregister = React.useCallback(() => {
-        window.removeEventListener('keydown', handleKeyDown)
-    }, [handleKeyDown])
-
-    unregister();
-    register();
-
-    useComponentWillUnmount(() => {
-        unregister();
-    })
 
     return null;
 

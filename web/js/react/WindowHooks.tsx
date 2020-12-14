@@ -36,7 +36,10 @@ export function useWindowEventListener(name: WindowEventListenerName,
             win.addEventListener(name, delegate, listenerOpts);
 
             return () => {
-                win.removeEventListener(name, delegate, listenerOpts);
+
+                if (win && typeof win.removeEventListener === 'function') {
+                    win.removeEventListener(name, delegate, listenerOpts);
+                }
             }
 
         }
