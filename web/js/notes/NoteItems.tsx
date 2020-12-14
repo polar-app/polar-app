@@ -35,7 +35,10 @@ export const NoteItems = deepMemo(function NoteItems(props: NotesProps) {
             <>
                 {props.notes.map((note) => {
 
-                    const key = note.id + note.updated;
+                    // WARN: do not use id + updated because this will cause the
+                    // components to constantly unmount
+                    const key = note.id;
+
                     return (
                         <Note key={key}
                               parent={props.parent}

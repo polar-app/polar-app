@@ -348,6 +348,9 @@ declare namespace ckeditor5 {
         readonly model: IModel;
         readonly commands: ICommands;
 
+        readonly getData: () => string;
+        readonly setData: (data: string) => void;
+
     }
 
 }
