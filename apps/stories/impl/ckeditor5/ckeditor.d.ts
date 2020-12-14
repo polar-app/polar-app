@@ -1,3 +1,4 @@
+
 declare module '@ckeditor/ckeditor5-react';
 declare module '@ckeditor/ckeditor5-build-classic';
 declare module '@ckeditor/ckeditor5-build-balloon';
@@ -21,54 +22,66 @@ declare module '@ckeditor/ckeditor5-editor-classic/src/classiceditor' {
     export const EssentialsPlugin: any;
 }
 
-declare module "@ckeditor/ckeditor5-engine/src/view/treewalker" {
+// declare module "@ckeditor/ckeditor5-engine/src/view/treewalker" {
+//
+//     // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_treewalker-TreeWalkerValueType.html
+//     import INode = ckeditor5.INode;
+//     import ITextProxy = ckeditor5.ITextProxy;
+//     import IRange = ckeditor5.IRange;
+//     import IPosition = ckeditor5.IPosition;
+//     import IIterable = ckeditor5.IIterable;
+//     import IIterator = ckeditor5.IIterator;
+//     export type TreeWalkerValueType = 'elementStart' | 'elementEnd' | 'character' | 'text';
+//
+//     export interface ITreeWalkerValue {
+//         readonly item: INode | ITextProxy;
+//         readonly type: TreeWalkerValueType;
+//     }
+//
+//     export type TreeWalkerDirection = 'backward' | 'forward';
+//
+//     export interface TreeWalkerOpts {
+//
+//         // default: forward
+//         readonly direction?: TreeWalkerDirection;
+//         readonly boundaries?: IRange;
+//         readonly startPosition?: IPosition;
+//
+//         // default: false
+//         readonly singleCharacters?: boolean;
+//
+//         // default: false
+//         readonly shallow?: boolean;
+//
+//         // default: false
+//         readonly ignoreElementEnd?: boolean;
+//     }
+//
+//     // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_treewalker-TreeWalker.html
+//     //
+//     //
+//     export class TreeWalker {
+//
+//         constructor(opts?: TreeWalkerOpts);
+//
+//         readonly [Symbol.iterator]: () => IIterator<ITreeWalkerValue>
+//         readonly direction: TreeWalkerDirection;
+//         readonly shallow: boolean;
+//         readonly next: () => ITreeWalkerValue;
+//
+//     }
+//
+// }
 
-    // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_treewalker-TreeWalkerValueType.html
-    import INode = ckeditor5.INode;
-    import ITextProxy = ckeditor5.ITextProxy;
-    import IRange = ckeditor5.IRange;
-    import IPosition = ckeditor5.IPosition;
-    import IIterable = ckeditor5.IIterable;
-    import IIterator = ckeditor5.IIterator;
-    export type TreeWalkerValueType = 'elementStart' | 'elementEnd' | 'character' | 'text';
 
-    export interface ITreeWalkerValue {
-        readonly item: INode | ITextProxy;
-        readonly type: TreeWalkerValueType;
-    }
-
-    export type TreeWalkerDirection = 'backward' | 'forward';
-
-    export interface TreeWalkerOpts {
-        readonly direction?: TreeWalkerDirection;
-        readonly boundaries?: IRange;
-        readonly startPosition?: IPosition;
-        readonly singleCharacters?: boolean;
-        readonly shallow?: boolean;
-        readonly ignoreElementEnd?: boolean;
-    }
-
-    // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_treewalker-TreeWalker.html
-    //
-    //
-    export class TreeWalker {
-
-        constructor(opts?: TreeWalkerOpts);
-
-        readonly [Symbol.iterator]: () => IIterator<ITreeWalkerValue>
-        readonly direction: TreeWalkerDirection;
-        readonly shallow: boolean;
-        readonly next: () => ITreeWalkerValue;
-
-    }
-
-}
-
+// https://ckeditor.com/docs/ckeditor5/latest/framework/guides/architecture/editing-engine.html
 declare namespace ckeditor5 {
 
     export interface IView {
         readonly focus: () => void;
         readonly document: IDocument;
+        readonly domConverter: IDomConverter;
+        readonly getDomRoot: () => Element;
     }
 
     export interface IEditing {
@@ -230,9 +243,23 @@ declare namespace ckeditor5 {
 
     }
 
+    export type TreeWalkerValueType = 'elementStart' | 'elementEnd' | 'character' | 'text';
+
+    export interface ITreeWalkerValue {
+        readonly item: INode | ITextProxy;
+        readonly type: TreeWalkerValueType;
+    }
+
+    export type TreeWalkerDirection = 'backward' | 'forward';
+
+    // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_range-Range.html
     export interface IRange {
+
         readonly isCollapsed: boolean;
+
         readonly isFlat: boolean;
+
+        readonly [Symbol.iterator]: () => IIterator<ITreeWalkerValue>
 
     }
 
@@ -271,6 +298,12 @@ declare namespace ckeditor5 {
         readonly doNotResetEntireContent?: boolean;
         readonly doNotAutoparagraph?: boolean;
         readonly direction?: boolean;
+    }
+
+    // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_view_domconverter-DomConverter.html
+    export interface IDomConverter {
+
+        readonly mapViewToDom: (viewNode: INode) => Element | DocumentFragment | undefined;
     }
 
     // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_model-Model.html

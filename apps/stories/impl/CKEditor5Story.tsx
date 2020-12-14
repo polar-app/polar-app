@@ -3,6 +3,7 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {CKEditor5BalloonEditor} from './ckeditor5/CKEditor5BalloonEditor';
 import Button from '@material-ui/core/Button';
 import {CKEditor5GlobalCss} from "./ckeditor5/CKEditor5GlobalCss";
+import {doEditorSplit} from "../../../web/js/notes/editor/UseEditorSplitter";
 
 export const CKEditor5Story = () => {
 
@@ -16,33 +17,36 @@ export const CKEditor5Story = () => {
 
     const onClick = React.useCallback(() => {
 
-        if (editorRef.current === undefined) {
-            console.log("no editor");
-            return;
-        }
+        const editor = editorRef.current!;
 
-        // https://stackoverflow.com/questions/16835365/set-cursor-to-specific-position-in-ckeditor
+        setTimeout(() => {
 
-        const editor = editorRef.current;
+            const {prefix, suffix} = doEditorSplit(editor);
 
-        const doc = editor.model.document;
+            console.log("prefix: ", prefix);
+            console.log("suffix: ", suffix);
 
-        // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_document-Document.html#function-getRoot
-        const root = doc.getRoot();
+        }, 2000);
 
-        editor.model.change((writer: any) => {
-            // beginning
-            // writer.setSelection(root, 0)
-            // end
-            writer.setSelection(root, 'end')
-        });
 
-        editor.editing.view.focus();
+        // extractContents();
 
-        console.log('FIXME: ', root);
 
-        // editorRef.current.model.document.selection.
+        //
+        // console.log("FIXME: dom root: ", ;
+        //
+        // const node = editor.model.document.getRoot().getChild(0);
+        // const foo = editor.editing.view.domConverter.mapViewToDom(node);
+        //
+        // console.log("node: ", node);
+        //
+        // console.log(foo);
 
+        // const editorSplit = doEditorSplit(editorRef.current!);
+        //
+        // console.log("prefix: ", editorSplit.prefix)
+        // console.log("suffix: ", editorSplit.suffix)
+        //
 
     }, [editorRef]);
 
