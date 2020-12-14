@@ -35,6 +35,7 @@ export namespace AccountNotifications {
 
             await Sendgrid.send({
                 to: user.email,
+                bcc: persona.email,
                 from: persona.email,
                 subject,
                 text: body

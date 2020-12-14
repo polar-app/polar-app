@@ -9,6 +9,7 @@ import {Lazy} from "../util/Lazy";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {SentryReporters} from "../reporters/SentryReporter";
 import {AmplitudeUtils} from "../amplitude/AmplitudeUtils";
+import { Plans } from "polar-accounts/src/Plans";
 
 const firebase = Lazy.create(() => FirebaseAdmin.app());
 const auth = Lazy.create(() => firebase().auth());
@@ -78,6 +79,7 @@ export namespace StripeWebhooks {
 
     async function sendNotifications(stripeMode: StripeMode,
                                      customerID: string,
+                                     from: Billing.V2Subscription,
                                      to: Billing.V2Subscription) {
 
         async function doSendNotifications() {
@@ -91,8 +93,6 @@ export namespace StripeWebhooks {
             if (! customer.email) {
                 throw new Error("Customer has no email: " + customerID);
             }
-
-            const from = await Subscriptions.getSubscriptionByEmail(customer.email);
 
             const user = await auth().getUserByEmail(customer.email)
 
@@ -114,8 +114,31 @@ export namespace StripeWebhooks {
 
     }
 
+    async function computeFromPlanForCustomer(stripeMode: StripeMode,
+                                              customerID: string): Promise<Billing.V2Subscription> {
+
+        const defaultSubscription: Billing.V2Subscription = {
+            plan: Plans.toV2('free'),
+            interval: 'month'
+        };
+
+        const customer = await StripeCustomers.getCustomerByEmail(stripeMode, {id: customerID});
+
+        if (! customer) {
+            return defaultSubscription;
+        }
+
+        if (! customer.email) {
+            return defaultSubscription;
+        }
+
+        return await Subscriptions.getSubscriptionByEmail(customer.email);
+
+    }
+
     async function sendAnalytics(stripeMode: StripeMode,
                                  customerID: string,
+                                 from: Billing.V2Subscription,
                                  to: Billing.V2Subscription) {
 
         async function doSendAnalytics() {
@@ -129,7 +152,6 @@ export namespace StripeWebhooks {
             if (! customer.email) {
                 throw new Error("Customer has no email: " + customerID);
             }
-            const from = await Subscriptions.getSubscriptionByEmail(customer.email);
 
             const user = await auth().getUserByEmail(customer.email)
 
@@ -161,8 +183,9 @@ export namespace StripeWebhooks {
                                 customerID: string,
                                 subscriptionID: string | undefined) {
 
+        const from = await computeFromPlanForCustomer(stripeMode, customerID);
+
         // must be sent first because as a side effect we read the users current plan
-        await sendNotifications(stripeMode, customerID, to);
 
         await StripeCustomers.deleteCustomerSubscriptions(stripeMode,
                                                           {id: customerID},
@@ -170,7 +193,8 @@ export namespace StripeWebhooks {
 
         await Accounts.changePlan(stripeMode, customerID, to);
 
-        await sendAnalytics(stripeMode, customerID, to);
+        await sendNotifications(stripeMode, customerID, from, to);
+        await sendAnalytics(stripeMode, customerID, from, to);
 
     }
 
