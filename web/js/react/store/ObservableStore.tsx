@@ -249,12 +249,12 @@ export interface StoreMutator {
 
 }
 
-// TODO: always use a mapper and filter but they are identity
 
-/**
- *
- */
+const DEFAULT_USE_STORE_MAPPER = <V, K extends keyof V, N>(store: Pick<V, K>) => store;
+
 export type UseStoreMapper<V, K extends keyof V, N> = (store: Pick<V, K>) => N;
+
+const DEFAULT_USE_STORE_FILTER = <V,  K extends keyof V>() => true;
 
 /**
  * Given a store, only render the hook it the value passes the filter.  This is
@@ -265,7 +265,8 @@ export type UseStoreFilter<V, K extends keyof V> = (store: Pick<V, K>) => boolea
 
 export interface IUseStoreHookOpts<V, K extends keyof V> {
     readonly debug?: boolean;
-    readonly filter?: UseStoreFilter<V, K>;
+    readonly filter: UseStoreFilter<V, K>;
+    // readonly mapper?: UseStoreMapper<V, K, N>;
 }
 
 export type ObservableStoreTuple<V, M extends StoreMutator, C> = [
@@ -380,7 +381,10 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
     const [storeContext,] = createObservableStoreContext<V>(store);
 
     const useStoreHook = <K extends keyof V>(keys: ReadonlyArray<K> | undefined,
-                                             storeHookOpts: IUseStoreHookOpts<V, K> = {}) => {
+                                             storeHookOpts: IUseStoreHookOpts<V, K> = {
+                                                 filter: DEFAULT_USE_STORE_FILTER
+                                             }) => {
+
         return useObservableStore(storeContext, keys, {
             enableShallowEquals: opts.enableShallowEquals || false,
             filter: storeHookOpts.filter
