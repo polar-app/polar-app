@@ -257,8 +257,10 @@ SpectronRenderer.run(async (state) => {
 
             console.log("doGroupProvision");
 
+            const uid = (await Firebase.currentUserID())!;
+
             const {docMeta} = mockDoc;
-            const docID = FirebaseDatastores.computeDocMetaID(docMeta.docInfo.fingerprint);
+            const docID = FirebaseDatastores.computeDocMetaID(docMeta.docInfo.fingerprint, uid);
 
             const docRef = DocRefs.fromDocMeta(docID, docMeta);
 
@@ -288,8 +290,10 @@ SpectronRenderer.run(async (state) => {
 
             console.log("doGroupProvisionPublic");
 
+            const uid = (await Firebase.currentUserID())!;
+
             const {docMeta} = mockDoc;
-            const docID = FirebaseDatastores.computeDocMetaID(docMeta.docInfo.fingerprint);
+            const docID = FirebaseDatastores.computeDocMetaID(docMeta.docInfo.fingerprint, uid);
 
             const docRef = DocRefs.fromDocMeta(docID, docMeta);
 
@@ -889,8 +893,10 @@ SpectronRenderer.run(async (state) => {
 
             async function doGroupDocsAdd(mockDoc: MockDoc) {
 
+                const uid = (await Firebase.currentUserID())!;
+
                 const {docMeta} = mockDoc;
-                const docID = FirebaseDatastores.computeDocMetaID(docMeta.docInfo.fingerprint);
+                const docID = FirebaseDatastores.computeDocMetaID(docMeta.docInfo.fingerprint, uid);
 
                 const docRef = DocRefs.fromDocMeta(docID, docMeta);
 

@@ -90,7 +90,7 @@ describe('DocMetas', function() {
     });
 
     describe('Deserialize', function() {
-
+        // noop
     });
 
 
@@ -105,7 +105,7 @@ describe('DocMetas', function() {
                 assert.notEqual(docMeta.docInfo, null);
                 delete (DocMetas.getPageMeta(docMeta, 1) as any).textHighlights;
 
-                delete docMeta.docInfo.pagemarkType;
+                delete (docMeta.docInfo as any).pagemarkType;
 
                 docMeta = DocMetas.upgrade(docMeta);
 
@@ -120,7 +120,7 @@ describe('DocMetas', function() {
 
                 assertJSON(Object.keys(DocMetas.getPageMeta(docMeta, 1).pagemarks), ["1s2gw2Mkwb"]);
 
-                delete DocMetas.getPageMeta(docMeta, 1).pagemarks["1s2gw2Mkwb"].rect ;
+                delete (DocMetas.getPageMeta(docMeta, 1).pagemarks["1s2gw2Mkwb"] as any).rect ;
 
                 docMeta = DocMetas.upgrade(docMeta);
 
@@ -214,7 +214,7 @@ describe('DocMetas', function() {
 
                 let docMeta = createUpgradeDoc();
 
-                delete DocMetas.getPageMeta(docMeta, 1).textHighlights["12pNUv1Y9S"].id;
+                delete (DocMetas.getPageMeta(docMeta, 1).textHighlights["12pNUv1Y9S"] as any).id;
 
                 docMeta = DocMetas.upgrade(docMeta);
 

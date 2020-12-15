@@ -12,7 +12,7 @@ export class Promises {
      *
      * We require at least 1 promise but you can specify up to N
      */
-    public static async any<T>(p0: Promise<T>, ...morePromises: Array<Promise<T>>): Promise<T> {
+    public static async any<T>(p0: Promise<T>, ...morePromises: ReadonlyArray<Promise<T>>): Promise<T> {
 
         const promises = [p0, ...morePromises];
 
@@ -64,10 +64,10 @@ export class Promises {
      */
     public static async waitFor(timeout: number) {
 
-        return new Promise(resolve => {
+        return new Promise<boolean>(resolve => {
 
             setTimeout(() => {
-                resolve();
+                resolve(true);
             }, timeout);
 
         });
@@ -123,9 +123,9 @@ export class Promises {
     }
 
     public static requestAnimationFrame(callback: () => void = NULL_FUNCTION) {
-        return new Promise(resolve => {
+        return new Promise<boolean>(resolve => {
             callback();
-            window.requestAnimationFrame(() => resolve());
+            window.requestAnimationFrame(() => resolve(true));
         });
     }
 

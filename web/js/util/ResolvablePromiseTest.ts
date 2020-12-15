@@ -56,10 +56,10 @@ describe('ResolvablePromise', function() {
     it('reject2', async function() {
 
         // noinspection TsLint
-        let resolve: (value?: string) => void = () => {};
+        let resolve: (value: string) => void = () => {};
 
         // noinspection TsLint
-        let reject: (reason?: any) => void = () => {};
+        let reject: (reason: any) => void = () => {};
 
         // noinspection TsLint
         const promise = new Promise<string>((_resolve, _reject) => {

@@ -21,7 +21,8 @@ export const ReviewRouter = () => {
             <Route path='#folders'
                    render={() => (
                        <LeftSidebar onClose={NULL_FUNCTION}>
-                           {/*<div>TODO: folders will go here</div>*/}
+                           <>
+                           </>
                        </LeftSidebar>
                    )}/>
 

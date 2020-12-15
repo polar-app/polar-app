@@ -20,7 +20,7 @@ export function injectScript(src: string, type?: string) {
         document.head.appendChild(script);
 
         script.addEventListener('load', function() {
-            resolve();
+            resolve(true);
         });
 
         script.addEventListener('error', function(err) {

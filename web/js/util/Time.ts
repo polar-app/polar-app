@@ -11,9 +11,9 @@ export class Time {
      */
     static sleep(interval: number) {
 
-        return new Promise(resolve =>  {
+        return new Promise<boolean>(resolve =>  {
             setTimeout(() => {
-                resolve();
+                resolve(true);
             }, interval);
         })
 

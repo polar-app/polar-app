@@ -240,7 +240,7 @@ export abstract class AbstractDatastore {
 
     }
 
-    public abstract async getDocMeta(fingerprint: string): Promise<string | null>;
+    public abstract getDocMeta(fingerprint: string): Promise<string | null>;
 
     /**
      * Default implementation provides no updates.  Used by default with

@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Provider} from "polar-shared/src/util/Providers";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {createObservableStore, SetStore} from "../../../web/js/react/store/ObservableStore";
+import { INote } from '../../../web/js/notes/NotesStore';
 
 export type NoteIDStr = IDStr;
 export type NoteNameStr = string;
