@@ -110,6 +110,76 @@ namespace Equals {
 
 }
 
+export type UseStoreReducerFilter<R> = (prev: R, next: R) => boolean;
+
+interface IUseObservableStoreReducerOpts<R> {
+    readonly enableShallowEquals?: boolean;
+    readonly debug?: boolean;
+    readonly filter?: UseStoreReducerFilter<R>;
+
+}
+
+export function useObservableStoreReducer<V, R>(context: React.Context<ObservableStore<V>>,
+                                                reducer: (value: V) => R,
+                                                opts: IUseObservableStoreReducerOpts<R> = {}): R {
+
+    const internalObservableStore = useContext(context) as InternalObservableStore<V>;
+
+    const [value, setValue] = useState<R>(reducer(internalObservableStore.current));
+    const valueRef = React.useRef(value);
+
+    React.useEffect(() => {
+
+        const subscription = internalObservableStore.subject.subscribe((nextStore) => {
+
+            function doUpdateValue(newValue: R) {
+                setValue(newValue);
+                valueRef.current = newValue;
+            }
+
+            const currValue = valueRef.current;
+
+            function isEqual(a: Dict, b: Dict): boolean {
+
+                if (opts.enableShallowEquals) {
+                    return Equals.shallow(a, b);
+                }
+
+                return Equals.deep(a, b);
+
+            }
+
+            const nextValue = reducer(nextStore);
+
+            if (! isEqual(currValue, nextValue)) {
+
+                if (opts.filter && ! opts.filter(currValue, nextValue)) {
+                    // the value didn't pass the filter so don't update it...
+                    return;
+                }
+
+                // the internal current in the context is already updated.
+                // debug("values are updated: ", nextValuePicked, currValuePicked);
+                return doUpdateValue(nextValue);
+
+            } else {
+                // debug("values are NOT updated: ", nextValuePicked, currValuePicked);
+            }
+
+        })
+
+        return () => {
+            subscription.unsubscribe();
+        }
+
+    }, [internalObservableStore.subject, opts, reducer]);
+
+    // return the initial value...
+    return value;
+
+}
+
+
 export function useObservableStore<V, K extends keyof V>(context: React.Context<ObservableStore<V>>,
                                                          keys: ReadonlyArray<K> | undefined,
                                                          opts: IUseObservableStoreOpts<V, K>): Pick<V, K> {
@@ -275,6 +345,7 @@ export type ObservableStoreTuple<V, M extends StoreMutator, C> = [
     <K extends keyof V>(keys: ReadonlyArray<K> | undefined, opts?: IUseStoreHookOpts<V, K>) => Pick<V, K>,
     UseContextHook<C>,
     UseContextHook<M>,
+    <R extends any>(reducer: (value: V) => R, opts: IUseObservableStoreReducerOpts<R>) => R
 ];
 
 /**
@@ -392,6 +463,10 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
 
     }
 
+    const useStoreReducerHook = <R extends any>(reducer: (value: V) => R, opts: IUseObservableStoreReducerOpts<R> = {}) => {
+        return useObservableStoreReducer(storeContext, reducer, opts);
+    }
+
     const callbacksContext = React.createContext<ComponentCallbacksFactory<C>>(componentCallbacksFactory);
 
     // NOTE: the callbacksFactory should be written with EXACTLY the same
@@ -429,7 +504,7 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
 
     }
 
-    return [ObservableProviderComponent, useStoreHook, useCallbacksHook, useMutatorHook];
+    return [ObservableProviderComponent, useStoreHook, useCallbacksHook, useMutatorHook, useStoreReducerHook];
 
 }
 //
