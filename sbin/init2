@@ -8,7 +8,8 @@ set -e
 mkdir -p packages
 for repo_url in `cat conf/repos.conf`; do
 
-    (cd packages && git clone ${repo_url})
+    echo "Working with URL ${repo_url}"
+    (cd packages && git clone "${repo_url}")
 
 done
 
