@@ -58,7 +58,7 @@
     "prompts": "^2.3.2",
     "rollbar": "=2.19.4",
     "stripe": "=8.119.0",
-    "typescript": "3.9.5",
+    "typescript": "4.1.3",
     "uuid": "3.3.3",
     "yargs": "^15.3.1"
   },

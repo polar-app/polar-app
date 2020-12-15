@@ -56,9 +56,9 @@ export class DatastoreFetchImports {
 
         const tmpFile = await this.createStorageTmpStream(tmpName);
 
-        const filePromise = new Promise(resolve => {
+        const filePromise = new Promise<boolean>(resolve => {
             tmpFile.stream.on('finish', () => {
-                resolve();
+                resolve(true);
             });
         });
 
