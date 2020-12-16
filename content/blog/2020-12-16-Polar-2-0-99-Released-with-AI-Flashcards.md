@@ -1,5 +1,5 @@
 ---
-title: Polar 2.0.96 released with AI flashcards
+title: Polar 2.0.99 released with AI flashcards
 date: 2020-12-16T08:00:00.000-08:00
 layout: post
 description: Polar 2.0.96 with AI-generated flashcards is now live 
@@ -18,7 +18,7 @@ Check it out in action here:
 
 AI-generated flashcards will allow you to speed up and simplify creating flashcards directly from text highlights.
 
-We are using GPT-3 for this on the backend. Since GPT-3 is content-agnostic, you can use this on any text highlight.
+We are using OpenAI's <a href="https://en.wikipedia.org/wiki/GPT-3">GPT-3</a> for this on the backend. Since GPT-3 is content-agnostic, you can use this on any text highlight. Create the flashcards the fastest way and sync them directly to <a href="https://ankiweb.net/about">Anki</a>.
 
 The feature is available to all Plus and Pro users.
 
