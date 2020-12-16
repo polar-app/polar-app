@@ -859,7 +859,7 @@ function useCallbacksFactory(storeProvider: Provider<INotesStore>,
 
 }
 
-export const [NotesStoreProvider, useNotesStore, useNotesStoreCallbacks, useNotesMutator]
+export const [NotesStoreProvider, useNotesStore, useNotesStoreCallbacks,, useNotesStoreReducer]
     = createObservableStore<INotesStore, Mutator, INotesCallbacks>({
     initialValue: initialStore,
     mutatorFactory,
@@ -870,6 +870,16 @@ export const [NotesStoreProvider, useNotesStore, useNotesStoreCallbacks, useNote
 export function useNoteFromStore(target: NoteTargetStr): INote | undefined {
 
     useLifecycleTracer('useNoteFromStore');
+
+    function reducer(store: INotesStore) {
+        return store.index[target] || store.indexByName[target] || undefined
+    }
+
+    function filter(curr: INote, next: INote): boolean {
+        return curr.updated !== next.updated;
+    }
+
+    useNotesStoreReducer(reducer, {filter});
 
     // TODO: this would be better with the new filters and mappers in the
     // observable store

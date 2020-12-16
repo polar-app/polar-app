@@ -30,7 +30,9 @@ export const WelcomeScreen = React.memo(() => {
             });
         }
 
-        analytics.event2('welcome-profile-completed');
+        analytics.event2('welcome-profile-completed', {
+            ...profile
+        });
 
         history.replace('/');
 
