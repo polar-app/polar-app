@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -e
+
+###
+#
+# go through the configured repositories and pull them down to initialize them.
+mkdir -p packages
+for repo_url in `cat conf/repos.conf`; do
+
+    echo "Working with URL ${repo_url}"
+    (cd packages && git clone "${repo_url}")
+
+done
+
+echo "Telling git to store passwords locally..."
