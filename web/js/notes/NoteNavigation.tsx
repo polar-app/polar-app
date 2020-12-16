@@ -3,12 +3,9 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import {
     NoteIDStr,
     useNotesStoreCallbacks,
-    useNotesStore,
-    NavPosition,
-    NewNotePosition,
     useNoteActivated
 } from "./NotesStore";
-import { deepMemo } from '../react/ReactUtils';import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
+import { deepMemo } from '../react/ReactUtils';
 import { useEditorStore } from './EditorStoreProvider';
 import IEventData = ckeditor5.IEventData;
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
@@ -24,37 +21,16 @@ interface IProps {
     readonly children: JSX.Element;
 }
 
-interface INoteActivated {
-    readonly id: NoteIDStr;
-    readonly activePos: NavPosition;
-}
+function useNoteActivation(id: NoteIDStr) {
 
-export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
-
-    useLifecycleTracer('NoteNavigation', {id: props.id});
+    useLifecycleTracer('useNoteActivation', {id});
 
     const editor = useEditorStore();
 
-    const noteActivated = useNoteActivated(props.id);
+    const noteActivated = useNoteActivated(id);
 
-    const {setActive, navPrev, navNext, doIndent, doUnIndent, noteIsEmpty, doDelete} = useNotesStoreCallbacks();
+    const hasFocusRef = React.useRef(true);
 
-    const [ref, setRef] = React.useState<HTMLDivElement | null>(null);
-
-    const hasActiveSelectionRef = React.useRef(false);
-
-    const getEditorCursorPosition = useEditorCursorPosition();
-    const handleEditorEnter = useNoteNavigationEnterHandler({parent: props.parent, id: props.id});
-
-    const handleClickAway = React.useCallback(() => {
-        // noop for now
-    }, []);
-
-    const editorFocus = React.useCallback(() => {
-        editor!.editing.view.focus();
-    }, [editor]);
-
-    // TODO move to editor hook
     const jumpToEditorRootPosition = React.useCallback((offset: number | 'before' | 'end') => {
 
         if (! editor) {
@@ -80,6 +56,69 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
         jumpToEditorRootPosition('end');
     }, [jumpToEditorRootPosition]);
 
+    const editorFocus = React.useCallback(() => {
+        editor!.editing.view.focus();
+    }, [editor]);
+
+    React.useEffect(() => {
+
+        if (editor !== undefined) {
+
+            if (noteActivated) {
+
+                if (! hasFocusRef.current) {
+
+                    editorFocus();
+
+                    switch (noteActivated.activePos) {
+                        case "start":
+                            jumpToEditorStartPosition();
+                            break;
+                        case "end":
+                            jumpToEditorEndPosition();
+                            break;
+                    }
+
+                    hasFocusRef.current = true;
+
+                }
+
+            } else {
+                // we are no longer active.
+                hasFocusRef.current = false;
+            }
+
+        } else {
+            // console.log("No editor: ")
+        }
+
+    }, [editor, editorFocus, jumpToEditorEndPosition, jumpToEditorStartPosition, noteActivated, id]);
+
+}
+
+export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
+
+    useLifecycleTracer('NoteNavigation', {id: props.id});
+
+    const editor = useEditorStore();
+
+    useNoteActivation(props.id);
+
+    const {setActive, navPrev, navNext, doIndent, doUnIndent, noteIsEmpty, doDelete} = useNotesStoreCallbacks();
+
+    const [ref, setRef] = React.useState<HTMLDivElement | null>(null);
+
+    const hasActiveSelectionRef = React.useRef(false);
+
+    const getEditorCursorPosition = useEditorCursorPosition();
+    const handleEditorEnter = useNoteNavigationEnterHandler({parent: props.parent, id: props.id});
+
+    const handleClickAway = React.useCallback(() => {
+        // noop for now
+    }, []);
+
+    // TODO move to editor hook
+
     interface IEditorSplit {
         readonly prefix: string;
         readonly suffix: string;
@@ -104,32 +143,6 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
         return null!;
 
     }, [editor])
-
-    React.useEffect(() => {
-
-        if (editor !== undefined) {
-
-            if (noteActivated) {
-                editorFocus();
-
-                switch (noteActivated.activePos) {
-                    case "start":
-                        jumpToEditorStartPosition();
-                        break;
-                    case "end":
-                        jumpToEditorEndPosition();
-                        break;
-                }
-
-            } else {
-                // different editor
-            }
-
-        } else {
-            // console.log("No editor: ")
-        }
-
-    }, [editor, editorFocus, jumpToEditorEndPosition, jumpToEditorStartPosition, noteActivated, props.id]);
 
     const handleClick = React.useCallback(() => {
         setActive(props.id);

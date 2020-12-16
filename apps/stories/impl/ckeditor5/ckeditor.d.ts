@@ -343,6 +343,7 @@ declare namespace ckeditor5 {
 
     }
 
+    // https://ckeditor.com/docs/ckeditor5/latest/api/module_editor-balloon_ballooneditor-BalloonEditor.html
     export interface IEditor {
         readonly editing: IEditing;
         readonly model: IModel;
