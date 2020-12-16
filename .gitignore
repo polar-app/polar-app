@@ -18,3 +18,5 @@ yarn-error.log*
 /public
 /.cache
 .firebase
+
+*.jsx

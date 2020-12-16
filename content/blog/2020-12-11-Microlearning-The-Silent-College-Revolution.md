@@ -6,7 +6,7 @@ description: Use Microlearning to enhance your learning and improve your grades 
 large_image: <img class="img-fluid" src="https://i.imgur.com/PCnVYwP.jpg">  
 ---
 
-Microlearning - The Silent College Revolution
+# Microlearning - The Silent College Revolution
 
 <img class="img-fluid" src="https://i.imgur.com/PCnVYwP.jpg">  
 

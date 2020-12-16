@@ -1,6 +1,4 @@
 import * as React from "react"
-import { useStaticQuery, graphql } from "gatsby";
-import Link from "@material-ui/core/Link";
 const polarLogo = require("../../content/assets/polar-icon.png");
 
 type Data = {
@@ -18,21 +16,19 @@ type Data = {
 };
 
 const Bio = () => {
-  const data: Data = useStaticQuery(graphql`
-    query BioQuery {
-      site {
-        siteMetadata {
-          author {
-            name
-            summary
-          }
-          social {
-            twitter
-          }
+  const data: Data = {
+    site: {
+      siteMetadata: {
+        author: {
+          name: "Polar Team",
+          summary: "Read. Learn. Never Forget."
+        },
+        social: {
+          twitter: "getpolarized"
         }
       }
     }
-  `);
+  }
 
   const { author, social } = data.site.siteMetadata;
   return (
@@ -59,8 +55,6 @@ const Bio = () => {
           Written by <strong>{author.name}</strong> {author.summary}
           {` `}
           <a
-            // color="BROKEN_ON_PURPOSE"
-
             href={`https://twitter.com/${social.twitter}`}
           >
             You should follow us on Twitter

@@ -8,6 +8,8 @@ large_image: https://i.imgur.com/sAI6hyr.png
 
 <img class="img-fluid" src="https://i.imgur.com/sAI6hyr.png">
 
+# Polar 2.0.99 Released with Artificially Intelligent Flashcards
+
 The simplest way to create flashcards from text highlights is finally here!
 
 We are happy to announce that we have launched AI-generated flashcards using <a

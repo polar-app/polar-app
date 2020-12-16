@@ -13,10 +13,10 @@ module.exports = {
     title: `Polar`,
     author: {
       name: `Polar Team`,
-      summary: `A place to catch up on all things productivity... and all things Polar!`,
+      summary: `Read. Learn. Never Forget.`,
     },
-    description: `Proof of concept gatsby + MUI + typescript + Markdown`,
-    siteUrl: `https://https://gatsby-mui.web.app/`,
+    description: `Read. Learn. Never Forget.`,
+    siteUrl: `https://getpolarized.io/`,
     social: {
       twitter: `getpolarized`,
       // twitterImage:
