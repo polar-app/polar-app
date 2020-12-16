@@ -3,10 +3,10 @@ title: Polar 2.0.99 released with AI flashcards
 date: 2020-12-16T08:00:00.000-08:00
 layout: post
 description: Polar 2.0.96 with AI-generated flashcards is now live 
-large_image: https://i.imgur.com/YXSw3Ge.png
+large_image: https://i.imgur.com/aeZQal1.jpg
 ---
 
-<img class="img-fluid" src="https://i.imgur.com/YXSw3Ge.png">
+<img class="img-fluid" src="https://i.imgur.com/aeZQal1.jpg">
 
 The simplest way to create flashcards from text highlights is finally here!
 
