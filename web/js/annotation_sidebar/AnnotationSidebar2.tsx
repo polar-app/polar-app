@@ -139,7 +139,7 @@ const Annotations = React.memo(() => {
 /**
  * Second version of the sidebar that is more react-ish...
  */
-export const AnnotationSidebar2 = React.memo(() => {
+export const AnnotationSidebar2 = React.memo(function AnnotationSidebar2() {
 
     return (
 

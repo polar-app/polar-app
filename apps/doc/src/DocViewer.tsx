@@ -38,7 +38,7 @@ import {DockLayout2} from "../../../web/js/ui/doc_layout/DockLayout2";
 import {Outliner} from "./outline/Outliner";
 import {FeedbackButton2} from "../../repository/js/ui/FeedbackButton2";
 
-const Main = React.memo(() => {
+const Main = React.memo(function Main() {
 
     return (
 
@@ -185,7 +185,7 @@ namespace Device {
         );
     }, isEqual);
 
-    export const Desktop = React.memo(() => {
+    export const Desktop = React.memo(function Desktop() {
 
         const {resizer, docMeta} = useDocViewerStore(['resizer', 'docMeta']);
 
@@ -276,7 +276,7 @@ namespace Device {
 
 }
 
-const DocViewerMain = deepMemo(() => {
+const DocViewerMain = deepMemo(function DocViewerMain() {
 
     return (
         <DeviceRouter handheld={<Device.Handheld/>}
@@ -302,7 +302,7 @@ const DocViewerParent = deepMemo((props: DocViewerParentProps) => (
     </div>
 ));
 
-export const DocViewer = deepMemo(() => {
+export const DocViewer = deepMemo(function DocViewer() {
 
     const {docURL} = useDocViewerStore(['docURL']);
     const {setDocMeta} = useDocViewerCallbacks();

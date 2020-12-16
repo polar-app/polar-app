@@ -32,7 +32,7 @@ const createInitialPanels = (dockPanels: ReadonlyArray<DockPanel>): FixedDocPane
  * toggle button is pushed.
  *
  */
-export const DockLayout2 = deepMemo((props: DocLayoutProps) => {
+export const DockLayout2 = deepMemo(function DockLayout2(props: DocLayoutProps) {
 
     const panels = React.useMemo(() => createInitialPanels(props.dockPanels), [props.dockPanels]);
     const store = React.useMemo((): IDockLayoutStore => {

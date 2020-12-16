@@ -25,7 +25,7 @@ const globalKeyMap = keyMapWithGroup({
     }
 });
 
-export const DockLayoutGlobalHotKeys = React.memo(() => {
+export const DockLayoutGlobalHotKeys = React.memo(function DockLayoutGlobalHotKeys() {
 
     const {toggleSide} = useDockLayoutCallbacks();
 

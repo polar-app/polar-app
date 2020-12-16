@@ -119,8 +119,8 @@ const OutlineTreeItem = deepMemo((props: IProps) => {
             {isExpanded && (
                 <div style={{marginLeft: '1.25rem'}}>
 
-                    {item.children.map(item => (
-                        <OutlineTreeItem item={item}/>
+                    {item.children.map((item, idx) => (
+                        <OutlineTreeItem key={item.id || idx} item={item}/>
                     ))}
 
                 </div>
@@ -144,8 +144,8 @@ const OutlineTreeView = React.memo(() => {
     return (
 
         <Box m={1}>
-            {outline.items.map(item => (
-                <OutlineTreeItem item={item}/>
+            {outline.items.map((item, idx) => (
+                <OutlineTreeItem key={item.id || idx} item={item}/>
             ))}
         </Box>
     );
@@ -153,7 +153,7 @@ const OutlineTreeView = React.memo(() => {
 });
 
 
-export const Outliner = React.memo(() => {
+export const Outliner = React.memo(function Outliner() {
 
     return (
         <OutlinerStoreProviderDelegate>

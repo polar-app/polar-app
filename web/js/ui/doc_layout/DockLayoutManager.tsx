@@ -30,7 +30,7 @@ export interface DocLayoutProps {
  * toggle button is pushed.
  *
  */
-export const DockLayoutManager = deepMemo((props: DocLayoutProps) => {
+export const DockLayoutManager = deepMemo(function DockLayoutManager(props: DocLayoutProps) {
 
     const mousePosition = React.useRef(MousePositions.get());
     const mouseDown = React.useRef(false);
