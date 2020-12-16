@@ -182,7 +182,7 @@ export function useObservableStore<V, K extends keyof V>(context: React.Context<
 
                 if (! isEqual(currValuePicked, nextValuePicked)) {
 
-                    console.log("FIXME:L values differ, ", currValuePicked, nextValuePicked);
+                    // console.log("values differ, ", currValuePicked, nextValuePicked);
 
                     if (opts.filter && ! opts.filter(nextValuePicked)) {
                         // the value didn't pass the filter so don't update it...

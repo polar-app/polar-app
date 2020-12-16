@@ -73,7 +73,7 @@ export const NoteInner = deepMemo(function NoteInner(props: IProps) {
                          marginRight: theme.spacing(0.5)
                      }}>
 
-                    <NoteOverflowButton target={props.id}/>
+                    <NoteOverflowButton id={props.id}/>
 
                     {hasItems && id !== root && (
                         <NoteExpandToggleButton id={props.id}/>

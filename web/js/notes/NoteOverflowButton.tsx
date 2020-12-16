@@ -2,7 +2,7 @@ import React from "react";
 import {NoteTargetStr} from "./NoteLinkLoader";
 import IconButton from "@material-ui/core/IconButton";
 import {deepMemo} from "../react/ReactUtils";
-import {useNotesStore} from "./NotesStore";
+import {NoteIDStr, useNoteActivated, useNotesStore} from "./NotesStore";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import createStyles from "@material-ui/core/styles/createStyles";
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -21,18 +21,18 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 interface IProps {
-    readonly target: NoteTargetStr;
+    readonly id: NoteIDStr;
 }
 
 export const NoteOverflowButton = deepMemo(function NoteOverflow(props: IProps) {
 
-    const {active} = useNotesStore(['active']);
+    const noteActivated = useNoteActivated(props.id)
     const classes = useStyles();
     const contextMenuHandlers = useNoteContextMenu();
 
     const className=clsx(classes.root, 'NoteOverflow');
 
-    if (active !== props.target) {
+    if (noteActivated?.note.id !== props.id) {
         return <div className={className}/>;
     }
 

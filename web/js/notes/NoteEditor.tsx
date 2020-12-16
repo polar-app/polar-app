@@ -1,7 +1,7 @@
 import React from "react";
 import {CKEditor5BalloonEditor} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
 import {NoteNavigation} from "./NoteNavigation";
-import {NoteIDStr, useNotesStore, useNotesStoreCallbacks, INote, useNoteFromStore} from "./NotesStore";
+import {NoteIDStr, useNotesStore, useNotesStoreCallbacks, INote, useNoteFromStore, useNoteActivated} from "./NotesStore";
 import {deepMemo} from "../react/ReactUtils";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 import {EditorStoreProvider, useEditorStore, useSetEditorStore} from "./EditorStoreProvider";
@@ -200,7 +200,8 @@ const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEd
     useLifecycleTracer('NoteEditorActivator', {id: props.id});
 
     const {onEditor, onChange, id, immutable} = props;
-    const {active} = useNotesStore(['active']);
+
+    const noteActivated = useNoteActivated(props.id);
     const {setActive} = useNotesStoreCallbacks();
     const [, setActivated, activatedRef] = useStateRef(false);
 
@@ -223,7 +224,7 @@ const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEd
 
     }, [id, immutable, setActivated, setActive]);
 
-    if (active === props.id) {
+    if (noteActivated?.note.id === props.id) {
         // there are two ways to activate this is that the user navigates to it
         // via key bindings and then the active item changes in the store, in
         // which case we have to turn this on and make it active OR the user

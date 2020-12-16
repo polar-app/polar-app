@@ -38,6 +38,7 @@ const InboundNoteRef = deepMemo((props: InboundNoteRefProps) => {
 
 export const NotesInbound = deepMemo(function NotesInbound(props: IProps) {
 
+    // TODO this will cause a refresh
     useNotesStore(['reverse', 'index']);
     const {lookupReverse, lookup} = useNotesStoreCallbacks();
 
