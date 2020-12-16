@@ -2,12 +2,17 @@ import {init} from '@sentry/browser';
 import {Integrations} from "@sentry/tracing";
 import {CaptureConsole} from '@sentry/integrations';
 import {Version} from 'polar-shared/src/util/Version';
+import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 
 export namespace SentryBrowser {
 
     let initialized: boolean = false;
 
     function isLocal() {
+
+        if (AppRuntime.isNode()) {
+            return false;
+        }
 
         if (typeof document === 'undefined') {
             return false;

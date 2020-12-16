@@ -1,7 +1,10 @@
 import {IAnalytics, IEventArgs, TraitsMap, IPageEvent} from "../IAnalytics";
 import userflow from 'userflow.js'
+import { AppRuntime } from "polar-shared/src/util/AppRuntime";
 
-userflow.init('ct_kyip2xj7ufhz7a2v7ejnwxaaxa');
+if (! AppRuntime.isNode()) {
+    userflow.init('ct_kyip2xj7ufhz7a2v7ejnwxaaxa');
+}
 
 // https://getuserflow.com/docs/userflow-js#track
 
@@ -10,7 +13,6 @@ let identified: boolean = false;
 export class UserflowAnalytics implements IAnalytics {
 
     public event(event: IEventArgs): void {
-
 
         if (! identified) {
             return;
