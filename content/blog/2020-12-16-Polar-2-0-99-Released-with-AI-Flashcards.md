@@ -8,7 +8,7 @@ large_image: https://i.imgur.com/Mld7JSU.png
 
 The simplest way to create flashcards from text highlights is finally here!
 
-We are happy to announce that we have launched AI-generated flashcards using GPT-3. 
+We are happy to announce that we have launched AI-generated flashcards using <a href="https://en.wikipedia.org/wiki/GPT-3">GPT-3</a>. 
 
 Simply highlight some text and click the button. It will take the text you selected and automatically convert it into a question and answer flashcard that you can sync to Anki or review directly in Polar.
 
