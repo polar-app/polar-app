@@ -2,7 +2,7 @@
 title: Polar 2.0.99 Released with Artificially Intelligent Flashcards
 date: 2020-12-16T08:00:00.000-08:00
 layout: post
-description: Polar 2.0.96 with AI-generated flashcards is now live 
+description: Polar 2.0.99 with AI-generated flashcards is now live! 
 large_image: https://i.imgur.com/sAI6hyr.png
 ---
 
