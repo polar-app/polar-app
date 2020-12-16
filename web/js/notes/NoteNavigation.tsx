@@ -1,6 +1,13 @@
 import * as React from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import {NoteIDStr, useNotesStoreCallbacks, useNotesStore, NavPosition, NewNotePosition} from "./NotesStore";
+import {
+    NoteIDStr,
+    useNotesStoreCallbacks,
+    useNotesStore,
+    NavPosition,
+    NewNotePosition,
+    useNoteActivated
+} from "./NotesStore";
 import { deepMemo } from '../react/ReactUtils';import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 import { useEditorStore } from './EditorStoreProvider';
 import IEventData = ckeditor5.IEventData;
@@ -22,37 +29,13 @@ interface INoteActivated {
     readonly activePos: NavPosition;
 }
 
-/**
- * Listen to the active note in the store and only fire when WE are active.
- */
-function useNoteActivatedListener(id: NoteIDStr): INoteActivated | undefined {
-
-    const lastActiveRef = React.useRef<NoteIDStr | undefined>();
-
-    const {active, activePos} = useNotesStore(['active', 'activePos'], {
-        filter: store => (lastActiveRef.current === id || store.active === id) && lastActiveRef.current !== store.active
-    });
-
-    lastActiveRef.current = active;
-
-    if (lastActiveRef.current === id) {
-        return {
-            id,
-            activePos
-        }
-    }
-
-    return undefined;
-
-}
-
 export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
-    useLifecycleTracer('NoteNavigation');
+    useLifecycleTracer('NoteNavigation', {id: props.id});
 
     const editor = useEditorStore();
 
-    const noteActive = useNoteActivatedListener(props.id);
+    const noteActivated = useNoteActivated(props.id);
 
     const {setActive, navPrev, navNext, doIndent, doUnIndent, noteIsEmpty, doDelete} = useNotesStoreCallbacks();
 
@@ -126,10 +109,10 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
         if (editor !== undefined) {
 
-            if (noteActive) {
+            if (noteActivated) {
                 editorFocus();
 
-                switch (noteActive.activePos) {
+                switch (noteActivated.activePos) {
                     case "start":
                         jumpToEditorStartPosition();
                         break;
@@ -146,7 +129,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
             // console.log("No editor: ")
         }
 
-    }, [editor, editorFocus, jumpToEditorEndPosition, jumpToEditorStartPosition, noteActive, props.id]);
+    }, [editor, editorFocus, jumpToEditorEndPosition, jumpToEditorStartPosition, noteActivated, props.id]);
 
     const handleClick = React.useCallback(() => {
         setActive(props.id);

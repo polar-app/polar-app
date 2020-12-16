@@ -7,6 +7,7 @@ import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/I
 import { Arrays } from 'polar-shared/src/util/Arrays';
 import {NoteTargetStr} from "./NoteLinkLoader";
 import {useLifecycleTracer} from "../hooks/ReactHooks";
+import {isPresent} from "polar-shared/src/Preconditions";
 
 export type NoteIDStr = IDStr;
 export type NoteNameStr = string;
@@ -869,7 +870,7 @@ export const [NotesStoreProvider, useNotesStore, useNotesStoreCallbacks,, useNot
 
 export function useNoteFromStore(target: NoteTargetStr): INote | undefined {
 
-    useLifecycleTracer('useNoteFromStore');
+    useLifecycleTracer('useNoteFromStore', {target});
 
     function reducer(store: INotesStore) {
         return store.index[target] || store.indexByName[target] || undefined
@@ -879,22 +880,64 @@ export function useNoteFromStore(target: NoteTargetStr): INote | undefined {
         return curr.updated !== next.updated;
     }
 
-    useNotesStoreReducer(reducer, {filter});
-
-    // TODO: this would be better with the new filters and mappers in the
-    // observable store
-
-    const noteRef = React.useRef<INote | undefined>();
-    const {index, indexByName} = useNotesStore(['index', 'indexByName'], {
-        filter: (store): boolean => {
-            const nextNote = store.index[target] || store.indexByName[target] || undefined;
-            return noteRef.current?.updated !== nextNote?.updated;
-            // return false;
-        }
-    });
-
-    noteRef.current = index[target] || indexByName[target] || undefined;
-
-    return noteRef.current;
+    return useNotesStoreReducer(reducer, {filter});
 
 }
+
+export interface INoteActivated {
+    readonly note: INote;
+    readonly activePos: NavPosition;
+}
+
+
+/**
+ * Listen to the active note in the store and only fire when WE are active.
+ */
+export function useNoteActivated(id: NoteIDStr): INoteActivated | undefined {
+
+    function reducer(store: INotesStore): INoteActivated | undefined {
+
+        const {active, activePos} = store;
+
+        if (! active) {
+            return undefined;
+        }
+
+        const note = store.index[active] || store.indexByName[active] || undefined;
+
+        if (note) {
+            return {note, activePos};
+        } else {
+            return undefined;
+        }
+
+    }
+
+    function filter(curr: INoteActivated | undefined, next: INoteActivated | undefined): boolean {
+        return next?.note.id === id;
+    }
+
+    return useNotesStoreReducer(reducer, {filter});
+
+}
+
+
+
+/**
+ * Listen to the active note in the store and only fire when WE are active.
+ */
+export function useNoteExpanded(id: NoteIDStr): boolean {
+
+    function reducer(store: INotesStore): boolean{
+        const {expanded} = store;
+        return isPresent(expanded[id]);
+    }
+
+    function filter(curr: boolean, next: boolean): boolean {
+        return curr !== next;
+    }
+
+    return useNotesStoreReducer(reducer, {filter});
+
+}
+

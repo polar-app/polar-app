@@ -63,19 +63,38 @@ export function useRefValue<V>(value: V) {
     return ref;
 }
 
-export function useLifecycleTracer(name: string) {
+export function useLifecycleTracer(name: string, args?: any) {
 
     useComponentDidMount(() => {
-        console.log("react-hook-tracer: componentDidMount: " + name);
+        console.log("react-hook-tracer: componentDidMount: " + name, args);
     })
 
     useComponentWillUnmount(() => {
-        console.log("react-hook-tracer: componentWillUnmount: " + name);
+        console.log("react-hook-tracer: componentWillUnmount: " + name, args);
     })
 
-    console.log("react-hook-tracer: render: " + name);
+    console.log("react-hook-tracer: render: " + name, args);
 
 }
+
+export function useLifecycleTracerForHook<V>(delegate: () => V,
+                                             name: string,
+                                             args?: any): V {
+
+    useComponentDidMount(() => {
+        console.log("react-hook-tracer: componentDidMount: " + name, args);
+    })
+
+    useComponentWillUnmount(() => {
+        console.log("react-hook-tracer: componentWillUnmount: " + name, args);
+    })
+
+    console.log("react-hook-tracer: render: " + name, args);
+
+    return delegate();
+
+}
+
 
 function pprint(value: any) {
 

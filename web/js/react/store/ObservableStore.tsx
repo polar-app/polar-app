@@ -2,7 +2,7 @@ import {Subject} from "rxjs";
 import React, {useContext, useState} from "react";
 import {Provider} from "polar-shared/src/util/Providers";
 import {useComponentWillUnmount} from "../../hooks/ReactLifecycleHooks";
-import deepEquals from "react-fast-compare";
+import { Equals } from "./Equals";
 
 function pick<T, K extends keyof T>(value: T, keys: ReadonlyArray<K>): Pick<T, K> {
 
@@ -64,51 +64,6 @@ interface IUseObservableStoreOpts<V, K extends keyof V> extends IUseStoreHookOpt
 }
 
 type Dict = {[key: string]: any};
-
-namespace Equals {
-
-    export function shallow(a: Dict, b: Dict): boolean {
-
-        if (a === b) {
-            // the easiest case where they are both object.
-            return true;
-        }
-
-        const aKeys = Object.keys(a);
-        const bKeys = Object.keys(b);
-
-        if (aKeys.length !== bKeys.length) {
-            // they have obviously different number of keys
-            return false;
-        }
-
-        // we HAVE to check the names of the keys in the index because
-        // if we don't there might be null values in a different
-        // dictionary which would be indistinguishable from missing
-
-        for (let idx = 0; idx < aKeys.length; ++idx) {
-            if(aKeys[idx] !== bKeys[idx]) {
-                return false;
-            }
-        }
-
-        for(const key of aKeys) {
-
-            if(a[key] !== b[key]) {
-                return false;
-            }
-
-        }
-
-        return true;
-
-    }
-
-    export function deep(a: Dict, b: Dict): boolean {
-        return deepEquals(a, b);
-    }
-
-}
 
 export type UseStoreReducerFilter<R> = (prev: R, next: R) => boolean;
 
@@ -206,6 +161,7 @@ export function useObservableStore<V, K extends keyof V>(context: React.Context<
             }
 
             function isEqual(a: Dict, b: Dict): boolean {
+
                 if (opts.enableShallowEquals) {
                     return Equals.shallow(a, b);
                 }
@@ -225,6 +181,8 @@ export function useObservableStore<V, K extends keyof V>(context: React.Context<
                 const currValuePicked = pick(currValue, keys);
 
                 if (! isEqual(currValuePicked, nextValuePicked)) {
+
+                    console.log("FIXME:L values differ, ", currValuePicked, nextValuePicked);
 
                     if (opts.filter && ! opts.filter(nextValuePicked)) {
                         // the value didn't pass the filter so don't update it...

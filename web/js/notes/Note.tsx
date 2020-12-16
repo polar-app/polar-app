@@ -1,10 +1,17 @@
 import React from "react";
 import {NoteEditor} from "./NoteEditor";
-import {NoteIDStr, useNotesStoreCallbacks, useNotesStore, useNoteFromStore} from "./NotesStore";
+import {
+    NoteIDStr,
+    useNotesStoreCallbacks,
+    useNotesStore,
+    useNoteFromStore,
+    StringSetMap,
+    useNoteExpanded
+} from "./NotesStore";
 import {NoteItems} from "./NoteItems";
 import {deepMemo} from "../react/ReactUtils";
 import {NoteBulletButton} from "./NoteBulletButton";
-import {useLifecycleTracer} from "../hooks/ReactHooks";
+import {useLifecycleTracer, useLifecycleTracerForHook} from "../hooks/ReactHooks";
 import {NoteOverflowButton} from "./NoteOverflowButton";
 import {createContextMenu} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
 import {IDocViewerContextMenuOrigin} from "../../../apps/doc/src/DocViewerMenu";
@@ -27,11 +34,13 @@ export const [NoteContextMenu, useNoteContextMenu]
 
 export const NoteInner = deepMemo(function NoteInner(props: IProps) {
 
-    useLifecycleTracer('NoteInner');
+    useLifecycleTracer('NoteInner', {id: props.id});
 
     const {id} = props;
-    const {expanded, root} = useNotesStore(['expanded', 'root']);
+
+    const {root} = useNotesStore(['root']);
     const {lookup} = useNotesStoreCallbacks();
+    const expanded = useNoteExpanded(props.id);
     const theme = useTheme();
     const contextMenuHandlers = useNoteContextMenu();
 
@@ -44,7 +53,6 @@ export const NoteInner = deepMemo(function NoteInner(props: IProps) {
     const items = lookup(note.items || []);
 
     const hasItems = items.length > 0;
-    const isExpanded = props.isExpanded || expanded[id] === true;
 
     return (
         <>
@@ -79,7 +87,7 @@ export const NoteInner = deepMemo(function NoteInner(props: IProps) {
 
             </div>
 
-            {isExpanded && (
+            {(expanded || props.isExpanded) && (
                 <NoteItems parent={props.id} notes={items}/>
             )}
         </>

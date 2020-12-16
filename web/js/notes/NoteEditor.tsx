@@ -197,7 +197,7 @@ interface INoteEditorActivatorProps {
  */
 const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEditorActivatorProps) {
 
-    useLifecycleTracer('NoteEditorActivator');
+    useLifecycleTracer('NoteEditorActivator', {id: props.id});
 
     const {onEditor, onChange, id, immutable} = props;
     const {active} = useNotesStore(['active']);
@@ -256,7 +256,7 @@ const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEd
 
 const NoteEditorInner = deepMemo(function NoteEditorInner(props: IProps) {
 
-    useLifecycleTracer('NoteEditorInner');
+    useLifecycleTracer('NoteEditorInner', {id: props.id});
 
     const {id} = props;
     const {updateNote} = useNotesStoreCallbacks()
