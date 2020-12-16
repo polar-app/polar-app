@@ -197,9 +197,8 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
 
                         <CreateFlashcardButton mutable={doc?.mutable}/>
 
-                        <FeatureToggle2 name='dev'>
-                            <CreateAIFlashcardButton mutable={doc?.mutable} annotation={annotation}/>
-                        </FeatureToggle2>
+                        {annotation.annotationType === AnnotationType.TEXT_HIGHLIGHT && (
+                            <CreateAIFlashcardButton mutable={doc?.mutable} annotation={annotation}/>)}
 
                         {! annotation.immutable &&
                             <ColorSelector role='change'

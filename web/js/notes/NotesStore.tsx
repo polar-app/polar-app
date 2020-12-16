@@ -914,10 +914,11 @@ export function useNoteActivated(id: NoteIDStr): INoteActivated | undefined {
     }
 
     function filter(curr: INoteActivated | undefined, next: INoteActivated | undefined): boolean {
-        return next?.note.id === id;
+        return next?.note.id === id && curr?.note.id !== next?.note.id;
     }
 
-    return useNotesStoreReducer(reducer, {filter});
+    // return useNotesStoreReducer(reducer, {filter});
+    return useNotesStoreReducer(reducer);
 
 }
 

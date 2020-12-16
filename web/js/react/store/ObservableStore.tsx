@@ -109,6 +109,9 @@ export function useObservableStoreReducer<V, R>(context: React.Context<Observabl
             if (! isEqual(currValue, nextValue)) {
 
                 if (opts.filter && ! opts.filter(currValue, nextValue)) {
+                    // we HAVE to update the valueRef so that the next filter will work properly
+
+                    valueRef.current = nextValue;
                     // the value didn't pass the filter so don't update it...
                     return;
                 }

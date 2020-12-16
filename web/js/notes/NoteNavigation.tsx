@@ -68,6 +68,8 @@ function useNoteActivation(id: NoteIDStr) {
 
                 if (! hasFocusRef.current) {
 
+                    console.log("FIXME: focusing in editor: " + id);
+
                     editorFocus();
 
                     switch (noteActivated.activePos) {
@@ -84,6 +86,7 @@ function useNoteActivation(id: NoteIDStr) {
                 }
 
             } else {
+                console.log("FIXME: no longer active!");
                 // we are no longer active.
                 hasFocusRef.current = false;
             }
@@ -185,11 +188,15 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
         switch (event.domEvent.key) {
 
             case 'ArrowUp':
+
+                console.log("FIXME ArrowUp")
                 abortEvent();
                 navPrev('start');
                 break;
 
             case 'ArrowDown':
+
+                console.log("FIXME ArrowDown")
                 abortEvent();
                 navNext('start');
                 break;
