@@ -57,4 +57,4 @@ Currently, most of us are doing the opposite. We tend to minimize the use of the
 
 Thus, by modifying and constantly improving your reading habits, you are guaranteed to become smarter.
 
-<img class="img-fluid" src=”https://i.imgur.com/zaCIPxB.jpg”>
+<img class="img-fluid" src="https://i.imgur.com/zaCIPxB.jpg">
