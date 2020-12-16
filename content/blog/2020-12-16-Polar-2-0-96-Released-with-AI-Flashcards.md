@@ -14,7 +14,7 @@ Simply highlight some text and click the button. It will take the text you selec
 
 Check it out in action here:
 
-<img class="img-fluid" src="https://i.imgur.com/wZxpMyg.gifv">
+<img class="img-fluid" src="https://i.imgur.com/wZxpMyg.gif">
 
 AI-generated flashcards will allow you to speed up and simplify creating flashcards directly from text highlights.
 
