@@ -72,26 +72,26 @@ const theme = createMuiTheme({
           color: "#816DE8",
         },
         p: {
-          fontSize: "15px",
+          fontSize: "18px",
 
           fontFamily: "Roboto",
           fontStyle: "normal",
           fontWeight: "300",
           // fontSize: "20px",
-          lineHeight: "20px",
+          lineHeight: "1.4em",
           letterSpacing: "0.05px",
 
           color: "#FFFFFF",
         },
 
         li: {
-          fontSize: "14px",
+          fontSize: "18px",
 
           fontFamily: "Roboto",
           fontStyle: "normal",
           fontWeight: "300",
           // fontSize: "20px",
-          lineHeight: "20px",
+          lineHeight: "1.4em",
           letterSpacing: "0.05px",
 
           color: "#FFFFFF",
