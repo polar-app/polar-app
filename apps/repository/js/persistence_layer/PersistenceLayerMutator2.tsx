@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useUserTags} from "./UserTagsDataLoader";
+import {useUserTagsDB} from "./UserTagsDataLoader";
 import {usePersistenceLayerContext, useRepoDocMetaManager, useTagsProvider} from "./PersistenceLayerApp";
 import {DocMetas} from "../../../../web/js/metadata/DocMetas";
 import {AnnotationTypes} from "../../../../web/js/metadata/AnnotationTypes";
@@ -17,7 +17,7 @@ import {IAsyncTransaction} from "polar-shared/src/util/IAsyncTransaction";
 
 export function useCreateTag() {
 
-    const userTags = useUserTags()
+    const userTags = useUserTagsDB()
 
     return React.useCallback(async (newTag: TagStr) => {
 
@@ -39,7 +39,7 @@ export type DeleteTagAction = (deleteTagID: TagStr, progressCallback?: ProgressC
 export function useDeleteTag(): DeleteTagAction {
 
     const repoDocMetaManager = useRepoDocMetaManager();
-    const userTags = useUserTags()
+    const userTags = useUserTagsDB()
     const removeTagsFromDocMetas = useRemoveTagsFromDocMetas();
     const tagsProvider = useTagsProvider();
 
@@ -250,7 +250,7 @@ export function useRenameTag() {
 
     const repoDocMetaManager = useRepoDocMetaManager();
     const {persistenceLayerProvider} = usePersistenceLayerContext();
-    const userTags = useUserTags()
+    const userTags = useUserTagsDB()
     const tagsProvider = useTagsProvider();
 
     return React.useCallback(async (renameTagID: TagStr,

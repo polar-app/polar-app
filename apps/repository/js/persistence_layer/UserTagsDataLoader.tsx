@@ -23,7 +23,7 @@ export const UserTagsDataLoader = React.memo((props: IProps) => {
 
 })
 
-export function useUserTags() {
+export function useUserTagsDB() {
 
     const prefs = usePrefsContext();
 
