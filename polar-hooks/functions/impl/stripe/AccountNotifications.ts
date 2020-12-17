@@ -38,7 +38,7 @@ export namespace AccountNotifications {
                 bcc: persona.email,
                 from: persona.email,
                 subject,
-                text: body
+                html: body
             })
 
             AmplitudeUtils.event2('AccountNotification.changePlan', {
@@ -59,19 +59,31 @@ function createSubject(sub: V2Subscription, userPersona: IUserPersona): string {
 function createBody(sub: V2Subscription, persona: IPersona, userPersona: IUserPersona): string {
     return `Hey ${userPersona.firstName}!
 
+<p>
 I'm ${persona.firstName}, one of the founders here at Polar.
+</p>
 
+<p>
 I just wanted to say thanks for subscribing to Polar ${sub.plan.level}!  We really 
 appreciate the support!
+</p>
 
+<p>
 Would you have 30 minutes to do a user interview sometime?  We do these every now and 
 then to see how users are using Polar and to get feedback.
+</p>
 
-${persona.links.userInterviewForPro}
+<p>
+<a href="${persona.links.userInterviewForPro}">Feel free to book a time here</a>
+</p>
 
+<p>
 Hope to chat soon!
+</p>
 
+<p>
 ${persona.firstName}
+</p>
 
 `;
 
