@@ -46,6 +46,7 @@ export function isAcademicOccupationProfile(profile: OccupationProfile): profile
     return (profile as any).fieldOfStudy !== undefined;
 }
 
+
 interface IProps {
     readonly onProfile: (occupationProfile: OccupationProfile) => void;
 }
@@ -55,9 +56,11 @@ export interface FormData<T> {
     readonly progress: number;
 }
 
+type ProfileFormData = FormData<AcademicOccupationProfile> | FormData<BusinessOccupationProfile>;
+
 interface IState {
     readonly occupation?: Occupation;
-    readonly form: FormData<AcademicOccupationProfile> | FormData<BusinessOccupationProfile>;
+    readonly form: ProfileFormData;
 }
 
 export const ProfileConfigurator = (props: IProps) => {
@@ -87,12 +90,34 @@ export const ProfileConfigurator = (props: IProps) => {
 
         const progress = computeProgress();
 
-        const newState = {
-            ...state,
-            form: {
+        function toFormData(): ProfileFormData {
+
+            if (occupation?.type === 'business') {
+
+                return {
+                    ...state.form,
+                    profile: {
+                        occupation
+                    },
+                    progress
+                }
+            }
+
+            return {
                 ...state.form,
+                profile: {
+
+                },
                 progress
-            },
+            };
+
+        }
+
+        const form = toFormData();
+
+        const newState: IState = {
+            ...state,
+            form,
             occupation
         };
 

@@ -1,6 +1,7 @@
 import {IAnalytics, IEventArgs, TraitsMap, IPageEvent} from "../IAnalytics";
 import userflow from 'userflow.js'
 import { AppRuntime } from "polar-shared/src/util/AppRuntime";
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
 if (! AppRuntime.isNode()) {
     userflow.init('ct_kyip2xj7ufhz7a2v7ejnwxaaxa');
@@ -35,7 +36,19 @@ export class UserflowAnalytics implements IAnalytics {
         }
 
         try {
-            userflow.track(event, data)
+
+            function toAttributes() {
+                if (typeof data === 'object') {
+                    // events don't support objects so we have to filter or flatten them.
+                    return Dictionaries.filter<string>(data, (key, value) => typeof value === 'string');
+                } else {
+                    return {};
+                }
+            }
+
+            const attributes = toAttributes();
+            userflow.track(event, attributes);
+
         } catch (e) {
             console.warn("Unable to track userflow event: " + event);
         }
@@ -53,6 +66,7 @@ export class UserflowAnalytics implements IAnalytics {
 
     public traits(traits: TraitsMap): void {
         userflow.updateUser(traits);
+
     }
 
     public version(version: string) {

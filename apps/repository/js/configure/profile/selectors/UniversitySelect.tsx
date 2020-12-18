@@ -150,9 +150,9 @@ const ListboxComponent = React.forwardRef<HTMLDivElement>(function ListboxCompon
 });
 
 const renderGroup = (params: AutocompleteRenderGroupParams) => [
-    <ListSubheader key={params.key} component="div">
-        {params.group}
-    </ListSubheader>,
+    // <ListSubheader key={params.key} component="div">
+    //     {params.group}
+    // </ListSubheader>,
     params.children,
 ];
 
