@@ -149,19 +149,27 @@ const ListboxComponent = React.forwardRef<HTMLDivElement>(function ListboxCompon
     );
 });
 
-const renderGroup = (params: AutocompleteRenderGroupParams) => [
+const renderGroup = (params: AutocompleteRenderGroupParams) => params.children;
     // <ListSubheader key={params.key} component="div">
     //     {params.group}
     // </ListSubheader>,
-    params.children,
-];
+    // params.children,
+// ];
 
 interface IProps {
     readonly placeholder?: string;
     readonly onSelect: (option: IOption<University> | undefined) => void;
 }
 
+const groupByFunction = (option: IOption<University>) => option.value.name[0].toUpperCase();
+
+const optionsComparator = (a: IOption<University>, b: IOption<University>) => {
+    return groupByFunction(a).localeCompare(groupByFunction(b));
+}
+
 export const UniversitySelect = (props: IProps) => {
+
+    const sortedOptions = React.useMemo(() => [...options].sort(optionsComparator), []);
 
     return (
         <Autocomplete
@@ -171,8 +179,8 @@ export const UniversitySelect = (props: IProps) => {
             ListboxComponent={ListboxComponent as React.ComponentType<React.HTMLAttributes<HTMLElement>>}
             getOptionLabel={(option) => option.label}
             renderGroup={renderGroup}
-            options={[...options]}
-            groupBy={(option) => option.value.name[0].toUpperCase()}
+            options={sortedOptions}
+            groupBy={groupByFunction}
             renderInput={(params) => <TextField {...params} variant="outlined" label="... and studies at" />}
             renderOption={(option) => <Typography noWrap>{option.label}</Typography>}
         />
