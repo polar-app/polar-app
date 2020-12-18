@@ -328,6 +328,16 @@ export type MutatorFactory<V, M> = (storeProvider: Provider<V>, setStore: SetSto
 // a component means it will break.  A mutator can be used if you want to work
 // with the store outside of a component.
 
+/**
+ *
+ */
+export interface IStorePrefs<V, K extends keyof V> {
+    // TODO: we just have to have the initial values and the persisterr...
+    // then load with the initialu values.  The prefs system could be below
+    // this which is perfect.
+    readonly setter: () => void;
+}
+
 export interface ObservableStoreOpts<V, M, C> {
 
     /**

@@ -54,7 +54,6 @@ import {UseLocationChangeRoot} from "../../../../apps/doc/src/annotations/UseLoc
 import {deepMemo} from "../../react/ReactUtils";
 import { PHZMigrationScreen } from './migrations/PHZMigrationScreen';
 import { AddFileDropzoneRoot } from './upload/AddFileDropzoneRoot';
-import {TwoMigrationForBrowser} from "../../../../apps/repository/js/gateways/two_migration/TwoMigrationForBrowser";
 import {AnalyticsLocationListener} from "../../analytics/AnalyticsLocationListener";
 import {LogsScreen} from "../../../../apps/repository/js/logs/LogsScreen";
 import {PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
@@ -117,12 +116,10 @@ export const RepositoryApp = (props: IProps) => {
                                      persistenceLayerManager={persistenceLayerManager}>
                      <DocRepoStore2>
                          <DocRepoSidebarTagStore>
-                             <TwoMigrationForBrowser>
-                                 <>
-                                     <AnkiSyncController/>
-                                     <DocRepoScreen2/>
-                                 </>
-                             </TwoMigrationForBrowser>
+                             <>
+                                 <AnkiSyncController/>
+                                 <DocRepoScreen2/>
+                             </>
                          </DocRepoSidebarTagStore>
                      </DocRepoStore2>
                 </PersistenceLayerApp>

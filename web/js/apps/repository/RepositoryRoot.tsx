@@ -1,5 +1,4 @@
 import React from 'react';
-import {TwoMigrationForElectron} from "../../../../apps/repository/js/gateways/two_migration/TwoMigrationForElectron";
 
 interface IProps {
     readonly children: React.ReactElement;
@@ -10,9 +9,9 @@ interface IProps {
  */
 export const RepositoryRoot = React.memo((props: IProps) =>     {
     return (
-        <TwoMigrationForElectron>
+        <>
             {props.children}
-        </TwoMigrationForElectron>
+        </>
     );
 
 });

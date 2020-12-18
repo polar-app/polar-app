@@ -4,7 +4,7 @@ import {usePrefsContext} from "./PrefsContext2";
 export type SortOrderType = string;
 
 export interface ISortOrder<C extends SortOrderType> {
-    readonly col: C;
+    readonly orderBy: C;
     readonly order: 'desc' | 'asc';
 }
 
