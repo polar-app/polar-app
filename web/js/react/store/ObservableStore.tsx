@@ -1,10 +1,9 @@
 import {Subject} from "rxjs";
 import React, {useContext, useState} from "react";
 import {Provider} from "polar-shared/src/util/Providers";
-import {useComponentWillUnmount} from "../../hooks/ReactLifecycleHooks";
 import { Equals } from "./Equals";
 
-function pick<T, K extends keyof T>(value: T, keys: ReadonlyArray<K>): Pick<T, K> {
+export function pick<T, K extends keyof T>(value: T, keys: ReadonlyArray<K>): Pick<T, K> {
 
     const result: any = {};
 
@@ -56,6 +55,7 @@ export interface ObservableStore<V> {
 
 }
 
+export type StoreProvider<V> = () => V;
 export type SetStore<V> = (value: V) => void;
 export type Store<V> = [V, SetStore<V>];
 
@@ -248,7 +248,7 @@ function createObservableStoreContext<V>(store: InternalObservableStore<V>): Int
     return [context, store];
 }
 
-interface ObservableStoreProps<V> {
+export interface ObservableStoreProps<V> {
 
     readonly children: JSX.Element | Provider<JSX.Element>;
 
@@ -306,7 +306,9 @@ export type ObservableStoreTuple<V, M extends StoreMutator, C> = [
     <K extends keyof V>(keys: ReadonlyArray<K> | undefined, opts?: IUseStoreHookOpts<V, K>) => Pick<V, K>,
     UseContextHook<C>,
     UseContextHook<M>,
-    <R extends any>(reducer: (value: V) => R, opts?: IUseObservableStoreReducerOpts<R>) => R
+    <R extends any>(reducer: (value: V) => R, opts?: IUseObservableStoreReducerOpts<R>) => R,
+    SetStore<V>,
+    StoreProvider<V>
 ];
 
 /**
@@ -329,13 +331,62 @@ export type MutatorFactory<V, M> = (storeProvider: Provider<V>, setStore: SetSto
 // with the store outside of a component.
 
 /**
- *
+ * A handler that the internal store uses when reading the initial store and
+ * writing the prefs.
  */
-export interface IStorePrefs<V, K extends keyof V> {
-    // TODO: we just have to have the initial values and the persisterr...
-    // then load with the initialu values.  The prefs system could be below
-    // this which is perfect.
-    readonly setter: () => void;
+export interface IPrefsHandler<V> {
+
+    /**
+     * Create the initial story by applying the prefs.
+     */
+    readonly createInitialStoreWithPrefs: (store: V) => V;
+
+    readonly writePrefs: (store: V) => void;
+
+}
+
+/**
+ * The raw prefs reader that reads the values from Firestore, etc.
+ *
+ * We return undefined if there are no prefs so that must be handled properly.
+ */
+export type PrefsReader<V, P extends keyof V> = () => Pick<V, P> | undefined
+
+/**
+ * The raw prefs writer that stores the values in Firestore, etc
+ */
+export type PrefsWriter<V, P extends keyof V> = (prefs: Pick<V, P>) => void;
+
+export function createPrefsHandler<V, P extends keyof V>(keys: ReadonlyArray<P>,
+                                                         reader: PrefsReader<V, P>,
+                                                         writer: PrefsWriter<V, P>): IPrefsHandler<V> {
+
+    function createInitialStoreWithPrefs(store: V): V {
+        const prefs = reader();
+
+        if (prefs) {
+
+            const newStore = {...store};
+
+            for (const key of keys) {
+                newStore[key] = prefs[key];
+            }
+
+            return newStore;
+
+        }
+
+        return store;
+
+    }
+
+    function writePrefs(store: V) {
+        const prefs = pick(store, keys);
+        writer(prefs);
+    }
+
+    return {createInitialStoreWithPrefs, writePrefs};
+
 }
 
 export interface ObservableStoreOpts<V, M, C> {
@@ -371,6 +422,8 @@ export interface ObservableStoreOpts<V, M, C> {
      */
     readonly enableShallowEquals?: boolean;
 
+    readonly prefsHandler?: IPrefsHandler<V>
+
 }
 
 type ComponentCallbacksFactory<C> = () => C;
@@ -379,7 +432,8 @@ type InitialContextValues<V, M, C> = [
     InternalObservableStore<V>,
     M,
     ComponentCallbacksFactory<C>,
-    SetStore<V>
+    SetStore<V>,
+    StoreProvider<V>
 ];
 
 /**
@@ -404,6 +458,11 @@ function createInitialContextValues<V, M, C>(opts: ObservableStoreOpts<V, M, C>)
         // cause a new render with updated data.
         store.subject.next(value);
 
+        if (opts.prefsHandler) {
+            // handle writing prefs for each store persist
+            opts.prefsHandler.writePrefs(value);
+        }
+
     };
 
     const storeProvider = () => store.current;
@@ -412,13 +471,13 @@ function createInitialContextValues<V, M, C>(opts: ObservableStoreOpts<V, M, C>)
 
     const componentCallbacksFactory = () => callbacksFactory(storeProvider, setStore, mutator);
 
-    return [store, mutator, componentCallbacksFactory, setStore];
+    return [store, mutator, componentCallbacksFactory, setStore, storeProvider];
 
 }
 
 export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C>): ObservableStoreTuple<V, M, C> {
 
-    const [store, mutator, componentCallbacksFactory, setStore] = createInitialContextValues(opts);
+    const [store, mutator, componentCallbacksFactory, setStore, storeProvider] = createInitialContextValues(opts);
 
     const [storeContext,] = createObservableStoreContext<V>(store);
 
@@ -475,7 +534,7 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
 
     }
 
-    return [ObservableProviderComponent, useStoreHook, useCallbacksHook, useMutatorHook, useStoreReducerHook];
+    return [ObservableProviderComponent, useStoreHook, useCallbacksHook, useMutatorHook, useStoreReducerHook, setStore, storeProvider];
 
 }
 //
