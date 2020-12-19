@@ -6,11 +6,30 @@ import { useHistory } from 'react-router-dom';
 import {useUserInfoContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 import {Plans} from "polar-accounts/src/Plans";
 
+export function useAIFlashcardVerificationWarning() {
+
+    const dialogs = useDialogManager();
+
+    return React.useCallback((props: {onAccept: () => void}) => {
+
+        dialogs.confirm({
+            title: 'Upgrade Required for AI Flashcards',
+            acceptText: "Upgrade for AI Flashcards",
+            type: 'primary',
+            subtitle: <AIFlashcardVerificationWarning/>,
+            onAccept: props.onAccept
+        })
+
+    }, [dialogs]);
+
+}
+
 export function useAIFlashcardVerifiedAction() {
 
     const userInfoContext = useUserInfoContext();
-    const dialogs = useDialogManager();
     const history = useHistory();
+
+    const triggerWarning = useAIFlashcardVerificationWarning();
 
     return React.useCallback((delegate: () => void) => {
 
@@ -24,23 +43,17 @@ export function useAIFlashcardVerifiedAction() {
                 reason: 'ai-flashcards'
             });
 
-            dialogs.confirm({
-                title: 'Upgrade Required for AI Flashcards',
-                acceptText: "Upgrade for AI Flashcards",
-                type: 'primary',
-                subtitle: <AIFlashcardWarning/>,
-                onAccept: () => history.push('/plans')
-            })
+            triggerWarning({onAccept: () => history.push('/plans')});
 
         } else {
             delegate();
         }
 
-    }, [dialogs, history, userInfoContext?.userInfo?.subscription.plan]);
+    }, [history, triggerWarning, userInfoContext?.userInfo?.subscription.plan]);
 
 }
 
-export const AIFlashcardWarning = deepMemo(() => {
+export const AIFlashcardVerificationWarning = deepMemo(() => {
     return (
         <div>
 
