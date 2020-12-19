@@ -1,28 +1,80 @@
 import * as React from 'react';
 import {
-    createObservableStore, createPrefsHandler,
+    createObservableStore,
     ObservableStoreOpts, ObservableStoreProps,
-    ObservableStoreTuple,
-    PrefsReader,
-    PrefsWriter
+    ObservableStoreTuple, pick,
 } from "./ObservableStore";
 import {usePrefsContext} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
 
 /**
- * Uses usePrefsContext, and a key, to create a PrefsHandler and the setStore on init
- * @param opts the options for the main observable store.
- * @param pref the key to use to store data in the prefs
- * @param keys the keys in the store to use.
+ * A handler that the internal store uses when reading the initial store and
+ * writing the prefs.
  */
-export function createObservableStoreWithPrefsContext<V, M, C, P extends keyof V>(opts: ObservableStoreOpts<V, M, C>,
-                                                                                  pref: string,
-                                                                                  keys: ReadonlyArray<P>): ObservableStoreTuple<V, M, C> {
+export interface IPrefsHandler<V> {
+
+    /**
+     * Create the initial story by applying the prefs.
+     */
+    readonly createInitialStoreWithPrefs: (store: V) => V;
+
+    readonly writePrefs: (store: V) => void;
+
+}
+
+/**
+ * The raw prefs reader that reads the values from Firestore, etc.
+ *
+ * We return undefined if there are no prefs so that must be handled properly.
+ */
+export type PrefsReader<V, P extends keyof V> = () => Pick<V, P> | undefined
+
+/**
+ * The raw prefs writer that stores the values in Firestore, etc
+ */
+export type PrefsWriter<V, P extends keyof V> = (prefs: Pick<V, P>) => void;
+
+interface IPrefsBacking<V, P extends keyof V> {
+    readonly reader: PrefsReader<V, P>,
+    readonly writer: PrefsWriter<V, P>
+}
+
+function usePrefsBackingUsingLocalStorage<V, P extends keyof V>(pref: string): IPrefsBacking<V , P> {
+
+    const reader: PrefsReader<V, P> = React.useCallback(() => {
+
+        const p = localStorage.getItem('pref:' + pref);
+
+        if (p) {
+
+            try {
+                return JSON.parse(p);
+            } catch (e) {
+                console.error("Unable to read prefs");
+            }
+
+        }
+
+        return undefined;
+
+    }, [pref]);
+
+    const writer: PrefsWriter<V, P> = React.useCallback((prefs: Pick<V, P>) => {
+
+        localStorage.setItem('pref:' + pref, JSON.stringify(prefs));
+
+    }, [pref]);
+
+    return {reader, writer};
+
+}
+
+function usePrefsBackingUsingPrefsContext<V, P extends keyof V>(pref: string): IPrefsBacking<V , P> {
 
     const prefsContext = usePrefsContext();
 
-    const p = prefsContext.fetch(pref);
+    const reader: PrefsReader<V, P> = React.useCallback(() => {
 
-    const reader: PrefsReader<V, P> = () => {
+        const p = prefsContext.fetch(pref);
 
         if (p) {
 
@@ -36,29 +88,104 @@ export function createObservableStoreWithPrefsContext<V, M, C, P extends keyof V
 
         return undefined;
 
-    }
+    }, [pref, prefsContext]);
 
-    const writer: PrefsWriter<V, P> = (prefs: Pick<V, P>) => {
+    const writer: PrefsWriter<V, P> = React.useCallback((prefs: Pick<V, P>) => {
+
         prefsContext.set(pref, JSON.stringify(prefs));
-        prefsContext.commit().catch(err => console.error("Unable to persist prefs with store: ", err));
-    }
 
-    const prefsHandler = createPrefsHandler(keys, reader, writer);
+        prefsContext.commit()
+            .catch(err => console.error("Unable to persist prefs with store: ", err));
 
-    const [StoreProvider, useStore, useCallbacks, useMutator, useStoreReducer, setStore, storeProvider] = createObservableStore<V, M, C>({...opts, prefsHandler});
+    }, [pref, prefsContext]);
+
+    return {reader, writer};
+
+}
+
+function usePrefsHandler<V, P extends keyof V>(pref: string, keys: ReadonlyArray<P>): IPrefsHandler<V> {
+
+    const {reader, writer} = usePrefsBackingUsingLocalStorage<V, P>(pref);
+
+    const createInitialStoreWithPrefs = React.useCallback((store: V): V => {
+
+        const prefs = reader();
+
+        if (prefs) {
+
+            const newStore = {...store};
+
+            for (const key of keys) {
+                newStore[key] = prefs[key];
+            }
+
+            return newStore;
+
+        }
+
+        return store;
+
+    }, [keys, reader]);
+
+    const writePrefs = React.useCallback((store: V) => {
+        const prefs = pick(store, keys);
+        writer(prefs);
+    }, [keys, writer]);
+
+    return {createInitialStoreWithPrefs, writePrefs};
+
+}
+
+/**
+ * Uses usePrefsContext, and a key, to create a PrefsHandler and the setStore on init
+ *
+ * @param opts the options for the main observable store.
+ * @param pref the key to use to store data in the prefs
+ * @param keys the keys in the store to use.
+ */
+export function createObservableStoreWithPrefsContext<V, M, C>(opts: ObservableStoreOpts<V, M, C>,
+                                                               pref: string,
+                                                               keys: ReadonlyArray<keyof V>): ObservableStoreTuple<V, M, C> {
+
+    const [StoreProvider, useStore, useCallbacks, useMutator, useStoreReducer, setStore, storeProvider] = createObservableStore<V, M, C>({...opts});
 
     // this is the last step... how do we set the store?
 
     const StoreProviderWithPrefs = React.memo((props: ObservableStoreProps<V>) => {
 
+        const {createInitialStoreWithPrefs, writePrefs} = usePrefsHandler<V, keyof V>(pref, keys);
+
+        const [initialized, setInitialized] = React.useState(false);
+
+        const store = useStore(undefined);
+
+        const storeIter = React.useRef(0);
+
         React.useEffect(() => {
+
+            if (storeIter.current > 0) {
+                writePrefs(store);
+            }
+
+            ++storeIter.current;
+
+        }, [store, writePrefs]);
+
+        React.useEffect(() => {
+
             const store = storeProvider();
-            setStore(prefsHandler.createInitialStoreWithPrefs(store));
-        }, [])
+            const initialStore = createInitialStoreWithPrefs(store);
+            setStore(initialStore);
+            // once the store has been set , trigger setInit to true...
+            setInitialized(true);
+
+        }, [createInitialStoreWithPrefs])
 
         return (
             <StoreProvider {...props}>
-                {props.children}
+                <>
+                    {initialized && props.children}
+                </>
             </StoreProvider>
         );
 

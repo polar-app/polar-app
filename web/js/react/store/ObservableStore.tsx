@@ -330,65 +330,6 @@ export type MutatorFactory<V, M> = (storeProvider: Provider<V>, setStore: SetSto
 // a component means it will break.  A mutator can be used if you want to work
 // with the store outside of a component.
 
-/**
- * A handler that the internal store uses when reading the initial store and
- * writing the prefs.
- */
-export interface IPrefsHandler<V> {
-
-    /**
-     * Create the initial story by applying the prefs.
-     */
-    readonly createInitialStoreWithPrefs: (store: V) => V;
-
-    readonly writePrefs: (store: V) => void;
-
-}
-
-/**
- * The raw prefs reader that reads the values from Firestore, etc.
- *
- * We return undefined if there are no prefs so that must be handled properly.
- */
-export type PrefsReader<V, P extends keyof V> = () => Pick<V, P> | undefined
-
-/**
- * The raw prefs writer that stores the values in Firestore, etc
- */
-export type PrefsWriter<V, P extends keyof V> = (prefs: Pick<V, P>) => void;
-
-export function createPrefsHandler<V, P extends keyof V>(keys: ReadonlyArray<P>,
-                                                         reader: PrefsReader<V, P>,
-                                                         writer: PrefsWriter<V, P>): IPrefsHandler<V> {
-
-    function createInitialStoreWithPrefs(store: V): V {
-        const prefs = reader();
-
-        if (prefs) {
-
-            const newStore = {...store};
-
-            for (const key of keys) {
-                newStore[key] = prefs[key];
-            }
-
-            return newStore;
-
-        }
-
-        return store;
-
-    }
-
-    function writePrefs(store: V) {
-        const prefs = pick(store, keys);
-        writer(prefs);
-    }
-
-    return {createInitialStoreWithPrefs, writePrefs};
-
-}
-
 export interface ObservableStoreOpts<V, M, C> {
 
     /**
@@ -421,8 +362,6 @@ export interface ObservableStoreOpts<V, M, C> {
      * Do a shallow equals by default..
      */
     readonly enableShallowEquals?: boolean;
-
-    readonly prefsHandler?: IPrefsHandler<V>
 
 }
 
@@ -457,11 +396,6 @@ function createInitialContextValues<V, M, C>(opts: ObservableStoreOpts<V, M, C>)
         // subscriber to update, which will increment the state iter, and
         // cause a new render with updated data.
         store.subject.next(value);
-
-        if (opts.prefsHandler) {
-            // handle writing prefs for each store persist
-            opts.prefsHandler.writePrefs(value);
-        }
 
     };
 

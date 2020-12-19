@@ -49,6 +49,7 @@ import {LoadDocRequest} from "../../../../web/js/apps/main/doc_loaders/LoadDocRe
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {RepoDocInfos} from "../RepoDocInfos";
 import TypeConverter = Sorting.TypeConverter;
+import {createObservableStoreWithPrefsContext} from "../../../../web/js/react/store/ObservableStoreWithPrefsContext";
 
 interface IDocRepoStore {
 
@@ -811,12 +812,14 @@ const useCallbacksFactory = (storeProvider: Provider<IDocRepoStore>,
 }
 
 export const [DocRepoStoreProvider, useDocRepoStore, useDocRepoCallbacks, useDocRepoMutator]
-    = createObservableStore<IDocRepoStore, Mutator, IDocRepoCallbacks>({
+    = createObservableStoreWithPrefsContext<IDocRepoStore, Mutator, IDocRepoCallbacks>({
         initialValue: initialStore,
         mutatorFactory,
         callbacksFactory: useCallbacksFactory,
         enableShallowEquals: true
-    });
+    },
+    'doc_repo_store',
+    ['order', 'orderBy']);
 
 DocRepoStoreProvider.displayName='DocRepoStoreProvider';
 
