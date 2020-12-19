@@ -866,18 +866,6 @@ const DocRepoStoreLoader = React.memo((props: IProps) => {
 
 });
 
-interface IDocRepoStoreWithPrefs {
-    readonly children: JSX.Element;
-}
-
-const DocRepoStoreWithPrefs = () => {
-
-    const {setSort} = useDocRepoCallbacks();
-
-
-
-}
-
 export const DocRepoStore2 = React.memo((props: IProps) => {
 
     return (
