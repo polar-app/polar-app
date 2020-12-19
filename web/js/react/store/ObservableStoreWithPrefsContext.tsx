@@ -116,7 +116,11 @@ function usePrefsHandler<V, P extends keyof V>(pref: string, keys: ReadonlyArray
             const newStore = {...store};
 
             for (const key of keys) {
-                newStore[key] = prefs[key];
+
+                if (prefs[key]) {
+                    newStore[key] = prefs[key];
+                }
+
             }
 
             return newStore;

@@ -9,7 +9,7 @@ export const [
     AnnotationRepoSidebarTagStoreProvider,
     useAnnotationRepoSidebarTagStoreStore,
     useAnnotationRepoSidebarTagStoreCallbacks
-] = createFolderSidebarStore();
+] = createFolderSidebarStore('annotation_repo');
 
 interface IProps {
     readonly children: JSX.Element;

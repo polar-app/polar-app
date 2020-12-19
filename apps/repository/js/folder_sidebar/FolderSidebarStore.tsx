@@ -28,6 +28,7 @@ import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {IAsyncTransaction} from "polar-shared/src/util/IAsyncTransaction";
 import {isPresent, Preconditions} from "polar-shared/src/Preconditions";
 import {useCreateTag, useDeleteTag} from "../persistence_layer/PersistenceLayerMutator2";
+import {createObservableStoreWithPrefsContext} from "../../../../web/js/react/store/ObservableStoreWithPrefsContext";
 
 export interface TagDescriptorSelected extends TagDescriptor {
     readonly selected: boolean
@@ -512,13 +513,17 @@ export type UseFolderSidebarStore = <K extends keyof IFolderSidebarStore>(keys: 
 
 export type UseFolderSidebarCallbacks = UseContextHook<IFolderSidebarCallbacks>
 
-export function createFolderSidebarStore() {
-    return createObservableStore<IFolderSidebarStore, Mutator, IFolderSidebarCallbacks>({
+export function createFolderSidebarStore(name: string) {
+
+    const pref = name + '-sidebar-store';
+
+    return createObservableStoreWithPrefsContext<IFolderSidebarStore, Mutator, IFolderSidebarCallbacks>({
           initialValue: initialStore,
           mutatorFactory,
           callbacksFactory: useCallbacksFactory,
           enableShallowEquals: true
-    });
+    }, pref, ['expanded']);
+
 }
 
 export const FolderSidebarStoreContext = React.createContext<UseFolderSidebarStore>(null!);
