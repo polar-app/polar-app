@@ -65,6 +65,11 @@ export class UserflowAnalytics implements IAnalytics {
     }
 
     public traits(traits: TraitsMap): void {
+
+        if (! identified) {
+            return;
+        }
+
         userflow.updateUser(traits);
 
     }

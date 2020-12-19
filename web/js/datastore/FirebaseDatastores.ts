@@ -13,52 +13,7 @@ import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {UserIDStr} from "polar-firebase/src/firebase/om/Profiles";
 
-const log = Logger.create();
-
 export class FirebaseDatastores {
-
-    private static user: firebase.User | undefined;
-
-    private static initialized: boolean = false;
-
-    /**
-     * Perform init against the FirebaseDatastores to keep the current user for all operations.  This is a bit
-     * of a hack in that it would be nice to have FB update this without it being async.
-     */
-    public static async init() {
-
-        if (this.initialized) {
-            return;
-        }
-
-        log.notice("Initializing FirebaseDatastores...");
-
-        // set the current version before we return
-        this.user = await Firebase.currentUserAsync();
-
-        const formatUser = (user: firebase.User | undefined) => {
-
-            if (user) {
-                return `${user.displayName}, uid=${user.uid}`;
-            }
-
-            return 'none';
-
-        };
-
-        log.notice("Initializing FirebaseDatastores...done", formatUser(this.user));
-
-        // update in the background
-        firebase.auth()
-            .onAuthStateChanged((user) => this.user = user || undefined,
-                                (err) => {
-                                    log.error("Unable to handle user: ", err);
-                                    this.user = undefined;
-                                });
-
-        this.initialized = true;
-
-    }
 
     public static computeDatastoreGetFileURL(request: DatastoreGetFileRequest) {
         const endpoint = CloudFunctions.createEndpoint();

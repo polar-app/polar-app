@@ -110,10 +110,14 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         this.storage = firebase.storage();
         this.uid = (await Firebase.currentUserID())!;
 
-        await FirebaseDatastores.init();
-
         if (opts.noInitialSnapshot) {
+
             log.debug("Skipping initial snapshot");
+
+        } else if (this.uid === undefined) {
+
+            log.debug("Skipping initial snapshot: no user");
+
         } else {
 
             log.debug("Performing initial snapshot");

@@ -43,7 +43,6 @@ export const LoginScreen = React.memo((props: IProps) => {
                 signInSuccessUrl,
                 provider: providerURL.provider
             }
-
             FirebaseUIAuth.login(authOptions);
 
         } else {
@@ -55,7 +54,7 @@ export const LoginScreen = React.memo((props: IProps) => {
 
     useEffect(() => {
         doInit().catch(err => console.error(err));
-    });
+    }, [doInit]);
 
     return (
         <div style={{
