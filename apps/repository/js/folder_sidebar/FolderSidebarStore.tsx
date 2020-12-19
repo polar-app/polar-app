@@ -249,7 +249,9 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     }
 
-    doHookUpdate();
+    React.useEffect(() => {
+        doHookUpdate();
+    });
 
     return React.useMemo(() => {
 

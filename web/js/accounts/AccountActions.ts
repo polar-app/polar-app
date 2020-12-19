@@ -15,10 +15,37 @@ export namespace AccountActions {
 
     export async function logout() {
 
-        await firebase.auth().signOut();
-        const firestore = await Firestore.getInstance();
-        await firestore.terminate();
-        await firestore.clearPersistence();
+        async function doLogout() {
+            await firebase.auth().signOut();
+        }
+
+        async function clearFirestore() {
+            const firestore = await Firestore.getInstance();
+            await firestore.terminate();
+            await firestore.clearPersistence();
+        }
+
+        async function clearLocalStorage() {
+
+            for(let idx = 0; idx < localStorage.length; ++idx) {
+
+                const key = localStorage.key(idx);
+
+                if (key !== null) {
+
+                    if (key.startsWith('pref:') || key.startsWith('cache":')) {
+                        localStorage.removeItem(key);
+                    }
+
+                }
+
+            }
+
+        }
+
+        await doLogout();
+        await clearFirestore();
+        await clearLocalStorage();
 
     }
 

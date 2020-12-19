@@ -77,17 +77,6 @@ export function useTagDescriptorsContext() {
 
 export type TagsType = 'documents' | 'annotations';
 
-/**
- * Main props for any app that's using the full state of our app
- */
-export interface DocRepoRenderProps {
-    readonly persistenceLayerProvider: ListenablePersistenceLayerProvider;
-    readonly docTags: () => ReadonlyArray<TagDescriptor>;
-    readonly annotationTags: () => ReadonlyArray<TagDescriptor>;
-    readonly userTags: () => ReadonlyArray<Tag>;
-}
-
-
 const RepoDocMetaLoaderContext = React.createContext<RepoDocMetaLoader>(null!);
 const RepoDocMetaManagerContext = React.createContext<RepoDocMetaManager>(null!);
 const TagsProviderContext = React.createContext<Provider<ReadonlyArray<Tag>>>(() =>[]);
