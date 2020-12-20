@@ -7,6 +7,7 @@ import {useAnnotationRepoCallbacks} from "./AnnotationRepoStore";
 import isEqual from "react-fast-compare";
 import { useAnnotationRepoTableContextMenu } from "./AnnotationRepoTable2";
 import {IMouseEvent} from "../doc_repo/MUIContextMenu2";
+import {FixedHeightAnnotationPreview} from "./FixedHeightAnnotationPreview";
 
 interface IProps {
     readonly viewIndex: number;
@@ -42,12 +43,12 @@ export const AnnotationRepoTableRow = React.memo(React.forwardRef((props: IProps
                   selected={rowSelected}>
 
             <TableCell padding="checkbox">
-                <AnnotationPreview id={annotation.id}
-                                   text={annotation.text}
-                                   img={annotation.img}
-                                   color={annotation.color}
-                                   lastUpdated={annotation.lastUpdated}
-                                   created={annotation.created}/>
+                <FixedHeightAnnotationPreview id={annotation.id}
+                                              text={annotation.text}
+                                              img={annotation.img}
+                                              color={annotation.color}
+                                              lastUpdated={annotation.lastUpdated}
+                                              created={annotation.created}/>
             </TableCell>
         </TableRow>
     );
