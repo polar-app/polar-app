@@ -314,12 +314,11 @@ const useCreateCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
                            event: IMouseEvent,
                            type: SelectRowType) {
 
-
             const store = storeProvider();
 
             const selected = SelectionEvents2.selectRow(selectedID,
                                                         store.selected,
-                                                        store.viewPage,
+                                                        store.view,
                                                         event,
                                                         type);
 

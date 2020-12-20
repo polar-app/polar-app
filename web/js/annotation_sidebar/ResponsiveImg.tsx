@@ -8,6 +8,7 @@ interface IProps {
     readonly img?: Img;
     readonly color?: HighlightColor;
     readonly defaultText?: string;
+    readonly style?: React.CSSProperties;
 }
 
 /**
@@ -34,7 +35,8 @@ export const ResponsiveImg = deepMemo((props: IProps) => {
                  style={{
                      display: 'block',
                      textAlign: 'center',
-                     position: 'relative'
+                     position: 'relative',
+                     ...props.style
                  }}>
 
                 <img style={{

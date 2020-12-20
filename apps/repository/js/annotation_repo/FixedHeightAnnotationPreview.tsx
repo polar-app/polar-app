@@ -53,7 +53,7 @@ const ImagePreview = deepMemo((props: IProps) => {
                  height,
              }}>
 
-            <ResponsiveImg id={props.id} img={img} defaultText="No image"/>
+            <ResponsiveImg id={props.id} img={img} defaultText="No image" style={{marginLeft: 'auto', marginRight: 'auto'}}/>
 
         </div>
     );
