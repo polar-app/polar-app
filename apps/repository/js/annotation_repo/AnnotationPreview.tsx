@@ -8,7 +8,6 @@ import Box from '@material-ui/core/Box';
 import {PlainTextStr, Strings} from "polar-shared/src/util/Strings";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import useTheme from '@material-ui/core/styles/useTheme';
-import {HeightFitImg} from "../../../../web/js/annotation_sidebar/HeightFitImg";
 
 const MAX_TEXT_LENGTH = 300;
 

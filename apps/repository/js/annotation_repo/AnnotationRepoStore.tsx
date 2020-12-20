@@ -56,7 +56,7 @@ import {
     useAnnotationMutationCallbacksFactory
 } from "../../../../web/js/annotation_sidebar/AnnotationMutationCallbacks";
 
-interface IAnnotationRepoStore {
+export interface IAnnotationRepoStore {
 
     readonly data: ReadonlyArray<IDocAnnotation>;
 
@@ -504,7 +504,7 @@ function useCallbacksFactory (storeProvider: Provider<IAnnotationRepoStore>,
 
 }
 
-export const [AnnotationRepoStoreProvider, useAnnotationRepoStore, useAnnotationRepoCallbacks, useAnnotationRepoMutator]
+export const [AnnotationRepoStoreProvider, useAnnotationRepoStore, useAnnotationRepoCallbacks, useAnnotationRepoMutator, useAnnotationRepoStoreReducer]
     = createObservableStore<IAnnotationRepoStore, Mutator, IAnnotationRepoCallbacks>({
     initialValue: initialStore,
     mutatorFactory,

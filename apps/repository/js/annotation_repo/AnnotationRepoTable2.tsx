@@ -4,8 +4,8 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import Paper from "@material-ui/core/Paper";
 import {
-    useAnnotationRepoCallbacks,
-    useAnnotationRepoStore
+    IAnnotationRepoStore,
+    useAnnotationRepoStore, useAnnotationRepoStoreReducer
 } from './AnnotationRepoStore';
 import {AnnotationRepoTableRow} from "./AnnotationRepoTableRow";
 import {createContextMenu} from "../doc_repo/MUIContextMenu2";
@@ -15,31 +15,35 @@ import {
     HiddenBlockComponentProps, IntersectionList,
     VisibleComponentProps
 } from "../../../../web/js/intersection_list/IntersectionList";
-import {RepoDocInfo} from "../RepoDocInfo";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {useFixedHeightAnnotationCalculator} from "./FixedHeightAnnotationPreview";
 import TableRow from '@material-ui/core/TableRow';
-import {DocRepoContextMenu} from "../doc_repo/DocRepoTable2";
+import {IDStr} from "polar-shared/src/util/Strings";
 
-interface AnnotationRepoTableRowProps {
-    readonly viewIndex: number;
-    readonly annotation: IDocAnnotation;
+
+function useAnnotationSelected(id: IDStr): boolean {
+
+    function reducer(store: IAnnotationRepoStore) {
+        return store.selected.includes(id);
+    }
+
+    return useAnnotationRepoStoreReducer(reducer, {filter: (prev, next) => prev !== next});
+
 }
 
 const VisibleComponent = deepMemo((props: VisibleComponentProps<IDocAnnotation>) => {
 
-    const {selected} = useAnnotationRepoStore(['selected']);
+    const selected = useAnnotationSelected(props.value.id);
 
     const annotation = props.value;
     const viewIndex = props.index;
-    const rowSelected = selected.includes(annotation.id);
 
     return (
         <AnnotationRepoTableRow key={annotation.id}
                                 viewIndex={viewIndex}
-                                rowSelected={rowSelected}
+                                rowSelected={selected}
                                 annotation={annotation}/>
     );
 

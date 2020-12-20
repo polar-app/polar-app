@@ -71,7 +71,6 @@ interface IUseObservableStoreReducerOpts<R> {
     readonly enableShallowEquals?: boolean;
     readonly debug?: boolean;
     readonly filter?: UseStoreReducerFilter<R>;
-
 }
 
 export function useObservableStoreReducer<V, R>(context: React.Context<ObservableStore<V>>,
