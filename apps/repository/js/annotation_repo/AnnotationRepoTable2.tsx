@@ -133,14 +133,15 @@ export const AnnotationRepoTable2 = React.memo(() => {
                                size={'medium'}
                                aria-label="enhanced table">
 
-                            {root && (
-                                <IntersectionList values={view}
-                                                  root={root}
-                                                  blockSize={10}
-                                                  BlockComponent={BlockComponent}
-                                                  HiddenBlockComponent={HiddenBlockComponent}
-                                                  VisibleComponent={VisibleComponent}/>)}
-
+                            <>
+                                {root && (
+                                    <IntersectionList values={view}
+                                                      root={root}
+                                                      blockSize={10}
+                                                      BlockComponent={BlockComponent}
+                                                      HiddenBlockComponent={HiddenBlockComponent}
+                                                      VisibleComponent={VisibleComponent}/>)}
+                            </>
                         </Table>
                     </TableContainer>
 
