@@ -95,13 +95,13 @@ export const IntersectionList = typedMemo(function<V extends ListValue>(props: I
 
             {blocks.map((block, idx) => (
                 <IntersectionListBlock key={idx}
-                                          root={props.root}
-                                          values={block}
-                                          blockSize={blockSize}
-                                          blockIndex={idx}
-                                          BlockComponent={props.BlockComponent}
-                                          VisibleComponent={props.VisibleComponent}
-                                          HiddenBlockComponent={props.HiddenBlockComponent}/>
+                                       root={props.root}
+                                       values={block}
+                                       blockSize={blockSize}
+                                       blockIndex={idx}
+                                       BlockComponent={props.BlockComponent}
+                                       VisibleComponent={props.VisibleComponent}
+                                       HiddenBlockComponent={props.HiddenBlockComponent}/>
 
             ))}
 
