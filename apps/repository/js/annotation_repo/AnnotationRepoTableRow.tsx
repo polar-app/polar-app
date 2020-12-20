@@ -1,6 +1,5 @@
 import * as React from "react";
 import TableCell from "@material-ui/core/TableCell";
-import {AnnotationPreview} from "./AnnotationPreview";
 import TableRow from "@material-ui/core/TableRow";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {useAnnotationRepoCallbacks} from "./AnnotationRepoStore";
