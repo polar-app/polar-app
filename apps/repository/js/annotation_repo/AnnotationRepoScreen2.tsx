@@ -15,6 +15,7 @@ import {AnnotationRepoRoutedComponents} from './AnnotationRepoRoutedComponents';
 import {StartReviewSpeedDial} from './StartReviewSpeedDial';
 import {FeedbackButton2} from '../ui/FeedbackButton2';
 import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
+import { AnnotationRepoTable2 } from './AnnotationRepoTable2';
 
 namespace main {
 
@@ -40,7 +41,7 @@ namespace main {
                     flexGrow: 1,
                     minHeight: 0,
                 },
-                component: <AnnotationRepoTable />,
+                component: <AnnotationRepoTable2 />,
                 width: 450
             },
             {
@@ -85,7 +86,7 @@ namespace main {
                                flexDirection: 'column',
                                minHeight: 0
                            }}>
-                        <AnnotationRepoTable/>
+                        <AnnotationRepoTable2/>
                     </Paper>,
                 width: 450
             },

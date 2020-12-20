@@ -9,6 +9,7 @@ import {PlainTextStr, Strings} from "polar-shared/src/util/Strings";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import useTheme from '@material-ui/core/styles/useTheme';
 import {HeightFitImg} from "../../../../web/js/annotation_sidebar/HeightFitImg";
+import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 
 const MAX_IMG_HEIGHT = 200;
 
@@ -46,15 +47,13 @@ const ImagePreview = deepMemo((props: IProps) => {
     const height = Math.min(img.height, MAX_IMG_HEIGHT);
 
     return (
-        <div style={{display: 'flex'}}>
+        <div className="ImagePreview"
+             style={{
+                 display: 'flex',
+                 height,
+             }}>
 
-            <HeightFitImg id={props.id}
-                          src={img.src}
-                          height={height}
-                          style={{
-                              marginLeft: 'auto',
-                              marginRight: 'auto'
-                          }}/>
+            <ResponsiveImg id={props.id} img={img} defaultText="No image"/>
 
         </div>
     );
@@ -68,7 +67,7 @@ interface ITextPreviewHeight {
 
 function calculateTextPreviewHeight(text: string): ITextPreviewHeight {
 
-    const defaultDockWidth = 300;
+    const defaultDockWidth = 450;
     const fontSize = 14;
     const lineHeight = 20;
 
@@ -143,18 +142,18 @@ interface IProps {
     readonly color: HighlightColor | undefined;
 }
 
-function useAnnotationHeightCalculator() {
+export function useFixedHeightAnnotationCalculator() {
 
     const theme = useTheme();
 
     const margin = theme.spacing(3);
 
-    return (props: IProps): number => {
-        if (props.img) {
-            return Math.min(props.img.height, MAX_IMG_HEIGHT) + margin;
+    return (annotation: IDocAnnotation): number => {
+        if (annotation.img) {
+            return Math.min(annotation.img.height, MAX_IMG_HEIGHT) + margin;
         }
 
-        const textPreviewHeight = calculateTextPreviewHeight(props.text || '');
+        const textPreviewHeight = calculateTextPreviewHeight(annotation.text || '');
         return textPreviewHeight.height + margin;
     };
 
