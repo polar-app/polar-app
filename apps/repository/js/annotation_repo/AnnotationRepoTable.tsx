@@ -120,7 +120,7 @@ namespace Handheld {
 export const [AnnotationRepoTableContextMenu, useAnnotationRepoTableContextMenu]
     = createContextMenu(AnnotationRepoTableMenu);
 
-export const AnnotationRepoTable2 = React.memo(() => {
+export const AnnotationRepoTable = React.memo(() => {
 
     const {page, rowsPerPage, view, viewPage, selected} =
         useAnnotationRepoStore(['page', 'rowsPerPage', 'view', 'viewPage', 'selected']);

@@ -4,7 +4,7 @@ import TableRow from "@material-ui/core/TableRow";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {useAnnotationRepoCallbacks} from "./AnnotationRepoStore";
 import isEqual from "react-fast-compare";
-import { useAnnotationRepoTableContextMenu } from "./AnnotationRepoTable2";
+import { useAnnotationRepoTableContextMenu } from "./AnnotationRepoTable";
 import {IMouseEvent} from "../doc_repo/MUIContextMenu2";
 import {FixedHeightAnnotationPreview} from "./FixedHeightAnnotationPreview";
 

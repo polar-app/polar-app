@@ -8,7 +8,7 @@ import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 import {FolderSidebar2} from "../folders/FolderSidebar2";
 import {AnnotationListView2} from "./AnnotationListView2";
 import {AnnotationRepoFilterBar2} from "./AnnotationRepoFilterBar2";
-import {AnnotationRepoTable2} from "./AnnotationRepoTable2";
+import {AnnotationRepoTable} from "./AnnotationRepoTable";
 import {AnnotationInlineViewer2} from "./AnnotationInlineViewer2";
 import {StartReviewDropdown} from "./filter_bar/StartReviewDropdown";
 import {AnnotationRepoRoutedComponents} from './AnnotationRepoRoutedComponents';
@@ -40,7 +40,7 @@ namespace main {
                     flexGrow: 1,
                     minHeight: 0,
                 },
-                component: <AnnotationRepoTable2 />,
+                component: <AnnotationRepoTable />,
                 width: 450
             },
             {
@@ -85,7 +85,7 @@ namespace main {
                                flexDirection: 'column',
                                minHeight: 0
                            }}>
-                        <AnnotationRepoTable2/>
+                        <AnnotationRepoTable/>
                     </Paper>,
                 width: 450
             },
