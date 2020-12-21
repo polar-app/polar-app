@@ -7,7 +7,7 @@ large_image: https://imgur.com/CSEQUB4
 ---
 
 <img class="img-fluid" src="https://imgur.com/CSEQUB4">
-s
+
 # How Incremental Reading Transformed My Stream of Work
 
 I started out as a market research intern at a B2B payments company in Charlotte, NC. I knew nothing about accounts payable automation or the B2B payments landscape, but knew I had to become an expert quickly. My onboarding process was full of long readings from industry reports to blog posts from fintech VC’s. Quite frankly, I was overwhelmed. 
