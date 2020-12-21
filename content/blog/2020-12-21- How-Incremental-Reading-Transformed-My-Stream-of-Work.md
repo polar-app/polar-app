@@ -3,10 +3,10 @@ title: How Incremental Reading Transformed My Stream of Work
 date: 2020-21-04T08:00:00.000-08:00
 layout: post
 description: Using an Advanced Reading and Annotation Tool Allowed Me to Transition from Onboarding to Industry Expert in Weeks
-large_image: https://imgur.com/CSEQUB4
+large_image: https://i.imgur.com/I1TBtJW.jpg
 ---
 
-<img class="img-fluid" src="https://i.imgur.com/vlcr7G8.jpg">
+<img class="img-fluid" src="https://i.imgur.com/I1TBtJW.jpg">
 
 # How Incremental Reading Transformed My Stream of Work
 
