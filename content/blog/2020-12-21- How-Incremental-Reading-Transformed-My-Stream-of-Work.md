@@ -6,7 +6,7 @@ description: Using an Advanced Reading and Annotation Tool Allowed Me to Transit
 large_image: https://imgur.com/CSEQUB4
 ---
 
-<img class="img-fluid" src="https://imgur.com/CSEQUB4">
+<img class="img-fluid" src="https://i.imgur.com/vlcr7G8.jpg">
 
 # How Incremental Reading Transformed My Stream of Work
 
