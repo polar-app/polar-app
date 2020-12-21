@@ -8,7 +8,6 @@ import Box from '@material-ui/core/Box';
 import {PlainTextStr, Strings} from "polar-shared/src/util/Strings";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import useTheme from '@material-ui/core/styles/useTheme';
-import {HeightFitImg} from "../../../../web/js/annotation_sidebar/HeightFitImg";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 
 const MAX_IMG_HEIGHT = 200;
@@ -63,24 +62,30 @@ const ImagePreview = deepMemo((props: IProps) => {
 interface ITextPreviewHeight {
     readonly maxTextLength: number;
     readonly height: number;
+
+    // debug variables
+
+    readonly nrRowsForTextPX: number;
+
 }
 
-function calculateTextPreviewHeight(text: string): ITextPreviewHeight {
+export function calculateTextPreviewHeight(text: string): ITextPreviewHeight {
 
-    const defaultDockWidth = 450;
-    const fontSize = 14;
-    const lineHeight = 20;
+    const defaultDockWidthPX = 450;
+    const fontSizePX = 14;
+    const lineHeightPX = 20;
 
-    const textWidth = text.length * fontSize;
-    const nrRows = textWidth / lineHeight;
+    const textWidthPX = text.length * fontSizePX;
+    const nrRowsForTextPX = Math.floor(textWidthPX / defaultDockWidthPX) + 1;
 
-    const rows = Math.min(nrRows, 4);
+    const rows = Math.min(nrRowsForTextPX, 4);
 
-    const charactersPerRow = defaultDockWidth / fontSize;
+    const charactersPerRow = Math.floor(defaultDockWidthPX / fontSizePX);
     const maxTextLength = charactersPerRow * rows;
 
-    const height = rows * fontSize;
-    return {maxTextLength, height};
+    const height = rows * lineHeightPX;
+
+    return {maxTextLength, height, nrRowsForTextPX};
 
 }
 
