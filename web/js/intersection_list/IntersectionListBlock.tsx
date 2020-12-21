@@ -28,13 +28,16 @@ interface IViewState {
 }
 
 interface IntersectionObserverViewStateOpts {
-    readonly root: HTMLElement;
+    readonly element: HTMLElement;
 
+    // when true we never update the state.
+    readonly inactive?: boolean;
 }
 
+// FIXME we can use this to disable when the root vanishes...
 function useIntersectionObserverViewState(opts: IntersectionObserverViewStateOpts): IViewState {
 
-    const {root} = opts;
+    const {element} = opts;
 
     const [inView, setUseInView] = React.useState(false);
 
@@ -42,7 +45,7 @@ function useIntersectionObserverViewState(opts: IntersectionObserverViewStateOpt
         threshold: 0,
         trackVisibility: true,
         delay: 100,
-        root
+        root: element
     });
 
     // if (observation.inView !== inView) {
@@ -51,7 +54,9 @@ function useIntersectionObserverViewState(opts: IntersectionObserverViewStateOpt
 
     if (observation.inView && ! inView) {
         // only go one way ... then don't deactivate...
-        setUseInView(true);
+        if (! opts.inactive) {
+            setUseInView(true);
+        }
     }
 
     return {
@@ -67,7 +72,7 @@ export function useIntersectionObserverUsingCalculationViewState(opts: Intersect
         threshold: 0,
         trackVisibility: true,
         delay: 100,
-        root: opts.root
+        root: opts.element
     });
 
     //
@@ -101,7 +106,13 @@ export function useIntersectionObserverUsingCalculationViewState(opts: Intersect
 
 export const IntersectionListBlock = typedMemo(function<V extends ListValue>(props: IProps<V>) {
 
-    const {ref, inView} = useIntersectionObserverViewState(props);
+    // FIXME we have to detect if the parent of the intersection list is hidden and then disable
+    // the inner view changing...
+
+    // const rootViewState = useIntersectionObserverViewState({element: props.root});
+
+    // FIXME: change this BACK to root I think
+    const {ref, inView} = useIntersectionObserverViewState({element: props.root});
 
     return (
         <LazyBlockComponent innerRef={ref}
