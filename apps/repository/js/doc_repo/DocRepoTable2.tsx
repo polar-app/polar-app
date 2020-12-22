@@ -85,7 +85,7 @@ export const DocRepoTable2 = deepMemo(() => {
 
     return (
 
-        <MUIElevation elevation={2}
+        <MUIElevation elevation={0}
                       style={{
                           width: '100%',
                           height: '100%',
