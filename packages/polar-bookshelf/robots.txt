@@ -1,0 +1,14 @@
+User-agent: *
+
+# going to disallow /add now since the content isn't helpful and /d will
+# actually be crawled
+Disallow: /add
+
+# going to block groups now as this isn't search accessible and we're going to
+# work on SSR for this.
+# Disallow: /groups
+Disallow: /group
+
+Sitemap: https://app.getpolarized.io/sitemap.xml
+Sitemap: https://app.getpolarized.io/sitemap-static.xml
+Sitemap: https://app.getpolarized.io/sitemap-doc-preview.xml
