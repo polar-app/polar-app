@@ -1,5 +1,5 @@
 ---
-title: How Schizophrenia Is No Excuse To Succeed In Life
+title: How Schizophrenia Is No Excuse Not To Succeed In Life
 date: 2020-12-14T08:00:00.000-08:00
 layout: post
 description: People tend to think that disabilities will always hold someone back but I have learned that you can choose how the disability will affect your life. You can either let it consume you or take control of it 
