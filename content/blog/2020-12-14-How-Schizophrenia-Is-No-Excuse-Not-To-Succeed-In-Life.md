@@ -1,12 +1,12 @@
 ---
-title: How Schizophrenia Is No Excuse To Succeed In Life
+title: How Schizophrenia Is No Excuse Not To Succeed In Life
 date: 2020-12-14T08:00:00.000-08:00
 layout: post
 description: People tend to think that disabilities will always hold someone back but I have learned that you can choose how the disability will affect your life. You can either let it consume you or take control of it 
 large_image: https://i.imgur.com/L5zCJ2L.jpg
 ---
 
-# How Schizophrenia Is No Excuse To Succeed In Life
+# How Schizophrenia Is No Excuse Not To Succeed In Life
 
 We talk to a lot of users with <a href="https://getpolarized.io/2020/11/18/How-I-Became-a-Space-Exploration-Enthusiast-in-a-Week.html">interesting stories</a>. Most of them have at least one thing in common - they use Polar in their own unique way. However, when we chatted with Liz, we had to stop for a moment and let it sink in. His story is one of constant struggle, yet one that shows the full potential of us as humans. Liz was diagnosed with <a href="https://www.mayoclinic.org/diseases-conditions/schizoaffective-disorder/symptoms-causes/syc-20354504">schizoaffective disorder</a> when he was 26. While enduring this, he remained a college student in Richmond, VA, and is currently getting his MA in theology and wants to continue with a PhD after that. His story is one of an avid read, continuous learner, and ceaseless fighter.
 
