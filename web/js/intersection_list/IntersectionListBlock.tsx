@@ -28,16 +28,15 @@ interface IViewState {
 }
 
 interface IntersectionObserverViewStateOpts {
-    readonly element: HTMLElement;
+    readonly root: HTMLElement;
 
     // when true we never update the state.
     readonly inactive?: boolean;
 }
 
-// FIXME we can use this to disable when the root vanishes...
 function useIntersectionObserverViewState(opts: IntersectionObserverViewStateOpts): IViewState {
 
-    const {element} = opts;
+    const {root} = opts;
 
     const [inView, setUseInView] = React.useState(false);
 
@@ -45,7 +44,7 @@ function useIntersectionObserverViewState(opts: IntersectionObserverViewStateOpt
         threshold: 0,
         trackVisibility: true,
         delay: 100,
-        root: element
+        root
     });
 
     // if (observation.inView !== inView) {
@@ -72,7 +71,7 @@ export function useIntersectionObserverUsingCalculationViewState(opts: Intersect
         threshold: 0,
         trackVisibility: true,
         delay: 100,
-        root: opts.element
+        root: opts.root
     });
 
     //
@@ -112,7 +111,7 @@ export const IntersectionListBlock = typedMemo(function<V extends ListValue>(pro
     // const rootViewState = useIntersectionObserverViewState({element: props.root});
 
     // TODO: change this BACK to root I think
-    const {ref, inView} = useIntersectionObserverViewState({element: props.root});
+    const {ref, inView} = useIntersectionObserverViewState({root: props.root});
 
     return (
         <LazyBlockComponent innerRef={ref}
