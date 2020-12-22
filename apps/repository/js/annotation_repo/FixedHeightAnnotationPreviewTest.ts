@@ -6,7 +6,11 @@ describe('FixedHeightAnnotationPreview', function() {
     describe('calculateTextPreviewHeight', function() {
 
         it("basic", function () {
-            assertJSON(calculateTextPreviewHeight("asdf"), {});
+            assertJSON(calculateTextPreviewHeight("asdf"), {
+                "height": 20,
+                "maxTextLength": 32,
+                "nrRowsForTextPX": 1
+            });
         });
 
     });
