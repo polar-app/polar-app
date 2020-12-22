@@ -11,7 +11,7 @@ exports.createPages = async ({ graphql, actions }) => {
 
   //include templates
   const blogPost = path.resolve(`./src/templates/blog-post.tsx`);
-  const blog = path.resolve("./src/templates/blog-index-template.tsx");
+  const blog = path.resolve("./src/templates/BlogIndex.tsx");
   const docs = path.resolve("./src/templates/docs-page-temp.tsx");
   const result = await graphql(
     `

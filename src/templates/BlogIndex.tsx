@@ -7,7 +7,7 @@ import { Link } from "gatsby-material-ui-components";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../gatsby-theme-material-ui-top-layout/docsTheme";
 import { makeStyles } from "@material-ui/styles";
-import BlogHead from "../components/blog-head-layout";
+import BlogHead from "../components/BlogHead";
 
 const NUM_HEADER_CARDS = 6;
 
