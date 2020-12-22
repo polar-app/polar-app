@@ -6,7 +6,7 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import { Arrays } from 'polar-shared/src/util/Arrays';
 import {NoteTargetStr} from "./NoteLinkLoader";
-import {useLifecycleTracer} from "../hooks/ReactHooks";
+import {useLifecycleTracer, useRefValue} from "../hooks/ReactHooks";
 import {isPresent} from "polar-shared/src/Preconditions";
 
 export type NoteIDStr = IDStr;
@@ -872,13 +872,22 @@ export function useNoteFromStore(target: NoteTargetStr): INote | undefined {
 
     useLifecycleTracer('useNoteFromStore', {target});
 
-    function reducer(store: INotesStore) {
-        return store.index[target] || store.indexByName[target] || undefined
-    }
+    // FIXMEL: this won't work because the store value didn't change just the param value...
 
-    function filter(curr: INote, next: INote): boolean {
-        return curr.updated !== next.updated;
-    }
+    const targetRef = useRefValue(target);
+
+    const reducer = React.useCallback((store: INotesStore) => {
+        const result = store.index[targetRef.current] || store.indexByName[targetRef.current] || undefined;
+
+        console.log("FIXME: reducer:", result)
+        return result
+    }, [targetRef]);
+
+    const filter = React.useCallback((curr: INote, next: INote): boolean => {
+        const result = curr.id !== next.id || curr.updated !== next.updated;
+        console.log("FIXME: filter:", result)
+        return result;
+    }, []);
 
     return useNotesStoreReducer(reducer, {filter});
 

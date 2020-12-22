@@ -20,6 +20,8 @@ export const NoteRoot = deepMemo(function NoteRoot(props: IProps) {
 
     const note = useNoteFromStore(props.target);
 
+    console.log("FIXME: rendered with note ID: ", note?.id);
+
     React.useEffect(() => {
         // TODO: do this with one init() operation so it mutates the store just once.
 
