@@ -872,7 +872,7 @@ export function useNoteFromStore(target: NoteTargetStr): INote | undefined {
 
     useLifecycleTracer('useNoteFromStore', {target});
 
-    // FIXMEL: this won't work because the store value didn't change just the param value...
+    // TODO: this won't work because the store value didn't change just the param value...
 
     const targetRef = useRefValue(target);
 

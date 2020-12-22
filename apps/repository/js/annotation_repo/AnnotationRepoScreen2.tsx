@@ -8,7 +8,6 @@ import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 import {FolderSidebar2} from "../folders/FolderSidebar2";
 import {AnnotationListView2} from "./AnnotationListView2";
 import {AnnotationRepoFilterBar2} from "./AnnotationRepoFilterBar2";
-import {AnnotationRepoTable} from "./AnnotationRepoTable";
 import {AnnotationInlineViewer2} from "./AnnotationInlineViewer2";
 import {StartReviewDropdown} from "./filter_bar/StartReviewDropdown";
 import {AnnotationRepoRoutedComponents} from './AnnotationRepoRoutedComponents';

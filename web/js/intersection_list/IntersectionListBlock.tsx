@@ -106,12 +106,12 @@ export function useIntersectionObserverUsingCalculationViewState(opts: Intersect
 
 export const IntersectionListBlock = typedMemo(function<V extends ListValue>(props: IProps<V>) {
 
-    // FIXME we have to detect if the parent of the intersection list is hidden and then disable
+    // TODO we have to detect if the parent of the intersection list is hidden and then disable
     // the inner view changing...
 
     // const rootViewState = useIntersectionObserverViewState({element: props.root});
 
-    // FIXME: change this BACK to root I think
+    // TODO: change this BACK to root I think
     const {ref, inView} = useIntersectionObserverViewState({element: props.root});
 
     return (
