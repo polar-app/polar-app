@@ -12,7 +12,7 @@ import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 
 
 const NoAnnotationSelected = () => (
-    <MUIElevation elevation={2}
+    <MUIElevation elevation={0}
                   style={{
                       display: 'flex',
                       flexGrow: 1,
@@ -47,7 +47,7 @@ const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
 
     return (
 
-        <MUIElevation elevation={2}
+        <MUIElevation elevation={0}
                       style={{
                           display: 'flex',
                           flexGrow: 1,
@@ -61,7 +61,7 @@ const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
                         <>
                             <AnnotationInlineControlBar annotation={annotation}/>
 
-                            <MUIElevation elevation={2}>
+                            <MUIElevation elevation={0}>
                                 <FeedbackPadding>
                                     <div className="mt-1">
                                         <AnnotationView2 annotation={annotation}/>

@@ -77,16 +77,14 @@ namespace main {
                     minHeight: 0,
                 },
                 component:
-                    <Paper square
-                           elevation={0}
-                           style={{
-                               flexGrow: 1,
-                               display: 'flex',
-                               flexDirection: 'column',
-                               minHeight: 0
-                           }}>
+                    <div style={{
+                              flexGrow: 1,
+                              display: 'flex',
+                              flexDirection: 'column',
+                              minHeight: 0
+                          }}>
                         <AnnotationRepoTable2/>
-                    </Paper>,
+                    </div>,
                 width: 450
             },
             {
@@ -96,7 +94,7 @@ namespace main {
                     display: 'flex'
                 },
                 component:
-                    <MUIElevation elevation={2}
+                    <MUIElevation elevation={0}
                                   style={{
                                       flexGrow: 1,
                                       display: 'flex'
@@ -122,21 +120,19 @@ namespace screen {
                 <AnnotationRepoRoutedComponents/>
 
                 <FixedNav.Body>
-                    <Paper square
-                           elevation={0}
-                           style={{
-                               flexGrow: 1,
-                               display: 'flex',
-                               flexDirection: 'column',
-                               minHeight: 0
-                           }}>
+                    <div style={{
+                             flexGrow: 1,
+                             display: 'flex',
+                             flexDirection: 'column',
+                             minHeight: 0
+                         }}>
 
                         <StartReviewSpeedDial/>
 
                         <DeviceRouter phone={<main.Phone />}
                                       tablet={<main.Tablet />}/>
 
-                    </Paper>
+                    </div>
                 </FixedNav.Body>
 
             </FixedNav>

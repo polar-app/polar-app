@@ -97,15 +97,14 @@ export const AnnotationRepoTable2 = React.memo(() => {
     return (
 
         <AnnotationRepoTableContextMenu>
-            <Paper className="AnnotationRepoTable2"
-                   square id="doc-repo-table"
-                   elevation={0}
-                   style={{
-                       display: 'flex',
-                       flexDirection: 'column',
-                       minHeight: 0,
-                       flexGrow: 1
-                   }}>
+            <div className="AnnotationRepoTable2"
+                 id="doc-repo-table"
+                 style={{
+                     display: 'flex',
+                     flexDirection: 'column',
+                     minHeight: 0,
+                     flexGrow: 1
+                 }}>
 
                 <div id="doc-table"
                      className="AnnotationRepoTable2.Body"
@@ -147,7 +146,7 @@ export const AnnotationRepoTable2 = React.memo(() => {
 
                 </div>
 
-            </Paper>
+            </div>
         </AnnotationRepoTableContextMenu>
 
     );
