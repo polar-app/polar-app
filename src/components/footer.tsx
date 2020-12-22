@@ -7,6 +7,7 @@ import { Box } from "@material-ui/core";
 import { useBreakpoint } from "gatsby-plugin-breakpoints";
 import RedditIcon from "@material-ui/icons/Reddit";
 import TwitterIcon from "@material-ui/icons/Twitter";
+import {ThirdPartyEmbeds} from "./ThirdPartyEmbeds";
 const DiscordIconDark = require("../../content/assets/logos/discord-dark.png");
 
 require("typeface-roboto");
@@ -212,78 +213,81 @@ function FooterDesktop() {
 
   const classes = useStyles();
   return (
-    <AppBar
-      style={{
-        backgroundColor: "#C4C4C4",
-        padding: 0,
-      }}
-      position="sticky"
-    >
-      <Toolbar style={{ display: "flex", justifyContent: "center" }}>
-        <Box className={classes.navChoicesContainer}>
-          <Button className={classes.navChoices} color="inherit" href="/terms">
-            Terms of Service
-          </Button>
-          <Button
-            className={classes.navChoices}
-            color="inherit"
-            href="/privacy-policy"
-          >
-            Privacy Policy
-          </Button>
-          <Button className={classes.navChoices} color="inherit" href="/docs">
-            Documentation
-          </Button>
-          {/* <Button className={classes.navChoices} color="inherit" href="/docs">
-            Demo Videos
-          </Button> */}
-          <Button
-            className={classes.navChoices}
-            color="inherit"
-            href="/pricing"
-          >
-            Pricing
-          </Button>
-          <Button className={classes.navChoices} color="inherit" href="/blog">
-            Blog
-          </Button>
-          <Button
-            className={classes.navChoices}
-            color="inherit"
-            href="/download"
-          >
-            Download
-          </Button>
-        </Box>
+      <>
+        <ThirdPartyEmbeds/>
+        <AppBar
+          style={{
+            backgroundColor: "#C4C4C4",
+            padding: 0,
+          }}
+          position="sticky"
+        >
+          <Toolbar style={{ display: "flex", justifyContent: "center" }}>
+            <Box className={classes.navChoicesContainer}>
+              <Button className={classes.navChoices} color="inherit" href="/terms">
+                Terms of Service
+              </Button>
+              <Button
+                className={classes.navChoices}
+                color="inherit"
+                href="/privacy-policy"
+              >
+                Privacy Policy
+              </Button>
+              <Button className={classes.navChoices} color="inherit" href="/docs">
+                Documentation
+              </Button>
+              {/* <Button className={classes.navChoices} color="inherit" href="/docs">
+                Demo Videos
+              </Button> */}
+              <Button
+                className={classes.navChoices}
+                color="inherit"
+                href="/pricing"
+              >
+                Pricing
+              </Button>
+              <Button className={classes.navChoices} color="inherit" href="/blog">
+                Blog
+              </Button>
+              <Button
+                className={classes.navChoices}
+                color="inherit"
+                href="/download"
+              >
+                Download
+              </Button>
+            </Box>
 
-        <Box style={{ marginRight: 30 }}>
-          <Button
-            className={classes.socialIcon}
-            href="https://www.reddit.com/r/PolarBookshelf/"
-          >
-            <RedditIcon
-              style={{ height: "29px", width: "29px", color: "#424242" }}
-            />
-          </Button>
-          <Button
-            className={classes.socialIcon}
-            href="https://twitter.com/getpolarized"
-          >
-            <TwitterIcon
-              style={{ height: "29px", width: "29px", color: "#424242" }}
-            />
-          </Button>
-          <Button
-            className={classes.socialIcon}
-            href="https://discord.com/invite/GT8MhA6"
-          >
-            <img
-              src={DiscordIconDark}
-              style={{ marginTop: "5%", height: "31px", width: "32px" }}
-            />
-          </Button>
-        </Box>
-      </Toolbar>
-    </AppBar>
+            <Box style={{ marginRight: 30 }}>
+              <Button
+                className={classes.socialIcon}
+                href="https://www.reddit.com/r/PolarBookshelf/"
+              >
+                <RedditIcon
+                  style={{ height: "29px", width: "29px", color: "#424242" }}
+                />
+              </Button>
+              <Button
+                className={classes.socialIcon}
+                href="https://twitter.com/getpolarized"
+              >
+                <TwitterIcon
+                  style={{ height: "29px", width: "29px", color: "#424242" }}
+                />
+              </Button>
+              <Button
+                className={classes.socialIcon}
+                href="https://discord.com/invite/GT8MhA6"
+              >
+                <img
+                  src={DiscordIconDark}
+                  style={{ marginTop: "5%", height: "31px", width: "32px" }}
+                />
+              </Button>
+            </Box>
+          </Toolbar>
+        </AppBar>
+      </>
   );
 }
