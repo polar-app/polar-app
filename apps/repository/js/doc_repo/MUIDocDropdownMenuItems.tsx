@@ -26,6 +26,8 @@ import {FADatabaseIcon} from "../../../../web/js/mui/MUIFontAwesome";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import BallotIcon from '@material-ui/icons/Ballot';
 import {useDocMetadataEditorForSelected} from "./doc_metadata_editor/DocMetadataEditorHook";
+import LaunchIcon from '@material-ui/icons/Launch';
+
 // NOTE that this CAN NOT be a functional component as it breaks MUI menu
 // component.
 
@@ -179,7 +181,7 @@ export const MUIDocDropdownMenuItems = React.memo(() => {
             {isSingle &&
                 <MenuItem onClick={callbacks.onOpen}>
                     <ListItemIcon>
-                        <SendIcon fontSize="small"/>
+                        <LaunchIcon fontSize="small"/>
                     </ListItemIcon>
                     <ListItemText primary="Open Document"/>
                 </MenuItem>}
