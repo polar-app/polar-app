@@ -13,10 +13,6 @@ import isEqual from 'react-fast-compare';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        root: {
-            display: 'flex',
-            // zIndex: 1000
-        },
         popper: {
             zIndex: 1000
         },
@@ -50,6 +46,7 @@ interface IProps {
     readonly placement?: PopperPlacementType;
     readonly caret?: boolean;
     readonly disabled?: boolean;
+    readonly className?: string;
 }
 
 // TODO: move this to MUIPopper
@@ -110,62 +107,60 @@ export const MUIMenu = React.memo(React.forwardRef((props: IProps, ref) => {
     const menuListID = id + "-menu-list-grow";
 
     return (
-        <div className={classes.root}>
-            <div>
+        <>
 
-                {props.button.text && props.button.icon &&
-                    <Button {...buttonProps}
-                            startIcon={props.button.icon}
-                            endIcon={props.caret ? <MUIDropdownCaret/> : undefined}>
-                        {props.button.text}
-                    </Button>}
+            {props.button.text && props.button.icon &&
+                <Button {...buttonProps}
+                        startIcon={props.button.icon}
+                        endIcon={props.caret ? <MUIDropdownCaret/> : undefined}>
+                    {props.button.text}
+                </Button>}
 
-                {props.button.icon && ! props.button.text &&
-                    <IconButton {...buttonProps}
-                                size={buttonProps.size === 'large' ? 'medium' : buttonProps.size}>
-                        {props.button.icon}
-                    </IconButton>}
+            {props.button.icon && ! props.button.text &&
+                <IconButton {...buttonProps}
+                            size={buttonProps.size === 'large' ? 'medium' : buttonProps.size}>
+                    {props.button.icon}
+                </IconButton>}
 
-                {! props.button.icon && props.button.text &&
-                    <Button {...buttonProps}
-                            size="large"
-                            variant="contained">
-                        {props.button.text}
-                    </Button>}
+            {! props.button.icon && props.button.text &&
+                <Button {...buttonProps}
+                        size="large"
+                        variant="contained">
+                    {props.button.text}
+                </Button>}
 
-                <Popper open={open}
-                        className={classes.popper}
-                        anchorEl={anchorRef.current}
-                        role={undefined}
-                        transition
-                        popperOptions={{
-                            offsets: {
-                                popper: {
-                                    top: 10
-                                }
+            <Popper open={open}
+                    className={classes.popper}
+                    anchorEl={anchorRef.current}
+                    role={undefined}
+                    transition
+                    popperOptions={{
+                        offsets: {
+                            popper: {
+                                top: 10
                             }
-                        }}
-                        placement={placement}
-                        disablePortal>
+                        }
+                    }}
+                    placement={placement}
+                    disablePortal>
 
-                    {({ TransitionProps, placement }) => (
-                        <Grow {...TransitionProps}>
-                            <Paper elevation={10}
-                                   className={classes.paper}>
-                                <ClickAwayListener onClickAway={handleClose}>
+                {({ TransitionProps, placement }) => (
+                    <Grow {...TransitionProps}>
+                        <Paper elevation={10}
+                               className={classes.paper}>
+                            <ClickAwayListener onClickAway={handleClose}>
 
-                                    <MenuList autoFocusItem={open}
-                                              id={menuListID}
-                                              onClick={handleClose}
-                                              onKeyDown={handleListKeyDown}>
-                                        {props.children}
-                                    </MenuList>
-                                </ClickAwayListener>
-                            </Paper>
-                        </Grow>
-                    )}
-                </Popper>
-            </div>
-        </div>
+                                <MenuList autoFocusItem={open}
+                                          id={menuListID}
+                                          onClick={handleClose}
+                                          onKeyDown={handleListKeyDown}>
+                                    {props.children}
+                                </MenuList>
+                            </ClickAwayListener>
+                        </Paper>
+                    </Grow>
+                )}
+            </Popper>
+        </>
     );
 }), isEqual);
