@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {MUIToggleButton} from "../../../../web/js/ui/MUIToggleButton";
 import FlagIcon from '@material-ui/icons/Flag';
-import Grid from "@material-ui/core/Grid";
 import {MUISearchBox2} from "../../../../web/js/mui/MUISearchBox2";
 import {useDocRepoCallbacks, useDocRepoStore} from "./DocRepoStore2";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
+import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 
 export interface IProps {
 
@@ -35,49 +35,27 @@ export const DocRepoFilterBar = deepMemo((props: IProps) => {
 
     return (
 
-        <div id="filter-bar"
-             style={{}}>
+        <MUIButtonBar>
 
-            <Grid spacing={1}
-                  container
-                  direction="row"
-                  justify="flex-start"
-                  style={{flexWrap: 'nowrap'}}
-                  alignItems="center">
-
-                <Grid item>
-
-                    <MUIToggleButton id="toggle-flagged"
-                                     tooltip="Show only flagged documents."
-                                     size="medium"
-                                     label="flagged"
-                                     icon={<FlagIcon/>}
-                                     initialValue={filters.flagged}
-                                     onChange={value => setFilters({...filters, flagged: value})}/>
-                </Grid>
-
-                <Grid item>
-                    <MUIToggleButton id="toggle-archived"
-                                     tooltip="Toggle showing archived documents"
-                                     size="medium"
-                                     label="archived"
-                                     initialValue={filters.archived}
-                                     onChange={value => setFilters({...filters, archived: value})}/>
-                </Grid>
-
-                <Grid item>
-                    <MUISearchBox2 id="filter_title"
-                                   placeholder="Search by title"
-                                   initialValue={filters.title}
-                                   autoComplete="off"
-                                   onChange={text => setFilters({...filters, title: text})}/>
-
-                </Grid>
-
-            </Grid>
-
-        </div>
-
+            <MUIToggleButton id="toggle-flagged"
+                             tooltip="Show only flagged documents."
+                             size="medium"
+                             label="flagged"
+                             icon={<FlagIcon/>}
+                             initialValue={filters.flagged}
+                             onChange={value => setFilters({...filters, flagged: value})}/>
+            <MUIToggleButton id="toggle-archived"
+                             tooltip="Toggle showing archived documents"
+                             size="medium"
+                             label="archived"
+                             initialValue={filters.archived}
+                             onChange={value => setFilters({...filters, archived: value})}/>
+            <MUISearchBox2 id="filter_title"
+                           placeholder="Search by title"
+                           initialValue={filters.title}
+                           autoComplete="off"
+                           onChange={text => setFilters({...filters, title: text})}/>
+        </MUIButtonBar>
     );
 
 });

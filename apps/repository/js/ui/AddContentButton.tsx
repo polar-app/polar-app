@@ -27,25 +27,29 @@ export namespace AddContent {
 
     };
 
-    export const Desktop = () => {
+    interface IProps {
+        readonly style?: React.CSSProperties;
+    }
+
+    export const Desktop = React.memo((props: IProps) => {
 
         const doAdd = useAddFileDropzone();
 
         return (
-            <MUITooltip title="Upload and add PDFs and EPUBs to your repository">
+            // <MUITooltip title="Upload and add PDFs and EPUBs to your repository">
                 <Button id="add-content-dropdown"
                         variant="contained"
                         color="primary"
                         startIcon={<AddIcon/>}
                         onClick={doAdd}
                         style={{
-                            minWidth: '285px'
+                            ...props.style
                         }}
                         size="large">
                     Add Document
                 </Button>
-            </MUITooltip>
+            // </MUITooltip>
         );
-    };
+    });
 
 }

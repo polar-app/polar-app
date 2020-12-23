@@ -1,15 +1,49 @@
 import React from "react";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
 import Checkbox from "@material-ui/core/Checkbox";
 import Divider from "@material-ui/core/Divider";
-import {AutoBlur} from "./AutoBlur";
 import {useDocRepoCallbacks, useDocRepoStore} from "./DocRepoStore2";
 import isEqual from "react-fast-compare";
 import { MUIDocTagButton } from "./buttons/MUIDocTagButton";
 import {MUIDocArchiveButton} from "./buttons/MUIDocArchiveButton";
 import { MUIDocFlagButton } from "./buttons/MUIDocFlagButton";
 import { MUIDocDeleteButton } from "./buttons/MUIDocDeleteButton";
+import {DocRepoFilterBar} from "./DocRepoFilterBar";
+import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
+import Paper from "@material-ui/core/Paper";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import createStyles from "@material-ui/core/styles/createStyles";
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import IconButton from "@material-ui/core/IconButton";
+import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
+
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        root: {
+            display: 'flex',
+            paddingTop: theme.spacing(1),
+            paddingBottom: theme.spacing(1),
+            paddingRight: theme.spacing(1),
+        },
+    }),
+);
+
+const SelectionActiveButtons = React.memo(() => {
+    const callbacks = useDocRepoCallbacks();
+
+    return (
+        <MUIButtonBar>
+            <>
+                <MUIDocTagButton onClick={callbacks.onTagged} size="medium"/>
+                <MUIDocArchiveButton onClick={callbacks.onArchived} size="medium"/>
+                <MUIDocFlagButton onClick={callbacks.onFlagged} size="medium"/>
+                <Divider orientation="vertical" variant="middle" flexItem/>
+
+                <MUIDocDeleteButton size="medium"
+                                    onClick={callbacks.onDeleted}/>
+            </>
+        </MUIButtonBar>
+    );
+});
 
 export const DocRepoTableToolbar = React.memo(() => {
 
@@ -17,10 +51,11 @@ export const DocRepoTableToolbar = React.memo(() => {
         = useDocRepoStore(['view', 'selected']);
 
     const callbacks = useDocRepoCallbacks();
+    const classes = useStyles();
 
     const {setSelected} = callbacks;
 
-    const handleCheckbox = (checked: boolean) => {
+    const handleCheckbox = React.useCallback((checked: boolean) => {
         // TODO: this is wrong... the '-' button should remove the checks...
         // just like gmail.
         if (checked) {
@@ -28,70 +63,32 @@ export const DocRepoTableToolbar = React.memo(() => {
         } else {
             setSelected('none');
         }
-    }
+    }, [setSelected]);
 
     return (
-        <>
-            <Grid container
-                  direction="row"
-                  justify="space-between"
-                  alignItems="center">
+        <Paper square
+               className={classes.root}>
 
-                <Grid item>
+                <div style={{
+                         display: 'flex',
+                         flexGrow: 1
+                     }}>
 
-                    <Box pl={0}>
+                    <div>
+                        <MUICheckboxIconButton
+                            indeterminate={selected.length > 0 && selected.length < view.length}
+                            checked={selected.length === view.length && view.length !== 0}
+                            onChange={(event, checked) => handleCheckbox(checked)}/>
+                    </div>
 
-                        <Grid container
-                              spacing={1}
-                              direction="row"
-                              justify="flex-start"
-                              style={{
-                                  flexWrap: 'nowrap'
-                              }}
-                              alignItems="center">
+                    {selected.length > 0 && (
+                        <SelectionActiveButtons/>
+                    )}
 
-                            <Grid item>
-                                <AutoBlur>
-                                    <Box mt={1} mb={1}>
-                                        <Checkbox
-                                            size="medium"
-                                            indeterminate={selected.length > 0 && selected.length < view.length}
-                                            checked={selected.length === view.length && view.length !== 0}
-                                            onChange={event => handleCheckbox(event.target.checked)}
-                                            inputProps={{ 'aria-label': 'select all documents' }}
-                                        />
-                                    </Box>
-                                </AutoBlur>
-                            </Grid>
+                </div>
 
-                            {selected.length > 0 && (
-                                <>
-                                    <Grid item>
-                                        <MUIDocTagButton onClick={callbacks.onTagged} size="medium"/>
-                                    </Grid>
+                <DocRepoFilterBar/>
 
-                                    <Grid item>
-                                        <MUIDocArchiveButton onClick={callbacks.onArchived} size="medium"/>
-                                    </Grid>
-
-                                    <Grid item>
-                                        <MUIDocFlagButton onClick={callbacks.onFlagged} size="medium"/>
-                                    </Grid>
-
-                                     <Divider orientation="vertical" variant="middle" flexItem/>
-
-                                    <Grid item>
-                                        <MUIDocDeleteButton size="medium"
-                                                            onClick={callbacks.onDeleted}/>
-                                    </Grid>
-                                </>
-                            )}
-                        </Grid>
-                    </Box>
-
-                </Grid>
-
-            </Grid>
-        </>
+        </Paper>
     );
 }, isEqual);

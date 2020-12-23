@@ -17,6 +17,8 @@ import {useHistory} from "react-router-dom";
 import useLocationWithHashOnly = ReactRouters.useLocationWithHashOnly;
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import {FeedbackButton2} from "../ui/FeedbackButton2";
+import Box from "@material-ui/core/Box";
+import useTheme from "@material-ui/core/styles/useTheme";
 
 namespace main {
 
@@ -83,64 +85,44 @@ namespace devices {
         </>
     ));
 
-    export const Desktop = React.memo(() => (
+    export const Desktop = React.memo(() => {
 
-        <DockLayout dockPanels={[
-            {
-                id: "dock-panel-left",
-                type: 'fixed',
-                // side: 'left',
-                component: <FolderSidebar2/>,
-                width: 300,
-                style: {
-                    display: 'flex',
-                    flexDirection: 'column',
-                    flexGrow: 1,
-                    overflow: 'none'
+        const theme = useTheme();
+
+        const AddContentHeader = () => (
+            <AddContent.Desktop style={{
+                                    flexGrow: 1,
+                                    marginTop: theme.spacing(1),
+                                    marginBottom: theme.spacing(1)
+                                }}/>
+        )
+        return (
+
+            <DockLayout dockPanels={[
+                {
+                    id: "dock-panel-left",
+                    type: 'fixed',
+                    // side: 'left',
+                    component: <FolderSidebar2 header={<AddContentHeader/>}/>,
+                    width: 300,
+                    style: {
+                        display: 'flex',
+                        flexDirection: 'column',
+                        flexGrow: 1,
+                        overflow: 'none'
+                    }
+                },
+                {
+                    id: "doc-panel-center",
+                    type: 'grow',
+                    component: <main.Documents/>
                 }
-            },
-            {
-                id: "doc-panel-center",
-                type: 'grow',
-                component: <main.Documents/>
-            }
-        ]}/>
+            ]}/>
 
-    ));
+        );
 
-}
+    });
 
-const DesktopToolbar = () => {
-    return (
-        <MUIPaperToolbar id="header-filter"
-                         borderBottom
-                         padding={1}>
-
-            <div style={{
-                display: 'flex',
-                alignItems: 'center'
-            }}>
-
-                <div className=""
-                     style={{
-                         whiteSpace: 'nowrap',
-                         display: 'flex'
-                     }}>
-
-                    <DocRepoButtonBar/>
-
-                </div>
-
-                <div style={{marginLeft: 'auto'}}>
-
-                    <DocRepoFilterBar/>
-
-                </div>
-
-            </div>
-        </MUIPaperToolbar>
-
-    )
 }
 
 export const DocRepoScreen2 = React.memo(() => {
@@ -154,10 +136,6 @@ export const DocRepoScreen2 = React.memo(() => {
                 <DocRepoScreenRoutedComponents/>
 
                 <header>
-
-                    <DeviceRouters.Desktop>
-                        <DesktopToolbar/>
-                    </DeviceRouters.Desktop>
 
                 </header>
 

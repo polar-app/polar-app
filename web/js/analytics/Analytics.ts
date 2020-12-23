@@ -6,6 +6,7 @@ import {AmplitudeAnalytics} from "./amplitude/AmplitudeAnalytics";
 import {FirestoreAnalytics} from "./firestore/FirestoreAnalytics";
 import {OnlineAnalytics} from "./online/OnlineAnalytics";
 import {UserflowAnalytics} from "./userflow/UserflowAnalytics";
+import { ConsoleAnalytics } from "./console/ConsoleAnalytics";
 
 export function isBrowser() {
     return typeof window !== 'undefined';
@@ -19,7 +20,8 @@ function createDelegate(): IAnalytics {
                 new AmplitudeAnalytics(),
                 new GAAnalytics(),
                 new FirestoreAnalytics(),
-                new UserflowAnalytics()
+                new UserflowAnalytics(),
+                new ConsoleAnalytics(),
             ])
         );
     } else {

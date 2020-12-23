@@ -21,7 +21,11 @@ const TagsMenu = () => <FolderSidebarMenu type="tag"/>
 const FoldersContextMenu = createContextMenu(FoldersMenu);
 const TagsContextMenu = createContextMenu(TagsMenu);
 
-export const FolderSidebar2 = () => {
+interface IProps {
+    readonly header?: JSX.Element;
+}
+
+export const FolderSidebar2 = React.memo((props: IProps) => {
 
     const {filter, foldersRoot, selected, expanded, tagsView}
         = useFolderSidebarStore(['filter', 'foldersRoot', 'selected', 'expanded', 'tagsView']);
@@ -51,25 +55,36 @@ export const FolderSidebar2 = () => {
             <>
                 <MUIPaperToolbar borderBottom
                                  padding={0.5}>
-                    <div style={{
-                        display: 'flex'
-                    }}>
+                    <>
+                        {props.header && (
+                            <div style={{
+                                     display: 'flex'
+                                 }}>
+                                {props.header}
+                            </div>
+                        )}
 
-                        <MUISearchBox2
-                            initialValue={filter}
-                            placeholder="Filter by tag or folder"
-                            autoComplete="off"
-                            style={{
-                                flexGrow: 1
-                            }}
-                            onChange={setFilter}/>
+                        <div style={{
+                                display: 'flex'
+                             }}>
 
-                        <div className="ml-1">
-                            <AddTagsDropdown onCreateFolder={() => onCreateUserTag('folder')}
-                                             onCreateTag={() => onCreateUserTag('tag')}/>
+                            <MUISearchBox2
+                                initialValue={filter}
+                                placeholder="Filter by tag or folder"
+                                autoComplete="off"
+                                style={{
+                                    flexGrow: 1
+                                }}
+                                onChange={setFilter}/>
+
+                            <div className="ml-1">
+                                <AddTagsDropdown onCreateFolder={() => onCreateUserTag('folder')}
+                                                 onCreateTag={() => onCreateUserTag('tag')}/>
+                            </div>
+
                         </div>
 
-                    </div>
+                    </>
                 </MUIPaperToolbar>
 
                 <div style={{
@@ -104,4 +119,4 @@ export const FolderSidebar2 = () => {
         </MUIElevation>
     )
 
-};
+});

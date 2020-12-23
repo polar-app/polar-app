@@ -18,6 +18,7 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {AutoBlur} from "./AutoBlur";
 import Checkbox from "@material-ui/core/Checkbox";
 import {OverflowMenuButton} from "./buttons/DocOverflowMenuButton";
+import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -360,9 +361,8 @@ export namespace cells {
         return (
             <TableCell padding="none">
                 <AutoBlur>
-                    <Checkbox checked={selected}
-                              inputProps={{'aria-labelledby': labelId}}
-                              onClick={(event) => selectRow(viewID, event, 'checkbox')}
+                    <MUICheckboxIconButton checked={selected}
+                                           onChange={(event) => selectRow(viewID, event, 'checkbox')}
 
                     />
                 </AutoBlur>
