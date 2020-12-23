@@ -6,7 +6,7 @@ description: We just shipped AI Flashcards in Polar - powered by Open AI and GPT
 large_image: https://i.imgur.com/2PWqevP.png
 ---
 
-<img class="img-fluid" src="https://i.imgur.com/GFj8gYz.png">
+<img class="img-fluid" src="https://i.imgur.com/2PWqevP.png">
 
 # Polar 2.0.99 Released with Artificially Intelligent Flashcards
 
