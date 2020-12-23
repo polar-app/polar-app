@@ -95,7 +95,8 @@ namespace devices {
                                     marginTop: theme.spacing(1),
                                     marginBottom: theme.spacing(1)
                                 }}/>
-        )
+        );
+
         return (
 
             <DockLayout dockPanels={[

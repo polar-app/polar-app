@@ -7,7 +7,11 @@ import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
 import FlashOnIcon from '@material-ui/icons/FlashOn';
 import {memoForwardRef} from "../../../../../web/js/react/ReactUtils";
 
-export const StartReviewDropdown = memoForwardRef(() => (
+interface IProps {
+    readonly style?: React.CSSProperties;
+}
+
+export const StartReviewDropdown = memoForwardRef((props: IProps) => (
 
     <MUIMenu id="start-review-dropdown"
              button={{
@@ -18,11 +22,11 @@ export const StartReviewDropdown = memoForwardRef(() => (
                  disableFocusRipple: true,
                  icon: <RateReviewIcon/>,
                  style: {
-                     minWidth: '285px'
+                     ...props.style
                  }
              }}
              caret>
-        <div>
+        <>
 
             <MUIRouterLink
                 to={{pathname: '/annotations', hash: '#review-flashcards'}}>
@@ -34,7 +38,7 @@ export const StartReviewDropdown = memoForwardRef(() => (
                 <MUIMenuItem text="Reading" icon={<LocalLibraryIcon/>}/>
             </MUIRouterLink>
 
-        </div>
+        </>
 
     </MUIMenu>
 

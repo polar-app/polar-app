@@ -15,6 +15,8 @@ import {StartReviewSpeedDial} from './StartReviewSpeedDial';
 import {FeedbackButton2} from '../ui/FeedbackButton2';
 import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 import { AnnotationRepoTable2 } from './AnnotationRepoTable2';
+import {AddContent} from "../ui/AddContentButton";
+import useTheme from '@material-ui/core/styles/useTheme';
 
 namespace main {
 
@@ -51,60 +53,77 @@ namespace main {
         ]}/>
     );
 
-    export const Desktop = () => (
-        <DockLayout dockPanels={[
-            {
-                id: 'dock-panel-left',
-                type: 'fixed',
-                style: {
-                    overflow: 'visible',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    flexGrow: 1,
-                    minHeight: 0,
-                },
-                component: <FolderSidebar2 />,
-                width: 300
-            },
-            {
-                id: 'dock-panel-center',
-                type: 'fixed',
-                style: {
-                    overflow: 'visible',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    flexGrow: 1,
-                    minHeight: 0,
-                },
-                component:
-                    <div style={{
-                              flexGrow: 1,
-                              display: 'flex',
-                              flexDirection: 'column',
-                              minHeight: 0
-                          }}>
-                        <AnnotationRepoTable2/>
-                    </div>,
-                width: 450
-            },
-            {
-                id: 'dock-panel-right',
-                type: 'grow',
-                style: {
-                    display: 'flex'
-                },
-                component:
-                    <MUIElevation elevation={0}
-                                  style={{
-                                      flexGrow: 1,
-                                      display: 'flex'
-                                  }}>
-                        <AnnotationInlineViewer2 />
-                    </MUIElevation>
 
-            }
-        ]}/>
-    );
+    export const Desktop = () => {
+
+        const theme = useTheme();
+
+        const StartReviewHeader = () => (
+            <StartReviewDropdown style={{
+                flexGrow: 1,
+                marginTop: theme.spacing(1),
+                marginBottom: theme.spacing(1)
+            }}/>
+        );
+
+
+        return (
+            <DockLayout dockPanels={[
+                {
+                    id: 'dock-panel-left',
+                    type: 'fixed',
+                    style: {
+                        overflow: 'visible',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        flexGrow: 1,
+                        minHeight: 0,
+                    },
+                    component: (
+                        <FolderSidebar2 header={<StartReviewHeader/>}/>
+                    ),
+                    width: 300
+                },
+                {
+                    id: 'dock-panel-center',
+                    type: 'fixed',
+                    style: {
+                        overflow: 'visible',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        flexGrow: 1,
+                        minHeight: 0,
+                    },
+                    component:
+                        <div style={{
+                            flexGrow: 1,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            minHeight: 0
+                        }}>
+                            <AnnotationRepoTable2/>
+                        </div>,
+                    width: 450
+                },
+                {
+                    id: 'dock-panel-right',
+                    type: 'grow',
+                    style: {
+                        display: 'flex'
+                    },
+                    component:
+                        <MUIElevation elevation={0}
+                                      style={{
+                                          flexGrow: 1,
+                                          display: 'flex'
+                                      }}>
+                            <AnnotationInlineViewer2/>
+                        </MUIElevation>
+
+                }
+            ]}/>
+        );
+    };
 
 }
 
@@ -155,8 +174,6 @@ namespace screen {
                             display: 'flex',
                             alignItems: 'center'
                          }}>
-
-                        <StartReviewDropdown />
 
                         <div style={{
                                  flexGrow: 1,
