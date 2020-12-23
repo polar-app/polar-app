@@ -5,6 +5,7 @@ import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import {MUIMenuItem} from "../../../../web/js/mui/menu/MUIMenuItem";
 import {MUIMenu} from "../../../../web/js/mui/menu/MUIMenu";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
+import Box from '@material-ui/core/Box';
 
 interface IProps {
     readonly onCreateFolder: () => void;
@@ -16,7 +17,11 @@ export const AddTagsDropdown = deepMemo((props: IProps) => {
     return (
 
         <MUIMenu button={{
-                    icon: <AddIcon/>
+                    icon: (
+                        <Box color="text.secondary">
+                            <AddIcon/>
+                        </Box>
+                    )
                  }}
                  placement="bottom-end">
             <div>

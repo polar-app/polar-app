@@ -37,11 +37,12 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         row: {
             "& th": {
-                paddingTop: '3px',
-                paddingBottom: '3px',
+                paddingTop: theme.spacing(1),
+                paddingBottom: theme.spacing(1),
                 paddingLeft: 0,
                 paddingRight: 0,
-                backgroundColor: `${theme.palette.background.default} !important`
+                borderCollapse: 'collapse',
+                lineHeight: '1em'
             }
         }
     }),
@@ -123,14 +124,15 @@ export const DocRepoTableHead = React.memo(() => {
                     })}
 
                     <DeviceRouter.Desktop>
-                        <ColumnSelector/>
+                        <>
+                            <ColumnSelector/>
+                        </>
                     </DeviceRouter.Desktop>
 
                     <DeviceRouters.NotDesktop>
                         <TableCell style={{width: '35px'}}>
                         </TableCell>
                     </DeviceRouters.NotDesktop>
-
 
                 </TableRow>
             </TableHead>

@@ -10,6 +10,7 @@ import SyncIcon from '@material-ui/icons/Sync';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import {FADiscordIcon} from "../../../../web/js/mui/MUIFontAwesome";
 import ForumIcon from '@material-ui/icons/Forum';
+import Box from "@material-ui/core/Box";
 
 export const MoreActionsDropdown = React.memo(() => {
 
@@ -40,7 +41,11 @@ export const MoreActionsDropdown = React.memo(() => {
         <MUIMenu caret
                  placement="bottom-end"
                  button={{
-                     icon: <MoreVertIcon/>,
+                     icon: (
+                         <Box color="text.secondary">
+                             <MoreVertIcon/>
+                         </Box>
+                     ),
                      size: 'large'
                  }}>
 

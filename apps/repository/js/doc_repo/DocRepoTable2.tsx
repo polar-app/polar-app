@@ -94,6 +94,7 @@ export const DocRepoTable2 = deepMemo(() => {
                       }}>
 
             <>
+
                 <DocRepoTableToolbar />
 
                 <TableContainer ref={setRoot}
