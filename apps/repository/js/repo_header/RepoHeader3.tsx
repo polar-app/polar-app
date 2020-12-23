@@ -13,6 +13,7 @@ import {MoreActionsDropdown} from "./MoreActionsDropdown";
 import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import {ChromeExtensionInstallButton} from "../ChromeExtensionInstallButton";
 import Box from '@material-ui/core/Box';
+import {IconWithColor} from "../../../../web/js/ui/IconWithColor";
 
 export namespace RepoHeader {
 
@@ -87,9 +88,7 @@ const Desktop = () => {
         return (
             <Link to="/settings">
                 <IconButton>
-                    <Box color="text.secondary">
-                        <SettingsIcon/>
-                    </Box>
+                    <IconWithColor color="text.secondary" Component={SettingsIcon}/>
                 </IconButton>
             </Link>
         );

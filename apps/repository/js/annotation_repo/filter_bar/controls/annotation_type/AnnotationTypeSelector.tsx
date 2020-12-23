@@ -3,6 +3,7 @@ import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import NoteIcon from '@material-ui/icons/Note';
 import {MUIMenu} from "../../../../../../../web/js/mui/menu/MUIMenu";
 import {AnnotationTypeMenuItem} from "./AnnotationTypeMenuItem";
+import {IconWithColor} from "../../../../../../../web/js/ui/IconWithColor";
 
 export class AnnotationTypeSelector extends React.PureComponent<IProps, IState> {
 
@@ -46,7 +47,7 @@ export class AnnotationTypeSelector extends React.PureComponent<IProps, IState> 
                      button={{
                          text: "Annotations",
                          variant: 'outlined',
-                         icon: <NoteIcon/>,
+                         icon: <IconWithColor color="text.secondary" Component={NoteIcon}/>,
                      }}>
 
                 <div>

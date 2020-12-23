@@ -6,6 +6,7 @@ import {MUIMenuItem} from "../../../../web/js/mui/menu/MUIMenuItem";
 import {MUIMenu} from "../../../../web/js/mui/menu/MUIMenu";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import Box from '@material-ui/core/Box';
+import {IconWithColor} from "../../../../web/js/ui/IconWithColor";
 
 interface IProps {
     readonly onCreateFolder: () => void;
@@ -18,9 +19,7 @@ export const AddTagsDropdown = deepMemo((props: IProps) => {
 
         <MUIMenu button={{
                     icon: (
-                        <Box color="text.secondary">
-                            <AddIcon/>
-                        </Box>
+                        <IconWithColor color="text.secondary" Component={AddIcon}/>
                     )
                  }}
                  placement="bottom-end">

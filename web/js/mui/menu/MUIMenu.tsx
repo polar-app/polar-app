@@ -97,7 +97,9 @@ export const MUIMenu = React.memo(React.forwardRef((props: IProps, ref) => {
         disabled: props.button.disabled,
         disableRipple: props.button.disableRipple,
         disableFocusRipple: props.button.disableFocusRipple,
-        style: props.button.style
+        style: {
+            ...props.button.style,
+        }
     };
 
     const placement = props.placement || 'bottom';

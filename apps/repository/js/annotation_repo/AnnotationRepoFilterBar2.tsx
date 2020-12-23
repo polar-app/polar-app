@@ -7,16 +7,28 @@ import {
 } from "./AnnotationRepoStore";
 import {AnnotationRepoTableDropdown2} from "./AnnotationRepoTableDropdown2";
 import {TextFilter2} from "./filter_bar/TextFilter2";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import createStyles from "@material-ui/core/styles/createStyles";
+
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        root: {
+            display: 'flex',
+            color: theme.palette.text.secondary
+        },
+    }),
+);
 
 export const AnnotationRepoFilterBar2 = () => {
 
+    const classes = useStyles();
     const {filter} = useAnnotationRepoStore(['filter']);
     const callbacks = useAnnotationRepoCallbacks();
 
     const {setFilter} = callbacks;
 
     return (
-        <div style={{display: 'flex'}}>
+        <div className={classes.root}>
             <div className="mr-1 mt-auto mb-auto">
                 <AnnotationTypeSelector
                     selected={filter.annotationTypes || []}

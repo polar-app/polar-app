@@ -11,6 +11,7 @@ import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import {FADiscordIcon} from "../../../../web/js/mui/MUIFontAwesome";
 import ForumIcon from '@material-ui/icons/Forum';
 import Box from "@material-ui/core/Box";
+import {IconWithColor} from "../../../../web/js/ui/IconWithColor";
 
 export const MoreActionsDropdown = React.memo(() => {
 
@@ -42,9 +43,7 @@ export const MoreActionsDropdown = React.memo(() => {
                  placement="bottom-end"
                  button={{
                      icon: (
-                         <Box color="text.secondary">
-                             <MoreVertIcon/>
-                         </Box>
+                         <IconWithColor color="text.secondary" Component={MoreVertIcon}/>
                      ),
                      size: 'large'
                  }}>
