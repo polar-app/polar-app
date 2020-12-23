@@ -3,7 +3,7 @@ title: Polar 2.0.99 Released with Artificially Intelligent Flashcards
 date: 2020-12-16T08:00:00.000-08:00
 layout: post
 description: We just shipped AI Flashcards in Polar - powered by Open AI and GPT3. Simply highlight some text and click the button. It will take the text you selected and automatically convert it into a question and answer flashcard that you can sync to Anki or review directly in Polar.
-large_image: https://i.imgur.com/GFj8gYz.png
+large_image: https://i.imgur.com/2PWqevP.png
 ---
 
 <img class="img-fluid" src="https://i.imgur.com/GFj8gYz.png">
@@ -21,7 +21,7 @@ you can sync to Anki or review directly in Polar.
 
 Check it out in action here:
 
-<img class="img-fluid" src="https://i.imgur.com/wZxpMyg.gif">
+<img class="img-fluid" src="https://i.imgur.com/Iu1ilJ0.gifv">
 
 AI-generated flashcards will allow you to speed up and simplify creating
 flashcards directly from text highlights.
