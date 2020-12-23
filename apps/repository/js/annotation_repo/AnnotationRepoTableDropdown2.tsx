@@ -24,7 +24,6 @@ export const AnnotationRepoTableDropdown2 = deepMemo((props: IProps) => {
                      placement="bottom-end"
                      button={{
                          icon: <GetAppIcon/>,
-                         size: 'small'
                      }}>
 
                 <div>

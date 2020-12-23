@@ -15,12 +15,11 @@ import {StartReviewSpeedDial} from './StartReviewSpeedDial';
 import {FeedbackButton2} from '../ui/FeedbackButton2';
 import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 import { AnnotationRepoTable2 } from './AnnotationRepoTable2';
-import {AddContent} from "../ui/AddContentButton";
 import useTheme from '@material-ui/core/styles/useTheme';
 
-namespace main {
+namespace Phone {
 
-    export const Phone = () => (
+    export const Main = () => (
         <DockLayout dockPanels={[
             {
                 id: 'dock-panel-center',
@@ -30,7 +29,12 @@ namespace main {
         ]}/>
     );
 
-    export const Tablet = () => (
+}
+
+namespace Tablet {
+
+
+    export const Main = () => (
         <DockLayout dockPanels={[
             {
                 id: 'dock-panel-center',
@@ -54,11 +58,15 @@ namespace main {
     );
 
 
-    export const Desktop = () => {
+}
+
+namespace Desktop {
+
+    const StartReviewHeader = () => {
 
         const theme = useTheme();
 
-        const StartReviewHeader = () => (
+        return (
             <StartReviewDropdown style={{
                 flexGrow: 1,
                 marginTop: theme.spacing(1),
@@ -66,6 +74,92 @@ namespace main {
             }}/>
         );
 
+    };
+
+    const Toolbar = React.memo(() => {
+        return (
+            <MUIPaperToolbar id="header-filter"
+                             padding={1}>
+
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center'
+                }}>
+
+                    <div style={{
+                        flexGrow: 1,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'flex-end'
+                    }}>
+                        <AnnotationRepoFilterBar2/>
+                    </div>
+
+                </div>
+
+            </MUIPaperToolbar>
+        );
+    });
+
+    const Right = React.memo(() => {
+
+        return (
+            <div style={{
+                     display: 'flex',
+                     flexGrow: 1,
+                     flexDirection: 'column',
+                     minHeight: 0,
+                     minWidth: 0
+                 }}>
+
+                <Toolbar/>
+
+                <DockLayout dockPanels={[
+                    {
+                        id: 'dock-panel-center',
+                        type: 'fixed',
+                        style: {
+                            overflow: 'visible',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            flexGrow: 1,
+                            minHeight: 0,
+                        },
+                        component:
+                            <div style={{
+                                flexGrow: 1,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                minHeight: 0
+                            }}>
+                                <AnnotationRepoTable2/>
+                            </div>,
+                        width: 450
+                    },
+                    {
+                        id: 'dock-panel-right',
+                        type: 'grow',
+                        style: {
+                            display: 'flex'
+                        },
+                        component:
+                            <MUIElevation elevation={0}
+                                          style={{
+                                              flexGrow: 1,
+                                              display: 'flex'
+                                          }}>
+                                <AnnotationInlineViewer2/>
+                            </MUIElevation>
+
+                    }
+                ]}/>
+            </div>
+
+        );
+    });
+
+
+    export const Main = () => {
 
         return (
             <DockLayout dockPanels={[
@@ -85,40 +179,13 @@ namespace main {
                     width: 300
                 },
                 {
-                    id: 'dock-panel-center',
-                    type: 'fixed',
-                    style: {
-                        overflow: 'visible',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        flexGrow: 1,
-                        minHeight: 0,
-                    },
-                    component:
-                        <div style={{
-                            flexGrow: 1,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            minHeight: 0
-                        }}>
-                            <AnnotationRepoTable2/>
-                        </div>,
-                    width: 450
-                },
-                {
                     id: 'dock-panel-right',
                     type: 'grow',
                     style: {
                         display: 'flex'
                     },
                     component:
-                        <MUIElevation elevation={0}
-                                      style={{
-                                          flexGrow: 1,
-                                          display: 'flex'
-                                      }}>
-                            <AnnotationInlineViewer2/>
-                        </MUIElevation>
+                        <Right/>
 
                 }
             ]}/>
@@ -129,7 +196,7 @@ namespace main {
 
 namespace screen {
 
-    export const Handheld = () => {
+    export const HandheldScreen = () => {
 
         return (
 
@@ -148,8 +215,8 @@ namespace screen {
 
                         <StartReviewSpeedDial/>
 
-                        <DeviceRouter phone={<main.Phone />}
-                                      tablet={<main.Tablet />}/>
+                        <DeviceRouter phone={<Phone.Main />}
+                                      tablet={<Tablet.Main />}/>
 
                     </div>
                 </FixedNav.Body>
@@ -159,39 +226,17 @@ namespace screen {
         );
     };
 
-    export const Desktop = () => (
+    export const DesktopScreen = () => (
 
         <FixedNav id="doc-repository"
                   className="annotations-view">
 
             <header>
 
-                <MUIPaperToolbar id="header-filter"
-                                 padding={1}
-                                 borderBottom>
-
-                    <div style={{
-                            display: 'flex',
-                            alignItems: 'center'
-                         }}>
-
-                        <div style={{
-                                 flexGrow: 1,
-                                 display: 'flex',
-                                 alignItems: 'center',
-                                 justifyContent: 'flex-end'
-                             }}>
-                            <AnnotationRepoFilterBar2/>
-                        </div>
-
-                    </div>
-
-                </MUIPaperToolbar>
-
             </header>
 
             <AnnotationRepoRoutedComponents/>
-            <main.Desktop />
+            <Desktop.Main />
 
             <FeedbackButton2/>
 
@@ -207,8 +252,8 @@ export const AnnotationRepoScreen2 = React.memo(() => (
 
     <>
 
-        <DeviceRouter desktop={<screen.Desktop/>}
-                      handheld={<screen.Handheld/>}/>
+        <DeviceRouter desktop={<screen.DesktopScreen/>}
+                      handheld={<screen.HandheldScreen/>}/>
 
     </>
 ));

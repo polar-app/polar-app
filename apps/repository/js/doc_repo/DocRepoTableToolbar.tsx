@@ -1,5 +1,4 @@
 import React from "react";
-import Checkbox from "@material-ui/core/Checkbox";
 import Divider from "@material-ui/core/Divider";
 import {useDocRepoCallbacks, useDocRepoStore} from "./DocRepoStore2";
 import isEqual from "react-fast-compare";
@@ -12,8 +11,6 @@ import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import Paper from "@material-ui/core/Paper";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import IconButton from "@material-ui/core/IconButton";
 import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
 
 const useStyles = makeStyles((theme) =>
