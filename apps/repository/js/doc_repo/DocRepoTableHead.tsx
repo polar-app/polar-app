@@ -10,11 +10,12 @@ import {
     useDocRepoStore, useDocRepoCallbacks
 } from "./DocRepoStore2";
 import {useDocRepoColumnsPrefs} from "./DocRepoColumnsPrefsHook";
-import {DocColumnsSelectorWithPrefs} from "./DocColumnsSelectorWithPrefs";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {Devices} from "polar-shared/src/util/Devices";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {DeviceRouter, DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
+import FilterListIcon from '@material-ui/icons/FilterList';
+import { DocColumnsSelectorWithPrefs } from "./DocColumnsSelectorWithPrefs";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -65,7 +66,9 @@ const ColumnSelector = React.memo(() => {
                    }}>
             <div style={{display: 'flex', justifyContent: 'flex-end'}}>
                 <DocColumnsSelectorWithPrefs/>
+
             </div>
+            {/*<FilterListIcon/>*/}
         </TableCell>
 
     );
