@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { makeObservable, makeAutoObservable, observable, action } from "mobx"
+import { makeObservable, makeAutoObservable, observable, action, computed } from "mobx"
 import { observer } from "mobx-react-lite"
 import Button from '@material-ui/core/Button';
 
@@ -73,17 +73,25 @@ export const MobXStory = () => {
 
 class Note {
 
-    @observable public id: string;
-    @observable public text: string;
+    @observable public _id: string;
+    @observable public _text: string;
 
     constructor(id: string, text: string) {
-        this.id = id;
-        this.text = text;
+        this._id = id;
+        this._text = text;
         makeObservable(this)
     }
 
+    @computed get id() {
+        return this._id;
+    }
+
+    @computed get text() {
+        return this._text;
+    }
+
     @action setText(text: string) {
-        this.text = text;
+        this._text = text;
     }
 
 }
