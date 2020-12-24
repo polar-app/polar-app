@@ -188,12 +188,7 @@ class Note implements INote {
         this._updated = ISODateTimeStrings.create();
     }
 
-    @action addLink(id: NoteIDStr) {
-        this._links.push(id);
-        this._updated = ISODateTimeStrings.create();
-    }
-
-    @action removeLink(id: NoteIDStr) {
+    @action removeItem(id: NoteIDStr) {
 
         const idx = this.items.indexOf(id);
 
@@ -204,6 +199,26 @@ class Note implements INote {
         // this mutates the array under us and I don't necessarily like that
         // but it's a copy of the original to begin with.
         this._items.splice(idx, 1);
+        this._updated = ISODateTimeStrings.create();
+
+    }
+
+    @action addLink(id: NoteIDStr) {
+        this._links.push(id);
+        this._updated = ISODateTimeStrings.create();
+    }
+
+    @action removeLink(id: NoteIDStr) {
+
+        const idx = this._links.indexOf(id);
+
+        if (idx === -1) {
+            return;
+        }
+
+        // this mutates the array under us and I don't necessarily like that
+        // but it's a copy of the original to begin with.
+        this._links.splice(idx, 1);
         this._updated = ISODateTimeStrings.create();
 
     }
@@ -742,108 +757,103 @@ class NotesStore {
     }
 
     public doDelete(deleteRequests: ReadonlyArray<DeleteNoteRequest>) {
-        //
-        // if (deleteRequests.length === 0) {
-        //     return;
-        // }
-        //
-        // const store = storeProvider();
-        //
-        // const index = {...store.index};
-        // const indexByName = {...store.indexByName};
-        // const reverse = {...store.reverse};
-        //
-        // interface NextActive {
-        //     readonly active: NoteIDStr;
-        //     readonly activePos: NavPosition;
-        // }
-        //
-        // function computeNextActive(): NextActive | undefined {
-        //
-        //     const deleteRequest = deleteRequests[0];
-        //     const expansionTree = computeLinearItemsFromExpansionTree(deleteRequest.parent);
-        //
-        //     const currentIndex = expansionTree.indexOf(deleteRequest.id);
-        //
-        //     if (currentIndex > 0) {
-        //         const nextActive = expansionTree[currentIndex - 1];
-        //
-        //         return {
-        //             active: nextActive,
-        //             activePos: 'end'
-        //         }
-        //
-        //     } else {
-        //         return {
-        //             active: deleteRequest.parent,
-        //             activePos: 'end'
-        //         }
-        //     }
-        //
-        // }
-        //
-        // function handleDelete(deleteRequests: ReadonlyArray<DeleteNoteRequest>) {
-        //
-        //     for (const deleteRequest of deleteRequests) {
-        //
-        //         const note = index[deleteRequest.id];
-        //
-        //         if (note) {
-        //
-        //             // *** delete the id for this note from the parents items.
-        //
-        //             const parentNote = index[deleteRequest.parent];
-        //
-        //             if (! parentNote) {
-        //                 console.warn("No parent note for ID: " + deleteRequest.parent);
-        //                 return;
-        //             }
-        //
-        //             index[parentNote.id] = {
-        //                 ...parentNote,
-        //                 items: (parentNote.items || []).filter(item => item !== deleteRequest.id)
-        //             }
-        //
-        //             // *** delete the note from the index
-        //             delete index[deleteRequest.id];
-        //
-        //             // *** delete the note from name index by name.
-        //             if (note.type === 'named') {
-        //                 indexByName[note.content] = note;
-        //             }
-        //
-        //             // *** delete the reverse index for this item
-        //
-        //             const inbound = lookupReverse(deleteRequest.id)
-        //                 .filter(current => current !== note.id);
-        //
-        //             if (inbound.length === 0) {
-        //                 delete reverse[deleteRequest.id];
-        //             } else {
-        //                 reverse[deleteRequest.id] = inbound
-        //             }
-        //
-        //             // *** now delete all children too...
-        //
-        //             function toDeleteNoteRequest(id: NoteIDStr): DeleteNoteRequest {
-        //                 return {
-        //                     parent: note.id,
-        //                     id
-        //                 }
-        //             }
-        //
-        //             handleDelete((note.items || []).map(toDeleteNoteRequest));
-        //
-        //         }
-        //
-        //     }
-        //
-        // }
-        //
-        // const nextActive = computeNextActive();
-        // handleDelete(deleteRequests);
-        //
-        // setStore({...store, index, indexByName, reverse, ...nextActive});
+
+        if (deleteRequests.length === 0) {
+            return;
+        }
+
+        interface NextActive {
+            readonly active: NoteIDStr;
+            readonly activePos: NavPosition;
+        }
+
+        const computeNextActive = (): NextActive | undefined => {
+
+            const deleteRequest = deleteRequests[0];
+            const expansionTree = this.computeLinearItemsFromExpansionTree(deleteRequest.parent);
+
+            const currentIndex = expansionTree.indexOf(deleteRequest.id);
+
+            if (currentIndex > 0) {
+                const nextActive = expansionTree[currentIndex - 1];
+
+                return {
+                    active: nextActive,
+                    activePos: 'end'
+                }
+
+            } else {
+                return {
+                    active: deleteRequest.parent,
+                    activePos: 'end'
+                }
+            }
+
+        }
+
+        const handleDelete = (deleteRequests: ReadonlyArray<DeleteNoteRequest>) => {
+
+            for (const deleteRequest of deleteRequests) {
+
+                const note = this._index[deleteRequest.id];
+
+                if (note) {
+
+                    // *** delete the id for this note from the parents items.
+
+                    const parentNote = this._index[deleteRequest.parent];
+
+                    if (! parentNote) {
+                        console.warn("No parent note for ID: " + deleteRequest.parent);
+                        return;
+                    }
+
+                    parentNote.removeItem(deleteRequest.id);
+
+                    // *** delete the note from the index
+                    delete this._index[deleteRequest.id];
+
+                    // *** delete the note from name index by name.
+                    if (note.type === 'named') {
+                        delete this._indexByName[note.content];
+                    }
+
+                    // *** delete the reverse index for this item
+
+                    const inbound = this.lookupReverse(deleteRequest.id)
+                        .filter(current => current !== note.id);
+
+                    if (inbound.length === 0) {
+                        delete this._reverse[deleteRequest.id];
+                    } else {
+                        // FIXME: this should use a helper object and not FILTER the objects...
+                        this._reverse[deleteRequest.id] = inbound
+                    }
+
+                    // *** now delete all children too...
+
+                    function toDeleteNoteRequest(id: NoteIDStr): DeleteNoteRequest {
+                        return {
+                            parent: note.id,
+                            id
+                        }
+                    }
+
+                    handleDelete((note.items || []).map(toDeleteNoteRequest));
+
+                }
+
+            }
+
+        };
+
+        const nextActive = computeNextActive();
+        handleDelete(deleteRequests);
+
+        if (nextActive) {
+            this._active = nextActive.active;
+            this._activePos = nextActive.activePos;
+        }
 
     }
 
