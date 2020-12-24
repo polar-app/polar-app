@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { makeAutoObservable } from "mobx"
+import { makeObservable, makeAutoObservable, observable, action } from "mobx"
 import { observer } from "mobx-react-lite"
 import Button from '@material-ui/core/Button';
 
@@ -7,22 +7,24 @@ import Button from '@material-ui/core/Button';
 // added back in
 
 
-interface INoteProps {
-    readonly note: INote;
+// TODO: how do I create a value that is readonly externally but I can mutate internally?
+
+interface INoteViewProps {
+    readonly note: Note;
 }
 
-const Note = observer((props: INoteProps) => {
+const NoteView = observer((props: INoteViewProps) => {
     const {note} = props;
     return (
         <div>
 
-            <Button onClick={() => note.text = 'this is changed'} variant="contained">
+            <Button onClick={() => note.setText('this is changed')} variant="contained">
                 Update it
             </Button>
 
             {note.id}: {note.text}
         </div>
-    )
+    );
 });
 
 let seq = 0
@@ -34,10 +36,11 @@ const Root = observer(() => {
     const createNote = React.useCallback(() => {
 
         const id = seq++;
-        store.notes.push(makeAutoObservable({
-          id,
-          text: 'asdf: ' + id
-        }));
+
+        store.notes.push(new Note(
+          `${id}`,
+          'asdf: ' + id
+        ));
 
     }, [store.notes]);
 
@@ -52,7 +55,7 @@ const Root = observer(() => {
 
 
             notes:
-            {store.notes.map(current => <Note key={current.id} note={current}/>)}
+            {store.notes.map(current => <NoteView key={current.id} note={current}/>)}
         </div>
     );
 
@@ -68,14 +71,26 @@ export const MobXStory = () => {
 
 }
 
-interface INote {
-    readonly id: number;
-    text: string;
+class Note {
+
+    @observable public id: string;
+    @observable public text: string;
+
+    constructor(id: string, text: string) {
+        this.id = id;
+        this.text = text;
+        makeObservable(this)
+    }
+
+    @action setText(text: string) {
+        this.text = text;
+    }
+
 }
 
 class MyStore {
 
-    readonly notes: INote[] = [];
+    readonly notes: Note[] = [];
 
     constructor() {
         makeAutoObservable(this);
