@@ -1,8 +1,8 @@
 import React from "react";
 import {ActionMenuItemProvider, IActionMenuItem, NoteActionMenu} from "./NoteActionMenu";
 import { deepMemo } from "../react/ReactUtils";
-import {NoteIDStr} from "./NotesStore";
 import {useLifecycleTracer} from "../hooks/ReactHooks";
+import { NoteIDStr } from "./NotesStore2";
 
 function useItemsProvider(): ActionMenuItemProvider {
 

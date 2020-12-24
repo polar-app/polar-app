@@ -1,11 +1,11 @@
 import React from "react";
 import {IDStr} from "polar-shared/src/util/Strings";
-import {useNoteExpanded, useNotesStore, useNotesStoreCallbacks} from "./NotesStore";
 import {NoteButton} from "./NoteButton";
 import {ArrowDown} from "./ArrowDown";
 import {ArrowRight} from "./ArrowRight";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
+import { useNotesStore } from "./NotesStore2";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -24,13 +24,14 @@ export const NoteExpandToggleButton = React.memo(function NoteExpandToggleButton
     const {id} = props;
 
     const classes = useStyles();
-    const {toggleExpand} = useNotesStoreCallbacks();
 
-    const expanded = useNoteExpanded(props.id);
+    const store = useNotesStore();
+
+    const expanded = store.isExpanded(props.id);
 
     return (
         <NoteButton className={classes.root}
-                    onClick={() => toggleExpand(id)}>
+                    onClick={() => store.toggleExpand(id)}>
             <>
                 {expanded && (
                     <ArrowDown/>

@@ -1,10 +1,5 @@
 import * as React from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import {
-    NoteIDStr,
-    useNotesStoreCallbacks,
-    useNoteActivated
-} from "./NotesStore";
 import { deepMemo } from '../react/ReactUtils';
 import { useEditorStore } from './EditorStoreProvider';
 import IEventData = ckeditor5.IEventData;
@@ -14,6 +9,7 @@ import IIterable = ckeditor5.IIterable;
 import {useEditorCursorPosition} from "./editor/UseEditorCursorPosition";
 import { useNoteNavigationEnterHandler } from './NoteNavigationEnter';
 import {useLifecycleTracer} from "../hooks/ReactHooks";
+import {NoteIDStr, useNotesStore} from "./NotesStore2";
 
 interface IProps {
     readonly parent: NoteIDStr | undefined;
@@ -27,7 +23,8 @@ function useNoteActivation(id: NoteIDStr) {
 
     const editor = useEditorStore();
 
-    const noteActivated = useNoteActivated(id);
+    const store = useNotesStore();
+    const noteActivated = store.getNoteActivated(id);
 
     const hasFocusRef = React.useRef(true);
 
@@ -103,11 +100,10 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
     useLifecycleTracer('NoteNavigation', {id: props.id});
 
+    const store = useNotesStore();
     const editor = useEditorStore();
 
     useNoteActivation(props.id);
-
-    const {setActive, navPrev, navNext, doIndent, doUnIndent, noteIsEmpty, doDelete} = useNotesStoreCallbacks();
 
     const [ref, setRef] = React.useState<HTMLDivElement | null>(null);
 
@@ -148,8 +144,8 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
     }, [editor])
 
     const handleClick = React.useCallback(() => {
-        setActive(props.id);
-    }, [props.id, setActive]);
+        store.setActive(props.id);
+    }, [props.id, store]);
 
     const handleEditorSelection = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
 
@@ -191,21 +187,21 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
                 console.log("FIXME ArrowUp")
                 abortEvent();
-                navPrev('start');
+                store.navPrev('start');
                 break;
 
             case 'ArrowDown':
 
                 console.log("FIXME ArrowDown")
                 abortEvent();
-                navNext('start');
+                store.navNext('start');
                 break;
 
             case 'ArrowLeft':
 
                 if (editorCursorPosition === 'start') {
                     abortEvent();
-                    navPrev('end');
+                    store.navPrev('end');
                 }
 
                 break;
@@ -214,7 +210,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
                 if (editorCursorPosition === 'end') {
                     abortEvent();
-                    navNext('start');
+                    store.navNext('start');
                 }
 
                 break;
@@ -226,9 +222,9 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
                     abortEvent();
 
                     if (event.domEvent.shiftKey) {
-                        doUnIndent(props.id, props.parent);
+                        store.doUnIndent(props.id, props.parent);
                     } else {
-                        doIndent(props.id, props.parent);
+                        store.doIndent(props.id, props.parent);
                     }
 
                 }
@@ -249,10 +245,10 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
                 }
 
                 // TODO: only do this if there aren't any modifiers I think...
-                if (props.parent !== undefined && noteIsEmpty(props.id)) {
+                if (props.parent !== undefined && store.noteIsEmpty(props.id)) {
 
                     abortEvent();
-                    doDelete([{parent: props.parent, id: props.id}]);
+                    store.doDelete([{parent: props.parent, id: props.id}]);
 
                 }
 
@@ -263,7 +259,7 @@ export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
 
         }
 
-    }, [doDelete, doIndent, doUnIndent, getEditorCursorPosition, navNext, navPrev, noteIsEmpty, props.id, props.parent]);
+    }, [getEditorCursorPosition, props.id, props.parent, store]);
 
     React.useEffect(() => {
 

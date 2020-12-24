@@ -1,6 +1,6 @@
 import {Arrays} from "polar-shared/src/util/Arrays";
-import {NoteIDStr} from "./NotesStore";
 import {NoteTargetStr} from "./NoteLinkLoader";
+import {NoteIDStr} from "./NotesStore2";
 
 export interface INoteURL {
 

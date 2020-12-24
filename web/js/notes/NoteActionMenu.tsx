@@ -7,10 +7,10 @@ import {useRefValue, useStateRef} from "../hooks/ReactHooks";
 import { deepMemo } from "../react/ReactUtils";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import {useEditorStore} from "./EditorStoreProvider";
-import {NoteIDStr} from "./NotesStore";
 import {NoteActionSelections} from "./NoteActionSelections";
 import IEventData = ckeditor5.IEventData;
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
+import {NoteIDStr} from "./NotesStore2";
 
 export interface ICommand {
 

@@ -24,7 +24,8 @@ const notes: ReadonlyArray<INote> = [
             '103',
             '104',
             '105'
-        ]
+        ],
+        links: []
     },
     {
         id: '100',
@@ -32,6 +33,8 @@ const notes: ReadonlyArray<INote> = [
         updated: now,
         type: 'item',
         content: 'World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world\'s countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.',
+        items: [],
+        links: []
     },
     {
         id: '103',
@@ -39,6 +42,8 @@ const notes: ReadonlyArray<INote> = [
         updated: now,
         type: 'item',
         content: '[Lasted](https://www.example.com) from 1939 to 1945',
+        items: [],
+        links: []
     },
     {
         id: '104',
@@ -46,6 +51,8 @@ const notes: ReadonlyArray<INote> = [
         updated: now,
         type: 'item',
         content: 'Axis Powers: Germany, Italy, Japan',
+        items: [],
+        links: []
     },
     {
         id: '108',
@@ -53,8 +60,8 @@ const notes: ReadonlyArray<INote> = [
         updated: now,
         content: "Russia",
         type: 'named',
-        items: [
-        ]
+        items: [],
+        links: []
     },
     {
         id: '109',
@@ -64,7 +71,8 @@ const notes: ReadonlyArray<INote> = [
         type: 'named',
         items: [
             '111'
-        ]
+        ],
+        links: []
     },
     {
         id: '111',
@@ -72,8 +80,9 @@ const notes: ReadonlyArray<INote> = [
         updated: now,
         type: 'item',
         content: 'Canada is north of the United States',
+        items: [],
+        links: []
     },
-    // FIXME: make text references NODE IDs...
     {
         id: '105',
         created: now,
@@ -91,6 +100,8 @@ const notes: ReadonlyArray<INote> = [
         updated: now,
         content: 'Lead by Franklin D. Roosevelt, Winston Churchill, and Joseph Stalin ',
         type: 'item',
+        items: [],
+        links: []
     },
     {
         id: '107',
@@ -111,7 +122,8 @@ const notes: ReadonlyArray<INote> = [
         type: 'item',
         links: [
             '100'
-        ]
+        ],
+        items: []
     }
 
 ]

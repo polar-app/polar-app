@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { deepMemo } from '../react/ReactUtils';
-import {NoteIDStr, useNotesStore, useNotesStoreCallbacks} from "./NotesStore";
 import Box from '@material-ui/core/Box';
 import { UL } from './UL';
 import {NoteBulletButton} from "./NoteBulletButton";
 import {NoteEditor} from "./NoteEditor";
+import {NoteIDStr, useNotesStore } from './NotesStore2';
 
 interface IProps {
     readonly id: NoteIDStr;
@@ -38,12 +38,10 @@ const InboundNoteRef = deepMemo((props: InboundNoteRefProps) => {
 
 export const NotesInbound = deepMemo(function NotesInbound(props: IProps) {
 
-    // TODO this will cause a refresh
-    useNotesStore(['reverse', 'index']);
-    const {lookupReverse, lookup} = useNotesStoreCallbacks();
+    const store = useNotesStore();
 
-    const inboundNoteIDs = lookupReverse(props.id);
-    const inbound = lookup(inboundNoteIDs);
+    const inboundNoteIDs = store.lookupReverse(props.id);
+    const inbound = store.lookup(inboundNoteIDs);
 
     return (
         <div className="NotesInbound">

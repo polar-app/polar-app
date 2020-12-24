@@ -1,16 +1,15 @@
 import React from "react";
 import {ActionMenuItemProvider, IActionMenuItem, NoteActionMenu} from "./NoteActionMenu";
 import { deepMemo } from "../react/ReactUtils";
-import {NoteIDStr, useNotesStore, useNotesStoreCallbacks} from "./NotesStore";
-import {useRefValue} from "../hooks/ReactHooks";
+import {NoteIDStr, useNotesStore} from "./NotesStore2";
 
 function useItemsProvider(): ActionMenuItemProvider {
 
-    const {filterNotesByName} = useNotesStoreCallbacks();
+    const store = useNotesStore();
 
     return React.useCallback((prompt: string): ReadonlyArray<IActionMenuItem> => {
 
-        const filteredNoteNames = filterNotesByName(prompt);
+        const filteredNoteNames = store.filterNotesByName(prompt);
 
         return filteredNoteNames.map(key => {
             return {
@@ -24,7 +23,7 @@ function useItemsProvider(): ActionMenuItemProvider {
             }
         });
 
-    }, [filterNotesByName]);
+    }, [store]);
 
 }
 

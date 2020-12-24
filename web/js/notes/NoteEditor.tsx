@@ -1,7 +1,6 @@
 import React from "react";
 import {CKEditor5BalloonEditor} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
 import {NoteNavigation} from "./NoteNavigation";
-import {NoteIDStr, useNotesStore, useNotesStoreCallbacks, INote, useNoteFromStore, useNoteActivated} from "./NotesStore";
 import {deepMemo} from "../react/ReactUtils";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 import {EditorStoreProvider, useEditorStore, useSetEditorStore} from "./EditorStoreProvider";
@@ -13,6 +12,7 @@ import {useLifecycleTracer, useStateRef} from "../hooks/ReactHooks";
 import {MarkdownContentEscaper} from "./MarkdownContentEscaper";
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 import IEventData = ckeditor5.IEventData;
+import {NoteIDStr, useNotesStore} from "./NotesStore2";
 
 interface ILinkNavigationEvent {
     readonly abortEvent: () => void;
@@ -201,8 +201,9 @@ const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEd
 
     const {onEditor, onChange, id, immutable} = props;
 
-    const noteActivated = useNoteActivated(props.id);
-    const {setActive} = useNotesStoreCallbacks();
+    const store = useNotesStore();
+
+    const noteActivated = store.getNoteActivated(props.id);
     const [, setActivated, activatedRef] = useStateRef(false);
 
     const escaper = MarkdownContentEscaper;
@@ -219,10 +220,10 @@ const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEd
             return;
         }
 
-        setActive(id)
+        store.setActive(id)
         setActivated(true);
 
-    }, [id, immutable, setActivated, setActive]);
+    }, [id, immutable, setActivated, store]);
 
     if (noteActivated?.note.id === props.id) {
         // there are two ways to activate this is that the user navigates to it
@@ -260,14 +261,16 @@ const NoteEditorInner = deepMemo(function NoteEditorInner(props: IProps) {
     useLifecycleTracer('NoteEditorInner', {id: props.id});
 
     const {id} = props;
-    const {updateNote} = useNotesStoreCallbacks()
+    const store = useNotesStore()
     const setEditor = useSetEditorStore();
 
-    const handleChange = React.useCallback((content: string) => {
-        updateNote(props.id, content);
-    }, [props.id, updateNote]);
+    const note = store.getNote(id);
 
-    const note = useNoteFromStore(id);
+    const handleChange = React.useCallback((content: string) => {
+        if (note) {
+            note.setContent(content);
+        }
+    }, [note]);
 
     if (! note) {
         // this can happen when a note is deleted but the component hasn't yet

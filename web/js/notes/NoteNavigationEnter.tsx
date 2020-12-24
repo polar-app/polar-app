@@ -1,10 +1,10 @@
 import * as React from "react";
-import {NewNotePosition, NoteIDStr, useNotesStoreCallbacks} from "./NotesStore";
 import IEventData = ckeditor5.IEventData;
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 import {useEditorCursorPosition} from "./editor/UseEditorCursorPosition";
 import {useEditorSplitter} from "./editor/UseEditorSplitter";
 import { useEditorSetContent } from "./editor/UseEditorSetContent";
+import {NewNotePosition, NoteIDStr, useNotesStore } from "./NotesStore2";
 
 interface IOpts {
     readonly parent: NoteIDStr | undefined;
@@ -15,7 +15,8 @@ export function useNoteNavigationEnterHandler(opts: IOpts) {
 
     const {parent, id} = opts;
 
-    const {createNewNote} = useNotesStoreCallbacks();
+    const store = useNotesStore();
+
     const getEditorCursorPosition = useEditorCursorPosition();
     const editorSplitter = useEditorSplitter();
     const editorSetContent = useEditorSetContent();
@@ -52,16 +53,16 @@ export function useNoteNavigationEnterHandler(opts: IOpts) {
             if (pos === 'split') {
                 const editorSplit = editorSplitter();
                 editorSetContent(editorSplit.prefix);
-                createNewNote(parent, id, pos, editorSplit);
+                store.createNewNote(parent, id, pos, editorSplit);
                 return;
             }
 
-            createNewNote(parent, id, pos);
+            store.createNewNote(parent, id, pos);
 
         } else {
-            createNewNote(id, undefined, 'before');
+            store.createNewNote(id, undefined, 'before');
         }
 
-    }, [createNewNote, editorSetContent, editorSplitter, getEditorCursorPosition, id, parent]);
+    }, [editorSetContent, editorSplitter, getEditorCursorPosition, id, parent, store]);
 
 }

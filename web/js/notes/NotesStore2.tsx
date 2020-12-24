@@ -1,11 +1,12 @@
 import {createReactiveStore} from "../react/store/ReactiveStore";
 import { makeObservable, makeAutoObservable, observable, action, computed } from "mobx"
 import { IDStr } from "polar-shared/src/util/Strings";
-import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {NoteTargetStr} from "./NoteLinkLoader";
 import * as React from "react";
 import {isPresent} from "polar-shared/src/Preconditions";
+import { Hashcodes } from "polar-shared/src/util/Hashcodes";
 
 export type NoteIDStr = IDStr;
 export type NoteNameStr = string;
@@ -27,6 +28,11 @@ export type NoteContent = string;
  */
 export type NavPosition = 'start' | 'end';
 
+export interface INoteActivated {
+    readonly note: INote;
+    readonly activePos: NavPosition;
+}
+
 interface DoPutOpts {
 
     /**
@@ -41,6 +47,17 @@ interface DoPutOpts {
 
 }
 
+export type NewNotePosition = 'before' | 'after' | 'split';
+
+export interface ISplitNote {
+    readonly prefix: string;
+    readonly suffix: string;
+}
+
+export interface DeleteNoteRequest {
+    readonly parent: NoteIDStr;
+    readonly id: NoteIDStr;
+}
 
 export interface INote {
 
@@ -53,7 +70,7 @@ export interface INote {
     /**
      * The sub-items of this node as node IDs.
      */
-    readonly items?: ReadonlyArray<NoteIDStr>;
+    readonly items: ReadonlyArray<NoteIDStr>;
 
     // TODO
     //
@@ -65,7 +82,7 @@ export interface INote {
     /**
      * The linked wiki references to other notes.
      */
-    readonly links?: ReadonlyArray<NoteIDStr>;
+    readonly links: ReadonlyArray<NoteIDStr>;
 
     // FIXMEL this needs to be refactoed because
     // the content type of the node should/could change and we need markdown/latex/etc note types
@@ -93,7 +110,7 @@ class Note implements INote {
     /**
      * The sub-items of this node as node IDs.
      */
-    @observable private _items?: ReadonlyArray<NoteIDStr>;
+    @observable private _items: NoteIDStr[];
 
     // TODO
     //
@@ -105,7 +122,7 @@ class Note implements INote {
     /**
      * The linked wiki references to other notes.
      */
-    @observable private _links?: ReadonlyArray<NoteIDStr>;
+    @observable private _links: NoteIDStr[];
 
     // FIXMEL this needs to be refactoed because
     // the content type of the node should/could change and we need markdown/latex/etc note types
@@ -125,9 +142,9 @@ class Note implements INote {
         this._id = opts.id;
         this._created = opts.created;
         this._updated = opts.updated;
-        this._items = opts.items;
+        this._items = [...opts.items];
         this._content = opts.content;
-        this._links = opts.links;
+        this._links = [...opts.links];
         this._type = opts.type;
 
         makeObservable(this)
@@ -145,7 +162,7 @@ class Note implements INote {
         return this._updated;
     }
 
-    @computed get items() {
+    @computed get items(): ReadonlyArray<NoteIDStr> {
         return this._items;
     }
 
@@ -153,7 +170,7 @@ class Note implements INote {
         return this._content;
     }
 
-    @computed get links() {
+    @computed get links(): ReadonlyArray<NoteIDStr> {
         return this._links;
     }
 
@@ -163,6 +180,22 @@ class Note implements INote {
 
     @action setContent(content: string) {
         this._content = content;
+        this._updated = ISODateTimeStrings.create();
+    }
+
+    @action removeLink(id: NoteIDStr) {
+
+        const idx = this.items.indexOf(id);
+
+        if (idx === -1) {
+            return;
+        }
+
+        // this mutates the array under us and I don't necessarily like that
+        // but it's a copy of the original to begin with.
+        this._items.splice(idx, 1);
+        this._updated = ISODateTimeStrings.create();
+
     }
 
 }
@@ -419,6 +452,396 @@ class NotesStore {
     public isExpanded(id: NoteIDStr): boolean {
         return isPresent(this._expanded[id]);
     }
+
+    public getNoteActivated(id: NoteIDStr) {
+
+        const active = this._active;
+        const activePos = this._activePos;
+
+        if (! active) {
+            return undefined;
+        }
+
+        if (id !== active) {
+            return undefined;
+        }
+
+        const note = this._index[active] || this._indexByName[active] || undefined;
+
+        if (note) {
+            return {note, activePos};
+        } else {
+            return undefined;
+        }
+
+    }
+    public createNewNote(parent: NoteIDStr,
+                         child: NoteIDStr | undefined,
+                         pos: NewNotePosition,
+                         split?: ISplitNote) {
+        //
+        // const index = this._index;
+        //
+        // const id = Hashcodes.createRandomID();
+        //
+        // const parentNote = index[parent];
+        //
+        // if (! parentNote) {
+        //     throw new Error("No parent note");
+        // }
+        //
+        // const now = ISODateTimeStrings.create()
+        //
+        // function createNewNote(): INote {
+        //     return {
+        //         id,
+        //         type: 'item',
+        //         content: split?.suffix || '',
+        //         created: now,
+        //         updated: now,
+        //         items: [],
+        //         links: []
+        //     };
+        // }
+        //
+        // const newNote: INote = createNewNote();
+        //
+        // // FIXME
+        // function computeNewParentNote(): INote {
+        //
+        //     function computeDelta() {
+        //         switch (pos) {
+        //             case "before":
+        //                 return 0;
+        //             case "after":
+        //                 return 1;
+        //             case "split":
+        //                 return 1;
+        //         }
+        //     }
+        //
+        //     const delta = computeDelta();
+        //
+        //     const items = [...(parentNote.items || [])];
+        //
+        //     const childIndexPosition = child ? items.indexOf(child) : 0;
+        //
+        //     const newItems = [...items];
+        //
+        //     // this mutates the array under us and I don't necessarily like that
+        //     // but it's a copy of the original to begin with.
+        //     newItems.splice(childIndexPosition + delta, 0, newNote.id);
+        //
+        //     return  {
+        //         id: parentNote.id,
+        //         ...parentNote,
+        //         updated: now,
+        //         items: newItems
+        //     };
+        //
+        // }
+        //
+        // const nextParentNote = computeNewParentNote();
+        //
+        // // we might have to mutate previous note while the new note is created if it's a split.
+        // function computePrevNote(): INote | undefined {
+        //
+        //     if (child && split) {
+        //
+        //         const note = index[child];
+        //
+        //         return {
+        //             ...note,
+        //             updated: now,
+        //             content: split.prefix
+        //         };
+        //
+        //     } else {
+        //         return undefined;
+        //     }
+        //
+        // }
+        //
+        // const prevNote = computePrevNote();
+        //
+        // console.log("FIXME: prevNote: ", prevNote);
+        //
+        // const mutations = [
+        //         nextParentNote, newNote, prevNote
+        //     ]
+        // .filter(current => current !== undefined)
+        // .map(current => current!);
+        //
+        // this.doPut(mutations, {newActive: newNote.id});
+
+    }
+
+    /**
+     * Make the active note a child of the prev sibling.
+     */
+    public doIndent(id: NoteIDStr, parent: NoteIDStr) {
+        //
+        // const store = storeProvider();
+        //
+        // const {index} = store;
+        //
+        // const note = index[id];
+        //
+        // if (! note) {
+        //     console.warn("No note for id: " + id);
+        //     return;
+        // }
+        //
+        // const parentNote = index[parent];
+        //
+        // if (! parentNote) {
+        //     console.warn("No parent note for id: " + parent);
+        //     return;
+        // }
+        //
+        // const parentItems = (parentNote.items || []);
+        //
+        // // figure out the sibling index in the parent
+        // const siblingIndex = parentItems.indexOf(id);
+        //
+        // if (siblingIndex > 0) {
+        //
+        //     const newParentID = parentItems[siblingIndex - 1];
+        //
+        //     const newParentNode = index[newParentID];
+        //
+        //     // *** remove myself from my parent
+        //
+        //     const now = ISODateTimeStrings.create();
+        //
+        //     function createNewItems() {
+        //         const newItems = [...parentItems];
+        //         newItems.splice(siblingIndex, 1);
+        //         return newItems;
+        //     }
+        //
+        //     const mutatedParentNode = {
+        //         ...parentNote,
+        //         updated: now,
+        //         items: createNewItems()
+        //     }
+        //
+        //     // ***: add myself to my newParent
+        //
+        //     const mutatedNewParentNode = {
+        //         ...newParentNode,
+        //         updated: now,
+        //         items: [
+        //             ...(newParentNode.items || []),
+        //             id
+        //         ]
+        //     }
+        //
+        //     doPut([mutatedParentNode, mutatedNewParentNode], {
+        //         newActive: id,
+        //         newExpand: mutatedNewParentNode.id
+        //     });
+        //
+    }
+
+    public doUnIndent(id: NoteIDStr, parent: NoteIDStr) {
+        //
+        // const store = storeProvider();
+        //
+        // const {index, root} = store;
+        //
+        // const note = index[id];
+        //
+        // if (! note) {
+        //     console.warn("No note for id: " + id);
+        //     return;
+        // }
+        //
+        // const parentNote = index[parent];
+        //
+        // if (! parentNote) {
+        //     console.warn("No parent note for id: " + parent);
+        //     return;
+        // }
+        //
+        // if (! root) {
+        //     console.warn("No root note");
+        //     return;
+        // }
+        //
+        // const expansionTree = computeLinearItemsFromExpansionTree(root);
+        //
+        // const parentIndexWithinExpansionTree = expansionTree.indexOf(parent);
+        //
+        // const newParentID = expansionTree[parentIndexWithinExpansionTree + 1];
+        //
+        // const newParentNode = index[newParentID];
+        //
+        // // *** remove myself from my current parent
+        //
+        // const now = ISODateTimeStrings.create();
+        //
+        // function createMutatedParentNode() {
+        //
+        //     function createNewItems() {
+        //         return (parentNote.items || []).filter(current => current !== id)
+        //     }
+        //
+        //     return {
+        //         ...parentNote,
+        //         updated: now,
+        //         items: createNewItems()
+        //     }
+        //
+        // }
+        //
+        // const mutatedParentNode = createMutatedParentNode();
+        //
+        // function createMutatedNewParentNode() {
+        //
+        //     const newParentItems = (newParentNode.items || []);
+        //
+        //     function createNewItems() {
+        //         const newItems = [...newParentItems];
+        //         newItems.splice(newParentItems.indexOf(parent), 0, id)
+        //         return newItems;
+        //     }
+        //
+        //     return {
+        //         ...newParentNode,
+        //         updated: now,
+        //         items: createNewItems()
+        //     };
+        //
+        // }
+        //
+        // const mutatedNewParentNode = createMutatedNewParentNode();
+        //
+        // doPut([mutatedParentNode, mutatedNewParentNode], {
+        //     newActive: id,
+        //     newExpand: mutatedNewParentNode.id
+        // });
+
+    }
+
+    public noteIsEmpty(id: NoteIDStr) {
+
+        //
+        // const store = storeProvider();
+        // const index = {...store.index};
+        //
+        // const note = index[id];
+        //
+        // return note?.content.trim() === '';
+
+    }
+
+    public doDelete(deleteRequests: ReadonlyArray<DeleteNoteRequest>) {
+        //
+        // if (deleteRequests.length === 0) {
+        //     return;
+        // }
+        //
+        // const store = storeProvider();
+        //
+        // const index = {...store.index};
+        // const indexByName = {...store.indexByName};
+        // const reverse = {...store.reverse};
+        //
+        // interface NextActive {
+        //     readonly active: NoteIDStr;
+        //     readonly activePos: NavPosition;
+        // }
+        //
+        // function computeNextActive(): NextActive | undefined {
+        //
+        //     const deleteRequest = deleteRequests[0];
+        //     const expansionTree = computeLinearItemsFromExpansionTree(deleteRequest.parent);
+        //
+        //     const currentIndex = expansionTree.indexOf(deleteRequest.id);
+        //
+        //     if (currentIndex > 0) {
+        //         const nextActive = expansionTree[currentIndex - 1];
+        //
+        //         return {
+        //             active: nextActive,
+        //             activePos: 'end'
+        //         }
+        //
+        //     } else {
+        //         return {
+        //             active: deleteRequest.parent,
+        //             activePos: 'end'
+        //         }
+        //     }
+        //
+        // }
+        //
+        // function handleDelete(deleteRequests: ReadonlyArray<DeleteNoteRequest>) {
+        //
+        //     for (const deleteRequest of deleteRequests) {
+        //
+        //         const note = index[deleteRequest.id];
+        //
+        //         if (note) {
+        //
+        //             // *** delete the id for this note from the parents items.
+        //
+        //             const parentNote = index[deleteRequest.parent];
+        //
+        //             if (! parentNote) {
+        //                 console.warn("No parent note for ID: " + deleteRequest.parent);
+        //                 return;
+        //             }
+        //
+        //             index[parentNote.id] = {
+        //                 ...parentNote,
+        //                 items: (parentNote.items || []).filter(item => item !== deleteRequest.id)
+        //             }
+        //
+        //             // *** delete the note from the index
+        //             delete index[deleteRequest.id];
+        //
+        //             // *** delete the note from name index by name.
+        //             if (note.type === 'named') {
+        //                 indexByName[note.content] = note;
+        //             }
+        //
+        //             // *** delete the reverse index for this item
+        //
+        //             const inbound = lookupReverse(deleteRequest.id)
+        //                 .filter(current => current !== note.id);
+        //
+        //             if (inbound.length === 0) {
+        //                 delete reverse[deleteRequest.id];
+        //             } else {
+        //                 reverse[deleteRequest.id] = inbound
+        //             }
+        //
+        //             // *** now delete all children too...
+        //
+        //             function toDeleteNoteRequest(id: NoteIDStr): DeleteNoteRequest {
+        //                 return {
+        //                     parent: note.id,
+        //                     id
+        //                 }
+        //             }
+        //
+        //             handleDelete((note.items || []).map(toDeleteNoteRequest));
+        //
+        //         }
+        //
+        //     }
+        //
+        // }
+        //
+        // const nextActive = computeNextActive();
+        // handleDelete(deleteRequests);
+        //
+        // setStore({...store, index, indexByName, reverse, ...nextActive});
+
+    }
+
 
 }
 
