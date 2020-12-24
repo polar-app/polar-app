@@ -24,11 +24,10 @@ export class FirestoreAnalytics implements IAnalytics {
     }
 
     public identify(userId: string): void {
-        // noop
     }
 
     public page(event: IPageEvent): void {
-        // noop
+        this.event2('pageView', event);
     }
 
     public traits(traits: TraitsMap): void {
