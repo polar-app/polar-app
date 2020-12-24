@@ -14,11 +14,16 @@ describe('NotesStore2', function() {
         TestingTime.unfreeze();
     });
 
-    it("basic", async function() {
-
+    function createStore() {
         const notes = MockNotes.create();
         const store = new NotesStore();
         store.doPut(notes);
+        return store;
+    }
+
+    it("basic", async function() {
+
+        const store = createStore();
 
         assertJSON(Object.keys(store.index), [
             "100",
@@ -50,6 +55,46 @@ describe('NotesStore2', function() {
             "_type": "item",
             "_updated": "2012-03-02T11:38:49.321Z",
         });
+
+    });
+
+    it("setContent", () => {
+        const store = createStore();
+
+        const note = store.getNote('102')
+
+        assertJSON(note, {
+            "_content": "World War II",
+            "_created": "2012-03-02T11:38:49.321Z",
+            "_id": "102",
+            "_items": [
+                "103",
+                "104",
+                "105"
+            ],
+            "_links": [],
+            "_type": "named",
+            "_updated": "2012-03-02T11:38:49.321Z"
+        });
+
+        TestingTime.forward(1000);
+
+        note!.setContent("hello")
+
+        assertJSON(note, {
+            "_content": "hello",
+            "_created": "2012-03-02T11:38:49.321Z",
+            "_id": "102",
+            "_items": [
+                "103",
+                "104",
+                "105"
+            ],
+            "_links": [],
+            "_type": "named",
+            "_updated": "2012-03-02T11:38:50.321Z"
+        });
+
 
     });
 
