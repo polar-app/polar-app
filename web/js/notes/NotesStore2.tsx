@@ -734,15 +734,10 @@ class NotesStore {
 
     }
 
-    public noteIsEmpty(id: NoteIDStr) {
+    public noteIsEmpty(id: NoteIDStr): boolean {
 
-        //
-        // const store = storeProvider();
-        // const index = {...store.index};
-        //
-        // const note = index[id];
-        //
-        // return note?.content.trim() === '';
+        const note = this._index[id];
+        return note?.content.trim() === '';
 
     }
 
