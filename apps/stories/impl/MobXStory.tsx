@@ -37,12 +37,12 @@ const Root = observer(() => {
 
         const id = seq++;
 
-        store.notes.push(new Note(
+        store.addNote(new Note(
           `${id}`,
           'asdf: ' + id
         ));
 
-    }, [store.notes]);
+    }, [store]);
 
     return (
         <div>
@@ -90,10 +90,14 @@ class Note {
 
 class MyStore {
 
-    readonly notes: Note[] = [];
+    @observable readonly notes: Note[] = [];
 
     constructor() {
         makeAutoObservable(this);
+    }
+
+    @action addNote(note: Note) {
+        this.notes.push(note);
     }
 
 }
