@@ -99,7 +99,7 @@ export interface INote {
 
 }
 
-class Note implements INote {
+export class Note implements INote {
 
     @observable private _id: string;
 
@@ -227,7 +227,7 @@ class Note implements INote {
 
 // FIXME can I use an observer as a hook?
 
-class NotesStore {
+export class NotesStore {
 
     @observable private _index: NotesIndex = {};
 
