@@ -83,7 +83,6 @@ function useNoteActivation(id: NoteIDStr) {
                 }
 
             } else {
-                console.log("FIXME: no longer active!");
                 // we are no longer active.
                 hasFocusRef.current = false;
             }

@@ -156,7 +156,7 @@ interface INoteEditorInactiveProps {
 
 const NoteEditorInactive = observer(function NoteEditorInactive(props: INoteEditorInactiveProps) {
 
-    useLifecycleTracer('NoteEditorInactive');
+    useLifecycleTracer('NoteEditorInactive', {id: props.id});
 
     const {content, onClick} = props;
 
@@ -237,7 +237,8 @@ const NoteEditorActivator = observer(function NoteEditorActivator(props: INoteEd
     if (activatedRef.current && ! immutable) {
 
         return (
-            <CKEditor5BalloonEditor content={content}
+            <CKEditor5BalloonEditor key={props.id}
+                                    content={content}
                                     preEscaped={true}
                                     escaper={escaper}
                                     onChange={onChange}
@@ -293,7 +294,7 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
 const NoteEditorWithEditorStore = observer(function NoteEditorWithEditorStore(props: IProps) {
 
-    useLifecycleTracer('NoteEditorWithEditorStore');
+    useLifecycleTracer('NoteEditorWithEditorStore', {id: props.id});
 
     useLinkNavigation();
 
@@ -325,9 +326,9 @@ interface IProps {
 
 }
 
-export const NoteEditor = deepMemo(function NoteEditor(props: IProps) {
+export const NoteEditor = observer(function NoteEditor(props: IProps) {
 
-    useLifecycleTracer('NoteEditor');
+    useLifecycleTracer('NoteEditor', {id: props.id});
 
     return (
         <EditorStoreProvider initialValue={undefined}>
