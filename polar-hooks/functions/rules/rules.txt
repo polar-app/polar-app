@@ -180,6 +180,11 @@ service cloud.firestore {
         
     }
         
+    match /event/{document=**} {
+        allow write;
+        
+    }
+        
     match /group/{document=**} {
         
         // allow reads on resources that aren't present.  This is critical because if
