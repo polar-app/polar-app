@@ -41,6 +41,7 @@ export const NoteInner = deepMemo(function NoteInner(props: IProps) {
     const root = store.root;
 
     if (! note) {
+        console.log("FIX<E no note for id: " + id);
         return null;
     }
 
