@@ -46,7 +46,7 @@ export const NoteRoot = deepMemo(function NoteRoot(props: IProps) {
                 <NoteStyle>
                     <MUIBrowserLinkStyle style={{flexGrow: 1}}>
 
-                        {/*<Note parent={undefined} id={id} isExpanded={true}/>*/}
+                        <Note parent={undefined} id={id} isExpanded={true}/>
 
                         {/*<NotesInbound id={id}/>*/}
 

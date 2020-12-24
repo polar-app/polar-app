@@ -1,13 +1,5 @@
 import React from "react";
 import {NoteEditor} from "./NoteEditor";
-import {
-    NoteIDStr,
-    useNotesStoreCallbacks,
-    useNotesStore,
-    useNoteFromStore,
-    StringSetMap,
-    useNoteExpanded
-} from "./NotesStore";
 import {NoteItems} from "./NoteItems";
 import {deepMemo} from "../react/ReactUtils";
 import {NoteBulletButton} from "./NoteBulletButton";
@@ -18,6 +10,7 @@ import {IDocViewerContextMenuOrigin} from "../../../apps/doc/src/DocViewerMenu";
 import {NoteContextMenuItems} from "./NoteContextMenuItems";
 import useTheme from "@material-ui/core/styles/useTheme";
 import { NoteExpandToggleButton } from "./NoteExpandToggleButton";
+import { NoteIDStr, useNotesStore } from "./NotesStore2";
 
 interface IProps {
     readonly parent: NoteIDStr | undefined;
@@ -38,19 +31,20 @@ export const NoteInner = deepMemo(function NoteInner(props: IProps) {
 
     const {id} = props;
 
-    const {root} = useNotesStore(['root']);
-    const {lookup} = useNotesStoreCallbacks();
-    const expanded = useNoteExpanded(props.id);
+    const store = useNotesStore();
     const theme = useTheme();
     const contextMenuHandlers = useNoteContextMenu();
 
-    const note = useNoteFromStore(id);
+    const expanded = store.isExpanded(props.id);
+    const note = store.getNote(id);
+
+    const root = store.root;
 
     if (! note) {
         return null;
     }
 
-    const items = lookup(note.items || []);
+    const items = store.lookup(note.items || []);
 
     const hasItems = items.length > 0;
 

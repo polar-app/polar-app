@@ -5,6 +5,7 @@ import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {NoteTargetStr} from "./NoteLinkLoader";
 import * as React from "react";
+import {isPresent} from "polar-shared/src/Preconditions";
 
 export type NoteIDStr = IDStr;
 export type NoteNameStr = string;
@@ -223,6 +224,10 @@ class NotesStore {
         return this._reverse;
     }
 
+    @computed get root() {
+        return this._root;
+    }
+
     @computed get active() {
         return this._active;
     }
@@ -272,7 +277,6 @@ class NotesStore {
         }
 
     }
-
 
     public getNote(id: NoteIDStr): Note | undefined {
         return this._index[id] || undefined;
@@ -411,6 +415,11 @@ class NotesStore {
     public setRoot(root: NoteIDStr | undefined) {
         this._root = root;
     }
+
+    public isExpanded(id: NoteIDStr): boolean {
+        return isPresent(this._expanded[id]);
+    }
+
 }
 
 export const [NotesStoreProvider, useNotesStore] = createReactiveStore(() => new NotesStore())
