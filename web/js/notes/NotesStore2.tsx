@@ -1,9 +1,10 @@
 import {createReactiveStore} from "../react/store/ReactiveStore";
 import { makeObservable, makeAutoObservable, observable, action, computed } from "mobx"
-import {INote, NavPosition, NoteContent} from "./NotesStore";
 import { IDStr } from "polar-shared/src/util/Strings";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {NoteTargetStr} from "./NoteLinkLoader";
+import * as React from "react";
 
 export type NoteIDStr = IDStr;
 export type NoteNameStr = string;
@@ -16,6 +17,14 @@ export type NotesIndexByName = {[name: string /* NoteNameStr */]: Note};
 export type ReverseNotesIndex = {[id: string /* NoteIDStr */]: NoteIDStr[]};
 
 export type StringSetMap = {[key: string]: boolean};
+
+// export type NoteContent = string | ITypedContent<'markdown'> | ITypedContent<'name'>;
+export type NoteContent = string;
+
+/**
+ * The position to place the cursor when jumping between items.
+ */
+export type NavPosition = 'start' | 'end';
 
 interface DoPutOpts {
 
@@ -31,7 +40,48 @@ interface DoPutOpts {
 
 }
 
-class Note {
+
+export interface INote {
+
+    readonly id: NoteIDStr;
+
+    readonly created: ISODateTimeString;
+
+    readonly updated: ISODateTimeString;
+
+    /**
+     * The sub-items of this node as node IDs.
+     */
+    readonly items?: ReadonlyArray<NoteIDStr>;
+
+    // TODO
+    //
+    // We might want to have a content object with a type so that we can
+    // have 'name' or 'markdown' as the type... but we could also support
+    // latex with this.
+    readonly content: NoteContent;
+
+    /**
+     * The linked wiki references to other notes.
+     */
+    readonly links?: ReadonlyArray<NoteIDStr>;
+
+    // FIXMEL this needs to be refactoed because
+    // the content type of the node should/could change and we need markdown/latex/etc note types
+    // but also we need the ability to do block embeds an so forth and those are a specic note type.
+    // FIXME: maybe content would be a reference to another type..
+
+    /**
+     * There are two types of notes.  One is just an 'item' where the 'content'
+     * is the body of the item and isn't actually a unique name and then there
+     * is a 'named' note where the content is actually the name of the note and
+     * has constrained semantics (can't have a link, image, etc.
+     */
+    readonly type: 'item' | 'named';
+
+}
+
+class Note implements INote {
 
     @observable private _id: string;
 
@@ -69,21 +119,15 @@ class Note {
      */
     @observable private _type: NoteType;
 
-    constructor(id: string,
-                created: ISODateTimeString,
-                updated: ISODateTimeString,
-                items: ReadonlyArray<NoteIDStr>,
-                content: string,
-                links: ReadonlyArray<NoteIDStr>,
-                type: NoteType) {
+    constructor(opts: INote) {
 
-        this._id = id;
-        this._created = created;
-        this._updated = updated;
-        this._items = items;
-        this._content = content;
-        this._links = links;
-        this._type = type;
+        this._id = opts.id;
+        this._created = opts.created;
+        this._updated = opts.updated;
+        this._items = opts.items;
+        this._content = opts.content;
+        this._links = opts.links;
+        this._type = opts.type;
 
         makeObservable(this)
     }
@@ -163,9 +207,24 @@ class NotesStore {
      */
     @observable private _selected: StringSetMap = {};
 
-
     constructor() {
         makeAutoObservable(this);
+    }
+
+    @computed get index() {
+        return this._index;
+    }
+
+    @computed get indexByName() {
+        return this._indexByName;
+    }
+
+    @computed get reverse() {
+        return this._reverse;
+    }
+
+    @computed get active() {
+        return this._active;
     }
 
     public lookup(notes: ReadonlyArray<NoteIDStr>): ReadonlyArray<INote> {
@@ -180,26 +239,27 @@ class NotesStore {
     }
 
 
-    public doPut(notes: ReadonlyArray<Note>, opts: DoPutOpts = {}) {
+    public doPut(notes: ReadonlyArray<INote>, opts: DoPutOpts = {}) {
 
-        for (const note of notes) {
+        for (const inote of notes) {
 
-            this._index[note.id] = note;
+            const note = new Note(inote);
+            this._index[inote.id] = note;
 
-            if (note.type === 'named') {
-                this._indexByName[note.content] = note;
+            if (inote.type === 'named') {
+                this._indexByName[inote.content] = note;
             }
 
             const outboundNodeIDs = [
-                ...(note.items || []),
-                ...(note.links || []),
+                ...(inote.items || []),
+                ...(inote.links || []),
             ]
 
             for (const outboundNodeID of outboundNodeIDs) {
                 const inbound = this.lookupReverse(outboundNodeID);
 
-                if (! inbound.includes(note.id)) {
-                    this._reverse[outboundNodeID] = [...inbound, note.id];
+                if (! inbound.includes(inote.id)) {
+                    this._reverse[outboundNodeID] = [...inbound, inote.id];
                 }
             }
 
@@ -216,6 +276,10 @@ class NotesStore {
 
     public getNote(id: NoteIDStr): Note | undefined {
         return this._index[id] || undefined;
+    }
+
+    public getNoteByTarget(target: NoteIDStr | NoteTargetStr): Note | undefined {
+        return this._index[target] || this._indexByName[target] || undefined
     }
 
     public getActiveNote(id: NoteIDStr): Note | undefined {
@@ -319,7 +383,8 @@ class NotesStore {
             return [];
         }
 
-        const isExpanded = root === true ? true : this._expanded[id];
+
+        const isExpanded = root ? true : this._expanded[id];
 
         if (isExpanded) {
             const items = (note.items || []);
@@ -339,6 +404,13 @@ class NotesStore {
 
     }
 
+    public setActive(active: NoteIDStr | undefined) {
+        this._active = active;
+    }
+
+    public setRoot(root: NoteIDStr | undefined) {
+        this._root = root;
+    }
 }
 
-const [NotesStoreProvider, useNotesStore] = createReactiveStore(() => new NotesStore())
+export const [NotesStoreProvider, useNotesStore] = createReactiveStore(() => new NotesStore())

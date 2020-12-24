@@ -1,7 +1,6 @@
 import React from 'react';
 import '@ckeditor/ckeditor5-theme-lark/theme/theme.css';
 import '@ckeditor/ckeditor5-theme-lark';
-import {INote, NotesStoreProvider, useNotesStoreCallbacks, useNotesStore} from '../../../web/js/notes/NotesStore';
 import {NotesRouter} from "../../../web/js/notes/NotesRouter";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import { CKEditor5AppRoot } from './ckeditor5/CKEditor5AppRoot';
@@ -10,6 +9,7 @@ import HelpIcon from '@material-ui/icons/Help';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import {CKEditor5NotesGlobalCSS} from "../../../web/js/notes/CKEditor5NotesGlobalCSS";
+import {INote, NotesStoreProvider, useNotesStore} from '../../../web/js/notes/NotesStore2';
 
 const now = ISODateTimeStrings.create();
 
@@ -122,7 +122,7 @@ interface BasicNotesDataSetProps {
 
 const NotesStoryDebug = React.memo(() => {
 
-    const {index, reverse, active} = useNotesStore(['index', 'reverse', 'active']);
+    const {index, reverse, active} = useNotesStore();
 
     return (
         <div>
@@ -196,9 +196,9 @@ const NotesInner = () => (
 
 const BasicNotesDataSet = (props: BasicNotesDataSetProps) => {
 
-    const {doPut} = useNotesStoreCallbacks();
+    const store = useNotesStore();
 
-    React.useMemo(() => doPut(notes), [doPut]);
+    React.useMemo(() => store.doPut(notes), [store]);
 
     return props.children;
 

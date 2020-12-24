@@ -1,12 +1,12 @@
 import React from "react";
 import {deepMemo} from "../react/ReactUtils";
-import {NoteIDStr, useNoteFromStore, useNotesStore, useNotesStoreCallbacks} from "./NotesStore";
-import {isPresent} from "polar-shared/src/Preconditions";
 import {MUIBrowserLinkStyle} from "../mui/MUIBrowserLinkStyle";
 import {NotesInbound} from "./NotesInbound";
 import { Note } from "./Note";
 import { NoteStyle } from "./NoteStyle";
 import {useLifecycleTracer} from "../hooks/ReactHooks";
+import { NoteIDStr, NotesStoreProvider } from "./NotesStore2";
+import { useNotesStore } from "./NotesStore2";
 
 interface IProps {
     readonly target: NoteIDStr;
@@ -16,21 +16,21 @@ export const NoteRoot = deepMemo(function NoteRoot(props: IProps) {
 
     useLifecycleTracer('NoteRoot');
 
-    const {setRoot, setActive} = useNotesStoreCallbacks();
+    const {target} = props;
 
-    const note = useNoteFromStore(props.target);
+    const store = useNotesStore();
 
-    console.log("FIXME: rendered with note ID: ", note?.id);
+    const note = store.getNoteByTarget(target)
 
     React.useEffect(() => {
         // TODO: do this with one init() operation so it mutates the store just once.
 
         if (note) {
-            setRoot(note.id);
-            setActive(note.id);
+            store.setRoot(note.id);
+            store.setActive(note.id);
         }
 
-    }, [note, setActive, setRoot])
+    }, [note, store])
 
     if (! note) {
         return (
@@ -41,15 +41,19 @@ export const NoteRoot = deepMemo(function NoteRoot(props: IProps) {
     const id = note?.id;
 
     return (
-        <NoteStyle>
-            <MUIBrowserLinkStyle style={{flexGrow: 1}}>
+        <NotesStoreProvider>
+            <>
+                <NoteStyle>
+                    <MUIBrowserLinkStyle style={{flexGrow: 1}}>
 
-                <Note parent={undefined} id={id} isExpanded={true}/>
+                        {/*<Note parent={undefined} id={id} isExpanded={true}/>*/}
 
-                <NotesInbound id={id}/>
+                        {/*<NotesInbound id={id}/>*/}
 
-            </MUIBrowserLinkStyle>
-        </NoteStyle>
+                    </MUIBrowserLinkStyle>
+                </NoteStyle>
+            </>
+        </NotesStoreProvider>
     );
 
 });
