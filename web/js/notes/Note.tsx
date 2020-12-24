@@ -42,7 +42,6 @@ export const NoteInner = observer(function NoteInner(props: IProps) {
     const root = store.root;
 
     if (! note) {
-        console.log("FIX<E no note for id: " + id);
         return null;
     }
 
