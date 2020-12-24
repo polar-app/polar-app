@@ -1,10 +1,10 @@
+import * as React from "react";
 import {createReactiveStore} from "../react/store/ReactiveStore";
 import { makeObservable, makeAutoObservable, observable, action, computed } from "mobx"
 import { IDStr } from "polar-shared/src/util/Strings";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {NoteTargetStr} from "./NoteLinkLoader";
-import * as React from "react";
 import {isPresent} from "polar-shared/src/Preconditions";
 import { Hashcodes } from "polar-shared/src/util/Hashcodes";
 
@@ -96,6 +96,50 @@ export interface INote {
      * has constrained semantics (can't have a link, image, etc.
      */
     readonly type: 'item' | 'named';
+
+}
+
+export class ReverseIndex {
+
+    @observable private index = new Map<string, NoteIDStr[]>();
+
+    @computed get(target: NoteIDStr): ReadonlyArray<NoteIDStr> {
+        return this.index.get(target) || [];
+    }
+
+    @action add(target: NoteIDStr, inbound: NoteIDStr) {
+
+        const current = this.index.get(target);
+
+        if (current) {
+            current.push(inbound);
+        } else {
+            this.index.set(target, [inbound]);
+        }
+
+    }
+
+    @action remove(target: NoteIDStr, inbound: NoteIDStr) {
+
+        const current = this.index.get(target);
+
+        if (current) {
+
+            const idx = current.indexOf(inbound);
+
+            if (idx > -1) {
+                // this mutates the array under us and I don't necessarily like that
+                // but it's a copy of the original to begin with.
+                current.splice(idx, 1);
+            }
+
+            if (current.length === 0) {
+                this.index.delete(target);
+            }
+
+        }
+
+    }
 
 }
 
@@ -236,9 +280,7 @@ export class NotesStore {
     /**
      * The reverse index so that we can build references to this node.
      */
-    @observable private _reverse: ReverseNotesIndex = {};
-
-
+    @observable private _reverse: ReverseIndex = new ReverseIndex();
 
     /**
      * The current root note
@@ -297,10 +339,9 @@ export class NotesStore {
 
     }
 
-    public lookupReverse(id: NoteIDStr): ReadonlyArray<NoteIDStr> {
-        return this._reverse[id] || [];
+    @computed public lookupReverse(id: NoteIDStr): ReadonlyArray<NoteIDStr> {
+        return this._reverse.get(id);
     }
-
 
     public doPut(notes: ReadonlyArray<INote>, opts: DoPutOpts = {}) {
 
@@ -321,9 +362,8 @@ export class NotesStore {
             for (const outboundNodeID of outboundNodeIDs) {
                 const inbound = this.lookupReverse(outboundNodeID);
 
-                if (! inbound.includes(inote.id)) {
-                    this._reverse[outboundNodeID] = [...inbound, inote.id];
-                }
+                this._reverse.add(note.id, outboundNodeID);
+
             }
 
         }
@@ -820,14 +860,10 @@ export class NotesStore {
 
                     // *** delete the reverse index for this item
 
-                    const inbound = this.lookupReverse(deleteRequest.id)
-                        .filter(current => current !== note.id);
+                    const inboundIDs = this.reverse.get(deleteRequest.id);
 
-                    if (inbound.length === 0) {
-                        delete this._reverse[deleteRequest.id];
-                    } else {
-                        // FIXME: this should use a helper object and not FILTER the objects...
-                        this._reverse[deleteRequest.id] = inbound
+                    for (const inboundID of inboundIDs) {
+                        this.reverse.remove(deleteRequest.id, inboundID);
                     }
 
                     // *** now delete all children too...

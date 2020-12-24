@@ -13,7 +13,9 @@ export class GAAnalytics implements IAnalytics {
     }
 
     public event2(event: string, data?: any): void {
-        // noop
+        if (navigator.onLine) {
+            RendererAnalytics.event({category: 'misc', action: 'event'});
+        }
     }
 
     public page(event: IPageEvent) {

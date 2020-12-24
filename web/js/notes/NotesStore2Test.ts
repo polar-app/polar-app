@@ -1,5 +1,5 @@
 import {MockNotes} from "../../../apps/stories/impl/MockNotes";
-import {NotesStore} from "./NotesStore2";
+import {NotesStore, ReverseIndex} from "./NotesStore2";
 import {assertJSON} from "../test/Assertions";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
@@ -95,6 +95,48 @@ describe('NotesStore2', function() {
             "_updated": "2012-03-02T11:38:50.321Z"
         });
 
+    });
+
+
+    it("doDelete", () => {
+
+        const store = createStore();
+
+        assertJSON(store.lookupReverse('102'), [
+            "103",
+            "104",
+            "105"
+        ]);
+
+        // FIXME do we need a parent to delete?
+        store.doDelete(['102']);
+
+        assertJSON(store.lookupReverse('102'), []);
+
+    });
+
+
+    describe("ReverseIndex", () => {
+
+        it("basic", () => {
+
+            const index = new ReverseIndex();
+
+            assertJSON(index, {
+                "index": {}
+            });
+
+            index.add('102', '101');
+
+            assertJSON(index.get('102'), ['101']);
+
+            // assertJSON(index, ['101']);
+
+            index.remove('102', '101');
+
+            assertJSON(index.get('102'), []);
+
+        });
 
     });
 

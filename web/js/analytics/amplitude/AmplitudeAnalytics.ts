@@ -1,9 +1,6 @@
 import {IAnalytics, IEventArgs, TraitsMap, IPageEvent} from "../IAnalytics";
 import {Analytics} from "../Analytics";
-import {Platforms, PlatformStr} from "polar-shared/src/util/Platforms";
-import {Version} from "polar-shared/src/util/Version";
-import { AppRuntime, AppRuntimeID } from "polar-shared/src/util/AppRuntime";
-import {Device, Devices} from "polar-shared/src/util/Devices";
+import { StandardEventProperties } from "../StandardEventProperties";
 
 function isBrowser() {
     return typeof window !== 'undefined';
@@ -28,37 +25,11 @@ function createAmplitude(): any {
 
 }
 
-interface StandardEventProperties {
-
-    readonly platform: PlatformStr;
-    readonly runtime: AppRuntimeID;
-    readonly device: Device;
-
-    readonly version_major: string;
-    readonly version_minor: string;
-    readonly version: string;
-
-    readonly hostname: string;
-
-}
-
-function createStandardEventsProperties(): StandardEventProperties {
-
-    const platform = Platforms.toSymbol(Platforms.get());
-    const version = Version.tokenized();
-    const runtime = AppRuntime.get();
-    const device = Devices.get();
-
-    const hostname = typeof document !== 'undefined' ? document.location.hostname : '';
-
-    return {platform, ...version, runtime, device, hostname};
-
-}
 
 // TODO session variables...
 
 const amplitude = createAmplitude();
-const standardEventProperties = createStandardEventsProperties();
+const standardEventProperties = StandardEventProperties.create();
 
 export class AmplitudeAnalytics implements IAnalytics {
 

@@ -1,3 +1,12 @@
+# New MobX store notes
+
+    - The inbound links needs to have the full path to the note
+    - It's better to think of this as multiple trees, but with links between them via:
+        - block embeds
+        - named nodes 
+        - tags (just a form of node named node)
+        - 
+    - nodes MUST have a single parent or else they are roots... 
 
 # Key Actions and Behavior that need to be tested
 
