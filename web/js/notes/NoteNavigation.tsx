@@ -65,8 +65,6 @@ function useNoteActivation(id: NoteIDStr) {
 
                 if (! hasFocusRef.current) {
 
-                    console.log("FIXME: focusing in editor: " + id);
-
                     editorFocus();
 
                     switch (noteActivated.activePos) {
@@ -184,14 +182,12 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
 
             case 'ArrowUp':
 
-                console.log("FIXME ArrowUp")
                 abortEvent();
                 store.navPrev('start');
                 break;
 
             case 'ArrowDown':
 
-                console.log("FIXME ArrowDown")
                 abortEvent();
                 store.navNext('start');
                 break;

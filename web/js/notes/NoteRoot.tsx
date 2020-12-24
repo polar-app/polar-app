@@ -22,8 +22,6 @@ export const NoteRoot = observer(function NoteRoot(props: IProps) {
 
     const note = store.getNoteByTarget(target)
 
-    console.log("FIXME: rendering with note: ", note?.id);
-
     React.useEffect(() => {
         // TODO: do this with one init() operation so it mutates the store just once.
 
