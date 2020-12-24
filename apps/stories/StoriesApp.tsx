@@ -45,6 +45,7 @@ import {FontAwesomeIconStory} from "./impl/FontAwesomeIconStory";
 import {CKEditor5Story2} from "./impl/CKEditor5Story2";
 import { ProfileStory } from './impl/ProfileStory';
 import { AccountVerificationStory } from './impl/AccountVerificationStory';
+import {MobXStory} from "./impl/MobXStory";
 
 interface IStory {
     readonly name: string;
@@ -75,6 +76,10 @@ const stories = createStoryIndex([
     {
         name: 'Account Verification',
         component: <AccountVerificationStory/>
+    },
+    {
+        name: 'MobX',
+        component: <MobXStory/>
     },
     {
         name: 'FontAwesomeIconStory',
