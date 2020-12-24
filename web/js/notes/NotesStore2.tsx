@@ -1,18 +1,35 @@
 import {createReactiveStore} from "../react/store/ReactiveStore";
 import { makeObservable, makeAutoObservable, observable, action, computed } from "mobx"
-import {NavPosition, NoteContent, StringSetMap} from "./NotesStore";
+import {INote, NavPosition, NoteContent} from "./NotesStore";
 import { IDStr } from "polar-shared/src/util/Strings";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 export type NoteIDStr = IDStr;
 export type NoteNameStr = string;
 
 export type NoteType = 'item' | 'named';
 
-export type NotesIndex = Readonly<{[id: string /* NoteIDStr */]: Note}>;
-export type NotesIndexByName = Readonly<{[name: string /* NoteNameStr */]: Note}>;
+export type NotesIndex = {[id: string /* NoteIDStr */]: Note};
+export type NotesIndexByName = {[name: string /* NoteNameStr */]: Note};
 
-export type ReverseNotesIndex = Readonly<{[id: string /* NoteIDStr */]: ReadonlyArray<NoteIDStr>}>;
+export type ReverseNotesIndex = {[id: string /* NoteIDStr */]: NoteIDStr[]};
+
+export type StringSetMap = {[key: string]: boolean};
+
+interface DoPutOpts {
+
+    /**
+     * The new active node after the put operation.
+     */
+    readonly newActive?: NoteIDStr;
+
+    /**
+     * Expand the give parent note.
+     */
+    readonly newExpand?: NoteIDStr;
+
+}
 
 class Note {
 
@@ -151,6 +168,52 @@ class NotesStore {
         makeAutoObservable(this);
     }
 
+    public lookup(notes: ReadonlyArray<NoteIDStr>): ReadonlyArray<INote> {
+
+        return notes.map(current => this._index[current])
+            .filter(current => current !== null && current !== undefined);
+
+    }
+
+    public lookupReverse(id: NoteIDStr): ReadonlyArray<NoteIDStr> {
+        return this._reverse[id] || [];
+    }
+
+
+    public doPut(notes: ReadonlyArray<Note>, opts: DoPutOpts = {}) {
+
+        for (const note of notes) {
+
+            this._index[note.id] = note;
+
+            if (note.type === 'named') {
+                this._indexByName[note.content] = note;
+            }
+
+            const outboundNodeIDs = [
+                ...(note.items || []),
+                ...(note.links || []),
+            ]
+
+            for (const outboundNodeID of outboundNodeIDs) {
+                const inbound = this.lookupReverse(outboundNodeID);
+
+                if (! inbound.includes(note.id)) {
+                    this._reverse[outboundNodeID] = [...inbound, note.id];
+                }
+            }
+
+        }
+
+        this._active = opts.newActive ? opts.newActive : this._active;
+
+        if (opts.newExpand) {
+            this._expanded[opts.newExpand] = true;
+        }
+
+    }
+
+
     public getNote(id: NoteIDStr): Note | undefined {
         return this._index[id] || undefined;
     }
@@ -166,10 +229,115 @@ class NotesStore {
         return this._index[id] || undefined;
     }
 
-    //
-    // @action addNote(note: Note) {
-    //     this.notes.push(note);
-    // }
+    public filterNotesByName(filter: string): ReadonlyArray<NoteNameStr> {
+
+        filter = filter.toLowerCase();
+
+        return Object.keys(this._indexByName)
+            .filter(key => key.toLowerCase().indexOf(filter) !== -1);
+
+    }
+
+
+    @action public expand(id: NoteIDStr) {
+        this._expanded[id] = true;
+    }
+
+    @action  public collapse(id: NoteIDStr) {
+        delete this._expanded[id];
+    }
+
+
+    @action public doNav(delta: 'prev' | 'next', pos: NavPosition) {
+
+        if (this._root === undefined) {
+            console.warn("No currently active root");
+            return;
+        }
+
+        if (this._active === undefined) {
+            console.warn("No currently active node");
+            return;
+        }
+
+        const rootNote = Arrays.first(this.lookup([this._root]));
+
+        if (! rootNote) {
+            console.warn("No note in index for ID: ", this._root);
+            return;
+        }
+
+        const items = [
+            this._root,
+            ...this.computeLinearItemsFromExpansionTree(this._root)
+        ];
+
+        const childIndex = items.indexOf(this._active);
+
+        if (childIndex === -1) {
+            console.warn(`Child ${this._active} not in note items`);
+            return;
+        }
+
+        const deltaIndex = delta === 'prev' ? -1 : 1;
+
+        const activeIndexWithoutBound = childIndex + deltaIndex;
+        const activeIndex = Math.min(Math.max(0, activeIndexWithoutBound), items.length -1);
+
+        const newActive = items[activeIndex];
+
+        this._active = newActive;
+        this._activePos = pos;
+
+    }
+
+    public navPrev(pos: NavPosition) {
+        this.doNav('prev', pos);
+    }
+
+    public navNext(pos: NavPosition) {
+        this.doNav('next', pos);
+    }
+
+    public toggleExpand(id: NoteIDStr) {
+
+        if (this._expanded[id]) {
+            this.collapse(id);
+        } else {
+            this.expand(id);
+        }
+
+    }
+
+    private computeLinearItemsFromExpansionTree(id: NoteIDStr,
+                                                root: boolean = true): ReadonlyArray<NoteIDStr> {
+
+        const note = this._index[id];
+
+        if (! note) {
+            console.warn("No note: ", id);
+            return [];
+        }
+
+        const isExpanded = root === true ? true : this._expanded[id];
+
+        if (isExpanded) {
+            const items = (note.items || []);
+
+            const result = [];
+
+            for (const item of items) {
+                result.push(item);
+                result.push(...this.computeLinearItemsFromExpansionTree(item, false));
+            }
+
+            return result;
+
+        } else {
+            return [];
+        }
+
+    }
 
 }
 
