@@ -11,6 +11,7 @@ import {NoteContextMenuItems} from "./NoteContextMenuItems";
 import useTheme from "@material-ui/core/styles/useTheme";
 import { NoteExpandToggleButton } from "./NoteExpandToggleButton";
 import { NoteIDStr, useNotesStore } from "./NotesStore2";
+import { observer } from "mobx-react-lite"
 
 interface IProps {
     readonly parent: NoteIDStr | undefined;
@@ -25,7 +26,7 @@ export interface INoteContextMenuOrigin {
 export const [NoteContextMenu, useNoteContextMenu]
     = createContextMenu<IDocViewerContextMenuOrigin>(NoteContextMenuItems);
 
-export const NoteInner = deepMemo(function NoteInner(props: IProps) {
+export const NoteInner = observer(function NoteInner(props: IProps) {
 
     useLifecycleTracer('NoteInner', {id: props.id});
 
@@ -91,7 +92,7 @@ export const NoteInner = deepMemo(function NoteInner(props: IProps) {
 
 
 
-export const Note = deepMemo(function Note(props: IProps) {
+export const Note = observer(function Note(props: IProps) {
 
     useLifecycleTracer('Note');
 

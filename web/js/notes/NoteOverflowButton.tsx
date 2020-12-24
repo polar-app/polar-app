@@ -6,6 +6,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import clsx from "clsx";
 import {useNoteContextMenu} from "./Note";
 import { NoteIDStr, useNotesStore } from "./NotesStore2";
+import { observer } from "mobx-react-lite"
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -21,7 +22,7 @@ interface IProps {
     readonly id: NoteIDStr;
 }
 
-export const NoteOverflowButton = deepMemo(function NoteOverflow(props: IProps) {
+export const NoteOverflowButton = observer(function NoteOverflow(props: IProps) {
 
     const store = useNotesStore();
     const classes = useStyles();

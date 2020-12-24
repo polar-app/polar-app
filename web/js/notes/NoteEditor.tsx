@@ -13,6 +13,7 @@ import {MarkdownContentEscaper} from "./MarkdownContentEscaper";
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 import IEventData = ckeditor5.IEventData;
 import {NoteIDStr, useNotesStore} from "./NotesStore2";
+import { observer } from "mobx-react-lite"
 
 interface ILinkNavigationEvent {
     readonly abortEvent: () => void;
@@ -153,7 +154,7 @@ interface INoteEditorInactiveProps {
 }
 
 
-const NoteEditorInactive = React.memo(function NoteEditorInactive(props: INoteEditorInactiveProps) {
+const NoteEditorInactive = observer(function NoteEditorInactive(props: INoteEditorInactiveProps) {
 
     useLifecycleTracer('NoteEditorInactive');
 
@@ -195,7 +196,7 @@ interface INoteEditorActivatorProps {
  *
  * Once it's on keep it on as there's a performance benefit too.
  */
-const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEditorActivatorProps) {
+const NoteEditorActivator = observer(function NoteEditorActivator(props: INoteEditorActivatorProps) {
 
     useLifecycleTracer('NoteEditorActivator', {id: props.id});
 
@@ -256,7 +257,7 @@ const NoteEditorActivator = deepMemo(function NoteEditorActivator(props: INoteEd
 });
 
 
-const NoteEditorInner = deepMemo(function NoteEditorInner(props: IProps) {
+const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
     useLifecycleTracer('NoteEditorInner', {id: props.id});
 
@@ -290,7 +291,7 @@ const NoteEditorInner = deepMemo(function NoteEditorInner(props: IProps) {
 
 });
 
-const NoteEditorWithEditorStore = deepMemo(function NoteEditorWithEditorStore(props: IProps) {
+const NoteEditorWithEditorStore = observer(function NoteEditorWithEditorStore(props: IProps) {
 
     useLifecycleTracer('NoteEditorWithEditorStore');
 

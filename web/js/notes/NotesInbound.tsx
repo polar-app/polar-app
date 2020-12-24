@@ -5,6 +5,7 @@ import { UL } from './UL';
 import {NoteBulletButton} from "./NoteBulletButton";
 import {NoteEditor} from "./NoteEditor";
 import {NoteIDStr, useNotesStore } from './NotesStore2';
+import { observer } from "mobx-react-lite"
 
 interface IProps {
     readonly id: NoteIDStr;
@@ -16,7 +17,7 @@ interface InboundNoteRefProps {
     readonly content: string | undefined;
 }
 
-const InboundNoteRef = deepMemo((props: InboundNoteRefProps) => {
+const InboundNoteRef = observer((props: InboundNoteRefProps) => {
 
     return (
         <div style={{

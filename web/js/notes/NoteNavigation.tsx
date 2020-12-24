@@ -1,6 +1,5 @@
 import * as React from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import { deepMemo } from '../react/ReactUtils';
 import { useEditorStore } from './EditorStoreProvider';
 import IEventData = ckeditor5.IEventData;
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
@@ -10,6 +9,7 @@ import {useEditorCursorPosition} from "./editor/UseEditorCursorPosition";
 import { useNoteNavigationEnterHandler } from './NoteNavigationEnter';
 import {useLifecycleTracer} from "../hooks/ReactHooks";
 import {NoteIDStr, useNotesStore} from "./NotesStore2";
+import { observer } from "mobx-react-lite"
 
 interface IProps {
     readonly parent: NoteIDStr | undefined;
@@ -96,7 +96,7 @@ function useNoteActivation(id: NoteIDStr) {
 
 }
 
-export const NoteNavigation = deepMemo(function NoteNavigation(props: IProps) {
+export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
 
     useLifecycleTracer('NoteNavigation', {id: props.id});
 

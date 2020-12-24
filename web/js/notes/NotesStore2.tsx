@@ -183,6 +183,16 @@ class Note implements INote {
         this._updated = ISODateTimeStrings.create();
     }
 
+    @action addItem(id: NoteIDStr) {
+        this._items.push(id);
+        this._updated = ISODateTimeStrings.create();
+    }
+
+    @action addLink(id: NoteIDStr) {
+        this._links.push(id);
+        this._updated = ISODateTimeStrings.create();
+    }
+
     @action removeLink(id: NoteIDStr) {
 
         const idx = this.items.indexOf(id);
@@ -479,34 +489,34 @@ class NotesStore {
                          child: NoteIDStr | undefined,
                          pos: NewNotePosition,
                          split?: ISplitNote) {
-        //
-        // const index = this._index;
-        //
-        // const id = Hashcodes.createRandomID();
-        //
-        // const parentNote = index[parent];
-        //
-        // if (! parentNote) {
-        //     throw new Error("No parent note");
-        // }
-        //
-        // const now = ISODateTimeStrings.create()
-        //
-        // function createNewNote(): INote {
-        //     return {
-        //         id,
-        //         type: 'item',
-        //         content: split?.suffix || '',
-        //         created: now,
-        //         updated: now,
-        //         items: [],
-        //         links: []
-        //     };
-        // }
-        //
-        // const newNote: INote = createNewNote();
-        //
-        // // FIXME
+
+        const index = this._index;
+
+        const id = Hashcodes.createRandomID();
+
+        const parentNote = this._index[parent];
+
+        if (! parentNote) {
+            throw new Error("No parent note");
+        }
+
+
+        const now = ISODateTimeStrings.create()
+
+        function createNewNote(): INote {
+            return {
+                id,
+                type: 'item',
+                content: split?.suffix || '',
+                created: now,
+                updated: now,
+                items: [],
+                links: []
+            };
+        }
+
+        const newNote: INote = createNewNote();
+
         // function computeNewParentNote(): INote {
         //
         //     function computeDelta() {

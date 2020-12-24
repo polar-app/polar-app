@@ -6,6 +6,7 @@ import {ArrowRight} from "./ArrowRight";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import { useNotesStore } from "./NotesStore2";
+import { observer } from "mobx-react-lite"
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -19,7 +20,7 @@ interface IProps {
     readonly id: IDStr;
 }
 
-export const NoteExpandToggleButton = React.memo(function NoteExpandToggleButton(props: IProps) {
+export const NoteExpandToggleButton = observer(function NoteExpandToggleButton(props: IProps) {
 
     const {id} = props;
 

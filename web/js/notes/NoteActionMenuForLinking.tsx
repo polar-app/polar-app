@@ -2,6 +2,7 @@ import React from "react";
 import {ActionMenuItemProvider, IActionMenuItem, NoteActionMenu} from "./NoteActionMenu";
 import { deepMemo } from "../react/ReactUtils";
 import {NoteIDStr, useNotesStore} from "./NotesStore2";
+import { observer } from "mobx-react-lite"
 
 function useItemsProvider(): ActionMenuItemProvider {
 
@@ -32,7 +33,7 @@ interface IProps {
     readonly children: JSX.Element;
 }
 
-export const NoteActionMenuForLinking = deepMemo(function NoteActionMenuForLinking(props: IProps) {
+export const NoteActionMenuForLinking = observer(function NoteActionMenuForLinking(props: IProps) {
 
     const itemsProvider = useItemsProvider();
 

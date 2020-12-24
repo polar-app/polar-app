@@ -5,8 +5,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import {Clipboards} from "../util/system/clipboard/Clipboards";
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import { useNotesStore } from './NotesStore2';
+import { observer } from "mobx-react-lite"
 
-export const NoteContextMenuItems = React.memo(function MUIDocDropdownMenuItems() {
+export const NoteContextMenuItems = observer(function MUIDocDropdownMenuItems() {
 
     const store = useNotesStore();
 

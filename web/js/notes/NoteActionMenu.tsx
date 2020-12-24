@@ -11,6 +11,7 @@ import {NoteActionSelections} from "./NoteActionSelections";
 import IEventData = ckeditor5.IEventData;
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 import {NoteIDStr} from "./NotesStore2";
+import { observer } from "mobx-react-lite"
 
 export interface ICommand {
 
@@ -69,7 +70,7 @@ interface IProps {
 
 // TODO: do not compute a prompt if the prev or next characters are non spaces
 
-export const NoteActionMenu = deepMemo(function NoteActionMenu(props: IProps) {
+export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
 
     const {itemsProvider, trigger} = props;
 
