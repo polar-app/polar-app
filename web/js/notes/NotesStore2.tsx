@@ -806,9 +806,9 @@ export class NotesStore {
 
     }
 
-    public doDelete(deleteRequests: ReadonlyArray<DeleteNoteRequest>) {
+    public doDelete(notes: ReadonlyArray<NoteIDStr>) {
 
-        if (deleteRequests.length === 0) {
+        if (notes.length === 0) {
             return;
         }
 
@@ -819,10 +819,20 @@ export class NotesStore {
 
         const computeNextActive = (): NextActive | undefined => {
 
-            const deleteRequest = deleteRequests[0];
-            const expansionTree = this.computeLinearItemsFromExpansionTree(deleteRequest.parent);
+            const noteID = notes[0];
+            const note = this._index[noteID];
 
-            const currentIndex = expansionTree.indexOf(deleteRequest.id);
+            if (! note) {
+                return undefined;
+            }
+
+            if (! note.parent) {
+                return undefined;
+            }
+
+            const expansionTree = this.computeLinearItemsFromExpansionTree(note.parent);
+
+            const currentIndex = expansionTree.indexOf(note.id);
 
             if (currentIndex > 0) {
                 const nextActive = expansionTree[currentIndex - 1];
@@ -834,34 +844,38 @@ export class NotesStore {
 
             } else {
                 return {
-                    active: deleteRequest.parent,
+                    active: note.parent,
                     activePos: 'end'
                 }
             }
 
         }
 
-        const handleDelete = (deleteRequests: ReadonlyArray<DeleteNoteRequest>) => {
+        const handleDelete = (notes: ReadonlyArray<NoteIDStr>) => {
 
-            for (const deleteRequest of deleteRequests) {
+            for (const noteID of notes) {
 
-                const note = this._index[deleteRequest.id];
+                const note = this._index[noteID];
 
                 if (note) {
 
                     // *** delete the id for this note from the parents items.
 
-                    const parentNote = this._index[deleteRequest.parent];
+                    if (note.parent) {
 
-                    if (! parentNote) {
-                        console.warn("No parent note for ID: " + deleteRequest.parent);
-                        return;
+                        const parentNote = this._index[note.parent];
+
+                        if (! parentNote) {
+                            console.warn("No parent note for ID: " + note.parent);
+                            return;
+                        }
+
+                        parentNote.removeItem(note.id);
+
                     }
 
-                    parentNote.removeItem(deleteRequest.id);
-
                     // *** delete the note from the index
-                    delete this._index[deleteRequest.id];
+                    delete this._index[note.id];
 
                     // *** delete the note from name index by name.
                     if (note.type === 'named') {
@@ -870,22 +884,15 @@ export class NotesStore {
 
                     // *** delete the reverse index for this item
 
-                    const inboundIDs = this.reverse.get(deleteRequest.id);
+                    const inboundIDs = this.reverse.get(note.id);
 
                     for (const inboundID of inboundIDs) {
-                        this.reverse.remove(deleteRequest.id, inboundID);
+                        this.reverse.remove(note.id, inboundID);
                     }
 
                     // *** now delete all children too...
 
-                    function toDeleteNoteRequest(id: NoteIDStr): DeleteNoteRequest {
-                        return {
-                            parent: note.id,
-                            id
-                        }
-                    }
-
-                    handleDelete((note.items || []).map(toDeleteNoteRequest));
+                    handleDelete(note.items);
 
                 }
 
@@ -894,7 +901,7 @@ export class NotesStore {
         };
 
         const nextActive = computeNextActive();
-        handleDelete(deleteRequests);
+        handleDelete(notes);
 
         if (nextActive) {
             this._active = nextActive.active;
