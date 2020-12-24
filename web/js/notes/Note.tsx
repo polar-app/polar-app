@@ -45,6 +45,8 @@ export const NoteInner = observer(function NoteInner(props: IProps) {
         return null;
     }
 
+    console.log("FIXME: NoteInner: rendering note  " + props.id)
+
     const items = store.lookup(note.items || []);
 
     const hasItems = items.length > 0;
