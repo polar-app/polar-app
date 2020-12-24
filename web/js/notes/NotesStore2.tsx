@@ -63,6 +63,8 @@ export interface INote {
 
     readonly id: NoteIDStr;
 
+    readonly parent: NoteIDStr | undefined;
+
     readonly created: ISODateTimeString;
 
     readonly updated: ISODateTimeString;
@@ -145,7 +147,9 @@ export class ReverseIndex {
 
 export class Note implements INote {
 
-    @observable private _id: string;
+    @observable private _id: NoteIDStr;
+
+    @observable private _parent: NoteIDStr | undefined;
 
     @observable private _created: ISODateTimeString;
 
@@ -184,6 +188,7 @@ export class Note implements INote {
     constructor(opts: INote) {
 
         this._id = opts.id;
+        this._parent = opts.parent;
         this._created = opts.created;
         this._updated = opts.updated;
         this._items = [...opts.items];
@@ -196,6 +201,10 @@ export class Note implements INote {
 
     @computed get id() {
         return this._id;
+    }
+
+    @computed get parent() {
+        return this._parent;
     }
 
     @computed get created() {
@@ -561,6 +570,7 @@ export class NotesStore {
         function createNewNote(): INote {
             return {
                 id,
+                parent,
                 type: 'item',
                 content: split?.suffix || '',
                 created: now,

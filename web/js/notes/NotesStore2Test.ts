@@ -109,7 +109,7 @@ describe('NotesStore2', function() {
         ]);
 
         // FIXME do we need a parent to delete?
-        store.doDelete(['102']);
+        // store.doDelete(['102']);
 
         assertJSON(store.lookupReverse('102'), []);
 

@@ -24,6 +24,7 @@ export class FirestoreAnalytics implements IAnalytics {
     }
 
     public identify(userId: string): void {
+        // noop
     }
 
     public page(event: IPageEvent): void {

@@ -9,6 +9,7 @@ export namespace MockNotes {
         const notes: ReadonlyArray<INote> = [
             {
                 id: '102',
+                parent: undefined,
                 created: now,
                 updated: now,
                 content: "World War II",
@@ -21,16 +22,8 @@ export namespace MockNotes {
                 links: []
             },
             {
-                id: '100',
-                created: now,
-                updated: now,
-                type: 'item',
-                content: 'World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world\'s countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.',
-                items: [],
-                links: []
-            },
-            {
                 id: '103',
+                parent: '102',
                 created: now,
                 updated: now,
                 type: 'item',
@@ -40,6 +33,7 @@ export namespace MockNotes {
             },
             {
                 id: '104',
+                parent: '102',
                 created: now,
                 updated: now,
                 type: 'item',
@@ -48,7 +42,30 @@ export namespace MockNotes {
                 links: []
             },
             {
+                id: '105',
+                parent: '102',
+                created: now,
+                updated: now,
+                content: 'Allied Powers: United States, United Kingdom, [[Canada]], [[Russia]].',
+                links: ['109', '108'],
+                items: [
+                    '106'
+                ],
+                type: 'item',
+            },
+            {
+                id: '100',
+                parent: undefined,
+                created: now,
+                updated: now,
+                type: 'item',
+                content: 'World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world\'s countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.',
+                items: [],
+                links: []
+            },
+            {
                 id: '108',
+                parent: undefined,
                 created: now,
                 updated: now,
                 content: "Russia",
@@ -58,6 +75,7 @@ export namespace MockNotes {
             },
             {
                 id: '109',
+                parent: undefined,
                 created: now,
                 updated: now,
                 content: "Canada",
@@ -69,6 +87,7 @@ export namespace MockNotes {
             },
             {
                 id: '111',
+                parent: '109',
                 created: now,
                 updated: now,
                 type: 'item',
@@ -77,18 +96,8 @@ export namespace MockNotes {
                 links: []
             },
             {
-                id: '105',
-                created: now,
-                updated: now,
-                content: 'Allied Powers: United States, United Kingdom, [[Canada]], [[Russia]].',
-                links: ['109', '108'],
-                items: [
-                    '106'
-                ],
-                type: 'item',
-            },
-            {
                 id: '106',
+                parent: undefined,
                 created: now,
                 updated: now,
                 content: 'Lead by Franklin D. Roosevelt, Winston Churchill, and Joseph Stalin ',
@@ -98,6 +107,7 @@ export namespace MockNotes {
             },
             {
                 id: '107',
+                parent: undefined,
                 created: now,
                 updated: now,
                 content: "Germany",
@@ -109,6 +119,7 @@ export namespace MockNotes {
             },
             {
                 id: '110',
+                parent: '107',
                 created: now,
                 updated: now,
                 content: 'Germany Germany (German: Deutschland, German pronunciation: [ˈdɔʏtʃlant]), officially the Federal Republic of Germany (German: Bundesrepublik Deutschland, About this soundlisten),[e] is a country in Central and Western Europe and one of the major participants of [[World War II]]',
