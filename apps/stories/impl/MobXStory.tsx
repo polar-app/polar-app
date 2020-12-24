@@ -3,20 +3,41 @@ import { makeAutoObservable } from "mobx"
 import { observer } from "mobx-react-lite"
 import Button from '@material-ui/core/Button';
 
+const Note = observer((note: INote) => {
+    return (
+        <div>
+            {note.id}: {note.text}
+        </div>
+    )
+});
+
+let seq = 0
+
 const Root = observer(() => {
 
     const store = useMyStoreContext();
+
+    const createNote = React.useCallback(() => {
+
+        const id = seq++;
+        store.notes.push({
+          id,
+          text: 'asdf: ' + id
+        })
+    }, [store.notes]);
 
     return (
         <div>
 
             <p>
-                <Button onClick={() => store.count++} variant="contained">
-                    click me
+                <Button onClick={createNote} variant="contained">
+                    create a note
                 </Button>
             </p>
 
-            count: {store.count}
+
+            notes:
+            {store.notes.map(current => <Note key={current.id} {...current}/>)}
         </div>
     );
 
@@ -32,10 +53,14 @@ export const MobXStory = () => {
 
 }
 
-
+interface INote {
+    readonly id: number;
+    readonly text: string;
+}
 
 class MyStore {
-    count: number = 0;
+
+    notes: INote[] = [];
 
     constructor() {
         makeAutoObservable(this);
