@@ -275,6 +275,15 @@ describe('NotesStore2', function() {
 
         });
 
+        it("indent or a root node", () => {
+
+            const store = createStore();
+
+            const result = store.doIndent('108')
+
+            assert.equal(result.error!, 'no-parent');
+
+        });
 
 
     });
