@@ -654,69 +654,48 @@ export class NotesStore {
     /**
      * Make the active note a child of the prev sibling.
      */
-    public doIndent(id: NoteIDStr, parent: NoteIDStr) {
-        //
-        // const store = storeProvider();
-        //
-        // const {index} = store;
-        //
-        // const note = index[id];
-        //
-        // if (! note) {
-        //     console.warn("No note for id: " + id);
-        //     return;
-        // }
-        //
-        // const parentNote = index[parent];
-        //
-        // if (! parentNote) {
-        //     console.warn("No parent note for id: " + parent);
-        //     return;
-        // }
-        //
-        // const parentItems = (parentNote.items || []);
-        //
-        // // figure out the sibling index in the parent
-        // const siblingIndex = parentItems.indexOf(id);
-        //
-        // if (siblingIndex > 0) {
-        //
-        //     const newParentID = parentItems[siblingIndex - 1];
-        //
-        //     const newParentNode = index[newParentID];
-        //
-        //     // *** remove myself from my parent
-        //
-        //     const now = ISODateTimeStrings.create();
-        //
-        //     function createNewItems() {
-        //         const newItems = [...parentItems];
-        //         newItems.splice(siblingIndex, 1);
-        //         return newItems;
-        //     }
-        //
-        //     const mutatedParentNode = {
-        //         ...parentNote,
-        //         updated: now,
-        //         items: createNewItems()
-        //     }
-        //
-        //     // ***: add myself to my newParent
-        //
-        //     const mutatedNewParentNode = {
-        //         ...newParentNode,
-        //         updated: now,
-        //         items: [
-        //             ...(newParentNode.items || []),
-        //             id
-        //         ]
-        //     }
-        //
-        //     doPut([mutatedParentNode, mutatedNewParentNode], {
-        //         newActive: id,
-        //         newExpand: mutatedNewParentNode.id
-        //     });
-        //
+    public doIndent(id: NoteIDStr) {
+
+        const note = this._index[id];
+
+        if (! note) {
+            console.warn("No note for id: " + id);
+            return;
+        }
+
+        if (! note.parent) {
+            console.warn("No parent");
+            return;
+        }
+
+        const parentNote = this._index[note.parent];
+
+        if (! parentNote) {
+            console.warn("No parent note for id: " + note.parent);
+            return;
+        }
+
+        const parentItems = (parentNote.items || []);
+
+        // figure out the sibling index in the parent
+        const siblingIndex = parentItems.indexOf(id);
+
+        if (siblingIndex > 0) {
+
+            const newParentID = parentItems[siblingIndex - 1];
+
+            const newParentNode = this._index[newParentID];
+
+            // *** remove myself from my parent
+
+            parentNote.removeItem(id);
+
+            // ***: add myself to my newParent
+
+            newParentNode.addItem(id);
+
+        }
+
     }
 
     public doUnIndent(id: NoteIDStr, parent: NoteIDStr) {
