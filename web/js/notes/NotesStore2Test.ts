@@ -249,7 +249,6 @@ describe('NotesStore2', function() {
 
     });
 
-
     it("doDelete", () => {
 
         const store = createStore();
@@ -265,7 +264,6 @@ describe('NotesStore2', function() {
         assertJSON(store.lookupReverse('102'), []);
 
     });
-
 
     describe("ReverseIndex", () => {
 

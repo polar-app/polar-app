@@ -913,7 +913,6 @@ export class NotesStore {
 
     }
 
-
 }
 
 export const [NotesStoreProvider, useNotesStore] = createReactiveStore(() => new NotesStore())
