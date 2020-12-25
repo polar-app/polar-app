@@ -562,7 +562,8 @@ export class NotesStore {
         return isPresent(this._expanded[id]);
     }
 
-    public getNoteActivated(id: NoteIDStr) {
+    // TODO: write a test for this...
+    @computed public getNoteActivated(id: NoteIDStr) {
 
         const active = this._active;
         const activePos = this._activePos;
@@ -575,7 +576,7 @@ export class NotesStore {
             return undefined;
         }
 
-        const note = this._index[active] || this._indexByName[active] || undefined;
+        const note = this._index[active];
 
         if (note) {
             return {note, activePos};

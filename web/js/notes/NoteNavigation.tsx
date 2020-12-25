@@ -115,30 +115,7 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
 
     // TODO move to editor hook
 
-    interface IEditorSplit {
-        readonly prefix: string;
-        readonly suffix: string;
-    }
-
     // TODO move to editor hook
-
-    // Split the editor at the cursor and return two HTML chunks (prefix and suffix)
-    const splitEditorAtCursor = React.useCallback((): IEditorSplit => {
-
-        if (! editor) {
-            throw new Error("No editor");
-        }
-
-        const root = editor.model.document.getRoot();
-        const firstPosition = editor?.model.document.selection.getFirstPosition();
-
-        const rootStart = editor.model.createPositionAt(root, 0);
-        const rootEnd = editor.model.createPositionAt(root, 'end');
-
-
-        return null!;
-
-    }, [editor])
 
     const handleClick = React.useCallback(() => {
         store.setActive(props.id);
@@ -169,6 +146,8 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
     }, [editor]);
 
     const handleEditorKeyDown = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
+
+        console.log("FIXME: here: ", event.domEvent.key);
 
         function abortEvent() {
             event.domEvent.stopPropagation();
