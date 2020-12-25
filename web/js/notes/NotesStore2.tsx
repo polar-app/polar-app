@@ -333,6 +333,10 @@ export class NotesStore {
         return this._reverse;
     }
 
+    @computed get expanded() {
+        return this._expanded;
+    }
+
     @computed get root() {
         return this._root;
     }
@@ -695,6 +699,8 @@ export class NotesStore {
             // ***: add myself to my newParent
 
             newParentNote.addItem(id);
+
+            this.expand(newParentID);
 
             return newParentNote.id;
 

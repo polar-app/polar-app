@@ -191,6 +191,8 @@ describe('NotesStore2', function() {
             "_updated": "2012-03-02T11:38:49.321Z"
         });
 
+        assertJSON(store.expanded, {});
+
         TestingTime.forward(1000);
 
         const newParentID = store.doIndent('104')
@@ -219,6 +221,10 @@ describe('NotesStore2', function() {
             "_parent": "102",
             "_type": "item",
             "_updated": "2012-03-02T11:38:50.321Z"
+        });
+
+        assertJSON(store.expanded, {
+            "103": true
         });
 
     });
