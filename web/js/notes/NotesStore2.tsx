@@ -653,26 +653,28 @@ export class NotesStore {
 
     /**
      * Make the active note a child of the prev sibling.
+     *
+     * @return The new parent NoteID or the code as to why it couldn't be reparented.
      */
-    public doIndent(id: NoteIDStr) {
+    public doIndent(id: NoteIDStr): NoteIDStr {
 
         const note = this._index[id];
 
         if (! note) {
             console.warn("No note for id: " + id);
-            return;
+            throw new Error('no-note');
         }
 
         if (! note.parent) {
             console.warn("No parent");
-            return;
+            throw new Error('no-parent');
         }
 
         const parentNote = this._index[note.parent];
 
         if (! parentNote) {
             console.warn("No parent note for id: " + note.parent);
-            return;
+            throw new Error('no-parent-note');
         }
 
         const parentItems = (parentNote.items || []);
@@ -684,7 +686,7 @@ export class NotesStore {
 
             const newParentID = parentItems[siblingIndex - 1];
 
-            const newParentNode = this._index[newParentID];
+            const newParentNote = this._index[newParentID];
 
             // *** remove myself from my parent
 
@@ -692,8 +694,12 @@ export class NotesStore {
 
             // ***: add myself to my newParent
 
-            newParentNode.addItem(id);
+            newParentNote.addItem(id);
 
+            return newParentNote.id;
+
+        } else {
+            throw new Error('no-sibling');
         }
 
     }
