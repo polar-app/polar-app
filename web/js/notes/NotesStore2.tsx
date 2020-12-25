@@ -562,8 +562,9 @@ export class NotesStore {
         return isPresent(this._expanded[id]);
     }
 
-    // TODO: write a test for this...
-    @computed public getNoteActivated(id: NoteIDStr) {
+    // TODO: write a test for this... OH!!!
+    // thjis isn't working because it's not being observed...
+    @computed public getNoteActivated(id: NoteIDStr): INoteActivated | undefined {
 
         const active = this._active;
         const activePos = this._activePos;
@@ -619,16 +620,7 @@ export class NotesStore {
 
         this.doPut([newNote]);
 
-        // function computeDelta() {
-        //     switch (pos) {
-        //         case "before":
-        //             return 0;
-        //         case "after":
-        //             return 1;
-        //         case "split":
-        //             return 1;
-        //     }
-        // }
+        // TODO: is before actually used/needed her?
 
         function computeNewChildPosition(): INewChildPosition | undefined {
             if (child) {

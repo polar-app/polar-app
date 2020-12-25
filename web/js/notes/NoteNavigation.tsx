@@ -8,7 +8,8 @@ import IIterable = ckeditor5.IIterable;
 import {useEditorCursorPosition} from "./editor/UseEditorCursorPosition";
 import { useNoteNavigationEnterHandler } from './NoteNavigationEnter';
 import {useLifecycleTracer} from "../hooks/ReactHooks";
-import {NoteIDStr, useNotesStore} from "./NotesStore2";
+import {INoteActivated, NoteIDStr, useNotesStore} from "./NotesStore2";
+import { autorun } from "mobx"
 import { observer } from "mobx-react-lite"
 
 interface IProps {
@@ -22,15 +23,19 @@ function useNoteActivation(id: NoteIDStr) {
     useLifecycleTracer('useNoteActivation', {id});
 
     const editor = useEditorStore();
-
     const store = useNotesStore();
-    const noteActivated = store.getNoteActivated(id);
+
+    const [noteActivated, setNoteActivated] = React.useState<INoteActivated | undefined>();
+
+    autorun(() => {
+        setNoteActivated(store.getNoteActivated(id))
+    });
 
     const hasFocusRef = React.useRef(true);
 
     const jumpToEditorRootPosition = React.useCallback((offset: number | 'before' | 'end') => {
 
-        if (! editor) {
+        if (!editor) {
             return;
         }
 
@@ -63,7 +68,7 @@ function useNoteActivation(id: NoteIDStr) {
 
             if (noteActivated) {
 
-                if (! hasFocusRef.current) {
+                if (!hasFocusRef.current) {
 
                     editorFocus();
 

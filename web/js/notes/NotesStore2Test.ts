@@ -232,51 +232,52 @@ describe('NotesStore2', function() {
 
         });
 
-    });
+        it("indent then unindent and make sure we do a full restore", () => {
 
-    it("indent then unindent and make sure we do a full restore", () => {
+            const store = createStore();
 
-        const store = createStore();
+            assertJSON(store.getNote('102'), {
+                "_content": "World War II",
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_id": "102",
+                "_items": [
+                    "103",
+                    "104",
+                    "105"
+                ],
+                "_links": [],
+                "_type": "named",
+                "_updated": "2012-03-02T11:38:49.321Z"
+            });
 
-        assertJSON(store.getNote('102'), {
-            "_content": "World War II",
-            "_created": "2012-03-02T11:38:49.321Z",
-            "_id": "102",
-            "_items": [
-                "103",
-                "104",
-                "105"
-            ],
-            "_links": [],
-            "_type": "named",
-            "_updated": "2012-03-02T11:38:49.321Z"
+            assertJSON(store.expanded, {});
+
+            store.doIndent('104')
+
+            assert.equal(store.getNote('104')!.parent, '103');
+
+            store.doUnIndent('104');
+            // assertJSON(store.doUnIndent('104'), {});
+
+            assertJSON(store.getNote('102'), {
+                "_content": "World War II",
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_id": "102",
+                "_items": [
+                    "103",
+                    "104",
+                    "105"
+                ],
+                "_links": [],
+                "_type": "named",
+                "_updated": "2012-03-02T11:38:49.321Z"
+            });
+
         });
 
-        assertJSON(store.expanded, {});
 
-        store.doIndent('104')
-
-        assert.equal(store.getNote('104')!.parent, '103');
-
-        store.doUnIndent('104');
-        // assertJSON(store.doUnIndent('104'), {});
-
-        assertJSON(store.getNote('102'), {
-            "_content": "World War II",
-            "_created": "2012-03-02T11:38:49.321Z",
-            "_id": "102",
-            "_items": [
-                "103",
-                "104",
-                "105"
-            ],
-            "_links": [],
-            "_type": "named",
-            "_updated": "2012-03-02T11:38:49.321Z"
-        });
 
     });
-
 
     it("basic", async function() {
 
@@ -316,6 +317,7 @@ describe('NotesStore2', function() {
     });
 
     it("setContent", () => {
+
         const store = createStore();
 
         const note = store.getNote('102')
