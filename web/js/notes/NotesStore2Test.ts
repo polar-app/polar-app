@@ -5,6 +5,8 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {assert} from 'chai';
 
+// TODO: get the reverse index to support json serialization so we can debug it...
+
 describe('NotesStore2', function() {
 
     beforeEach(() => {
@@ -159,7 +161,28 @@ describe('NotesStore2', function() {
                 "World War II": "102"
             },
             "_reverse": {
-                "index": {}
+                "index": {
+                    "102": [
+                        "103",
+                        "104",
+                        "105"
+                    ],
+                    "105": [
+                        "106",
+                        "109",
+                        "108"
+                    ],
+                    "107": [
+                        "110",
+                        "102"
+                    ],
+                    "109": [
+                        "111"
+                    ],
+                    "110": [
+                        "100"
+                    ]
+                }
             },
             "_selected": {}
         });

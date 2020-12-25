@@ -113,27 +113,27 @@ export interface INote {
 
 export class ReverseIndex {
 
-    @observable private index = new Map<string, NoteIDStr[]>();
+    @observable private index: {[key: string]: NoteIDStr[]} = {};
 
     @computed get(target: NoteIDStr): ReadonlyArray<NoteIDStr> {
-        return this.index.get(target) || [];
+        return this.index[target] || [];
     }
 
     @action add(target: NoteIDStr, inbound: NoteIDStr) {
 
-        const current = this.index.get(target);
+        const current = this.index[target];
 
         if (current) {
             current.push(inbound);
         } else {
-            this.index.set(target, [inbound]);
+            this.index[target] = [inbound];
         }
 
     }
 
     @action remove(target: NoteIDStr, inbound: NoteIDStr) {
 
-        const current = this.index.get(target);
+        const current = this.index[target];
 
         if (current) {
 
@@ -146,7 +146,7 @@ export class ReverseIndex {
             }
 
             if (current.length === 0) {
-                this.index.delete(target);
+                delete this.index[target];
             }
 
         }
