@@ -285,6 +285,17 @@ describe('NotesStore2', function() {
 
         });
 
+        it("indent the first node and fail properly", () => {
+            // this should not work because there should be no previous sibling
+            // to make as the new parent.
+
+            const store = createStore();
+
+            const result = store.doIndent('103')
+
+            assert.equal(result.error!, 'no-sibling');
+
+        });
 
     });
 

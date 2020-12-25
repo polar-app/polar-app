@@ -25,11 +25,13 @@ function useNoteActivation(id: NoteIDStr) {
     const editor = useEditorStore();
     const store = useNotesStore();
 
-    const [noteActivated, setNoteActivated] = React.useState<INoteActivated | undefined>();
+    // const [noteActivated, setNoteActivated] = React.useState<INoteActivated | undefined>();
 
-    autorun(() => {
-        setNoteActivated(store.getNoteActivated(id))
-    });
+    // autorun(() => {
+    //     setNoteActivated(store.getNoteActivated(id))
+    // });
+
+    const noteActivated = store.getNoteActivated(id);
 
     const hasFocusRef = React.useRef(true);
 
