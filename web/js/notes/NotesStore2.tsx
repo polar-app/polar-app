@@ -599,7 +599,6 @@ export class NotesStore {
             throw new Error("No parent note");
         }
 
-
         const now = ISODateTimeStrings.create()
 
         function createNewNote(): INote {
@@ -615,74 +614,40 @@ export class NotesStore {
             };
         }
 
-        const newNote: INote = createNewNote();
+        const newNote = createNewNote();
 
-        // function computeNewParentNote(): INote {
-        //
-        //     function computeDelta() {
-        //         switch (pos) {
-        //             case "before":
-        //                 return 0;
-        //             case "after":
-        //                 return 1;
-        //             case "split":
-        //                 return 1;
-        //         }
+        this.doPut([newNote]);
+
+        // function computeDelta() {
+        //     switch (pos) {
+        //         case "before":
+        //             return 0;
+        //         case "after":
+        //             return 1;
+        //         case "split":
+        //             return 1;
         //     }
-        //
-        //     const delta = computeDelta();
-        //
-        //     const items = [...(parentNote.items || [])];
-        //
-        //     const childIndexPosition = child ? items.indexOf(child) : 0;
-        //
-        //     const newItems = [...items];
-        //
-        //     // this mutates the array under us and I don't necessarily like that
-        //     // but it's a copy of the original to begin with.
-        //     newItems.splice(childIndexPosition + delta, 0, newNote.id);
-        //
-        //     return  {
-        //         id: parentNote.id,
-        //         ...parentNote,
-        //         updated: now,
-        //         items: newItems
-        //     };
-        //
         // }
-        //
-        // const nextParentNote = computeNewParentNote();
-        //
-        // // we might have to mutate previous note while the new note is created if it's a split.
-        // function computePrevNote(): INote | undefined {
-        //
-        //     if (child && split) {
-        //
-        //         const note = index[child];
-        //
-        //         return {
-        //             ...note,
-        //             updated: now,
-        //             content: split.prefix
-        //         };
-        //
-        //     } else {
-        //         return undefined;
-        //     }
-        //
-        // }
-        //
-        // const prevNote = computePrevNote();
-        //
-        // console.log("FIXME: prevNote: ", prevNote);
-        //
-        // const mutations = [
-        //         nextParentNote, newNote, prevNote
-        //     ]
-        // .filter(current => current !== undefined)
-        // .map(current => current!);
-        //
-        // this.doPut(mutations, {newActive: newNote.id});
+
+        function computeNewChildPosition(): INewChildPosition | undefined {
+            if (child) {
+                return {
+                    ref: child,
+                    pos: 'after'
+                };
+            } else {
+                return undefined;
+            }
+        }
+
+        parentNote.addItem(newNote.id, computeNewChildPosition());
+
+        if (split?.prefix && child) {
+
+            const currentNote = index[child];
+            currentNote.setContent(split.prefix);
+
+        }
 
     }
 
@@ -692,6 +657,8 @@ export class NotesStore {
      * @return The new parent NoteID or the code as to why it couldn't be reparented.
      */
     public doIndent(id: NoteIDStr): IMutation<'no-note' | 'no-parent' | 'no-parent-note' | 'no-sibling', NoteIDStr> {
+
+        console.log("doIndent: " + id);
 
         const note = this._index[id];
 
@@ -741,6 +708,8 @@ export class NotesStore {
     }
 
     public doUnIndent(id: NoteIDStr): IMutation<'no-note' | 'no-parent' | 'no-parent-note' | 'no-parent-note-parent' | 'no-parent-note-parent-note', NoteIDStr> {
+
+        console.log("doUnIndent: " + id);
 
         const note = this._index[id];
 
