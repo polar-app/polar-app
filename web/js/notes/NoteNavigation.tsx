@@ -243,7 +243,7 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
                 if (props.parent !== undefined && store.noteIsEmpty(props.id)) {
 
                     abortEvent();
-                    store.doDelete([{parent: props.parent, id: props.id}]);
+                    store.doDelete([props.id]);
 
                 }
 

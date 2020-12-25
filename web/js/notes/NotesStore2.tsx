@@ -14,7 +14,7 @@ export type NoteNameStr = string;
 export type NoteType = 'item' | 'named';
 
 export type NotesIndex = {[id: string /* NoteIDStr */]: Note};
-export type NotesIndexByName = {[name: string /* NoteNameStr */]: Note};
+export type NotesIndexByName = {[name: string /* NoteNameStr */]: NoteIDStr};
 
 export type ReverseNotesIndex = {[id: string /* NoteIDStr */]: NoteIDStr[]};
 
@@ -284,7 +284,7 @@ export class NotesStore {
 
     @observable private _index: NotesIndex = {};
 
-    @observable private _indexByName: NotesIndex = {};
+    @observable private _indexByName: NotesIndexByName = {};
 
     /**
      * The reverse index so that we can build references to this node.
@@ -360,7 +360,7 @@ export class NotesStore {
             this._index[inote.id] = note;
 
             if (inote.type === 'named') {
-                this._indexByName[inote.content] = note;
+                this._indexByName[inote.content] = note.id;
             }
 
             const outboundNodeIDs = [
@@ -875,6 +875,10 @@ export class NotesStore {
 
                     }
 
+                    // we have to capture this before we delete the node
+                    // and keep a snapshot of it
+                    const inboundIDs = [...this.reverse.get(note.id)];
+
                     // *** delete the note from the index
                     delete this._index[note.id];
 
@@ -884,8 +888,6 @@ export class NotesStore {
                     }
 
                     // *** delete the reverse index for this item
-
-                    const inboundIDs = this.reverse.get(note.id);
 
                     for (const inboundID of inboundIDs) {
                         this.reverse.remove(note.id, inboundID);
