@@ -49,6 +49,11 @@ interface DoPutOpts {
 
 export type NewNotePosition = 'before' | 'after' | 'split';
 
+export interface INewChildPosition {
+    readonly ref: NoteIDStr;
+    readonly pos: 'before' | 'after';
+}
+
 export interface ISplitNote {
     readonly prefix: string;
     readonly suffix: string;
@@ -57,6 +62,11 @@ export interface ISplitNote {
 export interface DeleteNoteRequest {
     readonly parent: NoteIDStr;
     readonly id: NoteIDStr;
+}
+
+export interface IMutation<E, V> {
+    readonly error?: E;
+    readonly value?: V;
 }
 
 export interface INote {
@@ -144,6 +154,8 @@ export class ReverseIndex {
     }
 
 }
+
+
 
 export class Note implements INote {
 
@@ -236,8 +248,22 @@ export class Note implements INote {
         this._updated = ISODateTimeStrings.create();
     }
 
-    @action addItem(id: NoteIDStr) {
-        this._items.push(id);
+    @action addItem(id: NoteIDStr, pos?: INewChildPosition) {
+
+
+        if (pos) {
+
+            const idx = this._items.indexOf(pos.ref);
+
+            if (idx !== -1) {
+                const delta = pos.pos === 'before' ? -1 : 0;
+                this._items.splice(idx + delta, 0, id);
+            }
+
+        } else {
+            this._items.push(id);
+        }
+
         this._updated = ISODateTimeStrings.create();
     }
 
@@ -660,25 +686,23 @@ export class NotesStore {
      *
      * @return The new parent NoteID or the code as to why it couldn't be reparented.
      */
-    public doIndent(id: NoteIDStr): NoteIDStr {
+    public doIndent(id: NoteIDStr): IMutation<'no-note' | 'no-parent' | 'no-parent-note' | 'no-sibling', NoteIDStr> {
 
         const note = this._index[id];
 
         if (! note) {
-            console.warn("No note for id: " + id);
-            throw new Error('no-note');
+            return {error: 'no-note'};
         }
 
         if (! note.parent) {
-            console.warn("No parent");
-            throw new Error('no-parent');
+            return {error: 'no-parent'};
         }
 
         const parentNote = this._index[note.parent];
 
         if (! parentNote) {
             console.warn("No parent note for id: " + note.parent);
-            throw new Error('no-parent-note');
+            return {error: 'no-parent-note'};
         }
 
         const parentItems = (parentNote.items || []);
@@ -702,52 +726,46 @@ export class NotesStore {
 
             this.expand(newParentID);
 
-            return newParentNote.id;
+            return {value: newParentNote.id};
 
         } else {
-            throw new Error('no-sibling');
+            return {error: 'no-sibling'};
         }
 
     }
 
-    public doUnIndent(id: NoteIDStr, parent: NoteIDStr) {
+    public doUnIndent(id: NoteIDStr): IMutation<'no-note' | 'no-parent' | 'no-parent-note' | 'no-parent-note-parent' | 'no-parent-note-parent-note', NoteIDStr> {
 
         const note = this._index[id];
 
         if (! note) {
-            console.warn("No note for id: " + id);
-            return;
+            return {error: 'no-note'};
         }
 
+        if (! note.parent) {
+            return {error: 'no-parent'};
+        }
 
-        const parentNote = this._index[parent];
+        const parentNote = this._index[note.parent];
 
         if (! parentNote) {
-            console.warn("No parent note for id: " + parent);
-            return;
+            return {error: 'no-parent-note'};
         }
 
-
-        if (! this.root) {
-            console.warn("No root note");
-            return;
+        if (! parentNote.parent) {
+            return {error: 'no-parent-note-parent'};
         }
 
+        const newParentNote = this._index[parentNote.parent];
 
-        const expansionTree = this.computeLinearItemsFromExpansionTree(this.root);
+        if (! newParentNote) {
+            return {error: 'no-parent-note-parent-note'};
+        }
 
-        const parentIndexWithinExpansionTree = expansionTree.indexOf(parent);
-
-        const newParentID = expansionTree[parentIndexWithinExpansionTree + 1];
-
-        const newParentNode = this._index[newParentID];
-
-        // // *** remove myself from my current parent
-
+        newParentNote.addItem(id, {pos: 'after', ref: parentNote.id});
         parentNote.removeItem(id);
 
-        // FIXME should be after newParentItems.indexOf(parent)
-        newParentNode.addItem(id);
+        return {value: id};
 
     }
 

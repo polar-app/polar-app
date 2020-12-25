@@ -217,7 +217,7 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
                     abortEvent();
 
                     if (event.domEvent.shiftKey) {
-                        store.doUnIndent(props.id, props.parent);
+                        store.doUnIndent(props.id);
                     } else {
                         store.doIndent(props.id);
                     }

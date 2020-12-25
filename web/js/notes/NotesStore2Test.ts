@@ -173,7 +173,67 @@ describe('NotesStore2', function() {
 
     });
 
-    it("doIndent", async function() {
+    describe("doIndent", () => {
+
+        it("second child note", async function() {
+
+            const store = createStore();
+
+            assertJSON(store.getNote('102'), {
+                "_content": "World War II",
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_id": "102",
+                "_items": [
+                    "103",
+                    "104",
+                    "105"
+                ],
+                "_links": [],
+                "_type": "named",
+                "_updated": "2012-03-02T11:38:49.321Z"
+            });
+
+            assertJSON(store.expanded, {});
+
+            TestingTime.forward(1000);
+
+            const newParentID = store.doIndent('104')
+
+            assertJSON(store.getNote('102'), {
+                "_content": "World War II",
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_id": "102",
+                "_items": [
+                    "103",
+                    "105"
+                ],
+                "_links": [],
+                "_type": "named",
+                "_updated": "2012-03-02T11:38:50.321Z"
+            });
+
+            assertJSON(store.getNote(newParentID.value!), {
+                "_content": "[Lasted](https://www.example.com) from 1939 to 1945",
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_id": "103",
+                "_items": [
+                    "104"
+                ],
+                "_links": [],
+                "_parent": "102",
+                "_type": "item",
+                "_updated": "2012-03-02T11:38:50.321Z"
+            });
+
+            assertJSON(store.expanded, {
+                "103": true
+            });
+
+        });
+
+    });
+
+    it("indent then unindent and make sure we do a full restore", () => {
 
         const store = createStore();
 
@@ -193,9 +253,9 @@ describe('NotesStore2', function() {
 
         assertJSON(store.expanded, {});
 
-        TestingTime.forward(1000);
+        store.doIndent('104')
 
-        const newParentID = store.doIndent('104')
+        assertJSON(store.doUnIndent('104'), {});
 
         assertJSON(store.getNote('102'), {
             "_content": "World War II",
@@ -203,28 +263,12 @@ describe('NotesStore2', function() {
             "_id": "102",
             "_items": [
                 "103",
+                "104",
                 "105"
             ],
             "_links": [],
             "_type": "named",
-            "_updated": "2012-03-02T11:38:50.321Z"
-        });
-
-        assertJSON(store.getNote(newParentID), {
-            "_content": "[Lasted](https://www.example.com) from 1939 to 1945",
-            "_created": "2012-03-02T11:38:49.321Z",
-            "_id": "103",
-            "_items": [
-                "104"
-            ],
-            "_links": [],
-            "_parent": "102",
-            "_type": "item",
-            "_updated": "2012-03-02T11:38:50.321Z"
-        });
-
-        assertJSON(store.expanded, {
-            "103": true
+            "_updated": "2012-03-02T11:38:49.321Z"
         });
 
     });
