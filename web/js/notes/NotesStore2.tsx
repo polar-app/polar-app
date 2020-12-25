@@ -699,82 +699,43 @@ export class NotesStore {
     }
 
     public doUnIndent(id: NoteIDStr, parent: NoteIDStr) {
-        //
-        // const store = storeProvider();
-        //
-        // const {index, root} = store;
-        //
-        // const note = index[id];
-        //
-        // if (! note) {
-        //     console.warn("No note for id: " + id);
-        //     return;
-        // }
-        //
-        // const parentNote = index[parent];
-        //
-        // if (! parentNote) {
-        //     console.warn("No parent note for id: " + parent);
-        //     return;
-        // }
-        //
-        // if (! root) {
-        //     console.warn("No root note");
-        //     return;
-        // }
-        //
-        // const expansionTree = computeLinearItemsFromExpansionTree(root);
-        //
-        // const parentIndexWithinExpansionTree = expansionTree.indexOf(parent);
-        //
-        // const newParentID = expansionTree[parentIndexWithinExpansionTree + 1];
-        //
-        // const newParentNode = index[newParentID];
-        //
+
+        const note = this._index[id];
+
+        if (! note) {
+            console.warn("No note for id: " + id);
+            return;
+        }
+
+
+        const parentNote = this._index[parent];
+
+        if (! parentNote) {
+            console.warn("No parent note for id: " + parent);
+            return;
+        }
+
+
+        if (! this.root) {
+            console.warn("No root note");
+            return;
+        }
+
+
+        const expansionTree = this.computeLinearItemsFromExpansionTree(this.root);
+
+        const parentIndexWithinExpansionTree = expansionTree.indexOf(parent);
+
+        const newParentID = expansionTree[parentIndexWithinExpansionTree + 1];
+
+        const newParentNode = this._index[newParentID];
+
         // // *** remove myself from my current parent
-        //
-        // const now = ISODateTimeStrings.create();
-        //
-        // function createMutatedParentNode() {
-        //
-        //     function createNewItems() {
-        //         return (parentNote.items || []).filter(current => current !== id)
-        //     }
-        //
-        //     return {
-        //         ...parentNote,
-        //         updated: now,
-        //         items: createNewItems()
-        //     }
-        //
-        // }
-        //
-        // const mutatedParentNode = createMutatedParentNode();
-        //
-        // function createMutatedNewParentNode() {
-        //
-        //     const newParentItems = (newParentNode.items || []);
-        //
-        //     function createNewItems() {
-        //         const newItems = [...newParentItems];
-        //         newItems.splice(newParentItems.indexOf(parent), 0, id)
-        //         return newItems;
-        //     }
-        //
-        //     return {
-        //         ...newParentNode,
-        //         updated: now,
-        //         items: createNewItems()
-        //     };
-        //
-        // }
-        //
-        // const mutatedNewParentNode = createMutatedNewParentNode();
-        //
-        // doPut([mutatedParentNode, mutatedNewParentNode], {
-        //     newActive: id,
-        //     newExpand: mutatedNewParentNode.id
-        // });
+
+        parentNote.removeItem(id);
+
+        // FIXME should be after newParentItems.indexOf(parent)
+        newParentNode.addItem(id);
 
     }
 
