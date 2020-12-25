@@ -248,6 +248,11 @@ export class Note implements INote {
         this._updated = ISODateTimeStrings.create();
     }
 
+    @action setParent(id: NoteIDStr) {
+        this._parent = id;
+        this._updated = ISODateTimeStrings.create();
+    }
+
     @action addItem(id: NoteIDStr, pos?: INewChildPosition) {
 
 
@@ -256,7 +261,7 @@ export class Note implements INote {
             const idx = this._items.indexOf(pos.ref);
 
             if (idx !== -1) {
-                const delta = pos.pos === 'before' ? -1 : 0;
+                const delta = pos.pos === 'before' ? 0 : 1;
                 this._items.splice(idx + delta, 0, id);
             }
 
@@ -724,6 +729,7 @@ export class NotesStore {
 
             newParentNote.addItem(id);
 
+            note.setParent(newParentNote.id);
             this.expand(newParentID);
 
             return {value: newParentNote.id};

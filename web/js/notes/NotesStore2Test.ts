@@ -3,6 +3,7 @@ import {NotesStore, ReverseIndex} from "./NotesStore2";
 import {assertJSON} from "../test/Assertions";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
+import {assert} from 'chai';
 
 describe('NotesStore2', function() {
 
@@ -255,7 +256,10 @@ describe('NotesStore2', function() {
 
         store.doIndent('104')
 
-        assertJSON(store.doUnIndent('104'), {});
+        assert.equal(store.getNote('104')!.parent, '103');
+
+        store.doUnIndent('104');
+        // assertJSON(store.doUnIndent('104'), {});
 
         assertJSON(store.getNote('102'), {
             "_content": "World War II",
