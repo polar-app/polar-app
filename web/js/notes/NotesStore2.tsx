@@ -835,6 +835,7 @@ export class NotesStore {
             const currentIndex = expansionTree.indexOf(note.id);
 
             if (currentIndex > 0) {
+
                 const nextActive = expansionTree[currentIndex - 1];
 
                 return {
