@@ -34,10 +34,6 @@ export const NoteInner = observer((props: IProps) => {
 
     const store = useNotesStore();
 
-    console.log("FIXME:store is observable:  ", isObservable(store));
-    console.log("FIXME:store root is observable prop:  ", isObservableProp(store, 'root'));
-    console.log("FIXME:store active is observable prop:  ", isObservableProp(store, 'active'));
-
     const theme = useTheme();
     const contextMenuHandlers = useNoteContextMenu();
 
@@ -53,8 +49,6 @@ export const NoteInner = observer((props: IProps) => {
     const items = store.lookup(note.items || []);
 
     const hasItems = items.length > 0;
-
-    console.log(`FIXME: id=${id} , root=${root} === : `, id === root);
 
     return (
         <>
@@ -74,8 +68,6 @@ export const NoteInner = observer((props: IProps) => {
                          justifyContent: 'flex-end',
                          marginRight: theme.spacing(0.5)
                      }}>
-
-                    <div>FIXME: root: '{store.root}' </div>
 
                     <NoteOverflowButton id={props.id}/>
 

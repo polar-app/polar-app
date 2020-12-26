@@ -310,8 +310,6 @@ export class Note implements INote {
 
 }
 
-// FIXME can I use an observer as a hook?
-
 export class NotesStore {
 
     @observable _index: NotesIndex = {};
@@ -571,8 +569,6 @@ export class NotesStore {
         return isPresent(this._expanded[id]);
     }
 
-    // TODO: write a test for this... OH!!!
-    // this isn't working because it's not being observed...
     public getNoteActivated(id: NoteIDStr): INoteActivated | undefined {
 
         const active = this._active;
@@ -595,6 +591,7 @@ export class NotesStore {
         }
 
     }
+
     public createNewNote(parent: NoteIDStr,
                          child: NoteIDStr | undefined,
                          pos: NewNotePosition,
