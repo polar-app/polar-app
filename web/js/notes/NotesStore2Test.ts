@@ -1,5 +1,5 @@
 import {MockNotes} from "../../../apps/stories/impl/MockNotes";
-import {NotesStore, ReverseIndex} from "./NotesStore2";
+import {Note, NotesStore, ReverseIndex} from "./NotesStore2";
 import {assertJSON} from "../test/Assertions";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
@@ -45,14 +45,39 @@ describe('NotesStore2', function() {
         return store;
     }
 
-    it("observability", () => {
+    describe("Observability", () => {
 
-        const store = new NotesStore();
+        it("NotesStore", () => {
 
-        assert.isTrue(isObservable(store));
-        assert.isTrue(isObservableProp(store, 'root'));
+            const store = new NotesStore();
+
+            assert.isTrue(isObservable(store));
+            assert.isTrue(isObservableProp(store, 'root'));
+            assert.isTrue(isObservableProp(store, 'active'));
+            assert.isTrue(isObservableProp(store, 'index'));
+            assert.isTrue(isObservableProp(store, 'indexByName'));
+            assert.isTrue(isObservableProp(store, 'reverse'));
+            assert.isTrue(isObservableProp(store, 'expanded'));
+        });
+
+        it("Note", () => {
+
+            const note = new Note(MockNotes.create()[0]);
+
+            assert.isTrue(isObservable(note));
+            assert.isTrue(isObservableProp(note, 'content'));
+            assert.isTrue(isObservableProp(note, 'items'));
+            assert.isTrue(isObservableProp(note, 'updated'));
+            assert.isTrue(isObservableProp(note, 'created'));
+            assert.isTrue(isObservableProp(note, 'links'));
+            assert.isTrue(isObservableProp(note, 'type'));
+            assert.isTrue(isObservableProp(note, 'parent'));
+            assert.isTrue(isObservableProp(note, 'items'));
+
+        });
 
     });
+
 
     it("initial store sanity", () => {
 
@@ -389,45 +414,50 @@ describe('NotesStore2', function() {
 
     });
 
-    it("setContent", () => {
+    describe("Notes", () => {
 
-        const store = createStore();
+        it("setContent", () => {
 
-        const note = store.getNote('102')
+            const store = createStore();
 
-        assertJSON(note, {
-            "_content": "World War II",
-            "_created": "2012-03-02T11:38:49.321Z",
-            "_id": "102",
-            "_items": [
-                "103",
-                "104",
-                "105"
-            ],
-            "_links": [],
-            "_type": "named",
-            "_updated": "2012-03-02T11:38:49.321Z"
-        });
+            const note = store.getNote('102')
 
-        TestingTime.forward(1000);
+            assertJSON(note, {
+                "_content": "World War II",
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_id": "102",
+                "_items": [
+                    "103",
+                    "104",
+                    "105"
+                ],
+                "_links": [],
+                "_type": "named",
+                "_updated": "2012-03-02T11:38:49.321Z"
+            });
 
-        note!.setContent("hello")
+            TestingTime.forward(1000);
 
-        assertJSON(note, {
-            "_content": "hello",
-            "_created": "2012-03-02T11:38:49.321Z",
-            "_id": "102",
-            "_items": [
-                "103",
-                "104",
-                "105"
-            ],
-            "_links": [],
-            "_type": "named",
-            "_updated": "2012-03-02T11:38:50.321Z"
+            note!.setContent("hello")
+
+            assertJSON(note, {
+                "_content": "hello",
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_id": "102",
+                "_items": [
+                    "103",
+                    "104",
+                    "105"
+                ],
+                "_links": [],
+                "_type": "named",
+                "_updated": "2012-03-02T11:38:50.321Z"
+            });
+
         });
 
     });
+
 
     it("doDelete", () => {
 
@@ -458,8 +488,6 @@ describe('NotesStore2', function() {
             index.add('102', '101');
 
             assertJSON(index.get('102'), ['101']);
-
-            // assertJSON(index, ['101']);
 
             index.remove('102', '101');
 
