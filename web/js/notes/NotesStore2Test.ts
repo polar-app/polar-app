@@ -140,11 +140,13 @@ describe('NotesStore2', function() {
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
                 "106": {
-                    "_content": "Lead by Franklin D. Roosevelt, Winston Churchill, and Joseph Stalin ",
+                    "_content": "Lead by Franklin D. Roosevelt, [[Winston Churchill]], and Joseph Stalin ",
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "106",
                     "_items": [],
-                    "_links": [],
+                    "_links": [
+                        "112"
+                    ],
                     "_parent": "105",
                     "_type": "item",
                     "_updated": "2012-03-02T11:38:49.321Z"
@@ -201,12 +203,22 @@ describe('NotesStore2', function() {
                     "_parent": "109",
                     "_type": "item",
                     "_updated": "2012-03-02T11:38:49.321Z"
+                },
+                "112": {
+                    "_content": "Winston Churchill",
+                    "_created": "2012-03-02T11:38:49.321Z",
+                    "_id": "112",
+                    "_items": [],
+                    "_links": [],
+                    "_type": "named",
+                    "_updated": "2012-03-02T11:38:49.321Z"
                 }
             },
             "_indexByName": {
                 "Canada": "109",
                 "Germany": "107",
                 "Russia": "108",
+                "Winston Churchill": "112",
                 "World War II": "102"
             },
             "_reverse": {
@@ -219,6 +231,9 @@ describe('NotesStore2', function() {
                     ],
                     "109": [
                         "105"
+                    ],
+                    "112": [
+                        "106"
                     ]
                 }
             },
@@ -398,14 +413,16 @@ describe('NotesStore2', function() {
             "108",
             "109",
             "110",
-            "111"
+            "111",
+            "112"
         ]);
 
         assertJSON(Object.keys(store.indexByName), [
             "World War II",
             "Russia",
             "Canada",
-            "Germany"
+            "Germany",
+            "Winston Churchill"
         ]);
 
         assertJSON(Arrays.first(Object.values(store.index)), {

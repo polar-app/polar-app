@@ -100,10 +100,10 @@ export namespace MockNotes {
                 parent: '105',
                 created: now,
                 updated: now,
-                content: 'Lead by Franklin D. Roosevelt, Winston Churchill, and Joseph Stalin ',
+                content: 'Lead by Franklin D. Roosevelt, [[Winston Churchill]], and Joseph Stalin ',
                 type: 'item',
                 items: [],
-                links: []
+                links: ['112']
             },
             {
                 id: '107',
@@ -126,6 +126,17 @@ export namespace MockNotes {
                 type: 'item',
                 links: [
                     '102'
+                ],
+                items: []
+            },
+            {
+                id: '112',
+                parent: undefined,
+                created: now,
+                updated: now,
+                content: 'Winston Churchill',
+                type: 'named',
+                links: [
                 ],
                 items: []
             }
