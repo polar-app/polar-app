@@ -6,10 +6,15 @@ import {NoteBulletButton} from "./NoteBulletButton";
 import {NoteEditor} from "./NoteEditor";
 import {NoteIDStr, useNotesStore } from './NotesStore2';
 import { observer } from "mobx-react-lite"
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 
-interface IProps {
-    readonly id: NoteIDStr;
-}
+const PathSep = () => React.memo(() => {
+    return (
+        <div style={{marginLeft: '5px', marginRight: '5px'}}>
+            /
+        </div>
+    )
+});
 
 interface InboundNoteRefProps {
     readonly id: NoteIDStr;
@@ -23,15 +28,15 @@ const InboundNoteRef = observer((props: InboundNoteRefProps) => {
 
     const pathToNote = store.pathToNote(props.id);
 
-    // FIXME: the path still doesn't look right
-
     return (
         <>
 
             <div style={{display: 'flex'}}>
-                {pathToNote.map(current => (
-                    <div>{current.content}</div>
-                ))}
+                <Breadcrumbs>
+                    {pathToNote.map(current => (
+                        <div key={current.id}>{current.content}</div>
+                    ))}
+                </Breadcrumbs>
             </div>
 
             <div style={{
@@ -51,6 +56,10 @@ const InboundNoteRef = observer((props: InboundNoteRefProps) => {
     )
 
 });
+
+interface IProps {
+    readonly id: NoteIDStr;
+}
 
 export const NotesInbound = deepMemo(function NotesInbound(props: IProps) {
 
