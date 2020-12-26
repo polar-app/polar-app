@@ -479,6 +479,24 @@ describe('NotesStore2', function() {
 
     });
 
+    describe("getNoteByTarget", () => {
+
+        it("By ID", () => {
+            const store = createStore();
+            const note = store.getNoteByTarget('102');
+            assert.equal(note?.id, '102');
+        });
+
+        it("By Name", () => {
+
+            const store = createStore();
+            const note = store.getNoteByTarget('World War II');
+            assert.equal(note?.id, '102');
+
+        });
+
+    });
+
     describe("pathToNote", () => {
 
         it("Verify that a root note has an empty path", () => {

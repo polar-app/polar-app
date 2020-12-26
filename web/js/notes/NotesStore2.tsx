@@ -422,7 +422,21 @@ export class NotesStore {
     }
 
     public getNoteByTarget(target: NoteIDStr | NoteTargetStr): Note | undefined {
-        return this._index[target] || this._indexByName[target] || undefined
+
+        const noteByID = this._index[target];
+
+        if (noteByID) {
+            return noteByID;
+        }
+
+        const noteRefByName = this._indexByName[target];
+
+        if (noteRefByName) {
+            return this._index[noteRefByName] || undefined;
+        }
+
+        return undefined;
+
     }
 
     public getActiveNote(id: NoteIDStr): Note | undefined {
