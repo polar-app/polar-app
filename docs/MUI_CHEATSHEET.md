@@ -6,6 +6,8 @@ fade(theme.palette.secondary.main, theme.palette.action.selectedOpacity)
 
 # Styles 
 
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import createStyles from "@material-ui/core/styles/createStyles";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -13,3 +15,5 @@ const useStyles = makeStyles((theme) =>
         },
     }),
 );
+
+# Adding style to sub-elements
