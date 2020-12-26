@@ -1,3 +1,7 @@
+# Overview
+
+Notes for MobX issues we found in *our* environment.
+
 # Bugs, issues
 
 - In order for a variable to be observable, it must be set in either the
