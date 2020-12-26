@@ -857,6 +857,25 @@ export class NotesStore {
 
     }
 
+    /**
+     * Compute the path to a note from its parent but not including the actual note.
+     */
+    public pathToNote(id: NoteIDStr): ReadonlyArray<Note> {
+
+        let current = this._index[id];
+
+        const result = [];
+
+        while (current.parent) {
+            const parentNote = this._index[current.parent];
+            result.push(parentNote);
+            current = parentNote;
+        }
+
+        return result.reverse();
+
+    }
+
 }
 
 export const [NotesStoreProvider, useNotesStore] = createReactiveStore(() => new NotesStore())

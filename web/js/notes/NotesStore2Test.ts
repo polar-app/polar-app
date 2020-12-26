@@ -8,9 +8,9 @@ import {isObservable, isObservableProp} from 'mobx';
 
 // TODO:
 
+// - the actions no longer work... need to fix them.
 
-// - right now the inbound references for '102' are wrong in the UI
-
+// - make sure when we update nodes that the graph is updated when we add links
 
 // - how do we make react hooks that work with observability
 //
@@ -18,8 +18,9 @@ import {isObservable, isObservableProp} from 'mobx';
 //   a node because it would yield an empty prefix or suffix and this way the same
 //   code path is used.
 //
-// - the inbound links 'nodes that reference this note' should support computing the
-//   breadcrumbs back to the root note
+// - change the UI so that we show breadcrumbs in note references
+//
+// - migrate all operations to merge/join not delete / create
 //
 
 describe('NotesStore2', function() {
@@ -144,6 +145,7 @@ describe('NotesStore2', function() {
                     "_id": "106",
                     "_items": [],
                     "_links": [],
+                    "_parent": "105",
                     "_type": "item",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
@@ -474,6 +476,40 @@ describe('NotesStore2', function() {
         store.doDelete(['102']);
 
         assertJSON(store.lookupReverse('102'), []);
+
+    });
+
+    describe("pathToNote", () => {
+
+        it("Verify that a root note has an empty path", () => {
+
+            const store = createStore();
+            const path = store.pathToNote('102');
+            assert.equal(path.length, 0);
+
+        });
+
+        it("Path to level 1", () => {
+
+            const store = createStore();
+            const path = store.pathToNote('105');
+            assert.equal(path.length, 1);
+
+            assert.equal(path[0].id, "102");
+
+        });
+
+        it("Path to level 2", () => {
+
+            const store = createStore();
+            const path = store.pathToNote('106');
+            assert.equal(path.length, 2);
+
+            assert.equal(path[0].id, "102");
+            assert.equal(path[1].id, "105");
+
+        });
+
 
     });
 
