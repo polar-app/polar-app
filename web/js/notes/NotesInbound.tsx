@@ -7,14 +7,7 @@ import {NoteEditor} from "./NoteEditor";
 import {NoteIDStr, useNotesStore } from './NotesStore2';
 import { observer } from "mobx-react-lite"
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-
-const PathSep = () => React.memo(() => {
-    return (
-        <div style={{marginLeft: '5px', marginRight: '5px'}}>
-            /
-        </div>
-    )
-});
+import {NoteBreadcrumbLink} from "./NoteBreadcrumbLink";
 
 interface InboundNoteRefProps {
     readonly id: NoteIDStr;
@@ -34,15 +27,9 @@ const InboundNoteRef = observer((props: InboundNoteRefProps) => {
             <div style={{display: 'flex'}}>
                 <Breadcrumbs>
                     {pathToNote.map(current => (
-                        <div key={current.id}
-                             style={{
-                                 overflow: 'hidden',
-                                 textOverflow: 'ellipsis',
-                                 whiteSpace: 'nowrap',
-                                 maxWidth: '30ch'
-                             }}>
-                            {current.content}
-                        </div>
+                        <NoteBreadcrumbLink key={current.id}
+                                            id={current.id}
+                                            content={current.content}/>
                     ))}
                 </Breadcrumbs>
             </div>

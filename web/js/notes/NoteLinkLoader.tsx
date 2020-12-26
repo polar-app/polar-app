@@ -18,3 +18,7 @@ export function useNoteLinkLoader() {
     }, [historyRef]);
 
 }
+
+export function useNoteLink(target: NoteTargetStr) {
+    return '/apps/stories/notes/' + target
+}
