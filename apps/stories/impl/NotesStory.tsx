@@ -11,6 +11,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import {CKEditor5NotesGlobalCSS} from "../../../web/js/notes/CKEditor5NotesGlobalCSS";
 import {INote, NotesStoreProvider, useNotesStore} from '../../../web/js/notes/NotesStore2';
 import {MockNotes} from "./MockNotes";
+import { observer } from "mobx-react-lite"
 
 const notes = MockNotes.create();
 
@@ -18,23 +19,21 @@ interface BasicNotesDataSetProps {
     readonly children: JSX.Element;
 }
 
-const NotesStoryDebug = React.memo(() => {
+const NotesStoryDebug = observer(() => {
 
-    const {index, reverse, active} = useNotesStore();
+    const store = useNotesStore();
 
     return (
         <div>
-            <b>active: </b><br/>
-            <pre>
-            {JSON.stringify(active, null, '  ')}
-            </pre>
+            <b>active: {store.active}</b><br/>
+            <b>root: {store.root}</b><br/>
             <b>index: </b><br/>
             <pre>
-            {JSON.stringify(index, null, '  ')}
+            {JSON.stringify(store.index, null, '  ')}
             </pre>
             <b>reverse: </b><br/>
             <pre>
-            {JSON.stringify(reverse, null, '  ')}
+            {JSON.stringify(store.reverse, null, '  ')}
             </pre>
         </div>
     );

@@ -156,7 +156,6 @@ export class ReverseIndex {
 }
 
 
-
 export class Note implements INote {
 
     @observable private _id: NoteIDStr;
@@ -199,6 +198,7 @@ export class Note implements INote {
 
     constructor(opts: INote) {
 
+
         this._id = opts.id;
         this._parent = opts.parent;
         this._created = opts.created;
@@ -209,6 +209,7 @@ export class Note implements INote {
         this._type = opts.type;
 
         makeObservable(this)
+
     }
 
     @computed get id() {
@@ -309,47 +310,68 @@ export class Note implements INote {
 
 }
 
+export class NotesStore2 {
+
+    @observable public root: NoteIDStr | undefined;
+
+    constructor() {
+        this.root = undefined;
+        makeObservable(this);
+    }
+
+    @action public setRoot(root: NoteIDStr | undefined) {
+        console.log("FIXME: setting root to: ", root);
+        this.root = root;
+        console.log("FIXME: root is now: " + this.root);
+
+        console.log("FIXME: root is now (derived): " + this.root);
+
+    }
+
+}
+
 // FIXME can I use an observer as a hook?
 
 export class NotesStore {
 
-    @observable private _index: NotesIndex = {};
+    @observable _index: NotesIndex = {};
 
-    @observable private _indexByName: NotesIndexByName = {};
+    @observable _indexByName: NotesIndexByName = {};
 
     /**
      * The reverse index so that we can build references to this node.
      */
-    @observable private _reverse: ReverseIndex = new ReverseIndex();
+    @observable _reverse: ReverseIndex = new ReverseIndex();
 
     /**
      * The current root note
      */
-    @observable private _root: NoteIDStr | undefined;
+    @observable public root: NoteIDStr | undefined;
 
     /**
      * The currently active note.
      */
-    @observable private _active: NoteIDStr | undefined;
+    @observable _active: NoteIDStr | undefined;
 
     /**
      * The position to place the cursor when we jump between items.
      */
-    @observable private _activePos: NavPosition = 'start';
+    @observable _activePos: NavPosition = 'start';
 
     /**
      * The nodes that are expanded.
      */
-    @observable private _expanded: StringSetMap = {};
+    @observable _expanded: StringSetMap = {};
 
 
     /**
      * The nodes that are selected by the user.
      */
-    @observable private _selected: StringSetMap = {};
+    @observable _selected: StringSetMap = {};
 
     constructor() {
-        makeAutoObservable(this);
+        this.root = undefined;
+        makeObservable(this);
     }
 
     @computed get index() {
@@ -368,11 +390,11 @@ export class NotesStore {
         return this._expanded;
     }
 
-    @computed get root() {
-        return this._root;
-    }
+    // @computed get root() {
+    //     return this._root;
+    // }
 
-    @computed get active() {
+    @observable get active() {
         return this._active;
     }
 
@@ -453,14 +475,14 @@ export class NotesStore {
         this._expanded[id] = true;
     }
 
-    @action  public collapse(id: NoteIDStr) {
+    @action public collapse(id: NoteIDStr) {
         delete this._expanded[id];
     }
 
 
     @action public doNav(delta: 'prev' | 'next', pos: NavPosition) {
 
-        if (this._root === undefined) {
+        if (this.root === undefined) {
             console.warn("No currently active root");
             return;
         }
@@ -470,16 +492,16 @@ export class NotesStore {
             return;
         }
 
-        const rootNote = Arrays.first(this.lookup([this._root]));
+        const rootNote = Arrays.first(this.lookup([this.root]));
 
         if (! rootNote) {
-            console.warn("No note in index for ID: ", this._root);
+            console.warn("No note in index for ID: ", this.root);
             return;
         }
 
         const items = [
-            this._root,
-            ...this.computeLinearItemsFromExpansionTree(this._root)
+            this.root,
+            ...this.computeLinearItemsFromExpansionTree(this.root)
         ];
 
         const childIndex = items.indexOf(this._active);
@@ -550,12 +572,19 @@ export class NotesStore {
 
     }
 
-    public setActive(active: NoteIDStr | undefined) {
+    @action public setActive(active: NoteIDStr | undefined) {
         this._active = active;
     }
 
-    public setRoot(root: NoteIDStr | undefined) {
-        this._root = root;
+
+
+    @action public setRoot(root: NoteIDStr | undefined) {
+        console.log("FIXME: setting root to: ", root);
+        this.root = root;
+        console.log("FIXME: root is now: " + this.root);
+
+        console.log("FIXME: root is now (derived): " + this.root);
+
     }
 
     public isExpanded(id: NoteIDStr): boolean {
@@ -563,7 +592,7 @@ export class NotesStore {
     }
 
     // TODO: write a test for this... OH!!!
-    // thjis isn't working because it's not being observed...
+    // this isn't working because it's not being observed...
     @computed public getNoteActivated(id: NoteIDStr): INoteActivated | undefined {
 
         const active = this._active;

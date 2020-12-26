@@ -1,11 +1,32 @@
 import {MockNotes} from "../../../apps/stories/impl/MockNotes";
-import {NotesStore, ReverseIndex} from "./NotesStore2";
+import {NotesStore, NotesStore2, ReverseIndex} from "./NotesStore2";
 import {assertJSON} from "../test/Assertions";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {assert} from 'chai';
+import {isObservable, isObservableProp} from 'mobx';
 
-// TODO: get the reverse index to support json serialization so we can debug it...
+// TODO:
+
+
+
+// - create/split nodes and test this
+// - test observability and make sure we can observe properly
+// - how do we make react hooks that work with observability
+// - indent
+//    - indent when we are at the max level and make sure we don't
+//      try to indent again
+//
+// - doCreateNode should always 'split' even if we're at the beginning or end of
+//   a node because it would yield an empty prefix or suffix and this way the same
+//   code path is used.
+//
+// - the inbound links 'nodes that reference this note' should support computing the
+//   breadcrumbs back to the root note
+//
+// - right now the inbound references for '102' are wrong in the UI
+//
+// -
 
 describe('NotesStore2', function() {
 
@@ -23,6 +44,15 @@ describe('NotesStore2', function() {
         store.doPut(notes);
         return store;
     }
+
+    it("observability", () => {
+
+        const store = new NotesStore2();
+
+        assert.isTrue(isObservable(store));
+        assert.isTrue(isObservableProp(store, 'root'));
+
+    });
 
     it("initial store sanity", () => {
 

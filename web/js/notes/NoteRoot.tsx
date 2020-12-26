@@ -12,7 +12,7 @@ interface IProps {
     readonly target: NoteIDStr;
 }
 
-export const NoteRoot = observer(function NoteRoot(props: IProps) {
+export const NoteRoot = observer((props: IProps) => {
 
     useLifecycleTracer('NoteRoot', {target: props.target});
 
@@ -25,12 +25,18 @@ export const NoteRoot = observer(function NoteRoot(props: IProps) {
     React.useEffect(() => {
         // TODO: do this with one init() operation so it mutates the store just once.
 
+        // FIXME: this won't actually work well because once we add it, as we're surfing
+        // we're going to keep expanding / collapsing the nodes.
+
         if (note) {
+            console.log("FIXME: effect: Setting root to: " + note.id);
             store.setRoot(note.id);
             store.setActive(note.id);
+        } else {
+            console.warn("FIXME: No note for target: ", target);
         }
 
-    }, [note, store])
+    }, [note, store, target])
 
     if (! note) {
         return (
@@ -45,7 +51,7 @@ export const NoteRoot = observer(function NoteRoot(props: IProps) {
             <NoteStyle>
                 <MUIBrowserLinkStyle style={{flexGrow: 1}}>
 
-                    <Note parent={undefined} id={id} isExpanded={true}/>
+                    <Note parent={undefined} id={id}/>
 
                     <NotesInbound id={id}/>
 

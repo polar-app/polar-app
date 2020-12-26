@@ -1,9 +1,8 @@
 import React from "react";
 import {NoteEditor} from "./NoteEditor";
 import {NoteItems} from "./NoteItems";
-import {deepMemo} from "../react/ReactUtils";
 import {NoteBulletButton} from "./NoteBulletButton";
-import {useLifecycleTracer, useLifecycleTracerForHook} from "../hooks/ReactHooks";
+import {useLifecycleTracer} from "../hooks/ReactHooks";
 import {NoteOverflowButton} from "./NoteOverflowButton";
 import {createContextMenu} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
 import {IDocViewerContextMenuOrigin} from "../../../apps/doc/src/DocViewerMenu";
@@ -11,12 +10,12 @@ import {NoteContextMenuItems} from "./NoteContextMenuItems";
 import useTheme from "@material-ui/core/styles/useTheme";
 import { NoteExpandToggleButton } from "./NoteExpandToggleButton";
 import { NoteIDStr, useNotesStore } from "./NotesStore2";
-import { observer } from "mobx-react-lite"
+import {isObservable, isObservableProp} from 'mobx';
+import { observer,  } from "mobx-react-lite"
 
 interface IProps {
     readonly parent: NoteIDStr | undefined;
     readonly id: NoteIDStr;
-    readonly isExpanded?: boolean;
 }
 
 export interface INoteContextMenuOrigin {
@@ -26,13 +25,19 @@ export interface INoteContextMenuOrigin {
 export const [NoteContextMenu, useNoteContextMenu]
     = createContextMenu<IDocViewerContextMenuOrigin>(NoteContextMenuItems);
 
-export const NoteInner = observer(function NoteInner(props: IProps) {
+export const NoteInner = observer((props: IProps) => {
 
     useLifecycleTracer('NoteInner', {id: props.id});
 
     const {id} = props;
 
+
     const store = useNotesStore();
+
+    console.log("FIXME:store is observable:  ", isObservable(store));
+    console.log("FIXME:store root is observable prop:  ", isObservableProp(store, 'root'));
+    console.log("FIXME:store active is observable prop:  ", isObservableProp(store, 'active'));
+
     const theme = useTheme();
     const contextMenuHandlers = useNoteContextMenu();
 
@@ -48,6 +53,8 @@ export const NoteInner = observer(function NoteInner(props: IProps) {
     const items = store.lookup(note.items || []);
 
     const hasItems = items.length > 0;
+
+    console.log(`FIXME: id=${id} , root=${root} === : `, id === root);
 
     return (
         <>
@@ -68,6 +75,8 @@ export const NoteInner = observer(function NoteInner(props: IProps) {
                          marginRight: theme.spacing(0.5)
                      }}>
 
+                    <div>FIXME: root: '{store.root}' </div>
+
                     <NoteOverflowButton id={props.id}/>
 
                     {hasItems && id !== root && (
@@ -82,14 +91,12 @@ export const NoteInner = observer(function NoteInner(props: IProps) {
 
             </div>
 
-            {(expanded || props.isExpanded) && (
+            {(expanded || id === root) && (
                 <NoteItems parent={props.id} notes={items}/>
             )}
         </>
     );
 });
-
-
 
 export const Note = observer(function Note(props: IProps) {
 

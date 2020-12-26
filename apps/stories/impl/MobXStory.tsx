@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { makeObservable, makeAutoObservable, observable, action, computed } from "mobx"
+import { isObservableProp } from "mobx";
 import { observer } from "mobx-react-lite"
 import Button from '@material-ui/core/Button';
 
@@ -15,6 +16,9 @@ interface INoteViewProps {
 
 const NoteView = observer((props: INoteViewProps) => {
     const {note} = props;
+
+    console.log("FIXME: isObservableProp: ", isObservableProp(note, 'text'))
+
     return (
         <div>
 
