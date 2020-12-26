@@ -34,7 +34,15 @@ const InboundNoteRef = observer((props: InboundNoteRefProps) => {
             <div style={{display: 'flex'}}>
                 <Breadcrumbs>
                     {pathToNote.map(current => (
-                        <div key={current.id}>{current.content}</div>
+                        <div key={current.id}
+                             style={{
+                                 overflow: 'hidden',
+                                 textOverflow: 'ellipsis',
+                                 whiteSpace: 'nowrap',
+                                 maxWidth: '30ch'
+                             }}>
+                            {current.content}
+                        </div>
                     ))}
                 </Breadcrumbs>
             </div>
