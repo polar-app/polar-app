@@ -22,7 +22,7 @@ const InboundNoteRef = observer((props: InboundNoteRefProps) => {
     return (
         <div style={{
                  overflow: 'hidden',
-                 whiteSpace: 'nowrap',
+                 // whiteSpace: 'nowrap',
                  // textOverflow: 'ellipsis',
                  // maxWidth: '50ch',
                  display: 'flex'
