@@ -19,20 +19,35 @@ interface InboundNoteRefProps {
 
 const InboundNoteRef = observer((props: InboundNoteRefProps) => {
 
+    const store = useNotesStore();
+
+    const pathToNote = store.pathToNote(props.id);
+
+    // FIXME: the path still doesn't look right
+
     return (
-        <div style={{
-                 overflow: 'hidden',
-                 // whiteSpace: 'nowrap',
-                 // textOverflow: 'ellipsis',
-                 // maxWidth: '50ch',
-                 display: 'flex'
-             }}>
+        <>
 
-            <NoteBulletButton target={props.id}/>
+            <div style={{display: 'flex'}}>
+                {pathToNote.map(current => (
+                    <div>{current.content}</div>
+                ))}
+            </div>
 
-            <NoteEditor parent={undefined} id={props.id} immutable={true}/>
+            <div style={{
+                     overflow: 'hidden',
+                     // whiteSpace: 'nowrap',
+                     // textOverflow: 'ellipsis',
+                     // maxWidth: '50ch',
+                     display: 'flex'
+                 }}>
 
-        </div>
+                <NoteBulletButton target={props.id}/>
+
+                <NoteEditor parent={undefined} id={props.id} immutable={true}/>
+
+            </div>
+        </>
     )
 
 });
