@@ -1,5 +1,5 @@
 import {MockNotes} from "../../../apps/stories/impl/MockNotes";
-import {NotesStore, NotesStore2, ReverseIndex} from "./NotesStore2";
+import {NotesStore, ReverseIndex} from "./NotesStore2";
 import {assertJSON} from "../test/Assertions";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
@@ -47,7 +47,7 @@ describe('NotesStore2', function() {
 
     it("observability", () => {
 
-        const store = new NotesStore2();
+        const store = new NotesStore();
 
         assert.isTrue(isObservable(store));
         assert.isTrue(isObservableProp(store, 'root'));

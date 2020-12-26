@@ -310,26 +310,6 @@ export class Note implements INote {
 
 }
 
-export class NotesStore2 {
-
-    @observable public root: NoteIDStr | undefined;
-
-    constructor() {
-        this.root = undefined;
-        makeObservable(this);
-    }
-
-    @action public setRoot(root: NoteIDStr | undefined) {
-        console.log("FIXME: setting root to: ", root);
-        this.root = root;
-        console.log("FIXME: root is now: " + this.root);
-
-        console.log("FIXME: root is now (derived): " + this.root);
-
-    }
-
-}
-
 // FIXME can I use an observer as a hook?
 
 export class NotesStore {
@@ -346,12 +326,12 @@ export class NotesStore {
     /**
      * The current root note
      */
-    @observable public root: NoteIDStr | undefined;
+    @observable public root: NoteIDStr | undefined = undefined;
 
     /**
      * The currently active note.
      */
-    @observable _active: NoteIDStr | undefined;
+    @observable _active: NoteIDStr | undefined = undefined;
 
     /**
      * The position to place the cursor when we jump between items.
@@ -394,7 +374,7 @@ export class NotesStore {
     //     return this._root;
     // }
 
-    @observable get active() {
+    @computed get active() {
         return this._active;
     }
 
@@ -405,7 +385,7 @@ export class NotesStore {
 
     }
 
-    @computed public lookupReverse(id: NoteIDStr): ReadonlyArray<NoteIDStr> {
+    public lookupReverse(id: NoteIDStr): ReadonlyArray<NoteIDStr> {
         return this._reverse.get(id);
     }
 
@@ -593,7 +573,7 @@ export class NotesStore {
 
     // TODO: write a test for this... OH!!!
     // this isn't working because it's not being observed...
-    @computed public getNoteActivated(id: NoteIDStr): INoteActivated | undefined {
+    public getNoteActivated(id: NoteIDStr): INoteActivated | undefined {
 
         const active = this._active;
         const activePos = this._activePos;
