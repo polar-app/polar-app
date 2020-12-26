@@ -9,13 +9,10 @@ import {isObservable, isObservableProp} from 'mobx';
 // TODO:
 
 
+// - right now the inbound references for '102' are wrong in the UI
 
-// - create/split nodes and test this
-// - test observability and make sure we can observe properly
+
 // - how do we make react hooks that work with observability
-// - indent
-//    - indent when we are at the max level and make sure we don't
-//      try to indent again
 //
 // - doCreateNode should always 'split' even if we're at the beginning or end of
 //   a node because it would yield an empty prefix or suffix and this way the same
@@ -24,9 +21,6 @@ import {isObservable, isObservableProp} from 'mobx';
 // - the inbound links 'nodes that reference this note' should support computing the
 //   breadcrumbs back to the root note
 //
-// - right now the inbound references for '102' are wrong in the UI
-//
-// -
 
 describe('NotesStore2', function() {
 
@@ -160,9 +154,7 @@ describe('NotesStore2', function() {
                     "_items": [
                         "110"
                     ],
-                    "_links": [
-                        "102"
-                    ],
+                    "_links": [],
                     "_type": "named",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
@@ -192,7 +184,7 @@ describe('NotesStore2', function() {
                     "_id": "110",
                     "_items": [],
                     "_links": [
-                        "100"
+                        "102"
                     ],
                     "_parent": "107",
                     "_type": "item",
@@ -218,24 +210,13 @@ describe('NotesStore2', function() {
             "_reverse": {
                 "index": {
                     "102": [
-                        "103",
-                        "104",
+                        "110"
+                    ],
+                    "108": [
                         "105"
                     ],
-                    "105": [
-                        "106",
-                        "109",
-                        "108"
-                    ],
-                    "107": [
-                        "110",
-                        "102"
-                    ],
                     "109": [
-                        "111"
-                    ],
-                    "110": [
-                        "100"
+                        "105"
                     ]
                 }
             },
@@ -248,7 +229,20 @@ describe('NotesStore2', function() {
 
         const store = createStore();
 
-        assertJSON(store.lookupReverse('109'), ['111']);
+        assertJSON(store.lookupReverse('109'), ['105']);
+
+    });
+
+    describe("lookupReverse", () => {
+
+        it("102", () => {
+
+            const store = createStore();
+
+            const references = store.lookupReverse('102');
+            assertJSON(references, ['110']);
+
+        });
 
     });
 
@@ -307,6 +301,16 @@ describe('NotesStore2', function() {
             assertJSON(store.expanded, {
                 "103": true
             });
+
+        });
+
+        it("indent node and try to indent it again to make sure it fails properly", async function() {
+
+            const store = createStore();
+
+            store.doIndent('104')
+
+            assert.equal(store.doIndent('104').error, 'no-sibling');
 
         });
 
@@ -464,9 +468,7 @@ describe('NotesStore2', function() {
         const store = createStore();
 
         assertJSON(store.lookupReverse('102'), [
-            "103",
-            "104",
-            "105"
+            "110"
         ]);
 
         store.doDelete(['102']);

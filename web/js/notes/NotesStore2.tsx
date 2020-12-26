@@ -398,16 +398,13 @@ export class NotesStore {
                 this._indexByName[inote.content] = note.id;
             }
 
-            const outboundNodeIDs = [
-                ...(inote.items || []),
-                ...(inote.links || []),
-            ]
+            // const outboundNodeIDs = [
+            //     ...(inote.items || []),
+            //     ...(inote.links || []),
+            // ]
 
-            for (const outboundNodeID of outboundNodeIDs) {
-                const inbound = this.lookupReverse(outboundNodeID);
-
-                this._reverse.add(note.id, outboundNodeID);
-
+            for (const link of note.links) {
+                this._reverse.add(link, note.id);
             }
 
         }

@@ -112,7 +112,7 @@ export namespace MockNotes {
                 updated: now,
                 content: "Germany",
                 type: 'named',
-                links: ['102'],
+                links: [],
                 items: [
                     '110'
                 ]
@@ -125,7 +125,7 @@ export namespace MockNotes {
                 content: 'Germany Germany (German: Deutschland, German pronunciation: [ˈdɔʏtʃlant]), officially the Federal Republic of Germany (German: Bundesrepublik Deutschland, About this soundlisten),[e] is a country in Central and Western Europe and one of the major participants of [[World War II]]',
                 type: 'item',
                 links: [
-                    '100'
+                    '102'
                 ],
                 items: []
             }
