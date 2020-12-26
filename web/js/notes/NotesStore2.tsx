@@ -648,6 +648,9 @@ export class NotesStore {
 
         }
 
+        this._active = newNote.id;
+        this._activePos = 'start';
+
     }
 
     /**
