@@ -439,6 +439,36 @@ describe('NotesStore2', function() {
 
     });
 
+    describe("mergeNotes", () => {
+
+
+        it("basic merge", () => {
+
+            const store = createStore()
+
+            // merge 103 and 104
+
+            TestingTime.forward(1000);
+
+            store.mergeNotes('103', '104');
+
+            assert.isUndefined(store.getNote('104'));
+
+            assertJSON(store.getNote('103'), {
+                "_content": "[Lasted](https://www.example.com) from 1939 to 1945Axis Powers: Germany, Italy, Japan",
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_id": "103",
+                "_items": [],
+                "_links": [],
+                "_parent": "102",
+                "_type": "item",
+                "_updated": "2012-03-02T11:38:50.321Z"
+            });
+
+        });
+
+    });
+
     describe("Notes", () => {
 
         it("setContent", () => {
