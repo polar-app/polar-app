@@ -47,15 +47,33 @@ export class NoteEditorMutator implements INoteEditorMutator {
 
     public setCursorPosition(offset: number | 'before' | 'end') {
 
-        console.log("FIXME: setCursorPosition: ", offset);
-
         const doc = this.editor.model.document;
 
         // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_document-Document.html#function-getRoot
         const root = doc.getRoot();
 
         this.editor.model.change((writer: IWriter) => {
-            writer.setSelection(root, offset)
+
+            if (typeof offset === 'number') {
+
+                const doc = this.editor.model.document;
+
+                const root = doc.getRoot();
+
+                this.editor.model.change((writer) => {
+
+                    const position = writer.createPositionFromPath(root, [0, offset])
+
+                    const range = writer.createRange(position, position);
+
+                    writer.setSelection(range);
+
+                });
+
+            } else {
+                writer.setSelection(root, offset)
+            }
+
         });
 
     }

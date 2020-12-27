@@ -11,6 +11,7 @@ import {INote} from "./INote";
 import {ReverseIndex} from "./ReverseIndex";
 import {Note} from "./Note";
 import {INoteEditorMutator} from "./NoteEditorMutator";
+import {MarkdownContentEscaper} from "../MarkdownContentEscaper";
 
 export type NoteIDStr = IDStr;
 export type NoteNameStr = string;
@@ -454,6 +455,8 @@ export class NotesStore {
             return 'incompatible-note-types';
         }
 
+        const initialTargetContent = targetNote.content;
+
         targetNote.setContent(targetNote.content + sourceNote.content);
         targetNote.setItems([...targetNote.items, ...sourceNote.items]);
         targetNote.setLinks([...targetNote.links, ...sourceNote.links]);
@@ -472,13 +475,18 @@ export class NotesStore {
         // *** now update the editor so it's setup correctly
 
         const editor = this.getNoteEditorMutator(target);
-        editor.focus();
 
-        editor.setCursorPosition('end');
+        function computeTextOffset() {
+            const div = document.createElement('div');
+            const html = MarkdownContentEscaper.escape(initialTargetContent);
+            div.innerHTML = html;
+            return div.innerText.length;
+        }
+
         editor.setData(targetNote.content);
-        // FIXME setData reset the cursor to teh beginning...
-        // we should jupm the cursor to the end, get the position, set the Data,
-        // then set the position ... bu tthat might not work if the nodes are different
+        editor.setCursorPosition(computeTextOffset());
+
+        editor.focus();
 
         return undefined;
 
