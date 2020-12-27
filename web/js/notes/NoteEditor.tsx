@@ -198,6 +198,8 @@ interface INoteEditorActivatorProps {
  */
 const NoteEditorActivator = observer(function NoteEditorActivator(props: INoteEditorActivatorProps) {
 
+    const DEFAULT_ACTIVATED = true;
+
     useLifecycleTracer('NoteEditorActivator', {id: props.id});
 
     const {onEditor, onChange, id, immutable} = props;
@@ -205,7 +207,7 @@ const NoteEditorActivator = observer(function NoteEditorActivator(props: INoteEd
     const store = useNotesStore();
 
     const noteActivated = store.getNoteActivated(props.id);
-    const [, setActivated, activatedRef] = useStateRef(false);
+    const [, setActivated, activatedRef] = useStateRef(DEFAULT_ACTIVATED);
 
     const escaper = MarkdownContentEscaper;
 

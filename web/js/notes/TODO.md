@@ -8,6 +8,10 @@
       in preview mode.  
 
 
+    - I might want to NOT do the ckeditor auto-activation for now to just get it to work 
+      and then build an auto-activation system later but hopefully make it completely 
+      transparent when I do it. 
+
 # New MobX store notes
 
     - It's better to think of this as multiple trees, but with links between them via:
