@@ -625,8 +625,9 @@ export class NotesStore {
         }
 
         const parentNote = this._index[note.parent];
+        const itemIdx = parentNote.items.indexOf(id)
 
-        return parentNote.items.indexOf(id) > 0;
+        return itemIdx > 0;
 
     }
 

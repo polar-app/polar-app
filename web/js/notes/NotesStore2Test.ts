@@ -439,8 +439,26 @@ describe('NotesStore2', function() {
 
     });
 
-    describe("mergeNotes", () => {
+    describe("canMerge", () => {
 
+        it("mergeable", () => {
+
+            const store = createStore()
+
+            assert.isTrue(store.canMerge('104'));
+
+        });
+
+        it("unmergeable", () => {
+
+            const store = createStore()
+
+            assert.isFalse(store.canMerge('103'));
+
+        });
+    });
+
+    describe("mergeNotes", () => {
 
         it("basic merge", () => {
 
