@@ -1,17 +1,20 @@
+import IEditor = ckeditor5.IEditor;
+import {computeEditorCursorPosition} from "../editor/UseEditorCursorPosition";
+import {doEditorSplit} from "../editor/UseEditorSplitter";
 
-export type ICursorPosition = 'start' | 'end' | 'within';
+export type CursorPosition = 'start' | 'end' | 'within';
 
-interface IEditorSplit {
+export interface IEditorSplit {
     readonly prefix: string;
     readonly suffix: string;
 }
 
-interface INoteEditor {
+export interface INoteEditor {
 
     /**
      * The the position of the cursor in the editor.
      */
-    readonly getCursorPosition: () => ICursorPosition;
+    readonly getCursorPosition: () => CursorPosition;
 
     /**
      * Split the editor at the cursor with a prefix of before and after the
@@ -28,5 +31,46 @@ interface INoteEditor {
 
 
 export class NoteEditor {
+
+    constructor(private readonly editor: IEditor) {
+
+    }
+
+    public getCursorPosition(): CursorPosition {
+        return computeEditorCursorPosition(this.editor);
+    }
+
+    public setData(data: string): void {
+        this.editor.setData(data);
+    }
+
+    public split(): IEditorSplit {
+        return doEditorSplit(this.editor);
+    }
+
+}
+
+export class MockNoteEditor implements INoteEditor {
+
+    private cursorPosition: CursorPosition = 'start';
+
+    private data: string = "";
+
+    public getCursorPosition(): CursorPosition {
+        return this.cursorPosition;
+    }
+
+    public setData(data: string): void {
+        this.data = data;
+    }
+
+    public split(): IEditorSplit {
+
+        return {
+            prefix: '',
+            suffix: this.data
+        };
+
+    }
 
 }

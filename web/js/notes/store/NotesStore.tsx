@@ -10,6 +10,7 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {INote} from "./INote";
 import {ReverseIndex} from "./ReverseIndex";
 import {Note} from "./Note";
+import {INoteEditor} from "./NoteEditor";
 
 export type NoteIDStr = IDStr;
 export type NoteNameStr = string;
@@ -84,7 +85,10 @@ export interface INoteMerge {
 }
 
 
+
 export class NotesStore {
+
+    @observable _noteEditors: {[id: string]: INoteEditor} = {}
 
     @observable _index: NotesIndex = {};
 
@@ -753,6 +757,18 @@ export class NotesStore {
 
         return result.reverse();
 
+    }
+
+    @observable public getNoteEditor(id: NoteIDStr): INoteEditor | undefined {
+        return this._noteEditors[id] || undefined;
+    }
+
+    @action public setNoteEditor(id: NoteIDStr, editor: INoteEditor) {
+        return this._noteEditors[id] = editor;
+    }
+
+    @action public clearNoteEditor(id: NoteIDStr) {
+        delete this._noteEditors[id];
     }
 
 }
