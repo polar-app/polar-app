@@ -393,7 +393,7 @@ export class NotesStore {
         return this._reverse.get(id);
     }
 
-    public doPut(notes: ReadonlyArray<INote>, opts: DoPutOpts = {}) {
+    @action public doPut(notes: ReadonlyArray<INote>, opts: DoPutOpts = {}) {
 
         for (const inote of notes) {
 
@@ -768,7 +768,7 @@ export class NotesStore {
 
     }
 
-    public doDelete(notes: ReadonlyArray<NoteIDStr>) {
+    @action public doDelete(notes: ReadonlyArray<NoteIDStr>) {
 
         if (notes.length === 0) {
             return;
