@@ -1,7 +1,7 @@
 
 import {IDStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {NoteIDStr} from "./store/NotesStore";
+import {NoteIDStr} from "./store/NotesStore0";
 import {NoteTargetStr} from "./NoteLinkLoader";
 
 export type BlockIDStr = IDStr;
