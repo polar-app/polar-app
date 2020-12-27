@@ -7,7 +7,7 @@ import IIterable = ckeditor5.IIterable;
 import {useEditorCursorPosition} from "./editor/UseEditorCursorPosition";
 import { useNoteNavigationEnterHandler } from './NoteNavigationEnter';
 import {useLifecycleTracer} from "../hooks/ReactHooks";
-import {NoteIDStr, useNotesStore} from "./store/NotesStore2";
+import {NoteIDStr, useNotesStore} from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
 import {useNoteActivation} from "./NoteActivation";
 

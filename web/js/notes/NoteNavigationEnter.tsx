@@ -4,7 +4,7 @@ import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 import {useEditorCursorPosition} from "./editor/UseEditorCursorPosition";
 import {useEditorSplitter} from "./editor/UseEditorSplitter";
 import { useEditorSetContent } from "./editor/UseEditorSetContent";
-import {NewNotePosition, NoteIDStr, useNotesStore } from "./store/NotesStore2";
+import {NewNotePosition, NoteIDStr, useNotesStore } from "./store/NotesStore";
 
 interface IOpts {
     readonly parent: NoteIDStr | undefined;

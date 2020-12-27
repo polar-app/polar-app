@@ -10,7 +10,7 @@ import {useEditorStore} from "./EditorStoreProvider";
 import {NoteActionSelections} from "./NoteActionSelections";
 import IEventData = ckeditor5.IEventData;
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
-import {NoteIDStr} from "./store/NotesStore2";
+import {NoteIDStr} from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
 
 export interface ICommand {

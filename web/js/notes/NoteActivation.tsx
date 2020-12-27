@@ -1,4 +1,4 @@
-import {NoteIDStr, useNotesStore} from "./store/NotesStore2";
+import {NoteIDStr, useNotesStore} from "./store/NotesStore";
 import {useLifecycleTracer} from "../hooks/ReactHooks";
 import {useEditorStore} from "./EditorStoreProvider";
 import * as React from "react";

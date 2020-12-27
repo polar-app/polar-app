@@ -9,7 +9,7 @@ import {IDocViewerContextMenuOrigin} from "../../../apps/doc/src/DocViewerMenu";
 import {NoteContextMenuItems} from "./NoteContextMenuItems";
 import useTheme from "@material-ui/core/styles/useTheme";
 import { NoteExpandToggleButton } from "./NoteExpandToggleButton";
-import { NoteIDStr, useNotesStore } from "./store/NotesStore2";
+import { NoteIDStr, useNotesStore } from "./store/NotesStore";
 import {isObservable, isObservableProp} from 'mobx';
 import { observer,  } from "mobx-react-lite"
 

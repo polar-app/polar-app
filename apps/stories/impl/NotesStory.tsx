@@ -9,7 +9,7 @@ import HelpIcon from '@material-ui/icons/Help';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import {CKEditor5NotesGlobalCSS} from "../../../web/js/notes/CKEditor5NotesGlobalCSS";
-import {INote, NotesStoreProvider, useNotesStore} from '../../../web/js/notes/store/NotesStore2';
+import {INote, NotesStoreProvider, useNotesStore} from '../../../web/js/notes/store/NotesStore';
 import {MockNotes} from "./MockNotes";
 import { observer } from "mobx-react-lite"
 
