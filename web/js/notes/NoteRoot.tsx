@@ -4,8 +4,8 @@ import {NotesInbound} from "./NotesInbound";
 import { Note } from "./Note";
 import { NoteStyle } from "./NoteStyle";
 import {useLifecycleTracer} from "../hooks/ReactHooks";
-import { NoteIDStr, NotesStoreProvider } from "./NotesStore2";
-import { useNotesStore } from "./NotesStore2";
+import { NoteIDStr, NotesStoreProvider } from "./store/NotesStore2";
+import { useNotesStore } from "./store/NotesStore2";
 import { observer } from "mobx-react-lite"
 
 interface IProps {

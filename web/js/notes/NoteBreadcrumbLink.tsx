@@ -1,5 +1,5 @@
 import * as React from "react";
-import {NoteIDStr} from "./NotesStore2";
+import {NoteIDStr} from "./store/NotesStore2";
 import {NoteLink} from "./NoteLink";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";

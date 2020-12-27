@@ -1,6 +1,6 @@
-import {MockNotes} from "../../../apps/stories/impl/MockNotes";
+import {MockNotes} from "../../../../apps/stories/impl/MockNotes";
 import {Note, NotesStore, ReverseIndex} from "./NotesStore2";
-import {assertJSON} from "../test/Assertions";
+import {assertJSON} from "../../test/Assertions";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {assert} from 'chai';

@@ -4,7 +4,7 @@ import Box from '@material-ui/core/Box';
 import { UL } from './UL';
 import {NoteBulletButton} from "./NoteBulletButton";
 import {NoteEditor} from "./NoteEditor";
-import {NoteIDStr, useNotesStore } from './NotesStore2';
+import {NoteIDStr, useNotesStore } from './store/NotesStore2';
 import { observer } from "mobx-react-lite"
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import {NoteBreadcrumbLink} from "./NoteBreadcrumbLink";

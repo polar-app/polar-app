@@ -1,10 +1,10 @@
 import * as React from "react";
-import {createReactiveStore} from "../react/store/ReactiveStore";
+import {createReactiveStore} from "../../react/store/ReactiveStore";
 import { makeObservable, makeAutoObservable, observable, action, computed } from "mobx"
 import { IDStr } from "polar-shared/src/util/Strings";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Arrays} from "polar-shared/src/util/Arrays";
-import {NoteTargetStr} from "./NoteLinkLoader";
+import {NoteTargetStr} from "../NoteLinkLoader";
 import {isPresent} from "polar-shared/src/Preconditions";
 import { Hashcodes } from "polar-shared/src/util/Hashcodes";
 

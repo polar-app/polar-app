@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useHistory} from "react-router-dom";
 import {useRefValue} from "../hooks/ReactHooks";
-import {NoteNameStr, NoteIDStr} from "./NotesStore2";
+import {NoteNameStr, NoteIDStr} from "./store/NotesStore2";
 
 export type NoteTargetStr = NoteIDStr | NoteNameStr;
 

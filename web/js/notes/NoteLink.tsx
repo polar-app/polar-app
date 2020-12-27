@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {NoteIDStr} from "./NotesStore2";
+import {NoteIDStr} from "./store/NotesStore2";
 import {useNoteLink} from "./NoteLinkLoader";
 import {Link} from "react-router-dom";
 

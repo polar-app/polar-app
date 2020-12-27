@@ -1,7 +1,7 @@
 import React from "react";
 import {ActionMenuItemProvider, IActionMenuItem, NoteActionMenu} from "./NoteActionMenu";
 import { deepMemo } from "../react/ReactUtils";
-import {NoteIDStr, useNotesStore} from "./NotesStore2";
+import {NoteIDStr, useNotesStore} from "./store/NotesStore2";
 import { observer } from "mobx-react-lite"
 
 function useItemsProvider(): ActionMenuItemProvider {

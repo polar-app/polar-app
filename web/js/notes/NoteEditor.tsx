@@ -12,7 +12,7 @@ import {useLifecycleTracer, useStateRef} from "../hooks/ReactHooks";
 import {MarkdownContentEscaper} from "./MarkdownContentEscaper";
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 import IEventData = ckeditor5.IEventData;
-import {NoteIDStr, useNotesStore} from "./NotesStore2";
+import {NoteIDStr, useNotesStore} from "./store/NotesStore2";
 import { observer } from "mobx-react-lite"
 
 interface ILinkNavigationEvent {

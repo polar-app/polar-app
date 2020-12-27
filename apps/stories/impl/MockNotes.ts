@@ -1,4 +1,4 @@
-import {INote} from "../../../web/js/notes/NotesStore2";
+import {INote} from "../../../web/js/notes/store/NotesStore2";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 export namespace MockNotes {
