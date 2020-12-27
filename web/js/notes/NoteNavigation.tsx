@@ -152,6 +152,17 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
 
                 }
 
+
+                if (editorCursorPosition === 'start') {
+
+                    // we're at the beginning of a note...
+
+                    if (store.canMerge(props.id)) {
+                        // FIXME the store needs nextSibling and prevSibling methods..
+                    }
+
+                }
+
                 // FIXME detect if a note is mergable.
 
                 break;

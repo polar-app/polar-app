@@ -432,6 +432,22 @@ export class NotesStore {
         return this._index[id] || undefined;
     }
 
+    public getParent(id: NoteIDStr): Note | undefined {
+
+        const note = this._index[id];
+
+        if (note) {
+
+            if (note.parent) {
+                return this._index[note.parent] || undefined;
+            }
+
+        }
+
+        return undefined;
+
+    }
+
     public getNoteByTarget(target: NoteIDStr | NoteTargetStr): Note | undefined {
 
         const noteByID = this._index[target];
