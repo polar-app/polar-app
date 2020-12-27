@@ -3,13 +3,11 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { useEditorStore } from './EditorStoreProvider';
 import IEventData = ckeditor5.IEventData;
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
-import IWriter = ckeditor5.IWriter;
 import IIterable = ckeditor5.IIterable;
 import {useEditorCursorPosition} from "./editor/UseEditorCursorPosition";
 import { useNoteNavigationEnterHandler } from './NoteNavigationEnter';
 import {useLifecycleTracer} from "../hooks/ReactHooks";
-import {INoteActivated, NoteIDStr, useNotesStore} from "./NotesStore2";
-import { autorun } from "mobx"
+import {NoteIDStr, useNotesStore} from "./NotesStore2";
 import { observer } from "mobx-react-lite"
 import {useNoteActivation} from "./NoteActivation";
 
