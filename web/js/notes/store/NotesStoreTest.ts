@@ -1,10 +1,11 @@
 import {MockNotes} from "../../../../apps/stories/impl/MockNotes";
-import {Note, NotesStore, ReverseIndex} from "./NotesStore";
+import {Note, NotesStore} from "./NotesStore";
 import {assertJSON} from "../../test/Assertions";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {assert} from 'chai';
 import {isObservable, isObservableProp} from 'mobx';
+import {ReverseIndex} from "./ReverseIndex";
 
 // TODO:
 

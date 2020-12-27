@@ -8,6 +8,7 @@ import {NoteTargetStr} from "../NoteLinkLoader";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {INote} from "./INote";
+import {ReverseIndex} from "./ReverseIndex";
 
 export type NoteIDStr = IDStr;
 export type NoteNameStr = string;
@@ -79,50 +80,6 @@ export interface IMutation<E, V> {
 export interface INoteMerge {
     readonly source: NoteIDStr;
     readonly target: NoteIDStr;
-}
-
-export class ReverseIndex {
-
-    @observable private index: {[key: string]: NoteIDStr[]} = {};
-
-    @computed get(target: NoteIDStr): ReadonlyArray<NoteIDStr> {
-        return this.index[target] || [];
-    }
-
-    @action add(target: NoteIDStr, inbound: NoteIDStr) {
-
-        const current = this.index[target];
-
-        if (current) {
-            current.push(inbound);
-        } else {
-            this.index[target] = [inbound];
-        }
-
-    }
-
-    @action remove(target: NoteIDStr, inbound: NoteIDStr) {
-
-        const current = this.index[target];
-
-        if (current) {
-
-            const idx = current.indexOf(inbound);
-
-            if (idx > -1) {
-                // this mutates the array under us and I don't necessarily like that
-                // but it's a copy of the original to begin with.
-                current.splice(idx, 1);
-            }
-
-            if (current.length === 0) {
-                delete this.index[target];
-            }
-
-        }
-
-    }
-
 }
 
 
