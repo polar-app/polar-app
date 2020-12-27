@@ -23,6 +23,8 @@ export function useNoteActivation(id: NoteIDStr) {
 
     const jumpToEditorRootPosition = React.useCallback((offset: number | 'before' | 'end') => {
 
+        console.log("FIXME: jumping to editor position: ", offset);
+
         if (!editor) {
             return;
         }
@@ -58,18 +60,18 @@ export function useNoteActivation(id: NoteIDStr) {
 
                 if (!hasFocusRef.current) {
 
-                    editorFocus();
-
-                    console.log("Focusing editor for note: " + id, noteActivated.note.content)
-
-                    switch (noteActivated.activePos) {
-                        case "start":
-                            jumpToEditorStartPosition();
-                            break;
-                        case "end":
-                            jumpToEditorEndPosition();
-                            break;
-                    }
+                    // editorFocus();
+                    //
+                    // console.log("Focusing editor for note: " + id, noteActivated.note.content)
+                    //
+                    // switch (noteActivated.activePos) {
+                    //     case "start":
+                    //         jumpToEditorStartPosition();
+                    //         break;
+                    //     case "end":
+                    //         jumpToEditorEndPosition();
+                    //         break;
+                    // }
 
                     hasFocusRef.current = true;
 

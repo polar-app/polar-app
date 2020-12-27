@@ -47,6 +47,8 @@ export class NoteEditorMutator implements INoteEditorMutator {
 
     public setCursorPosition(offset: number | 'before' | 'end') {
 
+        console.log("FIXME: setCursorPosition: ", offset);
+
         const doc = this.editor.model.document;
 
         // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_document-Document.html#function-getRoot
