@@ -483,7 +483,7 @@ export class NotesStore {
             return div.innerText.length;
         }
 
-        editor.setData(targetNote.content);
+        editor.setData(MarkdownContentEscaper.escape(targetNote.content));
         editor.setCursorPosition(computeTextOffset());
 
         editor.focus();
