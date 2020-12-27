@@ -5,7 +5,8 @@ import {UL} from "./UL";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
-import {INote, NoteIDStr} from "./store/NotesStore";
+import {NoteIDStr} from "./store/NotesStore";
+import {INote} from "./store/INote";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
