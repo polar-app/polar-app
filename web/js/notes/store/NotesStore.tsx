@@ -473,8 +473,12 @@ export class NotesStore {
 
         const editor = this.getNoteEditorMutator(target);
         editor.focus();
+
         editor.setCursorPosition('end');
         editor.setData(targetNote.content);
+        // FIXME setData reset the cursor to teh beginning...
+        // we should jupm the cursor to the end, get the position, set the Data,
+        // then set the position ... bu tthat might not work if the nodes are different
 
         return undefined;
 

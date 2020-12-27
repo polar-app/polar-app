@@ -273,6 +273,8 @@ declare namespace ckeditor5 {
         readonly data: string;
     }
 
+    export type PositionPath = [number, number];
+
     // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_writer-Writer.html
     export interface IWriter {
 
@@ -285,11 +287,13 @@ declare namespace ckeditor5 {
 
         readonly remove: (itemOrRange: IRange) => void;
 
-        readonly setSelection: (root: IRootElement, position: number | 'before' | 'after' | 'end' | 'on' | 'in') => void;
+        readonly setSelection: (root: IRootElement | IRange, position?: number | 'before' | 'after' | 'end' | 'on' | 'in') => void;
 
         readonly createDocumentFragment: () => IDocumentFragment;
 
         readonly split: (position: IPosition) => void;
+
+        readonly createPositionFromPath: (root: IRootElement, path: PositionPath) => IPosition;
 
     }
 

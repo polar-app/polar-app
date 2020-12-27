@@ -19,15 +19,41 @@ export const CKEditor5Story = () => {
 
         const editor = editorRef.current!;
 
-        setTimeout(() => {
 
-            const {prefix, suffix} = doEditorSplit(editor);
+        const doc = editor.model.document;
 
-            console.log("prefix: ", prefix);
-            console.log("suffix: ", suffix);
+        console.log("FIXME: path: " + (doc.selection.getFirstPosition() as any).path);
 
-        }, 2000);
+        editor.setData("hello world <b> this is a test</b>");
 
+        //
+        // // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_document-Document.html#function-getRoot
+        const root = doc.getRoot();
+
+        editor.model.change((writer) => {
+
+            const position = writer.createPositionFromPath(root, [0, 15])
+
+            const range = writer.createRange(position, position);
+
+            // writer.setSelection(root, 1)
+            writer.setSelection(range);
+
+        });
+
+        editor.editing.view.focus();
+
+
+
+        // setTimeout(() => {
+        //
+        //     const {prefix, suffix} = doEditorSplit(editor);
+        //
+        //     console.log("prefix: ", prefix);
+        //     console.log("suffix: ", suffix);
+        //
+        // }, 2000);
+        //
 
         // extractContents();
 
@@ -62,7 +88,7 @@ export const CKEditor5Story = () => {
 
                 <CKEditor5GlobalCss/>
 
-                <CKEditor5BalloonEditor content='this is the content'
+                <CKEditor5BalloonEditor content='this is the content and this is <b>bold</b> content'
                                         onChange={NULL_FUNCTION}
                                         onEditor={handleEditor}/>
 
