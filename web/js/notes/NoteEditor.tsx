@@ -15,6 +15,7 @@ import IEventData = ckeditor5.IEventData;
 import {NoteIDStr, useNotesStore} from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
 import IEditor = ckeditor5.IEditor;
+import {NoteEditorMutator} from "./store/NoteEditorMutator";
 
 interface ILinkNavigationEvent {
     readonly abortEvent: () => void;
@@ -280,7 +281,7 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
     const handleEditor = React.useCallback((editor: IEditor) => {
         setEditor(editor);
-        store.setNoteEditorMutator(id, new NoteEditor(editor));
+        store.setNoteEditorMutator(id, new NoteEditorMutator(editor));
     }, [id, setEditor, store]);
 
     if (! note) {
@@ -296,7 +297,7 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
                              content={content || ''}
                              onChange={handleChange}
                              immutable={props.immutable}
-                             onEditor={setEditor}/>
+                             onEditor={handleEditor}/>
     );
 
 });

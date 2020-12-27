@@ -466,8 +466,7 @@ export class NotesStore {
         // FIXME: we can use the markdown to html converter to determine WHERE the nodes shold
         // be offset.. joined.
         this._active = targetNote.id;
-        this._activePos = 'start';
-
+        this._activePos = undefined;
 
         // *** now update the editor so it's setup correctly
 
