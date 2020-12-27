@@ -25,8 +25,14 @@ export type NoteContent = string;
 
 /**
  * The position to place the cursor when jumping between items.
+ *
+ * When 'start' jump to the start.
+ *
+ * When 'end' jump to the end of the note.
+ *
+ * When undefined, make no jump.
  */
-export type NavPosition = 'start' | 'end';
+export type NavPosition = 'start' | 'end' | undefined;
 
 export interface INoteActivated {
     readonly note: INote;
@@ -563,6 +569,11 @@ export class NotesStore {
 
     @action public setActive(active: NoteIDStr | undefined) {
         this._active = active;
+    }
+
+    @action public setActiveWithPosition(active: NoteIDStr | undefined, activePos: NavPosition) {
+        this._active = active;
+        this._activePos = activePos;
     }
 
     @action public setRoot(root: NoteIDStr | undefined) {

@@ -44,7 +44,7 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
     // TODO move to editor hook
 
     const handleClick = React.useCallback(() => {
-        store.setActive(props.id);
+        store.setActiveWithPosition(props.id, undefined);
     }, [props.id, store]);
 
     const handleEditorSelection = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
