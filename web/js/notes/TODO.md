@@ -1,11 +1,19 @@
+# New TODO since MobX adopted:
+
+    - once the root is mounted, all new nodes should become editors by default
+        - it would be idea if we could hide all the details of this stuff and put it 
+          in one place
+          
+    - editor activation isn't working because the editor isn't mounted and it's just 
+      in preview mode.  
+
+
 # New MobX store notes
 
-    - The inbound links needs to have the full path to the note
     - It's better to think of this as multiple trees, but with links between them via:
         - block embeds
         - named nodes 
         - tags (just a form of node named node)
-        - 
     - nodes MUST have a single parent or else they are roots... 
 
 # Key Actions and Behavior that need to be tested

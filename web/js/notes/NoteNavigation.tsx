@@ -74,6 +74,8 @@ function useNoteActivation(id: NoteIDStr) {
 
                     editorFocus();
 
+                    console.log("Focusing editor for note: " + id, noteActivated.note.content)
+
                     switch (noteActivated.activePos) {
                         case "start":
                             jumpToEditorStartPosition();
