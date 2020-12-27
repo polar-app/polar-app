@@ -157,8 +157,10 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
 
                     // we're at the beginning of a note...
 
-                    if (store.canMerge(props.id)) {
-                        // FIXME the store needs nextSibling and prevSibling methods..
+                    const mergeTarget = store.canMerge(props.id);
+
+                    if (mergeTarget) {
+                        store.mergeNotes(mergeTarget.target, mergeTarget.source);
                     }
 
                 }
