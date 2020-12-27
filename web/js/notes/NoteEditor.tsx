@@ -14,6 +14,7 @@ import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 import IEventData = ckeditor5.IEventData;
 import {NoteIDStr, useNotesStore} from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
+import IEditor = ckeditor5.IEditor;
 
 interface ILinkNavigationEvent {
     readonly abortEvent: () => void;
@@ -276,6 +277,11 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
             note.setContent(content);
         }
     }, [note]);
+
+    const handleEditor = React.useCallback((editor: IEditor) => {
+        setEditor(editor);
+        store.setNoteEditorMutator(id, new NoteEditor(editor));
+    }, [id, setEditor, store]);
 
     if (! note) {
         // this can happen when a note is deleted but the component hasn't yet

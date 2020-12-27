@@ -10,7 +10,7 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {INote} from "./INote";
 import {ReverseIndex} from "./ReverseIndex";
 import {Note} from "./Note";
-import {INoteEditor} from "./NoteEditor";
+import {INoteEditorMutator} from "./NoteEditorMutator";
 
 export type NoteIDStr = IDStr;
 export type NoteNameStr = string;
@@ -88,7 +88,7 @@ export interface INoteMerge {
 
 export class NotesStore {
 
-    @observable _noteEditors: {[id: string]: INoteEditor} = {}
+    @observable _noteEditors: {[id: string]: INoteEditorMutator} = {}
 
     @observable _index: NotesIndex = {};
 
@@ -468,6 +468,13 @@ export class NotesStore {
         this._active = targetNote.id;
         this._activePos = 'start';
 
+
+        // *** now update the editor so it's setup correctly
+
+        const editor = this.getNoteEditorMutator(target);
+        editor.setCursorPosition('end');
+        editor.setData(targetNote.content);
+
         return undefined;
 
     }
@@ -759,15 +766,15 @@ export class NotesStore {
 
     }
 
-    @observable public getNoteEditor(id: NoteIDStr): INoteEditor {
+    @observable public getNoteEditorMutator(id: NoteIDStr): INoteEditorMutator {
         return this._noteEditors[id];
     }
 
-    @action public setNoteEditor(id: NoteIDStr, editor: INoteEditor) {
+    @action public setNoteEditorMutator(id: NoteIDStr, editor: INoteEditorMutator) {
         return this._noteEditors[id] = editor;
     }
 
-    @action public clearNoteEditor(id: NoteIDStr) {
+    @action public clearNoteEditorMutator(id: NoteIDStr) {
         delete this._noteEditors[id];
     }
 

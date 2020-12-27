@@ -11,7 +11,7 @@ export interface IEditorSplit {
     readonly suffix: string;
 }
 
-export interface INoteEditor {
+export interface INoteEditorMutator {
 
     /**
      * The the position of the cursor in the editor.
@@ -35,7 +35,7 @@ export interface INoteEditor {
 
 }
 
-export class NoteEditor implements INoteEditor {
+export class NoteEditorMutator implements INoteEditorMutator {
 
     constructor(private readonly editor: IEditor) {
 
@@ -72,7 +72,7 @@ export class NoteEditor implements INoteEditor {
 
 }
 
-export class MockNoteEditor implements INoteEditor {
+export class MockNoteEditorMutator implements INoteEditorMutator {
 
     private cursorPosition: CursorPosition = 'start';
 
