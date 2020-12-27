@@ -439,13 +439,35 @@ describe('NotesStore2', function() {
 
     });
 
+
+    describe("prevSibling", () => {
+
+        it("no prev sibling", () => {
+            const store = createStore()
+
+            assert.equal(store.prevSibling('104'), '103')
+        });
+
+        it("has prev sibling", () => {
+            const store = createStore()
+
+            assert.isUndefined(store.prevSibling('103'))
+
+        });
+
+
+    });
+
     describe("canMerge", () => {
 
         it("mergeable", () => {
 
             const store = createStore()
 
-            assert.isTrue(store.canMerge('104'));
+            assertJSON(store.canMerge('104'), {
+                "source": "104",
+                "target": "103"
+            });
 
         });
 
@@ -453,7 +475,7 @@ describe('NotesStore2', function() {
 
             const store = createStore()
 
-            assert.isFalse(store.canMerge('103'));
+            assert.isUndefined(store.canMerge('103'),);
 
         });
     });

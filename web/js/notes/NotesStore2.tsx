@@ -75,6 +75,11 @@ export interface IMutation<E, V> {
     readonly value?: V;
 }
 
+export interface INoteMerge {
+    readonly source: NoteIDStr;
+    readonly target: NoteIDStr;
+}
+
 export interface INote {
 
     readonly id: NoteIDStr;
@@ -448,6 +453,42 @@ export class NotesStore {
 
     }
 
+    private doSibling(id: NoteIDStr, type: 'prev' | 'next'): NoteIDStr | undefined {
+
+        const parent = this.getParent(id);
+
+        if (parent) {
+
+            const idx = parent.items.indexOf(id);
+
+            if (idx !== -1) {
+
+                switch (type) {
+
+                    case "prev":
+                        return Arrays.prevSibling(parent.items, idx);
+                    case "next":
+                        return Arrays.nextSibling(parent.items, idx);
+
+                }
+
+            }
+
+        }
+
+        return undefined;
+
+    }
+
+    public prevSibling(id: NoteIDStr) {
+        return this.doSibling(id, 'prev');
+    }
+
+    public nextSibling(id: NoteIDStr) {
+        return this.doSibling(id, 'next');
+    }
+
+
     public getNoteByTarget(target: NoteIDStr | NoteTargetStr): Note | undefined {
 
         const noteByID = this._index[target];
@@ -629,21 +670,21 @@ export class NotesStore {
     }
 
     /**
-     * Return true if this note can be merged. Meaning it has
-     *
+     * Return true if this note can be merged. Meaning it has a previous sibling
+     * we can merge with.
      */
-    public canMerge(id: NoteIDStr): boolean {
+    public canMerge(id: NoteIDStr): INoteMerge | undefined {
 
-        const note = this._index[id];
+        const prevSibling = this.prevSibling(id);
 
-        if (note.parent === undefined) {
-            return false;
+        if (prevSibling) {
+            return {
+                source: id,
+                target: prevSibling
+            }
         }
 
-        const parentNote = this._index[note.parent];
-        const itemIdx = parentNote.items.indexOf(id)
-
-        return itemIdx > 0;
+        return undefined;
 
     }
 
