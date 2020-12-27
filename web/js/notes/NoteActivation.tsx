@@ -60,18 +60,21 @@ export function useNoteActivation(id: NoteIDStr) {
 
                 if (!hasFocusRef.current) {
 
-                    // editorFocus();
-                    //
-                    // console.log("Focusing editor for note: " + id, noteActivated.note.content)
-                    //
-                    // switch (noteActivated.activePos) {
-                    //     case "start":
-                    //         jumpToEditorStartPosition();
-                    //         break;
-                    //     case "end":
-                    //         jumpToEditorEndPosition();
-                    //         break;
-                    // }
+                    // FIXME: move this to the store so that all manipulation of
+                    // the editors is done there too.
+
+                    editorFocus();
+
+                    console.log("Focusing editor for note: " + id, noteActivated.note.content)
+
+                    switch (noteActivated.activePos) {
+                        case "start":
+                            jumpToEditorStartPosition();
+                            break;
+                        case "end":
+                            jumpToEditorEndPosition();
+                            break;
+                    }
 
                     hasFocusRef.current = true;
 
