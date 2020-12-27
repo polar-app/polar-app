@@ -25,7 +25,7 @@ import {isObservable, isObservableProp} from 'mobx';
 //   code path is used.
 //
 
-describe('NotesStore2', function() {
+describe('NotesStore', function() {
 
     beforeEach(() => {
         TestingTime.freeze()
