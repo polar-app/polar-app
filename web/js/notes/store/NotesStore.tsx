@@ -759,8 +759,8 @@ export class NotesStore {
 
     }
 
-    @observable public getNoteEditor(id: NoteIDStr): INoteEditor | undefined {
-        return this._noteEditors[id] || undefined;
+    @observable public getNoteEditor(id: NoteIDStr): INoteEditor {
+        return this._noteEditors[id];
     }
 
     @action public setNoteEditor(id: NoteIDStr, editor: INoteEditor) {
