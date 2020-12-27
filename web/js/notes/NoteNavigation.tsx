@@ -73,8 +73,6 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
 
     const handleEditorKeyDown = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
 
-        console.log("FIXME: here: ", event.domEvent.key);
-
         function abortEvent() {
             event.domEvent.stopPropagation();
             event.domEvent.preventDefault();

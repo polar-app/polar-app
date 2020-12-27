@@ -241,6 +241,7 @@ const NoteEditorActivator = observer(function NoteEditorActivator(props: INoteEd
         return (
             <CKEditor5BalloonEditor key={props.id}
                                     content={content}
+                                    defaultFocus={props.id === noteActivated?.note.id}
                                     preEscaped={true}
                                     escaper={escaper}
                                     onChange={onChange}

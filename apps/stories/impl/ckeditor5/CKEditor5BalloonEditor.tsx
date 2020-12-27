@@ -24,6 +24,7 @@ interface IProps {
     readonly escaper?: ContentEscaper;
     readonly noToolbar?: boolean;
     readonly preEscaped?: boolean
+    readonly defaultFocus?: boolean;
 }
 
 /**
@@ -215,6 +216,9 @@ export const CKEditor5BalloonEditor = React.memo(function CKEditor5BalloonEditor
                         //     console.log( data );
                         //     stop(); // Works like data.preventDefault() + evt.stop()
                         // });
+                        if (props.defaultFocus) {
+                            editor.editing.view.focus();
+                        }
 
                     } }
                     onChange={ ( event: any, editor: any ) => {
