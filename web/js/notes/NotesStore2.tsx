@@ -565,15 +565,8 @@ export class NotesStore {
         this._active = active;
     }
 
-
-
     @action public setRoot(root: NoteIDStr | undefined) {
-        console.log("FIXME: setting root to: ", root);
         this.root = root;
-        console.log("FIXME: root is now: " + this.root);
-
-        console.log("FIXME: root is now (derived): " + this.root);
-
     }
 
     public isExpanded(id: NoteIDStr): boolean {
@@ -603,10 +596,10 @@ export class NotesStore {
 
     }
 
-    public createNewNote(parent: NoteIDStr,
-                         child: NoteIDStr | undefined,
-                         pos: NewNotePosition,
-                         split?: ISplitNote) {
+    @action public createNewNote(parent: NoteIDStr,
+                                 child: NoteIDStr | undefined,
+                                 pos: NewNotePosition,
+                                 split?: ISplitNote) {
 
         const index = this._index;
 
