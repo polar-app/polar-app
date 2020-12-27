@@ -27,10 +27,11 @@ export interface INoteEditor {
      */
     readonly setData: (data: string) => void;
 
+    readonly focus: () => void;
+
 }
 
-
-export class NoteEditor {
+export class NoteEditor implements INoteEditor {
 
     constructor(private readonly editor: IEditor) {
 
@@ -46,6 +47,10 @@ export class NoteEditor {
 
     public split(): IEditorSplit {
         return doEditorSplit(this.editor);
+    }
+
+    public focus(): void {
+        this.editor.editing.view.focus();
     }
 
 }
@@ -71,6 +76,9 @@ export class MockNoteEditor implements INoteEditor {
             suffix: this.data
         };
 
+    }
+
+    public focus(): void {
     }
 
 }
