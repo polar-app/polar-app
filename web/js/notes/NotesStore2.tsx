@@ -260,6 +260,11 @@ export class Note implements INote {
         this._updated = ISODateTimeStrings.create();
     }
 
+    @action setItems(items: ReadonlyArray<NoteIDStr>) {
+        this._items = [...items];
+        this._updated = ISODateTimeStrings.create();
+    }
+
     @action addItem(id: NoteIDStr, pos?: INewChildPosition) {
 
 
@@ -292,6 +297,11 @@ export class Note implements INote {
         this._items.splice(idx, 1);
         this._updated = ISODateTimeStrings.create();
 
+    }
+
+    @action setLinks(links: ReadonlyArray<NoteIDStr>) {
+        this._links = [...links];
+        this._updated = ISODateTimeStrings.create();
     }
 
     @action addLink(id: NoteIDStr) {
@@ -403,11 +413,6 @@ export class NotesStore {
             if (inote.type === 'named') {
                 this._indexByName[inote.content] = note.id;
             }
-
-            // const outboundNodeIDs = [
-            //     ...(inote.items || []),
-            //     ...(inote.links || []),
-            // ]
 
             for (const link of note.links) {
                 this._reverse.add(link, note.id);
@@ -604,6 +609,51 @@ export class NotesStore {
         } else {
             return undefined;
         }
+
+    }
+
+    /**
+     * Return true if this note can be merged. Meaning it has
+     *
+     */
+    public canMerge(id: NoteIDStr): boolean {
+
+        const note = this._index[id];
+
+        if (note.parent === undefined) {
+            return false;
+        }
+
+        const parentNote = this._index[note.parent];
+
+        return parentNote.items.indexOf(id) > 0;
+
+    }
+
+    @action public mergeNotes(target: NoteIDStr, source: NoteIDStr) {
+
+        const targetNote = this._index[target];
+        const sourceNote = this._index[source];
+
+        if (targetNote.type !== sourceNote.type) {
+            return 'incompatible-note-types';
+        }
+
+        targetNote.setContent(targetNote.content + sourceNote.content);
+        targetNote.setItems([...targetNote.items, ...sourceNote.items]);
+        targetNote.setLinks([...targetNote.links, ...sourceNote.links]);
+
+        this.doDelete([sourceNote.id]);
+
+        // now the target has to become active
+        // FIXME: this is wrong... it should be at the merge point with the new node
+
+        // FIXME: we can use the markdown to html converter to determine WHERE the nodes shold
+        // be offset.. joined.
+        this._active = targetNote.id;
+        this._activePos = 'start';
+
+        return undefined;
 
     }
 

@@ -142,6 +142,8 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
                     return;
                 }
 
+
+
                 // TODO: only do this if there aren't any modifiers I think...
                 if (props.parent !== undefined && store.noteIsEmpty(props.id)) {
 
@@ -149,6 +151,8 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
                     store.doDelete([props.id]);
 
                 }
+
+                // FIXME detect if a note is mergable.
 
                 break;
 
