@@ -11,6 +11,8 @@ const useStyles = makeStyles((theme) =>
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
             maxWidth: '30ch',
+            color: theme.palette.text.secondary,
+            fontSize: '0.8em',
             "& a:link": {
                 textDecoration: 'none'
             },
@@ -38,11 +40,11 @@ export const NoteBreadcrumbLink = React.memo((props: IProps) => {
     const classes = useStyles();
 
     return (
-        <NoteLink id={props.id}
+        <NoteLink target={props.id}
                   className={classes.root}>
 
             {content}
 
         </NoteLink>
-    )
+    );
 });

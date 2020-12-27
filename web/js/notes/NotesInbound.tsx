@@ -42,8 +42,6 @@ const InboundNoteRef = observer((props: InboundNoteRefProps) => {
                      display: 'flex'
                  }}>
 
-                <NoteBulletButton target={props.id}/>
-
                 <NoteEditor parent={undefined} id={props.id} immutable={true}/>
 
             </div>

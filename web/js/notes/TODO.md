@@ -1,16 +1,14 @@
 # New TODO since MobX adopted:
 
-    - once the root is mounted, all new nodes should become editors by default
+    - when I'm splitting and joining nodes it's seems to be sticking a <p> in
+    between then when converting to HTML and not sure why...
+
+    - once the root is mounted, all *new* nodes should become editors by default
         - it would be idea if we could hide all the details of this stuff and put it 
           in one place
           
     - editor activation isn't working because the editor isn't mounted and it's just 
       in preview mode.  
-
-
-    - I might want to NOT do the ckeditor auto-activation for now to just get it to work 
-      and then build an auto-activation system later but hopefully make it completely 
-      transparent when I do it. 
 
 # New MobX store notes
 

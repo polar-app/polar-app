@@ -4,7 +4,7 @@ import {useNoteLink} from "./NoteLinkLoader";
 import {Link} from "react-router-dom";
 
 interface IProps {
-    readonly id: NoteIDStr;
+    readonly target: NoteIDStr;
     readonly style?: React.CSSProperties;
     readonly className?: string;
     readonly children: JSX.Element | string;
@@ -12,7 +12,7 @@ interface IProps {
 
 export const NoteLink = React.memo((props: IProps) => {
 
-    const noteLink = useNoteLink(props.id);
+    const noteLink = useNoteLink(props.target);
 
     return (
         <Link to={noteLink}

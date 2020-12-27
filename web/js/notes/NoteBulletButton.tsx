@@ -4,6 +4,7 @@ import {NoteTargetStr, useNoteLinkLoader} from "./NoteLinkLoader";
 import {NoteButton} from "./NoteButton";
 import {NoteIDStr, useNotesStore} from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
+import { NoteLink } from "./NoteLink";
 
 interface IProps {
     readonly target: NoteIDStr | NoteTargetStr;
@@ -17,10 +18,12 @@ export const NoteBulletButton = observer(function NoteBulletButton(props: IProps
     const disabled = store.root === props.target;
 
     return (
-        <NoteButton onClick={() => noteLinkLoader(props.target)}
-                    disabled={disabled}>
-            <MiddleDot/>
-        </NoteButton>
+        // <NoteLink target={props.target}>
+            <NoteButton onClick={() => noteLinkLoader(props.target)}
+                        disabled={disabled}>
+                <MiddleDot/>
+            </NoteButton>
+        // </NoteLink>
     );
 })
 
