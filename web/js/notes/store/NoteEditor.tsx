@@ -1,6 +1,8 @@
 import IEditor = ckeditor5.IEditor;
 import {computeEditorCursorPosition} from "../editor/UseEditorCursorPosition";
 import {doEditorSplit} from "../editor/UseEditorSplitter";
+import * as React from "react";
+import IWriter = ckeditor5.IWriter;
 
 export type CursorPosition = 'start' | 'end' | 'within';
 
@@ -15,6 +17,8 @@ export interface INoteEditor {
      * The the position of the cursor in the editor.
      */
     readonly getCursorPosition: () => CursorPosition;
+
+    readonly setCursorPosition: (offset: number | 'before' | 'end') => void;
 
     /**
      * Split the editor at the cursor with a prefix of before and after the
@@ -41,6 +45,19 @@ export class NoteEditor implements INoteEditor {
         return computeEditorCursorPosition(this.editor);
     }
 
+    public setCursorPosition(offset: number | 'before' | 'end') {
+
+        const doc = this.editor.model.document;
+
+        // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_document-Document.html#function-getRoot
+        const root = doc.getRoot();
+
+        this.editor.model.change((writer: IWriter) => {
+            writer.setSelection(root, offset)
+        });
+
+    }
+
     public setData(data: string): void {
         this.editor.setData(data);
     }
@@ -65,6 +82,10 @@ export class MockNoteEditor implements INoteEditor {
         return this.cursorPosition;
     }
 
+    public setCursorPosition(offset: number | 'before' | 'end') {
+        // noop for now
+    }
+
     public setData(data: string): void {
         this.data = data;
     }
@@ -79,6 +100,7 @@ export class MockNoteEditor implements INoteEditor {
     }
 
     public focus(): void {
+        // noop
     }
 
 }
