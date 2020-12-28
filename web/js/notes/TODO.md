@@ -1,5 +1,11 @@
 # New TODO since MobX adopted:
 
+    
+
+    - actions no longer work even when I select them.
+        - use the store to select an action...
+        - we have to catch the action menu at the window level...  
+
     - when I'm splitting and joining nodes it's seems to be sticking a <p> in
     between then when converting to HTML and not sure why...
 

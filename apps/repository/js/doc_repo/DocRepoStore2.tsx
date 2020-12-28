@@ -247,7 +247,7 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
     }
 
     function copyText(text: string, message?: string) {
-        Clipboards.getInstance().writeText(text)
+        Clipboards.writeText(text)
 
         if (message) {
             dialogs.snackbar({message});

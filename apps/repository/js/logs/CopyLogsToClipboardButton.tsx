@@ -20,7 +20,7 @@ export const CopyLogsToClipboardButton = () => {
 
         }).join("\n");
 
-        Clipboards.getInstance().writeText(text);
+        Clipboards.writeText(text);
 
         // Toaster.success("Wrote log output to clipboard.");
 

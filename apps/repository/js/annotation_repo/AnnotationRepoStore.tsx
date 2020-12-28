@@ -41,7 +41,7 @@ import {
     IAnnotationMutationSelected
 } from "../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {IDStr} from "polar-shared/src/util/Strings";
+import {HTMLStr, IDStr} from "polar-shared/src/util/Strings";
 import {SelectionEvents2, SelectRowType} from "../doc_repo/SelectionEvents2";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {RepoDocMetas} from "../RepoDocMetas";
@@ -55,6 +55,12 @@ import {LoadDocRequest} from "../../../../web/js/apps/main/doc_loaders/LoadDocRe
 import {
     useAnnotationMutationCallbacksFactory
 } from "../../../../web/js/annotation_sidebar/AnnotationMutationCallbacks";
+import { AnnotationType } from "polar-shared/src/metadata/AnnotationType";
+import {ITextHighlights} from "polar-shared/src/metadata/ITextHighlights";
+import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
+import {IComment} from "polar-shared/src/metadata/IComment";
+import {Texts} from "polar-shared/src/metadata/Texts";
+import {Clipboards} from "../../../../web/js/util/system/clipboard/Clipboards";
 
 export interface IAnnotationRepoStore {
 
@@ -130,6 +136,8 @@ interface IAnnotationRepoCallbacks {
     readonly onDropped: (tag: Tag) => void;
 
     readonly annotationMutations: IAnnotationMutationCallbacks;
+
+    readonly onCopyToClipboard: () => void;
 
 }
 
@@ -459,6 +467,35 @@ const useCreateCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
             doDropped(selected, tag);
         }
 
+        function onCopyToClipboard() {
+
+            const selected = selectedAnnotations();
+
+            function toHTML(current: IAnnotationRef): HTMLStr | undefined {
+
+                switch (current.annotationType) {
+
+                    case AnnotationType.TEXT_HIGHLIGHT:
+                        return ITextHighlights.toHTML(current.original as ITextHighlight)
+
+                    case AnnotationType.COMMENT:
+                        const comment = current.original as IComment;
+                        return Texts.toHTML(this.toIText(comment.content));
+
+                }
+
+                return undefined;
+
+            }
+
+            const html = selected.map(current => toHTML(current))
+                                 .filter(current => current !== undefined)
+                                 .join("<br/")
+
+            Clipboards.writeText(html);
+
+        }
+
         return {
             doOpen,
             selectRow,
@@ -474,7 +511,8 @@ const useCreateCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
             onDragEnd,
             doDropped,
             onDropped,
-            annotationMutations
+            annotationMutations,
+            onCopyToClipboard
         };
 
     }, [docLoader, annotationMutationCallbacksFactory, log, mutator,

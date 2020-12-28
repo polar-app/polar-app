@@ -224,7 +224,9 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
         captureEditorPosition();
     }, [captureEditorPosition]);
 
-    const onKeyDown = React.useCallback((event: React.KeyboardEvent) => {
+    const onKeyDown = React.useCallback((event: KeyboardEvent) => {
+
+        // FIXME Escape should dismiss the menu...
 
         if (triggerHandler(event)) {
 
@@ -392,15 +394,24 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
 
     });
 
+    // FIXME: this needs to hook the window menu listener... I thinkk.
+
+    React.useEffect(() => {
+
+        window.addEventListener('keydown', onKeyDown, {capture: true})
+
+        return () => {
+            window.removeEventListener('keydown', onKeyDown, {capture: true})
+        }
+
+    }, [onKeyDown])
+
     return (
 
         <div className="NoteActionMenu"
              style={{
                  flexGrow: 1
              }}
-             onKeyDown={onKeyDown}
-             onKeyUp={onKeyDown}
-             onKeyPress={onKeyDown}
              onClick={onClick}>
 
             {menuPosition && (
@@ -432,7 +443,7 @@ function createTriggerHandler(trigger: TriggerStr) {
 
     let last: string | undefined;
 
-    return (event: React.KeyboardEvent): boolean => {
+    return (event: KeyboardEvent): boolean => {
 
         try {
 

@@ -27,7 +27,7 @@ export const NoteContextMenuItems = observer(function MUIDocDropdownMenuItems() 
 
         const markdown = activeNote.content;
 
-        Clipboards.getInstance().writeText(markdown);
+        Clipboards.writeText(markdown);
 
     }, [store]);
 

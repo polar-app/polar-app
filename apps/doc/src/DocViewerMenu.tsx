@@ -460,8 +460,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
     }
 
     const onCopy = () => {
-        const clipboard = Clipboards.getInstance();
-        clipboard.writeText(origin.selectionToText());
+        Clipboards.writeText(origin.selectionToText());
     }
 
     const onPagemarkSetMode = (annotation: IAnnotationMeta) => {
