@@ -5,11 +5,6 @@ import {
     Occupation,
     Occupations
 } from "polar-shared/src/util/Occupations";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import { Arrays } from "polar-shared/src/util/Arrays";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
