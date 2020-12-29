@@ -9,6 +9,9 @@ import {Slugs} from "polar-shared/src/util/Slugs";
 import {MUIDialog} from "../../ui/dialogs/MUIDialog";
 import { useHistory } from 'react-router-dom';
 import {useComponentDidMount} from "../../hooks/ReactLifecycleHooks";
+import {PolarLogoImage} from "../../../../apps/repository/js/nav/PolarLogoImage";
+import {PolarLogoText} from "../../../../apps/repository/js/nav/PolarLogoText";
+import {WelcomeScreenContent} from "./WelcomeScreenContent";
 
 export const WelcomeScreen = React.memo(() => {
 
@@ -49,7 +52,9 @@ export const WelcomeScreen = React.memo(() => {
 
     return (
         <MUIDialog open={true} onClose={handleClose} maxWidth="lg">
-            <ProfileConfigurator onProfile={handleProfile}/>
+
+            <WelcomeScreenContent onProfile={handleProfile}/>
+
         </MUIDialog>
     );
 

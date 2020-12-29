@@ -16,6 +16,8 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
+import {PolarLogoImage} from "../../nav/PolarLogoImage";
+import {PolarLogoText} from "../../nav/PolarLogoText";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -157,6 +159,47 @@ export const ProfileConfigurator = (props: IProps) => {
                             value={state.form.progress}/>
 
             <Box style={{flexGrow: 1}} m={1}>
+
+                <div style={{
+                         display: 'flex',
+                         justifyContent: 'center',
+                         alignItems: 'center'
+                     }}>
+
+                    <div style={{marginRight: '5px'}}>
+                        <PolarLogoImage width={75} height={75}/>
+                    </div>
+
+                    <div style={{marginLeft: '5px'}}>
+                        <PolarLogoText style={{fontSize: '45px'}}/>
+                    </div>
+
+                </div>
+
+                <Box style={{
+                         display: 'flex',
+                         justifyContent: 'center',
+                         alignItems: 'center'
+                     }}>
+
+                    <h2>
+                        Reading, learning and remembering made easy.
+                    </h2>
+
+                </Box>
+
+                {/*<Box style={{*/}
+                {/*         display: 'flex',*/}
+                {/*         justifyContent: 'center',*/}
+                {/*         alignItems: 'center'*/}
+                {/*     }}>*/}
+
+                {/*    <h3>*/}
+                {/*        Polar enables you to read smarter, study more efficiently,*/}
+                {/*        and build a personal knowledge base.*/}
+                {/*    </h3>*/}
+
+                {/*</Box>*/}
 
                 <div style={{textAlign: 'center'}}>
 

@@ -46,6 +46,7 @@ import {CKEditor5Story2} from "./impl/CKEditor5Story2";
 import { ProfileStory } from './impl/ProfileStory';
 import { AccountVerificationStory } from './impl/AccountVerificationStory';
 import {MobXStory} from "./impl/MobXStory";
+import {WelcomeStory} from "./impl/WelcomeStory";
 
 interface IStory {
     readonly name: string;
@@ -88,6 +89,10 @@ const stories = createStoryIndex([
     {
         name: 'Profile Story',
         component: <ProfileStory/>
+    },
+    {
+        name: 'Welcome Story',
+        component: <WelcomeStory/>
     },
     {
         name: "Active Keyboard Shortcuts",
