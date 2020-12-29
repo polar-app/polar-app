@@ -2,7 +2,7 @@ import * as React from "react"
 import { Box, Container } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
-import EditorsChoice from "./BlogAside";
+// import EditorsChoice from "./BlogAside";
 import { Link } from "gatsby-material-ui-components";
 const DEFAULT_POST_IMAGE = require("../../content/assets/utility-images/defaultBlogPost.jpg");
 const DEFAULT_POST_IMAGE1 = require("../../content/assets/utility-images/defaultBlogPost1.jpg");
@@ -325,12 +325,12 @@ function BlogHeadDesktop({ posts }) {
                   </Box>
                 </a>
               </Box>
-              {colLayoutPicker === 0 && (
-                <Box className={classes.singleColCard}>
-                  {" "}
-                  <EditorsChoice />
-                </Box>
-              )}
+              {/*{colLayoutPicker === 0 && (*/}
+              {/*  // <Box className={classes.singleColCard}>*/}
+              {/*  //   {" "}*/}
+              {/*  //   /!*<EditorsChoice />*!/*/}
+              {/*  // </Box>*/}
+              {/*)}*/}
             </React.Fragment>
           );
         })}
