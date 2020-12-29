@@ -21,6 +21,8 @@ you can sync to Anki or review directly in Polar.
 
 Check it out in action here:
 
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](http://www.youtube.com/watch?v=YOUTUBE_VIDEO_ID_HERE "Video Title")
+
 <img class="img-fluid" src="https://i.imgur.com/Iu1ilJ0.gifv">
 
 AI-generated flashcards will allow you to speed up and simplify creating
