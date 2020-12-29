@@ -21,7 +21,7 @@ you can sync to Anki or review directly in Polar.
 
 Check it out in action here:
 
-[![Everything Is AWESOME](http://i.imgur.com/Ot5DWAW.png)](https://youtu.be/StTqXEQ2l-Y?t=35s "Everything Is AWESOME")
+[![AI flashcards](https://i.imgur.com/SoywNMb.png)](https://youtu.be/StTqXEQ2l-Y?t=35s "Everything Is AWESOME")
 
 <img class="img-fluid" src="https://i.imgur.com/Iu1ilJ0.gifv">
 
