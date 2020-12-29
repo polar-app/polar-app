@@ -21,7 +21,7 @@ you can sync to Anki or review directly in Polar.
 
 Check it out in action here:
 
-[![AI flashcards](https://i.imgur.com/SoywNMb.png)](https://youtu.be/StTqXEQ2l-Y?t=35s "AI flashcards")
+[![AI flashcards](https://i.imgur.com/SoywNMb.png)](https://youtu.be/dM4_cClHPG8 "AI flashcards")
 
 <img class="img-fluid" src="https://i.imgur.com/Iu1ilJ0.gifv">
 
