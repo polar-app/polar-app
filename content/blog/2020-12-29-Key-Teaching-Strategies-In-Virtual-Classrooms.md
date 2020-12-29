@@ -18,7 +18,7 @@ But with online learning looking to be the future of education, at least for the
 
 ## Pick an accessible and familiar platform
 
-Dozens of educational tools and platforms surfaced during the pandemic. Chief among them are video conferencing software that play a pivotal role in online learning. Based on a survey, <ahref="https://marketbrief.edweek.org/marketplace-k-12/zoom-google-docs-win-remote-teaching-survey-educators-finds/">Zoom is the leading program used for synchronous classes</a> because the plans are affordable and the platform is easy to use. For document writing and collaboration, instructors also use Google Docs, which tracks and automatically saves changes made by each user.
+Dozens of educational tools and platforms surfaced during the pandemic. Chief among them are video conferencing software that play a pivotal role in online learning. Based on a survey, <a href="https://marketbrief.edweek.org/marketplace-k-12/zoom-google-docs-win-remote-teaching-survey-educators-finds/" target="_blank">Zoom is the leading program used for synchronous classes</a> because the plans are affordable and the platform is easy to use. For document writing and collaboration, instructors also use Google Docs, which tracks and automatically saves changes made by each user.
 
 Zoom and Google Docs are only two of the tech tools used in remote learning — there are various other options. Educators are tasked with choosing which of them their students are already familiar with. If it’s completely new, the technology needs to be easy to roll out and accessible to all. Remember that not all students might have the capacity to run complicated apps or software and no child should be left behind in education.
 
