@@ -4,8 +4,8 @@ import Menu from "@material-ui/core/Menu";
 import {IPoint} from "../../../../web/js/Point";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {createContextMenuStore} from "./MUIContextMenuStore";
-import {typedMemo} from "../../../../web/js/hooks/ReactHooks";
 import useLongPress from "../../../../web/js/hooks/UseLongPress";
+import { observer } from "mobx-react-lite"
 
 export namespace MouseEvents {
     export function fromNativeEvent(event: MouseEvent): IMouseEvent {
@@ -149,16 +149,11 @@ export type CreateContextMenuTuple = [ContextMenuProviderComponent, UseContextMe
 export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O>) => JSX.Element | null,
                                      opts: CreateContextMenuOpts<O> = {}): CreateContextMenuTuple {
 
-    const [
-        MUIContextMenuStoreProvider,
-        useMUIContextMenuStore,
-        useMUIContextMenuCallbacks,
-        useMUIContextMenuMutator
-    ] = createContextMenuStore();
+    const [MUIContextMenuStoreProvider, useMUIContextMenuStore] = createContextMenuStore<O>();
 
     const useContextMenu = (opts: Partial<IContextMenuCallbacks> = {}): IContextMenuCallbacks => {
 
-        const {setActive} = useMUIContextMenuCallbacks();
+        const store = useMUIContextMenuStore();
 
         const {computeOrigin} = React.useContext(ContextMenuContext);
 
@@ -180,10 +175,10 @@ export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O
                 origin
             };
 
-            setActive(newActive);
+            store.setActive(newActive);
 
 
-        }, [computeOrigin, opts.onContextMenu, setActive]);
+        }, [computeOrigin, opts.onContextMenu, store]);
 
         const onLongPress = React.useCallback((event: React.MouseEvent | React.TouchEvent) => {
 
@@ -222,41 +217,48 @@ export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O
 
     }
 
-    const ContextMenuInner = typedMemo(function<O>(props: ContextMenuInnerProps<O>) {
+    const ContextMenuInner = observer(function(props: ContextMenuInnerProps<O>) {
 
         const {MenuComponent} = props;
 
-        const {active} = useMUIContextMenuStore(['active']);
-        const {setActive} = useMUIContextMenuCallbacks();
+        const store = useMUIContextMenuStore();
 
         const handleClose = React.useCallback(() => {
-            setActive(undefined);
-        }, [setActive])
+            store.setActive(undefined);
+        }, [store])
+
+        const active = store.active;
 
         return (
             <>
                 {active &&
-                <MUIContextMenu {...active}
-                                anchorEl={props.anchorEl}
-                                handleClose={handleClose}>
-                    <MenuComponent origin={active.origin}/>
-                </MUIContextMenu>}
+                    <MUIContextMenu {...active}
+                                    anchorEl={props.anchorEl}
+                                    handleClose={handleClose}>
+                        <MenuComponent origin={active.origin}/>
+                    </MUIContextMenu>}
 
             </>
         );
     });
+
+    const ProviderComponentInner = (props: IContextMenuProps) => {
+        return (
+            <>
+                <ContextMenuInner MenuComponent={MenuComponent} anchorEl={props.anchorEl}/>
+
+                {props.children}
+            </>
+        );
+
+    }
 
     const ProviderComponent = (props: IContextMenuProps): JSX.Element => {
 
         return (
             <ContextMenuContext.Provider value={{computeOrigin: opts.computeOrigin}}>
                 <MUIContextMenuStoreProvider>
-
-                    <>
-                        <ContextMenuInner MenuComponent={MenuComponent} anchorEl={props.anchorEl}/>
-
-                        {props.children}
-                    </>
+                    <ProviderComponentInner {...props}/>
                 </MUIContextMenuStoreProvider>
             </ContextMenuContext.Provider>
         );

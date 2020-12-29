@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {Provider} from "polar-shared/src/util/Providers";
-import {createObservableStore, SetStore} from "../../../../web/js/react/store/ObservableStore";
+import {createReactiveStore} from "../../../../web/js/react/store/ReactiveStore";
+import {action, computed, makeObservable, observable} from "mobx"
 
 interface IContextMenuActive<O> {
     readonly mouseX: number;
@@ -9,62 +9,30 @@ interface IContextMenuActive<O> {
     readonly origin: O | undefined;
 }
 
-/**
- * High level store so that sub-components can determine if we're in zen mode to turn on/off specific UI components.
- */
-interface IMUIContextMenuStore {
-    readonly active: IContextMenuActive<any> | undefined;
-}
+export class MUIContextMenuStore<O> {
 
-interface IMUIContextMenuCallbacks {
-    readonly setActive: (active: IContextMenuActive<any> | undefined) => void;
-}
+    @observable _active: IContextMenuActive<O> | undefined = undefined;
 
-const initialStore: IMUIContextMenuStore = {
-    active: undefined
-}
+    constructor() {
+        this._active = undefined;
+        makeObservable(this);
+    }
 
-interface Mutation {
-}
+    @computed get active() {
+        return this._active;
+    }
 
-interface Mutator {
+    @action public setActive(active: IContextMenuActive<O> | undefined) {
+        this._active = active;
+    }
 
 }
 
-function mutatorFactory(storeProvider: Provider<IMUIContextMenuStore>,
-                        setStore: SetStore<IMUIContextMenuStore>): Mutator {
+export function createContextMenuStore<O>() {
 
-    return {};
-
-}
-
-function useCallbacksFactory(storeProvider: Provider<IMUIContextMenuStore>,
-                             setStore: (store: IMUIContextMenuStore) => void,
-                             mutator: Mutator): IMUIContextMenuCallbacks {
-
-    return React.useMemo(() => {
-
-        function setActive(active: IContextMenuActive<any> | undefined) {
-            setStore({active})
-        }
-
-        return {
-            setActive,
-        };
-
-    }, [setStore]);
-
+    return createReactiveStore(() => new MUIContextMenuStore<O>())
 
 }
 
-export function createContextMenuStore() {
-
-    return createObservableStore<IMUIContextMenuStore, Mutator, IMUIContextMenuCallbacks>({
-        initialValue: initialStore,
-        mutatorFactory,
-        callbacksFactory: useCallbacksFactory
-    });
-
-}
 
 
