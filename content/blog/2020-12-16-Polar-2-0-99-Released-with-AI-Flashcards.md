@@ -21,7 +21,7 @@ you can sync to Anki or review directly in Polar.
 
 Check it out in action here:
 
-<img class="img-fluid" src="https://i.imgur.com/Iu1ilJ0.gif">
+[![AI flashcards](https://i.imgur.com/SoywNMb.png)](https://youtu.be/dM4_cClHPG8 "AI flashcards")
 
 AI-generated flashcards will allow you to speed up and simplify creating
 flashcards directly from text highlights.
