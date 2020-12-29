@@ -116,10 +116,9 @@ export class NotesStore {
     @observable _activePos: NavPosition = 'start';
 
     /**
-     * The nodes that are expanded.
+     * The notes that are expanded.
      */
     @observable _expanded: StringSetMap = {};
-
 
     /**
      * The nodes that are selected by the user.

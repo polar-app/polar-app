@@ -2,7 +2,6 @@ import * as React from 'react';
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
-import Paper from "@material-ui/core/Paper";
 import {
     IAnnotationRepoStore,
     useAnnotationRepoStore, useAnnotationRepoStoreReducer
@@ -96,7 +95,7 @@ export const AnnotationRepoTable2 = React.memo(() => {
 
     return (
 
-        <AnnotationRepoTableContextMenu>
+        <>
             <div className="AnnotationRepoTable2"
                  id="doc-repo-table"
                  style={{
@@ -132,7 +131,7 @@ export const AnnotationRepoTable2 = React.memo(() => {
                                size={'medium'}
                                aria-label="enhanced table">
 
-                            <>
+                            <AnnotationRepoTableContextMenu>
                                 {root && (
                                     <IntersectionList values={view}
                                                       root={root}
@@ -140,14 +139,14 @@ export const AnnotationRepoTable2 = React.memo(() => {
                                                       BlockComponent={BlockComponent}
                                                       HiddenBlockComponent={HiddenBlockComponent}
                                                       VisibleComponent={VisibleComponent}/>)}
-                            </>
+                            </AnnotationRepoTableContextMenu>
                         </Table>
                     </TableContainer>
 
                 </div>
 
             </div>
-        </AnnotationRepoTableContextMenu>
+        </>
 
     );
 });
