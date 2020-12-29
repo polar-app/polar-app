@@ -37,7 +37,7 @@ A few tips on how to best use the feature:
 - Use relatively short annotations - right now only one flashcard is generated
 from annotations. We will increase this in the near future so you get several
 flashcards from annotations. An additional advantage is that the latency is
-shorter with shorter annotations
+shorter with shorter annotations.
 
 - Use the feature for annotations where the question and answer is in the
 annotation itself. The algorithm will only use information that is provided in

@@ -1,13 +1,12 @@
 ---
-title: Top 10 Tools for Learning Efficiently and Effectively
+title: What is Spaced Repetition? A Beginner's Guide
 date: 2020-09-20T08:00:00.000-08:00
 layout: post
 description: What is Spaced Repetition? A Beginner's Guide
-large_image: https://imgur.com/a/2OvXfLc
+large_image: https://i.imgur.com/loa4RO7.png
 ---
 
 <img class="img-fluid" src="https://i.imgur.com/loa4RO7.png">
-
 
 **What is Spaced Repetition?: A Beginner’s Guide**
 

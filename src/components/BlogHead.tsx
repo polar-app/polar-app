@@ -73,10 +73,12 @@ const useStyles = makeStyles({
   },
   title: {
     fontSize: "28px",
+    lineHeight: '1.3em'
   },
 
   titleMobile: {
     fontSize: "24px",
+    lineHeight: '1.3em'
   },
   articleBlob: {
     transition: "box-shadow .2s, border .2s",
@@ -318,7 +320,7 @@ function BlogHeadDesktop({ posts }) {
                           {title}
                         </Link>
                       </h4>
-                      <p style={{ position: "absolute", bottom: "0px" }}>
+                      <p style={{}}>
                         {date}
                       </p>
                     </Box>
