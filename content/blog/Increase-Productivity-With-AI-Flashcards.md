@@ -8,11 +8,7 @@ large_image: https://i.imgur.com/2sbt177.jpg
 
 <img class="img-fluid" src="https://i.imgur.com/2sbt177.jpg">
 
-Estimates vary, but plenty of studies have shown that **you only retain 10% of what you read**. So you know that last hour you just spent reading that PDF? Forget about it.
-
-Literally, you’ll forget about it.
-
-There’s nothing wrong with your brain. In fact, **your brain can store over 2.5 petabytes of data**. To put it lightly, that’s nothing short of amazing.
+Most of what you read you forget immediately again in fact, **our brain retains as little as 10%**. So that last hour you just spent reading that PDF? Forget about it.
 
 So what’s the deal with retaining what you read? We’re not entirely sure, but one thing we are pretty sure about is:
 
@@ -24,7 +20,7 @@ And the way to do this is really simple: **Flashcards.**
 
 Now, why don't we create more flashcards directly from our reading? **It takes time...**
 
-By the time have highlighted the text, you'll want to keep on reading. And when you put that book down, you're likely not going to take an extra 20 min to create all those flashcards
+By the time you have highlighted the text, you'll want to keep on reading. And when you put that book down, you're likely not going to take an extra 20 min to create all those flashcards
 
 That’s why we **partnered with OpenAI** to create **AI Flashcards in one click.**
 
