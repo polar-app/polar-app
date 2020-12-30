@@ -32,8 +32,8 @@ Check it out in action here:
 
 [![AI flashcards](https://i.imgur.com/SoywNMb.png)](https://www.loom.com/share/36c0a1d345fb43a29a44215f2c73d135 "AI flashcards")
 
-With this approach, you also get the **benefit of differently worded questions.** This makes you see the question from different angles, improving your memory and solidifying the concept in your brain.
+Not only does it save time, you also get **questions worded differently.** This helps with reenetion and solidifying the concept in your brain.
 
-Are you ready to become a master of your craft? Sign up now for free. As part of the launch, we're also giving away 100 subscriptions at 20% off using the code ```AI Flashcards```.
+Are you ready to start saving time on unnecessary work and focus on what actually improves your memory? Sign up now for free. As part of the launch, we're also giving away 100 subscriptions at 20% off using the code ```AI Flashcards```.
 
 This is the best way to remember what you learn - sign up now to see for yourself!
