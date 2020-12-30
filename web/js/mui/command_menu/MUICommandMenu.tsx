@@ -86,14 +86,20 @@ export const MUICommandMenu = React.memo((props: IProps) => {
 
     }, [onClose, onCommand]);
 
-    const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
+    /**
+     *
+     * Handler so that we can handle up, down and escape and do so at the window
+     * so that this component can take precedent over everything else.
+     *
+     */
+    const handleKeyDownForCommandNavigation = React.useCallback((event: KeyboardEvent) => {
 
-        if (event.shiftKey || event.ctrlKey || event.metaKey) {
-            // we only work with the raw keys.
-            return;
-        }
+        // if (event.shiftKey || event.ctrlKey || event.metaKey) {
+        //     // we only work with the raw keys.
+        //     return;
+        // }
 
-        function stopEvent() {
+        function stopHandlingEvent() {
             event.stopPropagation();
             event.preventDefault();
         }
@@ -136,23 +142,45 @@ export const MUICommandMenu = React.memo((props: IProps) => {
         }
 
         if (event.key === 'ArrowDown') {
-            stopEvent();
+            stopHandlingEvent();
             handleNewIndex(1);
         }
 
         if (event.key === 'ArrowUp') {
-            stopEvent();
+            stopHandlingEvent();
             handleNewIndex(-1);
         }
 
-    }, [commandsFiltered.length, index, setIndex]);
+        if (event.key === 'Escape') {
+            stopHandlingEvent();
+            onClose('cancel');
+        }
 
+        if (event.key === 'Enter') {
+            if (index !== undefined) {
+                const command = commandsFiltered[index];
+                handleCommandExecuted(command.id);
+            }
+        }
+
+    }, [commandsFiltered, handleCommandExecuted, index, onClose]);
+
+    React.useEffect(() => {
+
+        window.addEventListener('keydown', handleKeyDownForCommandNavigation, {capture: true});
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDownForCommandNavigation, {capture: true});
+        }
+
+    })
+
+    // FIXME: click away listener ahdn handle onCancel
     return (
 
         <div style={{display: 'flex', flexDirection: 'column', width: '600px'}}>
 
             <TextField autoFocus={true}
-                       onKeyDown={handleKeyDown}
                        onChange={event => setFilter(event.target.value) }/>
 
             <List component="nav">

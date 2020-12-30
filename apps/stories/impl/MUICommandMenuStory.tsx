@@ -3,11 +3,11 @@ import {ICommand, MUICommandMenu} from "../../../web/js/mui/command_menu/MUIComm
 
 const commands: ReadonlyArray<ICommand> = [
     {
-        id: '0',
+        id: 'world-war-I',
         text: 'World War I'
     },
     {
-        id: '1',
+        id: 'world-war-II',
         text: 'World War II'
     },
 ];
