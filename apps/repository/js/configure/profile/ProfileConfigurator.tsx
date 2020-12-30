@@ -158,7 +158,7 @@ export const ProfileConfigurator = (props: IProps) => {
             <LinearProgress variant="determinate"
                             value={state.form.progress}/>
 
-            <Box style={{flexGrow: 1}} m={1}>
+            <Box style={{flexGrow: 1}} m={1} ml={2} mr={2}>
 
                 <div style={{
                          display: 'flex',

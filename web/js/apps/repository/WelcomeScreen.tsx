@@ -12,6 +12,7 @@ import {useComponentDidMount} from "../../hooks/ReactLifecycleHooks";
 import {PolarLogoImage} from "../../../../apps/repository/js/nav/PolarLogoImage";
 import {PolarLogoText} from "../../../../apps/repository/js/nav/PolarLogoText";
 import {WelcomeScreenContent} from "./WelcomeScreenContent";
+import Box from '@material-ui/core/Box';
 
 export const WelcomeScreen = React.memo(() => {
 
@@ -53,7 +54,12 @@ export const WelcomeScreen = React.memo(() => {
     return (
         <MUIDialog open={true} onClose={handleClose} maxWidth="lg">
 
-            <WelcomeScreenContent onProfile={handleProfile}/>
+            <Box style={{
+                     minHeight: '600px',
+                     display: 'flex'
+                 }}>
+                <WelcomeScreenContent onProfile={handleProfile}/>
+            </Box>
 
         </MUIDialog>
     );
