@@ -5,11 +5,20 @@ import {KeySequences} from "../../hotkeys/KeySequences";
 import { MUIListItemRight } from "./MUIListItemRight";
 
 interface IProps {
+
     readonly icon?: React.ReactNode;
+
     readonly text: string;
+
+    /**
+     * True if this items should be shown as selected.
+     */
     readonly selected?: boolean;
+
     readonly sequences?: ReadonlyArray<string>;
+
     readonly onClick: () => void;
+
 }
 
 export const MUICommandMenuItem = React.memo((props: IProps) => {
