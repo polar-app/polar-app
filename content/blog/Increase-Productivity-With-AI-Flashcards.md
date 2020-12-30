@@ -34,7 +34,7 @@ In two simple steps, our algorithm will read the text you’ve highlighted and g
 
 Check it out in action here:
 
-FIXME: insert video
+[![AI flashcards](https://i.imgur.com/SoywNMb.png)](https://www.loom.com/share/36c0a1d345fb43a29a44215f2c73d135 "AI flashcards")
 
 With this approach, you also get the **benefit of differently worded questions.** This makes you see the question from different angles, improving your memory and solidifying the concept in your brain.
 
