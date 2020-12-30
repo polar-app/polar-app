@@ -3,7 +3,7 @@ title: Incrase Productivity With AI Flashcards
 date: 2020-12-30T08:00:00.000-08:00
 layout: post
 description: Using AI to automatically generate flashcards from text highlights is changing how we read and remember
-large_image: https://i.imgur.com/I1TBtJW.jpg
+large_image: https://i.imgur.com/2sbt177.jpg
 ---
 
 Estimates vary, but plenty of studies have shown that **you only retain 10% of what you read**. So you know that last hour you just spent reading that PDF? Forget about it.
