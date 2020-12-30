@@ -6,6 +6,8 @@ description: Using AI to automatically generate flashcards from text highlights 
 large_image: https://i.imgur.com/2sbt177.jpg
 ---
 
+<img class="img-fluid" src="https://i.imgur.com/2sbt177.jpg">
+
 Estimates vary, but plenty of studies have shown that **you only retain 10% of what you read**. So you know that last hour you just spent reading that PDF? Forget about it.
 
 Literally, you’ll forget about it.
