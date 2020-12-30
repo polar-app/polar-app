@@ -18,15 +18,15 @@ That’s right, just like how it takes 10,000 hours to master a skill (thanks fo
 
 And the way to do this is really simple: **Flashcards.**
 
-Now, why don't we create more flashcards directly from our reading? **It takes time...**
+Now, why don't we create more flashcards directly from our reading? **Often it's because it takes time...**
 
 By the time you have highlighted the text, you'll want to keep on reading. And when you put that book down, you're likely not going to take an extra 20 min to create all those flashcards
 
-That’s why we **partnered with OpenAI** to create **AI Flashcards in one click.**
+That’s why we **partnered with OpenAI** to create **flashcards in one click using AI.**
 
 With this feature, you can focus on what actually gives results - **read and remember what you just read.**
 
-In two simple steps, our algorithm will read the text you’ve highlighted and generate a meaningful question in a flashcard format. You just highlight, click, and the work is done for you.
+With one click, our algorithm will read the text you’ve highlighted and generate an question and answer pair. You just highlight what you want to remember, click the button, and the work is done for you.
 
 Check it out in action here:
 
