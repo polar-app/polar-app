@@ -1,26 +1,86 @@
-import {
-    useActiveKeyboardShortcutsCallbacks,
-    useActiveKeyboardShortcutsStore
-} from "../../hotkeys/ActiveKeyboardShortcutsStore";
-import {useKeyboardShortcutsStore} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
 import * as React from "react";
 import TextField from "@material-ui/core/TextField";
 import List from "@material-ui/core/List";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import { MUICommandMenuItem } from "./MUICommandMenuItem";
+import {MUICommandMenuItem} from "./MUICommandMenuItem";
+import {KeyBinding} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
+import {IDStr} from "polar-shared/src/util/Strings";
 
-interface IProps {
+/**
+ * Provide a list of action items we should execute and provide a prompt to
+ * filter the results such that the set of actions is applicable to the prompt.
+ */
+export type CommandsProvider = () => ReadonlyArray<ICommand>;
+
+export interface ICommand {
+
+    /**
+     * A unique id for the action so that we can handle it on the callback.
+     */
+    readonly id: IDStr;
+
+    /**
+     * The text to show in the UI.
+     */
+    readonly text: string;
+
+    /**
+     * The group for the command, if any.
+     */
+    readonly group?: string;
+
+    readonly icon?: React.ReactNode,
+
+    readonly sequences?: ReadonlyArray<KeyBinding>;
+
+    /**
+     * Longer description of this command. Not just the shorter 'text' description.
+     */
+    readonly description?: string;
 
 }
 
-export const MUICommandMenu = () => {
 
-    const {index, filter} = useActiveKeyboardShortcutsStore(['index', 'filter']);
-    const {setFilter, setIndex} = useActiveKeyboardShortcutsCallbacks();
-    const {shortcuts} = useKeyboardShortcutsStore(['shortcuts'])
 
-    const filtered = Object.values(shortcuts)
-        .filter(shortcut => filter === undefined || shortcut.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1);
+interface IProps {
+
+    /**
+     * The filter to use to narrow down the input.
+     */
+    readonly filter?: string;
+
+    /**
+     * Called when a command is to be executed.
+     */
+    readonly onCommand: (id: IDStr) => void;
+
+    /**
+     * Called when the command menu should be closed.
+     */
+    readonly onClose: (reason: 'executed' | 'cancel') => void;
+
+    /**
+     * A provider for resolving the items that the user can select form their input.
+     */
+    readonly commandsProvider: CommandsProvider;
+
+}
+
+
+export const MUICommandMenu = React.memo((props: IProps) => {
+
+    const {commandsProvider} = props;
+
+    const [index, setIndex] = React.useState<number | undefined>();
+    const [filter, setFilter] = React.useState<string | undefined>(props.filter);
+
+    const commands = React.useMemo(() => commandsProvider(), [commandsProvider]);
+
+    const filterPredicate = React.useCallback((command: ICommand) => {
+        return filter === undefined || command.text.toLowerCase().indexOf(filter.toLowerCase()) !== -1
+    }, [filter]);
+
+    const commandsFiltered = React.useMemo(() => commands.filter(filterPredicate), [commands, filterPredicate]);
 
     const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -45,7 +105,7 @@ export const MUICommandMenu = () => {
 
                 if (index === -1) {
                     // got to the end
-                    return filtered.length - 1;
+                    return commandsFiltered.length - 1;
                 }
 
                 return 0;
@@ -55,10 +115,10 @@ export const MUICommandMenu = () => {
             const newIndex = index + delta;
 
             if (newIndex < 0) {
-                return filtered.length - 1;
+                return commandsFiltered.length - 1;
             }
 
-            if (newIndex >= filtered.length) {
+            if (newIndex >= commandsFiltered.length) {
                 return 0;
             }
 
@@ -81,7 +141,7 @@ export const MUICommandMenu = () => {
             handleNewIndex(-1);
         }
 
-    }, [filtered.length, index, setIndex]);
+    }, [commandsFiltered.length, index, setIndex]);
 
     return (
 
@@ -93,17 +153,17 @@ export const MUICommandMenu = () => {
 
             <List component="nav">
 
-                {filtered.map((shortcut, idx) => {
+                {commandsFiltered.map((command, idx) => {
 
                     const selected = index === idx;
-                    const key = (shortcut.group || '') + ':' + shortcut.name + ':' + selected;
+                    const key = (command.group || '') + ':' + command.text + ':' + selected;
 
                     return (
                         <MUICommandMenuItem key={key}
-                                            text={shortcut.name}
-                                            icon={shortcut.icon}
+                                            text={command.text}
+                                            icon={command.icon}
                                             selected={selected}
-                                            sequences={shortcut.sequences}
+                                            sequences={command.sequences}
                                             onClick={NULL_FUNCTION}/>
                     );
                 })}
@@ -111,6 +171,6 @@ export const MUICommandMenu = () => {
             </List>
         </div>
 
+    );
 
-    )
-}
+});
