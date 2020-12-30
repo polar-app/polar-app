@@ -47,6 +47,7 @@ import { ProfileStory } from './impl/ProfileStory';
 import { AccountVerificationStory } from './impl/AccountVerificationStory';
 import {MobXStory} from "./impl/MobXStory";
 import {WelcomeStory} from "./impl/WelcomeStory";
+import {MUICommandMenuStory} from "./impl/MUICommandMenuStory";
 
 interface IStory {
     readonly name: string;
@@ -230,6 +231,10 @@ const stories = createStoryIndex([
     {
         name: 'AbortedRenderStory',
         component: <AbortedRenderStory/>
+    },
+    {
+        name: 'MUICommandMenu',
+        component: <MUICommandMenuStory/>
     }
 
 ]);

@@ -1,7 +1,6 @@
 import * as React from "react";
 import TextField from "@material-ui/core/TextField";
 import List from "@material-ui/core/List";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {MUICommandMenuItem} from "./MUICommandMenuItem";
 import {KeyBinding} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
 import {IDStr} from "polar-shared/src/util/Strings";
@@ -67,7 +66,7 @@ interface IProps {
 
 export const MUICommandMenu = React.memo((props: IProps) => {
 
-    const {commandsProvider} = props;
+    const {commandsProvider, onCommand, onClose} = props;
 
     const [index, setIndex] = React.useState<number | undefined>();
     const [filter, setFilter] = React.useState<string | undefined>(props.filter);
@@ -79,6 +78,13 @@ export const MUICommandMenu = React.memo((props: IProps) => {
     }, [filter]);
 
     const commandsFiltered = React.useMemo(() => commands.filter(filterPredicate), [commands, filterPredicate]);
+
+    const handleCommandExecuted = React.useCallback((id: IDStr) => {
+
+        onCommand(id);
+        onClose('executed');
+
+    }, [onClose, onCommand]);
 
     const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -162,7 +168,7 @@ export const MUICommandMenu = React.memo((props: IProps) => {
                                             icon={command.icon}
                                             selected={selected}
                                             sequences={command.sequences}
-                                            onClick={NULL_FUNCTION}/>
+                                            onSelected={() => handleCommandExecuted(command.id)}/>
                     );
                 })}
 

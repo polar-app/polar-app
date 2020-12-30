@@ -17,7 +17,7 @@ interface IProps {
 
     readonly sequences?: ReadonlyArray<string>;
 
-    readonly onClick: () => void;
+    readonly onSelected: () => void;
 
 }
 
@@ -27,7 +27,7 @@ export const MUICommandMenuItem = React.memo((props: IProps) => {
         <ListItem disableGutters
                   button
                   selected={props.selected}
-                  onClick={props.onClick}
+                  onClick={props.onSelected}
                   style={{padding: '5px'}}>
 
             {props.icon && (
