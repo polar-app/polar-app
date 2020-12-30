@@ -4,6 +4,7 @@ import List from "@material-ui/core/List";
 import {MUICommandMenuItem} from "./MUICommandMenuItem";
 import {KeyBinding} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
 import {IDStr} from "polar-shared/src/util/Strings";
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 /**
  * Provide a list of action items we should execute and provide a prompt to
@@ -175,33 +176,34 @@ export const MUICommandMenu = React.memo((props: IProps) => {
 
     })
 
-    // FIXME: click away listener ahdn handle onCancel
     return (
 
-        <div style={{display: 'flex', flexDirection: 'column', width: '600px'}}>
+        <ClickAwayListener onClickAway={() => props.onClose('cancel')}>
+            <div style={{display: 'flex', flexDirection: 'column', width: '600px'}}>
 
-            <TextField autoFocus={true}
-                       onChange={event => setFilter(event.target.value) }/>
+                <TextField autoFocus={true}
+                           onChange={event => setFilter(event.target.value) }/>
 
-            <List component="nav">
+                <List component="nav">
 
-                {commandsFiltered.map((command, idx) => {
+                    {commandsFiltered.map((command, idx) => {
 
-                    const selected = index === idx;
-                    const key = (command.group || '') + ':' + command.text + ':' + selected;
+                        const selected = index === idx;
+                        const key = (command.group || '') + ':' + command.text + ':' + selected;
 
-                    return (
-                        <MUICommandMenuItem key={key}
-                                            text={command.text}
-                                            icon={command.icon}
-                                            selected={selected}
-                                            sequences={command.sequences}
-                                            onSelected={() => handleCommandExecuted(command.id)}/>
-                    );
-                })}
+                        return (
+                            <MUICommandMenuItem key={key}
+                                                text={command.text}
+                                                icon={command.icon}
+                                                selected={selected}
+                                                sequences={command.sequences}
+                                                onSelected={() => handleCommandExecuted(command.id)}/>
+                        );
+                    })}
 
-            </List>
-        </div>
+                </List>
+            </div>
+        </ClickAwayListener>
 
     );
 
