@@ -22,7 +22,7 @@ That’s right, just like how it takes 10,000 hours to master a skill (thanks fo
 
 And the way to do this is really simple: **Flashcards.**
 
-Why don't we create more flashcards directly from our reading? **It takes time...**
+Now, why don't we create more flashcards directly from our reading? **It takes time...**
 
 By the time have highlighted the text, you'll want to keep on reading. And when you put that book down, you're likely not going to take an extra 20 min to create all those flashcards
 
