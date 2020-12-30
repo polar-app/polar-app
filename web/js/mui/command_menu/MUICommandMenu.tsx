@@ -158,6 +158,7 @@ export const MUICommandMenu = React.memo((props: IProps) => {
         }
 
         if (event.key === 'Enter') {
+            stopHandlingEvent();
             if (index !== undefined) {
                 const command = commandsFiltered[index];
                 handleCommandExecuted(command.id);
