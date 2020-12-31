@@ -443,12 +443,16 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
     // then, in the provider, use React.memo() and then define them for each provider.
     // then all the code should work.
 
+    const internalObservableStore = createInternalObservableStore(opts.initialValue);
 
-    const storeContext = React.createContext<InternalObservableStore<V>>(null!);
-    const callbacksContext = React.createContext<ComponentCallbacksFactory<C>>(null!);
-    const mutatorContext = React.createContext<M>(null!);
-    const setStoreContext = React.createContext<SetStore<V>>(null!);
-    const storeProviderContext = React.createContext<StoreProvider<V>>(null!);
+    const [mutator, componentCallbacksFactory, setStore, storeProvider]
+        = createInitialContextValues(opts, internalObservableStore);
+
+    const storeContext = React.createContext<InternalObservableStore<V>>(internalObservableStore);
+    const callbacksContext = React.createContext<ComponentCallbacksFactory<C>>(componentCallbacksFactory);
+    const mutatorContext = React.createContext<M>(mutator);
+    const setStoreContext = React.createContext<SetStore<V>>(setStore);
+    const storeProviderContext = React.createContext<StoreProvider<V>>(storeProvider);
 
     const useStoreHook = <K extends keyof V>(keys: ReadonlyArray<K> | undefined,
                                              storeHookOpts: IUseStoreHookOpts<V, K> = {

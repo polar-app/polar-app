@@ -288,8 +288,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
     return (
         <MUIRepositoryRoot>
             <RepositoryRoot>
-                <DocRepoStore2>
-                    <PersistenceLayerContext.Provider value={{persistenceLayerProvider: app.persistenceLayerProvider}}>
+                <PersistenceLayerContext.Provider value={{persistenceLayerProvider: app.persistenceLayerProvider}}>
                             <div className="RepositoryApp"
                                  style={{
                                      display: 'flex',
@@ -431,7 +430,6 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                             </div>
                     </PersistenceLayerContext.Provider>
-                </DocRepoStore2>
             </RepositoryRoot>
         </MUIRepositoryRoot>
     );

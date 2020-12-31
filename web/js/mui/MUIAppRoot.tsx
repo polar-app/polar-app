@@ -10,13 +10,12 @@ import {KeyboardShortcuts} from "../keyboard_shortcuts/KeyboardShortcuts";
 import {UndoQueueProvider} from "../undo/UndoQueueProvider";
 import useLocalStorageState from 'use-local-storage-state'
 import {MUIErrorBoundary} from "./MUIErrorBoundary";
-import { KeyboardShortcutsStoreProvider } from "../keyboard_shortcuts/KeyboardShortcutsStore";
 
 interface IProps {
     readonly children: React.ReactNode;
 }
 
-const Inner = React.memo(function Inner(props: IProps) {
+export const MUIAppRoot = React.memo(function MUIAppRoot(props: IProps) {
 
     const [theme, setTheme] = useLocalStorageState<ThemeType>('theme', "dark");
 
@@ -62,19 +61,6 @@ const Inner = React.memo(function Inner(props: IProps) {
                 </MUIThemeTypeContext.Provider>
             </ThemeProvider>
         </>
-    );
-
-});
-
-
-export const MUIAppRoot = React.memo(function MUIAppRoot(props: IProps) {
-
-    return (
-        <KeyboardShortcutsStoreProvider>
-            <Inner>
-                {props.children}
-            </Inner>
-        </KeyboardShortcutsStoreProvider>
     );
 
 });
