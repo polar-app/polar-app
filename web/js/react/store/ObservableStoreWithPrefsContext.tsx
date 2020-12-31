@@ -151,18 +151,19 @@ export function createObservableStoreWithPrefsContext<V, M, C>(opts: ObservableS
                                                                pref: string,
                                                                keys: ReadonlyArray<keyof V>): ObservableStoreTuple<V, M, C> {
 
-    const [StoreProvider, useStore, useCallbacks, useMutator, useStoreReducer, setStore, storeProvider] = createObservableStore<V, M, C>({...opts});
+    const [StoreProvider, useStore, useCallbacks, useMutator, useStoreReducer, useSetStore, useStoreProvider] = createObservableStore<V, M, C>({...opts});
 
     // this is the last step... how do we set the store?
 
-    const StoreProviderWithPrefs = React.memo((props: ObservableStoreProps<V>) => {
+    const WithMountedStore = React.memo((props: ObservableStoreProps<V>) => {
 
         const {createInitialStoreWithPrefs, writePrefs} = usePrefsHandler<V, keyof V>(pref, keys);
 
         const [initialized, setInitialized] = React.useState(false);
+        const setStore = useSetStore();
+        const storeProvider = useStoreProvider();
 
         const store = useStore(undefined);
-
         const storeIter = React.useRef(0);
 
         React.useEffect(() => {
@@ -183,7 +184,7 @@ export function createObservableStoreWithPrefsContext<V, M, C>(opts: ObservableS
             // once the store has been set , trigger setInit to true...
             setInitialized(true);
 
-        }, [createInitialStoreWithPrefs])
+        }, [createInitialStoreWithPrefs, setStore, storeProvider])
 
         return (
             <StoreProvider {...props}>
@@ -195,6 +196,19 @@ export function createObservableStoreWithPrefsContext<V, M, C>(opts: ObservableS
 
     });
 
-    return [StoreProviderWithPrefs, useStore, useCallbacks, useMutator, useStoreReducer, setStore, storeProvider];
+
+    const StoreProviderWithPrefs = React.memo((props: ObservableStoreProps<V>) => {
+
+        return (
+            <StoreProvider {...props}>
+                <WithMountedStore>
+                    {props.children}
+                </WithMountedStore>
+            </StoreProvider>
+        );
+
+    });
+
+    return [StoreProviderWithPrefs, useStore, useCallbacks, useMutator, useStoreReducer, useSetStore, useStoreProvider];
 
 }
