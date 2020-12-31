@@ -59,7 +59,7 @@ import {LogsScreen} from "../../../../apps/repository/js/logs/LogsScreen";
 import {PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {LoginWithCustomTokenScreen} from "../../../../apps/repository/js/login/LoginWithCustomTokenScreen";
 import {WelcomeScreen} from "./WelcomeScreen";
-import { useSideNavStore } from '../../sidenav/SideNavStore';
+import {SIDE_NAV_ENABLED, useSideNavStore} from '../../sidenav/SideNavStore';
 import {SideNav} from "../../sidenav/SideNav";
 
 interface IProps {
@@ -296,9 +296,10 @@ export const RepositoryApp = (props: IProps) => {
                                                                 <LoginWithCustomTokenScreen/>
                                                             </Route>
 
-                                                            {/*<Route exact path={["/doc", "/doc/:id"]}>*/}
-                                                            {/*    <RenderDocViewerScreen/>*/}
-                                                            {/*</Route>*/}
+                                                            {! SIDE_NAV_ENABLED && (
+                                                                <Route exact path={["/doc", "/doc/:id"]}>
+                                                                    <RenderDocViewerScreen/>
+                                                                </Route>)}
 
                                                             <Route exact path="/error">
                                                                 <ErrorScreen/>
@@ -317,61 +318,67 @@ export const RepositoryApp = (props: IProps) => {
                                                                     flexGrow: 1
                                                                 }}>
 
-                                                                    <SideNav/>
+                                                                    {SIDE_NAV_ENABLED && <SideNav/>}
 
                                                                     <div style={{
-                                                                            display: 'flex',
-                                                                            minWidth: 0,
-                                                                            minHeight: 0,
-                                                                            flexDirection: 'column',
-                                                                            flexGrow: 1
-                                                                        }}>
+                                                                             display: 'flex',
+                                                                             minWidth: 0,
+                                                                             minHeight: 0,
+                                                                             flexDirection: 'column',
+                                                                             flexGrow: 1
+                                                                         }}>
 
-                                                                <RepoHeader3/>
+                                                                        <RepoHeader3/>
 
-                                                                <PersistentRoute exact path="/">
-                                                                    <RenderDefaultScreen/>
-                                                                </PersistentRoute>
+                                                                        <PersistentRoute exact path="/">
+                                                                            <RenderDefaultScreen/>
+                                                                        </PersistentRoute>
 
-                                                                <PersistentRoute exact path="/annotations">
-                                                                    <RenderAnnotationRepoScreen/>
-                                                                </PersistentRoute>
+                                                                        <PersistentRoute exact path="/annotations">
+                                                                            <RenderAnnotationRepoScreen/>
+                                                                        </PersistentRoute>
 
-                                                                        {tabs.map(tab => (
-                                                                            <PersistentRoute key={'doc-' + tab.id}
-                                                                                             exact
-                                                                                             path={tab.url}>
-                                                                                <RenderDocViewerScreen/>
-                                                                            </PersistentRoute>
-                                                                        ))}
+                                                                        {SIDE_NAV_ENABLED && (
+                                                                            <>
+                                                                                {tabs.map(tab => (
+                                                                                        <PersistentRoute key={'doc-' + tab.id}
+                                                                                                         exact
+                                                                                                         path={tab.url}>
+                                                                                            <RenderDocViewerScreen/>
+                                                                                        </PersistentRoute>
+                                                                                    ))}
+                                                                            </>
+                                                                        )}
 
-                                                                <Switch location={ReactRouters.createLocationWithPathOnly()}>
+                                                                        <Switch location={ReactRouters.createLocationWithPathOnly()}>
 
-                                                                    <Route exact path='/whats-new'
-                                                                           render={renderWhatsNewScreen}/>
+                                                                            <Route exact path='/whats-new'
+                                                                                   render={renderWhatsNewScreen}/>
 
-                                                                    <Route exact path='/invite' render={renderInvite}/>
+                                                                            <Route exact path='/invite' render={renderInvite}/>
 
-                                                                    <Route exact path='/plans' render={premiumScreen}/>
+                                                                            <Route exact path='/plans' render={premiumScreen}/>
 
-                                                                    <Route exact path='/premium' render={premiumScreen}/>
+                                                                            <Route exact path='/premium' render={premiumScreen}/>
 
-                                                                    <Route exact path='/support' render={supportScreen}/>
+                                                                            <Route exact path='/support' render={supportScreen}/>
 
-                                                                    <Route exact path='/stats'
-                                                                           component={renderStatsScreen}/>
+                                                                            <Route exact path='/stats'
+                                                                                   component={renderStatsScreen}/>
 
-                                                                    <Route exact path="/settings"
-                                                                           component={RenderSettingsScreen}/>
+                                                                            <Route exact path="/settings"
+                                                                                   component={RenderSettingsScreen}/>
 
-                                                                    <Route exact path="/logs"
-                                                                           component={LogsScreen}/>
+                                                                            <Route exact path="/logs"
+                                                                                   component={LogsScreen}/>
 
-                                                                    <Route exact path="/device"
-                                                                           component={renderDeviceScreen}/>
+                                                                            <Route exact path="/device"
+                                                                                   component={renderDeviceScreen}/>
 
-                                                                </Switch>
-                                                                <RepoFooter/>
+                                                                        </Switch>
+
+                                                                        <RepoFooter/>
+
                                                                     </div>
                                                                 </div>
 
