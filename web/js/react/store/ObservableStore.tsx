@@ -242,9 +242,6 @@ function createInternalObservableStore<V>(initialValue: V): InternalObservableSt
 
 }
 
-function createObservableStoreContext<V>(store: InternalObservableStore<V>) {
-    return React.createContext(store);
-}
 
 export interface ObservableStoreProps<V> {
 
@@ -304,9 +301,7 @@ export type ObservableStoreTuple<V, M extends StoreMutator, C> = [
     <K extends keyof V>(keys: ReadonlyArray<K> | undefined, opts?: IUseStoreHookOpts<V, K>) => Pick<V, K>,
     UseContextHook<C>,
     UseContextHook<M>,
-    <R extends any>(reducer: (value: V) => R, opts?: IUseObservableStoreReducerOpts<R>) => R,
-    SetStore<V>,
-    StoreProvider<V>
+    <R extends any>(reducer: (value: V) => R, opts?: IUseObservableStoreReducerOpts<R>) => R
 ];
 
 /**
@@ -439,12 +434,17 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
 
     // FIXME: another idea, just create context here... then , within the provider, perform all the
     // variable creation on mount.
+    //
+    // FIXME: yes... I think this is the way to do it.
+    //
+    // create all th context objects here,
+    // then, in the provider, use React.memo() and then define them for each provider.
+    // then all the code should work.
 
-    const internalObservableStore = createInternalObservableStore(opts.initialValue);
 
-    const storeContext = createObservableStoreContext<V>(internalObservableStore);
-
-    const [mutator, componentCallbacksFactory, setStore, storeProvider] = createInitialContextValues(opts, internalObservableStore);
+    const storeContext = React.createContext<InternalObservableStore<V>>(null!);
+    const callbacksContext = React.createContext<ComponentCallbacksFactory<C>>(null!);
+    const mutatorContext = React.createContext<M>(null!);
 
     const useStoreHook = <K extends keyof V>(keys: ReadonlyArray<K> | undefined,
                                              storeHookOpts: IUseStoreHookOpts<V, K> = {
@@ -462,30 +462,20 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
         return useObservableStoreReducer(storeContext, reducer, opts);
     }
 
-    const callbacksContext = React.createContext<ComponentCallbacksFactory<C>>(componentCallbacksFactory);
-
-    // NOTE: the callbacksFactory should be written with EXACTLY the same
-    // semantics as a react hook since it's called directly including useMemo
-    // and useCallbacks
-    const useCallbacksHook = componentCallbacksFactory;
-
-    const mutatorContext = React.createContext<M>(mutator);
-
     const useMutatorHook: UseContextHook<M> = () => {
         return React.useContext(mutatorContext);
     }
 
+    const useCallbacksHook: UseContextHook<C> = () => {
+        return React.useContext(callbacksContext)();
+    }
+
     const ObservableProviderComponent = (props: ObservableStoreProps<V>) => {
 
-        // FIXME: I think the problem is because we're creating ONE store object so the context is working
-        // BUT it means that the store object needs to be recreated each time
+        const internalObservableStore = React.useMemo(() => createInternalObservableStore(opts.initialValue), []);
 
-        React.useMemo(() => {
-            // this is a hack to setStore only on the initial render and only when we have a props.store
-            if (props.store !== undefined) {
-                setStore(props.store);
-            }
-        }, [props.store]);
+        const [mutator, componentCallbacksFactory, setStore, storeProvider]
+            = React.useMemo(() => createInitialContextValues(opts, internalObservableStore), [internalObservableStore]);
 
         return (
             <storeContext.Provider value={internalObservableStore}>
@@ -499,70 +489,6 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
 
     }
 
-    return [ObservableProviderComponent, useStoreHook, useCallbacksHook, useMutatorHook, useStoreReducerHook, setStore, storeProvider];
+    return [ObservableProviderComponent, useStoreHook, useCallbacksHook, useMutatorHook, useStoreReducerHook];
 
 }
-//
-// export function createObservableStore2<V, M, C>(opts: ObservableStoreOpts<V, M, C>): ObservableStoreTuple<V, M, C> {
-//
-//     const storeContext = React.createContext<ObservableStore<V>>(undefined!);
-//     const callbacksContext = React.createContext<ComponentCallbacksFactory<C>>(undefined!);
-//     const mutatorContext = React.createContext<M>(undefined!);
-//
-//     const useStoreHook: UseStoreHook<V> = <K extends keyof V>(keys: ReadonlyArray<K> | undefined, opts?: IUseStoreHooksOpts) => {
-//         return useObservableStore(storeContext, keys, opts);
-//     }
-//
-//     // NOTE: the callbacksFactory should be written with EXACTLY the same
-//     // semantics as a react hook since it's called directly including useMemo
-//     // and useCallbacks
-//     const useCallbacksHook = componentCallbacksFactory;
-//
-//     const useMutatorHook: UseContextHook<M> = () => {
-//         return React.useContext(mutatorContext);
-//     }
-//
-//     interface ProviderComponentInnerProps<V> {
-//         readonly store: InternalObservableStore<V>;
-//         readonly callbacks: ComponentCallbacksFactory<C>;
-//         readonly mutator: M;
-//         readonly children: JSX.Element | Provider<JSX.Element>;
-//     }
-//
-//     const ProviderComponentInner = typedMemo((props: ProviderComponentInnerProps<V>) => {
-//
-//         return (
-//             <storeContext.Provider value={props.store}>
-//                 <callbacksContext.Provider value={props.callbacks}>
-//                     <mutatorContext.Provider value={props.mutator}>
-//                         {props.children}
-//                     </mutatorContext.Provider>
-//                 </callbacksContext.Provider>
-//             </storeContext.Provider>
-//         );
-//
-//     });
-//
-//     const ProviderComponent = typedMemo((props: ObservableStorePropsWithoutStore<V>) => {
-//
-//         const [store, mutator, callbacks, setStore] = React.useMemo(() => createInitialContextValues(opts), []);
-//
-//         return (
-//             <>
-//                 <ProviderComponentInner store={store}
-//                                         callbacks={callbacks}
-//                                         mutator={mutator}>
-//                     {props.children}
-//                 </ProviderComponentInner>
-//             </>
-//         );
-//
-//     });
-//
-//     return [ProviderComponent, useStoreHook, useCallbacksHook, useMutatorHook];
-//
-// }
-//
-//
-
-
