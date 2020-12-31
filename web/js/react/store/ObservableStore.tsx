@@ -73,7 +73,7 @@ interface IUseObservableStoreReducerOpts<R> {
     readonly filter?: UseStoreReducerFilter<R>;
 }
 
-export function useObservableStoreReducer<V, R>(context: React.Context<ObservableStore<V>>,
+export function useObservableStoreReducer<V, R>(context: React.Context<InternalObservableStore<V>>,
                                                 reducer: (value: V) => R,
                                                 opts: IUseObservableStoreReducerOpts<R> = {}): R {
 
@@ -137,7 +137,7 @@ export function useObservableStoreReducer<V, R>(context: React.Context<Observabl
 }
 
 
-export function useObservableStore<V, K extends keyof V>(context: React.Context<ObservableStore<V>>,
+export function useObservableStore<V, K extends keyof V>(context: React.Context<InternalObservableStore<V>>,
                                                          keys: ReadonlyArray<K> | undefined,
                                                          opts: IUseObservableStoreOpts<V, K>): Pick<V, K> {
 
@@ -224,7 +224,7 @@ export function useObservableStore<V, K extends keyof V>(context: React.Context<
 
 }
 
-export type InternalStoreContext<V> = [React.Context<ObservableStore<V>>, InternalObservableStore<V>];
+export type InternalStoreContext<V> = [React.Context<ObservableStore<V>>];
 
 export type StoreContext<V> = [React.Context<ObservableStore<V>>, ObservableStore<V>];
 
@@ -242,9 +242,8 @@ function createInternalObservableStore<V>(initialValue: V): InternalObservableSt
 
 }
 
-function createObservableStoreContext<V>(store: InternalObservableStore<V>): InternalStoreContext<V> {
-    const context = React.createContext(store as ObservableStore<V>);
-    return [context, store];
+function createObservableStoreContext<V>(store: InternalObservableStore<V>) {
+    return React.createContext(store);
 }
 
 export interface ObservableStoreProps<V> {
@@ -438,9 +437,12 @@ function createInitialContextValues<V, M, C>(opts: ObservableStoreOpts<V, M, C>,
 
 export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C>): ObservableStoreTuple<V, M, C> {
 
+    // FIXME: another idea, just create context here... then , within the provider, perform all the
+    // variable creation on mount.
+
     const internalObservableStore = createInternalObservableStore(opts.initialValue);
 
-    const [storeContext,] = createObservableStoreContext<V>(internalObservableStore);
+    const storeContext = createObservableStoreContext<V>(internalObservableStore);
 
     const [mutator, componentCallbacksFactory, setStore, storeProvider] = createInitialContextValues(opts, internalObservableStore);
 
