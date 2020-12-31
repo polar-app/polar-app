@@ -26,6 +26,28 @@ import { IntersectionListTableStory } from './impl/IntersectionListTableStory';
 import {MUIImageBottomFadeStory} from "./impl/MUIImageBottomFadeStory";
 import {MUITooltipStory} from "./impl/MUITooltipStory";
 import { MUIPaletteStory } from './impl/MUIPaletteStory';
+import { FirestoreSnapshotsStory } from './impl/FirestoreSnapshotsStory';
+import { HeightFitImgStory } from './impl/HeightFitImgStory';
+import {FirestoreInitStory} from "./impl/FirestoreInitStory";
+import {ActionMenuStory} from "./impl/ActionMenuStory";
+import {YoutubePlayerStory} from "./impl/YoutubePlayerStory";
+import {AutoFlashcardsStory} from "./impl/AutoFlashcardsStory";
+import { ProgressButtonStory } from './impl/ProgressButtonStory';
+import {FunctionalChildStory} from "./impl/FunctionalChildStory";
+import { UnmountComponentStory } from './impl/UnmountComponentStory';
+import {NotesComponentsStory} from "./impl/NotesComponentsStory";
+import { AbortedRenderStory } from './impl/AbortedRenderStory';
+import {ScratchStory} from "./impl/ScratchStory";
+import { ErrorBoundaryStory } from './impl/ErrorBoundaryStory';
+import {ActiveKeyboardShortcuts} from "../../web/js/hotkeys/ActiveKeyboardShortcuts";
+import {ActiveKeyboardShortcutsStory} from "./impl/ActiveKeyboardShortcutsStory";
+import {FontAwesomeIconStory} from "./impl/FontAwesomeIconStory";
+import {CKEditor5Story2} from "./impl/CKEditor5Story2";
+import { ProfileStory } from './impl/ProfileStory';
+import { AccountVerificationStory } from './impl/AccountVerificationStory';
+import {MobXStory} from "./impl/MobXStory";
+import {WelcomeStory} from "./impl/WelcomeStory";
+import {MUICommandMenuStory} from "./impl/MUICommandMenuStory";
 
 interface IStory {
     readonly name: string;
@@ -50,6 +72,38 @@ function createStoryIndex(stories: ReadonlyArray<IStory>) {
 
 const stories = createStoryIndex([
     {
+        name: "Scratch",
+        component: <ScratchStory/>
+    },
+    {
+        name: 'Account Verification',
+        component: <AccountVerificationStory/>
+    },
+    {
+        name: 'MobX',
+        component: <MobXStory/>
+    },
+    {
+        name: 'FontAwesomeIconStory',
+        component: <FontAwesomeIconStory/>
+    },
+    {
+        name: 'Profile Story',
+        component: <ProfileStory/>
+    },
+    {
+        name: 'Welcome Story',
+        component: <WelcomeStory/>
+    },
+    {
+        name: "Active Keyboard Shortcuts",
+        component: <ActiveKeyboardShortcutsStory/>
+    },
+    {
+        name: "Error Boundary",
+        component: <ErrorBoundaryStory/>
+    },
+    {
         name: "Doc Metadata Editor",
         component: <DocMetadataEditorStory/>
     },
@@ -66,8 +120,16 @@ const stories = createStoryIndex([
         component: <CKEditor5Story/>
     },
     {
+        name: "CKEditor5 2",
+        component: <CKEditor5Story2/>
+    },
+    {
         name: "Notes",
         component: <NotesStory/>
+    },
+    {
+        name: "Notes Components",
+        component: <NotesComponentsStory/>
     },
     {
         name: "Reviewer",
@@ -129,6 +191,50 @@ const stories = createStoryIndex([
     {
         name: "MUIPaletteStory",
         component: <MUIPaletteStory/>
+    },
+    {
+        name: "FirestoreSnapshotsStory",
+        component: <FirestoreSnapshotsStory/>
+    },
+    {
+        name: "HeightFitImgStory",
+        component: <HeightFitImgStory/>
+    },
+    {
+        name: "Firebase Init",
+        component: <FirestoreInitStory/>
+    },
+    {
+        name: "ActionMenuStory",
+        component: <ActionMenuStory/>
+    },
+    {
+        name: "Youtube Player",
+        component: <YoutubePlayerStory/>
+    },
+    {
+        name: "Auto Flashcards",
+        component: <AutoFlashcardsStory/>
+    },
+    {
+        name: "Circular Progress",
+        component: <ProgressButtonStory/>
+    },
+    {
+        name: 'FunctionalChildStory',
+        component: <FunctionalChildStory/>
+    },
+    {
+        name: 'UnmountComponentStory',
+        component: <UnmountComponentStory/>
+    },
+    {
+        name: 'AbortedRenderStory',
+        component: <AbortedRenderStory/>
+    },
+    {
+        name: 'MUICommandMenu',
+        component: <MUICommandMenuStory/>
     }
 
 ]);

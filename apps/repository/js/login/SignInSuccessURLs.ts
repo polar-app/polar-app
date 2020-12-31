@@ -38,13 +38,8 @@ export namespace SignInSuccessURLs {
     }
 
     function getDefault(): string {
-
         const base = URLs.toBase(document.location!.href);
-
-        const signInPath
-            = AppRuntime.isBrowser() ? "/" : '/#configured';
-
-        return new URL(signInPath, base).toString();
+        return new URL('/', base).toString();
 
     }
 

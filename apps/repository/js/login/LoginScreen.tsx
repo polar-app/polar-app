@@ -10,6 +10,9 @@ import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import {SignInSuccessURLs} from "./SignInSuccessURLs";
 import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import {ProviderURLs} from "./ProviderURLs";
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+
 
 interface IProps extends FirebaseUIAuthOptions {
 
@@ -17,21 +20,22 @@ interface IProps extends FirebaseUIAuthOptions {
 
 export const LoginScreen = React.memo((props: IProps) => {
 
-    function doDownloadDesktop() {
-        document.location.href = 'https://getpolarized.io/download.html?utm_source=getpolarized.io&utm_content=login-download-button&utm_medium=site';
-    }
+    const [pending, setPending] = React.useState(true);
 
-    function doInit() {
+    const doInit = React.useCallback(async () => {
 
         ExternalNavigationBlock.set(false);
 
         Firebase.init();
 
-        const user = Firebase.currentUser();
+        const user = await Firebase.currentUserAsync();
+
+        setPending(false);
+
+        const signInSuccessUrl = SignInSuccessURLs.get();
 
         if (! user) {
 
-            const signInSuccessUrl = SignInSuccessURLs.get();
             const providerURL = ProviderURLs.parse(document.location);
 
             const authOptions: FirebaseUIAuthOptions = {
@@ -44,13 +48,14 @@ export const LoginScreen = React.memo((props: IProps) => {
 
         } else {
             console.log("Already authenticated as " + user.email);
+            document.location.href = signInSuccessUrl
         }
 
-    }
+    }, [props]);
 
     useEffect(() => {
-        doInit();
-    });
+        doInit().catch(err => console.error(err));
+    }, [doInit]);
 
     return (
         <div style={{
@@ -68,46 +73,50 @@ export const LoginScreen = React.memo((props: IProps) => {
                        flexDirection: 'column'
                    }}>
 
-                <div style={{flexGrow: 1}}>
+                <>
+                    <div style={{flexGrow: 1}}>
 
-                    <div className="text-center">
+                        <div className="text-center">
 
-                        <PolarSVGIcon width={175} height={175}/>
+                            <PolarSVGIcon width={175} height={175}/>
 
-                        <h1>
-                            Login to Polar
-                        </h1>
+                            <h1>
+                                Login to Polar
+                            </h1>
+
+                        </div>
+
+                        <div id="firebaseui-auth-container" className="p-1"/>
+
+                        {pending && <CircularProgress/>}
 
                     </div>
 
-                    <div id="firebaseui-auth-container" className="p-1"/>
+                    <MUIButtonBar className="mt-1 p-1"
+                                  style={{justifyContent: 'flex-end'}}>
 
-                </div>
+                        {/*<Button variant="contained"*/}
+                        {/*        color="default"*/}
+                        {/*        onClick={doCancel}>*/}
 
-                <MUIButtonBar className="mt-1 p-1"
-                              style={{justifyContent: 'flex-end'}}>
+                        {/*    Cancel*/}
 
-                    {/*<Button variant="contained"*/}
-                    {/*        color="default"*/}
-                    {/*        onClick={doCancel}>*/}
+                        {/*</Button>*/}
 
-                    {/*    Cancel*/}
+                        {/*<Button variant="contained"*/}
+                        {/*        color="default"*/}
+                        {/*        onClick={doDownloadDesktop}*/}
+                        {/*        hidden={appRuntime === 'browser'}*/}
+                        {/*        title="We also have a desktop version of Polar that runs on Windows, MacOS, or Linux.">*/}
 
-                    {/*</Button>*/}
+                        {/*    <i className="fas fa-download"/>*/}
 
-                    {/*<Button variant="contained"*/}
-                    {/*        color="default"*/}
-                    {/*        onClick={doDownloadDesktop}*/}
-                    {/*        hidden={appRuntime === 'browser'}*/}
-                    {/*        title="We also have a desktop version of Polar that runs on Windows, MacOS, or Linux.">*/}
+                        {/*    Download Desktop*/}
 
-                    {/*    <i className="fas fa-download"/>*/}
+                        {/*</Button>*/}
 
-                    {/*    Download Desktop*/}
-
-                    {/*</Button>*/}
-
-                </MUIButtonBar>
+                    </MUIButtonBar>
+                </>
 
             </Paper>
 

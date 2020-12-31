@@ -46,13 +46,13 @@ export abstract class CacheEntry implements ICacheEntry {
      * The handleData should return false when there is no more data to handle.
      *
      */
-    public abstract async handleData(callback: DataCallback): Promise<boolean>;
+    public abstract handleData(callback: DataCallback): Promise<boolean>;
 
     /**
      */
-    public abstract async toBuffer(): Promise<Buffer>;
+    public abstract toBuffer(): Promise<Buffer>;
 
-    public abstract async toStream(): Promise<NodeJS.ReadableStream>;
+    public abstract toStream(): Promise<NodeJS.ReadableStream>;
 
 }
 

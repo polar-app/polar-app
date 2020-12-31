@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {GlobalKeyboardShortcuts, keyMapWithGroup} from "../../keyboard_shortcuts/GlobalKeyboardShortcuts";
 import { useDockLayoutCallbacks } from './DockLayoutStore';
+import MenuIcon from '@material-ui/icons/Menu';
 
 const globalKeyMap = keyMapWithGroup({
     group: "Sidebar Panels",
@@ -8,12 +9,14 @@ const globalKeyMap = keyMapWithGroup({
     keyMap: {
 
         TOGGLE_LEFT: {
+            icon: <MenuIcon/>,
             name: "Toggle Left Sidebar Visibility",
             description: "Hide/show the left sidebar",
             sequences: ['[']
         },
 
         TOGGLE_RIGHT: {
+            icon: <MenuIcon/>,
             name: "Toggle Right Sidebar Visibility",
             description: "Hide/show the right sidebar",
             sequences: [']']
@@ -22,7 +25,7 @@ const globalKeyMap = keyMapWithGroup({
     }
 });
 
-export const DockLayoutGlobalHotKeys = React.memo(() => {
+export const DockLayoutGlobalHotKeys = React.memo(function DockLayoutGlobalHotKeys() {
 
     const {toggleSide} = useDockLayoutCallbacks();
 

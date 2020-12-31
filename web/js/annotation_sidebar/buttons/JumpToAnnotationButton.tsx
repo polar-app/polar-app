@@ -14,16 +14,11 @@ interface IProps {
 
 export const JumpToAnnotationButton = memoForwardRef((props: IProps) => {
 
-    const jumpToAnnotationHandler = useJumpToAnnotationHandler();
-
     const {annotation} = props;
 
-    if (! [AnnotationType.TEXT_HIGHLIGHT, AnnotationType.AREA_HIGHLIGHT].includes(annotation.annotationType)) {
-        // this should only be added on text highlights.
-        return null;
-    }
+    const jumpToAnnotationHandler = useJumpToAnnotationHandler();
 
-    const handleJumpToCurrentAnnotation = () => {
+    const handleJumpToCurrentAnnotation = React.useCallback(() => {
 
         const ptr: IAnnotationPtr = {
             target: annotation.id,
@@ -33,7 +28,12 @@ export const JumpToAnnotationButton = memoForwardRef((props: IProps) => {
 
         jumpToAnnotationHandler(ptr);
 
-    };
+    }, [annotation.docMetaRef.id, annotation.id, annotation.pageNum, jumpToAnnotationHandler]);
+
+    if (! [AnnotationType.TEXT_HIGHLIGHT, AnnotationType.AREA_HIGHLIGHT].includes(annotation.annotationType)) {
+        // this should only be added on text highlights.
+        return null;
+    }
 
     return (
         <StandardIconButton tooltip="Jump to the current annotation in the page."

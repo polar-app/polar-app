@@ -5,12 +5,13 @@ import {Plans} from "polar-accounts/src/Plans";
 import {Billing} from "polar-accounts/src/Billing";
 import V2Plan = Billing.V2Plan;
 import {useAccounting} from "../../apps/repository/accounting/Accounting";
+import IRequiredPlan = AccountUpgrades.IRequiredPlan;
 
 const log = Logger.create();
 
-export interface IAccountUpgrade {
+export interface IAccountUpgrade extends IRequiredPlan {
     readonly required: boolean;
-    readonly toPlan: V2Plan;
+    readonly plan: V2Plan;
 }
 
 /**
@@ -29,18 +30,23 @@ export function useAccountUpgrader(): IAccountUpgrade | undefined {
 
     const accountUsage: AccountUsage = {
         created: userInfoContext?.userInfo?.creationTime,
-        storageInBytes: accounting.nrWebCaptures
+        storageInBytes: accounting.storageInBytes,
+        nrWebCaptures: accounting.nrWebCaptures
     }
 
-    const toPlan = AccountUpgrades.computePlanRequiredForAccount(plan, accountUsage);
+    const planRequiredForAccount = AccountUpgrades.computePlanRequiredForAccount(plan, accountUsage);
 
-    const required = plan.level !== toPlan.level;
+    const required = plan.level !== planRequiredForAccount.plan.level;
 
     if (required) {
-        log.warn(`Current account needs to be upgrade from ${plan.level} to ${toPlan}`);
+        log.warn(`Current account needs to be upgrade from ${plan.level} to ${planRequiredForAccount.plan}`);
     }
 
-    return {required, toPlan};
+    return {
+        required,
+        plan: planRequiredForAccount.plan,
+        reason: required ? planRequiredForAccount.reason : 'none'
+    };
 
 }
 

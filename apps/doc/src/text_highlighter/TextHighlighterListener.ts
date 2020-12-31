@@ -17,7 +17,11 @@ export namespace TextHighlighterListener {
         window.addEventListener('message', handleMessage);
 
         return () => {
-            window.removeEventListener('message', handleMessage);
+
+            if (window && typeof window.removeEventListener === 'function') {
+                window.removeEventListener('message', handleMessage);
+            }
+
         };
 
     }

@@ -6,7 +6,7 @@ import {
 } from "../folder_sidebar/FolderSidebarStore";
 
 export const [DocRepoSidebarTagStoreProvider, useDocRepoSidebarTagStoreStore, useDocRepoSidebarTagStoreCallbacks] =
-    createFolderSidebarStore();
+    createFolderSidebarStore('doc_repo');
 
 interface IProps {
     readonly children: JSX.Element;

@@ -36,7 +36,6 @@ import {Pagemarks} from "../../../../../web/js/metadata/Pagemarks";
 import {Scrollers} from "polar-pagemarks-auto/src/Scrollers";
 import {
     usePersistenceLayerContext,
-    usePrefsContext
 } from "../../../../repository/js/persistence_layer/PersistenceLayerApp";
 import {ExtendPagemark} from "polar-pagemarks-auto/src/AutoPagemarker";
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
@@ -51,6 +50,8 @@ import {IOutline} from "../../outline/IOutline";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import Destination = _pdfjs.Destination;
 import {Nonces} from "polar-shared/src/util/Nonces";
+import {useStateRef} from "../../../../../web/js/hooks/ReactHooks";
+import {usePrefsContext} from "../../../../repository/js/persistence_layer/PrefsContext2";
 
 interface DocViewer {
     readonly eventBus: EventBus;
@@ -148,7 +149,7 @@ interface IProps {
 export const PDFDocument = deepMemo((props: IProps) => {
 
     const {docURL} = props;
-    const [active, setActive] = React.useState(false);
+    const [active, setActive, activeRef] = useStateRef(false);
 
     const docViewerRef = React.useRef<DocViewer | undefined>(undefined);
     const scaleRef = React.useRef<ScaleLevelTuple>(ScaleLevelTuples[1]);
@@ -173,9 +174,33 @@ export const PDFDocument = deepMemo((props: IProps) => {
         docViewerRef.current = createDocViewer(props.docMeta.docInfo.fingerprint);
 
         doLoad(docViewerRef.current)
-            .catch(err => console.error("PDFDocument: Could not load PDF: ", err));
+            .catch(err => log.error("PDFDocument: Could not load PDF: ", err));
 
     });
+
+    const hasPagesInitRef = React.useRef(false);
+    const hasLoadRef = React.useRef(false);
+
+    const handleActive = React.useCallback(() => {
+
+        if (hasPagesInitRef.current && hasLoadRef.current) {
+            if (! activeRef.current) {
+                setActive(true);
+            }
+        }
+
+    }, [activeRef, setActive]);
+
+    const onPagesInit = React.useCallback(() => {
+        hasPagesInitRef.current = true;
+        handleActive();
+    }, [handleActive]);
+
+    const onLoaded = React.useCallback(() => {
+        hasLoadRef.current = true;
+        handleActive();
+
+    }, [handleActive]);
 
     const doLoad = async (docViewer: DocViewer) => {
 
@@ -215,9 +240,7 @@ export const PDFDocument = deepMemo((props: IProps) => {
             // PageContextMenus.start()
             annotationBarInjector();
 
-            if (! active) {
-                setActive(true);
-            }
+            onPagesInit();
 
         });
 
@@ -328,7 +351,7 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
         function enableAutoPagemarks() {
 
-            if (prefs.get(KnownPrefs.AUTO_PAGEMARKS) !== 'true') {
+            if (prefs.get(KnownPrefs.AUTO_PAGEMARKS).getOrElse('false') !== 'true') {
                 // only enable this via prefs now...
                 return;
             }
@@ -365,6 +388,8 @@ export const PDFDocument = deepMemo((props: IProps) => {
         }
 
         enableAutoPagemarks();
+
+        onLoaded()
 
     }
 
@@ -411,8 +436,13 @@ export const PDFDocument = deepMemo((props: IProps) => {
                 fingerprint: docRef.current.fingerprint
             };
 
-            setPage(pageNavigatorRef.current!.get());
             setDocDescriptor(docDescriptor);
+
+            if (pageNavigatorRef.current) {
+                setPage(pageNavigatorRef.current.get());
+            } else {
+                log.warn("No pageNavigatorRef")
+            }
 
         }
 

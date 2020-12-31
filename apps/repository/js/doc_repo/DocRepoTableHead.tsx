@@ -10,8 +10,12 @@ import {
     useDocRepoStore, useDocRepoCallbacks
 } from "./DocRepoStore2";
 import {useDocRepoColumnsPrefs} from "./DocRepoColumnsPrefsHook";
-import {DocColumnsSelectorWithPrefs} from "./DocColumnsSelectorWithPrefs";
 import {isPresent} from "polar-shared/src/Preconditions";
+import {Devices} from "polar-shared/src/util/Devices";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {DeviceRouter, DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
+import FilterListIcon from '@material-ui/icons/FilterList';
+import { DocColumnsSelectorWithPrefs } from "./DocColumnsSelectorWithPrefs";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -34,24 +38,54 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         row: {
             "& th": {
-                paddingTop: '3px',
-                paddingBottom: '3px',
+                paddingTop: theme.spacing(1),
+                paddingBottom: theme.spacing(1),
                 paddingLeft: 0,
                 paddingRight: 0,
-                backgroundColor: `${theme.palette.background.default} !important`
+                borderCollapse: 'collapse',
+                lineHeight: '1em'
             }
         }
     }),
 );
 
-export function DocRepoTableHead() {
+const Check = React.memo(() => {
+    return (
+        <TableCell key="left-checkbox"
+                   padding="checkbox">
+        </TableCell>
+    )
+});
+
+const ColumnSelector = React.memo(() => {
+    return (
+
+        <TableCell key="right-filter"
+                   style={{
+                       width: DOC_BUTTON_COLUMN_WIDTH,
+                   }}>
+            <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+                <DocColumnsSelectorWithPrefs/>
+
+            </div>
+            {/*<FilterListIcon/>*/}
+        </TableCell>
+
+    );
+
+});
+
+export const DocRepoTableHead = React.memo(() => {
 
     const classes = useStyles();
 
     const {order, orderBy} = useDocRepoStore(['order', 'orderBy']);
     const {setSort} = useDocRepoCallbacks();
+    const desktopColumns = useDocRepoColumnsPrefs();
 
-    const selectedColumns = useDocRepoColumnsPrefs();
+    const mobileColumns: ReadonlyArray<keyof IDocInfo> = ['title', 'progress'];
+
+    const selectedColumns = Devices.isDesktop() ? desktopColumns : mobileColumns;
 
     const columns = selectedColumns.map(current => COLUMN_MAP[current])
                                    .filter(current => isPresent(current));
@@ -60,9 +94,9 @@ export function DocRepoTableHead() {
 
             <TableHead className={classes.root}>
                 <TableRow className={classes.row}>
-                    <TableCell key="left-checkbox"
-                               padding="checkbox">
-                    </TableCell>
+
+                    <Check/>
+
                     {columns.map((column) => {
 
                         const newOrder = orderBy === column.id ? Sorting.reverse(order) : column.defaultOrder;
@@ -92,16 +126,18 @@ export function DocRepoTableHead() {
                         )
                     })}
 
-                    <TableCell key="right-filter"
-                               style={{
-                                   width: DOC_BUTTON_COLUMN_WIDTH,
-                               }}>
-                        <div style={{display: 'flex', justifyContent: 'flex-end'}}>
-                            <DocColumnsSelectorWithPrefs/>
-                        </div>
-                    </TableCell>
+                    <DeviceRouter.Desktop>
+                        <>
+                            <ColumnSelector/>
+                        </>
+                    </DeviceRouter.Desktop>
+
+                    <DeviceRouters.NotDesktop>
+                        <TableCell style={{width: '35px'}}>
+                        </TableCell>
+                    </DeviceRouters.NotDesktop>
 
                 </TableRow>
             </TableHead>
     );
-}
+});

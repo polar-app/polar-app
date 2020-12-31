@@ -1,76 +1,29 @@
 import * as React from 'react';
-import {Logger} from 'polar-shared/src/logger/Logger';
 import {LogsContent} from './LogsContent';
-import CopyLogsToClipboardButton from './CopyLogsToClipboardButton';
-import ClearLogsButton from './ClearLogsButton';
-import {FixedNav, FixedNavBody} from '../FixedNav';
-import {PersistenceLayerController} from '../../../../web/js/datastore/PersistenceLayerManager';
-import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
+import {CopyLogsToClipboardButton} from './CopyLogsToClipboardButton';
+import {ClearLogsButton} from './ClearLogsButton';
+import {DefaultPageLayout} from "../page_layout/DefaultPageLayout";
+import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
+import Box from '@material-ui/core/Box';
 
-const log = Logger.create();
+export const LogsScreen = () => (
 
-export default class LogsScreen extends React.Component<IProps, IState> {
+    <DefaultPageLayout>
+        <>
 
-    constructor(props: IProps, context: any) {
-        super(props, context);
+            <Box mb={1} mt={1}>
 
-        this.state = {
-        };
+                <MUIButtonBar>
+                    <CopyLogsToClipboardButton/>
+                    <ClearLogsButton/>
+                </MUIButtonBar>
 
-    }
+            </Box>
 
-    public render() {
+            <div>
+                <LogsContent/>
+            </div>
+        </>
 
-        return (
-
-            <FixedNav id="doc-repository">
-
-                <header>
-
-                    {/*<RepoHeader />*/}
-
-                    <div style={{display: 'flex'}} className="p-1">
-
-                        <div className="mb-1">
-                            <CopyLogsToClipboardButton/>
-                        </div>
-
-                        <div className="ml-1 mb-1">
-                            <ClearLogsButton/>
-                        </div>
-
-                    </div>
-
-                </header>
-
-                <FixedNavBody className="container-fluid">
-
-                    <div className="row">
-
-                        <div className="col-lg-12">
-
-                            <div className="mb-2 p-1">
-                                <LogsContent/>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </FixedNavBody>
-
-            </FixedNav>
-
-        );
-    }
-
-}
-
-export interface IProps {
-    readonly persistenceLayerProvider: PersistenceLayerProvider;
-    readonly persistenceLayerController: PersistenceLayerController;
-}
-
-export interface IState {
-
-}
+    </DefaultPageLayout>
+);

@@ -7,7 +7,11 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Billing} from "polar-accounts/src/Billing";
 import Paper from "@material-ui/core/Paper/Paper";
 import { Devices } from "polar-shared/src/util/Devices";
-import { useLocation, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import {useComponentDidMount, useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
+import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
+import {useRefValue} from "../../../../web/js/hooks/ReactHooks";
+import {ILocation} from "../../../../web/js/react/router/ReactRouters";
 
 const useStyles = makeStyles({
   button: {
@@ -16,23 +20,50 @@ const useStyles = makeStyles({
 
 });
 
+function useLocationListener() {
+
+    const [location, setLocation] = React.useState<ILocation | undefined>();
+    const unsubscriberRef = React.useRef<SnapshotUnsubscriber>();
+    const history = useHistory();
+    const historyRef = useRefValue(history);
+
+    useComponentDidMount(() => {
+
+        if (historyRef.current) {
+            unsubscriberRef.current = historyRef.current.listen(location => setLocation(location));
+        } else {
+            console.warn("No history");
+        }
+
+    });
+
+    useComponentWillUnmount(() => {
+        if (unsubscriberRef.current) {
+            unsubscriberRef.current();
+        }
+    });
+
+    return location;
+
+}
+
 export function useActivePlanIntervalFromLocation(): Billing.Interval {
 
-    useLocation();
+    const location = useLocationListener();
 
     // for some reason we're not getting the hash in the location change
-    const hash = document.location.hash;
+    const hash = location?.hash;
 
     if (hash === '#4year') {
         return '4year';
     }
 
-    if (hash === '#month') {
-        return 'month';
-    }
-
     if (hash === '#year') {
         return 'year';
+    }
+
+    if (hash === '#month') {
+        return 'month';
     }
 
     return 'month';
@@ -41,7 +72,7 @@ export function useActivePlanIntervalFromLocation(): Billing.Interval {
 
 function useActivePlanIntervalRouter() {
 
-    const interval = useActivePlanIntervalFromLocation();
+    const {interval} = usePricingStore(['interval']);
     const {setInterval} = usePricingCallbacks();
 
     React.useEffect(() => {
@@ -52,28 +83,24 @@ function useActivePlanIntervalRouter() {
 
 export function useActivePlanHandler() {
 
-    const history = useHistory();
+    const {setInterval} = usePricingCallbacks();
 
     return React.useCallback((interval: Billing.Interval) => {
-        history.push({
-            hash: `${interval}`
-        });
-
-    }, [history]);
+        setInterval(interval)
+    }, [setInterval]);
 
 }
 
 export const PlanIntervalToggle = React.memo(() => {
 
     const classes = useStyles();
-    useActivePlanIntervalRouter();
 
     const {interval} = usePricingStore(['interval']);
     const activePlanHandler = useActivePlanHandler();
 
     const orientation = Devices.isPhone() ? 'vertical' : 'horizontal';
 
-    const handleChange = React.useCallback((event: React.MouseEvent, newInterval: Billing.Interval | null) => {
+    const handleChange = React.useCallback((newInterval: Billing.Interval | null) => {
         activePlanHandler(newInterval || 'month');
     }, [activePlanHandler]);
 
@@ -82,20 +109,28 @@ export const PlanIntervalToggle = React.memo(() => {
 
             <ToggleButtonGroup exclusive
                                orientation={orientation}
-                               value={interval || 'month'}
-                               onChange={handleChange}>
+                               value={interval || 'month'}>
 
-                <ToggleButton className={classes.button} value="month" aria-label="bold">
+                <ToggleButton className={classes.button}
+                              value="month"
+                              onClick={() => handleChange('month')}
+                              aria-label="bold">
                     Monthly
                 </ToggleButton>
 
-                <ToggleButton className={classes.button} value="year" aria-label="bold">
+                <ToggleButton className={classes.button}
+                              value="year"
+                              onClick={() => handleChange('year')}
+                              aria-label="bold">
                     <Typography>Yearly</Typography>
                     &nbsp;&nbsp;
                     <Typography color="secondary">One Month Free</Typography>
                 </ToggleButton>
 
-                <ToggleButton className={classes.button} value="4year" aria-label="bold">
+                <ToggleButton className={classes.button}
+                              value="4year"
+                              onClick={() => handleChange('4year')}
+                              aria-label="bold">
                     <Typography>4 Years</Typography>
                     &nbsp;&nbsp;
                     <Typography color="secondary">Save Over 40%</Typography>

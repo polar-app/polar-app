@@ -99,7 +99,7 @@ interface IProps {
     readonly children: React.ReactNode;
 }
 
-export const DocRenderer = React.memo((props: IProps) => {
+export const DocRenderer = React.memo(function DocRenderer(props: IProps) {
 
     const {docURL, docMeta} = useDocViewerStore(['docURL', 'docMeta']);
 

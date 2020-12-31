@@ -14,7 +14,13 @@ export const AuthRequired = React.memo((props: IProps) => {
         // we do not yet have userInfo so we can't make any decisions regarding
         // authentication
         // console.warn("No userInfoContext");
-        return null;
+
+        return (
+            <div className='AuthRequiredNoUserInfoContext'>
+
+            </div>
+        );
+
     }
 
     if (! userInfoContext.userInfo) {
@@ -26,7 +32,12 @@ export const AuthRequired = React.memo((props: IProps) => {
 
         const authHandler = AuthHandlers.get();
         authHandler.authenticate(document.location.href);
-        return null;
+
+        return (
+            <div className='AuthRequiredNoUserInfo'>
+
+            </div>
+        );
 
     }
 
@@ -34,3 +45,5 @@ export const AuthRequired = React.memo((props: IProps) => {
     return props.children;
 
 });
+
+AuthRequired.displayName='AuthRequired';

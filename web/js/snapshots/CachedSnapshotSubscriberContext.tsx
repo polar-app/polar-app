@@ -42,12 +42,22 @@ interface ICachedSnapshotContext<V> {
 
 }
 
+/**
+ * The default filter to allow all values.
+ */
+const DEFAULT_PREDICATE = (value: ISnapshot<any> | undefined) => true;
+
 interface ProviderProps<V> {
     readonly id: string;
     readonly snapshotSubscriber: SnapshotSubscriber<ISnapshot<V>>;
     readonly onError: (err: Error) => void;
     readonly children: JSX.Element | React.ReactNode;
-    readonly filter?: (value: ISnapshot<V> | undefined) => boolean;
+
+    /**
+     * Only accept values that pass the predicate. Must return true.
+     */
+    readonly predicate?: (value: ISnapshot<V> | undefined) => boolean;
+
 }
 
 export type CacheProviderComponent<V> = (props: ProviderProps<V>) => JSX.Element | null;
@@ -103,13 +113,23 @@ export function createCachedSnapshotSubscriberContext<V>(): CachedSnapshotTuple<
     const Provider = React.memo((props: ProviderProps<V>) => {
 
         const storeContext = React.useContext(context);
+        const predicate = props.predicate || DEFAULT_PREDICATE;
+
+        const initialFiltered = React.useMemo(() => predicate(storeContext.current), [predicate, storeContext]);
+        const [accepted, setAccepted] = React.useState(initialFiltered);
 
         const onNext = React.useCallback((snapshot: ISnapshot<V> | undefined) => {
 
             storeContext.current = snapshot;
             storeContext.subject.next(snapshot);
 
-        }, [storeContext]);
+            const newAccepted = predicate(storeContext.current);
+
+            if (accepted !== newAccepted) {
+                setAccepted(newAccepted);
+            }
+
+        }, [storeContext, predicate, accepted]);
 
         useLocalCachedSnapshotSubscriber({
             id: props.id,
@@ -119,11 +139,9 @@ export function createCachedSnapshotSubscriberContext<V>(): CachedSnapshotTuple<
         });
 
         return (
-
             <context.Provider value={initialContext}>
-                {props.filter ? (props.filter(storeContext.current) && props.children) : props.children}
+                {accepted && props.children}
             </context.Provider>
-
         );
 
     });

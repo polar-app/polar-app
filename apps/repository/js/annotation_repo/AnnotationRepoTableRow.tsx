@@ -1,12 +1,12 @@
 import * as React from "react";
 import TableCell from "@material-ui/core/TableCell";
-import {AnnotationPreview} from "./AnnotationPreview";
 import TableRow from "@material-ui/core/TableRow";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {useAnnotationRepoCallbacks} from "./AnnotationRepoStore";
-import {IMouseEvent} from "../doc_repo/MUIContextMenu";
 import isEqual from "react-fast-compare";
-import { useAnnotationRepoTableContextMenu } from "./AnnotationRepoTable2";
+import { useAnnotationRepoTableContextMenu } from "./AnnotationRepoTable";
+import {IMouseEvent} from "../doc_repo/MUIContextMenu2";
+import {FixedHeightAnnotationPreview} from "./FixedHeightAnnotationPreview";
 
 interface IProps {
     readonly viewIndex: number;
@@ -42,12 +42,12 @@ export const AnnotationRepoTableRow = React.memo(React.forwardRef((props: IProps
                   selected={rowSelected}>
 
             <TableCell padding="checkbox">
-                <AnnotationPreview id={annotation.id}
-                                   text={annotation.text}
-                                   img={annotation.img}
-                                   color={annotation.color}
-                                   lastUpdated={annotation.lastUpdated}
-                                   created={annotation.created}/>
+                <FixedHeightAnnotationPreview id={annotation.id}
+                                              text={annotation.text}
+                                              img={annotation.img}
+                                              color={annotation.color}
+                                              lastUpdated={annotation.lastUpdated}
+                                              created={annotation.created}/>
             </TableCell>
         </TableRow>
     );

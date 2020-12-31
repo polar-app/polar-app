@@ -7,58 +7,13 @@ import {FirebaseDocMetaID} from './FirebaseDatastore';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {CloudFunctions} from './firebase/CloudFunctions';
 import {Firebase, UserID} from '../firebase/Firebase';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app'
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {UserIDStr} from "polar-firebase/src/firebase/om/Profiles";
 
-const log = Logger.create();
-
 export class FirebaseDatastores {
-
-    private static user: firebase.User | undefined;
-
-    private static initialized: boolean = false;
-
-    /**
-     * Perform init against the FirebaseDatastores to keep the current user for all operations.  This is a bit
-     * of a hack in that it would be nice to have FB update this without it being async.
-     */
-    public static async init() {
-
-        if (this.initialized) {
-            return;
-        }
-
-        log.notice("Initializing FirebaseDatastores...");
-
-        // set the current version before we return
-        this.user = Firebase.currentUser();
-
-        const formatUser = (user: firebase.User | undefined) => {
-
-            if (user) {
-                return `${user.displayName}, uid=${user.uid}`;
-            }
-
-            return 'none';
-
-        };
-
-        log.notice("Initializing FirebaseDatastores...done", formatUser(this.user));
-
-        // update in the background
-        firebase.auth()
-            .onAuthStateChanged((user) => this.user = user || undefined,
-                                (err) => {
-                                    log.error("Unable to handle user: ", err);
-                                    this.user = undefined;
-                                });
-
-        this.initialized = true;
-
-    }
 
     public static computeDatastoreGetFileURL(request: DatastoreGetFileRequest) {
         const endpoint = CloudFunctions.createEndpoint();
@@ -67,7 +22,7 @@ export class FirebaseDatastores {
 
     public static computeStoragePath(backend: Backend,
                                      fileRef: FileRef,
-                                     uid: UserIDStr = FirebaseDatastores.getUserID()): StoragePath {
+                                     uid: UserIDStr): StoragePath {
 
         const ext = FilePaths.toExtension(fileRef.name);
 
@@ -187,22 +142,8 @@ export class FirebaseDatastores {
     // in the future. Or, an anonymous user can link a Facebook account and then,
     // later, sign in with Facebook to continue using your app.
 
-    public static getUserID(): UserID {
-
-        const app = firebase.app();
-
-        const auth = app.auth();
-        Preconditions.assertPresent(auth, "Not authenticated (no auth)");
-
-        const user = this.user || auth.currentUser;
-        Preconditions.assertPresent(user, "Not authenticated (no user)");
-
-        return user!.uid;
-
-    }
-
     public static computeDocMetaID(fingerprint: string,
-                                   uid: UserID = FirebaseDatastores.getUserID()): FirebaseDocMetaID {
+                                   uid: UserID): FirebaseDocMetaID {
 
         return Hashcodes.createID(uid + ':' + fingerprint, 32);
 

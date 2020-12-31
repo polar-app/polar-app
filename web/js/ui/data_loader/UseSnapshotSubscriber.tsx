@@ -15,6 +15,7 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import {isPresent} from "polar-shared/src/Preconditions";
 
 export interface SubscriptionValue<T> {
+    // FIXME: add exists
     readonly value: T | undefined;
     readonly error: Error | undefined;
 }

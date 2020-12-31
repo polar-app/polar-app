@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {Logger} from 'polar-shared/src/logger/Logger';
-import {MemoryLogger} from '../../../../web/js/logger/MemoryLogger';
 import ReactJson from 'react-json-view';
 import {useComponentDidMount} from "../../../../web/js/hooks/ReactLifecycleHooks";
+import {ConsoleRecorder} from "polar-shared/src/util/ConsoleRecorder";
+import { isPresent } from 'polar-shared/src/Preconditions';
 
 class Styles {
 
@@ -29,29 +29,23 @@ class Styles {
         marginLeft: '5px'
     };
 
+    public static Level: React.CSSProperties = {
+        marginRight: '5px'
+    };
+
 }
 
 export const LogsContent = () => {
 
-    const messages = MemoryLogger.toView()
+    const messages = ConsoleRecorder.snapshot();
 
     useComponentDidMount(() => {
         // noop
     })
 
-    // public componentWillMount(): void {
-    //
-    //     this.releaser.register(
-    //         MemoryLogger.addEventListener(() => {
-    //             this.setState({messages: MemoryLogger.toView()});
-    //         })
-    //     );
-    //
-    // }
+    const argsRequireRender = (args: any): boolean => {
 
-    const argsRenderable = (args: any): boolean => {
-
-        if (args) {
+        if (isPresent(args)) {
 
             if (Array.isArray(args)) {
 
@@ -71,8 +65,7 @@ export const LogsContent = () => {
 
     };
 
-    const siblings = [...messages].reverse()
-                   .map(current => {
+    const siblings = [...messages].reverse().map((current, idx) => {
 
         let className = "";
 
@@ -84,28 +77,40 @@ export const LogsContent = () => {
             className = 'alert-danger';
         }
 
-        const RenderJSON = () => {
+        interface RenderParamProps {
+            readonly value: any;
+        }
 
-            if (argsRenderable(current.args)) {
+        const RenderParam = (props: RenderParamProps) => {
 
-                return (<div style={Styles.LogFieldArgs}>
-                    <ReactJson src={current.args} name={'args'} shouldCollapse={() => true}/>
-                </div>);
+            const {value} = props;
 
+            if (typeof value === 'string' || typeof value === 'number') {
+                return <>{value}</>
             }
 
-            return (<div></div>);
+            return (
+                <ReactJson src={current.params}
+                           theme='twilight'
+                           shouldCollapse={() => true}/>
+            )
 
-        };
+        }
 
-        return <div style={Styles.LogMessage} className={className} key={current.idx}>
+        const doRenderArgs = argsRequireRender(current.params);
 
-            <div style={Styles.LogFieldTimestamp}>{current.timestamp}</div>
-            <div style={Styles.LogFieldMsg}>{current.msg}</div>
+        return (
+            <div style={Styles.LogMessage} className={className} key={idx}>
 
-            <RenderJSON/>
+                <div style={Styles.LogFieldTimestamp}>{current.created}</div>
+                <div style={Styles.Level}>{current.level}</div>
+                <div style={Styles.LogFieldMsg}>{current.message}</div>
 
-        </div>;
+                {doRenderArgs && current.params.map((current: any, idx: number) => (
+                    <RenderParam key={idx} value={current}/>))}
+
+            </div>
+        );
    });
 
    return (

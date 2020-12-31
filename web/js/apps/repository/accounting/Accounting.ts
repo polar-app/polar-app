@@ -1,16 +1,16 @@
+import * as React from 'react';
 import {useDocRepoStore} from "../../../../../apps/repository/js/doc_repo/DocRepoStore2";
 import {Reducers} from "polar-shared/src/util/Reducers";
 import {useUserInfoContext} from "../auth_handler/UserInfoProvider";
 import {Plans} from "polar-accounts/src/Plans";
 import {AccountUpgrades} from "../../../accounts/AccountUpgrades";
 import computeStorageForPlan = AccountUpgrades.computeStorageForPlan;
-import {Percentage} from "polar-shared/src/util/ProgressTracker";
 import {Percentage100, Percentages} from "polar-shared/src/util/Percentages";
 
 export type Bytes = number;
 
 interface IAccounting {
-    readonly storage: Bytes;
+    readonly storageInBytes: Bytes;
     readonly nrWebCaptures: number;
 }
 
@@ -21,13 +21,13 @@ export function useAccounting(): IAccounting {
 
     const {data} = useDocRepoStore(['data']);
 
-    const storage = data.map(current => current.docInfo.bytes || 0)
-                        .reduce(Reducers.SUM, 0)
+    const storageInBytes = data.map(current => current.docInfo.bytes || 0)
+                               .reduce(Reducers.SUM, 0)
 
     const nrWebCaptures = data.filter(current => current.docInfo.webCapture)
                               .length;
 
-    return {storage, nrWebCaptures};
+    return {storageInBytes, nrWebCaptures};
 
 }
 
@@ -50,11 +50,11 @@ export function useAccountingUsage(): IAccountingUsage {
     const userInfoContext = useUserInfoContext();
     const accounting = useAccounting();
 
-    function computeStorage(): BilledResource {
+    const computeStorage = React.useCallback((): BilledResource => {
 
         const plan = Plans.toV2(userInfoContext?.userInfo?.subscription.plan || 'free');
 
-        const value = accounting.storage;
+        const value = accounting.storageInBytes;
         const limit = computeStorageForPlan(userInfoContext?.userInfo?.creationTime, plan);
         const usage = Percentages.calculate(value, limit);
 
@@ -62,19 +62,22 @@ export function useAccountingUsage(): IAccountingUsage {
             value, limit, usage
         };
 
-    }
+    }, [accounting.storageInBytes, userInfoContext?.userInfo?.creationTime, userInfoContext?.userInfo?.subscription.plan]);
 
-    function computeWebCaptures(): BilledResource {
+    const computeWebCaptures = React.useCallback((): BilledResource => {
 
         const plan = Plans.toV2(userInfoContext?.userInfo?.subscription.plan || 'free');
 
         const value = accounting.nrWebCaptures;
         const limit = plan.level === 'free' ? 250 : undefined;
+        // const limit = 0;
 
         if (limit === undefined) {
 
             return {
-                value, limit: undefined, usage: undefined
+                value,
+                limit: undefined,
+                usage: undefined
             };
 
         } else {
@@ -87,8 +90,7 @@ export function useAccountingUsage(): IAccountingUsage {
 
         }
 
-    }
-
+    }, [accounting.nrWebCaptures, userInfoContext?.userInfo?.subscription.plan]);
 
     const storage = computeStorage();
     const webCaptures = computeWebCaptures();

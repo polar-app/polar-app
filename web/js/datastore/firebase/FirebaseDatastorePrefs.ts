@@ -1,9 +1,9 @@
 import {
     DictionaryPrefs,
-    PersistentPrefs,
+    IPersistentPrefs,
     StringToPrefDict
 } from "../../util/prefs/Prefs";
-import {UserPref, UserPrefCallback, UserPrefs} from "./UserPrefs";
+import {IUserPref, UserPrefCallback, UserPrefs} from "./UserPrefs";
 import {Firestore} from "../../firebase/Firestore";
 import {Firebase} from "../../firebase/Firebase";
 import {Latch} from "polar-shared/src/util/Latch";
@@ -12,8 +12,9 @@ import {
     OnErrorCallback,
     SnapshotUnsubscriber
 } from 'polar-shared/src/util/Snapshots';
+import firebase from 'firebase/app'
 
-export class FirebaseDatastorePrefs extends DictionaryPrefs implements PersistentPrefs {
+export class FirebaseDatastorePrefs extends DictionaryPrefs implements IPersistentPrefs {
 
     private firestore: firebase.firestore.Firestore | undefined;
     private user: firebase.User | undefined;
@@ -27,13 +28,13 @@ export class FirebaseDatastorePrefs extends DictionaryPrefs implements Persisten
     public async init() {
 
         this.firestore = await Firestore.getInstance();
-        this.user = Firebase.currentUser();
+        this.user = await Firebase.currentUserAsync();
 
         function onError(err: Error) {
             console.error("Unable to read user prefs:", err);
         }
 
-        function toDictionaryPrefs(userPref: UserPref | undefined) {
+        function toDictionaryPrefs(userPref: IUserPref | undefined) {
 
             if (userPref) {
                 return new DictionaryPrefs(userPref.value);
@@ -82,18 +83,18 @@ export class FirebaseDatastorePrefs extends DictionaryPrefs implements Persisten
         await UserPrefs.set(this);
     }
 
-    public static toPersistentPrefs(userPref: UserPref | undefined) {
-
-        if (! userPref) {
-            // the user has no existing prefs in the store so we have to return an empty dict
-            // which will later be written.
-            return new FirebaseDatastorePrefs({});
-        }
-
-        const dictionaryPrefs = new DictionaryPrefs(userPref.value);
-        return new FirebaseDatastorePrefs(dictionaryPrefs.toPrefDict());
-
-    }
+    // public static toPersistentPrefs(userPref: IUserPref | undefined) {
+    //
+    //     if (! userPref) {
+    //         // the user has no existing prefs in the store so we have to return an empty dict
+    //         // which will later be written.
+    //         return new FirebaseDatastorePrefs({});
+    //     }
+    //
+    //     const dictionaryPrefs = new DictionaryPrefs(userPref.value);
+    //     return new FirebaseDatastorePrefs(dictionaryPrefs.toPrefDict());
+    //
+    // }
 
 }
 

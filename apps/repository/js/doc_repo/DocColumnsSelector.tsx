@@ -57,7 +57,7 @@ export const DocColumnsSelector = (props: IProps) => {
                 <IconButton size="small"
                             onClick={() => setOpen(true)}>
                     <Box color="text.secondary">
-                        <FilterListIcon/>
+                        <FilterListIcon style={{height: '0.8em'}}/>
                     </Box>
                 </IconButton>
             </Box>

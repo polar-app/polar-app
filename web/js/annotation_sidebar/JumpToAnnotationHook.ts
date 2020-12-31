@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {useHistory} from "react-router-dom";
 import {DocViewerAppURLs} from "../../../apps/doc/src/DocViewerAppURLs";
 import {useDocURLLoader} from "../apps/main/doc_loaders/browser/DocURLLoader";
@@ -16,7 +17,7 @@ export function useJumpToAnnotationHandler() {
         return DocViewerAppURLs.parse(document.location.href) !== undefined;
     }
 
-    return (ptr: IAnnotationPtr) => {
+    return React.useCallback((ptr: IAnnotationPtr) => {
 
         if (isDocViewer()) {
             const hash = AnnotationLinks.createHash(ptr);
@@ -26,6 +27,6 @@ export function useJumpToAnnotationHandler() {
             docURLLoader(url);
         }
 
-    }
+    }, [docURLLoader, history]);
 
 }

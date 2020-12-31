@@ -10,11 +10,11 @@ import V2Plan = Billing.V2Plan;
 import V2PlanFree = Billing.V2PlanFree;
 import {Bytes} from "polar-shared/src/util/Bytes";
 import isV2Grandfathered = AccountUpgrades.isV2Grandfathered;
+import IRequiredPlan = AccountUpgrades.IRequiredPlan;
 
 TestingTime.freeze()
 
 describe('AccountUpgrades', function() {
-
 
     it("isV2Grandfathered", function() {
         assert.isTrue(isV2Grandfathered('2012-03-02T11:38:49.321Z'));
@@ -28,18 +28,52 @@ describe('AccountUpgrades', function() {
 
         function doTest(currentPlan: V2Plan,
                         accountUsage: AccountUsage,
-                        expected: V2Plan) {
+                        expected: IRequiredPlan) {
 
             const requiredPlan = AccountUpgrades.computePlanRequiredForAccount(Plans.toV2('free'), accountUsage);
             console.log("requiredPlan: ", requiredPlan);
             assertJSON(requiredPlan, expected);
         }
 
-        doTest(V2PlanFree, {storageInBytes: Bytes.toBytes('200MB'), created}, V2PlanFree);
-        doTest(V2PlanFree, {storageInBytes: Bytes.toBytes('400MB'), created}, V2PlanFree);
-        doTest(V2PlanFree, {storageInBytes: Bytes.toBytes('900MB'), created}, V2PlanFree);
-        doTest(V2PlanFree, {storageInBytes: Bytes.toBytes('1GB'), created}, V2PlanFree);
-        doTest(V2PlanFree, {storageInBytes: Bytes.toBytes('2GB'), created}, V2PlanPlus);
+        doTest(V2PlanFree, {storageInBytes: Bytes.toBytes('200MB'), nrWebCaptures: 0, created}, {
+            "plan": {
+                "level": "free",
+                "ver": "v2"
+            },
+            "reason": "none"
+        });
+
+        doTest(V2PlanFree, {storageInBytes: Bytes.toBytes('400MB'), nrWebCaptures: 0, created}, {
+            "plan": {
+                "level": "free",
+                "ver": "v2"
+            },
+            "reason": "none"
+        });
+
+        doTest(V2PlanFree, {storageInBytes: Bytes.toBytes('900MB'), nrWebCaptures: 0, created}, {
+            "plan": {
+                "level": "free",
+                "ver": "v2"
+            },
+            "reason": "none"
+        });
+
+        doTest(V2PlanFree, {storageInBytes: Bytes.toBytes('1GB'), nrWebCaptures: 0, created}, {
+            "plan": {
+                "level": "free",
+                "ver": "v2"
+            },
+            "reason": "none"
+        });
+
+        doTest(V2PlanFree, {storageInBytes: Bytes.toBytes('2GB'), nrWebCaptures: 0, created}, {
+            "plan": {
+                "level": "plus",
+                "ver": "v2"
+            },
+            "reason": "storage"
+        });
 
     });
 

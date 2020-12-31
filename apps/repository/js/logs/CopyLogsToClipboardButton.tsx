@@ -1,56 +1,36 @@
 import * as React from 'react';
-import {MemoryLogger} from '../../../../web/js/logger/MemoryLogger';
 import {Clipboards} from '../../../../web/js/util/system/clipboard/Clipboards';
 import Button from "@material-ui/core/Button";
+import {ConsoleRecorder} from "polar-shared/src/util/ConsoleRecorder";
 
-export default class CopyLogsToClipboardButton extends React.Component<IProps, IState> {
+export const CopyLogsToClipboardButton = () => {
 
-    constructor(props: IProps, context: any) {
-        super(props, context);
+    const onClick = () => {
 
-
-    }
-
-    public render() {
-
-        return (
-            <Button variant="contained"
-                    onClick={() => this.onClick()}>
-                Copy to Clipboard
-            </Button>
-        );
-
-    }
-
-    private onClick() {
-
-        const messages = MemoryLogger.toView();
+        const messages = ConsoleRecorder.snapshot();
 
         const text = messages.map(current => {
 
-            if (current.args && current.args.length > 0) {
-                const args = JSON.stringify(current.args, null, "  ");
-                return `${current.timestamp}: ${current.msg}: ${args}`;
+            if (current.params && current.params.length > 0) {
+                const args = JSON.stringify(current.params, null, "  ");
+                return `${current.created}: ${current.message}: ${args}`;
             } else {
-                return `${current.timestamp}: ${current.msg}`;
+                return `${current.created}: ${current.message}`;
             }
 
         }).join("\n");
 
-        Clipboards.getInstance().writeText(text);
+        Clipboards.writeText(text);
 
         // Toaster.success("Wrote log output to clipboard.");
 
     }
 
-}
-
-
-
-export interface IProps {
-
-}
-
-export interface IState {
+    return (
+        <Button variant="contained"
+                onClick={() => onClick()}>
+            Copy to Clipboard
+        </Button>
+    );
 
 }

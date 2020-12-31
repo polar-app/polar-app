@@ -57,7 +57,8 @@ export const CollapseIcon = React.memo((props: CollapseIconProps) => {
 
 interface ExpandIconProps {
     readonly nodeId: string;
-    readonly onNodeExpand: (node: string) => void;
+    readonly onNodeExpand: (event: React.MouseEvent, node: string) => void;
+    readonly style?: React.CSSProperties;
 }
 
 export const ExpandIcon = React.memo((props: ExpandIconProps) => {
@@ -65,6 +66,6 @@ export const ExpandIcon = React.memo((props: ExpandIconProps) => {
 
     return (
         <PlusSquare className={classes.icon}
-                    onClick={() => props.onNodeExpand(props.nodeId)}/>
+                    onClick={(event) => props.onNodeExpand(event, props.nodeId)}/>
     );
 }, isEqual);

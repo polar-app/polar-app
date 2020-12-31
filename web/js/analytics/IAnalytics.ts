@@ -1,4 +1,9 @@
 
+export interface IPageEvent {
+    readonly location: string;
+    readonly locationCanonicalized: string;
+}
+
 export interface IAnalytics {
 
     /**
@@ -16,7 +21,7 @@ export interface IAnalytics {
      *
      * @param name The name/path of the page
      */
-    page(name: string): void;
+    page(name: IPageEvent): void;
 
     /**
      * Identify the user so that duplicate users on different machines are tracked.
@@ -49,10 +54,11 @@ export interface IAnalytics {
 export type UserIdentificationStr = string;
 
 export interface TraitsMap {
-    [key: string]: string | number;
+    [key: string]: string;
 }
 
 export interface IEventArgs {
     category: string;
     action: string;
 }
+

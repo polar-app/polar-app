@@ -71,25 +71,6 @@ export class RendererAnalytics {
 
     }
 
-    public static pageviewFromLocation() {
-
-        if (! isBrowserContext) {
-            log.warn("Not called from browser context");
-            return;
-        }
-
-        const url = new URL(document.location!.href);
-
-        const path = url.pathname + url.hash || "";
-        const hostname = url.hostname;
-        const title = document.title;
-
-        log.info("Created pageview for: ", { path, hostname, title });
-
-        Analytics.page(path);
-
-    }
-
     /**
      * https://support.google.com/analytics/answer/3123666?hl=en
      *
@@ -304,27 +285,29 @@ class DefaultTimer implements Timer {
 
         };
 
-        const level = toLevel(duration.durationMS);
-
-        const message = `Operation took too long: ${this.category}:${this.variable}: ${duration.durationMS}ms`;
-
-        // we have to log directly to the console here as logging normally would
-        // generate other types of events that we don't want to trigger.
-        switch (level) {
-
-            case 'info':
-                console.info(message);
-                break;
-
-            case 'warn':
-                console.warn(message);
-                break;
-
-            case 'error':
-                console.error(message);
-                break;
-
-        }
+        // const level = toLevel(duration.durationMS);
+        //
+        // const durationMS = `${duration.durationMS}ms`;
+        //
+        // const message = `Operation took too long: ${this.category}:${this.variable}:`;
+        //
+        // // we have to log directly to the console here as logging normally would
+        // // generate other types of events that we don't want to trigger.
+        // switch (level) {
+        //
+        //     case 'info':
+        //         console.info(message, durationMS);
+        //         break;
+        //
+        //     case 'warn':
+        //         console.warn(message, durationMS);
+        //         break;
+        //
+        //     case 'error':
+        //         console.error(message, durationMS);
+        //         break;
+        //
+        // }
 
     }
 

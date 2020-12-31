@@ -25,7 +25,6 @@ interface ActiveKeyBindingProps extends IBaseKeyboardShortcut {
 
 }
 
-
 interface GroupRowProps {
     readonly group: string;
 }
@@ -144,6 +143,37 @@ const keyMap = {
     }
 };
 
+
+interface ActiveKeyboardShortcutsDialogProps {
+    readonly onClose: () => void;
+}
+
+export const ActiveKeyboardShortcutsDialog = deepMemo((props: ActiveKeyboardShortcutsDialogProps) => {
+
+    return (
+        <Dialog fullWidth={true}
+                transitionDuration={50}
+                maxWidth="lg"
+                open={true}
+                onClose={props.onClose}>
+            <DialogTitle>Active Keyboard Shortcuts</DialogTitle>
+            <DialogContent>
+                <ActiveKeyboardShortcutsTable/>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={props.onClose}
+                        size="large"
+                        color="primary"
+                        variant="contained">
+                    Close
+                </Button>
+            </DialogActions>
+        </Dialog>
+    );
+
+});
+
+
 export const ActiveKeyboardShortcuts = deepMemo(() => {
 
     const {showActiveShortcuts} = useActiveKeyboardShortcutsStore(['showActiveShortcuts']);
@@ -162,24 +192,7 @@ export const ActiveKeyboardShortcuts = deepMemo(() => {
             <GlobalKeyboardShortcuts keyMap={keyMap}
                                      handlerMap={handlers}/>
 
-            <Dialog fullWidth={true}
-                    transitionDuration={50}
-                    maxWidth="lg"
-                    open={showActiveShortcuts}
-                    onClose={handleClose}>
-                <DialogTitle>Active Keyboard Shortcuts</DialogTitle>
-                <DialogContent>
-                    <ActiveKeyboardShortcutsTable/>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}
-                            size="large"
-                            color="primary"
-                            variant="contained">
-                        Close
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            {showActiveShortcuts && <ActiveKeyboardShortcutsDialog onClose={handleClose}/>}
 
         </>
     );

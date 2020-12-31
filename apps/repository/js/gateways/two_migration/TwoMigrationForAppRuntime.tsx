@@ -52,3 +52,4 @@ export const TwoMigrationForAppRuntime = React.memo((props: IProps) => {
 
 });
 
+TwoMigrationForAppRuntime.displayName='TwoMigrationForAppRuntime';

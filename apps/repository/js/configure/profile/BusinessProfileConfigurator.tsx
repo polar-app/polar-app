@@ -33,7 +33,7 @@ export const BusinessProfileConfigurator = (props: IProps) => {
 
             const tasks = [
                 props.occupation,
-                profile.domain,
+                // profile.domain,
             ];
 
             const score = arrayStream(tasks)
@@ -61,15 +61,15 @@ export const BusinessProfileConfigurator = (props: IProps) => {
             const parsedURL = new URL(url);
 
             onForm({
-                domainOrURL: url,
-                domain: parsedURL.hostname
+                // domainOrURL: url,
+                // domain: parsedURL.hostname
             });
 
         } catch (e) {
             // noop as this is an invalid URL so far.
             onForm({
-                domainOrURL: undefined,
-                domain: undefined
+                // domainOrURL: undefined,
+                // domain: undefined
             });
         }
 

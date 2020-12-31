@@ -10,7 +10,7 @@ export class ResolvablePromise<T> implements Promise<T> {
     public promise: Promise<T>;
 
     // noinspection TsLint
-    public resolve: (value?: T) => void = () => { };
+    public resolve: (value: T) => void = () => { };
 
     // noinspection TsLint
     // public reject: (reason?: any) => void = () => { };

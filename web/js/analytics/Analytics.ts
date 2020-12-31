@@ -1,10 +1,12 @@
 import {CompositeAnalytics} from "./CompositeAnalytics";
-import {IAnalytics, IEventArgs, TraitsMap} from "./IAnalytics";
+import {IAnalytics, IEventArgs, TraitsMap, IPageEvent} from "./IAnalytics";
 import {GAAnalytics} from "./ga/GAAnalytics";
 import {NullAnalytics} from "./null/NullAnalytics";
 import {AmplitudeAnalytics} from "./amplitude/AmplitudeAnalytics";
 import {FirestoreAnalytics} from "./firestore/FirestoreAnalytics";
 import {OnlineAnalytics} from "./online/OnlineAnalytics";
+import {UserflowAnalytics} from "./userflow/UserflowAnalytics";
+import { ConsoleAnalytics } from "./console/ConsoleAnalytics";
 
 export function isBrowser() {
     return typeof window !== 'undefined';
@@ -17,7 +19,9 @@ function createDelegate(): IAnalytics {
             new CompositeAnalytics([
                 new AmplitudeAnalytics(),
                 new GAAnalytics(),
-                new FirestoreAnalytics()
+                new FirestoreAnalytics(),
+                new UserflowAnalytics(),
+                new ConsoleAnalytics(),
             ])
         );
     } else {
@@ -28,34 +32,62 @@ function createDelegate(): IAnalytics {
 
 const delegate = createDelegate();
 
-export class Analytics {
+/**
+ * Hook for analytics that isn't that complicated yet but we can add more
+ * functionality later.
+ */
+export function useAnalytics(): IAnalytics {
+    return {
+        event: Analytics.event,
+        event2: Analytics.event2,
+        identify: Analytics.identify,
+        page: Analytics.page,
+        traits: Analytics.traits,
+        version: Analytics.version,
+        heartbeat: Analytics.heartbeat
+    }
+}
 
-    public static event(event: IEventArgs): void {
+export namespace Analytics {
+
+    export function event(event: IEventArgs): void {
         delegate.event(event);
     }
 
-    public static event2(event: string, data?: any): void {
+    export function event2(event: string, data?: any): void {
         delegate.event2(event, data);
     }
 
-    public static identify(userId: string): void {
+    export function identify(userId: string): void {
         delegate.identify(userId);
     }
 
-    public static page(name: string): void {
-        delegate.page(name);
+    export function page(event: IPageEvent): void {
+        delegate.page(event);
     }
 
-    public static traits(map: TraitsMap): void {
+    export function traits(map: TraitsMap): void {
         delegate.traits(map);
     }
 
-    public static version(version: string): void {
+    export function version(version: string): void {
         delegate.version(version);
     }
 
-    public static heartbeat(): void {
+    export function heartbeat(): void {
         delegate.heartbeat();
+    }
+
+    /**
+     * Action handler for the given delegate.
+     */
+    export function withEvent(event: IEventArgs) {
+
+        return (delegate: () => void) => {
+            Analytics.event(event);
+            delegate();
+        }
+
     }
 
 }

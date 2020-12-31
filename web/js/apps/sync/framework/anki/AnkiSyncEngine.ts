@@ -17,8 +17,8 @@ import {Decks} from './Decks';
 import {ModelNamesClient} from "./clients/ModelNamesClient";
 import {ModelNames} from "./ModelNames";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
-import {ModelTemplatesClient} from "./clients/ModelTemplatesClient";
 import {CreateModeClient, ICreateModelOpts} from "./clients/CreateModelClient";
+import {isPresent} from "polar-shared/src/Preconditions";
 
 /**
  * Sync engine for Anki.  Takes cards registered in a DocMeta and then transfers
@@ -49,6 +49,24 @@ export class AnkiSyncEngine implements SyncEngine {
             });
 
         return new PendingAnkiSyncJob(progress, deckDescriptors, noteDescriptors);
+
+    }
+
+    /**
+     * Anki doesn't allow cards with empty fields so filter these so we don't return errors.
+     */
+    private filterInvalidNoteDescriptors(noteDescriptors: ReadonlyArray<NoteDescriptor>) {
+
+        function isInvalid(note: NoteDescriptor) {
+            const emptyFields
+                = Object.values(note.fields)
+                        .filter(current => ! isPresent(current) || current.trim() === '')
+
+            return emptyFields.length > 0;
+
+        }
+
+        return noteDescriptors.filter(current => ! isInvalid(current));
 
     }
 

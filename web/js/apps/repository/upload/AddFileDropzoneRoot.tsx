@@ -21,6 +21,8 @@ export const AddFileDropzoneRoot = React.memo((props: IProps) => {
 
 });
 
+AddFileDropzoneRoot.displayName='AddFileDropzoneRoot';
+
 const DragAndDropListener = React.memo((props: IProps) => {
     useDragAndDropBackdropListener();
     useDragAndDropImportListener();

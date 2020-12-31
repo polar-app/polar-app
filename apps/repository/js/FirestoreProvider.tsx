@@ -4,6 +4,7 @@ import {FirestoreCollections} from "./reviewer/FirestoreCollections";
 import {Firebase} from "../../../web/js/firebase/Firebase";
 import {deepMemo} from "../../../web/js/react/ReactUtils";
 import {useAsyncWithError} from "../../../web/js/hooks/ReactLifecycleHooks";
+import firebase from 'firebase/app'
 
 export interface IFirestore {
     readonly uid: string | undefined;
@@ -29,7 +30,7 @@ interface IProps {
 async function doAsync(): Promise<IFirestore> {
 
     const firestore = await Firestore.getInstance();
-    const user = Firebase.currentUser();
+    const user = await Firebase.currentUserAsync();
     const uid = user?.uid;
 
     await FirestoreCollections.configure(firestore);
@@ -52,6 +53,8 @@ export const FirestoreProvider = deepMemo((props: IProps) => {
         );
     }
 
-    return null;
+    return (
+        <div className="no-firestore-provider"/>
+    );
 
 });

@@ -4,6 +4,8 @@ import {
     fieldsOfStudy,
     toFieldOfStudy
 } from "polar-shared/src/util/FieldOfStudies";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import TextField from "@material-ui/core/TextField";
 
 export interface IOption<T> {
     readonly value: T;
@@ -25,43 +27,31 @@ const options: ReadonlyArray<IOption<FieldOfStudy>>
 interface IProps {
 
     readonly placeholder?: string;
-
     readonly onSelect: (option: IOption<FieldOfStudy> | undefined) => void;
 }
 
 
-export const FieldOfStudySelect = (props: IProps) => {
+export const FieldOfStudySelect = React.memo((props: IProps) => {
 
-    type RawOption = IOption<FieldOfStudy> | string | null;
+    const handleChange = React.useCallback((event: React.ChangeEvent<{}>, option: IOption<FieldOfStudy> | null) => {
 
-
-    const onSelect = (option: RawOption) => {
-
-        if (option === null) {
+        if (option === null || option === undefined) {
             props.onSelect(undefined);
-        } else if (typeof option === 'string') {
-            props.onSelect(toOption(toFieldOfStudy(option)));
         } else {
             props.onSelect(option);
         }
 
-    };
+    }, [props]);
 
-    // return (
-    //     <CreatableSelect
-    //         isClearable
-    //         autoFocus
-    //         placeholder={props.placeholder ?? "Select a field of study..."}
-    //         options={options}
-    //         onChange={(option => onSelect(option as RawOption))}
-    //         // onKeyDown={event => props.onKeyDown(event)}
-    //         // onChange={(selectedOptions) => props.handleChange(selectedOptions as TagOption[])}
-    //         // value={props.pendingTagOptions}
-    //         // defaultValue={props.pendingTagOptions}
-    //     />
-    // );
+    return (
+        <Autocomplete
+            style={{ flexGrow: 1 }}
+            options={[...options]}
+            onChange={handleChange}
+            getOptionLabel={(option) => option.label}
+            renderInput={(params) => <TextField {...params} label="... who studies" variant="outlined" />}
+        />
+    );
 
-    return null;
-
-};
+});
 

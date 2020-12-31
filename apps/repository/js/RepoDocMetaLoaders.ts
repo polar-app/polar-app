@@ -37,7 +37,10 @@ export class RepoDocMetaLoaders {
         // strategy doesn't work as once we hit 100% (which seems to happen too
         // soon) we will no longer throttle and performance will suck.
 
-        const throttlerOpts = { maxRequests: 250, maxTimeout: 500 };
+        const throttlerOpts = {
+            maxRequests: 250,
+            maxTimeout: 500
+        };
 
         const refreshThrottler = new Throttler(() => callback(), throttlerOpts);
 

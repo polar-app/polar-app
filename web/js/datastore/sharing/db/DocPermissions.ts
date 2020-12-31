@@ -1,7 +1,7 @@
 import {GroupIDStr} from "../../Datastore";
 import {DatastoreCollection} from "../../FirebaseDatastore";
 import {Firestore} from "../../../firebase/Firestore";
-import * as firebase from "firebase";
+import firebase from 'firebase/app'
 import GetOptions = firebase.firestore.GetOptions;
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 

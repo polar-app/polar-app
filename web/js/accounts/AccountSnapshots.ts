@@ -1,6 +1,6 @@
 import {Account} from "./Account";
 import {UserIDStr} from "../firebase/Firebase";
-import * as firebase from "firebase";
+import firebase from 'firebase/app'
 import {
     OnErrorCallback,
     SnapshotUnsubscriber

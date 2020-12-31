@@ -7,7 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import {deepMemo} from "../../react/ReactUtils";
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
-import {useRefState} from "../../hooks/ReactHooks";
+import {useStateRef} from "../../hooks/ReactHooks";
 import {CircularProgressWithLabel} from "../../mui/CircularProgressWithLabel";
 import {ConfirmDialog} from "./ConfirmDialog";
 
@@ -69,7 +69,7 @@ export interface TaskbarDialogPropsWithCallback extends TaskbarDialogProps {
  */
 export const TaskbarDialog = deepMemo((props: TaskbarDialogPropsWithCallback) => {
 
-    const [progress, setProgress, progressRef] = useRefState<ITaskbarProgress>({value: 0, message: props.message});
+    const [progress, setProgress, progressRef] = useStateRef<ITaskbarProgress>({value: 0, message: props.message});
     const [open, setOpen] = React.useState(true);
     const [cancelRequested, setCancelRequested] = React.useState(false);
 

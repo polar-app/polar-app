@@ -2,7 +2,7 @@ import React from 'react';
 import withStyles from "@material-ui/core/styles/withStyles";
 import useTheme from "@material-ui/core/styles/useTheme";
 import {PREF_PDF_DARK_MODE_OPTIONS} from "../../../../repository/js/configure/settings/SettingsScreen";
-import {usePrefs} from "../../../../repository/js/persistence_layer/PrefsHook";
+import {usePrefsContext} from "../../../../repository/js/persistence_layer/PrefsContext2";
 
 export const GlobalCssDarkStyles = withStyles((theme) => {
 
@@ -65,13 +65,9 @@ export const GlobalCssDarkForInvertGreyscale = GlobalCssDarkForInvertGreyscaleSt
 export const GlobalPDFCss = React.memo(() => {
 
     const theme = useTheme();
-    const prefs = usePrefs();
+    const prefs = usePrefsContext();
 
-    if (! prefs.value) {
-        return null;
-    }
-
-    const mode = prefs.value!.get('dark-mode-pdf').getOrElse(PREF_PDF_DARK_MODE_OPTIONS[0].id)
+    const mode = prefs.get('dark-mode-pdf').getOrElse(PREF_PDF_DARK_MODE_OPTIONS[0].id)
 
     return (
         <>

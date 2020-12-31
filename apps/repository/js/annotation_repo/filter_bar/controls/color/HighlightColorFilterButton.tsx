@@ -71,7 +71,6 @@ export const HighlightColorFilterButton = deepMemo((props: IProps) => {
                        style={{
                             whiteSpace: 'nowrap'
                        }}
-                       size="small"
                        caret={true}
                        text="Colors"
                        icon={<PaletteIcon/>}

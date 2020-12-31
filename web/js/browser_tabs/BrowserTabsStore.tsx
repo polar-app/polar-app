@@ -181,7 +181,10 @@ export function createBrowserTabsStore() {
           mutatorFactory,
           callbacksFactory: useCallbacksFactory
     });
+
 }
 
 export const [BrowserTabsStoreProvider, useBrowserTabsStore, useBrowserTabsCallbacks]
     = createBrowserTabsStore();
+
+BrowserTabsStoreProvider.displayName='BrowserTabsStoreProvider';

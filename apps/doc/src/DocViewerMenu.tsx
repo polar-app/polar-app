@@ -39,6 +39,9 @@ import {ISelectOption} from "../../../web/js/ui/dialogs/SelectDialog";
 import {PagemarkMode} from "polar-shared/src/metadata/PagemarkMode";
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import {MUIMenuSection} from "../../../web/js/mui/menu/MUIMenuSection";
+import {useJumpToAnnotationHandler} from "../../../web/js/annotation_sidebar/JumpToAnnotationHook";
+import { Arrays } from "polar-shared/src/util/Arrays";
+import CenterFocusStrongIcon from '@material-ui/icons/CenterFocusStrong';
 
 type AnnotationMetaResolver = (annotationMeta: IAnnotationMeta) => IAnnotationRef;
 
@@ -355,6 +358,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
     const annotationMutationsContext = useAnnotationMutationsContext();
     const annotationMetaToRefResolver = useAnnotationMetaToRefResolver();
     const dialogManager = useDialogManager();
+    const jumpToAnnotationHandler = useJumpToAnnotationHandler();
 
     const origin = props.origin!;
 
@@ -456,8 +460,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
     }
 
     const onCopy = () => {
-        const clipboard = Clipboards.getInstance();
-        clipboard.writeText(origin.selectionToText());
+        Clipboards.writeText(origin.selectionToText());
     }
 
     const onPagemarkSetMode = (annotation: IAnnotationMeta) => {
@@ -517,6 +520,36 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
         });
     }
 
+    const onRevealAnnotation = React.useCallback(() => {
+
+        const highlights = [
+            ...origin.areaHighlights,
+            ...origin.textHighlights
+        ];
+
+        const highlight = Arrays.first(highlights);
+
+        if (! highlight) {
+            return;
+        }
+
+        if (! docDescriptor?.fingerprint) {
+            return;
+        }
+
+        const {pageNum} = highlight;
+
+        // TODO make sure the right doc panel is exposed
+
+        jumpToAnnotationHandler({
+            target: 'annotation-' + highlight.id,
+            docID: docDescriptor.fingerprint,
+            pageNum,
+            pos: 'top'
+        })
+
+    }, [docDescriptor?.fingerprint, jumpToAnnotationHandler, origin.areaHighlights, origin.textHighlights]);
+
     const isPDF = origin.fileType === 'pdf';
 
     return (
@@ -564,6 +597,13 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
                                  icon={<PhotoSizeSelectLargeIcon/>}
                                  onClick={onCreateAreaHighlight}/>}
 
+                {(props.origin?.areaHighlights?.length || 0) > 0 && (
+                    <MUIMenuItem key="area-highlight-reveal-in-annotation-sidebar"
+                             text="Reveal in Annotation Sidebar"
+                             icon={<CenterFocusStrongIcon/>}
+                             onClick={onRevealAnnotation}/>
+                )}
+
                 {isPDF && (props.origin?.areaHighlights?.length || 0) > 0 &&
                     <MUIMenuItem key="delete-area-highlight"
                                  text="Delete Area Highlight"
@@ -573,11 +613,19 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
             </MUIMenuSection>
 
             <MUIMenuSection title="Text Highlights">
-                {(props.origin?.textHighlights?.length || 0) > 0 &&
-                    <MUIMenuItem key="delete-text-highlight"
-                                 text="Delete Text Highlight"
-                                 icon={<DeleteForeverIcon/>}
-                                 onClick={() => onDelete(origin.textHighlights)}/>}
+                {(props.origin?.textHighlights?.length || 0) > 0 && (
+                    <>
+                        <MUIMenuItem key="text-highlight-reveal-in-annotation-sidebar"
+                                     text="Reveal in Annotation Sidebar"
+                                     icon={<CenterFocusStrongIcon/>}
+                                     onClick={onRevealAnnotation}/>
+
+                        <MUIMenuItem key="delete-text-highlight"
+                                     text="Delete Text Highlight"
+                                     icon={<DeleteForeverIcon/>}
+                                     onClick={() => onDelete(origin.textHighlights)}/>
+                    </>
+                )}
 
             </MUIMenuSection>
 

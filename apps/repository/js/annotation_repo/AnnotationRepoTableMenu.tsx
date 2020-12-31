@@ -5,7 +5,7 @@ import Divider from "@material-ui/core/Divider";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import * as React from "react";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
-
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 export const AnnotationRepoTableMenu = deepMemo(() => {
 
     const callbacks = useAnnotationRepoCallbacks();
@@ -21,6 +21,11 @@ export const AnnotationRepoTableMenu = deepMemo(() => {
             {/*             onClick={callbacks.onTagged}/>*/}
 
             <Divider/>
+            {/*<MUIMenuItem text="Copy"*/}
+            {/*             icon={<FileCopyIcon/>}*/}
+            {/*             onClick={callbacks.onCopyToClipboard}/>*/}
+
+            {/*<Divider/>*/}
             <MUIMenuItem text="Delete"
                          icon={<DeleteForeverIcon/>}
                          onClick={callbacks.onDeleted}/>

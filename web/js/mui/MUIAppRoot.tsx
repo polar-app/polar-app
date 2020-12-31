@@ -1,4 +1,3 @@
-import createPersistedState from "use-persisted-state";
 import {MUIThemeTypeContext, ThemeType} from "./context/MUIThemeTypeContext";
 import {GlobalCss} from "./css/GlobalCss";
 import * as React from "react";
@@ -8,15 +7,17 @@ import {GlobalCssMobile} from "./css/GlobalCssMobile";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles";
 import {KeyboardShortcuts} from "../keyboard_shortcuts/KeyboardShortcuts";
+import {UndoQueueProvider} from "../undo/UndoQueueProvider";
+import useLocalStorageState from 'use-local-storage-state'
+import {MUIErrorBoundary} from "./MUIErrorBoundary";
 
 interface IProps {
     readonly children: React.ReactNode;
 }
 
-export const MUIAppRoot = (props: IProps) => {
+export const MUIAppRoot = React.memo((props: IProps) => {
 
-    const usePersistedTheme = createPersistedState('theme');
-    const [theme, setTheme] = usePersistedTheme<ThemeType>("dark");
+    const [theme, setTheme] = useLocalStorageState<ThemeType>('theme', "dark");
 
     // TODO play responsiveFontSizes in MUI...
     const muiTheme = React.useMemo(() => createMuiTheme({
@@ -29,10 +30,10 @@ export const MUIAppRoot = (props: IProps) => {
             primary: {
                 'main': 'rgb(103, 84, 214)'
             },
-            // background: {
-            //     'default': '#1b1b1b',
-            //     'paper': '#343434'
-            // }
+            background: {
+                // 'default': '#050505',
+                // 'paper': '#343434'
+            }
         }
     }), [theme]);
 
@@ -48,7 +49,13 @@ export const MUIAppRoot = (props: IProps) => {
                         <GlobalCssSummernote/>
                         <GlobalCssMobile/>
 
-                        {props.children}
+                        <UndoQueueProvider>
+                            <MUIErrorBoundary>
+                                <>
+                                    {props.children}
+                                </>
+                            </MUIErrorBoundary>
+                        </UndoQueueProvider>
 
                     </>
                 </MUIThemeTypeContext.Provider>
@@ -56,4 +63,6 @@ export const MUIAppRoot = (props: IProps) => {
         </>
     );
 
-};
+});
+
+MUIAppRoot.displayName='MUIAppRoot';

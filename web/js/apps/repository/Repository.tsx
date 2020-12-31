@@ -20,6 +20,8 @@ import {RepositoryApp} from './RepositoryApp';
 import {Tracer} from 'polar-shared/src/util/Tracer';
 import {AuthHandlers} from "./auth_handler/AuthHandler";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
+import {ConsoleRecorder} from "polar-shared/src/util/ConsoleRecorder";
+import {SentryBrowser} from "../../logger/SentryBrowser";
 
 const log = Logger.create();
 
@@ -31,6 +33,9 @@ export class Repository {
     }
 
     public async start() {
+
+        SentryBrowser.initWhenNecessary();
+        ConsoleRecorder.start();
 
         console.log("Starting repository with app runtime: " + AppRuntime.get());
 

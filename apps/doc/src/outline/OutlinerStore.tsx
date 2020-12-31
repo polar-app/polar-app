@@ -1,43 +1,37 @@
 import * as React from 'react';
-import {Tags} from "polar-shared/src/tags/Tags";
-import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {
     createObservableStore,
     SetStore
 } from "../../../../web/js/react/store/ObservableStore";
 import {Provider} from "polar-shared/src/util/Providers";
-import TagID = Tags.TagID;
 import {FolderSelectionEvents} from "../../../repository/js/folder_sidebar/FolderSelectionEvents";
 import Selected = FolderSelectionEvents.Selected;
 import SelfSelected = FolderSelectionEvents.SelfSelected;
-
-export interface TagDescriptorSelected extends TagDescriptor {
-    readonly selected: boolean
-}
+import {IDStr} from "polar-shared/src/util/Strings";
 
 interface IOutlinerStore {
 
     /**
      * The state of selected nodes.
      */
-    readonly selected: ReadonlyArray<TagID>;
+    readonly selected: ReadonlyArray<IDStr>;
 
     /**
      * The state of expanded nodes.
      */
-    readonly expanded: ReadonlyArray<TagID>;
+    readonly expanded: ReadonlyArray<IDStr>;
 
 }
 
 interface IOutlinerCallbacks {
 
-    readonly selectRow: (node: TagID, event: React.MouseEvent, source: 'checkbox' | 'click') => void;
+    readonly selectRow: (node: IDStr, event: React.MouseEvent, source: 'checkbox' | 'click') => void;
 
-    readonly toggleExpanded: (nodes: ReadonlyArray<TagID>) => void;
+    readonly toggleExpanded: (nodes: ReadonlyArray<IDStr>) => void;
 
-    readonly collapseNode: (node: TagID) => void;
+    readonly collapseNode: (node: IDStr) => void;
 
-    readonly expandNode: (node: TagID) => void;
+    readonly expandNode: (node: IDStr) => void;
 
 }
 
@@ -66,7 +60,7 @@ function useCallbacksFactory(storeProvider: Provider<IOutlinerStore>,
 
     return React.useMemo(() => {
 
-        function selectRow(node: TagID,
+        function selectRow(node: IDStr,
                            event: React.MouseEvent,
                            source: 'checkbox' | 'click'): void {
 
@@ -100,18 +94,29 @@ function useCallbacksFactory(storeProvider: Provider<IOutlinerStore>,
 
         }
 
-        function toggleExpanded(nodes: ReadonlyArray<TagID>): void {
+        function toggleExpanded(nodes: ReadonlyArray<IDStr>): void {
 
             const store = storeProvider();
 
-            setStore({
-                ...store,
-                expanded: nodes
-            });
+            const expanded = [...store.expanded];
+
+            for (const node of nodes) {
+
+                const index = expanded.indexOf(node);
+
+                if (expanded.includes(node)) {
+                    expanded.splice(index, 1);
+                } else {
+                    expanded.push(node);
+                }
+
+            }
+
+            setStore({...store, expanded});
 
         }
 
-        function collapseNode(node: TagID) {
+        function collapseNode(node: IDStr) {
 
             const store = storeProvider();
 
@@ -122,7 +127,7 @@ function useCallbacksFactory(storeProvider: Provider<IOutlinerStore>,
 
         }
 
-        function expandNode(node: TagID) {
+        function expandNode(node: IDStr) {
 
             const store = storeProvider();
 
@@ -152,6 +157,7 @@ export const [OutlinerStoreProviderDelegate, useOutlinerStore, useOutlinerCallba
     createObservableStore<IOutlinerStore, Mutator, IOutlinerCallbacks>({
         initialValue: initialStore,
         mutatorFactory,
-        callbacksFactory: useCallbacksFactory
+        callbacksFactory: useCallbacksFactory,
+        enableShallowEquals: true
     });
 

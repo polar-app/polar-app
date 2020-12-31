@@ -21,15 +21,17 @@ export function useOnline(): boolean{
         setOnline(navigator.onLine);
     }, []);
 
-    useComponentDidMount(() => {
+    React.useEffect(() => {
+
         window.addEventListener('online', onConnectivityChange)
         window.addEventListener('offline', onConnectivityChange)
-    })
 
-    useComponentWillUnmount(() => {
-        window.removeEventListener('online', onConnectivityChange)
-        window.removeEventListener('offline', onConnectivityChange)
-    })
+        return () => {
+            window.removeEventListener('online', onConnectivityChange)
+            window.removeEventListener('offline', onConnectivityChange)
+        }
+
+    }, [onConnectivityChange]);
 
     return online;
 

@@ -52,3 +52,4 @@ export const [UseLocationChangeStoreProvider, useLocationChangeStore, useUseLoca
         callbacksFactory
     });
 
+UseLocationChangeStoreProvider.displayName='UseLocationChangeStoreProvider';

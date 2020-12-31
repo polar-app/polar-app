@@ -1,5 +1,5 @@
 import {Tag, TagStr} from "polar-shared/src/tags/Tags";
-import {PersistentPrefs} from "../util/prefs/Prefs";
+import {IPersistentPrefs} from "../util/prefs/Prefs";
 
 const PREFS_KEY = 'userTags';
 
@@ -43,7 +43,7 @@ export class UserTagsDB {
 
     private backing: LoadedUserTags = {};
 
-    constructor(private readonly persistentPrefs: PersistentPrefs) {
+    constructor(private readonly persistentPrefs: IPersistentPrefs) {
     }
 
     public register(tag: UserTag) {
@@ -77,7 +77,7 @@ export class UserTagsDB {
 
     }
 
-    public tags() {
+    public tags(): ReadonlyArray<UserTag> {
         return Object.values(this.backing);
     }
 

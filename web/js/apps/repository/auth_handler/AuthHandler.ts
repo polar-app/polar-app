@@ -6,6 +6,7 @@ import {Billing} from "polar-accounts/src/Billing";
 import {Account} from "../../../accounts/Account";
 import {Accounts} from "../../../accounts/Accounts";
 import {SignInSuccessURLs} from "../../../../../apps/repository/js/login/SignInSuccessURLs";
+import firebase from 'firebase/app'
 
 // TODO: I don't like this so we're going to have to find a solution long term.
 const POLAR_APP_SITES = [
@@ -119,6 +120,7 @@ export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
         const user = await this.currentUser();
 
         if (! user) {
+            console.warn("No user");
             return Optional.empty();
         }
 
@@ -129,7 +131,7 @@ export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
     }
 
     protected async currentUser(): Promise<firebase.User | undefined> {
-        return Firebase.currentUser();
+        return await Firebase.currentUserAsync();
     }
 
 }

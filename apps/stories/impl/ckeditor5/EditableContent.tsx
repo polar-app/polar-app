@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {CKEditor5} from "./CKEditor5";
+// import {CKEditor5BalloonEditor} from "./CKEditor5BalloonEditor";
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 
@@ -30,7 +30,7 @@ export const EditableContent = deepMemo((props: IProps) => {
         return (
             <ClickAwayListener onClickAway={() => setEditing((false))}>
                 <div onKeyDown={handleKeyDown}>
-                    <CKEditor5 content={content} onChange={handleChange}/>
+                    {/*<CKEditor5 content={content} onChange={handleChange}/>*/}
                 </div>
             </ClickAwayListener>
         );

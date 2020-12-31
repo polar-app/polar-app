@@ -1,14 +1,11 @@
 import React from "react";
 import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
-import {AutoBlur} from "./AutoBlur";
-import Checkbox from "@material-ui/core/Checkbox";
 import {ContextMenuHandler} from "./MUIDocContextMenu";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {RepoDocInfo} from "../RepoDocInfo";
 import isEqual from "react-fast-compare";
 import {useDocRepoCallbacks} from "./DocRepoStore2";
-import {DocRepoTableRowInner} from "./DocRepoTableRowInner";
+import {DocRepoTableRowInner, cells} from "./DocRepoTableRowInner";
 import { useDocRepoContextMenu } from "./DocRepoTable2";
 import {useMUIHoverListener, MUIHoverStoreProvider} from "../../../../web/js/mui/MUIHoverStore";
 
@@ -51,19 +48,16 @@ const Delegate = React.memo((props: IProps) => {
     const classes = useStyles();
 
     const callbacks = useDocRepoCallbacks();
+    const {selected, row} = props;
 
-    const {selectRow} = callbacks;
-    const {viewIndex, selected, row} = props;
-
-    const labelId = `enhanced-table-checkbox-${viewIndex}`;
     const contextMenuHandlers = useDocRepoContextMenu();
 
-    const hoverListener = useMUIHoverListener();
+    // const hoverListener = useMUIHoverListener();
+    // {/*{...hoverListener}*/}
 
     return (
         <TableRow
             {...contextMenuHandlers}
-            {...hoverListener}
             style={props.style}
             hover
             className={classes.tr}
@@ -77,16 +71,7 @@ const Delegate = React.memo((props: IProps) => {
             onDoubleClick={callbacks.onOpen}
             selected={selected}>
 
-            <TableCell padding="none">
-                <AutoBlur>
-                    <Checkbox
-                        checked={selected}
-                        inputProps={{'aria-labelledby': labelId}}
-                        onClick={(event) => selectRow(row.id, event, 'checkbox')}
-
-                    />
-                </AutoBlur>
-            </TableCell>
+            <cells.Check viewID={row.id} selected={props.selected} viewIndex={props.viewIndex}/>
 
             <DocRepoTableRowInner viewIndex={props.viewIndex}
                                   rawContextMenuHandler={props.rawContextMenuHandler}
@@ -98,8 +83,8 @@ const Delegate = React.memo((props: IProps) => {
 }, isEqual);
 
 export const DocRepoTableRow = React.memo((props: IProps) => (
-    <MUIHoverStoreProvider initialValue={false}>
-        <Delegate {...props}/>
-    </MUIHoverStoreProvider>
+    // <MUIHoverStoreProvider initialValue={false}>
+    <Delegate {...props}/>
+    // </MUIHoverStoreProvider>
 ));
 

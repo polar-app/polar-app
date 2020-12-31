@@ -99,8 +99,6 @@ export interface PersistenceLayer {
 
     capabilities(): DatastoreCapabilities;
 
-    getUserTagsDB(): Promise<UserTagsDB>;
-
 }
 
 export abstract class AbstractPersistenceLayer {

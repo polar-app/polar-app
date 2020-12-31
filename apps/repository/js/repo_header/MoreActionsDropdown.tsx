@@ -9,22 +9,56 @@ import {Nav} from "../../../../web/js/ui/util/Nav";
 import SyncIcon from '@material-ui/icons/Sync';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import {FADiscordIcon} from "../../../../web/js/mui/MUIFontAwesome";
+import ForumIcon from '@material-ui/icons/Forum';
+import {IconWithColor} from "../../../../web/js/ui/IconWithColor";
+import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
+import {useLinkLoader} from "../../../../web/js/ui/util/LinkLoaderHook";
 
 export const MoreActionsDropdown = React.memo(() => {
 
     const isElectron = AppRuntime.isElectron();
+    const dialogs = useDialogManager();
+    const linkLoader = useLinkLoader();
 
     function onChat() {
         Nav.openLinkWithNewTab('https://discord.gg/GT8MhA6')
+    }
+
+    function onForum() {
+        Nav.openLinkWithNewTab('https://forum.getpolarized.io')
     }
 
     function onDocumentation() {
         Nav.openLinkWithNewTab('https://getpolarized.io/docs/')
     }
 
-    function onStartAnkiSync() {
-        AnkiSyncClient.start();
-    }
+    const onStartAnkiSync = React.useCallback(() => {
+
+        if (isElectron) {
+            AnkiSyncClient.start();
+        } else {
+
+            dialogs.dialog({
+                type: 'warning',
+                title: "Anki Sync Requires Desktop",
+                acceptText: "Get Desktop App",
+                body: (
+                    <div>
+                        <p>
+                            Anki Sync only works with the Polar desktop app.
+                        </p>
+
+                        <p>
+                            Please download the Polar desktop app to enable syncing to Anki.
+                        </p>
+
+                    </div>
+                ),
+                onAccept: () => linkLoader('https://getpolarized.io/download/', {newWindow: true, focus: true})
+
+            })
+        }
+    }, [dialogs, isElectron, linkLoader]);
 
     // - overflow menu: chrome extension,  desktop app (only in webapp),
     // documentation, device (though not sure exactly why that is needed), logs
@@ -35,7 +69,9 @@ export const MoreActionsDropdown = React.memo(() => {
         <MUIMenu caret
                  placement="bottom-end"
                  button={{
-                     icon: <MoreVertIcon/>,
+                     icon: (
+                         <IconWithColor color="text.secondary" Component={MoreVertIcon}/>
+                     ),
                      size: 'large'
                  }}>
 
@@ -45,15 +81,16 @@ export const MoreActionsDropdown = React.memo(() => {
                              text="Chat with Polar Community"
                              onClick={onChat}/>
 
+                <MUIMenuItem icon={<ForumIcon/>}
+                             text="Forum"
+                             onClick={onForum}/>
+
                 <MUIMenuItem icon={<LibraryBooksIcon/>}
                              text="Documentation"
                              onClick={onDocumentation}/>
 
-                {isElectron && (
-                    <>
-                        <Divider/>
-                        <MUIMenuItem icon={<SyncIcon/>} text="Start Anki Sync" onClick={onStartAnkiSync}/>
-                    </>)}
+                <Divider/>
+                <MUIMenuItem icon={<SyncIcon/>} text="Start Anki Sync" onClick={onStartAnkiSync}/>
             </div>
 
         </MUIMenu>

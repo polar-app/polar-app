@@ -49,6 +49,7 @@ import {LoadDocRequest} from "../../../../web/js/apps/main/doc_loaders/LoadDocRe
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {RepoDocInfos} from "../RepoDocInfos";
 import TypeConverter = Sorting.TypeConverter;
+import {createObservableStoreWithPrefsContext} from "../../../../web/js/react/store/ObservableStoreWithPrefsContext";
 
 interface IDocRepoStore {
 
@@ -246,7 +247,7 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
     }
 
     function copyText(text: string, message?: string) {
-        Clipboards.getInstance().writeText(text)
+        Clipboards.writeText(text)
 
         if (message) {
             dialogs.snackbar({message});
@@ -704,7 +705,7 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
         dialogs.confirm({
             title: "Are you sure you want to delete these item(s)?",
             subtitle: "This is a permanent operation and can't be undone.  ",
-            type: 'danger',
+            type: 'warning',
             onAccept: () => doDeleted(repoDocInfos),
         });
 
@@ -811,11 +812,16 @@ const useCallbacksFactory = (storeProvider: Provider<IDocRepoStore>,
 }
 
 export const [DocRepoStoreProvider, useDocRepoStore, useDocRepoCallbacks, useDocRepoMutator]
-    = createObservableStore<IDocRepoStore, Mutator, IDocRepoCallbacks>({
+    = createObservableStoreWithPrefsContext<IDocRepoStore, Mutator, IDocRepoCallbacks>({
         initialValue: initialStore,
         mutatorFactory,
-        callbacksFactory: useCallbacksFactory
-    });
+        callbacksFactory: useCallbacksFactory,
+        enableShallowEquals: true
+    },
+    'doc_repo_store',
+    ['order', 'orderBy']);
+
+DocRepoStoreProvider.displayName='DocRepoStoreProvider';
 
 interface IProps {
     readonly children: JSX.Element;

@@ -13,7 +13,7 @@ import {BackendFileRefs} from "../../../datastore/BackendFileRefs";
 import {Either} from "../../../util/Either";
 import LaunchIcon from '@material-ui/icons/Launch';
 import {Strings} from "polar-shared/src/util/Strings";
-import {AddContentButtons} from "../../../../../apps/repository/js/ui/AddContentButtons";
+import {AccountVerifiedAction} from "../../../../../apps/repository/js/ui/AccountVerifiedAction";
 import {LoadDocRequest} from "../../main/doc_loaders/LoadDocRequest";
 import {IUpload} from "./IUpload";
 import {Tags} from "polar-shared/src/tags/Tags";
@@ -24,7 +24,7 @@ import {UploadHandler, useBatchUploader} from "./UploadHandlers";
 
 export namespace AddFileHooks {
 
-    import useAccountVerifiedAction = AddContentButtons.useAccountVerifiedAction;
+    import useAccountVerifiedAction = AccountVerifiedAction.useAccountVerifiedAction;
 
     export function useAddFileImporter() {
 

@@ -1,39 +1,23 @@
 import * as React from 'react';
-import {usePrefs} from "../../persistence_layer/PrefsHook";
 import {LocalPrefs} from "../../../../../web/js/util/LocalPrefs";
 import { TwoMigrationForAppRuntime, MigrationHookResult } from './TwoMigrationForAppRuntime';
+import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
 
 const KEY = 'two-migration';
 
 function useMigration(): MigrationHookResult {
 
-    const prefs = usePrefs();
-    const persistentPrefs = prefs.value;
+    const prefs = usePrefsContext();
 
-    if (persistentPrefs) {
-
-        const doMigration = ! (persistentPrefs.isMarked(KEY) || LocalPrefs.isMarked(KEY));
-
-        const onClose = async () => {
-            LocalPrefs.mark(KEY);
-            persistentPrefs.mark(KEY);
-            await persistentPrefs.commit();
-        }
-
-        return [doMigration, onClose];
-
-    }
-
-    if (prefs.error) {
-        console.error("Could not useMigration: ", prefs.error);
-        throw prefs.error;
-    }
+    const doMigration = ! (prefs.isMarked(KEY) || LocalPrefs.isMarked(KEY));
 
     const onClose = async () => {
-        throw new Error("Not ready")
+        LocalPrefs.mark(KEY);
+        prefs.mark(KEY);
+        await prefs.commit();
     }
 
-    return [undefined, onClose];
+    return [doMigration, onClose];
 
 }
 
@@ -46,7 +30,9 @@ export const TwoMigrationForBrowser = React.memo((props: IProps) => {
     const [doMigration, onClose] = useMigration();
 
     if (doMigration === undefined) {
-        return null;
+        return (
+            <div className="TwoMigrationForBrowserNoMigration"/>
+        );
     }
 
     if (! doMigration) {

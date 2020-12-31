@@ -14,6 +14,10 @@ import {deepMemo} from "../../react/ReactUtils";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        primary: {
+            backgroundColor: theme.palette.primary.main,
+            color: theme.palette.primary.contrastText,
+        },
         danger: {
             backgroundColor: theme.palette.error.main,
             color: theme.palette.error.contrastText,
@@ -49,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export type AlertType = 'danger' | 'error' | 'warning' | 'success' | 'info' | 'none';
+export type AlertType = 'danger' | 'error' | 'warning' | 'success' | 'info' | 'none' | 'primary';
 
 export interface ConfirmDialogProps {
     readonly title: string;
@@ -73,6 +77,11 @@ export interface ConfirmDialogProps {
      * When true, do not show the cancel button.
      */
     readonly noCancel?: boolean
+
+    /**
+     * When true, do not show the accept button.
+     */
+    readonly noAccept?: boolean
 
     // TOD: we need noCancel
 
@@ -160,13 +169,14 @@ export const ConfirmDialog = deepMemo((props: ConfirmDialogProps) => {
                                     {props.cancelText || 'Cancel'}
                                 </Button>}
 
-                            <Button className={palette}
-                                    onClick={handleAccept}
-                                    size="large"
-                                    variant="contained"
-                                    autoFocus={props.autoFocus}>
-                                {props.acceptText || 'Accept'}
-                            </Button>
+                            {! props.noAccept &&
+                                <Button className={palette}
+                                        onClick={handleAccept}
+                                        size="large"
+                                        variant="contained"
+                                        autoFocus={props.autoFocus}>
+                                    {props.acceptText || 'Accept'}
+                                </Button>}
 
                         </DialogActions>
                     </>

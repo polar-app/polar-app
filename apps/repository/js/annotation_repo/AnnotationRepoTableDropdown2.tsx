@@ -5,6 +5,7 @@ import {MUIMenu} from "../../../../web/js/mui/menu/MUIMenu";
 import {MUIMenuItem} from "../../../../web/js/mui/menu/MUIMenuItem";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import GetAppIcon from '@material-ui/icons/GetApp';
+import {IconWithColor} from "../../../../web/js/ui/IconWithColor";
 
 interface IProps {
     readonly onExport: (format: ExportFormat) => void;
@@ -23,8 +24,7 @@ export const AnnotationRepoTableDropdown2 = deepMemo((props: IProps) => {
             <MUIMenu caret
                      placement="bottom-end"
                      button={{
-                         icon: <GetAppIcon/>,
-                         size: 'small'
+                         icon: <IconWithColor color="text.secondary" Component={GetAppIcon}/>,
                      }}>
 
                 <div>

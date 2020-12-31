@@ -120,9 +120,5 @@ export class DelegatedDatastore extends AbstractDatastore implements Datastore {
         return this.delegate.capabilities();
     }
 
-    public getPrefs(): PrefsProvider {
-        return this.delegate.getPrefs();
-    }
-
 }
 

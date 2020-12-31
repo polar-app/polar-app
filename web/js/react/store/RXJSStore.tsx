@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Subject} from "rxjs";
 import { Provider } from 'polar-shared/src/util/Providers';
-import {typedMemo} from "../../hooks/ReactHooks";
+import {typedMemo, useRefValue} from "../../hooks/ReactHooks";
 import {useComponentWillUnmount} from "../../hooks/ReactLifecycleHooks";
 
 export type ProviderComponent<V> = (props: IProviderProps<V>) => JSX.Element;
@@ -66,15 +66,23 @@ export function createRXJSStore<V>(): [ProviderComponent<V>, UseSetStore<V>, Use
 
         const context = React.useContext(Context);
         const [state, setState] = React.useState(context.current);
+        const stateRef = useRefValue(state);
 
         const subscriptionRef = React.useRef(context.subject.subscribe((nextValue) => {
-            setState(nextValue);
+
+            if (stateRef.current !== nextValue) {
+                // TODO: isn't this technically setting the state during render???
+                setState(nextValue);
+            }
+
         }));
 
         useComponentWillUnmount(() => {
+
             if (subscriptionRef.current) {
                 subscriptionRef.current.unsubscribe();
             }
+
         });
 
         return state;

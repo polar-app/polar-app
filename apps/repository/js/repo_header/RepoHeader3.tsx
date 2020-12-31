@@ -12,7 +12,8 @@ import {CloudConnectivityButton} from "../../../../web/js/apps/repository/connec
 import {MoreActionsDropdown} from "./MoreActionsDropdown";
 import {MUIButtonBar} from "../../../../web/js/mui/MUIButtonBar";
 import {ChromeExtensionInstallButton} from "../ChromeExtensionInstallButton";
-import {DockLayoutToggleButton} from "../../../../web/js/ui/doc_layout/DockLayoutToggleButton";
+import Box from '@material-ui/core/Box';
+import {IconWithColor} from "../../../../web/js/ui/IconWithColor";
 
 export namespace RepoHeader {
 
@@ -87,12 +88,7 @@ const Desktop = () => {
         return (
             <Link to="/settings">
                 <IconButton>
-                    <SettingsIcon
-                        // size="md"
-                        //         className="border ml-1 text-muted"
-                        //             color="clear"
-                    >
-                    </SettingsIcon>
+                    <IconWithColor color="text.secondary" Component={SettingsIcon}/>
                 </IconButton>
             </Link>
         );

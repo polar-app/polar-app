@@ -15,6 +15,10 @@ import {SelectRowType} from "./SelectionEvents2";
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {useDocRepoColumnsPrefs} from "./DocRepoColumnsPrefsHook";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {AutoBlur} from "./AutoBlur";
+import Checkbox from "@material-ui/core/Checkbox";
+import {OverflowMenuButton} from "./buttons/DocOverflowMenuButton";
+import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -69,6 +73,20 @@ const useStyles = makeStyles((theme: Theme) =>
             textOverflow: 'ellipsis'
         },
         colAuthors: {
+            width: COLUMN_MAP.authors.width,
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            userSelect: 'none',
+            textOverflow: 'ellipsis'
+        },
+        colKeywords: {
+            width: COLUMN_MAP.authors.width,
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            userSelect: 'none',
+            textOverflow: 'ellipsis'
+        },
+        colEditor: {
             width: COLUMN_MAP.authors.width,
             overflow: 'hidden',
             whiteSpace: 'nowrap',
@@ -164,7 +182,7 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
 
             case 'added':
                 return (
-                    <DeviceRouters.NotPhone key={id}>
+                    <DeviceRouters.Desktop key={id}>
                         <TableCell className={classes.colAdded}
                                    padding="none"
                                    onClick={selectRowClickHandler}
@@ -173,12 +191,12 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
                             <DateTimeTableCell datetime={row.added}/>
 
                         </TableCell>
-                    </DeviceRouters.NotPhone>
+                    </DeviceRouters.Desktop>
                 );
 
             case 'lastUpdated':
                 return (
-                    <DeviceRouters.NotPhone key={id}>
+                    <DeviceRouters.Desktop key={id}>
                         <TableCell className={classes.colLastUpdated}
                                    padding="none"
                                    onClick={selectRowClickHandler}
@@ -187,23 +205,23 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
                             <DateTimeTableCell datetime={row.lastUpdated}/>
 
                         </TableCell>
-                    </DeviceRouters.NotPhone>
+                    </DeviceRouters.Desktop>
                 );
 
             case 'tags':
                 return (
-                    <DeviceRouters.NotPhone key={id}>
+                    <DeviceRouters.Desktop key={id}>
                         <TableCellTags contextMenuHandler={contextMenuHandler}
                                        selectRow={selectRow}
                                        viewID={row.id}
                                        tags={row.tags}/>
-                    </DeviceRouters.NotPhone>
+                    </DeviceRouters.Desktop>
                 );
 
             case 'authors':
 
                 return (
-                    <DeviceRouters.NotPhone key={id}>
+                    <DeviceRouters.Desktop key={id}>
                         <TableCell padding="none"
                                    className={classes.colAuthors}
                                    onClick={selectRowClickHandler}
@@ -212,12 +230,41 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
                             {Object.values(row.docInfo.authors || {}).join(', ')}
 
                         </TableCell>
-                    </DeviceRouters.NotPhone>
+                    </DeviceRouters.Desktop>
                 );
 
+            case 'keywords':
+
+                return (
+                    <DeviceRouters.Desktop key={id}>
+                        <TableCell padding="none"
+                                   className={classes.colKeywords}
+                                   onClick={selectRowClickHandler}
+                                   onContextMenu={contextMenuHandler}>
+
+                            {Object.values(row.docInfo.keywords || {}).join(', ')}
+
+                        </TableCell>
+                    </DeviceRouters.Desktop>
+                );
+
+            case 'editor':
+
+                return (
+                    <DeviceRouters.Desktop key={id}>
+                        <TableCell padding="none"
+                                   className={classes.colEditor}
+                                   onClick={selectRowClickHandler}
+                                   onContextMenu={contextMenuHandler}>
+
+                            {Object.values(row.docInfo.editor || {}).join(', ')}
+
+                        </TableCell>
+                    </DeviceRouters.Desktop>
+                );
+
+
             case 'progress':
-
-
 
                 return (
                     <cells.Progress key={id}
@@ -227,6 +274,19 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
                 );
 
             default:
+
+                function toVal(val: any) {
+
+                    if (['string', 'number'].includes(typeof val)) {
+                        return val;
+                    } else {
+                        return JSON.stringify(val);
+                    }
+
+                }
+
+                const val = toVal(row.docInfo[id]);
+
                 return (
                     <DeviceRouters.NotPhone key={id}>
                         <TableCell className={classes.colProgress}
@@ -240,7 +300,7 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
                                        textOverflow: 'ellipsis'
                                    }}>
 
-                            {row.docInfo[id]}
+                            {val}
 
                         </TableCell>
                     </DeviceRouters.NotPhone>
@@ -254,7 +314,7 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
 
             {columns.map(toCell)}
 
-            <DeviceRouters.NotPhone>
+            <DeviceRouters.Desktop>
                 <TableCell align="right"
                            padding="none"
                            className={classes.colDocButtons}
@@ -266,18 +326,50 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
                                      archived={row.archived}
                                      viewID={row.id}/>
 
-                    {/*<cells.OverflowMenuButton viewID={row.id}/>*/}
-
-
 
                 </TableCell>
-            </DeviceRouters.NotPhone>
+            </DeviceRouters.Desktop>
+
+            <DeviceRouters.NotDesktop>
+                <TableCell align="right"
+                           padding="none"
+                           onClick={event => event.stopPropagation()}
+                           onDoubleClick={event => event.stopPropagation()}>
+                    <OverflowMenuButton viewID={row.id}/>
+                </TableCell>
+            </DeviceRouters.NotDesktop>
         </>
     );
 
 }, isEqual);
 
-namespace cells {
+export namespace cells {
+
+    interface CheckboxProps {
+        readonly viewID: string;
+        readonly viewIndex: number;
+        readonly selected: boolean;
+    }
+
+    export const Check = React.memo((props: CheckboxProps) => {
+
+        const {viewID, viewIndex, selected} = props;
+        const {selectRow} = useDocRepoCallbacks();
+
+        const labelId = `enhanced-table-checkbox-${viewIndex}`;
+
+        return (
+            <TableCell padding="none">
+                <AutoBlur>
+                    <MUICheckboxIconButton checked={selected}
+                                           onChange={(event) => selectRow(viewID, event, 'checkbox')}
+
+                    />
+                </AutoBlur>
+            </TableCell>
+        );
+
+    })
 
     interface ProgressProps {
         readonly progress: number;

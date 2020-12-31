@@ -3,90 +3,75 @@ import {ListenablePersistenceLayerProvider, PersistenceLayerProvider} from "../.
 import {
     PersistenceLayerManager,
     PersistenceLayerManagerEvent,
-    PersistenceLayerManagerEventListener
 } from "../../../../web/js/datastore/PersistenceLayerManager";
 import {ListenablePersistenceLayer} from "../../../../web/js/datastore/ListenablePersistenceLayer";
+import {useComponentDidMount, useComponentWillUnmount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 
-export class PersistenceLayerWatcher extends React.Component<IProps, IState> {
+export interface IProps {
+    readonly persistenceLayerManager: PersistenceLayerManager;
+    readonly Component: React.FunctionComponent<{persistenceLayerProvider: ListenablePersistenceLayerProvider}>;
+}
 
-    private eventListener: PersistenceLayerManagerEventListener | undefined;
+export interface IState {
+    readonly persistenceLayerProvider: ListenablePersistenceLayerProvider | undefined;
+}
 
-    private unmounted: boolean = false;
 
-    constructor(props: IProps, context: any) {
-        super(props, context);
+export const PersistenceLayerWatcher = React.memo((props: IProps) => {
 
-        this.state = {
-            iter: 0
-        };
+    const unmountedRef = React.useRef(false);
+    const [state, setState] = React.useState<IState>({persistenceLayerProvider: undefined});
 
-    }
+    const onPersistenceLayer = React.useCallback((persistenceLayer: ListenablePersistenceLayer) => {
 
-    public componentDidMount(): void {
+        setState({
+            persistenceLayerProvider: () => persistenceLayer
+        });
 
-        const {persistenceLayerManager} = this.props;
+    }, []);
 
-        const onPersistenceLayer = (persistenceLayer: ListenablePersistenceLayer) => {
+    const eventListener = React.useCallback((event: PersistenceLayerManagerEvent) => {
 
-            this.setState({
-                iter: this.state.iter + 1,
-                persistenceLayerProvider: () => persistenceLayer
-            });
+        if (unmountedRef.current) {
+            console.warn("We've been unmounted");
+        }
 
-        };
+        if (event.state === 'changed') {
+            onPersistenceLayer(event.persistenceLayer);
+        }
 
-        this.eventListener = (event: PersistenceLayerManagerEvent) => {
+    }, [onPersistenceLayer]);
 
-            if (this.unmounted) {
-                console.warn("We've been unmounted");
-            }
+    useComponentDidMount(() => {
 
-            if (event.state === 'changed') {
-                onPersistenceLayer(event.persistenceLayer);
-            }
-
-        };
+        const {persistenceLayerManager} = props;
 
         if (persistenceLayerManager.state === 'changed' || persistenceLayerManager.state === 'initialized') {
             onPersistenceLayer(persistenceLayerManager.get());
         }
 
-        persistenceLayerManager.addEventListener(this.eventListener);
+        persistenceLayerManager.addEventListener(eventListener);
 
-        this.unmounted = false;
+        unmountedRef.current = false;
+    })
 
+    useComponentWillUnmount(() => {
+
+        props.persistenceLayerManager.removeEventListener(eventListener);
+
+        unmountedRef.current = true;
+
+    });
+
+
+    if (state.persistenceLayerProvider) {
+        return props.Component({persistenceLayerProvider: state.persistenceLayerProvider});
     }
 
-    public componentWillUnmount(): void {
+    return (
+        <div className="NoPersistenceLayer">
 
-        if (this.eventListener) {
-            this.props.persistenceLayerManager.removeEventListener(this.eventListener);
-        }
+        </div>
+    );
 
-        this.unmounted = true;
-
-    }
-
-    public render() {
-
-        if (this.state.persistenceLayerProvider) {
-            return this.props.render(this.state.persistenceLayerProvider);
-        }
-
-        return null;
-
-    }
-
-}
-
-export interface IProps {
-    readonly persistenceLayerManager: PersistenceLayerManager;
-    readonly render: (persistenceLayerProvider: ListenablePersistenceLayerProvider) => React.ReactElement;
-
-}
-
-export interface IState {
-    readonly iter: number;
-    readonly persistenceLayerProvider?: ListenablePersistenceLayerProvider;
-}
-
+});

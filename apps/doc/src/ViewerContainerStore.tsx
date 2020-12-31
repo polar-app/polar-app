@@ -51,10 +51,11 @@ const observableStore = createObservableStore<IViewerContainerStore, Mutator, IV
     callbacksFactory
 });
 
-
 export const [
     ViewerContainerProvider,
     useViewerContainerStore,
     useViewerContainerCallbacks,
     useViewerContainerMutator
 ] = observableStore;
+
+ViewerContainerProvider.displayName='ViewerContainerProvider';

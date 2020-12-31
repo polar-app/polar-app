@@ -3,6 +3,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import isEqual from "react-fast-compare";
+import Box from '@material-ui/core/Box';
 
 interface IProps {
     readonly id?: string;
@@ -29,7 +30,9 @@ export const MUISearchBox2 = React.memo((props: IProps) => {
         <OutlinedInput startAdornment={(
 
                            <InputAdornment position="start">
-                               <SearchIcon />
+                               <Box color="text.secondary">
+                                   <SearchIcon/>
+                               </Box>
                            </InputAdornment>
                        )}
                        margin="dense"

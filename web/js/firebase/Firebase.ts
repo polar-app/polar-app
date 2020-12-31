@@ -1,7 +1,8 @@
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app'
 import 'firebase/auth';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
+import { Latch } from 'polar-shared/src/util/Latch';
 
 const log = Logger.create();
 
@@ -31,6 +32,10 @@ const PROJECTS: {[project: string]: any} = {
 export class Firebase {
 
     private static app?: firebase.app.App;
+
+    private static userLatch = new Latch<boolean>();
+
+    private static user?: firebase.User | null;
 
     /**
      * Perform init of Firebase with our auth credentials.
@@ -67,43 +72,40 @@ export class Firebase {
 
         Preconditions.assertPresent(config, "config");
 
-        return firebase.initializeApp(config);
+        const app = firebase.initializeApp(config);
+
+        this.startListeningForUser();
+
+        return app;
 
     }
 
-    public static currentUser(): firebase.User | undefined {
-        Firebase.init();
+    /**
+     * This API is sort of broken by design
+     *
+     * https://medium.com/firebase-developers/why-is-my-currentuser-null-in-firebase-auth-4701791f74f0
+     *
+     */
+    private static startListeningForUser() {
         const auth = firebase.auth();
-        return auth.currentUser || undefined;
+        auth.onAuthStateChanged(user => {
+            console.log("New firebase user: ", user);
+            this.userLatch.resolve(true);
+            return this.user = user;
+        }, err => {
+            console.error(err);
+        });
     }
 
-    public static async currentUserAsync(): Promise<firebase.User | null> {
-
+    public static async currentUserAsync(): Promise<firebase.User | undefined> {
+        await this.userLatch.get();
         Firebase.init();
-
-        // const auth = firebase.auth();
-        // const user = auth.currentUser;
-        // return user;
-
-        // TODO: I think this actually might be wrong.
-        return new Promise<firebase.User | null>((resolve, reject) => {
-
-            const unsubscribe = firebase.auth()
-                .onAuthStateChanged((user) => {
-                                        unsubscribe();
-                                        resolve(user);
-                                    },
-                                    (err) => {
-                                        unsubscribe();
-                                        reject(err);
-                                    });
-
-        });
-
+        return this.user || undefined;
     }
 
     public static async currentUserID(): Promise<UserIDStr | undefined> {
-        return this.currentUser()?.uid;
+        const user = await this.currentUserAsync();
+        return user?.uid;
     }
 
 }

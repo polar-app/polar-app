@@ -11,6 +11,7 @@ import {Plans} from "polar-accounts/src/Plans";
 import V2PlanPlus = Billing.V2PlanPlus;
 import V2PlanFree = Billing.V2PlanFree;
 import V2PlanPro = Billing.V2PlanPro;
+import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 
 const _1GB   =   1000000000;
 const _2GB   =   2000000000;
@@ -45,17 +46,24 @@ export namespace AccountUpgrades {
 
     }
 
+    export type AccountUpgradeReason = 'none' | 'storage' | 'web-captures';
+
+    export interface IRequiredPlan {
+        readonly reason: AccountUpgradeReason;
+        readonly plan: V2Plan;
+    }
+
     /**
      * Get the required plan per the amount of data being used.
      */
-    export function computeRequiredPlan(accountUsage: AccountUsage) {
+    export function computeRequiredPlan(accountUsage: AccountUsage): IRequiredPlan {
 
         /**
          * Return true if the user is grandfathered for V2 pricing.
          */
-        function computePlan(free: number,
-                             plus: number,
-                             pro: number) {
+        function computePlanForStorageWithLevels(free: number,
+                                                 plus: number,
+                                                 pro: number) {
 
             if (accountUsage.storageInBytes < free) {
                 return V2PlanFree;
@@ -73,19 +81,58 @@ export namespace AccountUpgrades {
 
         }
 
-        function computeV2Grandfathered() {
-            return computePlan(_2GB, _50GB, _500GB);
+        function computePlanForStorage() {
+
+            function computeV2Grandfathered() {
+                return computePlanForStorageWithLevels(_2GB, _50GB, _500GB);
+            }
+
+            function computeV2() {
+                return computePlanForStorageWithLevels(_1GB, _50GB, _500GB);
+            }
+
+            if (isV2Grandfathered(accountUsage.created)) {
+                return computeV2Grandfathered();
+            } else {
+                return computeV2();
+            }
+
         }
 
-        function computeV2() {
-            return computePlan(_1GB, _50GB, _500GB);
+        function computePlanForWebCaptures() {
+
+            if (accountUsage.nrWebCaptures < 250) {
+                return V2PlanFree;
+            }
+
+            return V2PlanPlus;
+
         }
 
-        if (isV2Grandfathered(accountUsage.created)) {
-            return computeV2Grandfathered();
-        } else {
-            return computeV2();
+        const planForStorage = computePlanForStorage();
+        const planForWebCaptures = computePlanForWebCaptures();
+
+
+        interface ILimit extends IRequiredPlan {
+            readonly planAsInt: number;
         }
+
+        const limits: ReadonlyArray<ILimit> = [
+            {
+                plan: planForStorage,
+                reason: 'storage',
+                planAsInt: Plans.toInt(planForStorage)
+            },
+            {
+                plan: planForWebCaptures,
+                reason: 'web-captures',
+                planAsInt: Plans.toInt(planForWebCaptures)
+            }
+        ];
+
+        return arrayStream(limits)
+            .sort((a, b) => a.planAsInt - b.planAsInt)
+            .last()!;
 
     }
 
@@ -97,16 +144,22 @@ export namespace AccountUpgrades {
      * @param accountUsage The data about the machine that we're needing to upgrade
      */
     export function computePlanRequiredForAccount(currentPlan: Billing.V2Plan,
-                                                  accountUsage: AccountUsage): Billing.V2Plan {
+                                                  accountUsage: AccountUsage): IRequiredPlan {
 
         const requiredPlan = computeRequiredPlan(accountUsage);
 
-        if (Plans.toInt(currentPlan) < Plans.toInt(requiredPlan)) {
-            return requiredPlan;
+        if (Plans.toInt(currentPlan) < Plans.toInt(requiredPlan.plan)) {
+            return {
+                reason: requiredPlan.reason,
+                plan: requiredPlan.plan,
+            };
         }
 
         // their current plan is ok.
-        return currentPlan;
+        return {
+            reason: 'none',
+            plan: currentPlan
+        };
 
     }
 
@@ -123,5 +176,10 @@ export interface AccountUsage {
      * The number of bytes of storage the user has.
      */
     readonly storageInBytes: number;
+
+    /**
+     * Number of web captures for this user.
+     */
+    readonly nrWebCaptures: number;
 
 }

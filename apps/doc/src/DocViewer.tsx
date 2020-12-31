@@ -32,13 +32,13 @@ import {useLogger} from "../../../web/js/mui/MUILogger";
 import {ViewerContainerProvider} from "./ViewerContainerStore";
 import {FileTypes} from "../../../web/js/apps/main/file_loaders/FileTypes";
 import {deepMemo} from "../../../web/js/react/ReactUtils";
-import {useRefState, useRefValue} from "../../../web/js/hooks/ReactHooks";
+import {useStateRef, useRefValue} from "../../../web/js/hooks/ReactHooks";
 import {NoDocument} from "./NoDocument";
 import {DockLayout2} from "../../../web/js/ui/doc_layout/DockLayout2";
 import {Outliner} from "./outline/Outliner";
 import {FeedbackButton2} from "../../repository/js/ui/FeedbackButton2";
 
-const Main = React.memo(() => {
+const Main = React.memo(function Main() {
 
     return (
 
@@ -146,6 +146,16 @@ namespace Device {
         return (
             <>
 
+                {/*<SwipeableDrawer*/}
+                {/*    anchor='left'*/}
+                {/*    open={open}*/}
+                {/*    onClose={() => setOpen(false)}*/}
+                {/*    onOpen={() => setOpen(true)}>*/}
+
+                {/*    <Outliner />*/}
+
+                {/*</SwipeableDrawer>*/}
+
                 <SwipeableDrawer
                     anchor='right'
                     open={open}
@@ -175,7 +185,7 @@ namespace Device {
         );
     }, isEqual);
 
-    export const Desktop = React.memo(() => {
+    export const Desktop = React.memo(function Desktop() {
 
         const {resizer, docMeta} = useDocViewerStore(['resizer', 'docMeta']);
 
@@ -266,7 +276,7 @@ namespace Device {
 
 }
 
-const DocViewerMain = deepMemo(() => {
+const DocViewerMain = deepMemo(function DocViewerMain() {
 
     return (
         <DeviceRouter handheld={<Device.Handheld/>}
@@ -292,14 +302,14 @@ const DocViewerParent = deepMemo((props: DocViewerParentProps) => (
     </div>
 ));
 
-export const DocViewer = deepMemo(() => {
+export const DocViewer = deepMemo(function DocViewer() {
 
     const {docURL} = useDocViewerStore(['docURL']);
     const {setDocMeta} = useDocViewerCallbacks();
     const log = useLogger();
     const persistenceLayerContext = usePersistenceLayerContext();
     const parsedURL = React.useMemo(() => DocViewerAppURLs.parse(document.location.href), []);
-    const [exists, setExists, existsRef] = useRefState<boolean | undefined>(undefined);
+    const [exists, setExists, existsRef] = useStateRef<boolean | undefined>(undefined);
 
     useComponentDidMount(() => {
 

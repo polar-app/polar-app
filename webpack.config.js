@@ -51,7 +51,11 @@ function createRules() {
         },
         {
             test: /\.(jsx|tsx|ts)$/,
-            exclude: /node_modules/,
+            exclude: [
+                /node_modules/,
+                /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
+                /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
+            ],
             use: [
                 {
                     loader: 'thread-loader',
@@ -83,6 +87,10 @@ function createRules() {
         },
         {
             test: /\.(png|jpe?g|gif|bmp|ico|webp|woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/i,
+            exclude: [
+                /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
+                /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
+            ],
             use: [
                 {
                     loader: 'file-loader',
@@ -97,7 +105,10 @@ function createRules() {
         {
             // make SVGs use data URLs.
             test: /\.(svg)(\?v=\d+\.\d+\.\d+)?$/i,
-            exclude: /ckeditor5/,
+            exclude: [
+                /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
+                /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
+            ],
             use: [
                 {
                     loader: 'url-loader',
@@ -110,7 +121,10 @@ function createRules() {
         },
         {
             test: /\.css$/i,
-            exclude: /ckeditor5/,
+            exclude: [
+                /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
+                /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
+            ],
             use: [
                 {
                     loader: 'style-loader',
@@ -320,6 +334,10 @@ module.exports = {
                 {
                     urlPattern: /https:\/\/lh5.googleusercontent.com\//,
                     handler: 'CacheFirst'
+                },
+                {
+                    urlPattern: /https:\/\/js\.stripe\.com\/v3/,
+                    handler: 'StaleWhileRevalidate'
                 }
             ],
             modifyURLPrefix: {

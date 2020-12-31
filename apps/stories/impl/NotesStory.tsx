@@ -1,61 +1,123 @@
 import React from 'react';
 import '@ckeditor/ckeditor5-theme-lark/theme/theme.css';
 import '@ckeditor/ckeditor5-theme-lark';
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem/MenuItem';
-import {deepMemo} from "../../../web/js/react/ReactUtils";
-import {CKEditor5} from "./ckeditor5/CKEditor5";
+import {NotesRouter} from "../../../web/js/notes/NotesRouter";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import { CKEditor5AppRoot } from './ckeditor5/CKEditor5AppRoot';
+import Fab from '@material-ui/core/Fab';
+import HelpIcon from '@material-ui/icons/Help';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import {CKEditor5NotesGlobalCSS} from "../../../web/js/notes/CKEditor5NotesGlobalCSS";
+import {NotesStoreProvider, useNotesStore} from '../../../web/js/notes/store/NotesStore';
+import {MockNotes} from "./MockNotes";
+import { observer } from "mobx-react-lite"
+import {INote} from "../../../web/js/notes/store/INote";
 
-// import '@ckeditor/ckeditor5-theme-lark/theme/ckeditor5-editor-classic/classiceditor.css';
+const notes = MockNotes.create();
 
-// sets up finder and context
-
-interface INote {
-    readonly id: string;
-    readonly content: string
-    readonly children?: ReadonlyArray<INote>;
+interface BasicNotesDataSetProps {
+    readonly children: JSX.Element;
 }
 
-const notes: ReadonlyArray<INote> = [
-    {
-        id: '101',
-        content: 'first note',
-    },
-    {
-        id: '102',
-        content: 'this is the second note',
-        children: [
-            {
-                id: '103',
-                content: 'This is a child note'
-            }
-        ]
-    }
-]
+const NotesStoryDebug = observer(() => {
 
-interface NoteProps {
-    readonly notes: ReadonlyArray<INote> | undefined;
-}
-
-const Notes = deepMemo((props: NoteProps) => {
-
-    if ( ! props.notes) {
-        return null;
-    }
+    const store = useNotesStore();
 
     return (
-        <ul>
+        <div>
+            <b>active: {store.active}</b><br/>
+            <b>root: {store.root}</b><br/>
+            <b>index: </b><br/>
+            <pre>
+            {JSON.stringify(store.index, null, '  ')}
+            </pre>
+            <b>reverse: </b><br/>
+            <pre>
+            {JSON.stringify(store.reverse, null, '  ')}
+            </pre>
+        </div>
+    );
+});
 
-            {props.notes.map((note) => (
-                <li key={note.id}>
-                    <CKEditor5 content={note.content}
-                               onChange={NULL_FUNCTION}/>
-                    <Notes notes={note.children}/>
-                </li>))}
+const NotesStoryDebugButton = () => {
 
-        </ul>
+    const [active, setActive] = React.useState(false);
 
+    return (
+        <>
+
+            {active && (
+                <Dialog open={active} maxWidth="xl" onClose={() => setActive(false)}>
+                    <DialogContent>
+                        <NotesStoryDebug/>
+                    </DialogContent>
+                </Dialog>
+            )}
+
+            <Fab color="primary"
+                 style={{
+                     zIndex: 10,
+                     position: 'absolute',
+                     right: '20px',
+                     bottom: '20px'
+                 }}
+                 onClick={() => setActive(true)}>
+                <HelpIcon/>
+            </Fab>
+        </>
+    )
+}
+
+const NotesInner = () => (
+    <div className="NotesInner"
+         style={{
+             display: 'flex',
+             flexGrow: 1
+         }}>
+
+        <NotesRouter/>
+
+        <NotesStoryDebugButton/>
+
+        {/*<div style={{*/}
+        {/*         width: '500px',*/}
+        {/*         fontSize: '10px',*/}
+        {/*         overflow: 'auto'*/}
+        {/*     }}>*/}
+
+        {/*    <NotesStoryDebug/>*/}
+
+        {/*</div>*/}
+    </div>
+);
+
+const BasicNotesDataSet = (props: BasicNotesDataSetProps) => {
+
+    const store = useNotesStore();
+
+    React.useMemo(() => store.doPut(notes), [store]);
+
+    return props.children;
+
+}
+
+interface FixedWidthContainer {
+    readonly children: JSX.Element;
+}
+
+const FixedWidthContainer = React.memo((props: FixedWidthContainer) => {
+
+    return (
+        <div className="FixedWidthContainer"
+             style={{
+                 maxWidth: '1000px',
+                 flexGrow: 1,
+                 marginLeft: 'auto',
+                 marginRight: 'auto'
+             }}>
+            {props.children}
+        </div>
     );
 
 });
@@ -63,54 +125,19 @@ const Notes = deepMemo((props: NoteProps) => {
 export const NotesStory = () => {
 
     return (
-        <>
-            <Notes notes={notes}/>
-
-            {/*<Menu*/}
-            {/*    id="fade-menu"*/}
-            {/*    keepMounted*/}
-            {/*    open={true}*/}
-            {/*    style={{height: '100px'}}>*/}
-            {/*    <MenuItem>Profile</MenuItem>*/}
-            {/*    <MenuItem>My account</MenuItem>*/}
-            {/*    <MenuItem>Logout</MenuItem>*/}
-            {/*    <MenuItem>Profile</MenuItem>*/}
-            {/*    <MenuItem>My account</MenuItem>*/}
-            {/*    <MenuItem>Logout</MenuItem>*/}
-            {/*    <MenuItem>Profile</MenuItem>*/}
-            {/*    <MenuItem>My account</MenuItem>*/}
-            {/*    <MenuItem>Logout</MenuItem>*/}
-            {/*    <MenuItem>Profile</MenuItem>*/}
-            {/*    <MenuItem>My account</MenuItem>*/}
-            {/*    <MenuItem>Logout</MenuItem>*/}
-            {/*    <MenuItem>Profile</MenuItem>*/}
-            {/*    <MenuItem>My account</MenuItem>*/}
-            {/*    <MenuItem>Logout</MenuItem>*/}
-            {/*    <MenuItem>Profile</MenuItem>*/}
-            {/*    <MenuItem>My account</MenuItem>*/}
-            {/*    <MenuItem>Logout</MenuItem>*/}
-            {/*    <MenuItem>Profile</MenuItem>*/}
-            {/*    <MenuItem>My account</MenuItem>*/}
-            {/*    <MenuItem>Logout</MenuItem>*/}
-            {/*    <MenuItem>Profile</MenuItem>*/}
-            {/*    <MenuItem>My account</MenuItem>*/}
-            {/*    <MenuItem>Logout</MenuItem>*/}
-            {/*</Menu>*/}
-        </>
+        <FixedWidthContainer>
+            <CKEditor5AppRoot>
+                <NotesStoreProvider>
+                    <BasicNotesDataSet>
+                        <>
+                            <CKEditor5NotesGlobalCSS/>
+                            <NotesInner/>
+                        </>
+                    </BasicNotesDataSet>
+                </NotesStoreProvider>
+            </CKEditor5AppRoot>
+        </FixedWidthContainer>
     );
-
-    // return (
-    //     <ul>
-    //
-    //         {notes.map((note) => (
-    //             <li key={note.id}>
-    //                 <Editor content={note.content}
-    //                         onChange={NULL_FUNCTION}/>
-    //             </li>))}
-    //
-    //     </ul>
-    //
-    // );
 
 }
 

@@ -5,18 +5,24 @@ import {Analytics} from "./Analytics";
 
 export const AnalyticsLocationListener = React.memo(() => {
 
-    const location = useLocation();
+    const loc = useLocation();
 
     try {
 
-        // TODO: what about query params??
-        const path = AnalyticsURLCanonicalizer.canonicalize(location.pathname + location.hash || "");
+        const location = loc.pathname + loc.search + (loc.hash || "");
+        const locationCanonicalized = AnalyticsURLCanonicalizer.canonicalize(location);
+
         const hostname = window.location.hostname;
         const title = document.title;
 
-        console.log(`Location change: `, { path, hostname, title });
+        console.log(`Location change: `, {
+            location,
+            locationCanonicalized,
+            hostname,
+            title
+        });
 
-        Analytics.page(path);
+        Analytics.page({location, locationCanonicalized});
 
     } catch (e) {
         console.error("Unable to handle nav change", e);

@@ -8,8 +8,8 @@ export namespace UploadFilters {
     }
 
     export function filterByDocumentName<V extends IName>(value: V) {
-        const name = value.name.toLowerCase();
-        return name.endsWith(".pdf") || name.endsWith(".epub");
+        const nameLower = value.name.toLowerCase();
+        return nameLower.endsWith(".pdf") || nameLower.endsWith(".epub");
     }
 
     /**

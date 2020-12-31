@@ -1,21 +1,14 @@
 import {DefaultPageLayout} from "../../page_layout/DefaultPageLayout";
 import * as React from "react";
-import {PersistenceLayerProvider} from "../../../../../web/js/datastore/PersistenceLayer";
-import {PersistenceLayerController} from "../../../../../web/js/datastore/PersistenceLayerManager";
 import {OccupationProfile, ProfileConfigurator} from "./ProfileConfigurator";
 import {ConfigureNavbar} from "../ConfigureNavbar";
 import {ConfigureBody} from "../ConfigureBody";
 
 interface IProps {
-    readonly persistenceLayerProvider: PersistenceLayerProvider;
-    readonly persistenceLayerController: PersistenceLayerController;
+    readonly onProfile: (profile: OccupationProfile) => void;
 }
 
-export const ProfileScreen = (props: IProps) => {
-
-    const onProfile = (profile: OccupationProfile) => {
-        // noop
-    };
+export const ProfileScreen = React.memo((props: IProps) => {
 
     return (
         <DefaultPageLayout {...props}>
@@ -25,9 +18,9 @@ export const ProfileScreen = (props: IProps) => {
 
                 {/*<h2>Profile</h2>*/}
 
-                <ProfileConfigurator onOccupationProfile={occupationProfile => onProfile(occupationProfile)}/>
+                <ProfileConfigurator onProfile={occupationProfile => props.onProfile(occupationProfile)}/>
 
             </ConfigureBody>
         </DefaultPageLayout>
     );
-};
+});

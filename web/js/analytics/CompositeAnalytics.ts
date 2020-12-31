@@ -1,4 +1,4 @@
-import {IAnalytics, IEventArgs, TraitsMap} from "./IAnalytics";
+import {IAnalytics, IEventArgs, IPageEvent, TraitsMap} from "./IAnalytics";
 
 export class CompositeAnalytics implements IAnalytics {
 
@@ -18,8 +18,8 @@ export class CompositeAnalytics implements IAnalytics {
         this.invoke(delegate => delegate.identify(userId));
     }
 
-    public page(name: string): void {
-        this.invoke(delegate => delegate.page(name));
+    public page(event: IPageEvent): void {
+        this.invoke(delegate => delegate.page(event));
     }
 
     public traits(map: TraitsMap): void {

@@ -5,6 +5,7 @@ import {FirestoreLike} from "polar-firebase/src/firebase/Collections";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {DocPreviews} from "polar-firebase/src/firebase/om/DocPreviews";
 import {Heartbeats} from "polar-firebase/src/firebase/om/Heartbeats";
+import firebase from 'firebase/app'
 
 export class FirestoreCollections {
 

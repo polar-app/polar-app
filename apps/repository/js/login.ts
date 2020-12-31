@@ -1,6 +1,6 @@
 import {Firebase} from '../../../web/js/firebase/Firebase';
 import {FirebaseUIAuth} from '../../../web/js/firebase/FirebaseUIAuth';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app'
 import {ExternalNavigationBlock} from "../../../web/js/electron/navigation/ExternalNavigationBlock";
 import {Analytics} from "../../../web/js/analytics/Analytics";
 import {SignInSuccessURLs} from "./login/SignInSuccessURLs";

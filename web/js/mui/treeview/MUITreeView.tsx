@@ -31,7 +31,7 @@ export const MUITreeView = memoForwardRef((props: IProps) => {
                          label="Folders"
                          info={props.root.value.count}
                          selected={props.root.value.selected}
-                         onNodeExpand={props.expandNode}
+                         onNodeExpand={(event, nodeID) => props.expandNode(nodeID)}
                          onNodeCollapse={props.collapseNode}
                          selectRow={props.selectRow}
                          childNodes={props.root.children}

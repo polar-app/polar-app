@@ -55,6 +55,10 @@ export interface IScrollTarget {
     // where to align the target
     readonly pos: 'top' | 'bottom';
 
+    /**
+     * The iteration code so we can re-jump if a user clicks two times on the
+     * same position.
+     */
     readonly n: string;
 
     /**

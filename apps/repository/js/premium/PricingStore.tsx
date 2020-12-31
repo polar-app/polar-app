@@ -1,10 +1,6 @@
 import React from 'react';
-import {
-    createObservableStore,
-    SetStore
-} from "../../../../web/js/react/store/ObservableStore";
-import {Provider} from "polar-shared/src/util/Providers";
 import {Billing} from "polar-accounts/src/Billing";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 interface IPricingStore {
     readonly interval: Billing.Interval;
@@ -14,48 +10,67 @@ interface IPricingCallbacks {
 
     readonly setInterval: (interval: Billing.Interval) => void;
 
-    readonly toggleInterval: () => void;
+}
+
+function computeIntervalFromLocation(): Billing.Interval {
+
+    if (typeof window === 'undefined') {
+        return 'month';
+    }
+
+    if (typeof document === 'undefined') {
+        return 'month';
+    }
+
+    if (! document?.location?.href) {
+        return 'month'
+    }
+
+    if (document.location.href.endsWith('#month')) {
+        return 'month';
+    }
+
+    if (document.location.href.endsWith('#year')) {
+        return 'year';
+    }
+
+    if (document.location.href.endsWith('#4year')) {
+        return '4year';
+    }
+
+    return 'month';
 
 }
 
 const initialStore: IPricingStore = {
-    interval: 'month'
+    interval: computeIntervalFromLocation()
+};
+
+const StoreContext = React.createContext<IPricingStore>(initialStore);
+const CallbacksContext = React.createContext<IPricingCallbacks>({setInterval: NULL_FUNCTION});
+
+interface IProps {
+    readonly children: JSX.Element;
 }
 
-interface Mutator {
-
+export function usePricingStore(keys: ReadonlyArray<keyof IPricingStore>) {
+    return React.useContext(StoreContext);
 }
 
-function mutatorFactory(storeProvider: Provider<IPricingStore>,
-                        setStore: SetStore<IPricingStore>): Mutator {
-
-    return {};
-
+export function usePricingCallbacks() {
+    return React.useContext(CallbacksContext);
 }
 
-function callbacksFactory(storeProvider: Provider<IPricingStore>,
-                          setStore: (store: IPricingStore) => void,
-                          mutator: Mutator): IPricingCallbacks {
+export const PricingStoreProvider = React.memo((props: IProps) => {
 
-    function setInterval(interval: Billing.Interval) {
-        const store = storeProvider();
-        setStore({...store, interval});
-    }
+    const [interval, setInterval] = React.useState<Billing.Interval>(initialStore.interval);
 
-    function toggleInterval() {
-        const store = storeProvider();
-        const interval = store.interval === 'month' ? 'year' : 'month'
-        setStore({...store, interval});
-    }
+    return (
+        <StoreContext.Provider value={{interval}}>
+            <CallbacksContext.Provider value={{setInterval}}>
+                {props.children}
+            </CallbacksContext.Provider>
+        </StoreContext.Provider>
+    );
 
-    return {
-        setInterval, toggleInterval
-    };
-
-}
-export const [PricingStoreProvider, usePricingStore, usePricingCallbacks, usePricingMutator]
-    = createObservableStore<IPricingStore, Mutator, IPricingCallbacks>({
-        initialValue: initialStore,
-        mutatorFactory,
-        callbacksFactory
-    });
+})

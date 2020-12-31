@@ -3,7 +3,12 @@ import {Provider} from "polar-shared/src/util/Providers";
 import {createObservableStore, SetStore} from "../react/store/ObservableStore";
 import {Arrays} from "polar-shared/src/util/Arrays";
 
-export type KeyboardEventHandler = (event: KeyboardEvent) => void;
+export interface IKeyboardShortcutEvent {
+    preventDefault: () => void;
+    stopPropagation: () => void;
+}
+
+export type KeyboardShortcutEventHandler = (event: IKeyboardShortcutEvent) => void;
 
 export type KeyboardEventHandlerUsingPredicate = (event: KeyboardEvent) => boolean;
 
@@ -14,6 +19,7 @@ export type KeyBinding = string;
 
 export interface IBaseKeyboardShortcut {
     readonly name: string;
+    readonly icon?: React.ReactNode,
     readonly description?: string;
     readonly sequences: ReadonlyArray<KeyBinding>;
     readonly priority?: number;
@@ -25,7 +31,7 @@ export interface IKeyboardShortcut extends IBaseKeyboardShortcut {
 }
 
 export interface IKeyboardShortcutWithHandler extends IKeyboardShortcut {
-    readonly handler: KeyboardEventHandler;
+    readonly handler: KeyboardShortcutEventHandler;
 }
 
 interface IKeyboardShortcutsStore {

@@ -1,25 +1,24 @@
 // noinspection TsLint: max-line-length
-
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app'
 import 'firebase/auth';
-
 import * as firebaseui from 'firebaseui'
 import {Preconditions} from "polar-shared/src/Preconditions";
 import './FirebaseUIAuth.css';
 import 'firebaseui/dist/firebaseui.css';
+import {Analytics} from "../analytics/Analytics";
 
 const SIGN_IN_SUCCESS_URL = 'http://localhost:8005/';
 const TOS_URL = 'https://getpolarized.io/terms-of-service.html';
 const PRIVACY_POLICY_URL = 'https://getpolarized.io/privacy-policy.html';
 
-export class FirebaseUIAuth {
+export namespace FirebaseUIAuth {
 
     /**
      * Start the login and render the login box to the given selector.
      *
      * @param opts The opts to use when authenticating.
      */
-    public static login(opts: FirebaseUIAuthOptions = {}) {
+    export function login(opts: FirebaseUIAuthOptions = {}) {
 
         console.log("Triggering Firebase UI auth: ", opts);
 
@@ -80,18 +79,71 @@ export class FirebaseUIAuth {
 
         const signInOptions = computeSignInOptions();
 
+
         // FirebaseUI config.
         const uiConfig: firebaseui.auth.Config = {
 
             signInFlow: opts.signInFlow || 'redirect',
             callbacks: {
 
-                signInSuccessWithAuthResult: (authResult: any,
-                                              redirectUrl: string) => {
+                // https://github.com/firebase/firebaseui-web#available-callbacks
+
+                // The signInSuccessWithAuthResult callback is invoked when user
+                // signs in successfully. The authResult provided here is a
+                // firebaseui.auth.AuthResult object, which includes the current
+                // logged in user, the credential used to sign in the user,
+                // additional user info indicating if the user is new or
+                // existing and operation type like 'signIn' or 'link'. This
+                // callback will replace signInSuccess in future.
+                //
+                // authResult: The AuthResult of successful sign-in operation.
+                // The AuthResult object has same signature as
+                // firebase.auth.UserCredential.
+
+                // redirectUrl: The URL where the user is redirected after the callback
+                // finishes. It will only be given if you overwrite the sign-in
+                // success URL.
+                //
+                //
+                // Should return: boolean
+                //
+                // If the callback returns true, then the page is automatically
+                // redirected depending on the case:
+                //
+                // If no signInSuccessUrl parameter was given in the URL (See:
+                // Overwriting the sign-in success URL) then the default
+                // signInSuccessUrl in config is used.
+                //
+                // If the value is provided in the URL, that value will be used
+                // instead of the static signInSuccessUrl in config.
+                //
+                // If the callback returns false or nothing, the page is not
+                // automatically redirected.
+
+                signInSuccessWithAuthResult: (authResult: firebase.auth.UserCredential,
+                                              redirectUrl?: string) => {
+
+                    if (authResult.additionalUserInfo?.isNewUser) {
+                        console.log("New user authenticated");
+                        Analytics.event2('new-user-signup');
+
+                        document.location.href = '/#welcome';
+                        return false;
+
+                    }
+
+                    if (redirectUrl) {
+                        console.log("Sending to redirect URL: " + redirectUrl);
+                        document.location.href = redirectUrl;
+                        return false;
+                    }
+
+                    // we are returning true so it's automatically redirected to
+                    // redirectUrl
 
                     return true;
 
-                },
+                }
 
             },
             queryParameterForWidgetMode: 'mode',
@@ -109,12 +161,21 @@ export class FirebaseUIAuth {
 
         };
 
-        // TODO: include metrics on teh number of authorizations started vs completed.
-
         // Initialize the FirebaseUI Widget using Firebase.
         const ui = new firebaseui.auth.AuthUI(auth);
         // The start method will wait until the DOM is loaded.
         ui.start(containerSelector, uiConfig);
+
+    }
+
+    export async function loginWithCustomToken(customToken: string) {
+
+        Preconditions.assertPresent(firebaseui, 'firebaseui');
+        Preconditions.assertPresent(firebaseui.auth, 'firebaseui.auth');
+
+        const auth = firebase.auth();
+
+        const userCredential = await auth.signInWithCustomToken(customToken);
 
     }
 

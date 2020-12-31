@@ -36,7 +36,7 @@ import {DocMetaSnapshotEventListeners, EventDeduplicator} from './DocMetaSnapsho
 import {ASYNC_NULL_FUNCTION, NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {AsyncFunction} from 'polar-shared/src/util/AsyncWorkQueue';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app'
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {Datastores} from './Datastores';
 import {Either} from '../util/Either';
@@ -44,7 +44,7 @@ import {BackendFileRefs} from './BackendFileRefs';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
-import {InterceptedPrefsProvider, PersistentPrefs} from "../util/prefs/Prefs";
+import {InterceptedPrefsProvider, IPersistentPrefs} from "../util/prefs/Prefs";
 import {GetFileOpts, NetworkLayer} from "polar-shared/src/datastore/IDatastore";
 
 const log = Logger.create();
@@ -94,7 +94,6 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
                       opts: DatastoreInitOpts = {noInitialSnapshot: false, noSync: false}): Promise<InitResult> {
 
         await this.initDelegates(errorListener);
-        await this.initPrefs();
         await this.initSnapshots(errorListener, opts);
 
         return {};
@@ -106,27 +105,6 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
             this.cloud.init(errorListener, {noInitialSnapshot: true}),
             this.local.init(errorListener)
         ]);
-    }
-
-    private async initPrefs() {
-
-        const localPrefs = this.local.getPrefs().get();
-        const cloudPrefs = this.cloud.getPrefs().get();
-
-        const doUpdate = async (source: PersistentPrefs, target: PersistentPrefs) => {
-
-            if (target.update(source.toPrefDict())) {
-                // TODO: firestore sometimes will lock up here when we go to write
-                // but this essentially avoids the problem for now and a commit
-                // would be redundant here anyway plus slow things down.
-                await target.commit();
-            }
-
-        };
-
-        await doUpdate(localPrefs, cloudPrefs);
-        await doUpdate(cloudPrefs, localPrefs);
-
     }
 
     private async initSnapshots(errorListener: ErrorListener,
@@ -602,24 +580,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
     }
 
-    public getPrefs(): PrefsProvider {
-
-        const onCommit = async (persistentPrefs: PersistentPrefs) => {
-
-            // write to firebase first, then commit locally.
-
-            const localPrefs = this.local.getPrefs().get();
-            localPrefs.update(persistentPrefs.toPrefDict());
-            await localPrefs.commit();
-
-        };
-
-        return new InterceptedPrefsProvider(this.cloud.getPrefs(), onCommit);
-
-    }
-
 }
-
 
 /**
  * Represents a doc and its UUID.  The UUID is optional though as older docs

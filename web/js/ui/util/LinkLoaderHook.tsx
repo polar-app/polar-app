@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {useHistory} from 'react-router-dom';
 import {Devices} from "polar-shared/src/util/Devices";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
@@ -45,6 +46,11 @@ export function useLinkLoader(): LinkLoaderDelegate {
 
 }
 
+export function useLinkLoaderRef() {
+    const linkLoader = useLinkLoader();
+    return React.useRef(linkLoader);
+}
+
 function createMobileLinkLoader(history: IHistory): LinkLoaderDelegate {
 
     return (location: ILocationOrLink) => {
@@ -87,7 +93,10 @@ function createDesktopLinkLoader(): LinkLoaderDelegate {
                     // this is primarily for Electron as you can't access the
                     // document from electron since it's basically emulating
                     // this API.
-                    win.document.write(LOADING_HTML);
+
+                    if (typeof win.document.write === 'function') {
+                        win.document.write(LOADING_HTML);
+                    }
                 }
 
             }

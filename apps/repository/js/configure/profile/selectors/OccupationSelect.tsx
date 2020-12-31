@@ -5,6 +5,8 @@ import {
     Occupation,
     Occupations
 } from "polar-shared/src/util/Occupations";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
 export interface IOption<T> {
     readonly value: T;
@@ -36,31 +38,26 @@ interface IProps {
 }
 
 
-export const OccupationSelect = (props: IProps) => {
+export const OccupationSelect = React.memo((props: IProps) => {
 
-    type RawOption = IOption<Occupation> | string| null;
+    const handleChange = React.useCallback((event: React.ChangeEvent<{}>, option: IOption<Occupation> | null) => {
 
-    const onSelect = (option: RawOption) => {
-
-        if (option === null) {
+        if (option === null || option === undefined) {
             props.onSelect(undefined);
-        } else if (typeof option === 'string') {
-            props.onSelect(toOption(Occupations.businessFromName(option)));
         } else {
             props.onSelect(option);
         }
 
-    };
+    }, [props]);
 
-    // return (
-    //     <CreatableSelect
-    //         isClearable
-    //         autoFocus
-    //         placeholder={props.placeholder ?? "Select an occupation..."}
-    //         options={options}
-    //         onChange={(option => onSelect(option as RawOption))}
-    //     />
-    // );
-    return null;
-};
+    return (
+        <Autocomplete
+            options={[...options]}
+            onChange={handleChange}
+            getOptionLabel={(option) => option.label}
+            style={{ flexGrow: 1 }}
+            renderInput={(params) => <TextField {...params} label="I am a ... " variant="outlined" />}
+        />
+    );
 
+});

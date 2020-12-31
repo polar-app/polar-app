@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {Tag, Tags, TagStr, TagType} from "polar-shared/src/tags/Tags";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {
-    createObservableStore,
+    createObservableStore, IUseStoreHookOpts,
     SetStore, UseContextHook, UseStoreHook
 } from "../../../../web/js/react/store/ObservableStore";
 import {Provider} from "polar-shared/src/util/Providers";
@@ -18,7 +18,6 @@ import {FolderSelectionEvents} from "./FolderSelectionEvents";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Paths} from "polar-shared/src/util/Paths";
-import {PersistenceLayerMutator} from "../persistence_layer/PersistenceLayerMutator";
 import {BatchMutators} from "../BatchMutators";
 import TagID = Tags.TagID;
 import Selected = FolderSelectionEvents.Selected;
@@ -28,6 +27,8 @@ import {TRoot} from "../../../../web/js/ui/tree/TRoot";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {IAsyncTransaction} from "polar-shared/src/util/IAsyncTransaction";
 import {isPresent, Preconditions} from "polar-shared/src/Preconditions";
+import {useCreateTag, useDeleteTag} from "../persistence_layer/PersistenceLayerMutator2";
+import {createObservableStoreWithPrefsContext} from "../../../../web/js/react/store/ObservableStoreWithPrefsContext";
 
 export interface TagDescriptorSelected extends TagDescriptor {
     readonly selected: boolean
@@ -235,14 +236,8 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
     const dialogs = useDialogManager();
     const persistence = usePersistenceContext();
     const log = useLogger();
-
-    const persistenceLayerMutator = React.useMemo(() => {
-
-        return new PersistenceLayerMutator(repoDocMetaManager,
-                                           persistence.persistenceLayerProvider,
-                                           tagDescriptorsContext.tagDescriptorsProvider);
-
-    }, [repoDocMetaManager, persistence, tagDescriptorsContext]);
+    const createTag = useCreateTag();
+    const deleteTag = useDeleteTag();
 
     function doHookUpdate() {
 
@@ -254,7 +249,9 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
     }
 
-    doHookUpdate();
+    React.useEffect(() => {
+        doHookUpdate();
+    });
 
     return React.useMemo(() => {
 
@@ -369,12 +366,8 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
             const newTag = createNewTag();
 
             async function doHandle() {
-
-                const {persistenceLayerMutator} = persistence;
-                await persistenceLayerMutator.createTag(newTag);
-
+                await createTag(newTag);
                 dialogs.snackbar({message: `Tag '${newTag}' created successfully.`});
-
             }
 
             doHandle()
@@ -434,7 +427,7 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
                 Preconditions.assertPresent(tag, 'tag');
 
-                const deleteTagTransaction = persistenceLayerMutator.deleteTag(tag.id);
+                const deleteTagTransaction = deleteTag(tag.id);
 
                 function prepare() {
 
@@ -503,29 +496,36 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
             resetSelected
         };
 
-    }, [
+    }, [storeProvider,
         tagSidebarEventForwarder,
-        dialogs,
-        persistence,
-        log,
         mutator,
-        persistenceLayerMutator,
-        storeProvider,
-        setStore
+        setStore,
+        createTag,
+        dialogs,
+        log,
+        deleteTag
     ]);
 
 
 }
 
-export type UseFolderSidebarStore = UseStoreHook<IFolderSidebarStore>;
+// export type UseFolderSidebarStore = UseStoreHook<IFolderSidebarStore>;
+// export type UseFolderSidebarStore = (keys: ReadonlyArray<keyof IFolderSidebarStore> | undefined) => Pick<IFolderSidebarStore, keyof IFolderSidebarStore>;
+export type UseFolderSidebarStore = <K extends keyof IFolderSidebarStore>(keys: ReadonlyArray<K> | undefined) => Pick<IFolderSidebarStore, K>;
+
 export type UseFolderSidebarCallbacks = UseContextHook<IFolderSidebarCallbacks>
 
-export function createFolderSidebarStore() {
-    return createObservableStore<IFolderSidebarStore, Mutator, IFolderSidebarCallbacks>({
+export function createFolderSidebarStore(name: string) {
+
+    const pref = name + '-sidebar-store';
+
+    return createObservableStoreWithPrefsContext<IFolderSidebarStore, Mutator, IFolderSidebarCallbacks>({
           initialValue: initialStore,
           mutatorFactory,
-          callbacksFactory: useCallbacksFactory
-    });
+          callbacksFactory: useCallbacksFactory,
+          enableShallowEquals: true
+    }, pref, ['expanded']);
+
 }
 
 export const FolderSidebarStoreContext = React.createContext<UseFolderSidebarStore>(null!);

@@ -46,10 +46,7 @@ export class Throttler {
             // we might have to setup via the timeout now.
 
             if (this.timeout === undefined) {
-
-                this.timeout =
-                    Timeouts.setTimeout(() => this.doExecViaTimeout(), this.opts.maxTimeout);
-
+                this.timeout = Timeouts.setTimeout(() => this.doExecViaTimeout(), this.opts.maxTimeout);
             }
 
         }

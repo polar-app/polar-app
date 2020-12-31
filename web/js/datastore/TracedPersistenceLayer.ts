@@ -129,8 +129,4 @@ export class TracedPersistenceLayer implements ListenablePersistenceLayer {
         return this.delegate.capabilities();
     }
 
-    public getUserTagsDB(): Promise<UserTagsDB> {
-        return this.delegate.getUserTagsDB();
-    }
-
 }

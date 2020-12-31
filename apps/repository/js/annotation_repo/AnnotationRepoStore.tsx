@@ -41,7 +41,7 @@ import {
     IAnnotationMutationSelected
 } from "../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {IDStr} from "polar-shared/src/util/Strings";
+import {HTMLStr, IDStr} from "polar-shared/src/util/Strings";
 import {SelectionEvents2, SelectRowType} from "../doc_repo/SelectionEvents2";
 import {RepoDocMetaManager} from "../RepoDocMetaManager";
 import {RepoDocMetas} from "../RepoDocMetas";
@@ -50,13 +50,19 @@ import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {ILogger} from "polar-shared/src/logger/ILogger";
 import {AddFileDropzone} from "../../../../web/js/apps/repository/upload/AddFileDropzone";
 import {useDocLoader} from "../../../../web/js/apps/main/DocLoaderHooks";
-import {IMouseEvent} from "../doc_repo/MUIContextMenu";
+import {IMouseEvent} from "../doc_repo/MUIContextMenu2";
 import {LoadDocRequest} from "../../../../web/js/apps/main/doc_loaders/LoadDocRequest";
 import {
     useAnnotationMutationCallbacksFactory
 } from "../../../../web/js/annotation_sidebar/AnnotationMutationCallbacks";
+import { AnnotationType } from "polar-shared/src/metadata/AnnotationType";
+import {ITextHighlights} from "polar-shared/src/metadata/ITextHighlights";
+import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
+import {IComment} from "polar-shared/src/metadata/IComment";
+import {Texts} from "polar-shared/src/metadata/Texts";
+import {Clipboards} from "../../../../web/js/util/system/clipboard/Clipboards";
 
-interface IAnnotationRepoStore {
+export interface IAnnotationRepoStore {
 
     readonly data: ReadonlyArray<IDocAnnotation>;
 
@@ -130,6 +136,8 @@ interface IAnnotationRepoCallbacks {
     readonly onDropped: (tag: Tag) => void;
 
     readonly annotationMutations: IAnnotationMutationCallbacks;
+
+    readonly onCopyToClipboard: () => void;
 
 }
 
@@ -314,12 +322,11 @@ const useCreateCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
                            event: IMouseEvent,
                            type: SelectRowType) {
 
-
             const store = storeProvider();
 
             const selected = SelectionEvents2.selectRow(selectedID,
                                                         store.selected,
-                                                        store.viewPage,
+                                                        store.view,
                                                         event,
                                                         type);
 
@@ -460,6 +467,35 @@ const useCreateCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
             doDropped(selected, tag);
         }
 
+        function onCopyToClipboard() {
+
+            const selected = selectedAnnotations();
+
+            function toHTML(current: IAnnotationRef): HTMLStr | undefined {
+
+                switch (current.annotationType) {
+
+                    case AnnotationType.TEXT_HIGHLIGHT:
+                        return ITextHighlights.toHTML(current.original as ITextHighlight)
+
+                    case AnnotationType.COMMENT:
+                        const comment = current.original as IComment;
+                        return Texts.toHTML(this.toIText(comment.content));
+
+                }
+
+                return undefined;
+
+            }
+
+            const html = selected.map(current => toHTML(current))
+                                 .filter(current => current !== undefined)
+                                 .join("<br/")
+
+            Clipboards.writeText(html);
+
+        }
+
         return {
             doOpen,
             selectRow,
@@ -475,7 +511,8 @@ const useCreateCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
             onDragEnd,
             doDropped,
             onDropped,
-            annotationMutations
+            annotationMutations,
+            onCopyToClipboard
         };
 
     }, [docLoader, annotationMutationCallbacksFactory, log, mutator,
@@ -504,7 +541,7 @@ function useCallbacksFactory (storeProvider: Provider<IAnnotationRepoStore>,
 
 }
 
-export const [AnnotationRepoStoreProvider, useAnnotationRepoStore, useAnnotationRepoCallbacks, useAnnotationRepoMutator]
+export const [AnnotationRepoStoreProvider, useAnnotationRepoStore, useAnnotationRepoCallbacks, useAnnotationRepoMutator, useAnnotationRepoStoreReducer]
     = createObservableStore<IAnnotationRepoStore, Mutator, IAnnotationRepoCallbacks>({
     initialValue: initialStore,
     mutatorFactory,

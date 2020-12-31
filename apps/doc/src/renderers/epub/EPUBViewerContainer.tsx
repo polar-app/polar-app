@@ -28,7 +28,7 @@ const useStyles = makeStyles(() =>
     }),
 );
 
-export const EPUBViewerContainer = memoForwardRef((props: IProps) => {
+export const EPUBViewerContainer = memoForwardRef(function EPUBViewerContainer(props: IProps) {
 
     const classes = useStyles();
     const {page} = useDocViewerStore(['page']);

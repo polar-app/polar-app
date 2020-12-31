@@ -17,11 +17,12 @@ export const PageNumberInput = deepMemo((props: IProps) => {
 
     const {page, pageNavigator} = useDocViewerStore(['page', 'pageNavigator']);
     const {onPageJump} = useDocViewerCallbacks();
+    const ref = React.useRef<HTMLElement | null>();
 
     // yield to the property, except if we're changing the value, then jump
     // to the right value, and then blur the element...
 
-    const numberToString = (value: number | undefined): string => {
+    const numberToString = React.useCallback((value: number | undefined): string => {
 
         if (value) {
             return value.toString();
@@ -29,25 +30,23 @@ export const PageNumberInput = deepMemo((props: IProps) => {
 
         return '';
 
-    };
+    }, []);
 
     const [state, setState] = useState<IState>({
         changing: false,
         value: ''
     });
 
-    const value = state.changing ?
-        state.value :
-        numberToString(page);
+    const value = state.changing ? state.value : numberToString(page);
 
-    const resetState = () => {
+    const resetState = React.useCallback(() => {
         setState({
-                     changing: false,
-                     value: ''
-                 });
-    };
+           changing: false,
+           value: ''
+       });
+    }, []);
 
-    const parsePage = (): number | undefined => {
+    const parsePage = React.useCallback((): number | undefined => {
 
         try {
 
@@ -63,9 +62,9 @@ export const PageNumberInput = deepMemo((props: IProps) => {
             return undefined;
         }
 
-    };
+    }, [props.nrPages, value]);
 
-    const onEnter = () => {
+    const onEnter = React.useCallback(() => {
 
         const newPage = parsePage();
 
@@ -73,9 +72,16 @@ export const PageNumberInput = deepMemo((props: IProps) => {
             onPageJump(newPage);
         }
 
-    };
+        if (document.activeElement) {
+            const blurElement = document.activeElement as any;
+            if (blurElement && blurElement.blur) {
+                blurElement.blur();
+            }
+        }
 
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    }, [onPageJump, parsePage]);
+
+    const handleKeyDown = React.useCallback((event: React.KeyboardEvent<HTMLElement>) => {
 
         // note that react-hotkeys is broken when you listen to 'Enter' on
         // ObserveKeys when using an <input> but it doesn't matter because we can
@@ -94,23 +100,24 @@ export const PageNumberInput = deepMemo((props: IProps) => {
 
         }
 
-    };
+    }, [onEnter]);
 
-    const handleChange = (val: string) => {
+    const handleChange = React.useCallback((val: string) => {
         setState({changing: true, value: val});
-    };
+    }, []);
 
-    const handleBlur = () => {
+    const handleBlur = React.useCallback(() => {
         resetState();
-    };
+    }, [resetState]);
 
     return (
         <div style={{
-            maxWidth: '5em'
-        }}
+                 maxWidth: '5em'
+             }}
              className="mt-auto mb-auto">
 
             <TextField value={value}
+                       innerRef={ref}
                        onChange={event => handleChange(event.currentTarget.value)}
                        disabled={!pageNavigator || pageNavigator.count <= 1}
                        onBlur={() => handleBlur()}

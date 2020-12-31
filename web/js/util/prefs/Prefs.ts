@@ -111,7 +111,7 @@ export interface Pref {
  *
  * A prefs object that can be persisted to disk
  */
-export interface PersistentPrefs extends Prefs {
+export interface IPersistentPrefs extends Prefs {
 
     /**
      * Update the current prefs with the source and return true
@@ -133,11 +133,11 @@ export interface PersistentPrefs extends Prefs {
 
 }
 
-export interface InterceptedPersistentPrefs extends PersistentPrefs {
+export interface InterceptedPersistentPrefs extends IPersistentPrefs {
     readonly __intercepted: true;
 }
 
-export type CommitCallback = (persistentPrefs: PersistentPrefs) => Promise<void>;
+export type CommitCallback = (persistentPrefs: IPersistentPrefs) => Promise<void>;
 
 export class InterceptedPrefsProvider {
 
@@ -146,20 +146,20 @@ export class InterceptedPrefsProvider {
 
     }
 
-    public get(): PersistentPrefs {
+    public get(): IPersistentPrefs {
         return this.intercept(this.delegate.get())!;
     }
 
     public subscribe(onNext: PersistentPrefsUpdatedCallback, onError: OnErrorCallback): SnapshotUnsubscriber {
 
-        const handleOnNext = (persistentPrefs: PersistentPrefs | undefined) => {
+        const handleOnNext = (persistentPrefs: IPersistentPrefs | undefined) => {
             onNext(this.intercept(persistentPrefs));
         };
 
         return this.delegate.subscribe(handleOnNext, onError);
     }
 
-    private intercept(persistentPrefs: PersistentPrefs | undefined): PersistentPrefs | undefined {
+    private intercept(persistentPrefs: IPersistentPrefs | undefined): IPersistentPrefs | undefined {
 
         if (persistentPrefs) {
             return InterceptedPersistentPrefsFactory.create(persistentPrefs, this.onCommit);
@@ -173,7 +173,7 @@ export class InterceptedPrefsProvider {
 
 export class InterceptedPersistentPrefsFactory {
 
-    public static create(persistentPrefs: PersistentPrefs, onCommit: CommitCallback): InterceptedPersistentPrefs {
+    public static create(persistentPrefs: IPersistentPrefs, onCommit: CommitCallback): InterceptedPersistentPrefs {
 
         const commit = async () => {
 
@@ -314,16 +314,16 @@ export class DictionaryPrefs extends Prefs {
 
 }
 
-export class CompositePrefs implements PersistentPrefs {
+export class CompositePrefs implements IPersistentPrefs {
 
     /**
      * The primary delegate
      */
-    private delegate: PersistentPrefs;
+    private delegate: IPersistentPrefs;
 
-    private delegates: ReadonlyArray<PersistentPrefs>;
+    private delegates: ReadonlyArray<IPersistentPrefs>;
 
-    constructor(delegates: ReadonlyArray<PersistentPrefs>) {
+    constructor(delegates: ReadonlyArray<IPersistentPrefs>) {
         this.delegate = Preconditions.assertPresent(delegates[0], 'delegate');
         this.delegates = delegates;
     }
@@ -396,7 +396,7 @@ export class CompositePrefs implements PersistentPrefs {
 
 }
 
-export class NonPersistentPrefs extends DictionaryPrefs implements PersistentPrefs {
+export class NonPersistentPrefs extends DictionaryPrefs implements IPersistentPrefs {
 
     // tslint:disable-next-line:no-empty
     public async commit(): Promise<void> {
@@ -405,10 +405,10 @@ export class NonPersistentPrefs extends DictionaryPrefs implements PersistentPre
 
 }
 
-export class ListenablePersistentPrefs extends CompositePrefs implements PersistentPrefs {
+export class ListenablePersistentPrefs extends CompositePrefs implements IPersistentPrefs {
 
-    public constructor(private readonly backing: PersistentPrefs,
-                       private readonly onUpdated: (prefs: PersistentPrefs) => void) {
+    public constructor(private readonly backing: IPersistentPrefs,
+                       private readonly onUpdated: (prefs: IPersistentPrefs) => void) {
         super([backing]);
     }
 

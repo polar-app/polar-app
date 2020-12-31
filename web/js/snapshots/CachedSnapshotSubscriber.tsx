@@ -30,7 +30,7 @@ export namespace LocalCache {
 
         try {
 
-            const value = JSON.parse(cacheValue)
+            const value = cacheValue === 'undefined' ? undefined : JSON.parse(cacheValue);
 
             return {
                 exists: true,
@@ -39,10 +39,9 @@ export namespace LocalCache {
             };
 
         } catch (e) {
-            console.error(`Unable to parse JSON for cached subscriber ${cacheKey}: ` + cacheValue, e);
+            console.error(`Unable to parse JSON for cached subscriber ${cacheKey}: '${cacheValue}'`, e);
             return undefined;
         }
-
 
     }
 
@@ -50,10 +49,10 @@ export namespace LocalCache {
                              snapshot: ISnapshot<V> | undefined) {
 
         if (snapshot === undefined) {
-            // TODO: I don't think this is correct and that we should write
-            // undefined to the cache but this is a rare use case.
             localStorage.removeItem(cacheKey);
         } else {
+            // note that this can write 'undefined' to the cache as a value and we need to
+            // handle that
             localStorage.setItem(cacheKey, JSON.stringify(snapshot.value))
         }
 
@@ -104,10 +103,6 @@ export function useLocalCachedSnapshotSubscriber<V>(opts: CachedSnapshotSubscrib
 
     const initialValue = React.useMemo(readCacheData, [readCacheData]);
 
-    // const [value, setValue] = React.useState(initialValue);
-
-    opts.onNext(initialValue);
-
     const unsubscriberRef = React.useRef<SnapshotUnsubscriber>();
 
     const onNext = React.useCallback((snapshot: ISnapshot<V> | undefined) => {
@@ -116,6 +111,7 @@ export function useLocalCachedSnapshotSubscriber<V>(opts: CachedSnapshotSubscrib
     }, [opts, writeCacheData]);
 
     useComponentDidMount(() => {
+        opts.onNext(initialValue);
         unsubscriberRef.current = opts.subscriber(onNext, opts.onError)
     });
 

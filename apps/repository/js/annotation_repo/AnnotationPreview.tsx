@@ -34,9 +34,29 @@ function createStyle(color: HighlightColor | undefined): React.CSSProperties {
 const ImagePreview = deepMemo((props: IProps) => {
     const {img} = props;
 
+    if (! img) {
+        return (
+            <div>
+                No image
+            </div>
+        );
+    }
+
     return (
-        <ResponsiveImg id={props.id} img={img} defaultText="No image"/>
+        <div style={{display: 'flex'}}>
+            {/*<HeightFitImg id={props.id}*/}
+            {/*              src={img.src}*/}
+            {/*              height={200}*/}
+            {/*              style={{*/}
+            {/*                  marginLeft: 'auto',*/}
+            {/*                  marginRight: 'auto'*/}
+            {/*              }}/>*/}
+
+            <ResponsiveImg id={props.id} img={img} defaultText="No image"/>
+
+        </div>
     );
+
 });
 
 const TextPreview = deepMemo((props: IProps) => {

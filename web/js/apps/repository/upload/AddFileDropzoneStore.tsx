@@ -63,3 +63,5 @@ export const [
     useAddFileDropzoneCallbacks,
     useAddFileDropzoneMutator
 ] = observableStore;
+
+AddFileDropzoneProvider.displayName = 'AddFileDropzoneProvider';

@@ -11,6 +11,8 @@ import {IFindOpts} from "./Finders";
 import {InputEscapeListener} from "../../../web/js/mui/complete_listeners/InputEscapeListener";
 import {useDocFindCallbacks, useDocFindStore} from "./DocFindStore";
 import Collapse from "@material-ui/core/Collapse/Collapse";
+import Checkbox from "@material-ui/core/Checkbox";
+import Box from "@material-ui/core/Box";
 
 type FindCallback = (opts: IFindOpts) => void;
 
@@ -83,8 +85,10 @@ const MatchNav = React.memo(() => {
 
 export const DocFindBar = React.memo(() => {
 
-    const {active, opts} = useDocFindStore(['active', 'opts']);
+    const {active, opts, finder} = useDocFindStore(['active', 'opts', 'finder']);
     const {reset, setMatches} = useDocFindCallbacks();
+
+    const [phraseSearch, setPhraseSearch] = React.useState(false);
 
     const doFind = useFindCallback();
 
@@ -94,10 +98,16 @@ export const DocFindBar = React.memo(() => {
 
     const handleFind = React.useCallback((query: string) => {
 
-        const newOpts = {...opts, query, onMatches: setMatches};
+        const newOpts = {
+            ...opts,
+            query,
+            onMatches: setMatches,
+            phraseSearch
+        };
+
         doFind(newOpts);
 
-    }, [doFind, setMatches, opts]);
+    }, [opts, setMatches, phraseSearch, doFind]);
 
     return (
         <Collapse in={active} timeout={50}>
@@ -122,6 +132,12 @@ export const DocFindBar = React.memo(() => {
                                                    width: '20em'
                                                }}
                                                placeholder="Search..."/>
+
+                                {finder && (
+                                    <FindFeatureToggle title="Phrase search"
+                                                       checked={phraseSearch}
+                                                       onChanged={setPhraseSearch}/>
+                                )}
 
                                 <MatchNav/>
 
@@ -151,3 +167,27 @@ export const DocFindBar = React.memo(() => {
     )
 
 });
+
+interface IFeatureToggleProps {
+    readonly checked: boolean;
+    readonly title: string;
+    readonly onChanged: (checked: boolean) => void;
+}
+
+const FindFeatureToggle = React.memo((props: IFeatureToggleProps) => {
+    return (
+
+        <MUIButtonBar>
+            <Checkbox
+                checked={props.checked}
+                onChange={(event) => props.onChanged(event.target.checked)}
+                inputProps={{ 'aria-label': props.title }}
+            />
+
+            <Box color="text.secondary">
+                {props.title}
+            </Box>
+
+        </MUIButtonBar>
+    );
+})

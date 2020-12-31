@@ -220,5 +220,5 @@ export const DocFindStore = React.memo((props: IProps) => {
     );
 });
 
-
+DocFindStore.displayName='DocFindStore';
 

@@ -131,15 +131,13 @@ const Desktop = (props: ReviewerProps) => {
     const docInfos = useDocInfos();
 
     return (
-        <Paper square
-               elevation={0}
-               style={{
-                   display: 'flex',
-                   flexGrow: 1,
-                   minWidth: 0,
-                   minHeight: 0,
-                   overflowY: 'auto'
-               }}>
+        <div style={{
+                 display: 'flex',
+                 flexGrow: 1,
+                 minWidth: 0,
+                 minHeight: 0,
+                 overflowY: 'auto'
+             }}>
 
             <FeedbackButton2/>
 
@@ -162,7 +160,7 @@ const Desktop = (props: ReviewerProps) => {
 
             </div>
 
-        </Paper>
+        </div>
     );
 
                 {/*<Container maxWidth="md">*/}

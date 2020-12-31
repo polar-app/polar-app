@@ -15,11 +15,15 @@ import {useAnnotationMutationsContext} from "./AnnotationMutationsContext";
 import {AnnotationTagButton2} from './AnnotationTagButton2';
 import {MUIButtonBar} from "../mui/MUIButtonBar";
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import {createStyles} from "@material-ui/core";
+import {createStyles, CircularProgress} from "@material-ui/core";
 import {deepMemo} from "../react/ReactUtils";
 import {JumpToAnnotationButton} from "./buttons/JumpToAnnotationButton";
 import {MUIDocDeleteButton} from "../../../apps/repository/js/doc_repo/buttons/MUIDocDeleteButton";
 import {StandardIconButton} from "../../../apps/repository/js/doc_repo/buttons/StandardIconButton";
+import FlashAutoIcon from '@material-ui/icons/FlashAuto';
+import {useAutoFlashcardHandler} from "./AutoFlashcardHook";
+import {useAIFlashcardVerifiedAction} from "../../../apps/repository/js/ui/AIFlashcardVerifiedAction";
+import {FeatureToggle2} from "../ui/FeatureToggle2";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -99,6 +103,44 @@ const CreateFlashcardButton = deepMemo((props: IMutableProps) => {
 
 });
 
+const CreateAIFlashcardButton = deepMemo((props: IAnnotationProps) => {
+
+    const [status, handler] = useAutoFlashcardHandler(props.annotation);
+
+    const verifiedAction = useAIFlashcardVerifiedAction();
+
+    const handleClick = React.useCallback(() => {
+        verifiedAction(() => handler());
+    }, [handler, verifiedAction]);
+
+    return (
+        <StandardIconButton tooltip="Create a flashcard using AI"
+                            disabled={! props.mutable}
+                            size="small"
+                            onClick={handleClick}>
+
+            <div style={{
+                     width: '1em',
+                     // height: '1em',
+                     display: 'flex',
+                     flexDirection: 'column',
+                     alignItems: 'center'
+                 }}>
+                {status === 'idle' && (
+                    <FlashAutoIcon/>
+                )}
+
+                {status === 'waiting' && (
+                    <CircularProgress size="1em" color="secondary"/>
+                )}
+            </div>
+
+        </StandardIconButton>
+    );
+
+});
+
+
 interface IProps {
     readonly annotation: IDocAnnotationRef;
 }
@@ -155,6 +197,9 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
 
                         <CreateFlashcardButton mutable={doc?.mutable}/>
 
+                        {annotation.annotationType === AnnotationType.TEXT_HIGHLIGHT && (
+                            <CreateAIFlashcardButton mutable={doc?.mutable} annotation={annotation}/>)}
+
                         {! annotation.immutable &&
                             <ColorSelector role='change'
                                            color={props.annotation.color || 'yellow'}
@@ -174,3 +219,4 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
         </>
     );
 });
+

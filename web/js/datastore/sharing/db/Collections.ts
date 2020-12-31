@@ -1,5 +1,6 @@
 import {Firestore} from '../../../firebase/Firestore';
 import {Logger} from "polar-shared/src/logger/Logger";
+import firebase from 'firebase/app'
 import WhereFilterOp = firebase.firestore.WhereFilterOp;
 import DocumentChangeType = firebase.firestore.DocumentChangeType;
 import OrderByDirection = firebase.firestore.OrderByDirection;

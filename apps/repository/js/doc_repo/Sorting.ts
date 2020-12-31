@@ -1,8 +1,8 @@
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {StringComparators} from "polar-shared/src/util/StringComparators";
 import { TagFilters } from "polar-shared/src/tags/TagFilters";
-import {Tag} from "../../../../../polar-app-public.broken/polar-shared/src/tags/Tags";
 import {NumberComparators} from "polar-shared/src/util/NumberComparators";
+import {Tag} from "polar-shared/src/tags/Tags";
 
 export namespace Sorting {
 

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Firebase} from '../firebase/Firebase';
 import {Fetches, RequestInit} from 'polar-shared/src/util/Fetch';
 import {Billing} from "polar-accounts/src/Billing";
-import * as firebase from "firebase/app";
+import firebase from 'firebase/app'
 import 'firebase/auth';
 import {LoginURLs} from "../apps/viewer/LoginURLs";
 import {Firestore} from "../firebase/Firestore";
@@ -10,16 +10,42 @@ import {StripeMode} from "../../../../polar-app-private/polar-hooks/functions/im
 import {StripeUtils} from "../../../apps/repository/js/stripe/StripeUtils";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
 import {IStripeCreateCustomerPortalResponse} from "polar-backend-api/src/api/stripe/StripeCreateCustomerPortal";
-import {useLinkLoader} from "../ui/util/LinkLoaderHook";
 
 export namespace AccountActions {
 
     export async function logout() {
 
-        await firebase.auth().signOut();
-        const firestore = await Firestore.getInstance();
-        await firestore.terminate();
-        await firestore.clearPersistence();
+        async function doLogout() {
+            await firebase.auth().signOut();
+        }
+
+        async function clearFirestore() {
+            const firestore = await Firestore.getInstance();
+            await firestore.terminate();
+            await firestore.clearPersistence();
+        }
+
+        async function clearLocalStorage() {
+
+            for(let idx = 0; idx < localStorage.length; ++idx) {
+
+                const key = localStorage.key(idx);
+
+                if (key !== null) {
+
+                    if (key.startsWith('pref:') || key.startsWith('cache":')) {
+                        localStorage.removeItem(key);
+                    }
+
+                }
+
+            }
+
+        }
+
+        await doLogout();
+        await clearFirestore();
+        await clearLocalStorage();
 
     }
 
@@ -91,7 +117,7 @@ export namespace AccountActions {
 
     async function createAccountData(): Promise<AccountData> {
 
-        const user = Firebase.currentUser();
+        const user = await Firebase.currentUserAsync();
 
         if (! user) {
             throw new Error("No account");

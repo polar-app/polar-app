@@ -2,7 +2,7 @@ import * as React from 'react';
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {PolarSVGIcon} from "../../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import Brightness4Icon from '@material-ui/icons/Brightness4';
-import {MUIBrowserLinks} from "../../../../../web/js/mui/MUIBrowserLinks";
+import {MUIBrowserLinkStyle} from "../../../../../web/js/mui/MUIBrowserLinkStyle";
 import CloudDoneIcon from '@material-ui/icons/CloudDone';
 import DescriptionIcon from '@material-ui/icons/Description';
 import SyncIcon from '@material-ui/icons/Sync';
@@ -66,7 +66,7 @@ export const TwoMigrationContent = deepMemo(() => {
 
     // link to the blog post describing our changes
     return (
-        <MUIBrowserLinks>
+        <MUIBrowserLinkStyle>
             <div className={classes.root}>
 
                 <div style={{display: 'flex', justifyContent: 'center'}}>
@@ -103,7 +103,7 @@ export const TwoMigrationContent = deepMemo(() => {
 
             </div>
 
-        </MUIBrowserLinks>
+        </MUIBrowserLinkStyle>
     );
 
 });

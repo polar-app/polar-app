@@ -3,7 +3,7 @@ import * as React from "react";
 import {PreviewWarning} from "./PreviewWarning";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import {usePrefs} from "../../persistence_layer/PrefsHook";
+import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
 
 interface IProps {
     readonly title: string;
@@ -21,29 +21,25 @@ interface IOption {
 export const SettingSelect = (props: IProps) => {
 
     const log = useLogger();
-    const prefs = usePrefs();
-
-    if (! prefs.value) {
-        return null;
-    }
+    const prefs = usePrefsContext();
 
     const {name} = props;
 
     const onChange = (value: string) => {
         console.log("Setting " + name);
 
-        prefs.value!.set(props.name, value);
+        prefs.set(props.name, value);
 
         const doCommit = async () => {
-            await prefs.value!.commit();
+            await prefs.commit();
         };
 
         doCommit()
-        .catch(err => log.error("Could not write prefs: ", err));
+            .catch(err => log.error("Could not write prefs: ", err));
     };
 
-    const value = prefs.value!.get(props.name)
-                              .getOrElse(props.options[0].id);
+    const value = prefs.get(props.name)
+                       .getOrElse(props.options[0].id);
 
     return (
         <div>

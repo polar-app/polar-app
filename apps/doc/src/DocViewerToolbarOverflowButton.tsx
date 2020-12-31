@@ -30,7 +30,7 @@ export const DocViewerToolbarOverflowButton = deepMemo((props: IProps) => {
 
                 <MUIMenuItem text="Copy original URL to clipboard"
                              disabled={! props.docInfo?.url}
-                             onClick={() => Clipboards.getInstance().writeText(props.docInfo?.url!)}/>
+                             onClick={() => Clipboards.writeText(props.docInfo?.url!)}/>
             </div>
 
         </MUIMenu>

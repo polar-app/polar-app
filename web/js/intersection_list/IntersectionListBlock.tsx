@@ -30,6 +30,8 @@ interface IViewState {
 interface IntersectionObserverViewStateOpts {
     readonly root: HTMLElement;
 
+    // when true we never update the state.
+    readonly inactive?: boolean;
 }
 
 function useIntersectionObserverViewState(opts: IntersectionObserverViewStateOpts): IViewState {
@@ -51,7 +53,9 @@ function useIntersectionObserverViewState(opts: IntersectionObserverViewStateOpt
 
     if (observation.inView && ! inView) {
         // only go one way ... then don't deactivate...
-        setUseInView(true);
+        if (! opts.inactive) {
+            setUseInView(true);
+        }
     }
 
     return {
@@ -101,7 +105,13 @@ export function useIntersectionObserverUsingCalculationViewState(opts: Intersect
 
 export const IntersectionListBlock = typedMemo(function<V extends ListValue>(props: IProps<V>) {
 
-    const {ref, inView} = useIntersectionObserverViewState(props);
+    // TODO we have to detect if the parent of the intersection list is hidden and then disable
+    // the inner view changing...
+
+    // const rootViewState = useIntersectionObserverViewState({element: props.root});
+
+    // TODO: change this BACK to root I think
+    const {ref, inView} = useIntersectionObserverViewState({root: props.root});
 
     return (
         <LazyBlockComponent innerRef={ref}

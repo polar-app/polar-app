@@ -1,4 +1,4 @@
-import {IAnalytics, IEventArgs, TraitsMap, UserIdentificationStr} from "../IAnalytics";
+import {IAnalytics, IEventArgs, TraitsMap, UserIdentificationStr, IPageEvent} from "../IAnalytics";
 import {RendererAnalytics} from "../../ga/RendererAnalytics";
 
 /**
@@ -13,11 +13,14 @@ export class GAAnalytics implements IAnalytics {
     }
 
     public event2(event: string, data?: any): void {
+        if (navigator.onLine) {
+            RendererAnalytics.event({category: 'misc', action: 'event'});
+        }
     }
 
-    public page(name: string) {
+    public page(event: IPageEvent) {
         if (navigator.onLine) {
-            RendererAnalytics.pageview(name);
+            RendererAnalytics.pageview(event.locationCanonicalized);
         }
     }
 

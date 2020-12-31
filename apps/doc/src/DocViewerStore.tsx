@@ -749,8 +749,12 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
         }
 
         function setPageNavigator(pageNavigator: PageNavigator) {
+
+            Preconditions.assertPresent(pageNavigator, "pageNavigator");
+
             const store = storeProvider();
-            setStore({...store, pageNavigator})
+            setStore({...store, pageNavigator});
+
         }
 
         function onPageJump(page: number) {
@@ -1017,6 +1021,8 @@ export const [DocViewerStoreProviderDelegate, useDocViewerStore, useDocViewerCal
     mutatorFactory,
     callbacksFactory: useCallbacksFactory
 });
+
+DocViewerStoreProviderDelegate.displayName='DocViewerStoreProviderDelegate';
 
 interface IProps {
     readonly children: React.ReactElement;

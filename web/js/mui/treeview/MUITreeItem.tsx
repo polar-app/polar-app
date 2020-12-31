@@ -16,7 +16,7 @@ interface IProps {
     readonly info?: string | number;
     readonly selected: boolean;
 
-    readonly onNodeExpand: (node: string) => void;
+    readonly onNodeExpand: (event: React.MouseEvent, node: string) => void;
     readonly onNodeCollapse: (node: string) => void;
     readonly childNodes: ReadonlyArray<TNode<TagDescriptorSelected>>;
 
