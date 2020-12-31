@@ -488,7 +488,7 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
 
     const ObservableProviderComponent = (props: ObservableStoreProps<V>) => {
 
-        const internalObservableStore = React.useMemo(() => createInternalObservableStore(opts.initialValue), []);
+        const internalObservableStore = React.useMemo(() => createInternalObservableStore(props.store || opts.initialValue), []);
 
         const [mutator, componentCallbacksFactory, setStore, storeProvider]
             = React.useMemo(() => createInitialContextValues(opts, internalObservableStore), [internalObservableStore]);
