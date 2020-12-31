@@ -26,11 +26,21 @@ const createInitialPanels = (dockPanels: ReadonlyArray<DockPanel>): FixedDocPane
 
 };
 
+const Inner = deepMemo(function Inner(props: DocLayoutProps) {
+
+    return (
+        <>
+            <DockLayoutGlobalHotKeys/>
+            <DockLayoutManager {...props}/>
+        </>
+    );
+
+});
+
 /**
  * A simple expand/collapse dock with a persistent mode where it stays docked
  * next time you open the UI and a temporary mode too where it expand when the
  * toggle button is pushed.
- *
  */
 export const DockLayout2 = deepMemo(function DockLayout2(props: DocLayoutProps) {
 
@@ -44,10 +54,7 @@ export const DockLayout2 = deepMemo(function DockLayout2(props: DocLayoutProps) 
 
     return (
         <DockLayoutStoreProvider store={store}>
-            <>
-                <DockLayoutGlobalHotKeys/>
-                <DockLayoutManager {...props}/>
-            </>
+            <Inner {...props}/>
         </DockLayoutStoreProvider>
     );
 
