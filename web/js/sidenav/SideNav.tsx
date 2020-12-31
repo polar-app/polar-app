@@ -17,7 +17,8 @@ const useStyles = makeStyles((theme) =>
             display: 'flex',
             flexDirection: 'column',
             width: `${WIDTH}px`,
-            backgroundColor: theme.palette.background.default
+            backgroundColor: theme.palette.background.default,
+            alignItems: 'center'
         },
         logo: {
             display: 'flex',
@@ -38,16 +39,41 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
-const HomeButton = () => {
+interface HistoryButtonProps {
+    readonly path: string;
+    readonly children: JSX.Element;
+}
+
+const HistoryButton = React.memo((props: HistoryButtonProps) => {
 
     const history = useHistory();
 
     return (
-        <IconButton onClick={() => history.push('/')}>
-            <FAHomeIcon/>
+        <IconButton onClick={() => history.push(props.path)}>
+            {props.children}
         </IconButton>
     )
-}
+});
+
+
+const HomeButton = React.memo(() => {
+
+    return (
+        <HistoryButton path="/">
+            <FAHomeIcon/>
+        </HistoryButton>
+    )
+});
+
+const AnnotationsButton = React.memo(() => {
+
+    return (
+        <HistoryButton path="/annotations">
+            <FAHomeIcon/>
+        </HistoryButton>
+    )
+});
+
 
 export const SideNav = React.memo(() => {
 
@@ -72,7 +98,11 @@ export const SideNav = React.memo(() => {
                 <Divider/>
             </div>
 
-            <HomeButton/>
+            <div>
+                <HomeButton/>
+            </div>
+
+            <AnnotationsButton/>
 
             <div className={classes.divider}>
                 <Divider/>
