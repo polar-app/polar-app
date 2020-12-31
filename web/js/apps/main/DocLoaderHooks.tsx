@@ -10,6 +10,7 @@ import {PersistentRoute} from "../repository/PersistentRoute";
 import {useBrowserDocLoader} from './doc_loaders/browser/BrowserDocLoader';
 import {RepositoryDocViewerScreen} from '../repository/RepositoryApp';
 import { useSideNavDocLoader } from './doc_loaders/sidenav/SideNavDocLoaders';
+import {SIDE_NAV_ENABLED} from "../../sidenav/SideNavStore";
 
 function useDocLoaderElectron2() {
 
@@ -21,6 +22,8 @@ function useDocLoaderElectron2() {
 
     return useDocLoaderNull();
 }
+
+export type DocLoader = (loadDocRequest: LoadDocRequest) => void;
 
 function useDocLoaderElectron() {
 
@@ -87,4 +90,21 @@ function useDocLoaderNull() {
 // export const useDocLoader = AppRuntime.isElectron() ? useDocLoaderElectron : useDocLoaderDefault;
 
 // export const useDocLoader = useDocLoaderDefault;
-export const useDocLoader = useSideNavDocLoader
+// export const useDocLoader = useSideNavDocLoader;
+
+export function useDocLoader(): DocLoader {
+
+    const sideNavDocLoader = useSideNavDocLoader();
+    const defaultDocLoader = useDocLoaderDefault();
+
+    return React.useCallback((loadDocRequest: LoadDocRequest) => {
+
+        if (SIDE_NAV_ENABLED) {
+            sideNavDocLoader(loadDocRequest);
+        } else {
+            defaultDocLoader(loadDocRequest);
+        }
+
+    }, [defaultDocLoader, sideNavDocLoader]);
+
+}
