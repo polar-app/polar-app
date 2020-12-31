@@ -367,7 +367,6 @@ export interface ObservableStoreOpts<V, M, C> {
 type ComponentCallbacksFactory<C> = () => C;
 
 type InitialContextValues<V, M, C> = [
-    InternalObservableStore<V>,
     M,
     ComponentCallbacksFactory<C>,
     SetStore<V>,
@@ -378,41 +377,72 @@ type InitialContextValues<V, M, C> = [
  * Create the initial values of the components we're working with (store
  * and callbacks)
  */
-function createInitialContextValues<V, M, C>(opts: ObservableStoreOpts<V, M, C>): InitialContextValues<V, M, C> {
+function createInitialContextValues<V, M, C>(opts: ObservableStoreOpts<V, M, C>,
+                                             internalObservableStore: InternalObservableStore<V>): InitialContextValues<V, M, C> {
 
-    const {initialValue, mutatorFactory, callbacksFactory} = opts;
-
-    const store = createInternalObservableStore(initialValue);
+    const {mutatorFactory, callbacksFactory} = opts;
 
     const setStore = (value: V) => {
 
         // the current value needs to be set because we have to first update
         // the value for other components which will be created with the
         // internal value
-        store.current = value;
+        internalObservableStore.current = value;
 
         // now we have to send the next value which will cause the
         // subscriber to update, which will increment the state iter, and
         // cause a new render with updated data.
-        store.subject.next(value);
+        internalObservableStore.subject.next(value);
 
     };
 
-    const storeProvider = () => store.current;
+    const storeProvider = () => internalObservableStore.current;
 
     const mutator = mutatorFactory(storeProvider, setStore);
 
     const componentCallbacksFactory = () => callbacksFactory(storeProvider, setStore, mutator);
 
-    return [store, mutator, componentCallbacksFactory, setStore, storeProvider];
+    return [mutator, componentCallbacksFactory, setStore, storeProvider];
 
 }
 
+// FIXME: there is a major bug here because the actually subject backing is
+// global even though the context is not.
+//
+// TODO: a store for EACH component and memoize them but then I can't use useFoo()
+//
+// FIXME: I could migrate to mobx but then it won't work with our current store
+// and I have to completely rewrite it.  Also, I'm not confident enough in it yet
+// to it work with 'observer' because that's not always fired.
+//
+// FIXME rewriting the whole thing is going to be hard... it's probably going to
+// be JUST as hard as cutting over to mobx so might as well do it right.
+//
+// FIXME: I could also bite off migrating to RTL (react testing library) to make
+// sure everything works properly and is tested.
+//
+// FIXME: migrate the current code into master so that I can iterate on it moving
+// forward and I won't have to be locked out of the main branch.
+
+// FIXME: I think I have to fix the ObservableStore because if I dont' I'm going
+// to have to rewrite ALL the components since it's now global.
+//
+// see if there's an EASY way to do this by creating the context for each new
+// instance... or at least overwrriting them.. .
+
+//
+// FIXME: I could create a new context object named SubjectContext which stores the context and then
+// I just call useSubjectContext() everywhere which will solve that problem I thinkl
+//
+// FIXME: it's just createInternalObservableStore that I need to clean up I think.
+
 export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C>): ObservableStoreTuple<V, M, C> {
 
-    const [store, mutator, componentCallbacksFactory, setStore, storeProvider] = createInitialContextValues(opts);
+    const internalObservableStore = createInternalObservableStore(opts.initialValue);
 
-    const [storeContext,] = createObservableStoreContext<V>(store);
+    const [storeContext,] = createObservableStoreContext<V>(internalObservableStore);
+
+    const [mutator, componentCallbacksFactory, setStore, storeProvider] = createInitialContextValues(opts, internalObservableStore);
 
     const useStoreHook = <K extends keyof V>(keys: ReadonlyArray<K> | undefined,
                                              storeHookOpts: IUseStoreHookOpts<V, K> = {
@@ -456,7 +486,7 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
         }, [props.store]);
 
         return (
-            <storeContext.Provider value={store}>
+            <storeContext.Provider value={internalObservableStore}>
                 <callbacksContext.Provider value={componentCallbacksFactory}>
                     <mutatorContext.Provider value={mutator}>
                         {props.children}

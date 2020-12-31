@@ -20,6 +20,9 @@ interface ILoadedProps {
 }
 
 const PDFDocumentRenderer = (props: ILoadedProps) => {
+
+    console.log("FIXME: PDFDocumentRenderer: going to render doc: " + props.docMeta.docInfo.fingerprint)
+
     return (
         <>
             <PDFViewerContainer>
@@ -75,6 +78,8 @@ interface DocRendererDelegateProps {
 
 const DocRendererDelegate = React.memo((props: DocRendererDelegateProps) => {
 
+    console.log("FIXME: DocRendererDelegate: going to render doc: " + props.docMeta.docInfo.fingerprint)
+
     switch (props.fileType) {
 
         case "pdf":
@@ -101,11 +106,14 @@ interface IProps {
 
 export const DocRenderer = React.memo(function DocRenderer(props: IProps) {
 
+    // FIXME: this is the problem.  the store is global not local...
     const {docURL, docMeta} = useDocViewerStore(['docURL', 'docMeta']);
 
     if (! docURL || ! docMeta) {
         return null;
     }
+
+    console.log("FIXME: DocRenderer: going to render doc: " + docMeta.docInfo.fingerprint)
 
     const fileType = FileTypes.create(docURL);
 
@@ -115,4 +123,4 @@ export const DocRenderer = React.memo(function DocRenderer(props: IProps) {
         </DocRendererDelegate>
     );
 
-}, isEqual);
+});
