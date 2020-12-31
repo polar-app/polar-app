@@ -93,7 +93,10 @@ function createDesktopLinkLoader(): LinkLoaderDelegate {
                     // this is primarily for Electron as you can't access the
                     // document from electron since it's basically emulating
                     // this API.
-                    win.document.write(LOADING_HTML);
+
+                    if (typeof win.document.write === 'function') {
+                        win.document.write(LOADING_HTML);
+                    }
                 }
 
             }
