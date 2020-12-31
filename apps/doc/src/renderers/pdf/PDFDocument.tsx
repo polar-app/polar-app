@@ -19,7 +19,6 @@ import {
     ScaleLevelTuples,
     ScaleLevelTuplesMap
 } from "../../ScaleLevels";
-import {useComponentDidMount} from "../../../../../web/js/hooks/ReactLifecycleHooks";
 import {
     IDocDescriptor,
     IDocScale,
@@ -78,7 +77,10 @@ function createDocViewer(docID: string): DocViewer {
         eventBus
     });
 
+
     const root = document.querySelector(`div[data-doc-viewer-id='${docID}']`);
+
+    console.log("FIXME: going to use root form docID: " + docID, root);
 
     if (root === null) {
         throw new Error("No root");
@@ -169,17 +171,10 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
     useDocViewerPageJumpListener();
 
-    useComponentDidMount(() => {
-
-        docViewerRef.current = createDocViewer(props.docMeta.docInfo.fingerprint);
-
-        doLoad(docViewerRef.current)
-            .catch(err => log.error("PDFDocument: Could not load PDF: ", err));
-
-    });
-
     const hasPagesInitRef = React.useRef(false);
     const hasLoadRef = React.useRef(false);
+
+    const hasLoadStartedRef = React.useRef(false);
 
     const handleActive = React.useCallback(() => {
 
@@ -202,7 +197,62 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
     }, [handleActive]);
 
-    const doLoad = async (docViewer: DocViewer) => {
+    const dispatchPDFDocMeta = React.useCallback(() => {
+
+        if (docRef.current && docViewerRef.current) {
+
+            const docDescriptor: IDocDescriptor = {
+                // title: docRef.current.title,
+                // scale: scaleRef.current,
+                // scaleValue: docViewerRef.current.viewer.currentScale,
+                nrPages: docRef.current.numPages,
+                fingerprint: docRef.current.fingerprint
+            };
+
+            setDocDescriptor(docDescriptor);
+
+            if (pageNavigatorRef.current) {
+                setPage(pageNavigatorRef.current.get());
+            } else {
+                log.warn("No pageNavigatorRef")
+            }
+
+        }
+
+    }, [log, setDocDescriptor, setPage]);
+
+    const setScale = React.useCallback((scale: ScaleLevelTuple) => {
+
+        if (docViewerRef.current) {
+            scaleRef.current = scale;
+            docViewerRef.current.viewer.currentScaleValue = scale.value;
+
+            dispatchPDFDocMeta();
+
+            return docViewerRef.current.viewer.currentScale;
+
+        }
+
+        throw new Error("No viewer");
+
+    }, [dispatchPDFDocMeta]);
+
+
+    const resize = React.useCallback((): number => {
+
+        if (['page-width', 'page-fit'].includes(scaleRef.current.value)) {
+            setScale(scaleRef.current);
+        }
+
+        if (docViewerRef.current) {
+            return docViewerRef.current.viewer.currentScale;
+        } else {
+            throw new Error("No viewer");
+        }
+
+    }, [setScale]);
+
+    const doLoad = React.useCallback(async (docViewer: DocViewer) => {
 
         const loadingTask = PDFDocs.getDocument({url: docURL, docBaseURL: docURL});
 
@@ -232,7 +282,7 @@ export const PDFDocument = deepMemo((props: IProps) => {
         docViewer.linkService.setDocument(docRef.current, null);
 
         const finder = PDFFindControllers.createFinder(docViewer.eventBus,
-                                                       docViewer.findController);
+            docViewer.findController);
         setFinder(finder);
 
         docViewer.eventBus.on('pagesinit', () => {
@@ -391,62 +441,22 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
         onLoaded()
 
-    }
+    }, [annotationBarInjector, dispatchPDFDocMeta, docMetaProvider, docURL, log, onLoaded, onPagesInit, persistenceLayerProvider, prefs, resize, setDocScale, setFinder, setOutline, setOutlineNavigator, setPageNavigator, setResizer, setScale, setScaleLeveler]);
 
-    function resize(): number {
+    React.useEffect(() => {
 
-        if (['page-width', 'page-fit'].includes(scaleRef.current.value)) {
-            setScale(scaleRef.current);
+        if (hasLoadStartedRef.current) {
+            return;
         }
 
-        if (docViewerRef.current) {
-            return docViewerRef.current.viewer.currentScale;
-        } else {
-            throw new Error("No viewer");
-        }
+        hasLoadStartedRef.current = true;
 
+        docViewerRef.current = createDocViewer(props.docMeta.docInfo.fingerprint);
 
-    }
+        doLoad(docViewerRef.current)
+            .catch(err => log.error("PDFDocument: Could not load PDF: ", err));
 
-    function setScale(scale: ScaleLevelTuple) {
-
-        if (docViewerRef.current) {
-            scaleRef.current = scale;
-            docViewerRef.current.viewer.currentScaleValue = scale.value;
-
-            dispatchPDFDocMeta();
-
-            return docViewerRef.current.viewer.currentScale;
-
-        }
-
-        throw new Error("No viewer");
-
-    }
-
-    function dispatchPDFDocMeta() {
-
-        if (docRef.current && docViewerRef.current) {
-
-            const docDescriptor: IDocDescriptor = {
-                // title: docRef.current.title,
-                // scale: scaleRef.current,
-                // scaleValue: docViewerRef.current.viewer.currentScale,
-                nrPages: docRef.current.numPages,
-                fingerprint: docRef.current.fingerprint
-            };
-
-            setDocDescriptor(docDescriptor);
-
-            if (pageNavigatorRef.current) {
-                setPage(pageNavigatorRef.current.get());
-            } else {
-                log.warn("No pageNavigatorRef")
-            }
-
-        }
-
-    }
+    }, [doLoad, log, props.docMeta.docInfo.fingerprint]);
 
     return active && (
         <>
