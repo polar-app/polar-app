@@ -348,7 +348,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                                              flexGrow: 1
                                                                          }}>
 
-                                                                        <RepoHeader3/>
+                                                                        {! SIDE_NAV_ENABLED && <RepoHeader3/>}
 
                                                                         <PersistentRoute exact path="/">
                                                                             <RenderDefaultScreen/>
