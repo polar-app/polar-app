@@ -5,34 +5,31 @@ import {UserInfoProvider} from "../apps/repository/auth_handler/UserInfoProvider
 import {BrowserTabsStoreProvider} from "../browser_tabs/BrowserTabsStore";
 import {MUIAppRoot} from "./MUIAppRoot";
 import {SideNavStoreProvider} from "../sidenav/SideNavStore";
-import {UseLocationChangeStoreProvider} from "../../../apps/doc/src/annotations/UseLocationChangeStore";
 
 interface IProps {
     readonly children: React.ReactNode;
 }
 
-export const MUIRepositoryRoot = (props: IProps) => {
+export const MUIRepositoryRoot = React.memo(function MUIRepositoryRoot(props: IProps) {
 
     return (
         <MUIAppRoot>
-            <BrowserTabsStoreProvider>
-                <>
-                    <ActiveKeyboardShortcuts/>
+            <SideNavStoreProvider>
+                <BrowserTabsStoreProvider>
+                    <>
+                        <ActiveKeyboardShortcuts/>
 
-                    <FirestoreProvider>
-                        <UserInfoProvider>
-                            <SideNavStoreProvider>
-                                <>
-                                    {props.children}
-                                </>
-                            </SideNavStoreProvider>
-                        </UserInfoProvider>
-                    </FirestoreProvider>
-                </>
-            </BrowserTabsStoreProvider>
+                        <FirestoreProvider>
+                            <UserInfoProvider>
+                                    <>
+                                        {props.children}
+                                    </>
+                            </UserInfoProvider>
+                        </FirestoreProvider>
+                    </>
+                </BrowserTabsStoreProvider>
+            </SideNavStoreProvider>
         </MUIAppRoot>
     );
 
-};
-
-MUIRepositoryRoot.displayName='MUIRepositoryRoot';
+});

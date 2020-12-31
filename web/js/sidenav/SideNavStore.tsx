@@ -116,6 +116,8 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
                              setStore: (store: ISideNavStore) => void,
                              mutator: Mutator): ISideNavCallbacks {
 
+    // TODO: NEITHER one of these is trigginer the store to reload.  Not sure
+    // what's happening her.e.
     const history = useHistory();
     const historyRef = useRefValue(history);
 
