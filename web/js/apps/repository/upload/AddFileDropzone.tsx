@@ -222,7 +222,7 @@ export function useDragAndDropBackdropListener() {
             window.removeEventListener('drop', onDragLeaveOrDrop);
         }
 
-    }, [])
+    }, [onDragEnter, onDragLeaveOrDrop])
 
 }
 
