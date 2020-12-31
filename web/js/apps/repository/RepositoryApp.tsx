@@ -100,11 +100,31 @@ export const RepositoryDocViewerScreen = deepMemo((props: RepositoryDocViewerScr
     );
 });
 
-export const RepositoryApp = (props: IProps) => {
+interface SideNavDocumentsProps {
+    readonly persistenceLayerProvider: ListenablePersistenceLayerProvider;
+}
 
-    const {app, repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager} = props;
+const SideNavDocuments = React.memo(function SideNavDocuments(props: SideNavDocumentsProps) {
 
     const {tabs} = useSideNavStore(['tabs']);
+
+    return (
+        <>
+            {tabs.map(tab => (
+                <PersistentRoute key={'doc-' + tab.id}
+                                 exact
+                                 path={tab.url}>
+                    <RepositoryDocViewerScreen persistenceLayerProvider={props.persistenceLayerProvider}/>
+                </PersistentRoute>
+            ))}
+        </>
+    );
+
+});
+
+export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
+
+    const {app, repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager} = props;
 
     Preconditions.assertPresent(app, 'app');
 
@@ -338,17 +358,7 @@ export const RepositoryApp = (props: IProps) => {
                                                                             <RenderAnnotationRepoScreen/>
                                                                         </PersistentRoute>
 
-                                                                        {SIDE_NAV_ENABLED && (
-                                                                            <>
-                                                                                {tabs.map(tab => (
-                                                                                        <PersistentRoute key={'doc-' + tab.id}
-                                                                                                         exact
-                                                                                                         path={tab.url}>
-                                                                                            <RenderDocViewerScreen/>
-                                                                                        </PersistentRoute>
-                                                                                    ))}
-                                                                            </>
-                                                                        )}
+                                                                        {SIDE_NAV_ENABLED && <SideNavDocuments persistenceLayerProvider={app.persistenceLayerProvider}/>}
 
                                                                         <Switch location={ReactRouters.createLocationWithPathOnly()}>
 
@@ -424,6 +434,4 @@ export const RepositoryApp = (props: IProps) => {
         </MUIRepositoryRoot>
     );
 
-};
-
-RepositoryApp.displayName='RepositoryApp';
+});
