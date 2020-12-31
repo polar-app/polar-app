@@ -75,6 +75,17 @@ const AnnotationsButton = React.memo(() => {
 });
 
 
+
+const StatsButton = React.memo(() => {
+
+    return (
+        <HistoryButton path="/stats">
+            <FAHomeIcon/>
+        </HistoryButton>
+    )
+});
+
+
 export const SideNav = React.memo(() => {
 
     const classes = useStyles();
@@ -98,11 +109,9 @@ export const SideNav = React.memo(() => {
                 <Divider/>
             </div>
 
-            <div>
-                <HomeButton/>
-            </div>
-
+            <HomeButton/>
             <AnnotationsButton/>
+            <StatsButton/>
 
             <div className={classes.divider}>
                 <Divider/>
