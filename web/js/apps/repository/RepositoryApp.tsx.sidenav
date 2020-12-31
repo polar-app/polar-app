@@ -54,12 +54,10 @@ import {UseLocationChangeRoot} from "../../../../apps/doc/src/annotations/UseLoc
 import {deepMemo} from "../../react/ReactUtils";
 import { PHZMigrationScreen } from './migrations/PHZMigrationScreen';
 import { AddFileDropzoneRoot } from './upload/AddFileDropzoneRoot';
+import {TwoMigrationForBrowser} from "../../../../apps/repository/js/gateways/two_migration/TwoMigrationForBrowser";
 import {AnalyticsLocationListener} from "../../analytics/AnalyticsLocationListener";
-import {LogsScreen} from "../../../../apps/repository/js/logs/LogsScreen";
-import {PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
-import {LoginWithCustomTokenScreen} from "../../../../apps/repository/js/login/LoginWithCustomTokenScreen";
-import {WelcomeScreen} from "./WelcomeScreen";
-import { useSideNavStore } from '../../sidenav/SideNavStore';
+import { useSideNavStore, SideNavStoreProvider } from '../../sidenav/SideNavStore';
+import {SideNavButtonWithThumbnail} from "../../sidenav/SideNavButtonWithThumbnail";
 import {SideNav} from "../../sidenav/SideNav";
 
 interface IProps {
@@ -79,22 +77,21 @@ export const RepositoryDocViewerScreen = deepMemo((props: RepositoryDocViewerScr
 
     return (
         <AuthRequired>
-            <PersistenceLayerContext.Provider value={{persistenceLayerProvider: props.persistenceLayerProvider}}>
-                <PrefsContext2>
-                    <UserTagsProvider>
-                        <DocMetaContextProvider>
-                            <DocViewerDocMetaLookupContextProvider>
-                                <DocViewerStore>
-                                    <DocFindStore>
-                                        <AnnotationSidebarStoreProvider>
-                                            <DocViewer/>
-                                        </AnnotationSidebarStoreProvider>
-                                    </DocFindStore>
-                                </DocViewerStore>
-                            </DocViewerDocMetaLookupContextProvider>
-                        </DocMetaContextProvider>
-                    </UserTagsProvider>
-                </PrefsContext2>
+            <PersistenceLayerContext.Provider
+                value={{persistenceLayerProvider: props.persistenceLayerProvider}}>
+                <UserTagsProvider>
+                    <DocMetaContextProvider>
+                        <DocViewerDocMetaLookupContextProvider>
+                            <DocViewerStore>
+                                <DocFindStore>
+                                    <AnnotationSidebarStoreProvider>
+                                        <DocViewer/>
+                                    </AnnotationSidebarStoreProvider>
+                                </DocFindStore>
+                            </DocViewerStore>
+                        </DocViewerDocMetaLookupContextProvider>
+                    </DocMetaContextProvider>
+                </UserTagsProvider>
             </PersistenceLayerContext.Provider>
         </AuthRequired>
     );
@@ -117,20 +114,21 @@ export const RepositoryApp = (props: IProps) => {
                 <PersistenceLayerApp tagsType="documents"
                                      repoDocMetaManager={repoDocMetaManager}
                                      repoDocMetaLoader={repoDocMetaLoader}
-                                     persistenceLayerManager={persistenceLayerManager}>
-                     <DocRepoStore2>
-                         <DocRepoSidebarTagStore>
-                             <>
-                                 <AnkiSyncController/>
-                                 <DocRepoScreen2/>
-                             </>
-                         </DocRepoSidebarTagStore>
-                     </DocRepoStore2>
-                </PersistenceLayerApp>
+                                     persistenceLayerManager={persistenceLayerManager}
+                                     render={() =>
+                                         <DocRepoStore2>
+                                             <DocRepoSidebarTagStore>
+                                                 <TwoMigrationForBrowser>
+                                                     <>
+                                                         <AnkiSyncController/>
+                                                         <DocRepoScreen2/>
+                                                     </>
+                                                 </TwoMigrationForBrowser>
+                                             </DocRepoSidebarTagStore>
+                                         </DocRepoStore2>
+                                     }/>
             </AuthRequired>
         ));
-
-    RenderDocRepoScreen.displayName='RenderDocRepoScreen';
 
     const RenderAnnotationRepoScreen = React.memo(() => {
         return (
@@ -138,29 +136,25 @@ export const RepositoryApp = (props: IProps) => {
                 <PersistenceLayerApp tagsType="annotations"
                                      repoDocMetaManager={repoDocMetaManager}
                                      repoDocMetaLoader={repoDocMetaLoader}
-                                     persistenceLayerManager={persistenceLayerManager}>
-                     <AnnotationRepoStore2>
-                         <AnnotationRepoSidebarTagStore>
-                             <>
-                                 <ReviewRouter/>
-                                 <AnnotationRepoScreen2/>
-                             </>
-                         </AnnotationRepoSidebarTagStore>
-                     </AnnotationRepoStore2>
-                </PersistenceLayerApp>
+                                     persistenceLayerManager={persistenceLayerManager}
+                                     render={(props) =>
+                                         <AnnotationRepoStore2>
+                                             <AnnotationRepoSidebarTagStore>
+                                                 <>
+                                                     <ReviewRouter/>
+                                                     <AnnotationRepoScreen2/>
+                                                 </>
+                                             </AnnotationRepoSidebarTagStore>
+                                         </AnnotationRepoStore2>
+                                     }/>
             </AuthRequired>
         );
     });
 
     const RenderSettingsScreen = () => (
-        <AuthRequired>
-            <PersistenceLayerApp tagsType="documents"
-                                 repoDocMetaManager={repoDocMetaManager}
-                                 repoDocMetaLoader={repoDocMetaLoader}
-                                 persistenceLayerManager={persistenceLayerManager}>
-                <SettingsScreen/>
-            </PersistenceLayerApp>
-        </AuthRequired>
+        <Cached>
+            <SettingsScreen/>
+        </Cached>
     );
 
     // const renderProfileScreen = () => (
@@ -172,14 +166,14 @@ export const RepositoryApp = (props: IProps) => {
     // );
 
     const renderDeviceScreen = () => (
-        <DeviceScreen/>
+        <Cached>
+            <DeviceScreen/>
+        </Cached>
     );
 
     const RenderDefaultScreen = React.memo(() => (
         <RenderDocRepoScreen/>
     ));
-
-    RenderDefaultScreen.displayName='RenderDefaultScreen';
 
     const renderWhatsNewScreen = () => (
         <WhatsNewScreen/>
@@ -197,11 +191,22 @@ export const RepositoryApp = (props: IProps) => {
             <PersistenceLayerApp tagsType="documents"
                                  repoDocMetaManager={repoDocMetaManager}
                                  repoDocMetaLoader={repoDocMetaLoader}
-                                 persistenceLayerManager={persistenceLayerManager}>
-                <StatsScreen/>
-            </PersistenceLayerApp>
+                                 persistenceLayerManager={persistenceLayerManager}
+                                 render={(docRepo) =>
+                                     <StatsScreen/>
+                                 }/>
         </AuthRequired>
     );
+
+    // const renderLogsScreen = () => {
+    //     return (
+    //         <AuthRequired authStatus={app.authStatus}>
+    //             <LogsScreen
+    //                 persistenceLayerProvider={app.persistenceLayerProvider}
+    //                 persistenceLayerController={app.persistenceLayerController}/>
+    //         </AuthRequired>
+    //     );
+    // };
 
     // const editorsPicksScreen = () => {
     //     return (
@@ -280,7 +285,7 @@ export const RepositoryApp = (props: IProps) => {
 
                             <>
                                 <UseLocationChangeStoreProvider>
-                                    <BrowserRouter>
+                                        <BrowserRouter>
                                         <AnalyticsLocationListener/>
                                         <UseLocationChangeRoot>
                                             <MUIDialogController>
@@ -290,10 +295,6 @@ export const RepositoryApp = (props: IProps) => {
 
                                                             <Route exact path={["/login", "/login.html"]}>
                                                                 <LoginScreen/>
-                                                            </Route>
-
-                                                            <Route exact path={["/login-with-custom-token"]}>
-                                                                <LoginWithCustomTokenScreen/>
                                                             </Route>
 
                                                             {/*<Route exact path={["/doc", "/doc/:id"]}>*/}
@@ -327,15 +328,15 @@ export const RepositoryApp = (props: IProps) => {
                                                                             flexGrow: 1
                                                                         }}>
 
-                                                                <RepoHeader3/>
+                                                                        <RepoHeader3/>
 
-                                                                <PersistentRoute exact path="/">
-                                                                    <RenderDefaultScreen/>
-                                                                </PersistentRoute>
+                                                                        <PersistentRoute exact path="/">
+                                                                            <RenderDefaultScreen/>
+                                                                        </PersistentRoute>
 
-                                                                <PersistentRoute exact path="/annotations">
-                                                                    <RenderAnnotationRepoScreen/>
-                                                                </PersistentRoute>
+                                                                        <PersistentRoute exact path="/annotations">
+                                                                            <RenderAnnotationRepoScreen/>
+                                                                        </PersistentRoute>
 
                                                                         {tabs.map(tab => (
                                                                             <PersistentRoute key={'doc-' + tab.id}
@@ -345,33 +346,30 @@ export const RepositoryApp = (props: IProps) => {
                                                                             </PersistentRoute>
                                                                         ))}
 
-                                                                <Switch location={ReactRouters.createLocationWithPathOnly()}>
+                                                                        <Switch location={ReactRouters.createLocationWithPathOnly()}>
 
-                                                                    <Route exact path='/whats-new'
-                                                                           render={renderWhatsNewScreen}/>
+                                                                            <Route exact path='/whats-new'
+                                                                                   render={renderWhatsNewScreen}/>
 
-                                                                    <Route exact path='/invite' render={renderInvite}/>
+                                                                            <Route exact path='/invite' render={renderInvite}/>
 
-                                                                    <Route exact path='/plans' render={premiumScreen}/>
+                                                                            <Route exact path='/plans' render={premiumScreen}/>
 
-                                                                    <Route exact path='/premium' render={premiumScreen}/>
+                                                                            <Route exact path='/premium' render={premiumScreen}/>
 
-                                                                    <Route exact path='/support' render={supportScreen}/>
+                                                                            <Route exact path='/support' render={supportScreen}/>
 
-                                                                    <Route exact path='/stats'
-                                                                           component={renderStatsScreen}/>
+                                                                            <Route exact path='/stats'
+                                                                                   component={renderStatsScreen}/>
 
-                                                                    <Route exact path="/settings"
-                                                                           component={RenderSettingsScreen}/>
+                                                                            <Route exact path="/settings"
+                                                                                   component={RenderSettingsScreen}/>
 
-                                                                    <Route exact path="/logs"
-                                                                           component={LogsScreen}/>
+                                                                            <Route exact path="/device"
+                                                                                   component={renderDeviceScreen}/>
 
-                                                                    <Route exact path="/device"
-                                                                           component={renderDeviceScreen}/>
-
-                                                                </Switch>
-                                                                <RepoFooter/>
+                                                                        </Switch>
+                                                                        <RepoFooter/>
                                                                     </div>
                                                                 </div>
 
@@ -380,11 +378,6 @@ export const RepositoryApp = (props: IProps) => {
                                                         </Switch>
 
                                                         <Switch location={ReactRouters.createLocationWithHashOnly()}>
-
-                                                            <Route path='#welcome'
-                                                                   component={() =>
-                                                                       <WelcomeScreen/>
-                                                                   }/>
 
                                                             <Route path='#account'
                                                                    component={() =>
@@ -407,7 +400,7 @@ export const RepositoryApp = (props: IProps) => {
 
                                             </MUIDialogController>
                                         </UseLocationChangeRoot>
-                                 </BrowserRouter>
+                                     </BrowserRouter>
                                 </UseLocationChangeStoreProvider>
                             </>
 
@@ -418,5 +411,3 @@ export const RepositoryApp = (props: IProps) => {
     );
 
 };
-
-RepositoryApp.displayName='RepositoryApp';
