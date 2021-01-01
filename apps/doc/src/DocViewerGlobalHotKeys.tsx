@@ -1,6 +1,6 @@
 import React from 'react';
 import {useDocFindCallbacks} from './DocFindStore';
-import {useDocViewerCallbacks} from "./DocViewerStore";
+import {useDocViewerCallbacks, useDocViewerStore} from "./DocViewerStore";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import {ReactRouters} from "../../../web/js/react/router/ReactRouters";
 import {
@@ -8,6 +8,7 @@ import {
     keyMapWithGroup
 } from "../../../web/js/keyboard_shortcuts/GlobalKeyboardShortcuts";
 import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
+import {DocViewerAppURLs} from "./DocViewerAppURLs";
 
 const globalKeyMap = keyMapWithGroup({
     group: "Document Viewer",
@@ -70,6 +71,7 @@ export const DocViewerGlobalHotKeys = React.memo(() => {
 
     const findCallbacks = useDocFindCallbacks();
     const {onPagePrev, onPageNext, doZoom, doZoomRestore, onDocTagged, toggleDocArchived, toggleDocFlagged} = useDocViewerCallbacks();
+    const {docMeta} = useDocViewerStore(['docMeta']);
 
     const globalKeyHandlers = {
         FIND: () => findCallbacks.setActive(true),
@@ -86,17 +88,16 @@ export const DocViewerGlobalHotKeys = React.memo(() => {
 
     const location = useLocationWithPathOnly();
 
-    return (
-        <BrowserRouter>
-            <Switch location={location}>
+    const docViewerURL = DocViewerAppURLs.parse(location.pathname)
 
-                <Route path={['/pdf', '/doc']}>
-                    <GlobalKeyboardShortcuts
-                        keyMap={globalKeyMap}
-                        handlerMap={globalKeyHandlers}/>
-                </Route>
-            </Switch>
-        </BrowserRouter>
+    return (
+        <>
+            {docViewerURL && docMeta && docViewerURL.id === docMeta.docInfo.fingerprint && (
+                <GlobalKeyboardShortcuts
+                    keyMap={globalKeyMap}
+                    handlerMap={globalKeyHandlers}/>
+            )}
+        </>
     );
 
 });
