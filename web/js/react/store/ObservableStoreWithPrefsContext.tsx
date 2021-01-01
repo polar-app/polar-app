@@ -166,7 +166,7 @@ export function createObservableStoreWithPrefsContext<V, M, C>(opts: ObservableS
         const store = useStore(undefined);
         const storeIter = React.useRef(0);
 
-        React.useEffect(() => {
+        const writeUpdatedPrefs = React.useCallback(() => {
 
             if (storeIter.current > 0) {
                 writePrefs(store);
@@ -177,21 +177,27 @@ export function createObservableStoreWithPrefsContext<V, M, C>(opts: ObservableS
         }, [store, writePrefs]);
 
         React.useEffect(() => {
+            writeUpdatedPrefs();
+        }, [store, writePrefs, writeUpdatedPrefs]);
 
-            const store = storeProvider();
-            const initialStore = createInitialStoreWithPrefs(store);
-            setStore(initialStore);
-            // once the store has been set , trigger setInit to true...
-            setInitialized(true);
+        React.useEffect(() => {
 
-        }, [createInitialStoreWithPrefs, setStore, storeProvider])
+            if (! initialized) {
+
+                const store = storeProvider();
+                const initialStore = createInitialStoreWithPrefs(store);
+                setStore(initialStore);
+                // once the store has been set , trigger setInit to true...
+                setInitialized(true);
+
+            }
+
+        }, [createInitialStoreWithPrefs, initialized, setStore, storeProvider])
 
         return (
-            <StoreProvider {...props}>
-                <>
-                    {initialized && props.children}
-                </>
-            </StoreProvider>
+            <>
+                {initialized && props.children}
+            </>
         );
 
     });
