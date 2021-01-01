@@ -116,21 +116,10 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
                              setStore: (store: ISideNavStore) => void,
                              mutator: Mutator): ISideNavCallbacks {
 
-    // TODO: NEITHER one of these is trigginer the store to reload.  Not sure
-    // what's happening her.e.
     const history = useHistory();
     const historyRef = useRefValue(history);
 
-    // useLogWhenChanged('history', history);
-    // useLogWhenChanged('historyRef', historyRef);
-    // useLogWhenChanged('storeProvider', storeProvider);
-    // useLogWhenChanged('setStore', setStore);
-
     return React.useMemo((): ISideNavCallbacks => {
-
-        // useMemo SEEMs to be called over and over aain but not sure wy... it should be useMemo...
-        // and NONE of its deps are changing.
-        console.log("FIXME: Creating SideNav store");
 
         function tabByID(id: number) {
             const store = storeProvider();

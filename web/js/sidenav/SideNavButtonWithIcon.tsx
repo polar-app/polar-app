@@ -5,6 +5,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
 import {FAFileIcon} from "../mui/MUIFontAwesome";
+import IconButton from "@material-ui/core/IconButton";
 
 const WIDTH = 72;
 const BORDER = 3;
@@ -57,10 +58,10 @@ export const SideNavButtonWithIcon = deepMemo((props: IProps) => {
 
     return (
         <div>
-            <div onClick={() => setActiveTab(tab.id)}
-                 className={clsx(classes.button, active && classes.activeButton)}>
+            <IconButton onClick={() => setActiveTab(tab.id)}
+                        className={clsx(classes.button, active && classes.activeButton)}>
                 <FAFileIcon/>
-            </div>
+            </IconButton>
         </div>
     );
 });

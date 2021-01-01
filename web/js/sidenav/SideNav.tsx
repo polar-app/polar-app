@@ -16,7 +16,9 @@ const useStyles = makeStyles((theme) =>
         root: {
             display: 'flex',
             flexDirection: 'column',
-            width: `${WIDTH}px`,
+            width: WIDTH,
+            minWidth: WIDTH,
+            color: theme.palette.text.secondary,
             backgroundColor: theme.palette.background.default,
             alignItems: 'center'
         },
@@ -102,11 +104,12 @@ export const SideNav = React.memo(() => {
         <div className={classes.root}>
 
             <div className={classes.logo}>
-                <PolarSVGIcon width={WIDTH - 4} height={WIDTH - 4}/>
+                <PolarSVGIcon width={WIDTH - 10}
+                              height={WIDTH - 10}/>
             </div>
 
             <div className={classes.divider}>
-                <Divider/>
+                <Divider flexItem={true}/>
             </div>
 
             <HomeButton/>
@@ -114,7 +117,7 @@ export const SideNav = React.memo(() => {
             <StatsButton/>
 
             <div className={classes.divider}>
-                <Divider/>
+                <Divider flexItem={true}/>
             </div>
 
             <div className={classes.buttons}>

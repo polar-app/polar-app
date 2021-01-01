@@ -94,10 +94,6 @@ function createDocViewer(docID: string): DocViewer {
 
     const viewerElement = root.querySelector('.viewer')! as HTMLDivElement;
 
-    console.log("FIXME: rendering at root: ", root);
-    console.log("FIXME: rendering at containerElement: ", containerElement);
-    console.log("FIXME: rendering at viewerElement: ", viewerElement);
-
     if (viewerElement === null) {
         throw new Error("No viewerElement");
     }
@@ -298,10 +294,8 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
         window.addEventListener('resize', resizeDebouncer, {passive: true});
 
-
-        // FIXME:
-        // document.getElementById("viewerContainer")!
-        //     .addEventListener("resize", resizeDebouncer);
+        document.getElementById("viewerContainer")!
+            .addEventListener("resize", resizeDebouncer);
 
         setResizer(resizeDebouncer);
 

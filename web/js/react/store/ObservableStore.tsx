@@ -402,46 +402,7 @@ function createInitialContextValues<V, M, C>(opts: ObservableStoreOpts<V, M, C>,
 
 }
 
-// FIXME: there is a major bug here because the actually subject backing is
-// global even though the context is not.
-//
-// TODO: a store for EACH component and memoize them but then I can't use useFoo()
-//
-// FIXME: I could migrate to mobx but then it won't work with our current store
-// and I have to completely rewrite it.  Also, I'm not confident enough in it yet
-// to it work with 'observer' because that's not always fired.
-//
-// FIXME rewriting the whole thing is going to be hard... it's probably going to
-// be JUST as hard as cutting over to mobx so might as well do it right.
-//
-// FIXME: I could also bite off migrating to RTL (react testing library) to make
-// sure everything works properly and is tested.
-//
-// FIXME: migrate the current code into master so that I can iterate on it moving
-// forward and I won't have to be locked out of the main branch.
-
-// FIXME: I think I have to fix the ObservableStore because if I dont' I'm going
-// to have to rewrite ALL the components since it's now global.
-//
-// see if there's an EASY way to do this by creating the context for each new
-// instance... or at least overwrriting them.. .
-
-//
-// FIXME: I could create a new context object named SubjectContext which stores the context and then
-// I just call useSubjectContext() everywhere which will solve that problem I thinkl
-//
-// FIXME: it's just createInternalObservableStore that I need to clean up I think.
-
 export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C>): ObservableStoreTuple<V, M, C> {
-
-    // FIXME: another idea, just create context here... then , within the provider, perform all the
-    // variable creation on mount.
-    //
-    // FIXME: yes... I think this is the way to do it.
-    //
-    // create all th context objects here,
-    // then, in the provider, use React.memo() and then define them for each provider.
-    // then all the code should work.
 
     const internalObservableStore = createInternalObservableStore(opts.initialValue);
 
