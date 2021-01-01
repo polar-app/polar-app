@@ -30,11 +30,11 @@ export interface DocLayoutProps {
  * toggle button is pushed.
  *
  */
-export const DockLayoutManager = deepMemo(function DockLayoutManager(props: DocLayoutProps) {
+export const DockLayoutManager = deepMemo(function DockLayoutManager() {
 
     const mousePosition = React.useRef(MousePositions.get());
     const mouseDown = React.useRef(false);
-    const {panels} = useDockLayoutStore(['panels']);
+    const {panels, onResize, dockPanels} = useDockLayoutStore(['panels', 'onResize', 'dockPanels']);
     const {setPanels} = useDockLayoutCallbacks();
 
     const [, setState, stateRef] = useStateRef<IState>({
@@ -111,13 +111,13 @@ export const DockLayoutManager = deepMemo(function DockLayoutManager(props: DocL
 
         newPanels[resizeTarget.id] = newPanelState;
 
-        (props.onResize || NULL_FUNCTION)();
+        (onResize || NULL_FUNCTION)();
 
         setPanels(newPanels);
 
         mousePosition.current = lastMousePosition;
 
-    }, [stateRef, panels, props.onResize, setPanels]);
+    }, [stateRef, panels, onResize, setPanels]);
 
     // I'm not sure how much CPU this is going to save. It might be test
     // to show a sort of live preview of where the bar would go, then drop
@@ -126,7 +126,7 @@ export const DockLayoutManager = deepMemo(function DockLayoutManager(props: DocL
 
     const createDockPanels = React.useCallback((): ReadonlyArray<JSX.Element> => {
 
-        const tuples = Tuples.createSiblings(props.dockPanels.filter(current => ! current.disabled));
+        const tuples = Tuples.createSiblings(dockPanels.filter(current => ! current.disabled));
 
         const result: JSX.Element[] = [];
 
@@ -238,7 +238,7 @@ export const DockLayoutManager = deepMemo(function DockLayoutManager(props: DocL
 
         return result;
 
-    }, [onMouseDown, panels, props.dockPanels, stateRef]);
+    }, [onMouseDown, panels, dockPanels, stateRef]);
 
     const docPanels = createDockPanels();
 

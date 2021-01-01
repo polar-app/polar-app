@@ -203,73 +203,77 @@ namespace Device {
 
         return (
 
-            <div className="DocViewer.Desktop"
-                 style={{
-                     display: 'flex',
-                     flexDirection: 'column',
-                     flexGrow: 1,
-                     minHeight: 0
-                 }}>
+            <DockLayout2.Root
+                onResize={onDockLayoutResize}
+                dockPanels={[
+                    {
+                        id: "doc-panel-outline",
+                        type: 'fixed',
+                        side: 'left',
+                        collapsed: true,
+                        style: {
+                            display: 'flex',
+                            flexDirection: 'column',
+                            minHeight: 0,
+                            flexGrow: 1
+                        },
+                        component: (
+                            <Outliner/>
+                        ),
+                        width: 410,
+                    },
+                    {
+                        id: "dock-panel-viewer",
+                        type: 'grow',
+                        style: {
+                            display: 'flex'
+                        },
+                        component: <Main/>
+                    },
+                    {
+                        id: "doc-panel-sidebar",
+                        type: 'fixed',
+                        side: 'right',
+                        style: {
+                            display: 'flex',
+                            flexDirection: 'column',
+                            minHeight: 0,
+                            flexGrow: 1
+                        },
+                        component:
+                            <>
+                                {docMeta &&
+                                <AnnotationSidebar2 />}
+                            </>,
+                        width: 410,
+                    }
+                ]}>
+                <>
+                    <div className="DocViewer.Desktop"
+                         style={{
+                             display: 'flex',
+                             flexDirection: 'column',
+                             flexGrow: 1,
+                             minHeight: 0
+                         }}>
 
-                <DocViewerToolbar/>
-                <FeedbackButton2/>
+                        <DocViewerToolbar/>
+                        <FeedbackButton2/>
 
-                <div className="DocViewer.Desktop.Body"
-                     style={{
-                         display: 'flex',
-                         flexDirection: 'column',
-                         flexGrow: 1,
-                         minHeight: 0
-                     }}>
+                        <div className="DocViewer.Desktop.Body"
+                             style={{
+                                 display: 'flex',
+                                 flexDirection: 'column',
+                                 flexGrow: 1,
+                                 minHeight: 0
+                             }}>
 
-                    <DockLayout2
-                        onResize={onDockLayoutResize}
-                        dockPanels={[
-                            {
-                                id: "doc-panel-outline",
-                                type: 'fixed',
-                                side: 'left',
-                                collapsed: true,
-                                style: {
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    minHeight: 0,
-                                    flexGrow: 1
-                                },
-                                component: (
-                                    <Outliner/>
-                                ),
-                                width: 410,
-                            },
-                            {
-                                id: "dock-panel-viewer",
-                                type: 'grow',
-                                style: {
-                                    display: 'flex'
-                                },
-                                component: <Main/>
-                            },
-                            {
-                                id: "doc-panel-sidebar",
-                                type: 'fixed',
-                                side: 'right',
-                                style: {
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    minHeight: 0,
-                                    flexGrow: 1
-                                },
-                                component:
-                                    <>
-                                        {docMeta &&
-                                            <AnnotationSidebar2 />}
-                                    </>,
-                                width: 410,
-                            }
-                        ]}/>
-                </div>
+                            <DockLayout2.Main/>
+                        </div>
 
-            </div>
+                    </div>
+                </>
+            </DockLayout2.Root>
 
         );
     });

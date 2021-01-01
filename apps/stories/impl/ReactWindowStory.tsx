@@ -90,8 +90,8 @@ const WindowListSidebar = () => {
 };
 
 export const ReactWindowStory = () => (
-    
-    <DockLayout2 dockPanels={[
+
+    <DockLayout2.Root dockPanels={[
             {
                 id: "doc-panel-outline",
                 type: 'fixed',
@@ -119,7 +119,9 @@ export const ReactWindowStory = () => (
                     </div>
                 )
             }
-        ]}/>
+        ]}>
+        <DockLayout2.Main/>
+    </DockLayout2.Root>
 
 
 );

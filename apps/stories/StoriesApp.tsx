@@ -350,34 +350,36 @@ export const StoriesApp = () => {
         <MUIAppRoot>
 
             <BrowserRouter>
-                <DockLayout2
-                    dockPanels={[
-                        {
-                            id: "doc-panel-outline",
-                            type: 'fixed',
-                            side: 'left',
-                            style: {
-                                display: 'flex',
-                                flexDirection: 'column',
-                                minHeight: 0,
-                                flexGrow: 1
-                            },
-                            component: (
-                                <StoriesSidebar/>
-                            ),
-                            width: 410,
-                        },
-                        {
-                            id: "dock-panel-viewer",
-                            type: 'grow',
-                            style: {
-                                display: 'flex'
-                            },
-                            component: (
-                                <StoriesRouter/>
-                            )
-                        }
-                    ]}/>
+
+                <DockLayout2.Root dockPanels={[
+                                    {
+                                        id: "doc-panel-outline",
+                                        type: 'fixed',
+                                        side: 'left',
+                                        style: {
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            minHeight: 0,
+                                            flexGrow: 1
+                                        },
+                                        component: (
+                                            <StoriesSidebar/>
+                                        ),
+                                        width: 410,
+                                    },
+                                    {
+                                        id: "dock-panel-viewer",
+                                        type: 'grow',
+                                        style: {
+                                            display: 'flex'
+                                        },
+                                        component: (
+                                            <StoriesRouter/>
+                                        )
+                                    }
+                                ]}>
+                    <DockLayout2.Main/>
+                </DockLayout2.Root>
             </BrowserRouter>
 
         </MUIAppRoot>
