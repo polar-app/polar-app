@@ -1,15 +1,24 @@
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {SwitchButton} from "../../../../../web/js/ui/SwitchButton";
 import * as React from "react";
-import {IPersistentPrefs} from "../../../../../web/js/util/prefs/Prefs";
 import {FeatureToggles} from "polar-shared/src/util/FeatureToggles";
 import {PreviewWarning} from "./PreviewWarning";
+
+export interface PrefsWriter {
+
+    readonly isMarked: (key: string, defaultValue?: boolean) => boolean;
+
+    readonly mark: (key: string, value: boolean) => void;
+
+    readonly commit: () => Promise<void>;
+
+}
 
 interface IProps {
     readonly title: string;
     readonly description: string;
     readonly name: string;
-    readonly prefs: IPersistentPrefs | undefined;
+    readonly prefs: PrefsWriter | undefined;
     readonly preview?: boolean;
     readonly defaultValue?: boolean;
 
@@ -46,7 +55,7 @@ export const SettingToggle = (props: IProps) => {
         };
 
         doCommit()
-        .catch(err => log.error("Could not write prefs: ", err));
+            .catch(err => log.error("Could not write prefs: ", err));
     };
 
     return (

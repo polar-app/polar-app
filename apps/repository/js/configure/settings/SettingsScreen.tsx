@@ -14,6 +14,7 @@ import {MUIButtonBar} from "../../../../../web/js/mui/MUIButtonBar";
 import Box from '@material-ui/core/Box';
 import {ManageSubscriptionButton} from "../../premium/ManageSubscriptionButton";
 import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
+import {useLocalStoragePrefs} from "./LocalStoragePrefs";
 
 export const PREF_PDF_DARK_MODE_OPTIONS = [
     {
@@ -34,6 +35,8 @@ export const SettingsScreen = React.memo(() => {
 
     const {theme, setTheme} = useContext(MUIThemeTypeContext);
     const prefs = usePrefsContext();
+
+    const localStoragePrefs = useLocalStoragePrefs();
 
     const handleDarkModeToggle = (enabled: boolean) => {
 
@@ -110,6 +113,12 @@ export const SettingsScreen = React.memo(() => {
                     {/*        prefs={prefs}*/}
                     {/*        preview={true}/>*/}
                     {/*</DeviceRouters.Desktop>*/}
+
+                    <SettingToggle title="Experimental Side Navigation"
+                                   description="Enables the new side navigation we're working on for the next major UI revision (requires reload)"
+                                   name="sidenav"
+                                   prefs={localStoragePrefs}
+                                   preview={true}/>
 
                     <SettingToggle title="Development"
                                    description="Enables general development features for software engineers working on Polar."

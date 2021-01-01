@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { Arrays } from 'polar-shared/src/util/Arrays';
 import {useRefValue} from '../hooks/ReactHooks';
 
-export const SIDE_NAV_ENABLED = true;
+export const SIDE_NAV_ENABLED = localStorage.getItem('sidenav') === 'true';
 
 export interface ITabImage {
     readonly url: string;

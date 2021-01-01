@@ -6,9 +6,11 @@ import Divider from '@material-ui/core/Divider';
 import {PolarSVGIcon} from "../ui/svg_icons/PolarSVGIcon";
 import {SideNavButtonWithIcon} from "./SideNavButtonWithIcon";
 import {FAHomeIcon, FAStickyNote} from "../mui/MUIFontAwesome";
-import { useHistory } from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import TimelineIcon from '@material-ui/icons/Timeline';
+import {IconWithColor} from "../ui/IconWithColor";
+import {SettingsButton} from "./SettingsButton";
 
 const WIDTH = 56;
 
@@ -115,7 +117,6 @@ const PolarButton = React.memo(() => {
 
 })
 
-
 export const SideNav = React.memo(() => {
 
     const classes = useStyles();
@@ -145,6 +146,10 @@ export const SideNav = React.memo(() => {
 
             <div className={classes.buttons}>
                 {tabs.map(toNavButton)}
+            </div>
+
+            <div style={{marginBottom: '5px'}}>
+                <SettingsButton/>
             </div>
 
         </div>
