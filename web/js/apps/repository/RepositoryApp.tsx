@@ -61,6 +61,7 @@ import {LoginWithCustomTokenScreen} from "../../../../apps/repository/js/login/L
 import {WelcomeScreen} from "./WelcomeScreen";
 import {SIDE_NAV_ENABLED, useSideNavStore} from '../../sidenav/SideNavStore';
 import {SideNav} from "../../sidenav/SideNav";
+import Divider from '@material-ui/core/Divider';
 
 interface IProps {
     readonly app: App;
@@ -338,7 +339,11 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                                         flexGrow: 1
                                                                     }}>
 
-                                                                        {SIDE_NAV_ENABLED && <SideNav/>}
+                                                                        {SIDE_NAV_ENABLED && (
+                                                                            <>
+                                                                                <SideNav/>
+                                                                                <Divider orientation="vertical"/>
+                                                                            </> )}
 
                                                                         <div style={{
                                                                                  display: 'flex',

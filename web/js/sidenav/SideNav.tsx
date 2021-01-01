@@ -10,7 +10,7 @@ import { useHistory } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import TimelineIcon from '@material-ui/icons/Timeline';
 
-const WIDTH = 72;
+const WIDTH = 56;
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -39,6 +39,14 @@ const useStyles = makeStyles((theme) =>
             flexGrow: 1,
             minHeight: 0,
             overflow: 'hidden'
+        },
+        historyButton: {
+            color: theme.palette.text.secondary,
+
+            '&:hover': {
+                color: theme.palette.text.primary
+            },
+
         }
     }),
 );
@@ -51,9 +59,11 @@ interface HistoryButtonProps {
 const HistoryButton = React.memo((props: HistoryButtonProps) => {
 
     const history = useHistory();
+    const classes = useStyles();
 
     return (
-        <IconButton onClick={() => history.push(props.path)}>
+        <IconButton className={classes.historyButton}
+                    onClick={() => history.push(props.path)}>
             {props.children}
         </IconButton>
     )
