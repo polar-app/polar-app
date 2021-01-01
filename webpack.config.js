@@ -216,14 +216,39 @@ function createNode() {
 
 }
 
+function createEntries() {
+
+
+    if (process.argv.includes('--stories')) {
+
+        return {
+            "stories": "./apps/stories/index.tsx",
+        };
+
+    } else if (process.argv.includes('--repository')) {
+
+        return {
+            "repository": "./apps/repository/js/entry.tsx",
+        };
+
+    }
+
+    return {
+        "stories": "./apps/stories/index.tsx",
+        "repository": "./apps/repository/js/entry.tsx",
+    };
+
+}
+
+const entries = createEntries();
+
+console.log("Building with entries: ", entries);
+
 module.exports = {
     mode,
     // stats: 'verbose',
     target,
-    entry: {
-        "repository": "./apps/repository/js/entry.tsx",
-        "stories": "./apps/stories/index.tsx",
-    },
+    entry: entries,
     module: {
         rules: createRules()
     },

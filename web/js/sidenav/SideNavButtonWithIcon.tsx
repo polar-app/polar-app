@@ -14,18 +14,18 @@ const useStyles = makeStyles((theme) =>
     createStyles({
         button: {
             // borderRadius: '5px',
-            width: `${WIDTH - (BORDER * 2)}px`,
-
-            borderLeftWidth: `${BORDER}`,
-            borderLeftStyle: 'solid',
-            borderLeftColor: 'transparent',
-
-            borderRightWidth: `${BORDER}`,
-            borderRightStyle: 'solid',
-            borderRightColor: 'transparent',
-
-            marginBottom: '5px',
-            cursor: 'pointer',
+            // width: `${WIDTH - (BORDER * 2)}px`,
+            //
+            // borderLeftWidth: `${BORDER}`,
+            // borderLeftStyle: 'solid',
+            // borderLeftColor: 'transparent',
+            //
+            // borderRightWidth: `${BORDER}`,
+            // borderRightStyle: 'solid',
+            // borderRightColor: 'transparent',
+            //
+            // marginBottom: '5px',
+            // cursor: 'pointer',
 
             "& img": {
                 width: `${WIDTH - (BORDER * 2)}px`,
@@ -57,11 +57,9 @@ export const SideNavButtonWithIcon = deepMemo((props: IProps) => {
     const active = tab.id === activeTab;
 
     return (
-        <div>
-            <IconButton onClick={() => setActiveTab(tab.id)}
-                        className={clsx(classes.button, active && classes.activeButton)}>
-                <FAFileIcon/>
-            </IconButton>
-        </div>
+        <IconButton onClick={() => setActiveTab(tab.id)}
+                    className={clsx(classes.button, active && classes.activeButton)}>
+            <FAFileIcon/>
+        </IconButton>
     );
 });
