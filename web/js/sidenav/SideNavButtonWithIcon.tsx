@@ -28,12 +28,15 @@ const useStyles = makeStyles((theme) =>
             // marginBottom: '5px',
             // cursor: 'pointer',
 
+            color: theme.palette.text.secondary,
+
             "& img": {
                 width: `${WIDTH - (BORDER * 2)}px`,
                 borderRadius: '5px',
             },
             '&:hover': {
-                borderLeftColor: theme.palette.secondary.main
+                borderLeftColor: theme.palette.secondary.main,
+                color: theme.palette.text.primary,
             },
 
         },

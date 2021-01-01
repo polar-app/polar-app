@@ -33,7 +33,8 @@ const useStyles = makeStyles((theme) =>
         },
         divider: {
             marginBottom: '5px',
-            padding: theme.spacing(1)
+            margin: theme.spacing(1),
+            height: '1px'
         },
         buttons: {
             flexGrow: 1,
@@ -132,17 +133,15 @@ export const SideNav = React.memo(() => {
 
             <PolarButton/>
 
-            <div className={classes.divider}>
-                <Divider flexItem={true}/>
-            </div>
+            <Divider orientation="horizontal" flexItem={true} className={classes.divider}/>
 
             <HomeButton/>
             <AnnotationsButton/>
             <StatsButton/>
 
-            <div className={classes.divider}>
-                <Divider flexItem={true}/>
-            </div>
+            {tabs.length > 0 && (
+                <Divider orientation="horizontal" flexItem={true} className={classes.divider}/>
+            )}
 
             <div className={classes.buttons}>
                 {tabs.map(toNavButton)}
