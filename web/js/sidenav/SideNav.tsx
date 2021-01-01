@@ -5,9 +5,10 @@ import {useSideNavStore, TabDescriptor} from './SideNavStore';
 import Divider from '@material-ui/core/Divider';
 import {PolarSVGIcon} from "../ui/svg_icons/PolarSVGIcon";
 import {SideNavButtonWithIcon} from "./SideNavButtonWithIcon";
-import {FAHomeIcon} from "../mui/MUIFontAwesome";
+import {FAHomeIcon, FAStickyNote} from "../mui/MUIFontAwesome";
 import { useHistory } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
+import TimelineIcon from '@material-ui/icons/Timeline';
 
 const WIDTH = 72;
 
@@ -72,7 +73,7 @@ const AnnotationsButton = React.memo(() => {
 
     return (
         <HistoryButton path="/annotations">
-            <FAHomeIcon/>
+            <FAStickyNote/>
         </HistoryButton>
     )
 });
@@ -83,7 +84,7 @@ const StatsButton = React.memo(() => {
 
     return (
         <HistoryButton path="/stats">
-            <FAHomeIcon/>
+            <TimelineIcon/>
         </HistoryButton>
     )
 });

@@ -13,11 +13,12 @@ import {faDiscord} from "@fortawesome/free-brands-svg-icons/faDiscord";
 import {faDatabase} from "@fortawesome/free-solid-svg-icons/faDatabase";
 import {faHome} from "@fortawesome/free-solid-svg-icons/faHome";
 import {faFile} from "@fortawesome/free-solid-svg-icons/faFile";
+import {faStickyNote} from "@fortawesome/free-solid-svg-icons/faStickyNote";
 
 import {IconProp, library} from "@fortawesome/fontawesome-svg-core";
 import {deepMemo} from "../react/ReactUtils";
 
-library.add(faCheckSquare, faCoffee, faTag, faPlus, faCheckSquare, faDatabase, faTimesCircle, faSquare, faChrome, faDiscord);
+library.add(faCheckSquare, faCoffee, faTag, faPlus, faCheckSquare, faDatabase, faTimesCircle, faSquare, faChrome, faDiscord, faStickyNote);
 
 // to minimize size we have to:
 // https://github.com/FortAwesome/react-fontawesome/issues/70
@@ -51,3 +52,4 @@ export const FATimesCircleIcon = createIcon(faTimesCircle);
 export const FADatabaseIcon = createIcon(faDatabase);
 export const FAHomeIcon = createIcon(faHome);
 export const FAFileIcon = createIcon(faFile);
+export const FAStickyNote = createIcon(faStickyNote);
