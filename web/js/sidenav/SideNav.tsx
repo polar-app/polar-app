@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) =>
         },
         logo: {
             display: 'flex',
+            cursor: 'pointer',
             "& *": {
                 marginLeft: 'auto',
                 marginRight: 'auto',
@@ -88,6 +89,21 @@ const StatsButton = React.memo(() => {
 });
 
 
+const PolarButton = React.memo(() => {
+
+    const classes = useStyles();
+    const history = useHistory();
+
+    return (
+        <div className={classes.logo} onClick={() => history.push('')}>
+            <PolarSVGIcon width={WIDTH - 10}
+                          height={WIDTH - 10}/>
+        </div>
+    );
+
+})
+
+
 export const SideNav = React.memo(() => {
 
     const classes = useStyles();
@@ -103,10 +119,7 @@ export const SideNav = React.memo(() => {
     return (
         <div className={classes.root}>
 
-            <div className={classes.logo}>
-                <PolarSVGIcon width={WIDTH - 10}
-                              height={WIDTH - 10}/>
-            </div>
+            <PolarButton/>
 
             <div className={classes.divider}>
                 <Divider flexItem={true}/>
