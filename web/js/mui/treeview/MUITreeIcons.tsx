@@ -3,6 +3,8 @@ import React from "react";
 import isEqual from "react-fast-compare";
 import {createStyles} from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 
 export const MinusSquare = (props: SvgIconProps) => (
     <SvgIcon fontSize="inherit"
@@ -49,9 +51,11 @@ interface CollapseIconProps {
 export const CollapseIcon = React.memo((props: CollapseIconProps) => {
     const classes = useStyles();
 
+
+
     return (
-        <MinusSquare className={classes.icon}
-                     onClick={() => props.onNodeCollapse(props.nodeId)}/>
+        <KeyboardArrowDownIcon className={classes.icon}
+                               onClick={() => props.onNodeCollapse(props.nodeId)}/>
     );
 }, isEqual);
 
@@ -65,7 +69,7 @@ export const ExpandIcon = React.memo((props: ExpandIconProps) => {
     const classes = useStyles();
 
     return (
-        <PlusSquare className={classes.icon}
-                    onClick={(event) => props.onNodeExpand(event, props.nodeId)}/>
+        <ChevronRightIcon className={classes.icon}
+                          onClick={(event) => props.onNodeExpand(event, props.nodeId)}/>
     );
 }, isEqual);
