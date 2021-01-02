@@ -6,10 +6,10 @@ import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import Box from '@material-ui/core/Box';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import createStyles from '@material-ui/core/styles/createStyles';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -104,12 +104,12 @@ const OutlineTreeItem = deepMemo((props: IProps) => {
                 {item.children.length > 0 && (
                     <>
                         {! isExpanded && (
-                            <ExpandMoreIcon onClick={(event) => handleExpand(event, item.id)}
-                                            className={classes.folderExpandCollapse}/>)}
+                            <ChevronRightIcon onClick={(event) => handleExpand(event, item.id)}
+                                              className={classes.folderExpandCollapse}/>)}
 
                         {isExpanded && (
-                            <ExpandLessIcon onClick={(event) => handleExpand(event, item.id)}
-                                            className={classes.folderExpandCollapse}/>)}
+                            <KeyboardArrowDownIcon onClick={(event) => handleExpand(event, item.id)}
+                                                   className={classes.folderExpandCollapse}/>)}
 
                     </>
                 )}
