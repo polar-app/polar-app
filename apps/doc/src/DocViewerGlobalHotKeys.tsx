@@ -9,6 +9,7 @@ import {
 } from "../../../web/js/keyboard_shortcuts/GlobalKeyboardShortcuts";
 import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 import {DocViewerAppURLs} from "./DocViewerAppURLs";
+import {DockLayoutGlobalHotKeys} from "../../../web/js/ui/doc_layout/DockLayoutGlobalHotKeys";
 
 const globalKeyMap = keyMapWithGroup({
     group: "Document Viewer",
@@ -93,9 +94,13 @@ export const DocViewerGlobalHotKeys = React.memo(() => {
     return (
         <>
             {docViewerURL && docMeta && docViewerURL.id === docMeta.docInfo.fingerprint && (
-                <GlobalKeyboardShortcuts
-                    keyMap={globalKeyMap}
-                    handlerMap={globalKeyHandlers}/>
+                <>
+                    <DockLayoutGlobalHotKeys/>
+
+                    <GlobalKeyboardShortcuts
+                        keyMap={globalKeyMap}
+                        handlerMap={globalKeyHandlers}/>
+                </>
             )}
         </>
     );

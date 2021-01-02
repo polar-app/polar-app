@@ -2,7 +2,6 @@ import * as React from 'react';
 import {deepMemo} from "../../react/ReactUtils";
 import {DockLayoutManager, DockPanel, DocLayoutProps, FixedDocPanelStateMap} from "./DockLayoutManager";
 import { DockLayoutStoreProvider, IDockLayoutStore } from './DockLayoutStore';
-import { DockLayoutGlobalHotKeys } from './DockLayoutGlobalHotKeys';
 import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 const createInitialPanels = (dockPanels: ReadonlyArray<DockPanel>): FixedDocPanelStateMap => {
@@ -32,7 +31,6 @@ export namespace DockLayout2 {
 
         return (
             <>
-                <DockLayoutGlobalHotKeys/>
                 <DockLayoutManager/>
             </>
         );
