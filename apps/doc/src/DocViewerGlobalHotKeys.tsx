@@ -1,7 +1,6 @@
 import React from 'react';
 import {useDocFindCallbacks} from './DocFindStore';
 import {useDocViewerCallbacks, useDocViewerStore} from "./DocViewerStore";
-import {BrowserRouter, Route, Switch} from "react-router-dom";
 import {ReactRouters} from "../../../web/js/react/router/ReactRouters";
 import {
     GlobalKeyboardShortcuts,

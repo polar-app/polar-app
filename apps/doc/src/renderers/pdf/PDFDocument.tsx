@@ -80,8 +80,6 @@ function createDocViewer(docID: string): DocViewer {
 
     const root = document.querySelector(`div[data-doc-viewer-id='${docID}']`);
 
-    console.log("FIXME: going to use root form docID: " + docID, root);
-
     if (root === null) {
         throw new Error("No root");
     }
