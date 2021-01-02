@@ -7,6 +7,7 @@ import clsx from "clsx";
 import {FAFileIcon} from "../mui/MUIFontAwesome";
 import IconButton from "@material-ui/core/IconButton";
 import {ActiveTabBox} from "./ActiveTabBox";
+import {MUITooltip} from "../mui/MUITooltip";
 
 const WIDTH = 72;
 const BORDER = 3;
@@ -61,11 +62,15 @@ export const SideNavButtonWithIcon = deepMemo((props: IProps) => {
     const active = tab.id === activeTab;
 
     return (
-        <ActiveTabBox tabID={tab.id}>
-            <IconButton onClick={() => setActiveTab(tab.id)}
-                        className={clsx(classes.button, active && classes.activeButton)}>
-                <FAFileIcon/>
-            </IconButton>
-        </ActiveTabBox>
+            <>
+                <ActiveTabBox tabID={tab.id}>
+                    <IconButton onClick={() => setActiveTab(tab.id)}
+                                className={clsx(classes.button, active && classes.activeButton)}>
+                        <MUITooltip title={tab.title}>
+                        <FAFileIcon/>
+                        </MUITooltip>
+                    </IconButton>
+                </ActiveTabBox>
+            </>
     );
 });
