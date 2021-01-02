@@ -10,17 +10,16 @@ import {useHistory} from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import {SettingsButton} from "./SettingsButton";
-import { MUITooltip } from '../mui/MUITooltip';
 
-const WIDTH = 56;
+export const SIDENAV_WIDTH = 56;
 
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
             display: 'flex',
             flexDirection: 'column',
-            width: WIDTH,
-            minWidth: WIDTH,
+            width: SIDENAV_WIDTH,
+            minWidth: SIDENAV_WIDTH,
             color: theme.palette.text.secondary,
             backgroundColor: theme.palette.background.default,
             alignItems: 'center'
@@ -110,8 +109,8 @@ const PolarButton = React.memo(() => {
 
     return (
         <div className={classes.logo} onClick={() => history.push('')}>
-            <PolarSVGIcon width={WIDTH - 10}
-                          height={WIDTH - 10}/>
+            <PolarSVGIcon width={SIDENAV_WIDTH - 10}
+                          height={SIDENAV_WIDTH - 10}/>
         </div>
     );
 

@@ -6,15 +6,26 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
 import {FAFileIcon} from "../mui/MUIFontAwesome";
 import IconButton from "@material-ui/core/IconButton";
+import {SIDENAV_WIDTH} from "./SideNav";
 
 const BORDER = 3;
 
 const useStyles = makeStyles((theme) =>
     createStyles({
+        root: {
+            width: `${SIDENAV_WIDTH}px`,
+            display: 'flex',
+            justifyContent: 'center'
+        },
         button: {
+
             borderLeftWidth: `${BORDER}`,
             borderLeftStyle: 'solid',
             borderLeftColor: 'transparent',
+
+            borderRightWidth: `${BORDER}`,
+            borderRightStyle: 'solid',
+            borderRightColor: 'transparent',
 
             '&:hover': {
                 borderLeftColor: theme.palette.secondary.light
@@ -41,7 +52,7 @@ export const ActiveTabBox = deepMemo((props: IProps) => {
     const active = tabID === activeTab;
 
     return (
-        <div className={clsx(classes.button, active && classes.activeButton)}>
+        <div className={clsx(classes.root, classes.button, active && classes.activeButton)}>
             {props.children}
         </div>
     );
