@@ -6,11 +6,11 @@ import Divider from '@material-ui/core/Divider';
 import {PolarSVGIcon} from "../ui/svg_icons/PolarSVGIcon";
 import {SideNavButtonWithIcon} from "./SideNavButtonWithIcon";
 import {FAHomeIcon, FAStickyNote} from "../mui/MUIFontAwesome";
-import {Link, useHistory} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import TimelineIcon from '@material-ui/icons/Timeline';
-import {IconWithColor} from "../ui/IconWithColor";
 import {SettingsButton} from "./SettingsButton";
+import { MUITooltip } from '../mui/MUITooltip';
 
 const WIDTH = 56;
 

@@ -16,6 +16,20 @@ interface IProps {
      */
     readonly title?: string;
 
+    readonly placement?:
+        | 'bottom-end'
+        | 'bottom-start'
+        | 'bottom'
+        | 'left-end'
+        | 'left-start'
+        | 'left'
+        | 'right-end'
+        | 'right-start'
+        | 'right'
+        | 'top-end'
+        | 'top-start'
+        | 'top';
+
     // readonly disabled?: boolean;
     //
     // /**
@@ -44,6 +58,7 @@ export const MUITooltip = React.memo((props: IProps) => {
     return (
         <Tooltip title={props.title}
                  arrow={true}
+                 placement={props.placement}
                  disableTouchListener={true}
                  disableFocusListener={true}
                  // disableFocusListener={props.disableFocusListener || props.disabled}

@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme) =>
 interface IProps {
     readonly tabID: number;
     readonly children: JSX.Element;
-
 }
 
 export const ActiveTabBox = deepMemo((props: IProps) => {
