@@ -6,6 +6,8 @@ import {deepMemo} from "../../../web/js/react/ReactUtils";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {useLinkLoader} from "../../../web/js/ui/util/LinkLoaderHook";
 import {Clipboards} from "../../../web/js/util/system/clipboard/Clipboards";
+import {SIDE_NAV_ENABLED, useSideNavCallbacks} from "../../../web/js/sidenav/SideNavStore";
+import Divider from '@material-ui/core/Divider';
 
 interface IProps {
     readonly docInfo: IDocInfo | undefined;
@@ -14,6 +16,8 @@ interface IProps {
 export const DocViewerToolbarOverflowButton = deepMemo((props: IProps) => {
 
     const linkLoader = useLinkLoader();
+
+    const {closeCurrentTab} = useSideNavCallbacks();
 
     return (
         <MUIMenu caret
@@ -24,13 +28,23 @@ export const DocViewerToolbarOverflowButton = deepMemo((props: IProps) => {
                  }}>
 
             <div>
-                <MUIMenuItem text="Open original URL in browser"
+                <MUIMenuItem text="Open Original URL in Browser"
                              disabled={! props.docInfo?.url}
                              onClick={() => linkLoader(props.docInfo?.url!, {focus: true, newWindow: true})}/>
 
-                <MUIMenuItem text="Copy original URL to clipboard"
+                <MUIMenuItem text="Copy Original URL to Clipboard"
                              disabled={! props.docInfo?.url}
                              onClick={() => Clipboards.writeText(props.docInfo?.url!)}/>
+
+                <Divider/>
+
+                {SIDE_NAV_ENABLED && (
+                    <>
+                        <MUIMenuItem text="Close Document"
+                                     onClick={closeCurrentTab}/>
+                    </>
+                )}
+
             </div>
 
         </MUIMenu>

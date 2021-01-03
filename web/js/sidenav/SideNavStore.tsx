@@ -6,6 +6,7 @@ import {URLStr} from "polar-shared/src/util/Strings";
 import { useHistory } from 'react-router-dom';
 import { Arrays } from 'polar-shared/src/util/Arrays';
 import {useRefValue} from '../hooks/ReactHooks';
+import {Tabs} from "../../../../polar-app-public/polar-web-extension/src/chrome/Tabs";
 
 export const SIDE_NAV_ENABLED = localStorage.getItem('sidenav') === 'true';
 
@@ -33,7 +34,7 @@ export interface TabDescriptorInit {
     readonly icon?: React.ReactNode;
 
     /**
-     * The main content for the tab.
+     * The main content for the tab
      */
     readonly content?: React.ReactNode;
 
@@ -60,6 +61,7 @@ interface ISideNavCallbacks {
     readonly setActiveTab: (id: number) => void;
     readonly addTab: (tabDescriptor: TabDescriptorInit) => void;
     readonly removeTab: (id: number) => void;
+    readonly closeCurrentTab: () => void;
 
 }
 
@@ -181,32 +183,41 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
 
             const store = storeProvider();
 
-            function computeTabs() {
-                const tabs = [...store.tabs];
-                tabs.splice(id, 1);
-                return tabs;
+            function computeNewTabs() {
+                return store.tabs.filter(current => current.id !== id)
             }
 
-            function computeActiveTab() {
+            // function computeActiveTab() {
+            //
+            //     if (store.activeTab === id) {
+            //         return Math.max(store.activeTab - 1, 1);
+            //     }
+            //
+            //     return store.activeTab;
+            //
+            // }
 
-                if (store.activeTab === id) {
-                    return Math.max(store.activeTab - 1, 1);
-                }
+            const tabs = computeNewTabs();
+            // const activeTab = computeActiveTab();
 
-                return store.activeTab;
+            setStore({...store, tabs, activeTab: undefined});
 
+            historyRef.current.push("/");
+
+        }
+
+        function closeCurrentTab() {
+
+            const store = storeProvider();
+
+            if (store.activeTab !== undefined) {
+                removeTab(store.activeTab);
             }
-
-            const tabs = computeTabs();
-            const activeTab = computeActiveTab();
-
-            // FIXME: this needs to change the URL too..
-            setStore({...store, tabs, activeTab});
 
         }
 
         return {
-            addTab, removeTab, setActiveTab
+            addTab, removeTab, setActiveTab, closeCurrentTab
         };
 
     }, [historyRef, setStore, storeProvider]);
