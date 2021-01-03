@@ -183,6 +183,7 @@ export const MUICommandMenu = React.memo((props: IProps) => {
             <div style={{display: 'flex', flexDirection: 'column', width: '600px'}}>
 
                 <TextField autoFocus={true}
+                           placeholder="Type a command or search ..."
                            onChange={event => setFilter(event.target.value) }/>
 
                 <List component="nav">

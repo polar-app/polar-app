@@ -9,11 +9,11 @@ const useStyles = makeStyles((theme) =>
         root: {
             fontFamily: 'monospace',
             fontSize: '1.0em',
-            padding: '2px',
+            padding: '5px',
             borderRadius: '2px',
             border: `1px solid ${theme.palette.divider}`,
-            backgroundColor: theme.palette.background.paper,
-            // color: theme.palette.,
+            color: grey[900],
+            backgroundColor: grey[200],
             margin: '2px',
             whiteSpace: 'nowrap',
             userSelect: 'none'
