@@ -154,6 +154,16 @@ const PolarButton = React.memo(() => {
 
 })
 
+const SideNavDivider = React.memo(() => {
+
+    const classes = useStyles();
+
+    return (
+        <Divider orientation="horizontal" flexItem={true} className={classes.divider}/>
+    )
+
+});
+
 export const SideNav = React.memo(() => {
 
     const classes = useStyles();
@@ -171,14 +181,14 @@ export const SideNav = React.memo(() => {
 
             <PolarButton/>
 
-            <Divider orientation="horizontal" flexItem={true} className={classes.divider}/>
+            <SideNavDivider/>
 
             <HomeButton/>
             <AnnotationsButton/>
             <StatsButton/>
 
             {tabs.length > 0 && (
-                <Divider orientation="horizontal" flexItem={true} className={classes.divider}/>
+                <SideNavDivider/>
             )}
 
             <div className={classes.buttons}>
@@ -186,6 +196,7 @@ export const SideNav = React.memo(() => {
             </div>
 
             <div style={{marginBottom: '5px'}}>
+                <SideNavDivider/>
                 <SettingsButton/>
             </div>
 
