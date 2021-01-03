@@ -1,5 +1,5 @@
 import React from 'react';
-import {TabDescriptor, useSideNavStore} from "./SideNavStore"
+import {SIDE_NAV_ENABLED, TabDescriptor, useSideNavStore} from "./SideNavStore"
 import {ReactRouters} from "../react/router/ReactRouters";
 import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 import {DocViewerAppURLs} from "../../../apps/doc/src/DocViewerAppURLs";
@@ -21,7 +21,11 @@ export function useSideNavDocumentLoader() {
 
     const handleDocLoad = React.useCallback((id: IDStr) => {
 
-        const repoDocInfo = repoDocMetaManager.repoDocInfoIndex.get(docViewerURL?.id!);
+        if (! SIDE_NAV_ENABLED) {
+            return;
+        }
+
+        const repoDocInfo = repoDocMetaManager.repoDocInfoIndex.get(id);
 
         if (repoDocInfo) {
 
@@ -41,7 +45,7 @@ export function useSideNavDocumentLoader() {
             docLoader(docLoadRequest);
         }
 
-    }, [docLoader, docViewerURL?.id, repoDocMetaManager.repoDocInfoIndex])
+    }, [docLoader, repoDocMetaManager.repoDocInfoIndex])
 
     React.useEffect(() => {
 

@@ -4,7 +4,7 @@ import { deepMemo } from "../react/ReactUtils";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
-import {FAFileIcon} from "../mui/MUIFontAwesome";
+import {FAFileIcon, FaFilePdfIcon} from "../mui/MUIFontAwesome";
 import IconButton from "@material-ui/core/IconButton";
 import {ActiveTabBox} from "./ActiveTabBox";
 import {MUITooltip} from "../mui/MUITooltip";
@@ -67,7 +67,7 @@ export const SideNavButtonWithIcon = deepMemo((props: IProps) => {
                     <IconButton onClick={() => setActiveTab(tab.id)}
                                 className={clsx(classes.button, active && classes.activeButton)}>
                         {/*<MUITooltip title={tab.title}>*/}
-                        <FAFileIcon/>
+                        <FaFilePdfIcon/>
                         {/*</MUITooltip>*/}
                     </IconButton>
                 </ActiveTabBox>
