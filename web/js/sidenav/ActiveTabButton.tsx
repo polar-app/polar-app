@@ -17,7 +17,10 @@ const useStyles = makeStyles((theme) =>
             display: 'flex',
             justifyContent: 'center',
             cursor: 'pointer',
-            marginBottom: theme.spacing(1)
+            marginTop: theme.spacing(1),
+            marginBottom: theme.spacing(1),
+            paddingTop: theme.spacing(1),
+            paddingBottom: theme.spacing(1)
         },
         button: {
 
@@ -41,7 +44,6 @@ const useStyles = makeStyles((theme) =>
 );
 
 interface IProps {
-    readonly tabID: number;
     readonly title: string;
 
     /**

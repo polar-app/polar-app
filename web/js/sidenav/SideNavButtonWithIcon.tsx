@@ -69,7 +69,6 @@ export const SideNavButtonWithIcon = deepMemo((props: IProps) => {
 
     return (
         <ActiveTabButton title={tab.title}
-                         tabID={tab.id}
                          path={path}
                          canonicalizer={canonicalizer}
                          onClick={() => setActiveTab(tab.id)}>

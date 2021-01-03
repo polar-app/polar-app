@@ -7,13 +7,21 @@ import {PolarSVGIcon} from "../ui/svg_icons/PolarSVGIcon";
 import {SideNavButtonWithIcon} from "./SideNavButtonWithIcon";
 import {FAHomeIcon, FAStickyNoteIcon} from "../mui/MUIFontAwesome";
 import {useHistory} from 'react-router-dom';
-import IconButton from '@material-ui/core/IconButton';
 import TimelineIcon from '@material-ui/icons/Timeline';
-import {SettingsButton} from "./SettingsButton";
+import {ActiveTabButton} from "./ActiveTabButton";
+import SettingsIcon from '@material-ui/icons/Settings';
+
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
 export const SIDENAV_SECONDARY_BUTTON_SIZE = SIDENAV_WIDTH - 32;
+
+// 80 and 48x48 figma icons
+//
+// export const SIDENAV_WIDTH = 80;
+// export const SIDENAV_BUTTON_SIZE = 48;
+// export const SIDENAV_SECONDARY_BUTTON_SIZE = 48;
+
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -51,43 +59,56 @@ const useStyles = makeStyles((theme) =>
                 color: theme.palette.text.primary
             },
 
+        },
+        secondaryIcon: {
+            width: SIDENAV_SECONDARY_BUTTON_SIZE,
+            height: SIDENAV_SECONDARY_BUTTON_SIZE
         }
     }),
 );
 
 interface HistoryButtonProps {
     readonly path: string;
+    readonly title: string;
     readonly children: JSX.Element;
 }
 
 const HistoryButton = React.memo((props: HistoryButtonProps) => {
 
     const history = useHistory();
-    const classes = useStyles();
 
     return (
-        <IconButton className={classes.historyButton}
-                    onClick={() => history.push(props.path)}>
+        <ActiveTabButton title={props.title}
+                         path={props.path}
+                         onClick={() => history.push(props.path)}>
             {props.children}
-        </IconButton>
+        </ActiveTabButton>
     )
 });
 
 
 const HomeButton = React.memo(() => {
 
+    const history = useHistory();
+    const classes = useStyles();
+
     return (
-        <HistoryButton path="/">
-            <FAHomeIcon/>
-        </HistoryButton>
+        <ActiveTabButton title="Documents"
+                         path="/"
+                         onClick={() => history.push('/')}>
+            <FAHomeIcon className={classes.secondaryIcon}/>
+        </ActiveTabButton>
     )
 });
 
 const AnnotationsButton = React.memo(() => {
 
+    const classes = useStyles();
+
     return (
-        <HistoryButton path="/annotations">
-            <FAStickyNoteIcon/>
+        <HistoryButton title="Annotations"
+                       path="/annotations">
+            <FAStickyNoteIcon className={classes.secondaryIcon}/>
         </HistoryButton>
     )
 });
@@ -96,9 +117,24 @@ const AnnotationsButton = React.memo(() => {
 
 const StatsButton = React.memo(() => {
 
+    const classes = useStyles();
+
     return (
-        <HistoryButton path="/stats">
-            <TimelineIcon/>
+        <HistoryButton title="Statistics"
+                       path="/stats">
+            <TimelineIcon className={classes.secondaryIcon}/>
+        </HistoryButton>
+    )
+});
+
+const SettingsButton = React.memo(() => {
+
+    const classes = useStyles();
+
+    return (
+        <HistoryButton title="Settings"
+                       path="/settings">
+            <SettingsIcon className={classes.secondaryIcon}/>
         </HistoryButton>
     )
 });
