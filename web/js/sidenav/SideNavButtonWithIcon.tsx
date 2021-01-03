@@ -6,8 +6,9 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
 import {FAFileIcon, FaFilePdfIcon} from "../mui/MUIFontAwesome";
 import IconButton from "@material-ui/core/IconButton";
-import {ActiveTabBox} from "./ActiveTabBox";
+import {ActiveTabButton} from "./ActiveTabButton";
 import {MUITooltip} from "../mui/MUITooltip";
+import {SIDENAV_BUTTON_SIZE} from "./SideNav";
 
 const WIDTH = 72;
 const BORDER = 3;
@@ -63,14 +64,17 @@ export const SideNavButtonWithIcon = deepMemo((props: IProps) => {
 
     return (
             <>
-                <ActiveTabBox tabID={tab.id}>
-                    <IconButton onClick={() => setActiveTab(tab.id)}
-                                className={clsx(classes.button, active && classes.activeButton)}>
+                <ActiveTabButton tabID={tab.id} onClick={() => setActiveTab(tab.id)}>
+                    {/*<IconButton*/}
+                    {/*            className={clsx(classes.button, active && classes.activeButton)}>*/}
                         {/*<MUITooltip title={tab.title}>*/}
-                        <FaFilePdfIcon/>
+                        <FaFilePdfIcon style={{
+                                           width: `${SIDENAV_BUTTON_SIZE}px`,
+                                           height: `${SIDENAV_BUTTON_SIZE}px`
+                                       }}/>
                         {/*</MUITooltip>*/}
-                    </IconButton>
-                </ActiveTabBox>
+                    {/*</IconButton>*/}
+                </ActiveTabButton>
             </>
     );
 });

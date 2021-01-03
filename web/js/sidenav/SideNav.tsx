@@ -12,6 +12,7 @@ import TimelineIcon from '@material-ui/icons/Timeline';
 import {SettingsButton} from "./SettingsButton";
 
 export const SIDENAV_WIDTH = 56;
+export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -109,8 +110,8 @@ const PolarButton = React.memo(() => {
 
     return (
         <div className={classes.logo} onClick={() => history.push('')}>
-            <PolarSVGIcon width={SIDENAV_WIDTH - 10}
-                          height={SIDENAV_WIDTH - 10}/>
+            <PolarSVGIcon width={SIDENAV_BUTTON_SIZE}
+                          height={SIDENAV_BUTTON_SIZE}/>
         </div>
     );
 

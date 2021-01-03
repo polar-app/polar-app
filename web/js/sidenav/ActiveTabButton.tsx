@@ -15,7 +15,9 @@ const useStyles = makeStyles((theme) =>
         root: {
             width: `${SIDENAV_WIDTH}px`,
             display: 'flex',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            cursor: 'pointer',
+            marginBottom: theme.spacing(1)
         },
         button: {
 
@@ -40,10 +42,12 @@ const useStyles = makeStyles((theme) =>
 
 interface IProps {
     readonly tabID: number;
+    readonly onClick: () => void;
     readonly children: JSX.Element;
+    readonly className?: string;
 }
 
-export const ActiveTabBox = deepMemo((props: IProps) => {
+export const ActiveTabButton = deepMemo((props: IProps) => {
 
     const {tabID} = props;
     const {activeTab} = useSideNavStore(['tabs', 'activeTab']);
@@ -52,8 +56,11 @@ export const ActiveTabBox = deepMemo((props: IProps) => {
     const active = tabID === activeTab;
 
     return (
-        <div className={clsx(classes.root, classes.button, active && classes.activeButton)}>
+        <div className={clsx(classes.root, classes.button, active && classes.activeButton, props.className)}
+             onClick={props.onClick}>
+
             {props.children}
+
         </div>
     );
 
