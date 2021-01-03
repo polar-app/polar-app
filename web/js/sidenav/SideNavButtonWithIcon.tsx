@@ -66,9 +66,9 @@ export const SideNavButtonWithIcon = deepMemo((props: IProps) => {
                 <ActiveTabBox tabID={tab.id}>
                     <IconButton onClick={() => setActiveTab(tab.id)}
                                 className={clsx(classes.button, active && classes.activeButton)}>
-                        <MUITooltip title={tab.title}>
+                        {/*<MUITooltip title={tab.title}>*/}
                         <FAFileIcon/>
-                        </MUITooltip>
+                        {/*</MUITooltip>*/}
                     </IconButton>
                 </ActiveTabBox>
             </>

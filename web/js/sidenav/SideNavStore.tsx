@@ -155,8 +155,8 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
             }
 
             function doTabMutation(newStore: ISideNavStore) {
-                historyRef.current.push(tabDescriptor.url);
                 setStore(newStore);
+                historyRef.current.push(tabDescriptor.url);
             }
 
             const existingTab = computeExistingTab();

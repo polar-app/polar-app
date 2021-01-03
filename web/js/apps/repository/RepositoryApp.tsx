@@ -62,6 +62,7 @@ import {WelcomeScreen} from "./WelcomeScreen";
 import {SIDE_NAV_ENABLED, useSideNavStore} from '../../sidenav/SideNavStore';
 import {SideNav} from "../../sidenav/SideNav";
 import Divider from '@material-ui/core/Divider';
+import {SideNavDocumentLoader} from "../../sidenav/SideNavDocumentLoader";
 
 interface IProps {
     readonly app: App;
@@ -142,6 +143,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                      <DocRepoStore2>
                          <DocRepoSidebarTagStore>
                              <>
+                                 <SideNavDocumentLoader/>
                                  <AnkiSyncController/>
                                  <DocRepoScreen2/>
                              </>
