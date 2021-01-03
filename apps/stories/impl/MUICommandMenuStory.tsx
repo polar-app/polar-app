@@ -2,6 +2,7 @@ import * as React from "react";
 import {ICommand, MUICommandMenu} from "../../../web/js/mui/command_menu/MUICommandMenu";
 import AcUnitIcon from '@material-ui/icons/AcUnit';
 import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
+import AccessibleIcon from '@material-ui/icons/Accessible';
 
 const Example1 = () => {
 
@@ -72,10 +73,16 @@ const Example3 = () => {
 
         },
         {
-            id: 'Turn On the Alarm',
-            text: 'World War II',
+            id: 'alarm',
+            text: 'Turn On the Alarm',
             icon: <AccessAlarmIcon/>,
-            sequences: ["command+2"]
+            sequences: ["command+2", 'ctrl+2']
+        },
+        {
+            id: 'wheelchair',
+            text: 'Enable Wheelchair Access',
+            icon: <AccessibleIcon/>,
+            sequences: ["shift+ArrowRight"]
         },
     ];
 

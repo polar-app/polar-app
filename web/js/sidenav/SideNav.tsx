@@ -11,7 +11,7 @@ import TimelineIcon from '@material-ui/icons/Timeline';
 import {ActiveTabButton} from "./ActiveTabButton";
 import SettingsIcon from '@material-ui/icons/Settings';
 
-
+//
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
 export const SIDENAV_SECONDARY_BUTTON_SIZE = SIDENAV_WIDTH - 32;
@@ -19,8 +19,8 @@ export const SIDENAV_SECONDARY_BUTTON_SIZE = SIDENAV_WIDTH - 32;
 // 80 and 48x48 figma icons
 //
 // export const SIDENAV_WIDTH = 80;
-// export const SIDENAV_BUTTON_SIZE = 48;
-// export const SIDENAV_SECONDARY_BUTTON_SIZE = 48;
+// export const SIDENAV_BUTTON_SIZE = 32;
+// export const SIDENAV_SECONDARY_BUTTON_SIZE = 32;
 
 
 const useStyles = makeStyles((theme) =>
