@@ -13,6 +13,7 @@ import {SettingsButton} from "./SettingsButton";
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
+export const SIDENAV_SECONDARY_BUTTON_SIZE = SIDENAV_WIDTH - 32;
 
 const useStyles = makeStyles((theme) =>
     createStyles({

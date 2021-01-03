@@ -1,12 +1,12 @@
 import * as React from "react";
-import {TabDescriptor, useSideNavCallbacks, useSideNavStore} from "./SideNavStore";
 import { deepMemo } from "../react/ReactUtils";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
-import {FAFileIcon} from "../mui/MUIFontAwesome";
-import IconButton from "@material-ui/core/IconButton";
 import {SIDENAV_WIDTH} from "./SideNav";
+import Tooltip from "@material-ui/core/Tooltip";
+import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
+import { useLocation } from "react-router-dom";
 
 const BORDER = 3;
 
@@ -42,6 +42,15 @@ const useStyles = makeStyles((theme) =>
 
 interface IProps {
     readonly tabID: number;
+    readonly title: string;
+
+    /**
+     * The URL path to signal when this button is active.
+     */
+    readonly path: URLPathStr;
+
+    readonly canonicalizer?: (path: URLPathStr) => URLPathStr;
+
     readonly onClick: () => void;
     readonly children: JSX.Element;
     readonly className?: string;
@@ -49,19 +58,44 @@ interface IProps {
 
 export const ActiveTabButton = deepMemo((props: IProps) => {
 
-    const {tabID} = props;
-    const {activeTab} = useSideNavStore(['tabs', 'activeTab']);
     const classes = useStyles();
 
-    const active = tabID === activeTab;
+    const canonicalize = React.useCallback((path: URLPathStr) => {
+
+        if (props.canonicalizer) {
+            return props.canonicalizer(path);
+        }
+
+        return path;
+
+    }, [props]);
+
+    const location = useLocation();
+
+    const canonicalLocationPath = React.useMemo(() => canonicalize(location.pathname), [canonicalize, location.pathname]);
+    const canonicalPath = React.useMemo(() => canonicalize(props.path), [canonicalize, props.path]);
+
+    const active = canonicalLocationPath === canonicalPath;
 
     return (
-        <div className={clsx(classes.root, classes.button, active && classes.activeButton, props.className)}
-             onClick={props.onClick}>
 
-            {props.children}
+        <Tooltip title={props.title}
+                 arrow={false}
+                 placement="right"
+                 disableTouchListener={true}
+                 disableFocusListener={true}
+                 enterNextDelay={0}
+                 enterDelay={0}
+                 leaveDelay={0}>
 
-        </div>
+            <div className={clsx(classes.root, classes.button, active && classes.activeButton, props.className)}
+                 onClick={props.onClick}>
+
+                {props.children}
+
+            </div>
+
+        </Tooltip>
     );
 
 });

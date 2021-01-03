@@ -8,7 +8,9 @@ import {FAFileIcon, FaFilePdfIcon} from "../mui/MUIFontAwesome";
 import IconButton from "@material-ui/core/IconButton";
 import {ActiveTabButton} from "./ActiveTabButton";
 import {MUITooltip} from "../mui/MUITooltip";
-import {SIDENAV_BUTTON_SIZE} from "./SideNav";
+import {SIDENAV_BUTTON_SIZE, SIDENAV_SECONDARY_BUTTON_SIZE} from "./SideNav";
+import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
+import {DocViewerAppURLs} from "../../../apps/doc/src/DocViewerAppURLs";
 
 const WIDTH = 72;
 const BORDER = 3;
@@ -56,25 +58,25 @@ interface IProps {
 export const SideNavButtonWithIcon = deepMemo((props: IProps) => {
 
     const {tab} = props;
-    const {activeTab} = useSideNavStore(['tabs', 'activeTab']);
     const {setActiveTab} = useSideNavCallbacks();
-    const classes = useStyles();
 
-    const active = tab.id === activeTab;
+    const path = React.useMemo(() => tab.url, [tab.url]);
+
+    const canonicalizer = React.useCallback((path: URLPathStr) => {
+        const parsedURL = DocViewerAppURLs.parse(path);
+        return `/doc/${parsedURL?.id}`;
+    }, []);
 
     return (
-            <>
-                <ActiveTabButton tabID={tab.id} onClick={() => setActiveTab(tab.id)}>
-                    {/*<IconButton*/}
-                    {/*            className={clsx(classes.button, active && classes.activeButton)}>*/}
-                        {/*<MUITooltip title={tab.title}>*/}
-                        <FaFilePdfIcon style={{
-                                           width: `${SIDENAV_BUTTON_SIZE}px`,
-                                           height: `${SIDENAV_BUTTON_SIZE}px`
-                                       }}/>
-                        {/*</MUITooltip>*/}
-                    {/*</IconButton>*/}
-                </ActiveTabButton>
-            </>
+        <ActiveTabButton title={tab.title}
+                         tabID={tab.id}
+                         path={path}
+                         canonicalizer={canonicalizer}
+                         onClick={() => setActiveTab(tab.id)}>
+            <FaFilePdfIcon style={{
+                               width: `${SIDENAV_SECONDARY_BUTTON_SIZE}px`,
+                               height: `${SIDENAV_SECONDARY_BUTTON_SIZE}px`
+                           }}/>
+        </ActiveTabButton>
     );
 });
