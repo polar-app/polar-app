@@ -10,8 +10,9 @@ import {useHistory} from 'react-router-dom';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import {ActiveTabButton} from "./ActiveTabButton";
 import SettingsIcon from '@material-ui/icons/Settings';
+import NoteIcon from '@material-ui/icons/Note';
+import DescriptionIcon from '@material-ui/icons/Description';
 
-//
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
 export const SIDENAV_SECONDARY_BUTTON_SIZE = SIDENAV_WIDTH - 32;
@@ -96,7 +97,7 @@ const HomeButton = React.memo(() => {
         <ActiveTabButton title="Documents"
                          path="/"
                          onClick={() => history.push('/')}>
-            <FAHomeIcon className={classes.secondaryIcon}/>
+            <DescriptionIcon className={classes.secondaryIcon}/>
         </ActiveTabButton>
     )
 });
@@ -108,7 +109,7 @@ const AnnotationsButton = React.memo(() => {
     return (
         <HistoryButton title="Annotations"
                        path="/annotations">
-            <FAStickyNoteIcon className={classes.secondaryIcon}/>
+            <NoteIcon className={classes.secondaryIcon}/>
         </HistoryButton>
     )
 });

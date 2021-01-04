@@ -176,6 +176,7 @@ function createHandler(sequence: KeyBinding, handler: KeyboardShortcutEventHandl
             event.stopPropagation();
             event.preventDefault();
 
+            console.log("Executing handler for sequence: " + sequence);
             setTimeout(() => handler(event), 1);
             return true;
         }

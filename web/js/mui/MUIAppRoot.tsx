@@ -30,10 +30,15 @@ export const MUIAppRoot = React.memo(function MUIAppRoot(props: IProps) {
             primary: {
                 'main': 'rgb(103, 84, 214)'
             },
-            background: {
-                // 'default': '#050505',
-                // 'paper': '#343434'
-            }
+            // background: {
+            //     // 'default': '#050505',
+            //     'default': '#1F2023',
+            //     'paper': '#27282B'
+            // },
+            // divider: '#303236',
+            // text: {
+            //     primary: 'rgb(247, 248, 248)'
+            // }
         }
     }), [theme]);
 
