@@ -13,8 +13,8 @@ const useStyles = makeStyles((theme) =>
         },
         key: {
             fontFamily: 'monospace',
-            lineHeight: '18px',
-            fontSize: '18px',
+            lineHeight: '16px',
+            fontSize: '16px',
             padding: '3px',
             borderRadius: '2px',
             border: `1px solid ${theme.palette.divider}`,

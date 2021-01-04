@@ -126,11 +126,12 @@ export const MUICommandMenu = React.memo((props: IProps) => {
             const newIndex = index + delta;
 
             if (newIndex < 0) {
-                return commandsFiltered.length - 1;
+                // return commandsFiltered.length - 1;
+                return 0;
             }
 
             if (newIndex >= commandsFiltered.length) {
-                return 0;
+                return commandsFiltered.length - 1;
             }
 
             return newIndex;

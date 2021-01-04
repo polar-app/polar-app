@@ -9,6 +9,7 @@ import {
 import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 import {DocViewerAppURLs} from "./DocViewerAppURLs";
 import {DockLayoutGlobalHotKeys} from "../../../web/js/ui/doc_layout/DockLayoutGlobalHotKeys";
+import {useSideNavCallbacks} from "../../../web/js/sidenav/SideNavStore";
 
 const globalKeyMap = keyMapWithGroup({
     group: "Document Viewer",
@@ -63,6 +64,11 @@ const globalKeyMap = keyMapWithGroup({
             description: "Archive the current document",
             sequences: ['a']
         },
+        CLOSE_CURRENT_TAB: {
+            name: "Close Current Document",
+            description: "Close the Current Document Tab",
+            sequences: ['c', 'shift+ctrl+c']
+        }
 
     }
 });
@@ -72,6 +78,7 @@ export const DocViewerGlobalHotKeys = React.memo(() => {
     const findCallbacks = useDocFindCallbacks();
     const {onPagePrev, onPageNext, doZoom, doZoomRestore, onDocTagged, toggleDocArchived, toggleDocFlagged} = useDocViewerCallbacks();
     const {docMeta} = useDocViewerStore(['docMeta']);
+    const {closeCurrentTab} = useSideNavCallbacks();
 
     const globalKeyHandlers = {
         FIND: () => findCallbacks.setActive(true),
@@ -83,7 +90,8 @@ export const DocViewerGlobalHotKeys = React.memo(() => {
         ZOOM_RESTORE: doZoomRestore,
         TAG: onDocTagged,
         FLAG: toggleDocFlagged,
-        ARCHIVE: toggleDocArchived
+        ARCHIVE: toggleDocArchived,
+        CLOSE_CURRENT_TAB: closeCurrentTab
     };
 
     const location = useLocationWithPathOnly();

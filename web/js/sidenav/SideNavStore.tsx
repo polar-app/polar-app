@@ -208,6 +208,8 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
 
         function closeCurrentTab() {
 
+            console.log("Closing current tab");
+
             const store = storeProvider();
 
             if (store.activeTab !== undefined) {
