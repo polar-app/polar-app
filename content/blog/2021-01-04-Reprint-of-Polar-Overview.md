@@ -13,7 +13,7 @@ Written by: Marko Velimirović
 
 The article was originally published <a href="https://www.websiteplanet.com/blog/interview-jonathan-graeupner/" target="_blank">here</a>
 
-This week, we had the privilege of meeting Jonathan Graeupner, one of the founders of Polar – an integrated reading environment designed for building your personal knowledge base around. In this interview, we were able to get some insight into the creation and development of his company.
+This week, we spoke with Jonathan Graeupner, one of the founders of Polar – an integrated reading environment designed for building your personal knowledge base around.
 
 ## What is Polar?
 Polar is an early-stage reading and knowledge management tool that is primarily used by students and engineers. Specifically, it is a tool that allows you to manage and read your entire library of PDFs, EPUBs, and web pages.
