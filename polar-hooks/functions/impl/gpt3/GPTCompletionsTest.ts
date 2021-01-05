@@ -165,6 +165,17 @@ xdescribe('GPTCompletions', function() {
 
     });
 
+    it("incorrect definition", async function() {
+
+        // this definition works but text extraction really needs to be more reliable
+        await doTest("In this view, rationality means spending or saving resources to succeed in your immediate environment", {
+            "back": "In this view, rationality means spending or saving resources to succeed in your immediate environment",
+            "front": "What does rationality mean?"
+        });
+
+    });
+
+
     xit("test performance", async function() {
 
         // TODO: rework this into Benchmark to test each call and compute some stats on the result
