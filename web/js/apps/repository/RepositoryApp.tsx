@@ -75,6 +75,10 @@ interface IProps {
 
 interface RepositoryDocViewerScreenProps {
     readonly persistenceLayerProvider: ListenablePersistenceLayerProvider;
+    readonly repoDocMetaLoader: RepoDocMetaLoader;
+    readonly repoDocMetaManager: RepoDocMetaManager;
+    readonly persistenceLayerManager: PersistenceLayerManager;
+
 }
 
 export const RepositoryDocViewerScreen = deepMemo((props: RepositoryDocViewerScreenProps) => {
@@ -82,21 +86,26 @@ export const RepositoryDocViewerScreen = deepMemo((props: RepositoryDocViewerScr
     return (
         <AuthRequired>
             <PersistenceLayerContext.Provider value={{persistenceLayerProvider: props.persistenceLayerProvider}}>
-                <PrefsContext2>
-                    <UserTagsProvider>
-                        <DocMetaContextProvider>
-                            <DocViewerDocMetaLookupContextProvider>
+                <PersistenceLayerApp tagsType="documents"
+                                     repoDocMetaManager={props.repoDocMetaManager}
+                                     repoDocMetaLoader={props.repoDocMetaLoader}
+                                     persistenceLayerManager={props.persistenceLayerManager}>
+                    <PrefsContext2>
+                        <UserTagsProvider>
+                            <DocMetaContextProvider>
                                 <DocViewerStore>
-                                    <DocFindStore>
-                                        <AnnotationSidebarStoreProvider>
-                                            <DocViewer/>
-                                        </AnnotationSidebarStoreProvider>
-                                    </DocFindStore>
+                                    <DocViewerDocMetaLookupContextProvider>
+                                        <DocFindStore>
+                                            <AnnotationSidebarStoreProvider>
+                                                <DocViewer/>
+                                            </AnnotationSidebarStoreProvider>
+                                        </DocFindStore>
+                                    </DocViewerDocMetaLookupContextProvider>
                                 </DocViewerStore>
-                            </DocViewerDocMetaLookupContextProvider>
-                        </DocMetaContextProvider>
-                    </UserTagsProvider>
-                </PrefsContext2>
+                            </DocMetaContextProvider>
+                        </UserTagsProvider>
+                    </PrefsContext2>
+                </PersistenceLayerApp>
             </PersistenceLayerContext.Provider>
         </AuthRequired>
     );
@@ -104,6 +113,9 @@ export const RepositoryDocViewerScreen = deepMemo((props: RepositoryDocViewerScr
 
 interface SideNavDocumentsProps {
     readonly persistenceLayerProvider: ListenablePersistenceLayerProvider;
+    readonly repoDocMetaLoader: RepoDocMetaLoader;
+    readonly repoDocMetaManager: RepoDocMetaManager;
+    readonly persistenceLayerManager: PersistenceLayerManager;
 }
 
 const SideNavDocuments = React.memo(function SideNavDocuments(props: SideNavDocumentsProps) {
@@ -116,7 +128,10 @@ const SideNavDocuments = React.memo(function SideNavDocuments(props: SideNavDocu
                 <PersistentRoute key={'doc-' + tab.id}
                                  exact
                                  path={tab.url}>
-                    <RepositoryDocViewerScreen persistenceLayerProvider={props.persistenceLayerProvider}/>
+                    <RepositoryDocViewerScreen persistenceLayerProvider={props.persistenceLayerProvider}
+                                               repoDocMetaManager={props.repoDocMetaManager}
+                                               repoDocMetaLoader={props.repoDocMetaLoader}
+                                               persistenceLayerManager={props.persistenceLayerManager}/>
                 </PersistentRoute>
             ))}
         </>
@@ -131,7 +146,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
     Preconditions.assertPresent(app, 'app');
 
     const RenderDocViewerScreen = React.memo(() => (
-        <RepositoryDocViewerScreen persistenceLayerProvider={app.persistenceLayerProvider}/>
+        <RepositoryDocViewerScreen persistenceLayerProvider={app.persistenceLayerProvider}
+                                   repoDocMetaManager={repoDocMetaManager}
+                                   repoDocMetaLoader={repoDocMetaLoader}
+                                   persistenceLayerManager={persistenceLayerManager}/>
     ));
 
     const RenderDocRepoScreen = React.memo(() => (
@@ -365,7 +383,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                                                 <RenderAnnotationRepoScreen/>
                                                                             </PersistentRoute>
 
-                                                                            {SIDE_NAV_ENABLED && <SideNavDocuments persistenceLayerProvider={app.persistenceLayerProvider}/>}
+                                                                            {SIDE_NAV_ENABLED && <SideNavDocuments persistenceLayerProvider={app.persistenceLayerProvider}
+                                                                                                                   repoDocMetaManager={props.repoDocMetaManager}
+                                                                                                                   repoDocMetaLoader={props.repoDocMetaLoader}
+                                                                                                                   persistenceLayerManager={props.persistenceLayerManager}/>}
 
                                                                             <Switch location={ReactRouters.createLocationWithPathOnly()}>
 

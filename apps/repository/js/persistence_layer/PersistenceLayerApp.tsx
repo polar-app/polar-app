@@ -146,19 +146,19 @@ const UserTagsDataLoaderData = React.memo((props: IUserTagsDataLoaderDataProps) 
     const docMetaLookupContext = new DefaultDocMetaLookupContext();
 
     return (
-        <PersistenceContext.Provider value={persistenceContext}>
-            <PersistenceLayerContext.Provider value={persistenceLayerContext}>
-                <TagsContext.Provider value={tagsContext}>
-                    <TagDescriptorsContext.Provider value={tagDescriptorsContext}>
-                        <TagsProviderContext.Provider value={tagsProvider}>
+            <PersistenceContext.Provider value={persistenceContext}>
+                <PersistenceLayerContext.Provider value={persistenceLayerContext}>
+                    <TagsContext.Provider value={tagsContext}>
+                        <TagDescriptorsContext.Provider value={tagDescriptorsContext}>
+                            <TagsProviderContext.Provider value={tagsProvider}>
                             <DocMetaLookupContext.Provider value={docMetaLookupContext}>
                                 {props.children}
                             </DocMetaLookupContext.Provider>
-                        </TagsProviderContext.Provider>
-                    </TagDescriptorsContext.Provider>
-                </TagsContext.Provider>
-            </PersistenceLayerContext.Provider>
-        </PersistenceContext.Provider>
+                            </TagsProviderContext.Provider>
+                        </TagDescriptorsContext.Provider>
+                    </TagsContext.Provider>
+                </PersistenceLayerContext.Provider>
+            </PersistenceContext.Provider>
     );
 
 });

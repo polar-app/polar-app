@@ -454,9 +454,14 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
     }
 
     const MountedChild = React.memo((props: MountedChildProps) => {
+
+        const [mounted, setMounted] = React.useState(false);
+
+        React.useEffect(() => setMounted(true), []);
+
         return (
             <>
-                {props.children}
+                {mounted && props.children}
             </>
         );
     });

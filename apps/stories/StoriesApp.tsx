@@ -48,6 +48,7 @@ import { AccountVerificationStory } from './impl/AccountVerificationStory';
 import {MobXStory} from "./impl/MobXStory";
 import {WelcomeStory} from "./impl/WelcomeStory";
 import {MUICommandMenuStory} from "./impl/MUICommandMenuStory";
+import { NestedContextStory } from './impl/NestedContextStory';
 
 interface IStory {
     readonly name: string;
@@ -236,10 +237,10 @@ const stories = createStoryIndex([
         name: 'MUICommandMenu',
         component: <MUICommandMenuStory/>
     },
-    // {
-    //     name: 'Nested Context',
-    //     component: <MUICommandMenuStory/>
-    // }
+    {
+        name: 'Nested Context',
+        component: <NestedContextStory/>
+    }
 
 ]);
 
