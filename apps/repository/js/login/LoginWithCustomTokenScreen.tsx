@@ -12,21 +12,34 @@ interface IProps extends FirebaseUIAuthOptions {
 
 }
 
+function parseURL(): string | undefined {
+    const url = new URL(document.location.href);
+    return url.searchParams.get('token') || undefined;
+}
+
 export const LoginWithCustomTokenScreen = React.memo((props: IProps) => {
 
     const customTokenRef = React.useRef("");
     const log = useLogger();
 
-    const handleAuth = React.useCallback(() => {
+    const token = React.useMemo(() => parseURL(), []);
+
+    const handleAuth = React.useCallback((customToken: string) => {
 
         async function doAsync() {
-            await FirebaseUIAuth.loginWithCustomToken(customTokenRef.current);
+            await FirebaseUIAuth.loginWithCustomToken(customToken);
             document.location.href = '/';
         }
 
         doAsync().catch(err => log.error(err));
 
     }, [log]);
+
+
+    if (token) {
+        handleAuth(token);
+        return null;
+    }
 
     return (
         <div style={{
@@ -58,7 +71,7 @@ export const LoginWithCustomTokenScreen = React.memo((props: IProps) => {
 
 
                     <p>
-                        <Button variant="contained" onClick={handleAuth}>
+                        <Button variant="contained" onClick={() => handleAuth(customTokenRef.current)}>
                             Auth with Custom Token
                         </Button>
                     </p>
