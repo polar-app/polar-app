@@ -33,7 +33,7 @@ export const CreateAccountButton = (props: IProps) => {
                 color="primary"
                 style={{fontSize}}
                 href="https://app.getpolarized.io">
-            Create Account
+            Sign Up for Free
         </Button>
     );
 

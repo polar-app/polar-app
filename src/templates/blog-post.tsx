@@ -7,6 +7,7 @@ import SEO from "../components/seo_post";
 import { Typography, Container, ThemeProvider } from "@material-ui/core";
 import { Box, CssBaseline } from "@material-ui/core";
 import theme from "../gatsby-theme-material-ui-top-layout/docsTheme";
+import {CreateAccountButton} from "../components/CreateAccountButton";
 
 type Node = {
   frontmatter: {
@@ -101,8 +102,27 @@ const BlogPostTemplate = ({data, pageContext,}: PageProps<Data, pageContext>) =>
                 </Typography>
               </ul>
             </nav>
-            <hr />
             <footer>
+
+                <hr/>
+
+                <div style={{
+                         textAlign: 'center',
+                         marginTop: '50px',
+                         marginBottom: '50px'
+                     }}>
+
+                    <h1>
+                        Organize all your reading in one place, boost your return on
+                        what you read, and remember anything you want.
+                    </h1>
+
+                    <CreateAccountButton/>
+
+                </div>
+
+                <hr/>
+
               <Bio />
             </footer>
           </Container>
