@@ -88,7 +88,7 @@ export const DocFindBar = React.memo(() => {
     const {active, opts, finder} = useDocFindStore(['active', 'opts', 'finder']);
     const {reset, setMatches} = useDocFindCallbacks();
 
-    const [phraseSearch, setPhraseSearch] = React.useState(false);
+    const [phraseSearch, setPhraseSearch] = React.useState(true);
 
     const doFind = useFindCallback();
 

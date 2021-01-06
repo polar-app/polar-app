@@ -1,5 +1,4 @@
 import {DocViewerToolbar} from "./toolbar/DocViewerToolbar";
-import {DockLayout} from "../../../web/js/ui/doc_layout/DockLayout";
 import * as React from "react";
 import {DocViewerAppURLs} from "./DocViewerAppURLs";
 import {LoadingProgress} from "../../../web/js/ui/LoadingProgress";

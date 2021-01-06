@@ -10,7 +10,7 @@ export namespace PDFFindControllers {
     export function createFinder(eventBus: EventBus, findController: PDFFindController): Finder {
 
         const defaultOpts = {
-            phraseSearch: false,
+            phraseSearch: true,
             highlightAll: true,
             findPrevious: false,
         };
