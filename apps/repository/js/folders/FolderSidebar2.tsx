@@ -14,7 +14,6 @@ import {FolderSidebarMenu} from "./FolderSidebarMenu";
 import {TagIDStr} from "polar-shared/src/tags/Tags";
 import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 
-
 const FoldersMenu = () => <FolderSidebarMenu type="folder"/>
 const TagsMenu = () => <FolderSidebarMenu type="tag"/>
 
