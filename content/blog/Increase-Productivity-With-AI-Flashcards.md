@@ -1,5 +1,5 @@
 ---
-title: Incrase Productivity With AI Flashcards
+title: Increase Productivity With AI Flashcards
 date: 2020-12-30T08:00:00.000-08:00
 layout: post
 description: Using AI to automatically generate flashcards from text highlights is changing how we read and remember
