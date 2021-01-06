@@ -2,6 +2,7 @@ import {Subject} from "rxjs";
 import React, {useContext, useState} from "react";
 import {Provider} from "polar-shared/src/util/Providers";
 import { Equals } from "./Equals";
+import {typedMemo} from "../../hooks/ReactHooks";
 
 export function pick<T, K extends keyof T>(value: T, keys: ReadonlyArray<K>): Pick<T, K> {
 
@@ -447,7 +448,20 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
         return React.useContext(storeProviderContext);
     }
 
-    const ObservableProviderComponent = (props: ObservableStoreProps<V>) => {
+
+    interface MountedChildProps {
+        readonly children: JSX.Element | Provider<JSX.Element>;
+    }
+
+    const MountedChild = React.memo((props: MountedChildProps) => {
+        return (
+            <>
+                {props.children}
+            </>
+        );
+    });
+
+    const ObservableProviderComponent = typedMemo((props: ObservableStoreProps<V>) => {
 
         const internalObservableStore = React.useMemo(() => createInternalObservableStore(props.store || opts.initialValue), []);
 
@@ -460,7 +474,7 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
                     <mutatorContext.Provider value={mutator}>
                         <setStoreContext.Provider value={setStore}>
                             <storeProviderContext.Provider value={storeProvider}>
-                                {props.children}
+                                <MountedChild {...props}/>
                             </storeProviderContext.Provider>
                         </setStoreContext.Provider>
                     </mutatorContext.Provider>
@@ -468,7 +482,7 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
             </storeContext.Provider>
         );
 
-    }
+    });
 
     return [ObservableProviderComponent, useStoreHook, useCallbacksHook, useMutatorHook, useStoreReducerHook, useSetStore, useStoreProvider];
 
