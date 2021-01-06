@@ -36,7 +36,7 @@ export const TextHighlightRendererStatic = deepMemo((props: IProps) => {
     }
 
     if (rects.length === 0) {
-        console.log("No textHighlight rects");
+        console.log("No textHighlight rects for text highlight: ", props.pageAnnotation.annotation.id);
         return null;
     }
 
@@ -82,7 +82,7 @@ export const HighlightDelegate = memoForwardRefDiv((props: HighlightDelegateProp
     }
 
     if (rects.length === 0) {
-        console.log("No textHighlight rects");
+        console.log("No textHighlight rects for text highlight: ", props.pageAnnotation.annotation.id);
         return null;
     }
 

@@ -133,11 +133,11 @@ export const DocFindBar = React.memo(() => {
                                                }}
                                                placeholder="Search..."/>
 
-                                {finder && (
-                                    <FindFeatureToggle title="Phrase search"
-                                                       checked={phraseSearch}
-                                                       onChanged={setPhraseSearch}/>
-                                )}
+                                {/*{finder && (*/}
+                                {/*    <FindFeatureToggle title="Phrase search"*/}
+                                {/*                       checked={phraseSearch}*/}
+                                {/*                       onChanged={setPhraseSearch}/>*/}
+                                {/*)}*/}
 
                                 <MatchNav/>
 
