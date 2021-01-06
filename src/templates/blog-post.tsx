@@ -113,8 +113,7 @@ const BlogPostTemplate = ({data, pageContext,}: PageProps<Data, pageContext>) =>
                      }}>
 
                     <h1>
-                        Organize all your reading in one place, boost your return on
-                        what you read, and remember anything you want.
+                        Organize your reading. Read to Remember.
                     </h1>
 
                     <CreateAccountButton/>
