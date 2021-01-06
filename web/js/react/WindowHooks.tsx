@@ -33,6 +33,10 @@ export function useWindowEventListener(name: WindowEventListenerName,
 
         if (win) {
 
+            if (typeof win.addEventListener !== 'function') {
+                throw new Error("Window has no addEventListener in useWindowEventListener");
+            }
+
             win.addEventListener(name, delegate, listenerOpts);
 
             return () => {

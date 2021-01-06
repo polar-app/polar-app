@@ -32,20 +32,22 @@ function toHighlightViewportPositions(regions: ReadonlyArray<NodeTextRegion>) {
 /**
  * An individual highlight that might need to be split across rows.
  */
-export const DOMHighlight = deepMemo((props: IProps) => {
+export const DOMHighlight = deepMemo(function DOMHighlight(props: IProps) {
 
     const {regions} = props;
 
     const [highlightViewportPositions, setHighlightViewportPositions] = React.useState(toHighlightViewportPositions(regions))
 
     const redrawCallback = React.useMemo(() => withAnimationFrame(() => {
-        setHighlightViewportPositions(toHighlightViewportPositions(regions));
-    }), [regions]);
 
-    if (props.regions.length === 0) {
-        // no work to do...
-        return null;
-    }
+        if (props.regions.length === 0) {
+            // no work to do...
+            return;
+        }
+
+        setHighlightViewportPositions(toHighlightViewportPositions(regions));
+
+    }), [props.regions.length, regions]);
 
     function computeWindow(): Window {
         // this is a big hacky as we need to figure out which window is holding

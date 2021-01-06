@@ -103,7 +103,7 @@ function handleLinkClicks(target: HTMLElement, linkLoader: LinkLoaderDelegate) {
     }
 }
 
-export const EPUBDocument = (props: IProps) => {
+export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
 
     const {docURL, docMeta} = props;
 
@@ -128,7 +128,7 @@ export const EPUBDocument = (props: IProps) => {
     const stylesheet = useStylesheetURL();
     const linkLoader = useLinkLoader();
 
-    async function doLoad() {
+    const doLoad = React.useCallback(async () => {
 
         function doInitialCallbacks() {
 
@@ -397,7 +397,25 @@ export const EPUBDocument = (props: IProps) => {
 
         console.log("Loaded epub");
 
-    }
+    }, [annotationBarInjector,
+        docMeta.docInfo.fingerprint,
+        docURL,
+        docViewerElements,
+        epubResizer,
+        finder,
+        incrRenderIter,
+        linkLoader,
+        setDocDescriptor,
+        setDocScale,
+        setFinder,
+        setFluidPagemarkFactory,
+        setOutline,
+        setOutlineNavigator,
+        setPage,
+        setPageNavigator,
+        setResizer,
+        setSection,
+        stylesheet]);
 
     useWindowResizeEventListener(epubResizer);
 
@@ -415,14 +433,13 @@ export const EPUBDocument = (props: IProps) => {
         </DOMTextIndexProvider>
     ) || null;
 
-};
-
+});
 
 function useEPUBResizer() {
 
     const docViewerElements = useDocViewerElementsContext();
 
-    return () => {
+    return React.useCallback(() => {
 
         console.log("Resizing EPUB");
 
@@ -492,6 +509,6 @@ function useEPUBResizer() {
 
         console.log("Resized to dimensions: ", dimensions);
 
-    }
+    }, [docViewerElements]);
 
 }

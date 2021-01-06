@@ -9,7 +9,7 @@ interface IProps {
 
 // HitHighlights -> HitHighlight => HitHighlightRow
 
-export const DOMHighlights = memoForwardRef((props: IProps) => {
+export const DOMHighlights = memoForwardRef(function DOMHighlights(props: IProps) {
 
     function toDOMHighlight(hit: DOMTextHit) {
         return <DOMHighlight key={hit.id} {...hit}/>

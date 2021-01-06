@@ -7,7 +7,7 @@ import {useDocViewerStore} from "../../../DocViewerStore";
 
 const EPUBIFrameQuerySelector = createQuerySelector<HTMLIFrameElement>();
 
-export const EPUBContextMenuRoot = deepMemo(() => {
+export const EPUBContextMenuRoot = deepMemo(function EPUBContextMenuRoot() {
 
     const docViewerElementsContext = useDocViewerElementsContext();
 

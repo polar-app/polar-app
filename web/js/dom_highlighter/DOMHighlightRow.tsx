@@ -15,7 +15,7 @@ interface IProps extends IHighlightViewportPosition {
 /**
  * Handles rendering a single row of non-overflow text.
  */
-export const DOMHighlightRow = deepMemo((props: IProps) => {
+export const DOMHighlightRow = deepMemo(function DOMHighlightRow(props: IProps) {
 
     const scrollIntoViewRef = useScrollIntoViewUsingLocation();
 

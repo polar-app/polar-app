@@ -48,7 +48,7 @@ namespace DOMTextIndexContentCache {
 
 }
 
-export const DOMTextIndexProvider = React.memo((props: IProps) => {
+export const DOMTextIndexProvider = React.memo(function DOMTextIndexProvider(props: IProps) {
 
     const docViewerElementsContext = useDocViewerElementsContext();
     const {page} = useDocViewerStore(['page']);

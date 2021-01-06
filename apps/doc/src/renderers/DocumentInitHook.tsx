@@ -55,8 +55,8 @@ export function useDocumentInit() {
 
 }
 
-export const DocumentInit = React.memo(() => {
+export const DocumentInit = React.memo(function DocumentInit() {
     useDocViewerPageJumpListener();
     useDocumentInit();
     return null;
-})
+});

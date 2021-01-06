@@ -8,7 +8,7 @@ import {useEPUBRoot} from "./EPUBFinders";
 /**
  * Renders the results found with the find controller.
  */
-export const EPUBFindRenderer = memoForwardRef(() => {
+export const EPUBFindRenderer = memoForwardRef(function EPUBFindRenderer() {
 
     const {hits, current} = useEPUBFinderStore(['hits', 'current']);
 
