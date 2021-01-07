@@ -20,12 +20,11 @@ export const AnnotationRepoTableMenu = deepMemo(() => {
             {/*             icon={<LocalOfferIcon/>}*/}
             {/*             onClick={callbacks.onTagged}/>*/}
 
-            <Divider/>
-            {/*<MUIMenuItem text="Copy"*/}
-            {/*             icon={<FileCopyIcon/>}*/}
-            {/*             onClick={callbacks.onCopyToClipboard}/>*/}
+            <MUIMenuItem text="Copy"
+                         icon={<FileCopyIcon/>}
+                         onClick={callbacks.onCopyToClipboard}/>
 
-            {/*<Divider/>*/}
+            <Divider/>
             <MUIMenuItem text="Delete"
                          icon={<DeleteForeverIcon/>}
                          onClick={callbacks.onDeleted}/>

@@ -490,9 +490,9 @@ const useCreateCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
             const html = selected.map(current => toHTML(current))
                                  .filter(current => current !== undefined)
-                                 .join("<br/")
+                                 .join("<br/><br/>")
 
-            Clipboards.writeText(html);
+            Clipboards.writeHTML(html);
 
         }
 
