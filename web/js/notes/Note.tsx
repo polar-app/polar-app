@@ -23,7 +23,7 @@ export interface INoteContextMenuOrigin {
 }
 
 export const [NoteContextMenu, useNoteContextMenu]
-    = createContextMenu<IDocViewerContextMenuOrigin>(NoteContextMenuItems);
+    = createContextMenu<IDocViewerContextMenuOrigin>(NoteContextMenuItems, {name: 'notes'});
 
 export const NoteInner = observer((props: IProps) => {
 

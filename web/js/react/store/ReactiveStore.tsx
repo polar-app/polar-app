@@ -17,14 +17,19 @@ export type ReactiveStoreTuple<T> = [
 
 export function createReactiveStore<T>(storeFactory: () => T): ReactiveStoreTuple<T> {
 
-    const StoreContext = React.createContext(storeFactory());
+    const defaultStore = storeFactory();
+    const StoreContext = React.createContext(defaultStore);
 
     const StoreProvider = React.memo((props: IReactiveStoreProviderProps<T>) => {
+
+        const store = React.useMemo(() => props.initialStore || defaultStore, [props.initialStore]);
+
         return (
-            <StoreContext.Provider value={props.initialStore || storeFactory()}>
+            <StoreContext.Provider value={store}>
                 {props.children}
             </StoreContext.Provider>
         );
+
     });
 
     function useStore() {

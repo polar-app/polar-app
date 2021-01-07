@@ -99,6 +99,11 @@ export function computeEventOrigin(event: React.MouseEvent<HTMLElement>): IEvent
 interface CreateContextMenuOpts<O> {
 
     /**
+     * The name of this context menu (for debug purposes primarily).
+     */
+    readonly name: string;
+
+    /**
      * Create a new origin object that's custom that we can use
      */
     readonly computeOrigin?: (event: IMouseEvent) => O | undefined;
@@ -147,9 +152,11 @@ export type UseContextMenuHook = (opts?: Partial<IContextMenuCallbacks>) => ICon
 export type CreateContextMenuTuple = [ContextMenuProviderComponent, UseContextMenuHook];
 
 export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O>) => JSX.Element | null,
-                                     opts: CreateContextMenuOpts<O> = {}): CreateContextMenuTuple {
+                                     opts: CreateContextMenuOpts<O>): CreateContextMenuTuple {
 
     const [MUIContextMenuStoreProvider, useMUIContextMenuStore] = createContextMenuStore<O>();
+
+    const {name} = opts;
 
     const useContextMenu = (opts: Partial<IContextMenuCallbacks> = {}): IContextMenuCallbacks => {
 

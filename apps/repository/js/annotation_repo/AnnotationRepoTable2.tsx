@@ -85,7 +85,7 @@ const HiddenBlockComponent = React.memo((props: HiddenBlockComponentProps<IDocAn
 });
 
 export const [AnnotationRepoTableContextMenu, useAnnotationRepoTableContextMenu]
-    = createContextMenu(AnnotationRepoTableMenu);
+    = createContextMenu(AnnotationRepoTableMenu, {name: 'annotation-repo2'});
 
 export const AnnotationRepoTable2 = React.memo(() => {
 
