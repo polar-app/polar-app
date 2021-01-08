@@ -69,7 +69,7 @@ export const SelectDialog = function<V>(props: SelectDialogProps<V>) {
     function convertOptionToListItem(option: ISelectOption<V>) {
         return (
             <ListItem key={option.id}
-                      autoFocus={option.id === props.defaultValue}
+                      selected={option.id === props.defaultValue}
                       button
                       onClick={() => handleDone(option)}>
                 <ListItemText primary={option.label} />
@@ -102,9 +102,11 @@ export const SelectDialog = function<V>(props: SelectDialogProps<V>) {
                         </List>
                     </DialogContent>
                     <DialogActions>
+
                         <Button onClick={handleCancel}>
                             Cancel
                         </Button>
+
                     </DialogActions>
                 </>
             </WithDeactivatedKeyboardShortcuts>

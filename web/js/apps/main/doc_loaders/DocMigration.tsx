@@ -19,7 +19,7 @@ export function useDocMigration(): DocMigrationHandler {
             docID: loadDocRequest.fingerprint
         };
 
-        const url = `https://beta.getpolarized.io/migration/phz?docID=${params.docID}&url=${params.url}`;
+        const url = `https://getpolarized.io/migration/phz?docID=${params.docID}&url=${params.url}`;
 
         linkLoader(url, {newWindow: true, focus: true});
 

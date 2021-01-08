@@ -303,6 +303,8 @@ export interface IDocViewerCallbacks {
     onPagePrev(): void;
     onPageNext(): void;
 
+    readonly setColumnLayout: (columLayout: number) => void;
+
 }
 
 const initialStore: IDocViewerStore = {
@@ -982,6 +984,10 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
             return store.docMeta;
         }
 
+        function setColumnLayout(columnLayout: number) {
+            writeDocMetaMutation(docMeta => docMeta.docInfo.columnLayout = columnLayout);
+        }
+
         return {
             updateDocMeta,
             setDocMeta,
@@ -1008,7 +1014,8 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
             toggleDocArchived,
             setOutline,
             setOutlineNavigator,
-            docMetaProvider
+            docMetaProvider,
+            setColumnLayout
         };
     }, [log, docMetaContext, persistenceLayerContext, annotationSidebarCallbacks,
         dialogs, annotationMutationCallbacksFactory, setStore, storeProvider]);
