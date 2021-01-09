@@ -3,6 +3,7 @@ import {CKEditor} from "@ckeditor/ckeditor5-react";
 import BalloonEditor from "@ckeditor/ckeditor5-build-balloon";
 import {HTMLStr} from "polar-shared/src/util/Strings";
 import {useLifecycleTracer} from "../../../../web/js/hooks/ReactHooks";
+import {CKEditorConfigs} from "./CKEditorConfigs";
 
 /**
  * A data-format specific string like Markdown or HTML or JSON but that can be
@@ -85,127 +86,20 @@ export const CKEditor5BalloonEditor = React.memo(function CKEditor5BalloonEditor
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const content = React.useMemo<HTMLStr>(() => props.preEscaped ? props.content : escaper.escape(props.content), []);
 
+    // summernote requires.
+
+    //
+    // tables
+    // link
+    // images
+
     return (
         <>
             {/*<CKEditorContext context={ Context }>*/}
 
                 <CKEditor
                     editor={ BalloonEditor }
-                    config={{
-                        // removePlugins: [
-                        //     // "Base64UploadAdapter",
-                        //     // "Essentials",
-                        //     // "Autoformat",  /// important as it highlights elements.
-                        //     //  "Bold",
-                        //     // "Underline",
-                        //     // "Italic",
-                        //     // "Strikethrough",
-                        //     // "Paragraph",     // REQUIRED
-                        //     // "Subscript",
-                        //     // "Superscript",
-                        //     // "BlockQuote",
-                        //     "CKFinder",  // DEF not required I think...
-                        //     "Heading",   // DEF not required I think...
-                        //     // "Image",
-                        //     "ImageCaption",
-                        //     "ImageStyle",
-                        //     "ImageToolbar",
-                        //     "ImageUpload",
-                        //     "ImageResize",
-                        //     // "Link",
-                        //     "MediaEmbed",
-                        //     "PasteFromOffice",
-                        //     "Table",
-                        //     "TableToolbar",
-                        //     "TableProperties",
-                        //     "TableCellProperties",
-                        //     "TextTransformation"
-                        // ],
-                        removePlugins: [
-                            "CKFinder",
-                            // "Heading",
-                            // "ImageCaption",
-                            // "ImageStyle",
-                            // "ImageToolbar",
-                            // "ImageUpload",
-                            // "ImageResize",
-                            "TextTransformation",
-                            "MediaEmbed",
-                            "PasteFromOffice",
-                            "Table",
-                            "TableToolbar",
-                            "TableProperties",
-                            "TableCellProperties",
-                            "TextTransformation"
-                        ],
-                        toolbar: {
-                            items: [
-                                'heading',
-                                '|',
-                                'bold',
-                                'italic',
-                                'blockQuote',
-                                'underline',
-                                'strikethrough',
-                                'subscript',
-                                'superscript',
-                                'link',
-                                '|',
-                                // 'imageUpload',
-                                // 'insertTable',
-                                // 'mediaEmbed',
-                                // 'specialcharacters'
-                                // 'undo',
-                                // 'redo'
-                            ]
-                        },
-                        image: {
-                            toolbar: [
-                                // 'imageStyle:alignLeft',
-                                // 'imageStyle:alignCenter',
-                                // 'imageStyle:alignRight',
-                                // 'imageStyle:full',
-                                // 'imageStyle:side',
-                                // '|',
-                                'imageResize',
-                                '|',
-                                'imageTextAlternative'
-                            ],
-                            styles: [
-                                // 'alignLeft',
-                                // 'alignCenter',
-                                // 'alignRight',
-                                // 'full',
-                                // 'side',
-                                // {
-                                // 	name: "alignLeft",
-                                // 	isDefault: true
-                                // },
-                                // {
-                                // 	name: "alignCenter",
-                                // },
-                                // {
-                                // 	name: "alignRight",
-                                // },
-                                // {
-                                // 	name: "full",
-                                // },
-                                // {
-                                // 	name: "side",
-                                // }
-
-                            ]
-                        },
-                        table: {
-                            contentToolbar: [
-                                'tableColumn',
-                                'tableRow',
-                                'mergeTableCells',
-                                'tableProperties',
-                                'tableCellProperties'
-                            ]
-                        },
-                    }}
+                    config={CKEditorConfigs.CONFIG1}
                     data={content}
                     onReady={ (editor: ckeditor5.IEditor) => {
                         // You can store the "editor" and use when it is needed.
