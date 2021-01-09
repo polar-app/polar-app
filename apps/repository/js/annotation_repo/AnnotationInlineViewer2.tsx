@@ -45,6 +45,8 @@ const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
         mutable: true
     };
 
+    // TODO we need the same context menu work here...
+
     return (
 
         <MUIElevation elevation={0}

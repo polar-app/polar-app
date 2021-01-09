@@ -25,6 +25,8 @@ const AnnotationTypeComponent = deepMemo((props: IProps) => {
 
     switch (annotation.annotationType) {
 
+        // TODO: AnnotationRepoTableContextMenu here? or in TextHighlightAnnotationView2 ?
+
         case AnnotationType.AREA_HIGHLIGHT:
             return (
                 <AreaHighlightAnnotationView2 annotation={annotation}/>
