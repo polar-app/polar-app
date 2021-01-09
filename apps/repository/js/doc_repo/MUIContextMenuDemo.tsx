@@ -22,7 +22,7 @@ const MyMenu = () => (
     </>
 );
 
-const [MyContextMenu, useMyContextMenu] = createContextMenu(MyMenu);
+const [MyContextMenu, useMyContextMenu] = createContextMenu(MyMenu, {name: 'mui-context-menu-demo'});
 
 export const MUIContextMenuDemo = () => {
 
