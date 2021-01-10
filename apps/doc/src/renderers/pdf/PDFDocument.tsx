@@ -51,6 +51,7 @@ import Destination = _pdfjs.Destination;
 import {Nonces} from "polar-shared/src/util/Nonces";
 import {useStateRef} from "../../../../../web/js/hooks/ReactHooks";
 import {usePrefsContext} from "../../../../repository/js/persistence_layer/PrefsContext2";
+import { usePDFUpgrader } from './PDFUpgrader';
 
 interface DocViewer {
     readonly eventBus: EventBus;
@@ -151,6 +152,7 @@ export const PDFDocument = deepMemo((props: IProps) => {
     const scaleRef = React.useRef<ScaleLevelTuple>(ScaleLevelTuples[1]);
     const docRef = React.useRef<PDFDocumentProxy | undefined>(undefined);
     const pageNavigatorRef = React.useRef<PageNavigator | undefined>(undefined);
+    const pdfUpgrader = usePDFUpgrader();
 
     const log = useLogger();
 
@@ -431,9 +433,23 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
         enableAutoPagemarks();
 
+        async function doUpgrade() {
+            const docMeta = docMetaProvider();
+
+            if (docMeta) {
+                await pdfUpgrader(docMeta);
+            }
+
+        }
+
+        await doUpgrade();
+
         onLoaded()
 
-    }, [annotationBarInjector, dispatchPDFDocMeta, docMetaProvider, docURL, log, onLoaded, onPagesInit, persistenceLayerProvider, prefs, resize, setDocScale, setFinder, setOutline, setOutlineNavigator, setPageNavigator, setResizer, setScale, setScaleLeveler]);
+    }, [annotationBarInjector, dispatchPDFDocMeta, docMetaProvider, docURL,
+        log, onLoaded, onPagesInit, pdfUpgrader, persistenceLayerProvider,
+        prefs, resize, setDocScale, setFinder, setOutline, setOutlineNavigator,
+        setPageNavigator, setResizer, setScale, setScaleLeveler]);
 
     React.useEffect(() => {
 

@@ -14,6 +14,7 @@ import {usePersistenceLayerContext} from "../../repository/js/persistence_layer/
 import {Mappers} from "polar-shared/src/util/Mapper";
 import {DocAnnotations} from "../../../web/js/annotation_sidebar/DocAnnotations";
 import {Preconditions} from "polar-shared/src/Preconditions";
+import PageInfoIndex = DocAnnotationSorter.PageInfoIndex;
 
 interface IAnnotationSidebarStore {
 
@@ -47,7 +48,7 @@ interface IAnnotationSidebarCallbacks {
 const initialStore: IAnnotationSidebarStore = {
     filter: "",
     data: [],
-    view: []
+    view: [],
 }
 
 namespace mutations {
@@ -60,6 +61,7 @@ namespace mutations {
     export interface ISetData {
         readonly mutation: 'set-data',
         readonly data: ReadonlyArray<IDocAnnotationRef>;
+        readonly docMeta: IDocMeta;
     }
 
     export type IMutation = ISetFilter | ISetData;
@@ -98,15 +100,38 @@ function mutatorFactory(storeProvider: Provider<IAnnotationSidebarStore>,
 
             case "set-data":
 
+                const {docMeta} = mutation;
+
+                const columnLayout = docMeta.docInfo.columnLayout || 0;
+
+                function createPageMetaIndex() {
+                    const result: PageInfoIndex = {};
+
+                    for (const pageMeta of Object.values(docMeta.pageMetas || {})) {
+                        result[pageMeta.pageInfo.num] = pageMeta.pageInfo;
+                    }
+
+                    return result;
+
+                }
+
+                const pageMetaIndex = createPageMetaIndex();
+
+                const sorter = DocAnnotationSorter.create<IDocAnnotationRef>(pageMetaIndex, columnLayout);
+
                 const data = mutation.data;
                 const view = Mappers.create(data)
                                     // apply sort order
-                                    .map(DocAnnotationSorter.sort)
+                                    .map(sorter)
                                     // apply current filters
                                     .map(data => AnnotationRepoFilters2.execute(data, {text: store.filter}))
                                     .collect();
 
-                return {...store, data, view};
+                return {
+                    ...store,
+                    data,
+                    view,
+                };
 
         }
 
@@ -115,6 +140,7 @@ function mutatorFactory(storeProvider: Provider<IAnnotationSidebarStore>,
     }
 
     function doUpdate(mutation: mutations.IMutation) {
+
         const store = storeProvider();
 
         const newStore = reduce(store, mutation);
@@ -147,7 +173,7 @@ function useCallbacksFactory(storeProvider: Provider<IAnnotationSidebarStore>,
         function setDocMeta(docMeta: IDocMeta) {
             Preconditions.assertPresent(docMeta, 'docMeta');
             const data = toAnnotations(docMeta);
-            mutator.doUpdate({mutation: 'set-data', data});
+            mutator.doUpdate({mutation: 'set-data', data, docMeta});
         }
 
         return ({

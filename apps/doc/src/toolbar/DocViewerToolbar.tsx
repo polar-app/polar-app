@@ -34,7 +34,7 @@ export const DocViewerToolbar = deepMemo(() => {
     const {finder} = useDocFindStore(['finder']);
     const {setScale, onDocTagged, doZoom, toggleDocArchived, toggleDocFlagged} = useDocViewerCallbacks();
 
-    const handleScaleChange = (scale: ScaleLevel) => {
+    const handleScaleChange = React.useCallback((scale: ScaleLevel) => {
 
         const value =
             arrayStream(ScaleLevelTuples)
@@ -43,7 +43,7 @@ export const DocViewerToolbar = deepMemo(() => {
 
         setScale(value!);
 
-    };
+    }, [setScale]);
 
     return (
         <MUIPaperToolbar borderBottom>

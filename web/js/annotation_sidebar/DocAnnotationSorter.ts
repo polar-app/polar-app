@@ -1,48 +1,104 @@
-import {IDocAnnotationRef} from "./DocAnnotation";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {IPageInfo} from "polar-shared/src/metadata/IPageInfo";
+import {IDimensions} from "../util/IDimensions";
 
 export namespace DocAnnotationSorter {
 
-    export function sort<D extends IDocAnnotationRef>(data: ReadonlyArray<D>) {
+    export interface IPosition {
+        readonly x: number;
+        readonly y: number;
+    }
 
-        // TODO: I would prefer that this was a binary tree which was maintained sorted
+    export interface ISortable {
+        readonly id: string;
+        readonly pageNum: number;
+        readonly order: number | undefined;
+        readonly position: IPosition;
+    }
 
-        const computeScore = (item: D) => {
+    type SortFunction<D> = (data: ReadonlyArray<D>) => ReadonlyArray<D>
 
-            function computePrefix() {
-                return item.pageNum * 100000;
-            }
+    export type PageInfoIndex = {[pageNum: number]: IPageInfo};
 
-            function computeSuffix() {
+    export function create<D extends ISortable>(pageMetaIndex: PageInfoIndex,
+                                                columnLayout: number): SortFunction<D> {
 
-                if (item.order !== undefined) {
-                    return item.order * 100;
-                } else {
-                    return (item.position.y * 100) + item.position.x;
+        return (data) => {
+
+            // TODO: I would prefer that this was a binary tree which was maintained sorted
+
+            const computeScore = (item: D) => {
+
+                function computePageComponent() {
+                    return item.pageNum;
                 }
 
-            }
+                function computeColumnLayoutComponent(): number {
 
-            const prefix = computePrefix();
-            const suffix = computeSuffix();
+                    function scaleDimensionsToWeb(dimensions: IDimensions) {
+                        const WEB_RESOLUTION = 96;
+                        const PDF_RESOLUTION = 72;
 
-            return prefix + suffix;
+                        const UPSCALE_RATIO = WEB_RESOLUTION / PDF_RESOLUTION;
 
-        };
+                        return {
+                            width: dimensions.width * UPSCALE_RATIO,
+                            height: dimensions.height * UPSCALE_RATIO,
+                        };
 
-        const compareFn = (a: D, b: D) => {
+                    }
 
-            const diff = computeScore(a) - computeScore(b);
+                    const dimensions = pageMetaIndex[item.pageNum]?.dimensions;
 
-            if (diff === 0) {
-                return a.id.localeCompare(b.id);
-            }
+                    if (! dimensions) {
+                        return 0;
+                    }
 
-            return diff;
+                    if (item.order !== undefined) {
+                        return 0;
+                    }
 
-        };
+                    const webDimensions = scaleDimensionsToWeb(dimensions);
+                    const {width} = webDimensions;
+                    const columnWidth = width / columnLayout;
 
-        return arrayStream(data).sort(compareFn).collect();
+                    return Math.floor(item.position.x / columnWidth);
+
+                }
+
+                function computeSuffixComponent() {
+
+                    if (item.order !== undefined) {
+                        return item.order * 100;
+                    } else {
+                        return (item.position.y * 100) + item.position.x;
+                    }
+
+                }
+
+                const pageComponent = computePageComponent() * 100000000;
+                const columnLayoutComponent = computeColumnLayoutComponent() * 100000;
+                const suffix = computeSuffixComponent();
+
+                return pageComponent + columnLayoutComponent + suffix;
+
+            };
+
+            const compareFn = (a: D, b: D) => {
+
+                const diff = computeScore(a) - computeScore(b);
+
+                if (diff === 0) {
+                    return a.id.localeCompare(b.id);
+                }
+
+                return diff;
+
+            };
+
+            return arrayStream(data).sort(compareFn).collect();
+
+        }
 
     }
 
