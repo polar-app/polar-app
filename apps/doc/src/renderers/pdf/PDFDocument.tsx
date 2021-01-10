@@ -233,6 +233,9 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
     }, [dispatchPDFDocMeta]);
 
+    const scaleLeveler = React.useCallback((scale: ScaleLevelTuple) => {
+        return setScale(scale);
+    }, [setScale]);
 
     const resize = React.useCallback((): number => {
 
@@ -365,12 +368,6 @@ export const PDFDocument = deepMemo((props: IProps) => {
             handleScroll();
         }, {passive: true});
 
-        const scaleLeveler = (scale: ScaleLevelTuple) => {
-            return setScale(scale);
-        };
-
-        setScaleLeveler(scaleLeveler);
-
         class PDFDocScale implements IDocScale {
 
             get scale(): ScaleLevelTuple {
@@ -392,6 +389,7 @@ export const PDFDocument = deepMemo((props: IProps) => {
         }
 
         setDocScale(new PDFDocScale());
+        setScaleLeveler(scaleLeveler);
 
         function enableAutoPagemarks() {
 
@@ -446,10 +444,10 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
         onLoaded()
 
-    }, [annotationBarInjector, dispatchPDFDocMeta, docMetaProvider, docURL,
-        log, onLoaded, onPagesInit, pdfUpgrader, persistenceLayerProvider,
-        prefs, resize, setDocScale, setFinder, setOutline, setOutlineNavigator,
-        setPageNavigator, setResizer, setScale, setScaleLeveler]);
+    }, [annotationBarInjector, dispatchPDFDocMeta, docMetaProvider, docURL, log, onLoaded,
+        onPagesInit, pdfUpgrader, persistenceLayerProvider, prefs, resize, scaleLeveler,
+        setDocScale, setFinder, setOutline, setOutlineNavigator, setPageNavigator,
+        setResizer, setScaleLeveler]);
 
     React.useEffect(() => {
 
