@@ -102,7 +102,6 @@ export const DocViewerToolbarOverflowButton = deepMemo((props: IProps) => {
                              icon={<ViewWeekIcon/>}
                              onClick={setColumnLayoutCallback}/>
 
-
                 {SIDE_NAV_ENABLED && (
                     <>
                         <Divider/>

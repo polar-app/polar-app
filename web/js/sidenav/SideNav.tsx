@@ -4,8 +4,6 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import {useSideNavStore, TabDescriptor} from './SideNavStore';
 import Divider from '@material-ui/core/Divider';
 import {PolarSVGIcon} from "../ui/svg_icons/PolarSVGIcon";
-import {SideNavButtonWithIcon} from "./SideNavButtonWithIcon";
-import {FAHomeIcon, FAStickyNoteIcon} from "../mui/MUIFontAwesome";
 import {useHistory} from 'react-router-dom';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import {ActiveTabButton} from "./ActiveTabButton";
@@ -13,7 +11,6 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import NoteIcon from '@material-ui/icons/Note';
 import DescriptionIcon from '@material-ui/icons/Description';
 import {createContextMenu} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
-import {AnnotationRepoTableMenu} from "../../../apps/repository/js/annotation_repo/AnnotationRepoTableMenu";
 import {SideNavContextMenu, SideNavCurrentTabContext} from "./SideNavContextMenu";
 import {SideNavButton} from "./SideNavButton";
 

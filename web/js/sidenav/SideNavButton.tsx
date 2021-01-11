@@ -1,8 +1,8 @@
 import * as React from "react";
 import {TabDescriptor} from "./SideNavStore";
 import {SideNavCurrentTabContext} from "./SideNavContextMenu";
-import {SideNavButtonWithIcon} from "./SideNavButtonWithIcon";
 import {SideNavContextMenuProvider} from "./SideNav";
+import {SideNavButtonWithAvatar} from "./SideNavButtonWithAvatar";
 
 interface ISideNavButtonProps {
     readonly tab: TabDescriptor;
@@ -13,7 +13,7 @@ const WithContext = React.memo((props: ISideNavButtonProps) => {
     const {tab} = props;
 
     return (
-        <SideNavButtonWithIcon tab={tab}/>
+        <SideNavButtonWithAvatar tab={tab}/>
     );
 
 });
