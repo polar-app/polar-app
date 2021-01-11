@@ -12,6 +12,10 @@ import {ActiveTabButton} from "./ActiveTabButton";
 import SettingsIcon from '@material-ui/icons/Settings';
 import NoteIcon from '@material-ui/icons/Note';
 import DescriptionIcon from '@material-ui/icons/Description';
+import {createContextMenu} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
+import {AnnotationRepoTableMenu} from "../../../apps/repository/js/annotation_repo/AnnotationRepoTableMenu";
+import {SideNavContextMenu, SideNavCurrentTabContext} from "./SideNavContextMenu";
+import {SideNavButton} from "./SideNavButton";
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -165,17 +169,14 @@ const SideNavDivider = React.memo(() => {
 
 });
 
+export const [SideNavContextMenuProvider, useSideNavContextMenu]
+    = createContextMenu(SideNavContextMenu, {name: 'sidenav'});
+
 export const SideNav = React.memo(() => {
 
     const classes = useStyles();
 
     const {tabs} = useSideNavStore(['tabs']);
-
-    const toNavButton = React.useCallback((tab: TabDescriptor) => {
-        return (
-            <SideNavButtonWithIcon key={tab.id} tab={tab}/>
-        )
-    }, []);
 
     return (
         <div className={classes.root}>
@@ -193,7 +194,7 @@ export const SideNav = React.memo(() => {
             )}
 
             <div className={classes.buttons}>
-                {tabs.map(toNavButton)}
+                {tabs.map(tab => <SideNavButton key={tab.id} tab={tab}/>)}
             </div>
 
             <div style={{marginBottom: '5px'}}>

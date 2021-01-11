@@ -3,7 +3,7 @@ import { deepMemo } from "../react/ReactUtils";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
-import {SIDENAV_WIDTH} from "./SideNav";
+import {SIDENAV_WIDTH, useSideNavContextMenu} from "./SideNav";
 import Tooltip from "@material-ui/core/Tooltip";
 import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
 import { useLocation } from "react-router-dom";
@@ -62,6 +62,8 @@ export const ActiveTabButton = deepMemo((props: IProps) => {
 
     const classes = useStyles();
 
+    const {onContextMenu} = useSideNavContextMenu();
+
     const canonicalize = React.useCallback((path: URLPathStr) => {
 
         if (props.canonicalizer) {
@@ -91,6 +93,7 @@ export const ActiveTabButton = deepMemo((props: IProps) => {
                  leaveDelay={0}>
 
             <div className={clsx(classes.root, classes.button, active && classes.activeButton, props.className)}
+                 onContextMenu={onContextMenu}
                  onClick={props.onClick}>
 
                 {props.children}
