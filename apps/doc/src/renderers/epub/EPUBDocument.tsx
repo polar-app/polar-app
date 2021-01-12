@@ -57,7 +57,7 @@ interface ExtendedSpine {
     readonly items: ReadonlyArray<Section>;
 }
 
-// FIXME how do I pre-filter the HTML to reject XSS attacks...
+// TODO how do I pre-filter the HTML to reject XSS attacks...
 
 function forwardEvents(target: HTMLElement) {
     // this is needed because keyboard events and other events ould be swallowed
@@ -401,25 +401,10 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
 
         console.log("Loaded epub");
 
-    }, [annotationBarInjector,
-        docMeta.docInfo.fingerprint,
-        docURL,
-        docViewerElements,
-        epubResizer,
-        finder,
-        incrRenderIter,
-        linkLoader,
-        setDocDescriptor,
-        setDocScale,
-        setFinder,
-        setFluidPagemarkFactory,
-        setOutline,
-        setOutlineNavigator,
-        setPage,
-        setPageNavigator,
-        setResizer,
-        setSection,
-        stylesheet]);
+    }, [annotationBarInjector, docMeta.docInfo.fingerprint, docURL, epubResizer, finder,
+        incrRenderIter, linkLoader, props.docMeta.docInfo.fingerprint, setDocDescriptor,
+        setDocScale, setFinder, setFluidPagemarkFactory, setOutline, setOutlineNavigator,
+        setPage, setPageNavigator, setResizer, setSection, stylesheet]);
 
     useWindowResizeEventListener(epubResizer);
 
@@ -456,9 +441,9 @@ function useEPUBResizer() {
             return {width, height}
         }
 
-        function setWidth(element: HTMLElement | null | undefined, dimensions: IDimensions) {
+        function setWidthAndHeight(element: HTMLElement | null | undefined, dimensions: IDimensions) {
 
-            if (element) {
+            if (element && dimensions.width > 0) {
                 element.style.width = `${dimensions.width}px`;
                 element.style.height = `${dimensions.height}px`;
             } else {
@@ -470,13 +455,13 @@ function useEPUBResizer() {
         function adjustEpubView(dimensions: IDimensions) {
             const element = docViewer.querySelector(".epub-view") as HTMLElement;
             if (element){
-                setWidth(element, dimensions);
+                setWidthAndHeight(element, dimensions);
             }
         }
 
         function adjustIframe(dimensions: IDimensions) {
             const element = docViewer.querySelector(".epub-view iframe") as HTMLElement;
-            setWidth(element, dimensions);
+            setWidthAndHeight(element, dimensions);
         }
 
         function adjustIframeBody(dimensions: IDimensions) {
@@ -495,7 +480,7 @@ function useEPUBResizer() {
 
             const body = iframe.contentDocument.body
 
-            setWidth(body, dimensions);
+            setWidthAndHeight(body, dimensions);
 
             // this epub padding and I can't figure out where    this is being set.
             // iframe.contentDocument!.documentElement.style.padding = '0';
