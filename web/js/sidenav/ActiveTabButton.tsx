@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) =>
             borderRightColor: 'transparent',
 
             '&:hover': {
-                borderLeftColor: theme.palette.secondary.light
+                borderLeftColor: theme.palette.primary.light
             },
 
         },

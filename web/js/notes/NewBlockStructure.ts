@@ -1,9 +1,12 @@
 
 import {IDStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {NoteIDStr} from "./store/NotesStore0";
 import {NoteTargetStr} from "./NoteLinkLoader";
+import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
+import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
+import {IComment} from "polar-shared/src/metadata/IComment";
 
+export type NoteIDStr = IDStr;
 export type BlockIDStr = IDStr;
 
 /**
@@ -64,13 +67,24 @@ export interface IBlockReferenceContent {
  * Reference to a polar annotation.  We directly extend ITextHighlight and
  * IAnnotationHighlight here and reference the rest as inline metadata.
  */
-export interface IAnnotationReferenceContent {
+export interface IAnnotationContent {
 
-    // FIXME: should annotations support items?
-
-    // TODO: sort of like a block ref but to an annotation
     readonly type: 'annotation';
     readonly id: IDStr;
+
+    readonly docID: IDStr;
+
+    // FIXME: what metadata do we need for the annotation.  probably doc ID and pageID
+    readonly data: ITextHighlight | IAreaHighlight;
+
+}
+
+export interface IAnnotationCommentContent {
+
+    readonly type: 'annotation-comment';
+    readonly id: IDStr;
+
+    readonly data: IComment;
 
 }
 
@@ -96,10 +110,16 @@ export interface IBlock {
 
     readonly id: BlockIDStr;
 
+    /**
+     * The version of this block so we can have multiple but compatible versions
+     * in the same store.
+     */
+    readonly ver: 'v1';
+
     readonly created: ISODateTimeString;
 
     readonly updated: ISODateTimeString;
 
-    readonly content: INoteContent | IBlockReferenceContent | ILatexContent | IAnnotationReferenceContent;
+    readonly content: INoteContent | IBlockReferenceContent | ILatexContent | IAnnotationContent | IAnnotationCommentContent;
 
 }
