@@ -35,10 +35,10 @@ export const EPUBViewerContainer = memoForwardRef(function EPUBViewerContainer(p
 
     return (
         <main id="viewerContainer"
-              className={`${classes.container} ${classes.viewerContainer}`}
+              className={`${classes.container} ${classes.viewerContainer} viewerContainer`}
               itemProp="mainContentOfPage">
 
-            <div id="viewer" className={`${classes.container} epubViewer`}>
+            <div id="viewer" className={`${classes.container} epubViewer viewer`}>
                 <div data-page-number={page}
                      data-loaded="true"
                      className={`${classes.container} page`}

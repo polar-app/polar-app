@@ -45,6 +45,7 @@ import {IOutlineItem} from "../../outline/IOutlineItem";
 import {Nonces} from "polar-shared/src/util/Nonces";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {NavItem} from 'epubjs/types/navigation';
+import {useViewerElement} from "../UseViewerElementHook";
 
 interface IProps {
     readonly docURL: URLStr;
@@ -144,7 +145,10 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
 
         const book = ePub(docURL);
 
-        const pageElement = Arrays.first(docViewerElements.getPageElements());
+        const docID = props.docMeta.docInfo.fingerprint;
+        const {viewerElement} = useViewerElement(docID);
+
+        const pageElement = viewerElement.querySelector(".page")! as HTMLDivElement;
 
         if (! pageElement) {
             throw new Error("No page element");

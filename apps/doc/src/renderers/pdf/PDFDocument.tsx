@@ -52,6 +52,7 @@ import {Nonces} from "polar-shared/src/util/Nonces";
 import {useStateRef} from "../../../../../web/js/hooks/ReactHooks";
 import {usePrefsContext} from "../../../../repository/js/persistence_layer/PrefsContext2";
 import { usePDFUpgrader } from './PDFUpgrader';
+import {useViewerElement} from "../UseViewerElementHook";
 
 interface DocViewer {
     readonly eventBus: EventBus;
@@ -78,24 +79,7 @@ function createDocViewer(docID: string): DocViewer {
         eventBus
     });
 
-
-    const root = document.querySelector(`div[data-doc-viewer-id='${docID}']`);
-
-    if (root === null) {
-        throw new Error("No root");
-    }
-
-    const containerElement = root.querySelector('.viewerContainer')! as HTMLDivElement;
-
-    if (containerElement === null) {
-        throw new Error("No containerElement");
-    }
-
-    const viewerElement = root.querySelector('.viewer')! as HTMLDivElement;
-
-    if (viewerElement === null) {
-        throw new Error("No viewerElement");
-    }
+    const {containerElement, viewerElement} = useViewerElement(docID);
 
     const viewerOpts: PDFViewerOptions = {
         container: containerElement,
@@ -457,7 +441,8 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
         hasLoadStartedRef.current = true;
 
-        docViewerRef.current = createDocViewer(props.docMeta.docInfo.fingerprint);
+        const docID = props.docMeta.docInfo.fingerprint;
+        docViewerRef.current = createDocViewer(docID);
 
         doLoad(docViewerRef.current)
             .catch(err => log.error("PDFDocument: Could not load PDF: ", err));
