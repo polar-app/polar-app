@@ -34,7 +34,12 @@ export function useWindowEventListener(name: WindowEventListenerName,
         if (win) {
 
             if (typeof win.addEventListener !== 'function') {
-                throw new Error("Window has no addEventListener in useWindowEventListener");
+
+                const msg = `Window has no addEventListener for ${name} in useWindowEventListener: ` + (typeof win.addEventListener);
+
+                console.warn(msg, win);
+                throw new Error(msg);
+
             }
 
             win.addEventListener(name, delegate, listenerOpts);

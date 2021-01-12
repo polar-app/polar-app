@@ -24,7 +24,7 @@ export const SideNavButton = React.memo((props: ISideNavButtonProps) => {
 
     return (
         <>
-            <SideNavCurrentTabContext.Provider value={{id: tab.id}}>
+            <SideNavCurrentTabContext.Provider value={{tab}}>
                 <SideNavContextMenuProvider>
                     <WithContext tab={tab}/>
                 </SideNavContextMenuProvider>
