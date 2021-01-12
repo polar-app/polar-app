@@ -12,3 +12,11 @@ Notes for MobX issues we found in *our* environment.
       that a property is observable
       
     - 
+    
+- observer components aren't being called:
+
+    - it might be that the store is using the wrong object. Make sure you're
+      listening to the right object by generating a random 'id' for each store
+      object and verifying you have the right one.
+      
+    - 
