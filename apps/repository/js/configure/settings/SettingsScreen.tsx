@@ -99,7 +99,7 @@ export const SettingsScreen = React.memo(() => {
                     {/*              prefs={prefs}*/}
                     {/*              preview={true}/>*/}
 
-                    <SettingToggle title="Automatic pagemarks"
+                    <SettingToggle title="BETA: Automatic pagemarks"
                                    description="Enables auto pagemark creation as you scroll and read a document.  ONLY usable for the PDF documents."
                                    name={KnownPrefs.AUTO_PAGEMARKS}
                                    prefs={prefs}
@@ -114,7 +114,7 @@ export const SettingsScreen = React.memo(() => {
                     {/*        preview={true}/>*/}
                     {/*</DeviceRouters.Desktop>*/}
 
-                    <SettingToggle title="Experimental Side Navigation"
+                    <SettingToggle title="BETA: Experimental Side Navigation"
                                    description="Enables the new side navigation we're working on for the next major UI revision (requires reload)"
                                    name="sidenav"
                                    prefs={localStoragePrefs}

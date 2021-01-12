@@ -81,7 +81,7 @@ export const SettingToggle = (props: IProps) => {
                 </p>
             </div>
 
-            {props.preview && <PreviewWarning/>}
+            {/*{props.preview && <PreviewWarning/>}*/}
 
         </div>
     );
