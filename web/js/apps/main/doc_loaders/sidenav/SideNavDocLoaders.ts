@@ -16,7 +16,8 @@ export function useSideNavDocLoader() {
 
             const viewerURL = ViewerURLs.create(persistenceLayerProvider, loadDocRequest);
 
-            const url = viewerURL.replace("http://localhost:8050", "");
+            const url = viewerURL.replace("http://localhost:8050", "")
+                                 .replace("https://app.getpolarized.io", "");
 
             addTab({
                 url,

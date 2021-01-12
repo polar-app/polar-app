@@ -38,11 +38,6 @@ export interface INoteContent {
     readonly type: 'note';
 
     /**
-     * The sub-items of this node as node IDs.
-     */
-    readonly items?: ReadonlyArray<NoteIDStr>;
-
-    /**
      * The linked wiki references to other notes.
      */
     readonly links?: ReadonlyArray<NoteTargetStr>;
@@ -103,18 +98,27 @@ export interface ICodeContent {
     readonly data: ICodeData;
 }
 
-// FIXME: all blocks should have items... code, latex, etc should have children/items
-// FIXME: the text of annotations should have wiki links?
-
 export interface IBlock {
 
     readonly id: BlockIDStr;
+
+    /**
+     * The owner of this block.
+     */
+    readonly uid: string;
 
     /**
      * The version of this block so we can have multiple but compatible versions
      * in the same store.
      */
     readonly ver: 'v1';
+
+    /**
+     * The sub-items of this node as node IDs.  All blocks should have
+     * items/children because an embed or a latex note wouldn't be able to have
+     * children.
+     */
+    readonly items?: ReadonlyArray<NoteIDStr>;
 
     readonly created: ISODateTimeString;
 
