@@ -21,7 +21,6 @@ import {
 } from './EPUBDocumentStore';
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {useDocViewerElementsContext} from "../DocViewerElementsContext";
-import {Arrays} from 'polar-shared/src/util/Arrays';
 import {Latch} from "polar-shared/src/util/Latch";
 import {useWindowResizeEventListener} from "../../../../../web/js/react/WindowHooks";
 import {IDimensions} from 'polar-shared/src/util/IDimensions';
@@ -407,7 +406,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
         setDocScale, setFinder, setFluidPagemarkFactory, setOutline, setOutlineNavigator,
         setPage, setPageNavigator, setResizer, setSection, stylesheet]);
 
-    useWindowResizeEventListener(epubResizer);
+    useWindowResizeEventListener('epub-resizer', epubResizer);
 
     useComponentDidMount(() => {
         doLoad()

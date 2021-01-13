@@ -108,7 +108,7 @@ export const ResizeBox = deepMemo((props: IProps) => {
 
     const rndRef = React.useRef<Rnd | null>(null);
 
-    useWindowResizeEventListener(() => {
+    useWindowResizeEventListener('ResizeBox', () => {
         setState(computeNewState());
     }, {win: props.window});
 

@@ -21,21 +21,27 @@ const listenerOpts = {
     passive: true
 };
 
+/**
+ *
+ * @param name The event name
+ * @param activity The activity name (used for debugging)
+ * @param delegate The delegate to call.
+ * @param opts The optional window.
+ */
 export function useWindowEventListener(name: WindowEventListenerName,
+                                       activity: string,
                                        delegate: () => void,
                                        opts: WindowOpts = {}) {
 
-    const winRef = React.useRef(opts.win || window);
-
     React.useEffect(() => {
 
-        const win = winRef.current;
+        const win = opts.win || window;
 
         if (win) {
 
             if (typeof win.addEventListener !== 'function') {
 
-                const msg = `Window has no addEventListener for ${name} in useWindowEventListener: ` + (typeof win.addEventListener);
+                const msg = `Window has no addEventListener for ${name} with activity ${activity} in useWindowEventListener: ` + (typeof win.addEventListener);
 
                 console.warn(msg, win);
                 throw new Error(msg);
@@ -55,14 +61,14 @@ export function useWindowEventListener(name: WindowEventListenerName,
 
         return NULL_FUNCTION;
 
-    }, [delegate, name, winRef])
+    }, [activity, delegate, name, opts.win])
 
 }
 
-export function useWindowScrollEventListener(delegate: () => void, opts: WindowOpts = {}) {
-    useWindowEventListener('scroll', delegate, opts);
+export function useWindowScrollEventListener(activity: string, delegate: () => void, opts: WindowOpts = {}) {
+    useWindowEventListener('scroll', activity, delegate, opts);
 }
 
-export function useWindowResizeEventListener(delegate: () => void, opts: WindowOpts = {}) {
-    useWindowEventListener('resize', delegate, opts);
+export function useWindowResizeEventListener(activity: string,delegate: () => void, opts: WindowOpts = {}) {
+    useWindowEventListener('resize', activity, delegate, opts);
 }

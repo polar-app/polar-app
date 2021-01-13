@@ -49,19 +49,21 @@ export const DOMHighlight = deepMemo(function DOMHighlight(props: IProps) {
 
     }), [props.regions.length, regions]);
 
-    function computeWindow(): Window {
+    const computeWindow = React.useCallback((): Window => {
+
         // this is a big hacky as we need to figure out which window is holding
         // the node.
         return props.regions[0].node.ownerDocument!.defaultView!;
-    }
 
-    const win = computeWindow();
+    }, [props.regions]);
 
-    useWindowScrollEventListener(redrawCallback, {win});
-    useWindowResizeEventListener(redrawCallback, {win});
+    const win = React.useMemo(() => computeWindow(), [computeWindow]);
 
-    useWindowScrollEventListener(redrawCallback);
-    useWindowResizeEventListener(redrawCallback);
+    useWindowScrollEventListener('DOMHighlight-scroll-iframe', redrawCallback, {win});
+    useWindowResizeEventListener('DOMHighlight-resize-iframe', redrawCallback, {win});
+
+    useWindowScrollEventListener('DOMHighlight-scroll', redrawCallback);
+    useWindowResizeEventListener('DOMHighlight-resize', redrawCallback);
 
     const dataAttributes = Dictionaries.dataAttributes(props);
 

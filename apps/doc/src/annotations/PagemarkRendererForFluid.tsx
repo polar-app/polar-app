@@ -293,8 +293,8 @@ interface IProps {
 export const PagemarkRendererForFluid = deepMemo((props: IProps) => {
 
     const {pagemark, fingerprint, pageNum, container} = props;
-    useWindowScrollEventListener(NULL_FUNCTION);
-    useWindowResizeEventListener(NULL_FUNCTION);
+    useWindowScrollEventListener('PagemarkRendererForFluid-scroll', NULL_FUNCTION);
+    useWindowResizeEventListener('PagemarkRendererForFluid-resize', NULL_FUNCTION);
 
     if (! container) {
         return null;
