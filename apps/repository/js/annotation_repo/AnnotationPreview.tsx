@@ -44,13 +44,6 @@ const ImagePreview = deepMemo((props: IProps) => {
 
     return (
         <div style={{display: 'flex'}}>
-            {/*<HeightFitImg id={props.id}*/}
-            {/*              src={img.src}*/}
-            {/*              height={200}*/}
-            {/*              style={{*/}
-            {/*                  marginLeft: 'auto',*/}
-            {/*                  marginRight: 'auto'*/}
-            {/*              }}/>*/}
 
             <ResponsiveImg id={props.id} img={img} defaultText="No image"/>
 
@@ -63,12 +56,10 @@ const TextPreview = deepMemo((props: IProps) => {
 
     const {text} = props;
 
-    const truncated = text ? Strings.truncateOnWordBoundary(text, MAX_TEXT_LENGTH, true) : undefined;
-
     return (
         <div style={{userSelect: "none"}}
              className="text-sm"
-             dangerouslySetInnerHTML={{__html: truncated || 'no text'}}/>
+             dangerouslySetInnerHTML={{__html: text || 'no text'}}/>
     );
 
 });
