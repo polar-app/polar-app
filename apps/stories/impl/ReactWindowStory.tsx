@@ -49,7 +49,7 @@ function useWindowResizeDimensions() {
 
     const [state, setState] = React.useState<IDimensions>(() => calculateDimensions());
 
-    useWindowResizeEventListener(() => setState(calculateDimensions()));
+    useWindowResizeEventListener('react-window-story', () => setState(calculateDimensions()));
 
     return state;
 

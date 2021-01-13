@@ -93,15 +93,15 @@ export const RepositoryDocViewerScreen = deepMemo((props: RepositoryDocViewerScr
                     <PrefsContext2>
                         <UserTagsProvider>
                             <DocMetaContextProvider>
-                                <DocViewerStore>
-                                    <DocViewerDocMetaLookupContextProvider>
-                                        <DocFindStore>
-                                            <AnnotationSidebarStoreProvider>
+                                <AnnotationSidebarStoreProvider>
+                                    <DocViewerStore>
+                                        <DocViewerDocMetaLookupContextProvider>
+                                            <DocFindStore>
                                                 <DocViewer/>
-                                            </AnnotationSidebarStoreProvider>
-                                        </DocFindStore>
-                                    </DocViewerDocMetaLookupContextProvider>
-                                </DocViewerStore>
+                                            </DocFindStore>
+                                        </DocViewerDocMetaLookupContextProvider>
+                                    </DocViewerStore>
+                                </AnnotationSidebarStoreProvider>
                             </DocMetaContextProvider>
                         </UserTagsProvider>
                     </PrefsContext2>
