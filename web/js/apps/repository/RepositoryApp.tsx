@@ -91,9 +91,9 @@ export const RepositoryDocViewerScreen = deepMemo((props: RepositoryDocViewerScr
                                      repoDocMetaLoader={props.repoDocMetaLoader}
                                      persistenceLayerManager={props.persistenceLayerManager}>
                     <PrefsContext2>
-                        <UserTagsProvider>
-                            <DocMetaContextProvider>
-                                <AnnotationSidebarStoreProvider>
+                        <AnnotationSidebarStoreProvider>
+                            <UserTagsProvider>
+                                <DocMetaContextProvider>
                                     <DocViewerStore>
                                         <DocViewerDocMetaLookupContextProvider>
                                             <DocFindStore>
@@ -101,9 +101,9 @@ export const RepositoryDocViewerScreen = deepMemo((props: RepositoryDocViewerScr
                                             </DocFindStore>
                                         </DocViewerDocMetaLookupContextProvider>
                                     </DocViewerStore>
-                                </AnnotationSidebarStoreProvider>
-                            </DocMetaContextProvider>
-                        </UserTagsProvider>
+                                </DocMetaContextProvider>
+                            </UserTagsProvider>
+                        </AnnotationSidebarStoreProvider>
                     </PrefsContext2>
                 </PersistenceLayerApp>
             </PersistenceLayerContext.Provider>
