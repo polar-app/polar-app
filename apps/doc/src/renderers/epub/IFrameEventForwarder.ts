@@ -3,6 +3,8 @@
  * listeners to see the event as if it was called inside the parent .page in the
  * parent DOM window.
  */
+import {IFrames} from "polar-shared/src/util/IFrames";
+
 export namespace IFrameEventForwarder {
 
     export function start(iframe: HTMLIFrameElement, target: HTMLElement) {
@@ -15,13 +17,21 @@ export namespace IFrameEventForwarder {
             throw new Error("No parent for iframe");
         }
 
-        if (! iframe.contentDocument) {
-            throw new Error("No contentDocument for iframe");
+        function handleContentDocument() {
+
+            if (! iframe.contentDocument) {
+                throw new Error("No contentDocument for iframe");
+            }
+
+            iframe.contentDocument.body.addEventListener("keyup", event => handleKeyboardEvent(event, target));
+            iframe.contentDocument.body.addEventListener("keydown", event => handleKeyboardEvent(event, target));
+            iframe.contentDocument.body.addEventListener("keypress", event => handleKeyboardEvent(event, target));
+
         }
 
-        iframe.contentDocument.body.addEventListener("keyup", event => handleKeyboardEvent(event, target));
-        iframe.contentDocument.body.addEventListener("keydown", event => handleKeyboardEvent(event, target));
-        iframe.contentDocument.body.addEventListener("keypress", event => handleKeyboardEvent(event, target));
+        IFrames.waitForContentDocument(iframe)
+            .then(handleContentDocument)
+            .catch(err => console.error("Unable to handle iframe: ", err));
 
     }
 

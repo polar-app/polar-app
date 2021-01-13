@@ -65,6 +65,7 @@ function forwardEvents(target: HTMLElement) {
 
     const iframe = target.querySelector('iframe')! as HTMLIFrameElement;
     IFrameEventForwarder.start(iframe, target);
+
 }
 
 function handleLinkClicks(target: HTMLElement, linkLoader: LinkLoaderDelegate) {
