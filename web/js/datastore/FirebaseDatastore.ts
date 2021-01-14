@@ -69,6 +69,10 @@ import {
     SnapshotUnsubscriber
 } from 'polar-shared/src/util/Snapshots';
 import {SnapshotCaches} from "polar-snapshot-cache/src/SnapshotCaches";
+import {IQuerySnapshot} from "polar-snapshot-cache/src/store/IQuerySnapshot";
+import {IDocumentChange} from "polar-snapshot-cache/src/store/IDocumentChange";
+import {IDocumentReference} from "polar-snapshot-cache/src/store/IDocumentReference";
+import { IDocumentSnapshot } from 'polar-snapshot-cache/src/store/IDocumentSnapshot';
 
 const log = Logger.create();
 
@@ -160,7 +164,11 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         // them BOTH at the same time ... this way the performance is much much
         // better.
 
-        const query = this.firestore!
+        const firestore = await SnapshotCaches.create()
+            .withGenericSnapshotCacheKey('FirebaseDatastore.snapshot')
+            .build(this.firestore! as any);
+
+        const query = firestore
             .collection(DatastoreCollection.DOC_META)
             .where('uid', '==', uid);
 
@@ -173,7 +181,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             committed: 0
         };
 
-        const onNextForSnapshot = (snapshot: firebase.firestore.QuerySnapshot) => {
+        const onNextForSnapshot = (snapshot: IQuerySnapshot) => {
 
             try {
 
@@ -253,6 +261,10 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     public async delete(docMetaFileRef: DocMetaFileRef,
                         datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<Readonly<DeleteResult>> {
 
+        const firestore = await SnapshotCaches.create()
+            .withGenericSnapshotCacheKey('FirebaseDatastore.delete')
+            .build(this.firestore! as any);
+
         log.info("delete: ", docMetaFileRef);
 
         if (docMetaFileRef.docFile && docMetaFileRef.docFile.name) {
@@ -265,11 +277,11 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const id = FirebaseDatastores.computeDocMetaID(docMetaFileRef.fingerprint, this.uid);
 
-        const docInfoRef = this.firestore!
+        const docInfoRef = firestore
             .collection(DatastoreCollection.DOC_INFO)
             .doc(id);
 
-        const docMetaRef = this.firestore!
+        const docMetaRef = firestore!
             .collection(DatastoreCollection.DOC_META)
             .doc(id);
 
@@ -282,7 +294,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 this.waitForCommit(docInfoRef)
             ]);
 
-            const batch = this.firestore!.batch();
+            const batch = firestore.batch();
 
             batch.delete(docInfoRef);
             batch.delete(docMetaRef);
@@ -313,17 +325,21 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     public async getDocMetaSnapshot(opts: DocMetaSnapshotOpts<string>): Promise<DocMetaSnapshotResult> {
 
+        const firestore = await SnapshotCaches.create()
+            .withGenericSnapshotCacheKey('FirebaseDatastore.getDocMetaSnapshot')
+            .build(this.firestore! as any);
+
         const {fingerprint} = opts;
 
         const id = FirebaseDatastores.computeDocMetaID(fingerprint, this.uid);
 
-        const ref = this.firestore!
+        const ref = firestore
             .collection(DatastoreCollection.DOC_META)
             .doc(id);
 
         let unsubscriber: SnapshotUnsubscriber = NULL_FUNCTION;
 
-        const onNext = (snapshot: firebase.firestore.DocumentSnapshot) => {
+        const onNext = (snapshot: IDocumentSnapshot) => {
 
             // WARNING: do not use cache for any meaningful use because the cache
             // doesn't mean 'local' as something can be written and we receive a
@@ -365,8 +381,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                                     opts: GetDocMetaOpts = {}): Promise<string | null> {
 
         const firestore = await SnapshotCaches.create()
-                                              .withGenericSnapshotCacheKey(DatastoreCollection.DOC_META, 'getDocMetaDirectly')
-                                              .build(this.firestore!);
+            .withGenericSnapshotCacheKey('FirebaseDatastore.getDocMetaDirectly')
+            .build(this.firestore! as any);
 
         const ref = firestore
             .collection(DatastoreCollection.DOC_META)
@@ -735,6 +751,10 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                        docInfo: IDocInfo,
                        opts: WriteOpts = new DefaultWriteOpts()) {
 
+        const firestore = await SnapshotCaches.create()
+            .withGenericSnapshotCacheKey('FirebaseDatastore.write')
+            .build(this.firestore! as any);
+
         await this.handleWriteFile(opts);
 
         const datastoreMutation = opts.datastoreMutation || new DefaultDatastoreMutation();
@@ -746,11 +766,11 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
          */
         const createDocRefs = () => {
 
-            const docMetaRef = this.firestore!
+            const docMetaRef = firestore
                 .collection(DatastoreCollection.DOC_META)
                 .doc(id);
 
-            const docInfoRef = this.firestore!
+            const docInfoRef = firestore
                 .collection(DatastoreCollection.DOC_INFO)
                 .doc(id);
 
@@ -782,7 +802,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             const recordPermission
                 = Dictionaries.onlyDefinedProperties(await createRecordPermission());
 
-            const batch = this.firestore!.batch();
+            const batch = firestore.batch();
 
             const dataLen = data.length;
 
@@ -910,11 +930,13 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     public async getDocMetaRefs(): Promise<ReadonlyArray<DocMetaRef>> {
 
-        Preconditions.assertPresent(this.firestore, 'firestore');
+        const firestore = await SnapshotCaches.create()
+            .withGenericSnapshotCacheKey('FirebaseDatastore.getDocMetaRefs')
+            .build(this.firestore! as any);
 
         const uid = this.uid;
 
-        const snapshot = await this.firestore!
+        const snapshot = await firestore
             .collection(DatastoreCollection.DOC_META)
             .where('uid', '==', uid)
             .get();
@@ -948,7 +970,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
      * Wait for the record to be fully committed to the remote datastore - not
      * just written to the local cache.
      */
-    private waitForCommit(ref: firebase.firestore.DocumentReference): Promise<void> {
+    private waitForCommit(ref: IDocumentReference): Promise<void> {
 
         return new Promise(resolve => {
 
@@ -965,7 +987,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     }
 
-    private handleDatastoreMutations(ref: firebase.firestore.DocumentReference,
+    private handleDatastoreMutations(ref: IDocumentReference,
                                      datastoreMutation: DatastoreMutation<boolean>,
                                      op: 'write' | 'delete') {
 
@@ -1014,194 +1036,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
      * 2. Local data is added via the same code path.  The code path is remote-
      *    first but then then immediately resolved from the cache and added
      *    locally.
-     *
-     * @Deprecated
      */
-    private handleDocInfoSnapshot(snapshot: firebase.firestore.QuerySnapshot,
-                                  docMetaSnapshotEventListener: DocMetaSnapshotEventListener,
-                                  batchID: number) {
-
-        log.debug("onSnapshot... ");
-
-        type DocMetaData = string | null;
-
-        interface DocMetaLookup {
-            get(fingerprint: string): Promise<DocMetaData>;
-
-            // [fingerprint: string]: DocMetaData;
-        }
-
-        /**
-         * Local cache for storing DocMeta that we haven't fetched yet.
-         */
-        interface DocMetaCache {
-            [fingerprint: string]: DocMetaData;
-        }
-
-        const datastore = this;
-
-        class DefaultDocMetaLookup implements DocMetaLookup {
-
-            constructor(private readonly cache: DocMetaCache) {
-
-            }
-
-            public async get(fingerprint: string): Promise<DocMetaData> {
-
-                const result = this.cache[fingerprint];
-
-                if (isPresent(result)) {
-                    return result;
-                }
-
-                // we don't have this in the local cache which we SHOULD but
-                // dont' generate an error here.  We should force a fetch from
-                // the server.
-
-                log.warn("No entry for fingerprint (fetching directly): " + fingerprint);
-
-                return await datastore.getDocMeta(fingerprint);
-
-            }
-
-        }
-
-        // TODO: we should shave ANOTHER 500ms by hinting that this page will
-        // need BOTH the doc_meta and doc_info data (I think) by loading them
-        // both at the same time (in parallel via Promises.all)
-        const createDocMetaLookup = async (useCache: boolean): Promise<DocMetaLookup> => {
-
-            const uid = this.uid;
-
-            const query = this.firestore!
-                .collection(DatastoreCollection.DOC_META)
-                .where('uid', '==', uid);
-
-            const source = useCache ? 'cache' : 'server';
-
-            const stopwatch = Stopwatches.create();
-            const snapshot = await query.get({source});
-            log.info("DocMeta lookup snapshot duration: ", stopwatch.stop());
-
-            const docChanges = snapshot.docChanges();
-
-            const cache: DocMetaCache = {};
-
-            // TODO: if we did a lookup by ID and not by fingerprint we could
-            // probably keep the data JUST within localStorage until it's
-            // requested to avoid keeping it in this in-memory map which could
-            // help with memory pressure but we should wait until this is a
-            // problem as it's a premature optimization right now.
-
-            for (const docChange of docChanges) {
-                const record = <RecordHolder<DocMetaHolder>> docChange.doc.data();
-                const fingerprint = record.value.docInfo.fingerprint;
-                const data = record.value.value;
-                cache[fingerprint] = data;
-            }
-
-            return new DefaultDocMetaLookup(cache);
-
-        };
-
-        const docMetaLookupProvider =
-            AsyncProviders.memoize(() => createDocMetaLookup(snapshot.metadata.fromCache));
-
-        const docMetaMutationFromRecord = (record: RecordHolder<IDocInfo>,
-                                           mutationType: MutationType = 'created') => {
-
-            const id = record.id;
-
-            const docInfo = record.value;
-
-            const dataProvider = async () => {
-                const docMetaLookup = await docMetaLookupProvider();
-                return docMetaLookup.get(docInfo.fingerprint);
-            };
-
-            const docMetaProvider = AsyncProviders.memoize(async () => {
-
-                if (mutationType === 'deleted') {
-                    throw new Error("Unable to read data when mutationType is 'deleted'");
-                }
-
-                const data = await dataProvider();
-
-                if (! data) {
-                    console.warn("No data for fingerprint: " + docInfo.fingerprint);
-                    return undefined;
-                }
-
-                const docMetaID = FirebaseDatastores.computeDocMetaID(docInfo.fingerprint, this.uid);
-                Preconditions.assertPresent(data, `No data for docMeta with fingerprint: ${docInfo.fingerprint}, docMetaID: ${docMetaID}`);
-                return DocMetas.deserialize(data!, docInfo.fingerprint);
-
-            });
-
-            const docMetaMutation: FirebaseDocMetaMutation = {
-                id,
-                fingerprint: docInfo.fingerprint,
-                dataProvider,
-                docMetaProvider,
-                docInfoProvider: AsyncProviders.of(docInfo),
-                docMetaFileRefProvider: AsyncProviders.of(DocMetaFileRefs.createFromDocInfo(docInfo)),
-                mutationType
-            };
-
-            return docMetaMutation;
-
-        };
-
-        const toDocMetaMutationFromDocChange = (docChange: firebase.firestore.DocumentChange) => {
-            const record = <RecordHolder<IDocInfo>> docChange.doc.data();
-            return docMetaMutationFromRecord(record, toMutationType(docChange.type));
-
-        };
-
-        const consistency = snapshot.metadata.fromCache ? 'written' : 'committed';
-
-        const docChanges = snapshot.docChanges();
-
-        const progressTracker = new ProgressTracker({total: docChanges.length, id: 'firebase-snapshot'});
-
-        const docChangeDocMetaMutations = docChanges.map(current => toDocMetaMutationFromDocChange(current));
-
-        const docMetaMutations = [...docChangeDocMetaMutations];
-
-        docMetaSnapshotEventListener({
-            datastore: this.id,
-            consistency,
-            progress: progressTracker.terminate(),
-            docMetaMutations,
-            batch: {
-                id: batchID,
-                terminated: true,
-            }
-        }).catch(err => log.error("Unable to dispatch event listener: ", err));
-
-        log.debug("onSnapshot... done");
-
-    }
-
-    /**
-     * Called when new data is available from Firebase so we can solve promises,
-     * add things to local stores, etc.
-     *
-     * ALL operations are done via snapshots which we create and subscribe to
-     * on init().
-     *
-     * This solves to problems:
-     *
-     * 1. The most important, is that when data is added remotely (the user is
-     *    on another machine and this machine-rejoins the network or detects
-     *    changes) then content if pulled locally and added to the local
-     *    datastore.
-     *
-     * 2. Local data is added via the same code path.  The code path is remote-
-     *    first but then then immediately resolved from the cache and added
-     *    locally.
-     */
-    private handleDocMetaSnapshot(snapshot: firebase.firestore.QuerySnapshot,
+    private handleDocMetaSnapshot(snapshot: IQuerySnapshot,
                                   docMetaSnapshotEventListener: DocMetaSnapshotEventListener,
                                   batchID: number) {
 
@@ -1251,7 +1087,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         };
 
-        const toDocMetaMutationFromDocChange = (docChange: firebase.firestore.DocumentChange) => {
+        const toDocMetaMutationFromDocChange = (docChange: IDocumentChange) => {
             const record = <RecordHolder<DocMetaHolder>> docChange.doc.data();
             return docMetaMutationFromRecord(record, toMutationType(docChange.type));
 
@@ -1282,7 +1118,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     }
 
-    private toConsistency(snapshot: firebase.firestore.QuerySnapshot): DatastoreConsistency {
+    private toConsistency(snapshot: IQuerySnapshot): DatastoreConsistency {
         return snapshot.metadata.fromCache ? 'written' : 'committed';
     }
 
