@@ -68,6 +68,7 @@ import {
 import {
     SnapshotUnsubscriber
 } from 'polar-shared/src/util/Snapshots';
+import {SnapshotCaches} from "polar-snapshot-cache/src/SnapshotCaches";
 
 const log = Logger.create();
 
@@ -363,7 +364,11 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     public async getDocMetaDirectly(id: string,
                                     opts: GetDocMetaOpts = {}): Promise<string | null> {
 
-        const ref = this.firestore!
+        const firestore = await SnapshotCaches.create()
+                                              .withGenericSnapshotCacheKey(DatastoreCollection.DOC_META, 'getDocMetaDirectly')
+                                              .build(this.firestore!);
+
+        const ref = firestore
             .collection(DatastoreCollection.DOC_META)
             .doc(id);
 
