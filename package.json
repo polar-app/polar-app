@@ -197,6 +197,7 @@
     "polar-text-highlighter": "^2.0.105",
     "polar-web-extension-api": "^2.0.105",
     "polar-webapp-links": "^2.0.105",
+    "polar-snapshot-cache": "^2.0.105",
     "prop-types": "~15.7.2",
     "react-async": "=10.0.1",
     "react-cookie-banner": "~4.0.0",
