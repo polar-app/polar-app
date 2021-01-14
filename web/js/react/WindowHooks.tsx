@@ -33,15 +33,40 @@ export function useWindowEventListener(name: WindowEventListenerName,
                                        delegate: () => void,
                                        opts: WindowOpts = {}) {
 
+    interface IWindowDescriptor {
+        readonly win: Window;
+        readonly type: 'explicit' | 'default'
+    }
+
     React.useEffect(() => {
 
-        const win = opts.win || window;
+        function computeWindowDescriptor(): IWindowDescriptor {
+
+            if (opts.win) {
+
+                return {
+                    win: opts.win,
+                    type: 'explicit'
+                }
+
+            } else {
+
+                return {
+                    win,
+                    type: 'default'
+                }
+
+            }
+
+        }
+
+        const {win, type} = computeWindowDescriptor();
 
         if (win) {
 
             if (typeof win.addEventListener !== 'function') {
 
-                const msg = `Window has no addEventListener for ${name} with activity ${activity} in useWindowEventListener: ` + (typeof win.addEventListener);
+                const msg = `Window ${type} has no addEventListener for ${name} with activity ${activity} in useWindowEventListener: ` + (typeof win.addEventListener);
 
                 console.warn(msg, win);
                 throw new Error(msg);
