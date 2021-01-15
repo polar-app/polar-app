@@ -52,7 +52,7 @@ export function useWindowEventListener(name: WindowEventListenerName,
             } else {
 
                 return {
-                    win,
+                    win: window,
                     type: 'default'
                 }
 
