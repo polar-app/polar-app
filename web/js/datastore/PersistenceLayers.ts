@@ -305,7 +305,7 @@ export class PersistenceLayers {
                 if (data) {
                     await target.datastore.write(sourceSyncDoc.fingerprint, data!, sourceSyncDoc.docMetaFileRef.docInfo);
                 } else {
-                    log.warn("No data for fingerprint: " + sourceSyncDoc.fingerprint);
+                    log.warn("handleSyncDoc: No data for fingerprint: " + sourceSyncDoc.fingerprint);
                 }
 
                 ++result.docMeta.writes;

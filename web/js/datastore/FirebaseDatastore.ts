@@ -68,7 +68,7 @@ import {
 import {
     SnapshotUnsubscriber
 } from 'polar-shared/src/util/Snapshots';
-import {SnapshotCaches} from "polar-snapshot-cache/src/SnapshotCaches";
+import {StoreCaches} from "polar-snapshot-cache/src/StoreCaches";
 import {IQuerySnapshot} from "polar-snapshot-cache/src/store/IQuerySnapshot";
 import {IDocumentChange} from "polar-snapshot-cache/src/store/IDocumentChange";
 import {IDocumentReference} from "polar-snapshot-cache/src/store/IDocumentReference";
@@ -164,7 +164,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         // them BOTH at the same time ... this way the performance is much much
         // better.
 
-        const firestore = await SnapshotCaches.create()
+        const firestore = await StoreCaches.create()
             .withGenericSnapshotCacheKey('FirebaseDatastore.snapshot')
             .build(this.firestore! as any);
 
@@ -261,7 +261,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     public async delete(docMetaFileRef: DocMetaFileRef,
                         datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<Readonly<DeleteResult>> {
 
-        const firestore = await SnapshotCaches.create()
+        const firestore = await StoreCaches.create()
             .withGenericSnapshotCacheKey('FirebaseDatastore.delete')
             .build(this.firestore! as any);
 
@@ -325,7 +325,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     public async getDocMetaSnapshot(opts: DocMetaSnapshotOpts<string>): Promise<DocMetaSnapshotResult> {
 
-        const firestore = await SnapshotCaches.create()
+        const firestore = await StoreCaches.create()
             .withGenericSnapshotCacheKey('FirebaseDatastore.getDocMetaSnapshot')
             .build(this.firestore! as any);
 
@@ -380,7 +380,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     public async getDocMetaDirectly(id: string,
                                     opts: GetDocMetaOpts = {}): Promise<string | null> {
 
-        const firestore = await SnapshotCaches.create()
+        const firestore = await StoreCaches.create()
             .withGenericSnapshotCacheKey('FirebaseDatastore.getDocMetaDirectly')
             .build(this.firestore! as any);
 
@@ -751,7 +751,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                        docInfo: IDocInfo,
                        opts: WriteOpts = new DefaultWriteOpts()) {
 
-        const firestore = await SnapshotCaches.create()
+        const firestore = await StoreCaches.create()
             .withGenericSnapshotCacheKey('FirebaseDatastore.write')
             .build(this.firestore! as any);
 
@@ -930,7 +930,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     public async getDocMetaRefs(): Promise<ReadonlyArray<DocMetaRef>> {
 
-        const firestore = await SnapshotCaches.create()
+        const firestore = await StoreCaches.create()
             .withGenericSnapshotCacheKey('FirebaseDatastore.getDocMetaRefs')
             .build(this.firestore! as any);
 
@@ -1063,7 +1063,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 const data = await dataProvider();
 
                 if (! data) {
-                    console.warn("No data for fingerprint: " + docInfo.fingerprint);
+                    console.warn("No data for fingerprint from dataProvider: " + docInfo.fingerprint);
                     return undefined;
                 }
 

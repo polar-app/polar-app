@@ -24,7 +24,7 @@ export namespace Firestore {
     /**
      * Allows us to init with custom options.
      */
-    export async function init(opts: FirestoreOptions = {enablePersistence: true}) {
+    export async function init(opts: FirestoreOptions = {enablePersistence: false}) {
 
         if (instance) {
             return;
