@@ -136,7 +136,7 @@ const AccountButton = React.memo(() => {
 
     return (
         <HistoryButton title="Account"
-                       path="/#account">
+                       path="#account">
             <AccountAvatar className={classes.secondaryIcon}/>
         </HistoryButton>
     )
