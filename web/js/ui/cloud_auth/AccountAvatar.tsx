@@ -5,6 +5,7 @@ import {useUserInfoContext} from "../../apps/repository/auth_handler/UserInfoPro
 interface IProps {
     readonly size?: 'large' | 'medium' | 'small';
     readonly style?: React.CSSProperties;
+    readonly className?: string;
 }
 
 export const AccountAvatar = React.memo((props: IProps) => {
@@ -23,6 +24,7 @@ export const AccountAvatar = React.memo((props: IProps) => {
 
     return (
         <UserAvatar size={props.size}
+                    className={props.className}
                     displayName={userInfo.displayName}
                     style={props.style}
                     photoURL={userInfo.photoURL}/>

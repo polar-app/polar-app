@@ -5,6 +5,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import isEqual from "react-fast-compare";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import createStyles from "@material-ui/core/styles/createStyles";
+import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -38,6 +39,7 @@ interface IProps {
     readonly displayName: string | undefined;
     readonly size?: 'small' | 'medium' | 'large' | 'xlarge';
     readonly style?: React.CSSProperties;
+    readonly className?: string;
 
 }
 
@@ -56,7 +58,7 @@ export const UserAvatar = React.memo((props: IProps) => {
         xlarge: classes.xlarge,
     };
 
-    const className = classNameMap[size];
+    const className = clsx([classNameMap[size], props.className]);
 
     if (props.photoURL) {
 

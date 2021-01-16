@@ -11,8 +11,9 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import NoteIcon from '@material-ui/icons/Note';
 import DescriptionIcon from '@material-ui/icons/Description';
 import {createContextMenu} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
-import {SideNavContextMenu, SideNavCurrentTabContext} from "./SideNavContextMenu";
+import {SideNavContextMenu} from "./SideNavContextMenu";
 import {SideNavButton} from "./SideNavButton";
+import {AccountAvatar} from "../ui/cloud_auth/AccountAvatar";
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -129,6 +130,19 @@ const StatsButton = React.memo(() => {
     )
 });
 
+const AccountButton = React.memo(() => {
+
+    const classes = useStyles();
+
+    return (
+        <HistoryButton title="Account"
+                       path="/#account">
+            <AccountAvatar className={classes.secondaryIcon}/>
+        </HistoryButton>
+    )
+});
+
+
 const SettingsButton = React.memo(() => {
 
     const classes = useStyles();
@@ -196,6 +210,7 @@ export const SideNav = React.memo(() => {
 
             <div style={{marginBottom: '5px'}}>
                 <SideNavDivider/>
+                <AccountButton/>
                 <SettingsButton/>
             </div>
 

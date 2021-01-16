@@ -63,6 +63,7 @@ import {SIDE_NAV_ENABLED, useSideNavStore} from '../../sidenav/SideNavStore';
 import {SideNav} from "../../sidenav/SideNav";
 import Divider from '@material-ui/core/Divider';
 import {SideNavDocumentLoader} from "../../sidenav/SideNavDocumentLoader";
+import {AccountDialogScreen} from "../../ui/cloud_auth/AccountDialogScreen";
 
 interface IProps {
     readonly app: App;
@@ -433,9 +434,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                                                 <Route path='#account'
                                                                        component={() =>
-                                                                           <Cached>
-                                                                               <AccountControlSidebar persistenceLayerController={app.persistenceLayerController}/>
-                                                                           </Cached>
+                                                                           <AccountDialogScreen/>
                                                                        }/>
 
                                                                 <Route path='#add'>

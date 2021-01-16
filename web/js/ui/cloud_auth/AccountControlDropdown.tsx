@@ -5,7 +5,6 @@ import {MUIPopper} from "../../mui/menu/MUIPopper";
 import {AccountAvatar} from './AccountAvatar';
 import {deepMemo} from "../../react/ReactUtils";
 
-
 interface IProps {
     readonly userInfo: UserInfo;
 }
