@@ -8,18 +8,29 @@ const globalKeyMap = keyMapWithGroup({
         CLOSE_CURRENT_TAB: {
             name: "Close Current Document",
             description: "Close the Current Document Tab",
-            sequences: ['c', 'ctrl+c', 'command+c']
+            sequences: ['ctrl+c', 'command+c']
+        },
+        PREV_TAB: {
+            name: "Jump to Previous Document",
+            description: "Jump to Previous Document",
+            sequences: ['shift+command+ArrowUp', 'shift+ctrl+ArrowUp']
+        },
+        NEXT_TAB: {
+            name: "Jump to Next Document",
+            description: "Jump to Next Document",
+            sequences: ['shift+command+ArrowDown', 'shift+ctrl+ArrowDown']
         }
-
     }
 });
 
 export const SideNavGlobalHotKeys = React.memo(() => {
 
-    const {closeCurrentTab} = useSideNavCallbacks();
+    const {closeCurrentTab, prevTab, nextTab} = useSideNavCallbacks();
 
     const globalKeyHandlers = {
-        CLOSE_CURRENT_TAB: closeCurrentTab
+        CLOSE_CURRENT_TAB: closeCurrentTab,
+        PREV_TAB: prevTab,
+        NEXT_TAB: nextTab
     };
 
     if (! SIDE_NAV_ENABLED) {

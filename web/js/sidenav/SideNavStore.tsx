@@ -62,6 +62,8 @@ interface ISideNavCallbacks {
     readonly addTab: (tabDescriptor: TabDescriptorInit) => void;
     readonly removeTab: (id: number) => void;
     readonly closeCurrentTab: () => void;
+    readonly prevTab: () => void;
+    readonly nextTab: () => void;
 
 }
 
@@ -187,16 +189,6 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
                 return store.tabs.filter(current => current.id !== id)
             }
 
-            // function computeActiveTab() {
-            //
-            //     if (store.activeTab === id) {
-            //         return Math.max(store.activeTab - 1, 1);
-            //     }
-            //
-            //     return store.activeTab;
-            //
-            // }
-
             const tabs = computeNewTabs();
             // const activeTab = computeActiveTab();
 
@@ -218,8 +210,55 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
 
         }
 
+        function doNav(direction: 'prev' | 'next') {
+
+            const store = storeProvider();
+
+            if (store.activeTab === undefined) {
+                // nothing currently selected
+                return;
+            }
+
+            function computeNextTab(): TabDescriptor | undefined {
+
+                const currentTab = Arrays.first(store.tabs.filter(current => current.id === store.activeTab));
+
+                if (! currentTab) {
+                    return undefined;
+                }
+
+                const idx = store.tabs.indexOf(currentTab);
+
+                switch(direction) {
+
+                    case "prev":
+                        return Arrays.prevSibling(store.tabs, idx);
+
+                    case "next":
+                        return Arrays.nextSibling(store.tabs, idx);
+
+                }
+
+            }
+
+            const nextTab = computeNextTab();
+
+            if (nextTab) {
+                setActiveTab(nextTab.id);
+            }
+
+        }
+
+        function prevTab() {
+            doNav('prev');
+        }
+
+        function nextTab() {
+            doNav('next');
+        }
+
         return {
-            addTab, removeTab, setActiveTab, closeCurrentTab
+            addTab, removeTab, setActiveTab, closeCurrentTab, prevTab, nextTab
         };
 
     }, [historyRef, setStore, storeProvider]);
