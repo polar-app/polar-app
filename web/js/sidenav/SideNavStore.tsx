@@ -200,9 +200,9 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
             const tabs = computeNewTabs();
             // const activeTab = computeActiveTab();
 
+            historyRef.current.push("/");
             setStore({...store, tabs, activeTab: undefined});
 
-            historyRef.current.push("/");
 
         }
 
