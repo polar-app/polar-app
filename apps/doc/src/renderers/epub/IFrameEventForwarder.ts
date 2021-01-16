@@ -29,7 +29,7 @@ export namespace IFrameEventForwarder {
 
         }
 
-        IFrames.waitForContentDocument(iframe)
+        IFrames.waitForLoad(iframe)
             .then(handleContentDocument)
             .catch(err => console.error("Unable to handle iframe: ", err));
 
