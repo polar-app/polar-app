@@ -147,13 +147,15 @@ export function useObservableStore<V, K extends keyof V>(context: React.Context<
     const [value, setValue] = useState<V>(internalObservableStore.current);
     const valueRef = React.useRef(value);
 
-    React.useEffect(() => {
+    const {filter, enableShallowEquals} = opts;
 
-        const subscription = internalObservableStore.subject.subscribe((nextValue) => {
+    const handleUpdate = React.useCallback((nextValue: V) => {
+
+        try {
 
             function doUpdateValue(newValue: V) {
-                setValue(newValue);
                 valueRef.current = newValue;
+                setValue(newValue);
             }
 
             const currValue = valueRef.current;
@@ -165,7 +167,7 @@ export function useObservableStore<V, K extends keyof V>(context: React.Context<
 
             function isEqual(a: Dict, b: Dict): boolean {
 
-                if (opts.enableShallowEquals) {
+                if (enableShallowEquals) {
                     return Equals.shallow(a, b);
                 }
 
@@ -185,9 +187,7 @@ export function useObservableStore<V, K extends keyof V>(context: React.Context<
 
                 if (! isEqual(currValuePicked, nextValuePicked)) {
 
-                    // console.log("values differ, ", currValuePicked, nextValuePicked);
-
-                    if (opts.filter && ! opts.filter(nextValuePicked)) {
+                    if (filter && ! filter(nextValuePicked)) {
                         // the value didn't pass the filter so don't update it...
                         return;
                     }
@@ -197,7 +197,7 @@ export function useObservableStore<V, K extends keyof V>(context: React.Context<
                     return doUpdateValue(nextValue);
 
                 } else {
-                    // debug("values are NOT updated: ", nextValuePicked, currValuePicked);
+                    // noop
                 }
 
             } else {
@@ -211,16 +211,27 @@ export function useObservableStore<V, K extends keyof V>(context: React.Context<
 
                 }
             }
+        } catch(e) {
+            console.error("Unable to handle subscription: ", e);
+        }
 
+    }, [enableShallowEquals, filter, keys]);
+
+    React.useEffect(() => {
+
+        // the first value is never sent and we have to handle it.
+        handleUpdate(internalObservableStore.current);
+
+        const subscription = internalObservableStore.subject.subscribe((nextValue) => {
+            handleUpdate(nextValue);
         })
 
         return () => {
             subscription.unsubscribe();
         }
 
-    }, [internalObservableStore.subject, keys, opts]);
+    }, [handleUpdate, internalObservableStore]);
 
-    // return the initial value...
     return value;
 
 }

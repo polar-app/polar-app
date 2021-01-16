@@ -8,7 +8,7 @@ import {PagemarkProgressBar} from "./PagemarkProgressBar";
 import {AreaHighlightsView} from "./annotations/AreaHighlightsView";
 import {PagemarksView} from "./annotations/PagemarksView";
 import {useComponentDidMount} from "../../../web/js/hooks/ReactLifecycleHooks";
-import {SetDocMetaType, useDocViewerCallbacks, useDocViewerStore} from "./DocViewerStore";
+import {useDocViewerCallbacks, useDocViewerStore} from "./DocViewerStore";
 import isEqual from "react-fast-compare";
 import {usePersistenceLayerContext} from "../../repository/js/persistence_layer/PersistenceLayerApp";
 import {DocFindBar} from "./DocFindBar";
@@ -363,12 +363,21 @@ export const DocViewer = deepMemo(function DocViewer() {
         return <NoDocument/>;
     }
 
-    if (! docURL || ! parsedURL) {
-        return <LoadingProgress/>
+    if (parsedURL === undefined) {
+        return <NoDocument/>;
+    }
+
+    const docID = parsedURL.id;
+
+    if (docURL === undefined) {
+        return (
+            <>
+                <LoadingProgress/>
+            </>
+        )
     }
 
     const fileType = FileTypes.create(docURL);
-    const docID = parsedURL.id;
 
     return (
         <DocViewerParent docID={docID}>

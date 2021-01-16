@@ -88,6 +88,7 @@ export const FolderSidebar2 = React.memo((props: IProps) => {
 
                 <div style={{
                          display: 'flex',
+                         flexGrow: 1,
                          flexDirection: 'column',
                          overflow: 'auto'
                      }}>

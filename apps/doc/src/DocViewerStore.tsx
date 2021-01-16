@@ -393,6 +393,8 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
                             return file.url;
                         }
 
+                    } else {
+                        console.warn("No docMeta for setDocMeta");
                     }
 
                     return undefined;
@@ -1026,7 +1028,8 @@ export const [DocViewerStoreProviderDelegate, useDocViewerStore, useDocViewerCal
     = createObservableStore<IDocViewerStore, Mutator, IDocViewerCallbacks>({
     initialValue: initialStore,
     mutatorFactory,
-    callbacksFactory: useCallbacksFactory
+    callbacksFactory: useCallbacksFactory,
+    enableShallowEquals: true
 });
 
 DocViewerStoreProviderDelegate.displayName='DocViewerStoreProviderDelegate';
