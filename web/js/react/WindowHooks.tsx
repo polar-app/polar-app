@@ -64,6 +64,15 @@ export function useWindowEventListener(name: WindowEventListenerName,
 
         if (win) {
 
+            if (win.closed) {
+                // this happens when the window is closed and listening to
+                // events at this point would actually be silly.  We might not
+                // actually even want to warn at that point.
+                const msg = `Window ${type} has closed for ${name} with activity ${activity} in useWindowEventListener.`;
+                console.warn(msg, win);
+                return;
+            }
+
             if (typeof win.addEventListener !== 'function') {
 
                 const msg = `Window ${type} has no addEventListener for ${name} with activity ${activity} in useWindowEventListener: ` + (typeof win.addEventListener);
