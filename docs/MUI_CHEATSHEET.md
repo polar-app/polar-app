@@ -17,3 +17,18 @@ const useStyles = makeStyles((theme) =>
 );
 
 # Adding style to sub-elements
+
+# hover
+```
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        root: {
+            '&:hover': {
+                background: theme.palette.action.hover
+            },
+        },
+    }),
+);
+```
+
+
