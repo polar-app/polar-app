@@ -8,7 +8,7 @@ interface ISideNavButtonProps {
     readonly tab: TabDescriptor;
 }
 
-const WithContext = React.memo((props: ISideNavButtonProps) => {
+const Button = React.memo((props: ISideNavButtonProps) => {
 
     const {tab} = props;
 
@@ -26,7 +26,7 @@ export const SideNavButton = React.memo((props: ISideNavButtonProps) => {
         <>
             <SideNavCurrentTabContext.Provider value={{tab}}>
                 <SideNavContextMenuProvider>
-                    <WithContext tab={tab}/>
+                    <Button tab={tab}/>
                 </SideNavContextMenuProvider>
             </SideNavCurrentTabContext.Provider>
         </>

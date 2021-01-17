@@ -56,6 +56,8 @@ interface IProps {
     readonly onClick: () => void;
     readonly children: JSX.Element;
     readonly className?: string;
+    readonly noContextMenu?: boolean;
+
 }
 
 export const ActiveTabButton = deepMemo((props: IProps) => {
@@ -81,6 +83,16 @@ export const ActiveTabButton = deepMemo((props: IProps) => {
 
     const active = canonicalLocationPath === canonicalPath;
 
+    const handleContextMenu = React.useCallback((event: React.MouseEvent) => {
+
+        if (props.noContextMenu) {
+            return;
+        }
+
+        onContextMenu(event);
+
+    }, [onContextMenu, props.noContextMenu])
+
     return (
 
         <Tooltip title={props.title}
@@ -93,7 +105,7 @@ export const ActiveTabButton = deepMemo((props: IProps) => {
                  leaveDelay={0}>
 
             <div className={clsx(classes.root, classes.button, active && classes.activeButton, props.className)}
-                 onContextMenu={onContextMenu}
+                 onContextMenu={handleContextMenu}
                  onClick={props.onClick}>
 
                 {props.children}

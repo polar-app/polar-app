@@ -83,6 +83,7 @@ const HistoryButton = React.memo((props: HistoryButtonProps) => {
     return (
         <ActiveTabButton title={props.title}
                          path={props.path}
+                         noContextMenu={true}
                          onClick={() => history.push(props.path)}>
             {props.children}
         </ActiveTabButton>
@@ -98,6 +99,7 @@ const HomeButton = React.memo(() => {
     return (
         <ActiveTabButton title="Documents"
                          path="/"
+                         noContextMenu={true}
                          onClick={() => history.push('/')}>
             <DescriptionIcon className={classes.secondaryIcon}/>
         </ActiveTabButton>
