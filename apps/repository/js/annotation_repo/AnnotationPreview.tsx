@@ -9,8 +9,6 @@ import {PlainTextStr, Strings} from "polar-shared/src/util/Strings";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import useTheme from '@material-ui/core/styles/useTheme';
 
-const MAX_TEXT_LENGTH = 300;
-
 function createStyle(color: HighlightColor | undefined): React.CSSProperties {
 
     if (color) {
@@ -110,11 +108,11 @@ export const AnnotationPreview = deepMemo((props: IProps) => {
                 <>
                     <Preview {...props}/>
 
-                    <Box mt={1} mb={1}>
-                        <DateTimeTableCell
-                            datetime={props.lastUpdated || props.created}
-                            style={{color: theme.palette.text.secondary}}/>
-                    </Box>
+                    {/*<Box mt={1} mb={1}>*/}
+                    {/*    <DateTimeTableCell*/}
+                    {/*        datetime={props.lastUpdated || props.created}*/}
+                    {/*        style={{color: theme.palette.text.secondary}}/>*/}
+                    {/*</Box>*/}
                 </>
 
             </PreviewParent>

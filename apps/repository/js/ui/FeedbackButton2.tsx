@@ -16,6 +16,10 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import VideoCallIcon from '@material-ui/icons/VideoCall';
 import AllInboxIcon from '@material-ui/icons/AllInbox';
 import KeyboardIcon from '@material-ui/icons/Keyboard';
+import {FADiscordIcon} from "../../../../web/js/mui/MUIFontAwesome";
+import {Nav} from "../../../../web/js/ui/util/Nav";
+import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
+import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -59,6 +63,33 @@ function useReportFeedback() {
 }
 
 namespace MenuItems {
+
+    export const Chat = React.memo(() => {
+
+        function onClick() {
+            Nav.openLinkWithNewTab('https://discord.gg/GT8MhA6')
+        }
+
+        return (
+            <MUIMenuItem icon={<FADiscordIcon/>}
+                         text="Chat with Polar Community"
+                         onClick={onClick}/>
+        );
+
+    })
+
+    export const Documentation = React.memo(() => {
+
+        function onClick() {
+            Nav.openLinkWithNewTab('https://getpolarized.io/docs/')
+        }
+
+        return (
+            <MUIMenuItem icon={<LibraryBooksIcon/>}
+                         text="Documentation"
+                         onClick={onClick}/>
+        );
+    });
 
     export const SendVideoFeedback = deepMemo(() => {
 
@@ -160,6 +191,11 @@ export function FeedbackButton2() {
                                onClosed={() => setOpen(false)}>
 
                     <div>
+
+                        <MenuItems.Chat/>
+                        <MenuItems.Documentation/>
+
+                        <Divider/>
 
                         <MenuItems.SendVideoFeedback/>
 
