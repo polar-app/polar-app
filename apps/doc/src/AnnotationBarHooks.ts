@@ -22,6 +22,7 @@ import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {useMessageListener} from "./text_highlighter/PostMessageHooks";
 import {MessageListeners} from "./text_highlighter/MessageListeners";
 import { useDocViewerElementsContext } from "./renderers/DocViewerElementsContext";
+import {IDStr} from "polar-shared/src/util/Strings";
 
 
 /**
@@ -29,6 +30,11 @@ import { useDocViewerElementsContext } from "./renderers/DocViewerElementsContex
  * store context like docMeta.
  */
 interface ICreateTextHighlightCallbackOpts {
+
+    /**
+     * The document ID (fingerprint) in this this document as created.
+     */
+    readonly docID: IDStr;
 
     readonly pageNum: number;
 
@@ -54,6 +60,11 @@ function useCreateTextHighlightCallback(): CreateTextHighlightCallback {
 
         if (! docScale) {
             throw new Error("docScale");
+        }
+
+        if (docMeta.docInfo.fingerprint !== opts.docID) {
+            // this text highlight is from another doc.
+            return;
         }
 
         // TODO: what if this page isn't visible
@@ -95,8 +106,10 @@ export function useAnnotationBar(opts: AnnotationBarOpts = {}): AnnotationBarEve
     createTextHighlightCallbackRef.current = useCreateTextHighlightCallback();
 
     const messageListener = MessageListeners.createListener<ICreateTextHighlightCallbackOpts>(POST_MESSAGE_SERVICE, (message) => {
+
         const createTextHighlightCallback = createTextHighlightCallbackRef.current!;
         createTextHighlightCallback(message);
+
     });
 
     const messageDispatcher = MessageListeners.createDispatcher<ICreateTextHighlightCallbackOpts>(POST_MESSAGE_SERVICE);
@@ -128,6 +141,7 @@ export function useAnnotationBar(opts: AnnotationBarOpts = {}): AnnotationBarEve
             selection.empty();
 
             messageDispatcher({
+                docID: store.current?.docMeta?.docInfo.fingerprint!,
                 pageNum: highlightCreatedEvent.pageNum,
                 highlightColor: highlightCreatedEvent.highlightColor,
                 selectedContent
