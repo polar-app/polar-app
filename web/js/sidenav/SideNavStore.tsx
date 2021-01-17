@@ -230,6 +230,22 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
             const store = storeProvider();
 
             if (store.activeTab === undefined) {
+
+                if (store.tabs.length > 0) {
+
+                    switch (direction) {
+
+                        case "prev":
+                            setActiveTab(Arrays.last(store.tabs)!.id);
+                            break;
+                        case "next":
+                            setActiveTab(Arrays.first(store.tabs)!.id);
+                            break;
+
+                    }
+
+                }
+
                 // nothing currently selected
                 return;
             }
