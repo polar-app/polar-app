@@ -45,6 +45,7 @@ import {Nonces} from "polar-shared/src/util/Nonces";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {NavItem} from 'epubjs/types/navigation';
 import {useViewerElement} from "../UseViewerElementHook";
+import { useLocation } from 'react-router-dom';
 
 interface IProps {
     readonly docURL: URLStr;
@@ -128,6 +129,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
     const sectionRef = React.useRef<Section | undefined>(undefined);
     const stylesheet = useStylesheetURL();
     const linkLoader = useLinkLoader();
+    useEPUBResizerWithLocationChange();
 
     const doLoad = React.useCallback(async () => {
 
@@ -424,6 +426,22 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
 
 });
 
+/**
+ * Listen to route changes so that if the document changes we can resize.  This
+ * is a super efficient function so if we call it too many times it doesn't
+ * really matter.
+ */
+function useEPUBResizerWithLocationChange() {
+
+    const epubResizer = useEPUBResizer();
+    const location = useLocation();
+
+    React.useEffect(() => {
+        epubResizer();
+    }, [location, epubResizer])
+
+}
+
 function useEPUBResizer() {
 
     const docViewerElements = useDocViewerElementsContext();
@@ -443,9 +461,21 @@ function useEPUBResizer() {
 
         function setWidthAndHeight(element: HTMLElement | null | undefined, dimensions: IDimensions) {
 
-            if (element && dimensions.width > 0) {
-                element.style.width = `${dimensions.width}px`;
-                element.style.height = `${dimensions.height}px`;
+            function hasValidDimensions() {
+                return dimensions.width !== 0 && dimensions.height !== 0;
+            }
+
+            if (element) {
+
+                if (hasValidDimensions()) {
+
+                    element.style.width = `${dimensions.width}px`;
+                    element.style.height = `${dimensions.height}px`;
+
+                } else {
+                    console.log("Not setting dimensions (invalid): ", dimensions);
+                }
+
             } else {
                 console.warn("Can not set element style (no element)");
             }
@@ -492,11 +522,10 @@ function useEPUBResizer() {
         }
 
         const dimensions = computeContainerDimensions();
+
         adjustEpubView(dimensions);
         adjustIframe(dimensions);
         adjustIframeBody(dimensions);
-
-        console.log("Resized to dimensions: ", dimensions);
 
     }, [docViewerElements]);
 
