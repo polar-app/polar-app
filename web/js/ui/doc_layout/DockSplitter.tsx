@@ -1,23 +1,16 @@
 import React from 'react';
 import {deepMemo} from "../../react/ReactUtils";
-import useTheme from '@material-ui/core/styles/useTheme';
+import createStyles from '@material-ui/core/styles/createStyles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import grey from '@material-ui/core/colors/grey';
 
-interface IProps {
-    readonly onMouseDown: () => void;
-}
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        root: {
 
-export const DockSplitter = deepMemo((props: IProps) => {
-
-    const theme = useTheme();
-    const [active, setActive] = React.useState(false);
-
-    const createSplitterStyle = React.useCallback(() => {
-
-        const result: React.CSSProperties = {
-            width: '4px',
-            minWidth: '4px',
-            maxWidth: '4px',
+            width: '5px',
+            minWidth: '5px',
+            maxWidth: '5px',
             cursor: 'col-resize',
             // backgroundColor: active ?
             //     // TODO darken doesn't work but both paper and default are white
@@ -27,22 +20,32 @@ export const DockSplitter = deepMemo((props: IProps) => {
             // backgroundColor: grey[500],
             // TODO maybe use the divider color?
             // backgroundColor: grey[600],
-            backgroundColor: theme.palette.divider,
-            minHeight: 0
-        };
+            backgroundColor: theme.palette.background.paper,
+            // backgroundColor: 'inherit',
+            minHeight: 0,
 
-        return result;
+            '&:hover': {
+                // background: theme.palette.divider
+                backgroundColor: grey[500],
+            },
 
-    }, [theme.palette.divider]);
+        },
+    }),
+);
 
-    const splitterStyle = createSplitterStyle();
+
+interface IProps {
+    readonly onMouseDown: () => void;
+}
+
+export const DockSplitter = deepMemo((props: IProps) => {
+
+    const classes = useStyles();
 
     return (
         <div draggable={false}
-             onMouseDown={() => props.onMouseDown()}
-             // onMouseOver={() => setActive(true)}
-             // onMouseOut={() => setActive(false)}
-             style={splitterStyle}>
+             className={classes.root}
+             onMouseDown={() => props.onMouseDown()}>
 
         </div>
     );
