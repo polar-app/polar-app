@@ -18,7 +18,7 @@ function useSideNavCurrentTabContext() {
 
 export const SideNavContextMenu = deepMemo(() => {
 
-    const {removeTab} = useSideNavCallbacks();
+    const {removeTab, closeOtherTabs} = useSideNavCallbacks();
 
     const currentTabContext = useSideNavCurrentTabContext();
     const linkLoader = useLinkLoader();
@@ -53,6 +53,11 @@ export const SideNavContextMenu = deepMemo(() => {
             <MUIMenuItem text="Close Document"
                          icon={<CloseIcon/>}
                          onClick={closeCurrentTab}/>
+
+            <MUIMenuItem text="Close Other Documents"
+                         icon={<CloseIcon/>}
+                         onClick={closeOtherTabs}/>
+
         </>
     );
 

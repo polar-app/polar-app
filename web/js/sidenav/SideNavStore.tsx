@@ -62,6 +62,7 @@ interface ISideNavCallbacks {
     readonly addTab: (tabDescriptor: TabDescriptorInit) => void;
     readonly removeTab: (id: number) => void;
     readonly closeCurrentTab: () => void;
+    readonly closeOtherTabs: () => void;
     readonly prevTab: () => void;
     readonly nextTab: () => void;
 
@@ -198,6 +199,20 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
 
         }
 
+        function closeOtherTabs() {
+
+            const store = storeProvider();
+
+            if (store.activeTab === undefined) {
+                return;
+            }
+
+            const tabs = store.tabs.filter(current => current.id === store.activeTab);
+
+            setStore({...store, tabs});
+
+        }
+
         function closeCurrentTab() {
 
             console.log("Closing current tab");
@@ -258,7 +273,7 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
         }
 
         return {
-            addTab, removeTab, setActiveTab, closeCurrentTab, prevTab, nextTab
+            addTab, removeTab, setActiveTab, closeCurrentTab, prevTab, nextTab, closeOtherTabs
         };
 
     }, [historyRef, setStore, storeProvider]);
