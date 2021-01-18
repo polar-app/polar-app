@@ -2,6 +2,7 @@
   "hosting": {
     "target": "app.getpolarized.io",
     "public": "functions/node_modules/polar-webapp-dist/public",
+    "appAssociation": "AUTO",
     "rewrites": [
       {
         "source": "/",
@@ -99,6 +100,10 @@
       {
         "source": "**",
         "function": "webapp"
+      },
+      {
+        "source": "/dlink/**",
+        "dynamicLinks": true
       }
     ]
   }
