@@ -1,18 +1,17 @@
 ---
-title: Spaced Repetition and Reading Review
+title: Flashcard and annotation review
 layout: doc
 permalink: /docs/spaced-repetition.html
 description: Polar implements spaced repetition and review of annotations on mobile and desktop devices. 
 ---
 
-# Spaced Repetition
+# Overview
 
-Polar implements spaced repetition for flashcards and annotations on mobile and desktop devices. Since all files are stored in the cloud, you can easily create flashcards on the desktop and review on mobile.
+You can review all flashcards and annotations that you have created in Polar in the annotation viewer. Polar supports spaced repetition to automatically schedule reviews based on how well you know a card.
 
-# Background
+# Spaced reptition background
 
-If you're not familiar with spaced repetition you can get up to speed by <a href="https://ncase.me/remember/">reading this infographic by ncase</a> or
-<a href="https://numinous.productions/ttft/">"How can we develop transformative tools for thought?"</a> by Andy Matuschak and Michael Nielsen.
+If you're not familiar with spaced repetition you can ready up on it <a href="https://getpolarized.io/2020/09/20/What-is-Spaced-Repetition-A-Beginner's-Guide.html" target="_blank">here</a> or read a more detailed overview <a href="https://numinous.productions/ttft/">here</a>.
 
 At a high level spaced repetition allows you to review your notes by efficiently scheduling them into tasks that can be
 performed 15-60 minutes per day spread out while you're idle.
