@@ -13,8 +13,7 @@ You can review all flashcards and annotations that you have created in Polar in 
 
 If you're not familiar with spaced repetition you can ready up on it <a href="https://getpolarized.io/2020/09/20/What-is-Spaced-Repetition-A-Beginner's-Guide.html" target="_blank">here</a> or read a more detailed overview <a href="https://numinous.productions/ttft/">here</a>.
 
-At a high level spaced repetition allows you to review your notes by efficiently scheduling them into tasks that can be
-performed 15-60 minutes per day spread out while you're idle.
+At a high level spaced repetition allows you to review your notes by efficiently scheduling them into tasks that can be performed 15-60 minutes per day spread out while you're idle.
 
 <a href="https://en.wikipedia.org/wiki/Spaced_repetition">Wikipedia has a good overview of SR</a>:
 
@@ -30,45 +29,37 @@ durability that memory traces in the brain. The stronger the memory, the longer 
 recall it. A typical graph of the forgetting curve purports to show that humans tend to halve their memory of newly
 learned knowledge in a matter of days or weeks unless they consciously review the learned material.
 
-# Flashcards and Incremental Reading
+# Incremental reading
 
-We support spaced repetition for your flashcards and annotations.  Reading your annotations with spaced repetition 
+For incremental reading, we support spaced repetition for of flashcards and annotations. Reading your annotations with spaced repetition 
 intervals allows you to pursue incremental reading where you re-read important parts of documents you've highlighted.
+
+You can read more in our detailed overview of <a href="https://getpolarized.io/docs/incremental-reading.html">Incremental Reading with Polar</a>.
 
 # Anki vs Polar
 
 Polar supports Anki sync and our own native flashcard and spaced repetition based on similar technology and concepts.
 
-Read our documentation on <a href="https://getpolarized.io/docs/anki-sync-for-spaced-repetition.html">Anki sync</a>.  
+For details, read our documentation on <a href="https://getpolarized.io/docs/anki-sync-for-spaced-repetition.html">Anki sync</a>.  
 
-# Start Review
+# Review
 
-Polar allows you to review annotations directly by going to the annotation view and selecting "Start Review"
-which will review ten cards at a time.   
+Polar allows you to review annotations directly by going to the annotation view and selecting ```Start Review``` at the top left which will review ten cards at a time.   
 
 <p class="text-center">
 <img class="img-fluid border" src="https://i.imgur.com/2JZu8EV.png">
 </p>
 
-When you create an annotation or flashcard, they will be scheduled for the future so that you can review them at a
-later date.
+When you create an annotation or flashcard, they will be scheduled for the future so that you can review them at a later date. Specifically, a newly created flashcard or annotation will only show up in the review queue 24 hours after it was created.
 
-# User Interface
+Ever time you start a review, the algorithm takes 10 cards that are due for review. After those 10 cards, this review is finished. If you want to review more cards, you can start another review
 
-We will compute 10 or more 'tasks' that need to be completed.  Right now these are reading reviews but in the future
-will also be flashcards.
+If you only want to review a specific set of annotations or flashcards, you can do that by selecting a specific tag or annotation color. When you start a review, it will only review cards with those attributes 
 
-# Scheduling 
+# Algorithmic schedule for reviews
 
 Polar implements a variant of SM2 to schedule cards. This is the same algorithm used in Anki, and SuperMemo with a few 
 modifications which effectively do not change the core scheduler algorithm but just make it easier to work with.
-
-# Selecting Specific Tags/Folders, colors, etc
-
-When you click ```Start Review``` only the currently shown annotations are considered for review.  This will allow you
-to narrow a review to a specific folder or tag.  You can also filter by annotation color as well.
-
-# High-level Overview
 
 ## Stages
 
