@@ -56,6 +56,7 @@ const useStyles = makeStyles((theme) =>
         legal: {
             margin: theme.spacing(1),
             marginTop: theme.spacing(5),
+            marginBottom: theme.spacing(2),
             color: theme.palette.text.secondary,
             fontSize: '1.5em',
             textAlign: 'center',
@@ -414,7 +415,7 @@ export const CreateAccountScreen = React.memo(() => {
             <Paper style={{
                        margin: 'auto',
                        maxWidth: '450px',
-                       height: '550px',
+                       maxHeight: '650px',
                        width: '100%',
                        display: 'flex',
                        flexDirection: 'column'
