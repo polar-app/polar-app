@@ -9,7 +9,7 @@
       up a dialog box that prompts them for email addresses that they can add.
 
     - The user then calls a cloud function called groupCreate (though this might
-      need to be groupCreate or groupCreatOrUpdate or groupSetup)
+      need to be groupCreate or groupCreateOrUpdate or groupSetup)
       
         - this provisions the group:
         
