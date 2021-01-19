@@ -9,6 +9,7 @@ import {faCheckCircle} from "@fortawesome/free-solid-svg-icons/faCheckCircle";
 import {faTimesCircle} from "@fortawesome/free-solid-svg-icons/faTimesCircle";
 import {faSquare} from "@fortawesome/free-regular-svg-icons/faSquare";
 import {faChrome} from "@fortawesome/free-brands-svg-icons/faChrome";
+import {faGoogle} from "@fortawesome/free-brands-svg-icons/faGoogle";
 import {faDiscord} from "@fortawesome/free-brands-svg-icons/faDiscord";
 import {faDatabase} from "@fortawesome/free-solid-svg-icons/faDatabase";
 import {faHome} from "@fortawesome/free-solid-svg-icons/faHome";
@@ -19,7 +20,7 @@ import {faFilePdf} from "@fortawesome/free-solid-svg-icons/faFilePdf";
 import {IconProp, library} from "@fortawesome/fontawesome-svg-core";
 import {deepMemo} from "../react/ReactUtils";
 
-library.add(faCheckSquare, faCoffee, faTag, faPlus, faCheckSquare, faDatabase, faTimesCircle, faSquare, faChrome, faDiscord, faStickyNote, faFilePdf);
+library.add(faCheckSquare, faCoffee, faTag, faPlus, faCheckSquare, faDatabase, faTimesCircle, faSquare, faChrome, faGoogle, faDiscord, faStickyNote, faFilePdf);
 
 // to minimize size we have to:
 // https://github.com/FortAwesome/react-fontawesome/issues/70
@@ -44,6 +45,7 @@ function createIcon(icon: IconProp) {
 
 export const FACheckSquareIcon = createIcon(faCheckSquare);
 export const FASquareIcon = createIcon(faSquare);
+export const FAGoogleIcon = createIcon(faGoogle);
 export const FAChromeIcon = createIcon(faChrome);
 export const FADiscordIcon = createIcon(faDiscord);
 export const FATagIcon = createIcon(faTag);

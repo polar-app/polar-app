@@ -2,7 +2,6 @@ import {AbstractDatastore, Datastore, DatastoreID} from './Datastore';
 import {WritableBinaryMetaDatastore} from './Datastore';
 import {DocMetaSnapshotEventListener} from './Datastore';
 import {DatastoreCapabilities} from './Datastore';
-import {PrefsProvider} from './Datastore';
 import {ErrorListener} from './Datastore';
 import {DatastoreInitOpts} from './Datastore';
 import {DatastoreOverview} from './Datastore';

@@ -106,6 +106,7 @@ export const UserInfoProvider = deepMemo((props: IProps) => {
         const plan = Plans.toV2(value?.userInfo?.subscription.plan);
         const interval = value?.userInfo?.subscription.interval || 'month';
 
+        // TODO: consider adding these AFTER the user loggs in for the first time.
         analytics.traits({
             subscription_plan: plan.level,
             subscription_interval: interval

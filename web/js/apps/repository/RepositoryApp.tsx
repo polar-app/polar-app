@@ -64,6 +64,7 @@ import {SideNav} from "../../sidenav/SideNav";
 import Divider from '@material-ui/core/Divider';
 import {SideNavDocumentLoader} from "../../sidenav/SideNavDocumentLoader";
 import {AccountDialogScreen} from "../../ui/cloud_auth/AccountDialogScreen";
+import {CreateAccountScreen} from "../../../../apps/repository/js/login/CreateAccountScreen";
 
 interface IProps {
     readonly app: App;
@@ -332,6 +333,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                                                 <Route exact path={["/login", "/login.html"]}>
                                                                     <LoginScreen/>
+                                                                </Route>
+
+                                                                <Route exact path={["/create-account"]}>
+                                                                    <CreateAccountScreen/>
                                                                 </Route>
 
                                                                 <Route exact path={["/login-with-custom-token"]}>

@@ -49,6 +49,7 @@ import {MobXStory} from "./impl/MobXStory";
 import {WelcomeStory} from "./impl/WelcomeStory";
 import {MUICommandMenuStory} from "./impl/MUICommandMenuStory";
 import { NestedContextStory } from './impl/NestedContextStory';
+import {CreateAccountStory} from "./impl/CreateAccountStory";
 
 interface IStory {
     readonly name: string;
@@ -240,7 +241,12 @@ const stories = createStoryIndex([
     {
         name: 'Nested Context',
         component: <NestedContextStory/>
+    },
+    {
+        name: 'Create Account',
+        component: <CreateAccountStory/>
     }
+
 
 ]);
 

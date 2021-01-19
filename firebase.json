@@ -2,6 +2,7 @@
   "hosting": {
     "target": "app.getpolarized.io",
     "public": "dist/public",
+    "appAssociation": "AUTO",
     "rewrites": [
       {
         "source": "/",
@@ -90,8 +91,11 @@
       {
         "source": "/apps/doc/:id",
         "destination": "/apps/doc/index.html"
+      },
+      {
+        "source": "/dlink/**",
+        "dynamicLinks": true
       }
-
     ]
   }
 }
