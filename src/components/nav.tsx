@@ -291,11 +291,11 @@ function NavBarDesktop() {
             extension
           </Button>
 
-          <Button className={classes.navChoices}
-                  color="inherit"
-                  href="https://forum.getpolarized.io">
-            forum
-          </Button>
+          {/*<Button className={classes.navChoices}*/}
+          {/*        color="inherit"*/}
+          {/*        href="https://forum.getpolarized.io">*/}
+          {/*  forum*/}
+          {/*</Button>*/}
 
         </Box>
         {breakpoints.tab ? (
