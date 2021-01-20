@@ -16,6 +16,7 @@ import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {SignInSuccessURLs} from "./SignInSuccessURLs";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -345,6 +346,32 @@ const EmailAuthButton = () => {
     );
 };
 
+const SignInWithExistingAccount = () => {
+
+    const classes = useStyles();
+    const history = useHistory();
+
+    return (
+        <div className={classes.alternate} onClick={() => history.push('/sign-in')}>
+            <Button>or sign-in with existing account</Button>
+        </div>
+    );
+
+}
+
+const OrCreateNewAccount = () => {
+
+    const classes = useStyles();
+    const history = useHistory();
+
+    return (
+        <div className={classes.alternate} onClick={() => history.push('/create-account')}>
+            <Button>or create new account</Button>
+        </div>
+    );
+
+}
+
 const Main = React.memo((props: IProps) => {
 
     const classes = useStyles();
@@ -360,9 +387,18 @@ const Main = React.memo((props: IProps) => {
                     <PolarSVGIcon width={125} height={125}/>
                 </div>
 
-                <h2 className={classes.intro}>
-                    Create your Polar Account
-                </h2>
+
+                {props.mode === 'create-account' && (
+                    <h2 className={classes.intro}>
+                        Create your Polar Account
+                    </h2>
+                )}
+
+                {props.mode === 'sign-in' && (
+                    <h2 className={classes.intro}>
+                        Sign In to Polar
+                    </h2>
+                )}
 
                 <div style={{
                          display: 'flex',
@@ -379,9 +415,13 @@ const Main = React.memo((props: IProps) => {
 
             <Divider className={classes.divider}/>
 
-            <div className={classes.alternate}>
-                <Button>or sign-in with existing account</Button>
-            </div>
+            {props.mode === 'create-account' && (
+                <SignInWithExistingAccount/>
+            )}
+
+            {props.mode === 'sign-in' && (
+                <OrCreateNewAccount/>
+            )}
 
             <div style={{flexGrow: 1}}>
 
