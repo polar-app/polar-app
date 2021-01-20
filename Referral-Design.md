@@ -131,7 +131,6 @@ There will be two ways of rewarding points:
 - I will need to test ALL the payment flows... 
 
 - https://stripe.com/docs/payments/checkout/subscriptions/updating
-    - this is a huge fucking pain to setup! 
 
 
 https://stripe.com/partners/memberful
