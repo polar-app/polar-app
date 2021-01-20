@@ -1,5 +1,4 @@
 import * as React from "react";
-import {createObservableStore} from "../../../../web/js/react/store/ObservableStore";
 import {RepoDocInfo} from "../RepoDocInfo";
 import {Sorting} from "./Sorting";
 import {DocRepoFilters2} from "./DocRepoFilters2";

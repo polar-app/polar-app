@@ -16,9 +16,7 @@ import {
     PersistenceLayerContext
 } from "../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {InviteScreen} from "../../../../apps/repository/js/invite/InviteScreen";
-import {AccountControlSidebar} from "../../../../apps/repository/js/AccountControlSidebar";
 import {ReactRouters} from "../../react/router/ReactRouters";
-import {Cached} from '../../react/Cached';
 import {SettingsScreen} from "../../../../apps/repository/js/configure/settings/SettingsScreen";
 import {DeviceScreen} from "../../../../apps/repository/js/device/DeviceScreen";
 import {App} from "./AppInitializer";

@@ -3,8 +3,6 @@ import * as React from "react";
 import {PlanIcon} from './PlanIcon';
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {Plans} from "polar-accounts/src/Plans";
-import Box from "@material-ui/core/Box";
-import {MUITooltip} from "../../../../web/js/mui/MUITooltip";
 
 const Joiner = () => (
     <div className="ml-2 mr-2"
