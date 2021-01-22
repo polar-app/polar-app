@@ -89,6 +89,36 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
+interface IAuthButtonProps {
+    readonly startIcon: React.ReactNode;
+    readonly onClick: () => void;
+    readonly strategy: string;
+}
+
+const AuthButton = (props: IAuthButtonProps) => {
+
+    const classes = useStyles();
+
+    const mode = React.useContext(AuthenticatorModeContext);
+
+    const hint = mode === 'create-account' ? 'Continue' : 'Sign In'
+
+    return (
+        <>
+            <Button variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    onClick={props.onClick}
+                    startIcon={props.startIcon}>
+
+                {hint} with {props.strategy}
+
+            </Button>
+
+        </>
+    );
+}
+
 const GoogleAuthButton = () => {
 
     const classes = useStyles();
@@ -124,15 +154,10 @@ const GoogleAuthButton = () => {
                 </Alert>
             )}
 
-            <Button variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    onClick={handleTriggerAuth}
-                    startIcon={<FAGoogleIcon />}>
+            <AuthButton onClick={handleTriggerAuth}
+                        strategy="Google"
+                        startIcon={<FAGoogleIcon />}/>
 
-                Continue with Google
-
-            </Button>
         </>
     );
 }
@@ -220,15 +245,10 @@ const EmailAuthButton = () => {
                 </>
             )}
 
-            <Button variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    onClick={handleClick}
-                    startIcon={<EmailIcon />}>
+            <AuthButton onClick={handleClick}
+                        strategy="Email"
+                        startIcon={<EmailIcon />}/>
 
-                Continue with Email
-
-            </Button>
         </>
     );
 };
@@ -340,46 +360,52 @@ const Pending = () => {
     )
 }
 
+export type AuthenticatorMode = 'create-account' | 'sign-in';
+
 interface IProps {
-    readonly mode: 'create-account' | 'sign-in';
+    readonly mode: AuthenticatorMode;
 }
+
+const AuthenticatorModeContext = React.createContext<AuthenticatorMode>(null!);
 
 export const Authenticator = React.memo((props: IProps) => {
 
     const authStatus = useAuthHandler();
 
     return (
-        <div style={{
-                 display: 'flex',
-                 width: '100%',
-                 height: '100%'
-             }}>
+        <AuthenticatorModeContext.Provider value={props.mode}>
+            <div style={{
+                     display: 'flex',
+                     width: '100%',
+                     height: '100%'
+                 }}>
 
-            <Paper style={{
-                       margin: 'auto',
-                       maxWidth: '450px',
-                       minHeight: '500px',
-                       maxHeight: '650px',
-                       width: '100%',
-                       display: 'flex',
-                       flexDirection: 'column'
-                   }}>
+                <Paper style={{
+                           margin: 'auto',
+                           maxWidth: '450px',
+                           minHeight: '500px',
+                           maxHeight: '650px',
+                           width: '100%',
+                           display: 'flex',
+                           flexDirection: 'column'
+                       }}>
 
-                <>
+                    <>
 
-                    {authStatus === undefined && (
-                        <Pending/>
-                    )}
+                        {authStatus === undefined && (
+                            <Pending/>
+                        )}
 
 
-                    {authStatus === 'needs-auth' && (
-                       <Main {...props}/>
-                    )}
+                        {authStatus === 'needs-auth' && (
+                           <Main {...props}/>
+                        )}
 
-                </>
+                    </>
 
-            </Paper>
+                </Paper>
 
-        </div>
+            </div>
+        </AuthenticatorModeContext.Provider>
     );
 });
