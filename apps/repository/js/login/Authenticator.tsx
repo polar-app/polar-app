@@ -8,15 +8,10 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
-import firebase from 'firebase/app'
-import {useLogger} from "../../../../web/js/mui/MUILogger";
-import {FirebaseUIAuth} from "../../../../web/js/firebase/FirebaseUIAuth";
-import {Firebase} from "../../../../web/js/firebase/Firebase";
-import {Analytics} from "../../../../web/js/analytics/Analytics";
-import {SignInSuccessURLs} from "./SignInSuccessURLs";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
 import { useHistory } from 'react-router-dom';
+import {useAuthHandler, useTriggerFirebaseEmailAuth, useTriggerFirebaseGoogleAuth} from './AuthenticatorHooks';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -37,6 +32,12 @@ const useStyles = makeStyles((theme) =>
         },
 
         divider: {
+            margin: theme.spacing(1),
+            marginLeft: theme.spacing(3),
+            marginRight: theme.spacing(3),
+        },
+
+        sendLinkDivider: {
             margin: theme.spacing(1),
             marginBottom: theme.spacing(3),
             marginLeft: theme.spacing(3),
@@ -136,120 +137,6 @@ const GoogleAuthButton = () => {
     );
 }
 
-type AuthStatus = 'needs-auth';
-
-/**
- * The function we call AFTER the redirect has been completed to test if we're now authenticated.
- */
-function useAuthHandler() {
-
-    const logger = useLogger();
-    const [status, setStatus] = React.useState<'needs-auth' |  undefined>();
-
-    function handleAuthResult(authResult: firebase.auth.UserCredential) {
-
-        if (authResult.additionalUserInfo?.isNewUser) {
-            console.log("New user authenticated");
-            Analytics.event2('new-user-signup');
-
-            document.location.href = '/#welcome';
-
-        } else {
-            document.location.href = SignInSuccessURLs.get() || '/';
-        }
-
-    }
-
-    async function handleEmailLink() {
-
-        if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
-
-            const email = localStorage.getItem('emailForSignIn');
-
-            // TODO: we need to be prompting for the user if they're attempting to login in
-            // another browser session
-
-            if (email) {
-                const authResult = await firebase.auth().signInWithEmailLink(email, location.href);
-
-                localStorage.removeItem('emailForSignIn');
-
-                handleAuthResult(authResult);
-
-            }
-
-        }
-
-    }
-
-    async function doAsync(): Promise<AuthStatus | undefined> {
-
-        const user = await Firebase.currentUserAsync()
-
-        await handleEmailLink();
-
-        if (user) {
-
-            const auth = firebase.auth();
-
-            const authResult = await auth.getRedirectResult();
-            handleAuthResult(authResult);
-
-        } else {
-            setStatus('needs-auth');
-        }
-
-        return status;
-
-    }
-
-    doAsync()
-        .catch(err => logger.error("Can not authenticate: ", err));
-
-    return status;
-
-}
-
-function useTriggerFirebaseGoogleAuth() {
-
-    /// https://firebase.google.com/docs/auth/web/google-signin
-
-    return React.useCallback(async () => {
-
-        const auth = firebase.auth();
-        const provider = new firebase.auth.GoogleAuthProvider();
-
-        provider.setCustomParameters({
-            prompt: 'select_account'
-        })
-
-        await auth.signInWithRedirect(provider);
-
-        FirebaseUIAuth.authWithGoogle();
-
-    }, []);
-
-}
-
-function useTriggerFirebaseEmailAuth() {
-
-    return React.useCallback(async (email: string) => {
-
-        const auth = firebase.auth();
-
-        await auth.sendSignInLinkToEmail(email, {
-            // URL you want to redirect back to. The domain (www.example.com) for this
-            // URL must be in the authorized domains list in the Firebase Console.
-            // url: 'https://app.getpolarized.io',
-            url: document.location.href,
-            handleCodeInApp: true,
-            dynamicLinkDomain: 'app.getpolarized.io'
-        })
-
-    }, []);
-
-}
-
 const EmailAuthButton = () => {
 
     const classes = useStyles();
@@ -310,7 +197,7 @@ const EmailAuthButton = () => {
         <>
             {active && (
                 <>
-                    <Divider className={classes.divider}/>
+                    <Divider className={classes.sendLinkDivider}/>
 
                     {error && (
                         <Alert severity="error"
