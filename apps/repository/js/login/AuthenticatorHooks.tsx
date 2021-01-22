@@ -5,6 +5,7 @@ import {SignInSuccessURLs} from "./SignInSuccessURLs";
 import {Firebase} from "../../../../web/js/firebase/Firebase";
 import {FirebaseUIAuth} from "../../../../web/js/firebase/FirebaseUIAuth";
 import firebase from 'firebase/app'
+import { useHistory } from "react-router-dom";
 
 export type AuthStatus = 'needs-auth';
 
@@ -30,11 +31,16 @@ export function useAuthHandler() {
 
     }
 
-    async function handleEmailLink() {
+    async function handleEmailLink(): Promise<boolean> {
+
+        function parseEmailFromLocation(): string | undefined {
+            const url = new URL(document.location.href);
+            return url.searchParams.get('email') || undefined;
+        }
 
         if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
 
-            const email = localStorage.getItem('emailForSignIn');
+            const email = parseEmailFromLocation();
 
             // TODO: we need to be prompting for the user if they're attempting to login in
             // another browser session
@@ -42,13 +48,14 @@ export function useAuthHandler() {
             if (email) {
                 const authResult = await firebase.auth().signInWithEmailLink(email, location.href);
 
-                localStorage.removeItem('emailForSignIn');
-
                 handleAuthResult(authResult);
+                return true;
 
             }
 
         }
+
+        return false;
 
     }
 
@@ -56,9 +63,11 @@ export function useAuthHandler() {
 
         const user = await Firebase.currentUserAsync()
 
-        await handleEmailLink();
+        const handledEmailLink = await handleEmailLink();
 
-        if (user) {
+        if (handledEmailLink) {
+            // noop
+        } else if (user) {
 
             const auth = firebase.auth();
 
@@ -103,9 +112,25 @@ export function useTriggerFirebaseGoogleAuth() {
 
 export function useTriggerFirebaseEmailAuth() {
 
+    const history = useHistory();
+
     return React.useCallback(async (email: string) => {
 
         const auth = firebase.auth();
+
+        // TODO: an alternative here is to do this on the backend and call the
+        // function ourselves but it's somewhat annoying.
+
+        // push a new history state into the path with ?email = so that
+        function createLocationWithEmail() {
+            const url = new URL(document.location.href);
+            url.searchParams.set('email', email);
+            return `${url.pathname}${url.search}${url.hash}`;
+        }
+
+        const locationWithEmail = createLocationWithEmail();
+
+        history.push(locationWithEmail);
 
         await auth.sendSignInLinkToEmail(email, {
             // URL you want to redirect back to. The domain (www.example.com) for this
@@ -116,6 +141,6 @@ export function useTriggerFirebaseEmailAuth() {
             dynamicLinkDomain: 'app.getpolarized.io'
         })
 
-    }, []);
+    }, [history]);
 
 }
