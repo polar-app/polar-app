@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) =>
         },
         intro: {
             color: theme.palette.text.secondary,
-            fontSize: '2em'
+            fontSize: '2.2em'
         },
 
         divider: {
