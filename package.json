@@ -56,7 +56,7 @@
   },
   "license": "GPL-3.0-only",
   "devDependencies": {
-    "@types/amplitude-js": "^6.0.0",
+    "@types/amplitude-js": "^7.0.0",
     "@types/blueimp-md5": "^2.7.0",
     "@types/chai": "4.2.11",
     "@types/chrome": "0.0.114",
@@ -143,7 +143,7 @@
     "@sentry/tracing": "5.29.0",
     "@stripe/stripe-js": "=1.11.0",
     "@types/mousetrap": "=1.6.3",
-    "amplitude-js": "^7.3.3",
+    "amplitude-js": "^7.4.1",
     "base58check": "2.0.0",
     "blueimp-md5": "2.16.0",
     "clsx": "=1.1.0",
