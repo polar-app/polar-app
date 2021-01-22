@@ -5,8 +5,7 @@ export class AppOrigin {
 
         if (document && document.location && document.location.href) {
 
-            const href = document.location.href;
-            if (href.indexOf('getpolarized.io') !== -1) {
+            if (document.location.hostname.indexOf('getpolarized.io') !== -1) {
                 document.domain = 'getpolarized.io';
             }
 
