@@ -330,15 +330,15 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                 <>
                                                     <Switch>
 
-                                                        <Route exact path={["/login", "/login.html"]}>
-                                                            <LoginScreen/>
-                                                        </Route>
+                                                        {/*<Route exact path={["/login", "/login.html"]}>*/}
+                                                        {/*    <LoginScreen/>*/}
+                                                        {/*</Route>*/}
 
                                                         <Route exact path={["/create-account"]}>
                                                             <CreateAccountScreen/>
                                                         </Route>
 
-                                                        <Route exact path={["/sign-in"]}>
+                                                        <Route exact path={["/sign-in", "/login", "/login.html"]}>
                                                             <SignInScreen/>
                                                         </Route>
 
@@ -433,6 +433,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                                     </Switch>
 
+                                                    {/* the following are small popup screens that can exist anywhere */}
                                                     <Switch location={ReactRouters.createLocationWithHashOnly()}>
 
                                                         <Route path='#welcome'
