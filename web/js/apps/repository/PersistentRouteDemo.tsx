@@ -23,7 +23,7 @@ export const PersistentRouteDemo = React.memo(() => {
                     world
                 </Link>
 
-                <PersistentRoute exact path='/hello'>
+                <PersistentRoute exact path='/hello' strategy="display">
                     <div>this is the hello page</div>
                 </PersistentRoute>
 

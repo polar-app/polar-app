@@ -13,7 +13,7 @@ export const SideNavContentRouter = React.memo(() => {
     }
 
     return (
-        <PersistentRoute exact path={tab.url}>
+        <PersistentRoute strategy="visibility" exact path={tab.url}>
             <>
                 {tab.content}
             </>

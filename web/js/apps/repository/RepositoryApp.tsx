@@ -129,6 +129,7 @@ const SideNavDocuments = React.memo(function SideNavDocuments(props: SideNavDocu
             {tabs.map(tab => (
                 <PersistentRoute key={'doc-' + tab.id}
                                  exact
+                                 strategy="visibility"
                                  path={tab.url}>
                     <RepositoryDocViewerScreen persistenceLayerProvider={props.persistenceLayerProvider}
                                                repoDocMetaManager={props.repoDocMetaManager}
@@ -388,11 +389,11 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                                                         {! SIDE_NAV_ENABLED && <RepoHeader3/>}
 
-                                                                        <PersistentRoute exact path="/">
+                                                                        <PersistentRoute strategy="display" exact path="/">
                                                                             <RenderDefaultScreen/>
                                                                         </PersistentRoute>
 
-                                                                        <PersistentRoute exact path="/annotations">
+                                                                        <PersistentRoute strategy="display" exact path="/annotations">
                                                                             <RenderAnnotationRepoScreen/>
                                                                         </PersistentRoute>
 

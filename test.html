@@ -3,25 +3,30 @@
 </head>
 <body>
 
+<button onclick="toggle()">toggle</button><br/>
 
-<div id="root" onKeyDown="console.log('1'); event.stopPropagation();">
+<iframe style="width: 400px; height: 400px;" srcdoc="asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>asdfasdfasdf<br/>">
 
-    <script>
+</iframe>
 
-        const rootElement = document.querySelector("#root");
+<script>
 
-        rootElement.addEventListener('keydown', (event) => {
-            console.log("FIXME: stopping prop");
-            event.stopPropagation();
-        });
+    let hidden = false;
 
-    </script>
-    <div onKeyDown="console.log('2')">
-        <div onKeyDown="console.log('3')">
-            <input type="text"/>
-        </div>
-    </div>
-</div>
+    function toggle() {
+
+        const iframe = document.querySelector('iframe');
+        if (hidden) {
+            // iframe.style.display = 'block'
+            iframe.style.visibility = 'visible'
+        } else {
+            iframe.style.visibility = 'hidden'
+        }
+
+        hidden = !hidden;
+
+    }
+</script>
 
 
 </body>
