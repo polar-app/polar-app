@@ -22,9 +22,7 @@ const useStyles = makeStyles((theme) =>
         inactive: {
             visibility: 'hidden',
             height: 0,
-            width: 0,
             maxHeight: 0,
-            minHeight: 0
         }
 
     }),
