@@ -69,6 +69,14 @@
         "destination": "/apps/repository/index.html"
       },
       {
+        "source": "/sign-in",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/create-account",
+        "destination": "/apps/repository/index.html"
+      },
+      {
         "source": "/login.html",
         "destination": "/apps/repository/index.html"
       },
