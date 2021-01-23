@@ -32,3 +32,24 @@ const useStyles = makeStyles((theme) =>
 ```
 
 
+```
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        root: {
+            "& a:link": {
+                color: blue[300],
+            },
+            "& a:visited": {
+                color: blue[600],
+            },
+            "& a:hover": {
+                color: blue[400],
+            },
+            "& a:active": {
+                color: blue[500],
+            },
+        },
+    }),
+);
+
+```
