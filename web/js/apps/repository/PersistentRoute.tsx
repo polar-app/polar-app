@@ -6,6 +6,30 @@ import {
     useComponentWillUnmount
 } from "../../hooks/ReactLifecycleHooks";
 import {deepMemo} from "../../react/ReactUtils";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import createStyles from "@material-ui/core/styles/createStyles";
+import clsx from "clsx";
+
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        active: {
+        },
+
+        /**
+         * The inactive styles can not use display 'none' because if they do the
+         * iframe loses its scrolling position on chrome.
+         */
+        inactive: {
+            visibility: 'hidden',
+            height: 0,
+            width: 0,
+            maxHeight: 0,
+            minHeight: 0
+        }
+
+    }),
+);
+
 
 interface IProps {
     readonly children: React.ReactElement;
@@ -39,18 +63,20 @@ export function usePersistentRouteContext() {
 
 export const PersistentRoute = deepMemo((props: IProps) => {
 
+    const classes = useStyles();
     const [active, setActive] = React.useState(false);
 
-    const display = active ? 'flex' : 'none';
+    const className = active ? classes.active : classes.inactive;
 
     return (
 
         <>
             <Switch>
+
                 <Route path="/">
-                    <div className="PersistentRoute"
+                    <div className={clsx('PersistentRoute', className)}
                          style={{
-                             display,
+                             display: 'flex',
                              minHeight: 0,
                              flexDirection: 'column',
                              flexGrow: 1
