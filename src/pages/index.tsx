@@ -64,6 +64,7 @@ const Landing = ({}) => {
 
                   <CreateAccountButton/>
 
+
               </div>
 
               <div style={{marginBottom: '10px'}}>
