@@ -307,7 +307,6 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
         return <InviteScreen/>;
     };
 
-
     return (
         <RepoDocMetaManagerContext.Provider value={repoDocMetaManager}>
             <MUIRepositoryRoot>

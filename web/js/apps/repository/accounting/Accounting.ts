@@ -6,7 +6,13 @@ import {Plans} from "polar-accounts/src/Plans";
 import {AccountUpgrades} from "../../../accounts/AccountUpgrades";
 import computeStorageForPlan = AccountUpgrades.computeStorageForPlan;
 import {Percentage100, Percentages} from "polar-shared/src/util/Percentages";
-import {useRepoDocMetaManager} from "../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
+import {
+    usePersistenceLayerContext,
+    useRepoDocMetaManager
+} from "../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
+import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {DocMetaSnapshotError, DocMetaSnapshotEvent} from "../../../datastore/Datastore";
+import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 
 export type Bytes = number;
 
@@ -18,11 +24,11 @@ interface IAccounting {
 /**
  * Simple accounting function to keep track of storage.
  */
-export function useAccounting(): IAccounting {
+export function useAccounting0(): IAccounting {
 
     const repoDocMetaManager = useRepoDocMetaManager();
 
-    const data = Object.values(repoDocMetaManager.repoDocInfoIndex);
+    const data = repoDocMetaManager.repoDocInfoIndex.values();
 
     const storageInBytes = data.map(current => current.docInfo.bytes || 0)
                                .reduce(Reducers.SUM, 0)
@@ -31,6 +37,92 @@ export function useAccounting(): IAccounting {
                               .length;
 
     return {storageInBytes, nrWebCaptures};
+
+}
+
+/**
+ * Simple accounting function to keep track of storage.
+ */
+export function useAccounting(): IAccounting {
+
+    const {persistenceLayerProvider} = usePersistenceLayerContext();
+    const [state, setState] = React.useState<IAccounting>({storageInBytes: 0, nrWebCaptures: 0});
+    const persistenceLayer = persistenceLayerProvider();
+
+    type DocMetaIndex = {[id: string]: IDocInfo};
+
+    const docMetaIndex = React.useMemo<DocMetaIndex>(() => {
+        return {};
+    }, [])
+
+    const rebuildState = React.useCallback(() => {
+
+        const data = Object.values(docMetaIndex);
+
+        const storageInBytes = data.map(current => current.bytes || 0)
+            .reduce(Reducers.SUM, 0)
+
+        const nrWebCaptures = data.filter(current => current.webCapture)
+            .length;
+
+        const newState = {storageInBytes, nrWebCaptures};
+
+        setState(newState);
+
+    }, [docMetaIndex]);
+
+
+    const handleSnapshot = React.useCallback(async (event: DocMetaSnapshotEvent) => {
+
+        for (const mutation of event.docMetaMutations) {
+
+            switch (mutation.mutationType) {
+                case "created":
+                case "updated":
+                    const docInfo = await mutation.docInfoProvider();
+                    docMetaIndex[mutation.fingerprint] = docInfo;
+                    break;
+                case "deleted":
+                    delete docMetaIndex[mutation.fingerprint];
+                    break;
+
+            }
+
+        }
+
+    }, [docMetaIndex]);
+
+    React.useEffect(() => {
+
+        let unsubscriberRef: SnapshotUnsubscriber | undefined;
+
+        async function doAsync() {
+
+            const snapshotResult = await persistenceLayer.snapshot(async event => {
+
+                await handleSnapshot(event);
+                rebuildState();
+
+            });
+
+            unsubscriberRef = snapshotResult.unsubscribe;
+
+        }
+
+        doAsync()
+            .catch(err => console.error(err));
+
+        return () => {
+
+            if (unsubscriberRef) {
+                unsubscriberRef()
+            }
+
+        }
+
+    }, [handleSnapshot, persistenceLayer, rebuildState]);
+
+    return state;
 
 }
 
