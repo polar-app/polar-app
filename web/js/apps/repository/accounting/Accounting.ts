@@ -6,6 +6,7 @@ import {Plans} from "polar-accounts/src/Plans";
 import {AccountUpgrades} from "../../../accounts/AccountUpgrades";
 import computeStorageForPlan = AccountUpgrades.computeStorageForPlan;
 import {Percentage100, Percentages} from "polar-shared/src/util/Percentages";
+import {useRepoDocMetaManager} from "../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 
 export type Bytes = number;
 
@@ -19,7 +20,9 @@ interface IAccounting {
  */
 export function useAccounting(): IAccounting {
 
-    const {data} = useDocRepoStore(['data']);
+    const repoDocMetaManager = useRepoDocMetaManager();
+
+    const data = Object.values(repoDocMetaManager.repoDocInfoIndex);
 
     const storageInBytes = data.map(current => current.docInfo.bytes || 0)
                                .reduce(Reducers.SUM, 0)

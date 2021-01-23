@@ -77,8 +77,8 @@ export function useTagDescriptorsContext() {
 
 export type TagsType = 'documents' | 'annotations';
 
-const RepoDocMetaLoaderContext = React.createContext<RepoDocMetaLoader>(null!);
-const RepoDocMetaManagerContext = React.createContext<RepoDocMetaManager>(null!);
+export const RepoDocMetaLoaderContext = React.createContext<RepoDocMetaLoader>(null!);
+export const RepoDocMetaManagerContext = React.createContext<RepoDocMetaManager>(null!);
 const TagsProviderContext = React.createContext<Provider<ReadonlyArray<Tag>>>(() =>[]);
 
 export const useRepoDocMetaLoader = () => React.useContext(RepoDocMetaLoaderContext);
