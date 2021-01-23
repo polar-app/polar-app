@@ -17,7 +17,6 @@ interface IProps {
     readonly size?: 'small' | 'medium' | 'large';
 }
 
-
 export const CreateAccountButton = (props: IProps) => {
 
     const classes = useStyles();
@@ -32,7 +31,7 @@ export const CreateAccountButton = (props: IProps) => {
                 size={size}
                 color="primary"
                 style={{fontSize}}
-                href="https://app.getpolarized.io">
+                href="https://app.getpolarized.io/create-account">
             Sign Up for Free
         </Button>
     );

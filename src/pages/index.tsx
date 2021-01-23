@@ -68,7 +68,7 @@ const Landing = ({}) => {
 
               <div style={{marginBottom: '10px'}}>
                   Already using Polar?{" "}
-                  <a style={{ color: "#A88CFF" }} href="https://app.getpolarized.io">
+                  <a style={{ color: "#A88CFF" }} href="https://app.getpolarized.io/sign-in">
                       Sign in
                   </a>
               </div>
