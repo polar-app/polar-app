@@ -35,6 +35,7 @@ const useDisplayStyles = makeStyles((theme) =>
         inactive: {
             display: 'none',
             minHeight: 0,
+            overflow: 'hidden',
         }
 
     }),
@@ -57,8 +58,19 @@ const useVisibilityStyles = makeStyles((theme) =>
 
         inactive: {
             visibility: 'hidden',
-            height: 0,
-            maxHeight: 0,
+            minHeight: "0px !important",
+            maxHeight: "0px !important",
+            height: "0px !important",
+            // position: 'absolute',
+            overflow: 'hidden',
+            // top: '-9999px',
+            // left: '-9999px',
+            // clip: 'rect(0 0 0 0)',
+            "& *": {
+                minHeight: "0px !important",
+                maxHeight: "0px !important",
+                height: "0px !important"
+            }
         }
 
     }),

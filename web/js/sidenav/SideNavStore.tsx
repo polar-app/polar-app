@@ -6,7 +6,6 @@ import {URLStr} from "polar-shared/src/util/Strings";
 import { useHistory } from 'react-router-dom';
 import { Arrays } from 'polar-shared/src/util/Arrays';
 import {useRefValue} from '../hooks/ReactHooks';
-import {Tabs} from "../../../../polar-app-public/polar-web-extension/src/chrome/Tabs";
 
 export const SIDE_NAV_ENABLED = localStorage.getItem('sidenav') === 'true';
 
@@ -15,6 +14,8 @@ export interface ITabImage {
     readonly width: number;
     readonly height: number;
 }
+
+export type TabContentType = 'pdf' | 'epub';
 
 export interface TabDescriptorInit {
 
@@ -39,6 +40,8 @@ export interface TabDescriptorInit {
     readonly content?: React.ReactNode;
 
     readonly image?: ITabImage;
+
+    readonly type: TabContentType;
 
 }
 

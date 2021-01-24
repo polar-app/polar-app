@@ -3,7 +3,6 @@ import {PDFDocument} from "./pdf/PDFDocument";
 import * as React from "react";
 import {useDocViewerStore} from "../DocViewerStore";
 import {URLStr} from "polar-shared/src/util/Strings";
-import isEqual from "react-fast-compare";
 import {EPUBDocument} from "./epub/EPUBDocument";
 import {EPUBViewerContainer} from "./epub/EPUBViewerContainer";
 import {FileTypes} from "../../../../web/js/apps/main/file_loaders/FileTypes";
@@ -12,6 +11,7 @@ import {FileType} from "../../../../web/js/apps/main/file_loaders/FileType";
 import {EPUBFinderProvider} from "./epub/EPUBFinderStore";
 import {isPresent} from "polar-shared/src/Preconditions";
 import { EPUBDocumentStoreProvider } from "./epub/EPUBDocumentStore";
+import { DocResizeOnChange } from "./DocResizeOnChange";
 
 interface ILoadedProps {
     readonly docURL: URLStr;
@@ -112,7 +112,10 @@ export const DocRenderer = React.memo(function DocRenderer(props: IProps) {
 
     return (
         <DocRendererDelegate docURL={docURL} docMeta={docMeta} fileType={fileType}>
-            {props.children}
+            <>
+                {props.children}
+                <DocResizeOnChange/>
+            </>
         </DocRendererDelegate>
     );
 

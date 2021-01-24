@@ -44,7 +44,23 @@ export const GlobalCssDarkStyles = withStyles(() => {
     }
 });
 
+
+export const GlobalCssOverflowStyles = withStyles(() => {
+
+    return {
+        // @global is handled by jss-plugin-global.
+        '@global': {
+
+            'html, body': {
+                overflow: 'hidden'
+            },
+
+        },
+    }
+});
+
 export const GlobalCssDark = GlobalCssDarkStyles(() => null);
+export const GlobalCssOverflow = GlobalCssOverflowStyles(() => null);
 
 export const GlobalCss = () => {
 
@@ -55,6 +71,7 @@ export const GlobalCss = () => {
             {theme.palette.type === 'dark' &&
                 <GlobalCssDark/>}
 
+            <GlobalCssOverflow/>
             <GlobalCssGapBox/>
 
         </>

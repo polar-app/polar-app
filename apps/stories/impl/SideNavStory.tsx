@@ -13,6 +13,7 @@ const createWebCard = (id: number): TabDescriptor => {
 
         id,
         url: `/apps/stories/side-nav/${id}`,
+        type: 'epub',
         title: "Alice's Adventures in Wonderland",
         icon: (
             <img src={DocCardImages.WEB_CARD_IMAGE_URL} alt='foo'/>
@@ -34,6 +35,7 @@ const createPDFCard = (id: number): TabDescriptor => {
 
         id,
         url: `/apps/stories/side-nav/${id}`,
+        type: 'pdf',
         title: 'Large-scale Cluster Management at Google with Borg',
         icon: (
             <img src={DocCardImages.PDF_CARD_IMAGE_URL} alt='foo'/>

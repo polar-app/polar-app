@@ -129,12 +129,14 @@ const SideNavDocuments = React.memo(function SideNavDocuments(props: SideNavDocu
             {tabs.map(tab => (
                 <PersistentRoute key={'doc-' + tab.id}
                                  exact
-                                 strategy="visibility"
+                                 strategy={tab.type === 'pdf' ? 'display' : 'visibility'}
                                  path={tab.url}>
+
                     <RepositoryDocViewerScreen persistenceLayerProvider={props.persistenceLayerProvider}
                                                repoDocMetaManager={props.repoDocMetaManager}
                                                repoDocMetaLoader={props.repoDocMetaLoader}
                                                persistenceLayerManager={props.persistenceLayerManager}/>
+
                 </PersistentRoute>
             ))}
         </>

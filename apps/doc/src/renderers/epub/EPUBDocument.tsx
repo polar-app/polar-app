@@ -45,7 +45,6 @@ import {Nonces} from "polar-shared/src/util/Nonces";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {NavItem} from 'epubjs/types/navigation';
 import {useViewerElement} from "../UseViewerElementHook";
-import { useLocation } from 'react-router-dom';
 
 interface IProps {
     readonly docURL: URLStr;
@@ -123,13 +122,11 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
 
     const finder = useEPUBFindController();
     const annotationBarInjector = useAnnotationBar({noRectTexts: true});
-    const docViewerElements = useDocViewerElementsContext();
     const epubResizer = useEPUBResizer();
     const log = useLogger();
     const sectionRef = React.useRef<Section | undefined>(undefined);
     const stylesheet = useStylesheetURL();
     const linkLoader = useLinkLoader();
-    useEPUBResizerWithLocationChange();
 
     const doLoad = React.useCallback(async () => {
 
@@ -426,29 +423,12 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
 
 });
 
-/**
- * Listen to route changes so that if the document changes we can resize.  This
- * is a super efficient function so if we call it too many times it doesn't
- * really matter.
- */
-function useEPUBResizerWithLocationChange() {
-
-    const epubResizer = useEPUBResizer();
-    const location = useLocation();
-
-    React.useEffect(() => {
-        epubResizer();
-    }, [location, epubResizer])
-
-}
 
 function useEPUBResizer() {
 
     const docViewerElements = useDocViewerElementsContext();
 
     return React.useCallback(() => {
-
-        console.log("Resizing EPUB");
 
         const docViewer = docViewerElements.getDocViewerElement();
 
@@ -520,6 +500,8 @@ function useEPUBResizer() {
             iframe.contentDocument.body.style.height = 'auto';
 
         }
+
+        console.log("Resizing EPUB");
 
         const dimensions = computeContainerDimensions();
 
