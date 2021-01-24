@@ -76,21 +76,6 @@ interface ISideNavCallbacks {
 
 function createInitialTabs(): ReadonlyArray<TabDescriptor> {
     return [
-        // {
-        //     id: 0,
-        //     url: '/',
-        //     title: 'Documents'
-        // },
-        // {
-        //     id: 2,
-        //     url: '/doc/39b730b6e9d281b0eae91b2c2c29b842',
-        //     title: 'availability.pdf'
-        // },
-        // {
-        //     id: 3,
-        //     url: '/doc/65633831393839653565636565353663396137633437306630313331353264366266323462366463373335343834326562396534303262653534353034363564',
-        //     title: 'Venture Deals'
-        // }
     ]
 }
 

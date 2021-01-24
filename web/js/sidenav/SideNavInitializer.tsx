@@ -10,13 +10,16 @@ import {Either} from "../util/Either";
 import {LoadDocRequest} from "../apps/main/doc_loaders/LoadDocRequest";
 import {IDStr} from "polar-shared/src/util/Strings";
 
-export function useSideNavDocumentLoader() {
+export function useSideNavInitializer() {
 
     const {tabs} = useSideNavStore(['tabs']);
     const docLoader = useDocLoader();
     const repoDocMetaManager = useRepoDocMetaManager();
-    const location = useLocationWithPathOnly();
 
+    // the initial location of the app...
+    const location = React.useMemo(() => document.location, []);
+
+    // the first docViewerURL based on the initial location.
     const docViewerURL = DocViewerAppURLs.parse(location.pathname)
 
     const handleDocLoad = React.useCallback((id: IDStr) => {
@@ -64,7 +67,7 @@ export function useSideNavDocumentLoader() {
 
 }
 
-export const SideNavDocumentLoader = React.memo(() => {
-    useSideNavDocumentLoader();
+export const SideNavInitializer = React.memo(() => {
+    useSideNavInitializer();
     return null;
 });

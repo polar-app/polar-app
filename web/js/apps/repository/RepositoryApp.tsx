@@ -61,7 +61,7 @@ import {WelcomeScreen} from "./WelcomeScreen";
 import {SIDE_NAV_ENABLED, useSideNavStore} from '../../sidenav/SideNavStore';
 import {SideNav} from "../../sidenav/SideNav";
 import Divider from '@material-ui/core/Divider';
-import {SideNavDocumentLoader} from "../../sidenav/SideNavDocumentLoader";
+import {SideNavInitializer} from "../../sidenav/SideNavInitializer";
 import {AccountDialogScreen} from "../../ui/cloud_auth/AccountDialogScreen";
 import {CreateAccountScreen} from "../../../../apps/repository/js/login/CreateAccountScreen";
 import {SignInScreen} from "../../../../apps/repository/js/login/SignInScreen";
@@ -166,7 +166,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                      <DocRepoStore2>
                          <DocRepoSidebarTagStore>
                              <>
-                                 <SideNavDocumentLoader/>
+                                 <SideNavInitializer/>
                                  <AnkiSyncController/>
                                  <DocRepoScreen2/>
                              </>
