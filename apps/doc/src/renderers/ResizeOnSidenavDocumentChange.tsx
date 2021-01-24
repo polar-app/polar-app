@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useDocViewerStore} from "../DocViewerStore"
 import {SIDE_NAV_ENABLED} from "../../../../web/js/sidenav/SideNavStore";
-import {useSidenavDocumentChangeCallback} from "./UseDocumentChangeCallbackHook";
+import {useSidenavDocumentChangeCallback} from "./UseSidenavDocumentChangeCallbackHook";
 import { Functions } from 'polar-shared/src/util/Functions';
 
 export const ResizeOnSidenavDocumentChange = () => {

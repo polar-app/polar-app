@@ -1,6 +1,7 @@
 import {useLocation} from "react-router-dom";
 import React from "react";
 import {DocViewerAppURLs} from "../DocViewerAppURLs";
+import {SIDE_NAV_ENABLED} from "../../../../web/js/sidenav/SideNavStore";
 
 /**
  * Listen to route changes so that if the document changes we can resize.  This
@@ -15,6 +16,10 @@ export function useSidenavDocumentChangeCallback(callback: () => void) {
 
     React.useEffect(() => {
 
+        if (! SIDE_NAV_ENABLED) {
+            return;
+        }
+
         const newDocViewerURL = DocViewerAppURLs.parse(document.location.href);
 
         if (newDocViewerURL?.id && newDocViewerURL?.id !== currentDocID.current) {
@@ -23,6 +28,6 @@ export function useSidenavDocumentChangeCallback(callback: () => void) {
 
         currentDocID.current = newDocViewerURL?.id;
 
-    }, [callback, location])
+    }, [callback, location]);
 
 }

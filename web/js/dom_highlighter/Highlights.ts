@@ -126,7 +126,9 @@ export namespace Highlights {
     }
 
     export function intersects(parent: ILTRect, child: ILTRect): boolean {
+
         return Rects.intersect(Rects.createFromBasicRect(parent), Rects.createFromBasicRect(child));
+
     }
 
     export function intersectsWithWindow(position: IHighlightViewportPosition): boolean {

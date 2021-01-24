@@ -5,11 +5,25 @@ import {useScrollIntoViewUsingLocation} from "../../../apps/doc/src/annotations/
 import intersectsWithWindow = Highlights.intersectsWithWindow;
 import IHighlightViewportPosition = Highlights.IHighlightViewportPosition;
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
+import {useSidenavDocumentChangeCallback} from "../../../apps/doc/src/renderers/UseSidenavDocumentChangeCallbackHook";
+import {Functions} from "polar-shared/src/util/Functions";
 
 interface IProps extends IHighlightViewportPosition {
     readonly id: string;
     readonly color?: string;
     readonly className?: string;
+}
+
+function useSideNavDocChangeActivated() {
+
+    const [iter, setIter] = React.useState(0);
+
+    useSidenavDocumentChangeCallback(() => {
+        Functions.withTimeout(() => setIter(Date.now));
+    });
+
+    return iter;
+
 }
 
 /**
@@ -18,6 +32,7 @@ interface IProps extends IHighlightViewportPosition {
 export const DOMHighlightRow = deepMemo(function DOMHighlightRow(props: IProps) {
 
     const scrollIntoViewRef = useScrollIntoViewUsingLocation();
+    useSideNavDocChangeActivated();
 
     const useMinimalUI = ! intersectsWithWindow(props);
 
