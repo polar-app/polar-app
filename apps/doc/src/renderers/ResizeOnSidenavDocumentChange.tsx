@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {useDocViewerStore} from "../DocViewerStore"
 import {SIDE_NAV_ENABLED} from "../../../../web/js/sidenav/SideNavStore";
-import {useDocumentChangeCallback} from "./UseDocumentChangeCallbackHook";
+import {useSidenavDocumentChangeCallback} from "./UseDocumentChangeCallbackHook";
 import { Functions } from 'polar-shared/src/util/Functions';
 
-export const DocResizeOnChange = () => {
+export const ResizeOnSidenavDocumentChange = () => {
 
     const {resizer} = useDocViewerStore(['resizer'])
 
@@ -19,7 +19,7 @@ export const DocResizeOnChange = () => {
 
     }, [resizer]);
 
-    useDocumentChangeCallback(handleResize);
+    useSidenavDocumentChangeCallback(handleResize);
 
     return null;
 

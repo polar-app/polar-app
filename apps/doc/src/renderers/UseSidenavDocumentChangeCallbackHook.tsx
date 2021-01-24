@@ -7,7 +7,7 @@ import {DocViewerAppURLs} from "../DocViewerAppURLs";
  * is a super efficient function so if we call it too many times it doesn't
  * really matter.
  */
-export function useDocumentChangeCallback(callback: () => void) {
+export function useSidenavDocumentChangeCallback(callback: () => void) {
 
     const location = useLocation();
 

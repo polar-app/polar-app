@@ -11,7 +11,7 @@ import {FileType} from "../../../../web/js/apps/main/file_loaders/FileType";
 import {EPUBFinderProvider} from "./epub/EPUBFinderStore";
 import {isPresent} from "polar-shared/src/Preconditions";
 import { EPUBDocumentStoreProvider } from "./epub/EPUBDocumentStore";
-import { DocResizeOnChange } from "./DocResizeOnChange";
+import { ResizeOnSidenavDocumentChange } from "./ResizeOnSidenavDocumentChange";
 
 interface ILoadedProps {
     readonly docURL: URLStr;
@@ -114,7 +114,7 @@ export const DocRenderer = React.memo(function DocRenderer(props: IProps) {
         <DocRendererDelegate docURL={docURL} docMeta={docMeta} fileType={fileType}>
             <>
                 {props.children}
-                <DocResizeOnChange/>
+                <ResizeOnSidenavDocumentChange/>
             </>
         </DocRendererDelegate>
     );
