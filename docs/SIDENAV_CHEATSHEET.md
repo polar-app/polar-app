@@ -20,3 +20,14 @@
     -     
       
    
+   
+# BUG: 
+
+    - when a PDF doc is loaded
+    - and the window is made smaller
+    - and then we switch to epub, the epub has a larger document size than the window.
+    - 
+    
+    - NOTE: it does the resize properly but only after switching twice.
+        - the issue is the timing... it resizes but it's not resizing AFTER the document has loaded...
+        - 
