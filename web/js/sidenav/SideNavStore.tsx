@@ -306,6 +306,7 @@ export function createSideNavStore() {
         mutatorFactory,
         callbacksFactory: useCallbacksFactory
     });
+
 }
 
 export const [SideNavStoreProvider, useSideNavStore, useSideNavCallbacks]
