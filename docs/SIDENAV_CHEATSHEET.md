@@ -1,3 +1,4 @@
+
 # Resize Bugs / Tests
 
 - load two PDF documents , make sure we can switch back and forth between them.
