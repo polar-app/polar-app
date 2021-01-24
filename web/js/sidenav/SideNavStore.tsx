@@ -9,6 +9,8 @@ import {useRefValue} from '../hooks/ReactHooks';
 
 export const SIDE_NAV_ENABLED = localStorage.getItem('sidenav') === 'true';
 
+export type TabID = number;
+
 export interface ITabImage {
     readonly url: string;
     readonly width: number;
@@ -47,13 +49,13 @@ export interface TabDescriptorInit {
 
 export interface TabDescriptor extends TabDescriptorInit {
 
-    readonly id: number;
+    readonly id: TabID;
 
 }
 
 interface ISideNavStore {
 
-    readonly activeTab: number | undefined;
+    readonly activeTab: TabID | undefined;
 
     readonly tabs: ReadonlyArray<TabDescriptor>;
 
@@ -61,13 +63,14 @@ interface ISideNavStore {
 
 interface ISideNavCallbacks {
 
-    readonly setActiveTab: (id: number) => void;
+    readonly setActiveTab: (id: TabID) => void;
     readonly addTab: (tabDescriptor: TabDescriptorInit) => void;
-    readonly removeTab: (id: number) => void;
+    readonly removeTab: (id: TabID) => void;
     readonly closeCurrentTab: () => void;
-    readonly closeOtherTabs: () => void;
+    readonly closeOtherTabs: (anchor: TabID) => void;
     readonly prevTab: () => void;
     readonly nextTab: () => void;
+    readonly getTabDescriptor: (id: TabID) => TabDescriptor | undefined;
 
 }
 
@@ -202,17 +205,13 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
 
         }
 
-        function closeOtherTabs() {
+        function closeOtherTabs(anchor: TabID) {
 
             const store = storeProvider();
 
-            if (store.activeTab === undefined) {
-                return;
-            }
+            const tabs = store.tabs.filter(current => current.id === anchor);
 
-            const tabs = store.tabs.filter(current => current.id === store.activeTab);
-
-            setStore({...store, tabs});
+            setStore({...store, tabs, activeTab: anchor});
 
         }
 
@@ -291,8 +290,15 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
             doNav('next');
         }
 
+        function getTabDescriptor(id: TabID) {
+            const store = storeProvider();
+
+            return Arrays.first(store.tabs.filter(current => current.id === id));
+
+        }
+
         return {
-            addTab, removeTab, setActiveTab, closeCurrentTab, prevTab, nextTab, closeOtherTabs
+            addTab, removeTab, setActiveTab, closeCurrentTab, prevTab, nextTab, closeOtherTabs, getTabDescriptor
         };
 
     }, [historyRef, setStore, storeProvider]);

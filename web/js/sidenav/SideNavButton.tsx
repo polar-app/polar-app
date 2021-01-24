@@ -8,7 +8,7 @@ interface ISideNavButtonProps {
     readonly tab: TabDescriptor;
 }
 
-const Button = React.memo((props: ISideNavButtonProps) => {
+const Delegate = React.memo((props: ISideNavButtonProps) => {
 
     const {tab} = props;
 
@@ -26,7 +26,7 @@ export const SideNavButton = React.memo((props: ISideNavButtonProps) => {
         <>
             <SideNavCurrentTabContext.Provider value={{tab}}>
                 <SideNavContextMenuProvider>
-                    <Button tab={tab}/>
+                    <Delegate tab={tab}/>
                 </SideNavContextMenuProvider>
             </SideNavCurrentTabContext.Provider>
         </>

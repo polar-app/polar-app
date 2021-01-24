@@ -2,46 +2,61 @@ import * as React from "react";
 import {deepMemo} from "../react/ReactUtils";
 import {MUIMenuItem} from "../mui/menu/MUIMenuItem";
 import CloseIcon from '@material-ui/icons/Close';
-import {TabDescriptor, useSideNavCallbacks } from "./SideNavStore";
+import {TabDescriptor, TabDescriptorInit, TabID, useSideNavCallbacks} from "./SideNavStore";
 import {useLinkLoader} from "../ui/util/LinkLoaderHook";
 import OpenInBrowserIcon from '@material-ui/icons/OpenInBrowser';
+import {SideNavActivatedContextMenu} from "./SideNavActivatedContextMenu";
 
 interface ISideNavCurrentTab {
     readonly tab: TabDescriptor;
 }
 
-export const SideNavCurrentTabContext = React.createContext<ISideNavCurrentTab>(null!)
+export const SideNavCurrentTabContext = React.createContext<ISideNavCurrentTab | undefined>(undefined)
 
-function useSideNavCurrentTabContext() {
+export function useSideNavCurrentTabContext() {
     return React.useContext(SideNavCurrentTabContext);
 }
 
 export const SideNavContextMenu = deepMemo(() => {
 
-    const {removeTab, closeOtherTabs} = useSideNavCallbacks();
+    const {removeTab, closeOtherTabs, getTabDescriptor} = useSideNavCallbacks();
 
-    const currentTabContext = useSideNavCurrentTabContext();
+    const currentTabID = SideNavActivatedContextMenu.get();
     const linkLoader = useLinkLoader();
+
+    const withActivatedTab = React.useCallback((delegate: (tab: TabDescriptor) => void) => {
+
+        if (currentTabID !== undefined) {
+
+            const tab = getTabDescriptor(currentTabID);
+
+            if (tab) {
+                delegate(tab);
+            }
+
+        } else {
+            console.warn("No current tab");
+        }
+
+    }, [currentTabID, getTabDescriptor]);
 
     const handleOpenDocumentInBrowser = React.useCallback(() => {
 
-        if (currentTabContext) {
-            linkLoader(currentTabContext.tab.url, {focus: true, newWindow: true});
-        } else {
-            console.warn("No current tab context");
-        }
+        withActivatedTab(tab => linkLoader(tab.url, {focus: true, newWindow: true}));
 
-    }, [currentTabContext, linkLoader]);
+    }, [linkLoader, withActivatedTab]);
 
     const closeCurrentTab = React.useCallback(() => {
 
-        if (currentTabContext) {
-            removeTab(currentTabContext.tab.id);
-        } else {
-            console.warn("No current tab context");
-        }
+        withActivatedTab(tab => removeTab(tab.id));
 
-    }, [currentTabContext, removeTab]);
+    }, [removeTab, withActivatedTab]);
+
+    const handleCloseOtherTabs = React.useCallback(() => {
+
+        withActivatedTab(tab => closeOtherTabs(tab.id));
+
+    }, [closeOtherTabs, withActivatedTab]);
 
     return (
         <>
@@ -56,7 +71,7 @@ export const SideNavContextMenu = deepMemo(() => {
 
             <MUIMenuItem text="Close Other Documents"
                          icon={<CloseIcon/>}
-                         onClick={closeOtherTabs}/>
+                         onClick={handleCloseOtherTabs}/>
 
         </>
     );

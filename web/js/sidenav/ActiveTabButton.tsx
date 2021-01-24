@@ -7,6 +7,8 @@ import {SIDENAV_WIDTH, useSideNavContextMenu} from "./SideNav";
 import Tooltip from "@material-ui/core/Tooltip";
 import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
 import { useLocation } from "react-router-dom";
+import {SideNavActivatedContextMenu} from "./SideNavActivatedContextMenu";
+import {useSideNavCurrentTabContext} from "./SideNavContextMenu";
 
 const BORDER = 3;
 
@@ -44,6 +46,7 @@ const useStyles = makeStyles((theme) =>
 );
 
 interface IProps {
+
     readonly title: string;
 
     /**
@@ -65,6 +68,8 @@ export const ActiveTabButton = deepMemo((props: IProps) => {
     const classes = useStyles();
 
     const {onContextMenu} = useSideNavContextMenu();
+
+    const sideNavCurrentTabContext = useSideNavCurrentTabContext();
 
     const canonicalize = React.useCallback((path: URLPathStr) => {
 
@@ -89,9 +94,15 @@ export const ActiveTabButton = deepMemo((props: IProps) => {
             return;
         }
 
-        onContextMenu(event);
+        if (sideNavCurrentTabContext) {
+            SideNavActivatedContextMenu.set(sideNavCurrentTabContext.tab.id);
+            onContextMenu(event);
+        } else {
+            console.log("No activated tab");
+        }
 
-    }, [onContextMenu, props.noContextMenu])
+
+    }, [onContextMenu, props.noContextMenu, sideNavCurrentTabContext])
 
     return (
 
