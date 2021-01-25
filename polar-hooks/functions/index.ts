@@ -20,10 +20,8 @@ import {Webapp} from "./impl/webapp/Webapp";
 import {Sitemap} from "./impl/sitemaps/Sitemap";
 import {GroupSitemap} from "./impl/sitemaps/GroupSitemap";
 import {DocAddFunction} from "./impl/docs/DocAddFunctions";
-// import {DocPreviewFunction} from "./impl/docs/DocPreviewFunctions";
 import {SearchFunction} from "./impl/search/SearchFunction";
 import {SSRFunction} from "./impl/impl/ssr/SSRFunction";
-// import {DocPreviewSitemapFunction} from "./impl/sitemaps/DocPreviewSitemapFunction";
 import {HelloWorldFunction} from "./impl/impl/ssr/HelloWorldFunction";
 import {StripeCreateSessionFunction} from "./impl/stripe/StripeCreateSessionFunction";
 import {AutoFlashcardFunction} from "./impl/gpt3/AutoFlashcardFunction";
@@ -32,6 +30,9 @@ import {StripeStudentDiscountVerifyFunction} from "./impl/stripe/StripeStudentDi
 import {StripeStudentDiscountFunction} from "./impl/stripe/StripeStudentDiscountFunction";
 import {StartTokenAuthFunction} from "./impl/token_auth/StartTokenAuthFunction";
 import {VerifyTokenAuthFunction} from "./impl/token_auth/VerifyTokenAuthentication";
+
+// import {DocPreviewFunction} from "./impl/docs/DocPreviewFunctions";
+// import {DocPreviewSitemapFunction} from "./impl/sitemaps/DocPreviewSitemapFunction";
 
 exports.hello = HelloWorldFunction;
 // exports.docPreviewSitemap = DocPreviewSitemapFunction;
