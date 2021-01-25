@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Paper from '@material-ui/core/Paper';
 import {MUITreeView} from "../../../../web/js/mui/treeview/MUITreeView";
 import {MUITagList} from "./MUITagList";
 import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
@@ -13,6 +12,18 @@ import {createContextMenu} from "../doc_repo/MUIContextMenu";
 import {FolderSidebarMenu} from "./FolderSidebarMenu";
 import {TagIDStr} from "polar-shared/src/tags/Tags";
 import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import createStyles from '@material-ui/core/styles/createStyles';
+
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        controlBar: {
+            display: 'flex',
+            marginTop: theme.spacing(0.5)
+        },
+    }),
+);
+
 
 const FoldersMenu = () => <FolderSidebarMenu type="folder"/>
 const TagsMenu = () => <FolderSidebarMenu type="tag"/>
@@ -25,6 +36,8 @@ interface IProps {
 }
 
 export const FolderSidebar2 = React.memo((props: IProps) => {
+
+    const classes = useStyles();
 
     const {filter, foldersRoot, selected, expanded, tagsView}
         = useFolderSidebarStore(['filter', 'foldersRoot', 'selected', 'expanded', 'tagsView']);
@@ -63,9 +76,7 @@ export const FolderSidebar2 = React.memo((props: IProps) => {
                             </div>
                         )}
 
-                        <div style={{
-                                display: 'flex'
-                             }}>
+                        <div className={classes.controlBar}>
 
                             <MUISearchBox2
                                 initialValue={filter}

@@ -40,10 +40,17 @@ const useStyles = makeStyles((theme) =>
         logo: {
             display: 'flex',
             cursor: 'pointer',
+            marginTop: '8px',
             "& *": {
                 marginLeft: 'auto',
                 marginRight: 'auto',
             },
+        },
+        dividerTop: {
+            marginTop: '4px',
+            marginBottom: '5px',
+            margin: theme.spacing(1),
+            height: '1px'
         },
         divider: {
             marginBottom: '5px',
@@ -164,20 +171,35 @@ const PolarButton = React.memo(() => {
     const history = useHistory();
 
     return (
-        <div className={classes.logo} onClick={() => history.push('')}>
-            <PolarSVGIcon width={SIDENAV_BUTTON_SIZE}
-                          height={SIDENAV_BUTTON_SIZE}/>
+        <div className={classes.logo}
+             onClick={() => history.push('')}>
+            <PolarSVGIcon width={46}
+                          height={46}/>
         </div>
     );
 
 })
+
+const SideNavDividerTop = React.memo(() => {
+
+    const classes = useStyles();
+
+    return (
+        <Divider orientation="horizontal"
+                 flexItem={true}
+                 className={classes.dividerTop}/>
+    )
+
+});
 
 const SideNavDivider = React.memo(() => {
 
     const classes = useStyles();
 
     return (
-        <Divider orientation="horizontal" flexItem={true} className={classes.divider}/>
+        <Divider orientation="horizontal"
+                 flexItem={true}
+                 className={classes.divider}/>
     )
 
 });
@@ -196,7 +218,7 @@ export const SideNav = React.memo(() => {
 
             <PolarButton/>
 
-            <SideNavDivider/>
+            <SideNavDividerTop/>
 
             <HomeButton/>
             <AnnotationsButton/>
