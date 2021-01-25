@@ -30,6 +30,8 @@ import {AutoFlashcardFunction} from "./impl/gpt3/AutoFlashcardFunction";
 import {StripeCreateCustomerPortalFunction} from "./impl/stripe/StripeCreateCustomerPortalFunction";
 import {StripeStudentDiscountVerifyFunction} from "./impl/stripe/StripeStudentDiscountVerifyFunction";
 import {StripeStudentDiscountFunction} from "./impl/stripe/StripeStudentDiscountFunction";
+import {StartTokenAuthFunction} from "./impl/token_auth/StartTokenAuthFunction";
+import {VerifyTokenAuthFunction} from "./impl/token_auth/VerifyTokenAuthentication";
 
 exports.hello = HelloWorldFunction;
 // exports.docPreviewSitemap = DocPreviewSitemapFunction;
@@ -64,3 +66,5 @@ exports.autoFlashcard = AutoFlashcardFunction
 exports.StripeCreateCustomerPortal = StripeCreateCustomerPortalFunction;
 exports.StripeStudentDiscountVerifyFunction = StripeStudentDiscountVerifyFunction;
 exports.StripeStudentDiscountFunction = StripeStudentDiscountFunction;
+exports.StartTokenAuth = StartTokenAuthFunction;
+exports.VerifyTokenAuth = VerifyTokenAuthFunction;
