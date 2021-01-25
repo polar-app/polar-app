@@ -1,7 +1,5 @@
 import React from 'react';
 import {SIDE_NAV_ENABLED, TabDescriptor, useSideNavStore} from "./SideNavStore"
-import {ReactRouters} from "../react/router/ReactRouters";
-import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 import {DocViewerAppURLs} from "../../../apps/doc/src/DocViewerAppURLs";
 import {useRepoDocMetaManager} from "../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {useDocLoader} from "../apps/main/DocLoaderHooks";

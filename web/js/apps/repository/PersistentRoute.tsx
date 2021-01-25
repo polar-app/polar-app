@@ -61,15 +61,14 @@ const useVisibilityStyles = makeStyles((theme) =>
             minHeight: "0px !important",
             maxHeight: "0px !important",
             height: "0px !important",
-            // position: 'absolute',
+            lineHeight: 0,
             overflow: 'hidden',
-            // top: '-9999px',
-            // left: '-9999px',
-            // clip: 'rect(0 0 0 0)',
             "& *": {
                 minHeight: "0px !important",
                 maxHeight: "0px !important",
-                height: "0px !important"
+                height: "0px !important",
+                lineHeight: 0,
+                overflow: 'hidden',
             }
         }
 
