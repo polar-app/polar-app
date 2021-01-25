@@ -45,6 +45,8 @@ import {Nonces} from "polar-shared/src/util/Nonces";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {NavItem} from 'epubjs/types/navigation';
 import {useViewerElement} from "../UseViewerElementHook";
+import { Devices } from 'polar-shared/src/util/Devices';
+import {usePrefsContext} from "../../../../repository/js/persistence_layer/PrefsContext2";
 
 interface IProps {
     readonly docURL: URLStr;
@@ -104,6 +106,18 @@ function handleLinkClicks(target: HTMLElement, linkLoader: LinkLoaderDelegate) {
     }
 }
 
+export function useFixedWidth() {
+
+    const prefs = usePrefsContext();
+
+    if (Devices.isDesktop() ) {
+        return prefs.isMarked('fixed-width-epub');
+    }
+
+    return false;
+
+}
+
 export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
 
     const {docURL, docMeta} = props;
@@ -127,8 +141,6 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
     const sectionRef = React.useRef<Section | undefined>(undefined);
     const stylesheet = useStylesheetURL();
     const linkLoader = useLinkLoader();
-    const docID = props.docMeta.docInfo.fingerprint;
-    const {viewerElement} = useViewerElement(docID);
 
     const doLoad = React.useCallback(async () => {
 
@@ -146,6 +158,8 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
 
         const book = ePub(docURL);
 
+        const docID = props.docMeta.docInfo.fingerprint;
+        const {viewerElement} = useViewerElement(docID);
 
         const pageElement = viewerElement.querySelector(".page")! as HTMLDivElement;
 
@@ -401,9 +415,9 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
         console.log("Loaded epub");
 
     }, [annotationBarInjector, docMeta.docInfo.fingerprint, docURL, epubResizer, finder,
-        incrRenderIter, linkLoader, setDocDescriptor, setDocScale, setFinder,
-        setFluidPagemarkFactory, setOutline, setOutlineNavigator, setPage,
-        setPageNavigator, setResizer, setSection, stylesheet, viewerElement]);
+        incrRenderIter, linkLoader, props.docMeta.docInfo.fingerprint, setDocDescriptor,
+        setDocScale, setFinder, setFluidPagemarkFactory, setOutline, setOutlineNavigator,
+        setPage, setPageNavigator, setResizer, setSection, stylesheet]);
 
     useWindowResizeEventListener('epub-resizer', epubResizer);
 
@@ -427,6 +441,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
 function useEPUBResizer() {
 
     const docViewerElements = useDocViewerElementsContext();
+    const fixedWidth = useFixedWidth();
 
     return React.useCallback(() => {
 
@@ -492,12 +507,15 @@ function useEPUBResizer() {
 
             setWidthAndHeight(body, dimensions);
 
-            // this epub padding and I can't figure out where    this is being set.
-            // iframe.contentDocument!.documentElement.style.padding = '0';
-            // iframe.contentDocument!.body.style.padding = '5px';
+            if (fixedWidth) {
+                iframe.contentDocument.body.style.maxWidth = '800px';
+                iframe.contentDocument.body.style.margin = 'auto';
+                iframe.contentDocument.body.style.height = 'auto';
 
-            iframe.contentDocument.body.style.width = 'auto';
-            iframe.contentDocument.body.style.height = 'auto';
+            } else {
+                iframe.contentDocument.body.style.width = 'auto';
+                iframe.contentDocument.body.style.height = 'auto';
+            }
 
         }
 

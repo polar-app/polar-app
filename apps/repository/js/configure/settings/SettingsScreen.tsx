@@ -120,6 +120,12 @@ export const SettingsScreen = React.memo(() => {
                                    prefs={localStoragePrefs}
                                    preview={true}/>
 
+                    <SettingToggle title="BETA: Fixed-width EPUBs"
+                                   description="Enables fixed-width EPUBs in desktop mode"
+                                   name="fixed-width-epub"
+                                   prefs={prefs}
+                                   preview={true}/>
+
                     <SettingToggle title="Development"
                                    description="Enables general development features for software engineers working on Polar."
                                    name="dev"
