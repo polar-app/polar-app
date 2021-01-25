@@ -9,13 +9,13 @@ export const AccountDialogScreen = () => {
     const history = useHistory();
     const userInfoContext = useUserInfoContext();
 
-    if (! userInfoContext?.userInfo) {
-        return null;
-    }
-
     const handleClose = React.useCallback(() => {
         history.goBack();
     }, [history]);
+
+    if (! userInfoContext?.userInfo) {
+        return null;
+    }
 
     return (
         <MUIDialog maxWidth="md"

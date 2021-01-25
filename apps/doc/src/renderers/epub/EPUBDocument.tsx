@@ -127,6 +127,8 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
     const sectionRef = React.useRef<Section | undefined>(undefined);
     const stylesheet = useStylesheetURL();
     const linkLoader = useLinkLoader();
+    const docID = props.docMeta.docInfo.fingerprint;
+    const {viewerElement} = useViewerElement(docID);
 
     const doLoad = React.useCallback(async () => {
 
@@ -144,8 +146,6 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
 
         const book = ePub(docURL);
 
-        const docID = props.docMeta.docInfo.fingerprint;
-        const {viewerElement} = useViewerElement(docID);
 
         const pageElement = viewerElement.querySelector(".page")! as HTMLDivElement;
 
@@ -401,9 +401,9 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
         console.log("Loaded epub");
 
     }, [annotationBarInjector, docMeta.docInfo.fingerprint, docURL, epubResizer, finder,
-        incrRenderIter, linkLoader, props.docMeta.docInfo.fingerprint, setDocDescriptor,
-        setDocScale, setFinder, setFluidPagemarkFactory, setOutline, setOutlineNavigator,
-        setPage, setPageNavigator, setResizer, setSection, stylesheet]);
+        incrRenderIter, linkLoader, setDocDescriptor, setDocScale, setFinder,
+        setFluidPagemarkFactory, setOutline, setOutlineNavigator, setPage,
+        setPageNavigator, setResizer, setSection, stylesheet, viewerElement]);
 
     useWindowResizeEventListener('epub-resizer', epubResizer);
 
