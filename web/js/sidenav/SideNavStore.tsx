@@ -216,6 +216,7 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
 
             const store = storeProvider();
 
+            // TODO: it's not undefined if we change the URL...
             if (store.activeTab === undefined) {
 
                 if (store.tabs.length > 0) {
