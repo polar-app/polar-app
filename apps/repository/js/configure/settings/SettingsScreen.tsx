@@ -93,6 +93,12 @@ export const SettingsScreen = React.memo(() => {
                         defaultValue={true}
                         prefs={prefs}/>
 
+
+                    <SettingToggle title="Fixed-width EPUBs"
+                                   description="Enables fixed-width EPUBs in desktop mode"
+                                   name="fixed-width-epub"
+                                   prefs={prefs}/>
+
                     {/*<SettingEntry title="Enable groups"*/}
                     {/*              description="Enables the new groups functionality for sharing documents with other users."*/}
                     {/*              name="groups"*/}
@@ -118,12 +124,6 @@ export const SettingsScreen = React.memo(() => {
                                    description="Enables the new side navigation we're working on for the next major UI revision (requires reload)"
                                    name="sidenav"
                                    prefs={localStoragePrefs}
-                                   preview={true}/>
-
-                    <SettingToggle title="BETA: Fixed-width EPUBs"
-                                   description="Enables fixed-width EPUBs in desktop mode"
-                                   name="fixed-width-epub"
-                                   prefs={prefs}
                                    preview={true}/>
 
                     <SettingToggle title="Development"
