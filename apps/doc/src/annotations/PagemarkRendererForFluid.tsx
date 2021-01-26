@@ -129,6 +129,7 @@ function useEPUBIFrameBrowserContext(): IBrowserContext{
 
 interface PagemarkInnerProps {
     readonly id: string;
+    readonly iter?: number;
     readonly className: string;
     readonly fingerprint: string;
     readonly pageNum: number;
@@ -137,7 +138,7 @@ interface PagemarkInnerProps {
 
 }
 
-const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
+const PagemarkInner = deepMemo(function PagemarkInner(props: PagemarkInnerProps) {
 
     const {id, fingerprint, pagemark, pageNum, className, pagemarkColor} = props;
 
@@ -145,11 +146,6 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
     const iframe = useEPUBIFrameElement();
     const browserContext = useEPUBIFrameBrowserContext();
     const {onPagemark} = useDocViewerCallbacks();
-
-    if (! iframe || ! iframe.contentDocument) {
-        // the iframe isn't mounted yet.
-        return null;
-    }
 
     const computeBoundingClientRectFromCFI = React.useCallback((cfi: string | undefined): DOMRect | undefined => {
 
@@ -250,12 +246,19 @@ const PagemarkInner = deepMemo((props: PagemarkInnerProps) => {
 
     }, [browserContext, computePositionUsingPagemark, onPagemark, pageNum, pagemark]);
 
+    if (! iframe || ! iframe.contentDocument) {
+        // the iframe isn't mounted yet.
+        return null;
+    }
+
     return (
         <ResizeBox
                 {...contextMenu}
                 {...browserContext}
                 onResized={handleResized}
                 id={id}
+                key={props.iter}
+                iter={props.iter}
                 bounds="parent"
                 data-type="pagemark"
                 data-doc-fingerprint={fingerprint}
@@ -290,11 +293,14 @@ interface IProps {
     readonly container: HTMLElement;
 }
 
-export const PagemarkRendererForFluid = deepMemo((props: IProps) => {
+export const PagemarkRendererForFluid = deepMemo(function PagemarkRendererForFluid(props: IProps) {
 
     const {pagemark, fingerprint, pageNum, container} = props;
+
+    const [iter, setIter] = React.useState(0);
+
     useWindowScrollEventListener('PagemarkRendererForFluid-scroll', NULL_FUNCTION);
-    useWindowResizeEventListener('PagemarkRendererForFluid-resize', NULL_FUNCTION);
+    useWindowResizeEventListener('PagemarkRendererForFluid-resize', () => setIter(iter + 1));
 
     if (! container) {
         return null;
@@ -320,6 +326,8 @@ export const PagemarkRendererForFluid = deepMemo((props: IProps) => {
             <PagemarkValueContext.Provider value={pagemark}>
                 <ContextMenu>
                     <PagemarkInner id={id}
+                                   iter={iter}
+                                   key={iter}
                                    className={className}
                                    fingerprint={fingerprint}
                                    pageNum={pageNum}

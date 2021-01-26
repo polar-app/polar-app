@@ -48,6 +48,11 @@ interface IProps {
 
     readonly resizeAxis?: 'y'
 
+    /**
+     * Used to trigger a remount externally when we resize, scroll, etc.
+     */
+    readonly iter?: number;
+
 }
 
 interface IBox {
@@ -99,7 +104,19 @@ function computeNewBox(box: IBox, direction: ResizeDirection, delta: ResizableDe
 
 }
 
-export const ResizeBox = deepMemo((props: IProps) => {
+function toggleUserSelect(doc: Document, resizing: boolean) {
+    // this is a hack to disable user select of the document to prevent
+    // parts of the UI from being selected
+
+    if (resizing) {
+        doc.body.style.userSelect = 'none';
+    } else {
+        doc.body.style.userSelect = 'auto';
+    }
+
+}
+
+export const ResizeBox = deepMemo(function ResizeBox(props: IProps) {
 
     const computeNewState = () => deriveStateFromInitialPosition(props.computePosition);
 
@@ -212,18 +229,6 @@ export const ResizeBox = deepMemo((props: IProps) => {
     const position = computePosition(state);
     const doc = props.document || document;
 
-    const toggleUserSelect = (resizing: boolean) => {
-        // this is a hack to disable user select of the document to prevent
-        // parts of the UI from being selected
-
-        if (resizing) {
-            doc.body.style.userSelect = 'none';
-        } else {
-            doc.body.style.userSelect = 'auto';
-        }
-
-    };
-
     return (
         <>
 
@@ -239,8 +244,8 @@ export const ResizeBox = deepMemo((props: IProps) => {
                     width: state.width,
                     height: state.height
                 }}
-                onMouseDown={() => toggleUserSelect(true)}
-                onMouseUp={() => toggleUserSelect(false)}
+                onMouseDown={() => toggleUserSelect(doc, true)}
+                onMouseUp={() => toggleUserSelect(doc, false)}
                 position={position}
                 // onMouseOver={() => handleOnMouseOver()}
                 // onMouseOut={() => handleOnMouseOut()}
