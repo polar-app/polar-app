@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "public": "_site",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "redirects": [
+      {
+        "source": "/incremental-reading.html",
+        "destination": "/docs/incremental-reading.html",
+        "type": 301
+      }
+    ]
+  }
+}
