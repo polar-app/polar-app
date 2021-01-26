@@ -33,7 +33,7 @@ The reader also provides an outline of the document, assuming the document inclu
 
 # Reading features
 
-
+Polar's reader supports state-of-the-art reading features, including text highlights, area highlights, and pagemarks. Please note, area highlights are currently not available for EPUB and captured web pages. We support different types of pagemarks and labels for pagemarks. See details <a href="https://getpolarized.io/docs/pagemarks.html" target="_blank">here</a>
 
 # Annotation Sidebar
 
