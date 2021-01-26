@@ -41,7 +41,7 @@ When creating flashcards manually, the annotation text is automatically becomes 
 
 You can also create flashcards in only one click using the AI flashcard feature. This feature automatically generates both question and answer from a text highlight using GPT-3. See an example below
 
-FIXME: add flashcard gif
+<img class="img-fluid" src="https://i.imgur.com/Iu1ilJ0.gifv">
 
 Pagemarks allow you to closely track your reading progress. We support different types of pagemarks - specifically pagemarks from the very beginning of a doc (```Pagemark to current location```) and pagemarks from a specific page to your current location (```Pagemark from Page to Current Location```). The latter is currently only available for PDFs. In addition, you can also label pagemarks. For details on pagemark, see more <a href="https://getpolarized.io/docs/pagemarks.html" target="_blank">here</a>.
 
