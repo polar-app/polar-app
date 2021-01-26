@@ -507,14 +507,15 @@ function useEPUBResizer() {
 
             setWidthAndHeight(body, dimensions);
 
+            iframe.contentDocument.body.style.height = 'auto';
+            iframe.contentDocument.body.style.padding = '8px';
+
             if (fixedWidth) {
                 iframe.contentDocument.body.style.maxWidth = '800px';
                 iframe.contentDocument.body.style.margin = 'auto';
-                iframe.contentDocument.body.style.height = 'auto';
 
             } else {
                 iframe.contentDocument.body.style.width = 'auto';
-                iframe.contentDocument.body.style.height = 'auto';
             }
 
         }

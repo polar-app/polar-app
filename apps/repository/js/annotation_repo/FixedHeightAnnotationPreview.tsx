@@ -104,7 +104,7 @@ const TextPreview = deepMemo((props: IProps) => {
                  userSelect: "none",
                  height: textPreviewHeight.height,
                  overflow: 'hidden',
-                 fontSize: '1.1rem'
+                 fontSize: '14px'
              }}
              dangerouslySetInnerHTML={{__html: truncated || 'no text'}}/>
     );

@@ -30,7 +30,7 @@ const globalKeyMap = keyMapWithGroup(
             ACTIVATE: {
                 name: "Jump to Recent Document",
                 description: "Filter and jump to a recent document",
-                sequences: ['shift+command+e'],
+                sequences: ['shift+command+e', 'shift+ctrl+e'],
             },
         }
     });
