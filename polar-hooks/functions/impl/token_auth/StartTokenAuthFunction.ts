@@ -1,5 +1,3 @@
-
-import * as functions from "firebase-functions";
 import {Strings} from "polar-shared/src/util/Strings";
 import {AuthChallenges} from "./AuthChallenges";
 import {Sendgrid} from "../Sendgrid";
@@ -10,6 +8,7 @@ export interface IStartTokenAuthRequest {
 }
 
 export interface IStartTokenAuthResponse {
+    readonly status: 'ok';
 }
 
 interface IChallenge {
@@ -31,7 +30,7 @@ function createChallenge(): IChallenge {
 
 }
 
-export const StartTokenAuthFunction = functions.https.onRequest(async (req, res) => {
+export const StartTokenAuthFunction = ExpressFunctions.createHookAsync(async (req, res) => {
 
     const request: IStartTokenAuthRequest = req.body;
 
@@ -47,7 +46,9 @@ export const StartTokenAuthFunction = functions.https.onRequest(async (req, res)
         html: `Please use the code <b>${challenge.p0} ${challenge.p1}</b> to login to Polar.`
     })
 
-    const response: IStartTokenAuthResponse = {};
+    const response: IStartTokenAuthResponse = {
+        status: "ok"
+    };
 
     ExpressFunctions.sendResponse(res, response);
 

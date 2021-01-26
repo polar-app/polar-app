@@ -1,4 +1,3 @@
-import * as functions from "firebase-functions";
 import {AuthChallenges} from "./AuthChallenges";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 import {Lazy} from "../util/Lazy";
@@ -29,8 +28,7 @@ export interface IVerifyTokenAuthResponse {
 
 const firebaseProvider = Lazy.create(() => FirebaseAdmin.app());
 
-
-export const VerifyTokenAuthFunction = functions.https.onRequest(async (req, res) => {
+export const VerifyTokenAuthFunction = ExpressFunctions.createHookAsync(async (req, res) => {
 
     const request: IVerifyTokenAuthRequest = req.body;
 
