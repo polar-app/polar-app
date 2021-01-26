@@ -1,9 +1,9 @@
 ---
-title: Web Page Capture and Archival of HTML Content
+title: Web Page Capture with Chrome extension
 layout: doc
-permalink: /docs/web-page-capture-and-archival-of-html-content.html
+permalink: /docs/web-page-capture-with-Chrome-extension.html
 large_image: https://getpolarized.io/assets/screenshots/capture-preview-narrow.png
-description: Polar supports long term web page archival via a process called capture which downloads and caches the content locally.
+description: Use the Polar Chrome extension to capture web pages for into your repository and for later reading.
 ---
 
 # Web Page Capture
