@@ -52,7 +52,7 @@ import {Nonces} from "polar-shared/src/util/Nonces";
 import {useStateRef} from "../../../../../web/js/hooks/ReactHooks";
 import {usePrefsContext} from "../../../../repository/js/persistence_layer/PrefsContext2";
 import { usePDFUpgrader } from './PDFUpgrader';
-import {useViewerElement} from "../UseViewerElementHook";
+import {ViewerElements} from "../ViewerElements";
 
 interface DocViewer {
     readonly eventBus: EventBus;
@@ -79,7 +79,7 @@ function createDocViewer(docID: string): DocViewer {
         eventBus
     });
 
-    const {containerElement, viewerElement} = useViewerElement(docID);
+    const {containerElement, viewerElement} = ViewerElements.find(docID);
 
     const viewerOpts: PDFViewerOptions = {
         container: containerElement,

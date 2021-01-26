@@ -44,9 +44,9 @@ import {IOutlineItem} from "../../outline/IOutlineItem";
 import {Nonces} from "polar-shared/src/util/Nonces";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {NavItem} from 'epubjs/types/navigation';
-import {useViewerElement} from "../UseViewerElementHook";
 import { Devices } from 'polar-shared/src/util/Devices';
 import {usePrefsContext} from "../../../../repository/js/persistence_layer/PrefsContext2";
+import {ViewerElements} from "../ViewerElements";
 
 interface IProps {
     readonly docURL: URLStr;
@@ -159,7 +159,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
         const book = ePub(docURL);
 
         const docID = props.docMeta.docInfo.fingerprint;
-        const {viewerElement} = useViewerElement(docID);
+        const {viewerElement} = ViewerElements.find(docID);
 
         const pageElement = viewerElement.querySelector(".page")! as HTMLDivElement;
 
@@ -527,6 +527,6 @@ function useEPUBResizer() {
         adjustIframe(dimensions);
         adjustIframeBody(dimensions);
 
-    }, [docViewerElements]);
+    }, [docViewerElements, fixedWidth]);
 
 }
