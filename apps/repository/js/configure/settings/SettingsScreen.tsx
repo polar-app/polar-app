@@ -95,7 +95,7 @@ export const SettingsScreen = React.memo(() => {
 
 
                     <SettingToggle title="Fixed-width EPUBs"
-                                   description="Enables fixed-width EPUBs in desktop mode"
+                                   description="Enables fixed-width EPUBs in desktop mode and limits the document to 800px.  This should make for easier reading for some users."
                                    name="fixed-width-epub"
                                    prefs={prefs}/>
 

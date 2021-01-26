@@ -14,6 +14,8 @@ import {createContextMenu} from "../../../apps/repository/js/doc_repo/MUIContext
 import {SideNavContextMenu} from "./SideNavContextMenu";
 import {SideNavButton} from "./SideNavButton";
 import {AccountAvatar} from "../ui/cloud_auth/AccountAvatar";
+import SyncIcon from '@material-ui/icons/Sync';
+import {useAnkiSyncCallback} from "./AnkiSyncHook";
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -24,7 +26,6 @@ export const SIDENAV_SECONDARY_BUTTON_SIZE = SIDENAV_WIDTH - 32;
 // export const SIDENAV_WIDTH = 80;
 // export const SIDENAV_BUTTON_SIZE = 32;
 // export const SIDENAV_SECONDARY_BUTTON_SIZE = 32;
-
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -180,6 +181,22 @@ const PolarButton = React.memo(() => {
 
 })
 
+const SyncButton = React.memo(() => {
+
+    const classes = useStyles();
+
+    const ankiSyncCallback = useAnkiSyncCallback();
+
+    return (
+        <ActiveTabButton title="Sync"
+                         path="/sync"
+                         noContextMenu={true}
+                         onClick={ankiSyncCallback}>
+            <SyncIcon className={classes.secondaryIcon}/>
+        </ActiveTabButton>
+    )
+});
+
 const SideNavDividerTop = React.memo(() => {
 
     const classes = useStyles();
@@ -234,6 +251,7 @@ export const SideNav = React.memo(() => {
 
             <div style={{marginBottom: '5px'}}>
                 <SideNavDivider/>
+                <SyncButton/>
                 <AccountButton/>
                 <SettingsButton/>
             </div>

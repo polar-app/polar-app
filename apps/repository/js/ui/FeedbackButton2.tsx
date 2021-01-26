@@ -20,9 +20,6 @@ import {FADiscordIcon} from "../../../../web/js/mui/MUIFontAwesome";
 import {Nav} from "../../../../web/js/ui/util/Nav";
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import Divider from "@material-ui/core/Divider";
-import {AnkiSyncClient} from "../../../../web/js/controller/AnkiSyncClient";
-import SyncIcon from '@material-ui/icons/Sync';
-import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -66,49 +63,6 @@ function useReportFeedback() {
 }
 
 namespace MenuItems {
-
-    export const StartAnkiSync = React.memo(() => {
-
-        const dialogs = useDialogManager();
-        const linkLoader = useLinkLoader();
-
-        const isElectron = AppRuntime.isElectron();
-
-        const onClick = React.useCallback(() => {
-
-            if (isElectron) {
-                AnkiSyncClient.start();
-            } else {
-
-                dialogs.dialog({
-                    type: 'warning',
-                    title: "Anki Sync Requires Desktop",
-                    acceptText: "Get Desktop App",
-                    body: (
-                        <div>
-                            <p>
-                                Anki Sync only works with the Polar desktop app.
-                            </p>
-
-                            <p>
-                                Please download the Polar desktop app to enable syncing to Anki.
-                            </p>
-
-                        </div>
-                    ),
-                    onAccept: () => linkLoader('https://getpolarized.io/download/', {newWindow: true, focus: true})
-
-                })
-            }
-        }, [dialogs, isElectron, linkLoader]);
-
-        return (
-            <MUIMenuItem icon={<SyncIcon/>}
-                         text="Start Anki Sync"
-                         onClick={onClick}/>
-        )
-
-    });
 
     export const Chat = React.memo(() => {
 
@@ -241,8 +195,6 @@ export function FeedbackButton2() {
                         <MenuItems.Chat/>
                         <MenuItems.Documentation/>
 
-                        <Divider/>
-                        <MenuItems.StartAnkiSync/>
                         <Divider/>
 
                         <MenuItems.SendVideoFeedback/>
