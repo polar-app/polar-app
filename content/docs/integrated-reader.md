@@ -17,7 +17,7 @@ Polar supports light and dark mode. Your global setting is automatically adopted
 
 In addition, Polar allows you to automatically resume your reading position if you turn the feature on. For this, you need to use pagemarks to mark your reading position. Pagemarks can be set manually by right-clicking anywhere in the file. Alternatively, you can also turn on auto-pagemarks which will automatically update your reading positio in the background.
 
-FIXME: show image of settings
+<img class="img-fluid" src="https://i.imgur.com/gc8TyZ2.png">
 
 # Managing the file in the reader
 
@@ -25,7 +25,7 @@ In the top right of the reader, you can manage your file the same way you can ma
 
 In addition, you can set the number of columns for a file there. Many research papers are written in a two-column format. If this is not setting is not defined for the document, it can mess up the order of annotations for example.
 
-FIXME: show screenshot (show columns)
+<img class="img-fluid" src="https://i.imgur.com/LdJvmcg.png">
 
 # Outline
 
