@@ -6,6 +6,7 @@ import {URLStr} from "polar-shared/src/util/Strings";
 import { useHistory } from 'react-router-dom';
 import { Arrays } from 'polar-shared/src/util/Arrays';
 import {useRefValue} from '../hooks/ReactHooks';
+import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 export const SIDE_NAV_ENABLED = localStorage.getItem('sidenav') === 'true';
 
@@ -50,6 +51,14 @@ export interface TabDescriptorInit {
 export interface TabDescriptor extends TabDescriptorInit {
 
     readonly id: TabID;
+
+    readonly created: ISODateTimeString;
+
+    /**
+     * Used so that if we switch to a tab, or close a tab, we immediately switch
+     * to the previously used tab.
+     */
+    readonly lastActivated: ISODateTimeString;
 
 }
 
@@ -124,7 +133,16 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
 
         function setActiveTab(activeTabID: number) {
             const store = storeProvider();
-            setStore({...store, activeTab: activeTabID});
+            const lastActivated = ISODateTimeStrings.create();
+
+            const tabs = [...store.tabs];
+
+            tabs[activeTabID] = {
+                ...tabs[activeTabID],
+                lastActivated
+            }
+
+            setStore({...store, tabs, activeTab: activeTabID});
 
             const activeTab = tabByID(activeTabID);
 
@@ -136,8 +154,12 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
 
         function addTab(newTabDescriptor: TabDescriptorInit) {
 
+            const now = ISODateTimeStrings.create();
+
             const tabDescriptor: TabDescriptor = {
                 ...newTabDescriptor,
+                created: now,
+                lastActivated: now,
                 id: seq++
             }
 
