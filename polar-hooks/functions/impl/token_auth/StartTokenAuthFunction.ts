@@ -17,10 +17,10 @@ interface IChallenge {
     readonly value: string;
 }
 
-function createChallenge(): IChallenge {
+export function createChallenge(): IChallenge {
 
-    const n0 = Math.random() * 999;
-    const n1 = Math.random() * 999;
+    const n0 = Math.floor(Math.random() * 999);
+    const n1 = Math.floor(Math.random() * 999);
 
     const p0 = Strings.lpad(n0, '0', 3);
     const p1 = Strings.lpad(n1, '0', 3);
