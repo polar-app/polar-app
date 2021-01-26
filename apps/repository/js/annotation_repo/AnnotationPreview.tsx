@@ -55,7 +55,7 @@ const TextPreview = deepMemo((props: IProps) => {
     const {text} = props;
 
     return (
-        <div style={{userSelect: "none"}}
+        <div style={{userSelect: "none", fontSize: '1.1rem'}}
              className="text-sm"
              dangerouslySetInnerHTML={{__html: text || 'no text'}}/>
     );

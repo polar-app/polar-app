@@ -15,7 +15,7 @@ export const CommentAnnotationView2 = deepMemo((props: IProps) => {
     return (
         <div className="comment muted-color-root">
 
-            <div className="text-sm">
+            <div style={{fontSize: '1.1rem'}}>
 
                 {/*TODO: based on the state determine if we should be*/}
                 {/*editing or just displaying the comment*/}
