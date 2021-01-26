@@ -5,13 +5,19 @@ import Button from '@material-ui/core/Button';
 import {DocCardImages} from "./doc_cards/DocCardImages";
 import {SideNavContentRouter} from "../../../web/js/sidenav/SideNavContentRouter";
 import Divider from '@material-ui/core/Divider';
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 let seq = 0;
 
+
 const createWebCard = (id: number): TabDescriptor => {
+
+    const now = ISODateTimeStrings.create();
     return {
 
         id,
+        created: now,
+        lastActivated: now,
         url: `/apps/stories/side-nav/${id}`,
         type: 'epub',
         title: "Alice's Adventures in Wonderland",
@@ -31,9 +37,13 @@ const createWebCard = (id: number): TabDescriptor => {
 
 
 const createPDFCard = (id: number): TabDescriptor => {
+
+    const now = ISODateTimeStrings.create();
     return {
 
         id,
+        created: now,
+        lastActivated: now,
         url: `/apps/stories/side-nav/${id}`,
         type: 'pdf',
         title: 'Large-scale Cluster Management at Google with Borg',
