@@ -1,10 +1,33 @@
 import * as React from "react";
-import TextField from "@material-ui/core/TextField";
 import List from "@material-ui/core/List";
 import {MUICommandMenuItem} from "./MUICommandMenuItem";
 import {KeyBinding} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
 import {IDStr} from "polar-shared/src/util/Strings";
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import createStyles from "@material-ui/core/styles/createStyles";
+import Input from "@material-ui/core/Input";
+
+
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        title: {
+            padding: theme.spacing(1),
+            color: theme.palette.text.hint,
+            fontWeight: 'bold',
+            fontSize: '1.0rem !important'
+        },
+        textField: {
+            padding: theme.spacing(1),
+
+            fontSize: '1.2rem !important'
+        },
+        item: {
+            fontSize: '1.2rem !important'
+        }
+
+    }),
+);
 
 /**
  * Provide a list of action items we should execute and provide a prompt to
@@ -42,6 +65,8 @@ export interface ICommand {
 
 interface IProps {
 
+    readonly title?: string;
+
     /**
      * The filter to use to narrow down the input.
      */
@@ -50,7 +75,7 @@ interface IProps {
     /**
      * Called when a command is to be executed.
      */
-    readonly onCommand: (id: IDStr) => void;
+    readonly onCommand: (command: ICommand) => void;
 
     /**
      * Called when the command menu should be closed.
@@ -62,14 +87,16 @@ interface IProps {
      */
     readonly commandsProvider: CommandsProvider;
 
-}
+    readonly className?: string;
 
+}
 
 export const MUICommandMenu = React.memo((props: IProps) => {
 
+    const classes = useStyles();
     const {commandsProvider, onCommand, onClose} = props;
 
-    const [index, setIndex] = React.useState<number | undefined>();
+    const [index, setIndex] = React.useState<number>(0);
     const [filter, setFilter] = React.useState<string | undefined>(props.filter);
 
     const commands = React.useMemo(() => commandsProvider(), [commandsProvider]);
@@ -80,9 +107,9 @@ export const MUICommandMenu = React.memo((props: IProps) => {
 
     const commandsFiltered = React.useMemo(() => commands.filter(filterPredicate), [commands, filterPredicate]);
 
-    const handleCommandExecuted = React.useCallback((id: IDStr) => {
+    const handleCommandExecuted = React.useCallback((command: ICommand) => {
 
-        onCommand(id);
+        onCommand(command);
         onClose('executed');
 
     }, [onClose, onCommand]);
@@ -162,7 +189,7 @@ export const MUICommandMenu = React.memo((props: IProps) => {
             stopHandlingEvent();
             if (index !== undefined) {
                 const command = commandsFiltered[index];
-                handleCommandExecuted(command.id);
+                handleCommandExecuted(command);
             }
         }
 
@@ -181,11 +208,23 @@ export const MUICommandMenu = React.memo((props: IProps) => {
     return (
 
         <ClickAwayListener onClickAway={() => props.onClose('cancel')}>
-            <div style={{display: 'flex', flexDirection: 'column', width: '600px'}}>
+            <div style={{
+                     display: 'flex',
+                     flexDirection: 'column'
+                 }}
+                 className={props.className}>
 
-                <TextField autoFocus={true}
-                           placeholder="Type a command or search ..."
-                           onChange={event => setFilter(event.target.value) }/>
+                {props.title && (
+                    <div className={classes.title}>
+                        {props.title}
+                    </div>
+                )}
+
+                <Input autoFocus={true}
+                       disableUnderline={true}
+                       className={classes.textField}
+                       placeholder="Type a command or search ..."
+                       onChange={event => setFilter(event.target.value) }/>
 
                 <List component="nav">
 
@@ -196,11 +235,12 @@ export const MUICommandMenu = React.memo((props: IProps) => {
 
                         return (
                             <MUICommandMenuItem key={key}
+                                                className={classes.item}
                                                 text={command.text}
                                                 icon={command.icon}
                                                 selected={selected}
                                                 sequences={command.sequences}
-                                                onSelected={() => handleCommandExecuted(command.id)}/>
+                                                onSelected={() => handleCommandExecuted(command)}/>
                         );
                     })}
 

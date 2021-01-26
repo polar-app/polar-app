@@ -16,6 +16,7 @@ import {SideNavButton} from "./SideNavButton";
 import {AccountAvatar} from "../ui/cloud_auth/AccountAvatar";
 import SyncIcon from '@material-ui/icons/Sync';
 import {useAnkiSyncCallback} from "./AnkiSyncHook";
+import {SideNavCommandMenu} from "./SideNavCommand";
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -231,32 +232,35 @@ export const SideNav = React.memo(() => {
     const {tabs} = useSideNavStore(['tabs']);
 
     return (
-        <div className={classes.root}>
+        <>
+            <SideNavCommandMenu/>
+            <div className={classes.root}>
 
-            <PolarButton/>
+                <PolarButton/>
 
-            <SideNavDividerTop/>
+                <SideNavDividerTop/>
 
-            <HomeButton/>
-            <AnnotationsButton/>
-            <StatsButton/>
+                <HomeButton/>
+                <AnnotationsButton/>
+                <StatsButton/>
 
-            {tabs.length > 0 && (
-                <SideNavDivider/>
-            )}
+                {tabs.length > 0 && (
+                    <SideNavDivider/>
+                )}
 
-            <div className={classes.buttons}>
-                {tabs.map(tab => <SideNavButton key={tab.id} tab={tab}/>)}
+                <div className={classes.buttons}>
+                    {tabs.map(tab => <SideNavButton key={tab.id} tab={tab}/>)}
+                </div>
+
+                <div style={{marginBottom: '5px'}}>
+                    <SideNavDivider/>
+                    <SyncButton/>
+                    <AccountButton/>
+                    <SettingsButton/>
+                </div>
+
             </div>
-
-            <div style={{marginBottom: '5px'}}>
-                <SideNavDivider/>
-                <SyncButton/>
-                <AccountButton/>
-                <SettingsButton/>
-            </div>
-
-        </div>
+        </>
     );
 
 });
