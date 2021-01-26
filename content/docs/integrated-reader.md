@@ -47,12 +47,7 @@ Pagemarks allow you to closely track your reading progress. We support different
 
 # Annotation Sidebar
 
-The annotation sidebar in the document reader shows a list of highlights, comments and
-flashcards associated with a specific document.
-
-This allows you to create, edit, tag, and delete annotations for a specific document
-and view all annotations in one central location.
+The annotation sidebar in on the right in the reader shows the list of highlights, comments and
+flashcards in that document. This is where you can work with your annotations
 
 To view your annotations across all documents, use the annotation viewer in Polar.
-
-<p class="text-center"><img class="img-fluid img-shadow" src="../assets/screenshots/annotation-sidebar.png"></p>
