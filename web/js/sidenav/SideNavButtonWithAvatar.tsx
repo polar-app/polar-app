@@ -2,7 +2,7 @@ import * as React from "react";
 import {TabDescriptor, useSideNavCallbacks, useSideNavStore} from "./SideNavStore";
 import { deepMemo } from "../react/ReactUtils";
 import {ActiveTabButton} from "./ActiveTabButton";
-import {SIDENAV_BUTTON_SIZE, SIDENAV_SECONDARY_BUTTON_SIZE} from "./SideNav";
+import {SIDENAV_SECONDARY_BUTTON_SIZE} from "./SideNav";
 import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
 import {DocViewerAppURLs} from "../../../apps/doc/src/DocViewerAppURLs";
 import Avatar from "@material-ui/core/Avatar";
@@ -49,7 +49,7 @@ export const SideNavButtonWithAvatar = deepMemo((props: IProps) => {
 
     const avatarText = React.useMemo((): string => {
 
-        const title = tab.title.trim();
+        const title = (tab.title || '').trim();
 
         if (title.length === 0) {
             return 'U'
