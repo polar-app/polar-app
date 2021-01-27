@@ -72,8 +72,11 @@ export namespace ControlledAnnotationBars {
 
                     const computeForEPUB = (): AnnotationPageInfo | undefined => {
 
-                        // FIXME: this isn't portable to Polar 2.0
-                        const pageElement = window.parent.document.querySelector('.page') as HTMLElement;
+                        const {docViewerElementProvider} = opts;
+
+                        const docViewerElement = docViewerElementProvider();
+
+                        const pageElement = docViewerElement.querySelector('.page') as HTMLElement;
                         const pageNum = getPageNumberForPageElement(pageElement);
                         return {popupContainer: target, pageNum};
 
