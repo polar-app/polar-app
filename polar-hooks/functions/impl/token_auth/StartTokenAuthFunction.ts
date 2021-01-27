@@ -42,8 +42,8 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync(async (re
     await Sendgrid.send({
         to: email,
         from: 'noreply@getpolarized.io',
-        subject: 'Please Sign in to Polar',
-        html: `Please use the code <b>${challenge.p0} ${challenge.p1}</b> to login to Polar.`
+        subject: `Please Sign in to Polar with code ${challenge.p0} ${challenge.p1}`,
+        html: `Please use the code <b>${challenge.p0} ${challenge.p1}</b> to sign in to Polar.`
     })
 
     const response: IStartTokenAuthResponse = {
