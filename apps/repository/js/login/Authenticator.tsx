@@ -11,7 +11,14 @@ import Divider from '@material-ui/core/Divider';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
 import { useHistory } from 'react-router-dom';
-import {useAuthHandler, useTriggerFirebaseEmailAuth, useTriggerFirebaseGoogleAuth} from './AuthenticatorHooks';
+import {
+    useAuthHandler,
+    useTriggerFirebaseEmailAuth,
+    useTriggerFirebaseGoogleAuth,
+    useTriggerStartTokenAuth,
+    useTriggerVerifyTokenAuth
+} from './AuthenticatorHooks';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -84,6 +91,11 @@ const useStyles = makeStyles((theme) =>
             marginLeft: theme.spacing(3),
             marginRight: theme.spacing(3),
             textAlign: 'center'
+        },
+        progress: {
+            height: theme.spacing(1),
+            marginLeft: theme.spacing(3),
+            marginRight: theme.spacing(3),
         }
 
     }),
@@ -161,6 +173,226 @@ const GoogleAuthButton = () => {
         </>
     );
 }
+
+
+const ProgressInactive = () => {
+
+    const classes = useStyles();
+
+    return (
+        <div className={classes.progress}>
+
+        </div>
+    );
+}
+
+const ProgressActive = () => {
+    const classes = useStyles();
+
+    return (
+        <div className={classes.progress}>
+            <LinearProgress/>
+        </div>
+    );
+}
+
+const EmailTokenAuthButton = () => {
+
+    const classes = useStyles();
+
+    interface IAlert {
+        readonly type: 'error' | 'success';
+        readonly message: string;
+    }
+
+    const [pending, setPending] = React.useState(false);
+    const [alert, setAlert] = React.useState<IAlert | undefined>();
+    const [active, setActive] = React.useState(false);
+    const [triggered, setTriggered] = React.useState(false);
+
+    const triggerStartTokenAuth = useTriggerStartTokenAuth();
+    const triggerVerifyTokenAuth = useTriggerVerifyTokenAuth();
+
+    const emailRef = React.useRef("");
+    const challengeRef = React.useRef("");
+
+    const doTriggerVerifyTokenAuth = React.useCallback(async (email: string, challenge: string) => {
+
+        setAlert(undefined);
+
+        try {
+
+            try {
+                setPending(true);
+
+                const response = await triggerVerifyTokenAuth(email, challenge);
+
+                switch(response.code) {
+
+                    case "no-email-for-challenge":
+                        setAlert({
+                            type: 'error',
+                            message: "No email was found for that challenge"
+                        });
+                        break;
+
+                    case "invalid-challenge":
+                        setAlert({
+                            type: 'error',
+                            message: "The challenge code you provided was invalid."
+                        });
+                        break;
+
+                }
+
+            } finally {
+                setPending(false);
+            }
+
+
+        } catch(err) {
+            setAlert({
+                type: 'error',
+                message: err.message
+            });
+        }
+
+    }, [triggerVerifyTokenAuth]);
+
+    const handleTriggerVerifyTokenAuth = React.useCallback(() => {
+
+        const email = emailRef.current.trim();
+        const challenge = challengeRef.current.replace(/ /g, "");
+
+        doTriggerVerifyTokenAuth(email, challenge)
+            .catch(err => console.log("Unable to handle auth: ", err));
+
+    }, [doTriggerVerifyTokenAuth])
+
+    const doTriggerStartTokenAuth = React.useCallback(async (email: string) => {
+
+        setAlert(undefined);
+
+        try {
+
+            try {
+
+                setPending(true);
+
+                await triggerStartTokenAuth(email);
+
+                setTriggered(true);
+
+                setAlert({
+                    type: 'success',
+                    message: 'Check your email for a code to login to your account!'
+                });
+
+            } finally {
+                setPending(false);
+            }
+
+        } catch(err) {
+            setAlert({
+                type: 'error',
+                message: err.message
+            });
+        }
+
+    }, [triggerStartTokenAuth]);
+
+    const handleTriggerStartTokenAuth = React.useCallback(() => {
+
+        doTriggerStartTokenAuth(emailRef.current)
+            .catch(err => console.log("Unable to handle auth: ", err));
+
+    }, [doTriggerStartTokenAuth])
+
+    const handleKeyPressEnter = React.useCallback((event: React.KeyboardEvent, callback: () => void) => {
+
+        if (event.key === 'Enter') {
+            callback();
+        }
+
+    }, []);
+
+    const handleClick = React.useCallback(() => {
+
+        if (active) {
+
+            if (triggered) {
+
+                if (challengeRef.current.trim() !== '') {
+                    handleTriggerVerifyTokenAuth();
+                }
+
+            } else {
+
+                if (emailRef.current.trim() !== '') {
+                    handleTriggerStartTokenAuth();
+                }
+
+            }
+
+        } else {
+            setActive(true)
+        }
+
+    }, [active, handleTriggerStartTokenAuth, handleTriggerVerifyTokenAuth, triggered])
+
+    return (
+        <>
+            {active && (
+                <>
+                    <Divider className={classes.sendLinkDivider}/>
+
+                    {pending && (
+                        <ProgressActive/>
+                    )}
+
+                    {! pending && (
+                        <ProgressInactive/>
+                    )}
+
+                    {alert && (
+                        <Alert severity={alert.type}
+                               className={classes.alert}>
+                            {alert.message}
+                        </Alert>
+                    )}
+
+                    {triggered && (
+                        <>
+
+                            <TextField autoFocus={true}
+                                       className={classes.email}
+                                       onChange={event => challengeRef.current = event.target.value}
+                                       onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
+                                       placeholder="Enter your verification code... "
+                                       variant="outlined" />
+
+                        </>
+                    )}
+
+                    {! triggered && (
+                        <TextField autoFocus={true}
+                                   className={classes.email}
+                                   onChange={event => emailRef.current = event.target.value}
+                                   onKeyPress={event => handleKeyPressEnter(event, handleTriggerStartTokenAuth)}
+                                   placeholder="Enter your email address... "
+                                   variant="outlined" />
+                    )}
+
+                </>
+            )}
+
+            <AuthButton onClick={handleClick}
+                        strategy="Email"
+                        startIcon={<EmailIcon />}/>
+
+        </>
+    );
+};
 
 const EmailAuthButton = () => {
 
@@ -314,7 +546,9 @@ const Main = React.memo((props: IProps) => {
 
                     <GoogleAuthButton/>
 
-                    <EmailAuthButton/>
+                    <EmailTokenAuthButton/>
+
+                    {/*<EmailAuthButton/>*/}
 
                 </div>
 

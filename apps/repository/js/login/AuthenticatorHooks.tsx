@@ -6,8 +6,23 @@ import {Firebase} from "../../../../web/js/firebase/Firebase";
 import {FirebaseUIAuth} from "../../../../web/js/firebase/FirebaseUIAuth";
 import firebase from 'firebase/app'
 import { useHistory } from "react-router-dom";
+import { Fetches } from "polar-shared/src/util/Fetch";
 
 export type AuthStatus = 'needs-auth';
+
+function handleAuthResult(authResult: firebase.auth.UserCredential) {
+
+    if (authResult.additionalUserInfo?.isNewUser) {
+        console.log("New user authenticated");
+        Analytics.event2('new-user-signup');
+
+        document.location.href = '/#welcome';
+
+    } else {
+        document.location.href = SignInSuccessURLs.get() || '/';
+    }
+
+}
 
 /**
  * The function we call AFTER the redirect has been completed to test if we're now authenticated.
@@ -16,20 +31,6 @@ export function useAuthHandler() {
 
     const logger = useLogger();
     const [status, setStatus] = React.useState<'needs-auth' |  undefined>();
-
-    function handleAuthResult(authResult: firebase.auth.UserCredential) {
-
-        if (authResult.additionalUserInfo?.isNewUser) {
-            console.log("New user authenticated");
-            Analytics.event2('new-user-signup');
-
-            document.location.href = '/#welcome';
-
-        } else {
-            document.location.href = SignInSuccessURLs.get() || '/';
-        }
-
-    }
 
     async function handleEmailLink(): Promise<boolean> {
 
@@ -142,5 +143,86 @@ export function useTriggerFirebaseEmailAuth() {
         })
 
     }, [history]);
+
+}
+
+export async function executeCloudFunction(name: string, data: any): Promise<any> {
+
+    const url = `https://us-central1-polar-cors.cloudfunctions.net/${name}/`;
+
+    const body = JSON.stringify(data);
+
+    const init = {
+        mode: "cors",
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body
+    };
+
+    const response = await Fetches.fetch(url, init as any);
+
+    if (response.status !== 200) {
+        throw new Error("Cloud function failed: " + response.status + ": " + response.statusText);
+    }
+
+    return await response.json();
+
+}
+
+export interface IStartTokenAuthResponse {
+    readonly status: 'ok';
+}
+
+export function useTriggerStartTokenAuth() {
+
+    return React.useCallback(async (email: string): Promise<IStartTokenAuthResponse> => {
+
+        return await executeCloudFunction('StartTokenAuth', {
+            email
+        });
+
+    }, []);
+
+}
+
+export interface IVerifyTokenAuthResponseError {
+    readonly code: 'no-email-for-challenge' | 'invalid-challenge';
+}
+
+export interface IVerifyTokenAuthResponse {
+
+    /**
+     * The code / error.
+     */
+    readonly code: 'ok';
+
+    /**
+     * A generated custom token on the backend.
+     */
+    readonly customToken: string;
+
+}
+
+export function useTriggerVerifyTokenAuth() {
+
+    return React.useCallback(async (email: string, challenge: string): Promise<IVerifyTokenAuthResponse | IVerifyTokenAuthResponseError> => {
+
+        const response = await executeCloudFunction('VerifyTokenAuth', {
+            email, challenge
+        });
+
+        const auth = firebase.auth();
+
+        if (response.code === 'ok') {
+            const {customToken} = response;
+            const userCredential = await auth.signInWithCustomToken(customToken);
+            handleAuthResult(userCredential);
+        }
+
+        return response;
+
+    }, []);
 
 }
