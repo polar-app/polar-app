@@ -107,6 +107,9 @@ export function useAnnotationBar(opts: AnnotationBarOpts = {}): AnnotationBarEve
 
     const messageListener = MessageListeners.createListener<ICreateTextHighlightCallbackOpts>(POST_MESSAGE_SERVICE, (message) => {
 
+        // TODO for some reason it's getting the wrong page number here and it's
+        // bubbling up to other documents.
+
         const createTextHighlightCallback = createTextHighlightCallbackRef.current!;
         createTextHighlightCallback(message);
 
