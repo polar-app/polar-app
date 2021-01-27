@@ -83,7 +83,7 @@ interface RepositoryDocViewerScreenProps {
 
 }
 
-export const RepositoryDocViewerScreen = deepMemo((props: RepositoryDocViewerScreenProps) => {
+export const RepositoryDocViewerScreen = deepMemo(function RepositoryDocViewerScreen(props: RepositoryDocViewerScreenProps) {
 
     return (
         <AuthRequired>
@@ -126,19 +126,23 @@ const SideNavDocuments = React.memo(function SideNavDocuments(props: SideNavDocu
 
     return (
         <>
-            {tabs.map(tab => (
-                <PersistentRoute key={'doc-' + tab.id}
-                                 exact
-                                 strategy={tab.type === 'pdf' ? 'display' : 'visibility'}
-                                 path={tab.url}>
+            {tabs.map(tab => {
 
-                    <RepositoryDocViewerScreen persistenceLayerProvider={props.persistenceLayerProvider}
-                                               repoDocMetaManager={props.repoDocMetaManager}
-                                               repoDocMetaLoader={props.repoDocMetaLoader}
-                                               persistenceLayerManager={props.persistenceLayerManager}/>
+                return (
+                    <PersistentRoute key={`doc-${tab.id}`}
+                                     exact
+                                     strategy={tab.type === 'pdf' ? 'display' : 'visibility'}
+                                     path={tab.url}>
 
-                </PersistentRoute>
-            ))}
+                        <RepositoryDocViewerScreen persistenceLayerProvider={props.persistenceLayerProvider}
+                                                   repoDocMetaManager={props.repoDocMetaManager}
+                                                   repoDocMetaLoader={props.repoDocMetaLoader}
+                                                   persistenceLayerManager={props.persistenceLayerManager}/>
+
+                    </PersistentRoute>
+                );
+
+            })}
         </>
     );
 

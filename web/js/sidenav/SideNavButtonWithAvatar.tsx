@@ -19,6 +19,10 @@ interface IProps {
 
 function useDeterministicColor(text: string) {
 
+    if (! text && text.length === 0) {
+        return red[500];
+    }
+
     const colors = [
         red[500],
         pink[500],

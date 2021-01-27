@@ -126,25 +126,31 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
 
     return React.useMemo((): ISideNavCallbacks => {
 
-        function tabByID(id: number) {
+        function tabByID(id: TabID) {
             const store = storeProvider();
             return Arrays.first(store.tabs.filter(tab => tab.id === id));
         }
 
-        function setActiveTab(activeTabID: number) {
+        function setActiveTab(activeTabID: TabID) {
             const store = storeProvider();
             const lastActivated = ISODateTimeStrings.create();
 
             const tabs = [...store.tabs];
 
-            tabs[activeTabID] = {
-                ...tabs[activeTabID],
-                lastActivated
+            const activeTab = tabByID(activeTabID);
+
+            const tabIndex = Arrays.first(tabs.map((current, idx) => current.id === activeTabID ? idx : undefined))
+
+            if (tabIndex !== undefined && activeTab) {
+
+                tabs[tabIndex] = {
+                    ...activeTab,
+                    lastActivated
+                }
+
             }
 
             setStore({...store, tabs, activeTab: activeTabID});
-
-            const activeTab = tabByID(activeTabID);
 
             if (activeTab) {
                 historyRef.current.push(activeTab.url);
