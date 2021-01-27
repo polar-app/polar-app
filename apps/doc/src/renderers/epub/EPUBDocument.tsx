@@ -284,7 +284,11 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
                 }
 
                 function updateURL() {
-                    document.location.hash = '#page=' + newPage;
+
+                    if (document.location.hash.indexOf('page=' + newPage) === -1) {
+                        document.location.hash = '#page=' + newPage;
+                    }
+
                 }
 
                 await displayAndWaitForRender();
