@@ -10,7 +10,7 @@ export interface IVerifyTokenAuthRequest {
 }
 
 export interface IVerifyTokenAuthResponseError {
-    readonly code: 'no-email-for-challenge' | 'invalid-challenge' | 'no-user';
+    readonly code: 'no-email-for-challenge' | 'invalid-challenge' ;
 }
 
 export interface IVerifyTokenAuthResponse {
@@ -73,11 +73,6 @@ export const VerifyTokenAuthFunction = ExpressFunctions.createHookAsync(async (r
     }
 
     const user = await getOrCreateUser();
-
-    if (! user) {
-        await sendError({code: 'no-user'});
-        return;
-    }
 
     const customToken = await auth.createCustomToken(user.uid);
 
