@@ -299,22 +299,16 @@ export const PagemarkRendererForFluid = deepMemo(function PagemarkRendererForFlu
 
     const [iter, setIter] = React.useState(0);
 
+    const win = React.useMemo(() => container.ownerDocument.defaultView || undefined, [container]);
+
     useWindowScrollEventListener('PagemarkRendererForFluid-scroll', NULL_FUNCTION);
-    useWindowResizeEventListener('PagemarkRendererForFluid-resize', () => setIter(iter + 1));
+    useWindowResizeEventListener('PagemarkRendererForFluid-resize', () => setIter(iter + 1), {win});
 
-    if (! container) {
-        return null;
-    }
-
-    if (! isPresent(pagemark.percentage)) {
-        throw new Error("Pagemark has no percentage");
-    }
-
-    const createID = () => {
+    const createID = React.useCallback(() => {
         return `${pagemark.id}`;
-    };
+    }, [pagemark.id]);
 
-    const toReactPortal = (container: HTMLElement) => {
+    const toReactPortal = React.useCallback((container: HTMLElement) => {
 
         const id = createID();
 
@@ -336,7 +330,17 @@ export const PagemarkRendererForFluid = deepMemo(function PagemarkRendererForFlu
                 </ContextMenu>
             </PagemarkValueContext.Provider>,
             container);
-    };
+
+    }, [createID, fingerprint, iter, pageNum, pagemark]);
+
+
+    if (! container) {
+        return null;
+    }
+
+    if (! isPresent(pagemark.percentage)) {
+        throw new Error("Pagemark has no percentage");
+    }
 
     return toReactPortal(container);
 
