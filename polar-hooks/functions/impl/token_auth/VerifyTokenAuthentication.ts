@@ -2,6 +2,7 @@ import {AuthChallenges} from "./AuthChallenges";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 import {Lazy} from "../util/Lazy";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
+import { Hashcodes } from "polar-shared/src/util/Hashcodes";
 
 export interface IVerifyTokenAuthRequest {
     readonly email: string;
@@ -53,7 +54,25 @@ export const VerifyTokenAuthFunction = ExpressFunctions.createHookAsync(async (r
 
     const auth = firebase.auth();
 
-    const user = await auth.getUserByEmail(email);
+    async function getOrCreateUser() {
+
+        const user = await auth.getUserByEmail(email);
+        const password = Hashcodes.createRandomID()
+
+        if (! user) {
+
+            return await auth.createUser({
+                email,
+                password
+            })
+
+        }
+
+        return user;
+
+    }
+
+    const user = await getOrCreateUser();
 
     if (! user) {
         await sendError({code: 'no-user'});
