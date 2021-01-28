@@ -67,6 +67,14 @@ export function useDocViewerContext(): IDocViewerContext {
     return result;
 }
 
+export function useIsDocViewerContext() {
+
+    const result = React.useContext(DocViewerContext);
+
+    return isPresent(result);
+
+}
+
 interface DocRendererDelegateProps {
     readonly docURL: string,
     readonly docMeta: IDocMeta;

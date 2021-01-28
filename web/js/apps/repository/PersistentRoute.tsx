@@ -11,8 +11,6 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
 
 
-// FIXME:
-//
 // There are 2-3 main problems with using display: none and potentially
 // visibility: hidden here.
 //
@@ -22,6 +20,7 @@ import clsx from "clsx";
 // - I can't set max-height: 0 and visibility: hidden as some of the inner stuff in the annotation sidebar
 //   pushes it larger and won't accept min-height
 //
+
 const useDisplayStyles = makeStyles((theme) =>
     createStyles({
 

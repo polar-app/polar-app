@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {useHistory} from "react-router-dom";
-import {DocViewerAppURLs} from "../../../apps/doc/src/DocViewerAppURLs";
 import {useDocURLLoader} from "../apps/main/doc_loaders/browser/DocURLLoader";
 import {AnnotationLinks, IAnnotationPtr} from "./AnnotationLinks";
+import {useSideNavHistory} from "../sidenav/SideNavStore";
+import {useIsDocViewerContext} from "../../../apps/doc/src/renderers/DocRenderer";
 
 /**
  * This is the default jump to annotation button that's used in the document
@@ -10,23 +10,21 @@ import {AnnotationLinks, IAnnotationPtr} from "./AnnotationLinks";
  */
 export function useJumpToAnnotationHandler() {
 
-    const history = useHistory();
+    const history = useSideNavHistory();
     const docURLLoader = useDocURLLoader();
 
-    function isDocViewer() {
-        return DocViewerAppURLs.parse(document.location.href) !== undefined;
-    }
+    const isDocViewerContext = useIsDocViewerContext();
 
     return React.useCallback((ptr: IAnnotationPtr) => {
 
-        if (isDocViewer()) {
-            const hash = AnnotationLinks.createHash(ptr);
-            history.push({hash});
+        if (isDocViewerContext) {
+            const url = AnnotationLinks.createRelativeURL(ptr);
+            history.push(url);
         } else {
             const url = AnnotationLinks.createURL(ptr);
             docURLLoader(url);
         }
 
-    }, [docURLLoader, history]);
+    }, [docURLLoader, history, isDocViewerContext]);
 
 }

@@ -47,6 +47,7 @@ import {NavItem} from 'epubjs/types/navigation';
 import { Devices } from 'polar-shared/src/util/Devices';
 import {usePrefsContext} from "../../../../repository/js/persistence_layer/PrefsContext2";
 import {ViewerElements} from "../ViewerElements";
+import {DocViewerAppURLs} from "../../DocViewerAppURLs";
 
 interface IProps {
     readonly docURL: URLStr;
@@ -285,8 +286,14 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
 
                 function updateURL() {
 
-                    if (document.location.hash.indexOf('page=' + newPage) === -1) {
-                        document.location.hash = '#page=' + newPage;
+                    // only update the current URL if it's the right docID... might want to make this
+                    // into a helper function.
+                    if(docID === DocViewerAppURLs.parse(document.location.href)?.id) {
+
+                        if (document.location.hash.indexOf('page=' + newPage) === -1) {
+                            document.location.hash = '#page=' + newPage;
+                        }
+
                     }
 
                 }

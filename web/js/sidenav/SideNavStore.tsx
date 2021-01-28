@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { Arrays } from 'polar-shared/src/util/Arrays';
 import {useRefValue} from '../hooks/ReactHooks';
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {DocViewerAppURLs} from "../../../apps/doc/src/DocViewerAppURLs";
 
 export const SIDE_NAV_ENABLED = localStorage.getItem('sidenav') === 'true';
 
@@ -60,6 +61,19 @@ export interface TabDescriptor extends TabDescriptorInit {
      */
     readonly lastActivated: ISODateTimeString;
 
+    /**
+     * The URL that is currently 'active' vs the original URL which is only updated once.
+     */
+    readonly activeURL: URLStr;
+
+}
+
+/**
+ * Fields that we're allowed to update in a tab.
+ */
+interface TabDescriptorUpdate {
+    readonly activeURL: URLStr;
+    readonly title?: string;
 }
 
 interface ISideNavStore {
@@ -80,6 +94,11 @@ interface ISideNavCallbacks {
     readonly prevTab: () => void;
     readonly nextTab: () => void;
     readonly getTabDescriptor: (id: TabID) => TabDescriptor | undefined;
+
+    readonly updateTab: (id: TabID, update: TabDescriptorUpdate) => void;
+
+    readonly updateTabForPredicate: (update: TabDescriptorUpdate,
+                                     predicate: (tab: TabDescriptor) => boolean) => void;
 
 }
 
@@ -131,11 +150,80 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
             return Arrays.first(store.tabs.filter(tab => tab.id === id));
         }
 
+        function updateTabForPredicate(update: TabDescriptorUpdate,
+                                       predicate: (tab: TabDescriptor) => boolean) {
+
+            const store = storeProvider();
+
+            const tabs = [...store.tabs];
+            const matching = tabs.filter(predicate);
+
+            for (const tab of matching) {
+
+                const tabIndex = computeTabIndex(tabs, tab.id);
+
+                if (tabIndex !== undefined) {
+
+                    const newTab = {
+                        ...tab,
+                        ...update
+                    };
+
+                    tabs[tabIndex] = newTab;
+
+                }
+
+            }
+
+            setStore({...store, tabs});
+
+        }
+
+        function computeTabIndex(tabs: ReadonlyArray<TabDescriptor>, id: TabID) {
+
+            return arrayStream(tabs)
+                .map((current, idx) => current.id === id ? idx : undefined)
+                .filter(current => current !== undefined)
+                .first();
+        }
+
+        function updateTab(id: TabID, update: TabDescriptorUpdate) {
+
+            const store = storeProvider();
+            const tabs = [...store.tabs];
+            const tab = tabByID(id);
+
+            const tabIndex = computeTabIndex(tabs, id);
+
+            if (tabIndex !== undefined && tab) {
+
+                const newTab = {
+                    ...tab,
+                    ...update
+                };
+
+                tabs[tabIndex] = newTab;
+
+            }
+
+            setStore({...store, tabs});
+
+        }
+
         function setActiveTab(activeTabID: TabID) {
             const store = storeProvider();
             const lastActivated = ISODateTimeStrings.create();
 
             const tabs = [...store.tabs];
+
+            // TODO: this won't actively work if this was the last tab I
+            // selected, and we jump back to the other tabs since the activeTab
+            // doesn't get set to undefined.
+
+            // if (store.activeTab === activeTabID) {
+            //     // we're already on this ID
+            //     return;
+            // }
 
             const activeTab = tabByID(activeTabID);
 
@@ -153,7 +241,7 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
             setStore({...store, tabs, activeTab: activeTabID});
 
             if (activeTab) {
-                historyRef.current.push(activeTab.url);
+                historyRef.current.push(activeTab.activeURL);
             }
 
         }
@@ -164,6 +252,7 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
 
             const tabDescriptor: TabDescriptor = {
                 ...newTabDescriptor,
+                activeURL: newTabDescriptor.url,
                 created: now,
                 lastActivated: now,
                 id: seq++
@@ -312,10 +401,44 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
         }
 
         return {
-            addTab, removeTab, setActiveTab, closeCurrentTab, prevTab, nextTab, closeOtherTabs, getTabDescriptor
+            addTab, removeTab, setActiveTab, closeCurrentTab, prevTab,
+            nextTab, closeOtherTabs, getTabDescriptor, updateTab, updateTabForPredicate
         };
 
     }, [historyRef, setStore, storeProvider]);
+
+}
+
+export interface ISideNavHistory {
+    readonly push: (url: URLStr) => void;
+}
+
+export function useSideNavHistory(): ISideNavHistory {
+
+    const history = useHistory();
+    const {updateTabForPredicate} = useSideNavCallbacks();
+
+    const push = React.useCallback((url: URLStr) => {
+
+        const source = DocViewerAppURLs.parse(document.location.href);
+        const target = DocViewerAppURLs.parse(url);
+
+        if (source?.id === target?.id) {
+            history.push(url);
+        }
+
+        const update: TabDescriptorUpdate = {activeURL: url};
+
+        updateTabForPredicate(update, current => DocViewerAppURLs.parse(current.url)?.id === target?.id);
+
+    }, [history, updateTabForPredicate]);
+
+    if (SIDE_NAV_ENABLED) {
+        return {push};
+    } else {
+        return history;
+    }
+
 
 }
 

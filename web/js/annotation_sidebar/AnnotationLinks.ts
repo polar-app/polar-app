@@ -22,9 +22,14 @@ export namespace AnnotationLinks {
     }
 
     export function createURL(ptr: IAnnotationPtr): URLStr {
+        const relativeURL = createRelativeURL(ptr);
+        return ResourcePaths.resourceURLFromRelativeURL(relativeURL);
+    }
+
+    export function createRelativeURL(ptr: IAnnotationPtr) {
         const docID = ptr.docID;
         const hash = createHash(ptr)
-        return ResourcePaths.resourceURLFromRelativeURL(`/doc/${docID}#${hash}`);
+        return `/doc/${docID}#${hash}`;
     }
 
     export interface IAnnotationLink {
