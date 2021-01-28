@@ -14,10 +14,10 @@ const useStyles = makeStyles((theme) =>
         },
         commandMenu: {
             fontSize: '1.3rem',
-            minHeight: 'min(80vh, 400px)',
-            maxHeight: 'min(80vh, 400px)',
-            minWidth: 'min(80vw, 600px)',
-            maxWidth: 'min(80vw, 600px)',
+            minHeight: 'min(80vh, 500px)',
+            maxHeight: 'min(80vh, 500px)',
+            minWidth: 'min(80vw, 850px)',
+            maxWidth: 'min(80vw, 8500px)',
             margin: theme.spacing(1)
         },
     }),
