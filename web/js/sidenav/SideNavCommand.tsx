@@ -6,6 +6,7 @@ import {MUIDialog} from "../ui/dialogs/MUIDialog";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {Devices} from "polar-shared/src/util/Devices";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -66,6 +67,12 @@ export const SideNavCommandMenu = () => {
     const handleCommand = React.useCallback((command: ICommand) => {
         setActiveTab(parseInt(command.id));
     }, [setActiveTab]);
+
+
+    if (! Devices.isDesktop()) {
+        // only activate on desktop.
+        return null;
+    }
 
     return (
         <>
