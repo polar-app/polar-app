@@ -15,12 +15,13 @@ export const CommentAnnotationView2 = deepMemo((props: IProps) => {
     return (
         <div className="comment muted-color-root">
 
-            <div style={{fontSize: '1.1rem'}}>
+            <div>
 
                 {/*TODO: based on the state determine if we should be*/}
                 {/*editing or just displaying the comment*/}
 
-                <span dangerouslySetInnerHTML={{__html: comment.html!}}>
+                <span style={{fontSize: '14px'}}
+                      dangerouslySetInnerHTML={{__html: comment.html!}}>
 
                 </span>
 

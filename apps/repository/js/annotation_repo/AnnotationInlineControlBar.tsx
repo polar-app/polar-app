@@ -29,7 +29,7 @@ export const AnnotationInlineControlBar = deepMemo((props : IProps) => {
 
                 {/* TODO: I think this should be bold, 14px and text-secondary */}
                 <div style={{
-                         // fontWeight: 'bold'
+                         fontSize: '14px'
                      }}>
                     {annotation.docInfo?.title || 'Untitled'}
                 </div>

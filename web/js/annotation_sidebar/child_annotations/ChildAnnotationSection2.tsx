@@ -17,7 +17,7 @@ interface IChildAnnotationProps {
 
 export const ChildAnnotation = React.memo((props: IChildAnnotationProps) => {
 
-    const {parent, child} = props;
+    const {child} = props;
 
     if (child.annotationType === AnnotationType.COMMENT) {
 

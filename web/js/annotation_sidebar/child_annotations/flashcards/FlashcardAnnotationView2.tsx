@@ -17,7 +17,8 @@ const RenderFrontAndBackFields = deepMemo((props: IProps) => {
 
                 <div className="pb-2">
 
-                <span dangerouslySetInnerHTML={{__html: flashcard.fields!.front}}>
+                <span style={{fontSize: '14px'}}
+                      dangerouslySetInnerHTML={{__html: flashcard.fields!.front}}>
 
                 </span>
 
@@ -27,7 +28,8 @@ const RenderFrontAndBackFields = deepMemo((props: IProps) => {
 
                 <div className="pt-2">
 
-                <span dangerouslySetInnerHTML={{__html: flashcard.fields!.back}}>
+                <span style={{fontSize: '14px'}}
+                      dangerouslySetInnerHTML={{__html: flashcard.fields!.back}}>
 
                 </span>
 
@@ -48,7 +50,8 @@ const RenderClozeFields = deepMemo((props: IProps) => {
     return (
         <Card variant="outlined">
             <CardContent>
-                <span dangerouslySetInnerHTML={{__html: flashcard.fields!.text}}>
+                <span style={{fontSize: '14px'}}
+                      dangerouslySetInnerHTML={{__html: flashcard.fields!.text}}>
                 </span>
             </CardContent>
         </Card>

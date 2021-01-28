@@ -55,7 +55,9 @@ export const TextHighlightAnnotationView2 = deepMemo((props: IProps) => {
 
                     <div style={{display: 'flex'}}>
 
-                        <div style={{fontSize: '1.1rem'}}
+                        <div style={{
+                                 fontSize: '14px'
+                             }}
                              dangerouslySetInnerHTML={{__html: html}}>
 
                         </div>
