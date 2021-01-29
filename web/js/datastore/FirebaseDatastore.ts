@@ -68,11 +68,11 @@ import {
 import {
     SnapshotUnsubscriber
 } from 'polar-shared/src/util/Snapshots';
-import {StoreCaches} from "polar-snapshot-cache/src/StoreCaches";
 import {IQuerySnapshot} from "polar-snapshot-cache/src/store/IQuerySnapshot";
 import {IDocumentChange} from "polar-snapshot-cache/src/store/IDocumentChange";
 import {IDocumentReference} from "polar-snapshot-cache/src/store/IDocumentReference";
 import { IDocumentSnapshot } from 'polar-snapshot-cache/src/store/IDocumentSnapshot';
+import {IFirestore} from "polar-snapshot-cache/src/store/IFirestore";
 
 const log = Logger.create();
 
@@ -84,7 +84,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     private app?: firebase.app.App;
 
-    private firestore?: firebase.firestore.Firestore;
+    private firestore?: IFirestore;
 
     private storage?: firebase.storage.Storage;
 
@@ -164,8 +164,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         // them BOTH at the same time ... this way the performance is much much
         // better.
 
-        const firestore = await StoreCaches.create()
-            .build(this.firestore! as any);
+        const firestore = this.firestore!;
 
         const query = firestore
             .collection(DatastoreCollection.DOC_META)
@@ -260,8 +259,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     public async delete(docMetaFileRef: DocMetaFileRef,
                         datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<Readonly<DeleteResult>> {
 
-        const firestore = await StoreCaches.create()
-            .build(this.firestore! as any);
+        const firestore = this.firestore!;
 
         log.info("delete: ", docMetaFileRef);
 
@@ -323,8 +321,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     public async getDocMetaSnapshot(opts: DocMetaSnapshotOpts<string>): Promise<DocMetaSnapshotResult> {
 
-        const firestore = await StoreCaches.create()
-            .build(this.firestore! as any);
+        const firestore = this.firestore!;
 
         const {fingerprint} = opts;
 
@@ -377,8 +374,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     public async getDocMetaDirectly(id: string,
                                     opts: GetDocMetaOpts = {}): Promise<string | null> {
 
-        const firestore = await StoreCaches.create()
-            .build(this.firestore! as any);
+        const firestore = this.firestore!;
 
         const ref = firestore
             .collection(DatastoreCollection.DOC_META)
@@ -747,8 +743,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                        docInfo: IDocInfo,
                        opts: WriteOpts = new DefaultWriteOpts()) {
 
-        const firestore = await StoreCaches.create()
-            .build(this.firestore! as any);
+        const firestore = this.firestore!;
 
         await this.handleWriteFile(opts);
 
@@ -925,8 +920,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     public async getDocMetaRefs(): Promise<ReadonlyArray<DocMetaRef>> {
 
-        const firestore = await StoreCaches.create()
-            .build(this.firestore! as any);
+        const firestore = this.firestore!;
 
         const uid = this.uid;
 

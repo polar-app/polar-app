@@ -1,5 +1,4 @@
-import firebase from 'firebase/app'
-import DocumentReference = firebase.firestore.DocumentReference;
+\import {IDocumentReference} from "polar-snapshot-cache/src/store/IDocumentReference";
 
 export class DocumentReferences {
 
@@ -7,7 +6,7 @@ export class DocumentReferences {
      * Smarter get semantics with a preference but we fail over to the server
      * if the cache isn't available.
      */
-    public static async get(ref: DocumentReference, opts: GetOptions = {})   {
+    public static async get(ref: IDocumentReference, opts: GetOptions = {})   {
 
         const source = opts.source || 'default';
 
@@ -23,7 +22,7 @@ export class DocumentReferences {
 
     }
 
-    private static async getWithOrder(ref: DocumentReference,
+    private static async getWithOrder(ref: IDocumentReference,
                                       primarySource: DirectSource,
                                       secondarySource: DirectSource) {
 

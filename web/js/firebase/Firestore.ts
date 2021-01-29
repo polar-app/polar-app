@@ -4,8 +4,12 @@ import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import {Firebase} from './Firebase';
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Tracer} from 'polar-shared/src/util/Tracer';
+import {StoreCaches} from "polar-snapshot-cache/src/StoreCaches";
+import {IFirestore} from 'polar-snapshot-cache/src/store/IFirestore';
 
 const log = Logger.create();
+
+const ENABLE_PERSISTENCE = StoreCaches.config.backing === 'none';
 
 export namespace Firestore {
 
@@ -24,7 +28,7 @@ export namespace Firestore {
     /**
      * Allows us to init with custom options.
      */
-    export async function init(opts: FirestoreOptions = {enablePersistence: true}) {
+    export async function init(opts: FirestoreOptions = {enablePersistence: ENABLE_PERSISTENCE}) {
 
         if (instance) {
             return;
@@ -34,9 +38,11 @@ export namespace Firestore {
         return instance;
     }
 
-    export async function getInstance(): Promise<firebase.firestore.Firestore> {
+    export async function getInstance(): Promise<IFirestore> {
         await init();
-        return instance!;
+
+        return await StoreCaches.create().build(instance! as any)
+
     }
 
     async function createInstance(opts: FirestoreOptions = {}): Promise<firebase.firestore.Firestore> {

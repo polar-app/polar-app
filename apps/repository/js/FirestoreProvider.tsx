@@ -5,16 +5,17 @@ import {Firebase} from "../../../web/js/firebase/Firebase";
 import {deepMemo} from "../../../web/js/react/ReactUtils";
 import {useAsyncWithError} from "../../../web/js/hooks/ReactLifecycleHooks";
 import firebase from 'firebase/app'
+import {IFirestore} from "polar-snapshot-cache/src/store/IFirestore";
 
-export interface IFirestore {
+export interface IFirestoreContext {
     readonly uid: string | undefined;
     readonly user: firebase.User | undefined;
-    readonly firestore: firebase.firestore.Firestore;
+    readonly firestore: IFirestore;
 }
 
 // Firestore context which will now ALWAYS be defined anywhere in the app as
 // the provider will not call its children if there is no firestore.
-const FirestoreContext = React.createContext<IFirestore>(null!);
+const FirestoreContext = React.createContext<IFirestoreContext>(null!);
 
 /**
  * Get the firestore context, or undefined if one is not defined yet.
@@ -27,7 +28,7 @@ interface IProps {
     readonly children: React.ReactNode;
 }
 
-async function doAsync(): Promise<IFirestore> {
+async function doAsync(): Promise<IFirestoreContext> {
 
     const firestore = await Firestore.getInstance();
     const user = await Firebase.currentUserAsync();

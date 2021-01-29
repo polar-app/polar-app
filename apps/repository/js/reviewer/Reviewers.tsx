@@ -23,7 +23,7 @@ import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotatio
 import {ReadingTaskAction} from "./cards/ReadingTaskAction";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
-import {IFirestore} from "../FirestoreProvider";
+import {IFirestoreContext} from "../FirestoreProvider";
 
 const log = Logger.create();
 
@@ -39,7 +39,7 @@ export namespace Reviewers {
     }
 
     export interface IReviewerCreateOpts {
-        readonly firestore: IFirestore;
+        readonly firestore: IFirestoreContext;
         readonly annotations: ReadonlyArray<IDocAnnotation>;
         readonly mode: RepetitionMode;
         readonly onClose?: Callback;

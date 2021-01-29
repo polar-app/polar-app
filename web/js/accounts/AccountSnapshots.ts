@@ -1,17 +1,17 @@
 import {Account} from "./Account";
 import {UserIDStr} from "../firebase/Firebase";
-import firebase from 'firebase/app'
 import {
     OnErrorCallback,
     SnapshotUnsubscriber
 } from "polar-shared/src/util/Snapshots";
 import {createCachedFirestoreSnapshotSubscriber, OnNextCachedSnapshot, CachedSnapshotSubscriber} from "../snapshots/CachedFirestoreSnapshotSubscriber";
+import { IFirestore } from "polar-snapshot-cache/src/store/IFirestore";
 
 const COLLECTION_NAME = "account";
 
 export namespace AccountSnapshots {
 
-    export function create(firestore: firebase.firestore.Firestore, uid: string): CachedSnapshotSubscriber<Account> {
+    export function create(firestore: IFirestore, uid: string): CachedSnapshotSubscriber<Account> {
 
         function createRef(uid: UserIDStr) {
 
