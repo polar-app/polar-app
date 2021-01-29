@@ -165,7 +165,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         // better.
 
         const firestore = await StoreCaches.create()
-            .withGenericSnapshotCacheKey('FirebaseDatastore.snapshot')
             .build(this.firestore! as any);
 
         const query = firestore
@@ -262,7 +261,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                         datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<Readonly<DeleteResult>> {
 
         const firestore = await StoreCaches.create()
-            .withGenericSnapshotCacheKey('FirebaseDatastore.delete')
             .build(this.firestore! as any);
 
         log.info("delete: ", docMetaFileRef);
@@ -326,7 +324,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     public async getDocMetaSnapshot(opts: DocMetaSnapshotOpts<string>): Promise<DocMetaSnapshotResult> {
 
         const firestore = await StoreCaches.create()
-            .withGenericSnapshotCacheKey('FirebaseDatastore.getDocMetaSnapshot')
             .build(this.firestore! as any);
 
         const {fingerprint} = opts;
@@ -381,7 +378,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                                     opts: GetDocMetaOpts = {}): Promise<string | null> {
 
         const firestore = await StoreCaches.create()
-            .withGenericSnapshotCacheKey('FirebaseDatastore.getDocMetaDirectly')
             .build(this.firestore! as any);
 
         const ref = firestore
@@ -752,7 +748,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                        opts: WriteOpts = new DefaultWriteOpts()) {
 
         const firestore = await StoreCaches.create()
-            .withGenericSnapshotCacheKey('FirebaseDatastore.write')
             .build(this.firestore! as any);
 
         await this.handleWriteFile(opts);
@@ -931,7 +926,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     public async getDocMetaRefs(): Promise<ReadonlyArray<DocMetaRef>> {
 
         const firestore = await StoreCaches.create()
-            .withGenericSnapshotCacheKey('FirebaseDatastore.getDocMetaRefs')
             .build(this.firestore! as any);
 
         const uid = this.uid;
