@@ -6,6 +6,8 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import TextField from "@material-ui/core/TextField";
 import List from "@material-ui/core/List";
 import { ActionListItem } from "./ActionListItem";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -136,3 +138,36 @@ export const ActiveKeyboardShortcutsTable2 = React.memo((props: ActiveKeyboardSh
 
     )
 });
+
+
+
+interface GroupRowProps {
+    readonly group: string;
+}
+
+const GroupRow = (props: GroupRowProps) => {
+
+    return (
+        <TableRow>
+
+            <TableCell style={{fontSize: '1.2em'}}>
+                <b>{props.group}</b>
+            </TableCell>
+        </TableRow>
+
+    );
+}
+
+interface GroupBindingsProps {
+
+}
+
+const GroupBindings = (props: GroupBindingsProps) => {
+
+    return (
+        <>
+            {/*<GroupRow/>*/}
+        </>
+    )
+
+}
