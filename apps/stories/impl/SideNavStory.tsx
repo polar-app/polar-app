@@ -13,12 +13,15 @@ let seq = 0;
 const createWebCard = (id: number): TabDescriptor => {
 
     const now = ISODateTimeStrings.create();
+    const url = `/apps/stories/side-nav/${id}`;
+
     return {
 
         id,
         created: now,
         lastActivated: now,
-        url: `/apps/stories/side-nav/${id}`,
+        url,
+        activeURL: url,
         type: 'epub',
         title: "Alice's Adventures in Wonderland",
         icon: (
@@ -39,12 +42,16 @@ const createWebCard = (id: number): TabDescriptor => {
 const createPDFCard = (id: number): TabDescriptor => {
 
     const now = ISODateTimeStrings.create();
+
+    const url = `/apps/stories/side-nav/${id}`;
+
     return {
 
         id,
         created: now,
         lastActivated: now,
-        url: `/apps/stories/side-nav/${id}`,
+        url,
+        activeURL: url,
         type: 'pdf',
         title: 'Large-scale Cluster Management at Google with Borg',
         icon: (
@@ -59,6 +66,7 @@ const createPDFCard = (id: number): TabDescriptor => {
             height: 200
         }
     };
+
 }
 
 const createCard = (id: number) => {
