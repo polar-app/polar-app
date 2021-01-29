@@ -618,7 +618,7 @@ export const Authenticator = React.memo((props: IProps) => {
                            margin: 'auto',
                            maxWidth: '450px',
                            minHeight: '500px',
-                           maxHeight: '650px',
+                           maxHeight: '800px',
                            width: '100%',
                            display: 'flex',
                            flexDirection: 'column'
