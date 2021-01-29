@@ -10,6 +10,7 @@ import {StripeMode} from "../../../../polar-app-private/polar-hooks/functions/im
 import {StripeUtils} from "../../../apps/repository/js/stripe/StripeUtils";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
 import {IStripeCreateCustomerPortalResponse} from "polar-backend-api/src/api/stripe/StripeCreateCustomerPortal";
+import {StoreCaches} from "polar-snapshot-cache/src/StoreCaches";
 
 export namespace AccountActions {
 
@@ -43,9 +44,14 @@ export namespace AccountActions {
 
         }
 
+        async function clearStoreCaches() {
+            await StoreCaches.purge();
+        }
+
         await doLogout();
         await clearFirestore();
         await clearLocalStorage();
+        await clearStoreCaches();
 
     }
 
