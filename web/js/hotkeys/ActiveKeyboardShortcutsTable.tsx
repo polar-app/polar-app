@@ -1,8 +1,6 @@
 import {
     IBaseKeyboardShortcut,
     IKeyboardShortcutWithHandler,
-    useKeyboardShortcutsCallbacks,
-    useKeyboardShortcutsStore
 } from "../keyboard_shortcuts/KeyboardShortcutsStore";
 import React from "react";
 import Table from "@material-ui/core/Table";

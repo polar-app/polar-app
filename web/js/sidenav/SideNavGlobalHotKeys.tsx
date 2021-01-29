@@ -8,7 +8,7 @@ const globalKeyMap = keyMapWithGroup({
         CLOSE_CURRENT_TAB: {
             name: "Close Current Document",
             description: "Close the Current Document Tab",
-            sequences: ['ctrl+c', 'command+c']
+            sequences: ['shift+ctrl+c', 'shift+command+c']
         },
         PREV_TAB: {
             name: "Jump to Previous Document",
