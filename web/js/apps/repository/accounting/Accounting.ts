@@ -98,6 +98,8 @@ export function useAccounting(): IAccounting {
 
         async function doAsync() {
 
+            // TODO: this is a MAJOR flaw in our design because this creates
+            // another snapshot and these aren't efficient at all.
             const snapshotResult = await persistenceLayer.snapshot(async event => {
 
                 await handleSnapshot(event);
