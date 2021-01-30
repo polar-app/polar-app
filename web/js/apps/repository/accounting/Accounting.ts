@@ -24,7 +24,7 @@ interface IAccounting {
 /**
  * Simple accounting function to keep track of storage.
  */
-export function useAccounting0(): IAccounting {
+export function useAccounting(): IAccounting {
 
     const repoDocMetaManager = useRepoDocMetaManager();
 
@@ -37,94 +37,6 @@ export function useAccounting0(): IAccounting {
                               .length;
 
     return {storageInBytes, nrWebCaptures};
-
-}
-
-/**
- * Simple accounting function to keep track of storage.
- */
-export function useAccounting(): IAccounting {
-
-    const {persistenceLayerProvider} = usePersistenceLayerContext();
-    const [state, setState] = React.useState<IAccounting>({storageInBytes: 0, nrWebCaptures: 0});
-    const persistenceLayer = persistenceLayerProvider();
-
-    type DocMetaIndex = {[id: string]: IDocInfo};
-
-    const docMetaIndex = React.useMemo<DocMetaIndex>(() => {
-        return {};
-    }, [])
-
-    const rebuildState = React.useCallback(() => {
-
-        const data = Object.values(docMetaIndex);
-
-        const storageInBytes = data.map(current => current.bytes || 0)
-            .reduce(Reducers.SUM, 0)
-
-        const nrWebCaptures = data.filter(current => current.webCapture)
-            .length;
-
-        const newState = {storageInBytes, nrWebCaptures};
-
-        setState(newState);
-
-    }, [docMetaIndex]);
-
-
-    const handleSnapshot = React.useCallback(async (event: DocMetaSnapshotEvent) => {
-
-        for (const mutation of event.docMetaMutations) {
-
-            switch (mutation.mutationType) {
-                case "created":
-                case "updated":
-                    const docInfo = await mutation.docInfoProvider();
-                    docMetaIndex[mutation.fingerprint] = docInfo;
-                    break;
-                case "deleted":
-                    delete docMetaIndex[mutation.fingerprint];
-                    break;
-
-            }
-
-        }
-
-    }, [docMetaIndex]);
-
-    React.useEffect(() => {
-
-        let unsubscriberRef: SnapshotUnsubscriber | undefined;
-
-        async function doAsync() {
-
-            // TODO: this is a MAJOR flaw in our design because this creates
-            // another snapshot and these aren't efficient at all.
-            const snapshotResult = await persistenceLayer.snapshot(async event => {
-
-                await handleSnapshot(event);
-                rebuildState();
-
-            });
-
-            unsubscriberRef = snapshotResult.unsubscribe;
-
-        }
-
-        doAsync()
-            .catch(err => console.error(err));
-
-        return () => {
-
-            if (unsubscriberRef) {
-                unsubscriberRef()
-            }
-
-        }
-
-    }, [handleSnapshot, persistenceLayer, rebuildState]);
-
-    return state;
 
 }
 
