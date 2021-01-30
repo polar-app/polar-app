@@ -11,6 +11,8 @@ const log = Logger.create();
 
 const ENABLE_PERSISTENCE = StoreCaches.config.backing === 'none';
 
+// const ENABLE_PERSISTENCE = false;
+
 export namespace Firestore {
 
     let instance: firebase.firestore.Firestore | undefined;

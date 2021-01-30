@@ -14,13 +14,13 @@ export class FirestoreAnalytics implements IAnalytics {
 
     public event(event: IEventArgs): void {
         const name = `${event.category}/${event.action}`;
-        Events.write(name, standardEventProperties)
-            .catch(err => console.error("Unable to write event: " + name, err));
+        // Events.write(name, standardEventProperties)
+        //     .catch(err => console.error("Unable to write event: " + name, err));
     }
 
     public event2(event: string, data?: any): void {
-        Events.write(event, {...data, ...standardEventProperties})
-            .catch(err => console.error("Unable to write event: " + name, err));
+        // Events.write(event, {...data, ...standardEventProperties})
+        //     .catch(err => console.error("Unable to write event: " + name, err));
     }
 
     public identify(userId: string): void {
@@ -32,9 +32,9 @@ export class FirestoreAnalytics implements IAnalytics {
     }
 
     public traits(traits: TraitsMap): void {
-
-        UserTraits.write(traits)
-                  .catch(err => console.error("Failed to write traits: ", err));
+        //
+        // UserTraits.write(traits)
+        //           .catch(err => console.error("Failed to write traits: ", err));
 
     }
 

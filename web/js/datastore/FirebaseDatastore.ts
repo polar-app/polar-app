@@ -1,6 +1,5 @@
 import {
     AbstractDatastore,
-    AbstractPrefsProvider,
     BinaryFileData,
     Datastore,
     DatastoreCapabilities,
@@ -19,8 +18,6 @@ import {
     GroupIDStr,
     InitResult,
     MutationType,
-    PersistentPrefsUpdatedCallback,
-    PrefsProvider,
     SnapshotResult,
     WritableBinaryMetaDatastore, WriteController,
     WriteFileOpts,
@@ -34,7 +31,6 @@ import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {Firestore} from '../firebase/Firestore';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
-import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import firebase from 'firebase/app'
 import 'firebase/storage';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';

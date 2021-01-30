@@ -121,10 +121,15 @@ interface IBrowserContext {
 }
 
 function useEPUBIFrameBrowserContext(): IBrowserContext{
+
+    // TODO: there's a race here if the iframe isn't ready and also we should
+    // use Iframes to listen to the contentDocument being set.
+
     const iframe = useEPUBIFrameElement();
     const document = iframe.contentDocument!;
     const window = document.defaultView!;
     return {document, window};
+
 }
 
 interface PagemarkInnerProps {
