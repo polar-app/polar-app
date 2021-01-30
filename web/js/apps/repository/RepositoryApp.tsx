@@ -160,65 +160,52 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                    persistenceLayerManager={persistenceLayerManager}/>
     ));
 
-    const RenderDocRepoScreen = React.memo(() => (
-            <AuthRequired>
-                <PersistenceLayerApp tagsType="documents"
-                                     repoDocMetaManager={repoDocMetaManager}
-                                     repoDocMetaLoader={repoDocMetaLoader}
-                                     persistenceLayerManager={persistenceLayerManager}>
-                     <DocRepoStore2>
-                         <DocRepoSidebarTagStore>
-                             <>
-                                 <SideNavInitializer/>
-                                 <AnkiSyncController/>
-                                 <DocRepoScreen2/>
-                             </>
-                         </DocRepoSidebarTagStore>
-                     </DocRepoStore2>
-                </PersistenceLayerApp>
-            </AuthRequired>
-        ));
-
-    RenderDocRepoScreen.displayName='RenderDocRepoScreen';
-
-    const RenderAnnotationRepoScreen = React.memo(() => {
+    const RenderDocRepoScreen = React.memo(function RenderDocRepoScreen() {
         return (
-            <AuthRequired>
-                <PersistenceLayerApp tagsType="annotations"
-                                     repoDocMetaManager={repoDocMetaManager}
-                                     repoDocMetaLoader={repoDocMetaLoader}
-                                     persistenceLayerManager={persistenceLayerManager}>
-                     <AnnotationRepoStore2>
-                         <AnnotationRepoSidebarTagStore>
-                             <>
-                                 <ReviewRouter/>
-                                 <AnnotationRepoScreen2/>
-                             </>
-                         </AnnotationRepoSidebarTagStore>
-                     </AnnotationRepoStore2>
-                </PersistenceLayerApp>
-            </AuthRequired>
-        );
-    });
-
-    const RenderSettingsScreen = () => (
-        <AuthRequired>
             <PersistenceLayerApp tagsType="documents"
                                  repoDocMetaManager={repoDocMetaManager}
                                  repoDocMetaLoader={repoDocMetaLoader}
                                  persistenceLayerManager={persistenceLayerManager}>
-                <SettingsScreen/>
+                <DocRepoStore2>
+                    <DocRepoSidebarTagStore>
+                        <>
+                            <SideNavInitializer/>
+                            <AnkiSyncController/>
+                            <DocRepoScreen2/>
+                        </>
+                    </DocRepoSidebarTagStore>
+                </DocRepoStore2>
             </PersistenceLayerApp>
-        </AuthRequired>
-    );
+        );
+    });
 
-    // const renderProfileScreen = () => (
-    //     <Cached>
-    //         <ProfileScreen
-    //             persistenceLayerProvider={app.persistenceLayerProvider}
-    //             persistenceLayerController={app.persistenceLayerController}/>
-    //     </Cached>
-    // );
+
+    const RenderAnnotationRepoScreen = React.memo(() => {
+        return (
+            <PersistenceLayerApp tagsType="annotations"
+                                 repoDocMetaManager={repoDocMetaManager}
+                                 repoDocMetaLoader={repoDocMetaLoader}
+                                 persistenceLayerManager={persistenceLayerManager}>
+                 <AnnotationRepoStore2>
+                     <AnnotationRepoSidebarTagStore>
+                         <>
+                             <ReviewRouter/>
+                             <AnnotationRepoScreen2/>
+                         </>
+                     </AnnotationRepoSidebarTagStore>
+                 </AnnotationRepoStore2>
+            </PersistenceLayerApp>
+        );
+    });
+
+    const RenderSettingsScreen = () => (
+        <PersistenceLayerApp tagsType="documents"
+                             repoDocMetaManager={repoDocMetaManager}
+                             repoDocMetaLoader={repoDocMetaLoader}
+                             persistenceLayerManager={persistenceLayerManager}>
+            <SettingsScreen/>
+        </PersistenceLayerApp>
+    );
 
     const renderDeviceScreen = () => (
         <DeviceScreen/>
@@ -234,80 +221,24 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
         <WhatsNewScreen/>
     );
 
-    // const renderCommunityScreen = () => (
-    //     <AuthRequired authStatus={authStatus}>
-    //         <CommunityScreen persistenceLayerProvider={persistenceLayerProvider}
-    //                          persistenceLayerController={persistenceLayerController}/>
-    //     </AuthRequired>
-    // );
-
     const renderStatsScreen = () => (
-        <AuthRequired>
-            <PersistenceLayerApp tagsType="documents"
-                                 repoDocMetaManager={repoDocMetaManager}
-                                 repoDocMetaLoader={repoDocMetaLoader}
-                                 persistenceLayerManager={persistenceLayerManager}>
-                <StatsScreen/>
-            </PersistenceLayerApp>
-        </AuthRequired>
+        <PersistenceLayerApp tagsType="documents"
+                             repoDocMetaManager={repoDocMetaManager}
+                             repoDocMetaLoader={repoDocMetaLoader}
+                             persistenceLayerManager={persistenceLayerManager}>
+            <StatsScreen/>
+        </PersistenceLayerApp>
     );
-
-    // const editorsPicksScreen = () => {
-    //     return (
-    //         <AuthRequired authStatus={authStatus}>
-    //             <EditorsPicksScreen persistenceLayerProvider={persistenceLayerProvider}
-    //                                 persistenceLayerController={persistenceLayerController}/>
-    //         </AuthRequired>
-    //         );
-    // };
-    //
-    // const renderCreateGroupScreen = () => {
-    //
-    //     return (
-    //         <AuthRequired authStatus={app.authStatus}>
-    //             <CreateGroupScreen
-    //                 persistenceLayerProvider={app.persistenceLayerProvider}
-    //                 persistenceLayerController={app.persistenceLayerController}
-    //                 repoDocMetaManager={repoDocMetaManager}/>
-    //         </AuthRequired>
-    //     );
-    // };
 
     const premiumScreen = () => {
         return (
-            <AuthRequired>
-                <PricingScreen/>
-            </AuthRequired>
+            <PricingScreen/>
         );
     };
 
     const supportScreen = () => {
         return (<SupportScreen/>);
     };
-
-    // const renderGroupScreen = () => {
-    //     return (
-    //         <GroupScreen persistenceLayerProvider={app.persistenceLayerProvider}
-    //                      persistenceLayerController={app.persistenceLayerController}/>);
-    // };
-
-    // const renderGroupsScreen = () => {
-    //     return (<GroupsScreen
-    //                 persistenceLayerProvider={app.persistenceLayerProvider}
-    //                 persistenceLayerController={app.persistenceLayerController}/>);
-    // };
-    //
-    // const renderGroupHighlightsScreen = () => {
-    //     return (<HighlightsScreen
-    //                 persistenceLayerProvider={app.persistenceLayerProvider}
-    //                 persistenceLayerController={app.persistenceLayerController}/>);
-    // };
-
-    // const renderGroupHighlightScreen = () => {
-    //     return (<GroupHighlightScreen
-    //                 persistenceLayerProvider={app.persistenceLayerProvider}
-    //                 persistenceLayerController={app.persistenceLayerController}/>);
-    // };
 
     const renderInvite = () => {
         return <InviteScreen/>;
@@ -356,11 +287,6 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                                 <LoginWithCustomTokenScreen/>
                                                             </Route>
 
-                                                            {! SIDE_NAV_ENABLED && (
-                                                                <Route exact path={["/doc", "/doc/:id"]}>
-                                                                    <RenderDocViewerScreen/>
-                                                                </Route>)}
-
                                                             <Route exact path="/error">
                                                                 <ErrorScreen/>
                                                             </Route>
@@ -379,11 +305,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                                                  flexGrow: 1
                                                                              }}>
 
-                                                                            {SIDE_NAV_ENABLED && (
-                                                                                <>
-                                                                                    <SideNav/>
-                                                                                    <Divider orientation="vertical"/>
-                                                                                </> )}
+                                                                            <>
+                                                                                <SideNav/>
+                                                                                <Divider orientation="vertical"/>
+                                                                            </>
 
                                                                             <div style={{
                                                                                      display: 'flex',
@@ -393,8 +318,6 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                                                      flexGrow: 1
                                                                                  }}>
 
-                                                                                {! SIDE_NAV_ENABLED && <RepoHeader3/>}
-
                                                                                 <PersistentRoute strategy="display" exact path="/">
                                                                                     <RenderDefaultScreen/>
                                                                                 </PersistentRoute>
@@ -403,10 +326,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                                                     <RenderAnnotationRepoScreen/>
                                                                                 </PersistentRoute>
 
-                                                                                {SIDE_NAV_ENABLED && <SideNavDocuments persistenceLayerProvider={app.persistenceLayerProvider}
-                                                                                                                       repoDocMetaManager={props.repoDocMetaManager}
-                                                                                                                       repoDocMetaLoader={props.repoDocMetaLoader}
-                                                                                                                       persistenceLayerManager={props.persistenceLayerManager}/>}
+                                                                                <SideNavDocuments persistenceLayerProvider={app.persistenceLayerProvider}
+                                                                                                  repoDocMetaManager={props.repoDocMetaManager}
+                                                                                                  repoDocMetaLoader={props.repoDocMetaLoader}
+                                                                                                  persistenceLayerManager={props.persistenceLayerManager}/>
 
                                                                                 <Switch location={ReactRouters.createLocationWithPathOnly()}>
 
