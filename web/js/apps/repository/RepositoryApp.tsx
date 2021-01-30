@@ -31,7 +31,6 @@ import {AnnotationRepoStore2} from "../../../../apps/repository/js/annotation_re
 import {AnnotationRepoScreen2} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoScreen2";
 import {ReviewRouter} from "../../../../apps/repository/js/reviewer/ReviewerRouter";
 import {PersistentRoute} from "./PersistentRoute";
-import {LoginScreen} from "../../../../apps/repository/js/login/LoginScreen";
 import {UserTagsProvider} from "../../../../apps/repository/js/persistence_layer/UserTagsProvider2";
 import {DocMetaContextProvider} from "../../annotation_sidebar/DocMetaContextProvider";
 import {DocViewerDocMetaLookupContextProvider} from "../../../../apps/doc/src/DocViewerDocMetaLookupContextProvider";
@@ -373,11 +372,11 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                             <Route>
 
                                                                 <div style={{
-                                                                    display: 'flex',
-                                                                    minWidth: 0,
-                                                                    minHeight: 0,
-                                                                    flexGrow: 1
-                                                                }}>
+                                                                         display: 'flex',
+                                                                         minWidth: 0,
+                                                                         minHeight: 0,
+                                                                         flexGrow: 1
+                                                                     }}>
 
                                                                     {SIDE_NAV_ENABLED && (
                                                                         <>
