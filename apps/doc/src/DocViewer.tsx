@@ -27,7 +27,6 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from '@material-ui/icons/Menu';
 import {MUIPaperToolbar} from "../../../web/js/mui/MUIPaperToolbar";
 import {DocRenderer, DocViewerContext} from "./renderers/DocRenderer";
-import {useLogger} from "../../../web/js/mui/MUILogger";
 import {ViewerContainerProvider} from "./ViewerContainerStore";
 import {FileTypes} from "../../../web/js/apps/main/file_loaders/FileTypes";
 import {deepMemo} from "../../../web/js/react/ReactUtils";
@@ -36,6 +35,7 @@ import {NoDocument} from "./NoDocument";
 import {DockLayout2} from "../../../web/js/ui/doc_layout/DockLayout2";
 import {Outliner} from "./outline/Outliner";
 import {FeedbackButton2} from "../../repository/js/ui/FeedbackButton2";
+import {useDocViewerSnapshot} from "./UseDocViewerSnapshot";
 
 const Main = React.memo(function Main() {
 
@@ -309,55 +309,35 @@ export const DocViewer = deepMemo(function DocViewer() {
 
     const {docURL} = useDocViewerStore(['docURL']);
     const {setDocMeta} = useDocViewerCallbacks();
-    const log = useLogger();
-    const persistenceLayerContext = usePersistenceLayerContext();
     const parsedURL = React.useMemo(() => DocViewerAppURLs.parse(document.location.href), []);
     const [exists, setExists, existsRef] = useStateRef<boolean | undefined>(undefined);
 
-    useComponentDidMount(() => {
+    const snapshot = useDocViewerSnapshot(parsedURL?.id);
 
-        const handleLoad = async () => {
+    React.useEffect(() => {
 
-            if (! parsedURL) {
-                console.warn("Could not parse URL: " + document.location.href)
-                return;
+        if (snapshot) {
+
+            if (existsRef.current !== snapshot.exists) {
+                setExists(snapshot.exists)
             }
 
-            // TODO useSnapshotSubscriber for this so that we don't have to worry
-            // about component unmount.
+            if (snapshot.docMeta) {
 
-            const persistenceLayer
-                = persistenceLayerContext.persistenceLayerProvider();
-
-            const snapshotResult = await persistenceLayer.getDocMetaSnapshot({
-                fingerprint: parsedURL.id,
-                onSnapshot: (snapshot => {
-
-                    function computeType() {
-                        return snapshot.hasPendingWrites ? 'snapshot-local' : 'snapshot-server';
-                    }
-
-                    if (existsRef.current !== snapshot.exists) {
-                        setExists(snapshot.exists)
-                    }
-
-                    const type = computeType();
-
-                    setDocMeta(snapshot.data!, snapshot.hasPendingWrites, type);
-
-                }),
-                onError: (err) => {
-                    log.error("Could not handle snapshot: ", err);
+                function computeType() {
+                    return snapshot?.hasPendingWrites ? 'snapshot-local' : 'snapshot-server';
                 }
 
-            });
+                const type = computeType();
 
-        };
+                setDocMeta(snapshot.docMeta, snapshot.hasPendingWrites, type);
 
-        handleLoad()
-            .catch(err => log.error(err));
+            }
 
-    });
+        }
+
+
+    }, [existsRef, setDocMeta, setExists, snapshot]);
 
     if (exists === false) {
         return <NoDocument/>;

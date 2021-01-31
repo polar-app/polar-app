@@ -125,7 +125,9 @@ export class RepoDocMetaLoader implements RepoDocMetaUpdater {
             fingerprint,
             mutationType,
             docMetaProvider: async () => docMeta,
-            docInfoProvider: async () => docMeta.docInfo
+            docInfoProvider: async () => docMeta.docInfo,
+            fromCache: false,
+            hasPendingWrites: true
         };
 
         const progress = ProgressTrackers.singleTaskTerminated('doc-meta-update:' + fingerprint);
@@ -171,11 +173,13 @@ class ObjectConverter {
     }
 
     public toRepoDocMeta(fingerprint: string,
+                         fromCache: boolean,
+                         hasPendingWrites: boolean,
                          docMeta?: IDocMeta): RepoDocMeta | undefined {
 
         if (docMeta) {
 
-            return RepoDocMetas.convert(this.persistenceLayerProvider, fingerprint, docMeta);
+            return RepoDocMetas.convert(this.persistenceLayerProvider, fingerprint, fromCache, hasPendingWrites, docMeta);
 
         } else {
             log.warn("No DocMeta for fingerprint: " + fingerprint);
@@ -209,7 +213,10 @@ class ObjectConverter {
 
                 const docInfo = docMeta.docInfo;
 
-                const repoDocMeta = this.toRepoDocMeta(docInfo.fingerprint, docMeta);
+                const repoDocMeta = this.toRepoDocMeta(docInfo.fingerprint,
+                                                       docMetaMutation.fromCache,
+                                                       docMetaMutation.hasPendingWrites,
+                                                       docMeta, );
 
                 if (repoDocMeta && RepoDocInfos.isValid(repoDocMeta.repoDocInfo)) {
 

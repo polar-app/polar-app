@@ -1028,7 +1028,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         type DocMetaData = string | null;
 
         const docMetaMutationFromRecord = (record: RecordHolder<DocMetaHolder>,
-                                           mutationType: MutationType = 'created') => {
+                                           mutationType: MutationType = 'created',
+                                           fromCache: boolean,
+                                           hasPendingWrites: boolean) => {
 
             const id = record.id;
 
@@ -1064,7 +1066,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
                 docMetaProvider,
                 docInfoProvider: AsyncProviders.of(docInfo),
                 docMetaFileRefProvider: AsyncProviders.of(DocMetaFileRefs.createFromDocInfo(docInfo)),
-                mutationType
+                mutationType,
+                fromCache,
+                hasPendingWrites
             };
 
             return docMetaMutation;
@@ -1073,7 +1077,9 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         const toDocMetaMutationFromDocChange = (docChange: IDocumentChange) => {
             const record = <RecordHolder<DocMetaHolder>> docChange.doc.data();
-            return docMetaMutationFromRecord(record, toMutationType(docChange.type));
+            const fromCache = docChange.doc.metadata.fromCache;
+            const hasPendingWrites = docChange.doc.metadata.hasPendingWrites;
+            return docMetaMutationFromRecord(record, toMutationType(docChange.type), fromCache, hasPendingWrites);
 
         };
 

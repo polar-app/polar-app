@@ -274,7 +274,14 @@ const useCreateCallbacks = (storeProvider: Provider<IAnnotationRepoStore>,
 
             for (const docMeta of docMetas) {
                 const fingerprint = docMeta.docInfo.fingerprint;
-                const repoDocMeta = RepoDocMetas.convert(persistenceLayerProvider, fingerprint, docMeta);
+                const fromCache = true;
+                const hasPendingWrites = true;
+                const repoDocMeta = RepoDocMetas.convert(persistenceLayerProvider,
+                                                         fingerprint,
+                                                         fromCache,
+                                                         hasPendingWrites,
+                                                         docMeta);
+
                 repoDocMetaManager.updateFromRepoDocMeta(docMeta.docInfo.fingerprint, repoDocMeta);
             }
 

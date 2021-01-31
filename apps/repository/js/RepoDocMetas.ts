@@ -26,6 +26,8 @@ export class RepoDocMetas {
 
     public static convert(persistenceLayerProvider: PersistenceLayerProvider,
                           fingerprint: string,
+                          fromCache: boolean,
+                          hasPendingWrites: boolean,
                           docMeta?: IDocMeta): RepoDocMeta | undefined {
 
         if (! docMeta) {
@@ -38,7 +40,7 @@ export class RepoDocMetas {
             return undefined;
         }
 
-        const repoDocInfo = RepoDocInfos.convert(docMeta);
+        const repoDocInfo = RepoDocInfos.convert(docMeta, fromCache, hasPendingWrites);
         const repoAnnotations = RepoDocAnnotations.convert(persistenceLayerProvider, docMeta);
 
         return {repoDocInfo, repoDocAnnotations: repoAnnotations};

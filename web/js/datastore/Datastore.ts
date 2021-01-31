@@ -811,6 +811,10 @@ export interface MinimalDocMetaMutation {
 
     readonly docInfoProvider: AsyncProvider<IDocInfo>;
 
+    readonly fromCache: boolean;
+
+    readonly hasPendingWrites: boolean;
+
 }
 
 /**

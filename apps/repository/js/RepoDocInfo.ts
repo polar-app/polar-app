@@ -56,7 +56,10 @@ export interface RepoDocInfo {
      */
     readonly docMeta: IDocMeta;
 
-}
+    readonly fromCache: boolean;
 
+    readonly hasPendingWrites: boolean;
+
+}
 
 

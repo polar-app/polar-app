@@ -13,7 +13,9 @@ export class RepoDocInfos {
         return isPresent(repoDocInfo.filename);
     }
 
-    public static convert(docMeta: IDocMeta): RepoDocInfo {
+    public static convert(docMeta: IDocMeta,
+                          fromCache: boolean,
+                          hasPendingWrites: boolean): RepoDocInfo {
 
         Preconditions.assertPresent(docMeta, "docMeta");
 
@@ -68,7 +70,9 @@ export class RepoDocInfos {
             hashcode: docInfo.hashcode,
 
             docInfo,
-            docMeta
+            docMeta,
+            fromCache,
+            hasPendingWrites
 
         };
 

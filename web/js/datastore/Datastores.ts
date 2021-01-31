@@ -69,6 +69,7 @@ export class Datastores {
      * Create a committed snapshot from an existing datastore so that legacy
      * ones seem to support snapshots though they might not support updates of
      * the listeners.
+     * @Deprecated only used by DiskDatastore and some others...
      */
     public static async createCommittedSnapshot(datastore: Datastore,
                                                 listener: DocMetaSnapshotEventListener,
@@ -163,7 +164,9 @@ export class Datastores {
                 dataProvider,
                 docMetaProvider,
                 docInfoProvider,
-                mutationType: 'created'
+                mutationType: 'created',
+                hasPendingWrites: false,
+                fromCache: false
             };
 
             await listener({

@@ -81,7 +81,7 @@ interface IDocRepoStore {
      * but might in the future if we want to FORCE a refresh for some reason.
      */
     readonly _refresh: number;
-    
+
 }
 
 interface IDocRepoCallbacks {
@@ -428,7 +428,9 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
 
                 const docMeta = repoDocInfo.docMeta;
                 docMeta.docInfo = docInfo;
-                const newRepoDocInfo = RepoDocInfos.convert(docMeta);
+                const newRepoDocInfo = RepoDocInfos.convert(docMeta,
+                                                            repoDocInfo.fromCache,
+                                                            repoDocInfo.hasPendingWrites);
 
                 repoDocMetaManager.updateFromRepoDocInfo(repoDocInfo.fingerprint, newRepoDocInfo);
 
