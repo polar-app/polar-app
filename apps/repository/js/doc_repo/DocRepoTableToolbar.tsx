@@ -12,6 +12,7 @@ import Paper from "@material-ui/core/Paper";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
+import {ChromeExtensionInstallBar} from "../ChromeExtensionInstallBar";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -83,6 +84,8 @@ export const DocRepoTableToolbar = React.memo(() => {
                     )}
 
                 </div>
+
+                <ChromeExtensionInstallBar/>
 
                 <DocRepoFilterBar/>
 

@@ -56,6 +56,16 @@ export interface ObservableStore<V> {
 
 }
 
+/**
+ * Use the subject itself so that we can perform operations on it that don't
+ * cause react to render.
+ */
+export function useObservableStoreSubject<V, R>(context: React.Context<InternalObservableStore<V>>) {
+    const {subject} = useContext(context) as InternalObservableStore<V>;
+    return subject;
+}
+
+
 export type StoreProvider<V> = () => V;
 export type SetStore<V> = (value: V) => void;
 export type Store<V> = [V, SetStore<V>];

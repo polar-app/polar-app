@@ -812,7 +812,7 @@ const useCallbacksFactory = (storeProvider: Provider<IDocRepoStore>,
 
 }
 
-export const [DocRepoStoreProvider, useDocRepoStore, useDocRepoCallbacks, useDocRepoMutator]
+export const [DocRepoStoreProvider, useDocRepoStore, useDocRepoCallbacks, useDocRepoMutator, useDocRepoStoreReducer]
     = createObservableStoreWithPrefsContext<IDocRepoStore, Mutator, IDocRepoCallbacks>({
         initialValue: initialStore,
         mutatorFactory,

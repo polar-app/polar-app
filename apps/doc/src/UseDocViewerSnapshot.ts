@@ -4,8 +4,9 @@ import {useComponentDidMount} from "../../../web/js/hooks/ReactLifecycleHooks";
 import {usePersistenceLayerContext} from "../../repository/js/persistence_layer/PersistenceLayerApp";
 import {useLogger} from "../../../web/js/mui/MUILogger";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
-import {useDocRepoStore} from "../../repository/js/doc_repo/DocRepoStore2";
+import {useDocRepoStoreReducer} from "../../repository/js/doc_repo/DocRepoStore2";
 import { Arrays } from "polar-shared/src/util/Arrays";
+import {RepoDocInfo} from "../../repository/js/RepoDocInfo";
 
 export type DocViewerSnapshotType = 'snapshot-local' | 'snapshot-server';
 
@@ -71,15 +72,37 @@ export function useDocViewerSnapshot2(docID: IDStr | undefined): DocViewerSnapsh
 
 }
 
+// function useDocMeta(docID: string | undefined): IDocMeta | undefined {
+//
+//     const [, setDocMeta, docMetaRef] = useStateRef<IDocMeta | undefined>(undefined);
+//
+//     const filter = React.useCallback((docMeta: IDocMeta | undefined): boolean => {
+//         return docMetaRef.current !== docMeta;
+//     }, [docMetaRef]);
+//
+//     return useDocRepoStoreReducer(store => Arrays.first(store.data.filter(current => current.docMeta.docInfo.fingerprint === docID)
+//                                                                   .map(current => current.docMeta)), {filter});
+//
+// }
+
+function useRepoDocInfo(docID: string | undefined): RepoDocInfo | undefined {
+
+    function reducer(store: {data: ReadonlyArray<RepoDocInfo>}) {
+        return Arrays.first(store.data.filter(current => current.docMeta.docInfo.fingerprint === docID))
+    }
+
+    return useDocRepoStoreReducer(reducer);
+
+}
+
+
 export function useDocViewerSnapshot(docID: IDStr | undefined): DocViewerSnapshot | undefined {
 
-    const {data} = useDocRepoStore(['data'])
+    const repoDocInfo = useRepoDocInfo(docID);
 
     const [snapshot, setSnapshot] = React.useState<DocViewerSnapshot | undefined>(undefined);
 
     React.useEffect(() => {
-
-        const repoDocInfo = Arrays.first(data.filter(current => current.docMeta.docInfo.fingerprint === docID));
 
         function computeType() {
             return repoDocInfo?.hasPendingWrites ? 'snapshot-local' : 'snapshot-server';
@@ -111,8 +134,7 @@ export function useDocViewerSnapshot(docID: IDStr | undefined): DocViewerSnapsho
 
         }
 
-
-    }, [data, docID, snapshot?.docMeta]);
+    }, [docID, repoDocInfo, snapshot]);
 
     return snapshot;
 

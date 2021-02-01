@@ -437,6 +437,7 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
              * comparison not a deep comparison.
              */
             function cloneDocMetaAndUpdate() {
+                console.log(`DOC_WRITE: APPLYING update (type=${type}, update type: ${docViewerSnapshotUpdate.type})`);
 
                 docMeta = DocMetas.copyOf(docMeta);
 
