@@ -11,3 +11,5 @@ description: Keyboard Shortcuts for Common Polar Operations when using Polar, th
 Polar has integrated and high quality support for keyboard shortcuts.  
 
 You can find all active shortcuts in Polar by typing ```/``` or ```?```.
+
+<img class="img-fluid" src="https://i.imgur.com/Iv05PUX.png">
