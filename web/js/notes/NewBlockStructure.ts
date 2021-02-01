@@ -62,26 +62,42 @@ export interface IBlockReferenceContent {
  * Reference to a polar annotation.  We directly extend ITextHighlight and
  * IAnnotationHighlight here and reference the rest as inline metadata.
  */
-export interface IAnnotationContent {
+interface IAnnotationContent<T, D> {
 
-    readonly type: 'annotation';
+    readonly type: T;
+
     readonly id: IDStr;
 
+    /**
+     * The document ID for this highlight.
+     */
     readonly docID: IDStr;
 
-    // FIXME: what metadata do we need for the annotation.  probably doc ID and pageID
-    readonly data: ITextHighlight | IAreaHighlight;
+    /**
+     * The page number to which this document is attached.
+     */
+    readonly pageNum: number;
+
+    readonly data: D
 
 }
 
-export interface IAnnotationCommentContent {
-
-    readonly type: 'annotation-comment';
-    readonly id: IDStr;
-
-    readonly data: IComment;
+export interface ITextHighlightAnnotationContent extends IAnnotationContent<'annotation-text-highlight', ITextHighlight> {
 
 }
+
+export interface IAreaHighlightAnnotationContent extends IAnnotationContent<'annotation-area-highlight', IAreaHighlight> {
+
+}
+
+export interface ICommentAnnotationContent extends IAnnotationContent<'annotation-comment', IComment> {
+
+}
+
+export interface IFlashcardAnnotationContent extends IAnnotationContent<'annotation-flashcard', IComment> {
+
+}
+
 
 export interface ILatexContent {
     readonly type: 'latex';
@@ -124,6 +140,12 @@ export interface IBlock {
 
     readonly updated: ISODateTimeString;
 
-    readonly content: INoteContent | IBlockReferenceContent | ILatexContent | IAnnotationContent | IAnnotationCommentContent;
+    readonly content: INoteContent |
+                      IBlockReferenceContent |
+                      ILatexContent |
+                      ICommentAnnotationContent |
+                      ITextHighlightAnnotationContent |
+                      IAreaHighlightAnnotationContent |
+                      IFlashcardAnnotationContent;
 
 }
