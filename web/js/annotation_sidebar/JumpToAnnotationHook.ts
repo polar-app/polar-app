@@ -16,15 +16,23 @@ export function useJumpToAnnotationHandler() {
 
     const isDocViewerContext = useIsDocViewerContext();
 
+    const nonceRef = React.useRef<string | undefined>(undefined);
+
     const doJump = React.useCallback((ptr: IAnnotationPtr) => {
 
-        if (isDocViewerContext) {
-            const url = AnnotationLinks.createRelativeURL(ptr);
-            history.push(url);
-        } else {
-            const url = AnnotationLinks.createURL(ptr);
-            docURLLoader(url);
+        if (nonceRef.current !== ptr.n) {
+
+            if (isDocViewerContext) {
+                const url = AnnotationLinks.createRelativeURL(ptr);
+                history.push(url);
+            } else {
+                const url = AnnotationLinks.createURL(ptr);
+                docURLLoader(url);
+            }
+
         }
+
+        nonceRef.current = ptr.n;
 
     }, [docURLLoader, history, isDocViewerContext]);
 
@@ -32,6 +40,6 @@ export function useJumpToAnnotationHandler() {
 
         doJump(ptr)
 
-    }, [docURLLoader, history, isDocViewerContext]);
+    }, [doJump]);
 
 }
