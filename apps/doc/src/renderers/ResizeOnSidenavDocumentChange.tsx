@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {useDocViewerStore} from "../DocViewerStore"
-import {SIDE_NAV_ENABLED} from "../../../../web/js/sidenav/SideNavStore";
 import {useSidenavDocumentChangeCallback} from "./UseSidenavDocumentChangeCallbackHook";
 import { Functions } from 'polar-shared/src/util/Functions';
 
@@ -10,7 +9,7 @@ export const ResizeOnSidenavDocumentChange = () => {
 
     const handleResize = React.useCallback(() => {
 
-        if (SIDE_NAV_ENABLED &&  resizer) {
+        if (resizer) {
             // this is a hack because the iframe for EPUBs hasn't yet been
             // resized so we need to allow the current code to execute before
             // firing the resize and the timeout queue will do this for us.

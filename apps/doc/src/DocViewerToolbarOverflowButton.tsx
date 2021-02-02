@@ -102,15 +102,13 @@ export const DocViewerToolbarOverflowButton = deepMemo((props: IProps) => {
                              icon={<ViewWeekIcon/>}
                              onClick={setColumnLayoutCallback}/>
 
-                {SIDE_NAV_ENABLED && (
-                    <>
-                        <Divider/>
+                <>
+                    <Divider/>
 
-                        <MUIMenuItem text="Close Document"
-                                     icon={<CloseIcon/>}
-                                     onClick={closeCurrentTab}/>
-                    </>
-                )}
+                    <MUIMenuItem text="Close Document"
+                                 icon={<CloseIcon/>}
+                                 onClick={closeCurrentTab}/>
+                </>
 
             </div>
 
