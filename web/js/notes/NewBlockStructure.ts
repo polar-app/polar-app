@@ -114,6 +114,8 @@ export interface ICodeContent {
     readonly data: ICodeData;
 }
 
+// FIXME: would this support embed types  ?
+
 export interface IBlock {
 
     readonly id: BlockIDStr;
