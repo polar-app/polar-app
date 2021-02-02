@@ -1,15 +1,8 @@
 import {ResourcePaths} from "../electron/webresource/ResourcePaths";
 import {Optional} from "polar-shared/src/util/ts/Optional";
-import {IDStr, URLStr} from "polar-shared/src/util/Strings";
+import {URLStr} from "polar-shared/src/util/Strings";
 import {HashURLs} from "polar-shared/src/util/HashURLs";
-
-export interface IAnnotationPtr {
-    readonly target: IDStr;
-    readonly docID: IDStr;
-    readonly pageNum: number;
-    readonly pos?: 'top' | 'bottom';
-    readonly b?: number;
-}
+import {IAnnotationPtr} from "./AnnotationPtrs";
 
 export namespace AnnotationLinks {
 

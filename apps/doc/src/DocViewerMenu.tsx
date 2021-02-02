@@ -42,6 +42,7 @@ import {MUIMenuSection} from "../../../web/js/mui/menu/MUIMenuSection";
 import {useJumpToAnnotationHandler} from "../../../web/js/annotation_sidebar/JumpToAnnotationHook";
 import { Arrays } from "polar-shared/src/util/Arrays";
 import CenterFocusStrongIcon from '@material-ui/icons/CenterFocusStrong';
+import {AnnotationPtrs} from "../../../web/js/annotation_sidebar/AnnotationPtrs";
 
 type AnnotationMetaResolver = (annotationMeta: IAnnotationMeta) => IAnnotationRef;
 
@@ -541,12 +542,14 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
 
         // TODO make sure the right doc panel is exposed
 
-        jumpToAnnotationHandler({
+        const ptr = AnnotationPtrs.create({
             target: 'annotation-' + highlight.id,
             docID: docDescriptor.fingerprint,
             pageNum,
             pos: 'top'
         })
+
+        jumpToAnnotationHandler(ptr)
 
     }, [docDescriptor?.fingerprint, jumpToAnnotationHandler, origin.areaHighlights, origin.textHighlights]);
 

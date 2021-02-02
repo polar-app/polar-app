@@ -5,6 +5,7 @@ import {useDocViewerStore} from "../../../apps/doc/src/DocViewerStore";
 import {IPagemarkRef} from "polar-shared/src/metadata/IPagemarkRef";
 import {useJumpToAnnotationHandler} from "../annotation_sidebar/JumpToAnnotationHook";
 import {Callback} from "polar-shared/src/util/Functions";
+import {AnnotationPtrs} from "../annotation_sidebar/AnnotationPtrs";
 
 export namespace ReadingProgressResume {
 
@@ -33,12 +34,14 @@ export namespace ReadingProgressResume {
                 return;
             }
 
-            jumpToAnnotationHandler({
+            const ptr = AnnotationPtrs.create({
                 target: targetPagemark.pagemark.id,
                 pageNum: targetPagemark.pageNum,
                 docID: docMeta.docInfo.fingerprint,
                 pos: 'bottom'
-            });
+            })
+
+            jumpToAnnotationHandler(ptr);
 
         }, [docMeta, jumpToAnnotationHandler, targetPagemark]);
 

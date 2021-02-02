@@ -6,10 +6,10 @@ import {EPUBFinders, useEPUBRootProvider} from "./EPUBFinders";
 import {URLStr} from 'polar-shared/src/util/Strings';
 import {Provider} from 'polar-shared/src/util/Providers';
 import {useJumpToAnnotationHandler} from "../../../../../web/js/annotation_sidebar/JumpToAnnotationHook";
-import {IAnnotationPtr} from "../../../../../web/js/annotation_sidebar/AnnotationLinks";
 import {useDocViewerContext} from "../DocRenderer";
 import {useDocViewerStore} from '../../DocViewerStore';
 import EPUBFinder = EPUBFinders.EPUBFinder;
+import {AnnotationPtrs, IAnnotationPtr} from "../../../../../web/js/annotation_sidebar/AnnotationPtrs";
 
 export namespace EPUBFindControllers {
 
@@ -42,11 +42,11 @@ export namespace EPUBFindControllers {
 
                 function scrollTo() {
 
-                    const ptr: IAnnotationPtr = {
+                    const ptr: IAnnotationPtr = AnnotationPtrs.create({
                         target: hit!.id,
                         docID,
                         pageNum: pageRef.current
-                    }
+                    });
 
                     jumpToAnnotationHandler(ptr);
 

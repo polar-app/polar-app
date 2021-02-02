@@ -4,8 +4,8 @@ import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {IDocAnnotationRef} from "../DocAnnotation";
 import CenterFocusStrongIcon from '@material-ui/icons/CenterFocusStrong';
 import {useJumpToAnnotationHandler} from "../JumpToAnnotationHook";
-import {IAnnotationPtr} from "../AnnotationLinks";
 import {StandardIconButton} from "../../../../apps/repository/js/doc_repo/buttons/StandardIconButton";
+import {AnnotationPtrs, IAnnotationPtr} from "../AnnotationPtrs";
 
 
 interface IProps {
@@ -20,11 +20,11 @@ export const JumpToAnnotationButton = memoForwardRef((props: IProps) => {
 
     const handleJumpToCurrentAnnotation = React.useCallback(() => {
 
-        const ptr: IAnnotationPtr = {
+        const ptr: IAnnotationPtr = AnnotationPtrs.create({
             target: annotation.id,
             pageNum: annotation.pageNum,
             docID: annotation.docMetaRef.id,
-        };
+        });
 
         jumpToAnnotationHandler(ptr);
 
