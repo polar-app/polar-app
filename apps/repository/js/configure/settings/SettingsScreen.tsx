@@ -120,12 +120,6 @@ export const SettingsScreen = React.memo(() => {
                     {/*        preview={true}/>*/}
                     {/*</DeviceRouters.Desktop>*/}
 
-                    <SettingToggle title="BETA: Experimental Side Navigation"
-                                   description="Enables the new side navigation we're working on for the next major UI revision (requires reload)"
-                                   name="sidenav"
-                                   prefs={localStoragePrefs}
-                                   preview={true}/>
-
                     <SettingToggle title="Development"
                                    description="Enables general development features for software engineers working on Polar."
                                    name="dev"
