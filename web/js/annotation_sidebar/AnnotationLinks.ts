@@ -26,8 +26,8 @@ export namespace AnnotationLinks {
     }
 
     export interface IAnnotationLink {
-        readonly page?: number;
-        readonly target?: string;
+        readonly page: number;
+        readonly target: string;
     }
 
     export function parse(queryOrLocation: QueryOrLocation): IAnnotationLink | undefined{
@@ -42,7 +42,8 @@ export namespace AnnotationLinks {
         }
 
         return {
-            page, target
+            page: page!,
+            target: target!
         };
 
     }

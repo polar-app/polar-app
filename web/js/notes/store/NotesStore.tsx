@@ -85,8 +85,6 @@ export interface INoteMerge {
     readonly target: NoteIDStr;
 }
 
-
-
 export class NotesStore {
 
     @observable _noteEditors: {[id: string]: INoteEditorMutator} = {}

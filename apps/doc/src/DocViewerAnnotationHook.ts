@@ -11,35 +11,37 @@ export type DocViewerJumpCause = 'init' | 'history';
 export function useDocViewerJumpToPageLoader(): (location: ILocation, cause: DocViewerJumpCause) => boolean {
 
     const {onPageJump} = useDocViewerCallbacks();
-    const prevLocationRef = React.useRef<ILocation | undefined>();
+    const prevPageRef = React.useRef<number | undefined>();
     const currentDocumentLocationPredicate = useCurrentDocumentLocationPredicate();
 
     return (location, cause) => {
 
-        try {
+        if (currentDocumentLocationPredicate(location)) {
 
-            if (currentDocumentLocationPredicate(location)) {
+            const annotationLink = AnnotationLinks.parse(location.hash);
 
-                if (prevLocationRef.current?.hash === location.hash) {
-                    return false;
+            if (annotationLink) {
+
+                try {
+
+                    if (prevPageRef.current !== annotationLink.page) {
+
+                        console.log(`Jumping to page ${annotationLink.page} due to '${cause}'`);
+                        onPageJump(annotationLink.page);
+                        return true;
+
+                    }
+
+                } finally {
+                    prevPageRef.current = annotationLink.page;
                 }
-
-                const annotationLink = AnnotationLinks.parse(location.hash);
-
-                if (annotationLink?.page) {
-                    console.log(`Jumping to page ${annotationLink.page} due to '${cause}'`);
-                    onPageJump(annotationLink.page);
-                    return true;
-                }
-
 
             }
 
-            return false;
 
-        } finally {
-            prevLocationRef.current = location;
         }
+
+        return false;
 
     }
 
