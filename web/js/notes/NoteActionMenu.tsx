@@ -305,14 +305,13 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
 
                 case 'Escape':
 
-                    // FIXME: reset the prompt...
-                    setMenuPosition(undefined)
+                    reset();
                     abortEvent();
                     break;
 
                 case 'Enter':
                     // execute the given command...
-                    setMenuPosition(undefined)
+                    reset();
                     abortEvent();
                     break;
 
@@ -342,7 +341,7 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
         // always record the editor position each time we type a character.
         captureEditorPosition()
 
-    }, [captureEditorPosition, computeNextMenuID, computePrevMenuID, menuPositionRef, setMenuIndex, setMenuPosition, triggerHandler]);
+    }, [captureEditorPosition, computeNextMenuID, computePrevMenuID, menuPositionRef, reset, setMenuIndex, setMenuPosition, triggerHandler]);
 
     const handleEditorKeyDown = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
 
