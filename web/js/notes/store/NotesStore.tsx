@@ -119,7 +119,7 @@ export class NotesStore {
     @observable _expanded: StringSetMap = {};
 
     /**
-     * The nodes that are selected by the user.
+     * The nodes that are selected by the user so that they can be highlighted in the UI.
      */
     @observable _selected: StringSetMap = {};
 
@@ -399,6 +399,10 @@ export class NotesStore {
 
     public isExpanded(id: NoteIDStr): boolean {
         return isPresent(this._expanded[id]);
+    }
+
+    public isSelected(id: NoteIDStr): boolean {
+        return isPresent(this._selected[id]);
     }
 
     public getNoteActivated(id: NoteIDStr): INoteActivated | undefined {

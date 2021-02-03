@@ -37,6 +37,8 @@
     - editor activation isn't working because the editor isn't mounted and it's just 
       in preview mode.  
 
+    - strategy for drag and drop...
+
 # New MobX store notes
 
     - It's better to think of this as multiple trees, but with links between them via:

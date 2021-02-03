@@ -4,7 +4,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Paper from "@material-ui/core/Paper";
 import MenuList from "@material-ui/core/MenuList";
 import {useRefValue, useStateRef} from "../hooks/ReactHooks";
-import { deepMemo } from "../react/ReactUtils";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import {useEditorStore} from "./EditorStoreProvider";
 import {NoteActionSelections} from "./NoteActionSelections";
@@ -224,51 +223,6 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
         captureEditorPosition();
     }, [captureEditorPosition]);
 
-    const onKeyDown = React.useCallback((event: KeyboardEvent) => {
-
-
-        if (triggerHandler(event)) {
-
-            const cursorRange = NoteActionSelections.computeCursorRange();
-
-            if (cursorRange && NoteActionSelections.hasActivePrompt(cursorRange)) {
-
-                promptStartRef.current = cursorRange.startOffset;
-
-                const bcr = cursorRange.getBoundingClientRect();
-
-                const newPosition = {
-                    top: bcr.bottom,
-                    left: bcr.left,
-                };
-
-                if (newPosition.top !== 0 && newPosition.left !== 0) {
-
-                    setMenuPosition(newPosition);
-
-                    promptPositionRef.current = editorPositionRef.current
-
-                }
-
-            }
-
-        } else if (event.key === 'Enter') {
-            // just called when the user selects the current item.
-            return;
-        } else {
-
-            if (promptStartRef.current !== undefined) {
-                const prompt = NoteActionSelections.computePromptFromSelection(promptStartRef.current);
-                setPrompt(prompt);
-            }
-
-        }
-
-        // always record the editor position each time we type a character.
-        captureEditorPosition()
-
-    }, [captureEditorPosition, setMenuPosition, setPrompt, triggerHandler]);
-
     const computeNextMenuID = React.useCallback(() => {
 
         if (menuIndexRef.current === undefined) {
@@ -288,6 +242,107 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
         return Math.max(0, menuIndexRef.current - 1);
 
     }, [menuIndexRef]);
+
+    let onKeyDown: (event: KeyboardEvent) => void;
+    onKeyDown = React.useCallback((event: KeyboardEvent) => {
+
+        const triggered = triggerHandler(event);
+
+        if (triggered) {
+
+            const cursorRange = NoteActionSelections.computeCursorRange();
+
+            if (cursorRange && NoteActionSelections.hasActivePrompt(cursorRange)) {
+
+                promptStartRef.current = cursorRange.startOffset;
+
+                const bcr = cursorRange.getBoundingClientRect();
+
+                const newPosition = {
+                    top: bcr.bottom,
+                    left: bcr.left,
+                };
+
+                if (newPosition.top !== 0 && newPosition.left !== 0) {
+
+                    setMenuPosition(newPosition);
+                    promptPositionRef.current = editorPositionRef.current
+
+                }
+
+            }
+        }
+
+        // } else if (event.key === 'Enter') {
+        //     // just called when the user selects the current item.
+        //
+        //     // FIXME: we only listen to this if the menu is active.
+        //     return;
+        // } else {
+        //
+        //     if (promptStartRef.current !== undefined) {
+        //         const prompt = NoteActionSelections.computePromptFromSelection(promptStartRef.current);
+        //         setPrompt(prompt);
+        //     }
+        //
+        // }
+
+        if (menuPositionRef.current !== undefined) {
+
+            // TODO: if the user removes the prompt by typing Backspace, the
+            // action menu should vanish.
+
+            // there are CERTAIN keyboard events that can be executed by but
+            // these are only regular keyboard characters not up down arrows,
+            // etc.
+
+            function abortEvent() {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+
+            switch (event.key) {
+
+                case 'Escape':
+
+                    // FIXME: reset the prompt...
+                    setMenuPosition(undefined)
+                    abortEvent();
+                    break;
+
+                case 'Enter':
+                    // execute the given command...
+                    setMenuPosition(undefined)
+                    abortEvent();
+                    break;
+
+                case 'ArrowDown':
+
+                    const nextID = computeNextMenuID();
+                    setMenuIndex(nextID);
+                    abortEvent();
+                    break;
+
+                case 'ArrowUp':
+
+                    const prevID = computePrevMenuID();
+                    setMenuIndex(prevID);
+                    abortEvent();
+                    break;
+
+                default:
+                    break;
+
+            }
+
+        }
+
+        // FIXME: if the menu is active, we have to be the sole processor of keyboard events.
+
+        // always record the editor position each time we type a character.
+        captureEditorPosition()
+
+    }, [captureEditorPosition, computeNextMenuID, computePrevMenuID, menuPositionRef, setMenuIndex, setMenuPosition, triggerHandler]);
 
     const handleEditorKeyDown = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
 
@@ -438,6 +493,10 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
     );
 });
 
+/**
+ * The trigger handler determines when the action menu is triggered / activated
+ * when the user is typing and their specific trigger string is used.
+ */
 function createTriggerHandler(trigger: TriggerStr) {
 
     let last: string | undefined;
