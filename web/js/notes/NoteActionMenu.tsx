@@ -71,6 +71,8 @@ interface IProps {
 
 export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
 
+    // FIXME: can we do this ENTIRELY without ckeditor? I think we could...
+
     const {itemsProvider, trigger} = props;
 
     const triggerHandler = React.useMemo(() => createTriggerHandler(trigger), [trigger]);
@@ -81,13 +83,13 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
     const editorPositionRef = React.useRef<ckeditor5.IPosition | undefined>(undefined);
     const promptPositionRef = React.useRef<ckeditor5.IPosition | undefined>(undefined);
 
-    const [prompt, setPrompt, promptRef] = useStateRef<string | undefined>(undefined);
+    const [prompt, setPrompt, promptRef] = useStateRef<IPrompt | undefined>(undefined);
     const promptStartRef = React.useRef<number | undefined>();
 
     const editor = useEditorStore();
     const editorRef = useRefValue(editor);
 
-    const items = React.useMemo(() => itemsProvider(prompt || ''), [itemsProvider, prompt]);
+    const items = React.useMemo(() => itemsProvider(prompt?.prompt || ''), [itemsProvider, prompt]);
     const itemsRef = useRefValue(items);
     const store = useNotesStore();
 
@@ -283,19 +285,9 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
             }
         }
 
-        // if (promptStartRef.current !== undefined) {
-        // }
-
-
-        console.log("FIXME: promptStartRef: " + promptStartRef.current);
-
-        console.log("FIXME: prompt: " + promptRef.current);
-
         if (menuPositionRef.current !== undefined) {
 
             const prompt = promptManager.update(event);
-            //         const prompt = NoteActionSelections.computePromptFromSelection(promptStartRef.current);
-            console.log("FIXME: updated prompt to: " + prompt);
             setPrompt(prompt);
 
             // TEST: if the user removes the prompt by typing Backspace, the
@@ -312,6 +304,14 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
 
                     reset();
                     abortEvent();
+                    break;
+
+                case 'Backspace':
+
+                    if (prompt.raw === '') {
+                        reset();
+                    }
+
                     break;
 
                 case 'Enter':
@@ -342,99 +342,9 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
 
         }
 
-        // FIXME: if the menu is active, we have to be the sole processor of keyboard events.
-
-        // always record the editor position each time we type a character.
         captureEditorPosition()
 
-    }, [captureEditorPosition, computeNextMenuID, computePrevMenuID, handleSelectedActionItem, menuPositionRef, promptManager, promptRef, props.id, reset, setMenuIndex, setMenuPosition, setPrompt, store, triggerHandler]);
-
-    const handleEditorKeyDown = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
-
-        if (menuPositionRef.current === undefined) {
-            // the menu is not active
-            return;
-        }
-
-        function abortEvent() {
-            event.domEvent.stopPropagation();
-            event.domEvent.preventDefault();
-            eventData.stop();
-        }
-
-        switch (event.domEvent.key) {
-
-            case 'Escape':
-            case 'Backspace':
-            case 'Delete':
-            case 'ArrowLeft':
-            case 'ArrowRight':
-            case ' ':
-                reset();
-                break;
-
-            case 'ArrowDown':
-
-                const nextID = computeNextMenuID();
-                setMenuIndex(nextID);
-                abortEvent();
-                break;
-
-            case 'ArrowUp':
-
-                const prevID = computePrevMenuID();
-                setMenuIndex(prevID);
-                abortEvent();
-                break;
-
-            default:
-                break;
-        }
-
-    }, [computeNextMenuID, computePrevMenuID, menuPositionRef, reset, setMenuIndex]);
-
-    const handleEditorEnter = React.useCallback((eventData: IEventData) => {
-
-        if (menuPositionRef.current === undefined) {
-            // the menu is not active
-            return;
-        }
-
-        eventData.stop();
-        handleSelectedActionItem();
-
-    }, [handleSelectedActionItem, menuPositionRef]);
-
-    React.useEffect(() => {
-
-        if (! editor) {
-            return;
-        }
-
-        function subscribe() {
-
-            editor!.editing.view.document.on('keydown', handleEditorKeyDown);
-            editor!.editing.view.document.on('enter', handleEditorEnter);
-
-        }
-
-        function unsubscribe() {
-
-            if (editor) {
-                editor.editing.view.document.off('keydown', handleEditorKeyDown);
-                editor.editing.view.document.off('enter', handleEditorEnter);
-            } else {
-                console.warn("No editor in unsubscribe");
-            }
-
-        }
-
-        unsubscribe();
-        subscribe();
-
-        return unsubscribe;
-
-    }, [editor, handleEditorEnter, handleEditorKeyDown]);
+    }, [captureEditorPosition, computeNextMenuID, computePrevMenuID, handleSelectedActionItem, menuPositionRef, promptManager, props.id, reset, setMenuIndex, setMenuPosition, setPrompt, store, triggerHandler]);
 
     interface NoteMenuItemProps extends IActionMenuItem {
         readonly menuID: number;
@@ -536,13 +446,28 @@ function createTriggerHandler(trigger: TriggerStr) {
 
 }
 
+interface IPrompt {
+
+    /**
+     * The RAW prompt with no trigger removal
+     */
+    readonly raw: string;
+
+    /**
+     * The prompt with the trigger removed.
+     */
+    readonly prompt: string;
+
+}
+
 interface PromptManager {
+
     readonly reset: () => void;
 
     /**
      * Update the prompt and return the current value.
      */
-    readonly update: (event: KeyboardEvent) => string;
+    readonly update: (event: KeyboardEvent) => IPrompt;
 }
 
 /**
@@ -572,6 +497,9 @@ function usePromptManager(trigger: string): PromptManager {
 
                 break;
 
+            case 'Escape':
+            case 'Command':
+            case 'Enter':
             case 'ArrowUp':
             case 'ArrowDown':
             case 'Shift':
@@ -582,17 +510,25 @@ function usePromptManager(trigger: string): PromptManager {
                 // build a new prompt by appending the text
                 promptRef.current = promptRef.current + event.key;
                 break;
+
         }
 
         function computeResultWithoutTrigger() {
 
-            const start = trigger.length + 1;
+            const start = trigger.length;
 
-            if (promptRef.current.length < start) {
-                return "";
+            const raw = promptRef.current;
+
+            if (raw.length < start) {
+                return {
+                    raw,
+                    prompt: ""
+                }
             }
 
-            return promptRef.current.substring(start, promptRef.current.length - 1);
+            const prompt = raw.substring(start);
+
+            return {raw, prompt};
 
         }
 
