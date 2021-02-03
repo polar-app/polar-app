@@ -3,10 +3,28 @@
     - navigation is the main issue I think... 
     - 
 
+# Major Navigation Features and input.
+    - up down should select the next node
+
 # New TODO since MobX adopted:
 
-    - when I'm splitting and joining nodes it's seems to be sticking a <p> in
-      between then when converting to HTML and not sure why...
+    - write a DEDICATED test for activating the ckeditor control and setting the
+      cursor position.  It hink in my tests it was just about setting the offset
+
+    - the oepn action menu should now allow any events into the DOM until the action menu is dismissed
+
+    - the auto-complete widget isnt working now.
+        - when it's open it should capture, and swallow, all keyboard commands until it's escaped.
+
+    - I can only join two sibling nodes, not a first child to a parent
+    - shift + arrows don't select multiple nodes
+    
+    - I have to implement undo in the store.  
+    
+    - if the cursor is at the beginning of a node it should create a new node below it
+     
+    
+    - implement support for selections and multi-select
 
     - actions no longer work even when I select them.
         - use the store to select an action...

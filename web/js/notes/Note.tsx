@@ -12,6 +12,17 @@ import { NoteExpandToggleButton } from "./NoteExpandToggleButton";
 import { NoteIDStr, useNotesStore } from "./store/NotesStore";
 import {isObservable, isObservableProp} from 'mobx';
 import { observer,  } from "mobx-react-lite"
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import createStyles from "@material-ui/core/styles/createStyles";
+import clsx from "clsx";
+
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        selected: {
+            background: theme.palette.primary.main
+        },
+    }),
+);
 
 interface IProps {
     readonly parent: NoteIDStr | undefined;
@@ -31,13 +42,14 @@ export const NoteInner = observer((props: IProps) => {
 
     const {id} = props;
 
-
     const store = useNotesStore();
+    const classes = useStyles();
 
     const theme = useTheme();
     const contextMenuHandlers = useNoteContextMenu();
 
     const expanded = store.isExpanded(props.id);
+    const selected = store.isSelected(props.id);
     const note = store.getNote(id);
 
     const root = store.root;
@@ -51,9 +63,8 @@ export const NoteInner = observer((props: IProps) => {
     const hasItems = items.length > 0;
 
     return (
-        <>
-            <div className="Note"
-                 {...contextMenuHandlers}
+        <div className={clsx(['Note', selected ? classes.selected : undefined])}>
+            <div {...contextMenuHandlers}
                  style={{
                      display: 'flex',
                      alignItems: 'flex-start',
@@ -86,7 +97,7 @@ export const NoteInner = observer((props: IProps) => {
             {(expanded || id === root) && (
                 <NoteItems parent={props.id} notes={items}/>
             )}
-        </>
+        </div>
     );
 });
 

@@ -226,7 +226,6 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
 
     const onKeyDown = React.useCallback((event: KeyboardEvent) => {
 
-        // FIXME Escape should dismiss the menu...
 
         if (triggerHandler(event)) {
 
@@ -253,7 +252,7 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
 
             }
 
-        } else if (event.key === 'enter') {
+        } else if (event.key === 'Enter') {
             // just called when the user selects the current item.
             return;
         } else {
