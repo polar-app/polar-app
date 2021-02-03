@@ -1,6 +1,9 @@
-# New TODO since MobX adopted:
+# Main bugs
 
-    
+    - navigation is the main issue I think... 
+    - 
+
+# New TODO since MobX adopted:
 
     - actions no longer work even when I select them.
         - use the store to select an action...

@@ -23,16 +23,16 @@ export const FirestoreSnapshotsStory = () => {
 
     const doAsync = React.useCallback(async () => {
 
-        console.log("doAsync")
+        // console.log("doAsync")
+        //
+        // const firestore = await Firestore.getInstance();
+        //
+        // const uid = await Firebase.currentUserID();
+        // const ref = firestore.collection('user_pref').doc(uid);
+        //
+        // ref.onSnapshot(handleSnapshot, handleError);
 
-        const firestore = await Firestore.getInstance();
-
-        const uid = await Firebase.currentUserID();
-        const ref = firestore.collection('user_pref').doc(uid);
-
-        ref.onSnapshot(handleSnapshot, handleError);
-
-    }, [handleError, handleSnapshot]);
+    }, []);
 
     React.useMemo(() => doAsync().catch(err => console.error(err)), [doAsync]);
 

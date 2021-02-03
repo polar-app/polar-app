@@ -7,6 +7,9 @@ import {FirebaseUIAuth} from "../../../../web/js/firebase/FirebaseUIAuth";
 import firebase from 'firebase/app'
 import { useHistory } from "react-router-dom";
 import { Fetches } from "polar-shared/src/util/Fetch";
+import {AppRuntime} from "polar-shared/src/util/AppRuntime";
+import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 export type AuthStatus = 'needs-auth';
 
@@ -21,6 +24,37 @@ function handleAuthResult(authResult: firebase.auth.UserCredential) {
     } else {
         document.location.href = SignInSuccessURLs.get() || '/';
     }
+
+}
+
+export function useElectronWarningForGoogle() {
+
+    const dialogs = useDialogManager();
+
+    return React.useCallback(() => {
+
+        if (AppRuntime.isElectron()) {
+
+            dialogs.dialog({
+                type: 'warning',
+                title: "Desktop App Not Supported",
+                body: (
+                    <div>
+                        Google authentication doesn't work for the Desktop App (we're working on a fix).
+
+                        Until then, please use email authentication to login as it will send you a code to your email.
+                    </div>
+                ),
+                onAccept: NULL_FUNCTION
+            });
+
+            return true;
+
+        }
+
+        return false;
+
+    }, [dialogs]);
 
 }
 
@@ -94,7 +128,13 @@ export function useTriggerFirebaseGoogleAuth() {
 
     /// https://firebase.google.com/docs/auth/web/google-signin
 
+    const electronWarningForGoogle = useElectronWarningForGoogle();
+
     return React.useCallback(async () => {
+
+        if (electronWarningForGoogle()) {
+            return;
+        }
 
         const auth = firebase.auth();
         const provider = new firebase.auth.GoogleAuthProvider();
@@ -107,7 +147,7 @@ export function useTriggerFirebaseGoogleAuth() {
 
         FirebaseUIAuth.authWithGoogle();
 
-    }, []);
+    }, [electronWarningForGoogle]);
 
 }
 
