@@ -454,7 +454,8 @@ export class NotesStore {
 
         const initialTargetContent = targetNote.content;
 
-        targetNote.setContent(targetNote.content + sourceNote.content);
+        const newContent = targetNote.content + " " + sourceNote.content;
+        targetNote.setContent(newContent);
         targetNote.setItems([...targetNote.items, ...sourceNote.items]);
         targetNote.setLinks([...targetNote.links, ...sourceNote.links]);
 

@@ -92,6 +92,11 @@ export class Note implements INote {
     }
 
     @action setContent(content: string) {
+
+        // if (content.startsWith('<p')) {
+        //     throw new Error("Content was set as HTML!");
+        // }
+
         this._content = content;
         this._updated = ISODateTimeStrings.create();
     }

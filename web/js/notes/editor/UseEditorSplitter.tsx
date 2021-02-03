@@ -1,6 +1,8 @@
 import * as React from "react";
 import {useEditorStore} from "../EditorStoreProvider";
 import IEditor = ckeditor5.IEditor;
+import {HTMLToMarkdown} from "polar-markdown-parser/src/HTMLToMarkdown";
+import html2markdown = HTMLToMarkdown.html2markdown;
 
 interface IEditorSplit {
     readonly prefix: string;
@@ -76,8 +78,8 @@ export function doEditorSplit(editor: IEditor): IEditorSplit {
         return rangeToHTML(range);
     }
 
-    const prefix = computePrefix();
-    const suffix = computeSuffix();
+    const prefix = html2markdown(computePrefix());
+    const suffix = html2markdown(computeSuffix());
 
     return {
         prefix,

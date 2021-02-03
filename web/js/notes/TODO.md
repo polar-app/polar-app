@@ -5,12 +5,12 @@
 
 # New TODO since MobX adopted:
 
+    - when I'm splitting and joining nodes it's seems to be sticking a <p> in
+      between then when converting to HTML and not sure why...
+
     - actions no longer work even when I select them.
         - use the store to select an action...
         - we have to catch the action menu at the window level...  
-
-    - when I'm splitting and joining nodes it's seems to be sticking a <p> in
-    between then when converting to HTML and not sure why...
 
     - once the root is mounted, all *new* nodes should become editors by default
         - it would be idea if we could hide all the details of this stuff and put it 

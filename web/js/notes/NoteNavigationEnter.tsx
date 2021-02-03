@@ -5,6 +5,8 @@ import {useEditorCursorPosition} from "./editor/UseEditorCursorPosition";
 import {useEditorSplitter} from "./editor/UseEditorSplitter";
 import { useEditorSetContent } from "./editor/UseEditorSetContent";
 import {NewNotePosition, NoteIDStr, useNotesStore } from "./store/NotesStore";
+import {MarkdownToHTML} from "polar-markdown-parser/src/MarkdownToHTML";
+import markdown2html = MarkdownToHTML.markdown2html;
 
 interface IOpts {
     readonly parent: NoteIDStr | undefined;
@@ -52,7 +54,7 @@ export function useNoteNavigationEnterHandler(opts: IOpts) {
 
             if (pos === 'split') {
                 const editorSplit = editorSplitter();
-                editorSetContent(editorSplit.prefix);
+                editorSetContent(markdown2html(editorSplit.prefix));
                 store.createNewNote(parent, id, pos, editorSplit);
                 return;
             }
