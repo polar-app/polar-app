@@ -91,13 +91,19 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
     const itemsRef = useRefValue(items);
     const store = useNotesStore();
 
+    const promptManager = usePromptManager(props.trigger);
+
     const reset = React.useCallback(() => {
+
         setMenuPosition(undefined);
         setMenuIndex(undefined);
-        promptStartRef.current = undefined;
         setPrompt(undefined);
+
+        promptStartRef.current = undefined;
         promptPositionRef.current = undefined;
-    }, [setMenuIndex, setMenuPosition, setPrompt]);
+        promptManager.reset();
+
+    }, [promptManager, setMenuIndex, setMenuPosition, setPrompt]);
 
     const removeEditorPromptText = React.useCallback(() => {
 
@@ -277,28 +283,23 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
             }
         }
 
-        // } else if (event.key === 'Enter') {
-        //     // just called when the user selects the current item.
-        //
-        //     // FIXME: we only listen to this if the menu is active.
-        //     return;
-        // } else {
-        //
-        //     if (promptStartRef.current !== undefined) {
-        //         const prompt = NoteActionSelections.computePromptFromSelection(promptStartRef.current);
-        //         setPrompt(prompt);
-        //     }
-        //
+        // if (promptStartRef.current !== undefined) {
         // }
+
+
+        console.log("FIXME: promptStartRef: " + promptStartRef.current);
+
+        console.log("FIXME: prompt: " + promptRef.current);
 
         if (menuPositionRef.current !== undefined) {
 
-            // TODO: if the user removes the prompt by typing Backspace, the
-            // action menu should vanish.
+            const prompt = promptManager.update(event);
+            //         const prompt = NoteActionSelections.computePromptFromSelection(promptStartRef.current);
+            console.log("FIXME: updated prompt to: " + prompt);
+            setPrompt(prompt);
 
-            // there are CERTAIN keyboard events that can be executed by but
-            // these are only regular keyboard characters not up down arrows,
-            // etc.
+            // TEST: if the user removes the prompt by typing Backspace, the
+            // action menu should vanish.
 
             function abortEvent() {
                 event.stopPropagation();
@@ -346,7 +347,7 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
         // always record the editor position each time we type a character.
         captureEditorPosition()
 
-    }, [captureEditorPosition, computeNextMenuID, computePrevMenuID, handleSelectedActionItem, menuPositionRef, props.id, reset, setMenuIndex, setMenuPosition, store, triggerHandler]);
+    }, [captureEditorPosition, computeNextMenuID, computePrevMenuID, handleSelectedActionItem, menuPositionRef, promptManager, promptRef, props.id, reset, setMenuIndex, setMenuPosition, setPrompt, store, triggerHandler]);
 
     const handleEditorKeyDown = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
 
@@ -532,5 +533,73 @@ function createTriggerHandler(trigger: TriggerStr) {
         return false;
 
     }
+
+}
+
+interface PromptManager {
+    readonly reset: () => void;
+
+    /**
+     * Update the prompt and return the current value.
+     */
+    readonly update: (event: KeyboardEvent) => string;
+}
+
+/**
+ * The prompt manager takes events form the keyboard, and construct them to
+ * build a snapshot of what the ckeditor text should be at the cursor prompt
+ * without having to deal with ckeditor nonsense
+ */
+function usePromptManager(trigger: string): PromptManager {
+
+    const promptRef = React.useRef("");
+
+    const reset = React.useCallback(() => {
+        promptRef.current = '';
+    }, []);
+
+    const update = React.useCallback((event: KeyboardEvent) => {
+
+        switch (event.key) {
+
+            case 'Backspace':
+
+                if (promptRef.current !== '') {
+                    // remove the last character from the prompt.
+                    promptRef.current
+                        = promptRef.current.substr(0, promptRef.current.length - 1);
+                }
+
+                break;
+
+            case 'ArrowUp':
+            case 'ArrowDown':
+            case 'Shift':
+                // ignore these
+                break;
+
+            default:
+                // build a new prompt by appending the text
+                promptRef.current = promptRef.current + event.key;
+                break;
+        }
+
+        function computeResultWithoutTrigger() {
+
+            const start = trigger.length + 1;
+
+            if (promptRef.current.length < start) {
+                return "";
+            }
+
+            return promptRef.current.substring(start, promptRef.current.length - 1);
+
+        }
+
+        return computeResultWithoutTrigger();
+
+    }, [trigger]);
+
+    return React.useMemo((): PromptManager => ({reset, update}), [reset, update]);
 
 }

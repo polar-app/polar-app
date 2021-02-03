@@ -38,6 +38,8 @@
       in preview mode.  
 
     - strategy for drag and drop...
+    
+    - tables don't actually work well at all!  remove this functionality for now.
 
 # New MobX store notes
 
