@@ -1,6 +1,9 @@
 import { ISODateTimeString } from "polar-shared/src/metadata/ISODateTimeStrings";
 import {NoteContent, NoteIDStr} from "./NotesStore";
 
+/**
+ * @Deprecated use IBlock
+ */
 export interface INote {
 
     readonly id: NoteIDStr;
