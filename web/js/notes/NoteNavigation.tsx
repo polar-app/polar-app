@@ -7,7 +7,7 @@ import IIterable = ckeditor5.IIterable;
 import {useEditorCursorPosition} from "./editor/UseEditorCursorPosition";
 import { useNoteNavigationEnterHandler } from './NoteNavigationEnter';
 import {useLifecycleTracer} from "../hooks/ReactHooks";
-import {NoteIDStr, useNotesStore} from "./store/NotesStore";
+import {NavOpts, NoteIDStr, useNotesStore} from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
 import {useNoteActivation} from "./NoteActivation";
 
@@ -79,25 +79,29 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
 
         const editorCursorPosition = getEditorCursorPosition();
 
+        const opts: NavOpts = {
+            shiftKey: event.domEvent.shiftKey
+        }
+
         switch (event.domEvent.key) {
 
             case 'ArrowUp':
 
                 abortEvent();
-                store.navPrev('start');
+                store.navPrev('start', opts);
                 break;
 
             case 'ArrowDown':
 
                 abortEvent();
-                store.navNext('start');
+                store.navNext('start', opts);
                 break;
 
             case 'ArrowLeft':
 
                 if (editorCursorPosition === 'start') {
                     abortEvent();
-                    store.navPrev('end');
+                    store.navPrev('end', opts);
                 }
 
                 break;
@@ -106,7 +110,7 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
 
                 if (editorCursorPosition === 'end') {
                     abortEvent();
-                    store.navNext('start');
+                    store.navNext('start', opts);
                 }
 
                 break;
@@ -140,8 +144,6 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
                     return;
                 }
 
-
-
                 // TODO: only do this if there aren't any modifiers I think...
                 if (props.parent !== undefined && store.noteIsEmpty(props.id)) {
 
@@ -149,7 +151,6 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
                     store.doDelete([props.id]);
 
                 }
-
 
                 if (editorCursorPosition === 'start') {
 
@@ -162,8 +163,6 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
                     }
 
                 }
-
-                // FIXME detect if a note is mergable.
 
                 break;
 

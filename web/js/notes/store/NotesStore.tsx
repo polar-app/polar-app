@@ -85,6 +85,10 @@ export interface INoteMerge {
     readonly target: NoteIDStr;
 }
 
+export interface NavOpts {
+    readonly shiftKey: boolean;
+}
+
 export class NotesStore {
 
     @observable _noteEditors: {[id: string]: INoteEditorMutator} = {}
@@ -299,7 +303,9 @@ export class NotesStore {
     }
 
 
-    @action public doNav(delta: 'prev' | 'next', pos: NavPosition) {
+    @action public doNav(delta: 'prev' | 'next',
+                         pos: NavPosition,
+                         opts: NavOpts) {
 
         if (this.root === undefined) {
             console.warn("No currently active root");
@@ -337,17 +343,36 @@ export class NotesStore {
 
         const newActive = items[activeIndex];
 
+        const computeSelected = (active: NoteIDStr, newActive: NoteIDStr): StringSetMap => {
+
+            const currentSelected = Object.keys(this._selected);
+            const newSelected = [...currentSelected, active, newActive];
+
+            const result: {[key: string]: boolean} = {};
+
+            newSelected.forEach(current => result[current] = true);
+
+            return result;
+
+        }
+
+        if (opts.shiftKey) {
+            this._selected = computeSelected(this._active, newActive);
+        } else {
+            this._selected = {};
+        }
+
         this._active = newActive;
         this._activePos = pos;
 
     }
 
-    public navPrev(pos: NavPosition) {
-        this.doNav('prev', pos);
+    public navPrev(pos: NavPosition, opts: NavOpts) {
+        this.doNav('prev', pos, opts);
     }
 
-    public navNext(pos: NavPosition) {
-        this.doNav('next', pos);
+    public navNext(pos: NavPosition, opts: NavOpts) {
+        this.doNav('next', pos, opts);
     }
 
     public toggleExpand(id: NoteIDStr) {

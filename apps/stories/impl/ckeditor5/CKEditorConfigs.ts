@@ -149,7 +149,9 @@ export namespace CKEditorConfigs {
         removePlugins: [
             "CKFinder",
             // "Heading",
-            // "ImageCaption",
+            // The ImageCaption plugin isn't really helpful and we can add text
+            // ourselves
+            "ImageCaption",
             // "ImageStyle",
             // "ImageToolbar",
             // "ImageUpload",
@@ -175,9 +177,9 @@ export namespace CKEditorConfigs {
                 'subscript',
                 'superscript',
                 'link',
-                '|',
-                'imageUpload',
-                'insertTable',
+                // '|',
+                // 'imageUpload',
+                // 'insertTable',
                 // 'mediaEmbed',
                 // 'specialcharacters'
                 // 'undo',
