@@ -152,6 +152,13 @@ export class NotesStore {
         return this._active;
     }
 
+    /**
+     * Return true if the given note is active.
+     */
+    public isActive(id: NoteIDStr): boolean {
+        return this._active === id;
+    }
+
     public lookup(notes: ReadonlyArray<NoteIDStr>): ReadonlyArray<INote> {
 
         return notes.map(current => this._index[current])

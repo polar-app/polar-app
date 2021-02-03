@@ -9,7 +9,7 @@ import {useEditorStore} from "./EditorStoreProvider";
 import {NoteActionSelections} from "./NoteActionSelections";
 import IEventData = ckeditor5.IEventData;
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
-import {NoteIDStr} from "./store/NotesStore";
+import {NoteIDStr, useNotesStore} from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
 
 export interface ICommand {
@@ -89,6 +89,7 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
 
     const items = React.useMemo(() => itemsProvider(prompt || ''), [itemsProvider, prompt]);
     const itemsRef = useRefValue(items);
+    const store = useNotesStore();
 
     const reset = React.useCallback(() => {
         setMenuPosition(undefined);
@@ -243,8 +244,11 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
 
     }, [menuIndexRef]);
 
-    let onKeyDown: (event: KeyboardEvent) => void;
-    onKeyDown = React.useCallback((event: KeyboardEvent) => {
+    const onKeyDown = React.useCallback((event: KeyboardEvent) => {
+
+        if (! store.isActive(props.id)) {
+            return;
+        }
 
         const triggered = triggerHandler(event);
 
@@ -311,6 +315,7 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
 
                 case 'Enter':
                     // execute the given command...
+                    handleSelectedActionItem();
                     reset();
                     abortEvent();
                     break;
@@ -341,7 +346,7 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
         // always record the editor position each time we type a character.
         captureEditorPosition()
 
-    }, [captureEditorPosition, computeNextMenuID, computePrevMenuID, menuPositionRef, reset, setMenuIndex, setMenuPosition, triggerHandler]);
+    }, [captureEditorPosition, computeNextMenuID, computePrevMenuID, handleSelectedActionItem, menuPositionRef, props.id, reset, setMenuIndex, setMenuPosition, store, triggerHandler]);
 
     const handleEditorKeyDown = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
 
@@ -434,7 +439,7 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
         readonly menuID: number;
     }
 
-    const NoteMenuItem = React.memo((props: NoteMenuItemProps) => {
+    const NoteActionMenuItem = React.memo((props: NoteMenuItemProps) => {
 
         const {menuID} = props;
 
@@ -447,9 +452,17 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
 
     });
 
-    // FIXME: this needs to hook the window menu listener... I thinkk.
-
     React.useEffect(() => {
+
+        // we hook the main window event listener because we have to override
+        // all the key events to everything else once we are active.
+
+        // FIXME: I think this is activating N times not for only the currently
+        // active note ... there probably need to be two event listeners.
+        //
+        // the local one which is a normal event listener and listens for key
+        // events as part of the normal dom and then one that listens at the
+        // window level so it an abort events.
 
         window.addEventListener('keydown', onKeyDown, {capture: true})
 
@@ -479,7 +492,7 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
 
                         <MenuList>
                             {items.map((current, idx) => (
-                                <NoteMenuItem key={idx}
+                                <NoteActionMenuItem key={idx}
                                               menuID={idx}
                                               {...current}/>))}
                         </MenuList>
