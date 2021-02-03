@@ -6,7 +6,7 @@ import IWriter = ckeditor5.IWriter;
 
 export function useNoteActivation(id: NoteIDStr) {
 
-    useLifecycleTracer('useNoteActivation', {id});
+    // useLifecycleTracer('useNoteActivation', {id});
 
     const editor = useEditorStore();
     const store = useNotesStore();

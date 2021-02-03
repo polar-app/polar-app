@@ -38,7 +38,7 @@ export const [NoteContextMenu, useNoteContextMenu]
 
 export const NoteInner = observer((props: IProps) => {
 
-    useLifecycleTracer('NoteInner', {id: props.id});
+    // useLifecycleTracer('NoteInner', {id: props.id});
 
     const {id} = props;
 
@@ -103,7 +103,7 @@ export const NoteInner = observer((props: IProps) => {
 
 export const Note = observer(function Note(props: IProps) {
 
-    useLifecycleTracer('Note');
+    // useLifecycleTracer('Note');
 
     return (
         <NoteContextMenu>

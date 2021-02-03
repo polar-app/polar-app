@@ -52,7 +52,7 @@ interface IProps {
 
 export const NoteActionMenuForCommands = deepMemo(function NoteActionMenuForCommands(props: IProps) {
 
-    useLifecycleTracer('NoteActionMenuForCommands', {id: props.id});
+    // useLifecycleTracer('NoteActionMenuForCommands', {id: props.id});
 
     const itemsProvider = useItemsProvider();
 

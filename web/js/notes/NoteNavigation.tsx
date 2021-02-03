@@ -19,7 +19,7 @@ interface IProps {
 
 export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
 
-    useLifecycleTracer('NoteNavigation', {id: props.id});
+    // useLifecycleTracer('NoteNavigation', {id: props.id});
 
     const store = useNotesStore();
     const editor = useEditorStore();

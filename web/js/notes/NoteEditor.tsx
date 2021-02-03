@@ -158,7 +158,7 @@ interface INoteEditorInactiveProps {
 
 const NoteEditorInactive = observer(function NoteEditorInactive(props: INoteEditorInactiveProps) {
 
-    useLifecycleTracer('NoteEditorInactive', {id: props.id});
+    // useLifecycleTracer('NoteEditorInactive', {id: props.id});
 
     const {content, onClick} = props;
 
@@ -202,7 +202,7 @@ const NoteEditorActivator = observer(function NoteEditorActivator(props: INoteEd
 
     const DEFAULT_ACTIVATED = true;
 
-    useLifecycleTracer('NoteEditorActivator', {id: props.id});
+    // useLifecycleTracer('NoteEditorActivator', {id: props.id});
 
     const {onEditor, onChange, id, immutable} = props;
 
@@ -265,7 +265,7 @@ const NoteEditorActivator = observer(function NoteEditorActivator(props: INoteEd
 
 const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
-    useLifecycleTracer('NoteEditorInner', {id: props.id});
+    // useLifecycleTracer('NoteEditorInner', {id: props.id});
 
     const {id} = props;
     const store = useNotesStore()
@@ -304,7 +304,7 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
 const NoteEditorWithEditorStore = observer(function NoteEditorWithEditorStore(props: IProps) {
 
-    useLifecycleTracer('NoteEditorWithEditorStore', {id: props.id});
+    // useLifecycleTracer('NoteEditorWithEditorStore', {id: props.id});
 
     useLinkNavigation();
 
@@ -338,7 +338,7 @@ interface IProps {
 
 export const NoteEditor = observer(function NoteEditor(props: IProps) {
 
-    useLifecycleTracer('NoteEditor', {id: props.id});
+    // useLifecycleTracer('NoteEditor', {id: props.id});
 
     return (
         <EditorStoreProvider initialValue={undefined}>

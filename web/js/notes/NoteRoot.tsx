@@ -14,7 +14,7 @@ interface IProps {
 
 export const NoteRoot = observer((props: IProps) => {
 
-    useLifecycleTracer('NoteRoot', {target: props.target});
+    // useLifecycleTracer('NoteRoot', {target: props.target});
 
     const {target} = props;
 
