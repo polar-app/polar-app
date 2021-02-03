@@ -75,7 +75,7 @@ export const DefaultContentEscaper: ContentEscaper = {
 
 export const CKEditor5BalloonEditor = React.memo(function CKEditor5BalloonEditor(props: IProps) {
 
-    useLifecycleTracer('CKEditor5BalloonEditor');
+    // useLifecycleTracer('CKEditor5BalloonEditor');
 
     // we only need to convert to markdown on component startup.  This component
     // CAN NOT be reloaded during react re-renders so we have to give it the

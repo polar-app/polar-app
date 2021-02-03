@@ -298,6 +298,8 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
                 event.preventDefault();
             }
 
+            // FIXME: disable image captions.
+
             switch (event.key) {
 
                 case 'Escape':
