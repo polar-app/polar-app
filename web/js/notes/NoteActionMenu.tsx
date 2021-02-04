@@ -7,8 +7,6 @@ import {useRefValue, useStateRef} from "../hooks/ReactHooks";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import {useEditorStore} from "./EditorStoreProvider";
 import {NoteActionSelections} from "./NoteActionSelections";
-import IEventData = ckeditor5.IEventData;
-import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 import {NoteIDStr, useNotesStore} from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
 
@@ -297,8 +295,6 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
                 event.stopPropagation();
                 event.preventDefault();
             }
-
-            // FIXME: disable image captions.
 
             switch (event.key) {
 

@@ -46,16 +46,6 @@ export const NoteSelectionHandler = observer(function NoteSelectionHandler(props
 
     React.useEffect(() => {
 
-        // we hook the main window event listener because we have to override
-        // all the key events to everything else once we are active.
-
-        // FIXME: I think this is activating N times not for only the currently
-        // active note ... there probably need to be two event listeners.
-        //
-        // the local one which is a normal event listener and listens for key
-        // events as part of the normal dom and then one that listens at the
-        // window level so it an abort events.
-
         window.addEventListener('keydown', onKeyDown, {capture: true})
 
         return () => {
