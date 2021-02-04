@@ -7,38 +7,62 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 interface ActiveProps {
     readonly content: HTMLStr;
-    readonly offset: number;
+    readonly offset: EditorCursorPosition;
     readonly onEditor: (editor: ckeditor5.IEditor) => void;
 }
 
+export type EditorCursorPosition = number | 'before' | 'end';
+
+/**
+ * An editor activator does the following:
+ *
+ * - if the editor is not mounted, we mount it and load the editor
+ * - if an offset is specified and jump to that offset
+ * - focus the editor
+ */
+export type EditorActivator = (offset?: EditorCursorPosition) => void;
+
+function editorActivator(editor: ckeditor5.IEditor, offset?: EditorCursorPosition) {
+
+    const doc = editor.model.document;
+
+    editor.model.change((writer) => {
+
+        const root = doc.getRoot();
+
+        if (offset !== undefined) {
+
+            switch (offset) {
+
+                case 'before':
+                case 'end':
+                    writer.setSelection(root, offset)
+                    break;
+
+                default:
+                    const position = writer.createPositionFromPath(root, [0, offset]);
+                    const range = writer.createRange(position, position);
+
+                    writer.setSelection(range);
+                    break;
+            }
+
+        }
+
+    });
+
+    editor.editing.view.focus();
+
+}
 
 const Active = (props: ActiveProps) => {
 
-    const positionCursorWithinEditor = React.useCallback((editor: ckeditor5.IEditor, offset: number) => {
-
-        const doc = editor.model.document;
-
-        editor.model.change((writer) => {
-
-            const root = doc.getRoot();
-
-            const position = writer.createPositionFromPath(root, [0, offset]);
-
-            const range = writer.createRange(position, position);
-
-            writer.setSelection(range);
-
-        });
-
-    }, []);
-
     const handleEditor = React.useCallback((editor: ckeditor5.IEditor) => {
-        positionCursorWithinEditor(editor, props.offset);
+        editorActivator(editor, props.offset);
+
         props.onEditor(editor);
 
-        editor.editing.view.focus();
-
-    }, [positionCursorWithinEditor, props]);
+    }, [props]);
 
     return (
 
@@ -198,8 +222,6 @@ const Inactive = (props: InactiveProps) => {
     );
 }
 
-export type Activator = (offset?: number) => void;
-
 interface IProps {
 
     /**
@@ -207,7 +229,7 @@ interface IProps {
      * given component.
      *
      */
-    readonly onActivator: (activator: Activator) => void;
+    readonly onActivator: (activator: EditorActivator) => void;
     readonly onActivated: (editor: ckeditor5.IEditor) => void;
 
     readonly content: HTMLStr;
@@ -217,11 +239,22 @@ interface IProps {
 export const CKEditorActivator = (props: IProps) => {
 
     const [active, setActive] = React.useState(false);
-    const offsetRef = React.useRef(0);
+    const offsetRef = React.useRef<EditorCursorPosition>(0);
+    const editorRef = React.useRef<ckeditor5.IEditor | undefined>(undefined);
 
-    const handleActivated = React.useCallback((offset?: number) => {
+    const handleActivated = React.useCallback((offset?: EditorCursorPosition) => {
 
-        if (! active) {
+        if (active) {
+
+            if (editorRef.current) {
+                editorActivator(editorRef.current, offset);
+            } else {
+                console.warn("No editor");
+            }
+
+        } else {
+
+            // this will trigger the initial mount with the right offset.
 
             if (offset !== undefined) {
                 offsetRef.current = offset;
@@ -233,9 +266,16 @@ export const CKEditorActivator = (props: IProps) => {
 
     }, [active]);
 
-    const activator = React.useCallback((offset?: number) => {
+    const activator = React.useCallback((offset?: EditorCursorPosition) => {
         handleActivated(offset);
     }, [handleActivated]);
+
+    const handleEditor = React.useCallback((editor: ckeditor5.IEditor) => {
+
+        editorRef.current = editor;
+        props.onActivated(editor);
+
+    }, [props]);
 
     React.useEffect(() => {
         props.onActivator(activator)
@@ -246,7 +286,7 @@ export const CKEditorActivator = (props: IProps) => {
         return (
             <Active offset={offsetRef.current}
                     content={props.content}
-                    onEditor={props.onActivated}/>
+                    onEditor={handleEditor}/>
         );
 
     } else {
