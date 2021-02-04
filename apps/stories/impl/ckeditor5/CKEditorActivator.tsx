@@ -34,6 +34,8 @@ const Active = (props: ActiveProps) => {
         positionCursorWithinEditor(editor, props.offset);
         props.onEditor(editor);
 
+        editor.editing.view.focus();
+
     }, [positionCursorWithinEditor, props]);
 
     return (
@@ -61,8 +63,13 @@ const Inactive = (props: InactiveProps) => {
 
     const elementRef = React.useRef<HTMLDivElement |  null>(null);
 
+    const handleClick = React.useCallback(() => {
+        props.onActivated(0);
+    }, [props]);
+
     return (
         <div ref={elementRef}
+             onClick={handleClick}
              dangerouslySetInnerHTML={{__html: props.content}}>
 
         </div>
