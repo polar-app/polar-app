@@ -4,6 +4,7 @@ import {HTMLStr} from "polar-shared/src/util/Strings";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import { Numbers } from "polar-shared/src/util/Numbers";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {INoteEditorMutator, NoteEditorMutators} from "../../../../web/js/notes/store/NoteEditorMutator";
 
 interface ActiveProps {
     readonly content: HTMLStr;
@@ -229,7 +230,7 @@ interface IProps {
      * given component.
      *
      */
-    readonly onActivator: (activator: EditorActivator) => void;
+    readonly onEditorMutator: (editorMutator: INoteEditorMutator) => void;
     readonly onActivated: (editor: ckeditor5.IEditor) => void;
 
     readonly content: HTMLStr;
@@ -241,8 +242,9 @@ export const CKEditorActivator = (props: IProps) => {
     const [active, setActive] = React.useState(false);
     const offsetRef = React.useRef<EditorCursorPosition>(0);
     const editorRef = React.useRef<ckeditor5.IEditor | undefined>(undefined);
+    const mutatorRef = React.useRef<INoteEditorMutator | undefined>(undefined);
 
-    const handleActivated = React.useCallback((offset?: EditorCursorPosition) => {
+    const setCursorPosition = React.useCallback((offset?: EditorCursorPosition) => {
 
         if (active) {
 
@@ -266,20 +268,61 @@ export const CKEditorActivator = (props: IProps) => {
 
     }, [active]);
 
-    const activator = React.useCallback((offset?: EditorCursorPosition) => {
-        handleActivated(offset);
-    }, [handleActivated]);
+
+    const getCursorPosition = React.useCallback(() => {
+
+        if (mutatorRef.current) {
+            return mutatorRef.current.getCursorPosition();
+        }
+
+        throw new Error("No mutator");
+
+    }, []);
+
+    const split = React.useCallback(() => {
+
+        if (mutatorRef.current) {
+            return mutatorRef.current.split();
+        }
+
+        throw new Error("No mutator");
+
+    }, []);
+
+    const setData = React.useCallback((data: string) => {
+
+        if (mutatorRef.current) {
+            mutatorRef.current.setData(data);
+        }
+
+        throw new Error("No mutator");
+
+    }, []);
+
+    const focus = React.useCallback(() => {
+
+        if (mutatorRef.current) {
+            mutatorRef.current.focus();
+        }
+
+        throw new Error("No mutator");
+
+    }, []);
 
     const handleEditor = React.useCallback((editor: ckeditor5.IEditor) => {
 
         editorRef.current = editor;
+        mutatorRef.current = NoteEditorMutators.createForEditor(editorRef.current);
+
         props.onActivated(editor);
 
     }, [props]);
 
     React.useEffect(() => {
-        props.onActivator(activator)
-    }, [activator, props]);
+
+        props.onEditorMutator({getCursorPosition, setCursorPosition, setData, split, focus});
+
+    }, [focus, getCursorPosition, props, setCursorPosition, setData, split]);
 
     if (active) {
 
@@ -292,7 +335,7 @@ export const CKEditorActivator = (props: IProps) => {
     } else {
 
         return (
-            <Inactive onActivated={activator}
+            <Inactive onActivated={setCursorPosition}
                       content={props.content}/>
         );
 

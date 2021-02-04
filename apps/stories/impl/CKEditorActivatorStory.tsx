@@ -10,9 +10,10 @@ export const CKEditorActivatorStory = () => {
         <div style={{flexGrow: 1}}>
             <CKEditor5GlobalCss/>
 
-            <CKEditorActivator onActivator={NULL_FUNCTION}
+            <CKEditorActivator onEditorMutator={NULL_FUNCTION}
                                onActivated={NULL_FUNCTION}
                                content="this is <b>the</b> content"/>
+
         </div>
     )
 }
