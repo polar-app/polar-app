@@ -160,6 +160,9 @@ export class NotesStore {
         return this._selected;
     }
 
+    public clearSelected() {
+        this._selected = {};
+    }
 
     /**
      * Return true if the given note is active.

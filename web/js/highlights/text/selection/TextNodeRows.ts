@@ -205,7 +205,7 @@ export class TextNodeRows {
     /**
      *
      */
-    static splitElement(element: HTMLElement) {
+    public static splitElement(element: HTMLElement) {
 
         let result = 0;
 

@@ -15,7 +15,8 @@ const CKEditor5GlobalCssStyles = withStyles((theme) => {
                 "--ck-font-size-base": "14px",
 
                 /* Helper variables to avoid duplication in the colors. */
-                "--ck-custom-background": 'inherit',
+                // "--ck-custom-background": 'inherit',
+                "--ck-custom-background": theme.palette.background.paper,
                 "--ck-custom-foreground": "hsl(255, 3%, 18%)",
                 "--ck-custom-border": "hsl(300, 1%, 22%)",
                 "--ck-custom-white": "hsl(0, 0%, 100%)",
@@ -116,6 +117,7 @@ const CKEditor5GlobalCssStyles = withStyles((theme) => {
                 boxShadow: "none !important",
                 borderColor: `${theme.palette.background.default} !important`,
                 backgroundColor: `inherit !important`,
+                // backgroundColor: `${theme.palette.background.default}`,
                 color: `${theme.palette.text.primary} !important`,
 
                 // FIXME: this isn't working and it gets converted to [object]

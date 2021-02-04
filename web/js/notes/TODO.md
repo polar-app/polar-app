@@ -8,7 +8,17 @@
 
 # New TODO since MobX adopted:
 
-    - focus on fixing the exapand/collapse control
+    - focus on fixing the exapand/collapse control to the left
+        - it should be enabled on hover, not active
+    
+    - selection: can't use the mouse to select multiple notes... 
+    
+    - selection: we can only expand the selection, not narrow it down.
+
+    - selection. need a clickaway listener so that no other text is selected.
+
+    - selection, when in the middle of a post, should just select the text using the selection API not the entire
+      note.  Otherwise there isn't a way to just select parts of the text.
 
     - if I'm on the ROOt node, and hit enter, the node created becomes the last child, not the first child.
         -it seems if a node is expanded, we don't properly pick the right node to expand. 
