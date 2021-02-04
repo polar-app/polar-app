@@ -8,20 +8,25 @@
 
 # New TODO since MobX adopted:
 
+    - focus on fixing the exapand/collapse control
+
+    - if I'm on the ROOt node, and hit enter, the node created becomes the last child, not the first child.
+        -it seems if a node is expanded, we don't properly pick the right node to expand. 
+    
+    - if the cursor is at the beginning of a node it should create a new node below it
+
+
+    - no new note is selected after we delete a bunch of them.
+    
+    
+
     - write a DEDICATED test for activating the ckeditor control and setting the
       cursor position.  It hink in my tests it was just about setting the offset
-
-    - the oepn action menu should now allow any events into the DOM until the action menu is dismissed
-
-    - the auto-complete widget isnt working now.
-        - when it's open it should capture, and swallow, all keyboard commands until it's escaped.
 
     - I can only join two sibling nodes, not a first child to a parent
     - shift + arrows don't select multiple nodes
     
     - I have to implement undo in the store.  
-    
-    - if the cursor is at the beginning of a node it should create a new node below it
      
     
     - implement support for selections and multi-select
@@ -30,16 +35,7 @@
         - use the store to select an action...
         - we have to catch the action menu at the window level...  
 
-    - once the root is mounted, all *new* nodes should become editors by default
-        - it would be idea if we could hide all the details of this stuff and put it 
-          in one place
-          
-    - editor activation isn't working because the editor isn't mounted and it's just 
-      in preview mode.  
-
     - strategy for drag and drop...
-    
-    - tables don't actually work well at all!  remove this functionality for now.
 
 # New MobX store notes
 
