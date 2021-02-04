@@ -27,6 +27,9 @@ export function useNoteActivation(id: NoteIDStr) {
             return;
         }
 
+        // FIXME: this is in the new CKeditorActivator system and is better.  We
+        // should try to use that.  
+
         const doc = editor.model.document;
 
         // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_document-Document.html#function-getRoot

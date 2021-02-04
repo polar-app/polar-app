@@ -20,6 +20,8 @@
     - selection, when in the middle of a post, should just select the text using the selection API not the entire
       note.  Otherwise there isn't a way to just select parts of the text.
 
+    - there is no way to CREATE a new named node and link to it.
+
     - if I'm on the ROOt node, and hit enter, the node created becomes the last child, not the first child.
         -it seems if a node is expanded, we don't properly pick the right node to expand. 
     

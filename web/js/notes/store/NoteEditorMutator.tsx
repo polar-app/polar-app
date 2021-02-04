@@ -35,61 +35,63 @@ export interface INoteEditorMutator {
 
 }
 
-export class NoteEditorMutator implements INoteEditorMutator {
 
-    constructor(private readonly editor: IEditor) {
+export namespace NoteEditorMutators {
+
+    export function createForEditor(editor: IEditor): INoteEditorMutator {
+
+        function getCursorPosition(): CursorPosition {
+            return computeEditorCursorPosition(editor);
+        }
+
+        function setCursorPosition(offset: number | 'before' | 'end') {
+
+            const doc = editor.model.document;
+
+            // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_document-Document.html#function-getRoot
+            const root = doc.getRoot();
+
+            editor.model.change((writer: IWriter) => {
+
+                if (typeof offset === 'number') {
+
+                    const doc = editor.model.document;
+
+                    const root = doc.getRoot();
+
+                    editor.model.change((writer) => {
+
+                        const position = writer.createPositionFromPath(root, [0, offset])
+
+                        const range = writer.createRange(position, position);
+
+                        writer.setSelection(range);
+
+                    });
+
+                } else {
+                    writer.setSelection(root, offset)
+                }
+
+            });
+
+        }
+
+        function setData(data: string): void {
+            editor.setData(data);
+        }
+
+        function split(): IEditorSplit {
+            return doEditorSplit(editor);
+        }
+
+        function focus(): void {
+            editor.editing.view.focus();
+        }
+
+        return {getCursorPosition, setCursorPosition, setData, split, focus};
 
     }
-
-    public getCursorPosition(): CursorPosition {
-        return computeEditorCursorPosition(this.editor);
-    }
-
-    public setCursorPosition(offset: number | 'before' | 'end') {
-
-        const doc = this.editor.model.document;
-
-        // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_document-Document.html#function-getRoot
-        const root = doc.getRoot();
-
-        this.editor.model.change((writer: IWriter) => {
-
-            if (typeof offset === 'number') {
-
-                const doc = this.editor.model.document;
-
-                const root = doc.getRoot();
-
-                this.editor.model.change((writer) => {
-
-                    const position = writer.createPositionFromPath(root, [0, offset])
-
-                    const range = writer.createRange(position, position);
-
-                    writer.setSelection(range);
-
-                });
-
-            } else {
-                writer.setSelection(root, offset)
-            }
-
-        });
-
-    }
-
-    public setData(data: string): void {
-        this.editor.setData(data);
-    }
-
-    public split(): IEditorSplit {
-        return doEditorSplit(this.editor);
-    }
-
-    public focus(): void {
-        this.editor.editing.view.focus();
-    }
-
 }
 
 export class MockNoteEditorMutator implements INoteEditorMutator {

@@ -1,21 +1,20 @@
 import React from "react";
 import {CKEditor5BalloonEditor} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
 import {NoteNavigation} from "./NoteNavigation";
-import {deepMemo} from "../react/ReactUtils";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 import {EditorStoreProvider, useEditorStore, useSetEditorStore} from "./EditorStoreProvider";
 import {NoteActionMenuForCommands} from "./NoteActionMenuForCommands";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import { NoteActionMenuForLinking } from "./NoteActionMenuForLinking";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
-import {useLifecycleTracer, useStateRef} from "../hooks/ReactHooks";
+import {useStateRef} from "../hooks/ReactHooks";
 import {MarkdownContentEscaper} from "./MarkdownContentEscaper";
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 import IEventData = ckeditor5.IEventData;
 import {NoteIDStr, useNotesStore} from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
 import IEditor = ckeditor5.IEditor;
-import {NoteEditorMutator} from "./store/NoteEditorMutator";
+import {NoteEditorMutators} from "./store/NoteEditorMutator";
 
 interface ILinkNavigationEvent {
     readonly abortEvent: () => void;
@@ -281,7 +280,7 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
     const handleEditor = React.useCallback((editor: IEditor) => {
         setEditor(editor);
-        store.setNoteEditorMutator(id, new NoteEditorMutator(editor));
+        store.setNoteEditorMutator(id, NoteEditorMutators.createForEditor(editor));
     }, [id, setEditor, store]);
 
     if (! note) {
