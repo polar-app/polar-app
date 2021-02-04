@@ -50,6 +50,7 @@ import {WelcomeStory} from "./impl/WelcomeStory";
 import {MUICommandMenuStory} from "./impl/MUICommandMenuStory";
 import { NestedContextStory } from './impl/NestedContextStory';
 import {CreateAccountStory} from "./impl/CreateAccountStory";
+import { CKEditorActivatorStory } from './impl/CKEditorActivatorStory';
 
 interface IStory {
     readonly name: string;
@@ -245,6 +246,10 @@ const stories = createStoryIndex([
     {
         name: 'Create Account',
         component: <CreateAccountStory/>
+    },
+    {
+        name: 'CKEditorActivator',
+        component: <CKEditorActivatorStory/>
     }
 
 
