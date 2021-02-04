@@ -99,7 +99,7 @@ export const CKEditor5BalloonEditor = React.memo(function CKEditor5BalloonEditor
 
                 <CKEditor
                     editor={ BalloonEditor }
-                    config={CKEditorConfigs.CONFIG1}
+                    config={CKEditorConfigs.CONFIG0}
                     data={content}
                     onReady={ (editor: ckeditor5.IEditor) => {
                         // You can store the "editor" and use when it is needed.
