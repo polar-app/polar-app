@@ -7,6 +7,7 @@ import {useLifecycleTracer} from "../hooks/ReactHooks";
 import { NoteIDStr, NotesStoreProvider } from "./store/NotesStore";
 import { useNotesStore } from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
+import {NoteSelectionHandler} from "./NoteSelectionHandler";
 
 interface IProps {
     readonly target: NoteIDStr;
@@ -47,7 +48,7 @@ export const NoteRoot = observer((props: IProps) => {
     const id = note?.id;
 
     return (
-        <>
+        <NoteSelectionHandler>
             <NoteStyle>
                 <MUIBrowserLinkStyle style={{flexGrow: 1}}>
 
@@ -57,7 +58,7 @@ export const NoteRoot = observer((props: IProps) => {
 
                 </MUIBrowserLinkStyle>
             </NoteStyle>
-        </>
+        </NoteSelectionHandler>
     );
 
 });

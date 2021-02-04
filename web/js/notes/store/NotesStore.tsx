@@ -156,6 +156,11 @@ export class NotesStore {
         return this._active;
     }
 
+    @computed get selected() {
+        return this._selected;
+    }
+
+
     /**
      * Return true if the given note is active.
      */
