@@ -3,7 +3,6 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {CKEditor5BalloonEditor} from './ckeditor5/CKEditor5BalloonEditor';
 import Button from '@material-ui/core/Button';
 import {CKEditor5GlobalCss} from "./ckeditor5/CKEditor5GlobalCss";
-import {doEditorSplit} from "../../../web/js/notes/editor/UseEditorSplitter";
 
 export const CKEditor5Story = () => {
 
@@ -15,24 +14,15 @@ export const CKEditor5Story = () => {
 
     const editorRef = React.useRef<ckeditor5.IEditor>()
 
-    const onClick = React.useCallback(() => {
-
-        const editor = editorRef.current!;
-
+    const positionCursorWithinEditor = React.useCallback((editor: ckeditor5.IEditor, offset: number) => {
 
         const doc = editor.model.document;
 
-        console.log("FIXME: path: " + (doc.selection.getFirstPosition() as any).path);
-
-        editor.setData("hello world <b> this is a test</b>");
-
-        //
-        // // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_document-Document.html#function-getRoot
-        const root = doc.getRoot();
-
         editor.model.change((writer) => {
 
-            const position = writer.createPositionFromPath(root, [0, 15])
+            const root = doc.getRoot();
+
+            const position = writer.createPositionFromPath(root, [0, offset]);
 
             const range = writer.createRange(position, position);
 
@@ -40,6 +30,14 @@ export const CKEditor5Story = () => {
             writer.setSelection(range);
 
         });
+
+    }, []);
+
+    const onClick = React.useCallback(() => {
+
+        const editor = editorRef.current!;
+
+        positionCursorWithinEditor(editor, 15);
 
         editor.editing.view.focus();
 
@@ -74,7 +72,7 @@ export const CKEditor5Story = () => {
         // console.log("suffix: ", editorSplit.suffix)
         //
 
-    }, [editorRef]);
+    }, [positionCursorWithinEditor]);
 
     const handleEditor = React.useCallback((editor: ckeditor5.IEditor) => {
         editorRef.current = editor;
