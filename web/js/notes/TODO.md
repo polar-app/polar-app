@@ -8,6 +8,8 @@
 
 # New TODO since MobX adopted:
 
+    - selecting some text, then deleting it, deletes the whole node.
+
     - the activator system doesn't work for empty text.. .for some reason. 
 
     - focus on fixing the exapand/collapse control to the left
