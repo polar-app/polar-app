@@ -130,7 +130,10 @@ const CKEditor5GlobalCssStyles = withStyles((theme) => {
                 // us to be able to control that directly.
                 margin: "0px !important",
                 padding: "0px !important",
-                border: "0px !important"
+                border: "0px !important",
+
+                // needed because borderRadius on the content makes it look weird when we select it.
+                borderRadius: '0px !important'
 
             },
 
