@@ -13,8 +13,8 @@ import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 import IEventData = ckeditor5.IEventData;
 import {NoteIDStr, useNotesStore} from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
-import IEditor = ckeditor5.IEditor;
-import {NoteEditorMutators} from "./store/NoteEditorMutator";
+import {INoteEditorMutator} from "./store/NoteEditorMutator";
+import {CKEditorActivator} from "../../../apps/stories/impl/ckeditor5/CKEditorActivator";
 
 interface ILinkNavigationEvent {
     readonly abortEvent: () => void;
@@ -182,86 +182,6 @@ const NoteEditorInactive = observer(function NoteEditorInactive(props: INoteEdit
 
 });
 
-interface INoteEditorActivatorProps {
-    readonly id: NoteIDStr;
-    readonly content: string;
-    readonly onEditor: (editor: ckeditor5.IEditor) => void;
-    readonly onChange: (content: string) => void;
-    readonly immutable: boolean | undefined;
-}
-
-/**
- * Handles loading the HTML the first time, when active (either via onClick or
- * when using navigation then we turn on ckeditor and keep it on so we don't
- * have to worry about the position / cursor being maintained.
- *
- * Once it's on keep it on as there's a performance benefit too.
- */
-const NoteEditorActivator = observer(function NoteEditorActivator(props: INoteEditorActivatorProps) {
-
-    const DEFAULT_ACTIVATED = true;
-
-    // useLifecycleTracer('NoteEditorActivator', {id: props.id});
-
-    const {onEditor, onChange, id, immutable} = props;
-
-    const store = useNotesStore();
-
-    const noteActivated = store.getNoteActivated(props.id);
-    const [, setActivated, activatedRef] = useStateRef(DEFAULT_ACTIVATED);
-
-    const escaper = MarkdownContentEscaper;
-
-    // TODO: ckeditor STILL has a load delay of about 500ms so we might have to activate
-    // AFTER mount so the page is faster and more interactive.
-
-    const content = React.useMemo(() => escaper.escape(props.content), [escaper, props.content]);
-
-    const handleActivated = React.useCallback(() => {
-
-        if (immutable) {
-            // console.log("Not activating editor (immutable)");
-            return;
-        }
-
-        store.setActive(id)
-        setActivated(true);
-
-    }, [id, immutable, setActivated, store]);
-
-    if (noteActivated?.note.id === props.id) {
-        // there are two ways to activate this is that the user navigates to it
-        // via key bindings and then the active item changes in the store, in
-        // which case we have to turn this on and make it active OR the user
-        // clicks on it which we have a handler for.
-        activatedRef.current = true;
-    }
-
-    if (activatedRef.current && ! immutable) {
-
-        return (
-            <CKEditor5BalloonEditor key={props.id}
-                                    content={content}
-                                    defaultFocus={props.id === noteActivated?.note.id}
-                                    preEscaped={true}
-                                    escaper={escaper}
-                                    onChange={onChange}
-                                    onEditor={onEditor}/>
-        );
-    } else {
-
-        return (
-            <NoteEditorInactive id={id}
-                                content={content}
-                                onClick={handleActivated}/>
-        );
-
-    }
-
-
-});
-
-
 const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
     // useLifecycleTracer('NoteEditorInner', {id: props.id});
@@ -269,6 +189,7 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
     const {id} = props;
     const store = useNotesStore()
     const setEditor = useSetEditorStore();
+    const noteActivated = store.getNoteActivated(props.id);
 
     const note = store.getNote(id);
 
@@ -278,10 +199,17 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
         }
     }, [note]);
 
-    const handleEditor = React.useCallback((editor: IEditor) => {
+    const handleEditorMutator = React.useCallback((editorMutator: INoteEditorMutator) => {
+        store.setNoteEditorMutator(id, editorMutator);
+    }, [id, store]);
+
+    const handleEditor = React.useCallback((editor: ckeditor5.IEditor) => {
         setEditor(editor);
-        store.setNoteEditorMutator(id, NoteEditorMutators.createForEditor(editor));
-    }, [id, setEditor, store]);
+    }, [setEditor]);
+
+    const escaper = MarkdownContentEscaper;
+
+    const content = React.useMemo(() => escaper.escape(note?.content || ''), [escaper, note]);
 
     if (! note) {
         // this can happen when a note is deleted but the component hasn't yet
@@ -289,14 +217,14 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
         return null;
     }
 
-    const {content} = note;
-
     return (
-        <NoteEditorActivator id={id}
-                             content={content || ''}
-                             onChange={handleChange}
-                             immutable={props.immutable}
-                             onEditor={handleEditor}/>
+        <CKEditorActivator content={content}
+                           onChange={handleChange}
+                           onEditor={handleEditor}
+                           defaultFocus={props.id === noteActivated?.note.id}
+                           preEscaped={true}
+                           escaper={escaper}
+                           onEditorMutator={handleEditorMutator}/>
     );
 
 });

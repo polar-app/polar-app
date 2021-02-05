@@ -1,16 +1,9 @@
 import * as React from "react";
-import {CKEditor5BalloonEditor} from "./CKEditor5BalloonEditor";
+import {CKEditor5BalloonEditor, ContentEscaper, DataStr} from "./CKEditor5BalloonEditor";
 import {HTMLStr} from "polar-shared/src/util/Strings";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import { Numbers } from "polar-shared/src/util/Numbers";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {INoteEditorMutator, NoteEditorMutators} from "../../../../web/js/notes/store/NoteEditorMutator";
-
-interface ActiveProps {
-    readonly content: HTMLStr;
-    readonly offset: EditorCursorPosition;
-    readonly onEditor: (editor: ckeditor5.IEditor) => void;
-}
 
 export type EditorCursorPosition = number | 'before' | 'end';
 
@@ -56,6 +49,19 @@ function editorActivator(editor: ckeditor5.IEditor, offset?: EditorCursorPositio
 
 }
 
+interface ActiveProps {
+    readonly content: HTMLStr;
+    readonly offset: EditorCursorPosition;
+    readonly onEditor: (editor: ckeditor5.IEditor) => void;
+
+    readonly onChange: (content: DataStr) => void;
+    readonly escaper?: ContentEscaper;
+    readonly noToolbar?: boolean;
+    readonly preEscaped?: boolean
+    readonly defaultFocus?: boolean;
+
+}
+
 const Active = (props: ActiveProps) => {
 
     const handleEditor = React.useCallback((editor: ckeditor5.IEditor) => {
@@ -68,8 +74,12 @@ const Active = (props: ActiveProps) => {
     return (
 
         <CKEditor5BalloonEditor content={props.content}
-                                onChange={NULL_FUNCTION}
-                                onEditor={handleEditor}/>
+                                onEditor={handleEditor}
+                                onChange={props.onChange}
+                                escaper={props.escaper}
+                                noToolbar={props.noToolbar}
+                                preEscaped={props.preEscaped}
+                                defaultFocus={props.defaultFocus}/>
 
     );
 
@@ -231,15 +241,22 @@ interface IProps {
      *
      */
     readonly onEditorMutator: (editorMutator: INoteEditorMutator) => void;
-    readonly onActivated: (editor: ckeditor5.IEditor) => void;
+    readonly onEditor: (editor: ckeditor5.IEditor) => void;
 
-    readonly content: HTMLStr;
+    readonly content: DataStr;
+
+    readonly onChange: (content: DataStr) => void;
+    readonly escaper?: ContentEscaper;
+    readonly noToolbar?: boolean;
+    readonly preEscaped?: boolean
+    readonly defaultFocus?: boolean;
+
 
 }
 
 export const CKEditorActivator = (props: IProps) => {
 
-    const [active, setActive] = React.useState(false);
+    const [active, setActive] = React.useState<boolean>(props.defaultFocus || false);
     const offsetRef = React.useRef<EditorCursorPosition>(0);
     const editorRef = React.useRef<ckeditor5.IEditor | undefined>(undefined);
     const mutatorRef = React.useRef<INoteEditorMutator | undefined>(undefined);
@@ -314,7 +331,7 @@ export const CKEditorActivator = (props: IProps) => {
         editorRef.current = editor;
         mutatorRef.current = NoteEditorMutators.createForEditor(editorRef.current);
 
-        props.onActivated(editor);
+        props.onEditor(editor);
 
     }, [props]);
 
@@ -329,7 +346,12 @@ export const CKEditorActivator = (props: IProps) => {
         return (
             <Active offset={offsetRef.current}
                     content={props.content}
-                    onEditor={handleEditor}/>
+                    onEditor={handleEditor}
+                    onChange={props.onChange}
+                    escaper={props.escaper}
+                    noToolbar={props.noToolbar}
+                    preEscaped={props.preEscaped}
+                    defaultFocus={props.defaultFocus}/>
         );
 
     } else {

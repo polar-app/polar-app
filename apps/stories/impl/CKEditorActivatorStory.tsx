@@ -11,7 +11,8 @@ export const CKEditorActivatorStory = () => {
             <CKEditor5GlobalCss/>
 
             <CKEditorActivator onEditorMutator={NULL_FUNCTION}
-                               onActivated={NULL_FUNCTION}
+                               onEditor={NULL_FUNCTION}
+                               onChange={NULL_FUNCTION}
                                content="this is <b>the</b> content"/>
 
         </div>

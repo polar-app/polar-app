@@ -516,7 +516,7 @@ export class NotesStore {
 
         // *** now update the editor so it's setup correctly
 
-        const editor = this.getNoteEditorMutator(target);
+        const editorMutator = this.getNoteEditorMutator(target);
 
         function computeTextOffset() {
             const div = document.createElement('div');
@@ -525,10 +525,15 @@ export class NotesStore {
             return div.innerText.length;
         }
 
-        editor.setData(MarkdownContentEscaper.escape(targetNote.content));
-        editor.setCursorPosition(computeTextOffset());
+        if (editorMutator) {
 
-        editor.focus();
+            editorMutator.setData(MarkdownContentEscaper.escape(targetNote.content));
+            editorMutator.setCursorPosition(computeTextOffset());
+            editorMutator.focus();
+
+        } else {
+            console.warn("No editorMutator");
+        }
 
         return undefined;
 
@@ -821,8 +826,8 @@ export class NotesStore {
 
     }
 
-    @observable public getNoteEditorMutator(id: NoteIDStr): INoteEditorMutator {
-        return this._noteEditors[id];
+    @observable public getNoteEditorMutator(id: NoteIDStr): INoteEditorMutator | undefined {
+        return this._noteEditors[id] || undefined;
     }
 
     @action public setNoteEditorMutator(id: NoteIDStr, editor: INoteEditorMutator) {

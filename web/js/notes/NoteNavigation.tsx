@@ -9,7 +9,7 @@ import { useNoteNavigationEnterHandler } from './NoteNavigationEnter';
 import {useLifecycleTracer} from "../hooks/ReactHooks";
 import {NavOpts, NoteIDStr, useNotesStore} from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
-import {useNoteActivation} from "./NoteActivation";
+import { NoteActivation } from './NoteActivation';
 
 interface IProps {
     readonly parent: NoteIDStr | undefined;
@@ -23,8 +23,6 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
 
     const store = useNotesStore();
     const editor = useEditorStore();
-
-    useNoteActivation(props.id);
 
     const [ref, setRef] = React.useState<HTMLDivElement | null>(null);
 
@@ -203,11 +201,14 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
     }, [editor, handleEditorEnter, handleEditorKeyDown, handleEditorSelection]);
 
     return (
-        <ClickAwayListener onClickAway={handleClickAway}>
-            <div ref={setRef} onClick={handleClick}>
-                {ref !== null && props.children}
-            </div>
-        </ClickAwayListener>
+        <>
+            <NoteActivation id={props.id}/>
+            <ClickAwayListener onClickAway={handleClickAway}>
+                <div ref={setRef} onClick={handleClick}>
+                    {ref !== null && props.children}
+                </div>
+            </ClickAwayListener>
+        </>
     );
 
 });
