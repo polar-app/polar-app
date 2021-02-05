@@ -9,8 +9,8 @@
 # New TODO since MobX adopted:
 
     - selecting some text, then deleting it, deletes the whole node.
-
-    - the activator system doesn't work for empty text.. .for some reason. 
+        - I think it's the Delete handler and it deletes the text first, then we
+        realize that there isn't text for the note, at which point we merge them
 
     - focus on fixing the exapand/collapse control to the left
         - it should be enabled on hover, not active
