@@ -8,7 +8,6 @@
 
 # New TODO since MobX adopted:
 
-    - the title of the root doesn't change between navigations
 
     
  
