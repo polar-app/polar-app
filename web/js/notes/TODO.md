@@ -9,10 +9,9 @@
 # New TODO since MobX adopted:
 
 
+ 
         
     - selection: we can only expand the selection, not narrow it down.
-
-    - delete event now works so try to debug this agian... 
 
 
     - there is no way to CREATE a new named node and link to it.

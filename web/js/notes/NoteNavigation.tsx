@@ -196,9 +196,10 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
 
     const handleDelete = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
 
-        console.log( "FIXME: DELETE")
+        // FIXME: this doesn't work to detect that the editor slection is active...
+        console.log( "FIXME: DELETE: " + hasEditorSelection())
 
-    }, []);
+    }, [hasEditorSelection]);
 
     React.useEffect(() => {
 
