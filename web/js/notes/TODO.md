@@ -8,6 +8,8 @@
 
 # New TODO since MobX adopted:
 
+    - the activator system doesn't work for empty text.. .for some reason. 
+
     - focus on fixing the exapand/collapse control to the left
         - it should be enabled on hover, not active
     
@@ -22,7 +24,7 @@
 
     - there is no way to CREATE a new named node and link to it.
 
-    - if I'm on the ROOt node, and hit enter, the node created becomes the last child, not the first child.
+    - if I'm on the ROOT node, and hit enter, the node created becomes the last child, not the first child.
         -it seems if a node is expanded, we don't properly pick the right node to expand. 
     
     - if the cursor is at the beginning of a node it should create a new node below it
