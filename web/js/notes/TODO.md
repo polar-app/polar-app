@@ -8,31 +8,45 @@
 
 # New TODO since MobX adopted:
 
-    - selecting some text, then deleting it, deletes the whole node.
-        - I think it's the Delete handler and it deletes the text first, then we
-        realize that there isn't text for the note, at which point we merge them
+          
+    - enter at the beginning of the node, should create a new node below it ...
+      it's just a split basically
 
     - focus on fixing the exapand/collapse control to the left
         - it should be enabled on hover, not active
-    
-    - selection: can't use the mouse to select multiple notes... 
-    
+
+        
     - selection: we can only expand the selection, not narrow it down.
 
     - selection. need a clickaway listener so that no other text is selected.
 
-    - selection, when in the middle of a post, should just select the text using the selection API not the entire
-      note.  Otherwise there isn't a way to just select parts of the text.
 
     - there is no way to CREATE a new named node and link to it.
+
+    - the title of the root doesn't change between navigations
+    - if the cursor is at the beginning of a node it should create a new node below it
+
+    - no new note is selected after we delete a bunch of them.
+
+
+    - selecting some text, then deleting it, deletes the whole node.
+        - I think it's the Delete handler and it deletes the text first, then we
+          realize that there isn't text for the note, at which point we merge them
+          
+          - this was an existing bug...
+          
+          - the ckeditor selection DOES respond to all eventss and we CAN detect if it's the selection is active
+            BUT the it deletes the selection in the selection.changed event before we see it on the keyboard 
+            handler event 
+
+    - selection, when in the middle of a post, should just select the text using the selection API not the entire
+      note.  Otherwise there isn't a way to just select parts of the text.
 
     - if I'm on the ROOT node, and hit enter, the node created becomes the last child, not the first child.
         -it seems if a node is expanded, we don't properly pick the right node to expand. 
     
-    - if the cursor is at the beginning of a node it should create a new node below it
 
 
-    - no new note is selected after we delete a bunch of them.
     
     
 

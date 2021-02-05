@@ -15,6 +15,7 @@ import {NoteIDStr, useNotesStore} from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
 import {INoteEditorMutator} from "./store/NoteEditorMutator";
 import {CKEditorActivator} from "../../../apps/stories/impl/ckeditor5/CKEditorActivator";
+import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 
 interface ILinkNavigationEvent {
     readonly abortEvent: () => void;
@@ -127,61 +128,6 @@ function useLinkNavigation() {
 
 }
 
-// interface INoteEditorActiveProps {
-//     readonly content: string;
-//     readonly escaper?: ContentEscaper;
-//     readonly onEditor: (editor: ckeditor5.IEditor) => void;
-//     readonly onChange: (content: string) => void;
-//     readonly preEscaped?: boolean;
-// }
-//
-// const NoteEditorActive = React.memo(function NoteEditorActive(props: INoteEditorActiveProps) {
-//
-//     const {onEditor, onChange, escaper, preEscaped, content} = props;
-//
-//     return (
-//         <CKEditor5BalloonEditor content={content}
-//                                 preEscaped={true}
-//                                 escaper={escaper}
-//                                 onChange={onChange}
-//                                 onEditor={onEditor}/>
-//     );
-// });
-
-interface INoteEditorInactiveProps {
-    readonly id: NoteIDStr;
-    readonly content: string;
-    readonly onClick: (event: React.MouseEvent) => void;
-}
-
-
-const NoteEditorInactive = observer(function NoteEditorInactive(props: INoteEditorInactiveProps) {
-
-    // useLifecycleTracer('NoteEditorInactive', {id: props.id});
-
-    const {content, onClick} = props;
-
-    const linkNavigationClickHandler = useLinkNavigationClickHandler()
-
-    const placeholder = content.trim() === '' ? '&nbsp;' : content;
-
-    const handleClick = React.useCallback((event: React.MouseEvent) => {
-        linkNavigationClickHandler(event);
-        onClick(event);
-    }, [linkNavigationClickHandler, onClick]);
-
-    return (
-        // this uses the standard ckeditor spacing and border so things
-        // don't jump around after we activate
-        <div className="NoteEditorInactive"
-             onClick={handleClick}
-             style={{
-             }}
-             dangerouslySetInnerHTML={{__html: placeholder}}/>
-    );
-
-});
-
 const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
     // useLifecycleTracer('NoteEditorInner', {id: props.id});
@@ -210,6 +156,14 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
     const escaper = MarkdownContentEscaper;
 
     const content = React.useMemo(() => escaper.escape(note?.content || ''), [escaper, note]);
+
+    React.useEffect(() => {
+
+        return () => {
+            store.clearNoteEditorMutator(id);
+        }
+
+    }, [id, store]);
 
     if (! note) {
         // this can happen when a note is deleted but the component hasn't yet
