@@ -12,7 +12,6 @@
         
     - selection: we can only expand the selection, not narrow it down.
 
-    - selection. need a clickaway listener so that no other text is selected.
 
 
     - there is no way to CREATE a new named node and link to it.
