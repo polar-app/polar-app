@@ -8,8 +8,6 @@
 
 # New TODO since MobX adopted:
 
-    
-    
     - clicking on a new node link will chagne the URL to a # url first and then only jump after that.
     
     - there's no way to link to a new node via text like [[ or ]]

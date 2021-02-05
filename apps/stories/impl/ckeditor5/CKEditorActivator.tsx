@@ -193,6 +193,8 @@ const Inactive = (props: InactiveProps) => {
 
     const handleClick = React.useCallback((event: React.MouseEvent) => {
 
+        // TODO: for some reason we can't click on an empty node
+
         if (elementRef.current === null) {
             console.warn("No element yet");
             return;
@@ -224,10 +226,20 @@ const Inactive = (props: InactiveProps) => {
 
     }, [props]);
 
+    const content = React.useMemo((): string => {
+
+        if (props.content === '') {
+            return '<p></p>';
+        }
+
+        return props.content;
+
+    }, [props.content]);
+
     return (
         <div ref={elementRef}
              onClick={handleClick}
-             dangerouslySetInnerHTML={{__html: props.content}}>
+             dangerouslySetInnerHTML={{__html: content}}>
 
         </div>
     );
