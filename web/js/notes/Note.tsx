@@ -90,7 +90,7 @@ export const NoteInner = observer((props: IProps) => {
 
                 </div>
 
-                <NoteEditor parent={props.parent} id={props.id} />
+                <NoteEditor key={props.id} parent={props.parent} id={props.id} />
 
             </div>
 
