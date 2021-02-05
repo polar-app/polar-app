@@ -6,30 +6,98 @@
 # Major Navigation Features and input.
     - up down should select the next node
 
+main/suggested roam links... 
+
+https://www.youtube.com/watch?v=v9s3pusI1JQ
+https://www.youtube.com/watch?v=lHkMq3aqDtw
+https://www.youtube.com/watch?v=3SwQ4usbCX4
+https://www.youtube.com/watch?v=nROryUttSr0
+https://www.youtube.com/watch?v=BnwWdTnXlxU
+https://www.youtube.com/watch?v=asQ4RSjjCu4
+https://www.youtube.com/watch?v=7b2AVCZOMnw
+https://www.youtube.com/watch?v=ByiFhtlI66A
+
 # New TODO since MobX adopted:
 
-    - clicking on a new node link will chagne the URL to a # url first and then only jump after that.
+    - BLOCKER: make sure sharing system is designed properly and make sure permissions will work.
     
-    - there's no way to link to a new node via text like [[ or ]]
+        - how are we going to do permissions on the notes since there isn't a
+          'KEY' we can really use unless we build a synethetic one and make sure
+          all note creation includes them.
+    
+        - We would have to copy all the keys from the parent when working with the children
+        
+        - how does sharing work in Roam?? what happens if there are named node conflicts...?
+        
+        - BLOCKER: uid can NOT be shared. This needs to stay internal. That's a major obstacle
+            Make the name node their profile name + node name so if my profile is burtonator the 
+            node that we're linking to would be burtonator/Berlin but it's namespaced when I 
+            import other notes via snapshots. 
+      
+    - BLOCKER: what happens in Roam when 
+          
+
+    - clicking on a new node link will chagne the URL to a # url first and then only jump after that.
+        - this is due to the fact that ckeditor is not yet loaded.
+        - use the SAME event handler for both active and inactive in CKEditorActivator
+    
+    - there's no way to link to a new node via text like [[ or ]] by creating a new one...
     
     - shift+click on another node should select the range between the nodes
+    
     - ctrl+click should select individual nodes.
 
     - using the action menu to link to existing nodes doesn't really work just yet
 
     - the action menu for regular commands like date/time doesn't really work yet.
    
-   
     - clicking on an inactivated note text, then selecting a range, doesn't
       select the range in the activated component
   
-    - refs in the JSOJN needs to be update when saving a link to a new node
+    - refs connecting to other named nodes in the JSON needs to be update when
+      saving a link to a new node
     
     - indenting an empty node (where the child of a parent is indented) will result in an empty node that
       can't be clicked or activated and that has the wrong height.
-    
+  
     - image paste size needs to be correct
-   
+
+    - BREAKER: If we change the name of a named node, all the linking notes need
+      to be updated too...
+    
+        - This is what Roam does but would be nice if it was sort of automated...
+
+        - I think we could save the link as a wiki node with the original text,
+          of the note but then also use an ID for the note too which is generated
+          from the original name?
+          
+        - DESIGN/BREAKER : this way if we combine notes ... with the users
+          profile, and the notes are local, then I could link to them with
+          burtonator/Berlin or just type Berlin ... but the NAME is sort of
+          irrelevant.  We're actually linking to the ID not the name... teh name
+          is just a shortcut.
+ 
+        - DESIGN: do just-in-time setup of a user profile with a handle... the user can add an icon later.        
+            - if we STILL used a uid then we'd have to build a new mechanism on private docs... 
+  
+            - BREAKING/DESIGN: we could generate a NEW id called a 'sid' that is
+              a sharing ID that is a custom claim which is a 'sharing ID' that we
+              could use.
+
+            - FIXME: I think we can deal with this now and just use uid because you'd have to 
+              now the fingerprint of a document to read it anyway and that's a hashcode too.
+ 
+    - there's no way to link to other notes and to embed them into the current tree.
+        
+        - FIXME(BLOCKER) what would a block embed look like this way because the parent
+          would be wrong wouldn't it?  We could have the parent on the graft point
+          BUT the children wouldn't have the right parents.  
+            
+            - and why do we need parent again? 
+
+            - oh.. this should be totally fine. the intermediate node would
+              re-parent it and remaining parents are totally fine.
+
     - selection: we can only expand the selection, not narrow it down.
     
         - give it an selectionAnchor where the selection first started and the
