@@ -160,7 +160,7 @@ export class NotesStore {
         return this._selected;
     }
 
-    public clearSelected() {
+    @action public clearSelected() {
         this._selected = {};
     }
 
