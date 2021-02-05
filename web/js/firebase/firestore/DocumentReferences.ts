@@ -1,4 +1,4 @@
-\import {IDocumentReference} from "polar-snapshot-cache/src/store/IDocumentReference";
+import {IDocumentReference} from "polar-snapshot-cache/src/store/IDocumentReference";
 
 export class DocumentReferences {
 

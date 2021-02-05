@@ -61,6 +61,8 @@ https://www.youtube.com/watch?v=ByiFhtlI66A
       can't be clicked or activated and that has the wrong height.
   
     - image paste size needs to be correct
+    
+    - links are not A href 'links' but click handlers so we can't open in new tabs.
 
     - BREAKER: If we change the name of a named node, all the linking notes need
       to be updated too...
@@ -86,6 +88,34 @@ https://www.youtube.com/watch?v=ByiFhtlI66A
 
             - FIXME: I think we can deal with this now and just use uid because you'd have to 
               now the fingerprint of a document to read it anyway and that's a hashcode too.
+              
+              
+              
+            - when a node is created, how do we update the name without having the full datastore 
+              in memory.
+ 
+ 
+            - the way notes are created is that they are links to notes via ID... NOT via name..
+              There are only TWO ways we can create a note:
+              
+                - by typing it in with brackets around it like [[Foo]] ... when that happens we create the note
+                  with the ID and name, write it to the store, then we update the structure in memory
+                  so that the 'ref' no the note has a name but an ID too... 
+                  
+                    - clicking on it will load it up by name though.
+                    
+                    - IF the node name changes, we just update the UI, not the data ... this way we don't have
+                      to do bulk renames of nodes.
+                      
+                        - for now we won't start implementing the renaming just yet.
+                        
+                - by clicking on a URL and then loading it directly , at which point we say it's not present
+                  and would you like to create it in your graph.
+                  
+            - the added benefit here is that you can link ot another note, by ID, and the name is updated in the UI
+              to ALSO reflect the owner , if the owner is not you.  
+            
+            
  
     - there's no way to link to other notes and to embed them into the current tree.
         
