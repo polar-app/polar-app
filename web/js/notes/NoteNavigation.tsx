@@ -10,6 +10,7 @@ import {useLifecycleTracer} from "../hooks/ReactHooks";
 import {NavOpts, NoteIDStr, useNotesStore} from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
 import { NoteActivation } from './NoteActivation';
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 interface IProps {
     readonly parent: NoteIDStr | undefined;
@@ -61,11 +62,28 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
 
         }
 
-        const range = toArray(editor.model.document.selection.getRanges())[0]
+        const range = Arrays.first(toArray(editor.model.document.selection.getRanges()));
 
-        hasActiveSelectionRef.current = ! range.isCollapsed;
+        if (range) {
+            hasActiveSelectionRef.current = ! range.isCollapsed;
+        }
 
     }, [editor]);
+
+
+    const hasEditorSelection = React.useCallback((): boolean => {
+
+        const selection = window.getSelection();
+
+        if (selection) {
+            const range = selection.getRangeAt(0);
+            return range.cloneContents().textContent !== '';
+        } else {
+            return false;
+        }
+
+    }, []);
+
 
     const handleEditorKeyDown = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
 
@@ -131,14 +149,19 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
 
             case 'Backspace':
 
-                // TODO: backspace handling when there's an active selection
-                // doesn't work. the issue is that by the time we get the event
-                // click, the selection is removed.  One solution to fix this
-                // would be to trace EVERY key so that we know that there WAS an
-                // active selection as the we received no other key between
-                // clicking and the selection.
+                // FIXME: nothing I do seems to allow us to properly see tha the
+                // selection is active including listening to events from
+                // ckeditor.  this might be an issue with the virtual DOM
+                //
+                // things to test:
+                //
+                // - does Backspace handling (and selection) work via regular DOM events with ckeditor?
+                //    - NO... it seems that the selection is removed by the time we get the event
+                //
 
-                if (hasActiveSelectionRef.current) {
+                // I need to see if this
+                if (hasEditorSelection()) {
+                    console.log("Not handling Backspace");
                     return;
                 }
 
@@ -169,7 +192,13 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
 
         }
 
-    }, [getEditorCursorPosition, props.id, props.parent, store]);
+    }, [getEditorCursorPosition, hasEditorSelection, props.id, props.parent, store]);
+
+    const handleDelete = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
+
+        console.log( "FIXME: DELETE")
+
+    }, []);
 
     React.useEffect(() => {
 
@@ -181,6 +210,8 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
             editor!.model.document.selection.on('change', handleEditorSelection);
             editor!.editing.view.document.on('keydown', handleEditorKeyDown);
             editor!.editing.view.document.on('enter', handleEditorEnter);
+            editor!.editing.view.document.on('delete', handleDelete);
+
         }
 
         function unsubscribe() {
@@ -188,6 +219,7 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
                 editor!.model.document.selection.off('change', handleEditorSelection);
                 editor.editing.view.document.off('keydown', handleEditorKeyDown);
                 editor.editing.view.document.off('enter', handleEditorEnter);
+                editor.editing.view.document.off('delete', handleDelete);
             } else {
                 console.warn("No editor in unsubscribe");
             }
