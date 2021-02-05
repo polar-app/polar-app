@@ -8,7 +8,7 @@ export function useEditorSetContent() {
     return React.useCallback((content: string) => {
 
         if (! editor) {
-            throw new Error("No editor");
+            throw new Error("useEditorSetContent: No editor");
         }
 
         editor.setData(content);

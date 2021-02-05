@@ -1,5 +1,4 @@
 import React from "react";
-import {CKEditor5BalloonEditor} from "../../../apps/stories/impl/ckeditor5/CKEditor5BalloonEditor";
 import {NoteNavigation} from "./NoteNavigation";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 import {EditorStoreProvider, useEditorStore, useSetEditorStore} from "./EditorStoreProvider";
@@ -7,7 +6,6 @@ import {NoteActionMenuForCommands} from "./NoteActionMenuForCommands";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import { NoteActionMenuForLinking } from "./NoteActionMenuForLinking";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
-import {useStateRef} from "../hooks/ReactHooks";
 import {MarkdownContentEscaper} from "./MarkdownContentEscaper";
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 import IEventData = ckeditor5.IEventData;
@@ -15,7 +13,6 @@ import {NoteIDStr, useNotesStore} from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
 import {INoteEditorMutator} from "./store/NoteEditorMutator";
 import {CKEditorActivator} from "../../../apps/stories/impl/ckeditor5/CKEditorActivator";
-import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 
 interface ILinkNavigationEvent {
     readonly abortEvent: () => void;
@@ -85,6 +82,9 @@ function useLinkNavigation() {
 
     const linkNavigationEventListener = useLinkNavigationEventListener();
 
+    // FIXME: this won't fire because of CKEditorActivator not installing this until the
+    // component is mounted.
+
     const handleEditorClick = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
 
         function abortEvent() {
@@ -102,6 +102,7 @@ function useLinkNavigation() {
     React.useEffect(() => {
 
         if (! editor) {
+            // console.log("useLinkNavigation: No editor");
             return;
         }
 
@@ -114,7 +115,7 @@ function useLinkNavigation() {
             if (editor) {
                 editor.editing.view.document.off('click', handleEditorClick);
             } else {
-                console.warn("No editor in unsubscribe");
+                console.warn("useLinkNavigation: No editor in unsubscribe");
             }
 
         }

@@ -14,6 +14,21 @@
     
     - shift+click on another node should select the range between the nodes
     - ctrl+click should select individual nodes.
+
+    - using the action menu to link to existing nodes doesn't really work just yet
+
+    - the action menu for regular commands like date/time doesn't really work yet.
+   
+   
+    - clicking on an inactivated note text, then selecting a range, doesn't
+      select the range in the activated component
+  
+    - refs in the JSOJN needs to be update when saving a link to a new node
+    
+    - indenting an empty node (where the child of a parent is indented) will result in an empty node that
+      can't be clicked or activated and that has the wrong height.
+    
+    - image paste size needs to be correct
    
     - selection: we can only expand the selection, not narrow it down.
     
@@ -24,8 +39,6 @@
     - there is no way to CREATE a new named node and link to it.
 
     - we need a solution for editing named nodes as you can't split them...
-
-    - no new note is selected after we delete a bunch of them.
 
     - implement new hover control for manipulating nodes... 
 

@@ -12,6 +12,7 @@ import {ReverseIndex} from "./ReverseIndex";
 import {Note} from "./Note";
 import {INoteEditorMutator} from "./NoteEditorMutator";
 import {MarkdownContentEscaper} from "../MarkdownContentEscaper";
+import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 
 export type NoteIDStr = IDStr;
 export type NoteNameStr = string;
@@ -532,7 +533,7 @@ export class NotesStore {
             editorMutator.focus();
 
         } else {
-            console.warn("No editorMutator");
+            console.warn("mergeNotes: No editorMutator");
         }
 
         return undefined;
@@ -726,11 +727,16 @@ export class NotesStore {
 
             const expansionTree = this.computeLinearItemsFromExpansionTree(note.parent);
 
-            const currentIndex = expansionTree.indexOf(note.id);
+            // the indexes of the notes we should remove
+            const deleteIndex = arrayStream(notes)
+                                   .map(current => expansionTree.indexOf(current))
+                                   .filter(current => current !== -1)
+                                   .sort((a, b) => a - b)
+                                   .first()
 
-            if (currentIndex > 0) {
+            if (deleteIndex !== undefined && deleteIndex > 0) {
 
-                const nextActive = expansionTree[currentIndex - 1];
+                const nextActive = expansionTree[deleteIndex - 1];
 
                 return {
                     active: nextActive,

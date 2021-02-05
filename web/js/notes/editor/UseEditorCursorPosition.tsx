@@ -7,7 +7,7 @@ export type EditorCursorPosition = 'start' | 'end' | 'within';
 export function computeEditorCursorPosition(editor: IEditor) {
 
     if (!editor) {
-        throw new Error("No editor");
+        throw new Error("computeEditorCursorPosition: No editor");
     }
 
     const root = editor.model.document.getRoot();

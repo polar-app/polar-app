@@ -110,7 +110,7 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
         const editor = editorRef.current;
 
         if (! editor) {
-            console.warn("No editor");
+            console.warn("NoteActionMenu: No editor");
             return;
         }
 
@@ -144,7 +144,7 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
         const editor = editorRef.current;
 
         if (! editor) {
-            console.warn("No editor");
+            console.warn("getEditorPromptText: No editor");
             return;
         }
 
@@ -169,7 +169,7 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
         const editor = editorRef.current;
 
         if (! editor) {
-            console.warn("No editor");
+            console.warn("insertEditorPromptText: No editor");
             return;
         }
 
@@ -213,7 +213,7 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
                 }
 
             } else {
-                console.log("no editor");
+                console.log("handleSelectedActionItem: No editor");
             }
 
         } else {

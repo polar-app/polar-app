@@ -17,7 +17,7 @@ export type EditorSplitter = () => IEditorSplit;
 export function doEditorSplit(editor: IEditor): IEditorSplit {
 
     if (! editor) {
-        throw new Error("No editor");
+        throw new Error("doEditorSplit: No editor");
     }
 
     interface Cursor {
@@ -97,7 +97,7 @@ export function useEditorSplitter(): EditorSplitter {
     return React.useCallback((): IEditorSplit => {
 
         if (! editor) {
-            throw new Error("No editor");
+            throw new Error("useEditorSplitter: No editor");
         }
 
         return doEditorSplit(editor);

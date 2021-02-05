@@ -222,7 +222,7 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
                 editor.editing.view.document.off('enter', handleEditorEnter);
                 editor.editing.view.document.off('delete', handleDelete);
             } else {
-                console.warn("No editor in unsubscribe");
+                console.warn("NoteNavigation: No editor in unsubscribe");
             }
         }
 
