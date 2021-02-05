@@ -8,16 +8,20 @@
 
 # New TODO since MobX adopted:
 
+    - the title of the root doesn't change between navigations
 
+    
  
         
     - selection: we can only expand the selection, not narrow it down.
-
+    
+        - give it an selectionAnchor where the selection first started and the
+          seleciton should from from where it started ot the current point that is
+          active using ranges.
 
     - there is no way to CREATE a new named node and link to it.
 
-    - the title of the root doesn't change between navigations
-    - if the cursor is at the beginning of a node it should create a new node below it
+    - we need a solution for editing named nodes as you can't split them...
 
     - no new note is selected after we delete a bunch of them.
 
@@ -32,9 +36,15 @@
           - the ckeditor selection DOES respond to all eventss and we CAN detect if it's the selection is active
             BUT the it deletes the selection in the selection.changed event before we see it on the keyboard 
             handler event 
+        
+          - I can use a queue handler to listen to the selectino change events and if we have two events that are
+            collapsed: false and collapsed: true BEFORE a Backspace then it has a region.  The code won't be too bad
+            if I maintain a fixed list in RAM.
+
 
     - selection, when in the middle of a post, should just select the text using the selection API not the entire
-      note.  Otherwise there isn't a way to just select parts of the text.
+      note.  Otherwise there isn't a way to just select parts of the text.  THEN , after that, we can select text 
+      after it.
 
     - if I'm on the ROOT node, and hit enter, the node created becomes the last child, not the first child.
         -it seems if a node is expanded, we don't properly pick the right node to expand. 
