@@ -39,7 +39,7 @@ const Editors = React.memo(() => {
     );
 });
 
-export const CKEditor5Story2 = () => {
+export const CKEditorPerformanceStory = () => {
 
     return (
         <div>

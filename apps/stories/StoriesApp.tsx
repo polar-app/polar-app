@@ -39,10 +39,9 @@ import {NotesComponentsStory} from "./impl/NotesComponentsStory";
 import { AbortedRenderStory } from './impl/AbortedRenderStory';
 import {ScratchStory} from "./impl/ScratchStory";
 import { ErrorBoundaryStory } from './impl/ErrorBoundaryStory';
-import {ActiveKeyboardShortcuts} from "../../web/js/hotkeys/ActiveKeyboardShortcuts";
 import {ActiveKeyboardShortcutsStory} from "./impl/ActiveKeyboardShortcutsStory";
 import {FontAwesomeIconStory} from "./impl/FontAwesomeIconStory";
-import {CKEditor5Story2} from "./impl/CKEditor5Story2";
+import {CKEditorPerformanceStory} from "./impl/CKEditorPerformanceStory";
 import { ProfileStory } from './impl/ProfileStory';
 import { AccountVerificationStory } from './impl/AccountVerificationStory';
 import {MobXStory} from "./impl/MobXStory";
@@ -51,6 +50,7 @@ import {MUICommandMenuStory} from "./impl/MUICommandMenuStory";
 import { NestedContextStory } from './impl/NestedContextStory';
 import {CreateAccountStory} from "./impl/CreateAccountStory";
 import { CKEditorActivatorStory } from './impl/CKEditorActivatorStory';
+import {CKEditorActivatorPerformanceStory} from "./impl/CKEditorActivatorPerformanceStory";
 
 interface IStory {
     readonly name: string;
@@ -123,8 +123,16 @@ const stories = createStoryIndex([
         component: <CKEditor5Story/>
     },
     {
-        name: "CKEditor5 2",
-        component: <CKEditor5Story2/>
+        name: 'CKEditorActivator',
+        component: <CKEditorActivatorStory/>
+    },
+    {
+        name: "CKEditor5 Performance",
+        component: <CKEditorPerformanceStory/>
+    },
+    {
+        name: "CKEditorActivator Performance",
+        component: <CKEditorActivatorPerformanceStory/>
     },
     {
         name: "Notes",
@@ -247,10 +255,6 @@ const stories = createStoryIndex([
         name: 'Create Account',
         component: <CreateAccountStory/>
     },
-    {
-        name: 'CKEditorActivator',
-        component: <CKEditorActivatorStory/>
-    }
 
 
 ]);
