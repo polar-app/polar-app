@@ -37,7 +37,12 @@ export const NoteSelectionHandler = observer(function NoteSelectionHandler(props
                 }
                 break;
 
+            case 'ArrowUp':
+            case 'ArrowDown':
+                break;
+
             default:
+                store.clearSelected();
                 break;
 
         }

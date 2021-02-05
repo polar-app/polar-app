@@ -8,10 +8,16 @@
 
 # New TODO since MobX adopted:
 
-
+    - selection: you can type keys other than Delete and it's not cleared... 
     
- 
-        
+    
+    - clicking on a new node link will chagne the URL to a # url first and then only jump after that.
+    
+    - there's no way to link to a new node via text like [[ or ]]
+    
+    - shift+click on another node should select the range between the nodes
+    - ctrl+click should select individual nodes.
+   
     - selection: we can only expand the selection, not narrow it down.
     
         - give it an selectionAnchor where the selection first started and the
