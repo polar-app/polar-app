@@ -8,7 +8,6 @@
 
 # New TODO since MobX adopted:
 
-    - selection: you can type keys other than Delete and it's not cleared... 
     
     
     - clicking on a new node link will chagne the URL to a # url first and then only jump after that.
