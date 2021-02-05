@@ -1,10 +1,9 @@
 import * as React from "react";
 import IEventData = ckeditor5.IEventData;
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
-import {useEditorCursorPosition} from "./editor/UseEditorCursorPosition";
 import {useEditorSplitter} from "./editor/UseEditorSplitter";
 import { useEditorSetContent } from "./editor/UseEditorSetContent";
-import {NewNotePosition, NoteIDStr, useNotesStore } from "./store/NotesStore";
+import {NoteIDStr, useNotesStore } from "./store/NotesStore";
 import {MarkdownToHTML} from "polar-markdown-parser/src/MarkdownToHTML";
 import markdown2html = MarkdownToHTML.markdown2html;
 
@@ -19,7 +18,6 @@ export function useNoteNavigationEnterHandler(opts: IOpts) {
 
     const store = useNotesStore();
 
-    const getEditorCursorPosition = useEditorCursorPosition();
     const editorSplitter = useEditorSplitter();
     const editorSetContent = useEditorSetContent();
 
@@ -27,44 +25,17 @@ export function useNoteNavigationEnterHandler(opts: IOpts) {
 
         eventData.stop();
 
-        // FIXME: handle meta/shift/control
-
         if (parent) {
 
-            function computeNewNotePosition(): NewNotePosition {
+            const editorSplit = editorSplitter();
+            editorSetContent(markdown2html(editorSplit.prefix));
+            store.createNewNote(parent, id, 'split', editorSplit);
 
-                const cursorPosition = getEditorCursorPosition();
-
-                switch (cursorPosition) {
-
-                    case "start":
-                        return 'before';
-
-                    case "end":
-                        return 'after';
-
-                    case "within":
-                        return 'split';
-
-                }
-
-            }
-
-            const pos = computeNewNotePosition();
-
-            if (pos === 'split') {
-                const editorSplit = editorSplitter();
-                editorSetContent(markdown2html(editorSplit.prefix));
-                store.createNewNote(parent, id, pos, editorSplit);
-                return;
-            }
-
-            store.createNewNote(parent, id, pos);
 
         } else {
             store.createNewNote(id, undefined, 'before');
         }
 
-    }, [editorSetContent, editorSplitter, getEditorCursorPosition, id, parent, store]);
+    }, [editorSetContent, editorSplitter, id, parent, store]);
 
 }

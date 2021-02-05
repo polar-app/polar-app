@@ -9,8 +9,6 @@
 # New TODO since MobX adopted:
 
           
-    - enter at the beginning of the node, should create a new node below it ...
-      it's just a split basically
 
     - focus on fixing the exapand/collapse control to the left
         - it should be enabled on hover, not active
