@@ -80,7 +80,7 @@ export const NoteInner = observer((props: IProps) => {
                          marginRight: theme.spacing(0.5)
                      }}>
 
-                    <NoteOverflowButton id={props.id}/>
+                    {/*<NoteOverflowButton id={props.id}/>*/}
 
                     {hasItems && id !== root && (
                         <NoteExpandToggleButton id={props.id}/>

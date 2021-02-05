@@ -8,10 +8,6 @@
 
 # New TODO since MobX adopted:
 
-          
-
-    - focus on fixing the exapand/collapse control to the left
-        - it should be enabled on hover, not active
 
         
     - selection: we can only expand the selection, not narrow it down.
@@ -26,6 +22,7 @@
 
     - no new note is selected after we delete a bunch of them.
 
+    - implement new hover control for manipulating nodes... 
 
     - selecting some text, then deleting it, deletes the whole node.
         - I think it's the Delete handler and it deletes the text first, then we
