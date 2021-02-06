@@ -36,7 +36,13 @@ https://www.youtube.com/watch?v=ByiFhtlI66A
       
     - BLOCKER: what happens in Roam when 
           
-
+    - if I select shift, down/up arrow, and the cursor is in the middle of an item it should select the beginning 
+      of the note from the cursor or to the end of the note from the cursor. 
+          
+    - I don't htink the citation text at the bottom should be editable... 
+          
+    - clicking on a URL, which is the SAME, brings up the native ckeditor URL prompt thing.
+    
     - there's no way to link to a new node via text like [[ or ]] by creating a new one...
     
     - shift+click on another node should select the range between the nodes

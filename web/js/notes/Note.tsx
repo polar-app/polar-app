@@ -38,8 +38,6 @@ export const [NoteContextMenu, useNoteContextMenu]
 
 export const NoteInner = observer((props: IProps) => {
 
-    // useLifecycleTracer('NoteInner', {id: props.id});
-
     const {id} = props;
 
     const store = useNotesStore();
@@ -54,6 +52,33 @@ export const NoteInner = observer((props: IProps) => {
 
     const root = store.root;
 
+    const handleClick = React.useCallback((event: React.MouseEvent) => {
+
+        // we could maybe listen to JUST shift being typed, then the click handler would do the rest and
+        // know the range we're selecting over...
+
+        // FIXMEL this allows us to accideltally select itself...
+
+        console.log("FIXME.1");
+
+        if (event.shiftKey) {
+            console.log("FIXME.2");
+            if (store.active !== undefined) {
+                console.log("FIXME.3");
+
+                store.setSelectionRange(store.active, id);
+
+                // FIXME:
+                for(const editor of store.getNoteEditorMutators()) {
+                    editor.clearSelection();
+                }
+
+                event.stopPropagation();
+            }
+        }
+
+    }, [id, store]);
+
     if (! note) {
         return null;
     }
@@ -63,7 +88,8 @@ export const NoteInner = observer((props: IProps) => {
     const hasItems = items.length > 0;
 
     return (
-        <div className={clsx(['Note', selected ? classes.selected : undefined])}>
+        <div onClick={handleClick}
+             className={clsx(['Note', selected ? classes.selected : undefined])}>
             <div {...contextMenuHandlers}
                  style={{
                      display: 'flex',

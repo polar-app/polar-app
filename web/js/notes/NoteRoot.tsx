@@ -3,8 +3,7 @@ import {MUIBrowserLinkStyle} from "../mui/MUIBrowserLinkStyle";
 import {NotesInbound} from "./NotesInbound";
 import { Note } from "./Note";
 import { NoteStyle } from "./NoteStyle";
-import {useLifecycleTracer} from "../hooks/ReactHooks";
-import { NoteIDStr, NotesStoreProvider } from "./store/NotesStore";
+import { NoteIDStr } from "./store/NotesStore";
 import { useNotesStore } from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
 import {NoteSelectionHandler} from "./NoteSelectionHandler";
