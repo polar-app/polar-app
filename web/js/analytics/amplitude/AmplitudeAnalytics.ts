@@ -25,31 +25,59 @@ function createAmplitude(): any {
 
 }
 
+const ENABLED = typeof localStorage !== 'undefined' &&
+                localStorage.getItem('amplitude.tracing') === 'true';
 
 // TODO session variables...
 
 const amplitude = createAmplitude();
 const standardEventProperties = StandardEventProperties.create();
 
+function doTrace(eventName: string, eventData: object | undefined) {
+
+    if (ENABLED) {
+        console.log("amplitude: " + eventName, eventData || {});
+    }
+
+}
+
 export class AmplitudeAnalytics implements IAnalytics {
 
     public event(event: IEventArgs): void {
-        amplitude.getInstance().logEvent(event.category + '/' + event.action, standardEventProperties);
+
+        const eventName = event.category + '/' + event.action;
+        const eventData = standardEventProperties;
+
+        doTrace(eventName, eventData);
+        amplitude.getInstance().logEvent(eventName, eventData);
+
     }
 
-    public event2(event: string, data?: any): void {
-        amplitude.getInstance().logEvent(event, {...data, ...standardEventProperties});
+    public event2(eventName: string, data?: any): void {
+
+        const eventData = {...data, ...standardEventProperties};
+
+        doTrace(eventName, eventData);
+        amplitude.getInstance().logEvent(eventName, eventData);
     }
 
     public identify(userId: string): void {
+        doTrace('identify', {userId});
         amplitude.getInstance().setUserId(userId);
     }
 
     public page(event: IPageEvent): void {
-        amplitude.getInstance().logEvent('pageView', {...event, ...standardEventProperties});
+
+        const eventName = 'pageView';
+        const eventData = {...event, ...standardEventProperties};
+
+        doTrace(eventName, eventData);
+        amplitude.getInstance().logEvent(eventName, eventData);
+
     }
 
     public traits(traits: TraitsMap): void {
+        doTrace('traits', traits);
         amplitude.getInstance().setUserProperties(traits);
     }
 

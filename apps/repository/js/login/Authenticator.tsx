@@ -155,6 +155,8 @@ const GoogleAuthButton = () => {
 
     const handleTriggerAuth = React.useCallback(async () => {
 
+        Analytics.event2("auth:GoogleAuthActivated")
+
         doTriggerAuth()
             .catch(err => console.log("Unable to handle auth: ", err));
 
@@ -342,6 +344,7 @@ const EmailTokenAuthButton = () => {
             }
 
         } else {
+            Analytics.event2("auth:EmailTokenAuthActivated")
             setActive(true)
         }
 
