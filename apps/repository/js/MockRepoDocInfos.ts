@@ -59,7 +59,7 @@ export namespace MockRepoDocInfos {
             pagemarkType: PagemarkType.SINGLE_COLUMN
         };
 
-        return RepoDocInfos.convert(docMeta);
+        return RepoDocInfos.convert(docMeta, true, false);
 
     }
 
