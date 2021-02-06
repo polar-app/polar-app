@@ -64,6 +64,15 @@ https://www.youtube.com/watch?v=ByiFhtlI66A
     
     - links are not A href 'links' but click handlers so we can't open in new tabs.
 
+    - notes can be @user or @org/user/
+    
+    - sharing:
+        - research github, slack, google drive, notion, roam
+    
+    - BREAKER read only vs write only sharing... 
+        - this metadata is in the sharing token
+        - allow re-sharing with other people????
+
     - BREAKER: If we change the name of a named node, all the linking notes need
       to be updated too...
     
@@ -115,6 +124,8 @@ https://www.youtube.com/watch?v=ByiFhtlI66A
             - the added benefit here is that you can link ot another note, by ID, and the name is updated in the UI
               to ALSO reflect the owner , if the owner is not you.  
             
+    - BREAKER: if we LOSE permission to a link, say that it was revoked and it has to be removed from the snapshot
+      data...
             
  
     - there's no way to link to other notes and to embed them into the current tree.
