@@ -12,6 +12,8 @@ export namespace CKEditorConfigs {
             "TableCellProperties",
             "TextTransformation",
             "ImageCaption",
+            "ImageResize",
+
         ],
         toolbar: {
             items: [
@@ -29,9 +31,9 @@ export namespace CKEditorConfigs {
         },
         image: {
             toolbar: [
-                'imageResize',
-                '|',
-                'imageTextAlternative'
+                // 'imageResize',
+                // '|',
+                // 'imageTextAlternative'
             ],
             styles: [
             ]

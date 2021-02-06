@@ -336,6 +336,14 @@ export const CKEditorActivator = (props: IProps) => {
 
     }, []);
 
+    const clearSelection = React.useCallback(() => {
+
+        if (mutatorRef.current) {
+            mutatorRef.current.clearSelection();
+        }
+
+    }, []);
+
     const focus = React.useCallback(() => {
 
         if (mutatorRef.current) {
@@ -357,9 +365,9 @@ export const CKEditorActivator = (props: IProps) => {
 
     React.useEffect(() => {
 
-        props.onEditorMutator({getCursorPosition, setCursorPosition, setData, split, focus});
+        props.onEditorMutator({getCursorPosition, setCursorPosition, setData, split, focus, clearSelection});
 
-    }, [focus, getCursorPosition, props, setCursorPosition, setData, split]);
+    }, [clearSelection, focus, getCursorPosition, props, setCursorPosition, setData, split]);
 
     if (active) {
 
