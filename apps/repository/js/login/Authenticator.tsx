@@ -340,6 +340,14 @@ const EmailTokenAuthButton = () => {
 
     }, [active, handleTriggerStartTokenAuth, handleTriggerVerifyTokenAuth, triggered])
 
+    const handleCodeNotReceived = React.useCallback(() => {
+
+        setPending(false);
+        setAlert(undefined)
+        setTriggered(false);
+
+    }, []);
+
     return (
         <>
             {active && (
@@ -370,6 +378,10 @@ const EmailTokenAuthButton = () => {
                                        onKeyPress={event => handleKeyPressEnter(event, handleTriggerVerifyTokenAuth)}
                                        placeholder="Enter your verification code... "
                                        variant="outlined" />
+
+                            <div className={classes.alternate} onClick={handleCodeNotReceived}>
+                                <Button>Didn't receive email</Button>
+                            </div>
 
                         </>
                     )}
