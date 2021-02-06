@@ -30,6 +30,7 @@ import {StripeStudentDiscountVerifyFunction} from "./impl/stripe/StripeStudentDi
 import {StripeStudentDiscountFunction} from "./impl/stripe/StripeStudentDiscountFunction";
 import {StartTokenAuthFunction} from "./impl/token_auth/StartTokenAuthFunction";
 import {VerifyTokenAuthFunction} from "./impl/token_auth/VerifyTokenAuthentication";
+import {CloudFunctionsWarmer} from "./impl/CloudFunctionsWarmer";
 
 // import {DocPreviewFunction} from "./impl/docs/DocPreviewFunctions";
 // import {DocPreviewSitemapFunction} from "./impl/sitemaps/DocPreviewSitemapFunction";
@@ -69,3 +70,4 @@ exports.StripeStudentDiscountVerifyFunction = StripeStudentDiscountVerifyFunctio
 exports.StripeStudentDiscountFunction = StripeStudentDiscountFunction;
 exports.StartTokenAuth = StartTokenAuthFunction;
 exports.VerifyTokenAuth = VerifyTokenAuthFunction;
+exports.CloudFunctionsWarmer = CloudFunctionsWarmer;
