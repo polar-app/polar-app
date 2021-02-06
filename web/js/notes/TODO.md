@@ -62,8 +62,6 @@ https://www.youtube.com/watch?v=ByiFhtlI66A
   
     - image paste size needs to be correct
     
-    - links are not A href 'links' but click handlers so we can't open in new tabs.
-
     - notes can be @user or @org/user/
     
     - sharing:
