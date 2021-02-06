@@ -11,7 +11,13 @@ import red from '@material-ui/core/colors/red';
 import pink from '@material-ui/core/colors/pink';
 import purple from '@material-ui/core/colors/purple';
 import blue from '@material-ui/core/colors/blue';
+import deepPurple from '@material-ui/core/colors/deepPurple';
+import indigo from '@material-ui/core/colors/indigo';
+import cyan from '@material-ui/core/colors/cyan';
+import deepOrange from '@material-ui/core/colors/deepOrange';
+
 import useTheme from "@material-ui/core/styles/useTheme";
+import { Hashcodes } from "polar-shared/src/util/Hashcodes";
 
 interface IProps {
     readonly tab: TabDescriptor;
@@ -27,14 +33,31 @@ function useDeterministicColor(text: string) {
         red[500],
         pink[500],
         purple[500],
-        blue[500]
+        blue[500],
+        deepPurple[500],
+        indigo[500],
+        cyan[500],
+        deepOrange[500]
     ]
 
-    const textAsNumber = text.charCodeAt(0);
+    // we use a hashcode because the IDs created by fingerprints aren't random.
+    const hashcode = Hashcodes.create(text);
+    const textForConversion = hashcode[hashcode.length - 1];
+    const textAsNumber = textForConversion.charCodeAt(0);
+
+    if (isNaN(textAsNumber)) {
+        throw new Error("Text can not be converted to a number (NaN) from " + textForConversion);
+    }
 
     const idx = textAsNumber % colors.length;
 
-    return colors[idx];
+    const color = colors[idx];
+
+    if (! color) {
+        throw new Error("Unable to determine color using index: " + idx);
+    }
+
+    return color;
 
 }
 
