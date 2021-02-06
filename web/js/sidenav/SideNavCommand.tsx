@@ -29,8 +29,8 @@ const globalKeyMap = keyMapWithGroup(
         group: "Documents",
         keyMap: {
             ACTIVATE: {
-                name: "Jump to Recent Document",
-                description: "Filter and jump to a recent document",
+                name: "Jump to Open Document",
+                description: "Filter and jump to an open document",
                 sequences: ['shift+command+e', 'shift+ctrl+e'],
             },
         }
@@ -39,7 +39,7 @@ const globalKeyMap = keyMapWithGroup(
 export const SideNavCommandMenu = () => {
 
     const classes = useStyles();
-    const {tabs} = useSideNavStore(['tabs']);
+    const {tabs, activeTab} = useSideNavStore(['tabs', 'activeTab']);
     const {setActiveTab} = useSideNavCallbacks();
 
     const [active, setActive] = React.useState(false);
@@ -54,11 +54,12 @@ export const SideNavCommandMenu = () => {
         }
 
         return arrayStream(tabs).sort((a,b) => a.lastActivated.localeCompare(b.lastActivated))
+                                .filter(current => current.id !== activeTab)
                                 .reverse()
                                 .map(toCommand)
                                 .collect();
 
-    }, [tabs]);
+    }, [activeTab, tabs]);
 
     const globalKeyHandlers = {
         ACTIVATE: () => setActive(true),
@@ -85,7 +86,7 @@ export const SideNavCommandMenu = () => {
                        maxWidth="md">
 
                 <MUICommandMenu onCommand={handleCommand}
-                                title="Recent Documents"
+                                title="Open Documents"
                                 className={classes.commandMenu}
                                 onClose={() => setActive(false)}
                                 commandsProvider={commandsProvider}/>
