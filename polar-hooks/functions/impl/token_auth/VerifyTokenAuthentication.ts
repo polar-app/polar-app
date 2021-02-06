@@ -37,6 +37,7 @@ export const VerifyTokenAuthFunction = ExpressFunctions.createHookAsync(async (r
     const authChallenge = await AuthChallenges.get(email);
 
     async function sendError(response: IVerifyTokenAuthResponseError) {
+        console.error("Could not handle authentication: ", response);
         ExpressFunctions.sendResponse(res, response);
     }
 
