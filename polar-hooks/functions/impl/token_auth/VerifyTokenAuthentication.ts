@@ -46,7 +46,7 @@ export const VerifyTokenAuthFunction = ExpressFunctions.createHookAsync(async (r
         return;
     }
 
-    if( authChallenge.challenge !== challenge) {
+    if(authChallenge.challenge !== challenge) {
         await sendError({code: 'invalid-challenge'});
         return;
     }
