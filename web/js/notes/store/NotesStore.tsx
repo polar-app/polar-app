@@ -312,6 +312,25 @@ export class NotesStore {
     }
 
 
+    @action public setSelectionRange(active: NoteIDStr, newActive: NoteIDStr) {
+
+        const computeSelected = (): StringSetMap => {
+
+            const currentSelected = Object.keys(this._selected);
+            const newSelected = [...currentSelected, active, newActive];
+
+            const result: {[key: string]: boolean} = {};
+
+            newSelected.forEach(current => result[current] = true);
+
+            return result;
+
+        }
+
+        this._selected = computeSelected();
+
+    }
+
     @action public doNav(delta: 'prev' | 'next',
                          pos: NavPosition,
                          opts: NavOpts) {
@@ -352,21 +371,8 @@ export class NotesStore {
 
         const newActive = items[activeIndex];
 
-        const computeSelected = (active: NoteIDStr, newActive: NoteIDStr): StringSetMap => {
-
-            const currentSelected = Object.keys(this._selected);
-            const newSelected = [...currentSelected, active, newActive];
-
-            const result: {[key: string]: boolean} = {};
-
-            newSelected.forEach(current => result[current] = true);
-
-            return result;
-
-        }
-
         if (opts.shiftKey) {
-            this._selected = computeSelected(this._active, newActive);
+            this.setSelectionRange(this._active, newActive);
         } else {
             this._selected = {};
         }
@@ -835,6 +841,11 @@ export class NotesStore {
     @observable public getNoteEditorMutator(id: NoteIDStr): INoteEditorMutator | undefined {
         return this._noteEditors[id] || undefined;
     }
+
+    @observable public getNoteEditorMutators(): ReadonlyArray<INoteEditorMutator> {
+        return Object.values(this._noteEditors);
+    }
+
 
     @action public setNoteEditorMutator(id: NoteIDStr, editor: INoteEditorMutator) {
         return this._noteEditors[id] = editor;
