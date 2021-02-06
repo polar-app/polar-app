@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {NoteIDStr} from "./store/NotesStore";
-import {useNoteLink} from "./NoteLinkLoader";
+import {createNoteLink} from "./NoteLinkLoader";
 import {Link} from "react-router-dom";
 
 interface IProps {
@@ -12,7 +12,7 @@ interface IProps {
 
 export const NoteLink = React.memo((props: IProps) => {
 
-    const noteLink = useNoteLink(props.target);
+    const noteLink = createNoteLink(props.target);
 
     return (
         <Link to={noteLink}

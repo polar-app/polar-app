@@ -51,8 +51,8 @@ https://www.youtube.com/watch?v=ByiFhtlI66A
 
     - the action menu for regular commands like date/time doesn't really work yet.
    
-    - clicking on an inactivated note text, then selecting a range, doesn't
-      select the range in the activated component
+    - clicking on an inactivated html with CKEditorActivator, then selecting a
+      range, doesn't select the range in the activated component
   
     - refs connecting to other named nodes in the JSON needs to be update when
       saving a link to a new node

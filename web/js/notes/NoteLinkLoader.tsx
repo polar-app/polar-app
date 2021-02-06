@@ -19,6 +19,6 @@ export function useNoteLinkLoader() {
 
 }
 
-export function useNoteLink(target: NoteTargetStr) {
+export function createNoteLink(target: NoteTargetStr) {
     return '/apps/stories/notes/' + target
 }
