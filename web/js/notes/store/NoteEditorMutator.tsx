@@ -33,6 +33,8 @@ export interface INoteEditorMutator {
 
     readonly focus: () => void;
 
+    readonly clearSelection: () => void;
+
 }
 
 
@@ -89,7 +91,22 @@ export namespace NoteEditorMutators {
             editor.editing.view.focus();
         }
 
-        return {getCursorPosition, setCursorPosition, setData, split, focus};
+        function clearSelection() {
+
+            editor.model.change((writer) => {
+
+                const pos = editor.model.document.selection.getFirstPosition();
+
+                if (pos) {
+                    const range = writer.createRange(pos, pos);
+                    writer.setSelection(range);
+                }
+
+            });
+
+        }
+
+        return {getCursorPosition, setCursorPosition, setData, split, focus, clearSelection};
 
     }
 }
@@ -122,6 +139,10 @@ export class MockNoteEditorMutator implements INoteEditorMutator {
     }
 
     public focus(): void {
+        // noop
+    }
+
+    public clearSelection(): void {
         // noop
     }
 
