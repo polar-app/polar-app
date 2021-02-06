@@ -63,7 +63,7 @@ export const SideNavButtonWithAvatar = deepMemo((props: IProps) => {
 
     }, [tab.title])
 
-    const backgroundColor = useDeterministicColor(tab.title);
+    const backgroundColor = useDeterministicColor(tab.id);
 
     return (
         <ActiveTabButton title={tab.title}

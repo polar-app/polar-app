@@ -48,7 +48,7 @@ export const SideNavCommandMenu = () => {
 
         function toCommand(tab: TabDescriptor): ICommand {
             return {
-                id: `${tab.id}`,
+                id: tab.id,
                 text: tab.title
             }
         }
@@ -65,7 +65,7 @@ export const SideNavCommandMenu = () => {
     };
 
     const handleCommand = React.useCallback((command: ICommand) => {
-        setActiveTab(parseInt(command.id));
+        setActiveTab(command.id);
     }, [setActiveTab]);
 
 

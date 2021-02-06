@@ -10,7 +10,7 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 let seq = 0;
 
 
-const createWebCard = (id: number): TabDescriptor => {
+const createWebCard = (id: string): TabDescriptor => {
 
     const now = ISODateTimeStrings.create();
     const url = `/apps/stories/side-nav/${id}`;
@@ -36,7 +36,7 @@ const createWebCard = (id: number): TabDescriptor => {
 }
 
 
-const createPDFCard = (id: number): TabDescriptor => {
+const createPDFCard = (id: string): TabDescriptor => {
 
     const now = ISODateTimeStrings.create();
 
@@ -63,13 +63,15 @@ const createPDFCard = (id: number): TabDescriptor => {
 
 }
 
-const createCard = (id: number) => {
+const createCard = (id: string) => {
 
-    if (id % 2 === 0) {
-        return createPDFCard(id);
-    } else {
-        return createWebCard(id)
-    }
+    return createPDFCard(id);
+
+    // if (id % 2 === 0) {
+    //     return createPDFCard(id);
+    // } else {
+    //     return createWebCard(id)
+    // }
 }
 
 const Body = () => {
@@ -101,7 +103,7 @@ const Footer = () => {
     const doAddTab = React.useCallback(() => {
 
         const id = seq++;
-        addTab(createCard(id));
+        addTab(createCard(`${id}`));
 
     }, [addTab]);
 

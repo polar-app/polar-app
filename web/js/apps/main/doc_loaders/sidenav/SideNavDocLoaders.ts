@@ -39,6 +39,7 @@ export function useSideNavDocLoader() {
                                  .replace("https://app.getpolarized.io", "");
 
             addTab({
+                id: loadDocRequest.fingerprint,
                 url,
                 title: loadDocRequest.title,
                 type

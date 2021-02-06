@@ -2,7 +2,7 @@ import React from 'react';
 import {Provider} from 'polar-shared/src/util/Providers';
 import {createObservableStore, SetStore} from '../react/store/ObservableStore';
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {URLStr} from "polar-shared/src/util/Strings";
+import {IDStr, URLStr} from "polar-shared/src/util/Strings";
 import { useHistory } from 'react-router-dom';
 import { Arrays } from 'polar-shared/src/util/Arrays';
 import {useRefValue} from '../hooks/ReactHooks';
@@ -11,7 +11,7 @@ import {DocViewerAppURLs} from "../../../apps/doc/src/DocViewerAppURLs";
 
 export const SIDE_NAV_ENABLED = 'true';
 
-export type TabID = number;
+export type TabID = IDStr;
 
 export interface ITabImage {
     readonly url: string;
@@ -22,6 +22,11 @@ export interface ITabImage {
 export type TabContentType = 'pdf' | 'epub';
 
 export interface TabDescriptorInit {
+
+    /**
+     * The tab ID is globally unique and never changes.
+     */
+    readonly id: TabID;
 
     /**
      * The URL for this tab so that the router can be used with it.
@@ -45,8 +50,6 @@ export interface TabDescriptorInit {
 }
 
 export interface TabDescriptor extends TabDescriptorInit {
-
-    readonly id: TabID;
 
     readonly created: ISODateTimeString;
 
@@ -103,12 +106,12 @@ function createInitialTabs(): ReadonlyArray<TabDescriptor> {
 }
 
 const initialStore: ISideNavStore = {
-    activeTab: 0,
+    activeTab: undefined,
     tabs: createInitialTabs(),
 }
 
 interface Mutation {
-    readonly activeTab: number;
+    readonly activeTab: TabID;
     readonly tabs: ReadonlyArray<TabDescriptor>;
 }
 
@@ -128,8 +131,6 @@ function mutatorFactory(storeProvider: Provider<ISideNavStore>,
     return {doUpdate};
 
 }
-
-let seq = 0;
 
 function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
                              setStore: (store: ISideNavStore) => void,
@@ -250,7 +251,6 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
                 activeURL: newTabDescriptor.url,
                 created: now,
                 lastActivated: now,
-                id: seq++
             }
 
             const store = storeProvider();
@@ -272,7 +272,7 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
             if (existingTab) {
                 // just switch to the existing tab when one already exists and we
                 // want to switch to it again.
-                doTabMutation({...store, activeTab: existingTab.index});
+                doTabMutation({...store, activeTab: existingTab.value.id});
                 return;
             }
 
@@ -285,7 +285,7 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
 
         }
 
-        function removeTab(id: number) {
+        function removeTab(id: TabID) {
 
             const store = storeProvider();
 
