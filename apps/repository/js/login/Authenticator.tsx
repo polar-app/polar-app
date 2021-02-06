@@ -19,6 +19,7 @@ import {
     useTriggerVerifyTokenAuth
 } from './AuthenticatorHooks';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import {Analytics} from "../../../../web/js/analytics/Analytics";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -139,6 +140,8 @@ const GoogleAuthButton = () => {
     const triggerAuth = useTriggerFirebaseGoogleAuth();
 
     const doTriggerAuth = React.useCallback(async () => {
+
+        Analytics.event2("auth:GoogleAuthButtonTriggered")
 
         setError(undefined);
 
@@ -277,6 +280,8 @@ const EmailTokenAuthButton = () => {
 
             try {
 
+                Analytics.event2("auth:EmailTokenAuthStarted")
+
                 setPending(true);
 
                 await triggerStartTokenAuth(email);
@@ -302,6 +307,8 @@ const EmailTokenAuthButton = () => {
     }, [triggerStartTokenAuth]);
 
     const handleTriggerStartTokenAuth = React.useCallback(() => {
+
+        Analytics.event2("auth:EmailTokenAuthTriggered")
 
         doTriggerStartTokenAuth(emailRef.current)
             .catch(err => console.log("Unable to handle auth: ", err));

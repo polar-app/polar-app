@@ -15,14 +15,25 @@ export type AuthStatus = 'needs-auth';
 
 function handleAuthResult(authResult: firebase.auth.UserCredential) {
 
+    function handleRedirect(newUser: boolean, redirectURL: string) {
+
+        Analytics.event2('auth:handleAuthResult', {newUser, redirectURL});
+
+        document.location.href = redirectURL;
+
+    }
+
     if (authResult.additionalUserInfo?.isNewUser) {
         console.log("New user authenticated");
+
+        // this is legacy...
         Analytics.event2('new-user-signup');
 
-        document.location.href = '/#welcome';
+        handleRedirect(true, '/#welcome');
 
     } else {
-        document.location.href = SignInSuccessURLs.get() || '/';
+        const redirectURL = SignInSuccessURLs.get() || '/';
+        handleRedirect(false, redirectURL);
     }
 
 }
@@ -34,6 +45,8 @@ export function useElectronWarningForGoogle() {
     return React.useCallback(() => {
 
         if (AppRuntime.isElectron()) {
+
+            Analytics.event2("auth:ElectronWarningForGoogle")
 
             dialogs.dialog({
                 type: 'warning',
@@ -75,12 +88,15 @@ export function useAuthHandler() {
 
         if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
 
+            // TODO this is no longer used and we back this out I think.
+
             const email = parseEmailFromLocation();
 
             // TODO: we need to be prompting for the user if they're attempting to login in
             // another browser session
 
             if (email) {
+
                 const authResult = await firebase.auth().signInWithEmailLink(email, location.href);
 
                 handleAuthResult(authResult);
@@ -143,6 +159,7 @@ export function useTriggerFirebaseGoogleAuth() {
             prompt: 'select_account'
         })
 
+        Analytics.event2('auth:TriggerFirebaseGoogleAuth')
         await auth.signInWithRedirect(provider);
 
         FirebaseUIAuth.authWithGoogle();
@@ -249,17 +266,24 @@ export function useTriggerVerifyTokenAuth() {
 
     return React.useCallback(async (email: string, challenge: string): Promise<IVerifyTokenAuthResponse | IVerifyTokenAuthResponseError> => {
 
+        Analytics.event2('auth:VerifyTokenAuth');
+
         const response = await executeCloudFunction('VerifyTokenAuth', {
             email, challenge
         });
 
+        Analytics.event2('auth:VerifyTokenAuthResult', {code: response.code});
+
         const auth = firebase.auth();
 
         if (response.code === 'ok') {
+
             console.log("Got response from VerifyTokenAuth and now calling signInWithCustomToken");
             const {customToken} = response;
+
             const userCredential = await auth.signInWithCustomToken(customToken);
             handleAuthResult(userCredential);
+
         }
 
         return response;
