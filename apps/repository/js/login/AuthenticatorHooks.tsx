@@ -256,6 +256,7 @@ export function useTriggerVerifyTokenAuth() {
         const auth = firebase.auth();
 
         if (response.code === 'ok') {
+            console.log("Got response from VerifyTokenAuth and now calling signInWithCustomToken");
             const {customToken} = response;
             const userCredential = await auth.signInWithCustomToken(customToken);
             handleAuthResult(userCredential);
