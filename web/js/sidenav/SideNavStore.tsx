@@ -38,11 +38,6 @@ export interface TabDescriptorInit {
      */
     readonly icon?: React.ReactNode;
 
-    /**
-     * The main content for the tab
-     */
-    readonly content?: React.ReactNode;
-
     readonly image?: ITabImage;
 
     readonly type: TabContentType;

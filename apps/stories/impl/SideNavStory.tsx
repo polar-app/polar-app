@@ -27,9 +27,6 @@ const createWebCard = (id: number): TabDescriptor => {
         icon: (
             <img src={DocCardImages.WEB_CARD_IMAGE_URL} alt='foo'/>
         ),
-        content: (
-            <div>this is the content for tab {id}</div>
-        ),
         image: {
             url: DocCardImages.WEB_CARD_IMAGE_URL,
             width: 200,
@@ -56,9 +53,6 @@ const createPDFCard = (id: number): TabDescriptor => {
         title: 'Large-scale Cluster Management at Google with Borg',
         icon: (
             <img src={DocCardImages.PDF_CARD_IMAGE_URL} alt='foo'/>
-        ),
-        content: (
-            <div>this is the content for tab {id}</div>
         ),
         image: {
             url: DocCardImages.PDF_CARD_IMAGE_URL,
