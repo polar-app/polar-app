@@ -40,6 +40,7 @@ https://www.youtube.com/watch?v=ByiFhtlI66A
     - clicking on a new node link will chagne the URL to a # url first and then only jump after that.
         - this is due to the fact that ckeditor is not yet loaded.
         - use the SAME event handler for both active and inactive in CKEditorActivator
+        - this is in NoteEditor
     
     - there's no way to link to a new node via text like [[ or ]] by creating a new one...
     

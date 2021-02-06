@@ -4,6 +4,7 @@ import {HTMLStr} from "polar-shared/src/util/Strings";
 import { Numbers } from "polar-shared/src/util/Numbers";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {INoteEditorMutator, NoteEditorMutators} from "../../../../web/js/notes/store/NoteEditorMutator";
+import {deepMemo} from "../../../../web/js/react/ReactUtils";
 
 export type EditorCursorPosition = number | 'before' | 'end';
 
@@ -82,17 +83,6 @@ const Active = (props: ActiveProps) => {
                                 defaultFocus={props.defaultFocus}/>
 
     );
-
-}
-
-interface InactiveProps {
-
-    readonly content: HTMLStr;
-
-    /**
-     * Called when we've been activated by clicking.
-     */
-    readonly onActivated: (offset: number) => void;
 
 }
 
@@ -187,11 +177,28 @@ namespace NodeTextBoundingClientRects {
 
 }
 
-const Inactive = (props: InactiveProps) => {
+interface InactiveProps {
+
+    readonly content: HTMLStr;
+
+    /**
+     * Called when we've been activated by clicking.
+     */
+    readonly onActivated: (offset: number) => void;
+
+    readonly onClickWhileInactive?: (event: React.MouseEvent) => void;
+
+}
+
+const Inactive = deepMemo((props: InactiveProps) => {
 
     const elementRef = React.useRef<HTMLDivElement |  null>(null);
 
     const handleClick = React.useCallback((event: React.MouseEvent) => {
+
+        if (props.onClickWhileInactive) {
+            props.onClickWhileInactive(event);
+        }
 
         // TODO: for some reason we can't click on an empty node
 
@@ -243,7 +250,7 @@ const Inactive = (props: InactiveProps) => {
 
         </div>
     );
-}
+});
 
 interface IProps {
 
@@ -263,6 +270,7 @@ interface IProps {
     readonly preEscaped?: boolean
     readonly defaultFocus?: boolean;
 
+    readonly onClickWhileInactive?: (event: React.MouseEvent) => void;
 
 }
 
@@ -370,6 +378,7 @@ export const CKEditorActivator = (props: IProps) => {
 
         return (
             <Inactive onActivated={setCursorPosition}
+                      onClickWhileInactive={props.onClickWhileInactive}
                       content={props.content}/>
         );
 

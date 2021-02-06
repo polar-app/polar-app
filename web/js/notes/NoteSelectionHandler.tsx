@@ -4,6 +4,7 @@ import { useNotesStore } from './store/NotesStore';
 
 interface IProps {
     readonly children: JSX.Element;
+    readonly style?: React.CSSProperties;
 }
 
 export const NoteSelectionHandler = observer(function NoteSelectionHandler(props: IProps) {
@@ -47,7 +48,7 @@ export const NoteSelectionHandler = observer(function NoteSelectionHandler(props
 
         }
 
-    }, [handleDelete]);
+    }, [handleDelete, store]);
 
     const handleClick = React.useCallback(() => {
         store.clearSelected();
@@ -64,7 +65,7 @@ export const NoteSelectionHandler = observer(function NoteSelectionHandler(props
     }, [onKeyDown])
 
     return (
-        <div onClick={handleClick}>
+        <div onClick={handleClick} style={props.style}>
             {props.children}
         </div>
     );

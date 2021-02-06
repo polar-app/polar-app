@@ -48,7 +48,7 @@ export const NoteRoot = observer((props: IProps) => {
     const id = note?.id;
 
     return (
-        <NoteSelectionHandler>
+        <NoteSelectionHandler style={{flexGrow: 1}}>
             <NoteStyle>
                 <MUIBrowserLinkStyle style={{flexGrow: 1}}>
 

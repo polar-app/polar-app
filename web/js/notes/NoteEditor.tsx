@@ -137,6 +137,7 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
     const store = useNotesStore()
     const setEditor = useSetEditorStore();
     const noteActivated = store.getNoteActivated(props.id);
+    const onClickWhileInactive = useLinkNavigationClickHandler();
 
     const note = store.getNote(id);
 
@@ -179,7 +180,8 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
                            defaultFocus={props.id === noteActivated?.note.id}
                            preEscaped={true}
                            escaper={escaper}
-                           onEditorMutator={handleEditorMutator}/>
+                           onEditorMutator={handleEditorMutator}
+                           onClickWhileInactive={onClickWhileInactive}/>
     );
 
 });
