@@ -1,5 +1,5 @@
 ---
-title: [Review] The 15 Best Anki Add-Ons to Boost Your College Performance in 2021
+title: Review - The 15 Best Anki Add-Ons to Boost Your College Performance in 2021
 date: 2021-02-08T08:00:00.000-08:00
 layout: post
 description: Anki is an omnipresent flashcard tool for college students. In this article, we look in depth at the most popular add-ons used by college students
