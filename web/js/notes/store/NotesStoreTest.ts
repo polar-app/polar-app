@@ -7,6 +7,7 @@ import {assert} from 'chai';
 import {isObservable, isObservableProp} from 'mobx';
 import {ReverseIndex} from "./ReverseIndex";
 import {Note} from "./Note";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 // TODO:
 
@@ -30,10 +31,12 @@ import {Note} from "./Note";
 describe('NotesStore', function() {
 
     beforeEach(() => {
+        console.log("Freezing time...");
         TestingTime.freeze()
     });
 
     afterEach(() => {
+        console.log("Unfreezing time...");
         TestingTime.unfreeze();
     });
 
@@ -76,7 +79,6 @@ describe('NotesStore', function() {
         });
 
     });
-
 
     it("initial store sanity", () => {
 
@@ -442,7 +444,6 @@ describe('NotesStore', function() {
 
     });
 
-
     describe("prevSibling", () => {
 
         it("no prev sibling", () => {
@@ -556,7 +557,6 @@ describe('NotesStore', function() {
 
     });
 
-
     it("doDelete", () => {
 
         const store = createStore();
@@ -640,6 +640,109 @@ describe('NotesStore', function() {
             index.remove('102', '101');
 
             assertJSON(index.get('102'), []);
+
+        });
+
+    });
+
+    describe("createNewNote", () => {
+
+        it("Make sure first child when having existing children.", () => {
+
+            const store = createStore();
+
+            const note = store.getNote('102');
+
+            TestingTime.forward(60 * 1000);
+
+            const now = ISODateTimeStrings.create();
+
+            assertJSON(note!.items, [
+                "103",
+                "104",
+                "105"
+            ]);
+
+            const createdNote = store.createNewNote('102');
+
+            assertJSON(note!.items, [
+                createdNote.id,
+                "103",
+                "104",
+                "105"
+            ]);
+
+            const newNote = store.getNote(createdNote.id)!;
+
+            assert.equal(newNote.created, now);
+            assert.equal(newNote.updated, now);
+            assert.equal(newNote.parent, note!.id);
+
+            assert.equal(note!.updated, now);
+
+            // assertJSON(store, {});
+
+        });
+
+        it("Add child to root node with no children", () => {
+
+            const store = createStore();
+
+            const note = store.getNote('102');
+
+            store.doDelete(['103', '104', '105']);
+
+            assertJSON(note!.items, [
+            ]);
+
+            const createdNote = store.createNewNote('102');
+            assertJSON(note!.items, [
+                createdNote.id,
+            ]);
+
+        });
+
+        it("Make sure it's the child of an expanded note", () => {
+
+            const store = createStore();
+
+            function createNoteWithoutExpansion() {
+
+                const createdNote = store.createNewNote('105');
+
+                assert.equal(createdNote.parent, '102');
+
+                const note = store.getNote('102');
+
+                assertJSON(note!.items, [
+                    "103",
+                    "104",
+                    "105",
+                    createdNote.id
+                ]);
+
+            }
+
+            function createNoteWithExpansion() {
+                store.expand('105');
+
+                const createdNote = store.createNewNote('105');
+
+                assert.equal(createdNote.parent, '105');
+
+                const note = store.getNote('105');
+
+                assertJSON(note!.items, [
+                    createdNote.id,
+                    "106"
+                ]);
+
+            }
+
+            createNoteWithoutExpansion();
+            createNoteWithExpansion();
+
+
 
         });
 

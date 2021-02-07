@@ -25,16 +25,9 @@ export function useNoteNavigationEnterHandler(opts: IOpts) {
 
         eventData.stop();
 
-        if (parent) {
-
-            const editorSplit = editorSplitter();
-            editorSetContent(markdown2html(editorSplit.prefix));
-            store.createNewNote(parent, id, 'split', editorSplit);
-
-
-        } else {
-            store.createNewNote(id, undefined, 'before');
-        }
+        const editorSplit = editorSplitter();
+        editorSetContent(markdown2html(editorSplit.prefix));
+        store.createNewNote(id, editorSplit);
 
     }, [editorSetContent, editorSplitter, id, parent, store]);
 

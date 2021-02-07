@@ -12,10 +12,6 @@ https://www.youtube.com/watch?v=ByiFhtlI66A
 
 # TODO
 
-    - typing 'enter' on a node that has nested children doesn't create the child-node in teh right place.
-        - it creates it not based on the linear flow but on as a sibling 
-    
-    
     - enter on an image node doesn't create a new node...  
 
     - BLOCKER: make sure sharing system is designed properly and make sure permissions will work.

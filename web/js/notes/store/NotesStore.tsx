@@ -92,6 +92,21 @@ export interface NavOpts {
     readonly shiftKey: boolean;
 }
 
+/**
+ * The result of a createNote operation.
+ */
+export interface ICreatedNote {
+    /**
+     * The ID of the newly created note.
+     */
+    readonly id: NoteIDStr;
+
+    /**
+     * The parent of the newly created note.
+     */
+    readonly parent: NoteIDStr;
+}
+
 export class NotesStore {
 
     @observable _noteEditors: {[id: string]: INoteEditorMutator} = {}
@@ -414,7 +429,6 @@ export class NotesStore {
      * - D
      *
      * The result would be [A, B, C, D]
-     *
      */
     private computeLinearExpansionTree(id: NoteIDStr,
                                        root: boolean = true): ReadonlyArray<NoteIDStr> {
@@ -425,7 +439,6 @@ export class NotesStore {
             console.warn("No note: ", id);
             return [];
         }
-
 
         const isExpanded = root ? true : this._expanded[id];
 
@@ -446,6 +459,37 @@ export class NotesStore {
         }
 
     }
+
+    // FIXME: make this the default...
+    private computeLinearExpansionTree2(id: NoteIDStr): ReadonlyArray<NoteIDStr> {
+
+        const note = this._index[id];
+
+        if (! note) {
+            console.warn("No note: ", id);
+            return [];
+        }
+
+        const isExpanded = this._expanded[id];
+
+        if (isExpanded) {
+            const items = (note.items || []);
+
+            const result = [];
+
+            for (const item of items) {
+                result.push(item);
+                result.push(...this.computeLinearExpansionTree(item, false));
+            }
+
+            return result;
+
+        } else {
+            return [];
+        }
+
+    }
+
 
     @action public setActive(active: NoteIDStr | undefined) {
         this._active = active;
@@ -562,72 +606,11 @@ export class NotesStore {
 
     }
 
-    @action public createNewNote(parent: NoteIDStr,
-                                 child: NoteIDStr | undefined,
-                                 pos: NewNotePosition,
-                                 split?: ISplitNote) {
-
-        const index = this._index;
-
-        const id = Hashcodes.createRandomID();
-
-        const parentNote = this._index[parent];
-
-        if (! parentNote) {
-            throw new Error("No parent note");
-        }
-
-        function createNewNote(): INote {
-            const now = ISODateTimeStrings.create()
-            return {
-                id,
-                parent,
-                type: 'item',
-                content: split?.suffix || '',
-                created: now,
-                updated: now,
-                items: [],
-                links: []
-            };
-        }
-
-        const newNote = createNewNote();
-
-        this.doPut([newNote]);
-
-        // TODO: is before actually used/needed her?
-
-        function computeNewChildPosition(): INewChildPosition | undefined {
-            if (child) {
-                return {
-                    ref: child,
-                    pos: 'after'
-                };
-            } else {
-                return undefined;
-            }
-        }
-
-        parentNote.addItem(newNote.id, computeNewChildPosition());
-
-        if (split?.prefix && child) {
-
-            const currentNote = index[child];
-            currentNote.setContent(split.prefix);
-
-        }
-
-        this._active = newNote.id;
-        this._activePos = 'start';
-
-    }
-
     /**
      * Create a new note in reference to the note with given ID.
      */
-    @action public createNewNote2(id: NoteIDStr,
-                                  pos: NewNotePosition,
-                                  split?: ISplitNote) {
+    @action public createNewNote(id: NoteIDStr,
+                                 split?: ISplitNote): ICreatedNote {
 
         // *** we first have to compute the new parent this has to be computed
         // based on the expansion tree because if the current note setup is like:
@@ -655,43 +638,68 @@ export class NotesStore {
         //     - first child item
         // - second
 
-        interface INewNotePosition extends INewChildPosition {
+        /**
+         * A new note instruction that creates the note relative to a sibling
+         * and provides the parent.
+         */
+        interface INewNotePositionRelative {
+            readonly type: 'relative';
             readonly parentNote: Note;
-
+            readonly ref: NoteIDStr;
+            readonly pos: NewChildPos;
         }
 
-        const computeNewNotePosition = (): INewNotePosition => {
+        interface INewNotePositionFirstChild {
+            readonly type: 'first-child';
+            readonly parentNote: Note;
+        }
 
-            const linearExpansionTree = this.computeLinearExpansionTree(id);
+        const computeNewNotePosition = (): INewNotePositionRelative | INewNotePositionFirstChild => {
 
-            const idx = linearExpansionTree.indexOf(id);
+            const linearExpansionTree = this.computeLinearExpansionTree2(id);
 
-            if (idx === -1) {
-                // this shouldn't happen because it means that we didn't find the
-                // current note in the expansion tree.
-                throw new Error("Not id not in expansion tree: " + id);
-            }
+            const nextNoteID = Arrays.first(linearExpansionTree);
 
-            const nextNoteID = Arrays.nextSibling(linearExpansionTree, idx);
-
-
-            const createNewNotePosition = (ref: NoteIDStr, pos: NewChildPos): INewNotePosition => {
+            const createNewNotePositionRelative = (ref: NoteIDStr, pos: NewChildPos): INewNotePositionRelative => {
 
                 const note = this.getNote(ref)!;
                 const parentNote = this.getNote(note.parent!)!;
 
                 return {
+                    type: 'relative',
                     parentNote,
                     ref,
                     pos
-                }
+                };
 
             }
 
             if (nextNoteID) {
-                return createNewNotePosition(nextNoteID, 'before')
+                return createNewNotePositionRelative(nextNoteID, 'before')
             } else {
-                return createNewNotePosition(id, 'before')
+
+                const note = this.getNote(id)!;
+
+                if (note.parent) {
+
+                    const parentNote = this.getNote(note.parent)!;
+
+                    return {
+                        type: 'relative',
+                        parentNote,
+                        ref: id,
+                        pos: 'after'
+                    }
+
+                } else {
+
+                    return {
+                        type: 'first-child',
+                        parentNote: note
+                    }
+
+                }
+
             }
 
 
@@ -700,7 +708,7 @@ export class NotesStore {
         function createNewNote(parentNote: Note): INote {
             const now = ISODateTimeStrings.create()
             return {
-                id,
+                id: Hashcodes.createRandomID(),
                 parent: parentNote.id,
                 type: 'item',
                 content: split?.suffix || '',
@@ -719,7 +727,15 @@ export class NotesStore {
 
         this.doPut([newNote]);
 
-        parentNote.addItem(newNote.id, newNotePosition);
+        switch(newNotePosition.type) {
+            case "relative":
+                parentNote.addItem(newNote.id, newNotePosition);
+                break;
+            case "first-child":
+                parentNote.addItem(newNote.id, 'first-child');
+                break;
+
+        }
 
         if (split?.prefix !== undefined) {
 
@@ -731,6 +747,10 @@ export class NotesStore {
         this._active = newNote.id;
         this._activePos = 'start';
 
+        return {
+            id: newNote.id,
+            parent: newNote.parent!
+        };
     }
 
 

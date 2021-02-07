@@ -111,10 +111,13 @@ export class Note implements INote {
         this._updated = ISODateTimeStrings.create();
     }
 
-    @action addItem(id: NoteIDStr, pos?: INewChildPosition) {
+    @action addItem(id: NoteIDStr, pos?: INewChildPosition | 'first-child') {
 
+        if (pos === 'first-child') {
 
-        if (pos) {
+            this._items.unshift(id);
+
+        } else if (pos) {
 
             const idx = this._items.indexOf(pos.ref);
 
