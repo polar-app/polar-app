@@ -6,7 +6,6 @@ import {ErrorResponses} from './ErrorResponses';
 import {IDUser} from './IDUsers';
 import {UserRequests} from './UserRequests';
 import { Rollbars } from './Rollbars';
-import {RollbarReporters} from "../reporters/RollbarReporters";
 import {SentryReporters} from "../reporters/SentryReporter";
 
 const rollbar = Rollbars.create();
@@ -21,10 +20,11 @@ export class ExpressFunctions {
 
         const app = this.createApp();
 
+        // https://expressjs.com/en/resources/middleware/cors.html#configuring-cors
         app.use(bodyParser.json());
         app.use(cors({ origin: true }));
 
-        app.use((req, res, next) => {
+        app.use(cors({ origin: true }), (req, res, next) => {
 
             async function doAsync() {
                 await delegate(req, res, next);
@@ -47,7 +47,7 @@ export class ExpressFunctions {
         app.use(bodyParser.json());
         app.use(cors({ origin: true }));
 
-        app.use((req, res, next) => {
+        app.use(cors({ origin: true }), (req, res, next) => {
 
             try {
                 delegate(req, res, next);
