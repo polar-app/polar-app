@@ -13,6 +13,7 @@ import firebase from 'firebase/app'
 import {MachineID, MachineIDs} from "polar-shared/src/util/MachineIDs";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 import DocumentSnapshot = firebase.firestore.DocumentSnapshot;
+import {IDocumentSnapshot} from "polar-snapshot-cache/src/store/IDocumentSnapshot";
 
 const log = Logger.create();
 
@@ -45,7 +46,7 @@ export class MachineDatastores {
 
     }
 
-    private static toDoc(snapshot: DocumentSnapshot) {
+    private static toDoc(snapshot: IDocumentSnapshot) {
 
         if (! snapshot.exists) {
             return;

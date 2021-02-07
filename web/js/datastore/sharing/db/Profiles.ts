@@ -14,13 +14,13 @@ import {
     ProfileIDStr,
     ProfileRecordTuple
 } from "polar-firebase/src/firebase/om/Profiles";
-import DocumentReference = firebase.firestore.DocumentReference;
+import { IDocumentReference } from 'polar-snapshot-cache/src/store/IDocumentReference';
 
 export class Profiles {
 
     public static readonly COLLECTION = 'profile';
 
-    public static async doc(id: ProfileIDStr): Promise<[HandleStr, DocumentReference]> {
+    public static async doc(id: ProfileIDStr): Promise<[HandleStr, IDocumentReference]> {
         const firestore = await Firestore.getInstance();
         const doc = firestore.collection(this.COLLECTION).doc(id);
         return [id, doc];

@@ -57,7 +57,9 @@ describe('DocMetaSnapshotEventListener', function() {
             docMetaProvider: AsyncProviders.of(docMeta),
             docInfoProvider: AsyncProviders.of(docMeta.docInfo),
             docMetaFileRefProvider: AsyncProviders.of(DocMetaFileRefs.createFromDocInfo(docMeta.docInfo)),
-            mutationType
+            mutationType,
+            fromCache: true,
+            hasPendingWrites: false
         };
 
         const docMetaSnapshotEvent = {

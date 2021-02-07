@@ -9,12 +9,13 @@ import {
     HandleStr, ProfileIDStr,
     UserIDStr
 } from "polar-firebase/src/firebase/om/Profiles";
+import { IDocumentReference } from 'polar-snapshot-cache/src/store/IDocumentReference';
 
 export class ProfileOwners {
 
     public static readonly COLLECTION = 'profile_owner';
 
-    public static async doc(id: UserIDStr): Promise<[HandleStr, DocumentReference]> {
+    public static async doc(id: UserIDStr): Promise<[HandleStr, IDocumentReference]> {
         const firestore = await Firestore.getInstance();
         const doc = firestore.collection(this.COLLECTION).doc(id);
         return [id, doc];

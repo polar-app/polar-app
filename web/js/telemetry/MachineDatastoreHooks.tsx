@@ -5,6 +5,7 @@ import firebase from 'firebase/app'
 import {OnErrorCallback} from "polar-shared/src/util/Snapshots";
 import DocumentSnapshot = firebase.firestore.DocumentSnapshot;
 import {useSnapshots} from "../ui/data_loader/UseSnapshotSubscriber";
+import {IDocumentSnapshot} from "polar-snapshot-cache/src/store/IDocumentSnapshot";
 
 export namespace MachineDatastoreHooks {
 
@@ -22,7 +23,7 @@ export namespace MachineDatastoreHooks {
 
     }
 
-    function toDoc(snapshot: DocumentSnapshot) {
+    function toDoc(snapshot: IDocumentSnapshot) {
 
         if (! snapshot.exists) {
             return;
@@ -42,7 +43,7 @@ export namespace MachineDatastoreHooks {
         return (onNext: (machineDatastore: MachineDatastore) => void,
                 onError: OnErrorCallback = ERR_HANDLER) => {
 
-            return ref.onSnapshot((snapshot: DocumentSnapshot) => {
+            return ref.onSnapshot((snapshot: IDocumentSnapshot) => {
 
                 const doc = toDoc(snapshot);
 
