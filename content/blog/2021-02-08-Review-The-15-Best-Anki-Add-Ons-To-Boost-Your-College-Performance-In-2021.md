@@ -91,7 +91,7 @@ The Polar add-on for Anki allows you to sync your flashcards from Polar to Anki 
 
 Finally, Polar allows you to keep track of all reading - be it PDF, EPUB, or web pages, with things like tags, folders, reading progress tracking, and more!
 
-<img class="img-fluid" src="https://imgur.com/a/IBLB8IP">
+<img class="img-fluid" src="https://imgur.com/a/IBLB8IP.jpg">
 
 Updates: Regular
 
