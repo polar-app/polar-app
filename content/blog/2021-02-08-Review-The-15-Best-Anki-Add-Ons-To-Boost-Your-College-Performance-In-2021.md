@@ -91,8 +91,6 @@ The Polar add-on for Anki allows you to sync your flashcards from Polar to Anki 
 
 Finally, Polar allows you to keep track of all reading - be it PDF, EPUB, or web pages, with things like tags, folders, reading progress tracking, and more!
 
-<img class="img-fluid" src="https://imgur.com/a/IBLB8IP.jpg">
-
 Updates: Regular
 
 Popularity: Very popular (Only works through AnkiConnect)
@@ -107,8 +105,6 @@ The changes that you make are applied to all selected notes that are featured in
 
 <a href="https://www.youtube.com/watch?v=iCZzcSnAeH4&feature=youtu.be" target="_blank">Here's</a> an instructional video on how to use this add-on.
 
-<img class="img-fluid" src="https://imgur.com/a/6yOIilD">  
-  
 Updates: Regular
 
 Popularity: Popular (66 upvotes)
@@ -118,8 +114,6 @@ Anki code: 291119185
 ### 3.  <a href="https://ankiweb.net/shared/info/2116130837" target="_blank">More Overview Stats</a>  
 
 As the name indicates, this Anki plugin adds more stats to your overview page. This way you can keep track of your learning progress. It even adds colors to the labels for a different touch to the Anki stats page. When you hover over the colors, they show you the cards in the following order: new, learn, review, buried, and suspended.
-
-<img class="img-fluid" src="https://imgur.com/a/LzTJxs3">  
 
 Updates: Infrequent
 
@@ -135,8 +129,6 @@ The Pokemanki add-on will keep you motivated to use Anki by letting you catch an
 
 You can access your Pokemons under your Stats screen. They will be above all your figures and charts. You will be able to see Pokemons for specific decks and their origin. Just review the deck to keep on training them
 
-<img class="img-fluid" src="https://imgur.com/a/cSZNvnj">  
-
 Updates: Regular
 
 Popularity: Very popular (73 upvotes)
@@ -148,8 +140,6 @@ Anki code: 633922407
 Kittens rule the internet, and they have taken over Anki decks as well. Kitten Rewards is an Anki add-on which acts as an excellent learning motivator. This add-on has a simple concept: it adds a "cute kitten" on the congrats screen after a deck is finished. So if you lack motivation to study, use this add-on to get back on track.
 
 What's more? You can upload your own kitten pictures as well :)
-
-<img class="img-fluid" src="https://imgur.com/a/3oBfNPS">   
 
 Updates: Infrequent
 
@@ -165,8 +155,6 @@ It has many themes that you can use with your cards. Simply download a particula
 
 Users have reviewed this add-on writing that they get a "dopamine hit" every time they finish a card.
 
-<img class="img-fluid" src="https://imgur.com/a/J0ZGduz">   
-
 Updates: Infrequent
 
 Popularity: Somewhat popular (14 upvotes)
@@ -180,8 +168,6 @@ A little RPG magic always does the trick. No, we are not talking about Skyrim â€
 Anki Habitica is supported across platforms. It works by adding points to your Habitica stats as you progress through your cards. With these points added to your Habitica character, you can battle your friends and slay monsters.
 
 It's a really cool add-on if you already use Habitica. If not, give it a try and motivate yourself to achieve your goals. Over 2,000,000 people are having fun through Habitica while achieving their goals.
-
-<img class="img-fluid" src="https://imgur.com/a/b1MAxi9">   
 
 Updates: Regular
 
@@ -197,8 +183,6 @@ The whole point of Anki is to make memorization more efficient. Now imagine this
 
 With the ImageResizer add-on, you can resize all the images to the desired format and make sure that the image size is not a problem anymore. To change the shortcut and the size of the photos you are using, click on Tools, and then go to ImageResizer. The add-on page has a great tutorial to figure out exactly how to use this add-on to your advantage.
 
-<img class="img-fluid" src="https://imgur.com/a/F2ejFeO">   
-
 Updates: Infrequent
 
 Popularity: Popular (67 upvotes)
@@ -213,8 +197,6 @@ The Occlusion Enhanced Addon is designed to do just that. You can use it to memo
 
 There's even a series of video tutorials on how to use the add-on.
 
-<img class="img-fluid" src="https://imgur.com/a/gq0YWtc">   
-
 Updates: Frequent
 
 Popularity: Very popular (315 upvotes)
@@ -224,8 +206,6 @@ Anki code: 1374772155
 ### 3.  <a href="https://ankiweb.net/shared/info/561924305" target="_blank">Batch Download Pictures from Google Images</a>
 
 Wouldnâ€™t it be great if you can batch download pictures to Anki through an add-on so that you can later use them in your cards? This add-on for Anki downloads pictures from Google Images into a destination field. You also get to select how many pictures to download and choose the maximum height and width for them.
-
-<img class="img-fluid" src="https://imgur.com/a/qrCuaxK">   
 
 Updates: Frequent
 
@@ -238,8 +218,6 @@ Anki code: 561924305
 While studying, it's always great to track your progress. Anki does come with some stats that you can look at, but the Review Heatmap add-on gives you an advanced tracking functionality. It's a great Anki plugin for college students as it shows you your daily review averages, days learned, current streak, and longest streak.
 
 The newest release for Anki 2.1 is still in Beta, and you can download it from <a href="https://github.com/glutanimate/review-heatmap/releases" target="_blank">here</a>. This Anki plugin also integrates well with the Night Mode add-on.
-
-<img class="img-fluid" src="https://imgur.com/i6ZF8x2">   
 
 Updates: Regular
 
