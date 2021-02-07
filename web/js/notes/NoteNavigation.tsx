@@ -231,7 +231,7 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
 
         return unsubscribe;
 
-    }, [editor, handleEditorEnter, handleEditorKeyDown, handleEditorSelection]);
+    }, [editor, handleDelete, handleEditorEnter, handleEditorKeyDown, handleEditorSelection]);
 
     return (
         <>
