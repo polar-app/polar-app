@@ -225,6 +225,7 @@ describe('NotesStore', function() {
                 "Winston Churchill": "112",
                 "World War II": "102"
             },
+            "_noteEditors": {},
             "_reverse": {
                 "index": {
                     "102": [
@@ -497,7 +498,7 @@ describe('NotesStore', function() {
             assert.isUndefined(store.getNote('104'));
 
             assertJSON(store.getNote('103'), {
-                "_content": "[Lasted](https://www.example.com) from 1939 to 1945Axis Powers: Germany, Italy, Japan",
+                "_content": "[Lasted](https://www.example.com) from 1939 to 1945 Axis Powers: Germany, Italy, Japan",
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "103",
                 "_items": [],

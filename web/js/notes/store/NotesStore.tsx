@@ -61,9 +61,11 @@ interface DoPutOpts {
 
 export type NewNotePosition = 'before' | 'after' | 'split';
 
+export type NewChildPos = 'before' | 'after';
+
 export interface INewChildPosition {
     readonly ref: NoteIDStr;
-    readonly pos: 'before' | 'after';
+    readonly pos: NewChildPos;
 }
 
 export interface ISplitNote {
@@ -354,7 +356,7 @@ export class NotesStore {
 
         const items = [
             this.root,
-            ...this.computeLinearItemsFromExpansionTree(this.root)
+            ...this.computeLinearExpansionTree(this.root)
         ];
 
         const childIndex = items.indexOf(this._active);
@@ -400,8 +402,22 @@ export class NotesStore {
 
     }
 
-    private computeLinearItemsFromExpansionTree(id: NoteIDStr,
-                                                root: boolean = true): ReadonlyArray<NoteIDStr> {
+    /**
+     * A 'linear' expansion tree is are the list of expanded nodes as a series
+     * as if you enumerated them from top to bottom.
+     *
+     * So for example:
+     *
+     * - A
+     *     - B
+     *     - C
+     * - D
+     *
+     * The result would be [A, B, C, D]
+     *
+     */
+    private computeLinearExpansionTree(id: NoteIDStr,
+                                       root: boolean = true): ReadonlyArray<NoteIDStr> {
 
         const note = this._index[id];
 
@@ -420,7 +436,7 @@ export class NotesStore {
 
             for (const item of items) {
                 result.push(item);
-                result.push(...this.computeLinearItemsFromExpansionTree(item, false));
+                result.push(...this.computeLinearExpansionTree(item, false));
             }
 
             return result;
@@ -561,9 +577,8 @@ export class NotesStore {
             throw new Error("No parent note");
         }
 
-        const now = ISODateTimeStrings.create()
-
         function createNewNote(): INote {
+            const now = ISODateTimeStrings.create()
             return {
                 id,
                 parent,
@@ -608,9 +623,121 @@ export class NotesStore {
     }
 
     /**
+     * Create a new note in reference to the note with given ID.
+     */
+    @action public createNewNote2(id: NoteIDStr,
+                                  pos: NewNotePosition,
+                                  split?: ISplitNote) {
+
+        // *** we first have to compute the new parent this has to be computed
+        // based on the expansion tree because if the current note setup is like:
+        //
+        // - first
+        // - second
+        //
+        // and we are creating a note on 'first' then the new note should be
+        // between first and second like:
+        //
+        //
+        // - first
+        // - *new note*
+        // - second
+        //
+        // However if we have:
+        //
+        // - first
+        //     - first child item
+        // - second
+        //
+        // then we have to create it like:
+        // - first
+        //     - *new note*
+        //     - first child item
+        // - second
+
+        interface INewNotePosition extends INewChildPosition {
+            readonly parentNote: Note;
+
+        }
+
+        const computeNewNotePosition = (): INewNotePosition => {
+
+            const linearExpansionTree = this.computeLinearExpansionTree(id);
+
+            const idx = linearExpansionTree.indexOf(id);
+
+            if (idx === -1) {
+                // this shouldn't happen because it means that we didn't find the
+                // current note in the expansion tree.
+                throw new Error("Not id not in expansion tree: " + id);
+            }
+
+            const nextNoteID = Arrays.nextSibling(linearExpansionTree, idx);
+
+
+            const createNewNotePosition = (ref: NoteIDStr, pos: NewChildPos): INewNotePosition => {
+
+                const note = this.getNote(ref)!;
+                const parentNote = this.getNote(note.parent!)!;
+
+                return {
+                    parentNote,
+                    ref,
+                    pos
+                }
+
+            }
+
+            if (nextNoteID) {
+                return createNewNotePosition(nextNoteID, 'before')
+            } else {
+                return createNewNotePosition(id, 'before')
+            }
+
+
+        }
+
+        function createNewNote(parentNote: Note): INote {
+            const now = ISODateTimeStrings.create()
+            return {
+                id,
+                parent: parentNote.id,
+                type: 'item',
+                content: split?.suffix || '',
+                created: now,
+                updated: now,
+                items: [],
+                links: []
+            };
+        }
+
+        const newNotePosition = computeNewNotePosition();
+
+        const {parentNote} = newNotePosition;
+
+        const newNote = createNewNote(parentNote);
+
+        this.doPut([newNote]);
+
+        parentNote.addItem(newNote.id, newNotePosition);
+
+        if (split?.prefix !== undefined) {
+
+            const currentNote = this.getNote(id)!;
+            currentNote.setContent(split.prefix);
+
+        }
+
+        this._active = newNote.id;
+        this._activePos = 'start';
+
+    }
+
+
+    /**
      * Make the active note a child of the prev sibling.
      *
-     * @return The new parent NoteID or the code as to why it couldn't be reparented.
+     * @return The new parent NoteID or the code as to why it couldn't be re-parented.
      */
     public doIndent(id: NoteIDStr): IMutation<'no-note' | 'no-parent' | 'no-parent-note' | 'no-sibling', NoteIDStr> {
 
@@ -731,18 +858,18 @@ export class NotesStore {
                 return undefined;
             }
 
-            const expansionTree = this.computeLinearItemsFromExpansionTree(note.parent);
+            const linearExpansionTree = this.computeLinearExpansionTree(note.parent);
 
             // the indexes of the notes we should remove
             const deleteIndex = arrayStream(notes)
-                                   .map(current => expansionTree.indexOf(current))
+                                   .map(current => linearExpansionTree.indexOf(current))
                                    .filter(current => current !== -1)
                                    .sort((a, b) => a - b)
                                    .first()
 
             if (deleteIndex !== undefined && deleteIndex > 0) {
 
-                const nextActive = expansionTree[deleteIndex - 1];
+                const nextActive = linearExpansionTree[deleteIndex - 1];
 
                 return {
                     active: nextActive,
@@ -845,7 +972,6 @@ export class NotesStore {
     @observable public getNoteEditorMutators(): ReadonlyArray<INoteEditorMutator> {
         return Object.values(this._noteEditors);
     }
-
 
     @action public setNoteEditorMutator(id: NoteIDStr, editor: INoteEditorMutator) {
         return this._noteEditors[id] = editor;

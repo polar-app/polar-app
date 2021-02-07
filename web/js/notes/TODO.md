@@ -12,8 +12,11 @@ https://www.youtube.com/watch?v=ByiFhtlI66A
 
 # TODO
 
-
-
+    - typing 'enter' on a node that has nested children doesn't create the child-node in teh right place.
+        - it creates it not based on the linear flow but on as a sibling 
+    
+    
+    - enter on an image node doesn't create a new node...  
 
     - BLOCKER: make sure sharing system is designed properly and make sure permissions will work.
     
@@ -26,12 +29,12 @@ https://www.youtube.com/watch?v=ByiFhtlI66A
             node that we're linking to would be burtonator/Berlin but it's namespaced when I 
             import other notes via snapshots. 
       
-    - Handle proper sizing of images:            
+    - Handle proper sizing of images on high DPI displays with window.devicePixelRatio
+    
         - https://ckeditor.com/docs/ckeditor5/latest/features/image-upload/image-upload.html
         - https://ckeditor.com/docs/ckeditor5/latest/api/module_image_image_imageinsertcommand-ImageInsertCommand.html
         - https://ckeditor.com/docs/ckeditor5/latest/api/module_image_imageresize_imageresizecommand-ImageResizeCommand.html
                 
-    - enter when an image is shown doesn't create a new node
     
                 
     - if I select shift, down/up arrow, and the cursor is in the middle of an item it should select the beginning 
@@ -39,16 +42,23 @@ https://www.youtube.com/watch?v=ByiFhtlI66A
           
     - Don't allow images, formatting, etc in named nodes. Do it with just a
       plain textarea I think...
+        - this has to wait until I use the new IBlock work...
           
-    - I don't htink the citation text at the bottom should be editable... 
+    - I don't think the citation text at the bottom should be editable... 
+        - "All notes that reference this note:"
+        
+        - if it's editable it needs the same semantics as regular notes
+          including creating sub-bullets.
           
-    - clicking on a URL, which is the SAME, brings up the native ckeditor URL prompt thing.
+    - clicking on a URL, which is the same URL of the one we're currently
+      viewing, brings up the native ckeditor URL prompt thing.
     
     - there's no way to link to a new node via text like [[ or ]] by creating a new one...
-    
-    - shift+click on another node should select the range between the nodes
-    
-    - ctrl+click should select individual nodes.
+  
+    - mouse selection:   
+        - shift+click on another node should select the range between the nodes
+        
+        - ctrl+click should select individual nodes.
 
     - using the action menu to link to existing nodes doesn't really work just yet
 
