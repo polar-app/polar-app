@@ -30,7 +30,7 @@ Because the number of Anki add-ons is almost unlimited, it takes ages to try the
 That being said, let’s get started guys!
 
 <img class="img-fluid" src="https://imgur.com/a/G5DZBPF">
-
+ 
 ## Interface
 
 ### 1.  <a href="https://ankiweb.net/shared/info/1496166067" target="_blank">Night mode</a>    
