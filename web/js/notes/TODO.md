@@ -1,15 +1,8 @@
-# Main bugs
 
-    - navigation is the main issue I think... 
-    - 
+# Review These Roam Videos
 
-# Major Navigation Features and input.
-    - up down should select the next node
-
-main/suggested roam links... 
-
-https://www.youtube.com/watch?v=v9s3pusI1JQ
-https://www.youtube.com/watch?v=lHkMq3aqDtw
+DONE: https://www.youtube.com/watch?v=v9s3pusI1JQ
+DONE: https://www.youtube.com/watch?v=lHkMq3aqDtw
 https://www.youtube.com/watch?v=3SwQ4usbCX4
 https://www.youtube.com/watch?v=nROryUttSr0
 https://www.youtube.com/watch?v=BnwWdTnXlxU
@@ -17,13 +10,12 @@ https://www.youtube.com/watch?v=asQ4RSjjCu4
 https://www.youtube.com/watch?v=7b2AVCZOMnw
 https://www.youtube.com/watch?v=ByiFhtlI66A
 
-# New TODO since MobX adopted:
+# TODO
+
+
+
 
     - BLOCKER: make sure sharing system is designed properly and make sure permissions will work.
-    
-        - how are we going to do permissions on the notes since there isn't a
-          'KEY' we can really use unless we build a synethetic one and make sure
-          all note creation includes them.
     
         - We would have to copy all the keys from the parent when working with the children
         
@@ -34,10 +26,19 @@ https://www.youtube.com/watch?v=ByiFhtlI66A
             node that we're linking to would be burtonator/Berlin but it's namespaced when I 
             import other notes via snapshots. 
       
-    - BLOCKER: what happens in Roam when 
-          
+    - Handle proper sizing of images:            
+        - https://ckeditor.com/docs/ckeditor5/latest/features/image-upload/image-upload.html
+        - https://ckeditor.com/docs/ckeditor5/latest/api/module_image_image_imageinsertcommand-ImageInsertCommand.html
+        - https://ckeditor.com/docs/ckeditor5/latest/api/module_image_imageresize_imageresizecommand-ImageResizeCommand.html
+                
+    - enter when an image is shown doesn't create a new node
+    
+                
     - if I select shift, down/up arrow, and the cursor is in the middle of an item it should select the beginning 
       of the note from the cursor or to the end of the note from the cursor. 
+          
+    - Don't allow images, formatting, etc in named nodes. Do it with just a
+      plain textarea I think...
           
     - I don't htink the citation text at the bottom should be editable... 
           
@@ -194,9 +195,17 @@ https://www.youtube.com/watch?v=ByiFhtlI66A
         - use the store to select an action...
         - we have to catch the action menu at the window level...  
 
-    - strategy for drag and drop...
+    - strategy for drag and drop and moving notes around that way
 
-# New MobX store notes
+    - when at the end of the note, if we arrow right, then we have to go to 
+      the beginning of the next note.
+
+    - when at the begginning of the note, if we arrow left, then we have to go
+      to the end of the previous note.
+      
+  
+
+# Design Notes
 
     - It's better to think of this as multiple trees, but with links between them via:
         - block embeds
@@ -205,81 +214,6 @@ https://www.youtube.com/watch?v=ByiFhtlI66A
     - nodes MUST have a single parent or else they are roots... 
 
 # Key Actions and Behavior that need to be tested
-
-    - delete between new notes that are full will join them
-        - we don't need to do aything other than joion the markdown into a new / updated note
-        - we're going to have to create a selection over a range
-            - HOW?
-        - then copy it to HTML
-            - HOW?
-        - then insert the new HTML
-            - HOW? 
-            
-
-    - TODO: when deleting a node, selection the previous one, and position the cursor properly.
-  
-    - enter / new node creation
-  
-        - enter in the middle of a node should split it and create a new node below it.   
-        - DONE: enter at the beginning should insert a node before
-        - DONE: enter at the end should insert a node after 
-  
-    - when at the end of the note, if we arrow right, then we have to go to 
-      the beginning of the next note.
-  
-    - when at the begginning of the note, if we arrow left, then we have to go
-      to the end of the previous note.
-      
-    - shift+tab needs to indent
-    - tab needs to indent the node
-
-
-- Do the HARD input tasks first so I don't get into a swap of code.
-
-    
-    - HARD: when clicking on a node for the first time when activating it the cursor jumps to the beginning
-        - the problem is that the cursor isn't placed in the right spot... to begin with and 
-          has no correlation with the jumpToEditorStart
-
-
-# BUGS
-
-    - implement backspace to join.. .
-
-    - shift + indent locks us up... 
-
-
-    - next main tasks
-        - 3h click the ckeditor and make sure the position/cursor is in the right spot. 
-        - 2h new store model as in TODO.md
-        - 1h join nodes when hitting backspace (that is easy)
-    
-        ... about 10 hours to get this all done.
-        
-    
-    
-    - If the selection is active, when we delete content, don't delete the note too
-        - the seleciton in either ckedoitor AND the main browser seleciton isn't
-          working and showing it's collapsed
-    
-    - can not delete the previous node if the current node has text in it... this is part of the join operation
-
-
-    - when creating NEW node references, we don't register the anchor handler so clicking on them brings up the 
-      ckeditor link handler. 
-
-    - how are we going to handle copy/paste of notes and multi-selection since we're interacting with ckeditor
-      AND the browser DOM.
-        - one strategy is to just deal with the link clicks directly so that if the user highlights multiple nodes, 
-          then we select them.
-          
-            - workflowy doesnt' allow you to copy partial ones... 
-  
-    - Deleting the first empty node in the root does not cause the root to be selected
-    
-
-    - when changing nodes, the root seems to stay the same... and the node title
-      doesn't seem to change. 
 
 # Ideas from other Note Taking Platforms 
 
@@ -306,14 +240,7 @@ https://www.youtube.com/watch?v=ByiFhtlI66A
    - TODO: watch this too:
    
         - https://www.youtube.com/watch?v=ukLnPbIffxE
-   - TODO: buy a book "Make it Stick" - "The Science of Effective Learning"
-   
-   - notion supports 1000 free blocks.
-   
-   - .edu plans automatically qualify..?
-   
-   - notion gave away 1000 coupon codes... 
-   
+
    - TODO: 
         - find the paper referenced in this video: 
         
@@ -451,3 +378,10 @@ https://github.com/ckeditor/ckeditor5-angular/issues/110
     - FAIL: write one pag with a bunch of ckeditors to see if we can make them
       faster... maybe it's a plugin or something.
         - this doesn't work... It seems that there's an inherent performance issue
+
+
+# Sharing Design:
+
+      
+    - Sharing will be user based so @alice101/Berlin would be the node name locally and we link to that 
+      not to [[Berlin]] it would be [[@alice101/Berlin]]

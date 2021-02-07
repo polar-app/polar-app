@@ -101,7 +101,7 @@ export const NoteInner = observer((props: IProps) => {
                 <div style={{
                          display: 'flex',
                          alignItems: 'center',
-                         width: '3em',
+                         minWidth: '3em',
                          justifyContent: 'flex-end',
                          marginRight: theme.spacing(0.5)
                      }}>
