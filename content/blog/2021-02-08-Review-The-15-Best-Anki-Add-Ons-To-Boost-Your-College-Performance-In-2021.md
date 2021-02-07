@@ -29,8 +29,6 @@ Because the number of Anki add-ons is almost unlimited, it takes ages to try the
 
 That being said, let’s get started guys!
 
-<img class="img-fluid" src="https://imgur.com/a/G5DZBPF">
- 
 ## Interface
 
 ### 1.  <a href="https://ankiweb.net/shared/info/1496166067" target="_blank">Night mode</a>    
@@ -38,8 +36,6 @@ That being said, let’s get started guys!
 The history of night modes can be traced back to Windows Phone 7. The feature was added to the now-dead OS to reduce battery consumption as entirely black pixels didn't emit any light on OLED screens. Since then, night mode as a feature in apps and software has come a long way.
 
 It's one of the best Anki add-ons for students as they can recharge their deck review (even at night) by modifying Anki to having an all-black background. The add-on gives you the option to automatically (timer) or manually turn on the night mode. You can even invert colors of images or latex formulas and define custom color substitution rules.
-
-<img class="img-fluid" src="https://imgur.com/a/GApatVy">
 
 Updates: Regular
 
@@ -55,8 +51,6 @@ This add-on only imitates the impact of colors on humans: red is known to pose a
 
 "I'm a simple man. I see colours, I click like." — as one add-on review states.
 
- <img class="img-fluid" src="https://imgur.com/a/tWkHG6v">
-
 Updates: Infrequent
 
 Popularity: Very popular (111 upvotes)
@@ -69,8 +63,6 @@ College studies require a high amount of focus. There are so many new terms comi
 
 This add-on does what it says — it adds F11 key binding so that you can toggle full screen on Anki. You can also find this feature in the Tools menu. With this add-on at hand, you can cast all the distractions aside.
 
-<img class="img-fluid" src="https://imgur.com/a/zeK8xBX">
-
 Updates: Infrequent
 
 Popularity: Somewhat popular (We heard it regularly from our users)
@@ -82,8 +74,6 @@ Anki code: 1612375712
 The Keyboards Shortcuts add-on is designed to increase your efficiency on the Anki app. It allows you to change the shortcuts on the main page, the editor window, the review window, and the deck browser window.
 
 You can head over to Tools > Add-ons> Custom Shortcuts and click Config to change each shortcut inside Anki.
-
-<img class="img-fluid" src="https://imgur.com/a/XutB2Xz">
 
 Updates: Frequent
 
@@ -101,7 +91,7 @@ The Polar add-on for Anki allows you to sync your flashcards from Polar to Anki 
 
 Finally, Polar allows you to keep track of all reading - be it PDF, EPUB, or web pages, with things like tags, folders, reading progress tracking, and more!
 
-<img class="img-fluid" src="https://imgur.com/a/IBLB8IP">  
+<img class="img-fluid" src="https://imgur.com/a/IBLB8IP">
 
 Updates: Regular
 
