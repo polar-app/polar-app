@@ -12,6 +12,10 @@ https://www.youtube.com/watch?v=ByiFhtlI66A
 
 # TODO
 
+    - merging a note no longer works and says that the mutators are dead...
+    - I need to get testing working on every commit now... it would save me a bunch of time but would require 
+      me to slow down a bit.
+
     - enter on an image node doesn't create a new node...  
 
     - BLOCKER: make sure sharing system is designed properly and make sure permissions will work.
