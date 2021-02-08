@@ -58,9 +58,9 @@ commands:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      - run:
-          name: Required Linux packages (when on Linux)
-          command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get install libgtk-3-0 libnss3 libxss1 libasound2 libxtst6; fi
+      #- run:
+      #    name: Required Linux packages (when on Linux)
+      #    command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get install libgtk-3-0 libnss3 libxss1 libasound2 libxtst6; fi
 
       - run:
           name: compile
