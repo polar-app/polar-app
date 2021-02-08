@@ -35,9 +35,9 @@ That being said, let’s get started guys!
 
 ### 1.  <a href="https://ankiweb.net/shared/info/1496166067" target="_blank">Night mode</a>    
 
-The history of night modes can be traced back to Windows Phone 7. The feature was added to the now-dead OS to reduce battery consumption as entirely black pixels didn't emit any light on OLED screens. Since then, night mode as a feature in apps and software has come a long way.
+The history of night modes can be traced back to the Windows Phone 7. The feature was added to the now-dead OS to reduce battery consumption as entirely black pixels didn't emit any light on OLED screens. Since then, night mode as a feature in apps and software has come a long way.
 
-It's one of the best Anki add-ons for students as they can recharge their deck review (even at night) by modifying Anki to having an all-black background. The add-on gives you the option to automatically (timer) or manually turn on the night mode. You can even invert colors of images or latex formulas and define custom color substitution rules.
+It's one of the best Anki add-ons for students as they can boost their deck review (even at night) by modifying Anki to having an all-black background. The add-on gives you the option to automatically (timer) or manually turn on the night mode. You can even invert colors of images or latex formulas and define custom color substitution rules.
 
 <img class="img-fluid" src="https://i.imgur.com/iYpCcwV.png">
 
@@ -49,7 +49,7 @@ Anki code: 1496166067
 
 ### 2.  <a href="https://ankiweb.net/shared/info/2494384865" target="_blank">Button Colors</a>
 
-If you need some rigorous learning done through Anki, then you might as well use some colors.
+If you need to get some rigorous learning done with Anki, you might as well use some colors.
 
 This add-on only imitates the impact of colors on humans: red is known to pose a bit of danger, and you are good to go when things are green. This add-on makes the "Good" button green and the "Again" button red.
 
@@ -65,9 +65,9 @@ Anki code: 2494384865
 
 ### 3.  <a href="https://ankiweb.net/shared/info/1612375712" target="_blank">Full Screen Toggles</a>   
 
-College studies require a high amount of focus. There are so many new terms coming in, and you wouldn't want to entertain any distractions as you try to get through them.
+College studies require a high amount of focus. There are so many new terms and ideas to take in, you wouldn't want to face any distractions as you try to get through them.
 
-This add-on does what it says — it adds F11 key binding so that you can toggle full screen on Anki. You can also find this feature in the Tools menu. With this add-on at hand, you can cast all the distractions aside.
+This add-on does what it says — it adds F11 key binding so that you can toggle full screen. You can also find this feature in the Tools menu. With this add-on at hand, you can cast all the distractions aside.
 
 <img class="img-fluid" src="https://i.imgur.com/tmim2FQ.png">
 
@@ -95,17 +95,17 @@ Anki code: 24411424
 
 ### 1.  <a href="https://getpolarized.io/" target="_blank">Polar</a>
 
-Polar is a document manager, reader, and learning tool all in one. Have you ever had to study from a book or a website, highlight a bunch of stuff, and then create flashcards based on those highlights? Well, this is Polar. With Polar, you can auto-convert any annotation, highlight, or comment in one click into a flashcard. Especially if you want to go fancy, you can use AI to automatically generate a flashard without any work from your end.
+Polar is a document manager, reader, and learning tool all in one. Have you ever had to study from a PDF, EPUB, or a website, highlight a bunch of stuff, and then create flashcards based on those highlights? Well, this is Polar. With Polar, you can auto-convert any annotation, highlight, or comment in one click into a flashcard. Especially if you want to go fancy, you can use AI to automatically generate a flashard without any work from your end.
 
 The Polar add-on for Anki allows you to sync your flashcards from Polar to Anki in one click.
 
-Finally, Polar allows you to keep track of all reading - be it PDF, EPUB, or web pages, with things like tags, folders, reading progress tracking, and more!
+In addition, Polar allows you to organize all your reading - be it PDF, EPUB, or web pages, with things like tags, folders, reading progress tracking, and more!
 
 <img class="img-fluid" src="https://i.imgur.com/y3v4aCg.png">
 
 Updates: Regular
 
-Popularity: Very popular (Only works through AnkiConnect)
+Popularity: Very popular (Only through AnkiConnect)
 
 Anki code: 734898866
 
@@ -141,9 +141,9 @@ Anki code: 738807903
 
 ### 1.  <a href="https://ankiweb.net/shared/info/633922407" target="_blank">Pokemanki</a>
 
-The Pokemanki add-on will keep you motivated to use Anki by letting you catch and train Pokemons inside your deck. It gives you a hatchable Pokemon egg for each lowest-level deck that you start learning. Your Pokemon will keep on leveling up as you review and learn the cards in the deck. They might even evolve.
+The Pokemanki add-on will keep you motivated by letting you catch and train Pokemons inside your deck. It gives you a hatchable Pokemon egg for each lowest-level deck that you start learning. Your Pokemon will keep on leveling up as you review and learn the cards in the deck. They might even evolve.
 
-You can access your Pokemons under your Stats screen. They will be above all your figures and charts. You will be able to see Pokemons for specific decks and their origin. Just review the deck to keep on training them
+You can access your Pokemons under your Stats screen. They will be above all your figures and charts. You will be able to see Pokemons for specific decks and their origin. Just review the deck to keep on training them.
 
 <img class="img-fluid" src="https://i.imgur.com/ul2Cc1V.png">
 
@@ -155,7 +155,7 @@ Anki code: 633922407
 
 ### 2.  <a href="https://ankiweb.net/shared/info/1627107763" target="_blank">Kitten Rewards</a>  
 
-Kittens rule the internet, and they have taken over Anki decks as well. Kitten Rewards is an Anki add-on which acts as an excellent learning motivator. This add-on has a simple concept: it adds a "cute kitten" on the congrats screen after a deck is finished. So if you lack motivation to study, use this add-on to get back on track.
+Kittens rule the internet, and they have taken over Anki decks as well. Kitten Rewards is an Anki add-on which acts as an excellent learning motivator. This add-on has a simple concept: it adds a cute kitten on the congrats screen after a deck is finished. So if you lack motivation to study, use this add-on to get back on track.
 
 What's more? You can upload your own kitten pictures as well :)
 
@@ -185,7 +185,7 @@ Anki code: 2073603704
 
 ### 4.  <a href="https://ankiweb.net/shared/info/1758045507" target="_blank">Anki Habitica</a>
 
-A little RPG magic always does the trick. No, we are not talking about Skyrim — you might never do any learning around Skyrim. But this little RPG integrated into the Anki software can take you a long way when it comes to finding a little motivation while reviewing those cards.
+A little RPG magic always does the trick. No, we are not talking about Skyrim — you might never do any learning in Skyrim. But this little RPG integrated into Anki can take you a long way when it comes to finding a little motivation while reviewing those cards.
 
 Anki Habitica is supported across platforms. It works by adding points to your Habitica stats as you progress through your cards. With these points added to your Habitica character, you can battle your friends and slay monsters.
 
