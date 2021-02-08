@@ -1,10 +1,6 @@
 # our npm credentials for using the bytesafe repo created with
-#
-# npm --registry https://polar-app.bytesafe.dev/r/default token create --readonly
-#
-# note that this is VERY confusing and hard to setup.  npm ping
+# npm --registry https://polar-app.bytesafe.dev/r/default/ token create
 
-//polar-app.bytesafe.dev/r/default:_authToken=01EQ755692C84346913AKH9X7K
-//polar-app.bytesafe.dev/r/default/:_authToken=01EQ755692C84346913AKH9X7K
-registry=https://polar-app.bytesafe.dev/r/default
-
+//polar-app.bytesafe.dev/r/default:_authToken=01EQ780ERRQB9JFY9BV5HHX823
+//polar-app.bytesafe.dev/r/default/:_authToken=01EQ780ERRQB9JFY9BV5HHX823
+registry=https://polar-app.bytesafe.dev/r/default/

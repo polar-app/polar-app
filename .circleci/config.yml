@@ -43,7 +43,7 @@ commands:
           name: npm setup
           command: |
             # npm run-script set-registry-bytesafe-rw
-            cp .npmrc ~/.npmrc
+            cp .npmrc.default ~/.npmrc
             cat ~/.npmrc
             npm ping
 
