@@ -42,8 +42,7 @@ doExec() {
     # https://stackoverflow.com/questions/8139885/shellscript-action-if-two-files-are-different
 
     if ! filesIdentical /tmp/.remotes .remotes; then
-        #./sbin/git-sync-reset && ./sbin/git-sync-init
-        echo differ
+        ./sbin/git-sync-reset && ./sbin/git-sync-init
     else
         echo "No updates to sync"
     fi
