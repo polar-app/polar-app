@@ -26,7 +26,7 @@ import {PagePrevButton} from "./PagePrevButton";
 import {PageNextButton} from "./PageNextButton";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {DockLayoutToggleButton} from "../../../../web/js/ui/doc_layout/DockLayoutToggleButton";
-import {ZenModeContainer} from "../../../../web/js/mui/ZenModeContainer";
+import {ZenModeActiveContainer} from "../../../../web/js/mui/ZenModeActiveContainer";
 
 export const DocViewerToolbar = deepMemo(() => {
 
@@ -47,7 +47,7 @@ export const DocViewerToolbar = deepMemo(() => {
     }, [setScale]);
 
     return (
-        <ZenModeContainer>
+        <ZenModeActiveContainer>
             <MUIPaperToolbar borderBottom>
 
                 <div style={{
@@ -175,7 +175,7 @@ export const DocViewerToolbar = deepMemo(() => {
 
                 </div>
             </MUIPaperToolbar>
-        </ZenModeContainer>
+        </ZenModeActiveContainer>
     );
 });
 

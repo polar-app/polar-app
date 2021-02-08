@@ -17,7 +17,7 @@ import {AccountAvatar} from "../ui/cloud_auth/AccountAvatar";
 import SyncIcon from '@material-ui/icons/Sync';
 import {useAnkiSyncCallback} from "./AnkiSyncHook";
 import {SideNavCommandMenu} from "./SideNavCommand";
-import {ZenModeContainer} from "../mui/ZenModeContainer";
+import {ZenModeActiveContainer} from "../mui/ZenModeActiveContainer";
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -236,7 +236,7 @@ export const SideNav = React.memo(() => {
         <>
             <SideNavCommandMenu/>
 
-            <ZenModeContainer>
+            <ZenModeActiveContainer>
                 <div className={classes.root}>
 
                     <PolarButton/>
@@ -263,7 +263,7 @@ export const SideNav = React.memo(() => {
                     </div>
 
                 </div>
-            </ZenModeContainer>
+            </ZenModeActiveContainer>
         </>
     );
 

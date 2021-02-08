@@ -65,6 +65,7 @@ import {AccountDialogScreen} from "../../ui/cloud_auth/AccountDialogScreen";
 import {CreateAccountScreen} from "../../../../apps/repository/js/login/CreateAccountScreen";
 import {SignInScreen} from "../../../../apps/repository/js/login/SignInScreen";
 import {ZenModeGlobalHotKeys} from "../../mui/ZenModeGlobalHotKeys";
+import {ZenModeDeactivateButton} from "../../mui/ZenModeDeactivateButton";
 
 interface IProps {
     readonly app: App;
@@ -306,6 +307,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                                                                     <>
                                                                                         <ZenModeGlobalHotKeys/>
+                                                                                        <ZenModeDeactivateButton/>
                                                                                         <SideNav/>
                                                                                         <Divider orientation="vertical"/>
                                                                                     </>

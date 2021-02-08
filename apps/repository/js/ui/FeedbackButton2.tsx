@@ -20,7 +20,7 @@ import {FADiscordIcon} from "../../../../web/js/mui/MUIFontAwesome";
 import {Nav} from "../../../../web/js/ui/util/Nav";
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import Divider from "@material-ui/core/Divider";
-import {ZenModeContainer} from "../../../../web/js/mui/ZenModeContainer";
+import {ZenModeActiveContainer} from "../../../../web/js/mui/ZenModeActiveContainer";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -160,7 +160,7 @@ export function FeedbackButton2() {
     }, [open]);
 
     return (
-        <ZenModeContainer>
+        <ZenModeActiveContainer>
             <DeviceRouters.Desktop>
                 <>
                     <Tooltip open={tooltipActive && ! open}
@@ -210,6 +210,6 @@ export function FeedbackButton2() {
                     </MUIMenuPopper>
                 </>
             </DeviceRouters.Desktop>
-        </ZenModeContainer>
+        </ZenModeActiveContainer>
     );
 }

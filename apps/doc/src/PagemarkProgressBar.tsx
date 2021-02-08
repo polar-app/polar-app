@@ -1,7 +1,6 @@
 import {DocMetas} from "../../../web/js/metadata/DocMetas";
 import * as React from "react";
 import {MUIPaperToolbar} from "../../../web/js/mui/MUIPaperToolbar";
-import isEqual from "react-fast-compare";
 import {useDocViewerStore} from "./DocViewerStore";
 import {ReadingProgressResume} from "../../../web/js/view/ReadingProgressResume";
 import {
@@ -11,7 +10,7 @@ import {
 import {PagemarkProgressBarMenu} from "./PagemarkProgressBarMenu";
 import useReadingProgressResume = ReadingProgressResume.useReadingProgressResume;
 import {deepMemo} from "../../../web/js/react/ReactUtils";
-import {ZenModeContainer} from "../../../web/js/mui/ZenModeContainer";
+import {ZenModeActiveContainer} from "../../../web/js/mui/ZenModeActiveContainer";
 
 export const ProgressBar = deepMemo(() => {
 
@@ -44,7 +43,7 @@ export const PagemarkProgressBar = React.memo(() => {
     const ContextMenu = React.useMemo(() => createContextMenu(PagemarkProgressBarMenu), []);
 
     return (
-        <ZenModeContainer>
+        <ZenModeActiveContainer>
             <ContextMenu>
                 <MUIPaperToolbar borderBottom>
 
@@ -60,7 +59,7 @@ export const PagemarkProgressBar = React.memo(() => {
 
                 </MUIPaperToolbar>
             </ContextMenu>
-        </ZenModeContainer>
+        </ZenModeActiveContainer>
     );
 
 });
