@@ -5,9 +5,9 @@ import {Datastores} from "../datastore/Datastores";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Lazy} from "polar-shared/src/util/Lazy";
 import {File} from '@google-cloud/storage';
-import {FirebaseAdmin} from "../../../../../../tmp/polar-app-private/polar-firebase-admin/src/FirebaseAdmin";
 import {ArchiveWritable} from "./ArchiveWritable";
 import {SnapshotTransformer} from "./SnapshotTransformer";
+import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 
 const storageConfig = Lazy.create(() => Datastores.createStorage());
 const storage = Lazy.create(() => storageConfig().storage);
