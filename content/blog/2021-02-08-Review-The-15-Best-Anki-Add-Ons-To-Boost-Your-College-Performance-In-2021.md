@@ -8,7 +8,7 @@ large_image: https://i.imgur.com/gnyql4u.jpg
 
 <img class="img-fluid" src="https://i.imgur.com/gnyql4u.jpg">
 
-# Review - The 15 Best Anki Add-Ons to Boost Your College Performance in 2021
+# [Review] - The 15 Best Anki Add-Ons to Boost Your College Performance in 2021
 
 ## Last year was hard. Prepare yourself.
 
