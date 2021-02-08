@@ -43,8 +43,8 @@ commands:
           name: npm setup
           command: |
             # npm run-script set-registry-bytesafe-rw
-            # npm ping
-            echo "no ping"
+            echo "cp .npmrc ~/.npmrc"
+            npm ping
 
       - run:
           name: install lerna
