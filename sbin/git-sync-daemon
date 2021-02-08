@@ -23,13 +23,13 @@ computeRemotes() {
 
 }
 
-filesDiffer() {
+filesIdentical() {
 
     a="${1}"
     b="${2}"
 
     cmp ${a} ${b} >/dev/null 2>&1
-
+    return $?
 }
 
 doExec() {
@@ -39,8 +39,11 @@ doExec() {
     # compute the new remotes.
     computeRemotes > /tmp/.remotes
 
-    if filesDiffer /tmp/.remotes .remotes; then
-        ./sbin/git-sync-reset && ./sbin/git-sync-init
+    # https://stackoverflow.com/questions/8139885/shellscript-action-if-two-files-are-different
+
+    if ! filesIdentical /tmp/.remotes .remotes; then
+        #./sbin/git-sync-reset && ./sbin/git-sync-init
+        echo differ
     else
         echo "No updates to sync"
     fi
