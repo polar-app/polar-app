@@ -42,8 +42,9 @@ commands:
       - run:
           name: npm setup
           command: |
-            npm run-script set-registry-bytesafe-rw
-            npm ping
+            # npm run-script set-registry-bytesafe-rw
+            # npm ping
+            echo "no ping"
 
       - run:
           name: install lerna
