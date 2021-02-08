@@ -41,6 +41,8 @@ doExec() {
 
     if filesDiffer /tmp/.remotes .remotes; then
         ./sbin/git-sync-reset && ./sbin/git-sync-init
+    else
+        echo "No updates to sync"
     fi
 
     # update the remotes so that it makes it into the commit
