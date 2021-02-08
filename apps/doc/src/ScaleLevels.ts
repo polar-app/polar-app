@@ -71,6 +71,7 @@ export type ScaleLevel =
     | '0.5'
     | '0.6'
     | '0.7'
+    | '0.75'
     | '0.8'
     | '0.9'
     | '1'
@@ -104,7 +105,10 @@ export type ScaleLevel =
     | '3.8'
     | '3.9'
     | '4'
-    | '0.75'
+    | '4.5'
+    | '5'
+    | '5.5'
+    | '6'
     ;
 
 export type ScaleLevelTuple = LabelValueTuple<ScaleLevel>;
@@ -229,7 +233,24 @@ export const ScaleLevelTuples: ReadonlyArray<ScaleLevelTuple> = [
     {
         label: '400%',
         value: '4'
+    },
+    {
+        label: '450%',
+        value: '4.5'
+    },
+    {
+        label: '500%',
+        value: '5'
+    },
+    {
+        label: '550%',
+        value: '5.5'
+    },
+    {
+        label: '600%',
+        value: '6'
     }
+
 
 ];
 
