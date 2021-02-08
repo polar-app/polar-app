@@ -12,20 +12,20 @@ large_image: https://i.imgur.com/gnyql4u.jpg
 
 ## Last year was hard. Prepare yourself.
 
-Last year 2020 was extremely hard. But there is improvement in sight for 2021 like the development of vaccines. Nobody had it easy, especially not us college students. Not seeing our friends, not having a social life, not being able to go to university and how the hell are you supposed to optimize your studies from home please?
+2020 was obviously extremely hard. But there is improvement in sight for 2021 like the development of vaccines. Nobody had it easy, especially not us college students. Not seeing our friends, not having a social life, no in-person classes... and how the hell are you supposed to optimize your studies from home please with little guidance?
 
 Luckily, there are plenty of tools to help you with that. One of them is Anki. Anki is an open source flashcard software. If you’re here, you likely know how popular it is among students. Since it’s open source, anyone can build on top of it.
 
 You can find many free add-ons on the <a href="https://ankiweb.net/shared/addons/2.1" target="_blank">Anki website</a> to improve your Anki experience.
-There are hundreds of add-ons by other Anki users. We have categorized these Anki add-ons and picked the top ones to make it easy to find what you are looking for. While Anki and many Anki add-ons are great for college students, they can be used by everyone who wants to learn or to boost his or her career in a whole another way.
+There are hundreds of add-ons by other Anki users, so we decided to take a closer look at some. We categorized them and picked the top ones to make it easy to find what you are looking for. While Anki and many Anki add-ons are great for college students, they can of course be used by everyone who wants to learn or to boost their learning experience.
  
 ## How to install the Anki add-ons.
 
-To install an Anki add-on, go to the tools menu and then Add-ons, then click on Browse & Install and paste in the code. Here's also a <a href="https://www.youtube.com/watch?v=saVJN5-_JDM" target="_blank">video</a> that explains this process.
+As a reminder, to install an Anki add-on, go to the tools menu and then Add-ons, then click on Browse & Install and paste in the code. Here's a <a href="https://www.youtube.com/watch?v=saVJN5-_JDM" target="_blank">video</a> that explains this process.
 
 ## Our review structure
 
-Because the number of Anki add-ons is almost unlimited, it takes ages to try them all and because you don't have enough time as a student anyway, we decided to pick out the 15 best Anki add-ons for college students and bucket them in four categories. If you're going to do something for university, then do it right! We have chosen the categories user ***interface***, ***productivity***, ***fun factor*** and ***workflow***. We have also included a corresponding overview for you. You can save it and always refer back to it. Our choices are based on what we heard from our users coupled with general popularity based on reviews.
+Because the number of Anki add-ons is so big, it takes ages to sift through them all. And because you don't have that time as a student anyway, we decided to pick the 15 best Anki add-ons for college students and bucket them in four categories. If you're going to do something for school, then do it right! We have chosen the categories user ***interface***, ***productivity***, ***fun factor*** and ***workflow***. We have also included a deepdive on each.
 
 That being said, let’s get started guys!
 
