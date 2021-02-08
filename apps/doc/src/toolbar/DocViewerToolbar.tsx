@@ -26,6 +26,7 @@ import {PagePrevButton} from "./PagePrevButton";
 import {PageNextButton} from "./PageNextButton";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {DockLayoutToggleButton} from "../../../../web/js/ui/doc_layout/DockLayoutToggleButton";
+import {ZenModeContainer} from "../../../../web/js/mui/ZenModeContainer";
 
 export const DocViewerToolbar = deepMemo(() => {
 
@@ -46,133 +47,135 @@ export const DocViewerToolbar = deepMemo(() => {
     }, [setScale]);
 
     return (
-        <MUIPaperToolbar borderBottom>
-
-            <div style={{
-                     display: 'flex',
-                 }}
-                 className="p-1 vertical-aligned-children">
-
-                <div style={{
-                        display: 'flex',
-                        flexGrow: 1,
-                        flexBasis: 0
-                     }}
-                     className="vertical-aligned-children">
-
-                    <MUIButtonBar>
-
-                        <DockLayoutToggleButton side='left'/>
-
-                        {finder && (
-                            <>
-                                <DocFindButton className="mr-1"/>
-                                <Divider orientation="vertical" flexItem={true}/>
-                            </>
-                        )}
-
-                        <PagePrevButton/>
-
-                        <PageNextButton/>
-
-                        {pageNavigator && (
-                            <>
-                                <PageNumberInput nrPages={pageNavigator.count}/>
-                                <NumPages nrPages={pageNavigator.count}/>
-                            </>
-                        )}
-
-                    </MUIButtonBar>
-                </div>
+        <ZenModeContainer>
+            <MUIPaperToolbar borderBottom>
 
                 <div style={{
                          display: 'flex',
-                         flexGrow: 1,
-                         flexBasis: 0
                      }}
-                     className="vertical-align-children">
+                     className="p-1 vertical-aligned-children">
 
                     <div style={{
-                             display: 'flex',
-                             alignItems: 'center'
+                            display: 'flex',
+                            flexGrow: 1,
+                            flexBasis: 0
                          }}
-                         className="ml-auto mr-auto vertical-align-children">
-
-                        {docScale && scaleLeveler && (
-                            <DeviceRouters.Desktop>
-                                <MUIButtonBar>
-                                    <IconButton onClick={() => doZoom('-')}>
-                                        <RemoveIcon/>
-                                    </IconButton>
-
-                                        <FormControl variant="outlined" size="small">
-                                            <Select value={docScale.scale.value || 'page-width'}
-                                                    onChange={event => handleScaleChange(event.target.value as ScaleLevel)}>
-                                                {ScaleLevelTuples.map(current => (
-                                                    <MenuItem key={current.value}
-                                                              value={current.value}>
-                                                        {current.label}
-                                                    </MenuItem>
-                                                ))}
-                                            </Select>
-                                        </FormControl>
-
-                                    <IconButton onClick={() => doZoom('+')}>
-                                        <AddIcon/>
-                                    </IconButton>
-
-                                </MUIButtonBar>
-                            </DeviceRouters.Desktop>
-                        )}
-
-                    </div>
-
-                </div>
-
-                <div style={{
-                         display: 'flex',
-                         flexGrow: 1,
-                         flexBasis: 0
-                     }}
-                     className="vertical-aligned-children">
-
-                    <div style={{display: 'flex'}}
-                         className="ml-auto vertical-aligned-children">
+                         className="vertical-aligned-children">
 
                         <MUIButtonBar>
 
+                            <DockLayoutToggleButton side='left'/>
 
-                            {/* TODO: implement keyboard shortcuts for these. */}
-                            <MUIDocTagButton size="medium"
-                                             onClick={onDocTagged}/>
+                            {finder && (
+                                <>
+                                    <DocFindButton className="mr-1"/>
+                                    <Divider orientation="vertical" flexItem={true}/>
+                                </>
+                            )}
 
-                            <MUIDocArchiveButton size="medium"
-                                                 onClick={toggleDocArchived}
-                                                 active={docMeta?.docInfo?.archived}/>
+                            <PagePrevButton/>
 
-                            <MUIDocFlagButton size="medium"
-                                              onClick={toggleDocFlagged}
-                                              active={docMeta?.docInfo?.flagged}/>
+                            <PageNextButton/>
 
-                            <Divider orientation="vertical" flexItem={true}/>
-
-                            <div className="ml-3 mr-2" style={{display: 'flex'}}>
-                                <DocumentWriteStatus/>
-                            </div>
-
-                            <FullScreenButton/>
-
-                            <DocViewerToolbarOverflowButton docInfo={docMeta?.docInfo}/>
-
-                            <DockLayoutToggleButton side='right'/>
+                            {pageNavigator && (
+                                <>
+                                    <PageNumberInput nrPages={pageNavigator.count}/>
+                                    <NumPages nrPages={pageNavigator.count}/>
+                                </>
+                            )}
 
                         </MUIButtonBar>
                     </div>
 
-                </div>
+                    <div style={{
+                             display: 'flex',
+                             flexGrow: 1,
+                             flexBasis: 0
+                         }}
+                         className="vertical-align-children">
 
-            </div>
-        </MUIPaperToolbar>
+                        <div style={{
+                                 display: 'flex',
+                                 alignItems: 'center'
+                             }}
+                             className="ml-auto mr-auto vertical-align-children">
+
+                            {docScale && scaleLeveler && (
+                                <DeviceRouters.Desktop>
+                                    <MUIButtonBar>
+                                        <IconButton onClick={() => doZoom('-')}>
+                                            <RemoveIcon/>
+                                        </IconButton>
+
+                                            <FormControl variant="outlined" size="small">
+                                                <Select value={docScale.scale.value || 'page-width'}
+                                                        onChange={event => handleScaleChange(event.target.value as ScaleLevel)}>
+                                                    {ScaleLevelTuples.map(current => (
+                                                        <MenuItem key={current.value}
+                                                                  value={current.value}>
+                                                            {current.label}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
+
+                                        <IconButton onClick={() => doZoom('+')}>
+                                            <AddIcon/>
+                                        </IconButton>
+
+                                    </MUIButtonBar>
+                                </DeviceRouters.Desktop>
+                            )}
+
+                        </div>
+
+                    </div>
+
+                    <div style={{
+                             display: 'flex',
+                             flexGrow: 1,
+                             flexBasis: 0
+                         }}
+                         className="vertical-aligned-children">
+
+                        <div style={{display: 'flex'}}
+                             className="ml-auto vertical-aligned-children">
+
+                            <MUIButtonBar>
+
+
+                                {/* TODO: implement keyboard shortcuts for these. */}
+                                <MUIDocTagButton size="medium"
+                                                 onClick={onDocTagged}/>
+
+                                <MUIDocArchiveButton size="medium"
+                                                     onClick={toggleDocArchived}
+                                                     active={docMeta?.docInfo?.archived}/>
+
+                                <MUIDocFlagButton size="medium"
+                                                  onClick={toggleDocFlagged}
+                                                  active={docMeta?.docInfo?.flagged}/>
+
+                                <Divider orientation="vertical" flexItem={true}/>
+
+                                <div className="ml-3 mr-2" style={{display: 'flex'}}>
+                                    <DocumentWriteStatus/>
+                                </div>
+
+                                <FullScreenButton/>
+
+                                <DocViewerToolbarOverflowButton docInfo={docMeta?.docInfo}/>
+
+                                <DockLayoutToggleButton side='right'/>
+
+                            </MUIButtonBar>
+                        </div>
+
+                    </div>
+
+                </div>
+            </MUIPaperToolbar>
+        </ZenModeContainer>
     );
 });
 

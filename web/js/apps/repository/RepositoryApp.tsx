@@ -57,13 +57,14 @@ import {LogsScreen} from "../../../../apps/repository/js/logs/LogsScreen";
 import {PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {LoginWithCustomTokenScreen} from "../../../../apps/repository/js/login/LoginWithCustomTokenScreen";
 import {WelcomeScreen} from "./WelcomeScreen";
-import {SIDE_NAV_ENABLED, useSideNavStore} from '../../sidenav/SideNavStore';
+import {useSideNavStore} from '../../sidenav/SideNavStore';
 import {SideNav} from "../../sidenav/SideNav";
 import Divider from '@material-ui/core/Divider';
 import {SideNavInitializer} from "../../sidenav/SideNavInitializer";
 import {AccountDialogScreen} from "../../ui/cloud_auth/AccountDialogScreen";
 import {CreateAccountScreen} from "../../../../apps/repository/js/login/CreateAccountScreen";
 import {SignInScreen} from "../../../../apps/repository/js/login/SignInScreen";
+import {ZenModeGlobalHotKeys} from "../../mui/ZenModeGlobalHotKeys";
 
 interface IProps {
     readonly app: App;
@@ -304,6 +305,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                                                      }}>
 
                                                                                     <>
+                                                                                        <ZenModeGlobalHotKeys/>
                                                                                         <SideNav/>
                                                                                         <Divider orientation="vertical"/>
                                                                                     </>

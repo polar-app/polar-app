@@ -20,6 +20,7 @@ import {FADiscordIcon} from "../../../../web/js/mui/MUIFontAwesome";
 import {Nav} from "../../../../web/js/ui/util/Nav";
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import Divider from "@material-ui/core/Divider";
+import {ZenModeContainer} from "../../../../web/js/mui/ZenModeContainer";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -159,54 +160,56 @@ export function FeedbackButton2() {
     }, [open]);
 
     return (
-        <DeviceRouters.Desktop>
-            <>
-                <Tooltip open={tooltipActive && ! open}
-                         placement="left"
-                         title="Feedback and Resources.">
-                    <Fab ref={anchorRef}
-                         style={{
-                             zIndex: 1000
-                         }}
-                         color="primary"
-                         aria-label="Feedback"
-                         onClick={handleClick}
-                         onMouseEnter={() => setTooltipActive(true)}
-                         onMouseLeave={() => setTooltipActive(false)}
-                         className={classes.root}>
+        <ZenModeContainer>
+            <DeviceRouters.Desktop>
+                <>
+                    <Tooltip open={tooltipActive && ! open}
+                             placement="left"
+                             title="Feedback and Resources.">
+                        <Fab ref={anchorRef}
+                             style={{
+                                 zIndex: 1000
+                             }}
+                             color="primary"
+                             aria-label="Feedback"
+                             onClick={handleClick}
+                             onMouseEnter={() => setTooltipActive(true)}
+                             onMouseLeave={() => setTooltipActive(false)}
+                             className={classes.root}>
 
-                        <div style={{
-                                  fontSize: '28px',
-                                  lineHeight: '28px'
-                              }}>
-                            ?
+                            <div style={{
+                                      fontSize: '28px',
+                                      lineHeight: '28px'
+                                  }}>
+                                ?
+                            </div>
+
+                        </Fab>
+                    </Tooltip>
+
+                    <MUIMenuPopper anchorRef={anchorRef}
+                                   placement="bottom-end"
+                                   open={open}
+                                   onClosed={() => setOpen(false)}>
+
+                        <div>
+
+                            <MenuItems.Chat/>
+                            <MenuItems.Documentation/>
+
+                            <Divider/>
+
+                            <MenuItems.SendVideoFeedback/>
+
+                            <MenuItems.RequestFeatures/>
+
+                            <MenuItems.ShowActiveKeyboardShortcuts/>
+
                         </div>
 
-                    </Fab>
-                </Tooltip>
-
-                <MUIMenuPopper anchorRef={anchorRef}
-                               placement="bottom-end"
-                               open={open}
-                               onClosed={() => setOpen(false)}>
-
-                    <div>
-
-                        <MenuItems.Chat/>
-                        <MenuItems.Documentation/>
-
-                        <Divider/>
-
-                        <MenuItems.SendVideoFeedback/>
-
-                        <MenuItems.RequestFeatures/>
-
-                        <MenuItems.ShowActiveKeyboardShortcuts/>
-
-                    </div>
-
-                </MUIMenuPopper>
-            </>
-        </DeviceRouters.Desktop>
+                    </MUIMenuPopper>
+                </>
+            </DeviceRouters.Desktop>
+        </ZenModeContainer>
     );
 }

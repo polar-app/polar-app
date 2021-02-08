@@ -14,9 +14,9 @@ export const ZenModeContainer = React.memo((props: IProps) => {
     const {zenMode} = useZenModeStore(['zenMode']);
 
     if (zenMode) {
+        return null;
+    } else {
         return props.children;
     }
-
-    return null;
 
 })

@@ -11,6 +11,7 @@ import {
 import {PagemarkProgressBarMenu} from "./PagemarkProgressBarMenu";
 import useReadingProgressResume = ReadingProgressResume.useReadingProgressResume;
 import {deepMemo} from "../../../web/js/react/ReactUtils";
+import {ZenModeContainer} from "../../../web/js/mui/ZenModeContainer";
 
 export const ProgressBar = deepMemo(() => {
 
@@ -43,21 +44,23 @@ export const PagemarkProgressBar = React.memo(() => {
     const ContextMenu = React.useMemo(() => createContextMenu(PagemarkProgressBarMenu), []);
 
     return (
-        <ContextMenu>
-            <MUIPaperToolbar borderBottom>
+        <ZenModeContainer>
+            <ContextMenu>
+                <MUIPaperToolbar borderBottom>
 
-                <div style={{
-                         display: 'flex',
-                         alignItems: "center"
-                     }}
-                     className="p-1">
+                    <div style={{
+                             display: 'flex',
+                             alignItems: "center"
+                         }}
+                         className="p-1">
 
-                    <ProgressBar/>
+                        <ProgressBar/>
 
-                </div>
+                    </div>
 
-            </MUIPaperToolbar>
-        </ContextMenu>
+                </MUIPaperToolbar>
+            </ContextMenu>
+        </ZenModeContainer>
     );
 
 });

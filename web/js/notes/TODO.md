@@ -12,6 +12,12 @@ https://www.youtube.com/watch?v=ByiFhtlI66A
 
 # TODO
 
+    - if we hit enter at the beginning of on a note with sub-items the sub-items are
+      kept on THAT note and a new note under it has the content of that note...  
+
+    - enter at the end of a note, seems to blink the cursor at the beginning of the note...
+        
+
     - merging a note no longer works and says that the mutators are dead...
     - I need to get testing working on every commit now... it would save me a bunch of time but would require 
       me to slow down a bit.

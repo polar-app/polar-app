@@ -17,6 +17,7 @@ import {AccountAvatar} from "../ui/cloud_auth/AccountAvatar";
 import SyncIcon from '@material-ui/icons/Sync';
 import {useAnkiSyncCallback} from "./AnkiSyncHook";
 import {SideNavCommandMenu} from "./SideNavCommand";
+import {ZenModeContainer} from "../mui/ZenModeContainer";
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -234,32 +235,35 @@ export const SideNav = React.memo(() => {
     return (
         <>
             <SideNavCommandMenu/>
-            <div className={classes.root}>
 
-                <PolarButton/>
+            <ZenModeContainer>
+                <div className={classes.root}>
 
-                <SideNavDividerTop/>
+                    <PolarButton/>
 
-                <HomeButton/>
-                <AnnotationsButton/>
-                <StatsButton/>
+                    <SideNavDividerTop/>
 
-                {tabs.length > 0 && (
-                    <SideNavDivider/>
-                )}
+                    <HomeButton/>
+                    <AnnotationsButton/>
+                    <StatsButton/>
 
-                <div className={classes.buttons}>
-                    {tabs.map(tab => <SideNavButton key={tab.id} tab={tab}/>)}
+                    {tabs.length > 0 && (
+                        <SideNavDivider/>
+                    )}
+
+                    <div className={classes.buttons}>
+                        {tabs.map(tab => <SideNavButton key={tab.id} tab={tab}/>)}
+                    </div>
+
+                    <div style={{marginBottom: '5px'}}>
+                        <SideNavDivider/>
+                        <SyncButton/>
+                        <AccountButton/>
+                        <SettingsButton/>
+                    </div>
+
                 </div>
-
-                <div style={{marginBottom: '5px'}}>
-                    <SideNavDivider/>
-                    <SyncButton/>
-                    <AccountButton/>
-                    <SettingsButton/>
-                </div>
-
-            </div>
+            </ZenModeContainer>
         </>
     );
 
