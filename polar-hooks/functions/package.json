@@ -69,6 +69,7 @@
     "@types/node": "12.12.32",
     "@types/pdfjs-dist": "^2.0.115",
     "@types/stripe": "^6.30.3",
+    "@types/archiver": "=5.1.0",
     "chai": "4.2.0",
     "mocha": "=8.2.1",
     "polar-test": "^2.0.115",
