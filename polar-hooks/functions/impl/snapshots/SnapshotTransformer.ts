@@ -29,4 +29,5 @@ export class SnapshotTransformer extends Transform {
     _flush(callback: TransformCallback) {
 
     }
+
 }

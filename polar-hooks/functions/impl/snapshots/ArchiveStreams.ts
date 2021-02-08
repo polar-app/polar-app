@@ -14,7 +14,11 @@ const storage = Lazy.create(() => storageConfig().storage);
 
 export namespace ArchiveStreams {
 
-    export async function create(uid: IDStr) {
+    interface IUserDataArchive {
+        readonly url: string;
+    }
+
+    export async function create(uid: IDStr): Promise<IUserDataArchive> {
 
         const now = ISODateTimeStrings.create();
 
@@ -40,6 +44,11 @@ export namespace ArchiveStreams {
         );
 
         await storageFile.setMetadata({ contentDisposition: `attachment; filename="${fileName}"` })
+
+        await storageFile.makePublic();
+
+        const url = storageFile.publicUrl();
+        return {url};
 
     }
 
