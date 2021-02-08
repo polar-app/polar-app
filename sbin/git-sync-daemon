@@ -6,8 +6,49 @@
 #
 #    - THEN we need to make sure if we can pull incoming commits properly and make sure the diff applied is correct
 
+
+fetchRemoteID() {
+
+    origin="${1}"
+    git ls-remote ${origin} HEAD | grep -Eo "^........................................"
+
+}
+
+computeRemotes() {
+
+    for origin in `cat conf/repos.conf`; do
+        echo -n "${origin}: "
+        fetchRemoteID ${origin}
+    done
+
+}
+
+filesDiffer() {
+
+    a="${1}"
+    b="${2}"
+
+    cmp ${a} ${b} >/dev/null 2>&1
+
+}
+
+doExec() {
+
+    touch .remotes
+
+    # compute the new remotes.
+    computeRemotes > /tmp/.remotes
+
+    if filesDiffer /tmp/.remotes .remotes; then
+        ./sbin/git-sync-reset && ./sbin/git-sync-init
+    fi
+
+    # update the remotes so that it makes it into the commit
+    mv /tmp/.remotes .
+
+}
+
 while true; do
-    echo .
-    ./sbin/git-sync
+    doExec
     sleep 300
 done
