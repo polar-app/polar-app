@@ -5,7 +5,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { DeviceRouters } from "../ui/DeviceRouter";
 import { useZenModeCallbacks } from "./ZenModeStore";
 import {ZenModeInactiveContainer} from "./ZenModeInactiveContainer";
-import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
+import ZoomOutMapIcon from '@material-ui/icons/ZoomOutMap';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) =>
             position: 'absolute',
             bottom: theme.spacing(2),
             right: theme.spacing(3),
-            // color: theme.palette.text.secondary
+            backgroundColor: theme.palette.background.paper
         },
     }),
 );
@@ -34,7 +34,6 @@ export function ZenModeDeactivateButton() {
                              placement="right"
                              title="Exit Zen Mode">
                         <Fab ref={anchorRef}
-                             size="small"
                              variant="extended"
                              style={{
                                  zIndex: 1000
@@ -45,7 +44,12 @@ export function ZenModeDeactivateButton() {
                              onMouseLeave={() => setTooltipActive(false)}
                              className={classes.root}>
 
-                            <FullscreenExitIcon/>
+                            <div style={{
+                                     fontSize: '28px',
+                                     lineHeight: '28px'
+                                 }}>
+                                <ZoomOutMapIcon/>
+                            </div>
 
                             {/*Exit Zen Mode*/}
 
