@@ -1,12 +1,12 @@
 /* tslint:disable:no-console */
 import * as functions from 'firebase-functions';
-import { Fetches } from 'polar-shared/src/util/Fetch';
+import {default as fetch} from 'node-fetch';
 
 export const CloudFunctionsWarmer = functions.pubsub.schedule('every 5 minutes').onRun((context) => {
 
     async function doFetch(url: string) {
         console.log("Warming cloud function: ", url);
-        await Fetches.fetch(url);
+        await fetch(url);
     }
 
     async function doAsync() {
