@@ -1,0 +1,206 @@
+import React, {createRef, Fragment} from 'react';
+import {Document, pdfjs} from 'polar-react-pdf';
+import {VariableSizeList} from 'react-window';
+import {debounce} from 'throttle-debounce';
+
+import Loader from './Loader';
+import PageRenderer from './PageRenderer';
+import Buttons from './Buttons';
+
+pdfjs.GlobalWorkerOptions.workerSrc = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
+
+class Viewer extends React.PureComponent<any, any> {
+
+    // static propTypes = {
+    //     scale: PropTypes.number.isRequired
+    // }
+    //
+    // static defaultProps = {
+    //     scale: 1.2
+    // }
+    //
+
+    // tslint:disable-next-line:variable-name
+    private _list: any;
+
+    // tslint:disable-next-line:variable-name
+    private _callResizeHandler: any;
+
+    // tslint:disable-next-line:variable-name
+    private _callOrientationChangeHandler: any;
+
+    // tslint:disable-next-line:variable-name
+    private _mounted: boolean | undefined;
+
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            initialContainerHeight: null,
+            containerHeight: null,
+            pdf: null,
+            currentPage: 1,
+            cachedPageDimensions: null,
+            responsiveScale: 1,
+            pageNumbers: new Map(),
+            pages: new Map()
+        };
+
+        this._list = createRef();
+
+        this._callResizeHandler = debounce(50, this.handleResize.bind(this));
+        this._callOrientationChangeHandler = debounce(1000, this.handleResize.bind(this));
+
+    }
+
+    public componentDidMount() {
+        this._mounted = true;
+        window.addEventListener('resize', this._callResizeHandler);
+        window.addEventListener('orientationchange', this._callOrientationChangeHandler);
+    }
+
+    public componentWillUnmount() {
+        this._mounted = false;
+        window.removeEventListener('resize', this._callResizeHandler);
+        window.removeEventListener('orientationchange', this._callOrientationChangeHandler);
+    }
+
+    /**
+     * Load all pages so we can cache all page dimensions.
+     *
+     * @param {Object} pdf
+     * @returns {void}
+     */
+    private cachePageDimensions(pdf: any) {
+
+        const promises = Array
+            .from({length: pdf.numPages}, (v, i) => i + 1)
+            .map(pageNumber => pdf.getPage(pageNumber));
+
+        let height = 0;
+
+        // Assuming all pages may have different heights. Otherwise we can just
+        // load the first page and use its height for determining all the row
+        // heights.
+        Promise.all(promises).then(pages => {
+            if (!this._mounted) {
+                return;
+            }
+
+            const pageDimensions = new Map();
+            for (const page of pages) {
+                const w = page.view[2] * this.props.scale;
+                const h = page.view[3] * this.props.scale;
+
+                pageDimensions.set(page.pageIndex + 1, [w, h]);
+                height += h;
+            }
+
+            this.setState({
+                cachedPageDimensions: pageDimensions,
+                initialContainerHeight: height,
+                containerHeight: height
+            });
+        });
+    }
+
+    private recomputeRowHeights() {
+        this._list!.current!.resetAfterIndex(0);
+    }
+
+    private computeRowHeight(index: any) {
+        const {cachedPageDimensions, responsiveScale} = this.state;
+        if (cachedPageDimensions && responsiveScale) {
+            return (cachedPageDimensions.get(index + 1)[1] / responsiveScale);
+        }
+
+        return 768; // Initial height
+    }
+
+    private onDocumentLoadSuccess(pdf: any) {
+        this.setState({pdf});
+        this.cachePageDimensions(pdf);
+    }
+
+    private updateCurrentVisiblePage(visibleStopIndex: any) {
+        this.setState({currentPage: visibleStopIndex + 1});
+    }
+
+    private computeResponsiveScale(pageNumber: any) {
+        const {cachedPageDimensions, pages, pageNumbers} = this.state;
+
+        const node = pages.get(pageNumbers.get(pageNumber));
+
+        if (!node) {
+            return;
+        }
+
+        return cachedPageDimensions.get(pageNumber)[1] / node.clientHeight;
+    }
+
+    private handleResize() {
+        const {currentPage, responsiveScale, initialContainerHeight} = this.state;
+
+        // Recompute the responsive scale factor on window resize
+        const newResponsiveScale = this.computeResponsiveScale(currentPage);
+
+        if (newResponsiveScale && responsiveScale !== newResponsiveScale) {
+            const containerHeight = initialContainerHeight / newResponsiveScale;
+
+            this.setState(
+                {responsiveScale: newResponsiveScale, containerHeight},
+                () => this.recomputeRowHeights()
+            );
+        }
+    }
+
+    private handleClick(index: any) {
+        this._list.current.scrollToItem(index);
+    }
+
+    public render() {
+        const {scale} = this.props;
+
+        const {
+            cachedPageDimensions, containerHeight, pdf, pages, pageNumbers
+        } = this.state;
+
+        return (
+            <Document
+                file="./test.pdf"
+                loading={<Loader />}
+                onLoadSuccess={this.onDocumentLoadSuccess.bind(this)}
+                onLoadError={error => console.error(error)} // eslint-disable-line no-console
+            >
+                {cachedPageDimensions && (
+                    <Fragment>
+                        <Buttons
+                            numPages={pdf.numPages}
+                            onClick={this.handleClick.bind(this)} />
+                        <VariableSizeList
+                            height={500}
+                            width='100%'
+                            itemCount={pdf.numPages}
+                            itemSize={() => 500}
+                            itemData={{
+                                scale,
+                                pages,
+                                pageNumbers,
+                                numPages: pdf.numPages,
+                                triggerResize: this.handleResize.bind(this)
+                            }}
+                            overscanCount={2}
+                            onItemsRendered={props => this.updateCurrentVisiblePage(props)}
+                            ref={this._list}
+                        >
+                            {PageRenderer}
+                        </VariableSizeList>
+                    </Fragment>
+                )}
+            </Document>
+        );
+    }
+
+}
+
+export default Viewer;
