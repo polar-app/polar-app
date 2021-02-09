@@ -12,7 +12,7 @@ const globalKeyMap = keyMapWithGroup({
             icon: <MenuIcon/>,
             name: "Toggle Zen Mode",
             description: "Toggle 'zen' mode by hiding extra navigation items like toolbars, side navigation, etc.",
-            sequences: ['command+shift+z', 'ctrl+shift+z']
+            sequences: ['F9']
         },
 
     }

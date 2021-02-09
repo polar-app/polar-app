@@ -84,7 +84,7 @@ export const DocViewerToolbarOverflowButton = deepMemo((props: IProps) => {
                  placement="bottom-end"
                  button={{
                      icon: <MoreVertIcon/>,
-                     size: 'small'
+                     size: 'small',
                  }}>
 
             <div>

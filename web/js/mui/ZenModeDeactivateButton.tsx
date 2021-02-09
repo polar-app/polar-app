@@ -47,7 +47,7 @@ export function ZenModeDeactivateButton() {
 
                             <FullscreenExitIcon/>
 
-                            Exit Zen Mode
+                            {/*Exit Zen Mode*/}
 
                         </Fab>
                     </Tooltip>

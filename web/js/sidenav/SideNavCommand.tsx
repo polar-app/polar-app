@@ -31,7 +31,7 @@ const globalKeyMap = keyMapWithGroup(
             ACTIVATE: {
                 name: "Jump to Open Document",
                 description: "Filter and jump to an open document",
-                sequences: ['shift+command+e', 'shift+ctrl+e'],
+                sequences: ['shift+command+e', 'shift+ctrl+E'],
             },
         }
     });

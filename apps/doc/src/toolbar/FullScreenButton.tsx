@@ -1,12 +1,8 @@
 import * as React from "react";
-import {useState} from "react";
-import IconButton from "@material-ui/core/IconButton";
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
+import {StandardIconButton} from "../../../repository/js/doc_repo/buttons/StandardIconButton";
 
-export const FullScreenButton = React.memo(() => {
-
-    // TODO: shift+command+f for macos full-screen
-    // make this a hook that we can reuse...
+export function useFullScreenToggle() {
 
     const requestFullScreen = React.useCallback(() => {
 
@@ -30,18 +26,24 @@ export const FullScreenButton = React.memo(() => {
 
     }, []);
 
-    const toggleFullScreen = React.useCallback(() => {
+    return React.useCallback(() => {
         if (document.fullscreenElement) {
             exitFullScreen();
         } else {
             requestFullScreen();
         }
     }, [exitFullScreen, requestFullScreen]);
+}
+
+export const FullScreenButton = React.memo(() => {
+
+    const fullScreenToggle = useFullScreenToggle();
 
     return (
-        <IconButton onClick={toggleFullScreen}>
+        <StandardIconButton tooltip="Enter Full Screen"
+                            onClick={fullScreenToggle}>
             <FullscreenIcon/>
-        </IconButton>
-    )
+        </StandardIconButton>
+    );
 
 });

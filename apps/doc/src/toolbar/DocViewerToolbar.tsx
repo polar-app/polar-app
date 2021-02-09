@@ -27,6 +27,7 @@ import {PageNextButton} from "./PageNextButton";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {DockLayoutToggleButton} from "../../../../web/js/ui/doc_layout/DockLayoutToggleButton";
 import {ZenModeActiveContainer} from "../../../../web/js/mui/ZenModeActiveContainer";
+import {ZenModeButton} from "./ZenModeButton";
 
 export const DocViewerToolbar = deepMemo(() => {
 
@@ -161,6 +162,8 @@ export const DocViewerToolbar = deepMemo(() => {
                                 <div className="ml-3 mr-2" style={{display: 'flex'}}>
                                     <DocumentWriteStatus/>
                                 </div>
+
+                                <ZenModeButton/>
 
                                 <FullScreenButton/>
 
