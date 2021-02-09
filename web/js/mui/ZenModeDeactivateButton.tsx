@@ -34,7 +34,6 @@ export function ZenModeDeactivateButton() {
                              placement="right"
                              title="Exit Zen Mode">
                         <Fab ref={anchorRef}
-                             variant="extended"
                              style={{
                                  zIndex: 1000
                              }}
@@ -44,12 +43,7 @@ export function ZenModeDeactivateButton() {
                              onMouseLeave={() => setTooltipActive(false)}
                              className={classes.root}>
 
-                            <div style={{
-                                     fontSize: '28px',
-                                     lineHeight: '28px'
-                                 }}>
-                                <ZoomOutMapIcon/>
-                            </div>
+                            <ZoomOutMapIcon style={{fontSize: '30px'}}/>
 
                             {/*Exit Zen Mode*/}
 
