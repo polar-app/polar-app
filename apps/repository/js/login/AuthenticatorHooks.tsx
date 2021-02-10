@@ -10,6 +10,7 @@ import { Fetches } from "polar-shared/src/util/Fetch";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 export type AuthStatus = 'needs-auth';
 
@@ -218,7 +219,6 @@ export async function executeCloudFunction(name: string, data: any): Promise<any
         body
     };
 
-
     Analytics.event2("CloudFunctionCalled", {name});
 
     const response = await Fetches.fetch(url, init as any);
@@ -239,6 +239,8 @@ export interface IStartTokenAuthResponse {
 export function useTriggerStartTokenAuth() {
 
     return React.useCallback(async (email: string): Promise<IStartTokenAuthResponse> => {
+
+        Preconditions.assertPresent(email, 'email');
 
         return await executeCloudFunction('StartTokenAuth', {
             email
@@ -269,6 +271,9 @@ export interface IVerifyTokenAuthResponse {
 export function useTriggerVerifyTokenAuth() {
 
     return React.useCallback(async (email: string, challenge: string): Promise<IVerifyTokenAuthResponse | IVerifyTokenAuthResponseError> => {
+
+        Preconditions.assertPresent(email, 'email');
+        Preconditions.assertPresent(challenge, 'challenge');
 
         Analytics.event2('auth:VerifyTokenAuth');
 

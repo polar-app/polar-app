@@ -221,6 +221,8 @@ const EmailTokenAuthButton = () => {
     const emailRef = React.useRef("");
     const challengeRef = React.useRef("");
 
+    const emailBeingVerifiedRef = React.useRef("");
+
     const doTriggerVerifyTokenAuth = React.useCallback(async (email: string, challenge: string) => {
 
         setAlert(undefined);
@@ -266,7 +268,7 @@ const EmailTokenAuthButton = () => {
 
     const handleTriggerVerifyTokenAuth = React.useCallback(() => {
 
-        const email = emailRef.current.trim();
+        const email = emailBeingVerifiedRef.current.trim();
         const challenge = challengeRef.current.replace(/ /g, "");
 
         doTriggerVerifyTokenAuth(email, challenge)
@@ -308,11 +310,13 @@ const EmailTokenAuthButton = () => {
 
     }, [triggerStartTokenAuth]);
 
-    const handleTriggerStartTokenAuth = React.useCallback(() => {
+    const handleTriggerStartTokenAuth = React.useCallback((email: string) => {
 
         Analytics.event2("auth:EmailTokenAuthTriggered")
 
-        doTriggerStartTokenAuth(emailRef.current)
+        emailBeingVerifiedRef.current = email;
+
+        doTriggerStartTokenAuth(email)
             .catch(err => console.log("Unable to handle auth: ", err));
 
     }, [doTriggerStartTokenAuth])
@@ -325,6 +329,16 @@ const EmailTokenAuthButton = () => {
 
     }, []);
 
+    const handleEmailProvided = React.useCallback(() => {
+
+        const email = emailRef.current.trim();
+
+        if (email !== '') {
+            handleTriggerStartTokenAuth(email);
+        }
+
+    }, [handleTriggerStartTokenAuth]);
+
     const handleClick = React.useCallback(() => {
 
         if (active) {
@@ -336,11 +350,7 @@ const EmailTokenAuthButton = () => {
                 }
 
             } else {
-
-                if (emailRef.current.trim() !== '') {
-                    handleTriggerStartTokenAuth();
-                }
-
+                handleEmailProvided();
             }
 
         } else {
@@ -348,7 +358,7 @@ const EmailTokenAuthButton = () => {
             setActive(true)
         }
 
-    }, [active, handleTriggerStartTokenAuth, handleTriggerVerifyTokenAuth, triggered])
+    }, [active, handleEmailProvided, handleTriggerVerifyTokenAuth, triggered])
 
     const handleCodeNotReceived = React.useCallback(() => {
 
@@ -400,7 +410,7 @@ const EmailTokenAuthButton = () => {
                         <TextField autoFocus={true}
                                    className={classes.email}
                                    onChange={event => emailRef.current = event.target.value}
-                                   onKeyPress={event => handleKeyPressEnter(event, handleTriggerStartTokenAuth)}
+                                   onKeyPress={event => handleKeyPressEnter(event, handleEmailProvided)}
                                    placeholder="Enter your email address... "
                                    variant="outlined" />
                     )}
