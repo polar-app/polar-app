@@ -15,8 +15,13 @@ fetchRemoteID() {
 }
 
 computeRemotes() {
+    echo "https://github.com/burtonator/polar-app.git"
+    cat conf/repos.conf
+}
 
-    for origin in `cat conf/repos.conf`; do
+computeRemoteIDs() {
+
+    for origin in `computeRemotes`; do
         echo -n "${origin}: "
         fetchRemoteID ${origin}
     done
@@ -37,7 +42,7 @@ doExec() {
     touch .remotes
 
     # compute the new remotes.
-    computeRemotes > /tmp/.remotes
+    computeRemoteIDs > /tmp/.remotes
 
     # https://stackoverflow.com/questions/8139885/shellscript-action-if-two-files-are-different
 

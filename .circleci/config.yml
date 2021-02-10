@@ -151,7 +151,10 @@ jobs:
       # all images and tags here:
       #   https://circleci.com/docs/2.0/docker-image-tags.json
       #
-      - image: circleci/node:14.9-buster
+      - image: circleci/node:14.15.4-buster
+
+    # https://circleci.com/docs/2.0/configuration-reference/#resource_class
+    resource_class: large
 
     # Specify service dependencies here if necessary
     # CircleCI maintains a library of pre-built images
@@ -182,7 +185,9 @@ jobs:
       #   https://circleci.com/docs/2.0/docker-image-tags.json
       #
       - image: circleci/node:14.15.4-buster
-    resource_class: medium+
+
+    # https://circleci.com/docs/2.0/configuration-reference/#resource_class
+    resource_class: large
 
     # Specify service dependencies here if necessary
     # CircleCI maintains a library of pre-built images
@@ -203,7 +208,10 @@ jobs:
 executors:
   my-docker:
     docker:
-      - image: circleci/node:14.9-buster
+      - image: circleci/node:14.15.4-buster
+
+    # https://circleci.com/docs/2.0/configuration-reference/#resource_class
+    resource_class: large
 
   my-macos:
     macos:
