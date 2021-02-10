@@ -218,9 +218,13 @@ export async function executeCloudFunction(name: string, data: any): Promise<any
         body
     };
 
+
+    Analytics.event2("CloudFunctionCalled", {name});
+
     const response = await Fetches.fetch(url, init as any);
 
     if (response.status !== 200) {
+        Analytics.event2("CloudFunctionFailed", {name});
         throw new Error("Cloud function failed: " + response.status + ": " + response.statusText);
     }
 

@@ -13,7 +13,7 @@ import {useRepoDocMetaManager} from "../persistence_layer/PersistenceLayerApp";
 import {useComponentDidMount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 import {ReadingProgressTable} from "./ReadingProgressTable";
 import {Helmet} from "react-helmet";
-import {FeedbackButton2} from "../ui/FeedbackButton2";
+import {QuestionButton} from "../ui/QuestionButton";
 
 const log = Logger.create();
 
@@ -139,7 +139,7 @@ const Desktop = (props: ReviewerProps) => {
                  overflowY: 'auto'
              }}>
 
-            <FeedbackButton2/>
+            <QuestionButton/>
 
             <div style={{
                      maxWidth: '900px',

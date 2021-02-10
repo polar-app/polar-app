@@ -32,7 +32,7 @@ import {useStateRef, useRefValue} from "../../../web/js/hooks/ReactHooks";
 import {NoDocument} from "./NoDocument";
 import {DockLayout2} from "../../../web/js/ui/doc_layout/DockLayout2";
 import {Outliner} from "./outline/Outliner";
-import {FeedbackButton2} from "../../repository/js/ui/FeedbackButton2";
+import {QuestionButton} from "../../repository/js/ui/QuestionButton";
 import {useDocViewerSnapshot} from "./UseDocViewerSnapshot";
 import {useZenModeResizer} from "./ZenModeResizer";
 
@@ -256,7 +256,7 @@ namespace Device {
                          }}>
 
                         <DocViewerToolbar/>
-                        <FeedbackButton2/>
+                        <QuestionButton/>
 
                         <div className="DocViewer.Desktop.Body"
                              style={{

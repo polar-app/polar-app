@@ -12,7 +12,7 @@ import {AnnotationInlineViewer2} from "./AnnotationInlineViewer2";
 import {StartReviewDropdown} from "./filter_bar/StartReviewDropdown";
 import {AnnotationRepoRoutedComponents} from './AnnotationRepoRoutedComponents';
 import {StartReviewSpeedDial} from './StartReviewSpeedDial';
-import {FeedbackButton2} from '../ui/FeedbackButton2';
+import {QuestionButton} from '../ui/QuestionButton';
 import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 import { AnnotationRepoTable2 } from './AnnotationRepoTable2';
 import useTheme from '@material-ui/core/styles/useTheme';
@@ -238,7 +238,7 @@ namespace screen {
             <AnnotationRepoRoutedComponents/>
             <Desktop.Main />
 
-            <FeedbackButton2/>
+            <QuestionButton/>
 
             <RepoFooter/>
 

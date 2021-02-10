@@ -21,6 +21,7 @@ import {Nav} from "../../../../web/js/ui/util/Nav";
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import Divider from "@material-ui/core/Divider";
 import {ZenModeActiveContainer} from "../../../../web/js/mui/ZenModeActiveContainer";
+import {Analytics} from "../../../../web/js/analytics/Analytics";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -68,6 +69,8 @@ namespace MenuItems {
     export const Chat = React.memo(() => {
 
         function onClick() {
+            Analytics.event2('featureTriggered', {name: 'QuestionButton.Chat'})
+
             Nav.openLinkWithNewTab('https://discord.gg/GT8MhA6')
         }
 
@@ -82,6 +85,8 @@ namespace MenuItems {
     export const Documentation = React.memo(() => {
 
         function onClick() {
+            Analytics.event2('featureTriggered', {name: 'QuestionButton.Documentation'})
+
             Nav.openLinkWithNewTab('https://getpolarized.io/docs/')
         }
 
@@ -98,6 +103,8 @@ namespace MenuItems {
         const dialogs = useDialogManager();
 
         const handleClick = React.useCallback(() => {
+
+            Analytics.event2('featureTriggered', {name: 'QuestionButton.SendVideoFeedback'})
 
             if (zest.supported) {
                 zest.trigger();
@@ -126,10 +133,16 @@ namespace MenuItems {
 
         const reportFeedback = useReportFeedback();
 
+        const handleClick = React.useCallback(() => {
+
+            Analytics.event2('featureTriggered', {name: 'QuestionButton.RequestFeatures'})
+            reportFeedback();
+        }, [reportFeedback]);
+
         return (
             <MUIMenuItem text="Request Features and Help Improve Polar"
                          icon={<AllInboxIcon/>}
-                         onClick={reportFeedback}/>
+                         onClick={handleClick}/>
         );
 
     });
@@ -138,17 +151,25 @@ namespace MenuItems {
 
         const {setShowActiveShortcuts} = useActiveKeyboardShortcutsCallbacks()
 
+
+        const handleClick = React.useCallback(() => {
+
+            Analytics.event2('featureTriggered', {name: 'QuestionButton.ShowActiveKeyboardShortcuts'})
+            setShowActiveShortcuts(true);
+
+        }, [setShowActiveShortcuts]);
+
         return (
             <MUIMenuItem text="Show Active Keyboard Shortcuts"
                          icon={<KeyboardIcon/>}
-                         onClick={() => setShowActiveShortcuts(true)}/>
+                         onClick={handleClick}/>
         );
 
     });
 
 }
 
-export function FeedbackButton2() {
+export function QuestionButton() {
 
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
@@ -156,6 +177,8 @@ export function FeedbackButton2() {
     const anchorRef = React.useRef<HTMLButtonElement>(null);
 
     const handleClick = React.useCallback(() => {
+
+        Analytics.event2('featureTriggered', {name: 'QuestionButton'})
         setOpen(! open);
     }, [open]);
 

@@ -16,7 +16,7 @@ import {DocRepoScreenRoutedComponents} from "./DocRepoScreenRoutedComponents";
 import {useHistory} from "react-router-dom";
 import useLocationWithHashOnly = ReactRouters.useLocationWithHashOnly;
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
-import {FeedbackButton2} from "../ui/FeedbackButton2";
+import {QuestionButton} from "../ui/QuestionButton";
 import Box from "@material-ui/core/Box";
 import useTheme from "@material-ui/core/styles/useTheme";
 
@@ -149,7 +149,7 @@ export const DocRepoScreen2 = React.memo(() => {
                         <AddContent.Handheld/>
                     </DeviceRouter.Handheld>
 
-                    <FeedbackButton2/>
+                    <QuestionButton/>
 
                 </FixedNav.Footer>
 
