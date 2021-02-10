@@ -5,10 +5,7 @@ import * as functions from 'firebase-functions';
 import {ErrorResponses} from './ErrorResponses';
 import {IDUser} from './IDUsers';
 import {UserRequests} from './UserRequests';
-import { Rollbars } from './Rollbars';
 import {SentryReporters} from "../reporters/SentryReporter";
-
-const rollbar = Rollbars.create();
 
 export class ExpressFunctions {
 
@@ -31,7 +28,7 @@ export class ExpressFunctions {
             }
 
             doAsync().catch(err => {
-                this.handleError(req, err);
+                this.handleError(req, res, err);
             })
 
         });
@@ -52,7 +49,7 @@ export class ExpressFunctions {
             try {
                 delegate(req, res, next);
             } catch (err) {
-                this.handleError(req, err);
+                this.handleError(req, res, err);
             }
         });
 
@@ -60,7 +57,7 @@ export class ExpressFunctions {
 
     }
 
-    private static handleError(req: express.Request, err: Error) {
+    private static handleError(req: express.Request, res: express.Response, err: Error) {
 
         function createMessage() {
             if (req.body) {
@@ -72,9 +69,10 @@ export class ExpressFunctions {
 
         const msg = createMessage();
 
-        console.error("Handling error and sending to rollbar: ", err);
-        rollbar.log("Sending message from google cloud function...");
+        console.error("Handling error and sending to sentry: ", err);
         SentryReporters.reportError(msg, err);
+
+        ExpressFunctions.sendResponse(res, msg, 500, 'text/plain');
 
         // errorHandler(err, req, res, next)
 
@@ -102,7 +100,6 @@ export class ExpressFunctions {
     public static sendError(res: express.Response, err: Error) {
 
         const msg = "Unable to handle request: ";
-        rollbar.log(msg, err);
         console.error(msg, err);
         const body = ErrorResponses.create(err.message);
 

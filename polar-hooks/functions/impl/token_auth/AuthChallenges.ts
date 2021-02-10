@@ -1,5 +1,6 @@
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 interface IAuthChallenge {
     readonly id: string;
@@ -12,6 +13,8 @@ export namespace AuthChallenges {
     const COLLECTION_NAME = 'auth_challenge';
 
     export async function write(email: string, challenge: string) {
+
+        Preconditions.assertPresent(email, 'email');
 
         const app = FirebaseAdmin.app();
 
@@ -31,6 +34,8 @@ export namespace AuthChallenges {
     }
 
     export async function get(email: string): Promise<IAuthChallenge | undefined> {
+
+        Preconditions.assertPresent(email, 'email');
 
         const app = FirebaseAdmin.app();
 

@@ -2,6 +2,7 @@ import {Strings} from "polar-shared/src/util/Strings";
 import {AuthChallenges} from "./AuthChallenges";
 import {Sendgrid} from "../Sendgrid";
 import {ExpressFunctions} from "../util/ExpressFunctions";
+import { isPresent } from "polar-shared/src/Preconditions";
 
 export interface IStartTokenAuthRequest {
     readonly email: string;
@@ -31,6 +32,11 @@ export function createChallenge(): IChallenge {
 }
 
 export const StartTokenAuthFunction = ExpressFunctions.createHookAsync(async (req, res) => {
+
+    if (! isPresent(req.body)) {
+        ExpressFunctions.sendResponse(res, "No request body", 500, 'text/plain');
+        return;
+    }
 
     const request: IStartTokenAuthRequest = req.body;
 

@@ -3,6 +3,7 @@ import {ExpressFunctions} from "../util/ExpressFunctions";
 import {Lazy} from "../util/Lazy";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import { Hashcodes } from "polar-shared/src/util/Hashcodes";
+import {isPresent, Preconditions} from "polar-shared/src/Preconditions";
 
 export interface IVerifyTokenAuthRequest {
     readonly email: string;
@@ -31,14 +32,23 @@ const firebaseProvider = Lazy.create(() => FirebaseAdmin.app());
 
 export const VerifyTokenAuthFunction = ExpressFunctions.createHookAsync(async (req, res) => {
 
+    if (! isPresent(req.body)) {
+        ExpressFunctions.sendResponse(res, "No request body", 500, 'text/plain');
+        return;
+    }
+
     const request: IVerifyTokenAuthRequest = req.body;
 
     const {email, challenge} = request;
+
+    Preconditions.assertPresent(email, 'email');
+    Preconditions.assertPresent(challenge, 'challenge');
+
     const authChallenge = await AuthChallenges.get(email);
 
     async function sendError(response: IVerifyTokenAuthResponseError) {
         console.error("Could not handle authentication: ", response);
-        ExpressFunctions.sendResponse(res, response);
+        ExpressFunctions.sendResponse(res, response, 500);
     }
 
     if (! authChallenge) {
