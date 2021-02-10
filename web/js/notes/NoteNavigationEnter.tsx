@@ -29,6 +29,6 @@ export function useNoteNavigationEnterHandler(opts: IOpts) {
         editorSetContent(markdown2html(editorSplit.prefix));
         store.createNewNote(id, editorSplit);
 
-    }, [editorSetContent, editorSplitter, id, parent, store]);
+    }, [editorSetContent, editorSplitter, id, store]);
 
 }
