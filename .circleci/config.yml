@@ -27,9 +27,9 @@ commands:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run:
-          name: "Install latest NPM"
-          command: sudo npm -g install npm@7.5.3
+      #- run:
+      #    name: "Install latest NPM"
+      #    command: sudo npm -g install npm@7.5.3
 
       - run:
           name: Node and NPM version
@@ -234,9 +234,10 @@ workflows:
       - build_with_executor:
           executor: my-docker
 #
-      - build_with_executor:
-          executor: my-macos
+      #- build_with_executor:
+      #    executor: my-macos
 
+      # FIXME: these need executors too...
       - build-webapp
       - build-site
 
