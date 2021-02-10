@@ -22,14 +22,21 @@ Other than the native software, Anki also allows you to use many <a href="https:
 There are hundreds of add-ons. When we have too many options to choose from, we tend to get lost (it’s psychologically-proven, check <a href="https://en.wikipedia.org/wiki/Hick%27s_law" target="_blank">Hick’s Law</a>). We handpicked 10 add-ons. They are useful for improving productivity, workflow, and the overall learning experience. These add-ons are great for medical school students. They can also benefit anyone who wants to improve their learning experiences.
 
 ### The basic
+
 <img class="img-fluid" src="https://i.imgur.com/iN5XyMp.png">
 
 #### #1 <a href="https://ankiweb.net/shared/info/594329229" target="_blank">Hierarchical Tags</a>: Make highly-organized sidebar
+
 Update: infrequent
+
 76 upvotes
+
 Anki code: 594329229
+
 <img class="img-fluid" src="https://i.imgur.com/QsUrUYw.png">
+
 This add-on is the basic of the basic add-ons for Anki. But it’s a life-changing one. Without this add-on, your sidebar has no hierarchy or any sort of structure. You will have nice and clearly-structured tags that will make you organized and productive. It makes structuring the flashcards by chapters and subchapters easy, especially when you are managing large decks like USMLE.
+
 #### #2 <a href="https://ankiweb.net/shared/info/874215009" target="_blank">Advanced Browser</a>: Boost the usability of your card browser
 Update: frequent
 189 upvotes
