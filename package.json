@@ -158,7 +158,7 @@
     "file-selector": "=0.1.13",
     "firebase": "=8.2.5",
     "firebaseui": "=4.7.1",
-    "framer-motion": "^1.7.0",
+    "framer-motion": "=3.3.0",
     "jquery": "^3.4.1",
     "js-cookie": "~2.2.0",
     "js-sha3": "0.8.0",
