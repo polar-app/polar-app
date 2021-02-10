@@ -28,7 +28,11 @@ commands:
             - v1-dependencies-
 
       - run:
-          name: versions
+          name: "Install latest NPM"
+          command: sudo npm -g install npm@7.5.3
+
+      - run:
+          name: Node and NPM version
           command: |
             echo "Node version: "
             node --version
