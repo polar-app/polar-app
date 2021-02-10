@@ -181,7 +181,7 @@ jobs:
       # all images and tags here:
       #   https://circleci.com/docs/2.0/docker-image-tags.json
       #
-      - image: circleci/node:14.9-buster
+      - image: circleci/node:14.15.4-buster
     resource_class: medium+
 
     # Specify service dependencies here if necessary
