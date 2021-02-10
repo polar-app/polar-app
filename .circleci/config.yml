@@ -220,7 +220,7 @@ executors:
   my-macos:
     macos:
       # https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions
-      xcode: 11.2.1
+      xcode: 12.4.0
 
 workflows:
   version: 2
