@@ -39,7 +39,7 @@ export class ProfileDeleteFunctions {
 /**
  * Creates or re-provisions a group for document sharing.
  */
-export const ProfileDeleteFunction = ExpressFunctions.createHook((req, res) => {
+export const ProfileDeleteFunction = ExpressFunctions.createHook('ProfileDeleteFunction', (req, res) => {
     return UserRequests.execute(req, res, ProfileDeleteFunctions.exec);
 });
 

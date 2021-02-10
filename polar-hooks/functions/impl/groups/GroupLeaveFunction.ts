@@ -29,7 +29,7 @@ export class GroupLeaveFunctions {
 /**
  * Leaves a group...
  */
-export const GroupLeaveFunction = ExpressFunctions.createHook((req, res) => {
+export const GroupLeaveFunction = ExpressFunctions.createHook('GroupLeaveFunction', (req, res) => {
     return UserRequests.execute(req, res, GroupLeaveFunctions.exec);
 });
 

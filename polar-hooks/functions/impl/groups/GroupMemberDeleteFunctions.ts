@@ -38,7 +38,7 @@ export class GroupMemberDeleteFunctions {
 /**
  * Leaves a group...
  */
-export const GroupMemberDeleteFunction = ExpressFunctions.createHook((req, res) => {
+export const GroupMemberDeleteFunction = ExpressFunctions.createHook('GroupMemberDeleteFunction', (req, res) => {
     return UserRequests.execute(req, res, GroupMemberDeleteFunctions.exec);
 });
 

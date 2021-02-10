@@ -76,7 +76,7 @@ export class DocChangeVisibilityFunctions {
 
 }
 
-export const DocChangeVisibilityFunction = ExpressFunctions.createRPCHook(DocChangeVisibilityFunctions.exec);
+export const DocChangeVisibilityFunction = ExpressFunctions.createRPCHook('DocChangeVisibilityFunction', DocChangeVisibilityFunctions.exec);
 
 export interface DocChangeVisibilityRequest {
 

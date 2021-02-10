@@ -43,7 +43,7 @@ export class GroupGetFunctions {
 /**
  * Creates or re-provisions a group for document sharing.
  */
-export const GroupGetFunction = ExpressFunctions.createHook((req, res) => {
+export const GroupGetFunction = ExpressFunctions.createHook('GroupGetFunction', (req, res) => {
     return UserRequests.execute(req, res, GroupGetFunctions.exec);
 });
 

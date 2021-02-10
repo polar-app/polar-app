@@ -74,7 +74,7 @@ export class GroupJoinFunctions {
 /**
  * Joins a group...
  */
-export const GroupJoinFunction = ExpressFunctions.createHook((req, res) => {
+export const GroupJoinFunction = ExpressFunctions.createHook('GroupJoinFunction', (req, res) => {
     return UserRequests.execute(req, res, GroupJoinFunctions.exec);
 });
 

@@ -30,7 +30,7 @@ export interface IVerifyTokenAuthResponse {
 
 const firebaseProvider = Lazy.create(() => FirebaseAdmin.app());
 
-export const VerifyTokenAuthFunction = ExpressFunctions.createHookAsync(async (req, res) => {
+export const VerifyTokenAuthFunction = ExpressFunctions.createHookAsync('VerifyTokenAuthFunction', async (req, res) => {
 
     if (! isPresent(req.body)) {
         ExpressFunctions.sendResponse(res, "No request body", 500, 'text/plain');

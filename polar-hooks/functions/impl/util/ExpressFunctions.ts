@@ -13,7 +13,7 @@ export class ExpressFunctions {
         return express();
     }
 
-    public static createHookAsync(delegate: (req: express.Request, res: express.Response, next: express.NextFunction) => Promise<void>) {
+    public static createHookAsync(functionName: string, delegate: (req: express.Request, res: express.Response, next: express.NextFunction) => Promise<void>) {
 
         const app = this.createApp();
 
@@ -28,7 +28,7 @@ export class ExpressFunctions {
             }
 
             doAsync().catch(err => {
-                this.handleError(req, res, err);
+                this.handleError(functionName, req, res, err);
             })
 
         });
@@ -37,7 +37,8 @@ export class ExpressFunctions {
 
     }
 
-    public static createHook(delegate: (req: express.Request, res: express.Response, next: express.NextFunction) => void) {
+    public static createHook(functionName: string,
+                             delegate: (req: express.Request, res: express.Response, next: express.NextFunction) => void) {
 
         const app = this.createApp();
 
@@ -49,7 +50,7 @@ export class ExpressFunctions {
             try {
                 delegate(req, res, next);
             } catch (err) {
-                this.handleError(req, res, err);
+                this.handleError(functionName, req, res, err);
             }
         });
 
@@ -57,7 +58,9 @@ export class ExpressFunctions {
 
     }
 
-    private static handleError(req: express.Request, res: express.Response, err: Error) {
+    private static handleError(functionName: string,
+                               req: express.Request,
+                               res: express.Response, err: Error) {
 
         function createMessage() {
             if (req.body) {
@@ -70,7 +73,7 @@ export class ExpressFunctions {
         const msg = createMessage();
 
         console.error("Handling error and sending to sentry: ", err);
-        SentryReporters.reportError(msg, err);
+        SentryReporters.reportError(msg, err, {functionName});
 
         ExpressFunctions.sendResponse(res, msg, 500, 'text/plain');
 
@@ -78,9 +81,9 @@ export class ExpressFunctions {
 
     }
 
-    public static createRPCHook<R, V>(handler: (idUser: IDUser, request: R) => Promise<V>): ExpressRequestFunction {
+    public static createRPCHook<R, V>(functionName: string, handler: (idUser: IDUser, request: R) => Promise<V>): ExpressRequestFunction {
 
-        return this.createHook((req: express.Request, res: express.Response) => {
+        return this.createHook(functionName, (req: express.Request, res: express.Response) => {
             UserRequests.execute<R, V>(req, res, (idUser, request) => handler(idUser, request));
         });
 

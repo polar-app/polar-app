@@ -4,7 +4,7 @@ import {StripeCustomerAccounts} from "./StripeCustomerAccounts";
 import {StripeMode} from "./StripeUtils";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 
-export const StripeCancelSubscriptionFunction = ExpressFunctions.createHookAsync(async (req, res, next) => {
+export const StripeCancelSubscriptionFunction = ExpressFunctions.createHookAsync('StripeCancelSubscriptionFunction', async (req, res, next) => {
 
     console.log(JSON.stringify(req.body, null,  '  '));
 

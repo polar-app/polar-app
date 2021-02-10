@@ -4,7 +4,7 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 import {StripeCreateSessions} from "./StripeCreateSessions";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 
-export const StripeCreateSessionFunction = ExpressFunctions.createHookAsync(async (req, res) => {
+export const StripeCreateSessionFunction = ExpressFunctions.createHookAsync('StripeCreateSessionFunction', async (req, res) => {
 
     const stripeMode = <StripeMode> req.query.mode;
     const plan = <Billing.V2PlanLevel> req.query.plan;

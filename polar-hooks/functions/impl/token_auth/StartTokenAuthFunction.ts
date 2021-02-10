@@ -31,7 +31,7 @@ export function createChallenge(): IChallenge {
 
 }
 
-export const StartTokenAuthFunction = ExpressFunctions.createHookAsync(async (req, res) => {
+export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTokenAuthFunction', async (req, res) => {
 
     if (! isPresent(req.body)) {
         ExpressFunctions.sendResponse(res, "No request body", 500, 'text/plain');

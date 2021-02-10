@@ -85,6 +85,6 @@ async function copyFile(src: string, dest: string, uid: UserIDStr) {
 
 }
 
-export const DatastoreImportFileFunction = ExpressFunctions.createHook((req, res) => {
+export const DatastoreImportFileFunction = ExpressFunctions.createHook('DatastoreImportFileFunction', (req, res) => {
     return UserRequests.execute(req, res, DatastoreImportFileFunctions.exec);
 });

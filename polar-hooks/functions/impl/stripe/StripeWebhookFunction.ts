@@ -9,7 +9,7 @@ import {ExpressFunctions} from "../util/ExpressFunctions";
 
 function createApp(stripeMode: StripeMode) {
 
-    return ExpressFunctions.createHookAsync(async (req, res, next) => {
+    return ExpressFunctions.createHookAsync('StripeWebhook', async (req, res, next) => {
 
         const stripeEvent: StripeEvent = req.body;
 

@@ -103,7 +103,7 @@ export class GroupProvisionFunctions {
 /**
  * Creates or re-provisions a group for document sharing.
  */
-export const GroupProvisionFunction = ExpressFunctions.createHook((req, res) => {
+export const GroupProvisionFunction = ExpressFunctions.createHook('GroupProvisionFunction', (req, res) => {
     return UserRequests.execute(req, res, GroupProvisionFunctions.exec);
 });
 

@@ -1,7 +1,7 @@
 import {Mailchimp} from './util/Mailchimp';
 import {ExpressFunctions} from "./util/ExpressFunctions";
 
-export const MailinglistFunction = ExpressFunctions.createHookAsync(async (req, res) => {
+export const MailinglistFunction = ExpressFunctions.createHookAsync('MailinglistFunction', async (req, res) => {
 
     const subscription: Subscription = req.body;
 
