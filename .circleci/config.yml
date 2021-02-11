@@ -234,8 +234,8 @@ workflows:
       - build:
           executor: my-docker
 
-      #- build:
-      #    executor: my-macos
+      - build:
+          executor: my-macos
 
       - build-webapp
 
