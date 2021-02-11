@@ -1,6 +1,6 @@
 ---
 title: Analysis 10 Anki Add-ons for Medical Students in 2021
-date: 2021-02-10 T08:00:00.000-08:00
+date: 2021-02-10T08:00:00.000-08:00
 layout: post
 description: Recommendation of 10 Anki add-ons that are perfect for medical students to improve productivity, workflow and the overall learning experience in 2021
 large_image: https://i.imgur.com/gbTLiPD.png
