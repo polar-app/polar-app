@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# find . -name *Test.js | xargs mocha --timeout 20000 --exit
-
-for file in `find . -name '*Test.js'`; do
-    npx mocha ${file} --exit
-done
-

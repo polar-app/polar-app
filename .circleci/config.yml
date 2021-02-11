@@ -211,9 +211,6 @@ jobs:
     steps:
       - build_setup
 
-      - hold:
-          type: approval
-
       - run:
           name: dist-release-webapp
           command: echo hello world
@@ -247,12 +244,17 @@ workflows:
       - build-site:
           executor: my-docker
 
-      - deploy:
-          executor: my-docker
+      - hold:
+          type: approval
           requires:
             - build-site
             - build-webapp
             - build
+
+      - deploy:
+          executor: my-docker
+          requires:
+            - hold
 
 #      - build:
 #          executor: my-macos
