@@ -204,7 +204,7 @@ jobs:
       - build_setup
 
       - run:
-          name: build and verify webapp
+          name: build and verify site (getpolarized.io)
           command: |
             cd packages/polar-site2 && \
             npm run-script dist
