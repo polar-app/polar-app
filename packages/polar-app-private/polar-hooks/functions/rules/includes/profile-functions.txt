@@ -1,0 +1,18 @@
+
+/**
+ * Determine if the user has a profileID via the profile_owner table
+ */
+function hasProfileID() {
+    return exists(/databases/$(database)/documents/profile_owner/$(request.auth.uid));
+}
+
+/**
+ * Get the users profileID via the profile_owner table
+ */
+function getProfileID() {
+    return get(/databases/$(database)/documents/profile_owner/$(request.auth.uid)).data.profileID;
+}
+
+function matchesProfileID(profileID) {
+    return hasProfileID() && profileID == getProfileID();
+}
