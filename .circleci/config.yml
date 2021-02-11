@@ -226,21 +226,17 @@ workflows:
 
       - build:
           executor: my-docker
-
-      - build:
-          executor: my-macos
-
       - build-webapp:
           executor: my-docker
-
-      - build-webapp:
-          executor: my-macos
-
       - build-site:
           executor: my-docker
 
-      - build-site:
-          executor: my-macos
+#      - build:
+#          executor: my-macos
+#      - build-webapp:
+#          executor: my-macos
+#      - build-site:
+#          executor: my-macos
 
 #      - end2end:
 #          executor:
