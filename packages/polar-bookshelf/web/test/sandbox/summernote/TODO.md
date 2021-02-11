@@ -1,0 +1,3 @@
+- special characters
+- math support
+- https://github.com/thisroot/summernote-equation-plugin
