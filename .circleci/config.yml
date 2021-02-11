@@ -208,6 +208,7 @@ jobs:
 
     executor: << parameters.executor>>
     working_directory: ~/repo
+    steps:
       - build_setup
 
       - hold:
