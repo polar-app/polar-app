@@ -212,10 +212,18 @@ jobs:
       - build_setup
 
       - run:
-          name: dist-release-webapp
+          name: init
           command: |
             source packages/polar-bookshelf-secrets/credentials.sh
-            ./sbin/dist-release-webapp
+            npm run-script set-registry-bytesafe-rw
+            npm run-script dist-release-webapp-init
+
+      - run:
+          name: release
+          command: |
+            source packages/polar-bookshelf-secrets/credentials.sh
+            npm run-script set-registry-default-rw
+            npm run-script dist-release-webapp-release
 
 executors:
   my-docker:
