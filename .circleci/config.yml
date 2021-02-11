@@ -213,7 +213,9 @@ jobs:
 
       - run:
           name: dist-release-webapp
-          command: echo hello world
+          command: |
+            source packages/polar-bookshelf-secrets/credentials.sh
+            ./sbin/dist-release-webapp
 
 executors:
   my-docker:
