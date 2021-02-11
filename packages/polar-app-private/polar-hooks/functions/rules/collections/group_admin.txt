@@ -1,7 +1,0 @@
-// no user permissions on this table. Its only enforced for writes.
-
-// a user doesn't need to read this as they can determine if they are
-// an admin on a table by their own user_group table as it has an
-// 'admins' field.
-
-allow read, write: if false;
