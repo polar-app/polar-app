@@ -247,24 +247,24 @@ workflows:
 #            name: win/default
 #            shell: bash.exe
 #
-#      - build:
-#          executor: my-docker
-#      - build-webapp:
-#          executor: my-docker
-#      - build-site:
-#          executor: my-docker
-#
-#      - hold:
-#          type: approval
-#          requires:
-#            - build-site
-#            - build-webapp
-#            - build
+      - build:
+          executor: my-docker
+      - build-webapp:
+          executor: my-docker
+      - build-site:
+          executor: my-docker
+
+      - hold:
+          type: approval
+          requires:
+            - build-site
+            - build-webapp
+            - build
 
       - deploy:
           executor: my-docker
-#          requires:
-#            - hold
+          requires:
+            - hold
 
 #      - build:
 #          executor: my-macos
