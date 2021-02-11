@@ -18,6 +18,7 @@ import SyncIcon from '@material-ui/icons/Sync';
 import {useAnkiSyncCallback} from "./AnkiSyncHook";
 import {SideNavCommandMenu} from "./SideNavCommand";
 import {ZenModeActiveContainer} from "../mui/ZenModeActiveContainer";
+// import {Intercom} from "../apps/repository/Intercom";
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -235,6 +236,8 @@ export const SideNav = React.memo(() => {
     return (
         <>
             <SideNavCommandMenu/>
+
+            {/*<Intercom/>*/}
 
             <ZenModeActiveContainer>
                 <div className={classes.root}>

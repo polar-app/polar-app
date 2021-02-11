@@ -1,15 +1,12 @@
 import React from "react";
 import {FixedNav} from "../FixedNav";
-import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
-import {DocRepoButtonBar} from "./DocRepoButtonBar";
-import {DocRepoFilterBar} from "./DocRepoFilterBar";
 import {DocRepoTable2} from "./DocRepoTable2";
 import {Route, Switch} from "react-router";
 import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
 import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 import {FolderSidebar2} from "../folders/FolderSidebar2";
-import {DeviceRouter, DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
+import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {AddContent} from "../ui/AddContentButton";
 import isEqual from "react-fast-compare";
 import {DocRepoScreenRoutedComponents} from "./DocRepoScreenRoutedComponents";
@@ -17,8 +14,8 @@ import {useHistory} from "react-router-dom";
 import useLocationWithHashOnly = ReactRouters.useLocationWithHashOnly;
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import {QuestionButton} from "../ui/QuestionButton";
-import Box from "@material-ui/core/Box";
 import useTheme from "@material-ui/core/styles/useTheme";
+import {Intercom} from "../../../../web/js/apps/repository/Intercom";
 
 namespace main {
 

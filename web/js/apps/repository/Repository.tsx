@@ -5,15 +5,10 @@ import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {AppInstance} from '../../electron/framework/AppInstance';
 import {
     PersistenceLayerManager,
-    PersistenceLayerTypes
 } from '../../datastore/PersistenceLayerManager';
-import {PersistenceLayer} from '../../datastore/PersistenceLayer';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {PersistenceLayerEvent} from '../../datastore/PersistenceLayerEvent';
 import {RepoDocMetaManager} from '../../../../apps/repository/js/RepoDocMetaManager';
 import {RepoDocMetaLoader} from '../../../../apps/repository/js/RepoDocMetaLoader';
-import {ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
-import {RepoDocMetas} from '../../../../apps/repository/js/RepoDocMetas';
 import {Accounts} from '../../accounts/Accounts';
 import {App, AppInitializer} from "./AppInitializer";
 import {RepositoryApp} from './RepositoryApp';
