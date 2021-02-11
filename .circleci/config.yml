@@ -73,7 +73,7 @@ commands:
           command: npx lerna run compile
 
 jobs:
-  build_with_executor:
+  build:
 
     parameters:
       executor:
@@ -231,15 +231,16 @@ workflows:
 #            name: win/default
 #            shell: bash.exe
 
-      - build_with_executor:
+      - build:
           executor: my-docker
-#
-      #- build_with_executor:
+
+      #- build:
       #    executor: my-macos
 
-      # FIXME: these need executors too...
       - build-webapp
-      - build-site
+
+      # FIXME: add this back in but gatsby is being a huge pain..
+      # - build-site
 
 #      - end2end:
 #          executor:
