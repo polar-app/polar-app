@@ -149,16 +149,13 @@ jobs:
             npx mocha --timeout 60000 --exit web/spectron5/main-app-with-empty-repo/spec.js
 
   build-webapp:
-    docker:
-      # specify the version you desire here
-      #
-      # all images and tags here:
-      #   https://circleci.com/docs/2.0/docker-image-tags.json
-      #
-      - image: circleci/node:14.15.4-buster
 
-    # https://circleci.com/docs/2.0/configuration-reference/#resource_class
-    resource_class: large
+    parameters:
+      executor:
+        description: "The CircleCI executor to use."
+        type: executor
+
+    executor: << parameters.executor>>
 
     # Specify service dependencies here if necessary
     # CircleCI maintains a library of pre-built images
@@ -237,7 +234,11 @@ workflows:
       - build:
           executor: my-macos
 
-      - build-webapp
+      - build-webapp:
+          executor: my-docker
+
+      - build-webapp:
+          executor: my-macos
 
       # FIXME: add this back in but gatsby is being a huge pain..
       # - build-site
