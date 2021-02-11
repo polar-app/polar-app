@@ -1,0 +1,37 @@
+
+.polar-htmlviewer #polar-header {
+    position: fixed;
+    height: 65px;
+}
+
+
+
+/*.polar-htmlviewer,*/
+/*.polar-htmlviewer #polar-viewer*/
+/*.polar-htmlviewer .page,*/
+/*.polar-htmlviewer #content-parent,*/
+/*.polar-htmlviewer iframe,*/
+/*.polar-htmlviewer #viewerContainer {*/
+    /*overflow: hidden !important;*/
+/*}*/
+
+
+/*.inner-container::-webkit-scrollbar {*/
+    /*display: none;*/
+/*}*/
+
+
+/*.polar-htmlviewer,*/
+/*.polar-htmlviewer #polar-viewer*/
+/*.polar-htmlviewer .page,*/
+/*.polar-htmlviewer #content-parent,*/
+/*.polar-htmlviewer iframe,*/
+
+/*.polar-htmlviewer #viewerContainer::-webkit-scrollbar {*/
+    /*display: none;*/
+/*}*/
+
+/**::-webkit-scrollbar {*/
+    /*display: none;*/
+/*}*/
+
