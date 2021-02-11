@@ -1,1 +1,0 @@
-../profiles/auth_uid_read.txt

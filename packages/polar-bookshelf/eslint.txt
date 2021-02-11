@@ -1,4 +1,0 @@
-
-> polar-bookshelf@2.0.75 eslint /Users/burton/projects/polar-app/packages/polar-bookshelf
-> eslint -c .eslintrc.js --ext .ts,.tsx --ignore-pattern '*.d.ts' web/js apps
-
