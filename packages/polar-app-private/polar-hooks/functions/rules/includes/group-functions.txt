@@ -1,8 +1,0 @@
-function existsGroup() {
-    return exists(/databases/$(database)/documents/group/$(resource.data.groupID));
-}
-
-function getGroup() {
-    return get(/databases/$(database)/documents/group/$(resource.data.groupID));
-}
-
