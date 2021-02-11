@@ -200,7 +200,22 @@ jobs:
             cd packages/polar-site2 && \
             npm run-script dist
 
+  deploy:
+    parameters:
+      executor:
+        description: "The CircleCI executor to use."
+        type: executor
 
+    executor: << parameters.executor>>
+    working_directory: ~/repo
+      - build_setup
+
+      - hold:
+          type: approval
+
+      - run:
+          name: dist-release-webapp
+          command: echo hello world
 
 executors:
   my-docker:
@@ -230,6 +245,13 @@ workflows:
           executor: my-docker
       - build-site:
           executor: my-docker
+
+      - deploy:
+          executor: my-docker
+          requires:
+            - build-site
+            - build-webapp
+            - build
 
 #      - build:
 #          executor: my-macos
