@@ -56,8 +56,8 @@ interface IProps {
 
     readonly canonicalizer?: (path: URLPathStr) => URLPathStr;
 
-    readonly onClick: () => void;
-    readonly children: JSX.Element;
+    readonly onClick: (event: React.MouseEvent<HTMLElement>) => void;
+    readonly children: JSX.Element | string;
     readonly className?: string;
     readonly noContextMenu?: boolean;
 

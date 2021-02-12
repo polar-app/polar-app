@@ -15,6 +15,9 @@ interface IProps {
     readonly id?: string;
     readonly icon?: JSX.Element;
     readonly text: string;
+
+    readonly secondary?: string;
+
     readonly disabled?: boolean;
 
     readonly onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
@@ -62,7 +65,7 @@ export const MUIMenuItem = React.forwardRef((props: IProps, ref) => {
                     {props.icon}
                 </ListItemIcon>}
 
-            <ListItemText primary={props.text} />
+            <ListItemText primary={props.text} secondary={props.secondary}/>
 
         </MenuItem>
     );

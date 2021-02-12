@@ -3,7 +3,6 @@ import {FixedNav} from '../FixedNav';
 import {RepoFooter} from "../repo_footer/RepoFooter";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
-import Paper from "@material-ui/core/Paper";
 import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 import {FolderSidebar2} from "../folders/FolderSidebar2";
 import {AnnotationListView2} from "./AnnotationListView2";
@@ -12,7 +11,6 @@ import {AnnotationInlineViewer2} from "./AnnotationInlineViewer2";
 import {StartReviewDropdown} from "./filter_bar/StartReviewDropdown";
 import {AnnotationRepoRoutedComponents} from './AnnotationRepoRoutedComponents';
 import {StartReviewSpeedDial} from './StartReviewSpeedDial';
-import {QuestionButton} from '../ui/QuestionButton';
 import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 import { AnnotationRepoTable2 } from './AnnotationRepoTable2';
 import useTheme from '@material-ui/core/styles/useTheme';
@@ -237,8 +235,6 @@ namespace screen {
 
             <AnnotationRepoRoutedComponents/>
             <Desktop.Main />
-
-            <QuestionButton/>
 
             <RepoFooter/>
 

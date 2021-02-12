@@ -169,7 +169,7 @@ namespace MenuItems {
 
 }
 
-export function QuestionButton() {
+export function QuestionFloatingActionButton() {
 
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);

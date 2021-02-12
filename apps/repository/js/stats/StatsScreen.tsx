@@ -8,12 +8,10 @@ import {PremiumFeature} from "../../../../web/js/ui/premium_feature/PremiumFeatu
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
-import Paper from '@material-ui/core/Paper';
 import {useRepoDocMetaManager} from "../persistence_layer/PersistenceLayerApp";
 import {useComponentDidMount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 import {ReadingProgressTable} from "./ReadingProgressTable";
 import {Helmet} from "react-helmet";
-import {QuestionButton} from "../ui/QuestionButton";
 
 const log = Logger.create();
 
@@ -138,8 +136,6 @@ const Desktop = (props: ReviewerProps) => {
                  minHeight: 0,
                  overflowY: 'auto'
              }}>
-
-            <QuestionButton/>
 
             <div style={{
                      maxWidth: '900px',

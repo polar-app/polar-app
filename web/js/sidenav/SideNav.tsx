@@ -18,7 +18,8 @@ import SyncIcon from '@material-ui/icons/Sync';
 import {useAnkiSyncCallback} from "./AnkiSyncHook";
 import {SideNavCommandMenu} from "./SideNavCommand";
 import {ZenModeActiveContainer} from "../mui/ZenModeActiveContainer";
-// import {Intercom} from "../apps/repository/Intercom";
+import { Intercom } from '../apps/repository/Intercom';
+import { SideNavQuestionButton } from './SideNavQuestionButton';
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -84,10 +85,10 @@ const useStyles = makeStyles((theme) =>
 interface HistoryButtonProps {
     readonly path: string;
     readonly title: string;
-    readonly children: JSX.Element;
+    readonly children: JSX.Element | string;
 }
 
-const HistoryButton = React.memo((props: HistoryButtonProps) => {
+export const SideNavHistoryButton = React.memo((props: HistoryButtonProps) => {
 
     const history = useHistory();
 
@@ -122,10 +123,10 @@ const AnnotationsButton = React.memo(() => {
     const classes = useStyles();
 
     return (
-        <HistoryButton title="Annotations"
-                       path="/annotations">
+        <SideNavHistoryButton title="Annotations"
+                              path="/annotations">
             <NoteIcon className={classes.secondaryIcon}/>
-        </HistoryButton>
+        </SideNavHistoryButton>
     )
 });
 
@@ -136,10 +137,10 @@ const StatsButton = React.memo(() => {
     const classes = useStyles();
 
     return (
-        <HistoryButton title="Statistics"
-                       path="/stats">
+        <SideNavHistoryButton title="Statistics"
+                              path="/stats">
             <TimelineIcon className={classes.secondaryIcon}/>
-        </HistoryButton>
+        </SideNavHistoryButton>
     )
 });
 
@@ -148,23 +149,22 @@ const AccountButton = React.memo(() => {
     const classes = useStyles();
 
     return (
-        <HistoryButton title="Account"
-                       path="#account">
+        <SideNavHistoryButton title="Account"
+                              path="#account">
             <AccountAvatar className={classes.secondaryIcon}/>
-        </HistoryButton>
+        </SideNavHistoryButton>
     )
 });
-
 
 const SettingsButton = React.memo(() => {
 
     const classes = useStyles();
 
     return (
-        <HistoryButton title="Settings"
-                       path="/settings">
+        <SideNavHistoryButton title="Settings"
+                              path="/settings">
             <SettingsIcon className={classes.secondaryIcon}/>
-        </HistoryButton>
+        </SideNavHistoryButton>
     )
 });
 
@@ -237,7 +237,7 @@ export const SideNav = React.memo(() => {
         <>
             <SideNavCommandMenu/>
 
-            {/*<Intercom/>*/}
+            <Intercom/>
 
             <ZenModeActiveContainer>
                 <div className={classes.root}>
@@ -262,6 +262,7 @@ export const SideNav = React.memo(() => {
                         <SideNavDivider/>
                         <SyncButton/>
                         <AccountButton/>
+                        <SideNavQuestionButton/>
                         <SettingsButton/>
                     </div>
 

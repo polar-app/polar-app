@@ -2,44 +2,76 @@
 import * as React from 'react';
 import {useUserInfoContext} from "./auth_handler/UserInfoProvider";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import { useLocation } from 'react-router-dom';
+import { useZenModeStore } from '../../mui/ZenModeStore';
 
 declare var window: any;
 
 export function useIntercom() {
 
     const context = useUserInfoContext();
+    // TODO: location is used so that we call 'update' but we might want to
+    // decouple this into a new hook.
+    const location = useLocation();
+    const booted = React.useRef(false);
 
     const userInfo = context?.userInfo;
 
-    if (window.intercomSettings) {
-        console.log("FIXME1")
-        return;
-    }
-
     if (! userInfo) {
-        console.log("FIXME2")
         return;
     }
 
-    console.log("FIXME3")
+    // tslint:disable-next-line:variable-name
+    const created_at = Math.floor(ISODateTimeStrings.parse(userInfo.creationTime).getTime() / 1000);
 
-    window.intercomSettings = {
+    const data = {
         app_id: "wk5j7vo0",
+        user_id: userInfo.uid,
         name: userInfo?.displayName || "",
         email: userInfo?.email,
-        created_at: Math.floor(ISODateTimeStrings.parse(userInfo.creationTime).getTime() / 1000)
+        created_at: `${created_at}`
     };
 
-    // FIXME: this just isn't getting inserted here...
+    if (booted.current) {
+        window.Intercom('update', data);
+    } else {
+        window.Intercom('boot', data);
+        booted.current = true;
+    }
 
-    const script = document.createElement('script');
-    script.appendChild(document.createTextNode("(function(){var w=window;var ic=w.Intercom;if(typeof ic===\"function\"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/wk5j7vo0';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();\n"))
+}
 
-    document.head.appendChild(script);
+function useIntercomSideNavToggler() {
+
+    const {zenMode} = useZenModeStore(['zenMode']);
+    // intercom-launcher
+
+    React.useEffect(() => {
+
+        const launcher = document.querySelector('.intercom-launcher, .intercom-namespace') as HTMLElement;
+
+        if (launcher) {
+
+            // the intercom messenger hide/show methods won't hide the launcher
+
+            if (zenMode) {
+                // window.Intercom('hide');
+                console.log("Hiding intercom");
+                launcher.style.display = 'none';
+            } else {
+                // window.Intercom('show');
+                console.log("Showing intercom");
+                launcher.style.display = 'unset';
+            }
+
+        }
+
+    }, [zenMode]);
 
 }
 
 export const Intercom = () => {
     useIntercom();
+    useIntercomSideNavToggler();
     return null;
 }
