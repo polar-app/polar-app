@@ -111,8 +111,8 @@ export namespace AnnotationRects {
         Preconditions.assertCondition(boxRect.width > 0, 'boxRect width');
         Preconditions.assertCondition(boxRect.height > 0, 'boxRect height');
 
-        Preconditions.assertCondition(containerDimensions.width > 0, 'containerRect width');
-        Preconditions.assertCondition(containerDimensions.height > 0, 'containerRect height');
+        Preconditions.assertCondition(containerDimensions.width > 0, 'containerRect width: ' + containerDimensions.width);
+        Preconditions.assertCondition(containerDimensions.height > 0, 'containerRect height: ' + containerDimensions.height);
 
         Preconditions.assertInstanceOf(boxRect, Rect, "boxRect");
 
