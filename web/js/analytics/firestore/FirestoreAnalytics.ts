@@ -32,10 +32,8 @@ export class FirestoreAnalytics implements IAnalytics {
     }
 
     public traits(traits: TraitsMap): void {
-        //
         // UserTraits.write(traits)
         //           .catch(err => console.error("Failed to write traits: ", err));
-
     }
 
     public version(version: string) {
