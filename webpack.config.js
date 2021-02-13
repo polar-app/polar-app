@@ -334,6 +334,14 @@ module.exports = {
             swDest: 'service-worker.js',
             runtimeCaching: [
                 {
+                    urlPattern: /https:\/\/widget\.intercom\.io\/widget\//,
+                    handler: 'CacheFirst'
+                },
+                {
+                    urlPattern: /https:\/\/canny\.io\/sdk\.js\//,
+                    handler: 'CacheFirst'
+                },
+                {
                     // cache document URLs returned by polar so that they are
                     // available for reading offline...
                     //
