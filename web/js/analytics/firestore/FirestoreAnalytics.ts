@@ -3,12 +3,8 @@ import {Heartbeats} from "polar-firebase/src/firebase/om/Heartbeats";
 import {Firebase} from "../../firebase/Firebase";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {UserTraits} from "../../datastore/firebase/UserTraits";
-import {Events} from "./Events";
-import {StandardEventProperties} from "../StandardEventProperties";
 
 const log = Logger.create();
-
-const standardEventProperties = StandardEventProperties.create();
 
 export class FirestoreAnalytics implements IAnalytics {
 
@@ -32,8 +28,8 @@ export class FirestoreAnalytics implements IAnalytics {
     }
 
     public traits(traits: TraitsMap): void {
-        // UserTraits.write(traits)
-        //           .catch(err => console.error("Failed to write traits: ", err));
+        UserTraits.write(traits)
+                  .catch(err => console.error("Failed to write traits: ", err));
     }
 
     public version(version: string) {
