@@ -85,7 +85,7 @@ function useUserInfoContextSnapshotSubscriber(): SnapshotSubscriberWithID<IUserI
 
 
 // TODO: migrate this to a store so that the entire UI doesn't need to be
-// repainted.
+// repainted when this data is updated.
 export const UserInfoProvider = deepMemo((props: IProps) => {
 
     const snapshotSubscriber = useUserInfoContextSnapshotSubscriber();

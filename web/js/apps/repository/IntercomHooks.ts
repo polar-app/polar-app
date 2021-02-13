@@ -13,6 +13,10 @@ export interface IIntercomData {
     readonly name: string;
     readonly email: string;
     readonly created_at: string;
+
+    // now arbitrary key / value pairs for attributes.
+    [key: string]: string | number;
+
 }
 
 export interface IIntercomClient {
@@ -38,4 +42,28 @@ export function useIntercomClient(): IIntercomClient | undefined {
 
     return undefined;
 
+}
+
+export function useIntercomData(): IIntercomData | undefined {
+
+    const context = useUserInfoContext();
+
+    const userInfo = context?.userInfo;
+
+    if (! userInfo) {
+        return;
+    }
+
+    // tslint:disable-next-line:variable-name
+    const created_at = Math.floor(ISODateTimeStrings.parse(userInfo.creationTime).getTime() / 1000);
+
+    const data: IIntercomData = {
+        app_id: "wk5j7vo0",
+        user_id: userInfo.uid,
+        name: userInfo?.displayName || "",
+        email: userInfo?.email,
+        created_at: `${created_at}`
+    };
+
+    return data;
 }

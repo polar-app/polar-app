@@ -1,29 +1,52 @@
+import React from 'react';
 import {IAnalytics, IEventArgs, TraitsMap, IPageEvent} from "../IAnalytics";
+import {useIntercomClient, useIntercomData} from "../../apps/repository/IntercomHooks";
 
-export class IntercomAnalytics implements IAnalytics {
+export function useIntercomAnalytics(): IAnalytics {
 
-    public event(event: IEventArgs): void {
+    const intercomClient = useIntercomClient();
+    const intercomData = useIntercomData();
 
-    }
+    const event = React.useCallback((event: IEventArgs): void => {
+        // noop
+    }, []);
 
-    public event2(eventName: string, data?: any): void {
-    }
+    const event2 = React.useCallback((eventName: string, data?: any): void => {
+        // noop
+    }, []);
 
-    public identify(userId: string): void {
-    }
+    const identify = React.useCallback((userId: string): void => {
+        // noop
+    }, []);
 
-    public page(event: IPageEvent): void {
-    }
+    const page = React.useCallback((event: IPageEvent): void => {
+        // noop
+    }, []);
 
-    public traits(traits: TraitsMap): void {
-    }
+    const traits = React.useCallback((traits: TraitsMap): void => {
 
-    public version(version: string) {
-    }
+        if (! intercomClient) {
+            console.warn("No intercom client");
+            return;
+        }
 
-    public heartbeat(): void {
-    }
+        if (! intercomData) {
+            console.warn("No intercom data");
+            return;
+        }
+
+        intercomClient.update({...intercomData, ...traits});
+
+    }, [intercomClient, intercomData]);
+
+    const version = React.useCallback((version: string) => {
+        // noop
+    }, []);
+
+    const heartbeat = React.useCallback((): void => {
+        // noop
+    }, []);
+
+    return {event, event2, identify, page, traits, version, heartbeat};
 
 }
-
-

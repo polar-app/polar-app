@@ -1,3 +1,4 @@
+import React from 'react';
 import {CompositeAnalytics} from "./CompositeAnalytics";
 import {IAnalytics, IEventArgs, TraitsMap, IPageEvent} from "./IAnalytics";
 import {GAAnalytics} from "./ga/GAAnalytics";
@@ -7,6 +8,7 @@ import {FirestoreAnalytics} from "./firestore/FirestoreAnalytics";
 import {OnlineAnalytics} from "./online/OnlineAnalytics";
 import {UserflowAnalytics} from "./userflow/UserflowAnalytics";
 import { ConsoleAnalytics } from "./console/ConsoleAnalytics";
+import {useIntercomAnalytics} from "./intercom/IntercomAnalytics";
 
 export function isBrowser() {
     return typeof window !== 'undefined';
@@ -37,15 +39,27 @@ const delegate = createDelegate();
  * functionality later.
  */
 export function useAnalytics(): IAnalytics {
-    return {
-        event: Analytics.event,
-        event2: Analytics.event2,
-        identify: Analytics.identify,
-        page: Analytics.page,
-        traits: Analytics.traits,
-        version: Analytics.version,
-        heartbeat: Analytics.heartbeat
-    }
+
+    const intercomAnalytics = useIntercomAnalytics();
+
+    return React.useMemo((): IAnalytics => {
+        if (isBrowser()) {
+            return new OnlineAnalytics(
+                new CompositeAnalytics([
+                    new AmplitudeAnalytics(),
+                    new GAAnalytics(),
+                    new FirestoreAnalytics(),
+                    new UserflowAnalytics(),
+                    new ConsoleAnalytics(),
+                    intercomAnalytics,
+                ])
+            );
+        } else {
+            return new NullAnalytics();
+        }
+
+    }, [intercomAnalytics]);
+
 }
 
 export namespace Analytics {
@@ -66,6 +80,10 @@ export namespace Analytics {
         delegate.page(event);
     }
 
+    /**
+     * @deprecated We must use useAnalytics here because the modern traits need
+     * to use hooks.
+     */
     export function traits(map: TraitsMap): void {
         delegate.traits(map);
     }
