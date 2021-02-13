@@ -16,7 +16,7 @@
     "lerna-npm-publish": "npm run-script dist-validate-env && lerna exec --concurrency=1 --parallel=false --no-private  --no-bail -- npm publish && echo 'Packages successfully published'",
     "rebuild": "npm run-script purge-node-modules && lerna bootstrap && npm run-script lerna-run-compile",
     "dist-version": "lerna --yes --no-git-tag-version version patch && lerna bootstrap",
-    "dist-version-for-release": "npm run-script dist-version && version=$(cat lerna.json | jq -r .version) && ./sbin/mgit commit -m Commit if version ${version} for release && ./sbin/mgit push",
+    "dist-version-for-release": "npm run-script dist-version && version=$(cat lerna.json | jq -r .version) && ./sbin/mgit commit -m \"Commit if version ${version} for release\" && ./sbin/mgit push",
     "dist-clean": "git clean -Xfd && git clean -fd",
     "dist-prepare": "npm run-script dist-clean && ./sbin/mgit reset --hard HEAD && ./sbin/mgit pull",
     "dist-build": "npm run-script purge-node-modules && lerna bootstrap && npm run-script lerna-run-compile && npm run-script lerna-run-dist",
