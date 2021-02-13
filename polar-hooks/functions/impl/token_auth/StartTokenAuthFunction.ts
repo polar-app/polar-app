@@ -40,6 +40,8 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
 
     const request: IStartTokenAuthRequest = req.body;
 
+    console.log("Handling request: ", typeof request, request);
+
     const {email} = request;
     const challenge = createChallenge()
 

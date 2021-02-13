@@ -64,7 +64,7 @@ export class ExpressFunctions {
 
         function createMessage() {
             if (req.body) {
-                return `Could not handle HTTP ${req.method} request at: ${req.url}` + JSON.stringify(req.body, null, "  ");
+                return `Could not handle HTTP ${req.method} request at: ${req.url} with body: ` + JSON.stringify(req.body, null, "  ");
             } else {
                 return `Could not handle HTTP ${req.method} request at: ${req.url}`;
             }

@@ -39,6 +39,8 @@ export const VerifyTokenAuthFunction = ExpressFunctions.createHookAsync('VerifyT
 
     const request: IVerifyTokenAuthRequest = req.body;
 
+    console.log("Handling request: ", typeof request, request);
+
     const {email, challenge} = request;
 
     Preconditions.assertPresent(email, 'email');
