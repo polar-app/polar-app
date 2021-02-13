@@ -312,7 +312,7 @@ export const CKEditorActivator = (props: IProps) => {
             return mutatorRef.current.getCursorPosition();
         }
 
-        throw new Error("No mutator");
+        throw new Error("No mutator: getCursorPosition");
 
     }, []);
 
@@ -322,7 +322,7 @@ export const CKEditorActivator = (props: IProps) => {
             return mutatorRef.current.split();
         }
 
-        throw new Error("No mutator");
+        throw new Error("No mutator: split");
 
     }, []);
 
@@ -332,7 +332,7 @@ export const CKEditorActivator = (props: IProps) => {
             mutatorRef.current.setData(data);
         }
 
-        throw new Error("No mutator");
+        throw new Error("No mutator: setData");
 
     }, []);
 
@@ -350,7 +350,7 @@ export const CKEditorActivator = (props: IProps) => {
             mutatorRef.current.focus();
         }
 
-        throw new Error("No mutator");
+        throw new Error("No mutator: focus");
 
     }, []);
 

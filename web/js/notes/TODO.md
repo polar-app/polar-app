@@ -15,12 +15,30 @@ https://www.youtube.com/watch?v=ByiFhtlI66A
     - if we hit enter at the beginning of on a note with sub-items the sub-items are
       kept on THAT note and a new note under it has the content of that note...  
 
-    - enter at the end of a note, seems to blink the cursor at the beginning of the note...
+    - enter at the end of a note, seems to blink the cursor at the beginning of
+      the note while the new note is being created and there might be a race where
+      you could enter twice in this stuation.
         
 
     - merging a note no longer works and says that the mutators are dead...
-    - I need to get testing working on every commit now... it would save me a bunch of time but would require 
-      me to slow down a bit.
+        
+        - I think this could be because the node is fully re-mounted and I need to figure out why.        
+        - The alternative is to figure out why its' remounting.
+        
+        - The recent editors are probably responsible for this bug because it
+          was working for a long time.
+
+    - if I implemented this from scratch it wouldn't support image resize but that's ok.
+    
+    - Actually, with the CKEditorActivator, if I can set the initial cursor
+      position, and the key trick, I can force it to remount, then I don't need to
+      ever mutate them which would make my job easier.
+      
+        - I could use some sort of id to remount the node?  The problme is right
+          now we don't remount every time ... 
+          
+        - actually. fuck, if we do a remount it's going to be slow.  
+        
 
     - enter on an image node doesn't create a new node...  
 

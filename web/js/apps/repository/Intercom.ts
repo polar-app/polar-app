@@ -4,8 +4,7 @@ import {useUserInfoContext} from "./auth_handler/UserInfoProvider";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import { useLocation } from 'react-router-dom';
 import { useZenModeStore } from '../../mui/ZenModeStore';
-
-declare var window: any;
+import {IIntercomData, useIntercomClient} from "./IntercomHooks";
 
 export function useIntercom() {
 
@@ -14,6 +13,7 @@ export function useIntercom() {
     // decouple this into a new hook.
     const location = useLocation();
     const booted = React.useRef(false);
+    const intercomClient = useIntercomClient();
 
     const userInfo = context?.userInfo;
 
@@ -21,10 +21,14 @@ export function useIntercom() {
         return;
     }
 
+    if (! intercomClient) {
+        return;
+    }
+
     // tslint:disable-next-line:variable-name
     const created_at = Math.floor(ISODateTimeStrings.parse(userInfo.creationTime).getTime() / 1000);
 
-    const data = {
+    const data: IIntercomData = {
         app_id: "wk5j7vo0",
         user_id: userInfo.uid,
         name: userInfo?.displayName || "",
@@ -33,10 +37,9 @@ export function useIntercom() {
     };
 
     if (booted.current) {
-        window.Intercom('update', data);
+        intercomClient.update(data);
     } else {
-        window.Intercom('boot', data);
-        booted.current = true;
+        intercomClient.boot(data);
     }
 
 }
