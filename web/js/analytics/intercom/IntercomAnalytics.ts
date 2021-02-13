@@ -1,6 +1,6 @@
 import React from 'react';
 import {IAnalytics, IEventArgs, TraitsMap, IPageEvent} from "../IAnalytics";
-import {useIntercomClient, useIntercomData} from "../../apps/repository/IntercomHooks";
+import {IIntercomData, useIntercomClient, useIntercomData} from "../../apps/repository/IntercomHooks";
 import {StandardEventProperties} from "../StandardEventProperties";
 
 const standardEventProperties = StandardEventProperties.create();
@@ -38,7 +38,13 @@ export function useIntercomAnalytics(): IAnalytics {
             return;
         }
 
-        intercomClient.update({...intercomData, ...traits, ...standardEventProperties});
+        const data: IIntercomData = {
+            ...intercomData,
+            ...traits,
+            ...standardEventProperties
+        };
+
+        intercomClient.update(data);
 
     }, [intercomClient, intercomData]);
 

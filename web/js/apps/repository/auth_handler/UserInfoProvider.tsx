@@ -84,12 +84,33 @@ function useUserInfoContextSnapshotSubscriber(): SnapshotSubscriberWithID<IUserI
 }
 
 
+const UserInfoTraits = React.memo(() => {
+
+    const analytics = useAnalytics();
+
+    const userInfoContext = useUserInfoContext();
+
+    if (userInfoContext) {
+
+        const plan = Plans.toV2(userInfoContext?.userInfo?.subscription.plan);
+        const interval = userInfoContext?.userInfo?.subscription.interval || 'month';
+
+        analytics.traits({
+            subscription_plan: plan.level,
+            subscription_interval: interval
+        });
+
+    }
+
+    return null;
+
+});
+
 // TODO: migrate this to a store so that the entire UI doesn't need to be
 // repainted when this data is updated.
 export const UserInfoProvider = deepMemo((props: IProps) => {
 
     const snapshotSubscriber = useUserInfoContextSnapshotSubscriber();
-    const analytics = useAnalytics();
 
     // TODO: should we use on onError here with the dialog manager
     const {value, error} = useSnapshotSubscriber(snapshotSubscriber);
@@ -101,22 +122,12 @@ export const UserInfoProvider = deepMemo((props: IProps) => {
         return null;
     }
 
-    if (value) {
-
-        const plan = Plans.toV2(value?.userInfo?.subscription.plan);
-        const interval = value?.userInfo?.subscription.interval || 'month';
-
-        // TODO: consider adding these AFTER the user loggs in for the first time.
-        analytics.traits({
-            subscription_plan: plan.level,
-            subscription_interval: interval
-        });
-
-    }
-
     return (
         <UserInfoContext.Provider value={value!}>
-            {props.children}
+            <>
+                <UserInfoTraits/>
+                {props.children}
+            </>
         </UserInfoContext.Provider>
     )
 
