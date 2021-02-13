@@ -204,27 +204,26 @@ export function useTriggerFirebaseEmailAuth() {
 
 }
 
-export async function executeCloudFunction(name: string, data: any): Promise<any> {
+export async function executeCloudFunction(cloudFunctionName: string, body: any): Promise<any> {
 
-    const url = `https://us-central1-polar-cors.cloudfunctions.net/${name}/`;
+    const url = `https://us-central1-polar-cors.cloudfunctions.net/${cloudFunctionName}/`;
 
-    const body = JSON.stringify(data);
-
-    const init = {
+    const init: RequestInit = {
         mode: "cors",
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
         },
-        body
+        redirect: 'follow',
+        body: JSON.stringify(body)
     };
 
-    Analytics.event2("CloudFunctionCalled", {name});
+    Analytics.event2("CloudFunctionCalled", {name: cloudFunctionName});
 
-    const response = await Fetches.fetch(url, init as any);
+    const response = await fetch(url, init);
 
     if (response.status !== 200) {
-        Analytics.event2("CloudFunctionFailed", {name});
+        Analytics.event2("CloudFunctionFailed", {name: cloudFunctionName});
         throw new Error("Cloud function failed: " + response.status + ": " + response.statusText);
     }
 
