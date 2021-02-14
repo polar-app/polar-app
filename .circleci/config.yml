@@ -290,8 +290,6 @@ workflows:
           executor: my-docker
       - build-site:
           executor: my-docker
-      - cypress:
-          executor: my-docker
 
       - hold:
           type: approval
@@ -305,6 +303,11 @@ workflows:
           executor: my-docker
           requires:
             - hold
+
+  cypress:
+    jobs:
+      - cypress:
+          executor: my-docker
 
   macos:
     jobs:
