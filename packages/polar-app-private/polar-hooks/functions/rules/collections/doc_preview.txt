@@ -1,0 +1,4 @@
+
+// allow reads by ID which would give us metadata about a doc before I added it
+// to the repo
+allow read;
