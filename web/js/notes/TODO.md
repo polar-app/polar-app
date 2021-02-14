@@ -12,6 +12,13 @@ https://www.youtube.com/watch?v=ByiFhtlI66A
 
 # strategies moving forward:
 
+    - wht happens when I split a node that has children?
+        
+
+    - work on a tool to convert the DOM to a tree that I can assertJSON on... 
+    
+    - a note with one char, and I hit backspace, merges the notes.
+
     - no rich text formatting in the outliner ... use markdown
     - struggle through ckeditor5...
         - start building out more comprehensive testing using cypress to find any regressions
