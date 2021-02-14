@@ -267,22 +267,22 @@ workflows:
 #            name: win/default
 #            shell: bash.exe
 #
-      - build.docker:
+      - build:
           executor: my-docker
-      - build-webapp.docker:
+      - build-webapp:
           executor: my-docker
-      - build-site.docker:
+      - build-site:
           executor: my-docker
-      - cypress.docker:
+      - cypress:
           executor: my-docker
 
       - hold:
           type: approval
           requires:
-            - build.docker
-            - build-webapp.docker
-            - build-site.docker
-            - cypress.docker
+            - build
+            - build-webapp
+            - build-site
+            - cypress
 
       - deploy:
           executor: my-docker
@@ -292,7 +292,7 @@ workflows:
   macos:
     jobs:
 
-      - build.macos:
+      - build:
           executor: my-macos
 #      - build-webapp:
 #          executor: my-macos
