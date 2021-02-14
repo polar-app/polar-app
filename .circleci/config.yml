@@ -237,12 +237,20 @@ jobs:
       - build_setup
 
       - run:
+          name: install prereqs
+          command: |
+            sudo apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+
+      - run:
+          name: install chromium
+          command: |
+            sudo apt-get install chromium
+
+      - run:
           name: init
           command: |
             cd packages/polar-bookshelf
             npx webpack-dev-server &
-            sudo apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
-            sudo apt-get install chromium
 
             waitport() {
                 while ! nc -z localhost $1 ; do sleep 1 ; done
