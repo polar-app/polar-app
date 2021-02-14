@@ -241,6 +241,7 @@ jobs:
           command: |
             cd packages/polar-bookshelf
             apt-get install chromium-browser
+            apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
             npx webpack-dev-server &
             npx cypress run --browser chromium --headless
 
