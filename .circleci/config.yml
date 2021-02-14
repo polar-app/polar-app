@@ -260,7 +260,7 @@ executors:
 
 workflows:
   version: 2
-  parallel_workflow:
+  main:
     jobs:
 #      - build_with_executor:
 #          executor:
@@ -289,8 +289,11 @@ workflows:
           requires:
             - hold
 
-#      - build:
-#          executor: my-macos
+  macos:
+    jobs:
+
+      - build:
+          executor: my-macos
 #      - build-webapp:
 #          executor: my-macos
 #      - build-site:
