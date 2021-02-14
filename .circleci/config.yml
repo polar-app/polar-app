@@ -256,7 +256,9 @@ jobs:
                 while ! nc -z localhost $1 ; do sleep 1 ; done
             }
 
+            echo "Starting to wait for HTTP server on port 8050"
             waitport 8050
+            echo "HTTP server running on port 8050! Starting to test now..."
 
             npx cypress run --browser chromium --headless
 
