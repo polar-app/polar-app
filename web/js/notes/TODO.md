@@ -10,6 +10,24 @@ https://www.youtube.com/watch?v=asQ4RSjjCu4
 https://www.youtube.com/watch?v=7b2AVCZOMnw
 https://www.youtube.com/watch?v=ByiFhtlI66A
 
+# strategies moving forward:
+
+    - no rich text formatting in the outliner ... use markdown
+    - struggle through ckeditor5...
+        - start building out more comprehensive testing using cypress to find any regressions
+        -  
+
+    - implement my own control using for a rich text editor for just the node using contenteditable
+        - it's NOT as full featured as ckeditor 
+        - all I really need is 
+            - paste handling
+            - image
+            - bold, italics, etc.
+            - links to other nodes
+        
+            
+
+
 # TODO
 
     - if we hit enter at the beginning of on a note with sub-items the sub-items are
@@ -38,7 +56,6 @@ https://www.youtube.com/watch?v=ByiFhtlI66A
           now we don't remount every time ... 
           
         - actually. fuck, if we do a remount it's going to be slow.  
-        
 
     - enter on an image node doesn't create a new node...  
 

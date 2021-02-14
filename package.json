@@ -234,7 +234,8 @@
     "underscore": "~1.9.1",
     "universal-analytics": "~0.4.23",
     "use-local-storage-state": "=6.0.0",
-    "uuid": "3.3.3"
+    "uuid": "3.3.3",
+    "@emotion/is-prop-valid": "=1.1.0"
   },
   "collective": {
     "type": "opencollective",
