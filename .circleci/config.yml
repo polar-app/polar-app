@@ -225,6 +225,24 @@ jobs:
             npm run-script set-registry-default-rw
             npm run-script dist-release-webapp-release
 
+  cypress:
+    parameters:
+      executor:
+        description: "The CircleCI executor to use."
+        type: executor
+
+    executor: << parameters.executor>>
+    working_directory: ~/repo
+    steps:
+      - build_setup
+
+      - run:
+          name: init
+          command: |
+            cd packages/polar-bookshelf
+            npx webpack-dev-server &
+            npx cypress run --browser chrome --headless
+
 executors:
   my-docker:
     docker:
@@ -253,6 +271,8 @@ workflows:
           executor: my-docker
       - build-site:
           executor: my-docker
+      - cypress:
+          executor: my-docker
 
       - hold:
           type: approval
@@ -260,6 +280,7 @@ workflows:
             - build-site
             - build-webapp
             - build
+            - cypress
 
       - deploy:
           executor: my-docker

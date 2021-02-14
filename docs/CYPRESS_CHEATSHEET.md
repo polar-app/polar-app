@@ -20,3 +20,6 @@ cy.location('pathname').should('include', 'navigation')
 
     cy.get('.action-email')
       .type('fake@email.com').should('have.value', 'fake@email.com')
+
+
+https://stackoverflow.com/questions/53898085/check-if-an-error-has-been-written-to-the-console
