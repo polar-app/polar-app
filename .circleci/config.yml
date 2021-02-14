@@ -240,8 +240,9 @@ jobs:
           name: init
           command: |
             cd packages/polar-bookshelf
+            apt-get install chromium-browser
             npx webpack-dev-server &
-            npx cypress run --browser chrome --headless
+            npx cypress run --browser chromium --headless
 
 executors:
   my-docker:
