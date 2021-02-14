@@ -7,6 +7,15 @@ cy.visit('http://localhost:8050/apps/stories/notes/World%20War%20II');
 
 ```
 
+# Finding a element that contains some text
+
+```typescript
+
+cy.get('.action-email')
+  .contains("Axis Powers")
+
+````
+
 # navigation
 
 cy.go('back')
