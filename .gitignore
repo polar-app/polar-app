@@ -7,8 +7,5 @@ dist/
 bower_components/
 *.DS_Store
 .webpack-cache-loader
-*.js
-*.jsx
-*.js.map
 tsconfig.tsbuildinfo
 .terser-webpack-plugin
