@@ -33,7 +33,19 @@ context('Notes', () => {
         cy.get(".Note")
             .contains("Axis Powers")
             .type('{home}')
+
+        cy.get(".Note")
+            .contains("Axis Powers")
             .type('{rightarrow}')
+            .type('{rightarrow}')
+            .type('{rightarrow}')
+            .type('{rightarrow}')
+            .type('\n')
+
+        // the 3rd note should equal 'Axix' and the 4th should be split...
+        cy.get(".Note")
+            // .should('match', /Powers: Germany, Italy, Japan/i)
+
 //.type('{rightarrow}{rightarrow}{rightarrow}{rightarrow}');
 
         //
