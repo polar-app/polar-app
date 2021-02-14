@@ -1,0 +1,182 @@
+<html itemtype="https://schema.org/WebPage">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+
+    <meta name="app_version" content="" >
+
+    <link rel="stylesheet" href="../../node_modules/pdfjs-dist/web/pdf_viewer.css">
+
+    <!-- TODO: these need to load locally before we enable firebase in production -->
+    <script src="/node_modules/firebase/firebase.js"></script>
+    <script src="/node_modules/firebaseui/dist/firebaseui.js"></script>
+    <link rel="stylesheet" href="/node_modules/firebaseui/dist/firebaseui.css" />
+
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap-reboot.min.css">
+
+    <link rel="stylesheet" href="https://getpolarized.io/assets/css/style.css">
+
+    <style>
+        * {
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
+        }
+        *:before,
+        *:after {
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
+        }
+
+        main {
+            padding-bottom: 0;
+        }
+
+    </style>
+
+    <link rel="manifest" href="/manifest.json">
+
+    <!--
+
+        - TODO:
+            - twitter microdata
+            - title, summary,
+    -->
+
+    <link rel="canonical" href="" />
+    <meta name="description" content="">
+
+    <link rel="icon" href="/icon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <link href="//fonts.googleapis.com/css?family=Open Sans&subset=latin" rel="stylesheet" type="text/css">
+
+    <meta name="google-site-verification" content="j5BBM8XbyOumZOvUQGaej0asCNz6NERVdssDydibUl0" />
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .page {
+            margin-bottom: 10px !important;
+        }
+
+        #viewerContainer {
+            margin-top: 85px;
+        }
+
+        header .navbar-nav a.nav-link {
+            color: #777;
+        }
+
+        * {
+            font-family: 'Open Sans', sans-serif;
+        }
+
+    </style>
+
+    <title itemprop="headline"></title>
+
+    <!-- TODO: twitter sharing metadata including a thumbnail of the PDF -->
+
+</head>
+<body>
+<header data-block-type="headers" class="fixed-header">
+    <div class="" style="margin-left: auto; margin-right: auto; padding-left: 5px; padding-right: 5px; max-width: 1280px;">
+        <nav class="navbar navbar-expand-md p-0">
+
+            <a class="navbar-brand" href="/">
+                <img src="https://getpolarized.io/assets/logo/icon.svg" height="60" alt="POLAR">
+            </a>
+
+            <div class="logo" style="">
+                <a href="https://getpolarized.io/">
+                    POLAR
+                </a>
+            </div>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav5" aria-controls="navbarNav5" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-links navbar-collapse" id="navbarNav5">
+
+                <ul class="navbar-nav mr-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://getpolarized.io//#features">features</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://getpolarized.io//#pricing">pricing</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://getpolarized.io/docs/">docs</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://getpolarized.io/blog">blog</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://getpolarized.io/download.html">download</a>
+                    </li>
+
+                </ul>
+                </ul>
+
+
+                <a class="btn btn-light font-weight-bold ml-md-3" href="https://app.getpolarized.io">Sign In</a>
+
+                <a class="btn btn-success btn-lg font-weight-bold ml-2"
+                   onclick="sendEvent('main-cta', 'open-polar-in-browser')"
+                   href="https://app.getpolarized.io">Create an Account</a>
+
+            </div>
+        </nav>
+    </div>
+</header>
+
+<main id="viewerContainer" itemprop="mainContentOfPage">
+
+    <div>
+        <div id="viewer" class="pdfViewer">
+            <div/>
+
+        </div>
+    </div>
+
+</main>
+
+<script src="/apps/init.js"></script>
+
+<script>
+
+    const fallbackLoader = () => {
+
+        // REQUIRE_ENTRY_POINT: there seems to be an Electron bug where when
+        // loading over HTTP we can't find node_modules until we require().  We can
+        // only find standard modules like 'fs' and 'electron' but not custom
+        // modules so we have to just have these four lines repeated over and over
+        // for each of our main apps.  In the future we should try to track down
+        // why this is happening but I spent 1-2 hours on trying to figure out
+        // the root cause with no resolution and this is a temporary workaround.
+        const {remote} = require('electron');
+        const path = require('path');
+        const appPath = remote.getGlobal("appPath");
+        require(path.join(appPath, "apps", "preview", "index.js"));
+
+    };
+
+    injectApp('/preview-bundle.js', fallbackLoader);
+
+</script>
+
+</body>
+</html>
