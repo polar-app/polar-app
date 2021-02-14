@@ -240,9 +240,16 @@ jobs:
           name: init
           command: |
             cd packages/polar-bookshelf
+            npx webpack-dev-server &
             sudo apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
             sudo apt-get install chromium
-            npx webpack-dev-server &
+
+            waitport() {
+                while ! nc -z localhost $1 ; do sleep 1 ; done
+            }
+
+            waitport 8050
+
             npx cypress run --browser chromium --headless
 
 executors:
