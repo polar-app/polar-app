@@ -75,11 +75,6 @@ const Landing = ({}) => {
                   </a>
               </div>
 
-              {/*<h3>*/}
-              {/*    Read and manage multiple documents at the same time.*/}
-              {/*</h3>*/}
-
-
               <ColorBackground style={{
                                    marginTop: '40px',
                                    marginBottom: '40px'
