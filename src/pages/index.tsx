@@ -12,6 +12,7 @@ import DocumentViewerImage from "./images/DocumentViewerImage";
 import StatisticsImage from "./images/StatisticsImage";
 import FlashcardReviewImage from "./images/FlashcardReviewImage";
 import {CreateAccountButton} from "../components/CreateAccountButton";
+import {ColorBackground} from "../components/ColorBackground";
 const SummaryLargeImage = require("../../content/assets/screenshots/summary-large-image.png");
 
 const useStyles = IndexStyling;
@@ -78,7 +79,13 @@ const Landing = ({}) => {
               {/*    Read and manage multiple documents at the same time.*/}
               {/*</h3>*/}
 
-              <DocumentRepositoryImage className={classes.centerImage}/>
+
+              <ColorBackground style={{
+                                   marginTop: '40px',
+                                   marginBottom: '40px'
+                               }}>
+                  <DocumentRepositoryImage className={classes.centerImage}/>
+              </ColorBackground>
 
               <TrustedByLogos />
 
