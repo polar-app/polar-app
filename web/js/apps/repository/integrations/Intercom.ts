@@ -1,7 +1,7 @@
 /* tslint:disable:no-var-keyword prefer-const */
 import * as React from 'react';
 import { useLocation } from 'react-router-dom';
-import { useZenModeStore } from '../../mui/ZenModeStore';
+import { useZenModeStore } from '../../../mui/ZenModeStore';
 import {useIntercomClient, useIntercomData} from "./IntercomHooks";
 
 export function useIntercom() {

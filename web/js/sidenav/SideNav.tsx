@@ -18,7 +18,7 @@ import SyncIcon from '@material-ui/icons/Sync';
 import {useAnkiSyncCallback} from "./AnkiSyncHook";
 import {SideNavCommandMenu} from "./SideNavCommand";
 import {ZenModeActiveContainer} from "../mui/ZenModeActiveContainer";
-import { Intercom } from '../apps/repository/Intercom';
+import { Intercom } from '../apps/repository/integrations/Intercom';
 import { SideNavQuestionButton } from './SideNavQuestionButton';
 
 export const SIDENAV_WIDTH = 56;

@@ -1,9 +1,9 @@
 /* tslint:disable:no-var-keyword prefer-const */
 import * as React from 'react';
-import {useUserInfoContext} from "./auth_handler/UserInfoProvider";
+import {useUserInfoContext} from "../auth_handler/UserInfoProvider";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import { useLocation } from 'react-router-dom';
-import { useZenModeStore } from '../../mui/ZenModeStore';
+import { useZenModeStore } from '../../../mui/ZenModeStore';
 
 declare var window: any;
 

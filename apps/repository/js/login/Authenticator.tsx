@@ -20,7 +20,7 @@ import {
 } from './AuthenticatorHooks';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {Analytics} from "../../../../web/js/analytics/Analytics";
-import {Intercom} from "../../../../web/js/apps/repository/Intercom";
+import {Intercom} from "../../../../web/js/apps/repository/integrations/Intercom";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
