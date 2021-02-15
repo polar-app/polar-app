@@ -297,7 +297,6 @@ workflows:
             - build
             - build-webapp
             - build-site
-            - cypress
 
       - deploy:
           executor: my-docker
