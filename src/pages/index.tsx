@@ -14,6 +14,7 @@ import FlashcardReviewImage from "./images/FlashcardReviewImage";
 import {CreateAccountButton} from "../components/CreateAccountButton";
 import {ColorBackground} from "../components/ColorBackground";
 import KnowledgeAndBrainOrganizedImage from "./images/KnowledgeAndBrainOrganizedImage";
+import ReadingOnSteroidsImage from "./images/ReadingOnSteroidsImage";
 const SummaryLargeImage = require("../../content/assets/screenshots/summary-large-image.png");
 
 const useStyles = IndexStyling;
@@ -112,6 +113,34 @@ const Landing = ({}) => {
               </ColorBackground>
           </div>
 
+          <div className={classes.centerSection + ' ' + classes.sectionEven}>
+
+              <h1>
+                  This is <span style={{color: '#76CDC8'}}>reading on steroids</span>
+              </h1>
+
+              <h2>
+                  Use the integrated reader to actively read, highlight, take
+                  notes, connect thoughts, and track progress with pagemarks.
+                  Build your detailed knowledge base with granular highlight
+                  tagging, and flashcards, directly from text highlights.
+              </h2>
+
+              {/*<h3>*/}
+              {/*    Read and manage multiple documents at the same time.*/}
+              {/*</h3>*/}
+
+              <ColorBackground style={{
+                                   marginTop: '50px',
+                                   marginBottom: '50px'
+                               }}>
+
+                  <ReadingOnSteroidsImage className={classes.centerImage}
+                                          alt="Reading on Steroids"/>
+
+              </ColorBackground>
+              
+          </div>
 
 
           <div className={classes.centerSection + ' ' + classes.sectionEven}>
