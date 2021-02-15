@@ -32,7 +32,7 @@ context('Notes', () => {
 
         cy.get(".Note")
             .contains("Axis Powers")
-            .type('{home}')
+            .type('{home}');
 
         cy.get(".Note")
             .contains("Axis Powers")
