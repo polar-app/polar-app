@@ -13,6 +13,7 @@ import StatisticsImage from "./images/StatisticsImage";
 import FlashcardReviewImage from "./images/FlashcardReviewImage";
 import {CreateAccountButton} from "../components/CreateAccountButton";
 import {ColorBackground} from "../components/ColorBackground";
+import KnowledgeAndBrainOrganizedImage from "./images/KnowledgeAndBrainOrganizedImage";
 const SummaryLargeImage = require("../../content/assets/screenshots/summary-large-image.png");
 
 const useStyles = IndexStyling;
@@ -76,8 +77,8 @@ const Landing = ({}) => {
               </div>
 
               <ColorBackground style={{
-                                   marginTop: '40px',
-                                   marginBottom: '40px'
+                                   marginTop: '50px',
+                                   marginBottom: '50px'
                                }}>
                   <DocumentRepositoryImage className={classes.centerImage}/>
               </ColorBackground>
@@ -85,6 +86,32 @@ const Landing = ({}) => {
               <TrustedByLogos />
 
           </div>
+
+          <div className={classes.centerSection + ' ' + classes.sectionEven}>
+
+              <h1>
+                  Your Knowledge and <span style={{color: '#D7AC75'}}>Brain - Organized</span>
+              </h1>
+
+              <h2>
+                  Manage and save for later all your PDFs, EPUBs, and web pages
+                  in one place. Use tags, reading progress, and detailed
+                  document information to stay on top of your reading.
+              </h2>
+
+              {/*<h3>*/}
+              {/*    Read and manage multiple documents at the same time.*/}
+              {/*</h3>*/}
+
+              <ColorBackground style={{
+                                   marginTop: '50px',
+                                   marginBottom: '50px'
+                               }}>
+                  <KnowledgeAndBrainOrganizedImage className={classes.centerImage}
+                                                   alt="Your Knowledge and Brain Organized"/>
+              </ColorBackground>
+          </div>
+
 
 
           <div className={classes.centerSection + ' ' + classes.sectionEven}>

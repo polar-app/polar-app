@@ -39,6 +39,7 @@ const IndexStyling = makeStyles({
   },
 
   centerImage: {
+    borderRadius: '10px',
     maxWidth: 'min(1100px, 100vw)',
     maxHeight: '100vh',
     width: '100%',
