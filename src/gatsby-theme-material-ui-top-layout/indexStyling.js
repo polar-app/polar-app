@@ -3,16 +3,12 @@ import { makeStyles } from "@material-ui/core";
 const IndexStyling = makeStyles({
 
   sectionOdd: {
-    backgroundColor: 'rgb(90,90,90)'
-
   },
 
   sectionEven: {
-    backgroundColor: 'rgb(73,73,73)'
   },
 
   newHeroSection: {
-    background: 'radial-gradient(farthest-corner at 100% 100%, rgba(255, 255, 255, 0.4), #424242)',
   },
 
   centerSection: {
@@ -291,11 +287,6 @@ const IndexStyling = makeStyles({
     margin: "0 auto",
     padding: "0",
 
-    background: `radial-gradient(
-      farthest-corner at 0% 100%,
-      rgba(255, 255, 255, 0.4),
-      #424242
-    )`,
     mixBlendMode: "normal",
     opacity: "0.85",
     height: "100vh",
@@ -312,11 +303,6 @@ const IndexStyling = makeStyles({
 
     padding: "0",
 
-    background: ` radial-gradient(
-      farthest-corner at 0% 100%,
-      rgba(255, 255, 255, 0.4),
-      #424242
-    )`,
     mixBlendMode: "normal",
     opacity: "0.85",
     height: "100vh",
@@ -330,11 +316,6 @@ const IndexStyling = makeStyles({
     margin: "0 auto",
     padding: "0",
 
-    background: ` radial-gradient(
-      farthest-corner at 100% 100%,
-      rgba(255, 255, 255, 0.4),
-      #424242
-    )`,
     mixBlendMode: "normal",
     opacity: "0.85",
     height: "100vh",
@@ -351,11 +332,6 @@ const IndexStyling = makeStyles({
     justifyContent: "center",
     alignItems: "center",
 
-    background: `radial-gradient(
-      farthest-corner at 100% 100%,
-      rgba(255, 255, 255, 0.4),
-      #424242
-    )`,
     mixBlendMode: "normal",
     opacity: "0.85",
     height: "100vh",
@@ -377,7 +353,6 @@ const IndexStyling = makeStyles({
 
     position: "relative",
     height: "400px",
-    backgroundColor: "#424242",
   },
 
   logoFrameMobile: {
@@ -390,7 +365,6 @@ const IndexStyling = makeStyles({
     width: "100%",
     position: "relative",
     height: "40vh",
-    backgroundColor: "#424242",
   },
 });
 

@@ -8,6 +8,7 @@ import { useBreakpoint } from "gatsby-plugin-breakpoints";
 import RedditIcon from "@material-ui/icons/Reddit";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import {ThirdPartyEmbeds} from "./ThirdPartyEmbeds";
+import useTheme from "@material-ui/styles/useTheme";
 const DiscordIconDark = require("../../content/assets/logos/discord-dark.png");
 
 require("typeface-roboto");
@@ -27,7 +28,7 @@ const useStyles = makeStyles((darkMode) => ({
     fontWeight: 400,
     lineHeight: 1.75,
     letterSpacing: "0.02857em",
-    color: "#000",
+    // color: "#000",
     textTransform: "none",
     padding: " 2px 8px",
     textAlign: "center",
@@ -79,17 +80,18 @@ function FooterMobile() {
   const breakpoints = useBreakpoint();
 
   const classes = useStyles();
+  const theme = useTheme();
   return (
     <AppBar
       style={{
-        backgroundColor: "#C4C4C4",
         padding: "15px",
         overflow: "hidden",
         top: "100%",
         bottom: "0",
+        background: theme.palette.background.paper
       }}
-      position="sticky"
-    >
+      color="inherit"
+      position="sticky">
       <Toolbar
         style={{
           width: "100%",
@@ -209,17 +211,18 @@ function FooterMobile() {
 }
 
 function FooterDesktop() {
-  const breakpoints = useBreakpoint();
 
   const classes = useStyles();
+  const theme = useTheme();
   return (
       <>
         <ThirdPartyEmbeds/>
         <AppBar
           style={{
-            backgroundColor: "#C4C4C4",
             padding: 0,
+            background: theme.palette.background.paper
           }}
+          color="inherit"
           position="sticky"
         >
           <Toolbar style={{ display: "flex", justifyContent: "center" }}>

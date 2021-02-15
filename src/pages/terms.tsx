@@ -19,11 +19,6 @@ const Landing = ({ location }) => {
         <Box
           style={{
             margin: 0,
-            background: `radial-gradient(
-        farthest-corner at 0% 100%,
-        rgba(255, 255, 255, 0.4),
-        #424242
-      )`,
           }}
         >
           <Box style={{ width: "85vw", maxWidth: "890px", margin: "0 auto" }}>

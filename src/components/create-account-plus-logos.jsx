@@ -18,9 +18,7 @@ var useStyles = core_1.makeStyles({
         paddingLeft: "3%",
         paddingRight: "3%",
     },
-    background: {
-        backgroundColor: "#424242",
-    },
+    background: {},
     h1: {
         fontSize: '3rem',
         textAlign: "center",

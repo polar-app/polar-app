@@ -143,11 +143,6 @@ const BlogIndex = ({ data, pageContext }: PageProps<Data, pageContextType>) => {
     <ThemeProvider theme={theme}>
       <Box
         style={{
-          background: `radial-gradient(
-            farthest-corner at -80% 100%,
-            rgba(255, 255, 255, 0.4),
-            #424242
-          )`,
           mixBlendMode: "normal",
         }}
       >

@@ -17,11 +17,6 @@ const NotFoundPage = ({ data, location }) => {
       {/*/>*/}
       <Box
         style={{
-          background: `radial-gradient(
-        farthest-corner at 0% 100%,
-        rgba(255, 255, 255, 0.4),
-        #424242
-      )`,
           height: "100vh",
           paddingLeft: "5%",
         }}
@@ -39,13 +34,3 @@ const NotFoundPage = ({ data, location }) => {
 };
 
 export default NotFoundPage;
-
-export const pageQuery = graphql`
-  query {
-    site {
-      siteMetadata {
-        title
-      }
-    }
-  }
-`;

@@ -22,7 +22,6 @@ const useStyles = makeStyles({
   },
 
   background: {
-    backgroundColor: "#424242",
   },
 
   h1: {

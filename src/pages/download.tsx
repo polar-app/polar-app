@@ -16,11 +16,6 @@ const useStyles = makeStyles({
   background: {
     display: "flex",
     justifyContent: "center",
-    background: `radial-gradient(
-      farthest-corner at 0% 100%,
-      rgba(255, 255, 255, 0.4),
-      #424242
-    )`,
     mixBlendMode: "normal",
     opacity: 0.85,
     flexGrow: 1,
