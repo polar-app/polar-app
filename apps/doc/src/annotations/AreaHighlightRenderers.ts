@@ -23,7 +23,8 @@ export namespace AreaHighlightRenderers {
     export async function createAreaHighlightFromEvent(pageNum: number,
                                                        pointWithinPageElement: IPoint,
                                                        docScale: IDocScale,
-                                                       fileType: FileType): Promise<ICapturedAreaHighlight> {
+                                                       fileType: FileType,
+                                                       docViewerElement: HTMLElement): Promise<ICapturedAreaHighlight> {
 
         Preconditions.assertPresent(fileType, 'fileType');
 
@@ -47,7 +48,7 @@ export namespace AreaHighlightRenderers {
             height: positionRect.height,
         };
 
-        const capturedScreenshot = await Screenshots.capture({pageNum, boxRect: overlayRect, fileType});
+        const capturedScreenshot = await Screenshots.capture({pageNum, boxRect: overlayRect, fileType, docViewerElement});
 
         Preconditions.assertPresent(capturedScreenshot, 'capturedScreenshot');
 
@@ -60,7 +61,8 @@ export namespace AreaHighlightRenderers {
     export async function createAreaHighlightFromOverlayRect(pageNum: number,
                                                              overlayRect: ILTRect,
                                                              docScale: IDocScale,
-                                                             fileType: FileType): Promise<ICapturedAreaHighlight> {
+                                                             fileType: FileType,
+                                                             docViewerElement: HTMLElement): Promise<ICapturedAreaHighlight> {
         Preconditions.assertPresent(fileType, 'fileType');
 
         const rect = AnnotationRects.createFromOverlayRect(pageNum, overlayRect);
@@ -81,7 +83,12 @@ export namespace AreaHighlightRenderers {
             height: positionRect.height,
         };
 
-        const capturedScreenshot = await Screenshots.capture({pageNum, boxRect: overlayRect, fileType});
+        const capturedScreenshot = await Screenshots.capture({
+            pageNum,
+            boxRect: overlayRect,
+            fileType,
+            docViewerElement
+        });
 
         const areaHighlight = AreaHighlights.create({rect});
 

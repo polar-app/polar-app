@@ -434,10 +434,12 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
 
     }, [dialogManager, docDescriptor, onPagemark, origin]);
 
-    const onCreateAreaHighlight = () => {
+    const onCreateAreaHighlight = React.useCallback(() => {
         const {pageNum, pointWithinPageElement} = origin;
+
         onAreaHighlightCreated({pageNum, pointWithinPageElement});
-    }
+
+    }, [onAreaHighlightCreated, origin]);
 
     const onDeletePagemark = (annotations: ReadonlyArray<IAnnotationMeta>) => {
 

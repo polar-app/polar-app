@@ -14,6 +14,7 @@ import createAreaHighlightFromEvent = AreaHighlightRenderers.createAreaHighlight
 import createAreaHighlightFromOverlayRect = AreaHighlightRenderers.createAreaHighlightFromOverlayRect;
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {useDocViewerContext} from "../renderers/DocRenderer";
+import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext";
 
 export interface AreaHighlightCreatedOpts {
     readonly pointWithinPageElement: IPoint;
@@ -40,6 +41,7 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
     const {docScale, docMeta} = useDocViewerStore(['docScale', 'docMeta']);
     const {fileType} = useDocViewerContext();
     const log = useLogger();
+    const docViewerElementsContext = useDocViewerElementsContext();
 
     const onAreaHighlightCreatedAsync = React.useCallback(async (opts: AreaHighlightCreatedOpts) => {
 
@@ -47,11 +49,14 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
 
         if (docScale && docMeta) {
 
+            const docViewerElement = docViewerElementsContext.getDocViewerElement();
+
             const capturedAreaHighlight =
                 await createAreaHighlightFromEvent(pageNum,
-                    pointWithinPageElement,
-                    docScale,
-                    fileType);
+                                                   pointWithinPageElement,
+                                                   docScale,
+                                                   fileType,
+                                                   docViewerElement);
 
             const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
 
@@ -66,7 +71,7 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
 
         }
 
-    }, [docMeta, docScale, fileType, onAreaHighlight]);
+    }, [docMeta, docScale, docViewerElementsContext, fileType, onAreaHighlight]);
 
     const onAreaHighlightCreated = React.useCallback((opts: AreaHighlightCreatedOpts) => {
 
@@ -81,11 +86,14 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
 
         if (docScale && docMeta) {
 
+            const docViewerElement = docViewerElementsContext.getDocViewerElement();
+
             const capturedAreaHighlight =
                 await createAreaHighlightFromOverlayRect(pageNum,
                                                          overlayRect,
                                                          docScale,
-                                                         fileType);
+                                                         fileType,
+                                                         docViewerElement);
 
             const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
 
@@ -101,7 +109,7 @@ export function useAreaHighlightHooks(): IAreaHighlightHooks {
 
         }
 
-    }, [docMeta, docScale, fileType, onAreaHighlight]);
+    }, [docMeta, docScale, docViewerElementsContext, fileType, onAreaHighlight]);
 
     const onAreaHighlightUpdated = React.useCallback((opts: AreaHighlightUpdatedOpts) => {
 
