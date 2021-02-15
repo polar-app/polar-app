@@ -20,6 +20,7 @@ import {
 } from './AuthenticatorHooks';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {Analytics} from "../../../../web/js/analytics/Analytics";
+import {Intercom} from "../../../../web/js/apps/repository/Intercom";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -640,38 +641,41 @@ export const Authenticator = React.memo((props: IProps) => {
 
     return (
         <AuthenticatorModeContext.Provider value={props.mode}>
-            <div style={{
-                     display: 'flex',
-                     width: '100%',
-                     height: '100%'
-                 }}>
+            <>
+                <div style={{
+                         display: 'flex',
+                         width: '100%',
+                         height: '100%'
+                     }}>
 
-                <Paper style={{
-                           margin: 'auto',
-                           maxWidth: '450px',
-                           minHeight: '500px',
-                           maxHeight: '800px',
-                           width: '100%',
-                           display: 'flex',
-                           flexDirection: 'column'
-                       }}>
+                    <Paper style={{
+                               margin: 'auto',
+                               maxWidth: '450px',
+                               minHeight: '500px',
+                               maxHeight: '800px',
+                               width: '100%',
+                               display: 'flex',
+                               flexDirection: 'column'
+                           }}>
 
-                    <>
+                        <>
 
-                        {authStatus === undefined && (
-                            <Pending/>
-                        )}
+                            {authStatus === undefined && (
+                                <Pending/>
+                            )}
 
 
-                        {authStatus === 'needs-auth' && (
-                           <Main {...props}/>
-                        )}
+                            {authStatus === 'needs-auth' && (
+                               <Main {...props}/>
+                            )}
 
-                    </>
+                        </>
 
-                </Paper>
+                    </Paper>
 
-            </div>
+                </div>
+                <Intercom/>
+            </>
         </AuthenticatorModeContext.Provider>
     );
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 import {IAnalytics, IEventArgs, TraitsMap, IPageEvent} from "../IAnalytics";
-import {IIntercomData, useIntercomClient, useIntercomData} from "../../apps/repository/IntercomHooks";
+import {IIntercomDataForAuthenticatedUser, useIntercomClient, useIntercomData} from "../../apps/repository/IntercomHooks";
 import {StandardEventProperties} from "../StandardEventProperties";
 
 const standardEventProperties = StandardEventProperties.create();
@@ -38,7 +38,7 @@ export function useIntercomAnalytics(): IAnalytics {
             return;
         }
 
-        const data: IIntercomData = {
+        const data: IIntercomDataForAuthenticatedUser = {
             ...intercomData,
             ...traits,
             ...standardEventProperties
