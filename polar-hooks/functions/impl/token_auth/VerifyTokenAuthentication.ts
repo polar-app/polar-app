@@ -69,6 +69,7 @@ export const VerifyTokenAuthFunction = ExpressFunctions.createHookAsync('VerifyT
 
     async function getOrCreateUser() {
 
+        // FIXME instrument these errors...
         const user = await auth.getUserByEmail(email);
         const password = Hashcodes.createRandomID()
 
