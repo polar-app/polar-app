@@ -61,7 +61,7 @@ export function useAnalytics(): IAnalytics {
             return new NullAnalytics();
         }
 
-    }, [intercomAnalytics]);
+    }, [cannyAnalytics, intercomAnalytics]);
 
 }
 
