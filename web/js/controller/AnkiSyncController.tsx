@@ -95,7 +95,7 @@ export const AnkiSyncController = React.memo(() => {
 
                 function finalNotifications() {
 
-                    const message = `Anki sync complete. Completed ${nrTasks} with ${nrFailedTasks} failures.`;
+                    const message = `Anki sync complete. Completed ${nrTasks} tasks with ${nrFailedTasks} failures.`;
 
                     updateProgress({
                         message,
