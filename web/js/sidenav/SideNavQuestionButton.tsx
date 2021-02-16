@@ -22,30 +22,14 @@ import Menu from "@material-ui/core/Menu";
 function useReportFeedback() {
 
     const linkLoader = useLinkLoader();
-    const userInfoContext = useUserInfoContext();
 
     return React.useCallback(() => {
 
-        const email = userInfoContext?.userInfo?.email;
-
-        if (! email) {
-            return;
-        }
-
-        const plan = Plans.toV2(userInfoContext?.userInfo?.subscription.plan).level;
-        const interval = userInfoContext?.userInfo?.subscription.interval || 'monthly';
-
-        const params = {
-            email: encodeURIComponent(email),
-            plan,
-            interval
-        }
-
-        const url = `https://kevinburton1.typeform.com/to/lXUE4NmP#email=${params.email}&plan=${params.plan}&interval=${params.interval}`;
+        const url ='http://feedback.getpolarized.io/feature-requests';
 
         linkLoader(url, {newWindow: true, focus: true});
 
-    }, [linkLoader, userInfoContext]);
+    }, [linkLoader]);
 
 }
 
