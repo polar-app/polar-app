@@ -4,6 +4,7 @@ import {Lazy} from "../util/Lazy";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import { Hashcodes } from "polar-shared/src/util/Hashcodes";
 import {isPresent, Preconditions} from "polar-shared/src/Preconditions";
+import { UserRecord } from "firebase-functions/lib/providers/auth";
 
 export interface IVerifyTokenAuthRequest {
     readonly email: string;
@@ -67,13 +68,30 @@ export const VerifyTokenAuthFunction = ExpressFunctions.createHookAsync('VerifyT
 
     const auth = firebase.auth();
 
+    async function fetchUserByEmail(email: string): Promise<UserRecord | undefined> {
+
+        try {
+
+            return await auth.getUserByEmail(email);
+
+        } catch (err) {
+
+            if (err.code === 'auth/user-not-found') {
+                return undefined;
+            }
+
+            throw err;
+        }
+
+    }
+
     async function getOrCreateUser() {
 
-        // FIXME instrument these errors...
-        const user = await auth.getUserByEmail(email);
-        const password = Hashcodes.createRandomID()
+        const user = await fetchUserByEmail(email);
 
         if (! user) {
+
+            const password = Hashcodes.createRandomID()
 
             return await auth.createUser({
                 email,
