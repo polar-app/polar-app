@@ -43,6 +43,7 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
     console.log("Handling request: ", typeof request, request);
 
     const {email} = request;
+
     const challenge = createChallenge()
 
     await AuthChallenges.write(email, challenge.value)
