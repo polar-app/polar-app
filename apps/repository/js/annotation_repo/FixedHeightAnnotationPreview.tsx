@@ -10,7 +10,7 @@ import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import useTheme from '@material-ui/core/styles/useTheme';
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 
-const MAX_IMG_HEIGHT = 200;
+const MAX_IMG_HEIGHT = 300;
 
 function createStyle(color: HighlightColor | undefined): React.CSSProperties {
 
@@ -52,7 +52,13 @@ const ImagePreview = deepMemo((props: IProps) => {
                  height,
              }}>
 
-            <ResponsiveImg id={props.id} img={img} defaultText="No image" style={{marginLeft: 'auto', marginRight: 'auto'}}/>
+            <ResponsiveImg id={props.id}
+                           img={{...img, height}}
+                           defaultText="No image"
+                           style={{
+                               marginLeft: 'auto',
+                               marginRight: 'auto'
+                           }}/>
 
         </div>
     );
