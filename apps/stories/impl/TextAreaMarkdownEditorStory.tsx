@@ -45,7 +45,26 @@ const ActiveEditor = () => {
 }
 
 const TextAreaMarkdownEditor = () => {
-    return null;
+
+    const classes = useStyles();
+
+    const handleClick = React.useCallback((event: React.MouseEvent<HTMLTextAreaElement, MouseEvent>) => {
+
+        if (event.currentTarget instanceof HTMLTextAreaElement) {
+            const element = event.currentTarget;
+            element.selectionStart = 1;
+            element.selectionEnd = 5;
+        }
+
+    }, []);
+
+    return (
+        <textarea className={classes.textarea}
+                  onClick={handleClick}
+                  rows={1}
+                  defaultValue="this is some text"
+                  style={{resize: 'none'}}/>
+    );
 
 }
 
@@ -55,10 +74,7 @@ export const TextAreaMarkdownEditorStory = () => {
 
     return (
         <div className={classes.root}>
-            <textarea className={classes.textarea}
-                      rows={1}
-                      defaultValue="this is some text"
-                      style={{resize: 'none'}}/>
+            <TextAreaMarkdownEditor/>
             <div>
                 this is some text
             </div>
