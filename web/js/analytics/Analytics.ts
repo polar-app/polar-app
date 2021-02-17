@@ -99,6 +99,10 @@ export namespace Analytics {
         delegate.heartbeat();
     }
 
+    export function logout(): void {
+        delegate.logout();
+    }
+
     /**
      * Action handler for the given delegate.
      */

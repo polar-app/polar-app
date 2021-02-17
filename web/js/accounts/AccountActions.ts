@@ -57,6 +57,7 @@ export namespace AccountActions {
         await clearFirestore();
         await clearLocalStorage();
         await clearStoreCaches();
+        doAnalytics();
 
     }
 
