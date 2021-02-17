@@ -1,4 +1,4 @@
-import {IAnalytics, IEventArgs, IPageEvent, TraitsMap, UserIdentificationStr} from "../IAnalytics";
+import {IAnalytics, IAnalyticsUser, IEventArgs, IPageEvent, TraitsMap, UserIdentificationStr} from "../IAnalytics";
 
 const ENABLED = typeof localStorage !== 'undefined' &&
                 localStorage.getItem('analytics.tracing') === 'true';
@@ -29,8 +29,8 @@ export class ConsoleAnalytics implements IAnalytics {
         doTrace("page", event);
     }
 
-    public identify(userId: UserIdentificationStr) {
-        doTrace("identify", {userId});
+    public identify(user: IAnalyticsUser) {
+        doTrace("identify", user);
 
     }
 

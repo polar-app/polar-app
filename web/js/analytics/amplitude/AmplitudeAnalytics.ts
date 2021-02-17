@@ -1,4 +1,4 @@
-import {IAnalytics, IEventArgs, TraitsMap, IPageEvent} from "../IAnalytics";
+import {IAnalytics, IEventArgs, TraitsMap, IPageEvent, IAnalyticsUser} from "../IAnalytics";
 import {Analytics} from "../Analytics";
 import { StandardEventProperties } from "../StandardEventProperties";
 
@@ -61,9 +61,9 @@ export class AmplitudeAnalytics implements IAnalytics {
         amplitude.getInstance().logEvent(eventName, eventData);
     }
 
-    public identify(userId: string): void {
-        doTrace('identify', {userId});
-        amplitude.getInstance().setUserId(userId);
+    public identify(user: IAnalyticsUser): void {
+        doTrace('identify', user);
+        amplitude.getInstance().setUserId(user.uid);
     }
 
     public page(event: IPageEvent): void {

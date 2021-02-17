@@ -1,6 +1,14 @@
 declare var window: any;
 
-export type ICannyUserData = {[key: string]: string | number | Date};
+export type ICannyCustomFields = {[key: string]: string | number | Date};
+
+export interface ICannyUserData {
+    readonly name?: string;
+    readonly id: string;
+    readonly email: string;
+    readonly avatarURL?: string;
+    readonly customFields: ICannyCustomFields;
+}
 
 export interface ICannyData {
     appID: string;
@@ -8,26 +16,29 @@ export interface ICannyData {
 }
 
 export interface ICannyClient {
-    readonly update: (data: ICannyUserData) => void;
+    readonly identify: (data: ICannyUserData) => void;
 }
 
 // https://developers.canny.io/install
 export function useCannyClient(): ICannyClient | undefined {
 
+    const appID = '6028141fa9c2061014659f73';
+
     if (window.Canny) {
 
-        function doUpdate(data: ICannyData) {
+        function doIdentify(data: ICannyData) {
             window.Canny('identify', data);
         }
 
-        function update(user: ICannyUserData) {
-            doUpdate({
-                appID: '6028141fa9c2061014659f73',
+
+        function identify(user: ICannyUserData) {
+            doIdentify({
+                appID,
                 user
             })
         }
 
-        return {update};
+        return {identify};
     }
 
     return undefined;

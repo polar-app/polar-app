@@ -1,4 +1,4 @@
-import {IAnalytics, IEventArgs, IPageEvent, TraitsMap} from "../IAnalytics";
+import {IAnalytics, IAnalyticsUser, IEventArgs, IPageEvent, TraitsMap} from "../IAnalytics";
 import {Heartbeats} from "polar-firebase/src/firebase/om/Heartbeats";
 import {Firebase} from "../../firebase/Firebase";
 import {Logger} from "polar-shared/src/logger/Logger";
@@ -19,7 +19,7 @@ export class FirestoreAnalytics implements IAnalytics {
         //     .catch(err => console.error("Unable to write event: " + name, err));
     }
 
-    public identify(userId: string): void {
+    public identify(user: IAnalyticsUser): void {
         // noop
     }
 

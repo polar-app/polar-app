@@ -1,6 +1,6 @@
 import React from 'react';
 import {CompositeAnalytics} from "./CompositeAnalytics";
-import {IAnalytics, IEventArgs, TraitsMap, IPageEvent} from "./IAnalytics";
+import {IAnalytics, IEventArgs, TraitsMap, IPageEvent, IAnalyticsUser} from "./IAnalytics";
 import {GAAnalytics} from "./ga/GAAnalytics";
 import {NullAnalytics} from "./null/NullAnalytics";
 import {AmplitudeAnalytics} from "./amplitude/AmplitudeAnalytics";
@@ -75,8 +75,8 @@ export namespace Analytics {
         delegate.event2(event, data);
     }
 
-    export function identify(userId: string): void {
-        delegate.identify(userId);
+    export function identify(user: IAnalyticsUser): void {
+        delegate.identify(user);
     }
 
     export function page(event: IPageEvent): void {

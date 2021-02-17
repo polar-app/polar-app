@@ -1,4 +1,4 @@
-import {IAnalytics, IEventArgs, TraitsMap, UserIdentificationStr, IPageEvent} from "../IAnalytics";
+import {IAnalytics, IEventArgs, TraitsMap, UserIdentificationStr, IPageEvent, IAnalyticsUser} from "../IAnalytics";
 import {RendererAnalytics} from "../../ga/RendererAnalytics";
 
 /**
@@ -24,7 +24,7 @@ export class GAAnalytics implements IAnalytics {
         }
     }
 
-    public identify(userId: UserIdentificationStr) {
+    public identify(user: IAnalyticsUser) {
         // not implemented
     }
 

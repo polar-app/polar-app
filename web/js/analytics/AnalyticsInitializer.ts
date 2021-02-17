@@ -83,8 +83,17 @@ export namespace AnalyticsInitializer {
         const user = await Firebase.currentUserAsync();
 
         if (user) {
-            Analytics.identify(user.uid);
+
+            Analytics.identify({
+                uid: user.uid,
+                email: user.email!,
+                displayName: user.displayName || undefined,
+                photoURL: user.photoURL || undefined,
+                created: user.metadata.creationTime!
+            });
+
             doUserTraits(user);
+
         }
 
     }

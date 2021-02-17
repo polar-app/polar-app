@@ -1,7 +1,17 @@
+import {URLStr} from "polar-shared/src/util/Strings";
 
 export interface IPageEvent {
     readonly location: string;
     readonly locationCanonicalized: string;
+}
+
+
+export interface IAnalyticsUser {
+    readonly uid: string;
+    readonly email: string;
+    readonly displayName: string | undefined;
+    readonly photoURL: URLStr | undefined;
+    readonly created: string;
 }
 
 export interface IAnalytics {
@@ -26,7 +36,7 @@ export interface IAnalytics {
     /**
      * Identify the user so that duplicate users on different machines are tracked.
      */
-    identify(userId: UserIdentificationStr): void;
+    identify(user: IAnalyticsUser): void;
 
     /**
      * Set user traits.

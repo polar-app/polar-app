@@ -1,5 +1,5 @@
 import React from 'react';
-import {IAnalytics, IEventArgs, TraitsMap, IPageEvent} from "../IAnalytics";
+import {IAnalytics, IEventArgs, TraitsMap, IPageEvent, IAnalyticsUser} from "../IAnalytics";
 import {IntercomData, useIntercomClient, useIntercomData} from "../../apps/repository/integrations/IntercomHooks";
 import {StandardEventProperties} from "../StandardEventProperties";
 
@@ -18,7 +18,7 @@ export function useIntercomAnalytics(): IAnalytics {
         // noop
     }, []);
 
-    const identify = React.useCallback((userId: string): void => {
+    const identify = React.useCallback((user: IAnalyticsUser): void => {
         // noop
     }, []);
 

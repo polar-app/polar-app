@@ -1,7 +1,7 @@
 /**
  * System that just uses the legacy RendererAnalytics until we do away with GA.
  */
-import {IAnalytics, IEventArgs, IPageEvent, TraitsMap, UserIdentificationStr} from "../IAnalytics";
+import {IAnalytics, IAnalyticsUser, IEventArgs, IPageEvent, TraitsMap} from "../IAnalytics";
 
 export class OnlineAnalytics implements IAnalytics {
 
@@ -26,9 +26,9 @@ export class OnlineAnalytics implements IAnalytics {
         }
     }
 
-    public identify(userId: UserIdentificationStr) {
+    public identify(user: IAnalyticsUser) {
         if (navigator.onLine) {
-            this.delegate.identify(userId);
+            this.delegate.identify(user);
         }
     }
 
