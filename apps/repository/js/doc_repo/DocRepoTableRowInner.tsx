@@ -176,7 +176,7 @@ export const DocRepoTableRowInner = React.memo((props: IProps) => {
                                padding="none"
                                onClick={selectRowClickHandler}
                                onContextMenu={contextMenuHandler}>
-                        {row.title}
+                        {row.title || 'Untitled'}
                     </TableCell>
                 );
 
