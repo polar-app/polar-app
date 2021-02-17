@@ -77,7 +77,7 @@ export function useCannyAnalytics(): IAnalytics {
     }, []);
 
     const logout = React.useCallback((): void => {
-        // noop
+        identificationRef.current = undefined;
     }, []);
 
     return {event, event2, identify, page, traits, version, heartbeat, logout};
