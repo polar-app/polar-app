@@ -51,6 +51,7 @@ import { NestedContextStory } from './impl/NestedContextStory';
 import {CreateAccountStory} from "./impl/CreateAccountStory";
 import { CKEditorActivatorStory } from './impl/CKEditorActivatorStory';
 import {CKEditorActivatorPerformanceStory} from "./impl/CKEditorActivatorPerformanceStory";
+import {TextAreaMarkdownEditorStory} from "./impl/TextAreaMarkdownEditorStory";
 
 interface IStory {
     readonly name: string;
@@ -255,6 +256,10 @@ const stories = createStoryIndex([
         name: 'Create Account',
         component: <CreateAccountStory/>
     },
+    {
+        name: 'TextAreaMarkdownEditorStory',
+        component: <TextAreaMarkdownEditorStory/>
+    }
 
 
 ]);

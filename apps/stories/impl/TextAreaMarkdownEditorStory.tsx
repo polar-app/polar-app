@@ -1,4 +1,36 @@
+import createStyles from '@material-ui/core/styles/createStyles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import React from 'react';
+
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        root: {
+            display: 'flex',
+            flexDirection: 'column'
+        },
+        textarea: {
+            border: 'none',
+            outline: 'none',
+            background: 'inherit',
+            color: 'inherit',
+
+            fontFamily: 'inherit',
+            fontSize: 'inherit',
+            fontWeight: 'inherit',
+            lineHeight: 'inherit',
+            letterSpacing: 'inherit',
+            whiteSpace: 'inherit',
+            padding: '0px'
+
+
+            // FIXME: how do I get the
+
+            // -webkit-box-shadow: none;
+            // -moz-box-shadow: none;
+            // box-shadow: none;
+        }
+    }),
+);
 
 // major things to test...
 
@@ -18,5 +50,19 @@ const TextAreaMarkdownEditor = () => {
 }
 
 export const TextAreaMarkdownEditorStory = () => {
-    return null;
+
+    const classes = useStyles();
+
+    return (
+        <div className={classes.root}>
+            <textarea className={classes.textarea}
+                      rows={1}
+                      defaultValue="this is some text"
+                      style={{resize: 'none'}}/>
+            <div>
+                this is some text
+            </div>
+        </div>
+    );
+
 }
