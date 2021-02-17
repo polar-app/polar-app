@@ -90,6 +90,11 @@ export class AmplitudeAnalytics implements IAnalytics {
         Analytics.event2('heartbeat');
     }
 
+    public logout(): void {
+    }
+
 }
+
+
 
 

@@ -33,6 +33,10 @@ export class CompositeAnalytics implements IAnalytics {
         this.invoke(delegate => delegate.heartbeat());
     }
 
+    public logout(): void {
+        this.invoke(delegate => delegate.logout());
+    }
+
     private invoke(handler: (delegate: IAnalytics) => void) {
 
         for (const delegate of this.delegates) {

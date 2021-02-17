@@ -50,4 +50,10 @@ export class OnlineAnalytics implements IAnalytics {
         }
     }
 
+    public logout(): void {
+        if (navigator.onLine) {
+            this.delegate.logout();
+        }
+    }
+
 }

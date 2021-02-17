@@ -82,6 +82,10 @@ export class UserflowAnalytics implements IAnalytics {
         // noop
     }
 
+    public logout(): void {
+        // noop
+    }
+
 }
 
 

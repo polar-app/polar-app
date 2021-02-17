@@ -50,6 +50,9 @@ export class FirestoreAnalytics implements IAnalytics {
 
     }
 
+    public logout(): void {
+    }
+
 }
 
 

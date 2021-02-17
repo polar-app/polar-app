@@ -11,6 +11,7 @@ import {StripeUtils} from "../../../apps/repository/js/stripe/StripeUtils";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
 import {IStripeCreateCustomerPortalResponse} from "polar-backend-api/src/api/stripe/StripeCreateCustomerPortal";
 import {StoreCaches} from "polar-snapshot-cache/src/StoreCaches";
+import {Analytics} from "../analytics/Analytics";
 
 export namespace AccountActions {
 
@@ -46,6 +47,10 @@ export namespace AccountActions {
 
         async function clearStoreCaches() {
             await StoreCaches.purge();
+        }
+
+        function doAnalytics() {
+            Analytics.logout();
         }
 
         await doLogout();

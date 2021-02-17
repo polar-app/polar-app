@@ -40,4 +40,7 @@ export class GAAnalytics implements IAnalytics {
         // not implemented
     }
 
+    public logout(): void {
+    }
+
 }

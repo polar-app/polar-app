@@ -54,6 +54,8 @@ export interface IAnalytics {
      */
     heartbeat(): void;
 
+    logout(): void;
+
 }
 
 /**

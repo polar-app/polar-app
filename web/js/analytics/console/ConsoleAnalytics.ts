@@ -46,4 +46,7 @@ export class ConsoleAnalytics implements IAnalytics {
         // noop
     }
 
+    public logout(): void {
+    }
+
 }
