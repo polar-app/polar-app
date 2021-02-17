@@ -7,7 +7,7 @@
     "packages/polar-bookshelf-secrets",
     "packages/polar-site2"
   ],
-  "version": "2.1.12",
+  "version": "2.1.13",
   "concurrency": 1,
   "hoist": true,
   "mutex": "network"
