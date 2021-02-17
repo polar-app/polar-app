@@ -99,7 +99,7 @@ Anki code: 153625306
 
 <img class="img-fluid" src="https://i.imgur.com/NIX8KOw.png">
 
-Human beings remember things better when they can make connections between different pieces of information. This add-on serves exactly that purpose by helping you to make connections between cards. By double-clicking words or phrases, you can quickly draw up related facts from your card collection. This is extremely useful when you have a large-number of related cards and you need to grasp the information systematically. It is of course also helpful for preparing for exams like MCAT or USMLE.
+We remember things better when they can make connections between different pieces of information. This add-on serves exactly that purpose by helping you to make connections between cards. By double-clicking words or phrases, you can quickly draw up related facts from your card collection. This is extremely useful when you have a large-number of related cards and you need to grasp the information systematically. It is of course also helpful for preparing for exams like MCAT or USMLE.
 
 #### #7 <a href="https://ankiweb.net/shared/info/738807903" target="_blank">More Overview Stats</a>: Love metrics? Here are more of them
 
