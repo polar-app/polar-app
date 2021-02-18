@@ -68,11 +68,6 @@ export const NoteInner = observer((props: IProps) => {
 
                 store.setSelectionRange(store.active, id);
 
-                // FIXME:
-                for(const editor of store.getNoteEditorMutators()) {
-                    editor.clearSelection();
-                }
-
                 event.stopPropagation();
             }
         }

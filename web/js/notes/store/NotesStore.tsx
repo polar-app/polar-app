@@ -109,8 +109,6 @@ export interface ICreatedNote {
 
 export class NotesStore {
 
-    @observable _noteEditors: {[id: string]: INoteEditorMutator} = {}
-
     @observable _index: NotesIndex = {};
 
     @observable _indexByName: NotesIndexByName = {};
@@ -583,8 +581,6 @@ export class NotesStore {
 
         // *** now update the editor so it's setup correctly
 
-        const editorMutator = this.getNoteEditorMutator(target);
-
         function computeTextOffset() {
             const div = document.createElement('div');
             const html = MarkdownContentEscaper.escape(initialTargetContent);
@@ -592,15 +588,15 @@ export class NotesStore {
             return div.innerText.length;
         }
 
-        if (editorMutator) {
-
-            editorMutator.setData(MarkdownContentEscaper.escape(targetNote.content));
-            editorMutator.setCursorPosition(computeTextOffset());
-            editorMutator.focus();
-
-        } else {
-            console.warn("mergeNotes: No editorMutator");
-        }
+        // if (editorMutator) {
+        //
+        //     editorMutator.setData(MarkdownContentEscaper.escape(targetNote.content));
+        //     editorMutator.setCursorPosition(computeTextOffset());
+        //     editorMutator.focus();
+        //
+        // } else {
+        //     console.warn("mergeNotes: No editorMutator");
+        // }
 
         return undefined;
 
@@ -983,22 +979,6 @@ export class NotesStore {
 
         return result.reverse();
 
-    }
-
-    @observable public getNoteEditorMutator(id: NoteIDStr): INoteEditorMutator | undefined {
-        return this._noteEditors[id] || undefined;
-    }
-
-    @observable public getNoteEditorMutators(): ReadonlyArray<INoteEditorMutator> {
-        return Object.values(this._noteEditors);
-    }
-
-    @action public setNoteEditorMutator(id: NoteIDStr, editor: INoteEditorMutator) {
-        return this._noteEditors[id] = editor;
-    }
-
-    @action public clearNoteEditorMutator(id: NoteIDStr) {
-        delete this._noteEditors[id];
     }
 
 }

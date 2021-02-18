@@ -357,7 +357,7 @@ export const CKEditorActivator = (props: IProps) => {
     const handleEditor = React.useCallback((editor: ckeditor5.IEditor) => {
 
         editorRef.current = editor;
-        mutatorRef.current = NoteEditorMutators.createForEditor(editorRef.current);
+        // mutatorRef.current = NoteEditorMutators.createForEditor(editorRef.current);
 
         props.onEditor(editor);
 

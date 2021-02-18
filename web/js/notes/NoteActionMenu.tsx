@@ -1,12 +1,5 @@
 import React from "react";
-import MenuItem from "@material-ui/core/MenuItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import Paper from "@material-ui/core/Paper";
-import MenuList from "@material-ui/core/MenuList";
 import {useRefValue, useStateRef} from "../hooks/ReactHooks";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import {useEditorStore} from "./EditorStoreProvider";
-import {NoteActionSelections} from "./NoteActionSelections";
 import {NoteIDStr, useNotesStore} from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
 
@@ -29,7 +22,7 @@ export interface IActionMenuItem {
      */
     readonly id: string;
     readonly text: string;
-    readonly action: (id: NoteIDStr, editor: ckeditor5.IEditor) => ICommand | undefined;
+    readonly action: (id: NoteIDStr) => ICommand | undefined;
 
 }
 
@@ -84,9 +77,6 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
     const [prompt, setPrompt, promptRef] = useStateRef<IPrompt | undefined>(undefined);
     const promptStartRef = React.useRef<number | undefined>();
 
-    const editor = useEditorStore();
-    const editorRef = useRefValue(editor);
-
     const items = React.useMemo(() => itemsProvider(prompt?.prompt || ''), [itemsProvider, prompt]);
     const itemsRef = useRefValue(items);
     const store = useNotesStore();
@@ -105,244 +95,246 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
 
     }, [promptManager, setMenuIndex, setMenuPosition, setPrompt]);
 
-    const removeEditorPromptText = React.useCallback(() => {
-
-        const editor = editorRef.current;
-
-        if (! editor) {
-            console.warn("NoteActionMenu: No editor");
-            return;
-        }
-
-        editor.model.change((writer) => {
-
-            if ( ! promptPositionRef.current) {
-                console.log("No start position");
-                return;
-            }
-
-            const startPosition = editor.model.createPositionAt(promptPositionRef.current, 'before');
-            // const startPosition = editor.model.createPositionBefore(promptPositionRef.current);
-
-            const endPosition = editorRef.current?.model.document.selection.getFirstPosition() || undefined;
-            // const endPosition = editorPositionRef.current;
-
-            if (! endPosition) {
-                console.log("No end position");
-                return;
-            }
-
-            const range = writer.createRange(startPosition, endPosition);
-            writer.remove(range);
-
-        })
-
-    }, [editorRef]);
-
-    const getEditorPromptText = React.useCallback(() => {
-
-        const editor = editorRef.current;
-
-        if (! editor) {
-            console.warn("getEditorPromptText: No editor");
-            return;
-        }
-
-        // editor.model.document.selection.
-
-    }, [editorRef]);
-
-    const getEditorPosition = React.useCallback(() => {
-
-        return editorRef.current?.model.document.selection.getFirstPosition() || undefined;
-
-    }, [editorRef]);
-
-    const captureEditorPosition = React.useCallback(() => {
-
-        editorPositionRef.current = getEditorPosition();
-
-    }, [getEditorPosition]);
-
-    const insertEditorPromptText = React.useCallback((text: string) => {
-
-        const editor = editorRef.current;
-
-        if (! editor) {
-            console.warn("insertEditorPromptText: No editor");
-            return;
-        }
-
-        editor.model.change((writer) => {
-            if (promptPositionRef.current) {
-
-                writer.insertText(text, {linkHref: `#${text}`}, promptPositionRef.current);
-
-                const currentPosition = getEditorPosition();
-
-                if (currentPosition) {
-                    writer.insertText(' ', {}, currentPosition);
-                }
-
-            }
-        })
-
-    }, [editorRef, getEditorPosition]);
-
-    const handleSelectedActionItem = React.useCallback(() => {
-
-        if (menuIndexRef.current !== undefined) {
-
-            const selectedItem = itemsRef.current[menuIndexRef.current];
-
-            if (editorRef.current) {
-
-                try {
-
-                    console.log("Executing item: " + selectedItem.text);
-                    const command = selectedItem.action(props.id, editorRef.current);
-
-                    removeEditorPromptText();
-
-                    if (command?.type === 'replace') {
-                        insertEditorPromptText(selectedItem.text);
-                    }
-
-                } catch (err) {
-                    console.error("Unable to execute command: ", err);
-                }
-
-            } else {
-                console.log("handleSelectedActionItem: No editor");
-            }
-
-        } else {
-            console.log("No menuIndexRef")
-        }
-
-        setMenuIndex(undefined);
-        setMenuPosition(undefined);
-
-    }, [editorRef, insertEditorPromptText, itemsRef, menuIndexRef,
-        props.id, removeEditorPromptText, setMenuIndex, setMenuPosition])
-
-    const onClick = React.useCallback(() => {
-        captureEditorPosition();
-    }, [captureEditorPosition]);
-
-    const computeNextMenuID = React.useCallback(() => {
-
-        if (menuIndexRef.current === undefined) {
-            return 0;
-        }
-
-        return Math.min(itemsRef.current.length - 1, menuIndexRef.current + 1);
-
-    }, [itemsRef, menuIndexRef]);
-
-    const computePrevMenuID = React.useCallback(() => {
-
-        if (menuIndexRef.current === undefined) {
-            return 0;
-        }
-
-        return Math.max(0, menuIndexRef.current - 1);
-
-    }, [menuIndexRef]);
-
-    const onKeyDown = React.useCallback((event: KeyboardEvent) => {
-
-        if (! store.isActive(props.id)) {
-            return;
-        }
-
-        const triggered = triggerHandler(event);
-
-        if (triggered) {
-
-            const cursorRange = NoteActionSelections.computeCursorRange();
-
-            if (cursorRange && NoteActionSelections.hasActivePrompt(cursorRange)) {
-
-                promptStartRef.current = cursorRange.startOffset;
-
-                const bcr = cursorRange.getBoundingClientRect();
-
-                const newPosition = {
-                    top: bcr.bottom,
-                    left: bcr.left,
-                };
-
-                if (newPosition.top !== 0 && newPosition.left !== 0) {
-
-                    setMenuPosition(newPosition);
-                    promptPositionRef.current = editorPositionRef.current
-
-                }
-
-            }
-        }
-
-        if (menuPositionRef.current !== undefined) {
-
-            const prompt = promptManager.update(event);
-            setPrompt(prompt);
-
-            // TEST: if the user removes the prompt by typing Backspace, the
-            // action menu should vanish.
-
-            function abortEvent() {
-                event.stopPropagation();
-                event.preventDefault();
-            }
-
-            switch (event.key) {
-
-                case 'Escape':
-
-                    reset();
-                    abortEvent();
-                    break;
-
-                case 'Backspace':
-
-                    if (prompt.raw === '') {
-                        reset();
-                    }
-
-                    break;
-
-                case 'Enter':
-                    // execute the given command...
-                    handleSelectedActionItem();
-                    reset();
-                    abortEvent();
-                    break;
-
-                case 'ArrowDown':
-
-                    const nextID = computeNextMenuID();
-                    setMenuIndex(nextID);
-                    abortEvent();
-                    break;
-
-                case 'ArrowUp':
-
-                    const prevID = computePrevMenuID();
-                    setMenuIndex(prevID);
-                    abortEvent();
-                    break;
-
-                default:
-                    break;
-
-            }
-
-        }
-
-        captureEditorPosition()
-
-    }, [captureEditorPosition, computeNextMenuID, computePrevMenuID, handleSelectedActionItem, menuPositionRef, promptManager, props.id, reset, setMenuIndex, setMenuPosition, setPrompt, store, triggerHandler]);
+    // const removeEditorPromptText = React.useCallback(() => {
+    //
+    //     const editor = editorRef.current;
+    //
+    //     if (! editor) {
+    //         console.warn("NoteActionMenu: No editor");
+    //         return;
+    //     }
+    //
+    //     editor.model.change((writer) => {
+    //
+    //         if ( ! promptPositionRef.current) {
+    //             console.log("No start position");
+    //             return;
+    //         }
+    //
+    //         const startPosition = editor.model.createPositionAt(promptPositionRef.current, 'before');
+    //         // const startPosition = editor.model.createPositionBefore(promptPositionRef.current);
+    //
+    //         const endPosition = editorRef.current?.model.document.selection.getFirstPosition() || undefined;
+    //         // const endPosition = editorPositionRef.current;
+    //
+    //         if (! endPosition) {
+    //             console.log("No end position");
+    //             return;
+    //         }
+    //
+    //         const range = writer.createRange(startPosition, endPosition);
+    //         writer.remove(range);
+    //
+    //     })
+    //
+    // }, [editorRef]);
+    //
+    // const getEditorPromptText = React.useCallback(() => {
+    //
+    //     const editor = editorRef.current;
+    //
+    //     if (! editor) {
+    //         console.warn("getEditorPromptText: No editor");
+    //         return;
+    //     }
+    //
+    //     // editor.model.document.selection.
+    //
+    // }, [editorRef]);
+    //
+    // const getEditorPosition = React.useCallback(() => {
+    //
+    //     return editorRef.current?.model.document.selection.getFirstPosition() || undefined;
+    //
+    // }, [editorRef]);
+    //
+    // const captureEditorPosition = React.useCallback(() => {
+    //
+    //     editorPositionRef.current = getEditorPosition();
+    //
+    // }, [getEditorPosition]);
+    //
+    //
+    // const insertEditorPromptText = React.useCallback((text: string) => {
+    //
+    //     const editor = editorRef.current;
+    //
+    //     if (! editor) {
+    //         console.warn("insertEditorPromptText: No editor");
+    //         return;
+    //     }
+    //
+    //     editor.model.change((writer) => {
+    //         if (promptPositionRef.current) {
+    //
+    //             writer.insertText(text, {linkHref: `#${text}`}, promptPositionRef.current);
+    //
+    //             const currentPosition = getEditorPosition();
+    //
+    //             if (currentPosition) {
+    //                 writer.insertText(' ', {}, currentPosition);
+    //             }
+    //
+    //         }
+    //     })
+    //
+    // }, [editorRef, getEditorPosition]);
+    //
+    // const handleSelectedActionItem = React.useCallback(() => {
+    //
+    //     if (menuIndexRef.current !== undefined) {
+    //
+    //         const selectedItem = itemsRef.current[menuIndexRef.current];
+    //
+    //         if (editorRef.current) {
+    //
+    //             try {
+    //
+    //                 console.log("Executing item: " + selectedItem.text);
+    //                 const command = selectedItem.action(props.id);
+    //
+    //                 removeEditorPromptText();
+    //
+    //                 if (command?.type === 'replace') {
+    //                     insertEditorPromptText(selectedItem.text);
+    //                 }
+    //
+    //             } catch (err) {
+    //                 console.error("Unable to execute command: ", err);
+    //             }
+    //
+    //         } else {
+    //             console.log("handleSelectedActionItem: No editor");
+    //         }
+    //
+    //     } else {
+    //         console.log("No menuIndexRef")
+    //     }
+    //
+    //     setMenuIndex(undefined);
+    //     setMenuPosition(undefined);
+    //
+    // }, [editorRef, insertEditorPromptText, itemsRef, menuIndexRef,
+    //     props.id, removeEditorPromptText, setMenuIndex, setMenuPosition])
+
+    // const onClick = React.useCallback(() => {
+    //     captureEditorPosition();
+    // }, [captureEditorPosition]);
+    //
+    // const computeNextMenuID = React.useCallback(() => {
+    //
+    //     if (menuIndexRef.current === undefined) {
+    //         return 0;
+    //     }
+    //
+    //     return Math.min(itemsRef.current.length - 1, menuIndexRef.current + 1);
+    //
+    // }, [itemsRef, menuIndexRef]);
+
+    // const computePrevMenuID = React.useCallback(() => {
+    //
+    //     if (menuIndexRef.current === undefined) {
+    //         return 0;
+    //     }
+    //
+    //     return Math.max(0, menuIndexRef.current - 1);
+    //
+    // }, [menuIndexRef]);
+    //
+    //
+    // const onKeyDown = React.useCallback((event: KeyboardEvent) => {
+    //
+    //     if (! store.isActive(props.id)) {
+    //         return;
+    //     }
+    //
+    //     const triggered = triggerHandler(event);
+    //
+    //     if (triggered) {
+    //
+    //         const cursorRange = NoteActionSelections.computeCursorRange();
+    //
+    //         if (cursorRange && NoteActionSelections.hasActivePrompt(cursorRange)) {
+    //
+    //             promptStartRef.current = cursorRange.startOffset;
+    //
+    //             const bcr = cursorRange.getBoundingClientRect();
+    //
+    //             const newPosition = {
+    //                 top: bcr.bottom,
+    //                 left: bcr.left,
+    //             };
+    //
+    //             if (newPosition.top !== 0 && newPosition.left !== 0) {
+    //
+    //                 setMenuPosition(newPosition);
+    //                 promptPositionRef.current = editorPositionRef.current
+    //
+    //             }
+    //
+    //         }
+    //     }
+    //
+    //     if (menuPositionRef.current !== undefined) {
+    //
+    //         const prompt = promptManager.update(event);
+    //         setPrompt(prompt);
+    //
+    //         // TEST: if the user removes the prompt by typing Backspace, the
+    //         // action menu should vanish.
+    //
+    //         function abortEvent() {
+    //             event.stopPropagation();
+    //             event.preventDefault();
+    //         }
+    //
+    //         switch (event.key) {
+    //
+    //             case 'Escape':
+    //
+    //                 reset();
+    //                 abortEvent();
+    //                 break;
+    //
+    //             case 'Backspace':
+    //
+    //                 if (prompt.raw === '') {
+    //                     reset();
+    //                 }
+    //
+    //                 break;
+    //
+    //             case 'Enter':
+    //                 // execute the given command...
+    //                 handleSelectedActionItem();
+    //                 reset();
+    //                 abortEvent();
+    //                 break;
+    //
+    //             case 'ArrowDown':
+    //
+    //                 const nextID = computeNextMenuID();
+    //                 setMenuIndex(nextID);
+    //                 abortEvent();
+    //                 break;
+    //
+    //             case 'ArrowUp':
+    //
+    //                 const prevID = computePrevMenuID();
+    //                 setMenuIndex(prevID);
+    //                 abortEvent();
+    //                 break;
+    //
+    //             default:
+    //                 break;
+    //
+    //         }
+    //
+    //     }
+    //
+    //     captureEditorPosition()
+    //
+    // }, [captureEditorPosition, computeNextMenuID, computePrevMenuID, handleSelectedActionItem, menuPositionRef, promptManager, props.id, reset, setMenuIndex, setMenuPosition, setPrompt, store, triggerHandler]);
 
     interface NoteMenuItemProps extends IActionMenuItem {
         readonly menuID: number;
@@ -352,66 +344,72 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
 
         const {menuID} = props;
 
-        return (
-            <MenuItem onClick={handleSelectedActionItem}
-                      selected={menuIndexRef.current === menuID}>
-                <ListItemText primary={props.text} />
-            </MenuItem>
-        );
+        // return (
+        //     <MenuItem onClick={handleSelectedActionItem}
+        //               selected={menuIndexRef.current === menuID}>
+        //         <ListItemText primary={props.text} />
+        //     </MenuItem>
+        // );
+
+        return null;
 
     });
+    //
+    // React.useEffect(() => {
+    //
+    //     // we hook the main window event listener because we have to override
+    //     // all the key events to everything else once we are active.
+    //
+    //     // FIXME: I think this is activating N times not for only the currently
+    //     // active note ... there probably need to be two event listeners.
+    //     //
+    //     // the local one which is a normal event listener and listens for key
+    //     // events as part of the normal dom and then one that listens at the
+    //     // window level so it an abort events.
+    //
+    //     window.addEventListener('keydown', onKeyDown, {capture: true})
+    //
+    //     return () => {
+    //         window.removeEventListener('keydown', onKeyDown, {capture: true})
+    //     }
+    //
+    // }, [onKeyDown])
 
-    React.useEffect(() => {
-
-        // we hook the main window event listener because we have to override
-        // all the key events to everything else once we are active.
-
-        // FIXME: I think this is activating N times not for only the currently
-        // active note ... there probably need to be two event listeners.
+    // return (
         //
-        // the local one which is a normal event listener and listens for key
-        // events as part of the normal dom and then one that listens at the
-        // window level so it an abort events.
+        // <div className="NoteActionMenu"
+        //      style={{
+        //          flexGrow: 1
+        //      }}
+        //      onClick={onClick}>
+        //
+        //     {menuPosition && (
+        //         <ClickAwayListener onClickAway={() => setMenuPosition(undefined)}>
+        //
+        //             <Paper elevation={3}
+        //                    style={{
+        //                        position: 'absolute',
+        //                        top: menuPosition.top,
+        //                        left: menuPosition.left
+        //                    }}>
+        //
+        //                 <MenuList>
+        //                     {items.map((current, idx) => (
+        //                         <NoteActionMenuItem key={idx}
+        //                                             menuID={idx}
+        //                                             {...current}/>))}
+        //                 </MenuList>
+        //             </Paper>
+        //         </ClickAwayListener>)}
+        //
+        //     {props.children}
+        // </div>
+    //
+    //
+    // );
 
-        window.addEventListener('keydown', onKeyDown, {capture: true})
+    return props.children;
 
-        return () => {
-            window.removeEventListener('keydown', onKeyDown, {capture: true})
-        }
-
-    }, [onKeyDown])
-
-    return (
-
-        <div className="NoteActionMenu"
-             style={{
-                 flexGrow: 1
-             }}
-             onClick={onClick}>
-
-            {menuPosition && (
-                <ClickAwayListener onClickAway={() => setMenuPosition(undefined)}>
-
-                    <Paper elevation={3}
-                           style={{
-                               position: 'absolute',
-                               top: menuPosition.top,
-                               left: menuPosition.left
-                           }}>
-
-                        <MenuList>
-                            {items.map((current, idx) => (
-                                <NoteActionMenuItem key={idx}
-                                              menuID={idx}
-                                              {...current}/>))}
-                        </MenuList>
-                    </Paper>
-                </ClickAwayListener>)}
-
-            {props.children}
-        </div>
-
-    );
 });
 
 /**

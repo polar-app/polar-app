@@ -1,7 +1,6 @@
 import React from "react";
 import {NoteNavigation} from "./NoteNavigation";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
-import {EditorStoreProvider, useEditorStore, useSetEditorStore} from "./EditorStoreProvider";
 import {NoteActionMenuForCommands} from "./NoteActionMenuForCommands";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import { NoteActionMenuForLinking } from "./NoteActionMenuForLinking";
@@ -13,6 +12,7 @@ import {NoteIDStr, useNotesStore} from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
 import {INoteEditorMutator} from "./store/NoteEditorMutator";
 import {CKEditorActivator} from "../../../apps/stories/impl/ckeditor5/CKEditorActivator";
+import {TextAreaEditor} from "./textarea/TextAreaEditor";
 
 interface ILinkNavigationEvent {
     readonly abortEvent: () => void;
@@ -78,12 +78,7 @@ function useLinkNavigationClickHandler() {
 
 function useLinkNavigation() {
 
-    const editor = useEditorStore();
-
     const linkNavigationEventListener = useLinkNavigationEventListener();
-
-    // FIXME: this won't fire because of CKEditorActivator not installing this until the
-    // component is mounted.
 
     const handleEditorClick = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
 
@@ -99,34 +94,6 @@ function useLinkNavigation() {
 
     }, [linkNavigationEventListener]);
 
-    React.useEffect(() => {
-
-        if (! editor) {
-            // console.log("useLinkNavigation: No editor");
-            return;
-        }
-
-        function subscribe() {
-            editor!.editing.view.document.on('click', handleEditorClick);
-        }
-
-        function unsubscribe() {
-
-            if (editor) {
-                editor.editing.view.document.off('click', handleEditorClick);
-            } else {
-                console.warn("useLinkNavigation: No editor in unsubscribe");
-            }
-
-        }
-
-        unsubscribe();
-        subscribe();
-
-        return unsubscribe;
-
-    }, [editor, handleEditorClick]);
-
 }
 
 const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
@@ -135,7 +102,6 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
     const {id} = props;
     const store = useNotesStore()
-    const setEditor = useSetEditorStore();
     const noteActivated = store.getNoteActivated(props.id);
     const onClickWhileInactive = useLinkNavigationClickHandler();
 
@@ -147,25 +113,9 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
         }
     }, [note]);
 
-    const handleEditorMutator = React.useCallback((editorMutator: INoteEditorMutator) => {
-        store.setNoteEditorMutator(id, editorMutator);
-    }, [id, store]);
-
-    const handleEditor = React.useCallback((editor: ckeditor5.IEditor) => {
-        setEditor(editor);
-    }, [setEditor]);
-
     const escaper = MarkdownContentEscaper;
 
     const content = React.useMemo(() => escaper.escape(note?.content || ''), [escaper, note]);
-
-    React.useEffect(() => {
-
-        return () => {
-            store.clearNoteEditorMutator(id);
-        }
-
-    }, [id, store]);
 
     if (! note) {
         // this can happen when a note is deleted but the component hasn't yet
@@ -173,15 +123,19 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
         return null;
     }
 
+    // FIXME onClickWhileInactive={onClickWhileInactive}
+    // FIXME: offset needs to be set here...
+
+    const handleActivated = React.useCallback(() => {
+        store.setActive(props.id);
+    }, [props.id, store]);
+
     return (
-        <CKEditorActivator content={content}
-                           onChange={handleChange}
-                           onEditor={handleEditor}
-                           defaultFocus={props.id === noteActivated?.note.id}
-                           preEscaped={true}
-                           escaper={escaper}
-                           onEditorMutator={handleEditorMutator}
-                           onClickWhileInactive={onClickWhileInactive}/>
+        <TextAreaEditor content={content}
+                        onChange={handleChange}
+                        active={props.id === noteActivated?.note.id}
+                        offset={0}
+                        onActivated={handleActivated}/>
     );
 
 });
@@ -224,10 +178,10 @@ export const NoteEditor = observer(function NoteEditor(props: IProps) {
 
     // useLifecycleTracer('NoteEditor', {id: props.id});
 
+    // FIXME this inner component is not needed...
+
     return (
-        <EditorStoreProvider initialValue={undefined}>
-            <NoteEditorWithEditorStore {...props}/>
-        </EditorStoreProvider>
+        <NoteEditorWithEditorStore {...props}/>
     );
 
 });

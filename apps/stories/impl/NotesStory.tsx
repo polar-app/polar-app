@@ -2,7 +2,6 @@ import React from 'react';
 import '@ckeditor/ckeditor5-theme-lark/theme/theme.css';
 import '@ckeditor/ckeditor5-theme-lark';
 import {NotesRouter} from "../../../web/js/notes/NotesRouter";
-import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import { CKEditor5AppRoot } from './ckeditor5/CKEditor5AppRoot';
 import Fab from '@material-ui/core/Fab';
 import HelpIcon from '@material-ui/icons/Help';
@@ -12,7 +11,6 @@ import {CKEditor5NotesGlobalCSS} from "../../../web/js/notes/CKEditor5NotesGloba
 import {NotesStoreProvider, useNotesStore} from '../../../web/js/notes/store/NotesStore';
 import {MockNotes} from "./MockNotes";
 import { observer } from "mobx-react-lite"
-import {INote} from "../../../web/js/notes/store/INote";
 
 const notes = MockNotes.create();
 
