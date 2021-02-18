@@ -10,6 +10,8 @@ interface IProps {
 
     readonly style?: React.CSSProperties;
 
+    readonly innerRef?: React.MutableRefObject<HTMLDivElement | null>;
+
     readonly onChange: (content: string) => void;
 
 }
@@ -20,18 +22,13 @@ interface IProps {
  */
 export const MinimalContentEditable = React.memo((props: IProps) => {
 
-    const ref = React.useRef<HTMLDivElement | null>(null);
-
-    const handleKeyDown = React.useCallback(() => {
-
-        if (ref.current) {
-            props.onChange(ref.current.innerHTML)
-        }
-
+    const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
+        props.onChange(event.currentTarget.innerHTML)
     }, [props]);
 
     return (
-        <div ref={ref}
+
+        <div ref={props.innerRef}
              onKeyDown={handleKeyDown}
              contentEditable={true}
              spellCheck={props.spellCheck}
