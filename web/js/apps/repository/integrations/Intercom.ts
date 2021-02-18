@@ -2,7 +2,8 @@
 import * as React from 'react';
 import { useLocation } from 'react-router-dom';
 import { useZenModeStore } from '../../../mui/ZenModeStore';
-import {useIntercomClient, useIntercomData} from "./IntercomHooks";
+import {createIntercomClient} from "../../../analytics/intercom/IntercomAnalytics";
+import {useIntercomData} from "./IntercomHooks";
 
 export function useIntercom() {
 
@@ -10,7 +11,7 @@ export function useIntercom() {
     // decouple this into a new hook.
     const location = useLocation();
     const booted = React.useRef(false);
-    const intercomClient = useIntercomClient();
+    const intercomClient = createIntercomClient();
     const intercomData = useIntercomData();
 
     if (! intercomClient) {
