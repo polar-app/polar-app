@@ -11,6 +11,7 @@ import IEventData = ckeditor5.IEventData;
 import {NoteIDStr, useNotesStore} from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
 import {ContentEditableEditor} from "./textarea/ContentEditableEditor";
+import {MinimalContentEditable} from "./textarea/MinimalContentEditable";
 
 interface ILinkNavigationEvent {
     readonly abortEvent: () => void;
@@ -101,7 +102,7 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
     const {id} = props;
     const store = useNotesStore()
     const noteActivated = store.getNoteActivated(props.id);
-    const onClickWhileInactive = useLinkNavigationClickHandler();
+    const linkNavigationClickHandler = useLinkNavigationClickHandler();
 
     const note = store.getNote(id);
 
@@ -127,19 +128,23 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
     // FIXME onClickWhileInactive={onClickWhileInactive}
     // FIXME: offset needs to be set here...
 
-    const handleActivated = React.useCallback(() => {
+    const onClick = React.useCallback((event: React.MouseEvent) => {
+
+        if (noteActivated?.note.id !== props.id) {
+            linkNavigationClickHandler(event);
+            return;
+        }
+
         store.setActive(props.id);
-    }, [props.id, store]);
+
+    }, [linkNavigationClickHandler, noteActivated?.note.id, props.id, store]);
 
     return (
-        <ContentEditableEditor content={content}
-                               onChange={handleChange}
-                               active={props.id === noteActivated?.note.id}
-                               offset={0}
-                               escaper={escaper}
-                               preEscaped={true}
-                               onClickWhileInactive={onClickWhileInactive}
-                               onActivated={handleActivated}/>
+        <MinimalContentEditable content={content}
+                                onChange={handleChange}
+                                escaper={escaper}
+                                onClick={onClick}
+                                preEscaped={true}/>
     );
 
 });

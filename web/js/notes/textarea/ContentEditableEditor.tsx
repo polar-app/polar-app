@@ -109,11 +109,14 @@ const Inactive = deepMemo((props: InactiveProps) => {
 
     const handleClick = React.useCallback((event: React.MouseEvent) => {
 
+        console.log("FIXME111")
+
         if (props.onClickWhileInactive) {
             props.onClickWhileInactive(event);
         }
 
         if (elementRef.current === null) {
+            console.log("FIXME112")
             console.warn("No element yet");
             return;
         }
@@ -121,13 +124,18 @@ const Inactive = deepMemo((props: InactiveProps) => {
         function computeOffset(): number {
 
             if (elementRef.current === null) {
+                console.log("FIXME113")
                 return 0;
             }
 
             const nodes = NodeTextBoundingClientRects.compute(elementRef.current);
             const clickedNode = NodeTextBoundingClientRects.computeNearest(nodes, event.clientX, event.clientY);
 
+            console.log("FIXME114")
+
             if (clickedNode) {
+                console.log("FIXME115")
+
                 const range = document.createRange();
                 range.setStart(elementRef.current, 0);
                 range.setEnd(clickedNode.text, clickedNode.end);

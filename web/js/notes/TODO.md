@@ -1,3 +1,3 @@
-- when clicking outside of the div the content is not activated.
+- we have to click twice to make the content editable region work. 
 - when we mutate the HTML it isn't updated when clicking between the notes
 - NoteNavigation needs to be reworked

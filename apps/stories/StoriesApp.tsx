@@ -53,6 +53,7 @@ import { CKEditorActivatorStory } from './impl/CKEditorActivatorStory';
 import {CKEditorActivatorPerformanceStory} from "./impl/CKEditorActivatorPerformanceStory";
 import {TextAreaMarkdownEditorStory} from "./impl/TextAreaMarkdownEditorStory";
 import {TextAreaEditorStory} from "./impl/TextAreaEditorStory";
+import { MinimalContentEditablePerformanceStory } from './impl/MinimalContentEditablePerformanceStory';
 
 interface IStory {
     readonly name: string;
@@ -264,6 +265,10 @@ const stories = createStoryIndex([
     {
         name: 'TextAreaEditor',
         component: <TextAreaEditorStory/>
+    },
+    {
+        name: 'MinimalContentEditablePerformanceStory',
+        component: <MinimalContentEditablePerformanceStory/>
     }
 
 

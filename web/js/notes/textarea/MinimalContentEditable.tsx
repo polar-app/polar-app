@@ -39,6 +39,8 @@ interface IProps {
     readonly escaper?: ContentEscaper;
     readonly preEscaped?: boolean
 
+    readonly onClick?: (event: React.MouseEvent) => void;
+
 }
 
 /**
@@ -63,6 +65,7 @@ export const MinimalContentEditable = React.memo((props: IProps) => {
              contentEditable={true}
              spellCheck={props.spellCheck}
              className={props.className}
+             onClick={props.onClick}
              style={{
                  outline: 'none',
                  ...props.style
