@@ -151,7 +151,8 @@ const Inactive = deepMemo((props: InactiveProps) => {
     }, [props.content]);
 
     return (
-        <div ref={elementRef}
+        <div style={{cursor: 'text'}}
+             ref={elementRef}
              onClick={handleClick}
              dangerouslySetInnerHTML={{__html: content}}>
 
@@ -192,7 +193,7 @@ interface IProps {
 
 }
 
-export const ContentEditableEditor = (props: IProps) => {
+export const ContentEditableEditor = React.memo(function ContentEditableEditor(props: IProps) {
 
     const {active} = props;
 
@@ -242,4 +243,4 @@ export const ContentEditableEditor = (props: IProps) => {
 
     }
 
-}
+});

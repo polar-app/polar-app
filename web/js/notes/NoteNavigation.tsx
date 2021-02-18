@@ -225,7 +225,9 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
         <>
             <NoteActivation id={props.id}/>
             <ClickAwayListener onClickAway={handleClickAway}>
-                <div ref={setRef} onClick={handleClick}>
+                <div style={{flexGrow: 1}}
+                     ref={setRef}
+                     onClick={handleClick}>
                     {ref !== null && props.children}
                 </div>
             </ClickAwayListener>

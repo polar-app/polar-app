@@ -153,11 +153,9 @@ const NoteEditorWithEditorStore = observer(function NoteEditorWithEditorStore(pr
     return (
         <NoteActionMenuForLinking id={props.id}>
             <NoteActionMenuForCommands id={props.id}>
-                <div>
-                    <NoteNavigation parent={props.parent} id={props.id}>
-                        <NoteEditorInner {...props}/>
-                    </NoteNavigation>
-                </div>
+                <NoteNavigation parent={props.parent} id={props.id}>
+                    <NoteEditorInner {...props}/>
+                </NoteNavigation>
             </NoteActionMenuForCommands>
         </NoteActionMenuForLinking>
     );
