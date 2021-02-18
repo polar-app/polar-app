@@ -3,7 +3,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import IEventData = ckeditor5.IEventData;
 import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 import { useNoteNavigationEnterHandler } from './NoteNavigationEnter';
-import {NoteIDStr, useNotesStore} from "./store/NotesStore";
+import {NavOpts, NoteIDStr, useNotesStore} from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
 import { NoteActivation } from './NoteActivation';
 
@@ -72,115 +72,113 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
 
     }, []);
 
-    //
-    // const handleEditorKeyDown = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
-    //
-    //     function abortEvent() {
-    //         event.domEvent.stopPropagation();
-    //         event.domEvent.preventDefault();
-    //         eventData.stop();
-    //     }
-    //
-    //     // const editorCursorPosition = getEditorCursorPosition();
-    //
-    //     const opts: NavOpts = {
-    //         shiftKey: event.domEvent.shiftKey
-    //     }
-    //
-    //     switch (event.domEvent.key) {
-    //
-    //         case 'ArrowUp':
-    //
-    //             abortEvent();
-    //             store.navPrev('start', opts);
-    //             break;
-    //
-    //         case 'ArrowDown':
-    //
-    //             abortEvent();
-    //             store.navNext('start', opts);
-    //             break;
-    //
-    //         case 'ArrowLeft':
-    //
-    //             if (editorCursorPosition === 'start') {
-    //                 abortEvent();
-    //                 store.navPrev('end', opts);
-    //             }
-    //
-    //             break;
-    //
-    //         case 'ArrowRight':
-    //
-    //             if (editorCursorPosition === 'end') {
-    //                 abortEvent();
-    //                 store.navNext('start', opts);
-    //             }
-    //
-    //             break;
-    //
-    //         case 'Tab':
-    //
-    //             if (props.parent !== undefined) {
-    //
-    //                 abortEvent();
-    //
-    //                 if (event.domEvent.shiftKey) {
-    //                     store.doUnIndent(props.id);
-    //                 } else {
-    //                     store.doIndent(props.id);
-    //                 }
-    //
-    //             }
-    //
-    //             break;
-    //
-    //         case 'Backspace':
-    //
-    //             // FIXME: nothing I do seems to allow us to properly see tha the
-    //             // selection is active including listening to events from
-    //             // ckeditor.  this might be an issue with the virtual DOM
-    //             //
-    //             // things to test:
-    //             //
-    //             // - does Backspace handling (and selection) work via regular DOM events with ckeditor?
-    //             //    - NO... it seems that the selection is removed by the time we get the event
-    //             //
-    //
-    //             // I need to see if this
-    //             if (hasEditorSelection()) {
-    //                 console.log("Not handling Backspace");
-    //                 return;
-    //             }
-    //
-    //             // TODO: only do this if there aren't any modifiers I think...
-    //             if (props.parent !== undefined && store.noteIsEmpty(props.id)) {
-    //
-    //                 abortEvent();
-    //                 store.doDelete([props.id]);
-    //
-    //             }
-    //
-    //             if (editorCursorPosition === 'start') {
-    //
-    //                 // we're at the beginning of a note...
-    //
-    //                 const mergeTarget = store.canMerge(props.id);
-    //
-    //                 if (mergeTarget) {
-    //                     store.mergeNotes(mergeTarget.target, mergeTarget.source);
-    //                 }
-    //
-    //             }
-    //
-    //             break;
-    //
-    //         default:
-    //             break;
-    //
-    //     }
-    //
-    // }, [getEditorCursorPosition, hasEditorSelection, props.id, props.parent, store]);
+    const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
+
+        function abortEvent() {
+            event.stopPropagation();
+            event.preventDefault();
+        }
+
+        // const editorCursorPosition = getEditorCursorPosition();
+
+        const opts: NavOpts = {
+            shiftKey: event.shiftKey
+        }
+
+        switch (event.key) {
+
+            case 'ArrowUp':
+
+                abortEvent();
+                store.navPrev('start', opts);
+                break;
+
+            case 'ArrowDown':
+
+                abortEvent();
+                store.navNext('start', opts);
+                break;
+
+            case 'ArrowLeft':
+                //
+                // if (editorCursorPosition === 'start') {
+                //     abortEvent();
+                //     store.navPrev('end', opts);
+                // }
+
+                break;
+
+            case 'ArrowRight':
+                //
+                // if (editorCursorPosition === 'end') {
+                //     abortEvent();
+                //     store.navNext('start', opts);
+                // }
+
+                break;
+
+            case 'Tab':
+
+                if (props.parent !== undefined) {
+
+                    abortEvent();
+
+                    if (event.shiftKey) {
+                        store.doUnIndent(props.id);
+                    } else {
+                        store.doIndent(props.id);
+                    }
+
+                }
+
+                break;
+
+            case 'Backspace':
+
+                // FIXME: nothing I do seems to allow us to properly see tha the
+                // selection is active including listening to events from
+                // ckeditor.  this might be an issue with the virtual DOM
+                //
+                // things to test:
+                //
+                // - does Backspace handling (and selection) work via regular DOM events with ckeditor?
+                //    - NO... it seems that the selection is removed by the time we get the event
+                //
+
+                // I need to see if this
+                if (hasEditorSelection()) {
+                    console.log("Not handling Backspace");
+                    return;
+                }
+
+                // TODO: only do this if there aren't any modifiers I think...
+                if (props.parent !== undefined && store.noteIsEmpty(props.id)) {
+
+                    abortEvent();
+                    store.doDelete([props.id]);
+
+                }
+                //
+                // if (editorCursorPosition === 'start') {
+                //
+                //     // we're at the beginning of a note...
+                //
+                //     const mergeTarget = store.canMerge(props.id);
+                //
+                //     if (mergeTarget) {
+                //         store.mergeNotes(mergeTarget.target, mergeTarget.source);
+                //     }
+                //
+                // }
+
+                break;
+
+            default:
+                break;
+
+        }
+
+    }, [hasEditorSelection, props.id, props.parent, store]);
 
     const handleDelete = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
 
@@ -227,8 +225,11 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
             <ClickAwayListener onClickAway={handleClickAway}>
                 <div style={{flexGrow: 1}}
                      ref={setRef}
+                     onKeyDown={handleKeyDown}
                      onClick={handleClick}>
+
                     {ref !== null && props.children}
+
                 </div>
             </ClickAwayListener>
         </>
