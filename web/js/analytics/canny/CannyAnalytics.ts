@@ -1,32 +1,37 @@
-import React from 'react';
 import {IAnalytics, IEventArgs, TraitsMap, IPageEvent, IAnalyticsUser} from "../IAnalytics";
-import {ICannyUserData, useCannyClient} from "../../apps/repository/integrations/CannyHooks";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import onlyDefinedProperties = Dictionaries.onlyDefinedProperties;
 
-export function useCannyAnalytics(): IAnalytics {
+export class CannyAnalytics implements IAnalytics {
 
-    const cannyClient = useCannyClient();
+    private cannyClient = createCannyClient();
 
-    const identificationRef = React.useRef<ICannyUserData | undefined>(undefined);
+    private identification: ICannyUserData | undefined = undefined;
 
-    const event = React.useCallback((event: IEventArgs): void => {
+    public constructor() {
         // noop
-    }, []);
+    }
 
-    const event2 = React.useCallback((eventName: string, data?: any): void => {
+    public event(evt: IEventArgs) {
         // noop
-    }, []);
+    }
 
-    // identify: https://developers.canny.io/install
-    const identify = React.useCallback((user: IAnalyticsUser): void => {
+    public event2(event: string, data?: any): void {
+        // noop
+    }
 
-        if (! cannyClient) {
+    public page(event: IPageEvent) {
+        // noop
+    }
+
+    public identify(user: IAnalyticsUser) {
+
+        if (! this.cannyClient) {
             console.warn("No Canny client");
             return;
         }
 
-        identificationRef.current = onlyDefinedProperties({
+        this.identification = onlyDefinedProperties({
             email: user.email,
             name: user.displayName,
             id: user.uid,
@@ -35,51 +40,93 @@ export function useCannyAnalytics(): IAnalytics {
             customFields: {}
         });
 
-        cannyClient.identify(identificationRef.current!);
+        if (this.identification) {
+            this.cannyClient.identify(this.identification);
+        }
 
-    }, [cannyClient]);
+    }
 
-    const page = React.useCallback((event: IPageEvent): void => {
-        // noop
-    }, []);
+    public traits(traits: TraitsMap) {
 
-    const traits = React.useCallback((traits: TraitsMap): void => {
-
-        if (! cannyClient) {
+        if (! this.cannyClient) {
             console.warn("No Canny client");
             return;
         }
 
-        if (identificationRef.current) {
+        if (this.identification) {
 
             const newIdentification: ICannyUserData = {
-                ...identificationRef.current,
+                ...this.identification,
                 customFields: {
-                    ...identificationRef.current.customFields,
+                    ...this.identification.customFields,
                     ...traits
                 }
             }
 
-            identificationRef.current = newIdentification;
-            cannyClient.identify(identificationRef.current);
+            this.identification = newIdentification;
+            this.cannyClient.identify(this.identification);
 
         }
 
 
-    }, [cannyClient]);
+    }
 
-    const version = React.useCallback((version: string) => {
+    public version(version: string): void {
         // noop
-    }, []);
+    }
 
-    const heartbeat = React.useCallback((): void => {
+    public heartbeat(): void {
         // noop
-    }, []);
+    }
 
-    const logout = React.useCallback((): void => {
-        identificationRef.current = undefined;
-    }, []);
+    public logout(): void {
+        this.identification = undefined;
+    }
 
-    return {event, event2, identify, page, traits, version, heartbeat, logout};
+}
+
+declare var window: any;
+
+export type ICannyCustomFields = {[key: string]: string | number | Date};
+
+export interface ICannyUserData {
+    readonly name?: string;
+    readonly id: string;
+    readonly email: string;
+    readonly avatarURL?: string;
+    readonly customFields: ICannyCustomFields;
+}
+
+export interface ICannyData {
+    appID: string;
+    user: ICannyUserData
+}
+
+export interface ICannyClient {
+    readonly identify: (data: ICannyUserData) => void;
+}
+
+export function createCannyClient(): ICannyClient | undefined {
+
+    const appID = '6028141fa9c2061014659f73';
+
+    if (window.Canny) {
+
+        function doIdentify(data: ICannyData) {
+            window.Canny('identify', data);
+        }
+
+
+        function identify(user: ICannyUserData) {
+            doIdentify({
+                appID,
+                user
+            })
+        }
+
+        return {identify};
+    }
+
+    return undefined;
 
 }

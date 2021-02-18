@@ -9,7 +9,7 @@ import {OnlineAnalytics} from "./online/OnlineAnalytics";
 import {UserflowAnalytics} from "./userflow/UserflowAnalytics";
 import { ConsoleAnalytics } from "./console/ConsoleAnalytics";
 import {useIntercomAnalytics} from "./intercom/IntercomAnalytics";
-import {useCannyAnalytics} from "./canny/CannyAnalytics";
+import {CannyAnalytics} from "./canny/CannyAnalytics";
 
 export function isBrowser() {
     return typeof window !== 'undefined';
@@ -25,6 +25,7 @@ function createDelegate(): IAnalytics {
                 new FirestoreAnalytics(),
                 new UserflowAnalytics(),
                 new ConsoleAnalytics(),
+                new CannyAnalytics()
             ])
         );
     } else {
@@ -42,7 +43,6 @@ const delegate = createDelegate();
 export function useAnalytics(): IAnalytics {
 
     const intercomAnalytics = useIntercomAnalytics();
-    const cannyAnalytics = useCannyAnalytics();
 
     return React.useMemo((): IAnalytics => {
         if (isBrowser()) {
@@ -54,14 +54,14 @@ export function useAnalytics(): IAnalytics {
                     new UserflowAnalytics(),
                     new ConsoleAnalytics(),
                     intercomAnalytics,
-                    cannyAnalytics,
+                    new CannyAnalytics(),
                 ])
             );
         } else {
             return new NullAnalytics();
         }
 
-    }, [cannyAnalytics, intercomAnalytics]);
+    }, [intercomAnalytics]);
 
 }
 
