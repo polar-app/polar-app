@@ -4,6 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
 
+    <style>
+      body, html {
+        background-color: #303030;
+      }
+    </style>
+
     <meta name="theme-color" content="#000000">
 
     <link rel="chrome-webstore-item"
@@ -16,22 +22,6 @@
 
     <link rel="icon" href="/icon.ico">
 
-    <script>
-
-      function configureThemeBackground() {
-        const mode = localStorage.getItem('theme') || 'light';
-        const style = document.createElement("style");
-        document.head.appendChild(style);
-        const backgroundColor = mode === 'light' ? 'rgb(255, 255, 255)' : 'rgb(66,66,66)';
-
-        style.sheet.insertRule(`html { background-color: ${backgroundColor}; }`);
-      }
-
-      configureThemeBackground();
-
-
-    </script>
-
     <link rel="stylesheet" href="/pdfviewer-custom/flexbar.css">
     <link rel="stylesheet" href="/pdfviewer-custom/typography.css">
     <link rel="stylesheet" href="/pdfviewer-custom/toaster.css">
@@ -41,8 +31,6 @@
     <link rel="stylesheet" href="/pdfviewer-custom/ui-mode.css">
 
     <link rel="stylesheet" href="/apps/repository/css/index.css">
-
-    <script>configureThemeBackground()</script>
 
     <title>Polar</title>
 
