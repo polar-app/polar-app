@@ -1,11 +1,8 @@
 import * as React from "react";
 import {HTMLStr, MarkdownStr} from "polar-shared/src/util/Strings";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
 import {deepMemo} from "../../react/ReactUtils";
 import {NodeTextBoundingClientRects} from "./NodeTextBoundingClientRects";
-import {MinimalContentEditable} from "./MinimalContentEditable";
-
+import {ContentEscaper, MinimalContentEditable} from "./MinimalContentEditable";
 
 export type TextAreaEditorCursorPosition = number | 'start' | 'end';
 
@@ -59,6 +56,10 @@ interface ActiveProps {
     readonly innerRef: React.MutableRefObject<HTMLDivElement | null>;
     readonly onChange: (data: MarkdownStr) => void;
 
+    readonly escaper?: ContentEscaper;
+    readonly preEscaped?: boolean
+
+
 }
 
 const Active = React.memo(function Active(props: ActiveProps) {
@@ -80,7 +81,9 @@ const Active = React.memo(function Active(props: ActiveProps) {
     return (
 
         <MinimalContentEditable innerRef={props.innerRef}
-                                defaultValue={props.content}
+                                content={props.content}
+                                escaper={props.escaper}
+                                preEscaped={props.preEscaped}
                                 onChange={props.onChange}/>
 
     );
@@ -180,6 +183,9 @@ interface IProps {
      */
     readonly onActivated: (offset: TextAreaEditorCursorPosition) => void;
 
+    readonly escaper?: ContentEscaper;
+    readonly preEscaped?: boolean
+
 }
 
 export const ContentEditableEditor = (props: IProps) => {
@@ -217,6 +223,8 @@ export const ContentEditableEditor = (props: IProps) => {
                     content={props.content}
                     onChange={props.onChange}
                     innerRef={contentEditableRef}
+                    escaper={props.escaper}
+                    preEscaped={props.preEscaped}
                     defaultFocus={props.defaultFocus}/>
         );
 

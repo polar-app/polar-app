@@ -10,9 +10,8 @@ import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 import IEventData = ckeditor5.IEventData;
 import {NoteIDStr, useNotesStore} from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
-import {INoteEditorMutator} from "./store/NoteEditorMutator";
-import {CKEditorActivator} from "../../../apps/stories/impl/ckeditor5/CKEditorActivator";
 import {TextAreaEditor} from "./textarea/TextAreaEditor";
+import {ContentEditableEditor} from "./textarea/ContentEditableEditor";
 
 interface ILinkNavigationEvent {
     readonly abortEvent: () => void;
@@ -131,11 +130,13 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
     }, [props.id, store]);
 
     return (
-        <TextAreaEditor content={content}
-                        onChange={handleChange}
-                        active={props.id === noteActivated?.note.id}
-                        offset={0}
-                        onActivated={handleActivated}/>
+        <ContentEditableEditor content={content}
+                               onChange={handleChange}
+                               active={props.id === noteActivated?.note.id}
+                               offset={0}
+                               escaper={escaper}
+                               preEscaped={true}
+                               onActivated={handleActivated}/>
     );
 
 });
