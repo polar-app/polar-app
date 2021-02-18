@@ -2,7 +2,7 @@ import * as React from 'react';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {PersistenceLayerManager} from '../../datastore/PersistenceLayerManager';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import {BrowserRouter, Route, Switch, useHistory} from 'react-router-dom';
 import {RepoDocMetaManager} from '../../../../apps/repository/js/RepoDocMetaManager';
 import {RepoDocMetaLoader} from '../../../../apps/repository/js/RepoDocMetaLoader';
 import WhatsNewScreen
@@ -239,6 +239,11 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
         return <InviteScreen/>;
     };
 
+    const FeatureRequestsScreen = () => {
+        document.location.href = 'http://feedback.getpolarized.io/feature-requests';
+        return null;
+    }
+
     return (
         <RepoDocMetaManagerContext.Provider value={repoDocMetaManager}>
             <MUIRepositoryRoot>
@@ -357,6 +362,9 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                                                                             <Route exact path="/device"
                                                                                                    component={renderDeviceScreen}/>
+
+                                                                                            <Route exact path="/feature-requests"
+                                                                                                   component={FeatureRequestsScreen}/>
 
                                                                                         </Switch>
 
