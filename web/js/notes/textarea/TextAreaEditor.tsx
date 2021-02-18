@@ -4,7 +4,6 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import {deepMemo} from "../../react/ReactUtils";
 import {NodeTextBoundingClientRects} from "./NodeTextBoundingClientRects";
-import { INoteEditorMutator, NoteEditorMutators } from "../store/NoteEditorMutator";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -36,7 +35,7 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
-export type EditorCursorPosition = number | 'before' | 'end';
+export type TextAreaEditorCursorPosition = number | 'start' | 'end';
 
 /**
  * An editor activator does the following:
@@ -45,15 +44,15 @@ export type EditorCursorPosition = number | 'before' | 'end';
  * - if an offset is specified and jump to that offset
  * - focus the editor
  */
-export type EditorActivator = (offset?: EditorCursorPosition) => void;
+export type EditorActivator = (offset?: TextAreaEditorCursorPosition) => void;
 
-function editorActivator(textarea: HTMLTextAreaElement, offset?: EditorCursorPosition) {
+function editorActivator(textarea: HTMLTextAreaElement, offset?: TextAreaEditorCursorPosition) {
 
     if (offset !== undefined) {
 
         switch (offset) {
 
-            case 'before':
+            case 'start':
                 textarea.selectionStart = 0;
                 textarea.selectionEnd = 0;
                 break;
@@ -80,30 +79,45 @@ function editorActivator(textarea: HTMLTextAreaElement, offset?: EditorCursorPos
 interface ActiveProps {
 
     readonly content: MarkdownStr;
-    readonly offset: EditorCursorPosition;
+    readonly offset: TextAreaEditorCursorPosition;
 
     readonly defaultFocus?: boolean;
 
-    readonly ref: React.MutableRefObject<HTMLTextAreaElement | null>;
+    readonly innerRef: React.MutableRefObject<HTMLTextAreaElement | null>;
     readonly onChange: (data: MarkdownStr) => void;
 
 }
 
-const Active = (props: ActiveProps) => {
+const Active = React.memo(function Active(props: ActiveProps) {
 
     const classes = useStyles();
 
+    const [content, setContent] = React.useState(props.content);
+
+    React.useEffect(() => {
+
+        if (props.content !== content) {
+            // update the content but only if it differ.
+            setContent(content);
+        }
+
+    }, [content, props.content]);
+
+    // TODO: we have to add another inner component that can see if we need to remount
+    // but this really isn't a performance issue.
+
     return (
 
-        <textarea ref={props.ref}
+        <textarea ref={props.innerRef}
                   className={classes.textarea}
                   defaultValue={props.content}
+                  onChange={event => props.onChange(event.currentTarget.value)}
                   autoFocus={props.defaultFocus}
                   rows={1}/>
 
     );
 
-}
+});
 
 interface InactiveProps {
 
@@ -114,8 +128,6 @@ interface InactiveProps {
      */
     readonly onActivated: (offset: number) => void;
 
-    readonly onClickWhileInactive?: (event: React.MouseEvent) => void;
-
 }
 
 const Inactive = deepMemo((props: InactiveProps) => {
@@ -123,10 +135,6 @@ const Inactive = deepMemo((props: InactiveProps) => {
     const elementRef = React.useRef<HTMLDivElement |  null>(null);
 
     const handleClick = React.useCallback((event: React.MouseEvent) => {
-
-        if (props.onClickWhileInactive) {
-            props.onClickWhileInactive(event);
-        }
 
         // TODO: for some reason we can't click on an empty node
 
@@ -179,30 +187,41 @@ const Inactive = deepMemo((props: InactiveProps) => {
 interface IProps {
 
     /**
-     * Callback to provide an 'activator' that allows the caller to activate the
-     * given component.
-     *
+     * True this should be active.
      */
-    // readonly onEditorMutator: (editorMutator: INoteEditorMutator) => void;
-    // readonly onEditor: (editor: ckeditor5.IEditor) => void;
+    readonly active: boolean;
+
+    /**
+     * When active, the offset into the content where we should place the cursor.
+     */
+    readonly offset: number;
 
     readonly content: MarkdownStr;
 
+    /**
+     * Callback when the markdown is updated.
+     */
     readonly onChange: (content: MarkdownStr) => void;
 
     readonly defaultFocus?: boolean;
 
     readonly onClickWhileInactive?: (event: React.MouseEvent) => void;
 
+    /**
+     * The offset in the content where it was activated
+     */
+    readonly onActivated: (offset: TextAreaEditorCursorPosition) => void;
+
 }
+
 export const TextAreaEditor = (props: IProps) => {
 
-    const [active, setActive] = React.useState<boolean>(props.defaultFocus || false);
-    const offsetRef = React.useRef<EditorCursorPosition>(0);
-    const textAreaRef = React.useRef<HTMLTextAreaElement | null>(null);
-    const mutatorRef = React.useRef<INoteEditorMutator | undefined>(undefined);
+    const {active} = props;
 
-    const setCursorPosition = React.useCallback((offset?: EditorCursorPosition) => {
+    const offsetRef = React.useRef<TextAreaEditorCursorPosition>(0);
+    const textAreaRef = React.useRef<HTMLTextAreaElement | null>(null);
+
+    const handleActivation = React.useCallback((offset?: TextAreaEditorCursorPosition) => {
 
         if (active) {
 
@@ -214,81 +233,14 @@ export const TextAreaEditor = (props: IProps) => {
 
         } else {
 
-            // this will trigger the initial mount with the right offset.
-
             if (offset !== undefined) {
                 offsetRef.current = offset;
+                props.onActivated(offset);
             }
 
-            setActive(true);
-
         }
 
-    }, [active]);
-
-
-    const getCursorPosition = React.useCallback(() => {
-
-        if (mutatorRef.current) {
-            return mutatorRef.current.getCursorPosition();
-        }
-
-        throw new Error("No mutator: getCursorPosition");
-
-    }, []);
-
-    const split = React.useCallback(() => {
-
-        if (mutatorRef.current) {
-            return mutatorRef.current.split();
-        }
-
-        throw new Error("No mutator: split");
-
-    }, []);
-
-    const setData = React.useCallback((data: string) => {
-
-        if (mutatorRef.current) {
-            mutatorRef.current.setData(data);
-        }
-
-        throw new Error("No mutator: setData");
-
-    }, []);
-
-    const clearSelection = React.useCallback(() => {
-
-        if (mutatorRef.current) {
-            mutatorRef.current.clearSelection();
-        }
-
-    }, []);
-
-    const focus = React.useCallback(() => {
-
-        if (mutatorRef.current) {
-            mutatorRef.current.focus();
-        }
-
-        throw new Error("No mutator: focus");
-
-    }, []);
-
-    // const handleEditor = React.useCallback((editor: ckeditor5.IEditor) => {
-    //
-    //     editorRef.current = editor;
-    //     mutatorRef.current = NoteEditorMutators.createForEditor(editorRef.current);
-    //
-    //     props.onEditor(editor);
-    //
-    // }, [props]);
-
-    // React.useEffect(() => {
-    //
-    //     props.onEditorMutator({getCursorPosition, setCursorPosition, setData, split, focus, clearSelection});
-    //
-    // }, [clearSelection, focus, getCursorPosition, props, setCursorPosition, setData, split]);
+    }, [active, props]);
 
     if (active) {
 
@@ -296,15 +248,14 @@ export const TextAreaEditor = (props: IProps) => {
             <Active offset={offsetRef.current}
                     content={props.content}
                     onChange={props.onChange}
-                    ref={textAreaRef}
+                    innerRef={textAreaRef}
                     defaultFocus={props.defaultFocus}/>
         );
 
     } else {
 
         return (
-            <Inactive onActivated={setCursorPosition}
-                      onClickWhileInactive={props.onClickWhileInactive}
+            <Inactive onActivated={handleActivation}
                       content={props.content}/>
         );
 

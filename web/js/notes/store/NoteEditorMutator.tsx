@@ -109,6 +109,7 @@ export namespace NoteEditorMutators {
         return {getCursorPosition, setCursorPosition, setData, split, focus, clearSelection};
 
     }
+
 }
 
 export class MockNoteEditorMutator implements INoteEditorMutator {
