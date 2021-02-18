@@ -10,7 +10,6 @@ import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 import IEventData = ckeditor5.IEventData;
 import {NoteIDStr, useNotesStore} from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
-import {TextAreaEditor} from "./textarea/TextAreaEditor";
 import {ContentEditableEditor} from "./textarea/ContentEditableEditor";
 
 interface ILinkNavigationEvent {
