@@ -99,6 +99,8 @@ interface InactiveProps {
      */
     readonly onActivated: (offset: number) => void;
 
+    readonly onClickWhileInactive?: (event: React.MouseEvent) => void;
+
 }
 
 const Inactive = deepMemo((props: InactiveProps) => {
@@ -107,7 +109,9 @@ const Inactive = deepMemo((props: InactiveProps) => {
 
     const handleClick = React.useCallback((event: React.MouseEvent) => {
 
-        // TODO: for some reason we can't click on an empty node
+        if (props.onClickWhileInactive) {
+            props.onClickWhileInactive(event);
+        }
 
         if (elementRef.current === null) {
             console.warn("No element yet");
@@ -232,6 +236,7 @@ export const ContentEditableEditor = (props: IProps) => {
 
         return (
             <Inactive onActivated={handleActivation}
+                      onClickWhileInactive={props.onClickWhileInactive}
                       content={props.content}/>
         );
 

@@ -107,7 +107,10 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
     const note = store.getNote(id);
 
     const handleChange = React.useCallback((content: string) => {
+
+        console.log("FIXME 111: ", content);
         if (note) {
+            console.log("FIXME 112: ", content);
             note.setContent(content);
         }
     }, [note]);
@@ -136,6 +139,7 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
                                offset={0}
                                escaper={escaper}
                                preEscaped={true}
+                               onClickWhileInactive={onClickWhileInactive}
                                onActivated={handleActivated}/>
     );
 
