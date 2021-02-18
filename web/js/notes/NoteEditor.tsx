@@ -108,11 +108,10 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
     const handleChange = React.useCallback((content: string) => {
 
-        console.log("FIXME 111: ", content);
         if (note) {
-            console.log("FIXME 112: ", content);
             note.setContent(content);
         }
+
     }, [note]);
 
     const escaper = MarkdownContentEscaper;
@@ -125,8 +124,6 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
         return null;
     }
 
-    // FIXME onClickWhileInactive={onClickWhileInactive}
-    // FIXME: offset needs to be set here...
 
     const onClick = React.useCallback((event: React.MouseEvent) => {
 
