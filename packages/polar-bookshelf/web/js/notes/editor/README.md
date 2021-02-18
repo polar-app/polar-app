@@ -1,0 +1,1 @@
+Code/hooks for working with ckeditor5 editors.
