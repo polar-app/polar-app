@@ -47,7 +47,7 @@ interface IProps {
  */
 export const MinimalContentEditable = React.memo((props: IProps) => {
 
-    const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
+    const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
         props.onChange(event.currentTarget.innerHTML)
     }, [props]);
 
@@ -59,7 +59,7 @@ export const MinimalContentEditable = React.memo((props: IProps) => {
     return (
 
         <div ref={props.innerRef}
-             onKeyDown={handleKeyDown}
+             onKeyUp={handleKeyUp}
              contentEditable={true}
              spellCheck={props.spellCheck}
              className={props.className}
