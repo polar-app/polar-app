@@ -1,6 +1,12 @@
     
 - NoteNavigation needs to be reworked and all options moved to the new system
 
+- we might want to make it so that the cursor is rendered only on change and we jump to it...
+  that way rather than having this stored in the store as that's not really react-ish but
+  I need a way to re-mount when that happens.
+
+    
+
 
 - if we have a tree like
 
