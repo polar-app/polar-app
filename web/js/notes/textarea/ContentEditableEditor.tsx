@@ -15,34 +15,69 @@ export type TextAreaEditorCursorPosition = number | 'start' | 'end';
  */
 export type EditorActivator = (offset?: TextAreaEditorCursorPosition) => void;
 
-function editorActivator(textarea: HTMLDivElement, offset?: TextAreaEditorCursorPosition) {
+function editorActivator(editor: HTMLDivElement, offset?: TextAreaEditorCursorPosition) {
 
     if (offset !== undefined) {
 
-        //
-        // switch (offset) {
-        //
-        //     case 'start':
-        //         textarea.selectionStart = 0;
-        //         textarea.selectionEnd = 0;
-        //         break;
-        //
-        //     case 'end':
-        //         const len = textarea.textLength;
-        //         const end = len - 1;
-        //         textarea.selectionStart = end;
-        //         textarea.selectionEnd = end;
-        //         break;
-        //
-        //     default:
-        //         textarea.selectionStart = offset;
-        //         textarea.selectionEnd = offset;
-        //         break;
-        // }
+        function defineNewRange(range: Range) {
+
+            const sel = window.getSelection();
+
+            editor.focus();
+
+            if (sel) {
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+
+        }
+
+        if (offset === 'start') {
+            const range = document.createRange();
+            range.setStartAfter(editor)
+            range.setEndAfter(editor)
+        }
+
+        if (offset === 'end') {
+
+            interface INodeOffset {
+                readonly node: Node,
+                readonly offset: number;
+            }
+
+            function computeEnd(node: Node): INodeOffset {
+
+                if (node.nodeType === document.TEXT_NODE) {
+
+                    return {
+                        node,
+                        offset: node.textContent !== null ? node.textContent.length : 0,
+                    }
+
+                }
+
+                if (node.childNodes.length > 0) {
+                    return computeEnd(node.childNodes[node.childNodes.length - 1]);
+                }
+
+                return {
+                    node,
+                    offset: 0
+                };
+
+            }
+
+            const end = computeEnd(editor);
+
+            const range = document.createRange();
+            range.setStart(end.node, end.offset);
+            range.setEnd(end.node, end.offset);
+
+            defineNewRange(range);
+
+        }
 
     }
-
-    textarea.focus();
 
 }
 
