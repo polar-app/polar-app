@@ -20,13 +20,23 @@ export namespace ContentEditables {
                     return undefined;
                 }
 
-                const prefixRange = document.createRange();
-                prefixRange.setStartBefore(editable);
-                prefixRange.setEnd(range.endContainer, range.endOffset);
+                function createPrefixRange() {
+                    const prefixRange = document.createRange();
+                    prefixRange.setStartBefore(editable);
+                    prefixRange.setEnd(range.startContainer, range.startOffset);
+                    return prefixRange;
+                }
 
-                const suffixRange = document.createRange();
-                prefixRange.setStart(range.startContainer, range.startOffset);
-                prefixRange.setEndAfter(editable);
+                function createSuffixRange() {
+                    const suffixRange = document.createRange();
+                    const endPosition = computeEndCursorPosition(editable);
+                    suffixRange.setStart(range.startContainer, range.startOffset);
+                    suffixRange.setEnd(endPosition.node, endPosition.offset);
+                    return suffixRange;
+                }
+
+                const prefixRange = createPrefixRange();
+                const suffixRange = createSuffixRange();
 
                 return {
                     prefix: prefixRange.cloneContents(),
@@ -38,6 +48,33 @@ export namespace ContentEditables {
         }
 
         return undefined;
+
+    }
+
+    interface ICursorPosition {
+        readonly node: Node;
+        readonly offset: number;
+    }
+
+    export function computeEndCursorPosition(node: Node): ICursorPosition {
+
+        if (node.nodeType === document.TEXT_NODE) {
+
+            return {
+                node,
+                offset: node.textContent !== null ? node.textContent.length : 0,
+            }
+
+        }
+
+        if (node.childNodes.length > 0) {
+            return computeEndCursorPosition(node.childNodes[node.childNodes.length - 1]);
+        }
+
+        return {
+            node,
+            offset: 0
+        };
 
     }
 

@@ -3,6 +3,7 @@ import {HTMLStr, MarkdownStr} from "polar-shared/src/util/Strings";
 import {deepMemo} from "../../react/ReactUtils";
 import {NodeTextBoundingClientRects} from "./NodeTextBoundingClientRects";
 import {ContentEscaper, MinimalContentEditable} from "./MinimalContentEditable";
+import {ContentEditables} from "../ContentEditables";
 
 export type TextAreaEditorCursorPosition = number | 'start' | 'end';
 
@@ -40,34 +41,7 @@ function editorActivator(editor: HTMLDivElement, offset?: TextAreaEditorCursorPo
 
         if (offset === 'end') {
 
-            interface INodeOffset {
-                readonly node: Node,
-                readonly offset: number;
-            }
-
-            function computeEnd(node: Node): INodeOffset {
-
-                if (node.nodeType === document.TEXT_NODE) {
-
-                    return {
-                        node,
-                        offset: node.textContent !== null ? node.textContent.length : 0,
-                    }
-
-                }
-
-                if (node.childNodes.length > 0) {
-                    return computeEnd(node.childNodes[node.childNodes.length - 1]);
-                }
-
-                return {
-                    node,
-                    offset: 0
-                };
-
-            }
-
-            const end = computeEnd(editor);
+            const end = ContentEditables.computeEndCursorPosition(editor);
 
             const range = document.createRange();
             range.setStart(end.node, end.offset);

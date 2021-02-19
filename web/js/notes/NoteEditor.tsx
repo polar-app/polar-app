@@ -10,8 +10,10 @@ import IKeyPressEvent = ckeditor5.IKeyPressEvent;
 import IEventData = ckeditor5.IEventData;
 import {NoteIDStr, useNotesStore} from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
-import {ContentEditableEditor} from "./textarea/ContentEditableEditor";
 import {MinimalContentEditable} from "./textarea/MinimalContentEditable";
+import {ContentEditables} from "./ContentEditables";
+import {HTMLToMarkdown} from "polar-markdown-parser/src/HTMLToMarkdown";
+import html2markdown = HTMLToMarkdown.html2markdown;
 
 interface ILinkNavigationEvent {
     readonly abortEvent: () => void;
@@ -103,6 +105,7 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
     const store = useNotesStore()
     const noteActivated = store.getNoteActivated(props.id);
     const linkNavigationClickHandler = useLinkNavigationClickHandler();
+    const ref = React.createRef<HTMLDivElement | null>();
 
     const note = store.getNote(id);
 
@@ -136,11 +139,59 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
     }, [linkNavigationClickHandler, noteActivated?.note.id, props.id, store]);
 
+
+    const handleEnter = React.useCallback((event: React.KeyboardEvent) => {
+
+        if (ref.current) {
+            const split = ContentEditables.splitAtCursor(ref.current);
+
+            if (split) {
+
+                function fragmentToHTML(fragment: DocumentFragment) {
+                    const div = document.createElement('div');
+                    div.append(fragment);
+                    return div.innerHTML;
+                }
+
+                const prefix = html2markdown(fragmentToHTML(split.prefix));
+                const suffix = html2markdown(fragmentToHTML(split.suffix));
+
+                console.log("FIXME: ", {prefix, suffix});
+
+                store.createNewNote(id, {prefix, suffix});
+
+            }
+
+        }
+
+    }, [id, ref, store]);
+
+    const onKeyDown = React.useCallback((event: React.KeyboardEvent) => {
+
+        function abortEvent() {
+            event.stopPropagation();
+            event.preventDefault();
+        }
+
+        switch (event.key) {
+
+            case 'Enter':
+                handleEnter(event);
+                abortEvent();
+                break;
+
+        }
+
+    }, [handleEnter]);
+
+
     return (
-        <MinimalContentEditable content={content}
+        <MinimalContentEditable innerRef={ref}
+                                content={content}
                                 onChange={handleChange}
                                 escaper={escaper}
                                 onClick={onClick}
+                                onKeyDown={onKeyDown}
                                 preEscaped={true}/>
     );
 
@@ -179,10 +230,6 @@ interface IProps {
 }
 
 export const NoteEditor = observer(function NoteEditor(props: IProps) {
-
-    // useLifecycleTracer('NoteEditor', {id: props.id});
-
-    // FIXME this inner component is not needed...
 
     return (
         <NoteEditorWithEditorStore {...props}/>
