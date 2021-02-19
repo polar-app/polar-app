@@ -25,6 +25,10 @@
         "destination": "/apps/repository/index.html"
       },
       {
+        "source": "/feature-requests",
+        "destination": "/apps/repository/index.html"
+      },
+      {
         "source": "/profile",
         "destination": "/apps/repository/index.html"
       },
