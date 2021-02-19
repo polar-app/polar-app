@@ -41,6 +41,8 @@ interface IProps {
 
     readonly onClick?: (event: React.MouseEvent) => void;
 
+    readonly onKeyDown?: (event: React.KeyboardEvent) => void;
+
 }
 
 /**
@@ -61,6 +63,7 @@ export const MinimalContentEditable = React.memo((props: IProps) => {
     return (
 
         <div ref={props.innerRef}
+             onKeyDown={props.onKeyDown}
              onKeyUp={handleKeyUp}
              contentEditable={true}
              spellCheck={props.spellCheck}
