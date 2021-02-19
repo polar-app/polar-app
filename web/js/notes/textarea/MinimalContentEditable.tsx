@@ -1,32 +1,12 @@
 import { HTMLStr } from 'polar-shared/src/util/Strings';
 import React from 'react';
-
-/**
- * A data-format specific string like Markdown or HTML or JSON but that can be
- * converted to HTML
- */
-export type DataStr = string;
-
-export interface ContentEscaper {
-
-    readonly escape: (input: DataStr) => HTMLStr;
-    readonly unescape: (html: HTMLStr) => DataStr;
-
-}
-
-/**
- * NOOP/null content escaper pattern.
- */
-export const DefaultContentEscaper: ContentEscaper = {
-    escape: input => input,
-    unescape: html => html
-}
+import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 
 interface IProps {
 
     readonly spellCheck?: boolean;
 
-    readonly content: string;
+    readonly content: HTMLStr;
 
     readonly className?: string;
 
@@ -34,10 +14,7 @@ interface IProps {
 
     readonly innerRef?: React.MutableRefObject<HTMLDivElement | null>;
 
-    readonly onChange: (content: string) => void;
-
-    readonly escaper?: ContentEscaper;
-    readonly preEscaped?: boolean
+    readonly onChange: (content: HTMLStr) => void;
 
     readonly onClick?: (event: React.MouseEvent) => void;
 
@@ -51,13 +28,29 @@ interface IProps {
  */
 export const MinimalContentEditable = React.memo((props: IProps) => {
 
+    const [content, setContent] = React.useState(props.content);
+    const contentRef = React.useRef(props.content);
+
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
-        props.onChange(event.currentTarget.innerHTML)
+
+        // note that we have to first use trim on this because sometimes
+        // chrome uses &nbsp; which is dumb
+
+        const newContent = ContentEditableWhitespace.trim(event.currentTarget.innerHTML);
+
+        contentRef.current = newContent;
+        props.onChange(newContent);
+
     }, [props]);
 
-    const escaper = props.escaper || DefaultContentEscaper;
+    React.useEffect(() => {
 
-    const content = React.useMemo<HTMLStr>(() => props.preEscaped ? props.content : escaper.escape(props.content), [props.preEscaped, props.content, escaper]);
+        if (props.content !== contentRef.current) {
+            contentRef.current = props.content;
+            setContent(props.content);
+        }
+
+    }, [props.content]);
 
     return (
 

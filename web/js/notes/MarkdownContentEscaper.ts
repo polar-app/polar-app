@@ -6,6 +6,8 @@ import markdown2html = MarkdownToHTML.markdown2html;
 import html2markdown = HTMLToMarkdown.html2markdown;
 import {WikiLinksToHTML} from "./WikiLinksToHTML";
 import {WikiLinksToMarkdown} from "./WikiLinksToMarkdown";
+import {Mappers} from "polar-shared/src/util/Mapper";
+import {ContentEditableWhitespace} from "./ContentEditableWhitespace";
 
 export const MarkdownContentEscaper: ContentEscaper = {
 
@@ -13,16 +15,19 @@ export const MarkdownContentEscaper: ContentEscaper = {
 
         const markdown = markdown2html(WikiLinksToHTML.escape(input));
 
-        return markdown.replace(/^<p/, '<div')
-                       .replace(/<\/p>\n?$/, '</div>')
+        return markdown.replace(/^<p>/, '')
+                       .replace(/<\/p>\n?$/, '')
+                       .trim();
 
     },
     unescape: html => {
 
-        const conv0 = html2markdown(html);
-        const conv1 = WikiLinksToMarkdown.unescape(conv0);
+        return Mappers.create(html)
+                      .map(ContentEditableWhitespace.trim)
+                      .map(html2markdown)
+                      .map(WikiLinksToMarkdown.unescape)
+                      .collect();
 
-        return conv1;
     }
 
 }

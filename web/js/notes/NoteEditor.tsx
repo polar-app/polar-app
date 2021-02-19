@@ -14,6 +14,7 @@ import {MinimalContentEditable} from "./textarea/MinimalContentEditable";
 import {ContentEditables} from "./ContentEditables";
 import {HTMLToMarkdown} from "polar-markdown-parser/src/HTMLToMarkdown";
 import html2markdown = HTMLToMarkdown.html2markdown;
+import { HTMLStr } from "polar-shared/src/util/Strings";
 
 interface ILinkNavigationEvent {
     readonly abortEvent: () => void;
@@ -107,15 +108,16 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
     const note = store.getNote(id);
 
-    const handleChange = React.useCallback((content: string) => {
+    const escaper = MarkdownContentEscaper;
+
+    const handleChange = React.useCallback((content: HTMLStr) => {
 
         if (note) {
-            note.setContent(content);
+            const markdown = escaper.unescape(content);
+            note.setContent(markdown);
         }
 
-    }, [note]);
-
-    const escaper = MarkdownContentEscaper;
+    }, [escaper, note]);
 
     const content = React.useMemo(() => escaper.escape(note?.content || ''), [escaper, note?.content]);
 
@@ -183,10 +185,8 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
         <MinimalContentEditable innerRef={ref}
                                 content={content}
                                 onChange={handleChange}
-                                escaper={escaper}
                                 onClick={onClick}
-                                onKeyDown={onKeyDown}
-                                preEscaped={true}/>
+                                onKeyDown={onKeyDown}/>
     );
 
 });

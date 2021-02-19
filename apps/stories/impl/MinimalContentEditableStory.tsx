@@ -19,7 +19,6 @@ export const MinimalContentEditableStory = () => {
     return (
         <div>
             <MinimalContentEditable content="this is the content"
-                                    preEscaped={true}
                                     onKeyDown={handleKeyDown}
                                     onChange={NULL_FUNCTION}/>
 
