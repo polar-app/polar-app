@@ -11,3 +11,5 @@
         
     - and we delete 'world' the 'dog' should reparent under 'hello'
 
+- I think links like <a> need to be have 'hand' cursor when on hover and the contenteditable isn't active.
+- 
