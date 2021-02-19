@@ -94,6 +94,7 @@ interface ActiveProps {
     readonly escaper?: ContentEscaper;
     readonly preEscaped?: boolean
 
+    readonly onKeyDown?: (event: React.KeyboardEvent) => void;
 
 }
 
@@ -118,6 +119,7 @@ const Active = React.memo(function Active(props: ActiveProps) {
         <MinimalContentEditable innerRef={props.innerRef}
                                 content={props.content}
                                 escaper={props.escaper}
+                                onKeyDown={props.onKeyDown}
                                 preEscaped={props.preEscaped}
                                 onChange={props.onChange}/>
 
@@ -234,6 +236,8 @@ interface IProps {
     readonly escaper?: ContentEscaper;
     readonly preEscaped?: boolean
 
+    readonly onKeyDown?: (event: React.KeyboardEvent) => void;
+
 }
 
 export const ContentEditableEditor = React.memo(function ContentEditableEditor(props: IProps) {
@@ -273,6 +277,7 @@ export const ContentEditableEditor = React.memo(function ContentEditableEditor(p
                     innerRef={contentEditableRef}
                     escaper={props.escaper}
                     preEscaped={props.preEscaped}
+                    onKeyDown={props.onKeyDown}
                     defaultFocus={props.defaultFocus}/>
         );
 
