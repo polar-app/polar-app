@@ -25,6 +25,8 @@ interface IProps {
 /**
  * Just a minimal contenteditable control that we can use to allow the suer to
  * delete content.
+ *
+ * https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand
  */
 export const MinimalContentEditable = React.memo((props: IProps) => {
 
@@ -45,8 +47,15 @@ export const MinimalContentEditable = React.memo((props: IProps) => {
 
     React.useEffect(() => {
 
-        if (props.content !== contentRef.current) {
+        if (props.content.valueOf() !== contentRef.current.valueOf()) {
+
+            // console.log("content differs: ");
+            // console.log(`    props.content:      '${props.content}'`);
+            // console.log(`    contentRef.current: '${contentRef.current}'`);
+            // console.log(`    value of equals:    `, props.content.valueOf() === contentRef.current.valueOf());
+
             contentRef.current = props.content;
+
             setContent(props.content);
         }
 

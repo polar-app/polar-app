@@ -1,5 +1,13 @@
+    
+- NoteNavigation needs to be reworked and all options moved to the new system
 
-- typing now resets the pointer to the beginning for some reason...
-    - I think it's the re-render as the content is being set again...
-- when we mutate the HTML it isn't updated when clicking between the notes
-- NoteNavigation needs to be reworked
+
+- if we have a tree like
+
+    - hello
+    - world
+        -dog 
+        
+        
+    - and we delete 'world' the 'dog' should reparent under 'hello'
+
