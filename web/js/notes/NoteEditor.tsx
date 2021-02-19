@@ -99,8 +99,6 @@ function useLinkNavigation() {
 
 const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
-    // useLifecycleTracer('NoteEditorInner', {id: props.id});
-
     const {id} = props;
     const store = useNotesStore()
     const noteActivated = store.getNoteActivated(props.id);
@@ -119,14 +117,13 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
     const escaper = MarkdownContentEscaper;
 
-    const content = React.useMemo(() => escaper.escape(note?.content || ''), [escaper, note]);
+    const content = React.useMemo(() => escaper.escape(note?.content || ''), [escaper, note?.content]);
 
     if (! note) {
         // this can happen when a note is deleted but the component hasn't yet
         // been unmounted.
         return null;
     }
-
 
     const onClick = React.useCallback((event: React.MouseEvent) => {
 
@@ -139,8 +136,7 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
     }, [linkNavigationClickHandler, noteActivated?.note.id, props.id, store]);
 
-
-    const handleEnter = React.useCallback((event: React.KeyboardEvent) => {
+    const handleEnter = React.useCallback(() => {
 
         if (ref.current) {
             const split = ContentEditables.splitAtCursor(ref.current);
@@ -155,8 +151,6 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
                 const prefix = html2markdown(fragmentToHTML(split.prefix));
                 const suffix = html2markdown(fragmentToHTML(split.suffix));
-
-                console.log("FIXME: ", {prefix, suffix});
 
                 store.createNewNote(id, {prefix, suffix});
 
@@ -176,7 +170,7 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
         switch (event.key) {
 
             case 'Enter':
-                handleEnter(event);
+                handleEnter();
                 abortEvent();
                 break;
 

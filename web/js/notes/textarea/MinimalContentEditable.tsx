@@ -58,7 +58,7 @@ export const MinimalContentEditable = React.memo((props: IProps) => {
     const escaper = props.escaper || DefaultContentEscaper;
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const content = React.useMemo<HTMLStr>(() => props.preEscaped ? props.content : escaper.escape(props.content), []);
+    const content = React.useMemo<HTMLStr>(() => props.preEscaped ? props.content : escaper.escape(props.content), [props.preEscaped, props.content]);
 
     return (
 

@@ -747,8 +747,8 @@ export class NotesStore {
             id: newNote.id,
             parent: newNote.parent!
         };
-    }
 
+    }
 
     /**
      * Make the active note a child of the prev sibling.
