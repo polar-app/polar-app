@@ -78,26 +78,6 @@ function useLinkNavigationClickHandler() {
 
 }
 
-function useLinkNavigation() {
-
-    const linkNavigationEventListener = useLinkNavigationEventListener();
-
-    const handleEditorClick = React.useCallback((eventData: IEventData, event: IKeyPressEvent) => {
-
-        function abortEvent() {
-            event.domEvent.stopPropagation();
-            event.domEvent.preventDefault();
-            eventData.stop();
-        }
-
-        const target = event.domEvent.target;
-
-        linkNavigationEventListener({abortEvent, target});
-
-    }, [linkNavigationEventListener]);
-
-}
-
 const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
     const {id} = props;
@@ -190,8 +170,6 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 const NoteEditorWithEditorStore = observer(function NoteEditorWithEditorStore(props: IProps) {
 
     // useLifecycleTracer('NoteEditorWithEditorStore', {id: props.id});
-
-    useLinkNavigation();
 
     return (
         <NoteActionMenuForLinking id={props.id}>
