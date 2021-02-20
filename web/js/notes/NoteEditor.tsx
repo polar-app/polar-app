@@ -145,14 +145,8 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
             if (split) {
 
-                function fragmentToHTML(fragment: DocumentFragment) {
-                    const div = document.createElement('div');
-                    div.append(fragment);
-                    return div.innerHTML;
-                }
-
-                const prefix = html2markdown(fragmentToHTML(split.prefix));
-                const suffix = html2markdown(fragmentToHTML(split.suffix));
+                const prefix = html2markdown(ContentEditables.fragmentToHTML(split.prefix));
+                const suffix = html2markdown(ContentEditables.fragmentToHTML(split.suffix));
 
                 store.createNewNote(id, {prefix, suffix});
 

@@ -56,6 +56,38 @@ export namespace ContentEditables {
         readonly offset: number;
     }
 
+    export function fragmentToHTML(fragment: DocumentFragment) {
+        const div = document.createElement('div');
+        div.append(fragment);
+        return div.innerHTML;
+    }
+
+    export function fragmentToText(fragment: DocumentFragment) {
+        const div = document.createElement('div');
+        div.append(fragment);
+        return div.innerText;
+    }
+
+    export function computeCursorPosition(editable: HTMLElement): 'start' | 'end' | undefined {
+
+        const split = splitAtCursor(editable);
+
+        if (split) {
+
+            if (fragmentToText(split.prefix) === '') {
+                return 'start';
+            }
+
+            if (fragmentToText(split.suffix) === '') {
+                return 'end';
+            }
+
+        }
+
+        return undefined;
+
+    }
+
     export function computeEndCursorPosition(node: Node): ICursorPosition {
 
         if (node.nodeType === document.TEXT_NODE) {

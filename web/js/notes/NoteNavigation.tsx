@@ -158,7 +158,7 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
                     store.doDelete([props.id]);
 
                 }
-                //
+
                 // if (editorCursorPosition === 'start') {
                 //
                 //     // we're at the beginning of a note...
