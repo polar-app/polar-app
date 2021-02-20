@@ -52,7 +52,6 @@ import {CreateAccountStory} from "./impl/CreateAccountStory";
 import { CKEditorActivatorStory } from './impl/CKEditorActivatorStory';
 import {CKEditorActivatorPerformanceStory} from "./impl/CKEditorActivatorPerformanceStory";
 import {TextAreaMarkdownEditorStory} from "./impl/TextAreaMarkdownEditorStory";
-import {TextAreaEditorStory} from "./impl/TextAreaEditorStory";
 import { MinimalContentEditablePerformanceStory } from './impl/MinimalContentEditablePerformanceStory';
 import {MinimalContentEditableStory} from "./impl/MinimalContentEditableStory";
 
