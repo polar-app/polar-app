@@ -186,6 +186,25 @@ export const MinimalContentEditable = observer((props: IProps) => {
                 }
 
                 break;
+
+            case 'Tab':
+
+                if (props.parent !== undefined) {
+
+                    abortEvent();
+
+                    if (event.shiftKey) {
+                        store.doUnIndent(props.id);
+                    } else {
+                        store.doIndent(props.id);
+                    }
+
+                }
+
+                break;
+
+            default:
+                break;
         }
 
         if (props.onKeyDown) {

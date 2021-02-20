@@ -84,24 +84,6 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
 
         switch (event.key) {
 
-            case 'Tab':
-
-                if (props.parent !== undefined) {
-
-                    abortEvent();
-
-                    if (event.shiftKey) {
-                        store.doUnIndent(props.id);
-                    } else {
-                        store.doIndent(props.id);
-                    }
-
-                }
-
-                break;
-
-            default:
-                break;
 
         }
 
