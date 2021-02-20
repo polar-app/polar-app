@@ -4,7 +4,6 @@ import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import { observer } from "mobx-react-lite"
 import {NavOpts, NoteIDStr, useNotesStore} from '../store/NotesStore';
 import {ContentEditables} from "../ContentEditables";
-import {TextAreaEditorCursorPosition} from "./ContentEditableEditor";
 
 interface IProps {
 
