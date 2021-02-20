@@ -1,5 +1,4 @@
 import {NoteActions} from "./NoteActions";
-import { Arrays } from "polar-shared/src/util/Arrays";
 
 export namespace NoteActionSelections {
 
