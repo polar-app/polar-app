@@ -3,12 +3,15 @@ import React from 'react';
 import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import { observer } from "mobx-react-lite"
 import {NoteIDStr, useNotesStore} from '../store/NotesStore';
+import {ContentEditables} from "../ContentEditables";
 
 interface IProps {
 
-    readonly spellCheck?: boolean;
-
     readonly id: NoteIDStr;
+
+    readonly parent: NoteIDStr | undefined;
+
+    readonly spellCheck?: boolean;
 
     readonly content: HTMLStr;
 
@@ -92,10 +95,74 @@ export const MinimalContentEditable = observer((props: IProps) => {
 
     }, [props]);
 
+    const hasEditorSelection = React.useCallback((): boolean => {
+
+        const selection = window.getSelection();
+
+        if (selection) {
+            const range = selection.getRangeAt(0);
+            return range.cloneContents().textContent !== '';
+        } else {
+            return false;
+        }
+
+    }, []);
+
+    const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
+
+        if (! divRef.current) {
+            return;
+        }
+
+        const cursorPosition = ContentEditables.computeCursorPosition(divRef.current);
+
+        function abortEvent() {
+            event.stopPropagation();
+            event.preventDefault();
+        }
+
+        switch (event.key) {
+
+            case 'Backspace':
+
+                if (hasEditorSelection()) {
+                    console.log("Not handling Backspace");
+                    return;
+                }
+
+                // TODO: only do this if there aren't any modifiers I think...
+                if (props.parent !== undefined && store.noteIsEmpty(props.id)) {
+
+                    abortEvent();
+                    store.doDelete([props.id]);
+
+                }
+
+                if (cursorPosition === 'start') {
+
+                    // we're at the beginning of a note...
+
+                    const mergeTarget = store.canMerge(props.id);
+
+                    if (mergeTarget) {
+                        store.mergeNotes(mergeTarget.target, mergeTarget.source);
+                    }
+
+                }
+
+                break;
+        }
+
+        if (props.onKeyDown) {
+            props.onKeyDown(event);
+        }
+
+    }, [hasEditorSelection, props, store]);
+
     return (
 
         <div ref={handleRef}
-             onKeyDown={props.onKeyDown}
+             onKeyDown={handleKeyDown}
              onKeyUp={handleKeyUp}
              contentEditable={true}
              spellCheck={props.spellCheck}
