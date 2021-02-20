@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import { IDimensions } from 'polar-shared/src/util/IDimensions';
 import { assertJSON } from '../test/Assertions';
-import { DocMetas } from "./DocMetas";
+import {DocMetas, MockDocMetas} from "./DocMetas";
 import {SparseDimensions, SparseDocMetas} from "./SparseDocMetas";
 
 describe('SparseDocMetas', function() {
@@ -16,6 +16,8 @@ describe('SparseDocMetas', function() {
 
     });
 
+    // 394 bytes to 150k...
+
     it("size as sparse", function () {
 
         const inputDocMeta = DocMetas.create('0x1234', 7500)
@@ -25,7 +27,7 @@ describe('SparseDocMetas', function() {
 
         const json = JSON.stringify(sparseDocMeta);
 
-        assert.equal(json.length, 394)
+        assert.equal(json.length, 349)
 
     });
 
@@ -43,6 +45,62 @@ describe('SparseDocMetas', function() {
 
     });
 
+    it("verify output same as input", function () {
+
+        const inputDocMeta = DocMetas.create('0x1234', 2)
+        const sparseDocMeta = SparseDocMetas.toSparse(inputDocMeta);
+
+        assert.equal(sparseDocMeta.encodingType, 'sparse');
+
+        const outputDocMeta = SparseDocMetas.fromSparse(sparseDocMeta);
+
+        assertJSON(inputDocMeta, outputDocMeta);
+        // now verify the output is the same as the input...
+
+    });
+
+
+    it("verify dimensions", function () {
+
+        const inputDocMeta = DocMetas.create('0x1234', 2)
+
+        DocMetas.getPageMeta(inputDocMeta, 1).pageInfo.dimensions = {
+            width: 800, height: 600
+        };
+        DocMetas.getPageMeta(inputDocMeta, 2).pageInfo.dimensions = {
+            width: 800, height: 600
+        };
+
+        const sparseDocMeta = SparseDocMetas.toSparse(inputDocMeta);
+
+        assert.equal(sparseDocMeta.encodingType, 'sparse');
+
+        const outputDocMeta = SparseDocMetas.fromSparse(sparseDocMeta);
+
+        assertJSON(inputDocMeta, outputDocMeta);
+        // now verify the output is the same as the input...
+
+    });
+
+
+
+    it("verify output same as input for MockDocMeta", function () {
+
+        const inputDocMeta = MockDocMetas.createMockDocMeta('0x1234',)
+        const sparseDocMeta = SparseDocMetas.toSparse(inputDocMeta);
+
+        assert.equal(sparseDocMeta.encodingType, 'sparse');
+
+        const outputDocMeta = SparseDocMetas.fromSparse(sparseDocMeta);
+
+        assertJSON(inputDocMeta, outputDocMeta);
+
+        assert.equal(Object.values(inputDocMeta.pageMetas).length, 4);
+
+        assert.equal(Object.values(sparseDocMeta.pageMetas).length, 3);
+
+
+    });
 
     describe('SparseDimensions', function() {
 

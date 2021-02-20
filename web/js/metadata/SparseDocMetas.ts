@@ -14,7 +14,6 @@ import {IScreenshot} from "polar-shared/src/metadata/IScreenshot";
 import {IThumbnail} from "polar-shared/src/metadata/IThumbnail";
 import {ReadingProgress} from "polar-shared/src/metadata/ReadingProgress";
 import {IDimensions} from "polar-shared/src/util/IDimensions";
-import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 export namespace SparseDocMetas {
 
@@ -32,34 +31,7 @@ export namespace SparseDocMetas {
             annotationInfo: docMetaCopy.annotationInfo,
             version: docMetaCopy.version,
             attachments: docMetaCopy.attachments,
-            pageDimensionsIndex: [],
-            pageDimensions: []
         };
-
-        const pageDimensionsIndex =
-            arrayStream(Object.values(docMetaCopy.pageMetas || {}))
-                .map(current => current.pageInfo.dimensions)
-                .filter(current => current !== undefined)
-                .map(current => current!)
-                .map(SparseDimensions.toSparse)
-                .unique()
-                .collect();
-
-        // this is a lookup from the sparse page dimensions to the array index
-        // lookup so we can restore it easily.
-        const pageDimensionsIndexLookup =
-            arrayStream(pageDimensionsIndex)
-                .toMap2((current) => current, (current, index) => index);
-
-
-        const pageDimensions =
-            arrayStream(Object.values(docMetaCopy.pageMetas || {}))
-                .map(current => current.pageInfo.dimensions)
-                .filter(current => current !== undefined)
-                .map(current => current!)
-                .map(SparseDimensions.toSparse)
-                .map(current => pageDimensionsIndexLookup[current])
-                .collect();
 
         // *** make the pageMetas sparse
         for(const key of Object.keys(docMetaCopy.pageMetas)) {
@@ -74,11 +46,7 @@ export namespace SparseDocMetas {
 
         }
 
-        return {
-            ...result,
-            pageDimensionsIndex,
-            pageDimensions
-        };
+        return result;
 
     }
 
@@ -137,6 +105,10 @@ export namespace SparsePageMetas {
 
         }
 
+        if (pageMeta.pageInfo.dimensions) {
+            _pageMeta.dim = SparseDimensions.toSparse(pageMeta.pageInfo.dimensions)
+        }
+
         // pageInfo basically JUST has dimensions and at this point we should
         // have already encoded it in the dimensions index
         delete _pageMeta.pageInfo;
@@ -165,9 +137,13 @@ export namespace SparsePageMetas {
 
         const sparsePageMeta: ISparsePageMeta = input || {};
 
+        const dimensions = SparseDimensions.fromSparse(sparsePageMeta.dim);
+
         return {
+
             pageInfo: {
-                num: pageNum
+                num: pageNum,
+                dimensions
             },
             pagemarks: sparsePageMeta.pagemarks || {},
             notes: sparsePageMeta.notes || {},
@@ -179,6 +155,7 @@ export namespace SparsePageMetas {
             screenshots: sparsePageMeta.screenshots || {},
             thumbnails: sparsePageMeta.thumbnails || {},
             readingProgress: sparsePageMeta.readingProgress || {},
+
         };
 
     }
@@ -223,13 +200,13 @@ export interface ISparseDocMeta {
 
     attachments: { [id: string]: IAttachment };
 
-    pageDimensionsIndex: ReadonlyArray<SDimensions>;
-
-    pageDimensions: ReadonlyArray<number>;
-
 }
 
+export type PageDimensionIndex = number;
+
 export interface ISparsePageMeta {
+
+    readonly dim?: SDimensions;
 
     readonly pagemarks?: { [id: string]: IPagemark } | null | undefined;
 
@@ -254,31 +231,24 @@ export interface ISparsePageMeta {
 }
 
 
-export interface ISparsePageInfo {
-
-    /**
-     * The page number of this page.
-     */
-    readonly num: number | null | undefined;
-
-    /**
-     * The dimensions, in pixels, of this page (if we have it).  Used for
-     * rendering thumbnails, etc.  For HTML pages, this is the PHYSICAL rendering
-     * of the page.  HTML pages can be VERY long so they form *logical* pages
-     * as well once they are broken up into ~1000px height units.
-     */
-    dimensions: IDimensions | null | undefined;
-
-}
-
 export namespace SparseDimensions {
 
-    export function toSparse(dimension: IDimensions) {
-        return `${dimension.width}x${dimension.height}`;
+    export function toSparse(dimensions: IDimensions | undefined | null): SDimensions | null {
+
+        if (! dimensions) {
+            return null;
+        }
+
+        return `${dimensions.width}x${dimensions.height}`;
     }
 
-    export function fromSparse(dimension: string) {
-        const split = dimension.split('x');
+    export function fromSparse(dimensions: string | undefined): IDimensions | undefined {
+
+        if (! dimensions) {
+            return undefined;
+        }
+
+        const split = dimensions.split('x');
         const width = parseInt(split[0]);
         const height = parseInt(split[1]);
 
