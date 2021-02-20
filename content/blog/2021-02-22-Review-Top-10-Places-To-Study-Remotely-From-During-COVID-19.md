@@ -1,5 +1,5 @@
 ---
-title: [Review] Top 10 places to study remotely from during COVID-19
+title: Review Top 10 places to study remotely from during COVID-19
 date: 2021-02-22T08:00:00.000-08:00
 layout: post
 description: Review of the 10 best places to study remotely from in times of a pandemic. For students and workers.
