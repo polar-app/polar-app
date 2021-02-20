@@ -34,6 +34,7 @@ interface IProps {
  * delete content.
  *
  * https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand
+ *
  */
 export const MinimalContentEditable = observer((props: IProps) => {
 
