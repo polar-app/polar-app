@@ -11,17 +11,17 @@ interface IProps {
 
     readonly parent: NoteIDStr | undefined;
 
-    readonly spellCheck?: boolean;
-
     readonly content: HTMLStr;
 
+    readonly onChange: (content: HTMLStr) => void;
+
     readonly className?: string;
+
+    readonly spellCheck?: boolean;
 
     readonly style?: React.CSSProperties;
 
     readonly innerRef?: React.MutableRefObject<HTMLDivElement | null>;
-
-    readonly onChange: (content: HTMLStr) => void;
 
     readonly onClick?: (event: React.MouseEvent) => void;
 
