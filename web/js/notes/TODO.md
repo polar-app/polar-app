@@ -3,9 +3,13 @@
 
 - right on an empty note doesn't work... 
 
-- image paste
+- image paste handler
 
-- regions and multi-node selection needs to work.
+- enter on a note with children leaves the children behind...
+
+- regions and multi-node selection needs to work
+    - first select a region, then do multi-item select.
+    - select the current note first.
 
 - node range selection should allow us to expand and collapse as we up / down arrow
 
