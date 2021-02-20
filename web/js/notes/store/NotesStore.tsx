@@ -171,6 +171,10 @@ export class NotesStore {
         return this._active;
     }
 
+    @computed get activePos() {
+        return this._activePos;
+    }
+
     @computed get selected() {
         return this._selected;
     }

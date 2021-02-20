@@ -18,6 +18,8 @@ export const NoteActivation = observer(function NoteActivation(props: IProps) {
 
     const hasFocusRef = React.useRef(true);
 
+    // FIXME: all of this code is now super deprecated...
+
     // const jumpToEditorStartPosition = React.useCallback(() => {
     //
     //     if (editorMutator) {

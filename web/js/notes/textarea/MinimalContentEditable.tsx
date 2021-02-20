@@ -4,6 +4,7 @@ import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import { observer } from "mobx-react-lite"
 import {NavOpts, NoteIDStr, useNotesStore} from '../store/NotesStore';
 import {ContentEditables} from "../ContentEditables";
+import {TextAreaEditorCursorPosition} from "./ContentEditableEditor";
 
 interface IProps {
 
@@ -63,12 +64,25 @@ export const MinimalContentEditable = observer((props: IProps) => {
         if (store.active === props.id) {
 
             if (divRef.current) {
+
+                switch (store.activePos) {
+                    case 'start':
+                    case 'end':
+
+                        updateCursorPosition(divRef.current, store.activePos)
+
+                        break;
+                    default:
+
+                }
+
                 divRef.current.focus();
+
             }
 
         }
 
-    }, [props.id, store.active]);
+    }, [props.id, store.active, store.activePos]);
 
     React.useEffect(() => {
 
@@ -231,3 +245,43 @@ export const MinimalContentEditable = observer((props: IProps) => {
     );
 
 });
+
+
+function updateCursorPosition(editor: HTMLDivElement, offset: 'start' | 'end') {
+
+    if (offset !== undefined) {
+
+        function defineNewRange(range: Range) {
+
+            const sel = window.getSelection();
+
+            editor.focus();
+
+            if (sel) {
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+
+        }
+
+        if (offset === 'start') {
+            const range = document.createRange();
+            range.setStartAfter(editor)
+            range.setEndAfter(editor)
+        }
+
+        if (offset === 'end') {
+
+            const end = ContentEditables.computeEndCursorSelectionRange(editor);
+
+            const range = document.createRange();
+            range.setStart(end.node, end.offset);
+            range.setEnd(end.node, end.offset);
+
+            defineNewRange(range);
+
+        }
+
+    }
+
+}

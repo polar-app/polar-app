@@ -2,7 +2,6 @@ import * as React from "react";
 import {HTMLStr, MarkdownStr} from "polar-shared/src/util/Strings";
 import {deepMemo} from "../../react/ReactUtils";
 import {NodeTextBoundingClientRects} from "./NodeTextBoundingClientRects";
-import {ContentEscaper, MinimalContentEditable} from "./MinimalContentEditable";
 import {ContentEditables} from "../ContentEditables";
 
 export type TextAreaEditorCursorPosition = number | 'start' | 'end';
@@ -41,7 +40,7 @@ function editorActivator(editor: HTMLDivElement, offset?: TextAreaEditorCursorPo
 
         if (offset === 'end') {
 
-            const end = ContentEditables.computeEndCursorPosition(editor);
+            const end = ContentEditables.computeEndCursorSelectionRange(editor);
 
             const range = document.createRange();
             range.setStart(end.node, end.offset);
@@ -65,7 +64,6 @@ interface ActiveProps {
     readonly innerRef: React.MutableRefObject<HTMLDivElement | null>;
     readonly onChange: (data: MarkdownStr) => void;
 
-    readonly escaper?: ContentEscaper;
     readonly preEscaped?: boolean
 
     readonly onKeyDown?: (event: React.KeyboardEvent) => void;
@@ -88,16 +86,18 @@ const Active = React.memo(function Active(props: ActiveProps) {
     // TODO: we have to add another inner component that can see if we need to remount
     // but this really isn't a performance issue.
 
-    return (
+    // return (
+    //
+    //     // <MinimalContentEditable innerRef={props.innerRef}
+    //     //                         content={props.content}
+    //     //                         escaper={props.escaper}
+    //     //                         onKeyDown={props.onKeyDown}
+    //     //                         preEscaped={props.preEscaped}
+    //     //                         onChange={props.onChange}/>
+    //
+    // );
 
-        <MinimalContentEditable innerRef={props.innerRef}
-                                content={props.content}
-                                escaper={props.escaper}
-                                onKeyDown={props.onKeyDown}
-                                preEscaped={props.preEscaped}
-                                onChange={props.onChange}/>
-
-    );
+    return null;
 
 });
 
@@ -207,7 +207,6 @@ interface IProps {
      */
     readonly onActivated: (offset: TextAreaEditorCursorPosition) => void;
 
-    readonly escaper?: ContentEscaper;
     readonly preEscaped?: boolean
 
     readonly onKeyDown?: (event: React.KeyboardEvent) => void;
@@ -249,7 +248,6 @@ export const ContentEditableEditor = React.memo(function ContentEditableEditor(p
                     content={props.content}
                     onChange={props.onChange}
                     innerRef={contentEditableRef}
-                    escaper={props.escaper}
                     preEscaped={props.preEscaped}
                     onKeyDown={props.onKeyDown}
                     defaultFocus={props.defaultFocus}/>

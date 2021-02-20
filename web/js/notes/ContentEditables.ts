@@ -29,7 +29,7 @@ export namespace ContentEditables {
 
                 function createSuffixRange() {
                     const suffixRange = document.createRange();
-                    const endPosition = computeEndCursorPosition(editable);
+                    const endPosition = computeEndCursorSelectionRange(editable);
                     suffixRange.setStart(range.startContainer, range.startOffset);
                     suffixRange.setEnd(endPosition.node, endPosition.offset);
                     return suffixRange;
@@ -51,10 +51,6 @@ export namespace ContentEditables {
 
     }
 
-    interface ICursorPosition {
-        readonly node: Node;
-        readonly offset: number;
-    }
 
     export function fragmentToHTML(fragment: DocumentFragment) {
         const div = document.createElement('div');
@@ -88,9 +84,15 @@ export namespace ContentEditables {
 
     }
 
-    export function computeEndCursorPosition(node: Node): ICursorPosition {
+    export interface ICursorSelectionRange {
+        readonly node: Node;
+        readonly offset: number;
+    }
+
+    export function computeEndCursorSelectionRange(node: Node): ICursorSelectionRange {
 
         if (node.nodeType === document.TEXT_NODE) {
+
 
             return {
                 node,
@@ -100,7 +102,7 @@ export namespace ContentEditables {
         }
 
         if (node.childNodes.length > 0) {
-            return computeEndCursorPosition(node.childNodes[node.childNodes.length - 1]);
+            return computeEndCursorSelectionRange(node.childNodes[node.childNodes.length - 1]);
         }
 
         return {
