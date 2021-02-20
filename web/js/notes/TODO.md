@@ -1,5 +1,7 @@
 
+- regions and multi-node selection needs to work.
 
+- 
 
 - if we have a tree like
 
