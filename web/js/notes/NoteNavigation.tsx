@@ -81,41 +81,8 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
 
         // const editorCursorPosition = getEditorCursorPosition();
 
-        const opts: NavOpts = {
-            shiftKey: event.shiftKey
-        }
 
         switch (event.key) {
-
-            case 'ArrowUp':
-
-                abortEvent();
-                store.navPrev('start', opts);
-                break;
-
-            case 'ArrowDown':
-
-                abortEvent();
-                store.navNext('start', opts);
-                break;
-
-            case 'ArrowLeft':
-                //
-                // if (editorCursorPosition === 'start') {
-                //     abortEvent();
-                //     store.navPrev('end', opts);
-                // }
-
-                break;
-
-            case 'ArrowRight':
-                //
-                // if (editorCursorPosition === 'end') {
-                //     abortEvent();
-                //     store.navNext('start', opts);
-                // }
-
-                break;
 
             case 'Tab':
 

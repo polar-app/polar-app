@@ -2,7 +2,7 @@ import { HTMLStr } from 'polar-shared/src/util/Strings';
 import React from 'react';
 import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import { observer } from "mobx-react-lite"
-import {NoteIDStr, useNotesStore} from '../store/NotesStore';
+import {NavOpts, NoteIDStr, useNotesStore} from '../store/NotesStore';
 import {ContentEditables} from "../ContentEditables";
 
 interface IProps {
@@ -122,13 +122,47 @@ export const MinimalContentEditable = observer((props: IProps) => {
             event.preventDefault();
         }
 
+        const opts: NavOpts = {
+            shiftKey: event.shiftKey
+        }
+
         switch (event.key) {
+
+            case 'ArrowUp':
+
+                abortEvent();
+                store.navPrev('start', opts);
+                break;
+
+            case 'ArrowDown':
+
+                abortEvent();
+                store.navNext('start', opts);
+                break;
+
+            case 'ArrowLeft':
+
+                if (cursorPosition === 'start') {
+                    abortEvent();
+                    store.navPrev('end', opts);
+                }
+
+                break;
+
+            case 'ArrowRight':
+
+                if (cursorPosition === 'end') {
+                    abortEvent();
+                    store.navNext('start', opts);
+                }
+
+                break;
 
             case 'Backspace':
 
                 if (hasEditorSelection()) {
                     console.log("Not handling Backspace");
-                    return;
+                    break;
                 }
 
                 // TODO: only do this if there aren't any modifiers I think...
