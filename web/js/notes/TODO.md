@@ -1,7 +1,7 @@
 
 - regions and multi-node selection needs to work.
 
-- 
+- node range selection should allow us to expand and collapse as we up / down arrow
 
 - if we have a tree like
 
