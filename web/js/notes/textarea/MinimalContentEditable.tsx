@@ -1,10 +1,14 @@
 import { HTMLStr } from 'polar-shared/src/util/Strings';
 import React from 'react';
 import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
+import { observer } from "mobx-react-lite"
+import {NoteIDStr, useNotesStore} from '../store/NotesStore';
 
 interface IProps {
 
     readonly spellCheck?: boolean;
+
+    readonly id: NoteIDStr;
 
     readonly content: HTMLStr;
 
@@ -28,10 +32,15 @@ interface IProps {
  *
  * https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand
  */
-export const MinimalContentEditable = React.memo((props: IProps) => {
+export const MinimalContentEditable = observer((props: IProps) => {
 
     const [content, setContent] = React.useState(props.content);
+
+    const divRef = React.useRef<HTMLDivElement | null>();
+
     const contentRef = React.useRef(props.content);
+
+    const store = useNotesStore();
 
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -44,6 +53,18 @@ export const MinimalContentEditable = React.memo((props: IProps) => {
         props.onChange(newContent);
 
     }, [props]);
+
+    React.useEffect(() => {
+
+        if (store.active === props.id) {
+
+            if (divRef.current) {
+                divRef.current.focus();
+            }
+
+        }
+
+    }, [props.id, store.active]);
 
     React.useEffect(() => {
 
@@ -61,9 +82,19 @@ export const MinimalContentEditable = React.memo((props: IProps) => {
 
     }, [props.content]);
 
+    const handleRef = React.useCallback((current: HTMLDivElement | null) => {
+
+        divRef.current = current;
+
+        if (props.innerRef) {
+            props.innerRef.current = current;
+        }
+
+    }, [props]);
+
     return (
 
-        <div ref={props.innerRef}
+        <div ref={handleRef}
              onKeyDown={props.onKeyDown}
              onKeyUp={handleKeyUp}
              contentEditable={true}

@@ -182,7 +182,8 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
 
     return (
-        <MinimalContentEditable innerRef={ref}
+        <MinimalContentEditable id={props.id}
+                                innerRef={ref}
                                 content={content}
                                 onChange={handleChange}
                                 onClick={onClick}

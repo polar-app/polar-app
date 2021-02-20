@@ -31,7 +31,8 @@ const Editors = React.memo(() => {
     return (
         <>
             {Numbers.range(1, EDITOR_COUNT).map(idx => (
-                <MinimalContentEditable key={idx}
+                <MinimalContentEditable id="1234"
+                                        key={idx}
                                         content={`${idx} this is the <b>content</b> there are many like it but this one is mine.`}
                                         onChange={NULL_FUNCTION}/>))}
         </>

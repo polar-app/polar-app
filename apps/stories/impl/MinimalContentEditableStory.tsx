@@ -18,7 +18,8 @@ export const MinimalContentEditableStory = () => {
 
     return (
         <div>
-            <MinimalContentEditable content="this is the content"
+            <MinimalContentEditable id="1234"
+                                    content="this is the content"
                                     onKeyDown={handleKeyDown}
                                     onChange={NULL_FUNCTION}/>
 

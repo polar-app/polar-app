@@ -10,7 +10,6 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {INote} from "./INote";
 import {ReverseIndex} from "./ReverseIndex";
 import {Note} from "./Note";
-import {INoteEditorMutator} from "./NoteEditorMutator";
 import {MarkdownContentEscaper} from "../MarkdownContentEscaper";
 import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 
