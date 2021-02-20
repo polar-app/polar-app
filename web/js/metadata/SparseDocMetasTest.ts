@@ -18,26 +18,31 @@ describe('SparseDocMetas', function() {
 
     it("size as sparse", function () {
 
-        // TODO: I can write a completely *new* file format that keeps the data.
+        const inputDocMeta = DocMetas.create('0x1234', 7500)
+        const sparseDocMeta = SparseDocMetas.toSparse(inputDocMeta);
 
-        // TODO: this new version is ONLY about 4x smaller.. which is great but
-        // doesn't really make it TOO sparse
-        //
-        // TODO: I could use jszip but it doesn't use a web worker... which is a
-        // big fucking problem - it should use one automatically.
-        //
-        // the dimensions are the main issue... I can store these in a different
-        // index and re-encode it on deserialization.
+        assert.equal(sparseDocMeta.encodingType, 'sparse');
 
-        const docMeta = SparseDocMetas.toSparse(DocMetas.create('0x1234', 7500));
+        const json = JSON.stringify(sparseDocMeta);
 
-        // const json = DocMetas.serialize(docMeta, "  ");
-        //
-        // console.log("FIXME: ", json);
-        //
-        // assert.equal(json.length, 515703)
+        assert.equal(json.length, 394)
 
     });
+
+    it("verify output same as input", function () {
+
+        const inputDocMeta = DocMetas.create('0x1234', 2)
+        const sparseDocMeta = SparseDocMetas.toSparse(inputDocMeta);
+
+        assert.equal(sparseDocMeta.encodingType, 'sparse');
+
+        const outputDocMeta = SparseDocMetas.fromSparse(sparseDocMeta);
+
+        assertJSON(inputDocMeta, outputDocMeta);
+        // now verify the output is the same as the input...
+
+    });
+
 
     describe('SparseDimensions', function() {
 

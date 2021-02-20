@@ -18,8 +18,6 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 export namespace SparseDocMetas {
 
-    // FIXME: encode the sparse data properly...
-
     /**
      * Convert to sparse DocMeta without excessive PageMetas that are empty.
      */
@@ -84,14 +82,29 @@ export namespace SparseDocMetas {
 
     }
 
-    // FIXME: ability to omit the entire pageMeta, parts of the pageMeta , etc.
-    // FIXME: ablity to encode the dimensions efficiently in a lookup vector
-    // this would mean a doc with 7000 pages would compress down to 14k rather
-    // than 2MB
+    export function fromSparse(data: any): IDocMeta {
 
-    // export function fromSparse(data: string): IDocMeta {
-    //
-    // }
+        if (data.encodingType !== 'sparse') {
+            throw new Error("Not sparse docMeta");
+        }
+
+        const result: IDocMeta = {
+            docInfo: data.docInfo,
+            pageMetas: {},
+            annotationInfo: data.annotationInfo,
+            version: data.version,
+            attachments: data.attachments,
+        };
+
+        // now reconstruct the PageMetas...
+
+        for (let idx = 1; idx <= result.docInfo.nrPages; ++idx) {
+            result.pageMetas[idx] = SparsePageMetas.fromSparse(idx, data.pageMetas[idx]);
+        }
+
+        return result;
+
+    }
 
 }
 
@@ -147,6 +160,29 @@ export namespace SparsePageMetas {
 
     }
 
+    export function fromSparse(pageNum: number,
+                               input: ISparsePageMeta | null | undefined): IPageMeta {
+
+        const sparsePageMeta: ISparsePageMeta = input || {};
+
+        return {
+            pageInfo: {
+                num: pageNum
+            },
+            pagemarks: sparsePageMeta.pagemarks || {},
+            notes: sparsePageMeta.notes || {},
+            comments: sparsePageMeta.comments || {},
+            questions: sparsePageMeta.questions || {},
+            flashcards: sparsePageMeta.flashcards || {},
+            textHighlights: sparsePageMeta.textHighlights || {},
+            areaHighlights: sparsePageMeta.areaHighlights || {},
+            screenshots: sparsePageMeta.screenshots || {},
+            thumbnails: sparsePageMeta.thumbnails || {},
+            readingProgress: sparsePageMeta.readingProgress || {},
+        };
+
+    }
+
 }
 
 export namespace SparseDictionaries {
@@ -195,27 +231,25 @@ export interface ISparseDocMeta {
 
 export interface ISparsePageMeta {
 
-    readonly pageInfo: ISparsePageInfo | null | undefined;
+    readonly pagemarks?: { [id: string]: IPagemark } | null | undefined;
 
-    readonly pagemarks: { [id: string]: IPagemark } | null | undefined;
+    readonly notes?: { [id: string]: INote } | null | undefined;
 
-    readonly notes: { [id: string]: INote } | null | undefined;
+    readonly comments?: { [id: string]: IComment } | null | undefined;
 
-    readonly comments: { [id: string]: IComment } | null | undefined;
+    readonly questions?: { [id: string]: IQuestion } | null | undefined;
 
-    readonly questions: { [id: string]: IQuestion } | null | undefined;
+    readonly flashcards?: IFlashcardMap | null | undefined;
 
-    readonly flashcards: IFlashcardMap | null | undefined;
+    readonly textHighlights?: { [id: string]: ITextHighlight } | null | undefined;
 
-    readonly textHighlights: { [id: string]: ITextHighlight } | null | undefined;
+    readonly areaHighlights?: { [id: string]: IAreaHighlight } | null | undefined;
 
-    readonly areaHighlights: { [id: string]: IAreaHighlight } | null | undefined;
+    readonly screenshots?: { [id: string]: IScreenshot } | null | undefined;
 
-    readonly screenshots: { [id: string]: IScreenshot } | null | undefined;
+    readonly thumbnails?: { [id: string]: IThumbnail } | null | undefined;
 
-    readonly thumbnails: { [id: string]: IThumbnail } | null | undefined;
-
-    readonly readingProgress: { [id: string]: ReadingProgress } | null | undefined;
+    readonly readingProgress?: { [id: string]: ReadingProgress } | null | undefined;
 
 }
 
