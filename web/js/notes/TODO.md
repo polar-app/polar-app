@@ -1,7 +1,7 @@
 
 - get the action menus to work now...
 
-- right on an empty note doesnt' work.. 
+- right on an empty note doesn't work... 
 
 - regions and multi-node selection needs to work.
 
