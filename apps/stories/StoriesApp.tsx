@@ -264,10 +264,6 @@ const stories = createStoryIndex([
         component: <TextAreaMarkdownEditorStory/>
     },
     {
-        name: 'TextAreaEditor',
-        component: <TextAreaEditorStory/>
-    },
-    {
         name: 'MinimalContentEditableStory',
         component: <MinimalContentEditableStory/>
     },
