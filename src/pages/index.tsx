@@ -15,207 +15,233 @@ import {CreateAccountButton} from "../components/CreateAccountButton";
 import {ColorBackground} from "../components/ColorBackground";
 import KnowledgeAndBrainOrganizedImage from "./images/KnowledgeAndBrainOrganizedImage";
 import ReadingOnSteroidsImage from "./images/ReadingOnSteroidsImage";
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import ThemeProvider from "@material-ui/styles/ThemeProvider";
 const SummaryLargeImage = require("../../content/assets/screenshots/summary-large-image.png");
 
 const useStyles = IndexStyling;
 
+const theme = createMuiTheme({
+    typography: {
+        htmlFontSize: 12,
+        fontSize: 12
+    },
+    palette: {
+        type: 'dark',
+        primary: {
+            'main': 'rgb(103, 84, 214)'
+        },
+        background: {
+            'default': '#1A1A1A',
+        },
+        // divider: '#303236',
+        // text: {
+        //     primary: 'rgb(247, 248, 248)'
+        // }
+    }
+});
+
 const Landing = ({}) => {
+
   const breakpoints = useBreakpoint();
   const classes = useStyles();
 
   return (
-    <Layout>
-      <SEO
-        title="POLAR - Read. Learn. Never Forget."
-        description="POLAR - Read. Learn. Never Forget. Polar is a reading tool for networked knowledge. Use it to effortlessly annotate, highlight, and track your reading progress."
-        lang="en"
-        card="summary_large_image"
-        image={SummaryLargeImage}/>
+      <ThemeProvider theme={theme}>
 
-      <Box style={{
-               flexDirection: "column",
-               overflow: "hidden",
-           }}
-           className={breakpoints.md ? classes.marginsMobile : null}>
+          <Layout>
+          <SEO
+            title="POLAR - Read. Learn. Never Forget."
+            description="POLAR - Read. Learn. Never Forget. Polar is a reading tool for networked knowledge. Use it to effortlessly annotate, highlight, and track your reading progress."
+            lang="en"
+            card="summary_large_image"
+            image={SummaryLargeImage}/>
+
+          <Box style={{
+                   flexDirection: "column",
+                   overflow: "hidden",
+               }}
+               className={breakpoints.md ? classes.marginsMobile : null}>
 
 
-          <div className={classes.newHeroSection + ' ' + classes.centerSection}>
+              <div className={classes.newHeroSection + ' ' + classes.centerSection}>
 
-              <h1 style={{
-                      fontSize: '100px',
-                      lineHeight: '1em',
-                      fontWeight: 500,
-                      marginTop: '45px',
-                      marginBottom: '45px'
-                  }}>
-                  Read. Learn. Never Forget.
-              </h1>
+                  <h1 style={{
+                          fontSize: '100px',
+                          lineHeight: '1em',
+                          fontWeight: 500,
+                          marginTop: '45px',
+                          marginBottom: '45px'
+                      }}>
+                      Read. Learn. Never Forget.
+                  </h1>
 
-              <h2 style={{
-                      maxWidth: '1200px',
-                      textAlign: 'center',
-                      marginBottom: '20px'
-                  }}>
-                  Polar is an integrated reading environment to build your knowledge base. Actively read,
-                  annotate, connect thoughts, create flashcards, and track progress.
-              </h2>
+                  <h2 style={{
+                          maxWidth: '1200px',
+                          textAlign: 'center',
+                          marginBottom: '20px'
+                      }}>
+                      Polar is an integrated reading environment to build your knowledge base. Actively read,
+                      annotate, connect thoughts, create flashcards, and track progress.
+                  </h2>
 
-              <div style={{
-                       marginLeft: 'auto',
-                       marginRight: 'auto'
-                   }}>
+                  <div style={{
+                           marginLeft: 'auto',
+                           marginRight: 'auto'
+                       }}>
 
-                  <CreateAccountButton/>
+                      <CreateAccountButton/>
 
+
+                  </div>
+
+                  <div style={{marginBottom: '10px'}}>
+                      Already using Polar?{" "}
+                      <a style={{ color: "#A88CFF" }} href="https://app.getpolarized.io/sign-in">
+                          Sign in
+                      </a>
+                  </div>
+
+                  <ColorBackground style={{
+                                       marginTop: '50px',
+                                       marginBottom: '50px'
+                                   }}>
+                      <DocumentRepositoryImage className={classes.centerImage}/>
+                  </ColorBackground>
+
+                  <TrustedByLogos />
 
               </div>
 
-              <div style={{marginBottom: '10px'}}>
-                  Already using Polar?{" "}
-                  <a style={{ color: "#A88CFF" }} href="https://app.getpolarized.io/sign-in">
-                      Sign in
-                  </a>
+              <div className={classes.centerSection + ' ' + classes.sectionEven}>
+
+                  <h1>
+                      Your Knowledge and <span style={{color: '#D7AC75'}}>Brain - Organized</span>
+                  </h1>
+
+                  <h2>
+                      Manage and save for later all your PDFs, EPUBs, and web pages
+                      in one place. Use tags, reading progress, and detailed
+                      document information to stay on top of your reading.
+                  </h2>
+
+                  {/*<h3>*/}
+                  {/*    Read and manage multiple documents at the same time.*/}
+                  {/*</h3>*/}
+
+                  <ColorBackground style={{
+                                       marginTop: '50px',
+                                       marginBottom: '50px'
+                                   }}>
+                      <KnowledgeAndBrainOrganizedImage className={classes.centerImage}
+                                                       alt="Your Knowledge and Brain Organized"/>
+                  </ColorBackground>
               </div>
 
-              <ColorBackground style={{
-                                   marginTop: '50px',
-                                   marginBottom: '50px'
-                               }}>
-                  <DocumentRepositoryImage className={classes.centerImage}/>
-              </ColorBackground>
+              <div className={classes.centerSection + ' ' + classes.sectionEven}>
 
-              <TrustedByLogos />
+                  <h1>
+                      This is <span style={{color: '#76CDC8'}}>reading on steroids</span>
+                  </h1>
 
-          </div>
+                  <h2>
+                      Use the integrated reader to actively read, highlight, take
+                      notes, connect thoughts, and track progress with pagemarks.
+                      Build your detailed knowledge base with granular highlight
+                      tagging, and flashcards, directly from text highlights.
+                  </h2>
 
-          <div className={classes.centerSection + ' ' + classes.sectionEven}>
+                  {/*<h3>*/}
+                  {/*    Read and manage multiple documents at the same time.*/}
+                  {/*</h3>*/}
 
-              <h1>
-                  Your Knowledge and <span style={{color: '#D7AC75'}}>Brain - Organized</span>
-              </h1>
+                  <ColorBackground style={{
+                                       marginTop: '50px',
+                                       marginBottom: '50px'
+                                   }}>
 
-              <h2>
-                  Manage and save for later all your PDFs, EPUBs, and web pages
-                  in one place. Use tags, reading progress, and detailed
-                  document information to stay on top of your reading.
-              </h2>
+                      <ReadingOnSteroidsImage className={classes.centerImage}
+                                              alt="Reading on Steroids"/>
 
-              {/*<h3>*/}
-              {/*    Read and manage multiple documents at the same time.*/}
-              {/*</h3>*/}
+                  </ColorBackground>
 
-              <ColorBackground style={{
-                                   marginTop: '50px',
-                                   marginBottom: '50px'
-                               }}>
-                  <KnowledgeAndBrainOrganizedImage className={classes.centerImage}
-                                                   alt="Your Knowledge and Brain Organized"/>
-              </ColorBackground>
-          </div>
-
-          <div className={classes.centerSection + ' ' + classes.sectionEven}>
-
-              <h1>
-                  This is <span style={{color: '#76CDC8'}}>reading on steroids</span>
-              </h1>
-
-              <h2>
-                  Use the integrated reader to actively read, highlight, take
-                  notes, connect thoughts, and track progress with pagemarks.
-                  Build your detailed knowledge base with granular highlight
-                  tagging, and flashcards, directly from text highlights.
-              </h2>
-
-              {/*<h3>*/}
-              {/*    Read and manage multiple documents at the same time.*/}
-              {/*</h3>*/}
-
-              <ColorBackground style={{
-                                   marginTop: '50px',
-                                   marginBottom: '50px'
-                               }}>
-
-                  <ReadingOnSteroidsImage className={classes.centerImage}
-                                          alt="Reading on Steroids"/>
-
-              </ColorBackground>
-              
-          </div>
+              </div>
 
 
-          <div className={classes.centerSection + ' ' + classes.sectionEven}>
+              <div className={classes.centerSection + ' ' + classes.sectionEven}>
 
-              <h1>
-                  Organize and Prioritize Your Reading
-              </h1>
+                  <h1>
+                      Organize and Prioritize Your Reading
+                  </h1>
 
-              <h2>
-                  Upload PDFs and EPUBs, capture web pages with the Polar Chrome extension. Keep all your documents in one place. Manage and prioritize your reading with progress tracking, flagging, tagging, and more
+                  <h2>
+                      Upload PDFs and EPUBs, capture web pages with the Polar Chrome extension. Keep all your documents in one place. Manage and prioritize your reading with progress tracking, flagging, tagging, and more
 
-              </h2>
+                  </h2>
 
-              {/*<h3>*/}
-              {/*    Read and manage multiple documents at the same time.*/}
-              {/*</h3>*/}
+                  {/*<h3>*/}
+                  {/*    Read and manage multiple documents at the same time.*/}
+                  {/*</h3>*/}
 
-              <AnnotationRepositoryImage className={classes.centerImage}
-                                         alt="Polar App homepage screenshot macbook"/>
-          </div>
+                  <AnnotationRepositoryImage className={classes.centerImage}
+                                             alt="Polar App homepage screenshot macbook"/>
+              </div>
 
 
-          <div className={classes.centerSection + ' ' + classes.sectionOdd}>
+              <div className={classes.centerSection + ' ' + classes.sectionOdd}>
 
-              <h1>
-                  Active Reading
-              </h1>
+                  <h1>
+                      Active Reading
+                  </h1>
 
-              <h2>
-                  Use Polar's integrated document viewer for active and incremental reading. Annotate, highlight text and areas, tag annotations, comment, use advanced pagemarks, and create flashcards from highlights.
-              </h2>
+                  <h2>
+                      Use Polar's integrated document viewer for active and incremental reading. Annotate, highlight text and areas, tag annotations, comment, use advanced pagemarks, and create flashcards from highlights.
+                  </h2>
 
-              <DocumentViewerImage className={classes.centerImage}
-                                         alt="Polar Document Viewer"/>
-          </div>
+                  <DocumentViewerImage className={classes.centerImage}
+                                             alt="Polar Document Viewer"/>
+              </div>
 
 
 
 
 
 
-          <div className={classes.centerSection + ' ' + classes.sectionEven}>
+              <div className={classes.centerSection + ' ' + classes.sectionEven}>
 
-              <h1>
-                  Flashcards and Anki Integration
-              </h1>
+                  <h1>
+                      Flashcards and Anki Integration
+                  </h1>
 
-              <h3>
-                  Create flashcards in one click from your annotations and highlights. Review them using
-                  spaced repetition algorithm or sync them with Anki.
-              </h3>
+                  <h3>
+                      Create flashcards in one click from your annotations and highlights. Review them using
+                      spaced repetition algorithm or sync them with Anki.
+                  </h3>
 
-              <FlashcardReviewImage className={classes.centerImage}
-                                    alt="Polar Reading Statistics"/>
-          </div>
+                  <FlashcardReviewImage className={classes.centerImage}
+                                        alt="Polar Reading Statistics"/>
+              </div>
 
 
-          <div className={classes.centerSection + ' ' + classes.sectionOdd}>
+              <div className={classes.centerSection + ' ' + classes.sectionOdd}>
 
-              <h1>
-                  Keep Track of Reading Statistics
-              </h1>
+                  <h1>
+                      Keep Track of Reading Statistics
+                  </h1>
 
-              <h2>
-                  Commit to reading a fixed number of pages per day and use it to encourage your reading.
-              </h2>
+                  <h2>
+                      Commit to reading a fixed number of pages per day and use it to encourage your reading.
+                  </h2>
 
-              <StatisticsImage className={classes.centerImage}
-                               alt="Polar Reading Statistics"/>
-          </div>
+                  <StatisticsImage className={classes.centerImage}
+                                   alt="Polar Reading Statistics"/>
+              </div>
 
-          <CreateAccountWLogos transparent={false} />
+              <CreateAccountWLogos transparent={false} />
 
-      </Box>
-    </Layout>
+          </Box>
+        </Layout>
+      </ThemeProvider>
   );
 };
 

@@ -17,6 +17,7 @@ var useStyles = core_1.makeStyles({
         marginRight: 'auto',
         paddingLeft: "3%",
         paddingRight: "3%",
+        height: '100vh'
     },
     background: {},
     h1: {
@@ -41,15 +42,15 @@ var AccountWLogos = function (_a) {
 
         <CreateAccountButton_1.CreateAccountButton />
 
-        <div style={{ marginTop: '2em' }}>
-          <h2 className={classes.h2}>
-            Available On
-          </h2>
-          <core_1.Box className={classes.logoBar}>
-            <img src={ImgLogoBar} style={{ marginBottom: "3%" }}/>
-          </core_1.Box>
+        
+        
+        
+        
+        
+        
+        
 
-        </div>
+        
       </core_1.Box>
     </core_1.Box>);
 };

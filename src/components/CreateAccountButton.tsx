@@ -8,7 +8,7 @@ const useStyles = makeStyles({
         textTransform: "none",
         marginTop: "10px",
         marginBottom: "10px",
-        width: "183px",
+        width: "200px",
         backgroundColor: "#6754D6",
     },
 });
@@ -23,7 +23,7 @@ export const CreateAccountButton = (props: IProps) => {
 
     const size = props.size || 'large'
 
-    const fontSize = size === 'large' ? '18px' : '15px';
+    const fontSize = size === 'large' ? '20px' : '15px';
 
     return (
         <Button className={classes.buttonAccount}

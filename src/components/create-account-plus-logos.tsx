@@ -19,6 +19,7 @@ const useStyles = makeStyles({
     marginRight: 'auto',
     paddingLeft: "3%",
     paddingRight: "3%",
+    height: '100vh'
   },
 
   background: {
@@ -49,15 +50,15 @@ const AccountWLogos = ({ transparent }) => {
 
         <CreateAccountButton/>
 
-        <div style={{marginTop: '2em'}}>
-          <h2 className={classes.h2}>
-            Available On
-          </h2>
-          <Box className={classes.logoBar}>
-            <img src={ImgLogoBar} style={{ marginBottom: "3%" }} />
-          </Box>
+        {/*<div style={{marginTop: '2em'}}>*/}
+        {/*  <h2 className={classes.h2}>*/}
+        {/*    Available On*/}
+        {/*  </h2>*/}
+        {/*  <Box className={classes.logoBar}>*/}
+        {/*    <img src={ImgLogoBar} style={{ marginBottom: "3%" }} />*/}
+        {/*  </Box>*/}
 
-        </div>
+        {/*</div>*/}
       </Box>
     </Box>
   );

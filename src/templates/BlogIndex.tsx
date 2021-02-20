@@ -1,7 +1,6 @@
 import React from "react";
 import { PageProps, graphql } from "gatsby";
 import Layout from "../components/layout";
-import SEO from "../components/seo";
 import { Container, Box, ThemeProvider } from "@material-ui/core";
 import { Link } from "gatsby-material-ui-components";
 import CssBaseline from "@material-ui/core/CssBaseline";
