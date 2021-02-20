@@ -4,6 +4,15 @@ import { assertJSON } from '../test/Assertions';
 import {DocMetas, MockDocMetas} from "./DocMetas";
 import {SparseDimensions, SparseDocMetas} from "./SparseDocMetas";
 
+// TODO:
+//
+// what else to test:
+//
+// - test it on all my personal docMeta and verify input and output and verify
+//   that this works reliably and that we get solid compression.
+//
+// - enable it for my account / locally.
+
 describe('SparseDocMetas', function() {
 
     it("size without making sparse", function () {
