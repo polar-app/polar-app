@@ -7,12 +7,11 @@ import CreateAccountWLogos from "../components/create-account-plus-logos";
 import IndexStyling from "../gatsby-theme-material-ui-top-layout/indexStyling";
 import TrustedByLogos from "../components/trusted-by-logos";
 import AnnotationRepositoryImage from "./images/AnnotationRepositoryImage";
-import DocumentRepositoryImage from "./images/DocumentRepositoryImage";
 import DocumentViewerImage from "./images/DocumentViewerImage";
 import StatisticsImage from "./images/StatisticsImage";
 import FlashcardReviewImage from "./images/FlashcardReviewImage";
 import {CreateAccountButton} from "../components/CreateAccountButton";
-import {ColorBackground} from "../components/ColorBackground";
+import {ColorBackground0, ColorBackground1, ColorBackground2} from "../components/ColorBackground";
 import KnowledgeAndBrainOrganizedImage from "./images/KnowledgeAndBrainOrganizedImage";
 import ReadingOnSteroidsImage from "./images/ReadingOnSteroidsImage";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
@@ -103,12 +102,12 @@ const Landing = ({}) => {
                       </a>
                   </div>
 
-                  <ColorBackground style={{
+                  <ColorBackground0 style={{
                                        marginTop: '50px',
                                        marginBottom: '50px'
                                    }}>
                       <HeroImage className={classes.centerImage}/>
-                  </ColorBackground>
+                  </ColorBackground0>
 
                   <TrustedByLogos />
 
@@ -130,13 +129,13 @@ const Landing = ({}) => {
                   {/*    Read and manage multiple documents at the same time.*/}
                   {/*</h3>*/}
 
-                  <ColorBackground style={{
+                  <ColorBackground1 style={{
                                        marginTop: '50px',
                                        marginBottom: '50px'
                                    }}>
                       <KnowledgeAndBrainOrganizedImage className={classes.centerImage}
                                                        alt="Your Knowledge and Brain Organized"/>
-                  </ColorBackground>
+                  </ColorBackground1>
               </div>
 
               <div className={classes.centerSection + ' ' + classes.sectionEven}>
@@ -156,7 +155,7 @@ const Landing = ({}) => {
                   {/*    Read and manage multiple documents at the same time.*/}
                   {/*</h3>*/}
 
-                  <ColorBackground style={{
+                  <ColorBackground2 style={{
                                        marginTop: '50px',
                                        marginBottom: '50px'
                                    }}>
@@ -164,7 +163,7 @@ const Landing = ({}) => {
                       <ReadingOnSteroidsImage className={classes.centerImage}
                                               alt="Reading on Steroids"/>
 
-                  </ColorBackground>
+                  </ColorBackground2>
 
               </div>
 
