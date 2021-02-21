@@ -1,4 +1,5 @@
 import {assert} from 'chai';
+import { Files } from 'polar-shared/src/util/Files';
 import { IDimensions } from 'polar-shared/src/util/IDimensions';
 import { assertJSON } from '../test/Assertions';
 import {DocMetas, MockDocMetas} from "./DocMetas";
@@ -127,5 +128,38 @@ describe('SparseDocMetas', function() {
         });
 
     });
+
+    xdescribe('existing data', function() {
+
+        this.timeout(60000);
+
+        it("basic", async function () {
+
+            async function handlePath(path: string) {
+
+                if (! path.endsWith('state.json')) {
+                    return;
+                }
+
+                const buff = await Files.readFileAsync(path);
+                const content = buff.toString('UTF-8');
+
+                const inputDocMeta = DocMetas.deserialize(content, '0x1235');
+
+                const sparseDocMeta = SparseDocMetas.toSparse(inputDocMeta);
+
+                const outputDocMeta = SparseDocMetas.fromSparse(sparseDocMeta);
+
+                assertJSON(inputDocMeta, outputDocMeta);
+
+            }
+
+            await Files.recursively("/Users/burton/.polar", handlePath);
+
+
+        });
+
+    });
+
 
 });

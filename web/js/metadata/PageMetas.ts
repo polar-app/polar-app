@@ -65,6 +65,14 @@ export class PageMetas {
                 pageMeta.readingProgress = {};
             }
 
+            if (!pageMeta.thumbnails) {
+                pageMeta.thumbnails = {};
+            }
+
+            if (!pageMeta.flashcards) {
+                pageMeta.flashcards = {};
+            }
+
             pageMeta.pagemarks = Pagemarks.upgrade(pageMeta.pagemarks);
 
         } );
