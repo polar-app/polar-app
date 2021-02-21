@@ -22,7 +22,7 @@ describe('SparseDocMetas', function() {
 
         const json = DocMetas.serialize(docMeta);
 
-        assert.equal(json.length, 2353203)
+        assert.equal(json.length, 443)
 
     });
 
