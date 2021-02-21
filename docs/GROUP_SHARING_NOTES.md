@@ -8,4 +8,14 @@
 
 # Hubspot
 
+# Github
 
+# Amplitude
+
+# enterpriseready.io ??
+
+# zendesk
+
+# Roam Research... 
+
+# Airtable
