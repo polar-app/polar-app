@@ -17,6 +17,7 @@ import KnowledgeAndBrainOrganizedImage from "./images/KnowledgeAndBrainOrganized
 import ReadingOnSteroidsImage from "./images/ReadingOnSteroidsImage";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
+import HeroImage from "./images/HeroImage";
 const SummaryLargeImage = require("../../content/assets/screenshots/summary-large-image.png");
 
 const useStyles = IndexStyling;
@@ -32,7 +33,7 @@ const theme = createMuiTheme({
             'main': 'rgb(103, 84, 214)'
         },
         background: {
-            'default': '#1A1A1A',
+            'default': '#1C1C1C',
         },
         // divider: '#303236',
         // text: {
@@ -106,7 +107,7 @@ const Landing = ({}) => {
                                        marginTop: '50px',
                                        marginBottom: '50px'
                                    }}>
-                      <DocumentRepositoryImage className={classes.centerImage}/>
+                      <HeroImage className={classes.centerImage}/>
                   </ColorBackground>
 
                   <TrustedByLogos />
