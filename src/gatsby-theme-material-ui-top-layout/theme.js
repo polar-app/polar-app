@@ -26,11 +26,11 @@ const theme = createMuiTheme({
 
         html: {
           WebkitFontSmoothing: "auto",
-          backgroundColor: "#1A1A1A",
+          backgroundColor: "#060606",
           minHeight: '100vh',
         },
         body: {
-          backgroundColor: "#1A1A1A",
+          backgroundColor: "#060606",
           color: "#FFFFFF",
           minHeight: '100vh',
         },
