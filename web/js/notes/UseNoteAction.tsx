@@ -26,6 +26,8 @@ interface ICursorRange {
     readonly offset: number;
 }
 
+// FIXME: then hte region goes backwards, before the trigger point, close the dialog... 
+
 export function useNoteAction(opts: IOpts): NoteActionsResultTuple {
 
     const {trigger} = opts;

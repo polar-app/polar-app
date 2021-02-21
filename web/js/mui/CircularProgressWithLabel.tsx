@@ -4,7 +4,11 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import {deepMemo} from "../react/ReactUtils";
 
-export const CircularProgressWithLabel = deepMemo((props: CircularProgressProps & { value: number }) => {
+interface IProps extends CircularProgressProps {
+    readonly value: number;
+}
+
+export const CircularProgressWithLabel = deepMemo((props: IProps) => {
     return (
         <Box position="relative" display="inline-flex">
             <CircularProgress variant="static" {...props} />
@@ -16,8 +20,7 @@ export const CircularProgressWithLabel = deepMemo((props: CircularProgressProps 
                 position="absolute"
                 display="flex"
                 alignItems="center"
-                justifyContent="center"
-            >
+                justifyContent="center">
                 <Typography variant="caption" component="div" color="textSecondary">{`${Math.round(
                     props.value,
                 )}%`}</Typography>
