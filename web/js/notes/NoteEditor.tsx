@@ -8,7 +8,7 @@ import {useNoteLinkLoader} from "./NoteLinkLoader";
 import {MarkdownContentEscaper} from "./MarkdownContentEscaper";
 import {NoteIDStr, useNotesStore} from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
-import {MinimalContentEditable} from "./textarea/MinimalContentEditable";
+import {NoteContentEditable} from "./textarea/NoteContentEditable";
 import {ContentEditables} from "./ContentEditables";
 import {HTMLToMarkdown} from "polar-markdown-parser/src/HTMLToMarkdown";
 import html2markdown = HTMLToMarkdown.html2markdown;
@@ -154,13 +154,13 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
 
     return (
-        <MinimalContentEditable id={props.id}
-                                parent={props.parent}
-                                innerRef={ref}
-                                content={content}
-                                onChange={handleChange}
-                                onClick={onClick}
-                                onKeyDown={onKeyDown}/>
+        <NoteContentEditable id={props.id}
+                             parent={props.parent}
+                             innerRef={ref}
+                             content={content}
+                             onChange={handleChange}
+                             onClick={onClick}
+                             onKeyDown={onKeyDown}/>
     );
 
 });

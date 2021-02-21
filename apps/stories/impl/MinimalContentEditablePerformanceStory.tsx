@@ -3,7 +3,7 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {CKEditor5BalloonEditor} from './ckeditor5/CKEditor5BalloonEditor';
 import {CKEditor5GlobalCss} from "./ckeditor5/CKEditor5GlobalCss";
 import { Numbers } from 'polar-shared/src/util/Numbers';
-import {MinimalContentEditable} from "../../../web/js/notes/textarea/MinimalContentEditable";
+import {NoteContentEditable} from "../../../web/js/notes/textarea/NoteContentEditable";
 
 // interface EditorsProps {
 //     readonly
@@ -31,11 +31,11 @@ const Editors = React.memo(() => {
     return (
         <>
             {Numbers.range(1, EDITOR_COUNT).map(idx => (
-                <MinimalContentEditable id="1234"
-                                        parent={undefined}
-                                        key={idx}
-                                        content={`${idx} this is the <b>content</b> there are many like it but this one is mine.`}
-                                        onChange={NULL_FUNCTION}/>))}
+                <NoteContentEditable id="1234"
+                                     parent={undefined}
+                                     key={idx}
+                                     content={`${idx} this is the <b>content</b> there are many like it but this one is mine.`}
+                                     onChange={NULL_FUNCTION}/>))}
         </>
     );
 });

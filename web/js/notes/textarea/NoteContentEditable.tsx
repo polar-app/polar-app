@@ -4,6 +4,7 @@ import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import { observer } from "mobx-react-lite"
 import {NavOpts, NoteIDStr, useNotesStore} from '../store/NotesStore';
 import {ContentEditables} from "../ContentEditables";
+import {useNoteAction} from "../UseNoteAction";
 
 interface IProps {
 
@@ -36,15 +37,20 @@ interface IProps {
  * https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand
  *
  */
-export const MinimalContentEditable = observer((props: IProps) => {
+export const NoteContentEditable = observer((props: IProps) => {
 
     const [content, setContent] = React.useState(props.content);
 
-    const divRef = React.useRef<HTMLDivElement | null>();
+    const divRef = React.useRef<HTMLDivElement | null>(null);
 
     const contentRef = React.useRef(props.content);
 
     const store = useNotesStore();
+
+    const [noteLinkEventHandler] = useNoteAction({
+        contenteditable: divRef.current,
+        trigger: '[['
+    })
 
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -127,6 +133,8 @@ export const MinimalContentEditable = observer((props: IProps) => {
         if (! divRef.current) {
             return;
         }
+
+        noteLinkEventHandler(event);
 
         const cursorPosition = ContentEditables.computeCursorPosition(divRef.current);
 

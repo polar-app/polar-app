@@ -6,11 +6,13 @@ import {IActionMenuPosition} from "./NoteActionMenu";
 
 export type ReactKeyboardEventHandler = (event: React.KeyboardEvent) => void;
 
-export type NoteActionsResultTuple = [ReactKeyboardEventHandler, IActionMenuPosition | undefined];
+export type NoteActionReset = () => void;
+
+export type NoteActionsResultTuple = [ReactKeyboardEventHandler, IActionMenuPosition | undefined, NoteActionReset];
 
 interface IOpts {
 
-    readonly contenteditable: HTMLElement;
+    readonly contenteditable: HTMLElement | null;
 
     /**
      * The trigger characters that have to fire to bring up the dialog.
@@ -24,7 +26,7 @@ interface ICursorRange {
     readonly offset: number;
 }
 
-export function useNoteActions(opts: IOpts): NoteActionsResultTuple {
+export function useNoteAction(opts: IOpts): NoteActionsResultTuple {
 
     const {trigger} = opts;
 
@@ -60,19 +62,22 @@ export function useNoteActions(opts: IOpts): NoteActionsResultTuple {
 
             }
 
-        } else {
-
-            if (menuPositionRef.current !== undefined) {
-                // the menu must go away now ... [
-                setMenuPosition(undefined);
-                triggerPointRef.current = undefined;
-            }
-
         }
 
-    }, [keyBuffer, menuPositionRef, setMenuPosition, trigger]);
+    }, [keyBuffer, setMenuPosition, trigger]);
 
-    return [eventHandler, menuPosition];
+    const reset = React.useCallback(() => {
+
+        if (menuPositionRef.current !== undefined) {
+            // the menu must go away now ... [
+            setMenuPosition(undefined);
+        }
+
+        triggerPointRef.current = undefined;
+
+    }, [menuPositionRef, setMenuPosition])
+
+    return [eventHandler, menuPosition, reset];
 
 }
 
