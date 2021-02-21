@@ -152,6 +152,13 @@ describe('SparseDocMetas', function() {
 
                 assertJSON(inputDocMeta, outputDocMeta);
 
+                const before = JSON.stringify(inputDocMeta).length;
+                const after = JSON.stringify(sparseDocMeta).length
+
+                const reduction = ((after / before) * 100);
+
+                console.log("reduction: " , reduction);
+
             }
 
             await Files.recursively("/Users/burton/.polar", handlePath);

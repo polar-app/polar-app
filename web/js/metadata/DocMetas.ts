@@ -25,6 +25,7 @@ import {IComment} from 'polar-shared/src/metadata/IComment';
 import {AnnotationType} from 'polar-shared/src/metadata/AnnotationType';
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {UUIDs} from "./UUIDs";
+import {SparseDocMetas} from "./SparseDocMetas";
 
 export type AnnotationCallback = (pageMeta: IPageMeta,
                                   annotation: ITextHighlight | IAreaHighlight | IFlashcard | IComment,
@@ -154,7 +155,8 @@ export class DocMetas {
     }
 
     public static serialize(docMeta: IDocMeta, spacing: string = "  ") {
-        return MetadataSerializer.serialize(docMeta, spacing);
+        const data = SparseDocMetas.toSparse(docMeta);
+        return JSON.stringify(data, null, spacing);
     }
 
     /**
@@ -163,15 +165,21 @@ export class DocMetas {
 
         Preconditions.assertPresent(data, 'data');
 
-        if (! (typeof data === "string")) {
+        if (typeof data !== "string") {
             throw new Error("We can only deserialize strings: " + typeof data);
         }
 
-        let docMeta: IDocMeta = Object.create(DocMeta.prototype);
+        const docMeta: IDocMeta = Object.create(DocMeta.prototype);
 
         try {
 
-            docMeta = MetadataSerializer.deserialize(docMeta, data);
+            let obj = JSON.parse(data);
+
+            if (SparseDocMetas.isSparse(obj)) {
+                obj = SparseDocMetas.fromSparse(obj);
+            }
+
+            Object.assign(docMeta, obj);
 
             if (docMeta.docInfo && !docMeta.docInfo.filename) {
                 // log.warn("DocMeta has no filename: " + docMeta.docInfo.fingerprint);

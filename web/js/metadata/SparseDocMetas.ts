@@ -29,12 +29,12 @@ export namespace SparseDocMetas {
         const docMetaCopy = DocMetas.copyOf(docMeta);
 
         const result: ISparseDocMeta = {
-            encodingType: 'sparse',
-            docInfo: docMetaCopy.docInfo,
-            pageMetas: {},
             annotationInfo: docMetaCopy.annotationInfo,
             version: docMetaCopy.version,
             attachments: docMetaCopy.attachments,
+            encodingType: 'sparse',
+            docInfo: docMetaCopy.docInfo,
+            pageMetas: {},
         };
 
         // *** make the pageMetas sparse

@@ -75,7 +75,7 @@ export class PageMetas {
 
             pageMeta.pagemarks = Pagemarks.upgrade(pageMeta.pagemarks);
 
-        } );
+        });
 
         return pageMetas;
 

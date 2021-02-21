@@ -18,6 +18,32 @@ describe('DocMetas', function() {
         Pagemarks.sequences.batch = 0;
     });
 
+    describe('deserialize/serialize strategies', function () {
+
+        it("legacy", () => {
+
+            const fingerprint = '0x0001';
+            const docMeta = DocMetas.create(fingerprint, 1);
+
+            const deserialized = DocMetas.deserialize(JSON.stringify(docMeta), fingerprint)
+
+            assertJSON(docMeta, deserialized);
+
+        });
+
+        it("modern", () => {
+
+            const fingerprint = '0x0001';
+            const docMeta = DocMetas.create(fingerprint, 1);
+
+            const deserialized = DocMetas.deserialize(DocMetas.serialize(docMeta), fingerprint)
+
+            assertJSON(docMeta, deserialized);
+
+        });
+
+    });
+
     describe('JSON', function() {
 
         it("Test basic JSON encoding and decoding", function() {
@@ -251,7 +277,7 @@ describe('DocMetas', function() {
                     }
                 };
 
-                
+
                 assertJSON(DocMetas.getPageMeta(docMeta, 1).textHighlights, expected);
 
             });

@@ -232,7 +232,7 @@ export const NoteContentEditable = observer((props: IProps) => {
             props.onKeyDown(event);
         }
 
-    }, [hasEditorSelection, props, store]);
+    }, [hasEditorSelection, noteLinkEventHandler, props, store]);
 
     return (
 

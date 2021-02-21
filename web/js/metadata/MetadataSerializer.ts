@@ -21,7 +21,7 @@ export class MetadataSerializer {
 
         Preconditions.assertPresent(data, 'data');
 
-        if (! (typeof data === "string")) {
+        if (typeof data !== "string") {
             // extra check when called from JS
             throw new Error("We can only deserialize strings: " + typeof data);
         }
