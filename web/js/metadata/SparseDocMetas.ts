@@ -17,6 +17,10 @@ import {IDimensions} from "polar-shared/src/util/IDimensions";
 
 export namespace SparseDocMetas {
 
+    export function isSparse(docMeta: any) {
+        return docMeta.encodingType === 'sparse';
+    }
+
     /**
      * Convert to sparse DocMeta without excessive PageMetas that are empty.
      */
