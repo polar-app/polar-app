@@ -25,7 +25,9 @@ export const CircularProgressWithLabel = deepMemo((props: IProps) => {
                  alignItems="center"
                  justifyContent="center">
 
-                 <Typography variant="caption" component="div" color="textSecondary">
+                 <Typography variant="caption"
+                             component="div"
+                             color="textSecondary">
                      {text}
                  </Typography>
 
