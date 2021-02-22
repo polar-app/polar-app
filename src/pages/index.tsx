@@ -11,12 +11,14 @@ import DocumentViewerImage from "./images/DocumentViewerImage";
 import StatisticsImage from "./images/StatisticsImage";
 import FlashcardReviewImage from "./images/FlashcardReviewImage";
 import {CreateAccountButton} from "../components/CreateAccountButton";
-import {ColorBackground0, ColorBackground1, ColorBackground2} from "../components/ColorBackground";
+import {ColorBackground0, ColorBackground1, ColorBackground2, ColorBackground3} from "../components/ColorBackground";
 import KnowledgeAndBrainOrganizedImage from "./images/KnowledgeAndBrainOrganizedImage";
 import ReadingOnSteroidsImage from "./images/ReadingOnSteroidsImage";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import HeroImage from "./images/HeroImage";
+import DarkModeDark from "./images/DarkModeDark";
+import DarkModeLight from "./images/DarkModeLight";
 const SummaryLargeImage = require("../../content/assets/screenshots/summary-large-image.png");
 
 const useStyles = IndexStyling;
@@ -109,6 +111,7 @@ const Landing = ({}) => {
                       <HeroImage className={classes.centerImage}/>
                   </ColorBackground0>
 
+
                   <TrustedByLogos />
 
               </div>
@@ -164,6 +167,43 @@ const Landing = ({}) => {
                                               alt="Reading on Steroids"/>
 
                   </ColorBackground2>
+
+              </div>
+
+              <div className={classes.centerSection + ' ' + classes.sectionEven}>
+
+                  <ColorBackground3 style={{
+                                        marginTop: '50px',
+                                        marginBottom: '50px',
+                                        position: 'relative',
+                                        height: '80vh'
+                                    }}>
+
+                      <>
+
+                         <DarkModeDark style={{
+                                           width: '80%',
+                                           position: 'absolute',
+                                           bottom: '5%',
+                                           left: '3%',
+                                           zIndex: 2,
+                                           borderRadius: '10px',
+                                           boxShadow: "0px 0px 10px 5px rgb(50,50,50)",
+                                       }}/>
+
+                         <DarkModeLight style={{
+                                            width: '80%',
+                                            position: 'absolute',
+                                            bottom: '25%',
+                                            left: '17%',
+                                            zIndex: 1,
+                                            borderRadius: '10px',
+                                            boxShadow: "0px 0px 10px 5px rgb(50,50,50)",
+                                        }}/>
+
+                      </>
+
+                  </ColorBackground3>
 
               </div>
 

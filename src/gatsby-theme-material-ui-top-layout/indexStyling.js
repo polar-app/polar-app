@@ -39,12 +39,12 @@ const IndexStyling = makeStyles({
   },
 
   centerImage: {
-    borderRadius: '10px',
-    // maxWidth: 'min(1100px, 100vw)',
     maxHeight: '100vh',
     width: '100%',
     marginLeft: 'auto',
     marginRight: 'auto',
+
+    borderRadius: '10px',
     "-webkit-box-shadow": '0px 0px 10px 5px rgb(50,50,50)',
     "-moz-box-shadow": '0px 0px 10px 5px rgb(50,50,50)',
     boxShadow: "0px 0px 10px 5px rgb(50,50,50)",
