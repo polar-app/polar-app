@@ -195,9 +195,10 @@ const Landing = ({}) => {
 
                       <>
 
-                          <DarkModeDark style={{
-                              visibility: 'hidden',
-                          }}/>
+                          <DarkModeDark  className={classes.centerImage}
+                                          style={{
+                                              visibility: 'hidden',
+                                          }}/>
 
                           <DarkModeDark style={{
                                             width: '80%',
