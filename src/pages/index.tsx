@@ -172,38 +172,58 @@ const Landing = ({}) => {
 
               <div className={classes.centerSection + ' ' + classes.sectionEven}>
 
+                  <h1>
+                      <span style={{color: '#7CB3E9'}}>Light</span> or <span style={{color: '#25559F'}}>Dark</span> - you choose
+                  </h1>
+
+                  <h2>
+                  Look, we get it - some people prefer dark mode, some light
+                  mode, We even internally are split on it.  So we build both
+                  options for you to choose.
+                  </h2>
+
+                  <h2>
+                  The PDF is adjusted to your choice - if you choose dark mode,
+                  your PDFs automatically	convert to a dark background.
+                  </h2>
+
                   <ColorBackground3 style={{
                                         marginTop: '50px',
                                         marginBottom: '50px',
-                                        position: 'relative',
-                                        height: '80vh'
+                                        position: 'relative'
                                     }}>
 
                       <>
 
-                         <DarkModeDark style={{
-                                           width: '80%',
-                                           position: 'absolute',
-                                           bottom: '5%',
-                                           left: '3%',
-                                           zIndex: 2,
-                                           borderRadius: '10px',
-                                           boxShadow: "0px 0px 10px 5px rgb(50,50,50)",
-                                       }}/>
+                          <DarkModeDark style={{
+                              visibility: 'hidden',
+                          }}/>
 
-                         <DarkModeLight style={{
+                          <DarkModeDark style={{
                                             width: '80%',
                                             position: 'absolute',
-                                            bottom: '25%',
-                                            left: '17%',
-                                            zIndex: 1,
+                                            bottom: '5%',
+                                            left: '3%',
+                                            zIndex: 2,
                                             borderRadius: '10px',
                                             boxShadow: "0px 0px 10px 5px rgb(50,50,50)",
                                         }}/>
 
+                          <DarkModeLight style={{
+                                             width: '80%',
+                                             position: 'absolute',
+                                             bottom: '25%',
+                                             left: '17%',
+                                             zIndex: 1,
+                                             borderRadius: '10px',
+                                             boxShadow: "0px 0px 10px 5px rgb(50,50,50)",
+                                         }}/>
+
+
                       </>
 
                   </ColorBackground3>
+
 
               </div>
 
