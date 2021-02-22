@@ -5,7 +5,6 @@ import {PageInfo} from './PageInfo';
 import {DocInfos} from './DocInfos';
 import {AnnotationInfos} from './AnnotationInfos';
 import {Pagemarks} from './Pagemarks';
-import {MetadataSerializer} from './MetadataSerializer';
 import {PageMetas} from './PageMetas';
 import {forDict} from 'polar-shared/src/util/Functions';
 import {TextHighlights} from './TextHighlights';
@@ -30,6 +29,8 @@ import {SparseDocMetas} from "./SparseDocMetas";
 export type AnnotationCallback = (pageMeta: IPageMeta,
                                   annotation: ITextHighlight | IAreaHighlight | IFlashcard | IComment,
                                   type: AnnotationType) => void;
+
+const ENABLE_SPARSE_DOC_SERIALIZE = false;
 
 export class DocMetas {
 
@@ -155,8 +156,14 @@ export class DocMetas {
     }
 
     public static serialize(docMeta: IDocMeta, spacing: string = "  ") {
-        const data = SparseDocMetas.toSparse(docMeta);
-        return JSON.stringify(data, null, spacing);
+
+        if (ENABLE_SPARSE_DOC_SERIALIZE) {
+            const data = SparseDocMetas.toSparse(docMeta);
+            return JSON.stringify(data, null, spacing);
+        } else {
+            return JSON.stringify(docMeta, null, spacing);
+        }
+
     }
 
     /**
