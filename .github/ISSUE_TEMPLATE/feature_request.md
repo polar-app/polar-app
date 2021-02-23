@@ -7,20 +7,10 @@ assignees: ''
 
 ---
 
-**DONATE OR PURCHASE POLAR PREMIUM FOR PRIORITIZED SUPPORT AND FEATURES **
+PLEASE SUBMIT FEATURE AND BUG REQUESTS HERE: 
 
-**DONATE OR PURCHASE POLAR PREMIUM FOR PRIORITIZED SUPPORT AND FEATURES **
+https://app.getpolarized.io/feature-requests
 
-https://opencollective.com/polar-bookshelf
+... we are no longer using Github to track features/bugs in favor of Canny which is better integrated into Polar.
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
-
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
-
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
-
-**Additional context**
-Add any other context or screenshots about the feature request here.
+We'd still LOVE your feedback and will definitely fix any bugs but we can better prioritize using Canny!
