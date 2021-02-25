@@ -19,6 +19,7 @@ import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import HeroImage from "./images/HeroImage";
 import DarkModeDark from "./images/DarkModeDark";
 import DarkModeLight from "./images/DarkModeLight";
+import {FlashcardVideo} from "../components/FlashcardVideo";
 const SummaryLargeImage = require("../../content/assets/screenshots/summary-large-image.png");
 
 const useStyles = IndexStyling;
@@ -228,6 +229,15 @@ const Landing = ({}) => {
 
               </div>
 
+              <div className={classes.centerSection + ' ' + classes.sectionOdd}>
+                  <ColorBackground2 style={{
+                      marginTop: '50px',
+                      marginBottom: '50px'
+                  }}>
+                    <FlashcardVideo className={classes.centerImage}/>
+                  </ColorBackground2>
+              </div>
+
 
               <div className={classes.centerSection + ' ' + classes.sectionEven}>
 
@@ -265,6 +275,12 @@ const Landing = ({}) => {
 
 
 
+              <div className={classes.centerSection + ' ' + classes.sectionOdd}>
+
+                  <iframe src="https://player.vimeo.com/video/515601981?autoplay=1&loop=1&autopause=0" width="1280" height="800"  style={{borderRadius: '20px'}} frameBorder="0"
+                          allow="autoplay; fullscreen; picture-in-picture" allowFullScreen></iframe>
+
+              </div>
 
 
 
