@@ -27,6 +27,8 @@ export interface IVerifyTokenAuthResponse {
      */
     readonly customToken: string;
 
+    readonly isNewUser: boolean;
+
 }
 
 const firebaseProvider = Lazy.create(() => FirebaseAdmin.app());
@@ -85,32 +87,44 @@ export const VerifyTokenAuthFunction = ExpressFunctions.createHookAsync('VerifyT
 
     }
 
-    async function getOrCreateUser() {
+    interface IAuthUser {
+        readonly user: UserRecord;
+        readonly isNewUser: boolean;
+    }
+
+    async function getOrCreateUser(): Promise<IAuthUser> {
+
+        async function doCreateUser(email: string): Promise<IAuthUser> {
+
+            const password = Hashcodes.createRandomID();
+
+            const user = await auth.createUser({ email, password });
+
+            return {
+                user,
+                isNewUser: true
+            }
+
+        }
 
         const user = await fetchUserByEmail(email);
 
         if (! user) {
-
-            const password = Hashcodes.createRandomID()
-
-            return await auth.createUser({
-                email,
-                password
-            })
-
+            return await doCreateUser(email);
         }
 
-        return user;
+        return {user, isNewUser: false};
 
     }
 
-    const user = await getOrCreateUser();
+    const authUser = await getOrCreateUser();
 
-    const customToken = await auth.createCustomToken(user.uid);
+    const customToken = await auth.createCustomToken(authUser.user.uid);
 
     const response: IVerifyTokenAuthResponse = {
         code: 'ok',
-        customToken
+        customToken,
+        isNewUser: authUser.isNewUser
     };
 
     ExpressFunctions.sendResponse(res, response);
