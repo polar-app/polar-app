@@ -17,7 +17,7 @@ var useStyles = core_1.makeStyles({
         marginRight: 'auto',
         paddingLeft: "3%",
         paddingRight: "3%",
-        height: '100vh'
+        height: '50vh'
     },
     background: {},
     h1: {

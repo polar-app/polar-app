@@ -22,6 +22,7 @@ import DarkModeLight from "./images/DarkModeLight";
 import {FlashcardVideo} from "../components/FlashcardVideo";
 import {AnkiSyncVideo} from "../components/AnkiSyncVideo";
 import ReadingProgressImage from "./images/ReadingProgressImage";
+import WebCaptureImage from "./images/WebCaptureImage";
 const SummaryLargeImage = require("../../content/assets/screenshots/summary-large-image.png");
 
 const useStyles = IndexStyling;
@@ -141,6 +142,27 @@ const Landing = ({}) => {
                                    }}>
                       <KnowledgeAndBrainOrganizedImage className={classes.centerImage}
                                                        alt="Your Knowledge and Brain Organized"/>
+                  </ColorBackground1>
+              </div>
+
+
+
+              <div className={classes.centerSection + ' ' + classes.sectionEven}>
+
+                  <h1>
+                      WebCapture
+                  </h1>
+
+                  <h2>
+                  </h2>
+
+
+                  <ColorBackground1 style={{
+                      marginTop: '50px',
+                      marginBottom: '50px'
+                  }}>
+                      <WebCaptureImage className={classes.centerImage}
+                                       alt="Your Knowledge and Brain Organized"/>
                   </ColorBackground1>
               </div>
 
