@@ -291,43 +291,6 @@ const Landing = ({}) => {
                   </ColorBackground2>
               </div>
 
-
-              <div className={classes.centerSection + ' ' + classes.sectionEven}>
-
-                  <h1>
-                      Organize and Prioritize Your Reading
-                  </h1>
-
-                  <h2>
-                      Upload PDFs and EPUBs, capture web pages with the Polar Chrome extension. Keep all your documents in one place. Manage and prioritize your reading with progress tracking, flagging, tagging, and more
-
-                  </h2>
-
-                  {/*<h3>*/}
-                  {/*    Read and manage multiple documents at the same time.*/}
-                  {/*</h3>*/}
-
-                  <AnnotationRepositoryImage className={classes.centerImage}
-                                             alt="Polar App homepage screenshot macbook"/>
-              </div>
-
-
-              <div className={classes.centerSection + ' ' + classes.sectionOdd}>
-
-                  <h1>
-                      Active Reading
-                  </h1>
-
-                  <h2>
-                      Use Polar's integrated document viewer for active and incremental reading. Annotate, highlight text and areas, tag annotations, comment, use advanced pagemarks, and create flashcards from highlights.
-                  </h2>
-
-                  <DocumentViewerImage className={classes.centerImage}
-                                             alt="Polar Document Viewer"/>
-              </div>
-
-
-
               <CreateAccountWLogos transparent={false} />
 
           </Box>
