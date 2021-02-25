@@ -6,7 +6,6 @@ import {Firebase} from "../../../../web/js/firebase/Firebase";
 import {FirebaseUIAuth} from "../../../../web/js/firebase/FirebaseUIAuth";
 import firebase from 'firebase/app'
 import { useHistory } from "react-router-dom";
-import { Fetches } from "polar-shared/src/util/Fetch";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
@@ -27,7 +26,6 @@ function handleAuthResult(authResult: firebase.auth.UserCredential) {
     if (authResult.additionalUserInfo?.isNewUser) {
         console.log("New user authenticated");
 
-        // this is legacy...
         Analytics.event2('new-user-signup');
 
         handleRedirect(true, '/#welcome');
