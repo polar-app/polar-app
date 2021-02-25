@@ -145,27 +145,6 @@ const Landing = ({}) => {
                   </ColorBackground1>
               </div>
 
-
-
-              <div className={classes.centerSection + ' ' + classes.sectionEven}>
-
-                  <h1>
-                      <span style={{color: '#ECA091'}}>Web content</span> captured in one click
-                  </h1>
-
-                  <h2>
-                      Use the Polar Chrome extension to save web pages in your repository.
-                  </h2>
-
-                  <ColorBackground1 style={{
-                      marginTop: '50px',
-                      marginBottom: '50px'
-                  }}>
-                      <WebCaptureImage className={classes.centerImage}
-                                       alt="Your Knowledge and Brain Organized"/>
-                  </ColorBackground1>
-              </div>
-
               <div className={classes.centerSection + ' ' + classes.sectionEven}>
 
                   <h1>
@@ -193,6 +172,64 @@ const Landing = ({}) => {
 
                   </ColorBackground2>
 
+              </div>
+
+
+              <div className={classes.centerSection + ' ' + classes.sectionEven}>
+
+                  <h1>
+                      <span style={{color: '#ECA091'}}>Web content</span> <br/> captured in one click
+                  </h1>
+
+                  <h2>
+                      Use the Polar Chrome extension to save web pages in your repository.
+                  </h2>
+
+                  <ColorBackground1 style={{
+                      marginTop: '50px',
+                      marginBottom: '50px'
+                  }}>
+                      <WebCaptureImage className={classes.centerImage}
+                                       alt="Your Knowledge and Brain Organized"/>
+                  </ColorBackground1>
+              </div>
+
+
+              <div className={classes.centerSection + ' ' + classes.sectionOdd}>
+
+
+                  <h1>
+                      <span style={{color: '#6BD0AA'}}>Remember forever</span> <br/> what's important.
+                  </h1>
+
+                  <h2>
+                      Review your annotations and flashcards directly in Polar using our spaced repetition algorithms.
+                  </h2>
+
+                  <ColorBackground2 style={{
+                                        marginTop: '50px',
+                                        marginBottom: '50px'
+                                    }}>
+                      <FlashcardVideo className={classes.centerImage}/>
+                  </ColorBackground2>
+              </div>
+
+              <div className={classes.centerSection + ' ' + classes.sectionOdd}>
+
+                  <h1>
+                      Sync Your <br/> <span style={{color: '#61BBC6'}}>Flashcards To Anki</span>
+                  </h1>
+
+                  <h2>Use your favorite open-source flashcard tool along with
+                  Polar. One click and all your Polar flashcards are synced to
+                  Anki.</h2>
+
+                  <ColorBackground2 style={{
+                      marginTop: '50px',
+                      marginBottom: '50px'
+                  }}>
+                    <AnkiSyncVideo className={classes.centerImage}/>
+                  </ColorBackground2>
               </div>
 
 
@@ -275,43 +312,7 @@ const Landing = ({}) => {
 
               </div>
 
-              <div className={classes.centerSection + ' ' + classes.sectionOdd}>
 
-                  <h1>
-                      Sync Your <span style={{color: '#61BBC6'}}>Flashcards To Anki</span>
-                  </h1>
-
-                  <h2>Use your favorite open-source flashcard tool along with
-                  Polar. One click and all your Polar flashcards are synced to
-                  Anki.</h2>
-
-                  <ColorBackground2 style={{
-                      marginTop: '50px',
-                      marginBottom: '50px'
-                  }}>
-                    <AnkiSyncVideo className={classes.centerImage}/>
-                  </ColorBackground2>
-              </div>
-
-
-              <div className={classes.centerSection + ' ' + classes.sectionOdd}>
-
-
-                  <h1>
-                      <span style={{color: '#6BD0AA'}}>Remember forever</span> what's important.
-                  </h1>
-
-                  <h2>
-                      Review your annotations and flashcards directly in Polar using our spaced repetition algorithms.
-                  </h2>
-
-                  <ColorBackground2 style={{
-                                        marginTop: '50px',
-                                        marginBottom: '50px'
-                                    }}>
-                      <FlashcardVideo className={classes.centerImage}/>
-                  </ColorBackground2>
-              </div>
 
               <CreateAccountWLogos transparent={false} />
 
