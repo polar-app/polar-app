@@ -98,6 +98,16 @@ export class Ranges {
 
     }
 
+    public static toText2(range: Range): string {
+
+        const documentFragment = range.cloneContents();
+
+        const div = document.createElement('div');
+        div.appendChild(documentFragment);
+        return div.innerText;
+
+    }
+
     /**
      * Get the text nodes for range. Optionally splitting the text if necessary
      *

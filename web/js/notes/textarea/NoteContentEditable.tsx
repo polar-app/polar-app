@@ -4,7 +4,7 @@ import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import { observer } from "mobx-react-lite"
 import {NavOpts, NoteIDStr, useNotesStore} from '../store/NotesStore';
 import {ContentEditables} from "../ContentEditables";
-import {useNoteAction} from "../UseNoteAction";
+import {useCommandActionMenu} from "../../mui/command_action/UseCommandActionMenu";
 
 interface IProps {
 
@@ -47,10 +47,10 @@ export const NoteContentEditable = observer((props: IProps) => {
 
     const store = useNotesStore();
 
-    const [noteLinkEventHandler] = useNoteAction({
+    const [noteLinkEventHandler] = useCommandActionMenu({
         contenteditable: divRef.current,
         trigger: '[['
-    })
+    });
 
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 

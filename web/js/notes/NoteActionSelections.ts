@@ -84,4 +84,5 @@ export namespace NoteActionSelections {
         return undefined;
 
     }
+
 }
