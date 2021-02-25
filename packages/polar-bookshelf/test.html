@@ -1,0 +1,69 @@
+<html>
+<head>
+
+    <style>
+
+    </style>
+</head>
+<body>
+
+<div id="content" contenteditable="true">
+    this is <b>the</b> content
+</div>
+
+<script>
+
+    function test(offset) {
+
+        const sel = window.getSelection();
+
+        const content = document.getElementById('content');
+
+        const range = document.createRange();
+
+        if (offset === 'start') {
+            range.setStartAfter(content)
+            range.setEndAfter(content)
+        }
+
+        if (offset === 'end') {
+
+            function computeEnd(node) {
+
+                if (node.nodeType === Element.TEXT_NODE) {
+
+                    return {
+                        node,
+                        offset: node.textContent.length,
+                    }
+
+                }
+
+                if (node.childNodes.length > 0) {
+                    return computeEnd(node.childNodes[node.childNodes.length - 1]);
+                }
+
+                return {node, offset: 0};
+
+            }
+
+            const end = computeEnd(content);
+
+            range.setStart(end.node, end.offset);
+            range.setEnd(end.node, end.offset);
+
+        }
+
+        content.focus();
+
+        sel.removeAllRanges();
+        sel.addRange(range);
+
+    }
+
+</script>
+
+<button onclick="test('end')">test</button>
+
+</body>
+</html>
