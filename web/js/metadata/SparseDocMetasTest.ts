@@ -16,6 +16,16 @@ import {SparseDimensions, SparseDocMetas} from "./SparseDocMetas";
 
 describe('SparseDocMetas', function() {
 
+    const enabled = DocMetas.ENABLE_SPARSE_DOC_SERIALIZE;
+
+    beforeEach(() => {
+        DocMetas.ENABLE_SPARSE_DOC_SERIALIZE = true;
+    });
+
+    afterEach(() => {
+        DocMetas.ENABLE_SPARSE_DOC_SERIALIZE = enabled;
+    });
+
     it("size without making sparse", function () {
 
         const docMeta = DocMetas.create('0x1234', 7500);

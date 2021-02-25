@@ -30,9 +30,9 @@ export type AnnotationCallback = (pageMeta: IPageMeta,
                                   annotation: ITextHighlight | IAreaHighlight | IFlashcard | IComment,
                                   type: AnnotationType) => void;
 
-const ENABLE_SPARSE_DOC_SERIALIZE = false;
-
 export class DocMetas {
+
+    public static ENABLE_SPARSE_DOC_SERIALIZE = false;
 
     public static annotations(docMeta: IDocMeta, callback: AnnotationCallback) {
 
