@@ -157,7 +157,7 @@ export class DocMetas {
 
     public static serialize(docMeta: IDocMeta, spacing: string = "  ") {
 
-        if (ENABLE_SPARSE_DOC_SERIALIZE) {
+        if (this.ENABLE_SPARSE_DOC_SERIALIZE) {
             const data = SparseDocMetas.toSparse(docMeta);
             return JSON.stringify(data, null, spacing);
         } else {
