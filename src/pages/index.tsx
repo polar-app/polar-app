@@ -150,12 +150,12 @@ const Landing = ({}) => {
               <div className={classes.centerSection + ' ' + classes.sectionEven}>
 
                   <h1>
-                      WebCapture
+                      <span style={{color: '#ECA091'}}>Web content</span> captured in one click
                   </h1>
 
                   <h2>
+                      Use the Polar Chrome extension to save web pages in your repository.
                   </h2>
-
 
                   <ColorBackground1 style={{
                       marginTop: '50px',
