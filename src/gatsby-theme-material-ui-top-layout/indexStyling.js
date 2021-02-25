@@ -20,8 +20,8 @@ const IndexStyling = makeStyles({
     paddingBottom: '25px',
 
     "& h1": {
-      fontWeight: '400',
-      fontSize: '45px'
+      fontWeight: '500',
+      fontSize: '65px'
     },
     "& h2": {
       fontSize: '25px',

@@ -6,10 +6,6 @@ import {useBreakpoint} from "gatsby-plugin-breakpoints";
 import CreateAccountWLogos from "../components/create-account-plus-logos";
 import IndexStyling from "../gatsby-theme-material-ui-top-layout/indexStyling";
 import TrustedByLogos from "../components/trusted-by-logos";
-import AnnotationRepositoryImage from "./images/AnnotationRepositoryImage";
-import DocumentViewerImage from "./images/DocumentViewerImage";
-import StatisticsImage from "./images/StatisticsImage";
-import FlashcardReviewImage from "./images/FlashcardReviewImage";
 import {CreateAccountButton} from "../components/CreateAccountButton";
 import {ColorBackground0, ColorBackground1, ColorBackground2, ColorBackground3} from "../components/ColorBackground";
 import KnowledgeAndBrainOrganizedImage from "./images/KnowledgeAndBrainOrganizedImage";
@@ -68,7 +64,6 @@ const Landing = ({}) => {
                    overflow: "hidden",
                }}
                className={breakpoints.md ? classes.marginsMobile : null}>
-
 
               <div className={classes.newHeroSection + ' ' + classes.centerSection}>
 
