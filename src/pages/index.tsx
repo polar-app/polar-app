@@ -20,6 +20,8 @@ import HeroImage from "./images/HeroImage";
 import DarkModeDark from "./images/DarkModeDark";
 import DarkModeLight from "./images/DarkModeLight";
 import {FlashcardVideo} from "../components/FlashcardVideo";
+import {AnkiSyncVideo} from "../components/AnkiSyncVideo";
+import ReadingProgressImage from "./images/ReadingProgressImage";
 const SummaryLargeImage = require("../../content/assets/screenshots/summary-large-image.png");
 
 const useStyles = IndexStyling;
@@ -171,6 +173,21 @@ const Landing = ({}) => {
 
               </div>
 
+
+              <div className={classes.centerSection + ' ' + classes.sectionEven}>
+
+                  <ColorBackground2 style={{
+                                        marginTop: '50px',
+                                        marginBottom: '50px'
+                                    }}>
+
+                      <ReadingProgressImage className={classes.centerImage}
+                                             alt="Reading Progress"/>
+
+                  </ColorBackground2>
+
+              </div>
+
               <div className={classes.centerSection + ' ' + classes.sectionEven}>
 
                   <h1>
@@ -230,11 +247,30 @@ const Landing = ({}) => {
               </div>
 
               <div className={classes.centerSection + ' ' + classes.sectionOdd}>
+
+                  <h1>
+                      Sync Your <span style={{color: '#61BBC6'}}>Flashcards To Anki</span>
+                  </h1>
+
+                  <h2>Use your favorite open-source flashcard tool along with
+                  Polar. One click and all your Polar flashcards are synced to
+                  Anki.</h2>
+
                   <ColorBackground2 style={{
                       marginTop: '50px',
                       marginBottom: '50px'
                   }}>
-                    <FlashcardVideo className={classes.centerImage}/>
+                    <AnkiSyncVideo className={classes.centerImage}/>
+                  </ColorBackground2>
+              </div>
+
+
+              <div className={classes.centerSection + ' ' + classes.sectionOdd}>
+                  <ColorBackground2 style={{
+                      marginTop: '50px',
+                      marginBottom: '50px'
+                  }}>
+                      <FlashcardVideo className={classes.centerImage}/>
                   </ColorBackground2>
               </div>
 

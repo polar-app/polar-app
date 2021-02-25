@@ -4,14 +4,14 @@ interface IProps {
     readonly className?: string;
 }
 
-export const FlashcardVideo = (props: IProps) => {
+export const AnkiSyncVideo = (props: IProps) => {
     return (
         <video className={props.className}
                autoPlay={true}
                loop={true}
                muted={true}
-               poster="/flashcard-review.png">
-            <source src="/flashcard-review.mp4" type="video/mp4"/>
+               poster="/anki-sync.png">
+            <source src="/anki-sync.mp4" type="video/mp4"/>
         </video>
     );
 
