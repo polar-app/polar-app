@@ -78,10 +78,16 @@ export namespace SelectedContents {
 
         function computeText(): string {
 
+            console.log("FIXME: rectText.lenght: " + rectTexts.length);
+
+            // FIXME: this is the bug... we need to use the x/y positions of the
+            // text if they're absolutely positioned
+
             if (rectTexts.length > 0) {
+
                 // this is PDF mode so we should just compute the text via join
                 // the rect texts...
-                return Strings.joinWithSpacing(rectTexts.map(current => current.text));
+                // return Strings.joinWithSpacing(rectTexts.map(current => current.text));
             }
 
             return toText(ranges)
@@ -110,6 +116,7 @@ export namespace SelectedContents {
     }
 
     export function toText(ranges: ReadonlyArray<Range>) {
+        console.log("FIXME: working with N ragnes: " + ranges.length);
         return ranges.map(range => Ranges.toText(range)).join("");
     }
 
