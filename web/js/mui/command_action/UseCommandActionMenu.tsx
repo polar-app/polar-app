@@ -1,8 +1,8 @@
 import React from 'react';
 import {RingBuffers} from "polar-shared/src/util/RingBuffers";
-import {NoteActionSelections} from "./NoteActionSelections";
-import {useStateRef} from "../hooks/ReactHooks";
-import {IActionMenuPosition} from "./NoteActionMenu";
+import {IActionMenuPosition} from "./CommandActionMenuStore";
+import {useStateRef} from "../../hooks/ReactHooks";
+import {NoteActionSelections} from "../../notes/NoteActionSelections";
 
 export type ReactKeyboardEventHandler = (event: React.KeyboardEvent) => void;
 
@@ -26,17 +26,7 @@ interface ICursorRange {
     readonly offset: number;
 }
 
-// FIXME: then hte region goes backwards, before the trigger point, close the dialog...
-
-
-// FIXME: desgn, this component controls whether the auto-complete dialog pops up and that's a
-// root component for auto-complete that pops up, allows us to type, and can be dismissed as
-// I type.
-//
-// this code is given the metadata for the dialog, and the root store pops it up... and it uses
-// mobx for the control / code.
-
-export function useNoteAction(opts: IOpts): NoteActionsResultTuple {
+export function useCommandActionMenu(opts: IOpts): NoteActionsResultTuple {
 
     const {trigger} = opts;
 

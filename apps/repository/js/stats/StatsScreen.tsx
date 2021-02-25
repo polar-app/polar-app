@@ -134,14 +134,15 @@ const Desktop = (props: ReviewerProps) => {
                  flexGrow: 1,
                  minWidth: 0,
                  minHeight: 0,
-                 overflowY: 'auto'
+                 overflowY: 'auto',
              }}>
 
             <div style={{
-                     maxWidth: '900px',
+                     maxWidth: '1200px',
                      marginLeft: 'auto',
                      marginRight: 'auto',
                      flexGrow: 1,
+                     padding: '10px'
                  }}>
 
                 <ReadingStats docInfos={docInfos}/>

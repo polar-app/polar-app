@@ -41,12 +41,12 @@ export const ReadingProgressTable = (props: IProps) => {
 
     // compute the from and to year...
 
-    const days = data.map(current => current.day).sort();
+    const days = data.map(current => current.day).sort().reverse();
 
     const today = ISODateTimeStrings.toISODate(ISODateTimeStrings.create());
 
-    const fromYear = parseInt(ISODateTimeStrings.toISOYear(days.reduce(Reducers.FIRST, today)));
-    const toYear = parseInt(ISODateTimeStrings.toISOYear(days.reduce(Reducers.LAST, today)));
+    const fromYear = parseInt(ISODateTimeStrings.toISOYear(days.reduce(Reducers.LAST, today)));
+    const toYear = parseInt(ISODateTimeStrings.toISOYear(days.reduce(Reducers.FIRST, today)));
 
     // NOTE: we offset the days by 1 so that we don't fold into the next
     // year depending on timezones.
@@ -54,7 +54,7 @@ export const ReadingProgressTable = (props: IProps) => {
     const from = `${fromYear}-01-02`;
     const to = `${toYear}-12-30`;
 
-    const nrYears = (toYear - fromYear) + 1;
+    const nrYears = Math.abs(toYear - fromYear) + 1;
 
     const height = 150 * nrYears;
 
@@ -65,7 +65,7 @@ export const ReadingProgressTable = (props: IProps) => {
 
             <div style={{height: `${height}px`}}>
                 <div className="p-1 mr-auto ml-auto"
-                     style={{height: '100%', width: '800px'}}>
+                     style={{height: '100%'}}>
 
                     <ResponsiveCalendar
                         data={data}
@@ -74,16 +74,16 @@ export const ReadingProgressTable = (props: IProps) => {
                         // domain={domain}
                         emptyColor={theme.palette.background.default}
                         colors={[
-                            "rgba(0,0,255,0.1)",
-                            "rgba(0,0,255,0.2)",
-                            "rgba(0,0,255,0.3)",
-                            "rgba(0,0,255,0.4)",
-                            "rgba(0,0,255,0.5)",
-                            "rgba(0,0,255,0.6)",
-                            "rgba(0,0,255,0.7)",
-                            "rgba(0,0,255,0.8)",
-                            "rgba(0,0,255,0.9)",
-                            "rgba(0,0,255,1.0)",
+                            "rgba(0,0,255,0.55)",
+                            "rgba(0,0,255,0.60)",
+                            "rgba(0,0,255,0.65)",
+                            "rgba(0,0,255,0.70)",
+                            "rgba(0,0,255,0.75)",
+                            "rgba(0,0,255,0.80)",
+                            "rgba(0,0,255,0.85)",
+                            "rgba(0,0,255,0.90)",
+                            "rgba(0,0,255,0.95)",
+                            "rgba(0,0,255,1.00)",
                         ]}
                         // colors={{scheme: 'nivo'}}
                         margin={{
