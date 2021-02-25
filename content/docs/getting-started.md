@@ -48,7 +48,7 @@ Mobile includes both tablet and phones running iOS and Android. Polar supports m
 
 ## Desktop
 
-We have desktop apps for Windows, MacOS, and Linux which you can <a href="https://getpolarized.io/download.html" target="_blank">download here</a>.
+We have desktop apps for Windows, MacOS, and Linux which you can <a href="https://getpolarized.io/download/" target="_blank">download here</a>.
 
 ## Web
 
