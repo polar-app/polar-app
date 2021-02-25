@@ -176,6 +176,13 @@ const Landing = ({}) => {
 
               <div className={classes.centerSection + ' ' + classes.sectionEven}>
 
+                  <h1><span style={{color: '#B4504D'}}>Motivation</span> built in</h1>
+
+                  <h2>
+                      Track your progress automatically.  Commit to a daily
+                      number of pages to read or flashcards to review.
+                  </h2>
+
                   <ColorBackground2 style={{
                                         marginTop: '50px',
                                         marginBottom: '50px'
@@ -266,10 +273,20 @@ const Landing = ({}) => {
 
 
               <div className={classes.centerSection + ' ' + classes.sectionOdd}>
+
+
+                  <h1>
+                      <span style={{color: '#6BD0AA'}}>Remember forever</span> what's important.
+                  </h1>
+
+                  <h2>
+                      Review your annotations and flashcards directly in Polar using our spaced repetition algorithms.
+                  </h2>
+
                   <ColorBackground2 style={{
-                      marginTop: '50px',
-                      marginBottom: '50px'
-                  }}>
+                                        marginTop: '50px',
+                                        marginBottom: '50px'
+                                    }}>
                       <FlashcardVideo className={classes.centerImage}/>
                   </ColorBackground2>
               </div>
