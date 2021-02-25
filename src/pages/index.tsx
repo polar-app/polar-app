@@ -176,7 +176,7 @@ const Landing = ({}) => {
 
               <div className={classes.centerSection + ' ' + classes.sectionEven}>
 
-                  <h1><span style={{color: '#B4504D'}}>Motivation</span> built in</h1>
+                  <h1><span style={{color: '#B4504D'}}>Motivation</span> built-iin</h1>
 
                   <h2>
                       Track your progress automatically.  Commit to a daily
@@ -327,45 +327,6 @@ const Landing = ({}) => {
               </div>
 
 
-
-              <div className={classes.centerSection + ' ' + classes.sectionOdd}>
-
-                  <iframe src="https://player.vimeo.com/video/515601981?autoplay=1&loop=1&autopause=0" width="1280" height="800"  style={{borderRadius: '20px'}} frameBorder="0"
-                          allow="autoplay; fullscreen; picture-in-picture" allowFullScreen></iframe>
-
-              </div>
-
-
-
-              <div className={classes.centerSection + ' ' + classes.sectionEven}>
-
-                  <h1>
-                      Flashcards and Anki Integration
-                  </h1>
-
-                  <h3>
-                      Create flashcards in one click from your annotations and highlights. Review them using
-                      spaced repetition algorithm or sync them with Anki.
-                  </h3>
-
-                  <FlashcardReviewImage className={classes.centerImage}
-                                        alt="Polar Reading Statistics"/>
-              </div>
-
-
-              <div className={classes.centerSection + ' ' + classes.sectionOdd}>
-
-                  <h1>
-                      Keep Track of Reading Statistics
-                  </h1>
-
-                  <h2>
-                      Commit to reading a fixed number of pages per day and use it to encourage your reading.
-                  </h2>
-
-                  <StatisticsImage className={classes.centerImage}
-                                   alt="Polar Reading Statistics"/>
-              </div>
 
               <CreateAccountWLogos transparent={false} />
 
