@@ -21,7 +21,8 @@ const IndexStyling = makeStyles({
 
     "& h1": {
       fontWeight: '500',
-      fontSize: '65px'
+      fontSize: '65px',
+      lineHeight: '1.2em'
     },
     "& h2": {
       fontSize: '25px',

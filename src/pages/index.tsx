@@ -230,7 +230,7 @@ const Landing = ({}) => {
 
               <div className={classes.centerSection + ' ' + classes.sectionEven}>
 
-                  <h1><span style={{color: '#B4504D'}}>Motivation</span> built-iin</h1>
+                  <h1><span style={{color: '#B4504D'}}>Motivation</span> built-in</h1>
 
                   <h2>
                       Track your progress automatically.  Commit to a daily
