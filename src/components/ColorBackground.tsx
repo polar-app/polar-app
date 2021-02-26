@@ -13,7 +13,7 @@ const ColorBackground = (props: IProps) => {
         <div className={props.className}
              style={{
                  width: '100%',
-                 maxHeight: '100vh',
+                 // maxHeight: '100vh',
                  padding: '6vh 3vw',
                  borderRadius: '15px',
                  ...props.style
