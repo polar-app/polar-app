@@ -91,7 +91,7 @@ const CreateFlashcardButton = deepMemo((props: IMutableProps) => {
     const annotationInputContext = useAnnotationActiveInputContext();
 
     return (
-        <StandardIconButton tooltip="Create a new flashcard"
+        <StandardIconButton tooltip="Create flashcard manually"
                             disabled={! props.mutable}
                             size="small"
                             onClick={() => annotationInputContext.setActive('flashcard')}>
