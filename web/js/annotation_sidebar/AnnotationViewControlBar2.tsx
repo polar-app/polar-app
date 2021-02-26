@@ -57,7 +57,7 @@ const ChangeTextHighlightButton = deepMemo((props: IAnnotationProps) => {
     }
 
     return (
-        <StandardIconButton tooltip="Change the content of a text highlight."
+        <StandardIconButton tooltip="Edit highlight."
                             disabled={! props.mutable}
                             size="small"
                             onClick={() => annotationInputContext.setActive('text-highlight')}>
@@ -74,7 +74,7 @@ const CreateCommentButton = deepMemo((props: IMutableProps) => {
     const annotationInputContext = useAnnotationActiveInputContext();
 
     return (
-        <StandardIconButton tooltip="Create a new comment"
+        <StandardIconButton tooltip="Comment"
                             disabled={! props.mutable}
                             size="small"
                             onClick={() => annotationInputContext.setActive('comment')}>
@@ -91,7 +91,7 @@ const CreateFlashcardButton = deepMemo((props: IMutableProps) => {
     const annotationInputContext = useAnnotationActiveInputContext();
 
     return (
-        <StandardIconButton tooltip="Create a new flashcard"
+        <StandardIconButton tooltip="Create flashcard manually"
                             disabled={! props.mutable}
                             size="small"
                             onClick={() => annotationInputContext.setActive('flashcard')}>
@@ -114,7 +114,7 @@ const CreateAIFlashcardButton = deepMemo((props: IAnnotationProps) => {
     }, [handler, verifiedAction]);
 
     return (
-        <StandardIconButton tooltip="Create a flashcard using AI"
+        <StandardIconButton tooltip="Create flashcard automatically"
                             disabled={! props.mutable}
                             size="small"
                             onClick={handleClick}>

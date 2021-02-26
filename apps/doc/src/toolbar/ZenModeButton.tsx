@@ -8,7 +8,7 @@ export const ZenModeButton = React.memo(() => {
     const {toggleZenMode} = useZenModeCallbacks();
 
     return (
-        <StandardIconButton tooltip="Enter Zen Mode"
+        <StandardIconButton tooltip="Zen mode"
                             onClick={toggleZenMode}>
             <ZoomOutMapIcon />
         </StandardIconButton>

@@ -8,7 +8,7 @@ import {MUITooltip} from "../../../mui/MUITooltip";
 export const DocumentSaved = React.memo(() => {
     const theme = useTheme();
     return (
-        <MUITooltip title="Document fully written to the the cloud..">
+        <MUITooltip title="Saved to cloud">
             <Icon style={{color: theme.palette.text.secondary}}>
                 <CloudDoneIcon/>
             </Icon>

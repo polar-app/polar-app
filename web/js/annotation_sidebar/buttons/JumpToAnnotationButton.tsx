@@ -36,7 +36,7 @@ export const JumpToAnnotationButton = memoForwardRef((props: IProps) => {
     }
 
     return (
-        <StandardIconButton tooltip="Jump to the current annotation in the page."
+        <StandardIconButton tooltip="Jump to annotation."
                             size="small"
                             onClick={handleJumpToCurrentAnnotation}>
 

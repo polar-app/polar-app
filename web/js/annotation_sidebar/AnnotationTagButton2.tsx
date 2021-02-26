@@ -18,7 +18,7 @@ export const AnnotationTagButton2 = deepMemo((props: IProps) => {
     const taggedCallback = annotationMutations.createTaggedCallback({selected: [props.annotation]});
 
     return (
-        <StandardIconButton tooltip="Change/set the tags on an item."
+        <StandardIconButton tooltip="Tag highlight"
                             disabled={! doc?.mutable}
                             size="small"
                             onClick={taggedCallback}>

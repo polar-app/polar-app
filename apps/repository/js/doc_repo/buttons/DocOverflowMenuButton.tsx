@@ -22,7 +22,7 @@ export const OverflowMenuButton = React.memo((props: OverflowMenuButtonProps) =>
     }, [contextMenuHandlers, selectRow, viewID]);
 
     return (
-        <StandardIconButton tooltip="More document actions..."
+        <StandardIconButton tooltip="More"
                             aria-controls="doc-dropdown-menu"
                             aria-haspopup="true"
                             onClick={handleDropdownMenu}
