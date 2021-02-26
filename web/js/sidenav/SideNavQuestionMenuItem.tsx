@@ -82,14 +82,14 @@ export const SideNavQuestionMenuItem = React.forwardRef<HTMLLIElement, IProps>((
 
             <ListItemText primary={
                               <span style={{
-                                       fontSize: '1.5rem'
+                                       fontSize: '1.3rem'
                                    }}>
                                   {props.text}
                               </span>
                           }
                           secondary={
                               <span style={{
-                                       fontSize: '1.3rem'
+                                       fontSize: '1.1rem'
                                    }}>
                                   {props.secondary}
                               </span>
