@@ -40,7 +40,7 @@ const IndexStyling = makeStyles({
   },
 
   centerImage: {
-    maxHeight: '100vh',
+    // maxHeight: '100vh',
     width: '100%',
     marginLeft: 'auto',
     marginRight: 'auto',
