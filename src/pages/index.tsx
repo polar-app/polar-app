@@ -181,9 +181,9 @@ const Landing = ({}) => {
                   </h2>
 
                   <ColorBackground1 style={{
-                      marginTop: '50px',
-                      marginBottom: '50px'
-                  }}>
+                                        marginTop: '50px',
+                                        marginBottom: '50px'
+                                    }}>
                       <WebCaptureImage className={classes.centerImage}
                                        alt="Your Knowledge and Brain Organized"/>
                   </ColorBackground1>
@@ -220,9 +220,9 @@ const Landing = ({}) => {
                   Anki.</h2>
 
                   <ColorBackground2 style={{
-                      marginTop: '50px',
-                      marginBottom: '50px'
-                  }}>
+                                        marginTop: '50px',
+                                        marginBottom: '50px'
+                                    }}>
                     <AnkiSyncVideo className={classes.centerImage}/>
                   </ColorBackground2>
               </div>
