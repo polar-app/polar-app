@@ -1,0 +1,144 @@
+@import url('./flexbar.css');
+
+.annotation-sidebar {
+    height: 100%;
+}
+
+.annotation-sidebar,
+.annotation-sidebar * {
+    font-size: 14px !important;
+}
+
+.annotation-sidebar p {
+    line-height: 1.5;
+}
+
+.annotation-sidebar h4 {
+    font-size: 24px;
+    line-height: 1.2;
+}
+
+.annotation-sidebar ::selection {
+    background-color: #3297FD;
+}
+
+.annotation-sidebar {
+    padding-top: 5px;
+    font-family: -apple-system, BlinkMacSystemFont, Roboto, "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-size: 14px;
+    background-color: var(--primary-background-color);
+    color: var(--primary-text-color);
+}
+
+.annotation-sidebar .text-highlight {
+    /*margin: 5px;*/
+    /*margin-bottom: 10px;*/
+    /*padding-bottom: 5px;*/
+}
+
+.annotation-sidebar .text-highlight p {
+    margin: 0;
+}
+
+.annotation-sidebar .text-highlight p {
+    /*padding: 5px;*/
+}
+
+
+.annotation-sidebar .text-highlight,
+.annotation-sidebar .area-highlight {
+    margin: 5px;
+    /*opacity: 1.0;*/
+}
+
+.annotation-sidebar .text-highlight blockquote {
+
+    /*border-left: #FFD700 solid 3px;*/
+    /*margin: 0 0 0 0;*/
+
+    /*background-color: rgba(255, 255, 0, 0.5);*/
+    /*opacity: 0.3;*/
+
+    margin: 0;
+    padding: 0;
+
+    /*background-color: rgb(256, 256, 256);*/
+    /*color: rgba(0, 0, 0, 1);*/
+
+    /*border: lightgrey solid 1px;*/
+
+}
+
+#annotation-manager .annotation-sidebar .annotation-buttons {
+    margin-top: 5px;
+}
+
+.annotation-sidebar .text-highlight blockquote {
+    margin-bottom: 5px !important;
+}
+
+.annotation-sidebar .text-highlight blockquote span {
+    line-height: 1.6;
+}
+
+.comment-bar,
+.annotation-sidebar .annotation-buttons * {
+    font-size: 12px;
+    user-select: none;
+}
+
+.annotation-sidebar .annotation-buttons .fas {
+    font-size: 14px;
+}
+
+.annotation-sidebar * button {
+    font-size: 14px;
+}
+
+.annotation-sidebar .note-status-output {
+    display: none;
+}
+
+.rich-text-area-input,
+.annotation-comment-wrapper {
+    min-height: 125px;
+    border-width: 3px !important;
+    box-shadow: 0 0 5px transparent;
+}
+
+.rich-text-area-input:focus-within,
+.annotation-comment-wrapper:focus-within {
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    border: 3px solid rgba(81, 203, 238, 1) !important;
+}
+
+.rich-text-area label {
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.note-air-popover * {
+    font-size: 13px !important;
+}
+
+
+.annotation-sidebar .comment img {
+    max-width: 100%;
+}
+
+.annotation-sidebar .comments {
+    padding-left: 15px;
+}
+
+.flash-background-color {
+    animation: flash-background-color-animation 1s linear 1;
+}
+
+@keyframes flash-background-color-animation {
+    0% { background-color: rgba(255,255,0,0) }
+    100% { background-color: rgba(255,255,0,255) }
+}
+
+.flashcard {
+    background-color: #ededed;
+}
