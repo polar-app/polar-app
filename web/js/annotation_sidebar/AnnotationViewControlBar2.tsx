@@ -57,7 +57,7 @@ const ChangeTextHighlightButton = deepMemo((props: IAnnotationProps) => {
     }
 
     return (
-        <StandardIconButton tooltip="Change the content of a text highlight."
+        <StandardIconButton tooltip="Edit highlight."
                             disabled={! props.mutable}
                             size="small"
                             onClick={() => annotationInputContext.setActive('text-highlight')}>
