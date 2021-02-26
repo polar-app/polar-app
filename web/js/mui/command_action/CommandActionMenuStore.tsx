@@ -1,7 +1,8 @@
 import * as React from "react";
 import {createReactiveStore} from "../../react/store/ReactiveStore";
 import {IDStr} from "polar-shared/src/util/Strings";
-import {action, observable} from "mobx"
+import {action, makeObservable, observable} from "mobx"
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 export interface ICommandActionMenuPosition {
     readonly top: number;
@@ -32,21 +33,16 @@ export interface IActionMenuItemExecuted {
 export interface IActionState {
 
     /**
-     * The text the user has entered at the prompt.
-     */
-    readonly prompt: string;
-
-    /**
      * Where to display the action menu...
      */
     readonly position: ICommandActionMenuPosition;
 
     readonly items: ReadonlyArray<ICommandActionMenuItem>
 
-    /**
-     * Callback on the state that the user wanted to be executed.
-     */
-    readonly onCommand: (executed: IActionMenuItemExecuted) => void;
+    // /**
+    //  * Callback on the state that the user wanted to be executed.
+    //  */
+    // readonly onCommand: (executed: IActionMenuItemExecuted) => void;
 
 }
 
@@ -54,9 +50,30 @@ export class CommandActionMenuStore {
 
     @observable state: IActionState | undefined = undefined;
 
-    @action
-    public setState(state: IActionState | undefined) {
+    @observable id: string;
+
+    constructor() {
+        this.id = Hashcodes.createRandomID();
+        makeObservable(this);
+    }
+
+    /**
+     * Set the state or undefined if we want to clear it...
+     */
+    @action public setState(state: IActionState | undefined) {
         this.state = state;
+        console.log("FIXME: state is now: ", this.state)
+    }
+
+    @action public updateState(items: ReadonlyArray<ICommandActionMenuItem>) {
+
+        if (! this.state) {
+            console.warn("No state");
+            return;
+        }
+
+        this.setState({...this.state, items});
+
     }
 
 }

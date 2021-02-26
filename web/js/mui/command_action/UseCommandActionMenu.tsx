@@ -4,14 +4,14 @@ import {
     ICommandActionMenuPosition,
     useCommandActionMenuStore
 } from "./CommandActionMenuStore";
-import {useStateRef} from "../../hooks/ReactHooks";
 import {ContentEditables} from "../../notes/ContentEditables";
+import {NoteActionSelections} from "../../notes/NoteActionSelections";
 
 export type ReactKeyboardEventHandler = (event: React.KeyboardEvent, contenteditable: HTMLElement | null) => void;
 
 export type NoteActionReset = () => void;
 
-export type NoteActionsResultTuple = [ReactKeyboardEventHandler, ICommandActionMenuPosition | undefined, NoteActionReset];
+export type NoteActionsResultTuple = [ReactKeyboardEventHandler, NoteActionReset];
 
 interface IOpts {
 
@@ -40,11 +40,16 @@ export function useCommandActionMenu(opts: IOpts): NoteActionsResultTuple {
 
     const store = useCommandActionMenuStore();
 
-    const [menuPosition, setMenuPosition, menuPositionRef] = useStateRef<ICommandActionMenuPosition | undefined>(undefined);
+    const activeRef = React.useRef(false);
 
-    const triggerPointRef = React.useRef<ICursorRange | undefined>();
+    const textAtTriggerPointRef = React.useRef("");
 
-    // FIXME: split around the cursor... as the prefix and text...
+    const reset = React.useCallback(() => {
+
+        console.log("FIXME reset");
+        activeRef.current = false;
+        store.setState(undefined);
+    }, [store])
 
     const eventHandler = React.useCallback((event, contenteditable) => {
 
@@ -60,46 +65,104 @@ export function useCommandActionMenu(opts: IOpts): NoteActionsResultTuple {
             return;
         }
 
-        const splitText = ContentEditables.fragmentToText(split.prefix);
+        const prefixText = ContentEditables.fragmentToText(split.prefix);
 
-        if (splitText.endsWith(trigger)) {
-
-            console.log("FIXME: triggered");
-
-            // triggerPointRef.current = computeCursorRange();
-            // const cursorRange = NoteActionSelections.computeCursorRange();
-            //
-            // if (cursorRange) {
-            //
-            //     const bcr = cursorRange.getBoundingClientRect();
-            //
-            //     const newPosition = {
-            //         top: bcr.bottom,
-            //         left: bcr.left,
-            //     };
-            //
-            //     if (newPosition.top !== 0 && newPosition.left !== 0) {
-            //         setMenuPosition(newPosition);
-            //     }
-            //
-            // }
-
+        function computePrompt() {
+            return prefixText.substr(textAtTriggerPointRef.current.length);
         }
 
-    }, [trigger]);
+        if (activeRef.current) {
 
-    const reset = React.useCallback(() => {
+            const prompt = computePrompt();
 
-        if (menuPositionRef.current !== undefined) {
-            // the menu must go away now ... [
-            setMenuPosition(undefined);
-        }
+            if (event.key === 'Escape') {
+                reset();
+                return;
+            }
 
-        triggerPointRef.current = undefined;
+            console.log(`FIXME: prompt: '${prompt}'`);
 
-    }, [menuPositionRef, setMenuPosition])
+            if (prompt === '') {
+                reset();
+                return;
+            }
 
-    return [eventHandler, menuPosition, reset];
+        } else {
+
+            if (prefixText.endsWith(trigger)) {
+
+                console.log("FIXME: triggered with store: " + store.id);
+
+                textAtTriggerPointRef.current = prefixText;
+
+                const prompt = computePrompt();
+
+                function computePosition() {
+
+                    const cursorRange = NoteActionSelections.computeCursorRange();
+
+                    if (cursorRange) {
+
+                        const bcr = cursorRange.getBoundingClientRect();
+
+                        const newPosition = {
+                            top: bcr.bottom,
+                            left: bcr.left,
+                        };
+
+                        if (newPosition.top !== 0 && newPosition.left !== 0) {
+                            return newPosition;
+                        }
+                    }
+
+                    return undefined;
+
+                }
+
+                const position = computePosition();
+
+                if (position) {
+
+                    console.log("FIXME: setting state")
+
+                    activeRef.current = true;
+
+                    store.setState({
+                        position,
+                        items: []
+                    });
+
+                } else {
+                    console.log("FIXME no position")
+                }
+
+                // triggerPointRef.current = computeCursorRange();
+                // const cursorRange = NoteActionSelections.computeCursorRange();
+                //
+                // if (cursorRange) {
+                //
+                //     const bcr = cursorRange.getBoundingClientRect();
+                //
+                //     const newPosition = {
+                //         top: bcr.bottom,
+                //         left: bcr.left,
+                //     };
+                //
+                //     if (newPosition.top !== 0 && newPosition.left !== 0) {
+                //         setMenuPosition(newPosition);
+                //     }
+                //
+                // }
+
+            }
+
+    }
+
+
+
+    }, [reset, store, trigger]);
+
+    return [eventHandler, reset];
 
 }
 
