@@ -74,7 +74,7 @@ const CreateCommentButton = deepMemo((props: IMutableProps) => {
     const annotationInputContext = useAnnotationActiveInputContext();
 
     return (
-        <StandardIconButton tooltip="Create a new comment"
+        <StandardIconButton tooltip="Comment"
                             disabled={! props.mutable}
                             size="small"
                             onClick={() => annotationInputContext.setActive('comment')}>
