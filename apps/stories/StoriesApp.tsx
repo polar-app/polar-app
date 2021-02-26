@@ -54,6 +54,7 @@ import {CKEditorActivatorPerformanceStory} from "./impl/CKEditorActivatorPerform
 import {TextAreaMarkdownEditorStory} from "./impl/TextAreaMarkdownEditorStory";
 import { MinimalContentEditablePerformanceStory } from './impl/MinimalContentEditablePerformanceStory';
 import {MinimalContentEditableStory} from "./impl/MinimalContentEditableStory";
+import { MUICommandActionMenuStory } from './impl/MUICommandActionMenuStory';
 
 interface IStory {
     readonly name: string;
@@ -269,6 +270,10 @@ const stories = createStoryIndex([
     {
         name: 'MinimalContentEditablePerformanceStory',
         component: <MinimalContentEditablePerformanceStory/>
+    },
+    {
+        name: 'MUICommandActionMenuStory',
+        component: <MUICommandActionMenuStory/>
     }
 
 

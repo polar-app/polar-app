@@ -3,15 +3,15 @@ import {createReactiveStore} from "../../react/store/ReactiveStore";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {action, observable} from "mobx"
 
-export interface IActionMenuPosition {
+export interface ICommandActionMenuPosition {
     readonly top: number;
     readonly left: number;
 }
 
 
-export type ActionMenuItemProvider = (prompt: string) => ReadonlyArray<IActionMenuItem>;
+export type CommandActionMenuItemProvider = (prompt: string) => ReadonlyArray<ICommandActionMenuItem>;
 
-export interface IActionMenuItem {
+export interface ICommandActionMenuItem {
 
     /**
      * A unique id for the action so that we can handle it on the callback.
@@ -39,12 +39,9 @@ export interface IActionState {
     /**
      * Where to display the action menu...
      */
-    readonly position: IActionMenuPosition;
+    readonly position: ICommandActionMenuPosition;
 
-    /**
-     * The provider for the commands.
-     */
-    readonly itemsProvider: ActionMenuItemProvider;
+    readonly items: ReadonlyArray<ICommandActionMenuItem>
 
     /**
      * Callback on the state that the user wanted to be executed.
@@ -64,4 +61,4 @@ export class CommandActionMenuStore {
 
 }
 
-export const [CommandActionStoreProvider, useCommandActionStore] = createReactiveStore(() => new CommandActionMenuStore())
+export const [CommandActionMenuStoreProvider, useCommandActionMenuStore] = createReactiveStore(() => new CommandActionMenuStore())

@@ -1,6 +1,10 @@
 import React from 'react';
 import {RingBuffers} from "polar-shared/src/util/RingBuffers";
-import {IActionMenuPosition} from "./CommandActionMenuStore";
+import {
+    CommandActionMenuItemProvider,
+    ICommandActionMenuPosition,
+    useCommandActionMenuStore
+} from "./CommandActionMenuStore";
 import {useStateRef} from "../../hooks/ReactHooks";
 import {NoteActionSelections} from "../../notes/NoteActionSelections";
 
@@ -8,7 +12,7 @@ export type ReactKeyboardEventHandler = (event: React.KeyboardEvent) => void;
 
 export type NoteActionReset = () => void;
 
-export type NoteActionsResultTuple = [ReactKeyboardEventHandler, IActionMenuPosition | undefined, NoteActionReset];
+export type NoteActionsResultTuple = [ReactKeyboardEventHandler, ICommandActionMenuPosition | undefined, NoteActionReset];
 
 interface IOpts {
 
@@ -18,6 +22,13 @@ interface IOpts {
      * The trigger characters that have to fire to bring up the dialog.
      */
     readonly trigger: string;
+
+
+    // /**
+    //  * The provider for the commands which we filter for when computing the
+    //  * prompt and then set in the store.
+    //  */
+    // readonly itemsProvider: CommandActionMenuItemProvider;
 
 }
 
@@ -30,17 +41,23 @@ export function useCommandActionMenu(opts: IOpts): NoteActionsResultTuple {
 
     const {trigger} = opts;
 
+    const store = useCommandActionMenuStore();
+
     const keyBuffer = React.useMemo(() => RingBuffers.create(trigger.length), [trigger.length]);
 
-    const [menuPosition, setMenuPosition, menuPositionRef] = useStateRef<IActionMenuPosition | undefined>(undefined);
+    const [menuPosition, setMenuPosition, menuPositionRef] = useStateRef<ICommandActionMenuPosition | undefined>(undefined);
 
     const triggerPointRef = React.useRef<ICursorRange | undefined>();
+
+    // FIXME: split around the cursor... as the prefix and text...
 
     const eventHandler = React.useCallback((event) => {
 
         keyBuffer.push(event.key);
 
         const keysTyped = keyBuffer.toArray().join('')
+
+        console.log("FIXME: keysTyped: ", keysTyped)
 
         if (keysTyped === trigger) {
 

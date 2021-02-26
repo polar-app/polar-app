@@ -46,11 +46,11 @@ export const NoteContentEditable = observer((props: IProps) => {
     const contentRef = React.useRef(props.content);
 
     const store = useNotesStore();
-
-    const [noteLinkEventHandler] = useCommandActionMenu({
-        contenteditable: divRef.current,
-        trigger: '[['
-    });
+    //
+    // const [noteLinkEventHandler] = useCommandActionMenu({
+    //     contenteditable: divRef.current,
+    //     trigger: '[['
+    // });
 
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -134,7 +134,7 @@ export const NoteContentEditable = observer((props: IProps) => {
             return;
         }
 
-        noteLinkEventHandler(event);
+        // noteLinkEventHandler(event);
 
         const cursorPosition = ContentEditables.computeCursorPosition(divRef.current);
 
@@ -232,7 +232,7 @@ export const NoteContentEditable = observer((props: IProps) => {
             props.onKeyDown(event);
         }
 
-    }, [hasEditorSelection, noteLinkEventHandler, props, store]);
+    }, [hasEditorSelection, props, store]);
 
     return (
 
