@@ -40,7 +40,7 @@ export const FullScreenButton = React.memo(() => {
     const fullScreenToggle = useFullScreenToggle();
 
     return (
-        <StandardIconButton tooltip="Enter Full Screen"
+        <StandardIconButton tooltip="Full screen"
                             onClick={fullScreenToggle}>
             <FullscreenIcon/>
         </StandardIconButton>
