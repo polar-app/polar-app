@@ -95,7 +95,7 @@ namespace MenuItems {
         }, [dialogs, zest]);
 
         return (
-            <SideNavQuestionMenuItem text="Send Video Feedback"
+            <SideNavQuestionMenuItem text="Video Feedback"
                                      ref={ref}
                                      secondary="Have a bug to report or a feature suggestion?  Send in a video report and let us know."
                                      icon={VideoCallIcon}
@@ -115,9 +115,9 @@ namespace MenuItems {
         }, [reportFeedback]);
 
         return (
-            <SideNavQuestionMenuItem text="Request Features and Help Improve Polar"
+            <SideNavQuestionMenuItem text="Feature Requests"
                                      ref={ref}
-                                     secondary="We want to improve Polar and would love to get your feedback!"
+                                     secondary="Request features and report bugs to help improve Polar."
                                      icon={AllInboxIcon}
                                      onClick={handleClick}/>
         );
@@ -137,9 +137,9 @@ namespace MenuItems {
         }, [setShowActiveShortcuts]);
 
         return (
-            <SideNavQuestionMenuItem text="Show Active Keyboard Shortcuts"
+            <SideNavQuestionMenuItem text="Keyboard Shortcuts"
                                      ref={ref}
-                                     secondary="Polar is FAR more powerful when you can use keyboard shortcuts and get into a state of flow."
+                                     secondary="Show active keyboard shortcuts to keep you in a state of flow."
                                      icon={KeyboardIcon}
                                      onClick={handleClick}/>
         );
