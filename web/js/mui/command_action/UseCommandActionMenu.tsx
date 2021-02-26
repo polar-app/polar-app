@@ -1,22 +1,19 @@
 import React from 'react';
-import {RingBuffers} from "polar-shared/src/util/RingBuffers";
 import {
     CommandActionMenuItemProvider,
     ICommandActionMenuPosition,
     useCommandActionMenuStore
 } from "./CommandActionMenuStore";
 import {useStateRef} from "../../hooks/ReactHooks";
-import {NoteActionSelections} from "../../notes/NoteActionSelections";
+import {ContentEditables} from "../../notes/ContentEditables";
 
-export type ReactKeyboardEventHandler = (event: React.KeyboardEvent) => void;
+export type ReactKeyboardEventHandler = (event: React.KeyboardEvent, contenteditable: HTMLElement | null) => void;
 
 export type NoteActionReset = () => void;
 
 export type NoteActionsResultTuple = [ReactKeyboardEventHandler, ICommandActionMenuPosition | undefined, NoteActionReset];
 
 interface IOpts {
-
-    readonly contenteditable: HTMLElement | null;
 
     /**
      * The trigger characters that have to fire to bring up the dialog.
@@ -43,45 +40,53 @@ export function useCommandActionMenu(opts: IOpts): NoteActionsResultTuple {
 
     const store = useCommandActionMenuStore();
 
-    const keyBuffer = React.useMemo(() => RingBuffers.create(trigger.length), [trigger.length]);
-
     const [menuPosition, setMenuPosition, menuPositionRef] = useStateRef<ICommandActionMenuPosition | undefined>(undefined);
 
     const triggerPointRef = React.useRef<ICursorRange | undefined>();
 
     // FIXME: split around the cursor... as the prefix and text...
 
-    const eventHandler = React.useCallback((event) => {
+    const eventHandler = React.useCallback((event, contenteditable) => {
 
-        keyBuffer.push(event.key);
+        if (! contenteditable) {
+            console.log("FIXME1");
+            return;
+        }
 
-        const keysTyped = keyBuffer.toArray().join('')
+        const split = ContentEditables.splitAtCursor(contenteditable)
 
-        console.log("FIXME: keysTyped: ", keysTyped)
+        if (! split) {
+            console.log("FIXME2");
+            return;
+        }
 
-        if (keysTyped === trigger) {
+        const splitText = ContentEditables.fragmentToText(split.prefix);
 
-            triggerPointRef.current = computeCursorRange();
-            const cursorRange = NoteActionSelections.computeCursorRange();
+        if (splitText.endsWith(trigger)) {
 
-            if (cursorRange) {
+            console.log("FIXME: triggered");
 
-                const bcr = cursorRange.getBoundingClientRect();
-
-                const newPosition = {
-                    top: bcr.bottom,
-                    left: bcr.left,
-                };
-
-                if (newPosition.top !== 0 && newPosition.left !== 0) {
-                    setMenuPosition(newPosition);
-                }
-
-            }
+            // triggerPointRef.current = computeCursorRange();
+            // const cursorRange = NoteActionSelections.computeCursorRange();
+            //
+            // if (cursorRange) {
+            //
+            //     const bcr = cursorRange.getBoundingClientRect();
+            //
+            //     const newPosition = {
+            //         top: bcr.bottom,
+            //         left: bcr.left,
+            //     };
+            //
+            //     if (newPosition.top !== 0 && newPosition.left !== 0) {
+            //         setMenuPosition(newPosition);
+            //     }
+            //
+            // }
 
         }
 
-    }, [keyBuffer, setMenuPosition, trigger]);
+    }, [trigger]);
 
     const reset = React.useCallback(() => {
 

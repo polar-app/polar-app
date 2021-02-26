@@ -6,7 +6,6 @@ export const MUICommandActionMenuStory = () => {
     const divRef = React.useRef<HTMLDivElement | null>(null);
 
     const [onKeyDown] = useCommandActionMenu({
-        contenteditable: divRef.current,
         trigger: '[['
     });
 
@@ -20,7 +19,7 @@ export const MUICommandActionMenuStory = () => {
             <div ref={divRef}
                  contentEditable={true}
                  spellCheck={false}
-                 onKeyDown={onKeyDown}
+                 onKeyUp={event => onKeyDown(event, divRef.current)}
                  style={{
                      outline: 'none',
                  }}
