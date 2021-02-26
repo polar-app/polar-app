@@ -114,7 +114,7 @@ const CreateAIFlashcardButton = deepMemo((props: IAnnotationProps) => {
     }, [handler, verifiedAction]);
 
     return (
-        <StandardIconButton tooltip="Create a flashcard using AI"
+        <StandardIconButton tooltip="Create flashcard automatically"
                             disabled={! props.mutable}
                             size="small"
                             onClick={handleClick}>
