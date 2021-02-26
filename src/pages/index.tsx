@@ -7,7 +7,15 @@ import CreateAccountWLogos from "../components/create-account-plus-logos";
 import IndexStyling from "../gatsby-theme-material-ui-top-layout/indexStyling";
 import TrustedByLogos from "../components/trusted-by-logos";
 import {CreateAccountButton} from "../components/CreateAccountButton";
-import {ColorBackground0, ColorBackground1, ColorBackground2, ColorBackground3} from "../components/ColorBackground";
+import {
+    ColorBackground0,
+    ColorBackground1,
+    ColorBackground2,
+    ColorBackground3,
+    ColorBackground4,
+    ColorBackground5,
+    ColorBackground6, ColorBackground7, ColorBackground8
+} from "../components/ColorBackground";
 import KnowledgeAndBrainOrganizedImage from "./images/KnowledgeAndBrainOrganizedImage";
 import ReadingOnSteroidsImage from "./images/ReadingOnSteroidsImage";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
@@ -157,13 +165,13 @@ const Landing = ({}) => {
                   {/*    Read and manage multiple documents at the same time.*/}
                   {/*</h3>*/}
 
-                  <ColorBackground1 style={{
+                  <ColorBackground2 style={{
                                        marginTop: '50px',
                                        marginBottom: '50px'
                                    }}>
                       <KnowledgeAndBrainOrganizedImage className={classes.centerImage}
                                                        alt="Your Knowledge and Brain Organized"/>
-                  </ColorBackground1>
+                  </ColorBackground2>
               </div>
 
               <div className={classes.centerSection + ' ' + classes.sectionEven}>
@@ -183,7 +191,7 @@ const Landing = ({}) => {
                   {/*    Read and manage multiple documents at the same time.*/}
                   {/*</h3>*/}
 
-                  <ColorBackground2 style={{
+                  <ColorBackground3 style={{
                                        marginTop: '50px',
                                        marginBottom: '50px'
                                    }}>
@@ -191,7 +199,7 @@ const Landing = ({}) => {
                       <ReadingOnSteroidsImage className={classes.centerImage}
                                               alt="Reading on Steroids"/>
 
-                  </ColorBackground2>
+                  </ColorBackground3>
 
               </div>
 
@@ -206,13 +214,13 @@ const Landing = ({}) => {
                       Use the Polar Chrome extension to save web pages in your repository.
                   </h2>
 
-                  <ColorBackground1 style={{
+                  <ColorBackground4 style={{
                                         marginTop: '50px',
                                         marginBottom: '50px'
                                     }}>
                       <WebCaptureImage className={classes.centerImage}
                                        alt="Your Knowledge and Brain Organized"/>
-                  </ColorBackground1>
+                  </ColorBackground4>
               </div>
 
 
@@ -227,12 +235,12 @@ const Landing = ({}) => {
                       Review your annotations and flashcards directly in Polar using our spaced repetition algorithms.
                   </h2>
 
-                  <ColorBackground2 style={{
+                  <ColorBackground5 style={{
                                         marginTop: '50px',
                                         marginBottom: '50px'
                                     }}>
                       <FlashcardVideo className={classes.centerImage}/>
-                  </ColorBackground2>
+                  </ColorBackground5>
               </div>
 
               <div className={classes.centerSection + ' ' + classes.sectionOdd}>
@@ -245,12 +253,12 @@ const Landing = ({}) => {
                   Polar. One click and all your Polar flashcards are synced to
                   Anki.</h2>
 
-                  <ColorBackground2 style={{
+                  <ColorBackground6 style={{
                                         marginTop: '50px',
                                         marginBottom: '50px'
                                     }}>
                     <AnkiSyncVideo className={classes.centerImage}/>
-                  </ColorBackground2>
+                  </ColorBackground6>
               </div>
 
 
@@ -263,7 +271,7 @@ const Landing = ({}) => {
                       number of pages to read or flashcards to review.
                   </h2>
 
-                  <ColorBackground2 style={{
+                  <ColorBackground7 style={{
                                         marginTop: '50px',
                                         marginBottom: '50px'
                                     }}>
@@ -271,7 +279,7 @@ const Landing = ({}) => {
                       <ReadingProgressImage className={classes.centerImage}
                                              alt="Reading Progress"/>
 
-                  </ColorBackground2>
+                  </ColorBackground7>
 
               </div>
 
@@ -292,7 +300,7 @@ const Landing = ({}) => {
                   your PDFs automatically	convert to a dark background.
                   </h2>
 
-                  <ColorBackground3 style={{
+                  <ColorBackground8 style={{
                                         marginTop: '50px',
                                         marginBottom: '50px',
                                         position: 'relative'
@@ -328,12 +336,10 @@ const Landing = ({}) => {
 
                       </>
 
-                  </ColorBackground3>
+                  </ColorBackground8>
 
 
               </div>
-
-
 
               <CreateAccountWLogos transparent={false} />
 

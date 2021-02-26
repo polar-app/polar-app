@@ -10,6 +10,11 @@ export namespace ColorBackgrounds {
         readonly color3: RGBStr;
     }
 
+    export function createBackground(opts: CreateSVGOpts) {
+        const dataURL = createDataURL(opts);
+        return `url('${dataURL}')`;
+    }
+
     export function createDataURL(opts: CreateSVGOpts) {
         return 'data:image/svg+xml;charset=utf-8;base64,' + Base64.encode(createSVG(opts));
     }
