@@ -19,6 +19,7 @@ import {FlashcardVideo} from "../components/FlashcardVideo";
 import {AnkiSyncVideo} from "../components/AnkiSyncVideo";
 import ReadingProgressImage from "./images/ReadingProgressImage";
 import WebCaptureImage from "./images/WebCaptureImage";
+import {AIFlashcardsVideo} from "../components/AIFlashcardsVideo";
 const SummaryLargeImage = require("../../content/assets/screenshots/summary-large-image.png");
 
 const useStyles = IndexStyling;
@@ -113,6 +114,31 @@ const Landing = ({}) => {
 
                   <TrustedByLogos />
 
+              </div>
+
+
+              <div className={classes.centerSection + ' ' + classes.sectionEven}>
+
+                  <h1>
+                      Your brain's capacity <br/>
+                      <span style={{color: '#B94939'}}>coupled with AI</span>
+                  </h1>
+
+                  <h2>
+                      Save time in creating flashcards in one click from text highlights.  We use OpenAI's GPT-3 to
+                      automate this tedious process.  Review them with our spaced repetition algorithm or sync them to
+                      Anki.
+                  </h2>
+
+
+                  <ColorBackground1 style={{
+                                        marginTop: '50px',
+                                        marginBottom: '50px'
+                                    }}>
+
+                      <AIFlashcardsVideo className={classes.centerImage}/>
+
+                  </ColorBackground1>
               </div>
 
               <div className={classes.centerSection + ' ' + classes.sectionEven}>

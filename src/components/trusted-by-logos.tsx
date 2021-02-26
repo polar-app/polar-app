@@ -23,7 +23,9 @@ const useStyles = makeStyles({
     // flexWrap: "wrap",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: '10px',
+
+    marginTop: '30px',
+    marginBottom: '30px',
 
     // alignContent: "flex-end",
     width: "100vw",
