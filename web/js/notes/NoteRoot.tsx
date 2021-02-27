@@ -7,6 +7,8 @@ import { NoteIDStr } from "./store/NotesStore";
 import { useNotesStore } from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
 import {NoteSelectionHandler} from "./NoteSelectionHandler";
+import {ActionMenuPopup} from "../mui/action_menu/ActionMenuPopup";
+import { ActionMenuStoreProvider } from "../mui/action_menu/ActionStore";
 
 interface IProps {
     readonly target: NoteIDStr;
@@ -43,17 +45,20 @@ export const NoteRoot = observer((props: IProps) => {
     const id = note?.id;
 
     return (
-        <NoteSelectionHandler style={{flexGrow: 1}}>
-            <NoteStyle>
-                <MUIBrowserLinkStyle style={{flexGrow: 1}}>
+        <ActionMenuStoreProvider>
+            <NoteSelectionHandler style={{flexGrow: 1}}>
+                <NoteStyle>
+                    <MUIBrowserLinkStyle style={{flexGrow: 1}}>
 
-                    <Note parent={undefined} id={id}/>
+                        <Note parent={undefined} id={id}/>
 
-                    <NotesInbound id={id}/>
+                        <NotesInbound id={id}/>
 
-                </MUIBrowserLinkStyle>
-            </NoteStyle>
-        </NoteSelectionHandler>
+                    </MUIBrowserLinkStyle>
+                    <ActionMenuPopup/>
+                </NoteStyle>
+            </NoteSelectionHandler>
+        </ActionMenuStoreProvider>
     );
 
 });

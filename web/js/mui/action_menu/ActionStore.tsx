@@ -80,11 +80,11 @@ export interface IActionState {
 
 }
 
-export function createItemsProvider(items: ReadonlyArray<IActionMenuItem>): ActionMenuItemsProvider {
+export function createActionsProvider(actions: ReadonlyArray<IActionMenuItem>): ActionMenuItemsProvider {
 
     return (prompt) => {
         const promptLower = prompt.toLowerCase();
-        return items.filter(current => current.text.toLowerCase().indexOf(promptLower) !== -1);
+        return actions.filter(current => current.text.toLowerCase().indexOf(promptLower) !== -1);
     };
 
 }

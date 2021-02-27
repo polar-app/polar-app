@@ -158,7 +158,7 @@ export class NotesStore {
     /**
      * Get all the nodes by name.
      */
-    @computed getNamedNodes() {
+    getNamedNodes() {
         return Object.keys(this._indexByName);
     }
 

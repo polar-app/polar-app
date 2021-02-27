@@ -9,12 +9,14 @@ const useStyles = makeStyles((theme) =>
         root: {
             '& a[href^="#"]::before': {
                 content: "'[['",
-                color: theme.palette.text.disabled
+                color: theme.palette.text.disabled,
+                userSelect: 'none'
             },
 
             '& a[href^="#"]::after': {
                 content: "']]'",
-                color: theme.palette.text.disabled
+                color: theme.palette.text.disabled,
+                userSelect: 'none'
             },
             "& h1, h2, h3, h4, h5": {
                 lineHeight: 0

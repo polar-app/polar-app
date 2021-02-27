@@ -5,6 +5,7 @@ import { observer } from "mobx-react-lite"
 import {NavOpts, NoteIDStr, useNotesStore} from '../store/NotesStore';
 import {ContentEditables} from "../ContentEditables";
 import {useActions} from "../../mui/action_menu/UseActions";
+import {createActionsProvider} from "../../mui/action_menu/ActionStore";
 
 interface IProps {
 
@@ -31,8 +32,6 @@ interface IProps {
 }
 
 /**
- * Just a minimal contenteditable control that we can use to allow the suer to
- * delete content.
  *
  * https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand
  *
@@ -46,11 +45,24 @@ export const NoteContentEditable = observer((props: IProps) => {
     const contentRef = React.useRef(props.content);
 
     const store = useNotesStore();
-    //
-    // const [noteLinkEventHandler] = useCommandActionMenu({
-    //     contenteditable: divRef.current,
-    //     trigger: '[['
-    // });
+
+    const noteLinkActions = store.getNamedNodes().map(current => {
+        return {
+            id: current,
+            text: current
+        }
+    });
+
+    const [noteLinkEventHandler] = useActions({
+        trigger: '[[',
+        actionsProvider: createActionsProvider(noteLinkActions),
+        onAction: (id) => {
+            return {
+                type: 'note-link',
+                target: id
+            }
+        }
+    });
 
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -134,7 +146,9 @@ export const NoteContentEditable = observer((props: IProps) => {
             return;
         }
 
-        // noteLinkEventHandler(event);
+        if (noteLinkEventHandler(event, divRef.current)) {
+            return;
+        }
 
         const cursorPosition = ContentEditables.computeCursorPosition(divRef.current);
 

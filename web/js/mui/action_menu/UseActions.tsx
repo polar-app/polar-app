@@ -26,7 +26,7 @@ export type NoteActionsResultTuple = [ReactKeyboardEventHandler, NoteActionReset
  * Link to a node.
  */
 export interface IActionOpWithNodeLink {
-    readonly type: 'node-link';
+    readonly type: 'note-link';
     readonly target: string;
 }
 
@@ -70,7 +70,7 @@ function useActionExecutor() {
 
         switch (actionOp.type) {
 
-            case "node-link":
+            case "note-link":
 
                 const coveringRange = createCoveringRange();
                 coveringRange.deleteContents();

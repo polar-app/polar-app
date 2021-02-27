@@ -3,7 +3,7 @@ import React from "react";
 import {ActionHandler, useActions} from "../../../web/js/mui/action_menu/UseActions";
 import {
     ActionMenuStoreProvider,
-    createItemsProvider,
+    createActionsProvider,
     useActionMenuStore
 } from "../../../web/js/mui/action_menu/ActionStore";
 import {ActionMenuPopup} from "../../../web/js/mui/action_menu/ActionMenuPopup";
@@ -63,7 +63,7 @@ const items = [
     },
 ];
 
-const itemsProvider = createItemsProvider(items)
+const itemsProvider = createActionsProvider(items)
 
 const Editor = () => {
 
@@ -72,7 +72,7 @@ const Editor = () => {
 
     const onAction: ActionHandler = (id) => {
         return {
-            type: 'node-link',
+            type: 'note-link',
             target: id
         }
     }
