@@ -7,7 +7,10 @@ import {
 import {ContentEditables} from "../../notes/ContentEditables";
 import {NoteActionSelections} from "../../notes/NoteActionSelections";
 
-export type ReactKeyboardEventHandler = (event: React.KeyboardEvent, contenteditable: HTMLElement | null) => void;
+/**
+ * Keyboard handler for while the user types. We return true if the menu is active.
+ */
+export type ReactKeyboardEventHandler = (event: React.KeyboardEvent, contenteditable: HTMLElement | null) => boolean;
 
 export type NoteActionReset = () => void;
 
@@ -53,20 +56,20 @@ export function useCommandActionMenu(opts: IOpts): NoteActionsResultTuple {
         activeRef.current = false;
         store.setState(undefined);
 
+        return false;
+
     }, [store])
 
-    const eventHandler = React.useCallback((event, contenteditable) => {
+    const eventHandler = React.useCallback((event, contenteditable): boolean => {
 
         if (! contenteditable) {
-            console.log("FIXME1");
-            return;
+            return false;
         }
 
         const split = ContentEditables.splitAtCursor(contenteditable)
 
         if (! split) {
-            console.log("FIXME2");
-            return;
+            return false;
         }
 
         const prefixText = ContentEditables.fragmentToText(split.prefix);
@@ -84,13 +87,11 @@ export function useCommandActionMenu(opts: IOpts): NoteActionsResultTuple {
             const prompt = computePrompt();
 
             if (! hasPrompt()) {
-                reset();
-                return;
+                return reset();
             }
 
             if (event.key === 'Escape') {
-                reset();
-                return;
+                return reset();
             }
 
             const items = itemsProvider(prompt);
@@ -144,6 +145,8 @@ export function useCommandActionMenu(opts: IOpts): NoteActionsResultTuple {
             }
 
         }
+
+        return activeRef.current;
 
     }, [itemsProvider, reset, store, trigger]);
 
