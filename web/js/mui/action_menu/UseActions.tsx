@@ -7,6 +7,8 @@ import {ContentEditables} from "../../notes/ContentEditables";
 import {NoteActionSelections} from "../../notes/NoteActionSelections";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import INodeOffset = ContentEditables.INodeOffset;
+import INode = ckeditor5.INode;
 
 /**
  * Keyboard handler for while the user types. We return true if the menu is active.
@@ -57,16 +59,16 @@ interface IOpts {
 
 function useActionExecutor() {
 
-    return React.useCallback((from: Range, to: Range, action: ActionOp) => {
+    return React.useCallback((from: INodeOffset, to: INodeOffset, actionOp: ActionOp) => {
 
         function createCoveringRange(): Range {
             const range = document.createRange();
-            range.setStart(from.startContainer, from.startOffset);
-            range.setEnd(from.endContainer, from.endOffset);
+            range.setStart(from.node, from.offset);
+            range.setEnd(to.node, to.offset);
             return range;
         }
 
-        switch (action.type) {
+        switch (actionOp.type) {
 
             case "node-link":
 
@@ -74,8 +76,8 @@ function useActionExecutor() {
                 coveringRange.deleteContents();
 
                 const a = document.createElement('a');
-                a.setAttribute("href", "#" + action.target);
-                a.appendChild(document.createTextNode(action.target));
+                a.setAttribute("href", "#" + actionOp.target);
+                a.appendChild(document.createTextNode(actionOp.target));
                 coveringRange.insertNode(a);
 
                 break;
@@ -95,7 +97,7 @@ function useActionExecutor() {
 
 export function useActions(opts: IOpts): NoteActionsResultTuple {
 
-    const {trigger, itemsProvider} = opts;
+    const {trigger, itemsProvider, onAction} = opts;
 
     const store = useActionMenuStore();
     const actionExecutor = useActionExecutor();
@@ -104,9 +106,14 @@ export function useActions(opts: IOpts): NoteActionsResultTuple {
 
     const textAtTriggerPointRef = React.useRef("");
 
+    const triggerPointNodeOffsetRef = React.useRef<INodeOffset | undefined>(undefined);
+
     const reset = React.useCallback(() => {
 
         activeRef.current = false;
+        triggerPointNodeOffsetRef.current = undefined;
+        textAtTriggerPointRef.current = '';
+
         store.setState(undefined);
 
         return false;
@@ -115,9 +122,31 @@ export function useActions(opts: IOpts): NoteActionsResultTuple {
 
     const actionHandler = React.useCallback((id: IDStr) => {
 
+        const actionOp = onAction(id);
+
+        function computeFrom() {
+            return {
+                node: triggerPointNodeOffsetRef.current!.node,
+                offset: triggerPointNodeOffsetRef.current!.offset - trigger.length
+            };
+        }
+
+        function computeTo() {
+            const range = window.getSelection()!.getRangeAt(0);
+            return {
+                node: range.startContainer,
+                offset: range.startOffset
+            }
+        }
+
+        const from = computeFrom();
+        const to = computeTo();
+
+        actionExecutor(from, to, actionOp);
+
         reset();
 
-    }, [reset]);
+    }, [actionExecutor, onAction, reset, trigger.length]);
 
     const eventHandler = React.useCallback((event, contenteditable): boolean => {
 
@@ -149,10 +178,6 @@ export function useActions(opts: IOpts): NoteActionsResultTuple {
                 return reset();
             }
 
-            if (event.key === 'Escape') {
-                return reset();
-            }
-
             const items = itemsProvider(prompt);
             store.updateState(items);
 
@@ -161,6 +186,16 @@ export function useActions(opts: IOpts): NoteActionsResultTuple {
             if (prefixText.endsWith(trigger)) {
 
                 textAtTriggerPointRef.current = prefixText;
+
+                function computeNodeOffsetFromSelection() {
+                    const range = document.getSelection()!.getRangeAt(0);
+                    return {
+                        node: range.startContainer,
+                        offset: range.startOffset
+                    }
+                }
+
+                triggerPointNodeOffsetRef.current = computeNodeOffsetFromSelection();
 
                 const prompt = computePrompt();
 
@@ -198,7 +233,7 @@ export function useActions(opts: IOpts): NoteActionsResultTuple {
                     store.setState({
                         position,
                         actions,
-                        onAction: NULL_FUNCTION
+                        onAction: actionHandler
                     });
 
                 }
@@ -209,7 +244,7 @@ export function useActions(opts: IOpts): NoteActionsResultTuple {
 
         return activeRef.current;
 
-    }, [itemsProvider, reset, store, trigger]);
+    }, [actionHandler, itemsProvider, reset, store, trigger]);
 
     return [eventHandler, reset];
 
