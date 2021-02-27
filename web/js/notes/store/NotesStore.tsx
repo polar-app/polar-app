@@ -394,7 +394,24 @@ export class NotesStore {
         const newActive = items[activeIndex];
 
         if (opts.shiftKey) {
-            this.setSelectionRange(this._active, newActive);
+
+            if (this.hasSelected()) {
+                this.setSelectionRange(this._active, newActive);
+            } else {
+                // only select the entire/current node at first.
+                this._selected[this._active] = true;
+
+                function clearSelection() {
+                    const sel = window.getSelection()!;
+                    sel.getRangeAt(0).collapse(true);
+                }
+
+                // TODO: this probably shouldn't be here - in the store.
+                clearSelection();
+
+                return true;
+            }
+
         } else {
             this._selected = {};
         }
