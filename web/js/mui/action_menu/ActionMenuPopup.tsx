@@ -35,7 +35,9 @@ export const ActionMenuPopup = observer(() => {
                    left: store.state.position.left,
                }}>
 
-            <ActionMenu onAction={NULL_FUNCTION} actions={store.state.items} onClose={() => store.setState(undefined)}/>
+            <ActionMenu onAction={store.state.onAction}
+                        actions={store.state.actions}
+                        onClose={() => store.setState(undefined)}/>
 
         </Paper>
     )

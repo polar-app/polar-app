@@ -3,8 +3,9 @@ import List from "@material-ui/core/List";
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
-import {IActionMenuItem, IActionMenuItemExecuted} from "./ActionStore";
+import {IActionMenuItem} from "./ActionStore";
 import {MUICommandMenuItem} from "../command_menu/MUICommandMenuItem";
+import {ActionHandler} from "./UseActions";
 
 
 const useStyles = makeStyles((theme) =>
@@ -32,7 +33,7 @@ interface IProps {
     /**
      * Called when a command is to be executed.
      */
-    readonly onAction: (action: IActionMenuItemExecuted) => void;
+    readonly onAction: ActionHandler;
 
     /**
      * The actions the user can pick from.
@@ -57,7 +58,7 @@ export const ActionMenu = React.memo((props: IProps) => {
 
     const handleActionExecuted = React.useCallback((action: IActionMenuItem) => {
 
-        onAction({id: action.id});
+        onAction(action.id);
         onClose('executed');
 
     }, [onClose, onAction]);

@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
-import {useActions} from "../../../web/js/mui/action_menu/UseActions";
+import {ActionHandler, useActions} from "../../../web/js/mui/action_menu/UseActions";
 import {
     ActionMenuStoreProvider,
     createItemsProvider,
@@ -20,9 +20,9 @@ const DebugStoreState = observer(() => {
         <>
             <b>position: </b> {JSON.stringify(store.state.position)} <br/>
 
-            <b>Matching N items: {store.state.items.length}</b>
+            <b>Matching N items: {store.state.actions.length}</b>
 
-            {store.state.items.map(current => (
+            {store.state.actions.map(current => (
                 <div key={current.id}>
                     {current.text}
                 </div>
@@ -48,24 +48,35 @@ const DebugStore = observer(() => {
 })
 
 
-const itemsProvider = createItemsProvider([
+const items = [
     {
-        id: 'alice',
+        id: 'Alice',
         text: 'Alice'
     },
     {
-        id: 'bob',
+        id: 'Bob',
         text: 'Bob'
     },
-])
+];
+
+const itemsProvider = createItemsProvider(items)
 
 const Editor = () => {
 
     const divRef = React.useRef<HTMLDivElement | null>(null);
 
+
+    const onAction: ActionHandler = (id) => {
+        return {
+            type: 'node-link',
+            target: id
+        }
+    }
+
     const [onKeyDown] = useActions({
         trigger: '[[',
-        itemsProvider
+        itemsProvider,
+        onAction
     });
 
     return (

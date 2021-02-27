@@ -5,6 +5,7 @@ import {
 } from "./ActionStore";
 import {ContentEditables} from "../../notes/ContentEditables";
 import {NoteActionSelections} from "../../notes/NoteActionSelections";
+import {IDStr} from "polar-shared/src/util/Strings";
 
 /**
  * Keyboard handler for while the user types. We return true if the menu is active.
@@ -15,15 +16,23 @@ export type NoteActionReset = () => void;
 
 export type NoteActionsResultTuple = [ReactKeyboardEventHandler, NoteActionReset];
 
+// TODO: need operations for bold, italics, and any other type of action we want
+// to perform here.
+
 /**
- * Execute an action and replace it with the given text.
+ * Link to a node.
  */
-export interface IActionHandleWithReplacement {
-    readonly type: 'replace';
-    readonly value: string;
+export interface IActionOpWithNodeLink {
+    readonly type: 'node-link';
+    readonly target: string;
 }
 
-export type ActionHandler = () => IActionHandleWithReplacement;
+export type ActionOp = IActionOpWithNodeLink;
+
+/**
+ * Given an id for the action to, perform the given operation.
+ */
+export type ActionHandler = (id: IDStr) => ActionOp;
 
 interface IOpts {
 
@@ -37,6 +46,42 @@ interface IOpts {
      * prompt and then set in the store.
      */
     readonly itemsProvider: ActionMenuItemsProvider;
+
+    /**
+     * Execute the action
+     */
+    readonly onAction: ActionHandler;
+
+}
+
+function useActionExecutor() {
+
+    return React.useCallback((from: Range, to: Range, action: ActionOp) => {
+
+        function createCoveringRange(): Range {
+            const range = document.createRange();
+            range.setStart(from.startContainer, from.startOffset);
+            range.setEnd(from.endContainer, from.endOffset);
+            return range;
+        }
+
+        switch (action.type) {
+
+            case "node-link":
+
+                const coveringRange = createCoveringRange();
+                coveringRange.deleteContents();
+
+                const a = document.createElement('a');
+                a.setAttribute("href", "#" + action.target);
+                a.appendChild(document.createTextNode(action.target));
+                coveringRange.insertNode(a);
+
+                break;
+
+        }
+
+    }, [])
 
 }
 
@@ -52,6 +97,7 @@ export function useActions(opts: IOpts): NoteActionsResultTuple {
     const {trigger, itemsProvider} = opts;
 
     const store = useActionMenuStore();
+    const actionExecutor = useActionExecutor();
 
     const activeRef = React.useRef(false);
 
@@ -100,6 +146,10 @@ export function useActions(opts: IOpts): NoteActionsResultTuple {
                 return reset();
             }
 
+            if (event.key === 'Enter') {
+                return reset();
+            }
+
             const items = itemsProvider(prompt);
             store.updateState(items);
 
@@ -144,7 +194,7 @@ export function useActions(opts: IOpts): NoteActionsResultTuple {
 
                     store.setState({
                         position,
-                        items
+                        actions: items
                     });
 
                 }

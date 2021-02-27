@@ -4,6 +4,7 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import {action, makeObservable, observable} from "mobx"
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {KeyBinding} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
+import {ActionHandler} from "./UseActions";
 
 export interface IActionMenuPosition {
 
@@ -74,12 +75,9 @@ export interface IActionState {
      */
     readonly position: IActionMenuPosition;
 
-    readonly items: ReadonlyArray<IActionMenuItem>
+    readonly actions: ReadonlyArray<IActionMenuItem>;
 
-    // /**
-    //  * Callback on the state that the user wanted to be executed.
-    //  */
-    // readonly onCommand: (executed: IActionMenuItemExecuted) => void;
+    readonly onAction: ActionHandler;
 
 }
 
@@ -117,7 +115,7 @@ export class ActionStore {
             return;
         }
 
-        this.setState({...this.state, items});
+        this.setState({...this.state, actions: items});
 
     }
 
