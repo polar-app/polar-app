@@ -1,11 +1,11 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
-import {useCommandActionMenu} from "../../../web/js/mui/command_action/UseCommandActionMenu";
+import {useCommandActionMenu} from "../../../web/js/mui/action_menu/UseCommandActionMenu";
 import {
     CommandActionMenuStoreProvider,
     createItemsProvider,
     useCommandActionMenuStore
-} from "../../../web/js/mui/command_action/CommandActionMenuStore";
+} from "../../../web/js/mui/action_menu/CommandActionMenuStore";
 
 
 const DebugStoreState = observer(() => {

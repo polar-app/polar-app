@@ -4,7 +4,7 @@ import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import { observer } from "mobx-react-lite"
 import {NavOpts, NoteIDStr, useNotesStore} from '../store/NotesStore';
 import {ContentEditables} from "../ContentEditables";
-import {useCommandActionMenu} from "../../mui/command_action/UseCommandActionMenu";
+import {useCommandActionMenu} from "../../mui/action_menu/UseCommandActionMenu";
 
 interface IProps {
 
