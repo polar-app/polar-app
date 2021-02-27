@@ -66,6 +66,8 @@ export const NoteContentEditable = observer((props: IProps) => {
 
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
+        noteLinkEventHandler(event, divRef.current);
+
         // note that we have to first use trim on this because sometimes
         // chrome uses &nbsp; which is dumb
 
@@ -74,7 +76,7 @@ export const NoteContentEditable = observer((props: IProps) => {
         contentRef.current = newContent;
         props.onChange(newContent);
 
-    }, [props]);
+    }, [noteLinkEventHandler, props]);
 
     React.useEffect(() => {
 
@@ -143,11 +145,6 @@ export const NoteContentEditable = observer((props: IProps) => {
     const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 
         if (! divRef.current) {
-            return;
-        }
-
-        // FIXME: this has to be onKeyUp because the region is not yet affected.
-        if (noteLinkEventHandler(event, divRef.current)) {
             return;
         }
 
