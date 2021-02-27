@@ -8,6 +8,7 @@ import {
 } from "../../../web/js/mui/command_action/CommandActionMenuStore";
 
 
+
 const DebugStoreState = observer(() => {
 
     const store = useCommandActionMenuStore();
@@ -18,8 +19,16 @@ const DebugStoreState = observer(() => {
 
     return (
         <>
-            <b>position left: </b> {store.state.position.left} <br/>
-            <b>position top: </b> {store.state.position.top} <br/>
+            <b>position: </b> {JSON.stringify(store.state.position)} <br/>
+
+            <b>Matching N items: {store.state.items.length}</b>
+
+            {store.state.items.map(current => (
+                <div>
+                    {current.text}
+                </div>
+            ))}
+
         </>
     );
 
@@ -74,7 +83,6 @@ const Editor = () => {
     );
 
 }
-
 
 export const MUICommandActionMenuStory = () => {
 
