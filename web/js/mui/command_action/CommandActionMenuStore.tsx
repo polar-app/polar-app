@@ -17,7 +17,7 @@ export type CommandActionMenuItemsProvider = (prompt: string) => ReadonlyArray<I
 /**
  * Represents an item that can be selected but no action.  The action is just
  * given the ID so that ID must be unique so that the action can handle it
- * properly
+ * properly.
  */
 export interface ICommandActionMenuItem {
 
@@ -34,7 +34,12 @@ export interface ICommandActionMenuItem {
 }
 
 export interface IActionMenuItemExecuted {
+
+    /**
+     * The action that was executed.
+     */
     readonly id: string;
+
 }
 
 export interface IActionState {

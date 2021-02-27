@@ -8,7 +8,6 @@ import {
 } from "../../../web/js/mui/command_action/CommandActionMenuStore";
 
 
-
 const DebugStoreState = observer(() => {
 
     const store = useCommandActionMenuStore();
