@@ -6,6 +6,7 @@ import {
     createItemsProvider,
     useCommandActionMenuStore
 } from "../../../web/js/mui/action_menu/ActionStore";
+import {ActionMenuPopup} from "../../../web/js/mui/action_menu/ActionMenuPopup";
 
 const DebugStoreState = observer(() => {
 
@@ -95,6 +96,7 @@ export const MUICommandActionMenuStory = () => {
                     <Editor/>
                     <div>debug: </div>
                     <DebugStore/>
+                    <ActionMenuPopup/>
                 </>
             </CommandActionMenuStoreProvider>
         </div>
