@@ -1,7 +1,11 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import {useCommandActionMenu} from "../../../web/js/mui/command_action/UseCommandActionMenu";
-import {CommandActionMenuStoreProvider, useCommandActionMenuStore} from "../../../web/js/mui/command_action/CommandActionMenuStore";
+import {
+    CommandActionMenuStoreProvider,
+    createItemsProvider,
+    useCommandActionMenuStore
+} from "../../../web/js/mui/command_action/CommandActionMenuStore";
 
 
 const DebugStoreState = observer(() => {
@@ -35,20 +39,28 @@ const DebugStore = observer(() => {
 
 })
 
+
+const itemsProvider = createItemsProvider([
+    {
+        id: 'alice',
+        text: 'Alice'
+    },
+    {
+        id: 'bob',
+        text: 'Bob'
+    },
+])
+
 const Editor = () => {
 
     const divRef = React.useRef<HTMLDivElement | null>(null);
 
     const [onKeyDown] = useCommandActionMenu({
-        trigger: '[['
+        trigger: '[[',
+        itemsProvider
     });
 
     return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            flexGrow: 1
-        }}>
 
             <div ref={divRef}
                  contentEditable={true}
@@ -59,7 +71,6 @@ const Editor = () => {
                  }}
                  dangerouslySetInnerHTML={{__html: "this is the content"}}/>
 
-        </div>
     );
 
 }
@@ -68,13 +79,20 @@ const Editor = () => {
 export const MUICommandActionMenuStory = () => {
 
     return (
-        <CommandActionMenuStoreProvider>
-            <>
-                <Editor/>
-                <div>debug: </div>
-                <DebugStore/>
-            </>
-        </CommandActionMenuStoreProvider>
+        <div style={{
+                 display: 'flex',
+                 flexDirection: 'column',
+                 flexGrow: 1
+             }}>
+            <CommandActionMenuStoreProvider>
+                <>
+                    <Editor/>
+                    <div>debug: </div>
+                    <DebugStore/>
+                </>
+            </CommandActionMenuStoreProvider>
+        </div>
+
     )
 }
 

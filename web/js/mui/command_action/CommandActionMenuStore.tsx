@@ -10,8 +10,16 @@ export interface ICommandActionMenuPosition {
 }
 
 
-export type CommandActionMenuItemProvider = (prompt: string) => ReadonlyArray<ICommandActionMenuItem>;
+/**
+ * Returns items that match the prompt, ideally sorted by priority.
+ */
+export type CommandActionMenuItemsProvider = (prompt: string) => ReadonlyArray<ICommandActionMenuItem>;
 
+/**
+ * Represents an item that can be selected but no action.  The action is just
+ * given the ID so that ID must be unique so that the action can handle it
+ * properly
+ */
 export interface ICommandActionMenuItem {
 
     /**
@@ -43,6 +51,15 @@ export interface IActionState {
     //  * Callback on the state that the user wanted to be executed.
     //  */
     // readonly onCommand: (executed: IActionMenuItemExecuted) => void;
+
+}
+
+export function createItemsProvider(items: ReadonlyArray<ICommandActionMenuItem>): CommandActionMenuItemsProvider {
+
+    return (prompt) => {
+        const promptLower = prompt.toLowerCase();
+        return items.filter(current => current.text.toLowerCase().indexOf(promptLower) !== -1);
+    };
 
 }
 

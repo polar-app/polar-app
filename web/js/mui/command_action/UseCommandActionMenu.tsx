@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    CommandActionMenuItemProvider,
+    CommandActionMenuItemsProvider,
     ICommandActionMenuPosition,
     useCommandActionMenuStore
 } from "./CommandActionMenuStore";
@@ -20,12 +20,11 @@ interface IOpts {
      */
     readonly trigger: string;
 
-
-    // /**
-    //  * The provider for the commands which we filter for when computing the
-    //  * prompt and then set in the store.
-    //  */
-    // readonly itemsProvider: CommandActionMenuItemProvider;
+    /**
+     * The provider for the commands which we filter for when computing the
+     * prompt and then set in the store.
+     */
+    readonly itemsProvider: CommandActionMenuItemsProvider;
 
 }
 
@@ -34,9 +33,13 @@ interface ICursorRange {
     readonly offset: number;
 }
 
+// FIXME how do we replace /execute the action to replace the text? I could use
+// the range API for this, replace the text in that range with a document
+// fragment then emit the new content as markdown
+
 export function useCommandActionMenu(opts: IOpts): NoteActionsResultTuple {
 
-    const {trigger} = opts;
+    const {trigger, itemsProvider} = opts;
 
     const store = useCommandActionMenuStore();
 
@@ -87,6 +90,9 @@ export function useCommandActionMenu(opts: IOpts): NoteActionsResultTuple {
                 return;
             }
 
+            const items = itemsProvider(prompt);
+            store.updateState(items);
+
         } else {
 
             if (prefixText.endsWith(trigger)) {
@@ -127,9 +133,10 @@ export function useCommandActionMenu(opts: IOpts): NoteActionsResultTuple {
 
                     activeRef.current = true;
 
+                    const items = itemsProvider(prompt);
                     store.setState({
                         position,
-                        items: []
+                        items
                     });
 
                 } else {
