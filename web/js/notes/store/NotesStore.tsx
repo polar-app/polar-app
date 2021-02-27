@@ -351,23 +351,23 @@ export class NotesStore {
 
     @action public doNav(delta: 'prev' | 'next',
                          pos: NavPosition,
-                         opts: NavOpts) {
+                         opts: NavOpts): boolean {
 
         if (this.root === undefined) {
             console.warn("No currently active root");
-            return;
+            return false;
         }
 
         if (this._active === undefined) {
             console.warn("No currently active node");
-            return;
+            return false;
         }
 
         const rootNote = Arrays.first(this.lookup([this.root]));
 
         if (! rootNote) {
             console.warn("No note in index for ID: ", this.root);
-            return;
+            return false;
         }
 
         const items = [
@@ -379,7 +379,7 @@ export class NotesStore {
 
         if (childIndex === -1) {
             console.warn(`Child ${this._active} not in note items`);
-            return;
+            return false;
         }
 
         const deltaIndex = delta === 'prev' ? -1 : 1;
@@ -398,14 +398,16 @@ export class NotesStore {
         this._active = newActive;
         this._activePos = pos;
 
+        return true;
+
     }
 
     public navPrev(pos: NavPosition, opts: NavOpts) {
-        this.doNav('prev', pos, opts);
+        return this.doNav('prev', pos, opts);
     }
 
     public navNext(pos: NavPosition, opts: NavOpts) {
-        this.doNav('next', pos, opts);
+        return this.doNav('next', pos, opts);
     }
 
     public toggleExpand(id: NoteIDStr) {

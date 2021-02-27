@@ -64,6 +64,10 @@ export namespace ContentEditables {
         return div.innerText;
     }
 
+    export function isSuffixSelected() {
+
+    }
+
     export function computeCursorPosition(editable: HTMLElement): 'start' | 'end' | undefined {
 
         const split = splitAtCursor(editable);
@@ -111,5 +115,104 @@ export namespace ContentEditables {
         };
 
     }
+
+    export function computeRangeAtStart(node: Node) {
+
+        const range = document.createRange();
+        // range.setStartAfter(node);
+        // range.setEndAfter(node);
+
+        const parentElement = node.parentElement!;
+
+        if (! parentElement) {
+            throw new Error("No parent element");
+        }
+
+        const index = Array.from(parentElement.childNodes).indexOf(node as any);
+
+        console.log("FIXME parentElement: ", parentElement);
+        console.log("FIXME index: ", index);
+
+        range.setStart(parentElement, index);
+        range.setEndAfter(node);
+
+        return range;
+
+    }
+
+    export function computeRangeAtEnd(node: Node) {
+
+        const cursorSelectionRange = computeEndCursorSelectionRange(node);
+        const range = document.createRange();
+
+        range.setStart(cursorSelectionRange.node, cursorSelectionRange.offset);
+        range.setEnd(cursorSelectionRange.node, cursorSelectionRange.offset);
+
+        return range;
+
+    }
+
+    export function currentRange(): Range | undefined {
+
+        const sel = window.getSelection();
+
+        if (sel) {
+
+            if (sel.rangeCount > 0) {
+                return sel.getRangeAt(0);
+            }
+
+        }
+
+        return undefined;
+
+    }
+
+    // https://developer.mozilla.org/en-US/docs/Web/API/Range/compareBoundaryPoints
+    export function selectionAtEnd(node: Node): boolean {
+        return selectionBoundaryPointsEqual(Range.END_TO_END, computeRangeAtEnd(node));
+    }
+
+    export function selectionAtStart(node: Node): boolean {
+
+        const range = currentRange();
+        const sourceRange = computeRangeAtStart(node);
+
+        if (range) {
+
+            const rangeBCR = range.getBoundingClientRect();
+            const sourceRangeBCR = sourceRange.getBoundingClientRect();
+
+            console.log("FIXME: rangeBCR: ", rangeBCR)
+            console.log("FIXME: sourceRangeBCR: ", sourceRangeBCR)
+
+            return rangeBCR.left === sourceRangeBCR.left
+
+        }
+
+        return false;
+
+    }
+
+    function selectionBoundaryPointsEqual(how: number, sourceRange: Range) {
+
+        const range = currentRange();
+
+        if (range) {
+
+            console.log("FIXME: range bcr: ", range.getBoundingClientRect())
+            console.log("FIXME: sourceRange bcr: ", range.getBoundingClientRect())
+
+            const delta = range.compareBoundaryPoints(how, sourceRange);
+            console.log("FIXME delta: ", delta);
+            return delta === 0;
+        }
+
+        console.log("FIXME no range");
+
+        return false;
+
+    }
+
 
 }

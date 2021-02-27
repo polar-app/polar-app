@@ -15,6 +15,16 @@ export type NoteActionReset = () => void;
 
 export type NoteActionsResultTuple = [ReactKeyboardEventHandler, NoteActionReset];
 
+/**
+ * Execute an action and replace it with the given text.
+ */
+export interface IActionHandleWithReplacement {
+    readonly type: 'replace';
+    readonly value: string;
+}
+
+export type ActionHandler = () => IActionHandleWithReplacement;
+
 interface IOpts {
 
     /**
@@ -33,6 +43,9 @@ interface IOpts {
 // FIXME how do we replace /execute the action to replace the text? I could use
 // the range API for this, replace the text in that range with a document
 // fragment then emit the new content as markdown
+
+// FIXME: now the main issue is I have to patch the DOM and build the
+// replacement...
 
 export function useActions(opts: IOpts): NoteActionsResultTuple {
 

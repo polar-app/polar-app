@@ -151,14 +151,26 @@ export const NoteContentEditable = observer((props: IProps) => {
 
             case 'ArrowUp':
 
+                if (event.shiftKey && ! ContentEditables.selectionAtStart(divRef.current)) {
+                    console.log("FIXME: not handling");
+                    // don't handle shift until we allow the range to be selected.
+                    break;
+                }
+
                 abortEvent();
                 store.navPrev('start', opts);
                 break;
 
             case 'ArrowDown':
 
+                if (event.shiftKey && ! ContentEditables.selectionAtEnd(divRef.current)) {
+                    // don't handle shift until we allow the range to be selected.
+                    break;
+                }
+
                 abortEvent();
                 store.navNext('start', opts);
+
                 break;
 
             case 'ArrowLeft':
