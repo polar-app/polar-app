@@ -30,16 +30,11 @@ interface IOpts {
 
 }
 
-interface ICursorRange {
-    readonly node: Node;
-    readonly offset: number;
-}
-
 // FIXME how do we replace /execute the action to replace the text? I could use
 // the range API for this, replace the text in that range with a document
 // fragment then emit the new content as markdown
 
-export function useCommandActionMenu(opts: IOpts): NoteActionsResultTuple {
+export function useActions(opts: IOpts): NoteActionsResultTuple {
 
     const {trigger, itemsProvider} = opts;
 

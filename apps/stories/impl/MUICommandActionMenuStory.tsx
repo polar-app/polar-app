@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
-import {useCommandActionMenu} from "../../../web/js/mui/action_menu/UseCommandActionMenu";
+import {useActions} from "../../../web/js/mui/action_menu/UseActions";
 import {
     CommandActionMenuStoreProvider,
     createItemsProvider,
@@ -63,7 +63,7 @@ const Editor = () => {
 
     const divRef = React.useRef<HTMLDivElement | null>(null);
 
-    const [onKeyDown] = useCommandActionMenu({
+    const [onKeyDown] = useActions({
         trigger: '[[',
         itemsProvider
     });
