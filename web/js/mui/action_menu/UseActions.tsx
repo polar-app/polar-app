@@ -80,6 +80,9 @@ function useActionExecutor() {
                 a.appendChild(document.createTextNode(actionOp.target));
                 coveringRange.insertNode(a);
 
+                window.getSelection()!.getRangeAt(0).setStartAfter(a);
+                window.getSelection()!.getRangeAt(0).setEndAfter(a);
+
                 break;
 
         }
