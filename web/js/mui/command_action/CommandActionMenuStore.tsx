@@ -79,7 +79,6 @@ export class CommandActionMenuStore {
      */
     @action public setState(state: IActionState | undefined) {
         this.state = state;
-        console.log("FIXME: state is now: ", this.state)
     }
 
     @action public updateState(items: ReadonlyArray<ICommandActionMenuItem>) {
