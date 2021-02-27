@@ -24,7 +24,7 @@ const DebugStoreState = observer(() => {
             <b>Matching N items: {store.state.items.length}</b>
 
             {store.state.items.map(current => (
-                <div>
+                <div key={current.id}>
                     {current.text}
                 </div>
             ))}

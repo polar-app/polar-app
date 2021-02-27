@@ -6,6 +6,7 @@ import {
 } from "./CommandActionMenuStore";
 import {ContentEditables} from "../../notes/ContentEditables";
 import {NoteActionSelections} from "../../notes/NoteActionSelections";
+import has = Reflect.has;
 
 export type ReactKeyboardEventHandler = (event: React.KeyboardEvent, contenteditable: HTMLElement | null) => void;
 
@@ -70,7 +71,11 @@ export function useCommandActionMenu(opts: IOpts): NoteActionsResultTuple {
 
         const prefixText = ContentEditables.fragmentToText(split.prefix);
 
-        function computePrompt() {
+        function hasPrompt(): boolean {
+            return prefixText.length >= textAtTriggerPointRef.current.length;
+        }
+
+        function computePrompt(): string {
             return prefixText.substr(textAtTriggerPointRef.current.length);
         }
 
@@ -78,14 +83,13 @@ export function useCommandActionMenu(opts: IOpts): NoteActionsResultTuple {
 
             const prompt = computePrompt();
 
-            if (event.key === 'Escape') {
+            if (! hasPrompt()) {
+                console.log("FIXME: does not have a prompt");
                 reset();
                 return;
             }
 
-            console.log(`FIXME: prompt: '${prompt}'`);
-
-            if (prompt === '') {
+            if (event.key === 'Escape') {
                 reset();
                 return;
             }
@@ -134,6 +138,7 @@ export function useCommandActionMenu(opts: IOpts): NoteActionsResultTuple {
                     activeRef.current = true;
 
                     const items = itemsProvider(prompt);
+
                     store.setState({
                         position,
                         items
@@ -163,11 +168,9 @@ export function useCommandActionMenu(opts: IOpts): NoteActionsResultTuple {
 
             }
 
-    }
+        }
 
-
-
-    }, [reset, store, trigger]);
+    }, [itemsProvider, reset, store, trigger]);
 
     return [eventHandler, reset];
 
