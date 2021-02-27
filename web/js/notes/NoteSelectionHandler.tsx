@@ -50,10 +50,6 @@ export const NoteSelectionHandler = observer(function NoteSelectionHandler(props
 
     }, [handleDelete, store]);
 
-    const handleClick = React.useCallback(() => {
-        store.clearSelected();
-    }, [store]);
-
     React.useEffect(() => {
 
         window.addEventListener('keydown', onKeyDown, {capture: true})
@@ -65,7 +61,7 @@ export const NoteSelectionHandler = observer(function NoteSelectionHandler(props
     }, [onKeyDown])
 
     return (
-        <div onClick={handleClick} style={props.style}>
+        <div style={props.style}>
             {props.children}
         </div>
     );

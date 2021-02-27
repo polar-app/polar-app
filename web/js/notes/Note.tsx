@@ -46,13 +46,13 @@ export const NoteInner = observer((props: IProps) => {
     const theme = useTheme();
     const contextMenuHandlers = useNoteContextMenu();
 
-    const expanded = store.isExpanded(props.id);
-    const selected = store.isSelected(props.id);
+    const expanded = store.isExpanded(id);
+    const selected = store.isSelected(id);
     const note = store.getNote(id);
 
     const root = store.root;
 
-    const handleClick = React.useCallback((event: React.MouseEvent) => {
+    const handleMouseDown = React.useCallback((event: React.MouseEvent) => {
 
         // we could maybe listen to JUST shift being typed, then the click handler would do the rest and
         // know the range we're selecting over...
@@ -61,9 +61,12 @@ export const NoteInner = observer((props: IProps) => {
 
         if (event.shiftKey) {
             if (store.active !== undefined) {
+
                 store.setSelectionRange(store.active, id);
                 event.stopPropagation();
             }
+        } else {
+            store.clearSelected();
         }
 
     }, [id, store]);
@@ -77,7 +80,7 @@ export const NoteInner = observer((props: IProps) => {
     const hasItems = items.length > 0;
 
     return (
-        <div onClick={handleClick}
+        <div onMouseDown={handleMouseDown}
              className={clsx(['Note', selected ? classes.selected : undefined])}>
             <div {...contextMenuHandlers}
                  style={{
