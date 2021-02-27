@@ -5,8 +5,7 @@ import {
     CommandActionMenuStoreProvider,
     createItemsProvider,
     useCommandActionMenuStore
-} from "../../../web/js/mui/action_menu/ActionMenuStore";
-
+} from "../../../web/js/mui/action_menu/ActionStore";
 
 const DebugStoreState = observer(() => {
 

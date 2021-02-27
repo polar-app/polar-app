@@ -2,7 +2,7 @@ import React from 'react';
 import {
     CommandActionMenuItemsProvider,
     useCommandActionMenuStore
-} from "./ActionMenuStore";
+} from "./ActionStore";
 import {ContentEditables} from "../../notes/ContentEditables";
 import {NoteActionSelections} from "../../notes/NoteActionSelections";
 
@@ -46,7 +46,6 @@ export function useActions(opts: IOpts): NoteActionsResultTuple {
 
     const reset = React.useCallback(() => {
 
-        console.log("FIXME reset");
         activeRef.current = false;
         store.setState(undefined);
 
@@ -108,6 +107,7 @@ export function useActions(opts: IOpts): NoteActionsResultTuple {
                         const bcr = cursorRange.getBoundingClientRect();
 
                         const newPosition = {
+                            bottom: bcr.top,
                             top: bcr.bottom,
                             left: bcr.left,
                         };

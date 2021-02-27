@@ -5,7 +5,17 @@ import {action, makeObservable, observable} from "mobx"
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 export interface ICommandActionMenuPosition {
+
+    /**
+     * Where we should be placing the menu when it needs to be ABOVE the text.
+     */
+    readonly bottom: number;
+
+    /**
+     * Where we should be placing the menu when it needs to be BELOW the text.
+     */
     readonly top: number;
+
     readonly left: number;
 }
 
