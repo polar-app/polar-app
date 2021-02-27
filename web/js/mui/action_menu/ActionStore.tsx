@@ -3,8 +3,9 @@ import {createReactiveStore} from "../../react/store/ReactiveStore";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {action, makeObservable, observable} from "mobx"
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {KeyBinding} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
 
-export interface ICommandActionMenuPosition {
+export interface IActionMenuPosition {
 
     /**
      * Where we should be placing the menu when it needs to be ABOVE the text.
@@ -22,14 +23,14 @@ export interface ICommandActionMenuPosition {
 /**
  * Returns items that match the prompt, ideally sorted by priority.
  */
-export type CommandActionMenuItemsProvider = (prompt: string) => ReadonlyArray<ICommandActionMenuItem>;
+export type ActionMenuItemsProvider = (prompt: string) => ReadonlyArray<IActionMenuItem>;
 
 /**
  * Represents an item that can be selected but no action.  The action is just
  * given the ID so that ID must be unique so that the action can handle it
  * properly.
  */
-export interface ICommandActionMenuItem {
+export interface IActionMenuItem {
 
     /**
      * A unique id for the action so that we can handle it on the callback.
@@ -40,6 +41,20 @@ export interface ICommandActionMenuItem {
      * The text to show the user in the UI.
      */
     readonly text: string;
+
+    /**
+     * The group for the command, if any.
+     */
+    readonly group?: string;
+
+    readonly icon?: React.ReactNode,
+
+    readonly sequences?: ReadonlyArray<KeyBinding>;
+
+    /**
+     * Longer description of this command. Not just the shorter 'text' description.
+     */
+    readonly description?: string;
 
 }
 
@@ -57,9 +72,9 @@ export interface IActionState {
     /**
      * Where to display the action menu...
      */
-    readonly position: ICommandActionMenuPosition;
+    readonly position: IActionMenuPosition;
 
-    readonly items: ReadonlyArray<ICommandActionMenuItem>
+    readonly items: ReadonlyArray<IActionMenuItem>
 
     // /**
     //  * Callback on the state that the user wanted to be executed.
@@ -68,7 +83,7 @@ export interface IActionState {
 
 }
 
-export function createItemsProvider(items: ReadonlyArray<ICommandActionMenuItem>): CommandActionMenuItemsProvider {
+export function createItemsProvider(items: ReadonlyArray<IActionMenuItem>): ActionMenuItemsProvider {
 
     return (prompt) => {
         const promptLower = prompt.toLowerCase();
@@ -95,7 +110,7 @@ export class ActionStore {
         this.state = state;
     }
 
-    @action public updateState(items: ReadonlyArray<ICommandActionMenuItem>) {
+    @action public updateState(items: ReadonlyArray<IActionMenuItem>) {
 
         if (! this.state) {
             console.warn("No state");

@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    CommandActionMenuItemsProvider,
+    ActionMenuItemsProvider,
     useCommandActionMenuStore
 } from "./ActionStore";
 import {ContentEditables} from "../../notes/ContentEditables";
@@ -26,7 +26,7 @@ interface IOpts {
      * The provider for the commands which we filter for when computing the
      * prompt and then set in the store.
      */
-    readonly itemsProvider: CommandActionMenuItemsProvider;
+    readonly itemsProvider: ActionMenuItemsProvider;
 
 }
 
