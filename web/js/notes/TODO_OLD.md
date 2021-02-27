@@ -10,29 +10,6 @@ https://www.youtube.com/watch?v=asQ4RSjjCu4
 https://www.youtube.com/watch?v=7b2AVCZOMnw
 https://www.youtube.com/watch?v=ByiFhtlI66A
 
-# strategies moving forward:
-
-    - wht happens when I split a node that has children?
-        
-
-    - work on a tool to convert the DOM to a tree that I can assertJSON on... 
-    
-    - a note with one char, and I hit backspace, merges the notes.
-
-    - no rich text formatting in the outliner ... use markdown
-    - struggle through ckeditor5...
-        - start building out more comprehensive testing using cypress to find any regressions
-        -  
-
-    - implement my own control using for a rich text editor for just the node using contenteditable
-        - it's NOT as full featured as ckeditor 
-        - all I really need is 
-            - paste handling
-            - image
-            - bold, italics, etc.
-            - links to other nodes
-        
-            
 
 
 # TODO
@@ -103,10 +80,6 @@ https://www.youtube.com/watch?v=ByiFhtlI66A
     
     - there's no way to link to a new node via text like [[ or ]] by creating a new one...
   
-    - mouse selection:   
-        - shift+click on another node should select the range between the nodes
-        
-        - ctrl+click should select individual nodes.
 
     - using the action menu to link to existing nodes doesn't really work just yet
 

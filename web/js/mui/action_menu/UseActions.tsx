@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     ActionMenuItemsProvider,
-    useCommandActionMenuStore
+    useActionMenuStore
 } from "./ActionStore";
 import {ContentEditables} from "../../notes/ContentEditables";
 import {NoteActionSelections} from "../../notes/NoteActionSelections";
@@ -51,7 +51,7 @@ export function useActions(opts: IOpts): NoteActionsResultTuple {
 
     const {trigger, itemsProvider} = opts;
 
-    const store = useCommandActionMenuStore();
+    const store = useActionMenuStore();
 
     const activeRef = React.useRef(false);
 

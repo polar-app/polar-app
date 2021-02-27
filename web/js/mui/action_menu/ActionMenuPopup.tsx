@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
-import {useCommandActionMenuStore} from "./ActionStore";
+import {useActionMenuStore} from "./ActionStore";
 import {ActionMenu} from "./ActionMenu";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) =>
 
 export const ActionMenuPopup = observer(() => {
 
-    const store = useCommandActionMenuStore();
+    const store = useActionMenuStore();
     const classes = useStyles();
 
     if (! store.state) {

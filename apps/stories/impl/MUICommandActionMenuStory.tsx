@@ -2,15 +2,15 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import {useActions} from "../../../web/js/mui/action_menu/UseActions";
 import {
-    CommandActionMenuStoreProvider,
+    ActionMenuStoreProvider,
     createItemsProvider,
-    useCommandActionMenuStore
+    useActionMenuStore
 } from "../../../web/js/mui/action_menu/ActionStore";
 import {ActionMenuPopup} from "../../../web/js/mui/action_menu/ActionMenuPopup";
 
 const DebugStoreState = observer(() => {
 
-    const store = useCommandActionMenuStore();
+    const store = useActionMenuStore();
 
     if (! store.state) {
         return null;
@@ -36,7 +36,7 @@ const DebugStoreState = observer(() => {
 
 const DebugStore = observer(() => {
 
-    const store = useCommandActionMenuStore();
+    const store = useActionMenuStore();
 
     return (
         <>
@@ -91,14 +91,14 @@ export const MUICommandActionMenuStory = () => {
                  flexDirection: 'column',
                  flexGrow: 1
              }}>
-            <CommandActionMenuStoreProvider>
+            <ActionMenuStoreProvider>
                 <>
                     <Editor/>
                     <div>debug: </div>
                     <DebugStore/>
                     <ActionMenuPopup/>
                 </>
-            </CommandActionMenuStoreProvider>
+            </ActionMenuStoreProvider>
         </div>
 
     )

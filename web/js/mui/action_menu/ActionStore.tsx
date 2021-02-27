@@ -123,4 +123,4 @@ export class ActionStore {
 
 }
 
-export const [CommandActionMenuStoreProvider, useCommandActionMenuStore] = createReactiveStore(() => new ActionStore())
+export const [ActionMenuStoreProvider, useActionMenuStore] = createReactiveStore(() => new ActionStore())
