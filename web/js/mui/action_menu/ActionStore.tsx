@@ -67,7 +67,7 @@ export function createItemsProvider(items: ReadonlyArray<ICommandActionMenuItem>
 
 }
 
-export class ActionMenuStore {
+export class ActionStore {
 
     @observable state: IActionState | undefined = undefined;
 
@@ -98,4 +98,4 @@ export class ActionMenuStore {
 
 }
 
-export const [CommandActionMenuStoreProvider, useCommandActionMenuStore] = createReactiveStore(() => new ActionMenuStore())
+export const [CommandActionMenuStoreProvider, useCommandActionMenuStore] = createReactiveStore(() => new ActionStore())
