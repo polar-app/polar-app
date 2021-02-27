@@ -9,7 +9,6 @@ export interface ICommandActionMenuPosition {
     readonly left: number;
 }
 
-
 /**
  * Returns items that match the prompt, ideally sorted by priority.
  */
