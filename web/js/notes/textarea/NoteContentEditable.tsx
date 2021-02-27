@@ -146,6 +146,7 @@ export const NoteContentEditable = observer((props: IProps) => {
             return;
         }
 
+        // FIXME: this has to be onKeyUp because the region is not yet affected.
         if (noteLinkEventHandler(event, divRef.current)) {
             return;
         }
