@@ -226,6 +226,10 @@ export class NotesStore {
 
     }
 
+    public hasSelected(): boolean {
+        return Object.keys(this._selected).length > 0;
+    }
+
     public getNote(id: NoteIDStr): Note | undefined {
         return this._index[id] || undefined;
     }
