@@ -349,7 +349,7 @@ export class NotesStore {
     }
 
 
-    @action public setSelectionRange(newActive: NoteIDStr) {
+    @action public setSelectionRange(fromNote: NoteIDStr, toNote: NoteIDStr) {
 
         if (! this.root) {
             throw new Error("No root");
@@ -357,19 +357,19 @@ export class NotesStore {
 
         const linearExpansionTree = [this.root, ...this.computeLinearExpansionTree2(this.root)];
 
-        const selectedActiveIdx = linearExpansionTree.indexOf(this._selectedAnchor!);
-        const newActiveIdx = linearExpansionTree.indexOf(newActive);
+        const fromNoteIdx = linearExpansionTree.indexOf(fromNote);
+        const toNoteIdx = linearExpansionTree.indexOf(toNote);
 
-        if (selectedActiveIdx === -1) {
-            throw new Error("selectedAnchor not found: " + this._selectedAnchor);
+        if (fromNoteIdx === -1) {
+            throw new Error("selectedAnchor not found: " + fromNote);
         }
 
-        if (newActiveIdx === -1) {
-            throw new Error("newActive not found");
+        if (toNoteIdx === -1) {
+            throw new Error("toNoteIdx not found");
         }
 
-        const min = Math.min(selectedActiveIdx, newActiveIdx);
-        const max = Math.max(selectedActiveIdx, newActiveIdx);
+        const min = Math.min(fromNoteIdx, toNoteIdx);
+        const max = Math.max(fromNoteIdx, toNoteIdx);
 
         const newSelected
             = arrayStream(Numbers.range(min, max))
@@ -423,7 +423,7 @@ export class NotesStore {
         if (opts.shiftKey) {
 
             if (this.hasSelected()) {
-                this.setSelectionRange(newActive);
+                this.setSelectionRange(this._selectedAnchor!, newActive);
             } else {
 
                 // only select the entire/current node at first.

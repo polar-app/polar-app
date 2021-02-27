@@ -59,20 +59,14 @@ export const NoteInner = observer((props: IProps) => {
 
         // FIXMEL this allows us to accideltally select itself...
 
-        console.log("FIXME.1");
-
         if (event.shiftKey) {
-            console.log("FIXME.2");
             if (store.active !== undefined) {
-                // console.log("FIXME.3");
-                //
-                // store.setSelectionRange(store.active, id);
-
+                store.setSelectionRange(store.active, id);
                 event.stopPropagation();
             }
         }
 
-    }, [store]);
+    }, [id, store]);
 
     if (! note) {
         return null;
