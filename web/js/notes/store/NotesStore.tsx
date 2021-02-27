@@ -12,6 +12,7 @@ import {ReverseIndex} from "./ReverseIndex";
 import {Note} from "./Note";
 import {MarkdownContentEscaper} from "../MarkdownContentEscaper";
 import { arrayStream } from "polar-shared/src/util/ArrayStreams";
+import { Numbers } from "polar-shared/src/util/Numbers";
 
 export type NoteIDStr = IDStr;
 export type NoteNameStr = string;
@@ -142,6 +143,12 @@ export class NotesStore {
      */
     @observable _selected: StringSetMap = {};
 
+    /**
+     * Used so that when we change the selected notes, that we know which is the
+     * FIRST so that we can compute a from and to based on their position.
+     */
+    @observable _selectedAnchor: IDStr | undefined = undefined;
+
     constructor() {
         this.root = undefined;
         makeObservable(this);
@@ -188,6 +195,7 @@ export class NotesStore {
 
     @action public clearSelected() {
         this._selected = {};
+        this._selectedAnchor = undefined;
     }
 
     /**
@@ -341,22 +349,34 @@ export class NotesStore {
     }
 
 
-    @action public setSelectionRange(active: NoteIDStr, newActive: NoteIDStr) {
+    @action public setSelectionRange(newActive: NoteIDStr) {
 
-        const computeSelected = (): StringSetMap => {
-
-            const currentSelected = Object.keys(this._selected);
-            const newSelected = [...currentSelected, active, newActive];
-
-            const result: {[key: string]: boolean} = {};
-
-            newSelected.forEach(current => result[current] = true);
-
-            return result;
-
+        if (! this.root) {
+            throw new Error("No root");
         }
 
-        this._selected = computeSelected();
+        const linearExpansionTree = [this.root, ...this.computeLinearExpansionTree2(this.root)];
+
+        const selectedActiveIdx = linearExpansionTree.indexOf(this._selectedAnchor!);
+        const newActiveIdx = linearExpansionTree.indexOf(newActive);
+
+        if (selectedActiveIdx === -1) {
+            throw new Error("selectedAnchor not found: " + this._selectedAnchor);
+        }
+
+        if (newActiveIdx === -1) {
+            throw new Error("newActive not found");
+        }
+
+        const min = Math.min(selectedActiveIdx, newActiveIdx);
+        const max = Math.max(selectedActiveIdx, newActiveIdx);
+
+        const newSelected
+            = arrayStream(Numbers.range(min, max))
+                 .map(current => linearExpansionTree[current])
+                 .toMap2(current => current, () => true);
+
+        this._selected = newSelected;
 
     }
 
@@ -403,10 +423,12 @@ export class NotesStore {
         if (opts.shiftKey) {
 
             if (this.hasSelected()) {
-                this.setSelectionRange(this._active, newActive);
+                this.setSelectionRange(newActive);
             } else {
+
                 // only select the entire/current node at first.
                 this._selected[this._active] = true;
+                this._selectedAnchor = this._active;
 
                 function clearSelection() {
                     const sel = window.getSelection()!;
@@ -420,7 +442,9 @@ export class NotesStore {
             }
 
         } else {
+            // no shift key so by definition nothing is selected so clear the selections
             this._selected = {};
+            this._selectedAnchor = undefined;
         }
 
         this._active = newActive;
@@ -491,7 +515,6 @@ export class NotesStore {
 
     }
 
-    // FIXME: make this the default...
     private computeLinearExpansionTree2(id: NoteIDStr): ReadonlyArray<NoteIDStr> {
 
         const note = this._index[id];
@@ -501,7 +524,7 @@ export class NotesStore {
             return [];
         }
 
-        const isExpanded = this._expanded[id];
+        const isExpanded = this._expanded[id] || id === this.root;
 
         if (isExpanded) {
             const items = (note.items || []);

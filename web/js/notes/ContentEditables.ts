@@ -64,10 +64,6 @@ export namespace ContentEditables {
         return div.innerText;
     }
 
-    export function isSuffixSelected() {
-
-    }
-
     export function cursorAtStart(editable: HTMLElement): boolean {
 
         const split = splitAtCursor(editable);

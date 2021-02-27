@@ -64,15 +64,15 @@ export const NoteInner = observer((props: IProps) => {
         if (event.shiftKey) {
             console.log("FIXME.2");
             if (store.active !== undefined) {
-                console.log("FIXME.3");
-
-                store.setSelectionRange(store.active, id);
+                // console.log("FIXME.3");
+                //
+                // store.setSelectionRange(store.active, id);
 
                 event.stopPropagation();
             }
         }
 
-    }, [id, store]);
+    }, [store]);
 
     if (! note) {
         return null;
