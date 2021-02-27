@@ -1,9 +1,8 @@
 import React from 'react';
 import {
     CommandActionMenuItemsProvider,
-    ICommandActionMenuPosition,
     useCommandActionMenuStore
-} from "./CommandActionMenuStore";
+} from "./ActionMenuStore";
 import {ContentEditables} from "../../notes/ContentEditables";
 import {NoteActionSelections} from "../../notes/NoteActionSelections";
 
