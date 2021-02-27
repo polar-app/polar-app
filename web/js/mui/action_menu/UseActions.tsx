@@ -48,7 +48,7 @@ interface IOpts {
      * The provider for the commands which we filter for when computing the
      * prompt and then set in the store.
      */
-    readonly itemsProvider: ActionMenuItemsProvider;
+    readonly actionsProvider: ActionMenuItemsProvider;
 
     /**
      * Execute the action
@@ -100,7 +100,7 @@ function useActionExecutor() {
 
 export function useActions(opts: IOpts): NoteActionsResultTuple {
 
-    const {trigger, itemsProvider, onAction} = opts;
+    const {trigger, actionsProvider, onAction} = opts;
 
     const store = useActionMenuStore();
     const actionExecutor = useActionExecutor();
@@ -181,7 +181,7 @@ export function useActions(opts: IOpts): NoteActionsResultTuple {
                 return reset();
             }
 
-            const items = itemsProvider(prompt);
+            const items = actionsProvider(prompt);
             store.updateState(items);
 
         } else {
@@ -231,7 +231,7 @@ export function useActions(opts: IOpts): NoteActionsResultTuple {
 
                     activeRef.current = true;
 
-                    const actions = itemsProvider(prompt);
+                    const actions = actionsProvider(prompt);
 
                     store.setState({
                         position,
@@ -247,7 +247,7 @@ export function useActions(opts: IOpts): NoteActionsResultTuple {
 
         return activeRef.current;
 
-    }, [actionHandler, itemsProvider, reset, store, trigger]);
+    }, [actionHandler, actionsProvider, reset, store, trigger]);
 
     return [eventHandler, reset];
 

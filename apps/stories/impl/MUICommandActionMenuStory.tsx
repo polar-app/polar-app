@@ -79,7 +79,7 @@ const Editor = () => {
 
     const [onKeyDown] = useActions({
         trigger: '[[',
-        itemsProvider,
+        actionsProvider: itemsProvider,
         onAction
     });
 

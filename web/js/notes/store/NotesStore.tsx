@@ -155,6 +155,13 @@ export class NotesStore {
         return this._indexByName;
     }
 
+    /**
+     * Get all the nodes by name.
+     */
+    @computed getNamedNodes() {
+        return Object.keys(this._indexByName);
+    }
+
     @computed get reverse() {
         return this._reverse;
     }
