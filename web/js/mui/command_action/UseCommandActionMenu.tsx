@@ -84,7 +84,6 @@ export function useCommandActionMenu(opts: IOpts): NoteActionsResultTuple {
             const prompt = computePrompt();
 
             if (! hasPrompt()) {
-                console.log("FIXME: does not have a prompt");
                 reset();
                 return;
             }
@@ -100,8 +99,6 @@ export function useCommandActionMenu(opts: IOpts): NoteActionsResultTuple {
         } else {
 
             if (prefixText.endsWith(trigger)) {
-
-                console.log("FIXME: triggered with store: " + store.id);
 
                 textAtTriggerPointRef.current = prefixText;
 
@@ -133,8 +130,6 @@ export function useCommandActionMenu(opts: IOpts): NoteActionsResultTuple {
 
                 if (position) {
 
-                    console.log("FIXME: setting state")
-
                     activeRef.current = true;
 
                     const items = itemsProvider(prompt);
@@ -144,8 +139,6 @@ export function useCommandActionMenu(opts: IOpts): NoteActionsResultTuple {
                         items
                     });
 
-                } else {
-                    console.log("FIXME no position")
                 }
 
             }
