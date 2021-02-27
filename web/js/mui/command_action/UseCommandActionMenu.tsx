@@ -6,7 +6,6 @@ import {
 } from "./CommandActionMenuStore";
 import {ContentEditables} from "../../notes/ContentEditables";
 import {NoteActionSelections} from "../../notes/NoteActionSelections";
-import has = Reflect.has;
 
 export type ReactKeyboardEventHandler = (event: React.KeyboardEvent, contenteditable: HTMLElement | null) => void;
 
@@ -53,6 +52,7 @@ export function useCommandActionMenu(opts: IOpts): NoteActionsResultTuple {
         console.log("FIXME reset");
         activeRef.current = false;
         store.setState(undefined);
+
     }, [store])
 
     const eventHandler = React.useCallback((event, contenteditable) => {
@@ -148,24 +148,6 @@ export function useCommandActionMenu(opts: IOpts): NoteActionsResultTuple {
                     console.log("FIXME no position")
                 }
 
-                // triggerPointRef.current = computeCursorRange();
-                // const cursorRange = NoteActionSelections.computeCursorRange();
-                //
-                // if (cursorRange) {
-                //
-                //     const bcr = cursorRange.getBoundingClientRect();
-                //
-                //     const newPosition = {
-                //         top: bcr.bottom,
-                //         left: bcr.left,
-                //     };
-                //
-                //     if (newPosition.top !== 0 && newPosition.left !== 0) {
-                //         setMenuPosition(newPosition);
-                //     }
-                //
-                // }
-
             }
 
         }
@@ -173,28 +155,5 @@ export function useCommandActionMenu(opts: IOpts): NoteActionsResultTuple {
     }, [itemsProvider, reset, store, trigger]);
 
     return [eventHandler, reset];
-
-}
-
-function computeCursorRange(): ICursorRange {
-
-    const sel = window.getSelection();
-
-    if (sel) {
-
-        if (sel.rangeCount > 0) {
-
-            const range = sel.getRangeAt(0);
-
-            return {
-                node: range.startContainer,
-                offset: range.startOffset
-            }
-
-        }
-
-    }
-
-    throw new Error("No range point");
 
 }
