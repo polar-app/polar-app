@@ -6,6 +6,7 @@ import {
 import {ContentEditables} from "../../notes/ContentEditables";
 import {NoteActionSelections} from "../../notes/NoteActionSelections";
 import {IDStr} from "polar-shared/src/util/Strings";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 /**
  * Keyboard handler for while the user types. We return true if the menu is active.
@@ -112,6 +113,12 @@ export function useActions(opts: IOpts): NoteActionsResultTuple {
 
     }, [store])
 
+    const actionHandler = React.useCallback((id: IDStr) => {
+
+        reset();
+
+    }, [reset]);
+
     const eventHandler = React.useCallback((event, contenteditable): boolean => {
 
         if (! contenteditable) {
@@ -143,10 +150,6 @@ export function useActions(opts: IOpts): NoteActionsResultTuple {
             }
 
             if (event.key === 'Escape') {
-                return reset();
-            }
-
-            if (event.key === 'Enter') {
                 return reset();
             }
 
@@ -190,11 +193,12 @@ export function useActions(opts: IOpts): NoteActionsResultTuple {
 
                     activeRef.current = true;
 
-                    const items = itemsProvider(prompt);
+                    const actions = itemsProvider(prompt);
 
                     store.setState({
                         position,
-                        actions: items
+                        actions,
+                        onAction: NULL_FUNCTION
                     });
 
                 }

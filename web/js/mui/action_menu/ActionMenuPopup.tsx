@@ -2,7 +2,6 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import {useActionMenuStore} from "./ActionStore";
 import {ActionMenu} from "./ActionMenu";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import Paper from "@material-ui/core/Paper";

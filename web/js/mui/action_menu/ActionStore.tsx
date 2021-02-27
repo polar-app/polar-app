@@ -4,7 +4,6 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import {action, makeObservable, observable} from "mobx"
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {KeyBinding} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
-import {ActionHandler} from "./UseActions";
 
 export interface IActionMenuPosition {
 
@@ -77,7 +76,7 @@ export interface IActionState {
 
     readonly actions: ReadonlyArray<IActionMenuItem>;
 
-    readonly onAction: ActionHandler;
+    readonly onAction: (id: IDStr) => void;
 
 }
 
@@ -108,14 +107,18 @@ export class ActionStore {
         this.state = state;
     }
 
-    @action public updateState(items: ReadonlyArray<IActionMenuItem>) {
+    @action public updateState(actions: ReadonlyArray<IActionMenuItem>) {
 
         if (! this.state) {
-            console.warn("No state");
+            console.warn("Can not updateState: no state");
             return;
         }
 
-        this.setState({...this.state, actions: items});
+        this.setState({
+            position: this.state.position,
+            onAction: this.state.onAction,
+            actions
+        });
 
     }
 

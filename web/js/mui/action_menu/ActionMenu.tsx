@@ -6,6 +6,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import {IActionMenuItem} from "./ActionStore";
 import {MUICommandMenuItem} from "../command_menu/MUICommandMenuItem";
 import {ActionHandler} from "./UseActions";
+import {IDStr} from "polar-shared/src/util/Strings";
 
 
 const useStyles = makeStyles((theme) =>
@@ -33,7 +34,7 @@ interface IProps {
     /**
      * Called when a command is to be executed.
      */
-    readonly onAction: ActionHandler;
+    readonly onAction: (id: IDStr) => void;
 
     /**
      * The actions the user can pick from.

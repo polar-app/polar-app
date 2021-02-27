@@ -57,6 +57,10 @@ const items = [
         id: 'Bob',
         text: 'Bob'
     },
+    {
+        id: 'Carol',
+        text: 'Carol'
+    },
 ];
 
 const itemsProvider = createItemsProvider(items)
