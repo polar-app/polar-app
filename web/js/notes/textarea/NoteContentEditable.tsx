@@ -291,7 +291,7 @@ function updateCursorPosition(editor: HTMLDivElement, offset: 'start' | 'end') {
 
         if (offset === 'end') {
 
-            const end = ContentEditables.computeEndCursorSelectionRange(editor);
+            const end = ContentEditables.computeEndNodeOffset(editor);
 
             const range = document.createRange();
             range.setStart(end.node, end.offset);

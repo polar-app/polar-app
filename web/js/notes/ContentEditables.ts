@@ -29,7 +29,7 @@ export namespace ContentEditables {
 
                 function createSuffixRange() {
                     const suffixRange = document.createRange();
-                    const endPosition = computeEndCursorSelectionRange(editable);
+                    const endPosition = computeEndNodeOffset(editable);
                     suffixRange.setStart(range.startContainer, range.startOffset);
                     suffixRange.setEnd(endPosition.node, endPosition.offset);
                     return suffixRange;
@@ -88,12 +88,29 @@ export namespace ContentEditables {
 
     }
 
-    export interface ICursorSelectionRange {
+    /**
+     * Node and offset pair for working with ranges.
+     */
+    export interface INodeOffset {
         readonly node: Node;
         readonly offset: number;
     }
 
-    export function computeEndCursorSelectionRange(node: Node): ICursorSelectionRange {
+    export function computeStartNodeOffset(node: Node): INodeOffset {
+
+        const parentElement = node.parentElement!;
+
+        if (! parentElement) {
+            throw new Error("No parent element");
+        }
+
+        const offset = Array.from(parentElement.childNodes).indexOf(node as any);
+
+        return {node: parentElement, offset};
+
+    }
+
+    export function computeEndNodeOffset(node: Node): INodeOffset {
 
         if (node.nodeType === document.TEXT_NODE) {
 
@@ -106,7 +123,7 @@ export namespace ContentEditables {
         }
 
         if (node.childNodes.length > 0) {
-            return computeEndCursorSelectionRange(node.childNodes[node.childNodes.length - 1]);
+            return computeEndNodeOffset(node.childNodes[node.childNodes.length - 1]);
         }
 
         return {
@@ -116,37 +133,18 @@ export namespace ContentEditables {
 
     }
 
-    export function computeRangeAtStart(node: Node) {
+    /**
+     * Compute a range that covers the entire node.
+     */
+    export function computeCoveringRange(node: Node) {
 
         const range = document.createRange();
-        // range.setStartAfter(node);
-        // range.setEndAfter(node);
 
-        const parentElement = node.parentElement!;
+        const startNodeOffset = computeStartNodeOffset(node);
+        const endNodeOffset = computeEndNodeOffset(node);
 
-        if (! parentElement) {
-            throw new Error("No parent element");
-        }
-
-        const index = Array.from(parentElement.childNodes).indexOf(node as any);
-
-        console.log("FIXME parentElement: ", parentElement);
-        console.log("FIXME index: ", index);
-
-        range.setStart(parentElement, index);
-        range.setEndAfter(node);
-
-        return range;
-
-    }
-
-    export function computeRangeAtEnd(node: Node) {
-
-        const cursorSelectionRange = computeEndCursorSelectionRange(node);
-        const range = document.createRange();
-
-        range.setStart(cursorSelectionRange.node, cursorSelectionRange.offset);
-        range.setEnd(cursorSelectionRange.node, cursorSelectionRange.offset);
+        range.setStart(startNodeOffset.node, startNodeOffset.offset);
+        range.setEnd(endNodeOffset.node, endNodeOffset.offset);
 
         return range;
 
@@ -170,27 +168,27 @@ export namespace ContentEditables {
 
     // https://developer.mozilla.org/en-US/docs/Web/API/Range/compareBoundaryPoints
     export function selectionAtEnd(node: Node): boolean {
-        return selectionBoundaryPointsEqual(Range.END_TO_END, computeRangeAtEnd(node));
+        const coveringRange = computeCoveringRange(node);
+        return selectionBoundaryPointsEqual(Range.END_TO_END, coveringRange);
     }
 
     export function selectionAtStart(node: Node): boolean {
+        const coveringRange = computeCoveringRange(node);
+        // return selectionBoundaryPointsEqual(Range.START_TO_START, coveringRange);
+
+        // TODO: we should be able to compare start_to_start and the bounding client range
+        // seems to map up with that well but it still doesn't work.
 
         const range = currentRange();
-        const sourceRange = computeRangeAtStart(node);
 
-        if (range) {
-
-            const rangeBCR = range.getBoundingClientRect();
-            const sourceRangeBCR = sourceRange.getBoundingClientRect();
-
-            console.log("FIXME: rangeBCR: ", rangeBCR)
-            console.log("FIXME: sourceRangeBCR: ", sourceRangeBCR)
-
-            return rangeBCR.left === sourceRangeBCR.left
-
+        if (! range) {
+            return false;
         }
 
-        return false;
+        const rangeBCR = range.getBoundingClientRect();
+        const sourceRangeBCR = coveringRange.getBoundingClientRect();
+
+        return rangeBCR.left === sourceRangeBCR.left
 
     }
 
@@ -199,16 +197,8 @@ export namespace ContentEditables {
         const range = currentRange();
 
         if (range) {
-
-            console.log("FIXME: range bcr: ", range.getBoundingClientRect())
-            console.log("FIXME: sourceRange bcr: ", range.getBoundingClientRect())
-
-            const delta = range.compareBoundaryPoints(how, sourceRange);
-            console.log("FIXME delta: ", delta);
-            return delta === 0;
+            return range.compareBoundaryPoints(how, sourceRange) === 0;
         }
-
-        console.log("FIXME no range");
 
         return false;
 
