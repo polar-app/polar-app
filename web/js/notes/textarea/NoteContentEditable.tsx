@@ -148,7 +148,8 @@ export const NoteContentEditable = observer((props: IProps) => {
             return;
         }
 
-        const cursorPosition = ContentEditables.computeCursorPosition(divRef.current);
+        const cursorAtStart = ContentEditables.cursorAtStart(divRef.current);
+        const cursorAtEnd = ContentEditables.cursorAtEnd(divRef.current);
 
         function abortEvent() {
             event.stopPropagation();
@@ -190,7 +191,7 @@ export const NoteContentEditable = observer((props: IProps) => {
 
             case 'ArrowLeft':
 
-                if (cursorPosition === 'start') {
+                if (cursorAtStart) {
                     abortEvent();
                     store.navPrev('end', opts);
                 }
@@ -199,7 +200,7 @@ export const NoteContentEditable = observer((props: IProps) => {
 
             case 'ArrowRight':
 
-                if (cursorPosition === 'end') {
+                if (cursorAtEnd) {
                     abortEvent();
                     store.navNext('start', opts);
                 }
@@ -221,7 +222,7 @@ export const NoteContentEditable = observer((props: IProps) => {
 
                 }
 
-                if (cursorPosition === 'start') {
+                if (cursorAtStart) {
 
                     // we're at the beginning of a note...
 

@@ -68,23 +68,27 @@ export namespace ContentEditables {
 
     }
 
-    export function computeCursorPosition(editable: HTMLElement): 'start' | 'end' | undefined {
+    export function cursorAtStart(editable: HTMLElement): boolean {
 
         const split = splitAtCursor(editable);
 
         if (split) {
-
-            if (fragmentToText(split.prefix) === '') {
-                return 'start';
-            }
-
-            if (fragmentToText(split.suffix) === '') {
-                return 'end';
-            }
-
+            return fragmentToText(split.prefix) === '';
         }
 
-        return undefined;
+        return false;
+
+    }
+
+    export function cursorAtEnd(editable: HTMLElement): boolean {
+
+        const split = splitAtCursor(editable);
+
+        if (split) {
+            return fragmentToText(split.suffix) === '';
+        }
+
+        return false;
 
     }
 
