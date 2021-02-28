@@ -227,7 +227,6 @@ describe('NotesStore', function() {
                 "Winston Churchill": "112",
                 "World War II": "102"
             },
-            "_noteEditors": {},
             "_reverse": {
                 "index": {
                     "102": [
