@@ -51,7 +51,7 @@ const FormatButton = (props: FormatButtonProps) => {
 
 }
 
-interface IProps {
+export interface NoteFormatBarProps {
     readonly onBold?: () => void;
     readonly onItalic?: () => void;
     readonly onQuote?: () => void;
@@ -62,7 +62,7 @@ interface IProps {
     readonly onLink?: () => void;
 }
 
-export const NoteFormatBar = React.memo((props: IProps) => {
+export const NoteFormatBar = React.memo((props: NoteFormatBarProps) => {
 
     const classes = useStyles();
 
@@ -106,3 +106,17 @@ export const NoteFormatBar = React.memo((props: IProps) => {
         </Paper>
     );
 })
+
+export type OnMouseUpEventHandler = (event: React.MouseEvent) => void;
+
+export function useNoteFormatBar(opts: NoteFormatBarProps) {
+
+
+
+    return React.useCallback(() => {
+
+
+
+    }, []);
+
+}

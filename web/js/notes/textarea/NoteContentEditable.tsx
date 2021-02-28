@@ -6,6 +6,7 @@ import {NavOpts, NoteIDStr, useNotesStore} from '../store/NotesStore';
 import {ContentEditables} from "../ContentEditables";
 import {useActions} from "../../mui/action_menu/UseActions";
 import {createActionsProvider} from "../../mui/action_menu/ActionStore";
+import {NoteFormatPopper} from "../NoteFormatPopper";
 
 interface IProps {
 
@@ -162,8 +163,6 @@ export const NoteContentEditable = observer((props: IProps) => {
 
         const hasModifiers = event.ctrlKey || event.shiftKey || event.metaKey || event.altKey;
 
-        console.log("FIXME: hasModifiers: ", hasModifiers);
-
         switch (event.key) {
 
             case 'ArrowUp':
@@ -276,18 +275,20 @@ export const NoteContentEditable = observer((props: IProps) => {
 
     return (
 
-        <div ref={handleRef}
-             onKeyDown={handleKeyDown}
-             onKeyUp={handleKeyUp}
-             contentEditable={true}
-             spellCheck={props.spellCheck}
-             className={props.className}
-             onClick={props.onClick}
-             style={{
-                 outline: 'none',
-                 ...props.style
-             }}
-             dangerouslySetInnerHTML={{__html: content}}/>
+        <NoteFormatPopper>
+            <div ref={handleRef}
+                 onKeyDown={handleKeyDown}
+                 onKeyUp={handleKeyUp}
+                 contentEditable={true}
+                 spellCheck={props.spellCheck}
+                 className={props.className}
+                 onClick={props.onClick}
+                 style={{
+                     outline: 'none',
+                     ...props.style
+                 }}
+                 dangerouslySetInnerHTML={{__html: content}}/>
+        </NoteFormatPopper>
 
     );
 
