@@ -491,7 +491,7 @@ export class NotesStore {
         const note = this._index[id];
 
         if (! note) {
-            console.warn("No note: ", id);
+            console.warn("computeLinearExpansionTree: No note: ", id);
             return [];
         }
 
@@ -520,7 +520,7 @@ export class NotesStore {
         const note = this._index[id];
 
         if (! note) {
-            console.warn("No note: ", id);
+            console.warn("computeLinearExpansionTree2: No note: ", id);
             return [];
         }
 
