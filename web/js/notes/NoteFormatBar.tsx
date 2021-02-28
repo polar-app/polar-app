@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) =>
             padding: '6px',
         },
         button: {
-            color: theme.palette.text.secondary,
+            // color: theme.palette.text.secondary,
             fontSize: '12px',
             marginLeft: '3px',
             marginRight: '3px',

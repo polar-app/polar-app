@@ -160,6 +160,10 @@ export const NoteContentEditable = observer((props: IProps) => {
             shiftKey: event.shiftKey
         }
 
+        const hasModifiers = event.ctrlKey || event.shiftKey || event.metaKey || event.altKey;
+
+        console.log("FIXME: hasModifiers: ", hasModifiers);
+
         switch (event.key) {
 
             case 'ArrowUp':
@@ -191,18 +195,26 @@ export const NoteContentEditable = observer((props: IProps) => {
 
             case 'ArrowLeft':
 
-                if (cursorAtStart) {
-                    abortEvent();
-                    store.navPrev('end', opts);
+                if (! hasModifiers) {
+
+                    if (cursorAtStart) {
+                        abortEvent();
+                        store.navPrev('end', opts);
+                    }
+
                 }
 
                 break;
 
             case 'ArrowRight':
 
-                if (cursorAtEnd) {
-                    abortEvent();
-                    store.navNext('start', opts);
+                if (! hasModifiers) {
+
+                    if (cursorAtEnd) {
+                        abortEvent();
+                        store.navNext('start', opts);
+                    }
+
                 }
 
                 break;
