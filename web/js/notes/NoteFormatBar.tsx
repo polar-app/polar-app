@@ -1,7 +1,6 @@
 import IconButton from '@material-ui/core/IconButton';
 import React from 'react';
 import { MUIButtonBar } from '../mui/MUIButtonBar';
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {
     FABoldIcon,
     FAItalicIcon, FALinkIcon,
@@ -31,11 +30,10 @@ const useStyles = makeStyles((theme) =>
         }
     }));
 
-
 interface FormatButtonProps {
 
     readonly children: JSX.Element;
-    readonly onClick: () => void;
+    readonly onClick?: () => void;
 
 }
 
@@ -45,14 +43,26 @@ const FormatButton = (props: FormatButtonProps) => {
 
     return (
         <IconButton size="small"
-                    className={classes.button}>
+                    className={classes.button}
+                    onClick={props.onClick}>
             {props.children}
         </IconButton>
     );
 
 }
 
-export const NoteFormatBar = React.memo(() => {
+interface IProps {
+    readonly onBold?: () => void;
+    readonly onItalic?: () => void;
+    readonly onQuote?: () => void;
+    readonly onUnderline?: () => void;
+    readonly onStrikethrough?: () => void;
+    readonly onSubscript?: () => void;
+    readonly onSuperscript?: () => void;
+    readonly onLink?: () => void;
+}
+
+export const NoteFormatBar = React.memo((props: IProps) => {
 
     const classes = useStyles();
 
@@ -60,35 +70,35 @@ export const NoteFormatBar = React.memo(() => {
         <Paper className={classes.root}>
             <MUIButtonBar>
 
-                <FormatButton onClick={NULL_FUNCTION}>
+                <FormatButton onClick={props.onBold}>
                     <FABoldIcon className={classes.icon}/>
                 </FormatButton>
 
-                <FormatButton onClick={NULL_FUNCTION}>
+                <FormatButton onClick={props.onItalic}>
                     <FAItalicIcon className={classes.icon}/>
                 </FormatButton>
 
-                <FormatButton onClick={NULL_FUNCTION}>
+                <FormatButton onClick={props.onQuote}>
                     <FAQuoteLeftIcon className={classes.icon}/>
                 </FormatButton>
 
-                <FormatButton onClick={NULL_FUNCTION}>
+                <FormatButton onClick={props.onUnderline}>
                     <FAUnderlineIcon className={classes.icon}/>
                 </FormatButton>
 
-                <FormatButton onClick={NULL_FUNCTION}>
+                <FormatButton onClick={props.onStrikethrough}>
                     <FAStrikethroughIcon className={classes.icon}/>
                 </FormatButton>
 
-                <FormatButton onClick={NULL_FUNCTION}>
+                <FormatButton onClick={props.onSubscript}>
                     <FASubscriptIcon className={classes.icon}/>
                 </FormatButton>
 
-                <FormatButton onClick={NULL_FUNCTION}>
+                <FormatButton onClick={props.onSuperscript}>
                     <FASuperscriptIcon className={classes.icon}/>
                 </FormatButton>
 
-                <FormatButton onClick={NULL_FUNCTION}>
+                <FormatButton onClick={props.onLink}>
                     <FALinkIcon className={classes.icon}/>
                 </FormatButton>
 
