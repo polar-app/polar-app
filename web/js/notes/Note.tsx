@@ -2,15 +2,12 @@ import React from "react";
 import {NoteEditor} from "./NoteEditor";
 import {NoteItems} from "./NoteItems";
 import {NoteBulletButton} from "./NoteBulletButton";
-import {useLifecycleTracer} from "../hooks/ReactHooks";
-import {NoteOverflowButton} from "./NoteOverflowButton";
 import {createContextMenu} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
 import {IDocViewerContextMenuOrigin} from "../../../apps/doc/src/DocViewerMenu";
 import {NoteContextMenuItems} from "./NoteContextMenuItems";
 import useTheme from "@material-ui/core/styles/useTheme";
 import { NoteExpandToggleButton } from "./NoteExpandToggleButton";
 import { NoteIDStr, useNotesStore } from "./store/NotesStore";
-import {isObservable, isObservableProp} from 'mobx';
 import { observer,  } from "mobx-react-lite"
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
@@ -54,11 +51,6 @@ export const NoteInner = observer((props: IProps) => {
 
     const handleMouseDown = React.useCallback((event: React.MouseEvent) => {
 
-        // we could maybe listen to JUST shift being typed, then the click handler would do the rest and
-        // know the range we're selecting over...
-
-        // FIXMEL this allows us to accideltally select itself...
-
         if (event.shiftKey) {
             if (store.active !== undefined) {
 
@@ -75,12 +67,73 @@ export const NoteInner = observer((props: IProps) => {
         return null;
     }
 
+    const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
+
+        function abortEvent() {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        function computeUndoOperation(): 'undo' | 'redo' | undefined {
+
+            // **** macos
+
+            // *** undo
+            if (event.metaKey && event.key === 'z') {
+                return 'undo';
+            }
+
+            // *** redo
+            if (event.metaKey && event.shiftKey && event.key === 'z') {
+                abortEvent();
+                return 'redo';
+            }
+
+            // **** windows
+
+            // *** undo alt+backspace
+            if (event.metaKey && event.key === 'Backspace') {
+                abortEvent();
+                return 'undo';
+            }
+
+            // ** undo: ctrl+z
+            if (event.ctrlKey && event.key === 'z') {
+                abortEvent();
+                return 'undo';
+            }
+
+            // ** redo: ctrl+y
+            if (event.ctrlKey && event.key === 'y') {
+                // this is redo..
+                return 'redo';
+            }
+
+            // ** redo: ctrl+shift+z
+            if (event.ctrlKey && event.shiftKey && event.key === 'z') {
+                // this is redo..
+                return 'redo';
+            }
+
+            return undefined;
+
+        }
+
+        const op = computeUndoOperation();
+
+        if (op !== undefined) {
+            abortEvent();
+        }
+
+    }, []);
+
     const items = store.lookup(note.items || []);
 
     const hasItems = items.length > 0;
 
     return (
         <div onMouseDown={handleMouseDown}
+             onKeyDown={handleKeyDown}
              className={clsx(['Note', selected ? classes.selected : undefined])}>
             <div {...contextMenuHandlers}
                  style={{
