@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) =>
             //     color: theme.palette.text.disabled,
             //     userSelect: 'none'
             // },
+            '& a': {
+                cursor: 'hand'
+            },
             "& h1, h2, h3, h4, h5": {
                 lineHeight: 0
             },

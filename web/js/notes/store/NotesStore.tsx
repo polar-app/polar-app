@@ -906,9 +906,9 @@ export class NotesStore {
 
     }
 
-    @action public doDelete(notes: ReadonlyArray<NoteIDStr>) {
+    @action public doDelete(notesToDelete: ReadonlyArray<NoteIDStr>) {
 
-        if (notes.length === 0) {
+        if (notesToDelete.length === 0) {
             return;
         }
 
@@ -919,7 +919,7 @@ export class NotesStore {
 
         const computeNextActive = (): NextActive | undefined => {
 
-            const noteID = notes[0];
+            const noteID = notesToDelete[0];
             const note = this._index[noteID];
 
             if (! note) {
@@ -932,28 +932,41 @@ export class NotesStore {
 
             const linearExpansionTree = this.computeLinearExpansionTree(note.parent);
 
-            // the indexes of the notes we should remove
-            const deleteIndex = arrayStream(notes)
-                                   .map(current => linearExpansionTree.indexOf(current))
-                                   .filter(current => current !== -1)
-                                   .sort((a, b) => a - b)
-                                   .first()
+            const deleteIndexes = arrayStream(notesToDelete)
+                .map(current => linearExpansionTree.indexOf(current))
+                .filter(current => current !== -1)
+                .sort((a, b) => a - b)
+                .collect()
 
-            if (deleteIndex !== undefined && deleteIndex > 0) {
+            if (deleteIndexes.length === 0) {
+                return undefined;
+            }
 
-                const nextActive = linearExpansionTree[deleteIndex - 1];
+            const head = linearExpansionTree.slice(0, Arrays.first(deleteIndexes));
+            const tail = linearExpansionTree.slice(Arrays.last(deleteIndexes));
 
+            const tailFirst = Arrays.first(tail);
+
+            if (tailFirst !== undefined) {
                 return {
-                    active: nextActive,
-                    activePos: 'end'
-                }
-
-            } else {
-                return {
-                    active: note.parent,
-                    activePos: 'end'
+                    active: tailFirst,
+                    activePos: 'start'
                 }
             }
+
+            const headLast = Arrays.last(head);
+
+            if (headLast !== undefined) {
+                return {
+                    active: headLast,
+                    activePos: 'start'
+                }
+            }
+
+            return {
+                active: note.parent,
+                activePos: 'end'
+            };
 
         }
 
@@ -1009,7 +1022,7 @@ export class NotesStore {
         };
 
         const nextActive = computeNextActive();
-        handleDelete(notes);
+        handleDelete(notesToDelete);
 
         if (nextActive) {
             this._active = nextActive.active;

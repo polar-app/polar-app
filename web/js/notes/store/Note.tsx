@@ -99,6 +99,9 @@ export class Note implements INote {
 
         this._content = content;
         this._updated = ISODateTimeStrings.create();
+
+        // console.log(`Note updated ${this.id}:  ${this.content}`);
+
     }
 
     @action setParent(id: NoteIDStr) {

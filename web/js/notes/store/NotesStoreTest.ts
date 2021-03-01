@@ -556,17 +556,48 @@ describe('NotesStore', function() {
 
     });
 
-    it("doDelete", () => {
+    describe("doDelete", () => {
 
-        const store = createStore();
+        it("basic", () => {
 
-        assertJSON(store.lookupReverse('102'), [
-            "110"
-        ]);
+            const store = createStore();
 
-        store.doDelete(['102']);
+            assertJSON(store.lookupReverse('102'), [
+                "110"
+            ]);
 
-        assertJSON(store.lookupReverse('102'), []);
+            store.doDelete(['102']);
+
+            assertJSON(store.lookupReverse('102'), []);
+
+        });
+
+        it("delete middle note and verify active", () => {
+
+            const store = createStore();
+
+            store.doDelete(['104']);
+
+            const note = store.getNote('102');
+
+            assertJSON(note, {
+                "_content": "World War II",
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_id": "102",
+                "_items": [
+                    "103",
+                    "105"
+                ],
+                "_links": [],
+                "_type": "named",
+                "_updated": "2012-03-02T11:38:49.321Z"
+            })
+
+            assert.equal(store.active, '104');
+            assert.equal(store.activePos, 'start');
+
+        });
+
 
     });
 
