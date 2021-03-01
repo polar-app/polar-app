@@ -943,7 +943,7 @@ export class NotesStore {
             }
 
             const head = linearExpansionTree.slice(0, Arrays.first(deleteIndexes));
-            const tail = linearExpansionTree.slice(Arrays.last(deleteIndexes));
+            const tail = linearExpansionTree.slice(Arrays.last(deleteIndexes)! + 1);
 
             const tailFirst = Arrays.first(tail);
 
@@ -965,7 +965,7 @@ export class NotesStore {
 
             return {
                 active: note.parent,
-                activePos: 'end'
+                activePos: 'start'
             };
 
         }
@@ -978,6 +978,11 @@ export class NotesStore {
 
                 if (note) {
 
+                    // *** first delete all children,  We have to do this first
+                    // or else they won't have parents.
+
+                    handleDelete(note.items);
+
                     // *** delete the id for this note from the parents items.
 
                     if (note.parent) {
@@ -985,7 +990,7 @@ export class NotesStore {
                         const parentNote = this._index[note.parent];
 
                         if (! parentNote) {
-                            console.warn("No parent note for ID: " + note.parent);
+                            console.warn(`handleDelete: Note ${note.id} (${noteID}) has no parent for ID ${note.parent}`);
                             return;
                         }
 
@@ -1010,10 +1015,6 @@ export class NotesStore {
                     for (const inboundID of inboundIDs) {
                         this.reverse.remove(note.id, inboundID);
                     }
-
-                    // *** now delete all children too...
-
-                    handleDelete(note.items);
 
                 }
 

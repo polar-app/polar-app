@@ -593,7 +593,31 @@ describe('NotesStore', function() {
                 "_updated": "2012-03-02T11:38:49.321Z"
             })
 
-            assert.equal(store.active, '104');
+            assert.equal(store.active, '105');
+            assert.equal(store.activePos, 'start');
+
+        });
+
+        it("delete all children", () => {
+
+            const store = createStore();
+
+            store.doDelete(['103', '104', '105']);
+
+            const note = store.getNote('102');
+
+            assertJSON(note, {
+                "_content": "World War II",
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_id": "102",
+                "_items": [
+                ],
+                "_links": [],
+                "_type": "named",
+                "_updated": "2012-03-02T11:38:49.321Z"
+            })
+
+            assert.equal(store.active, '102');
             assert.equal(store.activePos, 'start');
 
         });
