@@ -18,11 +18,15 @@ export class Images {
             case 'image/png':
                 return "png";
             case 'image/jpeg':
-                return "png";
+                return "jpg";
             case 'image/webp':
                 return "webp";
             case 'image/svg+xml':
                 return "svg";
+            case 'image/avif':
+                return 'avif';
+            case 'image/apng':
+                return 'apng';
 
         }
 
