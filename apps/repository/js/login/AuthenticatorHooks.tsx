@@ -13,7 +13,7 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 
 export type AuthStatus = 'needs-auth';
 
-function handleAuthResult(authResult: firebase.auth.UserCredential) {
+function handleAuthResult(authResult: firebase.auth.UserCredential, isNewUser: boolean) {
 
     function handleRedirect(newUser: boolean, redirectURL: string) {
 
@@ -23,7 +23,7 @@ function handleAuthResult(authResult: firebase.auth.UserCredential) {
 
     }
 
-    if (authResult.additionalUserInfo?.isNewUser) {
+    if (isNewUser) {
         console.log("New user authenticated");
 
         Analytics.event2('new-user-signup');
@@ -98,7 +98,7 @@ export function useAuthHandler() {
 
                 const authResult = await firebase.auth().signInWithEmailLink(email, location.href);
 
-                handleAuthResult(authResult);
+                handleAuthResult(authResult, authResult.additionalUserInfo?.isNewUser || false);
                 return true;
 
             }
@@ -122,7 +122,7 @@ export function useAuthHandler() {
             const auth = firebase.auth();
 
             const authResult = await auth.getRedirectResult();
-            handleAuthResult(authResult);
+            handleAuthResult(authResult, authResult.additionalUserInfo?.isNewUser || false);
 
         } else {
             setStatus('needs-auth');
@@ -274,11 +274,27 @@ export function useTriggerVerifyTokenAuth() {
 
         Analytics.event2('auth:VerifyTokenAuth');
 
-        const response = await executeCloudFunction('VerifyTokenAuth', {
+        interface IVerifyTokenAuthResponse {
+
+            /**
+             * The code / error.
+             */
+            readonly code: 'ok';
+
+            /**
+             * A generated custom token on the backend.
+             */
+            readonly customToken: string;
+
+            readonly isNewUser: boolean;
+
+        }
+
+        const response: IVerifyTokenAuthResponse = await executeCloudFunction('VerifyTokenAuth', {
             email, challenge
         });
 
-        Analytics.event2('auth:VerifyTokenAuthResult', {code: response.code});
+        Analytics.event2('auth:VerifyTokenAuthResult', {code: response.code, isNewUser: response.isNewUser});
 
         const auth = firebase.auth();
 
@@ -288,7 +304,7 @@ export function useTriggerVerifyTokenAuth() {
             const {customToken} = response;
 
             const userCredential = await auth.signInWithCustomToken(customToken);
-            handleAuthResult(userCredential);
+            handleAuthResult(userCredential, response.isNewUser);
 
         }
 
