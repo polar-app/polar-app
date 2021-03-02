@@ -15,9 +15,9 @@ export type AuthStatus = 'needs-auth';
 
 function handleAuthResult(authResult: firebase.auth.UserCredential, isNewUser: boolean) {
 
-    function handleRedirect(newUser: boolean, redirectURL: string) {
+    function handleRedirect(redirectURL: string) {
 
-        Analytics.event2('auth:handleAuthResult', {newUser, redirectURL});
+        Analytics.event2('auth:handleAuthResult', {isNewUser, redirectURL});
 
         document.location.href = redirectURL;
 
@@ -28,11 +28,11 @@ function handleAuthResult(authResult: firebase.auth.UserCredential, isNewUser: b
 
         Analytics.event2('new-user-signup');
 
-        handleRedirect(true, '/#welcome');
+        handleRedirect('/#welcome');
 
     } else {
         const redirectURL = SignInSuccessURLs.get() || '/';
-        handleRedirect(false, redirectURL);
+        handleRedirect(redirectURL);
     }
 
 }
