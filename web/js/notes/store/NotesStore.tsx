@@ -892,6 +892,7 @@ export class NotesStore {
             return {error: 'no-parent-note-parent-note'};
         }
 
+        note.setParent(newParentNote.id);
         newParentNote.addItem(id, {pos: 'after', ref: parentNote.id});
         parentNote.removeItem(id);
 

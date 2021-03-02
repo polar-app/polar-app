@@ -357,12 +357,44 @@ describe('NotesStore', function() {
 
             assertJSON(store.expanded, {});
 
+            assertJSON(store.getNote('104'), {
+                "_content": "Axis Powers: Germany, Italy, Japan",
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_id": "104",
+                "_items": [],
+                "_links": [],
+                "_parent": "102",
+                "_type": "item",
+                "_updated": "2012-03-02T11:38:49.321Z"
+            });
+
             store.doIndent('104')
+
+            assertJSON(store.getNote('104'), {
+                "_content": "Axis Powers: Germany, Italy, Japan",
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_id": "104",
+                "_items": [],
+                "_links": [],
+                "_parent": "103",
+                "_type": "item",
+                "_updated": "2012-03-02T11:38:49.321Z"
+            });
 
             assert.equal(store.getNote('104')!.parent, '103');
 
             store.doUnIndent('104');
-            // assertJSON(store.doUnIndent('104'), {});
+
+            assertJSON(store.getNote('104'), {
+                "_content": "Axis Powers: Germany, Italy, Japan",
+                "_created": "2012-03-02T11:38:49.321Z",
+                "_id": "104",
+                "_items": [],
+                "_links": [],
+                "_parent": "102",
+                "_type": "item",
+                "_updated": "2012-03-02T11:38:49.321Z"
+            });
 
             assertJSON(store.getNote('102'), {
                 "_content": "World War II",
