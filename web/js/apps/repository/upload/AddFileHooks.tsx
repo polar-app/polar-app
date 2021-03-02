@@ -126,7 +126,7 @@ export namespace AddFileHooks {
                         const importedFiles = await handleUploads(uploads);
                         promptToOpenFiles(importedFiles);
                     } catch (e) {
-                        log.error("Unable to upload files: ", uploads, e);
+                        log.error("Unable to upload files: " + e.message, uploads, e);
                     }
 
                 }
