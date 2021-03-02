@@ -44,6 +44,7 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
 
     const {email} = request;
 
+    // TODO: the challenges should expire.
     const challenge = createChallenge()
 
     await AuthChallenges.write(email, challenge.value)
