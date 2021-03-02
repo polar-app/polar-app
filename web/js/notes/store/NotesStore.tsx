@@ -626,33 +626,8 @@ export class NotesStore {
 
         this.doDelete([sourceNote.id]);
 
-        // now the target has to become active
-        // FIXME: this is wrong... it should be at the merge point with the new node
-
-        // FIXME: we can use the markdown to html converter to determine WHERE the nodes shold
-        // be offset.. joined.
-
         this._activePos = undefined;
         this._active = targetNote.id;
-
-        // *** now update the editor so it's setup correctly
-
-        function computeTextOffset() {
-            const div = document.createElement('div');
-            const html = MarkdownContentEscaper.escape(initialTargetContent);
-            div.innerHTML = html;
-            return div.innerText.length;
-        }
-
-        // if (editorMutator) {
-        //
-        //     editorMutator.setData(MarkdownContentEscaper.escape(targetNote.content));
-        //     editorMutator.setCursorPosition(computeTextOffset());
-        //     editorMutator.focus();
-        //
-        // } else {
-        //     console.warn("mergeNotes: No editorMutator");
-        // }
 
         return undefined;
 
