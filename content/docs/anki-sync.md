@@ -28,7 +28,7 @@ To get started, you need to add <a href="https://ankiweb.net/shared/info/2055492
 
 Once that's done, you can sync all your flashcards to Anki by clicking the 'Start Anki Sync' in the top right corner of the app. Syncing only works from the desktop app, not from the webapp
 
-<img class="img-fluid" src="https://i.imgur.com/2EEIJAD.png">
+<img class="img-fluid" src="https://i.imgur.com/Al2VQ7s.png">
 
 # Deck mapping
 
