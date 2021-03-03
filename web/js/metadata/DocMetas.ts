@@ -32,7 +32,7 @@ export type AnnotationCallback = (pageMeta: IPageMeta,
 
 export class DocMetas {
 
-    public static ENABLE_SPARSE_DOC_SERIALIZE = true;
+    public static ENABLE_SPARSE_DOC_SERIALIZE = false;
 
     public static annotations(docMeta: IDocMeta, callback: AnnotationCallback) {
 
