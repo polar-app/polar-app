@@ -54,12 +54,12 @@ function useCreateTextHighlightCallback(): CreateTextHighlightCallback {
 
     return (opts: ICreateTextHighlightCallbackOpts) => {
 
-        if (! docMeta) {
+        if (docMeta === undefined) {
             throw new Error("No docMeta");
         }
 
-        if (! docScale) {
-            throw new Error("docScale");
+        if (docScale === undefined) {
+            throw new Error("No docScale");
         }
 
         if (docMeta.docInfo.fingerprint !== opts.docID) {
