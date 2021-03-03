@@ -2,7 +2,6 @@ import * as React from "react";
 import {useContextMenu} from "../../../../repository/js/doc_repo/MUIContextMenu";
 import {Elements} from "../../../../../web/js/util/Elements";
 import {GlobalPDFCss} from "./GlobalPDFCss";
-import {useForceMount} from "../../../../../web/js/hooks/ReactHooks";
 
 let iter: number = 0;
 
@@ -10,7 +9,7 @@ interface IProps {
     readonly children: React.ReactNode;
 }
 
-export const PDFViewerContainer = (props: IProps) => {
+export const PDFViewerContainer = React.memo((props: IProps) => {
 
     const contextMenu = useContextMenu();
 
@@ -58,4 +57,4 @@ export const PDFViewerContainer = (props: IProps) => {
         </>
     );
 
-};
+});

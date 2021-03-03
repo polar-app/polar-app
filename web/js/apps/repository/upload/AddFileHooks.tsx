@@ -21,6 +21,7 @@ import {DiskDatastoreMigrations, useDiskDatastoreMigration} from "./DiskDatastor
 import {useBatchProgressTaskbar, useUploadProgressTaskbar} from "./UploadProgressTaskbar";
 import {UploadFilters} from "./UploadFilters";
 import {UploadHandler, useBatchUploader} from "./UploadHandlers";
+import {useAnalytics} from "../../../analytics/Analytics";
 
 export namespace AddFileHooks {
 
@@ -35,6 +36,7 @@ export namespace AddFileHooks {
         const accountVerifiedAction = useAccountVerifiedAction()
         const diskDatastoreMigration = useDiskDatastoreMigration();
         const batchUploader = useBatchUploader();
+        const analytics = useAnalytics();
 
         const handleUploads = React.useCallback(async (uploads: ReadonlyArray<IUpload>): Promise<ReadonlyArray<ImportedFile>> => {
 
@@ -125,21 +127,23 @@ export namespace AddFileHooks {
                     try {
                         const importedFiles = await handleUploads(uploads);
                         promptToOpenFiles(importedFiles);
+
+                        analytics.event2('add-file-import-succeeded', {count: uploads.length});
+
                     } catch (e) {
+                        analytics.event2('add-file-import-failed', {count: uploads.length});
                         log.error("Unable to upload files: " + e.message, uploads, e);
                     }
 
                 }
 
-                accountVerifiedAction(() => doAsync().catch(err => log.error(err)))
-                // doAsync()
-                //     .catch(err => log.error(err));
+                accountVerifiedAction(() => doAsync().catch(err => log.error(err)));
 
             } else {
                 throw new Error("Unable to upload files.  Only PDF and EPUB uploads are supported.");
             }
 
-        }, [accountVerifiedAction, handleUploads, log, promptToOpenFiles]);
+        }, [accountVerifiedAction, analytics, handleUploads, log, promptToOpenFiles]);
 
         // TODO: to many dependencies here and I'm going to need to clean tyhis up.
         return React.useCallback((uploads: ReadonlyArray<IUpload>) => {
