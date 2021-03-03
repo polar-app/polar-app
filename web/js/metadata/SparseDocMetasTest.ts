@@ -51,6 +51,20 @@ describe('SparseDocMetas', function() {
 
     });
 
+    it("Make sure pageMeta works", function () {
+
+        const inputDocMeta = DocMetas.create('0x1234', 7500)
+        const sparseDocMeta = SparseDocMetas.toSparse(inputDocMeta);
+        const docMeta = SparseDocMetas.fromSparse(sparseDocMeta);
+
+        for (let pageNum = 1; pageNum <= docMeta.docInfo.nrPages; ++pageNum) {
+            const pageMeta = DocMetas.getPageMeta(docMeta, pageNum);
+            assert.equal(pageMeta.pageInfo.num, pageNum);
+        }
+
+    });
+
+
     it("verify output same as input", function () {
 
         const inputDocMeta = DocMetas.create('0x1234', 2)
