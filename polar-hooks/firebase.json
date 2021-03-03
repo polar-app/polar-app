@@ -110,6 +110,10 @@
         "destination": "/apps/doc/index.html"
       },
       {
+        "source": "/apps/stories/**",
+        "destination": "/apps/stories/index.html"
+      },
+      {
         "source": "**",
         "function": "webapp"
       },
