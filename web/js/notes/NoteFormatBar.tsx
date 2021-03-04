@@ -12,6 +12,7 @@ import {
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -51,6 +52,65 @@ const FormatButton = (props: FormatButtonProps) => {
 
 }
 
+const LinkBar = () => {
+
+    const ref = React.useRef("");
+
+    return (
+        <>
+            <TextField required
+                       autoFocus={true}
+                       placeholder="https://example.com"
+                       onChange={event => ref.current = event.currentTarget.value}/>
+
+            {/*<FormatButton*/}
+        </>
+    );
+}
+
+const NoteFormatBarInner = (props: NoteFormatBarProps) => {
+
+    const classes = useStyles();
+
+    return (
+        <>
+
+            <FormatButton onClick={props.onBold}>
+                <FABoldIcon className={classes.icon}/>
+            </FormatButton>
+
+            <FormatButton onClick={props.onItalic}>
+                <FAItalicIcon className={classes.icon}/>
+            </FormatButton>
+
+            {/*<FormatButton onClick={props.onQuote}>*/}
+            {/*    <FAQuoteLeftIcon className={classes.icon}/>*/}
+            {/*</FormatButton>*/}
+
+            <FormatButton onClick={props.onUnderline}>
+                <FAUnderlineIcon className={classes.icon}/>
+            </FormatButton>
+
+            <FormatButton onClick={props.onStrikethrough}>
+                <FAStrikethroughIcon className={classes.icon}/>
+            </FormatButton>
+
+            <FormatButton onClick={props.onSubscript}>
+                <FASubscriptIcon className={classes.icon}/>
+            </FormatButton>
+
+            <FormatButton onClick={props.onSuperscript}>
+                <FASuperscriptIcon className={classes.icon}/>
+            </FormatButton>
+
+            <FormatButton onClick={props.onLink}>
+                <FALinkIcon className={classes.icon}/>
+            </FormatButton>
+
+        </>
+    );
+}
+
 export interface NoteFormatBarProps {
     readonly onBold?: () => void;
     readonly onItalic?: () => void;
@@ -66,41 +126,21 @@ export const NoteFormatBar = React.memo((props: NoteFormatBarProps) => {
 
     const classes = useStyles();
 
+    const [mode, setMode] = React.useState<'link' | 'format'>('format');
+
+    console.log("FIXME: mode: ", mode);
+
     return (
         <Paper className={classes.root}>
             <MUIButtonBar>
 
-                <FormatButton onClick={props.onBold}>
-                    <FABoldIcon className={classes.icon}/>
-                </FormatButton>
+                {mode === 'format' && (
+                    <NoteFormatBarInner {...props} onLink={() => setMode('link')}/>
+                )}
 
-                <FormatButton onClick={props.onItalic}>
-                    <FAItalicIcon className={classes.icon}/>
-                </FormatButton>
-
-                <FormatButton onClick={props.onQuote}>
-                    <FAQuoteLeftIcon className={classes.icon}/>
-                </FormatButton>
-
-                <FormatButton onClick={props.onUnderline}>
-                    <FAUnderlineIcon className={classes.icon}/>
-                </FormatButton>
-
-                <FormatButton onClick={props.onStrikethrough}>
-                    <FAStrikethroughIcon className={classes.icon}/>
-                </FormatButton>
-
-                <FormatButton onClick={props.onSubscript}>
-                    <FASubscriptIcon className={classes.icon}/>
-                </FormatButton>
-
-                <FormatButton onClick={props.onSuperscript}>
-                    <FASuperscriptIcon className={classes.icon}/>
-                </FormatButton>
-
-                <FormatButton onClick={props.onLink}>
-                    <FALinkIcon className={classes.icon}/>
-                </FormatButton>
+                {mode === 'link' && (
+                    <LinkBar/>
+                )}
 
             </MUIButtonBar>
         </Paper>
