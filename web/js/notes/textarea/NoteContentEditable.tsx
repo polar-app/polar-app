@@ -8,6 +8,8 @@ import {useActions} from "../../mui/action_menu/UseActions";
 import {createActionsProvider} from "../../mui/action_menu/ActionStore";
 import {NoteFormatPopper} from "../NoteFormatPopper";
 
+const ENABLE_TRACE_CURSOR_RESET = true;
+
 interface IProps {
 
     readonly id: NoteIDStr;
@@ -65,17 +67,29 @@ export const NoteContentEditable = observer((props: IProps) => {
         }
     });
 
-    const updateMarkdownFromEditable = React.useCallback(() => {
+    const handleChange = React.useCallback(() => {
 
         if (! divRef.current) {
             return;
         }
 
         const innerHTML = divRef.current.innerHTML;
+        const newContent = ContentEditableWhitespace.trim(innerHTML);
 
-        props.onChange(innerHTML);
+        if (ENABLE_TRACE_CURSOR_RESET) {
+            console.log("==== handleChange: ")
+            console.log("RAW innerHTML: ", innerHTML);
+            console.log("newContent: ", newContent);
+        }
+
+        contentRef.current = newContent;
+        props.onChange(newContent);
 
     }, [props]);
+
+    const updateMarkdownFromEditable = React.useCallback(() => {
+        handleChange();
+    }, [handleChange]);
 
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -83,13 +97,9 @@ export const NoteContentEditable = observer((props: IProps) => {
 
         // note that we have to first use trim on this because sometimes
         // chrome uses &nbsp; which is dumb
+        handleChange();
 
-        const newContent = ContentEditableWhitespace.trim(event.currentTarget.innerHTML);
-
-        contentRef.current = newContent;
-        props.onChange(newContent);
-
-    }, [noteLinkEventHandler, props]);
+    }, [handleChange, noteLinkEventHandler]);
 
     React.useEffect(() => {
 
@@ -120,10 +130,12 @@ export const NoteContentEditable = observer((props: IProps) => {
 
         if (props.content.valueOf() !== contentRef.current.valueOf()) {
 
-            // console.log("content differs: ");
-            // console.log(`    props.content:      '${props.content}'`);
-            // console.log(`    contentRef.current: '${contentRef.current}'`);
-            // console.log(`    value of equals:    `, props.content.valueOf() === contentRef.current.valueOf());
+            if (ENABLE_TRACE_CURSOR_RESET) {
+                console.log("content differs (cursor will be reset): ");
+                console.log(`    props.content:      '${props.content}'`);
+                console.log(`    contentRef.current: '${contentRef.current}'`);
+                console.log(`    value of equals:    `, props.content.valueOf() === contentRef.current.valueOf());
+            }
 
             contentRef.current = props.content;
 
