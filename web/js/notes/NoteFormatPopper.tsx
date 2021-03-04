@@ -1,6 +1,7 @@
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import React from 'react';
 import {NoteFormatBar, NoteFormatBarProps} from "./NoteFormatBar";
+import {useNoteFormatHandlers} from "./NoteFormatHooks";
 
 export interface INoteFormatBarPosition {
 
@@ -66,6 +67,8 @@ export const NoteFormatPopper = React.memo((props: IProps) => {
 
     }, []);
 
+    const noteFormatHandlers = useNoteFormatHandlers();
+
     return (
         <ClickAwayListener onClickAway={() => setPosition(undefined)}>
 
@@ -82,13 +85,7 @@ export const NoteFormatPopper = React.memo((props: IProps) => {
                              paddingBottom: '5px'
                          }}>
 
-                        <NoteFormatBar onBold={props.onBold}
-                                       onItalic={props.onItalic}
-                                       onQuote={props.onQuote}
-                                       onUnderline={props.onUnderline}
-                                       onStrikethrough={props.onStrikethrough}
-                                       onSubscript={props.onSubscript}
-                                       onSuperscript={props.onSubscript}
+                        <NoteFormatBar {...noteFormatHandlers}
                                        onLink={props.onLink}/>
 
                     </div>

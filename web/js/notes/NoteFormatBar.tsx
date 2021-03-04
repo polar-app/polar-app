@@ -111,8 +111,6 @@ export type OnMouseUpEventHandler = (event: React.MouseEvent) => void;
 
 export function useNoteFormatBar(opts: NoteFormatBarProps) {
 
-
-
     return React.useCallback(() => {
 
 
