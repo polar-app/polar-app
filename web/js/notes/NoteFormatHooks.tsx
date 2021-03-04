@@ -1,12 +1,5 @@
-// readonly onBold?: () => void;
-// readonly onItalic?: () => void;
-// readonly onQuote?: () => void;
-// readonly onUnderline?: () => void;
-// readonly onStrikethrough?: () => void;
-// readonly onSubscript?: () => void;
-// readonly onSuperscript?: () => void;
-// readonly onLink?: () => void;
 
+// FIXME: we need mapping that our markdown system uses for all of these elements.
 
 export function useNoteFormatHandlers(onUpdated: () => void) {
 

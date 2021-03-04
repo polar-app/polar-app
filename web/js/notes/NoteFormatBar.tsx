@@ -87,9 +87,9 @@ const NoteFormatBarInner = (props: NoteFormatBarProps) => {
             {/*    <FAQuoteLeftIcon className={classes.icon}/>*/}
             {/*</FormatButton>*/}
 
-            <FormatButton onClick={props.onUnderline}>
-                <FAUnderlineIcon className={classes.icon}/>
-            </FormatButton>
+            {/*<FormatButton onClick={props.onUnderline}>*/}
+            {/*    <FAUnderlineIcon className={classes.icon}/>*/}
+            {/*</FormatButton>*/}
 
             <FormatButton onClick={props.onStrikethrough}>
                 <FAStrikethroughIcon className={classes.icon}/>
