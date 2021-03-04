@@ -8,7 +8,7 @@
 // readonly onLink?: () => void;
 
 
-export function useNoteFormatHandlers() {
+export function useNoteFormatHandlers(onUpdated: () => void) {
 
     function doSelectionWrap(tagName: string) {
 
@@ -23,6 +23,8 @@ export function useNoteFormatHandlers() {
         const wrapper = document.createElement(tagName);
 
         range.surroundContents(wrapper);
+
+        onUpdated();
 
     }
 

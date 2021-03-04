@@ -21,6 +21,9 @@ export interface INoteFormatBarPosition {
 
 export interface IProps extends NoteFormatBarProps {
     readonly children: JSX.Element;
+
+    readonly onUpdated: () => void;
+
 }
 
 export const NoteFormatPopper = React.memo((props: IProps) => {
@@ -67,7 +70,7 @@ export const NoteFormatPopper = React.memo((props: IProps) => {
 
     }, []);
 
-    const noteFormatHandlers = useNoteFormatHandlers();
+    const noteFormatHandlers = useNoteFormatHandlers(props.onUpdated);
 
     return (
         <ClickAwayListener onClickAway={() => setPosition(undefined)}>

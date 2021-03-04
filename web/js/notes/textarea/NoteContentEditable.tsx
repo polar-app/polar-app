@@ -65,6 +65,18 @@ export const NoteContentEditable = observer((props: IProps) => {
         }
     });
 
+    const updateMarkdownFromEditable = React.useCallback(() => {
+
+        if (! divRef.current) {
+            return;
+        }
+
+        const innerHTML = divRef.current.innerHTML;
+
+        props.onChange(innerHTML);
+
+    }, [props]);
+
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
         noteLinkEventHandler(event, divRef.current);
@@ -275,7 +287,7 @@ export const NoteContentEditable = observer((props: IProps) => {
 
     return (
 
-        <NoteFormatPopper>
+        <NoteFormatPopper onUpdated={updateMarkdownFromEditable}>
             <div ref={handleRef}
                  onKeyDown={handleKeyDown}
                  onKeyUp={handleKeyUp}
