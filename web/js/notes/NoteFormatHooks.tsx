@@ -10,50 +10,37 @@
 
 export function useNoteFormatHandlers(onUpdated: () => void) {
 
-    function doSelectionWrap(tagName: string) {
-
-        const selection = window.getSelection();
-
-        if (! selection) {
-            return;
-        }
-
-        const range = selection.getRangeAt(0);
-
-        const wrapper = document.createElement(tagName);
-
-        range.surroundContents(wrapper);
-
+    function doExecCommand(command: string) {
+        document.execCommand(command);
         onUpdated();
-
     }
 
     function onBold() {
-        doSelectionWrap('b');
+        doExecCommand('bold');
     }
 
     function onItalic() {
-        doSelectionWrap('i');
+        doExecCommand('italic');
     }
 
     function onQuote() {
-        doSelectionWrap('blockquote');
+        // doSelectionWrap('blockquote');
     }
 
     function onUnderline() {
-        doSelectionWrap('u');
+        doExecCommand('underline')
     }
 
     function onStrikethrough() {
-        doSelectionWrap('s');
+        doExecCommand('strikeThrough')
     }
 
     function onSubscript() {
-        doSelectionWrap('sub');
+        doExecCommand('subscript')
     }
 
     function onSuperscript() {
-        doSelectionWrap('sup');
+        doExecCommand('superscript')
     }
 
     return {onBold, onItalic, onQuote, onUnderline, onStrikethrough, onSubscript, onSuperscript}
