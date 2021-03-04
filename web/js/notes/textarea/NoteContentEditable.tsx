@@ -76,6 +76,11 @@ export const NoteContentEditable = observer((props: IProps) => {
         const innerHTML = divRef.current.innerHTML;
         const newContent = ContentEditableWhitespace.trim(innerHTML);
 
+        if (newContent === contentRef.current) {
+            // there was no change so skip this.
+            return;
+        }
+
         if (ENABLE_TRACE_CURSOR_RESET) {
             console.log("==== handleChange: ")
             console.log("RAW innerHTML: ", innerHTML);
