@@ -143,6 +143,10 @@ export class NotesStore {
      */
     @observable _selected: StringSetMap = {};
 
+    @observable _dropTarget: NoteIDStr | undefined = undefined;
+
+    @observable _dropSource: NoteIDStr | undefined = undefined;
+
     /**
      * Used so that when we change the selected notes, that we know which is the
      * FIRST so that we can compute a from and to based on their position.
@@ -196,6 +200,27 @@ export class NotesStore {
     @action public clearSelected() {
         this._selected = {};
         this._selectedAnchor = undefined;
+    }
+
+    @computed get dropTarget() {
+        return this._dropTarget;
+    }
+
+    @action public setDropTarget(dropTarget: NoteIDStr) {
+        this._dropTarget = dropTarget;
+    }
+
+    @computed get dropSource() {
+        return this._dropSource;
+    }
+
+    @action public setDropSource(dropSource: NoteIDStr) {
+        this._dropSource = dropSource;
+    }
+
+    @action public clearDrop() {
+        this._dropTarget = undefined;
+        this._dropSource = undefined;
     }
 
     /**

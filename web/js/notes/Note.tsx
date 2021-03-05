@@ -127,20 +127,46 @@ export const NoteInner = observer((props: IProps) => {
 
     }, []);
 
+    const handleDragStart = React.useCallback((event: React.DragEvent) => {
+        store.setDropSource(props.id);
+        // event.preventDefault();
+        // event.stopPropagation();
+    }, [props.id, store]);
+
+    const handleDragEnter = React.useCallback((event: React.DragEvent) => {
+        store.setDropTarget(props.id);
+        event.preventDefault();
+        event.stopPropagation();
+    }, [props.id, store]);
+
+    const handleDragExit = React.useCallback((event: React.DragEvent) => {
+        event.preventDefault();
+        event.stopPropagation();
+    }, []);
+
     const items = store.lookup(note.items || []);
 
     const hasItems = items.length > 0;
 
+    const dropActive = store.dropTarget === props.id && store.dropSource !== props.id;
+
     return (
         <div onMouseDown={handleMouseDown}
              onKeyDown={handleKeyDown}
+             onDragStart={event => handleDragStart(event)}
+             onDragEnter={event => handleDragEnter(event)}
+             onDragLeave={event => handleDragExit(event)}
+             onDragEnd={() => store.clearDrop()}
+             onDrop={event => event.preventDefault()}
              className={clsx(['Note', selected ? classes.selected : undefined])}>
+
             <div {...contextMenuHandlers}
                  style={{
                      display: 'flex',
                      alignItems: 'flex-start',
                      marginTop: theme.spacing(0.5),
-                     marginBottom: theme.spacing(0.5)
+                     marginBottom: theme.spacing(0.5),
+                     background: dropActive ? 'red' : 'inherit'
                  }}>
 
                 <div style={{

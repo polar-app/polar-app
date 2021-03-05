@@ -8,6 +8,7 @@ interface IProps {
     readonly style?: React.CSSProperties;
     readonly className?: string;
     readonly children: JSX.Element | string;
+    readonly draggable?: boolean;
 }
 
 export const NoteLink = React.memo((props: IProps) => {
@@ -16,6 +17,7 @@ export const NoteLink = React.memo((props: IProps) => {
 
     return (
         <Link to={noteLink}
+              draggable={props.draggable}
               className={props.className}
               style={props.style}>
 

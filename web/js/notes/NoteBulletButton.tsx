@@ -20,8 +20,12 @@ export const NoteBulletButton = observer(function NoteBulletButton(props: IProps
 
     const disabled = store.root === props.target;
 
+    // ev.dataTransfer.setData("text/plain", ev.target.id);
+
     return (
-        <NoteLink target={props.target} style={{color: theme.palette.text.hint}}>
+        <NoteLink target={props.target}
+                  style={{color: theme.palette.text.hint}}
+                  draggable={true}>
             <NoteButton onClick={NULL_FUNCTION}
                         disabled={disabled}>
                 <MiddleDot/>
