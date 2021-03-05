@@ -40,6 +40,10 @@ export const NoteSelectionHandler = observer(function NoteSelectionHandler(props
 
             case 'ArrowUp':
             case 'ArrowDown':
+            case 'Control':
+            case 'Meta':
+            case 'Command':
+            case 'Shift':
                 break;
 
             default:

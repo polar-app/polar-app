@@ -1006,6 +1006,9 @@ export class NotesStore {
             this._activePos = nextActive.activePos;
         }
 
+        // we have to clear now because the notes we deleted might have been selected
+        this.clearSelected();
+
     }
 
     /**
