@@ -228,6 +228,11 @@ export const NoteContentEditable = observer((props: IProps) => {
 
             case 'ArrowLeft':
 
+                if (event.shiftKey && event.ctrlKey) {
+                    store.doUnIndent(props.id);
+                    break;
+                }
+
                 if (! hasModifiers) {
 
                     if (cursorAtStart) {
@@ -240,6 +245,11 @@ export const NoteContentEditable = observer((props: IProps) => {
                 break;
 
             case 'ArrowRight':
+
+                if (event.shiftKey && event.ctrlKey) {
+                    store.doIndent(props.id);
+                    break;
+                }
 
                 if (! hasModifiers) {
 
