@@ -20,7 +20,7 @@ describe('MarkdownContentEscaper', function() {
         const input = "hello 'world'"
 
         const escaped = MarkdownContentEscaper.escape(input);
-        assert.equal(escaped, "hello &#39;world&#39;");
+        assert.equal(escaped, "hello 'world'");
 
         const unescaped = MarkdownContentEscaper.unescape(escaped);
         assert.equal(unescaped, input);
