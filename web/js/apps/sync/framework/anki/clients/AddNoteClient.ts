@@ -56,6 +56,8 @@ export class AddNoteClient implements IAddNoteClient {
 
     public async execute(note: NoteDescriptor): Promise<number> {
 
+        note = toNoteWithProperFields(note);
+
         const body = {
             action: "addNote",
             version: 6,
@@ -84,5 +86,41 @@ export class AddNoteClient implements IAddNoteClient {
 export interface IAddNoteClient {
 
     execute(notes: NoteDescriptor): Promise<number>;
+
+}
+
+/**
+ * We have to make certain changes to the flashcard in certain situations so a
+ * basic Flashcard with a Front and Back also needs a FrontSide or else it will
+ * be rejected in some situations.
+ * @param note
+ */
+function toNoteWithProperFields(note: NoteDescriptor): NoteDescriptor {
+
+    if (note.modelName === 'Basic') {
+
+        const fieldNames = Object.keys(note.fields);
+        if (! fieldNames.includes('FrontSide')) {
+
+            if (fieldNames.includes('Front')) {
+
+                const FrontSide = note.fields.Front;
+
+                return {
+                    ...note,
+                    fields: {
+                        ...note.fields,
+                        FrontSide
+                    }
+                }
+
+            }
+
+
+        }
+
+    }
+
+    return note;
 
 }
