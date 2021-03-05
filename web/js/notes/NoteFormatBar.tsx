@@ -22,8 +22,8 @@ const useStyles = makeStyles((theme) =>
         button: {
             // color: theme.palette.text.secondary,
             fontSize: '12px',
-            marginLeft: '3px',
-            marginRight: '3px',
+            marginLeft: '5px',
+            marginRight: '5px',
         },
         icon: {
             fontSize: '22px',
@@ -146,15 +146,3 @@ export const NoteFormatBar = React.memo((props: NoteFormatBarProps) => {
         </Paper>
     );
 })
-
-export type OnMouseUpEventHandler = (event: React.MouseEvent) => void;
-
-export function useNoteFormatBar(opts: NoteFormatBarProps) {
-
-    return React.useCallback(() => {
-
-
-
-    }, []);
-
-}

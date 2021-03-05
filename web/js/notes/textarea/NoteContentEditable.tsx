@@ -42,11 +42,8 @@ interface IProps {
 export const NoteContentEditable = observer((props: IProps) => {
 
     const [content, setContent] = React.useState(props.content);
-
     const divRef = React.useRef<HTMLDivElement | null>(null);
-
     const contentRef = React.useRef(props.content);
-
     const store = useNotesStore();
 
     const noteLinkActions = store.getNamedNodes().map(current => {
@@ -136,7 +133,7 @@ export const NoteContentEditable = observer((props: IProps) => {
         if (props.content.valueOf() !== contentRef.current.valueOf()) {
 
             if (ENABLE_TRACE_CURSOR_RESET) {
-                console.log("content differs (cursor will be reset): ");
+                console.log(`content differs for ${props.id} (cursor will be reset): `);
                 console.log(`    props.content:      '${props.content}'`);
                 console.log(`    contentRef.current: '${contentRef.current}'`);
                 console.log(`    value of equals:    `, props.content.valueOf() === contentRef.current.valueOf());
@@ -144,10 +141,18 @@ export const NoteContentEditable = observer((props: IProps) => {
 
             contentRef.current = props.content;
 
+            // https://stackoverflow.com/questions/30242530/dangerouslysetinnerhtml-doesnt-update-during-render/38548616
+
+            // We have to set the content in two place, trigger a re-render
+            // (though this might be optional) and then set the innerHTML
+            // directly.  React has a bug which won't work on empty strings.
+
+            divRef.current!.innerHTML = props.content;
             setContent(props.content);
+
         }
 
-    }, [props.content]);
+    }, [props.content, props.id]);
 
     const handleRef = React.useCallback((current: HTMLDivElement | null) => {
 
