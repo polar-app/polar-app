@@ -136,6 +136,18 @@ This will scale well with the Firestore cache performance issues we're seeing.
 The only issue is we have to have two snapshots, one for the pages and one for
 the namespaces.
 
+## Secure Permissions Changes via ChangeBlockPermission Cloud Function
+
+All permissions changes are mediated by the ```ChangeBlockPermission``` cloud
+function.
+
+This validates all changes so that the users can't do anything like privilege
+escalation and that we have a log recording all permissions changes.
+
+This also mutates ```user_block_permission``` for the user so that they have the
+right values there which the user can't actually mutate directly because it
+belongs to other users.
+
 # Schema
 
 This is a minimal and proposed schema. There might be other fields in the future like a photoURL, etc
@@ -309,7 +321,7 @@ user_block_permission
 ```
 
 This table is ro, but not rw or the user would be able to change their own
-permissions... it's updated by ChangeBlockPermission hook.
+permissions... it's updated by ChangeBlockPermission web function.
 
 FIXME the user_block_permission would be for the USER not for the web so we
 would need some structure for this but it could be a dedicate table.
@@ -389,9 +401,6 @@ allow write if block.nspace == get(/databases/$(database)/documents/block_permis
     
 ## TODO
 
-- How do we do permissions on the permissions.  For example, we have to reject a
-  write to a note when the user doesn't have permissions to change its permissions.
-
 - how do I do a block embed such that the parents and structure is setup
   properly. It's a weird situation...
 
@@ -447,6 +456,8 @@ allow write if block.nspace == get(/databases/$(database)/documents/block_permis
 - FIXME: a user should NOT be able to escalate their own permisions.
 
 - FIXME: how are we going ot do permissions for groups of users like 'accounting...' ?  
+
+- TODO: we need some way to see all the pages in a namespace that have custom permissions ... 
 
 ## To Review
 
