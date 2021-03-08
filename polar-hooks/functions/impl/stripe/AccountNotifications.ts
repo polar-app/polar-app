@@ -69,8 +69,7 @@ appreciate the support!
 </p>
 
 <p>
-Would you have 30 minutes to do a user interview sometime?  We do these every now and 
-then to see how users are using Polar and to get feedback.
+Would you have a few minutes to provide your thoughts about Polar?  We rely on these discussions to further improve Polar.
 </p>
 
 <p>
