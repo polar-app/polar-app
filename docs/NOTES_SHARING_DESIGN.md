@@ -109,7 +109,7 @@ page undefined   | ro        | rw         | no access        |
 The EFFECTIVE permissions do not need to be show in the UI when configuring
 permissions at the page level.
 
-The user sets permissions on teh namespace ,, and page level, but when changing
+The user sets permissions on the namespace, and page level, but when changing
 them on the page level we merge the inherited namespace permissions and show the
 effective permissions.
 
