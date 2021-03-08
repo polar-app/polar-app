@@ -447,13 +447,14 @@ allow write if block.nspace == get(/databases/$(database)/documents/block_permis
     
 ## TODO
 
-
-- FIXME: how does a user see who has access to to a note so that they can change permissions and it would also be nice
+- FIXME: how does a user see who has access to a note so that they can change permissions and it would also be nice
   to know who they are collaborating with.
 
-- TODO: we need some way to see all the pages in a namespace that have custom permissions ... 
+- TODO: we need some way to see all the pages in a namespace that have custom
+  permissions so that they can be cleared.
 
-- TODO: note that block embeds won't necessarily be shown.
+- TODO: note that block embeds won't necessarily be shown if the user doesn't have permission to it... we can use the
+  ```user_block_permission``` to figure this out 
 
 - TODO: design of an address book so people can keep track of who they've shared data with in the past
 
