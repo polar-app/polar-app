@@ -109,10 +109,44 @@ the namespaces.
 
 # Schema
 
+This is a minimal and proposed schema. There might be other fields in the future like a photoURL, etc
+
+## org
+
+```text
+org {
+
+    // random ID for this org
+    id: IDStr;
+
+    // time the org was created
+    created: ISODateTimeString;
+    
+    // name of this organization
+    name: SlugStr;
+    
+    description: string;
+
+    owners: ReadonlyArray<UIDStr>
+    
+    members: ReadonlyArray<UIDStr>
+    
+    nspaces: ReadonlyArray<IDStr>;
+    
+}
+```
+
 ## nspace 
 
 Keeps track of all the namespaces in the system.   Note that a namespace does
 NOT have a UID because it can belong to an organization.
+
+Namespaces do not have a list of members as their permissions are applied via the
+```block_permission``` system and the members are generally compiled via the members
+of the organization.
+
+The permission builder can source the members from the org and then the rules there
+get saved to determine who can have access to the permissions.
 
 ```text
 nspace {
@@ -121,7 +155,7 @@ nspace {
      * The ID of this namespace.
      */
     id: IDStr;
-    
+
     /**
       * org or profile handle (acme or burtonator)
       */
@@ -132,38 +166,14 @@ nspace {
     description: string;
     
     created: ISODateTimeStr;
-    
-    // people who have been added to this 
-    members: ReadonlyArray<INamespaceMember>;
-    
 }
 ```
 
-### nspace_member
+## block_permission
 
-Structure for storing the members.  
+Holds the permission that the user has set for nodes... 
 
-```text
-INamespaceMember {
-    readonly id: IDStr;
-    readonly uid: UIDStr;
-    readonly added: ISODateTimeStr;    
-    readonly role: 'owner' | 'admin' | 'user';
-}
 ```
-
-# Permissions
-
-// TODO: view/comment rights should be delegatable if the user doesn't have delegation rights.
-
-// TODO: would be good to keep a log of permission changes and who did them and
-// when they happened - another enterprise feature.
-
-// TODO: page permissions have to take presidence over nspace permissions and override them.
-
-/**
- * Holds the permission that the user has set for nodes... 
- */
 block_permission:
 
     /**
@@ -246,6 +256,7 @@ block_permission:
      */
     noFollow?: boolean;   
 }
+```
 
 /**
  * History of the permission changes
@@ -271,6 +282,12 @@ user_block_permission
 This table is ro, but not rw or the user would be able to change their own
 permissions... it's updated by ChangeBlockPermission hook.
 
+FIXME the user_block_permission would be for the USER not for the web so we
+would need some structure for this but it could be a dedicate table.
+
+## user_nspace 
+
+FIXME: do we need this?
 
 /**
  * Denormalized list of namespaces the user owns.  This way they can get their
@@ -281,19 +298,7 @@ user_nspace:
     uid: UIDStr
     nspaces: []
 
-/**
- * Denormalized access to the user permissions that the user has when they to go
- * read, edit a block.
- */
-user_block_permission
-    id: UIDStr
-    rw_blocks: []
-    ro_blocks: []
-    ro_nspaces: []    
-    rw_nspaces: [];    
-}
-
-## SEO / SSR
+# SEO / SSR
 
 SSR request would have to look at the URL, see if the note is shared with 'web'
 or if the nspace is shared with the web. and then allow/deny the request
