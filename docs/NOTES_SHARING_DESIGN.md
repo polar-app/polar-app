@@ -165,6 +165,23 @@ accept users from the organization that have been given a tag and then apply
 them that way.  This way a subset of the users is computed and only their
 ```user_block_permission``` is changed. 
 
+## Ranking Blocks and Comments
+
+This system needs to have support for both ranking blocks and sorting them, and
+a link to a comment thread.
+
+The comments system needs to support upvotes so that high quality comments are
+surfaced.
+
+Thee permission system supports this model by having a page that's not directly
+linked, but linked to via a 'comments' property on a block that points to
+another block which is a tree of comments.
+
+Since ranking can be supported in each sub-item, and we can set the sub-items
+sort of 'ranking' we can support both ranking for comments but also ranking for
+regular notes so users could have things like voting systems like reddit but
+also with rich discussion.
+
 # Schema
 
 This is a minimal and proposed schema. There might be other fields in the future
@@ -442,9 +459,6 @@ allow write if block.nspace == get(/databases/$(database)/documents/block_permis
 
 - FIXME: what happens to your data when you try to come online again and you've had revoked permissions.... I think 
   the rest of the data might not be committed and this would be a huge problem
-
-- FIXME comments
-- FIXME rankings 
 
 ## To Review
 
