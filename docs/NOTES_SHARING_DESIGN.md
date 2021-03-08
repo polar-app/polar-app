@@ -182,6 +182,15 @@ sort of 'ranking' we can support both ranking for comments but also ranking for
 regular notes so users could have things like voting systems like reddit but
 also with rich discussion.
 
+## Reset of Page Permissions
+
+A user might want to reset all page permissions or find out which ones have
+customer permissions other than those inherited from the namespace.
+
+The ```block_permission``` table keeps track of the namespace that this block is
+stored along with the page so we can always fine pages in a namespace that have
+custom permissions.
+
 # Schema
 
 This is a minimal and proposed schema. There might be other fields in the future
@@ -265,14 +274,15 @@ block_permission:
     owner: UIDStr;
 
     /**
-     * The block (root) that we're sharing.
+     * The namespace that this permission applies to. If it's a page that we're
+     * sharing the 'page' attribute is set *along* with the nspace attribute.
      */
-    block?: BlockIDStr
+    nspace: NSpaceIDStr;
 
     /**
-     * The namespace we're sharing.
+     * The block (root) that we're sharing.
      */
-    nspace?: NSpaceIDStr;
+    page?: BlockIDStr
     
     /**
      * Set when the user is sharing it with another user.
@@ -449,9 +459,6 @@ allow write if block.nspace == get(/databases/$(database)/documents/block_permis
 
 - FIXME: how does a user see who has access to a note so that they can change permissions and it would also be nice
   to know who they are collaborating with.
-
-- TODO: we need some way to see all the pages in a namespace that have custom
-  permissions so that they can be cleared.
 
 - TODO: note that block embeds won't necessarily be shown if the user doesn't have permission to it... we can use the
   ```user_block_permission``` to figure this out 
