@@ -92,7 +92,8 @@ Firebase security rules during read/write.
 
 Page level permissions override namespace level permissions.
 
-So if a user is rw at the namespace level, but ro at the page level, the effective permissions are ro.
+So if a user is rw at the namespace level, but ro at the page level, the
+effective permissions are ro.
 
 Here's a matrix to clarify:
 
@@ -104,6 +105,17 @@ page rw          | rw        | rw         | rw               |
 page undefined   | ro        | rw         | no access        |
 --------------------------------------------------------------
 ```
+
+The EFFECTIVE permissions do not need to be show in the UI when configuring
+permissions at the page level.
+
+The user sets permissions on teh namespace ,, and page level, but when changing
+them on the page level we merge the inherited namespace permissions and show the
+effective permissions.
+
+If the user selects the same permissions that would normally be inherited from
+the namespace they can just be removed from the page level and probably SHOULD
+for performance reasons.
 
 # Users Reading Snapshot Data
 
