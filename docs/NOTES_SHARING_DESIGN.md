@@ -461,6 +461,8 @@ allow write if block.nspace == get(/databases/$(database)/documents/block_permis
 - FIXME: what happens to your data when you try to come online again and you've had revoked permissions.... I think 
   the rest of the data might not be committed and this would be a huge problem
 
+- TODO review https://www.enterpriseready.io/
+
 ## To Review
 
 - roam
