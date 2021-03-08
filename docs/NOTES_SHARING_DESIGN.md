@@ -88,6 +88,23 @@ rules.  These are applied, and an effective* permissions system is then computed
 and saved into ```user_block_permission``` table which we then lookup during
 Firebase security rules during read/write.
 
+# Effective Permissions
+
+Page level permissions override namespace level permissions.
+
+So if a user is rw at the namespace level, but ro at the page level, the effective permissions are ro.
+
+Here's a matrix to clarify:
+
+```text
+                   nspace ro | nspace rw  | nspace undefined |
+--------------------------------------------------------------
+page ro          | ro        | ro         | ro               |
+page rw          | rw        | rw         | rw               |
+page undefined   | ro        | rw         | no access        |
+--------------------------------------------------------------
+```
+
 # Users Reading Snapshot Data
 
 In order for the user to get the data they have access to, the
@@ -305,13 +322,7 @@ or if the nspace is shared with the web. and then allow/deny the request
 accordingly.  We'd have to be careful of the block embeds though because they'd
 be in security context.
 
-## Changing Permissions
-
-- MUST be done online because it requires changing user_block_permission which 
-  the user does not have access too.
-
-## block_permission rules
-
+# Firebase Rules
 I think it would be better to have the rules for updating this structure in a
 trigger because they're somewhat complex.
 
@@ -323,11 +334,17 @@ match /user_nspace/{document=**} {
 
 match /block/{document=**} {
     
-    allow read: if get(/databases/$(database)/documents/user_block_permission/$(request.auth.uid).ro_blocks.hasAny(resource.data.root);
-    allow read, write: if get(/databases/$(database)/documents/user_block_permission/$(request.auth.uid).rw_blocks.hasAny(resource.data.root);
+    function getUserBlockPermission() {
+        return get(/databases/$(database)/documents/user_block_permission/$(request.auth.uid);
+    }
 
-    allow read: if get(/databases/$(database)/documents/user_block_permission/$(request.auth.uid).ro_nspaces.hasAny(resource.data.nspace);
-    allow read, write: if get(/databases/$(database)/documents/user_block_permission/$(request.auth.uid).rw_nspaces.hasAny(resource.data.nspace);
+    // FIXMEL write out the matrix here... 
+
+    allow read: if getUserBlockPermission().ro_blocks.hasAny(resource.data.root);
+    allow read, write: if getUserBlockPermission().rw_blocks.hasAny(resource.data.root);
+
+    allow read: if getUserBlockPermission().ro_nspaces.hasAny(resource.data.nspace);
+    allow read, write: if getUserBlockPermission().rw_nspaces.hasAny(resource.data.nspace);
 
 }
 
