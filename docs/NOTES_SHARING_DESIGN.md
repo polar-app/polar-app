@@ -1,6 +1,6 @@
 # Sharing
 
-discussion...
+## Model
 
 We support the following general permissions model:
 
@@ -83,34 +83,29 @@ from a constant but there IS no constant.
 
 # Applying Permissions to Firebase Rules
 
-In order to have firebase rules work, we have to take the permissions at the
-organization, namespace, and page level and rewrite them into sets of UIDs like
-so:
+The ```block_permission``` table stores the underlying permissions structure and
+rules.  These are applied, and an effective* permissions system is then computed
+and saved into ```user_block_permission``` table which we then lookup during
+Firebase security rules during read/write.
 
-FIXME: we shouldn't ALWAYS have to have a list of UIDs here right?  Orgs with thousands of users would bloat 
-this data structure and we might want to make the 'org' session trait... 
-
-block_permission_org
-    ro: ReadonlyArray<UIDStr>
-    rw: ReadonlyArray<UIDStr>
-
-block_permission_nspace
-    ro: ReadonlyArray<UIDStr>
-    rw: ReadonlyArray<UIDStr>
-
-block_permission_page 
-    ro: ReadonlyArray<UIDStr>
-    rw: ReadonlyArray<UIDStr>
-    
 # Users Reading Snapshot Data
 
-FIXNE: 
+In order for the user to get the data they have access to, the
+```user_block_permission``` table ALSO has needs to keep the effective
+permissions so that ANYTHING in these tables can be read and we can perform
+a snapshot to start reading ANY of that data.
+    
+Additionally, in the UI, we have to show that the user can not write some fields
+and might need some sort of UI treatment for that.    
+    
+## Reading Snapshot Data
 
-In order for the user to get the data they have access to, we maintain a separate table called
-    
-    
-NOTE: Firestore CAN do an IN clause so that's ok but we MIGHT have to do two
-queries / snapshots to get it but that's not the end of the world.  
+Firestore supports an IN clause so that we can read from ANY namespace to which
+the user has permissions.
+
+This will scale well with the Firestore cache performance issues we're seeing. 
+The only issue is we have to have two snapshots, one for the pages and one for
+the namespaces.
 
 # Schema
 
