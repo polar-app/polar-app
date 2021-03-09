@@ -27,5 +27,12 @@ describe('MarkdownContentEscaper', function() {
 
     });
 
+    it("with spans", () => {
+
+        const unescaped = MarkdownContentEscaper.unescape("this is some <span>text</span>");
+        assert.equal(unescaped, "this is some text");
+
+    });
+
 });
 
