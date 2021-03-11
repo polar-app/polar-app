@@ -49,24 +49,13 @@ const NoAnnotations = memoForwardRef(() => {
             <div style={{flexGrow: 1}}>
 
                 <h2 className="text-center text-muted text-xxl">
-                    No Annotations
+                    No annotation
                 </h2>
 
                 <p className="text-muted"
                    style={{fontSize: '16px'}}>
 
-                    No annotations have yet been created. To create new
-                    annotations create a
-                    new highlight by
-                    selecting text in the document.
-                </p>
-
-                <p className="text-muted"
-                   style={{fontSize: '16px'}}>
-
-                    The highlight will then be shown here and you can
-                    then easily attach comments and flashcards to it
-                    directly.
+                    Create new annotations by highlighting text in the document
                 </p>
 
             </div>
