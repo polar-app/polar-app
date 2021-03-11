@@ -17,7 +17,8 @@ export const UpgradeButton = deepMemo((props: IProps) => {
 
     return (
         <Button variant="contained"
-                size="small"
+                size="large"
+                color="primary"
                 className="border"
                 startIcon={<LockOpenIcon/>}
                 onClick={() => history.push("/plans")}>
