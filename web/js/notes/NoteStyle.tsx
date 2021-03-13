@@ -18,8 +18,13 @@ const useStyles = makeStyles((theme) =>
             //     color: theme.palette.text.disabled,
             //     userSelect: 'none'
             // },
-            '& a': {
+            "& a": {
                 cursor: 'hand'
+            },
+            "& a:not([href^=http])": {
+                textDecorationStyle: 'dotted',
+                textUnderlinePosition: 'under'
+
             },
             "& h1, h2, h3, h4, h5": {
                 lineHeight: 0

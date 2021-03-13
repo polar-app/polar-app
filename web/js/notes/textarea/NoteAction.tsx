@@ -91,11 +91,26 @@ function useActionExecutor() {
 
 }
 
-
+// FIXME: what do I do about these edge cases:
+//
+//     - when we place the mouse manually next to a [[ that's already created in the text
+//          - just don't double activate
+//     - what happens when we break the text by sticking a [ in it.
+//     - what if the link is ALREADY created but we try to change the text under it? how is the link updated?
+//           - this is the mian issue because I can abort it but that's it... what I could do is bring up a popup under it
+//             to edit it?
+//               - I would have to rehydrate the markers...
+//     - when we drop the mouse next to the [[ it will create teh ]] automatically and we can get a double effect...
+//     - maybe just scan right and don't double create if there are any ]] to the right of the cursor.
+//
+//     - what happens when I delete the entire region of text that I"m trying to enter? how do I detect that?
+//     -
 
 // FIXME how do we replace /execute the action to replace the text? I could use
 // the range API for this, replace the text in that range with a document
 // fragment then emit the new content as markdown
+
+// - FIXME: Escape should allow using [[ directly and then just abort that input.
 
 // FIXME: now the main issue is I have to patch the DOM and build the
 // replacement...
