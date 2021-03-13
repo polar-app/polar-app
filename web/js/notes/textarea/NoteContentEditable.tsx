@@ -4,9 +4,10 @@ import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import { observer } from "mobx-react-lite"
 import {NavOpts, NoteIDStr, useNotesStore} from '../store/NotesStore';
 import {ContentEditables} from "../ContentEditables";
-import {useActions} from "../../mui/action_menu/UseActions";
 import {createActionsProvider} from "../../mui/action_menu/ActionStore";
 import {NoteFormatPopper} from "../NoteFormatPopper";
+import {NoteContentCanonicalizer} from "./NoteContentCanonicalizer";
+import {NoteAction} from "./NoteAction";
 
 const ENABLE_TRACE_CURSOR_RESET = true;
 
@@ -34,6 +35,12 @@ interface IProps {
 
 }
 
+const NoteContentEditableElementContext = React.createContext<React.RefObject<HTMLElement | null>>({current: null});
+
+export function useNoteContentEditableElement() {
+    return React.useContext(NoteContentEditableElementContext);
+}
+
 /**
  *
  * https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand
@@ -46,23 +53,12 @@ export const NoteContentEditable = observer((props: IProps) => {
     const contentRef = React.useRef(props.content);
     const store = useNotesStore();
 
-    const noteLinkActions = store.getNamedNodes().map(current => {
-        return {
-            id: current,
-            text: current
-        }
-    });
+    const noteLinkActions = store.getNamedNodes().map(current => ({
+        id: current,
+        text: current
+    }));
 
-    const [noteLinkEventHandler] = useActions({
-        trigger: '[[',
-        actionsProvider: createActionsProvider(noteLinkActions),
-        onAction: (id) => {
-            return {
-                type: 'note-link',
-                target: id
-            }
-        }
-    });
+    const createNoteActionsProvider = React.useMemo(() => createActionsProvider(noteLinkActions), [noteLinkActions]);
 
     const handleChange = React.useCallback(() => {
 
@@ -70,7 +66,19 @@ export const NoteContentEditable = observer((props: IProps) => {
             return;
         }
 
-        const innerHTML = divRef.current.innerHTML;
+        function computeNewContent() {
+
+            if (! divRef.current) {
+                throw new Error("No element");
+            }
+
+            const div = NoteContentCanonicalizer.canonicalizeElement(divRef.current)
+            const innerHTML = div.innerHTML;
+            return ContentEditableWhitespace.trim(innerHTML);
+
+        }
+
+        const innerHTML = computeNewContent();
         const newContent = ContentEditableWhitespace.trim(innerHTML);
 
         if (newContent === contentRef.current) {
@@ -95,13 +103,11 @@ export const NoteContentEditable = observer((props: IProps) => {
 
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
-        noteLinkEventHandler(event, divRef.current);
-
         // note that we have to first use trim on this because sometimes
         // chrome uses &nbsp; which is dumb
         handleChange();
 
-    }, [handleChange, noteLinkEventHandler]);
+    }, [handleChange]);
 
     React.useEffect(() => {
 
@@ -318,22 +324,33 @@ export const NoteContentEditable = observer((props: IProps) => {
     }, [hasEditorSelection, props, store]);
 
     return (
+        <NoteContentEditableElementContext.Provider value={divRef}>
 
-        <NoteFormatPopper onUpdated={updateMarkdownFromEditable}>
-            <div ref={handleRef}
-                 onKeyDown={handleKeyDown}
-                 onKeyUp={handleKeyUp}
-                 contentEditable={true}
-                 spellCheck={props.spellCheck}
-                 className={props.className}
-                 onClick={props.onClick}
-                 style={{
-                     outline: 'none',
-                     ...props.style
-                 }}
-                 dangerouslySetInnerHTML={{__html: content}}/>
-        </NoteFormatPopper>
+            <NoteAction trigger="[["
+                        actionsProvider={createNoteActionsProvider}
+                        onAction={(id) => ({
+                            type: 'note-link',
+                            target: id
+                        })}>
 
+                <NoteFormatPopper onUpdated={updateMarkdownFromEditable}>
+                    <div ref={handleRef}
+                         onKeyDown={handleKeyDown}
+                         onKeyUp={handleKeyUp}
+                         contentEditable={true}
+                         spellCheck={props.spellCheck}
+                         className={props.className}
+                         onClick={props.onClick}
+                         style={{
+                             outline: 'none',
+                             ...props.style
+                         }}
+                         dangerouslySetInnerHTML={{__html: content}}/>
+                </NoteFormatPopper>
+
+            </NoteAction>
+
+        </NoteContentEditableElementContext.Provider>
     );
 
 });

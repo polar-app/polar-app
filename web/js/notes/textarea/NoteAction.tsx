@@ -1,13 +1,12 @@
 import React from 'react';
-import {
-    ActionMenuItemsProvider,
-    useActionMenuStore
-} from "./ActionStore";
-import {ContentEditables} from "../../notes/ContentEditables";
-import {NoteActionSelections} from "../../notes/NoteActionSelections";
 import {IDStr} from "polar-shared/src/util/Strings";
-import INodeOffset = ContentEditables.INodeOffset;
 import useTheme from '@material-ui/core/styles/useTheme';
+import {ActionMenuItemsProvider, useActionMenuStore} from "../../mui/action_menu/ActionStore";
+import {ContentEditables} from "../ContentEditables";
+import INodeOffset = ContentEditables.INodeOffset;
+import { NoteActionSelections } from '../NoteActionSelections';
+import {useNoteContentEditableElement} from "./NoteContentEditable";
+import { observer } from "mobx-react-lite"
 
 /**
  * Keyboard handler for while the user types. We return true if the menu is active.
@@ -36,7 +35,7 @@ export type ActionOp = IActionOpWithNodeLink;
  */
 export type ActionHandler = (id: IDStr) => ActionOp;
 
-interface IOpts {
+interface IProps {
 
     /**
      * The trigger characters that have to fire to bring up the dialog.
@@ -54,7 +53,9 @@ interface IOpts {
      */
     readonly onAction: ActionHandler;
 
+    readonly children: JSX.Element;
 }
+
 
 function useActionExecutor() {
 
@@ -90,18 +91,19 @@ function useActionExecutor() {
 
 }
 
+
+
 // FIXME how do we replace /execute the action to replace the text? I could use
 // the range API for this, replace the text in that range with a document
 // fragment then emit the new content as markdown
 
 // FIXME: now the main issue is I have to patch the DOM and build the
 // replacement...
-
-export function useActions(opts: IOpts): NoteActionsResultTuple {
+export const NoteAction = observer((props: IProps) => {
 
     const theme = useTheme();
 
-    const {trigger, actionsProvider, onAction} = opts;
+    const {trigger, actionsProvider, onAction} = props;
 
     const store = useActionMenuStore();
     const actionExecutor = useActionExecutor();
@@ -111,6 +113,8 @@ export function useActions(opts: IOpts): NoteActionsResultTuple {
     const textAtTriggerPointRef = React.useRef("");
 
     const triggerPointNodeOffsetRef = React.useRef<INodeOffset | undefined>(undefined);
+
+    const divRef = useNoteContentEditableElement();
 
     const reset = React.useCallback(() => {
 
@@ -152,13 +156,13 @@ export function useActions(opts: IOpts): NoteActionsResultTuple {
 
     }, [actionExecutor, onAction, reset, trigger.length]);
 
-    const eventHandler = React.useCallback((event, contenteditable): boolean => {
+    const handleKeyUp = React.useCallback((event: React.KeyboardEvent): boolean => {
 
-        if (! contenteditable) {
+        if (! divRef.current) {
             return false;
         }
 
-        const split = ContentEditables.splitAtCursor(contenteditable)
+        const split = ContentEditables.splitAtCursor(divRef.current)
 
         if (! split) {
             return false;
@@ -305,8 +309,13 @@ export function useActions(opts: IOpts): NoteActionsResultTuple {
 
         return activeRef.current;
 
-    }, [actionHandler, actionsProvider, reset, store, trigger]);
+    }, [actionHandler, actionsProvider, divRef, reset, store, trigger]);
 
-    return [eventHandler, reset];
+    return (
+        <div onKeyUp={handleKeyUp}>
+            {props.children}
+        </div>
+    );
 
-}
+});
+

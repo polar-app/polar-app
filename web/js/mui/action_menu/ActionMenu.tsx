@@ -5,7 +5,6 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import {IActionMenuItem} from "./ActionStore";
 import {MUICommandMenuItem} from "../command_menu/MUICommandMenuItem";
-import {ActionHandler} from "./UseActions";
 import {IDStr} from "polar-shared/src/util/Strings";
 
 
