@@ -45,7 +45,6 @@ export class Note implements INote {
 
     constructor(opts: INote) {
 
-
         this._id = opts.id;
         this._parent = opts.parent;
         this._created = opts.created;
