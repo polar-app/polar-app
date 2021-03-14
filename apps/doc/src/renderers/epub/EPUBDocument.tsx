@@ -522,7 +522,7 @@ function useEPUBResizer() {
             iframe.contentDocument.body.style.padding = '8px';
 
             if (fixedWidth) {
-                iframe.contentDocument.body.style.maxWidth = '800px';
+                iframe.contentDocument.body.style.maxWidth = '700px';
                 iframe.contentDocument.body.style.margin = 'auto';
 
             } else {
