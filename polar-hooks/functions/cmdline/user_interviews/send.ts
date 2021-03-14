@@ -6,7 +6,7 @@ async function exec() {
     const from: FromOpts = {
         firstName: "Jonathan",
         email: "jonathan@getpolarized.io",
-        calendarLink: 'https://calendly.com/jonathanpolarized/30min'
+        calendarLink: 'https://calendly.com/jonathangraeupner/30min'
     };
 
     await UserInterviewer.exec(from);
