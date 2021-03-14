@@ -222,6 +222,11 @@ export const NoteAction = observer((props: IProps) => {
                 //     the text to something like [a[ ... it should break that text but if they
                 //     rejoin it then it should go back to being active.
 
+
+
+                // FIXME: what I COULD do is use the splitter code, then compare the prefix and suffix of the note
+                // based on the cursor to compute where the cursor is, and then look at where the cursor is in relation
+                // to the [[ and ]] to activate/deactivate...
                 function createActivePrompt() {
 
                     // FIXME: when we wrap it, it resets the cursor
