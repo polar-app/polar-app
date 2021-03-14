@@ -3,7 +3,7 @@ import {NoteActions} from "./NoteActions";
 export namespace NoteActionSelections {
 
     /**
-     * Compute a cursor selection based on the current cursor or undefined.
+     * Compute a cursor selection based on the current cursor or return undefined undefined.
      */
     export function computeCursorRange(): Range | undefined {
 
@@ -13,20 +13,30 @@ export namespace NoteActionSelections {
 
             const range = selection.getRangeAt(0)
 
-            if (range.startContainer === range.endContainer) {
+            // if (range.startContainer === range.endContainer) {
+            //
+            //     // cursor detection we have to verify tha the range is over the same
+            //     // start and end container.
+            //
+            //     if (range.startOffset === range.endOffset) {
+            //
+            //         // we also have to verify that the start and end ranges are identical
+            //
+            //         return range;
+            //
+            //     } else {
+            //         console.log("FIXME startOffset does not equal range offsets ", range.startOffset, range.endOffset)
+            //     }
+            //
+            // } else {
+            //     console.log("FIXME2")
+            // }
 
-                // cursor detection we have to verify tha the range is over the same
-                // start and end container.
+            // if (range.collapsed) {
+            //     return range;
+            // }
 
-                if (range.startOffset === range.endOffset) {
-
-                    // we also have to verify that the start and end ranges are identical
-
-                    return range;
-
-                }
-
-            }
+            return range;
 
         }
 

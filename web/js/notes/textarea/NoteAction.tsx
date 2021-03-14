@@ -246,6 +246,7 @@ export const NoteAction = observer((props: IProps) => {
                         // FIXME: deleteContents...
 
                         const range = sel.getRangeAt(0);
+
                         const wrapRange = document.createRange();
                         wrapRange.setStart(range.startContainer, range.startOffset - 2);
                         wrapRange.setEnd(range.endContainer, range.endOffset);
@@ -260,9 +261,16 @@ export const NoteAction = observer((props: IProps) => {
                         wrapRange.insertNode(actionRight);
                         wrapRange.insertNode(actionLeft);
 
+                        // FIXME: this iw wrong becuase we're not able to detect
+                        // that it's actually one point...
+
+                        // FIXME: this SORT of works but the text goes IN the span... which is a problem.
+                        // - Another idea is instead of doing this map the cursor position to where it is in the text
+                        //   and then have some tests to detect what action I should perform depending on the text position
+
                         // FIXMEL bnot we're typing in the span
-                        range.setStartBefore(actionRight);
-                        range.setStartAfter(actionLeft);
+                        range.setStart(actionLeft.firstChild!, 2);
+                        range.setEnd(actionLeft.firstChild!, 2);
 
                     }
 
@@ -301,6 +309,7 @@ export const NoteAction = observer((props: IProps) => {
                         if (newPosition.top !== 0 && newPosition.left !== 0) {
                             return newPosition;
                         }
+
                     }
 
                     return undefined;
@@ -321,8 +330,6 @@ export const NoteAction = observer((props: IProps) => {
                         onAction: actionHandler
                     });
 
-                } else {
-                    console.log("FIXME: no position");
                 }
 
             }
