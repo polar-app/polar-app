@@ -52,11 +52,23 @@ export const NoteInner = observer((props: IProps) => {
     const handleMouseDown = React.useCallback((event: React.MouseEvent) => {
 
         if (event.shiftKey) {
+
             if (store.active !== undefined) {
 
-                store.setSelectionRange(store.active, id);
-                event.stopPropagation();
+                if (store.active !== id) {
+
+                    store.setSelectionRange(store.active, id);
+
+                    window.getSelection()!.removeAllRanges();
+
+                }
+
             }
+
+            // we have to stop propagation here because otherwise it will bubble
+            // up to the root and select that.
+            event.stopPropagation();
+
         } else {
             store.clearSelected();
         }
