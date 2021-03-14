@@ -131,7 +131,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
     const openRef = React.useRef(false);
     const [inputValue, setInputValue] = React.useState("");
 
-    const highlighted = useRef<ValueAutocompleteOption<T> | undefined>(undefined);
+    const highlighted = useRef<ValueAutocompleteOption<T> | null>(null);
 
     // creates an index of the options by ID so that we can lookup quickly if
     // we have an existing entry to avoid double creating a 'create' option
@@ -155,7 +155,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
 
         props.onChange(values.map(current => current.value));
 
-        highlighted.current = undefined;
+        highlighted.current = null;
 
     }, [props, state]);
 
@@ -247,7 +247,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
 
     const handleClose = React.useCallback(() => {
 
-        highlighted.current = undefined;
+        highlighted.current = null;
         openRef.current = false;
         fireOnOpen();
 
@@ -276,7 +276,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
 
     }, [handleChange, inputValue, options, state.values])
 
-    const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
+    const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
         function abortEvent() {
 
@@ -303,16 +303,15 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
 
         }
 
-        // FIXME: enter won't work because when we hit enter, with a selected
-        // option, it doesn't pick the selected option BUT the text and there's
-        // no way to differentiate.  We're going to have to implement our own
-        // ListBox for this.
-        //
-        // if (event.key === 'Enter') {
-        //     createNewOptionOnEnter();
-        // }
+        if (inputValue !== '') {
 
-    }, [handleClose, setValues, state.values]);
+            if (event.key === 'Enter') {
+                createNewOptionOnEnter();
+            }
+
+        }
+
+    }, [createNewOptionOnEnter, handleClose, inputValue, setValues, state.values]);
 
     function handleOpen() {
         openRef.current = true;
@@ -342,6 +341,12 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
         return option.id === value.id;
     }
 
+    const handleHighlightChange = React.useCallback((event: React.ChangeEvent<{}>, option: ValueAutocompleteOption<T> | null) => {
+
+        highlighted.current = option;
+
+    }, []);
+
     // TODO: one of our users suggested that 'tab' select the item since this
     // is somewhat standard but this requires that we use a controlled
     // auto-complete.  This breaks because there's a but which will cause the
@@ -355,7 +360,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
                 getOptionSelected={getOptionSelected}
                 // freeSolo
                 inputValue={inputValue}
-                onKeyDown={handleKeyDown}
+                onKeyUp={handleKeyUp}
                 value={[...state.values]}
                 // renderInput={props => renderInput(props)}
                 options={[...state.options]}
@@ -413,7 +418,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
                               {...getTagProps({ index })} />
                     ))
                 }
-                onHighlightChange={(event: object, option: any, reason: any) => highlighted.current = option}
+                onHighlightChange={handleHighlightChange}
                 // noOptionsText={<Button onClick={() => handleOptionCreated()}>Create "{value}"</Button>}
                 // ListboxComponent="ul"
                 renderInput={(params) => (

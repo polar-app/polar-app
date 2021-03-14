@@ -123,6 +123,7 @@ export const NoteAction = observer((props: IProps) => {
     const store = useActionMenuStore();
     const actionExecutor = useActionExecutor();
 
+    // true when the current prompt is active and we're actively selecting text.
     const activeRef = React.useRef(false);
 
     const textAtTriggerPointRef = React.useRef("");
@@ -132,6 +133,8 @@ export const NoteAction = observer((props: IProps) => {
     const divRef = useNoteContentEditableElement();
 
     const reset = React.useCallback(() => {
+
+        console.log("FIXME: reset");
 
         activeRef.current = false;
         triggerPointNodeOffsetRef.current = undefined;
@@ -192,6 +195,8 @@ export const NoteAction = observer((props: IProps) => {
         function computePrompt(): string {
             return prefixText.substr(textAtTriggerPointRef.current.length);
         }
+
+        console.log("FIXME: active: ", activeRef.current);
 
         if (activeRef.current) {
 
@@ -316,6 +321,8 @@ export const NoteAction = observer((props: IProps) => {
                         onAction: actionHandler
                     });
 
+                } else {
+                    console.log("FIXME: no position");
                 }
 
             }

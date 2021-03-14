@@ -22,11 +22,13 @@ export namespace NoteContentCanonicalizer {
 
                 let pointer: Node = childNode;
 
+                console.log("FIXME pointer: " + toText(pointer))
+                console.log("FIXME pointer and next sibling: " + toText(pointer.nextSibling))
+
                 // *** now remove all these nodes from the current node.
                 for (const current of Array.from(childNode.childNodes)) {
-                    childNode.parentElement!.insertBefore(current, pointer.nextSibling);
-                    childNode.removeChild(current);
-                    pointer = childNode;
+                    childNode.parentElement!.insertBefore(current, pointer);
+                    pointer = pointer.nextSibling!;
                 }
 
                 // *** now remove the span
@@ -39,6 +41,20 @@ export namespace NoteContentCanonicalizer {
         }
 
         return result;
+
+    }
+
+    function toText(node: Node | null) {
+
+        if (node === null) {
+            return 'null';
+        }
+
+        if (node.nodeType === node.TEXT_NODE) {
+            return 'Text: ' + node.textContent;
+        }
+
+        return node.textContent;
 
     }
 
