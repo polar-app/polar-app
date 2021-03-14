@@ -99,13 +99,31 @@ interface IState<T> {
     readonly options: ReadonlyArray<ValueAutocompleteOption<T>>;
 }
 
+function sortOptions<T>(options: ReadonlyArray<ValueAutocompleteOption<T>>) {
+
+    const hierarchical = options.filter(current => current.label.startsWith('/'));
+    const flat = options.filter(current => ! current.label.startsWith('/'));
+
+    function doSort(a: ValueAutocompleteOption<T>, b: ValueAutocompleteOption<T>) {
+        return a.label.localeCompare(b.label);
+    }
+
+    return [
+        ...flat.sort(doSort),
+        ...hierarchical.sort(doSort)
+    ]
+
+}
+
 export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompleteProps<T>) {
 
     const classes = useStyles();
 
+    const options = React.useMemo(() => sortOptions(props.options), [props.options]);
+
     const [state, setState] = useState<IState<T>>({
         values: props.defaultOptions || [],
-        options: props.options,
+        options
     });
 
     const [open, setOpen] = useState<boolean>(false);
@@ -118,9 +136,9 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
     // creates an index of the options by ID so that we can lookup quickly if
     // we have an existing entry to avoid double creating a 'create' option
     const optionsIndex = React.useMemo(() => {
-        return arrayStream(props.options)
+        return arrayStream(options)
                    .toMap(current => current.id);
-    }, [props.options])
+    }, [options])
 
     /**
      * Centrally set the values so we can also reset other states, fire events,
@@ -142,8 +160,6 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
     }, [props, state]);
 
     const handleChange = React.useCallback((newValues: InternalAutocompleteOption<T> | null | InternalAutocompleteOption<T>[]) => {
-
-        console.log("FIXME: newValues: ", newValues);
 
         const convertToAutocompleteOptions = (rawOptions: ReadonlyArray<InternalAutocompleteOption<T>>): ReadonlyArray<ValueAutocompleteOption<T>> => {
 
@@ -240,7 +256,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
     const createNewOptionOnEnter = React.useCallback(() => {
 
         function findOption() {
-            return arrayStream(props.options)
+            return arrayStream(options)
                 .filter(current => current.label.toLowerCase() === inputValue)
                 .first();
         }
@@ -258,7 +274,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
         setOpen(false);
         return handleChange([...state.values, newOption]);
 
-    }, [handleChange, inputValue, props.options, state.values])
+    }, [handleChange, inputValue, options, state.values])
 
     const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -287,11 +303,16 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
 
         }
 
-        if (event.key === 'Enter') {
-            createNewOptionOnEnter();
-        }
+        // FIXME: enter won't work because when we hit enter, with a selected
+        // option, it doesn't pick the selected option BUT the text and there's
+        // no way to differentiate.  We're going to have to implement our own
+        // ListBox for this.
+        //
+        // if (event.key === 'Enter') {
+        //     createNewOptionOnEnter();
+        // }
 
-    }, [createNewOptionOnEnter, handleClose, setValues, state.values]);
+    }, [handleClose, setValues, state.values]);
 
     function handleOpen() {
         openRef.current = true;
@@ -394,6 +415,7 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
                 }
                 onHighlightChange={(event: object, option: any, reason: any) => highlighted.current = option}
                 // noOptionsText={<Button onClick={() => handleOptionCreated()}>Create "{value}"</Button>}
+                // ListboxComponent="ul"
                 renderInput={(params) => (
                     <TextField
                         {...params}
@@ -405,13 +427,12 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
                 )}
             />
 
-            {relatedOptions !== undefined && (
-                <PremiumFeature required='plus' size='sm' feature="related tags">
-                    <>
-                    <MUIRelatedOptions relatedOptions={relatedOptions}
-                                      onAddRelatedOption={newOption => handleChange([...state.values, newOption])}/>
-                    </>
-                </PremiumFeature>)}
+            <PremiumFeature required='plus' size='sm' feature="related tags">
+                <>
+                <MUIRelatedOptions relatedOptions={relatedOptions || []}
+                                   onAddRelatedOption={newOption => handleChange([...state.values, newOption])}/>
+                </>
+            </PremiumFeature>
 
         </div>
     );
