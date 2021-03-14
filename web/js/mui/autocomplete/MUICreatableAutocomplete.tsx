@@ -126,8 +126,8 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
      * Centrally set the values so we can also reset other states, fire events,
      * etc.
      */
-    function setValues(values: ReadonlyArray<ValueAutocompleteOption<T>>,
-                       options?: ReadonlyArray<ValueAutocompleteOption<T>>) {
+    const setValues = React.useCallback((values: ReadonlyArray<ValueAutocompleteOption<T>>,
+                                         options?: ReadonlyArray<ValueAutocompleteOption<T>>) => {
 
         setState({
             ...state,
@@ -139,9 +139,11 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
 
         highlighted.current = undefined;
 
-    }
+    }, [props, state]);
 
-    const handleChange = (newValues: InternalAutocompleteOption<T> | null | InternalAutocompleteOption<T>[]) => {
+    const handleChange = React.useCallback((newValues: InternalAutocompleteOption<T> | null | InternalAutocompleteOption<T>[]) => {
+
+        console.log("FIXME: newValues: ", newValues);
 
         const convertToAutocompleteOptions = (rawOptions: ReadonlyArray<InternalAutocompleteOption<T>>): ReadonlyArray<ValueAutocompleteOption<T>> => {
 
@@ -196,12 +198,12 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
 
         setValues(convertedValues, convertedOptions);
 
-    };
+    }, [props, setValues, state.options]);
 
     const filter = createFilterOptions<ValueAutocompleteOption<T>>();
 
     const computeRelatedOptions = (): ReadonlyArray<ValueAutocompleteOption<T>> | undefined => {
-        
+
         if (props.relatedOptionsCalculator) {
 
             const values =
@@ -218,10 +220,54 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
         }
 
     };
-    
+
     const relatedOptions = computeRelatedOptions();
 
-    const handleKeyDown = (event: React.KeyboardEvent) => {
+    const fireOnOpen = React.useCallback(() => {
+        const onOpen = props.onOpen || NULL_FUNCTION;
+        onOpen(openRef.current);
+        setOpen(openRef.current);
+    }, [props.onOpen]);
+
+    const handleClose = React.useCallback(() => {
+
+        highlighted.current = undefined;
+        openRef.current = false;
+        fireOnOpen();
+
+    }, [fireOnOpen]);
+
+    const createNewOptionOnEnter = React.useCallback(() => {
+
+        function findOption() {
+            return arrayStream(props.options)
+                .filter(current => current.label.toLowerCase() === inputValue)
+                .first();
+        }
+
+        function createOption(): CreateAutocompleteOption {
+            return {
+                inputValue,
+                label: inputValue
+            };
+        }
+
+        const newOption = findOption() || createOption();
+
+        setInputValue('');
+        setOpen(false);
+        return handleChange([...state.values, newOption]);
+
+    }, [handleChange, inputValue, props.options, state.values])
+
+    const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
+
+        function abortEvent() {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+        }
 
         if (event.key === 'Tab') {
 
@@ -237,24 +283,15 @@ export default function MUICreatableAutocomplete<T>(props: MUICreatableAutocompl
 
             }
 
-            event.preventDefault();
-            event.stopPropagation();
+            abortEvent();
 
         }
 
-    };
+        if (event.key === 'Enter') {
+            createNewOptionOnEnter();
+        }
 
-    function fireOnOpen() {
-        const onOpen = props.onOpen || NULL_FUNCTION;
-        onOpen(openRef.current);
-        setOpen(openRef.current);
-    }
-
-    function handleClose() {
-        highlighted.current = undefined;
-        openRef.current = false;
-        fireOnOpen();
-    }
+    }, [createNewOptionOnEnter, handleClose, setValues, state.values]);
 
     function handleOpen() {
         openRef.current = true;
