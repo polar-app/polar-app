@@ -19,21 +19,7 @@ export namespace NoteContentCanonicalizer {
         for (const childNode of childNodes) {
 
             if (needsRewrite(childNode)) {
-
-                let pointer: Node = childNode;
-
-                console.log("FIXME pointer: " + toText(pointer))
-                console.log("FIXME pointer and next sibling: " + toText(pointer.nextSibling))
-
-                // *** now remove all these nodes from the current node.
-                for (const current of Array.from(childNode.childNodes)) {
-                    childNode.parentElement!.insertBefore(current, pointer);
-                    pointer = pointer.nextSibling!;
-                }
-
-                // *** now remove the span
-                childNode.parentElement!.removeChild(childNode);
-
+                childNode.replaceWith(...Array.from(childNode.childNodes));
             } else {
                 result.appendChild(childNode);
             }
@@ -58,7 +44,7 @@ export namespace NoteContentCanonicalizer {
 
     }
 
-    function needsRewrite(node: Node): boolean {
+    function needsRewrite(node: Node): node is HTMLSpanElement {
 
         if (node.nodeType !== node.ELEMENT_NODE) {
             return false;
