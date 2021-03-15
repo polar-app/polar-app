@@ -228,7 +228,7 @@ export const NoteAction = observer((props: IProps) => {
                             const span = document.createElement('span');
                             span.setAttribute('class', className);
                             span.setAttribute('contenteditable', 'false');
-                            span.setAttribute('style', `padding-left: 2px; padding-right: '2px`);
+                            span.setAttribute('style', `padding-left: 3px; padding-right: 3px; font-face: fixed; color: ${theme.palette.text.hint};`);
                             span.textContent = text;
                             return span;
                         }
