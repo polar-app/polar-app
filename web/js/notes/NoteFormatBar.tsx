@@ -42,10 +42,18 @@ const FormatButton = (props: FormatButtonProps) => {
 
     const classes = useStyles();
 
+    const handleClick = React.useCallback((event: React.MouseEvent) => {
+        event.preventDefault();
+        event.stopPropagation();
+        if (props.onClick) {
+            props.onClick();
+        }
+    }, [props]);
+
     return (
         <IconButton size="small"
                     className={classes.button}
-                    onClick={props.onClick}>
+                    onClick={handleClick}>
             {props.children}
         </IconButton>
     );
@@ -56,14 +64,25 @@ const LinkBar = () => {
 
     const ref = React.useRef("");
 
+    const handleChange = React.useCallback((event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+        ref.current = event.currentTarget.value;
+        event.stopPropagation();
+        event.preventDefault();
+    }, []);
+
+    const handleKeyboardEvent = React.useCallback((event: React.KeyboardEvent) => {
+        event.stopPropagation();
+    }, []);
+
     return (
         <>
             <TextField required
                        autoFocus={true}
                        placeholder="https://example.com"
-                       onChange={event => ref.current = event.currentTarget.value}/>
+                       onKeyDown={handleKeyboardEvent}
+                       onKeyUp={handleKeyboardEvent}
+                       onChange={event => handleChange(event)}/>
 
-            {/*<FormatButton*/}
         </>
     );
 }
@@ -127,8 +146,6 @@ export const NoteFormatBar = React.memo((props: NoteFormatBarProps) => {
     const classes = useStyles();
 
     const [mode, setMode] = React.useState<'link' | 'format'>('format');
-
-    console.log("FIXME: mode: ", mode);
 
     return (
         <Paper className={classes.root}>
