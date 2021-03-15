@@ -4,7 +4,11 @@
 - If you're on Windows you should download the latest version of Windows
   Subsystem for Linux.
 
-- Make sure you're on node >=14.5 and npm >=6.14.5
+- Make sure you're on the following versions:
+ 
+    ```node``` >=14.14
+    ```npm``` >=7.5.3
+
 - clone the polar-app repository locally.
 
 - Follow the following instructions
