@@ -56,7 +56,9 @@ interface IProps {
     readonly children: JSX.Element;
 }
 
-
+/**
+ * Performs teh action DOM mutation based on the type of action.
+ */
 function useActionExecutor() {
 
     return React.useCallback((from: INodeOffset, to: INodeOffset, actionOp: ActionOp) => {
@@ -123,7 +125,8 @@ export const NoteAction = observer((props: IProps) => {
     const store = useActionMenuStore();
     const actionExecutor = useActionExecutor();
 
-    // true when the current prompt is active and we're actively selecting text.
+    // true when the current prompt is active and we're actively selecting or
+    // creating a new note by typing in the prompt
     const activeRef = React.useRef(false);
 
     const textAtTriggerPointRef = React.useRef("");
@@ -133,8 +136,6 @@ export const NoteAction = observer((props: IProps) => {
     const divRef = useNoteContentEditableElement();
 
     const reset = React.useCallback(() => {
-
-        console.log("FIXME: reset");
 
         activeRef.current = false;
         triggerPointNodeOffsetRef.current = undefined;
@@ -196,8 +197,6 @@ export const NoteAction = observer((props: IProps) => {
             return prefixText.substr(textAtTriggerPointRef.current.length);
         }
 
-        console.log("FIXME: active: ", activeRef.current);
-
         if (activeRef.current) {
 
             const prompt = computePrompt();
@@ -227,7 +226,11 @@ export const NoteAction = observer((props: IProps) => {
                 // FIXME: what I COULD do is use the splitter code, then compare the prefix and suffix of the note
                 // based on the cursor to compute where the cursor is, and then look at where the cursor is in relation
                 // to the [[ and ]] to activate/deactivate...
-                function createActivePrompt() {
+
+                /**
+                 * Create the active input prompt and return a range where the menu must popup.
+                 */
+                function createActivePrompt(): Range {
 
                     // FIXME: when we wrap it, it resets the cursor
                     //
@@ -240,9 +243,15 @@ export const NoteAction = observer((props: IProps) => {
                         function createBracketSpan(text: string, className: string) {
                             const span = document.createElement('span');
                             span.setAttribute('class', className);
+                            span.setAttribute('contenteditable', 'false');
                             span.setAttribute('style', `padding-left: 2px; padding-right: '2px`);
-                            // span.setAttribute('style', `color: ${theme.palette.text.hint}; padding-left: 2px; padding-right: '2px`);
                             span.textContent = text;
+                            return span;
+                        }
+
+                        function createInputSpan() {
+                            const span = document.createElement('span');
+                            span.setAttribute('class', 'action-input');
                             return span;
                         }
 
@@ -263,7 +272,10 @@ export const NoteAction = observer((props: IProps) => {
 
                         const actionRight = createBracketSpan(']]', 'action-right');
                         const actionLeft = createBracketSpan('[[', 'action-left');
+                        const inputSpan = createInputSpan();
+
                         wrapRange.insertNode(actionRight);
+                        wrapRange.insertNode(inputSpan);
                         wrapRange.insertNode(actionLeft);
 
                         // FIXME: this iw wrong becuase we're not able to detect
@@ -273,15 +285,28 @@ export const NoteAction = observer((props: IProps) => {
                         // - Another idea is instead of doing this map the cursor position to where it is in the text
                         //   and then have some tests to detect what action I should perform depending on the text position
 
+                        // FIXME: if the node has NO text, it's not on the screen so the position is invalid...
+
                         // FIXMEL bnot we're typing in the span
-                        range.setStart(actionLeft.firstChild!, 2);
-                        range.setEnd(actionLeft.firstChild!, 2);
+                        range.setStart(inputSpan, 0);
+                        range.setEnd(inputSpan, 0);
+
+                        function createActivePromptRange() {
+                            const range = document.createRange();
+                            range.setStart(actionLeft.firstChild!, 1);
+                            range.setEnd(actionLeft.firstChild!, 1);
+                            return range;
+                        }
+
+                        return createActivePromptRange();
 
                     }
 
+                    throw new Error("No selection");
+
                 }
 
-                createActivePrompt();
+                const activePromptRange = createActivePrompt();
 
                 textAtTriggerPointRef.current = prefixText;
 
@@ -299,11 +324,9 @@ export const NoteAction = observer((props: IProps) => {
 
                 function computePosition() {
 
-                    const cursorRange = NoteActionSelections.computeCursorRange();
+                    if (activePromptRange) {
 
-                    if (cursorRange) {
-
-                        const bcr = cursorRange.getBoundingClientRect();
+                        const bcr = activePromptRange.getBoundingClientRect();
 
                         const newPosition = {
                             bottom: bcr.top,
@@ -313,8 +336,12 @@ export const NoteAction = observer((props: IProps) => {
 
                         if (newPosition.top !== 0 && newPosition.left !== 0) {
                             return newPosition;
+                        } else {
+                            console.warn("Invalid position ", newPosition);
                         }
 
+                    } else {
+                        console.warn("computePosition has no cursor range");
                     }
 
                     return undefined;
@@ -335,6 +362,8 @@ export const NoteAction = observer((props: IProps) => {
                         onAction: actionHandler
                     });
 
+                } else {
+                    console.warn("No position for menu");
                 }
 
             }
