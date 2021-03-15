@@ -116,7 +116,10 @@ interface ActivePrompt {
 
 // FIXME: next steps
 //
-// - ability to have a specific method to read the input....
+// - entering one character, then hitting backspace twice, deletes all of the text
+// - having a smaller contenteditable=false INSIDE cause some weird bugs...
+//    - instead, what we could do, is see if the user is mutating the actionLeft span and abort it OR if they hit
+//    - delete within that span then we have to delete the whole span and reset.
 
 export const NoteAction = observer((props: IProps) => {
 
@@ -141,12 +144,15 @@ export const NoteAction = observer((props: IProps) => {
             return;
         }
 
-        const range = document.createRange();
+        function deleteFromParent(element: HTMLElement) {
 
-        range.setStartBefore(activePromptRef.current.actionLeft);
-        range.setEndAfter(activePromptRef.current.actionRight);
+            element.remove();
 
-        range.deleteContents();
+        }
+
+        // deleteFromParent(activePromptRef.current.actionLeft);
+        // deleteFromParent(activePromptRef.current.actionRight);
+        // deleteFromParent(activePromptRef.current.actionInput);
 
     }, []);
 
@@ -164,18 +170,58 @@ export const NoteAction = observer((props: IProps) => {
 
     }, [clearActivePrompt, store])
 
-    // FIXME: if we jus type Shift or Command or any special key, then lift up, it's considered a valid input.
 
-    const handleKeyUp = React.useCallback((event: React.KeyboardEvent): boolean => {
+    const hasAborted = React.useCallback((): boolean => {
+
+        if (! activePromptRef.current) {
+            return true;
+        }
+
+        if (! activePromptRef.current.actionLeft.parentElement) {
+            return true;
+        }
+
+        if (! activePromptRef.current.actionRight.parentElement) {
+            return true;
+        }
+
+        return false;
+
+    }, []);
+
+    const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
+
+        const range = window.getSelection()?.getRangeAt(0);
+
+        if (range) {
+
+            if (activePromptRef.current) {
+
+                if (range.startContainer === activePromptRef.current.actionLeft ||
+                    range.startContainer === activePromptRef.current.actionRight) {
+
+
+                    event.stopPropagation();
+                    event.preventDefault();
+
+                }
+
+            }
+
+        }
+
+    }, []);
+
+    const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
         if (! divRef.current) {
-            return false;
+            return;
         }
 
         const split = ContentEditables.splitAtCursor(divRef.current)
 
         if (! split) {
-            return false;
+            return;
         }
 
         const prefixText = ContentEditables.fragmentToText(split.prefix);
@@ -190,16 +236,21 @@ export const NoteAction = observer((props: IProps) => {
 
         if (activeRef.current) {
 
-            const prompt = computeActionInputText();
+            if (hasAborted()) {
+                reset();
+            }
 
-            const items = actionsProvider(prompt);
-            store.updateState(items);
-
-            // FIXME use the actionHandler here that we've created when the user hits enter...
+            // FIXME use the actionHandler here that we've created when the user
+            // hits enter when a NEW note is being created
 
             if (event.key === 'Escape') {
                 reset();
             }
+
+            const prompt = computeActionInputText();
+
+            const items = actionsProvider(prompt);
+            store.updateState(items);
 
         } else {
 
@@ -217,7 +268,7 @@ export const NoteAction = observer((props: IProps) => {
                         function createBracketSpan(text: string, className: string) {
                             const span = document.createElement('span');
                             span.setAttribute('class', className);
-                            span.setAttribute('contenteditable', 'false');
+                            // span.setAttribute('contenteditable', 'false');
                             span.setAttribute('style', `padding-left: 3px; padding-right: 3px; font-face: fixed; color: ${theme.palette.text.hint};`);
                             span.textContent = text;
                             return span;
@@ -245,6 +296,7 @@ export const NoteAction = observer((props: IProps) => {
                         wrapRange.insertNode(actionInput);
                         wrapRange.insertNode(actionLeft);
 
+                        // FIXME: this isn't working to set the default text...
                         range.setStart(actionInput, 0);
                         range.setEnd(actionInput, 0);
 
@@ -356,10 +408,11 @@ export const NoteAction = observer((props: IProps) => {
 
         return activeRef.current;
 
-    }, [actionExecutor, actionsProvider, divRef, onAction, reset, store, theme.palette.text.hint, trigger]);
+    }, [actionExecutor, actionsProvider, divRef, hasAborted, onAction, reset, store, theme.palette.text.hint, trigger]);
 
     return (
-        <div onKeyUp={handleKeyUp}>
+        <div onKeyDown={handleKeyDown}
+             onKeyUp={handleKeyUp}>
             {props.children}
         </div>
     );
