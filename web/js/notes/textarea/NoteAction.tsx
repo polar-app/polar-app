@@ -92,29 +92,6 @@ function useActionExecutor() {
 
 }
 
-// FIXME: what do I do about these edge cases:
-//
-//     - when we place the mouse manually next to a [[ that's already created in the text
-//          - just don't double activate
-//     - what happens when we break the text by sticking a [ in it.
-//     - what if the link is ALREADY created but we try to change the text under it? how is the link updated?
-//           - this is the mian issue because I can abort it but that's it... what I could do is bring up a popup under it
-//             to edit it?
-//               - I would have to rehydrate the markers...
-//     - when we drop the mouse next to the [[ it will create teh ]] automatically and we can get a double effect...
-//     - maybe just scan right and don't double create if there are any ]] to the right of the cursor.
-//
-//     - what happens when I delete the entire region of text that I"m trying to enter? how do I detect that?
-//     -
-
-// FIXME how do we replace /execute the action to replace the text? I could use
-// the range API for this, replace the text in that range with a document
-// fragment then emit the new content as markdown
-
-// - FIXME: Escape should allow using [[ directly and then just abort that input.
-
-// FIXME: now the main issue is I have to patch the DOM and build the
-// replacement...
 export const NoteAction = observer((props: IProps) => {
 
     const theme = useTheme();
@@ -183,21 +160,6 @@ export const NoteAction = observer((props: IProps) => {
 
             if (prefixText.endsWith(trigger)) {
 
-                // FIXME end it with ]]
-
-                // ***
-                // - active prompt behavior
-                //   - if the cursor leaves the note the action is finished
-                //   - what happens if the user types something in the [[ or ]] like changes
-                //     the text to something like [a[ ... it should break that text but if they
-                //     rejoin it then it should go back to being active.
-
-
-
-                // FIXME: what I COULD do is use the splitter code, then compare the prefix and suffix of the note
-                // based on the cursor to compute where the cursor is, and then look at where the cursor is in relation
-                // to the [[ and ]] to activate/deactivate...
-
                 interface ActivePrompt {
 
                     /**
@@ -216,12 +178,8 @@ export const NoteAction = observer((props: IProps) => {
                  */
                 function createActivePrompt(): ActivePrompt {
 
-                    // FIXME: when we wrap it, it resets the cursor
-                    //
                     const sel = window.getSelection();
 
-                    // FIXME we will need a canonicalization function to rip the
-                    // note-action out.
                     if (sel) {
 
                         function createBracketSpan(text: string, className: string) {
@@ -239,10 +197,6 @@ export const NoteAction = observer((props: IProps) => {
                             return span;
                         }
 
-                        // FIXME: make the brackets a more mild color...
-
-                        // FIXME: deleteContents...
-
                         const range = sel.getRangeAt(0);
 
                         const wrapRange = document.createRange();
@@ -259,16 +213,6 @@ export const NoteAction = observer((props: IProps) => {
                         wrapRange.insertNode(inputSpan);
                         wrapRange.insertNode(actionLeft);
 
-                        // FIXME: this iw wrong becuase we're not able to detect
-                        // that it's actually one point...
-
-                        // FIXME: this SORT of works but the text goes IN the span... which is a problem.
-                        // - Another idea is instead of doing this map the cursor position to where it is in the text
-                        //   and then have some tests to detect what action I should perform depending on the text position
-
-                        // FIXME: if the node has NO text, it's not on the screen so the position is invalid...
-
-                        // FIXMEL bnot we're typing in the span
                         range.setStart(inputSpan, 0);
                         range.setEnd(inputSpan, 0);
 
