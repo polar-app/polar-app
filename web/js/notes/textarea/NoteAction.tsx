@@ -117,7 +117,6 @@ interface ActivePrompt {
 // FIXME: next steps
 //
 // - ability to have a specific method to read the input....
-//   - no textAtTriggerPointRef
 
 export const NoteAction = observer((props: IProps) => {
 
@@ -131,10 +130,6 @@ export const NoteAction = observer((props: IProps) => {
     // true when the current prompt is active and we're actively selecting or
     // creating a new note by typing in the prompt
     const activeRef = React.useRef(false);
-
-    const textAtTriggerPointRef = React.useRef("");
-
-    const triggerPointNodeOffsetRef = React.useRef<INodeOffset | undefined>(undefined);
 
     const divRef = useNoteContentEditableElement();
 
@@ -160,8 +155,6 @@ export const NoteAction = observer((props: IProps) => {
         clearActivePrompt();
 
         activeRef.current = false;
-        triggerPointNodeOffsetRef.current = undefined;
-        textAtTriggerPointRef.current = '';
 
         activePromptRef.current = undefined;
 
@@ -201,6 +194,8 @@ export const NoteAction = observer((props: IProps) => {
 
             const items = actionsProvider(prompt);
             store.updateState(items);
+
+            // FIXME use the actionHandler here that we've created when the user hits enter...
 
             if (event.key === 'Escape') {
                 reset();
@@ -276,18 +271,6 @@ export const NoteAction = observer((props: IProps) => {
                 }
 
                 activePromptRef.current = createActivePrompt();
-
-                textAtTriggerPointRef.current = prefixText;
-
-                function computeNodeOffsetFromSelection() {
-                    const range = document.getSelection()!.getRangeAt(0);
-                    return {
-                        node: range.startContainer,
-                        offset: range.startOffset
-                    }
-                }
-
-                triggerPointNodeOffsetRef.current = computeNodeOffsetFromSelection();
 
                 const prompt = computeActionInputText();
 
