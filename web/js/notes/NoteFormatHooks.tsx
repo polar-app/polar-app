@@ -1,12 +1,14 @@
 
 // FIXME: we need mapping that our markdown system uses for all of these elements.
 
+import {URLStr} from "polar-shared/src/util/Strings";
+
 export function useNoteFormatHandlers(onUpdated: () => void) {
 
     // FIXME we need one that's a clear formatting which removes bold, italics, link, etc.
 
-    function doExecCommand(command: string) {
-        document.execCommand(command);
+    function doExecCommand(command: string, value?: string) {
+        document.execCommand(command, false, value);
         onUpdated();
     }
 
@@ -39,6 +41,10 @@ export function useNoteFormatHandlers(onUpdated: () => void) {
         doExecCommand('superscript')
     }
 
-    return {onBold, onItalic, onQuote, onUnderline, onStrikethrough, onSubscript, onSuperscript}
+    function doLink(link: URLStr) {
+        doExecCommand('createlink', link)
+    }
+
+    return {onBold, onItalic, onQuote, onUnderline, onStrikethrough, onSubscript, onSuperscript, doLink}
 
 }

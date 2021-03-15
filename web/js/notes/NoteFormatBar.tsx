@@ -101,6 +101,8 @@ const LinkBar = (props: LinkBarProps) => {
         event.preventDefault();
     }, []);
 
+    // FIXME: hover says "please fill out this field"
+
     return (
         <>
             <TextField required
@@ -114,6 +116,7 @@ const LinkBar = (props: LinkBarProps) => {
                            fontSize: '14px',
                            minWidth: '35ch'
                        }}
+                       helperText=""
                        onKeyDown={handleKeyDown}
                        onKeyUp={handleKeyUp}
                        onClick={handleClick}
