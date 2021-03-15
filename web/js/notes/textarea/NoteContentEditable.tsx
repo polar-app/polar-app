@@ -8,6 +8,7 @@ import {createActionsProvider} from "../../mui/action_menu/ActionStore";
 import {NoteFormatPopper} from "../NoteFormatPopper";
 import {NoteContentCanonicalizer} from "./NoteContentCanonicalizer";
 import {NoteAction} from "./NoteAction";
+import { useHistory } from 'react-router-dom';
 
 const ENABLE_TRACE_CURSOR_RESET = true;
 
@@ -52,6 +53,7 @@ export const NoteContentEditable = observer((props: IProps) => {
     const divRef = React.useRef<HTMLDivElement | null>(null);
     const contentRef = React.useRef(props.content);
     const store = useNotesStore();
+    const history = useHistory();
 
     const noteLinkActions = store.getNamedNodes().map(current => ({
         id: current,
@@ -234,6 +236,14 @@ export const NoteContentEditable = observer((props: IProps) => {
 
             case 'ArrowLeft':
 
+                if (event.metaKey) {
+                    console.log("History back");
+                    // FIXME: this doesn't seem to work...
+                    history.go(-1);
+                    abortEvent();
+                    break;
+                }
+
                 if (event.shiftKey && event.ctrlKey) {
                     store.doUnIndent(props.id);
                     break;
@@ -251,6 +261,13 @@ export const NoteContentEditable = observer((props: IProps) => {
                 break;
 
             case 'ArrowRight':
+
+                if (event.metaKey) {
+                    console.log("History forward");
+                    history.goForward();
+                    abortEvent();
+                    break;
+                }
 
                 if (event.shiftKey && event.ctrlKey) {
                     store.doIndent(props.id);
@@ -321,7 +338,7 @@ export const NoteContentEditable = observer((props: IProps) => {
             props.onKeyDown(event);
         }
 
-    }, [hasEditorSelection, props, store]);
+    }, [hasEditorSelection, history, props, store]);
 
     return (
         <NoteContentEditableElementContext.Provider value={divRef}>

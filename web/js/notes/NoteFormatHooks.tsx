@@ -3,6 +3,8 @@
 
 export function useNoteFormatHandlers(onUpdated: () => void) {
 
+    // FIXME we need one that's a clear formatting which removes bold, italics, link, etc.
+
     function doExecCommand(command: string) {
         document.execCommand(command);
         onUpdated();
