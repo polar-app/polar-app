@@ -4,7 +4,6 @@ import useTheme from '@material-ui/core/styles/useTheme';
 import {ActionMenuItemsProvider, useActionMenuStore} from "../../mui/action_menu/ActionStore";
 import {ContentEditables} from "../ContentEditables";
 import INodeOffset = ContentEditables.INodeOffset;
-import { NoteActionSelections } from '../NoteActionSelections';
 import {useNoteContentEditableElement} from "./NoteContentEditable";
 import { observer } from "mobx-react-lite"
 
@@ -147,34 +146,6 @@ export const NoteAction = observer((props: IProps) => {
 
     }, [store])
 
-    const actionHandler = React.useCallback((id: IDStr) => {
-
-        const actionOp = onAction(id);
-
-        function computeFrom() {
-            return {
-                node: triggerPointNodeOffsetRef.current!.node,
-                offset: triggerPointNodeOffsetRef.current!.offset - trigger.length
-            };
-        }
-
-        function computeTo() {
-            const range = window.getSelection()!.getRangeAt(0);
-            return {
-                node: range.startContainer,
-                offset: range.startOffset
-            }
-        }
-
-        const from = computeFrom();
-        const to = computeTo();
-
-        actionExecutor(from, to, actionOp);
-
-        reset();
-
-    }, [actionExecutor, onAction, reset, trigger.length]);
-
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent): boolean => {
 
         if (! divRef.current) {
@@ -227,10 +198,23 @@ export const NoteAction = observer((props: IProps) => {
                 // based on the cursor to compute where the cursor is, and then look at where the cursor is in relation
                 // to the [[ and ]] to activate/deactivate...
 
+                interface ActivePrompt {
+
+                    /**
+                     * The range for where to place the calculate the position for the menu.
+                     */
+                    readonly positionRange: Range;
+
+                    readonly actionLeft: HTMLSpanElement;
+
+                    readonly actionRight: HTMLSpanElement;
+
+                }
+
                 /**
                  * Create the active input prompt and return a range where the menu must popup.
                  */
-                function createActivePrompt(): Range {
+                function createActivePrompt(): ActivePrompt {
 
                     // FIXME: when we wrap it, it resets the cursor
                     //
@@ -265,9 +249,6 @@ export const NoteAction = observer((props: IProps) => {
                         wrapRange.setStart(range.startContainer, range.startOffset - 2);
                         wrapRange.setEnd(range.endContainer, range.endOffset);
 
-                        // const newParent = document.createElement('span');
-                        // newParent.setAttribute('class', 'action');
-
                         wrapRange.deleteContents();
 
                         const actionRight = createBracketSpan(']]', 'action-right');
@@ -291,14 +272,20 @@ export const NoteAction = observer((props: IProps) => {
                         range.setStart(inputSpan, 0);
                         range.setEnd(inputSpan, 0);
 
-                        function createActivePromptRange() {
+                        function createPositionRange() {
                             const range = document.createRange();
                             range.setStart(actionLeft.firstChild!, 1);
                             range.setEnd(actionLeft.firstChild!, 1);
                             return range;
                         }
 
-                        return createActivePromptRange();
+                        const positionRange = createPositionRange();
+
+                        return {
+                            positionRange,
+                            actionLeft,
+                            actionRight
+                        }
 
                     }
 
@@ -306,7 +293,7 @@ export const NoteAction = observer((props: IProps) => {
 
                 }
 
-                const activePromptRange = createActivePrompt();
+                const activePrompt = createActivePrompt();
 
                 textAtTriggerPointRef.current = prefixText;
 
@@ -324,9 +311,9 @@ export const NoteAction = observer((props: IProps) => {
 
                 function computePosition() {
 
-                    if (activePromptRange) {
+                    if (activePrompt.positionRange) {
 
-                        const bcr = activePromptRange.getBoundingClientRect();
+                        const bcr = activePrompt.positionRange.getBoundingClientRect();
 
                         const newPosition = {
                             bottom: bcr.top,
@@ -348,7 +335,39 @@ export const NoteAction = observer((props: IProps) => {
 
                 }
 
+                function createActionHandler() {
+
+                    return (id: IDStr) => {
+
+                        const actionOp = onAction(id);
+
+                        function computeFrom() {
+                            return {
+                                node: activePrompt.actionLeft,
+                                offset: 0
+                            };
+                        }
+
+                        function computeTo() {
+                            return {
+                                node: activePrompt.actionRight,
+                                offset: 1
+                            }
+                        }
+
+                        const from = computeFrom();
+                        const to = computeTo();
+
+                        actionExecutor(from, to, actionOp);
+
+                        reset();
+
+                    }
+
+                }
+
                 const position = computePosition();
+                const actionHandler = createActionHandler();
 
                 if (position) {
 
@@ -372,7 +391,7 @@ export const NoteAction = observer((props: IProps) => {
 
         return activeRef.current;
 
-    }, [actionHandler, actionsProvider, divRef, reset, store, trigger]);
+    }, [actionExecutor, actionsProvider, divRef, onAction, reset, store, trigger]);
 
     return (
         <div onKeyUp={handleKeyUp}>
