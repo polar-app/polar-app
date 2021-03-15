@@ -95,6 +95,25 @@ function useActionExecutor() {
 
 }
 
+/**
+ * Represents a prompt range with two spans for left and right and an input in the middle.
+ */
+interface ActivePrompt {
+
+    /**
+     * The range for where to place the calculate the position for the menu.
+     */
+    readonly positionRange: Range;
+
+    readonly actionLeft: HTMLSpanElement;
+
+    readonly actionRight: HTMLSpanElement;
+
+    readonly actionInput: HTMLSpanElement;
+
+}
+
+
 // FIXME: next steps
 //
 // - ability to have a specific method to read the input....
@@ -119,20 +138,38 @@ export const NoteAction = observer((props: IProps) => {
 
     const divRef = useNoteContentEditableElement();
 
-    const actionInputRef = React.useRef<HTMLSpanElement | undefined>(undefined);
+    const activePromptRef = React.useRef<ActivePrompt | undefined>(undefined);
+
+    const clearActivePrompt = React.useCallback(() => {
+
+        if (! activePromptRef.current) {
+            return;
+        }
+
+        const range = document.createRange();
+
+        range.setStartBefore(activePromptRef.current.actionLeft);
+        range.setEndAfter(activePromptRef.current.actionRight);
+
+        range.deleteContents();
+
+    }, []);
 
     const reset = React.useCallback(() => {
+
+        clearActivePrompt();
 
         activeRef.current = false;
         triggerPointNodeOffsetRef.current = undefined;
         textAtTriggerPointRef.current = '';
-        actionInputRef.current = undefined;
+
+        activePromptRef.current = undefined;
 
         store.setState(undefined);
 
         return false;
 
-    }, [store])
+    }, [clearActivePrompt, store])
 
     // FIXME: if we jus type Shift or Command or any special key, then lift up, it's considered a valid input.
 
@@ -151,11 +188,11 @@ export const NoteAction = observer((props: IProps) => {
         const prefixText = ContentEditables.fragmentToText(split.prefix);
 
         function hasActionInputText(): boolean {
-            return actionInputRef.current?.textContent?.length !== 0;
+            return activePromptRef.current?.actionInput.textContent?.length !== 0;
         }
 
         function computeActionInputText(): string {
-            return actionInputRef.current?.textContent || '';
+            return activePromptRef.current?.actionInput.textContent || '';
         }
 
         if (activeRef.current) {
@@ -165,24 +202,13 @@ export const NoteAction = observer((props: IProps) => {
             const items = actionsProvider(prompt);
             store.updateState(items);
 
+            if (event.key === 'Escape') {
+                reset();
+            }
+
         } else {
 
             if (prefixText.endsWith(trigger)) {
-
-                interface ActivePrompt {
-
-                    /**
-                     * The range for where to place the calculate the position for the menu.
-                     */
-                    readonly positionRange: Range;
-
-                    readonly actionLeft: HTMLSpanElement;
-
-                    readonly actionRight: HTMLSpanElement;
-
-                    readonly actionInput: HTMLSpanElement;
-
-                }
 
                 /**
                  * Create the active input prompt and return a range where the menu must popup.
@@ -249,9 +275,7 @@ export const NoteAction = observer((props: IProps) => {
 
                 }
 
-                const activePrompt = createActivePrompt();
-
-                actionInputRef.current = activePrompt.actionInput;
+                activePromptRef.current = createActivePrompt();
 
                 textAtTriggerPointRef.current = prefixText;
 
@@ -269,9 +293,9 @@ export const NoteAction = observer((props: IProps) => {
 
                 function computePosition() {
 
-                    if (activePrompt.positionRange) {
+                    if (activePromptRef.current?.positionRange) {
 
-                        const bcr = activePrompt.positionRange.getBoundingClientRect();
+                        const bcr = activePromptRef.current.positionRange.getBoundingClientRect();
 
                         const newPosition = {
                             bottom: bcr.top,
@@ -301,14 +325,14 @@ export const NoteAction = observer((props: IProps) => {
 
                         function computeFrom() {
                             return {
-                                node: activePrompt.actionLeft,
+                                node: activePromptRef.current!.actionLeft,
                                 offset: 0
                             };
                         }
 
                         function computeTo() {
                             return {
-                                node: activePrompt.actionRight,
+                                node: activePromptRef.current!.actionRight,
                                 offset: 1
                             }
                         }
