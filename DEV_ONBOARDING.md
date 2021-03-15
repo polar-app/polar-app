@@ -15,4 +15,4 @@ with all the code kept in one place.
 
 - Material UI
 - pdf.js
-- 
+- epub.js
