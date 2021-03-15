@@ -30,7 +30,7 @@ export const NoteFormatPopper = React.memo((props: IProps) => {
 
     const [position, setPosition] = React.useState<INoteFormatBarPosition | undefined>(undefined);
 
-    const doPopup = React.useCallback(() => {
+    const doPopup = React.useCallback((): boolean => {
 
         const range = window.getSelection()!.getRangeAt(0);
 
@@ -40,7 +40,7 @@ export const NoteFormatPopper = React.memo((props: IProps) => {
                 setPosition(undefined);
             }
 
-            return;
+            return false;
         }
 
         const bcr = range.getBoundingClientRect();
@@ -50,6 +50,8 @@ export const NoteFormatPopper = React.memo((props: IProps) => {
             bottom: bcr.top,
             left: bcr.left
         })
+
+        return true;
 
     }, [position]);
 
@@ -61,14 +63,13 @@ export const NoteFormatPopper = React.memo((props: IProps) => {
 
     const onKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
-        // doPopup();
-        setPosition(undefined);
+        doPopup();
 
         if (event.key === 'Escape') {
             setPosition(undefined);
         }
 
-    }, []);
+    }, [doPopup]);
 
     const noteFormatHandlers = useNoteFormatHandlers(props.onUpdated);
 

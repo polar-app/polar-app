@@ -27,6 +27,7 @@ export function useNoteFormatHandlers(onUpdated: () => void) {
     }
 
     function onStrikethrough() {
+        // FIXME: this command resets the range selection...
         doExecCommand('strikeThrough')
     }
 
