@@ -13,6 +13,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
+import CheckIcon from '@material-ui/icons/Check';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -95,14 +96,34 @@ const LinkBar = (props: LinkBarProps) => {
 
     }, [props]);
 
+    const handleClick = React.useCallback((event: React.MouseEvent) => {
+        event.stopPropagation();
+        event.preventDefault();
+    }, []);
+
     return (
         <>
             <TextField required
+                       // variant="outlined"
                        autoFocus={true}
                        placeholder="https://example.com"
+                       // InputProps={{
+                       //     style: {padding: '35px'}
+                       // }}
+                       style={{
+                           fontSize: '14px',
+                           minWidth: '35ch'
+                       }}
                        onKeyDown={handleKeyDown}
                        onKeyUp={handleKeyUp}
+                       onClick={handleClick}
+                       onMouseDown={handleClick}
+                       onMouseUp={handleClick}
                        onChange={event => handleChange(event)}/>
+
+            <FormatButton>
+                <CheckIcon style={{color: 'green'}}/>
+            </FormatButton>
 
         </>
     );
