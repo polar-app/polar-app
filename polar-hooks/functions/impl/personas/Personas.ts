@@ -28,7 +28,7 @@ export namespace Personas {
             role: 'founder',
             email: 'jonathan@getpolarized.io',
             links: {
-                userInterviewForPro: 'https://calendly.com/jonathanpolarized/30min'
+                userInterviewForPro: 'https://calendly.com/jonathangraeupner/30min'
             }
         }
     ];
