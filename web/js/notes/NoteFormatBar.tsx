@@ -60,7 +60,11 @@ const FormatButton = (props: FormatButtonProps) => {
 
 }
 
-const LinkBar = () => {
+interface LinkBarProps {
+    readonly onDispose?: () => void;
+}
+
+const LinkBar = (props: LinkBarProps) => {
 
     const ref = React.useRef("");
 
@@ -70,17 +74,34 @@ const LinkBar = () => {
         event.preventDefault();
     }, []);
 
-    const handleKeyboardEvent = React.useCallback((event: React.KeyboardEvent) => {
+    const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
         event.stopPropagation();
     }, []);
+
+    const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
+
+        if (event.key === 'Enter') {
+            // noop for now
+        }
+
+        if (event.key === 'Escape') {
+
+            if (props.onDispose) {
+                props.onDispose();
+            }
+        }
+
+        event.stopPropagation();
+
+    }, [props]);
 
     return (
         <>
             <TextField required
                        autoFocus={true}
                        placeholder="https://example.com"
-                       onKeyDown={handleKeyboardEvent}
-                       onKeyUp={handleKeyboardEvent}
+                       onKeyDown={handleKeyDown}
+                       onKeyUp={handleKeyUp}
                        onChange={event => handleChange(event)}/>
 
         </>
@@ -139,6 +160,12 @@ export interface NoteFormatBarProps {
     readonly onSubscript?: () => void;
     readonly onSuperscript?: () => void;
     readonly onLink?: () => void;
+
+    /**
+     * Called when the bar should be removed/disposed.
+     */
+    readonly onDispose?: () => void;
+
 }
 
 export const NoteFormatBar = React.memo((props: NoteFormatBarProps) => {
@@ -156,7 +183,7 @@ export const NoteFormatBar = React.memo((props: NoteFormatBarProps) => {
                 )}
 
                 {mode === 'link' && (
-                    <LinkBar/>
+                    <LinkBar onDispose={props.onDispose}/>
                 )}
 
             </MUIButtonBar>

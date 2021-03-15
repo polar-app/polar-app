@@ -64,9 +64,9 @@ export const NoteFormatPopper = React.memo((props: IProps) => {
         // doPopup();
         setPosition(undefined);
 
-        // if (event.key === 'Escape') {
-        //     setPosition(undefined);
-        // }
+        if (event.key === 'Escape') {
+            setPosition(undefined);
+        }
 
     }, []);
 
@@ -89,6 +89,7 @@ export const NoteFormatPopper = React.memo((props: IProps) => {
                          }}>
 
                         <NoteFormatBar {...noteFormatHandlers}
+                                       onDispose={() => setPosition(undefined)}
                                        onLink={props.onLink}/>
 
                     </div>
