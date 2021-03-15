@@ -64,8 +64,11 @@ function useActionExecutor() {
 
         function createCoveringRange(): Range {
             const range = document.createRange();
-            range.setStart(from.node, from.offset);
-            range.setEnd(to.node, to.offset);
+
+            // TODO technically we don't need the offset here.
+            range.setStartBefore(from.node);
+            range.setEndAfter(to.node);
+
             return range;
         }
 
@@ -92,6 +95,11 @@ function useActionExecutor() {
 
 }
 
+// FIXME: next steps
+//
+// - ability to have a specific method to read the input....
+//   - no textAtTriggerPointRef
+
 export const NoteAction = observer((props: IProps) => {
 
     const theme = useTheme();
@@ -111,17 +119,22 @@ export const NoteAction = observer((props: IProps) => {
 
     const divRef = useNoteContentEditableElement();
 
+    const actionInputRef = React.useRef<HTMLSpanElement | undefined>(undefined);
+
     const reset = React.useCallback(() => {
 
         activeRef.current = false;
         triggerPointNodeOffsetRef.current = undefined;
         textAtTriggerPointRef.current = '';
+        actionInputRef.current = undefined;
 
         store.setState(undefined);
 
         return false;
 
     }, [store])
+
+    // FIXME: if we jus type Shift or Command or any special key, then lift up, it's considered a valid input.
 
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent): boolean => {
 
@@ -137,21 +150,17 @@ export const NoteAction = observer((props: IProps) => {
 
         const prefixText = ContentEditables.fragmentToText(split.prefix);
 
-        function hasPrompt(): boolean {
-            return prefixText.length >= textAtTriggerPointRef.current.length;
+        function hasActionInputText(): boolean {
+            return actionInputRef.current?.textContent?.length !== 0;
         }
 
-        function computePrompt(): string {
-            return prefixText.substr(textAtTriggerPointRef.current.length);
+        function computeActionInputText(): string {
+            return actionInputRef.current?.textContent || '';
         }
 
         if (activeRef.current) {
 
-            const prompt = computePrompt();
-
-            if (! hasPrompt()) {
-                return reset();
-            }
+            const prompt = computeActionInputText();
 
             const items = actionsProvider(prompt);
             store.updateState(items);
@@ -170,6 +179,8 @@ export const NoteAction = observer((props: IProps) => {
                     readonly actionLeft: HTMLSpanElement;
 
                     readonly actionRight: HTMLSpanElement;
+
+                    readonly actionInput: HTMLSpanElement;
 
                 }
 
@@ -207,14 +218,14 @@ export const NoteAction = observer((props: IProps) => {
 
                         const actionRight = createBracketSpan(']]', 'action-right');
                         const actionLeft = createBracketSpan('[[', 'action-left');
-                        const inputSpan = createInputSpan();
+                        const actionInput = createInputSpan();
 
                         wrapRange.insertNode(actionRight);
-                        wrapRange.insertNode(inputSpan);
+                        wrapRange.insertNode(actionInput);
                         wrapRange.insertNode(actionLeft);
 
-                        range.setStart(inputSpan, 0);
-                        range.setEnd(inputSpan, 0);
+                        range.setStart(actionInput, 0);
+                        range.setEnd(actionInput, 0);
 
                         function createPositionRange() {
                             const range = document.createRange();
@@ -228,7 +239,8 @@ export const NoteAction = observer((props: IProps) => {
                         return {
                             positionRange,
                             actionLeft,
-                            actionRight
+                            actionRight,
+                            actionInput
                         }
 
                     }
@@ -238,6 +250,8 @@ export const NoteAction = observer((props: IProps) => {
                 }
 
                 const activePrompt = createActivePrompt();
+
+                actionInputRef.current = activePrompt.actionInput;
 
                 textAtTriggerPointRef.current = prefixText;
 
@@ -251,7 +265,7 @@ export const NoteAction = observer((props: IProps) => {
 
                 triggerPointNodeOffsetRef.current = computeNodeOffsetFromSelection();
 
-                const prompt = computePrompt();
+                const prompt = computeActionInputText();
 
                 function computePosition() {
 
@@ -335,7 +349,7 @@ export const NoteAction = observer((props: IProps) => {
 
         return activeRef.current;
 
-    }, [actionExecutor, actionsProvider, divRef, onAction, reset, store, trigger]);
+    }, [actionExecutor, actionsProvider, divRef, onAction, reset, store, theme.palette.text.hint, trigger]);
 
     return (
         <div onKeyUp={handleKeyUp}>
