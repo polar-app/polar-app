@@ -18,12 +18,14 @@ import { withBreakpoints } from "gatsby-plugin-breakpoints";
 
 import RedditIcon from "@material-ui/icons/Reddit";
 import TwitterIcon from "@material-ui/icons/Twitter";
-const DiscordIconLight = require("../../content/assets/logos/discord-light.png");
 import IconButton from "@material-ui/core/IconButton";
 const ImgPolarLogo = require("../../content/assets//logos/logo.svg");
 import CloseIcon from "@material-ui/icons/Close";
 import {CreateAccountButton} from "./CreateAccountButton";
 import {Devices} from "polar-shared/src/util/Devices";
+import DiscordIcon from "./logos/Discord";
+
+
 const useStyles = makeStyles((darkMode) => ({
   list: {
     width: 250,
@@ -151,7 +153,7 @@ function NavBarMobile() {
           </IconButton>
           {links.map(
             (text, index) => (
-              <Box>
+              <Box key={ text }>
                 <ListItem
                   component={Button}
                   className={classes.navChoices}
@@ -211,7 +213,7 @@ function NavBarMobile() {
           </Button>
         </Typography>
         {["right"].map((anchor) => (
-          <Box>
+          <Box key={ anchor }>
             <Button onClick={toggleDrawer(anchor, true)}>
               <MenuIcon />
             </Button>
@@ -309,7 +311,7 @@ function NavBarDesktop() {
             >
               {/* <img src={RedditIconLight} className={classes.navIcon} /> */}
               <RedditIcon
-                style={{ height: "29px", width: "29px", color: "#E0E0E0" }}
+                style={{ height: "29px", width: "29px", fill: "#E0E0E0" }}
               />
             </Button>
             <Button
@@ -318,13 +320,14 @@ function NavBarDesktop() {
               target="_blank"
             >
               {/* <img src={TwitterIconLight} className={classes.navIcon} /> */}
-              <TwitterIcon style={{ height: "29px", width: "29px", color: "#E0E0E0" }}
+              <TwitterIcon style={{ height: "29px", width: "29px", fill: "#E0E0E0" }}
               />
             </Button>
             <Button className={classes.socialIcon}
                     href="https://discord.com/invite/GT8MhA6"
                     target="_blank">
-              <img src={DiscordIconLight} className={classes.navIcon} style={{ height: "29px", width: "29px"}} />
+              <DiscordIcon style={{ height: "29px", width: "29px", fill: "#E0E0E0" }}
+              />
             </Button>
           </Box>
         )}
