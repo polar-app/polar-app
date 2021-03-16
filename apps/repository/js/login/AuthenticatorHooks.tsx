@@ -274,12 +274,16 @@ export function useTriggerVerifyTokenAuth() {
 
         Analytics.event2('auth:VerifyTokenAuth');
 
+        interface IVerifyTokenAuthResponseError {
+            readonly code: 'no-email-for-challenge' | 'invalid-challenge' ;
+        }
+
         interface IVerifyTokenAuthResponse {
 
             /**
              * The code / error.
              */
-            readonly code: 'ok';
+            readonly code: 'ok' ;
 
             /**
              * A generated custom token on the backend.
