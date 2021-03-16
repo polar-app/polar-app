@@ -16,16 +16,15 @@ import { useBreakpoint } from "gatsby-plugin-breakpoints";
 const useStyles = makeStyles({
   articleCard: {
     display: "flex",
+    height: "100%",
     flexDirection: "column",
     justifyContent: "flex-start",
     backgroundColor: "#606060",
     // margin: "40px 14px",
     transform: "scale(1)",
     transition: "box-shadow .2s, border .2s",
-
-    height: "500px",
-
-    borderRadius: "4px",
+    borderRadius: "6px",
+    overflow: "hidden",
     // "&:hover": {
     //   boxShadow: " 4px 2px 40px 3px #424242",
     //
@@ -41,7 +40,10 @@ const useStyles = makeStyles({
     backgroundColor: "#606060",
     width: "100%",
     flexGrow: 3,
-    padding: "10px",
+    padding: "18px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
     // alignSelf: "left",
     // height: "50%",
     // height: "50%",
@@ -50,23 +52,36 @@ const useStyles = makeStyles({
     // minHeight: "200px",
   },
 
+  gridContainer: {
+    display: "grid",
+    gap: "30px",
+    gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+    "& > :first-child": {
+      gridColumn: "1 / span 2"
+    }
+  },
+
+  articleHeading: {
+    margin: "12px 0 0 0",
+    "&:hover": {
+      textDecoration: "underline",
+    }
+  },
+  articleDate: {
+    margin: "26px 0 0 0",
+    fontSize: "14px",
+  },
+
   singleColCard: {
     flexBasis: "30%",
-    maxHeight: "500px",
     margin: "12px 0px",
-    // overflow: "hidden",
   },
   doubleColCard: {
-    maxHeight: "500px",
-    // overflow: "hidden",
-
     flexBasis: "63%",
     margin: "12px 0px",
   },
 
   tripleColCard: {
-    maxHeight: "500px",
-    // overflow: "hidden",
 
     flexBasis: "97%",
     margin: "12px 0px",
@@ -170,9 +185,7 @@ function BlogHeadMobile({ posts }) {
                            key={node.fields.slug}>
 
                   <h4 style={{ marginBottom: "0" }}>
-                    <Link color="inherit" href={node.fields.slug}>
-                      {title}
-                    </Link>
+                    {title}
                   </h4>
                   <p style={{ paddingBottom: "5px" }}>{date}</p>
                   {!noImage && (
@@ -211,14 +224,6 @@ function BlogHeadMobile({ posts }) {
 function BlogHeadDesktop({ posts }) {
   const breakpoints = useBreakpoint();
   const classes = useStyles();
-  var colLayoutPicker = -1;
-  const numCols = [
-    classes.singleColCard,
-    classes.singleColCard,
-    classes.singleColCard,
-    classes.singleColCard,
-    classes.doubleColCard,
-  ];
   function defaultPostImage(num) {
     // console.log("-----------" + (num % 2));
     if (num % 2 === 0) {
@@ -265,62 +270,38 @@ function BlogHeadDesktop({ posts }) {
         {/*</Box>*/}
       </Box>
       <Box
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "space-around",
-        }}
+        className={ classes.gridContainer }
       >
-        {posts.map(({ node }) => {
+        {posts.map(({ node }, i: number) => {
           const title = node.frontmatter.title || node.fields.slug;
           const date = node.frontmatter.date;
           const image = node.frontmatter.large_image;
           const noImage = image === null;
-          var colLayout = numCols[colLayoutPicker % 5];
 
-          colLayoutPicker++;
           return (
-            <React.Fragment>
-              <Box
-                className={
-                  colLayoutPicker === 0 ? classes.doubleColCard : colLayout
-                }
-              >
+            <React.Fragment key={node.fields.slug}>
+              <Box>
                 <a
                   style={{ textDecoration: "none", color: "#fff" }}
                   href={node.fields.slug}
                 >
                   <Box className={classes.articleCard} key={title}>
-                    <Box style={{ overflow: "hidden", maxHeight: "391px" }}>
+                    <Box style={{ height: "350px" }}>
                       <img
-                        style={{ objectFit: "cover", width: "100%" }}
+                        style={{ objectFit: "cover", height: "100%", minWidth: "100%" }}
                         src={
                           noImage
-                            ? defaultPostImage(colLayoutPicker - 1)
+                            ? defaultPostImage(i)
                             : image
                         }
                       />
                     </Box>
 
                     <Box className={classes.articleInfo}>
-                      <h4
-                        style={{
-                          margin: "0 0 auto 0",
-                        }}
-                      >
-                        <Link
-                          className={
-                            breakpoints.tab
-                              ? classes.titleMobile
-                              : classes.title
-                          }
-                          color="inherit"
-                          href={node.fields.slug}
-                        >
-                          {title}
-                        </Link>
+                      <h4 className={`${classes.articleHeading} ${breakpoints.tab ? classes.titleMobile : classes.title}`}>
+                        {title}
                       </h4>
-                      <p style={{}}>
+                      <p className={classes.articleDate}>
                         {date}
                       </p>
                     </Box>
@@ -345,7 +326,6 @@ function BlogHeadDesktop({ posts }) {
 
 export default function BlogHead({ posts }) {
   const breakpoints = useBreakpoint();
-  const classes = useStyles();
 
   return (
     <React.Fragment>

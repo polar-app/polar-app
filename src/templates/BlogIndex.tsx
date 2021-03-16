@@ -102,6 +102,11 @@ const useStyles = makeStyles({
     //   borderBottom: "10px solid #816DE8",
     // },
   },
+  articleBlobHeading: {
+    margin: 0,
+    fontSize: "24px",
+    "&:hover": { textDecoration: "underline" },
+  },
   excerpt: {
     marginLeft: "5%",
     borderLeft: "3px solid #816DE8",
@@ -201,17 +206,11 @@ const BlogIndex = ({ data, pageContext }: PageProps<Data, pageContextType>) => {
                             disableGutters
                             key={node.fields.slug}
                           >
-                            <Box
-                              style={{
-                                fontSize: "24px",
-                                color: "#FFFFFF",
-                                margin: "0px",
-                              }}
+                            <h4
+                              className={ classes.articleBlobHeading }
                             >
-                              <Link color="inherit" href={node.fields.slug}>
-                                {title}
-                              </Link>
-                            </Box>
+                              {title}
+                            </h4>
                             <p style={{ paddingBottom: "5px" }}>{date}</p>
                             {!noImage && (
                               // <Container disableGutters>
@@ -323,7 +322,7 @@ export const pageQuery = graphql`
           excerpt(pruneLength: 300)
           frontmatter {
             title
-            date(formatString: "MM-DD-YYYY")
+            date(formatString: "MMM DD, YYYY")
             large_image
             editorsChoice
           }
