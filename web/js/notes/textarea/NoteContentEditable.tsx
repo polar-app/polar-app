@@ -209,6 +209,12 @@ export const NoteContentEditable = observer((props: IProps) => {
 
             case 'ArrowUp':
 
+                if (event.ctrlKey || event.metaKey) {
+                    store.collapse(props.id)
+                    abortEvent();
+                    break;
+                }
+
                 if (event.shiftKey && ! ContentEditables.selectionAtStart(divRef.current)) {
                     if (! store.hasSelected()) {
                         // don't handle shift until we allow the range to be selected.
@@ -221,6 +227,12 @@ export const NoteContentEditable = observer((props: IProps) => {
                 break;
 
             case 'ArrowDown':
+
+                if (event.ctrlKey || event.metaKey) {
+                    store.expand(props.id);
+                    abortEvent();
+                    break;
+                }
 
                 if (event.shiftKey && ! ContentEditables.selectionAtEnd(divRef.current)) {
                     if (! store.hasSelected()) {
