@@ -6,7 +6,9 @@ interface IProps {
     readonly children: React.ReactNode;
     readonly style?: React.CSSProperties;
     readonly className?: string;
-    readonly onClick?: () => void;
+    readonly onClick?: (event: React.MouseEvent) => void;
+    readonly onMouseDown?: (event: React.MouseEvent) => void;
+    readonly onMouseUp?: (event: React.MouseEvent) => void;
 }
 
 

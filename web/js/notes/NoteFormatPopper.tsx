@@ -34,6 +34,7 @@ export const NoteFormatPopper = React.memo((props: IProps) => {
 
         const range = window.getSelection()!.getRangeAt(0);
 
+        // range.collaopsed doesn't always work...
         if (range.collapsed) {
 
             if (position) {

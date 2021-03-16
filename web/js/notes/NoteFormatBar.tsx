@@ -14,6 +14,7 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import CheckIcon from '@material-ui/icons/Check';
+import { URLStr } from 'polar-shared/src/util/Strings';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme) =>
 interface FormatButtonProps {
 
     readonly children: JSX.Element;
-    readonly onClick?: () => void;
+    readonly onClick?: (event: React.MouseEvent) => void;
 
 }
 
@@ -47,13 +48,21 @@ const FormatButton = (props: FormatButtonProps) => {
         event.preventDefault();
         event.stopPropagation();
         if (props.onClick) {
-            props.onClick();
+            props.onClick(event);
         }
     }, [props]);
+
+    const abortEvent = React.useCallback((event: React.MouseEvent) => {
+        event.stopPropagation();
+        event.preventDefault();
+    }, []);
+
 
     return (
         <IconButton size="small"
                     className={classes.button}
+                    onMouseDown={abortEvent}
+                    onMouseUp={abortEvent}
                     onClick={handleClick}>
             {props.children}
         </IconButton>
@@ -63,14 +72,15 @@ const FormatButton = (props: FormatButtonProps) => {
 
 interface LinkBarProps {
     readonly onDispose?: () => void;
+    readonly onLink?: (url: URLStr) => void;
 }
 
 const LinkBar = (props: LinkBarProps) => {
 
-    const ref = React.useRef("");
+    const valueRef = React.useRef("");
 
     const handleChange = React.useCallback((event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-        ref.current = event.currentTarget.value;
+        valueRef.current = event.currentTarget.value;
         event.stopPropagation();
         event.preventDefault();
     }, []);
@@ -79,10 +89,26 @@ const LinkBar = (props: LinkBarProps) => {
         event.stopPropagation();
     }, []);
 
+    const handleCreateLink = React.useCallback(() => {
+
+        if (! valueRef.current.startsWith('http:') && ! valueRef.current.startsWith('https:')) {
+            return;
+        }
+
+        if (props.onLink) {
+            props.onLink(valueRef.current);
+        }
+
+        if (props.onDispose) {
+            props.onDispose();
+        }
+
+    }, [props]);
+
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
         if (event.key === 'Enter') {
-            // noop for now
+            handleCreateLink();
         }
 
         if (event.key === 'Escape') {
@@ -94,7 +120,7 @@ const LinkBar = (props: LinkBarProps) => {
 
         event.stopPropagation();
 
-    }, [props]);
+    }, [handleCreateLink, props]);
 
     const handleClick = React.useCallback((event: React.MouseEvent) => {
         event.stopPropagation();
@@ -124,7 +150,7 @@ const LinkBar = (props: LinkBarProps) => {
                        onMouseUp={handleClick}
                        onChange={event => handleChange(event)}/>
 
-            <FormatButton>
+            <FormatButton onClick={handleCreateLink}>
                 <CheckIcon style={{color: 'green'}}/>
             </FormatButton>
 
@@ -132,7 +158,21 @@ const LinkBar = (props: LinkBarProps) => {
     );
 }
 
-const NoteFormatBarInner = (props: NoteFormatBarProps) => {
+interface NoteFormatBarInnerProps {
+
+    readonly onBold?: () => void;
+    readonly onItalic?: () => void;
+    readonly onQuote?: () => void;
+    readonly onUnderline?: () => void;
+    readonly onStrikethrough?: () => void;
+    readonly onSubscript?: () => void;
+    readonly onSuperscript?: () => void;
+    readonly onLink?: (event: React.MouseEvent) => void;
+    readonly onDispose?: () => void;
+
+}
+
+const NoteFormatBarInner = (props: NoteFormatBarInnerProps) => {
 
     const classes = useStyles();
 
@@ -183,7 +223,7 @@ export interface NoteFormatBarProps {
     readonly onStrikethrough?: () => void;
     readonly onSubscript?: () => void;
     readonly onSuperscript?: () => void;
-    readonly onLink?: () => void;
+    readonly onLink?: (url: URLStr) => void;
 
     /**
      * Called when the bar should be removed/disposed.
@@ -198,16 +238,32 @@ export const NoteFormatBar = React.memo((props: NoteFormatBarProps) => {
 
     const [mode, setMode] = React.useState<'link' | 'format'>('format');
 
+    const changeToLinkMode = React.useCallback((event: React.MouseEvent) => {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        // FIXME: as soon as I setMode here, we lose the region...
+        setMode('link')
+
+    }, []);
+
+    const handleMouseEvent = React.useCallback((event: React.MouseEvent) => {
+        event.preventDefault();
+        event.stopPropagation();
+    }, []);
+
     return (
         <Paper className={classes.root}>
-            <MUIButtonBar>
+            <MUIButtonBar onMouseDown={handleMouseEvent}
+                          onMouseUp={handleMouseEvent}>
 
                 {mode === 'format' && (
-                    <NoteFormatBarInner {...props} onLink={() => setMode('link')}/>
+                    <NoteFormatBarInner {...props} onLink={changeToLinkMode}/>
                 )}
 
                 {mode === 'link' && (
-                    <LinkBar onDispose={props.onDispose}/>
+                    <LinkBar onDispose={props.onDispose} onLink={props.onLink}/>
                 )}
 
             </MUIButtonBar>

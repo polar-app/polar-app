@@ -270,13 +270,19 @@ export const NoteAction = observer((props: IProps) => {
                             span.setAttribute('class', className);
                             // span.setAttribute('contenteditable', 'false');
                             span.setAttribute('style', `padding-left: 3px; padding-right: 3px; font-face: fixed; color: ${theme.palette.text.hint};`);
-                            span.textContent = text;
+
+                            const textNode = document.createTextNode(text);
+                            span.appendChild(textNode);
                             return span;
                         }
 
                         function createInputSpan() {
                             const span = document.createElement('span');
                             span.setAttribute('class', 'action-input');
+
+                            const textNode = document.createTextNode('');
+                            span.appendChild(textNode);
+
                             return span;
                         }
 
@@ -297,8 +303,8 @@ export const NoteAction = observer((props: IProps) => {
                         wrapRange.insertNode(actionLeft);
 
                         // FIXME: this isn't working to set the default text...
-                        range.setStart(actionInput, 0);
-                        range.setEnd(actionInput, 0);
+                        range.setStart(actionInput.firstChild!, 0);
+                        range.setEnd(actionInput.firstChild!, 0);
 
                         function createPositionRange() {
                             const range = document.createRange();

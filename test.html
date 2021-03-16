@@ -7,27 +7,30 @@
 </head>
 <body>
 
-<div id="content" contenteditable="true">
-    this is <b>the</b> content
-</div>
+<style>
 
-<script>
-
-    function test() {
-        const div = document.getElementById('content');
-
-        div.focus();
-        console.log("FIXME: ", div.selectionStart);
-        console.log("FIXME: ", div.selectionEnd);
-
-
-        // 719-243-6431
+    .note-edit::before {
+        content: '[['
     }
 
+    .note-edit::after {
+        content: ']]'
+    }
 
-</script>
+</style>
 
-<button onclick="test('end')">test</button>
+<div id="content" contenteditable="true">
+    this is <b>the</b> content <span class="note-edit">&nbsp;&nbsp;</span>
+</div>
+
+<br/>
+<br/>
+<br/>
+
+<div id="content2" contenteditable="true">
+    this is <b>the</b> content <span contenteditable="false">[[</span> <span contenteditable="false">]]</span>
+</div>
+
 
 </body>
 </html>
