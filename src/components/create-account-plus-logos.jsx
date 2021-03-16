@@ -22,7 +22,6 @@ var useStyles = core_1.makeStyles(function (theme) {
             marginRight: 'auto',
             paddingLeft: "3%",
             paddingRight: "3%",
-            height: '40vh',
             marginBottom: '85px'
         },
         background: {},
@@ -49,7 +48,7 @@ var AccountWLogos = function (_a) {
 
         <CreateAccountButton_1.CreateAccountButton />
 
-        
+
           <h2 className={classes.h2}>
             Available On
           </h2>
@@ -57,7 +56,7 @@ var AccountWLogos = function (_a) {
             <img src={ImgLogoBar} style={{ marginBottom: "3%" }}/>
           </core_1.Box>
 
-        
+
       </core_1.Box>
     </core_1.Box>);
 };
