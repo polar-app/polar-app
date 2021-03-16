@@ -244,7 +244,7 @@ const BlogIndex = ({ data, pageContext }: PageProps<Data, pageContextType>) => {
                   alignItems: "center",
                   listStyle: "none",
                   padding: 0,
-                  margin: "8% 5% 2% 5%",
+                  margin: "8% 5% 5% 5%",
                   color: "#FFFFFF",
                 }}
               >
