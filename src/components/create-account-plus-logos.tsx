@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme) =>
       marginRight: 'auto',
       paddingLeft: "3%",
       paddingRight: "3%",
-      height: '40vh',
       marginBottom: '85px'
     },
 

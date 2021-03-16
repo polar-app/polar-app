@@ -303,38 +303,28 @@ const Landing = ({}) => {
                   <ColorBackground8 style={{
                                         marginTop: '50px',
                                         marginBottom: '50px',
-                                        position: 'relative'
+                                        boxSizing: 'border-box',
+                                        padding: 0,
                                     }}>
 
-                      <>
-
-                          <DarkModeDark  className={classes.centerImage}
-                                          style={{
-                                              visibility: 'hidden',
-                                          }}/>
-
+                      <div style={{ margin: '6vh 3vw', position: 'relative', paddingTop: "15%" }}>
+                          <DarkModeLight style={{
+                                            width: '80%',
+                                            zIndex: 1,
+                                            borderRadius: '10px',
+                                            boxShadow: '0px 0px 10px 5px rgb(50,50,50)',
+                                            top: 0,
+                                            right: 0,
+                                            position: 'absolute',
+                                         }}/>
                           <DarkModeDark style={{
                                             width: '80%',
-                                            position: 'absolute',
-                                            bottom: '5%',
-                                            left: '3%',
                                             zIndex: 2,
+                                            position: 'relative',
                                             borderRadius: '10px',
-                                            boxShadow: "0px 0px 10px 5px rgb(50,50,50)",
+                                            boxShadow: '0px 0px 10px 5px rgb(50,50,50)',
                                         }}/>
-
-                          <DarkModeLight style={{
-                                             width: '80%',
-                                             position: 'absolute',
-                                             bottom: '25%',
-                                             left: '17%',
-                                             zIndex: 1,
-                                             borderRadius: '10px',
-                                             boxShadow: "0px 0px 10px 5px rgb(50,50,50)",
-                                         }}/>
-
-
-                      </>
+                      </div>
 
                   </ColorBackground8>
 
