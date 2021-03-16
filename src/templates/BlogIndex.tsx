@@ -240,6 +240,7 @@ const BlogIndex = ({ data, pageContext }: PageProps<Data, pageContextType>) => {
               <ul
                 style={{
                   display: "flex",
+                  flexWrap: "wrap",
                   justifyContent: "center",
                   alignItems: "center",
                   listStyle: "none",
@@ -260,14 +261,14 @@ const BlogIndex = ({ data, pageContext }: PageProps<Data, pageContextType>) => {
                     href={prevPage}
                     rel="prev"
                   >
-                    <ArrowBack style={{ marginRight: "16px" }} /> PREV
+                    <ArrowBack style={{ marginRight: "8px" }} /> PREV
                   </Link>
-                ) : <div style={{ marginRight: "48px", width: "75px" }} />}
+                ) : <div style={{ marginRight: "38px" }} />}
                 {Array.from({ length: numBlogPages }, (_, i) => (
                   <li
                     key={`pagination-number${i + 1}`}
                     style={{
-                      margin: "0 6px",
+                      margin: "6px",
                     }}
                   >
                     <Link
@@ -277,6 +278,7 @@ const BlogIndex = ({ data, pageContext }: PageProps<Data, pageContextType>) => {
                       style={{
                         background:
                           pageNumberGen(i) === currentPage ? "#6754D6" : "",
+                        display: "block",
                         textDecoration: "none",
                         color: "inherit",
                         padding: "10px",
@@ -298,9 +300,9 @@ const BlogIndex = ({ data, pageContext }: PageProps<Data, pageContextType>) => {
                     href={nextPage}
                     rel="next"
                   >
-                    NEXT <ArrowForward style={{ marginLeft: "16px" }} />
+                    NEXT <ArrowForward style={{ marginLeft: "8px" }} />
                   </Link>
-                ) : <div style={{ marginLeft: "48px", width: "75px" }} />}
+                ) : <div style={{ marginLeft: "38px" }} />}
               </ul>
             </Box>
           </Container>
