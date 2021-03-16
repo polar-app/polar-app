@@ -7,6 +7,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../gatsby-theme-material-ui-top-layout/docsTheme";
 import { makeStyles } from "@material-ui/styles";
 import BlogHead from "../components/BlogHead";
+import { ArrowForward, ArrowBack } from "@material-ui/icons";
 
 const NUM_HEADER_CARDS = 6;
 
@@ -239,34 +240,34 @@ const BlogIndex = ({ data, pageContext }: PageProps<Data, pageContextType>) => {
               <ul
                 style={{
                   display: "flex",
-                  flexWrap: "wrap",
-                  justifyContent: "space-between",
+                  justifyContent: "center",
                   alignItems: "center",
                   listStyle: "none",
                   padding: 0,
-
                   margin: "8% 5% 2% 5%",
                   color: "#FFFFFF",
                 }}
               >
-                {!isFirst && (
+                {!isFirst ? (
                   <Link
                     style={{
                       textDecoration: "none",
                       color: "inherit",
+                      marginRight: "48px",
+                      display: "flex",
+                      alignItems: "center",
                     }}
                     href={prevPage}
                     rel="prev"
                   >
-                    ← Previous Page
+                    <ArrowBack style={{ marginRight: "16px" }} /> PREV
                   </Link>
-                )}
+                ) : <div style={{ marginRight: "48px", width: "75px" }} />}
                 {Array.from({ length: numBlogPages }, (_, i) => (
                   <li
                     key={`pagination-number${i + 1}`}
                     style={{
-                      margin: 0,
-                      // display: "none",
+                      margin: "0 6px",
                     }}
                   >
                     <Link
@@ -275,28 +276,31 @@ const BlogIndex = ({ data, pageContext }: PageProps<Data, pageContextType>) => {
                       }`}
                       style={{
                         background:
-                          pageNumberGen(i) === currentPage ? "#816DE8" : "",
+                          pageNumberGen(i) === currentPage ? "#6754D6" : "",
                         textDecoration: "none",
                         color: "inherit",
-                        padding: "6px",
+                        padding: "10px",
                       }}
                     >
                       {`${pageNumberGen(i)}`}
                     </Link>
                   </li>
                 ))}
-                {!isLast && (
+                {!isLast ? (
                   <Link
                     style={{
                       textDecoration: "none",
                       color: "inherit",
+                      marginLeft: "48px",
+                      display: "flex",
+                      alignItems: "center"
                     }}
                     href={nextPage}
                     rel="next"
                   >
-                    Next Page →
+                    NEXT <ArrowForward style={{ marginLeft: "16px" }} />
                   </Link>
-                )}
+                ) : <div style={{ marginLeft: "48px", width: "75px" }} />}
               </ul>
             </Box>
           </Container>
