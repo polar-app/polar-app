@@ -8,6 +8,8 @@ import { Typography, Container, ThemeProvider } from "@material-ui/core";
 import { Box, CssBaseline } from "@material-ui/core";
 import theme from "../gatsby-theme-material-ui-top-layout/docsTheme";
 import {CreateAccountButton} from "../components/CreateAccountButton";
+import { makeStyles } from "@material-ui/styles";
+import { ArrowBack, ArrowForward } from "@material-ui/icons";
 
 type Node = {
   frontmatter: {
@@ -37,8 +39,22 @@ type pageContext = {
   next: Node;
 };
 
+const useStyles = makeStyles({
+  blogContent: {
+    "& h1": {
+      fontSize: "46px",
+      lineHeight: "69px",
+    },
+    "& h2": {
+      fontSize: "30px",
+      margin: "50px 0"
+    }
+  }
+});
+
 const BlogPostTemplate = ({data, pageContext,}: PageProps<Data, pageContext>) => {
   const post = data.markdownRemark;
+  const classes = useStyles();
 
   const { previous, next } = pageContext;
 
@@ -46,13 +62,7 @@ const BlogPostTemplate = ({data, pageContext,}: PageProps<Data, pageContext>) =>
 
   return (
     <ThemeProvider theme={theme}>
-      <Box
-        style={{
-          background:
-            "conic-gradient(from 223deg at 00% 100%, rgba(255, 255, 255, 0) 0deg, rgba(116, 116, 116, 0.948419) 67.5deg, #313131 212.7deg, rgba(255, 255, 255, 0) 360deg), #424242",
-          mixBlendMode: "normal",
-        }}
-      >
+      <Box>
         <Layout>
           <CssBaseline />
 
@@ -68,9 +78,10 @@ const BlogPostTemplate = ({data, pageContext,}: PageProps<Data, pageContext>) =>
                          marginTop: '2rem'
                      }}>
 
-            <section dangerouslySetInnerHTML={{ __html: post.html }} />
+            <section className={ classes.blogContent } dangerouslySetInnerHTML={{ __html: post.html }} />
 
-            <h5>Posted on: {date}</h5>
+            <i>Posted on: {date}</i>
+            <Bio />
             <nav>
               <ul
                 style={{
@@ -84,8 +95,8 @@ const BlogPostTemplate = ({data, pageContext,}: PageProps<Data, pageContext>) =>
                 <Typography variant="button">
                   <li>
                     {previous && (
-                      <Link to={previous.fields.slug} rel="prev">
-                        {/* ← {previous.frontmatter.title} */}← Previous article
+                      <Link to={previous.fields.slug} rel="prev" style={{ display: "flex", alignItems: "center", color: "white" }}>
+                        <ArrowBack /> Previous article
                       </Link>
                     )}
                   </li>
@@ -93,9 +104,9 @@ const BlogPostTemplate = ({data, pageContext,}: PageProps<Data, pageContext>) =>
                 <Typography variant="button">
                   <li>
                     {next && (
-                      <Link to={next.fields.slug} rel="next">
+                      <Link to={next.fields.slug} rel="next" style={{ display: "flex", alignItems: "center", color: "white" }}>
                         {/* {next.frontmatter.title} → */}
-                        Next article →
+                        Next article <ArrowForward />
                       </Link>
                     )}
                   </li>
@@ -103,26 +114,17 @@ const BlogPostTemplate = ({data, pageContext,}: PageProps<Data, pageContext>) =>
               </ul>
             </nav>
             <footer>
-
                 <hr/>
-
                 <div style={{
                          textAlign: 'center',
                          marginTop: '50px',
                          marginBottom: '50px'
                      }}>
-
                     <h1>
                         Organize your reading. Read to Remember.
                     </h1>
-
                     <CreateAccountButton/>
-
                 </div>
-
-                <hr/>
-
-              <Bio />
             </footer>
           </Container>
         </Layout>
@@ -146,7 +148,7 @@ export const pageQuery = graphql`
       excerpt(pruneLength: 160)
       frontmatter {
         title
-        date(formatString: "YYYY-MM-DD")
+        date(formatString: "MMM DD, YYYY")
         large_image
       }
       fields {

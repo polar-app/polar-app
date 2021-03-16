@@ -35,9 +35,10 @@ const Bio = () => {
     <div>
       <div
         style={{
-          display: `flex`,
           marginBottom: "3%",
           marginTop: "3%",
+          display: "flex",
+          alignItems: "center" ,
         }}
       >
         <img
@@ -51,14 +52,17 @@ const Bio = () => {
             borderRadius: `500%`,
           }}
         />
-        <p style={{ marginLeft: "8px", marginTop: "0px" }}>
-          Written by <strong>{author.name}</strong> {author.summary}
-          {` `}
-          <a
-            href={`https://twitter.com/${social.twitter}`}
-          >
-            You should follow us on Twitter
-          </a>
+        <p style={{ marginLeft: "16px" }}>
+          <div>Written by <strong>{author.name}</strong></div>
+          <div>
+            {author.summary}
+            &nbsp;
+            <a
+              href={`https://twitter.com/${social.twitter}`}
+            >
+              Follow us on Twitter
+            </a>
+          </div>
         </p>
       </div>
     </div>
