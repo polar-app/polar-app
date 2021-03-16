@@ -13,10 +13,9 @@
 
 - Follow the following instructions
 
-```bash
+- login to bytesafe and then use npm login with your credentials.
 
-# setup NPM registry to use our cutsom registry.
-cp .npmrc.bytesafe ${HOME}/.npmrc 
+```bash
 
 # pull down all repositories locally
 ./sbin/init
