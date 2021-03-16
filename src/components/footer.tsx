@@ -9,7 +9,7 @@ import RedditIcon from "@material-ui/icons/Reddit";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import {ThirdPartyEmbeds} from "./ThirdPartyEmbeds";
 import useTheme from "@material-ui/styles/useTheme";
-const DiscordIconDark = require("../../content/assets/logos/discord-dark.png");
+import DiscordIcon from "./logos/Discord";
 
 require("typeface-roboto");
 
@@ -34,10 +34,6 @@ const useStyles = makeStyles((darkMode) => ({
     textAlign: "center",
   },
 
-  socialIcon: {
-    minWidth: "28px",
-    color: "#424242",
-  },
   flexContainerCol: {
     display: "flex",
     flexDirection: "column",
@@ -52,17 +48,18 @@ const useStyles = makeStyles((darkMode) => ({
     // width: "65%",
     minWidth: "469.55px",
   },
-
-  socialIconTab: {
-    height: "40px",
-    width: "40px",
-    color: "#424242",
+  socialIcon: {
+    height: "29px",
+    width: "29px",
+    fill: "#D1D1D1",
+  },
+  socialIconOuter: {
+    minWidth: "auto",
   },
   socialIconMobile: {
-    marginTop: "12px",
-    height: "40px",
-    width: "40px",
-    color: "#424242",
+    height: "29px",
+    width: "29px",
+    fill: "#D1D1D1",
   },
 }));
 
@@ -172,34 +169,33 @@ function FooterMobile() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              // flexBasis: "50%",
+              marginTop: 14
             }}
           >
-            <Button href="https://www.reddit.com/r/PolarBookshelf/">
+            <Button href="https://www.reddit.com/r/PolarBookshelf/" target="_blank">
               <RedditIcon
                 className={
                   breakpoints.ms
                     ? classes.socialIconMobile
-                    : classes.socialIconTab
+                    : classes.socialIcon
                 }
               />
             </Button>
-            <Button href="https://twitter.com/getpolarized">
+            <Button href="https://twitter.com/getpolarized" target="_blank">
               <TwitterIcon
                 className={
                   breakpoints.ms
                     ? classes.socialIconMobile
-                    : classes.socialIconTab
+                    : classes.socialIcon
                 }
               />
             </Button>
-            <Button href="https://discord.com/invite/GT8MhA6">
-              <img
-                src={DiscordIconDark}
+            <Button href="https://discord.com/invite/GT8MhA6" target="_blank">
+              <DiscordIcon
                 className={
                   breakpoints.ms
                     ? classes.socialIconMobile
-                    : classes.socialIconTab
+                    : classes.socialIcon
                 }
               />
             </Button>
@@ -264,28 +260,27 @@ function FooterDesktop() {
 
             <Box style={{ marginRight: 30 }}>
               <Button
-                className={classes.socialIcon}
                 href="https://www.reddit.com/r/PolarBookshelf/"
+                target="_blank"
               >
                 <RedditIcon
-                  style={{ height: "29px", width: "29px", color: "#424242" }}
+                  className={classes.socialIcon}
                 />
               </Button>
               <Button
-                className={classes.socialIcon}
                 href="https://twitter.com/getpolarized"
+                target="_blank"
               >
                 <TwitterIcon
-                  style={{ height: "29px", width: "29px", color: "#424242" }}
+                  className={classes.socialIcon}
                 />
               </Button>
               <Button
-                className={classes.socialIcon}
                 href="https://discord.com/invite/GT8MhA6"
+                target="_blank"
               >
-                <img
-                  src={DiscordIconDark}
-                  style={{ marginTop: "5%", height: "31px", width: "32px" }}
+                <DiscordIcon
+                  className={classes.socialIcon}
                 />
               </Button>
             </Box>
