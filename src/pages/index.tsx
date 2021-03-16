@@ -129,7 +129,7 @@ const Landing = ({}) => {
 
                   <h1>
                       Your brain's capacity <br/>
-                      <span style={{color: '#B94939'}}>coupled with AI</span>
+                      <span style={{color: '#E47E4C'}}>coupled with AI</span>
                   </h1>
 
                   <h2>
@@ -152,7 +152,7 @@ const Landing = ({}) => {
               <div className={classes.centerSection + ' ' + classes.sectionEven}>
 
                   <h1>
-                      Your Knowledge and <span style={{color: '#D7AC75'}}>Brain - Organized</span>
+                      Your Knowledge and <span style={{color: '#8E22D2'}}>Brain - Organized</span>
                   </h1>
 
                   <h2>
@@ -177,7 +177,7 @@ const Landing = ({}) => {
               <div className={classes.centerSection + ' ' + classes.sectionEven}>
 
                   <h1>
-                      This is <span style={{color: '#76CDC8'}}>reading on steroids</span>
+                      This is <span style={{color: '#0B9D93'}}>reading on steroids</span>
                   </h1>
 
                   <h2>
@@ -207,7 +207,7 @@ const Landing = ({}) => {
               <div className={classes.centerSection + ' ' + classes.sectionEven}>
 
                   <h1>
-                      <span style={{color: '#ECA091'}}>Web content</span> <br/> captured in one click
+                      <span style={{color: '#CC2834'}}>Web content</span> <br/> captured in one click
                   </h1>
 
                   <h2>
@@ -228,7 +228,7 @@ const Landing = ({}) => {
 
 
                   <h1>
-                      <span style={{color: '#6BD0AA'}}>Remember forever</span> <br/> what's important.
+                      <span style={{color: '#1CBC8A'}}>Remember forever</span> <br/> what's important.
                   </h1>
 
                   <h2>
@@ -246,7 +246,7 @@ const Landing = ({}) => {
               <div className={classes.centerSection + ' ' + classes.sectionOdd}>
 
                   <h1>
-                      Sync Your <br/> <span style={{color: '#61BBC6'}}>Flashcards To Anki</span>
+                      Sync Your <br/> <span style={{color: '#FF5366'}}>Flashcards To Anki</span>
                   </h1>
 
                   <h2>Use your favorite open-source flashcard tool along with
@@ -264,7 +264,7 @@ const Landing = ({}) => {
 
               <div className={classes.centerSection + ' ' + classes.sectionEven}>
 
-                  <h1><span style={{color: '#B4504D'}}>Motivation</span> built-in</h1>
+                  <h1><span style={{color: '#1F31AB'}}>Motivation</span> built-in</h1>
 
                   <h2>
                       Track your progress automatically.  Commit to a daily
@@ -286,7 +286,7 @@ const Landing = ({}) => {
               <div className={classes.centerSection + ' ' + classes.sectionEven}>
 
                   <h1>
-                      <span style={{color: '#7CB3E9'}}>Light</span> or <span style={{color: '#25559F'}}>Dark</span> - you choose
+                      <span style={{color: '#F1587C'}}>Light</span> or <span style={{color: '#AF1D3F'}}>Dark</span> - you choose
                   </h1>
 
                   <h2>
