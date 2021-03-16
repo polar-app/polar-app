@@ -141,6 +141,8 @@ interface PlanBoxProps {
   readonly maxDevices: number | 'unlimited';
   readonly support: boolean;
   readonly relatedTags: boolean;
+  readonly autoFlashcards: number;
+  readonly personalOnboarding: boolean;
 }
 
 const PlanBox = (props: PlanBoxProps) => {
@@ -185,10 +187,22 @@ const PlanBox = (props: PlanBoxProps) => {
                 {props.maxDevices}
               </td>
             </tr>
-
             <CheckRow name="Priority Support" checked={props.support}/>
             <CheckRow name="Related Tags" checked={props.relatedTags}/>
+            <tr className={classes.row}>
+              <td className={classes.rowHeadMobile}>
+                Auto-create flashcards (using GPT-3)
+              </td>
+              <td>
+                {
+                  props.autoFlashcards > 0
+                    ? `${props.autoFlashcards} / ${props.interval}`
+                    : <FATimesCircleIcon className={classes.checkCircle} />
+                }
+              </td>
+            </tr>
 
+            <CheckRow name="Personal onboarding by Polar team" checked={props.personalOnboarding}/>
           </table>
         </Box>
       </Paper>
@@ -222,7 +236,9 @@ export const PricingContentForMobile = () => {
                maxCapturedWebDocuments={250}
                maxDevices={2}
                support={false}
-               relatedTags={false}/>
+               relatedTags={false}
+               autoFlashcards={0}
+               personalOnboarding={false} />
 
       <PlanBox name="Plus"
                plan={V2PlanPlus}
@@ -232,7 +248,9 @@ export const PricingContentForMobile = () => {
                maxCapturedWebDocuments="unlimited"
                maxDevices="unlimited"
                support={true}
-               relatedTags={true}/>
+               relatedTags={true}
+               autoFlashcards={100}
+               personalOnboarding={true} />
 
       <PlanBox name="Pro"
                plan={V2PlanPro}
@@ -242,7 +260,9 @@ export const PricingContentForMobile = () => {
                maxCapturedWebDocuments="unlimited"
                maxDevices="unlimited"
                support={true}
-               relatedTags={true}/>
+               relatedTags={true}
+               autoFlashcards={250}
+               personalOnboarding={true} />
 
     </Box>
   );
