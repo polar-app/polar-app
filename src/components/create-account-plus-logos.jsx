@@ -24,7 +24,9 @@ var useStyles = core_1.makeStyles(function (theme) {
             paddingRight: "3%",
             marginBottom: '85px'
         },
-        background: {},
+        background: {
+            marginTop: '100px'
+        },
         h1: {
             fontSize: '3rem',
             textAlign: "center",
