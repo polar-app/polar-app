@@ -153,7 +153,38 @@ export const NoteAction = observer((props: IProps) => {
 
     }, []);
 
-    const reset = React.useCallback(() => {
+    const computeActionInputText = React.useCallback((): string => {
+
+        return (activePromptRef.current?.actionInput.textContent || '')
+            .replace(/^\[\[./, '')
+            .replace(/.\]\]$/, '');
+
+    }, []);
+
+    const createActionRangeForHandler = React.useCallback(() => {
+
+        function computeFrom() {
+            return {
+                node: activePromptRef.current!.actionInput,
+                offset: 0
+            };
+        }
+
+        function computeTo() {
+            return {
+                node: activePromptRef.current!.actionInput,
+                offset: (activePromptRef.current!.actionInput.textContent || '').length
+            }
+        }
+
+        const from = computeFrom();
+        const to = computeTo();
+
+        return {from, to};
+
+    }, []);
+
+    const doReset = React.useCallback(() => {
 
         if (activeRef.current) {
 
@@ -169,6 +200,32 @@ export const NoteAction = observer((props: IProps) => {
 
     }, [clearActivePrompt, actionStore])
 
+    const doComplete = React.useCallback(() => {
+
+        const prompt = computeActionInputText();
+
+        const {from, to} = createActionRangeForHandler()
+
+        actionExecutor(from, to, {
+            type: 'note-link',
+            target: prompt
+        });
+
+        doReset();
+
+    }, [actionExecutor, computeActionInputText, createActionRangeForHandler, doReset]);
+
+    const doCompleteOrReset = React.useCallback(() => {
+
+        const prompt = computeActionInputText();
+
+        if (prompt.length !== 0) {
+            doComplete();
+        } else {
+            doReset();
+        }
+
+    }, [computeActionInputText, doComplete, doReset]);
 
     const hasAborted = React.useCallback((event: React.KeyboardEvent): boolean => {
 
@@ -219,29 +276,6 @@ export const NoteAction = observer((props: IProps) => {
 
     }, []);
 
-    const createActionRangeForHandler = React.useCallback(() => {
-
-        function computeFrom() {
-            return {
-                node: activePromptRef.current!.actionInput,
-                offset: 0
-            };
-        }
-
-        function computeTo() {
-            return {
-                node: activePromptRef.current!.actionInput,
-                offset: (activePromptRef.current!.actionInput.textContent || '').length
-            }
-        }
-
-        const from = computeFrom();
-        const to = computeTo();
-
-        return {from, to};
-
-    }, []);
-
     const createActionHandler = React.useCallback(() => {
 
         return (id: IDStr) => {
@@ -252,11 +286,11 @@ export const NoteAction = observer((props: IProps) => {
 
             actionExecutor(from, to, actionOp);
 
-            reset();
+            doReset();
 
         }
 
-    }, [actionExecutor, createActionRangeForHandler, onAction, reset]);
+    }, [actionExecutor, createActionRangeForHandler, onAction, doReset]);
 
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -289,24 +323,19 @@ export const NoteAction = observer((props: IProps) => {
             const prompt = computeActionInputText();
 
             if (hasAborted(event)) {
-                reset();
+                doReset();
             }
 
             switch (event.key) {
+
                 case 'Escape':
-                    reset();
+                    doReset();
                     break;
 
                 case 'Enter':
-                    const {from, to} = createActionRangeForHandler()
-
-                    actionExecutor(from, to, {
-                        type: 'note-link',
-                        target: prompt
-                    });
-
-                    reset();
+                    doComplete();
                     break;
+
             }
 
             const items = computeItems(prompt);
@@ -436,12 +465,14 @@ export const NoteAction = observer((props: IProps) => {
 
         return activeRef.current;
 
-    }, [divRef, hasAborted, computeItems, actionStore, reset, createActionRangeForHandler, actionExecutor, trigger, createActionHandler, theme.palette.text.hint]);
+    }, [divRef, hasAborted, computeItems, actionStore, doReset, doComplete, trigger, createActionHandler, theme.palette.text.hint]);
 
 
     const handleClick = React.useCallback(() => {
-        reset();
-    }, [reset]);
+
+        doCompleteOrReset();
+
+    }, [doCompleteOrReset]);
 
     return (
         <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} onClick={handleClick}>
