@@ -54,7 +54,7 @@ export const ActionMenu = React.memo((props: IProps) => {
     const classes = useStyles();
     const {onAction, onClose, items} = props;
 
-    const [index, setIndex] = React.useState<number>(0);
+    const [index, setIndex] = React.useState<number | undefined>(undefined);
 
     const handleActionExecuted = React.useCallback((action: IActionMenuItem) => {
 

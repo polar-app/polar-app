@@ -123,7 +123,7 @@ export const NoteAction = observer((props: IProps) => {
 
     const {trigger, actionsProvider, onAction} = props;
 
-    const store = useActionMenuStore();
+    const actionStore = useActionMenuStore();
     const actionExecutor = useActionExecutor();
 
     // true when the current prompt is active and we're actively selecting or
@@ -167,11 +167,11 @@ export const NoteAction = observer((props: IProps) => {
 
         activePromptRef.current = undefined;
 
-        store.setState(undefined);
+        actionStore.setState(undefined);
 
         return false;
 
-    }, [clearActivePrompt, store])
+    }, [clearActivePrompt, actionStore])
 
 
     const hasAborted = React.useCallback((): boolean => {
@@ -308,10 +308,13 @@ export const NoteAction = observer((props: IProps) => {
                     type: 'note-link',
                     target: prompt
                 });
+
+                reset();
+
             }
 
             const items = computeItems(prompt);
-            store.updateState(items);
+            actionStore.updateState(items);
 
         } else {
 
@@ -412,7 +415,7 @@ export const NoteAction = observer((props: IProps) => {
 
                     const items = computeItems(prompt);
 
-                    store.setState({
+                    actionStore.setState({
                         position,
                         items,
                         onAction: actionHandler
@@ -428,11 +431,10 @@ export const NoteAction = observer((props: IProps) => {
 
         return activeRef.current;
 
-    }, [divRef, hasAborted, computeItems, store, reset, createActionRangeForHandler, actionExecutor, trigger, createActionHandler]);
+    }, [divRef, hasAborted, computeItems, actionStore, reset, createActionRangeForHandler, actionExecutor, trigger, createActionHandler]);
 
     return (
-        <div onKeyDown={handleKeyDown}
-             onKeyUp={handleKeyUp}>
+        <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
             {props.children}
         </div>
     );

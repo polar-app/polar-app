@@ -107,6 +107,8 @@ export interface ICreatedNote {
     readonly parent: NoteIDStr;
 }
 
+export type DoIndentResult = IMutation<'no-note' | 'no-parent' | 'no-parent-note' | 'no-sibling', NoteIDStr>;
+
 export class NotesStore {
 
     @observable _index: NotesIndex = {};
@@ -811,54 +813,65 @@ export class NotesStore {
      *
      * @return The new parent NoteID or the code as to why it couldn't be re-parented.
      */
-    public doIndent(id: NoteIDStr): IMutation<'no-note' | 'no-parent' | 'no-parent-note' | 'no-sibling', NoteIDStr> {
+    public doIndent(id: NoteIDStr): DoIndentResult {
 
-        console.log("doIndent: " + id);
+        const doExec = (id: NoteIDStr): DoIndentResult => {
 
-        const note = this._index[id];
+            console.log("doIndent: " + id);
 
-        if (! note) {
-            return {error: 'no-note'};
+            const note = this._index[id];
+
+            if (! note) {
+                return {error: 'no-note'};
+            }
+
+            if (! note.parent) {
+                return {error: 'no-parent'};
+            }
+
+            const parentNote = this._index[note.parent];
+
+            if (! parentNote) {
+                console.warn("No parent note for id: " + note.parent);
+                return {error: 'no-parent-note'};
+            }
+
+            const parentItems = (parentNote.items || []);
+
+            // figure out the sibling index in the parent
+            const siblingIndex = parentItems.indexOf(id);
+
+            if (siblingIndex > 0) {
+
+                const newParentID = parentItems[siblingIndex - 1];
+
+                const newParentNote = this._index[newParentID];
+
+                // *** remove myself from my parent
+
+                parentNote.removeItem(id);
+
+                // ***: add myself to my newParent
+
+                newParentNote.addItem(id);
+
+                note.setParent(newParentNote.id);
+                this.expand(newParentID);
+
+                return {value: newParentNote.id};
+
+            } else {
+                return {error: 'no-sibling'};
+            }
+
         }
 
-        if (! note.parent) {
-            return {error: 'no-parent'};
-        }
+        // if (this.hasSelected()) {
+        //     return undefined;
+        // } else {
+        // }
 
-        const parentNote = this._index[note.parent];
-
-        if (! parentNote) {
-            console.warn("No parent note for id: " + note.parent);
-            return {error: 'no-parent-note'};
-        }
-
-        const parentItems = (parentNote.items || []);
-
-        // figure out the sibling index in the parent
-        const siblingIndex = parentItems.indexOf(id);
-
-        if (siblingIndex > 0) {
-
-            const newParentID = parentItems[siblingIndex - 1];
-
-            const newParentNote = this._index[newParentID];
-
-            // *** remove myself from my parent
-
-            parentNote.removeItem(id);
-
-            // ***: add myself to my newParent
-
-            newParentNote.addItem(id);
-
-            note.setParent(newParentNote.id);
-            this.expand(newParentID);
-
-            return {value: newParentNote.id};
-
-        } else {
-            return {error: 'no-sibling'};
-        }
+        return doExec(id);
 
     }
 
