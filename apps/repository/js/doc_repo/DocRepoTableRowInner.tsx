@@ -19,6 +19,7 @@ import {AutoBlur} from "./AutoBlur";
 import Checkbox from "@material-ui/core/Checkbox";
 import {OverflowMenuButton} from "./buttons/DocOverflowMenuButton";
 import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
+import { LinearProgress } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -43,7 +44,10 @@ const useStyles = makeStyles((theme: Theme) =>
             whiteSpace: 'nowrap'
         },
         progress: {
-            width: COLUMN_MAP.progress.width
+            width: COLUMN_MAP.progress.width,
+            background: theme.palette.grey['300'],
+            height: 6,
+            borderRadius: 9999,
         },
         colProgress: {
             width: COLUMN_MAP.progress.width,
@@ -388,10 +392,7 @@ export namespace cells {
                            onContextMenu={props.contextMenuHandler}
                            padding="none">
 
-                    <progress className={classes.progress}
-                              value={props.progress}
-                              max={100}/>
-
+                    <LinearProgress variant="determinate" className={ classes.progress } value={props.progress} />
                 </TableCell>
             </DeviceRouters.NotPhone>
         );

@@ -1,5 +1,6 @@
 import {DocMetas} from "../../../web/js/metadata/DocMetas";
 import * as React from "react";
+import { LinearProgress, useTheme } from "@material-ui/core";
 import {MUIPaperToolbar} from "../../../web/js/mui/MUIPaperToolbar";
 import {useDocViewerStore} from "./DocViewerStore";
 import {ReadingProgressResume} from "../../../web/js/view/ReadingProgressResume";
@@ -17,6 +18,7 @@ export const ProgressBar = deepMemo(() => {
     const {docMeta} = useDocViewerStore(['docMeta']);
     const [, resumeProgressHandler] = useReadingProgressResume();
     const contextMenuHandlers = useContextMenu();
+    const theme = useTheme();
 
     if (! docMeta) {
         return null;
@@ -29,11 +31,17 @@ export const ProgressBar = deepMemo(() => {
     }
 
     return (
-        <progress {...contextMenuHandlers}
-                  value={perc}
+        <LinearProgress {...contextMenuHandlers}
+                  value={perc * 100}
+                  variant="determinate"
                   onDoubleClick={handleDoubleClick}
                   className="mt-auto mb-auto"
-                  style={{flexGrow: 1}}/>
+                  style={{
+                    background: theme.palette.grey['300'],
+                    width: '100%',
+                    height: 6,
+                    borderRadius: 9999,
+                  }}/>
     );
 
 });
@@ -51,7 +59,7 @@ export const PagemarkProgressBar = React.memo(() => {
                              display: 'flex',
                              alignItems: "center"
                          }}
-                         className="p-1">
+                         className="p-2">
 
                         <ProgressBar/>
 
