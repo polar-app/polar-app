@@ -7,6 +7,8 @@ import INodeOffset = ContentEditables.INodeOffset;
 import {useNoteContentEditableElement} from "./NoteContentEditable";
 import { observer } from "mobx-react-lite"
 
+const THINSP = ' ';
+
 /**
  * Keyboard handler for while the user types. We return true if the menu is active.
  */
@@ -186,11 +188,11 @@ export const NoteAction = observer((props: IProps) => {
 
         const actionText = activePromptRef.current.actionInput.textContent || '';
 
-        if (! actionText.startsWith('[[')) {
+        if (! actionText.startsWith(`[[${THINSP}`)) {
             return true;
         }
 
-        if (! actionText.endsWith(']]')) {
+        if (! actionText.endsWith(`${THINSP}]]`)) {
             return true;
         }
 
@@ -281,8 +283,8 @@ export const NoteAction = observer((props: IProps) => {
         function computeActionInputText(): string {
 
             return (activePromptRef.current?.actionInput.textContent || '')
-                .replace(/^\[\[/, '')
-                .replace(/\]\]$/, '');
+                .replace(/^\[\[./, '')
+                .replace(/.\]\]$/, '');
 
         }
 
@@ -333,7 +335,7 @@ export const NoteAction = observer((props: IProps) => {
                             const span = document.createElement('span');
                             span.setAttribute('class', 'action-input');
 
-                            const textNode = document.createTextNode('[[]]');
+                            const textNode = document.createTextNode(`[[${THINSP}${THINSP}]]`);
                             span.appendChild(textNode);
 
                             return span;
@@ -351,13 +353,13 @@ export const NoteAction = observer((props: IProps) => {
 
                         wrapRange.insertNode(actionInput);
 
-                        range.setStart(actionInput.firstChild!, 2);
-                        range.setEnd(actionInput.firstChild!, 2);
+                        range.setStart(actionInput.firstChild!, 3);
+                        range.setEnd(actionInput.firstChild!, 3);
 
                         function createPositionRange() {
                             const range = document.createRange();
-                            range.setStart(actionInput.firstChild!, 2);
-                            range.setEnd(actionInput.firstChild!, 2);
+                            range.setStart(actionInput.firstChild!, 3);
+                            range.setEnd(actionInput.firstChild!, 3);
                             return range;
                         }
 
@@ -377,8 +379,6 @@ export const NoteAction = observer((props: IProps) => {
                 activePromptRef.current = createActivePrompt();
 
                 const prompt = computeActionInputText();
-
-                console.log("FIXME1 prompt", prompt);
 
                 function computePosition() {
 

@@ -10,20 +10,32 @@
 <style>
 
     .note-edit::before {
-        content: '[['
+        content: '[[';
+        color: grey;
     }
 
     .note-edit::after {
-        content: ']]'
+        content: ']]';
+        color: grey;
     }
 
 </style>
+
+<b>With span and nbsp;</b>
 
 <div id="content" contenteditable="true">
     this is <b>the</b> content <span class="note-edit">&nbsp;&nbsp;</span>
 </div>
 
 <br/>
+<br/>
+
+<b>With span and thin space</b>
+
+<div id="content3" contenteditable="true">
+    this is <b>the</b> content <span class="note-edit">&#x2009;&#x2009;</span>
+</div>
+
 <br/>
 <br/>
 
