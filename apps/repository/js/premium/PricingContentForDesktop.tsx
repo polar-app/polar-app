@@ -220,6 +220,40 @@ const DesktopTable = () => {
               </Box>
             </td>
           </tr>
+          <TableRowDivider/>
+          <tr className={classes.row}>
+            <td className={classes.rowHead}>Auto-create flashcards (using GPT-3)</td>
+            <td>
+              <Box className={classes.imgBox}>
+                <FATimesCircleIcon className={classes.checkCircle} />
+              </Box>
+            </td>
+            <td>
+              100 / mo
+            </td>
+            <td>
+              250 / mo
+            </td>
+          </tr>
+          <TableRowDivider/>
+          <tr className={classes.row}>
+            <td className={classes.rowHead}>Personal onboarding by Polar team</td>
+            <td>
+              <Box className={classes.imgBox}>
+                <FATimesCircleIcon className={classes.checkCircle} />
+              </Box>
+            </td>
+            <td>
+              <Box className={classes.imgBox}>
+                <PlanCheckIcon/>
+              </Box>
+            </td>
+            <td>
+              <Box className={classes.imgBox}>
+                <PlanCheckIcon/>
+              </Box>
+            </td>
+          </tr>
           <tr style={{ height: "50px" }}></tr>
           </tbody>
         </table>
