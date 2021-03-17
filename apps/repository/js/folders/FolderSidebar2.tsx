@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) =>
     createStyles({
         controlBar: {
             display: 'flex',
-            marginTop: theme.spacing(0.5)
+            marginTop: theme.spacing(1.125)
         },
     }),
 );
