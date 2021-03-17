@@ -233,26 +233,7 @@ const EmailTokenAuthButton = () => {
             try {
                 setPending(true);
 
-                const response = await triggerVerifyTokenAuth(email, challenge);
-
-                switch(response.code) {
-
-                    case "no-email-for-challenge":
-                        setAlert({
-                            type: 'error',
-                            message: "No email was found for that challenge"
-                        });
-                        break;
-
-                    case "invalid-challenge":
-                        setAlert({
-                            type: 'error',
-                            message: "The challenge code you provided was invalid."
-                        });
-                        break;
-
-                }
-
+                await triggerVerifyTokenAuth(email, challenge);
             } finally {
                 setPending(false);
             }

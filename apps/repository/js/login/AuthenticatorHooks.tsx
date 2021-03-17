@@ -202,6 +202,15 @@ export function useTriggerFirebaseEmailAuth() {
 
 }
 
+class CloudFunctionError extends Error {
+    public response: Response;
+
+    constructor(response: Response) {
+        super("Cloud function failed: " + response.status + ": " + response.statusText);
+        this.response = response;
+    }
+}
+
 export async function executeCloudFunction(cloudFunctionName: string, body: any): Promise<any> {
 
     const url = `https://us-central1-polar-cors.cloudfunctions.net/${cloudFunctionName}/`;
@@ -222,11 +231,10 @@ export async function executeCloudFunction(cloudFunctionName: string, body: any)
 
     if (response.status !== 200) {
         Analytics.event2("CloudFunctionFailed", {name: cloudFunctionName});
-        throw new Error("Cloud function failed: " + response.status + ": " + response.statusText);
+        throw new CloudFunctionError(response);
     }
 
     return await response.json();
-
 }
 
 export interface IStartTokenAuthResponse {
@@ -274,16 +282,12 @@ export function useTriggerVerifyTokenAuth() {
 
         Analytics.event2('auth:VerifyTokenAuth');
 
-        interface IVerifyTokenAuthResponseError {
-            readonly code: 'no-email-for-challenge' | 'invalid-challenge' ;
-        }
-
         interface IVerifyTokenAuthResponse {
 
             /**
              * The code / error.
              */
-            readonly code: 'ok' ;
+            readonly code: 'ok';
 
             /**
              * A generated custom token on the backend.
@@ -294,26 +298,39 @@ export function useTriggerVerifyTokenAuth() {
 
         }
 
-        const response: IVerifyTokenAuthResponse = await executeCloudFunction('VerifyTokenAuth', {
-            email, challenge
-        });
 
-        Analytics.event2('auth:VerifyTokenAuthResult', {code: response.code, isNewUser: response.isNewUser});
+        try {
+            const response: IVerifyTokenAuthResponse = await executeCloudFunction('VerifyTokenAuth', {
+                email, challenge
+            });
 
-        const auth = firebase.auth();
+            Analytics.event2('auth:VerifyTokenAuthResult', {code: response.code, isNewUser: response.isNewUser});
 
-        if (response.code === 'ok') {
+            const auth = firebase.auth();
 
-            console.log("Got response from VerifyTokenAuth and now calling signInWithCustomToken");
-            const {customToken} = response;
+            if (response.code === 'ok') {
 
-            const userCredential = await auth.signInWithCustomToken(customToken);
-            handleAuthResult(userCredential, response.isNewUser);
+                console.log("Got response from VerifyTokenAuth and now calling signInWithCustomToken");
+                const {customToken} = response;
 
+                const userCredential = await auth.signInWithCustomToken(customToken);
+                handleAuthResult(userCredential, response.isNewUser);
+
+            }
+
+            return response;
+        } catch (e) {
+            if (e instanceof CloudFunctionError) {
+                const resp: IVerifyTokenAuthResponseError = await e.response.json();
+                switch (resp.code) {
+                    case 'invalid-challenge':
+                        throw new Error('The challenge code you provided was invalid.');
+                    case 'no-email-for-challenge':
+                        throw new Error('No email was found for that challenge.');
+                }
+            }
+            throw e;
         }
-
-        return response;
-
     }, []);
 
 }
