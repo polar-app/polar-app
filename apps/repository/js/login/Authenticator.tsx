@@ -388,9 +388,8 @@ const EmailTokenAuthButton = () => {
                             <Button variant="contained"
                                     color="primary"
                                     className={classes.button}
-                                    onClick={handleClick}
-                                    startIcon={<CheckIcon />}>
-                                Submit
+                                    onClick={handleClick}>
+                                Verify Code
                             </Button>
                         </>
                     )}
