@@ -1,10 +1,10 @@
 export namespace NoteContentCanonicalizer {
 
     export function canonicalizeElement(element: HTMLElement) {
-        return canonicalize(element.cloneNode(true)) as HTMLElement
+        return doA(doSPAN(element.cloneNode(true))) as HTMLElement;
     }
 
-    function canonicalize(node: Node) {
+    function doSPAN(node: Node) {
 
         if (node.nodeType !== node.ELEMENT_NODE) {
             // just return what we have now
@@ -14,7 +14,7 @@ export namespace NoteContentCanonicalizer {
         const result = node;
 
         const childNodes = Array.from(node.childNodes)
-                                .map(current => canonicalize(current));
+                                .map(current => doSPAN(current));
 
         for (const childNode of childNodes) {
 
@@ -27,6 +27,37 @@ export namespace NoteContentCanonicalizer {
         }
 
         return result;
+
+    }
+
+    function doA(node: Node) {
+
+        if (node.nodeType !== node.ELEMENT_NODE) {
+            // just return what we have now
+            return node
+        }
+
+        const element = node as HTMLElement;
+
+        for (const anchor of Array.from(element.querySelectorAll('a'))) {
+
+            const href = anchor.getAttribute('href');
+            const newTextContent = (anchor.textContent || '').trim();
+
+            if (href && href.startsWith('#')) {
+                const newHref = '#' + newTextContent;
+                if (href !== newHref) {
+                    anchor.setAttribute('href', newHref);
+                }
+            }
+
+            if (anchor.textContent !== newTextContent) {
+                anchor.textContent = newTextContent;
+            }
+
+        }
+
+        return element;
 
     }
 
