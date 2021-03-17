@@ -214,6 +214,45 @@ export const NoteAction = observer((props: IProps) => {
 
     }, []);
 
+    const createActionRangeForHandler = React.useCallback(() => {
+
+        function computeFrom() {
+            return {
+                node: activePromptRef.current!.actionInput,
+                offset: 0
+            };
+        }
+
+        function computeTo() {
+            return {
+                node: activePromptRef.current!.actionInput,
+                offset: (activePromptRef.current!.actionInput.textContent || '').length
+            }
+        }
+
+        const from = computeFrom();
+        const to = computeTo();
+
+        return {from, to};
+
+    }, []);
+
+    const createActionHandler = React.useCallback(() => {
+
+        return (id: IDStr) => {
+
+            const actionOp = onAction(id);
+
+            const {from, to} = createActionRangeForHandler()
+
+            actionExecutor(from, to, actionOp);
+
+            reset();
+
+        }
+
+    }, [actionExecutor, createActionRangeForHandler, onAction, reset]);
+
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
         if (! divRef.current) {
@@ -242,6 +281,8 @@ export const NoteAction = observer((props: IProps) => {
 
         if (activeRef.current) {
 
+            const prompt = computeActionInputText();
+
             if (hasAborted()) {
                 reset();
             }
@@ -253,7 +294,14 @@ export const NoteAction = observer((props: IProps) => {
                 reset();
             }
 
-            const prompt = computeActionInputText();
+            if (event.key === 'Enter') {
+                const {from, to} = createActionRangeForHandler()
+
+                actionExecutor(from, to, {
+                    type: 'note-link',
+                    target: prompt
+                });
+            }
 
             const items = actionsProvider(prompt);
             store.updateState(items);
@@ -348,45 +396,12 @@ export const NoteAction = observer((props: IProps) => {
 
                 }
 
-                function createActionHandler() {
-
-                    return (id: IDStr) => {
-
-                        const actionOp = onAction(id);
-
-                        function computeFrom() {
-                            return {
-                                node: activePromptRef.current!.actionInput,
-                                offset: 0
-                            };
-                        }
-
-                        function computeTo() {
-                            return {
-                                node: activePromptRef.current!.actionInput,
-                                offset: (activePromptRef.current!.actionInput.textContent || '').length
-                            }
-                        }
-
-                        const from = computeFrom();
-                        const to = computeTo();
-
-                        actionExecutor(from, to, actionOp);
-
-                        reset();
-
-                    }
-
-                }
-
                 const position = computePosition();
                 const actionHandler = createActionHandler();
 
                 if (position) {
 
                     activeRef.current = true;
-
-                    console.log("FIXME: prompt: ", prompt);
 
                     const actions = actionsProvider(prompt);
 
@@ -406,7 +421,7 @@ export const NoteAction = observer((props: IProps) => {
 
         return activeRef.current;
 
-    }, [actionExecutor, actionsProvider, divRef, hasAborted, onAction, reset, store, trigger]);
+    }, [actionsProvider, actionExecutor, createActionRangeForHandler, createActionHandler, divRef, hasAborted, reset, store, trigger]);
 
     return (
         <div onKeyDown={handleKeyDown}
