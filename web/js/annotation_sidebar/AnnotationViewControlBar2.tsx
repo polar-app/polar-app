@@ -23,7 +23,7 @@ import {StandardIconButton} from "../../../apps/repository/js/doc_repo/buttons/S
 import FlashAutoIcon from '@material-ui/icons/FlashAuto';
 import {useAutoFlashcardHandler} from "./AutoFlashcardHook";
 import {useAIFlashcardVerifiedAction} from "../../../apps/repository/js/ui/AIFlashcardVerifiedAction";
-import {FeatureToggle2} from "../ui/FeatureToggle2";
+import {useTheme} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -104,8 +104,8 @@ const CreateFlashcardButton = deepMemo((props: IMutableProps) => {
 });
 
 const CreateAIFlashcardButton = deepMemo((props: IAnnotationProps) => {
-
     const [status, handler] = useAutoFlashcardHandler(props.annotation);
+    const theme = useTheme();
 
     const verifiedAction = useAIFlashcardVerifiedAction();
 
@@ -118,23 +118,15 @@ const CreateAIFlashcardButton = deepMemo((props: IAnnotationProps) => {
                             disabled={! props.mutable}
                             size="small"
                             onClick={handleClick}>
-
-            <div style={{
-                     width: '1em',
-                     // height: '1em',
-                     display: 'flex',
-                     flexDirection: 'column',
-                     alignItems: 'center'
-                 }}>
+            <>
                 {status === 'idle' && (
                     <FlashAutoIcon/>
                 )}
 
                 {status === 'waiting' && (
-                    <CircularProgress size="1em" color="secondary"/>
+                    <CircularProgress size={ theme.typography.pxToRem(24) } color="secondary"/>
                 )}
-            </div>
-
+            </>
         </StandardIconButton>
     );
 
