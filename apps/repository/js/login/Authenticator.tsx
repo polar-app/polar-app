@@ -4,6 +4,7 @@ import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import Button from '@material-ui/core/Button';
 import {FAGoogleIcon} from "../../../../web/js/mui/MUIFontAwesome";
 import EmailIcon from '@material-ui/icons/Email';
+import CheckIcon from '@material-ui/icons/Check';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import TextField from '@material-ui/core/TextField';
@@ -384,7 +385,13 @@ const EmailTokenAuthButton = () => {
                             <div className={classes.alternate} onClick={handleCodeNotReceived}>
                                 <Button>Didn't receive email</Button>
                             </div>
-
+                            <Button variant="contained"
+                                    color="primary"
+                                    className={classes.button}
+                                    onClick={handleClick}
+                                    startIcon={<CheckIcon />}>
+                                Submit
+                            </Button>
                         </>
                     )}
 
@@ -400,10 +407,12 @@ const EmailTokenAuthButton = () => {
                 </>
             )}
 
-            <AuthButton onClick={handleClick}
-                        strategy="Email"
-                        startIcon={<EmailIcon />}/>
+            {!triggered && (
 
+                <AuthButton onClick={handleClick}
+                            strategy="Email"
+                            startIcon={<EmailIcon />}/>
+            )}
         </>
     );
 };
