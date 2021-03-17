@@ -149,34 +149,28 @@ export const NoteAction = observer((props: IProps) => {
             return;
         }
 
-        function deleteFromParent(element: HTMLElement) {
-
-            element.remove();
-
-        }
-
-        // deleteFromParent(activePromptRef.current.actionLeft);
-        // deleteFromParent(activePromptRef.current.actionRight);
-        // deleteFromParent(activePromptRef.current.actionInput);
+        activePromptRef.current.actionInput.innerText = '[[';
 
     }, []);
 
     const reset = React.useCallback(() => {
 
-        clearActivePrompt();
+        if (activeRef.current) {
 
-        activeRef.current = false;
+            clearActivePrompt();
 
-        activePromptRef.current = undefined;
+            activeRef.current = false;
 
-        actionStore.setState(undefined);
+            activePromptRef.current = undefined;
 
-        return false;
+            actionStore.setState(undefined);
+
+        }
 
     }, [clearActivePrompt, actionStore])
 
 
-    const hasAborted = React.useCallback((): boolean => {
+    const hasAborted = React.useCallback((event: React.KeyboardEvent): boolean => {
 
         if (! activePromptRef.current) {
             return true;
@@ -189,10 +183,12 @@ export const NoteAction = observer((props: IProps) => {
         const actionText = activePromptRef.current.actionInput.textContent || '';
 
         if (! actionText.startsWith(`[[${THINSP}`)) {
+            console.log("Aborted: left");
             return true;
         }
 
         if (! actionText.endsWith(`${THINSP}]]`)) {
+            console.log("Aborted: right");
             return true;
         }
 
@@ -292,27 +288,25 @@ export const NoteAction = observer((props: IProps) => {
 
             const prompt = computeActionInputText();
 
-            if (hasAborted()) {
+            if (hasAborted(event)) {
                 reset();
             }
 
-            // FIXME use the actionHandler here that we've created when the user
-            // hits enter when a NEW note is being created
+            switch (event.key) {
+                case 'Escape':
+                    reset();
+                    break;
 
-            if (event.key === 'Escape') {
-                reset();
-            }
+                case 'Enter':
+                    const {from, to} = createActionRangeForHandler()
 
-            if (event.key === 'Enter') {
-                const {from, to} = createActionRangeForHandler()
+                    actionExecutor(from, to, {
+                        type: 'note-link',
+                        target: prompt
+                    });
 
-                actionExecutor(from, to, {
-                    type: 'note-link',
-                    target: prompt
-                });
-
-                reset();
-
+                    reset();
+                    break;
             }
 
             const items = computeItems(prompt);
@@ -331,7 +325,18 @@ export const NoteAction = observer((props: IProps) => {
 
                     if (sel) {
 
+                        function createBracketSpan(text: string, className: string) {
+                            const span = document.createElement('span');
+                            span.setAttribute('class', className);
+                            span.setAttribute('style', `color: ${theme.palette.text.hint};`);
+
+                            const textNode = document.createTextNode(text);
+                            span.appendChild(textNode);
+                            return span;
+                        }
+
                         function createInputSpan() {
+
                             const span = document.createElement('span');
                             span.setAttribute('class', 'action-input');
 
@@ -431,10 +436,15 @@ export const NoteAction = observer((props: IProps) => {
 
         return activeRef.current;
 
-    }, [divRef, hasAborted, computeItems, actionStore, reset, createActionRangeForHandler, actionExecutor, trigger, createActionHandler]);
+    }, [divRef, hasAborted, computeItems, actionStore, reset, createActionRangeForHandler, actionExecutor, trigger, createActionHandler, theme.palette.text.hint]);
+
+
+    const handleClick = React.useCallback(() => {
+        reset();
+    }, [reset]);
 
     return (
-        <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
+        <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} onClick={handleClick}>
             {props.children}
         </div>
     );
