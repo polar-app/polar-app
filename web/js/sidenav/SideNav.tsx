@@ -174,11 +174,12 @@ const PolarButton = React.memo(() => {
     const classes = useStyles();
     const history = useHistory();
 
+    const w = SIDENAV_WIDTH - 8 * 2; // The size of the hr divider below it
+
     return (
         <div className={classes.logo}
              onClick={() => history.push('')}>
-            <PolarSVGIcon width={46}
-                          height={46}/>
+            <PolarSVGIcon width={ w } height={ w } />
         </div>
     );
 
