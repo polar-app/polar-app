@@ -10,6 +10,7 @@ import {KeyboardShortcuts} from "../keyboard_shortcuts/KeyboardShortcuts";
 import {UndoQueueProvider} from "../undo/UndoQueueProvider";
 import useLocalStorageState from 'use-local-storage-state'
 import {MUIErrorBoundary} from "./MUIErrorBoundary";
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
 interface IProps {
     readonly children: React.ReactNode;
@@ -19,7 +20,11 @@ export const MUIAppRoot = React.memo(function MUIAppRoot(props: IProps) {
 
     const [theme, setTheme] = useLocalStorageState<ThemeType>('theme', "dark");
 
-    // TODO play responsiveFontSizes in MUI...
+    const background = Dictionaries.onlyDefinedProperties({
+        'default': theme === 'light' ? '#ffffff' : undefined,
+        'paper': theme === 'light' ? '#f2f2f2' : undefined
+    });
+
     const muiTheme = React.useMemo(() => createMuiTheme({
         typography: {
             htmlFontSize: 12,
@@ -30,11 +35,7 @@ export const MUIAppRoot = React.memo(function MUIAppRoot(props: IProps) {
             primary: {
                 'main': 'rgb(103, 84, 214)'
             },
-            // background: {
-            //     // 'default': '#050505',
-            //     'default': '#1F2023',
-            //     'paper': '#27282B'
-            // },
+            background
             // divider: '#303236',
             // text: {
             //     primary: 'rgb(247, 248, 248)'
