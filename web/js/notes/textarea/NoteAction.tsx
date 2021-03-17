@@ -105,10 +105,6 @@ interface ActivePrompt {
      */
     readonly positionRange: Range;
 
-    readonly actionLeft: HTMLSpanElement;
-
-    readonly actionRight: HTMLSpanElement;
-
     readonly actionInput: HTMLSpanElement;
 
 }
@@ -177,11 +173,17 @@ export const NoteAction = observer((props: IProps) => {
             return true;
         }
 
-        if (! activePromptRef.current.actionLeft.parentElement) {
+        if (! activePromptRef.current.actionInput.parentElement) {
             return true;
         }
 
-        if (! activePromptRef.current.actionRight.parentElement) {
+        const actionText = activePromptRef.current.actionInput.textContent || '';
+
+        if (! actionText.startsWith('[[')) {
+            return true;
+        }
+
+        if (! actionText.endsWith(']]')) {
             return true;
         }
 
@@ -191,24 +193,24 @@ export const NoteAction = observer((props: IProps) => {
 
     const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 
-        const range = window.getSelection()?.getRangeAt(0);
-
-        if (range) {
-
-            if (activePromptRef.current) {
-
-                if (range.startContainer === activePromptRef.current.actionLeft ||
-                    range.startContainer === activePromptRef.current.actionRight) {
-
-
-                    event.stopPropagation();
-                    event.preventDefault();
-
-                }
-
-            }
-
-        }
+        // const range = window.getSelection()?.getRangeAt(0);
+        //
+        // if (range) {
+        //
+        //     if (activePromptRef.current) {
+        //
+        //         if (range.startContainer === activePromptRef.current.actionLeft ||
+        //             range.startContainer === activePromptRef.current.actionRight) {
+        //
+        //
+        //             event.stopPropagation();
+        //             event.preventDefault();
+        //
+        //         }
+        //
+        //     }
+        //
+        // }
 
     }, []);
 
@@ -231,7 +233,11 @@ export const NoteAction = observer((props: IProps) => {
         }
 
         function computeActionInputText(): string {
-            return activePromptRef.current?.actionInput.textContent || '';
+
+            return (activePromptRef.current?.actionInput.textContent || '')
+                .replace(/^\[\[/, '')
+                .replace(/\]\]$/, '');
+
         }
 
         if (activeRef.current) {
@@ -265,22 +271,11 @@ export const NoteAction = observer((props: IProps) => {
 
                     if (sel) {
 
-                        function createBracketSpan(text: string, className: string) {
-                            const span = document.createElement('span');
-                            span.setAttribute('class', className);
-                            // span.setAttribute('contenteditable', 'false');
-                            span.setAttribute('style', `padding-left: 3px; padding-right: 3px; font-face: fixed; color: ${theme.palette.text.hint};`);
-
-                            const textNode = document.createTextNode(text);
-                            span.appendChild(textNode);
-                            return span;
-                        }
-
                         function createInputSpan() {
                             const span = document.createElement('span');
                             span.setAttribute('class', 'action-input');
 
-                            const textNode = document.createTextNode('');
+                            const textNode = document.createTextNode('[[]]');
                             span.appendChild(textNode);
 
                             return span;
@@ -294,22 +289,17 @@ export const NoteAction = observer((props: IProps) => {
 
                         wrapRange.deleteContents();
 
-                        const actionRight = createBracketSpan(']]', 'action-right');
-                        const actionLeft = createBracketSpan('[[', 'action-left');
                         const actionInput = createInputSpan();
 
-                        wrapRange.insertNode(actionRight);
                         wrapRange.insertNode(actionInput);
-                        wrapRange.insertNode(actionLeft);
 
-                        // FIXME: this isn't working to set the default text...
-                        range.setStart(actionInput.firstChild!, 0);
-                        range.setEnd(actionInput.firstChild!, 0);
+                        range.setStart(actionInput.firstChild!, 2);
+                        range.setEnd(actionInput.firstChild!, 2);
 
                         function createPositionRange() {
                             const range = document.createRange();
-                            range.setStart(actionLeft.firstChild!, 1);
-                            range.setEnd(actionLeft.firstChild!, 1);
+                            range.setStart(actionInput.firstChild!, 2);
+                            range.setEnd(actionInput.firstChild!, 2);
                             return range;
                         }
 
@@ -317,8 +307,6 @@ export const NoteAction = observer((props: IProps) => {
 
                         return {
                             positionRange,
-                            actionLeft,
-                            actionRight,
                             actionInput
                         }
 
@@ -331,6 +319,8 @@ export const NoteAction = observer((props: IProps) => {
                 activePromptRef.current = createActivePrompt();
 
                 const prompt = computeActionInputText();
+
+                console.log("FIXME1 prompt", prompt);
 
                 function computePosition() {
 
@@ -366,15 +356,15 @@ export const NoteAction = observer((props: IProps) => {
 
                         function computeFrom() {
                             return {
-                                node: activePromptRef.current!.actionLeft,
+                                node: activePromptRef.current!.actionInput,
                                 offset: 0
                             };
                         }
 
                         function computeTo() {
                             return {
-                                node: activePromptRef.current!.actionRight,
-                                offset: 1
+                                node: activePromptRef.current!.actionInput,
+                                offset: (activePromptRef.current!.actionInput.textContent || '').length
                             }
                         }
 
@@ -396,6 +386,8 @@ export const NoteAction = observer((props: IProps) => {
 
                     activeRef.current = true;
 
+                    console.log("FIXME: prompt: ", prompt);
+
                     const actions = actionsProvider(prompt);
 
                     store.setState({
@@ -414,7 +406,7 @@ export const NoteAction = observer((props: IProps) => {
 
         return activeRef.current;
 
-    }, [actionExecutor, actionsProvider, divRef, hasAborted, onAction, reset, store, theme.palette.text.hint, trigger]);
+    }, [actionExecutor, actionsProvider, divRef, hasAborted, onAction, reset, store, trigger]);
 
     return (
         <div onKeyDown={handleKeyDown}
