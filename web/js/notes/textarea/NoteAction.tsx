@@ -467,7 +467,6 @@ export const NoteAction = observer((props: IProps) => {
 
     }, [divRef, hasAborted, computeItems, actionStore, doReset, doComplete, trigger, createActionHandler, theme.palette.text.hint]);
 
-
     const handleClick = React.useCallback(() => {
 
         doCompleteOrReset();
