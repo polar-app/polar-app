@@ -134,6 +134,13 @@ export const NoteAction = observer((props: IProps) => {
 
     const activePromptRef = React.useRef<ActivePrompt | undefined>(undefined);
 
+    const computeItems = React.useCallback((prompt: string) => {
+
+        return [...(prompt.length === 0 ? [] : actionsProvider(prompt))]
+               .sort((a, b) => a.text.localeCompare(b.text))
+
+    }, [actionsProvider])
+
     const clearActivePrompt = React.useCallback(() => {
 
         if (! activePromptRef.current) {
@@ -303,7 +310,7 @@ export const NoteAction = observer((props: IProps) => {
                 });
             }
 
-            const items = actionsProvider(prompt);
+            const items = computeItems(prompt);
             store.updateState(items);
 
         } else {
@@ -403,11 +410,11 @@ export const NoteAction = observer((props: IProps) => {
 
                     activeRef.current = true;
 
-                    const actions = actionsProvider(prompt);
+                    const items = computeItems(prompt);
 
                     store.setState({
                         position,
-                        actions,
+                        items,
                         onAction: actionHandler
                     });
 
@@ -421,7 +428,7 @@ export const NoteAction = observer((props: IProps) => {
 
         return activeRef.current;
 
-    }, [actionsProvider, actionExecutor, createActionRangeForHandler, createActionHandler, divRef, hasAborted, reset, store, trigger]);
+    }, [divRef, hasAborted, computeItems, store, reset, createActionRangeForHandler, actionExecutor, trigger, createActionHandler]);
 
     return (
         <div onKeyDown={handleKeyDown}

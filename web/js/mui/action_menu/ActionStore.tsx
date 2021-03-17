@@ -74,7 +74,7 @@ export interface IActionState {
      */
     readonly position: IActionMenuPosition;
 
-    readonly actions: ReadonlyArray<IActionMenuItem>;
+    readonly items: ReadonlyArray<IActionMenuItem>;
 
     readonly onAction: (id: IDStr) => void;
 
@@ -107,7 +107,7 @@ export class ActionStore {
         this.state = state;
     }
 
-    @action public updateState(actions: ReadonlyArray<IActionMenuItem>) {
+    @action public updateState(items: ReadonlyArray<IActionMenuItem>) {
 
         if (! this.state) {
             console.warn("Can not updateState: no state");
@@ -117,7 +117,7 @@ export class ActionStore {
         this.setState({
             position: this.state.position,
             onAction: this.state.onAction,
-            actions
+            items
         });
 
     }

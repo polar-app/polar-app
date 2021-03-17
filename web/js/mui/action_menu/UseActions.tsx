@@ -289,11 +289,11 @@ export function useActions(opts: IOpts): NoteActionsResultTuple {
 
                     activeRef.current = true;
 
-                    const actions = actionsProvider(prompt);
+                    const items = actionsProvider(prompt);
 
                     store.setState({
                         position,
-                        actions,
+                        items,
                         onAction: actionHandler
                     });
 

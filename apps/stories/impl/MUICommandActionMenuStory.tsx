@@ -20,9 +20,9 @@ const DebugStoreState = observer(() => {
         <>
             <b>position: </b> {JSON.stringify(store.state.position)} <br/>
 
-            <b>Matching N items: {store.state.actions.length}</b>
+            <b>Matching N items: {store.state.items.length}</b>
 
-            {store.state.actions.map(current => (
+            {store.state.items.map(current => (
                 <div key={current.id}>
                     {current.text}
                 </div>

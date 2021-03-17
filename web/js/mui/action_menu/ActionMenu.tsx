@@ -38,7 +38,7 @@ interface IProps {
     /**
      * The actions the user can pick from.
      */
-    readonly actions: ReadonlyArray<IActionMenuItem>;
+    readonly items: ReadonlyArray<IActionMenuItem>;
 
     /**
      * Called when the command menu should be closed.
@@ -52,7 +52,7 @@ interface IProps {
 export const ActionMenu = React.memo((props: IProps) => {
 
     const classes = useStyles();
-    const {onAction, onClose, actions} = props;
+    const {onAction, onClose, items} = props;
 
     const [index, setIndex] = React.useState<number>(0);
 
@@ -92,7 +92,7 @@ export const ActionMenu = React.memo((props: IProps) => {
 
                 if (index === -1) {
                     // got to the end
-                    return actions.length - 1;
+                    return items.length - 1;
                 }
 
                 return 0;
@@ -106,8 +106,8 @@ export const ActionMenu = React.memo((props: IProps) => {
                 return 0;
             }
 
-            if (newIndex >= actions.length) {
-                return actions.length - 1;
+            if (newIndex >= items.length) {
+                return items.length - 1;
             }
 
             return newIndex;
@@ -137,12 +137,12 @@ export const ActionMenu = React.memo((props: IProps) => {
         if (event.key === 'Enter') {
             stopHandlingEvent();
             if (index !== undefined) {
-                const command = actions[index];
+                const command = items[index];
                 handleActionExecuted(command);
             }
         }
 
-    }, [actions, handleActionExecuted, index, onClose]);
+    }, [items, handleActionExecuted, index, onClose]);
 
     React.useEffect(() => {
 
@@ -166,19 +166,19 @@ export const ActionMenu = React.memo((props: IProps) => {
 
                 <List component="nav">
 
-                    {actions.map((action, idx) => {
+                    {items.map((item, idx) => {
 
                         const selected = index === idx;
-                        const key = action.id + ':' + selected;
+                        const key = item.id + ':' + selected;
 
                         return (
                             <MUICommandMenuItem key={key}
                                                 className={classes.item}
-                                                text={action.text}
-                                                icon={action.icon}
+                                                text={item.text}
+                                                icon={item.icon}
                                                 selected={selected}
-                                                sequences={action.sequences}
-                                                onSelected={() => handleActionExecuted(action)}/>
+                                                sequences={item.sequences}
+                                                onSelected={() => handleActionExecuted(item)}/>
                         );
                     })}
 
