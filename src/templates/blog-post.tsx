@@ -47,10 +47,11 @@ const useStyles = makeStyles({
     },
     "& h2": {
       fontSize: "30px",
-      margin: "50px 0"
+      margin: "50px 0",
+      lineHeight: "normal",
     },
     "& iframe": {
-      maxWidth: "100%"
+      maxWidth: "100%",
     }
   },
   navLink: {
