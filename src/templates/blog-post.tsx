@@ -52,6 +52,15 @@ const useStyles = makeStyles({
     "& iframe": {
       maxWidth: "100%"
     }
+  },
+  navLink: {
+      display: "flex",
+      alignItems: "center",
+      color: "white",
+      textDecoration: "none",
+      "&:hover, &:active": {
+          textDecoration: "underline",
+      }
   }
 });
 
@@ -83,7 +92,7 @@ const BlogPostTemplate = ({data, pageContext,}: PageProps<Data, pageContext>) =>
 
             <section className={ classes.blogContent } dangerouslySetInnerHTML={{ __html: post.html }} />
 
-            <i>Posted on: {date}</i>
+            <i style={{ display: "block", margin: "20px 0" }}>Posted on: {date}</i>
             <Bio />
             <nav>
               <ul
@@ -98,8 +107,8 @@ const BlogPostTemplate = ({data, pageContext,}: PageProps<Data, pageContext>) =>
                 <Typography variant="button">
                   <li>
                     {previous && (
-                      <Link to={previous.fields.slug} rel="prev" style={{ display: "flex", alignItems: "center", color: "white" }}>
-                        <ArrowBack /> Previous article
+                      <Link className={classes.navLink} to={previous.fields.slug} rel="prev">
+                        <ArrowBack style={{ marginRight: "10px" }} /> PREV
                       </Link>
                     )}
                   </li>
@@ -107,9 +116,9 @@ const BlogPostTemplate = ({data, pageContext,}: PageProps<Data, pageContext>) =>
                 <Typography variant="button">
                   <li>
                     {next && (
-                      <Link to={next.fields.slug} rel="next" style={{ display: "flex", alignItems: "center", color: "white" }}>
+                      <Link className={classes.navLink} to={next.fields.slug} rel="next">
                         {/* {next.frontmatter.title} → */}
-                        Next article <ArrowForward />
+                        Next <ArrowForward style={{ marginLeft: "10px" }} />
                       </Link>
                     )}
                   </li>
