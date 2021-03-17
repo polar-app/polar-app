@@ -55,6 +55,8 @@ import {TextAreaMarkdownEditorStory} from "./impl/TextAreaMarkdownEditorStory";
 import { MinimalContentEditablePerformanceStory } from './impl/MinimalContentEditablePerformanceStory';
 import {MinimalContentEditableStory} from "./impl/MinimalContentEditableStory";
 import { MUICommandActionMenuStory } from './impl/MUICommandActionMenuStory';
+import ExportDefaultComponent from "./impl/ExportDefaultComponent";
+import {ExportDefaultComponentStory} from "./impl/ExportDefaultComponentStory";
 
 interface IStory {
     readonly name: string;
@@ -274,6 +276,10 @@ const stories = createStoryIndex([
     {
         name: 'MUICommandActionMenuStory',
         component: <MUICommandActionMenuStory/>
+    },
+    {
+        name: 'ExportDefaultComponentStory',
+        component: <ExportDefaultComponentStory/>
     }
 
 
