@@ -45,14 +45,16 @@ const useStyles = makeStyles((theme) =>
         logo: {
             display: 'flex',
             cursor: 'pointer',
-            marginTop: '8px',
+            height: '55px',
+            flex: '0 0 55px',
+            alignItems: 'center',
             "& *": {
                 marginLeft: 'auto',
                 marginRight: 'auto',
             },
         },
         dividerTop: {
-            marginTop: '4px',
+            marginTop: 0,
             marginBottom: '5px',
             margin: theme.spacing(1),
             height: '1px'
