@@ -2,7 +2,7 @@ import React from 'react';
 import withStyles from "@material-ui/core/styles/withStyles";
 import useTheme from "@material-ui/core/styles/useTheme";
 import {GlobalCssGapBox} from "./GlobalCSSGapBox";
-import Scrollbars from "./Scrollbars";
+import ScrollbarColors from "./ScrollbarColors";
 
 export const GlobalCssDarkStyles = withStyles(() => {
     const theme = useTheme();
@@ -56,7 +56,7 @@ export const GlobalCssOverflowStyles = withStyles(() => {
 export const GlobalCssScrollbarStyles = withStyles(() => {
     const theme = useTheme();
 
-    const scrollbars = Scrollbars.createCSSForReact(theme);
+    const scrollbars = ScrollbarColors.createCSSForReact(theme);
 
     return {
         '@global': {

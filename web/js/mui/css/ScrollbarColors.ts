@@ -1,6 +1,6 @@
 import { Theme } from "@material-ui/core";
 
-namespace Scrollbars {
+namespace ScrollbarColors {
     export function createCSSForReact(theme: Theme) {
         const isDark = theme.palette.type === 'dark';
         const isLight = theme.palette.type === 'light';
@@ -68,4 +68,4 @@ namespace Scrollbars {
     }
 }
 
-export default Scrollbars;
+export default ScrollbarColors;

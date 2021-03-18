@@ -1,5 +1,5 @@
 import React from 'react';
-import Scrollbars from "../../../../../web/js/mui/css/Scrollbars";
+import ScrollbarColors from "../../../../../web/js/mui/css/ScrollbarColors";
 import useTheme from "@material-ui/core/styles/useTheme";
 import blue from '@material-ui/core/colors/blue';
 import { StringBuffer } from "polar-shared/src/util/StringBuffer";
@@ -56,7 +56,7 @@ export function useStylesheetURL() {
 export function useCSS(): IStylesheetMap {
     const theme = useTheme();
 
-    const scrollBars = Scrollbars.createCSS(theme);
+    const scrollBars = ScrollbarColors.createCSS(theme);
 
     const color = theme.palette.type === 'dark' ? 'rgb(217, 217, 217)' : theme.palette.text.primary;
 
