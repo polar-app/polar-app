@@ -4,6 +4,7 @@ import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import Button from '@material-ui/core/Button';
 import {FAGoogleIcon} from "../../../../web/js/mui/MUIFontAwesome";
 import EmailIcon from '@material-ui/icons/Email';
+import CheckIcon from '@material-ui/icons/Check';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import TextField from '@material-ui/core/TextField';
@@ -233,26 +234,7 @@ const EmailTokenAuthButton = () => {
             try {
                 setPending(true);
 
-                const response = await triggerVerifyTokenAuth(email, challenge);
-
-                switch(response.code) {
-
-                    case "no-email-for-challenge":
-                        setAlert({
-                            type: 'error',
-                            message: "No email was found for that challenge"
-                        });
-                        break;
-
-                    case "invalid-challenge":
-                        setAlert({
-                            type: 'error',
-                            message: "The challenge code you provided was invalid."
-                        });
-                        break;
-
-                }
-
+                await triggerVerifyTokenAuth(email, challenge);
             } finally {
                 setPending(false);
             }
@@ -403,7 +385,12 @@ const EmailTokenAuthButton = () => {
                             <div className={classes.alternate} onClick={handleCodeNotReceived}>
                                 <Button>Didn't receive email</Button>
                             </div>
-
+                            <Button variant="contained"
+                                    color="primary"
+                                    className={classes.button}
+                                    onClick={handleClick}>
+                                Verify Code
+                            </Button>
                         </>
                     )}
 
@@ -419,10 +406,12 @@ const EmailTokenAuthButton = () => {
                 </>
             )}
 
-            <AuthButton onClick={handleClick}
-                        strategy="Email"
-                        startIcon={<EmailIcon />}/>
+            {!triggered && (
 
+                <AuthButton onClick={handleClick}
+                            strategy="Email"
+                            startIcon={<EmailIcon />}/>
+            )}
         </>
     );
 };

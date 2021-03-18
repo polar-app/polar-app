@@ -202,8 +202,26 @@ export function useTriggerFirebaseEmailAuth() {
 
 }
 
-export async function executeCloudFunction(cloudFunctionName: string, body: any): Promise<any> {
+type FetchResponseError = {
+    readonly code: 'fetch-response-error';
+    readonly message: string;
+    readonly status: number;
+    readonly statusText: string;
+};
 
+type FetchError = {
+    readonly code: 'fetch-error',
+    readonly message: string;
+};
+
+export type CloudFunctionResponse<S, E> = S | E | FetchResponseError | FetchError;
+
+export function getErrorFromCloudFunctionResponse(e: FetchResponseError | FetchError): Error {
+    console.log(e);
+    throw new Error(e.message);
+}
+
+export async function executeCloudFunction<S, E>(cloudFunctionName: string, body: any): Promise<CloudFunctionResponse<S, E>> {
     const url = `https://us-central1-polar-cors.cloudfunctions.net/${cloudFunctionName}/`;
 
     const init: RequestInit = {
@@ -218,31 +236,80 @@ export async function executeCloudFunction(cloudFunctionName: string, body: any)
 
     Analytics.event2("CloudFunctionCalled", {name: cloudFunctionName});
 
-    const response = await fetch(url, init);
+    try {
 
-    if (response.status !== 200) {
-        Analytics.event2("CloudFunctionFailed", {name: cloudFunctionName});
-        throw new Error("Cloud function failed: " + response.status + ": " + response.statusText);
+        const response = await fetch(url, init);
+
+        if (response.status === 200) {
+            return await response.json() as S;
+        } else {
+            Analytics.event2("CloudFunctionFailed", {name: cloudFunctionName});
+            const text = await response.text();
+
+            try {
+
+                // this is a JSON error... 
+
+                const json = JSON.parse(text) as E;
+                if (typeof json === 'object' && json !== null) return json;
+                throw new Error('Invalid JSON');
+            } catch (e) {
+
+                // if this is not json it's text/plain and so we should try to
+                // return a fetch-response-error
+
+                const error: FetchResponseError = {
+                    code: "fetch-response-error",
+                    message: "Something happened",
+                    status: response.status,
+                    statusText: response.statusText
+                };
+
+                return error;
+
+            }
+
+        }
+
+    } catch (e) {
+        return {
+            code: 'fetch-error',
+            message: e.message
+        };
     }
-
-    return await response.json();
-
 }
 
 export interface IStartTokenAuthResponse {
+    readonly code: 'ok';
     readonly status: 'ok';
+}
+
+export interface IStartTokenErrorResponse {
+    readonly code: 'unable-to-send-email';
+    readonly status: 'unable-to-send-email';
+    readonly message: string;
+    readonly email: string;
 }
 
 export function useTriggerStartTokenAuth() {
 
-    return React.useCallback(async (email: string): Promise<IStartTokenAuthResponse> => {
+    return React.useCallback(async (email: string) => {
 
         Preconditions.assertPresent(email, 'email');
 
-        return await executeCloudFunction('StartTokenAuth', {
+        const response = await executeCloudFunction<IStartTokenAuthResponse, IStartTokenErrorResponse>('StartTokenAuth', {
             email
         });
 
+        switch (response.code) {
+            case 'fetch-error':
+            case 'fetch-response-error':
+                throw getErrorFromCloudFunctionResponse(response);
+            case 'unable-to-send-email':
+                throw new Error(`Unable to send email: ${response.message}`);
+            default:
+                return response;
+        }
     }, []);
 
 }
@@ -267,23 +334,19 @@ export interface IVerifyTokenAuthResponse {
 
 export function useTriggerVerifyTokenAuth() {
 
-    return React.useCallback(async (email: string, challenge: string): Promise<IVerifyTokenAuthResponse | IVerifyTokenAuthResponseError> => {
+    return React.useCallback(async (email: string, challenge: string): Promise<IVerifyTokenAuthResponse> => {
 
         Preconditions.assertPresent(email, 'email');
         Preconditions.assertPresent(challenge, 'challenge');
 
         Analytics.event2('auth:VerifyTokenAuth');
 
-        interface IVerifyTokenAuthResponseError {
-            readonly code: 'no-email-for-challenge' | 'invalid-challenge' ;
-        }
-
         interface IVerifyTokenAuthResponse {
 
             /**
              * The code / error.
              */
-            readonly code: 'ok' ;
+            readonly code: 'ok';
 
             /**
              * A generated custom token on the backend.
@@ -294,26 +357,24 @@ export function useTriggerVerifyTokenAuth() {
 
         }
 
-        const response: IVerifyTokenAuthResponse = await executeCloudFunction('VerifyTokenAuth', {
+        const response = await executeCloudFunction<IVerifyTokenAuthResponse, IVerifyTokenAuthResponseError>('VerifyTokenAuth', {
             email, challenge
         });
 
-        Analytics.event2('auth:VerifyTokenAuthResult', {code: response.code, isNewUser: response.isNewUser});
-
-        const auth = firebase.auth();
-
-        if (response.code === 'ok') {
-
-            console.log("Got response from VerifyTokenAuth and now calling signInWithCustomToken");
-            const {customToken} = response;
-
-            const userCredential = await auth.signInWithCustomToken(customToken);
-            handleAuthResult(userCredential, response.isNewUser);
-
+        switch (response.code) {
+            case 'ok':
+                const auth = firebase.auth();
+                console.log("Got response from VerifyTokenAuth and now calling signInWithCustomToken");
+                Analytics.event2('auth:VerifyTokenAuthResult', {code: response.code, isNewUser: response.isNewUser});
+                const userCredential = await auth.signInWithCustomToken(response.customToken);
+                handleAuthResult(userCredential, response.isNewUser);
+                return response;
+            case 'no-email-for-challenge':
+                throw new Error('The challenge code you provided was invalid.');
+            case 'invalid-challenge':
+                throw new Error('No email was found for that challenge.');
+            default:
+                throw getErrorFromCloudFunctionResponse(response);
         }
-
-        return response;
-
     }, []);
-
 }
