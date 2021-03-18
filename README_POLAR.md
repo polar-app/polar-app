@@ -1,3 +1,5 @@
+- npm update --depth 5 @babel/preset-env
+
 - Use the es5 version for modern browsers
 - to build a version
 
@@ -24,3 +26,13 @@ git push --force
 then add the new ones
 then commit and push that
 ... just do everything in the temp dir
+
+## CHANGES
+
+- added the following localStorage prefs we can set:
+
+pdfjs.canvas.background         null
+pdfjs.canvas.strokeStyle        #ffffff
+pdfjs.canvas.fillStyle          #ffffff
+pdfjs.canvas.fillColor          #ffffff
+pdfjs.canvas.strokeColor        #ffffff

@@ -44,7 +44,12 @@ import { PDFPageView } from "./pdf_page_view.js";
 import { SimpleLinkService } from "./pdf_link_service.js";
 import { TextLayerBuilder } from "./text_layer_builder.js";
 
-const DEFAULT_CACHE_SIZE = 10;
+// burton: we have to change DEFAULT_CACHE_SIZE so I can set it via
+// configuration so that the PDF viewer could have better performance on
+// machines with more memory
+const DEFAULT_CACHE_SIZE = parseInt(
+  localStorage.getItem("pdfjs.viewer.cacheSize") || "10"
+);
 
 /**
  * @typedef {Object} PDFViewerOptions
