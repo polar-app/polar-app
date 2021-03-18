@@ -234,8 +234,6 @@ export async function executeCloudFunction<S, E>(cloudFunctionName: string, body
         body: JSON.stringify(body)
     };
 
-    // FIXME: Analytics.event2("CloudFunctionCalled", {name: cloudFunctionName});
-
     Analytics.event2("CloudFunctionCalled", {name: cloudFunctionName});
 
     try {
@@ -245,7 +243,7 @@ export async function executeCloudFunction<S, E>(cloudFunctionName: string, body
         if (response.status === 200) {
             return await response.json() as S;
         } else {
-
+            Analytics.event2("CloudFunctionFailed", {name: cloudFunctionName});
             const text = await response.text();
 
             try {
@@ -308,7 +306,7 @@ export function useTriggerStartTokenAuth() {
             case 'fetch-response-error':
                 throw getErrorFromCloudFunctionResponse(response);
             case 'unable-to-send-email':
-                throw new Error('Unable to send email');
+                throw new Error(`Unable to send email: ${response.message}`);
             default:
                 return response;
         }
@@ -364,10 +362,6 @@ export function useTriggerVerifyTokenAuth() {
         });
 
         switch (response.code) {
-            case 'no-email-for-challenge':
-                throw new Error('The challenge code you provided was invalid.');
-            case 'invalid-challenge':
-                throw new Error('No email was found for that challenge.');
             case 'ok':
                 const auth = firebase.auth();
                 console.log("Got response from VerifyTokenAuth and now calling signInWithCustomToken");
@@ -375,6 +369,10 @@ export function useTriggerVerifyTokenAuth() {
                 const userCredential = await auth.signInWithCustomToken(response.customToken);
                 handleAuthResult(userCredential, response.isNewUser);
                 return response;
+            case 'no-email-for-challenge':
+                throw new Error('The challenge code you provided was invalid.');
+            case 'invalid-challenge':
+                throw new Error('No email was found for that challenge.');
         }
         throw getErrorFromCloudFunctionResponse(response);
     }, []);
