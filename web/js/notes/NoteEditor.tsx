@@ -99,12 +99,6 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
     const content = React.useMemo(() => escaper.escape(note?.content || ''), [escaper, note?.content]);
 
-    if (! note) {
-        // this can happen when a note is deleted but the component hasn't yet
-        // been unmounted.
-        return null;
-    }
-
     const onClick = React.useCallback((event: React.MouseEvent) => {
 
         if (noteActivated?.note.id !== props.id) {
@@ -152,6 +146,11 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
     }, [handleEnter]);
 
+    if (! note) {
+        // this can happen when a note is deleted but the component hasn't yet
+        // been unmounted.
+        return null;
+    }
 
     return (
         <NoteContentEditable id={props.id}
