@@ -45,14 +45,16 @@ const useStyles = makeStyles((theme) =>
         logo: {
             display: 'flex',
             cursor: 'pointer',
-            marginTop: '8px',
+            height: '55px',
+            flex: '0 0 55px',
+            alignItems: 'center',
             "& *": {
                 marginLeft: 'auto',
                 marginRight: 'auto',
             },
         },
         dividerTop: {
-            marginTop: '4px',
+            marginTop: 0,
             marginBottom: '5px',
             margin: theme.spacing(1),
             height: '1px'
@@ -174,11 +176,12 @@ const PolarButton = React.memo(() => {
     const classes = useStyles();
     const history = useHistory();
 
+    const w = SIDENAV_WIDTH - 8 * 2; // The size of the hr divider below it
+
     return (
         <div className={classes.logo}
              onClick={() => history.push('')}>
-            <PolarSVGIcon width={46}
-                          height={46}/>
+            <PolarSVGIcon width={ w } height={ w } />
         </div>
     );
 

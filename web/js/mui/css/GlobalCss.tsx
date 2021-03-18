@@ -2,21 +2,14 @@ import React from 'react';
 import withStyles from "@material-ui/core/styles/withStyles";
 import useTheme from "@material-ui/core/styles/useTheme";
 import {GlobalCssGapBox} from "./GlobalCSSGapBox";
-import {DarkModeScrollbars} from "./DarkModeScrollbars";
+import ScrollbarColors from "./ScrollbarColors";
 
 export const GlobalCssDarkStyles = withStyles(() => {
-
     const theme = useTheme();
-
-    const darkModeScrollbars = DarkModeScrollbars.createCSSForReact();
 
     return {
         // @global is handled by jss-plugin-global.
         '@global': {
-
-            // ******* scrollbars
-            ...darkModeScrollbars,
-
             // You should target [class*="MuiButton-root"] instead if you nest themes.
 
             '.MuiTooltip-tooltip': {
@@ -59,8 +52,22 @@ export const GlobalCssOverflowStyles = withStyles(() => {
     }
 });
 
+
+export const GlobalCssScrollbarStyles = withStyles(() => {
+    const theme = useTheme();
+
+    const scrollbars = ScrollbarColors.createCSSForReact(theme);
+
+    return {
+        '@global': {
+            ...scrollbars
+        },
+    };
+});
+
 export const GlobalCssDark = GlobalCssDarkStyles(() => null);
 export const GlobalCssOverflow = GlobalCssOverflowStyles(() => null);
+export const GlobalCssScrollbar = GlobalCssScrollbarStyles(() => null);
 
 export const GlobalCss = () => {
 
@@ -71,6 +78,7 @@ export const GlobalCss = () => {
             {theme.palette.type === 'dark' &&
                 <GlobalCssDark/>}
 
+            <GlobalCssScrollbar/>
             <GlobalCssOverflow/>
             <GlobalCssGapBox/>
 
