@@ -8,7 +8,15 @@ export interface IStartTokenAuthRequest {
     readonly email: string;
 }
 
+export interface IStartTokenErrorResponse {
+    readonly code: 'unable-to-send-email';
+    readonly status: 'unable-to-send-email';
+    readonly message: string;
+    readonly email: string;
+}
+
 export interface IStartTokenAuthResponse {
+    readonly code: 'ok';
     readonly status: 'ok';
 }
 
@@ -54,17 +62,34 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
 
     await AuthChallenges.write(email, challenge.value)
 
-    await Sendgrid.send({
-        to: email,
-        from: 'noreply@getpolarized.io',
-        subject: `Please Sign in to Polar with code ${challenge.p0} ${challenge.p1}`,
-        html: `<p>Please use the following code to sign in to Polar:</p><p><span style="font-size: 30px;"><b>${challenge.p0} ${challenge.p1}</b></span></p>`
-    })
+    try {
 
-    const response: IStartTokenAuthResponse = {
-        status: "ok"
-    };
+        await Sendgrid.send({
+            to: email,
+            from: 'noreply@getpolarized.io',
+            subject: `Please Sign in to Polar with code ${challenge.p0} ${challenge.p1}`,
+            html: `<p>Please use the following code to sign in to Polar:</p><p><span style="font-size: 30px;"><b>${challenge.p0} ${challenge.p1}</b></span></p>`
+        });
 
-    ExpressFunctions.sendResponse(res, response);
+        const response: IStartTokenAuthResponse = {
+            code: 'ok',
+            status: "ok"
+        };
+
+        ExpressFunctions.sendResponse(res, response);
+
+    } catch (e) {
+
+        const response: IStartTokenErrorResponse = {
+            code: 'unable-to-send-email',
+            status: "unable-to-send-email",
+            message: e.message,
+            email
+        };
+
+        ExpressFunctions.sendResponse(res, response);
+
+    }
+
 
 });
