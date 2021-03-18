@@ -405,7 +405,7 @@ var CanvasExtraState = (function CanvasExtraStateClosure() {
     this.textRenderingMode = TextRenderingMode.FILL;
     this.textRise = 0;
     // Default fore and background colors
-    // FIXME: this needs to be changed for darkmode
+    // TODO: this needs to be changed for darkmode
     this.fillColor = localStorage.getItem('pdfjs.canvas.fillColor') || "#000000";
     this.strokeColor = localStorage.getItem('pdfjs.canvas.strokeColor') || "#000000";
     this.patternFill = false;
@@ -656,7 +656,7 @@ var CanvasGraphics = (function CanvasGraphicsClosure() {
   }
 
   function resetCtxToDefault(ctx) {
-    // FIXME: this needs to be changed for darkmode
+    // TODO: this needs to be changed for darkmode
     ctx.strokeStyle = localStorage.getItem("pdfjs.canvas.strokeStyle") || "#000000";
     ctx.fillStyle = localStorage.getItem("pdfjs.canvas.fillStyle") || "#000000";
     ctx.fillRule = "nonzero";
@@ -799,7 +799,7 @@ var CanvasGraphics = (function CanvasGraphicsClosure() {
       transform,
       viewport,
       transparency = false,
-      // FIXME: this needs to be changed for darkmode
+      // TODO: this needs to be changed for darkmode
       background = localStorage.getItem("pdfjs.canvas.background") || null,
     }) {
       // For pdfs that use blend modes we have to clear the canvas else certain
