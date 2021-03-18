@@ -233,7 +233,7 @@ class SecondaryToolbar {
   }
 
   _bindCursorToolsListener(buttons) {
-    this.eventBus._on("cursortoolchanged", function({ tool }) {
+    this.eventBus._on("cursortoolchanged", function ({ tool }) {
       buttons.cursorSelectToolButton.classList.toggle(
         "toggled",
         tool === CursorTool.SELECT
@@ -308,6 +308,7 @@ class SecondaryToolbar {
     this._setMaxHeight();
 
     this.toggleButton.classList.add("toggled");
+    this.toggleButton.setAttribute("aria-expanded", "true");
     this.toolbar.classList.remove("hidden");
   }
 
@@ -318,6 +319,7 @@ class SecondaryToolbar {
     this.opened = false;
     this.toolbar.classList.add("hidden");
     this.toggleButton.classList.remove("toggled");
+    this.toggleButton.setAttribute("aria-expanded", "false");
   }
 
   toggle() {
@@ -340,8 +342,9 @@ class SecondaryToolbar {
     if (this.containerHeight === this.previousContainerHeight) {
       return;
     }
-    this.toolbarButtonContainer.style.maxHeight = `${this.containerHeight -
-      SCROLLBAR_PADDING}px`;
+    this.toolbarButtonContainer.style.maxHeight = `${
+      this.containerHeight - SCROLLBAR_PADDING
+    }px`;
 
     this.previousContainerHeight = this.containerHeight;
   }

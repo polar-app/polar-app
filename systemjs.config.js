@@ -12,10 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/* eslint-disable no-var */
 
 "use strict";
 
-(function() {
+(function () {
   var baseLocation;
   if (typeof document !== "undefined") {
     baseLocation = new URL("./", document.currentScript.src);
@@ -44,7 +45,7 @@
   // require with __webpack_require__. When we want to use the real require,
   // __non_webpack_require__ has to be used.
   // In this target, we don't create a bundle, so we have to replace the
-  // occurences of __non_webpack_require__ ourselves.
+  // occurrences of __non_webpack_require__ ourselves.
   function babelPluginReplaceNonWebPackRequire(babel) {
     return {
       visitor: {

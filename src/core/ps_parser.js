@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/* eslint no-var: error */
 
 import { FormatError, shadow } from "../shared/util.js";
 import { EOF } from "./primitives.js";
@@ -113,6 +112,7 @@ const PostScriptTokenTypes = {
 const PostScriptToken = (function PostScriptTokenClosure() {
   const opCache = Object.create(null);
 
+  // eslint-disable-next-line no-shadow
   class PostScriptToken {
     constructor(type, value) {
       this.type = type;

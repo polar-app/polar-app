@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/* eslint no-var: error */
 
 // prettier-ignore
 const ISOAdobeCharset = [
@@ -117,4 +116,4 @@ const ExpertSubsetCharset = [
   "periodinferior", "commainferior"
 ];
 
-export { ISOAdobeCharset, ExpertCharset, ExpertSubsetCharset };
+export { ExpertCharset, ExpertSubsetCharset, ISOAdobeCharset };

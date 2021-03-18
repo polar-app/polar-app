@@ -12,15 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/* uses XRef */
 
 import { assert, unreachable } from "../shared/util.js";
 
-var EOF = {};
+const EOF = {};
 
-var Name = (function NameClosure() {
+const Name = (function NameClosure() {
   let nameCache = Object.create(null);
 
+  // eslint-disable-next-line no-shadow
   function Name(name) {
     this.name = name;
   }
@@ -28,21 +28,22 @@ var Name = (function NameClosure() {
   Name.prototype = {};
 
   Name.get = function Name_get(name) {
-    var nameValue = nameCache[name];
+    const nameValue = nameCache[name];
     // eslint-disable-next-line no-restricted-syntax
     return nameValue ? nameValue : (nameCache[name] = new Name(name));
   };
 
-  Name._clearCache = function() {
+  Name._clearCache = function () {
     nameCache = Object.create(null);
   };
 
   return Name;
 })();
 
-var Cmd = (function CmdClosure() {
+const Cmd = (function CmdClosure() {
   let cmdCache = Object.create(null);
 
+  // eslint-disable-next-line no-shadow
   function Cmd(cmd) {
     this.cmd = cmd;
   }
@@ -50,24 +51,25 @@ var Cmd = (function CmdClosure() {
   Cmd.prototype = {};
 
   Cmd.get = function Cmd_get(cmd) {
-    var cmdValue = cmdCache[cmd];
+    const cmdValue = cmdCache[cmd];
     // eslint-disable-next-line no-restricted-syntax
     return cmdValue ? cmdValue : (cmdCache[cmd] = new Cmd(cmd));
   };
 
-  Cmd._clearCache = function() {
+  Cmd._clearCache = function () {
     cmdCache = Object.create(null);
   };
 
   return Cmd;
 })();
 
-var Dict = (function DictClosure() {
-  var nonSerializable = function nonSerializableClosure() {
+const Dict = (function DictClosure() {
+  const nonSerializable = function nonSerializableClosure() {
     return nonSerializable; // creating closure on some variable
   };
 
   // xref is optional
+  // eslint-disable-next-line no-shadow
   function Dict(xref) {
     // Map should only be used internally, use functions below to access.
     this._map = Object.create(null);
@@ -80,6 +82,10 @@ var Dict = (function DictClosure() {
   Dict.prototype = {
     assignXref: function Dict_assignXref(newXref) {
       this.xref = newXref;
+    },
+
+    get size() {
+      return Object.keys(this._map).length;
     },
 
     // automatically dereferences Ref objects
@@ -137,6 +143,11 @@ var Dict = (function DictClosure() {
       return Object.keys(this._map);
     },
 
+    // no dereferencing
+    getRawValues: function Dict_getRawValues() {
+      return Object.values(this._map);
+    },
+
     set: function Dict_set(key, value) {
       if (
         (typeof PDFJSDev === "undefined" ||
@@ -153,38 +164,85 @@ var Dict = (function DictClosure() {
     },
 
     forEach: function Dict_forEach(callback) {
-      for (var key in this._map) {
+      for (const key in this._map) {
         callback(key, this.get(key));
       }
     },
   };
 
-  Dict.empty = new Dict(null);
+  Dict.empty = (function () {
+    const emptyDict = new Dict(null);
 
-  Dict.merge = function(xref, dictArray) {
+    emptyDict.set = (key, value) => {
+      unreachable("Should not call `set` on the empty dictionary.");
+    };
+    return emptyDict;
+  })();
+
+  Dict.merge = function ({ xref, dictArray, mergeSubDicts = false }) {
     const mergedDict = new Dict(xref);
 
-    for (let i = 0, ii = dictArray.length; i < ii; i++) {
-      const dict = dictArray[i];
-      if (!isDict(dict)) {
-        continue;
-      }
-      for (const keyName in dict._map) {
-        if (mergedDict._map[keyName] !== undefined) {
+    if (!mergeSubDicts) {
+      for (const dict of dictArray) {
+        if (!(dict instanceof Dict)) {
           continue;
         }
-        mergedDict._map[keyName] = dict._map[keyName];
+        for (const [key, value] of Object.entries(dict._map)) {
+          if (mergedDict._map[key] === undefined) {
+            mergedDict._map[key] = value;
+          }
+        }
+      }
+      return mergedDict.size > 0 ? mergedDict : Dict.empty;
+    }
+    const properties = new Map();
+
+    for (const dict of dictArray) {
+      if (!(dict instanceof Dict)) {
+        continue;
+      }
+      for (const [key, value] of Object.entries(dict._map)) {
+        let property = properties.get(key);
+        if (property === undefined) {
+          property = [];
+          properties.set(key, property);
+        }
+        property.push(value);
       }
     }
-    return mergedDict;
+    for (const [name, values] of properties) {
+      if (values.length === 1 || !(values[0] instanceof Dict)) {
+        mergedDict._map[name] = values[0];
+        continue;
+      }
+      const subDict = new Dict(xref);
+
+      for (const dict of values) {
+        if (!(dict instanceof Dict)) {
+          continue;
+        }
+        for (const [key, value] of Object.entries(dict._map)) {
+          if (subDict._map[key] === undefined) {
+            subDict._map[key] = value;
+          }
+        }
+      }
+      if (subDict.size > 0) {
+        mergedDict._map[name] = subDict;
+      }
+    }
+    properties.clear();
+
+    return mergedDict.size > 0 ? mergedDict : Dict.empty;
   };
 
   return Dict;
 })();
 
-var Ref = (function RefClosure() {
+const Ref = (function RefClosure() {
   let refCache = Object.create(null);
 
+  // eslint-disable-next-line no-shadow
   function Ref(num, gen) {
     this.num = num;
     this.gen = gen;
@@ -201,14 +259,14 @@ var Ref = (function RefClosure() {
     },
   };
 
-  Ref.get = function(num, gen) {
+  Ref.get = function (num, gen) {
     const key = gen === 0 ? `${num}R` : `${num}R${gen}`;
     const refValue = refCache[key];
     // eslint-disable-next-line no-restricted-syntax
     return refValue ? refValue : (refCache[key] = new Ref(num, gen));
   };
 
-  Ref._clearCache = function() {
+  Ref._clearCache = function () {
     refCache = Object.create(null);
   };
 
@@ -217,63 +275,77 @@ var Ref = (function RefClosure() {
 
 // The reference is identified by number and generation.
 // This structure stores only one instance of the reference.
-var RefSet = (function RefSetClosure() {
-  function RefSet() {
-    this.dict = Object.create(null);
+class RefSet {
+  constructor(parent = null) {
+    if (
+      (typeof PDFJSDev === "undefined" ||
+        PDFJSDev.test("!PRODUCTION || TESTING")) &&
+      parent &&
+      !(parent instanceof RefSet)
+    ) {
+      unreachable('RefSet: Invalid "parent" value.');
+    }
+    this._set = new Set(parent && parent._set);
   }
 
-  RefSet.prototype = {
-    has: function RefSet_has(ref) {
-      return ref.toString() in this.dict;
-    },
-
-    put: function RefSet_put(ref) {
-      this.dict[ref.toString()] = true;
-    },
-
-    remove: function RefSet_remove(ref) {
-      delete this.dict[ref.toString()];
-    },
-  };
-
-  return RefSet;
-})();
-
-var RefSetCache = (function RefSetCacheClosure() {
-  function RefSetCache() {
-    this.dict = Object.create(null);
+  has(ref) {
+    return this._set.has(ref.toString());
   }
 
-  RefSetCache.prototype = {
-    get: function RefSetCache_get(ref) {
-      return this.dict[ref.toString()];
-    },
+  put(ref) {
+    this._set.add(ref.toString());
+  }
 
-    has: function RefSetCache_has(ref) {
-      return ref.toString() in this.dict;
-    },
+  remove(ref) {
+    this._set.delete(ref.toString());
+  }
 
-    put: function RefSetCache_put(ref, obj) {
-      this.dict[ref.toString()] = obj;
-    },
+  forEach(callback) {
+    for (const ref of this._set.values()) {
+      callback(ref);
+    }
+  }
 
-    putAlias: function RefSetCache_putAlias(ref, aliasRef) {
-      this.dict[ref.toString()] = this.get(aliasRef);
-    },
+  clear() {
+    this._set.clear();
+  }
+}
 
-    forEach: function RefSetCache_forEach(callback) {
-      for (const i in this.dict) {
-        callback(this.dict[i]);
-      }
-    },
+class RefSetCache {
+  constructor() {
+    this._map = new Map();
+  }
 
-    clear: function RefSetCache_clear() {
-      this.dict = Object.create(null);
-    },
-  };
+  get size() {
+    return this._map.size;
+  }
 
-  return RefSetCache;
-})();
+  get(ref) {
+    return this._map.get(ref.toString());
+  }
+
+  has(ref) {
+    return this._map.has(ref.toString());
+  }
+
+  put(ref, obj) {
+    this._map.set(ref.toString(), obj);
+  }
+
+  putAlias(ref, aliasRef) {
+    this._map.set(ref.toString(), this.get(aliasRef));
+  }
+
+  forEach(callback) {
+    for (const value of this._map.values()) {
+      callback(value);
+    }
+  }
+
+  clear() {
+    this._map.clear();
+  }
+}
 
 function isEOF(v) {
   return v === EOF;
@@ -321,19 +393,19 @@ function clearPrimitiveCaches() {
 }
 
 export {
-  EOF,
   clearPrimitiveCaches,
   Cmd,
   Dict,
-  Name,
-  Ref,
-  RefSet,
-  RefSetCache,
-  isEOF,
+  EOF,
   isCmd,
   isDict,
+  isEOF,
   isName,
   isRef,
   isRefsEqual,
   isStream,
+  Name,
+  Ref,
+  RefSet,
+  RefSetCache,
 };

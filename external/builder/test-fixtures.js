@@ -1,37 +1,37 @@
 "use strict";
 
-var builder = require("./builder");
-var fs = require("fs");
-var path = require("path");
+const builder = require("./builder");
+const fs = require("fs");
+const path = require("path");
 
-var errors = 0;
+let errors = 0;
 
-var baseDir = path.join(__dirname, "fixtures");
-var files = fs
+const baseDir = path.join(__dirname, "fixtures");
+const files = fs
   .readdirSync(baseDir)
-  .filter(function(name) {
+  .filter(function (name) {
     return /-expected\./.test(name);
   })
-  .map(function(name) {
+  .map(function (name) {
     return path.join(baseDir, name);
   });
-files.forEach(function(expectationFilename) {
-  var inFilename = expectationFilename.replace("-expected", "");
-  var expectation = fs
+files.forEach(function (expectationFilename) {
+  const inFilename = expectationFilename.replace("-expected", "");
+  const expectation = fs
     .readFileSync(expectationFilename)
     .toString()
     .trim()
     .replace(/__filename/g, fs.realpathSync(inFilename));
-  var outLines = [];
+  const outLines = [];
 
-  var outFilename = function(line) {
+  const outFilename = function (line) {
     outLines.push(line);
   };
-  var defines = {
+  const defines = {
     TRUE: true,
     FALSE: false,
   };
-  var out;
+  let out;
   try {
     builder.preprocess(inFilename, outFilename, defines);
     out = outLines.join("\n").trim();

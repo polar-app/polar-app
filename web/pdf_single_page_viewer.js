@@ -27,12 +27,16 @@ class PDFSinglePageViewer extends BaseViewer {
     });
   }
 
-  get _setDocumentViewerElement() {
+  get _viewerElement() {
     // Since we only want to display *one* page at a time when using the
     // `PDFSinglePageViewer`, we cannot append them to the `viewer` DOM element.
     // Instead, they are placed in a `DocumentFragment`, and only the current
     // page is displayed in the viewer (refer to `this._ensurePageViewVisible`).
-    return shadow(this, "_setDocumentViewerElement", this._shadowViewer);
+    return shadow(this, "_viewerElement", this._shadowViewer);
+  }
+
+  get _pageWidthScaleFactor() {
+    return 1;
   }
 
   _resetView() {
@@ -117,6 +121,10 @@ class PDFSinglePageViewer extends BaseViewer {
   _updateScrollMode() {}
 
   _updateSpreadMode() {}
+
+  _getPageAdvance() {
+    return 1;
+  }
 }
 
 export { PDFSinglePageViewer };

@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 /* globals __non_webpack_require__ */
-/* eslint no-var: error */
 
 import {
   createObjectURL,
@@ -29,7 +28,8 @@ import {
 import { DOMSVGFactory } from "./display_utils.js";
 import { isNodeJS } from "../shared/is_node.js";
 
-let SVGGraphics = function() {
+/** @type {any} */
+let SVGGraphics = function () {
   throw new Error("Not implemented: SVGGraphics");
 };
 
@@ -44,7 +44,7 @@ if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
   const LINE_CAP_STYLES = ["butt", "round", "square"];
   const LINE_JOIN_STYLES = ["miter", "round", "bevel"];
 
-  const convertImgDataToPng = (function() {
+  const convertImgDataToPng = (function () {
     const PNG_HEADER = new Uint8Array([
       0x89,
       0x50,
@@ -286,6 +286,7 @@ if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
       return createObjectURL(data, "image/png", forceDataSchema);
     }
 
+    // eslint-disable-next-line no-shadow
     return function convertImgDataToPng(imgData, forceDataSchema, isMask) {
       const kind =
         imgData.kind === undefined ? ImageKind.GRAYSCALE_1BPP : imgData.kind;
@@ -437,8 +438,9 @@ if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
   let maskCount = 0;
   let shadingCount = 0;
 
+  // eslint-disable-next-line no-shadow
   SVGGraphics = class SVGGraphics {
-    constructor(commonObjs, objs, forceDataSchema) {
+    constructor(commonObjs, objs, forceDataSchema = false) {
       this.svgFactory = new DOMSVGFactory();
 
       this.current = new SVGExtraState();
@@ -662,9 +664,6 @@ if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
           case OPS.paintSolidColorImageMask:
             this.paintSolidColorImageMask();
             break;
-          case OPS.paintJpegXObject:
-            this.paintJpegXObject(args[0], args[1], args[2]);
-            break;
           case OPS.paintImageXObject:
             this.paintImageXObject(args[0]);
             break;
@@ -736,12 +735,13 @@ if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
     setTextMatrix(a, b, c, d, e, f) {
       const current = this.current;
       current.textMatrix = current.lineMatrix = [a, b, c, d, e, f];
-      current.textMatrixScale = Math.sqrt(a * a + b * b);
+      current.textMatrixScale = Math.hypot(a, b);
 
       current.x = current.lineX = 0;
       current.y = current.lineY = 0;
 
       current.xcoords = [];
+      current.ycoords = [];
       current.tspan = this.svgFactory.createElement("svg:tspan");
       current.tspan.setAttributeNS(null, "font-family", current.fontFamily);
       current.tspan.setAttributeNS(
@@ -766,6 +766,7 @@ if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
       current.txtElement = this.svgFactory.createElement("svg:text");
       current.txtgrp = this.svgFactory.createElement("svg:g");
       current.xcoords = [];
+      current.ycoords = [];
     }
 
     moveText(x, y) {
@@ -774,6 +775,7 @@ if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
       current.y = current.lineY += y;
 
       current.xcoords = [];
+      current.ycoords = [];
       current.tspan = this.svgFactory.createElement("svg:tspan");
       current.tspan.setAttributeNS(null, "font-family", current.fontFamily);
       current.tspan.setAttributeNS(
@@ -792,11 +794,14 @@ if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
         return;
       }
 
+      const fontSizeScale = current.fontSizeScale;
       const charSpacing = current.charSpacing;
       const wordSpacing = current.wordSpacing;
       const fontDirection = current.fontDirection;
       const textHScale = current.textHScale * fontDirection;
       const vertical = font.vertical;
+      const spacingDir = vertical ? 1 : -1;
+      const defaultVMetrics = font.defaultVMetrics;
       const widthAdvanceScale = fontSize * current.fontMatrix[0];
 
       let x = 0;
@@ -806,39 +811,72 @@ if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
           x += fontDirection * wordSpacing;
           continue;
         } else if (isNum(glyph)) {
-          x += -glyph * fontSize * 0.001;
+          x += (spacingDir * glyph * fontSize) / 1000;
           continue;
         }
 
-        const width = glyph.width;
-        const character = glyph.fontChar;
         const spacing = (glyph.isSpace ? wordSpacing : 0) + charSpacing;
-        const charWidth = width * widthAdvanceScale + spacing * fontDirection;
+        const character = glyph.fontChar;
+        let scaledX, scaledY;
+        let width = glyph.width;
+        if (vertical) {
+          let vx;
+          const vmetric = glyph.vmetric || defaultVMetrics;
+          vx = glyph.vmetric ? vmetric[1] : width * 0.5;
+          vx = -vx * widthAdvanceScale;
+          const vy = vmetric[2] * widthAdvanceScale;
 
-        if (!glyph.isInFont && !font.missingFile) {
-          x += charWidth;
+          width = vmetric ? -vmetric[0] : width;
+          scaledX = vx / fontSizeScale;
+          scaledY = (x + vy) / fontSizeScale;
+        } else {
+          scaledX = x / fontSizeScale;
+          scaledY = 0;
+        }
+
+        if (glyph.isInFont || font.missingFile) {
+          current.xcoords.push(current.x + scaledX);
+          if (vertical) {
+            current.ycoords.push(-current.y + scaledY);
+          }
+          current.tspan.textContent += character;
+        } else {
           // TODO: To assist with text selection, we should replace the missing
           // character with a space character if charWidth is not zero.
           // But we cannot just do "character = ' '", because the ' ' character
           // might actually map to a different glyph.
-          continue;
         }
-        current.xcoords.push(current.x + x);
-        current.tspan.textContent += character;
+
+        let charWidth;
+        if (vertical) {
+          charWidth = width * widthAdvanceScale - spacing * fontDirection;
+        } else {
+          charWidth = width * widthAdvanceScale + spacing * fontDirection;
+        }
+
         x += charWidth;
       }
-      if (vertical) {
-        current.y -= x * textHScale;
-      } else {
-        current.x += x * textHScale;
-      }
-
       current.tspan.setAttributeNS(
         null,
         "x",
         current.xcoords.map(pf).join(" ")
       );
-      current.tspan.setAttributeNS(null, "y", pf(-current.y));
+      if (vertical) {
+        current.tspan.setAttributeNS(
+          null,
+          "y",
+          current.ycoords.map(pf).join(" ")
+        );
+      } else {
+        current.tspan.setAttributeNS(null, "y", pf(-current.y));
+      }
+
+      if (vertical) {
+        current.y -= x;
+      } else {
+        current.x += x * textHScale;
+      }
+
       current.tspan.setAttributeNS(null, "font-family", current.fontFamily);
       current.tspan.setAttributeNS(
         null,
@@ -907,6 +945,12 @@ if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
     }
 
     addFontStyle(fontObj) {
+      if (!fontObj.data) {
+        throw new Error(
+          "addFontStyle: No font data available, " +
+            'ensure that the "fontExtraProperties" API parameter is set.'
+        );
+      }
       if (!this.cssStyle) {
         this.cssStyle = this.svgFactory.createElement("svg:style");
         this.cssStyle.setAttributeNS(null, "type", "text/css");
@@ -931,16 +975,13 @@ if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
 
       if (
         this.embedFonts &&
-        fontObj.data &&
+        !fontObj.missingFile &&
         !this.embeddedFonts[fontObj.loadedName]
       ) {
         this.addFontStyle(fontObj);
         this.embeddedFonts[fontObj.loadedName] = fontObj;
       }
-
-      current.fontMatrix = fontObj.fontMatrix
-        ? fontObj.fontMatrix
-        : FONT_IDENTITY_MATRIX;
+      current.fontMatrix = fontObj.fontMatrix || FONT_IDENTITY_MATRIX;
 
       let bold = "normal";
       if (fontObj.black) {
@@ -964,14 +1005,14 @@ if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
       current.tspan = this.svgFactory.createElement("svg:tspan");
       current.tspan.setAttributeNS(null, "y", pf(-current.y));
       current.xcoords = [];
+      current.ycoords = [];
     }
 
     endText() {
       const current = this.current;
       if (
         current.textRenderingMode & TextRenderingMode.ADD_TO_PATH_FLAG &&
-        current.txtElement &&
-        current.txtElement.hasChildNodes()
+        current.txtElement?.hasChildNodes()
       ) {
         // If no glyphs are shown (i.e. no child nodes), no clipping occurs.
         current.element = current.txtElement;
@@ -1004,7 +1045,7 @@ if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
     }
 
     setStrokeRGBColor(r, g, b) {
-      this.current.strokeColor = Util.makeCssRgb(r, g, b);
+      this.current.strokeColor = Util.makeHexColor(r, g, b);
     }
 
     setFillAlpha(fillAlpha) {
@@ -1012,9 +1053,10 @@ if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
     }
 
     setFillRGBColor(r, g, b) {
-      this.current.fillColor = Util.makeCssRgb(r, g, b);
+      this.current.fillColor = Util.makeHexColor(r, g, b);
       this.current.tspan = this.svgFactory.createElement("svg:tspan");
       this.current.xcoords = [];
+      this.current.ycoords = [];
     }
 
     setStrokeColorN(args) {
@@ -1044,6 +1086,9 @@ if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
       rect.setAttributeNS(null, "width", x1 - x0);
       rect.setAttributeNS(null, "height", y1 - y0);
       rect.setAttributeNS(null, "fill", this._makeShadingPattern(args));
+      if (this.current.fillAlpha < 1) {
+        rect.setAttributeNS(null, "fill-opacity", this.current.fillAlpha);
+      }
       this._ensureTransformGroup().appendChild(rect);
     }
 
@@ -1094,7 +1139,7 @@ if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
       this.svg = bbox;
       this.transformMatrix = matrix;
       if (paintType === 2) {
-        const cssColor = Util.makeCssRgb(...color);
+        const cssColor = Util.makeHexColor(...color);
         this.current.fillColor = cssColor;
         this.current.strokeColor = cssColor;
       }
@@ -1325,7 +1370,7 @@ if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
         // The previous clipping group content can go out of order -- resetting
         // cached clipGroups.
         current.clipGroup = null;
-        this.extraStack.forEach(function(prev) {
+        this.extraStack.forEach(function (prev) {
           prev.clipGroup = null;
         });
         // Intersect with the previous clipping path.
@@ -1437,7 +1482,7 @@ if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
       const current = this.current;
       let dashArray = current.dashArray;
       if (lineWidthScale !== 1 && dashArray.length > 0) {
-        dashArray = dashArray.map(function(value) {
+        dashArray = dashArray.map(function (value) {
           return lineWidthScale * value;
         });
       }
@@ -1510,25 +1555,10 @@ if (typeof PDFJSDev === "undefined" || PDFJSDev.test("GENERIC")) {
       this._ensureTransformGroup().appendChild(rect);
     }
 
-    paintJpegXObject(objId, w, h) {
-      const imgObj = this.objs.get(objId);
-      const imgEl = this.svgFactory.createElement("svg:image");
-      imgEl.setAttributeNS(XLINK_NS, "xlink:href", imgObj.src);
-      imgEl.setAttributeNS(null, "width", pf(w));
-      imgEl.setAttributeNS(null, "height", pf(h));
-      imgEl.setAttributeNS(null, "x", "0");
-      imgEl.setAttributeNS(null, "y", pf(-h));
-      imgEl.setAttributeNS(
-        null,
-        "transform",
-        `scale(${pf(1 / w)} ${pf(-1 / h)})`
-      );
-
-      this._ensureTransformGroup().appendChild(imgEl);
-    }
-
     paintImageXObject(objId) {
-      const imgData = this.objs.get(objId);
+      const imgData = objId.startsWith("g_")
+        ? this.commonObjs.get(objId)
+        : this.objs.get(objId);
       if (!imgData) {
         warn(`Dependent image with object ID ${objId} is not ready yet`);
         return;

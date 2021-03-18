@@ -13,18 +13,24 @@
  * limitations under the License.
  */
 
-import { isEmptyObj } from "../../src/shared/util.js";
+import { isEmptyObj } from "./test_utils.js";
 import { Metadata } from "../../src/display/metadata.js";
+import { MetadataParser } from "../../src/core/metadata_parser.js";
 
-describe("metadata", function() {
-  it("should handle valid metadata", function() {
+function createMetadata(data) {
+  const metadataParser = new MetadataParser(data);
+  return new Metadata(metadataParser.serializable);
+}
+
+describe("metadata", function () {
+  it("should handle valid metadata", function () {
     const data =
       "<x:xmpmeta xmlns:x='adobe:ns:meta/'>" +
       "<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'>" +
       "<rdf:Description xmlns:dc='http://purl.org/dc/elements/1.1/'>" +
       '<dc:title><rdf:Alt><rdf:li xml:lang="x-default">Foo bar baz</rdf:li>' +
       "</rdf:Alt></dc:title></rdf:Description></rdf:RDF></x:xmpmeta>";
-    const metadata = new Metadata(data);
+    const metadata = createMetadata(data);
 
     expect(metadata.has("dc:title")).toBeTruthy();
     expect(metadata.has("dc:qux")).toBeFalsy();
@@ -35,14 +41,14 @@ describe("metadata", function() {
     expect(metadata.getAll()).toEqual({ "dc:title": "Foo bar baz" });
   });
 
-  it("should repair and handle invalid metadata", function() {
+  it("should repair and handle invalid metadata", function () {
     const data =
       "<x:xmpmeta xmlns:x='adobe:ns:meta/'>" +
       "<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'>" +
       "<rdf:Description xmlns:dc='http://purl.org/dc/elements/1.1/'>" +
       "<dc:title>\\376\\377\\000P\\000D\\000F\\000&</dc:title>" +
       "</rdf:Description></rdf:RDF></x:xmpmeta>";
-    const metadata = new Metadata(data);
+    const metadata = createMetadata(data);
 
     expect(metadata.has("dc:title")).toBeTruthy();
     expect(metadata.has("dc:qux")).toBeFalsy();
@@ -53,7 +59,7 @@ describe("metadata", function() {
     expect(metadata.getAll()).toEqual({ "dc:title": "PDF&" });
   });
 
-  it("should repair and handle invalid metadata (bug 1424938)", function() {
+  it("should repair and handle invalid metadata (bug 1424938)", function () {
     const data =
       "<x:xmpmeta xmlns:x='adobe:ns:meta/' " +
       "x:xmptk='XMP toolkit 2.9.1-13, framework 1.6'>" +
@@ -85,7 +91,7 @@ describe("metadata", function() {
       "<dc:creator><rdf:Seq><rdf:li>\\376\\377\\000O\\000D\\000I\\000S" +
       "</rdf:li></rdf:Seq></dc:creator></rdf:Description></rdf:RDF>" +
       "</x:xmpmeta>";
-    const metadata = new Metadata(data);
+    const metadata = createMetadata(data);
 
     expect(metadata.has("dc:title")).toBeTruthy();
     expect(metadata.has("dc:qux")).toBeFalsy();
@@ -96,13 +102,13 @@ describe("metadata", function() {
     expect(metadata.get("dc:qux")).toEqual(null);
 
     expect(metadata.getAll()).toEqual({
-      "dc:creator": "ODIS",
+      "dc:creator": ["ODIS"],
       "dc:title": "L'Odissee thématique logo Odisséé - décembre 2008.pub",
       "xap:creatortool": "PDFCreator Version 0.9.6",
     });
   });
 
-  it("should gracefully handle incomplete tags (issue 8884)", function() {
+  it("should gracefully handle incomplete tags (issue 8884)", function () {
     const data =
       '<?xpacket begin="Ã¯Â»Â¿" id="W5M0MpCehiHzreSzNTczkc9d' +
       '<x:xmpmeta xmlns:x="adobe:ns:meta/">' +
@@ -128,12 +134,12 @@ describe("metadata", function() {
       "</rdf:RDF>" +
       "</x:xmpmeta>" +
       '<?xpacket end="w"?>';
-    const metadata = new Metadata(data);
+    const metadata = createMetadata(data);
 
     expect(isEmptyObj(metadata.getAll())).toEqual(true);
   });
 
-  it('should gracefully handle "junk" before the actual metadata (issue 10395)', function() {
+  it('should gracefully handle "junk" before the actual metadata (issue 10395)', function () {
     const data =
       'ï»¿<?xpacket begin="ï»¿" id="W5M0MpCehiHzreSzNTczkc9d"?>' +
       '<x:xmpmeta x:xmptk="TallComponents PDFObjects 1.0" ' +
@@ -159,7 +165,7 @@ describe("metadata", function() {
       '<dc:title><rdf:Alt><rdf:li xml:lang="x-default"></rdf:li>' +
       "</rdf:Alt></dc:title><dc:format>application/pdf</dc:format>" +
       '</rdf:Description></rdf:RDF></x:xmpmeta><?xpacket end="w"?>';
-    const metadata = new Metadata(data);
+    const metadata = createMetadata(data);
 
     expect(metadata.has("dc:title")).toBeTruthy();
     expect(metadata.has("dc:qux")).toBeFalsy();
@@ -168,10 +174,10 @@ describe("metadata", function() {
     expect(metadata.get("dc:qux")).toEqual(null);
 
     expect(metadata.getAll()).toEqual({
-      "dc:creator": "",
+      "dc:creator": [""],
       "dc:description": "",
       "dc:format": "application/pdf",
-      "dc:subject": "",
+      "dc:subject": [],
       "dc:title": "",
       "pdf:keywords": "",
       "pdf:pdfversion": "1.7",
@@ -183,7 +189,7 @@ describe("metadata", function() {
     });
   });
 
-  it('should correctly handle metadata containing "&apos" (issue 10407)', function() {
+  it('should correctly handle metadata containing "&apos" (issue 10407)', function () {
     const data =
       "<x:xmpmeta xmlns:x='adobe:ns:meta/'>" +
       "<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'>" +
@@ -191,7 +197,7 @@ describe("metadata", function() {
       "<dc:title><rdf:Alt>" +
       '<rdf:li xml:lang="x-default">&apos;Foo bar baz&apos;</rdf:li>' +
       "</rdf:Alt></dc:title></rdf:Description></rdf:RDF></x:xmpmeta>";
-    const metadata = new Metadata(data);
+    const metadata = createMetadata(data);
 
     expect(metadata.has("dc:title")).toBeTruthy();
     expect(metadata.has("dc:qux")).toBeFalsy();
@@ -202,7 +208,7 @@ describe("metadata", function() {
     expect(metadata.getAll()).toEqual({ "dc:title": "'Foo bar baz'" });
   });
 
-  it("should gracefully handle unbalanced end tags (issue 10410)", function() {
+  it("should gracefully handle unbalanced end tags (issue 10410)", function () {
     const data =
       '<?xpacket begin="Ã¯Â»Â¿" id="W5M0MpCehiHzreSzNTczkc9d"?>' +
       '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">' +
@@ -220,12 +226,12 @@ describe("metadata", function() {
       "<xmpMM:DocumentID>uuid:00000000-1c84-3cf9-89ba-bef0e729c831" +
       "</xmpMM:DocumentID></rdf:Description>" +
       '</rdf:RDF></x:xmpmeta><?xpacket end="w"?>';
-    const metadata = new Metadata(data);
+    const metadata = createMetadata(data);
 
     expect(isEmptyObj(metadata.getAll())).toEqual(true);
   });
 
-  it("should not be vulnerable to the billion laughs attack", function() {
+  it("should not be vulnerable to the billion laughs attack", function () {
     const data =
       '<?xml version="1.0"?>' +
       "<!DOCTYPE lolz [" +
@@ -249,7 +255,7 @@ describe("metadata", function() {
       "    </dc:title>" +
       "  </rdf:Description>" +
       "</rdf:RDF>";
-    const metadata = new Metadata(data);
+    const metadata = createMetadata(data);
 
     expect(metadata.has("dc:title")).toBeTruthy();
     expect(metadata.has("dc:qux")).toBeFalsy();

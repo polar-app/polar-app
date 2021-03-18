@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/* eslint no-var: error */
 
 import {
   assert,
@@ -25,9 +24,11 @@ import {
   isNum,
   isString,
   OPS,
+  PageActionEventType,
   shadow,
   stringToBytes,
   stringToPDFString,
+  unreachable,
   Util,
   warn,
 } from "../shared/util.js";
@@ -37,10 +38,12 @@ import {
   Dict,
   isDict,
   isName,
+  isRef,
   isStream,
   Ref,
 } from "./primitives.js";
 import {
+  collectActions,
   getInheritableProperty,
   isWhiteSpace,
   MissingDataException,
@@ -53,7 +56,6 @@ import { calculateMD5 } from "./crypto.js";
 import { Linearization } from "./parser.js";
 import { OperatorList } from "./operator_list.js";
 import { PartialEvaluator } from "./evaluator.js";
-import { PDFFunctionFactory } from "./function.js";
 
 const DEFAULT_USER_UNIT = 1.0;
 const LETTER_SIZE_MEDIABOX = [0, 0, 612, 792];
@@ -72,9 +74,11 @@ class Page {
     pageIndex,
     pageDict,
     ref,
+    globalIdFactory,
     fontCache,
     builtInCMapCache,
-    pdfFunctionFactory,
+    globalImageCache,
+    nonBlendModesSet,
   }) {
     this.pdfManager = pdfManager;
     this.pageIndex = pageIndex;
@@ -83,20 +87,18 @@ class Page {
     this.ref = ref;
     this.fontCache = fontCache;
     this.builtInCMapCache = builtInCMapCache;
-    this.pdfFunctionFactory = pdfFunctionFactory;
+    this.globalImageCache = globalImageCache;
+    this.nonBlendModesSet = nonBlendModesSet;
     this.evaluatorOptions = pdfManager.evaluatorOptions;
     this.resourcesPromise = null;
 
     const idCounters = {
       obj: 0,
     };
-    this.idFactory = {
-      createObjId() {
+    this._localIdFactory = class extends globalIdFactory {
+      static createObjId() {
         return `p${pageIndex}_${++idCounters.obj}`;
-      },
-      getDocId() {
-        return `g_${pdfManager.docId}`;
-      },
+      }
     };
   }
 
@@ -116,7 +118,7 @@ class Page {
     if (value.length === 1 || !isDict(value[0])) {
       return value[0];
     }
-    return Dict.merge(this.xref, value);
+    return Dict.merge({ xref: this.xref, dictArray: value });
   }
 
   get content() {
@@ -216,8 +218,8 @@ class Page {
       // Fetching the individual streams from the array.
       const xref = this.xref;
       const streams = [];
-      for (const stream of content) {
-        streams.push(xref.fetchIfRef(stream));
+      for (const subStream of content) {
+        streams.push(xref.fetchIfRef(subStream));
       }
       stream = new StreamsSequenceStream(streams);
     } else if (isStream(content)) {
@@ -227,6 +229,43 @@ class Page {
       stream = new NullStream();
     }
     return stream;
+  }
+
+  save(handler, task, annotationStorage) {
+    const partialEvaluator = new PartialEvaluator({
+      xref: this.xref,
+      handler,
+      pageIndex: this.pageIndex,
+      idFactory: this._localIdFactory,
+      fontCache: this.fontCache,
+      builtInCMapCache: this.builtInCMapCache,
+      globalImageCache: this.globalImageCache,
+      options: this.evaluatorOptions,
+    });
+
+    // Fetch the page's annotations and save the content
+    // in case of interactive form fields.
+    return this._parsedAnnotations.then(function (annotations) {
+      const newRefsPromises = [];
+      for (const annotation of annotations) {
+        if (!isAnnotationRenderable(annotation, "print")) {
+          continue;
+        }
+        newRefsPromises.push(
+          annotation
+            .save(partialEvaluator, task, annotationStorage)
+            .catch(function (reason) {
+              warn(
+                "save - ignoring annotation data during " +
+                  `"${task.name}" task: "${reason}".`
+              );
+              return null;
+            })
+        );
+      }
+
+      return Promise.all(newRefsPromises);
+    });
   }
 
   loadResources(keys) {
@@ -240,7 +279,14 @@ class Page {
     });
   }
 
-  getOperatorList({ handler, sink, task, intent, renderInteractiveForms }) {
+  getOperatorList({
+    handler,
+    sink,
+    task,
+    intent,
+    renderInteractiveForms,
+    annotationStorage,
+  }) {
     const contentStreamPromise = this.pdfManager.ensure(
       this,
       "getContentStream"
@@ -258,19 +304,22 @@ class Page {
       xref: this.xref,
       handler,
       pageIndex: this.pageIndex,
-      idFactory: this.idFactory,
+      idFactory: this._localIdFactory,
       fontCache: this.fontCache,
       builtInCMapCache: this.builtInCMapCache,
+      globalImageCache: this.globalImageCache,
       options: this.evaluatorOptions,
-      pdfFunctionFactory: this.pdfFunctionFactory,
     });
 
     const dataPromises = Promise.all([contentStreamPromise, resourcesPromise]);
     const pageListPromise = dataPromises.then(([contentStream]) => {
-      const opList = new OperatorList(intent, sink, this.pageIndex);
+      const opList = new OperatorList(intent, sink);
 
       handler.send("StartRenderPage", {
-        transparency: partialEvaluator.hasBlendModes(this.resources),
+        transparency: partialEvaluator.hasBlendModes(
+          this.resources,
+          this.nonBlendModesSet
+        ),
         pageIndex: this.pageIndex,
         intent,
       });
@@ -282,7 +331,7 @@ class Page {
           resources: this.resources,
           operatorList: opList,
         })
-        .then(function() {
+        .then(function () {
           return opList;
         });
     });
@@ -290,7 +339,7 @@ class Page {
     // Fetch the page's annotations and add their operator lists to the
     // page's operator list to render them.
     return Promise.all([pageListPromise, this._parsedAnnotations]).then(
-      function([pageOpList, annotations]) {
+      function ([pageOpList, annotations]) {
         if (annotations.length === 0) {
           pageOpList.flush(true);
           return { length: pageOpList.totalLength };
@@ -300,18 +349,30 @@ class Page {
         // is resolved with the complete operator list for a single annotation.
         const opListPromises = [];
         for (const annotation of annotations) {
-          if (isAnnotationRenderable(annotation, intent)) {
+          if (
+            isAnnotationRenderable(annotation, intent) &&
+            !annotation.isHidden(annotationStorage)
+          ) {
             opListPromises.push(
-              annotation.getOperatorList(
-                partialEvaluator,
-                task,
-                renderInteractiveForms
-              )
+              annotation
+                .getOperatorList(
+                  partialEvaluator,
+                  task,
+                  renderInteractiveForms,
+                  annotationStorage
+                )
+                .catch(function (reason) {
+                  warn(
+                    "getOperatorList - ignoring annotation data during " +
+                      `"${task.name}" task: "${reason}".`
+                  );
+                  return null;
+                })
             );
           }
         }
 
-        return Promise.all(opListPromises).then(function(opLists) {
+        return Promise.all(opListPromises).then(function (opLists) {
           pageOpList.addOp(OPS.beginAnnotations, []);
           for (const opList of opLists) {
             pageOpList.addOpList(opList);
@@ -347,11 +408,11 @@ class Page {
         xref: this.xref,
         handler,
         pageIndex: this.pageIndex,
-        idFactory: this.idFactory,
+        idFactory: this._localIdFactory,
         fontCache: this.fontCache,
         builtInCMapCache: this.builtInCMapCache,
+        globalImageCache: this.globalImageCache,
         options: this.evaluatorOptions,
-        pdfFunctionFactory: this.pdfFunctionFactory,
       });
 
       return partialEvaluator.getTextContent({
@@ -366,7 +427,7 @@ class Page {
   }
 
   getAnnotationsData(intent) {
-    return this._parsedAnnotations.then(function(annotations) {
+    return this._parsedAnnotations.then(function (annotations) {
       const annotationsData = [];
       for (let i = 0, ii = annotations.length; i < ii; i++) {
         if (!intent || isAnnotationRenderable(annotations[i], intent)) {
@@ -378,44 +439,45 @@ class Page {
   }
 
   get annotations() {
-    return shadow(
-      this,
-      "annotations",
-      this._getInheritableProperty("Annots") || []
-    );
+    const annots = this._getInheritableProperty("Annots");
+    return shadow(this, "annotations", Array.isArray(annots) ? annots : []);
   }
 
   get _parsedAnnotations() {
     const parsedAnnotations = this.pdfManager
       .ensure(this, "annotations")
       .then(() => {
-        const annotationRefs = this.annotations;
         const annotationPromises = [];
-        for (let i = 0, ii = annotationRefs.length; i < ii; i++) {
+        for (const annotationRef of this.annotations) {
           annotationPromises.push(
             AnnotationFactory.create(
               this.xref,
-              annotationRefs[i],
+              annotationRef,
               this.pdfManager,
-              this.idFactory
-            )
+              this._localIdFactory
+            ).catch(function (reason) {
+              warn(`_parsedAnnotations: "${reason}".`);
+              return null;
+            })
           );
         }
 
-        return Promise.all(annotationPromises).then(
-          function(annotations) {
-            return annotations.filter(function isDefined(annotation) {
-              return !!annotation;
-            });
-          },
-          function(reason) {
-            warn(`_parsedAnnotations: "${reason}".`);
-            return [];
-          }
-        );
+        return Promise.all(annotationPromises).then(function (annotations) {
+          return annotations.filter(annotation => !!annotation);
+        });
       });
 
     return shadow(this, "_parsedAnnotations", parsedAnnotations);
+  }
+
+  get jsActions() {
+    const actions = collectActions(
+      this.xref,
+      this.pageDict,
+      PageActionEventType
+    );
+
+    return shadow(this, "jsActions", actions);
   }
 }
 
@@ -506,51 +568,37 @@ class PDFDocument {
     this.pdfManager = pdfManager;
     this.stream = stream;
     this.xref = new XRef(stream, pdfManager);
-
-    this.pdfFunctionFactory = new PDFFunctionFactory({
-      xref: this.xref,
-      isEvalSupported: pdfManager.evaluatorOptions.isEvalSupported,
-    });
     this._pagePromises = [];
+    this._version = null;
+
+    const idCounters = {
+      font: 0,
+    };
+    this._globalIdFactory = class {
+      static getDocId() {
+        return `g_${pdfManager.docId}`;
+      }
+
+      static createFontId() {
+        return `f${++idCounters.font}`;
+      }
+
+      static createObjId() {
+        unreachable("Abstract method `createObjId` called.");
+      }
+    };
   }
 
   parse(recoveryMode) {
-    this.setup(recoveryMode);
+    this.xref.parse(recoveryMode);
+    this.catalog = new Catalog(this.pdfManager, this.xref);
 
-    const version = this.catalog.catDict.get("Version");
-    if (isName(version)) {
-      this.pdfFormatVersion = version.name;
-    }
-
-    // Check if AcroForms are present in the document.
-    try {
-      this.acroForm = this.catalog.catDict.get("AcroForm");
-      if (this.acroForm) {
-        this.xfa = this.acroForm.get("XFA");
-        const fields = this.acroForm.get("Fields");
-        if ((!Array.isArray(fields) || fields.length === 0) && !this.xfa) {
-          this.acroForm = null; // No fields and no XFA, so it's not a form.
-        }
-      }
-    } catch (ex) {
-      if (ex instanceof MissingDataException) {
-        throw ex;
-      }
-      info("Cannot fetch AcroForm entry; assuming no AcroForms are present");
-      this.acroForm = null;
-    }
-
-    // Check if a Collection dictionary is present in the document.
-    try {
-      const collection = this.catalog.catDict.get("Collection");
-      if (isDict(collection) && collection.getKeys().length > 0) {
-        this.collection = collection;
-      }
-    } catch (ex) {
-      if (ex instanceof MissingDataException) {
-        throw ex;
-      }
-      info("Cannot fetch Collection dictionary.");
+    // The `checkHeader` method is called before this method and parses the
+    // version from the header. The specification states in section 7.5.2
+    // that the version from the catalog, if present, should overwrite the
+    // version from the header.
+    if (this.catalog.version) {
+      this._version = this.catalog.version;
     }
   }
 
@@ -636,9 +684,9 @@ class PDFDocument {
       }
       version += String.fromCharCode(ch);
     }
-    if (!this.pdfFormatVersion) {
+    if (!this._version) {
       // Remove the "%PDF-" prefix.
-      this.pdfFormatVersion = version.substring(5);
+      this._version = version.substring(5);
     }
   }
 
@@ -646,15 +694,81 @@ class PDFDocument {
     this.xref.setStartXRef(this.startXRef);
   }
 
-  setup(recoveryMode) {
-    this.xref.parse(recoveryMode);
-    this.catalog = new Catalog(this.pdfManager, this.xref);
-  }
-
   get numPages() {
     const linearization = this.linearization;
     const num = linearization ? linearization.numPages : this.catalog.numPages;
     return shadow(this, "numPages", num);
+  }
+
+  /**
+   * @private
+   */
+  _hasOnlyDocumentSignatures(fields, recursionDepth = 0) {
+    const RECURSION_LIMIT = 10;
+
+    if (!Array.isArray(fields)) {
+      return false;
+    }
+    return fields.every(field => {
+      field = this.xref.fetchIfRef(field);
+      if (!(field instanceof Dict)) {
+        return false;
+      }
+      if (field.has("Kids")) {
+        if (++recursionDepth > RECURSION_LIMIT) {
+          warn("_hasOnlyDocumentSignatures: maximum recursion depth reached");
+          return false;
+        }
+        return this._hasOnlyDocumentSignatures(
+          field.get("Kids"),
+          recursionDepth
+        );
+      }
+      const isSignature = isName(field.get("FT"), "Sig");
+      const rectangle = field.get("Rect");
+      const isInvisible =
+        Array.isArray(rectangle) && rectangle.every(value => value === 0);
+      return isSignature && isInvisible;
+    });
+  }
+
+  get formInfo() {
+    const formInfo = { hasFields: false, hasAcroForm: false, hasXfa: false };
+    const acroForm = this.catalog.acroForm;
+    if (!acroForm) {
+      return shadow(this, "formInfo", formInfo);
+    }
+
+    try {
+      const fields = acroForm.get("Fields");
+      const hasFields = Array.isArray(fields) && fields.length > 0;
+      formInfo.hasFields = hasFields; // Used by the `fieldObjects` getter.
+
+      // The document contains XFA data if the `XFA` entry is a non-empty
+      // array or stream.
+      const xfa = acroForm.get("XFA");
+      formInfo.hasXfa =
+        (Array.isArray(xfa) && xfa.length > 0) ||
+        (isStream(xfa) && !xfa.isEmpty);
+
+      // The document contains AcroForm data if the `Fields` entry is a
+      // non-empty array and it doesn't consist of only document signatures.
+      // This second check is required for files that don't actually contain
+      // AcroForm data (only XFA data), but that use the `Fields` entry to
+      // store (invisible) document signatures. This can be detected using
+      // the first bit of the `SigFlags` integer (see Table 219 in the
+      // specification).
+      const sigFlags = acroForm.get("SigFlags");
+      const hasOnlyDocumentSignatures =
+        !!(sigFlags & 0x1) && this._hasOnlyDocumentSignatures(fields);
+      formInfo.hasAcroForm = hasFields && !hasOnlyDocumentSignatures;
+    } catch (ex) {
+      if (ex instanceof MissingDataException) {
+        throw ex;
+      }
+      warn(`Cannot fetch form information: "${ex}".`);
+    }
+    return shadow(this, "formInfo", formInfo);
   }
 
   get documentInfo() {
@@ -670,7 +784,7 @@ class PDFDocument {
       Trapped: isName,
     };
 
-    let version = this.pdfFormatVersion;
+    let version = this._version;
     if (
       typeof version !== "string" ||
       !PDF_HEADER_VERSION_REGEXP.test(version)
@@ -682,9 +796,9 @@ class PDFDocument {
     const docInfo = {
       PDFFormatVersion: version,
       IsLinearized: !!this.linearization,
-      IsAcroFormPresent: !!this.acroForm,
-      IsXFAPresent: !!this.xfa,
-      IsCollectionPresent: !!this.collection,
+      IsAcroFormPresent: this.formInfo.hasAcroForm,
+      IsXFAPresent: this.formInfo.hasXfa,
+      IsCollectionPresent: !!this.catalog.collection,
     };
 
     let infoDict;
@@ -725,10 +839,10 @@ class PDFDocument {
             continue;
           }
 
-          if (!docInfo["Custom"]) {
-            docInfo["Custom"] = Object.create(null);
+          if (!docInfo.Custom) {
+            docInfo.Custom = Object.create(null);
           }
-          docInfo["Custom"][key] = customValue;
+          docInfo.Custom[key] = customValue;
         }
       }
     }
@@ -763,7 +877,15 @@ class PDFDocument {
 
   _getLinearizationPage(pageIndex) {
     const { catalog, linearization } = this;
-    assert(linearization && linearization.pageFirst === pageIndex);
+    if (
+      typeof PDFJSDev === "undefined" ||
+      PDFJSDev.test("!PRODUCTION || TESTING")
+    ) {
+      assert(
+        linearization && linearization.pageFirst === pageIndex,
+        "_getLinearizationPage - invalid pageIndex argument."
+      );
+    }
 
     const ref = Ref.get(linearization.objectNumberFirst, 0);
     return this.xref
@@ -808,9 +930,11 @@ class PDFDocument {
         pageIndex,
         pageDict,
         ref,
+        globalIdFactory: this._globalIdFactory,
         fontCache: catalog.fontCache,
         builtInCMapCache: catalog.builtInCMapCache,
-        pdfFunctionFactory: this.pdfFunctionFactory,
+        globalImageCache: catalog.globalImageCache,
+        nonBlendModesSet: catalog.nonBlendModesSet,
       });
     }));
   }
@@ -833,8 +957,113 @@ class PDFDocument {
     return this.catalog.fontFallback(id, handler);
   }
 
-  async cleanup() {
-    return this.catalog ? this.catalog.cleanup() : clearPrimitiveCaches();
+  async cleanup(manuallyTriggered = false) {
+    return this.catalog
+      ? this.catalog.cleanup(manuallyTriggered)
+      : clearPrimitiveCaches();
+  }
+
+  /**
+   * @private
+   */
+  _collectFieldObjects(name, fieldRef, promises) {
+    const field = this.xref.fetchIfRef(fieldRef);
+    if (field.has("T")) {
+      const partName = stringToPDFString(field.get("T"));
+      if (name === "") {
+        name = partName;
+      } else {
+        name = `${name}.${partName}`;
+      }
+    }
+
+    if (!promises.has(name)) {
+      promises.set(name, []);
+    }
+    promises.get(name).push(
+      AnnotationFactory.create(
+        this.xref,
+        fieldRef,
+        this.pdfManager,
+        this._localIdFactory
+      )
+        .then(annotation => annotation && annotation.getFieldObject())
+        .catch(function (reason) {
+          warn(`_collectFieldObjects: "${reason}".`);
+          return null;
+        })
+    );
+
+    if (field.has("Kids")) {
+      const kids = field.get("Kids");
+      for (const kid of kids) {
+        this._collectFieldObjects(name, kid, promises);
+      }
+    }
+  }
+
+  get fieldObjects() {
+    if (!this.formInfo.hasFields) {
+      return shadow(this, "fieldObjects", Promise.resolve(null));
+    }
+
+    const allFields = Object.create(null);
+    const fieldPromises = new Map();
+    for (const fieldRef of this.catalog.acroForm.get("Fields")) {
+      this._collectFieldObjects("", fieldRef, fieldPromises);
+    }
+
+    const allPromises = [];
+    for (const [name, promises] of fieldPromises) {
+      allPromises.push(
+        Promise.all(promises).then(fields => {
+          fields = fields.filter(field => !!field);
+          if (fields.length > 0) {
+            allFields[name] = fields;
+          }
+        })
+      );
+    }
+
+    return shadow(
+      this,
+      "fieldObjects",
+      Promise.all(allPromises).then(() => allFields)
+    );
+  }
+
+  get hasJSActions() {
+    return shadow(
+      this,
+      "hasJSActions",
+      this.fieldObjects.then(fieldObjects => {
+        return (
+          (fieldObjects !== null &&
+            Object.values(fieldObjects).some(fieldObject =>
+              fieldObject.some(object => object.actions !== null)
+            )) ||
+          !!this.catalog.jsActions
+        );
+      })
+    );
+  }
+
+  get calculationOrderIds() {
+    const acroForm = this.catalog.acroForm;
+    if (!acroForm || !acroForm.has("CO")) {
+      return shadow(this, "calculationOrderIds", null);
+    }
+
+    const calculationOrder = acroForm.get("CO");
+    if (!Array.isArray(calculationOrder) || calculationOrder.length === 0) {
+      return shadow(this, "calculationOrderIds", null);
+    }
+
+    const ids = calculationOrder.filter(isRef).map(ref => ref.toString());
+    if (ids.length === 0) {
+      return shadow(this, "calculationOrderIds", null);
+    }
+    return shadow(this, "calculationOrderIds", ids);
   }
 }
 

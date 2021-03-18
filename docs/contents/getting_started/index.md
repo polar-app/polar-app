@@ -44,17 +44,18 @@ Before downloading PDF.js please take a moment to understand the different layer
       Includes the generic build of PDF.js and the viewer.
     </p>
     <span class="GROUP_CLASS">
+      <a type="button" class="btn btn-primary" href="https://github.com/mozilla/pdf.js/releases/download/vSTABLE_VERSION/pdfjs-STABLE_VERSION-dist.zip">Stable (vSTABLE_VERSION)</a>
       <a type="button" class="btn btn-warning HIDDEN_CLASS" href="https://github.com/mozilla/pdf.js/releases/download/vBETA_VERSION/pdfjs-BETA_VERSION-dist.zip">Beta (vBETA_VERSION)</a>
     </span>
   </div>
   <div class="col-md-4">
-    <h3>Prebuilt (ES5-compatible)</h3>
+    <h3>Prebuilt (for older browsers)</h3>
     <p>
       Includes the generic build of PDF.js and the viewer.
     </p>
     <span class="GROUP_CLASS">
-      <a type="button" class="btn btn-primary" href="https://github.com/mozilla/pdf.js/releases/download/vSTABLE_VERSION/pdfjs-STABLE_VERSION-dist.zip">Stable (vSTABLE_VERSION)</a>
-      <a type="button" class="btn btn-warning HIDDEN_CLASS" href="https://github.com/mozilla/pdf.js/releases/download/vBETA_VERSION/pdfjs-BETA_VERSION-es5-dist.zip">Beta (vBETA_VERSION)</a>
+      <a type="button" class="btn btn-primary" href="https://github.com/mozilla/pdf.js/releases/download/vSTABLE_VERSION/pdfjs-STABLE_VERSION_LEGACY-dist.zip">Stable (vSTABLE_VERSION)</a>
+      <a type="button" class="btn btn-warning HIDDEN_CLASS" href="https://github.com/mozilla/pdf.js/releases/download/vBETA_VERSION/pdfjs-BETA_VERSION_LEGACY-dist.zip">Beta (vBETA_VERSION)</a>
     </span>
   </div>
   <div class="col-md-4">

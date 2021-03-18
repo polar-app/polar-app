@@ -14,19 +14,23 @@
  */
 
 import { AnnotationLayer } from "pdfjs-lib";
-import { NullL10n } from "./ui_utils.js";
+import { NullL10n } from "./l10n_utils.js";
 import { SimpleLinkService } from "./pdf_link_service.js";
 
 /**
  * @typedef {Object} AnnotationLayerBuilderOptions
  * @property {HTMLDivElement} pageDiv
  * @property {PDFPage} pdfPage
+ * @property {AnnotationStorage} [annotationStorage]
  * @property {string} [imageResourcesPath] - Path for image resources, mainly
  *   for annotation icons. Include trailing slash.
  * @property {boolean} renderInteractiveForms
  * @property {IPDFLinkService} linkService
  * @property {DownloadManager} downloadManager
  * @property {IL10n} l10n - Localization service.
+ * @property {boolean} [enableScripting]
+ * @property {Promise<boolean>} [hasJSActionsPromise]
+ * @property {Object} [mouseState]
  */
 
 class AnnotationLayerBuilder {
@@ -38,9 +42,13 @@ class AnnotationLayerBuilder {
     pdfPage,
     linkService,
     downloadManager,
+    annotationStorage = null,
     imageResourcesPath = "",
-    renderInteractiveForms = false,
+    renderInteractiveForms = true,
     l10n = NullL10n,
+    enableScripting = false,
+    hasJSActionsPromise = null,
+    mouseState = null,
   }) {
     this.pageDiv = pageDiv;
     this.pdfPage = pdfPage;
@@ -49,6 +57,10 @@ class AnnotationLayerBuilder {
     this.imageResourcesPath = imageResourcesPath;
     this.renderInteractiveForms = renderInteractiveForms;
     this.l10n = l10n;
+    this.annotationStorage = annotationStorage;
+    this.enableScripting = enableScripting;
+    this._hasJSActionsPromise = hasJSActionsPromise;
+    this._mouseState = mouseState;
 
     this.div = null;
     this._cancelled = false;
@@ -57,10 +69,18 @@ class AnnotationLayerBuilder {
   /**
    * @param {PageViewport} viewport
    * @param {string} intent (default value is 'display')
+   * @returns {Promise<void>} A promise that is resolved when rendering of the
+   *   annotations is complete.
    */
   render(viewport, intent = "display") {
-    this.pdfPage.getAnnotations({ intent }).then(annotations => {
+    return Promise.all([
+      this.pdfPage.getAnnotations({ intent }),
+      this._hasJSActionsPromise,
+    ]).then(([annotations, hasJSActions = false]) => {
       if (this._cancelled) {
+        return;
+      }
+      if (annotations.length === 0) {
         return;
       }
 
@@ -73,6 +93,10 @@ class AnnotationLayerBuilder {
         renderInteractiveForms: this.renderInteractiveForms,
         linkService: this.linkService,
         downloadManager: this.downloadManager,
+        annotationStorage: this.annotationStorage,
+        enableScripting: this.enableScripting,
+        hasJSActions,
+        mouseState: this._mouseState,
       };
 
       if (this.div) {
@@ -82,9 +106,6 @@ class AnnotationLayerBuilder {
       } else {
         // Create an annotation layer div and render the annotations
         // if there is at least one annotation.
-        if (annotations.length === 0) {
-          return;
-        }
         this.div = document.createElement("div");
         this.div.className = "annotationLayer";
         this.pageDiv.appendChild(this.div);
@@ -104,7 +125,7 @@ class AnnotationLayerBuilder {
     if (!this.div) {
       return;
     }
-    this.div.setAttribute("hidden", "true");
+    this.div.hidden = true;
   }
 }
 
@@ -115,18 +136,26 @@ class DefaultAnnotationLayerFactory {
   /**
    * @param {HTMLDivElement} pageDiv
    * @param {PDFPage} pdfPage
+   * @param {AnnotationStorage} [annotationStorage]
    * @param {string} [imageResourcesPath] - Path for image resources, mainly
    *   for annotation icons. Include trailing slash.
    * @param {boolean} renderInteractiveForms
    * @param {IL10n} l10n
+   * @param {boolean} [enableScripting]
+   * @param {Promise<boolean>} [hasJSActionsPromise]
+   * @param {Object} [mouseState]
    * @returns {AnnotationLayerBuilder}
    */
   createAnnotationLayerBuilder(
     pageDiv,
     pdfPage,
+    annotationStorage = null,
     imageResourcesPath = "",
-    renderInteractiveForms = false,
-    l10n = NullL10n
+    renderInteractiveForms = true,
+    l10n = NullL10n,
+    enableScripting = false,
+    hasJSActionsPromise = null,
+    mouseState = null
   ) {
     return new AnnotationLayerBuilder({
       pageDiv,
@@ -135,6 +164,10 @@ class DefaultAnnotationLayerFactory {
       renderInteractiveForms,
       linkService: new SimpleLinkService(),
       l10n,
+      annotationStorage,
+      enableScripting,
+      hasJSActionsPromise,
+      mouseState,
     });
   }
 }

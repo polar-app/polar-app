@@ -14,11 +14,6 @@
  */
 /* globals __non_webpack_require__ */
 
-const fs = __non_webpack_require__("fs");
-const http = __non_webpack_require__("http");
-const https = __non_webpack_require__("https");
-const url = __non_webpack_require__("url");
-
 import {
   AbortException,
   assert,
@@ -29,6 +24,17 @@ import {
   extractFilenameFromHeader,
   validateRangeRequestCapabilities,
 } from "./network_utils.js";
+
+if (typeof PDFJSDev !== "undefined" && PDFJSDev.test("MOZCENTRAL")) {
+  throw new Error(
+    'Module "./node_stream.js" shall not be used with MOZCENTRAL builds.'
+  );
+}
+
+const fs = __non_webpack_require__("fs");
+const http = __non_webpack_require__("http");
+const https = __non_webpack_require__("https");
+const url = __non_webpack_require__("url");
 
 const fileUriRegex = /^file:\/\/\/[a-zA-Z]:\//;
 
@@ -63,11 +69,14 @@ class PDFNodeStream {
   }
 
   get _progressiveDataLength() {
-    return this._fullRequestReader ? this._fullRequestReader._loaded : 0;
+    return this._fullRequestReader?._loaded ?? 0;
   }
 
   getFullReader() {
-    assert(!this._fullRequestReader);
+    assert(
+      !this._fullRequestReader,
+      "PDFNodeStream.getFullReader can only be called once."
+    );
     this._fullRequestReader = this.isFsUrl
       ? new PDFNodeStreamFsFullReader(this)
       : new PDFNodeStreamFullReader(this);
@@ -91,7 +100,7 @@ class PDFNodeStream {
     }
 
     const readers = this._rangeRequestReaders.slice(0);
-    readers.forEach(function(reader) {
+    readers.forEach(function (reader) {
       reader.cancel(reason);
     });
   }
@@ -376,7 +385,7 @@ class PDFNodeStreamRangeReader extends BaseRangeReader {
       }
       this._httpHeaders[property] = value;
     }
-    this._httpHeaders["Range"] = `bytes=${start}-${end - 1}`;
+    this._httpHeaders.Range = `bytes=${start}-${end - 1}`;
 
     const handleResponse = response => {
       if (response.statusCode === 404) {

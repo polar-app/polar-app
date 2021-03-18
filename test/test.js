@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/* eslint-disable object-shorthand */
+/* eslint-disable no-var */
 
 "use strict";
 
 var WebServer = require("./webserver.js").WebServer;
-var WebBrowser = require("./webbrowser.js").WebBrowser;
 var path = require("path");
 var fs = require("fs");
 var os = require("os");
+var puppeteer = require("puppeteer");
 var url = require("url");
 var testUtils = require("./testutils.js");
 
 function parseOptions() {
   function describeCheck(fn, text) {
-    fn.toString = function() {
+    fn.toString = function () {
       return text;
     };
     return fn;
@@ -43,19 +43,11 @@ function parseOptions() {
       "fontTest",
       "noPrompts",
       "noDownload",
+      "noChrome",
       "downloadOnly",
       "strictVerify",
     ])
-    .string([
-      "manifestFile",
-      "browser",
-      "browserManifestFile",
-      "port",
-      "statsFile",
-      "statsDelay",
-      "testfilter",
-    ])
-    .alias("browser", "b")
+    .string(["manifestFile", "port", "statsFile", "statsDelay", "testfilter"])
     .alias("help", "h")
     .alias("masterMode", "m")
     .alias("testfilter", "t")
@@ -70,12 +62,6 @@ function parseOptions() {
       "A path to JSON file in the form of test_manifest.json"
     )
     .default("manifestFile", "test_manifest.json")
-    .describe("browser", "The path to a single browser ")
-    .describe(
-      "browserManifestFile",
-      "A path to JSON file in the form of " +
-        "those found in resources/browser_manifests/"
-    )
     .describe(
       "reftest",
       "Automatically start reftest showing comparison " +
@@ -84,14 +70,15 @@ function parseOptions() {
     .describe("testfilter", "Run specific reftest(s).")
     .default("testfilter", [])
     .example(
-      "$0 --b=firefox -t=issue5567 -t=issue5909",
-      "Run the reftest identified by issue5567 and issue5909 in Firefox."
+      "$0 -t=issue5567 -t=issue5909",
+      "Run the reftest identified by issue5567 and issue5909."
     )
     .describe("port", "The port the HTTP server should listen on.")
     .default("port", 0)
     .describe("unitTest", "Run the unit tests.")
     .describe("fontTest", "Run the font tests.")
     .describe("noDownload", "Skips test PDFs downloading.")
+    .describe("noChrome", "Skip Chrome when running tests.")
     .describe("downloadOnly", "Download test PDFs without running the tests.")
     .describe("strictVerify", "Error if verifying the manifest files fails.")
     .describe("statsFile", "The file where to store stats.")
@@ -102,7 +89,7 @@ function parseOptions() {
     )
     .default("statsDelay", 0)
     .check(
-      describeCheck(function(argv) {
+      describeCheck(function (argv) {
         return (
           +argv.reftest + argv.unitTest + argv.fontTest + argv.masterMode <= 1
         );
@@ -110,21 +97,15 @@ function parseOptions() {
         "specified at the same time.")
     )
     .check(
-      describeCheck(function(argv) {
+      describeCheck(function (argv) {
         return !argv.noDownload || !argv.downloadOnly;
       }, "--noDownload and --downloadOnly cannot be used together.")
     )
     .check(
-      describeCheck(function(argv) {
+      describeCheck(function (argv) {
         return !argv.masterMode || argv.manifestFile === "test_manifest.json";
       }, "when --masterMode is specified --manifestFile shall be equal " +
         "test_manifest.json")
-    )
-    .check(
-      describeCheck(function(argv) {
-        return !argv.browser || !argv.browserManifestFile;
-      }, "--browser and --browserManifestFile must not be specified at the " +
-        "same time.")
     );
   var result = yargs.argv;
   if (result.help) {
@@ -151,7 +132,7 @@ function monitorBrowserTimeout(session, onTimeout) {
     session.timeoutMonitor = null;
     return;
   }
-  session.timeoutMonitor = setTimeout(function() {
+  session.timeoutMonitor = setTimeout(function () {
     onTimeout(session);
   }, browserTimeout * 1000);
 }
@@ -172,7 +153,7 @@ function updateRefImages() {
   }
   testUtils.confirm(
     "Would you like to update the master copy in ref/? [yn] ",
-    function(confirmed) {
+    function (confirmed) {
       if (confirmed) {
         sync(true);
       } else {
@@ -184,16 +165,14 @@ function updateRefImages() {
 
 function examineRefImages() {
   startServer();
-  var startUrl =
-    "http://" +
-    server.host +
-    ":" +
-    server.port +
-    "/test/resources/reftest-analyzer.html#web=/test/eq.log";
-  var config = Object.assign({}, sessions[0].config);
-  config["headless"] = false;
-  var browser = WebBrowser.create(config);
-  browser.start(startUrl);
+
+  const startUrl = `http://${host}:${server.port}/test/resources/reftest-analyzer.html#web=/test/eq.log`;
+  startBrowser("firefox", startUrl).then(function (browser) {
+    browser.on("disconnected", function () {
+      stopServer();
+      process.exit(0);
+    });
+  });
 }
 
 function startRefTest(masterMode, showRefImages) {
@@ -203,7 +182,7 @@ function startRefTest(masterMode, showRefImages) {
     var numFBFFailures = 0;
     var numEqFailures = 0;
     var numEqNoSnapshot = 0;
-    sessions.forEach(function(session) {
+    sessions.forEach(function (session) {
       numErrors += session.numErrors;
       numFBFFailures += session.numFBFFailures;
       numEqFailures += session.numEqFailures;
@@ -271,15 +250,16 @@ function startRefTest(masterMode, showRefImages) {
 
     startTime = Date.now();
     startServer();
-    server.hooks["POST"].push(refTestPostHandler);
+    server.hooks.POST.push(refTestPostHandler);
     onAllSessionsClosed = finalize;
 
-    startBrowsers("/test/test_slave.html", function(session) {
+    const startUrl = `http://${host}:${server.port}/test/test_slave.html`;
+    startBrowsers(function (session) {
       session.masterMode = masterMode;
       session.taskResults = {};
       session.tasks = {};
       session.remaining = manifest.length;
-      manifest.forEach(function(item) {
+      manifest.forEach(function (item) {
         var rounds = item.rounds || 1;
         var roundsResults = [];
         roundsResults.length = rounds;
@@ -291,11 +271,11 @@ function startRefTest(masterMode, showRefImages) {
       session.numEqNoSnapshot = 0;
       session.numEqFailures = 0;
       monitorBrowserTimeout(session, handleSessionTimeout);
-    });
+    }, makeTestUrl(startUrl));
   }
   function checkRefsTmp() {
     if (masterMode && fs.existsSync(refsTmpDir)) {
-      if (options.noPrompt) {
+      if (options.noPrompts) {
         testUtils.removeDirSync(refsTmpDir);
         setup();
         return;
@@ -304,7 +284,7 @@ function startRefTest(masterMode, showRefImages) {
       console.log("tmp/ can be removed if it has nothing you need.");
       testUtils.confirm(
         "SHOULD THIS SCRIPT REMOVE tmp/? THINK CAREFULLY [yn] ",
-        function(confirmed) {
+        function (confirmed) {
           if (confirmed) {
             testUtils.removeDirSync(refsTmpDir);
           }
@@ -350,7 +330,7 @@ function getTestManifest() {
 
   var testFilter = options.testfilter.slice(0);
   if (testFilter.length) {
-    manifest = manifest.filter(function(item) {
+    manifest = manifest.filter(function (item) {
       var i = testFilter.indexOf(item.id);
       if (i !== -1) {
         testFilter.splice(i, 1);
@@ -487,9 +467,14 @@ function checkFBF(task, results, browser, masterMode) {
       continue;
     }
     if (r0Page.snapshot !== r1Page.snapshot) {
-      // The FBF tests fail intermittently in Google Chrome when run on the
-      // bots, ignoring `makeref` failures for now; see https://github.com/mozilla/pdf.js/pull/11491
-      if (masterMode && /chrom(e|ium)/i.test(browser)) {
+      // The FBF tests fail intermittently in Firefox and Google Chrome when run
+      // on the bots, ignoring `makeref` failures for now; see
+      //  - https://github.com/mozilla/pdf.js/pull/12368
+      //  - https://github.com/mozilla/pdf.js/pull/11491
+      //
+      // TODO: Figure out why this happens, so that we can remove the hack; see
+      //       https://github.com/mozilla/pdf.js/issues/12371
+      if (masterMode) {
         console.log(
           "TEST-SKIPPED | forward-back-forward test " +
             task.id +
@@ -533,8 +518,8 @@ function checkRefTestResults(browser, id, results) {
   var failed = false;
   var session = getSession(browser);
   var task = session.tasks[id];
-  results.forEach(function(roundResults, round) {
-    roundResults.forEach(function(pageResult, page) {
+  results.forEach(function (roundResults, round) {
+    roundResults.forEach(function (pageResult, page) {
       if (!pageResult) {
         return; // no results
       }
@@ -589,8 +574,8 @@ function checkRefTestResults(browser, id, results) {
       throw new Error("Unknown test type");
   }
   // clear memory
-  results.forEach(function(roundResults, round) {
-    roundResults.forEach(function(pageResult, page) {
+  results.forEach(function (roundResults, round) {
+    roundResults.forEach(function (pageResult, page) {
       pageResult.snapshot = null;
     });
   });
@@ -608,20 +593,16 @@ function refTestPostHandler(req, res) {
   }
 
   var body = "";
-  req.on("data", function(data) {
+  req.on("data", function (data) {
     body += data;
   });
-  req.on("end", function() {
+  req.on("end", function () {
     res.writeHead(200, { "Content-Type": "text/plain" });
     res.end();
 
     var session;
     if (pathname === "/tellMeToQuit") {
-      // finding by path
-      var browserPath = parsedUrl.query.path;
-      session = sessions.filter(function(session) {
-        return session.config.path === browserPath;
-      })[0];
+      session = getSession(parsedUrl.query.browser);
       monitorBrowserTimeout(session, null);
       closeSession(session.name);
       return;
@@ -665,15 +646,15 @@ function refTestPostHandler(req, res) {
     }
 
     taskResults[round][page] = {
-      failure: failure,
-      snapshot: snapshot,
+      failure,
+      snapshot,
     };
     if (stats) {
       stats.push({
-        browser: browser,
+        browser,
         pdf: id,
-        page: page,
-        round: round,
+        page,
+        round,
         stats: data.stats,
       });
     }
@@ -689,15 +670,13 @@ function refTestPostHandler(req, res) {
   return true;
 }
 
-function startUnitTest(url, name) {
-  var startTime = Date.now();
-  startServer();
-  server.hooks["POST"].push(unitTestPostHandler);
-  onAllSessionsClosed = function() {
+function onAllSessionsClosedAfterTests(name) {
+  const startTime = Date.now();
+  return function () {
     stopServer();
     var numRuns = 0,
       numErrors = 0;
-    sessions.forEach(function(session) {
+    sessions.forEach(function (session) {
       numRuns += session.numRuns;
       numErrors += session.numErrors;
     });
@@ -712,10 +691,53 @@ function startUnitTest(url, name) {
     var runtime = (Date.now() - startTime) / 1000;
     console.log(name + " tests runtime was " + runtime.toFixed(1) + " seconds");
   };
-  startBrowsers(url, function(session) {
+}
+
+function makeTestUrl(startUrl) {
+  return function (browserName) {
+    const queryParameters =
+      `?browser=${encodeURIComponent(browserName)}` +
+      `&manifestFile=${encodeURIComponent("/test/" + options.manifestFile)}` +
+      `&testFilter=${JSON.stringify(options.testfilter)}` +
+      `&delay=${options.statsDelay}` +
+      `&masterMode=${options.masterMode}`;
+    return startUrl + queryParameters;
+  };
+}
+
+function startUnitTest(testUrl, name) {
+  onAllSessionsClosed = onAllSessionsClosedAfterTests(name);
+  startServer();
+  server.hooks.POST.push(unitTestPostHandler);
+
+  const startUrl = `http://${host}:${server.port}${testUrl}`;
+  startBrowsers(function (session) {
+    session.numRuns = 0;
+    session.numErrors = 0;
+  }, makeTestUrl(startUrl));
+}
+
+function startIntegrationTest() {
+  onAllSessionsClosed = onAllSessionsClosedAfterTests("integration");
+  startServer();
+
+  const { runTests } = require("./integration-boot.js");
+  startBrowsers(function (session) {
     session.numRuns = 0;
     session.numErrors = 0;
   });
+  global.integrationBaseUrl = `http://${host}:${server.port}/build/generic/web/viewer.html`;
+  global.integrationSessions = sessions;
+
+  Promise.all(sessions.map(session => session.browserPromise)).then(
+    async () => {
+      const results = { runs: 0, failures: 0 };
+      await runTests(results);
+      sessions[0].numRuns = results.runs;
+      sessions[0].numErrors = results.failures;
+      await Promise.all(sessions.map(session => closeSession(session.name)));
+    }
+  );
 }
 
 function unitTestPostHandler(req, res) {
@@ -731,25 +753,25 @@ function unitTestPostHandler(req, res) {
   }
 
   var body = "";
-  req.on("data", function(data) {
+  req.on("data", function (data) {
     body += data;
   });
-  req.on("end", function() {
+  req.on("end", function () {
     if (pathname === "/ttx") {
       var translateFont = require("./font/ttxdriver.js").translateFont;
       var onCancel = null,
         ttxTimeout = 10000;
-      var timeoutId = setTimeout(function() {
+      var timeoutId = setTimeout(function () {
         if (onCancel) {
           onCancel("TTX timeout");
         }
       }, ttxTimeout);
       translateFont(
         body,
-        function(fn) {
+        function (fn) {
           onCancel = fn;
         },
-        function(err, xml) {
+        function (err, xml) {
           clearTimeout(timeoutId);
           res.writeHead(200, { "Content-Type": "text/xml" });
           res.end(err ? "<error>" + err + "</error>" : xml);
@@ -772,7 +794,8 @@ function unitTestPostHandler(req, res) {
     }
     var session = getSession(data.browser);
     session.numRuns++;
-    var message = data.status + " | " + data.description;
+    var message =
+      data.status + " | " + data.description + " | in " + session.name;
     if (data.status === "TEST-UNEXPECTED-FAIL") {
       session.numErrors++;
     }
@@ -784,52 +807,112 @@ function unitTestPostHandler(req, res) {
   return true;
 }
 
-function startBrowsers(url, initSessionCallback) {
-  var browsers;
-  if (options.browserManifestFile) {
-    browsers = JSON.parse(fs.readFileSync(options.browserManifestFile));
-  } else if (options.browser) {
-    var browserPath = options.browser;
-    var name = path.basename(browserPath, path.extname(browserPath));
-    browsers = [{ name: name, path: browserPath }];
-  } else {
-    console.error("Specify either browser or browserManifestFile.");
-    process.exit(1);
-  }
-  sessions = [];
-  browsers.forEach(function(b) {
-    var browser = WebBrowser.create(b);
-    var startUrl =
-      getServerBaseAddress() +
-      url +
-      "?browser=" +
-      encodeURIComponent(b.name) +
-      "&manifestFile=" +
-      encodeURIComponent("/test/" + options.manifestFile) +
-      "&testFilter=" +
-      JSON.stringify(options.testfilter) +
-      "&path=" +
-      encodeURIComponent(b.path) +
-      "&delay=" +
-      options.statsDelay +
-      "&masterMode=" +
-      options.masterMode;
-    browser.start(startUrl);
-    var session = {
-      name: b.name,
-      config: b,
-      browser: browser,
-      closed: false,
-    };
-    if (initSessionCallback) {
-      initSessionCallback(session);
-    }
-    sessions.push(session);
+async function startBrowser(browserName, startUrl = "") {
+  const revisions = require("puppeteer/lib/cjs/puppeteer/revisions.js")
+    .PUPPETEER_REVISIONS;
+  const wantedRevision =
+    browserName === "chrome" ? revisions.chromium : revisions.firefox;
+
+  // Remove other revisions than the one we want to use. Updating Puppeteer can
+  // cause a new revision to be used, and not removing older revisions causes
+  // the disk to fill up.
+  const browserFetcher = puppeteer.createBrowserFetcher({
+    product: browserName,
   });
+  const localRevisions = await browserFetcher.localRevisions();
+  if (localRevisions.length > 1) {
+    for (const localRevision of localRevisions) {
+      if (localRevision !== wantedRevision) {
+        console.log(`Removing old ${browserName} revision ${localRevision}...`);
+        await browserFetcher.remove(localRevision);
+      }
+    }
+  }
+
+  const options = {
+    product: browserName,
+    headless: false,
+    defaultViewport: null,
+    ignoreDefaultArgs: ["--disable-extensions"],
+  };
+
+  if (!tempDir) {
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "pdfjs-"));
+  }
+  const printFile = path.join(tempDir, "print.pdf");
+
+  if (browserName === "chrome") {
+    // avoid crash
+    options.args = ["--no-sandbox", "--disable-setuid-sandbox"];
+    // silent printing in a pdf
+    options.args.push("--kiosk-printing");
+  }
+
+  if (browserName === "firefox") {
+    options.extraPrefsFirefox = {
+      // avoid to have a prompt when leaving a page with a form
+      "dom.disable_beforeunload": true,
+      // Disable dialog when saving a pdf
+      "pdfjs.disabled": true,
+      "browser.helperApps.neverAsk.saveToDisk": "application/pdf",
+      // Avoid popup when saving is done
+      "browser.download.panel.shown": true,
+      // Save file in output
+      "browser.download.folderList": 2,
+      "browser.download.dir": tempDir,
+      // Print silently in a pdf
+      "print.always_print_silent": true,
+      "print.show_print_progress": false,
+      print_printer: "PDF",
+      "print.printer_PDF.print_to_file": true,
+      "print.printer_PDF.print_to_filename": printFile,
+    };
+  }
+
+  const browser = await puppeteer.launch(options);
+
+  if (startUrl) {
+    const pages = await browser.pages();
+    const page = pages[0];
+    await page.goto(startUrl, { timeout: 0 });
+  }
+
+  return browser;
 }
 
-function getServerBaseAddress() {
-  return "http://" + host + ":" + server.port;
+function startBrowsers(initSessionCallback, makeStartUrl = null) {
+  const browserNames = options.noChrome ? ["firefox"] : ["firefox", "chrome"];
+
+  sessions = [];
+  for (const browserName of browserNames) {
+    // The session must be pushed first and augmented with the browser once
+    // it's initialized. The reason for this is that browser initialization
+    // takes more time when the browser is not found locally yet and we don't
+    // want `onAllSessionsClosed` to trigger if one of the browsers is done
+    // and the other one is still initializing, since that would mean that
+    // once the browser is initialized the server would have stopped already.
+    // Pushing the session first ensures that `onAllSessionsClosed` will
+    // only trigger once all browsers are initialized and done.
+    const session = {
+      name: browserName,
+      browser: undefined,
+      closed: false,
+    };
+    sessions.push(session);
+    const startUrl = makeStartUrl ? makeStartUrl(browserName) : "";
+
+    session.browserPromise = startBrowser(browserName, startUrl)
+      .then(function (browser) {
+        session.browser = browser;
+        if (initSessionCallback) {
+          initSessionCallback(session);
+        }
+      })
+      .catch(function (ex) {
+        console.log(`Error while starting ${browserName}: ${ex}`);
+        closeSession(browserName);
+      });
+  }
 }
 
 function startServer() {
@@ -846,35 +929,44 @@ function stopServer() {
 }
 
 function getSession(browser) {
-  return sessions.filter(function(session) {
+  return sessions.filter(function (session) {
     return session.name === browser;
   })[0];
 }
 
-function closeSession(browser) {
-  var i = 0;
-  while (i < sessions.length && sessions[i].name !== browser) {
-    i++;
-  }
-  if (i < sessions.length) {
-    var session = sessions[i];
-    session.browser.stop(function() {
-      session.closed = true;
-      var allClosed = sessions.every(function(s) {
-        return s.closed;
-      });
-      if (allClosed && onAllSessionsClosed) {
+async function closeSession(browser) {
+  for (const session of sessions) {
+    if (session.name !== browser) {
+      continue;
+    }
+    if (session.browser !== undefined) {
+      for (const page of await session.browser.pages()) {
+        await page.close();
+      }
+      await session.browser.close();
+    }
+    session.closed = true;
+    const allClosed = sessions.every(function (s) {
+      return s.closed;
+    });
+    if (allClosed) {
+      if (tempDir) {
+        const rimraf = require("rimraf");
+        rimraf.sync(tempDir);
+      }
+
+      if (onAllSessionsClosed) {
         onAllSessionsClosed();
       }
-    });
+    }
   }
 }
 
 function ensurePDFsDownloaded(callback) {
   var downloadUtils = require("./downloadutils.js");
   var manifest = getTestManifest();
-  downloadUtils.downloadManifestFiles(manifest, function() {
-    downloadUtils.verifyManifestFiles(manifest, function(hasErrors) {
+  downloadUtils.downloadManifestFiles(manifest, function () {
+    downloadUtils.verifyManifestFiles(manifest, function (hasErrors) {
       if (hasErrors) {
         console.log(
           "Unable to verify the checksum for the files that are " +
@@ -899,16 +991,16 @@ function main() {
   }
 
   if (options.downloadOnly) {
-    ensurePDFsDownloaded(function() {});
-  } else if (!options.browser && !options.browserManifestFile) {
-    startServer();
+    ensurePDFsDownloaded(function () {});
   } else if (options.unitTest) {
     // Allows linked PDF files in unit-tests as well.
-    ensurePDFsDownloaded(function() {
+    ensurePDFsDownloaded(function () {
       startUnitTest("/test/unit/unit_test.html", "unit");
     });
   } else if (options.fontTest) {
     startUnitTest("/test/font/font_test.html", "font");
+  } else if (options.integration) {
+    startIntegrationTest();
   } else {
     startRefTest(options.masterMode, options.reftest);
   }
@@ -920,5 +1012,6 @@ var onAllSessionsClosed;
 var host = "127.0.0.1";
 var options = parseOptions();
 var stats;
+var tempDir = null;
 
 main();

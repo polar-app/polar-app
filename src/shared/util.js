@@ -12,18 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/* eslint no-var: error */
 
 import "./compatibility.js";
 
 const IDENTITY_MATRIX = [1, 0, 0, 1, 0, 0];
 const FONT_IDENTITY_MATRIX = [0.001, 0, 0, 0.001, 0, 0];
-
-const NativeImageDecoding = {
-  NONE: "none",
-  DECODE: "decode",
-  DISPLAY: "display",
-};
 
 // Permission flags from Table 22, Section 7.6.3.2 of the PDF specification.
 const PermissionFlag = {
@@ -149,6 +142,36 @@ const AnnotationBorderStyleType = {
   BEVELED: 3,
   INSET: 4,
   UNDERLINE: 5,
+};
+
+const AnnotationActionEventType = {
+  E: "Mouse Enter",
+  X: "Mouse Exit",
+  D: "Mouse Down",
+  U: "Mouse Up",
+  Fo: "Focus",
+  Bl: "Blur",
+  PO: "PageOpen",
+  PC: "PageClose",
+  PV: "PageVisible",
+  PI: "PageInvisible",
+  K: "Keystroke",
+  F: "Format",
+  V: "Validate",
+  C: "Calculate",
+};
+
+const DocumentActionEventType = {
+  WC: "WillClose",
+  WS: "WillSave",
+  DS: "DidSave",
+  WP: "WillPrint",
+  DP: "DidPrint",
+};
+
+const PageActionEventType = {
+  O: "PageOpen",
+  C: "PageClose",
 };
 
 const StreamType = {
@@ -288,12 +311,27 @@ const OPS = {
 };
 
 const UNSUPPORTED_FEATURES = {
+  /** @deprecated unused */
   unknown: "unknown",
   forms: "forms",
   javaScript: "javaScript",
   smask: "smask",
   shadingPattern: "shadingPattern",
+  /** @deprecated unused */
   font: "font",
+  errorTilingPattern: "errorTilingPattern",
+  errorExtGState: "errorExtGState",
+  errorXObject: "errorXObject",
+  errorFontLoadType3: "errorFontLoadType3",
+  errorFontState: "errorFontState",
+  errorFontMissing: "errorFontMissing",
+  errorFontTranslate: "errorFontTranslate",
+  errorColorSpace: "errorColorSpace",
+  errorOperatorList: "errorOperatorList",
+  errorFontToUnicode: "errorFontToUnicode",
+  errorFontLoadNative: "errorFontLoadNative",
+  errorFontGetPath: "errorFontGetPath",
+  errorMarkedContent: "errorMarkedContent",
 };
 
 const PasswordResponses = {
@@ -355,7 +393,7 @@ function isSameOrigin(baseUrl, otherUrl) {
   return base.origin === other.origin;
 }
 
-// Checks if URLs use one of the whitelisted protocols, e.g. to avoid XSS.
+// Checks if URLs use one of the allowed protocols, e.g. to avoid XSS.
 function _isValidProtocol(url) {
   if (!url) {
     return false;
@@ -404,7 +442,11 @@ function shadow(obj, prop, value) {
   return value;
 }
 
+/**
+ * @type {any}
+ */
 const BaseException = (function BaseExceptionClosure() {
+  // eslint-disable-next-line no-shadow
   function BaseException(message) {
     if (this.constructor === BaseException) {
       unreachable("Cannot initialize BaseException.");
@@ -455,6 +497,9 @@ class AbortException extends BaseException {}
 
 const NullCharactersRegExp = /\x00/g;
 
+/**
+ * @param {string} str
+ */
 function removeNullCharacters(str) {
   if (typeof str !== "string") {
     warn("The argument for removeNullCharacters must be a string.");
@@ -494,20 +539,21 @@ function stringToBytes(str) {
 
 /**
  * Gets length of the array (Array, Uint8Array, or string) in bytes.
- * @param {Array|Uint8Array|string} arr
+ * @param {Array<any>|Uint8Array|string} arr
  * @returns {number}
  */
 function arrayByteLength(arr) {
   if (arr.length !== undefined) {
     return arr.length;
   }
-  assert(arr.byteLength !== undefined);
+  assert(arr.byteLength !== undefined, "arrayByteLength - invalid argument.");
   return arr.byteLength;
 }
 
 /**
  * Combines array items (arrays) into single Uint8Array object.
- * @param {Array} arr - the array of the arrays (Array, Uint8Array, or string).
+ * @param {Array<Array<any>|Uint8Array|string>} arr - the array of the arrays
+ *   (Array, Uint8Array, or string).
  * @returns {Uint8Array}
  */
 function arraysToBytes(arr) {
@@ -547,6 +593,20 @@ function string32(value) {
   );
 }
 
+function objectSize(obj) {
+  return Object.keys(obj).length;
+}
+
+// Ensure that the returned Object has a `null` prototype; hence why
+// `Object.fromEntries(...)` is not used.
+function objectFromMap(map) {
+  const obj = Object.create(null);
+  for (const [key, value] of map) {
+    obj[key] = value;
+  }
+  return obj;
+}
+
 // Checks the endianness of the platform.
 function isLittleEndian() {
   const buffer8 = new Uint8Array(4);
@@ -575,16 +635,13 @@ const IsEvalSupportedCached = {
   },
 };
 
-const rgbBuf = ["rgb(", 0, ",", 0, ",", 0, ")"];
+const hexNumbers = [...Array(256).keys()].map(n =>
+  n.toString(16).padStart(2, "0")
+);
 
 class Util {
-  // makeCssRgb() can be called thousands of times. Using ´rgbBuf` avoids
-  // creating many intermediate strings.
-  static makeCssRgb(r, g, b) {
-    rgbBuf[1] = r;
-    rgbBuf[3] = g;
-    rgbBuf[5] = b;
-    return rgbBuf.join("");
+  static makeHexColor(r, g, b) {
+    return `#${hexNumbers[r]}${hexNumbers[g]}${hexNumbers[b]}`;
   }
 
   // Concatenates two transformation matrices together and returns the result.
@@ -668,7 +725,7 @@ class Util {
 
     // Solve the second degree polynomial to get roots.
     const first = (a + d) / 2;
-    const second = Math.sqrt((a + d) * (a + d) - 4 * (a * d - c * b)) / 2;
+    const second = Math.sqrt((a + d) ** 2 - 4 * (a * d - c * b)) / 2;
     const sx = first + second || 1;
     const sy = first - second || 1;
 
@@ -776,19 +833,40 @@ function stringToPDFString(str) {
   return strBuf.join("");
 }
 
+function escapeString(str) {
+  // replace "(", ")", "\n", "\r" and "\"
+  // by "\(", "\)", "\\n", "\\r" and "\\"
+  // in order to write it in a PDF file.
+  return str.replace(/([()\\\n\r])/g, match => {
+    if (match === "\n") {
+      return "\\n";
+    } else if (match === "\r") {
+      return "\\r";
+    }
+    return `\\${match}`;
+  });
+}
+
+function isAscii(str) {
+  return /^[\x00-\x7F]*$/.test(str);
+}
+
+function stringToUTF16BEString(str) {
+  const buf = ["\xFE\xFF"];
+  for (let i = 0, ii = str.length; i < ii; i++) {
+    const char = str.charCodeAt(i);
+    buf.push(String.fromCharCode((char >> 8) & 0xff));
+    buf.push(String.fromCharCode(char & 0xff));
+  }
+  return buf.join("");
+}
+
 function stringToUTF8String(str) {
   return decodeURIComponent(escape(str));
 }
 
 function utf8StringToString(str) {
   return unescape(encodeURIComponent(str));
-}
-
-function isEmptyObj(obj) {
-  for (const key in obj) {
-    return false;
-  }
-  return true;
 }
 
 function isBool(v) {
@@ -811,16 +889,32 @@ function isArrayEqual(arr1, arr2) {
   if (arr1.length !== arr2.length) {
     return false;
   }
-  return arr1.every(function(element, index) {
-    return element === arr2[index];
-  });
+  for (let i = 0, ii = arr1.length; i < ii; i++) {
+    if (arr1[i] !== arr2[i]) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function getModificationDate(date = new Date()) {
+  const buffer = [
+    date.getUTCFullYear().toString(),
+    (date.getUTCMonth() + 1).toString().padStart(2, "0"),
+    date.getUTCDate().toString().padStart(2, "0"),
+    date.getUTCHours().toString().padStart(2, "0"),
+    date.getUTCMinutes().toString().padStart(2, "0"),
+    date.getUTCSeconds().toString().padStart(2, "0"),
+  ];
+
+  return buffer.join("");
 }
 
 /**
  * Promise Capability object.
  *
  * @typedef {Object} PromiseCapability
- * @property {Promise} promise - A Promise object.
+ * @property {Promise<any>} promise - A Promise object.
  * @property {boolean} settled - If the Promise has been fulfilled/rejected.
  * @property {function} resolve - Fulfills the Promise.
  * @property {function} reject - Rejects the Promise.
@@ -841,12 +935,12 @@ function createPromiseCapability() {
       return isSettled;
     },
   });
-  capability.promise = new Promise(function(resolve, reject) {
-    capability.resolve = function(data) {
+  capability.promise = new Promise(function (resolve, reject) {
+    capability.resolve = function (data) {
       isSettled = true;
       resolve(data);
     };
-    capability.reject = function(reason) {
+    capability.reject = function (reason) {
       isSettled = true;
       reject(reason);
     };
@@ -854,39 +948,31 @@ function createPromiseCapability() {
   return capability;
 }
 
-const createObjectURL = (function createObjectURLClosure() {
+function createObjectURL(data, contentType = "", forceDataSchema = false) {
+  if (URL.createObjectURL && !forceDataSchema) {
+    return URL.createObjectURL(new Blob([data], { type: contentType }));
+  }
   // Blob/createObjectURL is not available, falling back to data schema.
   const digits =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
-  return function createObjectURL(data, contentType, forceDataSchema = false) {
-    if (!forceDataSchema && URL.createObjectURL) {
-      const blob = new Blob([data], { type: contentType });
-      return URL.createObjectURL(blob);
-    }
-
-    let buffer = `data:${contentType};base64,`;
-    for (let i = 0, ii = data.length; i < ii; i += 3) {
-      const b1 = data[i] & 0xff;
-      const b2 = data[i + 1] & 0xff;
-      const b3 = data[i + 2] & 0xff;
-      const d1 = b1 >> 2,
-        d2 = ((b1 & 3) << 4) | (b2 >> 4);
-      const d3 = i + 1 < ii ? ((b2 & 0xf) << 2) | (b3 >> 6) : 64;
-      const d4 = i + 2 < ii ? b3 & 0x3f : 64;
-      buffer += digits[d1] + digits[d2] + digits[d3] + digits[d4];
-    }
-    return buffer;
-  };
-})();
+  let buffer = `data:${contentType};base64,`;
+  for (let i = 0, ii = data.length; i < ii; i += 3) {
+    const b1 = data[i] & 0xff;
+    const b2 = data[i + 1] & 0xff;
+    const b3 = data[i + 2] & 0xff;
+    const d1 = b1 >> 2,
+      d2 = ((b1 & 3) << 4) | (b2 >> 4);
+    const d3 = i + 1 < ii ? ((b2 & 0xf) << 2) | (b3 >> 6) : 64;
+    const d4 = i + 2 < ii ? b3 & 0x3f : 64;
+    buffer += digits[d1] + digits[d2] + digits[d3] + digits[d4];
+  }
+  return buffer;
+}
 
 export {
-  BaseException,
-  FONT_IDENTITY_MATRIX,
-  IDENTITY_MATRIX,
-  OPS,
-  VerbosityLevel,
-  UNSUPPORTED_FEATURES,
+  AbortException,
+  AnnotationActionEventType,
   AnnotationBorderStyleType,
   AnnotationFieldFlag,
   AnnotationFlag,
@@ -895,48 +981,59 @@ export {
   AnnotationReviewState,
   AnnotationStateModelType,
   AnnotationType,
-  FontType,
-  ImageKind,
-  CMapCompressionType,
-  AbortException,
-  InvalidPDFException,
-  MissingPDFException,
-  NativeImageDecoding,
-  PasswordException,
-  PasswordResponses,
-  PermissionFlag,
-  StreamType,
-  TextRenderingMode,
-  UnexpectedResponseException,
-  UnknownErrorException,
-  Util,
-  FormatError,
   arrayByteLength,
   arraysToBytes,
   assert,
+  BaseException,
   bytesToString,
-  createPromiseCapability,
+  CMapCompressionType,
   createObjectURL,
+  createPromiseCapability,
+  createValidAbsoluteUrl,
+  DocumentActionEventType,
+  escapeString,
+  FONT_IDENTITY_MATRIX,
+  FontType,
+  FormatError,
+  getModificationDate,
   getVerbosityLevel,
+  IDENTITY_MATRIX,
+  ImageKind,
   info,
+  InvalidPDFException,
   isArrayBuffer,
   isArrayEqual,
+  isAscii,
   isBool,
-  isEmptyObj,
-  isNum,
-  isString,
-  isSameOrigin,
-  createValidAbsoluteUrl,
-  IsLittleEndianCached,
   IsEvalSupportedCached,
+  IsLittleEndianCached,
+  isNum,
+  isSameOrigin,
+  isString,
+  MissingPDFException,
+  objectFromMap,
+  objectSize,
+  OPS,
+  PageActionEventType,
+  PasswordException,
+  PasswordResponses,
+  PermissionFlag,
   removeNullCharacters,
   setVerbosityLevel,
   shadow,
+  StreamType,
   string32,
   stringToBytes,
   stringToPDFString,
+  stringToUTF16BEString,
   stringToUTF8String,
-  utf8StringToString,
-  warn,
+  TextRenderingMode,
+  UnexpectedResponseException,
+  UnknownErrorException,
   unreachable,
+  UNSUPPORTED_FEATURES,
+  utf8StringToString,
+  Util,
+  VerbosityLevel,
+  warn,
 };

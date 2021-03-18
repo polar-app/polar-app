@@ -12,16 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/* eslint-disable no-var */
 
+import { Dict, isDict, isStream, Ref } from "./primitives.js";
 import {
   FormatError,
   info,
   isBool,
   IsEvalSupportedCached,
+  shadow,
   unreachable,
 } from "../shared/util.js";
-import { isDict, isStream } from "./primitives.js";
 import { PostScriptLexer, PostScriptParser } from "./ps_parser.js";
+import { LocalFunctionCache } from "./image_utils.js";
 
 class PDFFunctionFactory {
   constructor({ xref, isEvalSupported = true }) {
@@ -30,19 +33,84 @@ class PDFFunctionFactory {
   }
 
   create(fn) {
-    return PDFFunction.parse({
+    const cachedFunction = this.getCached(fn);
+    if (cachedFunction) {
+      return cachedFunction;
+    }
+    const parsedFunction = PDFFunction.parse({
       xref: this.xref,
       isEvalSupported: this.isEvalSupported,
-      fn,
+      fn: fn instanceof Ref ? this.xref.fetch(fn) : fn,
     });
+
+    // Attempt to cache the parsed Function, by reference.
+    this._cache(fn, parsedFunction);
+
+    return parsedFunction;
   }
 
   createFromArray(fnObj) {
-    return PDFFunction.parseArray({
+    const cachedFunction = this.getCached(fnObj);
+    if (cachedFunction) {
+      return cachedFunction;
+    }
+    const parsedFunction = PDFFunction.parseArray({
       xref: this.xref,
       isEvalSupported: this.isEvalSupported,
-      fnObj,
+      fnObj: fnObj instanceof Ref ? this.xref.fetch(fnObj) : fnObj,
     });
+
+    // Attempt to cache the parsed Function, by reference.
+    this._cache(fnObj, parsedFunction);
+
+    return parsedFunction;
+  }
+
+  getCached(cacheKey) {
+    let fnRef;
+    if (cacheKey instanceof Ref) {
+      fnRef = cacheKey;
+    } else if (cacheKey instanceof Dict) {
+      fnRef = cacheKey.objId;
+    } else if (isStream(cacheKey)) {
+      fnRef = cacheKey.dict && cacheKey.dict.objId;
+    }
+    if (fnRef) {
+      const localFunction = this._localFunctionCache.getByRef(fnRef);
+      if (localFunction) {
+        return localFunction;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * @private
+   */
+  _cache(cacheKey, parsedFunction) {
+    if (!parsedFunction) {
+      throw new Error(
+        'PDFFunctionFactory._cache - expected "parsedFunction" argument.'
+      );
+    }
+    let fnRef;
+    if (cacheKey instanceof Ref) {
+      fnRef = cacheKey;
+    } else if (cacheKey instanceof Dict) {
+      fnRef = cacheKey.objId;
+    } else if (isStream(cacheKey)) {
+      fnRef = cacheKey.dict && cacheKey.dict.objId;
+    }
+    if (fnRef) {
+      this._localFunctionCache.set(/* name = */ null, fnRef, parsedFunction);
+    }
+  }
+
+  /**
+   * @private
+   */
+  get _localFunctionCache() {
+    return shadow(this, "_localFunctionCache", new LocalFunctionCache());
   }
 }
 
@@ -55,8 +123,8 @@ function toNumberArray(arr) {
     if (typeof arr[i] !== "number") {
       // Non-number is found -- convert all items to numbers.
       const result = new Array(length);
-      for (let i = 0; i < length; i++) {
-        result[i] = +arr[i];
+      for (let j = 0; j < length; j++) {
+        result[j] = +arr[j];
       }
       return result;
     }
@@ -159,7 +227,7 @@ var PDFFunction = (function PDFFunctionClosure() {
           this.parse({ xref, isEvalSupported, fn: xref.fetchIfRef(fnObj[j]) })
         );
       }
-      return function(src, srcOffset, dest, destOffset) {
+      return function (src, srcOffset, dest, destOffset) {
         for (var i = 0, ii = fnArray.length; i < ii; i++) {
           fnArray[i](src, srcOffset, dest, destOffset + i);
         }
@@ -565,26 +633,30 @@ function isPDFFunction(v) {
 
 var PostScriptStack = (function PostScriptStackClosure() {
   var MAX_STACK_SIZE = 100;
-  function PostScriptStack(initialStack) {
-    this.stack = !initialStack
-      ? []
-      : Array.prototype.slice.call(initialStack, 0);
-  }
 
-  PostScriptStack.prototype = {
-    push: function PostScriptStack_push(value) {
+  // eslint-disable-next-line no-shadow
+  class PostScriptStack {
+    constructor(initialStack) {
+      this.stack = !initialStack
+        ? []
+        : Array.prototype.slice.call(initialStack, 0);
+    }
+
+    push(value) {
       if (this.stack.length >= MAX_STACK_SIZE) {
         throw new Error("PostScript function stack overflow.");
       }
       this.stack.push(value);
-    },
-    pop: function PostScriptStack_pop() {
+    }
+
+    pop() {
       if (this.stack.length <= 0) {
         throw new Error("PostScript function stack underflow.");
       }
       return this.stack.pop();
-    },
-    copy: function PostScriptStack_copy(n) {
+    }
+
+    copy(n) {
       if (this.stack.length + n >= MAX_STACK_SIZE) {
         throw new Error("PostScript function stack overflow.");
       }
@@ -592,12 +664,14 @@ var PostScriptStack = (function PostScriptStackClosure() {
       for (var i = stack.length - n, j = n - 1; j >= 0; j--, i++) {
         stack.push(stack[i]);
       }
-    },
-    index: function PostScriptStack_index(n) {
+    }
+
+    index(n) {
       this.push(this.stack[this.stack.length - n - 1]);
-    },
+    }
+
     // rotate the last n stack elements p times
-    roll: function PostScriptStack_roll(n, p) {
+    roll(n, p) {
       var stack = this.stack;
       var l = stack.length - n;
       var r = stack.length - 1,
@@ -620,245 +694,245 @@ var PostScriptStack = (function PostScriptStackClosure() {
         stack[i] = stack[j];
         stack[j] = t;
       }
-    },
-  };
+    }
+  }
+
   return PostScriptStack;
 })();
-var PostScriptEvaluator = (function PostScriptEvaluatorClosure() {
-  function PostScriptEvaluator(operators) {
+
+class PostScriptEvaluator {
+  constructor(operators) {
     this.operators = operators;
   }
-  PostScriptEvaluator.prototype = {
-    execute: function PostScriptEvaluator_execute(initialStack) {
-      var stack = new PostScriptStack(initialStack);
-      var counter = 0;
-      var operators = this.operators;
-      var length = operators.length;
-      var operator, a, b;
-      while (counter < length) {
-        operator = operators[counter++];
-        if (typeof operator === "number") {
-          // Operator is really an operand and should be pushed to the stack.
-          stack.push(operator);
-          continue;
-        }
-        switch (operator) {
-          // non standard ps operators
-          case "jz": // jump if false
-            b = stack.pop();
-            a = stack.pop();
-            if (!a) {
-              counter = b;
-            }
-            break;
-          case "j": // jump
-            a = stack.pop();
-            counter = a;
-            break;
 
-          // all ps operators in alphabetical order (excluding if/ifelse)
-          case "abs":
-            a = stack.pop();
-            stack.push(Math.abs(a));
-            break;
-          case "add":
-            b = stack.pop();
-            a = stack.pop();
-            stack.push(a + b);
-            break;
-          case "and":
-            b = stack.pop();
-            a = stack.pop();
-            if (isBool(a) && isBool(b)) {
-              stack.push(a && b);
-            } else {
-              stack.push(a & b);
-            }
-            break;
-          case "atan":
-            a = stack.pop();
-            stack.push(Math.atan(a));
-            break;
-          case "bitshift":
-            b = stack.pop();
-            a = stack.pop();
-            if (a > 0) {
-              stack.push(a << b);
-            } else {
-              stack.push(a >> b);
-            }
-            break;
-          case "ceiling":
-            a = stack.pop();
-            stack.push(Math.ceil(a));
-            break;
-          case "copy":
-            a = stack.pop();
-            stack.copy(a);
-            break;
-          case "cos":
-            a = stack.pop();
-            stack.push(Math.cos(a));
-            break;
-          case "cvi":
-            a = stack.pop() | 0;
-            stack.push(a);
-            break;
-          case "cvr":
-            // noop
-            break;
-          case "div":
-            b = stack.pop();
-            a = stack.pop();
-            stack.push(a / b);
-            break;
-          case "dup":
-            stack.copy(1);
-            break;
-          case "eq":
-            b = stack.pop();
-            a = stack.pop();
-            stack.push(a === b);
-            break;
-          case "exch":
-            stack.roll(2, 1);
-            break;
-          case "exp":
-            b = stack.pop();
-            a = stack.pop();
-            stack.push(a ** b);
-            break;
-          case "false":
-            stack.push(false);
-            break;
-          case "floor":
-            a = stack.pop();
-            stack.push(Math.floor(a));
-            break;
-          case "ge":
-            b = stack.pop();
-            a = stack.pop();
-            stack.push(a >= b);
-            break;
-          case "gt":
-            b = stack.pop();
-            a = stack.pop();
-            stack.push(a > b);
-            break;
-          case "idiv":
-            b = stack.pop();
-            a = stack.pop();
-            stack.push((a / b) | 0);
-            break;
-          case "index":
-            a = stack.pop();
-            stack.index(a);
-            break;
-          case "le":
-            b = stack.pop();
-            a = stack.pop();
-            stack.push(a <= b);
-            break;
-          case "ln":
-            a = stack.pop();
-            stack.push(Math.log(a));
-            break;
-          case "log":
-            a = stack.pop();
-            stack.push(Math.log(a) / Math.LN10);
-            break;
-          case "lt":
-            b = stack.pop();
-            a = stack.pop();
-            stack.push(a < b);
-            break;
-          case "mod":
-            b = stack.pop();
-            a = stack.pop();
-            stack.push(a % b);
-            break;
-          case "mul":
-            b = stack.pop();
-            a = stack.pop();
-            stack.push(a * b);
-            break;
-          case "ne":
-            b = stack.pop();
-            a = stack.pop();
-            stack.push(a !== b);
-            break;
-          case "neg":
-            a = stack.pop();
-            stack.push(-a);
-            break;
-          case "not":
-            a = stack.pop();
-            if (isBool(a)) {
-              stack.push(!a);
-            } else {
-              stack.push(~a);
-            }
-            break;
-          case "or":
-            b = stack.pop();
-            a = stack.pop();
-            if (isBool(a) && isBool(b)) {
-              stack.push(a || b);
-            } else {
-              stack.push(a | b);
-            }
-            break;
-          case "pop":
-            stack.pop();
-            break;
-          case "roll":
-            b = stack.pop();
-            a = stack.pop();
-            stack.roll(a, b);
-            break;
-          case "round":
-            a = stack.pop();
-            stack.push(Math.round(a));
-            break;
-          case "sin":
-            a = stack.pop();
-            stack.push(Math.sin(a));
-            break;
-          case "sqrt":
-            a = stack.pop();
-            stack.push(Math.sqrt(a));
-            break;
-          case "sub":
-            b = stack.pop();
-            a = stack.pop();
-            stack.push(a - b);
-            break;
-          case "true":
-            stack.push(true);
-            break;
-          case "truncate":
-            a = stack.pop();
-            a = a < 0 ? Math.ceil(a) : Math.floor(a);
-            stack.push(a);
-            break;
-          case "xor":
-            b = stack.pop();
-            a = stack.pop();
-            if (isBool(a) && isBool(b)) {
-              stack.push(a !== b);
-            } else {
-              stack.push(a ^ b);
-            }
-            break;
-          default:
-            throw new FormatError(`Unknown operator ${operator}`);
-        }
+  execute(initialStack) {
+    var stack = new PostScriptStack(initialStack);
+    var counter = 0;
+    var operators = this.operators;
+    var length = operators.length;
+    var operator, a, b;
+    while (counter < length) {
+      operator = operators[counter++];
+      if (typeof operator === "number") {
+        // Operator is really an operand and should be pushed to the stack.
+        stack.push(operator);
+        continue;
       }
-      return stack.stack;
-    },
-  };
-  return PostScriptEvaluator;
-})();
+      switch (operator) {
+        // non standard ps operators
+        case "jz": // jump if false
+          b = stack.pop();
+          a = stack.pop();
+          if (!a) {
+            counter = b;
+          }
+          break;
+        case "j": // jump
+          a = stack.pop();
+          counter = a;
+          break;
+
+        // all ps operators in alphabetical order (excluding if/ifelse)
+        case "abs":
+          a = stack.pop();
+          stack.push(Math.abs(a));
+          break;
+        case "add":
+          b = stack.pop();
+          a = stack.pop();
+          stack.push(a + b);
+          break;
+        case "and":
+          b = stack.pop();
+          a = stack.pop();
+          if (isBool(a) && isBool(b)) {
+            stack.push(a && b);
+          } else {
+            stack.push(a & b);
+          }
+          break;
+        case "atan":
+          a = stack.pop();
+          stack.push(Math.atan(a));
+          break;
+        case "bitshift":
+          b = stack.pop();
+          a = stack.pop();
+          if (a > 0) {
+            stack.push(a << b);
+          } else {
+            stack.push(a >> b);
+          }
+          break;
+        case "ceiling":
+          a = stack.pop();
+          stack.push(Math.ceil(a));
+          break;
+        case "copy":
+          a = stack.pop();
+          stack.copy(a);
+          break;
+        case "cos":
+          a = stack.pop();
+          stack.push(Math.cos(a));
+          break;
+        case "cvi":
+          a = stack.pop() | 0;
+          stack.push(a);
+          break;
+        case "cvr":
+          // noop
+          break;
+        case "div":
+          b = stack.pop();
+          a = stack.pop();
+          stack.push(a / b);
+          break;
+        case "dup":
+          stack.copy(1);
+          break;
+        case "eq":
+          b = stack.pop();
+          a = stack.pop();
+          stack.push(a === b);
+          break;
+        case "exch":
+          stack.roll(2, 1);
+          break;
+        case "exp":
+          b = stack.pop();
+          a = stack.pop();
+          stack.push(a ** b);
+          break;
+        case "false":
+          stack.push(false);
+          break;
+        case "floor":
+          a = stack.pop();
+          stack.push(Math.floor(a));
+          break;
+        case "ge":
+          b = stack.pop();
+          a = stack.pop();
+          stack.push(a >= b);
+          break;
+        case "gt":
+          b = stack.pop();
+          a = stack.pop();
+          stack.push(a > b);
+          break;
+        case "idiv":
+          b = stack.pop();
+          a = stack.pop();
+          stack.push((a / b) | 0);
+          break;
+        case "index":
+          a = stack.pop();
+          stack.index(a);
+          break;
+        case "le":
+          b = stack.pop();
+          a = stack.pop();
+          stack.push(a <= b);
+          break;
+        case "ln":
+          a = stack.pop();
+          stack.push(Math.log(a));
+          break;
+        case "log":
+          a = stack.pop();
+          stack.push(Math.log(a) / Math.LN10);
+          break;
+        case "lt":
+          b = stack.pop();
+          a = stack.pop();
+          stack.push(a < b);
+          break;
+        case "mod":
+          b = stack.pop();
+          a = stack.pop();
+          stack.push(a % b);
+          break;
+        case "mul":
+          b = stack.pop();
+          a = stack.pop();
+          stack.push(a * b);
+          break;
+        case "ne":
+          b = stack.pop();
+          a = stack.pop();
+          stack.push(a !== b);
+          break;
+        case "neg":
+          a = stack.pop();
+          stack.push(-a);
+          break;
+        case "not":
+          a = stack.pop();
+          if (isBool(a)) {
+            stack.push(!a);
+          } else {
+            stack.push(~a);
+          }
+          break;
+        case "or":
+          b = stack.pop();
+          a = stack.pop();
+          if (isBool(a) && isBool(b)) {
+            stack.push(a || b);
+          } else {
+            stack.push(a | b);
+          }
+          break;
+        case "pop":
+          stack.pop();
+          break;
+        case "roll":
+          b = stack.pop();
+          a = stack.pop();
+          stack.roll(a, b);
+          break;
+        case "round":
+          a = stack.pop();
+          stack.push(Math.round(a));
+          break;
+        case "sin":
+          a = stack.pop();
+          stack.push(Math.sin(a));
+          break;
+        case "sqrt":
+          a = stack.pop();
+          stack.push(Math.sqrt(a));
+          break;
+        case "sub":
+          b = stack.pop();
+          a = stack.pop();
+          stack.push(a - b);
+          break;
+        case "true":
+          stack.push(true);
+          break;
+        case "truncate":
+          a = stack.pop();
+          a = a < 0 ? Math.ceil(a) : Math.floor(a);
+          stack.push(a);
+          break;
+        case "xor":
+          b = stack.pop();
+          a = stack.pop();
+          if (isBool(a) && isBool(b)) {
+            stack.push(a !== b);
+          } else {
+            stack.push(a ^ b);
+          }
+          break;
+        default:
+          throw new FormatError(`Unknown operator ${operator}`);
+      }
+    }
+    return stack.stack;
+  }
+}
 
 // Most of the PDFs functions consist of simple operations such as:
 //   roll, exch, sub, cvr, pop, index, dup, mul, if, gt, add.
@@ -867,84 +941,100 @@ var PostScriptEvaluator = (function PostScriptEvaluatorClosure() {
 // optimize some expressions using basic math properties. Keeping track of
 // min/max values will allow us to avoid extra Math.min/Math.max calls.
 var PostScriptCompiler = (function PostScriptCompilerClosure() {
-  function AstNode(type) {
-    this.type = type;
-  }
-  AstNode.prototype.visit = function(visitor) {
-    unreachable("abstract method");
-  };
+  class AstNode {
+    constructor(type) {
+      this.type = type;
+    }
 
-  function AstArgument(index, min, max) {
-    AstNode.call(this, "args");
-    this.index = index;
-    this.min = min;
-    this.max = max;
+    visit(visitor) {
+      unreachable("abstract method");
+    }
   }
-  AstArgument.prototype = Object.create(AstNode.prototype);
-  AstArgument.prototype.visit = function(visitor) {
-    visitor.visitArgument(this);
-  };
 
-  function AstLiteral(number) {
-    AstNode.call(this, "literal");
-    this.number = number;
-    this.min = number;
-    this.max = number;
-  }
-  AstLiteral.prototype = Object.create(AstNode.prototype);
-  AstLiteral.prototype.visit = function(visitor) {
-    visitor.visitLiteral(this);
-  };
+  class AstArgument extends AstNode {
+    constructor(index, min, max) {
+      super("args");
+      this.index = index;
+      this.min = min;
+      this.max = max;
+    }
 
-  function AstBinaryOperation(op, arg1, arg2, min, max) {
-    AstNode.call(this, "binary");
-    this.op = op;
-    this.arg1 = arg1;
-    this.arg2 = arg2;
-    this.min = min;
-    this.max = max;
+    visit(visitor) {
+      visitor.visitArgument(this);
+    }
   }
-  AstBinaryOperation.prototype = Object.create(AstNode.prototype);
-  AstBinaryOperation.prototype.visit = function(visitor) {
-    visitor.visitBinaryOperation(this);
-  };
 
-  function AstMin(arg, max) {
-    AstNode.call(this, "max");
-    this.arg = arg;
-    this.min = arg.min;
-    this.max = max;
-  }
-  AstMin.prototype = Object.create(AstNode.prototype);
-  AstMin.prototype.visit = function(visitor) {
-    visitor.visitMin(this);
-  };
+  class AstLiteral extends AstNode {
+    constructor(number) {
+      super("literal");
+      this.number = number;
+      this.min = number;
+      this.max = number;
+    }
 
-  function AstVariable(index, min, max) {
-    AstNode.call(this, "var");
-    this.index = index;
-    this.min = min;
-    this.max = max;
+    visit(visitor) {
+      visitor.visitLiteral(this);
+    }
   }
-  AstVariable.prototype = Object.create(AstNode.prototype);
-  AstVariable.prototype.visit = function(visitor) {
-    visitor.visitVariable(this);
-  };
 
-  function AstVariableDefinition(variable, arg) {
-    AstNode.call(this, "definition");
-    this.variable = variable;
-    this.arg = arg;
-  }
-  AstVariableDefinition.prototype = Object.create(AstNode.prototype);
-  AstVariableDefinition.prototype.visit = function(visitor) {
-    visitor.visitVariableDefinition(this);
-  };
+  class AstBinaryOperation extends AstNode {
+    constructor(op, arg1, arg2, min, max) {
+      super("binary");
+      this.op = op;
+      this.arg1 = arg1;
+      this.arg2 = arg2;
+      this.min = min;
+      this.max = max;
+    }
 
-  function ExpressionBuilderVisitor() {
-    this.parts = [];
+    visit(visitor) {
+      visitor.visitBinaryOperation(this);
+    }
   }
-  ExpressionBuilderVisitor.prototype = {
+
+  class AstMin extends AstNode {
+    constructor(arg, max) {
+      super("max");
+      this.arg = arg;
+      this.min = arg.min;
+      this.max = max;
+    }
+
+    visit(visitor) {
+      visitor.visitMin(this);
+    }
+  }
+
+  class AstVariable extends AstNode {
+    constructor(index, min, max) {
+      super("var");
+      this.index = index;
+      this.min = min;
+      this.max = max;
+    }
+
+    visit(visitor) {
+      visitor.visitVariable(this);
+    }
+  }
+
+  class AstVariableDefinition extends AstNode {
+    constructor(variable, arg) {
+      super("definition");
+      this.variable = variable;
+      this.arg = arg;
+    }
+
+    visit(visitor) {
+      visitor.visitVariableDefinition(this);
+    }
+  }
+
+  class ExpressionBuilderVisitor {
+    constructor() {
+      this.parts = [];
+    }
+
     visitArgument(arg) {
       this.parts.push(
         "Math.max(",
@@ -955,36 +1045,42 @@ var PostScriptCompiler = (function PostScriptCompilerClosure() {
         arg.index,
         "]))"
       );
-    },
+    }
+
     visitVariable(variable) {
       this.parts.push("v", variable.index);
-    },
+    }
+
     visitLiteral(literal) {
       this.parts.push(literal.number);
-    },
+    }
+
     visitBinaryOperation(operation) {
       this.parts.push("(");
       operation.arg1.visit(this);
       this.parts.push(" ", operation.op, " ");
       operation.arg2.visit(this);
       this.parts.push(")");
-    },
+    }
+
     visitVariableDefinition(definition) {
       this.parts.push("var ");
       definition.variable.visit(this);
       this.parts.push(" = ");
       definition.arg.visit(this);
       this.parts.push(";");
-    },
+    }
+
     visitMin(max) {
       this.parts.push("Math.min(");
       max.arg.visit(this);
       this.parts.push(", ", max.max, ")");
-    },
+    }
+
     toString() {
       return this.parts.join("");
-    },
-  };
+    }
+  }
 
   function buildAddOperation(num1, num2) {
     if (num2.type === "literal" && num2.number === 0) {
@@ -1084,22 +1180,21 @@ var PostScriptCompiler = (function PostScriptCompilerClosure() {
     return new AstMin(num1, max);
   }
 
-  function PostScriptCompiler() {}
-  PostScriptCompiler.prototype = {
-    compile: function PostScriptCompiler_compile(code, domain, range) {
+  // eslint-disable-next-line no-shadow
+  class PostScriptCompiler {
+    compile(code, domain, range) {
       var stack = [];
-      var i, ii;
       var instructions = [];
       var inputSize = domain.length >> 1,
         outputSize = range.length >> 1;
       var lastRegister = 0;
       var n, j;
       var num1, num2, ast1, ast2, tmpVar, item;
-      for (i = 0; i < inputSize; i++) {
+      for (let i = 0; i < inputSize; i++) {
         stack.push(new AstArgument(i, domain[i * 2], domain[i * 2 + 1]));
       }
 
-      for (i = 0, ii = code.length; i < ii; i++) {
+      for (let i = 0, ii = code.length; i < ii; i++) {
         item = code[i];
         if (typeof item === "number") {
           stack.push(new AstLiteral(item));
@@ -1242,12 +1337,12 @@ var PostScriptCompiler = (function PostScriptCompilerClosure() {
       }
 
       var result = [];
-      instructions.forEach(function(instruction) {
+      instructions.forEach(function (instruction) {
         var statementBuilder = new ExpressionBuilderVisitor();
         instruction.visit(statementBuilder);
         result.push(statementBuilder.toString());
       });
-      stack.forEach(function(expr, i) {
+      stack.forEach(function (expr, i) {
         var statementBuilder = new ExpressionBuilderVisitor();
         expr.visit(statementBuilder);
         var min = range[i * 2],
@@ -1266,8 +1361,8 @@ var PostScriptCompiler = (function PostScriptCompilerClosure() {
         result.push(out.join(""));
       });
       return result.join("\n");
-    },
-  };
+    }
+  }
 
   return PostScriptCompiler;
 })();
@@ -1275,6 +1370,6 @@ var PostScriptCompiler = (function PostScriptCompilerClosure() {
 export {
   isPDFFunction,
   PDFFunctionFactory,
-  PostScriptEvaluator,
   PostScriptCompiler,
+  PostScriptEvaluator,
 };

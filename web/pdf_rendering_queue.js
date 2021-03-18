@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+import { RenderingCancelledException } from "pdfjs-lib";
+
 const CLEANUP_TIMEOUT = 30000;
 
 const RenderingStates = {
@@ -170,6 +172,9 @@ class PDFRenderingQueue {
             this.renderHighestPriority();
           })
           .catch(reason => {
+            if (reason instanceof RenderingCancelledException) {
+              return;
+            }
             console.error(`renderView: "${reason}"`);
           });
         break;
@@ -178,4 +183,4 @@ class PDFRenderingQueue {
   }
 }
 
-export { RenderingStates, PDFRenderingQueue };
+export { PDFRenderingQueue, RenderingStates };

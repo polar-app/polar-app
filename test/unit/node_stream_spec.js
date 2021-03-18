@@ -14,19 +14,23 @@
  */
 /* globals __non_webpack_require__ */
 
-import { AbortException, assert } from "../../src/shared/util.js";
+import { AbortException } from "../../src/shared/util.js";
 import { isNodeJS } from "../../src/shared/is_node.js";
 import { PDFNodeStream } from "../../src/display/node_stream.js";
 
-// Make sure that we only running this script is Node.js environments.
-assert(isNodeJS);
+// Ensure that these test only runs in Node.js environments.
+if (!isNodeJS) {
+  throw new Error(
+    'The "node_stream" unit-tests can only be run in Node.js environments.'
+  );
+}
 
 const path = __non_webpack_require__("path");
 const url = __non_webpack_require__("url");
 const http = __non_webpack_require__("http");
 const fs = __non_webpack_require__("fs");
 
-describe("node_stream", function() {
+describe("node_stream", function () {
   let server = null;
   let port = null;
   const pdf = url.parse(
@@ -47,7 +51,7 @@ describe("node_stream", function() {
             response.end(`File ${request.url} not found!`);
             return;
           }
-          if (!request.headers["range"]) {
+          if (!request.headers.range) {
             const contentLength = stat.size;
             const stream = fs.createReadStream(filePath);
             response.writeHead(200, {
@@ -57,7 +61,7 @@ describe("node_stream", function() {
             });
             stream.pipe(response);
           } else {
-            const [start, end] = request.headers["range"]
+            const [start, end] = request.headers.range
               .split("=")[1]
               .split("-")
               .map(x => {
@@ -82,7 +86,7 @@ describe("node_stream", function() {
     done();
   });
 
-  it("read both http(s) and filesystem pdf files", function(done) {
+  it("read both http(s) and filesystem pdf files", function (done) {
     const stream1 = new PDFNodeStream({
       url: `http://127.0.0.1:${port}/tracemonkey.pdf`,
       rangeChunkSize: 65536,
@@ -114,8 +118,8 @@ describe("node_stream", function() {
 
     let len1 = 0,
       len2 = 0;
-    const read1 = function() {
-      return fullReader1.read().then(function(result) {
+    const read1 = function () {
+      return fullReader1.read().then(function (result) {
         if (result.done) {
           return undefined;
         }
@@ -123,8 +127,8 @@ describe("node_stream", function() {
         return read1();
       });
     };
-    const read2 = function() {
-      return fullReader2.read().then(function(result) {
+    const read2 = function () {
+      return fullReader2.read().then(function (result) {
         if (result.done) {
           return undefined;
         }
@@ -149,7 +153,7 @@ describe("node_stream", function() {
       });
   });
 
-  it("read custom ranges for both http(s) and filesystem urls", function(done) {
+  it("read custom ranges for both http(s) and filesystem urls", function (done) {
     const rangeSize = 32768;
     const stream1 = new PDFNodeStream({
       url: `http://127.0.0.1:${port}/tracemonkey.pdf`,
@@ -172,7 +176,7 @@ describe("node_stream", function() {
     let isStreamingSupported1, isRangeSupported1, fullReaderCancelled1;
     let isStreamingSupported2, isRangeSupported2, fullReaderCancelled2;
 
-    const promise1 = fullReader1.headersReady.then(function() {
+    const promise1 = fullReader1.headersReady.then(function () {
       isStreamingSupported1 = fullReader1.isStreamingSupported;
       isRangeSupported1 = fullReader1.isRangeSupported;
       // we shall be able to close the full reader without issues
@@ -180,7 +184,7 @@ describe("node_stream", function() {
       fullReaderCancelled1 = true;
     });
 
-    const promise2 = fullReader2.headersReady.then(function() {
+    const promise2 = fullReader2.headersReady.then(function () {
       isStreamingSupported2 = fullReader2.isStreamingSupported;
       isRangeSupported2 = fullReader2.isRangeSupported;
       fullReader2.cancel(new AbortException("Don't need fullReader2."));
@@ -213,8 +217,8 @@ describe("node_stream", function() {
     const result21 = { value: 0 },
       result22 = { value: 0 };
 
-    const read = function(reader, lenResult) {
-      return reader.read().then(function(result) {
+    const read = function (reader, lenResult) {
+      return reader.read().then(function (result) {
         if (result.done) {
           return undefined;
         }
@@ -233,7 +237,7 @@ describe("node_stream", function() {
     ]);
 
     readPromises
-      .then(function() {
+      .then(function () {
         expect(result11.value).toEqual(rangeSize);
         expect(result12.value).toEqual(tailSize);
         expect(result21.value).toEqual(rangeSize);
@@ -246,7 +250,7 @@ describe("node_stream", function() {
         expect(fullReaderCancelled2).toEqual(true);
         done();
       })
-      .catch(function(reason) {
+      .catch(function (reason) {
         done.fail(reason);
       });
   });

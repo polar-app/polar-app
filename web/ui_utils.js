@@ -23,11 +23,22 @@ const MAX_AUTO_SCALE = 1.25;
 const SCROLLBAR_PADDING = 40;
 const VERTICAL_PADDING = 5;
 
+const LOADINGBAR_END_OFFSET_VAR = "--loadingBar-end-offset";
+
 const PresentationModeState = {
   UNKNOWN: 0,
   NORMAL: 1,
   CHANGING: 2,
   FULLSCREEN: 3,
+};
+
+const SidebarView = {
+  UNKNOWN: -1,
+  NONE: 0,
+  THUMBS: 1, // Default value.
+  OUTLINE: 2,
+  ATTACHMENTS: 3,
+  LAYERS: 4,
 };
 
 const RendererType = {
@@ -58,36 +69,6 @@ const SpreadMode = {
 // Used by `PDFViewerApplication`, and by the API unit-tests.
 const AutoPrintRegExp = /\bprint\s*\(/;
 
-// Replaces {{arguments}} with their values.
-function formatL10nValue(text, args) {
-  if (!args) {
-    return text;
-  }
-  return text.replace(/\{\{\s*(\w+)\s*\}\}/g, (all, name) => {
-    return name in args ? args[name] : "{{" + name + "}}";
-  });
-}
-
-/**
- * No-op implementation of the localization service.
- * @implements {IL10n}
- */
-const NullL10n = {
-  async getLanguage() {
-    return "en-us";
-  },
-
-  async getDirection() {
-    return "ltr";
-  },
-
-  async get(property, args, fallback) {
-    return formatL10nValue(fallback, args);
-  },
-
-  async translate(element) {},
-};
-
 /**
  * Returns scale factor for the canvas. It makes sense for the HiDPI displays.
  * @returns {Object} The object with horizontal (sx) and vertical (sy)
@@ -99,8 +80,6 @@ function getOutputScale(ctx) {
   const backingStoreRatio =
     ctx.webkitBackingStorePixelRatio ||
     ctx.mozBackingStorePixelRatio ||
-    ctx.msBackingStorePixelRatio ||
-    ctx.oBackingStorePixelRatio ||
     ctx.backingStorePixelRatio ||
     1;
   const pixelRatio = devicePixelRatio / backingStoreRatio;
@@ -164,7 +143,7 @@ function scrollIntoView(element, spot, skipOverflowHiddenElements = false) {
  * PDF.js friendly one: with scroll debounce and scroll direction.
  */
 function watchScroll(viewAreaElement, callback) {
-  const debounceScroll = function(evt) {
+  const debounceScroll = function (evt) {
     if (rAF) {
       return;
     }
@@ -229,7 +208,7 @@ function binarySearchFirstItem(items, condition) {
   let minIndex = 0;
   let maxIndex = items.length - 1;
 
-  if (items.length === 0 || !condition(items[maxIndex])) {
+  if (maxIndex < 0 || !condition(items[maxIndex])) {
     return items.length;
   }
   if (condition(items[minIndex])) {
@@ -412,6 +391,21 @@ function backtrackBeforeAllVisibleElements(index, views, top) {
 }
 
 /**
+ * @typedef {Object} GetVisibleElementsParameters
+ * @property {HTMLElement} scrollEl - A container that can possibly scroll.
+ * @property {Array} views - Objects with a `div` property that contains an
+ *   HTMLElement, which should all be descendants of `scrollEl` satisfying the
+ *   relevant layout assumptions.
+ * @property {boolean} sortByVisibility - If `true`, the returned elements are
+ *   sorted in descending order of the percent of their padding box that is
+ *   visible. The default value is `false`.
+ * @property {boolean} horizontal - If `true`, the elements are assumed to be
+ *   laid out horizontally instead of vertically. The default value is `false`.
+ * @property {boolean} rtl - If `true`, the `scrollEl` container is assumed to
+ *   be in right-to-left mode. The default value is `false`.
+ */
+
+/**
  * Generic helper to find out what elements are visible within a scroll pane.
  *
  * Well, pretty generic. There are some assumptions placed on the elements
@@ -428,22 +422,16 @@ function backtrackBeforeAllVisibleElements(index, views, top) {
  * rendering canvas. Earlier and later refer to index in `views`, not page
  * layout.)
  *
- * @param scrollEl {HTMLElement} - a container that can possibly scroll
- * @param views {Array} - objects with a `div` property that contains an
- *   HTMLElement, which should all be descendents of `scrollEl` satisfying the
- *   above layout assumptions
- * @param sortByVisibility {boolean} - if true, the returned elements are sorted
- *   in descending order of the percent of their padding box that is visible
- * @param horizontal {boolean} - if true, the elements are assumed to be laid
- *   out horizontally instead of vertically
+ * @param {GetVisibleElementsParameters}
  * @returns {Object} `{ first, last, views: [{ id, x, y, view, percent }] }`
  */
-function getVisibleElements(
+function getVisibleElements({
   scrollEl,
   views,
   sortByVisibility = false,
-  horizontal = false
-) {
+  horizontal = false,
+  rtl = false,
+}) {
   const top = scrollEl.scrollTop,
     bottom = top + scrollEl.clientHeight;
   const left = scrollEl.scrollLeft,
@@ -465,22 +453,21 @@ function getVisibleElements(
       element.offsetTop + element.clientTop + element.clientHeight;
     return elementBottom > top;
   }
-  function isElementRightAfterViewLeft(view) {
+  function isElementNextAfterViewHorizontally(view) {
     const element = view.div;
-    const elementRight =
-      element.offsetLeft + element.clientLeft + element.clientWidth;
-    return elementRight > left;
+    const elementLeft = element.offsetLeft + element.clientLeft;
+    const elementRight = elementLeft + element.clientWidth;
+    return rtl ? elementLeft < right : elementRight > left;
   }
 
   const visible = [],
     numViews = views.length;
-  let firstVisibleElementInd =
-    numViews === 0
-      ? 0
-      : binarySearchFirstItem(
-          views,
-          horizontal ? isElementRightAfterViewLeft : isElementBottomAfterViewTop
-        );
+  let firstVisibleElementInd = binarySearchFirstItem(
+    views,
+    horizontal
+      ? isElementNextAfterViewHorizontally
+      : isElementBottomAfterViewTop
+  );
 
   // Please note the return value of the `binarySearchFirstItem` function when
   // no valid element is found (hence the `firstVisibleElementInd` check below).
@@ -546,17 +533,18 @@ function getVisibleElements(
       Math.max(0, top - currentHeight) + Math.max(0, viewBottom - bottom);
     const hiddenWidth =
       Math.max(0, left - currentWidth) + Math.max(0, viewRight - right);
-    const percent =
-      (((viewHeight - hiddenHeight) * (viewWidth - hiddenWidth) * 100) /
-        viewHeight /
-        viewWidth) |
-      0;
+
+    const fractionHeight = (viewHeight - hiddenHeight) / viewHeight,
+      fractionWidth = (viewWidth - hiddenWidth) / viewWidth;
+    const percent = (fractionHeight * fractionWidth * 100) | 0;
+
     visible.push({
       id: view.id,
       x: currentWidth,
       y: currentHeight,
       view,
       percent,
+      widthPercent: (fractionWidth * 100) | 0,
     });
   }
 
@@ -564,7 +552,7 @@ function getVisibleElements(
     last = visible[visible.length - 1];
 
   if (sortByVisibility) {
-    visible.sort(function(a, b) {
+    visible.sort(function (a, b) {
       const pc = a.percent - b.percent;
       if (Math.abs(pc) > 0.001) {
         return -pc;
@@ -609,10 +597,10 @@ function getPDFFileNameFromURL(url, defaultFilename = "document.pdf") {
     );
     return defaultFilename;
   }
-  const reURI = /^(?:(?:[^:]+:)?\/\/[^\/]+)?([^?#]*)(\?[^#]*)?(#.*)?$/;
-  //            SCHEME        HOST         1.PATH  2.QUERY   3.REF
+  const reURI = /^(?:(?:[^:]+:)?\/\/[^/]+)?([^?#]*)(\?[^#]*)?(#.*)?$/;
+  //              SCHEME        HOST        1.PATH  2.QUERY   3.REF
   // Pattern to get last matching NAME.pdf
-  const reFilename = /[^\/?#=]+\.pdf\b(?!.*\.pdf\b)/i;
+  const reFilename = /[^/?#=]+\.pdf\b(?!.*\.pdf\b)/i;
   const splitURI = reURI.exec(url);
   let suggestedFilename =
     reFilename.exec(splitURI[1]) ||
@@ -636,13 +624,18 @@ function getPDFFileNameFromURL(url, defaultFilename = "document.pdf") {
   return suggestedFilename || defaultFilename;
 }
 
-function normalizeWheelEventDelta(evt) {
-  let delta = Math.sqrt(evt.deltaX * evt.deltaX + evt.deltaY * evt.deltaY);
+function normalizeWheelEventDirection(evt) {
+  let delta = Math.hypot(evt.deltaX, evt.deltaY);
   const angle = Math.atan2(evt.deltaY, evt.deltaX);
   if (-0.25 * Math.PI < angle && angle < 0.75 * Math.PI) {
     // All that is left-up oriented has to change the sign.
     delta = -delta;
   }
+  return delta;
+}
+
+function normalizeWheelEventDelta(evt) {
+  let delta = normalizeWheelEventDirection(evt);
 
   const MOUSE_DOM_DELTA_PIXEL_MODE = 0;
   const MOUSE_DOM_DELTA_LINE_MODE = 1;
@@ -705,7 +698,7 @@ const WaitOnType = {
  * @returns {Promise} A promise that is resolved with a {WaitOnType} value.
  */
 function waitOnEventOrTimeout({ target, name, delay = 0 }) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     if (
       typeof target !== "object" ||
       !(name && typeof name === "string") ||
@@ -742,7 +735,7 @@ function waitOnEventOrTimeout({ target, name, delay = 0 }) {
 /**
  * Promise that is resolved when DOM window becomes visible.
  */
-const animationStarted = new Promise(function(resolve) {
+const animationStarted = new Promise(function (resolve) {
   if (
     typeof PDFJSDev !== "undefined" &&
     PDFJSDev.test("LIB && TESTING") &&
@@ -760,8 +753,11 @@ const animationStarted = new Promise(function(resolve) {
  * NOTE: Only used to support various PDF viewer tests in `mozilla-central`.
  */
 function dispatchDOMEvent(eventName, args = null) {
+  if (typeof PDFJSDev !== "undefined" && !PDFJSDev.test("MOZCENTRAL")) {
+    throw new Error("Not implemented: dispatchDOMEvent");
+  }
   const details = Object.create(null);
-  if (args && args.length > 0) {
+  if (args?.length > 0) {
     const obj = args[0];
     for (const key in obj) {
       const value = obj[key];
@@ -784,42 +780,45 @@ function dispatchDOMEvent(eventName, args = null) {
  * and `off` methods. To raise an event, the `dispatch` method shall be used.
  */
 class EventBus {
-  constructor({ dispatchToDOM = false } = {}) {
+  constructor(options) {
     this._listeners = Object.create(null);
-    this._dispatchToDOM = dispatchToDOM === true;
 
-    if (
-      typeof PDFJSDev !== "undefined" &&
-      !PDFJSDev.test("MOZCENTRAL || TESTING") &&
-      dispatchToDOM
-    ) {
-      console.error(
-        "The `eventBusDispatchToDOM` option/preference is deprecated, " +
-          "add event listeners to the EventBus instance rather than the DOM."
-      );
+    if (typeof PDFJSDev === "undefined" || PDFJSDev.test("MOZCENTRAL")) {
+      this._isInAutomation = options?.isInAutomation === true;
     }
   }
 
   /**
    * @param {string} eventName
    * @param {function} listener
+   * @param {Object} [options]
    */
-  on(eventName, listener) {
-    this._on(eventName, listener, { external: true });
+  on(eventName, listener, options = null) {
+    this._on(eventName, listener, {
+      external: true,
+      once: options?.once,
+    });
   }
 
   /**
    * @param {string} eventName
    * @param {function} listener
+   * @param {Object} [options]
    */
-  off(eventName, listener) {
-    this._off(eventName, listener, { external: true });
+  off(eventName, listener, options = null) {
+    this._off(eventName, listener, {
+      external: true,
+      once: options?.once,
+    });
   }
 
   dispatch(eventName) {
     const eventListeners = this._listeners[eventName];
     if (!eventListeners || eventListeners.length === 0) {
-      if (this._dispatchToDOM) {
+      if (
+        (typeof PDFJSDev === "undefined" || PDFJSDev.test("MOZCENTRAL")) &&
+        this._isInAutomation
+      ) {
         const args = Array.prototype.slice.call(arguments, 1);
         dispatchDOMEvent(eventName, args);
       }
@@ -830,12 +829,12 @@ class EventBus {
     let externalListeners;
     // Making copy of the listeners array in case if it will be modified
     // during dispatch.
-    eventListeners.slice(0).forEach(function({ listener, external }) {
+    eventListeners.slice(0).forEach(({ listener, external, once }) => {
+      if (once) {
+        this._off(eventName, listener);
+      }
       if (external) {
-        if (!externalListeners) {
-          externalListeners = [];
-        }
-        externalListeners.push(listener);
+        (externalListeners ||= []).push(listener);
         return;
       }
       listener.apply(null, args);
@@ -843,12 +842,15 @@ class EventBus {
     // Dispatch any "external" listeners *after* the internal ones, to give the
     // viewer components time to handle events and update their state first.
     if (externalListeners) {
-      externalListeners.forEach(function(listener) {
+      externalListeners.forEach(listener => {
         listener.apply(null, args);
       });
       externalListeners = null;
     }
-    if (this._dispatchToDOM) {
+    if (
+      (typeof PDFJSDev === "undefined" || PDFJSDev.test("MOZCENTRAL")) &&
+      this._isInAutomation
+    ) {
       dispatchDOMEvent(eventName, args);
     }
   }
@@ -857,13 +859,11 @@ class EventBus {
    * @ignore
    */
   _on(eventName, listener, options = null) {
-    let eventListeners = this._listeners[eventName];
-    if (!eventListeners) {
-      this._listeners[eventName] = eventListeners = [];
-    }
+    const eventListeners = (this._listeners[eventName] ||= []);
     eventListeners.push({
       listener,
-      external: (options && options.external) === true,
+      external: options?.external === true,
+      once: options?.once === true,
     });
   }
 
@@ -882,17 +882,6 @@ class EventBus {
       }
     }
   }
-}
-
-let globalEventBus = null;
-function getGlobalEventBus(dispatchToDOM = false) {
-  console.error(
-    "getGlobalEventBus is deprecated, use a manually created EventBus instance instead."
-  );
-  if (!globalEventBus) {
-    globalEventBus = new EventBus({ dispatchToDOM });
-  }
-  return globalEventBus;
 }
 
 function clamp(v, min, max) {
@@ -947,7 +936,8 @@ class ProgressBar {
     const container = viewer.parentNode;
     const scrollbarWidth = container.offsetWidth - viewer.offsetWidth;
     if (scrollbarWidth > 0) {
-      this.bar.style.width = `calc(100% - ${scrollbarWidth}px)`;
+      const doc = document.documentElement;
+      doc.style.setProperty(LOADINGBAR_END_OFFSET_VAR, `${scrollbarWidth}px`);
     }
   }
 
@@ -957,7 +947,6 @@ class ProgressBar {
     }
     this.visible = false;
     this.bar.classList.add("hidden");
-    document.body.classList.remove("loadingInProgress");
   }
 
   show() {
@@ -965,7 +954,6 @@ class ProgressBar {
       return;
     }
     this.visible = true;
-    document.body.classList.add("loadingInProgress");
     this.bar.classList.remove("hidden");
   }
 }
@@ -991,46 +979,117 @@ function moveToEndOfArray(arr, condition) {
   }
 }
 
+/**
+ * Get the active or focused element in current DOM.
+ *
+ * Recursively search for the truly active or focused element in case there are
+ * shadow DOMs.
+ *
+ * @returns {Element} the truly active or focused element.
+ */
+function getActiveOrFocusedElement() {
+  let curRoot = document;
+  let curActiveOrFocused =
+    curRoot.activeElement || curRoot.querySelector(":focus");
+
+  while (curActiveOrFocused?.shadowRoot) {
+    curRoot = curActiveOrFocused.shadowRoot;
+    curActiveOrFocused =
+      curRoot.activeElement || curRoot.querySelector(":focus");
+  }
+
+  return curActiveOrFocused;
+}
+
+/**
+ * Converts API PageLayout values to the format used by `BaseViewer`.
+ * NOTE: This is supported to the extent that the viewer implements the
+ *       necessary Scroll/Spread modes (since SinglePage, TwoPageLeft,
+ *       and TwoPageRight all suggests using non-continuous scrolling).
+ * @param {string} mode - The API PageLayout value.
+ * @returns {number} A value from {SpreadMode}.
+ */
+function apiPageLayoutToSpreadMode(layout) {
+  switch (layout) {
+    case "SinglePage":
+    case "OneColumn":
+      return SpreadMode.NONE;
+    case "TwoColumnLeft":
+    case "TwoPageLeft":
+      return SpreadMode.ODD;
+    case "TwoColumnRight":
+    case "TwoPageRight":
+      return SpreadMode.EVEN;
+  }
+  return SpreadMode.NONE; // Default value.
+}
+
+/**
+ * Converts API PageMode values to the format used by `PDFSidebar`.
+ * NOTE: There's also a "FullScreen" parameter which is not possible to support,
+ *       since the Fullscreen API used in browsers requires that entering
+ *       fullscreen mode only occurs as a result of a user-initiated event.
+ * @param {string} mode - The API PageMode value.
+ * @returns {number} A value from {SidebarView}.
+ */
+function apiPageModeToSidebarView(mode) {
+  switch (mode) {
+    case "UseNone":
+      return SidebarView.NONE;
+    case "UseThumbs":
+      return SidebarView.THUMBS;
+    case "UseOutlines":
+      return SidebarView.OUTLINE;
+    case "UseAttachments":
+      return SidebarView.ATTACHMENTS;
+    case "UseOC":
+      return SidebarView.LAYERS;
+  }
+  return SidebarView.NONE; // Default value.
+}
+
 export {
+  animationStarted,
+  apiPageLayoutToSpreadMode,
+  apiPageModeToSidebarView,
+  approximateFraction,
   AutoPrintRegExp,
+  backtrackBeforeAllVisibleElements, // only exported for testing
+  binarySearchFirstItem,
   CSS_UNITS,
-  DEFAULT_SCALE_VALUE,
   DEFAULT_SCALE,
-  MIN_SCALE,
-  MAX_SCALE,
-  UNKNOWN_SCALE,
-  MAX_AUTO_SCALE,
-  SCROLLBAR_PADDING,
-  VERTICAL_PADDING,
+  DEFAULT_SCALE_VALUE,
+  EventBus,
+  getActiveOrFocusedElement,
+  getOutputScale,
+  getPageSizeInches,
+  getPDFFileNameFromURL,
+  getVisibleElements,
+  isPortraitOrientation,
   isValidRotation,
   isValidScrollMode,
   isValidSpreadMode,
-  isPortraitOrientation,
-  PresentationModeState,
-  RendererType,
-  TextLayerMode,
-  ScrollMode,
-  SpreadMode,
-  NullL10n,
-  EventBus,
-  getGlobalEventBus,
-  clamp,
-  ProgressBar,
-  getPDFFileNameFromURL,
-  noContextMenuHandler,
-  parseQueryString,
-  backtrackBeforeAllVisibleElements, // only exported for testing
-  getVisibleElements,
-  roundToDivide,
-  getPageSizeInches,
-  approximateFraction,
-  getOutputScale,
-  scrollIntoView,
-  watchScroll,
-  binarySearchFirstItem,
-  normalizeWheelEventDelta,
-  animationStarted,
-  WaitOnType,
-  waitOnEventOrTimeout,
+  MAX_AUTO_SCALE,
+  MAX_SCALE,
+  MIN_SCALE,
   moveToEndOfArray,
+  noContextMenuHandler,
+  normalizeWheelEventDelta,
+  normalizeWheelEventDirection,
+  parseQueryString,
+  PresentationModeState,
+  ProgressBar,
+  RendererType,
+  roundToDivide,
+  SCROLLBAR_PADDING,
+  scrollIntoView,
+  ScrollMode,
+  SidebarView,
+  SpreadMode,
+  TextLayerMode,
+  UNKNOWN_SCALE,
+  VERTICAL_PADDING,
+  waitOnEventOrTimeout,
+  WaitOnType,
+  watchScroll,
 };

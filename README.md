@@ -1,8 +1,8 @@
-# PDF.js [![Build Status](https://travis-ci.org/mozilla/pdf.js.svg?branch=master)](https://travis-ci.org/mozilla/pdf.js)
+# PDF.js [![Build Status](https://github.com/mozilla/pdf.js/workflows/CI/badge.svg?branch=master)](https://github.com/mozilla/pdf.js/actions?query=workflow%3ACI+branch%3Amaster)
 
 [PDF.js](https://mozilla.github.io/pdf.js/) is a Portable Document Format (PDF) viewer that is built with HTML5.
 
-PDF.js is community-driven and supported by Mozilla Labs. Our goal is to
+PDF.js is community-driven and supported by Mozilla. Our goal is to
 create a general-purpose, web standards-based platform for parsing and
 rendering PDFs.
 
@@ -24,11 +24,12 @@ Feel free to stop by our [Matrix room](https://chat.mozilla.org/#/room/#pdfjs:mo
 ### Online demo
 
 Please note that the "Modern browsers" version assumes native support for
-features such as e.g. `async`/`await`, `Promise`, and `ReadableStream`.
+features such as e.g. `async`/`await`, `ReadableStream`, optional chaining, and
+nullish coalescing.
 
 + Modern browsers: https://mozilla.github.io/pdf.js/web/viewer.html
 
-+ Older browsers: https://mozilla.github.io/pdf.js/es5/web/viewer.html
++ Older browsers: https://mozilla.github.io/pdf.js/legacy/web/viewer.html
 
 ### Browser Extensions
 
@@ -70,21 +71,11 @@ and then you can open:
 
 + http://localhost:8888/web/viewer.html
 
-Please keep in mind that this requires an ES6 compatible browser; refer to [Building PDF.js](https://github.com/mozilla/pdf.js/blob/master/README.md#building-pdfjs) for usage with older browsers.
+Please keep in mind that this requires a modern and fully up-to-date browser; refer to [Building PDF.js](https://github.com/mozilla/pdf.js/blob/master/README.md#building-pdfjs) for non-development usage of the PDF.js library.
 
 It is also possible to view all test PDF files on the right side by opening:
 
 + http://localhost:8888/test/pdfs/?frame
-
-### Online setup with a single click
-
-It's highly recommended to follow the [Getting the Code](#getting-the-code)
-section above, which is the officially supported way to obtain the code.
-However, you may also use [Gitpod](https://gitpod.io) (a free online IDE). With
-a single click it will launch a ready to use development environment, with all
-the necessary dependencies pre-installed and the web server running.
-
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/mozilla/pdf.js)
 
 ## Building PDF.js
 
@@ -93,7 +84,11 @@ viewer, run:
 
     $ gulp generic
 
-This will generate `pdf.js` and `pdf.worker.js` in the `build/generic/build/` directory.
+If you need to support older browsers, run:
+
+    $ gulp generic-legacy
+
+This will generate `pdf.js` and `pdf.worker.js` in the `build/generic/build/` directory (respectively `build/generic-legacy/build/`).
 Both scripts are needed but only `pdf.js` needs to be included since `pdf.worker.js` will
 be loaded by `pdf.js`. The PDF.js files are large and should be minified for production.
 

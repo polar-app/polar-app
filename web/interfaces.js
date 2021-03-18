@@ -54,9 +54,14 @@ class IPDFLinkService {
   set externalLinkEnabled(value) {}
 
   /**
-   * @param dest - The PDF destination object.
+   * @param {string|Array} dest - The named, or explicit, PDF destination.
    */
-  navigateTo(dest) {}
+  async goToDestination(dest) {}
+
+  /**
+   * @param {number|string} val - The page number, or page label.
+   */
+  goToPage(val) {}
 
   /**
    * @param dest - The PDF destination object.
@@ -90,6 +95,11 @@ class IPDFLinkService {
    * @param {number} pageNumber
    */
   isPageVisible(pageNumber) {}
+
+  /**
+   * @param {number} pageNumber
+   */
+  isPageCached(pageNumber) {}
 }
 
 /**
@@ -107,6 +117,11 @@ class IPDFHistory {
    * @param {Object} params
    */
   push({ namedDest = null, explicitDest, pageNumber }) {}
+
+  /**
+   * @param {number} pageNumber
+   */
+  pushPage(pageNumber) {}
 
   pushCurrentPosition() {}
 
@@ -165,18 +180,27 @@ class IPDFAnnotationLayerFactory {
   /**
    * @param {HTMLDivElement} pageDiv
    * @param {PDFPage} pdfPage
+   * @param {AnnotationStorage} [annotationStorage] - Storage for annotation
+   *   data in forms.
    * @param {string} [imageResourcesPath] - Path for image resources, mainly
    *   for annotation icons. Include trailing slash.
    * @param {boolean} renderInteractiveForms
    * @param {IL10n} l10n
+   * @param {boolean} [enableScripting]
+   * @param {Promise<boolean>} [hasJSActionsPromise]
+   * @param {Object} [mouseState]
    * @returns {AnnotationLayerBuilder}
    */
   createAnnotationLayerBuilder(
     pageDiv,
     pdfPage,
+    annotationStorage = null,
     imageResourcesPath = "",
-    renderInteractiveForms = false,
-    l10n = undefined
+    renderInteractiveForms = true,
+    l10n = undefined,
+    enableScripting = false,
+    hasJSActionsPromise = null,
+    mouseState = null
   ) {}
 }
 
@@ -214,10 +238,10 @@ class IL10n {
 }
 
 export {
-  IPDFLinkService,
-  IPDFHistory,
-  IRenderableView,
-  IPDFTextLayerFactory,
-  IPDFAnnotationLayerFactory,
   IL10n,
+  IPDFAnnotationLayerFactory,
+  IPDFHistory,
+  IPDFLinkService,
+  IPDFTextLayerFactory,
+  IRenderableView,
 };

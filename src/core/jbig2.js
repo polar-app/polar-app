@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/* eslint-disable no-var */
 
 import { BaseException, shadow } from "../shared/util.js";
 import { log2, readInt8, readUint16, readUint32 } from "./core_utils.js";
@@ -371,7 +372,7 @@ var Jbig2Image = (function Jbig2ImageClosure() {
     // Sorting is non-standard, and it is not required. But sorting increases
     // the number of template bits that can be reused from the previous
     // contextLabel in the main loop.
-    template.sort(function(a, b) {
+    template.sort(function (a, b) {
       return a.y - b.y || a.x - b.x;
     });
 
@@ -2567,6 +2568,7 @@ var Jbig2Image = (function Jbig2ImageClosure() {
     return bitmap;
   }
 
+  // eslint-disable-next-line no-shadow
   function Jbig2Image() {}
 
   Jbig2Image.prototype = {

@@ -22,17 +22,17 @@ if (!fs.existsSync(file)) {
   throw new Error(`PDF file does not exist '${file}'.`);
 }
 
-function calculateMD5(file, callback) {
-  var hash = crypto.createHash("md5");
-  var stream = fs.createReadStream(file);
-  stream.on("data", function(data) {
+function calculateMD5(pdfFile, callback) {
+  const hash = crypto.createHash("md5");
+  const stream = fs.createReadStream(pdfFile);
+  stream.on("data", function (data) {
     hash.update(data);
   });
-  stream.on("error", function(err) {
+  stream.on("error", function (err) {
     callback(err);
   });
-  stream.on("end", function() {
-    var result = hash.digest("hex");
+  stream.on("end", function () {
+    const result = hash.digest("hex");
     callback(null, result);
   });
 }

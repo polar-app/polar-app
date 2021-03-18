@@ -23,6 +23,7 @@ import { shadow } from "../shared/util.js";
  * the stream behaves like all the other DecodeStreams.
  */
 const Jbig2Stream = (function Jbig2StreamClosure() {
+  // eslint-disable-next-line no-shadow
   function Jbig2Stream(stream, maybeLength, dict, params) {
     this.stream = stream;
     this.maybeLength = maybeLength;
@@ -42,12 +43,12 @@ const Jbig2Stream = (function Jbig2StreamClosure() {
     configurable: true,
   });
 
-  Jbig2Stream.prototype.ensureBuffer = function(requested) {
+  Jbig2Stream.prototype.ensureBuffer = function (requested) {
     // No-op, since `this.readBlock` will always parse the entire image and
     // directly insert all of its data into `this.buffer`.
   };
 
-  Jbig2Stream.prototype.readBlock = function() {
+  Jbig2Stream.prototype.readBlock = function () {
     if (this.eof) {
       return;
     }

@@ -1,6 +1,6 @@
 {
   "parserOptions": {
-    "ecmaVersion": 8,
+    "ecmaVersion": 2021,
     "sourceType": "module",
   },
 
@@ -8,6 +8,7 @@
     "import",
     "mozilla",
     "no-unsanitized",
+    "sort-exports",
     "unicorn",
   ],
 
@@ -17,13 +18,12 @@
 
   "env": {
     "browser": true,
-    "es6": true,
+    "es2021": true,
     "worker": true,
     "amd": true,
   },
 
   "globals": {
-    "globalThis": false,
     "PDFJSDev": false,
     "exports": false,
     "SystemJS": false,
@@ -37,8 +37,12 @@
     "mozilla/use-includes-instead-of-indexOf": "error",
     "no-unsanitized/method": "error",
     "no-unsanitized/property": "error",
-    "unicorn/no-array-instanceof": "error",
-    "unicorn/prefer-starts-ends-with": "error",
+    "sort-exports/sort-exports": ["error", {
+      "ignoreCase": true,
+    }],
+    "unicorn/no-abusive-eslint-disable": "error",
+    "unicorn/no-instanceof-array": "error",
+    "unicorn/prefer-string-starts-ends-with": "error",
 
     // Possible errors
     "for-direction": "error",
@@ -46,6 +50,7 @@
     "no-async-promise-executor": "error",
     "no-cond-assign": ["error", "except-parens"],
     "no-constant-condition": ["error", { "checkLoops": false, }],
+    "no-debugger": "error",
     "no-dupe-args": "error",
     "no-dupe-else-if": "error",
     "no-dupe-keys": "error",
@@ -58,6 +63,7 @@
     "no-invalid-regexp": "error",
     "no-irregular-whitespace": "error",
     "no-obj-calls": "error",
+    "no-promise-executor-return": "error",
     "no-regex-spaces": "error",
     "no-setter-return": "error",
     "no-sparse-arrays": "error",
@@ -65,7 +71,8 @@
     "no-unreachable": "error",
     "no-unsafe-finally": "error",
     "no-unsafe-negation": "error",
-    "use-isnan": "error",
+    "no-unsafe-optional-chaining": ["error", { "disallowArithmeticOperators": true }],
+    "use-isnan": ["error", { "enforceForIndexOf": true, }],
     "valid-typeof": ["error", { "requireStringLiterals": true, }],
 
     // Best Practices
@@ -75,7 +82,11 @@
     }],
     "consistent-return": "error",
     "curly": ["error", "all"],
+    "default-case-last": "error",
+    "dot-notation": "error",
     "eqeqeq": ["error", "always"],
+    "grouped-accessor-pairs": ["error", "getBeforeSet"],
+    "no-alert": "error",
     "no-caller": "error",
     "no-else-return": "error",
     "no-empty-pattern": "error",
@@ -105,6 +116,7 @@
     "no-useless-call": "error",
     "no-useless-catch": "error",
     "no-useless-concat": "error",
+    "no-useless-escape": "error",
     "no-useless-return": "error",
     "prefer-promise-reject-errors": "error",
     "wrap-iife": ["error", "any"],
@@ -119,13 +131,18 @@
     "no-catch-shadow": "error",
     "no-delete-var": "error",
     "no-label-var": "error",
+    "no-shadow": "error",
     "no-shadow-restricted-names": "error",
-    "no-shadow": "off",
     "no-undef-init": "error",
     "no-undef": ["error", { "typeof": true, }],
     "no-unused-vars": ["error", {
       "vars": "local",
       "args": "none",
+    }],
+    "no-use-before-define": ["error", {
+      "functions": false,
+      "classes": false,
+      "variables": false,
     }],
 
     // Node.js and CommonJS
@@ -144,6 +161,10 @@
     "no-nested-ternary": "error",
     "no-new-object": "error",
     "no-restricted-syntax": ["error",
+      {
+        "selector": "CallExpression[callee.name='assert'][arguments.length!=2]",
+        "message": "`assert()` must always be invoked with two arguments.",
+      },
       {
         "selector": "NewExpression[callee.name='Cmd']",
         "message": "Use `Cmd.get()` rather than `new Cmd()`.",
@@ -176,7 +197,7 @@
     "no-useless-computed-key": "error",
     "no-useless-constructor": "error",
     "no-useless-rename": "error",
-    "no-var": "off",
+    "no-var": "error",
     "object-shorthand": ["error", "always", {
       "avoidQuotes": true,
     }],

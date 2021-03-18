@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/* eslint-disable no-var */
 
 import { assert, BaseException, warn } from "../shared/util.js";
 import { readUint16 } from "./core_utils.js";
@@ -73,6 +74,7 @@ var JpegImage = (function JpegImageClosure() {
   var dctSqrt2 = 5793; // sqrt(2)
   var dctSqrt1d2 = 2896; // sqrt(2) / 2
 
+  // eslint-disable-next-line no-shadow
   function JpegImage({ decodeTransform = null, colorTransform = -1 } = {}) {
     this._decodeTransform = decodeTransform;
     this._colorTransform = colorTransform;
@@ -135,8 +137,8 @@ var JpegImage = (function JpegImageClosure() {
     var mcusPerLine = frame.mcusPerLine;
     var progressive = frame.progressive;
 
-    var startOffset = offset,
-      bitsData = 0,
+    const startOffset = offset;
+    let bitsData = 0,
       bitsCount = 0;
 
     function readBit() {
@@ -162,12 +164,16 @@ var JpegImage = (function JpegImageClosure() {
           } else if (nextByte === /* EOI = */ 0xd9) {
             if (parseDNLMarker) {
               // NOTE: only 8-bit JPEG images are supported in this decoder.
-              const maybeScanLines = blockRow * 8;
+              const maybeScanLines = blockRow * (frame.precision === 8 ? 8 : 0);
               // Heuristic to attempt to handle corrupt JPEG images with too
               // large `scanLines` parameter, by falling back to the currently
-              // parsed number of scanLines when it's at least one order of
-              // magnitude smaller than expected (fixes issue10880.pdf).
-              if (maybeScanLines > 0 && maybeScanLines < frame.scanLines / 10) {
+              // parsed number of scanLines when it's at least (approximately)
+              // one order of magnitude smaller than expected (fixes
+              // issue10880.pdf and issue10989.pdf).
+              if (
+                maybeScanLines > 0 &&
+                Math.round(frame.scanLines / maybeScanLines) >= 10
+              ) {
                 throw new DNLMarkerError(
                   "Found EOI marker (0xFFD9) while parsing scan data, " +
                     "possibly caused by incorrect `scanLines` parameter",
@@ -223,10 +229,10 @@ var JpegImage = (function JpegImageClosure() {
       return n + (-1 << length) + 1;
     }
 
-    function decodeBaseline(component, offset) {
+    function decodeBaseline(component, blockOffset) {
       var t = decodeHuffman(component.huffmanTableDC);
       var diff = t === 0 ? 0 : receiveAndExtend(t);
-      component.blockData[offset] = component.pred += diff;
+      component.blockData[blockOffset] = component.pred += diff;
       var k = 1;
       while (k < 64) {
         var rs = decodeHuffman(component.huffmanTableAC);
@@ -241,23 +247,23 @@ var JpegImage = (function JpegImageClosure() {
         }
         k += r;
         var z = dctZigZag[k];
-        component.blockData[offset + z] = receiveAndExtend(s);
+        component.blockData[blockOffset + z] = receiveAndExtend(s);
         k++;
       }
     }
 
-    function decodeDCFirst(component, offset) {
+    function decodeDCFirst(component, blockOffset) {
       var t = decodeHuffman(component.huffmanTableDC);
       var diff = t === 0 ? 0 : receiveAndExtend(t) << successive;
-      component.blockData[offset] = component.pred += diff;
+      component.blockData[blockOffset] = component.pred += diff;
     }
 
-    function decodeDCSuccessive(component, offset) {
-      component.blockData[offset] |= readBit() << successive;
+    function decodeDCSuccessive(component, blockOffset) {
+      component.blockData[blockOffset] |= readBit() << successive;
     }
 
     var eobrun = 0;
-    function decodeACFirst(component, offset) {
+    function decodeACFirst(component, blockOffset) {
       if (eobrun > 0) {
         eobrun--;
         return;
@@ -278,7 +284,7 @@ var JpegImage = (function JpegImageClosure() {
         }
         k += r;
         var z = dctZigZag[k];
-        component.blockData[offset + z] =
+        component.blockData[blockOffset + z] =
           receiveAndExtend(s) * (1 << successive);
         k++;
       }
@@ -286,14 +292,14 @@ var JpegImage = (function JpegImageClosure() {
 
     var successiveACState = 0,
       successiveACNextValue;
-    function decodeACSuccessive(component, offset) {
+    function decodeACSuccessive(component, blockOffset) {
       var k = spectralStart;
       var e = spectralEnd;
       var r = 0;
       var s;
       var rs;
       while (k <= e) {
-        const offsetZ = offset + dctZigZag[k];
+        const offsetZ = blockOffset + dctZigZag[k];
         const sign = component.blockData[offsetZ] < 0 ? -1 : 1;
         switch (successiveACState) {
           case 0: // initial state
@@ -358,15 +364,15 @@ var JpegImage = (function JpegImageClosure() {
       var mcuCol = mcu % mcusPerLine;
       blockRow = mcuRow * component.v + row;
       var blockCol = mcuCol * component.h + col;
-      var offset = getBlockBufferOffset(component, blockRow, blockCol);
-      decode(component, offset);
+      const blockOffset = getBlockBufferOffset(component, blockRow, blockCol);
+      decode(component, blockOffset);
     }
 
     function decodeBlock(component, decode, mcu) {
       blockRow = (mcu / component.blocksPerLine) | 0;
       var blockCol = mcu % component.blocksPerLine;
-      var offset = getBlockBufferOffset(component, blockRow, blockCol);
-      decode(component, offset);
+      const blockOffset = getBlockBufferOffset(component, blockRow, blockCol);
+      decode(component, blockOffset);
     }
 
     var componentsLength = components.length;
@@ -392,35 +398,42 @@ var JpegImage = (function JpegImageClosure() {
     }
 
     var h, v;
-    while (mcu < mcuExpected) {
+    while (mcu <= mcuExpected) {
       // reset interval stuff
       var mcuToRead = resetInterval
         ? Math.min(mcuExpected - mcu, resetInterval)
         : mcuExpected;
-      for (i = 0; i < componentsLength; i++) {
-        components[i].pred = 0;
-      }
-      eobrun = 0;
 
-      if (componentsLength === 1) {
-        component = components[0];
-        for (n = 0; n < mcuToRead; n++) {
-          decodeBlock(component, decodeFn, mcu);
-          mcu++;
+      // The `mcuToRead === 0` case should only occur when all of the expected
+      // MCU data has been already parsed, i.e. when `mcu === mcuExpected`, but
+      // some corrupt JPEG images contain more data than intended and we thus
+      // want to skip over any extra RSTx markers below (fixes issue11794.pdf).
+      if (mcuToRead > 0) {
+        for (i = 0; i < componentsLength; i++) {
+          components[i].pred = 0;
         }
-      } else {
-        for (n = 0; n < mcuToRead; n++) {
-          for (i = 0; i < componentsLength; i++) {
-            component = components[i];
-            h = component.h;
-            v = component.v;
-            for (j = 0; j < v; j++) {
-              for (k = 0; k < h; k++) {
-                decodeMcu(component, decodeFn, mcu, j, k);
+        eobrun = 0;
+
+        if (componentsLength === 1) {
+          component = components[0];
+          for (n = 0; n < mcuToRead; n++) {
+            decodeBlock(component, decodeFn, mcu);
+            mcu++;
+          }
+        } else {
+          for (n = 0; n < mcuToRead; n++) {
+            for (i = 0; i < componentsLength; i++) {
+              component = components[i];
+              h = component.h;
+              v = component.v;
+              for (j = 0; j < v; j++) {
+                for (k = 0; k < h; k++) {
+                  decodeMcu(component, decodeFn, mcu, j, k);
+                }
               }
             }
+            mcu++;
           }
-          mcu++;
         }
       }
 
@@ -428,39 +441,23 @@ var JpegImage = (function JpegImageClosure() {
       bitsCount = 0;
       fileMarker = findNextFileMarker(data, offset);
       if (!fileMarker) {
-        // Reached the end of the image data without finding an EOI marker.
-        break;
-      } else if (fileMarker.invalid) {
+        break; // Reached the end of the image data without finding any marker.
+      }
+      if (fileMarker.invalid) {
         // Some bad images seem to pad Scan blocks with e.g. zero bytes, skip
         // past those to attempt to find a valid marker (fixes issue4090.pdf).
+        const partialMsg = mcuToRead > 0 ? "unexpected" : "excessive";
         warn(
-          "decodeScan - unexpected MCU data, current marker is: " +
-            fileMarker.invalid
+          `decodeScan - ${partialMsg} MCU data, current marker is: ${fileMarker.invalid}`
         );
         offset = fileMarker.offset;
       }
-      var marker = fileMarker && fileMarker.marker;
-      if (!marker || marker <= 0xff00) {
-        throw new JpegError("decodeScan - a valid marker was not found.");
-      }
-
-      if (marker >= 0xffd0 && marker <= 0xffd7) {
+      if (fileMarker.marker >= 0xffd0 && fileMarker.marker <= 0xffd7) {
         // RSTx
         offset += 2;
       } else {
         break;
       }
-    }
-
-    fileMarker = findNextFileMarker(data, offset);
-    // Some images include more Scan blocks than expected, skip past those and
-    // attempt to find the next valid marker (fixes issue8182.pdf).
-    if (fileMarker && fileMarker.invalid) {
-      warn(
-        "decodeScan - unexpected Scan data, current marker is: " +
-          fileMarker.invalid
-      );
-      offset = fileMarker.offset;
     }
 
     return offset - startOffset;
@@ -999,8 +996,10 @@ var JpegImage = (function JpegImageClosure() {
             var components = [],
               component;
             for (i = 0; i < selectorsCount; i++) {
-              var componentIndex = frame.componentIds[data[offset++]];
+              const index = data[offset++];
+              var componentIndex = frame.componentIds[index];
               component = frame.components[componentIndex];
+              component.index = index;
               var tableSpec = data[offset++];
               component.huffmanTableDC = huffmanTablesDC[tableSpec >> 4];
               component.huffmanTableAC = huffmanTablesAC[tableSpec & 15];
@@ -1064,7 +1063,7 @@ var JpegImage = (function JpegImageClosure() {
               offset = nextFileMarker.offset;
               break;
             }
-            if (offset >= data.length - 1) {
+            if (!nextFileMarker || offset >= data.length - 1) {
               warn(
                 "JpegImage.parse - reached the end of the image data " +
                   "without finding an EOI marker (0xFFD9)."
@@ -1096,6 +1095,7 @@ var JpegImage = (function JpegImageClosure() {
         }
 
         this.components.push({
+          index: component.index,
           output: buildComponentData(frame, component),
           scaleX: component.h / frame.maxH,
           scaleY: component.v / frame.maxV,
@@ -1189,6 +1189,14 @@ var JpegImage = (function JpegImageClosure() {
         if (this._colorTransform === 0) {
           // If the Adobe transform marker is not present and the image
           // dictionary has a 'ColorTransform' entry, explicitly set to `0`,
+          // then the colours should *not* be transformed.
+          return false;
+        } else if (
+          this.components[0].index === /* "R" = */ 0x52 &&
+          this.components[1].index === /* "G" = */ 0x47 &&
+          this.components[2].index === /* "B" = */ 0x42
+        ) {
+          // If the three components are indexed as RGB in ASCII
           // then the colours should *not* be transformed.
           return false;
         }

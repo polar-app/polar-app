@@ -23,37 +23,114 @@ import {
  * Text layer render parameters.
  *
  * @typedef {Object} TextLayerRenderParameters
- * @property {TextContent} [textContent] - Text content to render (the object
- *   is returned by the page's `getTextContent` method).
+ * @property {import("./api").TextContent} [textContent] - Text content to
+ *   render (the object is returned by the page's `getTextContent` method).
  * @property {ReadableStream} [textContentStream] - Text content stream to
  *   render (the stream is returned by the page's `streamTextContent` method).
  * @property {HTMLElement} container - HTML element that will contain text runs.
- * @property {PageViewport} viewport - The target viewport to properly
- *   layout the text runs.
- * @property {Array} [textDivs] - HTML elements that are correspond to the
- *   text items of the textContent input. This is output and shall be
+ * @property {import("./display_utils").PageViewport} viewport - The target
+ *   viewport to properly layout the text runs.
+ * @property {Array<HTMLElement>} [textDivs] - HTML elements that are correspond
+ *   to the text items of the textContent input. This is output and shall be
  *   initially be set to empty array.
- * @property {Array} [textContentItemsStr] - Strings that correspond to the
- *   `str` property of the text items of textContent input. This is output
+ * @property {Array<string>} [textContentItemsStr] - Strings that correspond to
+ *    the `str` property of the text items of textContent input. This is output
  *   and shall be initially be set to empty array.
  * @property {number} [timeout] - Delay in milliseconds before rendering of the
  *   text runs occurs.
  * @property {boolean} [enhanceTextSelection] - Whether to turn on the text
  *   selection enhancement.
  */
-var renderTextLayer = (function renderTextLayerClosure() {
-  var MAX_TEXT_DIVS_TO_RENDER = 100000;
 
-  var NonWhitespaceRegexp = /\S/;
+/**
+ * @typedef {Object} TextLayerRenderTask
+ * @property {Promise<void>} promise
+ * @property {() => void} cancel
+ * @property {(expandDivs: boolean) => void} expandTextDivs
+ */
+
+/**
+ * @type {(renderParameters: TextLayerRenderParameters) => TextLayerRenderTask}
+ */
+const renderTextLayer = (function renderTextLayerClosure() {
+  const MAX_TEXT_DIVS_TO_RENDER = 100000;
+  const DEFAULT_FONT_SIZE = 30;
+  const DEFAULT_FONT_ASCENT = 0.8;
+  const ascentCache = new Map();
+
+  const NonWhitespaceRegexp = /\S/;
 
   function isAllWhitespace(str) {
     return !NonWhitespaceRegexp.test(str);
   }
 
-  function appendText(task, geom, styles) {
+  function getAscent(fontFamily, ctx) {
+    const cachedAscent = ascentCache.get(fontFamily);
+    if (cachedAscent) {
+      return cachedAscent;
+    }
+
+    ctx.save();
+    ctx.font = `${DEFAULT_FONT_SIZE}px ${fontFamily}`;
+    const metrics = ctx.measureText("");
+
+    // Both properties aren't available by default in Firefox.
+    let ascent = metrics.fontBoundingBoxAscent;
+    let descent = Math.abs(metrics.fontBoundingBoxDescent);
+    if (ascent) {
+      ctx.restore();
+      const ratio = ascent / (ascent + descent);
+      ascentCache.set(fontFamily, ratio);
+      return ratio;
+    }
+
+    // Try basic heuristic to guess ascent/descent.
+    // Draw a g with baseline at 0,0 and then get the line
+    // number where a pixel has non-null red component (starting
+    // from bottom).
+    ctx.strokeStyle = "red";
+    ctx.clearRect(0, 0, DEFAULT_FONT_SIZE, DEFAULT_FONT_SIZE);
+    ctx.strokeText("g", 0, 0);
+    let pixels = ctx.getImageData(0, 0, DEFAULT_FONT_SIZE, DEFAULT_FONT_SIZE)
+      .data;
+    descent = 0;
+    for (let i = pixels.length - 1 - 3; i >= 0; i -= 4) {
+      if (pixels[i] > 0) {
+        descent = Math.ceil(i / 4 / DEFAULT_FONT_SIZE);
+        break;
+      }
+    }
+
+    // Draw an A with baseline at 0,DEFAULT_FONT_SIZE and then get the line
+    // number where a pixel has non-null red component (starting
+    // from top).
+    ctx.clearRect(0, 0, DEFAULT_FONT_SIZE, DEFAULT_FONT_SIZE);
+    ctx.strokeText("A", 0, DEFAULT_FONT_SIZE);
+    pixels = ctx.getImageData(0, 0, DEFAULT_FONT_SIZE, DEFAULT_FONT_SIZE).data;
+    ascent = 0;
+    for (let i = 0, ii = pixels.length; i < ii; i += 4) {
+      if (pixels[i] > 0) {
+        ascent = DEFAULT_FONT_SIZE - Math.floor(i / 4 / DEFAULT_FONT_SIZE);
+        break;
+      }
+    }
+
+    ctx.restore();
+
+    if (ascent) {
+      const ratio = ascent / (ascent + descent);
+      ascentCache.set(fontFamily, ratio);
+      return ratio;
+    }
+
+    ascentCache.set(fontFamily, DEFAULT_FONT_ASCENT);
+    return DEFAULT_FONT_ASCENT;
+  }
+
+  function appendText(task, geom, styles, ctx) {
     // Initialize all used properties to keep the caches monomorphic.
-    var textDiv = document.createElement("span");
-    var textDivProperties = {
+    const textDiv = document.createElement("span");
+    const textDivProperties = {
       angle: 0,
       canvasWidth: 0,
       isWhitespace: false,
@@ -72,19 +149,14 @@ var renderTextLayer = (function renderTextLayerClosure() {
       return;
     }
 
-    var tx = Util.transform(task._viewport.transform, geom.transform);
-    var angle = Math.atan2(tx[1], tx[0]);
-    var style = styles[geom.fontName];
+    const tx = Util.transform(task._viewport.transform, geom.transform);
+    let angle = Math.atan2(tx[1], tx[0]);
+    const style = styles[geom.fontName];
     if (style.vertical) {
       angle += Math.PI / 2;
     }
-    var fontHeight = Math.sqrt(tx[2] * tx[2] + tx[3] * tx[3]);
-    var fontAscent = fontHeight;
-    if (style.ascent) {
-      fontAscent = style.ascent * fontAscent;
-    } else if (style.descent) {
-      fontAscent = (1 + style.descent) * fontAscent;
-    }
+    const fontHeight = Math.hypot(tx[2], tx[3]);
+    const fontAscent = fontHeight * getAscent(style.fontFamily, ctx);
 
     let left, top;
     if (angle === 0) {
@@ -102,6 +174,9 @@ var renderTextLayer = (function renderTextLayerClosure() {
     textDiv.style.fontFamily = style.fontFamily;
 
     textDiv.textContent = geom.str;
+    // geom.dir may be 'ttb' for vertical texts.
+    textDiv.dir = geom.dir;
+
     // `fontName` is only used by the FontInspector, and we only use `dataset`
     // here to make the font name available in the debugger.
     if (task._fontInspectorEnabled) {
@@ -113,7 +188,22 @@ var renderTextLayer = (function renderTextLayerClosure() {
     // We don't bother scaling single-char text divs, because it has very
     // little effect on text highlighting. This makes scrolling on docs with
     // lots of such divs a lot faster.
+    let shouldScaleText = false;
     if (geom.str.length > 1) {
+      shouldScaleText = true;
+    } else if (geom.transform[0] !== geom.transform[3]) {
+      const absScaleX = Math.abs(geom.transform[0]),
+        absScaleY = Math.abs(geom.transform[3]);
+      // When the horizontal/vertical scaling differs significantly, also scale
+      // even single-char text to improve highlighting (fixes issue11713.pdf).
+      if (
+        absScaleX !== absScaleY &&
+        Math.max(absScaleX, absScaleY) / Math.min(absScaleX, absScaleY) > 1.5
+      ) {
+        shouldScaleText = true;
+      }
+    }
+    if (shouldScaleText) {
       if (style.vertical) {
         textDivProperties.canvasWidth = geom.height * task._viewport.scale;
       } else {
@@ -126,17 +216,17 @@ var renderTextLayer = (function renderTextLayerClosure() {
     }
 
     if (task._enhanceTextSelection) {
-      var angleCos = 1,
+      let angleCos = 1,
         angleSin = 0;
       if (angle !== 0) {
         angleCos = Math.cos(angle);
         angleSin = Math.sin(angle);
       }
-      var divWidth =
+      const divWidth =
         (style.vertical ? geom.height : geom.width) * task._viewport.scale;
-      var divHeight = fontHeight;
+      const divHeight = fontHeight;
 
-      var m, b;
+      let m, b;
       if (angle !== 0) {
         m = [angleCos, angleSin, -angleSin, angleCos, left, top];
         b = Util.getAxialAlignedBoundingBox([0, 0, divWidth, divHeight], m);
@@ -160,9 +250,9 @@ var renderTextLayer = (function renderTextLayerClosure() {
     if (task._canceled) {
       return;
     }
-    var textDivs = task._textDivs;
-    var capability = task._capability;
-    var textDivsLength = textDivs.length;
+    const textDivs = task._textDivs;
+    const capability = task._capability;
+    const textDivsLength = textDivs.length;
 
     // No point in rendering many divs as it would make the browser
     // unusable even after the divs are rendered.
@@ -173,7 +263,7 @@ var renderTextLayer = (function renderTextLayerClosure() {
     }
 
     if (!task._textContentStream) {
-      for (var i = 0; i < textDivsLength; i++) {
+      for (let i = 0; i < textDivsLength; i++) {
         task._layoutText(textDivs[i]);
       }
     }
@@ -194,13 +284,13 @@ var renderTextLayer = (function renderTextLayerClosure() {
   }
 
   function expand(task) {
-    var bounds = task._bounds;
-    var viewport = task._viewport;
+    const bounds = task._bounds;
+    const viewport = task._viewport;
 
-    var expanded = expandBounds(viewport.width, viewport.height, bounds);
-    for (var i = 0; i < expanded.length; i++) {
-      var div = bounds[i].div;
-      var divProperties = task._textDivProperties.get(div);
+    const expanded = expandBounds(viewport.width, viewport.height, bounds);
+    for (let i = 0; i < expanded.length; i++) {
+      const div = bounds[i].div;
+      const divProperties = task._textDivProperties.get(div);
       if (divProperties.angle === 0) {
         divProperties.paddingLeft = bounds[i].left - expanded[i].left;
         divProperties.paddingTop = bounds[i].top - expanded[i].top;
@@ -211,16 +301,16 @@ var renderTextLayer = (function renderTextLayerClosure() {
       }
       // Box is rotated -- trying to find padding so rotated div will not
       // exceed its expanded bounds.
-      var e = expanded[i],
+      const e = expanded[i],
         b = bounds[i];
-      var m = b.m,
+      const m = b.m,
         c = m[0],
         s = m[1];
       // Finding intersections with expanded box.
-      var points = [[0, 0], [0, b.size[1]], [b.size[0], 0], b.size];
-      var ts = new Float64Array(64);
-      points.forEach(function(p, j) {
-        var t = Util.applyTransform(p, m);
+      const points = [[0, 0], [0, b.size[1]], [b.size[0], 0], b.size];
+      const ts = new Float64Array(64);
+      points.forEach(function (p, j) {
+        const t = Util.applyTransform(p, m);
         ts[j + 0] = c && (e.left - t[0]) / c;
         ts[j + 4] = s && (e.top - t[1]) / s;
         ts[j + 8] = c && (e.right - t[0]) / c;
@@ -243,7 +333,7 @@ var renderTextLayer = (function renderTextLayerClosure() {
       });
       // Not based on math, but to simplify calculations, using cos and sin
       // absolute values to not exceed the box (it can but insignificantly).
-      var boxScale = 1 + Math.min(Math.abs(c), Math.abs(s));
+      const boxScale = 1 + Math.min(Math.abs(c), Math.abs(s));
       divProperties.paddingLeft = findPositiveMin(ts, 32, 16) / boxScale;
       divProperties.paddingTop = findPositiveMin(ts, 48, 16) / boxScale;
       divProperties.paddingRight = findPositiveMin(ts, 0, 16) / boxScale;
@@ -253,7 +343,7 @@ var renderTextLayer = (function renderTextLayerClosure() {
   }
 
   function expandBounds(width, height, boxes) {
-    var bounds = boxes.map(function(box, i) {
+    const bounds = boxes.map(function (box, i) {
       return {
         x1: box.left,
         y1: box.top,
@@ -265,9 +355,9 @@ var renderTextLayer = (function renderTextLayerClosure() {
       };
     });
     expandBoundsLTR(width, bounds);
-    var expanded = new Array(boxes.length);
-    bounds.forEach(function(b) {
-      var i = b.index;
+    const expanded = new Array(boxes.length);
+    bounds.forEach(function (b) {
+      const i = b.index;
       expanded[i] = {
         left: b.x1New,
         top: 0,
@@ -278,8 +368,8 @@ var renderTextLayer = (function renderTextLayerClosure() {
 
     // Rotating on 90 degrees and extending extended boxes. Reusing the bounds
     // array and objects.
-    boxes.map(function(box, i) {
-      var e = expanded[i],
+    boxes.map(function (box, i) {
+      const e = expanded[i],
         b = bounds[i];
       b.x1 = box.top;
       b.y1 = width - e.right;
@@ -291,8 +381,8 @@ var renderTextLayer = (function renderTextLayerClosure() {
     });
     expandBoundsLTR(height, bounds);
 
-    bounds.forEach(function(b) {
-      var i = b.index;
+    bounds.forEach(function (b) {
+      const i = b.index;
       expanded[i].top = b.x1New;
       expanded[i].bottom = b.x2New;
     });
@@ -301,12 +391,12 @@ var renderTextLayer = (function renderTextLayerClosure() {
 
   function expandBoundsLTR(width, bounds) {
     // Sorting by x1 coordinate and walk by the bounds in the same order.
-    bounds.sort(function(a, b) {
+    bounds.sort(function (a, b) {
       return a.x1 - b.x1 || a.index - b.index;
     });
 
     // First we see on the horizon is a fake boundary.
-    var fakeBoundary = {
+    const fakeBoundary = {
       x1: -Infinity,
       y1: -Infinity,
       x2: 0,
@@ -315,7 +405,7 @@ var renderTextLayer = (function renderTextLayerClosure() {
       x1New: 0,
       x2New: 0,
     };
-    var horizon = [
+    const horizon = [
       {
         start: -Infinity,
         end: Infinity,
@@ -323,26 +413,26 @@ var renderTextLayer = (function renderTextLayerClosure() {
       },
     ];
 
-    bounds.forEach(function(boundary) {
+    bounds.forEach(function (boundary) {
       // Searching for the affected part of horizon.
       // TODO red-black tree or simple binary search
-      var i = 0;
+      let i = 0;
       while (i < horizon.length && horizon[i].end <= boundary.y1) {
         i++;
       }
-      var j = horizon.length - 1;
+      let j = horizon.length - 1;
       while (j >= 0 && horizon[j].start >= boundary.y2) {
         j--;
       }
 
-      var horizonPart, affectedBoundary;
-      var q,
+      let horizonPart, affectedBoundary;
+      let q,
         k,
         maxXNew = -Infinity;
       for (q = i; q <= j; q++) {
         horizonPart = horizon[q];
         affectedBoundary = horizonPart.boundary;
-        var xNew;
+        let xNew;
         if (affectedBoundary.x2 > boundary.x1) {
           // In the middle of the previous element, new x shall be at the
           // boundary start. Extending if further if the affected boundary
@@ -389,13 +479,13 @@ var renderTextLayer = (function renderTextLayerClosure() {
       }
 
       // Fixing the horizon.
-      var changedHorizon = [],
-        lastBoundary = null;
+      const changedHorizon = [];
+      let lastBoundary = null;
       for (q = i; q <= j; q++) {
         horizonPart = horizon[q];
         affectedBoundary = horizonPart.boundary;
         // Checking which boundary will be visible.
-        var useBoundary =
+        const useBoundary =
           affectedBoundary.x2 > boundary.x2 ? affectedBoundary : boundary;
         if (lastBoundary === useBoundary) {
           // Merging with previous.
@@ -435,7 +525,7 @@ var renderTextLayer = (function renderTextLayerClosure() {
         if (affectedBoundary.x2New !== undefined) {
           continue;
         }
-        var used = false;
+        let used = false;
         for (
           k = i - 1;
           !used && k >= 0 && horizon[k].start >= affectedBoundary.y1;
@@ -465,8 +555,8 @@ var renderTextLayer = (function renderTextLayerClosure() {
     });
 
     // Set new x2 for all unset boundaries.
-    horizon.forEach(function(horizonPart) {
-      var affectedBoundary = horizonPart.boundary;
+    horizon.forEach(function (horizonPart) {
+      const affectedBoundary = horizonPart.boundary;
       if (affectedBoundary.x2New === undefined) {
         affectedBoundary.x2New = Math.max(width, affectedBoundary.x2);
       }
@@ -495,13 +585,12 @@ var renderTextLayer = (function renderTextLayerClosure() {
     this._textContent = textContent;
     this._textContentStream = textContentStream;
     this._container = container;
+    this._document = container.ownerDocument;
     this._viewport = viewport;
     this._textDivs = textDivs || [];
     this._textContentItemsStr = textContentItemsStr || [];
     this._enhanceTextSelection = !!enhanceTextSelection;
-    this._fontInspectorEnabled = !!(
-      globalThis.FontInspector && globalThis.FontInspector.enabled
-    );
+    this._fontInspectorEnabled = !!globalThis.FontInspector?.enabled;
 
     this._reader = null;
     this._layoutTextLastFontSize = null;
@@ -550,7 +639,7 @@ var renderTextLayer = (function renderTextLayerClosure() {
     _processItems(items, styleCache) {
       for (let i = 0, len = items.length; i < len; i++) {
         this._textContentItemsStr.push(items[i].str);
-        appendText(this, items[i], styleCache);
+        appendText(this, items[i], styleCache, this._layoutTextCtx);
       }
     },
 
@@ -599,7 +688,9 @@ var renderTextLayer = (function renderTextLayerClosure() {
       let styleCache = Object.create(null);
 
       // The temporary canvas is used to measure text length in the DOM.
-      const canvas = document.createElement("canvas");
+      const canvas = this._document.createElement("canvas");
+      canvas.height = canvas.width = DEFAULT_FONT_SIZE;
+
       if (
         typeof PDFJSDev === "undefined" ||
         PDFJSDev.test("MOZCENTRAL || GENERIC")
@@ -662,7 +753,7 @@ var renderTextLayer = (function renderTextLayerClosure() {
       const transformBuf = [],
         paddingBuf = [];
 
-      for (var i = 0, ii = this._textDivs.length; i < ii; i++) {
+      for (let i = 0, ii = this._textDivs.length; i < ii; i++) {
         const div = this._textDivs[i];
         const divProps = this._textDivProperties.get(div);
 
@@ -713,14 +804,9 @@ var renderTextLayer = (function renderTextLayerClosure() {
     },
   };
 
-  /**
-   * Starts rendering of the text layer.
-   *
-   * @param {TextLayerRenderParameters} renderParameters
-   * @returns {TextLayerRenderTask}
-   */
+  // eslint-disable-next-line no-shadow
   function renderTextLayer(renderParameters) {
-    var task = new TextLayerRenderTask({
+    const task = new TextLayerRenderTask({
       textContent: renderParameters.textContent,
       textContentStream: renderParameters.textContentStream,
       container: renderParameters.container,

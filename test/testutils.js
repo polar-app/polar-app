@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/* eslint-disable no-var */
 
 "use strict";
 
@@ -32,7 +33,7 @@ exports.copySubtreeSync = function copySubtreeSync(src, dest) {
   if (!fs.existsSync(dest)) {
     fs.mkdirSync(dest);
   }
-  files.forEach(function(filename) {
+  files.forEach(function (filename) {
     var srcFile = path.join(src, filename);
     var file = path.join(dest, filename);
     var stats = fs.statSync(srcFile);
@@ -99,12 +100,12 @@ function handleStdinBuffer() {
 function initStdin() {
   process.stdin.setEncoding("utf8");
 
-  process.stdin.on("data", function(chunk) {
+  process.stdin.on("data", function (chunk) {
     stdinBuffer += chunk;
     handleStdinBuffer();
   });
 
-  process.stdin.on("end", function() {
+  process.stdin.on("end", function () {
     endOfStdin = true;
     handleStdinBuffer();
   });
@@ -125,7 +126,7 @@ exports.prompt = function prompt(message, callback) {
 };
 
 exports.confirm = function confirm(message, callback) {
-  exports.prompt(message, function(answer) {
+  exports.prompt(message, function (answer) {
     if (answer === undefined) {
       callback();
       return;

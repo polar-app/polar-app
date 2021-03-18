@@ -3,22 +3,9 @@
     "../.eslintrc"
   ],
 
-  "parserOptions": {
-    "ecmaVersion": 6,
-  },
-
-  "env": {
-    "es6": false,
-  },
-
   "globals": {
     "pdfjsImageDecoders": false,
     "pdfjsLib": false,
     "pdfjsViewer": false,
-    "Uint8Array": false,
   },
-
-  "rules": {
-    "object-shorthand": ["error", "never"]
-  }
 }

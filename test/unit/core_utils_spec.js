@@ -15,16 +15,19 @@
 
 import { Dict, Ref } from "../../src/core/primitives.js";
 import {
+  encodeToXmlString,
+  escapePDFName,
   getInheritableProperty,
   isWhiteSpace,
   log2,
+  parseXFAPath,
   toRomanNumerals,
 } from "../../src/core/core_utils.js";
 import { XRefMock } from "./test_utils.js";
 
-describe("core_utils", function() {
-  describe("getInheritableProperty", function() {
-    it("handles non-dictionary arguments", function() {
+describe("core_utils", function () {
+  describe("getInheritableProperty", function () {
+    it("handles non-dictionary arguments", function () {
       expect(getInheritableProperty({ dict: null, key: "foo" })).toEqual(
         undefined
       );
@@ -33,7 +36,7 @@ describe("core_utils", function() {
       );
     });
 
-    it("handles dictionaries that do not contain the property", function() {
+    it("handles dictionaries that do not contain the property", function () {
       // Empty dictionary.
       const emptyDict = new Dict();
       expect(getInheritableProperty({ dict: emptyDict, key: "foo" })).toEqual(
@@ -48,7 +51,7 @@ describe("core_utils", function() {
       );
     });
 
-    it("fetches the property if it is not inherited", function() {
+    it("fetches the property if it is not inherited", function () {
       const ref = Ref.get(10, 0);
       const xref = new XRefMock([{ ref, data: "quux" }]);
       const dict = new Dict(xref);
@@ -64,7 +67,7 @@ describe("core_utils", function() {
       ).toEqual(["qux", "quux"]);
     });
 
-    it("fetches the property if it is inherited and present on one level", function() {
+    it("fetches the property if it is inherited and present on one level", function () {
       const ref = Ref.get(10, 0);
       const xref = new XRefMock([{ ref, data: "quux" }]);
       const firstDict = new Dict(xref);
@@ -84,7 +87,7 @@ describe("core_utils", function() {
       ).toEqual(["qux", "quux"]);
     });
 
-    it("fetches the property if it is inherited and present on multiple levels", function() {
+    it("fetches the property if it is inherited and present on multiple levels", function () {
       const ref = Ref.get(10, 0);
       const xref = new XRefMock([{ ref, data: "quux" }]);
       const firstDict = new Dict(xref);
@@ -121,42 +124,18 @@ describe("core_utils", function() {
         ["qux2", "quux"],
       ]);
     });
-
-    it("stops searching when the loop limit is reached", function() {
-      const dict = new Dict();
-      let currentDict = dict;
-      let parentDict = null;
-      // Exceed the loop limit of 100.
-      for (let i = 0; i < 150; i++) {
-        parentDict = new Dict();
-        currentDict.set("Parent", parentDict);
-        currentDict = parentDict;
-      }
-      parentDict.set("foo", "bar"); // Never found because of loop limit.
-      expect(getInheritableProperty({ dict, key: "foo" })).toEqual(undefined);
-
-      dict.set("foo", "baz");
-      expect(
-        getInheritableProperty({
-          dict,
-          key: "foo",
-          getArray: false,
-          stopWhenFound: false,
-        })
-      ).toEqual(["baz"]);
-    });
   });
 
-  describe("toRomanNumerals", function() {
-    it("handles invalid arguments", function() {
+  describe("toRomanNumerals", function () {
+    it("handles invalid arguments", function () {
       for (const input of ["foo", -1, 0]) {
-        expect(function() {
+        expect(function () {
           toRomanNumerals(input);
         }).toThrow(new Error("The number should be a positive integer."));
       }
     });
 
-    it("converts numbers to uppercase Roman numerals", function() {
+    it("converts numbers to uppercase Roman numerals", function () {
       expect(toRomanNumerals(1)).toEqual("I");
       expect(toRomanNumerals(6)).toEqual("VI");
       expect(toRomanNumerals(7)).toEqual("VII");
@@ -169,7 +148,7 @@ describe("core_utils", function() {
       expect(toRomanNumerals(2019)).toEqual("MMXIX");
     });
 
-    it("converts numbers to lowercase Roman numerals", function() {
+    it("converts numbers to lowercase Roman numerals", function () {
       expect(toRomanNumerals(1, /* lowercase = */ true)).toEqual("i");
       expect(toRomanNumerals(6, /* lowercase = */ true)).toEqual("vi");
       expect(toRomanNumerals(7, /* lowercase = */ true)).toEqual("vii");
@@ -183,13 +162,13 @@ describe("core_utils", function() {
     });
   });
 
-  describe("log2", function() {
-    it("handles values smaller than/equal to zero", function() {
+  describe("log2", function () {
+    it("handles values smaller than/equal to zero", function () {
       expect(log2(0)).toEqual(0);
       expect(log2(-1)).toEqual(0);
     });
 
-    it("handles values larger than zero", function() {
+    it("handles values larger than zero", function () {
       expect(log2(1)).toEqual(0);
       expect(log2(2)).toEqual(1);
       expect(log2(3)).toEqual(2);
@@ -197,18 +176,61 @@ describe("core_utils", function() {
     });
   });
 
-  describe("isWhiteSpace", function() {
-    it("handles space characters", function() {
+  describe("isWhiteSpace", function () {
+    it("handles space characters", function () {
       expect(isWhiteSpace(0x20)).toEqual(true);
       expect(isWhiteSpace(0x09)).toEqual(true);
       expect(isWhiteSpace(0x0d)).toEqual(true);
       expect(isWhiteSpace(0x0a)).toEqual(true);
     });
 
-    it("handles non-space characters", function() {
+    it("handles non-space characters", function () {
       expect(isWhiteSpace(0x0b)).toEqual(false);
       expect(isWhiteSpace(null)).toEqual(false);
       expect(isWhiteSpace(undefined)).toEqual(false);
+    });
+  });
+
+  describe("parseXFAPath", function () {
+    it("should get a correctly parsed path", function () {
+      const path = "foo.bar[12].oof[3].rab.FOO[123].BAR[456]";
+      expect(parseXFAPath(path)).toEqual([
+        { name: "foo", pos: 0 },
+        { name: "bar", pos: 12 },
+        { name: "oof", pos: 3 },
+        { name: "rab", pos: 0 },
+        { name: "FOO", pos: 123 },
+        { name: "BAR", pos: 456 },
+      ]);
+    });
+  });
+
+  describe("escapePDFName", function () {
+    it("should escape PDF name", function () {
+      expect(escapePDFName("hello")).toEqual("hello");
+      expect(escapePDFName("\xfehello")).toEqual("#fehello");
+      expect(escapePDFName("he\xfell\xffo")).toEqual("he#fell#ffo");
+      expect(escapePDFName("\xfehe\xfell\xffo\xff")).toEqual(
+        "#fehe#fell#ffo#ff"
+      );
+      expect(escapePDFName("#h#e#l#l#o")).toEqual("#23h#23e#23l#23l#23o");
+      expect(escapePDFName("#()<>[]{}/%")).toEqual(
+        "#23#28#29#3c#3e#5b#5d#7b#7d#2f#25"
+      );
+    });
+  });
+
+  describe("encodeToXmlString", function () {
+    it("should get a correctly encoded string with some entities", function () {
+      const str = "\"\u0397ell😂' & <W😂rld>";
+      expect(encodeToXmlString(str)).toEqual(
+        "&quot;&#x397;ell&#x1F602;&apos; &amp; &lt;W&#x1F602;rld&gt;"
+      );
+    });
+
+    it("should get a correctly encoded basic ascii string", function () {
+      const str = "hello world";
+      expect(encodeToXmlString(str)).toEqual(str);
     });
   });
 });
