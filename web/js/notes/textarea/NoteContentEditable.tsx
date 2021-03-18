@@ -10,7 +10,7 @@ import {NoteContentCanonicalizer} from "./NoteContentCanonicalizer";
 import {NoteAction} from "./NoteAction";
 import { useHistory } from 'react-router-dom';
 
-const ENABLE_TRACE_CURSOR_RESET = true;
+const ENABLE_TRACE_CURSOR_RESET = false;
 
 interface IProps {
 

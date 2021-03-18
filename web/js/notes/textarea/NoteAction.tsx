@@ -163,6 +163,31 @@ export const NoteAction = observer((props: IProps) => {
 
     }, []);
 
+
+    const cursorWithinInput = React.useCallback((): boolean => {
+
+        if (! divRef.current) {
+            return false;
+        }
+
+        if (!activePromptRef.current) {
+            return false;
+        }
+
+
+        const inputStart = ContentEditables.computeStartNodeOffset(activePromptRef.current.actionInput);
+        const inputEnd = ContentEditables.computeEndNodeOffset(activePromptRef.current.actionInput);
+
+        const range = window.getSelection()!.getRangeAt(0);
+
+        if (range.comparePoint(inputStart.node, inputStart.offset) === 1) {
+            return false;
+        }
+
+        return true;
+
+    }, [divRef]);
+
     const computeActionInputText = React.useCallback((): string => {
 
         return (activePromptRef.current?.actionInput.textContent || '')
@@ -332,8 +357,14 @@ export const NoteAction = observer((props: IProps) => {
 
             const prompt = computeActionInputText();
 
+            // if (! cursorWithinInput()) {
+            //     doReset();
+            //     return;
+            // }
+
             if (hasAborted(event)) {
                 doReset();
+                return;
             }
 
             switch (event.key) {
@@ -342,6 +373,7 @@ export const NoteAction = observer((props: IProps) => {
                     doReset();
                     break;
 
+                case 'Tab':
                 case 'Enter':
                     doComplete();
                     break;

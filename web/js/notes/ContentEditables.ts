@@ -114,7 +114,6 @@ export namespace ContentEditables {
 
         if (node.nodeType === document.TEXT_NODE) {
 
-
             return {
                 node,
                 offset: node.textContent !== null ? node.textContent.length : 0,
