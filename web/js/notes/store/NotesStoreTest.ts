@@ -293,7 +293,7 @@ describe('NotesStore', function() {
 
             TestingTime.forward(1000);
 
-            const newParentID = store.doIndent('104')
+            const indentResult = store.doIndent('104')
 
             assertJSON(store.getNote('102'), {
                 "_content": "World War II",
@@ -308,7 +308,7 @@ describe('NotesStore', function() {
                 "_updated": "2012-03-02T11:38:50.321Z"
             });
 
-            assertJSON(store.getNote(newParentID.value!), {
+            assertJSON(store.getNote(indentResult[0].value!), {
                 "_content": "[Lasted](https://www.example.com) from 1939 to 1945",
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "103",
@@ -333,7 +333,7 @@ describe('NotesStore', function() {
 
             store.doIndent('104')
 
-            assert.equal(store.doIndent('104').error, 'no-sibling');
+            assert.equal(store.doIndent('104')[0].error, 'no-sibling');
 
         });
 
@@ -416,9 +416,9 @@ describe('NotesStore', function() {
 
             const store = createStore();
 
-            const result = store.doIndent('108')
+            const indentResult = store.doIndent('108')
 
-            assert.equal(result.error!, 'no-parent');
+            assert.equal(indentResult[0].error!, 'no-parent');
 
         });
 
@@ -428,9 +428,9 @@ describe('NotesStore', function() {
 
             const store = createStore();
 
-            const result = store.doIndent('103')
+            const indentResult = store.doIndent('103')
 
-            assert.equal(result.error!, 'no-sibling');
+            assert.equal(indentResult[0].error!, 'no-sibling');
 
         });
 

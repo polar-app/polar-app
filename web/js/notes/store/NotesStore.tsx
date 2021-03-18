@@ -107,7 +107,7 @@ export interface ICreatedNote {
     readonly parent: NoteIDStr;
 }
 
-export type DoIndentResult = IMutation<'no-note' | 'no-parent' | 'no-parent-note' | 'no-sibling', NoteIDStr | ReadonlyArray<NoteIDStr>>;
+export type DoIndentResult = IMutation<'no-note' | 'no-parent' | 'no-parent-note' | 'no-sibling', NoteIDStr>;
 
 export class NotesStore {
 
