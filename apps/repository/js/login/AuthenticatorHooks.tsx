@@ -373,7 +373,8 @@ export function useTriggerVerifyTokenAuth() {
                 throw new Error('The challenge code you provided was invalid.');
             case 'invalid-challenge':
                 throw new Error('No email was found for that challenge.');
+            default:
+                throw getErrorFromCloudFunctionResponse(response);
         }
-        throw getErrorFromCloudFunctionResponse(response);
     }, []);
 }
