@@ -1,31 +1,62 @@
 import * as React from 'react';
+import {useHistory} from 'react-router-dom';
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import createStyles from "@material-ui/core/styles/createStyles";
+
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
-import { useHistory } from 'react-router-dom';
 import {useUserInfoContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 import {Plans} from "polar-accounts/src/Plans";
+import AIFlashcardsImage from "../../img/ai-flashcards.png";
+
+const useModalStyles = makeStyles((theme) => {
+  return createStyles({
+    upgradeModalRoot: {
+        '& .MuiDialogTitle-root': {
+            background: 'transparent',
+            color: theme.palette.text.primary,
+            padding: theme.spacing(4, 5, 3),
+            '& h2': { fontSize: theme.typography.pxToRem(42) }
+        },
+        '& .MuiDialogActions-root': {
+            padding: theme.spacing(2, 5, 4),
+        },
+        '& .alert-dialog-content-outer, & .alert-dialog-content-outer .alert-dialog-content-inner': {
+            padding: 0,
+        }
+    },
+    upgradeModalContent: {
+        paddingBottom: theme.spacing(1),
+        padding: theme.spacing(0, 6, 0),
+        '& p': { fontSize: theme.typography.pxToRem(20) },
+    },
+    upgradeModalVideo: {
+        maxWidth: "100%"
+    }
+  });
+});
 
 export function useAIFlashcardVerificationWarning() {
-
     const dialogs = useDialogManager();
+    const classes = useModalStyles();
 
     return React.useCallback((props: {onAccept: () => void}) => {
-
         dialogs.confirm({
-            title: 'Upgrade Required for AI Flashcards',
+            title: 'Boost Your Productivity With AI flashcards',
             acceptText: "Upgrade for AI Flashcards",
             type: 'primary',
             subtitle: <AIFlashcardVerificationWarning/>,
-            onAccept: props.onAccept
+            onAccept: props.onAccept,
+            classes: { root: classes.upgradeModalRoot },
+            maxWidth: 'md',
         })
 
-    }, [dialogs]);
+    }, [dialogs, classes.upgradeModalRoot]);
 
 }
 
 export function useAIFlashcardVerifiedAction() {
-
     const userInfoContext = useUserInfoContext();
     const history = useHistory();
 
@@ -54,27 +85,19 @@ export function useAIFlashcardVerifiedAction() {
 }
 
 export const AIFlashcardVerificationWarning = deepMemo(() => {
+    const styles = useModalStyles();
     return (
-        <div>
-
+        <div className={styles.upgradeModalContent}>
+            <video className={styles.upgradeModalVideo} autoPlay loop muted poster={AIFlashcardsImage}>
+                <source src="https://getpolarized.io/ai-flashcards.mp4" type="video/mp4" />
+            </video>
             <p>
-                AI Flashcards are a premium feature and require either a
-                plus or pro account.
+                Create flashcards from your text highlights in one click using AI.
             </p>
 
             <p>
-                AI Flashcards use state-of-the-art artificial intelligence
-                technology from OpenAI based on GPT3 to automatically build
-                question and answer-based flashcards based on the text you
-                highlight.
+                Use GPT-3 to automate your workflow and stop typing out every single quesiton and answer pair.
             </p>
-
-            <p>
-                No more typing out question and answer pairs. AI Flashcards
-                just does all the hard work for you leaving you with more
-                time to study!
-            </p>
-
         </div>
     )
 });

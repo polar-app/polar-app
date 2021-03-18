@@ -11,6 +11,8 @@ import {InputCompleteListener, InputCompletionType} from "../../mui/complete_lis
 import {WithDeactivatedKeyboardShortcuts} from "../../keyboard_shortcuts/WithDeactivatedKeyboardShortcuts";
 import {MUIDialog} from "./MUIDialog";
 import {deepMemo} from "../../react/ReactUtils";
+import { ClassNameMap } from '@material-ui/styles';
+import { DialogClassKey } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -62,6 +64,7 @@ export interface ConfirmDialogProps {
     readonly onAccept: Callback;
     readonly type?: AlertType;
     readonly autoFocus?: boolean;
+    readonly classes?: Partial<ClassNameMap<DialogClassKey>>;
 
     /**
      * The text to use for the cancel button.
@@ -128,6 +131,7 @@ export const ConfirmDialog = deepMemo((props: ConfirmDialogProps) => {
             maxWidth={props.maxWidth}
             open={open}
             onClose={handleClose}
+            classes={props.classes}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description">
 
@@ -141,12 +145,12 @@ export const ConfirmDialog = deepMemo((props: ConfirmDialogProps) => {
                             {props.title}
                         </DialogTitle>
 
-                        <DialogContent>
+                        <DialogContent className="alert-dialog-content-outer">
 
                             {typeof props.subtitle === 'string' && (
                                 <Box pt={1}>
                                     <DialogContentText id="alert-dialog-description"
-                                                       className={classes.subtitle}>
+                                                       className={`${classes.subtitle} alert-dialog-content-inner`}>
                                         {props.subtitle}
                                     </DialogContentText>
                                 </Box>
@@ -154,7 +158,7 @@ export const ConfirmDialog = deepMemo((props: ConfirmDialogProps) => {
 
                             {typeof props.subtitle !== 'string' && (
                                 <DialogContent id="alert-dialog-description"
-                                               className={classes.subtitle}>
+                                               className={`${classes.subtitle} alert-dialog-content-inner`}>
                                     {props.subtitle}
                                 </DialogContent>
                             )}
