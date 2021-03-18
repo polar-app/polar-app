@@ -20,28 +20,32 @@ export const MUIAppRoot = React.memo(function MUIAppRoot(props: IProps) {
 
     const [theme, setTheme] = useLocalStorageState<ThemeType>('theme', "dark");
 
-    const background = Dictionaries.onlyDefinedProperties({
-        'default': theme === 'light' ? '#ffffff' : undefined,
-        'paper': theme === 'light' ? '#f2f2f2' : undefined
-    });
+    const muiTheme = React.useMemo(() => {
 
-    const muiTheme = React.useMemo(() => createMuiTheme({
-        typography: {
-            htmlFontSize: 12,
-            fontSize: 12
-        },
-        palette: {
-            type: theme,
-            primary: {
-                'main': 'rgb(103, 84, 214)'
+        const background = Dictionaries.onlyDefinedProperties({
+            'default': theme === 'light' ? '#ffffff' : undefined,
+            'paper': theme === 'light' ? '#f2f2f2' : undefined
+        });
+
+        return createMuiTheme({
+            typography: {
+                htmlFontSize: 12,
+                fontSize: 12
             },
-            background
-            // divider: '#303236',
-            // text: {
-            //     primary: 'rgb(247, 248, 248)'
-            // }
-        }
-    }), [theme]);
+            palette: {
+                type: theme,
+                primary: {
+                    'main': 'rgb(103, 84, 214)'
+                },
+                background
+                // divider: '#303236',
+                // text: {
+                //     primary: 'rgb(247, 248, 248)'
+                // }
+            }
+        });
+
+    }, [theme]);
 
     return (
         <>
