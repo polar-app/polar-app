@@ -107,7 +107,7 @@ export interface ICreatedNote {
     readonly parent: NoteIDStr;
 }
 
-export type DoIndentResult = IMutation<'no-note' | 'no-parent' | 'no-parent-note' | 'no-sibling', NoteIDStr>;
+export type DoIndentResult = IMutation<'no-note' | 'no-parent' | 'no-parent-note' | 'no-sibling', NoteIDStr | ReadonlyArray<NoteIDStr>>;
 
 export class NotesStore {
 
@@ -197,6 +197,10 @@ export class NotesStore {
 
     @computed get selected() {
         return this._selected;
+    }
+
+    selectedIDs() {
+        return Object.keys(this._selected);
     }
 
     @action public clearSelected() {
@@ -813,7 +817,7 @@ export class NotesStore {
      *
      * @return The new parent NoteID or the code as to why it couldn't be re-parented.
      */
-    public doIndent(id: NoteIDStr): DoIndentResult {
+    public doIndent(id: NoteIDStr): ReadonlyArray<DoIndentResult> {
 
         const doExec = (id: NoteIDStr): DoIndentResult => {
 
@@ -866,12 +870,11 @@ export class NotesStore {
 
         }
 
-        // if (this.hasSelected()) {
-        //     return undefined;
-        // } else {
-        // }
-
-        return doExec(id);
+        if (this.hasSelected()) {
+            return this.selectedIDs().map(id => doExec(id));
+        } else {
+            return [doExec(id)];
+        }
 
     }
 

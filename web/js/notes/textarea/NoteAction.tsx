@@ -149,7 +149,17 @@ export const NoteAction = observer((props: IProps) => {
             return;
         }
 
-        activePromptRef.current.actionInput.innerText = '[[';
+        const actionInput = activePromptRef.current.actionInput;
+
+        if (actionInput.parentElement) {
+
+            actionInput.innerText = '[[';
+
+            const range = window.getSelection()!.getRangeAt(0);
+            range.setStart(actionInput.firstChild!, 2);
+            range.setEnd(actionInput.firstChild!, 2);
+
+        }
 
     }, []);
 
@@ -343,7 +353,7 @@ export const NoteAction = observer((props: IProps) => {
 
         } else {
 
-            if (prefixText.endsWith(trigger)) {
+            if (prefixText.endsWith(trigger) && event.key === '[') {
 
                 /**
                  * Create the active input prompt and return a range where the menu must popup.
