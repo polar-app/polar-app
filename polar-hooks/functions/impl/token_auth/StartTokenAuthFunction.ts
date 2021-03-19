@@ -1,11 +1,13 @@
 import {Strings} from "polar-shared/src/util/Strings";
-import {AuthChallenges} from "./AuthChallenges";
+import {AuthChallenges, IAuthChallenge} from "./AuthChallenges";
 import {Sendgrid} from "../Sendgrid";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 import { isPresent } from "polar-shared/src/Preconditions";
+import {Mailgun} from "../Mailgun";
 
 export interface IStartTokenAuthRequest {
     readonly email: string;
+    readonly resend?: string;
 }
 
 export interface IStartTokenErrorResponse {
@@ -24,6 +26,7 @@ interface IChallenge {
     readonly p0: string;
     readonly p1: string;
     readonly value: string;
+    readonly challenge: string;
 }
 
 export function createChallenge(): IChallenge {
@@ -35,7 +38,7 @@ export function createChallenge(): IChallenge {
     const p1 = Strings.lpad(n1, '0', 3);
 
     const value = p0 + p1;
-    return {value, p0, p1};
+    return {value, p0, p1, challenge: value};
 
 }
 
@@ -55,21 +58,30 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
 
     console.log("Handling request: ", typeof request, request);
 
-    const {email} = request;
+    const {email, resend} = request;
 
-    // TODO: the challenges should expire.
-    const challenge = createChallenge()
+    interface IEmailTemplate {
+        readonly to: string;
+        readonly from: string;
+        readonly subject: string;
+        readonly html: string;
+    }
 
-    await AuthChallenges.write(email, challenge.value)
+    function createEmailTemplate(challenge: IChallenge | IAuthChallenge): IEmailTemplate {
 
-    try {
+        const p0 = challenge.challenge.substring(0, 3);
+        const p1 = challenge.challenge.substring(3, 6);
 
-        await Sendgrid.send({
+        return {
             to: email,
             from: 'noreply@getpolarized.io',
-            subject: `Please Sign in to Polar with code ${challenge.p0} ${challenge.p1}`,
-            html: `<p>Please use the following code to sign in to Polar:</p><p><span style="font-size: 30px;"><b>${challenge.p0} ${challenge.p1}</b></span></p>`
-        });
+            subject: `Please Sign in to Polar with code ${p0} ${p1}`,
+            html: `<p>Please use the following code to sign in to Polar:</p><p><span style="font-size: 30px;"><b>${p0} ${p1}</b></span></p>`
+        };
+
+    }
+
+    function sendResponseOK() {
 
         const response: IStartTokenAuthResponse = {
             code: 'ok',
@@ -77,6 +89,47 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
         };
 
         ExpressFunctions.sendResponse(res, response);
+
+    }
+
+    async function sendInitialMessage() {
+
+        // TODO: the challenges should expire.
+        const challenge = createChallenge()
+
+        await AuthChallenges.write(email, challenge.value)
+
+        const tmpl = createEmailTemplate(challenge);
+
+        await Sendgrid.send(tmpl);
+
+        sendResponseOK();
+
+    }
+
+    async function resendMessage() {
+
+        const challenge = await AuthChallenges.get(email);
+
+        if (! challenge) {
+            throw new Error("No previous challenge sent");
+        }
+
+        const tmpl = createEmailTemplate(challenge);
+
+        await Mailgun.send(tmpl);
+
+        sendResponseOK();
+
+    }
+
+    try {
+
+        if (resend) {
+            await resendMessage();
+        } else {
+            await sendInitialMessage();
+        }
 
     } catch (e) {
 
@@ -90,6 +143,5 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
         ExpressFunctions.sendResponse(res, response);
 
     }
-
 
 });

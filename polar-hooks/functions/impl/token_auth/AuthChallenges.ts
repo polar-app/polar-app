@@ -2,7 +2,7 @@ import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {Preconditions} from "polar-shared/src/Preconditions";
 
-interface IAuthChallenge {
+export interface IAuthChallenge {
     readonly id: string;
     readonly email: string;
     readonly challenge: string;
