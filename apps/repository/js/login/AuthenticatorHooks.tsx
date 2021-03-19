@@ -248,7 +248,7 @@ export async function executeCloudFunction<S, E>(cloudFunctionName: string, body
 
             try {
 
-                // this is a JSON error... 
+                // this is a JSON error...
 
                 const json = JSON.parse(text) as E;
                 if (typeof json === 'object' && json !== null) return json;
@@ -370,9 +370,9 @@ export function useTriggerVerifyTokenAuth() {
                 handleAuthResult(userCredential, response.isNewUser);
                 return response;
             case 'no-email-for-challenge':
-                throw new Error('The challenge code you provided was invalid.');
-            case 'invalid-challenge':
                 throw new Error('No email was found for that challenge.');
+            case 'invalid-challenge':
+                throw new Error('The challenge code you provided was invalid.');
             default:
                 throw getErrorFromCloudFunctionResponse(response);
         }
