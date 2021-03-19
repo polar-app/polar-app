@@ -28,7 +28,7 @@ const useModalStyles = makeStyles((theme) => {
     },
     upgradeModalContent: {
         paddingBottom: theme.spacing(1),
-        padding: theme.spacing(0, 6, 0),
+        padding: theme.spacing(0, 5, 0),
         '& p': { fontSize: theme.typography.pxToRem(20) },
     },
     upgradeModalVideo: {
