@@ -1,3 +1,22 @@
+# push to our new repo...
+
+https://stackoverflow.com/questions/25545613/how-can-i-push-to-my-fork-from-a-clone-of-the-original-repo
+
+# NEW build instructions
+
+- current build is 2.8.248-polar.1
+
+```
+npm install
+gulp dist
+# change the version to add a -polar.x version number
+vi build/dist/package.json
+# then publish to bytesafe... 
+npm publish
+```
+
+# OLD build instructions..
+
 - npm update --depth 5 @babel/preset-env
 
 - Use the es5 version for modern browsers
