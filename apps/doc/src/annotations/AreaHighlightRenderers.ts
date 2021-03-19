@@ -28,9 +28,9 @@ export namespace AreaHighlightRenderers {
 
         Preconditions.assertPresent(fileType, 'fileType');
 
-        const rect = AnnotationRects.createFromPointWithinPageElement(pageNum, pointWithinPageElement);
+        const rect = AnnotationRects.createFromPointWithinPageElement(pageNum, pointWithinPageElement, docViewerElement);
 
-        const pageDimensions = getPageElementDimensions(pageNum);
+        const pageDimensions = getPageElementDimensions(pageNum, docViewerElement);
 
         if (! pageDimensions) {
             throw new Error("No page dimensions");
@@ -65,9 +65,9 @@ export namespace AreaHighlightRenderers {
                                                              docViewerElement: HTMLElement): Promise<ICapturedAreaHighlight> {
         Preconditions.assertPresent(fileType, 'fileType');
 
-        const rect = AnnotationRects.createFromOverlayRect(pageNum, overlayRect);
+        const rect = AnnotationRects.createFromOverlayRect(pageNum, overlayRect, docViewerElement);
 
-        const pageDimensions = getPageElementDimensions(pageNum);
+        const pageDimensions = getPageElementDimensions(pageNum, docViewerElement);
 
         if (! pageDimensions) {
             throw new Error("No page dimensions");

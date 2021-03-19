@@ -31,13 +31,13 @@ export namespace AnnotationRects {
 
     }
 
-    export function getPageElement(page: number): HTMLElement | undefined {
-        return document.querySelectorAll(".page")[page - 1] as HTMLElement || undefined;
+    export function getPageElement(page: number, docViewerElem: HTMLElement): HTMLElement | undefined {
+        return docViewerElem.querySelectorAll(".page")[page - 1] as HTMLElement || undefined;
     }
 
-    export function getPageElementDimensions(page: number): IDimensions | undefined {
+    export function getPageElementDimensions(page: number, docViewerElem: HTMLElement): IDimensions | undefined {
 
-        const pageElement = getPageElement(page);
+        const pageElement = getPageElement(page, docViewerElem);
 
         if (! pageElement) {
             return undefined;
@@ -47,9 +47,9 @@ export namespace AnnotationRects {
 
     }
 
-    export function createFromPointWithinPageElement(pageNum: number, pointWithinPageElement: IPoint) {
+    export function createFromPointWithinPageElement(pageNum: number, pointWithinPageElement: IPoint, docViewerElem: HTMLElement) {
 
-        const pageElement = getPageElement(pageNum);
+        const pageElement = getPageElement(pageNum, docViewerElem);
 
         if (pageElement) {
             const containerDimensions = computeContainerDimensions(pageElement);
@@ -60,9 +60,9 @@ export namespace AnnotationRects {
 
     }
 
-    export function createFromOverlayRect(pageNum: number, overlayRect: ILTRect) {
+    export function createFromOverlayRect(pageNum: number, overlayRect: ILTRect, docViewerElem: HTMLElement) {
 
-        const pageElement = getPageElement(pageNum);
+        const pageElement = getPageElement(pageNum, docViewerElem);
 
         if (pageElement) {
             const containerDimensions = computeContainerDimensions(pageElement);
