@@ -11,13 +11,15 @@ const {DefaultRewrites} = require('polar-backend-shared/src/webserver/DefaultRew
 const svgToMiniDataURI = require('mini-svg-data-uri');
 const CKEditorWebpackPlugin = require( '@ckeditor/ckeditor5-dev-webpack-plugin' );
 const { styles } = require( '@ckeditor/ckeditor5-dev-utils' );
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 
 
-const isDevServer = process.env.WEBPACK_DEV_SERVER;
+const isDevServer = process.argv.includes('serve');
 const mode = process.env.NODE_ENV || (isDevServer ? 'development' : 'production');
 const isDev = mode === 'development';
 const target = process.env.WEBPACK_TARGET || 'web';
 const devtool = isDev ? (process.env.WEBPACK_DEVTOOL || "inline-source-map") : "source-map";
+const useWorkbox = ! isDevServer;
 
 const workers = os.cpus().length - 1;
 
@@ -25,10 +27,11 @@ const OUTPUT_PATH = path.resolve(__dirname, 'dist/public');
 
 console.log("Using N workers: " + workers);
 console.log("mode: " + mode);
-console.log("isDevServer: " + isDevServer);
 console.log("isDev: " + isDev);
+console.log("isDevServer: " + isDevServer);
+console.log("devtool: " + devtool);
+console.log("useWorkbox: " + useWorkbox);
 console.log("WEBPACK_TARGET: " + target);
-console.log("WEBPACK_DEVTOOL: " + devtool);
 console.log("Running in directory: " + __dirname);
 console.log("Writing to output path: " + OUTPUT_PATH);
 
@@ -255,6 +258,11 @@ module.exports = {
     resolve: {
         extensions: [ '.tsx', '.ts', '.js', '.jsx'],
         alias: {
+        },
+        fallback: {
+            fs: false,
+            net: false,
+            tls: false,
         }
     },
     devtool,
@@ -262,8 +270,9 @@ module.exports = {
         path: OUTPUT_PATH,
         filename: '[name]-bundle.js',
     },
-    node: createNode(),
     plugins: [
+        new NodePolyfillPlugin(),
+
         // TODO: this is needed for a localized build and it does not support en
         // new CKEditorWebpackPlugin( {
         //     // See https://ckeditor.com/docs/ckeditor5/latest/features/ui-language.html
@@ -385,7 +394,7 @@ module.exports = {
             // disable caching to:  node_modules/.cache/terser-webpack-plugin/
             // because intellij will index this data and lock up my machine
             // and generally waste space and CPU
-            cache: ".terser-webpack-plugin",
+            // cache: ".terser-webpack-plugin",
             terserOptions: {
                 output: { ascii_only: true },
             }})
@@ -416,5 +425,5 @@ module.exports = {
                 { from: /^\/apps\/stories/, to: '/apps/stories/index.html' },
             ]
         }
-    }
+    },
 };

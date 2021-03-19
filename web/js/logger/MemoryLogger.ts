@@ -5,7 +5,7 @@ import {EventListener, Releaseable} from '../reactor/EventListener';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Strings} from "polar-shared/src/util/Strings";
 
-const capacity = Strings.toNumber(process.env.POLAR_LOG_CAPACITY, 250);
+const capacity = 250;
 
 let IDX_GENERATOR = 0;
 

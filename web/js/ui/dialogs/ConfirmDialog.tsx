@@ -121,6 +121,7 @@ export const ConfirmDialog = deepMemo((props: ConfirmDialogProps) => {
         props.onAccept();
     }, [props]);
 
+    // FIXME: I don't think error should be the default here.
     const type: AlertType = props.type || 'error';
 
     // tslint:disable-next-line:no-string-literal
