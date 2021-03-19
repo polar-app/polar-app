@@ -38,7 +38,7 @@ npx webpack
 # remove the service worker generated so that webpack-dev-server doesn't get
 # confused (going to automate this in the future)
 rm -f dist/public/service-worker.js  
-npx webpack-dev-server
+npx webpack serve
 ```
 
 This *should* mean you have all code running and Polar should load in your 
