@@ -57,7 +57,7 @@ function createSubject(sub: V2Subscription, userPersona: IUserPersona): string {
 }
 
 function createBody(sub: V2Subscription, persona: IPersona, userPersona: IUserPersona): string {
-    return `Hey ${userPersona.firstName}!
+    return `Hey ${userPersona.firstName || ''}
 
 <p>
 I'm ${persona.firstName}, one of the founders here at Polar.
