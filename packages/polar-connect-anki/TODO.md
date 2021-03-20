@@ -1,1 +1,0 @@
-- installing the addon from a file doesn't wokr.
