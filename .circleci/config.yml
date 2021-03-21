@@ -292,17 +292,24 @@ workflows:
       - build-site:
           executor: my-docker
 
-      - hold:
+      - hold_webapp:
           type: approval
           requires:
             - build
             - build-webapp
             - build-site
 
-      - deploy:
+      - hold_webapp_beta:
+          type: approval
+          requires:
+            - build
+            - build-webapp
+            - build-site
+
+      - deploy_webapp:
           executor: my-docker
           requires:
-            - hold
+            - hold_webapp
 
   cypress:
     jobs:
