@@ -31,7 +31,7 @@ commands:
 
       - run:
           name: install lerna
-          command: npm install lerna
+          command: sudo npm -g install lerna
 
       - run:
           name: Node and NPM version
