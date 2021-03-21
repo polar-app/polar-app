@@ -11,12 +11,12 @@ export interface CreateSVGOpts {
 export class ColorBackgrounds {
 
     public static createBackground(opts: CreateSVGOpts) {
-        const dataURL = createDataURL(opts);
+        const dataURL = this.createDataURL(opts);
         return `url('${dataURL}')`;
     }
 
     public static createDataURL(opts: CreateSVGOpts) {
-        return 'data:image/svg+xml;charset=utf-8;base64,' + Base64.encode(createSVG(opts));
+        return 'data:image/svg+xml;charset=utf-8;base64,' + Base64.encode(this.createSVG(opts));
     }
 
     public static createSVG(opts: CreateSVGOpts) {
