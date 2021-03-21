@@ -349,7 +349,7 @@ workflows:
       - deploy_getpolarized_io:
           executor: my-docker
           requires:
-            - hold_site
+            - hold_getpolarized_io
 
 #  cypress:
 #    jobs:
