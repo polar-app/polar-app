@@ -1,0 +1,62 @@
+<html>
+<head>
+    <style>
+        iframe {
+            border: 0;
+        }
+
+        body {
+            overflow-y: scroll;
+        }
+
+    </style>
+</head>
+<body>
+
+<iframe src="doc.html" style="width: 700px; overflow: hidden;" scrolling="no" frameborder="no"></iframe>
+
+<script>
+
+    function expand() {
+
+        // FIXME: even if I fix the document, the scroll height is always larger !!!
+
+        let iframe = document.querySelector("iframe");
+
+        let newHeight = iframe.contentDocument.body.scrollHeight;
+
+        iframe.contentDocument.body.style.height = `${newHeight}px`;
+        iframe.contentDocument.body.style.maxHeight = `${newHeight}px`;
+
+        //let newHeight = this.iframe.contentDocument.documentElement.clientHeight;
+        //console.log("Setting new height to: " + newHeight);
+        iframe.style.height = `${newHeight}px`;
+        iframe.style.maxHeight = `${newHeight}px`;
+
+    }
+
+    function showHeights() {
+        let iframe = document.querySelector("iframe");
+        console.log("iframe.contentDocument.body.scrollHeight: ", iframe.contentDocument.body.scrollHeight)
+        console.log("iframe.contentDocument.body.offsetHeight: ", iframe.contentDocument.body.offsetHeight)
+        console.log("iframe.contentDocument.body.clientHeight: ", iframe.contentDocument.body.clientHeight)
+        console.log("window.screen.height: ", window.screen.height)
+
+    }
+
+    // soem moer ideas... set maxHeight
+
+
+    function createFuncLiteral(_function, _opts) {
+
+        return  `
+        ${_function.toString()}
+        ${_function.name}(${opts});
+        `;
+
+    }
+
+</script>
+
+</body>
+</html>
