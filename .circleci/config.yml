@@ -205,7 +205,7 @@ jobs:
       executor:
         description: "The CircleCI executor to use."
         type: executor
-      target:
+      firebase_hosting_target:
         description: "The npm target to run in the final step."
         type: string
 
@@ -227,7 +227,8 @@ jobs:
           command: |
             source packages/polar-bookshelf-secrets/credentials.sh
             npm run-script set-registry-default-rw
-            npm run-script << parameters.target >>
+            export FIREBASE_HOSTING_TARGET=<< parameters.firebase_hosting_target >>
+            npm run-script dist-release-webapp-release
 
   cypress:
     parameters:
@@ -311,13 +312,13 @@ workflows:
 
       - deploy_webapp:
           executor: my-docker
-          target: dist-release-webapp-release
+          firebase_hosting_target: polar-webapp
           requires:
             - hold_webapp
 
       - deploy_webapp:
           executor: my-docker
-          target: dist-release-main-webapp-beta
+          firebase_hosting_target: polar-beta
           requires:
             - hold_webapp_beta
 
