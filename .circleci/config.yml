@@ -326,16 +326,16 @@ workflows:
             - hold_webapp_beta
 
 
-  cypress:
-    jobs:
-      - cypress:
-          executor: my-docker
+#  cypress:
+#    jobs:
+#      - cypress:
+#          executor: my-docker
 
-  macos:
-    jobs:
-
-      - build:
-          executor: my-macos
+#  macos:
+#    jobs:
+#
+#      - build:
+#          executor: my-macos
 #      - build-webapp:
 #          executor: my-macos
 #      - build-site:
