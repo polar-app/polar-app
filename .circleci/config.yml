@@ -25,9 +25,9 @@ commands:
           keys:
             - v1-{{ arch }}-dependencies-{{ checksum "package.json" }}
 
-      #- run:
-      #    name: "Install latest NPM"
-      #    command: sudo npm -g install npm@7.5.3
+      - run:
+          name: "Install latest NPM"
+          command: sudo npm -g install npm
 
       - run:
           name: install lerna
