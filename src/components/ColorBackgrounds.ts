@@ -1,25 +1,25 @@
 import {RGBStr} from "polar-shared/src/metadata/HighlightColor";
 import {Base64} from "polar-shared/src/util/Base64";
 
-export namespace ColorBackgrounds {
+export interface CreateSVGOpts {
+    readonly color0: RGBStr;
+    readonly color1: RGBStr;
+    readonly color2: RGBStr;
+    readonly color3: RGBStr;
+}
 
-    export interface CreateSVGOpts {
-        readonly color0: RGBStr;
-        readonly color1: RGBStr;
-        readonly color2: RGBStr;
-        readonly color3: RGBStr;
-    }
+export class ColorBackgrounds {
 
-    export function createBackground(opts: CreateSVGOpts) {
+    public static createBackground(opts: CreateSVGOpts) {
         const dataURL = createDataURL(opts);
         return `url('${dataURL}')`;
     }
 
-    export function createDataURL(opts: CreateSVGOpts) {
+    public static createDataURL(opts: CreateSVGOpts) {
         return 'data:image/svg+xml;charset=utf-8;base64,' + Base64.encode(createSVG(opts));
     }
 
-    export function createSVG(opts: CreateSVGOpts) {
+    public static createSVG(opts: CreateSVGOpts) {
 
         const {color0, color1, color2, color3} = opts;
 
