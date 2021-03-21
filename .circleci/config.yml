@@ -203,7 +203,7 @@ jobs:
             cd packages/polar-site2 && \
             npm run-script dist
 
-  deploy_webapp:
+  deploy_app_getpolarized_io:
     parameters:
       executor:
         description: "The CircleCI executor to use."
@@ -233,7 +233,7 @@ jobs:
             export FIREBASE_HOSTING_TARGET=<< parameters.firebase_hosting_target >>
             npm run-script dist-release-webapp-release
 
-  deploy_site:
+  deploy_getpolarized_io:
     parameters:
       executor:
         description: "The CircleCI executor to use."
@@ -315,38 +315,38 @@ workflows:
       - build-site:
           executor: my-docker
 
-      - hold_webapp:
+      - hold_app_getpolarized_io:
           type: approval
           requires:
             - build
             - build-webapp
             - build-site
 
-      - hold_webapp_beta:
+      - hold_beta_getpolarized_io:
           type: approval
           requires:
             - build
             - build-webapp
             - build-site
 
-      - deploy_webapp:
+      - deploy_app_getpolarized_io:
           executor: my-docker
           firebase_hosting_target: polar-webapp
           requires:
-            - hold_webapp
+            - hold_app_getpolarized_io
 
-      - deploy_webapp:
+      - deploy_app_getpolarized_io:
           executor: my-docker
           firebase_hosting_target: polar-beta
           requires:
-            - hold_webapp_beta
+            - hold_beta_getpolarized_io
 
-      - hold_site:
+      - hold_getpolarized_io:
           type: approval
           requires:
             - build-site
 
-      - deploy_site:
+      - deploy_getpolarized_io:
           executor: my-docker
           requires:
             - hold_site
