@@ -315,7 +315,7 @@ workflows:
           requires:
             - hold_webapp
 
-      - deploy_webapp_beta:
+      - deploy_webapp:
           executor: my-docker
           target: dist-release-main-webapp-beta
           requires:
