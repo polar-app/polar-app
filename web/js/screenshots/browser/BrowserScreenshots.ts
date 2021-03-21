@@ -5,6 +5,7 @@ import {Results} from 'polar-shared/src/util/Results';
 import {Canvases} from 'polar-shared/src/util/Canvases';
 import {AnnotationToggler} from '../AnnotationToggler';
 import {Screenshots} from "../Screenshots";
+import { isPresent } from 'polar-shared/src/Preconditions';
 
 export class BrowserScreenshots {
 
@@ -13,7 +14,7 @@ export class BrowserScreenshots {
 
         rect = Screenshots.computeCaptureRect(rect, element);
 
-        if (chrome && chrome.runtime && chrome.runtime.sendMessage) {
+        if (chrome && chrome.runtime && isPresent(chrome.runtime.sendMessage)) {
 
             const captureWithRemoteCrop = async () => {
 
