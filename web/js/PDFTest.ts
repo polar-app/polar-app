@@ -2,7 +2,7 @@ import {Files} from 'polar-shared/src/util/Files';
 
 import url from 'url';
 
-import PDFJS from 'pdfjs-dist';
+import * as PDFJS from 'pdfjs-dist';
 
 xdescribe('PDF', function() {
 

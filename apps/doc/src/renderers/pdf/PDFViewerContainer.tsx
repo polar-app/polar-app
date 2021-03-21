@@ -31,7 +31,7 @@ export const PDFViewerContainer = React.memo((props: IProps) => {
     return (
         <>
             <GlobalPDFCss/>
-            <main onContextMenu={onContextMenu}
+            <div onContextMenu={onContextMenu}
                   id="viewerContainer"
                   style={{
                       position: 'absolute',
@@ -53,7 +53,7 @@ export const PDFViewerContainer = React.memo((props: IProps) => {
                     </div>
                 </div>
 
-            </main>
+            </div>
         </>
     );
 
