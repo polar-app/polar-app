@@ -205,6 +205,9 @@ jobs:
       executor:
         description: "The CircleCI executor to use."
         type: executor
+      target:
+        description: "The npm target to run in the final step."
+        type: string
 
     executor: << parameters.executor>>
     working_directory: ~/repo
@@ -224,7 +227,7 @@ jobs:
           command: |
             source packages/polar-bookshelf-secrets/credentials.sh
             npm run-script set-registry-default-rw
-            npm run-script dist-release-webapp-release
+            npm run-script << target >>
 
   cypress:
     parameters:
@@ -308,8 +311,16 @@ workflows:
 
       - deploy_webapp:
           executor: my-docker
+          target: dist-release-webapp-release
           requires:
             - hold_webapp
+
+      - deploy_webapp_beta:
+          executor: my-docker
+          target: dist-release-main-webapp-beta
+          requires:
+            - hold_webapp_beta
+
 
   cypress:
     jobs:
