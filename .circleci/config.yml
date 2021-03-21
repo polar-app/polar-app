@@ -227,7 +227,7 @@ jobs:
           command: |
             source packages/polar-bookshelf-secrets/credentials.sh
             npm run-script set-registry-default-rw
-            npm run-script << target >>
+            npm run-script << parameters.target >>
 
   cypress:
     parameters:
