@@ -233,6 +233,22 @@ jobs:
             export FIREBASE_HOSTING_TARGET=<< parameters.firebase_hosting_target >>
             npm run-script dist-release-webapp-release
 
+  deploy_site:
+    parameters:
+      executor:
+        description: "The CircleCI executor to use."
+        type: executor
+
+    executor: << parameters.executor>>
+    working_directory: ~/repo
+    steps:
+      - build_setup
+
+      - run:
+          name: deploy
+          command: |
+            cd packages/polar-site2
+            npm run-script dist-release
   cypress:
     parameters:
       executor:
@@ -325,6 +341,15 @@ workflows:
           requires:
             - hold_webapp_beta
 
+      - hold_site:
+          type: approval
+          requires:
+            - build-site
+
+      - deploy_site:
+          executor: my-docker
+          requires:
+            - hold_site
 
 #  cypress:
 #    jobs:
