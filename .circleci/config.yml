@@ -200,7 +200,8 @@ jobs:
       - run:
           name: build and verify site (getpolarized.io)
           command: |
-            cd packages/polar-site2 && \
+            pwd
+            cd packages/polar-site2
             npm run-script dist
 
   deploy_app_getpolarized_io:
@@ -246,6 +247,7 @@ jobs:
       - run:
           name: deploy
           command: |
+            pwd
             cd packages/polar-site2
             npm run-script dist-release
   cypress:
