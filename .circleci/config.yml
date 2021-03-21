@@ -30,12 +30,18 @@ commands:
       #    command: sudo npm -g install npm@7.5.3
 
       - run:
+          name: install lerna
+          command: npm install lerna
+
+      - run:
           name: Node and NPM version
           command: |
-            echo "Node version: "
+            echo -n "Node version: "
             node --version
-            echo "NPM version: "
+            echo -n "NPM version: "
             npm --version
+            echo -n "Lerna version: "
+            lerna --version
 
       - run:
           name: OS environment
@@ -48,10 +54,6 @@ commands:
             cp .npmrc.bytesafe ~/.npmrc
             cat ~/.npmrc
             npm ping
-
-      - run:
-          name: install lerna
-          command: npm install lerna
 
       - run:
           name: setup full dependencies
