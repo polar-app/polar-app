@@ -233,6 +233,8 @@ jobs:
             npm run-script set-registry-bytesafe-rw
             npm ping
             export FIREBASE_HOSTING_TARGET=<< parameters.firebase_hosting_target >>
+            pwd
+            rm -rfv packages/polar-app-private/polar-hooks/functions/node_modules
             npm run-script dist-release-webapp-release
 
   deploy_getpolarized_io:
