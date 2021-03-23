@@ -533,10 +533,12 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
         const highlight = Arrays.first(highlights);
 
         if (! highlight) {
+            console.warn("No highlight");
             return;
         }
 
         if (! docDescriptor?.fingerprint) {
+            console.warn("No doc descriptor fingerprint");
             return;
         }
 
@@ -551,6 +553,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
             pos: 'top'
         })
 
+        console.log("Jumping to annotation on document: " + docDescriptor.fingerprint, docDescriptor);
         jumpToAnnotationHandler(ptr)
 
     }, [docDescriptor?.fingerprint, jumpToAnnotationHandler, origin.areaHighlights, origin.textHighlights]);

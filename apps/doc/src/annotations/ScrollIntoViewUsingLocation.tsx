@@ -27,7 +27,7 @@ export function useScrollIntoViewUsingLocation() {
     //
     // - when the ref is defined because we then might have a ref + scrollTarget
     //
-    // - when the scrollTarget has changed due to a locatoin change.
+    // - when the scrollTarget has changed due to a location change.
 
     function handleRef() {
         if (scrollTarget && ref.current) {

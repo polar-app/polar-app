@@ -186,7 +186,7 @@ export const PDFDocument = deepMemo((props: IProps) => {
                 // scale: scaleRef.current,
                 // scaleValue: docViewerRef.current.viewer.currentScale,
                 nrPages: docRef.current.numPages,
-                fingerprint: docRef.current.fingerprint
+                fingerprint: props.docMeta.docInfo.fingerprint
             };
 
             setDocDescriptor(docDescriptor);
@@ -199,7 +199,7 @@ export const PDFDocument = deepMemo((props: IProps) => {
 
         }
 
-    }, [log, setDocDescriptor, setPage]);
+    }, [log, props.docMeta.docInfo.fingerprint, setDocDescriptor, setPage]);
 
     const setScale = React.useCallback((scale: ScaleLevelTuple) => {
 

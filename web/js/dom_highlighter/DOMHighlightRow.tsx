@@ -7,6 +7,7 @@ import IHighlightViewportPosition = Highlights.IHighlightViewportPosition;
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {useSidenavDocumentChangeCallback} from "../../../apps/doc/src/renderers/UseSidenavDocumentChangeCallbackHook";
 import {Functions} from "polar-shared/src/util/Functions";
+import useTheme from '@material-ui/core/styles/useTheme';
 
 interface IProps extends IHighlightViewportPosition {
     readonly id: string;
@@ -33,7 +34,7 @@ export const DOMHighlightRow = deepMemo(function DOMHighlightRow(props: IProps) 
 
     const scrollIntoViewRef = useScrollIntoViewUsingLocation();
     useSideNavDocChangeActivated();
-
+    const theme = useTheme();
     const useMinimalUI = ! intersectsWithWindow(props);
 
     // we use the absolute position so that on scroll nothing is actually updated
@@ -67,7 +68,7 @@ export const DOMHighlightRow = deepMemo(function DOMHighlightRow(props: IProps) 
                      backgroundColor: `${backgroundColor}`,
                      position: 'absolute',
                      pointerEvents: 'none',
-                     mixBlendMode: 'overlay',
+                     mixBlendMode: theme.palette.type === 'light' ? 'multiply' : 'screen',
                      ...absolutePosition
                  }}>
             </div>

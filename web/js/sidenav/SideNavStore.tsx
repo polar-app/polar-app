@@ -420,6 +420,8 @@ export function useSideNavHistory(): ISideNavHistory {
 
         if (source?.id === target?.id) {
             history.push(url);
+        } else {
+            console.warn(`URL not loaded: source and target are note identical: ${source?.id} vs ${target?.id}: `, url);
         }
 
         const update: TabDescriptorUpdate = {activeURL: url};
