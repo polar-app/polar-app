@@ -19,7 +19,6 @@ import {GroupDocMetaWriteFunction} from "./impl/groups/GroupDocMetaWriteFunction
 import {Webapp} from "./impl/webapp/Webapp";
 import {Sitemap} from "./impl/sitemaps/Sitemap";
 import {GroupSitemap} from "./impl/sitemaps/GroupSitemap";
-import {DocAddFunction} from "./impl/docs/DocAddFunctions";
 import {SearchFunction} from "./impl/search/SearchFunction";
 import {SSRFunction} from "./impl/impl/ssr/SSRFunction";
 import {HelloWorldFunction} from "./impl/impl/ssr/HelloWorldFunction";
@@ -61,7 +60,7 @@ exports.GroupDocMetaWriteFunction = GroupDocMetaWriteFunction;
 exports.webapp = Webapp;
 exports.groupSitemap = GroupSitemap;
 exports.sitemap = Sitemap;
-exports.docAdd = DocAddFunction;
+// exports.docAdd = DocAddFunction;
 // exports.docPreview = DocPreviewFunction;
 exports.search = SearchFunction;
 exports.autoFlashcard = AutoFlashcardFunction
