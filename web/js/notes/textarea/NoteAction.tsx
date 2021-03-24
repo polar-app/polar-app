@@ -163,7 +163,7 @@ export const NoteAction = observer((props: IProps) => {
 
     }, []);
 
-    const cursorWithinInput = React.useCallback((): boolean => {
+    const cursorWithinInput = React.useCallback((delta: number = 0): boolean => {
 
         if (! divRef.current) {
             return false;
@@ -179,7 +179,13 @@ export const NoteAction = observer((props: IProps) => {
             const inputEnd = ContentEditables.computeEndNodeOffset(activePromptRef.current!.actionInput);
 
             const inputRange = document.createRange();
-            inputRange.setStart(inputStart.node, 2);
+            // inputRange.setStart(inputStart.node, inputStart.offset + 2);
+            // inputRange.setEnd(inputEnd.node, inputEnd.offset - 3);
+
+            // inputRange.setStart(inputStart.node, inputStart.offset);
+            // inputRange.setEnd(inputEnd.node, inputEnd.offset);
+
+            inputRange.setStart(inputStart.node, inputStart.offset);
             inputRange.setEnd(inputEnd.node, inputEnd.offset - 3);
 
             return inputRange;
@@ -190,8 +196,8 @@ export const NoteAction = observer((props: IProps) => {
 
         const range = window.getSelection()!.getRangeAt(0);
 
-        return inputRange.isPointInRange(range.startContainer, range.startOffset) &&
-               inputRange.isPointInRange(range.endContainer, range.endOffset);
+        return inputRange.isPointInRange(range.startContainer, range.startOffset + delta) &&
+               inputRange.isPointInRange(range.endContainer, range.endOffset + delta);
 
     }, [divRef]);
 
@@ -402,29 +408,52 @@ export const NoteAction = observer((props: IProps) => {
 
     }, []);
 
-
     const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 
-        // const range = window.getSelection()?.getRangeAt(0);
-        //
-        // if (range) {
-        //
-        //     if (activePromptRef.current) {
-        //
-        //         if (range.startContainer === activePromptRef.current.actionLeft ||
-        //             range.startContainer === activePromptRef.current.actionRight) {
-        //
-        //
-        //             event.stopPropagation();
-        //             event.preventDefault();
-        //
-        //         }
-        //
-        //     }
-        //
-        // }
+        if (activeRef.current) {
 
-    }, []);
+            function computeDelta(): number {
+
+                switch (event.key) {
+
+                    case 'ArrowLeft':
+                        return -1;
+
+                    case 'Backspace':
+                        return -1;
+
+                    case 'ArrowRight':
+                        return 1;
+
+                    default:
+                        return 0;
+
+                }
+
+            }
+
+            const delta = computeDelta();
+
+            if (delta !== 0 && ! cursorWithinInput(delta)) {
+                doCompleteOrReset();
+
+                switch (event.key) {
+
+                    case 'ArrowLeft':
+                    case 'Backspace':
+                        event.stopPropagation();
+                        event.preventDefault();
+                        break;
+
+                }
+
+                return;
+
+            }
+
+        }
+
+    }, [cursorWithinInput, doCompleteOrReset]);
 
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -455,11 +484,6 @@ export const NoteAction = observer((props: IProps) => {
         if (activeRef.current) {
 
             const prompt = computeActionInputText();
-
-            if (! cursorWithinInput()) {
-                doCompleteOrReset();
-                return;
-            }
 
             if (hasAborted(event)) {
                 doReset();
@@ -515,7 +539,7 @@ export const NoteAction = observer((props: IProps) => {
 
         return activeRef.current;
 
-    }, [divRef, cursorWithinInput, hasAborted, computeItems, actionStore, doCompleteOrReset, doReset, doComplete, trigger, createActivePrompt, computePosition, createActionHandler]);
+    }, [divRef, hasAborted, computeItems, actionStore, doReset, doComplete, trigger, createActivePrompt, computePosition, createActionHandler]);
 
     const handleClick = React.useCallback(() => {
 
