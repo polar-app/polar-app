@@ -17,7 +17,8 @@
   "dependencies": {
     "@amplitude/node": "^1.1.0",
     "@firebase/functions-types": "=0.4.0",
-    "@google-cloud/storage": "=5.4.0",
+    "@google-cloud/storage": "=5.8.2",
+    "@google-cloud/firestore": "=4.9.8",
     "@mailchimp/mailchimp_marketing": "=3.0.24",
     "@sendgrid/mail": "=7.3.0",
     "@types/blueimp-md5": "^2.7.0",
