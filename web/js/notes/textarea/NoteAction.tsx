@@ -163,7 +163,6 @@ export const NoteAction = observer((props: IProps) => {
 
     }, []);
 
-
     const cursorWithinInput = React.useCallback((): boolean => {
 
         if (! divRef.current) {
@@ -174,17 +173,25 @@ export const NoteAction = observer((props: IProps) => {
             return false;
         }
 
+        function createInputRange() {
 
-        const inputStart = ContentEditables.computeStartNodeOffset(activePromptRef.current.actionInput);
-        const inputEnd = ContentEditables.computeEndNodeOffset(activePromptRef.current.actionInput);
+            const inputStart = ContentEditables.computeStartNodeOffset(activePromptRef.current!.actionInput);
+            const inputEnd = ContentEditables.computeEndNodeOffset(activePromptRef.current!.actionInput);
+
+            const inputRange = document.createRange();
+            inputRange.setStart(inputStart.node, 2);
+            inputRange.setEnd(inputEnd.node, inputEnd.offset - 3);
+
+            return inputRange;
+
+        }
+
+        const inputRange = createInputRange();
 
         const range = window.getSelection()!.getRangeAt(0);
 
-        if (range.comparePoint(inputStart.node, inputStart.offset) === 1) {
-            return false;
-        }
-
-        return true;
+        return inputRange.isPointInRange(range.startContainer, range.startOffset) &&
+               inputRange.isPointInRange(range.endContainer, range.endOffset);
 
     }, [divRef]);
 
@@ -288,6 +295,114 @@ export const NoteAction = observer((props: IProps) => {
 
     }, []);
 
+    const createActionHandler = React.useCallback(() => {
+
+        return (id: IDStr) => {
+
+            const actionOp = onAction(id);
+
+            const {from, to} = createActionRangeForHandler()
+
+            actionExecutor(from, to, actionOp);
+
+            doReset();
+
+        }
+
+    }, [actionExecutor, createActionRangeForHandler, onAction, doReset]);
+
+    /**
+     * Create the active input prompt and return a range where the menu must popup.
+     */
+    const createActivePrompt = React.useCallback((): ActivePrompt => {
+
+        const sel = window.getSelection();
+
+        if (sel) {
+
+            function createBracketSpan(text: string, className: string) {
+                const span = document.createElement('span');
+                span.setAttribute('class', className);
+                span.setAttribute('style', `color: ${theme.palette.text.hint};`);
+
+                const textNode = document.createTextNode(text);
+                span.appendChild(textNode);
+                return span;
+            }
+
+            function createInputSpan() {
+
+                const span = document.createElement('span');
+                span.setAttribute('class', 'action-input');
+
+                const textNode = document.createTextNode(`[[${THINSP}${THINSP}]]`);
+                span.appendChild(textNode);
+
+                return span;
+            }
+
+            const range = sel.getRangeAt(0);
+
+            const wrapRange = document.createRange();
+            wrapRange.setStart(range.startContainer, range.startOffset - 2);
+            wrapRange.setEnd(range.endContainer, range.endOffset);
+
+            wrapRange.deleteContents();
+
+            const actionInput = createInputSpan();
+
+            wrapRange.insertNode(actionInput);
+
+            range.setStart(actionInput.firstChild!, 3);
+            range.setEnd(actionInput.firstChild!, 3);
+
+            function createPositionRange() {
+                const range = document.createRange();
+                range.setStart(actionInput.firstChild!, 3);
+                range.setEnd(actionInput.firstChild!, 3);
+                return range;
+            }
+
+            const positionRange = createPositionRange();
+
+            return {
+                positionRange,
+                actionInput
+            }
+
+        }
+
+        throw new Error("No selection");
+
+    }, [theme.palette.text.hint]);
+
+    const computePosition = React.useCallback(() => {
+
+        if (activePromptRef.current?.positionRange) {
+
+            const bcr = activePromptRef.current.positionRange.getBoundingClientRect();
+
+            const newPosition = {
+                bottom: bcr.top,
+                top: bcr.bottom,
+                left: bcr.left,
+            };
+
+            if (newPosition.top !== 0 && newPosition.left !== 0) {
+                return newPosition;
+            } else {
+                console.warn("Invalid position ", newPosition);
+            }
+
+        } else {
+            console.warn("computePosition has no cursor range");
+        }
+
+        return undefined;
+
+    }, []);
+
+
     const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 
         // const range = window.getSelection()?.getRangeAt(0);
@@ -310,22 +425,6 @@ export const NoteAction = observer((props: IProps) => {
         // }
 
     }, []);
-
-    const createActionHandler = React.useCallback(() => {
-
-        return (id: IDStr) => {
-
-            const actionOp = onAction(id);
-
-            const {from, to} = createActionRangeForHandler()
-
-            actionExecutor(from, to, actionOp);
-
-            doReset();
-
-        }
-
-    }, [actionExecutor, createActionRangeForHandler, onAction, doReset]);
 
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -357,10 +456,10 @@ export const NoteAction = observer((props: IProps) => {
 
             const prompt = computeActionInputText();
 
-            // if (! cursorWithinInput()) {
-            //     doReset();
-            //     return;
-            // }
+            if (! cursorWithinInput()) {
+                doCompleteOrReset();
+                return;
+            }
 
             if (hasAborted(event)) {
                 doReset();
@@ -387,100 +486,9 @@ export const NoteAction = observer((props: IProps) => {
 
             if (prefixText.endsWith(trigger) && event.key === '[') {
 
-                /**
-                 * Create the active input prompt and return a range where the menu must popup.
-                 */
-                function createActivePrompt(): ActivePrompt {
-
-                    const sel = window.getSelection();
-
-                    if (sel) {
-
-                        function createBracketSpan(text: string, className: string) {
-                            const span = document.createElement('span');
-                            span.setAttribute('class', className);
-                            span.setAttribute('style', `color: ${theme.palette.text.hint};`);
-
-                            const textNode = document.createTextNode(text);
-                            span.appendChild(textNode);
-                            return span;
-                        }
-
-                        function createInputSpan() {
-
-                            const span = document.createElement('span');
-                            span.setAttribute('class', 'action-input');
-
-                            const textNode = document.createTextNode(`[[${THINSP}${THINSP}]]`);
-                            span.appendChild(textNode);
-
-                            return span;
-                        }
-
-                        const range = sel.getRangeAt(0);
-
-                        const wrapRange = document.createRange();
-                        wrapRange.setStart(range.startContainer, range.startOffset - 2);
-                        wrapRange.setEnd(range.endContainer, range.endOffset);
-
-                        wrapRange.deleteContents();
-
-                        const actionInput = createInputSpan();
-
-                        wrapRange.insertNode(actionInput);
-
-                        range.setStart(actionInput.firstChild!, 3);
-                        range.setEnd(actionInput.firstChild!, 3);
-
-                        function createPositionRange() {
-                            const range = document.createRange();
-                            range.setStart(actionInput.firstChild!, 3);
-                            range.setEnd(actionInput.firstChild!, 3);
-                            return range;
-                        }
-
-                        const positionRange = createPositionRange();
-
-                        return {
-                            positionRange,
-                            actionInput
-                        }
-
-                    }
-
-                    throw new Error("No selection");
-
-                }
-
                 activePromptRef.current = createActivePrompt();
 
                 const prompt = computeActionInputText();
-
-                function computePosition() {
-
-                    if (activePromptRef.current?.positionRange) {
-
-                        const bcr = activePromptRef.current.positionRange.getBoundingClientRect();
-
-                        const newPosition = {
-                            bottom: bcr.top,
-                            top: bcr.bottom,
-                            left: bcr.left,
-                        };
-
-                        if (newPosition.top !== 0 && newPosition.left !== 0) {
-                            return newPosition;
-                        } else {
-                            console.warn("Invalid position ", newPosition);
-                        }
-
-                    } else {
-                        console.warn("computePosition has no cursor range");
-                    }
-
-                    return undefined;
-
-                }
 
                 const position = computePosition();
                 const actionHandler = createActionHandler();
@@ -507,7 +515,7 @@ export const NoteAction = observer((props: IProps) => {
 
         return activeRef.current;
 
-    }, [divRef, hasAborted, computeItems, actionStore, doReset, doComplete, trigger, createActionHandler, theme.palette.text.hint]);
+    }, [divRef, cursorWithinInput, hasAborted, computeItems, actionStore, doCompleteOrReset, doReset, doComplete, trigger, createActivePrompt, computePosition, createActionHandler]);
 
     const handleClick = React.useCallback(() => {
 
