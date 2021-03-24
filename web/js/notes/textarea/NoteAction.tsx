@@ -175,17 +175,11 @@ export const NoteAction = observer((props: IProps) => {
 
         function createInputRange() {
 
-            const inputStart = ContentEditables.computeStartNodeOffset(activePromptRef.current!.actionInput);
             const inputEnd = ContentEditables.computeEndNodeOffset(activePromptRef.current!.actionInput);
 
             const inputRange = document.createRange();
-            // inputRange.setStart(inputStart.node, inputStart.offset + 2);
-            // inputRange.setEnd(inputEnd.node, inputEnd.offset - 3);
 
-            // inputRange.setStart(inputStart.node, inputStart.offset);
-            // inputRange.setEnd(inputEnd.node, inputEnd.offset);
-
-            inputRange.setStart(inputStart.node, inputStart.offset);
+            inputRange.setStart(activePromptRef.current!.actionInput.firstChild!, 3);
             inputRange.setEnd(inputEnd.node, inputEnd.offset - 3);
 
             return inputRange;
