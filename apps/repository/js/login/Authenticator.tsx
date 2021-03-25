@@ -22,6 +22,7 @@ import {
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {Intercom} from "../../../../web/js/apps/repository/integrations/Intercom";
+import {useStateRef} from '../../../../web/js/hooks/ReactHooks';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -215,7 +216,7 @@ const EmailTokenAuthButton = () => {
     const [pending, setPending] = React.useState(false);
     const [alert, setAlert] = React.useState<IAlert | undefined>();
     const [active, setActive] = React.useState(false);
-    const [triggered, setTriggered] = React.useState(false);
+    const [triggered, setTriggered, triggeredRef] = useStateRef(false);
 
     const triggerStartTokenAuth = useTriggerStartTokenAuth();
     const triggerVerifyTokenAuth = useTriggerVerifyTokenAuth();
@@ -267,11 +268,11 @@ const EmailTokenAuthButton = () => {
 
             try {
 
-                Analytics.event2("auth:EmailTokenAuthStarted")
+                Analytics.event2("auth:EmailTokenAuthStarted", {resend: triggeredRef.current})
 
                 setPending(true);
 
-                await triggerStartTokenAuth(email);
+                await triggerStartTokenAuth(email, triggeredRef.current);
 
                 setTriggered(true);
 
@@ -291,18 +292,18 @@ const EmailTokenAuthButton = () => {
             });
         }
 
-    }, [triggerStartTokenAuth]);
+    }, [triggerStartTokenAuth, setTriggered, triggeredRef]);
 
     const handleTriggerStartTokenAuth = React.useCallback((email: string) => {
 
-        Analytics.event2("auth:EmailTokenAuthTriggered")
+        Analytics.event2("auth:EmailTokenAuthTriggered", {resend: triggeredRef.current})
 
         emailBeingVerifiedRef.current = email;
 
         doTriggerStartTokenAuth(email)
             .catch(err => console.log("Unable to handle auth: ", err));
 
-    }, [doTriggerStartTokenAuth])
+    }, [doTriggerStartTokenAuth, triggeredRef])
 
     const handleKeyPressEnter = React.useCallback((event: React.KeyboardEvent, callback: () => void) => {
 
@@ -343,14 +344,6 @@ const EmailTokenAuthButton = () => {
 
     }, [active, handleEmailProvided, handleTriggerVerifyTokenAuth, triggered])
 
-    const handleCodeNotReceived = React.useCallback(() => {
-
-        setPending(false);
-        setAlert(undefined)
-        setTriggered(false);
-
-    }, []);
-
     return (
         <>
             {active && (
@@ -382,8 +375,8 @@ const EmailTokenAuthButton = () => {
                                        placeholder="Enter your verification code... "
                                        variant="outlined" />
 
-                            <div className={classes.alternate} onClick={handleCodeNotReceived}>
-                                <Button>Didn't receive email</Button>
+                            <div className={classes.alternate}>
+                                <Button onClick={handleEmailProvided}>Didn't receive email</Button>
                             </div>
                             <Button variant="contained"
                                     color="primary"
