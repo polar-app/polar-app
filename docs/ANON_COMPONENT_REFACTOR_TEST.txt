@@ -16,3 +16,8 @@ interface FooBarProps {
 export const FooBar = React.memo((props: FooBarProps) => {
     return 'hello';
 });
+
+
+...
+
+export const FooBar = React.memo(function FooBar(props: FooBarProps) {
