@@ -1,10 +1,8 @@
 # search
 
-const ([a-zA-Z]+) = React.memo\(.* => \{$
-
 ^(export )?const ([a-zA-Z]+) = React.memo\((\(.*\)) => \{$
 
 # replace
 
-const $2 = React.memo(function $2$3 {
+$1const $2 = React.memo(function $2$3 {
 
