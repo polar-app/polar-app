@@ -12,7 +12,7 @@ Polar is an integrated reading environment that allows you to build a knowledge 
     
 ### What are the main benefits of reading and studying with Polar?
     
-The main advantages of learning with Polar are the opportunity to read more efficiently and retain the read information. But what does that mean? For starters, it means you can <a href="https://getpolarized.io/docs/spaced-repetition.html" target="_blank">read actively</a>. With the help of annotations and flashcards you can actively review content. Everything is in one place and directly accessible. In Polar, you can use <a href="https://getpolarized.io/2020/09/20/What-is-Spaced-Repetition-A-Beginner's-Guide.html" target="_blank">Spaced Repetition</a>, i.e. the repetitive review of content. That way you can store information in your long-term memory and can remember what you have learned longer.
+The main advantages of learning with Polar are the opportunity to read more efficiently and retain the read information more efficienty. But what does that mean? For starters, it means you can <a href="https://getpolarized.io/docs/spaced-repetition.html" target="_blank">read actively</a>. With the help of annotations and flashcards you can actively review content. Everything is in one place and directly accessible. In Polar, you can use <a href="https://getpolarized.io/2020/09/20/What-is-Spaced-Repetition-A-Beginner's-Guide.html" target="_blank">Spaced Repetition</a>, i.e. the repetitive review of content. That way you can store information in your long-term memory and can remember what you have learned longer.
     
 ### Is Polar free?
     
