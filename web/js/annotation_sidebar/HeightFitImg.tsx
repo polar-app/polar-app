@@ -13,7 +13,7 @@ interface IProps {
 /**
  * Shows a and image and re-sizes it to its parent properly.
  */
-export const HeightFitImg = deepMemo((props: IProps) => {
+export const HeightFitImg = deepMemo(function HeightFitImg(props: IProps) {
 
     const {src, height, id, color} = props;
 

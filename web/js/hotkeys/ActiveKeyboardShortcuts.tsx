@@ -28,7 +28,7 @@ interface ActiveKeyboardShortcutsDialogProps {
     readonly onClose: () => void;
 }
 
-export const ActiveKeyboardShortcutsDialog = deepMemo((props: ActiveKeyboardShortcutsDialogProps) => {
+export const ActiveKeyboardShortcutsDialog = deepMemo(function ActiveKeyboardShortcutsDialog(props: ActiveKeyboardShortcutsDialogProps) {
 
     const {shortcuts} = useKeyboardShortcutsStore(['shortcuts'])
     const {setActive} = useKeyboardShortcutsCallbacks()
@@ -60,7 +60,7 @@ export const ActiveKeyboardShortcutsDialog = deepMemo((props: ActiveKeyboardShor
 });
 
 
-export const ActiveKeyboardShortcuts = deepMemo(() => {
+export const ActiveKeyboardShortcuts = deepMemo(function ActiveKeyboardShortcuts() {
 
     const {showActiveShortcuts} = useActiveKeyboardShortcutsStore(['showActiveShortcuts']);
     const {setShowActiveShortcuts} = useActiveKeyboardShortcutsCallbacks();

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {PolarSVGIcon} from "../../../../../web/js/ui/svg_icons/PolarSVGIcon";
 
-export const MobileGatewayContent = deepMemo(() => {
+export const MobileGatewayContent = deepMemo(function MobileGatewayContent() {
 
     return (
         <div>

@@ -32,7 +32,7 @@ interface IProps {
  *
  * https://github.com/mui-org/material-ui/blob/next/packages/material-ui/src/TableRow/TableRow.js
  */
-export const MUISelected = deepMemo((props: IProps) => {
+export const MUISelected = deepMemo(function MUISelected(props: IProps) {
 
     const classes = useStyles();
 

@@ -14,7 +14,7 @@ interface IProps extends DocInfoProperty {
     readonly onChange: (values: ReadonlyArray<string>) => void;
 }
 
-export const StringArrayAutocompleteProperty = deepMemo((props: IProps) => {
+export const StringArrayAutocompleteProperty = deepMemo(function StringArrayAutocompleteProperty(props: IProps) {
 
     const options = React.useMemo((): ReadonlyArray<ValueAutocompleteOption<string>> => {
 

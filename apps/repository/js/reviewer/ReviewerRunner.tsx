@@ -7,7 +7,7 @@ import {useReviewerStore} from './ReviewerStore';
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {MUILoading} from "../../../../web/js/mui/MUILoading";
 
-export const ReviewerRunner = deepMemo(() => {
+export const ReviewerRunner = deepMemo(function ReviewerRunner() {
 
     const {taskRep, finished, total, initialized} = useReviewerStore(['taskRep', 'finished', 'total', 'initialized']);
 

@@ -48,7 +48,7 @@ interface IState {
     readonly validationError?: string;
 }
 
-export const PromptDialog = deepMemo((props: PromptDialogProps) => {
+export const PromptDialog = deepMemo(function PromptDialog(props: PromptDialogProps) {
 
     const classes = useStyles();
 

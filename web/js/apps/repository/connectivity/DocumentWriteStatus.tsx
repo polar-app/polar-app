@@ -4,7 +4,7 @@ import {DocumentSaving} from './DocumentSaving';
 import {useDocViewerStore} from '../../../../../apps/doc/src/DocViewerStore';
 import {deepMemo} from "../../../react/ReactUtils";
 
-export const DocumentWriteStatus = deepMemo(() => {
+export const DocumentWriteStatus = deepMemo(function DocumentWriteStatus() {
 
     const {hasPendingWrites} = useDocViewerStore(['hasPendingWrites']);
     // const online = useOnline();

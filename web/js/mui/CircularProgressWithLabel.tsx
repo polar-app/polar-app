@@ -8,7 +8,7 @@ interface IProps extends CircularProgressProps {
     readonly value: number;
 }
 
-export const CircularProgressWithLabel = deepMemo((props: IProps) => {
+export const CircularProgressWithLabel = deepMemo(function CircularProgressWithLabel(props: IProps) {
 
     const rounded = Math.round(props.value);
     const text = `${rounded}%`;

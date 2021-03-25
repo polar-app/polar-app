@@ -9,7 +9,7 @@ interface IProps {
     readonly tags?: {[id: string]: Tag};
 }
 
-export const AnnotationTagsBar = deepMemo((props: IProps) => {
+export const AnnotationTagsBar = deepMemo(function AnnotationTagsBar(props: IProps) {
 
     // TODO: remove document tags too.. .
 

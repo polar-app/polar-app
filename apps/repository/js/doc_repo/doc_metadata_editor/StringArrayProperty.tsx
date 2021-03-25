@@ -16,7 +16,7 @@ interface IProps extends DocInfoProperty {
     readonly onUpdate: (docInfo: IDocInfo) => void;
 }
 
-export const StringArrayProperty = deepMemo((props: IProps) => {
+export const StringArrayProperty = deepMemo(function StringArrayProperty(props: IProps) {
 
     const values = React.useMemo(() => props.values || [], [props.values]);
 

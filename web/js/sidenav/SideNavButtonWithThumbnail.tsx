@@ -61,7 +61,7 @@ interface IProps {
 
 }
 
-export const SideNavButtonWithThumbnail = deepMemo((props: IProps) => {
+export const SideNavButtonWithThumbnail = deepMemo(function SideNavButtonWithThumbnail(props: IProps) {
 
     const {tab} = props;
     const {activeTab} = useSideNavStore(['tabs', 'activeTab']);

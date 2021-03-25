@@ -57,7 +57,7 @@ export function usePopperController() {
     return React.useContext(PopperControllerContext);
 }
 
-export const MUIPopper = deepMemo((props: IProps) => {
+export const MUIPopper = deepMemo(function MUIPopper(props: IProps) {
 
     const theme = useTheme();
     const classes = useStyles();

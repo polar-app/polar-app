@@ -26,7 +26,7 @@ interface IProps {
 
 }
 
-const ColorSelector = deepMemo((props: IProps) => {
+const ColorSelector = deepMemo(function ColorSelector(props: IProps) {
 
     const popperController = usePopperController();
     const onSelected = props.onSelected || NULL_FUNCTION;
@@ -60,7 +60,7 @@ const ColorSelector = deepMemo((props: IProps) => {
 
 });
 
-export const HighlightColorFilterButton = deepMemo((props: IProps) => {
+export const HighlightColorFilterButton = deepMemo(function HighlightColorFilterButton(props: IProps) {
 
     return (
 

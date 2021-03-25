@@ -11,7 +11,7 @@ function toArray(children: React.ReactNode | ReadonlyArray<React.ReactNode>) {
     return Array.isArray(children) ? children : [children];
 }
 
-export const MUIMenuSection = deepMemo((props: IProps) => {
+export const MUIMenuSection = deepMemo(function MUIMenuSection(props: IProps) {
 
     const children = toArray(props.children)
         .filter(current => current !== false)

@@ -11,7 +11,7 @@ export interface EPUBIFrameMenuOrigin {
 
 }
 
-export const EPUBIFrameMenu = deepMemo((props: MenuComponentProps<EPUBIFrameMenuOrigin>) => {
+export const EPUBIFrameMenu = deepMemo(function EPUBIFrameMenu(props: MenuComponentProps<EPUBIFrameMenuOrigin>) {
 
     function handleCreatePagemark() {
         console.log(props.origin!.target);

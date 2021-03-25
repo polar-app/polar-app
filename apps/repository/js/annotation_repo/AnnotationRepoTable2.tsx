@@ -32,7 +32,7 @@ function useAnnotationSelected(id: IDStr): boolean {
 
 }
 
-const VisibleComponent = deepMemo((props: VisibleComponentProps<IDocAnnotation>) => {
+const VisibleComponent = deepMemo(function VisibleComponent(props: VisibleComponentProps<IDocAnnotation>) {
 
     const selected = useAnnotationSelected(props.value.id);
 

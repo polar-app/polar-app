@@ -16,7 +16,7 @@ export interface IProps {
 
 }
 
-export const DocRepoFilterBar = deepMemo((props: IProps) => {
+export const DocRepoFilterBar = deepMemo(function DocRepoFilterBar(props: IProps) {
 
     const {filters} = useDocRepoStore(['filters']);
     const callbacks = useDocRepoCallbacks();

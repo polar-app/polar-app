@@ -32,7 +32,7 @@ function createStyle(color: HighlightColor | undefined): React.CSSProperties {
 
 }
 
-const ImagePreview = deepMemo((props: IProps) => {
+const ImagePreview = deepMemo(function ImagePreview(props: IProps) {
     const {img} = props;
 
     if (! img) {
@@ -95,7 +95,7 @@ export function calculateTextPreviewHeight(text: string): ITextPreviewHeight {
 
 }
 
-const TextPreview = deepMemo((props: IProps) => {
+const TextPreview = deepMemo(function TextPreview(props: IProps) {
 
     const {text} = props;
 
@@ -122,7 +122,7 @@ interface PreviewParentProps {
     readonly children: React.ReactElement;
 }
 
-const PreviewParent = deepMemo((props: PreviewParentProps) => {
+const PreviewParent = deepMemo(function PreviewParent(props: PreviewParentProps) {
 
     const style = createStyle(props.color);
 
@@ -134,7 +134,7 @@ const PreviewParent = deepMemo((props: PreviewParentProps) => {
 
 });
 
-const Preview = deepMemo((props: IProps) => {
+const Preview = deepMemo(function Preview(props: IProps) {
 
     if (props.img) {
         return <ImagePreview {...props}/>;
@@ -170,7 +170,7 @@ export function useFixedHeightAnnotationCalculator() {
 
 }
 
-export const FixedHeightAnnotationPreview = deepMemo((props: IProps) => {
+export const FixedHeightAnnotationPreview = deepMemo(function FixedHeightAnnotationPreview(props: IProps) {
 
     const theme = useTheme();
 

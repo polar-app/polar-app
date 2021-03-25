@@ -5,7 +5,7 @@ interface IProps {
     readonly style?: React.CSSProperties;
 }
 
-export const PolarLogoText = deepMemo((props: IProps) => {
+export const PolarLogoText = deepMemo(function PolarLogoText(props: IProps) {
     return (
         <div style={{
                  paddingLeft: '5px',

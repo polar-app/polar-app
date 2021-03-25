@@ -84,7 +84,7 @@ export function useAIFlashcardVerifiedAction() {
 
 }
 
-export const AIFlashcardVerificationWarning = deepMemo(() => {
+export const AIFlashcardVerificationWarning = deepMemo(function AIFlashcardVerificationWarning() {
     const styles = useModalStyles();
     return (
         <div className={styles.upgradeModalContent}>

@@ -10,7 +10,7 @@ interface IProps {
     readonly feature: string;
 }
 
-export const UpgradeButton = deepMemo((props: IProps) => {
+export const UpgradeButton = deepMemo(function UpgradeButton(props: IProps) {
 
     const history = useHistory();
     const {required, feature} = props;

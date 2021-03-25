@@ -153,7 +153,7 @@ interface IProps {
     readonly onUpdate: (docInfo: IDocInfo) => void;
 }
 
-export const DocMetadataEditor = deepMemo((props: IProps) => {
+export const DocMetadataEditor = deepMemo(function DocMetadataEditor(props: IProps) {
 
     const [docInfo, setDocInfo] = React.useState(props.docInfo);
     const classes = useStyles();

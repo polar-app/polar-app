@@ -61,7 +61,7 @@ function useDeterministicColor(text: string) {
 
 }
 
-export const SideNavButtonWithAvatar = deepMemo((props: IProps) => {
+export const SideNavButtonWithAvatar = deepMemo(function SideNavButtonWithAvatar(props: IProps) {
 
     const {tab} = props;
     const {setActiveTab} = useSideNavCallbacks();

@@ -9,7 +9,7 @@ interface IProps {
     readonly children: React.ReactElement;
 }
 
-export const WithDeactivatedKeyboardShortcuts = deepMemo((props: IProps) => {
+export const WithDeactivatedKeyboardShortcuts = deepMemo(function WithDeactivatedKeyboardShortcuts(props: IProps) {
 
     const {setActive} = useKeyboardShortcutsCallbacks();
 

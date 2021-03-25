@@ -41,7 +41,7 @@ interface IProps {
     readonly children: React.ReactNode;
 }
 
-export const NoteStyle = deepMemo((props: IProps) => {
+export const NoteStyle = deepMemo(function NoteStyle(props: IProps) {
 
     const classes = useStyles();
 

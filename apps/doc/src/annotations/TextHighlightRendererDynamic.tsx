@@ -17,7 +17,7 @@ interface IProps {
  * Text highlight layout that uses the text of the annotation, not the actual
  * fixes position.
  */
-export const TextHighlightRendererDynamic = deepMemo((props: IProps) => {
+export const TextHighlightRendererDynamic = deepMemo(function TextHighlightRendererDynamic(props: IProps) {
 
     const {pageAnnotation, container} = props;
     const {annotation} = pageAnnotation;

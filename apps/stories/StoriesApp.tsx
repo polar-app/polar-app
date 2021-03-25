@@ -285,7 +285,7 @@ const stories = createStoryIndex([
 
 ]);
 
-const StoriesSidebar = deepMemo(() => {
+const StoriesSidebar = deepMemo(function StoriesSidebar() {
 
     const history = useHistory();
     const id = useLocationID();
@@ -318,7 +318,7 @@ interface StoryViewProps {
     readonly story: IStoryWithID;
 }
 
-const StoryView = deepMemo((props: StoryViewProps) => {
+const StoryView = deepMemo(function StoryView(props: StoryViewProps) {
     return (
         props.story.component
     );
@@ -346,7 +346,7 @@ function useLocationID(): string | undefined {
 
 }
 
-const StoryViewRoute = deepMemo(() => {
+const StoryViewRoute = deepMemo(function StoryViewRoute() {
 
     const id = useLocationID();
 
@@ -381,7 +381,7 @@ const StoryViewRoute = deepMemo(() => {
 
 });
 
-const StoriesRouter = deepMemo(() => {
+const StoriesRouter = deepMemo(function StoriesRouter() {
     return (
         // <Switch>
         //     <Route path="/id">

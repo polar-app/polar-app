@@ -63,7 +63,7 @@ interface IProps {
 
 }
 
-export const ActiveTabButton = deepMemo((props: IProps) => {
+export const ActiveTabButton = deepMemo(function ActiveTabButton(props: IProps) {
 
     const classes = useStyles();
 

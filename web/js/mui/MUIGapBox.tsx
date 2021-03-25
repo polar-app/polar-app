@@ -29,7 +29,7 @@ interface IProps {
     readonly className?: string;
 }
 
-export const MUIGapBox = deepMemo((props: IProps) => {
+export const MUIGapBox = deepMemo(function MUIGapBox(props: IProps) {
 
     const classes = useStyles();
 

@@ -38,7 +38,7 @@ interface IProps {
     readonly item: IOutlineItem;
 }
 
-const OutlineTreeItem = deepMemo((props: IProps) => {
+const OutlineTreeItem = deepMemo(function OutlineTreeItem(props: IProps) {
 
     const {item} = props;
     const {outlineNavigator} = useDocViewerStore(['outline', 'outlineNavigator']);

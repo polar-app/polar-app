@@ -17,7 +17,7 @@ interface IProps {
  * root and a custom event listener so we abort when they type in an <input>
  * @param props @constructor
  */
-export const InputEscapeListener = deepMemo((props: IProps) => {
+export const InputEscapeListener = deepMemo(function InputEscapeListener(props: IProps) {
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
 

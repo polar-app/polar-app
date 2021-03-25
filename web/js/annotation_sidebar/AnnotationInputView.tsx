@@ -9,7 +9,7 @@ interface IProps {
     readonly annotation: IDocAnnotationRef;
 }
 
-export const AnnotationInputView = deepMemo((props: IProps) => {
+export const AnnotationInputView = deepMemo(function AnnotationInputView(props: IProps) {
 
     const {annotation} = props;
 

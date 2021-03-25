@@ -190,7 +190,7 @@ interface InactiveProps {
 
 }
 
-const Inactive = deepMemo((props: InactiveProps) => {
+const Inactive = deepMemo(function Inactive(props: InactiveProps) {
 
     const elementRef = React.useRef<HTMLDivElement |  null>(null);
 

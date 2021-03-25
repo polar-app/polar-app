@@ -101,7 +101,7 @@ interface IProps {
  *
  * https://github.com/mui-org/material-ui/blob/next/packages/material-ui/src/TableRow/TableRow.js
  */
-export const MUIElevation = deepMemo((props: IProps) => {
+export const MUIElevation = deepMemo(function MUIElevation(props: IProps) {
 
     const elevation = useElevationBackground(props.elevation);
     const backgroundColor = props.highlighted ? elevation.highlighted : elevation.default;

@@ -8,7 +8,7 @@ interface IProps {
     readonly children: React.ReactElement;
 }
 
-export const UseLocationChangeRoot = deepMemo((props: IProps) => {
+export const UseLocationChangeRoot = deepMemo(function UseLocationChangeRoot(props: IProps) {
 
     const {setInitialScrollLoader} = useUseLocationChangeCallbacks();
 

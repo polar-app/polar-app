@@ -10,7 +10,7 @@ interface IProps {
     readonly onReset: () => void;
 }
 
-export const ResetableColorSelectorBox = deepMemo((props: IProps) => {
+export const ResetableColorSelectorBox = deepMemo(function ResetableColorSelectorBox(props: IProps) {
 
     return (
         <div>

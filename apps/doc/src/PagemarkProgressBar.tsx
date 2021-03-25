@@ -13,7 +13,7 @@ import useReadingProgressResume = ReadingProgressResume.useReadingProgressResume
 import {deepMemo} from "../../../web/js/react/ReactUtils";
 import {ZenModeActiveContainer} from "../../../web/js/mui/ZenModeActiveContainer";
 
-export const ProgressBar = deepMemo(() => {
+export const ProgressBar = deepMemo(function ProgressBar() {
 
     const {docMeta} = useDocViewerStore(['docMeta']);
     const [, resumeProgressHandler] = useReadingProgressResume();

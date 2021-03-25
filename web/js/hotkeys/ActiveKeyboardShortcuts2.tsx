@@ -25,7 +25,7 @@ interface ActiveKeyboardShortcutsDialogProps {
     readonly onExecute: (event: React.MouseEvent | React.KeyboardEvent, shortcut: IKeyboardShortcutWithHandler) => void;
 }
 
-export const ActiveKeyboardShortcutsDialog = deepMemo((props: ActiveKeyboardShortcutsDialogProps) => {
+export const ActiveKeyboardShortcutsDialog = deepMemo(function ActiveKeyboardShortcutsDialog(props: ActiveKeyboardShortcutsDialogProps) {
 
     return (
         <Dialog fullWidth={true}

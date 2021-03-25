@@ -31,7 +31,7 @@ interface IProps {
     readonly sequence: string;
 }
 
-export const KeySequence = deepMemo((props: IProps) => {
+export const KeySequence = deepMemo(function KeySequence(props: IProps) {
 
     const classes = useStyles();
 

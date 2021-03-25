@@ -82,7 +82,7 @@ export interface IProps {
 /**
  * Basic flashcard component which allows us to display any type of card as long as it has a front/back design.
  */
-export const FlashcardCardInner = deepMemo((props: IProps) => {
+export const FlashcardCardInner = deepMemo(function FlashcardCardInner(props: IProps) {
 
     const {side} = useFlashcardStore(['side']);
     const {setSide} = useFlashcardCallbacks();

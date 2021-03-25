@@ -20,7 +20,7 @@ interface IProps {
     readonly onClose: () => void;
 }
 
-export const BrowseFilesToUpload = deepMemo((props: IProps) => {
+export const BrowseFilesToUpload = deepMemo(function BrowseFilesToUpload(props: IProps) {
 
     const classes = useStyles();
     const id = React.useMemo(() => '' + Math.floor(10000 *Math.random()), []);

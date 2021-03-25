@@ -128,7 +128,7 @@ interface IProps extends InputCompleteListenerOpts {
 
 }
 
-export const InputCompleteListener = deepMemo((props: IProps) => {
+export const InputCompleteListener = deepMemo(function InputCompleteListener(props: IProps) {
 
     useInputCompleteListener(props);
 

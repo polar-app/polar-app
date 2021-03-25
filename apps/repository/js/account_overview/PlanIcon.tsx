@@ -17,7 +17,7 @@ class Colors {
     public static GOLD = RGBs.create(252, 194, 0);
 }
 
-export const PlanIcon = deepMemo((props: IProps) => {
+export const PlanIcon = deepMemo(function PlanIcon(props: IProps) {
 
     // const computeColor = () => {
     //     switch (this.props.plan) {

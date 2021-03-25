@@ -9,7 +9,7 @@ interface IProps {
 
 // TODO: take a base URL to load it via a different strategy for use with the
 // chrome extension.
-export const PolarLogoImage = deepMemo((props: IProps) => {
+export const PolarLogoImage = deepMemo(function PolarLogoImage(props: IProps) {
 
     const width = props.width || 35;
     const height = props.height || 35;

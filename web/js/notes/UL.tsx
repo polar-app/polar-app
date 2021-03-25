@@ -20,7 +20,7 @@ interface IProps {
     readonly children: JSX.Element;
 }
 
-export const UL = deepMemo((props: IProps) => {
+export const UL = deepMemo(function UL(props: IProps) {
     const classes = useStyles();
 
     return (

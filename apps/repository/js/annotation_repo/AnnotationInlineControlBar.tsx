@@ -12,7 +12,7 @@ interface IProps {
     readonly annotation: IDocAnnotation;
 }
 
-export const AnnotationInlineControlBar = deepMemo((props : IProps) => {
+export const AnnotationInlineControlBar = deepMemo(function AnnotationInlineControlBar(props : IProps) {
 
     const {annotation} = props;
 

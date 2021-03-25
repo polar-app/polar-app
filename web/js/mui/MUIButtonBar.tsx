@@ -12,7 +12,7 @@ interface IProps {
 }
 
 
-export const MUIButtonBar = deepMemo((props: IProps) => {
+export const MUIButtonBar = deepMemo(function MUIButtonBar(props: IProps) {
 
     const className = clsx("gap-box", props.className);
 

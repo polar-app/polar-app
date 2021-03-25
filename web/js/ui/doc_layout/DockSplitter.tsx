@@ -38,7 +38,7 @@ interface IProps {
     readonly onMouseDown: () => void;
 }
 
-export const DockSplitter = deepMemo((props: IProps) => {
+export const DockSplitter = deepMemo(function DockSplitter(props: IProps) {
 
     const classes = useStyles();
 

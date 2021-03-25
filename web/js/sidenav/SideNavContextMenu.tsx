@@ -17,7 +17,7 @@ export function useSideNavCurrentTabContext() {
     return React.useContext(SideNavCurrentTabContext);
 }
 
-export const SideNavContextMenu = deepMemo(() => {
+export const SideNavContextMenu = deepMemo(function SideNavContextMenu() {
 
     const {removeTab, closeOtherTabs, getTabDescriptor} = useSideNavCallbacks();
 

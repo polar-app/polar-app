@@ -14,7 +14,7 @@ interface IProps {
 /**
  * Shows a and image and re-sizes it to its parent properly.
  */
-export const ResponsiveImg = deepMemo((props: IProps) => {
+export const ResponsiveImg = deepMemo(function ResponsiveImg(props: IProps) {
 
     const {img, id, color} = props;
 

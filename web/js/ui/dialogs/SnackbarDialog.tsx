@@ -16,7 +16,7 @@ export interface SnackbarDialogProps {
 
 }
 
-export const SnackbarDialog = deepMemo((props: SnackbarDialogProps) => {
+export const SnackbarDialog = deepMemo(function SnackbarDialog(props: SnackbarDialogProps) {
     const [open, setOpen] = React.useState(true);
 
     const handleClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {

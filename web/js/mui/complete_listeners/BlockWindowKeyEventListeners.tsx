@@ -35,7 +35,7 @@ interface IProps {
     readonly children: React.ReactElement;
 }
 
-export const BlockWindowKeyEventListeners = deepMemo((props: IProps) => {
+export const BlockWindowKeyEventListeners = deepMemo(function BlockWindowKeyEventListeners(props: IProps) {
     useBlockWindowKeyEventListeners();
     return props.children;
 });

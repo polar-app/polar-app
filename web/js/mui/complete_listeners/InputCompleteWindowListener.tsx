@@ -73,7 +73,7 @@ interface IProps {
     readonly children: React.ReactElement;
 }
 
-export const InputCompleteWindowListener = deepMemo((props: IProps) => {
+export const InputCompleteWindowListener = deepMemo(function InputCompleteWindowListener(props: IProps) {
 
     useInputCompleteWindowListener({
         onComplete: props.onComplete,

@@ -10,7 +10,7 @@ import {createContextMenu} from "../../../../../repository/js/doc_repo/MUIContex
 
 const DocViewerContextMenu = createContextMenu<IDocViewerContextMenuOrigin>(DocViewerMenu, {computeOrigin: computeDocViewerContextMenuOrigin});
 
-export const EPUBIFrameContextMenuPortalContent = deepMemo(() => {
+export const EPUBIFrameContextMenuPortalContent = deepMemo(function EPUBIFrameContextMenuPortalContent() {
 
     return (
         <DocViewerContextMenu>

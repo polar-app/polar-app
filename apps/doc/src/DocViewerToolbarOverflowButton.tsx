@@ -70,7 +70,7 @@ function useSetColumnLayoutCallback() {
 }
 
 
-export const DocViewerToolbarOverflowButton = deepMemo((props: IProps) => {
+export const DocViewerToolbarOverflowButton = deepMemo(function DocViewerToolbarOverflowButton(props: IProps) {
 
     const linkLoader = useLinkLoader();
 

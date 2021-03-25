@@ -15,7 +15,7 @@ export interface IProps {
     readonly limit?: number;
 }
 
-export const ReviewerScreen = deepMemo((props: IProps) => {
+export const ReviewerScreen = deepMemo(function ReviewerScreen(props: IProps) {
 
     const firestoreContext = useFirestore();
 

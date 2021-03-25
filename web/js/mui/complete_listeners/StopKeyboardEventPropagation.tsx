@@ -5,7 +5,7 @@ interface IProps {
     readonly children: JSX.Element;
 }
 
-export const StopKeyboardEventPropagation = deepMemo((props: IProps) => {
+export const StopKeyboardEventPropagation = deepMemo(function StopKeyboardEventPropagation(props: IProps) {
 
     const handleEvent = React.useCallback((event: React.KeyboardEvent) => {
         event.stopPropagation();

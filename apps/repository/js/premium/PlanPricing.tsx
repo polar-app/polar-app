@@ -73,7 +73,7 @@ namespace PlanPrices {
 
 }
 
-export const PlanPricing = deepMemo((props: IProps) => {
+export const PlanPricing = deepMemo(function PlanPricing(props: IProps) {
 
     const classes = useStyles();
     const {plan} = props;

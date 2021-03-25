@@ -14,7 +14,7 @@ export interface IProps {
     readonly reviewerProvider: ReviewerProvider;
 
 }
-export const Reviewer = deepMemo((props: IProps) => {
+export const Reviewer = deepMemo(function Reviewer(props: IProps) {
 
     const {init} = useReviewerCallbacks();
     const log = useLogger();

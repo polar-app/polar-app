@@ -24,7 +24,7 @@ interface IProps {
     readonly container: HTMLElement;
 }
 
-export const AreaHighlightRenderer = deepMemo((props: IProps) => {
+export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(props: IProps) {
 
     const {areaHighlight, fingerprint, pageNum, container} = props;
     const {id} = areaHighlight;

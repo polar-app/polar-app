@@ -33,7 +33,7 @@ interface IProps {
 
 }
 
-export const AccountOverview = deepMemo((props: IProps) => {
+export const AccountOverview = deepMemo(function AccountOverview(props: IProps) {
 
     const v2Plan = Plans.toV2(props.subscription.plan);
 

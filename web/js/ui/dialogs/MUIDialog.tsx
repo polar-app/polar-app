@@ -5,7 +5,7 @@ import React from "react";
 /**
  * Dialog that prevents events from being handled up the tree.
  */
-export const MUIDialog = deepMemo((props: DialogProps) => {
+export const MUIDialog = deepMemo(function MUIDialog(props: DialogProps) {
 
     return (
 

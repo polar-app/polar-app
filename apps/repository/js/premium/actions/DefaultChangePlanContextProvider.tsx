@@ -77,7 +77,7 @@ interface IProps {
     readonly children: React.ReactNode;
 }
 
-export const DefaultChangePlanContextProvider = deepMemo((props: IProps) => {
+export const DefaultChangePlanContextProvider = deepMemo(function DefaultChangePlanContextProvider(props: IProps) {
 
     const type = 'change';
     const action = usePurchaseOrChangePlanAction();

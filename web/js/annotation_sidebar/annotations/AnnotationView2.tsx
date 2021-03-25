@@ -19,7 +19,7 @@ interface IProps {
     readonly annotation: IDocAnnotationRef;
 }
 
-const AnnotationTypeComponent = deepMemo((props: IProps) => {
+const AnnotationTypeComponent = deepMemo(function AnnotationTypeComponent(props: IProps) {
 
     const { annotation } = props;
 

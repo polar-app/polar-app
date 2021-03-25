@@ -108,7 +108,7 @@ interface IProps {
     readonly strategy: Strategy;
 }
 
-export const PersistentRoute = deepMemo((props: IProps) => {
+export const PersistentRoute = deepMemo(function PersistentRoute(props: IProps) {
 
     const displayClasses = useDisplayStyles();
     const visibilityClasses = useVisibilityStyles();

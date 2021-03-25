@@ -21,7 +21,7 @@ export interface IProps {
     readonly newSubscription: Billing.V2Subscription;
 }
 
-export const PurchaseOrChangePlanButton = deepMemo((props: IProps) => {
+export const PurchaseOrChangePlanButton = deepMemo(function PurchaseOrChangePlanButton(props: IProps) {
 
     const classes = useStyles();
     const changePlanActionContext = useChangePlanActionContext();

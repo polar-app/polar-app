@@ -42,7 +42,7 @@ async function doAsync(): Promise<IFirestoreContext> {
     };
 }
 
-export const FirestoreProvider = deepMemo((props: IProps) => {
+export const FirestoreProvider = deepMemo(function FirestoreProvider(props: IProps) {
 
     const data = useAsyncWithError({promiseFn: doAsync});
 

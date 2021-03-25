@@ -12,7 +12,7 @@ interface IProps {
 
 }
 
-export const SideNavButtonWithIcon = deepMemo((props: IProps) => {
+export const SideNavButtonWithIcon = deepMemo(function SideNavButtonWithIcon(props: IProps) {
 
     const {tab} = props;
     const {setActiveTab} = useSideNavCallbacks();

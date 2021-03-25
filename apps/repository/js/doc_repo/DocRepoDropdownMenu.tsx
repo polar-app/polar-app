@@ -9,7 +9,7 @@ interface IProps {
     readonly onClose: Callback;
 }
 
-export const DocRepoDropdownMenu = deepMemo((props: IProps) => {
+export const DocRepoDropdownMenu = deepMemo(function DocRepoDropdownMenu(props: IProps) {
     const {anchorEl} = props;
 
     return (

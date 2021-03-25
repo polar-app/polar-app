@@ -37,7 +37,7 @@ type MouseEventHandler = (event: MouseEvent) => void;
 // FIXME: I need to add support for positioning based on the positioned ancestor
 // a box might have default positioning so position 'absolute' won't work to
 // position it ... this is going to require some more work
-export const Resizable = deepMemo((props: IProps) => {
+export const Resizable = deepMemo(function Resizable(props: IProps) {
 
     const [position, setPosition] = React.useState<ILTRect>(props.computeInitialPosition())
 

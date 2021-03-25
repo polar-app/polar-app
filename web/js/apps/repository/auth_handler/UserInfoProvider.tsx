@@ -108,7 +108,7 @@ const UserInfoTraits = React.memo(function UserInfoTraits() {
 
 // TODO: migrate this to a store so that the entire UI doesn't need to be
 // repainted when this data is updated.
-export const UserInfoProvider = deepMemo((props: IProps) => {
+export const UserInfoProvider = deepMemo(function UserInfoProvider(props: IProps) {
 
     const snapshotSubscriber = useUserInfoContextSnapshotSubscriber();
 

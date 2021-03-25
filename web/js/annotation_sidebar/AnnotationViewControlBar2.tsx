@@ -45,7 +45,7 @@ interface IAnnotationProps {
     readonly mutable: boolean | undefined;
 }
 
-const ChangeTextHighlightButton = deepMemo((props: IAnnotationProps) => {
+const ChangeTextHighlightButton = deepMemo(function ChangeTextHighlightButton(props: IAnnotationProps) {
 
     const {annotation} = props;
 
@@ -69,7 +69,7 @@ const ChangeTextHighlightButton = deepMemo((props: IAnnotationProps) => {
 
 });
 
-const CreateCommentButton = deepMemo((props: IMutableProps) => {
+const CreateCommentButton = deepMemo(function CreateCommentButton(props: IMutableProps) {
 
     const annotationInputContext = useAnnotationActiveInputContext();
 
@@ -86,7 +86,7 @@ const CreateCommentButton = deepMemo((props: IMutableProps) => {
 });
 
 
-const CreateFlashcardButton = deepMemo((props: IMutableProps) => {
+const CreateFlashcardButton = deepMemo(function CreateFlashcardButton(props: IMutableProps) {
 
     const annotationInputContext = useAnnotationActiveInputContext();
 
@@ -103,7 +103,7 @@ const CreateFlashcardButton = deepMemo((props: IMutableProps) => {
 
 });
 
-const CreateAIFlashcardButton = deepMemo((props: IAnnotationProps) => {
+const CreateAIFlashcardButton = deepMemo(function CreateAIFlashcardButton(props: IAnnotationProps) {
     const [status, handler] = useAutoFlashcardHandler(props.annotation);
     const theme = useTheme();
 

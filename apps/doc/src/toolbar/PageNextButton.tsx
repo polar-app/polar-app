@@ -4,7 +4,7 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import IconButton from "@material-ui/core/IconButton";
 
-export const PageNextButton = deepMemo(() => {
+export const PageNextButton = deepMemo(function PageNextButton() {
 
     const {onPageNext} = useDocViewerCallbacks();
     const {pageNavigator, page} = useDocViewerStore(['pageNavigator', 'page']);

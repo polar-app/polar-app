@@ -13,7 +13,7 @@ interface IProps {
     readonly onCreateTag: () => void;
 }
 
-export const AddTagsDropdown = deepMemo((props: IProps) => {
+export const AddTagsDropdown = deepMemo(function AddTagsDropdown(props: IProps) {
 
     return (
 

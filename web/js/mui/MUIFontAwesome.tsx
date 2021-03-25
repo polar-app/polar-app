@@ -37,7 +37,7 @@ interface FASvgIconProps extends SvgIconProps {
     readonly icon: IconProp;
 }
 
-const FASvgIcon = deepMemo((props: FASvgIconProps) => {
+const FASvgIcon = deepMemo(function FASvgIcon(props: FASvgIconProps) {
     return (
         <SvgIcon {...props}>
             <FontAwesomeIcon icon={props.icon} />

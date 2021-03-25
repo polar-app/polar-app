@@ -16,7 +16,7 @@ const useStyles = makeStyles(() =>
     }),
 );
 
-export const MUIMenuSubheader = deepMemo((props: IProps) => {
+export const MUIMenuSubheader = deepMemo(function MUIMenuSubheader(props: IProps) {
 
     const classes = useStyles();
 

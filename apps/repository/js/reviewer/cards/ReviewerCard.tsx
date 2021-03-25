@@ -10,7 +10,7 @@ interface ReviewerCardProps {
     readonly taskRep: TaskRep<any>;
 }
 
-const DoReadingCard = deepMemo((props: ReviewerCardProps) => {
+const DoReadingCard = deepMemo(function DoReadingCard(props: ReviewerCardProps) {
     const {taskRep} = props;
     const readingTaskRep = taskRep as any as TaskRep<ReadingTaskAction>;
 
@@ -18,7 +18,7 @@ const DoReadingCard = deepMemo((props: ReviewerCardProps) => {
 
 });
 
-const DoFlashcardCard = deepMemo((props: ReviewerCardProps) => {
+const DoFlashcardCard = deepMemo(function DoFlashcardCard(props: ReviewerCardProps) {
     const {taskRep} = props;
 
     const flashcardTaskRep = taskRep as any as TaskRep<FlashcardTaskAction>;

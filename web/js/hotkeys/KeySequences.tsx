@@ -7,7 +7,7 @@ interface IProps {
     readonly sequences: ReadonlyArray<string>;
 }
 
-export const KeySequences = deepMemo((props: IProps) => {
+export const KeySequences = deepMemo(function KeySequences(props: IProps) {
 
     return (
         <MUIButtonBar>

@@ -216,7 +216,7 @@ function isIgnorableKeyboardEvent(event: KeyboardEvent): boolean {
 type SequenceToHandler = [string, KeyboardShortcutEventHandler];
 type SequenceToKeyboardEventHandlerPredicate = [string, KeyboardEventHandlerPredicate];
 
-export const KeyboardShortcuts = deepMemo(() => {
+export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
 
     const {shortcuts, active} = useKeyboardShortcutsStore(['shortcuts', 'active']);
     const shortcutsRef = useRefWithUpdates(shortcuts);

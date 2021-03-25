@@ -94,7 +94,7 @@ export interface ConfirmDialogProps {
 
 }
 
-export const ConfirmDialog = deepMemo((props: ConfirmDialogProps) => {
+export const ConfirmDialog = deepMemo(function ConfirmDialog(props: ConfirmDialogProps) {
 
     const [open, setOpen] = React.useState(true);
 

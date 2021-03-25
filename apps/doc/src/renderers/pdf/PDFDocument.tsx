@@ -127,7 +127,7 @@ interface IProps {
     readonly children: React.ReactNode;
 }
 
-export const PDFDocument = deepMemo((props: IProps) => {
+export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
     const {docURL} = props;
     const [active, setActive, activeRef] = useStateRef(false);

@@ -144,7 +144,7 @@ export function useJSONDownloadHandler() {
 
 }
 
-const UpdateDocMetadataMenuItem = deepMemo(() => {
+const UpdateDocMetadataMenuItem = deepMemo(function UpdateDocMetadataMenuItem() {
 
     const docMetadataEditorForSelected = useDocMetadataEditorForSelected()
 

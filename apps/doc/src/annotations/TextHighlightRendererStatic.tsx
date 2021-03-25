@@ -18,7 +18,7 @@ interface IProps {
     readonly container: HTMLElement,
 }
 
-export const TextHighlightRendererStatic = deepMemo((props: IProps) => {
+export const TextHighlightRendererStatic = deepMemo(function TextHighlightRendererStatic(props: IProps) {
 
     const {pageAnnotation, container} = props;
     const {annotation} = pageAnnotation;

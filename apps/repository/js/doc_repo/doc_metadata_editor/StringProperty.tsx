@@ -13,7 +13,7 @@ interface IProps extends DocInfoProperty {
     readonly onChange: (value: string) => void;
 }
 
-export const StringProperty = deepMemo((props: IProps) => {
+export const StringProperty = deepMemo(function StringProperty(props: IProps) {
 
     const label = props.label || Strings.upperFirst(props.name);
 

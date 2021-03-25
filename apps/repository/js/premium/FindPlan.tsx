@@ -1,7 +1,7 @@
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import React from "react";
 
-export const FindPlan = deepMemo(() => {
+export const FindPlan = deepMemo(function FindPlan() {
 
     return (
         <div>

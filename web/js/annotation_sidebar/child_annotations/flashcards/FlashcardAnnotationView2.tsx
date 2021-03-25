@@ -6,7 +6,7 @@ import Divider from "@material-ui/core/Divider";
 import {FlashcardAnnotationControlBar2} from "./FlashcardAnnotationControlBar2";
 import {deepMemo} from "../../../react/ReactUtils";
 
-const RenderFrontAndBackFields = deepMemo((props: IProps) => {
+const RenderFrontAndBackFields = deepMemo(function RenderFrontAndBackFields(props: IProps) {
 
     const { flashcard } = props;
 
@@ -43,7 +43,7 @@ const RenderFrontAndBackFields = deepMemo((props: IProps) => {
 });
 
 
-const RenderClozeFields = deepMemo((props: IProps) => {
+const RenderClozeFields = deepMemo(function RenderClozeFields(props: IProps) {
 
     const { flashcard } = props;
 
@@ -59,7 +59,7 @@ const RenderClozeFields = deepMemo((props: IProps) => {
 
 });
 
-const RenderFields = deepMemo((props: IProps) => {
+const RenderFields = deepMemo(function RenderFields(props: IProps) {
 
     const { flashcard } = props;
 

@@ -12,7 +12,7 @@ interface IProps {
     readonly disabled?: boolean;
 }
 
-export const EditButton = deepMemo((props: IProps) => {
+export const EditButton = deepMemo(function EditButton(props: IProps) {
 
     const theme = useTheme();
 

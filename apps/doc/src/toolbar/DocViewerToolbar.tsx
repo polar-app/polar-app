@@ -29,7 +29,7 @@ import {DockLayoutToggleButton} from "../../../../web/js/ui/doc_layout/DockLayou
 import {ZenModeActiveContainer} from "../../../../web/js/mui/ZenModeActiveContainer";
 import {ZenModeButton} from "./ZenModeButton";
 
-export const DocViewerToolbar = deepMemo(() => {
+export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
 
     const {docScale, pageNavigator, scaleLeveler, docMeta}
         = useDocViewerStore(['docScale', 'pageNavigator', 'scaleLeveler', 'docMeta']);

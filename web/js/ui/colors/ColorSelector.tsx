@@ -30,7 +30,7 @@ interface ColorSelectorInnerProps {
     readonly onColor: (color: string) => void;
 }
 
-const ColorSelectorInner = deepMemo((props: ColorSelectorInnerProps) => {
+const ColorSelectorInner = deepMemo(function ColorSelectorInner(props: ColorSelectorInnerProps) {
 
     const popperController = usePopperController();
 
@@ -46,7 +46,7 @@ const ColorSelectorInner = deepMemo((props: ColorSelectorInnerProps) => {
 
 });
 
-export const ColorSelector = deepMemo((props: IProps) => {
+export const ColorSelector = deepMemo(function ColorSelector(props: IProps) {
 
     const onSelected = props.onSelected || NULL_FUNCTION;
 

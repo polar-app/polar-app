@@ -10,7 +10,7 @@ interface IProps {
 
 }
 
-export const MobileGateway = deepMemo((props: IProps) => {
+export const MobileGateway = deepMemo(function MobileGateway(props: IProps) {
 
     function isMobile() {
 

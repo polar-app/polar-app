@@ -59,7 +59,7 @@ export function useWebExtensionInstalledSnapshots() {
 
 }
 
-export const ChromeExtensionInstallButton = deepMemo(() => {
+export const ChromeExtensionInstallButton = deepMemo(function ChromeExtensionInstallButton() {
 
     const isChrome = ['chrome', 'chromium'].includes(Browsers.get()?.id || '');
     const linkLoader = useLinkLoader();

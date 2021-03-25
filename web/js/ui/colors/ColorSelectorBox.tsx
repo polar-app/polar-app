@@ -70,7 +70,7 @@ interface IProps {
     readonly onSelected?: (color: ColorStr) => void;
 }
 
-export const ColorSelectorBox = deepMemo((props: IProps) => {
+export const ColorSelectorBox = deepMemo(function ColorSelectorBox(props: IProps) {
 
     return (
         <div>

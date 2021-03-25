@@ -13,7 +13,7 @@ interface IState {
     readonly value: string;
 }
 
-export const PageNumberInput = deepMemo((props: IProps) => {
+export const PageNumberInput = deepMemo(function PageNumberInput(props: IProps) {
 
     const {page, pageNavigator} = useDocViewerStore(['page', 'pageNavigator']);
     const {onPageJump} = useDocViewerCallbacks();

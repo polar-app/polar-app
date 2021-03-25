@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) =>
         },
     }),
 );
-export const TwoMigrationContent = deepMemo(() => {
+export const TwoMigrationContent = deepMemo(function TwoMigrationContent() {
 
     const classes = useStyles();
 

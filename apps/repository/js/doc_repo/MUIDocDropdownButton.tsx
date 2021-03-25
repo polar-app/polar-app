@@ -14,7 +14,7 @@ interface IState {
     readonly anchorEl: HTMLElement | null;
 }
 
-export const MUIDocDropdownButton = deepMemo((props: IProps) => {
+export const MUIDocDropdownButton = deepMemo(function MUIDocDropdownButton(props: IProps) {
 
     const [state, setState] = React.useState<IState>({anchorEl: null});
 

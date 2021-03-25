@@ -67,7 +67,7 @@ export interface TaskbarDialogPropsWithCallback extends TaskbarDialogProps {
 /**
  * Like a Snackbar but it includes progress...
  */
-export const TaskbarDialog = deepMemo((props: TaskbarDialogPropsWithCallback) => {
+export const TaskbarDialog = deepMemo(function TaskbarDialog(props: TaskbarDialogPropsWithCallback) {
 
     const [progress, setProgress, progressRef] = useStateRef<ITaskbarProgress>({value: 0, message: props.message});
     const [open, setOpen] = React.useState(true);

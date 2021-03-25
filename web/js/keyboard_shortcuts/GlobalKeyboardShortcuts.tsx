@@ -20,7 +20,7 @@ interface IProps {
     readonly handlerMap: HandlerMap;
 }
 
-export const GlobalKeyboardShortcuts = deepMemo((props: IProps) => {
+export const GlobalKeyboardShortcuts = deepMemo(function GlobalKeyboardShortcuts(props: IProps) {
 
     const {addKeyboardShortcut, removeKeyboardShortcut} = useKeyboardShortcutsCallbacks();
 

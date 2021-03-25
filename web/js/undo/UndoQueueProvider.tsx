@@ -7,7 +7,7 @@ interface IProps {
     readonly children: JSX.Element;
 }
 
-export const UndoQueueProvider = deepMemo((props: IProps) => {
+export const UndoQueueProvider = deepMemo(function UndoQueueProvider(props: IProps) {
     return (
         <UndoStoreProviderDelegate>
             <>

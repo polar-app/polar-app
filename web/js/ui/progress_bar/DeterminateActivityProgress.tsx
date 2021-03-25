@@ -11,7 +11,7 @@ interface IProps {
  * complicated rendering issues or requiring React to be used.  This allows
  * us to easily show a GUI for a download at any point in time.
  */
-export const DeterminateActivityProgress = deepMemo((props: IProps) => {
+export const DeterminateActivityProgress = deepMemo(function DeterminateActivityProgress(props: IProps) {
 
     return (
         <progress id={props.id}

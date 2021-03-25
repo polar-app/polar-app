@@ -9,7 +9,7 @@ interface IProps {
     readonly onMouseUp: (event: React.MouseEvent) => void;
 }
 
-export const HorizontalLine = deepMemo((props: IProps) => {
+export const HorizontalLine = deepMemo(function HorizontalLine(props: IProps) {
 
     const position = props.side === 'top' ? {top: '0px'} : {bottom: '0px'};
 

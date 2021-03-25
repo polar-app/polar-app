@@ -8,7 +8,7 @@ interface IProps {
     readonly onChange: (html: string) => void;
 }
 
-export const EditableContent = deepMemo((props: IProps) => {
+export const EditableContent = deepMemo(function EditableContent(props: IProps) {
 
     const [editing, setEditing] = React.useState(false);
     const [content, setContent] = React.useState(props.content)

@@ -13,7 +13,7 @@ interface IProps {
     readonly container: HTMLElement;
 }
 
-export const PagemarkRenderer = deepMemo((props: IProps) => {
+export const PagemarkRenderer = deepMemo(function PagemarkRenderer(props: IProps) {
 
     const {fileType} = useDocViewerContext();
 

@@ -39,7 +39,7 @@ interface NoteProps {
     readonly notes: ReadonlyArray<INote> | undefined;
 }
 
-const Notes = deepMemo((props: NoteProps) => {
+const Notes = deepMemo(function Notes(props: NoteProps) {
 
     if ( ! props.notes) {
         return null;

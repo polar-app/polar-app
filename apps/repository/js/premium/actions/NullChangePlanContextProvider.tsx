@@ -16,7 +16,7 @@ interface IProps {
     readonly children: React.ReactNode;
 }
 
-export const NullChangePlanContextProvider = deepMemo((props: IProps) => {
+export const NullChangePlanContextProvider = deepMemo(function NullChangePlanContextProvider(props: IProps) {
 
     const type = 'buy';
     const action = useAction();

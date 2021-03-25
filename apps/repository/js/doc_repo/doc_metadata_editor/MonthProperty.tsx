@@ -41,7 +41,7 @@ function toMonth(month: MonthSelect): Month | undefined {
 
 }
 
-export const MonthProperty = deepMemo((props: IProps) => {
+export const MonthProperty = deepMemo(function MonthProperty(props: IProps) {
 
     const label = props.label || Strings.upperFirst(props.name);
 

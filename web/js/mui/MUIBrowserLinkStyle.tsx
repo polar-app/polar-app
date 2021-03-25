@@ -34,7 +34,7 @@ interface IProps {
 /**
  * Use browser link colors for the text under this element.
  */
-export const MUIBrowserLinkStyle = deepMemo((props: IProps) => {
+export const MUIBrowserLinkStyle = deepMemo(function MUIBrowserLinkStyle(props: IProps) {
 
     const classes = useStyles();
 
