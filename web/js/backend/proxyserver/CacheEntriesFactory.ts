@@ -114,7 +114,7 @@ export class CacheEntriesFactory {
 
         const json = fs.readFileSync(jsonPath);
 
-        const data = JSON.parse(json.toString("UTF-8"));
+        const data = JSON.parse(json.toString("utf-8"));
 
         let url = data.url;
 

@@ -826,7 +826,7 @@ export class DiskPersistentPrefsBacking {
         if (await Files.existsAsync(this.path)) {
             log.info("Loaded prefs from: " + this.path);
             const data = await Files.readFileAsync(this.path);
-            const prefs: StringToPrefDict = JSON.parse(data.toString("UTF-8"));
+            const prefs: StringToPrefDict = JSON.parse(data.toString("utf-8"));
 
             this.prefs = new DiskPersistentPrefs(this, prefs);
         }

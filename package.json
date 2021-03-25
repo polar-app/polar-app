@@ -68,7 +68,7 @@
     "@types/jsdom": "=16.2.7",
     "@types/lodash": "~4.14.119",
     "@types/mocha": "=8.0.4",
-    "@types/node": "12.12.32",
+    "@types/node": "=14.14.35",
     "@types/prop-types": "~15.7.3",
     "@types/react-helmet": "=6.1.0",
     "@types/react-router-dom": "=5.1.5",

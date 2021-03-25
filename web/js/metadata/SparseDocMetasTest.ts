@@ -166,7 +166,7 @@ describe('SparseDocMetas', function() {
                 }
 
                 const buff = await Files.readFileAsync(path);
-                const content = buff.toString('UTF-8');
+                const content = buff.toString('utf-8');
 
                 const inputDocMeta = DocMetas.deserialize(content, '0x1235');
 

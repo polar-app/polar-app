@@ -47,7 +47,7 @@ describe('CachingPHZReader', function() {
 
         let buffer = await phzReader.getResource(resourceEntry);
 
-        let content = buffer.toString("UTF-8");
+        let content = buffer.toString("utf-8");
 
         assert.equal(content, "<html></html>");
 
