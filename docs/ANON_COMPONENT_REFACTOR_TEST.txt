@@ -1,0 +1,18 @@
+const Foo = React.memo(() => {
+    return 'hello';
+});
+
+export const Foo = React.memo(() => {
+    return 'hello';
+});
+
+export const FooBar = React.memo(() => {
+    return 'hello';
+});
+
+interface FooBarProps {
+}
+
+export const FooBar = React.memo((props: FooBarProps) => {
+    return 'hello';
+});
