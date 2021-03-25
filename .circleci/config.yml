@@ -46,7 +46,9 @@ commands:
 
       - run:
           name: OS environment
-          command: echo $OSTYPE
+          command: |
+            echo $OSTYPE
+            uname -a
 
       - run:
           name: npm setup
