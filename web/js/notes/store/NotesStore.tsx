@@ -203,7 +203,7 @@ export class NotesStore {
         return Object.keys(this._selected);
     }
 
-    @action public clearSelected() {
+    @action public clearSelected(reason: string) {
         this._selected = {};
         this._selectedAnchor = undefined;
     }
@@ -923,11 +923,7 @@ export class NotesStore {
 
     }
 
-    @action public doDelete(notesToDelete: ReadonlyArray<NoteIDStr>) {
-
-        if (notesToDelete.length === 0) {
-            return;
-        }
+    @action public doDelete(noteIDs: ReadonlyArray<NoteIDStr>) {
 
         interface NextActive {
             readonly active: NoteIDStr;
@@ -940,10 +936,12 @@ export class NotesStore {
             const note = this._index[noteID];
 
             if (! note) {
+                console.log("No note for ID: " + noteID)
                 return undefined;
             }
 
             if (! note.parent) {
+                console.log("No parent for ID: " + noteID)
                 return undefined;
             }
 
@@ -989,6 +987,8 @@ export class NotesStore {
 
         const handleDelete = (notes: ReadonlyArray<NoteIDStr>) => {
 
+            let deleted: number = 0;
+
             for (const noteID of notes) {
 
                 const note = this._index[noteID];
@@ -1008,7 +1008,7 @@ export class NotesStore {
 
                         if (! parentNote) {
                             console.warn(`handleDelete: Note ${note.id} (${noteID}) has no parent for ID ${note.parent}`);
-                            return;
+                            continue;
                         }
 
                         parentNote.removeItem(note.id);
@@ -1033,22 +1033,38 @@ export class NotesStore {
                         this.reverse.remove(note.id, inboundID);
                     }
 
+                    ++deleted;
+
                 }
 
             }
 
+            return deleted;
+
         };
 
-        const nextActive = computeNextActive();
-        handleDelete(notesToDelete);
+        const selected = this.selectedIDs();
 
-        if (nextActive) {
-            this._active = nextActive.active;
-            this._activePos = nextActive.activePos;
+        const notesToDelete = selected.length > 0 ? selected : noteIDs;
+
+        if (notesToDelete.length === 0) {
+            return;
         }
 
-        // we have to clear now because the notes we deleted might have been selected
-        this.clearSelected();
+        const nextActive = computeNextActive();
+
+        if (handleDelete(notesToDelete) > 0) {
+
+            if (nextActive) {
+                this._active = nextActive.active;
+                this._activePos = nextActive.activePos;
+
+            }
+
+            // we have to clear now because the notes we deleted might have been selected
+            this.clearSelected('doDelete');
+
+        }
 
     }
 

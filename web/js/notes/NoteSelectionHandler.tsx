@@ -49,7 +49,7 @@ export const NoteSelectionHandler = observer(function NoteSelectionHandler(props
                 break;
 
             default:
-                store.clearSelected();
+                store.clearSelected("NoteSelectionHandler: other char");
                 break;
 
         }

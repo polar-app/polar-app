@@ -70,7 +70,7 @@ export const NoteInner = observer((props: IProps) => {
             event.stopPropagation();
 
         } else {
-            store.clearSelected();
+            store.clearSelected('Note: handleMouseDown');
         }
 
     }, [id, store]);
