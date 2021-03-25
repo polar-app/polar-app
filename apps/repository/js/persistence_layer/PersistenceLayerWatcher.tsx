@@ -17,7 +17,7 @@ export interface IState {
 }
 
 
-export const PersistenceLayerWatcher = React.memo((props: IProps) => {
+export const PersistenceLayerWatcher = React.memo(function PersistenceLayerWatcher(props: IProps) {
 
     const unmountedRef = React.useRef(false);
     const [state, setState] = React.useState<IState>({persistenceLayerProvider: undefined});

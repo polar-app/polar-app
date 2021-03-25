@@ -9,7 +9,7 @@ interface IProps {
     readonly children: React.ReactElement;
 }
 
-export const AddFileDropzoneRoot = React.memo((props: IProps) => {
+export const AddFileDropzoneRoot = React.memo(function AddFileDropzoneRoot(props: IProps) {
 
     return (
         <AddFileDropzoneProvider>
@@ -23,7 +23,7 @@ export const AddFileDropzoneRoot = React.memo((props: IProps) => {
 
 AddFileDropzoneRoot.displayName='AddFileDropzoneRoot';
 
-const DragAndDropListener = React.memo((props: IProps) => {
+const DragAndDropListener = React.memo(function DragAndDropListener(props: IProps) {
     useDragAndDropBackdropListener();
     useDragAndDropImportListener();
     return props.children;

@@ -11,7 +11,7 @@ interface IProps {
     readonly docInfos: ReadonlyArray<IDocInfo>;
 }
 
-export const TopTagsChart = React.memo((props: IProps) => {
+export const TopTagsChart = React.memo(function TopTagsChart(props: IProps) {
 
     const theme = useTheme();
     const nivoTheme = useNivoTheme();

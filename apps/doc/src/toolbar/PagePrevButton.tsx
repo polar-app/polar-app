@@ -3,7 +3,7 @@ import {useDocViewerCallbacks, useDocViewerStore} from "../DocViewerStore";
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import IconButton from "@material-ui/core/IconButton";
 
-export const PagePrevButton = React.memo(() => {
+export const PagePrevButton = React.memo(function PagePrevButton() {
 
     const {onPagePrev} = useDocViewerCallbacks();
     const {pageNavigator, page} = useDocViewerStore(['pageNavigator', 'page']);

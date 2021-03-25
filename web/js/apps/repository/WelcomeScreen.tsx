@@ -14,7 +14,7 @@ import {PolarLogoText} from "../../../../apps/repository/js/nav/PolarLogoText";
 import {WelcomeScreenContent} from "./WelcomeScreenContent";
 import Box from '@material-ui/core/Box';
 
-export const WelcomeScreen = React.memo(() => {
+export const WelcomeScreen = React.memo(function WelcomeScreen() {
 
     const analytics = useAnalytics();
     const history = useHistory();

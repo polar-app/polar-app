@@ -49,7 +49,7 @@ interface IProps {
 
 }
 
-export const MUITooltip = React.memo((props: IProps) => {
+export const MUITooltip = React.memo(function MUITooltip(props: IProps) {
 
     if (props.title === undefined) {
         return props.children;

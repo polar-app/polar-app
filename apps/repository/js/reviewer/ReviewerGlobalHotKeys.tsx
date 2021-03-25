@@ -10,7 +10,7 @@ const keyMap = keyMapWithGroup({
     }
 });
 
-export const ReviewerGlobalHotKeys = React.memo(() => {
+export const ReviewerGlobalHotKeys = React.memo(function ReviewerGlobalHotKeys() {
 
     // return (
     //     <GlobalHotKeys allowChanges={true}

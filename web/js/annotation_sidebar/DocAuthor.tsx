@@ -10,7 +10,7 @@ interface IProps {
 /**
  * A generic wrapper that determines which sub-component to render.
  */
-export const DocAuthor = React.memo((props: IProps) => {
+export const DocAuthor = React.memo(function DocAuthor(props: IProps) {
 
     const {author} = props;
 

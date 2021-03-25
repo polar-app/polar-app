@@ -94,7 +94,7 @@ interface MUIInlineErrorDialogProps {
     readonly children: JSX.Element;
 }
 
-export const MUIInlineErrorDialog = React.memo((props: MUIInlineErrorDialogProps) => {
+export const MUIInlineErrorDialog = React.memo(function MUIInlineErrorDialog(props: MUIInlineErrorDialogProps) {
 
     const theme = useTheme();
 

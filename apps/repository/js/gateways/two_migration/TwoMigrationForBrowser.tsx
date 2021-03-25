@@ -25,7 +25,7 @@ interface IProps {
     readonly children: React.ReactElement;
 }
 
-export const TwoMigrationForBrowser = React.memo((props: IProps) => {
+export const TwoMigrationForBrowser = React.memo(function TwoMigrationForBrowser(props: IProps) {
 
     const [doMigration, onClose] = useMigration();
 

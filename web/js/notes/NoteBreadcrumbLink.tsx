@@ -34,7 +34,7 @@ interface IProps {
     readonly content: string;
 }
 
-export const NoteBreadcrumbLink = React.memo((props: IProps) => {
+export const NoteBreadcrumbLink = React.memo(function NoteBreadcrumbLink(props: IProps) {
 
     const {content} = props;
     const classes = useStyles();

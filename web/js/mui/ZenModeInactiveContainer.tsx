@@ -5,7 +5,7 @@ interface IProps {
     readonly children: JSX.Element;
 }
 
-export const ZenModeInactiveContainer = React.memo((props: IProps) => {
+export const ZenModeInactiveContainer = React.memo(function ZenModeInactiveContainer(props: IProps) {
 
     const {zenMode} = useZenModeStore(['zenMode']);
 

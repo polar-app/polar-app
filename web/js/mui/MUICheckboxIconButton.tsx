@@ -26,7 +26,7 @@ interface IProps {
 
 }
 
-export const MUICheckboxIconButton = React.memo((props: IProps) => {
+export const MUICheckboxIconButton = React.memo(function MUICheckboxIconButton(props: IProps) {
 
     const classes = useStyles();
     const mode = props.indeterminate ? 'i' : props.checked ? 'c' : 'n';

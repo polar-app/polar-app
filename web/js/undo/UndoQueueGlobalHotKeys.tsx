@@ -23,7 +23,7 @@ const globalKeyMap = keyMapWithGroup({
     }
 });
 
-export const UndoQueueGlobalHotKeys = React.memo(() => {
+export const UndoQueueGlobalHotKeys = React.memo(function UndoQueueGlobalHotKeys() {
 
     const {undo, redo} = useUndoCallbacks();
 

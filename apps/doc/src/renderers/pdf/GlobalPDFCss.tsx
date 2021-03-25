@@ -62,7 +62,7 @@ export const GlobalCssDark = GlobalCssDarkStyles(() => null);
 export const GlobalCssDarkForInvert = GlobalCssDarkForInvertStyles(() => null);
 export const GlobalCssDarkForInvertGreyscale = GlobalCssDarkForInvertGreyscaleStyles(() => null);
 
-export const GlobalPDFCss = React.memo(() => {
+export const GlobalPDFCss = React.memo(function GlobalPDFCss() {
 
     const theme = useTheme();
     const prefs = usePrefsContext();

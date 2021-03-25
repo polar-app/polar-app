@@ -175,7 +175,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
     });
 
 
-    const RenderAnnotationRepoScreen = React.memo(() => {
+    const RenderAnnotationRepoScreen = React.memo(function RenderAnnotationRepoScreen() {
         return (
             <PersistenceLayerApp tagsType="annotations"
                                  repoDocMetaManager={repoDocMetaManager}

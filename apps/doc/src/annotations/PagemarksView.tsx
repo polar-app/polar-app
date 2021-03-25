@@ -5,7 +5,7 @@ import {useDocViewerStore} from "../DocViewerStore";
 import {useAnnotationContainers} from "./AnnotationHooks";
 import {AnnotationContainers} from "./AnnotationContainers";
 
-export const PagemarksView = React.memo(() => {
+export const PagemarksView = React.memo(function PagemarksView() {
 
     const {docMeta} = useDocViewerStore(['docMeta']);
     const annotationContainers = useAnnotationContainers();

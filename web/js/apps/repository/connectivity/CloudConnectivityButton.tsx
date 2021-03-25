@@ -37,7 +37,7 @@ export function useOnline(): boolean{
 
 }
 
-export const CloudConnectivityButton = React.memo(() => {
+export const CloudConnectivityButton = React.memo(function CloudConnectivityButton() {
 
     // TODO this does not work now because I have to use realtime database
     // but I have a post about this to resolve it:

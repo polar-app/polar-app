@@ -48,7 +48,7 @@ const VisibleComponent = deepMemo((props: VisibleComponentProps<IDocAnnotation>)
 
 });
 
-const BlockComponent = React.memo((props: BlockComponentProps<IDocAnnotation>) => {
+const BlockComponent = React.memo(function BlockComponent(props: BlockComponentProps<IDocAnnotation>) {
 
     const fixedHeightAnnotationCalculator = useFixedHeightAnnotationCalculator();
 
@@ -67,7 +67,7 @@ const BlockComponent = React.memo((props: BlockComponentProps<IDocAnnotation>) =
 
 });
 
-const HiddenBlockComponent = React.memo((props: HiddenBlockComponentProps<IDocAnnotation>) => {
+const HiddenBlockComponent = React.memo(function HiddenBlockComponent(props: HiddenBlockComponentProps<IDocAnnotation>) {
 
     const fixedHeightAnnotationCalculator = useFixedHeightAnnotationCalculator();
 

@@ -23,7 +23,7 @@ function useFilteredValue() {
 
 }
 
-const FilteredView = React.memo(() => {
+const FilteredView = React.memo(function FilteredView() {
 
     const filteredValue = useFilteredValue();
 
@@ -36,7 +36,7 @@ const FilteredView = React.memo(() => {
     );
 });
 
-const Inner = React.memo(() => {
+const Inner = React.memo(function Inner() {
 
 
     const {incr} = useAbortedRenderStoreCallbacks();
@@ -49,7 +49,7 @@ const Inner = React.memo(() => {
     );
 });
 
-export const AbortedRenderStory = React.memo(() => {
+export const AbortedRenderStory = React.memo(function AbortedRenderStory() {
     return (
         <AbortedRenderStoreProvider>
             <Inner/>

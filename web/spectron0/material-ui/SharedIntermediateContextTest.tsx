@@ -17,7 +17,7 @@ const ValueContext = React.createContext<IContext>({
 interface IProps {
 
 }
-// const ChildComponent = React.memo(() => {
+// const ChildComponent = React.memo(function ChildComponent() {
 //
 //     const context = React.useContext(ValueContext);
 //
@@ -55,7 +55,7 @@ const ChildComponent = () => {
 
 };
 
-const IntermediateComponent = React.memo(() => {
+const IntermediateComponent = React.memo(function IntermediateComponent() {
     console.log("IntermediateComponent: render");
 
     return (

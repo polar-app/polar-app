@@ -46,7 +46,7 @@ export const ProgressBar = deepMemo(() => {
 
 });
 
-export const PagemarkProgressBar = React.memo(() => {
+export const PagemarkProgressBar = React.memo(function PagemarkProgressBar() {
 
     const ContextMenu = React.useMemo(() => createContextMenu(PagemarkProgressBarMenu), []);
 

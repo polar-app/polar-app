@@ -25,7 +25,7 @@ interface IProps {
 
 }
 
-export const MUITreeItem = React.memo((props: IProps) => {
+export const MUITreeItem = React.memo(function MUITreeItem(props: IProps) {
 
     const onDrop = useCallback((event: React.DragEvent) => {
         props.onDrop(event, props.nodeId)

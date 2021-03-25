@@ -9,7 +9,7 @@ interface OverflowMenuButtonProps {
     readonly viewID: IDStr;
 }
 
-export const OverflowMenuButton = React.memo((props: OverflowMenuButtonProps) => {
+export const OverflowMenuButton = React.memo(function OverflowMenuButton(props: OverflowMenuButtonProps) {
 
     const {viewID} = props;
 

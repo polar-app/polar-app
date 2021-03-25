@@ -21,7 +21,7 @@ const globalKeyMap = keyMapWithGroup(
         }
     });
 
-export const NavigationGlobalHotKeys = React.memo(() => {
+export const NavigationGlobalHotKeys = React.memo(function NavigationGlobalHotKeys() {
 
     const callbacks = useDocRepoCallbacks();
     const history = useHistory();

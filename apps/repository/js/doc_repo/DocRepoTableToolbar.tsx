@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
-const SelectionActiveButtons = React.memo(() => {
+const SelectionActiveButtons = React.memo(function SelectionActiveButtons() {
     const callbacks = useDocRepoCallbacks();
 
     return (
@@ -43,7 +43,7 @@ const SelectionActiveButtons = React.memo(() => {
     );
 });
 
-export const DocRepoTableToolbar = React.memo(() => {
+export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
 
     const {view, selected}
         = useDocRepoStore(['view', 'selected']);

@@ -17,7 +17,7 @@ interface IProps {
     readonly Component: React.FunctionComponent<{className?: string}>;
 }
 
-export const IconWithColor = React.memo((props: IProps) => {
+export const IconWithColor = React.memo(function IconWithColor(props: IProps) {
 
     const classes = useStyles();
 

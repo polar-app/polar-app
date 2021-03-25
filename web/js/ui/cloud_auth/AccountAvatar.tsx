@@ -8,7 +8,7 @@ interface IProps {
     readonly className?: string;
 }
 
-export const AccountAvatar = React.memo((props: IProps) => {
+export const AccountAvatar = React.memo(function AccountAvatar(props: IProps) {
 
     const userInfoContext = useUserInfoContext();
 

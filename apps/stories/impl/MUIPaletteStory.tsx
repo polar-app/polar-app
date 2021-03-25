@@ -41,7 +41,7 @@ const Color = (props: IColorProps) => {
     )
 }
 
-export const MUIPaletteStory = React.memo(() => {
+export const MUIPaletteStory = React.memo(function MUIPaletteStory() {
 
     const theme = useTheme();
 

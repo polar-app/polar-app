@@ -34,7 +34,7 @@ interface IProps {
     readonly tooltip?: string;
 }
 
-export const MUIToggleButton = React.memo((props: IProps) => {
+export const MUIToggleButton = React.memo(function MUIToggleButton(props: IProps) {
 
     const classes = useStyles();
 

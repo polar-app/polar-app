@@ -12,7 +12,7 @@ const useStyles = makeStyles({
 
 });
 
-export const PricingFAQ = React.memo(() => {
+export const PricingFAQ = React.memo(function PricingFAQ() {
 
     const classes = useStyles();
 

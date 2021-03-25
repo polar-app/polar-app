@@ -232,7 +232,7 @@ export interface NoteFormatBarProps {
 
 }
 
-export const NoteFormatBar = React.memo((props: NoteFormatBarProps) => {
+export const NoteFormatBar = React.memo(function NoteFormatBar(props: NoteFormatBarProps) {
 
     const classes = useStyles();
 

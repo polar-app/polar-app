@@ -38,7 +38,7 @@ interface IProps {
 }
 
 
-export const OccupationSelect = React.memo((props: IProps) => {
+export const OccupationSelect = React.memo(function OccupationSelect(props: IProps) {
 
     const handleChange = React.useCallback((event: React.ChangeEvent<{}>, option: IOption<Occupation> | null) => {
 

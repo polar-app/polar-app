@@ -23,7 +23,7 @@ interface IProps extends Omit<ButtonProps, "color"> {
 
 
 // https://material-ui.com/styles/basics/#adapting-based-on-props
-export const ColorButton = React.memo((props: IProps) => {
+export const ColorButton = React.memo(function ColorButton(props: IProps) {
     // Pass the props as the first argument of useStyles()
     const classes = useStyles(props);
 

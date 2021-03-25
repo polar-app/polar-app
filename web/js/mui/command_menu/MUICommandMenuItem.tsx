@@ -46,7 +46,7 @@ interface IProps {
 
 }
 
-export const MUICommandMenuItem = React.memo((props: IProps) => {
+export const MUICommandMenuItem = React.memo(function MUICommandMenuItem(props: IProps) {
 
     const classes = useStyles();
 

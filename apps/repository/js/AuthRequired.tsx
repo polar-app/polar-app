@@ -6,7 +6,7 @@ interface IProps {
     readonly children: React.ReactElement;
 }
 
-export const AuthRequired = React.memo((props: IProps) => {
+export const AuthRequired = React.memo(function AuthRequired(props: IProps) {
 
     const userInfoContext = useUserInfoContext();
 

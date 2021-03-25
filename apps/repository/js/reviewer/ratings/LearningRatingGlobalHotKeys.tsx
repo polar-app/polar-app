@@ -30,7 +30,7 @@ const globalKeyMap = keyMapWithGroup({
     }
 });
 
-export const LearningRatingGlobalHotKeys = React.memo(() => {
+export const LearningRatingGlobalHotKeys = React.memo(function LearningRatingGlobalHotKeys() {
 
     const {taskRep} = useReviewerStore(['taskRep']);
 

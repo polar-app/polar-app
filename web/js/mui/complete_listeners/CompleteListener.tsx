@@ -7,7 +7,7 @@ interface IProps {
     readonly children: React.ReactElement;
 }
 
-export const CompleteListener = React.memo((props: IProps) => {
+export const CompleteListener = React.memo(function CompleteListener(props: IProps) {
 
     function handleKeyPress(event: React.KeyboardEvent<HTMLDivElement>) {
 

@@ -104,7 +104,7 @@ interface FixedWidthContainer {
     readonly children: JSX.Element;
 }
 
-const FixedWidthContainer = React.memo((props: FixedWidthContainer) => {
+const FixedWidthContainer = React.memo(function FixedWidthContainer(props: FixedWidthContainer) {
 
     return (
         <div className="FixedWidthContainer"

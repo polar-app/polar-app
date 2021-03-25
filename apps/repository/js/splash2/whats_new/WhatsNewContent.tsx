@@ -5,7 +5,7 @@ import {DateMoment} from "../../../../../web/js/ui/util/DateMoment";
 
 const releases = ReleaseMetadatas.get();
 
-export const WhatsNewContent = React.memo(() => {
+export const WhatsNewContent = React.memo(function WhatsNewContent() {
 
     const release = Arrays.first(releases);
 

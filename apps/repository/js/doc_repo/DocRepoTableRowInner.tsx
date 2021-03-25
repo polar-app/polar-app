@@ -115,7 +115,7 @@ interface TableCellTagsProps {
     readonly tags?: Readonly<{[id: string]: Tag}>;
 }
 
-export const TableCellTags = React.memo((props: TableCellTagsProps) => {
+export const TableCellTags = React.memo(function TableCellTags(props: TableCellTagsProps) {
 
     const classes = useStyles();
 
@@ -145,7 +145,7 @@ interface IProps {
     readonly style?: React.CSSProperties;
 }
 
-export const DocRepoTableRowInner = React.memo((props: IProps) => {
+export const DocRepoTableRowInner = React.memo(function DocRepoTableRowInner(props: IProps) {
 
     const classes = useStyles();
 
@@ -355,7 +355,7 @@ export namespace cells {
         readonly selected: boolean;
     }
 
-    export const Check = React.memo((props: CheckboxProps) => {
+    export const Check = React.memo(function Check(props: CheckboxProps) {
 
         const {viewID, viewIndex, selected} = props;
         const {selectRow} = useDocRepoCallbacks();
@@ -381,7 +381,7 @@ export namespace cells {
         readonly selectRowClickHandler: (event: React.MouseEvent<HTMLElement>) => void;
     }
 
-    export const Progress = React.memo((props: ProgressProps) => {
+    export const Progress = React.memo(function Progress(props: ProgressProps) {
 
         const classes = useStyles();
 

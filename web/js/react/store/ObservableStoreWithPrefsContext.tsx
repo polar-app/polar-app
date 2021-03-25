@@ -155,7 +155,7 @@ export function createObservableStoreWithPrefsContext<V, M, C>(opts: ObservableS
 
     // this is the last step... how do we set the store?
 
-    const WithMountedStore = React.memo((props: ObservableStoreProps<V>) => {
+    const WithMountedStore = React.memo(function WithMountedStore(props: ObservableStoreProps<V>) {
 
         const {createInitialStoreWithPrefs, writePrefs} = usePrefsHandler<V, keyof V>(pref, keys);
 
@@ -203,7 +203,7 @@ export function createObservableStoreWithPrefsContext<V, M, C>(opts: ObservableS
     });
 
 
-    const StoreProviderWithPrefs = React.memo((props: ObservableStoreProps<V>) => {
+    const StoreProviderWithPrefs = React.memo(function StoreProviderWithPrefs(props: ObservableStoreProps<V>) {
 
         return (
             <StoreProvider {...props}>

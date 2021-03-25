@@ -132,7 +132,7 @@ interface BrowserTabProps {
     readonly onChange?: (event: React.ChangeEvent<{}>, newValue: number) => void;
 }
 
-const BrowserTab = React.memo((props: BrowserTabProps) => {
+const BrowserTab = React.memo(function BrowserTab(props: BrowserTabProps) {
 
     const classes = useStyles();
 

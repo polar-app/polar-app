@@ -8,7 +8,7 @@ interface IProps {
     readonly onProfile: (profile: OccupationProfile) => void;
 }
 
-export const ProfileScreen = React.memo((props: IProps) => {
+export const ProfileScreen = React.memo(function ProfileScreen(props: IProps) {
 
     return (
         <DefaultPageLayout {...props}>

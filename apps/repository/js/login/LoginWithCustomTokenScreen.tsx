@@ -17,7 +17,7 @@ function parseURL(): string | undefined {
     return url.searchParams.get('token') || undefined;
 }
 
-export const LoginWithCustomTokenScreen = React.memo((props: IProps) => {
+export const LoginWithCustomTokenScreen = React.memo(function LoginWithCustomTokenScreen(props: IProps) {
 
     const customTokenRef = React.useRef("");
     const log = useLogger();

@@ -340,7 +340,7 @@ export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
         readonly menuID: number;
     }
 
-    const NoteActionMenuItem = React.memo((props: NoteMenuItemProps) => {
+    const NoteActionMenuItem = React.memo(function NoteActionMenuItem(props: NoteMenuItemProps) {
 
         const {menuID} = props;
 

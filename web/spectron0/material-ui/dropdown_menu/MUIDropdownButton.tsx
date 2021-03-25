@@ -13,7 +13,7 @@ export interface IButtonProps {
     readonly ref?: React.RefObject<HTMLButtonElement>;
 }
 
-export const MUIDropdownButton = React.memo((props: IButtonProps) => {
+export const MUIDropdownButton = React.memo(function MUIDropdownButton(props: IButtonProps) {
 
     const buttonProps = {
         onClick: props.onClick || NULL_FUNCTION,

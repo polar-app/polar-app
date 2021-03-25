@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from "@material-ui/core/Button";
 
-export const CachedComponent = React.memo(() => {
+export const CachedComponent = React.memo(function CachedComponent() {
     console.log("FIXME rendered");
 
     return <div>this is cached</div>

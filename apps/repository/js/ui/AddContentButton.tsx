@@ -31,7 +31,7 @@ export namespace AddContent {
         readonly style?: React.CSSProperties;
     }
 
-    export const Desktop = React.memo((props: IProps) => {
+    export const Desktop = React.memo(function Desktop(props: IProps) {
 
         const doAdd = useAddFileDropzone();
 

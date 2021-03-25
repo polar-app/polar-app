@@ -474,7 +474,7 @@ export function createObservableStore<V, M, C>(opts: ObservableStoreOpts<V, M, C
         readonly children: JSX.Element | Provider<JSX.Element>;
     }
 
-    const MountedChild = React.memo((props: MountedChildProps) => {
+    const MountedChild = React.memo(function MountedChild(props: MountedChildProps) {
 
         const [mounted, setMounted] = React.useState(false);
 

@@ -9,7 +9,7 @@ interface IProps {
     readonly style?: React.CSSProperties;
 }
 
-export const DateTimeTableCell = React.memo((props: IProps) => {
+export const DateTimeTableCell = React.memo(function DateTimeTableCell(props: IProps) {
 
     if (isPresent(props.datetime)) {
 

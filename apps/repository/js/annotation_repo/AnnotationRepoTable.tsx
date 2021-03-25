@@ -26,7 +26,7 @@ interface ToolbarProps {
 }
 
 // TODO: move to a dedicated component
-const Toolbar = React.memo((props: ToolbarProps) => {
+const Toolbar = React.memo(function Toolbar(props: ToolbarProps) {
 
     // TODO: don't use props for callbacks...
 
@@ -77,7 +77,7 @@ const Toolbar = React.memo((props: ToolbarProps) => {
 
 namespace Handheld {
 
-    export const PrevPage = React.memo(() => {
+    export const PrevPage = React.memo(function PrevPage() {
 
         const {page} = useAnnotationRepoStore(['page']);
         const {setPage} = useAnnotationRepoCallbacks();
@@ -95,7 +95,7 @@ namespace Handheld {
 
     });
 
-    export const NextPage = React.memo(() => {
+    export const NextPage = React.memo(function NextPage() {
 
         const {page, rowsPerPage, view} = useAnnotationRepoStore(['page', 'rowsPerPage', 'view']);
         const {setPage} = useAnnotationRepoCallbacks();
@@ -123,7 +123,7 @@ export const [AnnotationRepoTableContextMenu, useAnnotationRepoTableContextMenu]
 /**
  * @deprecated
  */
-export const AnnotationRepoTable = React.memo(() => {
+export const AnnotationRepoTable = React.memo(function AnnotationRepoTable() {
 
     const {page, rowsPerPage, view, viewPage, selected} =
         useAnnotationRepoStore(['page', 'rowsPerPage', 'view', 'viewPage', 'selected']);

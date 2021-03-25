@@ -36,7 +36,7 @@ interface IProps {
     readonly children: any;
 }
 
-export const ReviewerDialog = React.memo((props: IProps) => {
+export const ReviewerDialog = React.memo(function ReviewerDialog(props: IProps) {
 
     const classes = useStyles();
     const [open, setOpen] = useState<boolean>(true);

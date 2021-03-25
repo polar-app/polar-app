@@ -831,7 +831,7 @@ interface IProps {
 /**
  * Once the provider is in place, we load the repo which uses the observer store.
  */
-const DocRepoStoreLoader = React.memo((props: IProps) => {
+const DocRepoStoreLoader = React.memo(function DocRepoStoreLoader(props: IProps) {
 
     const repoDocMetaLoader = useRepoDocMetaLoader();
     const repoDocMetaManager = useRepoDocMetaManager();

@@ -100,7 +100,7 @@ interface IProps {
     readonly container: HTMLElement;
 }
 
-const PagemarkInner = React.memo((props: PagemarkInnerProps) => {
+const PagemarkInner = React.memo(function PagemarkInner(props: PagemarkInnerProps) {
 
     const {id, fingerprint, pagemark, pageNum, className, overlayRect, pagemarkColor} = props;
 

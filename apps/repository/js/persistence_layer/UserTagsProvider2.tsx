@@ -23,7 +23,7 @@ interface IProps {
 }
 
 // TODO: this can be cached easier...
-export const UserTagsProvider = React.memo((props: IProps) => {
+export const UserTagsProvider = React.memo(function UserTagsProvider(props: IProps) {
 
     const userTagsRef = React.useRef<SubscriptionValue<ReadonlyArray<UserTag>>>({value: [], error: undefined});
 

@@ -80,7 +80,7 @@ interface MountListenerProps {
     readonly onMounted: (mounted: boolean) => void;
 }
 
-const MountListener = React.memo((props: MountListenerProps) => {
+const MountListener = React.memo(function MountListener(props: MountListenerProps) {
 
     useComponentDidMount(() => props.onMounted(true));
     useComponentWillUnmount(() => props.onMounted(false));

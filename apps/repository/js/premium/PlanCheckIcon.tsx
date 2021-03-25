@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) =>
 );
 
 
-export const PlanCheckIcon = React.memo(() => {
+export const PlanCheckIcon = React.memo(function PlanCheckIcon() {
 
     const classes = useStyles();
 

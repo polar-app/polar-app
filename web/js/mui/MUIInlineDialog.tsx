@@ -5,7 +5,7 @@ interface IProps {
     readonly children: JSX.Element;
 }
 
-export const MUIInlineDialog = React.memo((props: IProps) => {
+export const MUIInlineDialog = React.memo(function MUIInlineDialog(props: IProps) {
 
     return (
         <div style={{

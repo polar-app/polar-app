@@ -19,7 +19,7 @@ const globalKeyMap = keyMapWithGroup({
     }
 });
 
-export const FlashcardGlobalHotKeys = React.memo(() => {
+export const FlashcardGlobalHotKeys = React.memo(function FlashcardGlobalHotKeys() {
 
     const {setSide} = useFlashcardCallbacks();
 

@@ -74,7 +74,7 @@ namespace Desktop {
 
     };
 
-    const Toolbar = React.memo(() => {
+    const Toolbar = React.memo(function Toolbar() {
         return (
             <MUIPaperToolbar id="header-filter"
                              padding={1}>
@@ -99,7 +99,7 @@ namespace Desktop {
         );
     });
 
-    const Right = React.memo(() => {
+    const Right = React.memo(function Right() {
 
         return (
             <div style={{

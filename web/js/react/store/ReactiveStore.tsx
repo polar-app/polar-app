@@ -20,7 +20,7 @@ export function createReactiveStore<T>(storeFactory: () => T): ReactiveStoreTupl
     const defaultStore = storeFactory();
     const StoreContext = React.createContext(defaultStore);
 
-    const StoreProvider = React.memo((props: IReactiveStoreProviderProps<T>) => {
+    const StoreProvider = React.memo(function StoreProvider(props: IReactiveStoreProviderProps<T>) {
 
         const store = React.useMemo(() => props.initialStore || defaultStore, [props.initialStore]);
 

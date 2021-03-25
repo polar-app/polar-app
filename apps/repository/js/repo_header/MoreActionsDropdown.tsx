@@ -14,7 +14,7 @@ import {IconWithColor} from "../../../../web/js/ui/IconWithColor";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {useLinkLoader} from "../../../../web/js/ui/util/LinkLoaderHook";
 
-export const MoreActionsDropdown = React.memo(() => {
+export const MoreActionsDropdown = React.memo(function MoreActionsDropdown() {
 
     const isElectron = AppRuntime.isElectron();
     const dialogs = useDialogManager();

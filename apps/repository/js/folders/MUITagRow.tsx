@@ -11,7 +11,7 @@ interface IProps {
     readonly info: string | number;
 }
 
-export const MUITagRow = React.memo((props: IProps) => {
+export const MUITagRow = React.memo(function MUITagRow(props: IProps) {
     return (
         <TableRow hover role="checkbox" tabIndex={-1}>
             <TableCell>

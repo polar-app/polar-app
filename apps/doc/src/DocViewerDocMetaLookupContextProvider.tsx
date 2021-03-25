@@ -11,7 +11,7 @@ interface IProps {
     readonly children: React.ReactElement;
 }
 
-export const DocViewerDocMetaLookupContextProvider = React.memo((props: IProps) => {
+export const DocViewerDocMetaLookupContextProvider = React.memo(function DocViewerDocMetaLookupContextProvider(props: IProps) {
 
     const {docMeta} = useDocViewerStore(['docMeta']);
 

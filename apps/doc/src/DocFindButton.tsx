@@ -7,7 +7,7 @@ interface IProps {
     readonly className?: string;
 }
 
-export const DocFindButton = React.memo((props: IProps) => {
+export const DocFindButton = React.memo(function DocFindButton(props: IProps) {
 
     const {setActive} = useDocFindCallbacks();
 

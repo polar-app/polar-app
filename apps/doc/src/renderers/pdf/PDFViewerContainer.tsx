@@ -9,7 +9,7 @@ interface IProps {
     readonly children: React.ReactNode;
 }
 
-export const PDFViewerContainer = React.memo((props: IProps) => {
+export const PDFViewerContainer = React.memo(function PDFViewerContainer(props: IProps) {
 
     const contextMenu = useContextMenu();
 

@@ -5,7 +5,7 @@ import Icon from '@material-ui/core/Icon';
 import useTheme from '@material-ui/core/styles/useTheme';
 import {MUITooltip} from "../../../mui/MUITooltip";
 
-export const DocumentSaved = React.memo(() => {
+export const DocumentSaved = React.memo(function DocumentSaved() {
     const theme = useTheme();
     return (
         <MUITooltip title="Saved to cloud">

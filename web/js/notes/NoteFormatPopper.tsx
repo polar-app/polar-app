@@ -26,7 +26,7 @@ export interface IProps extends NoteFormatBarProps {
 
 }
 
-export const NoteFormatPopper = React.memo((props: IProps) => {
+export const NoteFormatPopper = React.memo(function NoteFormatPopper(props: IProps) {
 
     const [position, setPosition] = React.useState<INoteFormatBarPosition | undefined>(undefined);
 

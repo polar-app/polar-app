@@ -11,7 +11,7 @@ interface IProps {
     readonly onClose: () => void;
 }
 
-export const TwoMigrationDialog = React.memo((props: IProps) => {
+export const TwoMigrationDialog = React.memo(function TwoMigrationDialog(props: IProps) {
 
     const [open, setOpen] = React.useState(true);
 

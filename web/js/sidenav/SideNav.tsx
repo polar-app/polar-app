@@ -90,7 +90,7 @@ interface HistoryButtonProps {
     readonly children: JSX.Element | string;
 }
 
-export const SideNavHistoryButton = React.memo((props: HistoryButtonProps) => {
+export const SideNavHistoryButton = React.memo(function SideNavHistoryButton(props: HistoryButtonProps) {
 
     const history = useHistory();
 
@@ -105,7 +105,7 @@ export const SideNavHistoryButton = React.memo((props: HistoryButtonProps) => {
 });
 
 
-const HomeButton = React.memo(() => {
+const HomeButton = React.memo(function HomeButton() {
 
     const history = useHistory();
     const classes = useStyles();
@@ -120,7 +120,7 @@ const HomeButton = React.memo(() => {
     )
 });
 
-const AnnotationsButton = React.memo(() => {
+const AnnotationsButton = React.memo(function AnnotationsButton() {
 
     const classes = useStyles();
 
@@ -134,7 +134,7 @@ const AnnotationsButton = React.memo(() => {
 
 
 
-const StatsButton = React.memo(() => {
+const StatsButton = React.memo(function StatsButton() {
 
     const classes = useStyles();
 
@@ -146,7 +146,7 @@ const StatsButton = React.memo(() => {
     )
 });
 
-const AccountButton = React.memo(() => {
+const AccountButton = React.memo(function AccountButton() {
 
     const classes = useStyles();
 
@@ -158,7 +158,7 @@ const AccountButton = React.memo(() => {
     )
 });
 
-const SettingsButton = React.memo(() => {
+const SettingsButton = React.memo(function SettingsButton() {
 
     const classes = useStyles();
 
@@ -171,7 +171,7 @@ const SettingsButton = React.memo(() => {
 });
 
 
-const PolarButton = React.memo(() => {
+const PolarButton = React.memo(function PolarButton() {
 
     const classes = useStyles();
     const history = useHistory();
@@ -187,7 +187,7 @@ const PolarButton = React.memo(() => {
 
 })
 
-const SyncButton = React.memo(() => {
+const SyncButton = React.memo(function SyncButton() {
 
     const classes = useStyles();
 
@@ -203,7 +203,7 @@ const SyncButton = React.memo(() => {
     )
 });
 
-const SideNavDividerTop = React.memo(() => {
+const SideNavDividerTop = React.memo(function SideNavDividerTop() {
 
     const classes = useStyles();
 
@@ -215,7 +215,7 @@ const SideNavDividerTop = React.memo(() => {
 
 });
 
-const SideNavDivider = React.memo(() => {
+const SideNavDivider = React.memo(function SideNavDivider() {
 
     const classes = useStyles();
 
@@ -230,7 +230,7 @@ const SideNavDivider = React.memo(() => {
 export const [SideNavContextMenuProvider, useSideNavContextMenu]
     = createContextMenu(SideNavContextMenu, {name: 'sidenav'});
 
-export const SideNav = React.memo(() => {
+export const SideNav = React.memo(function SideNav() {
 
     const classes = useStyles();
 

@@ -96,7 +96,7 @@ interface IUserTagsDataLoaderDataProps {
     readonly children: JSX.Element;
 }
 
-const UserTagsDataLoaderData = React.memo((props: IUserTagsDataLoaderDataProps) => {
+const UserTagsDataLoaderData = React.memo(function UserTagsDataLoaderData(props: IUserTagsDataLoaderDataProps) {
 
     const {repoDocMetaManager, appTags, userTags, persistenceLayerProvider} = props;
 
@@ -173,7 +173,7 @@ interface IRepoDataLoaderDataProps {
     readonly children: JSX.Element;
 }
 
-const RepoDataLoaderData = React.memo((props: IRepoDataLoaderDataProps) => {
+const RepoDataLoaderData = React.memo(function RepoDataLoaderData(props: IRepoDataLoaderDataProps) {
 
     const Component = (dataProps: {userTags: ReadonlyArray<Tag> | undefined}) => {
 
@@ -209,7 +209,7 @@ interface IPersistenceLayerAppDataProps {
 
 }
 
-const PersistenceLayerAppData = React.memo((props: IPersistenceLayerAppDataProps) => {
+const PersistenceLayerAppData = React.memo(function PersistenceLayerAppData(props: IPersistenceLayerAppDataProps) {
 
     const Component = (dataProps: {data: AppTags | undefined}) => (
         <RepoDataLoaderData {...props} appTags={dataProps.data}>
@@ -242,7 +242,7 @@ export interface IProps {
     readonly children: JSX.Element;
 }
 
-export const PersistenceLayerApp = React.memo((props: IProps) => {
+export const PersistenceLayerApp = React.memo(function PersistenceLayerApp(props: IProps) {
 
     const Component = (dataProps: {persistenceLayerProvider: ListenablePersistenceLayerProvider}) => (
         <PersistenceLayerAppData {...props} persistenceLayerProvider={dataProps.persistenceLayerProvider}>

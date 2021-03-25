@@ -23,10 +23,10 @@ const globalKeyMap = keyMapWithGroup(
         }
     });
 
-export const AnnotationRepoGlobalHotKeys = React.memo(() => {
+export const AnnotationRepoGlobalHotKeys = React.memo(function AnnotationRepoGlobalHotKeys() {
 
     const callbacks = useAnnotationRepoCallbacks();
-    
+
     const globalKeyHandlers = {
         TAG: KeyboardShortcutHandlers.withPreventDefault(callbacks.onTagged),
         DELETE: KeyboardShortcutHandlers.withPreventDefault(callbacks.onDeleted),

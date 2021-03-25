@@ -94,7 +94,7 @@ const useStyles = makeStyles({
 
 });
 
-const TableRowDivider = React.memo(() => {
+const TableRowDivider = React.memo(function TableRowDivider() {
 
   const classes = useStyles();
 

@@ -43,7 +43,7 @@ interface IProps {
     readonly style?: React.CSSProperties;
 }
 
-const Delegate = React.memo((props: IProps) => {
+const Delegate = React.memo(function Delegate(props: IProps) {
 
     const classes = useStyles();
 

@@ -9,7 +9,7 @@ interface IProps {
     readonly side: SideType;
 }
 
-export const DockLayoutToggleButton = React.memo((props: IProps) => {
+export const DockLayoutToggleButton = React.memo(function DockLayoutToggleButton(props: IProps) {
 
     const {toggleSide} = useDockLayoutCallbacks();
 

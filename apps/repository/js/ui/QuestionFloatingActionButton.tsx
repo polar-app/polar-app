@@ -66,7 +66,7 @@ function useReportFeedback() {
 
 namespace MenuItems {
 
-    export const Chat = React.memo(() => {
+    export const Chat = React.memo(function Chat() {
 
         function onClick() {
             Analytics.event2('featureTriggered', {name: 'QuestionButton.Chat'})
@@ -82,7 +82,7 @@ namespace MenuItems {
 
     })
 
-    export const Documentation = React.memo(() => {
+    export const Documentation = React.memo(function Documentation() {
 
         function onClick() {
             Analytics.event2('featureTriggered', {name: 'QuestionButton.Documentation'})

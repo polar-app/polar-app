@@ -19,7 +19,7 @@ export interface IProps {
     readonly Component: React.FunctionComponent<IDataProps<AppTags>>;
 }
 
-export const RepoDataLoader = React.memo((props: IProps) => {
+export const RepoDataLoader = React.memo(function RepoDataLoader(props: IProps) {
 
     const {Component} = props;
 

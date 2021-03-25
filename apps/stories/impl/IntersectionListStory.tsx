@@ -35,7 +35,7 @@ function createData(count: number) {
 
 }
 
-const VisibleComponent = React.memo((props: VisibleComponentProps<IData>) => {
+const VisibleComponent = React.memo(function VisibleComponent(props: VisibleComponentProps<IData>) {
 
     const theme = useTheme();
 
@@ -58,7 +58,7 @@ const VisibleComponent = React.memo((props: VisibleComponentProps<IData>) => {
 
 });
 
-const BlockComponent = React.memo((props: BlockComponentProps<IData>) => {
+const BlockComponent = React.memo(function BlockComponent(props: BlockComponentProps<IData>) {
 
     const height = Numbers.sum(...props.values.map(current => current.height));
 
@@ -76,7 +76,7 @@ const BlockComponent = React.memo((props: BlockComponentProps<IData>) => {
 
 });
 
-const HiddenBlockComponent = React.memo((props: HiddenBlockComponentProps<IData>) => {
+const HiddenBlockComponent = React.memo(function HiddenBlockComponent(props: HiddenBlockComponentProps<IData>) {
 
     const height = Numbers.sum(...props.values.map(current => current.height));
 

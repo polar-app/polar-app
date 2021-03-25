@@ -7,7 +7,7 @@ interface IProps {
     readonly onClick: () => void;
 }
 
-export const MUIPrevIconButton = React.memo((props: IProps) => {
+export const MUIPrevIconButton = React.memo(function MUIPrevIconButton(props: IProps) {
     return (
         <IconButton color={props.color}
                     onClick={props.onClick}>

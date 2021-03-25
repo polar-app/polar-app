@@ -5,7 +5,7 @@ import Tab from '@material-ui/core/Tab';
 import {useHistory} from 'react-router-dom';
 import {DragBar} from "./DragBar";
 
-export const BrowserTabsList = React.memo(() => {
+export const BrowserTabsList = React.memo(function BrowserTabsList() {
 
     const {activeTab, tabs} = useBrowserTabsStore(['activeTab', 'tabs']);
     const {setActiveTab} = useBrowserTabsCallbacks();

@@ -7,7 +7,7 @@ interface IProps {
     readonly style?: React.CSSProperties;
 }
 
-export const MUIHoverToggle = React.memo((props: IProps) => {
+export const MUIHoverToggle = React.memo(function MUIHoverToggle(props: IProps) {
 
     const [hover, setHover] = React.useState(false);
 

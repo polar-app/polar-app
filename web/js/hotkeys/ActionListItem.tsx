@@ -12,7 +12,7 @@ interface IProps {
     readonly onClick: (event: React.MouseEvent) => void;
 }
 
-export const ActionListItem = React.memo((props: IProps) => {
+export const ActionListItem = React.memo(function ActionListItem(props: IProps) {
 
     return (
         <ListItem disableGutters

@@ -39,7 +39,7 @@ interface IProps {
     readonly children: JSX.Element;
 }
 
-export const DocMetaContextProvider = React.memo((props: IProps) => {
+export const DocMetaContextProvider = React.memo(function DocMetaContextProvider(props: IProps) {
 
     const [doc, setDoc] = useState<IDocMetaHolder | undefined>(props.doc);
 

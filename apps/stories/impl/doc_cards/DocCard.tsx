@@ -21,7 +21,7 @@ interface IProps {
     readonly description: string;
 }
 
-export const DocCard = React.memo((props: IProps) => {
+export const DocCard = React.memo(function DocCard(props: IProps) {
     const classes = useStyles();
 
     return (

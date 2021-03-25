@@ -21,7 +21,7 @@ interface IProps {
     readonly checked: boolean;
 }
 
-export const MUIEfficientCheckbox = React.memo((props: IProps) => {
+export const MUIEfficientCheckbox = React.memo(function MUIEfficientCheckbox(props: IProps) {
 
     const classes = useStyles();
 

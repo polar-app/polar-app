@@ -83,7 +83,7 @@ const Handheld = () => {
 
 const Desktop = () => {
 
-    const SettingsButton = React.memo(() => {
+    const SettingsButton = React.memo(function SettingsButton() {
 
         return (
             <Link to="/settings">

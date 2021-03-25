@@ -216,7 +216,7 @@ const Desktop = (props: ReviewerProps) => {
 
 };
 
-const PhoneAndTablet = React.memo((props: ReviewerProps) => {
+const PhoneAndTablet = React.memo(function PhoneAndTablet(props: ReviewerProps) {
 
     return (
         <FixedNav id="doc-repository"
@@ -248,7 +248,7 @@ export interface IState {
     readonly isReviewer: boolean;
 }
 
-export const StatsScreen = React.memo(() => {
+export const StatsScreen = React.memo(function StatsScreen() {
 
     const [state, setState] = React.useState<IState>({isReviewer: false});
 

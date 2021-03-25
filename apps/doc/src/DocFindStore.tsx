@@ -212,7 +212,7 @@ interface IProps {
     readonly children: React.ReactElement;
 }
 
-export const DocFindStore = React.memo((props: IProps) => {
+export const DocFindStore = React.memo(function DocFindStore(props: IProps) {
     return (
         <DocFindStoreProviderDelegate>
             {props.children}

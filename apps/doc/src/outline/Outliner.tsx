@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
-const NoOutlineAvailable = React.memo(() => {
+const NoOutlineAvailable = React.memo(function NoOutlineAvailable() {
 
     return (
         <div style={{textAlign: 'center'}}>
@@ -131,7 +131,7 @@ const OutlineTreeItem = deepMemo((props: IProps) => {
 
 });
 
-const OutlineTreeView = React.memo(() => {
+const OutlineTreeView = React.memo(function OutlineTreeView() {
 
     const {outline} = useDocViewerStore(['outline']);
 

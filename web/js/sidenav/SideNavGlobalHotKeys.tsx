@@ -23,7 +23,7 @@ const globalKeyMap = keyMapWithGroup({
     }
 });
 
-export const SideNavGlobalHotKeys = React.memo(() => {
+export const SideNavGlobalHotKeys = React.memo(function SideNavGlobalHotKeys() {
 
     const {closeCurrentTab, prevTab, nextTab} = useSideNavCallbacks();
 

@@ -64,7 +64,7 @@ interface IProps {
 
 }
 
-export const MUITreeItemLabel = React.memo((props: IProps) => {
+export const MUITreeItemLabel = React.memo(function MUITreeItemLabel(props: IProps) {
 
     const classes = useStyles();
     const drag = useDragContext();

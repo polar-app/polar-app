@@ -11,7 +11,7 @@ interface IProps {
     readonly draggable?: boolean;
 }
 
-export const NoteLink = React.memo((props: IProps) => {
+export const NoteLink = React.memo(function NoteLink(props: IProps) {
 
     const noteLink = createNoteLink(props.target);
 

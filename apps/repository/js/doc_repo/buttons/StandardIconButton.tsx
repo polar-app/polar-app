@@ -19,7 +19,7 @@ export interface StandardButtonProps extends ButtonProps {
     readonly disabled?: boolean;
 }
 
-export const StandardIconButton = React.memo((props: StandardButtonProps) => {
+export const StandardIconButton = React.memo(function StandardIconButton(props: StandardButtonProps) {
     const classes = useStyles();
 
     return (

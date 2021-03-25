@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const ZenModeOverview = React.memo(() => {
+export const ZenModeOverview = React.memo(function ZenModeOverview() {
 
     return (
         <div>

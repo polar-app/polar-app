@@ -9,7 +9,7 @@ export interface IProps {
     readonly Component: React.FunctionComponent<{userTags: ReadonlyArray<Tag> | undefined}>;
 }
 
-export const UserTagsDataLoader = React.memo((props: IProps) => {
+export const UserTagsDataLoader = React.memo(function UserTagsDataLoader(props: IProps) {
 
     const prefs = usePrefsContext();
 

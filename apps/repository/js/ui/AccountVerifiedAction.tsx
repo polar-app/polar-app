@@ -47,7 +47,7 @@ export namespace AccountVerifiedAction {
         readonly plan: V2Plan;
     }
 
-    export const WarningSelector = React.memo((props: IWarningSelectorProps) => {
+    export const WarningSelector = React.memo(function WarningSelector(props: IWarningSelectorProps) {
 
         switch(props.reason) {
 

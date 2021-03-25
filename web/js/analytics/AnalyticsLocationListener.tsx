@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import {AnalyticsURLCanonicalizer} from "./AnalyticsURLCanonicalizer";
 import {Analytics} from "./Analytics";
 
-export const AnalyticsLocationListener = React.memo(() => {
+export const AnalyticsLocationListener = React.memo(function AnalyticsLocationListener() {
 
     const loc = useLocation();
 

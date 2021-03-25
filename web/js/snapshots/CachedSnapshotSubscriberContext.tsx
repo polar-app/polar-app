@@ -110,7 +110,7 @@ export function createCachedSnapshotSubscriberContext<V>(): CachedSnapshotTuple<
 
     };
 
-    const Provider = React.memo((props: ProviderProps<V>) => {
+    const Provider = React.memo(function Provider(props: ProviderProps<V>) {
 
         const storeContext = React.useContext(context);
         const predicate = props.predicate || DEFAULT_PREDICATE;

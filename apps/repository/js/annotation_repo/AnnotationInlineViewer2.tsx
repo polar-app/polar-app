@@ -36,7 +36,7 @@ interface AnnotationSelectedProps {
     readonly annotation: IDocAnnotation;
 }
 
-const AnnotationSelected = React.memo((props : AnnotationSelectedProps) => {
+const AnnotationSelected = React.memo(function AnnotationSelected(props : AnnotationSelectedProps) {
 
     const {annotation} = props;
 

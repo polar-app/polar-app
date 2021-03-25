@@ -15,7 +15,7 @@ interface IChildAnnotationProps {
     readonly child: IDocAnnotationRef;
 }
 
-export const ChildAnnotation = React.memo((props: IChildAnnotationProps) => {
+export const ChildAnnotation = React.memo(function ChildAnnotation(props: IChildAnnotationProps) {
 
     const {child} = props;
 

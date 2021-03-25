@@ -22,7 +22,7 @@ interface IProps {
 
 }
 
-export const AcademicProfileConfigurator = React.memo((props: IProps) => {
+export const AcademicProfileConfigurator = React.memo(function AcademicProfileConfigurator(props: IProps) {
 
     const onForm = (newProfile: Partial<AcademicOccupationProfile>) => {
 

@@ -21,7 +21,7 @@ interface IProps {
     readonly tabs: ReadonlyArray<ITabProps>;
 }
 
-export const NavTabs = React.memo((props: IProps) => {
+export const NavTabs = React.memo(function NavTabs(props: IProps) {
 
     const location = useLocation();
 

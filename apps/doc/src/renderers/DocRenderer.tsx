@@ -82,7 +82,7 @@ interface DocRendererDelegateProps {
     readonly children: React.ReactNode;
 }
 
-const DocRendererDelegate = React.memo((props: DocRendererDelegateProps) => {
+const DocRendererDelegate = React.memo(function DocRendererDelegate(props: DocRendererDelegateProps) {
 
     switch (props.fileType) {
 

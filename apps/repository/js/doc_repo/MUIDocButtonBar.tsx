@@ -34,7 +34,7 @@ function useSelectRowCallback(id: IDStr,
 
 }
 
-export const MUIDocButtonBar = React.memo((props: IProps) => {
+export const MUIDocButtonBar = React.memo(function MUIDocButtonBar(props: IProps) {
 
     const callbacks = useDocRepoCallbacks();
 

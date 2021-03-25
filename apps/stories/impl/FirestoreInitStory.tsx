@@ -3,7 +3,7 @@ import {Firestore} from "../../../web/js/firebase/Firestore";
 import {useComponentDidMount} from "../../../web/js/hooks/ReactLifecycleHooks";
 import firebase from 'firebase/app'
 
-export const FirestoreInitStory = React.memo(() => {
+export const FirestoreInitStory = React.memo(function FirestoreInitStory() {
 
     const [init, setInit] = React.useState(false);
 

@@ -91,7 +91,7 @@ interface IProps {
 
 }
 
-export const MUICommandMenu = React.memo((props: IProps) => {
+export const MUICommandMenu = React.memo(function MUICommandMenu(props: IProps) {
 
     const classes = useStyles();
     const {commandsProvider, onCommand, onClose} = props;

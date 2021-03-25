@@ -84,7 +84,7 @@ function useUserInfoContextSnapshotSubscriber(): SnapshotSubscriberWithID<IUserI
 }
 
 
-const UserInfoTraits = React.memo(() => {
+const UserInfoTraits = React.memo(function UserInfoTraits() {
 
     const analytics = useAnalytics();
 

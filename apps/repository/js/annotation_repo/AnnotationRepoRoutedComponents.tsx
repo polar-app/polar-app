@@ -8,7 +8,7 @@ import {AnnotationRepoFilterBar2} from "./AnnotationRepoFilterBar2";
 import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 import {Helmet} from "react-helmet";
 
-export const AnnotationRepoRoutedComponents = React.memo(() => {
+export const AnnotationRepoRoutedComponents = React.memo(function AnnotationRepoRoutedComponents() {
 
     const location = useLocationWithPathOnly();
     const history = useHistory();

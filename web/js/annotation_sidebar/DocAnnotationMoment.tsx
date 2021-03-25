@@ -23,7 +23,7 @@ interface IProps {
 /**
  * A generic wrapper that determines which sub-component to render.
  */
-export const DocAnnotationMoment = React.memo((props: IProps) => {
+export const DocAnnotationMoment = React.memo(function DocAnnotationMoment(props: IProps) {
 
     const classes = useStyles();
 

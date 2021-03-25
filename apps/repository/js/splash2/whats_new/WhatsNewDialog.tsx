@@ -5,7 +5,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 
-export const WhatsNewDialog = React.memo(() => {
+export const WhatsNewDialog = React.memo(function WhatsNewDialog() {
 
     const [open, setOpen] = React.useState(true);
 

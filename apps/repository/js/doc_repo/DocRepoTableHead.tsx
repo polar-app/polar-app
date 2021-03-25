@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const Check = React.memo(() => {
+const Check = React.memo(function Check() {
     return (
         <TableCell key="left-checkbox"
                    padding="checkbox">
@@ -57,7 +57,7 @@ const Check = React.memo(() => {
     )
 });
 
-const ColumnSelector = React.memo(() => {
+const ColumnSelector = React.memo(function ColumnSelector() {
     return (
 
         <TableCell key="right-filter"
@@ -75,7 +75,7 @@ const ColumnSelector = React.memo(() => {
 
 });
 
-export const DocRepoTableHead = React.memo(() => {
+export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
 
     const classes = useStyles();
 

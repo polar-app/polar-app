@@ -10,7 +10,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 import {Helmet} from "react-helmet";
 
-export const DocRepoScreenRoutedComponents = React.memo(() => {
+export const DocRepoScreenRoutedComponents = React.memo(function DocRepoScreenRoutedComponents() {
 
     const location = useLocationWithPathOnly();
     const history = useHistory();

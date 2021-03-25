@@ -23,7 +23,7 @@ import {
 } from "../../../doc/src/DocViewerMenu";
 import {MUIDocDropdownMenuItems} from "./MUIDocDropdownMenuItems";
 
-const VisibleComponent = React.memo((props: VisibleComponentProps<RepoDocInfo>) => {
+const VisibleComponent = React.memo(function VisibleComponent(props: VisibleComponentProps<RepoDocInfo>) {
 
     const {selected} = useDocRepoStore(['selected']);
 
@@ -42,7 +42,7 @@ const VisibleComponent = React.memo((props: VisibleComponentProps<RepoDocInfo>) 
 
 });
 
-const BlockComponent = React.memo((props: BlockComponentProps<RepoDocInfo>) => {
+const BlockComponent = React.memo(function BlockComponent(props: BlockComponentProps<RepoDocInfo>) {
 
     const height = Numbers.sum(...props.values.map(current => HEIGHT));
 
@@ -59,7 +59,7 @@ const BlockComponent = React.memo((props: BlockComponentProps<RepoDocInfo>) => {
 
 });
 
-const HiddenBlockComponent = React.memo((props: HiddenBlockComponentProps<RepoDocInfo>) => {
+const HiddenBlockComponent = React.memo(function HiddenBlockComponent(props: HiddenBlockComponentProps<RepoDocInfo>) {
 
     const height = Numbers.sum(...props.values.map(current => HEIGHT));
 

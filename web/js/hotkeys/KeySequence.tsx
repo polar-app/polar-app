@@ -77,7 +77,7 @@ interface InputAdvice {
 /**
  * An actual key on the keyboard.
  */
-const Key = React.memo((props: KeyProps) => {
+const Key = React.memo(function Key(props: KeyProps) {
 
     const classes = useStyles();
 

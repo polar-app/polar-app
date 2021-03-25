@@ -120,7 +120,7 @@ interface IMyStoreContextProviderProps {
     readonly children: JSX.Element;
 }
 
-const MyStoreContextProvider = React.memo((props: IMyStoreContextProviderProps) => {
+const MyStoreContextProvider = React.memo(function MyStoreContextProvider(props: IMyStoreContextProviderProps) {
     return (
         <MyStoreContext.Provider value={new MyStore()}>
             {props.children}

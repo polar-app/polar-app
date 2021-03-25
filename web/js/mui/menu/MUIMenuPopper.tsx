@@ -33,7 +33,7 @@ interface IProps {
 /**
  * Isolated and non-state based popper with the button external.
  */
-export const MUIMenuPopper = React.memo((props: IProps) => {
+export const MUIMenuPopper = React.memo(function MUIMenuPopper(props: IProps) {
     const classes = useStyles();
 
     const {anchorRef, onClosed} = props;

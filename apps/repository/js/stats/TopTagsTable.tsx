@@ -9,7 +9,7 @@ export interface IProps {
     readonly docInfos: ReadonlyArray<IDocInfo>;
 }
 
-export const TopTagsTable = React.memo((props: IProps) => {
+export const TopTagsTable = React.memo(function TopTagsTable(props: IProps) {
 
     const topTags = DocInfoStatistics.computeTopTags(props.docInfos, 20);
 

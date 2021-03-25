@@ -18,7 +18,7 @@ interface IProps extends FirebaseUIAuthOptions {
 
 }
 
-export const LoginScreen = React.memo((props: IProps) => {
+export const LoginScreen = React.memo(function LoginScreen(props: IProps) {
 
     const [pending, setPending] = React.useState(true);
 

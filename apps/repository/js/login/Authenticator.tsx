@@ -526,7 +526,7 @@ const OrCreateNewAccount = () => {
 
 }
 
-const Main = React.memo((props: IProps) => {
+const Main = React.memo(function Main(props: IProps) {
 
     const classes = useStyles();
 
@@ -617,7 +617,7 @@ interface IProps {
 
 const AuthenticatorModeContext = React.createContext<AuthenticatorMode>(null!);
 
-export const Authenticator = React.memo((props: IProps) => {
+export const Authenticator = React.memo(function Authenticator(props: IProps) {
 
     const authStatus = useAuthHandler();
 

@@ -19,7 +19,7 @@ const Styles: IStyleMap = {
 
 };
 
-export const NavLogo = React.memo(() => {
+export const NavLogo = React.memo(function NavLogo() {
 
     const createLink = () => {
 

@@ -68,7 +68,7 @@ const Main = React.memo(function Main() {
     )
 })
 
-const DocMain = React.memo(() => {
+const DocMain = React.memo(function DocMain() {
 
     const {docURL} = useDocViewerStore(['docURL', 'docMeta']);
 
@@ -100,7 +100,7 @@ namespace Device {
         readonly toggleRightDrawer: () => void;
     }
 
-    const HandheldToolbar = React.memo((props: HandheldToolbarProps) => {
+    const HandheldToolbar = React.memo(function HandheldToolbar(props: HandheldToolbarProps) {
 
         return (
             <MUIPaperToolbar borderBottom>
@@ -132,7 +132,7 @@ namespace Device {
         )
     });
 
-    export const Handheld = React.memo(() => {
+    export const Handheld = React.memo(function Handheld() {
 
         const [open, setOpen] = React.useState(false);
 

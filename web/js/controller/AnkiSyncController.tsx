@@ -17,7 +17,7 @@ import {AnkiSyncError} from "../apps/sync/framework/anki/AnkiSyncError";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {MUILinkLoaderButton} from "../mui/MUILinkLoaderButton";
 
-export const AnkiSyncController = React.memo(() => {
+export const AnkiSyncController = React.memo(function AnkiSyncController() {
 
     const log = useLogger();
     const dialogManager = useDialogManager();

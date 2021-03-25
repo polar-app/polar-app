@@ -22,7 +22,7 @@ interface IProps {
     readonly children: JSX.Element;
 }
 
-export const MUIRouterLink = React.memo((props: IProps) => {
+export const MUIRouterLink = React.memo(function MUIRouterLink(props: IProps) {
 
     const classes = useStyles();
 

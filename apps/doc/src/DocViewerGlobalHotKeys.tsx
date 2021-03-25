@@ -68,7 +68,7 @@ const globalKeyMap = keyMapWithGroup({
     }
 });
 
-export const DocViewerGlobalHotKeys = React.memo(() => {
+export const DocViewerGlobalHotKeys = React.memo(function DocViewerGlobalHotKeys() {
 
     const findCallbacks = useDocFindCallbacks();
     const {onPagePrev, onPageNext, doZoom, doZoomRestore, onDocTagged, toggleDocArchived, toggleDocFlagged} = useDocViewerCallbacks();

@@ -61,7 +61,7 @@ export function usePricingCallbacks() {
     return React.useContext(CallbacksContext);
 }
 
-export const PricingStoreProvider = React.memo((props: IProps) => {
+export const PricingStoreProvider = React.memo(function PricingStoreProvider(props: IProps) {
 
     const [interval, setInterval] = React.useState<Billing.Interval>(initialStore.interval);
 

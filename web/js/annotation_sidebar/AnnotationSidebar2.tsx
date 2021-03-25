@@ -86,7 +86,7 @@ const AnnotationSidebarItem = memoForwardRef((props: AnnotationSidebarItemProps)
 
 });
 
-const AnnotationsBlock = React.memo(() => {
+const AnnotationsBlock = React.memo(function AnnotationsBlock() {
 
     const store = useAnnotationSidebarStore(['view']);
 
@@ -105,7 +105,7 @@ const AnnotationsBlock = React.memo(() => {
 
 });
 
-const Annotations = React.memo(() => {
+const Annotations = React.memo(function Annotations() {
 
     return (
         <Paper square

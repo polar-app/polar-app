@@ -36,7 +36,7 @@ interface IProps {
     readonly children: JSX.Element;
 }
 
-export const AnnotationActiveInputContextProvider = React.memo((props: IProps) => {
+export const AnnotationActiveInputContextProvider = React.memo(function AnnotationActiveInputContextProvider(props: IProps) {
 
     const [active, setActive] = useState<AnnotationInputType>('none');
 

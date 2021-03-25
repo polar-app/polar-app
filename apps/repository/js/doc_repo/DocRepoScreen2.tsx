@@ -44,7 +44,7 @@ const Router = () => (
 
 );
 
-const FolderDrawer = React.memo(() => {
+const FolderDrawer = React.memo(function FolderDrawer() {
 
     const location = useLocationWithHashOnly();
     const history = useHistory()
@@ -80,7 +80,7 @@ namespace devices {
         </>
     ));
 
-    export const Desktop = React.memo(() => {
+    export const Desktop = React.memo(function Desktop() {
 
         const theme = useTheme();
 

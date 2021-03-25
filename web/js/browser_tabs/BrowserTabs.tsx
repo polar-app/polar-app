@@ -7,7 +7,7 @@ interface IProps {
     readonly children: React.ReactElement;
 }
 
-export const BrowserTabs = React.memo((props: IProps) => {
+export const BrowserTabs = React.memo(function BrowserTabs(props: IProps) {
 
     if (! AppRuntime.isElectron()) {
         // don't do anything if we're not running electron

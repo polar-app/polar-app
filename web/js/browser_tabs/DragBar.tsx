@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
  *
  * https://www.electronjs.org/docs/api/frameless-window
  */
-export const DragBar = React.memo(() => {
+export const DragBar = React.memo(function DragBar() {
 
     const classes = useStyles();
 

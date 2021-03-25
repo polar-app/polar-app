@@ -6,7 +6,7 @@ interface IProps {
     readonly style?: React.CSSProperties;
 }
 
-export const LoadingProgress = React.memo((props: IProps) => {
+export const LoadingProgress = React.memo(function LoadingProgress(props: IProps) {
 
     const style = props.style || {};
 

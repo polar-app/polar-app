@@ -3,7 +3,7 @@ import {StandardIconButton} from "../../../repository/js/doc_repo/buttons/Standa
 import {useZenModeCallbacks} from "../../../../web/js/mui/ZenModeStore";
 import ZoomOutMapIcon from '@material-ui/icons/ZoomOutMap';
 
-export const ZenModeButton = React.memo(() => {
+export const ZenModeButton = React.memo(function ZenModeButton() {
 
     const {toggleZenMode} = useZenModeCallbacks();
 

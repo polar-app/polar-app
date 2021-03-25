@@ -2,7 +2,7 @@ import * as React from "react";
 import {useHistory} from "react-router-dom";
 import {AddFileDropzoneDialog2} from "./AddFileDropzoneDialog2";
 
-export const AddFileDropzoneScreen = React.memo(() => {
+export const AddFileDropzoneScreen = React.memo(function AddFileDropzoneScreen() {
 
     const history = useHistory();
     const [open, setOpen] = React.useState(true);

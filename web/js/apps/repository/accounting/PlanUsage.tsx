@@ -56,7 +56,7 @@ interface UsageGaugeProps {
 
 }
 
-const UsageGauge = React.memo((props: UsageGaugeProps) => {
+const UsageGauge = React.memo(function UsageGauge(props: UsageGaugeProps) {
 
     const classes = useStyles();
 
@@ -109,7 +109,7 @@ const UsageGauge = React.memo((props: UsageGaugeProps) => {
 
 });
 //
-// const PlanUsageForStorage = React.memo(() => {
+// const PlanUsageForStorage = React.memo(function PlanUsageForStorage() {
 //
 //     const classes = useStyles();
 //

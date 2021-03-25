@@ -4,7 +4,7 @@ interface ListItemRightProps {
     readonly children: JSX.Element;
 }
 
-export const ListItemRight = React.memo((props: ListItemRightProps) => {
+export const ListItemRight = React.memo(function ListItemRight(props: ListItemRightProps) {
     return (
         <div style={{
             top: '50%',

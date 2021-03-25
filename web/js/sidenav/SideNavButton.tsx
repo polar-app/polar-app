@@ -8,7 +8,7 @@ interface ISideNavButtonProps {
     readonly tab: TabDescriptor;
 }
 
-const Delegate = React.memo((props: ISideNavButtonProps) => {
+const Delegate = React.memo(function Delegate(props: ISideNavButtonProps) {
 
     const {tab} = props;
 
@@ -18,7 +18,7 @@ const Delegate = React.memo((props: ISideNavButtonProps) => {
 
 });
 
-export const SideNavButton = React.memo((props: ISideNavButtonProps) => {
+export const SideNavButton = React.memo(function SideNavButton(props: ISideNavButtonProps) {
 
     const {tab} = props;
 

@@ -5,7 +5,7 @@ interface IProps {
     readonly onClick: () => void;
 }
 
-export const CancelButton = React.memo((props: IProps) => {
+export const CancelButton = React.memo(function CancelButton(props: IProps) {
 
     return (
         <Button onClick={props.onClick}>

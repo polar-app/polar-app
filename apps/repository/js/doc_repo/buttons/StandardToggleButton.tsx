@@ -23,7 +23,7 @@ export interface StandardToggleButtonProps extends ToggleButtonProps {
     readonly children: JSX.Element;
 }
 
-export const StandardToggleButton = React.memo((props: StandardToggleButtonProps) => {
+export const StandardToggleButton = React.memo(function StandardToggleButton(props: StandardToggleButtonProps) {
 
     const activeColor = useActiveColor(props.active || false);
 

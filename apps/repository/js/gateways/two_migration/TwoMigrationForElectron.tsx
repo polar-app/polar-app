@@ -19,7 +19,7 @@ interface IProps {
     readonly children: React.ReactElement;
 }
 
-export const TwoMigrationForElectron = React.memo((props: IProps) => {
+export const TwoMigrationForElectron = React.memo(function TwoMigrationForElectron(props: IProps) {
 
     const [doMigration, onClose] = useMigration();
 

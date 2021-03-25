@@ -45,7 +45,7 @@ const LeafComponent = () => {
 
 }
 
-const IntermediateComponent = React.memo(() => {
+const IntermediateComponent = React.memo(function IntermediateComponent() {
 
     console.log("IntermediateComponent: rendered");
 

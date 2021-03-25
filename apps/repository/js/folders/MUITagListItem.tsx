@@ -65,7 +65,7 @@ interface IProps {
     readonly onDrop: (event: React.DragEvent, tagID: TagID) => void;
 }
 
-export const MUITagListItemInner = React.memo((props: IProps) => {
+export const MUITagListItemInner = React.memo(function MUITagListItemInner(props: IProps) {
 
     const classes = useStyles();
 
@@ -110,7 +110,7 @@ export const MUITagListItemInner = React.memo((props: IProps) => {
 
 }, isEqual);
 
-export const MUITagListItem = React.memo((props: IProps) => {
+export const MUITagListItem = React.memo(function MUITagListItem(props: IProps) {
 
     const onDrop = useCallback((event: React.DragEvent) => {
 

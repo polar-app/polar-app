@@ -46,7 +46,7 @@ function useFindCallback(): FindCallback {
 
 }
 
-const Matches = React.memo(() => {
+const Matches = React.memo(function Matches() {
 
     const {matches} = useDocFindStore(['matches']);
 
@@ -62,7 +62,7 @@ const Matches = React.memo(() => {
 
 }, isEqual);
 
-const MatchNav = React.memo(() => {
+const MatchNav = React.memo(function MatchNav() {
 
     const {matches} = useDocFindStore(['matches']);
     const {findHandler} = useDocFindStore(['findHandler']);
@@ -83,7 +83,7 @@ const MatchNav = React.memo(() => {
 
 }, isEqual);
 
-export const DocFindBar = React.memo(() => {
+export const DocFindBar = React.memo(function DocFindBar() {
 
     const {active, opts, finder} = useDocFindStore(['active', 'opts', 'finder']);
     const {reset, setMatches} = useDocFindCallbacks();
@@ -174,7 +174,7 @@ interface IFeatureToggleProps {
     readonly onChanged: (checked: boolean) => void;
 }
 
-const FindFeatureToggle = React.memo((props: IFeatureToggleProps) => {
+const FindFeatureToggle = React.memo(function FindFeatureToggle(props: IFeatureToggleProps) {
     return (
 
         <MUIButtonBar>

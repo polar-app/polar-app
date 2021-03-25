@@ -56,7 +56,7 @@ interface IProps {
     readonly children: React.ReactElement;
 }
 
-export const ComponentProgressLoader = React.memo((props: IProps) => {
+export const ComponentProgressLoader = React.memo(function ComponentProgressLoader(props: IProps) {
 
     const [loading, setLoading] = React.useState<boolean>(false);
 

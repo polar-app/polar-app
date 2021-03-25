@@ -65,7 +65,7 @@ export function useSideNavInitializer() {
 
 }
 
-export const SideNavInitializer = React.memo(() => {
+export const SideNavInitializer = React.memo(function SideNavInitializer() {
     useSideNavInitializer();
     return null;
 });

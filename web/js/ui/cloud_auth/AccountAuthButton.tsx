@@ -4,7 +4,7 @@ import {AccountControlDropdown} from './AccountControlDropdown';
 import {AccountActions} from "../../accounts/AccountActions";
 import {useUserInfoContext} from "../../apps/repository/auth_handler/UserInfoProvider";
 
-export const AccountAuthButton = React.memo(() => {
+export const AccountAuthButton = React.memo(function AccountAuthButton() {
 
     const userInfoContext = useUserInfoContext();
 

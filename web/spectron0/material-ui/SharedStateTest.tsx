@@ -7,7 +7,7 @@ interface IProps {
     readonly value: number;
     readonly setValue: (value: number) => void;
 }
-const ChildComponent = React.memo((props: IProps) => {
+const ChildComponent = React.memo(function ChildComponent(props: IProps) {
 
     const value = props.value;
 

@@ -1039,7 +1039,7 @@ interface IProps {
     readonly children: React.ReactElement;
 }
 
-const DocViewerStoreInner = React.memo((props: IProps) => {
+const DocViewerStoreInner = React.memo(function DocViewerStoreInner(props: IProps) {
 
     const docViewerCallbacks = useDocViewerCallbacks();
 
@@ -1051,7 +1051,7 @@ const DocViewerStoreInner = React.memo((props: IProps) => {
 });
 
 
-export const DocViewerStore = React.memo((props: IProps) => {
+export const DocViewerStore = React.memo(function DocViewerStore(props: IProps) {
     return (
         <DocViewerStoreProviderDelegate>
             <DocViewerStoreInner>

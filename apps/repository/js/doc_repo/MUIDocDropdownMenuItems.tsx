@@ -158,7 +158,7 @@ const UpdateDocMetadataMenuItem = deepMemo(() => {
     );
 });
 
-export const MUIDocDropdownMenuItems = React.memo(() => {
+export const MUIDocDropdownMenuItems = React.memo(function MUIDocDropdownMenuItems() {
 
     const callbacks = useDocRepoCallbacks();
 

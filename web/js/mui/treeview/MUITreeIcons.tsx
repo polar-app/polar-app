@@ -48,7 +48,7 @@ interface CollapseIconProps {
     readonly onNodeCollapse: (node: string) => void;
 }
 
-export const CollapseIcon = React.memo((props: CollapseIconProps) => {
+export const CollapseIcon = React.memo(function CollapseIcon(props: CollapseIconProps) {
     const classes = useStyles();
 
 
@@ -65,7 +65,7 @@ interface ExpandIconProps {
     readonly style?: React.CSSProperties;
 }
 
-export const ExpandIcon = React.memo((props: ExpandIconProps) => {
+export const ExpandIcon = React.memo(function ExpandIcon(props: ExpandIconProps) {
     const classes = useStyles();
 
     return (

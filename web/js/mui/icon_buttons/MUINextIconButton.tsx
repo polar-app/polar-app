@@ -7,7 +7,7 @@ interface IProps {
     readonly onClick: () => void;
 }
 
-export const MUINextIconButton = React.memo((props: IProps) => {
+export const MUINextIconButton = React.memo(function MUINextIconButton(props: IProps) {
     return (
         <IconButton color={props.color}
                     onClick={props.onClick}>

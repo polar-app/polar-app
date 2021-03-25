@@ -52,7 +52,7 @@ const globalKeyMap = keyMapWithGroup(
         }
     });
 
-export const DocRepoGlobalHotKeys = React.memo(() => {
+export const DocRepoGlobalHotKeys = React.memo(function DocRepoGlobalHotKeys() {
 
     const callbacks = useDocRepoCallbacks();
 

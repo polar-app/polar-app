@@ -4,7 +4,7 @@ import {AccountActions} from "../../../../web/js/accounts/AccountActions";
 import {useAsyncActionTaskbar} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {useUserSubscriptionContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 
-export const ManageSubscriptionButton = React.memo(() => {
+export const ManageSubscriptionButton = React.memo(function ManageSubscriptionButton() {
 
     const asyncActionTaskbar = useAsyncActionTaskbar()
     const currentSubscription = useUserSubscriptionContext();

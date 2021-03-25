@@ -4,7 +4,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import {MobileGatewayContent} from "./MobileGatewayContent";
 
 
-export const MobileGatewayDialog = React.memo(() => {
+export const MobileGatewayDialog = React.memo(function MobileGatewayDialog() {
 
     return (
 

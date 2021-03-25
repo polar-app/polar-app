@@ -35,7 +35,7 @@ export function useFullScreenToggle() {
     }, [exitFullScreen, requestFullScreen]);
 }
 
-export const FullScreenButton = React.memo(() => {
+export const FullScreenButton = React.memo(function FullScreenButton() {
 
     const fullScreenToggle = useFullScreenToggle();
 

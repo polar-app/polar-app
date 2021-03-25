@@ -91,7 +91,7 @@ export function useActivePlanHandler() {
 
 }
 
-export const PlanIntervalToggle = React.memo(() => {
+export const PlanIntervalToggle = React.memo(function PlanIntervalToggle() {
 
     const classes = useStyles();
 

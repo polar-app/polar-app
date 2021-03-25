@@ -22,7 +22,7 @@ interface ChartProps {
     readonly lineData: Serie[];
 }
 
-const Chart = React.memo((props: ChartProps) => {
+const Chart = React.memo(function Chart(props: ChartProps) {
 
     const nivoTheme = useNivoTheme();
     const theme = useTheme();

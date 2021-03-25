@@ -7,7 +7,7 @@ interface BrowserTabContentProps {
     readonly children: React.ReactNode;
 }
 
-const BrowserTabContent = React.memo((props: BrowserTabContentProps) => {
+const BrowserTabContent = React.memo(function BrowserTabContent(props: BrowserTabContentProps) {
 
     const {active} = props;
 
@@ -30,7 +30,7 @@ const BrowserTabContent = React.memo((props: BrowserTabContentProps) => {
 }, isEqual)
 
 
-export const BrowserTabContents = React.memo(() => {
+export const BrowserTabContents = React.memo(function BrowserTabContents() {
 
     const {activeTab, tabs} = useBrowserTabsStore(['activeTab', 'tabs']);
 

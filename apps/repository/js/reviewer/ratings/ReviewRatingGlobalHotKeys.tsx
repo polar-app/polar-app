@@ -35,7 +35,7 @@ const globalKeyMap = keyMapWithGroup({
     }
 });
 
-export const ReviewRatingGlobalHotKeys = React.memo(() => {
+export const ReviewRatingGlobalHotKeys = React.memo(function ReviewRatingGlobalHotKeys() {
 
     const {taskRep} = useReviewerStore(['taskRep']);
 

@@ -562,7 +562,7 @@ interface IProps {
 /**
  * Once the provider is in place, we load the repo which uses the observer store.
  */
-const AnnotationRepoStoreInner = React.memo((props: IProps) => {
+const AnnotationRepoStoreInner = React.memo(function AnnotationRepoStoreInner(props: IProps) {
 
     // TODO: migrate to useRepoDocInfos
 

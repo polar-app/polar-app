@@ -49,7 +49,7 @@ interface IProps {
 
 }
 
-export const ActionMenu = React.memo((props: IProps) => {
+export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
 
     const classes = useStyles();
     const {onAction, onClose, items} = props;

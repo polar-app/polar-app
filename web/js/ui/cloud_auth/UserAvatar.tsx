@@ -43,7 +43,7 @@ interface IProps {
 
 }
 
-export const UserAvatar = React.memo((props: IProps) => {
+export const UserAvatar = React.memo(function UserAvatar(props: IProps) {
 
     const classes = useStyles();
 

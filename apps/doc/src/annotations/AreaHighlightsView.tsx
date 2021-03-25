@@ -5,7 +5,7 @@ import {useDocViewerStore} from "../DocViewerStore";
 import {useAnnotationContainers} from "./AnnotationHooks";
 import {AnnotationContainers} from "./AnnotationContainers";
 
-export const AreaHighlightsView = React.memo(() => {
+export const AreaHighlightsView = React.memo(function AreaHighlightsView() {
 
     const {docMeta} = useDocViewerStore(['docMeta']);
     const annotationContainers = useAnnotationContainers();

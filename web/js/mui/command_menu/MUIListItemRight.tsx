@@ -4,7 +4,7 @@ interface IProps {
     readonly children: JSX.Element;
 }
 
-export const MUIListItemRight = React.memo((props: IProps) => {
+export const MUIListItemRight = React.memo(function MUIListItemRight(props: IProps) {
     return (
         <div style={{
             top: '50%',

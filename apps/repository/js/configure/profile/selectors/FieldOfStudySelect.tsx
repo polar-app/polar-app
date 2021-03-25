@@ -31,7 +31,7 @@ interface IProps {
 }
 
 
-export const FieldOfStudySelect = React.memo((props: IProps) => {
+export const FieldOfStudySelect = React.memo(function FieldOfStudySelect(props: IProps) {
 
     const handleChange = React.useCallback((event: React.ChangeEvent<{}>, option: IOption<FieldOfStudy> | null) => {
 

@@ -11,7 +11,7 @@ import {NoteContentEditable} from "../../../web/js/notes/textarea/NoteContentEdi
 
 const EDITOR_COUNT = 50;
 
-const Editors = React.memo(() => {
+const Editors = React.memo(function Editors() {
 
     const epoch = React.useMemo(() => Date.now(), []);
 
