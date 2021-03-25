@@ -7,7 +7,7 @@ import {Mailgun} from "../Mailgun";
 
 export interface IStartTokenAuthRequest {
     readonly email: string;
-    readonly resend?: string;
+    readonly resend?: boolean;
 }
 
 export interface IStartTokenErrorResponse {
