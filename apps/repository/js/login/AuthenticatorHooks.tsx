@@ -293,12 +293,13 @@ export interface IStartTokenErrorResponse {
 
 export function useTriggerStartTokenAuth() {
 
-    return React.useCallback(async (email: string) => {
+    return React.useCallback(async (email: string, resend: boolean = false) => {
 
         Preconditions.assertPresent(email, 'email');
 
         const response = await executeCloudFunction<IStartTokenAuthResponse, IStartTokenErrorResponse>('StartTokenAuth', {
-            email
+            email,
+            resend,
         });
 
         switch (response.code) {
