@@ -4,6 +4,7 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/ckeditor5" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/epub.js" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/pdf.js" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-app-private" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-app-private.wiki" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/polar-app-public" vcs="Git" />
