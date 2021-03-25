@@ -2,7 +2,7 @@
 
 const ([a-zA-Z]+) = React.memo\(.* => \{$
 
-(export )?const ([a-zA-Z]+) = React.memo\((\(.*\)) => \{$
+^(export )?const ([a-zA-Z]+) = React.memo\((\(.*\)) => \{$
 
 # replace
 
