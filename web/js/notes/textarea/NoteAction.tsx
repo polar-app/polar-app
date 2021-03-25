@@ -143,6 +143,15 @@ export const NoteAction = observer((props: IProps) => {
 
     }, [actionsProvider])
 
+
+    const computeActionInputText = React.useCallback((): string => {
+
+        return (activePromptRef.current?.actionInput.textContent || '')
+            .replace(/^\[\[./, '')
+            .replace(/.\]\]$/, '');
+
+    }, []);
+
     const clearActivePrompt = React.useCallback(() => {
 
         if (! activePromptRef.current) {
@@ -153,7 +162,15 @@ export const NoteAction = observer((props: IProps) => {
 
         if (actionInput.parentElement) {
 
-            actionInput.innerText = '[[';
+            // FIXME: don't use the actionInput instead replace the range...
+
+            // FIXME: create a range for the entire actionInput
+            // FIXME: delete the contents of the range
+            // FIXME: insert text at that range...
+
+            const prompt = computeActionInputText();
+
+            actionInput.innerText = prompt !== '' ? prompt : '[[';
 
             const range = window.getSelection()!.getRangeAt(0);
             range.setStart(actionInput.firstChild!, 2);
@@ -161,7 +178,7 @@ export const NoteAction = observer((props: IProps) => {
 
         }
 
-    }, []);
+    }, [computeActionInputText]);
 
     const cursorWithinInput = React.useCallback((delta: number = 0): boolean => {
 
@@ -194,14 +211,6 @@ export const NoteAction = observer((props: IProps) => {
                inputRange.isPointInRange(range.endContainer, range.endOffset + delta);
 
     }, [divRef]);
-
-    const computeActionInputText = React.useCallback((): string => {
-
-        return (activePromptRef.current?.actionInput.textContent || '')
-            .replace(/^\[\[./, '')
-            .replace(/.\]\]$/, '');
-
-    }, []);
 
     const createActionRangeForHandler = React.useCallback(() => {
 
