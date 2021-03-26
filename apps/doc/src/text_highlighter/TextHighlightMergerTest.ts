@@ -294,11 +294,27 @@ describe('TextHighlightMerger', () => {
         it('Should return an empty array when provided with one', () => {
             assert.deepEqual(TextHighlightMerger.groupAdjacent([], () => true), []);
         });
+
+        it('Should return a group that contains one element if the provided array has a length of 1', () => {
+            assert.deepEqual(TextHighlightMerger.groupAdjacent([1], () => true), [[1]]);
+        });
     });
 
     describe('merge', () => {
         it('Should work with empty arrays', () => {
             assert.deepEqual(TextHighlightMerger.merge([]), []);
+        });
+
+        it('Should work with arrays that have one element', () => {
+            const a = {
+                left   : 200,
+                right  : 400,
+                width  : 200,
+                top    : 460,
+                bottom : 490,
+                height : 30,
+            };
+            assert.deepEqual(TextHighlightMerger.merge([a]), [a]);
         });
 
         it('Should merge recursively random test 1', () => {
