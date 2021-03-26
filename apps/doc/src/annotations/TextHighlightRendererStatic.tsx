@@ -10,6 +10,7 @@ import {useDocViewerStore} from "../DocViewerStore";
 import {deepMemo, memoForwardRefDiv} from "../../../../web/js/react/ReactUtils";
 import {useScrollIntoViewUsingLocation} from "./ScrollIntoViewUsingLocation";
 import {PageAnnotation} from "./PageAnnotations";
+import {TextHighlightMerger} from "../text_highlighter/TextHighlightMerger";
 
 interface IProps {
     readonly fingerprint: IDStr;
@@ -23,7 +24,11 @@ export const TextHighlightRendererStatic = deepMemo(function TextHighlightRender
     const {pageAnnotation, container} = props;
     const {annotation} = pageAnnotation;
     const {docScale} = useDocViewerStore(['docScale']);
-    const rects = Object.values(annotation.rects || {})
+    const rects = React.useMemo(() => {
+        const orig = Object.values(annotation.rects || {})
+        return TextHighlightMerger.merge(orig);
+    }, [annotation.rects]);
+
 
     if (! container) {
         console.warn("No container");
