@@ -6,6 +6,7 @@ import {ContentEditables} from "../ContentEditables";
 import INodeOffset = ContentEditables.INodeOffset;
 import {useNoteContentEditableElement} from "./NoteContentEditable";
 import { observer } from "mobx-react-lite"
+import { useNotesStore } from '../store/NotesStore';
 
 const THINSP = ' ';
 
@@ -62,6 +63,8 @@ interface IProps {
  */
 function useActionExecutor() {
 
+    const notesStore = useNotesStore();
+
     return React.useCallback((from: INodeOffset, to: INodeOffset, actionOp: ActionOp) => {
 
         function createCoveringRange(): Range {
@@ -78,6 +81,8 @@ function useActionExecutor() {
 
             case "note-link":
 
+                notesStore.createNewNamedNote(actionOp.target);
+
                 const coveringRange = createCoveringRange();
                 coveringRange.deleteContents();
 
@@ -93,7 +98,7 @@ function useActionExecutor() {
 
         }
 
-    }, [])
+    }, [notesStore])
 
 }
 

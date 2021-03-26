@@ -355,6 +355,19 @@ export class NotesStore {
 
     }
 
+    public getNoteByName(name: NoteNameStr): Note | undefined {
+
+        const noteRefByName = this._indexByName[name];
+
+        if (noteRefByName) {
+            return this._index[noteRefByName] || undefined;
+        }
+
+        return undefined;
+
+    }
+
+
     public getActiveNote(id: NoteIDStr): Note | undefined {
 
         const active = this._active;
@@ -678,6 +691,40 @@ export class NotesStore {
         this.setActiveWithPosition(targetNote.id, undefined);
 
         return undefined;
+
+    }
+
+    /**
+     * Create a new named note but only when a note with this name does not exist.
+     */
+    @action public createNewNamedNote(name: NoteNameStr): NoteIDStr {
+
+        const existingNote = this.getNoteByName(name);
+
+        if (existingNote) {
+            // note already exists...
+            return existingNote.id;
+        }
+
+        function createNewNote(): INote {
+            const now = ISODateTimeStrings.create()
+            return {
+                id: Hashcodes.createRandomID(),
+                parent: undefined,
+                type: 'named',
+                content: name,
+                created: now,
+                updated: now,
+                items: [],
+                links: []
+            };
+        }
+
+        const newNote = createNewNote();
+
+        this.doPut([newNote]);
+
+        return newNote.id;
 
     }
 
