@@ -21,6 +21,7 @@ const devtool = isDev ? (process.env.WEBPACK_DEVTOOL || "eval") : "source-map";
 const useWorkbox = ! isDevServer;
 const bundle = determineBundle();
 const port = determinePort(bundle);
+const openPage = determineOpenPage(bundle);
 
 const workers = os.cpus().length - 1;
 
@@ -40,6 +41,7 @@ console.log("Config: ==================");
 console.log("workers:      " + workers);
 console.log("bundle:       " + bundle);
 console.log("port:         " + port);
+console.log("openPage:     " + openPage);
 console.log("mode:         " + mode);
 console.log("isDev:        " + isDev);
 console.log("isDevServer:  " + isDevServer);
@@ -242,6 +244,20 @@ function determinePort(bundle) {
         case 'repository':
         default:
             return 8050;
+    }
+
+}
+
+function determineOpenPage(bundle) {
+
+    switch (bundle) {
+
+        case 'stories':
+            return 'apps/stories';
+
+        case 'repository':
+        default:
+            return '';
     }
 
 }
@@ -452,6 +468,7 @@ module.exports = {
         compress: true,
         port,
         open: true,
+        openPage,
         overlay: true,
         hot: true,
         watchContentBase: false,
