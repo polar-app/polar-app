@@ -24,7 +24,8 @@ const NotesStoryDebug = observer(() => {
 
     return (
         <div>
-            <b>active: {store.active}</b><br/>
+            <b>active id: {store.active?.id}</b><br/>
+            <b>active pos: {store.active?.pos}</b><br/>
             <b>root: {store.root}</b><br/>
             <b>index: </b><br/>
             <pre>

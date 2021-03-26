@@ -9,6 +9,7 @@ import {NoteFormatPopper} from "../NoteFormatPopper";
 import {NoteContentCanonicalizer} from "./NoteContentCanonicalizer";
 import {NoteAction} from "./NoteAction";
 import { useHistory } from 'react-router-dom';
+import { autorun } from 'mobx'
 
 const ENABLE_TRACE_CURSOR_RESET = false;
 
@@ -111,30 +112,29 @@ export const NoteContentEditable = observer((props: IProps) => {
 
     }, [handleChange]);
 
-    React.useEffect(() => {
+    React.useEffect(() =>
+        autorun(() => {
 
-        if (store.active === props.id) {
+            if (store.active?.id === props.id) {
 
-            if (divRef.current) {
+                if (divRef.current) {
 
-                switch (store.activePos) {
-                    case 'start':
-                    case 'end':
+                    switch (store.active.pos) {
+                        case 'start':
+                        case 'end':
+                            updateCursorPosition(divRef.current, store.active.pos)
 
-                        updateCursorPosition(divRef.current, store.activePos)
+                            break;
+                        default:
+                            break;
+                    }
 
-                        break;
-                    default:
+                    divRef.current.focus();
 
                 }
 
-                divRef.current.focus();
-
             }
-
-        }
-
-    }, [props.id, store.active, store.activePos]);
+        }));
 
     React.useEffect(() => {
 
@@ -309,7 +309,13 @@ export const NoteContentEditable = observer((props: IProps) => {
 
                     abortEvent();
                     store.doDelete([props.id]);
+                    break;
+                }
 
+                if (store.hasSelected()) {
+                    abortEvent();
+                    store.doDelete([]);
+                    break;
                 }
 
                 if (cursorAtStart) {
@@ -319,7 +325,9 @@ export const NoteContentEditable = observer((props: IProps) => {
                     const mergeTarget = store.canMerge(props.id);
 
                     if (mergeTarget) {
+                        abortEvent();
                         store.mergeNotes(mergeTarget.target, mergeTarget.source);
+                        break;
                     }
 
                 }

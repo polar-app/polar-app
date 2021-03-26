@@ -19,7 +19,7 @@ export const NoteContextMenuItems = observer(function MUIDocDropdownMenuItems() 
             return;
         }
 
-        const activeNote = store.getNote(active);
+        const activeNote = store.getNote(active.id);
 
         if (! activeNote) {
             return;

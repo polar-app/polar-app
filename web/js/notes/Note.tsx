@@ -55,9 +55,9 @@ export const NoteInner = observer((props: IProps) => {
 
             if (store.active !== undefined) {
 
-                if (store.active !== id) {
+                if (store.active?.id !== id) {
 
-                    store.setSelectionRange(store.active, id);
+                    store.setSelectionRange(store.active.id, id);
 
                     window.getSelection()!.removeAllRanges();
 

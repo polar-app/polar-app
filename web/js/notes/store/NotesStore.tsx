@@ -50,7 +50,7 @@ interface DoPutOpts {
     /**
      * The new active node after the put operation.
      */
-    readonly newActive?: NoteIDStr;
+    readonly newActive?: IActiveNote;
 
     /**
      * Expand the give parent note.
@@ -109,6 +109,21 @@ export interface ICreatedNote {
 
 export type DoIndentResult = IMutation<'no-note' | 'no-parent' | 'no-parent-note' | 'no-sibling', NoteIDStr>;
 
+/**
+ * The active note and the position it should be set to once it's made active.
+ */
+export interface IActiveNote {
+
+    readonly id: NoteIDStr;
+
+    /**
+     * The position within the note.  When undefined, do not jump the position
+     * and keep the cursor where it is.
+     */
+    readonly pos: NavPosition | undefined;
+
+}
+
 export class NotesStore {
 
     @observable _index: NotesIndex = {};
@@ -128,13 +143,7 @@ export class NotesStore {
     /**
      * The currently active note.
      */
-    @observable _active: NoteIDStr | undefined = undefined;
-
-    /**
-     * The position to place the cursor when we jump between items.
-     */
-    @observable _activePos: NavPosition = 'start';
-
+    @observable _active: IActiveNote | undefined = undefined;
     /**
      * The notes that are expanded.
      */
@@ -191,10 +200,6 @@ export class NotesStore {
         return this._active;
     }
 
-    @computed get activePos() {
-        return this._activePos;
-    }
-
     @computed get selected() {
         return this._selected;
     }
@@ -233,7 +238,7 @@ export class NotesStore {
      * Return true if the given note is active.
      */
     public isActive(id: NoteIDStr): boolean {
-        return this._active === id;
+        return this._active?.id === id;
     }
 
     public lookup(notes: ReadonlyArray<NoteIDStr>): ReadonlyArray<INote> {
@@ -437,7 +442,7 @@ export class NotesStore {
             ...this.computeLinearExpansionTree(this.root)
         ];
 
-        const childIndex = items.indexOf(this._active);
+        const childIndex = items.indexOf(this._active?.id);
 
         if (childIndex === -1) {
             console.warn(`Child ${this._active} not in note items`);
@@ -458,8 +463,8 @@ export class NotesStore {
             } else {
 
                 // only select the entire/current node at first.
-                this._selected[this._active] = true;
-                this._selectedAnchor = this._active;
+                this._selected[this._active?.id] = true;
+                this._selectedAnchor = this._active?.id;
 
                 function clearSelection() {
                     const sel = window.getSelection()!;
@@ -478,8 +483,7 @@ export class NotesStore {
             this._selectedAnchor = undefined;
         }
 
-        this._active = newActive;
-        this._activePos = pos;
+        this.setActiveWithPosition(newActive, pos);
 
         return true;
 
@@ -577,12 +581,29 @@ export class NotesStore {
 
 
     @action public setActive(active: NoteIDStr | undefined) {
-        this._active = active;
+
+        if (active) {
+            this._active = {
+                id: active,
+                pos: undefined
+            };
+        } else {
+            this._active = undefined;
+        }
+
     }
 
     @action public setActiveWithPosition(active: NoteIDStr | undefined, activePos: NavPosition) {
-        this._active = active;
-        this._activePos = activePos;
+
+        if (active) {
+            this._active = {
+                id: active,
+                pos: activePos
+            };
+        } else {
+            this._active = undefined;
+        }
+
     }
 
     @action public setRoot(root: NoteIDStr | undefined) {
@@ -600,20 +621,19 @@ export class NotesStore {
     public getNoteActivated(id: NoteIDStr): INoteActivated | undefined {
 
         const active = this._active;
-        const activePos = this._activePos;
 
         if (! active) {
             return undefined;
         }
 
-        if (id !== active) {
+        if (id !== active.id) {
             return undefined;
         }
 
-        const note = this._index[active];
+        const note = this._index[active.id];
 
         if (note) {
-            return {note, activePos};
+            return {note, activePos: active.pos};
         } else {
             return undefined;
         }
@@ -648,8 +668,6 @@ export class NotesStore {
             return 'incompatible-note-types';
         }
 
-        const initialTargetContent = targetNote.content;
-
         const newContent = targetNote.content + " " + sourceNote.content;
         targetNote.setContent(newContent);
         targetNote.setItems([...targetNote.items, ...sourceNote.items]);
@@ -657,8 +675,7 @@ export class NotesStore {
 
         this.doDelete([sourceNote.id]);
 
-        this._activePos = undefined;
-        this._active = targetNote.id;
+        this.setActiveWithPosition(targetNote.id, undefined);
 
         return undefined;
 
@@ -802,8 +819,7 @@ export class NotesStore {
 
         }
 
-        this._active = newNote.id;
-        this._activePos = 'start';
+        this.setActiveWithPosition(newNote.id, 'start');
 
         return {
             id: newNote.id,
@@ -1056,9 +1072,7 @@ export class NotesStore {
         if (handleDelete(notesToDelete) > 0) {
 
             if (nextActive) {
-                this._active = nextActive.active;
-                this._activePos = nextActive.activePos;
-
+                this.setActiveWithPosition(nextActive.active, nextActive.activePos);
             }
 
             // we have to clear now because the notes we deleted might have been selected

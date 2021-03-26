@@ -625,8 +625,8 @@ describe('NotesStore', function() {
                 "_updated": "2012-03-02T11:38:49.321Z"
             })
 
-            assert.equal(store.active, '105');
-            assert.equal(store.activePos, 'start');
+            assert.equal(store.active?.id, '105');
+            assert.equal(store.active?.pos, 'start');
 
         });
 
@@ -649,8 +649,8 @@ describe('NotesStore', function() {
                 "_updated": "2012-03-02T11:38:49.321Z"
             })
 
-            assert.equal(store.active, '102');
-            assert.equal(store.activePos, 'start');
+            assert.equal(store.active?.id, '102');
+            assert.equal(store.active?.pos, 'start');
 
         });
 
