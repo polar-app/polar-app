@@ -53,6 +53,10 @@ console.log("__dirname:    " + __dirname);
 // TODO: first time we run this when using 'webpack serve' make sure
 // dist/public is setup and that webpack was run first.
 
+if (isDev && bundle === null) {
+    throw new Error("MUST export WEBPACK_BUNDLE to either 'repository' or 'stories' in serve mode.");
+}
+
 function createRules() {
 
     const rules = [
@@ -223,12 +227,15 @@ function createRules() {
 function determineBundle() {
 
     switch (process.env['WEBPACK_BUNDLE']) {
+
         case 'stories':
             return 'stories';
 
         case 'repository':
-        default:
             return 'repository';
+
+        default:
+            return null;
 
     }
 
@@ -267,16 +274,23 @@ function createEntries(bundle) {
     switch (bundle) {
 
         case 'stories':
+
             return {
                 "stories": "./apps/stories/index.tsx",
             };
 
         case 'repository':
-        default:
-
             return {
                 "repository": "./apps/repository/js/entry.tsx",
             };
+
+        default:
+
+            return {
+                "stories": "./apps/stories/index.tsx",
+                "repository": "./apps/repository/js/entry.tsx",
+            };
+
 
     }
 
