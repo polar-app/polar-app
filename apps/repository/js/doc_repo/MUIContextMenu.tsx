@@ -246,7 +246,7 @@ export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContext
 
     return (
         <Menu
-            transitionDuration={50}
+            transitionDuration={0}
             keepMounted
             anchorEl={props.anchorEl}
             open={true}

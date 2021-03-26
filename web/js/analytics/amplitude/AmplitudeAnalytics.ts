@@ -25,8 +25,8 @@ function createAmplitude(): any {
 
 }
 
-const ENABLED = typeof localStorage !== 'undefined' &&
-                localStorage.getItem('amplitude.tracing') === 'true';
+const TRACING_ENABLED = typeof localStorage !== 'undefined' &&
+                        localStorage.getItem('amplitude.tracing') === 'true';
 
 // TODO session variables...
 
@@ -35,7 +35,7 @@ const standardEventProperties = StandardEventProperties.create();
 
 function doTrace(eventName: string, eventData: object | undefined) {
 
-    if (ENABLED) {
+    if (TRACING_ENABLED) {
         console.log("amplitude: " + eventName, eventData || {});
     }
 
