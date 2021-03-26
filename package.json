@@ -25,7 +25,7 @@
     "e2e-X": "scripts/run-spectron",
     "postinstall": "opencollective-postinstall",
     "tslint": "tslint --project tsconfig.json --config tslint.yaml",
-    "eslint": "npx eslint -c .eslintrc.js --ext .ts,.tsx --ignore-pattern '*.d.ts' web/js apps",
+    "eslint": "../../node_modules/eslint/bin/eslint.js -c .eslintrc.js --ext .ts,.tsx --ignore-pattern '*.d.ts' web/js apps",
     "webpack": "rm -rf dist/public && rm -rf .webpack-cache-loader && rm -rf .terser-webpack-plugin/ && mkdir -p dist/public && npx webpack --config=webpack.config.js && pwd && ls -al dist/public && echo 'Webpack built successfully'",
     "webpack-serve": "node  --max_old_space_size=4096 node_modules/.bin/webpack serve",
     "find-unhandled-promises": "npm run-script tslint | grep 'Promises must be handled appropriately' | grep -v 'web/spectron0' | grep -v 'web/test' ; true",
