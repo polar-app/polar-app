@@ -26,9 +26,9 @@ commands:
             - v1-{{ arch }}-dependencies-{{ checksum "package.json" }}
 
       # I think bytesafe might not work with npm v7
-      #- run:
-      #    name: "Install latest NPM"
-      #    command: sudo npm -g install npm
+      - run:
+          name: "Install latest NPM"
+          command: sudo npm -g install npm
 
       - run:
           name: install lerna
