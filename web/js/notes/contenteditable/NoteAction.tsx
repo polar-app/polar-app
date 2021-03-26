@@ -116,14 +116,6 @@ interface ActivePrompt {
 
 }
 
-
-// FIXME: next steps
-//
-// - entering one character, then hitting backspace twice, deletes all of the text
-// - having a smaller contenteditable=false INSIDE cause some weird bugs...
-//    - instead, what we could do, is see if the user is mutating the actionLeft span and abort it OR if they hit
-//    - delete within that span then we have to delete the whole span and reset.
-
 export const NoteAction = observer((props: IProps) => {
 
     const theme = useTheme();
@@ -420,6 +412,19 @@ export const NoteAction = observer((props: IProps) => {
 
         if (activeRef.current) {
 
+            switch (event.key) {
+
+                case 'Escape':
+                    doReset();
+                    return;
+
+                case 'Tab':
+                case 'Enter':
+                    doComplete();
+                    return;
+
+            }
+
             function computeDelta(): number {
 
                 switch (event.key) {
@@ -443,6 +448,7 @@ export const NoteAction = observer((props: IProps) => {
             const delta = computeDelta();
 
             if (delta !== 0 && ! cursorWithinInput(delta)) {
+
                 doCompleteOrReset();
 
                 switch (event.key) {
@@ -461,7 +467,7 @@ export const NoteAction = observer((props: IProps) => {
 
         }
 
-    }, [cursorWithinInput, doCompleteOrReset]);
+    }, [cursorWithinInput, doComplete, doCompleteOrReset, doReset]);
 
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -492,25 +498,6 @@ export const NoteAction = observer((props: IProps) => {
             if (hasAborted(event)) {
                 doReset();
                 return;
-            }
-
-
-
-            switch (event.key) {
-
-                case 'Escape':
-                    // event.stopPropagation();
-                    doReset();
-                    return;
-
-                case 'Tab':
-                case 'Enter':
-                    doComplete();
-                    return;
-
-                // TODO: we might have to stopPropagation on OTHER events that
-                // the note content editable handles.
-
             }
 
             const items = computeItems(prompt);
@@ -549,7 +536,7 @@ export const NoteAction = observer((props: IProps) => {
 
         return activeRef.current;
 
-    }, [divRef, hasAborted, computeItems, actionStore, doReset, doComplete, trigger, createActivePrompt, computePosition, createActionHandler]);
+    }, [divRef, hasAborted, computeItems, actionStore, doReset, trigger, createActivePrompt, computePosition, createActionHandler]);
 
     const handleClick = React.useCallback(() => {
 

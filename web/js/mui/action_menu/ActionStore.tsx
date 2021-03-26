@@ -97,6 +97,7 @@ export class ActionStore {
 
     constructor() {
         this.id = Hashcodes.createRandomID();
+        this.state = undefined;
         makeObservable(this);
     }
 
@@ -109,7 +110,7 @@ export class ActionStore {
 
     @action public updateState(items: ReadonlyArray<IActionMenuItem>) {
 
-        if (! this.state) {
+        if (this.state === undefined) {
             console.warn("Can not updateState: no state");
             return;
         }
