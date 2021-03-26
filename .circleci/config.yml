@@ -60,7 +60,8 @@ commands:
 
       - run:
           name: setup full dependencies
-          command: npm run-script purge-node-modules && npx lerna bootstrap
+          # command: npm run-script purge-node-modules && npx lerna bootstrap
+          command: npx lerna bootstrap
 
       - save_cache:
           paths:
