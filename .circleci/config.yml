@@ -59,7 +59,7 @@ commands:
             npm ping
 
       - run:
-          name: setup full dependencies
+          name: lerna bootstrap
           # command: npm run-script purge-node-modules && npx lerna bootstrap
           command: npx lerna bootstrap
 
