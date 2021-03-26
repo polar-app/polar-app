@@ -24,7 +24,7 @@ function useLinkNavigationEventListener() {
     const linkLoaderRef = useLinkLoaderRef();
     const noteLinkLoader = useNoteLinkLoader();
 
-    return React.useCallback((event: ILinkNavigationEvent) => {
+    return React.useCallback((event: ILinkNavigationEvent): boolean => {
 
         const {target, abortEvent} = event;
 
@@ -41,17 +41,21 @@ function useLinkNavigationEventListener() {
                     if (anchor) {
                         noteLinkLoader(anchor);
                         abortEvent();
+                        return true;
                     }
 
                 } else {
                     const linkLoader = linkLoaderRef.current;
                     linkLoader(href, {newWindow: true, focus: true});
                     abortEvent();
+                    return true;
                 }
 
             }
 
         }
+
+        return false;
 
     }, [linkLoaderRef, noteLinkLoader]);
 
@@ -70,7 +74,7 @@ function useLinkNavigationClickHandler() {
 
         const target = event.target;
 
-        linkNavigationEventListener({target, abortEvent});
+        return linkNavigationEventListener({target, abortEvent});
 
     }, [linkNavigationEventListener]);
 
@@ -101,14 +105,13 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
     const onClick = React.useCallback((event: React.MouseEvent) => {
 
-        if (noteActivated?.note.id !== props.id) {
-            linkNavigationClickHandler(event);
+        if (linkNavigationClickHandler(event)) {
             return;
         }
 
         store.setActive(props.id);
 
-    }, [linkNavigationClickHandler, noteActivated?.note.id, props.id, store]);
+    }, [linkNavigationClickHandler, props.id, store]);
 
     const handleEnter = React.useCallback(() => {
 
