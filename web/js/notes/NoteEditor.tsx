@@ -8,7 +8,7 @@ import {useNoteLinkLoader} from "./NoteLinkLoader";
 import {MarkdownContentEscaper} from "./MarkdownContentEscaper";
 import {NoteIDStr, useNotesStore} from "./store/NotesStore";
 import { observer } from "mobx-react-lite"
-import {NoteContentEditable} from "./textarea/NoteContentEditable";
+import {NoteContentEditable} from "./contenteditable/NoteContentEditable";
 import {ContentEditables} from "./ContentEditables";
 import {HTMLToMarkdown} from "polar-markdown-parser/src/HTMLToMarkdown";
 import html2markdown = HTMLToMarkdown.html2markdown;
