@@ -803,6 +803,7 @@ export class NotesStore {
         this.doPut([newNote]);
 
         switch(newNotePosition.type) {
+
             case "relative":
                 parentNote.addItem(newNote.id, newNotePosition);
                 break;

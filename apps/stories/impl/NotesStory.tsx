@@ -68,8 +68,8 @@ const NotesStoryDebugButton = () => {
     )
 }
 
-const NotesInner = () => (
-    <div className="NotesInner"
+const NotesStoryInner = () => (
+    <div className="NotesStoryInner"
          style={{
              display: 'flex',
              flexGrow: 1
@@ -129,8 +129,7 @@ export const NotesStory = () => {
                 <NotesStoreProvider>
                     <BasicNotesDataSet>
                         <>
-                            <CKEditor5NotesGlobalCSS/>
-                            <NotesInner/>
+                            <NotesStoryInner/>
                         </>
                     </BasicNotesDataSet>
                 </NotesStoreProvider>
