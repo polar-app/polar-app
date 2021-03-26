@@ -445,7 +445,7 @@ export class NotesStore {
         const childIndex = items.indexOf(this._active?.id);
 
         if (childIndex === -1) {
-            console.warn(`Child ${this._active} not in note items`);
+            console.warn(`Child ${this._active.id} not in note items`);
             return false;
         }
 
