@@ -9,7 +9,6 @@ const fs = require('fs');
 const CopyPlugin = require('copy-webpack-plugin');
 const {DefaultRewrites} = require('polar-backend-shared/src/webserver/DefaultRewrites');
 const svgToMiniDataURI = require('mini-svg-data-uri');
-const CKEditorWebpackPlugin = require( '@ckeditor/ckeditor5-dev-webpack-plugin' );
 const { styles } = require( '@ckeditor/ckeditor5-dev-utils' );
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 
@@ -18,24 +17,38 @@ const isDevServer = process.argv.includes('serve');
 const mode = process.env.NODE_ENV || (isDevServer ? 'development' : 'production');
 const isDev = mode === 'development';
 const target = process.env.WEBPACK_TARGET || 'web';
-const devtool = isDev ? (process.env.WEBPACK_DEVTOOL || "inline-source-map") : "source-map";
+const devtool = isDev ? (process.env.WEBPACK_DEVTOOL || "eval") : "source-map";
 const useWorkbox = ! isDevServer;
+const bundle = determineBundle();
+const port = determinePort(bundle);
 
 const workers = os.cpus().length - 1;
 
-const OUTPUT_PATH = path.resolve(__dirname, 'dist/public');
+const output = path.resolve(__dirname, 'dist/public');
 
-console.log("Using N workers: " + workers);
-console.log("mode: " + mode);
-console.log("isDev: " + isDev);
-console.log("isDevServer: " + isDevServer);
-console.log("devtool: " + devtool);
-console.log("useWorkbox: " + useWorkbox);
-console.log("WEBPACK_TARGET: " + target);
-console.log("Running in directory: " + __dirname);
-console.log("Writing to output path: " + OUTPUT_PATH);
+console.log("Usage: ===================");
 
-// TODO: first time we run this when using webpack-dev-server make sure
+console.log(" - export WEBPACK_BUNDLE to 'stories' or 'repository' (default) to change the bundle being built");
+console.log(" - export WEBPACK_DEVTOOL to 'inline-source-map' for better symbols (but slower build)");
+
+console.log("Environment: =============");
+console.log("WEBPACK_TARGET: " + process.env['WEBPACK_DEVTOOL']);
+console.log("WEBPACK_BUNDLE: " + process.env['WEBPACK_BUNDLE']);
+
+console.log("Config: ==================");
+
+console.log("workers:      " + workers);
+console.log("bundle:       " + bundle);
+console.log("port:         " + port);
+console.log("mode:         " + mode);
+console.log("isDev:        " + isDev);
+console.log("isDevServer:  " + isDevServer);
+console.log("devtool:      " + devtool);
+console.log("useWorkbox:   " + useWorkbox);
+console.log("output:       " + output);
+console.log("__dirname:    " + __dirname);
+
+// TODO: first time we run this when using 'webpack serve' make sure
 // dist/public is setup and that webpack was run first.
 
 function createRules() {
@@ -75,7 +88,7 @@ function createRules() {
                     options: {
                         // performance: this improved performance by about 2x.
                         // from 20s to about 10s
-                        transpileOnly: true,
+                        transpileOnly: isDev,
                         experimentalWatchApi: true,
 
                         // IMPORTANT! use happyPackMode mode to speed-up
@@ -205,45 +218,55 @@ function createRules() {
 
 }
 
-function createNode() {
+function determineBundle() {
 
-    if (target === 'electron-renderer') {
-        return {};
-    } else {
-        return {
-            fs: 'empty',
-            net: 'empty',
-            tls: 'empty',
-        };
+    switch (process.env['WEBPACK_BUNDLE']) {
+        case 'stories':
+            return 'stories';
+
+        case 'repository':
+        default:
+            return 'repository';
+
     }
 
 }
 
-function createEntries() {
+function determinePort(bundle) {
 
+    switch (bundle) {
 
-    if (process.argv.includes('--stories')) {
+        case 'stories':
+            return 8051;
 
-        return {
-            "stories": "./apps/stories/index.tsx",
-        };
-
-    } else if (process.argv.includes('--repository')) {
-
-        return {
-            "repository": "./apps/repository/js/entry.tsx",
-        };
-
+        case 'repository':
+        default:
+            return 8050;
     }
-
-    return {
-        "stories": "./apps/stories/index.tsx",
-        "repository": "./apps/repository/js/entry.tsx",
-    };
 
 }
 
-const entries = createEntries();
+function createEntries(bundle) {
+
+    switch (bundle) {
+
+        case 'stories':
+            return {
+                "stories": "./apps/stories/index.tsx",
+            };
+
+        case 'repository':
+        default:
+
+            return {
+                "repository": "./apps/repository/js/entry.tsx",
+            };
+
+    }
+
+}
+
+const entries = createEntries(bundle);
 
 console.log("Building with entries: ", entries);
 
@@ -251,6 +274,9 @@ module.exports = {
     mode,
     // stats: 'verbose',
     target,
+    cache: {
+        type: 'memory'
+    },
     entry: entries,
     module: {
         rules: createRules()
@@ -267,10 +293,23 @@ module.exports = {
     },
     devtool,
     output: {
-        path: OUTPUT_PATH,
+        path: output,
         filename: '[name]-bundle.js',
     },
     plugins: [
+        new webpack.ProgressPlugin({
+            activeModules: false,
+            entries: true,
+            // handler(percentage, message, ...args) {
+            //     // custom logic
+            // },
+            modules: true,
+            modulesCount: 5000,
+            profile: false,
+            dependencies: true,
+            dependenciesCount: 10000,
+            percentBy: null,
+        }),
         new NodePolyfillPlugin(),
 
         // TODO: this is needed for a localized build and it does not support en
@@ -411,7 +450,7 @@ module.exports = {
     devServer: {
         contentBase: path.resolve('dist/public'),
         compress: true,
-        port: 8050,
+        port,
         open: true,
         overlay: true,
         hot: true,
