@@ -2,7 +2,7 @@ import React from 'react';
 import {Provider} from 'polar-shared/src/util/Providers';
 import {createObservableStore, SetStore} from '../react/store/ObservableStore';
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {IDStr, URLStr} from "polar-shared/src/util/Strings";
+import {DataURLStr, IDStr, URLStr} from "polar-shared/src/util/Strings";
 import { useHistory } from 'react-router-dom';
 import { Arrays } from 'polar-shared/src/util/Arrays';
 import {useRefValue} from '../hooks/ReactHooks';
@@ -14,9 +14,13 @@ export const SIDE_NAV_ENABLED = 'true';
 export type TabID = IDStr;
 
 export interface ITabImage {
-    readonly url: string;
+
+    readonly url: DataURLStr;
+
     readonly width: number;
+
     readonly height: number;
+
 }
 
 export type TabContentType = 'pdf' | 'epub';
@@ -24,7 +28,7 @@ export type TabContentType = 'pdf' | 'epub';
 export interface TabDescriptorInit {
 
     /**
-     * The tab ID is globally unique and never changes.
+     * The tab ID is globally unique and never changes across the tab instances.
      */
     readonly id: TabID;
 

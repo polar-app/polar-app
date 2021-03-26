@@ -472,10 +472,6 @@ export const NoteAction = observer((props: IProps) => {
 
         const prefixText = ContentEditables.fragmentToText(split.prefix);
 
-        function hasActionInputText(): boolean {
-            return activePromptRef.current?.actionInput.textContent?.length !== 0;
-        }
-
         function computeActionInputText(): string {
 
             return (activePromptRef.current?.actionInput.textContent || '')
@@ -493,16 +489,22 @@ export const NoteAction = observer((props: IProps) => {
                 return;
             }
 
+
+
             switch (event.key) {
 
                 case 'Escape':
+                    // event.stopPropagation();
                     doReset();
-                    break;
+                    return;
 
                 case 'Tab':
                 case 'Enter':
                     doComplete();
-                    break;
+                    return;
+
+                // TODO: we might have to stopPropagation on OTHER events that
+                // the note content editable handles.
 
             }
 

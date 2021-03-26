@@ -836,6 +836,10 @@ export class NotesStore {
      */
     public doIndent(id: NoteIDStr): ReadonlyArray<DoIndentResult> {
 
+        // FIXME the way this needs to work is that we need to compute a new parent,
+        // then the index to insert it, then insert ALL the items selected after this one
+        // that are on the same level...
+
         const doExec = (id: NoteIDStr): DoIndentResult => {
 
             console.log("doIndent: " + id);

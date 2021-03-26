@@ -155,6 +155,7 @@ export const NoteContentEditable = observer((props: IProps) => {
             // (though this might be optional) and then set the innerHTML
             // directly.  React has a bug which won't work on empty strings.
 
+
             divRef.current!.innerHTML = props.content;
             setContent(props.content);
 
@@ -363,29 +364,32 @@ export const NoteContentEditable = observer((props: IProps) => {
     return (
         <NoteContentEditableElementContext.Provider value={divRef}>
 
-            <NoteAction trigger="[["
-                        actionsProvider={createNoteActionsProvider}
-                        onAction={(id) => ({
-                            type: 'note-link',
-                            target: id
-                        })}>
+            <div onKeyDown={handleKeyDown}
+                 onKeyUp={handleKeyUp}>
 
-                <NoteFormatPopper onUpdated={updateMarkdownFromEditable}>
-                    <div ref={handleRef}
-                         onKeyDown={handleKeyDown}
-                         onKeyUp={handleKeyUp}
-                         contentEditable={true}
-                         spellCheck={props.spellCheck}
-                         className={props.className}
-                         onClick={props.onClick}
-                         style={{
-                             outline: 'none',
-                             ...props.style
-                         }}
-                         dangerouslySetInnerHTML={{__html: content}}/>
-                </NoteFormatPopper>
+                <NoteAction trigger="[["
+                            actionsProvider={createNoteActionsProvider}
+                            onAction={(id) => ({
+                                type: 'note-link',
+                                target: id
+                            })}>
 
-            </NoteAction>
+                    <NoteFormatPopper onUpdated={updateMarkdownFromEditable}>
+                        <div ref={handleRef}
+                             onClick={props.onClick}
+                             contentEditable={true}
+                             spellCheck={props.spellCheck}
+                             className={props.className}
+                             style={{
+                                 outline: 'none',
+                                 ...props.style
+                             }}
+                             dangerouslySetInnerHTML={{__html: content}}/>
+                    </NoteFormatPopper>
+
+                </NoteAction>
+
+            </div>
 
         </NoteContentEditableElementContext.Provider>
     );
