@@ -1,7 +1,3 @@
-# TODO:
-#
-# - cache the .npm cache dir
-
 version: 2.1
 
 orbs:
@@ -386,5 +382,6 @@ workflows:
 #      - end2end:
 #          executor: my-macos
 #
+
 
 
