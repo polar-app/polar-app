@@ -51,10 +51,14 @@ commands:
       - run:
           name: npm setup
           command: |
-            # npm run-script set-registry-bytesafe-rw
             cp .npmrc.bytesafe ~/.npmrc
             cat ~/.npmrc
+            echo "npm ping: ======"
             npm ping
+            echo "npm config list: ======"
+            npm config list
+            echo "npm config ls -l: ======"
+            npm config ls -l
 
       - run:
           name: lerna bootstrap
