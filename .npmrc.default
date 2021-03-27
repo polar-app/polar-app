@@ -1,2 +1,2 @@
 //registry.npmjs.org/:_authToken=902cf7e3-b9c2-4d3d-b15e-cfcad1141d41
-maxsockets=512
+maxsockets=64
