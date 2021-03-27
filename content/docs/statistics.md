@@ -9,7 +9,7 @@ description: Polar Statistics part of the documentation.
 
 Your stats are the ultimate tool to track your productivity and increase your efficiency. You can find it in the left side nav. See your granular stats by specific categories.
 
-<img alt="Annotation reading progress" src="https://i.imgur.com/S0swojr.png">
+<img alt="Annotation reading progress" src="https://i.imgur.com/12FXidz.png">
 
 Polar stats provide a comprehensive view of your flashcard reveiws. Including upcoming queue and what has been completed.
 
