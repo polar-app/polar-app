@@ -10,6 +10,7 @@ import {UserflowAnalytics} from "./userflow/UserflowAnalytics";
 import { ConsoleAnalytics } from "./console/ConsoleAnalytics";
 import {IntercomAnalytics} from "./intercom/IntercomAnalytics";
 import {CannyAnalytics} from "./canny/CannyAnalytics";
+import {SentryAnalytics} from "./sentry/SentryAnalytics";
 
 export function isBrowser() {
     return typeof window !== 'undefined';
@@ -26,7 +27,8 @@ function createDelegate(): IAnalytics {
                 new UserflowAnalytics(),
                 new ConsoleAnalytics(),
                 new IntercomAnalytics(),
-                new CannyAnalytics()
+                new CannyAnalytics(),
+                new SentryAnalytics()
             ])
         );
     } else {
@@ -54,6 +56,7 @@ export function useAnalytics(): IAnalytics {
                     new ConsoleAnalytics(),
                     new IntercomAnalytics(),
                     new CannyAnalytics(),
+                    new SentryAnalytics()
                 ])
             );
         } else {
