@@ -42,7 +42,7 @@ See <a href="https://getpolarized.io/docs/Polar-Workflow.html" target="_blank">h
 
 Message us directly in the app through the button at the bottom right.
 
-<img alt="Polar Support Button" src="https://i.imgur.com/N2v9UVl.png">
+<img alt="Polar Support Button" src="https://i.imgur.com/5kxyMDG.png">
 
 
 ### Does Polar have enterprise pricing?
