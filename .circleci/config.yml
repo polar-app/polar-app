@@ -31,8 +31,10 @@ commands:
       #    command: sudo npm -g install npm
 
       - run:
-          name: install lerna
-          command: sudo npm -g install lerna
+          name: Install global node modules
+          command: |
+            sudo npm -g install lerna
+            sudo npm -g install npm
 
       - run:
           name: Node and NPM version
