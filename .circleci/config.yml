@@ -307,14 +307,12 @@ workflows:
           requires:
             - build
             - build-webapp
-            - build-site
 
       - hold_beta_getpolarized_io:
           type: approval
           requires:
             - build
             - build-webapp
-            - build-site
 
       - deploy_app_getpolarized_io:
           executor: my-docker
