@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -e
+
+firebase deploy --only functions:CloudFunctionsWarmer
+firebase deploy --only functions:GroupDocMetaWriteFunction
+firebase deploy --only functions:StartTokenAuth
+firebase deploy --only functions:StripeCancelSubscription
+firebase deploy --only functions:StripeChangePlan
+firebase deploy --only functions:StripeCreateCustomerPortal
+firebase deploy --only functions:StripeCreateSession
+firebase deploy --only functions:StripeStudentDiscountFunction
+firebase deploy --only functions:StripeStudentDiscountVerifyFunction
+firebase deploy --only functions:StripeWebhook
+firebase deploy --only functions:StripeWebhookTest
+firebase deploy --only functions:VerifyTokenAuth
+firebase deploy --only functions:autoFlashcard
+firebase deploy --only functions:datastoreGetFile
+firebase deploy --only functions:datastoreImportFile
+firebase deploy --only functions:docChangeVisibility
+firebase deploy --only functions:groupDelete
+firebase deploy --only functions:groupDocsAdd
+firebase deploy --only functions:groupGet
+firebase deploy --only functions:groupInvite
+firebase deploy --only functions:groupJoin
+firebase deploy --only functions:groupLeave
+firebase deploy --only functions:groupMemberDelete
+firebase deploy --only functions:groupProvision
+firebase deploy --only functions:groupSitemap
+firebase deploy --only functions:hello
+firebase deploy --only functions:mailinglist
+firebase deploy --only functions:profileDelete
+firebase deploy --only functions:profileUpdate
+firebase deploy --only functions:search
+firebase deploy --only functions:sitemap
+firebase deploy --only functions:ssr
+firebase deploy --only functions:webapp
