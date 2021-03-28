@@ -24,3 +24,13 @@ rm -f package-lock.json
 # Test
 
 Run ```npm ping``` to verify that the repo is working.
+
+
+
+
+# Running List of NPM bugs
+
+- postinstall doesn't work reliably
+- DDoS of private registries due to revert of maxsockets
+- no ability to debug package installation
+- 
