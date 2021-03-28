@@ -45,6 +45,5 @@
     ],
     "exclude": [
         "node_modules/**",
-        "web/spectron.disabled/*"
     ]
 }
