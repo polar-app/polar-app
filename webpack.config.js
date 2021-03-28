@@ -9,7 +9,6 @@ const fs = require('fs');
 const CopyPlugin = require('copy-webpack-plugin');
 const {DefaultRewrites} = require('polar-backend-shared/src/webserver/DefaultRewrites');
 const svgToMiniDataURI = require('mini-svg-data-uri');
-const { styles } = require( '@ckeditor/ckeditor5-dev-utils' );
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 
 
@@ -75,8 +74,6 @@ function createRules() {
             test: /\.(jsx|tsx|ts)$/,
             exclude: [
                 /node_modules/,
-                /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
-                /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
             ],
             use: [
                 {
@@ -110,8 +107,6 @@ function createRules() {
         {
             test: /\.(png|jpe?g|gif|bmp|ico|webp|woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/i,
             exclude: [
-                /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
-                /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
             ],
             use: [
                 {
@@ -128,8 +123,6 @@ function createRules() {
             // make SVGs use data URLs.
             test: /\.(svg)(\?v=\d+\.\d+\.\d+)?$/i,
             exclude: [
-                /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
-                /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
             ],
             use: [
                 {
@@ -144,8 +137,6 @@ function createRules() {
         {
             test: /\.css$/i,
             exclude: [
-                /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
-                /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
             ],
             use: [
                 {
@@ -172,35 +163,6 @@ function createRules() {
                     }
                 },
             ],
-        },
-        {
-            test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
-            use: [ 'raw-loader' ]
-        },
-        {
-            test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
-            use: [
-                {
-                    loader: 'style-loader',
-                    options: {
-                        injectType: 'singletonStyleTag',
-                        attributes: {
-                            'data-cke': true
-                        }
-                    }
-                },
-                {
-                    loader: 'postcss-loader',
-                    options: {
-                        postcssOptions: styles.getPostCssConfig( {
-                            themeImporter: {
-                                themePath: require.resolve( '@ckeditor/ckeditor5-theme-lark' )
-                            },
-                            minify: true
-                        } )
-                    }
-                },
-            ]
         },
 
     ];
@@ -343,12 +305,6 @@ module.exports = {
         new NodePolyfillPlugin(),
 
         // TODO: this is needed for a localized build and it does not support en
-        // new CKEditorWebpackPlugin( {
-        //     // See https://ckeditor.com/docs/ckeditor5/latest/features/ui-language.html
-        //     // language: 'en',
-        //     // addMainLanguageTranslationsToAllAssets: true,
-        //     // buildAllTranslationsToSeparateFiles: true
-        // } ),
         // TODO: this won't be needed once we get rid of summernote .... it
         // should be the only thing depending on jquery moving forward.
         new webpack.ProvidePlugin({
