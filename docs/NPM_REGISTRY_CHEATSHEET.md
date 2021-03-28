@@ -34,3 +34,4 @@ Run ```npm ping``` to verify that the repo is working.
 - DDoS of private registries due to revert of maxsockets
 - no ability to debug package installation
 - 
+- GCP cloud functions are unbounded in terms of sockets... 
