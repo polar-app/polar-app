@@ -4,7 +4,13 @@ import { AppRuntime } from "polar-shared/src/util/AppRuntime";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 
 if (! AppRuntime.isNode()) {
-    userflow.init('ct_kyip2xj7ufhz7a2v7ejnwxaaxa');
+
+    try {
+        userflow.init('ct_kyip2xj7ufhz7a2v7ejnwxaaxa');
+    } catch (e) {
+        console.error("Unable to load userflow: ", e);
+    }
+
 }
 
 // https://getuserflow.com/docs/userflow-js#track
