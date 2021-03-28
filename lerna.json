@@ -10,5 +10,6 @@
   "version": "2.1.32",
   "concurrency": 1,
   "hoist": true,
-  "mutex": "network"
+  "mutex": "network",
+  "ci": true
 }
