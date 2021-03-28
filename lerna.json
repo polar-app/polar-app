@@ -4,8 +4,7 @@
     "packages/polar-app-private/polar-hooks/functions",
     "packages/polar-app-public/*",
     "packages/polar-bookshelf",
-    "packages/polar-bookshelf-secrets",
-    "packages/polar-site2"
+    "packages/polar-bookshelf-secrets"
   ],
   "version": "2.1.32",
   "concurrency": 1,
