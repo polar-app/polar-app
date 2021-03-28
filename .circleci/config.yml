@@ -67,6 +67,7 @@ commands:
 
       - run:
           name: lerna bootstrap
+          no_output_timeout: 30m
           # command: npm run-script purge-node-modules && npx lerna bootstrap
           command: npx lerna bootstrap
 
@@ -130,34 +131,6 @@ jobs:
               echo "Not running Xvfb (not linux)"
             fi
           background: true
-
-      - run:
-          name: Spectron Tests
-          command: |
-            export DISPLAY=:99 &&
-            export SPECTRON_OFFSCREEN=true &&
-            source packages/polar-bookshelf-secrets/build-env.sh &&
-            cd packages/polar-bookshelf &&
-            echo "Running E2E tests..." &&
-            npx mocha --timeout 60000 --exit web/spectron0/browser-capture/spec.js &&
-            npx mocha --timeout 60000 --exit web/spectron0/content-capture/spec.js &&
-            npx mocha --timeout 60000 --exit web/spectron0/firebase-cloud-aware-datastore/spec.js &&
-            npx mocha --timeout 60000 --exit web/spectron0/doc-info-advertisements/spec.js &&
-            npx mocha --timeout 60000 --exit web/spectron1/firebase-groups/spec.js &&
-            npx mocha --timeout 60000 --exit web/spectron2/toaster/spec.js &&
-            npx mocha --timeout 60000 --exit web/spectron2/toaster-logger/spec.js &&
-            npx mocha --timeout 60000 --exit web/spectron2/ui-notifier/spec.js &&
-            npx mocha --timeout 60000 --exit web/spectron3/sentry-test/spec.js &&
-            npx mocha --timeout 60000 --exit web/spectron3/repository-app/spec.js &&
-            npx mocha --timeout 60000 --exit web/spectron3/text-node-splitting/spec.js &&
-            npx mocha --timeout 60000 --exit web/spectron4/persistent-error-logger/spec.js &&
-            npx mocha --timeout 60000 --exit web/spectron4/open-phz-file-with-arg/spec.js &&
-            npx mocha --timeout 60000 --exit web/spectron4/open-pdf-file-with-arg/spec.js &&
-            npx mocha --timeout 60000 --exit web/spectron4/net-request/spec.js &&
-            npx mocha --timeout 60000 --exit web/spectron5/main-app-with-import/spec.js &&
-            npx mocha --timeout 60000 --exit web/spectron5/firebase-datastore/spec.js &&
-            npx mocha --timeout 60000 --exit web/spectron5/main-app/spec.js &&
-            npx mocha --timeout 60000 --exit web/spectron5/main-app-with-empty-repo/spec.js
 
   build-webapp:
 
