@@ -49,6 +49,10 @@ commands:
             uname -a
 
       - run:
+          name: Required Linux packages (when on Linux)
+          command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get install libvips; fi
+
+      - run:
           name: npm setup
           command: |
             cp .npmrc.bytesafe ~/.npmrc
