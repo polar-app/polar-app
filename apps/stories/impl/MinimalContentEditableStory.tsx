@@ -1,8 +1,5 @@
 import * as React from 'react';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {CKEditor5BalloonEditor} from './ckeditor5/CKEditor5BalloonEditor';
-import {CKEditor5GlobalCss} from "./ckeditor5/CKEditor5GlobalCss";
-import { Numbers } from 'polar-shared/src/util/Numbers';
 import {NoteContentEditable} from "../../../web/js/notes/contenteditable/NoteContentEditable";
 
 export const MinimalContentEditableStory = () => {

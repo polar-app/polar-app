@@ -1,13 +1,9 @@
 import React from 'react';
-import '@ckeditor/ckeditor5-theme-lark/theme/theme.css';
-import '@ckeditor/ckeditor5-theme-lark';
 import {NotesRouter} from "../../../web/js/notes/NotesRouter";
-import { CKEditor5AppRoot } from './ckeditor5/CKEditor5AppRoot';
 import Fab from '@material-ui/core/Fab';
 import HelpIcon from '@material-ui/icons/Help';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import {CKEditor5NotesGlobalCSS} from "../../../web/js/notes/CKEditor5NotesGlobalCSS";
 import {NotesStoreProvider, useNotesStore} from '../../../web/js/notes/store/NotesStore';
 import {MockNotes} from "./MockNotes";
 import { observer } from "mobx-react-lite"
@@ -125,15 +121,13 @@ export const NotesStory = () => {
 
     return (
         <FixedWidthContainer>
-            <CKEditor5AppRoot>
-                <NotesStoreProvider>
-                    <BasicNotesDataSet>
-                        <>
-                            <NotesStoryInner/>
-                        </>
-                    </BasicNotesDataSet>
-                </NotesStoreProvider>
-            </CKEditor5AppRoot>
+            <NotesStoreProvider>
+                <BasicNotesDataSet>
+                    <>
+                        <NotesStoryInner/>
+                    </>
+                </BasicNotesDataSet>
+            </NotesStoreProvider>
         </FixedWidthContainer>
     );
 

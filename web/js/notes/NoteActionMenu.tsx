@@ -63,37 +63,36 @@ interface IProps {
 export const NoteActionMenu = observer(function NoteActionMenu(props: IProps) {
 
     // FIXME: can we do this ENTIRELY without ckeditor? I think we could...
-
-    const {itemsProvider, trigger} = props;
-
-    const triggerHandler = React.useMemo(() => createTriggerHandler(trigger), [trigger]);
-
-    const [menuPosition, setMenuPosition, menuPositionRef] = useStateRef<IActionMenuPosition | undefined>(undefined);
-    const [, setMenuIndex, menuIndexRef] = useStateRef<number | undefined>(undefined);
-
-    const editorPositionRef = React.useRef<ckeditor5.IPosition | undefined>(undefined);
-    const promptPositionRef = React.useRef<ckeditor5.IPosition | undefined>(undefined);
-
-    const [prompt, setPrompt, promptRef] = useStateRef<IPrompt | undefined>(undefined);
-    const promptStartRef = React.useRef<number | undefined>();
-
-    const items = React.useMemo(() => itemsProvider(prompt?.prompt || ''), [itemsProvider, prompt]);
-    const itemsRef = useRefValue(items);
-    const store = useNotesStore();
-
-    const promptManager = usePromptManager(props.trigger);
-
-    const reset = React.useCallback(() => {
-
-        setMenuPosition(undefined);
-        setMenuIndex(undefined);
-        setPrompt(undefined);
-
-        promptStartRef.current = undefined;
-        promptPositionRef.current = undefined;
-        promptManager.reset();
-
-    }, [promptManager, setMenuIndex, setMenuPosition, setPrompt]);
+    //
+    // const {itemsProvider, trigger} = props;
+    //
+    // const triggerHandler = React.useMemo(() => createTriggerHandler(trigger), [trigger]);
+    //
+    // const [menuPosition, setMenuPosition, menuPositionRef] = useStateRef<IActionMenuPosition | undefined>(undefined);
+    // const [, setMenuIndex, menuIndexRef] = useStateRef<number | undefined>(undefined);
+    //
+    // const promptPositionRef = React.useRef<ckeditor5.IPosition | undefined>(undefined);
+    //
+    // const [prompt, setPrompt, promptRef] = useStateRef<IPrompt | undefined>(undefined);
+    // const promptStartRef = React.useRef<number | undefined>();
+    //
+    // const items = React.useMemo(() => itemsProvider(prompt?.prompt || ''), [itemsProvider, prompt]);
+    // const itemsRef = useRefValue(items);
+    // const store = useNotesStore();
+    //
+    // const promptManager = usePromptManager(props.trigger);
+    //
+    // const reset = React.useCallback(() => {
+    //
+    //     setMenuPosition(undefined);
+    //     setMenuIndex(undefined);
+    //     setPrompt(undefined);
+    //
+    //     promptStartRef.current = undefined;
+    //     promptPositionRef.current = undefined;
+    //     promptManager.reset();
+    //
+    // }, [promptManager, setMenuIndex, setMenuPosition, setPrompt]);
 
     // const removeEditorPromptText = React.useCallback(() => {
     //

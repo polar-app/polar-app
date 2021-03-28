@@ -1,5 +1,4 @@
 import * as React from 'react';
-// import {CKEditor5BalloonEditor} from "./CKEditor5BalloonEditor";
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 

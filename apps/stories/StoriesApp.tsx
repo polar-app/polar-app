@@ -9,7 +9,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import {BrowserRouter, useHistory, useLocation} from 'react-router-dom';
 import {PDFThumbnailerStory} from "./impl/PDFThumbnailerStory";
 import Box from '@material-ui/core/Box';
-import {CKEditor5Story} from "./impl/CKEditor5Story";
 import {NotesStory} from "./impl/NotesStory";
 import {EPUBThumbnailerStory} from "./impl/EPUBThumbnailerStory";
 import {ReviewerStory} from "./impl/ReviewerStory";
@@ -41,7 +40,6 @@ import {ScratchStory} from "./impl/ScratchStory";
 import { ErrorBoundaryStory } from './impl/ErrorBoundaryStory';
 import {ActiveKeyboardShortcutsStory} from "./impl/ActiveKeyboardShortcutsStory";
 import {FontAwesomeIconStory} from "./impl/FontAwesomeIconStory";
-import {CKEditorPerformanceStory} from "./impl/CKEditorPerformanceStory";
 import { ProfileStory } from './impl/ProfileStory';
 import { AccountVerificationStory } from './impl/AccountVerificationStory';
 import {MobXStory} from "./impl/MobXStory";
@@ -49,8 +47,6 @@ import {WelcomeStory} from "./impl/WelcomeStory";
 import {MUICommandMenuStory} from "./impl/MUICommandMenuStory";
 import { NestedContextStory } from './impl/NestedContextStory';
 import {CreateAccountStory} from "./impl/CreateAccountStory";
-import { CKEditorActivatorStory } from './impl/CKEditorActivatorStory';
-import {CKEditorActivatorPerformanceStory} from "./impl/CKEditorActivatorPerformanceStory";
 import {TextAreaMarkdownEditorStory} from "./impl/TextAreaMarkdownEditorStory";
 import { MinimalContentEditablePerformanceStory } from './impl/MinimalContentEditablePerformanceStory';
 import {MinimalContentEditableStory} from "./impl/MinimalContentEditableStory";
@@ -123,22 +119,6 @@ const stories = createStoryIndex([
     {
         name: "EPUB Thumbnailer",
         component: <EPUBThumbnailerStory/>
-    },
-    {
-        name: "CKEditor5",
-        component: <CKEditor5Story/>
-    },
-    {
-        name: 'CKEditorActivator',
-        component: <CKEditorActivatorStory/>
-    },
-    {
-        name: "CKEditor5 Performance",
-        component: <CKEditorPerformanceStory/>
-    },
-    {
-        name: "CKEditorActivator Performance",
-        component: <CKEditorActivatorPerformanceStory/>
     },
     {
         name: "Notes",

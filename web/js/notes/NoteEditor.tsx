@@ -172,13 +172,9 @@ const NoteEditorWithEditorStore = observer(function NoteEditorWithEditorStore(pr
     // useLifecycleTracer('NoteEditorWithEditorStore', {id: props.id});
 
     return (
-        <NoteActionMenuForLinking id={props.id}>
-            <NoteActionMenuForCommands id={props.id}>
-                <NoteNavigation parent={props.parent} id={props.id}>
-                    <NoteEditorInner {...props}/>
-                </NoteNavigation>
-            </NoteActionMenuForCommands>
-        </NoteActionMenuForLinking>
+        <NoteNavigation parent={props.parent} id={props.id}>
+            <NoteEditorInner {...props}/>
+        </NoteNavigation>
     );
 
 });
