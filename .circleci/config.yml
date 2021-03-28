@@ -51,7 +51,7 @@ commands:
       - run:
           name: Required Linux packages (when on Linux)
           # libvips is needed by sharp which is needed by gatsby
-          command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get install libvips libvips-dev; fi
+          command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get install libvips libvips-dev pngquant; fi
 
       - run:
           name: npm setup
