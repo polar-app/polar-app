@@ -16,20 +16,32 @@ export function isBrowser() {
     return typeof window !== 'undefined';
 }
 
-function createDelegate(): IAnalytics {
+export function isWebExtension() {
+    return document.location.href.startsWith("chrome-extension:");
+}
+
+function createDelegates(): ReadonlyArray<IAnalytics> {
+
+    const webExtension = isWebExtension();
+
+    return [
+        new AmplitudeAnalytics(),
+        webExtension ? undefined : new GAAnalytics(),
+        webExtension ? undefined : new FirestoreAnalytics(),
+        webExtension ? undefined : new UserflowAnalytics(),
+        new ConsoleAnalytics(),
+        webExtension ? undefined : new IntercomAnalytics(),
+        webExtension ? undefined : new CannyAnalytics(),
+        new SentryAnalytics()
+    ].filter(current => current !== undefined)
+     .map(current => current!);
+}
+
+function createInstance(): IAnalytics {
 
     if (isBrowser()) {
         return new OnlineAnalytics(
-            new CompositeAnalytics([
-                new AmplitudeAnalytics(),
-                new GAAnalytics(),
-                new FirestoreAnalytics(),
-                new UserflowAnalytics(),
-                new ConsoleAnalytics(),
-                new IntercomAnalytics(),
-                new CannyAnalytics(),
-                new SentryAnalytics()
-            ])
+            new CompositeAnalytics(createDelegates())
         );
     } else {
         return new NullAnalytics();
@@ -37,7 +49,7 @@ function createDelegate(): IAnalytics {
 
 }
 
-const delegate = createDelegate();
+const instance = createInstance();
 
 /**
  * Hook for analytics that isn't that complicated yet but we can add more
@@ -48,16 +60,7 @@ export function useAnalytics(): IAnalytics {
     return React.useMemo((): IAnalytics => {
         if (isBrowser()) {
             return new OnlineAnalytics(
-                new CompositeAnalytics([
-                    new AmplitudeAnalytics(),
-                    new GAAnalytics(),
-                    new FirestoreAnalytics(),
-                    new UserflowAnalytics(),
-                    new ConsoleAnalytics(),
-                    new IntercomAnalytics(),
-                    new CannyAnalytics(),
-                    new SentryAnalytics()
-                ])
+                new CompositeAnalytics(createDelegates())
             );
         } else {
             return new NullAnalytics();
@@ -70,19 +73,19 @@ export function useAnalytics(): IAnalytics {
 export namespace Analytics {
 
     export function event(event: IEventArgs): void {
-        delegate.event(event);
+        instance.event(event);
     }
 
     export function event2(event: string, data?: any): void {
-        delegate.event2(event, data);
+        instance.event2(event, data);
     }
 
     export function identify(user: IAnalyticsUser): void {
-        delegate.identify(user);
+        instance.identify(user);
     }
 
     export function page(event: IPageEvent): void {
-        delegate.page(event);
+        instance.page(event);
     }
 
     /**
@@ -90,19 +93,19 @@ export namespace Analytics {
      * to use hooks.
      */
     export function traits(map: TraitsMap): void {
-        delegate.traits(map);
+        instance.traits(map);
     }
 
     export function version(version: string): void {
-        delegate.version(version);
+        instance.version(version);
     }
 
     export function heartbeat(): void {
-        delegate.heartbeat();
+        instance.heartbeat();
     }
 
     export function logout(): void {
-        delegate.logout();
+        instance.logout();
     }
 
     /**

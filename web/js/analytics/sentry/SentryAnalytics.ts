@@ -1,5 +1,5 @@
 import {IAnalytics, IEventArgs, TraitsMap, IPageEvent, IAnalyticsUser} from "../IAnalytics";
-import Sentry from '@sentry/browser';
+import * as Sentry from '@sentry/browser';
 
 /**
  * https://docs.sentry.io/platforms/javascript/enriching-events/identify-user/
