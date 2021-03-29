@@ -12,7 +12,7 @@ description: Polar Support - Get Help
 You need help? No problem, we are here to help as soon as possible. You can see documentation for Polar <a href="https://getpolarized.io/docs/" target="_blank">here</a>.
 You can also reach us through chat. Just click on the chat icon on the bottom right and let us know what the problem is!
 
-<img alt="Polar Support Button" src="https://i.imgur.com/N2v9UVl.png">
+<img alt="Polar Support Button" src="https://i.imgur.com/5kxyMDG.png">
     
 ## Discord / Reddit community for questions
     
