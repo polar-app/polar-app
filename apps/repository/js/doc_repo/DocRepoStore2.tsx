@@ -49,6 +49,7 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {RepoDocInfos} from "../RepoDocInfos";
 import TypeConverter = Sorting.TypeConverter;
 import {createObservableStoreWithPrefsContext} from "../../../../web/js/react/store/ObservableStoreWithPrefsContext";
+import {Analytics} from "../../../../web/js/analytics/Analytics";
 
 interface IDocRepoStore {
 
@@ -365,6 +366,9 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
         }
 
         withBatch(repoDocInfos.map(toAsyncTransaction))
+            .then(() => {
+                Analytics.event2("doc-tagged", { count: repoDocInfos.length });
+            })
             .catch(err => log.error(err));
 
     }
@@ -390,6 +394,9 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
         }
 
         doHandle()
+            .then(() => {
+                Analytics.event2("doc-archived", { count: repoDocInfos.length, archived });
+            })
             .catch(err => log.error(err));
 
     }
@@ -416,6 +423,9 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
         }
 
         doHandle()
+            .then(() => {
+                Analytics.event2("doc-flagged", { count: repoDocInfos.length, flagged });
+            })
             .catch(err => log.error(err));
 
     }
@@ -728,7 +738,6 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
         const callback = TaggedCallbacks.create(opts);
 
         callback();
-
     }
 
     // I don't know of a better way to return / organize the callbacks here

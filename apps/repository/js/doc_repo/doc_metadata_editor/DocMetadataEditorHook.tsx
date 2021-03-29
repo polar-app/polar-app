@@ -4,6 +4,7 @@ import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {DocMetadataEditor} from "./DocMetadataEditor";
 import {useDocRepoCallbacks} from "../DocRepoStore2";
 import {RepoDocInfo} from "../../RepoDocInfo";
+import {Analytics} from "../../../../../web/js/analytics/Analytics";
 
 export function useDocMetadataEditor() {
 
@@ -19,6 +20,8 @@ export function useDocMetadataEditor() {
                               onUpdate: (docInfo: IDocInfo) => void) => {
 
         docInfoRef.current = docInfo;
+
+        Analytics.event2('doc-metadataModalOpened');
 
         dialogs.dialog({
             title: "Update Document Metadata",
@@ -46,6 +49,7 @@ export function useDocMetadataEditorForSelected() {
     const docMetadataEditor = useDocMetadataEditor()
 
     const handleUpdated = React.useCallback((repoDocInfo: RepoDocInfo, docInfo: IDocInfo) => {
+        Analytics.event2('doc-metadataUpdated');
         onUpdated(repoDocInfo, docInfo)
     }, [onUpdated]);
 

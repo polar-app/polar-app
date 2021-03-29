@@ -1,6 +1,7 @@
 import * as React from "react";
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import {StandardIconButton} from "../../../repository/js/doc_repo/buttons/StandardIconButton";
+import {Analytics} from "../../../../web/js/analytics/Analytics";
 
 export function useFullScreenToggle() {
 
@@ -11,6 +12,9 @@ export function useFullScreenToggle() {
         }
 
         doAsync()
+            .then(() => {
+                Analytics.event2('global-fullscreenModeToggled', { enabled: true });
+            })
             .catch(err => console.error(err));
 
     }, []);

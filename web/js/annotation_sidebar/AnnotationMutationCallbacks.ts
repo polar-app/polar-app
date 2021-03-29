@@ -45,6 +45,7 @@ import {
     DocAnnotationsMutator,
     IAreaHighlightMutation, ITextHighlightMutation, ICommentMutation, IFlashcardMutation, IColorMutation
 } from "./AnnotationMutationsContext";
+import {Analytics} from "../analytics/Analytics";
 
 /**
  * @param updateStore: Update the store directly.
@@ -296,6 +297,10 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
             }
 
             doAsync()
+                .then(() => {
+                    if (mutation.type === "create")
+                        Analytics.event2('doc-highlightCreated', { type: 'area' });
+                })
                 .catch(err => log.error(err));
 
         }
@@ -316,6 +321,9 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
                     pageMeta.textHighlights[textHighlight.id] = textHighlight;
 
                     writeUpdatedDocMetas([docMeta])
+                        .then(() => {
+                            Analytics.event2('doc-highlightCreated', { type: 'text' });
+                        })
                         .catch(err => log.error(err));
 
                     break;
@@ -396,6 +404,8 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
 
                 }
 
+            }).then(() => {
+                Analytics.event2('annotation-colorChanged');
             }).catch(err => log.error(err));
 
         }
