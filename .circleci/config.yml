@@ -206,6 +206,7 @@ jobs:
 
       - run:
           name: init
+          no_output_timeout: 120m
           command: |
             source packages/polar-bookshelf-secrets/credentials.sh
             npm run-script set-registry-bytesafe-rw
@@ -213,7 +214,7 @@ jobs:
 
       - run:
           name: release
-          no_output_timeout: 30m
+          no_output_timeout: 120m
           command: |
             source packages/polar-bookshelf-secrets/credentials.sh
             npm run-script set-registry-bytesafe-rw
