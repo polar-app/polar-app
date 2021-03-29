@@ -234,16 +234,29 @@ export const NoteAction = observer((props: IProps) => {
 
     const doReset = React.useCallback(() => {
 
+        console.log("FIXME 114 within doReset");
+
         if (activeRef.current) {
 
+            console.log("FIXME doing reset")
+
+            console.log("FIXME 114.1");
+
             clearActivePrompt();
+            console.log("FIXME 114.2");
 
             activeRef.current = false;
 
+            console.log("FIXME 114.3");
+
             activePromptRef.current = undefined;
+
+            console.log("FIXME 114.4");
 
             actionStore.setState(undefined);
 
+        } else {
+            console.log("FIXME not acitve");
         }
 
     }, [clearActivePrompt, actionStore])
@@ -415,7 +428,15 @@ export const NoteAction = observer((props: IProps) => {
             switch (event.key) {
 
                 case 'Escape':
-                    doReset();
+                    console.log("FIXME 113 going to call doREset now...");
+
+                    try {
+                        doReset();
+                    } catch (e) {
+                        console.log("FIXME 113 got error, ", e )
+                    }
+
+                    console.log("FIXME 113.1 doReset called");
                     return;
 
                 case 'Tab':
@@ -465,6 +486,8 @@ export const NoteAction = observer((props: IProps) => {
 
             }
 
+        } else {
+            console.log("FIXME 114 not active");
         }
 
     }, [cursorWithinInput, doComplete, doCompleteOrReset, doReset]);
@@ -516,10 +539,12 @@ export const NoteAction = observer((props: IProps) => {
 
                 if (position) {
 
+                    console.log("FIXME: setting active ref to true");
                     activeRef.current = true;
 
                     const items = computeItems(prompt);
 
+                    console.log("FIXME: setting initial state");
                     actionStore.setState({
                         position,
                         items,

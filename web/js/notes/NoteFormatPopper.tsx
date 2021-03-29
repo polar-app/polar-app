@@ -67,10 +67,15 @@ export const NoteFormatPopper = React.memo(function NoteFormatPopper(props: IPro
         doPopup();
 
         if (event.key === 'Escape') {
-            setPosition(undefined);
+
+            if (position !== undefined) {
+                setPosition(undefined);
+                console.log("FIXME NoteFormatPopper escape... ");
+            }
+
         }
 
-    }, [doPopup]);
+    }, [doPopup, position]);
 
     const noteFormatHandlers = useNoteFormatHandlers(props.onUpdated);
 

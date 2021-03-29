@@ -498,6 +498,7 @@ function usePromptManager(trigger: string): PromptManager {
             case 'ArrowUp':
             case 'ArrowDown':
             case 'Shift':
+                console.log("FIXME 111");
                 // ignore these
                 break;
 

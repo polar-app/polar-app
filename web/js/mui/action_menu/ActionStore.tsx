@@ -105,6 +105,7 @@ export class ActionStore {
      * Set the state or undefined if we want to clear it...
      */
     @action public setState(state: IActionState | undefined) {
+        console.log("FIXME: setting state to: ", state);
         this.state = state;
     }
 
