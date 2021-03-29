@@ -7,8 +7,8 @@
 - [Table of Contents](#table-of-contents)
 - [Events](#events)
   - [Global](#global)
-    - [`global-fullscreenModeToggled` Global Fullscreen Mode Toggled](#global-fullscreenmodetoggled-global-fullscreen-mode-toggled)
-    - [`global-zenModeToggled` Global Zen Mode Toggled](#global-zenmodetoggled-global-zen-mode-toggled)
+    - [`global-fullscreenModeEnabled` Global Fullscreen Mode Enabled](#global-fullscreenmodeenabled-global-fullscreen-mode-enabled)
+    - [`global-zenModeEnabled` Global Zen Mode Enabled](#global-zenmodeenabled-global-zen-mode-enabled)
   - [Document](#document)
     - [`doc-flagged` Document Flagged](#doc-flagged-document-flagged)
     - [`doc-tagged` Document Tags Changed](#doc-tagged-document-tags-changed)
@@ -32,23 +32,13 @@
 
 ## Global
 
-### `global-fullscreenModeToggled` Global Fullscreen Mode Toggled
-Note: Only going into fullscreen mode is being reported atm (enabled will always be `true`).
+### `global-fullscreenModeEnabled` Global Fullscreen Mode Enabled
 
-```ts
-{
-    enabled: boolean,
-}
-```
+*No extra data*
 
-### `global-zenModeToggled` Global Zen Mode Toggled
-Note: Only going into zen mode is being reported atm (enabled will always be `true`).
+### `global-zenModeEnabled` Global Zen Mode Enabled
 
-```ts
-{
-    enabled: boolean,
-}
-```
+*No extra data*
 
 ## Document
 

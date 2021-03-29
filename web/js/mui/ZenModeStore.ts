@@ -45,8 +45,8 @@ function useCallbacksFactory(storeProvider: Provider<IZenModeStore>,
 
         function toggleZenMode() {
             const store = storeProvider();
-            if (!store.zenMode) {
-                Analytics.event2('global-zenModeToggled', { enabled: true });
+            if (! store.zenMode) {
+                Analytics.event2('global-zenModeEnabled');
             }
             setZenMode(! store.zenMode);
         }
