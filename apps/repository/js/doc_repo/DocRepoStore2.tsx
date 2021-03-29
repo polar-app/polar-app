@@ -366,9 +366,7 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
         }
 
         withBatch(repoDocInfos.map(toAsyncTransaction))
-            .then(() => {
-                Analytics.event2("doc-tagged", { count: repoDocInfos.length });
-            })
+            .then(() => Analytics.event2("doc-tagged", { count: repoDocInfos.length }))
             .catch(err => log.error(err));
 
     }
@@ -394,9 +392,7 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
         }
 
         doHandle()
-            .then(() => {
-                Analytics.event2("doc-archived", { count: repoDocInfos.length, archived });
-            })
+            .then(() => Analytics.event2("doc-archived", { count: repoDocInfos.length, archived }))
             .catch(err => log.error(err));
 
     }
@@ -423,9 +419,7 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
         }
 
         doHandle()
-            .then(() => {
-                Analytics.event2("doc-flagged", { count: repoDocInfos.length, flagged });
-            })
+            .then(() => Analytics.event2("doc-flagged", { count: repoDocInfos.length, flagged }))
             .catch(err => log.error(err));
 
     }

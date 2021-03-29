@@ -294,13 +294,12 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
 
                 refresher();
 
+                if (mutation.type === "create") {
+                    Analytics.event2('doc-highlightCreated', { type: 'area' });
+                }
             }
 
             doAsync()
-                .then(() => {
-                    if (mutation.type === "create")
-                        Analytics.event2('doc-highlightCreated', { type: 'area' });
-                })
                 .catch(err => log.error(err));
 
         }
@@ -404,7 +403,6 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
 
                 }
 
-            }).then(() => {
                 Analytics.event2('annotation-colorChanged');
             }).catch(err => log.error(err));
 

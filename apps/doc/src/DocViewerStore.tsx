@@ -608,9 +608,7 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
                 const createdPagemarks = createPagemarksForRange(pageNum, percentage);
 
                 writeUpdatedDocMetas([docMeta])
-                    .then(() => {
-                        Analytics.event2('doc-pagemarkCreated');
-                    })
+                    .then(() => Analytics.event2('doc-pagemarkCreated'))
                     .catch(err => log.error(err));
 
                 return createdPagemarks;
@@ -727,9 +725,7 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
                 updateDocMeta(docMeta);
                 writeUpdatedDocMetas([docMeta])
-                    .then(() => {
-                        Analytics.event2('doc-markAsRead');
-                    })
+                    .then(() => Analytics.event2('doc-markAsRead'))
                     .catch(err => log.error(err));
 
                 return [];

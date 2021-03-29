@@ -9,12 +9,10 @@ export function useFullScreenToggle() {
 
         async function doAsync() {
             await document.documentElement.requestFullscreen();
+            Analytics.event2('global-fullscreenModeToggled', { enabled: true });
         }
 
         doAsync()
-            .then(() => {
-                Analytics.event2('global-fullscreenModeToggled', { enabled: true });
-            })
             .catch(err => console.error(err));
 
     }, []);
