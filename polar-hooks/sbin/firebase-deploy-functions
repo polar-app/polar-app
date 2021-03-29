@@ -2,6 +2,7 @@
 
 set -e
 
+firebase deploy --only functions:webapp
 firebase deploy --only functions:CloudFunctionsWarmer
 firebase deploy --only functions:GroupDocMetaWriteFunction
 firebase deploy --only functions:StartTokenAuth
@@ -34,4 +35,3 @@ firebase deploy --only functions:profileUpdate
 firebase deploy --only functions:search
 firebase deploy --only functions:sitemap
 firebase deploy --only functions:ssr
-firebase deploy --only functions:webapp
