@@ -2,36 +2,36 @@
 
 set -e
 
-firebase deploy --only functions:webapp
-firebase deploy --only functions:CloudFunctionsWarmer
-firebase deploy --only functions:GroupDocMetaWriteFunction
-firebase deploy --only functions:StartTokenAuth
-firebase deploy --only functions:StripeCancelSubscription
-firebase deploy --only functions:StripeChangePlan
-firebase deploy --only functions:StripeCreateCustomerPortal
-firebase deploy --only functions:StripeCreateSession
-firebase deploy --only functions:StripeStudentDiscountFunction
-firebase deploy --only functions:StripeStudentDiscountVerifyFunction
-firebase deploy --only functions:StripeWebhook
-firebase deploy --only functions:StripeWebhookTest
-firebase deploy --only functions:VerifyTokenAuth
-firebase deploy --only functions:autoFlashcard
-firebase deploy --only functions:datastoreGetFile
-firebase deploy --only functions:datastoreImportFile
-firebase deploy --only functions:docChangeVisibility
-firebase deploy --only functions:groupDelete
-firebase deploy --only functions:groupDocsAdd
-firebase deploy --only functions:groupGet
-firebase deploy --only functions:groupInvite
-firebase deploy --only functions:groupJoin
-firebase deploy --only functions:groupLeave
-firebase deploy --only functions:groupMemberDelete
-firebase deploy --only functions:groupProvision
-firebase deploy --only functions:groupSitemap
-firebase deploy --only functions:hello
-firebase deploy --only functions:mailinglist
-firebase deploy --only functions:profileDelete
-firebase deploy --only functions:profileUpdate
-firebase deploy --only functions:search
-firebase deploy --only functions:sitemap
-firebase deploy --only functions:ssr
+time firebase deploy --only functions:webapp
+time firebase deploy --only functions:CloudFunctionsWarmer
+time firebase deploy --only functions:GroupDocMetaWriteFunction
+time firebase deploy --only functions:StartTokenAuth
+time firebase deploy --only functions:StripeCancelSubscription
+time firebase deploy --only functions:StripeChangePlan
+time firebase deploy --only functions:StripeCreateCustomerPortal
+time firebase deploy --only functions:StripeCreateSession
+time firebase deploy --only functions:StripeStudentDiscountFunction
+time firebase deploy --only functions:StripeStudentDiscountVerifyFunction
+time firebase deploy --only functions:StripeWebhook
+time firebase deploy --only functions:StripeWebhookTest
+time firebase deploy --only functions:VerifyTokenAuth
+time firebase deploy --only functions:autoFlashcard
+time firebase deploy --only functions:datastoreGetFile
+time firebase deploy --only functions:datastoreImportFile
+time firebase deploy --only functions:docChangeVisibility
+time firebase deploy --only functions:groupDelete
+time firebase deploy --only functions:groupDocsAdd
+time firebase deploy --only functions:groupGet
+time firebase deploy --only functions:groupInvite
+time firebase deploy --only functions:groupJoin
+time firebase deploy --only functions:groupLeave
+time firebase deploy --only functions:groupMemberDelete
+time firebase deploy --only functions:groupProvision
+time firebase deploy --only functions:groupSitemap
+time firebase deploy --only functions:hello
+time firebase deploy --only functions:mailinglist
+time firebase deploy --only functions:profileDelete
+time firebase deploy --only functions:profileUpdate
+time firebase deploy --only functions:search
+time firebase deploy --only functions:sitemap
+time firebase deploy --only functions:ssr
