@@ -19,15 +19,15 @@ time firebase deploy --only functions:autoFlashcard
 time firebase deploy --only functions:datastoreGetFile
 time firebase deploy --only functions:datastoreImportFile
 time firebase deploy --only functions:docChangeVisibility
-time firebase deploy --only functions:groupDelete
-time firebase deploy --only functions:groupDocsAdd
-time firebase deploy --only functions:groupGet
-time firebase deploy --only functions:groupInvite
-time firebase deploy --only functions:groupJoin
-time firebase deploy --only functions:groupLeave
-time firebase deploy --only functions:groupMemberDelete
-time firebase deploy --only functions:groupProvision
-time firebase deploy --only functions:groupSitemap
+# time firebase deploy --only functions:groupDelete
+# time firebase deploy --only functions:groupDocsAdd
+# time firebase deploy --only functions:groupGet
+# time firebase deploy --only functions:groupInvite
+# time firebase deploy --only functions:groupJoin
+# time firebase deploy --only functions:groupLeave
+# time firebase deploy --only functions:groupMemberDelete
+# time firebase deploy --only functions:groupProvision
+# time firebase deploy --only functions:groupSitemap
 time firebase deploy --only functions:hello
 time firebase deploy --only functions:mailinglist
 time firebase deploy --only functions:profileDelete
