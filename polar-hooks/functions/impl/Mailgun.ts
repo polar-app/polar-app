@@ -19,6 +19,12 @@ export namespace Mailgun {
     // https://github.com/mailgun/mailgun-js#create
     export async function send(opts: SendOpts) {
 
+        // https://github.com/mailgun/mailgun-js#create
+        // o:deliverytime
+
+        // Desired time of delivery. See Date Format. Note: Messages can be
+        // scheduled for a maximum of 3 days in the future.
+
         await client.messages.create('getpolarized.io', {
             from: opts.from,
             to: opts.to,
