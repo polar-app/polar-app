@@ -187,6 +187,8 @@ jobs:
           name: build and verify site (getpolarized.io)
           command: |
             pwd
+            # this postinstall is a hack because npm v7 doesn't properly run postinstall
+            (cd node_modules/pngquant-bin &&  npm run-script postinstall)
             cd packages/polar-site2
             npm run-script dist
 
