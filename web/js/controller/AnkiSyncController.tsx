@@ -34,7 +34,7 @@ export const AnkiSyncController = React.memo(function AnkiSyncController() {
 
         async function doAsync(): Promise<void> {
 
-            Analytics.event({category: 'anki', action: 'sync-started'});
+            Analytics.event2('anki-syncStarted');
 
             let nrTasks = 0;
             let nrFailedTasks = 0;
@@ -108,7 +108,7 @@ export const AnkiSyncController = React.memo(function AnkiSyncController() {
 
                 finalNotifications();
 
-                Analytics.event({category: 'anki', action: 'sync-completed'});
+                Analytics.event2('anki-syncCompleted', { noSucceeded: nrTasks - nrFailedTasks, noFailed: nrFailedTasks });
             } finally {
                 updateProgress('terminate');
             }
@@ -156,6 +156,7 @@ export const AnkiSyncController = React.memo(function AnkiSyncController() {
             } else {
                 log.error("Could not sync to Anki: ", err);
             }
+            Analytics.event2('anki-syncFailed');
         }
 
         doAsync()

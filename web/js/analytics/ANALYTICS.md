@@ -9,6 +9,10 @@
   - [Global](#global)
     - [`global-fullscreenModeEnabled` Global Fullscreen Mode Enabled](#global-fullscreenmodeenabled-global-fullscreen-mode-enabled)
     - [`global-zenModeEnabled` Global Zen Mode Enabled](#global-zenmodeenabled-global-zen-mode-enabled)
+  - [Anki](#anki)
+    - [`anki-syncStarted` Anki Sync Started](#anki-syncstarted-anki-sync-started)
+    - [`anki-syncFailed` Anki Sync Started](#anki-syncfailed-anki-sync-started)
+    - [`anki-syncCompleted` Anki Sync Completed](#anki-synccompleted-anki-sync-completed)
   - [Document](#document)
     - [`doc-flagged` Document Flagged](#doc-flagged-document-flagged)
     - [`doc-tagged` Document Tags Changed](#doc-tagged-document-tags-changed)
@@ -39,6 +43,24 @@
 ### `global-zenModeEnabled` Global Zen Mode Enabled
 
 *No extra data*
+
+## Anki
+
+### `anki-syncStarted` Anki Sync Started
+
+*No extra data*
+### `anki-syncFailed` Anki Sync Started
+
+*No extra data*
+
+### `anki-syncCompleted` Anki Sync Completed
+
+```ts
+{
+    noSucceeded: number, // The number of flashcards that synced successfully
+    noFailed: number, // The number of flashcards that failed to sync
+}
+```
 
 ## Document
 
