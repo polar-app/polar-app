@@ -440,6 +440,9 @@ export const NoteAction = observer((props: IProps) => {
                 case 'Tab':
                 case 'Enter':
                     doComplete();
+
+                    event.stopPropagation();
+
                     return true;
 
             }

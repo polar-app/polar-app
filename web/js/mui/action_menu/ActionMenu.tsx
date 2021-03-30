@@ -76,7 +76,7 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
         //     return;
         // }
 
-        function stopHandlingEvent() {
+        function abortEvent() {
             event.stopPropagation();
             event.preventDefault();
         }
@@ -120,22 +120,22 @@ export const ActionMenu = React.memo(function ActionMenu(props: IProps) {
         }
 
         if (event.key === 'ArrowDown') {
-            stopHandlingEvent();
+            abortEvent();
             handleNewIndex(1);
         }
 
         if (event.key === 'ArrowUp') {
-            stopHandlingEvent();
+            abortEvent();
             handleNewIndex(-1);
         }
 
         if (event.key === 'Escape') {
-            stopHandlingEvent();
+            abortEvent();
             onClose('cancel');
         }
 
         if (event.key === 'Enter') {
-            stopHandlingEvent();
+            abortEvent();
             if (index !== undefined) {
                 const command = items[index];
                 handleActionExecuted(command);
