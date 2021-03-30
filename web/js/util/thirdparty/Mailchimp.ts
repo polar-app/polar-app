@@ -5,7 +5,7 @@ export class Mailchimp {
 
     public static async subscribe(email: string, name: string) {
 
-        const url = `https://us-central1-polar-cors.cloudfunctions.net/mailinglist/`;
+        const url = `https://us-central1-polar-32b0f.cloudfunctions.net/mailinglist/`;
 
         const userName = this.parseName(name);
 

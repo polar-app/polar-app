@@ -222,7 +222,7 @@ export function getErrorFromCloudFunctionResponse(e: FetchResponseError | FetchE
 }
 
 export async function executeCloudFunction<S, E>(cloudFunctionName: string, body: any): Promise<CloudFunctionResponse<S, E>> {
-    const url = `https://us-central1-polar-cors.cloudfunctions.net/${cloudFunctionName}/`;
+    const url = `https://us-central1-polar-32b0f.cloudfunctions.net/${cloudFunctionName}/`;
 
     const init: RequestInit = {
         mode: "cors",
