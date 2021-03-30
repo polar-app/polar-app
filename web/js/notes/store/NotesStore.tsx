@@ -141,6 +141,11 @@ export class NotesStore {
     @observable public root: NoteIDStr | undefined = undefined;
 
     /**
+     * The current root note
+     */
+    @observable public roots: ReadonlyArray<NoteIDStr> = [];
+
+    /**
      * The currently active note.
      */
     @observable _active: IActiveNote | undefined = undefined;
@@ -166,6 +171,7 @@ export class NotesStore {
 
     constructor() {
         this.root = undefined;
+        this.roots = [];
         makeObservable(this);
     }
 

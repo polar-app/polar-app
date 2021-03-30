@@ -12,7 +12,7 @@ export namespace StripeUtils {
                 case "test":
                     return 'us-central1-polar-cors-beta.cloudfunctions.net'
                 case "live":
-                    return 'us-central1-polar-cors.cloudfunctions.net'
+                    return 'us-central1-polar-32b0f.cloudfunctions.net'
             }
 
         }

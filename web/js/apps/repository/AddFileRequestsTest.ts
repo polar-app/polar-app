@@ -7,12 +7,12 @@ describe('AddFileRequests', function() {
 
     it('with encoded URL', function() {
 
-        const url = "https://us-central1-polar-cors.cloudfunctions.net/cors?url=http%3A%2F%2Fwww.seanriddle.com%2Ffurbysource.pdf";
+        const url = "https://us-central1-polar-32b0f.cloudfunctions.net/cors?url=http%3A%2F%2Fwww.seanriddle.com%2Ffurbysource.pdf";
         const actual = AddFileRequests.fromURL(url);
 
         assertJSON(actual, {
             "basename": "furbysource.pdf",
-            "docPath": "https://us-central1-polar-cors.cloudfunctions.net/cors?url=http%3A%2F%2Fwww.seanriddle.com%2Ffurbysource.pdf"
+            "docPath": "https://us-central1-polar-32b0f.cloudfunctions.net/cors?url=http%3A%2F%2Fwww.seanriddle.com%2Ffurbysource.pdf"
         });
 
     });
@@ -25,7 +25,7 @@ describe('AddFileRequests', function() {
 
         assertJSON(actual, {
             "basename": "furbysource.pdf",
-            "docPath": "https://us-central1-polar-cors.cloudfunctions.net/cors?url=http%3A%2F%2Fwww.seanriddle.com%2Ffurbysource.pdf"
+            "docPath": "https://us-central1-polar-32b0f.cloudfunctions.net/cors?url=http%3A%2F%2Fwww.seanriddle.com%2Ffurbysource.pdf"
         });
 
     });
