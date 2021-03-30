@@ -45,7 +45,7 @@ export namespace StripeStudentDiscountFunctions {
 
         // *** send the user a verification email
 
-        const link = `https://us-central1-polar-cors.cloudfunctions.net/stripeStudentDiscountVerify?s=${secret}&id=${id}`;
+        const link = `https://us-central1-polar-32b0f.cloudfunctions.net/stripeStudentDiscountVerify?s=${secret}&id=${id}`;
 
         await Sendgrid.send({
             to: email,

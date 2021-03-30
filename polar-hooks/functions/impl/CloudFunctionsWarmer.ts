@@ -11,8 +11,8 @@ async function doWarm() {
 
     console.log("Warming cloud functions");
 
-    await doFetch("https://us-central1-polar-cors.cloudfunctions.net/VerifyTokenAuth/");
-    await doFetch("https://us-central1-polar-cors.cloudfunctions.net/StartTokenAuth/");
+    await doFetch("https://us-central1-polar-32b0f.cloudfunctions.net/VerifyTokenAuth/");
+    await doFetch("https://us-central1-polar-32b0f.cloudfunctions.net/StartTokenAuth/");
 
 }
 
