@@ -413,7 +413,7 @@ export const NoteAction = observer((props: IProps) => {
      * React (for some reason) is not reliably calling onKeyDown with Escape
      * with an empty prompt.
      */
-    const doResetWithEscape = React.useCallback((event: React.KeyboardEvent): boolean => {
+    const doResetWithKeyboardEvent = React.useCallback((event: React.KeyboardEvent): boolean => {
 
         if (activeRef.current) {
 
@@ -431,21 +431,35 @@ export const NoteAction = observer((props: IProps) => {
 
     }, [doReset]);
 
-    const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
+    const doCompleteWithKeyboardEvent = React.useCallback((event: React.KeyboardEvent): boolean => {
 
         if (activeRef.current) {
-
-            if (doResetWithEscape(event)) {
-                return;
-            }
 
             switch (event.key) {
 
                 case 'Tab':
                 case 'Enter':
                     doComplete();
-                    return;
+                    return true;
 
+            }
+
+        }
+
+        return false;
+
+    }, [doComplete]);
+
+    const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
+
+        if (activeRef.current) {
+
+            if (doResetWithKeyboardEvent(event)) {
+                return;
+            }
+
+            if (doCompleteWithKeyboardEvent(event)) {
+                return;
             }
 
             function computeDelta(): number {
@@ -490,7 +504,7 @@ export const NoteAction = observer((props: IProps) => {
 
         }
 
-    }, [cursorWithinInput, doComplete, doCompleteOrReset, doResetWithEscape]);
+    }, [cursorWithinInput, doCompleteOrReset, doCompleteWithKeyboardEvent, doResetWithKeyboardEvent]);
 
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -516,7 +530,11 @@ export const NoteAction = observer((props: IProps) => {
 
         if (activeRef.current) {
 
-            if (doResetWithEscape(event)) {
+            if (doResetWithKeyboardEvent(event)) {
+                return;
+            }
+
+            if (doCompleteWithKeyboardEvent(event)) {
                 return;
             }
 
@@ -563,7 +581,7 @@ export const NoteAction = observer((props: IProps) => {
 
         return activeRef.current;
 
-    }, [divRef, doResetWithEscape, hasAborted, computeItems, actionStore, doReset, trigger, createActivePrompt, computePosition, createActionHandler]);
+    }, [divRef, doResetWithKeyboardEvent, doCompleteWithKeyboardEvent, hasAborted, computeItems, actionStore, doReset, trigger, createActivePrompt, computePosition, createActionHandler]);
 
     const handleClick = React.useCallback(() => {
 
