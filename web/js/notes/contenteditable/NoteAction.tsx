@@ -431,7 +431,7 @@ export const NoteAction = observer((props: IProps) => {
 
     }, [doReset]);
 
-    const doCompleteWithKeyboardEvent = React.useCallback((event: React.KeyboardEvent): boolean => {
+    const doCompleteOrResetWithKeyboardEvent = React.useCallback((event: React.KeyboardEvent): boolean => {
 
         if (activeRef.current) {
 
@@ -439,7 +439,8 @@ export const NoteAction = observer((props: IProps) => {
 
                 case 'Tab':
                 case 'Enter':
-                    doComplete();
+
+                    doCompleteOrReset();
 
                     event.stopPropagation();
 
@@ -451,7 +452,7 @@ export const NoteAction = observer((props: IProps) => {
 
         return false;
 
-    }, [doComplete]);
+    }, [doCompleteOrReset]);
 
     const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -461,7 +462,7 @@ export const NoteAction = observer((props: IProps) => {
                 return;
             }
 
-            if (doCompleteWithKeyboardEvent(event)) {
+            if (doCompleteOrResetWithKeyboardEvent(event)) {
                 return;
             }
 
@@ -507,7 +508,7 @@ export const NoteAction = observer((props: IProps) => {
 
         }
 
-    }, [cursorWithinInput, doCompleteOrReset, doCompleteWithKeyboardEvent, doResetWithKeyboardEvent]);
+    }, [cursorWithinInput, doCompleteOrReset, doCompleteOrResetWithKeyboardEvent, doResetWithKeyboardEvent]);
 
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -537,7 +538,7 @@ export const NoteAction = observer((props: IProps) => {
                 return;
             }
 
-            if (doCompleteWithKeyboardEvent(event)) {
+            if (doCompleteOrResetWithKeyboardEvent(event)) {
                 return;
             }
 
@@ -584,7 +585,7 @@ export const NoteAction = observer((props: IProps) => {
 
         return activeRef.current;
 
-    }, [divRef, doResetWithKeyboardEvent, doCompleteWithKeyboardEvent, hasAborted, computeItems, actionStore, doReset, trigger, createActivePrompt, computePosition, createActionHandler]);
+    }, [divRef, doResetWithKeyboardEvent, doCompleteOrResetWithKeyboardEvent, hasAborted, computeItems, actionStore, doReset, trigger, createActivePrompt, computePosition, createActionHandler]);
 
     const handleClick = React.useCallback(() => {
 
