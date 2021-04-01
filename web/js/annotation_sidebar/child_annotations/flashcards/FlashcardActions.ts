@@ -11,6 +11,7 @@ import {DocMetas} from '../../../metadata/DocMetas';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
 import {IDStr} from "polar-shared/src/util/Strings";
+import {Analytics} from '../../../analytics/Analytics';
 
 export class FlashcardActions {
 
@@ -23,6 +24,7 @@ export class FlashcardActions {
 
         if (flashcard) {
             pageMeta.flashcards[flashcard.id] = Flashcards.createMutable(flashcard);
+            Analytics.event2('annotation-manualFlashcardCreated', { type });
         }
 
     }
