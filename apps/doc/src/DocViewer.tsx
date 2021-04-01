@@ -34,6 +34,7 @@ import {DockLayout2} from "../../../web/js/ui/doc_layout/DockLayout2";
 import {Outliner} from "./outline/Outliner";
 import {useDocViewerSnapshot} from "./UseDocViewerSnapshot";
 import {useZenModeResizer} from "./ZenModeResizer";
+import {useDocumentViewerVisible} from "./renderers/UseSidenavDocumentChangeCallbackHook";
 
 const Main = React.memo(function Main() {
 
@@ -70,14 +71,21 @@ const Main = React.memo(function Main() {
 
 const DocMain = React.memo(function DocMain() {
 
-    const {docURL} = useDocViewerStore(['docURL', 'docMeta']);
+    const {docURL, docMeta} = useDocViewerStore(['docURL', 'docMeta']);
 
     if (! docURL) {
         return null;
     }
 
+    const isVisible = useDocumentViewerVisible(docMeta?.docInfo.fingerprint || '');
+
     return (
         <>
+            {isVisible && 
+                <Helmet>
+                    <title>Polar: { docMeta?.docInfo.title }</title>
+                </Helmet>
+            }
             <DocRenderer>
                 <>
                     <TextHighlightsView />

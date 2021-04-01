@@ -40,6 +40,7 @@ export const PDFViewerContainer = React.memo(function PDFViewerContainer(props: 
                       width: '100%',
                       height: '100%'
                   }}
+                  tabIndex={0}
                   className="viewerContainer"
                   itemProp= "mainContentOfPage"
                   data-iter={iter}>

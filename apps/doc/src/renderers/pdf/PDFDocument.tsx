@@ -53,6 +53,7 @@ import {useStateRef} from "../../../../../web/js/hooks/ReactHooks";
 import {usePrefsContext} from "../../../../repository/js/persistence_layer/PrefsContext2";
 import { usePDFUpgrader } from './PDFUpgrader';
 import {ViewerElements} from "../ViewerElements";
+import {useDocumentViewerVisibleElemFocus} from '../UseSidenavDocumentChangeCallbackHook';
 
 interface DocViewer {
     readonly eventBus: EventBus;
@@ -448,6 +449,11 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
             .catch(err => log.error("PDFDocument: Could not load PDF: ", err));
 
     }, [doLoad, log, props.docMeta.docInfo.fingerprint]);
+
+    useDocumentViewerVisibleElemFocus(
+        props.docMeta.docInfo.fingerprint,
+        docViewerRef.current?.containerElement,
+    );
 
     return active && (
         <>
