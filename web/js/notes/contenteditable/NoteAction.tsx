@@ -159,19 +159,23 @@ export const NoteAction = observer((props: IProps) => {
 
         if (actionInput.parentElement) {
 
-            // FIXME: don't use the actionInput instead replace the range...
-
-            // FIXME: create a range for the entire actionInput
-            // FIXME: delete the contents of the range
-            // FIXME: insert text at that range...
-
             const prompt = computeActionInputText();
 
-            actionInput.innerText = prompt !== '' ? prompt : '[[';
+            const newPromptText = prompt !== '' ? prompt : '[[';
 
+            // **** replace the range of teh actionInput element so that it's not part of the DOM
+
+            const replaceRange = document.createRange();
+            replaceRange.setStartBefore(actionInput);
+            replaceRange.setEndAfter(actionInput);
+
+            replaceRange.deleteContents();
+            replaceRange.insertNode(document.createTextNode(newPromptText));
+
+            // **** now use the last char of the replace range as the main range.
             const range = window.getSelection()!.getRangeAt(0);
-            range.setStart(actionInput.firstChild!, 2);
-            range.setEnd(actionInput.firstChild!, 2);
+            range.setStart(replaceRange.endContainer, replaceRange.endOffset);
+            range.setEnd(replaceRange.endContainer, replaceRange.endOffset);
 
         }
 
