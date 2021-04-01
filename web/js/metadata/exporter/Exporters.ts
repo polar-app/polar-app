@@ -9,6 +9,7 @@ import {
     ReadableBinaryDatastore,
     ReadableBinaryDatastoreProvider
 } from "polar-shared/src/datastore/IDatastore";
+import {Analytics} from '../../analytics/Analytics';
 
 /**
  * Exporter provides a mechanism to write data from the internal Polar JSON
@@ -27,7 +28,6 @@ export class Exporters {
         const annotations = AnnotationHolders.fromDocMeta(docMeta);
 
         await this.doExportForAnnotations(datastoreProvider, annotations, format);
-
     }
 
     public static async doExportForAnnotations(datastoreProvider: ReadableBinaryDatastoreProvider,
@@ -75,6 +75,7 @@ export class Exporters {
 
         FileSavers.saveAs(blob, filename);
 
+        Analytics.event2('doc-annotationsExported', { format });
     }
 
     /**

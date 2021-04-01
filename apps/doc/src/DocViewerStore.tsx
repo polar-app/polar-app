@@ -56,6 +56,7 @@ import {useAnnotationMutationCallbacksFactory} from "../../../web/js/annotation_
 import {UUIDs} from "../../../web/js/metadata/UUIDs";
 import { IOutline } from './outline/IOutline';
 import {OutlineNavigator} from "./outline/IOutlineItem";
+import {Analytics} from '../../../web/js/analytics/Analytics';
 
 /**
  * Lightweight metadata describing the currently loaded document.
@@ -607,6 +608,7 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
                 const createdPagemarks = createPagemarksForRange(pageNum, percentage);
 
                 writeUpdatedDocMetas([docMeta])
+                    .then(() => Analytics.event2('doc-pagemarkCreated'))
                     .catch(err => log.error(err));
 
                 return createdPagemarks;
@@ -723,6 +725,7 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
                 updateDocMeta(docMeta);
                 writeUpdatedDocMetas([docMeta])
+                    .then(() => Analytics.event2('doc-markAsRead'))
                     .catch(err => log.error(err));
 
                 return [];
@@ -864,10 +867,13 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
         function setDocFlagged(flagged: boolean) {
             writeDocMetaMutation(docMeta => docMeta.docInfo.flagged = flagged);
+            // TODO: Trigger the event only after the previous operation completes
+            Analytics.event2("doc-flagged", { count: 1, flagged });
         }
 
         function setDocArchived(archived: boolean) {
             writeDocMetaMutation(docMeta => docMeta.docInfo.archived = archived);
+            Analytics.event2("doc-archived", { count: 1, archived });
         }
 
         interface ITaggedDocMetaHolder extends ITagsHolder {
@@ -887,7 +893,7 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
                 const newTags = Tags.computeNewTags(docMeta.docInfo.tags, tags, strategy);
                 writeDocMetaMutation(docMeta => docMeta.docInfo.tags = Tags.toMap(newTags));
             }
-
+            Analytics.event2("doc-tagged", { count: targets.length });
         }
 
         function onDocTagged() {
@@ -989,6 +995,7 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
 
         function setColumnLayout(columnLayout: number) {
             writeDocMetaMutation(docMeta => docMeta.docInfo.columnLayout = columnLayout);
+            Analytics.event2('doc-columnLayoutChanged', { columns: columnLayout });
         }
 
         return {

@@ -7,6 +7,7 @@ import {DocMetas} from "../../../metadata/DocMetas";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {IComment} from "polar-shared/src/metadata/IComment";
 import {IPageMeta} from "polar-shared/src/metadata/IPageMeta";
+import {Analytics} from "../../../analytics/Analytics";
 
 const log = Logger.create();
 
@@ -32,6 +33,7 @@ export class CommentActions {
 
         pageMeta.comments[comment.id] = comment;
 
+        Analytics.event2('annotation-commentCreated');
     }
 
     /**
