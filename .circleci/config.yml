@@ -54,7 +54,7 @@ commands:
       - run:
           name: Required Linux packages (when on Linux)
           # libvips is needed by sharp which is needed by gatsby
-          command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get install libvips libvips-dev pngquant; fi
+          command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get update && apt-get install libvips libvips-dev pngquant; fi
 
       - run:
           name: npm setup
@@ -256,12 +256,12 @@ jobs:
       - run:
           name: install prereqs
           command: |
-            sudo apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+            sudo apt-get update && apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
 
       - run:
           name: install chromium
           command: |
-            sudo apt-get install chromium
+            sudo apt-get update && apt-get install chromium
 
       - run:
           name: init
