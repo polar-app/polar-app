@@ -99,6 +99,8 @@ jobs:
 
     working_directory: ~/repo
 
+    description: "Build the main code and run 'npm test'"
+
     steps:
 
       - build_setup
