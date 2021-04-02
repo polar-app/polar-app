@@ -72,12 +72,11 @@ const Main = React.memo(function Main() {
 const DocMain = React.memo(function DocMain() {
 
     const {docURL, docMeta} = useDocViewerStore(['docURL', 'docMeta']);
+    const isVisible = useDocumentViewerVisible(docMeta?.docInfo.fingerprint || '');
 
     if (! docURL) {
         return null;
     }
-
-    const isVisible = useDocumentViewerVisible(docMeta?.docInfo.fingerprint || '');
 
     return (
         <>

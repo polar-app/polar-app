@@ -42,7 +42,7 @@ export function useDocumentViewerVisible(docID: string): boolean {
         } else {
             if (visibleRef.current) setVisible(false);
         }
-    }, [location, docID]);
+    }, [location, docID, visibleRef, setVisible]);
 
     return visible;
 }
@@ -54,5 +54,5 @@ export function useDocumentViewerVisibleElemFocus(docID: string, elem: HTMLEleme
         if (isViewerVisible) {
             elem?.focus();
         }
-    }, [isViewerVisible]);
+    }, [isViewerVisible, elem]);
 }
