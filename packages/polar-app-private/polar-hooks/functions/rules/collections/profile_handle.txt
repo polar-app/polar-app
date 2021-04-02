@@ -1,0 +1,2 @@
+// anyone can read this. Just allows us to lookup a profile ID based on handle.
+allow read;
