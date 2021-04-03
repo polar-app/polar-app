@@ -26,8 +26,8 @@ export function useDocViewerJumpToPageLoader(): (location: ILocation, cause: Doc
 
                 try {
 
-                    if (prevPageRef.current !== annotationLink.page
-                        || prevNonceRef.current !== annotationLink.nonce) {
+                    if (prevPageRef.current !== annotationLink.page ||
+                        prevNonceRef.current !== annotationLink.nonce) {
 
                         console.log(`Jumping to page ${annotationLink.page} due to '${cause}'`);
                         onPageJump(annotationLink.page);
