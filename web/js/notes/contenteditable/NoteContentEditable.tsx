@@ -257,7 +257,7 @@ export const NoteContentEditable = observer((props: IProps) => {
                     break;
                 }
 
-                if (event.shiftKey && event.ctrlKey) {
+                if (event.shiftKey && (event.ctrlKey || event.metaKey)) {
                     store.doUnIndent(props.id);
                     break;
                 }
@@ -282,7 +282,7 @@ export const NoteContentEditable = observer((props: IProps) => {
                     break;
                 }
 
-                if (event.shiftKey && event.ctrlKey) {
+                if (event.shiftKey && (event.ctrlKey || event.metaKey)) {
                     store.doIndent(props.id);
                     break;
                 }

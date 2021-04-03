@@ -38,6 +38,20 @@ module.exports = {
         "react-hooks/exhaustive-deps": "error",
         "curly": "error",
         "brace-style": "error",
+        // this isn't working yet because it does not seem to properly
+        // handle method call parameters..
+        // "indent": ["error", 4, {
+        //     "FunctionDeclaration": {
+        //         "parameters": "off"
+        //     },
+        //     "FunctionExpression": {
+        //         "parameters": "off"
+        //     },
+        //     "SwitchCase": 1,
+        //     "MemberExpression": "off"
+        // }
+        //
+        // ]
         // "@typescript-eslint/adjacent-overload-signatures": "error",
         // "@typescript-eslint/array-type": [
         //     "error",

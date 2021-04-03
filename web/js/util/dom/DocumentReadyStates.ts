@@ -110,7 +110,7 @@ export class DocumentReadyStateChanger implements ReadyStateChanger {
         // think and would make testing simpler.
         return new Promise<void>(resolve => {
 
-            let listener: () => void = () => {
+            const listener: () => void = () => {
 
                 if (DocumentReadyStates.meetsRequiredState(requiredReadyState, this.doc.readyState)) {
                     resolve();
