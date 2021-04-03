@@ -26,13 +26,12 @@ export function useDocViewerJumpToPageLoader(): (location: ILocation, cause: Doc
 
                 try {
 
-                    if (
-                        prevPageRef.current !== annotationLink.page
-                        || prevNonceRef.current !== annotationLink.nonce
-                    ) {
+                    if (prevPageRef.current !== annotationLink.page
+                        || prevNonceRef.current !== annotationLink.nonce) {
 
                         console.log(`Jumping to page ${annotationLink.page} due to '${cause}'`);
                         onPageJump(annotationLink.page);
+                        return true;
                     }
                 } finally {
                     prevPageRef.current = annotationLink.page;
@@ -78,7 +77,8 @@ export function useDocViewerPageJumpListener() {
     }
     const isViewerVisible = useDocumentViewerVisible(docMeta.docInfo.fingerprint);
     React.useEffect(() => {
-        if (isViewerVisible)
+        if (isViewerVisible) {
             docViewerJumpToPageLoader(location, 'history');
+        }
     }, [location, isViewerVisible, docViewerJumpToPageLoader]);
 }
