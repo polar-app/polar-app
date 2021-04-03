@@ -1,12 +1,23 @@
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 
-export interface IAuthChallenge {
+export interface IAuthChallenge1 {
     readonly id: string;
     readonly email: string;
     readonly challenge: string;
 }
+
+export interface IAuthChallenge2 {
+    readonly ver: '2';
+    readonly id: string;
+    readonly email: string;
+    readonly challenge: string;
+    readonly created: ISODateTimeString;
+}
+
+export type IAuthChallenge = IAuthChallenge1 | IAuthChallenge2;
 
 export namespace AuthChallenges {
 
@@ -25,8 +36,10 @@ export namespace AuthChallenges {
         const collection = await firestore.collection(COLLECTION_NAME)
         const ref = collection.doc(id);
 
-        const value: IAuthChallenge = {
-            id, email, challenge
+        const value: IAuthChallenge2 = {
+            id, email, challenge,
+            ver: '2',
+            created: ISODateTimeStrings.create()
         }
 
         ref.set(value);
