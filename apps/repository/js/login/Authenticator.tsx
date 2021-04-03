@@ -376,7 +376,7 @@ const EmailTokenAuthButton = () => {
                                        variant="outlined" />
 
                             <div className={classes.alternate}>
-                                <Button onClick={handleEmailProvided}>Didn't receive email</Button>
+                                <Button onClick={handleEmailProvided}>Resend Email</Button>
                             </div>
                             <Button variant="contained"
                                     color="primary"
