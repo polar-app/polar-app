@@ -38,6 +38,11 @@ export interface TabDescriptorInit {
     readonly url: URLStr;
 
     /**
+     * The initial URL for this tab. this is used to jump to specific locations upon document load
+     */
+    readonly initialUrl ?: URLStr;
+
+    /**
      * The title for the tab
      */
     readonly title: string;
@@ -266,17 +271,13 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
                     .first();
             }
 
-            function doTabMutation(newStore: ISideNavStore) {
-                setStore(newStore);
-                historyRef.current.push(tabDescriptor.url);
-            }
-
             const existingTab = computeExistingTab();
 
             if (existingTab) {
                 // just switch to the existing tab when one already exists and we
                 // want to switch to it again.
-                doTabMutation({...store, activeTab: existingTab.value.id});
+                setStore({...store, activeTab: existingTab.value.id});
+                historyRef.current.push(tabDescriptor.url);
                 return;
             }
 
@@ -285,8 +286,8 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
             // now switch to the new tab
             const activeTab = tabDescriptor.id;
 
-            doTabMutation({...store, tabs, activeTab});
-
+            setStore({...store, tabs, activeTab});
+            historyRef.current.push(newTabDescriptor.initialUrl || newTabDescriptor.url);
         }
 
         function removeTab(id: TabID) {
@@ -419,14 +420,9 @@ export function useSideNavHistory(): ISideNavHistory {
 
     const push = React.useCallback((url: URLStr) => {
 
-        const source = DocViewerAppURLs.parse(document.location.href);
         const target = DocViewerAppURLs.parse(url);
 
-        if (source?.id === target?.id) {
-            history.push(url);
-        } else {
-            console.warn(`URL not loaded: source and target are note identical: ${source?.id} vs ${target?.id}: `, url);
-        }
+        history.push(url);
 
         const update: TabDescriptorUpdate = {activeURL: url};
 

@@ -7,6 +7,7 @@ import {BackendFileRefs} from "../datastore/BackendFileRefs";
 import {Either} from "../util/Either";
 import {LoadDocRequest} from "../apps/main/doc_loaders/LoadDocRequest";
 import {IDStr} from "polar-shared/src/util/Strings";
+import {useLocation} from 'react-router';
 
 export function useSideNavInitializer() {
 
@@ -15,7 +16,7 @@ export function useSideNavInitializer() {
     const repoDocMetaManager = useRepoDocMetaManager();
 
     // the initial location of the app...
-    const location = React.useMemo(() => document.location, []);
+    const location = useLocation();
 
     // the first docViewerURL based on the initial location.
     const docViewerURL = DocViewerAppURLs.parse(location.pathname)
@@ -40,13 +41,14 @@ export function useSideNavInitializer() {
                 title: repoDocInfo.title,
                 url: repoDocInfo.url,
                 backendFileRef,
-                newWindow: true
-            }
+                newWindow: true,
+                initialUrl: `${location.pathname}${location.hash}`,
+            };
 
             docLoader(docLoadRequest);
         }
 
-    }, [docLoader, repoDocMetaManager.repoDocInfoIndex])
+    }, [location, docLoader, repoDocMetaManager.repoDocInfoIndex])
 
     React.useEffect(() => {
 

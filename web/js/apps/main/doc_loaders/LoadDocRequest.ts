@@ -11,6 +11,11 @@ export interface LoadDocRequest {
      */
     readonly url: string | undefined;
 
+    /**
+     * Used for jumping to specific areas in the document upon load
+     */
+    readonly initialUrl?: string;
+
     readonly backendFileRef: BackendFileRef;
 
     /**
