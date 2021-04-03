@@ -37,6 +37,7 @@ module.exports = {
         "react-hooks/rules-of-hooks": "warn",
         "react-hooks/exhaustive-deps": "error",
         "curly": "error",
+        "brace-style": "error",
         // "@typescript-eslint/adjacent-overload-signatures": "error",
         // "@typescript-eslint/array-type": [
         //     "error",

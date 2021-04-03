@@ -20,27 +20,37 @@ export class FilteredLogger implements ILogger {
     }
 
     public debug(msg: string, ...args: any[]) {
-        if (this.level < LogLevel.DEBUG) { return; }
+        if (this.level < LogLevel.DEBUG) {
+            return;
+        }
         this.delegate.debug(msg, ...args);
     }
 
     public verbose(msg: string, ...args: any[]) {
-        if (this.level < LogLevel.VERBOSE) { return; }
+        if (this.level < LogLevel.VERBOSE) {
+            return;
+        }
         this.delegate.verbose(msg, ...args);
     }
 
     public info(msg: string, ...args: any[]) {
-        if (this.level < LogLevel.INFO) { return; }
+        if (this.level < LogLevel.INFO) {
+            return;
+        }
         this.delegate.info(msg, ...args);
     }
 
     public warn(msg: string, ...args: any[]) {
-        if (this.level < LogLevel.WARN) { return; }
+        if (this.level < LogLevel.WARN) {
+            return;
+        }
         this.delegate.warn(msg, ...args);
     }
 
     public error(msg: string, ...args: any[]) {
-        if (this.level < LogLevel.ERROR) { return; }
+        if (this.level < LogLevel.ERROR) {
+            return;
+        }
         this.delegate.error(msg, ...args);
     }
 
