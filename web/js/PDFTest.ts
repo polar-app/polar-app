@@ -50,7 +50,7 @@ xdescribe('PDF', function() {
         console.log("numPages: " + doc.numPages);
         console.log("fingerprint: " + doc.fingerprint);
 
-        //assert.ok(PDFJS.getDocument);
+        // assert.ok(PDFJS.getDocument);
 
     });
 
@@ -58,12 +58,24 @@ xdescribe('PDF', function() {
 
 
 function toArray(buf: Buffer) {
-    if (!buf) return undefined;
+    if (!buf) {
+        return undefined;
+    }
+
     if (buf.constructor.name === 'Uint8Array' /* || buf.constructor === Uint8Array*/) {
         return buf;
     }
-    if (typeof buf === 'string') buf = Buffer.from(buf);
+
+    if (typeof buf === 'string') {
+        buf = Buffer.from(buf);
+    }
+
     var a = new Uint8Array(buf.length);
-    for (var i = 0; i < buf.length; i++) a[i] = buf[i];
+
+    for (var i = 0; i < buf.length; i++) {
+        a[i] = buf[i];
+    }
+
     return a;
-};
+
+}

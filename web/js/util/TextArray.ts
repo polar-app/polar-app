@@ -73,8 +73,9 @@ export class TextArray {
 
                 let ch = source.charAt(x,y);
 
-                if(ch === " ")
+                if(ch === " ") {
                     continue;
+                }
 
                 this.write(x, y, ch);
 

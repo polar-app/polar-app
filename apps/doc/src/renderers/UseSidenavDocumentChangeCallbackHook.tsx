@@ -38,9 +38,13 @@ export function useDocumentViewerVisible(docID: string): boolean {
         const newDocViewerURL = DocViewerAppURLs.parse(location.pathname);
 
         if (newDocViewerURL?.id && newDocViewerURL.id === docID) {
-            if (!visibleRef.current) setVisible(true);
+            if (!visibleRef.current) {
+                setVisible(true);
+            }
         } else {
-            if (visibleRef.current) setVisible(false);
+            if (visibleRef.current) {
+                setVisible(false);
+            }
         }
     }, [location, docID, visibleRef, setVisible]);
 

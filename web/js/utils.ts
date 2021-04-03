@@ -134,16 +134,18 @@ export class OffsetCalculator{
 
         while(true) {
 
-            if(element == null)
+            if (element == null) {
                 break;
+            }
 
             offset.left += this._toInt(element.offsetLeft);
             offset.top += this._toInt(element.offsetTop);
             offset.width = this._toInt(element.offsetWidth);
             offset.height = this._toInt(element.offsetHeight);
 
-            if(element === rootElement)
+            if(element === rootElement) {
                 break;
+            }
 
             element = element.offsetParent;
 
@@ -174,8 +176,9 @@ export class Styles {
 
         let result = transform;
 
-        if( ! result)
+        if( ! result) {
             return null;
+        }
 
         result = result.replace("scaleX(", "");
         result = result.replace(")", "");

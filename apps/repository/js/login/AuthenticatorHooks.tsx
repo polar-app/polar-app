@@ -251,8 +251,13 @@ export async function executeCloudFunction<S, E>(cloudFunctionName: string, body
                 // this is a JSON error...
 
                 const json = JSON.parse(text) as E;
-                if (typeof json === 'object' && json !== null) return json;
+
+                if (typeof json === 'object' && json !== null) {
+                    return json;
+                }
+
                 throw new Error('Invalid JSON');
+
             } catch (e) {
 
                 // if this is not json it's text/plain and so we should try to

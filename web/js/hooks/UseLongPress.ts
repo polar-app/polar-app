@@ -75,7 +75,9 @@ const isTouchEvent = (event: MouseEvent | TouchEvent): event is TouchEvent => {
 
 const preventDefault = (event: any) => {
 
-    if (!isTouchEvent(event)) return;
+    if (!isTouchEvent(event)) {
+        return;
+    }
 
     if (event.touches.length < 2 && event.preventDefault) {
         event.preventDefault();

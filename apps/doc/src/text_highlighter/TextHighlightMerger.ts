@@ -5,7 +5,9 @@ export namespace TextHighlightMerger {
     export const VERTICAL_THRESHOLD_PERCENTAGE = 40 / 100;
 
     export function merge(rects: ReadonlyArray<IRect>): ReadonlyArray<IRect> {
-        if (rects.length === 0) return [];
+        if (rects.length === 0) {
+            return [];
+        }
 
         const avgHeight = rects.reduce((a, b) => a + b.height, 1) / rects.length;
 
@@ -17,15 +19,22 @@ export namespace TextHighlightMerger {
             let merged = TextHighlightMerger
                 .groupAdjacent(last, canMerge(verticalThreshold, horizontalThreshold))
                 .map(a => a.reduce(TextHighlightMerger.mergeRects));
-            if (merged.length === last.length)
+
+            if (merged.length === last.length) {
                 break;
+            }
+
             last = merged;
         }
         return last;
     }
 
     export function groupAdjacent<T>(items: ReadonlyArray<T>, fn: (a: T, b: T) => boolean): ReadonlyArray<ReadonlyArray<T>> {
-        if (items.length === 0) return [];
+
+        if (items.length === 0) {
+            return [];
+        }
+
         let last          = [items[0]];
         let groups: T[][] = [last];
 
@@ -84,6 +93,6 @@ export namespace TextHighlightMerger {
             right,
             width: Math.abs(left - right),
             height: Math.abs(top - bottom)
-        }; 
+        };
     }
 }
