@@ -150,8 +150,6 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
     const prefs = usePrefsContext();
     const annotationBarInjector = useAnnotationBar();
 
-    useDocViewerPageJumpListener();
-
     const hasPagesInitRef = React.useRef(false);
     const hasLoadRef = React.useRef(false);
 
