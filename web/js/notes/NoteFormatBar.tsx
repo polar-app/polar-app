@@ -9,6 +9,7 @@ import {
     FASubscriptIcon, FASuperscriptIcon,
     FAUnderlineIcon
 } from "../mui/MUIFontAwesome";
+import FormatClearIcon from '@material-ui/icons/FormatClear';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import Paper from '@material-ui/core/Paper';
@@ -169,6 +170,7 @@ interface NoteFormatBarInnerProps {
     readonly onSubscript?: () => void;
     readonly onSuperscript?: () => void;
     readonly onLink?: (event: React.MouseEvent) => void;
+    readonly onRemoveFormat?: () => void;
     readonly onDispose?: () => void;
 
 }
@@ -212,6 +214,10 @@ const NoteFormatBarInner = (props: NoteFormatBarInnerProps) => {
                 <FALinkIcon className={classes.icon}/>
             </FormatButton>
 
+            <FormatButton onClick={props.onRemoveFormat}>
+                <FormatClearIcon className={classes.icon}/>
+            </FormatButton>
+
         </>
     );
 }
@@ -225,11 +231,13 @@ export interface NoteFormatBarProps {
     readonly onSubscript?: () => void;
     readonly onSuperscript?: () => void;
     readonly onLink?: (url: URLStr) => void;
+    readonly onRemoveFormat?: () => void;
 
     /**
      * Called when the bar should be removed/disposed.
      */
     readonly onDispose?: () => void;
+
 
 }
 

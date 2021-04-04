@@ -70,7 +70,6 @@ export const NoteFormatPopper = React.memo(function NoteFormatPopper(props: IPro
 
             if (position !== undefined) {
                 setPosition(undefined);
-                console.log("FIXME NoteFormatPopper escape... ");
             }
 
         }

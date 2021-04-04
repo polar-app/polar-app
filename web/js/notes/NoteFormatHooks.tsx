@@ -1,6 +1,3 @@
-
-// FIXME: we need mapping that our markdown system uses for all of these elements.
-
 import {URLStr} from "polar-shared/src/util/Strings";
 
 export function useNoteFormatHandlers(onUpdated: () => void) {
@@ -45,6 +42,10 @@ export function useNoteFormatHandlers(onUpdated: () => void) {
         doExecCommand('createlink', link)
     }
 
-    return {onBold, onItalic, onQuote, onUnderline, onStrikethrough, onSubscript, onSuperscript, doLink}
+    function doRemoveFormat() {
+        doExecCommand('removeFormat');
+    }
+
+    return {onBold, onItalic, onQuote, onUnderline, onStrikethrough, onSubscript, onSuperscript, doLink, doRemoveFormat}
 
 }
