@@ -1,9 +1,7 @@
 import React from "react";
 import {NoteNavigation} from "./NoteNavigation";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
-import {NoteActionMenuForCommands} from "./NoteActionMenuForCommands";
 import {Arrays} from "polar-shared/src/util/Arrays";
-import { NoteActionMenuForLinking } from "./NoteActionMenuForLinking";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
 import {MarkdownContentEscaper} from "./MarkdownContentEscaper";
 import {NoteIDStr, useNotesStore} from "./store/NotesStore";
@@ -11,7 +9,6 @@ import { observer } from "mobx-react-lite"
 import {NoteContentEditable} from "./contenteditable/NoteContentEditable";
 import {ContentEditables} from "./ContentEditables";
 import {HTMLToMarkdown} from "polar-markdown-parser/src/HTMLToMarkdown";
-import html2markdown = HTMLToMarkdown.html2markdown;
 import { HTMLStr } from "polar-shared/src/util/Strings";
 
 interface ILinkNavigationEvent {
@@ -96,6 +93,7 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
         if (note) {
             const markdown = escaper.unescape(content);
+            console.log("FIXME: markdown :", markdown);
             note.setContent(markdown);
         }
 
@@ -120,8 +118,8 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
             if (split) {
 
-                const prefix = html2markdown(ContentEditables.fragmentToHTML(split.prefix));
-                const suffix = html2markdown(ContentEditables.fragmentToHTML(split.suffix));
+                const prefix = escaper.unescape(ContentEditables.fragmentToHTML(split.prefix));
+                const suffix = escaper.unescape(ContentEditables.fragmentToHTML(split.suffix));
 
                 store.createNewNote(id, {prefix, suffix});
 
@@ -129,7 +127,7 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
         }
 
-    }, [id, ref, store]);
+    }, [escaper, id, ref, store]);
 
     const onKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 

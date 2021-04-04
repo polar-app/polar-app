@@ -8,24 +8,44 @@ import {Mappers} from "polar-shared/src/util/Mapper";
 import {ContentEditableWhitespace} from "./ContentEditableWhitespace";
 import {ContentEscaper} from "./ContentEscaper";
 
+const TRACE = true;
+
+function doTrace(name: string,
+                 input: string,
+                 output: string) {
+
+    if (TRACE) {
+        console.log(`${name}: "${input}" => "${output}"`)
+    }
+
+}
+
 export const MarkdownContentEscaper: ContentEscaper = {
 
     escape: input => {
 
         const markdown = markdown2html(WikiLinksToHTML.escape(input));
 
-        return markdown.replace(/^<p>/, '')
-                       .replace(/<\/p>\n?$/, '')
-                       .trim();
+        const result = markdown.replace(/^<p>/, '')
+                               .replace(/<\/p>\n?$/, '')
+                               .trim();
+
+        doTrace('escape', input, result);
+
+        return result;
 
     },
     unescape: html => {
 
-        return Mappers.create(html)
-                      .map(ContentEditableWhitespace.trim)
-                      .map(html2markdown)
-                      .map(WikiLinksToMarkdown.unescape)
-                      .collect();
+        const result = Mappers.create(html)
+                              .map(ContentEditableWhitespace.trim)
+                              .map(html2markdown)
+                              .map(WikiLinksToMarkdown.unescape)
+                              .collect();
+
+        doTrace('unescape', html, result);
+
+        return result;
 
     }
 

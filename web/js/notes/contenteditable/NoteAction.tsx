@@ -7,6 +7,7 @@ import INodeOffset = ContentEditables.INodeOffset;
 import {useNoteContentEditableElement} from "./NoteContentEditable";
 import { observer } from "mobx-react-lite"
 import { useNotesStore } from '../store/NotesStore';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 const THINSP = ' ';
 
@@ -149,7 +150,7 @@ export const NoteAction = observer((props: IProps) => {
 
     }, []);
 
-    const clearActivePrompt = React.useCallback(() => {
+    const clearActivePrompt = React.useCallback((noRange?: boolean) => {
 
         if (! activePromptRef.current) {
             return;
@@ -172,10 +173,14 @@ export const NoteAction = observer((props: IProps) => {
             replaceRange.deleteContents();
             replaceRange.insertNode(document.createTextNode(newPromptText));
 
-            // **** now use the last char of the replace range as the main range.
-            const range = window.getSelection()!.getRangeAt(0);
-            range.setStart(replaceRange.endContainer, replaceRange.endOffset);
-            range.setEnd(replaceRange.endContainer, replaceRange.endOffset);
+            if (! noRange) {
+
+                // **** now use the last char of the replace range as the main range.
+                const range = window.getSelection()!.getRangeAt(0);
+                range.setStart(replaceRange.endContainer, replaceRange.endOffset);
+                range.setEnd(replaceRange.endContainer, replaceRange.endOffset);
+
+            }
 
         }
 
@@ -236,11 +241,11 @@ export const NoteAction = observer((props: IProps) => {
 
     }, []);
 
-    const doReset = React.useCallback(() => {
+    const doReset = React.useCallback((noRange?: boolean) => {
 
         if (activeRef.current) {
 
-            clearActivePrompt();
+            clearActivePrompt(noRange);
 
             activeRef.current = false;
 
@@ -447,6 +452,7 @@ export const NoteAction = observer((props: IProps) => {
                     doCompleteOrReset();
 
                     event.stopPropagation();
+                    event.preventDefault();
 
                     return true;
 
@@ -598,9 +604,11 @@ export const NoteAction = observer((props: IProps) => {
     }, [doCompleteOrReset]);
 
     return (
-        <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} onClick={handleClick}>
-            {props.children}
-        </div>
+        <ClickAwayListener onClickAway={() => doReset(true)}>
+            <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} onClick={handleClick}>
+                {props.children}
+            </div>
+        </ClickAwayListener>
     );
 
 });
