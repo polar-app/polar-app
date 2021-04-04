@@ -93,7 +93,6 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
         if (note) {
             const markdown = escaper.unescape(content);
-            console.log("FIXME: markdown :", markdown);
             note.setContent(markdown);
         }
 

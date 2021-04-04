@@ -10,6 +10,7 @@ import {NoteContentCanonicalizer} from "./NoteContentCanonicalizer";
 import {NoteAction} from "./NoteAction";
 import { useHistory } from 'react-router-dom';
 import { autorun } from 'mobx'
+import { useNoteFormatKeyboardHandler } from '../NoteFormatHooks';
 
 const ENABLE_TRACE_CURSOR_RESET = false;
 
@@ -55,6 +56,8 @@ export const NoteContentEditable = observer((props: IProps) => {
     const contentRef = React.useRef(props.content);
     const store = useNotesStore();
     const history = useHistory();
+
+    const noteFormatKeyboardHandler = useNoteFormatKeyboardHandler();
 
     const noteLinkActions = store.getNamedNodes().map(current => ({
         id: current,
@@ -353,13 +356,22 @@ export const NoteContentEditable = observer((props: IProps) => {
 
             default:
                 break;
+
         }
+
+        // TODO: break out the above into its own hook so that this code isn't
+        // being crowded with multiple handlers in one place. Right now they're
+        // disjoint but that might not happen forever and this would cause bugs
+        // long term and isn't very clean/elegant.
+
+        // ****
+        noteFormatKeyboardHandler(event);
 
         if (props.onKeyDown) {
             props.onKeyDown(event);
         }
 
-    }, [hasEditorSelection, history, props, store]);
+    }, [hasEditorSelection, history, noteFormatKeyboardHandler, props, store]);
 
     return (
         <NoteContentEditableElementContext.Provider value={divRef}>

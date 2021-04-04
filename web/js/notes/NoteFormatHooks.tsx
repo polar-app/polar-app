@@ -1,4 +1,6 @@
+import * as React from 'react';
 import {URLStr} from "polar-shared/src/util/Strings";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 export function useNoteFormatHandlers(onUpdated: () => void) {
 
@@ -37,14 +39,54 @@ export function useNoteFormatHandlers(onUpdated: () => void) {
         doExecCommand('superscript')
     }
 
+    function onRemoveFormat() {
+        doExecCommand('removeFormat');
+    }
+
     function doLink(link: URLStr) {
         doExecCommand('createlink', link)
     }
 
-    function doRemoveFormat() {
-        doExecCommand('removeFormat');
-    }
+    return {onBold, onItalic, onQuote, onUnderline, onStrikethrough, onSubscript, onSuperscript, doLink, onRemoveFormat}
 
-    return {onBold, onItalic, onQuote, onUnderline, onStrikethrough, onSubscript, onSuperscript, doLink, doRemoveFormat}
+}
+
+export function useNoteFormatKeyboardHandler() {
+
+    const noteFormatHandlers = useNoteFormatHandlers(NULL_FUNCTION);
+
+    return React.useCallback((event: React.KeyboardEvent) => {
+
+        if (event.metaKey || event.ctrlKey) {
+
+            if (! event.shiftKey && ! event.altKey) {
+
+                function abortEvent() {
+                    event.stopPropagation();
+                    event.preventDefault();
+                }
+
+                switch(event.key) {
+                    case 'b':
+                        noteFormatHandlers.onBold();
+                        abortEvent();
+                        break;
+                    case 'i':
+                        noteFormatHandlers.onItalic();
+                        abortEvent();
+                        break;
+
+                    case 'u':
+                        noteFormatHandlers.onUnderline();
+                        abortEvent();
+                        break;
+
+                }
+
+            }
+
+        }
+
+    }, [noteFormatHandlers]);
 
 }
