@@ -67,7 +67,9 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
         readonly html: string;
     }
 
-    function createEmailTemplate(challenge: IChallenge | IAuthChallenge): IEmailTemplate {
+    type MailProvider = 'sendgrid' | 'mailgun';
+
+    function createEmailTemplate(challenge: IChallenge | IAuthChallenge, provider: MailProvider): IEmailTemplate {
 
         const p0 = challenge.challenge.substring(0, 3);
         const p1 = challenge.challenge.substring(3, 6);
@@ -76,7 +78,9 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
             to: email,
             from: 'noreply@getpolarized.io',
             subject: `Please Sign in to Polar with code ${p0} ${p1}`,
-            html: `<p>Please use the following code to sign in to Polar:</p><p><span style="font-size: 30px;"><b>${p0} ${p1}</b></span></p>`
+            html: `<p>Please use the following code to sign in to Polar:</p>
+                   <p><span style="font-size: 30px;"><b>${p0} ${p1}</b></span></p>
+                   <p style="font-size: smaller; color: #c6c6c6;">Sent via ${provider}</p>`
         };
 
     }
@@ -92,6 +96,22 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
 
     }
 
+    async function sendMailWithProvider(message: IEmailTemplate,
+                                        provider: MailProvider) {
+
+        switch(provider) {
+
+            case "sendgrid":
+                await Sendgrid.send(message);
+                break;
+            case "mailgun":
+                await Mailgun.send(message);
+                break;
+
+        }
+
+    }
+
     async function sendInitialMessage() {
 
         // TODO: the challenges should expire.
@@ -99,9 +119,11 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
 
         await AuthChallenges.write(email, challenge.value)
 
-        const tmpl = createEmailTemplate(challenge);
+        const provider = 'sendgrid';
 
-        await Sendgrid.send(tmpl);
+        const tmpl = createEmailTemplate(challenge, provider);
+
+        await sendMailWithProvider(tmpl, provider);
 
         sendResponseOK();
 
@@ -115,9 +137,11 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
             throw new Error("No previous challenge sent");
         }
 
-        const tmpl = createEmailTemplate(challenge);
+        const provider = 'mailgun';
 
-        await Mailgun.send(tmpl);
+        const tmpl = createEmailTemplate(challenge, provider);
+
+        await sendMailWithProvider(tmpl, provider);
 
         sendResponseOK();
 
