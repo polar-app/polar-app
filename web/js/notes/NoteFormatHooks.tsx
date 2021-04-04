@@ -2,9 +2,8 @@ import {URLStr} from "polar-shared/src/util/Strings";
 
 export function useNoteFormatHandlers(onUpdated: () => void) {
 
-    // FIXME we need one that's a clear formatting which removes bold, italics, link, etc.
-
     function doExecCommand(command: string, value?: string) {
+        console.log('doExecCommand: ' + command);
         document.execCommand(command, false, value);
         onUpdated();
     }
