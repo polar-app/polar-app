@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Link} from 'react-router-dom';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {URLPathStr} from "polar-shared/src/url/PathToRegexps";
@@ -31,11 +32,11 @@ export const MUIAnchor = (props: IProps) => {
     const classes = useStyles();
 
     return (
-        <a id={props.id}
+        <Link id={props.id}
               className={[props.className, classes.link].join(' ')}
-              href={props.href}>
+              to={props.href}>
             {props.children}
-        </a>
+        </Link>
     );
 
 };
