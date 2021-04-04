@@ -28,14 +28,16 @@ export namespace AnnotationLinks {
     export interface IAnnotationLink {
         readonly page: number;
         readonly target: string;
+        readonly nonce?: string;
     }
 
-    export function parse(queryOrLocation: QueryOrLocation): IAnnotationLink | undefined{
+    export function parse(queryOrLocation: QueryOrLocation): IAnnotationLink | undefined {
 
         const params = HashURLs.parse(queryOrLocation);
 
         const page = Optional.of(params.get('page')).map(parseInt).getOrUndefined();
         const target = params.get('target') || undefined;
+        const nonce = params.get('n') || undefined;
 
         if (page === undefined && target === undefined) {
             return undefined;
@@ -43,7 +45,8 @@ export namespace AnnotationLinks {
 
         return {
             page: page!,
-            target: target!
+            target: target!,
+            nonce,
         };
 
     }

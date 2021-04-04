@@ -19,7 +19,7 @@ export function scrollIntoView(scrollTarget: IScrollTarget, ref: HTMLElement) {
 
 export function useScrollIntoViewUsingLocation() {
 
-    const ref = React.useRef<HTMLElement | null>(null);
+    const [scrollTargetElem, setScrollTargetElem] = React.useState<HTMLElement | null>(null);
     const {initialScrollLoader} = useLocationChangeStore(['initialScrollLoader'])
     const scrollTarget = useScrollTarget();
 
@@ -29,19 +29,16 @@ export function useScrollIntoViewUsingLocation() {
     //
     // - when the scrollTarget has changed due to a location change.
 
-    function handleRef() {
-        if (scrollTarget && ref.current) {
-            initialScrollLoader(scrollTarget, ref.current);
+    React.useEffect(() => {
+        if (scrollTarget && scrollTargetElem) {
+            initialScrollLoader(scrollTarget, scrollTargetElem);
         }
-    }
-
-    handleRef();
+    }, [scrollTarget, scrollTargetElem, initialScrollLoader]);
 
     return (newRef: HTMLElement | null) => {
 
-        if (ref.current !== newRef) {
-            ref.current = newRef;
-            handleRef();
+        if (scrollTargetElem !== newRef) {
+            setScrollTargetElem(newRef);
         }
 
     }

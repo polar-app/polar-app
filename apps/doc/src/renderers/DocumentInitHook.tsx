@@ -19,6 +19,9 @@ export function useDocumentInit() {
     const [resumeProgressActive, resumeProgressHandler] = useReadingProgressResume();
 
     const doInit = React.useCallback(() => {
+        if (document.location.hash.length !== 0) {
+            return;
+        }
 
         if (! pageNavigator) {
             throw new Error("No pageNavigator");

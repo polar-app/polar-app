@@ -42,7 +42,8 @@ export function useSideNavDocLoader() {
                 id: loadDocRequest.fingerprint,
                 url,
                 title: loadDocRequest.title,
-                type
+                type,
+                initialUrl: loadDocRequest.initialUrl,
             })
 
         }
