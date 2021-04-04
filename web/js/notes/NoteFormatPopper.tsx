@@ -2,6 +2,8 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import React from 'react';
 import {NoteFormatBar, NoteFormatBarProps} from "./NoteFormatBar";
 import {useNoteFormatHandlers} from "./NoteFormatHooks";
+import { observer } from "mobx-react-lite"
+import { useNotesStore } from './store/NotesStore';
 
 export interface INoteFormatBarPosition {
 
@@ -26,15 +28,25 @@ export interface IProps extends NoteFormatBarProps {
 
 }
 
-export const NoteFormatPopper = React.memo(function NoteFormatPopper(props: IProps) {
+export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps) {
 
     const [position, setPosition] = React.useState<INoteFormatBarPosition | undefined>(undefined);
+    const timeoutRef = React.useRef<number | undefined>(undefined);
+
+    const notesStore = useNotesStore();
+
+    const {selected} = notesStore;
+
+    // FIXME listen to selected in the store and if it's not empty then clear the popup..
 
     const doPopup = React.useCallback((): boolean => {
 
+        if (Object.keys(notesStore.selected).length > 0) {
+            return false;
+        }
+
         const range = window.getSelection()!.getRangeAt(0);
 
-        // range.collaopsed doesn't always work...
         if (range.collapsed) {
 
             if (position) {
@@ -54,27 +66,57 @@ export const NoteFormatPopper = React.memo(function NoteFormatPopper(props: IPro
 
         return true;
 
-    }, [position]);
+    }, [notesStore.selected, position]);
+
+    const clearPopup = React.useCallback(() => {
+
+        setPosition(undefined);
+
+    }, [])
+
+    const clearPopupTimeout = React.useCallback(() => {
+
+        if (timeoutRef.current !== undefined) {
+            clearTimeout(timeoutRef.current);
+        }
+
+    }, [])
+
+    const doPopupWithTimeout = React.useCallback(() => {
+
+        clearPopupTimeout();
+
+        timeoutRef.current = window.setTimeout(() => doPopup(), 350);
+
+    }, [clearPopupTimeout, doPopup]);
 
     const onMouseUp = React.useCallback(() => {
 
-        doPopup();
+        doPopupWithTimeout();
 
-    }, [doPopup]);
+    }, [doPopupWithTimeout]);
 
     const onKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
-        doPopup();
+        if (position !== undefined) {
 
-        if (event.key === 'Escape') {
-
-            if (position !== undefined) {
-                setPosition(undefined);
+            if (event.key === 'Escape') {
+                clearPopup();
             }
 
+        } else {
+            doPopupWithTimeout();
         }
 
-    }, [doPopup, position]);
+    }, [clearPopup, doPopupWithTimeout, position]);
+
+    React.useEffect(() => {
+
+        if (Object.keys(selected).length !== 0) {
+            clearPopup();
+        }
+
+    }, [clearPopup, selected]);
 
     const noteFormatHandlers = useNoteFormatHandlers(props.onUpdated);
 
