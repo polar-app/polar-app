@@ -10,7 +10,6 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {INote} from "./INote";
 import {ReverseIndex} from "./ReverseIndex";
 import {Note} from "./Note";
-import {MarkdownContentEscaper} from "../MarkdownContentEscaper";
 import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 import { Numbers } from "polar-shared/src/util/Numbers";
 
@@ -38,11 +37,11 @@ export type NoteContent = string;
  *
  * When undefined, make no jump.
  */
-export type NavPosition = 'start' | 'end' | undefined;
+export type NavPosition = 'start' | 'end';
 
 export interface INoteActivated {
     readonly note: INote;
-    readonly activePos: NavPosition;
+    readonly activePos: NavPosition | undefined;
 }
 
 interface DoPutOpts {
@@ -612,7 +611,8 @@ export class NotesStore {
 
     }
 
-    @action public setActiveWithPosition(active: NoteIDStr | undefined, activePos: NavPosition) {
+    @action public setActiveWithPosition(active: NoteIDStr | undefined,
+                                         activePos: NavPosition | undefined) {
 
         if (active) {
             this._active = {
