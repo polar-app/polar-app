@@ -7,7 +7,7 @@ import {Mailgun} from "../Mailgun";
 
 export interface IStartTokenAuthRequest {
     readonly email: string;
-    readonly resend?: boolean;
+    readonly resend?: boolean | string;
 }
 
 export interface IStartTokenErrorResponse {
@@ -127,6 +127,8 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
 
         sendResponseOK();
 
+        console.log(`Send 'initial' with provider: ${provider}`);
+
     }
 
     async function resendMessage() {
@@ -143,13 +145,15 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
 
         await sendMailWithProvider(tmpl, provider);
 
+        console.log(`Send 'resend' with provider: ${provider}`);
+
         sendResponseOK();
 
     }
 
     try {
 
-        if (resend) {
+        if (resend === true || resend === 'true') {
             await resendMessage();
         } else {
             await sendInitialMessage();
