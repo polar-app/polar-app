@@ -10,6 +10,8 @@ export interface IStartTokenAuthRequest {
     readonly resend?: boolean | string;
 }
 
+export type MailProvider = 'sendgrid' | 'mailgun';
+
 export interface IStartTokenErrorResponse {
     readonly code: 'unable-to-send-email';
     readonly status: 'unable-to-send-email';
@@ -66,8 +68,6 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
         readonly subject: string;
         readonly html: string;
     }
-
-    type MailProvider = 'sendgrid' | 'mailgun';
 
     function createEmailTemplate(challenge: IChallenge | IAuthChallenge, provider: MailProvider): IEmailTemplate {
 
@@ -165,7 +165,7 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
             code: 'unable-to-send-email',
             status: "unable-to-send-email",
             message: e.message,
-            email
+            email,
         };
 
         ExpressFunctions.sendResponse(res, response);
