@@ -20,6 +20,7 @@ import {SideNavCommandMenu} from "./SideNavCommand";
 import {ZenModeActiveContainer} from "../mui/ZenModeActiveContainer";
 import { Intercom } from '../apps/repository/integrations/Intercom';
 import { SideNavQuestionButton } from './SideNavQuestionButton';
+import {VerticalDynamicScroller} from './DynamicScroller';
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -67,7 +68,6 @@ const useStyles = makeStyles((theme) =>
         buttons: {
             flexGrow: 1,
             minHeight: 0,
-            overflow: 'hidden'
         },
         historyButton: {
             color: theme.palette.text.secondary,
@@ -257,9 +257,9 @@ export const SideNav = React.memo(function SideNav() {
                         <SideNavDivider/>
                     )}
 
-                    <div className={classes.buttons}>
+                    <VerticalDynamicScroller className={classes.buttons}>
                         {tabs.map(tab => <SideNavButton key={tab.id} tab={tab}/>)}
-                    </div>
+                    </VerticalDynamicScroller>
 
                     <div style={{marginBottom: '5px'}}>
                         <SideNavDivider/>
