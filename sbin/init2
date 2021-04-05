@@ -1,16 +1,97 @@
-#!/bin/bash
+#!/usr/bin/env node
 
-set -e
+const fs = require('fs');
+const { spawn } = require("child_process");
 
-###
-#
-# go through the configured repositories and pull them down to initialize them.
-mkdir -p packages
-for repo_url in `cat conf/repos.conf`; do
+function getRepoDir(str) {
 
-    echo "Working with URL ${repo_url}"
-    (cd packages && git clone "${repo_url}")
+    // https://github.com/burtonator/polar-app.git
 
-done
+    // returns polar-app
 
-echo "Telling git to store passwords locally..."
+    const m = str.match(/([a-zA-Z0-9.-]+)$/)
+
+    if (m) {
+        return m[1].replace(".git", "");
+    }
+
+    return undefined;
+
+}
+
+function makeDirWhenMissing(path) {
+
+    if (! fs.existsSync(path)) {
+        fs.mkdirSync(path);
+    }
+
+}
+
+function getRepos() {
+    const buff = fs.readFileSync('conf/repos.conf');
+
+    const content = buff.toString('utf-8');
+
+    return content.split('\n')
+                  .filter(current => current !== '');
+}
+
+makeDirWhenMissing('./packages');
+
+async function doSpawn(repo, packageDir) {
+
+    return new Promise((res, rej) => {
+
+        const git = spawn("git", ["clone", repo, packageDir]);
+
+        git.stdout.on("data", data => {
+            console.log(`${data}`);
+        });
+
+        git.stderr.on("data", data => {
+            console.error(`${data}`);
+        });
+
+        git.on('error', (error) => {
+            console.error(`${error.message}`);
+        });
+
+        git.on("close", code => {
+
+            if (code !== 0) {
+                rej(code);
+            }
+
+            res(0);
+
+        });
+
+    });
+
+}
+
+
+async function doExec() {
+
+    for (const repo of getRepos()) {
+        // console.log(repo);
+        const repoDir = getRepoDir(repo);
+        // console.log(repoDir);
+
+        const packageDir = `packages/${repoDir}`;
+
+        if (! fs.existsSync(packageDir)) {
+            await doSpawn(repo, packageDir);
+
+        } else {
+            console.log(`Skipping ${repo} in ${repoDir}.  Already cloned.`);
+        }
+
+    }
+
+    console.log("done");
+
+}
+
+doExec().
+    catch(err => console.error(err));
