@@ -19,14 +19,6 @@ function getRepoDir(str) {
 
 }
 
-function makeDirWhenMissing(path) {
-
-    if (! fs.existsSync(path)) {
-        fs.mkdirSync(path);
-    }
-
-}
-
 function getRepos() {
 
     const buff = fs.readFileSync('conf/repos.conf');
@@ -38,13 +30,13 @@ function getRepos() {
 
 }
 
-makeDirWhenMissing('./packages');
-
-async function doSpawn(repo, packageDir) {
+async function doGit(cwd, args) {
 
     return new Promise((res, rej) => {
 
-        const git = spawn("git", ["clone", repo, packageDir]);
+        console.log(`mgit: ==== working with ${cwd}`);
+
+        const git = spawn("git", args, {cwd});
 
         git.stdout.on("data", data => {
             console.log(`${data}`);
@@ -74,19 +66,15 @@ async function doSpawn(repo, packageDir) {
 
 async function doExec() {
 
+    const args = process.argv.slice(2);
+
+    doGit(__dirname, args);
+
     for (const repo of getRepos()) {
-        // console.log(repo);
+
         const repoDir = getRepoDir(repo);
-        // console.log(repoDir);
-
         const packageDir = `packages/${repoDir}`;
-
-        if (! fs.existsSync(packageDir)) {
-            await doSpawn(repo, packageDir);
-
-        } else {
-            console.log(`Skipping ${repo} in ${repoDir}.  Already cloned.`);
-        }
+        await doGit(packageDir, args);
 
     }
 
