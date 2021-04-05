@@ -6,9 +6,9 @@ import {HTMLStr} from "polar-shared/src/util/Strings";
  */
 export type DataStr = string;
 
-export interface ContentEscaper {
+export interface ContentEscaper<D extends DataStr> {
 
-    readonly escape: (input: DataStr) => HTMLStr;
-    readonly unescape: (html: HTMLStr) => DataStr;
+    readonly escape: (input: D) => HTMLStr;
+    readonly unescape: (html: HTMLStr) => D;
 
 }

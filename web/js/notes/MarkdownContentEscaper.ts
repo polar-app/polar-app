@@ -7,6 +7,7 @@ import {WikiLinksToMarkdown} from "./WikiLinksToMarkdown";
 import {Mappers} from "polar-shared/src/util/Mapper";
 import {ContentEditableWhitespace} from "./ContentEditableWhitespace";
 import {ContentEscaper} from "./ContentEscaper";
+import {MarkdownStr} from "polar-shared/src/util/Strings";
 
 const TRACE = true;
 
@@ -20,7 +21,7 @@ function doTrace(name: string,
 
 }
 
-export const MarkdownContentEscaper: ContentEscaper = {
+export const MarkdownContentEscaper: ContentEscaper<MarkdownStr> = {
 
     escape: input => {
 
