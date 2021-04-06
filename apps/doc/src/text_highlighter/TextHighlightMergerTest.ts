@@ -1,6 +1,6 @@
 import {Rect} from '../../../../web/js/Rect';
 import {assert} from 'chai';
-import {TextHighlightMerger} from './TextHighlightMerger';
+import {TextHighlightMerger, ThresholdsI} from './TextHighlightMerger';
 
 const TEST_DATA = [
     /*
@@ -31,8 +31,8 @@ const TEST_DATA = [
      * Every nodeD/Cin directoryDwould be storedon the partitionP(D/C)=hash(D)mod...
      */
     {
-        input: `[{"left":419,"top":643,"right":430,"bottom":658,"width":10,"height":14},{"left":436,"top":643,"right":489,"bottom":658,"width":52,"height":14},{"left":488,"top":643,"right":724,"bottom":658,"width":236,"height":14},{"left":419,"top":659,"right":524,"bottom":674,"width":104,"height":14},{"left":525,"top":659,"right":535,"bottom":674,"width":10,"height":14},{"left":536,"top":659,"right":541,"bottom":674,"width":4,"height":14},{"left":543,"top":659,"right":552,"bottom":674,"width":9,"height":14},{"left":557,"top":659,"right":619,"bottom":674,"width":62,"height":14},{"left":621,"top":659,"right":632,"bottom":674,"width":10,"height":14},{"left":635,"top":659,"right":721,"bottom":674,"width":85,"height":14},{"left":419,"top":675,"right":426,"bottom":690,"width":6,"height":14},{"left":426,"top":675,"right":503,"bottom":690,"width":76,"height":14},{"left":505,"top":675,"right":513,"bottom":690,"width":8,"height":14},{"left":515,"top":675,"right":520,"bottom":690,"width":5,"height":14},{"left":520,"top":675,"right":548,"bottom":690,"width":27,"height":14},{"left":549,"top":675,"right":569,"bottom":690,"width":20,"height":14},{"left":573,"top":675,"right":601,"bottom":690,"width":28,"height":14},{"left":601,"top":675,"right":606,"bottom":690,"width":5,"height":14},{"left":606,"top":675,"right":616,"bottom":690,"width":10,"height":14},{"left":617,"top":675,"right":622,"bottom":690,"width":5,"height":14},{"left":626,"top":675,"right":647,"bottom":690,"width":21,"height":14},{"left":650,"top":675,"right":660,"bottom":690,"width":10,"height":14},{"left":662,"top":675,"right":721,"bottom":690,"width":58,"height":14},{"left":419,"top":691,"right":511,"bottom":706,"width":91,"height":14},{"left":512,"top":691,"right":522,"bottom":706,"width":10,"height":14},{"left":526,"top":691,"right":724,"bottom":706,"width":197,"height":14},{"left":419,"top":707,"right":428,"bottom":722,"width":8,"height":14},{"left":430,"top":707,"right":435,"bottom":722,"width":5,"height":14},{"left":435,"top":707,"right":445,"bottom":722,"width":10,"height":14},{"left":446,"top":707,"right":466,"bottom":722,"width":19,"height":14},{"left":469,"top":707,"right":498,"bottom":722,"width":28,"height":14},{"left":497,"top":707,"right":502,"bottom":722,"width":5,"height":14},{"left":502,"top":707,"right":513,"bottom":722,"width":10,"height":14},{"left":514,"top":705,"right":519,"bottom":716,"width":5,"height":10},{"left":517,"top":707,"right":523,"bottom":722,"width":5,"height":14},{"left":526,"top":707,"right":547,"bottom":722,"width":21,"height":14},{"left":550,"top":707,"right":560,"bottom":722,"width":10,"height":14},{"left":562,"top":707,"right":602,"bottom":722,"width":39,"height":14},{"left":604,"top":707,"right":615,"bottom":722,"width":10,"height":14},{"left":616,"top":705,"right":621,"bottom":716,"width":5,"height":10},{"left":623,"top":707,"right":703,"bottom":722,"width":80,"height":14},{"left":705,"top":707,"right":715,"bottom":722,"width":10,"height":14},{"left":716,"top":707,"right":721,"bottom":722,"width":4,"height":14}]`,
-        output: `[{"left":419,"top":643,"right":724,"bottom":706,"width":305,"height":63},{"left":419,"top":705,"right":615,"bottom":722,"width":196,"height":17},{"left":616,"top":705,"right":621,"bottom":716,"width":5,"height":10},{"left":623,"top":707,"right":721,"bottom":722,"width":98,"height":15}]`
+        input: `[{"left":419,"top":642,"right":429,"bottom":658,"width":9,"height":15},{"left":436,"top":643,"right":488,"bottom":658,"width":52,"height":15},{"left":488,"top":643,"right":722,"bottom":658,"width":234,"height":15},{"left":419,"top":659,"right":523,"bottom":674,"width":103,"height":15},{"left":525,"top":658,"right":534,"bottom":674,"width":9,"height":15},{"left":536,"top":658,"right":540,"bottom":674,"width":3,"height":15},{"left":543,"top":658,"right":552,"bottom":674,"width":9,"height":15},{"left":557,"top":659,"right":619,"bottom":674,"width":61,"height":15},{"left":621,"top":658,"right":631,"bottom":674,"width":9,"height":15},{"left":636,"top":659,"right":720,"bottom":674,"width":84,"height":15},{"left":419,"top":675,"right":502,"bottom":690,"width":82,"height":15},{"left":505,"top":674,"right":514,"bottom":690,"width":8,"height":15},{"left":515,"top":674,"right":520,"bottom":690,"width":4,"height":15},{"left":520,"top":674,"right":548,"bottom":690,"width":27,"height":15},{"left":549,"top":674,"right":569,"bottom":690,"width":19,"height":15},{"left":573,"top":675,"right":601,"bottom":690,"width":28,"height":15},{"left":601,"top":674,"right":605,"bottom":690,"width":4,"height":15},{"left":606,"top":674,"right":615,"bottom":690,"width":9,"height":15},{"left":617,"top":674,"right":622,"bottom":690,"width":4,"height":15},{"left":626,"top":675,"right":647,"bottom":690,"width":21,"height":15},{"left":650,"top":674,"right":659,"bottom":690,"width":9,"height":15},{"left":662,"top":675,"right":720,"bottom":690,"width":58,"height":15},{"left":419,"top":691,"right":510,"bottom":706,"width":90,"height":15},{"left":512,"top":690,"right":521,"bottom":706,"width":9,"height":15},{"left":526,"top":691,"right":722,"bottom":706,"width":196,"height":15},{"left":419,"top":706,"right":428,"bottom":722,"width":8,"height":15},{"left":430,"top":706,"right":434,"bottom":722,"width":4,"height":15},{"left":435,"top":706,"right":445,"bottom":722,"width":9,"height":15},{"left":446,"top":706,"right":466,"bottom":722,"width":19,"height":15},{"left":469,"top":707,"right":497,"bottom":722,"width":28,"height":15},{"left":497,"top":706,"right":502,"bottom":722,"width":4,"height":15},{"left":502,"top":706,"right":512,"bottom":722,"width":9,"height":15},{"left":514,"top":705,"right":519,"bottom":716,"width":5,"height":10},{"left":517,"top":706,"right":522,"bottom":722,"width":4,"height":15},{"left":526,"top":707,"right":547,"bottom":722,"width":21,"height":15},{"left":550,"top":706,"right":560,"bottom":722,"width":9,"height":15},{"left":562,"top":707,"right":602,"bottom":722,"width":39,"height":15},{"left":604,"top":706,"right":614,"bottom":722,"width":9,"height":15},{"left":616,"top":705,"right":621,"bottom":716,"width":5,"height":10},{"left":623,"top":707,"right":703,"bottom":722,"width":79,"height":15},{"left":705,"top":706,"right":715,"bottom":722,"width":9,"height":15},{"left":716,"top":707,"right":720,"bottom":722,"width":4,"height":15}]`,
+        output: `[{"top":642,"bottom":658,"left":419,"right":722,"width":303,"height":16},{"top":658,"bottom":690,"left":419,"right":720,"width":301,"height":32},{"top":690,"bottom":706,"left":419,"right":722,"width":303,"height":16},{"top":706,"bottom":722,"left":419,"right":512,"width":93,"height":16},{"left":514,"top":705,"right":519,"bottom":716,"width":5,"height":10},{"top":706,"bottom":722,"left":517,"right":614,"width":97,"height":16},{"left":616,"top":705,"right":621,"bottom":716,"width":5,"height":10},{"top":706,"bottom":722,"left":623,"right":720,"width":97,"height":16}]`
     },
 
     /*
@@ -44,8 +44,8 @@ const TEST_DATA = [
      * 
      */
     {
-        input: `[{"left":441,"top":268,"right":449,"bottom":281,"width":8,"height":12},{"left":448,"top":271,"right":476,"bottom":281,"width":27,"height":9},{"left":476,"top":268,"right":509,"bottom":281,"width":33,"height":12},{"left":508,"top":271,"right":535,"bottom":281,"width":26,"height":9},{"left":535,"top":268,"right":569,"bottom":281,"width":33,"height":12},{"left":569,"top":271,"right":603,"bottom":281,"width":34,"height":9},{"left":602,"top":268,"right":638,"bottom":281,"width":35,"height":12},{"left":641,"top":271,"right":661,"bottom":281,"width":19,"height":9},{"left":665,"top":268,"right":672,"bottom":281,"width":7,"height":12},{"left":673,"top":271,"right":717,"bottom":281,"width":44,"height":9},{"left":717,"top":268,"right":720,"bottom":281,"width":3,"height":12},{"left":444,"top":281,"right":727,"bottom":294,"width":282,"height":12},{"left":444,"top":294,"right":726,"bottom":306,"width":282,"height":12},{"left":444,"top":306,"right":485,"bottom":319,"width":40,"height":12}]`,
-        output: `[{"left":441,"top":268,"right":720,"bottom":281,"width":279,"height":13},{"left":444,"top":281,"right":727,"bottom":306,"width":283,"height":25},{"left":444,"top":306,"right":485,"bottom":319,"width":40,"height":12}]`,
+        input: `[{"left":443,"top":269,"right":449,"bottom":282,"width":5,"height":12},{"left":448,"top":271,"right":476,"bottom":281,"width":27,"height":9},{"left":476,"top":269,"right":509,"bottom":282,"width":32,"height":12},{"left":508,"top":271,"right":535,"bottom":281,"width":26,"height":9},{"left":535,"top":269,"right":569,"bottom":282,"width":33,"height":12},{"left":569,"top":271,"right":603,"bottom":281,"width":34,"height":9},{"left":602,"top":269,"right":637,"bottom":282,"width":35,"height":12},{"left":641,"top":271,"right":661,"bottom":281,"width":19,"height":9},{"left":665,"top":269,"right":672,"bottom":282,"width":7,"height":12},{"left":673,"top":271,"right":717,"bottom":281,"width":43,"height":9},{"left":717,"top":269,"right":720,"bottom":282,"width":3,"height":12},{"left":444,"top":282,"right":724,"bottom":294,"width":279,"height":12},{"left":444,"top":294,"right":723,"bottom":307,"width":279,"height":12},{"left":444,"top":307,"right":484,"bottom":319,"width":40,"height":12}]`,
+        output: `[{"top":269,"bottom":282,"left":443,"right":720,"width":277,"height":13},{"top":282,"bottom":307,"left":444,"right":724,"width":280,"height":25},{"left":444,"top":307,"right":484,"bottom":319,"width":40,"height":12}]`,
     },
     /*
      * File: availability
@@ -53,8 +53,8 @@ const TEST_DATA = [
      * Text: {ford,flab,florentina,mstokely}@google.com, vatruong@ieor.columbia.edu{luiz,cgrimes,sean}@google.com
      */
     {
-        input: `[{"left":157,"top":242,"right":165,"bottom":256,"width":7,"height":14},{"left":164,"top":242,"right":375,"bottom":256,"width":211,"height":14},{"left":372,"top":242,"right":379,"bottom":256,"width":7,"height":14},{"left":378,"top":242,"right":662,"bottom":256,"width":284,"height":14},{"left":301,"top":260,"right":308,"bottom":275,"width":7,"height":14},{"left":307,"top":260,"right":431,"bottom":275,"width":123,"height":14},{"left":429,"top":260,"right":436,"bottom":275,"width":7,"height":14},{"left":435,"top":260,"right":515,"bottom":275,"width":80,"height":14}]`,
-        output: `[{"left":157,"top":242,"right":662,"bottom":256,"width":505,"height":14},{"left":301,"top":260,"right":515,"bottom":275,"width":214,"height":15}]`,
+        input: `[{"left":157,"top":242,"right":165,"bottom":257,"width":7,"height":14},{"left":164,"top":242,"right":374,"bottom":257,"width":210,"height":14},{"left":372,"top":242,"right":379,"bottom":257,"width":7,"height":14},{"left":378,"top":242,"right":661,"bottom":257,"width":282,"height":14},{"left":301,"top":261,"right":308,"bottom":275,"width":7,"height":14},{"left":307,"top":261,"right":430,"bottom":275,"width":123,"height":14},{"left":429,"top":261,"right":436,"bottom":275,"width":7,"height":14},{"left":435,"top":261,"right":515,"bottom":275,"width":79,"height":14}]`,
+        output: `[{"top":242,"bottom":257,"left":157,"right":661,"width":504,"height":15},{"top":261,"bottom":275,"left":301,"right":515,"width":214,"height":14}]`,
     }
 ];
 
@@ -86,8 +86,8 @@ describe('TextHighlightMerger', () => {
                 height : 15,
             };
             
-            assert.strictEqual(TextHighlightMerger.canMergeX(a, b, 0, 10), true);
-            assert.strictEqual(TextHighlightMerger.canMergeX(b, a, 0, 10), true);
+            assert.strictEqual(TextHighlightMerger.canMergeX(a, b, [10, 0]), true);
+            assert.strictEqual(TextHighlightMerger.canMergeX(b, a, [10, 0]), true);
         });
 
         /*      
@@ -114,8 +114,8 @@ describe('TextHighlightMerger', () => {
                 height : 15,
             };
 
-            assert.strictEqual(TextHighlightMerger.canMergeX(a, b, 0, 30), false);
-            assert.strictEqual(TextHighlightMerger.canMergeX(b, a, 0, 30), false);
+            assert.strictEqual(TextHighlightMerger.canMergeX(a, b, [0, 30]), false);
+            assert.strictEqual(TextHighlightMerger.canMergeX(b, a, [0, 30]), false);
         });
 
 
@@ -144,8 +144,8 @@ describe('TextHighlightMerger', () => {
                 height : 30,
             };
 
-            assert.strictEqual(TextHighlightMerger.canMergeX(a, b, 10, 30), true);
-            assert.strictEqual(TextHighlightMerger.canMergeX(b, a, 10, 30), true);
+            assert.strictEqual(TextHighlightMerger.canMergeX(a, b, [10, 30]), true);
+            assert.strictEqual(TextHighlightMerger.canMergeX(b, a, [10, 30]), true);
         });
 
         it('Should allow merging random test 1', () => {
@@ -167,8 +167,33 @@ describe('TextHighlightMerger', () => {
                 width  : 111,
             });
 
-            assert.strictEqual(TextHighlightMerger.canMergeX(a, b, 10, 20), true);
-            assert.strictEqual(TextHighlightMerger.canMergeX(b, a, 10, 20), true);
+            assert.strictEqual(TextHighlightMerger.canMergeX(a, b, [10, 20]), true);
+            assert.strictEqual(TextHighlightMerger.canMergeX(b, a, [10, 20]), true);
+        });
+
+        it('Should allow merging random test 2', () => {
+            const a = new Rect({
+                bottom: 498.265625,
+                height: 38,
+                left: 877.640625,
+                right: 895.53125,
+                top: 460.265625,
+                width: 17.890625,
+            });
+
+            const b = new Rect({
+                bottom: 496.359375,
+                height: 30,
+                left: 898.71875,
+                right: 974.8060302734375,
+                top: 466.359375,
+                width: 76.0872802734375,
+            });
+
+            const thresholds: ThresholdsI = ;
+
+            assert.strictEqual(TextHighlightMerger.canMergeX(a, b, [3.5, 11]), true);
+            assert.strictEqual(TextHighlightMerger.canMergeX(b, a, [3.5, 11]), true);
         });
     });
 
@@ -196,13 +221,13 @@ describe('TextHighlightMerger', () => {
                 top    : 400,
                 bottom : 450,
                 height : 50,
-                left   : 59,
-                right  : 762,
-                width  : 702,
+                left   : 50,
+                right  : 760,
+                width  : 710,
             };
 
-            assert.strictEqual(TextHighlightMerger.canMergeY(a, b, 5, 10), true);
-            assert.strictEqual(TextHighlightMerger.canMergeY(b, a, 5, 10), true);
+            assert.strictEqual(TextHighlightMerger.canMergeY(a, b, [0, 5]), true);
+            assert.strictEqual(TextHighlightMerger.canMergeY(b, a, [0, 5]), true);
         });
         
         it('Should allow merging random test 1', () => {
@@ -218,16 +243,16 @@ describe('TextHighlightMerger', () => {
                 bottom : 420,
                 height : 23,
                 left   : 59,
-                right  : 762,
+                right  : 760,
                 top    : 397,
                 width  : 702,
             };
 
-            assert.strictEqual(TextHighlightMerger.canMergeY(a, b, 7, 20), true);
-            assert.strictEqual(TextHighlightMerger.canMergeY(b, a, 7, 20), true);
+            assert.strictEqual(TextHighlightMerger.canMergeY(a, b, [0, 7]), true);
+            assert.strictEqual(TextHighlightMerger.canMergeY(b, a, [0, 7]), true);
         });
 
-        it('Should allow merging random test 1', () => {
+        it('Should allow merging random test 2', () => {
             const a = {
                 bottom : 882,
                 height : 23,
@@ -241,13 +266,13 @@ describe('TextHighlightMerger', () => {
                 bottom : 905,
                 height : 23,
                 left   : 59,
-                right  : 761,
+                right  : 759,
                 top    : 882,
                 width  : 701,
             };
 
-            assert.strictEqual(TextHighlightMerger.canMergeY(a, b, 7, 20), true);
-            assert.strictEqual(TextHighlightMerger.canMergeY(b, a, 7, 20), true);
+            assert.strictEqual(TextHighlightMerger.canMergeY(a, b, [0, 7]), true);
+            assert.strictEqual(TextHighlightMerger.canMergeY(b, a, [0, 7]), true);
         });
     });
 
