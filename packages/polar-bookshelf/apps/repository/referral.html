@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+
+    <link rel="manifest" href="/manifest.json">
+
+    <link rel="icon" href="/icon.ico">
+
+    <title>Polar</title>
+
+  </head>
+  <body>
+
+    <noscript>
+      You need to enable JavaScript to run this app.
+
+      <a href="https://getpolarized.io/">Powered by Polar</a>
+
+    </noscript>
+
+  <script></script>
+
+  <script>
+
+     // TODO I think this should/could move to a cloud function...
+
+     const parsedURL = new URL(document.location.href);
+
+     const code = parsedURL.searchParams.get('id');
+
+     if (code) {
+         // always overwrite the last code
+         localStorage.setItem('referral', id);
+     } else {
+         console.warn("No referral code to record");
+     }
+
+     // for now redirect to the main app page.
+     document.location.href = 'https://getpolarized.io';
+
+  </script>
+
+</html>
