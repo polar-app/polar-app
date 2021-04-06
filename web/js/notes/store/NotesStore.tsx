@@ -12,6 +12,7 @@ import {ReverseIndex} from "./ReverseIndex";
 import {Note} from "./Note";
 import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 import { Numbers } from "polar-shared/src/util/Numbers";
+import {CursorPositions} from "../contenteditable/CursorPositions";
 
 export type NoteIDStr = IDStr;
 export type NoteNameStr = string;
@@ -29,6 +30,11 @@ export type StringSetMap = {[key: string]: boolean};
 export type NoteContent = string;
 
 /**
+ * A offset into the content of a not where we should place the cursor.
+ */
+export type NoteContentOffset = number;
+
+/**
  * The position to place the cursor when jumping between items.
  *
  * When 'start' jump to the start.
@@ -37,7 +43,7 @@ export type NoteContent = string;
  *
  * When undefined, make no jump.
  */
-export type NavPosition = 'start' | 'end';
+export type NavPosition = 'start' | 'end' | NoteContentOffset;
 
 export interface INoteActivated {
     readonly note: INote;
@@ -687,6 +693,8 @@ export class NotesStore {
             return 'incompatible-note-types';
         }
 
+        const offset = CursorPositions.renderedTextLength(targetNote.content);
+
         const newContent = targetNote.content + " " + sourceNote.content;
         targetNote.setContent(newContent);
         targetNote.setItems([...targetNote.items, ...sourceNote.items]);
@@ -694,7 +702,7 @@ export class NotesStore {
 
         this.doDelete([sourceNote.id]);
 
-        this.setActiveWithPosition(targetNote.id, undefined);
+        this.setActiveWithPosition(targetNote.id, offset);
 
         return undefined;
 

@@ -16,6 +16,28 @@ export namespace CursorPositions {
      */
     export type CursorLookupArray = ReadonlyArray<ICursorPosition>;
 
+    export function jumpToPosition(element: HTMLElement, offset: number) {
+
+        const lookup = computeCursorLookupArray(element);
+
+        const position = lookup[offset];
+
+        if (position) {
+
+            const sel = window.getSelection();
+
+            if (sel) {
+                const range = sel.getRangeAt(0);
+                range.setStart(position.node, position.offset);
+                range.setEnd(position.node, position.offset);
+            }
+
+        } else {
+            console.warn("No lookup position for: ", offset);
+        }
+
+    }
+
     /**
      * Create a lookup array from the text offset in the root element to the
      * node and local offset for that text so that we can place our cursor

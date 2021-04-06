@@ -11,6 +11,7 @@ import {NoteAction} from "./NoteAction";
 import { useHistory } from 'react-router-dom';
 import { autorun } from 'mobx'
 import { useNoteFormatKeyboardHandler } from '../NoteFormatHooks';
+import {CursorPositions} from "./CursorPositions";
 
 const ENABLE_TRACE_CURSOR_RESET = false;
 
@@ -129,6 +130,11 @@ export const NoteContentEditable = observer((props: IProps) => {
 
                             break;
                         default:
+
+                            if (typeof store.active.pos === 'number') {
+                                CursorPositions.jumpToPosition(divRef.current, store.active.pos)
+                            }
+
                             break;
                     }
 
