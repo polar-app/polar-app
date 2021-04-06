@@ -32,7 +32,7 @@ export class RectTexts {
             // clientRects: range.getClientRects(),
             selectionRange,
             boundingClientRect,
-            text: textNode.textContent || undefined
+            text: textNode.textContent || ''
         };
 
     }

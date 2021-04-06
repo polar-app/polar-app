@@ -190,8 +190,6 @@ describe('TextHighlightMerger', () => {
                 width: 76.0872802734375,
             });
 
-            const thresholds: ThresholdsI = ;
-
             assert.strictEqual(TextHighlightMerger.canMergeX(a, b, [3.5, 11]), true);
             assert.strictEqual(TextHighlightMerger.canMergeX(b, a, [3.5, 11]), true);
         });
