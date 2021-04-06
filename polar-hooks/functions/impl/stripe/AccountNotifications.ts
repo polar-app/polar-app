@@ -53,7 +53,7 @@ export namespace AccountNotifications {
 }
 
 function createSubject(sub: V2Subscription, userPersona: IUserPersona): string {
-    return `Hey ${userPersona.firstName}, Thanks for Buying Polar ${sub.plan.level}!`;
+    return `Hey ${userPersona.firstName || ''}, Thanks for Buying Polar ${sub.plan.level}!`;
 }
 
 function createBody(sub: V2Subscription, persona: IPersona, userPersona: IUserPersona): string {
