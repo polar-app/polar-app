@@ -111,6 +111,12 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
                                    prefs={prefs}
                                    preview={true}/>
 
+                    <SettingToggle title="BETA: Better text extraction for annotations (PDFs only)"
+                                   description=""
+                                   name="better-text-extraction"
+                                   prefs={prefs}
+                                   preview={true}/>
+
                     {/*<DeviceRouters.Desktop>*/}
                     {/*    <SettingEntry*/}
                     {/*        title="Table and phone reading"*/}

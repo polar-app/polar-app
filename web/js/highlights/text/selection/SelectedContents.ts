@@ -9,7 +9,7 @@ import {FileType} from "../../../apps/main/file_loaders/FileType";
 import {RectText} from '../controller/RectText';
 import {TextHighlightMerger} from '../../../../../apps/doc/src/text_highlighter/TextHighlightMerger';
 import {Rect} from '../../../Rect';
-import {Tuples} from 'polar-shared/src/util/Tuples';
+import {Strings} from 'polar-shared/src/util/Strings';
 
 export namespace SelectedContents {
 
@@ -22,6 +22,7 @@ export namespace SelectedContents {
 
         readonly fileType: FileType;
 
+        readonly useEnhancedExtraction: boolean;
     }
 
     export function extractText(rects: ReadonlyArray<RectText>): string {
@@ -129,7 +130,9 @@ export namespace SelectedContents {
                 // this is PDF mode so we should just compute the text via join
                 // the rect texts...
 
-                return extractText(rectTexts);
+                return opts.useEnhancedExtraction
+                    ? extractText(rectTexts)
+                    : Strings.joinWithSpacing(rectTexts.map(current => current.text));
             }
 
             return toText(ranges)
