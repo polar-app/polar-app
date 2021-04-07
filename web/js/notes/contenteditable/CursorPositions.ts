@@ -12,9 +12,48 @@ export namespace CursorPositions {
     }
 
     /**
+     * Like ICursorPosition but used an ID for the node so that the data is
+     * deterministic for test and can be converted to JSON
+     */
+    export interface ICursorPositionTest {
+
+        /**
+         * The actual text of the entire node.
+         */
+        readonly nodeText: string;
+
+        readonly offset: number;
+
+    }
+
+    /**
      * Allows us to lookup the ICursorPosition in via offset.
      */
     export type CursorLookupArray = ReadonlyArray<ICursorPosition>;
+
+    export type CursorLookupTestArray = ReadonlyArray<ICursorPositionTest>;
+
+    export function jumpToPosition(element: HTMLElement, offset: number) {
+
+        const lookup = computeCursorLookupArray(element);
+
+        const position = lookup[offset];
+
+        if (position) {
+
+            const sel = window.getSelection();
+
+            if (sel) {
+                const range = sel.getRangeAt(0);
+                range.setStart(position.node, position.offset);
+                range.setEnd(position.node, position.offset);
+            }
+
+        } else {
+            console.warn("No lookup position for: ", offset);
+        }
+
+    }
 
     /**
      * Create a lookup array from the text offset in the root element to the
@@ -22,6 +61,9 @@ export namespace CursorPositions {
      * there.
      */
     export function computeCursorLookupArray(element: HTMLElement): CursorLookupArray {
+
+        // FIXME: create tests and a lookup array by ID that allows us to test us
+        // and have a node ID not the node so we can use this as JSON
 
         const doc = element.ownerDocument;
 
@@ -53,6 +95,23 @@ export namespace CursorPositions {
         }
 
         return result;
+
+    }
+
+    /**
+     * Convert the lookup array to data so we can test it.
+     */
+    export function toCursorLookupTestArray(arr: CursorLookupArray): CursorLookupTestArray {
+
+        function toCursorPositionTest(cursorPosition: ICursorPosition): ICursorPositionTest {
+
+            const nodeText: string = cursorPosition.node.textContent || '';
+            const offset = cursorPosition.offset;
+            return {nodeText, offset};
+
+        }
+
+        return arr.map(toCursorPositionTest);
 
     }
 

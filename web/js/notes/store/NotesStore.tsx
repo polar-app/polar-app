@@ -12,6 +12,7 @@ import {ReverseIndex} from "./ReverseIndex";
 import {Note} from "./Note";
 import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 import { Numbers } from "polar-shared/src/util/Numbers";
+import {CursorPositions} from "../contenteditable/CursorPositions";
 
 export type NoteIDStr = IDStr;
 export type NoteNameStr = string;
@@ -29,6 +30,11 @@ export type StringSetMap = {[key: string]: boolean};
 export type NoteContent = string;
 
 /**
+ * A offset into the content of a not where we should place the cursor.
+ */
+export type NoteContentOffset = number;
+
+/**
  * The position to place the cursor when jumping between items.
  *
  * When 'start' jump to the start.
@@ -37,7 +43,7 @@ export type NoteContent = string;
  *
  * When undefined, make no jump.
  */
-export type NavPosition = 'start' | 'end';
+export type NavPosition = 'start' | 'end' | NoteContentOffset;
 
 export interface INoteActivated {
     readonly note: INote;
@@ -107,6 +113,8 @@ export interface ICreatedNote {
 }
 
 export type DoIndentResult = IMutation<'no-note' | 'no-parent' | 'no-parent-note' | 'no-sibling', NoteIDStr>;
+
+export type DoUnIndentResult = IMutation<'no-note' | 'no-parent' | 'no-parent-note' | 'no-parent-note-parent' | 'no-parent-note-parent-note', NoteIDStr>
 
 /**
  * The active note and the position it should be set to once it's made active.
@@ -687,6 +695,8 @@ export class NotesStore {
             return 'incompatible-note-types';
         }
 
+        const offset = CursorPositions.renderedTextLength(targetNote.content);
+
         const newContent = targetNote.content + " " + sourceNote.content;
         targetNote.setContent(newContent);
         targetNote.setItems([...targetNote.items, ...sourceNote.items]);
@@ -694,7 +704,7 @@ export class NotesStore {
 
         this.doDelete([sourceNote.id]);
 
-        this.setActiveWithPosition(targetNote.id, undefined);
+        this.setActiveWithPosition(targetNote.id, offset);
 
         return undefined;
 
@@ -882,16 +892,46 @@ export class NotesStore {
 
     }
 
+
+    /**
+     * A note is only indentable if it has a parent and we are not the first
+     * child in that parent. IE it must have a previous sibling so that we can
+     * be
+     */
+    public isIndentable(id: NoteIDStr): boolean {
+
+        const note = this.getNote(id);
+
+        if (! note) {
+            return false;
+        }
+
+        if (! note.parent) {
+            return false;
+        }
+
+        const parentNote = this.getNote(note.parent);
+
+        if (! parentNote) {
+            // this is a bug and shouldn't happen
+            return false;
+        }
+
+        return parentNote.items.indexOf(id) !== 0;
+
+    }
+
+    private computeSelectedIndentableNoteIDs(): ReadonlyArray<NoteIDStr> {
+        const selectedIDs = this.selectedIDs();
+        return selectedIDs.filter(current => this.isIndentable(current));
+    }
+
     /**
      * Make the active note a child of the prev sibling.
      *
      * @return The new parent NoteID or the code as to why it couldn't be re-parented.
      */
     public doIndent(id: NoteIDStr): ReadonlyArray<DoIndentResult> {
-
-        // FIXME the way this needs to work is that we need to compute a new parent,
-        // then the index to insert it, then insert ALL the items selected after this one
-        // that are on the same level...
 
         const doExec = (id: NoteIDStr): DoIndentResult => {
 
@@ -945,48 +985,58 @@ export class NotesStore {
         }
 
         if (this.hasSelected()) {
-            return this.selectedIDs().map(id => doExec(id));
+            return this.computeSelectedIndentableNoteIDs().map(id => doExec(id));
         } else {
             return [doExec(id)];
         }
 
     }
 
-    public doUnIndent(id: NoteIDStr): IMutation<'no-note' | 'no-parent' | 'no-parent-note' | 'no-parent-note-parent' | 'no-parent-note-parent-note', NoteIDStr> {
+    public doUnIndent(id: NoteIDStr): ReadonlyArray<DoUnIndentResult> {
 
-        console.log("doUnIndent: " + id);
+        const doExec = (id: NoteIDStr): DoUnIndentResult => {
 
-        const note = this._index[id];
+            console.log("doUnIndent: " + id);
 
-        if (! note) {
-            return {error: 'no-note'};
+            const note = this._index[id];
+
+            if (! note) {
+                return {error: 'no-note'};
+            }
+
+            if (! note.parent) {
+                return {error: 'no-parent'};
+            }
+
+            const parentNote = this._index[note.parent];
+
+            if (! parentNote) {
+                return {error: 'no-parent-note'};
+            }
+
+            if (! parentNote.parent) {
+                return {error: 'no-parent-note-parent'};
+            }
+
+            const newParentNote = this._index[parentNote.parent];
+
+            if (! newParentNote) {
+                return {error: 'no-parent-note-parent-note'};
+            }
+
+            note.setParent(newParentNote.id);
+            newParentNote.addItem(id, {pos: 'after', ref: parentNote.id});
+            parentNote.removeItem(id);
+
+            return {value: id};
+
+        };
+
+        if (this.hasSelected()) {
+            return this.computeSelectedIndentableNoteIDs().map(id => doExec(id));
+        } else {
+            return [doExec(id)];
         }
-
-        if (! note.parent) {
-            return {error: 'no-parent'};
-        }
-
-        const parentNote = this._index[note.parent];
-
-        if (! parentNote) {
-            return {error: 'no-parent-note'};
-        }
-
-        if (! parentNote.parent) {
-            return {error: 'no-parent-note-parent'};
-        }
-
-        const newParentNote = this._index[parentNote.parent];
-
-        if (! newParentNote) {
-            return {error: 'no-parent-note-parent-note'};
-        }
-
-        note.setParent(newParentNote.id);
-        newParentNote.addItem(id, {pos: 'after', ref: parentNote.id});
-        parentNote.removeItem(id);
-
-        return {value: id};
 
     }
 
