@@ -676,6 +676,15 @@ export class NotesStore {
             }
         }
 
+        const note = this.getNote(id);
+
+        if (note?.parent) {
+            return {
+                source: id,
+                target: note.parent
+            }
+        }
+
         return undefined;
 
     }
