@@ -95,6 +95,37 @@ const jsonToRectTexts = (str: string): ReadonlyArray<RectText> => (
 );
 
 describe('SelectedContents', () => {
+    describe('lineNeedsHyphenElimination', () => {
+        it('Should return true for lines ends with a hyphen', () => {
+            assert.equal(SelectedContents.lineNeedsHyphenElimination('elim-'), true);
+        });
+
+        it('Should return false for lines ends with a hyphen preceeded by a space', () => {
+            assert.equal(SelectedContents.lineNeedsHyphenElimination('elim -'), false);
+        });
+
+        it('Should return false for lines that don\'t end with a hyphen', () => {
+            assert.equal(SelectedContents.lineNeedsHyphenElimination('elim'), false);
+            assert.equal(SelectedContents.lineNeedsHyphenElimination('100 '), false);
+        });
+    });
+
+    describe('lineNeedsHyphenJoin', () => {
+        it('Should return ture for lines that end with a range', () => {
+            assert.equal(SelectedContents.lineNeedsHyphenJoin('100-'), true);
+        });
+
+        it('Should return ture for lines that end with a hyphen proceeded by "non"', () => {
+            assert.equal(SelectedContents.lineNeedsHyphenJoin('Non-'), true);
+            assert.equal(SelectedContents.lineNeedsHyphenJoin('non-'), true);
+        });
+
+        it('Should return false for lines that don\'t end with a hyphen', () => {
+            assert.equal(SelectedContents.lineNeedsHyphenElimination('elim'), false);
+            assert.equal(SelectedContents.lineNeedsHyphenElimination('100 '), false);
+        });
+    });
+
     describe('extractText', () => {
         for (let i = 0; i < TEST_DATA.length; i += 1) {
             it(`Random test case ${i + 1}`, () => {

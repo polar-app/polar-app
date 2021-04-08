@@ -25,6 +25,16 @@ export namespace SelectedContents {
         readonly useEnhancedExtraction: boolean;
     }
 
+    // Split up words (Fi-nance). Join and remove the hyphen
+    export const lineNeedsHyphenElimination = (line: string) => /[^\s]-$/.test(line);
+
+    // Ranges (100-300) && words that start with <non->. Join with no space in between
+    export const lineNeedsHyphenJoin = (line: string) =>  /\d+-$/.test(line) || (/[^\s]-$/.test(line) && /non-$/i.test(line));
+
+    export function extractTextLegacy(rectTexts: ReadonlyArray<RectText>): string {
+        return Strings.joinWithSpacing(rectTexts.map(current => current.text));
+    }
+
     export function extractText(rects: ReadonlyArray<RectText>): string {
         const mergeRectTexts = (a: RectText, b: RectText, withWhitespace: boolean): RectText => {
             const rect = new Rect(TextHighlightMerger.mergeRects(a.boundingClientRect, b.boundingClientRect));
@@ -48,16 +58,15 @@ export namespace SelectedContents {
 
 
         let text = '';
-        // Joining lines together
+
         for (const line of lines) {
             const currText = line.text.trim();
 
-            // Ranges (100-300) && words that start with <non->. Join with no space in between
-            if (/\d+-$/.test(currText) || (/[^\s]-$/.test(currText) && /non-$/i.test(currText))) {
+            if (lineNeedsHyphenJoin(currText)) {
                 text += currText;
-            } else if (/[^\s]-$/.test(currText)) { // Split up words (Fi-nance). Join and remove the hyphen
+            } else if (lineNeedsHyphenElimination(currText)) {
                 text += currText.slice(0, -1)
-            } else { // Everything else. Join with a space in between
+            } else {
                 text += currText + ' ';
             }
         }
@@ -132,7 +141,7 @@ export namespace SelectedContents {
 
                 return opts.useEnhancedExtraction
                     ? extractText(rectTexts)
-                    : Strings.joinWithSpacing(rectTexts.map(current => current.text));
+                    : extractTextLegacy(rectTexts);
             }
 
             return toText(ranges)
