@@ -4,56 +4,58 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 export function useNoteFormatHandlers(onUpdated: () => void) {
 
-    function doExecCommand(command: string, value?: string) {
+    const doExecCommand = React.useCallback((command: string, value?: string) => {
+
         console.log('doExecCommand: ' + command);
         document.execCommand(command, false, value);
         onUpdated();
-    }
 
-    function onBold() {
+    }, [onUpdated]);
+
+    const onBold = React.useCallback(() => {
         doExecCommand('bold');
-    }
+    }, [doExecCommand]);
 
-    function onItalic() {
+    const onItalic = React.useCallback(() => {
         doExecCommand('italic');
-    }
+    }, [doExecCommand]);
 
-    function onQuote() {
+    const onQuote = React.useCallback(() => {
         // doSelectionWrap('blockquote');
-    }
+    }, []);
 
-    function onUnderline() {
+    const onUnderline = React.useCallback(() => {
         doExecCommand('underline')
-    }
+    }, [doExecCommand]);
 
-    function onStrikethrough() {
+    const onStrikethrough = React.useCallback(() => {
         // FIXME: this command resets the range selection...
         doExecCommand('strikeThrough')
-    }
+    }, [doExecCommand]);
 
-    function onSubscript() {
+    const onSubscript = React.useCallback(() => {
         doExecCommand('subscript')
-    }
+    }, [doExecCommand]);
 
-    function onSuperscript() {
+    const onSuperscript = React.useCallback(() => {
         doExecCommand('superscript')
-    }
+    }, [doExecCommand]);
 
-    function onRemoveFormat() {
+    const onRemoveFormat = React.useCallback(() => {
         doExecCommand('removeFormat');
-    }
+    }, [doExecCommand]);
 
-    function doLink(link: URLStr) {
+    const doLink = React.useCallback((link: URLStr) => {
         doExecCommand('createlink', link)
-    }
+    }, [doExecCommand]);
 
     return {onBold, onItalic, onQuote, onUnderline, onStrikethrough, onSubscript, onSuperscript, doLink, onRemoveFormat}
 
 }
 
-export function useNoteFormatKeyboardHandler() {
+export function useNoteFormatKeyboardHandler(onUpdated: () => void = NULL_FUNCTION) {
 
-    const noteFormatHandlers = useNoteFormatHandlers(NULL_FUNCTION);
+    const noteFormatHandlers = useNoteFormatHandlers(onUpdated);
 
     return React.useCallback((event: React.KeyboardEvent) => {
 

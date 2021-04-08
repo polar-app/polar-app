@@ -58,8 +58,6 @@ export const NoteContentEditable = observer((props: IProps) => {
     const store = useNotesStore();
     const history = useHistory();
 
-    const noteFormatKeyboardHandler = useNoteFormatKeyboardHandler();
-
     const noteLinkActions = store.getNamedNodes().map(current => ({
         id: current,
         text: current
@@ -365,19 +363,11 @@ export const NoteContentEditable = observer((props: IProps) => {
 
         }
 
-        // TODO: break out the above into its own hook so that this code isn't
-        // being crowded with multiple handlers in one place. Right now they're
-        // disjoint but that might not happen forever and this would cause bugs
-        // long term and isn't very clean/elegant.
-
-        // ****
-        noteFormatKeyboardHandler(event);
-
         if (props.onKeyDown) {
             props.onKeyDown(event);
         }
 
-    }, [hasEditorSelection, history, noteFormatKeyboardHandler, props, store]);
+    }, [hasEditorSelection, history, props, store]);
 
     return (
         <NoteContentEditableElementContext.Provider value={divRef}>

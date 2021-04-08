@@ -1,7 +1,7 @@
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import React from 'react';
 import {NoteFormatBar, NoteFormatBarProps} from "./NoteFormatBar";
-import {useNoteFormatHandlers} from "./NoteFormatHooks";
+import {useNoteFormatHandlers, useNoteFormatKeyboardHandler} from "./NoteFormatHooks";
 import { observer } from "mobx-react-lite"
 import { useNotesStore } from './store/NotesStore';
 
@@ -74,6 +74,15 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
     }, [])
 
+    const clearPopupForKeyboard = React.useCallback(() => {
+
+        clearPopup();
+        window.getSelection()!.collapseToStart();
+
+    }, [clearPopup])
+
+    const noteFormatKeyboardHandler = useNoteFormatKeyboardHandler(clearPopupForKeyboard);
+
     const clearPopupTimeout = React.useCallback(() => {
 
         if (timeoutRef.current !== undefined) {
@@ -110,6 +119,10 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
     }, [clearPopup, doPopupWithTimeout, position]);
 
+    const onKeyDown = React.useCallback((event: React.KeyboardEvent) => {
+        noteFormatKeyboardHandler(event);
+    }, [noteFormatKeyboardHandler]);
+
     React.useEffect(() => {
 
         if (Object.keys(selected).length !== 0) {
@@ -120,10 +133,15 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
     const noteFormatHandlers = useNoteFormatHandlers(props.onUpdated);
 
+    // FIXME: place the format hooks here for the keyboard so that if they make it bold we can dismiss.
+
     return (
         <ClickAwayListener onClickAway={() => setPosition(undefined)}>
 
-            <div onMouseUp={onMouseUp} onKeyUp={onKeyUp}>
+            <div onMouseUp={onMouseUp}
+                 onKeyUp={onKeyUp}
+                 onKeyDown={onKeyDown}>
+
                 {props.children}
 
                 {position && (
