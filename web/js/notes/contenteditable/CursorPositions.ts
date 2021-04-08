@@ -62,39 +62,45 @@ export namespace CursorPositions {
      */
     export function computeCursorLookupArray(element: HTMLElement): CursorLookupArray {
 
-        // FIXME: create tests and a lookup array by ID that allows us to test us
-        // and have a node ID not the node so we can use this as JSON
+        const lookup: ICursorPosition[] = [];
 
-        const doc = element.ownerDocument;
+        function doBuild(offset: number, node: Node) {
 
-        // tslint:disable-next-line:no-bitwise
-        const treeWalker = doc.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+            if (node.nodeType === node.TEXT_NODE) {
 
-        let offset = 0;
+                const nodeValue = node.nodeValue || '';
 
-        const result: ICursorPosition[] = [];
+                for (let idx = 0; idx < nodeValue.length; ++idx) {
+                    const ptr = offset + idx;
 
-        for(let currentNode: Node | null = treeWalker.currentNode; currentNode !== null; currentNode = treeWalker.nextNode()) {
+                    const position: ICursorPosition = {
+                        node,
+                        offset: idx
+                    };
 
-            const textContent = currentNode.textContent || '';
+                    lookup[ptr] = position;
 
-            for (let idx = 0; idx < textContent.length; ++idx) {
-                const ptr = offset + idx;
+                }
 
-                const position: ICursorPosition = {
-                    node: currentNode,
-                    offset: idx
-                };
-
-                result[ptr] = position;
+                offset += nodeValue.length;
 
             }
 
-            offset = textContent.length;
+            if (node.nodeType === node.ELEMENT_NODE) {
+
+                for(const childNode of Array.from(node.childNodes)) {
+                    offset = doBuild(offset, childNode);
+                }
+
+            }
+
+            return offset;
 
         }
 
-        return result;
+        doBuild(0, element);
+
+        return lookup;
 
     }
 
@@ -105,7 +111,7 @@ export namespace CursorPositions {
 
         function toCursorPositionTest(cursorPosition: ICursorPosition): ICursorPositionTest {
 
-            const nodeText: string = cursorPosition.node.textContent || '';
+            const nodeText: string = cursorPosition.node.nodeValue || '';
             const offset = cursorPosition.offset;
             return {nodeText, offset};
 
