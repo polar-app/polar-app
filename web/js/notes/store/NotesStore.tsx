@@ -703,12 +703,21 @@ export class NotesStore {
 
         const offset = CursorPositions.renderedTextLength(targetNote.content);
 
+        const items = [...targetNote.items, ...sourceNote.items];
+        const links = [...targetNote.links, ...sourceNote.links];
+
         const newContent = targetNote.content + " " + sourceNote.content;
         targetNote.setContent(newContent);
-        targetNote.setItems([...targetNote.items, ...sourceNote.items]);
-        targetNote.setLinks([...targetNote.links, ...sourceNote.links]);
+        targetNote.setItems(items);
+        targetNote.setLinks(links);
 
-        this.doDelete([sourceNote.id]);
+        const deleteSourceNote = () => {
+            // we have to set items to an empty array or doDelete will also remove the children recursively.
+            sourceNote.setItems([]);
+            this.doDelete([sourceNote.id]);
+        }
+
+        deleteSourceNote();
 
         this.setActiveWithPosition(targetNote.id, offset);
 
@@ -851,17 +860,24 @@ export class NotesStore {
 
         function createNewNote(parentNote: Note): INote {
             const now = ISODateTimeStrings.create()
+
+            const id = Hashcodes.createRandomID();
+            const items = split?.suffix !== undefined ? currentNote.items : [];
+
             return {
-                id: Hashcodes.createRandomID(),
+                id,
                 parent: parentNote.id,
                 type: 'item',
                 content: split?.suffix || '',
                 created: now,
                 updated: now,
-                items: [],
+                items,
                 links: []
             };
+
         }
+
+        const currentNote = this.getNote(id)!;
 
         const newNotePosition = computeNewNotePosition();
 
@@ -882,11 +898,13 @@ export class NotesStore {
 
         }
 
+        if (split?.suffix !== undefined && newNote.items.length > 0) {
+            this.expand(newNote.id);
+        }
+
         if (split?.prefix !== undefined) {
-
-            const currentNote = this.getNote(id)!;
             currentNote.setContent(split.prefix);
-
+            currentNote.setItems([]);
         }
 
         this.setActiveWithPosition(newNote.id, 'start');
