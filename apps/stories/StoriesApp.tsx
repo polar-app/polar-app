@@ -53,6 +53,7 @@ import {MinimalContentEditableStory} from "./impl/MinimalContentEditableStory";
 import { MUICommandActionMenuStory } from './impl/MUICommandActionMenuStory';
 import ExportDefaultComponent from "./impl/ExportDefaultComponent";
 import {ExportDefaultComponentStory} from "./impl/ExportDefaultComponentStory";
+import {VerticalDynamicScrollerStory} from './impl/VerticalDynamicScrollerStory';
 
 interface IStory {
     readonly name: string;
@@ -76,6 +77,10 @@ function createStoryIndex(stories: ReadonlyArray<IStory>) {
 }
 
 const stories = createStoryIndex([
+    {
+        name: "Vertical Dynamic Scroller",
+        component: <VerticalDynamicScrollerStory/>
+    },
     {
         name: "Scratch",
         component: <ScratchStory/>
