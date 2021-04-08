@@ -1,16 +1,21 @@
 import * as React from 'react';
 import {URLStr} from "polar-shared/src/util/Strings";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import { NoteType } from './store/NotesStore';
 
-export function useNoteFormatHandlers(onUpdated: () => void) {
+export function useNoteFormatHandlers(type: NoteType | undefined, onUpdated: () => void) {
 
     const doExecCommand = React.useCallback((command: string, value?: string) => {
+
+        if (type !== 'item') {
+            return;
+        }
 
         console.log('doExecCommand: ' + command);
         document.execCommand(command, false, value);
         onUpdated();
 
-    }, [onUpdated]);
+    }, [onUpdated, type]);
 
     const onBold = React.useCallback(() => {
         doExecCommand('bold');
@@ -53,9 +58,9 @@ export function useNoteFormatHandlers(onUpdated: () => void) {
 
 }
 
-export function useNoteFormatKeyboardHandler(onUpdated: () => void = NULL_FUNCTION) {
+export function useNoteFormatKeyboardHandler(type: NoteType | undefined, onUpdated: () => void = NULL_FUNCTION) {
 
-    const noteFormatHandlers = useNoteFormatHandlers(onUpdated);
+    const noteFormatHandlers = useNoteFormatHandlers(type, onUpdated);
 
     return React.useCallback((event: React.KeyboardEvent) => {
 

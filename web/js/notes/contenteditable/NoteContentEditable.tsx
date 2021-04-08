@@ -382,7 +382,7 @@ export const NoteContentEditable = observer((props: IProps) => {
                                 target: id
                             })}>
 
-                    <NoteFormatPopper onUpdated={updateMarkdownFromEditable}>
+                    <NoteFormatPopper onUpdated={updateMarkdownFromEditable} id={props.id}>
                         <div ref={handleRef}
                              onClick={props.onClick}
                              contentEditable={true}

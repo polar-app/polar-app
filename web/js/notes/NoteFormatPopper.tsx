@@ -3,7 +3,7 @@ import React from 'react';
 import {NoteFormatBar, NoteFormatBarProps} from "./NoteFormatBar";
 import {useNoteFormatHandlers, useNoteFormatKeyboardHandler} from "./NoteFormatHooks";
 import { observer } from "mobx-react-lite"
-import { useNotesStore } from './store/NotesStore';
+import {NoteIDStr, useNotesStore } from './store/NotesStore';
 
 export interface INoteFormatBarPosition {
 
@@ -22,6 +22,7 @@ export interface INoteFormatBarPosition {
 }
 
 export interface IProps extends NoteFormatBarProps {
+    readonly id: NoteIDStr;
     readonly children: JSX.Element;
 
     readonly onUpdated: () => void;
@@ -34,6 +35,8 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
     const timeoutRef = React.useRef<number | undefined>(undefined);
 
     const notesStore = useNotesStore();
+
+    const note = notesStore.getNote(props.id);
 
     const {selected} = notesStore;
 
@@ -81,7 +84,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
     }, [clearPopup])
 
-    const noteFormatKeyboardHandler = useNoteFormatKeyboardHandler(clearPopupForKeyboard);
+    const noteFormatKeyboardHandler = useNoteFormatKeyboardHandler(note?.type, clearPopupForKeyboard);
 
     const clearPopupTimeout = React.useCallback(() => {
 
@@ -131,7 +134,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
     }, [clearPopup, selected]);
 
-    const noteFormatHandlers = useNoteFormatHandlers(props.onUpdated);
+    const noteFormatHandlers = useNoteFormatHandlers(note?.type, props.onUpdated);
 
     return (
         <ClickAwayListener onClickAway={() => setPosition(undefined)}>
@@ -142,7 +145,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
                 {props.children}
 
-                {position && (
+                {note?.type === 'item' && position && (
                     <div onClick={() => setPosition(undefined)}
                          style={{
                              position: 'absolute',
