@@ -667,6 +667,8 @@ export class NotesStore {
      */
     public canMerge(id: NoteIDStr): INoteMerge | undefined {
 
+        console.log("FIXME0")
+
         const prevSibling = this.prevSibling(id);
 
         if (prevSibling) {
@@ -695,6 +697,7 @@ export class NotesStore {
         const sourceNote = this._index[source];
 
         if (targetNote.type !== sourceNote.type) {
+            console.warn("Note types are incompatible and can't be merged");
             return 'incompatible-note-types';
         }
 
