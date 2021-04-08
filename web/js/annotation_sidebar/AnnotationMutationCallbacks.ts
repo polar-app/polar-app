@@ -320,9 +320,7 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
                     pageMeta.textHighlights[textHighlight.id] = textHighlight;
 
                     writeUpdatedDocMetas([docMeta])
-                        .then(() => {
-                            Analytics.event2('doc-highlightCreated', { type: 'text' });
-                        })
+                        .then(() => Analytics.event2('doc-highlightCreated', { type: 'text' }))
                         .catch(err => log.error(err));
 
                     break;

@@ -1,32 +1,59 @@
 import {IRect} from "polar-shared/src/util/rects/IRect";
 
+export type IThresholds = [number, number];
+
 export namespace TextHighlightMerger {
-    export const HORIZONTAL_THRESHOLD_PERCENTAGE = 50 / 100;
-    export const VERTICAL_THRESHOLD_PERCENTAGE = 40 / 100;
+    // The following values are based on the average height
+    export const LINE_HEIGHT_THRESHOLD_PERCENTAGE    = 35 / 100;
+    export const LETTER_SPACING_THRESHOLD_PERCENTAGE = 8 / 100;
 
     export function merge(rects: ReadonlyArray<IRect>): ReadonlyArray<IRect> {
         if (rects.length === 0) {
             return [];
         }
 
-        const avgHeight = rects.reduce((a, b) => a + b.height, 1) / rects.length;
+        const lineThresholds = getLineThresholds(rects);
+        const blockThresholds = getBlockThresholds(rects);
 
-        const verticalThreshold = avgHeight * VERTICAL_THRESHOLD_PERCENTAGE;
-        const horizontalThreshold = avgHeight * HORIZONTAL_THRESHOLD_PERCENTAGE;
+        const mergeAll = (g: ReadonlyArray<IRect>) => g.reduce(TextHighlightMerger.mergeRects)
 
-        let last: ReadonlyArray<IRect> = rects;
-        while (true) {
-            let merged = TextHighlightMerger
-                .groupAdjacent(last, canMerge(verticalThreshold, horizontalThreshold))
-                .map(a => a.reduce(TextHighlightMerger.mergeRects));
+        let lines  = TextHighlightMerger.lines(rects, lineThresholds, x => x).map(mergeAll);
+        let blocks = TextHighlightMerger.blocks(lines, blockThresholds, x => x).map(mergeAll);
+        return blocks;
+    }
 
-            if (merged.length === last.length) {
-                break;
-            }
-
-            last = merged;
+    export function avgRectsHeight(rects: ReadonlyArray<IRect>): number {
+        if (rects.length === 0) {
+            return 0;
         }
-        return last;
+        return rects.reduce((a, b) => a + b.height, 0) / rects.length;
+    }
+
+    export function getWordThresholds(rects: ReadonlyArray<IRect>): IThresholds {
+        const avgHeight = avgRectsHeight(rects);
+
+        return [
+            avgHeight * LETTER_SPACING_THRESHOLD_PERCENTAGE,
+            avgHeight * LINE_HEIGHT_THRESHOLD_PERCENTAGE,
+        ];
+    }
+
+    export function getLineThresholds(rects: ReadonlyArray<IRect>): IThresholds {
+        const avgHeight = avgRectsHeight(rects);
+
+        return [
+            Infinity,
+            avgHeight * LINE_HEIGHT_THRESHOLD_PERCENTAGE,
+        ];
+    }
+
+    export function getBlockThresholds(rects: ReadonlyArray<IRect>): IThresholds {
+        const avgHeight = avgRectsHeight(rects);
+
+        return [
+            avgHeight * LETTER_SPACING_THRESHOLD_PERCENTAGE,
+            avgHeight * LINE_HEIGHT_THRESHOLD_PERCENTAGE,
+        ];
     }
 
     export function groupAdjacent<T>(items: ReadonlyArray<T>, fn: (a: T, b: T) => boolean): ReadonlyArray<ReadonlyArray<T>> {
@@ -50,33 +77,41 @@ export namespace TextHighlightMerger {
         return groups;
     }
 
-    export function canMerge(verticalThreshold: number, horizontalThreshold: number) {
-        return (a: IRect, b: IRect) =>
-            TextHighlightMerger.canMergeX(a, b, verticalThreshold, horizontalThreshold) ||
-            TextHighlightMerger.canMergeY(a, b, verticalThreshold, horizontalThreshold);
+    export function words<T>(items: ReadonlyArray<T>, thresholds: IThresholds, getRect: (a: T) => IRect): ReadonlyArray<ReadonlyArray<T>> {
+
+        return groupAdjacent<T>(items, (a, b) => canMergeX(getRect(a), getRect(b), thresholds));
     }
 
-    export function canMergeX(a: IRect, b: IRect, verticalThreshold: number, horizontalThreshold: number): boolean {
+    export function lines<T>(items: ReadonlyArray<T>, thresholds: IThresholds, getRect: (a: T) => IRect): ReadonlyArray<ReadonlyArray<T>> {
+        return groupAdjacent<T>(items, (a, b) => canMergeX(getRect(a), getRect(b), thresholds));
+    }
+
+    export function blocks<T>(items: ReadonlyArray<T>, thresholds: IThresholds, getRect: (a: T) => IRect): ReadonlyArray<ReadonlyArray<T>> {
+        return groupAdjacent<T>(items, (a, b) => canMergeY(getRect(a), getRect(b), thresholds));
+    }
+
+    export function canMergeX(a: IRect, b: IRect, [xt, yt]: IThresholds): boolean {
         return (
             (
-                (a.left <= b.left && a.right >= b.left - horizontalThreshold) ||
-                (b.left <= a.left && b.right >= a.left - horizontalThreshold)
+                (a.left <= b.left && a.right >= b.left - xt) ||
+                (b.left <= a.left && b.right >= a.left - xt)
             ) &&
             // Check if the ractangles are on the same line with some leeway
-            Math.abs(a.top - b.top) <= verticalThreshold &&
-            Math.abs(a.bottom - b.bottom) <= verticalThreshold
+            Math.abs(a.top - b.top) <= yt &&
+            Math.abs(a.bottom - b.bottom) <= yt
         );
     }
 
-    export function canMergeY(a: IRect, b: IRect, verticalThreshold: number, horizontalThreshold: number): boolean {
-        return (
+    export function canMergeY(a: IRect, b: IRect, [xt, yt]: IThresholds): boolean {
+        const val = (
             (
-                a.top <= b.top && a.bottom >= b.top - verticalThreshold ||
-                b.top <= a.top && b.bottom >= a.top - verticalThreshold
+                (a.top <= b.top && a.bottom >= b.top - yt) ||
+                (b.top <= a.top && b.bottom >= a.top - yt)
             ) &&
-            Math.abs(a.left - b.left) <= horizontalThreshold &&
-            Math.abs(a.right - b.right) <= horizontalThreshold
+            Math.abs(a.left - b.left) <= xt &&
+            Math.abs(a.right - b.right) <= xt
         );
+        return val;
     }
 
     export function mergeRects(a: IRect, b: IRect): IRect {

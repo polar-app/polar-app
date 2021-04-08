@@ -23,6 +23,7 @@ import {useMessageListener} from "./text_highlighter/PostMessageHooks";
 import {MessageListeners} from "./text_highlighter/MessageListeners";
 import { useDocViewerElementsContext } from "./renderers/DocViewerElementsContext";
 import {IDStr} from "polar-shared/src/util/Strings";
+import {usePrefsContext} from "../../repository/js/persistence_layer/PrefsContext2";
 
 
 /**
@@ -95,12 +96,18 @@ interface AnnotationBarOpts {
     readonly noRectTexts?: boolean;
 }
 
+export function useEnhancedTextExtractionPref() {
+    const prefs = usePrefsContext();
+    return prefs.isMarked("better-text-extraction", false);
+}
+
 export function useAnnotationBar(opts: AnnotationBarOpts = {}): AnnotationBarEventListenerRegisterer {
 
     const store = React.useRef<Pick<IDocViewerStore, 'docMeta' | 'docScale'> | undefined>(undefined)
     const createTextHighlightCallbackRef = React.useRef<CreateTextHighlightCallback | undefined>(undefined)
     const {fileType} = useDocViewerContext();
     const docViewerElementsContext = useDocViewerElementsContext();
+    const enhancedTextExtractionEnabled = useEnhancedTextExtractionPref();
 
     store.current = useDocViewerStore(['docMeta', 'docScale']);
     createTextHighlightCallbackRef.current = useCreateTextHighlightCallback();
@@ -135,7 +142,12 @@ export function useAnnotationBar(opts: AnnotationBarOpts = {}): AnnotationBarEve
 
             const {selection} = highlightCreatedEvent.activeSelection;
 
-            const selectedContent = SelectedContents.computeFromSelection(selection, {noRectTexts, fileType});
+            const opts: SelectedContents.ComputeOpts = {
+                noRectTexts,
+                fileType,
+                useEnhancedExtraction: enhancedTextExtractionEnabled,
+            };
+            const selectedContent = SelectedContents.computeFromSelection(selection, opts);
 
             // now clear the selection since we just highlighted it.
             selection.empty();
@@ -165,7 +177,7 @@ export function useAnnotationBar(opts: AnnotationBarOpts = {}): AnnotationBarEve
 
         }
 
-    }, [docViewerElementsContext, fileType, messageDispatcher, noRectTexts]);
+    }, [docViewerElementsContext, fileType, messageDispatcher, noRectTexts, enhancedTextExtractionEnabled]);
 
 }
 

@@ -6,7 +6,10 @@ import {HTMLSanitizer} from 'polar-html/src/sanitize/HTMLSanitizer';
 import {TextNodeRows} from "./TextNodeRows";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {FileType} from "../../../apps/main/file_loaders/FileType";
-import { Strings } from 'polar-shared/src/util/Strings';
+import {RectText} from '../controller/RectText';
+import {TextHighlightMerger} from '../../../../../apps/doc/src/text_highlighter/TextHighlightMerger';
+import {Rect} from '../../../Rect';
+import {Strings} from 'polar-shared/src/util/Strings';
 
 export namespace SelectedContents {
 
@@ -19,6 +22,56 @@ export namespace SelectedContents {
 
         readonly fileType: FileType;
 
+        readonly useEnhancedExtraction: boolean;
+    }
+
+    // Split up words (Fi-nance). Join and remove the hyphen
+    export const lineNeedsHyphenElimination = (line: string) => /[^\s]-$/.test(line);
+
+    // Ranges (100-300) && words that start with <non->. Join with no space in between
+    export const lineNeedsHyphenJoin = (line: string) =>  /\d+-$/.test(line) || (/[^\s]-$/.test(line) && /non-$/i.test(line));
+
+    export function extractTextLegacy(rectTexts: ReadonlyArray<RectText>): string {
+        return Strings.joinWithSpacing(rectTexts.map(current => current.text));
+    }
+
+    export function extractText(rects: ReadonlyArray<RectText>): string {
+        const mergeRectTexts = (a: RectText, b: RectText, withWhitespace: boolean): RectText => {
+            const rect = new Rect(TextHighlightMerger.mergeRects(a.boundingClientRect, b.boundingClientRect));
+            const val ={
+                boundingClientRect: rect,
+                text: a.text + (withWhitespace ? ' ' : '') + b.text,
+                selectionRange: a.selectionRange,
+            };
+            return val;
+        };
+
+        const rectPositions = rects.map(x => x.boundingClientRect);
+
+        const wordThresholds = TextHighlightMerger.getWordThresholds(rectPositions);
+        const lineThresholds = TextHighlightMerger.getLineThresholds(rectPositions);
+
+        const words = TextHighlightMerger.words(rects, wordThresholds, a => a.boundingClientRect)
+            .map(group => group.reduce((a, b) => mergeRectTexts(a, b, false)));
+        const lines = TextHighlightMerger.lines(words, lineThresholds, a => a.boundingClientRect)
+            .map(group => group.reduce((a, b) => mergeRectTexts(a, b, true)));
+
+
+        let text = '';
+
+        for (const line of lines) {
+            const currText = line.text.trim();
+
+            if (lineNeedsHyphenJoin(currText)) {
+                text += currText;
+            } else if (lineNeedsHyphenElimination(currText)) {
+                text += currText.slice(0, -1)
+            } else {
+                text += currText + ' ';
+            }
+        }
+
+        return text.replace(/\s+/g, ' ').trim();
     }
 
     /**
@@ -85,7 +138,10 @@ export namespace SelectedContents {
             if (rectTexts.length > 0) {
                 // this is PDF mode so we should just compute the text via join
                 // the rect texts...
-                return Strings.joinWithSpacing(rectTexts.map(current => current.text));
+
+                return opts.useEnhancedExtraction
+                    ? extractText(rectTexts)
+                    : extractTextLegacy(rectTexts);
             }
 
             return toText(ranges)
