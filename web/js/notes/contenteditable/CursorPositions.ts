@@ -104,6 +104,31 @@ export namespace CursorPositions {
 
     }
 
+    export function computeCurrentOffset(element: HTMLElement): number | undefined {
+
+        const lookup = computeCursorLookupArray(element);
+
+        const range = document.getSelection()!.getRangeAt(0);
+
+        // NOTE: this is O(N) but N is almost always insanely small.
+        for (let idx = 0; idx < lookup.length; ++idx) {
+
+            const curr = lookup[idx];
+
+            if (range.startContainer === curr.node) {
+
+                if (range.startOffset === curr.offset) {
+                    return idx;
+                }
+
+            }
+
+        }
+
+        return undefined;
+
+    }
+
     /**
      * Convert the lookup array to data so we can test it.
      */

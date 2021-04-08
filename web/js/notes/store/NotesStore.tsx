@@ -926,6 +926,39 @@ export class NotesStore {
         return selectedIDs.filter(current => this.isIndentable(current));
     }
 
+    private withActiveCursorOffsetRestored<T>(delegate: () => T) {
+
+        const captureOffset = (): number | undefined => {
+
+            if (this.active !== undefined) {
+
+                const range = document.getSelection()!.getRangeAt(0);
+                return CursorPositions.computeCurrentOffset(range.startContainer as HTMLElement);
+
+            }
+
+            return undefined;
+
+        }
+
+        const active = this.active;
+        const offset = captureOffset();
+
+        const result = delegate();
+
+        if (active?.id) {
+
+            this._active = {
+                id: active?.id,
+                pos: offset
+            }
+
+        }
+
+        return result;
+
+    }
+
     /**
      * Make the active note a child of the prev sibling.
      *
@@ -984,13 +1017,35 @@ export class NotesStore {
 
         }
 
-        if (this.hasSelected()) {
-            return this.computeSelectedIndentableNoteIDs().map(id => doExec(id));
-        } else {
-            return [doExec(id)];
-        }
+        return this.withActiveCursorOffsetRestored(() => {
+
+            if (this.hasSelected()) {
+                return this.computeSelectedIndentableNoteIDs().map(id => doExec(id));
+            } else {
+                return [doExec(id)];
+            }
+
+        });
 
     }
+
+    // public isUnIndentable(id: NoteIDStr) {
+    //
+    //     if (id === this.root) {
+    //         return false;
+    //     }
+    //
+    //     const note = this.getNote(id);
+    //
+    //     if (! note) {
+    //         return false;
+    //     }
+    //
+    //     if (! note.parent) {
+    //         return false;
+    //     }
+    //
+    // }
 
     public doUnIndent(id: NoteIDStr): ReadonlyArray<DoUnIndentResult> {
 
@@ -1032,11 +1087,15 @@ export class NotesStore {
 
         };
 
-        if (this.hasSelected()) {
-            return this.computeSelectedIndentableNoteIDs().map(id => doExec(id));
-        } else {
-            return [doExec(id)];
-        }
+        return this.withActiveCursorOffsetRestored(() => {
+
+            if (this.hasSelected()) {
+                return this.computeSelectedIndentableNoteIDs().map(id => doExec(id));
+            } else {
+                return [doExec(id)];
+            }
+
+        });
 
     }
 
