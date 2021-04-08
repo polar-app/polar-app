@@ -10,7 +10,6 @@ import {NoteContentCanonicalizer} from "./NoteContentCanonicalizer";
 import {NoteAction} from "./NoteAction";
 import { useHistory } from 'react-router-dom';
 import { autorun } from 'mobx'
-import { useNoteFormatKeyboardHandler } from '../NoteFormatHooks';
 import {CursorPositions} from "./CursorPositions";
 
 const ENABLE_TRACE_CURSOR_RESET = false;

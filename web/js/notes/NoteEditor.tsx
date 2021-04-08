@@ -110,9 +110,10 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
     }, [linkNavigationClickHandler, props.id, store]);
 
-    const handleEnter = React.useCallback(() => {
+    const handleCreateNewNote = React.useCallback(() => {
 
         if (ref.current) {
+
             const split = ContentEditables.splitAtCursor(ref.current);
 
             if (split) {
@@ -127,6 +128,18 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
         }
 
     }, [escaper, id, ref, store]);
+
+    const handleEnter = React.useCallback(() => {
+
+        if (ref.current) {
+            if (store.noteIsEmpty(props.id) && store.root !== note?.parent) {
+                store.doUnIndent(props.id);
+            } else {
+                handleCreateNewNote();
+            }
+        }
+
+    }, [handleCreateNewNote, note?.parent, props.id, ref, store]);
 
     const onKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 

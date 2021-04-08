@@ -950,7 +950,7 @@ export class NotesStore {
         return selectedIDs.filter(current => this.isIndentable(current));
     }
 
-    private withActiveCursorOffsetRestored<T>(delegate: () => T) {
+    private cursorOffsetCapture(): IActiveNote | undefined {
 
         const captureOffset = (): number | undefined => {
 
@@ -965,21 +965,27 @@ export class NotesStore {
 
         }
 
-        const active = this.active;
-        const offset = captureOffset();
+        if (this.active) {
+            const id = this.active.id;
+            const pos = captureOffset();
 
-        const result = delegate();
+            return {id, pos};
+        } else {
+            return undefined;
+        }
+
+
+    }
+
+    @action private cursorOffsetRestore(active: IActiveNote | undefined) {
 
         if (active?.id) {
 
             this._active = {
-                id: active?.id,
-                pos: offset
+                ...active
             }
 
         }
-
-        return result;
 
     }
 
@@ -1041,7 +1047,9 @@ export class NotesStore {
 
         }
 
-        return this.withActiveCursorOffsetRestored(() => {
+        const cursorOffset = this.cursorOffsetCapture();
+
+        try {
 
             if (this.hasSelected()) {
                 return this.computeSelectedIndentableNoteIDs().map(id => doExec(id));
@@ -1049,7 +1057,9 @@ export class NotesStore {
                 return [doExec(id)];
             }
 
-        });
+        } finally {
+            this.cursorOffsetRestore(cursorOffset);
+        }
 
     }
 
@@ -1111,7 +1121,9 @@ export class NotesStore {
 
         };
 
-        return this.withActiveCursorOffsetRestored(() => {
+        const cursorOffset = this.cursorOffsetCapture();
+
+        try {
 
             if (this.hasSelected()) {
                 return this.computeSelectedIndentableNoteIDs().map(id => doExec(id));
@@ -1119,7 +1131,9 @@ export class NotesStore {
                 return [doExec(id)];
             }
 
-        });
+        } finally {
+            this.cursorOffsetRestore(cursorOffset);
+        }
 
     }
 
