@@ -39,18 +39,33 @@ export namespace CursorPositions {
 
         const position = lookup[offset];
 
+        const range = window.getSelection()!.getRangeAt(0);
+
         if (position) {
 
-            const sel = window.getSelection();
+            range.setStart(position.node, position.offset);
+            range.setEnd(position.node, position.offset);
 
-            if (sel) {
-                const range = sel.getRangeAt(0);
-                range.setStart(position.node, position.offset);
-                range.setEnd(position.node, position.offset);
+        } else if (offset === lookup.length) {
+
+            function computeRangeNode() {
+
+                if (lookup.length > 0) {
+                    return lookup[lookup.length - 1].node;
+                }
+
+                return range.startContainer;
+
             }
 
+            const rangeNode = computeRangeNode();
+            const rangeOffset = (rangeNode.nodeValue || '').length
+
+            range.setStart(rangeNode, rangeOffset);
+            range.setEnd(rangeNode, rangeOffset);
+
         } else {
-            console.warn("No lookup position for: ", offset);
+            console.warn(`No lookup position for offset ${offset} with N lookup elements: ` + lookup.length);
         }
 
     }

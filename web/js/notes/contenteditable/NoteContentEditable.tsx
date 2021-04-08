@@ -315,12 +315,12 @@ export const NoteContentEditable = observer((props: IProps) => {
                 }
 
                 // TODO: only do this if there aren't any modifiers I think...
-                if (props.parent !== undefined && store.noteIsEmpty(props.id)) {
-
-                    abortEvent();
-                    store.doDelete([props.id]);
-                    break;
-                }
+                // don't do a manual delete and just always merge.
+                // if (props.parent !== undefined && store.noteIsEmpty(props.id)) {
+                //     abortEvent();
+                //     store.doDelete([props.id]);
+                //     break;
+                // }
 
                 if (store.hasSelected()) {
                     abortEvent();
