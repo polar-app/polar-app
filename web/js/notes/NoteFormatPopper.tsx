@@ -133,8 +133,6 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
     const noteFormatHandlers = useNoteFormatHandlers(props.onUpdated);
 
-    // FIXME: place the format hooks here for the keyboard so that if they make it bold we can dismiss.
-
     return (
         <ClickAwayListener onClickAway={() => setPosition(undefined)}>
 
