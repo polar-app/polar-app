@@ -1,6 +1,7 @@
 import {Rect} from '../../../../web/js/Rect';
 import {assert} from 'chai';
-import {TextHighlightMerger, ThresholdsI} from './TextHighlightMerger';
+import {TextHighlightMerger} from './TextHighlightMerger';
+import {IRect} from 'polar-shared/src/util/rects/IRect';
 
 const TEST_DATA = [
     /*
@@ -271,6 +272,34 @@ describe('TextHighlightMerger', () => {
 
             assert.strictEqual(TextHighlightMerger.canMergeY(a, b, [0, 7]), true);
             assert.strictEqual(TextHighlightMerger.canMergeY(b, a, [0, 7]), true);
+        });
+    });
+
+    describe('avgRectsHeight', () => {
+        it('Should return 0 when provided with an empty array', () => {
+            assert.equal(TextHighlightMerger.avgRectsHeight([]), 0);
+        });
+        it('Should get the average height of rectangles', () => {
+            const rects: ReadonlyArray<IRect> = [
+                new Rect({
+                    bottom : 882,
+                    height : 23,
+                    left   : 59,
+                    right  : 759,
+                    top    : 859,
+                    width  : 699,
+                }),
+                new Rect({
+                    bottom : 900,
+                    height : 18,
+                    left   : 59,
+                    right  : 759,
+                    top    : 882,
+                    width  : 701,
+                }),
+            ];
+
+            assert.equal(TextHighlightMerger.avgRectsHeight(rects), 20.5);
         });
     });
 

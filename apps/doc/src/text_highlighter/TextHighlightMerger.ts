@@ -1,6 +1,6 @@
 import {IRect} from "polar-shared/src/util/rects/IRect";
 
-export type ThresholdsI = [number, number];
+export type IThresholds = [number, number];
 
 export namespace TextHighlightMerger {
     // The following values are based on the average height
@@ -22,8 +22,15 @@ export namespace TextHighlightMerger {
         return blocks;
     }
 
-    export function getWordThresholds(rects: ReadonlyArray<IRect>): ThresholdsI {
-        const avgHeight = rects.reduce((a, b) => a + b.height, 0) / rects.length;
+    export function avgRectsHeight(rects: ReadonlyArray<IRect>): number {
+        if (rects.length === 0) {
+            return 0;
+        }
+        return rects.reduce((a, b) => a + b.height, 0) / rects.length;
+    }
+
+    export function getWordThresholds(rects: ReadonlyArray<IRect>): IThresholds {
+        const avgHeight = avgRectsHeight(rects);
 
         return [
             avgHeight * LETTER_SPACING_THRESHOLD_PERCENTAGE,
@@ -31,8 +38,8 @@ export namespace TextHighlightMerger {
         ];
     }
 
-    export function getLineThresholds(rects: ReadonlyArray<IRect>): ThresholdsI {
-        const avgHeight = rects.reduce((a, b) => a + b.height, 0) / rects.length;
+    export function getLineThresholds(rects: ReadonlyArray<IRect>): IThresholds {
+        const avgHeight = avgRectsHeight(rects);
 
         return [
             Infinity,
@@ -40,8 +47,8 @@ export namespace TextHighlightMerger {
         ];
     }
 
-    export function getBlockThresholds(rects: ReadonlyArray<IRect>): ThresholdsI {
-        const avgHeight = rects.reduce((a, b) => a + b.height, 0) / rects.length;
+    export function getBlockThresholds(rects: ReadonlyArray<IRect>): IThresholds {
+        const avgHeight = avgRectsHeight(rects);
 
         return [
             avgHeight * LETTER_SPACING_THRESHOLD_PERCENTAGE,
@@ -70,20 +77,20 @@ export namespace TextHighlightMerger {
         return groups;
     }
 
-    export function words<T>(items: ReadonlyArray<T>, thresholds: ThresholdsI, getRect: (a: T) => IRect): ReadonlyArray<ReadonlyArray<T>> {
+    export function words<T>(items: ReadonlyArray<T>, thresholds: IThresholds, getRect: (a: T) => IRect): ReadonlyArray<ReadonlyArray<T>> {
 
         return groupAdjacent<T>(items, (a, b) => canMergeX(getRect(a), getRect(b), thresholds));
     }
 
-    export function lines<T>(items: ReadonlyArray<T>, thresholds: ThresholdsI, getRect: (a: T) => IRect): ReadonlyArray<ReadonlyArray<T>> {
+    export function lines<T>(items: ReadonlyArray<T>, thresholds: IThresholds, getRect: (a: T) => IRect): ReadonlyArray<ReadonlyArray<T>> {
         return groupAdjacent<T>(items, (a, b) => canMergeX(getRect(a), getRect(b), thresholds));
     }
 
-    export function blocks<T>(items: ReadonlyArray<T>, thresholds: ThresholdsI, getRect: (a: T) => IRect): ReadonlyArray<ReadonlyArray<T>> {
+    export function blocks<T>(items: ReadonlyArray<T>, thresholds: IThresholds, getRect: (a: T) => IRect): ReadonlyArray<ReadonlyArray<T>> {
         return groupAdjacent<T>(items, (a, b) => canMergeY(getRect(a), getRect(b), thresholds));
     }
 
-    export function canMergeX(a: IRect, b: IRect, [xt, yt]: ThresholdsI): boolean {
+    export function canMergeX(a: IRect, b: IRect, [xt, yt]: IThresholds): boolean {
         return (
             (
                 (a.left <= b.left && a.right >= b.left - xt) ||
@@ -95,7 +102,7 @@ export namespace TextHighlightMerger {
         );
     }
 
-    export function canMergeY(a: IRect, b: IRect, [xt, yt]: ThresholdsI): boolean {
+    export function canMergeY(a: IRect, b: IRect, [xt, yt]: IThresholds): boolean {
         const val = (
             (
                 (a.top <= b.top && a.bottom >= b.top - yt) ||
