@@ -860,7 +860,8 @@ export class NotesStore {
             const now = ISODateTimeStrings.create()
 
             const id = Hashcodes.createRandomID();
-            const items = split?.suffix !== undefined ? currentNote.items : [];
+
+            const items = newNoteInheritsItems ? currentNote.items : [];
 
             return {
                 id,
@@ -874,6 +875,8 @@ export class NotesStore {
             };
 
         }
+
+        const newNoteInheritsItems = split?.suffix !== undefined && split?.suffix !== '';
 
         const currentNote = this.getNote(id)!;
 
@@ -902,7 +905,11 @@ export class NotesStore {
 
         if (split?.prefix !== undefined) {
             currentNote.setContent(split.prefix);
-            currentNote.setItems([]);
+
+            if (newNoteInheritsItems) {
+                currentNote.setItems([]);
+            }
+
         }
 
         this.setActiveWithPosition(newNote.id, 'start');
