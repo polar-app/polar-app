@@ -914,40 +914,6 @@ export class NotesStore {
 
     }
 
-
-    /**
-     * A note is only indentable if it has a parent and we are not the first
-     * child in that parent. IE it must have a previous sibling so that we can
-     * be
-     */
-    public isIndentable(id: NoteIDStr): boolean {
-
-        const note = this.getNote(id);
-
-        if (! note) {
-            return false;
-        }
-
-        if (! note.parent) {
-            return false;
-        }
-
-        const parentNote = this.getNote(note.parent);
-
-        if (! parentNote) {
-            // this is a bug and shouldn't happen
-            return false;
-        }
-
-        return parentNote.items.indexOf(id) !== 0;
-
-    }
-
-    private computeSelectedIndentableNoteIDs(): ReadonlyArray<NoteIDStr> {
-        const selectedIDs = this.selectedIDs();
-        return selectedIDs.filter(current => this.isIndentable(current));
-    }
-
     private cursorOffsetCapture(): IActiveNote | undefined {
 
         const captureOffset = (): number | undefined => {
@@ -985,6 +951,39 @@ export class NotesStore {
 
         }
 
+    }
+
+    /**
+     * A note is only indentable if it has a parent and we are not the first
+     * child in that parent. IE it must have a previous sibling so that we can
+     * be
+     */
+    public isIndentable(id: NoteIDStr): boolean {
+
+        const note = this.getNote(id);
+
+        if (! note) {
+            return false;
+        }
+
+        if (! note.parent) {
+            return false;
+        }
+
+        const parentNote = this.getNote(note.parent);
+
+        if (! parentNote) {
+            // this is a bug and shouldn't happen
+            return false;
+        }
+
+        return parentNote.items.indexOf(id) !== 0;
+
+    }
+
+    private computeSelectedIndentableNoteIDs(): ReadonlyArray<NoteIDStr> {
+        const selectedIDs = this.selectedIDs();
+        return selectedIDs.filter(current => this.isIndentable(current));
     }
 
     /**
@@ -1061,23 +1060,35 @@ export class NotesStore {
 
     }
 
-    // public isUnIndentable(id: NoteIDStr) {
-    //
-    //     if (id === this.root) {
-    //         return false;
-    //     }
-    //
-    //     const note = this.getNote(id);
-    //
-    //     if (! note) {
-    //         return false;
-    //     }
-    //
-    //     if (! note.parent) {
-    //         return false;
-    //     }
-    //
-    // }
+    public isUnIndentable(id: NoteIDStr) {
+
+        if (id === this.root) {
+            return false;
+        }
+
+        const note = this.getNote(id);
+
+        if (! note) {
+            return false;
+        }
+
+        if (! note.parent) {
+            // this is the root...
+            return false;
+        }
+
+        if (note.parent === this.root) {
+            return false;
+        }
+
+        return true;
+
+    }
+
+    private computeSelectedUnIndentableNoteIDs(): ReadonlyArray<NoteIDStr> {
+        const selectedIDs = this.selectedIDs();
+        return selectedIDs.filter(current => this.isUnIndentable(current));
+    }
 
     public doUnIndent(id: NoteIDStr): ReadonlyArray<DoUnIndentResult> {
 
@@ -1124,7 +1135,7 @@ export class NotesStore {
         try {
 
             if (this.hasSelected()) {
-                return this.computeSelectedIndentableNoteIDs().map(id => doExec(id));
+                return this.computeSelectedUnIndentableNoteIDs().map(id => doExec(id));
             } else {
                 return [doExec(id)];
             }
