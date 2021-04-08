@@ -96,14 +96,18 @@ interface AnnotationBarOpts {
     readonly noRectTexts?: boolean;
 }
 
+export function useEnhancedTextExtractionPref() {
+    const prefs = usePrefsContext();
+    return prefs.isMarked("better-text-extraction", false);
+}
+
 export function useAnnotationBar(opts: AnnotationBarOpts = {}): AnnotationBarEventListenerRegisterer {
 
     const store = React.useRef<Pick<IDocViewerStore, 'docMeta' | 'docScale'> | undefined>(undefined)
     const createTextHighlightCallbackRef = React.useRef<CreateTextHighlightCallback | undefined>(undefined)
     const {fileType} = useDocViewerContext();
     const docViewerElementsContext = useDocViewerElementsContext();
-    const prefs = usePrefsContext();
-    const useEnhancedExtraction = prefs.isMarked("better-text-extraction", false);
+    const enhancedTextExtractionEnabled = useEnhancedTextExtractionPref();
 
     store.current = useDocViewerStore(['docMeta', 'docScale']);
     createTextHighlightCallbackRef.current = useCreateTextHighlightCallback();
@@ -141,7 +145,7 @@ export function useAnnotationBar(opts: AnnotationBarOpts = {}): AnnotationBarEve
             const opts: SelectedContents.ComputeOpts = {
                 noRectTexts,
                 fileType,
-                useEnhancedExtraction,
+                useEnhancedExtraction: enhancedTextExtractionEnabled,
             };
             const selectedContent = SelectedContents.computeFromSelection(selection, opts);
 
@@ -173,7 +177,7 @@ export function useAnnotationBar(opts: AnnotationBarOpts = {}): AnnotationBarEve
 
         }
 
-    }, [docViewerElementsContext, fileType, messageDispatcher, noRectTexts, useEnhancedExtraction]);
+    }, [docViewerElementsContext, fileType, messageDispatcher, noRectTexts, enhancedTextExtractionEnabled]);
 
 }
 
