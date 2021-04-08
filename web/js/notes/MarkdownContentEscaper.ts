@@ -9,7 +9,7 @@ import {ContentEditableWhitespace} from "./ContentEditableWhitespace";
 import {ContentEscaper} from "./ContentEscaper";
 import {MarkdownStr} from "polar-shared/src/util/Strings";
 
-const TRACE = true;
+const TRACE = false;
 
 function doTrace(name: string,
                  input: string,
