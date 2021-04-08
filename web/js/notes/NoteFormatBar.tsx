@@ -113,7 +113,6 @@ const LinkBar = (props: LinkBarProps) => {
         }
 
         if (event.key === 'Escape') {
-            console.log("FIXME 112");
 
             if (props.onDispose) {
                 props.onDispose();

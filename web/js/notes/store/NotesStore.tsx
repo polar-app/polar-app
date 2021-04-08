@@ -667,8 +667,6 @@ export class NotesStore {
      */
     public canMerge(id: NoteIDStr): INoteMerge | undefined {
 
-        console.log("FIXME0")
-
         const prevSibling = this.prevSibling(id);
 
         if (prevSibling) {
