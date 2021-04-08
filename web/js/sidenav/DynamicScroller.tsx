@@ -5,6 +5,7 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import {debounce} from 'throttle-debounce';
 import {Theme} from "@material-ui/core";
+import clsx from "clsx";
 
 
 type UseArrowStylesProps = {
@@ -61,14 +62,23 @@ const ScrollArrow: React.FC<ScrollArrowProps> = ({ direction, onClick }) => {
     );
 };
 
-const useDVSStyles = makeStyles(() => createStyles({
-    outer: {
-        overflow: 'hidden',
+const useVDSStyles = makeStyles(() => createStyles({
+    scrollerOuter: {
+        position: 'relative',
+    },
+    contentOuter: {
+        overflowY: 'auto',
+        overflowX: 'hidden',
         position: 'relative',
         maxHeight: '100%',
+        scrollBehavior: 'smooth',
+        msOverflowStyle: 'none',
+        scrollbarWidth: 'none',
+        '&::-webkit-scrollbar': {
+            display: 'none',
+        },
     },
-    inner: {
-        whitespace: 'nowrap',
+    contentInner: {
         transition: 'transform 150ms cubic-bezier(0.05, 0, 0, 1)',
         willChange: 'transform',
         '&::before, &::after' : {
@@ -87,7 +97,6 @@ const getNewScroll = (parentHeight: number, height: number, newScroll: number) =
 };
 
 export type VerticalDynamicScrollerProps = {
-    scrollMultiplier ?: number;
     clickScrollAmount ?: number;
     style ?: React.CSSProperties;
     className ?: string;
@@ -96,32 +105,52 @@ export type VerticalDynamicScrollerProps = {
 export const VerticalDynamicScroller: React.FC<VerticalDynamicScrollerProps> = (props) => {
     const {
         children,
-        scrollMultiplier = 0.5,
-        clickScrollAmount = 45,
+        clickScrollAmount = 90,
         style = {},
         className = '',
     } = props;
-    const classes = useDVSStyles();
+    const classes = useVDSStyles();
 
     const innerRef = React.useRef<HTMLDivElement>(document.createElement('div'));
     const parentRef = React.useRef<HTMLDivElement>(document.createElement('div'));
 
-    const [scrollTop, setScrollTop] = React.useState(0);
     const [innerHeight, setInnerHeight] = React.useState(0);
     const [parentHeight, setParentHeight] = React.useState(999999);
+    const [scrollUpShown, setScrollUpShown] = React.useState(false);
+    const [scrollDownShown, setScrollDownShown] = React.useState(false);
 
-    const handleScroll = React.useCallback((newScroll: number): React.MouseEventHandler<HTMLDivElement> => {
-        return () => setScrollTop(scroll => getNewScroll(parentHeight, innerHeight, scroll + newScroll));
-    }, [setScrollTop, innerHeight, parentHeight]);
+
+    const updateArrows = React.useCallback((scrollPos: number, parentHeight: number, innerHeight: number) => {
+        if (scrollPos > 0 && !scrollUpShown) {
+            setScrollUpShown(true);
+        } else if (scrollPos === 0 && scrollUpShown) {
+            setScrollUpShown(false);
+        }
+
+        const maxScroll = Math.floor(innerHeight - parentHeight);
+        if (scrollPos < maxScroll && !scrollDownShown) {
+            setScrollDownShown(true);
+        } else if (scrollPos >= maxScroll && scrollDownShown) {
+            setScrollDownShown(false);
+        }
+    }, [scrollDownShown, scrollUpShown]);
+
+    const handleScroll = React.useCallback((delta: number): React.MouseEventHandler<HTMLDivElement> => {
+        return () => {
+            const newScroll = getNewScroll(parentHeight, innerHeight, parentRef.current.scrollTop + delta);
+            parentRef.current.scrollTo(0, newScroll);
+        };
+    }, [innerHeight, parentHeight]);
 
     React.useEffect(() => {
         const parentElem = parentRef.current;
-        const wheel = (e: WheelEvent) => {
-            setScrollTop((scroll) => getNewScroll(parentHeight, innerHeight, scroll + e.deltaY * scrollMultiplier));
+        const onScroll = (e: Event) => {
+            e.preventDefault();
+            updateArrows(parentElem.scrollTop, parentHeight, innerHeight);
         };
-        parentElem.addEventListener('wheel', wheel);
-        return () => parentElem.removeEventListener('wheel', wheel);
-    }, [setScrollTop, parentHeight, innerHeight, scrollMultiplier]);
+        parentElem.addEventListener('scroll', onScroll);
+        return () => parentElem.removeEventListener('scroll', onScroll);
+    }, [parentHeight, innerHeight, updateArrows]);
 
     React.useEffect(() => {
         const parentElem = parentRef.current;
@@ -139,29 +168,30 @@ export const VerticalDynamicScroller: React.FC<VerticalDynamicScrollerProps> = (
             }
             setInnerHeight(innerHeight);
             setParentHeight(parentHeight);
-            setScrollTop(scroll => getNewScroll(parentHeight, innerHeight, scroll));
+            updateArrows(parentElem.scrollTop, parentHeight, innerHeight);
         }));
         resizeObserver.observe(parentElem);
         resizeObserver.observe(innerElem);
 
         return () => resizeObserver.disconnect();
-    }, [setInnerHeight, setParentHeight]);
+    }, [setInnerHeight, setParentHeight, updateArrows]);
 
     const arrowsShown = parentHeight < innerHeight && parentHeight > 100;
 
     return  (
-        <div ref={parentRef} style={style} className={`${classes.outer} ${className}`}>
-            { (arrowsShown && scrollTop > 0) &&
+        <div className={clsx(classes.scrollerOuter, className)}>
+            {(arrowsShown && scrollUpShown) &&
                 <ScrollArrow direction="up" onClick={handleScroll(-clickScrollAmount)} />
             }
-            <div
-                className={classes.inner}
-                style={{ transform: `translateY(${-scrollTop}px)`}}
-                ref={innerRef}
-            >
-                {children}
+            <div ref={parentRef} style={style} className={classes.contentOuter}>
+                <div
+                    className={classes.contentInner}
+                    ref={innerRef}
+                >
+                    {children}
+                </div>
             </div>
-            { (arrowsShown && scrollTop < innerHeight - parentHeight) &&
+            {(arrowsShown && scrollDownShown) &&
                 <ScrollArrow direction="down" onClick={handleScroll(clickScrollAmount)} />
             }
         </div>

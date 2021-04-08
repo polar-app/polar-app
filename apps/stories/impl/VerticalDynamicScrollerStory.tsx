@@ -34,7 +34,7 @@ const DynamicChild = () => {
     );
 };
 
-const ResizeEmulator: React.FC<VerticalDynamicScrollerProps> = ({ scrollMultiplier, clickScrollAmount }) => {
+const ResizeEmulator: React.FC<VerticalDynamicScrollerProps> = ({ clickScrollAmount }) => {
     const classes = useStyles();
     const [height, setHeight] = React.useState(200);
     return (
@@ -42,7 +42,7 @@ const ResizeEmulator: React.FC<VerticalDynamicScrollerProps> = ({ scrollMultipli
             <Button onClick={() => setHeight(height => height - 20)}>Decrease</Button>
             <Button onClick={() => setHeight(height => height + 20)}>Increase</Button>
             <div>
-                <VerticalDynamicScroller style={{ height }} className={classes.scrollerOutline} scrollMultiplier={scrollMultiplier} clickScrollAmount={clickScrollAmount}>
+                <VerticalDynamicScroller style={{ height }} className={classes.scrollerOutline} clickScrollAmount={clickScrollAmount}>
                     {Array.from({ length: 10 }).map((_, i) => <div key={i}>Item {i}</div>)}
                 </VerticalDynamicScroller>
             </div>
@@ -50,20 +50,13 @@ const ResizeEmulator: React.FC<VerticalDynamicScrollerProps> = ({ scrollMultipli
     );
 };
 
-export const VerticalDynamicScrollerDemo = () => {
+export const VerticalDynamicScrollerStory = () => {
     const classes = useStyles();
-    const [scrollMultiplier, setScrollMultiplier] = React.useState(50);
-    const [clickScrollAmount, setClickScrollAmount] = React.useState(45);
+    const [clickScrollAmount, setClickScrollAmount] = React.useState(100);
 
     return (
         <div>
             <Box m={1}>
-                <TextField
-                    label="Wheel Scroll Multiplier (%)"
-                    value={scrollMultiplier}
-                    onChange={({ target: { value } }) => setScrollMultiplier(+value)}
-                    style={{ marginRight: 20 }}
-                />
                 <TextField
                     label="Arrow Scroll Amount (px)"
                     value={clickScrollAmount}
@@ -75,7 +68,6 @@ export const VerticalDynamicScrollerDemo = () => {
                     <h5>Random children</h5>
                     <VerticalDynamicScroller
                         className={`${classes.scrollerOutline} ${classes.fixedHeight}`}
-                        scrollMultiplier={scrollMultiplier / 100}
                         clickScrollAmount={clickScrollAmount}
                     >
                         <div>First</div>
@@ -94,7 +86,6 @@ export const VerticalDynamicScrollerDemo = () => {
                     <h5>Tabs</h5>
                     <VerticalDynamicScroller
                         className={`${classes.scrollerOutline} ${classes.fixedHeight}`}
-                        scrollMultiplier={scrollMultiplier / 100}
                         clickScrollAmount={clickScrollAmount}
                     >
                         {
@@ -108,7 +99,6 @@ export const VerticalDynamicScrollerDemo = () => {
                     <h5>Dyanamic Size Child</h5>
                     <VerticalDynamicScroller
                         className={`${classes.scrollerOutline} ${classes.fixedHeight}`}
-                        scrollMultiplier={scrollMultiplier / 100}
                         clickScrollAmount={clickScrollAmount}
                     >
                         <DynamicChild />
@@ -116,7 +106,7 @@ export const VerticalDynamicScrollerDemo = () => {
                 </Box>
                 <Box mr={10}>
                     <h5>Container Resize</h5>
-                    <ResizeEmulator {...{ scrollMultiplier: scrollMultiplier / 100, clickScrollAmount }} />
+                    <ResizeEmulator {...{ clickScrollAmount }} />
                 </Box>
             </Box>
         </div>
