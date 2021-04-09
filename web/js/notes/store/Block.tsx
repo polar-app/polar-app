@@ -26,17 +26,18 @@ export class Block implements IBlock {
     @observable private _content: BlockContent;
 
     /**
-     * The linked wiki references to other notes.
+     * The linked wiki references to other blocks.
      */
     @observable private _links: BlockIDStr[];
 
     // FIXMEL this needs to be refactoed because
-    // the content type of the node should/could change and we need markdown/latex/etc note types
-    // but also we need the ability to do block embeds an so forth and those are a specic note type.
+    // the content type of the node should/could change and we need markdown/latex/etc block types
+    // but also we need the ability to do block embeds an so forth and those are a specific block type.
+
     // FIXME: maybe content would be a reference to another type..
 
     /**
-     * There are two types of notes.  One is just an 'item' where the 'content'
+     * There are two types of blocks.  One is just an 'item' where the 'content'
      * is the body of the item and isn't actually a unique name and then there
      * is a 'named' note where the content is actually the name of the note and
      * has constrained semantics (can't have a link, image, etc.
