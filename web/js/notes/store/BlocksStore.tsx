@@ -124,7 +124,7 @@ export interface IActiveBlock {
     readonly id: BlockIDStr;
 
     /**
-     * The position within the note.  When undefined, do not jump the position
+     * The position within the block.  When undefined, do not jump the position
      * and keep the cursor where it is.
      */
     readonly pos: NavPosition | undefined;
@@ -143,16 +143,16 @@ export class BlocksStore {
     @observable _reverse: ReverseIndex = new ReverseIndex();
 
     /**
-     * The current root note
+     * The current root block
      */
     @observable public root: BlockIDStr | undefined = undefined;
 
     /**
-     * The currently active note.
+     * The currently active block.
      */
     @observable _active: IActiveBlock | undefined = undefined;
     /**
-     * The notes that are expanded.
+     * The blocks that are expanded.
      */
     @observable _expanded: StringSetMap = {};
 
@@ -166,7 +166,7 @@ export class BlocksStore {
     @observable _dropSource: BlockIDStr | undefined = undefined;
 
     /**
-     * Used so that when we change the selected notes, that we know which is the
+     * Used so that when we change the selected blocks, that we know which is the
      * FIRST so that we can compute a from and to based on their position.
      */
     @observable _selectedAnchor: IDStr | undefined = undefined;
@@ -242,15 +242,15 @@ export class BlocksStore {
     }
 
     /**
-     * Return true if the given note is active.
+     * Return true if the given block is active.
      */
     public isActive(id: BlockIDStr): boolean {
         return this._active?.id === id;
     }
 
-    public lookup(notes: ReadonlyArray<BlockIDStr>): ReadonlyArray<IBlock> {
+    public lookup(blocks: ReadonlyArray<BlockIDStr>): ReadonlyArray<IBlock> {
 
-        return notes.map(current => this._index[current])
+        return blocks.map(current => this._index[current])
             .filter(current => current !== null && current !== undefined);
 
     }
@@ -259,15 +259,15 @@ export class BlocksStore {
         return this._reverse.get(id);
     }
 
-    @action public doPut(notes: ReadonlyArray<IBlock>, opts: DoPutOpts = {}) {
+    @action public doPut(blocks: ReadonlyArray<IBlock>, opts: DoPutOpts = {}) {
 
-        for (const inote of notes) {
+        for (const block of blocks) {
 
-            const note = new Block(inote);
-            this._index[inote.id] = note;
+            const note = new Block(block);
+            this._index[block.id] = note;
 
-            if (inote.type === 'named') {
-                this._indexByName[inote.content] = note.id;
+            if (block.type === 'named') {
+                this._indexByName[block.content] = note.id;
             }
 
             for (const link of note.links) {
