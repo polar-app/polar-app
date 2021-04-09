@@ -350,16 +350,16 @@ export class BlocksStore {
 
     public getBlockByTarget(target: BlockIDStr | BlockTargetStr): Block | undefined {
 
-        const noteByID = this._index[target];
+        const blockByID = this._index[target];
 
-        if (noteByID) {
-            return noteByID;
+        if (blockByID) {
+            return blockByID;
         }
 
-        const noteRefByName = this._indexByName[target];
+        const blockRefByName = this._indexByName[target];
 
-        if (noteRefByName) {
-            return this._index[noteRefByName] || undefined;
+        if (blockRefByName) {
+            return this._index[blockRefByName] || undefined;
         }
 
         return undefined;
@@ -368,10 +368,10 @@ export class BlocksStore {
 
     public getBlockByName(name: BlockNameStr): Block | undefined {
 
-        const noteRefByName = this._indexByName[name];
+        const blockRefByName = this._indexByName[name];
 
-        if (noteRefByName) {
-            return this._index[noteRefByName] || undefined;
+        if (blockRefByName) {
+            return this._index[blockRefByName] || undefined;
         }
 
         return undefined;
@@ -379,7 +379,7 @@ export class BlocksStore {
     }
 
 
-    public getActiveNote(id: BlockIDStr): Block | undefined {
+    public getActiveBlock(id: BlockIDStr): Block | undefined {
 
         const active = this._active;
 
@@ -457,7 +457,7 @@ export class BlocksStore {
         const rootBlock = Arrays.first(this.lookup([this.root]));
 
         if (! rootBlock) {
-            console.warn("No note in index for ID: ", this.root);
+            console.warn("No block in index for ID: ", this.root);
             return false;
         }
 
