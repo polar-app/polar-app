@@ -32,7 +32,7 @@ export const NoteOverflowButton = observer(function NoteOverflow(props: IProps) 
 
     const className=clsx(classes.root, 'NoteOverflow');
 
-    if (noteActivated?.note.id !== props.id) {
+    if (noteActivated?.block.id !== props.id) {
         return <div className={className}/>;
     }
 

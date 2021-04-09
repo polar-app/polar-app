@@ -46,7 +46,7 @@ export type BlockContentOffset = number;
 export type NavPosition = 'start' | 'end' | BlockContentOffset;
 
 export interface IBlockActivated {
-    readonly note: IBlock;
+    readonly block: IBlock;
     readonly activePos: NavPosition | undefined;
 }
 
@@ -405,7 +405,7 @@ export class BlocksStore {
     }
 
 
-    @action public setSelectionRange(fromNote: BlockIDStr, toNote: BlockIDStr) {
+    @action public setSelectionRange(fromBlock: BlockIDStr, toBlock: BlockIDStr) {
 
         if (! this.root) {
             throw new Error("No root");
@@ -413,19 +413,19 @@ export class BlocksStore {
 
         const linearExpansionTree = [this.root, ...this.computeLinearExpansionTree2(this.root)];
 
-        const fromNoteIdx = linearExpansionTree.indexOf(fromNote);
-        const toNoteIdx = linearExpansionTree.indexOf(toNote);
+        const fromBlockIdx = linearExpansionTree.indexOf(fromBlock);
+        const toBlockIdx = linearExpansionTree.indexOf(toBlock);
 
-        if (fromNoteIdx === -1) {
-            throw new Error("selectedAnchor not found: " + fromNote);
+        if (fromBlockIdx === -1) {
+            throw new Error("selectedAnchor not found: " + fromBlock);
         }
 
-        if (toNoteIdx === -1) {
-            throw new Error("toNoteIdx not found");
+        if (toBlockIdx === -1) {
+            throw new Error("toBlockIdx not found");
         }
 
-        const min = Math.min(fromNoteIdx, toNoteIdx);
-        const max = Math.max(fromNoteIdx, toNoteIdx);
+        const min = Math.min(fromBlockIdx, toBlockIdx);
+        const max = Math.max(fromBlockIdx, toBlockIdx);
 
         const newSelected
             = arrayStream(Numbers.range(min, max))
@@ -450,9 +450,9 @@ export class BlocksStore {
             return false;
         }
 
-        const rootNote = Arrays.first(this.lookup([this.root]));
+        const rootBlock = Arrays.first(this.lookup([this.root]));
 
-        if (! rootNote) {
+        if (! rootBlock) {
             console.warn("No note in index for ID: ", this.root);
             return false;
         }
@@ -465,7 +465,7 @@ export class BlocksStore {
         const childIndex = items.indexOf(this._active?.id);
 
         if (childIndex === -1) {
-            console.warn(`Child ${this._active.id} not in note items`);
+            console.warn(`Child ${this._active.id} not in block items`);
             return false;
         }
 
@@ -543,17 +543,17 @@ export class BlocksStore {
     private computeLinearExpansionTree(id: BlockIDStr,
                                        root: boolean = true): ReadonlyArray<BlockIDStr> {
 
-        const note = this._index[id];
+        const block = this._index[id];
 
-        if (! note) {
-            console.warn("computeLinearExpansionTree: No note: ", id);
+        if (! block) {
+            console.warn("computeLinearExpansionTree: No block: ", id);
             return [];
         }
 
         const isExpanded = root ? true : this._expanded[id];
 
         if (isExpanded) {
-            const items = (note.items || []);
+            const items = (block.items || []);
 
             const result = [];
 
@@ -572,17 +572,17 @@ export class BlocksStore {
 
     private computeLinearExpansionTree2(id: BlockIDStr): ReadonlyArray<BlockIDStr> {
 
-        const note = this._index[id];
+        const block = this._index[id];
 
-        if (! note) {
-            console.warn("computeLinearExpansionTree2: No note: ", id);
+        if (! block) {
+            console.warn("computeLinearExpansionTree2: No block: ", id);
             return [];
         }
 
         const isExpanded = this._expanded[id] || id === this.root;
 
         if (isExpanded) {
-            const items = (note.items || []);
+            const items = (block.items || []);
 
             const result = [];
 
@@ -651,10 +651,10 @@ export class BlocksStore {
             return undefined;
         }
 
-        const note = this._index[active.id];
+        const block = this._index[active.id];
 
-        if (note) {
-            return {note, activePos: active.pos};
+        if (block) {
+            return {block: block, activePos: active.pos};
         } else {
             return undefined;
         }
