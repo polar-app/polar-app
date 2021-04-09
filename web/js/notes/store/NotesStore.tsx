@@ -1327,7 +1327,7 @@ export class NotesStore {
 
 export const [NotesStoreProvider, useNotesStoreDelegate] = createReactiveStore(() => new NotesStore())
 
-export function useNotesStore(): INotesStore {
+export function useNotesStore() {
     const delegate = useNotesStoreDelegate();
     return delegate;
 }
