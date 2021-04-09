@@ -4,7 +4,7 @@ import Fab from '@material-ui/core/Fab';
 import HelpIcon from '@material-ui/icons/Help';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import {NotesStoreProvider, useBlocksStore} from '../../../web/js/notes/store/BlocksStore';
+import {BlocksStoreProvider, useBlocksStore} from '../../../web/js/notes/store/BlocksStore';
 import {MockNotes} from "./MockNotes";
 import { observer } from "mobx-react-lite"
 
@@ -121,13 +121,13 @@ export const NotesStory = () => {
 
     return (
         <FixedWidthContainer>
-            <NotesStoreProvider>
+            <BlocksStoreProvider>
                 <BasicNotesDataSet>
                     <>
                         <NotesStoryInner/>
                     </>
                 </BasicNotesDataSet>
-            </NotesStoreProvider>
+            </BlocksStoreProvider>
         </FixedWidthContainer>
     );
 

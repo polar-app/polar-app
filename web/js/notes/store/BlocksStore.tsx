@@ -958,7 +958,7 @@ export class BlocksStore {
     }
 
     /**
-     * A note is only indentable if it has a parent and we are not the first
+     * A block is only indentable if it has a parent and we are not the first
      * child in that parent. IE it must have a previous sibling so that we can
      * be
      */
@@ -991,9 +991,9 @@ export class BlocksStore {
     }
 
     /**
-     * Make the active note a child of the prev sibling.
+     * Make the active block a child of the prev sibling.
      *
-     * @return The new parent NoteID or the code as to why it couldn't be re-parented.
+     * @return The new parent BlockID or the code as to why it couldn't be re-parented.
      */
     public doIndent(id: BlockIDStr): ReadonlyArray<DoIndentResult> {
 
@@ -1301,7 +1301,7 @@ export class BlocksStore {
     }
 
     /**
-     * Compute the path to a block from its parent but not including the actual note.
+     * Compute the path to a block from its parent but not including the actual block.
      */
     public pathToBlock(id: BlockIDStr): ReadonlyArray<Block> {
 
@@ -1310,9 +1310,9 @@ export class BlocksStore {
         const result = [];
 
         while (current.parent) {
-            const parentNote = this._index[current.parent];
-            result.push(parentNote);
-            current = parentNote;
+            const parentBlock = this._index[current.parent];
+            result.push(parentBlock);
+            current = parentBlock;
         }
 
         return result.reverse();
@@ -1321,9 +1321,9 @@ export class BlocksStore {
 
 }
 
-export const [NotesStoreProvider, useNotesStoreDelegate] = createReactiveStore(() => new BlocksStore())
+export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore(() => new BlocksStore())
 
 export function useBlocksStore() {
-    const delegate = useNotesStoreDelegate();
+    const delegate = useBlocksStoreDelegate();
     return delegate;
 }
