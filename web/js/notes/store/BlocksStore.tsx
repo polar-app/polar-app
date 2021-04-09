@@ -19,20 +19,20 @@ export type BlockNameStr = string;
 
 export type BlockType = 'item' | 'named';
 
-export type NotesIndex = {[id: string /* NoteIDStr */]: Block};
-export type NotesIndexByName = {[name: string /* NoteNameStr */]: BlockIDStr};
+export type BlocksIndex = {[id: string /* NoteIDStr */]: Block};
+export type BlocksIndexByName = {[name: string /* NoteNameStr */]: BlockIDStr};
 
-export type ReverseNotesIndex = {[id: string /* NoteIDStr */]: BlockIDStr[]};
+export type ReverseBlocksIndex = {[id: string /* NoteIDStr */]: BlockIDStr[]};
 
 export type StringSetMap = {[key: string]: boolean};
 
 // export type NoteContent = string | ITypedContent<'markdown'> | ITypedContent<'name'>;
-export type NoteContent = string;
+export type BlockContent = string;
 
 /**
  * A offset into the content of a not where we should place the cursor.
  */
-export type NoteContentOffset = number;
+export type BlockContentOffset = number;
 
 /**
  * The position to place the cursor when jumping between items.
@@ -43,9 +43,9 @@ export type NoteContentOffset = number;
  *
  * When undefined, make no jump.
  */
-export type NavPosition = 'start' | 'end' | NoteContentOffset;
+export type NavPosition = 'start' | 'end' | BlockContentOffset;
 
-export interface INoteActivated {
+export interface IBlockActivated {
     readonly note: IBlock;
     readonly activePos: NavPosition | undefined;
 }
@@ -55,7 +55,7 @@ interface DoPutOpts {
     /**
      * The new active node after the put operation.
      */
-    readonly newActive?: IActiveNote;
+    readonly newActive?: IActiveBlock;
 
     /**
      * Expand the give parent note.
@@ -119,7 +119,7 @@ export type DoUnIndentResult = IMutation<'no-note' | 'no-parent' | 'no-parent-no
 /**
  * The active note and the position it should be set to once it's made active.
  */
-export interface IActiveNote {
+export interface IActiveBlock {
 
     readonly id: BlockIDStr;
 
@@ -133,9 +133,9 @@ export interface IActiveNote {
 
 export class BlocksStore {
 
-    @observable _index: NotesIndex = {};
+    @observable _index: BlocksIndex = {};
 
-    @observable _indexByName: NotesIndexByName = {};
+    @observable _indexByName: BlocksIndexByName = {};
 
     /**
      * The reverse index so that we can build references to this node.
@@ -150,7 +150,7 @@ export class BlocksStore {
     /**
      * The currently active note.
      */
-    @observable _active: IActiveNote | undefined = undefined;
+    @observable _active: IActiveBlock | undefined = undefined;
     /**
      * The notes that are expanded.
      */
@@ -639,7 +639,7 @@ export class BlocksStore {
         return isPresent(this._selected[id]);
     }
 
-    public getNoteActivated(id: BlockIDStr): INoteActivated | undefined {
+    public getNoteActivated(id: BlockIDStr): IBlockActivated | undefined {
 
         const active = this._active;
 
@@ -921,7 +921,7 @@ export class BlocksStore {
 
     }
 
-    private cursorOffsetCapture(): IActiveNote | undefined {
+    private cursorOffsetCapture(): IActiveBlock | undefined {
 
         const captureOffset = (): number | undefined => {
 
@@ -948,7 +948,7 @@ export class BlocksStore {
 
     }
 
-    @action private cursorOffsetRestore(active: IActiveNote | undefined) {
+    @action private cursorOffsetRestore(active: IActiveBlock | undefined) {
 
         if (active?.id) {
 

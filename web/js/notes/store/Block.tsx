@@ -1,5 +1,5 @@
 import {IBlock} from "./IBlock";
-import {INewChildPosition, NoteContent, BlockIDStr, BlockType} from "./BlocksStore";
+import {INewChildPosition, BlockContent, BlockIDStr, BlockType} from "./BlocksStore";
 import {action, computed, makeObservable, observable} from "mobx"
 import { ISODateTimeString, ISODateTimeStrings } from "polar-shared/src/metadata/ISODateTimeStrings";
 
@@ -23,7 +23,7 @@ export class Block implements IBlock {
     // We might want to have a content object with a type so that we can
     // have 'name' or 'markdown' as the type... but we could also support
     // latex with this.
-    @observable private _content: NoteContent;
+    @observable private _content: BlockContent;
 
     /**
      * The linked wiki references to other notes.

@@ -1,5 +1,5 @@
 import { ISODateTimeString } from "polar-shared/src/metadata/ISODateTimeStrings";
-import {NoteContent, BlockIDStr} from "./BlocksStore";
+import {BlockContent, BlockIDStr} from "./BlocksStore";
 
 export interface IBlock {
 
@@ -21,7 +21,7 @@ export interface IBlock {
     // We might want to have a content object with a type so that we can
     // have 'name' or 'markdown' as the type... but we could also support
     // latex with this.
-    readonly content: NoteContent;
+    readonly content: BlockContent;
 
     /**
      * The linked wiki references to other notes.

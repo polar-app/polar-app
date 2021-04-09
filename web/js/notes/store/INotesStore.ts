@@ -1,4 +1,4 @@
-import {INoteActivated, NavOpts, NavPosition, BlockIDStr, StringSetMap} from "./BlocksStore";
+import {IBlockActivated, NavOpts, NavPosition, BlockIDStr, StringSetMap} from "./BlocksStore";
 import {IBlock} from "./IBlock";
 import {Block} from "./Block";
 import {NoteTargetStr} from "../NoteLinkLoader";
@@ -20,7 +20,7 @@ export interface INotesStore {
 
     getNoteByTarget(target: BlockIDStr | NoteTargetStr): Block | undefined;
 
-    getNoteActivated(id: BlockIDStr): INoteActivated | undefined;
+    getNoteActivated(id: BlockIDStr): IBlockActivated | undefined;
 
     getNote(id: BlockIDStr): Block | undefined;
 
