@@ -132,7 +132,7 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
     const handleEnter = React.useCallback(() => {
 
         if (ref.current) {
-            if (store.noteIsEmpty(props.id) && store.root !== note?.parent) {
+            if (store.blockIsEmpty(props.id) && store.root !== note?.parent) {
                 store.doUnIndent(props.id);
             } else {
                 handleCreateNewNote();

@@ -852,19 +852,18 @@ export class BlocksStore {
 
             }
 
-
         }
 
-        function createNewNote(parentNote: Block): IBlock {
+        function createNewBlock(parentBlock: Block): IBlock {
             const now = ISODateTimeStrings.create()
 
             const id = Hashcodes.createRandomID();
 
-            const items = newNoteInheritsItems ? currentNote.items : [];
+            const items = newBlockInheritItems ? currentBlock.items : [];
 
             return {
                 id,
-                parent: parentNote.id,
+                parent: parentBlock.id,
                 type: 'item',
                 content: split?.suffix || '',
                 created: now,
@@ -875,47 +874,45 @@ export class BlocksStore {
 
         }
 
-        const newNoteInheritsItems = split?.suffix !== undefined && split?.suffix !== '';
+        const newBlockInheritItems = split?.suffix !== undefined && split?.suffix !== '';
 
-        const currentNote = this.getBlock(id)!;
+        const currentBlock = this.getBlock(id)!;
 
-        const newNotePosition = computeNewBlockPosition();
+        const newBlockPosition = computeNewBlockPosition();
 
-        const {parentBlock} = newNotePosition;
+        const newBlock = createNewBlock(parentBlock);
 
-        const newNote = createNewNote(parentNote);
+        this.doPut([newBlock]);
 
-        this.doPut([newNote]);
-
-        switch(newNotePosition.type) {
+        switch(newBlockPosition.type) {
 
             case "relative":
-                parentNote.addItem(newNote.id, newNotePosition);
+                parentBlock.addItem(newBlock.id, newBlockPosition);
                 break;
             case "first-child":
-                parentNote.addItem(newNote.id, 'first-child');
+                parentBlock.addItem(newBlock.id, 'first-child');
                 break;
 
         }
 
-        if (split?.suffix !== undefined && newNote.items.length > 0) {
-            this.expand(newNote.id);
+        if (split?.suffix !== undefined && newBlock.items.length > 0) {
+            this.expand(newBlock.id);
         }
 
         if (split?.prefix !== undefined) {
-            currentNote.setContent(split.prefix);
+            currentBlock.setContent(split.prefix);
 
-            if (newNoteInheritsItems) {
-                currentNote.setItems([]);
+            if (newBlockInheritItems) {
+                currentBlock.setItems([]);
             }
 
         }
 
-        this.setActiveWithPosition(newNote.id, 'start');
+        this.setActiveWithPosition(newBlock.id, 'start');
 
         return {
-            id: newNote.id,
-            parent: newNote.parent!
+            id: newBlock.id,
+            parent: newBlock.parent!
         };
 
     }
@@ -987,7 +984,7 @@ export class BlocksStore {
 
     }
 
-    private computeSelectedIndentableNoteIDs(): ReadonlyArray<BlockIDStr> {
+    private computeSelectedIndentableBlockIDs(): ReadonlyArray<BlockIDStr> {
         const selectedIDs = this.selectedIDs();
         return selectedIDs.filter(current => this.isIndentable(current));
     }
@@ -1003,24 +1000,24 @@ export class BlocksStore {
 
             console.log("doIndent: " + id);
 
-            const note = this._index[id];
+            const block = this._index[id];
 
-            if (! note) {
+            if (! block) {
                 return {error: 'no-note'};
             }
 
-            if (! note.parent) {
+            if (! block.parent) {
                 return {error: 'no-parent'};
             }
 
-            const parentNote = this._index[note.parent];
+            const parentBlock = this._index[block.parent];
 
-            if (! parentNote) {
-                console.warn("No parent note for id: " + note.parent);
-                return {error: 'no-parent-note'};
+            if (! parentBlock) {
+                console.warn("No parent block for id: " + block.parent);
+                return {error: 'no-parent-block'};
             }
 
-            const parentItems = (parentNote.items || []);
+            const parentItems = (parentBlock.items || []);
 
             // figure out the sibling index in the parent
             const siblingIndex = parentItems.indexOf(id);
@@ -1029,20 +1026,20 @@ export class BlocksStore {
 
                 const newParentID = parentItems[siblingIndex - 1];
 
-                const newParentNote = this._index[newParentID];
+                const newParentBlock = this._index[newParentID];
 
                 // *** remove myself from my parent
 
-                parentNote.removeItem(id);
+                parentBlock.removeItem(id);
 
                 // ***: add myself to my newParent
 
-                newParentNote.addItem(id);
+                newParentBlock.addItem(id);
 
-                note.setParent(newParentNote.id);
+                block.setParent(newParentBlock.id);
                 this.expand(newParentID);
 
-                return {value: newParentNote.id};
+                return {value: newParentBlock.id};
 
             } else {
                 return {error: 'no-sibling'};
@@ -1055,7 +1052,7 @@ export class BlocksStore {
         try {
 
             if (this.hasSelected()) {
-                return this.computeSelectedIndentableNoteIDs().map(id => doExec(id));
+                return this.computeSelectedIndentableBlockIDs().map(id => doExec(id));
             } else {
                 return [doExec(id)];
             }
@@ -1072,18 +1069,18 @@ export class BlocksStore {
             return false;
         }
 
-        const note = this.getBlock(id);
+        const block = this.getBlock(id);
 
-        if (! note) {
+        if (! block) {
             return false;
         }
 
-        if (! note.parent) {
+        if (! block.parent) {
             // this is the root...
             return false;
         }
 
-        if (note.parent === this.root) {
+        if (block.parent === this.root) {
             return false;
         }
 
@@ -1091,7 +1088,7 @@ export class BlocksStore {
 
     }
 
-    private computeSelectedUnIndentableNoteIDs(): ReadonlyArray<BlockIDStr> {
+    private computeSelectedUnIndentableBlockIDs(): ReadonlyArray<BlockIDStr> {
         const selectedIDs = this.selectedIDs();
         return selectedIDs.filter(current => this.isUnIndentable(current));
     }
@@ -1102,35 +1099,35 @@ export class BlocksStore {
 
             console.log("doUnIndent: " + id);
 
-            const note = this._index[id];
+            const block = this._index[id];
 
-            if (! note) {
-                return {error: 'no-note'};
+            if (! block) {
+                return {error: 'no-block'};
             }
 
-            if (! note.parent) {
+            if (! block.parent) {
                 return {error: 'no-parent'};
             }
 
-            const parentNote = this._index[note.parent];
+            const parentBlock = this._index[block.parent];
 
-            if (! parentNote) {
-                return {error: 'no-parent-note'};
+            if (! parentBlock) {
+                return {error: 'no-parent-block'};
             }
 
-            if (! parentNote.parent) {
-                return {error: 'no-parent-note-parent'};
+            if (! parentBlock.parent) {
+                return {error: 'no-parent-block-parent'};
             }
 
-            const newParentNote = this._index[parentNote.parent];
+            const newParentBlock = this._index[parentBlock.parent];
 
-            if (! newParentNote) {
-                return {error: 'no-parent-note-parent-note'};
+            if (! newParentBlock) {
+                return {error: 'no-parent-block-parent-block'};
             }
 
-            note.setParent(newParentNote.id);
-            newParentNote.addItem(id, {pos: 'after', ref: parentNote.id});
-            parentNote.removeItem(id);
+            block.setParent(newParentBlock.id);
+            newParentBlock.addItem(id, {pos: 'after', ref: parentBlock.id});
+            parentBlock.removeItem(id);
 
             return {value: id};
 
@@ -1141,7 +1138,7 @@ export class BlocksStore {
         try {
 
             if (this.hasSelected()) {
-                return this.computeSelectedUnIndentableNoteIDs().map(id => doExec(id));
+                return this.computeSelectedUnIndentableBlockIDs().map(id => doExec(id));
             } else {
                 return [doExec(id)];
             }
@@ -1152,7 +1149,7 @@ export class BlocksStore {
 
     }
 
-    public noteIsEmpty(id: BlockIDStr): boolean {
+    public blockIsEmpty(id: BlockIDStr): boolean {
 
         const note = this._index[id];
         return note?.content.trim() === '';
