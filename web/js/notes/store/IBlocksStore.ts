@@ -3,7 +3,7 @@ import {IBlock} from "./IBlock";
 import {Block} from "./Block";
 import {NoteTargetStr} from "../NoteLinkLoader";
 
-export interface INotesStore {
+export interface IBlocksStore {
 
     selected: StringSetMap;
 

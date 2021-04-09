@@ -28,7 +28,7 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 //   code path is used.
 //
 
-describe('NotesStore', function() {
+describe('BlocksStore', function() {
 
     beforeEach(() => {
         console.log("Freezing time...");
