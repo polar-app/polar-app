@@ -19,10 +19,10 @@ export type BlockNameStr = string;
 
 export type BlockType = 'item' | 'named';
 
-export type BlocksIndex = {[id: string /* NoteIDStr */]: Block};
-export type BlocksIndexByName = {[name: string /* NoteNameStr */]: BlockIDStr};
+export type BlocksIndex = {[id: string /* BlockIDStr */]: Block};
+export type BlocksIndexByName = {[name: string /* BlockNameStr */]: BlockIDStr};
 
-export type ReverseBlocksIndex = {[id: string /* NoteIDStr */]: BlockIDStr[]};
+export type ReverseBlocksIndex = {[id: string /* BlockIDStr */]: BlockIDStr[]};
 
 export type StringSetMap = {[key: string]: boolean};
 
@@ -39,7 +39,7 @@ export type BlockContentOffset = number;
  *
  * When 'start' jump to the start.
  *
- * When 'end' jump to the end of the note.
+ * When 'end' jump to the end of the block.
  *
  * When undefined, make no jump.
  */
@@ -58,13 +58,13 @@ interface DoPutOpts {
     readonly newActive?: IActiveBlock;
 
     /**
-     * Expand the give parent note.
+     * Expand the give parent block.
      */
     readonly newExpand?: BlockIDStr;
 
 }
 
-export type NewNotePosition = 'before' | 'after' | 'split';
+export type NewBlockPosition = 'before' | 'after' | 'split';
 
 export type NewChildPos = 'before' | 'after';
 
@@ -112,9 +112,9 @@ export interface ICreatedBlock {
     readonly parent: BlockIDStr;
 }
 
-export type DoIndentResult = IMutation<'no-note' | 'no-parent' | 'no-parent-note' | 'no-sibling', BlockIDStr>;
+export type DoIndentResult = IMutation<'no-block' | 'no-parent' | 'no-parent-block' | 'no-sibling', BlockIDStr>;
 
-export type DoUnIndentResult = IMutation<'no-note' | 'no-parent' | 'no-parent-note' | 'no-parent-note-parent' | 'no-parent-note-parent-note', BlockIDStr>
+export type DoUnIndentResult = IMutation<'no-block' | 'no-parent' | 'no-parent-block' | 'no-parent-block-parent' | 'no-parent-block-parent-block', BlockIDStr>
 
 /**
  * The active note and the position it should be set to once it's made active.
@@ -880,6 +880,7 @@ export class BlocksStore {
 
         const newBlockPosition = computeNewBlockPosition();
 
+        const {parentBlock} = newBlockPosition;
         const newBlock = createNewBlock(parentBlock);
 
         this.doPut([newBlock]);
@@ -963,24 +964,24 @@ export class BlocksStore {
      */
     public isIndentable(id: BlockIDStr): boolean {
 
-        const note = this.getBlock(id);
+        const block = this.getBlock(id);
 
-        if (! note) {
+        if (! block) {
             return false;
         }
 
-        if (! note.parent) {
+        if (! block.parent) {
             return false;
         }
 
-        const parentNote = this.getBlock(note.parent);
+        const parentBlock = this.getBlock(block.parent);
 
-        if (! parentNote) {
+        if (! parentBlock) {
             // this is a bug and shouldn't happen
             return false;
         }
 
-        return parentNote.items.indexOf(id) !== 0;
+        return parentBlock.items.indexOf(id) !== 0;
 
     }
 
@@ -1003,7 +1004,7 @@ export class BlocksStore {
             const block = this._index[id];
 
             if (! block) {
-                return {error: 'no-note'};
+                return {error: 'no-block'};
             }
 
             if (! block.parent) {
