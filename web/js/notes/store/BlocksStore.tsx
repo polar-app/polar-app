@@ -386,7 +386,7 @@ export class BlocksStore {
         return this._index[id] || undefined;
     }
 
-    public filterNotesByName(filter: string): ReadonlyArray<BlockNameStr> {
+    public filterByName(filter: string): ReadonlyArray<BlockNameStr> {
 
         filter = filter.toLowerCase();
 

@@ -9,7 +9,7 @@ function useItemsProvider(): ActionMenuItemProvider {
 
     return React.useCallback((prompt: string): ReadonlyArray<IActionMenuItem> => {
 
-        const filteredNoteNames = store.filterNotesByName(prompt);
+        const filteredNoteNames = store.filterByName(prompt);
 
         return filteredNoteNames.map(key => {
             return {
