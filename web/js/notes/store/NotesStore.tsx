@@ -13,6 +13,7 @@ import {Note} from "./Note";
 import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 import { Numbers } from "polar-shared/src/util/Numbers";
 import {CursorPositions} from "../contenteditable/CursorPositions";
+import { INotesStore } from "./INotesStore";
 
 export type NoteIDStr = IDStr;
 export type NoteNameStr = string;
@@ -1326,7 +1327,7 @@ export class NotesStore {
 
 export const [NotesStoreProvider, useNotesStoreDelegate] = createReactiveStore(() => new NotesStore())
 
-export function useNotesStore() {
+export function useNotesStore(): INotesStore {
     const delegate = useNotesStoreDelegate();
     return delegate;
 }
