@@ -45,7 +45,7 @@ export const NoteInner = observer((props: IProps) => {
 
     const expanded = store.isExpanded(id);
     const selected = store.isSelected(id);
-    const note = store.getNote(id);
+    const note = store.getBlock(id);
 
     const root = store.root;
 

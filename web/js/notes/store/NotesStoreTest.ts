@@ -275,7 +275,7 @@ describe('NotesStore', function() {
 
             const store = createStore();
 
-            assertJSON(store.getNote('102'), {
+            assertJSON(store.getBlock('102'), {
                 "_content": "World War II",
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "102",
@@ -295,7 +295,7 @@ describe('NotesStore', function() {
 
             const indentResult = store.doIndent('104')
 
-            assertJSON(store.getNote('102'), {
+            assertJSON(store.getBlock('102'), {
                 "_content": "World War II",
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "102",
@@ -308,7 +308,7 @@ describe('NotesStore', function() {
                 "_updated": "2012-03-02T11:38:50.321Z"
             });
 
-            assertJSON(store.getNote(indentResult[0].value!), {
+            assertJSON(store.getBlock(indentResult[0].value!), {
                 "_content": "[Lasted](https://www.example.com) from 1939 to 1945",
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "103",
@@ -341,7 +341,7 @@ describe('NotesStore', function() {
 
             const store = createStore();
 
-            assertJSON(store.getNote('102'), {
+            assertJSON(store.getBlock('102'), {
                 "_content": "World War II",
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "102",
@@ -357,7 +357,7 @@ describe('NotesStore', function() {
 
             assertJSON(store.expanded, {});
 
-            assertJSON(store.getNote('104'), {
+            assertJSON(store.getBlock('104'), {
                 "_content": "Axis Powers: Germany, Italy, Japan",
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "104",
@@ -370,7 +370,7 @@ describe('NotesStore', function() {
 
             store.doIndent('104')
 
-            assertJSON(store.getNote('104'), {
+            assertJSON(store.getBlock('104'), {
                 "_content": "Axis Powers: Germany, Italy, Japan",
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "104",
@@ -381,11 +381,11 @@ describe('NotesStore', function() {
                 "_updated": "2012-03-02T11:38:49.321Z"
             });
 
-            assert.equal(store.getNote('104')!.parent, '103');
+            assert.equal(store.getBlock('104')!.parent, '103');
 
             store.doUnIndent('104');
 
-            assertJSON(store.getNote('104'), {
+            assertJSON(store.getBlock('104'), {
                 "_content": "Axis Powers: Germany, Italy, Japan",
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "104",
@@ -396,7 +396,7 @@ describe('NotesStore', function() {
                 "_updated": "2012-03-02T11:38:49.321Z"
             });
 
-            assertJSON(store.getNote('102'), {
+            assertJSON(store.getBlock('102'), {
                 "_content": "World War II",
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "102",
@@ -527,9 +527,9 @@ describe('NotesStore', function() {
 
             store.mergeBlocks('103', '104');
 
-            assert.isUndefined(store.getNote('104'));
+            assert.isUndefined(store.getBlock('104'));
 
-            assertJSON(store.getNote('103'), {
+            assertJSON(store.getBlock('103'), {
                 "_content": "[Lasted](https://www.example.com) from 1939 to 1945 Axis Powers: Germany, Italy, Japan",
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "103",
@@ -550,7 +550,7 @@ describe('NotesStore', function() {
 
             const store = createStore();
 
-            const note = store.getNote('102')
+            const note = store.getBlock('102')
 
             assertJSON(note, {
                 "_content": "World War II",
@@ -610,7 +610,7 @@ describe('NotesStore', function() {
 
             store.doDelete(['104']);
 
-            const note = store.getNote('102');
+            const note = store.getBlock('102');
 
             assertJSON(note, {
                 "_content": "World War II",
@@ -636,7 +636,7 @@ describe('NotesStore', function() {
 
             store.doDelete(['103', '104', '105']);
 
-            const note = store.getNote('102');
+            const note = store.getBlock('102');
 
             assertJSON(note, {
                 "_content": "World War II",
@@ -737,7 +737,7 @@ describe('NotesStore', function() {
 
             const store = createStore();
 
-            const note = store.getNote('102');
+            const note = store.getBlock('102');
 
             TestingTime.forward(60 * 1000);
 
@@ -758,7 +758,7 @@ describe('NotesStore', function() {
                 "105"
             ]);
 
-            const newNote = store.getNote(createdNote.id)!;
+            const newNote = store.getBlock(createdNote.id)!;
 
             assert.equal(newNote.created, now);
             assert.equal(newNote.updated, now);
@@ -774,7 +774,7 @@ describe('NotesStore', function() {
 
             const store = createStore();
 
-            const note = store.getNote('102');
+            const note = store.getBlock('102');
 
             store.doDelete(['103', '104', '105']);
 
@@ -798,7 +798,7 @@ describe('NotesStore', function() {
 
                 assert.equal(createdNote.parent, '102');
 
-                const note = store.getNote('102');
+                const note = store.getBlock('102');
 
                 assertJSON(note!.items, [
                     "103",
@@ -816,7 +816,7 @@ describe('NotesStore', function() {
 
                 assert.equal(createdNote.parent, '105');
 
-                const note = store.getNote('105');
+                const note = store.getBlock('105');
 
                 assertJSON(note!.items, [
                     createdNote.id,

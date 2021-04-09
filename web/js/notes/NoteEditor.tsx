@@ -85,7 +85,7 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
     const linkNavigationClickHandler = useLinkNavigationClickHandler();
     const ref = React.createRef<HTMLDivElement | null>();
 
-    const note = store.getNote(id);
+    const note = store.getBlock(id);
 
     const escaper = MarkdownContentEscaper;
 

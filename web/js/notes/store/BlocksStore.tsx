@@ -88,7 +88,7 @@ export interface IMutation<E, V> {
     readonly value?: V;
 }
 
-export interface INoteMerge {
+export interface IBlockMerge {
     readonly source: BlockIDStr;
     readonly target: BlockIDStr;
 }
@@ -100,7 +100,7 @@ export interface NavOpts {
 /**
  * The result of a createNote operation.
  */
-export interface ICreatedNote {
+export interface ICreatedBlock {
     /**
      * The ID of the newly created note.
      */
@@ -288,7 +288,7 @@ export class BlocksStore {
         return Object.keys(this._selected).length > 0;
     }
 
-    public getNote(id: BlockIDStr): Block | undefined {
+    public getBlock(id: BlockIDStr): Block | undefined {
         return this._index[id] || undefined;
     }
 
@@ -662,10 +662,10 @@ export class BlocksStore {
     }
 
     /**
-     * Return true if this note can be merged. Meaning it has a previous sibling
+     * Return true if this block can be merged. Meaning it has a previous sibling
      * we can merge with.
      */
-    public canMerge(id: BlockIDStr): INoteMerge | undefined {
+    public canMerge(id: BlockIDStr): IBlockMerge | undefined {
 
         const prevSibling = this.prevSibling(id);
 
@@ -676,12 +676,12 @@ export class BlocksStore {
             }
         }
 
-        const note = this.getNote(id);
+        const block = this.getBlock(id);
 
-        if (note?.parent) {
+        if (block?.parent) {
             return {
                 source: id,
-                target: note.parent
+                target: block.parent
             }
         }
 
@@ -731,7 +731,6 @@ export class BlocksStore {
         const existingBlock = this.getBlockByName(name);
 
         if (existingBlock) {
-            // note already exists...
             return existingBlock.id;
         }
 
@@ -761,20 +760,20 @@ export class BlocksStore {
      * Create a new block in reference to the block with given ID.
      */
     @action public createNewBlock(id: BlockIDStr,
-                                  split?: ISplitBlock): ICreatedNote {
+                                  split?: ISplitBlock): ICreatedBlock {
 
         // *** we first have to compute the new parent this has to be computed
-        // based on the expansion tree because if the current note setup is like:
+        // based on the expansion tree because if the current block setup is like:
         //
         // - first
         // - second
         //
-        // and we are creating a note on 'first' then the new note should be
+        // and we are creating a block on 'first' then the new block should be
         // between first and second like:
         //
         //
         // - first
-        // - *new note*
+        // - *new block*
         // - second
         //
         // However if we have:
@@ -785,7 +784,7 @@ export class BlocksStore {
         //
         // then we have to create it like:
         // - first
-        //     - *new note*
+        //     - *new block*
         //     - first child item
         // - second
 
@@ -793,32 +792,32 @@ export class BlocksStore {
          * A new note instruction that creates the note relative to a sibling
          * and provides the parent.
          */
-        interface INewNotePositionRelative {
+        interface INewBlockPositionRelative {
             readonly type: 'relative';
-            readonly parentNote: Block;
+            readonly parentBlock: Block;
             readonly ref: BlockIDStr;
             readonly pos: NewChildPos;
         }
 
         interface INewNotePositionFirstChild {
             readonly type: 'first-child';
-            readonly parentNote: Block;
+            readonly parentBlock: Block;
         }
 
-        const computeNewNotePosition = (): INewNotePositionRelative | INewNotePositionFirstChild => {
+        const computeNewNotePosition = (): INewBlockPositionRelative | INewNotePositionFirstChild => {
 
             const linearExpansionTree = this.computeLinearExpansionTree2(id);
 
             const nextNoteID = Arrays.first(linearExpansionTree);
 
-            const createNewNotePositionRelative = (ref: BlockIDStr, pos: NewChildPos): INewNotePositionRelative => {
+            const createNewNotePositionRelative = (ref: BlockIDStr, pos: NewChildPos): INewBlockPositionRelative => {
 
-                const note = this.getNote(ref)!;
-                const parentNote = this.getNote(note.parent!)!;
+                const note = this.getBlock(ref)!;
+                const parentNote = this.getBlock(note.parent!)!;
 
                 return {
                     type: 'relative',
-                    parentNote,
+                    parentBlock: parentNote,
                     ref,
                     pos
                 };
@@ -829,11 +828,11 @@ export class BlocksStore {
                 return createNewNotePositionRelative(nextNoteID, 'before')
             } else {
 
-                const note = this.getNote(id)!;
+                const note = this.getBlock(id)!;
 
                 if (note.parent) {
 
-                    const parentNote = this.getNote(note.parent)!;
+                    const parentNote = this.getBlock(note.parent)!;
 
                     return {
                         type: 'relative',
@@ -878,11 +877,11 @@ export class BlocksStore {
 
         const newNoteInheritsItems = split?.suffix !== undefined && split?.suffix !== '';
 
-        const currentNote = this.getNote(id)!;
+        const currentNote = this.getBlock(id)!;
 
         const newNotePosition = computeNewNotePosition();
 
-        const {parentNote} = newNotePosition;
+        const {parentBlock} = newNotePosition;
 
         const newNote = createNewNote(parentNote);
 
@@ -967,7 +966,7 @@ export class BlocksStore {
      */
     public isIndentable(id: BlockIDStr): boolean {
 
-        const note = this.getNote(id);
+        const note = this.getBlock(id);
 
         if (! note) {
             return false;
@@ -977,7 +976,7 @@ export class BlocksStore {
             return false;
         }
 
-        const parentNote = this.getNote(note.parent);
+        const parentNote = this.getBlock(note.parent);
 
         if (! parentNote) {
             // this is a bug and shouldn't happen
@@ -1073,7 +1072,7 @@ export class BlocksStore {
             return false;
         }
 
-        const note = this.getNote(id);
+        const note = this.getBlock(id);
 
         if (! note) {
             return false;
