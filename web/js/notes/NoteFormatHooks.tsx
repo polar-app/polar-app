@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {URLStr} from "polar-shared/src/util/Strings";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import { NoteType } from './store/BlocksStore';
+import { BlockType } from './store/BlocksStore';
 
-export function useNoteFormatHandlers(type: NoteType | undefined, onUpdated: () => void) {
+export function useNoteFormatHandlers(type: BlockType | undefined, onUpdated: () => void) {
 
     const doExecCommand = React.useCallback((command: string, value?: string) => {
 
@@ -58,7 +58,7 @@ export function useNoteFormatHandlers(type: NoteType | undefined, onUpdated: () 
 
 }
 
-export function useNoteFormatKeyboardHandler(type: NoteType | undefined, onUpdated: () => void = NULL_FUNCTION) {
+export function useNoteFormatKeyboardHandler(type: BlockType | undefined, onUpdated: () => void = NULL_FUNCTION) {
 
     const noteFormatHandlers = useNoteFormatHandlers(type, onUpdated);
 

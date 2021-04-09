@@ -1,13 +1,13 @@
 import {IBlock} from "./IBlock";
-import {INewChildPosition, NoteContent, NoteIDStr, NoteType} from "./BlocksStore";
+import {INewChildPosition, NoteContent, BlockIDStr, BlockType} from "./BlocksStore";
 import {action, computed, makeObservable, observable} from "mobx"
 import { ISODateTimeString, ISODateTimeStrings } from "polar-shared/src/metadata/ISODateTimeStrings";
 
 export class Block implements IBlock {
 
-    @observable private _id: NoteIDStr;
+    @observable private _id: BlockIDStr;
 
-    @observable private _parent: NoteIDStr | undefined;
+    @observable private _parent: BlockIDStr | undefined;
 
     @observable private _created: ISODateTimeString;
 
@@ -16,7 +16,7 @@ export class Block implements IBlock {
     /**
      * The sub-items of this node as node IDs.
      */
-    @observable private _items: NoteIDStr[];
+    @observable private _items: BlockIDStr[];
 
     // TODO
     //
@@ -28,7 +28,7 @@ export class Block implements IBlock {
     /**
      * The linked wiki references to other notes.
      */
-    @observable private _links: NoteIDStr[];
+    @observable private _links: BlockIDStr[];
 
     // FIXMEL this needs to be refactoed because
     // the content type of the node should/could change and we need markdown/latex/etc note types
@@ -41,7 +41,7 @@ export class Block implements IBlock {
      * is a 'named' note where the content is actually the name of the note and
      * has constrained semantics (can't have a link, image, etc.
      */
-    @observable private _type: NoteType;
+    @observable private _type: BlockType;
 
     constructor(opts: IBlock) {
 
@@ -74,7 +74,7 @@ export class Block implements IBlock {
         return this._updated;
     }
 
-    @computed get items(): ReadonlyArray<NoteIDStr> {
+    @computed get items(): ReadonlyArray<BlockIDStr> {
         return this._items;
     }
 
@@ -82,7 +82,7 @@ export class Block implements IBlock {
         return this._content;
     }
 
-    @computed get links(): ReadonlyArray<NoteIDStr> {
+    @computed get links(): ReadonlyArray<BlockIDStr> {
         return this._links;
     }
 
@@ -103,17 +103,17 @@ export class Block implements IBlock {
 
     }
 
-    @action setParent(id: NoteIDStr) {
+    @action setParent(id: BlockIDStr) {
         this._parent = id;
         this._updated = ISODateTimeStrings.create();
     }
 
-    @action setItems(items: ReadonlyArray<NoteIDStr>) {
+    @action setItems(items: ReadonlyArray<BlockIDStr>) {
         this._items = [...items];
         this._updated = ISODateTimeStrings.create();
     }
 
-    @action addItem(id: NoteIDStr, pos?: INewChildPosition | 'first-child') {
+    @action addItem(id: BlockIDStr, pos?: INewChildPosition | 'first-child') {
 
         if (pos === 'first-child') {
 
@@ -135,7 +135,7 @@ export class Block implements IBlock {
         this._updated = ISODateTimeStrings.create();
     }
 
-    @action removeItem(id: NoteIDStr) {
+    @action removeItem(id: BlockIDStr) {
 
         const idx = this.items.indexOf(id);
 
@@ -150,17 +150,17 @@ export class Block implements IBlock {
 
     }
 
-    @action setLinks(links: ReadonlyArray<NoteIDStr>) {
+    @action setLinks(links: ReadonlyArray<BlockIDStr>) {
         this._links = [...links];
         this._updated = ISODateTimeStrings.create();
     }
 
-    @action addLink(id: NoteIDStr) {
+    @action addLink(id: BlockIDStr) {
         this._links.push(id);
         this._updated = ISODateTimeStrings.create();
     }
 
-    @action removeLink(id: NoteIDStr) {
+    @action removeLink(id: BlockIDStr) {
 
         const idx = this._links.indexOf(id);
 

@@ -5,7 +5,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import clsx from "clsx";
 import {useNoteContextMenu} from "./Note";
-import { NoteIDStr, useNotesStore } from "./store/BlocksStore";
+import { BlockIDStr, useNotesStore } from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
 
 const useStyles = makeStyles((theme) =>
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 interface IProps {
-    readonly id: NoteIDStr;
+    readonly id: BlockIDStr;
 }
 
 export const NoteOverflowButton = observer(function NoteOverflow(props: IProps) {

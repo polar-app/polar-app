@@ -2,7 +2,7 @@ import React from "react";
 import {MiddleDot} from "./MiddleDot";
 import {NoteTargetStr, useNoteLinkLoader} from "./NoteLinkLoader";
 import {NoteButton} from "./NoteButton";
-import {NoteIDStr, useNotesStore} from "./store/BlocksStore";
+import {BlockIDStr, useNotesStore} from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
 import { NoteLink } from "./NoteLink";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
@@ -10,7 +10,7 @@ import useTheme from "@material-ui/core/styles/useTheme";
 
 
 interface IProps {
-    readonly target: NoteIDStr | NoteTargetStr;
+    readonly target: BlockIDStr | NoteTargetStr;
 }
 
 export const NoteBulletButton = observer(function NoteBulletButton(props: IProps) {

@@ -1,13 +1,13 @@
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {NoteTargetStr} from "./NoteLinkLoader";
-import {NoteIDStr} from "./store/BlocksStore";
+import {BlockIDStr} from "./store/BlocksStore";
 
 export interface INoteURL {
 
     /**
      * The ID or node name as a target.
      */
-    readonly target: NoteIDStr | NoteTargetStr;
+    readonly target: BlockIDStr | NoteTargetStr;
 
 }
 

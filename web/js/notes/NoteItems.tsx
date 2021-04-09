@@ -5,7 +5,7 @@ import {UL} from "./UL";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
-import {NoteIDStr} from "./store/BlocksStore";
+import {BlockIDStr} from "./store/BlocksStore";
 import {IBlock} from "./store/IBlock";
 
 const useStyles = makeStyles((theme) =>
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) =>
 );
 
 interface NotesProps {
-    readonly parent: NoteIDStr;
+    readonly parent: BlockIDStr;
     readonly notes: ReadonlyArray<IBlock> | undefined;
 }
 

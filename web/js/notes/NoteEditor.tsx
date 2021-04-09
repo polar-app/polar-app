@@ -4,7 +4,7 @@ import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
 import {MarkdownContentEscaper} from "./MarkdownContentEscaper";
-import {NoteIDStr, useNotesStore} from "./store/BlocksStore";
+import {BlockIDStr, useNotesStore} from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
 import {NoteContentEditable} from "./contenteditable/NoteContentEditable";
 import {ContentEditables} from "./ContentEditables";
@@ -191,9 +191,9 @@ const NoteEditorWithEditorStore = observer(function NoteEditorWithEditorStore(pr
 
 interface IProps {
 
-    readonly parent: NoteIDStr | undefined;
+    readonly parent: BlockIDStr | undefined;
 
-    readonly id: NoteIDStr;
+    readonly id: BlockIDStr;
 
     /**
      * Used when showing content that can't edited so that we get the normal

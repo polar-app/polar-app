@@ -1,7 +1,7 @@
 import React from "react";
 import {ActionMenuItemProvider, IActionMenuItem, NoteActionMenu} from "./NoteActionMenu";
 import { deepMemo } from "../react/ReactUtils";
-import { NoteIDStr } from "./store/BlocksStore";
+import { BlockIDStr } from "./store/BlocksStore";
 
 function useItemsProvider(): ActionMenuItemProvider {
 
@@ -45,7 +45,7 @@ function useItemsProvider(): ActionMenuItemProvider {
 }
 
 interface IProps {
-    readonly id: NoteIDStr;
+    readonly id: BlockIDStr;
     readonly children: JSX.Element;
 }
 

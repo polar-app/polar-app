@@ -1,6 +1,6 @@
 import React from "react";
 import {useRefValue, useStateRef} from "../hooks/ReactHooks";
-import {NoteIDStr, useNotesStore} from "./store/BlocksStore";
+import {BlockIDStr, useNotesStore} from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
 
 export interface ICommand {
@@ -22,7 +22,7 @@ export interface IActionMenuItem {
      */
     readonly id: string;
     readonly text: string;
-    readonly action: (id: NoteIDStr) => ICommand | undefined;
+    readonly action: (id: BlockIDStr) => ICommand | undefined;
 
 }
 
@@ -41,7 +41,7 @@ export type ActionMenuItemProvider = (prompt: string) => ReadonlyArray<IActionMe
 
 interface IProps {
 
-    readonly id: NoteIDStr;
+    readonly id: BlockIDStr;
 
     /**
      * The trigger string (may be 1 or two characters in length);

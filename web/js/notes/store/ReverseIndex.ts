@@ -1,15 +1,15 @@
-import {NoteIDStr} from "./BlocksStore";
+import {BlockIDStr} from "./BlocksStore";
 import {action, computed, makeObservable, observable} from "mobx"
 
 export class ReverseIndex {
 
-    @observable private index: { [key: string]: NoteIDStr[] } = {};
+    @observable private index: { [key: string]: BlockIDStr[] } = {};
 
-    @computed get(target: NoteIDStr): ReadonlyArray<NoteIDStr> {
+    @computed get(target: BlockIDStr): ReadonlyArray<BlockIDStr> {
         return this.index[target] || [];
     }
 
-    @action add(target: NoteIDStr, inbound: NoteIDStr) {
+    @action add(target: BlockIDStr, inbound: BlockIDStr) {
 
         const current = this.index[target];
 
@@ -21,7 +21,7 @@ export class ReverseIndex {
 
     }
 
-    @action remove(target: NoteIDStr, inbound: NoteIDStr) {
+    @action remove(target: BlockIDStr, inbound: BlockIDStr) {
 
         const current = this.index[target];
 

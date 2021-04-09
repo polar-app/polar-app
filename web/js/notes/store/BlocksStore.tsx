@@ -14,15 +14,15 @@ import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 import { Numbers } from "polar-shared/src/util/Numbers";
 import {CursorPositions} from "../contenteditable/CursorPositions";
 
-export type NoteIDStr = IDStr;
-export type NoteNameStr = string;
+export type BlockIDStr = IDStr;
+export type BlockNameStr = string;
 
-export type NoteType = 'item' | 'named';
+export type BlockType = 'item' | 'named';
 
 export type NotesIndex = {[id: string /* NoteIDStr */]: Block};
-export type NotesIndexByName = {[name: string /* NoteNameStr */]: NoteIDStr};
+export type NotesIndexByName = {[name: string /* NoteNameStr */]: BlockIDStr};
 
-export type ReverseNotesIndex = {[id: string /* NoteIDStr */]: NoteIDStr[]};
+export type ReverseNotesIndex = {[id: string /* NoteIDStr */]: BlockIDStr[]};
 
 export type StringSetMap = {[key: string]: boolean};
 
@@ -60,7 +60,7 @@ interface DoPutOpts {
     /**
      * Expand the give parent note.
      */
-    readonly newExpand?: NoteIDStr;
+    readonly newExpand?: BlockIDStr;
 
 }
 
@@ -69,7 +69,7 @@ export type NewNotePosition = 'before' | 'after' | 'split';
 export type NewChildPos = 'before' | 'after';
 
 export interface INewChildPosition {
-    readonly ref: NoteIDStr;
+    readonly ref: BlockIDStr;
     readonly pos: NewChildPos;
 }
 
@@ -79,8 +79,8 @@ export interface ISplitNote {
 }
 
 export interface DeleteNoteRequest {
-    readonly parent: NoteIDStr;
-    readonly id: NoteIDStr;
+    readonly parent: BlockIDStr;
+    readonly id: BlockIDStr;
 }
 
 export interface IMutation<E, V> {
@@ -89,8 +89,8 @@ export interface IMutation<E, V> {
 }
 
 export interface INoteMerge {
-    readonly source: NoteIDStr;
-    readonly target: NoteIDStr;
+    readonly source: BlockIDStr;
+    readonly target: BlockIDStr;
 }
 
 export interface NavOpts {
@@ -104,24 +104,24 @@ export interface ICreatedNote {
     /**
      * The ID of the newly created note.
      */
-    readonly id: NoteIDStr;
+    readonly id: BlockIDStr;
 
     /**
      * The parent of the newly created note.
      */
-    readonly parent: NoteIDStr;
+    readonly parent: BlockIDStr;
 }
 
-export type DoIndentResult = IMutation<'no-note' | 'no-parent' | 'no-parent-note' | 'no-sibling', NoteIDStr>;
+export type DoIndentResult = IMutation<'no-note' | 'no-parent' | 'no-parent-note' | 'no-sibling', BlockIDStr>;
 
-export type DoUnIndentResult = IMutation<'no-note' | 'no-parent' | 'no-parent-note' | 'no-parent-note-parent' | 'no-parent-note-parent-note', NoteIDStr>
+export type DoUnIndentResult = IMutation<'no-note' | 'no-parent' | 'no-parent-note' | 'no-parent-note-parent' | 'no-parent-note-parent-note', BlockIDStr>
 
 /**
  * The active note and the position it should be set to once it's made active.
  */
 export interface IActiveNote {
 
-    readonly id: NoteIDStr;
+    readonly id: BlockIDStr;
 
     /**
      * The position within the note.  When undefined, do not jump the position
@@ -145,7 +145,7 @@ export class BlocksStore {
     /**
      * The current root note
      */
-    @observable public root: NoteIDStr | undefined = undefined;
+    @observable public root: BlockIDStr | undefined = undefined;
 
     /**
      * The currently active note.
@@ -161,9 +161,9 @@ export class BlocksStore {
      */
     @observable _selected: StringSetMap = {};
 
-    @observable _dropTarget: NoteIDStr | undefined = undefined;
+    @observable _dropTarget: BlockIDStr | undefined = undefined;
 
-    @observable _dropSource: NoteIDStr | undefined = undefined;
+    @observable _dropSource: BlockIDStr | undefined = undefined;
 
     /**
      * Used so that when we change the selected notes, that we know which is the
@@ -224,7 +224,7 @@ export class BlocksStore {
         return this._dropTarget;
     }
 
-    @action public setDropTarget(dropTarget: NoteIDStr) {
+    @action public setDropTarget(dropTarget: BlockIDStr) {
         this._dropTarget = dropTarget;
     }
 
@@ -232,7 +232,7 @@ export class BlocksStore {
         return this._dropSource;
     }
 
-    @action public setDropSource(dropSource: NoteIDStr) {
+    @action public setDropSource(dropSource: BlockIDStr) {
         this._dropSource = dropSource;
     }
 
@@ -244,18 +244,18 @@ export class BlocksStore {
     /**
      * Return true if the given note is active.
      */
-    public isActive(id: NoteIDStr): boolean {
+    public isActive(id: BlockIDStr): boolean {
         return this._active?.id === id;
     }
 
-    public lookup(notes: ReadonlyArray<NoteIDStr>): ReadonlyArray<IBlock> {
+    public lookup(notes: ReadonlyArray<BlockIDStr>): ReadonlyArray<IBlock> {
 
         return notes.map(current => this._index[current])
             .filter(current => current !== null && current !== undefined);
 
     }
 
-    public lookupReverse(id: NoteIDStr): ReadonlyArray<NoteIDStr> {
+    public lookupReverse(id: BlockIDStr): ReadonlyArray<BlockIDStr> {
         return this._reverse.get(id);
     }
 
@@ -288,11 +288,11 @@ export class BlocksStore {
         return Object.keys(this._selected).length > 0;
     }
 
-    public getNote(id: NoteIDStr): Block | undefined {
+    public getNote(id: BlockIDStr): Block | undefined {
         return this._index[id] || undefined;
     }
 
-    public getParent(id: NoteIDStr): Block | undefined {
+    public getParent(id: BlockIDStr): Block | undefined {
 
         const note = this._index[id];
 
@@ -308,7 +308,7 @@ export class BlocksStore {
 
     }
 
-    private doSibling(id: NoteIDStr, type: 'prev' | 'next'): NoteIDStr | undefined {
+    private doSibling(id: BlockIDStr, type: 'prev' | 'next'): BlockIDStr | undefined {
 
         const parent = this.getParent(id);
 
@@ -335,16 +335,16 @@ export class BlocksStore {
 
     }
 
-    public prevSibling(id: NoteIDStr) {
+    public prevSibling(id: BlockIDStr) {
         return this.doSibling(id, 'prev');
     }
 
-    public nextSibling(id: NoteIDStr) {
+    public nextSibling(id: BlockIDStr) {
         return this.doSibling(id, 'next');
     }
 
 
-    public getNoteByTarget(target: NoteIDStr | NoteTargetStr): Block | undefined {
+    public getNoteByTarget(target: BlockIDStr | NoteTargetStr): Block | undefined {
 
         const noteByID = this._index[target];
 
@@ -362,7 +362,7 @@ export class BlocksStore {
 
     }
 
-    public getNoteByName(name: NoteNameStr): Block | undefined {
+    public getNoteByName(name: BlockNameStr): Block | undefined {
 
         const noteRefByName = this._indexByName[name];
 
@@ -375,7 +375,7 @@ export class BlocksStore {
     }
 
 
-    public getActiveNote(id: NoteIDStr): Block | undefined {
+    public getActiveNote(id: BlockIDStr): Block | undefined {
 
         const active = this._active;
 
@@ -386,7 +386,7 @@ export class BlocksStore {
         return this._index[id] || undefined;
     }
 
-    public filterNotesByName(filter: string): ReadonlyArray<NoteNameStr> {
+    public filterNotesByName(filter: string): ReadonlyArray<BlockNameStr> {
 
         filter = filter.toLowerCase();
 
@@ -396,16 +396,16 @@ export class BlocksStore {
     }
 
 
-    @action public expand(id: NoteIDStr) {
+    @action public expand(id: BlockIDStr) {
         this._expanded[id] = true;
     }
 
-    @action public collapse(id: NoteIDStr) {
+    @action public collapse(id: BlockIDStr) {
         delete this._expanded[id];
     }
 
 
-    @action public setSelectionRange(fromNote: NoteIDStr, toNote: NoteIDStr) {
+    @action public setSelectionRange(fromNote: BlockIDStr, toNote: BlockIDStr) {
 
         if (! this.root) {
             throw new Error("No root");
@@ -517,7 +517,7 @@ export class BlocksStore {
         return this.doNav('next', pos, opts);
     }
 
-    public toggleExpand(id: NoteIDStr) {
+    public toggleExpand(id: BlockIDStr) {
 
         if (this._expanded[id]) {
             this.collapse(id);
@@ -540,8 +540,8 @@ export class BlocksStore {
      *
      * The result would be [A, B, C, D]
      */
-    private computeLinearExpansionTree(id: NoteIDStr,
-                                       root: boolean = true): ReadonlyArray<NoteIDStr> {
+    private computeLinearExpansionTree(id: BlockIDStr,
+                                       root: boolean = true): ReadonlyArray<BlockIDStr> {
 
         const note = this._index[id];
 
@@ -570,7 +570,7 @@ export class BlocksStore {
 
     }
 
-    private computeLinearExpansionTree2(id: NoteIDStr): ReadonlyArray<NoteIDStr> {
+    private computeLinearExpansionTree2(id: BlockIDStr): ReadonlyArray<BlockIDStr> {
 
         const note = this._index[id];
 
@@ -600,7 +600,7 @@ export class BlocksStore {
     }
 
 
-    @action public setActive(active: NoteIDStr | undefined) {
+    @action public setActive(active: BlockIDStr | undefined) {
 
         if (active) {
             this._active = {
@@ -613,7 +613,7 @@ export class BlocksStore {
 
     }
 
-    @action public setActiveWithPosition(active: NoteIDStr | undefined,
+    @action public setActiveWithPosition(active: BlockIDStr | undefined,
                                          activePos: NavPosition | undefined) {
 
         if (active) {
@@ -627,19 +627,19 @@ export class BlocksStore {
 
     }
 
-    @action public setRoot(root: NoteIDStr | undefined) {
+    @action public setRoot(root: BlockIDStr | undefined) {
         this.root = root;
     }
 
-    public isExpanded(id: NoteIDStr): boolean {
+    public isExpanded(id: BlockIDStr): boolean {
         return isPresent(this._expanded[id]);
     }
 
-    public isSelected(id: NoteIDStr): boolean {
+    public isSelected(id: BlockIDStr): boolean {
         return isPresent(this._selected[id]);
     }
 
-    public getNoteActivated(id: NoteIDStr): INoteActivated | undefined {
+    public getNoteActivated(id: BlockIDStr): INoteActivated | undefined {
 
         const active = this._active;
 
@@ -665,7 +665,7 @@ export class BlocksStore {
      * Return true if this note can be merged. Meaning it has a previous sibling
      * we can merge with.
      */
-    public canMerge(id: NoteIDStr): INoteMerge | undefined {
+    public canMerge(id: BlockIDStr): INoteMerge | undefined {
 
         const prevSibling = this.prevSibling(id);
 
@@ -689,7 +689,7 @@ export class BlocksStore {
 
     }
 
-    @action public mergeNotes(target: NoteIDStr, source: NoteIDStr) {
+    @action public mergeNotes(target: BlockIDStr, source: BlockIDStr) {
 
         const targetNote = this._index[target];
         const sourceNote = this._index[source];
@@ -726,7 +726,7 @@ export class BlocksStore {
     /**
      * Create a new named note but only when a note with this name does not exist.
      */
-    @action public createNewNamedNote(name: NoteNameStr): NoteIDStr {
+    @action public createNewNamedNote(name: BlockNameStr): BlockIDStr {
 
         const existingNote = this.getNoteByName(name);
 
@@ -760,7 +760,7 @@ export class BlocksStore {
     /**
      * Create a new note in reference to the note with given ID.
      */
-    @action public createNewNote(id: NoteIDStr,
+    @action public createNewNote(id: BlockIDStr,
                                  split?: ISplitNote): ICreatedNote {
 
         // *** we first have to compute the new parent this has to be computed
@@ -796,7 +796,7 @@ export class BlocksStore {
         interface INewNotePositionRelative {
             readonly type: 'relative';
             readonly parentNote: Block;
-            readonly ref: NoteIDStr;
+            readonly ref: BlockIDStr;
             readonly pos: NewChildPos;
         }
 
@@ -811,7 +811,7 @@ export class BlocksStore {
 
             const nextNoteID = Arrays.first(linearExpansionTree);
 
-            const createNewNotePositionRelative = (ref: NoteIDStr, pos: NewChildPos): INewNotePositionRelative => {
+            const createNewNotePositionRelative = (ref: BlockIDStr, pos: NewChildPos): INewNotePositionRelative => {
 
                 const note = this.getNote(ref)!;
                 const parentNote = this.getNote(note.parent!)!;
@@ -965,7 +965,7 @@ export class BlocksStore {
      * child in that parent. IE it must have a previous sibling so that we can
      * be
      */
-    public isIndentable(id: NoteIDStr): boolean {
+    public isIndentable(id: BlockIDStr): boolean {
 
         const note = this.getNote(id);
 
@@ -988,7 +988,7 @@ export class BlocksStore {
 
     }
 
-    private computeSelectedIndentableNoteIDs(): ReadonlyArray<NoteIDStr> {
+    private computeSelectedIndentableNoteIDs(): ReadonlyArray<BlockIDStr> {
         const selectedIDs = this.selectedIDs();
         return selectedIDs.filter(current => this.isIndentable(current));
     }
@@ -998,9 +998,9 @@ export class BlocksStore {
      *
      * @return The new parent NoteID or the code as to why it couldn't be re-parented.
      */
-    public doIndent(id: NoteIDStr): ReadonlyArray<DoIndentResult> {
+    public doIndent(id: BlockIDStr): ReadonlyArray<DoIndentResult> {
 
-        const doExec = (id: NoteIDStr): DoIndentResult => {
+        const doExec = (id: BlockIDStr): DoIndentResult => {
 
             console.log("doIndent: " + id);
 
@@ -1067,7 +1067,7 @@ export class BlocksStore {
 
     }
 
-    public isUnIndentable(id: NoteIDStr) {
+    public isUnIndentable(id: BlockIDStr) {
 
         if (id === this.root) {
             return false;
@@ -1092,14 +1092,14 @@ export class BlocksStore {
 
     }
 
-    private computeSelectedUnIndentableNoteIDs(): ReadonlyArray<NoteIDStr> {
+    private computeSelectedUnIndentableNoteIDs(): ReadonlyArray<BlockIDStr> {
         const selectedIDs = this.selectedIDs();
         return selectedIDs.filter(current => this.isUnIndentable(current));
     }
 
-    public doUnIndent(id: NoteIDStr): ReadonlyArray<DoUnIndentResult> {
+    public doUnIndent(id: BlockIDStr): ReadonlyArray<DoUnIndentResult> {
 
-        const doExec = (id: NoteIDStr): DoUnIndentResult => {
+        const doExec = (id: BlockIDStr): DoUnIndentResult => {
 
             console.log("doUnIndent: " + id);
 
@@ -1153,17 +1153,17 @@ export class BlocksStore {
 
     }
 
-    public noteIsEmpty(id: NoteIDStr): boolean {
+    public noteIsEmpty(id: BlockIDStr): boolean {
 
         const note = this._index[id];
         return note?.content.trim() === '';
 
     }
 
-    @action public doDelete(noteIDs: ReadonlyArray<NoteIDStr>) {
+    @action public doDelete(noteIDs: ReadonlyArray<BlockIDStr>) {
 
         interface NextActive {
-            readonly active: NoteIDStr;
+            readonly active: BlockIDStr;
             readonly activePos: NavPosition;
         }
 
@@ -1222,7 +1222,7 @@ export class BlocksStore {
 
         }
 
-        const handleDelete = (notes: ReadonlyArray<NoteIDStr>) => {
+        const handleDelete = (notes: ReadonlyArray<BlockIDStr>) => {
 
             let deleted: number = 0;
 
@@ -1306,7 +1306,7 @@ export class BlocksStore {
     /**
      * Compute the path to a note from its parent but not including the actual note.
      */
-    public pathToNote(id: NoteIDStr): ReadonlyArray<Block> {
+    public pathToNote(id: BlockIDStr): ReadonlyArray<Block> {
 
         let current = this._index[id];
 

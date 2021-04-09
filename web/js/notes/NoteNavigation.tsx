@@ -1,11 +1,11 @@
 import * as React from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import {NoteIDStr, useNotesStore} from "./store/BlocksStore";
+import {BlockIDStr, useNotesStore} from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
 
 interface IProps {
-    readonly parent: NoteIDStr | undefined;
-    readonly id: NoteIDStr;
+    readonly parent: BlockIDStr | undefined;
+    readonly id: BlockIDStr;
     readonly children: JSX.Element;
 }
 

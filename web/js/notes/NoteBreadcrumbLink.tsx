@@ -1,5 +1,5 @@
 import * as React from "react";
-import {NoteIDStr} from "./store/BlocksStore";
+import {BlockIDStr} from "./store/BlocksStore";
 import {NoteLink} from "./NoteLink";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) =>
 );
 
 interface IProps {
-    readonly id: NoteIDStr;
+    readonly id: BlockIDStr;
     readonly content: string;
 }
 

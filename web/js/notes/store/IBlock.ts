@@ -1,11 +1,11 @@
 import { ISODateTimeString } from "polar-shared/src/metadata/ISODateTimeStrings";
-import {NoteContent, NoteIDStr} from "./BlocksStore";
+import {NoteContent, BlockIDStr} from "./BlocksStore";
 
 export interface IBlock {
 
-    readonly id: NoteIDStr;
+    readonly id: BlockIDStr;
 
-    readonly parent: NoteIDStr | undefined;
+    readonly parent: BlockIDStr | undefined;
 
     readonly created: ISODateTimeString;
 
@@ -14,7 +14,7 @@ export interface IBlock {
     /**
      * The sub-items of this node as node IDs.
      */
-    readonly items: ReadonlyArray<NoteIDStr>;
+    readonly items: ReadonlyArray<BlockIDStr>;
 
     // TODO
     //
@@ -26,7 +26,7 @@ export interface IBlock {
     /**
      * The linked wiki references to other notes.
      */
-    readonly links: ReadonlyArray<NoteIDStr>;
+    readonly links: ReadonlyArray<BlockIDStr>;
 
     // FIXMEL this needs to be refactoed because
     // the content type of the node should/could change and we need markdown/latex/etc note types

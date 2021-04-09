@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {NoteIDStr} from "./store/BlocksStore";
+import {BlockIDStr} from "./store/BlocksStore";
 import {createNoteLink} from "./NoteLinkLoader";
 import {Link} from "react-router-dom";
 
 interface IProps {
-    readonly target: NoteIDStr;
+    readonly target: BlockIDStr;
     readonly style?: React.CSSProperties;
     readonly className?: string;
     readonly children: JSX.Element | string;

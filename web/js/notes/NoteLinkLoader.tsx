@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {useHistory} from "react-router-dom";
 import {useRefValue} from "../hooks/ReactHooks";
-import {NoteNameStr, NoteIDStr} from "./store/BlocksStore";
+import {BlockNameStr, BlockIDStr} from "./store/BlocksStore";
 
-export type NoteTargetStr = NoteIDStr | NoteNameStr;
+export type NoteTargetStr = BlockIDStr | BlockNameStr;
 
 export function useNoteLinkLoader() {
 

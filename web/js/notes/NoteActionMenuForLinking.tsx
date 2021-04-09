@@ -1,6 +1,6 @@
 import React from "react";
 import {ActionMenuItemProvider, IActionMenuItem, NoteActionMenu} from "./NoteActionMenu";
-import {NoteIDStr, useNotesStore} from "./store/BlocksStore";
+import {BlockIDStr, useNotesStore} from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
 
 function useItemsProvider(): ActionMenuItemProvider {
@@ -28,7 +28,7 @@ function useItemsProvider(): ActionMenuItemProvider {
 }
 
 interface IProps {
-    readonly id: NoteIDStr;
+    readonly id: BlockIDStr;
     readonly children: JSX.Element;
 }
 

@@ -1,4 +1,4 @@
-import {INoteActivated, NavOpts, NavPosition, NoteIDStr, StringSetMap} from "./BlocksStore";
+import {INoteActivated, NavOpts, NavPosition, BlockIDStr, StringSetMap} from "./BlocksStore";
 import {IBlock} from "./IBlock";
 import {Block} from "./Block";
 import {NoteTargetStr} from "../NoteLinkLoader";
@@ -9,22 +9,22 @@ export interface INotesStore {
 
     clearSelected(reason: string): void;
 
-    lookup(notes: ReadonlyArray<NoteIDStr>): ReadonlyArray<IBlock>;
-    lookupReverse(id: NoteIDStr): ReadonlyArray<NoteIDStr>;
-    pathToNote(id: NoteIDStr): ReadonlyArray<Block>;
+    lookup(notes: ReadonlyArray<BlockIDStr>): ReadonlyArray<IBlock>;
+    lookupReverse(id: BlockIDStr): ReadonlyArray<BlockIDStr>;
+    pathToNote(id: BlockIDStr): ReadonlyArray<Block>;
 
-    doDelete(noteIDs: ReadonlyArray<NoteIDStr>): void;
-    setActive(active: NoteIDStr | undefined): void;
+    doDelete(noteIDs: ReadonlyArray<BlockIDStr>): void;
+    setActive(active: BlockIDStr | undefined): void;
 
-    setRoot(root: NoteIDStr | undefined): void;
+    setRoot(root: BlockIDStr | undefined): void;
 
-    getNoteByTarget(target: NoteIDStr | NoteTargetStr): Block | undefined;
+    getNoteByTarget(target: BlockIDStr | NoteTargetStr): Block | undefined;
 
-    getNoteActivated(id: NoteIDStr): INoteActivated | undefined;
+    getNoteActivated(id: BlockIDStr): INoteActivated | undefined;
 
-    getNote(id: NoteIDStr): Block | undefined;
+    getNote(id: BlockIDStr): Block | undefined;
 
-    setActiveWithPosition(active: NoteIDStr | undefined,
+    setActiveWithPosition(active: BlockIDStr | undefined,
                           activePos: NavPosition | undefined): void;
 
 }
