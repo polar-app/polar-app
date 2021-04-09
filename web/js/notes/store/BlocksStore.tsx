@@ -7,7 +7,7 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {NoteTargetStr} from "../NoteLinkLoader";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {INote} from "./INote";
+import {IBlock} from "./IBlock";
 import {ReverseIndex} from "./ReverseIndex";
 import {Block} from "./Block";
 import { arrayStream } from "polar-shared/src/util/ArrayStreams";
@@ -46,7 +46,7 @@ export type NoteContentOffset = number;
 export type NavPosition = 'start' | 'end' | NoteContentOffset;
 
 export interface INoteActivated {
-    readonly note: INote;
+    readonly note: IBlock;
     readonly activePos: NavPosition | undefined;
 }
 
@@ -248,7 +248,7 @@ export class BlocksStore {
         return this._active?.id === id;
     }
 
-    public lookup(notes: ReadonlyArray<NoteIDStr>): ReadonlyArray<INote> {
+    public lookup(notes: ReadonlyArray<NoteIDStr>): ReadonlyArray<IBlock> {
 
         return notes.map(current => this._index[current])
             .filter(current => current !== null && current !== undefined);
@@ -259,7 +259,7 @@ export class BlocksStore {
         return this._reverse.get(id);
     }
 
-    @action public doPut(notes: ReadonlyArray<INote>, opts: DoPutOpts = {}) {
+    @action public doPut(notes: ReadonlyArray<IBlock>, opts: DoPutOpts = {}) {
 
         for (const inote of notes) {
 
@@ -735,7 +735,7 @@ export class BlocksStore {
             return existingNote.id;
         }
 
-        function createNewNote(): INote {
+        function createNewNote(): IBlock {
             const now = ISODateTimeStrings.create()
             return {
                 id: Hashcodes.createRandomID(),
@@ -856,7 +856,7 @@ export class BlocksStore {
 
         }
 
-        function createNewNote(parentNote: Block): INote {
+        function createNewNote(parentNote: Block): IBlock {
             const now = ISODateTimeStrings.create()
 
             const id = Hashcodes.createRandomID();

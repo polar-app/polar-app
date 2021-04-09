@@ -1,5 +1,5 @@
 import {INoteActivated, NavOpts, NavPosition, NoteIDStr, StringSetMap} from "./BlocksStore";
-import {INote} from "./INote";
+import {IBlock} from "./IBlock";
 import {Block} from "./Block";
 import {NoteTargetStr} from "../NoteLinkLoader";
 
@@ -9,7 +9,7 @@ export interface INotesStore {
 
     clearSelected(reason: string): void;
 
-    lookup(notes: ReadonlyArray<NoteIDStr>): ReadonlyArray<INote>;
+    lookup(notes: ReadonlyArray<NoteIDStr>): ReadonlyArray<IBlock>;
     lookupReverse(id: NoteIDStr): ReadonlyArray<NoteIDStr>;
     pathToNote(id: NoteIDStr): ReadonlyArray<Block>;
 

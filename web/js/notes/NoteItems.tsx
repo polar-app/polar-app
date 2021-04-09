@@ -6,7 +6,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
 import {NoteIDStr} from "./store/BlocksStore";
-import {INote} from "./store/INote";
+import {IBlock} from "./store/IBlock";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) =>
 
 interface NotesProps {
     readonly parent: NoteIDStr;
-    readonly notes: ReadonlyArray<INote> | undefined;
+    readonly notes: ReadonlyArray<IBlock> | undefined;
 }
 
 export const NoteItems = deepMemo(function NoteItems(props: NotesProps) {

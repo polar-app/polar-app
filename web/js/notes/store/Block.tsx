@@ -1,9 +1,9 @@
-import {INote} from "./INote";
+import {IBlock} from "./IBlock";
 import {INewChildPosition, NoteContent, NoteIDStr, NoteType} from "./BlocksStore";
 import {action, computed, makeObservable, observable} from "mobx"
 import { ISODateTimeString, ISODateTimeStrings } from "polar-shared/src/metadata/ISODateTimeStrings";
 
-export class Block implements INote {
+export class Block implements IBlock {
 
     @observable private _id: NoteIDStr;
 
@@ -43,7 +43,7 @@ export class Block implements INote {
      */
     @observable private _type: NoteType;
 
-    constructor(opts: INote) {
+    constructor(opts: IBlock) {
 
         this._id = opts.id;
         this._parent = opts.parent;

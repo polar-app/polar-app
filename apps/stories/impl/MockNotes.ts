@@ -1,12 +1,12 @@
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {INote} from "../../../web/js/notes/store/INote";
+import {IBlock} from "../../../web/js/notes/store/IBlock";
 
 export namespace MockNotes {
     export function create() {
 
         const now = ISODateTimeStrings.create();
 
-        const notes: ReadonlyArray<INote> = [
+        const notes: ReadonlyArray<IBlock> = [
             {
                 id: '102',
                 parent: undefined,

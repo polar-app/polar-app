@@ -2,13 +2,13 @@ import * as React from 'react';
 import {Provider} from "polar-shared/src/util/Providers";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {createObservableStore, SetStore} from "../../../web/js/react/store/ObservableStore";
-import {INote} from "../../../web/js/notes/store/INote";
+import {IBlock} from "../../../web/js/notes/store/IBlock";
 
 export type NoteIDStr = IDStr;
 export type NoteNameStr = string;
 
-export type AbortedRenderIndex = Readonly<{[id: string /* NoteIDStr */]: INote}>;
-export type AbortedRenderIndexByName = Readonly<{[name: string /* NoteNameStr */]: INote}>;
+export type AbortedRenderIndex = Readonly<{[id: string /* NoteIDStr */]: IBlock}>;
+export type AbortedRenderIndexByName = Readonly<{[name: string /* NoteNameStr */]: IBlock}>;
 
 export type ReverseAbortedRenderIndex = Readonly<{[id: string /* NoteIDStr */]: ReadonlyArray<NoteIDStr>}>;
 
