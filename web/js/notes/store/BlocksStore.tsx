@@ -689,7 +689,7 @@ export class BlocksStore {
 
     }
 
-    @action public mergeNotes(target: BlockIDStr, source: BlockIDStr) {
+    @action public mergeBlocks(target: BlockIDStr, source: BlockIDStr) {
 
         const targetNote = this._index[target];
         const sourceNote = this._index[source];

@@ -525,7 +525,7 @@ describe('NotesStore', function() {
 
             TestingTime.forward(1000);
 
-            store.mergeNotes('103', '104');
+            store.mergeBlocks('103', '104');
 
             assert.isUndefined(store.getNote('104'));
 

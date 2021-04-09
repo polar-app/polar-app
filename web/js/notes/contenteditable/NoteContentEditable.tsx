@@ -333,7 +333,7 @@ export const NoteContentEditable = observer((props: IProps) => {
 
                     if (mergeTarget) {
                         abortEvent();
-                        store.mergeNotes(mergeTarget.target, mergeTarget.source);
+                        store.mergeBlocks(mergeTarget.target, mergeTarget.source);
                         break;
                     }
 
