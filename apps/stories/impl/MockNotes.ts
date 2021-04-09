@@ -6,9 +6,12 @@ export namespace MockNotes {
 
         const now = ISODateTimeStrings.create();
 
+        const nspace = 'ns101';
+        const uid = '123';
         const notes: ReadonlyArray<IBlock> = [
             {
                 id: '102',
+                nspace, uid,
                 parent: undefined,
                 created: now,
                 updated: now,
@@ -23,6 +26,7 @@ export namespace MockNotes {
             },
             {
                 id: '103',
+                nspace, uid,
                 parent: '102',
                 created: now,
                 updated: now,
@@ -33,6 +37,7 @@ export namespace MockNotes {
             },
             {
                 id: '104',
+                nspace, uid,
                 parent: '102',
                 created: now,
                 updated: now,
@@ -43,6 +48,7 @@ export namespace MockNotes {
             },
             {
                 id: '105',
+                nspace, uid,
                 parent: '102',
                 created: now,
                 updated: now,
@@ -55,6 +61,7 @@ export namespace MockNotes {
             },
             {
                 id: '100',
+                nspace, uid,
                 parent: undefined,
                 created: now,
                 updated: now,
@@ -65,6 +72,7 @@ export namespace MockNotes {
             },
             {
                 id: '108',
+                nspace, uid,
                 parent: undefined,
                 created: now,
                 updated: now,
@@ -75,6 +83,7 @@ export namespace MockNotes {
             },
             {
                 id: '109',
+                nspace, uid,
                 parent: undefined,
                 created: now,
                 updated: now,
@@ -87,6 +96,7 @@ export namespace MockNotes {
             },
             {
                 id: '111',
+                nspace, uid,
                 parent: '109',
                 created: now,
                 updated: now,
@@ -97,6 +107,7 @@ export namespace MockNotes {
             },
             {
                 id: '106',
+                nspace, uid,
                 parent: '105',
                 created: now,
                 updated: now,
@@ -107,6 +118,7 @@ export namespace MockNotes {
             },
             {
                 id: '107',
+                nspace, uid,
                 parent: undefined,
                 created: now,
                 updated: now,
@@ -119,6 +131,7 @@ export namespace MockNotes {
             },
             {
                 id: '110',
+                nspace, uid,
                 parent: '107',
                 created: now,
                 updated: now,
@@ -131,6 +144,7 @@ export namespace MockNotes {
             },
             {
                 id: '112',
+                nspace, uid,
                 parent: undefined,
                 created: now,
                 updated: now,
