@@ -749,7 +749,7 @@ describe('NotesStore', function() {
                 "105"
             ]);
 
-            const createdNote = store.createNewNote('102');
+            const createdNote = store.createNewBlock('102');
 
             assertJSON(note!.items, [
                 createdNote.id,
@@ -781,7 +781,7 @@ describe('NotesStore', function() {
             assertJSON(note!.items, [
             ]);
 
-            const createdNote = store.createNewNote('102');
+            const createdNote = store.createNewBlock('102');
             assertJSON(note!.items, [
                 createdNote.id,
             ]);
@@ -794,7 +794,7 @@ describe('NotesStore', function() {
 
             function createNoteWithoutExpansion() {
 
-                const createdNote = store.createNewNote('105');
+                const createdNote = store.createNewBlock('105');
 
                 assert.equal(createdNote.parent, '102');
 
@@ -812,7 +812,7 @@ describe('NotesStore', function() {
             function createNoteWithExpansion() {
                 store.expand('105');
 
-                const createdNote = store.createNewNote('105');
+                const createdNote = store.createNewBlock('105');
 
                 assert.equal(createdNote.parent, '105');
 

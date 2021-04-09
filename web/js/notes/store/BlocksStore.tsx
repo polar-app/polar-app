@@ -73,12 +73,12 @@ export interface INewChildPosition {
     readonly pos: NewChildPos;
 }
 
-export interface ISplitNote {
+export interface ISplitBlock {
     readonly prefix: string;
     readonly suffix: string;
 }
 
-export interface DeleteNoteRequest {
+export interface DeleteBlockRequest {
     readonly parent: BlockIDStr;
     readonly id: BlockIDStr;
 }
@@ -362,7 +362,7 @@ export class BlocksStore {
 
     }
 
-    public getNoteByName(name: BlockNameStr): Block | undefined {
+    public getBlockByName(name: BlockNameStr): Block | undefined {
 
         const noteRefByName = this._indexByName[name];
 
@@ -654,7 +654,7 @@ export class BlocksStore {
         const block = this._index[active.id];
 
         if (block) {
-            return {block: block, activePos: active.pos};
+            return {block, activePos: active.pos};
         } else {
             return undefined;
         }
@@ -691,51 +691,51 @@ export class BlocksStore {
 
     @action public mergeBlocks(target: BlockIDStr, source: BlockIDStr) {
 
-        const targetNote = this._index[target];
-        const sourceNote = this._index[source];
+        const targetBlock = this._index[target];
+        const sourceBlock = this._index[source];
 
-        if (targetNote.type !== sourceNote.type) {
-            console.warn("Note types are incompatible and can't be merged");
-            return 'incompatible-note-types';
+        if (targetBlock.type !== sourceBlock.type) {
+            console.warn("Block types are incompatible and can't be merged");
+            return 'incompatible-block-types';
         }
 
-        const offset = CursorPositions.renderedTextLength(targetNote.content);
+        const offset = CursorPositions.renderedTextLength(targetBlock.content);
 
-        const items = [...targetNote.items, ...sourceNote.items];
-        const links = [...targetNote.links, ...sourceNote.links];
+        const items = [...targetBlock.items, ...sourceBlock.items];
+        const links = [...targetBlock.links, ...sourceBlock.links];
 
-        const newContent = targetNote.content + " " + sourceNote.content;
-        targetNote.setContent(newContent);
-        targetNote.setItems(items);
-        targetNote.setLinks(links);
+        const newContent = targetBlock.content + " " + sourceBlock.content;
+        targetBlock.setContent(newContent);
+        targetBlock.setItems(items);
+        targetBlock.setLinks(links);
 
-        const deleteSourceNote = () => {
+        const deleteSourceBlock = () => {
             // we have to set items to an empty array or doDelete will also remove the children recursively.
-            sourceNote.setItems([]);
-            this.doDelete([sourceNote.id]);
+            sourceBlock.setItems([]);
+            this.doDelete([sourceBlock.id]);
         }
 
-        deleteSourceNote();
+        deleteSourceBlock();
 
-        this.setActiveWithPosition(targetNote.id, offset);
+        this.setActiveWithPosition(targetBlock.id, offset);
 
         return undefined;
 
     }
 
     /**
-     * Create a new named note but only when a note with this name does not exist.
+     * Create a new named block but only when a block with this name does not exist.
      */
-    @action public createNewNamedNote(name: BlockNameStr): BlockIDStr {
+    @action public createNewNamedBlock(name: BlockNameStr): BlockIDStr {
 
-        const existingNote = this.getNoteByName(name);
+        const existingBlock = this.getBlockByName(name);
 
-        if (existingNote) {
+        if (existingBlock) {
             // note already exists...
-            return existingNote.id;
+            return existingBlock.id;
         }
 
-        function createNewNote(): IBlock {
+        function createNewBlock(): IBlock {
             const now = ISODateTimeStrings.create()
             return {
                 id: Hashcodes.createRandomID(),
@@ -749,19 +749,19 @@ export class BlocksStore {
             };
         }
 
-        const newNote = createNewNote();
+        const newBlock = createNewBlock();
 
-        this.doPut([newNote]);
+        this.doPut([newBlock]);
 
-        return newNote.id;
+        return newBlock.id;
 
     }
 
     /**
-     * Create a new note in reference to the note with given ID.
+     * Create a new block in reference to the block with given ID.
      */
-    @action public createNewNote(id: BlockIDStr,
-                                 split?: ISplitNote): ICreatedNote {
+    @action public createNewBlock(id: BlockIDStr,
+                                  split?: ISplitBlock): ICreatedNote {
 
         // *** we first have to compute the new parent this has to be computed
         // based on the expansion tree because if the current note setup is like:

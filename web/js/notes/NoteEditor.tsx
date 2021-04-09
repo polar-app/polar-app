@@ -121,7 +121,7 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
                 const prefix = escaper.unescape(ContentEditables.fragmentToHTML(split.prefix));
                 const suffix = escaper.unescape(ContentEditables.fragmentToHTML(split.suffix));
 
-                store.createNewNote(id, {prefix, suffix});
+                store.createNewBlock(id, {prefix, suffix});
 
             }
 

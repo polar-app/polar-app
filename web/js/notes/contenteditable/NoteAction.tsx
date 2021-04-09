@@ -82,7 +82,7 @@ function useActionExecutor() {
 
             case "note-link":
 
-                notesStore.createNewNamedNote(actionOp.target);
+                notesStore.createNewNamedBlock(actionOp.target);
 
                 const coveringRange = createCoveringRange();
                 coveringRange.deleteContents();
