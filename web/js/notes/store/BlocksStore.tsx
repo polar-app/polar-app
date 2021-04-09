@@ -9,7 +9,7 @@ import {isPresent} from "polar-shared/src/Preconditions";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {INote} from "./INote";
 import {ReverseIndex} from "./ReverseIndex";
-import {Note} from "./Note";
+import {Block} from "./Block";
 import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 import { Numbers } from "polar-shared/src/util/Numbers";
 import {CursorPositions} from "../contenteditable/CursorPositions";
@@ -19,7 +19,7 @@ export type NoteNameStr = string;
 
 export type NoteType = 'item' | 'named';
 
-export type NotesIndex = {[id: string /* NoteIDStr */]: Note};
+export type NotesIndex = {[id: string /* NoteIDStr */]: Block};
 export type NotesIndexByName = {[name: string /* NoteNameStr */]: NoteIDStr};
 
 export type ReverseNotesIndex = {[id: string /* NoteIDStr */]: NoteIDStr[]};
@@ -263,7 +263,7 @@ export class BlocksStore {
 
         for (const inote of notes) {
 
-            const note = new Note(inote);
+            const note = new Block(inote);
             this._index[inote.id] = note;
 
             if (inote.type === 'named') {
@@ -288,11 +288,11 @@ export class BlocksStore {
         return Object.keys(this._selected).length > 0;
     }
 
-    public getNote(id: NoteIDStr): Note | undefined {
+    public getNote(id: NoteIDStr): Block | undefined {
         return this._index[id] || undefined;
     }
 
-    public getParent(id: NoteIDStr): Note | undefined {
+    public getParent(id: NoteIDStr): Block | undefined {
 
         const note = this._index[id];
 
@@ -344,7 +344,7 @@ export class BlocksStore {
     }
 
 
-    public getNoteByTarget(target: NoteIDStr | NoteTargetStr): Note | undefined {
+    public getNoteByTarget(target: NoteIDStr | NoteTargetStr): Block | undefined {
 
         const noteByID = this._index[target];
 
@@ -362,7 +362,7 @@ export class BlocksStore {
 
     }
 
-    public getNoteByName(name: NoteNameStr): Note | undefined {
+    public getNoteByName(name: NoteNameStr): Block | undefined {
 
         const noteRefByName = this._indexByName[name];
 
@@ -375,7 +375,7 @@ export class BlocksStore {
     }
 
 
-    public getActiveNote(id: NoteIDStr): Note | undefined {
+    public getActiveNote(id: NoteIDStr): Block | undefined {
 
         const active = this._active;
 
@@ -795,14 +795,14 @@ export class BlocksStore {
          */
         interface INewNotePositionRelative {
             readonly type: 'relative';
-            readonly parentNote: Note;
+            readonly parentNote: Block;
             readonly ref: NoteIDStr;
             readonly pos: NewChildPos;
         }
 
         interface INewNotePositionFirstChild {
             readonly type: 'first-child';
-            readonly parentNote: Note;
+            readonly parentNote: Block;
         }
 
         const computeNewNotePosition = (): INewNotePositionRelative | INewNotePositionFirstChild => {
@@ -856,7 +856,7 @@ export class BlocksStore {
 
         }
 
-        function createNewNote(parentNote: Note): INote {
+        function createNewNote(parentNote: Block): INote {
             const now = ISODateTimeStrings.create()
 
             const id = Hashcodes.createRandomID();
@@ -1306,7 +1306,7 @@ export class BlocksStore {
     /**
      * Compute the path to a note from its parent but not including the actual note.
      */
-    public pathToNote(id: NoteIDStr): ReadonlyArray<Note> {
+    public pathToNote(id: NoteIDStr): ReadonlyArray<Block> {
 
         let current = this._index[id];
 

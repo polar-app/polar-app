@@ -6,7 +6,7 @@ import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {assert} from 'chai';
 import {isObservable, isObservableProp} from 'mobx';
 import {ReverseIndex} from "./ReverseIndex";
-import {Note} from "./Note";
+import {Block} from "./Block";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 // TODO:
@@ -64,7 +64,7 @@ describe('NotesStore', function() {
 
         it("Note", () => {
 
-            const note = new Note(MockNotes.create()[0]);
+            const note = new Block(MockNotes.create()[0]);
 
             assert.isTrue(isObservable(note));
             assert.isTrue(isObservableProp(note, 'content'));
