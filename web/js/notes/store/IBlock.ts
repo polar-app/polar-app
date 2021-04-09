@@ -1,9 +1,16 @@
 import { ISODateTimeString } from "polar-shared/src/metadata/ISODateTimeStrings";
 import {BlockContent, BlockIDStr} from "./BlocksStore";
 
+export type UIDStr = string;
+export type NamespaceIDStr = string;
+
 export interface IBlock {
 
     readonly id: BlockIDStr;
+
+    readonly nspace: NamespaceIDStr;
+
+    readonly uid: UIDStr;
 
     readonly parent: BlockIDStr | undefined;
 

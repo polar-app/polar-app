@@ -1,4 +1,4 @@
-import {IBlock} from "./IBlock";
+import {IBlock, NamespaceIDStr, UIDStr} from "./IBlock";
 import {INewChildPosition, BlockContent, BlockIDStr, BlockType} from "./BlocksStore";
 import {action, computed, makeObservable, observable} from "mobx"
 import { ISODateTimeString, ISODateTimeStrings } from "polar-shared/src/metadata/ISODateTimeStrings";
@@ -6,6 +6,16 @@ import { ISODateTimeString, ISODateTimeStrings } from "polar-shared/src/metadata
 export class Block implements IBlock {
 
     @observable private _id: BlockIDStr;
+
+    /**
+     * The graph to which this page belongs.
+     */
+    @observable private _nspace: NamespaceIDStr;
+
+    /**
+     * The owner of this block.
+     */
+    @observable readonly _uid: UIDStr;
 
     @observable private _parent: BlockIDStr | undefined;
 
@@ -47,6 +57,8 @@ export class Block implements IBlock {
     constructor(opts: IBlock) {
 
         this._id = opts.id;
+        this._nspace = opts.nspace;
+        this._uid = opts.uid;
         this._parent = opts.parent;
         this._created = opts.created;
         this._updated = opts.updated;
@@ -61,6 +73,14 @@ export class Block implements IBlock {
 
     @computed get id() {
         return this._id;
+    }
+
+    @computed get nspace() {
+        return this._nspace;
+    }
+
+    @computed get uid() {
+        return this._uid;
     }
 
     @computed get parent() {
@@ -173,6 +193,23 @@ export class Block implements IBlock {
         // but it's a copy of the original to begin with.
         this._links.splice(idx, 1);
         this._updated = ISODateTimeStrings.create();
+
+    }
+
+    public toJSON(): IBlock {
+
+        return {
+            id: this._id,
+            nspace: this._nspace,
+            uid: this._uid,
+            parent: this._parent,
+            created: this._created,
+            updated: this._updated,
+            items: this._items,
+            content: this._content,
+            links: this._links,
+            type: this._type
+        };
 
     }
 
