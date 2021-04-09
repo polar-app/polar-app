@@ -789,7 +789,7 @@ export class BlocksStore {
         // - second
 
         /**
-         * A new note instruction that creates the note relative to a sibling
+         * A new block instruction that creates the block relative to a sibling
          * and provides the parent.
          */
         interface INewBlockPositionRelative {
@@ -799,44 +799,44 @@ export class BlocksStore {
             readonly pos: NewChildPos;
         }
 
-        interface INewNotePositionFirstChild {
+        interface INewBlockPositionFirstChild {
             readonly type: 'first-child';
             readonly parentBlock: Block;
         }
 
-        const computeNewNotePosition = (): INewBlockPositionRelative | INewNotePositionFirstChild => {
+        const computeNewBlockPosition = (): INewBlockPositionRelative | INewBlockPositionFirstChild => {
 
             const linearExpansionTree = this.computeLinearExpansionTree2(id);
 
-            const nextNoteID = Arrays.first(linearExpansionTree);
+            const nextBlockID = Arrays.first(linearExpansionTree);
 
-            const createNewNotePositionRelative = (ref: BlockIDStr, pos: NewChildPos): INewBlockPositionRelative => {
+            const createNewBlockPositionRelative = (ref: BlockIDStr, pos: NewChildPos): INewBlockPositionRelative => {
 
-                const note = this.getBlock(ref)!;
-                const parentNote = this.getBlock(note.parent!)!;
+                const block = this.getBlock(ref)!;
+                const parentBlock = this.getBlock(block.parent!)!;
 
                 return {
                     type: 'relative',
-                    parentBlock: parentNote,
+                    parentBlock,
                     ref,
                     pos
                 };
 
             }
 
-            if (nextNoteID) {
-                return createNewNotePositionRelative(nextNoteID, 'before')
+            if (nextBlockID) {
+                return createNewBlockPositionRelative(nextBlockID, 'before')
             } else {
 
-                const note = this.getBlock(id)!;
+                const block = this.getBlock(id)!;
 
-                if (note.parent) {
+                if (block.parent) {
 
-                    const parentNote = this.getBlock(note.parent)!;
+                    const parentBlock = this.getBlock(block.parent)!;
 
                     return {
                         type: 'relative',
-                        parentNote,
+                        parentBlock,
                         ref: id,
                         pos: 'after'
                     }
@@ -845,7 +845,7 @@ export class BlocksStore {
 
                     return {
                         type: 'first-child',
-                        parentNote: note
+                        parentBlock: block
                     }
 
                 }
@@ -879,7 +879,7 @@ export class BlocksStore {
 
         const currentNote = this.getBlock(id)!;
 
-        const newNotePosition = computeNewNotePosition();
+        const newNotePosition = computeNewBlockPosition();
 
         const {parentBlock} = newNotePosition;
 
