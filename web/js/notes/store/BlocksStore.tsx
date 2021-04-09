@@ -1334,6 +1334,36 @@ export class BlocksStore {
 
     }
 
+    public requiredAutoUnIndent(id: BlockIDStr) {
+
+        const block = this.getBlock(id);
+
+        if (! block) {
+            return false;
+        }
+
+        if (! this.blockIsEmpty(id)) {
+            return false;
+        }
+
+        if (! block.parent) {
+            return false;
+        }
+
+        const parentBlock = this.getBlock(block.parent);
+
+        if (! parentBlock) {
+            return false;
+        }
+
+        if (this.root === parentBlock.id) {
+            return false;
+        }
+
+        return parentBlock.items.indexOf(id) === parentBlock.items.length - 1;
+
+    }
+
 }
 
 export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore(() => {

@@ -80,12 +80,12 @@ function useLinkNavigationClickHandler() {
 const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
     const {id} = props;
-    const store = useBlocksStore()
-    const noteActivated = store.getNoteActivated(props.id);
+    const blocksStore = useBlocksStore()
+    const noteActivated = blocksStore.getNoteActivated(props.id);
     const linkNavigationClickHandler = useLinkNavigationClickHandler();
     const ref = React.createRef<HTMLDivElement | null>();
 
-    const note = store.getBlock(id);
+    const note = blocksStore.getBlock(id);
 
     const escaper = MarkdownContentEscaper;
 
@@ -106,9 +106,9 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
             return;
         }
 
-        store.setActive(props.id);
+        blocksStore.setActive(props.id);
 
-    }, [linkNavigationClickHandler, props.id, store]);
+    }, [linkNavigationClickHandler, props.id, blocksStore]);
 
     const handleCreateNewNote = React.useCallback(() => {
 
@@ -121,25 +121,26 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
                 const prefix = escaper.unescape(ContentEditables.fragmentToHTML(split.prefix));
                 const suffix = escaper.unescape(ContentEditables.fragmentToHTML(split.suffix));
 
-                store.createNewBlock(id, {prefix, suffix});
+                blocksStore.createNewBlock(id, {prefix, suffix});
 
             }
 
         }
 
-    }, [escaper, id, ref, store]);
+    }, [escaper, id, ref, blocksStore]);
+
 
     const handleEnter = React.useCallback(() => {
 
         if (ref.current) {
-            if (store.blockIsEmpty(props.id) && store.root !== note?.parent) {
-                store.doUnIndent(props.id);
+            if (blocksStore.requiredAutoUnIndent(props.id)) {
+                blocksStore.doUnIndent(props.id);
             } else {
                 handleCreateNewNote();
             }
         }
 
-    }, [handleCreateNewNote, note?.parent, props.id, ref, store]);
+    }, [handleCreateNewNote, props.id, ref, blocksStore]);
 
     const onKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 
