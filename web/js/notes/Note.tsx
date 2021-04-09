@@ -7,7 +7,7 @@ import {IDocViewerContextMenuOrigin} from "../../../apps/doc/src/DocViewerMenu";
 import {NoteContextMenuItems} from "./NoteContextMenuItems";
 import useTheme from "@material-ui/core/styles/useTheme";
 import { NoteExpandToggleButton } from "./NoteExpandToggleButton";
-import { BlockIDStr, useNotesStore } from "./store/BlocksStore";
+import { BlockIDStr, useBlocksStore } from "./store/BlocksStore";
 import { observer,  } from "mobx-react-lite"
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
@@ -37,7 +37,7 @@ export const NoteInner = observer((props: IProps) => {
 
     const {id} = props;
 
-    const store = useNotesStore();
+    const store = useBlocksStore();
     const classes = useStyles();
 
     const theme = useTheme();

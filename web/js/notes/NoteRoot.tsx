@@ -4,7 +4,7 @@ import {NotesInbound} from "./NotesInbound";
 import { Note } from "./Note";
 import { NoteStyle } from "./NoteStyle";
 import { BlockIDStr } from "./store/BlocksStore";
-import { useNotesStore } from "./store/BlocksStore";
+import { useBlocksStore } from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
 import {NoteSelectionHandler} from "./NoteSelectionHandler";
 import {ActionMenuPopup} from "../mui/action_menu/ActionMenuPopup";
@@ -20,7 +20,7 @@ export const NoteRoot = observer((props: IProps) => {
 
     const {target} = props;
 
-    const store = useNotesStore();
+    const store = useBlocksStore();
 
     const note = store.getNoteByTarget(target)
 

@@ -2,7 +2,7 @@ import { HTMLStr } from 'polar-shared/src/util/Strings';
 import React from 'react';
 import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import { observer } from "mobx-react-lite"
-import {NavOpts, BlockIDStr, useNotesStore} from '../store/BlocksStore';
+import {NavOpts, BlockIDStr, useBlocksStore} from '../store/BlocksStore';
 import {ContentEditables} from "../ContentEditables";
 import {createActionsProvider} from "../../mui/action_menu/ActionStore";
 import {NoteFormatPopper} from "../NoteFormatPopper";
@@ -54,7 +54,7 @@ export const NoteContentEditable = observer((props: IProps) => {
     const [content, setContent] = React.useState(props.content);
     const divRef = React.useRef<HTMLDivElement | null>(null);
     const contentRef = React.useRef(props.content);
-    const store = useNotesStore();
+    const store = useBlocksStore();
     const history = useHistory();
 
     const noteLinkActions = store.getNamedNodes().map(current => ({

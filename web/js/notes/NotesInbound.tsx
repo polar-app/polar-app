@@ -4,7 +4,7 @@ import Box from '@material-ui/core/Box';
 import { UL } from './UL';
 import {NoteBulletButton} from "./NoteBulletButton";
 import {NoteEditor} from "./NoteEditor";
-import {BlockIDStr, useNotesStore } from './store/BlocksStore';
+import {BlockIDStr, useBlocksStore } from './store/BlocksStore';
 import { observer } from "mobx-react-lite"
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import {NoteBreadcrumbLink} from "./NoteBreadcrumbLink";
@@ -17,9 +17,9 @@ interface InboundNoteRefProps {
 
 const InboundNoteRef = observer((props: InboundNoteRefProps) => {
 
-    const store = useNotesStore();
+    const store = useBlocksStore();
 
-    const pathToNote = store.pathToNote(props.id);
+    const pathToNote = store.pathToBlock(props.id);
 
     return (
         <>
@@ -56,7 +56,7 @@ interface IProps {
 
 export const NotesInbound = deepMemo(function NotesInbound(props: IProps) {
 
-    const store = useNotesStore();
+    const store = useBlocksStore();
 
     const inboundNoteIDs = store.lookupReverse(props.id);
     const inbound = store.lookup(inboundNoteIDs);

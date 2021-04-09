@@ -680,7 +680,7 @@ describe('NotesStore', function() {
         it("Verify that a root note has an empty path", () => {
 
             const store = createStore();
-            const path = store.pathToNote('102');
+            const path = store.pathToBlock('102');
             assert.equal(path.length, 0);
 
         });
@@ -688,7 +688,7 @@ describe('NotesStore', function() {
         it("Path to level 1", () => {
 
             const store = createStore();
-            const path = store.pathToNote('105');
+            const path = store.pathToBlock('105');
             assert.equal(path.length, 1);
 
             assert.equal(path[0].id, "102");
@@ -698,7 +698,7 @@ describe('NotesStore', function() {
         it("Path to level 2", () => {
 
             const store = createStore();
-            const path = store.pathToNote('106');
+            const path = store.pathToBlock('106');
             assert.equal(path.length, 2);
 
             assert.equal(path[0].id, "102");

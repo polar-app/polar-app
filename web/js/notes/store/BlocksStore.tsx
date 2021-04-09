@@ -1151,12 +1151,12 @@ export class BlocksStore {
 
     public blockIsEmpty(id: BlockIDStr): boolean {
 
-        const note = this._index[id];
-        return note?.content.trim() === '';
+        const block = this._index[id];
+        return block?.content.trim() === '';
 
     }
 
-    @action public doDelete(noteIDs: ReadonlyArray<BlockIDStr>) {
+    @action public doDelete(blockIDs: ReadonlyArray<BlockIDStr>) {
 
         interface NextActive {
             readonly active: BlockIDStr;
@@ -1165,22 +1165,22 @@ export class BlocksStore {
 
         const computeNextActive = (): NextActive | undefined => {
 
-            const noteID = notesToDelete[0];
-            const note = this._index[noteID];
+            const blockID = blocksToDelete[0];
+            const block = this._index[blockID];
 
-            if (! note) {
-                console.log("No note for ID: " + noteID)
+            if (! block) {
+                console.log("No block for ID: " + blockID)
                 return undefined;
             }
 
-            if (! note.parent) {
-                console.log("No parent for ID: " + noteID)
+            if (! block.parent) {
+                console.log("No parent for ID: " + blockID)
                 return undefined;
             }
 
-            const linearExpansionTree = this.computeLinearExpansionTree(note.parent);
+            const linearExpansionTree = this.computeLinearExpansionTree(block.parent);
 
-            const deleteIndexes = arrayStream(notesToDelete)
+            const deleteIndexes = arrayStream(blocksToDelete)
                 .map(current => linearExpansionTree.indexOf(current))
                 .filter(current => current !== -1)
                 .sort((a, b) => a - b)
@@ -1212,58 +1212,58 @@ export class BlocksStore {
             }
 
             return {
-                active: note.parent,
+                active: block.parent,
                 activePos: 'start'
             };
 
         }
 
-        const handleDelete = (notes: ReadonlyArray<BlockIDStr>) => {
+        const handleDelete = (blocks: ReadonlyArray<BlockIDStr>) => {
 
             let deleted: number = 0;
 
-            for (const noteID of notes) {
+            for (const blockID of blocks) {
 
-                const note = this._index[noteID];
+                const block = this._index[blockID];
 
-                if (note) {
+                if (block) {
 
                     // *** first delete all children,  We have to do this first
                     // or else they won't have parents.
 
-                    handleDelete(note.items);
+                    handleDelete(block.items);
 
-                    // *** delete the id for this note from the parents items.
+                    // *** delete the id for this block from the parents items.
 
-                    if (note.parent) {
+                    if (block.parent) {
 
-                        const parentNote = this._index[note.parent];
+                        const parentBlock = this._index[block.parent];
 
-                        if (! parentNote) {
-                            console.warn(`handleDelete: Note ${note.id} (${noteID}) has no parent for ID ${note.parent}`);
+                        if (! parentBlock) {
+                            console.warn(`handleDelete: Block ${block.id} (${blockID}) has no parent for ID ${block.parent}`);
                             continue;
                         }
 
-                        parentNote.removeItem(note.id);
+                        parentBlock.removeItem(block.id);
 
                     }
 
                     // we have to capture this before we delete the node
                     // and keep a snapshot of it
-                    const inboundIDs = [...this.reverse.get(note.id)];
+                    const inboundIDs = [...this.reverse.get(block.id)];
 
-                    // *** delete the note from the index
-                    delete this._index[note.id];
+                    // *** delete the block from the index
+                    delete this._index[block.id];
 
-                    // *** delete the note from name index by name.
-                    if (note.type === 'named') {
-                        delete this._indexByName[note.content];
+                    // *** delete the block from name index by name.
+                    if (block.type === 'named') {
+                        delete this._indexByName[block.content];
                     }
 
                     // *** delete the reverse index for this item
 
                     for (const inboundID of inboundIDs) {
-                        this.reverse.remove(note.id, inboundID);
+                        this.reverse.remove(block.id, inboundID);
                     }
 
                     ++deleted;
@@ -1278,21 +1278,21 @@ export class BlocksStore {
 
         const selected = this.selectedIDs();
 
-        const notesToDelete = selected.length > 0 ? selected : noteIDs;
+        const blocksToDelete = selected.length > 0 ? selected : blockIDs;
 
-        if (notesToDelete.length === 0) {
+        if (blocksToDelete.length === 0) {
             return;
         }
 
         const nextActive = computeNextActive();
 
-        if (handleDelete(notesToDelete) > 0) {
+        if (handleDelete(blocksToDelete) > 0) {
 
             if (nextActive) {
                 this.setActiveWithPosition(nextActive.active, nextActive.activePos);
             }
 
-            // we have to clear now because the notes we deleted might have been selected
+            // we have to clear now because the blocks we deleted might have been selected
             this.clearSelected('doDelete');
 
         }
@@ -1300,9 +1300,9 @@ export class BlocksStore {
     }
 
     /**
-     * Compute the path to a note from its parent but not including the actual note.
+     * Compute the path to a block from its parent but not including the actual note.
      */
-    public pathToNote(id: BlockIDStr): ReadonlyArray<Block> {
+    public pathToBlock(id: BlockIDStr): ReadonlyArray<Block> {
 
         let current = this._index[id];
 
@@ -1322,7 +1322,7 @@ export class BlocksStore {
 
 export const [NotesStoreProvider, useNotesStoreDelegate] = createReactiveStore(() => new BlocksStore())
 
-export function useNotesStore() {
+export function useBlocksStore() {
     const delegate = useNotesStoreDelegate();
     return delegate;
 }

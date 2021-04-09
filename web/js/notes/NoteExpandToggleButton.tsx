@@ -5,7 +5,7 @@ import {ArrowDown} from "./ArrowDown";
 import {ArrowRight} from "./ArrowRight";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
-import { useNotesStore } from "./store/BlocksStore";
+import { useBlocksStore } from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
 
 const useStyles = makeStyles((theme) =>
@@ -26,7 +26,7 @@ export const NoteExpandToggleButton = observer(function NoteExpandToggleButton(p
 
     const classes = useStyles();
 
-    const store = useNotesStore();
+    const store = useBlocksStore();
 
     const expanded = store.isExpanded(props.id);
 

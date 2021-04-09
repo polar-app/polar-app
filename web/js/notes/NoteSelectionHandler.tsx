@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { observer } from "mobx-react-lite"
-import { useNotesStore } from './store/BlocksStore';
+import { useBlocksStore } from './store/BlocksStore';
 
 interface IProps {
     readonly children: JSX.Element;
@@ -9,7 +9,7 @@ interface IProps {
 
 export const NoteSelectionHandler = observer(function NoteSelectionHandler(props: IProps) {
 
-    const store = useNotesStore();
+    const store = useBlocksStore();
 
     const selected = store.selected;
 

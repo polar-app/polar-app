@@ -6,7 +6,7 @@ import {ContentEditables} from "../ContentEditables";
 import INodeOffset = ContentEditables.INodeOffset;
 import {useNoteContentEditableElement} from "./NoteContentEditable";
 import { observer } from "mobx-react-lite"
-import { useNotesStore } from '../store/BlocksStore';
+import { useBlocksStore } from '../store/BlocksStore';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 const THINSP = ' ';
@@ -64,7 +64,7 @@ interface IProps {
  */
 function useActionExecutor() {
 
-    const notesStore = useNotesStore();
+    const notesStore = useBlocksStore();
 
     return React.useCallback((from: INodeOffset, to: INodeOffset, actionOp: ActionOp) => {
 

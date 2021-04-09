@@ -5,7 +5,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import clsx from "clsx";
 import {useNoteContextMenu} from "./Note";
-import { BlockIDStr, useNotesStore } from "./store/BlocksStore";
+import { BlockIDStr, useBlocksStore } from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
 
 const useStyles = makeStyles((theme) =>
@@ -24,7 +24,7 @@ interface IProps {
 
 export const NoteOverflowButton = observer(function NoteOverflow(props: IProps) {
 
-    const store = useNotesStore();
+    const store = useBlocksStore();
     const classes = useStyles();
     const contextMenuHandlers = useNoteContextMenu();
 

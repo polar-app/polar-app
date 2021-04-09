@@ -4,7 +4,7 @@ import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
 import {MarkdownContentEscaper} from "./MarkdownContentEscaper";
-import {BlockIDStr, useNotesStore} from "./store/BlocksStore";
+import {BlockIDStr, useBlocksStore} from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
 import {NoteContentEditable} from "./contenteditable/NoteContentEditable";
 import {ContentEditables} from "./ContentEditables";
@@ -80,7 +80,7 @@ function useLinkNavigationClickHandler() {
 const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
     const {id} = props;
-    const store = useNotesStore()
+    const store = useBlocksStore()
     const noteActivated = store.getNoteActivated(props.id);
     const linkNavigationClickHandler = useLinkNavigationClickHandler();
     const ref = React.createRef<HTMLDivElement | null>();

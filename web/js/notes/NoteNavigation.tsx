@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import {BlockIDStr, useNotesStore} from "./store/BlocksStore";
+import {BlockIDStr, useBlocksStore} from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
 
 interface IProps {
@@ -11,7 +11,7 @@ interface IProps {
 
 export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
 
-    const store = useNotesStore();
+    const store = useBlocksStore();
 
     const [ref, setRef] = React.useState<HTMLDivElement | null>(null);
 

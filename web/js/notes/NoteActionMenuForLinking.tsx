@@ -1,11 +1,11 @@
 import React from "react";
 import {ActionMenuItemProvider, IActionMenuItem, NoteActionMenu} from "./NoteActionMenu";
-import {BlockIDStr, useNotesStore} from "./store/BlocksStore";
+import {BlockIDStr, useBlocksStore} from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
 
 function useItemsProvider(): ActionMenuItemProvider {
 
-    const store = useNotesStore();
+    const store = useBlocksStore();
 
     return React.useCallback((prompt: string): ReadonlyArray<IActionMenuItem> => {
 

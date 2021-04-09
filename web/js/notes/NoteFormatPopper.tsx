@@ -3,7 +3,7 @@ import React from 'react';
 import {NoteFormatBar, NoteFormatBarProps} from "./NoteFormatBar";
 import {useNoteFormatHandlers, useNoteFormatKeyboardHandler} from "./NoteFormatHooks";
 import { observer } from "mobx-react-lite"
-import {BlockIDStr, useNotesStore } from './store/BlocksStore';
+import {BlockIDStr, useBlocksStore } from './store/BlocksStore';
 
 export interface INoteFormatBarPosition {
 
@@ -34,7 +34,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
     const [position, setPosition] = React.useState<INoteFormatBarPosition | undefined>(undefined);
     const timeoutRef = React.useRef<number | undefined>(undefined);
 
-    const notesStore = useNotesStore();
+    const notesStore = useBlocksStore();
 
     const note = notesStore.getBlock(props.id);
 
