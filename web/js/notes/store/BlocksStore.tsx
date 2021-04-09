@@ -408,6 +408,15 @@ export class BlocksStore {
         delete this._expanded[id];
     }
 
+    public toggleExpand(id: BlockIDStr) {
+
+        if (this._expanded[id]) {
+            this.collapse(id);
+        } else {
+            this.expand(id);
+        }
+
+    }
 
     @action public setSelectionRange(fromBlock: BlockIDStr, toBlock: BlockIDStr) {
 
@@ -519,16 +528,6 @@ export class BlocksStore {
 
     public navNext(pos: NavPosition, opts: NavOpts) {
         return this.doNav('next', pos, opts);
-    }
-
-    public toggleExpand(id: BlockIDStr) {
-
-        if (this._expanded[id]) {
-            this.collapse(id);
-        } else {
-            this.expand(id);
-        }
-
     }
 
     /**
@@ -896,6 +895,7 @@ export class BlocksStore {
         const newBlockPosition = computeNewBlockPosition();
 
         const {parentBlock} = newBlockPosition;
+
         const newBlock = createNewBlock(parentBlock);
 
         this.doPut([newBlock]);
@@ -1281,6 +1281,8 @@ export class BlocksStore {
                     for (const inboundID of inboundIDs) {
                         this.reverse.remove(block.id, inboundID);
                     }
+
+                    this.collapse(blockID);
 
                     ++deleted;
 
