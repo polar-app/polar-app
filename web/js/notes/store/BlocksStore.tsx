@@ -7,12 +7,13 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {NoteTargetStr} from "../NoteLinkLoader";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {IBlock} from "./IBlock";
+import {IBlock, UIDStr} from "./IBlock";
 import {ReverseIndex} from "./ReverseIndex";
 import {Block} from "./Block";
 import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 import { Numbers } from "polar-shared/src/util/Numbers";
 import {CursorPositions} from "../contenteditable/CursorPositions";
+import {useBlocksStoreContext} from "./BlockStoreContextProvider";
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
@@ -133,6 +134,8 @@ export interface IActiveBlock {
 
 export class BlocksStore {
 
+    private readonly uid: UIDStr;
+
     @observable _index: BlocksIndex = {};
 
     @observable _indexByName: BlocksIndexByName = {};
@@ -171,7 +174,8 @@ export class BlocksStore {
      */
     @observable _selectedAnchor: IDStr | undefined = undefined;
 
-    constructor() {
+    constructor(uid: UIDStr) {
+        this.uid = uid;
         this.root = undefined;
         makeObservable(this);
     }
@@ -726,7 +730,7 @@ export class BlocksStore {
     /**
      * Create a new named block but only when a block with this name does not exist.
      */
-    @action public createNewNamedBlock(name: BlockNameStr): BlockIDStr {
+    @action public createNewNamedBlock(name: BlockNameStr, ref: BlockIDStr): BlockIDStr {
 
         const existingBlock = this.getBlockByName(name);
 
@@ -734,10 +738,19 @@ export class BlocksStore {
             return existingBlock.id;
         }
 
-        function createNewBlock(): IBlock {
+        const createNewBlock = (): IBlock => {
+
+            const refBlock = this.getBlock(ref);
+
+            if (! refBlock) {
+                throw new Error("Reference block doesn't exist");
+            }
+
             const now = ISODateTimeStrings.create()
             return {
                 id: Hashcodes.createRandomID(),
+                nspace: refBlock.nspace,
+                uid: this.uid,
                 parent: undefined,
                 type: 'named',
                 content: name,
@@ -746,7 +759,7 @@ export class BlocksStore {
                 items: [],
                 links: []
             };
-        }
+        };
 
         const newBlock = createNewBlock();
 
@@ -854,7 +867,7 @@ export class BlocksStore {
 
         }
 
-        function createNewBlock(parentBlock: Block): IBlock {
+        const createNewBlock = (parentBlock: Block): IBlock => {
             const now = ISODateTimeStrings.create()
 
             const id = Hashcodes.createRandomID();
@@ -864,6 +877,8 @@ export class BlocksStore {
             return {
                 id,
                 parent: parentBlock.id,
+                nspace: parentBlock.nspace,
+                uid: this.uid,
                 type: 'item',
                 content: split?.suffix || '',
                 created: now,
@@ -1321,9 +1336,13 @@ export class BlocksStore {
 
 }
 
-export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore(() => new BlocksStore())
+export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore(() => {
+    const {uid} = useBlocksStoreContext();
+    return new BlocksStore(uid);
+})
 
 export function useBlocksStore() {
+    const blockStoreContext = useBlocksStoreContext();
     const delegate = useBlocksStoreDelegate();
     return delegate;
 }

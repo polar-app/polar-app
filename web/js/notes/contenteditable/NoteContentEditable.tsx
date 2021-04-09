@@ -374,7 +374,8 @@ export const NoteContentEditable = observer((props: IProps) => {
             <div onKeyDown={handleKeyDown}
                  onKeyUp={handleKeyUp}>
 
-                <NoteAction trigger="[["
+                <NoteAction id={props.id}
+                            trigger="[["
                             actionsProvider={createNoteActionsProvider}
                             onAction={(id) => ({
                                 type: 'note-link',

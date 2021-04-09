@@ -7,6 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import {BlocksStoreProvider, useBlocksStore} from '../../../web/js/notes/store/BlocksStore';
 import {MockNotes} from "./MockNotes";
 import { observer } from "mobx-react-lite"
+import {BlockStoreContextProvider} from "../../../web/js/notes/store/BlockStoreContextProvider";
 
 const notes = MockNotes.create();
 
@@ -121,13 +122,15 @@ export const NotesStory = () => {
 
     return (
         <FixedWidthContainer>
-            <BlocksStoreProvider>
-                <BasicNotesDataSet>
-                    <>
-                        <NotesStoryInner/>
-                    </>
-                </BasicNotesDataSet>
-            </BlocksStoreProvider>
+            <BlockStoreContextProvider uid='1234'>
+                <BlocksStoreProvider>
+                    <BasicNotesDataSet>
+                        <>
+                            <NotesStoryInner/>
+                        </>
+                    </BasicNotesDataSet>
+                </BlocksStoreProvider>
+            </BlockStoreContextProvider>
         </FixedWidthContainer>
     );
 

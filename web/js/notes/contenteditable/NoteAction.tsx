@@ -6,7 +6,7 @@ import {ContentEditables} from "../ContentEditables";
 import INodeOffset = ContentEditables.INodeOffset;
 import {useNoteContentEditableElement} from "./NoteContentEditable";
 import { observer } from "mobx-react-lite"
-import { useBlocksStore } from '../store/BlocksStore';
+import {BlockIDStr, useBlocksStore} from '../store/BlocksStore';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 const THINSP = ' ';
@@ -40,6 +40,8 @@ export type ActionHandler = (id: IDStr) => ActionOp;
 
 interface IProps {
 
+    readonly id: BlockIDStr;
+
     /**
      * The trigger characters that have to fire to bring up the dialog.
      */
@@ -62,7 +64,7 @@ interface IProps {
 /**
  * Performs teh action DOM mutation based on the type of action.
  */
-function useActionExecutor() {
+function useActionExecutor(id: BlockIDStr) {
 
     const notesStore = useBlocksStore();
 
@@ -82,7 +84,7 @@ function useActionExecutor() {
 
             case "note-link":
 
-                notesStore.createNewNamedBlock(actionOp.target);
+                notesStore.createNewNamedBlock(actionOp.target, id);
 
                 const coveringRange = createCoveringRange();
                 coveringRange.deleteContents();
@@ -99,7 +101,7 @@ function useActionExecutor() {
 
         }
 
-    }, [notesStore])
+    }, [id, notesStore])
 
 }
 
@@ -124,7 +126,7 @@ export const NoteAction = observer((props: IProps) => {
     const {trigger, actionsProvider, onAction} = props;
 
     const actionStore = useActionMenuStore();
-    const actionExecutor = useActionExecutor();
+    const actionExecutor = useActionExecutor(props.id);
 
     // true when the current prompt is active and we're actively selecting or
     // creating a new note by typing in the prompt

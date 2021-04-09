@@ -42,7 +42,7 @@ describe('BlocksStore', function() {
 
     function createStore() {
         const notes = MockNotes.create();
-        const store = new BlocksStore();
+        const store = new BlocksStore('1234');
         store.doPut(notes);
         return store;
     }
@@ -51,7 +51,7 @@ describe('BlocksStore', function() {
 
         it("NotesStore", () => {
 
-            const store = new BlocksStore();
+            const store = new BlocksStore('1234');
 
             assert.isTrue(isObservable(store));
             assert.isTrue(isObservableProp(store, 'root'));
