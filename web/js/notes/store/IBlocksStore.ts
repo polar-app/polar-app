@@ -1,7 +1,7 @@
 import {IBlockActivated, NavOpts, NavPosition, BlockIDStr, StringSetMap} from "./BlocksStore";
 import {IBlock} from "./IBlock";
 import {Block} from "./Block";
-import {NoteTargetStr} from "../NoteLinkLoader";
+import {BlockTargetStr} from "../NoteLinkLoader";
 
 export interface IBlocksStore {
 
@@ -18,7 +18,7 @@ export interface IBlocksStore {
 
     setRoot(root: BlockIDStr | undefined): void;
 
-    getNoteByTarget(target: BlockIDStr | NoteTargetStr): Block | undefined;
+    getNoteByTarget(target: BlockIDStr | BlockTargetStr): Block | undefined;
 
     getNoteActivated(id: BlockIDStr): IBlockActivated | undefined;
 

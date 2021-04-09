@@ -4,7 +4,7 @@ import {action, computed, makeObservable, observable} from "mobx"
 import {IDStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Arrays} from "polar-shared/src/util/Arrays";
-import {NoteTargetStr} from "../NoteLinkLoader";
+import {BlockTargetStr} from "../NoteLinkLoader";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {IBlock, UIDStr} from "./IBlock";
@@ -99,16 +99,16 @@ export interface NavOpts {
 }
 
 /**
- * The result of a createNote operation.
+ * The result of a createBlock operation.
  */
 export interface ICreatedBlock {
     /**
-     * The ID of the newly created note.
+     * The ID of the newly created block.
      */
     readonly id: BlockIDStr;
 
     /**
-     * The parent of the newly created note.
+     * The parent of the newly created block.
      */
     readonly parent: BlockIDStr;
 }
@@ -118,7 +118,7 @@ export type DoIndentResult = IMutation<'no-block' | 'no-parent' | 'no-parent-blo
 export type DoUnIndentResult = IMutation<'no-block' | 'no-parent' | 'no-parent-block' | 'no-parent-block-parent' | 'no-parent-block-parent-block', BlockIDStr>
 
 /**
- * The active note and the position it should be set to once it's made active.
+ * The active block and the position it should be set to once it's made active.
  */
 export interface IActiveBlock {
 
@@ -265,17 +265,17 @@ export class BlocksStore {
 
     @action public doPut(blocks: ReadonlyArray<IBlock>, opts: DoPutOpts = {}) {
 
-        for (const block of blocks) {
+        for (const blockID of blocks) {
 
-            const note = new Block(block);
-            this._index[block.id] = note;
+            const block = new Block(blockID);
+            this._index[blockID.id] = block;
 
-            if (block.type === 'named') {
-                this._indexByName[block.content] = note.id;
+            if (blockID.type === 'named') {
+                this._indexByName[blockID.content] = block.id;
             }
 
-            for (const link of note.links) {
-                this._reverse.add(link, note.id);
+            for (const link of block.links) {
+                this._reverse.add(link, block.id);
             }
 
         }
@@ -298,12 +298,12 @@ export class BlocksStore {
 
     public getParent(id: BlockIDStr): Block | undefined {
 
-        const note = this._index[id];
+        const block = this._index[id];
 
-        if (note) {
+        if (block) {
 
-            if (note.parent) {
-                return this._index[note.parent] || undefined;
+            if (block.parent) {
+                return this._index[block.parent] || undefined;
             }
 
         }
@@ -348,7 +348,7 @@ export class BlocksStore {
     }
 
 
-    public getNoteByTarget(target: BlockIDStr | NoteTargetStr): Block | undefined {
+    public getBlockByTarget(target: BlockIDStr | BlockTargetStr): Block | undefined {
 
         const noteByID = this._index[target];
 
@@ -643,7 +643,7 @@ export class BlocksStore {
         return isPresent(this._selected[id]);
     }
 
-    public getNoteActivated(id: BlockIDStr): IBlockActivated | undefined {
+    public getBlockActivated(id: BlockIDStr): IBlockActivated | undefined {
 
         const active = this._active;
 

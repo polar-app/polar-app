@@ -661,14 +661,14 @@ describe('BlocksStore', function() {
 
         it("By ID", () => {
             const store = createStore();
-            const note = store.getNoteByTarget('102');
+            const note = store.getBlockByTarget('102');
             assert.equal(note?.id, '102');
         });
 
         it("By Name", () => {
 
             const store = createStore();
-            const note = store.getNoteByTarget('World War II');
+            const note = store.getBlockByTarget('World War II');
             assert.equal(note?.id, '102');
 
         });

@@ -3,14 +3,14 @@ import {useHistory} from "react-router-dom";
 import {useRefValue} from "../hooks/ReactHooks";
 import {BlockNameStr, BlockIDStr} from "./store/BlocksStore";
 
-export type NoteTargetStr = BlockIDStr | BlockNameStr;
+export type BlockTargetStr = BlockIDStr | BlockNameStr;
 
 export function useNoteLinkLoader() {
 
     const history = useHistory();
     const historyRef = useRefValue(history);
 
-    return React.useCallback((target: NoteTargetStr) => {
+    return React.useCallback((target: BlockTargetStr) => {
 
         const newURL = '/apps/stories/notes/' + target;
         historyRef.current.push(newURL);
@@ -19,6 +19,6 @@ export function useNoteLinkLoader() {
 
 }
 
-export function createNoteLink(target: NoteTargetStr) {
+export function createNoteLink(target: BlockTargetStr) {
     return '/apps/stories/notes/' + target
 }

@@ -22,7 +22,7 @@ export const NoteRoot = observer((props: IProps) => {
 
     const store = useBlocksStore();
 
-    const note = store.getNoteByTarget(target)
+    const note = store.getBlockByTarget(target)
 
     React.useEffect(() => {
         // TODO: do this with one init() operation so it mutates the store just once.

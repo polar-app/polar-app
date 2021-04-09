@@ -1,6 +1,6 @@
 import React from "react";
 import {MiddleDot} from "./MiddleDot";
-import {NoteTargetStr, useNoteLinkLoader} from "./NoteLinkLoader";
+import {BlockTargetStr, useNoteLinkLoader} from "./NoteLinkLoader";
 import {NoteButton} from "./NoteButton";
 import {BlockIDStr, useBlocksStore} from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
@@ -10,7 +10,7 @@ import useTheme from "@material-ui/core/styles/useTheme";
 
 
 interface IProps {
-    readonly target: BlockIDStr | NoteTargetStr;
+    readonly target: BlockIDStr | BlockTargetStr;
 }
 
 export const NoteBulletButton = observer(function NoteBulletButton(props: IProps) {

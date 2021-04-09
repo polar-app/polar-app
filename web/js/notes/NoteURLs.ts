@@ -1,5 +1,5 @@
 import {Arrays} from "polar-shared/src/util/Arrays";
-import {NoteTargetStr} from "./NoteLinkLoader";
+import {BlockTargetStr} from "./NoteLinkLoader";
 import {BlockIDStr} from "./store/BlocksStore";
 
 export interface INoteURL {
@@ -7,7 +7,7 @@ export interface INoteURL {
     /**
      * The ID or node name as a target.
      */
-    readonly target: BlockIDStr | NoteTargetStr;
+    readonly target: BlockIDStr | BlockTargetStr;
 
 }
 

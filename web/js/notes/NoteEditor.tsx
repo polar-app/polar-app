@@ -8,7 +8,6 @@ import {BlockIDStr, useBlocksStore} from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
 import {NoteContentEditable} from "./contenteditable/NoteContentEditable";
 import {ContentEditables} from "./ContentEditables";
-import {HTMLToMarkdown} from "polar-markdown-parser/src/HTMLToMarkdown";
 import { HTMLStr } from "polar-shared/src/util/Strings";
 
 interface ILinkNavigationEvent {
@@ -81,7 +80,7 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
     const {id} = props;
     const blocksStore = useBlocksStore()
-    const noteActivated = blocksStore.getNoteActivated(props.id);
+    const noteActivated = blocksStore.getBlockActivated(props.id);
     const linkNavigationClickHandler = useLinkNavigationClickHandler();
     const ref = React.createRef<HTMLDivElement | null>();
 
