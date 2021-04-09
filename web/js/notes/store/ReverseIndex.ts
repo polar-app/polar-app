@@ -1,4 +1,4 @@
-import {NoteIDStr} from "./NotesStore";
+import {NoteIDStr} from "./BlocksStore";
 import {action, computed, makeObservable, observable} from "mobx"
 
 export class ReverseIndex {

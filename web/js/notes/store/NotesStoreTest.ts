@@ -1,5 +1,5 @@
 import {MockNotes} from "../../../../apps/stories/impl/MockNotes";
-import {NotesStore} from "./NotesStore";
+import {BlocksStore} from "./BlocksStore";
 import {assertJSON} from "../../test/Assertions";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
@@ -42,7 +42,7 @@ describe('NotesStore', function() {
 
     function createStore() {
         const notes = MockNotes.create();
-        const store = new NotesStore();
+        const store = new BlocksStore();
         store.doPut(notes);
         return store;
     }
@@ -51,7 +51,7 @@ describe('NotesStore', function() {
 
         it("NotesStore", () => {
 
-            const store = new NotesStore();
+            const store = new BlocksStore();
 
             assert.isTrue(isObservable(store));
             assert.isTrue(isObservableProp(store, 'root'));

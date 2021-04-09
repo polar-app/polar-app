@@ -2,7 +2,7 @@ import React from "react";
 import {MiddleDot} from "./MiddleDot";
 import {NoteTargetStr, useNoteLinkLoader} from "./NoteLinkLoader";
 import {NoteButton} from "./NoteButton";
-import {NoteIDStr, useNotesStore} from "./store/NotesStore";
+import {NoteIDStr, useNotesStore} from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
 import { NoteLink } from "./NoteLink";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";

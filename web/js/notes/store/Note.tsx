@@ -1,5 +1,5 @@
 import {INote} from "./INote";
-import {INewChildPosition, NoteContent, NoteIDStr, NoteType} from "./NotesStore";
+import {INewChildPosition, NoteContent, NoteIDStr, NoteType} from "./BlocksStore";
 import {action, computed, makeObservable, observable} from "mobx"
 import { ISODateTimeString, ISODateTimeStrings } from "polar-shared/src/metadata/ISODateTimeStrings";
 

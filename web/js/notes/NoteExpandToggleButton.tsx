@@ -5,7 +5,7 @@ import {ArrowDown} from "./ArrowDown";
 import {ArrowRight} from "./ArrowRight";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
-import { useNotesStore } from "./store/NotesStore";
+import { useNotesStore } from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
 
 const useStyles = makeStyles((theme) =>

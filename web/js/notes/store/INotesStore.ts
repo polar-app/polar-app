@@ -1,4 +1,4 @@
-import {INoteActivated, NavOpts, NavPosition, NoteIDStr, StringSetMap} from "./NotesStore";
+import {INoteActivated, NavOpts, NavPosition, NoteIDStr, StringSetMap} from "./BlocksStore";
 import {INote} from "./INote";
 import {Note} from "./Note";
 import {NoteTargetStr} from "../NoteLinkLoader";

@@ -4,7 +4,7 @@ import Fab from '@material-ui/core/Fab';
 import HelpIcon from '@material-ui/icons/Help';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import {NotesStoreProvider, useNotesStore} from '../../../web/js/notes/store/NotesStore';
+import {NotesStoreProvider, useNotesStore} from '../../../web/js/notes/store/BlocksStore';
 import {MockNotes} from "./MockNotes";
 import { observer } from "mobx-react-lite"
 

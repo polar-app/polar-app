@@ -13,7 +13,6 @@ import {Note} from "./Note";
 import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 import { Numbers } from "polar-shared/src/util/Numbers";
 import {CursorPositions} from "../contenteditable/CursorPositions";
-import { INotesStore } from "./INotesStore";
 
 export type NoteIDStr = IDStr;
 export type NoteNameStr = string;
@@ -132,7 +131,7 @@ export interface IActiveNote {
 
 }
 
-export class NotesStore {
+export class BlocksStore {
 
     @observable _index: NotesIndex = {};
 
@@ -1325,7 +1324,7 @@ export class NotesStore {
 
 }
 
-export const [NotesStoreProvider, useNotesStoreDelegate] = createReactiveStore(() => new NotesStore())
+export const [NotesStoreProvider, useNotesStoreDelegate] = createReactiveStore(() => new BlocksStore())
 
 export function useNotesStore() {
     const delegate = useNotesStoreDelegate();

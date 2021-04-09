@@ -3,7 +3,7 @@ import React from 'react';
 import {NoteFormatBar, NoteFormatBarProps} from "./NoteFormatBar";
 import {useNoteFormatHandlers, useNoteFormatKeyboardHandler} from "./NoteFormatHooks";
 import { observer } from "mobx-react-lite"
-import {NoteIDStr, useNotesStore } from './store/NotesStore';
+import {NoteIDStr, useNotesStore } from './store/BlocksStore';
 
 export interface INoteFormatBarPosition {
 

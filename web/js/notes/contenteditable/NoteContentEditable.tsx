@@ -2,7 +2,7 @@ import { HTMLStr } from 'polar-shared/src/util/Strings';
 import React from 'react';
 import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import { observer } from "mobx-react-lite"
-import {NavOpts, NoteIDStr, useNotesStore} from '../store/NotesStore';
+import {NavOpts, NoteIDStr, useNotesStore} from '../store/BlocksStore';
 import {ContentEditables} from "../ContentEditables";
 import {createActionsProvider} from "../../mui/action_menu/ActionStore";
 import {NoteFormatPopper} from "../NoteFormatPopper";

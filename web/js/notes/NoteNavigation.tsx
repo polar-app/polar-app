@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import {NoteIDStr, useNotesStore} from "./store/NotesStore";
+import {NoteIDStr, useNotesStore} from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
 
 interface IProps {

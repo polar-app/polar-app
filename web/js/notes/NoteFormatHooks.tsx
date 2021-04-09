@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {URLStr} from "polar-shared/src/util/Strings";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import { NoteType } from './store/NotesStore';
+import { NoteType } from './store/BlocksStore';
 
 export function useNoteFormatHandlers(type: NoteType | undefined, onUpdated: () => void) {
 

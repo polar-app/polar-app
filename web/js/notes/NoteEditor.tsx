@@ -4,7 +4,7 @@ import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
 import {MarkdownContentEscaper} from "./MarkdownContentEscaper";
-import {NoteIDStr, useNotesStore} from "./store/NotesStore";
+import {NoteIDStr, useNotesStore} from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
 import {NoteContentEditable} from "./contenteditable/NoteContentEditable";
 import {ContentEditables} from "./ContentEditables";

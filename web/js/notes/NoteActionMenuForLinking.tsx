@@ -1,6 +1,6 @@
 import React from "react";
 import {ActionMenuItemProvider, IActionMenuItem, NoteActionMenu} from "./NoteActionMenu";
-import {NoteIDStr, useNotesStore} from "./store/NotesStore";
+import {NoteIDStr, useNotesStore} from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
 
 function useItemsProvider(): ActionMenuItemProvider {

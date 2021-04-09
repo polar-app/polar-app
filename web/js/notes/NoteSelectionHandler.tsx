@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { observer } from "mobx-react-lite"
-import { useNotesStore } from './store/NotesStore';
+import { useNotesStore } from './store/BlocksStore';
 
 interface IProps {
     readonly children: JSX.Element;

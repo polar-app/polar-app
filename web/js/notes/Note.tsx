@@ -7,7 +7,7 @@ import {IDocViewerContextMenuOrigin} from "../../../apps/doc/src/DocViewerMenu";
 import {NoteContextMenuItems} from "./NoteContextMenuItems";
 import useTheme from "@material-ui/core/styles/useTheme";
 import { NoteExpandToggleButton } from "./NoteExpandToggleButton";
-import { NoteIDStr, useNotesStore } from "./store/NotesStore";
+import { NoteIDStr, useNotesStore } from "./store/BlocksStore";
 import { observer,  } from "mobx-react-lite"
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";

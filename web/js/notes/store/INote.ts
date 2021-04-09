@@ -1,5 +1,5 @@
 import { ISODateTimeString } from "polar-shared/src/metadata/ISODateTimeStrings";
-import {NoteContent, NoteIDStr} from "./NotesStore";
+import {NoteContent, NoteIDStr} from "./BlocksStore";
 
 /**
  * @Deprecated use IBlock
