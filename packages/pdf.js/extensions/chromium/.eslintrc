@@ -1,0 +1,23 @@
+{
+  "extends": [
+    ../../.eslintrc
+  ],
+
+  "env": {
+    "webextensions": true
+  },
+
+  "plugins": [
+    "mozilla"
+  ],
+
+  "parserOptions": {
+    "sourceType": "script"
+  },
+
+  "rules": {
+    "mozilla/import-globals": "error",
+    "no-var": "off",
+    "object-shorthand": "off",
+  },
+}
