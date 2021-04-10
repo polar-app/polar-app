@@ -34,6 +34,7 @@ export const FirestoreSnapshotsStory = () => {
 
     }, []);
 
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     React.useMemo(() => doAsync().catch(err => console.error(err)), [doAsync]);
 
     return (

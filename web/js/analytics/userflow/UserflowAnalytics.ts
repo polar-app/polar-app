@@ -27,11 +27,8 @@ export class UserflowAnalytics implements IAnalytics {
 
         const eventName = event.category + '_' + event.action;
 
-        try {
-            userflow.track(eventName);
-        } catch (e) {
-            console.warn("Unable to track userflow event: " + eventName);
-        }
+        userflow.track(eventName)
+                .catch(err => console.warn("Unable to track userflow event: " + eventName, err));
 
     }
 
@@ -41,29 +38,28 @@ export class UserflowAnalytics implements IAnalytics {
             return;
         }
 
-        try {
-
-            function toAttributes() {
-                if (typeof data === 'object') {
-                    // events don't support objects so we have to filter or flatten them.
-                    return Dictionaries.filter<string>(data, (key, value) => typeof value === 'string');
-                } else {
-                    return {};
-                }
+        function toAttributes() {
+            if (typeof data === 'object') {
+                // events don't support objects so we have to filter or flatten them.
+                return Dictionaries.filter<string>(data, (key, value) => typeof value === 'string');
+            } else {
+                return {};
             }
-
-            const attributes = toAttributes();
-            userflow.track(event, attributes);
-
-        } catch (e) {
-            console.warn("Unable to track userflow event: " + event);
         }
+
+        const attributes = toAttributes();
+        userflow.track(event, attributes)
+            .catch(err => console.warn("Unable to track userflow event: " + event, err))
 
     }
 
     public identify(user: IAnalyticsUser): void {
-        userflow.identify(user.uid);
+
+        userflow.identify(user.uid)
+                .catch(err => console.warn("Unable to track userflow event: ", user, err))
+
         identified = true;
+
     }
 
     public page(event: IPageEvent): void {
@@ -76,7 +72,8 @@ export class UserflowAnalytics implements IAnalytics {
             return;
         }
 
-        userflow.updateUser(traits);
+        userflow.updateUser(traits)
+                .catch(err => console.warn("Unable to update user: ", err));
 
     }
 

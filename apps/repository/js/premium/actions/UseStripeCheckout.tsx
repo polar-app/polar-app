@@ -38,6 +38,7 @@ export function useStripeCheckout() {
 
         const sessionId = await startStripeSession(newSubscription, email);
         stripe.redirectToCheckout({sessionId})
+            .catch(err => console.error("Unable to redirect to stripe checkout: ", err));
 
     }, []);
 
