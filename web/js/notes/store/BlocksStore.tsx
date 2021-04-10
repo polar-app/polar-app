@@ -14,6 +14,7 @@ import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 import { Numbers } from "polar-shared/src/util/Numbers";
 import {CursorPositions} from "../contenteditable/CursorPositions";
 import {useBlocksStoreContext} from "./BlockStoreContextProvider";
+import {IBlocksStore} from "./IBlocksStore";
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
@@ -51,7 +52,7 @@ export interface IBlockActivated {
     readonly activePos: NavPosition | undefined;
 }
 
-interface DoPutOpts {
+export interface DoPutOpts {
 
     /**
      * The new active node after the put operation.
@@ -132,7 +133,7 @@ export interface IActiveBlock {
 
 }
 
-export class BlocksStore {
+export class BlocksStore implements IBlocksStore {
 
     private readonly uid: UIDStr;
 
@@ -191,7 +192,7 @@ export class BlocksStore {
     /**
      * Get all the nodes by name.
      */
-    getNamedNodes() {
+    getNamedNodes(): ReadonlyArray<string> {
         return Object.keys(this._indexByName);
     }
 
@@ -1336,7 +1337,7 @@ export class BlocksStore {
 
     }
 
-    public requiredAutoUnIndent(id: BlockIDStr) {
+    public requiredAutoUnIndent(id: BlockIDStr): boolean {
 
         const block = this.getBlock(id);
 
@@ -1368,12 +1369,20 @@ export class BlocksStore {
 
 }
 
+// const TRACE_ENABLED = true;
+//
+// function trace(method: string, args: ReadonlyArray<string | number | object | null | undefined>) {
+//     if (TRACE_ENABLED) {
+//         console.log(method, JSON.stringify(args, null, "  "));
+//     }
+// }
+
 export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore(() => {
     const {uid} = useBlocksStoreContext();
     return new BlocksStore(uid);
 })
 
-export function useBlocksStore() {
+export function useBlocksStore(): IBlocksStore {
     const blockStoreContext = useBlocksStoreContext();
     const delegate = useBlocksStoreDelegate();
     return delegate;
