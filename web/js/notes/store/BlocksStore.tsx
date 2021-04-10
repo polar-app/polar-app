@@ -1369,14 +1369,6 @@ export class BlocksStore implements IBlocksStore {
 
 }
 
-// const TRACE_ENABLED = true;
-//
-// function trace(method: string, args: ReadonlyArray<string | number | object | null | undefined>) {
-//     if (TRACE_ENABLED) {
-//         console.log(method, JSON.stringify(args, null, "  "));
-//     }
-// }
-
 export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore(() => {
     const {uid} = useBlocksStoreContext();
     return new BlocksStore(uid);
