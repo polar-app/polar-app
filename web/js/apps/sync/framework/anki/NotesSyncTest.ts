@@ -10,7 +10,7 @@ import {SyncQueue} from '../SyncQueue';
 import {StoreMediaFileClient} from './clients/StoreMediaFileClient';
 import {CanAddNotesClient} from './clients/CanAddNotesClient';
 
-describe('NotesSync', function() {
+xdescribe('NotesSync', function() {
 
     let notesSync: NotesSync;
 
