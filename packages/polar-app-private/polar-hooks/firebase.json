@@ -1,0 +1,126 @@
+{
+  "hosting": {
+    "target": "app.getpolarized.io",
+    "public": "functions/node_modules/polar-webapp-dist/public",
+    "appAssociation": "AUTO",
+    "rewrites": [
+      {
+        "source": "/",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/annotations",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/stats",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/sitemap-doc-preview.xml",
+        "function": "docPreviewSitemap"
+      },
+      {
+        "source": "/sitemap-doc-preview-function.xml",
+        "function": "docPreviewSitemap"
+      },
+
+      {
+        "source": "/sitemap.xml",
+        "function": "sitemap"
+      },
+      {
+        "source": "/sitemaps/group/*",
+        "function": "groupSitemap"
+      },
+      {
+        "source": "/add/**",
+        "function": "docAdd"
+      },
+      {
+        "source": "/preview/**",
+        "function": "docPreview"
+      },
+      {
+        "source": "/doc-preview-import/**",
+        "function": "docPreview"
+      },
+      {
+        "source": "/d/**",
+        "function": "ssr"
+      },
+      {
+        "source": "/hello/**",
+        "function": "hello"
+      },
+      {
+        "source": "/prerender/**",
+        "function": "prerender"
+      },
+      {
+        "source": "/index.html",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/migration/phz",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/device",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/feature-requests",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/login",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/sign-in",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/create-account",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/login.html",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/pdfjsWorker-bundle.js",
+        "destination": "/web/dist/pdfjsWorker-bundle.js"
+      },
+      {
+        "source": "/doc",
+        "destination": "/apps/doc/index.html"
+      },
+      {
+        "source": "/doc/:id",
+        "destination": "/apps/doc/index.html"
+      },
+      {
+        "source": "/doc/:id/:title",
+        "destination": "/apps/doc/index.html"
+      },
+      {
+        "source": "/apps/doc/:id",
+        "destination": "/apps/doc/index.html"
+      },
+      {
+        "source": "/apps/stories/**",
+        "destination": "/apps/stories/index.html"
+      },
+      {
+        "source": "**",
+        "function": "webapp"
+      },
+      {
+        "source": "/dlink/**",
+        "dynamicLinks": true
+      }
+    ]
+  }
+}
