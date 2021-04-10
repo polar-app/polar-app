@@ -147,6 +147,8 @@ export class Block implements IBlock {
             if (idx !== -1) {
                 const delta = pos.pos === 'before' ? 0 : 1;
                 this._items.splice(idx + delta, 0, id);
+            } else {
+                throw new Error(`Unable to find item for position: ${pos.ref} ${pos.pos}`);
             }
 
         } else {

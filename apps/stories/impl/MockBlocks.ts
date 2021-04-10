@@ -1,14 +1,14 @@
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IBlock} from "../../../web/js/notes/store/IBlock";
 
-export namespace MockNotes {
+export namespace MockBlocks {
     export function create() {
 
         const now = ISODateTimeStrings.create();
 
         const nspace = 'ns101';
         const uid = '123';
-        const notes: ReadonlyArray<IBlock> = [
+        const blocks: ReadonlyArray<IBlock> = [
             {
                 id: '102',
                 nspace, uid,
@@ -156,6 +156,6 @@ export namespace MockNotes {
             }
 
         ];
-        return notes;
+        return blocks;
     }
 }

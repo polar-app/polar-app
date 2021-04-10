@@ -1,5 +1,5 @@
-import {MockNotes} from "../../../../apps/stories/impl/MockNotes";
-import {BlocksStore} from "./BlocksStore";
+import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
+import {BlockIDStr, BlocksStore} from "./BlocksStore";
 import {assertJSON} from "../../test/Assertions";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
@@ -43,7 +43,7 @@ describe('BlocksStore', function() {
     });
 
     function createStore() {
-        const notes = MockNotes.create();
+        const notes = MockBlocks.create();
         const store = new BlocksStore('1234');
         store.doPut(notes);
         return store;
@@ -66,7 +66,7 @@ describe('BlocksStore', function() {
 
         it("Note", () => {
 
-            const note = new Block(MockNotes.create()[0]);
+            const note = new Block(MockBlocks.create()[0]);
 
             assert.isTrue(isObservable(note));
             assert.isTrue(isObservableProp(note, 'content'));
@@ -882,6 +882,53 @@ describe('BlocksStore', function() {
             createNoteWithExpansion();
 
 
+
+        });
+
+        it("Split a note with children", () => {
+
+            const store = createStore();
+
+            function doFirstSplit() {
+
+                const id = '105'
+
+                const originalBlock = store.getBlock(id);
+
+                assert.isDefined(originalBlock);
+                const createdBlock = store.createNewBlock(id, {prefix: '', suffix: originalBlock!.content});
+
+                assertJSON(store.getBlock(originalBlock!.parent!)!.items, [
+                    "103",
+                    "104",
+                    "105",
+                    createdBlock.id
+                ]);
+
+                return createdBlock.id;
+
+            }
+
+            function doSecondSplit(id: BlockIDStr) {
+
+                const originalBlock = store.getBlock(id);
+
+                assert.isDefined(originalBlock);
+
+                const createdBlock = store.createNewBlock(id, {prefix: '', suffix: originalBlock!.content});
+                assertJSON(store.getBlock(originalBlock!.parent!)!.items, [
+                    "103",
+                    "104",
+                    "105",
+                    id,
+                    createdBlock.id
+                ]);
+
+            }
+
+            const firstSplitBlockID = doFirstSplit();
+
+            doSecondSplit(firstSplitBlockID);
 
         });
 

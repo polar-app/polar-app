@@ -5,11 +5,11 @@ import HelpIcon from '@material-ui/icons/Help';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import {BlocksStoreProvider, useBlocksStore} from '../../../web/js/notes/store/BlocksStore';
-import {MockNotes} from "./MockNotes";
+import {MockBlocks} from "./MockBlocks";
 import { observer } from "mobx-react-lite"
 import {BlockStoreContextProvider} from "../../../web/js/notes/store/BlockStoreContextProvider";
 
-const notes = MockNotes.create();
+const notes = MockBlocks.create();
 
 interface BasicNotesDataSetProps {
     readonly children: JSX.Element;

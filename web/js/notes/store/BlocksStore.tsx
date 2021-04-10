@@ -836,9 +836,7 @@ export class BlocksStore implements IBlocksStore {
 
         const computeNewBlockPosition = (): INewBlockPositionRelative | INewBlockPositionFirstChild => {
 
-            const linearExpansionTree = this.computeLinearExpansionTree2(id);
-
-            const nextBlockID = Arrays.first(linearExpansionTree);
+            const nextSiblingID = this.nextSibling(id);
 
             const createNewBlockPositionRelative = (ref: BlockIDStr, pos: NewChildPos): INewBlockPositionRelative => {
 
@@ -854,8 +852,8 @@ export class BlocksStore implements IBlocksStore {
 
             }
 
-            if (nextBlockID) {
-                return createNewBlockPositionRelative(nextBlockID, 'before')
+            if (nextSiblingID) {
+                return createNewBlockPositionRelative(nextSiblingID, 'before')
             } else {
 
                 const block = this.getBlock(id)!;
