@@ -171,7 +171,7 @@ export class TracingBlocksStore implements IBlocksStore {
 
     public navPrev(pos: NavPosition, opts: NavOpts): void {
         trace('navPrev', {pos, opts});
-        this.delegate.navNext(pos, opts);
+        this.delegate.navPrev(pos, opts);
     }
 
     public pathToBlock(id: BlockIDStr): ReadonlyArray<Block> {

@@ -169,7 +169,7 @@ export namespace CursorPositions {
         const html = MarkdownContentEscaper.escape(markdown);
         const div = document.createElement('div');
         div.innerHTML = html;
-        return div.innerText.length;
+        return (div.innerText || div.textContent || '').length;
     }
 
 }

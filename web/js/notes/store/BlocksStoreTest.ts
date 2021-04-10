@@ -8,6 +8,7 @@ import {isObservable, isObservableProp} from 'mobx';
 import {ReverseIndex} from "./ReverseIndex";
 import {Block} from "./Block";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {ConstructorOptions, JSDOM} from "jsdom";
 
 // TODO:
 
@@ -33,6 +34,7 @@ describe('BlocksStore', function() {
     beforeEach(() => {
         console.log("Freezing time...");
         TestingTime.freeze()
+        JSDOMParser.makeGlobal();
     });
 
     afterEach(() => {
@@ -85,7 +87,6 @@ describe('BlocksStore', function() {
         const store = createStore();
 
         assertJSON(store, {
-            "_activePos": "start",
             "_expanded": {},
             "_index": {
                 "100": {
@@ -94,7 +95,9 @@ describe('BlocksStore', function() {
                     "_id": "100",
                     "_items": [],
                     "_links": [],
+                    "_nspace": "ns101",
                     "_type": "item",
+                    "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
                 "102": {
@@ -107,7 +110,9 @@ describe('BlocksStore', function() {
                         "105"
                     ],
                     "_links": [],
+                    "_nspace": "ns101",
                     "_type": "named",
+                    "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
                 "103": {
@@ -116,8 +121,10 @@ describe('BlocksStore', function() {
                     "_id": "103",
                     "_items": [],
                     "_links": [],
+                    "_nspace": "ns101",
                     "_parent": "102",
                     "_type": "item",
+                    "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
                 "104": {
@@ -126,8 +133,10 @@ describe('BlocksStore', function() {
                     "_id": "104",
                     "_items": [],
                     "_links": [],
+                    "_nspace": "ns101",
                     "_parent": "102",
                     "_type": "item",
+                    "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
                 "105": {
@@ -141,8 +150,10 @@ describe('BlocksStore', function() {
                         "109",
                         "108"
                     ],
+                    "_nspace": "ns101",
                     "_parent": "102",
                     "_type": "item",
+                    "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
                 "106": {
@@ -153,8 +164,10 @@ describe('BlocksStore', function() {
                     "_links": [
                         "112"
                     ],
+                    "_nspace": "ns101",
                     "_parent": "105",
                     "_type": "item",
+                    "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
                 "107": {
@@ -165,7 +178,9 @@ describe('BlocksStore', function() {
                         "110"
                     ],
                     "_links": [],
+                    "_nspace": "ns101",
                     "_type": "named",
+                    "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
                 "108": {
@@ -174,7 +189,9 @@ describe('BlocksStore', function() {
                     "_id": "108",
                     "_items": [],
                     "_links": [],
+                    "_nspace": "ns101",
                     "_type": "named",
+                    "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
                 "109": {
@@ -185,7 +202,9 @@ describe('BlocksStore', function() {
                         "111"
                     ],
                     "_links": [],
+                    "_nspace": "ns101",
                     "_type": "named",
+                    "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
                 "110": {
@@ -196,8 +215,10 @@ describe('BlocksStore', function() {
                     "_links": [
                         "102"
                     ],
+                    "_nspace": "ns101",
                     "_parent": "107",
                     "_type": "item",
+                    "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
                 "111": {
@@ -206,8 +227,10 @@ describe('BlocksStore', function() {
                     "_id": "111",
                     "_items": [],
                     "_links": [],
+                    "_nspace": "ns101",
                     "_parent": "109",
                     "_type": "item",
+                    "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
                 "112": {
@@ -216,7 +239,9 @@ describe('BlocksStore', function() {
                     "_id": "112",
                     "_items": [],
                     "_links": [],
+                    "_nspace": "ns101",
                     "_type": "named",
+                    "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 }
             },
@@ -243,7 +268,8 @@ describe('BlocksStore', function() {
                     ]
                 }
             },
-            "_selected": {}
+            "_selected": {},
+            "uid": "1234"
         });
 
     });
@@ -285,7 +311,9 @@ describe('BlocksStore', function() {
                     "105"
                 ],
                 "_links": [],
+                "_nspace": "ns101",
                 "_type": "named",
+                "_uid": "123",
                 "_updated": "2012-03-02T11:38:49.321Z"
             });
 
@@ -304,7 +332,9 @@ describe('BlocksStore', function() {
                     "105"
                 ],
                 "_links": [],
+                "_nspace": "ns101",
                 "_type": "named",
+                "_uid": "123",
                 "_updated": "2012-03-02T11:38:50.321Z"
             });
 
@@ -316,8 +346,10 @@ describe('BlocksStore', function() {
                     "104"
                 ],
                 "_links": [],
+                "_nspace": "ns101",
                 "_parent": "102",
                 "_type": "item",
+                "_uid": "123",
                 "_updated": "2012-03-02T11:38:50.321Z"
             });
 
@@ -351,7 +383,9 @@ describe('BlocksStore', function() {
                     "105"
                 ],
                 "_links": [],
+                "_nspace": "ns101",
                 "_type": "named",
+                "_uid": "123",
                 "_updated": "2012-03-02T11:38:49.321Z"
             });
 
@@ -363,8 +397,10 @@ describe('BlocksStore', function() {
                 "_id": "104",
                 "_items": [],
                 "_links": [],
+                "_nspace": "ns101",
                 "_parent": "102",
                 "_type": "item",
+                "_uid": "123",
                 "_updated": "2012-03-02T11:38:49.321Z"
             });
 
@@ -376,8 +412,10 @@ describe('BlocksStore', function() {
                 "_id": "104",
                 "_items": [],
                 "_links": [],
+                "_nspace": "ns101",
                 "_parent": "103",
                 "_type": "item",
+                "_uid": "123",
                 "_updated": "2012-03-02T11:38:49.321Z"
             });
 
@@ -391,8 +429,10 @@ describe('BlocksStore', function() {
                 "_id": "104",
                 "_items": [],
                 "_links": [],
+                "_nspace": "ns101",
                 "_parent": "102",
                 "_type": "item",
+                "_uid": "123",
                 "_updated": "2012-03-02T11:38:49.321Z"
             });
 
@@ -406,7 +446,9 @@ describe('BlocksStore', function() {
                     "105"
                 ],
                 "_links": [],
+                "_nspace": "ns101",
                 "_type": "named",
+                "_uid": "123",
                 "_updated": "2012-03-02T11:38:49.321Z"
             });
 
@@ -469,8 +511,10 @@ describe('BlocksStore', function() {
             "_id": "100",
             "_items": [],
             "_links": [],
+            "_nspace": "ns101",
             "_type": "item",
-            "_updated": "2012-03-02T11:38:49.321Z",
+            "_uid": "123",
+            "_updated": "2012-03-02T11:38:49.321Z"
         });
 
     });
@@ -510,7 +554,7 @@ describe('BlocksStore', function() {
 
             const store = createStore()
 
-            assert.isUndefined(store.canMerge('103'),);
+            assert.isUndefined(store.canMerge('103'));
 
         });
     });
@@ -530,13 +574,15 @@ describe('BlocksStore', function() {
             assert.isUndefined(store.getBlock('104'));
 
             assertJSON(store.getBlock('103'), {
-                "_content": "[Lasted](https://www.example.com) from 1939 to 1945 Axis Powers: Germany, Italy, Japan",
+                "_content": "[Lasted](https://www.example.com) from 1939 to 1945Axis Powers: Germany, Italy, Japan",
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "103",
                 "_items": [],
                 "_links": [],
+                "_nspace": "ns101",
                 "_parent": "102",
                 "_type": "item",
+                "_uid": "123",
                 "_updated": "2012-03-02T11:38:50.321Z"
             });
 
@@ -562,7 +608,9 @@ describe('BlocksStore', function() {
                     "105"
                 ],
                 "_links": [],
+                "_nspace": "ns101",
                 "_type": "named",
+                "_uid": "123",
                 "_updated": "2012-03-02T11:38:49.321Z"
             });
 
@@ -580,7 +628,9 @@ describe('BlocksStore', function() {
                     "105"
                 ],
                 "_links": [],
+                "_nspace": "ns101",
                 "_type": "named",
+                "_uid": "123",
                 "_updated": "2012-03-02T11:38:50.321Z"
             });
 
@@ -621,7 +671,9 @@ describe('BlocksStore', function() {
                     "105"
                 ],
                 "_links": [],
+                "_nspace": "ns101",
                 "_type": "named",
+                "_uid": "123",
                 "_updated": "2012-03-02T11:38:49.321Z"
             })
 
@@ -642,10 +694,11 @@ describe('BlocksStore', function() {
                 "_content": "World War II",
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "102",
-                "_items": [
-                ],
+                "_items": [],
                 "_links": [],
+                "_nspace": "ns101",
                 "_type": "named",
+                "_uid": "123",
                 "_updated": "2012-03-02T11:38:49.321Z"
             })
 
@@ -836,3 +889,22 @@ describe('BlocksStore', function() {
 
 });
 
+
+export namespace JSDOMParser {
+    declare var global: any;
+
+    export function makeGlobal(html: string = '') {
+
+        const url = 'https://www.example.com';
+        const opts: ConstructorOptions = {url, contentType: 'text/html', resources: 'usable'};
+        const dom = new JSDOM(`<html><body>${html}</body></html>`, opts);
+
+        global.window = dom.window;
+        global.NodeFilter = dom.window.NodeFilter;
+        global.document = dom.window.document;
+
+        return dom.window.document.body as HTMLElement;
+
+    }
+
+}

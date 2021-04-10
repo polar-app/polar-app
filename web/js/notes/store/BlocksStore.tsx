@@ -15,6 +15,7 @@ import { Numbers } from "polar-shared/src/util/Numbers";
 import {CursorPositions} from "../contenteditable/CursorPositions";
 import {useBlocksStoreContext} from "./BlockStoreContextProvider";
 import {IBlocksStore} from "./IBlocksStore";
+import {TracingBlocksStore} from "./TracingBlocksStore";
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
@@ -667,7 +668,7 @@ export class BlocksStore implements IBlocksStore {
 
     /**
      * Return true if this block can be merged. Meaning it has a previous sibling
-     * we can merge with.
+     * we can merge with or a parent.
      */
     public canMerge(id: BlockIDStr): IBlockMerge | undefined {
 
@@ -683,14 +684,30 @@ export class BlocksStore implements IBlocksStore {
         const block = this.getBlock(id);
 
         if (block?.parent) {
-            return {
-                source: id,
-                target: block.parent
+
+            const parentBlock = this.getBlock(block.parent);
+
+            if (parentBlock) {
+
+                if (this.canMergeTypes(block, parentBlock)) {
+
+                    return {
+                        source: id,
+                        target: block.parent
+                    }
+
+                }
+
             }
+
         }
 
         return undefined;
 
+    }
+
+    private canMergeTypes(sourceBlock: IBlock, targetBlock: IBlock): boolean {
+        return targetBlock.type === sourceBlock.type;
     }
 
     @action public mergeBlocks(target: BlockIDStr, source: BlockIDStr) {
@@ -698,7 +715,7 @@ export class BlocksStore implements IBlocksStore {
         const targetBlock = this._index[target];
         const sourceBlock = this._index[source];
 
-        if (targetBlock.type !== sourceBlock.type) {
+        if (! this.canMergeTypes(sourceBlock, targetBlock)) {
             console.warn("Block types are incompatible and can't be merged");
             return 'incompatible-block-types';
         }
@@ -708,7 +725,7 @@ export class BlocksStore implements IBlocksStore {
         const items = [...targetBlock.items, ...sourceBlock.items];
         const links = [...targetBlock.links, ...sourceBlock.links];
 
-        const newContent = targetBlock.content + " " + sourceBlock.content;
+        const newContent = targetBlock.content + sourceBlock.content;
         targetBlock.setContent(newContent);
         targetBlock.setItems(items);
         targetBlock.setLinks(links);
@@ -1375,7 +1392,7 @@ export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore
 })
 
 export function useBlocksStore(): IBlocksStore {
-    const blockStoreContext = useBlocksStoreContext();
     const delegate = useBlocksStoreDelegate();
+    // return new TracingBlocksStore(delegate);
     return delegate;
 }
