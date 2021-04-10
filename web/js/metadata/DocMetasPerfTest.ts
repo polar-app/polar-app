@@ -1,6 +1,6 @@
 import {DocMetas} from "./DocMetas";
 
-describe('DocMetasPerf', function() {
+xdescribe('DocMetasPerf', function() {
 
     this.timeout(10000);
 

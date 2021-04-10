@@ -20,7 +20,7 @@
     "test-mocha": "npx mocha --exit --log-timer-events --recursive 'web/js/**/*Test.js'",
     "_test": "./scripts/test-runner.sh",
     "___test": "mocha --timeout 20000 --exit 'web/js/**/*Test.js' 'apps/**/*Test.js'",
-    "test": "mocha -p --timeout 60000 --exit web/js/**/*Test.js apps/**/*Test.js",
+    "test": "mocha -p --timeout 60000 --exit 'web/js/**/*Test.js' 'apps/**/*Test.js'",
     "__test": "scripts/test.sh",
     "postinstall": "opencollective-postinstall",
     "tslint": "tslint --project tsconfig.json --config tslint.yaml",

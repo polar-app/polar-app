@@ -4,7 +4,7 @@ import {NoteContentCanonicalizer} from "./NoteContentCanonicalizer";
 
 declare var global: any;
 
-describe('ContentCapture', function() {
+describe('NoteContentCanonicalizer', function() {
 
     function parseHTML(html: string) {
 

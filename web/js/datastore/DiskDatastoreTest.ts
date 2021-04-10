@@ -17,7 +17,7 @@ import {MockPHZWriter} from '../phz/MockPHZWriter';
 
 const tmpdir = os.tmpdir();
 
-describe("DiskDatastore", async function() {
+xdescribe("DiskDatastore", async function() {
 
     DatastoreTester.test(async () => new DiskDatastore());
 
