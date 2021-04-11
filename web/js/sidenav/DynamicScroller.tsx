@@ -6,6 +6,7 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import {debounce} from 'throttle-debounce';
 import {Theme} from "@material-ui/core";
 import clsx from "clsx";
+import {fade} from '@material-ui/core/styles/colorManipulator';
 
 
 type UseArrowStylesProps = {
@@ -30,7 +31,7 @@ const useArrowStyles = makeStyles<Theme, UseArrowStylesProps>((theme) => createS
                 display: 'block',
                 height: 20,
                 width: '100%',
-                background: `linear-gradient(to ${gradDirection}, ${theme.palette.background.default} 20%, rgba(255, 255, 255, 0) 100%)`,
+                background: `linear-gradient(to ${gradDirection}, ${theme.palette.background.default} 20%, ${fade(theme.palette.background.default, 0)} 100%)`,
             }
         };
     },
@@ -65,6 +66,7 @@ const ScrollArrow: React.FC<ScrollArrowProps> = ({ direction, onClick }) => {
 const useVDSStyles = makeStyles(() => createStyles({
     scrollerOuter: {
         position: 'relative',
+        display: 'flex',
     },
     contentOuter: {
         overflowY: 'auto',
@@ -144,8 +146,7 @@ export const VerticalDynamicScroller: React.FC<VerticalDynamicScrollerProps> = (
 
     React.useEffect(() => {
         const parentElem = parentRef.current;
-        const onScroll = (e: Event) => {
-            e.preventDefault();
+        const onScroll = () => {
             updateArrows(parentElem.scrollTop, parentHeight, innerHeight);
         };
         parentElem.addEventListener('scroll', onScroll);
