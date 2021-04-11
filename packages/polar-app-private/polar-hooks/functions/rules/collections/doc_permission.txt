@@ -1,0 +1,10 @@
+// allow reads on resources that aren't present.  This is critical because if
+// we do not have this rule then when a user tries to read a document that
+// does not exist then they will get a "permission failed" error/exception.
+// We also need to do this FIRST so that no other rule is evaluated since
+// they might result in null pointer exceptions when trying to read the data
+// property on a record that does not exist.
+allow delete, read: if resource == null || resource.data == null;
+
+// If the user is the owner they can read it obviously
+allow read, write: if request.auth != null && request.auth.uid == resource.data.uid;
