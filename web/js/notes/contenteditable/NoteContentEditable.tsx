@@ -11,6 +11,7 @@ import {NoteAction} from "./NoteAction";
 import { useHistory } from 'react-router-dom';
 import { autorun } from 'mobx'
 import {CursorPositions} from "./CursorPositions";
+import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
 
 const ENABLE_TRACE_CURSOR_RESET = true;
 
@@ -56,6 +57,8 @@ export const NoteContentEditable = observer((props: IProps) => {
     const contentRef = React.useRef(props.content);
     const store = useBlocksStore();
     const history = useHistory();
+
+    const platform = React.useMemo(() => Platforms.get(), []);
 
     const updateCursorPosition = useUpdateCursorPosition();
 
@@ -253,7 +256,8 @@ export const NoteContentEditable = observer((props: IProps) => {
                     break;
                 }
 
-                if (event.shiftKey && (event.ctrlKey || event.metaKey)) {
+                if ((platform === Platform.MACOS && event.shiftKey && event.metaKey) ||
+                    (platform === Platform.WINDOWS && event.shiftKey && event.altKey)) {
                     store.doUnIndent(props.id);
                     break;
                 }
@@ -278,7 +282,8 @@ export const NoteContentEditable = observer((props: IProps) => {
                     break;
                 }
 
-                if (event.shiftKey && (event.ctrlKey || event.metaKey)) {
+                if ((platform === Platform.MACOS && event.shiftKey && event.metaKey) ||
+                    (platform === Platform.WINDOWS && event.shiftKey && event.altKey)) {
                     store.doIndent(props.id);
                     break;
                 }

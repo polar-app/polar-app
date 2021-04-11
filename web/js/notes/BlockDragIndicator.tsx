@@ -10,17 +10,12 @@ interface IProps {
 
 export const BlockDragIndicator = observer((props: IProps) => {
 
-
     const {dropTarget} = useBlocksStore();
-
-    console.log("FIXME: ", dropTarget)
 
     const theme = useTheme();
 
     const activeTop = props.id === dropTarget?.id && dropTarget?.pos === 'top';
     const activeBottom = props.id === dropTarget?.id && dropTarget?.pos === 'bottom';
-
-    console.log("FIXME 2: ", {activeTop, activeBottom});
 
     const style: React.CSSProperties = {
 
