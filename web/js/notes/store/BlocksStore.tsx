@@ -140,6 +140,13 @@ export interface IActiveBlock {
 
 }
 
+export type DropPosition = 'top' | 'bottom';
+
+export interface IDropTarget {
+    readonly id: BlockIDStr;
+    readonly pos: DropPosition;
+}
+
 export namespace ActiveBlockNonces {
 
     let value = 0;
@@ -182,7 +189,7 @@ export class BlocksStore implements IBlocksStore {
      */
     @observable _selected: StringSetMap = {};
 
-    @observable _dropTarget: BlockIDStr | undefined = undefined;
+    @observable _dropTarget: IDropTarget | undefined = undefined;
 
     @observable _dropSource: BlockIDStr | undefined = undefined;
 
@@ -260,7 +267,7 @@ export class BlocksStore implements IBlocksStore {
         return this._dropTarget;
     }
 
-    @action public setDropTarget(dropTarget: BlockIDStr) {
+    @action public setDropTarget(dropTarget: IDropTarget) {
         this._dropTarget = dropTarget;
     }
 

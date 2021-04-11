@@ -4,7 +4,7 @@ import {
     BlocksIndex, DoIndentResult, DoPutOpts, DoUnIndentResult,
     IActiveBlock, IBlockActivated,
     IBlockMerge,
-    ICreatedBlock,
+    ICreatedBlock, IDropTarget,
     ISplitBlock, NavOpts, NavPosition,
     StringSetMap
 } from "./BlocksStore";
@@ -34,7 +34,7 @@ export class TracingBlocksStore implements IBlocksStore {
         return this.delegate.dropSource;
     }
 
-    public get dropTarget(): string | undefined {
+    public get dropTarget(): IDropTarget | undefined {
         return this.delegate.dropTarget;
     }
 
@@ -199,7 +199,7 @@ export class TracingBlocksStore implements IBlocksStore {
         this.delegate.setDropSource(dropSource);
     }
 
-    public setDropTarget(dropTarget: BlockIDStr): void {
+    public setDropTarget(dropTarget: IDropTarget): void {
         trace('setDropTarget', {dropTarget});
         this.delegate.setDropTarget(dropTarget);
     }

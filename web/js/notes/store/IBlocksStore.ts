@@ -5,7 +5,15 @@ import {
     BlockIDStr,
     StringSetMap,
     DoIndentResult,
-    DoUnIndentResult, ISplitBlock, ICreatedBlock, IActiveBlock, BlockNameStr, IBlockMerge, DoPutOpts, BlocksIndex
+    DoUnIndentResult,
+    ISplitBlock,
+    ICreatedBlock,
+    IActiveBlock,
+    BlockNameStr,
+    IBlockMerge,
+    DoPutOpts,
+    BlocksIndex,
+    IDropTarget
 } from "./BlocksStore";
 import {IBlock} from "./IBlock";
 import {Block} from "./Block";
@@ -17,8 +25,8 @@ export interface IBlocksStore {
     selected: StringSetMap;
     root: BlockIDStr | undefined;
     active: IActiveBlock | undefined;
-    dropSource: string | undefined;
-    dropTarget: string | undefined;
+    dropSource: BlockIDStr | undefined;
+    dropTarget: IDropTarget | undefined;
     reverse: ReverseIndex;
     index: BlocksIndex;
 
@@ -66,7 +74,7 @@ export interface IBlocksStore {
     clearDrop(): void;
 
     setDropSource(dropSource: BlockIDStr): void;
-    setDropTarget(dropTarget: BlockIDStr): void;
+    setDropTarget(dropTarget: IDropTarget): void;
 
     mergeBlocks(target: BlockIDStr, source: BlockIDStr): void;
 

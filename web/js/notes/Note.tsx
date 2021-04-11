@@ -12,6 +12,7 @@ import { observer,  } from "mobx-react-lite"
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
+import { BlockDragIndicator } from "./BlockDragIndicator";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -46,6 +47,9 @@ export const NoteInner = observer((props: IProps) => {
     const expanded = store.isExpanded(id);
     const selected = store.isSelected(id);
     const note = store.getBlock(id);
+
+    const divRef = React.useRef<HTMLDivElement | null>(null);
+    const dragActive = React.useRef<boolean>(false);
 
     const root = store.root;
 
@@ -145,67 +149,131 @@ export const NoteInner = observer((props: IProps) => {
         // event.stopPropagation();
     }, [props.id, store]);
 
+    const computeDragPosition = React.useCallback((event: React.DragEvent | React.MouseEvent) => {
+
+        // FIXME: if this is a root note then we can only drag BELOW it...
+
+        if (divRef.current) {
+
+            const bcr = divRef.current.getBoundingClientRect();
+
+            const deltaTop = Math.abs(event.clientY - bcr.top);
+            const deltaBottom = Math.abs(event.clientY - bcr.bottom);
+
+            if (deltaTop < deltaBottom) {
+                return 'top';
+            }
+
+        }
+
+        return 'bottom';
+
+    }, []);
+
+    const updateDropTarget = React.useCallback((event: React.DragEvent | React.MouseEvent) => {
+
+        const pos = computeDragPosition(event);
+
+        store.setDropTarget({
+            id: props.id, pos
+        });
+
+    }, [computeDragPosition, props.id, store]);
+
     const handleDragEnter = React.useCallback((event: React.DragEvent) => {
-        store.setDropTarget(props.id);
+
+        updateDropTarget(event);
+
+        dragActive.current = true;
+
         event.preventDefault();
         event.stopPropagation();
-    }, [props.id, store]);
+
+    }, [updateDropTarget]);
 
     const handleDragExit = React.useCallback((event: React.DragEvent) => {
+
+        dragActive.current = false;
+
         event.preventDefault();
         event.stopPropagation();
+    }, []);
+
+    const handleMouseMove = React.useCallback((event: React.MouseEvent) => {
+
+        if (dragActive.current) {
+            updateDropTarget(event);
+        }
+
+    }, [updateDropTarget]);
+
+    const handleDrop = React.useCallback((event: React.DragEvent) => {
+
+        event.preventDefault();
+
+        // FIXME: do the move now... and actually move the item
+
+        console.log("FIXME: DROP")
+
     }, []);
 
     const items = store.lookup(note.items || []);
 
     const hasItems = items.length > 0;
 
-    const dropActive = store.dropTarget === props.id && store.dropSource !== props.id;
+    const dropActive = store.dropTarget?.id === props.id && store.dropSource !== props.id;
 
     return (
-        <div onMouseDown={handleMouseDown}
+        <div ref={divRef}
+             onMouseDown={handleMouseDown}
+             onMouseMove={handleMouseMove}
              onKeyDown={handleKeyDown}
              onDragStart={event => handleDragStart(event)}
              onDragEnter={event => handleDragEnter(event)}
              onDragLeave={event => handleDragExit(event)}
              onDragEnd={() => store.clearDrop()}
-             onDrop={event => event.preventDefault()}
+             onDrop={event => handleDrop(event)}
              className={clsx(['Note', selected ? classes.selected : undefined])}>
 
-            <div {...contextMenuHandlers}
-                 style={{
-                     display: 'flex',
-                     alignItems: 'flex-start',
-                     marginTop: theme.spacing(0.5),
-                     marginBottom: theme.spacing(0.5),
-                     background: dropActive ? 'red' : 'inherit'
-                 }}>
+                <BlockDragIndicator id={props.id}>
+                    <>
+                        <div {...contextMenuHandlers}
+                             style={{
+                                 display: 'flex',
+                                 alignItems: 'flex-start',
+                                 boxSizing: 'border-box',
+                                 paddingTop: theme.spacing(0.5),
+                                 paddingBottom: theme.spacing(0.5),
+                                 // background: dropActive ? 'red' : 'inherit'
+                             }}>
 
-                <div style={{
-                         display: 'flex',
-                         alignItems: 'center',
-                         minWidth: '3em',
-                         justifyContent: 'flex-end',
-                         marginRight: theme.spacing(0.5)
-                     }}>
+                            <div style={{
+                                     display: 'flex',
+                                     alignItems: 'center',
+                                     minWidth: '3em',
+                                     justifyContent: 'flex-end',
+                                     marginRight: theme.spacing(0.5)
+                                 }}>
 
-                    {/*<NoteOverflowButton id={props.id}/>*/}
+                                {/*<NoteOverflowButton id={props.id}/>*/}
 
-                    {hasItems && id !== root && (
-                        <NoteExpandToggleButton id={props.id}/>
-                    )}
+                                {hasItems && id !== root && (
+                                    <NoteExpandToggleButton id={props.id}/>
+                                )}
 
-                    <NoteBulletButton target={props.id}/>
+                                <NoteBulletButton target={props.id}/>
 
-                </div>
+                            </div>
 
-                <NoteEditor key={props.id} parent={props.parent} id={props.id} />
+                            <NoteEditor key={props.id} parent={props.parent} id={props.id} />
 
-            </div>
+                        </div>
 
-            {(expanded || id === root) && (
-                <NoteItems parent={props.id} notes={items}/>
-            )}
+                        {(expanded || id === root) && (
+                            <NoteItems parent={props.id} notes={items}/>
+                        )}
+                </>
+            </BlockDragIndicator>
         </div>
     );
 });
