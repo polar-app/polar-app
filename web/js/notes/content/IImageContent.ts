@@ -2,7 +2,7 @@ export type DataURLStr = string;
 
 export interface IImageContent {
 
-    readonly type: 'name';
+    readonly type: 'image';
     readonly src: DataURLStr;
 
     readonly width: number;
