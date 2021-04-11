@@ -561,6 +561,40 @@ describe('BlocksStore', function() {
 
     describe("mergeNotes", () => {
 
+        it("Merge empty first child with named note root", () => {
+
+            const store = createStore()
+
+            const createdBlock = store.createNewBlock('102');
+
+            const block = store.getBlock('102')!;
+
+            assertJSON(block.items, [
+                createdBlock.id,
+                '103',
+                '104',
+                '105'
+            ]);
+
+            const newBlock = store.getBlock(createdBlock.id)!;
+
+            assert.equal(newBlock.content, '');
+
+            assert.ok(store.canMerge(newBlock.id));
+            assert.ok(store.canMergeWithDelete(newBlock, block));
+
+            assert.equal(store.mergeBlocks(block.id, newBlock.id), 'block-merged-with-delete');
+
+            assertJSON(store.getBlock('102')!.items, [
+                '103',
+                '104',
+                '105'
+            ]);
+
+            assert.isUndefined(store.getBlock(createdBlock.id));
+
+        });
+
         it("basic merge", () => {
 
             const store = createStore()

@@ -737,6 +737,13 @@ export class BlocksStore implements IBlocksStore {
 
                 }
 
+                if (this.canMergeWithDelete(block, parentBlock)) {
+                    return {
+                        source: id,
+                        target: block.parent
+                    };
+                }
+
             }
 
         }
@@ -745,8 +752,32 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    private canMergeTypes(sourceBlock: IBlock, targetBlock: IBlock): boolean {
+    public canMergeTypes(sourceBlock: IBlock, targetBlock: IBlock): boolean {
         return targetBlock.type === sourceBlock.type;
+    }
+
+    public canMergeWithDelete(sourceBlock: IBlock, targetBlock: IBlock) {
+
+        if (! this.canMergeTypes(sourceBlock, targetBlock)) {
+
+            if (this.blockIsEmpty(sourceBlock.id)) {
+
+                if (sourceBlock.parent === targetBlock.id) {
+
+                    const firstChild = targetBlock.items.indexOf(sourceBlock.id) === 0;
+
+                    if (firstChild) {
+                        return true;
+                    }
+
+                }
+
+            }
+
+        }
+
+        return false;
+
     }
 
     @action public mergeBlocks(target: BlockIDStr, source: BlockIDStr) {
@@ -755,6 +786,15 @@ export class BlocksStore implements IBlocksStore {
         const sourceBlock = this._index[source];
 
         if (! this.canMergeTypes(sourceBlock, targetBlock)) {
+
+            if (this.canMergeWithDelete(sourceBlock, targetBlock)) {
+                // this is an edge case where a merge to the parent isn't
+                // possible but the child is empty so we just delete the child.
+                this.doDelete([sourceBlock.id]);
+                this.setActiveWithPosition(targetBlock.id, 'end');
+                return 'block-merged-with-delete';
+            }
+
             console.warn("Block types are incompatible and can't be merged");
             return 'incompatible-block-types';
         }
