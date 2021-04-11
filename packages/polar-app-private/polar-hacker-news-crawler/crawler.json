@@ -1,0 +1,3901 @@
+[
+  {
+    "title": "9th Circuit holds that scraping a public website does not violate the CFAA [pdf]",
+    "link": "http://cdn.ca9.uscourts.gov/datastore/opinions/2019/09/09/17-16783.pdf",
+    "score": 1102,
+    "commentsURL": "https://news.ycombinator.com/item?id=20920753",
+    "nrComments": 270
+  },
+  {
+    "title": "Mathematics all-in-one cheat-sheet (2013) [pdf]",
+    "link": "https://ourway.keybase.pub/mathematics_cheat_sheet.pdf",
+    "score": 890,
+    "commentsURL": "https://news.ycombinator.com/item?id=20048205",
+    "nrComments": 143
+  },
+  {
+    "title": "Topics in Advanced Data Structures [pdf]",
+    "link": "http://web.stanford.edu/class/cs166/handouts/100%20Suggested%20Final%20Project%20Topics.pdf",
+    "score": 880,
+    "commentsURL": "https://news.ycombinator.com/item?id=19780387",
+    "nrComments": 80
+  },
+  {
+    "title": "How to recognize AI snake oil [pdf]",
+    "link": "https://www.cs.princeton.edu/~arvindn/talks/MIT-STS-AI-snakeoil.pdf",
+    "score": 864,
+    "commentsURL": "https://news.ycombinator.com/item?id=21577156",
+    "nrComments": 335
+  },
+  {
+    "title": "Math Basics for Computer Science and Machine Learning [pdf]",
+    "link": "http://www.cis.upenn.edu/~jean/math-basics.pdf",
+    "score": 808,
+    "commentsURL": "https://news.ycombinator.com/item?id=20570025",
+    "nrComments": 114
+  },
+  {
+    "title": "I/O Is Faster Than CPU – Let’s Partition Resources and Eliminate OS Abstractions [pdf]",
+    "link": "https://penberg.org/parakernel-hotos19.pdf",
+    "score": 777,
+    "commentsURL": "https://news.ycombinator.com/item?id=19818899",
+    "nrComments": 268
+  },
+  {
+    "title": "A Heavily-Commented Linux Kernel Source Code [pdf]",
+    "link": "http://www.oldlinux.org/download/ECLK-5.0-WithCover.pdf",
+    "score": 712,
+    "commentsURL": "https://news.ycombinator.com/item?id=19225268",
+    "nrComments": 39
+  },
+  {
+    "title": "Structure and Interpretation of Computer Programs (1996) [pdf]",
+    "link": "https://opendocs.github.io/sicp/sicp.pdf",
+    "score": 547,
+    "commentsURL": "https://news.ycombinator.com/item?id=21299546",
+    "nrComments": 116
+  },
+  {
+    "title": "The Rate of Return on Everything, 1870–2015 [pdf]",
+    "link": "https://economics.harvard.edu/files/economics/files/ms28533.pdf",
+    "score": 475,
+    "commentsURL": "https://news.ycombinator.com/item?id=19817584",
+    "nrComments": 259
+  },
+  {
+    "title": "The Essential Guide to Electronics in Shenzhen (2016) [pdf]",
+    "link": "https://bunniefoo.com/bunnie/essential/essential-guide-shenzhen-web.pdf",
+    "score": 464,
+    "commentsURL": "https://news.ycombinator.com/item?id=21817656",
+    "nrComments": 183
+  },
+  {
+    "title": "Clear is better than clever [pdf]",
+    "link": "https://dave.cheney.net/paste/clear-is-better-than-clever.pdf",
+    "score": 454,
+    "commentsURL": "https://news.ycombinator.com/item?id=19837981",
+    "nrComments": 291
+  },
+  {
+    "title": "Statistics with Julia [pdf]",
+    "link": "https://people.smp.uq.edu.au/YoniNazarathy/julia-stats/StatisticsWithJulia.pdf",
+    "score": 444,
+    "commentsURL": "https://news.ycombinator.com/item?id=20420686",
+    "nrComments": 117
+  },
+  {
+    "title": "A Technology Freelancer's Guide to Starting a Worker Cooperative [pdf]",
+    "link": "https://techworker.coop/sites/default/files/TechCoopHOWTO.pdf",
+    "score": 441,
+    "commentsURL": "https://news.ycombinator.com/item?id=20908452",
+    "nrComments": 70
+  },
+  {
+    "title": "Information Theory for Intelligent People (2018) [pdf]",
+    "link": "http://tuvalu.santafe.edu/~simon/it.pdf",
+    "score": 424,
+    "commentsURL": "https://news.ycombinator.com/item?id=20611270",
+    "nrComments": 20
+  },
+  {
+    "title": "Linux Kernel Fastboot [pdf]",
+    "link": "https://www.linuxplumbersconf.org/event/4/contributions/281/attachments/216/435/LPC_2019_kernel_fastboot_on_the_way.pdf",
+    "score": 399,
+    "commentsURL": "https://news.ycombinator.com/item?id=20974793",
+    "nrComments": 104
+  },
+  {
+    "title": "“Illegal” Lego Builds (2006) [pdf]",
+    "link": "http://bramlambrecht.com/tmp/jamieberard-brickstress-bf06.pdf",
+    "score": 370,
+    "commentsURL": "https://news.ycombinator.com/item?id=19236249",
+    "nrComments": 56
+  },
+  {
+    "title": "Introduction to Algotrading (2011) [pdf]",
+    "link": "http://isomorphisms.sdf.org/maxdama.pdf",
+    "score": 368,
+    "commentsURL": "https://news.ycombinator.com/item?id=19215026",
+    "nrComments": 101
+  },
+  {
+    "title": "Case Study: Npm uses Rust for its CPU-bound bottlenecks [pdf]",
+    "link": "https://www.rust-lang.org/static/pdfs/Rust-npm-Whitepaper.pdf",
+    "score": 357,
+    "commentsURL": "https://news.ycombinator.com/item?id=19294512",
+    "nrComments": 274
+  },
+  {
+    "title": "Reverse Engineering for Beginners [pdf]",
+    "link": "https://beginners.re/RE4B-EN.pdf",
+    "score": 355,
+    "commentsURL": "https://news.ycombinator.com/item?id=21640669",
+    "nrComments": 41
+  },
+  {
+    "title": "Thirty-three Miniatures: Applications of Linear Algebra (2012) [pdf]",
+    "link": "https://kam.mff.cuni.cz/~matousek/stml-53-matousek-1.pdf",
+    "score": 322,
+    "commentsURL": "https://news.ycombinator.com/item?id=20241148",
+    "nrComments": 13
+  },
+  {
+    "title": "Lambda School fined $75k by CA for operating without state approval [pdf]",
+    "link": "https://www.bppe.ca.gov/enforcement/actions/lambdainc_ord.pdf",
+    "score": 313,
+    "commentsURL": "https://news.ycombinator.com/item?id=20555351",
+    "nrComments": 321
+  },
+  {
+    "title": "Lectures in Quantitative Economics with Python [pdf]",
+    "link": "https://lectures.quantecon.org/_downloads/pdf/py/Quantitative%20Economics%20with%20Python.pdf",
+    "score": 310,
+    "commentsURL": "https://news.ycombinator.com/item?id=21022620",
+    "nrComments": 48
+  },
+  {
+    "title": "Bullshitters: Who Are They and What Do We Know about Their Lives? [pdf]",
+    "link": "http://ftp.iza.org/dp12282.pdf",
+    "score": 302,
+    "commentsURL": "https://news.ycombinator.com/item?id=19749130",
+    "nrComments": 221
+  },
+  {
+    "title": "Algebra, Topology, Differential Calculus, and Optimization Theory for CS and ML [pdf]",
+    "link": "https://www.cis.upenn.edu/~jean/math-deep.pdf",
+    "score": 293,
+    "commentsURL": "https://news.ycombinator.com/item?id=21241906",
+    "nrComments": 53
+  },
+  {
+    "title": "An Idiot’s guide to Support vector machines (2015) [pdf]",
+    "link": "http://web.mit.edu/6.034/wwwbob/svm-notes-long-08.pdf",
+    "score": 289,
+    "commentsURL": "https://news.ycombinator.com/item?id=18794545",
+    "nrComments": 62
+  },
+  {
+    "title": "LaTeX Coffee Stains (2009) [pdf]",
+    "link": "http://hanno-rein.de/downloads/coffee.pdf",
+    "score": 279,
+    "commentsURL": "https://news.ycombinator.com/item?id=19008109",
+    "nrComments": 19
+  },
+  {
+    "title": "Busy Person Patterns (2006) [pdf]",
+    "link": "https://hillside.net/plop/2006/Papers/Library/PLoP%20Busy%20Person%20Pattern%20v8.pdf",
+    "score": 278,
+    "commentsURL": "https://news.ycombinator.com/item?id=19596001",
+    "nrComments": 14
+  },
+  {
+    "title": "Natural Language Processing (2018) [pdf]",
+    "link": "https://github.com/jacobeisenstein/gt-nlp-class/blob/master/notes/eisenstein-nlp-notes.pdf",
+    "score": 258,
+    "commentsURL": "https://news.ycombinator.com/item?id=21327114",
+    "nrComments": 12
+  },
+  {
+    "title": "Fundamentals of Python Programming [pdf]",
+    "link": "https://python.cs.southern.edu/pythonbook/pythonbook.pdf",
+    "score": 253,
+    "commentsURL": "https://news.ycombinator.com/item?id=21156705",
+    "nrComments": 36
+  },
+  {
+    "title": "Mary Meeker’s 2019 internet trends report [pdf]",
+    "link": "https://www.bondcap.com/pdf/190611_Internet_Trends_2019.pdf",
+    "score": 250,
+    "commentsURL": "https://news.ycombinator.com/item?id=20156842",
+    "nrComments": 97
+  },
+  {
+    "title": "Introduction to Stochastic Processes [pdf]",
+    "link": "https://web.ma.utexas.edu/users/gordanz/notes/introduction_to_stochastic_processes.pdf",
+    "score": 249,
+    "commentsURL": "https://news.ycombinator.com/item?id=21797480",
+    "nrComments": 11
+  },
+  {
+    "title": "Seneca Valley Virus has earned a reputation as a potent oncolytic agent",
+    "link": "https://www.pnas.org/content/pnas/early/2018/10/30/1810664115.full.pdf",
+    "score": 242,
+    "commentsURL": "https://news.ycombinator.com/item?id=18966742",
+    "nrComments": 65
+  },
+  {
+    "title": "US Senate report on Equifax breach [pdf]",
+    "link": "https://www.hsgac.senate.gov/imo/media/doc/FINAL%20Equifax%20Report.pdf",
+    "score": 240,
+    "commentsURL": "https://news.ycombinator.com/item?id=20249902",
+    "nrComments": 141
+  },
+  {
+    "title": "Effectiveness of Photodynamic Therapy in Elimination of HPV in Mexican Women [pdf]",
+    "link": "https://twin.sci-hub.tw/6319/73863883d6bd8895505fcc8581dfc0e0/maldonadoalvarado2017.pdf",
+    "score": 237,
+    "commentsURL": "https://news.ycombinator.com/item?id=19118891",
+    "nrComments": 48
+  },
+  {
+    "title": "Kubernetes Security Assessment [pdf]",
+    "link": "https://github.com/kubernetes/community/blob/master/wg-security-audit/findings/Kubernetes%20Final%20Report.pdf",
+    "score": 236,
+    "commentsURL": "https://news.ycombinator.com/item?id=20655017",
+    "nrComments": 57
+  },
+  {
+    "title": "The Unix-Haters Handbook (1994) [pdf]",
+    "link": "http://web.mit.edu/~simsong/www/ugh.pdf",
+    "score": 235,
+    "commentsURL": "https://news.ycombinator.com/item?id=19416485",
+    "nrComments": 105
+  },
+  {
+    "title": "Ray Tracing a Tiny Procedural Planet [pdf]",
+    "link": "https://casual-effects.com/research/McGuire2019ProcGen/McGuire2019ProcGen.pdf",
+    "score": 235,
+    "commentsURL": "https://news.ycombinator.com/item?id=21433078",
+    "nrComments": 8
+  },
+  {
+    "title": "Philosophy of Computer Science [pdf]",
+    "link": "https://cse.buffalo.edu/~rapaport/Papers/phics.pdf",
+    "score": 234,
+    "commentsURL": "https://news.ycombinator.com/item?id=20912718",
+    "nrComments": 49
+  },
+  {
+    "title": "Self-Supervised Learning [pdf]",
+    "link": "https://project.inria.fr/paiss/files/2018/07/zisserman-self-supervised.pdf",
+    "score": 229,
+    "commentsURL": "https://news.ycombinator.com/item?id=20195575",
+    "nrComments": 44
+  },
+  {
+    "title": "An optimization guide for assembly programmers and compiler makers (2018) [pdf]",
+    "link": "https://www.agner.org/optimize/microarchitecture.pdf",
+    "score": 228,
+    "commentsURL": "https://news.ycombinator.com/item?id=19137660",
+    "nrComments": 50
+  },
+  {
+    "title": "Telling users why their content was removed reduces future issues [pdf]",
+    "link": "https://shagunjhaver.com/files/research/jhaver-2019-transparency.pdf",
+    "score": 225,
+    "commentsURL": "https://news.ycombinator.com/item?id=21513871",
+    "nrComments": 140
+  },
+  {
+    "title": "Mathematics and Computation [pdf]",
+    "link": "https://www.math.ias.edu/files/Website03-25-19.pdf",
+    "score": 222,
+    "commentsURL": "https://news.ycombinator.com/item?id=19609613",
+    "nrComments": 13
+  },
+  {
+    "title": "Discrete Differential Geometry: An Applied Introduction [pdf]",
+    "link": "https://www.cs.cmu.edu/~kmcrane/Projects/DGPDEC/paper.pdf",
+    "score": 220,
+    "commentsURL": "https://news.ycombinator.com/item?id=20542470",
+    "nrComments": 40
+  },
+  {
+    "title": "Thinking Forth – A Language and Philosophy for Solving Problems (1984) [pdf]",
+    "link": "https://1scyem2bunjw1ghzsf1cjwwn-wpengine.netdna-ssl.com/wp-content/uploads/2018/11/thinking-forth-color.pdf",
+    "score": 217,
+    "commentsURL": "https://news.ycombinator.com/item?id=18885493",
+    "nrComments": 40
+  },
+  {
+    "title": "Efficient IO with io_uring [pdf]",
+    "link": "http://kernel.dk/io_uring.pdf",
+    "score": 215,
+    "commentsURL": "https://news.ycombinator.com/item?id=19843464",
+    "nrComments": 42
+  },
+  {
+    "title": "Why is Maxwell's theory so hard to understand? (2007) [pdf]",
+    "link": "http://www.damtp.cam.ac.uk/user/tong/em/dyson.pdf",
+    "score": 212,
+    "commentsURL": "https://news.ycombinator.com/item?id=18837677",
+    "nrComments": 104
+  },
+  {
+    "title": "Effects of Intermittent Fasting on Health, Aging, and Disease [pdf]",
+    "link": "https://www.gwern.net/docs/longevity/2019-decabo.pdf",
+    "score": 209,
+    "commentsURL": "https://news.ycombinator.com/item?id=21887905",
+    "nrComments": 106
+  },
+  {
+    "title": "Minimalism: Practical Guide to Writing Less Code (2002) [pdf]",
+    "link": "http://www.two-sdg.demon.co.uk/curbralan/papers/jaoo/Minimalism.pdf",
+    "score": 206,
+    "commentsURL": "https://news.ycombinator.com/item?id=18830732",
+    "nrComments": 112
+  },
+  {
+    "title": "SBCL – Past, Present, Future [pdf]",
+    "link": "https://european-lisp-symposium.org/static/2019/rhodes.pdf",
+    "score": 204,
+    "commentsURL": "https://news.ycombinator.com/item?id=20365490",
+    "nrComments": 47
+  },
+  {
+    "title": "Interviews with programming language creators (2010) [pdf]",
+    "link": "http://www.math.bas.bg/bantchev/misc/az.pdf",
+    "score": 201,
+    "commentsURL": "https://news.ycombinator.com/item?id=20797521",
+    "nrComments": 44
+  },
+  {
+    "title": "8chan served with search warrant [pdf]",
+    "link": "https://www.courtlistener.com/recap/gov.uscourts.casd.626722/gov.uscourts.casd.626722.1.0.pdf",
+    "score": 200,
+    "commentsURL": "https://news.ycombinator.com/item?id=20186775",
+    "nrComments": 364
+  },
+  {
+    "title": "NUMA Siloing in the FreeBSD Network Stack [pdf]",
+    "link": "https://people.freebsd.org/~gallatin/talks/euro2019.pdf",
+    "score": 195,
+    "commentsURL": "https://news.ycombinator.com/item?id=21043765",
+    "nrComments": 100
+  },
+  {
+    "title": "What Every Programmer Should Know About Memory (2007) [pdf]",
+    "link": "https://akkadia.org/drepper/cpumemory.pdf",
+    "score": 194,
+    "commentsURL": "https://news.ycombinator.com/item?id=19302299",
+    "nrComments": 89
+  },
+  {
+    "title": "FTC rules 5-0 that Cambridge Analytica engaged in deceptive practices [pdf]",
+    "link": "https://www.ftc.gov/system/files/documents/cases/d09389_comm_final_opinionpublic.pdf",
+    "score": 193,
+    "commentsURL": "https://news.ycombinator.com/item?id=21724892",
+    "nrComments": 29
+  },
+  {
+    "title": "The Saddest Moment (2013) [pdf]",
+    "link": "https://www.usenix.org/system/files/login-logout_1305_mickens.pdf",
+    "score": 190,
+    "commentsURL": "https://news.ycombinator.com/item?id=20111644",
+    "nrComments": 42
+  },
+  {
+    "title": "What’s New in Apple Filesystems [pdf]",
+    "link": "https://devstreaming-cdn.apple.com/videos/wwdc/2019/710aunvynji5emrl/710/710_whats_new_in_apple_file_systems.pdf",
+    "score": 188,
+    "commentsURL": "https://news.ycombinator.com/item?id=20156923",
+    "nrComments": 147
+  },
+  {
+    "title": "Reinforcement Learning: An Introduction (2018) [pdf]",
+    "link": "http://incompleteideas.net/book/RLbook2018.pdf",
+    "score": 185,
+    "commentsURL": "https://news.ycombinator.com/item?id=19191746",
+    "nrComments": 23
+  },
+  {
+    "title": "Timeline for Logic, λ-Calculus, and Programming Language Theory (2012) [pdf]",
+    "link": "http://fm.csl.sri.com/SSFT15/Timeline.pages.pdf",
+    "score": 182,
+    "commentsURL": "https://news.ycombinator.com/item?id=20860888",
+    "nrComments": 31
+  },
+  {
+    "title": "Laws of Showrunning (2016) [pdf]",
+    "link": "http://okbjgm.weebly.com/uploads/3/1/5/0/31506003/11_laws_of_showrunning_nice_version.pdf",
+    "score": 179,
+    "commentsURL": "https://news.ycombinator.com/item?id=20730543",
+    "nrComments": 20
+  },
+  {
+    "title": "The Knot Book: Introduction to the Mathematical Theory of Knots (1994) [pdf]",
+    "link": "http://math.harvard.edu/~ctm/home/text/books/adams/knot_book/knot_book.pdf",
+    "score": 178,
+    "commentsURL": "https://news.ycombinator.com/item?id=19105426",
+    "nrComments": 26
+  },
+  {
+    "title": "Software Engineering at Google (2017) [pdf]",
+    "link": "https://arxiv.org/ftp/arxiv/papers/1702/1702.01715.pdf",
+    "score": 177,
+    "commentsURL": "https://news.ycombinator.com/item?id=18818412",
+    "nrComments": 50
+  },
+  {
+    "title": "Kurt Gödel's Letter to John von Neumann (1956) [pdf]",
+    "link": "http://www.cs.cmu.edu/~aada/courses/15251s15/www/notes/godel-letter.pdf",
+    "score": 167,
+    "commentsURL": "https://news.ycombinator.com/item?id=19281633",
+    "nrComments": 77
+  },
+  {
+    "title": "CIA Doc on Time Travel, Consciousness, and Existence of the Absolute (1983) [pdf]",
+    "link": "https://www.cia.gov/library/readingroom/docs/CIA-RDP96-00788R001700210016-5.pdf",
+    "score": 167,
+    "commentsURL": "https://news.ycombinator.com/item?id=19425844",
+    "nrComments": 61
+  },
+  {
+    "title": "End-User Probabilistic Programming [pdf]",
+    "link": "https://www.cs.uoregon.edu/research/summerschool/summer19/lecture_notes/DRAFT___Probabilistic_Programming_for_End_Users.pdf",
+    "score": 158,
+    "commentsURL": "https://news.ycombinator.com/item?id=20211201",
+    "nrComments": 14
+  },
+  {
+    "title": "The Science of Functional Programming [pdf]",
+    "link": "https://github.com/winitzki/sofp/blob/master/sofp-src/sofp.pdf",
+    "score": 158,
+    "commentsURL": "https://news.ycombinator.com/item?id=21093129",
+    "nrComments": 59
+  },
+  {
+    "title": "A guide to pricing and hedging (2003) [pdf]",
+    "link": "https://ieor.columbia.edu/files/seasdepts/file_attach/BoysGuide.pdf",
+    "score": 157,
+    "commentsURL": "https://news.ycombinator.com/item?id=19980532",
+    "nrComments": 73
+  },
+  {
+    "title": "Small guide to making nice tables [pdf]",
+    "link": "https://inf.ethz.ch/personal/markusp/teaching/guides/guide-tables.pdf",
+    "score": 157,
+    "commentsURL": "https://news.ycombinator.com/item?id=20144619",
+    "nrComments": 42
+  },
+  {
+    "title": "Design Patterns in Dynamic Programming (1996) [pdf]",
+    "link": "http://norvig.com/design-patterns/design-patterns.pdf",
+    "score": 153,
+    "commentsURL": "https://news.ycombinator.com/item?id=20468164",
+    "nrComments": 32
+  },
+  {
+    "title": "Network offloading in OpenWrt (2018) [pdf]",
+    "link": "https://openwrtsummit.files.wordpress.com/2018/11/hauke-mehrtens.pdf",
+    "score": 152,
+    "commentsURL": "https://news.ycombinator.com/item?id=19831385",
+    "nrComments": 34
+  },
+  {
+    "title": "GNU Compiler Collection Internals [pdf]",
+    "link": "https://gcc.gnu.org/onlinedocs/gccint.pdf",
+    "score": 152,
+    "commentsURL": "https://news.ycombinator.com/item?id=21512890",
+    "nrComments": 55
+  },
+  {
+    "title": "Is College Still Worth It? The New Calculus of Falling Returns [pdf]",
+    "link": "https://www.stlouisfed.org/~/media/files/pdfs/hfs/is-college-worth-it/emmons_kent_ricketts_college_still_worth_it.pdf",
+    "score": 152,
+    "commentsURL": "https://news.ycombinator.com/item?id=21890872",
+    "nrComments": 160
+  },
+  {
+    "title": "Linux 3.8 introduced unprivileged user namespaces [pdf]",
+    "link": "http://man7.org/conf/meetup/understanding-user-namespaces--Google-Munich-Kerrisk-2019-10-25.pdf",
+    "score": 148,
+    "commentsURL": "https://news.ycombinator.com/item?id=21812641",
+    "nrComments": 47
+  },
+  {
+    "title": "From Laptop to Lambda: Outsourcing Everyday Jobs to Thousands of Containers [pdf]",
+    "link": "https://www-cs.stanford.edu/~matei/papers/2019/usenix_atc_gg.pdf",
+    "score": 147,
+    "commentsURL": "https://news.ycombinator.com/item?id=20433315",
+    "nrComments": 11
+  },
+  {
+    "title": "Too Much Crypto [pdf]",
+    "link": "https://eprint.iacr.org/2019/1492.pdf",
+    "score": 147,
+    "commentsURL": "https://news.ycombinator.com/item?id=21917505",
+    "nrComments": 78
+  },
+  {
+    "title": "Conversations among German Nuclear Physicists at Farm Hall (1945) [pdf]",
+    "link": "http://germanhistorydocs.ghi-dc.org/pdf/eng/English101.pdf",
+    "score": 142,
+    "commentsURL": "https://news.ycombinator.com/item?id=19113443",
+    "nrComments": 107
+  },
+  {
+    "title": "The Efficiency Is Everything Cookbook [pdf]",
+    "link": "https://efficiencyiseverything.com/The-Cookbook-v-1.4.pdf",
+    "score": 141,
+    "commentsURL": "https://news.ycombinator.com/item?id=19590332",
+    "nrComments": 72
+  },
+  {
+    "title": "Report on the technical vulnerabilities found in Huawei 5G [pdf]",
+    "link": "https://finitestate.io/wp-content/uploads/2019/06/Finite-State-SCA1-Final.pdf",
+    "score": 141,
+    "commentsURL": "https://news.ycombinator.com/item?id=20421148",
+    "nrComments": 80
+  },
+  {
+    "title": "Most Unit Testing Is Waste (2014) [pdf]",
+    "link": "https://rbcs-us.com/documents/Why-Most-Unit-Testing-is-Waste.pdf",
+    "score": 139,
+    "commentsURL": "https://news.ycombinator.com/item?id=20309815",
+    "nrComments": 80
+  },
+  {
+    "title": "Berkshire Hathaway 2018 Annual Shareholder Letter [pdf]",
+    "link": "http://berkshirehathaway.com/letters/2018ltr.pdf",
+    "score": 137,
+    "commentsURL": "https://news.ycombinator.com/item?id=19233289",
+    "nrComments": 81
+  },
+  {
+    "title": "The reliability pillar of the AWS Well-Architected Framework [pdf]",
+    "link": "https://d1.awsstatic.com/whitepapers/architecture/AWS-Reliability-Pillar.pdf",
+    "score": 137,
+    "commentsURL": "https://news.ycombinator.com/item?id=20486830",
+    "nrComments": 57
+  },
+  {
+    "title": "Hacking PostgreSQL [pdf]",
+    "link": "https://www.postgresql.eu/events/pgconfeu2018/sessions/session/2058/slides/96/hackingpg-present.pdf",
+    "score": 136,
+    "commentsURL": "https://news.ycombinator.com/item?id=19014665",
+    "nrComments": 1
+  },
+  {
+    "title": "Self-forgiveness for procrastinating can reduce future procrastination (2010) [pdf]",
+    "link": "https://law.utexas.edu/wp-content/uploads/sites/25/Pretend-Paper.pdf",
+    "score": 136,
+    "commentsURL": "https://news.ycombinator.com/item?id=19487411",
+    "nrComments": 24
+  },
+  {
+    "title": "ACIDRain: Concurrency-Related Attacks on Database-Backed Web Applications (2017) [pdf]",
+    "link": "http://www.bailis.org/papers/acidrain-sigmod2017.pdf",
+    "score": 135,
+    "commentsURL": "https://news.ycombinator.com/item?id=20027532",
+    "nrComments": 36
+  },
+  {
+    "title": "Ignition: An Informal History of Liquid Rocket Propellants (1972) [pdf]",
+    "link": "https://library.sciencemadness.org/library/books/ignition.pdf",
+    "score": 135,
+    "commentsURL": "https://news.ycombinator.com/item?id=20729115",
+    "nrComments": 30
+  },
+  {
+    "title": "Foundations of Data Science [pdf]",
+    "link": "https://www.cs.cornell.edu/jeh/book%20no%20so;utions%20March%202019.pdf",
+    "score": 134,
+    "commentsURL": "https://news.ycombinator.com/item?id=21179378",
+    "nrComments": 20
+  },
+  {
+    "title": "Higher-Order Type-Level Programming in Haskell [pdf]",
+    "link": "https://www.microsoft.com/en-us/research/uploads/prod/2019/03/ho-haskell-5c8bb4918a4de.pdf",
+    "score": 133,
+    "commentsURL": "https://news.ycombinator.com/item?id=19412667",
+    "nrComments": 14
+  },
+  {
+    "title": "LispOS: Specification of a Lisp operating system (2013) [pdf]",
+    "link": "http://metamodular.com/lispos.pdf",
+    "score": 131,
+    "commentsURL": "https://news.ycombinator.com/item?id=19121443",
+    "nrComments": 44
+  },
+  {
+    "title": "“Breathability” Comparison of Commercial Outerwear Shell Layers (2018) [pdf]",
+    "link": "https://www.shelbyoutdoor.com/images/support/breathability.pdf",
+    "score": 131,
+    "commentsURL": "https://news.ycombinator.com/item?id=21876101",
+    "nrComments": 68
+  },
+  {
+    "title": "Irish Supreme Court Dismisses Facebook’s Complaint on NSA Surveillance [pdf]",
+    "link": "https://noyb.eu/wp-content/uploads/2019/05/SC_PA.pdf",
+    "score": 128,
+    "commentsURL": "https://news.ycombinator.com/item?id=20059651",
+    "nrComments": 25
+  },
+  {
+    "title": "The Impact of the Lambda Calculus (1997) [pdf]",
+    "link": "http://www-users.mat.umk.pl/~adwid/materialy/doc/church.pdf",
+    "score": 126,
+    "commentsURL": "https://news.ycombinator.com/item?id=19835615",
+    "nrComments": 31
+  },
+  {
+    "title": "A Pixel Is Not A Little Square (1995) [pdf]",
+    "link": "http://alvyray.com/Memos/CG/Microsoft/6_pixel.pdf",
+    "score": 126,
+    "commentsURL": "https://news.ycombinator.com/item?id=20535984",
+    "nrComments": 67
+  },
+  {
+    "title": "Basics of Compiler Design (2000) [pdf]",
+    "link": "http://hjemmesider.diku.dk/~torbenm/Basics/basics_lulu2.pdf",
+    "score": 126,
+    "commentsURL": "https://news.ycombinator.com/item?id=21778546",
+    "nrComments": 12
+  },
+  {
+    "title": "GNU Octave: A high-level interactive language for numerical computations [pdf]",
+    "link": "https://octave.org/octave.pdf",
+    "score": 123,
+    "commentsURL": "https://news.ycombinator.com/item?id=18944617",
+    "nrComments": 59
+  },
+  {
+    "title": "Open Source Radio Telescope [pdf]",
+    "link": "https://www.gnuradio.org/grcon/grcon18/presentations/open_source_radio_telescopes/2-John_Makous-OSRT.pdf",
+    "score": 123,
+    "commentsURL": "https://news.ycombinator.com/item?id=18954475",
+    "nrComments": 8
+  },
+  {
+    "title": "The Mathematics of the Rubik’s Cube (2009) [pdf]",
+    "link": "https://web.mit.edu/sp.268/www/rubik.pdf",
+    "score": 123,
+    "commentsURL": "https://news.ycombinator.com/item?id=19135523",
+    "nrComments": 42
+  },
+  {
+    "title": "Seven Insights into Queueing Theory [pdf]",
+    "link": "http://www.treewhimsy.com/TECPB/Articles/SevenInsights.pdf",
+    "score": 123,
+    "commentsURL": "https://news.ycombinator.com/item?id=20313834",
+    "nrComments": 17
+  },
+  {
+    "title": "Augmenting Human Intellect: A Conceptual Framework (1962) [pdf]",
+    "link": "http://www.dougengelbart.org/pubs/papers/scanned/Doug_Engelbart-AugmentingHumanIntellect.pdf",
+    "score": 122,
+    "commentsURL": "https://news.ycombinator.com/item?id=20418297",
+    "nrComments": 16
+  },
+  {
+    "title": "Alphabet Announces Second Quarter 2019 Results [pdf]",
+    "link": "https://abc.xyz/investor/static/pdf/2019Q2_alphabet_earnings_release.pdf",
+    "score": 122,
+    "commentsURL": "https://news.ycombinator.com/item?id=20529108",
+    "nrComments": 133
+  },
+  {
+    "title": "Netflix and FreeBSD: Using Open Source to Deliver Streaming Video [pdf]",
+    "link": "https://fosdem.org/2019/schedule/event/netflix_freebsd/attachments/slides/3103/export/events/attachments/netflix_freebsd/slides/3103/FOSDEM_2019_Netflix_and_FreeBSD.pdf",
+    "score": 121,
+    "commentsURL": "https://news.ycombinator.com/item?id=19069560",
+    "nrComments": 40
+  },
+  {
+    "title": "It Takes Two Neurons to Ride a Bicycle (2004) [pdf]",
+    "link": "http://paradise.caltech.edu/%7Ecook/papers/TwoNeurons.pdf",
+    "score": 121,
+    "commentsURL": "https://news.ycombinator.com/item?id=19196664",
+    "nrComments": 20
+  },
+  {
+    "title": "Invent More, Toil Less (2016) [pdf]",
+    "link": "https://www.usenix.org/system/files/login/articles/login_fall16_08_beyer.pdf",
+    "score": 120,
+    "commentsURL": "https://news.ycombinator.com/item?id=19408174",
+    "nrComments": 40
+  },
+  {
+    "title": "Pedestrian Bridge Collapse over SW 8th Street in Miami [pdf]",
+    "link": "https://www.ntsb.gov/news/events/Documents/2019-HWY18MH009-BMG-abstract.pdf",
+    "score": 120,
+    "commentsURL": "https://news.ycombinator.com/item?id=21329870",
+    "nrComments": 77
+  },
+  {
+    "title": "GameBoy CPU Manual [pdf]",
+    "link": "https://realboyemulator.files.wordpress.com/2013/01/gbcpuman.pdf",
+    "score": 119,
+    "commentsURL": "https://news.ycombinator.com/item?id=19663009",
+    "nrComments": 23
+  },
+  {
+    "title": "Keeping Top AI Talent in the United States [pdf]",
+    "link": "https://cset.georgetown.edu/wp-content/uploads/Keeping-Top-AI-Talent-in-the-United-States.pdf",
+    "score": 116,
+    "commentsURL": "https://news.ycombinator.com/item?id=21815333",
+    "nrComments": 99
+  },
+  {
+    "title": "Remote, in-memory key-value stores: An idea whose time has come and gone? [pdf]",
+    "link": "http://pages.cs.wisc.edu/~rgrandl/papers/link.pdf",
+    "score": 115,
+    "commentsURL": "https://news.ycombinator.com/item?id=19823022",
+    "nrComments": 58
+  },
+  {
+    "title": "Freedom to Compete Act [pdf]",
+    "link": "https://www.rubio.senate.gov/public/_cache/files/7563e7ae-ca85-423b-b3e8-b44ce3b4eb54/1DC3C59DB28D9D2D273ACEB3087742E4.the-freedom-to-compete-act.pdf",
+    "score": 114,
+    "commentsURL": "https://news.ycombinator.com/item?id=19522028",
+    "nrComments": 53
+  },
+  {
+    "title": "What Is the Cost of Building a Subway? [pdf]",
+    "link": "https://pedestrianobservations.files.wordpress.com/2019/11/costspresentation2.pdf",
+    "score": 114,
+    "commentsURL": "https://news.ycombinator.com/item?id=21716312",
+    "nrComments": 85
+  },
+  {
+    "title": "Tutorial on Good Lisp Programming Style (1993) [pdf]",
+    "link": "https://www.cs.umd.edu/~nau/cmsc421/norvig-lisp-style.pdf",
+    "score": 113,
+    "commentsURL": "https://news.ycombinator.com/item?id=20516351",
+    "nrComments": 20
+  },
+  {
+    "title": "Graphs and Geometry (2010) [pdf]",
+    "link": "http://web.cs.elte.hu/~lovasz/bookxx/geomgraphbook/geombook2019.01.11.pdf",
+    "score": 112,
+    "commentsURL": "https://news.ycombinator.com/item?id=20317825",
+    "nrComments": 5
+  },
+  {
+    "title": "Ray-Strips: A Compact Mesh Representation for Interactive Ray Tracing (2007) [pdf]",
+    "link": "http://gamma.cs.unc.edu/RS/paper_rt07.pdf",
+    "score": 110,
+    "commentsURL": "https://news.ycombinator.com/item?id=19848906",
+    "nrComments": 16
+  },
+  {
+    "title": "The unreasonable effectiveness of mathematics in the natural sciences (1960) [pdf]",
+    "link": "https://www.maths.ed.ac.uk/~v1ranick/papers/wigner.pdf",
+    "score": 108,
+    "commentsURL": "https://news.ycombinator.com/item?id=19588971",
+    "nrComments": 67
+  },
+  {
+    "title": "Programming as Theory Building (1985) [pdf]",
+    "link": "http://pages.cs.wisc.edu/~remzi/Naur.pdf",
+    "score": 107,
+    "commentsURL": "https://news.ycombinator.com/item?id=20736145",
+    "nrComments": 10
+  },
+  {
+    "title": "Rules for Developing Safety-Critical Code (2006) [pdf]",
+    "link": "http://pixelscommander.com/wp-content/uploads/2014/12/P10.pdf",
+    "score": 107,
+    "commentsURL": "https://news.ycombinator.com/item?id=21290881",
+    "nrComments": 33
+  },
+  {
+    "title": "Mobile Jazz Company Handbook [pdf]",
+    "link": "https://mobilejazz.com/docs/company-handbook/mobile-jazz-company-handbook.pdf",
+    "score": 106,
+    "commentsURL": "https://news.ycombinator.com/item?id=19207834",
+    "nrComments": 49
+  },
+  {
+    "title": "GNU Parallel Cheat Sheet [pdf]",
+    "link": "https://www.gnu.org/software/parallel/parallel_cheat.pdf",
+    "score": 106,
+    "commentsURL": "https://news.ycombinator.com/item?id=19330356",
+    "nrComments": 52
+  },
+  {
+    "title": "New LTE vulnerabilities discovered by KAIST [pdf]",
+    "link": "https://syssec.kaist.ac.kr/pub/2019/kim_sp_2019.pdf",
+    "score": 106,
+    "commentsURL": "https://news.ycombinator.com/item?id=19517468",
+    "nrComments": 13
+  },
+  {
+    "title": "A Randomized Controlled Trial of Interleaved Mathematics Practice [pdf]",
+    "link": "http://uweb.cas.usf.edu/~drohrer/pdfs/Rohrer_et_al_InPressJEdPsych.pdf",
+    "score": 105,
+    "commentsURL": "https://news.ycombinator.com/item?id=19951464",
+    "nrComments": 28
+  },
+  {
+    "title": "Avoid News: Towards a Healthy News Diet (2010) [pdf]",
+    "link": "https://www.gwern.net/docs/culture/2010-dobelli.pdf",
+    "score": 105,
+    "commentsURL": "https://news.ycombinator.com/item?id=21430337",
+    "nrComments": 90
+  },
+  {
+    "title": "A wander through a weird landscape to the heart of compilation [pdf]",
+    "link": "http://venge.net/graydon/talks/CompilerTalk-2019.pdf",
+    "score": 104,
+    "commentsURL": "https://news.ycombinator.com/item?id=19657983",
+    "nrComments": 11
+  },
+  {
+    "title": "What Made Apollo a Success (1971) [pdf]",
+    "link": "https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19720005243.pdf",
+    "score": 101,
+    "commentsURL": "https://news.ycombinator.com/item?id=19451420",
+    "nrComments": 34
+  },
+  {
+    "title": "50 Years of Data Science (2015) [pdf]",
+    "link": "http://courses.csail.mit.edu/18.337/2015/docs/50YearsDataScience.pdf",
+    "score": 100,
+    "commentsURL": "https://news.ycombinator.com/item?id=19643071",
+    "nrComments": 7
+  },
+  {
+    "title": "Mathematics for Computer Science (2017) [pdf]",
+    "link": "http://opendatastructures.org/mcs.pdf",
+    "score": 100,
+    "commentsURL": "https://news.ycombinator.com/item?id=20052496",
+    "nrComments": 5
+  },
+  {
+    "title": "Apple Antitrust Probe – Responses to Congress [pdf]",
+    "link": "https://docs.house.gov/meetings/JU/JU05/20190716/109793/HHRG-116-JU05-20190716-SD036.pdf",
+    "score": 100,
+    "commentsURL": "https://news.ycombinator.com/item?id=21587191",
+    "nrComments": 110
+  },
+  {
+    "title": "The ABC's of Guiding the Child (1967) [pdf]",
+    "link": "http://centervideo.forest.usf.edu/qpi/goalsofpar/handout04.pdf",
+    "score": 99,
+    "commentsURL": "https://news.ycombinator.com/item?id=20027733",
+    "nrComments": 22
+  },
+  {
+    "title": "Magritte: A Language for Pipe-Based Programming [pdf]",
+    "link": "http://files.jneen.net/academic/thesis.pdf",
+    "score": 99,
+    "commentsURL": "https://news.ycombinator.com/item?id=20853628",
+    "nrComments": 37
+  },
+  {
+    "title": "A Peer to Peer Voting Algorithm [pdf]",
+    "link": "http://vixra.org/pdf/1905.0239v1.pdf",
+    "score": 97,
+    "commentsURL": "https://news.ycombinator.com/item?id=20067480",
+    "nrComments": 46
+  },
+  {
+    "title": "The Machine Stops (1909) [pdf]",
+    "link": "https://www.ele.uri.edu/faculty/vetter/Other-stuff/The-Machine-Stops.pdf",
+    "score": 97,
+    "commentsURL": "https://news.ycombinator.com/item?id=20461514",
+    "nrComments": 15
+  },
+  {
+    "title": "Some Were Meant for C (2017) [pdf]",
+    "link": "https://www.cs.kent.ac.uk/people/staff/srk21//research/papers/kell17some-preprint.pdf",
+    "score": 96,
+    "commentsURL": "https://news.ycombinator.com/item?id=19736214",
+    "nrComments": 85
+  },
+  {
+    "title": "Inside Macintosh (1985) [pdf]",
+    "link": "http://www.weihenstephan.org/~michaste/pagetable/mac/Inside_Macintosh.pdf",
+    "score": 96,
+    "commentsURL": "https://news.ycombinator.com/item?id=21667265",
+    "nrComments": 50
+  },
+  {
+    "title": "How NLP can help cure cancer? [pdf]",
+    "link": "https://people.csail.mit.edu/regina/talks/CNLP.pdf",
+    "score": 94,
+    "commentsURL": "https://news.ycombinator.com/item?id=20019355",
+    "nrComments": 18
+  },
+  {
+    "title": "No Silver Bullet (1986) [pdf]",
+    "link": "http://worrydream.com/refs/Brooks-NoSilverBullet.pdf",
+    "score": 94,
+    "commentsURL": "https://news.ycombinator.com/item?id=20818537",
+    "nrComments": 65
+  },
+  {
+    "title": "CHURP: Dynamic-Committee Proactive Secret Sharing",
+    "link": "https://eprint.iacr.org/2019/017.pdf",
+    "score": 92,
+    "commentsURL": "https://news.ycombinator.com/item?id=20853387",
+    "nrComments": 48
+  },
+  {
+    "title": "What is Life? by Erwin Schrödinger (1944) [pdf]",
+    "link": "http://www.whatislife.ie/downloads/What-is-Life.pdf",
+    "score": 90,
+    "commentsURL": "https://news.ycombinator.com/item?id=18906495",
+    "nrComments": 32
+  },
+  {
+    "title": "All late projects are the same (2011) [pdf]",
+    "link": "http://www.systemsguild.com/pdfs/DeMarcoNov2011.pdf",
+    "score": 90,
+    "commentsURL": "https://news.ycombinator.com/item?id=19072941",
+    "nrComments": 36
+  },
+  {
+    "title": "The C-- Language Specification (2005) [pdf]",
+    "link": "https://www.cs.tufts.edu/~nr/c--/extern/man2.pdf",
+    "score": 90,
+    "commentsURL": "https://news.ycombinator.com/item?id=19429522",
+    "nrComments": 27
+  },
+  {
+    "title": "Map Design – a guide to good looking maps (2008) [pdf]",
+    "link": "https://orienteering.asn.au/wp-content/uploads/2013/09/Map-Design.pdf",
+    "score": 89,
+    "commentsURL": "https://news.ycombinator.com/item?id=20764937",
+    "nrComments": 10
+  },
+  {
+    "title": "Comparison of California Consumer Privacy Act (CCPA) and GDPR [pdf]",
+    "link": "https://www.bakerlaw.com/webfiles/Privacy/2018/Articles/CCPA-GDPR-Chart.pdf",
+    "score": 89,
+    "commentsURL": "https://news.ycombinator.com/item?id=21527758",
+    "nrComments": 36
+  },
+  {
+    "title": "LSD – My Problem Child (1980) [pdf]",
+    "link": "https://maps.org/images/pdf/books/lsdmyproblemchild.pdf",
+    "score": 89,
+    "commentsURL": "https://news.ycombinator.com/item?id=21878726",
+    "nrComments": 49
+  },
+  {
+    "title": "SAT/SMT by Example [pdf]",
+    "link": "https://yurichev.com/writings/SAT_SMT_by_example.pdf",
+    "score": 88,
+    "commentsURL": "https://news.ycombinator.com/item?id=19075599",
+    "nrComments": 6
+  },
+  {
+    "title": "Collapsing Towers of Interpreters (2018) [pdf]",
+    "link": "http://lampwww.epfl.ch/~amin/pub/collapsing-towers.pdf",
+    "score": 87,
+    "commentsURL": "https://news.ycombinator.com/item?id=19690449",
+    "nrComments": 14
+  },
+  {
+    "title": "Introduction to Probability at an advanced level (2018) [pdf]",
+    "link": "https://www.stat.berkeley.edu/~aditya/resources/AllLectures2018Fall201A.pdf",
+    "score": 87,
+    "commentsURL": "https://news.ycombinator.com/item?id=21468519",
+    "nrComments": 11
+  },
+  {
+    "title": "The Challenges of Operating a Computing Cloud and Charging for Its Use (2017) [pdf]",
+    "link": "https://web.stanford.edu/class/cs349d/docs/theimer.pdf",
+    "score": 86,
+    "commentsURL": "https://news.ycombinator.com/item?id=20429394",
+    "nrComments": 3
+  },
+  {
+    "title": "The Ecological Limits of Work [pdf]",
+    "link": "http://autonomy.work/wp-content/uploads/2019/05/The-Ecological-Limits-of-Work-final.pdf",
+    "score": 85,
+    "commentsURL": "https://news.ycombinator.com/item?id=19982558",
+    "nrComments": 45
+  },
+  {
+    "title": "Theorem Proving in Lean [pdf]",
+    "link": "https://leanprover.github.io/theorem_proving_in_lean/theorem_proving_in_lean.pdf",
+    "score": 85,
+    "commentsURL": "https://news.ycombinator.com/item?id=21108357",
+    "nrComments": 21
+  },
+  {
+    "title": "Survival in chessland [pdf]",
+    "link": "http://tom7.org/chess/survival.pdf",
+    "score": 84,
+    "commentsURL": "https://news.ycombinator.com/item?id=20550034",
+    "nrComments": 5
+  },
+  {
+    "title": "Fuzzification: Anti-Fuzzing Techniques [pdf]",
+    "link": "https://www.usenix.org/system/files/sec19fall_jung_prepub.pdf",
+    "score": 84,
+    "commentsURL": "https://news.ycombinator.com/item?id=20801168",
+    "nrComments": 35
+  },
+  {
+    "title": "Security in Plan 9 (2002) [pdf]",
+    "link": "https://css.csail.mit.edu/6.858/2013/readings/plan9auth.pdf",
+    "score": 84,
+    "commentsURL": "https://news.ycombinator.com/item?id=21688576",
+    "nrComments": 9
+  },
+  {
+    "title": "Rules of Machine Learning: Best Practices for ML Engineering [pdf]",
+    "link": "http://martin.zinkevich.org/rules_of_ml/rules_of_ml.pdf",
+    "score": 84,
+    "commentsURL": "https://news.ycombinator.com/item?id=21778814",
+    "nrComments": 1
+  },
+  {
+    "title": "Incompleteness ex Machina – proving Gödel's theorems in terms of algorithms [pdf]",
+    "link": "https://www.scottaaronson.com/incompleteness.pdf",
+    "score": 83,
+    "commentsURL": "https://news.ycombinator.com/item?id=19161440",
+    "nrComments": 21
+  },
+  {
+    "title": "How to write code in modern Fortran (2011) [pdf]",
+    "link": "https://www.tacc.utexas.edu/documents/13601/162125/fortran_class.pdf",
+    "score": 81,
+    "commentsURL": "https://news.ycombinator.com/item?id=19012403",
+    "nrComments": 70
+  },
+  {
+    "title": "JPL Institutional Coding Standard for the C Programming Language (2009) [pdf]",
+    "link": "https://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf",
+    "score": 81,
+    "commentsURL": "https://news.ycombinator.com/item?id=19187824",
+    "nrComments": 43
+  },
+  {
+    "title": "The Doors of Perception (1954) [pdf]",
+    "link": "https://maps.org/images/pdf/books/HuxleyA1954TheDoorsOfPerception.pdf",
+    "score": 81,
+    "commentsURL": "https://news.ycombinator.com/item?id=21890424",
+    "nrComments": 27
+  },
+  {
+    "title": "Computers without clocks (2002) [pdf]",
+    "link": "http://www.cs.virginia.edu/~robins/Computing_Without_Clocks.pdf",
+    "score": 80,
+    "commentsURL": "https://news.ycombinator.com/item?id=19545700",
+    "nrComments": 26
+  },
+  {
+    "title": "Rebuilding Racket on Chez Scheme Experience Report [pdf]",
+    "link": "https://www.cs.utah.edu/plt/publications/icfp19-rddkmstz.pdf",
+    "score": 80,
+    "commentsURL": "https://news.ycombinator.com/item?id=20445739",
+    "nrComments": 15
+  },
+  {
+    "title": "Jsonpath – a query language for JSON in Postgres [pdf]",
+    "link": "http://www.sai.msu.su/~megera/postgres/talks/jsonpath-pgday.it-2019.pdf",
+    "score": 79,
+    "commentsURL": "https://news.ycombinator.com/item?id=19949240",
+    "nrComments": 17
+  },
+  {
+    "title": "FUSE performance improvements with eBPF [pdf]",
+    "link": "https://www.usenix.org/system/files/atc19-bijlani.pdf",
+    "score": 79,
+    "commentsURL": "https://news.ycombinator.com/item?id=20416180",
+    "nrComments": 23
+  },
+  {
+    "title": "Intuit Notice of Unauthorized Access to Tax Returns [pdf]",
+    "link": "https://ago.vermont.gov/wp-content/uploads/2019/02/2019-02-22-Intuit-Notice-of-Data-Breach-to-Consumers.pdf",
+    "score": 78,
+    "commentsURL": "https://news.ycombinator.com/item?id=19249491",
+    "nrComments": 37
+  },
+  {
+    "title": "Unikernels: The Next Stage of Linux’s Dominance [pdf]",
+    "link": "https://www.cs.bu.edu/~jappavoo/Resources/Papers/unikernel-hotos19.pdf",
+    "score": 78,
+    "commentsURL": "https://news.ycombinator.com/item?id=19796877",
+    "nrComments": 11
+  },
+  {
+    "title": "The Evolution of Lisp (1993) [pdf]",
+    "link": "https://www.dreamsongs.com/Files/HOPL2-Uncut.pdf",
+    "score": 78,
+    "commentsURL": "https://news.ycombinator.com/item?id=20311817",
+    "nrComments": 29
+  },
+  {
+    "title": "Hard Drive of Hearing: Disks That Eavesdrop with a Synthesized Microphone [pdf]",
+    "link": "https://spqr.eecs.umich.edu/papers/Kwong-HDDphone-IEEE-SP-2019.pdf",
+    "score": 78,
+    "commentsURL": "https://news.ycombinator.com/item?id=20542333",
+    "nrComments": 27
+  },
+  {
+    "title": "Dynamically Adjustable Key-Value Store by Combining LSM and COW B+ Tree [pdf]",
+    "link": "https://greensky00.github.io/pdf/jungle_hotstorage19.pdf",
+    "score": 78,
+    "commentsURL": "https://news.ycombinator.com/item?id=21490364",
+    "nrComments": 12
+  },
+  {
+    "title": "OpenStreetMap Foundation investigation into unusual membership signups [pdf]",
+    "link": "https://openstreetmap.lu/MWGGlobalLogicReport20181226.pdf",
+    "score": 77,
+    "commentsURL": "https://news.ycombinator.com/item?id=19008792",
+    "nrComments": 7
+  },
+  {
+    "title": "A 20-Year Community Roadmap for Artificial Intelligence Research in the US [pdf]",
+    "link": "https://cra.org/ccc/wp-content/uploads/sites/2/2019/03/AI_Roadmap_Exec_Summary-FINAL-.pdf",
+    "score": 77,
+    "commentsURL": "https://news.ycombinator.com/item?id=19471903",
+    "nrComments": 11
+  },
+  {
+    "title": "Unwind: A privilege-separated DNS recursive nameserver for every laptop [pdf]",
+    "link": "https://www.openbsd.org/papers/bsdcan2019_unwind.pdf",
+    "score": 75,
+    "commentsURL": "https://news.ycombinator.com/item?id=19943550",
+    "nrComments": 5
+  },
+  {
+    "title": "Watching You Watch: The Tracking Ecosystem of Over-the-Top TV Streaming Devices [pdf]",
+    "link": "https://tv-watches-you.princeton.edu/tv-tracking-acm-ccs19.pdf",
+    "score": 75,
+    "commentsURL": "https://news.ycombinator.com/item?id=21100404",
+    "nrComments": 9
+  },
+  {
+    "title": "Category Theory for Scientists (2018) [pdf]",
+    "link": "https://arxiv.org/pdf/1302.6946v1.pdf",
+    "score": 75,
+    "commentsURL": "https://news.ycombinator.com/item?id=21242713",
+    "nrComments": 9
+  },
+  {
+    "title": "To Wash It All Away (2014) [pdf]",
+    "link": "http://scholar.harvard.edu/files/mickens/files/towashitallaway.pdf",
+    "score": 75,
+    "commentsURL": "https://news.ycombinator.com/item?id=21744785",
+    "nrComments": 18
+  },
+  {
+    "title": "Design Considerations for High-Throughput Cloud-Native RDBMS [pdf]",
+    "link": "http://allthingsdistributed.com/files/p1041-verbitski.pdf",
+    "score": 74,
+    "commentsURL": "https://news.ycombinator.com/item?id=18917847",
+    "nrComments": 13
+  },
+  {
+    "title": "Understanding Foreign Interference [pdf]",
+    "link": "https://www.dhs.gov/sites/default/files/publications/19_0717_cisa_the-war-on-pineapple-understanding-foreign-interference-in-5-steps.pdf",
+    "score": 74,
+    "commentsURL": "https://news.ycombinator.com/item?id=21055223",
+    "nrComments": 37
+  },
+  {
+    "title": "IBM System/360 Principles of Operation (1964) [pdf]",
+    "link": "http://bitsavers.org/pdf/ibm/360/princOps/A22-6821-0_360PrincOps.pdf",
+    "score": 74,
+    "commentsURL": "https://news.ycombinator.com/item?id=21481045",
+    "nrComments": 27
+  },
+  {
+    "title": "Extended BPF: A New Type of Software [pdf]",
+    "link": "http://www.brendangregg.com/Slides/UM2019_BPF_a_new_type_of_software.pdf",
+    "score": 74,
+    "commentsURL": "https://news.ycombinator.com/item?id=21712642",
+    "nrComments": 13
+  },
+  {
+    "title": "Case Study: IBM's System/360-370 Architecture (1987) [pdf]",
+    "link": "https://www.cs.tufts.edu/~nr/cs257/archive/alfred-spector/spector87ibm.pdf",
+    "score": 73,
+    "commentsURL": "https://news.ycombinator.com/item?id=19593677",
+    "nrComments": 22
+  },
+  {
+    "title": "MS Office in Wonderland [pdf]",
+    "link": "https://i.blackhat.com/asia-19/Thu-March-28/bh-asia-Hegt-MS-Office-in-Wonderland.pdf",
+    "score": 73,
+    "commentsURL": "https://news.ycombinator.com/item?id=19857867",
+    "nrComments": 7
+  },
+  {
+    "title": "RISC-V Bitmanip Extension [pdf]",
+    "link": "https://raw.githubusercontent.com/riscv/riscv-bitmanip/master/bitmanip-0.90.pdf",
+    "score": 73,
+    "commentsURL": "https://news.ycombinator.com/item?id=20146523",
+    "nrComments": 31
+  },
+  {
+    "title": "Smalltalk 80 – Blue Book (1983) [pdf]",
+    "link": "http://stephane.ducasse.free.fr/FreeBooks/BlueBook/Bluebook.pdf",
+    "score": 72,
+    "commentsURL": "https://news.ycombinator.com/item?id=18808984",
+    "nrComments": 21
+  },
+  {
+    "title": "Intel Processor Graphics Gen11 Architecture [pdf]",
+    "link": "https://software.intel.com/sites/default/files/managed/db/88/The-Architecture-of-Intel-Processor-Graphics-Gen11_R1new.pdf",
+    "score": 72,
+    "commentsURL": "https://news.ycombinator.com/item?id=19453949",
+    "nrComments": 27
+  },
+  {
+    "title": "The Dark Ages of AI (1985) [pdf]",
+    "link": "https://pdfs.semanticscholar.org/2a85/7e042331c53b856b3ad5018454f72d798790.pdf",
+    "score": 72,
+    "commentsURL": "https://news.ycombinator.com/item?id=20546503",
+    "nrComments": 22
+  },
+  {
+    "title": "The Enduring Legacy of Dennis Ritchie (2012) [pdf]",
+    "link": "http://www.cs.columbia.edu/~aho/Talks/12-09-07_DMR.pdf",
+    "score": 72,
+    "commentsURL": "https://news.ycombinator.com/item?id=21241066",
+    "nrComments": 13
+  },
+  {
+    "title": "Why functional programming matters (1990) [pdf]",
+    "link": "https://www.cs.kent.ac.uk/people/staff/dat/miranda/whyfp90.pdf",
+    "score": 72,
+    "commentsURL": "https://news.ycombinator.com/item?id=21480926",
+    "nrComments": 70
+  },
+  {
+    "title": "American Pictures (1985) [pdf]",
+    "link": "http://www.american-pictures.com/english/book/American%20Pictures-small-size.pdf",
+    "score": 71,
+    "commentsURL": "https://news.ycombinator.com/item?id=20008694",
+    "nrComments": 16
+  },
+  {
+    "title": "Alan Perlis: Epigrams on Programming (1982) [pdf]",
+    "link": "https://www.gwern.net/docs/cs/1982-perlis.pdf",
+    "score": 71,
+    "commentsURL": "https://news.ycombinator.com/item?id=20434630",
+    "nrComments": 9
+  },
+  {
+    "title": "Investigating sources of PII used in Facebook’s targeted advertising [pdf]",
+    "link": "https://mislove.org/publications/PII-PETS.pdf",
+    "score": 71,
+    "commentsURL": "https://news.ycombinator.com/item?id=20474103",
+    "nrComments": 4
+  },
+  {
+    "title": "Case Study: Monolithic Repository at Google (2018) [pdf]",
+    "link": "https://people.engr.ncsu.edu/ermurph3/papers/seip18.pdf",
+    "score": 70,
+    "commentsURL": "https://news.ycombinator.com/item?id=19303082",
+    "nrComments": 16
+  },
+  {
+    "title": "An Incremental Approach to Compiler Construction (2006) [pdf]",
+    "link": "http://scheme2006.cs.uchicago.edu/11-ghuloum.pdf",
+    "score": 70,
+    "commentsURL": "https://news.ycombinator.com/item?id=20577660",
+    "nrComments": 3
+  },
+  {
+    "title": "An Introduction to the Mathematics of Uncertainty (2010) [pdf]",
+    "link": "https://www.creighton.edu/fileadmin/user/CCAS/programs/fuzzy_math/docs/MOU.pdf",
+    "score": 69,
+    "commentsURL": "https://news.ycombinator.com/item?id=19094418",
+    "nrComments": 11
+  },
+  {
+    "title": "NHTSA’s Implausible Safety Claim for Tesla’s Autosteer Driver Assistance System [pdf]",
+    "link": "http://www.safetyresearch.net/Library/NHTSA_Autosteer_Safety_Claim.pdf",
+    "score": 69,
+    "commentsURL": "https://news.ycombinator.com/item?id=19127613",
+    "nrComments": 24
+  },
+  {
+    "title": "Compiling Dynamic Languages (2013) [pdf]",
+    "link": "http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/6620/pdf/imm6620.pdf",
+    "score": 68,
+    "commentsURL": "https://news.ycombinator.com/item?id=19653902",
+    "nrComments": 13
+  },
+  {
+    "title": "Non-Photorealistic Rendering Using a Painting Robot [pdf]",
+    "link": "http://graphics.uni-konstanz.de/publikationen/Lindemeier2015HardwareBasedNon/Lindemeier2015HardwareBasedNon.pdf",
+    "score": 67,
+    "commentsURL": "https://news.ycombinator.com/item?id=19751172",
+    "nrComments": 12
+  },
+  {
+    "title": "A New Aristocracy: Yale Law School Commencement Address (2015) [pdf]",
+    "link": "https://law.yale.edu/sites/default/files/area/department/studentaffairs/document/markovitscommencementrev.pdf",
+    "score": 67,
+    "commentsURL": "https://news.ycombinator.com/item?id=21330981",
+    "nrComments": 57
+  },
+  {
+    "title": "The One Weird Trick SecureROM Hates [pdf]",
+    "link": "http://iokit.racing/oneweirdtrick.pdf",
+    "score": 67,
+    "commentsURL": "https://news.ycombinator.com/item?id=21481598",
+    "nrComments": 21
+  },
+  {
+    "title": "Banding in Games: A Noisy Rant [pdf]",
+    "link": "http://loopit.dk/banding_in_games.pdf",
+    "score": 66,
+    "commentsURL": "https://news.ycombinator.com/item?id=20553177",
+    "nrComments": 5
+  },
+  {
+    "title": "Legacy and Athlete Preferences at Harvard [pdf]",
+    "link": "http://public.econ.duke.edu/~psarcidi/legacyathlete.pdf",
+    "score": 66,
+    "commentsURL": "https://news.ycombinator.com/item?id=21037400",
+    "nrComments": 29
+  },
+  {
+    "title": "Artificial Intelligence Meets Natural Stupidity (1976) [pdf]",
+    "link": "https://homepage.univie.ac.at/nicole.rossmanith/concepts/papers/mcdermott1976artificial.pdf",
+    "score": 66,
+    "commentsURL": "https://news.ycombinator.com/item?id=21431254",
+    "nrComments": 8
+  },
+  {
+    "title": "Formal Reasoning About Programs (2017) [pdf]",
+    "link": "http://adam.chlipala.net/frap/frap_book.pdf",
+    "score": 66,
+    "commentsURL": "https://news.ycombinator.com/item?id=21921795",
+    "nrComments": 18
+  },
+  {
+    "title": "Dota 2 with Large Scale Deep Reinforcement Learning [pdf]",
+    "link": "https://cdn.openai.com/dota-2.pdf",
+    "score": 65,
+    "commentsURL": "https://news.ycombinator.com/item?id=21784264",
+    "nrComments": 22
+  },
+  {
+    "title": "Laboratory Notebook Skills [pdf]",
+    "link": "https://www.dur.ac.uk/resources/physics/students/labs/skills/notebookskills.pdf",
+    "score": 64,
+    "commentsURL": "https://news.ycombinator.com/item?id=19740545",
+    "nrComments": 22
+  },
+  {
+    "title": "Comparing the Network Performance of AWS, Azure and GCP [pdf]",
+    "link": "https://pc.nanog.org/static/published/meetings/NANOG75/1909/20190218_Kesavan_Comparing_The_Network_v1.pdf",
+    "score": 63,
+    "commentsURL": "https://news.ycombinator.com/item?id=19199163",
+    "nrComments": 12
+  },
+  {
+    "title": "The Night Watch (2013) [pdf]",
+    "link": "https://www.usenix.org/system/files/1311_05-08_mickens.pdf",
+    "score": 63,
+    "commentsURL": "https://news.ycombinator.com/item?id=19289353",
+    "nrComments": 7
+  },
+  {
+    "title": "What is Symplectic Geometry? (2016) [pdf]",
+    "link": "https://www.ams.org/journals/notices/201611/rnoti-p1252.pdf",
+    "score": 63,
+    "commentsURL": "https://news.ycombinator.com/item?id=21677797",
+    "nrComments": 27
+  },
+  {
+    "title": "Plundervolt: Software-Based Fault Injection Attacks Against Intel SGX [pdf]",
+    "link": "https://plundervolt.com/doc/plundervolt.pdf",
+    "score": 63,
+    "commentsURL": "https://news.ycombinator.com/item?id=21759683",
+    "nrComments": 26
+  },
+  {
+    "title": "Symbolics Lisp: Using the DEC Alpha as a Programmable Micro-Engine (1993) [pdf]",
+    "link": "http://pt.withington.org/publications/VLM.pdf",
+    "score": 62,
+    "commentsURL": "https://news.ycombinator.com/item?id=19550713",
+    "nrComments": 11
+  },
+  {
+    "title": "Self-encrypting deception: weaknesses in the encryption of solid state drives [pdf]",
+    "link": "https://www.ieee-security.org/TC/SP2019/papers/310.pdf",
+    "score": 62,
+    "commentsURL": "https://news.ycombinator.com/item?id=21581980",
+    "nrComments": 17
+  },
+  {
+    "title": "Honu: Syntactic Extension for Algebraic Notation (2012) [pdf]",
+    "link": "https://www.cs.utah.edu/plt/publications/gpce12-rf.pdf",
+    "score": 62,
+    "commentsURL": "https://news.ycombinator.com/item?id=21721163",
+    "nrComments": 52
+  },
+  {
+    "title": "Hints for Computer System Design (1983) [pdf]",
+    "link": "http://bwlampson.site/33-Hints/Acrobat.pdf",
+    "score": 61,
+    "commentsURL": "https://news.ycombinator.com/item?id=18831030",
+    "nrComments": 3
+  },
+  {
+    "title": "How to make sure your talk doesn't suck (2011) [pdf]",
+    "link": "http://www.damtp.cam.ac.uk/user/tong/talks/talk.pdf",
+    "score": 61,
+    "commentsURL": "https://news.ycombinator.com/item?id=18854650",
+    "nrComments": 7
+  },
+  {
+    "title": "Building a Time Capsule – Guidelines for Preserving Materials [pdf]",
+    "link": "http://www.mnhs.org/preserve/conservation/reports/timecapsule.pdf",
+    "score": 61,
+    "commentsURL": "https://news.ycombinator.com/item?id=19233727",
+    "nrComments": 2
+  },
+  {
+    "title": "On the difficulty of predicting the future (2001) [pdf]",
+    "link": "https://library.rumsfeld.com/doclib/sp/2382/2001-04-12%20To%20George%20W%20Bush%20et%20al%20re%20Predicting%20the%20Future.pdf",
+    "score": 61,
+    "commentsURL": "https://news.ycombinator.com/item?id=19616078",
+    "nrComments": 29
+  },
+  {
+    "title": "Mitre Systems Engineering Guide (2014) [pdf]",
+    "link": "http://www.mitre.org/sites/default/files/publications/se-guide-book-interactive.pdf",
+    "score": 61,
+    "commentsURL": "https://news.ycombinator.com/item?id=20692553",
+    "nrComments": 10
+  },
+  {
+    "title": "The Early History of F# [pdf]",
+    "link": "https://fsharp.org/history/hopl-draft-1.pdf",
+    "score": 59,
+    "commentsURL": "https://news.ycombinator.com/item?id=18874796",
+    "nrComments": 7
+  },
+  {
+    "title": "The Welfare Effects of Social Media [pdf]",
+    "link": "http://web.stanford.edu/~gentzkow/research/facebook.pdf",
+    "score": 59,
+    "commentsURL": "https://news.ycombinator.com/item?id=19076863",
+    "nrComments": 25
+  },
+  {
+    "title": "HyperCard Users Guide (1987) [pdf]",
+    "link": "https://vintageapple.org/macprogramming/pdf/HyperCard_Users_Guide_1987.pdf",
+    "score": 59,
+    "commentsURL": "https://news.ycombinator.com/item?id=19253435",
+    "nrComments": 13
+  },
+  {
+    "title": "Haskell, Ada, C++: An Experiment in Prototyping Productivity (1994) [pdf]",
+    "link": "http://haskell.cs.yale.edu/wp-content/uploads/2011/03/HaskellVsAda-NSWC.pdf",
+    "score": 59,
+    "commentsURL": "https://news.ycombinator.com/item?id=19570776",
+    "nrComments": 45
+  },
+  {
+    "title": "World's richest 10% produce half of global carbon emissions (2015) [pdf]",
+    "link": "https://www-cdn.oxfam.org/s3fs-public/file_attachments/mb-extreme-carbon-inequality-021215-en.pdf",
+    "score": 59,
+    "commentsURL": "https://news.ycombinator.com/item?id=19995922",
+    "nrComments": 32
+  },
+  {
+    "title": "Evaluating the effectiveness of Google's “Testing on the Toilet” program [pdf]",
+    "link": "https://storage.googleapis.com/pub-tools-public-publication-data/pdf/00e67690ad147ab03479b9ddbc7f242ed85b5133.pdf",
+    "score": 59,
+    "commentsURL": "https://news.ycombinator.com/item?id=21140913",
+    "nrComments": 34
+  },
+  {
+    "title": "A Verified, Efficient Embedding of a Verifiable Assembly Language [pdf]",
+    "link": "https://www.microsoft.com/en-us/research/uploads/prod/2018/12/popl19-vale.pdf",
+    "score": 58,
+    "commentsURL": "https://news.ycombinator.com/item?id=18948889",
+    "nrComments": 2
+  },
+  {
+    "title": "Using the IOMMU for Safe and Secure User Space Drivers [pdf]",
+    "link": "https://www.net.in.tum.de/fileadmin/bibtex/publications/theses/2019-ixy-iommu.pdf",
+    "score": 58,
+    "commentsURL": "https://news.ycombinator.com/item?id=19520476",
+    "nrComments": 16
+  },
+  {
+    "title": "Introduction to Data Compression (2013) [pdf]",
+    "link": "https://www.cs.cmu.edu/~guyb/realworld/compression.pdf",
+    "score": 58,
+    "commentsURL": "https://news.ycombinator.com/item?id=21667332",
+    "nrComments": 1
+  },
+  {
+    "title": "Engineering Security (2014) [pdf]",
+    "link": "https://www.cs.auckland.ac.nz/~pgut001/pubs/book.pdf",
+    "score": 57,
+    "commentsURL": "https://news.ycombinator.com/item?id=18837358",
+    "nrComments": 8
+  },
+  {
+    "title": "Validating SSL Certificates in Non-Browser Software (2012) [pdf]",
+    "link": "http://www.cs.utexas.edu/~shmat/shmat_ccs12.pdf",
+    "score": 57,
+    "commentsURL": "https://news.ycombinator.com/item?id=20764720",
+    "nrComments": 26
+  },
+  {
+    "title": "A programmable programming language (2018) [pdf]",
+    "link": "https://cs.brown.edu/~sk/Publications/Papers/Published/fffkbmt-programmable-prog-lang/paper.pdf",
+    "score": 57,
+    "commentsURL": "https://news.ycombinator.com/item?id=21763407",
+    "nrComments": 28
+  },
+  {
+    "title": "Lambda: The Ultimate Imperative (1976) [pdf]",
+    "link": "https://dspace.mit.edu/bitstream/handle/1721.1/5790/AIM-353.pdf",
+    "score": 56,
+    "commentsURL": "https://news.ycombinator.com/item?id=19785500",
+    "nrComments": 3
+  },
+  {
+    "title": "How Complex Systems Fail (1998) [pdf]",
+    "link": "https://web.mit.edu/2.75/resources/random/How%20Complex%20Systems%20Fail.pdf",
+    "score": 56,
+    "commentsURL": "https://news.ycombinator.com/item?id=20380055",
+    "nrComments": 5
+  },
+  {
+    "title": "The Inevitable Death of VMs: A Progress Report [pdf]",
+    "link": "https://www.cs.kent.ac.uk/people/staff/srk21/research/papers/kell18inevitable-preprint.pdf",
+    "score": 56,
+    "commentsURL": "https://news.ycombinator.com/item?id=21103505",
+    "nrComments": 19
+  },
+  {
+    "title": "Distributed Algorithm for Constructing Minimal Spanning Trees in Networks (1976) [pdf]",
+    "link": "http://i.stanford.edu/pub/cstr/reports/csl/tr/76/111/CSL-TR-76-111.pdf",
+    "score": 56,
+    "commentsURL": "https://news.ycombinator.com/item?id=21788388",
+    "nrComments": 5
+  },
+  {
+    "title": "The Traveling Salesman Problem: A Neural Network Perspective (1993) [pdf]",
+    "link": "http://www.iro.umontreal.ca/~dift6751/paper_potvin_nn_tsp.pdf",
+    "score": 55,
+    "commentsURL": "https://news.ycombinator.com/item?id=19016469",
+    "nrComments": 2
+  },
+  {
+    "title": "Dilemmas in a General Theory of Planning (1973) [pdf]",
+    "link": "http://www.sympoetic.net/Managing_Complexity/complexity_files/1973%20Rittel%20and%20Webber%20Wicked%20Problems.pdf",
+    "score": 55,
+    "commentsURL": "https://news.ycombinator.com/item?id=19562718",
+    "nrComments": 6
+  },
+  {
+    "title": "I Got More Data, My Model Is More Refined, but My Estimator Is Getting Worse [pdf]",
+    "link": "https://statmodeling.stat.columbia.edu/wp-content/uploads/2012/07/timeseries06272012.pdf",
+    "score": 55,
+    "commentsURL": "https://news.ycombinator.com/item?id=20893260",
+    "nrComments": 12
+  },
+  {
+    "title": "In mobile, 62.7% of energy is spent on data movement [pdf]",
+    "link": "https://safari.ethz.ch/architecture/fall2019/lib/exe/fetch.php?media=onur-comparch-fall2019-lecture6b-in-memory-computation-i-afterlecture.pdf",
+    "score": 55,
+    "commentsURL": "https://news.ycombinator.com/item?id=21641343",
+    "nrComments": 27
+  },
+  {
+    "title": "Automatic Differentiation in Machine Learning: A Survey (2018) [pdf]",
+    "link": "http://www.jmlr.org/papers/volume18/17-468/17-468.pdf",
+    "score": 54,
+    "commentsURL": "https://news.ycombinator.com/item?id=19330632",
+    "nrComments": 22
+  },
+  {
+    "title": "How developers use API documentation: an observation study [pdf]",
+    "link": "http://sigdoc.acm.org/wp-content/uploads/2019/01/CDQ18002_Meng_Steinhardt_Schubert.pdf",
+    "score": 54,
+    "commentsURL": "https://news.ycombinator.com/item?id=20471577",
+    "nrComments": 8
+  },
+  {
+    "title": "Understanding the Linux Virtual Memory Manager (2007) [pdf]",
+    "link": "https://www.kernel.org/doc/gorman/pdf/understand.pdf",
+    "score": 53,
+    "commentsURL": "https://news.ycombinator.com/item?id=19120637",
+    "nrComments": 2
+  },
+  {
+    "title": "Machine Learning Reproducibility Checklist [pdf]",
+    "link": "https://www.cs.mcgill.ca/~jpineau/ReproducibilityChecklist.pdf",
+    "score": 53,
+    "commentsURL": "https://news.ycombinator.com/item?id=21883615",
+    "nrComments": 18
+  },
+  {
+    "title": "How do you compute the midpoint of an interval? (2014) [pdf]",
+    "link": "https://hal.archives-ouvertes.fr/file/index/docid/576641/filename/computing-midpoint.pdf",
+    "score": 52,
+    "commentsURL": "https://news.ycombinator.com/item?id=19509905",
+    "nrComments": 7
+  },
+  {
+    "title": "How not to prove your election outcome [pdf]",
+    "link": "https://people.eng.unimelb.edu.au/vjteague/HowNotToProveElectionOutcome.pdf",
+    "score": 52,
+    "commentsURL": "https://news.ycombinator.com/item?id=19520904",
+    "nrComments": 3
+  },
+  {
+    "title": "The Paradoxical Effects of Pursuing Positive Emotion (2013) [pdf]",
+    "link": "https://www.ocf.berkeley.edu/~eerlab/pdf/papers/Ford_Mauss_Pursuit_of_Positive_Emotion.pdf",
+    "score": 52,
+    "commentsURL": "https://news.ycombinator.com/item?id=20505579",
+    "nrComments": 15
+  },
+  {
+    "title": "Monadic parsing in Haskell (1998) [pdf]",
+    "link": "http://www.cs.nott.ac.uk/~pszgmh/pearl.pdf",
+    "score": 52,
+    "commentsURL": "https://news.ycombinator.com/item?id=20869328",
+    "nrComments": 2
+  },
+  {
+    "title": "A Critique of Standard ML (1992) [pdf]",
+    "link": "http://cs.princeton.edu/~appel/papers/critique.pdf",
+    "score": 51,
+    "commentsURL": "https://news.ycombinator.com/item?id=18837733",
+    "nrComments": 6
+  },
+  {
+    "title": "From Collisions to Chosen-Prefix Collisions Application to Full SHA-1 [pdf]",
+    "link": "https://eprint.iacr.org/2019/459.pdf",
+    "score": 51,
+    "commentsURL": "https://news.ycombinator.com/item?id=19878917",
+    "nrComments": 14
+  },
+  {
+    "title": "The Energy Cost of Electric and Human-Powered Bicycles (2004) [pdf]",
+    "link": "https://www.ebikes.ca/documents/Ebike_Energy.pdf",
+    "score": 51,
+    "commentsURL": "https://news.ycombinator.com/item?id=20317643",
+    "nrComments": 35
+  },
+  {
+    "title": "Rethinking Giftedness and Gifted Education (2011) [pdf]",
+    "link": "https://www.apa.org/ed/schools/gifted/rethinking-giftedness.pdf",
+    "score": 50,
+    "commentsURL": "https://news.ycombinator.com/item?id=19144913",
+    "nrComments": 31
+  },
+  {
+    "title": "Workplace Monitoring and Surveillance [pdf]",
+    "link": "https://datasociety.net/wp-content/uploads/2019/02/DS_Workplace_Monitoring_Surveillance_Explainer.pdf",
+    "score": 50,
+    "commentsURL": "https://news.ycombinator.com/item?id=19372678",
+    "nrComments": 2
+  },
+  {
+    "title": "Ethically Aligned Design: A Vision for Prioritizing Human Well-Being [pdf]",
+    "link": "https://standards.ieee.org/content/dam/ieee-standards/standards/web/documents/other/ead_v2.pdf",
+    "score": 50,
+    "commentsURL": "https://news.ycombinator.com/item?id=19626351",
+    "nrComments": 6
+  },
+  {
+    "title": "Simple, Fast and Safe Manual Memory Management (2017) [pdf]",
+    "link": "https://www.microsoft.com/en-us/research/wp-content/uploads/2017/03/kedia2017mem.pdf",
+    "score": 50,
+    "commentsURL": "https://news.ycombinator.com/item?id=19756376",
+    "nrComments": 12
+  },
+  {
+    "title": "Recursive Make Considered Harmful (1997) [pdf]",
+    "link": "http://aegis.sourceforge.net/auug97.pdf",
+    "score": 50,
+    "commentsURL": "https://news.ycombinator.com/item?id=20014348",
+    "nrComments": 38
+  },
+  {
+    "title": "Bronx High School Math Bulletin (1957) [pdf]",
+    "link": "http://lamport.azurewebsites.net/pubs/bxscience.pdf",
+    "score": 50,
+    "commentsURL": "https://news.ycombinator.com/item?id=20222540",
+    "nrComments": 14
+  },
+  {
+    "title": "Cross-Browser Fingerprinting via OS and Hardware Level Features (2017) [pdf]",
+    "link": "http://yinzhicao.org/TrackingFree/crossbrowsertracking_NDSS17.pdf",
+    "score": 50,
+    "commentsURL": "https://news.ycombinator.com/item?id=20366191",
+    "nrComments": 1
+  },
+  {
+    "title": "The Structure of a Programming Language Revolution (2012) [pdf]",
+    "link": "https://www.dreamsongs.com/Files/Incommensurability.pdf",
+    "score": 50,
+    "commentsURL": "https://news.ycombinator.com/item?id=20373179",
+    "nrComments": 4
+  },
+  {
+    "title": "Flight 1080 (1978) [pdf]",
+    "link": "https://www.tristar500.net/library/flight1080.pdf",
+    "score": 50,
+    "commentsURL": "https://news.ycombinator.com/item?id=21531507",
+    "nrComments": 20
+  },
+  {
+    "title": "How Is Disinformation Gaming Ad Tech? [pdf]",
+    "link": "https://disinformationindex.org/wp-content/uploads/2019/09/GDI_Ad-tech_Report_Screen_AW16.pdf",
+    "score": 50,
+    "commentsURL": "https://news.ycombinator.com/item?id=21640242",
+    "nrComments": 12
+  },
+  {
+    "title": "ZMOB: A multiprocessor computer with 256 Z80 CPUs. (1981) [pdf]",
+    "link": "https://www.ijcai.org/Proceedings/81-2/Papers/071.pdf",
+    "score": 50,
+    "commentsURL": "https://news.ycombinator.com/item?id=21761869",
+    "nrComments": 4
+  },
+  {
+    "title": "A First Try at ROI: Ranking 4,500 Colleges [pdf]",
+    "link": "https://1gyhoq479ufd3yna29x7ubjn-wpengine.netdna-ssl.com/wp-content/uploads/College_ROI.pdf",
+    "score": 50,
+    "commentsURL": "https://news.ycombinator.com/item?id=21787167",
+    "nrComments": 48
+  },
+  {
+    "title": "Assessing Unikernel Security [pdf]",
+    "link": "https://www.nccgroup.trust/globalassets/our-research/us/whitepapers/2019/ncc_group-assessing_unikernel_security.pdf",
+    "score": 49,
+    "commentsURL": "https://news.ycombinator.com/item?id=19738905",
+    "nrComments": 6
+  },
+  {
+    "title": "Exploiting Byte-Accessibility of SSDs Within a Unified Memory-Storage Hierarchy [pdf]",
+    "link": "https://jianh.web.engr.illinois.edu/papers/flatflash.pdf",
+    "score": 49,
+    "commentsURL": "https://news.ycombinator.com/item?id=20068800",
+    "nrComments": 4
+  },
+  {
+    "title": "Chess2vec: Learning Vector Representations for Chess (2018) [pdf]",
+    "link": "http://www.berkkapicioglu.com/wp-content/uploads/2018/11/chess2vec_nips_2018_short.pdf",
+    "score": 49,
+    "commentsURL": "https://news.ycombinator.com/item?id=20711585",
+    "nrComments": 9
+  },
+  {
+    "title": "Claude: Common Lisp Library Audience Expansion Toolkit (2014) [pdf]",
+    "link": "https://www.nicklevine.org/claude/paper.pdf",
+    "score": 49,
+    "commentsURL": "https://news.ycombinator.com/item?id=20845928",
+    "nrComments": 5
+  },
+  {
+    "title": "The World's Dumbest Idea: Maximizing Shareholder Value (2014) [pdf]",
+    "link": "https://www.gmo.com/globalassets/articles/white-paper/2014/jm_the-worlds-dumbest-idea_12-14.pdf",
+    "score": 49,
+    "commentsURL": "https://news.ycombinator.com/item?id=21732330",
+    "nrComments": 26
+  },
+  {
+    "title": "Does open-source cryptographic software work correctly? [pdf]",
+    "link": "https://cr.yp.to/talks/2019.05.16/slides-djb-20190516-correctly-4x3.pdf",
+    "score": 48,
+    "commentsURL": "https://news.ycombinator.com/item?id=20000100",
+    "nrComments": 10
+  },
+  {
+    "title": "Understanding GCC Builtins to Develop Better Tools [pdf]",
+    "link": "https://www.manuelrigger.at/papers/GCCBuiltins-ESECFSE19-preprint.pdf",
+    "score": 48,
+    "commentsURL": "https://news.ycombinator.com/item?id=20845828",
+    "nrComments": 21
+  },
+  {
+    "title": "Individualism, Self-Selection, Cultural Change During the Age of Mass Migration [pdf]",
+    "link": "https://annesofiebeckknudsen.com/wp-content/uploads/2019/01/thosewhostayed.pdf",
+    "score": 47,
+    "commentsURL": "https://news.ycombinator.com/item?id=18976654",
+    "nrComments": 6
+  },
+  {
+    "title": "Parapsychology in the PRC: 1979 [pdf]",
+    "link": "https://www.cia.gov/library/readingroom/docs/CIA-RDP96-00789R002600290003-0.pdf",
+    "score": 47,
+    "commentsURL": "https://news.ycombinator.com/item?id=19664378",
+    "nrComments": 21
+  },
+  {
+    "title": "Wingtip Coupling at 15,000 Feet (2000) [pdf]",
+    "link": "https://www.flightjournal.com/wp-content/uploads/2011/12/wing-tip.qxd_.pdf",
+    "score": 47,
+    "commentsURL": "https://news.ycombinator.com/item?id=19916583",
+    "nrComments": 7
+  },
+  {
+    "title": "Intelligent Machinery (1948) [pdf]",
+    "link": "https://weightagnostic.github.io/papers/turing1948.pdf",
+    "score": 47,
+    "commentsURL": "https://news.ycombinator.com/item?id=20220944",
+    "nrComments": 7
+  },
+  {
+    "title": "Tools for Conviviality (1973) [pdf]",
+    "link": "https://co-munity.net/system/files/ILLICH%201973_tools_for_convivality_1.pdf",
+    "score": 47,
+    "commentsURL": "https://news.ycombinator.com/item?id=21512587",
+    "nrComments": 6
+  },
+  {
+    "title": "NL-Graphs: A Hybrid Approach Toward Interactively Querying Semantic Data [pdf]",
+    "link": "http://2014.eswc-conferences.org/sites/default/files/papers/paper_211.pdf",
+    "score": 46,
+    "commentsURL": "https://news.ycombinator.com/item?id=19186516",
+    "nrComments": 6
+  },
+  {
+    "title": "The Rise of the Citizen Data Scientist [pdf]",
+    "link": "https://pages.dataiku.com/hubfs/PDF/Whitepaper/Importance_of_AutoML-for-Augmented-Analytics.pdf",
+    "score": 46,
+    "commentsURL": "https://news.ycombinator.com/item?id=19206720",
+    "nrComments": 3
+  },
+  {
+    "title": "Period Three Implies Chaos (1975) [pdf]",
+    "link": "http://yorke.umd.edu/papers/Li-Yorke%20Period%20Three%20Implies%20Chaos.pdf",
+    "score": 46,
+    "commentsURL": "https://news.ycombinator.com/item?id=19258461",
+    "nrComments": 4
+  },
+  {
+    "title": "Illumination for Computer Generated Pictures (1975) [pdf]",
+    "link": "http://www.cs.northwestern.edu/~ago820/cs395/Papers/Phong_1975.pdf",
+    "score": 46,
+    "commentsURL": "https://news.ycombinator.com/item?id=19375827",
+    "nrComments": 7
+  },
+  {
+    "title": "What every compiler writer should know about programmers (2015) [pdf]",
+    "link": "http://www.complang.tuwien.ac.at/kps2015/proceedings/KPS_2015_submission_29.pdf",
+    "score": 46,
+    "commentsURL": "https://news.ycombinator.com/item?id=19659555",
+    "nrComments": 31
+  },
+  {
+    "title": "The Missing Link: Explaining ELF Static Linking, Semantically [pdf]",
+    "link": "https://www.cs.kent.ac.uk/people/staff/srk21/research/papers/kell16missing-preprint.pdf",
+    "score": 46,
+    "commentsURL": "https://news.ycombinator.com/item?id=21100202",
+    "nrComments": 2
+  },
+  {
+    "title": "Truth and Probability (1926) [pdf]",
+    "link": "https://core.ac.uk/download/pdf/7048428.pdf",
+    "score": 46,
+    "commentsURL": "https://news.ycombinator.com/item?id=21859760",
+    "nrComments": 1
+  },
+  {
+    "title": "K Language: Remarks on Style (1995) [pdf]",
+    "link": "http://nsl.com/papers/style.pdf",
+    "score": 46,
+    "commentsURL": "https://news.ycombinator.com/item?id=21912479",
+    "nrComments": 3
+  },
+  {
+    "title": "SSA is Functional Programming (1998) [pdf]",
+    "link": "https://www.cs.princeton.edu/~appel/papers/ssafun.pdf",
+    "score": 45,
+    "commentsURL": "https://news.ycombinator.com/item?id=18893494",
+    "nrComments": 20
+  },
+  {
+    "title": "Bruno Buchberger’s algorithm: Gröbner bases and applications (1998) [pdf]",
+    "link": "https://www3.risc.jku.at/research/theorema/Groebner-Bases-Bibliography/gbbib_files/publication_428.pdf",
+    "score": 45,
+    "commentsURL": "https://news.ycombinator.com/item?id=19009190",
+    "nrComments": 4
+  },
+  {
+    "title": "A deep dive into macOS MDM and how it can be compromised (2018) [pdf]",
+    "link": "https://i.blackhat.com/us-18/Thu-August-9/us-18-Endahl-A-Deep-Dive-Into-macOS-MDM-And-How-It-Can-Be-Compromised-wp.pdf",
+    "score": 45,
+    "commentsURL": "https://news.ycombinator.com/item?id=19330955",
+    "nrComments": 1
+  },
+  {
+    "title": "Programming as a medium for poorly understood, sloppily-formulated ideas (1967) [pdf]",
+    "link": "https://github.com/devinmcgloin/theory/blob/master/worrydream/Minsky%20-%20Why%20programming%20is%20a%20good%20medium%20for%20expressing%20poorly%20understood%20and%20sloppily-formulated%20ideas.pdf",
+    "score": 45,
+    "commentsURL": "https://news.ycombinator.com/item?id=20489007",
+    "nrComments": 2
+  },
+  {
+    "title": "A Personal History of Modeless Text Editing and Cut/Copy-Paste (2012) [pdf]",
+    "link": "http://worrydream.com/refs/Tesler%20-%20A%20Personal%20History%20of%20Modeless%20Text%20Editing%20and%20Cut-Copy-Paste.pdf",
+    "score": 45,
+    "commentsURL": "https://news.ycombinator.com/item?id=20670877",
+    "nrComments": 16
+  },
+  {
+    "title": "A view to the possible habitability of ancient Venus over three billion years [pdf]",
+    "link": "https://meetingorganizer.copernicus.org/EPSC-DPS2019/EPSC-DPS2019-1846-1.pdf",
+    "score": 45,
+    "commentsURL": "https://news.ycombinator.com/item?id=21050366",
+    "nrComments": 35
+  },
+  {
+    "title": "Taichi: A Language for High-Performance Computation on Spatially Sparse Data [pdf]",
+    "link": "http://taichi.graphics/wp-content/uploads/2019/09/taichi_lang.pdf",
+    "score": 45,
+    "commentsURL": "https://news.ycombinator.com/item?id=21135945",
+    "nrComments": 2
+  },
+  {
+    "title": "Injecting Software Vulnerabilities with Voltage Glitching [pdf]",
+    "link": "https://yifan.lu/images/2019/01/Injecting_Software_Vulnerabilities_with_Voltage_Glitching.pdf",
+    "score": 44,
+    "commentsURL": "https://news.ycombinator.com/item?id=19016596",
+    "nrComments": 2
+  },
+  {
+    "title": "Ironies of Automation (1983) [pdf]",
+    "link": "https://www.ise.ncsu.edu/wp-content/uploads/2017/02/Bainbridge_1983_Automatica.pdf",
+    "score": 44,
+    "commentsURL": "https://news.ycombinator.com/item?id=19132724",
+    "nrComments": 14
+  },
+  {
+    "title": "The Miracle of Applied Mathematics (2001) [pdf]",
+    "link": "http://www.colyvan.com/papers/miracle.pdf",
+    "score": 44,
+    "commentsURL": "https://news.ycombinator.com/item?id=19152030",
+    "nrComments": 6
+  },
+  {
+    "title": "An Analysis of Pre-Installed Android Software [pdf]",
+    "link": "http://eprints.networks.imdea.org/1959/1/An_Analysis_of_Pre-installed_Android_Software_2019_EN.pdf",
+    "score": 44,
+    "commentsURL": "https://news.ycombinator.com/item?id=19885935",
+    "nrComments": 8
+  },
+  {
+    "title": "Cast Handbook: How to Learn More from Incidents and Accidents [pdf]",
+    "link": "https://psas.scripts.mit.edu/home/get_file4.php?name=CAST_handbook.pdf",
+    "score": 44,
+    "commentsURL": "https://news.ycombinator.com/item?id=20484398",
+    "nrComments": 4
+  },
+  {
+    "title": "Quantum Computing Through Quaternions (2008) [pdf]",
+    "link": "http://www.ejtp.com/articles/ejtpv5i19p1.pdf",
+    "score": 44,
+    "commentsURL": "https://news.ycombinator.com/item?id=20636422",
+    "nrComments": 3
+  },
+  {
+    "title": "Smalltalk-72 Instruction Manual (1976) [pdf]",
+    "link": "https://pdfs.semanticscholar.org/442f/0f5205c7d4674612204ecc8357367dabbf45.pdf",
+    "score": 44,
+    "commentsURL": "https://news.ycombinator.com/item?id=21045369",
+    "nrComments": 3
+  },
+  {
+    "title": "GDPR Like Privacy Legislation Proposed to U.S. Lawmakers [pdf]",
+    "link": "https://www.gao.gov/assets/700/696437.pdf",
+    "score": 43,
+    "commentsURL": "https://news.ycombinator.com/item?id=19177077",
+    "nrComments": 6
+  },
+  {
+    "title": "Sun Microsystems business plan (1982) [pdf]",
+    "link": "https://www.khoslaventures.com/wp-content/uploads/SunMicrosystem_bus_plan.pdf",
+    "score": 43,
+    "commentsURL": "https://news.ycombinator.com/item?id=19486109",
+    "nrComments": 2
+  },
+  {
+    "title": "Vampire: First-Order Theorem Proving [pdf]",
+    "link": "http://www.cse.chalmers.se/~laurako/pub/CAV13_Kovacs.pdf",
+    "score": 43,
+    "commentsURL": "https://news.ycombinator.com/item?id=19659582",
+    "nrComments": 8
+  },
+  {
+    "title": "T1: Secure Programming for Embedded Systems [pdf]",
+    "link": "https://t1lang.github.io/NorthSec-20190516.pdf",
+    "score": 43,
+    "commentsURL": "https://news.ycombinator.com/item?id=19933664",
+    "nrComments": 18
+  },
+  {
+    "title": "Recycling of plastics enabled by dynamic covalent diketoenamine bonds (2018) [pdf]",
+    "link": "http://ipo.lbl.gov/wp-content/uploads/sites/8/2018/03/Helms-Closed-Loop-Recycling-Nature-Materials.pdf",
+    "score": 43,
+    "commentsURL": "https://news.ycombinator.com/item?id=20692420",
+    "nrComments": 6
+  },
+  {
+    "title": "Introduction to Operating System Abstractions Using Plan 9 from Bell Labs (2007) [pdf]",
+    "link": "http://lsub.org/who/nemo/9.intro.pdf",
+    "score": 43,
+    "commentsURL": "https://news.ycombinator.com/item?id=21778791",
+    "nrComments": 1
+  },
+  {
+    "title": "Disco: Modern Session Encryption [pdf]",
+    "link": "https://eprint.iacr.org/2019/180.pdf",
+    "score": 42,
+    "commentsURL": "https://news.ycombinator.com/item?id=19254640",
+    "nrComments": 10
+  },
+  {
+    "title": "An evidence based guide to anxiety in autism [pdf]",
+    "link": "https://www.city.ac.uk/__data/assets/pdf_file/0010/466039/Anxiety-in-Autism-A5-guide.pdf",
+    "score": 42,
+    "commentsURL": "https://news.ycombinator.com/item?id=19759454",
+    "nrComments": 12
+  },
+  {
+    "title": "And now for something completely different: running Lisp on GPUs [pdf]",
+    "link": "https://dspace.lboro.ac.uk/dspace-jspui/bitstream/2134/35128/1/main.pdf",
+    "score": 42,
+    "commentsURL": "https://news.ycombinator.com/item?id=20047231",
+    "nrComments": 6
+  },
+  {
+    "title": "Web Programming with Continuations (2002) [pdf]",
+    "link": "https://thelackthereof.org/docs/library/cs/continuations.pdf",
+    "score": 42,
+    "commentsURL": "https://news.ycombinator.com/item?id=20110555",
+    "nrComments": 22
+  },
+  {
+    "title": "The Art of the Propagator (2009) [pdf]",
+    "link": "https://dspace.mit.edu/bitstream/handle/1721.1/44215/MIT-CSAIL-TR-2009-002.pdf",
+    "score": 42,
+    "commentsURL": "https://news.ycombinator.com/item?id=20405183",
+    "nrComments": 10
+  },
+  {
+    "title": "Every good regulator of a system must be a model of that system (1970) [pdf]",
+    "link": "http://pespmc1.vub.ac.be/books/Conant_Ashby.pdf",
+    "score": 42,
+    "commentsURL": "https://news.ycombinator.com/item?id=20761459",
+    "nrComments": 17
+  },
+  {
+    "title": "The Trouble with Fusion (1983) [pdf]",
+    "link": "http://orcutt.net/weblog/wp-content/uploads/2015/08/The-Trouble-With-Fusion_MIT_Tech_Review_1983.pdf",
+    "score": 42,
+    "commentsURL": "https://news.ycombinator.com/item?id=20782346",
+    "nrComments": 40
+  },
+  {
+    "title": "Typeful Programming (1993) [pdf]",
+    "link": "http://lucacardelli.name/Papers/TypefulProg.pdf",
+    "score": 41,
+    "commentsURL": "https://news.ycombinator.com/item?id=18872535",
+    "nrComments": 2
+  },
+  {
+    "title": "Stabilizer: Statistically sound performance evaluation [pdf]",
+    "link": "https://people.cs.umass.edu/~emery/pubs/stabilizer-asplos13.pdf",
+    "score": 41,
+    "commentsURL": "https://news.ycombinator.com/item?id=19245663",
+    "nrComments": 3
+  },
+  {
+    "title": "The Problem of Thinking Too Much (2003) [pdf]",
+    "link": "http://statweb.stanford.edu/~cgates/PERSI/papers/thinking.pdf",
+    "score": 41,
+    "commentsURL": "https://news.ycombinator.com/item?id=19897670",
+    "nrComments": 7
+  },
+  {
+    "title": "Foundations of Mathematics (2015) [pdf]",
+    "link": "http://www.mathetal.net/data/book1.pdf",
+    "score": 41,
+    "commentsURL": "https://news.ycombinator.com/item?id=20081573",
+    "nrComments": 5
+  },
+  {
+    "title": "Pascal's Mugging (2009) [pdf]",
+    "link": "https://www.nickbostrom.com/papers/pascal.pdf",
+    "score": 41,
+    "commentsURL": "https://news.ycombinator.com/item?id=21535200",
+    "nrComments": 25
+  },
+  {
+    "title": "Biased Reference Counting: Minimizing atomic operations in GC (2018) [pdf]",
+    "link": "http://iacoma.cs.uiuc.edu/iacoma-papers/pact18.pdf",
+    "score": 41,
+    "commentsURL": "https://news.ycombinator.com/item?id=21636000",
+    "nrComments": 5
+  },
+  {
+    "title": "Is There a Crystal Lattice Possessing Five-Fold Symmetry? (2012) [pdf]",
+    "link": "https://www.ams.org/notices/201201/rtx120100022p.pdf",
+    "score": 40,
+    "commentsURL": "https://news.ycombinator.com/item?id=21675280",
+    "nrComments": 6
+  },
+  {
+    "title": "Natural language isn’t just English [pdf]",
+    "link": "http://faculty.washington.edu/ebender/papers/Bender-SDSS-2019.pdf",
+    "score": 40,
+    "commentsURL": "https://news.ycombinator.com/item?id=21876320",
+    "nrComments": 18
+  },
+  {
+    "title": "A Student’s Guide to the Digital World (2009) [pdf]",
+    "link": "https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-004-computation-structures-spring-2009/study-materials/MIT6_004s09_study_digital_guide.pdf",
+    "score": 39,
+    "commentsURL": "https://news.ycombinator.com/item?id=18805445",
+    "nrComments": 2
+  },
+  {
+    "title": "The Fortran Automatic Coding System (1957) [pdf]",
+    "link": "https://archive.computerhistory.org/resources/text/Fortran/102663113.05.01.acc.pdf",
+    "score": 39,
+    "commentsURL": "https://news.ycombinator.com/item?id=19453234",
+    "nrComments": 7
+  },
+  {
+    "title": "R: Lessons Learned, Directions for the Future [pdf]",
+    "link": "https://www.stat.auckland.ac.nz/~ihaka/downloads/JSM-2010.pdf",
+    "score": 39,
+    "commentsURL": "https://news.ycombinator.com/item?id=19677460",
+    "nrComments": 22
+  },
+  {
+    "title": "The Geometry of Reflection Groups (2015) [pdf]",
+    "link": "http://people.mpim-bonn.mpg.de/geordie/mpg.pdf",
+    "score": 39,
+    "commentsURL": "https://news.ycombinator.com/item?id=19775699",
+    "nrComments": 6
+  },
+  {
+    "title": "Fooling Production-Grade Classification Systems with Adversarial Traffic Signs [pdf]",
+    "link": "https://arxiv.org/ftp/arxiv/papers/1907/1907.00374.pdf",
+    "score": 39,
+    "commentsURL": "https://news.ycombinator.com/item?id=20362481",
+    "nrComments": 7
+  },
+  {
+    "title": "Computer for the 21st Century (1991) [pdf]",
+    "link": "https://www.ics.uci.edu/~corps/phaseii/Weiser-Computer21stCentury-SciAm.pdf",
+    "score": 38,
+    "commentsURL": "https://news.ycombinator.com/item?id=18935681",
+    "nrComments": 7
+  },
+  {
+    "title": "Notes on Computational Group Theory (2010) [pdf]",
+    "link": "https://www.math.colostate.edu/~hulpke/CGT/cgtnotes.pdf",
+    "score": 38,
+    "commentsURL": "https://news.ycombinator.com/item?id=19143362",
+    "nrComments": 3
+  },
+  {
+    "title": "Microservice Architecture Book (OReilly) available for free now [pdf]",
+    "link": "https://www.ca.com/content/dam/ca/us/files/ebook/microservice-architecture-aligning-principles-practices-and-culture.pdf",
+    "score": 38,
+    "commentsURL": "https://news.ycombinator.com/item?id=19415362",
+    "nrComments": 2
+  },
+  {
+    "title": "Multiversion Concurrency Control-Theory and Algorithms (1983) [pdf]",
+    "link": "http://sungsoo.github.io/papers/bernstein-1983.pdf",
+    "score": 38,
+    "commentsURL": "https://news.ycombinator.com/item?id=19788830",
+    "nrComments": 2
+  },
+  {
+    "title": "That's Interesting (1971) [pdf]",
+    "link": "http://info.marshall.usc.edu/faculty/mentoring/Documents/Murray%20Davis.pdf",
+    "score": 38,
+    "commentsURL": "https://news.ycombinator.com/item?id=20646097",
+    "nrComments": 6
+  },
+  {
+    "title": "Wavelets (1994) [pdf]",
+    "link": "http://cybertester.com/data/wavelet.pdf",
+    "score": 38,
+    "commentsURL": "https://news.ycombinator.com/item?id=20689275",
+    "nrComments": 8
+  },
+  {
+    "title": "On the Design of Display Processors (1968) [pdf]",
+    "link": "http://cva.stanford.edu/classes/cs99s/papers/myer-sutherland-design-of-display-processors.pdf",
+    "score": 38,
+    "commentsURL": "https://news.ycombinator.com/item?id=21133389",
+    "nrComments": 7
+  },
+  {
+    "title": "A Unix System Implementation for System/370 (1978) [pdf]",
+    "link": "https://www.tuhs.org/Archive/Distributions/IBM/370/ibm.pdf",
+    "score": 38,
+    "commentsURL": "https://news.ycombinator.com/item?id=21389152",
+    "nrComments": 3
+  },
+  {
+    "title": "Positional Drum Notation [pdf]",
+    "link": "http://stanford.edu/~mishel/CS448B/PositionalDrumNotation_Report.pdf",
+    "score": 38,
+    "commentsURL": "https://news.ycombinator.com/item?id=21593667",
+    "nrComments": 6
+  },
+  {
+    "title": "Coloured Petri Nets: Modelling and Validation of Concurrent Systems (2009) [pdf]",
+    "link": "https://artamonoviv.ru/wp-content/uploads/2016/08/Coloured_Petri_Nets_modeling_and_validation_of_concurrent_systems__2009.pdf",
+    "score": 37,
+    "commentsURL": "https://news.ycombinator.com/item?id=19030517",
+    "nrComments": 4
+  },
+  {
+    "title": "Curing the Vulnerable Parser: Design Patterns for Secure Input Handling (2017) [pdf]",
+    "link": "https://www.usenix.org/system/files/login/articles/login_spring17_08_bratus.pdf",
+    "score": 37,
+    "commentsURL": "https://news.ycombinator.com/item?id=19421500",
+    "nrComments": 0
+  },
+  {
+    "title": "Functional Pearl: I am not a Number – I am a Free Variable (2004) [pdf]",
+    "link": "http://www.cs.ru.nl/~james/RESEARCH/haskell2004.pdf",
+    "score": 37,
+    "commentsURL": "https://news.ycombinator.com/item?id=19509223",
+    "nrComments": 1
+  },
+  {
+    "title": "What3Words submitting takedown requests against Tweets [pdf]",
+    "link": "https://www.owenboswarva.com/misc/W3W_Twitter_20191007.pdf",
+    "score": 37,
+    "commentsURL": "https://news.ycombinator.com/item?id=21184505",
+    "nrComments": 6
+  },
+  {
+    "title": "Unix for Poets [pdf]",
+    "link": "https://www.cs.upc.edu/~padro/Unixforpoets.pdf",
+    "score": 37,
+    "commentsURL": "https://news.ycombinator.com/item?id=21503005",
+    "nrComments": 3
+  },
+  {
+    "title": "Long-Run Impacts of a Universal Child Care Program (2015) [pdf]",
+    "link": "https://www.nber.org/papers/w21571.pdf",
+    "score": 36,
+    "commentsURL": "https://news.ycombinator.com/item?id=18817118",
+    "nrComments": 43
+  },
+  {
+    "title": "The Measure of Man – Human Factors in Design (1966) [pdf]",
+    "link": "http://design.data.free.fr/RUCHE/documents/Ergonomie%20Henry%20DREYFUS.pdf",
+    "score": 36,
+    "commentsURL": "https://news.ycombinator.com/item?id=19481238",
+    "nrComments": 5
+  },
+  {
+    "title": "SMT-COP: Defeating Side-Channel Attacks on Execution Units in SMT Processors",
+    "link": "http://www.cs.binghamton.edu/~dima/pact19.pdf",
+    "score": 36,
+    "commentsURL": "https://news.ycombinator.com/item?id=20930542",
+    "nrComments": 9
+  },
+  {
+    "title": "HTTP/3 spin bit [pdf]",
+    "link": "https://github.com/quicwg/wg-materials/blob/master/ietf103/spin_summary.pdf",
+    "score": 36,
+    "commentsURL": "https://news.ycombinator.com/item?id=20990754",
+    "nrComments": 14
+  },
+  {
+    "title": "Hashed and Hierarchical Timing Wheels: Data Structures for Timers (1987) [pdf]",
+    "link": "http://www.cs.columbia.edu/~nahum/w6998/papers/sosp87-timing-wheels.pdf",
+    "score": 35,
+    "commentsURL": "https://news.ycombinator.com/item?id=19453539",
+    "nrComments": 3
+  },
+  {
+    "title": "NeXTSTEP Programming (1993) [pdf]",
+    "link": "http://simson.net/ref/1993/NeXTSTEP3.0.pdf",
+    "score": 35,
+    "commentsURL": "https://news.ycombinator.com/item?id=19682496",
+    "nrComments": 1
+  },
+  {
+    "title": "Decisions and Technical Leadership E-book [pdf]",
+    "link": "https://ruthmalan.com/Journal/2019/20190629SlideDocTechnicalLeadershipDecisions.pdf",
+    "score": 35,
+    "commentsURL": "https://news.ycombinator.com/item?id=21364029",
+    "nrComments": 2
+  },
+  {
+    "title": "How I Built the Flying Cart (1960) [pdf]",
+    "link": "http://www.vintageprojects.com/go-kart/flying-hovercraft.pdf",
+    "score": 34,
+    "commentsURL": "https://news.ycombinator.com/item?id=19185890",
+    "nrComments": 6
+  },
+  {
+    "title": "Finding Structure in Time (1990) [pdf]",
+    "link": "https://crl.ucsd.edu/~elman/Bulgaria/fsit.pdf",
+    "score": 34,
+    "commentsURL": "https://news.ycombinator.com/item?id=19896729",
+    "nrComments": 1
+  },
+  {
+    "title": "The Packet Filter: An Efficient Mechanism for User-Level Network Code (1987) [pdf]",
+    "link": "https://www.hpl.hp.com/techreports/Compaq-DEC/WRL-87-2.pdf",
+    "score": 34,
+    "commentsURL": "https://news.ycombinator.com/item?id=19938273",
+    "nrComments": 2
+  },
+  {
+    "title": "The privacy of the TLS 1.3 protocol [pdf]",
+    "link": "https://eprint.iacr.org/2019/749.pdf",
+    "score": 34,
+    "commentsURL": "https://news.ycombinator.com/item?id=20347935",
+    "nrComments": 7
+  },
+  {
+    "title": "Cyber Incident Exposes Potential Vulnerabilities Onboard Commercial Vessels [pdf]",
+    "link": "https://www.dco.uscg.mil/Portals/9/DCO%20Documents/5p/CG-5PC/INV/Alerts/0619.pdf",
+    "score": 34,
+    "commentsURL": "https://news.ycombinator.com/item?id=20452007",
+    "nrComments": 10
+  },
+  {
+    "title": "Local Routing in a new Indefinitely Scalable Architecture [pdf]",
+    "link": "https://www.cs.unm.edu/~ackley/papers/paper_tsmall1_11_24.pdf",
+    "score": 34,
+    "commentsURL": "https://news.ycombinator.com/item?id=20596815",
+    "nrComments": 2
+  },
+  {
+    "title": "Re Accuracy Concerns Regarding FBI Matters Submitted to the FISC [pdf]",
+    "link": "https://www.fisc.uscourts.gov/sites/default/files/MIsc%2019%2002%20191217.pdf",
+    "score": 34,
+    "commentsURL": "https://news.ycombinator.com/item?id=21829473",
+    "nrComments": 13
+  },
+  {
+    "title": "The perils of relying on output streams in C (2011) [pdf]",
+    "link": "https://www.gnu.org/ghm/2011/paris/slides/jim-meyering-goodbye-world.pdf",
+    "score": 33,
+    "commentsURL": "https://news.ycombinator.com/item?id=18996033",
+    "nrComments": 6
+  },
+  {
+    "title": "Preliminary Macintosh Business Plan (1981) [pdf]",
+    "link": "https://archive.computerhistory.org/resources/text/2009/102712692.05.01acc.pdf",
+    "score": 33,
+    "commentsURL": "https://news.ycombinator.com/item?id=19071598",
+    "nrComments": 5
+  },
+  {
+    "title": "A Microkernel Written in Rust: Porting the Unix-Like Redox OS to Armv8 [pdf]",
+    "link": "https://fosdem.org/2019/schedule/event/microkernel_written_in_rust/attachments/slides/3258/export/events/attachments/microkernel_written_in_rust/slides/3258/FOSDEM_2019___A_microkernel_written_in_Rust.pdf",
+    "score": 33,
+    "commentsURL": "https://news.ycombinator.com/item?id=19087871",
+    "nrComments": 6
+  },
+  {
+    "title": "Tactical Nuclear Weapons in Southeast Asia (1954) [pdf]",
+    "link": "http://nautilus.org/wp-content/uploads/2012/09/tactical_nukes_vietnam.pdf",
+    "score": 33,
+    "commentsURL": "https://news.ycombinator.com/item?id=19127565",
+    "nrComments": 10
+  },
+  {
+    "title": "Performance Analysis of VPN Gateways (2018) [pdf]",
+    "link": "https://www.net.in.tum.de/fileadmin/bibtex/publications/theses/2018-pudelko-vpn-performance.pdf",
+    "score": 33,
+    "commentsURL": "https://news.ycombinator.com/item?id=19340076",
+    "nrComments": 12
+  },
+  {
+    "title": "Dynamic Drawing: Broadening Practice and Participation in Procedural Art (2017) [pdf]",
+    "link": "https://web.media.mit.edu/~jacobsj/resources/jjacobs_dissertation_final_optimized.pdf",
+    "score": 33,
+    "commentsURL": "https://news.ycombinator.com/item?id=19544863",
+    "nrComments": 2
+  },
+  {
+    "title": "The T1 Programming Language [pdf]",
+    "link": "https://t1lang.github.io/t1spec.pdf",
+    "score": 33,
+    "commentsURL": "https://news.ycombinator.com/item?id=20259000",
+    "nrComments": 3
+  },
+  {
+    "title": "Raytracer.jl: A Differentiable Renderer That Supports Parameter Optimization [pdf]",
+    "link": "https://github.com/JuliaCon/proceedings-papers/blob/jcon.00037/jcon.00037/10.21105.jcon.00037.pdf",
+    "score": 33,
+    "commentsURL": "https://news.ycombinator.com/item?id=20489325",
+    "nrComments": 6
+  },
+  {
+    "title": "Steganography: An Art of Hiding Data (2009) [pdf]",
+    "link": "https://arxiv.org/ftp/arxiv/papers/0912/0912.2319.pdf",
+    "score": 32,
+    "commentsURL": "https://news.ycombinator.com/item?id=19698507",
+    "nrComments": 6
+  },
+  {
+    "title": "Data Positivism Since World War II [pdf]",
+    "link": "http://www.columbia.edu/~mj340/HSNS4805_12_Jones.pdf",
+    "score": 32,
+    "commentsURL": "https://news.ycombinator.com/item?id=19763891",
+    "nrComments": 1
+  },
+  {
+    "title": "Use of Prolog for developing a new programming language (1992) [pdf]",
+    "link": "https://pdfs.semanticscholar.org/57d3/1ca47fa9688089b9b7e7c19c199aa03aff1e.pdf",
+    "score": 32,
+    "commentsURL": "https://news.ycombinator.com/item?id=19910375",
+    "nrComments": 11
+  },
+  {
+    "title": "Simulating Futures in Extended Common Lisp (1988) [pdf]",
+    "link": "https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19880015808.pdf",
+    "score": 32,
+    "commentsURL": "https://news.ycombinator.com/item?id=20669404",
+    "nrComments": 1
+  },
+  {
+    "title": "Life expectancy and cause of death in popular musicians (2016) [pdf]",
+    "link": "https://www.researchgate.net/profile/Dianna_Kenny/publication/300969552_Life_expectancy_and_cause_of_death_in_popular_musicians/links/57157ed908ae16479d8acda7.pdf",
+    "score": 32,
+    "commentsURL": "https://news.ycombinator.com/item?id=20786657",
+    "nrComments": 14
+  },
+  {
+    "title": "On System Design (2006) [pdf]",
+    "link": "https://scholar.harvard.edu/files/waldo/files/ps-2006-6.pdf",
+    "score": 32,
+    "commentsURL": "https://news.ycombinator.com/item?id=21759196",
+    "nrComments": 1
+  },
+  {
+    "title": "SageDB: A Learned Database System [pdf]",
+    "link": "http://alexbeutel.com/papers/CIDR2019_SageDB.pdf",
+    "score": 31,
+    "commentsURL": "https://news.ycombinator.com/item?id=18836456",
+    "nrComments": 2
+  },
+  {
+    "title": "Tularosa Study: Experimental Quantify the Effectiveness of Cyber Deception [pdf]",
+    "link": "https://scholarspace.manoa.hawaii.edu/bitstream/10125/60164/0724.pdf",
+    "score": 31,
+    "commentsURL": "https://news.ycombinator.com/item?id=18947354",
+    "nrComments": 0
+  },
+  {
+    "title": "How to read Nancy (1988) [pdf]",
+    "link": "http://www.laffpix.com/howtoreadnancy.pdf",
+    "score": 31,
+    "commentsURL": "https://news.ycombinator.com/item?id=19625083",
+    "nrComments": 2
+  },
+  {
+    "title": "I’m Not Dead yet; The Role of the Operating System in a Kernel-Bypass Era [pdf]",
+    "link": "http://irenezhang.net//papers/demikernel-hotos19.pdf",
+    "score": 31,
+    "commentsURL": "https://news.ycombinator.com/item?id=19626727",
+    "nrComments": 1
+  },
+  {
+    "title": "Combining Video and Movement Data to Enhance Team Sport Analysis (2018) [pdf]",
+    "link": "http://publications.lightfield-analysis.net/SJLBZGSAGK17_tvcg.pdf",
+    "score": 31,
+    "commentsURL": "https://news.ycombinator.com/item?id=19755794",
+    "nrComments": 2
+  },
+  {
+    "title": "Computer Science and Metaphysics: A Cross-Fertilization [pdf]",
+    "link": "http://mally.stanford.edu/Papers/cs-metaphysics.pdf",
+    "score": 31,
+    "commentsURL": "https://news.ycombinator.com/item?id=19817002",
+    "nrComments": 3
+  },
+  {
+    "title": "Introduction to Applied Linear Algebra Vectors, Matrices, and Least Squares [pdf]",
+    "link": "https://web.stanford.edu/~boyd/vmls/vmls.pdf",
+    "score": 31,
+    "commentsURL": "https://news.ycombinator.com/item?id=20782731",
+    "nrComments": 3
+  },
+  {
+    "title": "Securing Update Propagation with Homomorphic Hashing [pdf]",
+    "link": "https://eprint.iacr.org/2019/227.pdf",
+    "score": 30,
+    "commentsURL": "https://news.ycombinator.com/item?id=19288131",
+    "nrComments": 1
+  },
+  {
+    "title": "Do ethicists steal more books? (2009) [pdf]",
+    "link": "http://www.faculty.ucr.edu/~eschwitz/SchwitzPapers/EthicsBooks.pdf",
+    "score": 30,
+    "commentsURL": "https://news.ycombinator.com/item?id=19613723",
+    "nrComments": 10
+  },
+  {
+    "title": "Safecracking for the computer scientist (2004) [pdf]",
+    "link": "https://www.mattblaze.org/papers/safelocks.pdf",
+    "score": 30,
+    "commentsURL": "https://news.ycombinator.com/item?id=20616251",
+    "nrComments": 1
+  },
+  {
+    "title": "General Balanced Trees (1999) [pdf]",
+    "link": "http://user.it.uu.se/~arnea/ps/gb.pdf",
+    "score": 30,
+    "commentsURL": "https://news.ycombinator.com/item?id=20724231",
+    "nrComments": 1
+  },
+  {
+    "title": "Darwin, a Game of Survival of the Fittest Among Programs (1971) [pdf]",
+    "link": "https://corewar.co.uk/darwin/darwin.pdf",
+    "score": 30,
+    "commentsURL": "https://news.ycombinator.com/item?id=20974999",
+    "nrComments": 5
+  },
+  {
+    "title": "Engineering a Sort Function (1993) [pdf]",
+    "link": "https://cs.fit.edu/~pkc/classes/writing/samples/bentley93engineering.pdf",
+    "score": 29,
+    "commentsURL": "https://news.ycombinator.com/item?id=21173323",
+    "nrComments": 1
+  },
+  {
+    "title": "A Framework for Purposeful Open Source (2018) [pdf]",
+    "link": "https://blog.mozilla.org/wp-content/uploads/2018/05/MZOTS_OS_Archetypes_report_ext_scr.pdf",
+    "score": 29,
+    "commentsURL": "https://news.ycombinator.com/item?id=21352126",
+    "nrComments": 1
+  },
+  {
+    "title": "The Verified CakeML Compiler Back End [pdf]",
+    "link": "https://www.cs.cmu.edu/~yongkiat/files/cakeml-jfp.pdf",
+    "score": 28,
+    "commentsURL": "https://news.ycombinator.com/item?id=18835914",
+    "nrComments": 6
+  },
+  {
+    "title": "Building Consistent Transactions with Inconsistent Replication (2015) [pdf]",
+    "link": "https://web.eecs.umich.edu/~manosk/assets/papers/tapir.pdf",
+    "score": 28,
+    "commentsURL": "https://news.ycombinator.com/item?id=19062349",
+    "nrComments": 1
+  },
+  {
+    "title": "Polymorphic Identifiers: Uniform Resource Access in Objective-Smalltalk (2013) [pdf]",
+    "link": "https://www.hpi.uni-potsdam.de/hirschfeld/publications/media/WeiherHirschfeld_2013_PolymorphicIdentifiersUniformResourceAccessInObjectiveSmalltalk_AcmDL.pdf",
+    "score": 28,
+    "commentsURL": "https://news.ycombinator.com/item?id=19555373",
+    "nrComments": 0
+  },
+  {
+    "title": "John McCarthy‘s ACM paper on Lisp from April 1960 (59 years ago) [pdf]",
+    "link": "http://www-formal.stanford.edu/jmc/recursive.pdf",
+    "score": 28,
+    "commentsURL": "https://news.ycombinator.com/item?id=19682384",
+    "nrComments": 0
+  },
+  {
+    "title": "The Logic of Scientific Discovery (1935) [pdf]",
+    "link": "http://strangebeautiful.com/other-texts/popper-logic-scientific-discovery.pdf",
+    "score": 28,
+    "commentsURL": "https://news.ycombinator.com/item?id=20546609",
+    "nrComments": 1
+  },
+  {
+    "title": "The economics, risk and ethics of time compression [pdf]",
+    "link": "http://www.aleph.se/papers/TIPOTATB.pdf",
+    "score": 28,
+    "commentsURL": "https://news.ycombinator.com/item?id=20987813",
+    "nrComments": 2
+  },
+  {
+    "title": "Oral History of Ken Thompson (2005) [pdf]",
+    "link": "http://archive.computerhistory.org/resources/text/Oral_History/Thompson_Ken/thompson.oral_history_transcript.2005.102657921.pdf",
+    "score": 28,
+    "commentsURL": "https://news.ycombinator.com/item?id=21538090",
+    "nrComments": 1
+  },
+  {
+    "title": "Learning higher order programs through abstraction and invention [pdf]",
+    "link": "https://www.doc.ic.ac.uk/~shm/Papers/metafunc.pdf",
+    "score": 27,
+    "commentsURL": "https://news.ycombinator.com/item?id=19288919",
+    "nrComments": 0
+  },
+  {
+    "title": "The Art of Fuzzing (2017) [pdf]",
+    "link": "https://sec-consult.com/wp-content/uploads/files/vulnlab/the_art_of_fuzzing_slides.pdf",
+    "score": 27,
+    "commentsURL": "https://news.ycombinator.com/item?id=19555188",
+    "nrComments": 2
+  },
+  {
+    "title": "Alpha: Solver for Lazy-Grounding Answer-Set Programming [pdf]",
+    "link": "https://www.cs.nmsu.edu/ALP/wp-content/uploads/2019/04/alpha1.pdf",
+    "score": 27,
+    "commentsURL": "https://news.ycombinator.com/item?id=19663409",
+    "nrComments": 0
+  },
+  {
+    "title": "The Craft of the Adventure (1995) [pdf]",
+    "link": "https://ifarchive.org/if-archive/info/Craft.Of.Adventure.pdf",
+    "score": 27,
+    "commentsURL": "https://news.ycombinator.com/item?id=19741389",
+    "nrComments": 1
+  },
+  {
+    "title": "When is one thing equal to some other thing? (2007) [pdf]",
+    "link": "http://www.math.harvard.edu/~mazur/preprints/when_is_one.pdf",
+    "score": 27,
+    "commentsURL": "https://news.ycombinator.com/item?id=19770486",
+    "nrComments": 2
+  },
+  {
+    "title": "Voice Pitch Predicts Labor Market Success Among Male CEOs (2012) [pdf]",
+    "link": "https://scprod2-lb.mccombs.utexas.edu/~/media/Files/MSB/Departments/Accounting/Centennial/MPV_PSYCI_07262012.pdf",
+    "score": 27,
+    "commentsURL": "https://news.ycombinator.com/item?id=19897194",
+    "nrComments": 6
+  },
+  {
+    "title": "Language Support for Memory Persistency [pdf]",
+    "link": "http://web.eecs.umich.edu/~vgogte/kolli-top-picks-19.pdf",
+    "score": 27,
+    "commentsURL": "https://news.ycombinator.com/item?id=20187465",
+    "nrComments": 0
+  },
+  {
+    "title": "Towards Separation of Concerns in Flow-Based Programming (2015) [pdf]",
+    "link": "http://orbit.dtu.dk/files/128046887/FBDSL_final.pdf",
+    "score": 27,
+    "commentsURL": "https://news.ycombinator.com/item?id=20215592",
+    "nrComments": 0
+  },
+  {
+    "title": "Buffett's Alpha (2018) [pdf]",
+    "link": "http://docs.lhpedersen.com/BuffettsAlpha.pdf",
+    "score": 27,
+    "commentsURL": "https://news.ycombinator.com/item?id=21417192",
+    "nrComments": 7
+  },
+  {
+    "title": "Taxing Top Incomes in a World of Ideas [pdf]",
+    "link": "https://www8.gsb.columbia.edu/faculty-research/sites/faculty-research/files/finance/Macro%20Workshop/toptax.pdf",
+    "score": 26,
+    "commentsURL": "https://news.ycombinator.com/item?id=18881525",
+    "nrComments": 26
+  },
+  {
+    "title": "Production, use, and fate of all plastics ever made [pdf]",
+    "link": "http://advances.sciencemag.org/content/advances/3/7/e1700782.full.pdf",
+    "score": 26,
+    "commentsURL": "https://news.ycombinator.com/item?id=18894341",
+    "nrComments": 10
+  },
+  {
+    "title": "How Inefficient Can a Sort Algorithm Be? (2012) [pdf]",
+    "link": "https://sites.math.northwestern.edu/~mlerma/papers/inefficient_algorithms.pdf",
+    "score": 26,
+    "commentsURL": "https://news.ycombinator.com/item?id=19428475",
+    "nrComments": 17
+  },
+  {
+    "title": "Peltier Application Note – Thermoelectric Cooling [pdf]",
+    "link": "https://www.cui.com/catalog/resource/peltier-app-note.pdf",
+    "score": 26,
+    "commentsURL": "https://news.ycombinator.com/item?id=19559464",
+    "nrComments": 13
+  },
+  {
+    "title": "Evolutionary Tree-Structured Storage (2014) [pdf]",
+    "link": "http://pubsys.mmsp-kn.de/pubsys/publishedFiles/Kramis2014.pdf",
+    "score": 26,
+    "commentsURL": "https://news.ycombinator.com/item?id=19752293",
+    "nrComments": 1
+  },
+  {
+    "title": "Transporting a portable operating system: UNIX to an IBM minicomputer (1983) [pdf]",
+    "link": "https://zero.sci-hub.se/3252/016657c71a46a2d7110d87b4f720847e/jalics1983.pdf",
+    "score": 26,
+    "commentsURL": "https://news.ycombinator.com/item?id=20661959",
+    "nrComments": 2
+  },
+  {
+    "title": "Knuth – Estimating the Efficiency of Backtrack Programs(1975) [pdf]",
+    "link": "https://www.ams.org/journals/mcom/1975-29-129/S0025-5718-1975-0373371-6/S0025-5718-1975-0373371-6.pdf",
+    "score": 26,
+    "commentsURL": "https://news.ycombinator.com/item?id=21289104",
+    "nrComments": 2
+  },
+  {
+    "title": "Ternary Computers: The Setun and the Setun 70 (2006) [pdf]",
+    "link": "http://dl.ifip.org/db/conf/ifip9/sorucom2006/BrusentsovA06.pdf",
+    "score": 26,
+    "commentsURL": "https://news.ycombinator.com/item?id=21874490",
+    "nrComments": 2
+  },
+  {
+    "title": "Technical Rescue Handbook (2014) [pdf]",
+    "link": "http://mra.org/wp-content/uploads/2016/05/nps-technical-rescue-handbook-2014.pdf",
+    "score": 25,
+    "commentsURL": "https://news.ycombinator.com/item?id=19316491",
+    "nrComments": 4
+  },
+  {
+    "title": "A Message-Passing Interpretation of Adjoint Logic [pdf]",
+    "link": "http://www.cs.cmu.edu/~fp/papers/mpiadj19.pdf",
+    "score": 25,
+    "commentsURL": "https://news.ycombinator.com/item?id=19605435",
+    "nrComments": 0
+  },
+  {
+    "title": "A brief tour of differential privacy [pdf]",
+    "link": "https://www.cs.cmu.edu/~avrim/Randalgs11/lectures/lect0420.pdf",
+    "score": 25,
+    "commentsURL": "https://news.ycombinator.com/item?id=20596149",
+    "nrComments": 5
+  },
+  {
+    "title": "The Use of Sub-Routines in Programmes (1951) [pdf]",
+    "link": "http://www.laputan.org/pub/papers/wheeler.pdf",
+    "score": 25,
+    "commentsURL": "https://news.ycombinator.com/item?id=20735688",
+    "nrComments": 3
+  },
+  {
+    "title": "MLISP (1968) [pdf]",
+    "link": "http://i.stanford.edu/pub/cstr/reports/cs/tr/68/92/CS-TR-68-92.pdf",
+    "score": 25,
+    "commentsURL": "https://news.ycombinator.com/item?id=21786652",
+    "nrComments": 2
+  },
+  {
+    "title": "Making Sense of Stream Processing (2016) [pdf]",
+    "link": "https://www.confluent.io/wp-content/uploads/2016/08/Making_Sense_of_Stream_Processing_Confluent_1.pdf",
+    "score": 24,
+    "commentsURL": "https://news.ycombinator.com/item?id=18837859",
+    "nrComments": 0
+  },
+  {
+    "title": "Unifying Logical and Statistical AI (2006) [pdf]",
+    "link": "https://homes.cs.washington.edu/~pedrod/papers/aaai06c.pdf",
+    "score": 24,
+    "commentsURL": "https://news.ycombinator.com/item?id=18885799",
+    "nrComments": 1
+  },
+  {
+    "title": "A Short Rebuttal to Searle (1984) [pdf]",
+    "link": "http://ai.stanford.edu/~nilsson/OnlinePubs-Nils/General%20Essays/OtherEssays-Nils/searle.pdf",
+    "score": 24,
+    "commentsURL": "https://news.ycombinator.com/item?id=18946652",
+    "nrComments": 21
+  },
+  {
+    "title": "2017 saw highest rate of death due to alcohol, drugs, suicide in US history [pdf]",
+    "link": "http://www.paininthenation.org/assets/pdfs/TFAH-2017-PainNationRpt.pdf",
+    "score": 24,
+    "commentsURL": "https://news.ycombinator.com/item?id=19325570",
+    "nrComments": 8
+  },
+  {
+    "title": "Toward Domain-Specific Solvers for Distributed Consistency (2012) [pdf]",
+    "link": "https://users.soe.ucsc.edu/~lkuper/papers/toward-domain-specific-solvers-distributed-consistency-draft.pdf",
+    "score": 24,
+    "commentsURL": "https://news.ycombinator.com/item?id=19408882",
+    "nrComments": 2
+  },
+  {
+    "title": "Earlier Thoughts that Inspired Grothendieck (2014) [pdf]",
+    "link": "http://www.staff.science.uu.nl/~oort0109/AGRoots-final.pdf",
+    "score": 24,
+    "commentsURL": "https://news.ycombinator.com/item?id=19424802",
+    "nrComments": 10
+  },
+  {
+    "title": "The cognitive ecology of the Internet (2017) [pdf]",
+    "link": "https://philpapers.org/archive/SMATCE-2.pdf",
+    "score": 24,
+    "commentsURL": "https://news.ycombinator.com/item?id=19740304",
+    "nrComments": 1
+  },
+  {
+    "title": "MVCC Unmasked (2011) [pdf]",
+    "link": "https://momjian.us/main/writings/pgsql/mvcc.pdf",
+    "score": 24,
+    "commentsURL": "https://news.ycombinator.com/item?id=20828595",
+    "nrComments": 3
+  },
+  {
+    "title": "Generating Mutually Recursive Definitions [pdf]",
+    "link": "http://okmij.org/ftp/meta-programming/genletrec/pepm2019.pdf",
+    "score": 23,
+    "commentsURL": "https://news.ycombinator.com/item?id=19080923",
+    "nrComments": 1
+  },
+  {
+    "title": "The Logic of Political Survival (2002) [pdf]",
+    "link": "https://projects.iq.harvard.edu/files/gov2126/files/bueno_mesquita_2003_logic.pdf",
+    "score": 23,
+    "commentsURL": "https://news.ycombinator.com/item?id=19629293",
+    "nrComments": 6
+  },
+  {
+    "title": "A Theory of Type Polymorphism in Programming (1977) [pdf]",
+    "link": "https://homepages.inf.ed.ac.uk/wadler/papers/papers-we-love/milner-type-polymorphism.pdf",
+    "score": 23,
+    "commentsURL": "https://news.ycombinator.com/item?id=19757161",
+    "nrComments": 3
+  },
+  {
+    "title": "In-Memory Performance for Big Data (2014) [pdf]",
+    "link": "http://www.vldb.org/pvldb/vol8/p37-graefe.pdf",
+    "score": 23,
+    "commentsURL": "https://news.ycombinator.com/item?id=19782684",
+    "nrComments": 5
+  },
+  {
+    "title": "Hong Kong Metro Collision Report Investigation Panel Report [pdf]",
+    "link": "http://www.mtr.com.hk/archive/corporate/en/press_release/PR-19-044-E.pdf",
+    "score": 23,
+    "commentsURL": "https://news.ycombinator.com/item?id=20460660",
+    "nrComments": 4
+  },
+  {
+    "title": ".org domain name registry to be sold to private equity firm [pdf]",
+    "link": "https://domainnamewire.com/wp-content/ICA-Letter-to-ICANN-Board-of-Directors-November-15-2019.pdf",
+    "score": 23,
+    "commentsURL": "https://news.ycombinator.com/item?id=21548614",
+    "nrComments": 0
+  },
+  {
+    "title": "Kenneth E. Iverson: An Autobiographical Essay (2004) [pdf]",
+    "link": "http://archive.vector.org.uk/trad/v234/iverson.pdf",
+    "score": 23,
+    "commentsURL": "https://news.ycombinator.com/item?id=21855821",
+    "nrComments": 3
+  },
+  {
+    "title": "Return of the Runtimes: Rethinking the Language Runtime System (2017) [pdf]",
+    "link": "https://people.eecs.berkeley.edu/~maas/papers/maas-hotos17-cloud30.pdf",
+    "score": 22,
+    "commentsURL": "https://news.ycombinator.com/item?id=18903660",
+    "nrComments": 2
+  },
+  {
+    "title": "Artificial Intelligence and Life in 2030 (2016) [pdf]",
+    "link": "http://www.cs.fsu.edu/~cap5605/ai_100_report_0906fnlc_single.pdf",
+    "score": 22,
+    "commentsURL": "https://news.ycombinator.com/item?id=18934594",
+    "nrComments": 0
+  },
+  {
+    "title": "A Program Optimization for Automatic Database Result Caching (2017) [pdf]",
+    "link": "http://adam.chlipala.net/papers/SqlcachePOPL17/SqlcachePOPL17.pdf",
+    "score": 22,
+    "commentsURL": "https://news.ycombinator.com/item?id=18958574",
+    "nrComments": 3
+  },
+  {
+    "title": "Procedure Calls Are the Assembly Language of Software Interconnection (1994) [pdf]",
+    "link": "http://sunset.usc.edu/~neno/teaching/s99/FirstClassConn.pdf",
+    "score": 22,
+    "commentsURL": "https://news.ycombinator.com/item?id=19059805",
+    "nrComments": 4
+  },
+  {
+    "title": "That's Interesting (1971) [pdf]",
+    "link": "https://proseminarcrossnationalstudies.files.wordpress.com/2009/11/thatsinteresting_1971.pdf",
+    "score": 22,
+    "commentsURL": "https://news.ycombinator.com/item?id=20173558",
+    "nrComments": 2
+  },
+  {
+    "title": "Binary Adder Tube for High-Speed Computers (1955) [pdf]",
+    "link": "http://www.philbrickarchive.org/adder.pdf",
+    "score": 22,
+    "commentsURL": "https://news.ycombinator.com/item?id=20850678",
+    "nrComments": 7
+  },
+  {
+    "title": "The Future of Mathematics? [pdf]",
+    "link": "http://wwwf.imperial.ac.uk/~buzzard/one_off_lectures/msr.pdf",
+    "score": 22,
+    "commentsURL": "https://news.ycombinator.com/item?id=20909404",
+    "nrComments": 14
+  },
+  {
+    "title": "Continuations in Natural Language (2004) [pdf]",
+    "link": "http://www.cs.bham.ac.uk/~hxt/cw04/barker.pdf",
+    "score": 21,
+    "commentsURL": "https://news.ycombinator.com/item?id=19288664",
+    "nrComments": 1
+  },
+  {
+    "title": "Avalanche visualisation using satellite radar [pdf]",
+    "link": "https://aron.mjuk.is/avanor/widforss2019avalanche.pdf",
+    "score": 21,
+    "commentsURL": "https://news.ycombinator.com/item?id=19946243",
+    "nrComments": 2
+  },
+  {
+    "title": "MinimaLT: Minimal-Latency Networking Through Better Security (2013) [pdf]",
+    "link": "https://cr.yp.to/tcpip/minimalt-20131031.pdf",
+    "score": 21,
+    "commentsURL": "https://news.ycombinator.com/item?id=20181751",
+    "nrComments": 3
+  },
+  {
+    "title": "Nightshade: Near Protocol Sharding Design [pdf]",
+    "link": "https://nearprotocol.com/downloads/Nightshade.pdf",
+    "score": 21,
+    "commentsURL": "https://news.ycombinator.com/item?id=20405122",
+    "nrComments": 8
+  },
+  {
+    "title": "The Grothendieck I Knew: Telling, Not Hiding, Not Judging [pdf]",
+    "link": "http://www.ams.org/journals/notices/201907/rnoti-p1069.pdf",
+    "score": 21,
+    "commentsURL": "https://news.ycombinator.com/item?id=20489013",
+    "nrComments": 3
+  },
+  {
+    "title": "Taking a Long Look at QUIC (2017) [pdf]",
+    "link": "https://conferences.sigcomm.org/imc/2017/papers/imc17-final39.pdf",
+    "score": 21,
+    "commentsURL": "https://news.ycombinator.com/item?id=20566965",
+    "nrComments": 4
+  },
+  {
+    "title": "Dynamic Storage Allocation: A Survey and Critical Review (1995) [pdf]",
+    "link": "http://csapp.cs.cmu.edu/3e/docs/dsa.pdf",
+    "score": 21,
+    "commentsURL": "https://news.ycombinator.com/item?id=20852586",
+    "nrComments": 1
+  },
+  {
+    "title": "FBI designates FaceApp as counterintelligence threat [pdf]",
+    "link": "https://www.democrats.senate.gov/imo/media/doc/FBI%20Letter%20to%20Schumer%20re%20FaceApp11.pdf",
+    "score": 21,
+    "commentsURL": "https://news.ycombinator.com/item?id=21688239",
+    "nrComments": 6
+  },
+  {
+    "title": "Map Labeling Algorithms with Application in Graph Drawing and Cartography (2008) [pdf]",
+    "link": "http://algo.inf.uni-tuebingen.de/mitarbeiter/michaelbekos/pubs/bekos-phd-thesis.pdf",
+    "score": 21,
+    "commentsURL": "https://news.ycombinator.com/item?id=21765030",
+    "nrComments": 2
+  },
+  {
+    "title": "A History and Survey of Network Firewalls (2002) [pdf]",
+    "link": "https://www.cs.unm.edu/~treport/tr/02-12/firewall.pdf",
+    "score": 20,
+    "commentsURL": "https://news.ycombinator.com/item?id=19953796",
+    "nrComments": 0
+  },
+  {
+    "title": "Endogenous Technological Change (1990) [pdf]",
+    "link": "http://pages.stern.nyu.edu/~promer/Endogenous.pdf",
+    "score": 20,
+    "commentsURL": "https://news.ycombinator.com/item?id=20964416",
+    "nrComments": 2
+  },
+  {
+    "title": "DOMPurify, Security in the DOM, and Why We Really Need Both [pdf]",
+    "link": "https://www.usenix.org/sites/default/files/conference/protected-files/enigma16_slides_heiderich.pdf",
+    "score": 20,
+    "commentsURL": "https://news.ycombinator.com/item?id=21068908",
+    "nrComments": 9
+  },
+  {
+    "title": "WxErlang: Getting_started [pdf]",
+    "link": "https://arifishaq.files.wordpress.com/2017/12/wxerlang-getting-started.pdf",
+    "score": 20,
+    "commentsURL": "https://news.ycombinator.com/item?id=21203489",
+    "nrComments": 0
+  },
+  {
+    "title": "Running LibFuzzer in a Browser, via WASM [pdf]",
+    "link": "https://github.com/jonathanmetzman/wasm-fuzzing-demo/blob/master/meetup-Fuzzing-Native-Applications-in-Browsers-With-WASM.pdf",
+    "score": 20,
+    "commentsURL": "https://news.ycombinator.com/item?id=21788474",
+    "nrComments": 1
+  },
+  {
+    "title": "The Evolution of IPsec [pdf]",
+    "link": "https://www.cs.columbia.edu/~smb/talks/why-ipsec.pdf",
+    "score": 19,
+    "commentsURL": "https://news.ycombinator.com/item?id=19122095",
+    "nrComments": 3
+  },
+  {
+    "title": "Can Programming Be Liberated, Period? (2008) [pdf]",
+    "link": "http://www.wisdom.weizmann.ac.il/~harel/papers/LiberatingProgramming.pdf",
+    "score": 19,
+    "commentsURL": "https://news.ycombinator.com/item?id=19239658",
+    "nrComments": 5
+  },
+  {
+    "title": "Incentives to Attract Firms Induce Bad Selection [pdf]",
+    "link": "http://www.economics.uci.edu/~aglazer/TaxIncentivesInefficient.pdf",
+    "score": 19,
+    "commentsURL": "https://news.ycombinator.com/item?id=19246723",
+    "nrComments": 2
+  },
+  {
+    "title": "Paul Dirac: Projective Geometry and the Origin of Quantum Equations [pdf]",
+    "link": "https://atomicprecision.com/Topics/Paul%20Dirac%20Talk%20-%20Projective%20Geometry.pdf",
+    "score": 19,
+    "commentsURL": "https://news.ycombinator.com/item?id=19686492",
+    "nrComments": 1
+  },
+  {
+    "title": "Homeokinetics: A Physical Science for Complex Systems (1978) [pdf]",
+    "link": "https://www.homeokinetics.org/pdf%20files/1978%20Physical%20Basis%20-%20Homeokinetics.pdf",
+    "score": 19,
+    "commentsURL": "https://news.ycombinator.com/item?id=19890529",
+    "nrComments": 0
+  },
+  {
+    "title": "Performance and evaluation of Lisp systems (1985) [pdf]",
+    "link": "http://rpgpoet.com/Files/Timrep.pdf",
+    "score": 19,
+    "commentsURL": "https://news.ycombinator.com/item?id=21106431",
+    "nrComments": 0
+  },
+  {
+    "title": "Behind the Scenes of iOS and Mac Security [pdf]",
+    "link": "https://i.blackhat.com/USA-19/Thursday/us-19-Krstic-Behind-The-Scenes-Of-IOS-And-Mas-Security.pdf",
+    "score": 19,
+    "commentsURL": "https://news.ycombinator.com/item?id=21610325",
+    "nrComments": 1
+  },
+  {
+    "title": "Coffee market report (October 2019) [pdf]",
+    "link": "http://www.ico.org/documents/cy2019-20/cmr-1019-e.pdf",
+    "score": 19,
+    "commentsURL": "https://news.ycombinator.com/item?id=21615426",
+    "nrComments": 3
+  },
+  {
+    "title": "Reaping the performance of fast NVM storage with uDepot [pdf]",
+    "link": "https://www.usenix.org/system/files/fast19-kourtis.pdf",
+    "score": 18,
+    "commentsURL": "https://news.ycombinator.com/item?id=19256435",
+    "nrComments": 0
+  },
+  {
+    "title": "Slang: language mechanisms for extensible real-time shading systems (2018) [pdf]",
+    "link": "http://graphics.cs.cmu.edu/projects/slang/he18_slang.pdf",
+    "score": 18,
+    "commentsURL": "https://news.ycombinator.com/item?id=19262477",
+    "nrComments": 3
+  },
+  {
+    "title": "Don't Warry – It Can't Happen (1940) [pdf]",
+    "link": "https://www.gwern.net/docs/xrisks/1940-sciam-harrington-nuclearweapons-dontworryitcanthappen.pdf",
+    "score": 18,
+    "commentsURL": "https://news.ycombinator.com/item?id=19288543",
+    "nrComments": 5
+  },
+  {
+    "title": "The Null Ritual (2004) [pdf]",
+    "link": "https://library.mpib-berlin.mpg.de/ft/gg/GG_Null_2004.pdf",
+    "score": 18,
+    "commentsURL": "https://news.ycombinator.com/item?id=19741320",
+    "nrComments": 2
+  },
+  {
+    "title": "Visualizing Collective Trends in Space and Time [pdf]",
+    "link": "https://scibib.dbvis.de/uploadedFiles/MotionRugsPreprint.pdf",
+    "score": 18,
+    "commentsURL": "https://news.ycombinator.com/item?id=19777039",
+    "nrComments": 2
+  },
+  {
+    "title": "When Proxies Lie: Verifying Locations of Proxies with Active Geolocation (2018) [pdf]",
+    "link": "https://conferences.sigcomm.org/imc/2018/papers/imc18-final122.pdf",
+    "score": 18,
+    "commentsURL": "https://news.ycombinator.com/item?id=19774083",
+    "nrComments": 7
+  },
+  {
+    "title": "Clair Patterson's Battle Against Lead Pollution (2006) [pdf]",
+    "link": "http://www.anthonyturton.com/assets/my_documents/my_files/1A4_adlerthesis06012006.pdf",
+    "score": 18,
+    "commentsURL": "https://news.ycombinator.com/item?id=20131021",
+    "nrComments": 0
+  },
+  {
+    "title": "Ethically Aligned Design [pdf]",
+    "link": "https://standards.ieee.org/content/dam/ieee-standards/standards/web/documents/other/ead1e.pdf",
+    "score": 18,
+    "commentsURL": "https://news.ycombinator.com/item?id=20599883",
+    "nrComments": 2
+  },
+  {
+    "title": "On the Complexity of Crafting Crash-Consistent Applications (2014) [pdf]",
+    "link": "https://www.usenix.org/system/files/conference/osdi14/osdi14-paper-pillai.pdf",
+    "score": 18,
+    "commentsURL": "https://news.ycombinator.com/item?id=21674875",
+    "nrComments": 3
+  },
+  {
+    "title": "Swizzle Inventor: Data Movement Synthesis for GPU Kernels [pdf]",
+    "link": "https://lenary.co.uk/publications/swizzle_inventor.pdf",
+    "score": 17,
+    "commentsURL": "https://news.ycombinator.com/item?id=19018240",
+    "nrComments": 5
+  },
+  {
+    "title": "Handbook of Analog Computation [pdf]",
+    "link": "http://www.analogmuseum.org/library/handbook_of_analog_computation.pdf",
+    "score": 17,
+    "commentsURL": "https://news.ycombinator.com/item?id=19449927",
+    "nrComments": 1
+  },
+  {
+    "title": "Electric Barons (2018) [pdf]",
+    "link": "https://cryptome.org/2019/02/elbar.pdf",
+    "score": 17,
+    "commentsURL": "https://news.ycombinator.com/item?id=19647974",
+    "nrComments": 2
+  },
+  {
+    "title": "Value-Based Prioritization: A method for choosing meaningful work [pdf]",
+    "link": "https://github.com/freeradical13/ValueBasedPrioritization/raw/master/value_based_prioritization.pdf",
+    "score": 17,
+    "commentsURL": "https://news.ycombinator.com/item?id=19686411",
+    "nrComments": 0
+  },
+  {
+    "title": "Inverting back the inversion of control (2003) [pdf]",
+    "link": "https://pages.lip6.fr/Christian.Queinnec/PDF/www.pdf",
+    "score": 17,
+    "commentsURL": "https://news.ycombinator.com/item?id=20448796",
+    "nrComments": 1
+  },
+  {
+    "title": "Deep Learning Lecture Slides [pdf]",
+    "link": "https://glouppe.github.io/info8010-deep-learning/pdf/lec-all.pdf",
+    "score": 17,
+    "commentsURL": "https://news.ycombinator.com/item?id=20535270",
+    "nrComments": 0
+  },
+  {
+    "title": "Magnetically Accelerated Plasmoid (MAP) Thruster (2007) [pdf]",
+    "link": "http://erps.spacegrant.org/uploads/images/images/iepc_articledownload_1988-2007/2007index/IEPC-2007-016.pdf",
+    "score": 17,
+    "commentsURL": "https://news.ycombinator.com/item?id=20540883",
+    "nrComments": 0
+  },
+  {
+    "title": "Let's Encrypt: An Automated CertificateAuthority to Encrypt the Entire Web [pdf]",
+    "link": "https://jhalderm.com/pub/papers/letsencrypt-ccs19.pdf",
+    "score": 17,
+    "commentsURL": "https://news.ycombinator.com/item?id=21519377",
+    "nrComments": 0
+  },
+  {
+    "title": "An architecture of diversity for commonsense reasoning (2002) [pdf]",
+    "link": "http://www.jfsowa.com/ikl/McCarthy02.pdf",
+    "score": 16,
+    "commentsURL": "https://news.ycombinator.com/item?id=19184773",
+    "nrComments": 0
+  },
+  {
+    "title": "Towards Fine-Grained Network Security Forensics and Diagnosis in the SDN Era [pdf]",
+    "link": "http://faculty.cs.tamu.edu/guofei/paper/ForenGuard-CCS18.pdf",
+    "score": 16,
+    "commentsURL": "https://news.ycombinator.com/item?id=19288805",
+    "nrComments": 0
+  },
+  {
+    "title": "Semantic Memory (1966) [pdf]",
+    "link": "https://apps.dtic.mil/dtic/tr/fulltext/u2/641671.pdf",
+    "score": 16,
+    "commentsURL": "https://news.ycombinator.com/item?id=19386297",
+    "nrComments": 0
+  },
+  {
+    "title": "Lambda Twist: An Accurate Fast Robust-Perspective Three-Point Solver [pdf]",
+    "link": "http://openaccess.thecvf.com/content_ECCV_2018/papers/Mikael_Persson_Lambda_Twist_An_ECCV_2018_paper.pdf",
+    "score": 16,
+    "commentsURL": "https://news.ycombinator.com/item?id=20027493",
+    "nrComments": 3
+  },
+  {
+    "title": "Scanning the Scanners: Sensing the Internet from a Distributed Network Telescope [pdf]",
+    "link": "https://people.csail.mit.edu/richterp/imc19_scanners.pdf",
+    "score": 16,
+    "commentsURL": "https://news.ycombinator.com/item?id=21366067",
+    "nrComments": 0
+  },
+  {
+    "title": "T-Fuzz: fuzzing by program transformation (2018) [pdf]",
+    "link": "https://nebelwelt.net/publications/files/18Oakland.pdf",
+    "score": 16,
+    "commentsURL": "https://news.ycombinator.com/item?id=21626555",
+    "nrComments": 0
+  },
+  {
+    "title": "The Human Revolution in Understanding Programs [pdf]",
+    "link": "http://drakon-editor.sourceforge.net/DRAKON.pdf",
+    "score": 15,
+    "commentsURL": "https://news.ycombinator.com/item?id=19160248",
+    "nrComments": 6
+  },
+  {
+    "title": "Warren's Abstract Machine: A Tutorial Reconstruction (1991) [pdf]",
+    "link": "http://wambook.sourceforge.net/wambook.pdf",
+    "score": 15,
+    "commentsURL": "https://news.ycombinator.com/item?id=19296314",
+    "nrComments": 1
+  },
+  {
+    "title": "An Assessment of the Connection Machine (1990) [pdf]",
+    "link": "http://bitsavers.trailing-edge.com/pdf/thinkingMachines/CM2/An_Assessment_of_the_Connection_Machine_Jun1990.pdf",
+    "score": 15,
+    "commentsURL": "https://news.ycombinator.com/item?id=20144863",
+    "nrComments": 3
+  },
+  {
+    "title": "Foundations of Data Science",
+    "link": "https://www.cs.cornell.edu/jeh/book.pdf",
+    "score": 15,
+    "commentsURL": "https://news.ycombinator.com/item?id=20475067",
+    "nrComments": 0
+  },
+  {
+    "title": "Faster Progress Bars: Manipulating Perceived Duration with Augmentations (2010) [pdf]",
+    "link": "http://chrisharrison.net/projects/progressbars2/ProgressBarsHarrison.pdf",
+    "score": 15,
+    "commentsURL": "https://news.ycombinator.com/item?id=21103853",
+    "nrComments": 3
+  },
+  {
+    "title": "Top Down Operator Precedence (1971) [pdf]",
+    "link": "https://daesan.com/wp-content/uploads/2018/05/top_down_operator_precedence.pdf",
+    "score": 15,
+    "commentsURL": "https://news.ycombinator.com/item?id=21238051",
+    "nrComments": 2
+  },
+  {
+    "title": "Lenny Baum as trader (1982) [pdf]",
+    "link": "https://klendathucap.files.wordpress.com/2017/08/baum-as-a-trader.pdf",
+    "score": 14,
+    "commentsURL": "https://news.ycombinator.com/item?id=19066276",
+    "nrComments": 3
+  },
+  {
+    "title": "Complexity, contingency, and criticality (1994) [pdf]",
+    "link": "https://www.pnas.org/content/pnas/92/15/6689.full.pdf",
+    "score": 14,
+    "commentsURL": "https://news.ycombinator.com/item?id=19113416",
+    "nrComments": 1
+  },
+  {
+    "title": "The Seaboard: discreteness and continuity in musical interface design [pdf]",
+    "link": "http://researchonline.rca.ac.uk/1648/1/Roland%20Lamb%20PhD%20June%202014.pdf",
+    "score": 14,
+    "commentsURL": "https://news.ycombinator.com/item?id=19595623",
+    "nrComments": 5
+  },
+  {
+    "title": "Two Paths to the Telephone (1981) [pdf]",
+    "link": "https://www.princeton.edu/ssp/trips/data/scientificamerican0181-156-hounshell.pdf",
+    "score": 14,
+    "commentsURL": "https://news.ycombinator.com/item?id=20200771",
+    "nrComments": 1
+  },
+  {
+    "title": "Interview with Bill Joy (1984) [pdf]",
+    "link": "https://begriffs.com/pdf/unix-review-bill-joy.pdf",
+    "score": 14,
+    "commentsURL": "https://news.ycombinator.com/item?id=20484547",
+    "nrComments": 4
+  },
+  {
+    "title": "In the beginning was the command line (1999) [pdf]",
+    "link": "https://faculty.georgetown.edu/irvinem/theory/Stephenson-CommandLine-1999.pdf",
+    "score": 14,
+    "commentsURL": "https://news.ycombinator.com/item?id=20684764",
+    "nrComments": 4
+  },
+  {
+    "title": "Commentaries on Criticisms of Magnetic Fusion [pdf]",
+    "link": "https://fire.pppl.gov/fusion_critic_response_stacey.pdf",
+    "score": 14,
+    "commentsURL": "https://news.ycombinator.com/item?id=20787963",
+    "nrComments": 5
+  },
+  {
+    "title": "Real-Time Image Stitching for Automotive 360 Vision Systems (2014) [pdf]",
+    "link": "https://core.ac.uk/download/pdf/41813777.pdf",
+    "score": 13,
+    "commentsURL": "https://news.ycombinator.com/item?id=19057683",
+    "nrComments": 0
+  },
+  {
+    "title": "A Comparative Long-Term Study Of Fallback Authentication [pdf]",
+    "link": "https://www.mobsec.ruhr-uni-bochum.de/media/mobsec/veroeffentlichungen/2019/02/20/usec2019-30-wip-fallback-long-term-study-finalv2.pdf",
+    "score": 13,
+    "commentsURL": "https://news.ycombinator.com/item?id=19243543",
+    "nrComments": 0
+  },
+  {
+    "title": "Carnap, Quine and the Fate of Metaphysics (1997) [pdf]",
+    "link": "http://prce.hu/w/preprints/CarnapQuine.pdf",
+    "score": 13,
+    "commentsURL": "https://news.ycombinator.com/item?id=19254829",
+    "nrComments": 0
+  },
+  {
+    "title": "Playing Pool with Pi (2003) [pdf]",
+    "link": "https://www.maths.tcd.ie/~lebed/Galperin.%20Playing%20pool%20with%20pi.pdf",
+    "score": 13,
+    "commentsURL": "https://news.ycombinator.com/item?id=19590090",
+    "nrComments": 1
+  },
+  {
+    "title": "Algorithm Design (2006) [pdf]",
+    "link": "http://www.cs.sjtu.edu.cn/~jiangli/teaching/CS222/files/materials/Algorithm%20Design.pdf",
+    "score": 13,
+    "commentsURL": "https://news.ycombinator.com/item?id=19796900",
+    "nrComments": 2
+  },
+  {
+    "title": "FCC Chairman Statement on T-Mobile/Sprint Transaction [pdf]",
+    "link": "https://docs.fcc.gov/public/attachments/DOC-357535A1.pdf",
+    "score": 13,
+    "commentsURL": "https://news.ycombinator.com/item?id=19960578",
+    "nrComments": 1
+  },
+  {
+    "title": "SOHO’s Recovery – An Unprecedented Success Story (1999) [pdf]",
+    "link": "https://www.esa.int/esapub/bulletin/bullet97/vandenbu.pdf",
+    "score": 13,
+    "commentsURL": "https://news.ycombinator.com/item?id=20241772",
+    "nrComments": 2
+  },
+  {
+    "title": "The Expanding News Desert (2018) [pdf]",
+    "link": "https://www.cislm.org/wp-content/uploads/2018/10/The-Expanding-News-Desert-10_14-Web.pdf",
+    "score": 13,
+    "commentsURL": "https://news.ycombinator.com/item?id=20601382",
+    "nrComments": 2
+  },
+  {
+    "title": "The Synchronization of Periodic Routing Messages (1994) [pdf]",
+    "link": "https://www.icir.org/floyd/papers/sync_94.pdf",
+    "score": 13,
+    "commentsURL": "https://news.ycombinator.com/item?id=20883528",
+    "nrComments": 1
+  },
+  {
+    "title": "Modeling BBR’s Interactions with Loss-Based Congestion Control [pdf]",
+    "link": "http://justinesherry.com/papers/ware-imc2019.pdf",
+    "score": 13,
+    "commentsURL": "https://news.ycombinator.com/item?id=21318236",
+    "nrComments": 1
+  },
+  {
+    "title": "Knowing and the Known (1949) [pdf]",
+    "link": "https://www.aier.org/sites/default/files/Files/WYSIWYG/page/31/KnowingKnownFullText.pdf",
+    "score": 12,
+    "commentsURL": "https://news.ycombinator.com/item?id=18895926",
+    "nrComments": 0
+  },
+  {
+    "title": "Wind River VxWorks Platforms 6.9 RTOS [pdf]",
+    "link": "https://www.windriver.com/products/product-notes/PN_VE_6_9_Platform_0311.pdf",
+    "score": 12,
+    "commentsURL": "https://news.ycombinator.com/item?id=19191691",
+    "nrComments": 1
+  },
+  {
+    "title": "Time Protection: The Missing OS Abstraction [pdf]",
+    "link": "https://ts.data61.csiro.au/publications/csiro_full_text//Ge_YCH_19.pdf",
+    "score": 12,
+    "commentsURL": "https://news.ycombinator.com/item?id=19663890",
+    "nrComments": 2
+  },
+  {
+    "title": "Why Google Poses a SeriousThreat to Democracy, and How to End That Threat [pdf]",
+    "link": "https://www.judiciary.senate.gov/imo/media/doc/Epstein%20Testimony.pdf",
+    "score": 12,
+    "commentsURL": "https://news.ycombinator.com/item?id=20510610",
+    "nrComments": 1
+  },
+  {
+    "title": "The Noah's Ark Problem (1998) [pdf]",
+    "link": "https://scholar.harvard.edu/files/weitzman/files/noahs_ark_problem.pdf",
+    "score": 12,
+    "commentsURL": "https://news.ycombinator.com/item?id=20836247",
+    "nrComments": 5
+  },
+  {
+    "title": "5G Network Architecture – A High-Level Perspective [pdf]",
+    "link": "https://www.huawei.com/minisite/hwmbbf16/insights/5G-Nework-Architecture-Whitepaper-en.pdf",
+    "score": 12,
+    "commentsURL": "https://news.ycombinator.com/item?id=21107231",
+    "nrComments": 1
+  },
+  {
+    "title": "Crew: A Weeding Manual for Modern Libraries (2012) [pdf]",
+    "link": "https://www.tsl.texas.gov/sites/default/files/public/tslac/ld/ld/pubs/crew/crewmethod12.pdf",
+    "score": 12,
+    "commentsURL": "https://news.ycombinator.com/item?id=21674598",
+    "nrComments": 3
+  },
+  {
+    "title": "Macros That Work Together: Comp-Time Bindings, Partial Expansion (2012) [pdf]",
+    "link": "https://www.cs.utah.edu/plt/publications/jfp12-draft-fcdf.pdf",
+    "score": 12,
+    "commentsURL": "https://news.ycombinator.com/item?id=21721147",
+    "nrComments": 2
+  },
+  {
+    "title": "Filtered Dispatch (2008) [pdf]",
+    "link": "http://www.p-cos.net/documents/filtered-dispatch.pdf",
+    "score": 11,
+    "commentsURL": "https://news.ycombinator.com/item?id=18917933",
+    "nrComments": 0
+  },
+  {
+    "title": "Perceptions of Randomness: Why Three Heads Are Better Than Four (2009) [pdf]",
+    "link": "http://psych.cf.ac.uk/home2/hahn/Psychological_Review_2009_Hahn.pdf",
+    "score": 11,
+    "commentsURL": "https://news.ycombinator.com/item?id=18939842",
+    "nrComments": 0
+  },
+  {
+    "title": "Special Sciences: The Disunity of Science as a Working Hypothesis (1974) [pdf]",
+    "link": "https://fewd.univie.ac.at/fileadmin/user_upload/inst_ethik_wiss_dialog/Fodor__J._1974._Special_sciences_in_Synhtese.pdf",
+    "score": 11,
+    "commentsURL": "https://news.ycombinator.com/item?id=19151787",
+    "nrComments": 0
+  },
+  {
+    "title": "The Amber Computer VDU Project [pdf]",
+    "link": "http://worldphaco.com/uploads/THE_AMBER_COMPUTER_VDU_PROJECT.pdf",
+    "score": 11,
+    "commentsURL": "https://news.ycombinator.com/item?id=19699070",
+    "nrComments": 1
+  },
+  {
+    "title": "Search Engine Art: Internet Imperialism and the image in context (2018) [pdf]",
+    "link": "https://ewic.bcs.org/upload/pdf/ewic_eva18_de_paper1.pdf",
+    "score": 10,
+    "commentsURL": "https://news.ycombinator.com/item?id=19161313",
+    "nrComments": 2
+  },
+  {
+    "title": "Implementation of Direct Segments on a RISC-V Processor (2018) [pdf]",
+    "link": "https://carrv.github.io/2018/papers/CARRV_2018_paper_4.pdf",
+    "score": 10,
+    "commentsURL": "https://news.ycombinator.com/item?id=19302694",
+    "nrComments": 3
+  },
+  {
+    "title": "The Art of Snaring Dragons (1975) [pdf]",
+    "link": "http://harveycohen.net/papers/TheArtOfSnaringDragons-MIT-AI-Memo338.pdf",
+    "score": 9,
+    "commentsURL": "https://news.ycombinator.com/item?id=18940199",
+    "nrComments": 0
+  },
+  {
+    "title": "A Symbolic Analysis of Relay and Switching Circuits (1937) [pdf]",
+    "link": "https://www.cs.virginia.edu/~evans/greatworks/shannon38.pdf",
+    "score": 9,
+    "commentsURL": "https://news.ycombinator.com/item?id=19086235",
+    "nrComments": 0
+  },
+  {
+    "title": "The Hideous Name (1985) [pdf]",
+    "link": "http://3e8.org/pub/scheme/doc/the-hideous-name.pdf",
+    "score": 9,
+    "commentsURL": "https://news.ycombinator.com/item?id=19122731",
+    "nrComments": 3
+  },
+  {
+    "title": "Sandia Software Guidelines – Volume 5 – Tools, Techniques, and Methodologies [pdf]",
+    "link": "https://prod-ng.sandia.gov/techlib-noauth/access-control.cgi/1985/852348.pdf",
+    "score": 9,
+    "commentsURL": "https://news.ycombinator.com/item?id=19505889",
+    "nrComments": 1
+  },
+  {
+    "title": "Breaking Deniability in Signal with SGX [pdf]",
+    "link": "https://aaltodoc.aalto.fi/bitstream/handle/123456789/33674/master_Vieitez_Parra_Ricardo_2018.pdf",
+    "score": 9,
+    "commentsURL": "https://news.ycombinator.com/item?id=19531399",
+    "nrComments": 0
+  },
+  {
+    "title": "The Pac-Man Dossier (2011) [pdf]",
+    "link": "http://tralvex.com/download/forum/The%20Pac-Man%20Dossier.pdf",
+    "score": 9,
+    "commentsURL": "https://news.ycombinator.com/item?id=19529487",
+    "nrComments": 2
+  },
+  {
+    "title": "The official Go brand book [pdf]",
+    "link": "https://storage.googleapis.com/golang-assets/Go-brand-book-v1.9.5.pdf",
+    "score": 9,
+    "commentsURL": "https://news.ycombinator.com/item?id=20058891",
+    "nrComments": 0
+  },
+  {
+    "title": "Fixed It for You: Protocol Repair Using Lineage Graphs [pdf]",
+    "link": "http://cidrdb.org/cidr2019/papers/p122-oldenburg-cidr19.pdf",
+    "score": 9,
+    "commentsURL": "https://news.ycombinator.com/item?id=20487657",
+    "nrComments": 0
+  },
+  {
+    "title": "Juggling: Theory and Practice [pdf]",
+    "link": "http://www.solipsys.co.uk/Writings/JugglingTheoryAndPractice.pdf",
+    "score": 9,
+    "commentsURL": "https://news.ycombinator.com/item?id=20661338",
+    "nrComments": 2
+  },
+  {
+    "title": "The Question Concerning Technology (1949) [pdf]",
+    "link": "https://www2.hawaii.edu/~freeman/courses/phil394/The%20Question%20Concerning%20Technology.pdf",
+    "score": 8,
+    "commentsURL": "https://news.ycombinator.com/item?id=18805664",
+    "nrComments": 0
+  },
+  {
+    "title": "Fred George, Rapids river ponds software architecture vision [pdf]",
+    "link": "http://yowconference.com.au/slides/yow2014/George-ImplementingMicroserviceArchitectures.pdf",
+    "score": 8,
+    "commentsURL": "https://news.ycombinator.com/item?id=19600009",
+    "nrComments": 0
+  },
+  {
+    "title": "The weird world of fossil worm cocoons (2016) [pdf]",
+    "link": "http://www.diva-portal.org/smash/get/diva2:1047133/FULLTEXT02.pdf",
+    "score": 8,
+    "commentsURL": "https://news.ycombinator.com/item?id=19862145",
+    "nrComments": 2
+  },
+  {
+    "title": "Object Oriented Frameworks: a survey of methodological issues (1996) [pdf]",
+    "link": "https://www.researchgate.net/profile/Michael_Mattsson/publication/2238535_Object-Oriented_Frameworks/links/54d0a8ed0cf298d65667af54.pdf",
+    "score": 8,
+    "commentsURL": "https://news.ycombinator.com/item?id=20082513",
+    "nrComments": 0
+  },
+  {
+    "title": "The Game of Pogo (2011) [pdf]",
+    "link": "http://cossdesign.com/teacher_resources/PogoRules2.0.pdf",
+    "score": 8,
+    "commentsURL": "https://news.ycombinator.com/item?id=20279291",
+    "nrComments": 1
+  },
+  {
+    "title": "Fully Homomorphic Encryption Using Ideal Lattices (2009) [pdf]",
+    "link": "https://www.cs.cmu.edu/~odonnell/hits09/gentry-homomorphic-encryption.pdf",
+    "score": 8,
+    "commentsURL": "https://news.ycombinator.com/item?id=21548159",
+    "nrComments": 6
+  },
+  {
+    "title": "HeteroTSDB: An Extensible Time Series Database on Heterogeneous Key-Value Stores [pdf]",
+    "link": "https://yuuk.io/papers/heterotsdb_compsac2019.pdf",
+    "score": 8,
+    "commentsURL": "https://news.ycombinator.com/item?id=21614007",
+    "nrComments": 2
+  },
+  {
+    "title": "The FL Project: The Design of a Function Language (1989) [pdf]",
+    "link": "https://theory.stanford.edu/~aiken/publications/trs/FLProject.pdf",
+    "score": 7,
+    "commentsURL": "https://news.ycombinator.com/item?id=19035004",
+    "nrComments": 0
+  },
+  {
+    "title": "Parser-Directed Fuzzing [pdf]",
+    "link": "http://rahul.gopinath.org/resources/pldi2019/mathis2019parser.pdf",
+    "score": 7,
+    "commentsURL": "https://news.ycombinator.com/item?id=19690138",
+    "nrComments": 0
+  },
+  {
+    "title": "Verified Compilation on a Verified Processor [pdf]",
+    "link": "https://cakeml.org/pldi19.pdf",
+    "score": 7,
+    "commentsURL": "https://news.ycombinator.com/item?id=20074996",
+    "nrComments": 0
+  },
+  {
+    "title": "Elements of Statistical Learning [pdf]",
+    "link": "https://web.stanford.edu/~hastie/ElemStatLearn/printings/ESLII_print12.pdf",
+    "score": 7,
+    "commentsURL": "https://news.ycombinator.com/item?id=20266641",
+    "nrComments": 0
+  },
+  {
+    "title": "Fundamental? (2018) [pdf]",
+    "link": "https://fqxi.org/data/essay-contest-files/Adlam_fundamental_essay_Jan.pdf",
+    "score": 7,
+    "commentsURL": "https://news.ycombinator.com/item?id=20547013",
+    "nrComments": 1
+  },
+  {
+    "title": "Theoretical Statistics – All Lectures [pdf]",
+    "link": "https://www.stat.berkeley.edu/~aditya/resources/FullNotes210BSpring2018.pdf",
+    "score": 7,
+    "commentsURL": "https://news.ycombinator.com/item?id=21468493",
+    "nrComments": 0
+  },
+  {
+    "title": "UN/CEFACT Business Requirements Specifications on smart container tech released [pdf]",
+    "link": "https://www.unece.org/fileadmin/DAM/cefact/brs/BRS-SmartContainer_v1.0.pdf",
+    "score": 7,
+    "commentsURL": "https://news.ycombinator.com/item?id=21580359",
+    "nrComments": 0
+  },
+  {
+    "title": "HyveMind: Election Infrastructure on the Blockchain [pdf]",
+    "link": "http://freepdfhosting.com/408e68e786.pdf",
+    "score": 6,
+    "commentsURL": "https://news.ycombinator.com/item?id=18842869",
+    "nrComments": 4
+  },
+  {
+    "title": "AI Index 2018 Report [pdf]",
+    "link": "http://cdn.aiindex.org/2018/AI%20Index%202018%20Annual%20Report.pdf",
+    "score": 6,
+    "commentsURL": "https://news.ycombinator.com/item?id=18908764",
+    "nrComments": 0
+  },
+  {
+    "title": "Urs Hölzle: Reconciling High Performance with Exploratory Programming (1994) [pdf]",
+    "link": "http://i.stanford.edu/pub/cstr/reports/cs/tr/94/1520/CS-TR-94-1520.pdf",
+    "score": 6,
+    "commentsURL": "https://news.ycombinator.com/item?id=18955509",
+    "nrComments": 0
+  },
+  {
+    "title": "Reaching Agreement in the Presence of Faults (1980) [pdf]",
+    "link": "https://lamport.azurewebsites.net/pubs/reaching.pdf",
+    "score": 6,
+    "commentsURL": "https://news.ycombinator.com/item?id=19726888",
+    "nrComments": 0
+  },
+  {
+    "title": "Programming Add-Ons for Blender 2.80, version 2.0 [pdf]",
+    "link": "http://airplanes3d.net/downloads/pydev2/pydev-blender-en.pdf",
+    "score": 6,
+    "commentsURL": "https://news.ycombinator.com/item?id=20453504",
+    "nrComments": 1
+  },
+  {
+    "title": "SoftBank Next 30-Year Vision Deck (2010) [pdf]",
+    "link": "https://cdn.group.softbank/en/corp/set/data/irinfo/presentations/vod/2010/pdf/press_20100625_01.pdf",
+    "score": 6,
+    "commentsURL": "https://news.ycombinator.com/item?id=21481120",
+    "nrComments": 1
+  },
+  {
+    "title": "Maskless photolithographic system using low-cost projector and microscope (2005) [pdf]",
+    "link": "http://web.archive.org/web/20150104005610if_/http://www.physics.rutgers.edu/ugrad/387/388s06/film_deposition/Musgraves05.pdf",
+    "score": 5,
+    "commentsURL": "https://news.ycombinator.com/item?id=18948793",
+    "nrComments": 1
+  },
+  {
+    "title": "Detecting Kernel Memory Disclosure with x86 Emulation and Taint Tracking [pdf]",
+    "link": "https://j00ru.vexillium.org/papers/2018/bochspwn_reloaded.pdf",
+    "score": 5,
+    "commentsURL": "https://news.ycombinator.com/item?id=19016930",
+    "nrComments": 1
+  },
+  {
+    "title": "Simplicity Helps You Find the Truth Without Pointing at It [pdf]",
+    "link": "https://pdfs.semanticscholar.org/fd67/17201c9855615795729e29b5821bb037c775.pdf",
+    "score": 5,
+    "commentsURL": "https://news.ycombinator.com/item?id=19060491",
+    "nrComments": 0
+  },
+  {
+    "title": "BlueHatIL – Trends, challenge, and shifts in software vulnerability mitigation [pdf]",
+    "link": "https://github.com/Microsoft/MSRC-Security-Research/blob/master/presentations/2019_02_BlueHatIL/2019_01%20-%20BlueHatIL%20-%20Trends%2C%20challenge%2C%20and%20shifts%20in%20software%20vulnerability%20mitigation.pdf",
+    "score": 5,
+    "commentsURL": "https://news.ycombinator.com/item?id=19129877",
+    "nrComments": 0
+  },
+  {
+    "title": "Cloud Programming Simplified: A Berkeley View on Serverless Computing [pdf]",
+    "link": "https://www2.eecs.berkeley.edu/Pubs/TechRpts/2019/EECS-2019-3.pdf",
+    "score": 5,
+    "commentsURL": "https://news.ycombinator.com/item?id=19239489",
+    "nrComments": 0
+  },
+  {
+    "title": "Overlapping Experiment Infrastructure (2010) [pdf]",
+    "link": "https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/36500.pdf",
+    "score": 5,
+    "commentsURL": "https://news.ycombinator.com/item?id=19454563",
+    "nrComments": 0
+  },
+  {
+    "title": "The Humane Dozen (2017) [pdf]",
+    "link": "http://melconway.com/Home/pdf/humanedozen.pdf",
+    "score": 5,
+    "commentsURL": "https://news.ycombinator.com/item?id=19550396",
+    "nrComments": 0
+  },
+  {
+    "title": "The Modern Bicycle and Its Accessories (1898) [pdf]",
+    "link": "https://github.com/GITenberg/The-Modern-Bicycle-and-Its-Accessories_58444/releases/download/0.1.0/book.pdf",
+    "score": 5,
+    "commentsURL": "https://news.ycombinator.com/item?id=20145663",
+    "nrComments": 0
+  },
+  {
+    "title": "Organizational Blueprints for Success in High-Tech Startups (2002) [pdf]",
+    "link": "https://cmr.berkeley.edu/documents/sample_articles/2002_44_3_4776.pdf",
+    "score": 5,
+    "commentsURL": "https://news.ycombinator.com/item?id=20168770",
+    "nrComments": 0
+  },
+  {
+    "title": "The Inner Ring (1944) [pdf]",
+    "link": "http://johnrepici.com/Misc/TheInnerRing.pdf",
+    "score": 5,
+    "commentsURL": "https://news.ycombinator.com/item?id=20259862",
+    "nrComments": 0
+  },
+  {
+    "title": "Fragmentation considered harmful (1987) [pdf]",
+    "link": "https://www.hpl.hp.com/techreports/Compaq-DEC/WRL-87-3.pdf",
+    "score": 5,
+    "commentsURL": "https://news.ycombinator.com/item?id=20410777",
+    "nrComments": 1
+  },
+  {
+    "title": "Time to Measure the Pi (2016) [pdf]",
+    "link": "http://crin.eng.uts.edu.au/~darryl/Publications/Pi-hat_current.pdf",
+    "score": 5,
+    "commentsURL": "https://news.ycombinator.com/item?id=20505666",
+    "nrComments": 0
+  },
+  {
+    "title": "Monokle: The Mobile Surveillance Tooling of the Special Technology Center [pdf]",
+    "link": "https://www.lookout.com/documents/threat-reports/lookout-discovers-monokle-threat-report.pdf",
+    "score": 5,
+    "commentsURL": "https://news.ycombinator.com/item?id=20518251",
+    "nrComments": 0
+  },
+  {
+    "title": "A Magnetically-Actuated Untethered Jellyfish-Inspired Soft Milliswimmer [pdf]",
+    "link": "http://www.roboticsproceedings.org/rss15/p13.pdf",
+    "score": 5,
+    "commentsURL": "https://news.ycombinator.com/item?id=20729415",
+    "nrComments": 0
+  },
+  {
+    "title": "Civilization and Its Discontents [pdf]",
+    "link": "https://www.stephenhicks.org/wp-content/uploads/2015/10/FreudS-CIVILIZATION-AND-ITS-DISCONTENTS-text-final.pdf",
+    "score": 5,
+    "commentsURL": "https://news.ycombinator.com/item?id=21303142",
+    "nrComments": 0
+  },
+  {
+    "title": "The Economics of Information (1961) [pdf]",
+    "link": "https://home.uchicago.edu/~vlima/courses/econ200/spring01/stigler.pdf",
+    "score": 5,
+    "commentsURL": "https://news.ycombinator.com/item?id=21775364",
+    "nrComments": 0
+  },
+  {
+    "title": "A Password-Storage Field Study with Freelance Developers [pdf]",
+    "link": "https://net.cs.uni-bonn.de/fileadmin/user_upload/naiakshi/Naiakshina_Password_Study.pdf",
+    "score": 4,
+    "commentsURL": "https://news.ycombinator.com/item?id=19318498",
+    "nrComments": 1
+  },
+  {
+    "title": "Sundial: Harmonizing Concurrency Control and Caching in a Distributed OLTP DBMS [pdf]",
+    "link": "https://people.csail.mit.edu/devadas/pubs/sundial.pdf",
+    "score": 4,
+    "commentsURL": "https://news.ycombinator.com/item?id=19363655",
+    "nrComments": 1
+  },
+  {
+    "title": "Making Music with Shaders Practical Additive GPU Audio Synthesis [pdf]",
+    "link": "http://www.graffathon.fi/2016/presentations/additive_slides.pdf",
+    "score": 4,
+    "commentsURL": "https://news.ycombinator.com/item?id=19470135",
+    "nrComments": 0
+  },
+  {
+    "title": "DIMMer: A case of turning off DIMMs in clouds (2014) [pdf]",
+    "link": "https://zxr.io/research/sion2014socc.pdf",
+    "score": 4,
+    "commentsURL": "https://news.ycombinator.com/item?id=19599585",
+    "nrComments": 0
+  },
+  {
+    "title": "The Restoration of Early Unix Artifacts (2009) [pdf]",
+    "link": "https://www.usenix.org/legacy/events/usenix09/tech/full_papers/toomey/toomey.pdf",
+    "score": 4,
+    "commentsURL": "https://news.ycombinator.com/item?id=19655488",
+    "nrComments": 0
+  },
+  {
+    "title": "NetCache: Balancing Key-Value Stores with Fast In-Network Caching [pdf]",
+    "link": "https://www.cs.cornell.edu/~jnfoster/papers/netcache.pdf",
+    "score": 4,
+    "commentsURL": "https://news.ycombinator.com/item?id=21468130",
+    "nrComments": 0
+  },
+  {
+    "title": "FCC: Carriers lying about coverage about 40% of the time [pdf]",
+    "link": "https://docs.fcc.gov/public/attachments/DOC-361165A1.pdf",
+    "score": 4,
+    "commentsURL": "https://news.ycombinator.com/item?id=21711618",
+    "nrComments": 1
+  },
+  {
+    "title": "A Note on the Use of Dictionaries (2012) [pdf]",
+    "link": "http://www.greenbag.org/v16n4/v16n4_articles_scalia_and_garner.pdf",
+    "score": 4,
+    "commentsURL": "https://news.ycombinator.com/item?id=21818730",
+    "nrComments": 0
+  },
+  {
+    "title": "“Proof-Of-Work” Proves Not to Work (2004) [pdf]",
+    "link": "https://www.cl.cam.ac.uk/~rnc1/proofwork.pdf",
+    "score": 3,
+    "commentsURL": "https://news.ycombinator.com/item?id=18889889",
+    "nrComments": 1
+  },
+  {
+    "title": "A Tour of Scheme in Gambit (2008) [pdf]",
+    "link": "http://dynamo.iro.umontreal.ca/wiki/images/a/a7/A_Tour_of_Scheme_in_Gambit.pdf",
+    "score": 3,
+    "commentsURL": "https://news.ycombinator.com/item?id=20908307",
+    "nrComments": 0
+  },
+  {
+    "title": "The State of Homelessness in America [pdf]",
+    "link": "https://www.whitehouse.gov/wp-content/uploads/2019/09/The-State-of-Homelessness-in-America.pdf",
+    "score": 3,
+    "commentsURL": "https://news.ycombinator.com/item?id=21001300",
+    "nrComments": 0
+  },
+  {
+    "title": "The Effect of Founder Experience on Labor Market Outcomes: A Field Experiment [pdf]",
+    "link": "http://www.tristanbotelho.com/files/BotelhoChang2019_FounderExperienceLaborMarkets.pdf",
+    "score": 3,
+    "commentsURL": "https://news.ycombinator.com/item?id=21123706",
+    "nrComments": 0
+  }
+]
