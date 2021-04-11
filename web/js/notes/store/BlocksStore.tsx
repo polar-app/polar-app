@@ -233,8 +233,22 @@ export class BlocksStore implements IBlocksStore {
         return this._selected;
     }
 
-    selectedIDs() {
+    public selectedIDs() {
         return Object.keys(this._selected);
+    }
+
+    /**
+     * Compute notes that are the selected roots that have no parent that is
+     * also selected.
+     */
+    public computeSelectedRoots() {
+        const selected = this.selectedIDs();
+
+        return selected.map(current => this.getBlock(current))
+                       .filter(current => current !== undefined)
+                       .map(current => current!)
+                       .filter(current => current.parent === undefined || ! selected.includes(current.parent))
+
     }
 
     @action public clearSelected(reason: string) {
@@ -1040,8 +1054,13 @@ export class BlocksStore implements IBlocksStore {
     }
 
     private computeSelectedIndentableBlockIDs(): ReadonlyArray<BlockIDStr> {
-        const selectedIDs = this.selectedIDs();
-        return selectedIDs.filter(current => this.isIndentable(current));
+
+        const selectedRoots = this.computeSelectedRoots();
+
+        return selectedRoots
+                   .filter(current => this.isIndentable(current.id))
+                   .map(current => current.id);
+
     }
 
     /**
@@ -1144,8 +1163,11 @@ export class BlocksStore implements IBlocksStore {
     }
 
     private computeSelectedUnIndentableBlockIDs(): ReadonlyArray<BlockIDStr> {
-        const selectedIDs = this.selectedIDs();
-        return selectedIDs.filter(current => this.isUnIndentable(current));
+
+        const selectedRoots = this.computeSelectedRoots();
+        return selectedRoots.filter(current => this.isUnIndentable(current.id))
+                            .map(current => current.id);
+
     }
 
     public doUnIndent(id: BlockIDStr): ReadonlyArray<DoUnIndentResult> {
