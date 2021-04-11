@@ -147,8 +147,6 @@ export namespace CursorPositions {
 
     export function computeCurrentOffset(element: HTMLElement): number | undefined {
 
-        console.log("FIXME: computeCurrentOffset: " , element);
-
         const lookup = computeCursorLookupArray(element);
 
         const range = document.getSelection()!.getRangeAt(0);
@@ -161,8 +159,6 @@ export namespace CursorPositions {
             if (range.startContainer === curr.node) {
 
                 if (range.startOffset === curr.offset) {
-                    console.log("FIXME: found a hit in container: ", range.startContainer);
-                    console.log("FIXME: at offset: ", range.startOffset);
                     return idx;
                 }
 
