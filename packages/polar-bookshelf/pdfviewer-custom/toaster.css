@@ -1,0 +1,18 @@
+
+.polar-viewer div#toastr-container {
+    position: fixed;
+    z-index: 9999999;
+    top: 90px;
+    right: 70px;
+    opacity: 1 !important;
+    font-size: 14px;
+}
+
+.toastr-message,
+.toastr {
+    opacity: 1 !important;
+}
+
+.toastr {
+    width: 400px !important;
+}
