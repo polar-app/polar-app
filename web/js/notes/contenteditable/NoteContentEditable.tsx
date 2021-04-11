@@ -2,7 +2,7 @@ import { HTMLStr } from 'polar-shared/src/util/Strings';
 import React from 'react';
 import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import { observer } from "mobx-react-lite"
-import {NavOpts, BlockIDStr, useBlocksStore} from '../store/BlocksStore';
+import {NavOpts, BlockIDStr, useBlocksStore, IActiveBlock} from '../store/BlocksStore';
 import {ContentEditables} from "../ContentEditables";
 import {createActionsProvider} from "../../mui/action_menu/ActionStore";
 import {NoteFormatPopper} from "../NoteFormatPopper";
@@ -12,7 +12,7 @@ import { useHistory } from 'react-router-dom';
 import { autorun } from 'mobx'
 import {CursorPositions} from "./CursorPositions";
 
-const ENABLE_TRACE_CURSOR_RESET = false;
+const ENABLE_TRACE_CURSOR_RESET = true;
 
 interface IProps {
 
@@ -57,6 +57,8 @@ export const NoteContentEditable = observer((props: IProps) => {
     const store = useBlocksStore();
     const history = useHistory();
 
+    const updateCursorPosition = useUpdateCursorPosition();
+
     const noteLinkActions = store.getNamedNodes().map(current => ({
         id: current,
         text: current
@@ -77,13 +79,11 @@ export const NoteContentEditable = observer((props: IProps) => {
             }
 
             const div = NoteContentCanonicalizer.canonicalizeElement(divRef.current)
-            const innerHTML = div.innerHTML;
-            return ContentEditableWhitespace.trim(innerHTML);
+            return ContentEditableWhitespace.trim(div.innerHTML);
 
         }
 
-        const innerHTML = computeNewContent();
-        const newContent = ContentEditableWhitespace.trim(innerHTML);
+        const newContent = computeNewContent();
 
         if (newContent === contentRef.current) {
             // there was no change so skip this.
@@ -92,7 +92,6 @@ export const NoteContentEditable = observer((props: IProps) => {
 
         if (ENABLE_TRACE_CURSOR_RESET) {
             console.log("==== handleChange: ")
-            console.log("RAW innerHTML: ", innerHTML);
             console.log("newContent: ", newContent);
         }
 
@@ -120,19 +119,8 @@ export const NoteContentEditable = observer((props: IProps) => {
 
                 if (divRef.current) {
 
-                    switch (store.active.pos) {
-                        case 'start':
-                        case 'end':
-                            updateCursorPosition(divRef.current, store.active.pos)
-
-                            break;
-                        default:
-
-                            if (typeof store.active.pos === 'number') {
-                                CursorPositions.jumpToPosition(divRef.current, store.active.pos)
-                            }
-
-                            break;
+                    if (store.active.pos !== undefined) {
+                        updateCursorPosition(divRef.current, store.active)
                     }
 
                     divRef.current.focus();
@@ -161,13 +149,15 @@ export const NoteContentEditable = observer((props: IProps) => {
             // (though this might be optional) and then set the innerHTML
             // directly.  React has a bug which won't work on empty strings.
 
-
             divRef.current!.innerHTML = props.content;
-            setContent(props.content);
+
+            if (divRef.current && store.active) {
+                updateCursorPosition(divRef.current, store.active, true);
+            }
 
         }
 
-    }, [props.content, props.id]);
+    }, [props.content, props.id, store.active, updateCursorPosition]);
 
     const handleRef = React.useCallback((current: HTMLDivElement | null) => {
 
@@ -404,10 +394,37 @@ export const NoteContentEditable = observer((props: IProps) => {
 
 });
 
+/**
+ * Hook which keeps track of the last nonce we updated to avoid double updates.
+ */
+function useUpdateCursorPosition() {
 
-function updateCursorPosition(editor: HTMLDivElement, offset: 'start' | 'end') {
+    const nonceRef = React.useRef(-1);
 
-    if (offset !== undefined) {
+    return (editor: HTMLDivElement, activeBlock: IActiveBlock, force?: boolean) => {
+
+        if (force || nonceRef.current !== activeBlock.nonce) {
+
+            try {
+
+                if (activeBlock.pos !== undefined) {
+
+                    doUpdateCursorPosition(editor, activeBlock.pos)
+                }
+
+            } finally {
+                nonceRef.current = activeBlock.nonce;
+            }
+
+        }
+
+    }
+
+}
+
+function doUpdateCursorPosition(editor: HTMLDivElement, pos: 'start' | 'end' | number) {
+
+    if (pos !== undefined) {
 
         function defineNewRange(range: Range) {
 
@@ -422,13 +439,17 @@ function updateCursorPosition(editor: HTMLDivElement, offset: 'start' | 'end') {
 
         }
 
-        if (offset === 'start') {
+        console.log("Updating cursor position to: ", pos);
+
+        editor.focus();
+
+        if (pos === 'start') {
             const range = document.createRange();
             range.setStartAfter(editor)
             range.setEndAfter(editor)
         }
 
-        if (offset === 'end') {
+        if (pos === 'end') {
 
             const end = ContentEditables.computeEndNodeOffset(editor);
 
@@ -438,6 +459,10 @@ function updateCursorPosition(editor: HTMLDivElement, offset: 'start' | 'end') {
 
             defineNewRange(range);
 
+        }
+
+        if (typeof pos === 'number') {
+            CursorPositions.jumpToPosition(editor, pos)
         }
 
     }

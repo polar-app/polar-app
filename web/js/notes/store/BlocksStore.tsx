@@ -132,6 +132,22 @@ export interface IActiveBlock {
      */
     readonly pos: NavPosition | undefined;
 
+    /**
+     * A nonce that's unique to this block setting so that we don't attempt to
+     * double jump the cursor.
+     */
+    readonly nonce: number;
+
+}
+
+export namespace ActiveBlockNonces {
+
+    let value = 0;
+
+    export function create() {
+        return value++;
+    }
+
 }
 
 export class BlocksStore implements IBlocksStore {
@@ -610,7 +626,8 @@ export class BlocksStore implements IBlocksStore {
         if (active) {
             this._active = {
                 id: active,
-                pos: undefined
+                pos: undefined,
+                nonce: ActiveBlockNonces.create()
             };
         } else {
             this._active = undefined;
@@ -624,7 +641,8 @@ export class BlocksStore implements IBlocksStore {
         if (active) {
             this._active = {
                 id: active,
-                pos: activePos
+                pos: activePos,
+                nonce: ActiveBlockNonces.create()
             };
         } else {
             this._active = undefined;
@@ -968,7 +986,12 @@ export class BlocksStore implements IBlocksStore {
             const id = this.active.id;
             const pos = captureOffset();
 
-            return {id, pos};
+            return {
+                id,
+                pos,
+                nonce: ActiveBlockNonces.create()
+            };
+
         } else {
             return undefined;
         }
