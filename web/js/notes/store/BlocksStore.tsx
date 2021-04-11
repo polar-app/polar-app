@@ -988,7 +988,8 @@ export class BlocksStore implements IBlocksStore {
             if (this.active !== undefined) {
 
                 const range = document.getSelection()!.getRangeAt(0);
-                return CursorPositions.computeCurrentOffset(range.startContainer as HTMLElement);
+                const contenteditable = CursorPositions.computeContentEditableRoot(range.startContainer);
+                return CursorPositions.computeCurrentOffset(contenteditable);
 
             }
 

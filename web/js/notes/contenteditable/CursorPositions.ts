@@ -119,7 +119,35 @@ export namespace CursorPositions {
 
     }
 
+    export function computeContentEditableRoot(node: Node | null): HTMLElement {
+
+        if (node === null) {
+            throw new Error("Unable to find content editable root");
+        }
+
+        if (node.nodeType === node.TEXT_NODE) {
+            return computeContentEditableRoot(node.parentElement);
+        }
+
+        if (node.nodeType === node.ELEMENT_NODE) {
+
+            const element = node as HTMLElement;
+
+            if (element.getAttribute('contenteditable') === 'true') {
+                return element;
+            }
+
+            return computeContentEditableRoot(element.parentElement);
+
+        }
+
+        throw new Error("Invalid node type: " + node.nodeType);
+
+    }
+
     export function computeCurrentOffset(element: HTMLElement): number | undefined {
+
+        console.log("FIXME: computeCurrentOffset: " , element);
 
         const lookup = computeCursorLookupArray(element);
 
@@ -133,6 +161,8 @@ export namespace CursorPositions {
             if (range.startContainer === curr.node) {
 
                 if (range.startOffset === curr.offset) {
+                    console.log("FIXME: found a hit in container: ", range.startContainer);
+                    console.log("FIXME: at offset: ", range.startOffset);
                     return idx;
                 }
 
