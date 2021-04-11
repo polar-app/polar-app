@@ -2,6 +2,8 @@ import {IBlock, NamespaceIDStr, UIDStr} from "./IBlock";
 import {INewChildPosition, BlockContent, BlockIDStr, BlockType} from "./BlocksStore";
 import {action, computed, makeObservable, observable} from "mobx"
 import { ISODateTimeString, ISODateTimeStrings } from "polar-shared/src/metadata/ISODateTimeStrings";
+import {IMarkdownContent} from "../content/IMarkdownContent";
+import {INameContent} from "../content/INameContent";
 
 export class Block implements IBlock {
 
@@ -46,14 +48,6 @@ export class Block implements IBlock {
 
     // FIXME: maybe content would be a reference to another type..
 
-    /**
-     * There are two types of blocks.  One is just an 'item' where the 'content'
-     * is the body of the item and isn't actually a unique name and then there
-     * is a 'named' note where the content is actually the name of the note and
-     * has constrained semantics (can't have a link, image, etc.
-     */
-    @observable private _type: BlockType;
-
     constructor(opts: IBlock) {
 
         this._id = opts.id;
@@ -65,7 +59,6 @@ export class Block implements IBlock {
         this._items = [...opts.items];
         this._content = opts.content;
         this._links = [...opts.links];
-        this._type = opts.type;
 
         makeObservable(this)
 
@@ -107,11 +100,7 @@ export class Block implements IBlock {
         return this._links;
     }
 
-    @computed get type() {
-        return this._type;
-    }
-
-    @action setContent(content: string) {
+    @action setContent(content: BlockContent) {
 
         // if (content.startsWith('<p')) {
         //     throw new Error("Content was set as HTML!");
@@ -210,7 +199,6 @@ export class Block implements IBlock {
             items: this._items,
             content: this._content,
             links: this._links,
-            type: this._type
         };
 
     }

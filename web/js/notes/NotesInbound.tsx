@@ -29,7 +29,7 @@ const InboundNoteRef = observer((props: InboundNoteRefProps) => {
                     {pathToNote.map(current => (
                         <NoteBreadcrumbLink key={current.id}
                                             id={current.id}
-                                            content={current.content}/>
+                                            content={current.content.data}/>
                     ))}
                 </Breadcrumbs>
             </div>
@@ -72,8 +72,8 @@ export const NotesInbound = deepMemo(function NotesInbound(props: IProps) {
                 <>
                     {inbound.map((current, idx) => <InboundNoteRef key={idx}
                                                                    id={current.id}
-                                                                   name={current.content}
-                                                                   content={current.content}/>)}
+                                                                   name={current.content.data}
+                                                                   content={current.content.data}/>)}
                 </>
             </UL>
         </div>

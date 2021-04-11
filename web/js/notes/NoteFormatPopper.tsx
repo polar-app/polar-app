@@ -84,7 +84,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
     }, [clearPopup])
 
-    const noteFormatKeyboardHandler = useNoteFormatKeyboardHandler(note?.type, clearPopupForKeyboard);
+    const noteFormatKeyboardHandler = useNoteFormatKeyboardHandler(note?.content.type, clearPopupForKeyboard);
 
     const clearPopupTimeout = React.useCallback(() => {
 
@@ -134,7 +134,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
     }, [clearPopup, selected]);
 
-    const noteFormatHandlers = useNoteFormatHandlers(note?.type, props.onUpdated);
+    const noteFormatHandlers = useNoteFormatHandlers(note?.content.type, props.onUpdated);
 
     return (
         <ClickAwayListener onClickAway={() => setPosition(undefined)}>
@@ -145,7 +145,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
                 {props.children}
 
-                {note?.type === 'item' && position && (
+                {note?.content.type === 'markdown' && position && (
                     <div onClick={() => setPosition(undefined)}
                          style={{
                              position: 'absolute',

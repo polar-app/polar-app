@@ -1,4 +1,4 @@
 export interface IMarkdownContent {
     readonly type: 'markdown';
-    readonly content: string;
+    readonly data: string;
 }

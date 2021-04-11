@@ -16,11 +16,13 @@ import {CursorPositions} from "../contenteditable/CursorPositions";
 import {useBlocksStoreContext} from "./BlockStoreContextProvider";
 import {IBlocksStore} from "./IBlocksStore";
 import {TracingBlocksStore} from "./TracingBlocksStore";
+import {IMarkdownContent} from "../content/IMarkdownContent";
+import {INameContent} from "../content/INameContent";
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
 
-export type BlockType = 'item' | 'named';
+export type BlockType = 'name' | 'markdown';
 
 export type BlocksIndex = {[id: string /* BlockIDStr */]: Block};
 export type BlocksIndexByName = {[name: string /* BlockNameStr */]: BlockIDStr};
@@ -30,7 +32,7 @@ export type ReverseBlocksIndex = {[id: string /* BlockIDStr */]: BlockIDStr[]};
 export type StringSetMap = {[key: string]: boolean};
 
 // export type NoteContent = string | ITypedContent<'markdown'> | ITypedContent<'name'>;
-export type BlockContent = string;
+export type BlockContent = IMarkdownContent | INameContent;
 
 /**
  * A offset into the content of a not where we should place the cursor.
@@ -304,13 +306,13 @@ export class BlocksStore implements IBlocksStore {
 
     @action public doPut(blocks: ReadonlyArray<IBlock>, opts: DoPutOpts = {}) {
 
-        for (const blockID of blocks) {
+        for (const blockData of blocks) {
 
-            const block = new Block(blockID);
-            this._index[blockID.id] = block;
+            const block = new Block(blockData);
+            this._index[blockData.id] = block;
 
-            if (blockID.type === 'named') {
-                this._indexByName[blockID.content] = block.id;
+            if (blockData.content.type === 'name') {
+                this._indexByName[blockData.content.data] = block.id;
             }
 
             for (const link of block.links) {
@@ -753,7 +755,7 @@ export class BlocksStore implements IBlocksStore {
     }
 
     public canMergeTypes(sourceBlock: IBlock, targetBlock: IBlock): boolean {
-        return targetBlock.type === sourceBlock.type;
+        return targetBlock.content.type === sourceBlock.content.type;
     }
 
     public canMergeWithDelete(sourceBlock: IBlock, targetBlock: IBlock) {
@@ -799,13 +801,21 @@ export class BlocksStore implements IBlocksStore {
             return 'incompatible-block-types';
         }
 
-        const offset = CursorPositions.renderedTextLength(targetBlock.content);
+        if (sourceBlock.content.type !== 'markdown' || targetBlock.content.type !== 'markdown') {
+            throw new Error("Attempt to merge invalid content types");
+        }
+
+        const offset = CursorPositions.renderedTextLength(targetBlock.content.data);
 
         const items = [...targetBlock.items, ...sourceBlock.items];
         const links = [...targetBlock.links, ...sourceBlock.links];
 
-        const newContent = targetBlock.content + sourceBlock.content;
-        targetBlock.setContent(newContent);
+        const newContent = targetBlock.content.data + sourceBlock.content.data;
+
+        targetBlock.setContent({
+            type: 'markdown',
+            data: newContent
+        });
         targetBlock.setItems(items);
         targetBlock.setLinks(links);
 
@@ -848,8 +858,10 @@ export class BlocksStore implements IBlocksStore {
                 nspace: refBlock.nspace,
                 uid: this.uid,
                 parent: undefined,
-                type: 'named',
-                content: name,
+                content: {
+                    type: 'name',
+                    data: name
+                },
                 created: now,
                 updated: now,
                 items: [],
@@ -981,8 +993,10 @@ export class BlocksStore implements IBlocksStore {
                 parent: parentBlock.id,
                 nspace: parentBlock.nspace,
                 uid: this.uid,
-                type: 'item',
-                content: split?.suffix || '',
+                content: {
+                    type: 'markdown',
+                    data: split?.suffix || ''
+                },
                 created: now,
                 updated: now,
                 items,
@@ -1019,7 +1033,11 @@ export class BlocksStore implements IBlocksStore {
         }
 
         if (split?.prefix !== undefined) {
-            currentBlock.setContent(split.prefix);
+
+            currentBlock.setContent({
+                type: 'markdown',
+                data: split.prefix
+            });
 
             if (newBlockInheritItems) {
                 currentBlock.setItems([]);
@@ -1285,7 +1303,7 @@ export class BlocksStore implements IBlocksStore {
     public blockIsEmpty(id: BlockIDStr): boolean {
 
         const block = this._index[id];
-        return block?.content.trim() === '';
+        return block?.content.data.trim() === '';
 
     }
 
@@ -1389,8 +1407,8 @@ export class BlocksStore implements IBlocksStore {
                     delete this._index[block.id];
 
                     // *** delete the block from name index by name.
-                    if (block.type === 'named') {
-                        delete this._indexByName[block.content];
+                    if (block.content.type === 'name') {
+                        delete this._indexByName[block.content.data];
                     }
 
                     // *** delete the reverse index for this item

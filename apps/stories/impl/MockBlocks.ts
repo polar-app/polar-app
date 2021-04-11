@@ -15,8 +15,10 @@ export namespace MockBlocks {
                 parent: undefined,
                 created: now,
                 updated: now,
-                content: "World War II",
-                type: 'named',
+                content: {
+                    type: 'name',
+                    data: "World War II"
+                },
                 items: [
                     '103',
                     '104',
@@ -30,8 +32,10 @@ export namespace MockBlocks {
                 parent: '102',
                 created: now,
                 updated: now,
-                type: 'item',
-                content: '[Lasted](https://www.example.com) from 1939 to 1945',
+                content: {
+                    type: 'markdown',
+                    data: '[Lasted](https://www.example.com) from 1939 to 1945'
+                },
                 items: [],
                 links: []
             },
@@ -41,8 +45,10 @@ export namespace MockBlocks {
                 parent: '102',
                 created: now,
                 updated: now,
-                type: 'item',
-                content: 'Axis Powers: Germany, Italy, Japan',
+                content: {
+                    type: 'markdown',
+                    data: 'Axis Powers: Germany, Italy, Japan'
+                },
                 items: [],
                 links: []
             },
@@ -52,12 +58,14 @@ export namespace MockBlocks {
                 parent: '102',
                 created: now,
                 updated: now,
-                content: 'Allied Powers: United States, United Kingdom, [[Canada]], [[Russia]].',
+                content: {
+                    type: 'markdown',
+                    data: 'Allied Powers: United States, United Kingdom, [[Canada]], [[Russia]].'
+                },
                 links: ['109', '108'],
                 items: [
                     '106'
                 ],
-                type: 'item',
             },
             {
                 id: '100',
@@ -65,8 +73,10 @@ export namespace MockBlocks {
                 parent: undefined,
                 created: now,
                 updated: now,
-                type: 'item',
-                content: 'World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world\'s countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.',
+                content: {
+                    type: 'markdown',
+                    data: 'World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world\'s countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.',
+                },
                 items: [],
                 links: []
             },
@@ -76,8 +86,10 @@ export namespace MockBlocks {
                 parent: undefined,
                 created: now,
                 updated: now,
-                content: "Russia",
-                type: 'named',
+                content: {
+                    type: 'name',
+                    data: "Russia"
+                },
                 items: [],
                 links: []
             },
@@ -87,8 +99,10 @@ export namespace MockBlocks {
                 parent: undefined,
                 created: now,
                 updated: now,
-                content: "Canada",
-                type: 'named',
+                content: {
+                    type: 'name',
+                    data: "Canada"
+                },
                 items: [
                     '111'
                 ],
@@ -100,8 +114,10 @@ export namespace MockBlocks {
                 parent: '109',
                 created: now,
                 updated: now,
-                type: 'item',
-                content: 'Canada is north of the United States',
+                content: {
+                    type: 'markdown',
+                    data: 'Canada is north of the United States'
+                },
                 items: [],
                 links: []
             },
@@ -111,8 +127,10 @@ export namespace MockBlocks {
                 parent: '105',
                 created: now,
                 updated: now,
-                content: 'Lead by Franklin D. Roosevelt, [[Winston Churchill]], and Joseph Stalin ',
-                type: 'item',
+                content: {
+                    type: 'markdown',
+                    data: 'Lead by Franklin D. Roosevelt, [[Winston Churchill]], and Joseph Stalin '
+                },
                 items: [],
                 links: ['112']
             },
@@ -122,8 +140,10 @@ export namespace MockBlocks {
                 parent: undefined,
                 created: now,
                 updated: now,
-                content: "Germany",
-                type: 'named',
+                content: {
+                    type: 'name',
+                    data: "Germany"
+                },
                 links: [],
                 items: [
                     '110'
@@ -135,8 +155,10 @@ export namespace MockBlocks {
                 parent: '107',
                 created: now,
                 updated: now,
-                content: 'Germany Germany (German: Deutschland, German pronunciation: [ˈdɔʏtʃlant]), officially the Federal Republic of Germany (German: Bundesrepublik Deutschland, About this soundlisten),[e] is a country in Central and Western Europe and one of the major participants of [[World War II]]',
-                type: 'item',
+                content: {
+                    type: 'markdown',
+                    data: 'Germany Germany (German: Deutschland, German pronunciation: [ˈdɔʏtʃlant]), officially the Federal Republic of Germany (German: Bundesrepublik Deutschland, About this soundlisten),[e] is a country in Central and Western Europe and one of the major participants of [[World War II]]'
+                },
                 links: [
                     '102'
                 ],
@@ -148,8 +170,10 @@ export namespace MockBlocks {
                 parent: undefined,
                 created: now,
                 updated: now,
-                content: 'Winston Churchill',
-                type: 'named',
+                content: {
+                    type: 'name',
+                    data: 'Winston Churchill'
+                },
                 links: [
                 ],
                 items: []

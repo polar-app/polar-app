@@ -92,12 +92,15 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
         if (note) {
             const markdown = escaper.unescape(content);
-            note.setContent(markdown);
+            note.setContent({
+                type: 'markdown',
+                data: markdown
+            });
         }
 
     }, [escaper, note]);
 
-    const content = React.useMemo(() => escaper.escape(note?.content || ''), [escaper, note?.content]);
+    const content = React.useMemo(() => escaper.escape(note?.content.data || ''), [escaper, note?.content]);
 
     const onClick = React.useCallback((event: React.MouseEvent) => {
 

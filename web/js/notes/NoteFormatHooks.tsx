@@ -7,7 +7,7 @@ export function useNoteFormatHandlers(type: BlockType | undefined, onUpdated: ()
 
     const doExecCommand = React.useCallback((command: string, value?: string) => {
 
-        if (type !== 'item') {
+        if (type !== 'markdown') {
             return;
         }
 

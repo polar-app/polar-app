@@ -13,7 +13,7 @@ import { autorun } from 'mobx'
 import {CursorPositions} from "./CursorPositions";
 import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
 
-const ENABLE_TRACE_CURSOR_RESET = true;
+const ENABLE_TRACE_CURSOR_RESET = false;
 
 interface IProps {
 
@@ -94,7 +94,8 @@ export const NoteContentEditable = observer((props: IProps) => {
         }
 
         if (ENABLE_TRACE_CURSOR_RESET) {
-            console.log("==== handleChange: ")
+            console.log("==== cursor reset in handleChange: ")
+            console.log("contentRef.current: ", contentRef.current);
             console.log("newContent: ", newContent);
         }
 
