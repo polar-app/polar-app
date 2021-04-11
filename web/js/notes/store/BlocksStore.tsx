@@ -983,7 +983,7 @@ export class BlocksStore implements IBlocksStore {
 
     private cursorOffsetCapture(): IActiveBlock | undefined {
 
-        const captureOffset = (): number | undefined => {
+        const captureOffset = (): 'end' | number | undefined => {
 
             if (this.active !== undefined) {
 

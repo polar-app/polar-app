@@ -145,7 +145,7 @@ export namespace CursorPositions {
 
     }
 
-    export function computeCurrentOffset(element: HTMLElement): number | undefined {
+    export function computeCurrentOffset(element: HTMLElement): 'end' | number | undefined {
 
         const lookup = computeCursorLookupArray(element);
 
@@ -166,7 +166,7 @@ export namespace CursorPositions {
 
         }
 
-        return undefined;
+        return 'end';
 
     }
 
