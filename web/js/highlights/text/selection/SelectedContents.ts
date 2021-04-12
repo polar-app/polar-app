@@ -9,7 +9,6 @@ import {FileType} from "../../../apps/main/file_loaders/FileType";
 import {RectText} from '../controller/RectText';
 import {TextHighlightMerger} from '../../../../../apps/doc/src/text_highlighter/TextHighlightMerger';
 import {Rect} from '../../../Rect';
-import {Strings} from 'polar-shared/src/util/Strings';
 
 export namespace SelectedContents {
 
@@ -21,8 +20,6 @@ export namespace SelectedContents {
         readonly noRectTexts?: boolean;
 
         readonly fileType: FileType;
-
-        readonly useEnhancedExtraction: boolean;
     }
 
     // Split up words (Fi-nance). Join and remove the hyphen
@@ -30,10 +27,6 @@ export namespace SelectedContents {
 
     // Ranges (100-300) && words that start with <non->. Join with no space in between
     export const lineNeedsHyphenJoin = (line: string) =>  /\d+-$/.test(line) || (/[^\s]-$/.test(line) && /non-$/i.test(line));
-
-    export function extractTextLegacy(rectTexts: ReadonlyArray<RectText>): string {
-        return Strings.joinWithSpacing(rectTexts.map(current => current.text));
-    }
 
     export function extractText(rects: ReadonlyArray<RectText>): string {
         const mergeRectTexts = (a: RectText, b: RectText, withWhitespace: boolean): RectText => {
@@ -139,9 +132,7 @@ export namespace SelectedContents {
                 // this is PDF mode so we should just compute the text via join
                 // the rect texts...
 
-                return opts.useEnhancedExtraction
-                    ? extractText(rectTexts)
-                    : extractTextLegacy(rectTexts);
+                return extractText(rectTexts)
             }
 
             return toText(ranges)
