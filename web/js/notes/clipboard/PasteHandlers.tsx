@@ -82,18 +82,40 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
                         const file = pasteItem.dataTransferItem.getAsFile()
 
                         if (file) {
+
                             const ab = await Blobs.toArrayBuffer(file)
                             const dataURL = DataURLs.encode(ab, pasteItem.type);
 
+                            // TODO: we need the width and height of the image too...
                             onImage(dataURL);
+
                         }
 
                         break;
                 }
 
+                // FIXME: need to handle HTML too which would read in a lot nodes from ul and li items...
+
+                // if (originalEvent.clipboardData.types.includes('text/html')) {
+                //
+                //     const srcHTML = originalEvent.clipboardData.getData('text/html');
+                //     const sanitizedHTML = HTMLSanitizer.sanitizePasteData(srcHTML);
+                //
+                //     const spanElement = document.createElement('span');
+                //     spanElement.innerHTML = sanitizedHTML;
+                //
+                //     this.insertNode(spanElement);
+                //
+                //     originalEvent.preventDefault();
+                //     originalEvent.stopPropagation();
+                //
+                // }
+
             }
 
         }
+
+        // do not go async if there are no images...
 
         doAsync()
             .catch(err => onError(err));
