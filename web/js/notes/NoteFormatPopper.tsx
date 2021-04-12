@@ -80,7 +80,6 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
     const clearPopupForKeyboard = React.useCallback(() => {
 
         clearPopup();
-        window.getSelection()!.collapseToStart();
 
     }, [clearPopup])
 
