@@ -8,7 +8,7 @@ large_image: X
 
 # Polar vs. Brainscape vs. Quizlet. Which is the best one for students?
  
-<img alt="Flashcards" src="https://i.imgur.com/mIZDjhe.jpg">
+<img alt="Flashcards" src="https://i.imgur.com/wYz3d7M.jpg[/img]">
 
 ## The advantage of studying with flashcards
 
