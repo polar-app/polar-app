@@ -30,8 +30,9 @@ export function useNoteFormatHandlers(type: BlockType | undefined, onUpdated: ()
     }, []);
 
     const onUnderline = React.useCallback(() => {
-        doExecCommand('underline')
-    }, [doExecCommand]);
+        // underline is disabled but we need a key binding for it so that we can
+        // override the native contenteditable hooks in the browser.
+    }, []);
 
     const onStrikethrough = React.useCallback(() => {
         // FIXME: this command resets the range selection...

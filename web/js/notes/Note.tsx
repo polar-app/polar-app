@@ -14,6 +14,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
 import { BlockDragIndicator } from "./BlockDragIndicator";
 import {BlockImageContent} from "./blocks/BlockImageContent";
+import {BlockPredicates} from "./store/BlockPredicates";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -266,7 +267,7 @@ export const NoteInner = observer((props: IProps) => {
 
                             </div>
 
-                            {block.content.type === 'markdown' || block.content.type === 'name' && (
+                            {BlockPredicates.isTextBlock(block) && (
                                 <NoteEditor key={props.id} parent={props.parent} id={props.id} />
                             )}
 
