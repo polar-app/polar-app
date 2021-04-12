@@ -12,6 +12,7 @@ import { useHistory } from 'react-router-dom';
 import { autorun } from 'mobx'
 import {CursorPositions} from "./CursorPositions";
 import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
+import {IPasteImageData, usePasteHandler } from '../clipboard/PasteHandlers';
 
 const ENABLE_TRACE_CURSOR_RESET = false;
 
@@ -55,14 +56,24 @@ export const NoteContentEditable = observer((props: IProps) => {
     const [content, setContent] = React.useState(props.content);
     const divRef = React.useRef<HTMLDivElement | null>(null);
     const contentRef = React.useRef(props.content);
-    const store = useBlocksStore();
+    const blocksStore = useBlocksStore();
     const history = useHistory();
 
     const platform = React.useMemo(() => Platforms.get(), []);
 
     const updateCursorPosition = useUpdateCursorPosition();
 
-    const noteLinkActions = store.getNamedNodes().map(current => ({
+    const onPasteImage = React.useCallback((image: IPasteImageData) => {
+        console.log("Got paste: ", image);
+    }, []);
+
+    const onPasteError = React.useCallback((err: Error) => {
+        console.error("Got paste: ", err);
+    }, []);
+
+    const handlePaste = usePasteHandler({onPasteImage, onPasteError});
+
+    const noteLinkActions = blocksStore.getNamedNodes().map(current => ({
         id: current,
         text: current
     }));
@@ -119,12 +130,12 @@ export const NoteContentEditable = observer((props: IProps) => {
     React.useEffect(() =>
         autorun(() => {
 
-            if (store.active?.id === props.id) {
+            if (blocksStore.active?.id === props.id) {
 
                 if (divRef.current) {
 
-                    if (store.active.pos !== undefined) {
-                        updateCursorPosition(divRef.current, store.active)
+                    if (blocksStore.active.pos !== undefined) {
+                        updateCursorPosition(divRef.current, blocksStore.active)
                     }
 
                     divRef.current.focus();
@@ -155,13 +166,13 @@ export const NoteContentEditable = observer((props: IProps) => {
 
             divRef.current!.innerHTML = props.content;
 
-            if (divRef.current && store.active) {
-                updateCursorPosition(divRef.current, store.active, true);
+            if (divRef.current && blocksStore.active) {
+                updateCursorPosition(divRef.current, blocksStore.active, true);
             }
 
         }
 
-    }, [props.content, props.id, store.active, updateCursorPosition]);
+    }, [props.content, props.id, blocksStore.active, updateCursorPosition]);
 
     const handleRef = React.useCallback((current: HTMLDivElement | null) => {
 
@@ -211,39 +222,39 @@ export const NoteContentEditable = observer((props: IProps) => {
             case 'ArrowUp':
 
                 if (event.ctrlKey || event.metaKey) {
-                    store.collapse(props.id)
+                    blocksStore.collapse(props.id)
                     abortEvent();
                     break;
                 }
 
                 if (event.shiftKey && ! ContentEditables.selectionAtStart(divRef.current)) {
-                    if (! store.hasSelected()) {
+                    if (! blocksStore.hasSelected()) {
                         // don't handle shift until we allow the range to be selected.
                         break;
                     }
                 }
 
                 abortEvent();
-                store.navPrev('start', opts);
+                blocksStore.navPrev('start', opts);
                 break;
 
             case 'ArrowDown':
 
                 if (event.ctrlKey || event.metaKey) {
-                    store.expand(props.id);
+                    blocksStore.expand(props.id);
                     abortEvent();
                     break;
                 }
 
                 if (event.shiftKey && ! ContentEditables.selectionAtEnd(divRef.current)) {
-                    if (! store.hasSelected()) {
+                    if (! blocksStore.hasSelected()) {
                         // don't handle shift until we allow the range to be selected.
                         break;
                     }
                 }
 
                 abortEvent();
-                store.navNext('start', opts);
+                blocksStore.navNext('start', opts);
 
                 break;
 
@@ -259,7 +270,7 @@ export const NoteContentEditable = observer((props: IProps) => {
 
                 if ((platform === Platform.MACOS && event.shiftKey && event.metaKey) ||
                     (platform === Platform.WINDOWS && event.shiftKey && event.altKey)) {
-                    store.doUnIndent(props.id);
+                    blocksStore.doUnIndent(props.id);
                     break;
                 }
 
@@ -267,7 +278,7 @@ export const NoteContentEditable = observer((props: IProps) => {
 
                     if (cursorAtStart) {
                         abortEvent();
-                        store.navPrev('end', opts);
+                        blocksStore.navPrev('end', opts);
                     }
 
                 }
@@ -285,7 +296,7 @@ export const NoteContentEditable = observer((props: IProps) => {
 
                 if ((platform === Platform.MACOS && event.shiftKey && event.metaKey) ||
                     (platform === Platform.WINDOWS && event.shiftKey && event.altKey)) {
-                    store.doIndent(props.id);
+                    blocksStore.doIndent(props.id);
                     break;
                 }
 
@@ -293,7 +304,7 @@ export const NoteContentEditable = observer((props: IProps) => {
 
                     if (cursorAtEnd) {
                         abortEvent();
-                        store.navNext('start', opts);
+                        blocksStore.navNext('start', opts);
                     }
 
                 }
@@ -315,9 +326,9 @@ export const NoteContentEditable = observer((props: IProps) => {
                 //     break;
                 // }
 
-                if (store.hasSelected()) {
+                if (blocksStore.hasSelected()) {
                     abortEvent();
-                    store.doDelete([]);
+                    blocksStore.doDelete([]);
                     break;
                 }
 
@@ -325,11 +336,11 @@ export const NoteContentEditable = observer((props: IProps) => {
 
                     // we're at the beginning of a note...
 
-                    const mergeTarget = store.canMerge(props.id);
+                    const mergeTarget = blocksStore.canMerge(props.id);
 
                     if (mergeTarget) {
                         abortEvent();
-                        store.mergeBlocks(mergeTarget.target, mergeTarget.source);
+                        blocksStore.mergeBlocks(mergeTarget.target, mergeTarget.source);
                         break;
                     }
 
@@ -344,9 +355,9 @@ export const NoteContentEditable = observer((props: IProps) => {
                     abortEvent();
 
                     if (event.shiftKey) {
-                        store.doUnIndent(props.id);
+                        blocksStore.doUnIndent(props.id);
                     } else {
-                        store.doIndent(props.id);
+                        blocksStore.doIndent(props.id);
                     }
 
                 }
@@ -362,7 +373,7 @@ export const NoteContentEditable = observer((props: IProps) => {
             props.onKeyDown(event);
         }
 
-    }, [hasEditorSelection, history, props, store]);
+    }, [hasEditorSelection, history, platform, props, blocksStore]);
 
     return (
         <NoteContentEditableElementContext.Provider value={divRef}>
@@ -380,6 +391,7 @@ export const NoteContentEditable = observer((props: IProps) => {
 
                     <NoteFormatPopper onUpdated={updateMarkdownFromEditable} id={props.id}>
                         <div ref={handleRef}
+                             onPaste={event => handlePaste(event)}
                              onClick={props.onClick}
                              contentEditable={true}
                              spellCheck={props.spellCheck}
