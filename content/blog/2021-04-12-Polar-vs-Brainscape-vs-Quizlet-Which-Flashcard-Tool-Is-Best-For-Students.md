@@ -44,7 +44,7 @@ Polar, on the other hand, is one of the newer tools out there when it comes to f
     
 Let us now turn to the productivity factor. I don't care what tool I study with or how I learn. The main thing is that I learn 1. quickly and 2. retain the information long-term. So how do our three tools perform here?
 
-FIXME: gif of AI flashcards
+<img alt="AI flashcards" src="https://i.imgur.com/Iu1ilJ0.gif">
 
 When it comes to productivity, Polar is ahead of the others. This has a special reason. Creating flashcards has been reduced to a minimum here🥳. To put it more precisely. It takes only one click to create a flashcard from a text highliht. As you can see in the video above, all you have to do is select something, press the AI Flashcard icon, and automatically create your flashcard! Some people also call it Voodoo.....👀🔮 Especially efficient is that the PDFs, EPUBs and even web pages don't have to be opened in a separate tool, but everything can be done in in Polar. An unbeatable feature is the <a href="https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd" target="_blank">**Chrome extension**</a>. With the extension, it is very easy to download web pages and online articles to work with them directly in Polar, including creating flashcards from those websites.
 
