@@ -22,27 +22,27 @@ export const NoteRoot = observer((props: IProps) => {
 
     const blocksStore = useBlocksStore();
 
-    const note = blocksStore.getBlockByTarget(target)
+    const block = blocksStore.getBlockByTarget(target)
 
     React.useEffect(() => {
         // TODO: do this with one init() operation so it mutates the store just once.
 
-        if (note) {
-            blocksStore.setRoot(note.id);
-            blocksStore.setActive(note.id);
+        if (block) {
+            blocksStore.setRoot(block.id);
+            blocksStore.setActive(block.id);
         } else {
             console.warn("No note for target: ", target);
         }
 
-    }, [note, blocksStore, target])
+    }, [block, blocksStore, target])
 
-    if (! note) {
+    if (! block) {
         return (
             <div>No note for target: {props.target}</div>
         );
     }
 
-    const id = note?.id;
+    const id = block?.id;
 
     return (
         <ActionMenuStoreProvider>
