@@ -9,22 +9,22 @@ interface IProps {
 
 export const NoteSelectionHandler = observer(function NoteSelectionHandler(props: IProps) {
 
-    const store = useBlocksStore();
+    const blocksStore = useBlocksStore();
 
-    const selected = store.selected;
+    const selected = blocksStore.selected;
 
     const handleDelete = React.useCallback((): boolean => {
 
         const deletable = Object.keys(selected);
 
         if (deletable.length > 0) {
-            store.doDelete(deletable);
+            blocksStore.doDelete(deletable);
             return true;
         }
 
         return false;
 
-    }, [selected, store]);
+    }, [selected, blocksStore]);
 
     const onKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -49,12 +49,12 @@ export const NoteSelectionHandler = observer(function NoteSelectionHandler(props
                 break;
 
             default:
-                store.clearSelected("NoteSelectionHandler: other char");
+                blocksStore.clearSelected("NoteSelectionHandler: other char");
                 break;
 
         }
 
-    }, [handleDelete, store]);
+    }, [handleDelete, blocksStore]);
 
     return (
         <div style={props.style} onKeyDown={onKeyDown}>

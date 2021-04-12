@@ -40,30 +40,30 @@ export const NoteInner = observer((props: IProps) => {
 
     const {id} = props;
 
-    const store = useBlocksStore();
+    const blocksStore = useBlocksStore();
     const classes = useStyles();
 
     const theme = useTheme();
     const contextMenuHandlers = useNoteContextMenu();
 
-    const expanded = store.isExpanded(id);
-    const selected = store.isSelected(id);
-    const block = store.getBlock(id);
+    const expanded = blocksStore.isExpanded(id);
+    const selected = blocksStore.isSelected(id);
+    const block = blocksStore.getBlock(id);
 
     const divRef = React.useRef<HTMLDivElement | null>(null);
     const dragActive = React.useRef<boolean>(false);
 
-    const root = store.root;
+    const root = blocksStore.root;
 
     const handleMouseDown = React.useCallback((event: React.MouseEvent) => {
 
         if (event.shiftKey) {
 
-            if (store.active !== undefined) {
+            if (blocksStore.active !== undefined) {
 
-                if (store.active?.id !== id) {
+                if (blocksStore.active?.id !== id) {
 
-                    store.setSelectionRange(store.active.id, id);
+                    blocksStore.setSelectionRange(blocksStore.active.id, id);
 
                     window.getSelection()!.removeAllRanges();
 
@@ -76,10 +76,10 @@ export const NoteInner = observer((props: IProps) => {
             event.stopPropagation();
 
         } else {
-            store.clearSelected('Note: handleMouseDown');
+            blocksStore.clearSelected('Note: handleMouseDown');
         }
 
-    }, [id, store]);
+    }, [id, blocksStore]);
 
     if (! block) {
         return null;
@@ -146,10 +146,10 @@ export const NoteInner = observer((props: IProps) => {
     }, []);
 
     const handleDragStart = React.useCallback((event: React.DragEvent) => {
-        store.setDropSource(props.id);
+        blocksStore.setDropSource(props.id);
         // event.preventDefault();
         // event.stopPropagation();
-    }, [props.id, store]);
+    }, [props.id, blocksStore]);
 
     const computeDragPosition = React.useCallback((event: React.DragEvent | React.MouseEvent) => {
 
@@ -176,11 +176,11 @@ export const NoteInner = observer((props: IProps) => {
 
         const pos = computeDragPosition(event);
 
-        store.setDropTarget({
+        blocksStore.setDropTarget({
             id: props.id, pos
         });
 
-    }, [computeDragPosition, props.id, store]);
+    }, [computeDragPosition, props.id, blocksStore]);
 
     const handleDragEnter = React.useCallback((event: React.DragEvent) => {
 
@@ -219,11 +219,11 @@ export const NoteInner = observer((props: IProps) => {
 
     }, []);
 
-    const items = store.lookup(block.items || []);
+    const items = blocksStore.lookup(block.items || []);
 
     const hasItems = items.length > 0;
 
-    const dropActive = store.dropTarget?.id === props.id && store.dropSource !== props.id;
+    const dropActive = blocksStore.dropTarget?.id === props.id && blocksStore.dropSource !== props.id;
 
     return (
         <div ref={divRef}
@@ -233,7 +233,7 @@ export const NoteInner = observer((props: IProps) => {
              onDragStart={event => handleDragStart(event)}
              onDragEnter={event => handleDragEnter(event)}
              onDragLeave={event => handleDragExit(event)}
-             onDragEnd={() => store.clearDrop()}
+             onDragEnd={() => blocksStore.clearDrop()}
              onDrop={event => handleDrop(event)}
              className={clsx(['Note', selected ? classes.selected : undefined])}>
 

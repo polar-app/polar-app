@@ -16,9 +16,9 @@ interface IProps {
 export const NoteBulletButton = observer(function NoteBulletButton(props: IProps) {
 
     const theme = useTheme();
-    const store = useBlocksStore();
+    const blocksStore = useBlocksStore();
 
-    const disabled = store.root === props.target;
+    const disabled = blocksStore.root === props.target;
 
     // ev.dataTransfer.setData("text/plain", ev.target.id);
 

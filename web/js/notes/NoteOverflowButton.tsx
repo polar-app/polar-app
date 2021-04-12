@@ -24,11 +24,11 @@ interface IProps {
 
 export const NoteOverflowButton = observer(function NoteOverflow(props: IProps) {
 
-    const store = useBlocksStore();
+    const blocksStore = useBlocksStore();
     const classes = useStyles();
     const contextMenuHandlers = useNoteContextMenu();
 
-    const noteActivated = store.getBlockActivated(props.id);
+    const noteActivated = blocksStore.getBlockActivated(props.id);
 
     const className=clsx(classes.root, 'NoteOverflow');
 

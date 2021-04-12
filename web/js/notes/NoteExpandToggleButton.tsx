@@ -26,13 +26,13 @@ export const NoteExpandToggleButton = observer(function NoteExpandToggleButton(p
 
     const classes = useStyles();
 
-    const store = useBlocksStore();
+    const blocksStore = useBlocksStore();
 
-    const expanded = store.isExpanded(props.id);
+    const expanded = blocksStore.isExpanded(props.id);
 
     return (
         <NoteButton className={classes.root}
-                    onClick={() => store.toggleExpand(id)}>
+                    onClick={() => blocksStore.toggleExpand(id)}>
             <>
                 {expanded && (
                     <ArrowDown/>

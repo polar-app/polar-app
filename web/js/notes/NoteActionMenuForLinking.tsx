@@ -5,11 +5,11 @@ import { observer } from "mobx-react-lite"
 
 function useItemsProvider(): ActionMenuItemProvider {
 
-    const store = useBlocksStore();
+    const blocksStore = useBlocksStore();
 
     return React.useCallback((prompt: string): ReadonlyArray<IActionMenuItem> => {
 
-        const filteredNoteNames = store.filterByName(prompt);
+        const filteredNoteNames = blocksStore.filterByName(prompt);
 
         return filteredNoteNames.map(key => {
             return {
@@ -23,7 +23,7 @@ function useItemsProvider(): ActionMenuItemProvider {
             }
         });
 
-    }, [store]);
+    }, [blocksStore]);
 
 }
 

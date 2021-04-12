@@ -19,9 +19,9 @@ interface InboundNoteRefProps {
 
 const InboundNoteRef = observer((props: InboundNoteRefProps) => {
 
-    const store = useBlocksStore();
+    const blocksStore = useBlocksStore();
 
-    const pathToNote = store.pathToBlock(props.id);
+    const pathToNote = blocksStore.pathToBlock(props.id);
 
     return (
         <>
@@ -59,10 +59,10 @@ interface IProps {
 
 export const NotesInbound = deepMemo(function NotesInbound(props: IProps) {
 
-    const store = useBlocksStore();
+    const blocksStore = useBlocksStore();
 
-    const inboundNoteIDs = store.lookupReverse(props.id);
-    const inbound = store.lookup(inboundNoteIDs);
+    const inboundNoteIDs = blocksStore.lookupReverse(props.id);
+    const inbound = blocksStore.lookup(inboundNoteIDs);
 
     return (
         <div className="NotesInbound">

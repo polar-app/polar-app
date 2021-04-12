@@ -10,17 +10,17 @@ import {BlockPredicates} from "./store/BlockPredicates";
 
 export const NoteContextMenuItems = observer(function MUIDocDropdownMenuItems() {
 
-    const store = useBlocksStore();
+    const blocksStore = useBlocksStore();
 
     const onCopyMarkdown = React.useCallback(() => {
 
-        const active = store.active;
+        const active = blocksStore.active;
 
         if (! active) {
             return;
         }
 
-        const activeBlock = store.getBlock(active.id);
+        const activeBlock = blocksStore.getBlock(active.id);
 
         if (! activeBlock) {
             return;
@@ -34,7 +34,7 @@ export const NoteContextMenuItems = observer(function MUIDocDropdownMenuItems() 
 
         Clipboards.writeText(markdown);
 
-    }, [store]);
+    }, [blocksStore]);
 
     return (
         <>

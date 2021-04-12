@@ -11,7 +11,7 @@ interface IProps {
 
 export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
 
-    const store = useBlocksStore();
+    const blocksStore = useBlocksStore();
 
     const [ref, setRef] = React.useState<HTMLDivElement | null>(null);
 
@@ -21,8 +21,8 @@ export const NoteNavigation = observer(function NoteNavigation(props: IProps) {
 
 
     const handleClick = React.useCallback(() => {
-        store.setActiveWithPosition(props.id, undefined);
-    }, [props.id, store]);
+        blocksStore.setActiveWithPosition(props.id, undefined);
+    }, [props.id, blocksStore]);
 
     return (
         <>

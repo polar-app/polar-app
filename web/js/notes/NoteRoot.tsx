@@ -20,21 +20,21 @@ export const NoteRoot = observer((props: IProps) => {
 
     const {target} = props;
 
-    const store = useBlocksStore();
+    const blocksStore = useBlocksStore();
 
-    const note = store.getBlockByTarget(target)
+    const note = blocksStore.getBlockByTarget(target)
 
     React.useEffect(() => {
         // TODO: do this with one init() operation so it mutates the store just once.
 
         if (note) {
-            store.setRoot(note.id);
-            store.setActive(note.id);
+            blocksStore.setRoot(note.id);
+            blocksStore.setActive(note.id);
         } else {
             console.warn("No note for target: ", target);
         }
 
-    }, [note, store, target])
+    }, [note, blocksStore, target])
 
     if (! note) {
         return (
