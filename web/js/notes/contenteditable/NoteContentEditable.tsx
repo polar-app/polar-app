@@ -268,10 +268,16 @@ export const NoteContentEditable = observer((props: IProps) => {
                     break;
                 }
 
-                if ((platform === Platform.MACOS && event.shiftKey && event.metaKey) ||
-                    (platform === Platform.WINDOWS && event.shiftKey && event.altKey)) {
-                    blocksStore.doUnIndent(props.id);
-                    break;
+                if (! hasEditorSelection()) {
+
+                    if ((platform === Platform.MACOS && event.shiftKey && event.metaKey) ||
+                        (platform === Platform.WINDOWS && event.shiftKey && event.altKey)) {
+
+                        blocksStore.doUnIndent(props.id);
+                        break;
+
+                    }
+
                 }
 
                 if (! hasModifiers) {
@@ -294,10 +300,14 @@ export const NoteContentEditable = observer((props: IProps) => {
                     break;
                 }
 
-                if ((platform === Platform.MACOS && event.shiftKey && event.metaKey) ||
-                    (platform === Platform.WINDOWS && event.shiftKey && event.altKey)) {
-                    blocksStore.doIndent(props.id);
-                    break;
+                if (! hasEditorSelection()) {
+
+                    if ((platform === Platform.MACOS && event.shiftKey && event.metaKey) ||
+                        (platform === Platform.WINDOWS && event.shiftKey && event.altKey)) {
+                        blocksStore.doIndent(props.id);
+                        break;
+                    }
+
                 }
 
                 if (! hasModifiers) {
