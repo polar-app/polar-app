@@ -2,10 +2,8 @@ import {IBlock, NamespaceIDStr, UIDStr} from "./IBlock";
 import {INewChildPosition, BlockContent, BlockIDStr, BlockType} from "./BlocksStore";
 import {action, computed, makeObservable, observable} from "mobx"
 import { ISODateTimeString, ISODateTimeStrings } from "polar-shared/src/metadata/ISODateTimeStrings";
-import {IMarkdownContent} from "../content/IMarkdownContent";
-import {INameContent} from "../content/INameContent";
 
-export class Block implements IBlock {
+export class Block<C = BlockContent> implements IBlock<C> {
 
     @observable private _id: BlockIDStr;
 
@@ -30,25 +28,14 @@ export class Block implements IBlock {
      */
     @observable private _items: BlockIDStr[];
 
-    // TODO
-    //
-    // We might want to have a content object with a type so that we can
-    // have 'name' or 'markdown' as the type... but we could also support
-    // latex with this.
-    @observable private _content: BlockContent;
+    @observable private _content: C;
 
     /**
      * The linked wiki references to other blocks.
      */
     @observable private _links: BlockIDStr[];
 
-    // FIXMEL this needs to be refactoed because
-    // the content type of the node should/could change and we need markdown/latex/etc block types
-    // but also we need the ability to do block embeds an so forth and those are a specific block type.
-
-    // FIXME: maybe content would be a reference to another type..
-
-    constructor(opts: IBlock) {
+    constructor(opts: IBlock<C>) {
 
         this._id = opts.id;
         this._nspace = opts.nspace;
@@ -100,7 +87,7 @@ export class Block implements IBlock {
         return this._links;
     }
 
-    @action setContent(content: BlockContent) {
+    @action setContent(content: C) {
 
         // if (content.startsWith('<p')) {
         //     throw new Error("Content was set as HTML!");
@@ -187,7 +174,7 @@ export class Block implements IBlock {
 
     }
 
-    public toJSON(): IBlock {
+    public toJSON(): IBlock<C> {
 
         return {
             id: this._id,

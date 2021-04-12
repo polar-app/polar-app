@@ -1,5 +1,5 @@
 import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
-import {BlockIDStr, BlocksStore} from "./BlocksStore";
+import {BlockContent, BlockIDStr, BlocksStore} from "./BlocksStore";
 import {assertJSON} from "../../test/Assertions";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
@@ -9,6 +9,9 @@ import {ReverseIndex} from "./ReverseIndex";
 import {Block} from "./Block";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {ConstructorOptions, JSDOM} from "jsdom";
+import { IBlock } from "./IBlock";
+import {IMarkdownContent} from "../content/IMarkdownContent";
+import {INameContent} from "../content/INameContent";
 
 // TODO:
 
@@ -28,6 +31,16 @@ import {ConstructorOptions, JSDOM} from "jsdom";
 //   a node because it would yield an empty prefix or suffix and this way the same
 //   code path is used.
 //
+
+function assertTextBlock(content: BlockContent): asserts content is IMarkdownContent | INameContent {
+
+    if (content.type !== 'markdown' && content.type !== 'name') {
+        throw new Error("wrong type: " + content.type);
+    }
+
+}
+
+
 
 describe('BlocksStore', function() {
 
@@ -621,6 +634,8 @@ describe('BlocksStore', function() {
 
             const newBlock = store.getBlock(createdBlock.id)!;
 
+            assertTextBlock(newBlock!.content);
+
             assert.equal(newBlock.content.data, '');
 
             assert.ok(store.canMerge(newBlock.id));
@@ -983,6 +998,9 @@ describe('BlocksStore', function() {
                 const originalBlock = store.getBlock(id);
 
                 assert.isDefined(originalBlock);
+
+                assertTextBlock(originalBlock!.content);
+
                 const createdBlock = store.createNewBlock(id, {prefix: '', suffix: originalBlock!.content.data});
 
                 assertJSON(store.getBlock(originalBlock!.parent!)!.items, [
@@ -1001,6 +1019,8 @@ describe('BlocksStore', function() {
                 const originalBlock = store.getBlock(id);
 
                 assert.isDefined(originalBlock);
+
+                assertTextBlock(originalBlock!.content);
 
                 const createdBlock = store.createNewBlock(id, {prefix: '', suffix: originalBlock!.content.data});
                 assertJSON(store.getBlock(originalBlock!.parent!)!.items, [

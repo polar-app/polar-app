@@ -9,6 +9,7 @@ import { observer } from "mobx-react-lite"
 import {NoteContentEditable} from "./contenteditable/NoteContentEditable";
 import {ContentEditables} from "./ContentEditables";
 import { HTMLStr } from "polar-shared/src/util/Strings";
+import {BlockPredicates} from "./store/BlockPredicates";
 
 interface ILinkNavigationEvent {
     readonly abortEvent: () => void;
@@ -84,23 +85,32 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
     const linkNavigationClickHandler = useLinkNavigationClickHandler();
     const ref = React.createRef<HTMLDivElement | null>();
 
-    const note = blocksStore.getBlock(id);
+    const block = blocksStore.getBlock(id);
 
     const escaper = MarkdownContentEscaper;
 
     const handleChange = React.useCallback((content: HTMLStr) => {
 
-        if (note) {
+        if (block) {
             const markdown = escaper.unescape(content);
-            note.setContent({
+            block.setContent({
                 type: 'markdown',
                 data: markdown
             });
         }
 
-    }, [escaper, note]);
+    }, [escaper, block]);
 
-    const content = React.useMemo(() => escaper.escape(note?.content.data || ''), [escaper, note?.content]);
+    const content = React.useMemo(() => {
+
+        if (! block) {
+            return ''
+        }
+
+        const text = BlockPredicates.isTextBlock(block) ? block.content.data : '';
+        return escaper.escape(text);
+
+    }, [block, escaper]);
 
     const onClick = React.useCallback((event: React.MouseEvent) => {
 
@@ -162,7 +172,7 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
     }, [handleEnter]);
 
-    if (! note) {
+    if (! block) {
         // this can happen when a note is deleted but the component hasn't yet
         // been unmounted.
         return null;

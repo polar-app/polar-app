@@ -4,7 +4,7 @@ import {BlockContent, BlockIDStr} from "./BlocksStore";
 export type UIDStr = string;
 export type NamespaceIDStr = string;
 
-export interface IBlock {
+export interface IBlock<C = BlockContent> {
 
     readonly id: BlockIDStr;
 
@@ -23,12 +23,7 @@ export interface IBlock {
      */
     readonly items: ReadonlyArray<BlockIDStr>;
 
-    // TODO
-    //
-    // We might want to have a content object with a type so that we can
-    // have 'name' or 'markdown' as the type... but we could also support
-    // latex with this.
-    readonly content: BlockContent;
+    readonly content: C;
 
     /**
      * The linked wiki references to other notes.

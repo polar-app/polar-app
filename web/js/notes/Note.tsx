@@ -13,6 +13,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
 import { BlockDragIndicator } from "./BlockDragIndicator";
+import {BlockImageContent} from "./blocks/BlockImageContent";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -46,7 +47,7 @@ export const NoteInner = observer((props: IProps) => {
 
     const expanded = store.isExpanded(id);
     const selected = store.isSelected(id);
-    const note = store.getBlock(id);
+    const block = store.getBlock(id);
 
     const divRef = React.useRef<HTMLDivElement | null>(null);
     const dragActive = React.useRef<boolean>(false);
@@ -79,7 +80,7 @@ export const NoteInner = observer((props: IProps) => {
 
     }, [id, store]);
 
-    if (! note) {
+    if (! block) {
         return null;
     }
 
@@ -217,7 +218,7 @@ export const NoteInner = observer((props: IProps) => {
 
     }, []);
 
-    const items = store.lookup(note.items || []);
+    const items = store.lookup(block.items || []);
 
     const hasItems = items.length > 0;
 
@@ -265,7 +266,13 @@ export const NoteInner = observer((props: IProps) => {
 
                             </div>
 
-                            <NoteEditor key={props.id} parent={props.parent} id={props.id} />
+                            {block.content.type === 'markdown' || block.content.type === 'name' && (
+                                <NoteEditor key={props.id} parent={props.parent} id={props.id} />
+                            )}
+
+                            {block.content.type === 'image' && (
+                                <BlockImageContent {...block.content}/>
+                            )}
 
                         </div>
 

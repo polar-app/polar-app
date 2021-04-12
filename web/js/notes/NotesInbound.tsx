@@ -8,6 +8,8 @@ import {BlockIDStr, useBlocksStore } from './store/BlocksStore';
 import { observer } from "mobx-react-lite"
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import {NoteBreadcrumbLink} from "./NoteBreadcrumbLink";
+import {BlockPredicates} from "./store/BlockPredicates";
+import {IBlockPredicates} from "./store/IBlockPredicates";
 
 interface InboundNoteRefProps {
     readonly id: BlockIDStr;
@@ -26,11 +28,12 @@ const InboundNoteRef = observer((props: InboundNoteRefProps) => {
 
             <div style={{display: 'flex'}}>
                 <Breadcrumbs>
-                    {pathToNote.map(current => (
-                        <NoteBreadcrumbLink key={current.id}
-                                            id={current.id}
-                                            content={current.content.data}/>
-                    ))}
+
+                    {pathToNote.filter(BlockPredicates.isTextBlock)
+                               .map(current => <NoteBreadcrumbLink key={current.id}
+                                                                   id={current.id}
+                                                                   content={current.content.data}/>)}
+
                 </Breadcrumbs>
             </div>
 
@@ -70,7 +73,8 @@ export const NotesInbound = deepMemo(function NotesInbound(props: IProps) {
 
             <UL>
                 <>
-                    {inbound.map((current, idx) => <InboundNoteRef key={idx}
+                    {inbound.filter(IBlockPredicates.isTextBlock)
+                            .map((current, idx) => <InboundNoteRef key={idx}
                                                                    id={current.id}
                                                                    name={current.content.data}
                                                                    content={current.content.data}/>)}

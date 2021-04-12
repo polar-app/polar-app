@@ -6,6 +6,7 @@ import {Clipboards} from "../util/system/clipboard/Clipboards";
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import { useBlocksStore } from './store/BlocksStore';
 import { observer } from "mobx-react-lite"
+import {BlockPredicates} from "./store/BlockPredicates";
 
 export const NoteContextMenuItems = observer(function MUIDocDropdownMenuItems() {
 
@@ -19,13 +20,17 @@ export const NoteContextMenuItems = observer(function MUIDocDropdownMenuItems() 
             return;
         }
 
-        const activeNote = store.getBlock(active.id);
+        const activeBlock = store.getBlock(active.id);
 
-        if (! activeNote) {
+        if (! activeBlock) {
             return;
         }
 
-        const markdown = activeNote.content.data;
+        if (! BlockPredicates.isTextBlock(activeBlock)) {
+            return;
+        }
+
+        const markdown = activeBlock.content.data;
 
         Clipboards.writeText(markdown);
 

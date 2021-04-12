@@ -18,11 +18,13 @@ import {IBlocksStore} from "./IBlocksStore";
 import {TracingBlocksStore} from "./TracingBlocksStore";
 import {IMarkdownContent} from "../content/IMarkdownContent";
 import {INameContent} from "../content/INameContent";
+import {IImageContent} from "../content/IImageContent";
+import { BlockPredicates } from "./BlockPredicates";
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
 
-export type BlockType = 'name' | 'markdown';
+export type BlockType = 'name' | 'markdown' | 'image';
 
 export type BlocksIndex = {[id: string /* BlockIDStr */]: Block};
 export type BlocksIndexByName = {[name: string /* BlockNameStr */]: BlockIDStr};
@@ -32,7 +34,7 @@ export type ReverseBlocksIndex = {[id: string /* BlockIDStr */]: BlockIDStr[]};
 export type StringSetMap = {[key: string]: boolean};
 
 // export type NoteContent = string | ITypedContent<'markdown'> | ITypedContent<'name'>;
-export type BlockContent = IMarkdownContent | INameContent;
+export type BlockContent = IMarkdownContent | INameContent | IImageContent;
 
 /**
  * A offset into the content of a not where we should place the cursor.
@@ -1303,7 +1305,12 @@ export class BlocksStore implements IBlocksStore {
     public blockIsEmpty(id: BlockIDStr): boolean {
 
         const block = this._index[id];
-        return block?.content.data.trim() === '';
+
+        if (BlockPredicates.isTextBlock(block)) {
+            return block?.content.data.trim() === '';
+        }
+
+        return false;
 
     }
 
