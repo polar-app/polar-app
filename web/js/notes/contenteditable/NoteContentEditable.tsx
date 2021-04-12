@@ -14,7 +14,7 @@ import {CursorPositions} from "./CursorPositions";
 import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
 import {IPasteImageData, usePasteHandler } from '../clipboard/PasteHandlers';
 
-const ENABLE_TRACE_CURSOR_RESET = false;
+const ENABLE_TRACE_CURSOR_RESET = true;
 
 interface IProps {
 
@@ -105,9 +105,9 @@ export const NoteContentEditable = observer((props: IProps) => {
         }
 
         if (ENABLE_TRACE_CURSOR_RESET) {
-            console.log("==== cursor reset in handleChange: ")
-            console.log("contentRef.current: ", contentRef.current);
-            console.log("newContent: ", newContent);
+            console.log("==== update handleChange: ")
+            console.log(`    contentRef.current:  '${contentRef.current}'`, );
+            console.log(`    newContent:          '${newContent}'`, );
         }
 
         contentRef.current = newContent;
@@ -150,10 +150,9 @@ export const NoteContentEditable = observer((props: IProps) => {
         if (props.content.valueOf() !== contentRef.current.valueOf()) {
 
             if (ENABLE_TRACE_CURSOR_RESET) {
-                console.log(`content differs for ${props.id} (cursor will be reset): `);
+                console.log(`=== content differs for ${props.id} (cursor will be reset): `);
                 console.log(`    props.content:      '${props.content}'`);
                 console.log(`    contentRef.current: '${contentRef.current}'`);
-                console.log(`    value of equals:    `, props.content.valueOf() === contentRef.current.valueOf());
             }
 
             contentRef.current = props.content;

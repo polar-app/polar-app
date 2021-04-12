@@ -34,17 +34,17 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
     const [position, setPosition] = React.useState<INoteFormatBarPosition | undefined>(undefined);
     const timeoutRef = React.useRef<number | undefined>(undefined);
 
-    const notesStore = useBlocksStore();
+    const blocksStore = useBlocksStore();
 
-    const note = notesStore.getBlock(props.id);
+    const note = blocksStore.getBlock(props.id);
 
-    const {selected} = notesStore;
+    const {selected, active} = blocksStore;
 
     // FIXME listen to selected in the store and if it's not empty then clear the popup..
 
     const doPopup = React.useCallback((): boolean => {
 
-        if (Object.keys(notesStore.selected).length > 0) {
+        if (Object.keys(blocksStore.selected).length > 0) {
             return false;
         }
 
@@ -69,7 +69,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
         return true;
 
-    }, [notesStore.selected, position]);
+    }, [blocksStore.selected, position]);
 
     const clearPopup = React.useCallback(() => {
 
@@ -126,6 +126,16 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
     }, [noteFormatKeyboardHandler]);
 
     React.useEffect(() => {
+
+        if (active?.id !== props.id) {
+            clearPopup();
+        }
+
+    }, [active?.id, clearPopup, props.id]);
+
+    React.useEffect(() => {
+
+        // FIXME: this just isn't being fired reliably
 
         if (Object.keys(selected).length !== 0) {
             clearPopup();
