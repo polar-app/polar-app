@@ -3,12 +3,12 @@ title: Polar vs. Brainscape vs. Quizlet. Which is the best one for students?
 date: 2021-04-06T08:00:00.000-08:00
 layout: post
 description: Review of which flashcard tool is the best one for students.
-large_image: X
+large_image: https://i.imgur.com/wYz3d7M.jpg
 ---
 
 # Polar vs. Brainscape vs. Quizlet. Which is the best one for students?
  
-<img alt="Flashcards" src="https://i.imgur.com/wYz3d7M.jpg[/img]">
+<img alt="Flashcards" src="https://i.imgur.com/wYz3d7M.jpg">
 
 ## The advantage of studying with flashcards
 
