@@ -66,7 +66,7 @@ interface IProps {
  */
 function useActionExecutor(id: BlockIDStr) {
 
-    const notesStore = useBlocksStore();
+    const blocksStore = useBlocksStore();
 
     return React.useCallback((from: INodeOffset, to: INodeOffset, actionOp: ActionOp) => {
 
@@ -84,7 +84,7 @@ function useActionExecutor(id: BlockIDStr) {
 
             case "note-link":
 
-                notesStore.createNewNamedBlock(actionOp.target, id);
+                blocksStore.createNewNamedBlock(actionOp.target, id);
 
                 const coveringRange = createCoveringRange();
                 coveringRange.deleteContents();
@@ -101,7 +101,7 @@ function useActionExecutor(id: BlockIDStr) {
 
         }
 
-    }, [id, notesStore])
+    }, [id, blocksStore])
 
 }
 
