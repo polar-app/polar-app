@@ -161,14 +161,6 @@ export const PagemarkRendererForFixed = deepMemo(function PagemarkRendererForFix
 
     const {pagemark, fingerprint, pageNum, container} = props;
 
-    if (! container) {
-        return null;
-    }
-
-    if (! isPresent(pagemark.percentage)) {
-        throw new Error("Pagemark has no percentage");
-    }
-
     const createID = React.useCallback(() => {
         return `${pagemark.id}`;
     }, [pagemark.id]);
@@ -198,6 +190,15 @@ export const PagemarkRendererForFixed = deepMemo(function PagemarkRendererForFix
             </PagemarkValueContext.Provider>,
             container);
     }, [createID, fingerprint, pageNum, pagemark]);
+
+    if (! container) {
+        return null;
+    }
+
+    if (! isPresent(pagemark.percentage)) {
+        throw new Error("Pagemark has no percentage");
+    }
+
 
     return toReactPortal(container);
 

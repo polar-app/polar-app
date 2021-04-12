@@ -34,7 +34,7 @@ module.exports = {
         "@typescript-eslint"
     ],
     "rules": {
-        "react-hooks/rules-of-hooks": "warn",
+        "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "error",
         "curly": "error",
         "brace-style": "error",

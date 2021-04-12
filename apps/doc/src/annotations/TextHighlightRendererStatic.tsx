@@ -24,11 +24,24 @@ export const TextHighlightRendererStatic = deepMemo(function TextHighlightRender
     const {pageAnnotation, container} = props;
     const {annotation} = pageAnnotation;
     const {docScale} = useDocViewerStore(['docScale']);
+
     const rects = React.useMemo(() => {
         const orig = Object.values(annotation.rects || {})
         return TextHighlightMerger.merge(orig);
     }, [annotation.rects]);
 
+
+    const toReactPortal = React.useCallback((rawTextHighlightRect: IRect,
+                                             container: HTMLElement,
+                                             idx: number) => {
+
+        return ReactDOM.createPortal(
+            <HighlightDelegate idx={idx}
+                               rawTextHighlightRect={rawTextHighlightRect}
+                               {...props}/>,
+            container);
+
+    }, [props]);
 
     if (! container) {
         console.warn("No container");
@@ -44,18 +57,6 @@ export const TextHighlightRendererStatic = deepMemo(function TextHighlightRender
         console.log("No textHighlight rects for text highlight: ", props.pageAnnotation.annotation.id);
         return null;
     }
-
-    const toReactPortal = React.useCallback((rawTextHighlightRect: IRect,
-                                             container: HTMLElement,
-                                             idx: number) => {
-
-        return ReactDOM.createPortal(
-            <HighlightDelegate idx={idx}
-                               rawTextHighlightRect={rawTextHighlightRect}
-                               {...props}/>,
-            container);
-
-    }, [props]);
 
     const portals = rects.map((current, idx) => toReactPortal(current, container, idx));
 
