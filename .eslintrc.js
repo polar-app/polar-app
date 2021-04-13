@@ -38,6 +38,16 @@ module.exports = {
         "react-hooks/exhaustive-deps": "error",
         "curly": "error",
         "brace-style": "error",
+
+        "@typescript-eslint/no-floating-promises": "error",
+
+        "import/newline-after-import": "error",
+        "import/no-cycle": "error",
+        "import/no-absolute-path": "error",
+
+        // "import/order": "error",
+
+
         // this isn't working yet because it does not seem to properly
         // handle method call parameters..
         // "indent": ["error", 4, {
@@ -47,7 +57,7 @@ module.exports = {
         //     "FunctionExpression": {
         //         "parameters": "off"
         //     },
-        //     "SwitchCase": 1,
+        //     "SwitchCase": 1,e
         //     "MemberExpression": "off"
         // }
         //
@@ -92,7 +102,6 @@ module.exports = {
         // "@typescript-eslint/no-empty-function": "error",
         // "@typescript-eslint/no-empty-interface": "off",
         // "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/no-floating-promises": "error",
         // "@typescript-eslint/no-misused-new": "error",
         // "@typescript-eslint/no-namespace": "off",
         // "@typescript-eslint/no-parameter-properties": "off",

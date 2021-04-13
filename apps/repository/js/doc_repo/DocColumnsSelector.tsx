@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import Box from '@material-ui/core/Box';
+
 interface IProps {
     readonly columns: ReadonlyArray<keyof IDocInfo>;
     readonly onAccept: (columns: ReadonlyArray<keyof IDocInfo>) => void;

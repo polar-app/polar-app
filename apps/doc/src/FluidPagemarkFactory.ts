@@ -1,5 +1,6 @@
 import {IPagemarkRange} from "polar-shared/src/metadata/IPagemarkRange";
 import {IPagemark} from "polar-shared/src/metadata/IPagemark";
+
 export type Direction = 'top' | 'right' | 'bottom' | 'left' | 'topRight' | 'bottomRight' | 'bottomLeft' | 'topLeft';
 
 export interface IFluidPagemark {
