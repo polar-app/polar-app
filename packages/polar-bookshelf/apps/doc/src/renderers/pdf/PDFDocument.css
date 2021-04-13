@@ -1,0 +1,33 @@
+.pdfViewer .page {
+    margin: 5px auto 5px auto;
+
+    /*
+     * Used to fix a conflict with material UI
+     */
+    box-sizing: content-box;
+}
+
+.pdfViewer * {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+/**:before,*/
+/**:after {*/
+/*    -webkit-box-sizing: content-box;*/
+/*    -moz-box-sizing: content-box;*/
+/*    box-sizing: content-box;*/
+/*}*/
+
+.pdfViewer .textLayer {
+    opacity: 1.0 !important;
+}
+
+.pdfViewer .textLayer ::selection {
+    background-color: rgba(0, 0, 255, 0.2) !important;;
+}
+
+.pdfViewer .textLayer .highlight {
+    background-color: rgba(255, 255, 0, 0.5) !important;;
+}
