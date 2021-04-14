@@ -54,12 +54,12 @@ export class UserTagsDB {
         return delete this.backing[id];
     }
 
-    public rename(id: TagStr) {
+    public rename(id: TagStr, newName: TagStr) {
         delete this.backing[id];
         this.backing[id] = {
-            id,
-            label: id
-        }
+            id: newName,
+            label: newName,
+        };
     }
 
     /**

@@ -27,7 +27,7 @@ import {TRoot} from "../../../../web/js/ui/tree/TRoot";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {IAsyncTransaction} from "polar-shared/src/util/IAsyncTransaction";
 import {isPresent, Preconditions} from "polar-shared/src/Preconditions";
-import {useCreateTag, useDeleteTag} from "../persistence_layer/PersistenceLayerMutator2";
+import {useCreateTag, useDeleteTag, useRenameTag} from "../persistence_layer/PersistenceLayerMutator2";
 import {createObservableStoreWithPrefsContext} from "../../../../web/js/react/store/ObservableStoreWithPrefsContext";
 
 export interface TagDescriptorSelected extends TagDescriptor {
@@ -60,6 +60,7 @@ interface IFolderSidebarStore {
      */
     readonly expanded: ReadonlyArray<TagID>;
 
+    readonly isProcessing: boolean;
 }
 
 interface IFolderSidebarCallbacks {
@@ -75,6 +76,8 @@ interface IFolderSidebarCallbacks {
     readonly setFilter: (text: string) => void;
 
     readonly onCreateUserTag: (type: 'folder' | 'tag') => void;
+
+    readonly onRenameUserTag: (type: 'folder' | 'tag') => void;
 
     /**
      * Dropped an item on the tag with the given viewIndex.
@@ -93,7 +96,8 @@ const initialStore: IFolderSidebarStore = {
     tagsView: [],
     foldersRoot: undefined,
     selected: [],
-    expanded: []
+    expanded: [],
+    isProcessing: false,
 }
 
 interface Mutation {
@@ -131,7 +135,6 @@ function mutatorFactory(storeProvider: Provider<IFolderSidebarStore>,
         }
 
         function rebuildStore(tags: ReadonlyArray<TagDescriptor>): IFolderSidebarStore | undefined{
-
             const filtered = computeFiltered(tags);
 
             const tagsView = Tags.onlyRegular(filtered);
@@ -230,14 +233,13 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
     // TODO: This isn't an amazingly good way to listen for updates since we're
     // just trying to get the tagsContext working..
 
-    const repoDocMetaManager = useRepoDocMetaManager();
     const tagDescriptorsContext = useTagDescriptorsContext();
     const tagSidebarEventForwarder = useTagSidebarEventForwarder();
     const dialogs = useDialogManager();
-    const persistence = usePersistenceContext();
     const log = useLogger();
     const createTag = useCreateTag();
     const deleteTag = useDeleteTag();
+    const renameTag = useRenameTag();
 
     function doHookUpdate() {
 
@@ -246,7 +248,6 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
         const tags = tagDescriptorsContext?.tagDescriptorsProvider() || [];
 
         mutator.doUpdate({...store, tags});
-
     }
 
     React.useEffect(() => {
@@ -360,7 +361,6 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
                         const parent = selectedTags.length > 0 ? selectedTags[0] : '/';
                         return Paths.create(parent, userTag);
                 }
-
             };
 
             const newTag = createNewTag();
@@ -384,6 +384,68 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
                 onCancel: NULL_FUNCTION,
                 onDone: (text) => doCreateUserTag(text, type)
             });
+
+        }
+
+        function onRenameUserTag(type: TagType) {
+            const selected = selectedTags();
+            const store = storeProvider();
+            if (selected.length === 0 || store.isProcessing) {
+                return;
+            }
+
+            const tagToBeRenamed = selected[0];
+            const end            = tagToBeRenamed.id.lastIndexOf('/');
+            const baseDir        = tagToBeRenamed.id.slice(0, end);
+
+            function handleRename(text: string) {
+                resetSelected();
+                switch (type) {
+                    case "tag":
+                        doRenameUserTag(tagToBeRenamed, { label: text }, type);
+                        break;
+                    case "folder":
+                        doRenameUserTag(tagToBeRenamed, { label: Paths.create(baseDir, text) }, type);
+                        break;
+                }
+            }
+
+            dialogs.prompt({
+                title: `Rename ${type} ${Paths.basename(tagToBeRenamed.id)}`,
+                description: "May not create spaces and some extended unicode characters.",
+                autoFocus: true,
+                onCancel: NULL_FUNCTION,
+                onDone: handleRename,
+            });
+        }
+
+        function doRenameUserTag(tagToBeRenamed: Tag, newTagData: Omit<Tag, 'id'>, type: TagType) {
+            const store = storeProvider();
+
+            let transactions: ReadonlyArray<IAsyncTransaction<void>>;
+            const newTag: Tag = { ...newTagData, id: newTagData.label };
+            switch (type) {
+            case "tag":
+                transactions = [renameTag(tagToBeRenamed, newTag)];
+                break;
+            case "folder":
+                const foldersToBeRenamed = store.tags.filter(tag => tag.id.startsWith(tagToBeRenamed.id));
+                transactions = foldersToBeRenamed.map(folder => {
+                    const newPath = folder.id.replace(tagToBeRenamed.id, newTagData.label);
+                    return renameTag(folder, { ...folder, label: newPath, id: newPath });
+                });
+                break;
+            }
+            setStore({ ...store, isProcessing: true });
+
+            withBatch(transactions, {error: "Unable to delete tag: "})
+                .then(() => {
+                    setStore({ ...store, isProcessing: false });
+                })
+                .catch(err => {
+                    setStore({ ...store, isProcessing: false });
+                    log.error(err)
+                });
 
         }
 
@@ -422,41 +484,30 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
         }
 
         function doDelete(selected: ReadonlyArray<Tag>) {
+            const store = storeProvider();
 
-            function toAsyncTransaction(tag: Tag): IAsyncTransaction<void> {
-
-                Preconditions.assertPresent(tag, 'tag');
-
-                const deleteTagTransaction = deleteTag(tag.id);
-
-                function prepare() {
-
-                    deleteTagTransaction.prepare();
-
-                    const store = storeProvider();
-                    const tags = store.tags.filter(current => current.id !== tag.id);
-                    mutator.doUpdate({...store, tags});
-
-                }
-
-                function commit() {
-                    return deleteTagTransaction.commit();
-                }
-
-                return {prepare, commit};
-
-            }
-
-            const transactions = selected.map(toAsyncTransaction);
-
-            withBatch(transactions, {error: "Unable to delete tag: "})
-                .catch(err => log.error(err));
-
+            const isFolder = (tag: Tag) => tag.id.startsWith('/');
+            const tags = selected.flatMap(item => (
+                isFolder(item)
+                    ? store.tags.filter(sitem => sitem.id.startsWith(item.id))
+                    : [item]
+            ));
+            
+            setStore({ ...store, isProcessing: true });
+            withBatch(tags.map(tag => deleteTag(tag.id)), {error: "Unable to delete tag: "})
+                .then(() => setStore({ ...store, isProcessing: false }))
+                .catch(err => {
+                    setStore({ ...store, isProcessing: false });
+                    log.error(err)
+                });
         }
 
         function onDelete() {
-
             const selected = selectedTags();
+            const store = storeProvider();
+            if (selected.length === 0 || store.isProcessing) {
+                return;
+            }
 
             function handleDeleted() {
                 resetSelected();
@@ -491,6 +542,7 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
             setFilter,
             selectRow,
             onCreateUserTag,
+            onRenameUserTag,
             onDrop,
             onDelete,
             resetSelected

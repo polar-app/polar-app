@@ -5,31 +5,31 @@ import {usePrefsContext} from "./PrefsContext2";
 
 export type UserTags = ReadonlyArray<Tag>;
 
-export interface IProps {
-    readonly Component: React.FunctionComponent<{userTags: ReadonlyArray<Tag> | undefined}>;
-}
+export const UserTagsContext = React.createContext<UserTagsDB | null>(null);
 
-export const UserTagsDataLoader = React.memo(function UserTagsDataLoader(props: IProps) {
+export const UserTagsDataLoader: React.FC = React.memo(function UserTagsDataLoader({ children }) {
 
     const prefs = usePrefsContext();
 
-    const userTags = React.useMemo(() => {
+    const userTagsDB = React.useMemo(() => {
         const userTagsDB = new UserTagsDB(prefs);
         userTagsDB.init();
-        return userTagsDB.tags();
+        return userTagsDB;
     }, [prefs]);
 
-    return props.Component({userTags});
-
-})
+    return (
+        <UserTagsContext.Provider value={userTagsDB}>
+            {children}
+        </UserTagsContext.Provider>
+    );
+});
 
 export function useUserTagsDB() {
+    const userTagsDB = React.useContext(UserTagsContext)
 
-    const prefs = usePrefsContext();
-
-    const userTagsDB = new UserTagsDB(prefs);
-    userTagsDB.init();
+    if (!userTagsDB) {
+        throw new Error("useUserTagsDB must be used within a component that's wrapped in UserTagsDataLoader");
+    }
 
     return userTagsDB;
-
 }
