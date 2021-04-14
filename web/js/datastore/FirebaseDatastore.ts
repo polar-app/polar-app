@@ -1113,7 +1113,15 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     }
 
     public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void {
-        this.docMetaSnapshotEventDispatcher.addEventListener(docMetaSnapshotEventListener);
+
+        const listener = (event: DocMetaSnapshotEvent) => {
+
+            docMetaSnapshotEventListener(event)
+                .catch(err => console.error("Could not handle snapshot: ", err));
+
+        }
+
+        this.docMetaSnapshotEventDispatcher.addEventListener(event => listener(event));
     }
 
     private preferredSource(): FirestoreSource {

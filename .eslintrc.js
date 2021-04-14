@@ -40,6 +40,10 @@ module.exports = {
         "brace-style": "error",
 
         "@typescript-eslint/no-floating-promises": "error",
+        "@typescript-eslint/await-thenable": "error",
+        "@typescript-eslint/no-misused-promises": "error",
+        "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
+        // "@typescript-eslint/no-non-null-assertion": "error",
 
         "import/newline-after-import": "error",
         "import/no-cycle": "error",

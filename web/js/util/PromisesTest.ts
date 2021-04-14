@@ -5,10 +5,10 @@ import {Latch} from "polar-shared/src/util/Latch";
 describe('Promises', function() {
 
     it("Basic", async function() {
-
+        // noop
     });
 
-    describe("any", async function() {
+    describe("any", function() {
 
         it("with one successful", async function() {
 

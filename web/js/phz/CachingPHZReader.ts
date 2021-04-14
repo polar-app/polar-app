@@ -42,9 +42,14 @@ export class CachingPHZReader implements CompressedReader {
         this.delegate = new PHZReader();
         await this.delegate!.init(this.path);
 
-        setTimeout(async () => {
-
+        const doAsync = async () => {
             await this.close();
+        }
+
+        setTimeout(() => {
+
+            doAsync()
+                .catch(err => console.error("Unable to init with timeout: ", err));
 
         }, this.timeout);
 

@@ -59,6 +59,8 @@ export interface CloudAwareDeleteResult extends DeleteResult {
  * and writes are resolved to both the remote and local concurrently.
  * The reverse is true too. If we startup and there is an excess file in the
  * remote, it's copied local.
+ *
+ * @Deprecated Polar 1.x
  */
 export class CloudAwareDatastore extends AbstractDatastore implements Datastore, SynchronizingDatastore {
 
@@ -553,6 +555,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
     }
 
     public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void {
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         this.docMetaSnapshotEventDispatcher.addEventListener(docMetaSnapshotEventListener);
     }
 

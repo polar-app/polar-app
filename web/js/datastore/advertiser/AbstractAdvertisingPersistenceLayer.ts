@@ -152,7 +152,7 @@ export abstract class AbstractAdvertisingPersistenceLayer extends AbstractPersis
         const docInfo = await handler();
 
         const eventType: PersistenceEventType
-            = this.contains(docMeta.docInfo.fingerprint) ? 'updated' : 'created';
+            = await this.contains(docMeta.docInfo.fingerprint) ? 'updated' : 'created';
 
         this.broadcastEvent({
             docInfo,

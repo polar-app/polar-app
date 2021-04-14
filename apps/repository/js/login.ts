@@ -33,7 +33,7 @@ class InitialLogin {
 }
 
 
-window.addEventListener('load', async () => {
+window.addEventListener('load', () => {
 
     Firebase.init();
 

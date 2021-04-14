@@ -25,19 +25,23 @@ function usePurchaseOrChangePlanAction() {
 
         const {interval, plan} = newSubscription;
 
-        const email = userInfoContext?.userInfo?.email!;
-
         const buyHandler = () => {
             // if we're buying a NEW product go ahead and redirect us to
             // stripe and use their BUY package.  This is better than embedding
             // the stripe SDK and also stripe ALSO needs to run over HTTPS
 
-            const doAsync = async () => {
-                dialogManager.snackbar({message: 'One moment.  About to setup your purchase... '});
-                await stripeCheckout(newSubscription, email);
-            }
+            const email = userInfoContext?.userInfo?.email;
 
-            doAsync().catch(err => log.error(err));
+            if (email) {
+
+                const doAsync = async () => {
+                    dialogManager.snackbar({message: 'One moment.  About to setup your purchase... '});
+                    await stripeCheckout(newSubscription, email);
+                }
+
+                doAsync().catch(err => log.error(err));
+
+            }
 
         };
 
