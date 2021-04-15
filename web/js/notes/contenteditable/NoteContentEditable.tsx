@@ -59,20 +59,6 @@ export const NoteContentEditable = observer((props: IProps) => {
     const blocksStore = useBlocksStore();
     const history = useHistory();
 
-    const platform = React.useMemo(() => Platforms.get(), []);
-
-    const updateCursorPosition = useUpdateCursorPosition();
-
-    const onPasteImage = React.useCallback((image: IPasteImageData) => {
-        console.log("Got paste: ", image);
-    }, []);
-
-    const onPasteError = React.useCallback((err: Error) => {
-        console.error("Got paste: ", err);
-    }, []);
-
-    const handlePaste = usePasteHandler({onPasteImage, onPasteError});
-
     const noteLinkActions = blocksStore.getNamedNodes().map(current => ({
         id: current,
         text: current
@@ -93,11 +79,13 @@ export const NoteContentEditable = observer((props: IProps) => {
             }
 
             const div = NoteContentCanonicalizer.canonicalizeElement(divRef.current)
-            return ContentEditableWhitespace.trim(div.innerHTML);
+            const innerHTML = div.innerHTML;
+            return ContentEditableWhitespace.trim(innerHTML);
 
         }
 
-        const newContent = computeNewContent();
+        const innerHTML = computeNewContent();
+        const newContent = ContentEditableWhitespace.trim(innerHTML);
 
         if (newContent === contentRef.current) {
             // there was no change so skip this.
@@ -105,9 +93,9 @@ export const NoteContentEditable = observer((props: IProps) => {
         }
 
         if (ENABLE_TRACE_CURSOR_RESET) {
-            console.log("==== update handleChange: ")
-            console.log(`    contentRef.current:  '${contentRef.current}'`, );
-            console.log(`    newContent:          '${newContent}'`, );
+            console.log("==== handleChange: ")
+            console.log("RAW innerHTML: ", innerHTML);
+            console.log("newContent: ", newContent);
         }
 
         contentRef.current = newContent;
@@ -134,8 +122,19 @@ export const NoteContentEditable = observer((props: IProps) => {
 
                 if (divRef.current) {
 
-                    if (blocksStore.active.pos !== undefined) {
-                        updateCursorPosition(divRef.current, blocksStore.active)
+                    switch (blocksStore.active.pos) {
+                        case 'start':
+                        case 'end':
+                            updateCursorPosition(divRef.current, blocksStore.active.pos)
+
+                            break;
+                        default:
+
+                            if (typeof blocksStore.active.pos === 'number') {
+                                CursorPositions.jumpToPosition(divRef.current, blocksStore.active.pos)
+                            }
+
+                            break;
                     }
 
                     divRef.current.focus();
@@ -150,9 +149,10 @@ export const NoteContentEditable = observer((props: IProps) => {
         if (props.content.valueOf() !== contentRef.current.valueOf()) {
 
             if (ENABLE_TRACE_CURSOR_RESET) {
-                console.log(`=== content differs for ${props.id} (cursor will be reset): `);
+                console.log(`content differs for ${props.id} (cursor will be reset): `);
                 console.log(`    props.content:      '${props.content}'`);
                 console.log(`    contentRef.current: '${contentRef.current}'`);
+                console.log(`    value of equals:    `, props.content.valueOf() === contentRef.current.valueOf());
             }
 
             contentRef.current = props.content;
@@ -163,15 +163,13 @@ export const NoteContentEditable = observer((props: IProps) => {
             // (though this might be optional) and then set the innerHTML
             // directly.  React has a bug which won't work on empty strings.
 
-            divRef.current!.innerHTML = props.content;
 
-            if (divRef.current && blocksStore.active) {
-                updateCursorPosition(divRef.current, blocksStore.active, true);
-            }
+            divRef.current!.innerHTML = props.content;
+            setContent(props.content);
 
         }
 
-    }, [props.content, props.id, blocksStore.active, updateCursorPosition]);
+    }, [props.content, props.id]);
 
     const handleRef = React.useCallback((current: HTMLDivElement | null) => {
 
@@ -267,16 +265,9 @@ export const NoteContentEditable = observer((props: IProps) => {
                     break;
                 }
 
-                if (! hasEditorSelection()) {
-
-                    if ((platform === Platform.MACOS && event.shiftKey && event.metaKey) ||
-                        (platform === Platform.WINDOWS && event.shiftKey && event.altKey)) {
-
-                        blocksStore.doUnIndent(props.id);
-                        break;
-
-                    }
-
+                if (event.shiftKey && (event.ctrlKey || event.metaKey)) {
+                    blocksStore.doUnIndent(props.id);
+                    break;
                 }
 
                 if (! hasModifiers) {
@@ -299,14 +290,9 @@ export const NoteContentEditable = observer((props: IProps) => {
                     break;
                 }
 
-                if (! hasEditorSelection()) {
-
-                    if ((platform === Platform.MACOS && event.shiftKey && event.metaKey) ||
-                        (platform === Platform.WINDOWS && event.shiftKey && event.altKey)) {
-                        blocksStore.doIndent(props.id);
-                        break;
-                    }
-
+                if (event.shiftKey && (event.ctrlKey || event.metaKey)) {
+                    blocksStore.doIndent(props.id);
+                    break;
                 }
 
                 if (! hasModifiers) {
@@ -382,7 +368,7 @@ export const NoteContentEditable = observer((props: IProps) => {
             props.onKeyDown(event);
         }
 
-    }, [hasEditorSelection, history, platform, props, blocksStore]);
+    }, [hasEditorSelection, history, props, blocksStore]);
 
     return (
         <NoteContentEditableElementContext.Provider value={divRef}>
@@ -400,7 +386,6 @@ export const NoteContentEditable = observer((props: IProps) => {
 
                     <NoteFormatPopper onUpdated={updateMarkdownFromEditable} id={props.id}>
                         <div ref={handleRef}
-                             onPaste={event => handlePaste(event)}
                              onClick={props.onClick}
                              contentEditable={true}
                              spellCheck={props.spellCheck}
@@ -421,37 +406,10 @@ export const NoteContentEditable = observer((props: IProps) => {
 
 });
 
-/**
- * Hook which keeps track of the last nonce we updated to avoid double updates.
- */
-function useUpdateCursorPosition() {
 
-    const nonceRef = React.useRef(-1);
+function updateCursorPosition(editor: HTMLDivElement, offset: 'start' | 'end') {
 
-    return (editor: HTMLDivElement, activeBlock: IActiveBlock, force?: boolean) => {
-
-        if (force || nonceRef.current !== activeBlock.nonce) {
-
-            try {
-
-                if (activeBlock.pos !== undefined) {
-
-                    doUpdateCursorPosition(editor, activeBlock.pos)
-                }
-
-            } finally {
-                nonceRef.current = activeBlock.nonce;
-            }
-
-        }
-
-    }
-
-}
-
-function doUpdateCursorPosition(editor: HTMLDivElement, pos: 'start' | 'end' | number) {
-
-    if (pos !== undefined) {
+    if (offset !== undefined) {
 
         function defineNewRange(range: Range) {
 
@@ -466,17 +424,13 @@ function doUpdateCursorPosition(editor: HTMLDivElement, pos: 'start' | 'end' | n
 
         }
 
-        console.log("Updating cursor position to: ", pos);
-
-        editor.focus();
-
-        if (pos === 'start') {
+        if (offset === 'start') {
             const range = document.createRange();
             range.setStartAfter(editor)
             range.setEndAfter(editor)
         }
 
-        if (pos === 'end') {
+        if (offset === 'end') {
 
             const end = ContentEditables.computeEndNodeOffset(editor);
 
@@ -486,10 +440,6 @@ function doUpdateCursorPosition(editor: HTMLDivElement, pos: 'start' | 'end' | n
 
             defineNewRange(range);
 
-        }
-
-        if (typeof pos === 'number') {
-            CursorPositions.jumpToPosition(editor, pos)
         }
 
     }
