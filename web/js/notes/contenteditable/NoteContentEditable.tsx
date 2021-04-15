@@ -59,6 +59,20 @@ export const NoteContentEditable = observer((props: IProps) => {
     const blocksStore = useBlocksStore();
     const history = useHistory();
 
+    const platform = React.useMemo(() => Platforms.get(), []);
+
+    const updateCursorPosition = useUpdateCursorPosition();
+
+    const onPasteImage = React.useCallback((image: IPasteImageData) => {
+        console.log("Got paste: ", image);
+    }, []);
+
+    const onPasteError = React.useCallback((err: Error) => {
+        console.error("Got paste: ", err);
+    }, []);
+
+    const handlePaste = usePasteHandler({onPasteImage, onPasteError});
+
     const noteLinkActions = blocksStore.getNamedNodes().map(current => ({
         id: current,
         text: current
@@ -122,19 +136,8 @@ export const NoteContentEditable = observer((props: IProps) => {
 
                 if (divRef.current) {
 
-                    switch (blocksStore.active.pos) {
-                        case 'start':
-                        case 'end':
-                            updateCursorPosition(divRef.current, blocksStore.active.pos)
-
-                            break;
-                        default:
-
-                            if (typeof blocksStore.active.pos === 'number') {
-                                CursorPositions.jumpToPosition(divRef.current, blocksStore.active.pos)
-                            }
-
-                            break;
+                    if (blocksStore.active.pos !== undefined) {
+                        updateCursorPosition(divRef.current, blocksStore.active)
                     }
 
                     divRef.current.focus();
@@ -406,10 +409,37 @@ export const NoteContentEditable = observer((props: IProps) => {
 
 });
 
+/**
+ * Hook which keeps track of the last nonce we updated to avoid double updates.
+ */
+function useUpdateCursorPosition() {
 
-function updateCursorPosition(editor: HTMLDivElement, offset: 'start' | 'end') {
+    const nonceRef = React.useRef(-1);
 
-    if (offset !== undefined) {
+    return (editor: HTMLDivElement, activeBlock: IActiveBlock, force?: boolean) => {
+
+        if (force || nonceRef.current !== activeBlock.nonce) {
+
+            try {
+
+                if (activeBlock.pos !== undefined) {
+
+                    doUpdateCursorPosition(editor, activeBlock.pos)
+                }
+
+            } finally {
+                nonceRef.current = activeBlock.nonce;
+            }
+
+        }
+
+    }
+
+}
+
+function doUpdateCursorPosition(editor: HTMLDivElement, pos: 'start' | 'end' | number) {
+
+    if (pos !== undefined) {
 
         function defineNewRange(range: Range) {
 
@@ -424,13 +454,17 @@ function updateCursorPosition(editor: HTMLDivElement, offset: 'start' | 'end') {
 
         }
 
-        if (offset === 'start') {
+        console.log("Updating cursor position to: ", pos);
+
+        editor.focus();
+
+        if (pos === 'start') {
             const range = document.createRange();
             range.setStartAfter(editor)
             range.setEndAfter(editor)
         }
 
-        if (offset === 'end') {
+        if (pos === 'end') {
 
             const end = ContentEditables.computeEndNodeOffset(editor);
 
@@ -440,6 +474,10 @@ function updateCursorPosition(editor: HTMLDivElement, offset: 'start' | 'end') {
 
             defineNewRange(range);
 
+        }
+
+        if (typeof pos === 'number') {
+            CursorPositions.jumpToPosition(editor, pos)
         }
 
     }
