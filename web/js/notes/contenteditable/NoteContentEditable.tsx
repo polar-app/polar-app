@@ -268,9 +268,16 @@ export const NoteContentEditable = observer((props: IProps) => {
                     break;
                 }
 
-                if (event.shiftKey && (event.ctrlKey || event.metaKey)) {
-                    blocksStore.doUnIndent(props.id);
-                    break;
+                if (! hasEditorSelection()) {
+
+                    if ((platform === Platform.MACOS && event.shiftKey && event.metaKey) ||
+                        (platform === Platform.WINDOWS && event.shiftKey && event.altKey)) {
+
+                        blocksStore.doUnIndent(props.id);
+                        break;
+
+                    }
+
                 }
 
                 if (! hasModifiers) {
@@ -293,9 +300,14 @@ export const NoteContentEditable = observer((props: IProps) => {
                     break;
                 }
 
-                if (event.shiftKey && (event.ctrlKey || event.metaKey)) {
-                    blocksStore.doIndent(props.id);
-                    break;
+                if (! hasEditorSelection()) {
+
+                    if ((platform === Platform.MACOS && event.shiftKey && event.metaKey) ||
+                        (platform === Platform.WINDOWS && event.shiftKey && event.altKey)) {
+                        blocksStore.doIndent(props.id);
+                        break;
+                    }
+
                 }
 
                 if (! hasModifiers) {
@@ -371,7 +383,7 @@ export const NoteContentEditable = observer((props: IProps) => {
             props.onKeyDown(event);
         }
 
-    }, [hasEditorSelection, history, props, blocksStore]);
+    }, [hasEditorSelection, history, platform, props, blocksStore]);
 
     return (
         <NoteContentEditableElementContext.Provider value={divRef}>
@@ -389,6 +401,7 @@ export const NoteContentEditable = observer((props: IProps) => {
 
                     <NoteFormatPopper onUpdated={updateMarkdownFromEditable} id={props.id}>
                         <div ref={handleRef}
+                             onPaste={event => handlePaste(event)}
                              onClick={props.onClick}
                              contentEditable={true}
                              spellCheck={props.spellCheck}
