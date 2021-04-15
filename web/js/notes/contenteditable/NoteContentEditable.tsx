@@ -93,13 +93,11 @@ export const NoteContentEditable = observer((props: IProps) => {
             }
 
             const div = NoteContentCanonicalizer.canonicalizeElement(divRef.current)
-            const innerHTML = div.innerHTML;
-            return ContentEditableWhitespace.trim(innerHTML);
+            return ContentEditableWhitespace.trim(div.innerHTML);
 
         }
 
-        const innerHTML = computeNewContent();
-        const newContent = ContentEditableWhitespace.trim(innerHTML);
+        const newContent = computeNewContent();
 
         if (newContent === contentRef.current) {
             // there was no change so skip this.
@@ -107,9 +105,9 @@ export const NoteContentEditable = observer((props: IProps) => {
         }
 
         if (ENABLE_TRACE_CURSOR_RESET) {
-            console.log("==== handleChange: ")
-            console.log("RAW innerHTML: ", innerHTML);
-            console.log("newContent: ", newContent);
+            console.log("==== update handleChange: ")
+            console.log(`    contentRef.current:  '${contentRef.current}'`, );
+            console.log(`    newContent:          '${newContent}'`, );
         }
 
         contentRef.current = newContent;
