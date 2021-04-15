@@ -163,13 +163,15 @@ export const NoteContentEditable = observer((props: IProps) => {
             // (though this might be optional) and then set the innerHTML
             // directly.  React has a bug which won't work on empty strings.
 
-
             divRef.current!.innerHTML = props.content;
-            setContent(props.content);
+
+            if (divRef.current && blocksStore.active) {
+                updateCursorPosition(divRef.current, blocksStore.active, true);
+            }
 
         }
 
-    }, [props.content, props.id]);
+    }, [props.content, props.id, blocksStore.active, updateCursorPosition]);
 
     const handleRef = React.useCallback((current: HTMLDivElement | null) => {
 
@@ -426,7 +428,7 @@ function useUpdateCursorPosition() {
 
     const nonceRef = React.useRef(-1);
 
-    return (editor: HTMLDivElement, activeBlock: IActiveBlock, force?: boolean) => {
+    return React.useCallback((editor: HTMLDivElement, activeBlock: IActiveBlock, force?: boolean) => {
 
         if (force || nonceRef.current !== activeBlock.nonce) {
 
@@ -443,7 +445,7 @@ function useUpdateCursorPosition() {
 
         }
 
-    }
+    }, []);
 
 }
 
