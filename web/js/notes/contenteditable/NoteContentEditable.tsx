@@ -150,10 +150,9 @@ export const NoteContentEditable = observer((props: IProps) => {
         if (props.content.valueOf() !== contentRef.current.valueOf()) {
 
             if (ENABLE_TRACE_CURSOR_RESET) {
-                console.log(`content differs for ${props.id} (cursor will be reset): `);
+                console.log(`=== content differs for ${props.id} (cursor will be reset): `);
                 console.log(`    props.content:      '${props.content}'`);
                 console.log(`    contentRef.current: '${contentRef.current}'`);
-                console.log(`    value of equals:    `, props.content.valueOf() === contentRef.current.valueOf());
             }
 
             contentRef.current = props.content;
