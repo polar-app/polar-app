@@ -1,7 +1,7 @@
 import {URLs} from 'polar-shared/src/util/URLs';
 import {Firebase} from '../../../firebase/Firebase';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
+import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Billing} from "polar-accounts/src/Billing";
 import {Account} from "../../../accounts/Account";
 import {Accounts} from "../../../accounts/Accounts";
@@ -81,10 +81,24 @@ export function toUserInfo(user: firebase.User, account: Account | undefined): U
     const createSubscription = (): Billing.Subscription => {
 
         if (account) {
+
+            if (account.trial?.expires) {
+
+                const now = ISODateTimeStrings.create();
+                if (ISODateTimeStrings.compare(now, account.trial.expires) === -1) {
+                    return {
+                        plan: Billing.V2PlanPro,
+                        interval: 'month',
+                        trial: account.trial,
+                    };
+                }
+            }
+
             return {
                 plan: account.plan,
                 interval: account.interval || 'month'
             };
+
         } else {
             return {
                 plan: 'free',
