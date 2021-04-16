@@ -555,7 +555,8 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
         createTag,
         dialogs,
         log,
-        deleteTag
+        deleteTag,
+        renameTag,
     ]);
 
 

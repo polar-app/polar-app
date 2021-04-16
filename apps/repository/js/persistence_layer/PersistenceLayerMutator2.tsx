@@ -140,7 +140,6 @@ export function useRenameTag(): RenameTagAction  {
 
     const repoDocMetaManager = useRepoDocMetaManager();
     const userTags = useUserTagsDB();
-    const tagsProvider = useTagsProvider();
     const {persistenceLayerProvider} = usePersistenceLayerContext();
 
     return React.useCallback((oldTag: Tag,
@@ -252,6 +251,6 @@ export function useRenameTag(): RenameTagAction  {
 
         return { prepare, commit };
 
-    }, [repoDocMetaManager.repoDocAnnotationIndex, repoDocMetaManager.repoDocInfoIndex, tagsProvider, userTags, persistenceLayerProvider]);
+    }, [repoDocMetaManager.repoDocAnnotationIndex, repoDocMetaManager.repoDocInfoIndex, userTags, persistenceLayerProvider]);
 
 }
