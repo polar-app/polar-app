@@ -4,6 +4,9 @@ import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {TextType} from 'polar-shared/src/metadata/TextType';
 import {Texts} from 'polar-shared/src/metadata/Texts';
 import {Ref} from 'polar-shared/src/metadata/Refs';
+import {IDocMeta} from 'polar-shared/src/metadata/IDocMeta';
+import {IPageMeta} from 'polar-shared/src/metadata/IPageMeta';
+import {IComment} from 'polar-shared/src/metadata/IComment';
 
 export class Comments {
 
@@ -50,4 +53,18 @@ export class Comments {
 
     }
 
+    public static update(id: string,
+                         docMeta: IDocMeta,
+                         pageMeta: IPageMeta,
+                         updates: Partial<IComment>) {
+
+        const existing = pageMeta.comments[id]!;
+
+        if (!existing) {
+            throw new Error("No existing for id: " + id);
+        }
+
+        const updated = new Comment({...existing, ...updates});
+        pageMeta.comments[id] = updated;
+    }
 }

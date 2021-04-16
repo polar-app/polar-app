@@ -23,7 +23,6 @@ import {
     DocMetaLookupContext
 } from "../../../../web/js/annotation_sidebar/DocMetaLookupContextProvider";
 import {IDStr} from "polar-shared/src/util/Strings";
-import {PrefsContext2} from "./PrefsContext2";
 import {AppTags} from "./AppTags";
 
 export interface ITagsContext {

@@ -21,6 +21,8 @@ import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {RepoDocAnnotations} from "../RepoDocAnnotations";
 import {toSelfInheritedTags} from "polar-shared/src/tags/InheritedTags";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
+import {Comments} from "../../../../web/js/metadata/Comments";
+import {Flashcards} from "../../../../web/js/metadata/Flashcards";
 
 export function useCreateTag() {
 
@@ -116,8 +118,13 @@ const setAnnotationTags = (
             AreaHighlights.update(annotation.id, docMeta, pageMeta, {tags});
         }
 
-        // TODO: comments and flashcards here too.
+        if (AnnotationTypes.isComment(annotation, type)) {
+            Comments.update(annotation.id, docMeta, pageMeta, {tags});
+        }
 
+        if (AnnotationTypes.isFlashcard(annotation, type)) {
+            Flashcards.update(annotation.id, docMeta, pageMeta, {tags});
+        }
     }));
 };
 
@@ -159,9 +166,9 @@ export function useRenameTag(): RenameTagAction  {
         const docIDs = repoDocMetaManager.repoDocInfoIndex.tagged(oldTag);
         const annotationsDocIDs = docsWithAnnotationsTagged();
 
+
         const docsIDsSet = new Set(docIDs);
         const annotationDocIDsSet = new Set(annotationsDocIDs);
-
 
         const mergedDocIDs = ArrayStreams.create([...annotationsDocIDs, ...docIDs]).unique().collect();
 
@@ -173,11 +180,13 @@ export function useRenameTag(): RenameTagAction  {
             userTags.register(newTag);
         }
 
+        // FIXME REVIEW: I was thinking of creating a union type for these 4 ITextHighlight | IAreaHighlight | IFlashcard | IComment
         const annotationPredicate = (annotation: ITextHighlight | IAreaHighlight | IFlashcard | IComment | IDocAnnotation) => {
             const tags = (annotation.tags || {});
             return isPresent(tags[oldTag.id]);
         };
 
+        // FIXME REVIEW: I was hoping to share some code between prepare & commit but I wasn't able to
         const prepare = () => {
             for (const docID of mergedDocIDs) {
                 let repoDocInfo = repoDocMetaManager.repoDocInfoIndex.get(docID);
@@ -206,9 +215,6 @@ export function useRenameTag(): RenameTagAction  {
                 // UPDATE THE IN-MEMORY TAGS FOR DOCS
                 repoDocMetaManager.repoDocInfoIndex.delete(docID);
                 repoDocMetaManager.repoDocInfoIndex.put(docID, repoDocInfo);
-
-
-                // UPDATE THE IN-MEMORY TAGS FOR ANNOTATIONS (repoDocMetaManager.repoDocAnnotationIndex)
             }
             repoDocMetaManager.repoDocInfoIndex.prune();
             repoDocMetaManager.repoDocAnnotationIndex.prune();
