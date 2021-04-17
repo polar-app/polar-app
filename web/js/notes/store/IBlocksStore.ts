@@ -20,6 +20,16 @@ import {Block} from "./Block";
 import {BlockTargetStr} from "../NoteLinkLoader";
 import {ReverseIndex} from "./ReverseIndex";
 
+/**
+ * delete
+ * createNewBlock
+ * createNewNamedBlock
+ * collapse
+ * expand
+ * doIndent
+ * doUnIndent
+ * mergeBlocks
+ */
 export interface IBlocksStore {
 
     root: BlockIDStr | undefined;
@@ -88,5 +98,8 @@ export interface IBlocksStore {
     getNamedNodes(): ReadonlyArray<string>;
 
     doPut(blocks: ReadonlyArray<IBlock>, opts?: DoPutOpts): void;
+
+    undo(): Promise<void>;
+    redo(): Promise<void>;
 
 }

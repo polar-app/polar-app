@@ -15,7 +15,6 @@ import { Numbers } from "polar-shared/src/util/Numbers";
 import {CursorPositions} from "../contenteditable/CursorPositions";
 import {useBlocksStoreContext} from "./BlockStoreContextProvider";
 import {IBlocksStore} from "./IBlocksStore";
-import {TracingBlocksStore} from "./TracingBlocksStore";
 import {IImageContent} from "../content/IImageContent";
 import { BlockPredicates } from "./BlockPredicates";
 import {MarkdownContent} from "../content/MarkdownContent";
@@ -25,6 +24,7 @@ import { IMarkdownContent } from "../content/IMarkdownContent";
 import {INameContent} from "../content/INameContent";
 import { Contents } from "../content/Contents";
 import { IBaseBlockContent } from "../content/IBaseBlockContent";
+import {UndoQueues} from "../../undo/UndoQueues";
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
@@ -176,6 +176,8 @@ export namespace ActiveBlockNonces {
 export class BlocksStore implements IBlocksStore {
 
     private readonly uid: UIDStr;
+
+    private readonly undoQueue = UndoQueues.create();
 
     @observable _index: BlocksIndex = {};
 
@@ -1531,6 +1533,14 @@ export class BlocksStore implements IBlocksStore {
 
         return parentBlock.items.indexOf(id) === parentBlock.items.length - 1;
 
+    }
+
+    public async undo() {
+        await this.undoQueue.undo();
+    }
+
+    public async redo() {
+        await this.undoQueue.redo();
     }
 
 }
