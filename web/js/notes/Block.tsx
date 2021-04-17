@@ -29,7 +29,7 @@ interface IProps {
     readonly id: BlockIDStr;
 }
 
-export interface INoteContextMenuOrigin {
+export interface IBlockContextMenuOrigin {
 
 }
 
