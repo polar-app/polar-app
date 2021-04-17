@@ -22,13 +22,14 @@ import {ReverseIndex} from "./ReverseIndex";
 
 export interface IBlocksStore {
 
-    selected: StringSetMap;
     root: BlockIDStr | undefined;
     active: IActiveBlock | undefined;
     dropSource: BlockIDStr | undefined;
     dropTarget: IDropTarget | undefined;
     reverse: ReverseIndex;
     index: BlocksIndex;
+
+    selected(): StringSetMap;
 
     clearSelected(reason: string): void;
     hasSelected(): boolean;

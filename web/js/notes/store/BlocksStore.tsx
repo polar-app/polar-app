@@ -252,7 +252,7 @@ export class BlocksStore implements IBlocksStore {
         return this._active;
     }
 
-    @computed get selected() {
+    public selected() {
         return this._selected;
     }
 

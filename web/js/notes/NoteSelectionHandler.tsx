@@ -11,7 +11,7 @@ export const NoteSelectionHandler = observer(function NoteSelectionHandler(props
 
     const blocksStore = useBlocksStore();
 
-    const selected = blocksStore.selected;
+    const selected = blocksStore.selected();
 
     const handleDelete = React.useCallback((): boolean => {
 

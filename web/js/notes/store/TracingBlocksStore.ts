@@ -50,8 +50,8 @@ export class TracingBlocksStore implements IBlocksStore {
         return this.delegate.root;
     }
 
-    public get selected(): StringSetMap {
-        return this.delegate.selected;
+    public selected(): StringSetMap {
+        return this.delegate.selected();
     }
 
     public canMerge(id: BlockIDStr): IBlockMerge | undefined {
@@ -60,7 +60,7 @@ export class TracingBlocksStore implements IBlocksStore {
     }
 
     public clearDrop(): void {
-        trace('canMerge');
+        trace('clearDrop');
         this.delegate.clearDrop();
     }
 
