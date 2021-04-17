@@ -6,7 +6,6 @@ import {
     StringSetMap,
     DoIndentResult,
     DoUnIndentResult,
-    ISplitBlock,
     ICreatedBlock,
     IActiveBlock,
     BlockNameStr,
