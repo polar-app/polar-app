@@ -36,7 +36,7 @@ export interface INoteContextMenuOrigin {
 export const [NoteContextMenu, useNoteContextMenu]
     = createContextMenu<IDocViewerContextMenuOrigin>(NoteContextMenuItems, {name: 'notes'});
 
-export const NoteInner = observer((props: IProps) => {
+export const BlockInner = observer((props: IProps) => {
 
     const {id} = props;
 
@@ -288,13 +288,13 @@ export const NoteInner = observer((props: IProps) => {
     );
 });
 
-export const Note = observer(function Note(props: IProps) {
+export const Block = observer(function Note(props: IProps) {
 
     // useLifecycleTracer('Note');
 
     return (
         <NoteContextMenu>
-            <NoteInner {...props}/>
+            <BlockInner {...props}/>
         </NoteContextMenu>
     );
 

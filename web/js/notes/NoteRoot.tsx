@@ -1,7 +1,7 @@
 import React from "react";
 import {MUIBrowserLinkStyle} from "../mui/MUIBrowserLinkStyle";
 import {NotesInbound} from "./NotesInbound";
-import { Note } from "./Note";
+import { Block } from "./Note";
 import { NoteStyle } from "./NoteStyle";
 import { BlockIDStr } from "./store/BlocksStore";
 import { useBlocksStore } from "./store/BlocksStore";
@@ -50,7 +50,7 @@ export const NoteRoot = observer((props: IProps) => {
                 <NoteStyle>
                     <MUIBrowserLinkStyle style={{flexGrow: 1}}>
 
-                        <Note parent={undefined} id={id}/>
+                        <Block parent={undefined} id={id}/>
 
                         <NotesInbound id={id}/>
 
