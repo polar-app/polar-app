@@ -13,6 +13,7 @@ import { autorun } from 'mobx'
 import {CursorPositions} from "./CursorPositions";
 import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
 import {IPasteImageData, usePasteHandler } from '../clipboard/PasteHandlers';
+import {IImageContent} from "../content/IImageContent";
 
 const ENABLE_TRACE_CURSOR_RESET = true;
 
@@ -65,10 +66,24 @@ export const NoteContentEditable = observer((props: IProps) => {
 
     const onPasteImage = React.useCallback((image: IPasteImageData) => {
         console.log("Got paste: ", image);
-    }, []);
+
+        const content: IImageContent = {
+            type: 'image',
+            src: image.url,
+            width: image.width,
+            height: image.height,
+            naturalWidth: image.width,
+            naturalHeight: image.height
+        };
+
+        blocksStore.createNewBlock(props.id, {content});
+
+    }, [blocksStore, props.id]);
 
     const onPasteError = React.useCallback((err: Error) => {
         console.error("Got paste error: ", err);
+
+
     }, []);
 
     const handlePaste = usePasteHandler({onPasteImage, onPasteError});
