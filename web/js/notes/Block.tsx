@@ -1,10 +1,10 @@
 import React from "react";
 import {BlockEditor} from "./BlockEditor";
 import {BlockItems} from "./BlockItems";
-import {NoteBulletButton} from "./NoteBulletButton";
+import {BlockBulletButton} from "./BlockBulletButton";
 import {createContextMenu} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
 import {IDocViewerContextMenuOrigin} from "../../../apps/doc/src/DocViewerMenu";
-import {NoteContextMenuItems} from "./NoteContextMenuItems";
+import {BlockContextMenuItems} from "./BlockContextMenuItems";
 import useTheme from "@material-ui/core/styles/useTheme";
 import { BlockExpandToggleButton } from "./BlockExpandToggleButton";
 import { BlockIDStr, useBlocksStore } from "./store/BlocksStore";
@@ -33,8 +33,8 @@ export interface INoteContextMenuOrigin {
 
 }
 
-export const [NoteContextMenu, useNoteContextMenu]
-    = createContextMenu<IDocViewerContextMenuOrigin>(NoteContextMenuItems, {name: 'notes'});
+export const [BlockContextMenu, useBlockContextMenu]
+    = createContextMenu<IDocViewerContextMenuOrigin>(BlockContextMenuItems, {name: 'notes'});
 
 export const BlockInner = observer((props: IProps) => {
 
@@ -44,7 +44,7 @@ export const BlockInner = observer((props: IProps) => {
     const classes = useStyles();
 
     const theme = useTheme();
-    const contextMenuHandlers = useNoteContextMenu();
+    const contextMenuHandlers = useBlockContextMenu();
 
     const expanded = blocksStore.isExpanded(id);
     const selected = blocksStore.isSelected(id);
@@ -235,7 +235,7 @@ export const BlockInner = observer((props: IProps) => {
              onDragLeave={event => handleDragExit(event)}
              onDragEnd={() => blocksStore.clearDrop()}
              onDrop={event => handleDrop(event)}
-             className={clsx(['Note', selected ? classes.selected : undefined])}>
+             className={clsx(['Block', selected ? classes.selected : undefined])}>
 
                 <BlockDragIndicator id={props.id}>
                     <>
@@ -263,7 +263,7 @@ export const BlockInner = observer((props: IProps) => {
                                     <BlockExpandToggleButton id={props.id}/>
                                 )}
 
-                                <NoteBulletButton target={props.id}/>
+                                <BlockBulletButton target={props.id}/>
 
                             </div>
 
@@ -293,9 +293,9 @@ export const Block = observer(function Note(props: IProps) {
     // useLifecycleTracer('Note');
 
     return (
-        <NoteContextMenu>
+        <BlockContextMenu>
             <BlockInner {...props}/>
-        </NoteContextMenu>
+        </BlockContextMenu>
     );
 
 });
