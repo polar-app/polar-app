@@ -78,7 +78,7 @@ function useLinkNavigationClickHandler() {
 
 }
 
-const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
+const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
 
     const {id} = props;
     const blocksStore = useBlocksStore()
@@ -87,6 +87,7 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
     const ref = React.createRef<HTMLDivElement | null>();
 
     const block = blocksStore.getBlock(id);
+    const data = blocksStore.getBlockContentData(id);
 
     const escaper = MarkdownContentEscaper;
 
@@ -103,15 +104,8 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
     }, [escaper, block]);
 
     const content = React.useMemo(() => {
-
-        if (! block) {
-            return ''
-        }
-
-        const text = BlockPredicates.isTextBlock(block) ? block.content.data : '';
-        return escaper.escape(text);
-
-    }, [block, escaper]);
+        return data !== undefined ? escaper.escape(data) : '';
+    }, [data, escaper]);
 
     const onClick = React.useCallback((event: React.MouseEvent) => {
 
@@ -217,7 +211,7 @@ interface IProps {
 
 }
 
-export const BlockEditor = observer(function NoteEditor(props: IProps) {
+export const BlockEditor = observer(function BlockEditor(props: IProps) {
 
     return (
         <NoteEditorWithEditorStore {...props}/>

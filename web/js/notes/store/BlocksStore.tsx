@@ -346,6 +346,18 @@ export class BlocksStore implements IBlocksStore {
         return this._index[id] || undefined;
     }
 
+    public getBlockContentData(id: BlockIDStr): string | undefined {
+
+        const block = this.getBlock(id);
+
+        if (! block?.content) {
+            return ''
+        }
+
+        return BlockPredicates.isTextBlock(block) ? block.content.data : '';
+
+    }
+
     public getParent(id: BlockIDStr): Block | undefined {
 
         const block = this._index[id];
@@ -892,8 +904,6 @@ export class BlocksStore implements IBlocksStore {
     @action public createNewBlock(id: BlockIDStr,
                                   split?: ISplitBlock): ICreatedBlock {
 
-        console.log("FIXME: creating content with split: " , split);
-
         // *** we first have to compute the new parent this has to be computed
         // based on the expansion tree because if the current block setup is like:
         //
@@ -1045,14 +1055,10 @@ export class BlocksStore implements IBlocksStore {
 
         if (split?.prefix !== undefined) {
 
-            console.log("FIXME: setting current block content to: ", split.prefix)
-
             currentBlock.setContent(new MarkdownContent({
                 type: 'markdown',
                 data: split.prefix
             }));
-
-            console.log(`FIXME:  currentBlock ${currentBlock.id} content: `, {...currentBlock.content})
 
             if (newBlockInheritItems) {
                 currentBlock.setItems([]);

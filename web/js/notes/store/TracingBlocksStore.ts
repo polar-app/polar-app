@@ -119,6 +119,11 @@ export class TracingBlocksStore implements IBlocksStore {
         return this.delegate.getBlock(id);
     }
 
+    public getBlockContentData(id: BlockIDStr): string | undefined {
+        trace('getBlockContentData', {id});
+        return this.delegate.getBlockContentData(id);
+    }
+
     public getBlockActivated(id: BlockIDStr): IBlockActivated | undefined {
         trace('getBlockActivated', {id});
         return this.delegate.getBlockActivated(id);
