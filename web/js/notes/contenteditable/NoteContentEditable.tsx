@@ -6,7 +6,7 @@ import {NavOpts, BlockIDStr, useBlocksStore, IActiveBlock} from '../store/Blocks
 import {ContentEditables} from "../ContentEditables";
 import {createActionsProvider} from "../../mui/action_menu/ActionStore";
 import {NoteFormatPopper} from "../NoteFormatPopper";
-import {NoteContentCanonicalizer} from "./NoteContentCanonicalizer";
+import {BlockContentCanonicalizer} from "./BlockContentCanonicalizer";
 import {NoteAction} from "./NoteAction";
 import { useHistory } from 'react-router-dom';
 import { autorun } from 'mobx'
@@ -92,7 +92,7 @@ export const NoteContentEditable = observer((props: IProps) => {
                 throw new Error("No element");
             }
 
-            const div = NoteContentCanonicalizer.canonicalizeElement(divRef.current)
+            const div = BlockContentCanonicalizer.canonicalizeElement(divRef.current)
             return ContentEditableWhitespace.trim(div.innerHTML);
 
         }
