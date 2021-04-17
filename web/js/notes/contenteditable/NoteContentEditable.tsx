@@ -68,7 +68,7 @@ export const NoteContentEditable = observer((props: IProps) => {
     }, []);
 
     const onPasteError = React.useCallback((err: Error) => {
-        console.error("Got paste: ", err);
+        console.error("Got paste error: ", err);
     }, []);
 
     const handlePaste = usePasteHandler({onPasteImage, onPasteError});
