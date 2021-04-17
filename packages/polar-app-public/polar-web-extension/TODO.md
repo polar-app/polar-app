@@ -1,0 +1,4 @@
+- get rid of clipboardRead and clipboardWrite 
+- get rid of fileBrowserHandler
+- get rid of 'storage'
+- get rid of declarativeContent
