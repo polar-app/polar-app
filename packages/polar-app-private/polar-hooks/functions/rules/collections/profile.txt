@@ -1,3 +1,0 @@
-// all profiles are public by default.  There should be no personal data in
-// user like email or uid.
-allow read;
