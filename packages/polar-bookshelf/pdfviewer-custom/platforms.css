@@ -1,0 +1,16 @@
+html[data-platform='macos'] {
+    font-family: "Lucida Grande","Lucida Sans Unicode", Tahoma, sans-serif;
+}
+
+html[data-platform='ios'] {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+html[data-platform='android'] {
+    font-family: 'Roboto', 'RobotoRegular', 'Droid Sans', sans-serif;
+}
+
+html[data-platform='windows'] {
+    /* TODO: enable this but I think it's actually windows phone */
+    /*font-family: 'Segoe UI', Segoe, Tahoma, Geneva, sans-serif;*/
+}
