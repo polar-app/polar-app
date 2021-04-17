@@ -104,8 +104,8 @@ describe('BlocksStore', function() {
             "_index": {
                 "100": {
                     "_content": {
-                        "data": "World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world's countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.",
-                        "type": "markdown"
+                        "_data": "World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world's countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.",
+                        "_type": "markdown"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "100",
@@ -117,8 +117,8 @@ describe('BlocksStore', function() {
                 },
                 "102": {
                     "_content": {
-                        "data": "World War II",
-                        "type": "name"
+                        "_data": "World War II",
+                        "_type": "name"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "102",
@@ -134,8 +134,8 @@ describe('BlocksStore', function() {
                 },
                 "103": {
                     "_content": {
-                        "data": "[Lasted](https://www.example.com) from 1939 to 1945",
-                        "type": "markdown"
+                        "_data": "[Lasted](https://www.example.com) from 1939 to 1945",
+                        "_type": "markdown"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "103",
@@ -148,8 +148,8 @@ describe('BlocksStore', function() {
                 },
                 "104": {
                     "_content": {
-                        "data": "Axis Powers: Germany, Italy, Japan",
-                        "type": "markdown"
+                        "_data": "Axis Powers: Germany, Italy, Japan",
+                        "_type": "markdown"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "104",
@@ -162,8 +162,8 @@ describe('BlocksStore', function() {
                 },
                 "105": {
                     "_content": {
-                        "data": "Allied Powers: United States, United Kingdom, [[Canada]], [[Russia]].",
-                        "type": "markdown"
+                        "_data": "Allied Powers: United States, United Kingdom, [[Canada]], [[Russia]].",
+                        "_type": "markdown"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "105",
@@ -181,8 +181,8 @@ describe('BlocksStore', function() {
                 },
                 "106": {
                     "_content": {
-                        "data": "Lead by Franklin D. Roosevelt, [[Winston Churchill]], and Joseph Stalin ",
-                        "type": "markdown"
+                        "_data": "Lead by Franklin D. Roosevelt, [[Winston Churchill]], and Joseph Stalin ",
+                        "_type": "markdown"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "106",
@@ -197,8 +197,8 @@ describe('BlocksStore', function() {
                 },
                 "107": {
                     "_content": {
-                        "data": "Germany",
-                        "type": "name"
+                        "_data": "Germany",
+                        "_type": "name"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "107",
@@ -212,8 +212,8 @@ describe('BlocksStore', function() {
                 },
                 "108": {
                     "_content": {
-                        "data": "Russia",
-                        "type": "name"
+                        "_data": "Russia",
+                        "_type": "name"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "108",
@@ -225,8 +225,8 @@ describe('BlocksStore', function() {
                 },
                 "109": {
                     "_content": {
-                        "data": "Canada",
-                        "type": "name"
+                        "_data": "Canada",
+                        "_type": "name"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "109",
@@ -240,8 +240,8 @@ describe('BlocksStore', function() {
                 },
                 "110": {
                     "_content": {
-                        "data": "Germany Germany (German: Deutschland, German pronunciation: [ˈdɔʏtʃlant]), officially the Federal Republic of Germany (German: Bundesrepublik Deutschland, About this soundlisten),[e] is a country in Central and Western Europe and one of the major participants of [[World War II]]",
-                        "type": "markdown"
+                        "_data": "Germany Germany (German: Deutschland, German pronunciation: [ˈdɔʏtʃlant]), officially the Federal Republic of Germany (German: Bundesrepublik Deutschland, About this soundlisten),[e] is a country in Central and Western Europe and one of the major participants of [[World War II]]",
+                        "_type": "markdown"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "110",
@@ -256,8 +256,8 @@ describe('BlocksStore', function() {
                 },
                 "111": {
                     "_content": {
-                        "data": "Canada is north of the United States",
-                        "type": "markdown"
+                        "_data": "Canada is north of the United States",
+                        "_type": "markdown"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "111",
@@ -270,8 +270,8 @@ describe('BlocksStore', function() {
                 },
                 "112": {
                     "_content": {
-                        "data": "Winston Churchill",
-                        "type": "name"
+                        "_data": "Winston Churchill",
+                        "_type": "name"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "112",
@@ -340,8 +340,8 @@ describe('BlocksStore', function() {
 
             assertJSON(store.getBlock('102'), {
                 "_content": {
-                    "data": "World War II",
-                    "type": "name"
+                    "_data": "World War II",
+                    "_type": "name"
                 },
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "102",
@@ -364,8 +364,8 @@ describe('BlocksStore', function() {
 
             assertJSON(store.getBlock('102'), {
                 "_content": {
-                    "data": "World War II",
-                    "type": "name"
+                    "_data": "World War II",
+                    "_type": "name"
                 },
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "102",
@@ -381,8 +381,8 @@ describe('BlocksStore', function() {
 
             assertJSON(store.getBlock(indentResult[0].value!), {
                 "_content": {
-                    "data": "[Lasted](https://www.example.com) from 1939 to 1945",
-                    "type": "markdown"
+                    "_data": "[Lasted](https://www.example.com) from 1939 to 1945",
+                    "_type": "markdown"
                 },
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "103",
@@ -418,8 +418,8 @@ describe('BlocksStore', function() {
 
             assertJSON(store.getBlock('102'), {
                 "_content": {
-                    "data": "World War II",
-                    "type": "name"
+                    "_data": "World War II",
+                    "_type": "name"
                 },
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "102",
@@ -438,8 +438,8 @@ describe('BlocksStore', function() {
 
             assertJSON(store.getBlock('104'), {
                 "_content": {
-                    "data": "Axis Powers: Germany, Italy, Japan",
-                    "type": "markdown"
+                    "_data": "Axis Powers: Germany, Italy, Japan",
+                    "_type": "markdown"
                 },
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "104",
@@ -455,8 +455,8 @@ describe('BlocksStore', function() {
 
             assertJSON(store.getBlock('104'), {
                 "_content": {
-                    "data": "Axis Powers: Germany, Italy, Japan",
-                    "type": "markdown"
+                    "_data": "Axis Powers: Germany, Italy, Japan",
+                    "_type": "markdown"
                 },
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "104",
@@ -474,8 +474,8 @@ describe('BlocksStore', function() {
 
             assertJSON(store.getBlock('104'), {
                 "_content": {
-                    "data": "Axis Powers: Germany, Italy, Japan",
-                    "type": "markdown"
+                    "_data": "Axis Powers: Germany, Italy, Japan",
+                    "_type": "markdown"
                 },
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "104",
@@ -489,8 +489,8 @@ describe('BlocksStore', function() {
 
             assertJSON(store.getBlock('102'), {
                 "_content": {
-                    "data": "World War II",
-                    "type": "name"
+                    "_data": "World War II",
+                    "_type": "name"
                 },
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "102",
@@ -560,8 +560,8 @@ describe('BlocksStore', function() {
 
         assertJSON(Arrays.first(Object.values(store.index)), {
             "_content": {
-                "data": "World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world's countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.",
-                "type": "markdown"
+                "_data": "World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world's countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.",
+                "_type": "markdown"
             },
             "_created": "2012-03-02T11:38:49.321Z",
             "_id": "100",
@@ -666,8 +666,8 @@ describe('BlocksStore', function() {
 
             assertJSON(store.getBlock('103'), {
                 "_content": {
-                    "data": "[Lasted](https://www.example.com) from 1939 to 1945Axis Powers: Germany, Italy, Japan",
-                    "type": "markdown"
+                    "_data": "[Lasted](https://www.example.com) from 1939 to 1945Axis Powers: Germany, Italy, Japan",
+                    "_type": "markdown"
                 },
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "103",
@@ -708,8 +708,8 @@ describe('BlocksStore', function() {
 
                 assertJSON(block, {
                     "_content": {
-                        "data": "World War II",
-                        "type": "name"
+                        "_data": "World War II",
+                        "_type": "name"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "102",
@@ -726,12 +726,12 @@ describe('BlocksStore', function() {
 
                 TestingTime.forward(1000);
 
-                block!.setContent({type: 'markdown', data: "hello"})
+                block!.setContent({type: 'name', data: "World War Two"})
 
                 assertJSON(block, {
                     "_content": {
-                        "data": "hello",
-                        "type": "markdown"
+                        "_data": "World War Two",
+                        "_type": "name"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "102",
@@ -778,8 +778,8 @@ describe('BlocksStore', function() {
 
             assertJSON(block, {
                 "_content": {
-                    "data": "World War II",
-                    "type": "name"
+                    "_data": "World War II",
+                    "_type": "name"
                 },
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "102",
@@ -808,8 +808,8 @@ describe('BlocksStore', function() {
 
             assertJSON(block, {
                 "_content": {
-                    "data": "World War II",
-                    "type": "name"
+                    "_data": "World War II",
+                    "_type": "name"
                 },
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "102",
