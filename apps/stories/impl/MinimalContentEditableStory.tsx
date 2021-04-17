@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {NoteContentEditable} from "../../../web/js/notes/contenteditable/NoteContentEditable";
+import {BlockContentEditable} from "../../../web/js/notes/contenteditable/BlockContentEditable";
 
 export const MinimalContentEditableStory = () => {
 
@@ -15,11 +15,11 @@ export const MinimalContentEditableStory = () => {
 
     return (
         <div>
-            <NoteContentEditable id="1234"
-                                 parent={undefined}
-                                 content="this is the content"
-                                 onKeyDown={handleKeyDown}
-                                 onChange={NULL_FUNCTION}/>
+            <BlockContentEditable id="1234"
+                                  parent={undefined}
+                                  content="this is the content"
+                                  onKeyDown={handleKeyDown}
+                                  onChange={NULL_FUNCTION}/>
 
         </div>
     );

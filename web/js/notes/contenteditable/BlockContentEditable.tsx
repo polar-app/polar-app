@@ -52,7 +52,7 @@ export function useNoteContentEditableElement() {
  * https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand
  *
  */
-export const NoteContentEditable = observer((props: IProps) => {
+export const BlockContentEditable = observer((props: IProps) => {
 
     const [content, setContent] = React.useState(props.content);
     const divRef = React.useRef<HTMLDivElement | null>(null);

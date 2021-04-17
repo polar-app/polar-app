@@ -6,7 +6,7 @@ import {useNoteLinkLoader} from "./NoteLinkLoader";
 import {MarkdownContentEscaper} from "./MarkdownContentEscaper";
 import {BlockIDStr, useBlocksStore} from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
-import {NoteContentEditable} from "./contenteditable/NoteContentEditable";
+import {BlockContentEditable} from "./contenteditable/BlockContentEditable";
 import {ContentEditables} from "./ContentEditables";
 import { HTMLStr } from "polar-shared/src/util/Strings";
 import {BlockPredicates} from "./store/BlockPredicates";
@@ -174,13 +174,13 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
     }
 
     return (
-        <NoteContentEditable id={props.id}
-                             parent={props.parent}
-                             innerRef={ref}
-                             content={content}
-                             onChange={handleChange}
-                             onClick={onClick}
-                             onKeyDown={onKeyDown}/>
+        <BlockContentEditable id={props.id}
+                              parent={props.parent}
+                              innerRef={ref}
+                              content={content}
+                              onChange={handleChange}
+                              onClick={onClick}
+                              onKeyDown={onKeyDown}/>
     );
 
 });
