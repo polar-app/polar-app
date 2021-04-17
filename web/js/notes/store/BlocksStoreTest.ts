@@ -78,16 +78,16 @@ describe('BlocksStore', function() {
 
         it("Note", () => {
 
-            const note = new Block(MockBlocks.create()[0]);
+            const block = new Block(MockBlocks.create()[0]);
 
-            assert.isTrue(isObservable(note));
-            assert.isTrue(isObservableProp(note, 'content'));
-            assert.isTrue(isObservableProp(note, 'items'));
-            assert.isTrue(isObservableProp(note, 'updated'));
-            assert.isTrue(isObservableProp(note, 'created'));
-            assert.isTrue(isObservableProp(note, 'links'));
-            assert.isTrue(isObservableProp(note, 'parent'));
-            assert.isTrue(isObservableProp(note, 'items'));
+            assert.isTrue(isObservable(block));
+            assert.isTrue(isObservableProp(block, 'content'));
+            assert.isTrue(isObservableProp(block, 'items'));
+            assert.isTrue(isObservableProp(block, 'updated'));
+            assert.isTrue(isObservableProp(block, 'created'));
+            assert.isTrue(isObservableProp(block, 'links'));
+            assert.isTrue(isObservableProp(block, 'parent'));
+            assert.isTrue(isObservableProp(block, 'items'));
 
             // assert.isTrue(isObservableProp(note.content.type, 'type'));
 
@@ -774,9 +774,9 @@ describe('BlocksStore', function() {
 
             store.doDelete(['104']);
 
-            const note = store.getBlock('102');
+            const block = store.getBlock('102');
 
-            assertJSON(note, {
+            assertJSON(block, {
                 "_content": {
                     "data": "World War II",
                     "type": "name"
@@ -804,9 +804,9 @@ describe('BlocksStore', function() {
 
             store.doDelete(['103', '104', '105']);
 
-            const note = store.getBlock('102');
+            const block = store.getBlock('102');
 
-            assertJSON(note, {
+            assertJSON(block, {
                 "_content": {
                     "data": "World War II",
                     "type": "name"
@@ -832,15 +832,15 @@ describe('BlocksStore', function() {
 
         it("By ID", () => {
             const store = createStore();
-            const note = store.getBlockByTarget('102');
-            assert.equal(note?.id, '102');
+            const block = store.getBlockByTarget('102');
+            assert.equal(block?.id, '102');
         });
 
         it("By Name", () => {
 
             const store = createStore();
-            const note = store.getBlockByTarget('World War II');
-            assert.equal(note?.id, '102');
+            const block = store.getBlockByTarget('World War II');
+            assert.equal(block?.id, '102');
 
         });
 
@@ -908,34 +908,34 @@ describe('BlocksStore', function() {
 
             const store = createStore();
 
-            const note = store.getBlock('102');
+            const block = store.getBlock('102');
 
             TestingTime.forward(60 * 1000);
 
             const now = ISODateTimeStrings.create();
 
-            assertJSON(note!.items, [
+            assertJSON(block!.items, [
                 "103",
                 "104",
                 "105"
             ]);
 
-            const createdNote = store.createNewBlock('102');
+            const createdBlock = store.createNewBlock('102');
 
-            assertJSON(note!.items, [
-                createdNote.id,
+            assertJSON(block!.items, [
+                createdBlock.id,
                 "103",
                 "104",
                 "105"
             ]);
 
-            const newNote = store.getBlock(createdNote.id)!;
+            const newBlock = store.getBlock(createdBlock.id)!;
 
-            assert.equal(newNote.created, now);
-            assert.equal(newNote.updated, now);
-            assert.equal(newNote.parent, note!.id);
+            assert.equal(newBlock.created, now);
+            assert.equal(newBlock.updated, now);
+            assert.equal(newBlock.parent, block!.id);
 
-            assert.equal(note!.updated, now);
+            assert.equal(block!.updated, now);
 
             // assertJSON(store, {});
 
@@ -945,16 +945,16 @@ describe('BlocksStore', function() {
 
             const store = createStore();
 
-            const note = store.getBlock('102');
+            const block = store.getBlock('102');
 
             store.doDelete(['103', '104', '105']);
 
-            assertJSON(note!.items, [
+            assertJSON(block!.items, [
             ]);
 
-            const createdNote = store.createNewBlock('102');
-            assertJSON(note!.items, [
-                createdNote.id,
+            const createdBlock = store.createNewBlock('102');
+            assertJSON(block!.items, [
+                createdBlock.id,
             ]);
 
         });
@@ -965,17 +965,17 @@ describe('BlocksStore', function() {
 
             function createNoteWithoutExpansion() {
 
-                const createdNote = store.createNewBlock('105');
+                const createdBlock = store.createNewBlock('105');
 
-                assert.equal(createdNote.parent, '102');
+                assert.equal(createdBlock.parent, '102');
 
-                const note = store.getBlock('102');
+                const block = store.getBlock('102');
 
-                assertJSON(note!.items, [
+                assertJSON(block!.items, [
                     "103",
                     "104",
                     "105",
-                    createdNote.id
+                    createdBlock.id
                 ]);
 
             }
@@ -983,14 +983,14 @@ describe('BlocksStore', function() {
             function createNoteWithExpansion() {
                 store.expand('105');
 
-                const createdNote = store.createNewBlock('105');
+                const createdBlock = store.createNewBlock('105');
 
-                assert.equal(createdNote.parent, '105');
+                assert.equal(createdBlock.parent, '105');
 
-                const note = store.getBlock('105');
+                const block = store.getBlock('105');
 
-                assertJSON(note!.items, [
-                    createdNote.id,
+                assertJSON(block!.items, [
+                    createdBlock.id,
                     "106"
                 ]);
 
