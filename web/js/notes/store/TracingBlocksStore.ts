@@ -75,7 +75,7 @@ export class TracingBlocksStore implements IBlocksStore {
     }
 
     public createNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock {
-        trace('', {});
+        trace('createNewBlock', {id, opts});
         return this.delegate.createNewBlock(id, opts);
     }
 

@@ -1542,6 +1542,6 @@ export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore
 
 export function useBlocksStore(): IBlocksStore {
     const delegate = useBlocksStoreDelegate();
-    // return new TracingBlocksStore(delegate);
-    return delegate;
+    return new TracingBlocksStore(delegate);
+    // return delegate;
 }
