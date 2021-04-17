@@ -217,7 +217,7 @@ interface IProps {
 
 }
 
-export const NoteEditor = observer(function NoteEditor(props: IProps) {
+export const BlockEditor = observer(function NoteEditor(props: IProps) {
 
     return (
         <NoteEditorWithEditorStore {...props}/>

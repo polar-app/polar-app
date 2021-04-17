@@ -2,7 +2,7 @@ import * as React from 'react';
 import { deepMemo } from '../react/ReactUtils';
 import Box from '@material-ui/core/Box';
 import { UL } from './UL';
-import {NoteEditor} from "./NoteEditor";
+import {BlockEditor} from "./BlockEditor";
 import {BlockIDStr, useBlocksStore } from './store/BlocksStore';
 import { observer } from "mobx-react-lite"
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
@@ -44,7 +44,7 @@ const InboundNoteRef = observer((props: InboundNoteRefProps) => {
                      display: 'flex'
                  }}>
 
-                <NoteEditor parent={undefined} id={props.id} immutable={true}/>
+                <BlockEditor parent={undefined} id={props.id} immutable={true}/>
 
             </div>
         </>

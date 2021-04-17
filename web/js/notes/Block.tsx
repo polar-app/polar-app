@@ -1,12 +1,12 @@
 import React from "react";
-import {NoteEditor} from "./NoteEditor";
+import {BlockEditor} from "./BlockEditor";
 import {BlockItems} from "./BlockItems";
 import {NoteBulletButton} from "./NoteBulletButton";
 import {createContextMenu} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
 import {IDocViewerContextMenuOrigin} from "../../../apps/doc/src/DocViewerMenu";
 import {NoteContextMenuItems} from "./NoteContextMenuItems";
 import useTheme from "@material-ui/core/styles/useTheme";
-import { NoteExpandToggleButton } from "./NoteExpandToggleButton";
+import { BlockExpandToggleButton } from "./BlockExpandToggleButton";
 import { BlockIDStr, useBlocksStore } from "./store/BlocksStore";
 import { observer,  } from "mobx-react-lite"
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -260,7 +260,7 @@ export const BlockInner = observer((props: IProps) => {
                                 {/*<NoteOverflowButton id={props.id}/>*/}
 
                                 {hasItems && id !== root && (
-                                    <NoteExpandToggleButton id={props.id}/>
+                                    <BlockExpandToggleButton id={props.id}/>
                                 )}
 
                                 <NoteBulletButton target={props.id}/>
@@ -268,7 +268,7 @@ export const BlockInner = observer((props: IProps) => {
                             </div>
 
                             {BlockPredicates.isTextBlock(block) && (
-                                <NoteEditor key={props.id} parent={props.parent} id={props.id} />
+                                <BlockEditor key={props.id} parent={props.parent} id={props.id} />
                             )}
 
                             {block.content.type === 'image' && (
