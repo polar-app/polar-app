@@ -1,16 +1,19 @@
 import {makeObservable, observable, computed} from "mobx"
 import {DataURLStr, IImageContent} from "./IImageContent";
+import {INameContent} from "./INameContent";
+import {IBaseBlockContent} from "./IBaseBlockContent";
+import {BlockContent, IBlockContent} from "../store/BlocksStore";
 
-export class ImageContent implements IImageContent {
+export class ImageContent implements IImageContent, IBaseBlockContent {
 
     @observable private readonly _type: 'image';
-    @observable private readonly _src: DataURLStr;
+    @observable private _src: DataURLStr;
 
-    @observable private readonly _width: number;
-    @observable private readonly _height: number;
+    @observable private _width: number;
+    @observable private _height: number;
 
-    @observable private readonly _naturalWidth: number;
-    @observable private readonly _naturalHeight: number;
+    @observable private _naturalWidth: number;
+    @observable private _naturalHeight: number;
 
 
     constructor(opts: IImageContent) {
@@ -48,6 +51,19 @@ export class ImageContent implements IImageContent {
 
     @computed get naturalHeight() {
         return this._naturalHeight;
+    }
+
+    public update(content: IBlockContent) {
+        if (content.type === 'image') {
+            this._src = content.src;
+            this._width = content.width;
+            this._height = content.height;
+            this._naturalHeight = content.naturalHeight;
+            this._naturalWidth = content.naturalWidth;
+        } else {
+            throw new Error("Invalid type: " +  content.type)
+        }
+
     }
 
 }

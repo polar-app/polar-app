@@ -1,10 +1,12 @@
 import {makeObservable, observable, computed} from "mobx"
 import {INameContent} from "./INameContent";
+import {BlockContent, IBlockContent} from "../store/BlocksStore";
+import {IBaseBlockContent} from "./IBaseBlockContent";
 
-export class NameContent implements INameContent {
+export class NameContent implements INameContent, IBaseBlockContent {
 
     @observable private readonly _type: 'name';
-    @observable private readonly _data: string;
+    @observable private _data: string;
 
     constructor(opts: INameContent) {
 
@@ -21,6 +23,15 @@ export class NameContent implements INameContent {
 
     @computed get data() {
         return this._data;
+    }
+
+    public update(content: IBlockContent) {
+        if (content.type === 'name') {
+            this._data = content.data;
+        } else {
+            throw new Error("Invalid type: " +  content.type)
+        }
+
     }
 
 }

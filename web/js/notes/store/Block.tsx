@@ -45,7 +45,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         this._created = opts.created;
         this._updated = opts.updated;
         this._items = [...opts.items];
-        this._content = makeObservable(Contents.create(opts.content));
+        this._content = Contents.create(opts.content);
         this._links = [...opts.links];
 
         makeObservable(this)
@@ -90,11 +90,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @action setContent(content: C | IBlockContent) {
 
-        // if (content.startsWith('<p')) {
-        //     throw new Error("Content was set as HTML!");
-        // }
-
-        this._content = makeObservable(Contents.create(content));
+        this._content.update(content);
         this._updated = ISODateTimeStrings.create();
 
     }

@@ -24,6 +24,7 @@ import { ImageContent } from "../content/ImageContent";
 import { IMarkdownContent } from "../content/IMarkdownContent";
 import {INameContent} from "../content/INameContent";
 import { Contents } from "../content/Contents";
+import { IBaseBlockContent } from "../content/IBaseBlockContent";
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
@@ -39,7 +40,7 @@ export type StringSetMap = {[key: string]: boolean};
 
 // export type NoteContent = string | ITypedContent<'markdown'> | ITypedContent<'name'>;
 export type IBlockContent = IMarkdownContent | INameContent | IImageContent;
-export type BlockContent = MarkdownContent | NameContent | ImageContent;
+export type BlockContent = (MarkdownContent | NameContent | ImageContent) & IBaseBlockContent;
 // export type BlockContent = MarkdownContent | NameContent ;
 
 /**
