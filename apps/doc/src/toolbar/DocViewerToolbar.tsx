@@ -159,9 +159,11 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
 
                                 <Divider orientation="vertical" flexItem={true}/>
 
+                                {/*
                                 <div className="ml-3 mr-2" style={{display: 'flex'}}>
                                     <DocumentWriteStatus/>
                                 </div>
+                                */}
 
                                 <ZenModeButton/>
 
