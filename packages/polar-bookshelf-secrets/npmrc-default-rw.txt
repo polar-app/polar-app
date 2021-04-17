@@ -1,0 +1,2 @@
+//registry.npmjs.org/:_authToken=4c77d4f0-68b5-4b35-9507-3c9a88531bb2
+registry=https://registry.npmjs.org/
