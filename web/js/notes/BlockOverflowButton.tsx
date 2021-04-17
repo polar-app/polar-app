@@ -21,7 +21,7 @@ interface IProps {
     readonly id: BlockIDStr;
 }
 
-export const NoteOverflowButton = observer(function NoteOverflow(props: IProps) {
+export const BlockOverflowButton = observer(function NoteOverflow(props: IProps) {
 
     const blocksStore = useBlocksStore();
     const classes = useStyles();
