@@ -1,6 +1,6 @@
 import React from "react";
 import {deepMemo} from "../react/ReactUtils";
-import { Block } from "./Note";
+import { Block } from "./Block";
 import {UL} from "./UL";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";

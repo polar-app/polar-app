@@ -1,7 +1,7 @@
 import React from "react";
 import {MUIBrowserLinkStyle} from "../mui/MUIBrowserLinkStyle";
 import {NotesInbound} from "./NotesInbound";
-import { Block } from "./Note";
+import { Block } from "./Block";
 import { NoteStyle } from "./NoteStyle";
 import { BlockIDStr } from "./store/BlocksStore";
 import { useBlocksStore } from "./store/BlocksStore";
