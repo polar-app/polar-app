@@ -1,6 +1,6 @@
 import React from "react";
 import {NoteEditor} from "./NoteEditor";
-import {NoteItems} from "./NoteItems";
+import {BlockItems} from "./BlockItems";
 import {NoteBulletButton} from "./NoteBulletButton";
 import {createContextMenu} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
 import {IDocViewerContextMenuOrigin} from "../../../apps/doc/src/DocViewerMenu";
@@ -280,7 +280,7 @@ export const BlockInner = observer((props: IProps) => {
                         </div>
 
                         {(expanded || id === root) && (
-                            <NoteItems parent={props.id} notes={items}/>
+                            <BlockItems parent={props.id} notes={items}/>
                         )}
                 </>
             </BlockDragIndicator>

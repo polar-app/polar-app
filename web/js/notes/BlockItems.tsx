@@ -22,7 +22,7 @@ interface NotesProps {
     readonly notes: ReadonlyArray<IBlock> | undefined;
 }
 
-export const NoteItems = deepMemo(function NoteItems(props: NotesProps) {
+export const BlockItems = deepMemo(function NoteItems(props: NotesProps) {
 
     const classes = useStyles();
 
