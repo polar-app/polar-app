@@ -10,6 +10,7 @@ import {NoteContentEditable} from "./contenteditable/NoteContentEditable";
 import {ContentEditables} from "./ContentEditables";
 import { HTMLStr } from "polar-shared/src/util/Strings";
 import {BlockPredicates} from "./store/BlockPredicates";
+import {MarkdownContent} from "./content/MarkdownContent";
 
 interface ILinkNavigationEvent {
     readonly abortEvent: () => void;
@@ -93,10 +94,10 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
         if (block) {
             const markdown = escaper.unescape(content);
-            block.setContent({
+            block.setContent(new MarkdownContent({
                 type: 'markdown',
                 data: markdown
-            });
+            }));
         }
 
     }, [escaper, block]);

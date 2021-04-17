@@ -2,7 +2,6 @@ import * as React from 'react';
 import { deepMemo } from '../react/ReactUtils';
 import Box from '@material-ui/core/Box';
 import { UL } from './UL';
-import {NoteBulletButton} from "./NoteBulletButton";
 import {NoteEditor} from "./NoteEditor";
 import {BlockIDStr, useBlocksStore } from './store/BlocksStore';
 import { observer } from "mobx-react-lite"

@@ -9,9 +9,8 @@ import {ReverseIndex} from "./ReverseIndex";
 import {Block} from "./Block";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {ConstructorOptions, JSDOM} from "jsdom";
-import { IBlock } from "./IBlock";
-import {IMarkdownContent} from "../content/IMarkdownContent";
-import {INameContent} from "../content/INameContent";
+import { NameContent } from "../content/NameContent";
+import { MarkdownContent } from "../content/MarkdownContent";
 
 // TODO:
 
@@ -32,7 +31,7 @@ import {INameContent} from "../content/INameContent";
 //   code path is used.
 //
 
-function assertTextBlock(content: BlockContent): asserts content is IMarkdownContent | INameContent {
+function assertTextBlock(content: BlockContent): asserts content is MarkdownContent | NameContent {
 
     if (content.type !== 'markdown' && content.type !== 'name') {
         throw new Error("wrong type: " + content.type);
@@ -686,53 +685,70 @@ describe('BlocksStore', function() {
 
     describe("Notes", () => {
 
-        it("setContent", () => {
+        describe("setContent", () => {
 
-            const store = createStore();
+            it("reactivity", () => {
+                //
+                // const store = createStore();
+                //
+                // const block = store.getBlock('102')
+                //
+                // console.log("FIXME: ", block!.content);
+                //
+                //
+                // (block!.content as any).subscribe((next: any) => console.log("FIXME next"));
 
-            const note = store.getBlock('102')
-
-            assertJSON(note, {
-                "_content": {
-                    "data": "World War II",
-                    "type": "name"
-                },
-                "_created": "2012-03-02T11:38:49.321Z",
-                "_id": "102",
-                "_items": [
-                    "103",
-                    "104",
-                    "105"
-                ],
-                "_links": [],
-                "_nspace": "ns101",
-                "_uid": "123",
-                "_updated": "2012-03-02T11:38:49.321Z"
             });
 
-            TestingTime.forward(1000);
+            it("basic", () => {
 
-            note!.setContent({type: 'markdown', data: "hello"})
+                const store = createStore();
 
-            assertJSON(note, {
-                "_content": {
-                    "data": "hello",
-                    "type": "markdown"
-                },
-                "_created": "2012-03-02T11:38:49.321Z",
-                "_id": "102",
-                "_items": [
-                    "103",
-                    "104",
-                    "105"
-                ],
-                "_links": [],
-                "_nspace": "ns101",
-                "_uid": "123",
-                "_updated": "2012-03-02T11:38:50.321Z"
+                const block = store.getBlock('102')
+
+                assertJSON(block, {
+                    "_content": {
+                        "data": "World War II",
+                        "type": "name"
+                    },
+                    "_created": "2012-03-02T11:38:49.321Z",
+                    "_id": "102",
+                    "_items": [
+                        "103",
+                        "104",
+                        "105"
+                    ],
+                    "_links": [],
+                    "_nspace": "ns101",
+                    "_uid": "123",
+                    "_updated": "2012-03-02T11:38:49.321Z"
+                });
+
+                TestingTime.forward(1000);
+
+                block!.setContent({type: 'markdown', data: "hello"})
+
+                assertJSON(block, {
+                    "_content": {
+                        "data": "hello",
+                        "type": "markdown"
+                    },
+                    "_created": "2012-03-02T11:38:49.321Z",
+                    "_id": "102",
+                    "_items": [
+                        "103",
+                        "104",
+                        "105"
+                    ],
+                    "_links": [],
+                    "_nspace": "ns101",
+                    "_uid": "123",
+                    "_updated": "2012-03-02T11:38:50.321Z"
+                });
+
             });
-
         });
+
 
     });
 

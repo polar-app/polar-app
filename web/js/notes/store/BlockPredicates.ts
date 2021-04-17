@@ -1,6 +1,6 @@
-import { IMarkdownContent } from "../content/IMarkdownContent";
-import {INameContent} from "../content/INameContent";
 import {Block} from "./Block";
+import {MarkdownContent} from "../content/MarkdownContent";
+import { NameContent } from "../content/NameContent";
 
 /**
  * Note we have to have IBlockPredicates and BlockPredicates as the typescript
@@ -9,7 +9,7 @@ import {Block} from "./Block";
  */
 export namespace BlockPredicates {
 
-    export function isTextBlock(block: Block): block is Block<IMarkdownContent | INameContent> {
+    export function isTextBlock(block: Block): block is Block<MarkdownContent | NameContent> {
         return block.content.type === 'markdown' || block.content.type === 'name';
     }
 

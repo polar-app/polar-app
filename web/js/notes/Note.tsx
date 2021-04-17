@@ -272,7 +272,9 @@ export const NoteInner = observer((props: IProps) => {
                             )}
 
                             {block.content.type === 'image' && (
-                                <BlockImageContent {...block.content}/>
+                                <BlockImageContent src={block.content.src}
+                                                   width={block.content.width}
+                                                   height={block.content.height}/>
                             )}
 
                         </div>

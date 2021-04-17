@@ -16,10 +16,14 @@ import {CursorPositions} from "../contenteditable/CursorPositions";
 import {useBlocksStoreContext} from "./BlockStoreContextProvider";
 import {IBlocksStore} from "./IBlocksStore";
 import {TracingBlocksStore} from "./TracingBlocksStore";
-import {IMarkdownContent} from "../content/IMarkdownContent";
-import {INameContent} from "../content/INameContent";
 import {IImageContent} from "../content/IImageContent";
 import { BlockPredicates } from "./BlockPredicates";
+import {MarkdownContent} from "../content/MarkdownContent";
+import {NameContent} from "../content/NameContent";
+import { ImageContent } from "../content/ImageContent";
+import { IMarkdownContent } from "../content/IMarkdownContent";
+import {INameContent} from "../content/INameContent";
+import { Contents } from "../content/Contents";
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
@@ -34,7 +38,9 @@ export type ReverseBlocksIndex = {[id: string /* BlockIDStr */]: BlockIDStr[]};
 export type StringSetMap = {[key: string]: boolean};
 
 // export type NoteContent = string | ITypedContent<'markdown'> | ITypedContent<'name'>;
-export type BlockContent = IMarkdownContent | INameContent | IImageContent;
+export type IBlockContent = IMarkdownContent | INameContent | IImageContent;
+export type BlockContent = MarkdownContent | NameContent | ImageContent;
+// export type BlockContent = MarkdownContent | NameContent ;
 
 /**
  * A offset into the content of a not where we should place the cursor.
@@ -814,10 +820,10 @@ export class BlocksStore implements IBlocksStore {
 
         const newContent = targetBlock.content.data + sourceBlock.content.data;
 
-        targetBlock.setContent({
+        targetBlock.setContent(new MarkdownContent({
             type: 'markdown',
             data: newContent
-        });
+        }));
         targetBlock.setItems(items);
         targetBlock.setLinks(links);
 
@@ -860,10 +866,10 @@ export class BlocksStore implements IBlocksStore {
                 nspace: refBlock.nspace,
                 uid: this.uid,
                 parent: undefined,
-                content: {
+                content: Contents.create({
                     type: 'name',
                     data: name
-                },
+                }),
                 created: now,
                 updated: now,
                 items: [],
@@ -884,6 +890,8 @@ export class BlocksStore implements IBlocksStore {
      */
     @action public createNewBlock(id: BlockIDStr,
                                   split?: ISplitBlock): ICreatedBlock {
+
+        console.log("FIXME: creating content with split: " , split);
 
         // *** we first have to compute the new parent this has to be computed
         // based on the expansion tree because if the current block setup is like:
@@ -995,10 +1003,10 @@ export class BlocksStore implements IBlocksStore {
                 parent: parentBlock.id,
                 nspace: parentBlock.nspace,
                 uid: this.uid,
-                content: {
+                content: Contents.create({
                     type: 'markdown',
                     data: split?.suffix || ''
-                },
+                }),
                 created: now,
                 updated: now,
                 items,
@@ -1036,10 +1044,14 @@ export class BlocksStore implements IBlocksStore {
 
         if (split?.prefix !== undefined) {
 
-            currentBlock.setContent({
+            console.log("FIXME: setting current block content to: ", split.prefix)
+
+            currentBlock.setContent(new MarkdownContent({
                 type: 'markdown',
                 data: split.prefix
-            });
+            }));
+
+            console.log(`FIXME:  currentBlock ${currentBlock.id} content: `, {...currentBlock.content})
 
             if (newBlockInheritItems) {
                 currentBlock.setItems([]);

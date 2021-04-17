@@ -1,9 +1,10 @@
 import {IBlock, NamespaceIDStr, UIDStr} from "./IBlock";
-import {INewChildPosition, BlockContent, BlockIDStr, BlockType} from "./BlocksStore";
+import {INewChildPosition, BlockIDStr, BlockContent, IBlockContent} from "./BlocksStore";
 import {action, computed, makeObservable, observable} from "mobx"
 import { ISODateTimeString, ISODateTimeStrings } from "polar-shared/src/metadata/ISODateTimeStrings";
+import { Contents } from "../content/Contents";
 
-export class Block<C = BlockContent> implements IBlock<C> {
+export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @observable private _id: BlockIDStr;
 
@@ -35,7 +36,7 @@ export class Block<C = BlockContent> implements IBlock<C> {
      */
     @observable private _links: BlockIDStr[];
 
-    constructor(opts: IBlock<C>) {
+    constructor(opts: IBlock<C | IBlockContent>) {
 
         this._id = opts.id;
         this._nspace = opts.nspace;
@@ -44,7 +45,7 @@ export class Block<C = BlockContent> implements IBlock<C> {
         this._created = opts.created;
         this._updated = opts.updated;
         this._items = [...opts.items];
-        this._content = opts.content;
+        this._content = makeObservable(Contents.create(opts.content));
         this._links = [...opts.links];
 
         makeObservable(this)
@@ -87,16 +88,14 @@ export class Block<C = BlockContent> implements IBlock<C> {
         return this._links;
     }
 
-    @action setContent(content: C) {
+    @action setContent(content: C | IBlockContent) {
 
         // if (content.startsWith('<p')) {
         //     throw new Error("Content was set as HTML!");
         // }
 
-        this._content = content;
+        this._content = makeObservable(Contents.create(content));
         this._updated = ISODateTimeStrings.create();
-
-        // console.log(`Note updated ${this.id}:  ${this.content}`);
 
     }
 

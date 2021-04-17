@@ -1,7 +1,11 @@
 import React from "react";
-import {IImageContent} from "../content/IImageContent";
+import {DataURLStr} from "../content/IImageContent";
 
-interface IProps extends IImageContent {
+interface IProps {
+    readonly src: DataURLStr;
+
+    readonly width: number;
+    readonly height: number;
 
 }
 
