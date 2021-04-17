@@ -1,6 +1,6 @@
 import {action, computed, makeObservable, observable} from "mobx"
 
-describe('MobX', function() {
+xdescribe('MobX', function() {
 
     it('basic', () => {
 
