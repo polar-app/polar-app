@@ -13,7 +13,7 @@ import {
     IBlockMerge,
     DoPutOpts,
     BlocksIndex,
-    IDropTarget
+    IDropTarget, INewBlockOpts
 } from "./BlocksStore";
 import {IBlock} from "./IBlock";
 import {Block} from "./Block";
@@ -66,8 +66,7 @@ export interface IBlocksStore {
 
     requiredAutoUnIndent(id: BlockIDStr): boolean;
 
-    createNewBlock(id: BlockIDStr,
-                   split?: ISplitBlock): ICreatedBlock;
+    createNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock;
 
     createNewNamedBlock(name: BlockNameStr, ref: BlockIDStr): BlockIDStr;
 

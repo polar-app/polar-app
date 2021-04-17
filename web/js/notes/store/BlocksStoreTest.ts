@@ -1017,7 +1017,7 @@ describe('BlocksStore', function() {
 
                 assertTextBlock(originalBlock!.content);
 
-                const createdBlock = store.createNewBlock(id, {prefix: '', suffix: originalBlock!.content.data});
+                const createdBlock = store.createNewBlock(id, {split: {prefix: '', suffix: originalBlock!.content.data}});
 
                 assertJSON(store.getBlock(originalBlock!.parent!)!.items, [
                     "103",
@@ -1038,7 +1038,7 @@ describe('BlocksStore', function() {
 
                 assertTextBlock(originalBlock!.content);
 
-                const createdBlock = store.createNewBlock(id, {prefix: '', suffix: originalBlock!.content.data});
+                const createdBlock = store.createNewBlock(id, {split: {prefix: '', suffix: originalBlock!.content.data}});
                 assertJSON(store.getBlock(originalBlock!.parent!)!.items, [
                     "103",
                     "104",

@@ -92,6 +92,11 @@ export interface ISplitBlock {
     readonly suffix: string;
 }
 
+export interface INewBlockOpts {
+    readonly split?: ISplitBlock;
+    readonly content?: IBlockContent;
+}
+
 export interface DeleteBlockRequest {
     readonly parent: BlockIDStr;
     readonly id: BlockIDStr;
@@ -901,8 +906,7 @@ export class BlocksStore implements IBlocksStore {
     /**
      * Create a new block in reference to the block with given ID.
      */
-    @action public createNewBlock(id: BlockIDStr,
-                                  split?: ISplitBlock): ICreatedBlock {
+    @action public createNewBlock(id: BlockIDStr, opts: INewBlockOpts = {}): ICreatedBlock {
 
         // *** we first have to compute the new parent this has to be computed
         // based on the expansion tree because if the current block setup is like:
@@ -970,9 +974,9 @@ export class BlocksStore implements IBlocksStore {
 
             }
 
-            if (nextSiblingID && split !== undefined) {
+            if (nextSiblingID && opts.split !== undefined) {
                 return createNewBlockPositionRelative(nextSiblingID, 'before')
-            } else if (nextLinearExpansionID && split === undefined) {
+            } else if (nextLinearExpansionID && opts.split === undefined) {
                 return createNewBlockPositionRelative(nextLinearExpansionID, 'before')
             } else {
 
@@ -1009,15 +1013,17 @@ export class BlocksStore implements IBlocksStore {
 
             const items = newBlockInheritItems ? currentBlock.items : [];
 
+            const content = opts.content || {
+                type: 'markdown',
+                data: opts.split?.suffix || ''
+            };
+
             return {
                 id,
                 parent: parentBlock.id,
                 nspace: parentBlock.nspace,
                 uid: this.uid,
-                content: Contents.create({
-                    type: 'markdown',
-                    data: split?.suffix || ''
-                }),
+                content: Contents.create(content),
                 created: now,
                 updated: now,
                 items,
@@ -1026,7 +1032,7 @@ export class BlocksStore implements IBlocksStore {
 
         }
 
-        const newBlockInheritItems = split?.suffix !== undefined && split?.suffix !== '';
+        const newBlockInheritItems = opts.split?.suffix !== undefined && opts.split?.suffix !== '';
 
         const currentBlock = this.getBlock(id)!;
 
@@ -1049,15 +1055,15 @@ export class BlocksStore implements IBlocksStore {
 
         }
 
-        if (split?.suffix !== undefined && newBlock.items.length > 0) {
+        if (opts.split?.suffix !== undefined && newBlock.items.length > 0) {
             this.expand(newBlock.id);
         }
 
-        if (split?.prefix !== undefined) {
+        if (opts.split?.prefix !== undefined) {
 
             currentBlock.setContent(new MarkdownContent({
                 type: 'markdown',
-                data: split.prefix
+                data: opts.split.prefix
             }));
 
             if (newBlockInheritItems) {

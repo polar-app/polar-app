@@ -4,7 +4,7 @@ import {
     BlocksIndex, DoIndentResult, DoPutOpts, DoUnIndentResult,
     IActiveBlock, IBlockActivated,
     IBlockMerge,
-    ICreatedBlock, IDropTarget,
+    ICreatedBlock, IDropTarget, INewBlockOpts,
     ISplitBlock, NavOpts, NavPosition,
     StringSetMap
 } from "./BlocksStore";
@@ -74,9 +74,9 @@ export class TracingBlocksStore implements IBlocksStore {
         this.delegate.collapse(id);
     }
 
-    public createNewBlock(id: BlockIDStr, split?: ISplitBlock): ICreatedBlock {
+    public createNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock {
         trace('', {});
-        return this.delegate.createNewBlock(id, split);
+        return this.delegate.createNewBlock(id, opts);
     }
 
     public createNewNamedBlock(name: BlockNameStr, ref: BlockIDStr): BlockIDStr {
