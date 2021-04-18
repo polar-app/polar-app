@@ -11,6 +11,8 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {ConstructorOptions, JSDOM} from "jsdom";
 import { NameContent } from "../content/NameContent";
 import { MarkdownContent } from "../content/MarkdownContent";
+import {Asserts} from "polar-shared/src/Asserts";
+import assertPresent = Asserts.assertPresent;
 
 // TODO:
 
@@ -622,6 +624,8 @@ describe('BlocksStore', function() {
 
             const createdBlock = store.createNewBlock('102');
 
+            assertPresent(createdBlock);
+
             const block = store.getBlock('102')!;
 
             assertJSON(block.items, [
@@ -922,6 +926,8 @@ describe('BlocksStore', function() {
 
             const createdBlock = store.createNewBlock('102');
 
+            assertPresent(createdBlock);
+
             assertJSON(block!.items, [
                 createdBlock.id,
                 "103",
@@ -953,6 +959,8 @@ describe('BlocksStore', function() {
             ]);
 
             const createdBlock = store.createNewBlock('102');
+            assertPresent(createdBlock);
+
             assertJSON(block!.items, [
                 createdBlock.id,
             ]);
@@ -966,6 +974,7 @@ describe('BlocksStore', function() {
             function createNoteWithoutExpansion() {
 
                 const createdBlock = store.createNewBlock('105');
+                assertPresent(createdBlock);
 
                 assert.equal(createdBlock.parent, '102');
 
@@ -984,6 +993,7 @@ describe('BlocksStore', function() {
                 store.expand('105');
 
                 const createdBlock = store.createNewBlock('105');
+                assertPresent(createdBlock);
 
                 assert.equal(createdBlock.parent, '105');
 
@@ -1018,6 +1028,7 @@ describe('BlocksStore', function() {
                 assertTextBlock(originalBlock!.content);
 
                 const createdBlock = store.createNewBlock(id, {split: {prefix: '', suffix: originalBlock!.content.data}});
+                assertPresent(createdBlock);
 
                 assertJSON(store.getBlock(originalBlock!.parent!)!.items, [
                     "103",
@@ -1039,6 +1050,8 @@ describe('BlocksStore', function() {
                 assertTextBlock(originalBlock!.content);
 
                 const createdBlock = store.createNewBlock(id, {split: {prefix: '', suffix: originalBlock!.content.data}});
+                assertPresent(createdBlock);
+
                 assertJSON(store.getBlock(originalBlock!.parent!)!.items, [
                     "103",
                     "104",

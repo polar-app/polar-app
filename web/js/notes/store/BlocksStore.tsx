@@ -471,10 +471,12 @@ export class BlocksStore implements IBlocksStore {
 
     @action public expand(id: BlockIDStr) {
         this._expanded[id] = true;
+        this.setActiveWithPosition(id, 'start');
     }
 
     @action public collapse(id: BlockIDStr) {
         delete this._expanded[id];
+        this.setActiveWithPosition(id, 'start');
     }
 
     public toggleExpand(id: BlockIDStr) {
@@ -912,7 +914,7 @@ export class BlocksStore implements IBlocksStore {
     /**
      * Create a new block in reference to the block with given ID.
      */
-    @action public createNewBlock(id: BlockIDStr, opts: INewBlockOpts = {}): ICreatedBlock {
+    @action public createNewBlock(id: BlockIDStr, opts: INewBlockOpts = {}): ICreatedBlock | undefined {
 
         // *** we first have to compute the new parent this has to be computed
         // based on the expansion tree because if the current block setup is like:
@@ -1042,6 +1044,15 @@ export class BlocksStore implements IBlocksStore {
 
         const currentBlock = this.getBlock(id)!;
 
+        if (currentBlock.content.type !== 'markdown' && opts.split) {
+            console.warn("Can not split a block that is not markdown");
+            return undefined;
+        }
+
+        const restore = {
+            block: currentBlock.toJSON(),
+        }
+
         const newBlockPosition = computeNewBlockPosition();
 
         const {parentBlock} = newBlockPosition;
@@ -1078,7 +1089,18 @@ export class BlocksStore implements IBlocksStore {
 
         }
 
+        // FIXME: undo:
+        //
+        // - restore the active range
+        // - restore the originalBlock
+
         this.setActiveWithPosition(newBlock.id, 'start');
+
+        this.undoQueue.push(async () => {
+
+            this.doPut([restore.block]);
+
+        }).catch(err => console.log(err));
 
         return {
             id: newBlock.id,

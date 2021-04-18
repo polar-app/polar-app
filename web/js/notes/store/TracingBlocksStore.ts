@@ -79,7 +79,7 @@ export class TracingBlocksStore implements IBlocksStore {
         return this.delegate.deleteBlocks(blockIDs);
     }
 
-    public createNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock {
+    public createNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock | undefined {
         trace('createNewBlock', {id, opts});
         return this.delegate.createNewBlock(id, opts);
     }
