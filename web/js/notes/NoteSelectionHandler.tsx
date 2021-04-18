@@ -18,7 +18,7 @@ export const NoteSelectionHandler = observer(function NoteSelectionHandler(props
         const deletable = Object.keys(selected);
 
         if (deletable.length > 0) {
-            blocksStore.doDelete(deletable);
+            blocksStore.deleteBlocks(deletable);
             return true;
         }
 

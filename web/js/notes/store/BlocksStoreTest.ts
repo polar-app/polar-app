@@ -762,7 +762,7 @@ describe('BlocksStore', function() {
                 "110"
             ]);
 
-            store.doDelete(['102']);
+            store.deleteBlocks(['102']);
 
             assertJSON(store.lookupReverse('102'), []);
 
@@ -772,7 +772,7 @@ describe('BlocksStore', function() {
 
             const store = createStore();
 
-            store.doDelete(['104']);
+            store.deleteBlocks(['104']);
 
             const block = store.getBlock('102');
 
@@ -802,7 +802,7 @@ describe('BlocksStore', function() {
 
             const store = createStore();
 
-            store.doDelete(['103', '104', '105']);
+            store.deleteBlocks(['103', '104', '105']);
 
             const block = store.getBlock('102');
 
@@ -947,7 +947,7 @@ describe('BlocksStore', function() {
 
             const block = store.getBlock('102');
 
-            store.doDelete(['103', '104', '105']);
+            store.deleteBlocks(['103', '104', '105']);
 
             assertJSON(block!.items, [
             ]);
