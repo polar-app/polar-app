@@ -10,9 +10,8 @@ import {
     IActiveBlock,
     BlockNameStr,
     IBlockMerge,
-    DoPutOpts,
     BlocksIndex,
-    IDropTarget, INewBlockOpts
+    IDropTarget, INewBlockOpts, DoPutOpts
 } from "./BlocksStore";
 import {IBlock} from "./IBlock";
 import {Block} from "./Block";
@@ -20,7 +19,7 @@ import {BlockTargetStr} from "../NoteLinkLoader";
 import {ReverseIndex} from "./ReverseIndex";
 
 /**
- * delete
+ * deleteBlocks
  * createNewBlock
  * createNewNamedBlock
  * collapse
@@ -48,6 +47,8 @@ export interface IBlocksStore {
     pathToBlock(id: BlockIDStr): ReadonlyArray<Block>;
 
     doDelete(blockIDs: ReadonlyArray<BlockIDStr>): void;
+    doPut(blocks: ReadonlyArray<IBlock>, opts?: DoPutOpts): void;
+
     setActive(active: BlockIDStr | undefined): void;
 
     setRoot(root: BlockIDStr | undefined): void;
@@ -76,6 +77,8 @@ export interface IBlocksStore {
 
     requiredAutoUnIndent(id: BlockIDStr): boolean;
 
+    deleteBlocks(blockIDs: ReadonlyArray<BlockIDStr>): void;
+
     createNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock;
 
     createNewNamedBlock(name: BlockNameStr, ref: BlockIDStr): BlockIDStr;
@@ -95,8 +98,6 @@ export interface IBlocksStore {
     navNext(pos: NavPosition, opts: NavOpts): void;
 
     getNamedNodes(): ReadonlyArray<string>;
-
-    doPut(blocks: ReadonlyArray<IBlock>, opts?: DoPutOpts): void;
 
     undo(): Promise<void>;
     redo(): Promise<void>;

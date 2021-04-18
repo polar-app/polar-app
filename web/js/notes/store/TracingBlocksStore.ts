@@ -74,6 +74,11 @@ export class TracingBlocksStore implements IBlocksStore {
         this.delegate.collapse(id);
     }
 
+    public deleteBlocks(blockIDs: ReadonlyArray<BlockIDStr>): void {
+        trace('deleteBlocks', {blockIDs});
+        return this.delegate.deleteBlocks(blockIDs);
+    }
+
     public createNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock {
         trace('createNewBlock', {id, opts});
         return this.delegate.createNewBlock(id, opts);
@@ -222,6 +227,14 @@ export class TracingBlocksStore implements IBlocksStore {
     public toggleExpand(id: BlockIDStr): void {
         trace('toggleExpand', {id});
         this.delegate.toggleExpand(id);
+    }
+
+    public redo(): Promise<void> {
+        return Promise.resolve(undefined);
+    }
+
+    public undo(): Promise<void> {
+        return Promise.resolve(undefined);
     }
 
 }

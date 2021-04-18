@@ -905,6 +905,10 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
+    public deleteBlocks(blockIDs: ReadonlyArray<BlockIDStr>) {
+        this.doDelete(blockIDs);
+    }
+
     /**
      * Create a new block in reference to the block with given ID.
      */
