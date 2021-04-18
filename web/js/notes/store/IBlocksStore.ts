@@ -72,8 +72,8 @@ export interface IBlocksStore {
     isExpanded(id: BlockIDStr): boolean;
     isSelected(id: BlockIDStr): boolean;
 
-    doIndent(id: BlockIDStr): ReadonlyArray<DoIndentResult>;
-    doUnIndent(id: BlockIDStr): ReadonlyArray<DoUnIndentResult>;
+    indentBlock(id: BlockIDStr): ReadonlyArray<DoIndentResult>;
+    unIndentBlock(id: BlockIDStr): ReadonlyArray<DoUnIndentResult>;
 
     requiredAutoUnIndent(id: BlockIDStr): boolean;
 

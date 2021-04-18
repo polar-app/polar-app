@@ -360,7 +360,7 @@ describe('BlocksStore', function() {
 
             TestingTime.forward(1000);
 
-            const indentResult = store.doIndent('104')
+            const indentResult = store.indentBlock('104')
 
             assertJSON(store.getBlock('102'), {
                 "_content": {
@@ -406,9 +406,9 @@ describe('BlocksStore', function() {
 
             const store = createStore();
 
-            store.doIndent('104')
+            store.indentBlock('104')
 
-            assert.equal(store.doIndent('104')[0].error, 'no-sibling');
+            assert.equal(store.indentBlock('104')[0].error, 'no-sibling');
 
         });
 
@@ -451,7 +451,7 @@ describe('BlocksStore', function() {
                 "_updated": "2012-03-02T11:38:49.321Z"
             });
 
-            store.doIndent('104')
+            store.indentBlock('104')
 
             assertJSON(store.getBlock('104'), {
                 "_content": {
@@ -470,7 +470,7 @@ describe('BlocksStore', function() {
 
             assert.equal(store.getBlock('104')!.parent, '103');
 
-            store.doUnIndent('104');
+            store.unIndentBlock('104');
 
             assertJSON(store.getBlock('104'), {
                 "_content": {
@@ -511,7 +511,7 @@ describe('BlocksStore', function() {
 
             const store = createStore();
 
-            const indentResult = store.doIndent('108')
+            const indentResult = store.indentBlock('108')
 
             assert.equal(indentResult[0].error!, 'no-parent');
 
@@ -523,7 +523,7 @@ describe('BlocksStore', function() {
 
             const store = createStore();
 
-            const indentResult = store.doIndent('103')
+            const indentResult = store.indentBlock('103')
 
             assert.equal(indentResult[0].error!, 'no-sibling');
 

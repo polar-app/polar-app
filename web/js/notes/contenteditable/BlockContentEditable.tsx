@@ -287,7 +287,7 @@ export const BlockContentEditable = observer((props: IProps) => {
                     if ((platform === Platform.MACOS && event.shiftKey && event.metaKey) ||
                         (platform === Platform.WINDOWS && event.shiftKey && event.altKey)) {
 
-                        blocksStore.doUnIndent(props.id);
+                        blocksStore.unIndentBlock(props.id);
                         break;
 
                     }
@@ -318,7 +318,7 @@ export const BlockContentEditable = observer((props: IProps) => {
 
                     if ((platform === Platform.MACOS && event.shiftKey && event.metaKey) ||
                         (platform === Platform.WINDOWS && event.shiftKey && event.altKey)) {
-                        blocksStore.doIndent(props.id);
+                        blocksStore.indentBlock(props.id);
                         break;
                     }
 
@@ -379,9 +379,9 @@ export const BlockContentEditable = observer((props: IProps) => {
                     abortEvent();
 
                     if (event.shiftKey) {
-                        blocksStore.doUnIndent(props.id);
+                        blocksStore.unIndentBlock(props.id);
                     } else {
-                        blocksStore.doIndent(props.id);
+                        blocksStore.indentBlock(props.id);
                     }
 
                 }

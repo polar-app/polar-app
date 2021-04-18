@@ -1175,7 +1175,7 @@ export class BlocksStore implements IBlocksStore {
      *
      * @return The new parent BlockID or the code as to why it couldn't be re-parented.
      */
-    public doIndent(id: BlockIDStr): ReadonlyArray<DoIndentResult> {
+    public indentBlock(id: BlockIDStr): ReadonlyArray<DoIndentResult> {
 
         const doExec = (id: BlockIDStr): DoIndentResult => {
 
@@ -1277,7 +1277,7 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    public doUnIndent(id: BlockIDStr): ReadonlyArray<DoUnIndentResult> {
+    public unIndentBlock(id: BlockIDStr): ReadonlyArray<DoUnIndentResult> {
 
         const doExec = (id: BlockIDStr): DoUnIndentResult => {
 

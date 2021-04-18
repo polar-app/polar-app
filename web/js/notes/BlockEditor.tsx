@@ -141,7 +141,7 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
 
         if (ref.current) {
             if (blocksStore.requiredAutoUnIndent(props.id)) {
-                blocksStore.doUnIndent(props.id);
+                blocksStore.unIndentBlock(props.id);
             } else {
                 handleCreateNewNote();
             }

@@ -94,9 +94,9 @@ export class TracingBlocksStore implements IBlocksStore {
         return this.delegate.doDelete(blockIDs);
     }
 
-    public doIndent(id: BlockIDStr): ReadonlyArray<DoIndentResult> {
+    public indentBlock(id: BlockIDStr): ReadonlyArray<DoIndentResult> {
         trace('doIndent', {id});
-        return this.delegate.doIndent(id);
+        return this.delegate.indentBlock(id);
     }
 
     public doPut(blocks: ReadonlyArray<IBlock>, opts?: DoPutOpts): void {
@@ -104,9 +104,9 @@ export class TracingBlocksStore implements IBlocksStore {
         this.delegate.doPut(blocks);
     }
 
-    public doUnIndent(id: BlockIDStr): ReadonlyArray<DoUnIndentResult> {
+    public unIndentBlock(id: BlockIDStr): ReadonlyArray<DoUnIndentResult> {
         trace('doUnIndent', {id});
-        return this.delegate.doUnIndent(id)
+        return this.delegate.unIndentBlock(id)
     }
 
     public expand(id: BlockIDStr): void {
