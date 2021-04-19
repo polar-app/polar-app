@@ -408,9 +408,12 @@ describe('BlocksStore', function() {
 
             const store = createStore();
 
-            store.indentBlock('104')
+            const indent0 = store.indentBlock('104');
+            const indent1 = store.indentBlock('104');
 
-            assert.equal(store.indentBlock('104')[0].error, 'no-sibling');
+            assert.equal(indent1.length, 1);
+
+            assert.equal(indent1[0].error, 'no-sibling');
 
         });
 

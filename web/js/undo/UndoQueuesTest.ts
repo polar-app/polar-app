@@ -62,7 +62,21 @@ describe('UndoQueues', function() {
 
     });
 
-    it("try to unredodo when at the tail of the queue. No action should be taken", async function() {
+    it("undo and redo with a set", async function() {
+
+        const undoQueue = UndoQueues.create({limit: 3});
+        assert.equal(undoQueue.limit, 3);
+
+        const store = createStore();
+
+        await undoQueue.push(store.createUndoFunction(101))
+        assert.equal(store.value(), 101)
+        await undoQueue.push(store.createUndoFunction(102))
+        await undoQueue.push(store.createUndoFunction(103))
+
+    });
+
+    it("try to undo and redo when at the tail of the queue. No action should be taken", async function() {
         const undoQueue = UndoQueues.create({limit: 3});
         assert.equal(undoQueue.limit, 3);
 

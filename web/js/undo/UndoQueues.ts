@@ -32,7 +32,6 @@ export namespace UndoQueues {
          */
         readonly pointer: () => number;
 
-
         readonly limit: number;
 
     }
@@ -101,6 +100,8 @@ export namespace UndoQueues {
         }
 
         async function undo(): Promise<UndoResult> {
+
+            // FIXME: I think this is wrong≥
 
             if (ptr <= 0) {
                 // we are at the head of the queue so nothing left to complete.

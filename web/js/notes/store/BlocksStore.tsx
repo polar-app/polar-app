@@ -25,6 +25,8 @@ import {INameContent} from "../content/INameContent";
 import { Contents } from "../content/Contents";
 import { IBaseBlockContent } from "../content/IBaseBlockContent";
 import {UndoQueues} from "../../undo/UndoQueues";
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
+import deepEqual from "deep-equal";
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
@@ -173,11 +175,39 @@ export namespace ActiveBlockNonces {
 
 }
 
+/**
+ * The RAW store with just the data that we can use to restore undo/redo data.
+ */
+export interface IBlocksStoreSnapshot {
+
+    _index: BlocksIndex;
+
+    _indexByName: BlocksIndexByName;
+
+    // FIXME: this won't work with restore...
+    _reverse: ReverseIndex;
+
+    root: BlockIDStr | undefined;
+
+    _active: IActiveBlock | undefined;
+
+    _expanded: StringSetMap;
+
+    _selected: StringSetMap;
+
+    _dropTarget: IDropTarget | undefined;
+
+    _dropSource: BlockIDStr | undefined;
+
+    _selectedAnchor: IDStr | undefined;
+
+}
+
 export class BlocksStore implements IBlocksStore {
 
     private readonly uid: UIDStr;
 
-    private readonly undoQueue = UndoQueues.create();
+    // private readonly undoQueue = UndoQueues.create();
 
     @observable _index: BlocksIndex = {};
 
@@ -942,170 +972,161 @@ export class BlocksStore implements IBlocksStore {
         //     - first child item
         // - second
 
-        /**
-         * A new block instruction that creates the block relative to a sibling
-         * and provides the parent.
-         */
-        interface INewBlockPositionRelative {
-            readonly type: 'relative';
-            readonly parentBlock: Block;
-            readonly ref: BlockIDStr;
-            readonly pos: NewChildPos;
-        }
+        // return this.withUndo(() => {
 
-        interface INewBlockPositionFirstChild {
-            readonly type: 'first-child';
-            readonly parentBlock: Block;
-        }
-
-        const computeNewBlockPosition = (): INewBlockPositionRelative | INewBlockPositionFirstChild => {
-
-            const computeNextLinearExpansionID = () => {
-                const linearExpansionTree = this.computeLinearExpansionTree2(id);
-                return Arrays.first(linearExpansionTree);
+            /**
+             * A new block instruction that creates the block relative to a sibling
+             * and provides the parent.
+             */
+            interface INewBlockPositionRelative {
+                readonly type: 'relative';
+                readonly parentBlock: Block;
+                readonly ref: BlockIDStr;
+                readonly pos: NewChildPos;
             }
 
-            const nextSiblingID = this.nextSibling(id);
-            const nextLinearExpansionID  = computeNextLinearExpansionID();
-
-            const createNewBlockPositionRelative = (ref: BlockIDStr, pos: NewChildPos): INewBlockPositionRelative => {
-
-                const block = this.getBlock(ref)!;
-                const parentBlock = this.getBlock(block.parent!)!;
-
-                return {
-                    type: 'relative',
-                    parentBlock,
-                    ref,
-                    pos
-                };
-
+            interface INewBlockPositionFirstChild {
+                readonly type: 'first-child';
+                readonly parentBlock: Block;
             }
 
-            if (nextSiblingID && opts.split !== undefined) {
-                return createNewBlockPositionRelative(nextSiblingID, 'before')
-            } else if (nextLinearExpansionID && opts.split === undefined) {
-                return createNewBlockPositionRelative(nextLinearExpansionID, 'before')
-            } else {
+            const computeNewBlockPosition = (): INewBlockPositionRelative | INewBlockPositionFirstChild => {
 
-                const block = this.getBlock(id)!;
+                const computeNextLinearExpansionID = () => {
+                    const linearExpansionTree = this.computeLinearExpansionTree2(id);
+                    return Arrays.first(linearExpansionTree);
+                }
 
-                if (block.parent) {
+                const nextSiblingID = this.nextSibling(id);
+                const nextLinearExpansionID = computeNextLinearExpansionID();
 
-                    const parentBlock = this.getBlock(block.parent)!;
+                const createNewBlockPositionRelative = (ref: BlockIDStr, pos: NewChildPos): INewBlockPositionRelative => {
+
+                    const block = this.getBlock(ref)!;
+                    const parentBlock = this.getBlock(block.parent!)!;
 
                     return {
                         type: 'relative',
                         parentBlock,
-                        ref: id,
-                        pos: 'after'
-                    }
+                        ref,
+                        pos
+                    };
 
+                }
+
+                if (nextSiblingID && split !== undefined) {
+                    return createNewBlockPositionRelative(nextSiblingID, 'before')
+                } else if (nextLinearExpansionID && split === undefined) {
+                    return createNewBlockPositionRelative(nextLinearExpansionID, 'before')
                 } else {
 
-                    return {
-                        type: 'first-child',
-                        parentBlock: block
+                    const block = this.getBlock(id)!;
+
+                    if (block.parent) {
+
+                        const parentBlock = this.getBlock(block.parent)!;
+
+                        return {
+                            type: 'relative',
+                            parentBlock,
+                            ref: id,
+                            pos: 'after'
+                        }
+
+                    } else {
+
+                        return {
+                            type: 'first-child',
+                            parentBlock: block
+                        }
+
                     }
 
                 }
 
             }
 
-        }
+            const createNewBlock = (parentBlock: Block): IBlock => {
+                const now = ISODateTimeStrings.create()
 
-        const createNewBlock = (parentBlock: Block): IBlock => {
-            const now = ISODateTimeStrings.create()
+                const id = Hashcodes.createRandomID();
 
-            const id = Hashcodes.createRandomID();
+                const items = newBlockInheritItems ? currentBlock.items : [];
 
-            const items = newBlockInheritItems ? currentBlock.items : [];
+                const content = opts.content || {
+                    type: 'markdown',
+                    data: split?.suffix || ''
+                };
 
-            const content = opts.content || {
-                type: 'markdown',
-                data: opts.split?.suffix || ''
-            };
+                return {
+                    id,
+                    parent: parentBlock.id,
+                    nspace: parentBlock.nspace,
+                    uid: this.uid,
+                    content: Contents.create(content),
+                    created: now,
+                    updated: now,
+                    items,
+                    links: []
+                };
 
-            return {
-                id,
-                parent: parentBlock.id,
-                nspace: parentBlock.nspace,
-                uid: this.uid,
-                content: Contents.create(content),
-                created: now,
-                updated: now,
-                items,
-                links: []
-            };
-
-        }
-
-        const newBlockInheritItems = opts.split?.suffix !== undefined && opts.split?.suffix !== '';
-
-        const currentBlock = this.getBlock(id)!;
-
-        if (currentBlock.content.type !== 'markdown' && opts.split) {
-            console.warn("Can not split a block that is not markdown");
-            return undefined;
-        }
-
-        const restore = {
-            block: currentBlock.toJSON(),
-        }
-
-        const newBlockPosition = computeNewBlockPosition();
-
-        const {parentBlock} = newBlockPosition;
-
-        const newBlock = createNewBlock(parentBlock);
-
-        this.doPut([newBlock]);
-
-        switch(newBlockPosition.type) {
-
-            case "relative":
-                parentBlock.addItem(newBlock.id, newBlockPosition);
-                break;
-            case "first-child":
-                parentBlock.addItem(newBlock.id, 'first-child');
-                break;
-
-        }
-
-        if (opts.split?.suffix !== undefined && newBlock.items.length > 0) {
-            this.expand(newBlock.id);
-        }
-
-        if (opts.split?.prefix !== undefined) {
-
-            currentBlock.setContent(new MarkdownContent({
-                type: 'markdown',
-                data: opts.split.prefix
-            }));
-
-            if (newBlockInheritItems) {
-                currentBlock.setItems([]);
             }
 
-        }
+            const storeSnapshot = this.createSnapshot();
 
-        // FIXME: undo:
-        //
-        // - restore the active range
-        // - restore the originalBlock
+            const currentBlock = this.getBlock(id)!;
+            const split = currentBlock.content.type === 'markdown' ? opts.split : undefined;
+            // const split = opts.split;
+            const newBlockInheritItems = split?.suffix !== undefined && split?.suffix !== '';
 
-        this.setActiveWithPosition(newBlock.id, 'start');
+            const restore = {
+                block: currentBlock.toJSON(),
+            }
 
-        this.undoQueue.push(async () => {
+            const newBlockPosition = computeNewBlockPosition();
 
-            this.doPut([restore.block]);
+            const {parentBlock} = newBlockPosition;
 
-        }).catch(err => console.log(err));
+            const newBlock = createNewBlock(parentBlock);
 
-        return {
-            id: newBlock.id,
-            parent: newBlock.parent!
-        };
+            this.doPut([newBlock]);
+
+            switch (newBlockPosition.type) {
+
+                case "relative":
+                    parentBlock.addItem(newBlock.id, newBlockPosition);
+                    break;
+                case "first-child":
+                    parentBlock.addItem(newBlock.id, 'first-child');
+                    break;
+
+            }
+
+            if (split?.suffix !== undefined && newBlock.items.length > 0) {
+                this.expand(newBlock.id);
+            }
+
+            if (split?.prefix !== undefined) {
+
+                currentBlock.setContent({
+                    type: 'markdown',
+                    data: split.prefix
+                });
+
+                if (newBlockInheritItems) {
+                    currentBlock.setItems([]);
+                }
+
+            }
+
+            this.setActiveWithPosition(newBlock.id, 'start');
+
+            return {
+                id: newBlock.id,
+                parent: newBlock.parent!
+            };
+
+        // });
 
     }
 
@@ -1115,9 +1136,30 @@ export class BlocksStore implements IBlocksStore {
 
             if (this.active !== undefined) {
 
-                const range = document.getSelection()!.getRangeAt(0);
-                const contenteditable = CursorPositions.computeContentEditableRoot(range.startContainer);
-                return CursorPositions.computeCurrentOffset(contenteditable);
+                function firstRange(): Range | undefined {
+
+                    const sel = document.getSelection();
+
+                    if (! sel) {
+                        return undefined;
+                    }
+
+                    if (sel.rangeCount === 0) {
+                        return undefined;
+                    }
+
+                    return sel.getRangeAt(0);
+
+                }
+
+                const range = firstRange();
+
+                if (range) {
+                    const contenteditable = CursorPositions.computeContentEditableRoot(range.startContainer);
+                    return CursorPositions.computeCurrentOffset(contenteditable);
+                } else {
+                    return 0;
+                }
 
             }
 
@@ -1561,12 +1603,68 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
+    private withUndo<T>(action: () => T) {
+
+        const before = this.createSnapshot();
+
+        const result = action();
+
+        const after = this.createSnapshot();
+
+        // const doAsync = async () => {
+        //     await this.undoQueue.push(async () => this.restoreSnapshot(before));
+        // }
+
+        if (! deepEqual(before, after)) {
+
+            // doAsync()
+            //     .catch(err => console.error(err));
+
+        }
+
+        return result;
+
+    }
+
+    // TODO: this is wrong because we're restoring too much stuff.  ALSO, since
+    // it isn't updated with snapshots we're not going to properly update the data
+    // once we undo it...
+    private createSnapshot(): IBlocksStoreSnapshot {
+        return {
+            _active: Dictionaries.deepCopy(this._active),
+            _dropSource: Dictionaries.deepCopy(this._dropSource),
+            _dropTarget: Dictionaries.deepCopy(this._dropTarget),
+            _expanded: Dictionaries.deepCopy(this._expanded),
+            _index: Dictionaries.deepCopy(this._index),
+            _indexByName: Dictionaries.deepCopy(this._indexByName),
+            _reverse: Dictionaries.deepCopy(this._reverse),
+            _selected: Dictionaries.deepCopy(this._selected),
+            _selectedAnchor: Dictionaries.deepCopy(this._selectedAnchor),
+            root: Dictionaries.deepCopy(this.root)
+        }
+    }
+
+    private restoreSnapshot(snapshot: IBlocksStoreSnapshot) {
+
+        this._active = snapshot._active;
+        this._dropSource = snapshot._dropSource;
+        this._dropTarget = snapshot._dropTarget;
+        this._expanded = snapshot._expanded;
+        this._index = snapshot._index;
+        this._indexByName = snapshot._indexByName;
+        this._reverse = snapshot._reverse;
+        this._selected = snapshot._selected;
+        this._selectedAnchor = snapshot._selectedAnchor;
+        this.root = snapshot.root;
+
+    }
+
     public async undo() {
-        await this.undoQueue.undo();
+        // await this.undoQueue.undo();
     }
 
     public async redo() {
-        await this.undoQueue.redo();
+        // await this.undoQueue.redo();
     }
 
 }
