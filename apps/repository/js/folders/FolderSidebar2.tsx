@@ -8,7 +8,7 @@ import {
     useFolderSidebarCallbacks,
     useFolderSidebarStore
 } from "../folder_sidebar/FolderSidebarStore";
-import {createContextMenu} from "../doc_repo/MUIContextMenu";
+import {createContextMenu, MenuComponentProps} from "../doc_repo/MUIContextMenu";
 import {FolderSidebarMenu} from "./FolderSidebarMenu";
 import {TagIDStr} from "polar-shared/src/tags/Tags";
 import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
@@ -25,8 +25,8 @@ const useStyles = makeStyles((theme) =>
 );
 
 
-const FoldersMenu = () => <FolderSidebarMenu type="folder"/>
-const TagsMenu = () => <FolderSidebarMenu type="tag"/>
+const FoldersMenu: React.FC<MenuComponentProps<unknown>> = (props) => <FolderSidebarMenu {...props} type="folder" />;
+const TagsMenu: React.FC<MenuComponentProps<unknown>> = (props) => <FolderSidebarMenu {...props} type="tag" />;
 
 const FoldersContextMenu = createContextMenu(FoldersMenu);
 const TagsContextMenu = createContextMenu(TagsMenu);
@@ -39,8 +39,8 @@ export const FolderSidebar2 = React.memo((props: IProps) => {
 
     const classes = useStyles();
 
-    const {filter, foldersRoot, selected, expanded, tagsView}
-        = useFolderSidebarStore(['filter', 'foldersRoot', 'selected', 'expanded', 'tagsView']);
+    const {filter, foldersRoot, selected, expanded, tagsView, isProcessing}
+        = useFolderSidebarStore(['filter', 'foldersRoot', 'selected', 'expanded', 'tagsView', 'isProcessing']);
 
     const {onDrop, onCreateUserTag, setFilter, toggleExpanded, selectRow, collapseNode, expandNode} = useFolderSidebarCallbacks();
 
@@ -106,7 +106,7 @@ export const FolderSidebar2 = React.memo((props: IProps) => {
 
                     {foldersRoot &&
                         <div style={{marginLeft: '8px'}}>
-                            <FoldersContextMenu>
+                            <FoldersContextMenu disabled={isProcessing}>
                                 <MUITreeView root={foldersRoot}
                                              toggleExpanded={toggleExpanded}
                                              selectRow={selectRow}
@@ -119,7 +119,7 @@ export const FolderSidebar2 = React.memo((props: IProps) => {
                             </FoldersContextMenu>
                         </div>}
 
-                    <TagsContextMenu>
+                    <TagsContextMenu disabled={isProcessing}>
                         <MUITagList tags={tagsView}
                                     selected={selected}
                                     selectRow={selectRow}

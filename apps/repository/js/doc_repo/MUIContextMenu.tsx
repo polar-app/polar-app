@@ -51,6 +51,7 @@ export const ContextMenuContext
 interface IContextMenuProps {
     readonly children: React.ReactNode;
     readonly anchorEl?: HTMLElement;
+    readonly disabled?: boolean;
 }
 
 /**
@@ -71,6 +72,7 @@ export interface IEventOrigin {
 
 export interface MenuComponentProps<O> {
     readonly origin: O | undefined;
+    readonly disabled?: boolean;
 }
 
 export function computeEventOrigin(event: React.MouseEvent<HTMLElement>): IEventOrigin {
@@ -182,7 +184,7 @@ export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O
                 <MUIContextMenu {...active}
                                 anchorEl={props.anchorEl}
                                 handleClose={handleClose}>
-                    <MenuComponent origin={active.origin}/>
+                    <MenuComponent disabled={props.disabled} origin={active.origin}/>
                 </MUIContextMenu>}
 
                 {props.children}

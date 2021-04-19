@@ -10,6 +10,7 @@ import {useFolderSidebarCallbacks, useFolderSidebarStore} from "../folder_sideba
 
 interface IProps {
     readonly type: TagType;
+    readonly disabled?: boolean;
 }
 
 export const FolderSidebarMenu = (props: IProps) => {
@@ -22,21 +23,25 @@ export const FolderSidebarMenu = (props: IProps) => {
         onDelete();
     }, [onDelete])
 
+    const { disabled = false, type } = props;
+
     return (
         <>
-            <MUIMenuItem text={"Create " + Strings.upperFirst(props.type)}
+            <MUIMenuItem text={"Create " + Strings.upperFirst(type)}
                          icon={<LocalOfferIcon/>}
-                         onClick={() => onCreateUserTag(props.type)}/>
+                         onClick={() => onCreateUserTag(type)}/>
 
             {selected.length === 1 && 
-                <MUIMenuItem text={"Rename " + Strings.upperFirst(props.type)}
+                <MUIMenuItem text={"Rename " + Strings.upperFirst(type)}
                              icon={<CreateIcon/>}
-                             onClick={() => onRenameUserTag(props.type)}/>
+                             disabled={disabled}
+                             onClick={() => onRenameUserTag(type)}/>
             }
             <Divider/>
 
             <MUIMenuItem text="Delete"
                          icon={<DeleteForeverIcon/>}
+                         disabled={disabled}
                          onClick={handleDelete}/>
 
         </>
