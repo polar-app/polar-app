@@ -9,6 +9,7 @@ import {fade} from "@material-ui/core/styles";
 import clsx from "clsx";
 import {useDragContext} from "../../ui/tree/DragTarget2";
 import {useContextMenu} from "../../../../apps/repository/js/doc_repo/MUIContextMenu";
+import {SelectRowType} from "../../../../apps/repository/js/doc_repo/SelectionEvents2";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -55,7 +56,7 @@ const useStyles = makeStyles((theme) =>
 );
 interface IProps {
 
-    readonly selectRow: (node: TagID, event: React.MouseEvent, source: 'checkbox' | 'click') => void;
+    readonly selectRow: (node: TagID, event: React.MouseEvent, source: SelectRowType) => void;
 
     readonly nodeId: string;
     readonly selected: boolean;
@@ -85,13 +86,19 @@ export const MUITreeItemLabel = React.memo(function MUITreeItemLabel(props: IPro
         },
     );
 
+    const onContextMenu: React.MouseEventHandler<HTMLDivElement> = React.useCallback((e) => {
+        contextMenuCallbacks.onContextMenu(e);
+        props.selectRow(props.nodeId, e, 'context')
+    }, [props.nodeId, contextMenuCallbacks.onContextMenu, props.selectRow]);
+
     return (
         <div className={className}
              {...contextMenuCallbacks}
+             onContextMenu={onContextMenu}
              onClick={event => props.selectRow(props.nodeId, event, 'click')}>
 
             <div className={classes.checkbox}
-                 onClick={event => onCheckbox(event)}>
+                 onClick={onCheckbox}>
                 <MUIEfficientCheckbox checked={props.selected}/>
             </div>
 

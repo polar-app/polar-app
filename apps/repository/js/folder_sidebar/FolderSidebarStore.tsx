@@ -29,6 +29,7 @@ import {IAsyncTransaction} from "polar-shared/src/util/IAsyncTransaction";
 import {isPresent, Preconditions} from "polar-shared/src/Preconditions";
 import {useCreateTag, useDeleteTag, useRenameTag} from "../persistence_layer/PersistenceLayerMutator2";
 import {createObservableStoreWithPrefsContext} from "../../../../web/js/react/store/ObservableStoreWithPrefsContext";
+import {SelectionEvents2, SelectRowType} from '../doc_repo/SelectionEvents2';
 
 export interface TagDescriptorSelected extends TagDescriptor {
     readonly selected: boolean
@@ -65,7 +66,7 @@ interface IFolderSidebarStore {
 
 interface IFolderSidebarCallbacks {
 
-    readonly selectRow: (node: TagID, event: React.MouseEvent, source: 'checkbox' | 'click') => void;
+    readonly selectRow: (node: TagID, event: React.MouseEvent, source: SelectRowType) => void;
 
     readonly toggleExpanded: (nodes: ReadonlyArray<TagID>) => void;
 
@@ -267,37 +268,18 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
         function selectRow(node: TagID,
                            event: React.MouseEvent,
-                           source: 'checkbox' | 'click'): void {
+                           type: SelectRowType): void {
 
             const store = storeProvider();
 
-            function toSelected(): Selected {
+            const selected = SelectionEvents2.selectRow(node,
+                                                        store.selected,
+                                                        store.tags,
+                                                        event,
+                                                        type);
 
-                if (store.selected.length > 1) {
-                    return 'multiple';
-                } else if (store.selected.length === 1) {
-                    return 'single';
-                } else {
-                    return 'none';
-                }
-
-            }
-
-            function toSelfSelected(): SelfSelected {
-                return store.selected.includes(node) ? 'yes' : 'no';
-            }
-
-            const eventType = FolderSelectionEvents.toEventType(event, source);
-            const selected = toSelected();
-            const selfSelected = toSelfSelected();
-
-            const strategy = FolderSelectionEvents.toStrategy({eventType, selected, selfSelected});
-
-            const newSelected = FolderSelectionEvents.executeStrategy(strategy, node, store.selected);
-
-            mutator.doUpdate({...store, selected: newSelected});
-            doSelectRow(newSelected);
-
+            mutator.doUpdate({...store, selected});
+            doSelectRow(selected);
         }
 
         function toggleExpanded(nodes: ReadonlyArray<TagID>): void {
@@ -395,8 +377,7 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
             }
 
             const tagToBeRenamed = selected[0];
-            const end            = tagToBeRenamed.id.lastIndexOf('/');
-            const baseDir        = tagToBeRenamed.id.slice(0, end);
+            const baseDir        = Paths.dirname(tagToBeRenamed.id);
 
             function handleRename(text: string) {
                 resetSelected();
