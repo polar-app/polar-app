@@ -6,7 +6,7 @@ import CreateIcon from "@material-ui/icons/Create";
 import * as React from "react";
 import {TagType} from "polar-shared/src/tags/Tags";
 import {Strings} from "polar-shared/src/util/Strings";
-import {useFolderSidebarCallbacks} from "../folder_sidebar/FolderSidebarStore";
+import {useFolderSidebarCallbacks, useFolderSidebarStore} from "../folder_sidebar/FolderSidebarStore";
 
 interface IProps {
     readonly type: TagType;
@@ -15,6 +15,8 @@ interface IProps {
 export const FolderSidebarMenu = (props: IProps) => {
 
     const {onDelete, onCreateUserTag, onRenameUserTag} = useFolderSidebarCallbacks();
+
+    const {selected} = useFolderSidebarStore(['selected']);
 
     const handleDelete = React.useCallback(() => {
         onDelete();
@@ -26,9 +28,11 @@ export const FolderSidebarMenu = (props: IProps) => {
                          icon={<LocalOfferIcon/>}
                          onClick={() => onCreateUserTag(props.type)}/>
 
-            <MUIMenuItem text={"Rename " + Strings.upperFirst(props.type)}
-                         icon={<CreateIcon/>}
-                         onClick={() => onRenameUserTag(props.type)}/>
+            {selected.length === 1 && 
+                <MUIMenuItem text={"Rename " + Strings.upperFirst(props.type)}
+                             icon={<CreateIcon/>}
+                             onClick={() => onRenameUserTag(props.type)}/>
+            }
             <Divider/>
 
             <MUIMenuItem text="Delete"
