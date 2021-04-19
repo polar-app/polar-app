@@ -89,7 +89,7 @@ export const MUITreeItemLabel = React.memo(function MUITreeItemLabel(props: IPro
     const onContextMenu: React.MouseEventHandler<HTMLDivElement> = React.useCallback((e) => {
         contextMenuCallbacks.onContextMenu(e);
         props.selectRow(props.nodeId, e, 'context')
-    }, [props.nodeId, contextMenuCallbacks.onContextMenu, props.selectRow]);
+    }, [props, contextMenuCallbacks]);
 
     return (
         <div className={className}

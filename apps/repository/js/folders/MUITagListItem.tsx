@@ -90,7 +90,7 @@ export const MUITagListItemInner = React.memo(function MUITagListItemInner(props
     const onContextMenu: React.MouseEventHandler<HTMLDivElement> = React.useCallback((e) => {
         contextMenu.onContextMenu(e);
         props.selectRow(props.nodeId, e, 'context')
-    }, [props.nodeId, contextMenu.onContextMenu, props.selectRow]);
+    }, [props, contextMenu]);
 
     // TODO: needs tabindex and focus...
     return (
