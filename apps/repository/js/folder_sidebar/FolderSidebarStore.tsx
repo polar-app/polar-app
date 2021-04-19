@@ -2,31 +2,25 @@ import React, {useContext} from 'react';
 import {Tag, Tags, TagStr, TagType} from "polar-shared/src/tags/Tags";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {
-    createObservableStore, IUseStoreHookOpts,
-    SetStore, UseContextHook, UseStoreHook
+    SetStore, UseContextHook
 } from "../../../../web/js/react/store/ObservableStore";
 import {Provider} from "polar-shared/src/util/Providers";
 import {TagNodes} from "../../../../web/js/tags/TagNodes";
 import isEqual from "react-fast-compare";
 import {
-    usePersistenceContext,
-    useRepoDocMetaManager,
     useTagDescriptorsContext
 } from "../persistence_layer/PersistenceLayerApp";
 import {useTagSidebarEventForwarder} from "../store/TagSidebarEventForwarder";
-import {FolderSelectionEvents} from "./FolderSelectionEvents";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Paths} from "polar-shared/src/util/Paths";
 import {BatchMutators} from "../BatchMutators";
 import TagID = Tags.TagID;
-import Selected = FolderSelectionEvents.Selected;
-import SelfSelected = FolderSelectionEvents.SelfSelected;
 import BatchMutatorOpts = BatchMutators.BatchMutatorOpts;
 import {TRoot} from "../../../../web/js/ui/tree/TRoot";
 import {useLogger} from "../../../../web/js/mui/MUILogger";
 import {IAsyncTransaction} from "polar-shared/src/util/IAsyncTransaction";
-import {isPresent, Preconditions} from "polar-shared/src/Preconditions";
+import {isPresent} from "polar-shared/src/Preconditions";
 import {useCreateTag, useDeleteTag, useRenameTag} from "../persistence_layer/PersistenceLayerMutator2";
 import {createObservableStoreWithPrefsContext} from "../../../../web/js/react/store/ObservableStoreWithPrefsContext";
 import {SelectionEvents2, SelectRowType} from '../doc_repo/SelectionEvents2';
@@ -393,7 +387,6 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
             dialogs.prompt({
                 title: `Rename ${type} ${Paths.basename(tagToBeRenamed.id)}`,
-                description: "May not create spaces and some extended unicode characters.",
                 autoFocus: true,
                 onCancel: NULL_FUNCTION,
                 onDone: handleRename,
@@ -417,17 +410,18 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
                 });
                 break;
             }
-            setStore({ ...store, isProcessing: true });
 
-            withBatch(transactions, {error: "Unable to delete tag: "})
-                .then(() => {
+            const doAsync = async () => {
+                setStore({ ...store, isProcessing: true });
+                try {
+                    await withBatch(transactions, {error: "Unable to rename tag: "})
                     setStore({ ...store, isProcessing: false });
-                })
-                .catch(err => {
+                } catch(err) {
                     setStore({ ...store, isProcessing: false });
-                    log.error(err)
-                });
+                }
+            };
 
+            doAsync().catch((err) => log.error("Could not rename tag.", err));
         }
 
         function onDrop(tagID: TagID) {
@@ -473,14 +467,18 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
                     ? store.tags.filter(sitem => sitem.id.startsWith(item.id))
                     : [item]
             ));
-            
-            setStore({ ...store, isProcessing: true });
-            withBatch(tags.map(tag => deleteTag(tag.id)), {error: "Unable to delete tag: "})
-                .then(() => setStore({ ...store, isProcessing: false }))
-                .catch(err => {
+
+            const doAsync = async () => {
+                setStore({ ...store, isProcessing: true });
+                try {
+                    await withBatch(tags.map(tag => deleteTag(tag.id)), {error: "Unable to delete tag: "})
                     setStore({ ...store, isProcessing: false });
-                    log.error(err)
-                });
+                } catch(err) {
+                    setStore({ ...store, isProcessing: false });
+                }
+            };
+
+            doAsync().catch((err) => log.error("Could not delete tag.", err));
         }
 
         function onDelete() {

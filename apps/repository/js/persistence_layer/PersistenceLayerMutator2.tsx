@@ -95,10 +95,12 @@ const computeNewTags = (tags: TagMap | undefined, mutations: ReadonlyArray<TagMu
     );
 };
 
+export type IAnnotationType = ITextHighlight | IAreaHighlight | IFlashcard | IComment;
+
 const setAnnotationTags = (
     docMeta: IDocMeta,
     tagMutations: ReadonlyArray<TagMutation>,
-    predicate: (annotation: ITextHighlight | IAreaHighlight | IFlashcard | IComment) => boolean,
+    predicate: (annotation: IAnnotationType | IDocAnnotation) => boolean,
 ) => {
     DocMetas.annotations(docMeta, ((pageMeta, annotation, type) => {
         if (!predicate(annotation)) {
@@ -135,6 +137,7 @@ const setDocInfoTags = (docMeta: IDocMeta, tagMutations: ReadonlyArray<TagMutati
 export type RenameTagAction = (renameTagID: Tag,
                                newName: Tag | null,
                                progressCallback?: ProgressCallback) => IAsyncTransaction<void>;
+
 
 export function useRenameTag(): RenameTagAction  {
 
@@ -179,13 +182,11 @@ export function useRenameTag(): RenameTagAction  {
             userTags.register(newTag);
         }
 
-        // FIXME REVIEW: I was thinking of creating a union type for these 4 ITextHighlight | IAreaHighlight | IFlashcard | IComment
-        const annotationPredicate = (annotation: ITextHighlight | IAreaHighlight | IFlashcard | IComment | IDocAnnotation) => {
+        const annotationPredicate = (annotation: IAnnotationType | IDocAnnotation) => {
             const tags = (annotation.tags || {});
             return isPresent(tags[oldTag.id]);
         };
 
-        // FIXME REVIEW: I was hoping to share some code between prepare & commit but I wasn't able to
         const prepare = () => {
             for (const docID of mergedDocIDs) {
                 let repoDocInfo = repoDocMetaManager.repoDocInfoIndex.get(docID);
@@ -195,7 +196,6 @@ export function useRenameTag(): RenameTagAction  {
                 }
 
                 if (docsIDsSet.has(docID)) {
-                    // setDocInfoTags(repoDocInfo.docMeta, tagMutations);
                     repoDocInfo = { ...repoDocInfo, tags: computeNewTags(repoDocInfo.docMeta.docInfo.tags, tagMutations) };
                 }
 
@@ -203,15 +203,16 @@ export function useRenameTag(): RenameTagAction  {
                     const annotations = RepoDocAnnotations.convert(persistenceLayerProvider, repoDocInfo.docMeta)
                         .filter(annotationPredicate);
 
+                    // Update the in-memory tags for annotations
                     for (const annotation of annotations) {
                         repoDocMetaManager.repoDocAnnotationIndex.delete(annotation.id);
                         repoDocMetaManager.repoDocAnnotationIndex.put(annotation.id, {
                             ...annotation,
-                            tags:toSelfInheritedTags(computeNewTags(annotation.tags, tagMutations)),
+                            tags: toSelfInheritedTags(computeNewTags(annotation.tags, tagMutations)),
                         });
                     }
                 }
-                // UPDATE THE IN-MEMORY TAGS FOR DOCS
+                // Update the in-memory tags for docs
                 repoDocMetaManager.repoDocInfoIndex.delete(docID);
                 repoDocMetaManager.repoDocInfoIndex.put(docID, repoDocInfo);
             }
@@ -219,11 +220,12 @@ export function useRenameTag(): RenameTagAction  {
             repoDocMetaManager.repoDocAnnotationIndex.prune();
         };
 
+        const progressTracker = new ProgressTracker({
+            total: mergedDocIDs.length,
+            id: 'updateTagsInDocMetas'
+        });
+
         const commit =  async () => {
-            const progressTracker = new ProgressTracker({
-                total: docIDs.length + annotationsDocIDs.length,
-                id: 'removeTagsFromDocMetas'
-            });
 
             for (const docID of mergedDocIDs) {
                 const docMeta = await persistenceLayer.getDocMeta(docID);
