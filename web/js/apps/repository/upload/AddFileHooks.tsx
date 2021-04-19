@@ -137,7 +137,9 @@ export namespace AddFileHooks {
 
                 }
 
-                accountVerifiedAction(() => doAsync().catch(err => log.error(err)));
+                accountVerifiedAction(() => {
+                    doAsync().catch(err => log.error(err));
+                });
 
             } else {
                 throw new Error("Unable to upload files.  Only PDF and EPUB uploads are supported.");

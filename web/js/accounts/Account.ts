@@ -1,5 +1,5 @@
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {Billing} from 'polar-accounts/src/Billing';
+import {Billing, Trial} from 'polar-accounts/src/Billing';
 
 export interface AccountUsage {
     readonly storageInBytes: number;
@@ -31,6 +31,8 @@ export interface Account extends AccountInit {
      * updated, etc.
      */
     readonly lastModified: ISODateTimeString;
+
+    readonly trial?: Trial;
 
 }
 

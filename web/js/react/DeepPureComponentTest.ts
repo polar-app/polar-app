@@ -1,4 +1,5 @@
 import {assert} from 'chai';
+
 const isEqual = require("react-fast-compare");
 
 describe('DeepPureComponent', function() {

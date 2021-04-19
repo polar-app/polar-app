@@ -10,11 +10,9 @@ export class Concurrently {
 
         return new Promise<T>((resolve, reject) => {
 
-            let executor = async () => {
+            const executor = () => {
 
-                try {
-
-                    let val = await callable();
+                const doThen = (val: T) => {
 
                     if(predicate(val)) {
 
@@ -25,10 +23,14 @@ export class Concurrently {
                         setTimeout(executor, intervalMS);
                     }
 
-
-                } catch (e) {
-                    reject(e);
                 }
+
+                const doCatch = (err: Error) => {
+                    reject(err);
+                }
+
+                callable().then(val => doThen(val))
+                         .catch(err => doCatch(err));
 
             };
 

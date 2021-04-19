@@ -111,7 +111,10 @@ const CreateAIFlashcardButton = deepMemo(function CreateAIFlashcardButton(props:
     const verifiedAction = useAIFlashcardVerifiedAction();
 
     const handleClick = React.useCallback(() => {
-        verifiedAction(() => handler());
+        verifiedAction(() => {
+            handler()
+                .catch(err => console.error("Could not handle verified action: ", err));
+        })
     }, [handler, verifiedAction]);
 
     return (

@@ -7,7 +7,7 @@ import {DocMetas} from '../metadata/DocMetas';
 
 const tmpdir = os.tmpdir();
 
-xdescribe("DocMetaParsePerformance", async function() {
+xdescribe("DocMetaParsePerformance", function() {
 
     xit("basic", async function() {
 

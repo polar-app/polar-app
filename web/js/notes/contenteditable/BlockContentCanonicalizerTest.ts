@@ -1,10 +1,10 @@
 import {assert} from 'chai';
 import {ConstructorOptions, JSDOM} from "jsdom";
-import {NoteContentCanonicalizer} from "./NoteContentCanonicalizer";
+import {BlockContentCanonicalizer} from "./BlockContentCanonicalizer";
 
 declare var global: any;
 
-describe('NoteContentCanonicalizer', function() {
+describe('BlockContentCanonicalizer', function() {
 
     function parseHTML(html: string) {
 
@@ -20,7 +20,7 @@ describe('NoteContentCanonicalizer', function() {
     }
 
     function doCanonicalize(html: string) {
-        return NoteContentCanonicalizer.canonicalizeElement(parseHTML(html));
+        return BlockContentCanonicalizer.canonicalizeElement(parseHTML(html));
     }
 
     it("basic parse", function() {

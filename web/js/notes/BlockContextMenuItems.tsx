@@ -8,7 +8,7 @@ import { useBlocksStore } from './store/BlocksStore';
 import { observer } from "mobx-react-lite"
 import {BlockPredicates} from "./store/BlockPredicates";
 
-export const NoteContextMenuItems = observer(function MUIDocDropdownMenuItems() {
+export const BlockContextMenuItems = observer(function MUIDocDropdownMenuItems() {
 
     const blocksStore = useBlocksStore();
 

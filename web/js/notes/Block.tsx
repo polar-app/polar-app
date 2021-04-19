@@ -1,12 +1,12 @@
 import React from "react";
-import {NoteEditor} from "./NoteEditor";
-import {NoteItems} from "./NoteItems";
-import {NoteBulletButton} from "./NoteBulletButton";
+import {BlockEditor} from "./BlockEditor";
+import {BlockItems} from "./BlockItems";
+import {BlockBulletButton} from "./BlockBulletButton";
 import {createContextMenu} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
 import {IDocViewerContextMenuOrigin} from "../../../apps/doc/src/DocViewerMenu";
-import {NoteContextMenuItems} from "./NoteContextMenuItems";
+import {BlockContextMenuItems} from "./BlockContextMenuItems";
 import useTheme from "@material-ui/core/styles/useTheme";
-import { NoteExpandToggleButton } from "./NoteExpandToggleButton";
+import { BlockExpandToggleButton } from "./BlockExpandToggleButton";
 import { BlockIDStr, useBlocksStore } from "./store/BlocksStore";
 import { observer,  } from "mobx-react-lite"
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -29,14 +29,14 @@ interface IProps {
     readonly id: BlockIDStr;
 }
 
-export interface INoteContextMenuOrigin {
+export interface IBlockContextMenuOrigin {
 
 }
 
-export const [NoteContextMenu, useNoteContextMenu]
-    = createContextMenu<IDocViewerContextMenuOrigin>(NoteContextMenuItems, {name: 'notes'});
+export const [BlockContextMenu, useBlockContextMenu]
+    = createContextMenu<IDocViewerContextMenuOrigin>(BlockContextMenuItems, {name: 'notes'});
 
-export const NoteInner = observer((props: IProps) => {
+export const BlockInner = observer((props: IProps) => {
 
     const {id} = props;
 
@@ -44,7 +44,7 @@ export const NoteInner = observer((props: IProps) => {
     const classes = useStyles();
 
     const theme = useTheme();
-    const contextMenuHandlers = useNoteContextMenu();
+    const contextMenuHandlers = useBlockContextMenu();
 
     const expanded = blocksStore.isExpanded(id);
     const selected = blocksStore.isSelected(id);
@@ -235,7 +235,7 @@ export const NoteInner = observer((props: IProps) => {
              onDragLeave={event => handleDragExit(event)}
              onDragEnd={() => blocksStore.clearDrop()}
              onDrop={event => handleDrop(event)}
-             className={clsx(['Note', selected ? classes.selected : undefined])}>
+             className={clsx(['Block', selected ? classes.selected : undefined])}>
 
                 <BlockDragIndicator id={props.id}>
                     <>
@@ -260,25 +260,27 @@ export const NoteInner = observer((props: IProps) => {
                                 {/*<NoteOverflowButton id={props.id}/>*/}
 
                                 {hasItems && id !== root && (
-                                    <NoteExpandToggleButton id={props.id}/>
+                                    <BlockExpandToggleButton id={props.id}/>
                                 )}
 
-                                <NoteBulletButton target={props.id}/>
+                                <BlockBulletButton target={props.id}/>
 
                             </div>
 
                             {BlockPredicates.isTextBlock(block) && (
-                                <NoteEditor key={props.id} parent={props.parent} id={props.id} />
+                                <BlockEditor key={props.id} parent={props.parent} id={props.id} />
                             )}
 
                             {block.content.type === 'image' && (
-                                <BlockImageContent {...block.content}/>
+                                <BlockImageContent src={block.content.src}
+                                                   width={block.content.width}
+                                                   height={block.content.height}/>
                             )}
 
                         </div>
 
                         {(expanded || id === root) && (
-                            <NoteItems parent={props.id} notes={items}/>
+                            <BlockItems parent={props.id} notes={items}/>
                         )}
                 </>
             </BlockDragIndicator>
@@ -286,14 +288,14 @@ export const NoteInner = observer((props: IProps) => {
     );
 });
 
-export const Note = observer(function Note(props: IProps) {
+export const Block = observer(function Note(props: IProps) {
 
     // useLifecycleTracer('Note');
 
     return (
-        <NoteContextMenu>
-            <NoteInner {...props}/>
-        </NoteContextMenu>
+        <BlockContextMenu>
+            <BlockInner {...props}/>
+        </BlockContextMenu>
     );
 
 });

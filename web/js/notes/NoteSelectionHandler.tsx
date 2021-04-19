@@ -11,14 +11,14 @@ export const NoteSelectionHandler = observer(function NoteSelectionHandler(props
 
     const blocksStore = useBlocksStore();
 
-    const selected = blocksStore.selected;
+    const selected = blocksStore.selected();
 
     const handleDelete = React.useCallback((): boolean => {
 
         const deletable = Object.keys(selected);
 
         if (deletable.length > 0) {
-            blocksStore.doDelete(deletable);
+            blocksStore.deleteBlocks(deletable);
             return true;
         }
 

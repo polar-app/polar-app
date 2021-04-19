@@ -1,6 +1,6 @@
 import React from "react";
 import {deepMemo} from "../react/ReactUtils";
-import { Note } from "./Note";
+import { Block } from "./Block";
 import {UL} from "./UL";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
@@ -22,7 +22,7 @@ interface NotesProps {
     readonly notes: ReadonlyArray<IBlock> | undefined;
 }
 
-export const NoteItems = deepMemo(function NoteItems(props: NotesProps) {
+export const BlockItems = deepMemo(function NoteItems(props: NotesProps) {
 
     const classes = useStyles();
 
@@ -41,9 +41,9 @@ export const NoteItems = deepMemo(function NoteItems(props: NotesProps) {
                     const key = note.id;
 
                     return (
-                        <Note key={key}
-                              parent={props.parent}
-                              id={note.id}/>);
+                        <Block key={key}
+                               parent={props.parent}
+                               id={note.id}/>);
                 })}
             </>
         </UL>

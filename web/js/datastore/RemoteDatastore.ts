@@ -16,6 +16,7 @@ const log = Logger.create();
 /**
  * A remote datastore bug one that has a native implementation of snapshot
  * so that it operates in the proper thread.
+ * @Deprecated remove this as it's from Polar 1.x
  */
 export class RemoteDatastore extends DelegatedDatastore {
 
@@ -96,6 +97,7 @@ export class RemoteDatastore extends DelegatedDatastore {
      * without having to re-read the datastore after it's been initialized.
      */
     public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void {
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         this.docMetaSnapshotEventDispatcher.addEventListener(docMetaSnapshotEventListener);
     }
 

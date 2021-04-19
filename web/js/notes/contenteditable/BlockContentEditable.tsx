@@ -6,13 +6,14 @@ import {NavOpts, BlockIDStr, useBlocksStore, IActiveBlock} from '../store/Blocks
 import {ContentEditables} from "../ContentEditables";
 import {createActionsProvider} from "../../mui/action_menu/ActionStore";
 import {NoteFormatPopper} from "../NoteFormatPopper";
-import {NoteContentCanonicalizer} from "./NoteContentCanonicalizer";
+import {BlockContentCanonicalizer} from "./BlockContentCanonicalizer";
 import {NoteAction} from "./NoteAction";
 import { useHistory } from 'react-router-dom';
 import { autorun } from 'mobx'
 import {CursorPositions} from "./CursorPositions";
 import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
 import {IPasteImageData, usePasteHandler } from '../clipboard/PasteHandlers';
+import {IImageContent} from "../content/IImageContent";
 
 const ENABLE_TRACE_CURSOR_RESET = true;
 
@@ -51,7 +52,7 @@ export function useNoteContentEditableElement() {
  * https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand
  *
  */
-export const NoteContentEditable = observer((props: IProps) => {
+export const BlockContentEditable = observer((props: IProps) => {
 
     const [content, setContent] = React.useState(props.content);
     const divRef = React.useRef<HTMLDivElement | null>(null);
@@ -65,10 +66,24 @@ export const NoteContentEditable = observer((props: IProps) => {
 
     const onPasteImage = React.useCallback((image: IPasteImageData) => {
         console.log("Got paste: ", image);
-    }, []);
+
+        const content: IImageContent = {
+            type: 'image',
+            src: image.url,
+            width: image.width,
+            height: image.height,
+            naturalWidth: image.width,
+            naturalHeight: image.height
+        };
+
+        blocksStore.createNewBlock(props.id, {content});
+
+    }, [blocksStore, props.id]);
 
     const onPasteError = React.useCallback((err: Error) => {
-        console.error("Got paste: ", err);
+        console.error("Got paste error: ", err);
+
+
     }, []);
 
     const handlePaste = usePasteHandler({onPasteImage, onPasteError});
@@ -92,7 +107,7 @@ export const NoteContentEditable = observer((props: IProps) => {
                 throw new Error("No element");
             }
 
-            const div = NoteContentCanonicalizer.canonicalizeElement(divRef.current)
+            const div = BlockContentCanonicalizer.canonicalizeElement(divRef.current)
             return ContentEditableWhitespace.trim(div.innerHTML);
 
         }
@@ -272,7 +287,7 @@ export const NoteContentEditable = observer((props: IProps) => {
                     if ((platform === Platform.MACOS && event.shiftKey && event.metaKey) ||
                         (platform === Platform.WINDOWS && event.shiftKey && event.altKey)) {
 
-                        blocksStore.doUnIndent(props.id);
+                        blocksStore.unIndentBlock(props.id);
                         break;
 
                     }
@@ -303,7 +318,7 @@ export const NoteContentEditable = observer((props: IProps) => {
 
                     if ((platform === Platform.MACOS && event.shiftKey && event.metaKey) ||
                         (platform === Platform.WINDOWS && event.shiftKey && event.altKey)) {
-                        blocksStore.doIndent(props.id);
+                        blocksStore.indentBlock(props.id);
                         break;
                     }
 
@@ -337,7 +352,7 @@ export const NoteContentEditable = observer((props: IProps) => {
 
                 if (blocksStore.hasSelected()) {
                     abortEvent();
-                    blocksStore.doDelete([]);
+                    blocksStore.deleteBlocks([]);
                     break;
                 }
 
@@ -364,9 +379,9 @@ export const NoteContentEditable = observer((props: IProps) => {
                     abortEvent();
 
                     if (event.shiftKey) {
-                        blocksStore.doUnIndent(props.id);
+                        blocksStore.unIndentBlock(props.id);
                     } else {
-                        blocksStore.doIndent(props.id);
+                        blocksStore.indentBlock(props.id);
                     }
 
                 }
@@ -428,7 +443,7 @@ function useUpdateCursorPosition() {
 
     const nonceRef = React.useRef(-1);
 
-    return (editor: HTMLDivElement, activeBlock: IActiveBlock, force?: boolean) => {
+    return React.useCallback((editor: HTMLDivElement, activeBlock: IActiveBlock, force?: boolean) => {
 
         if (force || nonceRef.current !== activeBlock.nonce) {
 
@@ -445,7 +460,7 @@ function useUpdateCursorPosition() {
 
         }
 
-    }
+    }, []);
 
 }
 

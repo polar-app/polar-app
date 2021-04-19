@@ -18,6 +18,12 @@ export const AnnotationInlineControlBar = deepMemo(function AnnotationInlineCont
 
     const callbacks = useAnnotationRepoCallbacks();
 
+    const docInfo = annotation?.docInfo;
+
+    if (! docInfo) {
+        return null;
+    }
+
     return (
 
         <>
@@ -31,7 +37,7 @@ export const AnnotationInlineControlBar = deepMemo(function AnnotationInlineCont
                 <div style={{
                          fontSize: '14px'
                      }}>
-                    {annotation.docInfo?.title || 'Untitled'}
+                    {docInfo.title || 'Untitled'}
                 </div>
 
                 <MUIButtonBar style={{
@@ -40,7 +46,7 @@ export const AnnotationInlineControlBar = deepMemo(function AnnotationInlineCont
                                   justifyContent: "flex-end"
                               }}>
                     <MUITooltip title="Open document">
-                        <IconButton onClick={() => callbacks.doOpen(annotation?.docInfo!)}>
+                        <IconButton onClick={() => callbacks.doOpen(docInfo)}>
                             <OpenInNewIcon/>
                         </IconButton>
                     </MUITooltip>

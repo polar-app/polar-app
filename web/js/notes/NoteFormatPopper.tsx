@@ -37,14 +37,15 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
     const blocksStore = useBlocksStore();
 
     const block = blocksStore.getBlock(props.id);
+    const selected = blocksStore.selected();
 
-    const {selected, active} = blocksStore;
+    const {active} = blocksStore;
 
     // FIXME listen to selected in the store and if it's not empty then clear the popup..
 
     const doPopup = React.useCallback((): boolean => {
 
-        if (Object.keys(blocksStore.selected).length > 0) {
+        if (Object.keys(selected).length > 0) {
             return false;
         }
 
@@ -69,7 +70,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
         return true;
 
-    }, [blocksStore.selected, position]);
+    }, [position, selected]);
 
     const clearPopup = React.useCallback(() => {
 

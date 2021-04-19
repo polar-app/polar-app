@@ -20,7 +20,7 @@ interface IProps {
     readonly id: IDStr;
 }
 
-export const NoteExpandToggleButton = observer(function NoteExpandToggleButton(props: IProps) {
+export const BlockExpandToggleButton = observer(function NoteExpandToggleButton(props: IProps) {
 
     const {id} = props;
 

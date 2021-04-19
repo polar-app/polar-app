@@ -191,9 +191,9 @@ export namespace DocAnnotations {
     }
 
     export function createFromAreaHighlight(docFileResolver: DocFileResolver,
-                                          docMeta: IDocMeta,
-                                          annotation: IAreaHighlight,
-                                          pageMeta: IPageMeta): IDocAnnotation {
+                                            docMeta: IDocMeta,
+                                            annotation: IAreaHighlight,
+                                            pageMeta: IPageMeta): IDocAnnotation {
 
         const createPosition = (): Point => {
 
@@ -315,8 +315,7 @@ export namespace DocAnnotations {
 
         for (const areaHighlight of areaHighlights) {
 
-            const docAnnotation =
-                await createFromAreaHighlight(docFileResolver, docMeta, areaHighlight, pageMeta);
+            const docAnnotation = createFromAreaHighlight(docFileResolver, docMeta, areaHighlight, pageMeta);
 
             result.push(docAnnotation);
 

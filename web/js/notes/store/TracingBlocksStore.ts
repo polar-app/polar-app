@@ -4,7 +4,7 @@ import {
     BlocksIndex, DoIndentResult, DoPutOpts, DoUnIndentResult,
     IActiveBlock, IBlockActivated,
     IBlockMerge,
-    ICreatedBlock, IDropTarget,
+    ICreatedBlock, IDropTarget, INewBlockOpts,
     ISplitBlock, NavOpts, NavPosition,
     StringSetMap
 } from "./BlocksStore";
@@ -50,8 +50,8 @@ export class TracingBlocksStore implements IBlocksStore {
         return this.delegate.root;
     }
 
-    public get selected(): StringSetMap {
-        return this.delegate.selected;
+    public selected(): StringSetMap {
+        return this.delegate.selected();
     }
 
     public canMerge(id: BlockIDStr): IBlockMerge | undefined {
@@ -60,7 +60,7 @@ export class TracingBlocksStore implements IBlocksStore {
     }
 
     public clearDrop(): void {
-        trace('canMerge');
+        trace('clearDrop');
         this.delegate.clearDrop();
     }
 
@@ -74,9 +74,14 @@ export class TracingBlocksStore implements IBlocksStore {
         this.delegate.collapse(id);
     }
 
-    public createNewBlock(id: BlockIDStr, split?: ISplitBlock): ICreatedBlock {
-        trace('', {});
-        return this.delegate.createNewBlock(id, split);
+    public deleteBlocks(blockIDs: ReadonlyArray<BlockIDStr>): void {
+        trace('deleteBlocks', {blockIDs});
+        return this.delegate.deleteBlocks(blockIDs);
+    }
+
+    public createNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock | undefined {
+        trace('createNewBlock', {id, opts});
+        return this.delegate.createNewBlock(id, opts);
     }
 
     public createNewNamedBlock(name: BlockNameStr, ref: BlockIDStr): BlockIDStr {
@@ -89,9 +94,9 @@ export class TracingBlocksStore implements IBlocksStore {
         return this.delegate.doDelete(blockIDs);
     }
 
-    public doIndent(id: BlockIDStr): ReadonlyArray<DoIndentResult> {
+    public indentBlock(id: BlockIDStr): ReadonlyArray<DoIndentResult> {
         trace('doIndent', {id});
-        return this.delegate.doIndent(id);
+        return this.delegate.indentBlock(id);
     }
 
     public doPut(blocks: ReadonlyArray<IBlock>, opts?: DoPutOpts): void {
@@ -99,9 +104,9 @@ export class TracingBlocksStore implements IBlocksStore {
         this.delegate.doPut(blocks);
     }
 
-    public doUnIndent(id: BlockIDStr): ReadonlyArray<DoUnIndentResult> {
+    public unIndentBlock(id: BlockIDStr): ReadonlyArray<DoUnIndentResult> {
         trace('doUnIndent', {id});
-        return this.delegate.doUnIndent(id)
+        return this.delegate.unIndentBlock(id)
     }
 
     public expand(id: BlockIDStr): void {
@@ -117,6 +122,11 @@ export class TracingBlocksStore implements IBlocksStore {
     public getBlock(id: BlockIDStr): Block | undefined {
         trace('getBlock', {id});
         return this.delegate.getBlock(id);
+    }
+
+    public getBlockContentData(id: BlockIDStr): string | undefined {
+        trace('getBlockContentData', {id});
+        return this.delegate.getBlockContentData(id);
     }
 
     public getBlockActivated(id: BlockIDStr): IBlockActivated | undefined {
@@ -217,6 +227,14 @@ export class TracingBlocksStore implements IBlocksStore {
     public toggleExpand(id: BlockIDStr): void {
         trace('toggleExpand', {id});
         this.delegate.toggleExpand(id);
+    }
+
+    public redo(): Promise<void> {
+        return Promise.resolve(undefined);
+    }
+
+    public undo(): Promise<void> {
+        return Promise.resolve(undefined);
     }
 
 }

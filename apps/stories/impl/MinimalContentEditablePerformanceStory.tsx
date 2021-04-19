@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import { Numbers } from 'polar-shared/src/util/Numbers';
-import {NoteContentEditable} from "../../../web/js/notes/contenteditable/NoteContentEditable";
+import {BlockContentEditable} from "../../../web/js/notes/contenteditable/BlockContentEditable";
 
 // interface EditorsProps {
 //     readonly
@@ -29,11 +29,11 @@ const Editors = React.memo(function Editors() {
     return (
         <>
             {Numbers.range(1, EDITOR_COUNT).map(idx => (
-                <NoteContentEditable id="1234"
-                                     parent={undefined}
-                                     key={idx}
-                                     content={`${idx} this is the <b>content</b> there are many like it but this one is mine.`}
-                                     onChange={NULL_FUNCTION}/>))}
+                <BlockContentEditable id="1234"
+                                      parent={undefined}
+                                      key={idx}
+                                      content={`${idx} this is the <b>content</b> there are many like it but this one is mine.`}
+                                      onChange={NULL_FUNCTION}/>))}
         </>
     );
 });

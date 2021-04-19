@@ -1,4 +1,5 @@
 import {HTMLStr} from "polar-shared/src/util/Strings";
+
 const copy = require('copy-html-to-clipboard');
 
 export class Clipboards {

@@ -60,7 +60,7 @@ export function useSideNavInitializer() {
         const matchingTabs = tabs.filter(predicate);
 
         if (matchingTabs.length === 0 && docViewerURL) {
-            handleDocLoad(docViewerURL?.id!)
+            handleDocLoad(docViewerURL.id)
         }
 
     }, [docViewerURL, docViewerURL?.id, handleDocLoad, tabs])

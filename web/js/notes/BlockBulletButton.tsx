@@ -13,7 +13,7 @@ interface IProps {
     readonly target: BlockIDStr | BlockTargetStr;
 }
 
-export const NoteBulletButton = observer(function NoteBulletButton(props: IProps) {
+export const BlockBulletButton = observer(function NoteBulletButton(props: IProps) {
 
     const theme = useTheme();
     const blocksStore = useBlocksStore();

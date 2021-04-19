@@ -6,29 +6,38 @@ import {
     StringSetMap,
     DoIndentResult,
     DoUnIndentResult,
-    ISplitBlock,
     ICreatedBlock,
     IActiveBlock,
     BlockNameStr,
     IBlockMerge,
-    DoPutOpts,
     BlocksIndex,
-    IDropTarget
+    IDropTarget, INewBlockOpts, DoPutOpts
 } from "./BlocksStore";
 import {IBlock} from "./IBlock";
 import {Block} from "./Block";
 import {BlockTargetStr} from "../NoteLinkLoader";
 import {ReverseIndex} from "./ReverseIndex";
 
+/**
+ * deleteBlocks
+ * createNewBlock
+ * createNewNamedBlock
+ * collapse
+ * expand
+ * doIndent
+ * doUnIndent
+ * mergeBlocks
+ */
 export interface IBlocksStore {
 
-    selected: StringSetMap;
     root: BlockIDStr | undefined;
     active: IActiveBlock | undefined;
     dropSource: BlockIDStr | undefined;
     dropTarget: IDropTarget | undefined;
     reverse: ReverseIndex;
     index: BlocksIndex;
+
+    selected(): StringSetMap;
 
     clearSelected(reason: string): void;
     hasSelected(): boolean;
@@ -38,6 +47,8 @@ export interface IBlocksStore {
     pathToBlock(id: BlockIDStr): ReadonlyArray<Block>;
 
     doDelete(blockIDs: ReadonlyArray<BlockIDStr>): void;
+    doPut(blocks: ReadonlyArray<IBlock>, opts?: DoPutOpts): void;
+
     setActive(active: BlockIDStr | undefined): void;
 
     setRoot(root: BlockIDStr | undefined): void;
@@ -47,6 +58,8 @@ export interface IBlocksStore {
     getBlockActivated(id: BlockIDStr): IBlockActivated | undefined;
 
     getBlock(id: BlockIDStr): Block | undefined;
+
+    getBlockContentData(id: BlockIDStr): string | undefined;
 
     setActiveWithPosition(active: BlockIDStr | undefined,
                           activePos: NavPosition | undefined): void;
@@ -59,13 +72,14 @@ export interface IBlocksStore {
     isExpanded(id: BlockIDStr): boolean;
     isSelected(id: BlockIDStr): boolean;
 
-    doIndent(id: BlockIDStr): ReadonlyArray<DoIndentResult>;
-    doUnIndent(id: BlockIDStr): ReadonlyArray<DoUnIndentResult>;
+    indentBlock(id: BlockIDStr): ReadonlyArray<DoIndentResult>;
+    unIndentBlock(id: BlockIDStr): ReadonlyArray<DoUnIndentResult>;
 
     requiredAutoUnIndent(id: BlockIDStr): boolean;
 
-    createNewBlock(id: BlockIDStr,
-                   split?: ISplitBlock): ICreatedBlock;
+    deleteBlocks(blockIDs: ReadonlyArray<BlockIDStr>): void;
+
+    createNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock | undefined;
 
     createNewNamedBlock(name: BlockNameStr, ref: BlockIDStr): BlockIDStr;
 
@@ -85,6 +99,7 @@ export interface IBlocksStore {
 
     getNamedNodes(): ReadonlyArray<string>;
 
-    doPut(blocks: ReadonlyArray<IBlock>, opts?: DoPutOpts): void;
+    undo(): Promise<void>;
+    redo(): Promise<void>;
 
 }

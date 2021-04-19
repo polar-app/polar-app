@@ -1,4 +1,4 @@
-export namespace NoteContentCanonicalizer {
+export namespace BlockContentCanonicalizer {
 
     export function canonicalizeElement(element: HTMLElement) {
         return doA(doSPAN(element.cloneNode(true))) as HTMLElement;

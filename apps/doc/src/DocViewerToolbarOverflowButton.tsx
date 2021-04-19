@@ -78,6 +78,9 @@ export const DocViewerToolbarOverflowButton = deepMemo(function DocViewerToolbar
 
     const setColumnLayoutCallback = useSetColumnLayoutCallback();
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+    const url = props.docInfo?.url!;
+
     return (
 
         <MUIMenu caret
@@ -91,12 +94,12 @@ export const DocViewerToolbarOverflowButton = deepMemo(function DocViewerToolbar
                 <MUIMenuItem text="Open Original URL in Browser"
                              icon={<OpenInBrowserIcon/>}
                              disabled={! props.docInfo?.url}
-                             onClick={() => linkLoader(props.docInfo?.url!, {focus: true, newWindow: true})}/>
+                             onClick={() => linkLoader(url, {focus: true, newWindow: true})}/>
 
                 <MUIMenuItem text="Copy Original URL to Clipboard"
                              icon={<LinkIcon/>}
                              disabled={! props.docInfo?.url}
-                             onClick={() => Clipboards.writeText(props.docInfo?.url!)}/>
+                             onClick={() => Clipboards.writeText(url)}/>
 
                 <MUIMenuItem text="Set Document Layout (Number of Columns)"
                              icon={<ViewWeekIcon/>}

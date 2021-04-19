@@ -9,9 +9,10 @@ import {ReverseIndex} from "./ReverseIndex";
 import {Block} from "./Block";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {ConstructorOptions, JSDOM} from "jsdom";
-import { IBlock } from "./IBlock";
-import {IMarkdownContent} from "../content/IMarkdownContent";
-import {INameContent} from "../content/INameContent";
+import { NameContent } from "../content/NameContent";
+import { MarkdownContent } from "../content/MarkdownContent";
+import {Asserts} from "polar-shared/src/Asserts";
+import assertPresent = Asserts.assertPresent;
 
 // TODO:
 
@@ -32,7 +33,7 @@ import {INameContent} from "../content/INameContent";
 //   code path is used.
 //
 
-function assertTextBlock(content: BlockContent): asserts content is IMarkdownContent | INameContent {
+function assertTextBlock(content: BlockContent): asserts content is MarkdownContent | NameContent {
 
     if (content.type !== 'markdown' && content.type !== 'name') {
         throw new Error("wrong type: " + content.type);
@@ -79,16 +80,16 @@ describe('BlocksStore', function() {
 
         it("Note", () => {
 
-            const note = new Block(MockBlocks.create()[0]);
+            const block = new Block(MockBlocks.create()[0]);
 
-            assert.isTrue(isObservable(note));
-            assert.isTrue(isObservableProp(note, 'content'));
-            assert.isTrue(isObservableProp(note, 'items'));
-            assert.isTrue(isObservableProp(note, 'updated'));
-            assert.isTrue(isObservableProp(note, 'created'));
-            assert.isTrue(isObservableProp(note, 'links'));
-            assert.isTrue(isObservableProp(note, 'parent'));
-            assert.isTrue(isObservableProp(note, 'items'));
+            assert.isTrue(isObservable(block));
+            assert.isTrue(isObservableProp(block, 'content'));
+            assert.isTrue(isObservableProp(block, 'items'));
+            assert.isTrue(isObservableProp(block, 'updated'));
+            assert.isTrue(isObservableProp(block, 'created'));
+            assert.isTrue(isObservableProp(block, 'links'));
+            assert.isTrue(isObservableProp(block, 'parent'));
+            assert.isTrue(isObservableProp(block, 'items'));
 
             // assert.isTrue(isObservableProp(note.content.type, 'type'));
 
@@ -105,8 +106,8 @@ describe('BlocksStore', function() {
             "_index": {
                 "100": {
                     "_content": {
-                        "data": "World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world's countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.",
-                        "type": "markdown"
+                        "_data": "World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world's countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.",
+                        "_type": "markdown"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "100",
@@ -118,8 +119,8 @@ describe('BlocksStore', function() {
                 },
                 "102": {
                     "_content": {
-                        "data": "World War II",
-                        "type": "name"
+                        "_data": "World War II",
+                        "_type": "name"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "102",
@@ -135,8 +136,8 @@ describe('BlocksStore', function() {
                 },
                 "103": {
                     "_content": {
-                        "data": "[Lasted](https://www.example.com) from 1939 to 1945",
-                        "type": "markdown"
+                        "_data": "[Lasted](https://www.example.com) from 1939 to 1945",
+                        "_type": "markdown"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "103",
@@ -149,8 +150,8 @@ describe('BlocksStore', function() {
                 },
                 "104": {
                     "_content": {
-                        "data": "Axis Powers: Germany, Italy, Japan",
-                        "type": "markdown"
+                        "_data": "Axis Powers: Germany, Italy, Japan",
+                        "_type": "markdown"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "104",
@@ -163,8 +164,8 @@ describe('BlocksStore', function() {
                 },
                 "105": {
                     "_content": {
-                        "data": "Allied Powers: United States, United Kingdom, [[Canada]], [[Russia]].",
-                        "type": "markdown"
+                        "_data": "Allied Powers: United States, United Kingdom, [[Canada]], [[Russia]].",
+                        "_type": "markdown"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "105",
@@ -182,8 +183,8 @@ describe('BlocksStore', function() {
                 },
                 "106": {
                     "_content": {
-                        "data": "Lead by Franklin D. Roosevelt, [[Winston Churchill]], and Joseph Stalin ",
-                        "type": "markdown"
+                        "_data": "Lead by Franklin D. Roosevelt, [[Winston Churchill]], and Joseph Stalin ",
+                        "_type": "markdown"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "106",
@@ -198,8 +199,8 @@ describe('BlocksStore', function() {
                 },
                 "107": {
                     "_content": {
-                        "data": "Germany",
-                        "type": "name"
+                        "_data": "Germany",
+                        "_type": "name"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "107",
@@ -213,8 +214,8 @@ describe('BlocksStore', function() {
                 },
                 "108": {
                     "_content": {
-                        "data": "Russia",
-                        "type": "name"
+                        "_data": "Russia",
+                        "_type": "name"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "108",
@@ -226,8 +227,8 @@ describe('BlocksStore', function() {
                 },
                 "109": {
                     "_content": {
-                        "data": "Canada",
-                        "type": "name"
+                        "_data": "Canada",
+                        "_type": "name"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "109",
@@ -241,8 +242,8 @@ describe('BlocksStore', function() {
                 },
                 "110": {
                     "_content": {
-                        "data": "Germany Germany (German: Deutschland, German pronunciation: [ˈdɔʏtʃlant]), officially the Federal Republic of Germany (German: Bundesrepublik Deutschland, About this soundlisten),[e] is a country in Central and Western Europe and one of the major participants of [[World War II]]",
-                        "type": "markdown"
+                        "_data": "Germany Germany (German: Deutschland, German pronunciation: [ˈdɔʏtʃlant]), officially the Federal Republic of Germany (German: Bundesrepublik Deutschland, About this soundlisten),[e] is a country in Central and Western Europe and one of the major participants of [[World War II]]",
+                        "_type": "markdown"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "110",
@@ -257,8 +258,8 @@ describe('BlocksStore', function() {
                 },
                 "111": {
                     "_content": {
-                        "data": "Canada is north of the United States",
-                        "type": "markdown"
+                        "_data": "Canada is north of the United States",
+                        "_type": "markdown"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "111",
@@ -271,8 +272,8 @@ describe('BlocksStore', function() {
                 },
                 "112": {
                     "_content": {
-                        "data": "Winston Churchill",
-                        "type": "name"
+                        "_data": "Winston Churchill",
+                        "_type": "name"
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "112",
@@ -341,8 +342,8 @@ describe('BlocksStore', function() {
 
             assertJSON(store.getBlock('102'), {
                 "_content": {
-                    "data": "World War II",
-                    "type": "name"
+                    "_data": "World War II",
+                    "_type": "name"
                 },
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "102",
@@ -361,12 +362,12 @@ describe('BlocksStore', function() {
 
             TestingTime.forward(1000);
 
-            const indentResult = store.doIndent('104')
+            const indentResult = store.indentBlock('104')
 
             assertJSON(store.getBlock('102'), {
                 "_content": {
-                    "data": "World War II",
-                    "type": "name"
+                    "_data": "World War II",
+                    "_type": "name"
                 },
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "102",
@@ -382,8 +383,8 @@ describe('BlocksStore', function() {
 
             assertJSON(store.getBlock(indentResult[0].value!), {
                 "_content": {
-                    "data": "[Lasted](https://www.example.com) from 1939 to 1945",
-                    "type": "markdown"
+                    "_data": "[Lasted](https://www.example.com) from 1939 to 1945",
+                    "_type": "markdown"
                 },
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "103",
@@ -407,9 +408,9 @@ describe('BlocksStore', function() {
 
             const store = createStore();
 
-            store.doIndent('104')
+            store.indentBlock('104')
 
-            assert.equal(store.doIndent('104')[0].error, 'no-sibling');
+            assert.equal(store.indentBlock('104')[0].error, 'no-sibling');
 
         });
 
@@ -419,8 +420,8 @@ describe('BlocksStore', function() {
 
             assertJSON(store.getBlock('102'), {
                 "_content": {
-                    "data": "World War II",
-                    "type": "name"
+                    "_data": "World War II",
+                    "_type": "name"
                 },
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "102",
@@ -439,8 +440,8 @@ describe('BlocksStore', function() {
 
             assertJSON(store.getBlock('104'), {
                 "_content": {
-                    "data": "Axis Powers: Germany, Italy, Japan",
-                    "type": "markdown"
+                    "_data": "Axis Powers: Germany, Italy, Japan",
+                    "_type": "markdown"
                 },
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "104",
@@ -452,12 +453,12 @@ describe('BlocksStore', function() {
                 "_updated": "2012-03-02T11:38:49.321Z"
             });
 
-            store.doIndent('104')
+            store.indentBlock('104')
 
             assertJSON(store.getBlock('104'), {
                 "_content": {
-                    "data": "Axis Powers: Germany, Italy, Japan",
-                    "type": "markdown"
+                    "_data": "Axis Powers: Germany, Italy, Japan",
+                    "_type": "markdown"
                 },
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "104",
@@ -471,12 +472,12 @@ describe('BlocksStore', function() {
 
             assert.equal(store.getBlock('104')!.parent, '103');
 
-            store.doUnIndent('104');
+            store.unIndentBlock('104');
 
             assertJSON(store.getBlock('104'), {
                 "_content": {
-                    "data": "Axis Powers: Germany, Italy, Japan",
-                    "type": "markdown"
+                    "_data": "Axis Powers: Germany, Italy, Japan",
+                    "_type": "markdown"
                 },
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "104",
@@ -490,8 +491,8 @@ describe('BlocksStore', function() {
 
             assertJSON(store.getBlock('102'), {
                 "_content": {
-                    "data": "World War II",
-                    "type": "name"
+                    "_data": "World War II",
+                    "_type": "name"
                 },
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "102",
@@ -512,7 +513,7 @@ describe('BlocksStore', function() {
 
             const store = createStore();
 
-            const indentResult = store.doIndent('108')
+            const indentResult = store.indentBlock('108')
 
             assert.equal(indentResult[0].error!, 'no-parent');
 
@@ -524,7 +525,7 @@ describe('BlocksStore', function() {
 
             const store = createStore();
 
-            const indentResult = store.doIndent('103')
+            const indentResult = store.indentBlock('103')
 
             assert.equal(indentResult[0].error!, 'no-sibling');
 
@@ -561,8 +562,8 @@ describe('BlocksStore', function() {
 
         assertJSON(Arrays.first(Object.values(store.index)), {
             "_content": {
-                "data": "World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world's countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.",
-                "type": "markdown"
+                "_data": "World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world's countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.",
+                "_type": "markdown"
             },
             "_created": "2012-03-02T11:38:49.321Z",
             "_id": "100",
@@ -623,6 +624,8 @@ describe('BlocksStore', function() {
 
             const createdBlock = store.createNewBlock('102');
 
+            assertPresent(createdBlock);
+
             const block = store.getBlock('102')!;
 
             assertJSON(block.items, [
@@ -667,8 +670,8 @@ describe('BlocksStore', function() {
 
             assertJSON(store.getBlock('103'), {
                 "_content": {
-                    "data": "[Lasted](https://www.example.com) from 1939 to 1945Axis Powers: Germany, Italy, Japan",
-                    "type": "markdown"
+                    "_data": "[Lasted](https://www.example.com) from 1939 to 1945Axis Powers: Germany, Italy, Japan",
+                    "_type": "markdown"
                 },
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "103",
@@ -686,53 +689,70 @@ describe('BlocksStore', function() {
 
     describe("Notes", () => {
 
-        it("setContent", () => {
+        describe("setContent", () => {
 
-            const store = createStore();
+            it("reactivity", () => {
+                //
+                // const store = createStore();
+                //
+                // const block = store.getBlock('102')
+                //
+                // console.log("FIXME: ", block!.content);
+                //
+                //
+                // (block!.content as any).subscribe((next: any) => console.log("FIXME next"));
 
-            const note = store.getBlock('102')
-
-            assertJSON(note, {
-                "_content": {
-                    "data": "World War II",
-                    "type": "name"
-                },
-                "_created": "2012-03-02T11:38:49.321Z",
-                "_id": "102",
-                "_items": [
-                    "103",
-                    "104",
-                    "105"
-                ],
-                "_links": [],
-                "_nspace": "ns101",
-                "_uid": "123",
-                "_updated": "2012-03-02T11:38:49.321Z"
             });
 
-            TestingTime.forward(1000);
+            it("basic", () => {
 
-            note!.setContent({type: 'markdown', data: "hello"})
+                const store = createStore();
 
-            assertJSON(note, {
-                "_content": {
-                    "data": "hello",
-                    "type": "markdown"
-                },
-                "_created": "2012-03-02T11:38:49.321Z",
-                "_id": "102",
-                "_items": [
-                    "103",
-                    "104",
-                    "105"
-                ],
-                "_links": [],
-                "_nspace": "ns101",
-                "_uid": "123",
-                "_updated": "2012-03-02T11:38:50.321Z"
+                const block = store.getBlock('102')
+
+                assertJSON(block, {
+                    "_content": {
+                        "_data": "World War II",
+                        "_type": "name"
+                    },
+                    "_created": "2012-03-02T11:38:49.321Z",
+                    "_id": "102",
+                    "_items": [
+                        "103",
+                        "104",
+                        "105"
+                    ],
+                    "_links": [],
+                    "_nspace": "ns101",
+                    "_uid": "123",
+                    "_updated": "2012-03-02T11:38:49.321Z"
+                });
+
+                TestingTime.forward(1000);
+
+                block!.setContent({type: 'name', data: "World War Two"})
+
+                assertJSON(block, {
+                    "_content": {
+                        "_data": "World War Two",
+                        "_type": "name"
+                    },
+                    "_created": "2012-03-02T11:38:49.321Z",
+                    "_id": "102",
+                    "_items": [
+                        "103",
+                        "104",
+                        "105"
+                    ],
+                    "_links": [],
+                    "_nspace": "ns101",
+                    "_uid": "123",
+                    "_updated": "2012-03-02T11:38:50.321Z"
+                });
+
             });
-
         });
+
 
     });
 
@@ -746,7 +766,7 @@ describe('BlocksStore', function() {
                 "110"
             ]);
 
-            store.doDelete(['102']);
+            store.deleteBlocks(['102']);
 
             assertJSON(store.lookupReverse('102'), []);
 
@@ -756,14 +776,14 @@ describe('BlocksStore', function() {
 
             const store = createStore();
 
-            store.doDelete(['104']);
+            store.deleteBlocks(['104']);
 
-            const note = store.getBlock('102');
+            const block = store.getBlock('102');
 
-            assertJSON(note, {
+            assertJSON(block, {
                 "_content": {
-                    "data": "World War II",
-                    "type": "name"
+                    "_data": "World War II",
+                    "_type": "name"
                 },
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "102",
@@ -786,14 +806,14 @@ describe('BlocksStore', function() {
 
             const store = createStore();
 
-            store.doDelete(['103', '104', '105']);
+            store.deleteBlocks(['103', '104', '105']);
 
-            const note = store.getBlock('102');
+            const block = store.getBlock('102');
 
-            assertJSON(note, {
+            assertJSON(block, {
                 "_content": {
-                    "data": "World War II",
-                    "type": "name"
+                    "_data": "World War II",
+                    "_type": "name"
                 },
                 "_created": "2012-03-02T11:38:49.321Z",
                 "_id": "102",
@@ -816,15 +836,15 @@ describe('BlocksStore', function() {
 
         it("By ID", () => {
             const store = createStore();
-            const note = store.getBlockByTarget('102');
-            assert.equal(note?.id, '102');
+            const block = store.getBlockByTarget('102');
+            assert.equal(block?.id, '102');
         });
 
         it("By Name", () => {
 
             const store = createStore();
-            const note = store.getBlockByTarget('World War II');
-            assert.equal(note?.id, '102');
+            const block = store.getBlockByTarget('World War II');
+            assert.equal(block?.id, '102');
 
         });
 
@@ -892,34 +912,36 @@ describe('BlocksStore', function() {
 
             const store = createStore();
 
-            const note = store.getBlock('102');
+            const block = store.getBlock('102');
 
             TestingTime.forward(60 * 1000);
 
             const now = ISODateTimeStrings.create();
 
-            assertJSON(note!.items, [
+            assertJSON(block!.items, [
                 "103",
                 "104",
                 "105"
             ]);
 
-            const createdNote = store.createNewBlock('102');
+            const createdBlock = store.createNewBlock('102');
 
-            assertJSON(note!.items, [
-                createdNote.id,
+            assertPresent(createdBlock);
+
+            assertJSON(block!.items, [
+                createdBlock.id,
                 "103",
                 "104",
                 "105"
             ]);
 
-            const newNote = store.getBlock(createdNote.id)!;
+            const newBlock = store.getBlock(createdBlock.id)!;
 
-            assert.equal(newNote.created, now);
-            assert.equal(newNote.updated, now);
-            assert.equal(newNote.parent, note!.id);
+            assert.equal(newBlock.created, now);
+            assert.equal(newBlock.updated, now);
+            assert.equal(newBlock.parent, block!.id);
 
-            assert.equal(note!.updated, now);
+            assert.equal(block!.updated, now);
 
             // assertJSON(store, {});
 
@@ -929,16 +951,18 @@ describe('BlocksStore', function() {
 
             const store = createStore();
 
-            const note = store.getBlock('102');
+            const block = store.getBlock('102');
 
-            store.doDelete(['103', '104', '105']);
+            store.deleteBlocks(['103', '104', '105']);
 
-            assertJSON(note!.items, [
+            assertJSON(block!.items, [
             ]);
 
-            const createdNote = store.createNewBlock('102');
-            assertJSON(note!.items, [
-                createdNote.id,
+            const createdBlock = store.createNewBlock('102');
+            assertPresent(createdBlock);
+
+            assertJSON(block!.items, [
+                createdBlock.id,
             ]);
 
         });
@@ -949,17 +973,18 @@ describe('BlocksStore', function() {
 
             function createNoteWithoutExpansion() {
 
-                const createdNote = store.createNewBlock('105');
+                const createdBlock = store.createNewBlock('105');
+                assertPresent(createdBlock);
 
-                assert.equal(createdNote.parent, '102');
+                assert.equal(createdBlock.parent, '102');
 
-                const note = store.getBlock('102');
+                const block = store.getBlock('102');
 
-                assertJSON(note!.items, [
+                assertJSON(block!.items, [
                     "103",
                     "104",
                     "105",
-                    createdNote.id
+                    createdBlock.id
                 ]);
 
             }
@@ -967,14 +992,15 @@ describe('BlocksStore', function() {
             function createNoteWithExpansion() {
                 store.expand('105');
 
-                const createdNote = store.createNewBlock('105');
+                const createdBlock = store.createNewBlock('105');
+                assertPresent(createdBlock);
 
-                assert.equal(createdNote.parent, '105');
+                assert.equal(createdBlock.parent, '105');
 
-                const note = store.getBlock('105');
+                const block = store.getBlock('105');
 
-                assertJSON(note!.items, [
-                    createdNote.id,
+                assertJSON(block!.items, [
+                    createdBlock.id,
                     "106"
                 ]);
 
@@ -1001,7 +1027,8 @@ describe('BlocksStore', function() {
 
                 assertTextBlock(originalBlock!.content);
 
-                const createdBlock = store.createNewBlock(id, {prefix: '', suffix: originalBlock!.content.data});
+                const createdBlock = store.createNewBlock(id, {split: {prefix: '', suffix: originalBlock!.content.data}});
+                assertPresent(createdBlock);
 
                 assertJSON(store.getBlock(originalBlock!.parent!)!.items, [
                     "103",
@@ -1022,7 +1049,9 @@ describe('BlocksStore', function() {
 
                 assertTextBlock(originalBlock!.content);
 
-                const createdBlock = store.createNewBlock(id, {prefix: '', suffix: originalBlock!.content.data});
+                const createdBlock = store.createNewBlock(id, {split: {prefix: '', suffix: originalBlock!.content.data}});
+                assertPresent(createdBlock);
+
                 assertJSON(store.getBlock(originalBlock!.parent!)!.items, [
                     "103",
                     "104",

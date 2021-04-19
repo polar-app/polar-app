@@ -6,10 +6,11 @@ import {useNoteLinkLoader} from "./NoteLinkLoader";
 import {MarkdownContentEscaper} from "./MarkdownContentEscaper";
 import {BlockIDStr, useBlocksStore} from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
-import {NoteContentEditable} from "./contenteditable/NoteContentEditable";
+import {BlockContentEditable} from "./contenteditable/BlockContentEditable";
 import {ContentEditables} from "./ContentEditables";
 import { HTMLStr } from "polar-shared/src/util/Strings";
 import {BlockPredicates} from "./store/BlockPredicates";
+import {MarkdownContent} from "./content/MarkdownContent";
 
 interface ILinkNavigationEvent {
     readonly abortEvent: () => void;
@@ -77,7 +78,7 @@ function useLinkNavigationClickHandler() {
 
 }
 
-const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
+const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
 
     const {id} = props;
     const blocksStore = useBlocksStore()
@@ -86,6 +87,7 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
     const ref = React.createRef<HTMLDivElement | null>();
 
     const block = blocksStore.getBlock(id);
+    const data = blocksStore.getBlockContentData(id);
 
     const escaper = MarkdownContentEscaper;
 
@@ -93,24 +95,17 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
         if (block) {
             const markdown = escaper.unescape(content);
-            block.setContent({
+            block.setContent(new MarkdownContent({
                 type: 'markdown',
                 data: markdown
-            });
+            }));
         }
 
     }, [escaper, block]);
 
     const content = React.useMemo(() => {
-
-        if (! block) {
-            return ''
-        }
-
-        const text = BlockPredicates.isTextBlock(block) ? block.content.data : '';
-        return escaper.escape(text);
-
-    }, [block, escaper]);
+        return data !== undefined ? escaper.escape(data) : '';
+    }, [data, escaper]);
 
     const onClick = React.useCallback((event: React.MouseEvent) => {
 
@@ -133,7 +128,7 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
                 const prefix = escaper.unescape(ContentEditables.fragmentToHTML(split.prefix));
                 const suffix = escaper.unescape(ContentEditables.fragmentToHTML(split.suffix));
 
-                blocksStore.createNewBlock(id, {prefix, suffix});
+                blocksStore.createNewBlock(id, {split: {prefix, suffix}});
 
             }
 
@@ -146,7 +141,7 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
 
         if (ref.current) {
             if (blocksStore.requiredAutoUnIndent(props.id)) {
-                blocksStore.doUnIndent(props.id);
+                blocksStore.unIndentBlock(props.id);
             } else {
                 handleCreateNewNote();
             }
@@ -179,13 +174,13 @@ const NoteEditorInner = observer(function NoteEditorInner(props: IProps) {
     }
 
     return (
-        <NoteContentEditable id={props.id}
-                             parent={props.parent}
-                             innerRef={ref}
-                             content={content}
-                             onChange={handleChange}
-                             onClick={onClick}
-                             onKeyDown={onKeyDown}/>
+        <BlockContentEditable id={props.id}
+                              parent={props.parent}
+                              innerRef={ref}
+                              content={content}
+                              onChange={handleChange}
+                              onClick={onClick}
+                              onKeyDown={onKeyDown}/>
     );
 
 });
@@ -216,7 +211,7 @@ interface IProps {
 
 }
 
-export const NoteEditor = observer(function NoteEditor(props: IProps) {
+export const BlockEditor = observer(function BlockEditor(props: IProps) {
 
     return (
         <NoteEditorWithEditorStore {...props}/>

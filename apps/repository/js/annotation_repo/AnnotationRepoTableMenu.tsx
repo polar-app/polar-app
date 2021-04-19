@@ -6,6 +6,7 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import * as React from "react";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import FileCopyIcon from '@material-ui/icons/FileCopy';
+
 export const AnnotationRepoTableMenu = deepMemo(function AnnotationRepoTableMenu() {
 
     const callbacks = useAnnotationRepoCallbacks();

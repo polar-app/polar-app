@@ -7,7 +7,7 @@ import {PHZWriter} from "polar-content-capture/src/phz/PHZWriter";
 
 TestingTime.freeze();
 
-describe('CacheRegistryTest', function() {
+xdescribe('CacheRegistryTest', function() {
 
     describe('Load PHZ', function() {
 

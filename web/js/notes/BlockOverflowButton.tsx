@@ -1,12 +1,11 @@
 import React from "react";
-import {deepMemo} from "../react/ReactUtils";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import createStyles from "@material-ui/core/styles/createStyles";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import clsx from "clsx";
-import {useNoteContextMenu} from "./Note";
 import { BlockIDStr, useBlocksStore } from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
+import { useBlockContextMenu } from "./Block";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -22,11 +21,11 @@ interface IProps {
     readonly id: BlockIDStr;
 }
 
-export const NoteOverflowButton = observer(function NoteOverflow(props: IProps) {
+export const BlockOverflowButton = observer(function NoteOverflow(props: IProps) {
 
     const blocksStore = useBlocksStore();
     const classes = useStyles();
-    const contextMenuHandlers = useNoteContextMenu();
+    const contextMenuHandlers = useBlockContextMenu();
 
     const noteActivated = blocksStore.getBlockActivated(props.id);
 

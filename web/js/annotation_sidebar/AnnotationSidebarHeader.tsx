@@ -62,12 +62,15 @@ function useExportCallback(): (format: ExportFormat) => void {
     const persistenceLayer = usePersistenceLayerContext();
     const log = useLogger();
 
-    const docMeta = docMetaContext.doc?.docMeta!;
-
     return (format: ExportFormat) => {
 
-        Exporters.doExportFromDocMeta(persistenceLayer.persistenceLayerProvider, format, docMeta)
-                 .catch(err => log.error(err));
+
+        const docMeta = docMetaContext.doc?.docMeta;
+
+        if (docMeta) {
+            Exporters.doExportFromDocMeta(persistenceLayer.persistenceLayerProvider, format, docMeta)
+                .catch(err => log.error(err));
+        }
 
     }
 

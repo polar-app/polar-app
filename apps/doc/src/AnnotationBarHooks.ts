@@ -144,12 +144,20 @@ export function useAnnotationBar(opts: AnnotationBarOpts = {}): AnnotationBarEve
             // now clear the selection since we just highlighted it.
             selection.empty();
 
-            messageDispatcher({
-                docID: store.current?.docMeta?.docInfo.fingerprint!,
-                pageNum: highlightCreatedEvent.pageNum,
-                highlightColor: highlightCreatedEvent.highlightColor,
-                selectedContent
-            });
+            const docID = store.current?.docMeta?.docInfo.fingerprint;
+
+            if (docID) {
+
+                messageDispatcher({
+                    docID,
+                    pageNum: highlightCreatedEvent.pageNum,
+                    highlightColor: highlightCreatedEvent.highlightColor,
+                    selectedContent
+                });
+
+            } else {
+                console.warn("No docID")
+            }
 
             // TextHighlighter.computeTextSelections();
         };
