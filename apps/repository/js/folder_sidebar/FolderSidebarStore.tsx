@@ -266,9 +266,10 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
 
             const store = storeProvider();
 
+            const folderRoot = store.foldersRoot ? [store.foldersRoot.value] : [];
             const selected = SelectionEvents2.selectRow(node,
                                                         store.selected,
-                                                        store.tags,
+                                                        [...store.tags, ...folderRoot],
                                                         event,
                                                         type);
 
