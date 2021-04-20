@@ -6,11 +6,12 @@ import {TagDescriptorSelected} from "../../../../apps/repository/js/folder_sideb
 import {Tags} from "polar-shared/src/tags/Tags";
 import {memoForwardRef} from "../../react/ReactUtils";
 import TagID = Tags.TagID;
+import {SelectRowType} from '../../../../apps/repository/js/doc_repo/SelectionEvents2';
 
 interface IProps {
     readonly root: TagNode<TagDescriptorSelected>;
     readonly toggleExpanded: (nodes: ReadonlyArray<string>) => void;
-    readonly selectRow: (node: TagID, event: React.MouseEvent, source: 'checkbox' | 'click') => void;
+    readonly selectRow: (node: TagID, event: React.MouseEvent, source: SelectRowType) => void;
 
     readonly collapseNode: (node: string) => void;
     readonly expandNode: (node: string) => void;
@@ -31,7 +32,7 @@ export const MUITreeView = memoForwardRef((props: IProps) => {
                          label="Folders"
                          info={props.root.value.count}
                          selected={props.root.value.selected}
-                         onNodeExpand={(event, nodeID) => props.expandNode(nodeID)}
+                         onNodeExpand={(_, nodeID) => props.expandNode(nodeID)}
                          onNodeCollapse={props.collapseNode}
                          selectRow={props.selectRow}
                          childNodes={props.root.children}

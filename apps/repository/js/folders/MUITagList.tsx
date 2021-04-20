@@ -3,11 +3,12 @@ import {MUITagListItem} from "./MUITagListItem";
 import {TagDescriptor} from "polar-shared/src/tags/TagDescriptors";
 import {Tags} from "polar-shared/src/tags/Tags";
 import TagID = Tags.TagID;
+import {SelectRowType} from '../doc_repo/SelectionEvents2';
 
 interface IProps {
     readonly tags: ReadonlyArray<TagDescriptor>;
     readonly selected: ReadonlyArray<string>;
-    readonly selectRow: (node: TagID, event: React.MouseEvent, source: 'checkbox' | 'click') => void
+    readonly selectRow: (node: TagID, event: React.MouseEvent, source: SelectRowType) => void
     readonly onDrop: (event: React.DragEvent, tagID: TagID) => void;
 }
 

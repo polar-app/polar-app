@@ -10,6 +10,8 @@ import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {HTMLString} from '../util/HTMLString';
 import {Ref} from 'polar-shared/src/metadata/Refs';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {IFlashcard} from 'polar-shared/src/metadata/IFlashcard';
+import {IPageMeta} from 'polar-shared/src/metadata/IPageMeta';
 
 export class Flashcards {
 
@@ -79,6 +81,23 @@ export class Flashcards {
 
     }
 
+    public static update(id: string,
+                         docMeta: IDocMeta,
+                         pageMeta: IPageMeta,
+                         updates: Partial<IFlashcard>) {
+
+        const existing = pageMeta.flashcards[id];
+
+        if (!existing) {
+            throw new Error("No existing for id: " + id);
+        }
+
+        pageMeta.flashcards[id] = {
+            ...existing,
+            ...updates,
+        };
+
+    }
 }
 
 export class MockFlashcards {

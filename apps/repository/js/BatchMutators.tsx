@@ -67,10 +67,12 @@ export namespace BatchMutators {
         try {
 
             for (const transaction of transactions) {
-
                 transaction.prepare();
+            }
 
-                refresh();
+            refresh();
+
+            for (const transaction of transactions) {
 
                 // TODO update progress of this operation using a snackbar
                 await transaction.commit();

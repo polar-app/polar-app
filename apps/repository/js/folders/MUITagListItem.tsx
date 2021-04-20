@@ -10,6 +10,7 @@ import {
 } from "../../../../web/js/ui/tree/DragTarget2";
 import {useContextMenu} from "../doc_repo/MUIContextMenu";
 import TagID = Tags.TagID;
+import {SelectRowType} from "../doc_repo/SelectionEvents2";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -61,7 +62,7 @@ interface IProps {
     readonly nodeId: string;
     readonly label: string;
     readonly info: string | number;
-    readonly selectRow: (node: TagID, event: React.MouseEvent, source: 'checkbox' | 'click') => void;
+    readonly selectRow: (node: TagID, event: React.MouseEvent, source: SelectRowType) => void;
     readonly onDrop: (event: React.DragEvent, tagID: TagID) => void;
 }
 
@@ -86,11 +87,16 @@ export const MUITagListItemInner = React.memo(function MUITagListItemInner(props
 
     const contextMenu = useContextMenu();
 
+    const onContextMenu: React.MouseEventHandler<HTMLDivElement> = React.useCallback((e) => {
+        contextMenu.onContextMenu(e);
+        props.selectRow(props.nodeId, e, 'context')
+    }, [props, contextMenu]);
+
     // TODO: needs tabindex and focus...
     return (
         <div className={className}
-             {...contextMenu}
-             onClick={(event) => props.selectRow(props.nodeId, event, 'click')}>
+            onContextMenu={onContextMenu} 
+            onClick={(event) => props.selectRow(props.nodeId, event, 'click')}>
 
             <div onClick={onCheckbox}
                  className={classes.checkbox}>

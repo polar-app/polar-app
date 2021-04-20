@@ -1,6 +1,6 @@
 import React from 'react';
 import {PersistenceLayerWatcher} from "./PersistenceLayerWatcher";
-import {UserTagsDataLoader} from "./UserTagsDataLoader";
+import {UserTagsDataLoader, useUserTagsDB} from "./UserTagsDataLoader";
 import {PersistenceLayerManager} from "../../../../web/js/datastore/PersistenceLayerManager";
 import {
     ListenablePersistenceLayerProvider,
@@ -23,7 +23,6 @@ import {
     DocMetaLookupContext
 } from "../../../../web/js/annotation_sidebar/DocMetaLookupContextProvider";
 import {IDStr} from "polar-shared/src/util/Strings";
-import {PrefsContext2} from "./PrefsContext2";
 import {AppTags} from "./AppTags";
 
 export interface ITagsContext {
@@ -90,7 +89,6 @@ interface IUserTagsDataLoaderDataProps {
     readonly repoDocMetaLoader: RepoDocMetaLoader;
     readonly repoDocMetaManager: RepoDocMetaManager;
     readonly tagsType: TagsType;
-    readonly userTags: ReadonlyArray<Tag> | undefined;
     readonly persistenceLayerProvider: ListenablePersistenceLayerProvider;
     readonly persistenceLayerManager: PersistenceLayerManager;
     readonly children: JSX.Element;
@@ -98,10 +96,11 @@ interface IUserTagsDataLoaderDataProps {
 
 const UserTagsDataLoaderData = React.memo(function UserTagsDataLoaderData(props: IUserTagsDataLoaderDataProps) {
 
-    const {repoDocMetaManager, appTags, userTags, persistenceLayerProvider} = props;
+    const {repoDocMetaManager, appTags, persistenceLayerProvider} = props;
+    const userTagsDB = useUserTagsDB();
 
-    const docTags = () => TagDescriptors.merge(appTags?.docTags(), userTags);
-    const annotationTags = () => TagDescriptors.merge(appTags?.annotationTags(), userTags);
+    const docTags = () => TagDescriptors.merge(appTags?.docTags(), userTagsDB.tags());
+    const annotationTags = () => TagDescriptors.merge(appTags?.annotationTags(), userTagsDB.tags());
 
     const tagsProvider = props.tagsType === 'documents' ? docTags : annotationTags;
     const tagDescriptorsProvider = props.tagsType === 'documents' ? docTags : annotationTags;
@@ -146,19 +145,19 @@ const UserTagsDataLoaderData = React.memo(function UserTagsDataLoaderData(props:
     const docMetaLookupContext = new DefaultDocMetaLookupContext();
 
     return (
-            <PersistenceContext.Provider value={persistenceContext}>
-                <PersistenceLayerContext.Provider value={persistenceLayerContext}>
-                    <TagsContext.Provider value={tagsContext}>
-                        <TagDescriptorsContext.Provider value={tagDescriptorsContext}>
-                            <TagsProviderContext.Provider value={tagsProvider}>
-                            <DocMetaLookupContext.Provider value={docMetaLookupContext}>
-                                {props.children}
-                            </DocMetaLookupContext.Provider>
-                            </TagsProviderContext.Provider>
-                        </TagDescriptorsContext.Provider>
-                    </TagsContext.Provider>
-                </PersistenceLayerContext.Provider>
-            </PersistenceContext.Provider>
+        <PersistenceContext.Provider value={persistenceContext}>
+            <PersistenceLayerContext.Provider value={persistenceLayerContext}>
+                <TagsContext.Provider value={tagsContext}>
+                    <TagDescriptorsContext.Provider value={tagDescriptorsContext}>
+                        <TagsProviderContext.Provider value={tagsProvider}>
+                        <DocMetaLookupContext.Provider value={docMetaLookupContext}>
+                            {props.children}
+                        </DocMetaLookupContext.Provider>
+                        </TagsProviderContext.Provider>
+                    </TagDescriptorsContext.Provider>
+                </TagsContext.Provider>
+            </PersistenceLayerContext.Provider>
+        </PersistenceContext.Provider>
     );
 
 });
@@ -175,19 +174,10 @@ interface IRepoDataLoaderDataProps {
 
 const RepoDataLoaderData = React.memo(function RepoDataLoaderData(props: IRepoDataLoaderDataProps) {
 
-    const Component = (dataProps: {userTags: ReadonlyArray<Tag> | undefined}) => {
-
-        return (
-            <UserTagsDataLoaderData {...props} userTags={dataProps.userTags}>
-                {props.children}
-            </UserTagsDataLoaderData>
-        );
-    };
-
     return (
-        <PrefsContext2>
-            <UserTagsDataLoader Component={Component}/>
-        </PrefsContext2>
+        <UserTagsDataLoaderData {...props}>
+            {props.children}
+        </UserTagsDataLoaderData>
     );
 
 });

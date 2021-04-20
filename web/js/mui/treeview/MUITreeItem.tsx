@@ -8,6 +8,7 @@ import {Tags} from "polar-shared/src/tags/Tags";
 import {DragTarget2} from "../../ui/tree/DragTarget2";
 import TagID = Tags.TagID;
 import {TNode} from "../../ui/tree/TNode";
+import {SelectRowType} from "../../../../apps/repository/js/doc_repo/SelectionEvents2";
 
 interface IProps {
 
@@ -20,7 +21,7 @@ interface IProps {
     readonly onNodeCollapse: (node: string) => void;
     readonly childNodes: ReadonlyArray<TNode<TagDescriptorSelected>>;
 
-    readonly selectRow: (node: TagID, event: React.MouseEvent, source: 'checkbox' | 'click') => void;
+    readonly selectRow: (node: TagID, event: React.MouseEvent, source: SelectRowType) => void;
     readonly onDrop: (event: React.DragEvent, tagID: TagID) => void;
 
 }
