@@ -147,7 +147,7 @@ export const VerticalDynamicScroller: React.FC<VerticalDynamicScrollerProps> = (
     React.useEffect(() => {
         const parentElem = parentRef.current;
         const onScroll = () => {
-            updateArrows(parentElem.scrollTop, parentHeight, innerHeight);
+            updateArrows(Math.ceil(parentElem.scrollTop), parentHeight, innerHeight);
         };
         parentElem.addEventListener('scroll', onScroll);
         return () => parentElem.removeEventListener('scroll', onScroll);
@@ -169,7 +169,7 @@ export const VerticalDynamicScroller: React.FC<VerticalDynamicScrollerProps> = (
             }
             setInnerHeight(innerHeight);
             setParentHeight(parentHeight);
-            updateArrows(parentElem.scrollTop, parentHeight, innerHeight);
+            updateArrows(Math.ceil(parentElem.scrollTop), parentHeight, innerHeight);
         }));
         resizeObserver.observe(parentElem);
         resizeObserver.observe(innerElem);
