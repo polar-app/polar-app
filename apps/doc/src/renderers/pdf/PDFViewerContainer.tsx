@@ -69,7 +69,7 @@ export const PDFViewerContainer = React.memo(function PDFViewerContainer(props: 
                   itemProp= "mainContentOfPage"
                   data-iter={iter}>
 
-                    <div>
+                <div>
                     <div id="viewer" className="pdfViewer viewer" ref={viewerRef}>
                         <div/>
 
