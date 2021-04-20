@@ -29,6 +29,12 @@ import {DockLayoutToggleButton} from "../../../../web/js/ui/doc_layout/DockLayou
 import {ZenModeActiveContainer} from "../../../../web/js/mui/ZenModeActiveContainer";
 import {ZenModeButton} from "./ZenModeButton";
 
+const getScaleLevelTuple = (scale: ScaleLevel) => (
+    arrayStream(ScaleLevelTuples)
+        .filter(current => current.value === scale)
+        .first()
+);
+
 export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
 
     const {docScale, pageNavigator, scaleLeveler, docMeta}
@@ -38,14 +44,19 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
 
     const handleScaleChange = React.useCallback((scale: ScaleLevel) => {
 
-        const value =
-            arrayStream(ScaleLevelTuples)
-                .filter(current => current.value === scale)
-                .first();
-
-        setScale(value!);
+        setScale(getScaleLevelTuple(scale)!);
 
     }, [setScale]);
+
+    const zoomValue = React.useMemo(() => {
+        if (!docScale || !docScale.scale.value) {
+            return 'page-width';
+        }
+        if (getScaleLevelTuple(docScale.scale.value)) {
+            return docScale.scale.value;
+        }
+        return 'custom';
+    }, [docScale]);
 
     return (
         <ZenModeActiveContainer>
@@ -101,7 +112,7 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
                              }}
                              className="ml-auto mr-auto vertical-align-children">
 
-                            {docScale && scaleLeveler && (
+                             {docScale && scaleLeveler && (
                                 <DeviceRouters.Desktop>
                                     <MUIButtonBar>
                                         <IconButton size="small" onClick={() => doZoom('-')}>
@@ -109,8 +120,14 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
                                         </IconButton>
 
                                             <FormControl variant="outlined" size="small">
-                                                <Select value={docScale.scale.value || 'page-width'}
+                                                <Select value={zoomValue}
                                                         onChange={event => handleScaleChange(event.target.value as ScaleLevel)}>
+                                                    {zoomValue === "custom" &&
+                                                        <MenuItem disabled value="custom">
+                                                            {(+docScale.scale.value * 100).toFixed(2)}%
+                                                            &nbsp;(Custom)
+                                                        </MenuItem>
+                                                    }
                                                     {ScaleLevelTuples.map(current => (
                                                         <MenuItem key={current.value}
                                                                   value={current.value}>

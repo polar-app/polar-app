@@ -65,6 +65,8 @@ export interface LabelValueTuple<V> {
     readonly value: V;
 }
 
+export type CustomZoomLevel = string; // Custom zoom levels
+
 export type ScaleLevel =
     'page-fit'
     | 'page-width'
@@ -109,6 +111,7 @@ export type ScaleLevel =
     | '5'
     | '5.5'
     | '6'
+    | CustomZoomLevel
     ;
 
 export type ScaleLevelTuple = LabelValueTuple<ScaleLevel>;
