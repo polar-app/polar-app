@@ -1,0 +1,5 @@
+/*
+ * This is needed for firebase UI as firebaseui.css imports it but we have to use
+ * sass to import all the dependent CSS
+ */
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:100,300,400");
