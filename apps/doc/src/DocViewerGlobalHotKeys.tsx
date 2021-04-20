@@ -16,52 +16,52 @@ const globalKeyMap = keyMapWithGroup({
     keyMap: {
         FIND: {
             name: "Find",
-            description: "Search within the document for the given text.",
+            description: "Search text",
             sequences: ['ctrl+f', 'command+f']
         },
         FIND_NEXT: {
             name: "Find Next Match",
-            description: "Jump to the next match in the current search results.",
+            description: "Next match",
             sequences: ['ctrl+g', 'command+g']
         },
         PAGE_NEXT: {
             name: "Next Page",
-            description: "Jump to the next page",
+            description: "Jump to next page",
             sequences: ['n', 'j', 'ArrowRight']
         },
         PAGE_PREV: {
             name: "Previous Page",
-            description: "Jump to the previous page",
+            description: "Jump to previous page",
             sequences: ['p', 'k', 'ArrowLeft']
         },
         ZOOM_IN: {
             name: "Zoom In",
-            description: "Zoom in to the current document",
+            description: "Zoom in",
             sequences: ['command+shift+=', 'command+=', 'ctrl+shift+=', 'ctrl+=']
         },
         ZOOM_OUT: {
             name: "Zoom Out",
-            description: "Zoom out to the current document",
+            description: "Zoom out",
             sequences: ['command+shift+-', 'command+-', 'ctrl+shift+-', 'ctrl+-']
         },
         ZOOM_RESTORE: {
             name: "Zoom Restore",
-            description: "Restore the default zoom level",
+            description: "Restore default zoom",
             sequences: ['command+0', 'ctrl+0']
         },
         TAG: {
             name: "Tag",
-            description: "Tag the current document",
+            description: "Tag doc",
             sequences: ['t']
         },
         FLAG: {
             name: "Flag",
-            description: "Flag the current document",
+            description: "Flag doc",
             sequences: ['f']
         },
         ARCHIVE: {
             name: "Archive",
-            description: "Archive the current document",
+            description: "Archive doc",
             sequences: ['a']
         },
 
