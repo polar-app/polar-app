@@ -60,7 +60,9 @@ export const usePinch = ({ elem, onMove, onFinish }: UsePinchConfig) => {
         let initialDelta = 0;
         let prevDelta = 0;
 
-        const reset = () => { startX = startY = initialDelta = 0; };
+        const reset = () => {
+            startX = startY = initialDelta = 0;
+        };
 
         const onTouchStart = (e: TouchEvent) => {
             if (e.touches.length > 1) {
@@ -109,5 +111,5 @@ export const usePinch = ({ elem, onMove, onFinish }: UsePinchConfig) => {
             elem.removeEventListener("touchmove", onTouchMove);
             elem.removeEventListener("touchend", onTouchEnd);
         };
-    }, [elem]);
+    }, [elem, onFinish, onMove]);
 }
