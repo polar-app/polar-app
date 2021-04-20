@@ -9,7 +9,7 @@ export const PagePrevButton = React.memo(function PagePrevButton() {
     const {pageNavigator, page} = useDocViewerStore(['pageNavigator', 'page']);
 
     return (
-        <IconButton disabled={!pageNavigator || page <= 1}
+        <IconButton size="small"  disabled={!pageNavigator || page <= 1}
                     onClick={onPagePrev}>
             <ArrowUpwardIcon/>
         </IconButton>

@@ -12,7 +12,8 @@ export const DocFindButton = React.memo(function DocFindButton(props: IProps) {
     const {setActive} = useDocFindCallbacks();
 
     return (
-        <IconButton className={props.className}
+        <IconButton size="small"
+                    className={props.className}
                     onClick={() => setActive(true)}>
             <SearchIcon/>
         </IconButton>

@@ -65,7 +65,7 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
 
                         <MUIButtonBar>
 
-                            <DockLayoutToggleButton side='left'/>
+                            <DockLayoutToggleButton side='left' size="small"/>
 
                             {finder && (
                                 <>
@@ -104,7 +104,7 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
                             {docScale && scaleLeveler && (
                                 <DeviceRouters.Desktop>
                                     <MUIButtonBar>
-                                        <IconButton onClick={() => doZoom('-')}>
+                                        <IconButton size="small" onClick={() => doZoom('-')}>
                                             <RemoveIcon/>
                                         </IconButton>
 
@@ -120,7 +120,7 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
                                                 </Select>
                                             </FormControl>
 
-                                        <IconButton onClick={() => doZoom('+')}>
+                                        <IconButton size="small"  onClick={() => doZoom('+')}>
                                             <AddIcon/>
                                         </IconButton>
 
@@ -146,14 +146,14 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
 
 
                                 {/* TODO: implement keyboard shortcuts for these. */}
-                                <MUIDocTagButton size="medium"
+                                <MUIDocTagButton size="small"
                                                  onClick={onDocTagged}/>
 
-                                <MUIDocArchiveButton size="medium"
+                                <MUIDocArchiveButton size="small"
                                                      onClick={toggleDocArchived}
                                                      active={docMeta?.docInfo?.archived}/>
 
-                                <MUIDocFlagButton size="medium"
+                                <MUIDocFlagButton size="small"
                                                   onClick={toggleDocFlagged}
                                                   active={docMeta?.docInfo?.flagged}/>
 
@@ -171,7 +171,7 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
 
                                 <DocViewerToolbarOverflowButton docInfo={docMeta?.docInfo}/>
 
-                                <DockLayoutToggleButton side='right'/>
+                                <DockLayoutToggleButton side='right' size="small"/>
 
                             </MUIButtonBar>
                         </div>

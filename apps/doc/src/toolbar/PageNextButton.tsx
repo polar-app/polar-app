@@ -10,7 +10,7 @@ export const PageNextButton = deepMemo(function PageNextButton() {
     const {pageNavigator, page} = useDocViewerStore(['pageNavigator', 'page']);
 
     return (
-        <IconButton disabled={!pageNavigator || page >= pageNavigator.count}
+        <IconButton size="small" disabled={!pageNavigator || page >= pageNavigator.count}
                     onClick={onPageNext}>
             <ArrowDownwardIcon/>
         </IconButton>
