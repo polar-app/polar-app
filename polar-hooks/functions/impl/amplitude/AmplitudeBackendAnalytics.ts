@@ -1,7 +1,7 @@
 import * as Amplitude from '@amplitude/node';
 import {Version} from "polar-shared/src/util/Version";
 
-export namespace AmplitudeUtils {
+export namespace AmplitudeBackendAnalytics {
 
     const client = Amplitude.init('c1374bb8854a0e847c0d85957461b9f0');
 

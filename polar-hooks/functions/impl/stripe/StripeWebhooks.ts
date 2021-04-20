@@ -8,7 +8,7 @@ import {AccountNotifications} from "./AccountNotifications";
 import {Lazy} from "../util/Lazy";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {SentryReporters} from "../reporters/SentryReporter";
-import {AmplitudeUtils} from "../amplitude/AmplitudeUtils";
+import {AmplitudeBackendAnalytics} from "../amplitude/AmplitudeBackendAnalytics";
 import { Plans } from "polar-accounts/src/Plans";
 
 const firebase = Lazy.create(() => FirebaseAdmin.app());
@@ -155,7 +155,7 @@ export namespace StripeWebhooks {
 
             const user = await auth().getUserByEmail(customer.email)
 
-            AmplitudeUtils.event2('planChanged', {
+            AmplitudeBackendAnalytics.event2('planChanged', {
                 from_plan_level: from.plan.level,
                 from_plan_interval: from.interval,
                 to_plan_level: to.plan.level,

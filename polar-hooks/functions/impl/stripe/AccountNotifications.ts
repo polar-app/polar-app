@@ -4,7 +4,7 @@ import {IPersona, Personas} from "../personas/Personas";
 import {UserPersonas} from "../personas/UserPersonas";
 import IUserPersona = UserPersonas.IUserPersona;
 import V2Subscription = Billing.V2Subscription;
-import {AmplitudeUtils} from "../amplitude/AmplitudeUtils";
+import {AmplitudeBackendAnalytics} from "../amplitude/AmplitudeBackendAnalytics";
 
 export namespace AccountNotifications {
 
@@ -41,7 +41,7 @@ export namespace AccountNotifications {
                 html: body
             })
 
-            AmplitudeUtils.event2('AccountNotification.changePlan', {
+            AmplitudeBackendAnalytics.event2('AccountNotification.changePlan', {
                 plan_level: to.plan.level,
                 plan_interval: to.interval
             }, user);
