@@ -160,7 +160,7 @@ export class FontReplacer {
      * the same font across platforms.
      */
     public static createReplacementStylesheet() {
-
+        // noop
     }
 
     public static createStandardFontIndex(): StandardFontIndex {
