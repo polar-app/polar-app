@@ -17,8 +17,8 @@ const useStyles = makeStyles((theme) =>
             fontSize: '1.3rem',
             minHeight: 'min(80vh, 500px)',
             maxHeight: 'min(80vh, 500px)',
-            minWidth: 'min(80vw, 850px)',
-            maxWidth: 'min(80vw, 8500px)',
+            minWidth: 'min(80vw, 700px)',
+            maxWidth: 'min(80vw, 700px)',
             margin: theme.spacing(1)
         },
     }),

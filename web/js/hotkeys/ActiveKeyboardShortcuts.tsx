@@ -10,7 +10,17 @@ import { useActiveKeyboardShortcutsStore, useActiveKeyboardShortcutsCallbacks } 
 import { ActiveKeyboardShortcutsTable } from './ActiveKeyboardShortcutsTable';
 import {useKeyboardShortcutsCallbacks, useKeyboardShortcutsStore} from "../keyboard_shortcuts/KeyboardShortcutsStore";
 import {useComponentDidMount, useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
+import {createStyles} from '@material-ui/styles';
+import {makeStyles} from '@material-ui/core';
 
+const useStyles = makeStyles(() =>
+    createStyles({
+        shortcutDialog: {
+            minWidth: 'min(80vw, 700px)',
+            maxWidth: 'min(80vw, 700px)',
+        },
+    }),
+);
 
 
 const keyMap = {
@@ -30,6 +40,7 @@ interface ActiveKeyboardShortcutsDialogProps {
 
 export const ActiveKeyboardShortcutsDialog = deepMemo(function ActiveKeyboardShortcutsDialog(props: ActiveKeyboardShortcutsDialogProps) {
 
+    const classes = useStyles();
     const {shortcuts} = useKeyboardShortcutsStore(['shortcuts'])
     const {setActive} = useKeyboardShortcutsCallbacks()
 
@@ -37,23 +48,24 @@ export const ActiveKeyboardShortcutsDialog = deepMemo(function ActiveKeyboardSho
     useComponentWillUnmount(() => setActive(true));
 
     return (
-        <Dialog fullWidth={true}
-                transitionDuration={50}
-                maxWidth="lg"
+        <Dialog transitionDuration={50}
+                maxWidth="md"
                 open={true}
                 onClose={props.onClose}>
-            <DialogTitle>Active Keyboard Shortcuts</DialogTitle>
-            <DialogContent>
-                <ActiveKeyboardShortcutsTable shortcuts={shortcuts}/>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={props.onClose}
-                        size="large"
-                        color="primary"
-                        variant="contained">
-                    Close
-                </Button>
-            </DialogActions>
+            <div className={classes.shortcutDialog}>
+                <DialogTitle>Active Keyboard Shortcuts</DialogTitle>
+                <DialogContent>
+                    <ActiveKeyboardShortcutsTable shortcuts={shortcuts}/>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={props.onClose}
+                            size="large"
+                            color="primary"
+                            variant="contained">
+                        Close
+                    </Button>
+                </DialogActions>
+            </div>
         </Dialog>
     );
 
