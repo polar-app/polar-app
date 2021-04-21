@@ -1,0 +1,44 @@
+
+#set-title {
+
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-style: normal;
+    font-size: 16px;
+
+    background-color: rgb(71, 71, 71);
+    width: 100%;
+    vertical-align: middle;
+
+    z-index: 999;
+
+    margin-bottom: 10px;
+
+    /* not initially visible */
+    display: none;
+
+}
+
+#set-title-form {
+    width: 100%;
+}
+
+#set-title input[type=text] {
+    width: 100%;
+    padding: 5px;
+    font-size: 12px;
+    box-sizing : border-box;
+
+}
+
+#set-title input[type=text], textarea {
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+    outline: none;
+    border: 1px solid #DDDDDD;
+}
+
+#set-title input[type=text]:focus, textarea:focus {
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    border: 1px solid rgba(81, 203, 238, 1);
+}
