@@ -1,0 +1,20 @@
+{
+  "name": "polar-webapp-dist",
+  "version": "2.1.43",
+  "description": "An internal package to contain our assets for bundling with the webapp so that we can just depend on the bundle to include our assets.",
+  "main": "index.js",
+  "private": false,
+  "scripts": {
+    "dist": "rm -rf public && mkdir -p public && cd ../../polar-bookshelf && npm run-script build-webapp && cp -rp dist/public/* ../polar-app-private/polar-webapp-dist/public",
+    "compile": "echo nothing to compile",
+    "prepublishOnly": "npm run-script dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "files": [
+    "package.json",
+    "index.js",
+    "public"
+  ]
+}
