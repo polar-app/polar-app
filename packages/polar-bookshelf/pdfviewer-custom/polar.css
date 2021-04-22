@@ -1,0 +1,163 @@
+
+@import url('./set-title.css');
+@import url('./toaster.css');
+@import url('./selection.css');
+@import url('./sidebar.css');
+@import url('./annotation-sidebar.css');
+@import url('./htmlviewer.css');
+@import url('./pdfviewer.css');
+@import url('./twitter-bootstrap.css');
+@import url('./add-comment.css');
+@import url('./annotationbar.css');
+@import url('./text-highlights.css');
+@import url('./flexbar.css');
+@import url('./progress.css');
+@import url('./typography.css');
+@import url('./summernote.css');
+@import url('./pricing.css');
+@import url('./ui-mode.css');
+@import url('./platforms.css');
+
+body {
+    height: 100%;
+}
+
+/*#secondaryToolbarButtonContainer > .polar-fa-button {*/
+    /*font-size: 25px;*/
+/*}*/
+
+/*#secondaryToolbarButtonContainer > .polar-fa-button span {*/
+    /*font-size: 12px;*/
+/*}*/
+
+#polar-header {
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: white;
+    text-align: center;
+    background-color: rgb(71, 71, 71);
+    box-shadow: inset 0 1px 1px hsla(0,0%,0%,.15), inset 0 -1px 0 hsla(0,0%,100%,.05), 0 1px 0 hsla(0,0%,0%,.15), 0 1px 1px hsla(0,0%,0%,.1);
+    overflow: hidden;
+    z-index: 99;
+    width: 100%;
+}
+
+/*.polar-htmlviewer #polar-header {*/
+    /*position: absolute;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    /*height: 50px;*/
+/*}*/
+
+
+.polar-htmlviewer #viewerContainer {
+    margin-top: 20px;
+}
+
+.polar-htmlviewer .polar-viewer,
+.polar-htmlviewer .polar-sidebar {
+    margin-top: 65px;
+    height: calc(100% - 65px);
+    width: 100%;
+}
+
+/*.polar-htmlviewer #polar-progress {*/
+    /*!*position: fixed;*!*/
+    /*width: 100%;*/
+    /*background-color: rgb(71, 71, 71);*/
+/*}*/
+
+#polar-header-body {
+    /*width: calc(100% - 10px);*/
+    /*margin-left: 5px;*/
+}
+
+
+#polar-header-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#polar-header-body #polar-progress {
+    margin: auto 5px;
+    padding-right: 10px;
+}
+
+#polar-progress {
+    width: 100%;
+}
+
+#polar-progress progress {
+    border: none;
+}
+
+#polar-header progress {
+    /*position: absolute;;*/
+    width: 100%;
+    /*left: 5px;*/
+    height: 12px;
+}
+
+#polar-footer {
+    position: sticky;
+    left: 0;
+    bottom: 0;
+    color: white;
+    height: 20px;
+    background-color: rgb(71, 71, 71);
+    box-shadow: inset 0 1px 1px hsla(0,0%,0%,.15), inset 0 -1px 0 hsla(0,0%,100%,.05), 0 1px 0 hsla(0,0%,0%,.15), 0 1px 50px hsla(0,0%,0%,.1);
+
+    border-top: 1px solid black;
+    overflow: hidden;
+    z-index: 99;
+    /* padding: 10px; */
+    vertical-align: middle;
+    padding-top: 5px;
+    padding-left: 5px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.polar-dropdown {
+    position: absolute;
+    top: 3px;
+    right: 15px;
+}
+
+#viewer {
+    margin-bottom: 5px;
+}
+
+.text-highlight {
+}
+
+/**
+ * We have to disable the PDF.js file upload button now.  It doesn't work when
+ * being served via file URLs. It's not that big of a deal either way.
+ */
+#openFile, #presentationMode, #download, #viewBookmark, #secondaryToolbarToggle {
+    display: none;
+}
+
+#polarCreatePagemarksAcrossPages:before {
+
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    content: "\f055";
+    padding: 2px;
+    font-size: 13px;
+
+}
+
+#polar-toolbar #DIV_8,
+#polar-toolbar #DIV_5,
+#polar-toolbar button {
+    display: none;
+}
+
