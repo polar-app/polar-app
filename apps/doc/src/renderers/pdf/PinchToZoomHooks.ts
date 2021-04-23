@@ -63,7 +63,7 @@ export const usePDFPinchToZoom = ({ containerRef, wrapperRef }: IUsePDFPinchToZo
     const shouldUpdate = React.useCallback((zoom: number): boolean => {
         const min = initialScale.current!, max = 4;
         const scale = docScale!.scaleValue * zoom;
-        return scale >= min && scale <= max;
+        return (scale >= min || zoom > 1) && (scale <= max || zoom < 1);
     }, [docScale, initialScale]);
 
     const onZoom = React.useCallback((zoom: number): void => {
