@@ -12,12 +12,12 @@ export namespace UndoQueues2 {
 
     export type RedoFunction = () => Promise<void>;
 
-    interface IUndoQueueEntry {
+    export interface IUndoQueueAction {
         readonly redo: RedoFunction;
         readonly undo: UndoFunction;
     }
 
-    interface IUndoQueueAction extends IUndoQueueEntry {
+    interface IUndoQueueEntry extends IUndoQueueAction {
         readonly id: number;
         readonly redo: RedoFunction;
         readonly undo: UndoFunction;
@@ -29,7 +29,7 @@ export namespace UndoQueues2 {
          * Adds an item to the queue and potentially resets the pointer so that
          * there are no more undo actions if we're not at the head of the queue.
          */
-        readonly push: (entry: IUndoQueueEntry) => Promise<IPushResult>;
+        readonly push: (action: IUndoQueueAction) => Promise<IPushResult>;
         readonly undo: () => Promise<UndoResult>;
         readonly redo: () => Promise<RedoResult>;
         readonly size: () => number;
@@ -64,21 +64,21 @@ export namespace UndoQueues2 {
      */
     export function create(opts: ICreateOpts = {}): UndoQueue {
 
-        const actions: IUndoQueueAction[] = [];
+        const actions: IUndoQueueEntry[] = [];
 
         let ptr: number = -1;
         const limit = opts.limit || 25;
 
         let seq = 0;
 
-        async function push(entry: IUndoQueueEntry): Promise<IPushResult> {
+        async function push(action: IUndoQueueAction): Promise<IPushResult> {
 
             const pushResult = {
                 removedFromHead: 0,
                 removedFromTail: 0
             }
 
-            await entry.redo();
+            await action.redo();
 
             if (actions.length >= limit) {
                 // we have too many items so we have to prune one and move it down.
@@ -98,7 +98,7 @@ export namespace UndoQueues2 {
 
             actions.push({
                 id,
-                ...entry
+                ...action
             });
 
             ptr = ptr + 1;
@@ -109,12 +109,12 @@ export namespace UndoQueues2 {
 
         async function undo(): Promise<UndoResult> {
 
-            if (ptr <= 0) {
+            if (ptr < 0) {
                 // we are at the head of the queue so nothing left to complete.
                 return 'at-head';
             }
 
-            const action = actions[ptr - 1];
+            const action = actions[ptr];
             console.log("Applying action ID: " + action.id);
             await action.undo();
             ptr = ptr - 1;
