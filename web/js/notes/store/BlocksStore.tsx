@@ -24,7 +24,7 @@ import { IMarkdownContent } from "../content/IMarkdownContent";
 import {INameContent} from "../content/INameContent";
 import { Contents } from "../content/Contents";
 import { IBaseBlockContent } from "../content/IBaseBlockContent";
-import {UndoQueues} from "../../undo/UndoQueues";
+import {UndoQueues2} from "../../undo/UndoQueues2";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import deepEqual from "deep-equal";
 
@@ -207,7 +207,7 @@ export class BlocksStore implements IBlocksStore {
 
     private readonly uid: UIDStr;
 
-    // private readonly undoQueue = UndoQueues.create();
+    private readonly undoQueue = UndoQueues2.create({limit: 50});
 
     @observable _index: BlocksIndex = {};
 
@@ -972,8 +972,10 @@ export class BlocksStore implements IBlocksStore {
         //     - first child item
         // - second
 
-        // return this.withUndo(() => {
+        // create the newBlock ID here so that it can be reliably used in undo/redo operations.
+        const newBlockID = Hashcodes.createRandomID();
 
+        const redo = () => {
             /**
              * A new block instruction that creates the block relative to a sibling
              * and provides the parent.
@@ -1049,8 +1051,6 @@ export class BlocksStore implements IBlocksStore {
             const createNewBlock = (parentBlock: Block): IBlock => {
                 const now = ISODateTimeStrings.create()
 
-                const id = Hashcodes.createRandomID();
-
                 const items = newBlockInheritItems ? currentBlock.items : [];
 
                 const content = opts.content || {
@@ -1059,7 +1059,7 @@ export class BlocksStore implements IBlocksStore {
                 };
 
                 return {
-                    id,
+                    id: newBlockID,
                     parent: parentBlock.id,
                     nspace: parentBlock.nspace,
                     uid: this.uid,
@@ -1126,7 +1126,13 @@ export class BlocksStore implements IBlocksStore {
                 parent: newBlock.parent!
             };
 
-        // });
+        }
+
+        const undo = () => {
+            this.doDelete([newBlockID])
+        }
+
+        return this.undoQueue.push({redo, undo}).value;
 
     }
 

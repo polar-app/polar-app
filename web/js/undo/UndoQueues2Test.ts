@@ -10,20 +10,20 @@ describe('UndoQueues2', function() {
 
     interface IStore {
         readonly value: () => StoreData;
-        readonly createAction: (key: string, value: string) => IUndoQueueEntry;
+        readonly createAction: (key: string, value: string) => IUndoQueueEntry<void, void>;
     }
 
     function createStore(): IStore {
 
         const index: StoreData = {};
 
-        function createAction(key: string, value: string): IUndoQueueEntry {
+        function createAction(key: string, value: string): IUndoQueueEntry<void, void> {
 
-            const redo = async () => {
+            const redo = () => {
                 index[key] = value;
             }
 
-            const undo = async () => {
+            const undo = () => {
                 delete index[key];
             }
 
@@ -46,14 +46,14 @@ describe('UndoQueues2', function() {
 
     it("try to undo when the queue is empty", async function() {
         const undoQueue = UndoQueues2.create();
-        const result = await undoQueue.undo();
+        const result = undoQueue.undo();
         assert.equal(result, 'at-head');
     });
 
 
     it("try to redo when the queue is empty", async function() {
         const undoQueue = UndoQueues2.create();
-        assert.equal(await undoQueue.redo(), 'at-tail');
+        assert.equal(undoQueue.redo(), 'at-tail');
     });
 
 
@@ -64,9 +64,9 @@ describe('UndoQueues2', function() {
 
         const store = createStore();
 
-        await undoQueue.push(store.createAction('101', '101'))
-        await undoQueue.push(store.createAction('102', '102'))
-        await undoQueue.push(store.createAction('103', '103'))
+        undoQueue.push(store.createAction('101', '101'))
+        undoQueue.push(store.createAction('102', '102'))
+        undoQueue.push(store.createAction('103', '103'))
 
         assertJSON(store.value(), {
             "101": "101",
@@ -74,25 +74,25 @@ describe('UndoQueues2', function() {
             "103": "103"
         });
 
-        assert.equal(await undoQueue.undo(), 'executed');
+        assert.equal(undoQueue.undo(), 'executed');
 
         assertJSON(store.value(), {
             "101": "101",
             "102": "102",
         });
 
-        assert.equal(await undoQueue.undo(), 'executed');
+        assert.equal(undoQueue.undo(), 'executed');
 
         assertJSON(store.value(), {
             "101": "101",
         });
 
-        assert.equal(await undoQueue.undo(), 'executed');
+        assert.equal(undoQueue.undo(), 'executed');
 
         assertJSON(store.value(), {
         });
 
-        assert.equal(await undoQueue.undo(), 'at-head');
+        assert.equal(undoQueue.undo(), 'at-head');
 
         assertJSON(store.value(), {
         });
@@ -108,9 +108,9 @@ describe('UndoQueues2', function() {
 
         const store = createStore();
 
-        await undoQueue.push(store.createAction('101', '101'))
-        await undoQueue.push(store.createAction('102', '102'))
-        await undoQueue.push(store.createAction('103', '103'))
+        undoQueue.push(store.createAction('101', '101'))
+        undoQueue.push(store.createAction('102', '102'))
+        undoQueue.push(store.createAction('103', '103'))
 
         assertJSON(store.value(), {
             "101": "101",
@@ -118,14 +118,14 @@ describe('UndoQueues2', function() {
             "103": "103"
         });
 
-        assert.equal(await undoQueue.undo(), 'executed');
+        assert.equal(undoQueue.undo(), 'executed');
 
         assertJSON(store.value(), {
             "101": "101",
             "102": "102",
         });
 
-        assert.equal(await undoQueue.redo(), 'executed');
+        assert.equal(undoQueue.redo(), 'executed');
 
         assertJSON(store.value(), {
             "101": "101",
@@ -143,12 +143,12 @@ describe('UndoQueues2', function() {
 
         const store = createStore();
 
-        assert.equal(await undoQueue.undo(), 'at-head');
-        assert.equal(await undoQueue.redo(), 'at-tail');
+        assert.equal(undoQueue.undo(), 'at-head');
+        assert.equal(undoQueue.redo(), 'at-tail');
 
-        await undoQueue.push(store.createAction('101', '101'))
-        await undoQueue.push(store.createAction('102', '102'))
-        await undoQueue.push(store.createAction('103', '103'))
+        undoQueue.push(store.createAction('101', '101'))
+        undoQueue.push(store.createAction('102', '102'))
+        undoQueue.push(store.createAction('103', '103'))
 
         assertJSON(store.value(), {
             "101": "101",
@@ -156,14 +156,14 @@ describe('UndoQueues2', function() {
             "103": "103"
         });
 
-        assert.equal(await undoQueue.undo(), 'executed');
+        assert.equal(undoQueue.undo(), 'executed');
 
         assertJSON(store.value(), {
             "101": "101",
             "102": "102",
         });
 
-        assert.equal(await undoQueue.redo(), 'executed');
+        assert.equal(undoQueue.redo(), 'executed');
 
         assertJSON(store.value(), {
             "101": "101",
@@ -183,9 +183,9 @@ describe('UndoQueues2', function() {
 
         const store = createStore();
 
-        await undoQueue.push(store.createAction('101', '101'))
-        await undoQueue.push(store.createAction('102', '102'))
-        await undoQueue.push(store.createAction('103', '103'))
+        undoQueue.push(store.createAction('101', '101'))
+        undoQueue.push(store.createAction('102', '102'))
+        undoQueue.push(store.createAction('103', '103'))
 
         assertJSON(store.value(), {
             "101": "101",
@@ -193,36 +193,36 @@ describe('UndoQueues2', function() {
             "103": "103"
         });
 
-        assert.equal(await undoQueue.undo(), 'executed');
+        assert.equal(undoQueue.undo(), 'executed');
 
         assertJSON(store.value(), {
             "101": "101",
             "102": "102",
         });
 
-        assert.equal(await undoQueue.undo(), 'executed');
+        assert.equal(undoQueue.undo(), 'executed');
 
         assertJSON(store.value(), {
             "101": "101",
         });
 
-        assert.equal(await undoQueue.undo(), 'executed');
+        assert.equal(undoQueue.undo(), 'executed');
 
         assertJSON(store.value(), {
         });
 
-        assert.equal(await undoQueue.undo(), 'at-head');
+        assert.equal(undoQueue.undo(), 'at-head');
 
         assertJSON(store.value(), {
         });
 
-        assert.equal(await undoQueue.redo(), 'executed');
+        assert.equal(undoQueue.redo(), 'executed');
 
         assertJSON(store.value(), {
             "101": "101",
         });
 
-        assert.equal(await undoQueue.redo(), 'executed');
+        assert.equal(undoQueue.redo(), 'executed');
 
         assertJSON(store.value(), {
             "101": "101",
@@ -230,7 +230,7 @@ describe('UndoQueues2', function() {
 
         });
 
-        assert.equal(await undoQueue.redo(), 'executed');
+        assert.equal(undoQueue.redo(), 'executed');
 
         assertJSON(store.value(), {
             "101": "101",
@@ -238,7 +238,7 @@ describe('UndoQueues2', function() {
             "103": "103"
         });
 
-        assert.equal(await undoQueue.redo(), 'at-tail');
+        assert.equal(undoQueue.redo(), 'at-tail');
 
     });
 

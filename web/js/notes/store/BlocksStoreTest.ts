@@ -308,7 +308,11 @@ describe('BlocksStore', function() {
                 }
             },
             "_selected": {},
-            "uid": "1234"
+            "uid": "1234",
+            "undoQueue": {
+                "limit": 50
+            }
+
         });
 
     });

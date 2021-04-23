@@ -4,7 +4,7 @@
  * Design inspired by:
  *
  * https://stackoverflow.com/questions/3541383/undo-redo-implementation
- *
+ * @Deprecated use UndoQueues2
  */
 export namespace UndoQueues {
 

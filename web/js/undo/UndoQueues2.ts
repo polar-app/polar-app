@@ -8,19 +8,19 @@
  */
 export namespace UndoQueues2 {
 
-    export type UndoFunction = () => Promise<void>;
+    export type UndoFunction<U> = () => U;
 
-    export type RedoFunction = () => Promise<void>;
+    export type RedoFunction<R> = () => R;
 
-    export interface IUndoQueueAction {
-        readonly redo: RedoFunction;
-        readonly undo: UndoFunction;
+    export interface IUndoQueueAction<R, U> {
+        readonly redo: RedoFunction<R>;
+        readonly undo: UndoFunction<U>;
     }
 
-    interface IUndoQueueEntry extends IUndoQueueAction {
+    interface IUndoQueueEntry<R, U> extends IUndoQueueAction<R, U> {
         readonly id: number;
-        readonly redo: RedoFunction;
-        readonly undo: UndoFunction;
+        readonly redo: RedoFunction<R>;
+        readonly undo: UndoFunction<U>;
     }
 
     export interface UndoQueue {
@@ -29,9 +29,9 @@ export namespace UndoQueues2 {
          * Adds an item to the queue and potentially resets the pointer so that
          * there are no more undo actions if we're not at the head of the queue.
          */
-        readonly push: (action: IUndoQueueAction) => Promise<IPushResult>;
-        readonly undo: () => Promise<UndoResult>;
-        readonly redo: () => Promise<RedoResult>;
+        readonly push: <R,U> (action: IUndoQueueAction<R, U>) => IPushResult<R>;
+        readonly undo: () => UndoResult;
+        readonly redo: () => RedoResult;
         readonly size: () => number;
 
         /**
@@ -48,10 +48,11 @@ export namespace UndoQueues2 {
         readonly limit?: number;
     }
 
-    export interface IPushResult {
+    export interface IPushResult<R> {
         readonly id: number;
         readonly removedFromHead: number;
         readonly removedFromTail: number;
+        readonly value: R;
     }
 
     export type UndoResult = 'at-head' | 'executed';
@@ -64,21 +65,21 @@ export namespace UndoQueues2 {
      */
     export function create(opts: ICreateOpts = {}): UndoQueue {
 
-        const actions: IUndoQueueEntry[] = [];
+        const actions: IUndoQueueEntry<any, any>[] = [];
 
         let ptr: number = -1;
         const limit = opts.limit || 25;
 
         let seq = 0;
 
-        async function push(action: IUndoQueueAction): Promise<IPushResult> {
+        function push<R, U>(action: IUndoQueueAction<R, U>): IPushResult<R> {
 
             const pushResult = {
                 removedFromHead: 0,
                 removedFromTail: 0
             }
 
-            await action.redo();
+            const value = action.redo();
 
             if (actions.length >= limit) {
                 // we have too many items so we have to prune one and move it down.
@@ -103,11 +104,11 @@ export namespace UndoQueues2 {
 
             ptr = ptr + 1;
 
-            return {id, ...pushResult};
+            return {id, ...pushResult, value};
 
         }
 
-        async function undo(): Promise<UndoResult> {
+        function undo(): UndoResult {
 
             if (ptr < 0) {
                 // we are at the head of the queue so nothing left to complete.
@@ -116,14 +117,14 @@ export namespace UndoQueues2 {
 
             const action = actions[ptr];
             console.log("Applying action ID: " + action.id);
-            await action.undo();
+            action.undo();
             ptr = ptr - 1;
 
             return 'executed';
 
         }
 
-        async function redo(): Promise<RedoResult> {
+        function redo(): RedoResult {
 
             const end = actions.length - 1;
 
@@ -132,7 +133,7 @@ export namespace UndoQueues2 {
             }
 
             const action = actions[ptr + 1];
-            await action.redo();
+            action.redo();
             ptr = ptr + 1;
 
             return 'executed';
