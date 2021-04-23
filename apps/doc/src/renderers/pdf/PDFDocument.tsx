@@ -142,7 +142,7 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
     const log = useLogger();
 
     const {setDocDescriptor, setPageNavigator, setResizer, setScaleLeveler,
-           setDocScale, setPage, setOutline, setOutlineNavigator, docMetaProvider}
+           setDocScale, setPage, setOutline, setOutlineNavigator, docMetaProvider, setScale: setStoreScale}
         = useDocViewerCallbacks();
 
     const {setFinder} = useDocFindCallbacks();
@@ -224,6 +224,7 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
         if (['page-width', 'page-fit'].includes(scaleRef.current.value)) {
             setScale(scaleRef.current);
+            setStoreScale(scaleRef.current);
         }
 
         if (docViewerRef.current) {
@@ -232,7 +233,7 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
             throw new Error("No viewer");
         }
 
-    }, [setScale]);
+    }, [setScale, setStoreScale]);
 
     const doLoad = React.useCallback(async (docViewer: DocViewer) => {
 
