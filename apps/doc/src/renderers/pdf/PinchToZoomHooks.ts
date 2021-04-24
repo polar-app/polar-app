@@ -58,7 +58,7 @@ export const usePDFPinchToZoom = ({ containerRef, wrapperRef }: IUsePDFPinchToZo
         }
     }, [docScale]);
 
-    useElemWidthChanged(() => setScale(ScaleLevelTuples[1]), { elemRef: wrapperRef });
+    // useElemWidthChanged(() => setScale(ScaleLevelTuples[1]), { elemRef: wrapperRef });
 
     const shouldUpdate = React.useCallback((zoom: number): boolean => {
         const min = initialScale.current!, max = 4;
