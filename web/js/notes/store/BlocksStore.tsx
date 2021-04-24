@@ -27,6 +27,7 @@ import { IBaseBlockContent } from "../content/IBaseBlockContent";
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import deepEqual from "deep-equal";
+import {useUndoQueue} from "../../undo/UndoQueueProvider2";
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
@@ -207,7 +208,7 @@ export class BlocksStore implements IBlocksStore {
 
     private readonly uid: UIDStr;
 
-    private readonly undoQueue = UndoQueues2.create({limit: 50});
+    private readonly undoQueue ;
 
     @observable _index: BlocksIndex = {};
 
@@ -247,9 +248,10 @@ export class BlocksStore implements IBlocksStore {
      */
     @observable _selectedAnchor: IDStr | undefined = undefined;
 
-    constructor(uid: UIDStr) {
+    constructor(uid: UIDStr, undoQueue: UndoQueues2.UndoQueue) {
         this.uid = uid;
         this.root = undefined;
+        this.undoQueue = undoQueue;
         makeObservable(this);
     }
 
@@ -974,6 +976,7 @@ export class BlocksStore implements IBlocksStore {
 
         // create the newBlock ID here so that it can be reliably used in undo/redo operations.
         const newBlockID = Hashcodes.createRandomID();
+        // ... we also have to keep track of the active note ... right?
 
         const redo = () => {
             /**
@@ -1677,7 +1680,8 @@ export class BlocksStore implements IBlocksStore {
 
 export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore(() => {
     const {uid} = useBlocksStoreContext();
-    return new BlocksStore(uid);
+    const undoQueue = useUndoQueue();
+    return new BlocksStore(uid, undoQueue);
 })
 
 export function useBlocksStore(): IBlocksStore {

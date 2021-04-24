@@ -13,6 +13,7 @@ import { NameContent } from "../content/NameContent";
 import { MarkdownContent } from "../content/MarkdownContent";
 import {Asserts} from "polar-shared/src/Asserts";
 import assertPresent = Asserts.assertPresent;
+import {UndoQueues2} from "../../undo/UndoQueues2";
 
 // TODO:
 
@@ -58,7 +59,7 @@ describe('BlocksStore', function() {
 
     function createStore() {
         const notes = MockBlocks.create();
-        const store = new BlocksStore('1234');
+        const store = new BlocksStore('1234', UndoQueues2.create());
         store.doPut(notes);
         return store;
     }
@@ -67,7 +68,7 @@ describe('BlocksStore', function() {
 
         it("NotesStore", () => {
 
-            const store = new BlocksStore('1234');
+            const store = new BlocksStore('1234', UndoQueues2.create());
 
             assert.isTrue(isObservable(store));
             assert.isTrue(isObservableProp(store, 'root'));
