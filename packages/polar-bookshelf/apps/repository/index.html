@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow: hidden;">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+
+    <style>
+      body, html {
+        background-color: #303030;
+      }
+    </style>
+
+    <meta name="theme-color" content="#000000">
+
+    <link rel="chrome-webstore-item"
+          href="https://chrome.google.com/webstore/detail/jkfdkjomocoaljglgddnmhcbolldcafd">
+
+    <meta name="google-site-verification" content="j5BBM8XbyOumZOvUQGaej0asCNz6NERVdssDydibUl0" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <link rel="manifest" href="/manifest.json">
+
+    <link rel="icon" href="/icon.ico">
+
+    <link rel="stylesheet" href="/pdfviewer-custom/flexbar.css">
+    <link rel="stylesheet" href="/pdfviewer-custom/typography.css">
+    <link rel="stylesheet" href="/pdfviewer-custom/toaster.css">
+    <link rel="stylesheet" href="/pdfviewer-custom/twitter-bootstrap.css">
+    <link rel="stylesheet" href="/pdfviewer-custom/reviewer.css">
+    <link rel="stylesheet" href="/pdfviewer-custom/pricing.css">
+    <link rel="stylesheet" href="/pdfviewer-custom/ui-mode.css">
+
+    <link rel="stylesheet" href="/apps/repository/css/index.css">
+
+    <title>Polar</title>
+
+    <meta name="description" content="A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress." />
+    <!-- TODO: use react-helmet to set canonical and other properties here when we -->
+    <!-- use SSR-->
+    <!-- <link rel="canonical" href="https://app.getpolarized.io/" />-->
+
+    <meta property="og:description" content="A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress." />
+    <meta property="og:url" content="https://app.getpolarized.io/" />
+    <meta property="og:site_name" content="POLAR - Easily manage your PDFs, web content, and notes." />
+    <meta property="og:image" content="https://getpolarized.io/assets/logo/icon.png" />
+    <meta name="twitter:image" content="https://getpolarized.io/assets/logo/icon.png">
+    <meta name="twitter:card"  content="summary">
+    <meta name="twitter:description" content="A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.">
+    <meta name="twitter:title" content="POLAR - Easily manage your reading.  Tag, annotate, and highlight PDFs and web content.">
+    <meta name="twitter:site" content="@getpolarized">
+
+    <script>
+      <!-- intercom -->
+      const APP_ID='wk5j7vo0';
+      (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/' + APP_ID;var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+    </script>
+
+    <!-- canny -->
+    <!-- https://developers.canny.io/install -->
+    <script>!function(w,d,i,s){function l(){if(!d.getElementById(i)){var f=d.getElementsByTagName(s)[0],e=d.createElement(s);e.type="text/javascript",e.async=!0,e.src="https://canny.io/sdk.js",f.parentNode.insertBefore(e,f)}}if("function"!=typeof w.Canny){var c=function(){c.q.push(arguments)};c.q=[],w.Canny=c,"complete"===d.readyState?l():w.attachEvent?w.attachEvent("onload",l):w.addEventListener("load",l,!1)}}(window,document,"canny-jssdk","script");</script>
+
+  </head>
+  <body>
+
+    <noscript>
+
+      <a href="https://getpolarized.io/">Polar</a> allows you to easily manage
+      your PDFs, web content, and notes and supports advanced features like
+      <a href="https://app.getpolarized.io/groups">group sharing</a> of
+      documents.
+
+    </noscript>
+
+    <div id="root" style="height: 100%; width: 100%; display: flex;">
+
+      <div id="error" class="alert alert-danger m-1"
+           style="display: none;"
+           role="alert">
+
+      </div>
+
+      <div id="loading-v1"
+           style="display: flex; position: absolute; left: 0; top: 0; width: 100vw; height: 100vh;">
+        <!-- a simple loading widget -->
+
+        <div style="margin: auto;">
+          <img class="logo" width="250" height="250" src="/icon.svg"/>
+        </div>
+
+      </div>
+
+    </div>
+
+  </body>
+
+  <script src="/apps/service-worker-registration.js"></script>
+
+  <!-- TODO: migrate service-worker-registration.js into our main bundle -->
+  <script src="/repository-bundle.js"></script>
+
+
+</html>
