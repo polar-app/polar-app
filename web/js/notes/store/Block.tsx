@@ -169,6 +169,17 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     }
 
+    @action set(block: IBlock) {
+
+        this._parent = block.parent;
+        this._created = block.created;
+        this._updated = block.updated;
+        this._items = [...block.items];
+        this._content.update(block.content)
+        this._links = [...block.links];
+
+    }
+
     public toJSON(): IBlock<C> {
 
         return {
@@ -179,7 +190,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
             created: this._created,
             updated: this._updated,
             items: this._items,
-            content: this._content,
+            content: this._content.toJSON() as any,
             links: this._links,
         };
 

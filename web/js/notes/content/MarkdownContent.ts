@@ -34,5 +34,12 @@ export class MarkdownContent implements IMarkdownContent, IBaseBlockContent {
 
     }
 
+    public toJSON(): IMarkdownContent {
+        return {
+            type: this._type,
+            data: this._data
+        }
+    }
+
 }
 

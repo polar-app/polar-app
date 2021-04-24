@@ -974,6 +974,8 @@ export class BlocksStore implements IBlocksStore {
         //     - first child item
         // - second
 
+        const restoreBlock = this.getBlock(id)?.toJSON();
+
         // create the newBlock ID here so that it can be reliably used in undo/redo operations.
         const newBlockID = Hashcodes.createRandomID();
         // ... we also have to keep track of the active note ... right?
@@ -1132,7 +1134,15 @@ export class BlocksStore implements IBlocksStore {
         }
 
         const undo = () => {
+
             this.doDelete([newBlockID])
+
+            const block = this.getBlock(id);
+
+            if (block && restoreBlock) {
+                block.set(restoreBlock);
+            }
+
         }
 
         return this.undoQueue.push({redo, undo}).value;
