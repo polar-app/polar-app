@@ -940,7 +940,23 @@ export class BlocksStore implements IBlocksStore {
     }
 
     public deleteBlocks(blockIDs: ReadonlyArray<BlockIDStr>) {
+
+        // const restoreBlocks =
+        //     blockIDs.map(current => this.getBlock(current)!.toJSON());
+        //
+        // const redo = () => {
+        //     this.doDelete(blockIDs);
+        // }
+        //
+        // const undo = () => {
+        //
+        //     // FIXME: we also need to link it from the parent. and the position in the parent.. .
+        //     this.doPut([restoreBlocks]);
+        //
+        // }
+
         this.doDelete(blockIDs);
+
     }
 
     /**

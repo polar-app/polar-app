@@ -183,6 +183,7 @@
     "polar-text-highlighter": "^2.1.45",
     "polar-web-extension-api": "^2.1.45",
     "polar-webapp-links": "^2.1.45",
+    "polar-images": "^2.1.45",
     "prop-types": "~15.7.2",
     "react-async": "=10.0.1",
     "react-cookie-banner": "~4.0.0",
