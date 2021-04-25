@@ -43,7 +43,7 @@ export namespace PositionalArrays {
                 const computeDelta = () => {
 
                     const computeDeltaFromSibling = (entry: PositionalArrayEntry<T> | undefined) => {
-                        return entry ? Math.abs(parseFloat(entry[0]) - base) : 1.0
+                        return entry ? Math.abs(parseFloat(entry[0]) - base) / 2 : 1.0
                     }
 
                     switch(pos) {

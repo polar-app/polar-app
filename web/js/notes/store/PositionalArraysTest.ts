@@ -65,6 +65,62 @@ describe("PositionalArrays", () => {
 
     });
 
+    it("insert before", () => {
+
+        let arr: PositionalArray<string> = {};
+
+        arr = PositionalArrays.append(arr, '0x123');
+
+        assertJSON(arr, {
+            "1": "0x123",
+        });
+
+        arr = PositionalArrays.insert(arr, '0x123', '0x234', 'before');
+
+        assertJSON(arr, {
+            "0": "0x234",
+            "1": "0x123",
+        });
+
+    });
+
+    it("insert before (2x)", () => {
+
+        let arr: PositionalArray<string> = {};
+
+        arr = PositionalArrays.append(arr, '0x123');
+
+        assertJSON(arr, {
+            "1": "0x123",
+        });
+
+        arr = PositionalArrays.insert(arr, '0x123', '0x234', 'before');
+        arr = PositionalArrays.insert(arr, '0x234', '0x345', 'before');
+
+        assertJSON(arr, {
+            "-1": "0x345",
+            "0": "0x234",
+            "1": "0x123",
+        });
+
+    });
+
+    it("insert between", () => {
+
+        let arr: PositionalArray<string> = {};
+
+        arr = PositionalArrays.append(arr, '0x123');
+        arr = PositionalArrays.append(arr, '0x234');
+
+        arr = PositionalArrays.insert(arr, '0x234', '0x345', 'before');
+
+        assertJSON(arr, {
+            "1": "0x123",
+            "2": "0x234",
+            "1.5": "0x345",
+        });
+
+    });
 
     it("double (idempotent) remove", () => {
 
