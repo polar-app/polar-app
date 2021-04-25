@@ -381,6 +381,10 @@ export class BlocksStore implements IBlocksStore {
         return Object.keys(this._selected).length > 0;
     }
 
+    public containsBlock(id: BlockIDStr): boolean {
+        return this.getBlock(id) !== undefined;
+    }
+
     public getBlock(id: BlockIDStr): Block | undefined {
         return this._index[id] || undefined;
     }
