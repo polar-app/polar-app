@@ -59,7 +59,7 @@ describe('BlocksStore', function() {
 
     function createStore() {
         const notes = MockBlocks.create();
-        const store = new BlocksStore('1234', UndoQueues2.create());
+        const store = new BlocksStore('1234', UndoQueues2.create({limit: 50}));
         store.doPut(notes);
         return store;
     }
