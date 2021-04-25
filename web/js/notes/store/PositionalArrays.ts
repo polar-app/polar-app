@@ -102,6 +102,23 @@ export namespace PositionalArrays {
 
     }
 
+    export function unshift<T>(positionalArray: PositionalArray<T>, value: T): PositionalArray<T> {
+
+        const min
+            = arrayStream(Object.keys(positionalArray))
+            .map(parseFloat)
+            .sort((a, b) => a - b)
+            .last() || 0.0;
+
+        const idx = min - 1.0;
+
+        const key = `${idx}`;
+
+        positionalArray[key] = value;
+
+        return positionalArray;
+    }
+
     export function append<T>(positionalArray: PositionalArray<T>, value: T): PositionalArray<T> {
 
         const max
@@ -129,6 +146,26 @@ export namespace PositionalArrays {
         if (key !== undefined) {
             delete positionalArray[key];
             return positionalArray;
+        }
+
+        return positionalArray;
+
+    }
+
+    export function clear<T>(positionalArray: PositionalArray<T>) {
+
+        for(const key of Object.keys(positionalArray)) {
+            delete positionalArray[key];
+        }
+
+    }
+
+    export function set<T>(positionalArray: PositionalArray<T>, values: ReadonlyArray<T>): PositionalArray<T> {
+
+        clear(positionalArray);
+
+        for (const value of values) {
+            append(positionalArray, value);
         }
 
         return positionalArray;
