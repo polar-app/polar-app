@@ -46,6 +46,23 @@ describe("PositionalArrays", () => {
 
     });
 
+    it("insert", () => {
+
+        let arr: PositionalArray<string> = {};
+
+        arr = PositionalArrays.append(arr, '0x123');
+
+        assertJSON(arr, {
+            "1": "0x123",
+        });
+
+        arr = PositionalArrays.remove(arr, '0x123');
+
+        assertJSON(arr, {
+        });
+
+    });
+
 
     it("double (idempotent) remove", () => {
 

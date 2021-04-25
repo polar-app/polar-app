@@ -1,4 +1,5 @@
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {Tuples} from "polar-shared/src/util/Tuples";
 
 export namespace PositionalArrays {
 
@@ -10,9 +11,6 @@ export namespace PositionalArrays {
 
     export type PositionalArray<T> = Readonly<{[position: string /* PositionalArrayPosition */]: T}>;
 
-    // FIXME: insert with 'before' and 'after'
-    // FIXME: delete vy value...
-
     export interface IPositionalArrayPosition<T> {
         readonly pos: number;
         readonly value: T;
@@ -22,6 +20,61 @@ export namespace PositionalArrays {
      * An entry in the dictionary.
      */
     type PositionalArrayEntry<T> = [string, T];
+
+    export function entries<T>(positionalArray: PositionalArray<T>): ReadonlyArray<PositionalArrayEntry<T>> {
+        return Object.entries(positionalArray);
+    }
+
+    export function insert<T>(positionalArray: PositionalArray<T>,
+                              ref: T,
+                              value: T,
+                              pos: 'before' | 'after'): PositionalArray<T> {
+
+        const ptr = arrayStream(Tuples.createSiblings(entries(positionalArray)))
+              .filter(current => current.curr[1] === ref)
+              .first();
+
+        if (ptr) {
+
+            const computeKey = () => {
+
+                const base = parseFloat(ptr.curr[0]);
+
+                const computeDelta = () => {
+
+                    const computeDeltaFromSibling = (entry: PositionalArrayEntry<T> | undefined) => {
+                        return entry ? Math.abs(parseFloat(entry[0]) - base) : 1.0
+                    }
+
+                    switch(pos) {
+
+                        case "before":
+                            return computeDeltaFromSibling(ptr.prev) * -1;
+                        case "after":
+                            return computeDeltaFromSibling(ptr.next);
+
+                    }
+
+                }
+
+                const delta = computeDelta();
+
+                const idx = base + delta;
+                return `${idx}`;
+
+            }
+
+            const key = computeKey();
+            const tmp = {...positionalArray};
+            tmp[key] = value;
+
+            return tmp;
+
+        } else {
+            throw new Error("Unable to find reference");
+        }
+
+    }
 
     export function append<T>(positionalArray: PositionalArray<T>, value: T): PositionalArray<T> {
 
@@ -59,6 +112,9 @@ export namespace PositionalArrays {
 
     }
 
+    /**
+     * This is needed by the UI so that we can sort base on position.
+     */
     export function toArray<T>(positionalArray: PositionalArray<T>): ReadonlyArray<T> {
 
         const toPosition = (entry: PositionalArrayEntry<T>): IPositionalArrayPosition<T> => {
