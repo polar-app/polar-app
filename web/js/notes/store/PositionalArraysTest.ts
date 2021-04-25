@@ -46,7 +46,7 @@ describe("PositionalArrays", () => {
 
     });
 
-    it("insert", () => {
+    it("insert after", () => {
 
         let arr: PositionalArray<string> = {};
 
@@ -56,9 +56,11 @@ describe("PositionalArrays", () => {
             "1": "0x123",
         });
 
-        arr = PositionalArrays.remove(arr, '0x123');
+        arr = PositionalArrays.insert(arr, '0x123', '0x234', 'after');
 
         assertJSON(arr, {
+            "1": "0x123",
+            "2": "0x234"
         });
 
     });
