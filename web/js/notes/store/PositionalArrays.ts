@@ -9,7 +9,7 @@ export namespace PositionalArrays {
      */
     export type PositionalArrayPositionStr = string;
 
-    export type PositionalArray<T> = Readonly<{[position: string /* PositionalArrayPosition */]: T}>;
+    export type PositionalArray<T> = {[position: string /* PositionalArrayPosition */]: T};
 
     export interface IPositionalArrayPosition<T> {
         readonly pos: number;
@@ -79,10 +79,9 @@ export namespace PositionalArrays {
             }
 
             const key = computeKey();
-            const tmp = {...positionalArray};
-            tmp[key] = value;
+            positionalArray[key] = value;
 
-            return tmp;
+            return positionalArray;
 
         } else {
             throw new Error("Unable to find reference");
@@ -102,13 +101,9 @@ export namespace PositionalArrays {
 
         const key = `${idx}`;
 
-        const result = {
-            ...positionalArray,
-        }
+        positionalArray[key] = value;
 
-        result[key] = value;
-
-        return result;
+        return positionalArray;
     }
 
     export function remove<T>(positionalArray: PositionalArray<T>, value: T): PositionalArray<T> {
@@ -119,9 +114,8 @@ export namespace PositionalArrays {
                         .first();
 
         if (key !== undefined) {
-            const tmp = {...positionalArray};
-            delete tmp[key];
-            return tmp;
+            delete positionalArray[key];
+            return positionalArray;
         }
 
         return positionalArray;
