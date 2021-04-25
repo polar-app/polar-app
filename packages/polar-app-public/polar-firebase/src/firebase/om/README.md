@@ -1,1 +1,0 @@
-General object model for our firebase datastore backend. 
