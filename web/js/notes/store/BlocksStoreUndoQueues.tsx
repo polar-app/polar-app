@@ -20,13 +20,20 @@ export namespace BlocksStoreUndoQueues {
         readonly block: IBlock;
     }
 
-
     export interface IUndoCapture {
         readonly prepare: (snapshot: ReadonlyArray<Block>) => void;
         readonly capture: (snapshot: ReadonlyArray<Block>) => ReadonlyArray<IBlocksStoreMutation>;
     }
 
     // FIXME move everything that uses BlocksStore into BlocksStore
+    // FIXME we can not do just a set() on a parent because it would remove children
+    // from antother non-undo transaction like a snapshot update. Instead we
+    // have to patch it and update the right items in the right place.
+    //
+    //
+    // FIXME: the item positions aren't stored with an ID to know where the
+    // relative portion is located so if we try to patch items we're not going
+    // to be able to compute its relative position
 
     export function createUndoCapture(identifiers: ReadonlyArray<BlockIDStr>): IUndoCapture {
 
