@@ -99,7 +99,4 @@ export interface IBlocksStore {
 
     getNamedNodes(): ReadonlyArray<string>;
 
-    undo(): Promise<void>;
-    redo(): Promise<void>;
-
 }

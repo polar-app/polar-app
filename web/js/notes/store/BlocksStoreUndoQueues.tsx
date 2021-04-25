@@ -6,6 +6,8 @@ import {Block} from "./Block";
 
 export namespace BlocksStoreUndoQueues {
 
+    // FIXME: have tests for this... that uses the BlocksStore directly..
+
     export interface IUndoMutation {
         readonly parent: IBlock | undefined;
         readonly child: IBlock;
