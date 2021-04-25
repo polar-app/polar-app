@@ -97,7 +97,7 @@ export namespace PositionalArrays {
             return positionalArray;
 
         } else {
-            throw new Error("Unable to find reference");
+            throw new Error(`Unable to find reference to ${ref} in: ` + JSON.stringify(positionalArray));
         }
 
     }
@@ -108,7 +108,7 @@ export namespace PositionalArrays {
             = arrayStream(Object.keys(positionalArray))
             .map(parseFloat)
             .sort((a, b) => a - b)
-            .last() || 0.0;
+            .first() || 0.0;
 
         const idx = min - 1.0;
 
