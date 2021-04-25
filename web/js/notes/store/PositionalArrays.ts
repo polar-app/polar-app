@@ -92,11 +92,11 @@ export namespace PositionalArrays {
 
     export function append<T>(positionalArray: PositionalArray<T>, value: T): PositionalArray<T> {
 
-        // FIXME: does this need to be sorted? FIXME... yes... I think it does... and we need the last n9t the first...
-
         const max
             = arrayStream(Object.keys(positionalArray))
-                .map(parseFloat).first() || 0.0;
+                .map(parseFloat)
+                .sort((a, b) => a - b)
+                .first() || 0.0;
 
         const idx = max + 1.0;
 
