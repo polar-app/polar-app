@@ -30,7 +30,15 @@ export namespace PositionalArrays {
                               value: T,
                               pos: 'before' | 'after'): PositionalArray<T> {
 
-        const ptr = arrayStream(Tuples.createSiblings(entries(positionalArray)))
+        const sorted = arrayStream(entries(positionalArray))
+            .sort((a, b) => parseFloat(a[0]) - parseFloat(b[0]))
+            .collect();
+
+        const pointers = arrayStream(Tuples.createSiblings(sorted))
+              .sort((a, b) => parseFloat(a.curr[0]) - parseFloat(b.curr[0]))
+              .collect();
+
+        const ptr = arrayStream(pointers)
               .filter(current => current.curr[1] === ref)
               .first();
 
@@ -43,7 +51,13 @@ export namespace PositionalArrays {
                 const computeDelta = () => {
 
                     const computeDeltaFromSibling = (entry: PositionalArrayEntry<T> | undefined) => {
-                        return entry ? Math.abs(parseFloat(entry[0]) - base) / 2 : 1.0
+
+                        if (entry !== undefined) {
+                            return Math.abs(parseFloat(entry[0]) - base) / 2;
+                        } else {
+                            return 1.0;
+                        }
+
                     }
 
                     switch(pos) {
@@ -77,6 +91,8 @@ export namespace PositionalArrays {
     }
 
     export function append<T>(positionalArray: PositionalArray<T>, value: T): PositionalArray<T> {
+
+        // FIXME: does this need to be sorted? FIXME... yes... I think it does... and we need the last n9t the first...
 
         const max
             = arrayStream(Object.keys(positionalArray))
