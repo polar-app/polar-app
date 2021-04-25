@@ -36,7 +36,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     /**
      * The linked wiki references to other blocks.
      */
-    @observable private _links: BlockIDStr[];
+    @observable private _links: PositionalArray<BlockIDStr>;
 
     constructor(opts: IBlock<C | IBlockContent>) {
 
@@ -48,7 +48,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         this._updated = opts.updated;
         this._items = PositionalArrays.create([...opts.items]);
         this._content = Contents.create(opts.content);
-        this._links = [...opts.links];
+        this._links = PositionalArrays.create([...opts.links]);
 
         makeObservable(this)
 
@@ -87,7 +87,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     }
 
     @computed get links(): ReadonlyArray<BlockIDStr> {
-        return this._links;
+        return PositionalArrays.toArray(this._links);
     }
 
     @action setContent(content: C | IBlockContent) {
@@ -131,26 +131,18 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     }
 
     @action setLinks(links: ReadonlyArray<BlockIDStr>) {
-        this._links = [...links];
+        PositionalArrays.set(this._links, links);
         this._updated = ISODateTimeStrings.create();
     }
 
     @action addLink(id: BlockIDStr) {
-        this._links.push(id);
+        PositionalArrays.append(this._links, id);
         this._updated = ISODateTimeStrings.create();
     }
 
     @action removeLink(id: BlockIDStr) {
 
-        const idx = this._links.indexOf(id);
-
-        if (idx === -1) {
-            return;
-        }
-
-        // this mutates the array under us and I don't necessarily like that
-        // but it's a copy of the original to begin with.
-        this._links.splice(idx, 1);
+        PositionalArrays.remove(this._links, id);
         this._updated = ISODateTimeStrings.create();
 
     }
@@ -162,7 +154,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         this._updated = block.updated;
         PositionalArrays.set(this._items, block.items);
         this._content.update(block.content)
-        this._links = [...block.links];
+        PositionalArrays.set(this._links, block.links);
 
     }
 
@@ -177,7 +169,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
             updated: this._updated,
             items: PositionalArrays.toArray(this._items),
             content: this._content.toJSON() as any,
-            links: this._links,
+            links: PositionalArrays.toArray(this._links),
         };
 
     }

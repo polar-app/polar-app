@@ -113,7 +113,7 @@ describe('BlocksStore', function() {
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "100",
                     "_items": {},
-                    "_links": [],
+                    "_links": {},
                     "_nspace": "ns101",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
@@ -130,7 +130,7 @@ describe('BlocksStore', function() {
                         "2": "104",
                         "3": "105"
                     },
-                    "_links": [],
+                    "_links": {},
                     "_nspace": "ns101",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
@@ -143,7 +143,7 @@ describe('BlocksStore', function() {
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "103",
                     "_items": {},
-                    "_links": [],
+                    "_links": {},
                     "_nspace": "ns101",
                     "_parent": "102",
                     "_uid": "123",
@@ -157,7 +157,7 @@ describe('BlocksStore', function() {
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "104",
                     "_items": {},
-                    "_links": [],
+                    "_links": {},
                     "_nspace": "ns101",
                     "_parent": "102",
                     "_uid": "123",
@@ -173,10 +173,10 @@ describe('BlocksStore', function() {
                     "_items": {
                         "1": "106"
                     },
-                    "_links": [
-                        "109",
-                        "108"
-                    ],
+                    "_links": {
+                        "1": "109",
+                        "2": "108"
+                    },
                     "_nspace": "ns101",
                     "_parent": "102",
                     "_uid": "123",
@@ -190,9 +190,9 @@ describe('BlocksStore', function() {
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "106",
                     "_items": {},
-                    "_links": [
-                        "112"
-                    ],
+                    "_links": {
+                        "1": "112"
+                    },
                     "_nspace": "ns101",
                     "_parent": "105",
                     "_uid": "123",
@@ -208,7 +208,7 @@ describe('BlocksStore', function() {
                     "_items": {
                         "1": "110"
                     },
-                    "_links": [],
+                    "_links": {},
                     "_nspace": "ns101",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
@@ -221,7 +221,7 @@ describe('BlocksStore', function() {
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "108",
                     "_items": {},
-                    "_links": [],
+                    "_links": {},
                     "_nspace": "ns101",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
@@ -236,7 +236,7 @@ describe('BlocksStore', function() {
                     "_items": {
                         "1": "111"
                     },
-                    "_links": [],
+                    "_links": {},
                     "_nspace": "ns101",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
@@ -249,9 +249,9 @@ describe('BlocksStore', function() {
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "110",
                     "_items": {},
-                    "_links": [
-                        "102"
-                    ],
+                    "_links": {
+                        "1": "102"
+                    },
                     "_nspace": "ns101",
                     "_parent": "107",
                     "_uid": "123",
@@ -265,7 +265,7 @@ describe('BlocksStore', function() {
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "111",
                     "_items": {},
-                    "_links": [],
+                    "_links": {},
                     "_nspace": "ns101",
                     "_parent": "109",
                     "_uid": "123",
@@ -279,7 +279,7 @@ describe('BlocksStore', function() {
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "112",
                     "_items": {},
-                    "_links": [],
+                    "_links": {},
                     "_nspace": "ns101",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
@@ -567,18 +567,18 @@ describe('BlocksStore', function() {
             "Winston Churchill"
         ]);
 
-        assertJSON(Arrays.first(Object.values(store.index)), {
-            "_content": {
-                "_data": "World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world's countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.",
-                "_type": "markdown"
+        assertJSON(Arrays.first(Object.values(store.index))?.toJSON(), {
+            "content": {
+                "data": "World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world's countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.",
+                "type": "markdown"
             },
-            "_created": "2012-03-02T11:38:49.321Z",
-            "_id": "100",
-            "_items": {},
-            "_links": [],
-            "_nspace": "ns101",
-            "_uid": "123",
-            "_updated": "2012-03-02T11:38:49.321Z"
+            "created": "2012-03-02T11:38:49.321Z",
+            "id": "100",
+            "items": [],
+            "links": [],
+            "nspace": "ns101",
+            "uid": "123",
+            "updated": "2012-03-02T11:38:49.321Z"
         });
 
     });
