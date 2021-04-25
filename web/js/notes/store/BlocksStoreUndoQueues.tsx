@@ -4,7 +4,7 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {BlockIDStr, BlocksStore} from "./BlocksStore";
 import {Block} from "./Block";
 
-export namespace BlockStores {
+export namespace BlocksStoreUndoQueues {
 
     export interface IUndoMutation {
         readonly parent: IBlock | undefined;
@@ -23,6 +23,8 @@ export namespace BlockStores {
         readonly prepare: (snapshot: ReadonlyArray<Block>) => void;
         readonly capture: (snapshot: ReadonlyArray<Block>) => ReadonlyArray<IBlocksStoreMutation>;
     }
+
+    // FIXME move everything that uses BlocksStore into BlocksStore
 
     export function createUndoCapture(identifiers: ReadonlyArray<BlockIDStr>): IUndoCapture {
 
