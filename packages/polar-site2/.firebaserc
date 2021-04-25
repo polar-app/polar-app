@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "polar-32b0f": {
+      "hosting": {
+        "www.getpolarized.io": [
+          "polar-32b0f"
+        ]
+      }
+    }
+  }
+}
