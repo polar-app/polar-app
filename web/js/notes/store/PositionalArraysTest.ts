@@ -239,4 +239,20 @@ describe("PositionalArrays", () => {
 
     });
 
+
+    it("create with existing values", () => {
+
+        const arr: PositionalArray<string> = PositionalArrays.create(['1', '2', '3']);
+
+        assertJSON(arr, {
+            "1": "1",
+            "2": "2",
+            "3": "3"
+        });
+
+        assertJSON(PositionalArrays.toArray(arr), ['1', '2', '3']);
+
+    });
+
+
 });

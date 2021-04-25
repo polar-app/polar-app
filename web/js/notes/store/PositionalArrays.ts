@@ -21,6 +21,19 @@ export namespace PositionalArrays {
      */
     type PositionalArrayEntry<T> = [string, T];
 
+    export function create<T>(values?: ReadonlyArray<T>): PositionalArray<T> {
+
+        const result: PositionalArray<T> = {};
+
+        if (values !== undefined) {
+            for(const value of values) {
+                append(result, value);
+            }
+        }
+
+        return result;
+    }
+
     export function entries<T>(positionalArray: PositionalArray<T>): ReadonlyArray<PositionalArrayEntry<T>> {
         return Object.entries(positionalArray);
     }
@@ -95,7 +108,7 @@ export namespace PositionalArrays {
             = arrayStream(Object.keys(positionalArray))
                 .map(parseFloat)
                 .sort((a, b) => a - b)
-                .first() || 0.0;
+                .last() || 0.0;
 
         const idx = max + 1.0;
 
