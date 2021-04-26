@@ -79,6 +79,8 @@ export interface IBlocksStore {
 
     deleteBlocks(blockIDs: ReadonlyArray<BlockIDStr>): void;
 
+    updateBlocks(blocks: ReadonlyArray<IBlock>): void;
+
     createNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock | undefined;
 
     createNewNamedBlock(name: BlockNameStr, ref: BlockIDStr): BlockIDStr;

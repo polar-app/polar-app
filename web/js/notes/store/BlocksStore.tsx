@@ -963,6 +963,10 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
+    @action public updateBlocks(blocks: ReadonlyArray<IBlock>): void {
+        this.doPut(blocks);
+    }
+
     /**
      * Create a new block in reference to the block with given ID.
      */

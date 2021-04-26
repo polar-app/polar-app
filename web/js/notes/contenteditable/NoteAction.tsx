@@ -104,12 +104,20 @@ function useActionExecutor(id: BlockIDStr) {
                 }
 
                 const addLinkToBlock = (newBlockID: BlockIDStr) => {
+
                     const block = blocksStore.getBlock(id);
 
-                    block?.addLink({
-                        id: newBlockID,
-                        text: actionOp.target
-                    });
+                    // think this won't trigger the undo/redo system...
+                    if (block) {
+
+                        block.addLink({
+                            id: newBlockID,
+                            text: actionOp.target
+                        });
+
+                        blocksStore.updateBlocks([block]);
+
+                    }
 
                 }
 
