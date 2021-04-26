@@ -174,8 +174,14 @@ describe('BlocksStore', function() {
                         "1": "106"
                     },
                     "_links": {
-                        "1": "109",
-                        "2": "108"
+                        "1": {
+                            "id": "109",
+                            "text": "Canada"
+                        },
+                        "2": {
+                            "id": "108",
+                            "text": "Russia"
+                        }
                     },
                     "_nspace": "ns101",
                     "_parent": "102",
@@ -191,7 +197,10 @@ describe('BlocksStore', function() {
                     "_id": "106",
                     "_items": {},
                     "_links": {
-                        "1": "112"
+                        "1": {
+                            "id": "112",
+                            "text": "Winston Churchill"
+                        }
                     },
                     "_nspace": "ns101",
                     "_parent": "105",
@@ -250,7 +259,10 @@ describe('BlocksStore', function() {
                     "_id": "110",
                     "_items": {},
                     "_links": {
-                        "1": "102"
+                        "1": {
+                            "id": "102",
+                            "text": "World War II"
+                        }
                     },
                     "_nspace": "ns101",
                     "_parent": "107",
