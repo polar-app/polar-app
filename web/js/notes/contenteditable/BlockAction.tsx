@@ -147,7 +147,7 @@ interface ActivePrompt {
 
 }
 
-export const NoteAction = observer((props: IProps) => {
+export const BlockAction = observer((props: IProps) => {
 
     const theme = useTheme();
 

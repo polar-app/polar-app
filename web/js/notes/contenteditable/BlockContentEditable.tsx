@@ -7,7 +7,7 @@ import {ContentEditables} from "../ContentEditables";
 import {createActionsProvider} from "../../mui/action_menu/ActionStore";
 import {NoteFormatPopper} from "../NoteFormatPopper";
 import {BlockContentCanonicalizer} from "./BlockContentCanonicalizer";
-import {NoteAction} from "./NoteAction";
+import {BlockAction} from "./BlockAction";
 import { useHistory } from 'react-router-dom';
 import { autorun } from 'mobx'
 import {CursorPositions} from "./CursorPositions";
@@ -405,10 +405,10 @@ export const BlockContentEditable = observer((props: IProps) => {
             <div onKeyDown={handleKeyDown}
                  onKeyUp={handleKeyUp}>
 
-                <NoteAction id={props.id}
-                            trigger="[["
-                            actionsProvider={createNoteActionsProvider}
-                            onAction={(id) => ({
+                <BlockAction id={props.id}
+                             trigger="[["
+                             actionsProvider={createNoteActionsProvider}
+                             onAction={(id) => ({
                                 type: 'note-link',
                                 target: id
                             })}>
@@ -427,7 +427,7 @@ export const BlockContentEditable = observer((props: IProps) => {
                              dangerouslySetInnerHTML={{__html: content}}/>
                     </NoteFormatPopper>
 
-                </NoteAction>
+                </BlockAction>
 
             </div>
 
