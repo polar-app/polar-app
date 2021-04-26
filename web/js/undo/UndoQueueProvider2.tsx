@@ -1,26 +1,24 @@
 import * as React from 'react';
 import {deepMemo} from "../react/ReactUtils";
-import { UndoStoreProviderDelegate } from "./UndoStore";
-import { UndoQueueGlobalHotKeys } from "./UndoQueueGlobalHotKeys";
 import {UndoQueues2} from "./UndoQueues2";
 
-interface IProps {
-    readonly children: JSX.Element;
-}
-
-const UndoQueueContext = React.createContext(UndoQueues2.create());
+const UndoQueueContext = React.createContext(UndoQueues2.create({limit: 50}));
 
 export function useUndoQueue() {
     return React.useContext(UndoQueueContext);
 }
 
+interface IProps {
+    readonly children: JSX.Element;
+}
+
 export const UndoQueueProvider2 = deepMemo(function UndoQueueProvider(props: IProps) {
     return (
-        <UndoStoreProviderDelegate>
+        // <UndoQueueContext.Provider>
             <>
                 {/*<UndoQueueGlobalHotKeys/>*/}
                 {props.children}
             </>
-        </UndoStoreProviderDelegate>
+        // </UndoQueueContext.Provider>
     );
 });

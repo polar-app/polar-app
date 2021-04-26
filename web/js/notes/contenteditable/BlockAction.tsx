@@ -84,18 +84,46 @@ function useActionExecutor(id: BlockIDStr) {
 
             case "note-link":
 
-                blocksStore.createNewNamedBlock(actionOp.target, id);
+                const createNewBlock = (): BlockIDStr => {
+                    return blocksStore.createNewNamedBlock(actionOp.target, id);
+                }
 
-                const coveringRange = createCoveringRange();
-                coveringRange.deleteContents();
+                const updateSelection = () => {
 
-                const a = document.createElement('a');
-                a.setAttribute("href", "#" + actionOp.target);
-                a.appendChild(document.createTextNode(actionOp.target));
-                coveringRange.insertNode(a);
+                    const coveringRange = createCoveringRange();
+                    coveringRange.deleteContents();
 
-                window.getSelection()!.getRangeAt(0).setStartAfter(a);
-                window.getSelection()!.getRangeAt(0).setEndAfter(a);
+                    const a = document.createElement('a');
+                    a.setAttribute("href", "#" + actionOp.target);
+                    a.appendChild(document.createTextNode(actionOp.target));
+                    coveringRange.insertNode(a);
+
+                    window.getSelection()!.getRangeAt(0).setStartAfter(a);
+                    window.getSelection()!.getRangeAt(0).setEndAfter(a);
+
+                }
+
+                const addLinkToBlock = (newBlockID: BlockIDStr) => {
+
+                    const block = blocksStore.getBlock(id);
+
+                    // think this won't trigger the undo/redo system...
+                    if (block) {
+
+                        block.addLink({
+                            id: newBlockID,
+                            text: actionOp.target
+                        });
+
+                        blocksStore.updateBlocks([block]);
+
+                    }
+
+                }
+
+                const newBlockID = createNewBlock();
+                updateSelection();
+                addLinkToBlock(newBlockID);
 
                 break;
 
@@ -119,7 +147,7 @@ interface ActivePrompt {
 
 }
 
-export const NoteAction = observer((props: IProps) => {
+export const BlockAction = observer((props: IProps) => {
 
     const theme = useTheme();
 

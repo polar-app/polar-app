@@ -79,6 +79,8 @@ export interface IBlocksStore {
 
     deleteBlocks(blockIDs: ReadonlyArray<BlockIDStr>): void;
 
+    updateBlocks(blocks: ReadonlyArray<IBlock>): void;
+
     createNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock | undefined;
 
     createNewNamedBlock(name: BlockNameStr, ref: BlockIDStr): BlockIDStr;
@@ -98,8 +100,5 @@ export interface IBlocksStore {
     navNext(pos: NavPosition, opts: NavOpts): void;
 
     getNamedNodes(): ReadonlyArray<string>;
-
-    undo(): Promise<void>;
-    redo(): Promise<void>;
 
 }

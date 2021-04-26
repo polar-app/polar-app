@@ -364,7 +364,7 @@ export class BlocksStore implements IBlocksStore {
             }
 
             for (const link of block.links) {
-                this._reverse.add(link, block.id);
+                this._reverse.add(link.id, block.id);
             }
 
         }
@@ -379,6 +379,10 @@ export class BlocksStore implements IBlocksStore {
 
     public hasSelected(): boolean {
         return Object.keys(this._selected).length > 0;
+    }
+
+    public containsBlock(id: BlockIDStr): boolean {
+        return this.getBlock(id) !== undefined;
     }
 
     public getBlock(id: BlockIDStr): Block | undefined {
@@ -940,7 +944,27 @@ export class BlocksStore implements IBlocksStore {
     }
 
     public deleteBlocks(blockIDs: ReadonlyArray<BlockIDStr>) {
+
+        // const restoreBlocks =
+        //     blockIDs.map(current => this.getBlock(current)!.toJSON());
+        //
+        // const redo = () => {
+        //     this.doDelete(blockIDs);
+        // }
+        //
+        // const undo = () => {
+        //
+        //     // FIXME: we also need to link it from the parent. and the position in the parent.. .
+        //     this.doPut([restoreBlocks]);
+        //
+        // }
+
         this.doDelete(blockIDs);
+
+    }
+
+    @action public updateBlocks(blocks: ReadonlyArray<IBlock>): void {
+        this.doPut(blocks);
     }
 
     /**
@@ -1076,8 +1100,6 @@ export class BlocksStore implements IBlocksStore {
                 };
 
             }
-
-            const storeSnapshot = this.createSnapshot();
 
             const currentBlock = this.getBlock(id)!;
             const split = currentBlock.content.type === 'markdown' ? opts.split : undefined;
@@ -1620,70 +1642,6 @@ export class BlocksStore implements IBlocksStore {
 
         return parentBlock.items.indexOf(id) === parentBlock.items.length - 1;
 
-    }
-
-    private withUndo<T>(action: () => T) {
-
-        const before = this.createSnapshot();
-
-        const result = action();
-
-        const after = this.createSnapshot();
-
-        // const doAsync = async () => {
-        //     await this.undoQueue.push(async () => this.restoreSnapshot(before));
-        // }
-
-        if (! deepEqual(before, after)) {
-
-            // doAsync()
-            //     .catch(err => console.error(err));
-
-        }
-
-        return result;
-
-    }
-
-    // TODO: this is wrong because we're restoring too much stuff.  ALSO, since
-    // it isn't updated with snapshots we're not going to properly update the data
-    // once we undo it...
-    private createSnapshot(): IBlocksStoreSnapshot {
-        return {
-            _active: Dictionaries.deepCopy(this._active),
-            _dropSource: Dictionaries.deepCopy(this._dropSource),
-            _dropTarget: Dictionaries.deepCopy(this._dropTarget),
-            _expanded: Dictionaries.deepCopy(this._expanded),
-            _index: Dictionaries.deepCopy(this._index),
-            _indexByName: Dictionaries.deepCopy(this._indexByName),
-            _reverse: Dictionaries.deepCopy(this._reverse),
-            _selected: Dictionaries.deepCopy(this._selected),
-            _selectedAnchor: Dictionaries.deepCopy(this._selectedAnchor),
-            root: Dictionaries.deepCopy(this.root)
-        }
-    }
-
-    private restoreSnapshot(snapshot: IBlocksStoreSnapshot) {
-
-        this._active = snapshot._active;
-        this._dropSource = snapshot._dropSource;
-        this._dropTarget = snapshot._dropTarget;
-        this._expanded = snapshot._expanded;
-        this._index = snapshot._index;
-        this._indexByName = snapshot._indexByName;
-        this._reverse = snapshot._reverse;
-        this._selected = snapshot._selected;
-        this._selectedAnchor = snapshot._selectedAnchor;
-        this.root = snapshot.root;
-
-    }
-
-    public async undo() {
-        // await this.undoQueue.undo();
-    }
-
-    public async redo() {
-        // await this.undoQueue.redo();
     }
 
 }

@@ -79,6 +79,11 @@ export class TracingBlocksStore implements IBlocksStore {
         return this.delegate.deleteBlocks(blockIDs);
     }
 
+    public updateBlocks(blocks: ReadonlyArray<IBlock>): void {
+        trace('updateBlocks', {blocks});
+        return this.delegate.updateBlocks(blocks);
+    }
+
     public createNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock | undefined {
         trace('createNewBlock', {id, opts});
         return this.delegate.createNewBlock(id, opts);

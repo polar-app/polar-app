@@ -1,8 +1,11 @@
-import {IBlock, NamespaceIDStr, UIDStr} from "./IBlock";
+import {IBlock, IBlockLink, NamespaceIDStr, UIDStr} from "./IBlock";
 import {INewChildPosition, BlockIDStr, BlockContent, IBlockContent} from "./BlocksStore";
 import {action, computed, makeObservable, observable} from "mobx"
 import { ISODateTimeString, ISODateTimeStrings } from "polar-shared/src/metadata/ISODateTimeStrings";
 import { Contents } from "../content/Contents";
+import {PositionalArrays} from "./PositionalArrays";
+import PositionalArray = PositionalArrays.PositionalArray;
+import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 
 export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
@@ -27,14 +30,14 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     /**
      * The sub-items of this node as node IDs.
      */
-    @observable private _items: BlockIDStr[];
+    @observable private _items: PositionalArray<BlockIDStr>;
 
     @observable private _content: C;
 
     /**
      * The linked wiki references to other blocks.
      */
-    @observable private _links: BlockIDStr[];
+    @observable private _links: PositionalArray<IBlockLink>;
 
     constructor(opts: IBlock<C | IBlockContent>) {
 
@@ -44,9 +47,9 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         this._parent = opts.parent;
         this._created = opts.created;
         this._updated = opts.updated;
-        this._items = [...opts.items];
+        this._items = PositionalArrays.create([...opts.items]);
         this._content = Contents.create(opts.content);
-        this._links = [...opts.links];
+        this._links = PositionalArrays.create([...opts.links]);
 
         makeObservable(this)
 
@@ -77,15 +80,15 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     }
 
     @computed get items(): ReadonlyArray<BlockIDStr> {
-        return this._items;
+        return PositionalArrays.toArray(this._items);
     }
 
     @computed get content() {
         return this._content;
     }
 
-    @computed get links(): ReadonlyArray<BlockIDStr> {
-        return this._links;
+    @computed get links(): ReadonlyArray<IBlockLink> {
+        return PositionalArrays.toArray(this._links);
     }
 
     @action setContent(content: C | IBlockContent) {
@@ -101,7 +104,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     }
 
     @action setItems(items: ReadonlyArray<BlockIDStr>) {
-        this._items = [...items];
+        PositionalArrays.set(this._items, items);
         this._updated = ISODateTimeStrings.create();
     }
 
@@ -109,21 +112,12 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
         if (pos === 'first-child') {
 
-            this._items.unshift(id);
+            PositionalArrays.unshift(this._items, id);
 
         } else if (pos) {
-
-            const idx = this._items.indexOf(pos.ref);
-
-            if (idx !== -1) {
-                const delta = pos.pos === 'before' ? 0 : 1;
-                this._items.splice(idx + delta, 0, id);
-            } else {
-                throw new Error(`Unable to find item for position: ${pos.ref} ${pos.pos}`);
-            }
-
+            PositionalArrays.insert(this._items, pos.ref, id, pos.pos);
         } else {
-            this._items.push(id);
+            PositionalArrays.append(this._items, id);
         }
 
         this._updated = ISODateTimeStrings.create();
@@ -131,41 +125,33 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @action removeItem(id: BlockIDStr) {
 
-        const idx = this.items.indexOf(id);
+        PositionalArrays.remove(this._items, id);
 
-        if (idx === -1) {
-            return;
-        }
-
-        // this mutates the array under us and I don't necessarily like that
-        // but it's a copy of the original to begin with.
-        this._items.splice(idx, 1);
         this._updated = ISODateTimeStrings.create();
 
     }
 
-    @action setLinks(links: ReadonlyArray<BlockIDStr>) {
-        this._links = [...links];
+    @action setLinks(links: ReadonlyArray<IBlockLink>) {
+        PositionalArrays.set(this._links, links);
         this._updated = ISODateTimeStrings.create();
     }
 
-    @action addLink(id: BlockIDStr) {
-        this._links.push(id);
+    @action addLink(link: IBlockLink) {
+        PositionalArrays.append(this._links, link);
         this._updated = ISODateTimeStrings.create();
     }
 
     @action removeLink(id: BlockIDStr) {
 
-        const idx = this._links.indexOf(id);
+        const link =
+            arrayStream(Object.values(this._links))
+                .filter(current => current.id === id)
+                .first();
 
-        if (idx === -1) {
-            return;
+        if (link) {
+            PositionalArrays.remove(this._links, link);
+            this._updated = ISODateTimeStrings.create();
         }
-
-        // this mutates the array under us and I don't necessarily like that
-        // but it's a copy of the original to begin with.
-        this._links.splice(idx, 1);
-        this._updated = ISODateTimeStrings.create();
 
     }
 
@@ -174,9 +160,9 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         this._parent = block.parent;
         this._created = block.created;
         this._updated = block.updated;
-        this._items = [...block.items];
+        PositionalArrays.set(this._items, block.items);
         this._content.update(block.content)
-        this._links = [...block.links];
+        PositionalArrays.set(this._links, block.links);
 
     }
 
@@ -189,9 +175,9 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
             parent: this._parent,
             created: this._created,
             updated: this._updated,
-            items: this._items,
+            items: PositionalArrays.toArray(this._items),
             content: this._content.toJSON() as any,
-            links: this._links,
+            links: PositionalArrays.toArray(this._links),
         };
 
     }
