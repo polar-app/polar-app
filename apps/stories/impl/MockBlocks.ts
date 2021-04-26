@@ -62,7 +62,16 @@ export namespace MockBlocks {
                     type: 'markdown',
                     data: 'Allied Powers: United States, United Kingdom, [[Canada]], [[Russia]].'
                 },
-                links: ['109', '108'],
+                links: [
+                    {
+                        id: '109',
+                        text: 'Canada'
+                    },
+                    {
+                        id: '108',
+                        text: 'Russia'
+                    }
+                ],
                 items: [
                     '106'
                 ],
@@ -132,7 +141,12 @@ export namespace MockBlocks {
                     data: 'Lead by Franklin D. Roosevelt, [[Winston Churchill]], and Joseph Stalin '
                 },
                 items: [],
-                links: ['112']
+                links: [
+                    {
+                        id: '112',
+                        text: 'Winston Churchill'
+                    }
+                ]
             },
             {
                 id: '107',
@@ -160,7 +174,10 @@ export namespace MockBlocks {
                     data: 'Germany Germany (German: Deutschland, German pronunciation: [ˈdɔʏtʃlant]), officially the Federal Republic of Germany (German: Bundesrepublik Deutschland, About this soundlisten),[e] is a country in Central and Western Europe and one of the major participants of [[World War II]]'
                 },
                 links: [
-                    '102'
+                    {
+                        id: '102',
+                        text: 'World War II'
+                    }
                 ],
                 items: []
             },

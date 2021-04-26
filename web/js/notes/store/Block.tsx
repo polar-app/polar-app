@@ -1,10 +1,11 @@
-import {IBlock, NamespaceIDStr, UIDStr} from "./IBlock";
+import {IBlock, IBlockLink, NamespaceIDStr, UIDStr} from "./IBlock";
 import {INewChildPosition, BlockIDStr, BlockContent, IBlockContent} from "./BlocksStore";
 import {action, computed, makeObservable, observable} from "mobx"
 import { ISODateTimeString, ISODateTimeStrings } from "polar-shared/src/metadata/ISODateTimeStrings";
 import { Contents } from "../content/Contents";
 import {PositionalArrays} from "./PositionalArrays";
 import PositionalArray = PositionalArrays.PositionalArray;
+import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 
 export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
@@ -36,7 +37,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     /**
      * The linked wiki references to other blocks.
      */
-    @observable private _links: PositionalArray<BlockIDStr>;
+    @observable private _links: PositionalArray<IBlockLink>;
 
     constructor(opts: IBlock<C | IBlockContent>) {
 
@@ -86,7 +87,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         return this._content;
     }
 
-    @computed get links(): ReadonlyArray<BlockIDStr> {
+    @computed get links(): ReadonlyArray<IBlockLink> {
         return PositionalArrays.toArray(this._links);
     }
 
@@ -130,20 +131,27 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     }
 
-    @action setLinks(links: ReadonlyArray<BlockIDStr>) {
+    @action setLinks(links: ReadonlyArray<IBlockLink>) {
         PositionalArrays.set(this._links, links);
         this._updated = ISODateTimeStrings.create();
     }
 
-    @action addLink(id: BlockIDStr) {
-        PositionalArrays.append(this._links, id);
+    @action addLink(link: IBlockLink) {
+        PositionalArrays.append(this._links, link);
         this._updated = ISODateTimeStrings.create();
     }
 
     @action removeLink(id: BlockIDStr) {
 
-        PositionalArrays.remove(this._links, id);
-        this._updated = ISODateTimeStrings.create();
+        const link =
+            arrayStream(Object.values(this._links))
+                .filter(current => current.id === id)
+                .first();
+
+        if (link) {
+            PositionalArrays.remove(this._links, link);
+            this._updated = ISODateTimeStrings.create();
+        }
 
     }
 

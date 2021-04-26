@@ -4,6 +4,20 @@ import {BlockIDStr, IBlockContent} from "./BlocksStore";
 export type UIDStr = string;
 export type NamespaceIDStr = string;
 
+export interface IBlockLink {
+
+    /**
+     * The id of the block we're linking to.
+     */
+    readonly id: BlockIDStr;
+
+    /**
+     * The text of the block in the markdown note.
+     */
+    readonly text: string;
+
+}
+
 export interface IBlock<C extends IBlockContent = IBlockContent> {
 
     readonly id: BlockIDStr;
@@ -28,11 +42,6 @@ export interface IBlock<C extends IBlockContent = IBlockContent> {
     /**
      * The linked wiki references to other notes.
      */
-    readonly links: ReadonlyArray<BlockIDStr>;
-
-    // FIXMEL this needs to be refactoed because
-    // the content type of the node should/could change and we need markdown/latex/etc note types
-    // but also we need the ability to do block embeds an so forth and those are a specic note type.
-    // FIXME: maybe content would be a reference to another type..
+    readonly links: ReadonlyArray<IBlockLink>;
 
 }

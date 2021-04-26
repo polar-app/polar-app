@@ -364,7 +364,7 @@ export class BlocksStore implements IBlocksStore {
             }
 
             for (const link of block.links) {
-                this._reverse.add(link, block.id);
+                this._reverse.add(link.id, block.id);
             }
 
         }

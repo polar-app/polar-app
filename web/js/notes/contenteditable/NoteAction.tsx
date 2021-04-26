@@ -84,18 +84,38 @@ function useActionExecutor(id: BlockIDStr) {
 
             case "note-link":
 
-                blocksStore.createNewNamedBlock(actionOp.target, id);
+                const createNewBlock = (): BlockIDStr => {
+                    return blocksStore.createNewNamedBlock(actionOp.target, id);
+                }
 
-                const coveringRange = createCoveringRange();
-                coveringRange.deleteContents();
+                const updateSelection = () => {
 
-                const a = document.createElement('a');
-                a.setAttribute("href", "#" + actionOp.target);
-                a.appendChild(document.createTextNode(actionOp.target));
-                coveringRange.insertNode(a);
+                    const coveringRange = createCoveringRange();
+                    coveringRange.deleteContents();
 
-                window.getSelection()!.getRangeAt(0).setStartAfter(a);
-                window.getSelection()!.getRangeAt(0).setEndAfter(a);
+                    const a = document.createElement('a');
+                    a.setAttribute("href", "#" + actionOp.target);
+                    a.appendChild(document.createTextNode(actionOp.target));
+                    coveringRange.insertNode(a);
+
+                    window.getSelection()!.getRangeAt(0).setStartAfter(a);
+                    window.getSelection()!.getRangeAt(0).setEndAfter(a);
+
+                }
+
+                const addLinkToBlock = (newBlockID: BlockIDStr) => {
+                    const block = blocksStore.getBlock(id);
+
+                    block?.addLink({
+                        id: newBlockID,
+                        text: actionOp.target
+                    });
+
+                }
+
+                const newBlockID = createNewBlock();
+                updateSelection();
+                addLinkToBlock(newBlockID);
 
                 break;
 
