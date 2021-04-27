@@ -2,12 +2,82 @@ import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
 import {assertJSON} from "../../test/Assertions";
 import {IBlock, IBlockLink} from "./IBlock";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {BlockIDStr, IBlockContent} from "./BlocksStore";
+import {BlockIDStr, BlocksStore, IBlockContent} from "./BlocksStore";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IMarkdownContent} from "../content/IMarkdownContent";
 import {assert} from 'chai';
+import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
+import {UndoQueues2} from "../../undo/UndoQueues2";
 
 describe("BlocksStoreUndoQueues", () => {
+
+    describe("expandToParentAndChildren", () => {
+
+        function createStore() {
+            const blocks = MockBlocks.create();
+            const store = new BlocksStore('1234', UndoQueues2.create({limit: 50}));
+            store.doPut(blocks);
+            return store;
+        }
+
+        it('single root and children', () => {
+
+            const blocksStore = createStore();
+
+            const identifiers = BlocksStoreUndoQueues.expandToParentAndChildren(blocksStore, ['102']);
+
+            assertJSON(identifiers, [
+                "102",
+                "103",
+                "104",
+                "105",
+                "106"
+            ]);
+
+        });
+
+        it('first child off root with no children', () => {
+
+            const blocksStore = createStore();
+
+            const identifiers = BlocksStoreUndoQueues.expandToParentAndChildren(blocksStore, ['103']);
+
+            assertJSON(identifiers, [
+                "102",
+                "103",
+            ]);
+
+        });
+
+        it(' child off root with few children', () => {
+
+            const blocksStore = createStore();
+
+            const identifiers = BlocksStoreUndoQueues.expandToParentAndChildren(blocksStore, ['105']);
+
+            assertJSON(identifiers, [
+                "102",
+                "105",
+                "106"
+            ]);
+
+        });
+
+        it(' child with parent but parent is not root', () => {
+
+            const blocksStore = createStore();
+
+            const identifiers = BlocksStoreUndoQueues.expandToParentAndChildren(blocksStore, ['106']);
+
+            assertJSON(identifiers, [
+                "105",
+                "106"
+            ]);
+
+        });
+
+
+    });
 
     describe("computeMutationType", () => {
 
