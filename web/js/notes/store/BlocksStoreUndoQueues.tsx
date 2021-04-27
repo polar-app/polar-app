@@ -96,6 +96,8 @@ export namespace BlocksStoreUndoQueues {
 
     }
 
+    // FIXME: this has to be moved to the blockStore as it has to be an action so that everything
+    // is updated at once.
     export function applyUndoMutations(blocksStore: BlocksStore,
                                        mutations: ReadonlyArray<IBlocksStoreMutation>) {
 
@@ -106,10 +108,55 @@ export namespace BlocksStoreUndoQueues {
             const block = blocksStore.getBlock(mutation.id);
 
             if (! block) {
-                throw new Error("Block not currently in store: " + mutation.id)
+                throw new Error("Could not find updated block: " + mutation.id);
             }
 
-            block.set(mutation.after);
+            const mutationType = computeMutationType(mutation.before, mutation.after);
+
+            const handleUpdatedItems= () => {
+
+                const handleItemsPatch = (itemsPatch: IItemsPatch) => {
+
+                    switch (itemsPatch.type) {
+
+                        case "remove":
+                            block.removeItem(itemsPatch.id);
+                            break;
+                        case "insert":
+                            block.addItem(itemsPatch.id, {ref: itemsPatch.ref, pos: itemsPatch.pos});
+                            break;
+                        case "unshift":
+                            block.addItem(itemsPatch.id, 'unshift');
+                            break;
+
+                    }
+
+                }
+
+                const itemsPatches = computeItemsPatches(mutation.before.items, mutation.after.items);
+                itemsPatches.map(handleItemsPatch);
+
+
+            }
+
+            const handleUpdatedContent = () => {
+                block.setContent(mutation.after.content);
+            }
+
+            switch (mutationType) {
+
+                case "items":
+                    handleUpdatedItems();
+                    break;
+                case "content":
+                    handleUpdatedContent();
+                    break;
+                case "items-and-content":
+                    handleUpdatedItems();
+                    handleUpdatedContent();
+                    break;
+
+            }
 
         }
 
@@ -348,7 +395,7 @@ export namespace BlocksStoreUndoQueues {
 
     export type IItemsPatch = IItemsPatchRemove | IItemsPatchInsert | IItemsPatchUnshift;
 
-    export function computeItemsPatch(before: ReadonlyArray<BlockIDStr>, after: ReadonlyArray<BlockIDStr>): ReadonlyArray<IItemsPatch> {
+    export function computeItemsPatches(before: ReadonlyArray<BlockIDStr>, after: ReadonlyArray<BlockIDStr>): ReadonlyArray<IItemsPatch> {
 
         const removed = SetArrays.difference(before, after);
         const added = SetArrays.difference(after, before);

@@ -358,11 +358,11 @@ describe("BlocksStoreUndoQueues", () => {
     });
 
 
-    describe("computeItemsPatch", () => {
+    describe("computeItemsPatches", () => {
 
         it("remove", () => {
 
-            assertJSON(BlocksStoreUndoQueues.computeItemsPatch(['1'], []), [
+            assertJSON(BlocksStoreUndoQueues.computeItemsPatches(['1'], []), [
                 {
                     "type": "remove",
                     "id": "1"
@@ -373,7 +373,7 @@ describe("BlocksStoreUndoQueues", () => {
 
         it("unshift", () => {
 
-            assertJSON(BlocksStoreUndoQueues.computeItemsPatch([], ['1']), [
+            assertJSON(BlocksStoreUndoQueues.computeItemsPatches([], ['1']), [
                 {
                     "type": "unshift",
                     "id": "1"
@@ -384,7 +384,7 @@ describe("BlocksStoreUndoQueues", () => {
 
         it("insert after", () => {
 
-            assertJSON(BlocksStoreUndoQueues.computeItemsPatch(['1'], ['1', '2']), [
+            assertJSON(BlocksStoreUndoQueues.computeItemsPatches(['1'], ['1', '2']), [
                 {
                     "type": "insert",
                     "ref": "1",
@@ -398,7 +398,7 @@ describe("BlocksStoreUndoQueues", () => {
 
         it("insert before", () => {
 
-            assertJSON(BlocksStoreUndoQueues.computeItemsPatch(['1'], ['2', '1']), [
+            assertJSON(BlocksStoreUndoQueues.computeItemsPatches(['1'], ['2', '1']), [
                 {
                     "type": "insert",
                     "ref": "1",
