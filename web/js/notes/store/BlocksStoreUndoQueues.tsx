@@ -49,7 +49,6 @@ export namespace BlocksStoreUndoQueues {
         readonly noExpand?: boolean;
     }
 
-
     /**
      * Perform an undo capture for the following identifiers based on their
      * parent
@@ -98,8 +97,8 @@ export namespace BlocksStoreUndoQueues {
     }
 
     // FIXME: this is wrong now too because we don't compute the patchs...
-    export function applyUndoMutations(blocksStore: BlocksStore,
-                                       mutations: ReadonlyArray<IBlocksStoreMutation>) {
+    export function computeMutatedBlocks(blocksStore: BlocksStore,
+                                         mutations: ReadonlyArray<IBlocksStoreMutation>) {
 
         // TODO: we might not need to mutate something if it hasn't actually
         // changed and we can look at 'updated' for this
@@ -165,6 +164,8 @@ export namespace BlocksStoreUndoQueues {
     }
 
     // FIXME: this code is now outdated...
+
+    // FIXME: rename to computeMutatedBlocks =
 
     export function computeUndoMutations(beforeBlocks: ReadonlyArray<IBlock>,
                                          afterBlocks: ReadonlyArray<IBlock>): ReadonlyArray<IBlocksStoreMutation> {
