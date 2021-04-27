@@ -4,6 +4,7 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {BlockIDStr, BlocksStore} from "./BlocksStore";
 import {Block} from "./Block";
 import deepEqual from "deep-equal";
+import { Arrays } from "polar-shared/src/util/Arrays";
 
 export namespace BlocksStoreUndoQueues {
 
@@ -303,13 +304,21 @@ export namespace BlocksStoreUndoQueues {
     export interface IItemsPatchInsert {
         readonly type: 'insert';
         readonly ref: BlockIDStr;
+        readonly id: BlockIDStr
         readonly pos: 'after' | 'before';
     }
 
-    export function computeItemsPatch(before: IBlock, after: IBlock) {
+    export interface IItemsPatchUnshift {
+        readonly type: 'unshift';
+        readonly id: BlockIDStr;
+    }
 
-        const removed = SetArrays.difference(before.items, after.items);
-        const added = SetArrays.difference(after.items, before.items);
+    export type IItemsPatch = IItemsPatchRemove | IItemsPatchInsert | IItemsPatchUnshift;
+
+    export function computeItemsPatch(before: ReadonlyArray<BlockIDStr>, after: ReadonlyArray<BlockIDStr>): ReadonlyArray<IItemsPatch> {
+
+        const removed = SetArrays.difference(before, after);
+        const added = SetArrays.difference(after, before);
 
         const toRemoved = (id: BlockIDStr): IItemsPatchRemove => {
             return {
@@ -318,8 +327,44 @@ export namespace BlocksStoreUndoQueues {
             };
         }
 
+        const toAdded = (id: BlockIDStr): IItemsPatchUnshift | IItemsPatchInsert => {
+
+            if (after.length === 1) {
+                return {
+                    type: 'unshift',
+                    id
+                };
+            }
+
+            const idx = after.indexOf(id);
+            const prevSibling = Arrays.prevSibling(after, idx);
+            const nextSibling = Arrays.nextSibling(after, idx);
+
+            if (prevSibling !== undefined) {
+                return {
+                    type: 'insert',
+                    ref: prevSibling,
+                    id,
+                    pos: 'after'
+                };
+            }
+
+            if (nextSibling !== undefined) {
+                return {
+                    type: 'insert',
+                    ref: nextSibling,
+                    id,
+                    pos: 'before'
+                };
+            }
+
+            throw new Error("Unable to compute patch");
+
+        }
+
         return [
-            ...removed.map(toRemoved)
+            ...removed.map(toRemoved),
+            ...added.map(toAdded)
         ];
 
     }
