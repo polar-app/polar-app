@@ -4,7 +4,8 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {BlockIDStr, BlocksStore} from "./BlocksStore";
 import {Block} from "./Block";
 import deepEqual from "deep-equal";
-import { Arrays } from "polar-shared/src/util/Arrays";
+import {Arrays} from "polar-shared/src/util/Arrays";
+import {lookup} from "dns";
 
 export namespace BlocksStoreUndoQueues {
 
@@ -15,12 +16,28 @@ export namespace BlocksStoreUndoQueues {
         readonly child: IBlock;
     }
 
-    export type BlockUpdateMutationType = 'updated' | 'added' | 'removed';
+    export type BlockUpdateMutationType = 'added' | 'removed' | 'updated';
 
-    export interface IBlocksStoreMutation {
-        readonly type: BlockUpdateMutationType;
+    export interface IBlocksStoreMutationAdded {
+        readonly id: BlockIDStr;
+        readonly type: 'added';
         readonly block: IBlock;
     }
+
+    export interface IBlocksStoreMutationRemoved {
+        readonly id: BlockIDStr;
+        readonly type: 'removed';
+        readonly block: IBlock;
+    }
+    export interface IBlocksStoreMutationUpdated {
+        readonly id: BlockIDStr;
+        readonly type: 'updated';
+        readonly before: IBlock;
+        readonly after: IBlock;
+    }
+
+    // FIXME this needs to be a patch...
+    export type IBlocksStoreMutation = IBlocksStoreMutationAdded | IBlocksStoreMutationRemoved | IBlocksStoreMutationUpdated;
 
     export interface IUndoCapture {
         readonly prepare: (snapshot: ReadonlyArray<Block>) => void;
@@ -82,26 +99,28 @@ export namespace BlocksStoreUndoQueues {
 
     }
 
-    export function applyUndoMutations(blocksStore: BlocksStore, mutations: ReadonlyArray<IBlocksStoreMutation>) {
+    // FIXME: this is wrong now too because we don't compute the patchs...
+    export function applyUndoMutations(blocksStore: BlocksStore,
+                                       mutations: ReadonlyArray<IBlocksStoreMutation>) {
 
         // TODO: we might not need to mutate something if it hasn't actually
         // changed and we can look at 'updated' for this
 
-        const handleUpdated = (mutation: IBlocksStoreMutation) => {
+        const handleUpdated = (mutation: IBlocksStoreMutationUpdated) => {
 
             // updated means we need to restore it to the older version.
 
-            const block = blocksStore.getBlock(mutation.block.id);
+            const block = blocksStore.getBlock(mutation.id);
 
             if (! block) {
-                throw new Error("Block mot currently in store: " + mutation.block.id)
+                throw new Error("Block mot currently in store: " + mutation.id)
             }
 
-            block.set(mutation.block);
+            block.set(mutation.after);
 
         }
 
-        const handleAdded = (mutation: IBlocksStoreMutation) => {
+        const handleAdded = (mutation: IBlocksStoreMutationAdded) => {
 
             // added means we have to remove it now...
 
@@ -113,7 +132,7 @@ export namespace BlocksStoreUndoQueues {
 
         }
 
-        const handleRemoved = (mutation: IBlocksStoreMutation) => {
+        const handleRemoved = (mutation: IBlocksStoreMutationRemoved) => {
 
             // added means we have to remove it now...
 
@@ -147,6 +166,8 @@ export namespace BlocksStoreUndoQueues {
 
     }
 
+    // FIXME: this code is now outdated...
+
     export function computeUndoMutations(beforeBlocks: ReadonlyArray<IBlock>,
                                          afterBlocks: ReadonlyArray<IBlock>): ReadonlyArray<IBlocksStoreMutation> {
 
@@ -165,34 +186,49 @@ export namespace BlocksStoreUndoQueues {
         const removed = SetArrays.difference(beforeBlockIDs, afterBlockIDs)
                                  .map(id => beforeBlockIndex[id]);
 
-        const computeUpdated = () => {
+        const computeUpdated = (): ReadonlyArray<IBlocksStoreMutationUpdated> => {
 
-            const isUpdated = (beforeBlock: IBlock) => {
+            const toUpdated = (beforeBlock: IBlock): IBlocksStoreMutationUpdated | undefined => {
 
                 const afterBlock = afterBlockIndex[beforeBlock.id];
                 if ( afterBlock) {
-                    return afterBlock.updated !== beforeBlock.updated;
+                    if (afterBlock.updated !== beforeBlock.updated) {
+                        return {
+                            id: beforeBlock.id,
+                            type: 'updated',
+                            before: beforeBlock,
+                            after: afterBlock
+                        };
+                    }
+
                 }
 
-                return false;
+                return undefined;
 
             }
 
-            return beforeBlocks.filter(isUpdated)
+            return arrayStream(beforeBlocks)
+                        .map(toUpdated)
+                        .filterPresent()
+                        .collect();
 
         }
 
         const updated = computeUpdated();
 
-        const toMutation = (block: IBlock, type: BlockUpdateMutationType): IBlocksStoreMutation => {
-            return {block, type};
+        const toMutation = (block: IBlock, type: 'added' | 'removed'): IBlocksStoreMutationAdded | IBlocksStoreMutationRemoved=> {
+            return {
+                id: block.id,
+                block,
+                type
+            };
 
         }
 
         return [
-            ...updated.map(current => toMutation(current, 'updated')),
             ...added.map(current => toMutation(current, 'added')),
-            ...removed.map(current => toMutation(current, 'removed'))
+            ...removed.map(current => toMutation(current, 'removed')),
+            ...updated,
         ];
 
     }
