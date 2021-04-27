@@ -8,8 +8,194 @@ import {IMarkdownContent} from "../content/IMarkdownContent";
 import {assert} from 'chai';
 import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
 import {UndoQueues2} from "../../undo/UndoQueues2";
+import {JSDOMParser} from "./BlocksStoreTest";
+import {TestingTime} from "polar-shared/src/test/TestingTime";
+
+interface IBasicBlockOpts<C> {
+    readonly id?: BlockIDStr;
+    readonly parent?: BlockIDStr;
+    readonly content: C;
+    readonly items?: ReadonlyArray<BlockIDStr>;
+    readonly links?: ReadonlyArray<IBlockLink>;
+}
+function createBasicBlock<C extends IBlockContent = IBlockContent>(opts: IBasicBlockOpts<C>): IBlock<C> {
+
+    const nspace = '234'
+    const uid = '1234'
+    const created = ISODateTimeStrings.create();
+
+    return {
+        id: opts.id || Hashcodes.createRandomID(),
+        nspace,
+        uid,
+        created,
+        updated: created,
+        ...opts,
+        parent: opts.parent || undefined,
+        items: opts.items || [],
+        links: opts.links || []
+    }
+
+}
 
 describe("BlocksStoreUndoQueues", () => {
+
+    describe("computeMutatedBlocks", () => {
+
+        beforeEach(() => {
+            console.log("Freezing time...");
+            TestingTime.freeze()
+            JSDOMParser.makeGlobal();
+        });
+
+        afterEach(() => {
+            console.log("Unfreezing time...");
+            TestingTime.unfreeze();
+        });
+
+        it('basic', () => {
+
+            const staticBlock = createBasicBlock<IMarkdownContent>({
+                id: '0x01',
+                content: {
+                    type: 'markdown',
+                    data: 'static block',
+                },
+                items: ['1', '2']
+            });
+
+            const removedBlock = createBasicBlock<IMarkdownContent>({
+                id: '0x02',
+                content: {
+                    type: 'markdown',
+                    data: 'removed block',
+                },
+                items: ['1', '2']
+            });
+
+            const beforeBlocks = [
+                staticBlock,
+                removedBlock,
+                createBasicBlock<IMarkdownContent>({
+                    id: '0x04',
+                    content: {
+                        type: 'markdown',
+                        data: 'updated block',
+                    },
+                    items: ['1', '2']
+                }),
+            ];
+
+            TestingTime.forward(1000);
+
+            const addedBlock = createBasicBlock<IMarkdownContent>({
+                id: '0x03',
+                content: {
+                    type: 'markdown',
+                    data: 'added block',
+                },
+                items: ['1', '2']
+            });
+
+
+            const afterBlocks = [
+                staticBlock,
+                addedBlock,
+                createBasicBlock<IMarkdownContent>({
+                    id: '0x04',
+                    content: {
+                        type: 'markdown',
+                        data: 'updated block 2',
+                    },
+                    items: ['1', '2']
+                }),
+
+            ];
+
+            const mutatedBlocks = BlocksStoreUndoQueues.computeMutatedBlocks(beforeBlocks, afterBlocks);
+
+            assertJSON(mutatedBlocks,[
+                {
+                    "id": "0x03",
+                    "block": {
+                        "id": "0x03",
+                        "nspace": "234",
+                        "uid": "1234",
+                        "created": "2012-03-02T11:38:50.321Z",
+                        "updated": "2012-03-02T11:38:50.321Z",
+                        "content": {
+                            "type": "markdown",
+                            "data": "added block"
+                        },
+                        "items": [
+                            "1",
+                            "2"
+                        ],
+                        "links": []
+                    },
+                    "type": "added"
+                },
+                {
+                    "id": "0x02",
+                    "block": {
+                        "id": "0x02",
+                        "nspace": "234",
+                        "uid": "1234",
+                        "created": "2012-03-02T11:38:49.321Z",
+                        "updated": "2012-03-02T11:38:49.321Z",
+                        "content": {
+                            "type": "markdown",
+                            "data": "removed block"
+                        },
+                        "items": [
+                            "1",
+                            "2"
+                        ],
+                        "links": []
+                    },
+                    "type": "removed"
+                },
+                {
+                    "id": "0x04",
+                    "type": "updated",
+                    "before": {
+                        "id": "0x04",
+                        "nspace": "234",
+                        "uid": "1234",
+                        "created": "2012-03-02T11:38:49.321Z",
+                        "updated": "2012-03-02T11:38:49.321Z",
+                        "content": {
+                            "type": "markdown",
+                            "data": "updated block"
+                        },
+                        "items": [
+                            "1",
+                            "2"
+                        ],
+                        "links": []
+                    },
+                    "after": {
+                        "id": "0x04",
+                        "nspace": "234",
+                        "uid": "1234",
+                        "created": "2012-03-02T11:38:50.321Z",
+                        "updated": "2012-03-02T11:38:50.321Z",
+                        "content": {
+                            "type": "markdown",
+                            "data": "updated block 2"
+                        },
+                        "items": [
+                            "1",
+                            "2"
+                        ],
+                        "links": []
+                    }
+                }
+            ]);
+
+        });
+
+    });
 
     describe("expandToParentAndChildren", () => {
 
@@ -80,33 +266,6 @@ describe("BlocksStoreUndoQueues", () => {
     });
 
     describe("computeMutationType", () => {
-
-        interface IBasicBlockOpts<C> {
-            readonly parent?: BlockIDStr;
-            readonly content: C;
-            readonly items?: ReadonlyArray<BlockIDStr>;
-            readonly links?: ReadonlyArray<IBlockLink>;
-        }
-        function createBasicBlock<C extends IBlockContent = IBlockContent>(opts: IBasicBlockOpts<C>): IBlock<C> {
-
-            const id = Hashcodes.createRandomID();
-            const nspace = '234'
-            const uid = '1234'
-            const created = ISODateTimeStrings.create();
-
-            return {
-                id,
-                nspace,
-                uid,
-                created,
-                updated: created,
-                ...opts,
-                parent: opts.parent || undefined,
-                items: opts.items || [],
-                links: opts.links || []
-            }
-
-        }
 
         it("items", () => {
 

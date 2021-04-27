@@ -166,8 +166,8 @@ export namespace BlocksStoreUndoQueues {
     export function computeMutatedBlocks(beforeBlocks: ReadonlyArray<IBlock>,
                                          afterBlocks: ReadonlyArray<IBlock>): ReadonlyArray<IBlocksStoreMutation> {
 
-        const afterBlockIndex = arrayStream(afterBlocks).toMap();
-        const beforeBlockIndex = arrayStream(beforeBlocks).toMap();
+        const afterBlockIndex = arrayStream(afterBlocks).toMap(current => current.id);
+        const beforeBlockIndex = arrayStream(beforeBlocks).toMap(current => current.id);
 
         const beforeBlockIDs = beforeBlocks.map(current => current.id);
         const afterBlockIDs = afterBlocks.map(current => current.id);
