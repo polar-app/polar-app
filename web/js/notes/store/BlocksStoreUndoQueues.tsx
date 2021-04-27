@@ -150,6 +150,9 @@ export namespace BlocksStoreUndoQueues {
     export function computeUndoMutations(beforeBlocks: ReadonlyArray<IBlock>,
                                          afterBlocks: ReadonlyArray<IBlock>): ReadonlyArray<IBlocksStoreMutation> {
 
+        // FIXME this is wrong now becuase we now have to determine the proper
+        // operations including the patches..
+
         const afterBlockIndex = arrayStream(afterBlocks).toMap();
         const beforeBlockIndex = arrayStream(beforeBlocks).toMap();
 
