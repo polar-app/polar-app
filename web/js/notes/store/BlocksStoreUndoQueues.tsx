@@ -106,7 +106,7 @@ export namespace BlocksStoreUndoQueues {
             const block = blocksStore.getBlock(mutation.id);
 
             if (! block) {
-                throw new Error("Block mot currently in store: " + mutation.id)
+                throw new Error("Block not currently in store: " + mutation.id)
             }
 
             block.set(mutation.after);
