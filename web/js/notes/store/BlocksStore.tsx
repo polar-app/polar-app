@@ -1124,7 +1124,7 @@ export class BlocksStore implements IBlocksStore {
                     parentBlock.addItem(newBlock.id, newBlockPosition);
                     break;
                 case "first-child":
-                    parentBlock.addItem(newBlock.id, 'first-child');
+                    parentBlock.addItem(newBlock.id, 'unshift');
                     break;
 
             }

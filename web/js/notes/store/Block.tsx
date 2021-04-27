@@ -108,12 +108,10 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         this._updated = ISODateTimeStrings.create();
     }
 
-    @action addItem(id: BlockIDStr, pos?: INewChildPosition | 'first-child') {
+    @action addItem(id: BlockIDStr, pos?: INewChildPosition | 'unshift') {
 
-        if (pos === 'first-child') {
-
+        if (pos === 'unshift') {
             PositionalArrays.unshift(this._items, id);
-
         } else if (pos) {
             PositionalArrays.insert(this._items, pos.ref, id, pos.pos);
         } else {

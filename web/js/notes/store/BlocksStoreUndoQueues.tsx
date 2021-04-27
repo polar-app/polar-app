@@ -3,6 +3,7 @@ import {SetArrays} from "polar-shared/src/util/SetArrays";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {BlockIDStr, BlocksStore} from "./BlocksStore";
 import {Block} from "./Block";
+import deepEqual from "deep-equal";
 
 export namespace BlocksStoreUndoQueues {
 
@@ -28,11 +29,22 @@ export namespace BlocksStoreUndoQueues {
     // FIXME move everything that uses BlocksStore into BlocksStore
     // FIXME: aprent operations have to behave properly
 
-    export function createUndoCapture(identifiers: ReadonlyArray<BlockIDStr>): IUndoCapture {
+    export interface IUndoCaptureOpts {
+        readonly noExpand?: boolean;
+    }
+
+
+    /**
+     * Perform an undo capture for the following identifiers based on their
+     * parent
+     */
+    export function createUndoCapture(blocksStore: BlocksStore, identifiers: ReadonlyArray<BlockIDStr>): IUndoCapture {
 
         let prepared: boolean = false;
 
         let beforeBlocks: ReadonlyArray<IBlock> = [];
+
+        identifiers = expandToParentAndChildren(blocksStore, identifiers);
 
         /**
          * Computes only the blocks that are applicable to this operation.  We
@@ -182,11 +194,13 @@ export namespace BlocksStoreUndoQueues {
     }
 
     /**
+     *
      * For a given ID, compute all the blocks that could be involved in a
      * mutation including the immediate parents and all the children, the
      * identifiers, themselves, and all the descendants.
+     *
      */
-    export function computeMutationBlocks(blocksStore: BlocksStore, identifiers: ReadonlyArray<BlockIDStr>) {
+    export function expandToParentAndChildren(blocksStore: BlocksStore, identifiers: ReadonlyArray<BlockIDStr>): ReadonlyArray<BlockIDStr> {
 
         const computeChildren = (identifiers: ReadonlyArray<BlockIDStr>) => {
 
@@ -238,6 +252,75 @@ export namespace BlocksStoreUndoQueues {
         return arrayStream([...identifiers, ...children, ...parents])
                 .unique()
                 .collect();
+
+    }
+
+    /**
+     *
+     * The mutation types:
+     *
+     * - items: the items were changes which means that we have to issue a patch
+     *          to undo it to avoid conflicting with another users edits on the
+     *          children.
+     *
+     * - content: the content was changed.
+     *
+     * - items-and-content: both the items and content were changed.
+     *
+     */
+    export type MutationType = 'items' | 'content' | 'items-and-content';
+
+    /**
+     * Given a before block, and an after block, compute the mutations that were
+     * performed on the content.
+     */
+    export function computeMutationType(before: IBlock, after: IBlock): MutationType {
+
+        // FIXME for 'items' we also have to compute a diff and a before / after
+        // mutation set including 'remove' and 'insert'
+
+        const itemsMuted = ! deepEqual(before.items, after.items);
+        const contentMuted = ! deepEqual(before.content, after.content);
+
+        if (itemsMuted && contentMuted) {
+            return 'items-and-content';
+        } else if (itemsMuted) {
+            return 'items';
+        } else  {
+            return 'content';
+        }
+
+    }
+
+    /**
+     * Instruction to remove and item from the items.
+     */
+    export interface IItemsPatchRemove {
+        readonly type: 'remove';
+        readonly id: BlockIDStr;
+    }
+
+    export interface IItemsPatchInsert {
+        readonly type: 'insert';
+        readonly ref: BlockIDStr;
+        readonly pos: 'after' | 'before';
+    }
+
+    export function computeItemsPatch(before: IBlock, after: IBlock) {
+
+        const removed = SetArrays.difference(before.items, after.items);
+        const added = SetArrays.difference(after.items, before.items);
+
+        const toRemoved = (id: BlockIDStr): IItemsPatchRemove => {
+            return {
+                type: 'remove',
+                id
+            };
+        }
+
+        return [
+            ...removed.map(toRemoved)
+        ];
 
     }
 
