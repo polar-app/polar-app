@@ -5,7 +5,6 @@ import {BlockIDStr, BlocksStore} from "./BlocksStore";
 import {Block} from "./Block";
 import deepEqual from "deep-equal";
 import {Arrays} from "polar-shared/src/util/Arrays";
-import {lookup} from "dns";
 
 export namespace BlocksStoreUndoQueues {
 
