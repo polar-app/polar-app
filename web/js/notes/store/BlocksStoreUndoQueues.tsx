@@ -278,7 +278,7 @@ export namespace BlocksStoreUndoQueues {
      * Given a before block, and an after block, compute the mutations that were
      * performed on the content.
      */
-    export function computeMutationType(before: IBlock, after: IBlock): MutationType {
+    export function computeMutationType(before: IBlock, after: IBlock): MutationType | undefined {
 
         // FIXME for 'items' we also have to compute a diff and a before / after
         // mutation set including 'remove' and 'insert'
@@ -290,9 +290,11 @@ export namespace BlocksStoreUndoQueues {
             return 'items-and-content';
         } else if (itemsMuted) {
             return 'items';
-        } else  {
+        } else if (contentMuted) {
             return 'content';
         }
+
+        return undefined;
 
     }
 
