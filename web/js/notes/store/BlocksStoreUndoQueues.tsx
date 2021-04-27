@@ -88,7 +88,7 @@ export namespace BlocksStoreUndoQueues {
 
             const afterBlocks = computeBlocks(snapshot);
 
-            return computeUndoMutations(beforeBlocks, afterBlocks);
+            return computeMutatedBlocks(beforeBlocks, afterBlocks);
 
         }
 
@@ -96,12 +96,8 @@ export namespace BlocksStoreUndoQueues {
 
     }
 
-    // FIXME: this is wrong now too because we don't compute the patchs...
-    export function computeMutatedBlocks(blocksStore: BlocksStore,
-                                         mutations: ReadonlyArray<IBlocksStoreMutation>) {
-
-        // TODO: we might not need to mutate something if it hasn't actually
-        // changed and we can look at 'updated' for this
+    export function applyUndoMutations(blocksStore: BlocksStore,
+                                       mutations: ReadonlyArray<IBlocksStoreMutation>) {
 
         const handleUpdated = (mutation: IBlocksStoreMutationUpdated) => {
 
@@ -163,15 +159,12 @@ export namespace BlocksStoreUndoQueues {
 
     }
 
-    // FIXME: this code is now outdated...
-
-    // FIXME: rename to computeMutatedBlocks =
-
-    export function computeUndoMutations(beforeBlocks: ReadonlyArray<IBlock>,
+    /**
+     * Compute just the mutated blocks so that we can figure out which ones need
+     * to be patched.
+     */
+    export function computeMutatedBlocks(beforeBlocks: ReadonlyArray<IBlock>,
                                          afterBlocks: ReadonlyArray<IBlock>): ReadonlyArray<IBlocksStoreMutation> {
-
-        // FIXME this is wrong now becuase we now have to determine the proper
-        // operations including the patches..
 
         const afterBlockIndex = arrayStream(afterBlocks).toMap();
         const beforeBlockIndex = arrayStream(beforeBlocks).toMap();
