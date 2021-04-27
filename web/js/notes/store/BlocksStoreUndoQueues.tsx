@@ -35,7 +35,6 @@ export namespace BlocksStoreUndoQueues {
         readonly after: IBlock;
     }
 
-    // FIXME this needs to be a patch...
     export type IBlocksStoreMutation = IBlocksStoreMutationAdded | IBlocksStoreMutationRemoved | IBlocksStoreMutationUpdated;
 
     export interface IUndoCapture {
