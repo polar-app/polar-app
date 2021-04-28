@@ -66,7 +66,7 @@ describe('BlocksStore', function() {
 
     describe("Observability", () => {
 
-        it("NotesStore", () => {
+        it("BlocksStore", () => {
 
             const store = new BlocksStore('1234', UndoQueues2.create());
 
@@ -79,7 +79,7 @@ describe('BlocksStore', function() {
             assert.isTrue(isObservableProp(store, 'expanded'));
         });
 
-        it("Note", () => {
+        it("Block", () => {
 
             const block = new Block(MockBlocks.create()[0]);
 
@@ -352,7 +352,7 @@ describe('BlocksStore', function() {
 
     describe("doIndent", () => {
 
-        it("second child note", async function() {
+        it("second child block", async function() {
 
             const store = createStore();
 
@@ -433,7 +433,7 @@ describe('BlocksStore', function() {
 
         });
 
-        it("indent then unindent and make sure we do a full restore", () => {
+        it("indent then unindent and make sure we do a full restore to the original", () => {
 
             const store = createStore();
 
@@ -635,9 +635,9 @@ describe('BlocksStore', function() {
         });
     });
 
-    describe("mergeNotes", () => {
+    describe("mergeBlocks", () => {
 
-        it("Merge empty first child with named note root", () => {
+        it("Merge empty first child with named block root", () => {
 
             const store = createStore()
 
@@ -706,7 +706,7 @@ describe('BlocksStore', function() {
 
     });
 
-    describe("Notes", () => {
+    describe("Blocks", () => {
 
         describe("setContent", () => {
 
@@ -791,7 +791,7 @@ describe('BlocksStore', function() {
 
         });
 
-        it("delete middle note and verify active", () => {
+        it("delete middle block and verify active", () => {
 
             const store = createStore();
 
@@ -851,7 +851,7 @@ describe('BlocksStore', function() {
 
     });
 
-    describe("getNoteByTarget", () => {
+    describe("getBlockByTarget", () => {
 
         it("By ID", () => {
             const store = createStore();
@@ -869,9 +869,9 @@ describe('BlocksStore', function() {
 
     });
 
-    describe("pathToNote", () => {
+    describe("pathToBlock", () => {
 
-        it("Verify that a root note has an empty path", () => {
+        it("Verify that a root block has an empty path", () => {
 
             const store = createStore();
             const path = store.pathToBlock('102');
@@ -925,7 +925,7 @@ describe('BlocksStore', function() {
 
     });
 
-    describe("createNewNote", () => {
+    describe("createNewBlock", () => {
 
         it("Make sure first child when having existing children.", () => {
 
@@ -986,11 +986,11 @@ describe('BlocksStore', function() {
 
         });
 
-        it("Make sure it's the child of an expanded note", () => {
+        it("Make sure it's the child of an expanded block", () => {
 
             const store = createStore();
 
-            function createNoteWithoutExpansion() {
+            function createBlockWithoutExpansion() {
 
                 const createdBlock = store.createNewBlock('105');
                 assertPresent(createdBlock);
@@ -1008,7 +1008,7 @@ describe('BlocksStore', function() {
 
             }
 
-            function createNoteWithExpansion() {
+            function createBlockWithExpansion() {
                 store.expand('105');
 
                 const createdBlock = store.createNewBlock('105');
@@ -1025,14 +1025,14 @@ describe('BlocksStore', function() {
 
             }
 
-            createNoteWithoutExpansion();
-            createNoteWithExpansion();
+            createBlockWithoutExpansion();
+            createBlockWithExpansion();
 
 
 
         });
 
-        it("Split a note with children", () => {
+        it("Split a block with children", () => {
 
             const store = createStore();
 
