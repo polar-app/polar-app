@@ -105,29 +105,20 @@ export namespace BlocksStoreUndoQueues {
          * have to know all the block IDs that would be involved with this
          * transaction.
          */
-        const computeBlocks = (blocks: ReadonlyArray<Block>) => {
-
-            return blocks.filter(block => identifiers.includes(block.id))
-                         .map(block => block.toJSON());
-
+        const computeApplicableBlocks = (blocks: ReadonlyArray<IBlock>) => {
+            return blocks.filter(block => identifiers.includes(block.id));
         }
 
-        const createSnapshot = () => {
-            return arrayStream(identifiers.map(id => blocksStore.getBlock(id)))
-                .filterPresent()
-                .collect();
-        }
 
-        const beforeBlocks: ReadonlyArray<IBlock> = computeBlocks(createSnapshot());
+        const beforeBlocks: ReadonlyArray<IBlock> = computeApplicableBlocks(blocksStore.createSnapshot(identifiers));
 
         let afterBlocks: ReadonlyArray<IBlock> = [];
 
         const capture = () => {
 
-            const snapshot = createSnapshot();
+            const snapshot = blocksStore.createSnapshot(identifiers);
 
-            afterBlocks = computeBlocks(snapshot);
-
+            afterBlocks = computeApplicableBlocks(snapshot);
 
         }
 

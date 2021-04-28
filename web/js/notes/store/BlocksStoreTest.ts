@@ -14,6 +14,7 @@ import { MarkdownContent } from "../content/MarkdownContent";
 import {Asserts} from "polar-shared/src/Asserts";
 import assertPresent = Asserts.assertPresent;
 import {UndoQueues2} from "../../undo/UndoQueues2";
+import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
 
 // TODO:
 
@@ -926,6 +927,23 @@ describe('BlocksStore', function() {
     });
 
     describe("createNewBlock", () => {
+
+        it("undo", () => {
+
+            const store = createStore();
+
+            const identifiers = BlocksStoreUndoQueues.expandToParentAndChildren(store, ['102'])
+            const before = store.createSnapshot(identifiers);
+
+            store.createNewBlock('102');
+            store.undo();
+
+            const after = store.createSnapshot(identifiers);
+
+            assertJSON(before, after);
+
+        });
+
 
         it("Make sure first child when having existing children.", () => {
 

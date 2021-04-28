@@ -1629,6 +1629,18 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
+
+    /**
+     * Get the blocks that apply here and convert them to JSON objects.
+     */
+    public createSnapshot(identifiers: ReadonlyArray<BlockIDStr>): ReadonlyArray<IBlock> {
+        return arrayStream(identifiers.map(id => this.getBlock(id)))
+            .filterPresent()
+            .map(current => current.toJSON())
+            .collect();
+    }
+
+
     private doUndoPush<T>(identifiers: ReadonlyArray<BlockIDStr>, redoDelegate: () => T): T {
         return BlocksStoreUndoQueues.doUndoPush(this, this.undoQueue, identifiers, redoDelegate);
     }
