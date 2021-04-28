@@ -357,7 +357,6 @@ describe("BlocksStoreUndoQueues", () => {
 
     });
 
-
     describe("computeItemsPatches", () => {
 
         it("remove", () => {
