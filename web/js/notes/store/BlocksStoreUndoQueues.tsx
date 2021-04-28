@@ -253,6 +253,69 @@ export namespace BlocksStoreUndoQueues {
 
     }
 
+
+    /**
+     *
+     * For a given ID, compute all the blocks that could be involved in a
+     * mutation including the immediate parents and all the children, the
+     * identifiers, themselves, and all the descendants.
+     */
+    export function expandToParentAndChildren(blocksStore: BlocksStore,
+                                              identifiers: ReadonlyArray<BlockIDStr>): ReadonlyArray<BlockIDStr> {
+
+        const computeChildren = (identifiers: ReadonlyArray<BlockIDStr>) => {
+
+            const computeChildrenForBlock = (id: BlockIDStr): ReadonlyArray<BlockIDStr> => {
+
+                const items = blocksStore.getBlock(id)?.items || [];
+
+                const descendants = arrayStream(items)
+                    .map(current => computeChildrenForBlock(current))
+                    .flatMap(current => current)
+                    .collect();
+
+                return [
+                    ...items,
+                    ...descendants
+                ];
+
+            }
+
+            return arrayStream(identifiers)
+                .map(current => computeChildrenForBlock(current))
+                .flatMap(current => current)
+                .unique()
+                .collect();
+        }
+
+        const children = computeChildren(identifiers);
+
+        const computeParents = (identifiers: ReadonlyArray<BlockIDStr>): ReadonlyArray<BlockIDStr> => {
+
+            const getParent = (id: BlockIDStr): BlockIDStr | undefined => {
+                return blocksStore.getBlock(id)?.parent;
+            }
+
+            return arrayStream(identifiers)
+                .map(current => getParent(current))
+                .filterPresent()
+                .collect();
+
+        }
+
+        const primaryBlockIdentifiers
+            = arrayStream([...identifiers, ...children])
+            .unique()
+            .collect();
+
+        const parents = computeParents(primaryBlockIdentifiers);
+
+        return arrayStream([...identifiers, ...children, ...parents])
+            .unique()
+            .collect();
+
+    }
+
     /**
      * Compute just the mutated blocks so that we can figure out which ones need
      * to be patched.
@@ -316,68 +379,6 @@ export namespace BlocksStoreUndoQueues {
             ...removed.map(current => toMutation(current, 'removed')),
             ...updated,
         ];
-
-    }
-
-    /**
-     *
-     * For a given ID, compute all the blocks that could be involved in a
-     * mutation including the immediate parents and all the children, the
-     * identifiers, themselves, and all the descendants.
-     *
-     */
-    export function expandToParentAndChildren(blocksStore: BlocksStore, identifiers: ReadonlyArray<BlockIDStr>): ReadonlyArray<BlockIDStr> {
-
-        const computeChildren = (identifiers: ReadonlyArray<BlockIDStr>) => {
-
-            const computeChildrenForBlock = (id: BlockIDStr): ReadonlyArray<BlockIDStr> => {
-
-                const items = blocksStore.getBlock(id)?.items || [];
-
-                const descendants = arrayStream(items)
-                    .map(current => computeChildrenForBlock(current))
-                    .flatMap(current => current)
-                    .collect();
-
-                return [
-                    ...items,
-                    ...descendants
-                ];
-
-            }
-
-            return arrayStream(identifiers)
-                    .map(current => computeChildrenForBlock(current))
-                    .flatMap(current => current)
-                    .unique()
-                    .collect();
-        }
-
-        const children = computeChildren(identifiers);
-
-        const computeParents = (identifiers: ReadonlyArray<BlockIDStr>): ReadonlyArray<BlockIDStr> => {
-
-            const getParent = (id: BlockIDStr): BlockIDStr | undefined => {
-                return blocksStore.getBlock(id)?.parent;
-            }
-
-            return arrayStream(identifiers)
-                .map(current => getParent(current))
-                .filterPresent()
-                .collect();
-
-        }
-
-        const primaryBlockIdentifiers
-            = arrayStream([...identifiers, ...children])
-                .unique()
-                .collect();
-
-        const parents = computeParents(primaryBlockIdentifiers);
-
-        return arrayStream([...identifiers, ...children, ...parents])
-                .unique()
-                .collect();
 
     }
 
