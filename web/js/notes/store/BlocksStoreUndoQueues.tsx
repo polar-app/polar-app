@@ -38,8 +38,7 @@ export namespace BlocksStoreUndoQueues {
     export type IBlocksStoreMutation = IBlocksStoreMutationAdded | IBlocksStoreMutationRemoved | IBlocksStoreMutationUpdated;
 
     export interface IUndoCapture {
-        readonly prepare: (snapshot: ReadonlyArray<Block>) => void;
-        readonly capture: (snapshot: ReadonlyArray<Block>) => ReadonlyArray<IBlocksStoreMutation>;
+        readonly capture: () => ReadonlyArray<IBlocksStoreMutation>;
     }
 
     // FIXME move everything that uses BlocksStore into BlocksStore
@@ -49,15 +48,54 @@ export namespace BlocksStoreUndoQueues {
         readonly noExpand?: boolean;
     }
 
+    export function createUndo<T>(blocksStore: BlocksStore,
+                                  identifiers: ReadonlyArray<BlockIDStr>,
+                                  redo: () => T) {
+
+        // this captures the state before the initial transaction
+        const undoCapture = createUndoCapture(blocksStore, identifiers);
+
+        // FIXME: can someone ELSE wipe out my changes if we receive a
+        // transaction from the server from someone else?...
+
+        // FIXME:
+        //
+        //  so we have
+        //
+        // - version1 (me)
+        // - version2 (someone else)
+        // - version3 (mine)
+
+
+        // Bob: block0 : v0 => San Francisco
+        //
+        // # Bob creates block0 at v0 (version 0) and sets the value to "San Francisco"
+        //
+        // Alice: block0 : v1 => Germany
+        //
+        // # Alice edits block0, changes the version number to v1, and sets the value to "Germany"
+        // #
+        // # Alice has an undo queue entry here that can properly restore the block0 edit
+        // # from v1 to v0 but ONLY if block0 is at v1.
+        //     #
+        // # right now she can undo if she wants.
+        //
+        //     Bob: block0 : v2 => San Francisco
+        //
+        // # Bob sets the content of block0 back to San Francisco, and the version is
+        // # automatically set to v2.
+        //     #
+        // # Now Alice is prevented from doing an undo because when she reads the current
+        // # version, she sees that it's not compatible with her undo so it's silently
+        // # aborted.
+
+
+    }
     /**
      * Perform an undo capture for the following identifiers based on their
      * parent
      */
     export function createUndoCapture(blocksStore: BlocksStore, identifiers: ReadonlyArray<BlockIDStr>): IUndoCapture {
-
-        let prepared: boolean = false;
-
-        let beforeBlocks: ReadonlyArray<IBlock> = [];
 
         identifiers = expandToParentAndChildren(blocksStore, identifiers);
 
@@ -73,18 +111,17 @@ export namespace BlocksStoreUndoQueues {
 
         }
 
-        const prepare = (snapshot: ReadonlyArray<Block>) => {
+        const createSnapshot = () => {
+            return arrayStream(identifiers.map(id => blocksStore.getBlock(id)))
+                .filterPresent()
+                .collect();
+        }
 
-            prepared = true;
-            beforeBlocks = computeBlocks(snapshot)
+        const beforeBlocks: ReadonlyArray<IBlock> = computeBlocks(createSnapshot());
 
-        };
+        const capture = () => {
 
-        const capture = (snapshot: ReadonlyArray<Block>) => {
-
-            if (! prepared) {
-                throw new Error("Not prepared");
-            }
+            const snapshot = createSnapshot();
 
             const afterBlocks = computeBlocks(snapshot);
 
@@ -92,7 +129,9 @@ export namespace BlocksStoreUndoQueues {
 
         }
 
-        return {capture, prepare};
+        // FIXME: this pass a redo function, then create an undo function and return both...
+
+        return {capture};
 
     }
 
@@ -139,8 +178,16 @@ export namespace BlocksStoreUndoQueues {
 
             }
 
-            const handleUpdatedContent = () => {
-                block.setContent(mutation.after.content);
+            const handleUpdatedContent = (): boolean => {
+
+                if (block.updated === mutation.after.updated) {
+                    block.setContent(mutation.before.content);
+                    return true;
+                } else {
+                    console.log(`Skipping update as the version number is invalid expected: ${mutation.after.updated} but was ${block.updated}`);
+                    return false;
+                }
+
             }
 
             switch (mutationType) {
