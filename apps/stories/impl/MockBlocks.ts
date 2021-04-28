@@ -24,7 +24,8 @@ export namespace MockBlocks {
                     '104',
                     '105'
                 ],
-                links: []
+                links: [],
+                mutation: 0
             },
             {
                 id: '103',
@@ -37,7 +38,8 @@ export namespace MockBlocks {
                     data: '[Lasted](https://www.example.com) from 1939 to 1945'
                 },
                 items: [],
-                links: []
+                links: [],
+                mutation: 0
             },
             {
                 id: '104',
@@ -50,7 +52,8 @@ export namespace MockBlocks {
                     data: 'Axis Powers: Germany, Italy, Japan'
                 },
                 items: [],
-                links: []
+                links: [],
+                mutation: 0
             },
             {
                 id: '105',
@@ -75,6 +78,7 @@ export namespace MockBlocks {
                 items: [
                     '106'
                 ],
+                mutation: 0,
             },
             {
                 id: '100',
@@ -87,7 +91,8 @@ export namespace MockBlocks {
                     data: 'World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world\'s countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.',
                 },
                 items: [],
-                links: []
+                links: [],
+                mutation: 0,
             },
             {
                 id: '108',
@@ -100,7 +105,8 @@ export namespace MockBlocks {
                     data: "Russia"
                 },
                 items: [],
-                links: []
+                links: [],
+                mutation: 0,
             },
             {
                 id: '109',
@@ -115,7 +121,8 @@ export namespace MockBlocks {
                 items: [
                     '111'
                 ],
-                links: []
+                links: [],
+                mutation: 0,
             },
             {
                 id: '111',
@@ -128,7 +135,8 @@ export namespace MockBlocks {
                     data: 'Canada is north of the United States'
                 },
                 items: [],
-                links: []
+                links: [],
+                mutation: 0,
             },
             {
                 id: '106',
@@ -146,7 +154,8 @@ export namespace MockBlocks {
                         id: '112',
                         text: 'Winston Churchill'
                     }
-                ]
+                ],
+                mutation: 0,
             },
             {
                 id: '107',
@@ -161,7 +170,8 @@ export namespace MockBlocks {
                 links: [],
                 items: [
                     '110'
-                ]
+                ],
+                mutation: 0,
             },
             {
                 id: '110',
@@ -179,7 +189,8 @@ export namespace MockBlocks {
                         text: 'World War II'
                     }
                 ],
-                items: []
+                items: [],
+                mutation: 0,
             },
             {
                 id: '112',
@@ -193,10 +204,13 @@ export namespace MockBlocks {
                 },
                 links: [
                 ],
-                items: []
+                items: [],
+                mutation: 0,
             }
 
         ];
         return blocks;
     }
 }
+
+

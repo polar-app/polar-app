@@ -1,4 +1,4 @@
-import {IBlock, IBlockLink, NamespaceIDStr, UIDStr} from "./IBlock";
+import {IBlock, IBlockLink, NamespaceIDStr, TMutation, UIDStr} from "./IBlock";
 import {INewChildPosition, BlockIDStr, BlockContent, IBlockContent} from "./BlocksStore";
 import {action, computed, makeObservable, observable} from "mobx"
 import { ISODateTimeString, ISODateTimeStrings } from "polar-shared/src/metadata/ISODateTimeStrings";
@@ -39,6 +39,8 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
      */
     @observable private _links: PositionalArray<IBlockLink>;
 
+    @observable private _mutation: TMutation;
+
     constructor(opts: IBlock<C | IBlockContent>) {
 
         this._id = opts.id;
@@ -50,6 +52,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         this._items = PositionalArrays.create([...opts.items]);
         this._content = Contents.create(opts.content);
         this._links = PositionalArrays.create([...opts.links]);
+        this._mutation = opts.mutation;
 
         makeObservable(this)
 
@@ -91,21 +94,28 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         return PositionalArrays.toArray(this._links);
     }
 
+    @computed get mutation() {
+        return this._mutation;
+    }
+
     @action setContent(content: C | IBlockContent) {
 
         this._content.update(content);
         this._updated = ISODateTimeStrings.create();
+        this._mutation = this._mutation + 1;
 
     }
 
     @action setParent(id: BlockIDStr) {
         this._parent = id;
         this._updated = ISODateTimeStrings.create();
+        this._mutation = this._mutation + 1;
     }
 
     @action setItems(items: ReadonlyArray<BlockIDStr>) {
         PositionalArrays.set(this._items, items);
         this._updated = ISODateTimeStrings.create();
+        this._mutation = this._mutation + 1;
     }
 
     @action addItem(id: BlockIDStr, pos?: INewChildPosition | 'unshift') {
@@ -119,6 +129,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         }
 
         this._updated = ISODateTimeStrings.create();
+        this._mutation = this._mutation + 1;
     }
 
     @action removeItem(id: BlockIDStr) {
@@ -126,17 +137,20 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         PositionalArrays.remove(this._items, id);
 
         this._updated = ISODateTimeStrings.create();
+        this._mutation = this._mutation + 1;
 
     }
 
     @action setLinks(links: ReadonlyArray<IBlockLink>) {
         PositionalArrays.set(this._links, links);
         this._updated = ISODateTimeStrings.create();
+        this._mutation = this._mutation + 1;
     }
 
     @action addLink(link: IBlockLink) {
         PositionalArrays.append(this._links, link);
         this._updated = ISODateTimeStrings.create();
+        this._mutation = this._mutation + 1;
     }
 
     @action removeLink(id: BlockIDStr) {
@@ -149,6 +163,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         if (link) {
             PositionalArrays.remove(this._links, link);
             this._updated = ISODateTimeStrings.create();
+            this._mutation = this._mutation + 1;
         }
 
     }
@@ -161,6 +176,10 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         PositionalArrays.set(this._items, block.items);
         this._content.update(block.content)
         PositionalArrays.set(this._links, block.links);
+
+        // the mutation still has to be incremented here, even in an undo
+        // operation because technically the content has been mutated again.
+        this._mutation = this._mutation + 1;
 
     }
 
@@ -176,6 +195,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
             items: PositionalArrays.toArray(this._items),
             content: this._content.toJSON() as any,
             links: PositionalArrays.toArray(this._links),
+            mutation: this._mutation
         };
 
     }

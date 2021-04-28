@@ -2,7 +2,6 @@ import {IBlock} from "./IBlock";
 import {SetArrays} from "polar-shared/src/util/SetArrays";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {BlockIDStr, BlocksStore} from "./BlocksStore";
-import {Block} from "./Block";
 import deepEqual from "deep-equal";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {UndoQueues2} from "../../undo/UndoQueues2";
@@ -136,6 +135,8 @@ export namespace BlocksStoreUndoQueues {
 
         const handleUpdated = (mutation: IBlocksStoreMutationUpdated) => {
 
+            console.log("Handling 'updated' mutation: ", mutation);
+
             // updated means we need to restore it to the older version.
 
             const block = blocksStore.getBlock(mutation.id);
@@ -153,17 +154,18 @@ export namespace BlocksStoreUndoQueues {
                     switch (itemsPatch.type) {
 
                         case "remove":
-                            console.log("Apply undo patch for items: remove: " + itemsPatch.id);
+                            // FIXME: this is now wrong because it has to be transformed to an insert ...
+                            // const op = {ref: itemsPatch.ref, pos: itemsPatch.pos};
+                            console.log("Handling undo patch for items: remove: " + itemsPatch.id);
                             block.removeItem(itemsPatch.id);
                             break;
                         case "insert":
-                            const op = {ref: itemsPatch.ref, pos: itemsPatch.pos};
-                            console.log("Apply undo patch for items: insert: ", itemsPatch.id, op);
-                            block.addItem(itemsPatch.id, op);
+                            console.log("Handling undo patch for items: insert (transformed to remove): ", itemsPatch.id);
+                            block.removeItem(itemsPatch.id);
                             break;
                         case "unshift":
-                            console.log("Apply undo patch for items: unshift: ", itemsPatch.id);
-                            block.addItem(itemsPatch.id, 'unshift');
+                            console.log("Handling undo patch for items: unshift  (transformed to remove): ", itemsPatch.id);
+                            block.removeItem(itemsPatch.id);
                             break;
 
                     }
@@ -200,14 +202,15 @@ export namespace BlocksStoreUndoQueues {
             // # aborted.
             const handleUpdatedContent = (): boolean => {
 
-                console.log("Apply undo patch for content: ", mutation.before.content);
-                // if (block.updated === mutation.after.updated) {
+                console.log("Handling undo patch for content: ", mutation.before.content);
+
+                if (block.mutation === mutation.after.mutation) {
                     block.setContent(mutation.before.content);
                     return true;
-                // } else {
-                //     console.log(`Skipping update as the version number is invalid expected: ${mutation.after.updated} but was ${block.updated}`);
-                //     return false;
-                // }
+                } else {
+                    console.log(`Skipping update as the mutation number is invalid expected: ${mutation.after.mutation} but was ${block.mutation}`);
+                    return false;
+                }
 
             }
 
@@ -230,6 +233,8 @@ export namespace BlocksStoreUndoQueues {
 
         const handleAdded = (mutation: IBlocksStoreMutationAdded) => {
 
+            console.log("Handling 'added' mutation: ", mutation);
+
             // added means we have to remove it now...
 
             if (blocksStore.containsBlock(mutation.block.id)) {
@@ -242,6 +247,8 @@ export namespace BlocksStoreUndoQueues {
 
         const handleRemoved = (mutation: IBlocksStoreMutationRemoved) => {
 
+            console.log("Handling 'removed' mutation: ", mutation);
+
             // added means we have to remove it now...
 
             if (! blocksStore.containsBlock(mutation.block.id)) {
@@ -251,6 +258,8 @@ export namespace BlocksStoreUndoQueues {
             }
 
         }
+
+        console.log(`Executing undo with ${mutations.length} mutations`);
 
         for(const mutation of mutations) {
 
@@ -362,7 +371,7 @@ export namespace BlocksStoreUndoQueues {
 
                 const afterBlock = afterBlockIndex[beforeBlock.id];
                 if ( afterBlock) {
-                    if (afterBlock.updated !== beforeBlock.updated) {
+                    if (afterBlock.mutation !== beforeBlock.mutation || afterBlock.updated !== beforeBlock.updated) {
                         return {
                             id: beforeBlock.id,
                             type: 'updated',
@@ -463,6 +472,11 @@ export namespace BlocksStoreUndoQueues {
     }
 
     export type IItemsPatch = IItemsPatchRemove | IItemsPatchInsert | IItemsPatchUnshift;
+
+    // FIXME: this is all wrong now because we have to take the 'items' map not
+    // the items array and work with it that way. We should make the data NATIVE
+    // now when working with the JSON objects because that data is correct and
+    // working with the array destroys part of the data.
 
     export function computeItemsPatches(before: ReadonlyArray<BlockIDStr>, after: ReadonlyArray<BlockIDStr>): ReadonlyArray<IItemsPatch> {
 

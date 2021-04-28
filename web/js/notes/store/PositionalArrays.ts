@@ -102,6 +102,18 @@ export namespace PositionalArrays {
 
     }
 
+    /**
+     * Put a value into the positional array with the exact key position.
+     */
+    export function put<T>(positionalArray: PositionalArray<T>,
+                           key: PositionalArrayPositionStr,
+                           value: T): PositionalArray<T> {
+
+        positionalArray[key] = value;
+        return positionalArray;
+
+    }
+
     export function unshift<T>(positionalArray: PositionalArray<T>, value: T): PositionalArray<T> {
 
         const min

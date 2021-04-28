@@ -115,6 +115,7 @@ describe('BlocksStore', function() {
                     "_id": "100",
                     "_items": {},
                     "_links": {},
+                    "_mutation": 0,
                     "_nspace": "ns101",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
@@ -132,6 +133,7 @@ describe('BlocksStore', function() {
                         "3": "105"
                     },
                     "_links": {},
+                    "_mutation": 0,
                     "_nspace": "ns101",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
@@ -145,6 +147,7 @@ describe('BlocksStore', function() {
                     "_id": "103",
                     "_items": {},
                     "_links": {},
+                    "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "102",
                     "_uid": "123",
@@ -159,6 +162,7 @@ describe('BlocksStore', function() {
                     "_id": "104",
                     "_items": {},
                     "_links": {},
+                    "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "102",
                     "_uid": "123",
@@ -184,6 +188,7 @@ describe('BlocksStore', function() {
                             "text": "Russia"
                         }
                     },
+                    "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "102",
                     "_uid": "123",
@@ -203,6 +208,7 @@ describe('BlocksStore', function() {
                             "text": "Winston Churchill"
                         }
                     },
+                    "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "105",
                     "_uid": "123",
@@ -219,6 +225,7 @@ describe('BlocksStore', function() {
                         "1": "110"
                     },
                     "_links": {},
+                    "_mutation": 0,
                     "_nspace": "ns101",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
@@ -232,6 +239,7 @@ describe('BlocksStore', function() {
                     "_id": "108",
                     "_items": {},
                     "_links": {},
+                    "_mutation": 0,
                     "_nspace": "ns101",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
@@ -247,6 +255,7 @@ describe('BlocksStore', function() {
                         "1": "111"
                     },
                     "_links": {},
+                    "_mutation": 0,
                     "_nspace": "ns101",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
@@ -265,6 +274,7 @@ describe('BlocksStore', function() {
                             "text": "World War II"
                         }
                     },
+                    "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "107",
                     "_uid": "123",
@@ -279,6 +289,7 @@ describe('BlocksStore', function() {
                     "_id": "111",
                     "_items": {},
                     "_links": {},
+                    "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "109",
                     "_uid": "123",
@@ -293,6 +304,7 @@ describe('BlocksStore', function() {
                     "_id": "112",
                     "_items": {},
                     "_links": {},
+                    "_mutation": 0,
                     "_nspace": "ns101",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
@@ -370,6 +382,7 @@ describe('BlocksStore', function() {
                     "105"
                 ],
                 "links": [],
+                "mutation": 0,
                 "nspace": "ns101",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
@@ -393,6 +406,7 @@ describe('BlocksStore', function() {
                     "105"
                 ],
                 "links": [],
+                "mutation": 1,
                 "nspace": "ns101",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:50.321Z"
@@ -409,6 +423,7 @@ describe('BlocksStore', function() {
                     "104"
                 ],
                 "links": [],
+                "mutation": 1,
                 "nspace": "ns101",
                 "parent": "102",
                 "uid": "123",
@@ -451,6 +466,7 @@ describe('BlocksStore', function() {
                     "105"
                 ],
                 "links": [],
+                "mutation": 0,
                 "nspace": "ns101",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
@@ -467,6 +483,7 @@ describe('BlocksStore', function() {
                 "id": "104",
                 "items": [],
                 "links": [],
+                "mutation": 0,
                 "nspace": "ns101",
                 "parent": "102",
                 "uid": "123",
@@ -484,6 +501,7 @@ describe('BlocksStore', function() {
                 "id": "104",
                 "items": [],
                 "links": [],
+                "mutation": 1,
                 "nspace": "ns101",
                 "parent": "103",
                 "uid": "123",
@@ -503,6 +521,7 @@ describe('BlocksStore', function() {
                 "id": "104",
                 "items": [],
                 "links": [],
+                "mutation": 2,
                 "nspace": "ns101",
                 "parent": "102",
                 "uid": "123",
@@ -522,6 +541,7 @@ describe('BlocksStore', function() {
                     "105"
                 ],
                 "links": [],
+                "mutation": 2,
                 "nspace": "ns101",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
@@ -589,6 +609,7 @@ describe('BlocksStore', function() {
             "id": "100",
             "items": [],
             "links": [],
+            "mutation": 0,
             "nspace": "ns101",
             "uid": "123",
             "updated": "2012-03-02T11:38:49.321Z"
@@ -697,6 +718,7 @@ describe('BlocksStore', function() {
                 "id": "103",
                 "items": [],
                 "links": [],
+                "mutation": 3,
                 "nspace": "ns101",
                 "parent": "102",
                 "uid": "123",
@@ -743,6 +765,7 @@ describe('BlocksStore', function() {
                         "105"
                     ],
                     "links": [],
+                    "mutation": 0,
                     "nspace": "ns101",
                     "uid": "123",
                     "updated": "2012-03-02T11:38:49.321Z"
@@ -765,6 +788,7 @@ describe('BlocksStore', function() {
                         "105"
                     ],
                     "links": [],
+                    "mutation": 1,
                     "nspace": "ns101",
                     "uid": "123",
                     "updated": "2012-03-02T11:38:50.321Z"
@@ -812,6 +836,7 @@ describe('BlocksStore', function() {
                     "105"
                 ],
                 "links": [],
+                "mutation": 1,
                 "nspace": "ns101",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
@@ -839,6 +864,7 @@ describe('BlocksStore', function() {
                 "id": "102",
                 "items": [],
                 "links": [],
+                "mutation": 3,
                 "nspace": "ns101",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
@@ -951,6 +977,7 @@ describe('BlocksStore', function() {
                     "105"
                 ],
                 "links": [],
+                "mutation": 1,
                 "nspace": "ns101",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
@@ -958,12 +985,171 @@ describe('BlocksStore', function() {
 
             store.undo();
 
-            const after = store.createSnapshot(identifiers);
+            assertJSON(store.getBlock('102')?.toJSON(), {
+                "content": {
+                    "data": "World War II",
+                    "type": "name"
+                },
+                "created": "2012-03-02T11:38:49.321Z",
+                "id": "102",
+                "items": [
+                    "103",
+                    "104",
+                    "105"
+                ],
+                "links": [],
+                "mutation": 3,
+                "nspace": "ns101",
+                "uid": "123",
+                "updated": "2012-03-02T11:38:49.321Z"
+            });
 
-            assertJSON(before, after);
+            assertJSON(before, [
+                {
+                    "id": "102",
+                    "nspace": "ns101",
+                    "uid": "123",
+                    "created": "2012-03-02T11:38:49.321Z",
+                    "updated": "2012-03-02T11:38:49.321Z",
+                    "items": [
+                        "103",
+                        "104",
+                        "105"
+                    ],
+                    "content": {
+                        "type": "name",
+                        "data": "World War II"
+                    },
+                    "links": [],
+                    "mutation": 0
+                },
+                {
+                    "id": "103",
+                    "nspace": "ns101",
+                    "uid": "123",
+                    "parent": "102",
+                    "created": "2012-03-02T11:38:49.321Z",
+                    "updated": "2012-03-02T11:38:49.321Z",
+                    "items": [],
+                    "content": {
+                        "type": "markdown",
+                        "data": "[Lasted](https://www.example.com) from 1939 to 1945"
+                    },
+                    "links": [],
+                    "mutation": 0
+                },
+                {
+                    "id": "104",
+                    "nspace": "ns101",
+                    "uid": "123",
+                    "parent": "102",
+                    "created": "2012-03-02T11:38:49.321Z",
+                    "updated": "2012-03-02T11:38:49.321Z",
+                    "items": [],
+                    "content": {
+                        "type": "markdown",
+                        "data": "Axis Powers: Germany, Italy, Japan"
+                    },
+                    "links": [],
+                    "mutation": 0
+                },
+                {
+                    "id": "105",
+                    "nspace": "ns101",
+                    "uid": "123",
+                    "parent": "102",
+                    "created": "2012-03-02T11:38:49.321Z",
+                    "updated": "2012-03-02T11:38:49.321Z",
+                    "items": [
+                        "106"
+                    ],
+                    "content": {
+                        "type": "markdown",
+                        "data": "Allied Powers: United States, United Kingdom, [[Canada]], [[Russia]]."
+                    },
+                    "links": [
+                        {
+                            "id": "109",
+                            "text": "Canada"
+                        },
+                        {
+                            "id": "108",
+                            "text": "Russia"
+                        }
+                    ],
+                    "mutation": 0
+                },
+                {
+                    "id": "106",
+                    "nspace": "ns101",
+                    "uid": "123",
+                    "parent": "105",
+                    "created": "2012-03-02T11:38:49.321Z",
+                    "updated": "2012-03-02T11:38:49.321Z",
+                    "items": [],
+                    "content": {
+                        "type": "markdown",
+                        "data": "Lead by Franklin D. Roosevelt, [[Winston Churchill]], and Joseph Stalin "
+                    },
+                    "links": [
+                        {
+                            "id": "112",
+                            "text": "Winston Churchill"
+                        }
+                    ],
+                    "mutation": 0
+                }
+            ]);
 
         });
 
+        it("undo with split", () => {
+
+            const store = createStore();
+
+            const identifiers = BlocksStoreUndoQueues.expandToParentAndChildren(store, ['104'])
+            const before = store.createSnapshot(identifiers);
+
+            const createdBlock = store.createNewBlock('104', {split: {prefix: 'Axis ', suffix: 'Powers: Germany, Italy, Japan'}});
+
+            assertJSON(store.getBlock('104')?.toJSON(), {
+                "content": {
+                    "data": "Axis ",
+                    "type": "markdown"
+                },
+                "created": "2012-03-02T11:38:49.321Z",
+                "id": "104",
+                "items": [],
+                "links": [],
+                "mutation": 2,
+                "nspace": "ns101",
+                "parent": "102",
+                "uid": "123",
+                "updated": "2012-03-02T11:38:49.321Z"
+            });
+
+            assertJSON(store.getBlock(createdBlock!.id)?.toJSON(), {
+                "content": {
+                    "data": "Powers: Germany, Italy, Japan",
+                    "type": "markdown"
+                },
+                "created": "2012-03-02T11:38:49.321Z",
+                "id": createdBlock!.id,
+                "items": [],
+                "links": [],
+                "mutation": 0,
+                "nspace": "ns101",
+                "parent": "102",
+                "uid": "1234",
+                "updated": "2012-03-02T11:38:49.321Z"
+            });
+
+            store.undo();
+
+            const after = store.createSnapshot(identifiers);
+            assertJSON(before, after);
+
+        });
 
         it("Make sure first child when having existing children.", () => {
 

@@ -930,7 +930,8 @@ export class BlocksStore implements IBlocksStore {
                 created: now,
                 updated: now,
                 items: [],
-                links: []
+                links: [],
+                mutation: 0
             };
         };
 
@@ -1093,7 +1094,8 @@ export class BlocksStore implements IBlocksStore {
                     created: now,
                     updated: now,
                     items,
-                    links: []
+                    links: [],
+                    mutation: 0
                 };
 
             }

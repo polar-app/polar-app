@@ -17,6 +17,7 @@ interface IBasicBlockOpts<C> {
     readonly content: C;
     readonly items?: ReadonlyArray<BlockIDStr>;
     readonly links?: ReadonlyArray<IBlockLink>;
+    readonly mutation?: number;
 }
 function createBasicBlock<C extends IBlockContent = IBlockContent>(opts: IBasicBlockOpts<C>): IBlock<C> {
 
@@ -33,7 +34,8 @@ function createBasicBlock<C extends IBlockContent = IBlockContent>(opts: IBasicB
         ...opts,
         parent: opts.parent || undefined,
         items: opts.items || [],
-        links: opts.links || []
+        links: opts.links || [],
+        mutation: opts.mutation || 0
     }
 
 }
@@ -107,7 +109,8 @@ describe("BlocksStoreUndoQueues", () => {
                         type: 'markdown',
                         data: 'updated block 2',
                     },
-                    items: ['1', '2']
+                    items: ['1', '2'],
+                    mutation: 1
                 }),
 
             ];
@@ -131,7 +134,8 @@ describe("BlocksStoreUndoQueues", () => {
                             "1",
                             "2"
                         ],
-                        "links": []
+                        "links": [],
+                        "mutation": 0
                     },
                     "type": "added"
                 },
@@ -151,7 +155,8 @@ describe("BlocksStoreUndoQueues", () => {
                             "1",
                             "2"
                         ],
-                        "links": []
+                        "links": [],
+                        "mutation": 0
                     },
                     "type": "removed"
                 },
@@ -172,7 +177,8 @@ describe("BlocksStoreUndoQueues", () => {
                             "1",
                             "2"
                         ],
-                        "links": []
+                        "links": [],
+                        "mutation": 0
                     },
                     "after": {
                         "id": "0x04",
@@ -188,7 +194,8 @@ describe("BlocksStoreUndoQueues", () => {
                             "1",
                             "2"
                         ],
-                        "links": []
+                        "mutation": 1,
+                        "links": [],
                     }
                 }
             ]);
