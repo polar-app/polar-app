@@ -1633,7 +1633,17 @@ export class BlocksStore implements IBlocksStore {
         return BlocksStoreUndoQueues.doUndoPush(this, this.undoQueue, identifiers, redoDelegate);
     }
 
+    public undo() {
+        this.undoQueue.undo();
+    }
+
+    public redo() {
+        this.undoQueue.redo();
+    }
+
 }
+
+
 
 export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore(() => {
     const {uid} = useBlocksStoreContext();
