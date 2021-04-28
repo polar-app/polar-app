@@ -1152,7 +1152,7 @@ export class BlocksStore implements IBlocksStore {
 
         }
 
-        return this.doUndo([id, newBlockID], redo);
+        return this.doUndoPush([id, newBlockID], redo);
 
     }
 
@@ -1629,8 +1629,8 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    private doUndo<T>(identifiers: ReadonlyArray<BlockIDStr>, redoDelegate: () => T): T {
-        return BlocksStoreUndoQueues.doUndo(this, this.undoQueue, identifiers, redoDelegate);
+    private doUndoPush<T>(identifiers: ReadonlyArray<BlockIDStr>, redoDelegate: () => T): T {
+        return BlocksStoreUndoQueues.doUndoPush(this, this.undoQueue, identifiers, redoDelegate);
     }
 
 }

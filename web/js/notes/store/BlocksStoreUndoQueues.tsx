@@ -54,10 +54,10 @@ export namespace BlocksStoreUndoQueues {
      * @param identifiers
      * @param redoDelegate
      */
-    export function doUndo<T>(blocksStore: BlocksStore,
-                              undoQueue: UndoQueues2.UndoQueue,
-                              identifiers: ReadonlyArray<BlockIDStr>,
-                              redoDelegate: () => T): T {
+    export function doUndoPush<T>(blocksStore: BlocksStore,
+                                  undoQueue: UndoQueues2.UndoQueue,
+                                  identifiers: ReadonlyArray<BlockIDStr>,
+                                  redoDelegate: () => T): T {
 
         // FIXME: dont' allow undo on pages that aren't currently the root ...
 
