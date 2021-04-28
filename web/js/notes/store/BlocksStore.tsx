@@ -25,9 +25,8 @@ import {INameContent} from "../content/INameContent";
 import { Contents } from "../content/Contents";
 import { IBaseBlockContent } from "../content/IBaseBlockContent";
 import {UndoQueues2} from "../../undo/UndoQueues2";
-import {Dictionaries} from "polar-shared/src/util/Dictionaries";
-import deepEqual from "deep-equal";
 import {useUndoQueue} from "../../undo/UndoQueueProvider2";
+import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
@@ -998,8 +997,6 @@ export class BlocksStore implements IBlocksStore {
         //     - first child item
         // - second
 
-        const restoreBlock = this.getBlock(id)?.toJSON();
-
         // create the newBlock ID here so that it can be reliably used in undo/redo operations.
         const newBlockID = Hashcodes.createRandomID();
         // ... we also have to keep track of the active note ... right?
@@ -1155,19 +1152,7 @@ export class BlocksStore implements IBlocksStore {
 
         }
 
-        const undo = () => {
-
-            this.doDelete([newBlockID])
-
-            const block = this.getBlock(id);
-
-            if (block && restoreBlock) {
-                block.set(restoreBlock);
-            }
-
-        }
-
-        return this.undoQueue.push({redo, undo}).value;
+        return this.doUndo([id, newBlockID], redo);
 
     }
 
@@ -1642,6 +1627,10 @@ export class BlocksStore implements IBlocksStore {
 
         return parentBlock.items.indexOf(id) === parentBlock.items.length - 1;
 
+    }
+
+    private doUndo<T>(identifiers: ReadonlyArray<BlockIDStr>, redoDelegate: () => T): T {
+        return BlocksStoreUndoQueues.doUndo(this, this.undoQueue, identifiers, redoDelegate);
     }
 
 }

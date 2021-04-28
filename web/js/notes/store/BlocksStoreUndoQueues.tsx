@@ -43,8 +43,6 @@ export namespace BlocksStoreUndoQueues {
         readonly undo: () => void;
     }
 
-    // FIXME move everything that uses BlocksStore into BlocksStore
-
     export interface IUndoCaptureOpts {
         readonly noExpand?: boolean;
     }
@@ -59,7 +57,7 @@ export namespace BlocksStoreUndoQueues {
     export function doUndo<T>(blocksStore: BlocksStore,
                               undoQueue: UndoQueues2.UndoQueue,
                               identifiers: ReadonlyArray<BlockIDStr>,
-                              redoDelegate: () => T) {
+                              redoDelegate: () => T): T {
 
         // FIXME: dont' allow undo on pages that aren't currently the root ...
 
@@ -72,14 +70,16 @@ export namespace BlocksStoreUndoQueues {
          * The redo operation has to execute, capture the graph for a delta
          * operation later,
          */
-        const redo = () => {
+        const redo = (): T => {
 
-            redoDelegate();
+            const result = redoDelegate();
 
             if (! captured) {
                 undoCapture.capture();
                 captured = true;
             }
+
+            return result;
 
         }
 
@@ -87,7 +87,7 @@ export namespace BlocksStoreUndoQueues {
             undoCapture.undo();
         }
 
-        return this.undoQueue.push({redo, undo}).value;
+        return undoQueue.push({redo, undo}).value;
 
 
     }
