@@ -49,10 +49,17 @@ export namespace BlocksStoreUndoQueues {
         readonly noExpand?: boolean;
     }
 
-    export function createUndo<T>(blocksStore: BlocksStore,
-                                  undoQueue: UndoQueues2.UndoQueue,
-                                  identifiers: ReadonlyArray<BlockIDStr>,
-                                  redoDelegate: () => T) {
+    /**
+     * Do an undo operation and push it into the undo queue.
+     * @param blocksStore
+     * @param undoQueue
+     * @param identifiers
+     * @param redoDelegate
+     */
+    export function doUndo<T>(blocksStore: BlocksStore,
+                              undoQueue: UndoQueues2.UndoQueue,
+                              identifiers: ReadonlyArray<BlockIDStr>,
+                              redoDelegate: () => T) {
 
         // FIXME: dont' allow undo on pages that aren't currently the root ...
 
@@ -126,17 +133,15 @@ export namespace BlocksStoreUndoQueues {
 
         const undo = () => {
             const mutations = computeMutatedBlocks(beforeBlocks, afterBlocks);
-            applyUndoMutations(blocksStore, mutations);
+            doMutations(blocksStore, mutations);
         }
 
         return {capture, undo};
 
     }
 
-    // FIXME: this has to be moved to the blockStore as it has to be an action so that everything
-    // is updated at once.
-    export function applyUndoMutations(blocksStore: BlocksStore,
-                                       mutations: ReadonlyArray<IBlocksStoreMutation>) {
+    export function doMutations(blocksStore: BlocksStore,
+                                mutations: ReadonlyArray<IBlocksStoreMutation>) {
 
         const handleUpdated = (mutation: IBlocksStoreMutationUpdated) => {
 
