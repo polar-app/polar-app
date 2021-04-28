@@ -162,12 +162,16 @@ export namespace BlocksStoreUndoQueues {
                     switch (itemsPatch.type) {
 
                         case "remove":
+                            console.log("Apply undo patch for items: remove: " + itemsPatch.id);
                             block.removeItem(itemsPatch.id);
                             break;
                         case "insert":
-                            block.addItem(itemsPatch.id, {ref: itemsPatch.ref, pos: itemsPatch.pos});
+                            const op = {ref: itemsPatch.ref, pos: itemsPatch.pos};
+                            console.log("Apply undo patch for items: insert: ", itemsPatch.id, op);
+                            block.addItem(itemsPatch.id, op);
                             break;
                         case "unshift":
+                            console.log("Apply undo patch for items: unshift: ", itemsPatch.id);
                             block.addItem(itemsPatch.id, 'unshift');
                             break;
 
@@ -205,13 +209,14 @@ export namespace BlocksStoreUndoQueues {
             // # aborted.
             const handleUpdatedContent = (): boolean => {
 
-                if (block.updated === mutation.after.updated) {
+                console.log("Apply undo patch for content: ", mutation.before.content);
+                // if (block.updated === mutation.after.updated) {
                     block.setContent(mutation.before.content);
                     return true;
-                } else {
-                    console.log(`Skipping update as the version number is invalid expected: ${mutation.after.updated} but was ${block.updated}`);
-                    return false;
-                }
+                // } else {
+                //     console.log(`Skipping update as the version number is invalid expected: ${mutation.after.updated} but was ${block.updated}`);
+                //     return false;
+                // }
 
             }
 
