@@ -5,6 +5,7 @@ import {BlockIDStr, BlocksStore} from "./BlocksStore";
 import {Block} from "./Block";
 import deepEqual from "deep-equal";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {UndoQueues2} from "../../undo/UndoQueues2";
 
 export namespace BlocksStoreUndoQueues {
 
@@ -38,56 +39,48 @@ export namespace BlocksStoreUndoQueues {
     export type IBlocksStoreMutation = IBlocksStoreMutationAdded | IBlocksStoreMutationRemoved | IBlocksStoreMutationUpdated;
 
     export interface IUndoCapture {
-        readonly capture: () => ReadonlyArray<IBlocksStoreMutation>;
+        readonly capture: () => void;
+        readonly undo: () => void;
     }
 
     // FIXME move everything that uses BlocksStore into BlocksStore
-    // FIXME: aprent operations have to behave properly
 
     export interface IUndoCaptureOpts {
         readonly noExpand?: boolean;
     }
 
     export function createUndo<T>(blocksStore: BlocksStore,
+                                  undoQueue: UndoQueues2.UndoQueue,
                                   identifiers: ReadonlyArray<BlockIDStr>,
-                                  redo: () => T) {
+                                  redoDelegate: () => T) {
+
+        // FIXME: dont' allow undo on pages that aren't currently the root ...
 
         // this captures the state before the initial transaction
         const undoCapture = createUndoCapture(blocksStore, identifiers);
 
-        // FIXME: can someone ELSE wipe out my changes if we receive a
-        // transaction from the server from someone else?...
+        let captured: boolean = false;
 
-        // FIXME:
-        //
-        //  so we have
-        //
-        // - version1 (me)
-        // - version2 (someone else)
-        // - version3 (mine)
+        /**
+         * The redo operation has to execute, capture the graph for a delta
+         * operation later,
+         */
+        const redo = () => {
 
-        //
-        // Bob: block0 : v0 => San Francisco
-        //
-        // # Bob creates block0 at v0 (version 0) and sets the value to "San Francisco"
-        //
-        // Alice: block0 : v1 => Germany
-        //
-        // # Alice edits block0, changes the version number to v1, and sets the value to "Germany"
-        // #
-        // # Alice has an undo queue entry here that can properly restore the block0 edit
-        // # from v1 to v0 but ONLY if block0 is at v1.
-        // #
-        // # right now she can undo if she wants.
-        //
-        // Bob: block0 : v2 => San Francisco
-        //
-        // # Bob sets the content of block0 back to San Francisco, and the version is
-        // # automatically set to v2.
-        // #
-        // # Now Alice is prevented from doing an undo because when she reads the current
-        // # version, she sees that it's not compatible with her undo so it's silently
-        // # aborted.
+            redoDelegate();
+
+            if (! captured) {
+                undoCapture.capture();
+                captured = true;
+            }
+
+        }
+
+        const undo = () => {
+            undoCapture.undo();
+        }
+
+        return this.undoQueue.push({redo, undo}).value;
 
 
     }
@@ -120,19 +113,23 @@ export namespace BlocksStoreUndoQueues {
 
         const beforeBlocks: ReadonlyArray<IBlock> = computeBlocks(createSnapshot());
 
+        let afterBlocks: ReadonlyArray<IBlock> = [];
+
         const capture = () => {
 
             const snapshot = createSnapshot();
 
-            const afterBlocks = computeBlocks(snapshot);
+            afterBlocks = computeBlocks(snapshot);
 
-            return computeMutatedBlocks(beforeBlocks, afterBlocks);
 
         }
 
-        // FIXME: this pass a redo function, then create an undo function and return both...
+        const undo = () => {
+            const mutations = computeMutatedBlocks(beforeBlocks, afterBlocks);
+            applyUndoMutations(blocksStore, mutations);
+        }
 
-        return {capture};
+        return {capture, undo};
 
     }
 
@@ -179,6 +176,28 @@ export namespace BlocksStoreUndoQueues {
 
             }
 
+            //
+            // Bob: block0 : v0 => San Francisco
+            //
+            // # Bob creates block0 at v0 (version 0) and sets the value to "San Francisco"
+            //
+            // Alice: block0 : v1 => Germany
+            //
+            // # Alice edits block0, changes the version number to v1, and sets the value to "Germany"
+            // #
+            // # Alice has an undo queue entry here that can properly restore the block0 edit
+            // # from v1 to v0 but ONLY if block0 is at v1.
+            // #
+            // # right now she can undo if she wants.
+            //
+            // Bob: block0 : v2 => San Francisco
+            //
+            // # Bob sets the content of block0 back to San Francisco, and the version is
+            // # automatically set to v2.
+            // #
+            // # Now Alice is prevented from doing an undo because when she reads the current
+            // # version, she sees that it's not compatible with her undo so it's silently
+            // # aborted.
             const handleUpdatedContent = (): boolean => {
 
                 if (block.updated === mutation.after.updated) {
