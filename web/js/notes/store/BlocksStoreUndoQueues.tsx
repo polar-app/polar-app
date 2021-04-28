@@ -66,7 +66,7 @@ export namespace BlocksStoreUndoQueues {
         // - version2 (someone else)
         // - version3 (mine)
 
-
+        //
         // Bob: block0 : v0 => San Francisco
         //
         // # Bob creates block0 at v0 (version 0) and sets the value to "San Francisco"
@@ -77,14 +77,14 @@ export namespace BlocksStoreUndoQueues {
         // #
         // # Alice has an undo queue entry here that can properly restore the block0 edit
         // # from v1 to v0 but ONLY if block0 is at v1.
-        //     #
+        // #
         // # right now she can undo if she wants.
         //
-        //     Bob: block0 : v2 => San Francisco
+        // Bob: block0 : v2 => San Francisco
         //
         // # Bob sets the content of block0 back to San Francisco, and the version is
         // # automatically set to v2.
-        //     #
+        // #
         // # Now Alice is prevented from doing an undo because when she reads the current
         // # version, she sees that it's not compatible with her undo so it's silently
         // # aborted.
@@ -95,7 +95,8 @@ export namespace BlocksStoreUndoQueues {
      * Perform an undo capture for the following identifiers based on their
      * parent
      */
-    export function createUndoCapture(blocksStore: BlocksStore, identifiers: ReadonlyArray<BlockIDStr>): IUndoCapture {
+    export function createUndoCapture(blocksStore: BlocksStore,
+                                      identifiers: ReadonlyArray<BlockIDStr>): IUndoCapture {
 
         identifiers = expandToParentAndChildren(blocksStore, identifiers);
 
