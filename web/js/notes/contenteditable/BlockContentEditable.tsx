@@ -481,7 +481,7 @@ function doUpdateCursorPosition(editor: HTMLDivElement, pos: 'start' | 'end' | n
 
         }
 
-        console.log("Updating cursor position to: ", pos);
+        // console.log("Updating cursor position to: ", pos);
 
         editor.focus();
 
