@@ -935,7 +935,27 @@ describe('BlocksStore', function() {
             const identifiers = BlocksStoreUndoQueues.expandToParentAndChildren(store, ['102'])
             const before = store.createSnapshot(identifiers);
 
-            store.createNewBlock('102');
+            const createdBlock = store.createNewBlock('102');
+
+            assertJSON(store.getBlock('102')?.toJSON(), {
+                "content": {
+                    "data": "World War II",
+                    "type": "name"
+                },
+                "created": "2012-03-02T11:38:49.321Z",
+                "id": "102",
+                "items": [
+                    createdBlock?.id,
+                    "103",
+                    "104",
+                    "105"
+                ],
+                "links": [],
+                "nspace": "ns101",
+                "uid": "123",
+                "updated": "2012-03-02T11:38:49.321Z"
+            });
+
             store.undo();
 
             const after = store.createSnapshot(identifiers);
