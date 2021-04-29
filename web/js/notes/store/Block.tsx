@@ -6,6 +6,7 @@ import { Contents } from "../content/Contents";
 import {PositionalArrays} from "./PositionalArrays";
 import PositionalArray = PositionalArrays.PositionalArray;
 import { arrayStream } from "polar-shared/src/util/ArrayStreams";
+import PositionalArrayPositionStr = PositionalArrays.PositionalArrayPositionStr;
 
 export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
@@ -49,9 +50,9 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         this._parent = opts.parent;
         this._created = opts.created;
         this._updated = opts.updated;
-        this._items = PositionalArrays.create([...opts.items]);
+        this._items = {...opts.items};
         this._content = Contents.create(opts.content);
-        this._links = PositionalArrays.create([...opts.links]);
+        this._links = {...opts.links};
         this._mutation = opts.mutation;
 
         makeObservable(this)
@@ -82,7 +83,11 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         return this._updated;
     }
 
-    @computed get items(): ReadonlyArray<BlockIDStr> {
+    @computed get items(): PositionalArray<BlockIDStr> {
+        return this._items;
+    }
+
+    @computed get itemsAsArray(): ReadonlyArray<BlockIDStr> {
         return PositionalArrays.toArray(this._items);
     }
 
@@ -90,7 +95,11 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         return this._content;
     }
 
-    @computed get links(): ReadonlyArray<IBlockLink> {
+    @computed get links(): PositionalArray<IBlockLink> {
+        return this._links;
+    }
+
+    @computed get linksAsArray(): ReadonlyArray<IBlockLink> {
         return PositionalArrays.toArray(this._links);
     }
 
@@ -135,6 +144,15 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     @action removeItem(id: BlockIDStr) {
 
         PositionalArrays.remove(this._items, id);
+
+        this._updated = ISODateTimeStrings.create();
+        this._mutation = this._mutation + 1;
+
+    }
+
+    @action putItem(key: PositionalArrayPositionStr, id: BlockIDStr) {
+
+        PositionalArrays.put(this._items, key, id);
 
         this._updated = ISODateTimeStrings.create();
         this._mutation = this._mutation + 1;
@@ -192,9 +210,9 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
             parent: this._parent,
             created: this._created,
             updated: this._updated,
-            items: PositionalArrays.toArray(this._items),
+            items: {...this._items},
             content: this._content.toJSON() as any,
-            links: PositionalArrays.toArray(this._links),
+            links: {...this._links},
             mutation: this._mutation
         };
 

@@ -27,6 +27,7 @@ import { IBaseBlockContent } from "../content/IBaseBlockContent";
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {useUndoQueue} from "../../undo/UndoQueueProvider2";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
+import {PositionalArrays} from "./PositionalArrays";
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
@@ -343,7 +344,7 @@ export class BlocksStore implements IBlocksStore {
     public lookup(blocks: ReadonlyArray<BlockIDStr>): ReadonlyArray<IBlock> {
 
         return blocks.map(current => this._index[current])
-            .filter(current => current !== null && current !== undefined);
+                     .filter(current => current !== null && current !== undefined);
 
     }
 
@@ -362,7 +363,7 @@ export class BlocksStore implements IBlocksStore {
                 this._indexByName[blockData.content.data] = block.id;
             }
 
-            for (const link of block.links) {
+            for (const link of block.linksAsArray) {
                 this._reverse.add(link.id, block.id);
             }
 
@@ -422,16 +423,16 @@ export class BlocksStore implements IBlocksStore {
 
         if (parent) {
 
-            const idx = parent.items.indexOf(id);
+            const idx = parent.itemsAsArray.indexOf(id);
 
             if (idx !== -1) {
 
                 switch (type) {
 
                     case "prev":
-                        return Arrays.prevSibling(parent.items, idx);
+                        return Arrays.prevSibling(parent.itemsAsArray, idx);
                     case "next":
-                        return Arrays.nextSibling(parent.items, idx);
+                        return Arrays.nextSibling(parent.itemsAsArray, idx);
 
                 }
 
@@ -662,7 +663,8 @@ export class BlocksStore implements IBlocksStore {
         const isExpanded = root ? true : this._expanded[id];
 
         if (isExpanded) {
-            const items = (block.items || []);
+
+            const items = (block.itemsAsArray || []);
 
             const result = [];
 
@@ -691,7 +693,7 @@ export class BlocksStore implements IBlocksStore {
         const isExpanded = this._expanded[id] || id === this.root;
 
         if (isExpanded) {
-            const items = (block.items || []);
+            const items = (block.itemsAsArray || []);
 
             const result = [];
 
@@ -831,7 +833,8 @@ export class BlocksStore implements IBlocksStore {
 
                 if (sourceBlock.parent === targetBlock.id) {
 
-                    const firstChild = targetBlock.items.indexOf(sourceBlock.id) === 0;
+                    const targetBlockItems = PositionalArrays.toArray(targetBlock.items);
+                    const firstChild = targetBlockItems.indexOf(sourceBlock.id) === 0;
 
                     if (firstChild) {
                         return true;
@@ -872,8 +875,8 @@ export class BlocksStore implements IBlocksStore {
 
         const offset = CursorPositions.renderedTextLength(targetBlock.content.data);
 
-        const items = [...targetBlock.items, ...sourceBlock.items];
-        const links = [...targetBlock.links, ...sourceBlock.links];
+        const items = [...targetBlock.itemsAsArray, ...sourceBlock.itemsAsArray];
+        const links = [...targetBlock.linksAsArray, ...sourceBlock.linksAsArray];
 
         const newContent = targetBlock.content.data + sourceBlock.content.data;
 
@@ -881,6 +884,7 @@ export class BlocksStore implements IBlocksStore {
             type: 'markdown',
             data: newContent
         }));
+
         targetBlock.setItems(items);
         targetBlock.setLinks(links);
 
@@ -929,8 +933,8 @@ export class BlocksStore implements IBlocksStore {
                 }),
                 created: now,
                 updated: now,
-                items: [],
-                links: [],
+                items: {},
+                links: {},
                 mutation: 0
             };
         };
@@ -1078,7 +1082,7 @@ export class BlocksStore implements IBlocksStore {
             const createNewBlock = (parentBlock: Block): IBlock => {
                 const now = ISODateTimeStrings.create()
 
-                const items = newBlockInheritItems ? currentBlock.items : [];
+                const items = newBlockInheritItems ? currentBlock.items : {};
 
                 const content = opts.content || {
                     type: 'markdown',
@@ -1094,7 +1098,7 @@ export class BlocksStore implements IBlocksStore {
                     created: now,
                     updated: now,
                     items,
-                    links: [],
+                    links: {},
                     mutation: 0
                 };
 
@@ -1128,7 +1132,7 @@ export class BlocksStore implements IBlocksStore {
 
             }
 
-            if (split?.suffix !== undefined && newBlock.items.length > 0) {
+            if (split?.suffix !== undefined && Object.keys(newBlock.items).length > 0) {
                 this.expand(newBlock.id);
             }
 
@@ -1248,7 +1252,7 @@ export class BlocksStore implements IBlocksStore {
             return false;
         }
 
-        return parentBlock.items.indexOf(id) !== 0;
+        return parentBlock.itemsAsArray.indexOf(id) !== 0;
 
     }
 
@@ -1290,7 +1294,7 @@ export class BlocksStore implements IBlocksStore {
                 return {error: 'no-parent-block'};
             }
 
-            const parentItems = (parentBlock.items || []);
+            const parentItems = (parentBlock.itemsAsArray || []);
 
             // figure out the sibling index in the parent
             const siblingIndex = parentItems.indexOf(id);
@@ -1512,7 +1516,7 @@ export class BlocksStore implements IBlocksStore {
                     // *** first delete all children,  We have to do this first
                     // or else they won't have parents.
 
-                    handleDelete(block.items);
+                    handleDelete(block.itemsAsArray);
 
                     // *** delete the id for this block from the parents items.
 
@@ -1627,7 +1631,7 @@ export class BlocksStore implements IBlocksStore {
             return false;
         }
 
-        return parentBlock.items.indexOf(id) === parentBlock.items.length - 1;
+        return parentBlock.itemsAsArray.indexOf(id) === parentBlock.itemsAsArray.length - 1;
 
     }
 

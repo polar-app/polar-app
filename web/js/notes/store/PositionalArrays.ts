@@ -1,7 +1,36 @@
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {Tuples} from "polar-shared/src/util/Tuples";
 
+/**
+ * Positional Arrays are based on LSeq:
+ *
+ * LSEQ: an Adaptive Structure for Sequences in DistributedCollaborative Editing
+ *
+ * The general idea here is that we can implement distributed arrays as CRDT-like stuctures
+ * where the keys are the position in a map and the 'array' order is determined by the key.
+ *
+ * This is a ROUGH approximation of the LSEQ idea but designed for rapid
+ * iteration and fewer total keys.
+ *
+ * https://bartoszsypytkowski.com/operation-based-crdts-arrays-1/
+ * https://www.researchgate.net/publication/262162421_LSEQ_an_Adaptive_Structure_for_Sequences_in_Distributed_Collaborative_Editing
+ *
+ *
+ */
 export namespace PositionalArrays {
+
+    // FIXME: I think this implementation has the following bugs:
+    //
+    // If someone tries to delete the first element, and I try to add it then
+    // it's possible to compute the same key. We can resolve this by having a
+    // local portion so this is impossible since to can't generate teh same
+    // code.
+    // FIXME: need a local component
+    //
+
+    //
+    // TODO: this system doesn't have THAT many keys ... what I think we need to
+    // do is ...
 
     /**
      * A number encoded as an string that can be used to place something into a
@@ -172,15 +201,52 @@ export namespace PositionalArrays {
 
     }
 
-    export function set<T>(positionalArray: PositionalArray<T>, values: ReadonlyArray<T>): PositionalArray<T> {
+    /**
+     * Set will take new items, and give them keys that will be unique, then
+     * remove the old keys.  This way the set has new values and it's safe from
+     * the existing data and can't conflict with anyone.
+     */
+    export function set<T>(positionalArray: PositionalArray<T>, values: ReadonlyArray<T> | PositionalArray<T>): PositionalArray<T> {
 
-        clear(positionalArray);
+        const convertToArray = (): ReadonlyArray<T> => {
 
-        for (const value of values) {
+            if (Array.isArray(values)) {
+                return values;
+            }
+
+            if (typeof values === 'object') {
+                return toArray(values as any);
+            }
+
+            throw new Error("Unknown values");
+
+        }
+
+        const converted = convertToArray();
+
+        // *** get all of the existingk keys so that we can remove them later
+        const existing = Object.keys(positionalArray);
+
+        // *** now append all the current ones.
+        for (const value of converted) {
             append(positionalArray, value);
         }
 
+        // *** now delete all the existing values...
+        for (const key of existing) {
+            delete positionalArray[key];
+        }
+
         return positionalArray;
+
+    }
+
+    export function keyForValue<T>(positionalArray: PositionalArray<T>, value: T): PositionalArrayPositionStr | undefined {
+
+        return arrayStream(Object.entries(positionalArray))
+            .filter(current => current[1] === value)
+            .map(current => current[0])
+            .first()
 
     }
 

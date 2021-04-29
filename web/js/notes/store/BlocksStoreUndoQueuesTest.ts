@@ -10,13 +10,15 @@ import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {JSDOMParser} from "./BlocksStoreTest";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
+import {PositionalArrays} from "./PositionalArrays";
+import PositionalArray = PositionalArrays.PositionalArray;
 
 interface IBasicBlockOpts<C> {
     readonly id?: BlockIDStr;
     readonly parent?: BlockIDStr;
     readonly content: C;
-    readonly items?: ReadonlyArray<BlockIDStr>;
-    readonly links?: ReadonlyArray<IBlockLink>;
+    readonly items?: PositionalArray<BlockIDStr>;
+    readonly links?: PositionalArray<IBlockLink>;
     readonly mutation?: number;
 }
 function createBasicBlock<C extends IBlockContent = IBlockContent>(opts: IBasicBlockOpts<C>): IBlock<C> {
@@ -33,8 +35,8 @@ function createBasicBlock<C extends IBlockContent = IBlockContent>(opts: IBasicB
         updated: created,
         ...opts,
         parent: opts.parent || undefined,
-        items: opts.items || [],
-        links: opts.links || [],
+        items: opts.items || {},
+        links: opts.links || {},
         mutation: opts.mutation || 0
     }
 
@@ -63,7 +65,7 @@ describe("BlocksStoreUndoQueues", () => {
                     type: 'markdown',
                     data: 'static block',
                 },
-                items: ['1', '2']
+                items: PositionalArrays.create(['1', '2'])
             });
 
             const removedBlock = createBasicBlock<IMarkdownContent>({
@@ -72,7 +74,7 @@ describe("BlocksStoreUndoQueues", () => {
                     type: 'markdown',
                     data: 'removed block',
                 },
-                items: ['1', '2']
+                items: PositionalArrays.create(['1', '2'])
             });
 
             const beforeBlocks = [
@@ -84,7 +86,7 @@ describe("BlocksStoreUndoQueues", () => {
                         type: 'markdown',
                         data: 'updated block',
                     },
-                    items: ['1', '2']
+                    items: PositionalArrays.create(['1', '2'])
                 }),
             ];
 
@@ -96,7 +98,7 @@ describe("BlocksStoreUndoQueues", () => {
                     type: 'markdown',
                     data: 'added block',
                 },
-                items: ['1', '2']
+                items: PositionalArrays.create(['1', '2'])
             });
 
 
@@ -109,7 +111,7 @@ describe("BlocksStoreUndoQueues", () => {
                         type: 'markdown',
                         data: 'updated block 2',
                     },
-                    items: ['1', '2'],
+                    items: PositionalArrays.create(['1', '2']),
                     mutation: 1
                 }),
 
@@ -117,7 +119,7 @@ describe("BlocksStoreUndoQueues", () => {
 
             const mutatedBlocks = BlocksStoreUndoQueues.computeMutatedBlocks(beforeBlocks, afterBlocks);
 
-            assertJSON(mutatedBlocks,[
+            assertJSON(mutatedBlocks, [
                 {
                     "id": "0x03",
                     "block": {
@@ -130,11 +132,11 @@ describe("BlocksStoreUndoQueues", () => {
                             "type": "markdown",
                             "data": "added block"
                         },
-                        "items": [
-                            "1",
-                            "2"
-                        ],
-                        "links": [],
+                        "items": {
+                            "1": "1",
+                            "2": "2"
+                        },
+                        "links": {},
                         "mutation": 0
                     },
                     "type": "added"
@@ -151,11 +153,11 @@ describe("BlocksStoreUndoQueues", () => {
                             "type": "markdown",
                             "data": "removed block"
                         },
-                        "items": [
-                            "1",
-                            "2"
-                        ],
-                        "links": [],
+                        "items": {
+                            "1": "1",
+                            "2": "2"
+                        },
+                        "links": {},
                         "mutation": 0
                     },
                     "type": "removed"
@@ -173,11 +175,11 @@ describe("BlocksStoreUndoQueues", () => {
                             "type": "markdown",
                             "data": "updated block"
                         },
-                        "items": [
-                            "1",
-                            "2"
-                        ],
-                        "links": [],
+                        "items": {
+                            "1": "1",
+                            "2": "2"
+                        },
+                        "links": {},
                         "mutation": 0
                     },
                     "after": {
@@ -190,12 +192,12 @@ describe("BlocksStoreUndoQueues", () => {
                             "type": "markdown",
                             "data": "updated block 2"
                         },
-                        "items": [
-                            "1",
-                            "2"
-                        ],
+                        "items": {
+                            "1": "1",
+                            "2": "2"
+                        },
                         "mutation": 1,
-                        "links": [],
+                        "links": {}
                     }
                 }
             ]);
@@ -281,7 +283,7 @@ describe("BlocksStoreUndoQueues", () => {
                     type: 'markdown',
                     data: 'hello world',
                 },
-                items: ['1', '2']
+                items: PositionalArrays.create(['1', '2'])
             });
 
             const after = createBasicBlock<IMarkdownContent>({
@@ -289,7 +291,7 @@ describe("BlocksStoreUndoQueues", () => {
                     type: 'markdown',
                     data: 'hello world'
                 },
-                items: ['1', '2', '3']
+                items: PositionalArrays.create(['1', '2', '3'])
             });
 
             assert.equal(BlocksStoreUndoQueues.computeMutationType(before, after), 'items');
@@ -323,7 +325,7 @@ describe("BlocksStoreUndoQueues", () => {
                     type: 'markdown',
                     data: 'hello world'
                 },
-                items: ['1', '2']
+                items: PositionalArrays.create(['1', '2'])
             });
 
             const after = createBasicBlock<IMarkdownContent>({
@@ -331,7 +333,7 @@ describe("BlocksStoreUndoQueues", () => {
                     type: 'markdown',
                     data: 'hello world 2'
                 },
-                items: ['1', '2', '3']
+                items: PositionalArrays.create(['1', '2', '3'])
 
             });
 
@@ -346,7 +348,7 @@ describe("BlocksStoreUndoQueues", () => {
                     type: 'markdown',
                     data: 'hello world'
                 },
-                items: ['1', '2']
+                items: PositionalArrays.create(['1', '2'])
             });
 
             const after = createBasicBlock<IMarkdownContent>({
@@ -354,7 +356,7 @@ describe("BlocksStoreUndoQueues", () => {
                     type: 'markdown',
                     data: 'hello world'
                 },
-                items: ['1', '2']
+                items: PositionalArrays.create(['1', '2'])
 
             });
 
@@ -368,9 +370,10 @@ describe("BlocksStoreUndoQueues", () => {
 
         it("remove", () => {
 
-            assertJSON(BlocksStoreUndoQueues.computeItemsPatches(['1'], []), [
+            assertJSON(BlocksStoreUndoQueues.computeItemsPatches(PositionalArrays.create(['1']), PositionalArrays.create([])), [
                 {
                     "type": "remove",
+                    "key": "1",
                     "id": "1"
                 }
             ]);
@@ -379,9 +382,10 @@ describe("BlocksStoreUndoQueues", () => {
 
         it("unshift", () => {
 
-            assertJSON(BlocksStoreUndoQueues.computeItemsPatches([], ['1']), [
+            assertJSON(BlocksStoreUndoQueues.computeItemsPatches(PositionalArrays.create([]), PositionalArrays.create(['1'])), [
                 {
-                    "type": "unshift",
+                    "type": "insert",
+                    "key": "1",
                     "id": "1"
                 }
             ]);
@@ -390,12 +394,11 @@ describe("BlocksStoreUndoQueues", () => {
 
         it("insert after", () => {
 
-            assertJSON(BlocksStoreUndoQueues.computeItemsPatches(['1'], ['1', '2']), [
+            assertJSON(BlocksStoreUndoQueues.computeItemsPatches(PositionalArrays.create(['1']), PositionalArrays.create(['1', '2'])), [
                 {
                     "type": "insert",
-                    "ref": "1",
-                    "id": "2",
-                    "pos": "after"
+                    "key": "2",
+                    "id": "2"
                 }
             ]);
 
@@ -404,12 +407,11 @@ describe("BlocksStoreUndoQueues", () => {
 
         it("insert before", () => {
 
-            assertJSON(BlocksStoreUndoQueues.computeItemsPatches(['1'], ['2', '1']), [
+            assertJSON(BlocksStoreUndoQueues.computeItemsPatches(PositionalArrays.create(['1']), PositionalArrays.create(['2', '1'])), [
                 {
                     "type": "insert",
-                    "ref": "1",
-                    "id": "2",
-                    "pos": "before"
+                    "key": "1",
+                    "id": "2"
                 }
             ]);
 

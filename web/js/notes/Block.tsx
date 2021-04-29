@@ -233,7 +233,7 @@ export const BlockInner = observer((props: IProps) => {
 
     }, []);
 
-    const items = blocksStore.lookup(block.items || []);
+    const items = blocksStore.lookup(block.itemsAsArray || []);
 
     const hasItems = items.length > 0;
 

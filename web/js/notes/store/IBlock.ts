@@ -1,5 +1,7 @@
 import { ISODateTimeString } from "polar-shared/src/metadata/ISODateTimeStrings";
 import {BlockIDStr, IBlockContent} from "./BlocksStore";
+import {PositionalArrays} from "./PositionalArrays";
+import PositionalArray = PositionalArrays.PositionalArray;
 
 export type UIDStr = string;
 export type NamespaceIDStr = string;
@@ -49,14 +51,14 @@ export interface IBlock<C extends IBlockContent = IBlockContent> {
     /**
      * The sub-items of this node as node IDs.
      */
-    readonly items: ReadonlyArray<BlockIDStr>;
+    readonly items: PositionalArray<BlockIDStr>;
 
     readonly content: C;
 
     /**
      * The linked wiki references to other notes.
      */
-    readonly links: ReadonlyArray<IBlockLink>;
+    readonly links: PositionalArray<IBlockLink>;
 
     /**
      * The unique mutation number that's incremented each time we change the object.

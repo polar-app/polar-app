@@ -3,12 +3,15 @@ import {SetArrays} from "polar-shared/src/util/SetArrays";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {BlockIDStr, BlocksStore} from "./BlocksStore";
 import deepEqual from "deep-equal";
-import {Arrays} from "polar-shared/src/util/Arrays";
 import {UndoQueues2} from "../../undo/UndoQueues2";
+import {PositionalArrays} from "./PositionalArrays";
 
 export namespace BlocksStoreUndoQueues {
 
     // FIXME: have tests for this... that uses the BlocksStore directly..
+
+    import PositionalArray = PositionalArrays.PositionalArray;
+    import PositionalArrayPositionStr = PositionalArrays.PositionalArrayPositionStr;
 
     export interface IUndoMutation {
         readonly parent: IBlock | undefined;
@@ -154,17 +157,11 @@ export namespace BlocksStoreUndoQueues {
                     switch (itemsPatch.type) {
 
                         case "remove":
-                            // FIXME: this is now wrong because it has to be transformed to an insert ...
-                            // const op = {ref: itemsPatch.ref, pos: itemsPatch.pos};
-                            console.log("Handling undo patch for items: remove: " + itemsPatch.id);
-                            block.removeItem(itemsPatch.id);
+                            console.log("Handling undo patch for items: remove: (transformed to put)" + itemsPatch.id);
+                            block.putItem(itemsPatch.key, itemsPatch.id);
                             break;
                         case "insert":
                             console.log("Handling undo patch for items: insert (transformed to remove): ", itemsPatch.id);
-                            block.removeItem(itemsPatch.id);
-                            break;
-                        case "unshift":
-                            console.log("Handling undo patch for items: unshift  (transformed to remove): ", itemsPatch.id);
                             block.removeItem(itemsPatch.id);
                             break;
 
@@ -174,7 +171,6 @@ export namespace BlocksStoreUndoQueues {
 
                 const itemsPatches = computeItemsPatches(mutation.before.items, mutation.after.items);
                 itemsPatches.map(handleItemsPatch);
-
 
             }
 
@@ -297,7 +293,7 @@ export namespace BlocksStoreUndoQueues {
 
             const computeChildrenForBlock = (id: BlockIDStr): ReadonlyArray<BlockIDStr> => {
 
-                const items = blocksStore.getBlock(id)?.items || [];
+                const items = blocksStore.getBlock(id)?.itemsAsArray || [];
 
                 const descendants = arrayStream(items)
                     .map(current => computeChildrenForBlock(current))
@@ -456,72 +452,52 @@ export namespace BlocksStoreUndoQueues {
      */
     export interface IItemsPatchRemove {
         readonly type: 'remove';
+        readonly key: PositionalArrayPositionStr;
         readonly id: BlockIDStr;
     }
 
     export interface IItemsPatchInsert {
         readonly type: 'insert';
-        readonly ref: BlockIDStr;
+        readonly key: PositionalArrayPositionStr;
         readonly id: BlockIDStr
-        readonly pos: 'after' | 'before';
     }
 
-    export interface IItemsPatchUnshift {
-        readonly type: 'unshift';
-        readonly id: BlockIDStr;
-    }
+    export type IItemsPatch = IItemsPatchRemove | IItemsPatchInsert;
 
-    export type IItemsPatch = IItemsPatchRemove | IItemsPatchInsert | IItemsPatchUnshift;
+    export function computeItemsPatches(before: PositionalArray<BlockIDStr>,
+                                        after: PositionalArray<BlockIDStr>): ReadonlyArray<IItemsPatch> {
 
-    // FIXME: this is all wrong now because we have to take the 'items' map not
-    // the items array and work with it that way. We should make the data NATIVE
-    // now when working with the JSON objects because that data is correct and
-    // working with the array destroys part of the data.
-
-    export function computeItemsPatches(before: ReadonlyArray<BlockIDStr>, after: ReadonlyArray<BlockIDStr>): ReadonlyArray<IItemsPatch> {
-
-        const removed = SetArrays.difference(before, after);
-        const added = SetArrays.difference(after, before);
+        const removed = SetArrays.difference(PositionalArrays.toArray(before), PositionalArrays.toArray(after));
+        const added = SetArrays.difference(PositionalArrays.toArray(after), PositionalArrays.toArray(before));
 
         const toRemoved = (id: BlockIDStr): IItemsPatchRemove => {
+
+            const key = PositionalArrays.keyForValue(before, id);
+
+            if (key === undefined) {
+                throw new Error("Could know find key for value: " + id);
+            }
+
             return {
                 type: 'remove',
+                key,
                 id
             };
         }
 
-        const toAdded = (id: BlockIDStr): IItemsPatchUnshift | IItemsPatchInsert => {
+        const toAdded = (id: BlockIDStr): IItemsPatchInsert => {
 
-            if (after.length === 1) {
-                return {
-                    type: 'unshift',
-                    id
-                };
+            const key = PositionalArrays.keyForValue(after, id);
+
+            if (key === undefined) {
+                throw new Error("Could know find key for value: " + id);
             }
 
-            const idx = after.indexOf(id);
-            const prevSibling = Arrays.prevSibling(after, idx);
-            const nextSibling = Arrays.nextSibling(after, idx);
-
-            if (prevSibling !== undefined) {
-                return {
-                    type: 'insert',
-                    ref: prevSibling,
-                    id,
-                    pos: 'after'
-                };
+            return {
+                type: 'insert',
+                key,
+                id
             }
-
-            if (nextSibling !== undefined) {
-                return {
-                    type: 'insert',
-                    ref: nextSibling,
-                    id,
-                    pos: 'before'
-                };
-            }
-
-            throw new Error("Unable to compute patch");
 
         }
 
