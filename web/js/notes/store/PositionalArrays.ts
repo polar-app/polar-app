@@ -29,8 +29,8 @@ export namespace PositionalArrays {
     //
 
     //
-    // TODO: this system doesn't have THAT many keys ... what I think we need to
-    // do is ...
+    // FIXME: We might want to to think about a tree with all positive integers with an arity of say 10000
+    // and a spacing of say 10... then when this is filled up another level of 10000
 
     /**
      * A number encoded as an string that can be used to place something into a
