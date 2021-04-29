@@ -1652,11 +1652,11 @@ export class BlocksStore implements IBlocksStore {
     }
 
     public undo() {
-        this.undoQueue.undo();
+        return this.undoQueue.undo();
     }
 
     public redo() {
-        this.undoQueue.redo();
+        return this.undoQueue.redo();
     }
 
 }
