@@ -718,7 +718,7 @@ describe('BlocksStore', function() {
                 "id": "103",
                 "items": {},
                 "links": {},
-                "mutation": 3,
+                "mutation": 2,
                 "nspace": "ns101",
                 "parent": "102",
                 "uid": "123",
@@ -998,7 +998,7 @@ describe('BlocksStore', function() {
                     "3": "105"
                 },
                 "links": {},
-                "mutation": 3,
+                "mutation": 2,
                 "nspace": "ns101",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
@@ -1121,7 +1121,7 @@ describe('BlocksStore', function() {
                 "id": "104",
                 "items": {},
                 "links": {},
-                "mutation": 2,
+                "mutation": 1,
                 "nspace": "ns101",
                 "parent": "102",
                 "uid": "123",

@@ -7,6 +7,7 @@ import {PositionalArrays} from "./PositionalArrays";
 import PositionalArray = PositionalArrays.PositionalArray;
 import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 import PositionalArrayPositionStr = PositionalArrays.PositionalArrayPositionStr;
+import deepEqual from "deep-equal";
 
 export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
@@ -107,71 +108,150 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         return this._mutation;
     }
 
+    // FIXME: setContentAndItems method that does everything in one mutation....
+    // the only operations we need are insert and remove with items.
+
     @action setContent(content: C | IBlockContent) {
 
-        this._content.update(content);
-        this._updated = ISODateTimeStrings.create();
-        this._mutation = this._mutation + 1;
-
-    }
-
-    @action setParent(id: BlockIDStr) {
-        this._parent = id;
-        this._updated = ISODateTimeStrings.create();
-        this._mutation = this._mutation + 1;
-    }
-
-    @action setItems(items: ReadonlyArray<BlockIDStr>) {
-        PositionalArrays.set(this._items, items);
-        this._updated = ISODateTimeStrings.create();
-        this._mutation = this._mutation + 1;
-    }
-
-    @action addItem(id: BlockIDStr, pos?: INewChildPosition | 'unshift') {
-
-        if (pos === 'unshift') {
-            PositionalArrays.unshift(this._items, id);
-        } else if (pos) {
-            PositionalArrays.insert(this._items, pos.ref, id, pos.pos);
-        } else {
-            PositionalArrays.append(this._items, id);
+        const equals = () => {
+            // note this is not a set-theoretic comparison - order matters.
+            return deepEqual(this._content, content);
         }
 
-        this._updated = ISODateTimeStrings.create();
-        this._mutation = this._mutation + 1;
+        if (! equals()) {
+            // FIXME: only update the content if it's actually different than the current content...
+            this._content.update(content);
+            this._updated = ISODateTimeStrings.create();
+            this._mutation = this._mutation + 1;
+            return true;
+        } else {}
+
+        return
+
     }
 
-    @action removeItem(id: BlockIDStr) {
+    @action setParent(id: BlockIDStr): boolean {
 
-        PositionalArrays.remove(this._items, id);
-
-        this._updated = ISODateTimeStrings.create();
-        this._mutation = this._mutation + 1;
+        if (this._parent !== id) {
+            this._parent = id;
+            this._updated = ISODateTimeStrings.create();
+            this._mutation = this._mutation + 1;
+            return true;
+        } else {
+            return false;
+        }
 
     }
 
-    @action putItem(key: PositionalArrayPositionStr, id: BlockIDStr) {
+    @action setItems(items: ReadonlyArray<BlockIDStr>): boolean {
 
-        PositionalArrays.put(this._items, key, id);
+        const equals = () => {
+            // note this is not a set-theoretic comparison - order matters.
+            return deepEqual(PositionalArrays.toArray(this._items), items);
+        }
 
-        this._updated = ISODateTimeStrings.create();
-        this._mutation = this._mutation + 1;
+        if (! equals()) {
+            PositionalArrays.set(this._items, items);
+            this._updated = ISODateTimeStrings.create();
+            this._mutation = this._mutation + 1;
+            return true;
+        } else {
+            return false;
+        }
 
+    }
+
+    @action addItem(id: BlockIDStr, pos?: INewChildPosition | 'unshift'): boolean {
+
+        if (! this.hasItem(id)) {
+
+            if (pos === 'unshift') {
+                PositionalArrays.unshift(this._items, id);
+            } else if (pos) {
+                PositionalArrays.insert(this._items, pos.ref, id, pos.pos);
+            } else {
+                PositionalArrays.append(this._items, id);
+            }
+
+            this._updated = ISODateTimeStrings.create();
+            this._mutation = this._mutation + 1;
+
+            return true;
+
+        } else {
+            return false;
+        }
+
+    }
+
+    @action removeItem(id: BlockIDStr): boolean {
+
+        if (this.hasItem(id)) {
+
+            PositionalArrays.remove(this._items, id);
+
+            this._updated = ISODateTimeStrings.create();
+            this._mutation = this._mutation + 1;
+            return true;
+
+        } else {
+            return false;
+        }
+
+    }
+
+    @action putItem(key: PositionalArrayPositionStr, id: BlockIDStr): boolean {
+
+        if (! this.hasItem(id)) {
+
+            PositionalArrays.put(this._items, key, id);
+
+            this._updated = ISODateTimeStrings.create();
+            this._mutation = this._mutation + 1;
+
+            return true;
+
+        } else {
+            return false;
+        }
+
+    }
+
+    public hasItem(id: BlockIDStr): boolean {
+        return PositionalArrays.toArray(this._items).includes(id);
     }
 
     @action setLinks(links: ReadonlyArray<IBlockLink>) {
+
+
+
         PositionalArrays.set(this._links, links);
         this._updated = ISODateTimeStrings.create();
         this._mutation = this._mutation + 1;
     }
 
     @action addLink(link: IBlockLink) {
-        PositionalArrays.append(this._links, link);
-        this._updated = ISODateTimeStrings.create();
-        this._mutation = this._mutation + 1;
+
+        if (! this.hasLink(link.id)) {
+            PositionalArrays.append(this._links, link);
+            this._updated = ISODateTimeStrings.create();
+            this._mutation = this._mutation + 1;
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
-    @action removeLink(id: BlockIDStr) {
+    public hasLink(id: BlockIDStr): boolean {
+
+        return arrayStream(PositionalArrays.toArray(this._links)).
+                filter(current => current.id === id)
+                .first() !== undefined;
+
+    }
+
+    @action removeLink(id: BlockIDStr): boolean {
 
         const link =
             arrayStream(Object.values(this._links))
@@ -182,6 +262,9 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
             PositionalArrays.remove(this._links, link);
             this._updated = ISODateTimeStrings.create();
             this._mutation = this._mutation + 1;
+            return true;
+        } else {
+            return false;
         }
 
     }

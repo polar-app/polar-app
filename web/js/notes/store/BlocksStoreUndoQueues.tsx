@@ -91,7 +91,6 @@ export namespace BlocksStoreUndoQueues {
 
         return undoQueue.push({redo, undo}).value;
 
-
     }
     /**
      * Perform an undo capture for the following identifiers based on their
@@ -157,7 +156,7 @@ export namespace BlocksStoreUndoQueues {
                     switch (itemsPatch.type) {
 
                         case "remove":
-                            console.log("Handling undo patch for items: remove: (transformed to put)" + itemsPatch.id);
+                            console.log("Handling undo patch for items: remove: (transformed to put): " + itemsPatch.id);
                             block.putItem(itemsPatch.key, itemsPatch.id);
                             break;
                         case "insert":
@@ -204,7 +203,7 @@ export namespace BlocksStoreUndoQueues {
                     block.setContent(mutation.before.content);
                     return true;
                 } else {
-                    console.log(`Skipping update as the mutation number is invalid expected: ${mutation.after.mutation} but was ${block.mutation}`);
+                    console.log(`Skipping update as the mutation number is invalid expected: ${mutation.after.mutation} but was ${block.mutation}`, mutation);
                     return false;
                 }
 
@@ -219,8 +218,9 @@ export namespace BlocksStoreUndoQueues {
                     handleUpdatedContent();
                     break;
                 case "items-and-content":
-                    handleUpdatedItems();
+                    // FIXME this has to be a single operation because the mutation is changed..
                     handleUpdatedContent();
+                    handleUpdatedItems();
                     break;
 
             }
@@ -255,7 +255,7 @@ export namespace BlocksStoreUndoQueues {
 
         }
 
-        console.log(`Executing undo with ${mutations.length} mutations`);
+        console.log(`Executing undo with ${mutations.length} mutations`, mutations);
 
         for(const mutation of mutations) {
 

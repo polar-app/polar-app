@@ -26,6 +26,7 @@ export class MarkdownContent implements IMarkdownContent, IBaseBlockContent {
     }
 
     public update(content: IBlockContent) {
+
         if (content.type === 'markdown') {
             this._data = content.data;
         } else {
