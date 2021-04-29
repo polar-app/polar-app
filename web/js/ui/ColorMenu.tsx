@@ -7,7 +7,7 @@ export const MAIN_HIGHLIGHT_COLORS: ReadonlyArray<ColorStr> = [
     "#ff0000",
     "#00ff00",
     "#9900ef",
-    "ff6900",
+    "#ff6900",
     "#ffff00",
 ];
 
