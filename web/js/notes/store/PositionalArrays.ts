@@ -224,7 +224,7 @@ export namespace PositionalArrays {
 
         const converted = convertToArray();
 
-        // *** get all of the existingk keys so that we can remove them later
+        // *** get all of the existing keys so that we can remove them later
         const existing = Object.keys(positionalArray);
 
         // *** now append all the current ones.
