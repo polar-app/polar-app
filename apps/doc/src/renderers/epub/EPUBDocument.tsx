@@ -11,7 +11,6 @@ import {EPUBFindControllers} from "./EPUBFindControllers";
 import {useDocFindCallbacks} from "../../DocFindStore";
 import {IFrameEventForwarder} from "./IFrameEventForwarder";
 import {SCALE_VALUE_PAGE_WIDTH} from '../../ScaleLevels';
-import {useAnnotationBar} from '../../AnnotationBarHooks';
 import './EPUBDocument.css';
 import {DocumentInit} from "../DocumentInitHook";
 import {DOMTextIndexProvider} from "../../annotations/DOMTextIndexContext";
@@ -48,6 +47,7 @@ import { Devices } from 'polar-shared/src/util/Devices';
 import {usePrefsContext} from "../../../../repository/js/persistence_layer/PrefsContext2";
 import {ViewerElements} from "../ViewerElements";
 import {DocViewerAppURLs} from "../../DocViewerAppURLs";
+import {TextHighlightHandler} from '../../TextHighlightHandler';
 
 interface IProps {
     readonly docURL: URLStr;
@@ -136,7 +136,6 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
         = useEPUBDocumentCallbacks()
 
     const finder = useEPUBFindController();
-    const annotationBarInjector = useAnnotationBar({noRectTexts: true});
     const epubResizer = useEPUBResizer();
     const log = useLogger();
     const sectionRef = React.useRef<Section | undefined>(undefined);
@@ -219,7 +218,6 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
             handleLinkClicks(pageElement, linkLoader);
 
             // applyCSS();
-            annotationBarInjector();
 
             incrRenderIter();
 
@@ -425,7 +423,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
 
         console.log("Loaded epub");
 
-    }, [annotationBarInjector, docMeta.docInfo.fingerprint, docURL, epubResizer, finder,
+    }, [docMeta.docInfo.fingerprint, docURL, epubResizer, finder,
         incrRenderIter, linkLoader, props.docMeta.docInfo.fingerprint, setDocDescriptor,
         setDocScale, setFinder, setFluidPagemarkFactory, setOutline, setOutlineNavigator,
         setPage, setPageNavigator, setResizer, setSection, stylesheet]);
@@ -440,6 +438,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
     return renderIter && (
         <DOMTextIndexProvider>
             <DocumentInit/>
+            <TextHighlightHandler key={renderIter}/>
             <EPUBFindRenderer/>
             <EPUBContextMenuRoot/>
             {props.children}

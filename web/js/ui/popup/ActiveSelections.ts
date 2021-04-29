@@ -6,13 +6,15 @@ import {MouseDirection} from "./MouseDirection";
 
 const log = Logger.create();
 
+type EventRemover = () => void;
+
 /**
  * Listens for when a new text selection has been created
  */
 export class ActiveSelections {
 
     public static addEventListener(listener: ActiveSelectionListener,
-                                   target: HTMLElement = document.body): void {
+                                   target: HTMLElement = document.body): () => void {
 
         let originPoint: Point | undefined;
 
@@ -101,12 +103,12 @@ export class ActiveSelections {
 
         type EventType = 'mouse' | 'touch';
 
-        const onMouseDown = (event: MouseEvent | TouchEvent, type: EventType) => {
+        const onMouseDown = (event: MouseEvent | TouchEvent, type: EventType): EventRemover => {
 
             if (event.ctrlKey || event.metaKey) {
                 // only work with default / basic mouse selection because otherwise
                 // we could trigger on context menu
-                return;
+                return () => {};
             }
 
             if (!activeSelection) {
@@ -120,25 +122,24 @@ export class ActiveSelections {
             switch (type) {
 
                 case "mouse":
-
-                    view.addEventListener('mouseup', event => {
+                    const handleMouseUp = (event: MouseEvent) => {
                         // this code properly handles the mouse leaving the window
                         // during mouse up and then leaving wonky event handlers.
                         onMouseUp(event, element);
-                    }, {once: true});
+                    };
 
-                    break;
+                    view.addEventListener('mouseup', handleMouseUp, {once: true});
+                    return () => view.removeEventListener('mouseup', handleMouseUp);
 
                 case "touch":
 
-                    view.addEventListener('touchend', event => {
+                    const handleTouchEnd = (event: TouchEvent) => {
                         // this code properly handles the mouse leaving the window
                         // during mouse up and then leaving wonky event handlers.
                         onMouseUp(event, element);
-                    }, {once: true});
-
-                    break;
-
+                    };
+                    view.addEventListener('touchend', handleTouchEnd, {once: true});
+                    return () => view.removeEventListener('touchend', handleTouchEnd);
             }
 
         };
@@ -149,13 +150,16 @@ export class ActiveSelections {
             }
         }
 
-        target.addEventListener('mousedown', (event: MouseEvent) => {
-            onMouseDown(event, 'mouse');
-        });
+        const handleMouseDown = (event: MouseEvent) => onMouseDown(event, 'mouse');
+        const handleTouchStart = (event: TouchEvent) => onMouseDown(event, 'touch');
 
-        target.addEventListener('touchstart', (event: TouchEvent) => {
-            onMouseDown(event, 'touch');
-        });
+        target.addEventListener('mousedown', handleMouseDown);
+        target.addEventListener('touchstart', handleTouchStart);
+
+        return () => {
+            target.removeEventListener('mousedown', handleMouseDown);
+            target.removeEventListener('touchstart', handleTouchStart);
+        };
 
         // TODO: this isn't being handled properly and the event doesn't seem
         // to be fired.

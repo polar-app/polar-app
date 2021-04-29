@@ -57,6 +57,7 @@ import {UUIDs} from "../../../web/js/metadata/UUIDs";
 import { IOutline } from './outline/IOutline';
 import {OutlineNavigator} from "./outline/IOutlineItem";
 import {Analytics} from '../../../web/js/analytics/Analytics';
+import {ColorStr} from "../../../web/js/ui/colors/ColorSelectorBox";
 
 /**
  * Lightweight metadata describing the currently loaded document.
@@ -135,6 +136,7 @@ export interface IDocViewerStore {
 
     readonly outlineNavigator?: OutlineNavigator;
 
+    readonly textHighlightColor: ColorStr | null;
 }
 
 export interface IPagemarkCoverage {
@@ -306,12 +308,14 @@ export interface IDocViewerCallbacks {
 
     readonly setColumnLayout: (columLayout: number) => void;
 
+    readonly setTextHighlightColor: (color: ColorStr | null) => void;
 }
 
 const initialStore: IDocViewerStore = {
     page: 1,
     docLoaded: false,
     pendingWrites: 0,
+    textHighlightColor: null,
     fluidPagemarkFactory: new NullFluidPagemarkFactory()
 }
 
@@ -471,6 +475,11 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
         function setDocScale(docScale: IDocScale) {
             const store = storeProvider();
             setStore({...store, docScale});
+        }
+
+        function setTextHighlightColor(color: ColorStr | null) {
+            const store = storeProvider();
+            setStore({...store, textHighlightColor: color});
         }
 
         function setDocLoaded(docLoaded: boolean) {
@@ -1025,7 +1034,8 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
             setOutline,
             setOutlineNavigator,
             docMetaProvider,
-            setColumnLayout
+            setColumnLayout,
+            setTextHighlightColor,
         };
     }, [log, docMetaContext, persistenceLayerContext, annotationSidebarCallbacks,
         dialogs, annotationMutationCallbacksFactory, setStore, storeProvider]);

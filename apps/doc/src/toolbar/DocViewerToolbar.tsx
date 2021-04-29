@@ -14,7 +14,6 @@ import {useDocViewerCallbacks, useDocViewerStore} from "../DocViewerStore";
 import Divider from "@material-ui/core/Divider";
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {useDocFindStore} from "../DocFindStore";
-import {DocumentWriteStatus} from "../../../../web/js/apps/repository/connectivity/DocumentWriteStatus";
 import {MUIDocFlagButton} from "../../../repository/js/doc_repo/buttons/MUIDocFlagButton";
 import {MUIDocArchiveButton} from "../../../repository/js/doc_repo/buttons/MUIDocArchiveButton";
 import {DocViewerToolbarOverflowButton} from "../DocViewerToolbarOverflowButton";
@@ -28,6 +27,7 @@ import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {DockLayoutToggleButton} from "../../../../web/js/ui/doc_layout/DockLayoutToggleButton";
 import {ZenModeActiveContainer} from "../../../../web/js/mui/ZenModeActiveContainer";
 import {ZenModeButton} from "./ZenModeButton";
+import {TextHighlightTrigger} from "./TextHighlightTrigger";
 
 const getScaleLevelTuple = (scale: ScaleLevel) => (
     arrayStream(ScaleLevelTuples)
@@ -161,6 +161,7 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
 
                             <MUIButtonBar>
 
+                                <TextHighlightTrigger />
 
                                 {/* TODO: implement keyboard shortcuts for these. */}
                                 <MUIDocTagButton size="small"
