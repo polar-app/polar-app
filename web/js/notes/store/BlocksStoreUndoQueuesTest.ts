@@ -366,11 +366,11 @@ describe("BlocksStoreUndoQueues", () => {
 
     });
 
-    describe("computeItemsPatches", () => {
+    describe("computeItemPositionPatches", () => {
 
         it("remove", () => {
 
-            assertJSON(BlocksStoreUndoQueues.computeItemsPatches(PositionalArrays.create(['1']), PositionalArrays.create([])), [
+            assertJSON(BlocksStoreUndoQueues.computeItemPositionPatches(PositionalArrays.create(['1']), PositionalArrays.create([])), [
                 {
                     "type": "remove",
                     "key": "1",
@@ -382,7 +382,7 @@ describe("BlocksStoreUndoQueues", () => {
 
         it("unshift", () => {
 
-            assertJSON(BlocksStoreUndoQueues.computeItemsPatches(PositionalArrays.create([]), PositionalArrays.create(['1'])), [
+            assertJSON(BlocksStoreUndoQueues.computeItemPositionPatches(PositionalArrays.create([]), PositionalArrays.create(['1'])), [
                 {
                     "type": "insert",
                     "key": "1",
@@ -394,7 +394,7 @@ describe("BlocksStoreUndoQueues", () => {
 
         it("insert after", () => {
 
-            assertJSON(BlocksStoreUndoQueues.computeItemsPatches(PositionalArrays.create(['1']), PositionalArrays.create(['1', '2'])), [
+            assertJSON(BlocksStoreUndoQueues.computeItemPositionPatches(PositionalArrays.create(['1']), PositionalArrays.create(['1', '2'])), [
                 {
                     "type": "insert",
                     "key": "2",
@@ -407,7 +407,7 @@ describe("BlocksStoreUndoQueues", () => {
 
         it("insert before", () => {
 
-            assertJSON(BlocksStoreUndoQueues.computeItemsPatches(PositionalArrays.create(['1']), PositionalArrays.create(['2', '1'])), [
+            assertJSON(BlocksStoreUndoQueues.computeItemPositionPatches(PositionalArrays.create(['1']), PositionalArrays.create(['2', '1'])), [
                 {
                     "type": "insert",
                     "key": "1",

@@ -208,6 +208,11 @@ export namespace PositionalArrays {
      */
     export function set<T>(positionalArray: PositionalArray<T>, values: ReadonlyArray<T> | PositionalArray<T>): PositionalArray<T> {
 
+        // FIXME: instead of appending, then removing the existing, it might be
+        // better to delete the removed items, then place the added items in the
+        // right positions.  This way none of the existing item keys will be
+        // changed.
+
         const convertToArray = (): ReadonlyArray<T> => {
 
             if (Array.isArray(values)) {

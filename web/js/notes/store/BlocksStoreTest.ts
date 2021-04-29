@@ -705,6 +705,9 @@ describe('BlocksStore', function() {
 
             TestingTime.forward(1000);
 
+            assert.equal(store.getBlock('103')?.mutation, 0);
+            assert.equal(store.getBlock('104')?.mutation, 0);
+
             store.mergeBlocks('103', '104');
 
             assert.isUndefined(store.getBlock('104'));
@@ -718,7 +721,7 @@ describe('BlocksStore', function() {
                 "id": "103",
                 "items": {},
                 "links": {},
-                "mutation": 2,
+                "mutation": 1,
                 "nspace": "ns101",
                 "parent": "102",
                 "uid": "123",
@@ -752,7 +755,9 @@ describe('BlocksStore', function() {
 
                 const block = store.getBlock('102')
 
-                assertJSON(block?.toJSON(), {
+                assertPresent(block);
+
+                assertJSON(block.toJSON(), {
                     "content": {
                         "data": "World War II",
                         "type": "name"
@@ -773,7 +778,9 @@ describe('BlocksStore', function() {
 
                 TestingTime.forward(1000);
 
-                block!.setContent({type: 'name', data: "World War Two"})
+                block.withMutation(() => {
+                    block.setContent({type: 'name', data: "World War Two"})
+                })
 
                 assertJSON(block?.toJSON(), {
                     "content": {

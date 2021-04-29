@@ -149,28 +149,33 @@ export namespace BlocksStoreUndoQueues {
 
             const mutationType = computeMutationType(mutation.before, mutation.after);
 
-            const handleUpdatedItems= () => {
+            const computeTransformedItemPositionPatches = () => {
 
-                const handleItemsPatch = (itemsPatch: IItemsPatch) => {
+                const transformItemPositionPatch = (itemsPositionPatch: IItemsPositionPatch): IItemsPositionPatch => {
 
-                    switch (itemsPatch.type) {
+                    const newType = itemsPositionPatch.type === 'remove' ? 'insert' : 'remove';
 
-                        case "remove":
-                            console.log("Handling undo patch for items: remove: (transformed to put): " + itemsPatch.id);
-                            block.putItem(itemsPatch.key, itemsPatch.id);
-                            break;
-                        case "insert":
-                            console.log("Handling undo patch for items: insert (transformed to remove): ", itemsPatch.id);
-                            block.removeItem(itemsPatch.id);
-                            break;
+                    console.log(`Transform item patch from ${itemsPositionPatch.type} to ${newType}`);
 
+                    return {
+                        type: newType,
+                        key: itemsPositionPatch.key,
+                        id: itemsPositionPatch.id
                     }
 
                 }
 
-                const itemsPatches = computeItemsPatches(mutation.before.items, mutation.after.items);
-                itemsPatches.map(handleItemsPatch);
+                return computeItemPositionPatches(mutation.before.items, mutation.after.items)
+                           .map(current => transformItemPositionPatch(current));
 
+
+            }
+
+            const handleUpdatedItems= () => {
+                const transformedItemPositionPatches = computeTransformedItemPositionPatches();
+                block.withMutation(() => {
+                    block.setItemsUsingPatches(transformedItemPositionPatches)
+                })
             }
 
             //
@@ -200,7 +205,30 @@ export namespace BlocksStoreUndoQueues {
                 console.log("Handling undo patch for content: ", mutation.before.content);
 
                 if (block.mutation === mutation.after.mutation) {
-                    block.setContent(mutation.before.content);
+                    block.withMutation(() => {
+                        block.setContent(mutation.before.content);
+                    })
+                    return true;
+                } else {
+                    console.log(`Skipping update as the mutation number is invalid expected: ${mutation.after.mutation} but was ${block.mutation}`, mutation);
+                    return false;
+                }
+
+            }
+
+            const handleUpdatedItemsAndContent = (): boolean => {
+
+                console.log("Handling undo patch for content: ", mutation.before.content);
+
+                if (block.mutation === mutation.after.mutation) {
+
+                    const transformedItemPositionPatches = computeTransformedItemPositionPatches();
+
+                    block.withMutation(() => {
+                        block.setContent(mutation.before.content);
+                        block.setItemsUsingPatches(transformedItemPositionPatches);
+                    })
+
                     return true;
                 } else {
                     console.log(`Skipping update as the mutation number is invalid expected: ${mutation.after.mutation} but was ${block.mutation}`, mutation);
@@ -218,9 +246,7 @@ export namespace BlocksStoreUndoQueues {
                     handleUpdatedContent();
                     break;
                 case "items-and-content":
-                    // FIXME this has to be a single operation because the mutation is changed..
-                    handleUpdatedContent();
-                    handleUpdatedItems();
+                    handleUpdatedItemsAndContent();
                     break;
 
             }
@@ -450,27 +476,27 @@ export namespace BlocksStoreUndoQueues {
     /**
      * Instruction to remove and item from the items.
      */
-    export interface IItemsPatchRemove {
+    export interface IItemsPositionPatchRemove {
         readonly type: 'remove';
         readonly key: PositionalArrayPositionStr;
         readonly id: BlockIDStr;
     }
 
-    export interface IItemsPatchInsert {
+    export interface IItemsPositionPatchInsert {
         readonly type: 'insert';
         readonly key: PositionalArrayPositionStr;
         readonly id: BlockIDStr
     }
 
-    export type IItemsPatch = IItemsPatchRemove | IItemsPatchInsert;
+    export type IItemsPositionPatch = IItemsPositionPatchRemove | IItemsPositionPatchInsert;
 
-    export function computeItemsPatches(before: PositionalArray<BlockIDStr>,
-                                        after: PositionalArray<BlockIDStr>): ReadonlyArray<IItemsPatch> {
+    export function computeItemPositionPatches(before: PositionalArray<BlockIDStr>,
+                                               after: PositionalArray<BlockIDStr>): ReadonlyArray<IItemsPositionPatch> {
 
         const removed = SetArrays.difference(PositionalArrays.toArray(before), PositionalArrays.toArray(after));
         const added = SetArrays.difference(PositionalArrays.toArray(after), PositionalArrays.toArray(before));
 
-        const toRemoved = (id: BlockIDStr): IItemsPatchRemove => {
+        const toRemoved = (id: BlockIDStr): IItemsPositionPatchRemove => {
 
             const key = PositionalArrays.keyForValue(before, id);
 
@@ -485,7 +511,7 @@ export namespace BlocksStoreUndoQueues {
             };
         }
 
-        const toAdded = (id: BlockIDStr): IItemsPatchInsert => {
+        const toAdded = (id: BlockIDStr): IItemsPositionPatchInsert => {
 
             const key = PositionalArrays.keyForValue(after, id);
 

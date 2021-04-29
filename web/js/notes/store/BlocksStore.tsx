@@ -880,13 +880,18 @@ export class BlocksStore implements IBlocksStore {
 
         const newContent = targetBlock.content.data + sourceBlock.content.data;
 
-        targetBlock.setContent(new MarkdownContent({
-            type: 'markdown',
-            data: newContent
-        }));
+        targetBlock.withMutation(() => {
 
-        targetBlock.setItems(items);
-        targetBlock.setLinks(links);
+            targetBlock.setContent(new MarkdownContent({
+                type: 'markdown',
+                data: newContent
+            }));
+
+            targetBlock.setItems(items);
+            targetBlock.setLinks(links);
+
+        })
+
 
         const deleteSourceBlock = () => {
             // we have to set items to an empty array or doDelete will also remove the children recursively.
@@ -1121,33 +1126,41 @@ export class BlocksStore implements IBlocksStore {
 
             this.doPut([newBlock]);
 
-            switch (newBlockPosition.type) {
+            parentBlock.withMutation(() => {
 
-                case "relative":
-                    parentBlock.addItem(newBlock.id, newBlockPosition);
-                    break;
-                case "first-child":
-                    parentBlock.addItem(newBlock.id, 'unshift');
-                    break;
+                switch (newBlockPosition.type) {
 
-            }
+                    case "relative":
+                        parentBlock.addItem(newBlock.id, newBlockPosition);
+                        break;
+                    case "first-child":
+                        parentBlock.addItem(newBlock.id, 'unshift');
+                        break;
+
+                }
+
+            })
 
             if (split?.suffix !== undefined && Object.keys(newBlock.items).length > 0) {
                 this.expand(newBlock.id);
             }
 
-            if (split?.prefix !== undefined) {
+            currentBlock.withMutation(() => {
 
-                currentBlock.setContent({
-                    type: 'markdown',
-                    data: split.prefix
-                });
+                if (split?.prefix !== undefined) {
 
-                if (newBlockInheritItems) {
-                    currentBlock.setItems([]);
+                    currentBlock.setContent({
+                        type: 'markdown',
+                        data: split.prefix
+                    });
+
+                    if (newBlockInheritItems) {
+                        currentBlock.setItems([]);
+                    }
+
                 }
 
-            }
+            })
 
             this.setActiveWithPosition(newBlock.id, 'start');
 
@@ -1307,13 +1320,20 @@ export class BlocksStore implements IBlocksStore {
 
                 // *** remove myself from my parent
 
-                parentBlock.removeItem(id);
+                parentBlock.withMutation(() => {
+                    parentBlock.removeItem(id);
+                })
 
                 // ***: add myself to my newParent
 
-                newParentBlock.addItem(id);
+                newParentBlock.withMutation(() => {
+                    newParentBlock.addItem(id);
+                })
 
-                block.setParent(newParentBlock.id);
+                block.withMutation(() => {
+                    block.setParent(newParentBlock.id);
+                })
+
                 this.expand(newParentID);
 
                 return {value: newParentBlock.id};
@@ -1405,9 +1425,17 @@ export class BlocksStore implements IBlocksStore {
                 return {error: 'no-parent-block-parent-block'};
             }
 
-            block.setParent(newParentBlock.id);
-            newParentBlock.addItem(id, {pos: 'after', ref: parentBlock.id});
-            parentBlock.removeItem(id);
+            block.withMutation(() => {
+                block.setParent(newParentBlock.id);
+            })
+
+            newParentBlock.withMutation(() => {
+                newParentBlock.addItem(id, {pos: 'after', ref: parentBlock.id});
+            })
+
+            parentBlock.withMutation(() => {
+                parentBlock.removeItem(id);
+            })
 
             return {value: id};
 
@@ -1529,7 +1557,9 @@ export class BlocksStore implements IBlocksStore {
                             continue;
                         }
 
-                        parentBlock.removeItem(block.id);
+                        parentBlock.withMutation(() => {
+                            parentBlock.removeItem(block.id);
+                        })
 
                     }
 
