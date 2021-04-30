@@ -141,14 +141,36 @@ undo that operation.  What we do now is that we abort 'content' changes to that
 block but still allow 'items' mutation since the user intent can be preserved
 thanks to LSeq.
 
+# Undo and Persistence Cooperation
+
+## Writes
+
+On write, the persistence layer is given a set of blocks that have been mutated
+as before/after pairs.
+
+There is no visibility into the undo/redo system or why a mutation is performed.
+It could be a normal 'forward' operation or an undo operation.
+
+The persistence layer is just given an array of these before/after pairs and 
+it then mutates these according to a Firestore persistence layer implementation.
+
+## Updates
+
+Updates to the data are done via Firestore snapshots.  We use the 'docChanges' field
+to figure out what has changed, then we do a doPut() on the store directly which 
+updates the UI.
+
+The 'mutation' is changed on the block to allow the UI to know that data has changes 
+when trying to do undo/redo operations.
+
 # Sharing
 
-This is a sharing model which is extensible and allows us to implement a basic
-v1 with an initial form of sharing now, and a more complicated, enterprise-grade
-sharing model in the future.
+Thie sharing model is extensible and allows us to implement a basic v1 with an
+initial form of sharing now, and a more complicated, "enterprise-ready" sharing
+model in the future.
 
-All the IDs in the system are globally unique so it's easy to refer to nodes across 
-namespaces created by other users.
+All the IDs in the system are globally unique, so it's easy to refer to nodes across 
+namespaces created by other users as they will not collide.
 
 A link to a named note is actually a link to the ```id``` with just an alias for it 
 stored in the text.  This way we support cross-namespace linking.
@@ -165,8 +187,7 @@ We support the following general permissions model:
     - namespaces can be connected to either users or organizations.
     
     - There is a default namespace for both users and organizations that can't
-      be deleted and is where all notes go by default.
-        - TODO: what does roam do?
+      be deleted and is where all blocks go by default.
       
     - Both pages and namespaces support permissions and setting perimssions on a
       page will be merged with the permissions for the namespace with the
@@ -193,10 +214,12 @@ We support the following general permissions model:
       
         - Internally these are not actually saved into the note and instead we link
           to the specific node ID with a name alias that is changed on render.  This
-          is stored as [[12355|MyPage]].  The 'MyPage' string is actually changed
-          based on the namespace and user context.
+          is stored as [[MyPage]].  The 'MyPage' string/link is actually changed
+          based on the namespace and user context.  Internally this is handled by having a 'links' 
+          property which includes the actual ID that the user is linking to.  The text is just 
+          what the user typed initially.
         
-        - TODO: people could spam you and clog up your inbound references view at the bottom.
+        - TODO: people could spam you and clog up your inbound references view at the bottom if we are not careful. 
 
     - only the owner can share to the web
         - TODO: can other people be owners?
