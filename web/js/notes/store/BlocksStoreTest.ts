@@ -961,6 +961,9 @@ describe('BlocksStore', function() {
 
     describe("createNewBlock", () => {
 
+        // TODO : test redo and the functions should do patches after the first redo...
+        //
+
         it("undo", () => {
 
             const store = createStore();
@@ -969,6 +972,8 @@ describe('BlocksStore', function() {
             const before = store.createSnapshot(identifiers);
 
             const createdBlock = store.createNewBlock('102');
+
+            const after = store.createSnapshot(identifiers);
 
             assertJSON(store.getBlock('102')?.toJSON(), {
                 "content": {
@@ -1010,103 +1015,6 @@ describe('BlocksStore', function() {
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
             });
-
-            assertJSON(before, [
-                {
-                    "id": "102",
-                    "nspace": "ns101",
-                    "uid": "123",
-                    "created": "2012-03-02T11:38:49.321Z",
-                    "updated": "2012-03-02T11:38:49.321Z",
-                    "items": {
-                        "1": "103",
-                        "2": "104",
-                        "3": "105"
-                    },
-                    "content": {
-                        "type": "name",
-                        "data": "World War II"
-                    },
-                    "links": {},
-                    "mutation": 0
-                },
-                {
-                    "id": "103",
-                    "nspace": "ns101",
-                    "uid": "123",
-                    "parent": "102",
-                    "created": "2012-03-02T11:38:49.321Z",
-                    "updated": "2012-03-02T11:38:49.321Z",
-                    "items": {},
-                    "content": {
-                        "type": "markdown",
-                        "data": "[Lasted](https://www.example.com) from 1939 to 1945"
-                    },
-                    "links": {},
-                    "mutation": 0
-                },
-                {
-                    "id": "104",
-                    "nspace": "ns101",
-                    "uid": "123",
-                    "parent": "102",
-                    "created": "2012-03-02T11:38:49.321Z",
-                    "updated": "2012-03-02T11:38:49.321Z",
-                    "items": {},
-                    "content": {
-                        "type": "markdown",
-                        "data": "Axis Powers: Germany, Italy, Japan"
-                    },
-                    "links": {},
-                    "mutation": 0
-                },
-                {
-                    "id": "105",
-                    "nspace": "ns101",
-                    "uid": "123",
-                    "parent": "102",
-                    "created": "2012-03-02T11:38:49.321Z",
-                    "updated": "2012-03-02T11:38:49.321Z",
-                    "items": {
-                        "1": "106"
-                    },
-                    "content": {
-                        "type": "markdown",
-                        "data": "Allied Powers: United States, United Kingdom, [[Canada]], [[Russia]]."
-                    },
-                    "links": {
-                        "1": {
-                            "id": "109",
-                            "text": "Canada"
-                        },
-                        "2": {
-                            "id": "108",
-                            "text": "Russia"
-                        }
-                    },
-                    "mutation": 0
-                },
-                {
-                    "id": "106",
-                    "nspace": "ns101",
-                    "uid": "123",
-                    "parent": "105",
-                    "created": "2012-03-02T11:38:49.321Z",
-                    "updated": "2012-03-02T11:38:49.321Z",
-                    "items": {},
-                    "content": {
-                        "type": "markdown",
-                        "data": "Lead by Franklin D. Roosevelt, [[Winston Churchill]], and Joseph Stalin "
-                    },
-                    "links": {
-                        "1": {
-                            "id": "112",
-                            "text": "Winston Churchill"
-                        }
-                    },
-                    "mutation": 0
-                }
-            ]);
 
         });
 
@@ -1153,7 +1061,6 @@ describe('BlocksStore', function() {
 
             store.undo();
 
-            const after = store.createSnapshot(identifiers);
             assertJSON(before, [
                 {
                     "id": "102",

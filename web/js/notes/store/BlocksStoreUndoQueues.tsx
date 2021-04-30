@@ -42,7 +42,17 @@ export namespace BlocksStoreUndoQueues {
 
     export interface IUndoCapture {
         readonly capture: () => void;
+
+        /**
+         * Undo the operations using patches.
+         */
         readonly undo: () => void;
+
+        /**
+         * Redo the operations using patches.
+         */
+        readonly redo: () => void;
+
     }
 
     export interface IUndoCaptureOpts {
@@ -61,12 +71,16 @@ export namespace BlocksStoreUndoQueues {
                                   identifiers: ReadonlyArray<BlockIDStr>,
                                   redoDelegate: () => T): T {
 
-        // FIXME: dont' allow undo on pages that aren't currently the root ...
+        // TODO: dont' allow undo on pages that aren't currently the root because when the user
+        // is navigating through different pages they could undo stuff in a previous context
+        // but maybe the trick here is to create a new undo context when the route changes.
 
         // this captures the state before the initial transaction
         const undoCapture = createUndoCapture(blocksStore, identifiers);
 
         let captured: boolean = false;
+
+        let result: T | undefined;
 
         /**
          * The redo operation has to execute, capture the graph for a delta
@@ -74,14 +88,15 @@ export namespace BlocksStoreUndoQueues {
          */
         const redo = (): T => {
 
-            const result = redoDelegate();
-
-            if (! captured) {
+            if (captured) {
+                undoCapture.redo();
+            } else {
+                result = redoDelegate();
                 undoCapture.capture();
                 captured = true;
             }
 
-            return result;
+            return result!;
 
         }
 
@@ -125,14 +140,25 @@ export namespace BlocksStoreUndoQueues {
 
         const undo = () => {
             const mutations = computeMutatedBlocks(beforeBlocks, afterBlocks);
-            doMutations(blocksStore, mutations);
+            doMutations(blocksStore, 'undo', mutations);
         }
 
-        return {capture, undo};
+        const redo = () => {
+            const mutations = computeMutatedBlocks(beforeBlocks, afterBlocks);
+            doMutations(blocksStore, 'redo', mutations);
+        }
+
+        return {capture, undo, redo};
 
     }
 
+    export type UndoMutationType = 'undo' | 'redo';
+
+    /**
+     *
+     */
     export function doMutations(blocksStore: BlocksStore,
+                                mutationType: UndoMutationType,
                                 mutations: ReadonlyArray<IBlocksStoreMutation>) {
 
         const handleUpdated = (mutation: IBlocksStoreMutationUpdated) => {
@@ -147,13 +173,22 @@ export namespace BlocksStoreUndoQueues {
 
             console.log(`Handling 'updated' mutation for block ${block.id}: `, mutation);
 
-            const mutationType = computeMutationType(mutation.before, mutation.after);
+            //
+            const mutationTarget = computeMutationTarget(mutation.before, mutation.after);
 
             const computeTransformedItemPositionPatches = () => {
 
                 const transformItemPositionPatch = (itemsPositionPatch: IItemsPositionPatch): IItemsPositionPatch => {
 
-                    const newType = itemsPositionPatch.type === 'remove' ? 'insert' : 'remove';
+                    const computeUndoType = () => {
+                        return itemsPositionPatch.type === 'remove' ? 'insert' : 'remove';
+                    }
+
+                    const computeRedoType = () => {
+                        return itemsPositionPatch.type;
+                    }
+
+                    const newType = mutationType === 'undo' ? computeUndoType() : computeRedoType();
 
                     console.log(`Transform item patch from ${itemsPositionPatch.type} to ${newType}`);
 
@@ -242,7 +277,7 @@ export namespace BlocksStoreUndoQueues {
 
             }
 
-            switch (mutationType) {
+            switch (mutationTarget) {
 
                 case "items":
                     handleUpdatedItems();
@@ -466,13 +501,13 @@ export namespace BlocksStoreUndoQueues {
      * - items-and-content: both the items and content were changed.
      *
      */
-    export type MutationType = 'items' | 'content' | 'items-and-content';
+    export type MutationTarget = 'items' | 'content' | 'items-and-content';
 
     /**
      * Given a before block, and an after block, compute the mutations that were
      * performed on the content.
      */
-    export function computeMutationType(before: IBlock, after: IBlock): MutationType | undefined {
+    export function computeMutationTarget(before: IBlock, after: IBlock): MutationTarget | undefined {
 
         // FIXME for 'items' we also have to compute a diff and a before / after
         // mutation set including 'remove' and 'insert'

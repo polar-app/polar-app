@@ -294,7 +294,7 @@ describe("BlocksStoreUndoQueues", () => {
                 items: PositionalArrays.create(['1', '2', '3'])
             });
 
-            assert.equal(BlocksStoreUndoQueues.computeMutationType(before, after), 'items');
+            assert.equal(BlocksStoreUndoQueues.computeMutationTarget(before, after), 'items');
 
         });
 
@@ -314,7 +314,7 @@ describe("BlocksStoreUndoQueues", () => {
                 }
             });
 
-            assert.equal(BlocksStoreUndoQueues.computeMutationType(before, after), 'content');
+            assert.equal(BlocksStoreUndoQueues.computeMutationTarget(before, after), 'content');
 
         });
 
@@ -337,7 +337,7 @@ describe("BlocksStoreUndoQueues", () => {
 
             });
 
-            assert.equal(BlocksStoreUndoQueues.computeMutationType(before, after), 'items-and-content');
+            assert.equal(BlocksStoreUndoQueues.computeMutationTarget(before, after), 'items-and-content');
 
         });
 
@@ -360,7 +360,7 @@ describe("BlocksStoreUndoQueues", () => {
 
             });
 
-            assert.isUndefined(BlocksStoreUndoQueues.computeMutationType(before, after));
+            assert.isUndefined(BlocksStoreUndoQueues.computeMutationTarget(before, after));
 
         });
 
