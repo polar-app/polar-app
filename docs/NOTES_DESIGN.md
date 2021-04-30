@@ -118,6 +118,28 @@ All of this has to be done in a Firestore transaction.
  
 # Undo / Redo
 
+The undo/redo system in the blocks store uses a general / global Undo/Redo queue that is
+available as a context.
+
+The idea being individual stores can push undo actions into one global store.  This way
+you can undo operations in storeA followed by storeB. 
+
+This enables the stores to work together collaboratively. 
+
+## Undo Diff Computation
+
+We have a custom undo action building system which first computes all potential
+blocks that *could* be mutated and then determines which were ACTUALLY mutated
+when the user wants to undo/redo.
+
+This is done by tracking a field called ```mutation``` which is incremented 
+every time the block is changed.
+
+This also enables us to verify that a undo/redo operation isn't changed by
+someone else because if userA mutates a block that is shared, userB could try to
+undo that operation.  What we do now is that we abort 'content' changes to that
+block but still allow 'items' mutation since the user intent can be preserved
+thanks to LSeq.
 
 # Sharing
 
