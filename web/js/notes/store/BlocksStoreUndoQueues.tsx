@@ -137,8 +137,6 @@ export namespace BlocksStoreUndoQueues {
 
         const handleUpdated = (mutation: IBlocksStoreMutationUpdated) => {
 
-            console.log("Handling 'updated' mutation: ", mutation);
-
             // updated means we need to restore it to the older version.
 
             const block = blocksStore.getBlock(mutation.id);
@@ -146,6 +144,8 @@ export namespace BlocksStoreUndoQueues {
             if (! block) {
                 throw new Error("Could not find updated block: " + mutation.id);
             }
+
+            console.log(`Handling 'updated' mutation for block ${block.id}: `, mutation);
 
             const mutationType = computeMutationType(mutation.before, mutation.after);
 
@@ -173,6 +173,9 @@ export namespace BlocksStoreUndoQueues {
 
             const handleUpdatedItems= () => {
                 const transformedItemPositionPatches = computeTransformedItemPositionPatches();
+
+                console.log(`Handling undo item patches for block ${block.id}: `, transformedItemPositionPatches);
+
                 block.withMutation(() => {
                     block.setItemsUsingPatches(transformedItemPositionPatches)
                 })
@@ -224,6 +227,8 @@ export namespace BlocksStoreUndoQueues {
 
                     const transformedItemPositionPatches = computeTransformedItemPositionPatches();
 
+                    console.log("Handling undo item patches: ", transformedItemPositionPatches);
+
                     block.withMutation(() => {
                         block.setContent(mutation.before.content);
                         block.setItemsUsingPatches(transformedItemPositionPatches);
@@ -260,7 +265,7 @@ export namespace BlocksStoreUndoQueues {
             // added means we have to remove it now...
 
             if (blocksStore.containsBlock(mutation.block.id)) {
-                blocksStore.doDelete([mutation.block.id]);
+                blocksStore.doDelete([mutation.block.id], {noDeleteItems: true});
             } else {
                 throw new Error("Block missing: " + mutation.block.id)
             }
@@ -283,7 +288,7 @@ export namespace BlocksStoreUndoQueues {
 
         console.log(`Executing undo with ${mutations.length} mutations`, mutations);
 
-        for(const mutation of mutations) {
+        const handleMutation = (mutation: IBlocksStoreMutation) => {
 
             switch (mutation.type) {
 
@@ -302,6 +307,20 @@ export namespace BlocksStoreUndoQueues {
             }
 
         }
+
+        // *** first process updated so that items are re-parented, otherwise,
+        // we can delete items recursively.
+
+        console.log("===== Apply updated mutations");
+
+        mutations.filter(current => current.type === 'updated')
+                 .map(handleMutation)
+
+        console.log("===== Apply ! updated mutations");
+
+        // *** once we've handled updated, process the rest
+        mutations.filter(current => current.type !== 'updated')
+                 .map(handleMutation)
 
     }
 
@@ -490,6 +509,9 @@ export namespace BlocksStoreUndoQueues {
 
     export type IItemsPositionPatch = IItemsPositionPatchRemove | IItemsPositionPatchInsert;
 
+    // TODO: Why did we go with the exact remove/insert model? I think this is
+    // actually wrong because if we undo/redo it's better to have the position
+    // in the tree to avoid a collision with another edit.
     export function computeItemPositionPatches(before: PositionalArray<BlockIDStr>,
                                                after: PositionalArray<BlockIDStr>): ReadonlyArray<IItemsPositionPatch> {
 

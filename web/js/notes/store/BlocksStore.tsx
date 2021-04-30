@@ -204,6 +204,15 @@ export interface IBlocksStoreSnapshot {
 
 }
 
+export interface IDoDeleteOpts {
+
+    /**
+     * Do not delete items recursively.
+     */
+    readonly noDeleteItems?: boolean;
+
+}
+
 export class BlocksStore implements IBlocksStore {
 
     private readonly uid: UIDStr;
@@ -1469,7 +1478,7 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    @action public doDelete(blockIDs: ReadonlyArray<BlockIDStr>) {
+    @action public doDelete(blockIDs: ReadonlyArray<BlockIDStr>, opts: IDoDeleteOpts = {}) {
 
         interface NextActive {
             readonly active: BlockIDStr;
@@ -1544,7 +1553,9 @@ export class BlocksStore implements IBlocksStore {
                     // *** first delete all children,  We have to do this first
                     // or else they won't have parents.
 
-                    handleDelete(block.itemsAsArray);
+                    if (! opts.noDeleteItems) {
+                        handleDelete(block.itemsAsArray);
+                    }
 
                     // *** delete the id for this block from the parents items.
 
