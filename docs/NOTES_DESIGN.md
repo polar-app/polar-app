@@ -1,3 +1,124 @@
+
+# Overview
+
+The notes system uses is a hierarchical tree structure composed of pages
+which, when combined forms a [graph](https://en.wikipedia.org/wiki/Graph)
+
+A page is basically a tree with a name. So for example "World War II" could be a 
+page with children under it.  
+
+A page is a [tree](https://en.wikipedia.org/wiki/Tree_(graph_theory)) which
+means it has no cycles back to the root and all children are descendants of the
+parent.
+
+# Persistence and Concurrency
+
+When we discuss concurrency here we're talking about the concurrency of multi-person edits.
+
+Persistence and concurrency are related because if we were to design the
+persistence layer without thinking about concurrent edits it would be possible
+for someone to accidentally overwrite someone else's edits which would defeat
+the entire point of collaboration.
+
+We evaluated multiple models for our concurrency model and decided on a compromise
+between ease of implementation and usability.
+
+The best model to use would probably be something based on full [Operational
+Transform](https://en.wikipedia.org/wiki/Operational_transformation) (also known
+as OT) but I think this would take about 3-6 months to implement with a team of
+2-3 and would be very prone to complicated edge cases.
+
+Instead, we designed a system based on
+[LSeq](https://www.researchgate.net/publication/262162421_LSEQ_an_Adaptive_Structure_for_Sequences_in_Distributed_Collaborative_Editing)
+(linear sequences) which is a somewhat straight forward algorithm and maps well to Firestore concurrent write primitives.
+
+This means that two or more people can edit the same page/tree and generally not conflict.  
+
+It's an optimistic concurrency model which assumes that it's very rare that two people would edit the same bullet 
+point at the same time.
+
+The *main* area of corruption would involve people overwriting the 'items' of a block thereby potentially losing
+children which LSeq solves.
+
+The tradeoffs here involve:
+
+ - It's possible that two people, editing the same bullet point at the same time
+   can conflict where one overwrites the other's edits.  This is mitigated by the
+   way Firestore pushes updates to the client.  If both clients are online the
+   data for that page will be updated in realtime so that the persons latest edits
+   will be pushed out to all parties.
+   
+- There's no inherent 'presence' information like in OT.  The presence functionality 
+  allow us to show which users are editing which bullet points in realtime.  We can 
+  add this on top in the future if necessary using Firestore cloud push of events to the
+  client showing which users are editing which notes.
+  
+## LSeq
+
+LSeq (or linear sequences) is used to maintain the 'items' structure.
+
+Basically the way LSeq is structured is that instead of installing things as a
+list where anyone can append, set, we structure it as a map where the key is the order.
+
+In order to build the final list we sort the keys the list is then the linear
+order of the values of the map.
+
+So for example a map of:
+
+```
+{
+    "2.0", "4"
+    "1.0", "3"
+    "3.0", "5"
+}
+```
+
+would yield a list of 
+
+```
+['3', '4', '5']
+```
+
+## Firestore Persistence
+
+The persistence model of this is somewhat straight forward.
+
+When we go to mutate a block in Firestore we don't do a set on the full
+document. Instead, we use a Firestore 'field path' to set some of the field and
+then to use ```FieldValue.delete()``` to remove a value or just update to insert
+new values.
+
+For example:
+
+```
+db.collection('block').doc('1245')
+        .update({
+            'items.1' : firebase.firestore.FieldValue.delete()
+            'items.2' : "2"
+        })
+```
+ 
+Would delete the item with key '1' from 'items' and then add a value for '2' with the value '2'.
+
+The rest or fields we would set to the new value.
+
+This would still take advantage of Firestore transactions, caching, etc.
+
+When we mutate multiple blocks, these would need to be done in a Firestore transaction.
+
+For example, if we split a block, thereby creating two new blocks, We would have to make two block changes.
+
+We would have to:
+
+- Create a new block with the split suffix text 
+- Update the parent with new items
+- Change the original block content
+
+All of this has to be done in a Firestore transaction. 
+ 
+# Undo / Redo
+
+
 # Sharing
 
 This is a sharing model which is extensible and allows us to implement a basic
