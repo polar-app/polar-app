@@ -964,16 +964,16 @@ describe('BlocksStore', function() {
         // TODO : test redo and the functions should do patches after the first redo...
         //
 
-        it("undo", () => {
+        it("basic undo and redo", () => {
 
             const store = createStore();
 
             const identifiers = BlocksStoreUndoQueues.expandToParentAndChildren(store, ['102'])
-            const before = store.createSnapshot(identifiers);
+            const before = store.createSnapshotWithoutMutation(identifiers);
 
             const createdBlock = store.createNewBlock('102');
 
-            const after = store.createSnapshot(identifiers);
+            const after = store.createSnapshotWithoutMutation(identifiers);
 
             assertJSON(store.getBlock('102')?.toJSON(), {
                 "content": {
@@ -996,6 +996,8 @@ describe('BlocksStore', function() {
             });
 
             store.undo();
+
+            assertJSON(before, store.createSnapshotWithoutMutation(identifiers))
 
             assertJSON(store.getBlock('102')?.toJSON(), {
                 "content": {

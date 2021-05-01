@@ -1677,6 +1677,21 @@ export class BlocksStore implements IBlocksStore {
             .collect();
     }
 
+    /**
+     * Create a snapshot but without the mutation property because for some use
+     * cases that might be irrelevant. Usually testing.
+     */
+    public createSnapshotWithoutMutation(identifiers: ReadonlyArray<BlockIDStr>): ReadonlyArray<Exclude<IBlock, 'mutation'>> {
+
+        const removeMutation = (block: IBlock): Exclude<IBlock, 'mutation'> => {
+            delete (block as any).mutation;
+            return block;
+        }
+
+        return this.createSnapshot(identifiers)
+            .map(current => removeMutation(current));
+
+    }
 
     private doUndoPush<T>(identifiers: ReadonlyArray<BlockIDStr>, redoDelegate: () => T): T {
         return BlocksStoreUndoQueues.doUndoPush(this, this.undoQueue, identifiers, redoDelegate);

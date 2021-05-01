@@ -125,7 +125,6 @@ export namespace BlocksStoreUndoQueues {
             return blocks.filter(block => identifiers.includes(block.id));
         }
 
-
         const beforeBlocks: ReadonlyArray<IBlock> = computeApplicableBlocks(blocksStore.createSnapshot(identifiers));
 
         let afterBlocks: ReadonlyArray<IBlock> = [];
