@@ -52,25 +52,28 @@ export function createUndoRunner(blocksStore: BlocksStore,
                                  identifiers: ReadonlyArray<BlockIDStr>,
                                  action: () => void) {
 
-    const before = blocksStore.createSnapshotWithoutMutation(identifiers);
+    const before = blocksStore.createSnapshot(identifiers);
 
     console.log("Executing main action... ");
     action();
     console.log("Executing main action... done");
 
-    const after = blocksStore.createSnapshotWithoutMutation(identifiers);
+    const after = blocksStore.createSnapshot(identifiers);
 
     console.log("Execute undo() and verify ... ");
     blocksStore.undo();
 
-    assertJSON(before, blocksStore.createSnapshotWithoutMutation(identifiers));
+    console.log("Verifying undo snapshot with before snapshot... ");
+    assertJSON(blocksStore.createSnapshot(identifiers), before);
+    console.log("Verifying undo snapshot with before snapshot... done");
+
     console.log("Execute undo() and verify ... done");
 
     console.log("Execute redo() and verify ... ");
 
     blocksStore.redo();
 
-    assertJSON(after, blocksStore.createSnapshotWithoutMutation(identifiers));
+    assertJSON(blocksStore.createSnapshot(identifiers), after);
     console.log("Execute redo() and verify ... done");
 
 }
@@ -1000,6 +1003,10 @@ describe('BlocksStore', function() {
 
             const identifiers = BlocksStoreUndoQueues.expandToParentAndChildren(blocksStore, ['102'])
 
+            // FIXME: there's a bug here... if we restore, and EVERYTHING looks
+            // the same, except the mutation, and updated, then we have to restore that
+            // too... .
+
             createUndoRunner(blocksStore, identifiers, () => {
 
                 const createdBlock = blocksStore.createNewBlock('102');
@@ -1030,82 +1037,47 @@ describe('BlocksStore', function() {
 
         it("undo with split", () => {
 
-            const store = createStore();
+            const blocksStore = createStore();
 
-            const identifiers = BlocksStoreUndoQueues.expandToParentAndChildren(store, ['104'])
-            const before = store.createSnapshot(identifiers);
+            const identifiers = BlocksStoreUndoQueues.expandToParentAndChildren(blocksStore, ['104'])
 
-            const createdBlock = store.createNewBlock('104', {split: {prefix: 'Axis ', suffix: 'Powers: Germany, Italy, Japan'}});
+            createUndoRunner(blocksStore, identifiers, () => {
 
-            assertJSON(store.getBlock('104')?.toJSON(), {
-                "content": {
-                    "data": "Axis ",
-                    "type": "markdown"
-                },
-                "created": "2012-03-02T11:38:49.321Z",
-                "id": "104",
-                "items": {},
-                "links": {},
-                "mutation": 1,
-                "nspace": "ns101",
-                "parent": "102",
-                "uid": "123",
-                "updated": "2012-03-02T11:38:49.321Z"
-            });
+                const createdBlock = blocksStore.createNewBlock('104', {split: {prefix: 'Axis ', suffix: 'Powers: Germany, Italy, Japan'}});
 
-            assertJSON(store.getBlock(createdBlock!.id)?.toJSON(), {
-                "content": {
-                    "data": "Powers: Germany, Italy, Japan",
-                    "type": "markdown"
-                },
-                "created": "2012-03-02T11:38:49.321Z",
-                "id": createdBlock!.id,
-                "items": {},
-                "links": {},
-                "mutation": 0,
-                "nspace": "ns101",
-                "parent": "102",
-                "uid": "1234",
-                "updated": "2012-03-02T11:38:49.321Z"
-            });
-
-            store.undo();
-
-            assertJSON(before, [
-                {
-                    "id": "102",
-                    "nspace": "ns101",
-                    "uid": "123",
-                    "created": "2012-03-02T11:38:49.321Z",
-                    "updated": "2012-03-02T11:38:49.321Z",
-                    "items": {
-                        "1": "103",
-                        "2": "104",
-                        "3": "105"
-                    },
+                assertJSON(blocksStore.getBlock('104')?.toJSON(), {
                     "content": {
-                        "type": "name",
-                        "data": "World War II"
+                        "data": "Axis ",
+                        "type": "markdown"
                     },
-                    "links": {},
-                    "mutation": 0
-                },
-                {
+                    "created": "2012-03-02T11:38:49.321Z",
                     "id": "104",
-                    "nspace": "ns101",
-                    "uid": "123",
-                    "parent": "102",
-                    "created": "2012-03-02T11:38:49.321Z",
-                    "updated": "2012-03-02T11:38:49.321Z",
                     "items": {},
-                    "content": {
-                        "type": "markdown",
-                        "data": "Axis Powers: Germany, Italy, Japan"
-                    },
                     "links": {},
-                    "mutation": 0
-                }
-            ]);
+                    "mutation": 1,
+                    "nspace": "ns101",
+                    "parent": "102",
+                    "uid": "123",
+                    "updated": "2012-03-02T11:38:49.321Z"
+                });
+
+                assertJSON(blocksStore.getBlock(createdBlock!.id)?.toJSON(), {
+                    "content": {
+                        "data": "Powers: Germany, Italy, Japan",
+                        "type": "markdown"
+                    },
+                    "created": "2012-03-02T11:38:49.321Z",
+                    "id": createdBlock!.id,
+                    "items": {},
+                    "links": {},
+                    "mutation": 0,
+                    "nspace": "ns101",
+                    "parent": "102",
+                    "uid": "1234",
+                    "updated": "2012-03-02T11:38:49.321Z"
+                });
+
+            });
 
         });
 

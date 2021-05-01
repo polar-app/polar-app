@@ -12,6 +12,7 @@ import {JSDOMParser} from "./BlocksStoreTest";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {PositionalArrays} from "./PositionalArrays";
 import PositionalArray = PositionalArrays.PositionalArray;
+import IBlocksStoreMutation = BlocksStoreUndoQueues.IBlocksStoreMutation;
 
 interface IBasicBlockOpts<C> {
     readonly id?: BlockIDStr;
@@ -42,7 +43,69 @@ function createBasicBlock<C extends IBlockContent = IBlockContent>(opts: IBasicB
 
 }
 
+function createStore() {
+    const blocks = MockBlocks.create();
+    const store = new BlocksStore('1234', UndoQueues2.create({limit: 50}));
+    store.doPut(blocks);
+    return store;
+}
+
 describe("BlocksStoreUndoQueues", () => {
+
+    describe("doMutations", () => {
+
+        // we should test the undo/redo code directly here...
+        // TODO: that content is not restored when the mutation is updated
+        // TODO: that content and items works but the items are not restored
+
+        it("undo/redo mutation block", () => {
+
+            const mutation0: IBlocksStoreMutation = {
+                "id": "104",
+                "type": "updated",
+                "before": {
+                    "id": "104",
+                    "nspace": "ns101",
+                    "uid": "123",
+                    "parent": "102",
+                    "created": "2012-03-02T11:38:49.321Z",
+                    "updated": "2012-03-02T11:38:49.321Z",
+                    "items": {},
+                    "content": {
+                        "type": "markdown",
+                        "data": "Axis Powers: Germany, Italy, Japan"
+                    },
+                    "links": {},
+                    "mutation": 0
+                },
+                "after": {
+                    "id": "104",
+                    "nspace": "ns101",
+                    "uid": "123",
+                    "parent": "102",
+                    "created": "2012-03-02T11:38:49.321Z",
+                    "updated": "2012-03-02T11:38:49.321Z",
+                    "items": {},
+                    "content": {
+                        "type": "markdown",
+                        "data": "Axis "
+                    },
+                    "links": {},
+                    "mutation": 1
+                }
+            };
+
+            const blocksStore = createStore();
+
+            blocksStore.doPut([mutation0.after]);
+
+            BlocksStoreUndoQueues.doMutations(blocksStore, 'undo', [mutation0]);
+
+            assertJSON(mutation0.before, blocksStore.getBlock('104')?.toJSON())
+
+        });
+
+    });
 
     describe("computeMutatedBlocks", () => {
 
@@ -122,7 +185,7 @@ describe("BlocksStoreUndoQueues", () => {
             assertJSON(mutatedBlocks, [
                 {
                     "id": "0x03",
-                    "block": {
+                    "before": {
                         "id": "0x03",
                         "nspace": "234",
                         "uid": "1234",
@@ -143,7 +206,7 @@ describe("BlocksStoreUndoQueues", () => {
                 },
                 {
                     "id": "0x02",
-                    "block": {
+                    "before": {
                         "id": "0x02",
                         "nspace": "234",
                         "uid": "1234",
@@ -207,13 +270,6 @@ describe("BlocksStoreUndoQueues", () => {
     });
 
     describe("expandToParentAndChildren", () => {
-
-        function createStore() {
-            const blocks = MockBlocks.create();
-            const store = new BlocksStore('1234', UndoQueues2.create({limit: 50}));
-            store.doPut(blocks);
-            return store;
-        }
 
         it('single root and children', () => {
 

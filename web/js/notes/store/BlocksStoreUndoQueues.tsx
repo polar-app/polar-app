@@ -5,6 +5,8 @@ import {BlockIDStr, BlocksStore} from "./BlocksStore";
 import deepEqual from "deep-equal";
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {PositionalArrays} from "./PositionalArrays";
+import {IWithMutationOpts} from "./Block";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 export namespace BlocksStoreUndoQueues {
 
@@ -21,13 +23,24 @@ export namespace BlocksStoreUndoQueues {
     export interface IBlocksStoreMutationAdded {
         readonly id: BlockIDStr;
         readonly type: 'added';
-        readonly block: IBlock;
+
+        /**
+         * The actual block added.
+         */
+        readonly before: IBlock;
+
     }
 
     export interface IBlocksStoreMutationRemoved {
+
         readonly id: BlockIDStr;
         readonly type: 'removed';
-        readonly block: IBlock;
+
+        /**
+         * The actual block removed.
+         */
+        readonly before: IBlock;
+
     }
     export interface IBlocksStoreMutationUpdated {
         readonly id: BlockIDStr;
@@ -158,6 +171,45 @@ export namespace BlocksStoreUndoQueues {
                                 mutationType: UndoMutationType,
                                 mutations: ReadonlyArray<IBlocksStoreMutation>) {
 
+        const createWithMutationOpts =  (mutation: IBlocksStoreMutation): IWithMutationOpts => {
+
+            switch (mutationType) {
+
+                case "undo":
+
+                    return {
+                        updated: mutation.before.updated,
+                        mutation: mutation.before.mutation
+                    };
+
+                case "redo":
+
+                    const updated = ISODateTimeStrings.create();
+
+                    switch (mutation.type) {
+
+                        case "added":
+                            return {
+                                updated,
+                                mutation: 0,
+                            }
+                        case "removed":
+                            return {
+                                updated,
+                                mutation: mutation.before.mutation,
+                            }
+                        case "updated":
+                            return {
+                                updated,
+                                mutation: mutation.before.mutation + 1,
+                            }
+
+                    }
+
+            }
+
+        }
+
         const handleUpdated = (mutation: IBlocksStoreMutationUpdated) => {
 
             // updated means we need to restore it to the older version.
@@ -172,6 +224,18 @@ export namespace BlocksStoreUndoQueues {
 
             //
             const mutationTarget = computeMutationTarget(mutation.before, mutation.after);
+
+            const computeComparisonBlock = (): IBlock => {
+
+                switch (mutationType) {
+                    case "undo":
+                        return mutation.before;
+                    case "redo":
+                        return mutation.after;
+
+                }
+
+            }
 
             const computeTransformedItemPositionPatches = () => {
 
@@ -204,13 +268,17 @@ export namespace BlocksStoreUndoQueues {
             }
 
             const handleUpdatedItems= () => {
+
                 const transformedItemPositionPatches = computeTransformedItemPositionPatches();
 
                 console.log(`Handling undo item patches for block ${block.id}: `, transformedItemPositionPatches);
 
+                const opts = createWithMutationOpts(mutation);
+
                 block.withMutation(() => {
                     block.setItemsUsingPatches(transformedItemPositionPatches)
-                })
+                }, opts);
+
             }
 
             //
@@ -235,43 +303,58 @@ export namespace BlocksStoreUndoQueues {
             // # Now Alice is prevented from doing an undo because when she reads the current
             // # version, she sees that it's not compatible with her undo so it's silently
             // # aborted.
-            const handleUpdatedContent = (): boolean => {
 
-                console.log("Handling undo patch for content: ", mutation.before.content);
+            const withMutationComparison = (action: (comparisonBlock: IBlock) => void) => {
 
-                if (block.mutation === mutation.after.mutation) {
-                    block.withMutation(() => {
-                        block.setContent(mutation.before.content);
-                    })
+                const comparisonBlock = computeComparisonBlock();
+
+                console.log("Handling undo patch for comparison block: ", comparisonBlock);
+
+                const comparisonDelta = mutationType === 'undo' ? 1 : -1;
+
+                const comparisonMutation = comparisonBlock.mutation + comparisonDelta;
+
+                if (comparisonMutation === block.mutation) {
+
+                    action(comparisonBlock);
+
                     return true;
+
                 } else {
-                    console.log(`Skipping update as the mutation number is invalid expected: ${mutation.after.mutation} but was ${block.mutation}`, mutation);
+                    console.log(`WARN: Skipping update as the mutation number is invalid expected comparisonMutation=${comparisonMutation} but was ${block.mutation} with comparisonDelta=${comparisonDelta}`, mutation);
                     return false;
                 }
 
             }
 
+            const doHandleUpdated = (doContent: boolean, doItems: boolean): boolean => {
+
+                const comparisonBlock = computeComparisonBlock();
+
+                const opts = createWithMutationOpts(mutation);
+
+                return block.withMutation(() => {
+
+                    if(doContent) {
+                        withMutationComparison(() => {
+                            block.setContent(comparisonBlock.content);
+                        });
+                    }
+
+                    if (doItems) {
+                        block.setItemsUsingPatches(computeTransformedItemPositionPatches());
+                    }
+
+                }, opts);
+
+            }
+
+            const handleUpdatedContent = (): boolean => {
+                return doHandleUpdated(true, false);
+            }
+
             const handleUpdatedItemsAndContent = (): boolean => {
-
-                console.log("Handling undo patch for content: ", mutation.before.content);
-
-                if (block.mutation === mutation.after.mutation) {
-
-                    const transformedItemPositionPatches = computeTransformedItemPositionPatches();
-
-                    console.log("Handling undo item patches: ", transformedItemPositionPatches);
-
-                    block.withMutation(() => {
-                        block.setContent(mutation.before.content);
-                        block.setItemsUsingPatches(transformedItemPositionPatches);
-                    })
-
-                    return true;
-                } else {
-                    console.log(`Skipping update as the mutation number is invalid expected: ${mutation.after.mutation} but was ${block.mutation}`, mutation);
-                    return false;
-                }
-
+                return doHandleUpdated(true, true);
             }
 
             switch (mutationTarget) {
@@ -293,20 +376,20 @@ export namespace BlocksStoreUndoQueues {
 
         const handleDelete = (mutation: IBlocksStoreMutationAdded | IBlocksStoreMutationRemoved) => {
 
-            if (blocksStore.containsBlock(mutation.block.id)) {
-                blocksStore.doDelete([mutation.block.id], {noDeleteItems: true});
+            if (blocksStore.containsBlock(mutation.before.id)) {
+                blocksStore.doDelete([mutation.before.id], {noDeleteItems: true});
             } else {
-                throw new Error("Block missing: " + mutation.block.id)
+                throw new Error("Block missing: " + mutation.before.id)
             }
 
         }
 
         const handlePut = (mutation: IBlocksStoreMutationAdded | IBlocksStoreMutationRemoved) => {
 
-            if (! blocksStore.containsBlock(mutation.block.id)) {
-                blocksStore.doPut([mutation.block]);
+            if (! blocksStore.containsBlock(mutation.before.id)) {
+                blocksStore.doPut([mutation.before]);
             } else {
-                throw new Error("Block missing: " + mutation.block.id)
+                throw new Error("Block missing: " + mutation.before.id)
             }
 
         }
@@ -349,7 +432,7 @@ export namespace BlocksStoreUndoQueues {
 
         }
 
-        console.log(`Executing undo with ${mutations.length} mutations`, mutations);
+        console.log(`Executing undo with ${mutations.length} mutations`, JSON.stringify(mutations, null, '  '));
 
         const handleMutation = (mutation: IBlocksStoreMutation) => {
 
@@ -502,7 +585,7 @@ export namespace BlocksStoreUndoQueues {
         const toMutation = (block: IBlock, type: 'added' | 'removed'): IBlocksStoreMutationAdded | IBlocksStoreMutationRemoved=> {
             return {
                 id: block.id,
-                block,
+                before: block,
                 type
             };
 

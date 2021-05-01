@@ -11,6 +11,14 @@ import deepEqual from "deep-equal";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
 import IItemsPositionPatch = BlocksStoreUndoQueues.IItemsPositionPatch;
 
+/**
+ * Opts for withMutation normally used for undo.
+ */
+export interface IWithMutationOpts {
+    readonly updated: ISODateTimeString;
+    readonly mutation: TMutation;
+}
+
 export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @observable private _id: BlockIDStr;
@@ -333,7 +341,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     /**
      * Perform a bulk/single mutation of the Block.
      */
-    public withMutation(delegate: () => void) {
+    public withMutation(delegate: () => void, opts?: IWithMutationOpts): boolean {
 
         const before = this.toJSON();
 
@@ -341,14 +349,34 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
         const after = this.toJSON();
 
+        let result: boolean = false;
+
         if (! deepEqual(before, after)) {
 
-            this._updated = ISODateTimeStrings.create();
-            this._mutation = this._mutation + 1;
-            return true;
+            this._updated = opts?.updated || ISODateTimeStrings.create();
+            this._mutation = opts?.mutation || (this._mutation + 1);
+            result = true;
         }
 
-        return false;
+        if (opts) {
+
+            if (this._mutation !== opts.mutation) {
+
+                this._mutation = opts.mutation;
+                result = true;
+
+            }
+
+            if (this._updated !== opts.updated) {
+
+                this._updated = opts.updated;
+                result = true;
+
+            }
+
+        }
+
+        return result;
 
     }
 
