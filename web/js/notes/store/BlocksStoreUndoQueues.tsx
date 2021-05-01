@@ -125,7 +125,15 @@ export namespace BlocksStoreUndoQueues {
     export function createUndoCapture(blocksStore: BlocksStore,
                                       identifiers: ReadonlyArray<BlockIDStr>): IUndoCapture {
 
+        if (identifiers.length === 0) {
+            throw new Error("Not given any identifiers");
+        }
+
         identifiers = expandToParentAndChildren(blocksStore, identifiers);
+
+        if (identifiers.length === 0) {
+            throw new Error("Expansion failed to identify additional identifiers");
+        }
 
         /**
          * Computes only the blocks that are applicable to this operation.  We
@@ -143,6 +151,8 @@ export namespace BlocksStoreUndoQueues {
         const capture = () => {
 
             const snapshot = blocksStore.createSnapshot(identifiers);
+
+            console.log("FIXME: captured snapshot for identifiers: ", identifiers, snapshot);
 
             afterBlocks = computeApplicableBlocks(snapshot);
 

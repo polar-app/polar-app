@@ -1477,7 +1477,7 @@ export class BlocksStore implements IBlocksStore {
 
         const computeNextActive = (): NextActive | undefined => {
 
-            const blockID = blocksToDelete[0];
+            const blockID = blockIDs[0];
             const block = this._index[blockID];
 
             if (! block) {
@@ -1492,7 +1492,7 @@ export class BlocksStore implements IBlocksStore {
 
             const linearExpansionTree = this.computeLinearExpansionTree(block.parent);
 
-            const deleteIndexes = arrayStream(blocksToDelete)
+            const deleteIndexes = arrayStream(blockIDs)
                 .map(current => linearExpansionTree.indexOf(current))
                 .filter(current => current !== -1)
                 .sort((a, b) => a - b)
@@ -1594,17 +1594,13 @@ export class BlocksStore implements IBlocksStore {
 
         };
 
-        const selected = this.selectedIDs();
-
-        const blocksToDelete = selected.length > 0 ? selected : blockIDs;
-
-        if (blocksToDelete.length === 0) {
+        if (blockIDs.length === 0) {
             return;
         }
 
         const nextActive = computeNextActive();
 
-        if (handleDelete(blocksToDelete) > 0) {
+        if (handleDelete(blockIDs) > 0) {
 
             if (nextActive) {
                 this.setActiveWithPosition(nextActive.active, nextActive.activePos);
@@ -1694,6 +1690,7 @@ export class BlocksStore implements IBlocksStore {
     }
 
     private doUndoPush<T>(identifiers: ReadonlyArray<BlockIDStr>, redoDelegate: () => T): T {
+        console.log("FIXME: item pushed... ");
         return BlocksStoreUndoQueues.doUndoPush(this, this.undoQueue, identifiers, redoDelegate);
     }
 

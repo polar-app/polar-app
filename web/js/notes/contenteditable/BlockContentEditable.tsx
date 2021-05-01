@@ -352,7 +352,12 @@ export const BlockContentEditable = observer((props: IProps) => {
 
                 if (blocksStore.hasSelected()) {
                     abortEvent();
-                    blocksStore.deleteBlocks([]);
+
+                    const selected = blocksStore.selectedIDs();
+
+                    if (selected.length > 0) {
+                        blocksStore.deleteBlocks(selected);
+                    }
                     break;
                 }
 

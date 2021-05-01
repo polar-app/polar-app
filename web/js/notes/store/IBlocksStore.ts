@@ -38,6 +38,7 @@ export interface IBlocksStore {
     index: BlocksIndex;
 
     selected(): StringSetMap;
+    selectedIDs(): ReadonlyArray<BlockIDStr>;
 
     clearSelected(reason: string): void;
     hasSelected(): boolean;
