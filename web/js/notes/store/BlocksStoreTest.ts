@@ -44,6 +44,29 @@ function assertTextBlock(content: BlockContent): asserts content is MarkdownCont
 }
 
 
+/**
+ * Run the action but also undo and redo it and verify the result.  This way
+ * every basic test can have an undo/redo operation test assertion too.
+ */
+export function createUndoRunner(blocksStore: BlocksStore,
+                                 identifiers: ReadonlyArray<BlockIDStr>,
+                                 action: () => void) {
+
+    const before = blocksStore.createSnapshotWithoutMutation(identifiers);
+
+    action();
+
+    const after = blocksStore.createSnapshotWithoutMutation(identifiers);
+
+    blocksStore.undo();
+
+    assertJSON(before, blocksStore.createSnapshotWithoutMutation(identifiers));
+
+    blocksStore.redo();
+
+    assertJSON(after, blocksStore.createSnapshotWithoutMutation(identifiers));
+
+}
 
 describe('BlocksStore', function() {
 
