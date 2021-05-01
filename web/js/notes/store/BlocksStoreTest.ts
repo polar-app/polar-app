@@ -54,17 +54,24 @@ export function createUndoRunner(blocksStore: BlocksStore,
 
     const before = blocksStore.createSnapshotWithoutMutation(identifiers);
 
+    console.log("Executing main action... ");
     action();
+    console.log("Executing main action... done");
 
     const after = blocksStore.createSnapshotWithoutMutation(identifiers);
 
+    console.log("Execute undo() and verify ... ");
     blocksStore.undo();
 
     assertJSON(before, blocksStore.createSnapshotWithoutMutation(identifiers));
+    console.log("Execute undo() and verify ... done");
+
+    console.log("Execute redo() and verify ... ");
 
     blocksStore.redo();
 
     assertJSON(after, blocksStore.createSnapshotWithoutMutation(identifiers));
+    console.log("Execute redo() and verify ... done");
 
 }
 
@@ -989,62 +996,35 @@ describe('BlocksStore', function() {
 
         it("basic undo and redo", () => {
 
-            const store = createStore();
+            const blocksStore = createStore();
 
-            const identifiers = BlocksStoreUndoQueues.expandToParentAndChildren(store, ['102'])
-            const before = store.createSnapshotWithoutMutation(identifiers);
+            const identifiers = BlocksStoreUndoQueues.expandToParentAndChildren(blocksStore, ['102'])
 
-            const createdBlock = store.createNewBlock('102');
+            createUndoRunner(blocksStore, identifiers, () => {
 
-            const after = store.createSnapshotWithoutMutation(identifiers);
+                const createdBlock = blocksStore.createNewBlock('102');
 
-            assertJSON(store.getBlock('102')?.toJSON(), {
-                "content": {
-                    "data": "World War II",
-                    "type": "name"
-                },
-                "created": "2012-03-02T11:38:49.321Z",
-                "id": "102",
-                "items": {
-                    "0": createdBlock?.id,
-                    "1": "103",
-                    "2": "104",
-                    "3": "105"
-                },
-                "links": {},
-                "mutation": 1,
-                "nspace": "ns101",
-                "uid": "123",
-                "updated": "2012-03-02T11:38:49.321Z"
-            });
+                assertJSON(blocksStore.getBlock('102')?.toJSON(), {
+                    "content": {
+                        "data": "World War II",
+                        "type": "name"
+                    },
+                    "created": "2012-03-02T11:38:49.321Z",
+                    "id": "102",
+                    "items": {
+                        "0": createdBlock?.id,
+                        "1": "103",
+                        "2": "104",
+                        "3": "105"
+                    },
+                    "links": {},
+                    "mutation": 1,
+                    "nspace": "ns101",
+                    "uid": "123",
+                    "updated": "2012-03-02T11:38:49.321Z"
+                });
 
-            store.undo();
-
-            assertJSON(before, store.createSnapshotWithoutMutation(identifiers))
-
-            assertJSON(store.getBlock('102')?.toJSON(), {
-                "content": {
-                    "data": "World War II",
-                    "type": "name"
-                },
-                "created": "2012-03-02T11:38:49.321Z",
-                "id": "102",
-                "items": {
-                    "1": "103",
-                    "2": "104",
-                    "3": "105"
-                },
-                "links": {},
-                "mutation": 2,
-                "nspace": "ns101",
-                "uid": "123",
-                "updated": "2012-03-02T11:38:49.321Z"
-            });
-
-            // now redo the operation and compare it to after
-            store.redo();
-
-            assertJSON(after, store.createSnapshotWithoutMutation(identifiers))
+            })
 
         });
 
