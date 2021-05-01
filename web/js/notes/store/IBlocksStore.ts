@@ -11,7 +11,7 @@ import {
     BlockNameStr,
     IBlockMerge,
     BlocksIndex,
-    IDropTarget, INewBlockOpts, DoPutOpts
+    IDropTarget, INewBlockOpts, DoPutOpts, IBlockContent
 } from "./BlocksStore";
 import {IBlock} from "./IBlock";
 import {Block} from "./Block";
@@ -101,5 +101,7 @@ export interface IBlocksStore {
     navNext(pos: NavPosition, opts: NavOpts): void;
 
     getNamedNodes(): ReadonlyArray<string>;
+
+    setBlockContent<C extends IBlockContent = IBlockContent>(id: BlockIDStr, content: C): void;
 
 }

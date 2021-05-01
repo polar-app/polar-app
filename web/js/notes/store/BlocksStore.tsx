@@ -971,6 +971,27 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
+    public setBlockContent<C extends IBlockContent = IBlockContent>(id: BlockIDStr, content: C) {
+
+        const redo = () => {
+
+            const block = this.getBlock(id);
+
+            if (block) {
+
+                block.withMutation(() => {
+                    block.setContent(content);
+                })
+
+            }
+
+        }
+
+        return this.doUndoPush([id], redo);
+
+    }
+
+
     @action public updateBlocks(blocks: ReadonlyArray<IBlock>): void {
         this.doPut(blocks);
     }
@@ -1690,7 +1711,7 @@ export class BlocksStore implements IBlocksStore {
     }
 
     private doUndoPush<T>(identifiers: ReadonlyArray<BlockIDStr>, redoDelegate: () => T): T {
-        console.log("FIXME: item pushed... ");
+        console.log("Item pushed to undo queue...");
         return BlocksStoreUndoQueues.doUndoPush(this, this.undoQueue, identifiers, redoDelegate);
     }
 

@@ -95,10 +95,12 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
 
         if (block) {
             const markdown = escaper.unescape(content);
-            block.setContent(new MarkdownContent({
+
+            blocksStore.setBlockContent(block.id, new MarkdownContent({
                 type: 'markdown',
                 data: markdown
-            }));
+            }))
+
         }
 
     }, [escaper, block]);
