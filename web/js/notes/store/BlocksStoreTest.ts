@@ -52,6 +52,8 @@ export function createUndoRunner(blocksStore: BlocksStore,
                                  identifiers: ReadonlyArray<BlockIDStr>,
                                  action: () => void) {
 
+    identifiers = BlocksStoreUndoQueues.expandToParentAndChildren(blocksStore, identifiers)
+
     const before = blocksStore.createSnapshot(identifiers);
 
     console.log("Executing main action... ");
@@ -840,19 +842,33 @@ describe('BlocksStore', function() {
 
     });
 
+    it("deleteBlocks", () => {
+
+        it("basic", () => {
+
+            const blocksStore = createStore();
+
+            createUndoRunner(blocksStore, ['102'], () => {
+                blocksStore.deleteBlocks(['102']);
+            });
+
+        });
+
+    });
+
     describe("doDelete", () => {
 
         it("basic", () => {
 
-            const store = createStore();
+            const blocksStore = createStore();
 
-            assertJSON(store.lookupReverse('102'), [
+            assertJSON(blocksStore.lookupReverse('102'), [
                 "110"
             ]);
 
-            store.deleteBlocks(['102']);
+            blocksStore.deleteBlocks(['102']);
 
-            assertJSON(store.lookupReverse('102'), []);
+            assertJSON(blocksStore.lookupReverse('102'), []);
 
         });
 
@@ -1001,7 +1017,7 @@ describe('BlocksStore', function() {
 
             const blocksStore = createStore();
 
-            const identifiers = BlocksStoreUndoQueues.expandToParentAndChildren(blocksStore, ['102'])
+            const identifiers = ['102'];
 
             // FIXME: there's a bug here... if we restore, and EVERYTHING looks
             // the same, except the mutation, and updated, then we have to restore that
@@ -1039,7 +1055,7 @@ describe('BlocksStore', function() {
 
             const blocksStore = createStore();
 
-            const identifiers = BlocksStoreUndoQueues.expandToParentAndChildren(blocksStore, ['104'])
+            const identifiers = ['104'];
 
             createUndoRunner(blocksStore, identifiers, () => {
 
