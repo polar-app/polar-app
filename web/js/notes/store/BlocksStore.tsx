@@ -861,58 +861,64 @@ export class BlocksStore implements IBlocksStore {
 
     @action public mergeBlocks(target: BlockIDStr, source: BlockIDStr) {
 
-        const targetBlock = this._index[target];
-        const sourceBlock = this._index[source];
+        const redo = () => {
 
-        if (! this.canMergeTypes(sourceBlock, targetBlock)) {
+            const targetBlock = this._index[target];
+            const sourceBlock = this._index[source];
 
-            if (this.canMergeWithDelete(sourceBlock, targetBlock)) {
-                // this is an edge case where a merge to the parent isn't
-                // possible but the child is empty so we just delete the child.
-                this.doDelete([sourceBlock.id]);
-                this.setActiveWithPosition(targetBlock.id, 'end');
-                return 'block-merged-with-delete';
+            if (! this.canMergeTypes(sourceBlock, targetBlock)) {
+
+                if (this.canMergeWithDelete(sourceBlock, targetBlock)) {
+                    // this is an edge case where a merge to the parent isn't
+                    // possible but the child is empty so we just delete the child.
+                    this.doDelete([sourceBlock.id]);
+                    this.setActiveWithPosition(targetBlock.id, 'end');
+                    return 'block-merged-with-delete';
+                }
+
+                console.warn("Block types are incompatible and can't be merged");
+                return 'incompatible-block-types';
             }
 
-            console.warn("Block types are incompatible and can't be merged");
-            return 'incompatible-block-types';
+            if (sourceBlock.content.type !== 'markdown' || targetBlock.content.type !== 'markdown') {
+                throw new Error("Attempt to merge invalid content types");
+            }
+
+            const offset = CursorPositions.renderedTextLength(targetBlock.content.data);
+
+            const items = [...targetBlock.itemsAsArray, ...sourceBlock.itemsAsArray];
+            const links = [...targetBlock.linksAsArray, ...sourceBlock.linksAsArray];
+
+            const newContent = targetBlock.content.data + sourceBlock.content.data;
+
+            targetBlock.withMutation(() => {
+
+                targetBlock.setContent(new MarkdownContent({
+                    type: 'markdown',
+                    data: newContent
+                }));
+
+                targetBlock.setItems(items);
+                targetBlock.setLinks(links);
+
+            })
+
+
+            const deleteSourceBlock = () => {
+                // we have to set items to an empty array or doDelete will also remove the children recursively.
+                sourceBlock.setItems([]);
+                this.doDelete([sourceBlock.id]);
+            }
+
+            deleteSourceBlock();
+
+            this.setActiveWithPosition(targetBlock.id, offset);
+
+            return undefined;
+
         }
 
-        if (sourceBlock.content.type !== 'markdown' || targetBlock.content.type !== 'markdown') {
-            throw new Error("Attempt to merge invalid content types");
-        }
-
-        const offset = CursorPositions.renderedTextLength(targetBlock.content.data);
-
-        const items = [...targetBlock.itemsAsArray, ...sourceBlock.itemsAsArray];
-        const links = [...targetBlock.linksAsArray, ...sourceBlock.linksAsArray];
-
-        const newContent = targetBlock.content.data + sourceBlock.content.data;
-
-        targetBlock.withMutation(() => {
-
-            targetBlock.setContent(new MarkdownContent({
-                type: 'markdown',
-                data: newContent
-            }));
-
-            targetBlock.setItems(items);
-            targetBlock.setLinks(links);
-
-        })
-
-
-        const deleteSourceBlock = () => {
-            // we have to set items to an empty array or doDelete will also remove the children recursively.
-            sourceBlock.setItems([]);
-            this.doDelete([sourceBlock.id]);
-        }
-
-        deleteSourceBlock();
-
-        this.setActiveWithPosition(targetBlock.id, offset);
-
-        return undefined;
+        return this.doUndoPush([source, target], redo);
 
     }
 

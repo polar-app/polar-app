@@ -73,7 +73,9 @@ export interface IBlocksStore {
     isExpanded(id: BlockIDStr): boolean;
     isSelected(id: BlockIDStr): boolean;
 
+    // FIXME: undo
     indentBlock(id: BlockIDStr): ReadonlyArray<DoIndentResult>;
+    // FIXME: undo
     unIndentBlock(id: BlockIDStr): ReadonlyArray<DoUnIndentResult>;
 
     requiredAutoUnIndent(id: BlockIDStr): boolean;
@@ -84,6 +86,7 @@ export interface IBlocksStore {
 
     createNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock | undefined;
 
+    // FIXME: undo
     createNewNamedBlock(name: BlockNameStr, ref: BlockIDStr): BlockIDStr;
 
     filterByName(filter: string): ReadonlyArray<BlockNameStr>;
