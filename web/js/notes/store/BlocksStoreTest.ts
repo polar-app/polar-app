@@ -1018,6 +1018,11 @@ describe('BlocksStore', function() {
                 "updated": "2012-03-02T11:38:49.321Z"
             });
 
+            // now redo the operation and compare it to after
+            store.redo();
+
+            assertJSON(after, store.createSnapshotWithoutMutation(identifiers))
+
         });
 
         it("undo with split", () => {

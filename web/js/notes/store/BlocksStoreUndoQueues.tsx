@@ -8,8 +8,6 @@ import {PositionalArrays} from "./PositionalArrays";
 
 export namespace BlocksStoreUndoQueues {
 
-    // FIXME: have tests for this... that uses the BlocksStore directly..
-
     import PositionalArray = PositionalArrays.PositionalArray;
     import PositionalArrayPositionStr = PositionalArrays.PositionalArrayPositionStr;
 
@@ -292,16 +290,41 @@ export namespace BlocksStoreUndoQueues {
 
         }
 
-        const handleAdded = (mutation: IBlocksStoreMutationAdded) => {
 
-            console.log("Handling 'added' mutation: ", mutation);
-
-            // added means we have to remove it now...
+        const handleDelete = (mutation: IBlocksStoreMutationAdded | IBlocksStoreMutationRemoved) => {
 
             if (blocksStore.containsBlock(mutation.block.id)) {
                 blocksStore.doDelete([mutation.block.id], {noDeleteItems: true});
             } else {
                 throw new Error("Block missing: " + mutation.block.id)
+            }
+
+        }
+
+        const handlePut = (mutation: IBlocksStoreMutationAdded | IBlocksStoreMutationRemoved) => {
+
+            if (! blocksStore.containsBlock(mutation.block.id)) {
+                blocksStore.doPut([mutation.block]);
+            } else {
+                throw new Error("Block missing: " + mutation.block.id)
+            }
+
+        }
+
+        const handleAdded = (mutation: IBlocksStoreMutationAdded) => {
+
+            console.log("Handling 'added' mutation: ", mutation);
+
+            switch (mutationType) {
+
+                case "undo":
+                    handleDelete(mutation);
+                    break;
+
+                case "redo":
+                    handlePut(mutation);
+                    break;
+
             }
 
         }
@@ -312,10 +335,16 @@ export namespace BlocksStoreUndoQueues {
 
             // added means we have to remove it now...
 
-            if (! blocksStore.containsBlock(mutation.block.id)) {
-                blocksStore.doPut([mutation.block]);
-            } else {
-                throw new Error("Block already exists: " + mutation.block.id)
+            switch (mutationType) {
+
+                case "undo":
+                    handlePut(mutation);
+                    break;
+
+                case "redo":
+                    handleDelete(mutation);
+                    break;
+
             }
 
         }
