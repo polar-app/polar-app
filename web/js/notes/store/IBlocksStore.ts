@@ -37,6 +37,10 @@ export interface IBlocksStore {
     reverse: ReverseIndex;
     index: BlocksIndex;
 
+    doDelete(blockIDs: ReadonlyArray<BlockIDStr>): void;
+    doPut(blocks: ReadonlyArray<IBlock>, opts?: DoPutOpts): void;
+    doCreateNewNamedBlock(name: BlockNameStr, ref: BlockIDStr): BlockIDStr;
+
     selected(): StringSetMap;
     selectedIDs(): ReadonlyArray<BlockIDStr>;
 
@@ -47,8 +51,8 @@ export interface IBlocksStore {
     lookupReverse(id: BlockIDStr): ReadonlyArray<BlockIDStr>;
     pathToBlock(id: BlockIDStr): ReadonlyArray<Block>;
 
-    doDelete(blockIDs: ReadonlyArray<BlockIDStr>): void;
-    doPut(blocks: ReadonlyArray<IBlock>, opts?: DoPutOpts): void;
+
+
 
     setActive(active: BlockIDStr | undefined): void;
 
@@ -86,8 +90,7 @@ export interface IBlocksStore {
 
     createNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock | undefined;
 
-    // FIXME: undo
-    createNewNamedBlock(name: BlockNameStr, ref: BlockIDStr): BlockIDStr;
+    createLinkToBlock<C extends IBlockContent = IBlockContent>(sourceID: BlockIDStr, targetName: BlockNameStr): void;
 
     filterByName(filter: string): ReadonlyArray<BlockNameStr>;
 

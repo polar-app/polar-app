@@ -205,23 +205,27 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @action addItem(id: BlockIDStr, pos?: INewChildPosition | 'unshift'): boolean {
 
-        if (! this.hasItem(id)) {
+        try {
+            if (!this.hasItem(id)) {
 
-            if (pos === 'unshift') {
-                PositionalArrays.unshift(this._items, id);
-            } else if (pos) {
-                PositionalArrays.insert(this._items, pos.ref, id, pos.pos);
-            } else {
-                PositionalArrays.append(this._items, id);
+                if (pos === 'unshift') {
+                    PositionalArrays.unshift(this._items, id);
+                } else if (pos) {
+                    PositionalArrays.insert(this._items, pos.ref, id, pos.pos);
+                } else {
+                    PositionalArrays.append(this._items, id);
+                }
+
+                this._updated = ISODateTimeStrings.create();
+
+                return true;
+
             }
 
-            this._updated = ISODateTimeStrings.create();
-
-            return true;
-
+            return false;
+        } catch (e) {
+            throw new Error(`addItem failed on in block: ${this.id}: ` + e.message)
         }
-
-        return false;
 
     }
 
@@ -283,10 +287,20 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         return PositionalArrays.toArray(this._items).includes(id);
     }
 
+    public hasLinksMutated(links: ReadonlyArray<IBlockLink>): boolean {
+        return ! deepEqual(PositionalArrays.toArray(this._links), links);
+
+    }
+
     @action setLinks(links: ReadonlyArray<IBlockLink>) {
 
-        PositionalArrays.set(this._links, links);
-        this._updated = ISODateTimeStrings.create();
+        if (this.hasLinksMutated(links)) {
+            PositionalArrays.set(this._links, links);
+            this._updated = ISODateTimeStrings.create();
+            return true;
+        }
+
+        return false;
 
     }
 

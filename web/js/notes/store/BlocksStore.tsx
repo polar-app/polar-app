@@ -924,8 +924,14 @@ export class BlocksStore implements IBlocksStore {
 
     /**
      * Create a new named block but only when a block with this name does not exist.
+     *
+     * The 'ref' block is used to compute the namespace in which this blocks
+     * should be stored.
+     *
      */
-    @action public createNewNamedBlock(name: BlockNameStr, ref: BlockIDStr): BlockIDStr {
+    @action public doCreateNewNamedBlock(name: BlockNameStr,
+                                         ref: BlockIDStr,
+                                         newBlockID: BlockIDStr = Hashcodes.createRandomID()): BlockIDStr {
 
         const existingBlock = this.getBlockByName(name);
 
@@ -941,9 +947,10 @@ export class BlocksStore implements IBlocksStore {
                 throw new Error("Reference block doesn't exist");
             }
 
-            const now = ISODateTimeStrings.create()
+            const now = ISODateTimeStrings.create();
+
             return {
-                id: Hashcodes.createRandomID(),
+                id: newBlockID,
                 nspace: refBlock.nspace,
                 uid: this.uid,
                 parent: undefined,
@@ -957,13 +964,14 @@ export class BlocksStore implements IBlocksStore {
                 links: {},
                 mutation: 0
             };
+
         };
 
         const newBlock = createNewBlock();
 
         this.doPut([newBlock]);
 
-        return newBlock.id;
+        return newBlockID;
 
     }
 
@@ -977,7 +985,7 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    public setBlockContent<C extends IBlockContent = IBlockContent>(id: BlockIDStr, content: C) {
+    @action public setBlockContent<C extends IBlockContent = IBlockContent>(id: BlockIDStr, content: C) {
 
         const redo = () => {
 
@@ -997,6 +1005,50 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
+    @action public createLinkToBlock<C extends IBlockContent = IBlockContent>(sourceID: BlockIDStr,
+                                                                              targetName: BlockNameStr) {
+
+        // if the existing target block exists, use that block name.
+        const targetBlock = this.getBlockByName(targetName);
+
+        const targetID = targetBlock?.id || Hashcodes.createRandomID();
+
+        const redo = () => {
+
+            // TODO: we have to setContent here too but I need to figure out how
+            // to get it from the element when we're changing it.
+
+            // create the new block - the sourceID is used for the ref to compute the nspace.
+            const targetID = this.doCreateNewNamedBlock(targetName, sourceID);
+
+            const block = this.getBlock(sourceID);
+
+            if (! block) {
+                throw new Error("Unable to find block: " + sourceID);
+            }
+
+            // think this won't trigger the undo/redo system...
+            if (block) {
+
+                block.withMutation(() => {
+
+                    block.addLink({
+                        id: targetID,
+                        text: targetName
+                    });
+
+                })
+
+                this.doPut([block]);
+
+            }
+
+
+        }
+
+        return this.doUndoPush([sourceID, targetID], redo);
+
+    }
 
     @action public updateBlocks(blocks: ReadonlyArray<IBlock>): void {
         this.doPut(blocks);

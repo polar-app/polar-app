@@ -152,8 +152,6 @@ export namespace BlocksStoreUndoQueues {
 
             const snapshot = blocksStore.createSnapshot(identifiers);
 
-            console.log("FIXME: captured snapshot for identifiers: ", identifiers, snapshot);
-
             afterBlocks = computeApplicableBlocks(snapshot);
 
         }
@@ -346,8 +344,10 @@ export namespace BlocksStoreUndoQueues {
                 return block.withMutation(() => {
 
                     if(doContent) {
+
                         withMutationComparison(() => {
                             block.setContent(comparisonBlock.content);
+                            block.setLinks(PositionalArrays.toArray(comparisonBlock.links));
                         });
                     }
 

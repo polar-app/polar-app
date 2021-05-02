@@ -84,10 +84,6 @@ function useActionExecutor(id: BlockIDStr) {
 
             case "note-link":
 
-                const createNewBlock = (): BlockIDStr => {
-                    return blocksStore.createNewNamedBlock(actionOp.target, id);
-                }
-
                 const updateSelection = () => {
 
                     const coveringRange = createCoveringRange();
@@ -103,28 +99,9 @@ function useActionExecutor(id: BlockIDStr) {
 
                 }
 
-                const addLinkToBlock = (newBlockID: BlockIDStr) => {
-
-                    const block = blocksStore.getBlock(id);
-
-                    // think this won't trigger the undo/redo system...
-                    if (block) {
-
-                        block.addLink({
-                            id: newBlockID,
-                            text: actionOp.target
-                        });
-
-                        blocksStore.updateBlocks([block]);
-
-                    }
-
-                }
-
-                const newBlockID = createNewBlock();
                 updateSelection();
-                addLinkToBlock(newBlockID);
 
+                blocksStore.createLinkToBlock(id, actionOp.target)
                 break;
 
         }
