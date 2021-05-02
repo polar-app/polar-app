@@ -51,9 +51,6 @@ export interface IBlocksStore {
     lookupReverse(id: BlockIDStr): ReadonlyArray<BlockIDStr>;
     pathToBlock(id: BlockIDStr): ReadonlyArray<Block>;
 
-
-
-
     setActive(active: BlockIDStr | undefined): void;
 
     setRoot(root: BlockIDStr | undefined): void;

@@ -1364,6 +1364,18 @@ export class BlocksStore implements IBlocksStore {
      */
     public indentBlock(id: BlockIDStr): ReadonlyArray<DoIndentResult> {
 
+        const computeIdentifiers = () => {
+
+            if (this.hasSelected()) {
+                return this.computeSelectedIndentableBlockIDs();
+            } else {
+                return [id];
+            }
+
+        }
+
+        const identifiers = computeIdentifiers();
+
         const doExec = (id: BlockIDStr): DoIndentResult => {
 
             console.log("doIndent: " + id);
@@ -1424,17 +1436,19 @@ export class BlocksStore implements IBlocksStore {
 
         const cursorOffset = this.cursorOffsetCapture();
 
-        try {
+        const redo = () => {
 
-            if (this.hasSelected()) {
-                return this.computeSelectedIndentableBlockIDs().map(id => doExec(id));
-            } else {
-                return [doExec(id)];
+            try {
+
+                return identifiers.map(id => doExec(id));
+
+            } finally {
+                this.cursorOffsetRestore(cursorOffset);
             }
 
-        } finally {
-            this.cursorOffsetRestore(cursorOffset);
         }
+
+        return this.doUndoPush(identifiers, redo);
 
     }
 
