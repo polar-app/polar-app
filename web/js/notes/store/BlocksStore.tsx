@@ -1404,9 +1404,6 @@ export class BlocksStore implements IBlocksStore {
      */
     public indentBlock(id: BlockIDStr): ReadonlyArray<DoIndentResult> {
 
-        // FIXME: we're not computing all applicable identifiers because the
-        // item that wer'e indeting into isn't being captured.
-
         const computeTargetIdentifiers = () => {
 
             if (this.hasSelected()) {
@@ -1419,13 +1416,10 @@ export class BlocksStore implements IBlocksStore {
 
         const targetIdentifiers = computeTargetIdentifiers();
 
-        const roots = arrayStream(targetIdentifiers)
-            .map(current => this.getBlock(current))
-            .filterPresent().map(current => current.root)
-            .unique().collect()
+        const root = this.getBlock(id)!.root;
 
         const undoIdentifiers
-            = BlocksStoreUndoQueues.expandToParentAndChildren(this, roots)
+            = BlocksStoreUndoQueues.expandToParentAndChildren(this, [root])
 
         const doExec = (id: BlockIDStr): DoIndentResult => {
 
