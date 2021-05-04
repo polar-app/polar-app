@@ -8,11 +8,11 @@ description: We're hiring at Polar! If you're a frontend engineer or know a fron
 
 <img class="img-fluid" src="https://i.imgur.com/Mld7JSU.png">
 
-# Overview
+## Overview
 
 We at Polar are looking for a Senior Frontend Engineer to join our team as soon as possible. We are a team of two founders with previous experience in startups, tech, and growth. We are looking for someone with strong frontend experience and preferably previous startup experience. Compensation is competitive and a mix of cash and equity. See details below.
 
-# Role requirements
+## Role requirements
 
 Our ideal candidate has a strong background in frontend development, a fullstack interest, and preferably some AI experience. Specifically:
 - Min 5 years of frontend experience - Javascript, React, React Native, PWAs, NodeJS
@@ -29,7 +29,7 @@ balance but we are looking for someone who is passionate about the product and r
 
 Your compensation package will be a mix of cash and equity - with the exact split depending on your experience and your personal preference
 
-# About us
+## About us
 
 We are a team of two founders with over 35 years of combined experience in startups, tech, growth, and business.
 - Kevin is founder and focused on development and product. He recently sold his last startup. Polar is his fourth startup. He is also one of the inventors of RSS
