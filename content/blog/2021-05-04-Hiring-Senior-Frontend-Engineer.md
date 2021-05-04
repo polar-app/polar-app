@@ -10,7 +10,7 @@ description: We're hiring at Polar! If you're a frontend engineer or know a fron
 
 ## Overview
 
-We at Polar are looking for a Senior Frontend Engineer to join our team as soon as possible. We are a team of two founders with previous experience in startups, tech, and growth. We are looking for someone with strong frontend experience and preferably previous startup experience. Compensation is competitive and a mix of cash and equity. See details below.
+We at Polar are looking for a Senior Frontend Engineer to join our team as soon as possible. We are a team of two founders with previous experience in startups, tech, and growth, and two engineers. We are looking for someone with strong frontend experience and preferably previous startup experience. Compensation is competitive and a mix of cash and equity. See details below.
 
 ## Role requirements
 
