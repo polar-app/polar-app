@@ -1419,6 +1419,14 @@ export class BlocksStore implements IBlocksStore {
 
         const targetIdentifiers = computeTargetIdentifiers();
 
+        const roots = arrayStream(targetIdentifiers)
+            .map(current => this.getBlock(current))
+            .filterPresent().map(current => current.root)
+            .unique().collect()
+
+        const undoIdentifiers
+            = BlocksStoreUndoQueues.expandToParentAndChildren(this, roots)
+
         const doExec = (id: BlockIDStr): DoIndentResult => {
 
             console.log("doIndent: " + id);
@@ -1491,7 +1499,7 @@ export class BlocksStore implements IBlocksStore {
 
         }
 
-        return this.doUndoPush(targetIdentifiers, redo);
+        return this.doUndoPush(undoIdentifiers, redo);
 
     }
 

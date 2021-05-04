@@ -230,8 +230,7 @@ export namespace BlocksStoreUndoQueues {
 
             console.log(`Handling 'updated' mutation for block ${block.id}: `, mutation);
 
-            //
-            const mutationTarget = computeMutationTarget(mutation.before, mutation.after);
+            const mutationTargets = computeMutationTargets(mutation.before, mutation.after);
 
             const computeComparisonBlock = (): IBlock => {
 
@@ -272,20 +271,6 @@ export namespace BlocksStoreUndoQueues {
                 return computeItemPositionPatches(mutation.before.items, mutation.after.items)
                            .map(current => transformItemPositionPatch(current));
 
-
-            }
-
-            const handleUpdatedItems= () => {
-
-                const transformedItemPositionPatches = computeTransformedItemPositionPatches();
-
-                console.log(`Handling undo item patches for block ${block.id}: `, transformedItemPositionPatches);
-
-                const opts = createWithMutationOpts(mutation);
-
-                block.withMutation(() => {
-                    block.setItemsUsingPatches(transformedItemPositionPatches)
-                }, opts);
 
             }
 
@@ -335,7 +320,7 @@ export namespace BlocksStoreUndoQueues {
 
             }
 
-            const doHandleUpdated = (doContent: boolean, doItems: boolean): boolean => {
+            const doHandleUpdated = (): boolean => {
 
                 const comparisonBlock = computeComparisonBlock();
 
@@ -343,43 +328,28 @@ export namespace BlocksStoreUndoQueues {
 
                 return block.withMutation(() => {
 
-                    if(doContent) {
+                    if (mutationTargets.includes('content')) {
 
                         withMutationComparison(() => {
                             block.setContent(comparisonBlock.content);
                             block.setLinks(PositionalArrays.toArray(comparisonBlock.links));
                         });
+
                     }
 
-                    if (doItems) {
+                    if (mutationTargets.includes('items')) {
                         block.setItemsUsingPatches(computeTransformedItemPositionPatches());
+                    }
+
+                    if (mutationTargets.includes('parent') && comparisonBlock.parent !== undefined) {
+                        block.setParent(comparisonBlock.parent);
                     }
 
                 }, opts);
 
             }
 
-            const handleUpdatedContent = (): boolean => {
-                return doHandleUpdated(true, false);
-            }
-
-            const handleUpdatedItemsAndContent = (): boolean => {
-                return doHandleUpdated(true, true);
-            }
-
-            switch (mutationTarget) {
-
-                case "items":
-                    handleUpdatedItems();
-                    break;
-                case "content":
-                    handleUpdatedContent();
-                    break;
-                case "items-and-content":
-                    handleUpdatedItemsAndContent();
-                    break;
-
-            }
+            doHandleUpdated();
 
         }
 
@@ -622,29 +592,32 @@ export namespace BlocksStoreUndoQueues {
      * - items-and-content: both the items and content were changed.
      *
      */
-    export type MutationTarget = 'items' | 'content' | 'items-and-content';
+    export type MutationTarget = 'items' | 'content' | 'parent';
 
     /**
      * Given a before block, and an after block, compute the mutations that were
      * performed on the content.
      */
-    export function computeMutationTarget(before: IBlock, after: IBlock): MutationTarget | undefined {
-
-        // FIXME for 'items' we also have to compute a diff and a before / after
-        // mutation set including 'remove' and 'insert'
+    export function computeMutationTargets(before: IBlock, after: IBlock): ReadonlyArray<MutationTarget> {
 
         const itemsMuted = ! deepEqual(before.items, after.items);
         const contentMuted = ! deepEqual(before.content, after.content);
 
-        if (itemsMuted && contentMuted) {
-            return 'items-and-content';
-        } else if (itemsMuted) {
-            return 'items';
-        } else if (contentMuted) {
-            return 'content';
+        const result: MutationTarget[] = [];
+
+        if (itemsMuted) {
+            result.push('items');
         }
 
-        return undefined;
+        if (contentMuted) {
+            result.push('content');
+        }
+
+        if (before.parent !== after.parent) {
+            result.push('parent');
+        }
+
+        return result;
 
     }
 
