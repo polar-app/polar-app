@@ -1532,6 +1532,23 @@ export class BlocksStore implements IBlocksStore {
 
     public unIndentBlock(id: BlockIDStr): ReadonlyArray<DoUnIndentResult> {
 
+        const computeTargetIdentifiers = () => {
+
+            if (this.hasSelected()) {
+                return this.computeSelectedUnIndentableBlockIDs();
+            } else {
+                return [id];
+            }
+
+        }
+
+        const targetIdentifiers = computeTargetIdentifiers();
+
+        const root = this.getBlock(id)!.root;
+
+        const undoIdentifiers
+            = BlocksStoreUndoQueues.expandToParentAndChildren(this, [root])
+
         const doExec = (id: BlockIDStr): DoUnIndentResult => {
 
             console.log("doUnIndent: " + id);
@@ -1580,17 +1597,19 @@ export class BlocksStore implements IBlocksStore {
 
         const cursorOffset = this.cursorOffsetCapture();
 
-        try {
+        const redo = () => {
 
-            if (this.hasSelected()) {
-                return this.computeSelectedUnIndentableBlockIDs().map(id => doExec(id));
-            } else {
-                return [doExec(id)];
+            try {
+
+                return targetIdentifiers.map(id => doExec(id));
+
+            } finally {
+                this.cursorOffsetRestore(cursorOffset);
             }
 
-        } finally {
-            this.cursorOffsetRestore(cursorOffset);
         }
+
+        return this.doUndoPush(undoIdentifiers, redo);
 
     }
 
