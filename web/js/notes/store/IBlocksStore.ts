@@ -75,9 +75,9 @@ export interface IBlocksStore {
     isExpanded(id: BlockIDStr): boolean;
     isSelected(id: BlockIDStr): boolean;
 
-    // FIXME: undo
+    // FIXME: undo leave an extra block
     indentBlock(id: BlockIDStr): ReadonlyArray<DoIndentResult>;
-    // FIXME: undo
+    // FIXME: undo leave an extra block
     unIndentBlock(id: BlockIDStr): ReadonlyArray<DoUnIndentResult>;
 
     requiredAutoUnIndent(id: BlockIDStr): boolean;
@@ -88,6 +88,7 @@ export interface IBlocksStore {
 
     createNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock | undefined;
 
+    // FIXME: the cursor isn't persisted
     createLinkToBlock<C extends IBlockContent = IBlockContent>(sourceID: BlockIDStr,
                                                                targetName: BlockNameStr,
                                                                undoContent: MarkdownStr,

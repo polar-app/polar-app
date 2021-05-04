@@ -1055,6 +1055,8 @@ export class BlocksStore implements IBlocksStore {
 
                 this.doPut([block]);
 
+                this.setActiveWithPosition(block.id, 'end');
+
             }
 
         }
@@ -1077,6 +1079,8 @@ export class BlocksStore implements IBlocksStore {
                 })
 
             }, restore);
+
+            this.setActiveWithPosition(block.id, 'end');
 
         }
 
