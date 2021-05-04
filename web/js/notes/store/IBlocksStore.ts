@@ -17,6 +17,7 @@ import {IBlock} from "./IBlock";
 import {Block} from "./Block";
 import {BlockTargetStr} from "../NoteLinkLoader";
 import {ReverseIndex} from "./ReverseIndex";
+import {MarkdownStr} from "polar-shared/src/util/Strings";
 
 /**
  * deleteBlocks
@@ -87,7 +88,10 @@ export interface IBlocksStore {
 
     createNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock | undefined;
 
-    createLinkToBlock<C extends IBlockContent = IBlockContent>(sourceID: BlockIDStr, targetName: BlockNameStr): void;
+    createLinkToBlock<C extends IBlockContent = IBlockContent>(sourceID: BlockIDStr,
+                                                               targetName: BlockNameStr,
+                                                               undoContent: MarkdownStr,
+                                                               content: MarkdownStr): void;
 
     filterByName(filter: string): ReadonlyArray<BlockNameStr>;
 

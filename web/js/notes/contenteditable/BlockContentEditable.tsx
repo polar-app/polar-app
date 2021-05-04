@@ -43,7 +43,7 @@ interface IProps {
 
 const NoteContentEditableElementContext = React.createContext<React.RefObject<HTMLElement | null>>({current: null});
 
-export function useNoteContentEditableElement() {
+export function useBlockContentEditableElement() {
     return React.useContext(NoteContentEditableElementContext);
 }
 
@@ -414,7 +414,7 @@ export const BlockContentEditable = observer((props: IProps) => {
                              trigger="[["
                              actionsProvider={createNoteActionsProvider}
                              onAction={(id) => ({
-                                type: 'note-link',
+                                type: 'link-to-block',
                                 target: id
                             })}>
 

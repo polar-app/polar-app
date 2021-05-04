@@ -1,7 +1,7 @@
 import * as React from "react";
 import {createReactiveStore} from "../../react/store/ReactiveStore";
 import {action, computed, makeObservable, observable} from "mobx"
-import {IDStr} from "polar-shared/src/util/Strings";
+import {IDStr, MarkdownStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {BlockTargetStr} from "../NoteLinkLoader";
@@ -1006,12 +1006,21 @@ export class BlocksStore implements IBlocksStore {
     }
 
     @action public createLinkToBlock<C extends IBlockContent = IBlockContent>(sourceID: BlockIDStr,
-                                                                              targetName: BlockNameStr) {
+                                                                              targetName: BlockNameStr,
+                                                                              undoContent: MarkdownStr,
+                                                                              content: MarkdownStr) {
+
+        const sourceBlock = this.getBlock(sourceID)!;
 
         // if the existing target block exists, use that block name.
         const targetBlock = this.getBlockByName(targetName);
 
         const targetID = targetBlock?.id || Hashcodes.createRandomID();
+
+        const restore = {
+            updated: sourceBlock.updated,
+            mutation: sourceBlock.mutation
+        }
 
         const redo = () => {
 
@@ -1037,16 +1046,41 @@ export class BlocksStore implements IBlocksStore {
                         text: targetName
                     });
 
+                    block.setContent({
+                        type: "markdown",
+                        data: content
+                    });
+
                 })
 
                 this.doPut([block]);
 
             }
 
+        }
+
+        const undo = () => {
+
+            const block = this.getBlock(sourceID);
+
+            if (! block) {
+                throw new Error("Unable to find block: " + sourceID);
+            }
+
+            block.withMutation(() => {
+
+                block.removeLink(targetID);
+
+                block.setContent({
+                    type: "markdown",
+                    data: undoContent
+                })
+
+            }, restore);
 
         }
 
-        return this.doUndoPush([sourceID, targetID], redo);
+        this.undoQueue.push({redo, undo});
 
     }
 

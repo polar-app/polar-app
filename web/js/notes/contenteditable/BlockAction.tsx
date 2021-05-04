@@ -1,13 +1,14 @@
 import React from 'react';
-import {IDStr} from "polar-shared/src/util/Strings";
+import {IDStr, MarkdownStr} from "polar-shared/src/util/Strings";
 import useTheme from '@material-ui/core/styles/useTheme';
 import {ActionMenuItemsProvider, useActionMenuStore} from "../../mui/action_menu/ActionStore";
 import {ContentEditables} from "../ContentEditables";
 import INodeOffset = ContentEditables.INodeOffset;
-import {useNoteContentEditableElement} from "./BlockContentEditable";
+import {useBlockContentEditableElement} from "./BlockContentEditable";
 import { observer } from "mobx-react-lite"
 import {BlockIDStr, useBlocksStore} from '../store/BlocksStore';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import {MarkdownContentEscaper} from "../MarkdownContentEscaper";
 
 const THINSP = ' ';
 
@@ -26,17 +27,25 @@ export type NoteActionsResultTuple = [ReactKeyboardEventHandler, NoteActionReset
 /**
  * Link to a node.
  */
-export interface IActionOpWithNodeLink {
-    readonly type: 'note-link';
+export interface IActionOpWithBlockLink {
+    readonly type: 'link-to-block';
+    readonly target: string;
+    readonly undoContent: MarkdownStr;
+}
+
+export type ActionOp = IActionOpWithBlockLink;
+
+export interface IActionTypeWithBlockLink {
+    readonly type: 'link-to-block';
     readonly target: string;
 }
 
-export type ActionOp = IActionOpWithNodeLink;
+export type ActionType = IActionTypeWithBlockLink;
 
 /**
  * Given an id for the action to, perform the given operation.
  */
-export type ActionHandler = (id: IDStr) => ActionOp;
+export type ActionHandler = (id: IDStr) => ActionType;
 
 interface IProps {
 
@@ -68,6 +77,8 @@ function useActionExecutor(id: BlockIDStr) {
 
     const blocksStore = useBlocksStore();
 
+    const contentEditableMarkdownReader = useContentEditableMarkdownReader();
+
     return React.useCallback((from: INodeOffset, to: INodeOffset, actionOp: ActionOp) => {
 
         function createCoveringRange(): Range {
@@ -82,7 +93,7 @@ function useActionExecutor(id: BlockIDStr) {
 
         switch (actionOp.type) {
 
-            case "note-link":
+            case "link-to-block":
 
                 const updateSelection = () => {
 
@@ -101,12 +112,28 @@ function useActionExecutor(id: BlockIDStr) {
 
                 updateSelection();
 
-                blocksStore.createLinkToBlock(id, actionOp.target)
+                const content = contentEditableMarkdownReader();
+                blocksStore.createLinkToBlock(id, actionOp.target, actionOp.undoContent, content);
                 break;
 
         }
 
-    }, [id, blocksStore])
+    }, [contentEditableMarkdownReader, blocksStore, id])
+
+}
+
+function useContentEditableMarkdownReader() {
+
+    const divRef = useBlockContentEditableElement();
+
+    return React.useCallback(() => {
+
+        const escaper = MarkdownContentEscaper;
+        const div = divRef.current!.cloneNode(true) as HTMLElement;
+        const html = div.innerHTML;
+        return escaper.unescape(html);
+
+    }, [divRef]);
 
 }
 
@@ -137,7 +164,9 @@ export const BlockAction = observer((props: IProps) => {
     // creating a new note by typing in the prompt
     const activeRef = React.useRef(false);
 
-    const divRef = useNoteContentEditableElement();
+    const initialMarkdownContentRef = React.useRef('');
+
+    const divRef = useBlockContentEditableElement();
 
     const activePromptRef = React.useRef<ActivePrompt | undefined>(undefined);
 
@@ -264,15 +293,28 @@ export const BlockAction = observer((props: IProps) => {
 
     }, [clearActivePrompt, actionStore])
 
+    const captureInitialMarkdownContent = React.useCallback(() => {
+
+        const escaper = MarkdownContentEscaper;
+        const div = divRef.current!.cloneNode(true) as HTMLElement;
+        div.querySelector('.action-input')!.outerHTML = '';
+        const html = div.innerHTML;
+        return escaper.unescape(html);
+
+    }, [divRef]);
+
     const doComplete = React.useCallback(() => {
 
         const prompt = computeActionInputText();
 
         const {from, to} = createActionRangeForHandler()
 
+        const undoContent = initialMarkdownContentRef.current!;
+
         actionExecutor(from, to, {
-            type: 'note-link',
-            target: prompt
+            type: 'link-to-block',
+            target: prompt,
+            undoContent
         });
 
         doReset();
@@ -321,9 +363,16 @@ export const BlockAction = observer((props: IProps) => {
 
         return (id: IDStr) => {
 
-            const actionOp = onAction(id);
+            const actionType = onAction(id);
 
             const {from, to} = createActionRangeForHandler()
+
+            const undoContent = initialMarkdownContentRef.current!;
+
+            const actionOp = {
+                ...actionType,
+                undoContent
+            };
 
             actionExecutor(from, to, actionOp);
 
@@ -331,7 +380,7 @@ export const BlockAction = observer((props: IProps) => {
 
         }
 
-    }, [actionExecutor, createActionRangeForHandler, onAction, doReset]);
+    }, [onAction, createActionRangeForHandler, actionExecutor, doReset]);
 
     /**
      * Create the active input prompt and return a range where the menu must popup.
@@ -584,6 +633,8 @@ export const BlockAction = observer((props: IProps) => {
 
                     activeRef.current = true;
 
+                    initialMarkdownContentRef.current = captureInitialMarkdownContent();
+
                     const items = computeItems(prompt);
 
                     actionStore.setState({
@@ -602,7 +653,9 @@ export const BlockAction = observer((props: IProps) => {
 
         return activeRef.current;
 
-    }, [divRef, doResetWithKeyboardEvent, doCompleteOrResetWithKeyboardEvent, hasAborted, computeItems, actionStore, doReset, trigger, createActivePrompt, computePosition, createActionHandler]);
+    }, [divRef, doResetWithKeyboardEvent, doCompleteOrResetWithKeyboardEvent, hasAborted, computeItems,
+        actionStore, doReset, trigger, createActivePrompt, computePosition, createActionHandler,
+        captureInitialMarkdownContent]);
 
     const handleClick = React.useCallback(() => {
 
