@@ -953,6 +953,7 @@ export class BlocksStore implements IBlocksStore {
                 id: newBlockID,
                 nspace: refBlock.nspace,
                 uid: this.uid,
+                root: newBlockID,
                 parent: undefined,
                 content: Contents.create({
                     type: 'name',
@@ -1215,6 +1216,7 @@ export class BlocksStore implements IBlocksStore {
                     parent: parentBlock.id,
                     nspace: parentBlock.nspace,
                     uid: this.uid,
+                    root: parentBlock.root,
                     content: Contents.create(content),
                     created: now,
                     updated: now,
@@ -1402,7 +1404,10 @@ export class BlocksStore implements IBlocksStore {
      */
     public indentBlock(id: BlockIDStr): ReadonlyArray<DoIndentResult> {
 
-        const computeIdentifiers = () => {
+        // FIXME: we're not computing all applicable identifiers because the
+        // item that wer'e indeting into isn't being captured.
+
+        const computeTargetIdentifiers = () => {
 
             if (this.hasSelected()) {
                 return this.computeSelectedIndentableBlockIDs();
@@ -1412,7 +1417,7 @@ export class BlocksStore implements IBlocksStore {
 
         }
 
-        const identifiers = computeIdentifiers();
+        const targetIdentifiers = computeTargetIdentifiers();
 
         const doExec = (id: BlockIDStr): DoIndentResult => {
 
@@ -1478,7 +1483,7 @@ export class BlocksStore implements IBlocksStore {
 
             try {
 
-                return identifiers.map(id => doExec(id));
+                return targetIdentifiers.map(id => doExec(id));
 
             } finally {
                 this.cursorOffsetRestore(cursorOffset);
@@ -1486,7 +1491,7 @@ export class BlocksStore implements IBlocksStore {
 
         }
 
-        return this.doUndoPush(identifiers, redo);
+        return this.doUndoPush(targetIdentifiers, redo);
 
     }
 

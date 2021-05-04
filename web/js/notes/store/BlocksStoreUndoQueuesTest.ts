@@ -16,6 +16,7 @@ import IBlocksStoreMutation = BlocksStoreUndoQueues.IBlocksStoreMutation;
 
 interface IBasicBlockOpts<C> {
     readonly id?: BlockIDStr;
+    readonly root: BlockIDStr;
     readonly parent?: BlockIDStr;
     readonly content: C;
     readonly items?: PositionalArray<BlockIDStr>;
@@ -35,6 +36,7 @@ function createBasicBlock<C extends IBlockContent = IBlockContent>(opts: IBasicB
         created,
         updated: created,
         ...opts,
+        root: opts.root,
         parent: opts.parent || undefined,
         items: opts.items || {},
         links: opts.links || {},
@@ -49,6 +51,16 @@ function createStore() {
     store.doPut(blocks);
     return store;
 }
+
+const root = createBasicBlock({
+    id: '100',
+    root: '100',
+    parent: undefined,
+    content: {
+        type: 'name',
+        data: "United States"
+    }
+})
 
 describe("BlocksStoreUndoQueues", () => {
 
@@ -67,6 +79,7 @@ describe("BlocksStoreUndoQueues", () => {
                     "id": "104",
                     "nspace": "ns101",
                     "uid": "123",
+                    "root": "100",
                     "parent": "102",
                     "created": "2012-03-02T11:38:49.321Z",
                     "updated": "2012-03-02T11:38:49.321Z",
@@ -82,6 +95,7 @@ describe("BlocksStoreUndoQueues", () => {
                     "id": "104",
                     "nspace": "ns101",
                     "uid": "123",
+                    "root": "100",
                     "parent": "102",
                     "created": "2012-03-02T11:38:49.321Z",
                     "updated": "2012-03-02T11:38:49.321Z",
@@ -124,6 +138,8 @@ describe("BlocksStoreUndoQueues", () => {
 
             const staticBlock = createBasicBlock<IMarkdownContent>({
                 id: '0x01',
+                root: "100",
+                parent: "100",
                 content: {
                     type: 'markdown',
                     data: 'static block',
@@ -133,6 +149,7 @@ describe("BlocksStoreUndoQueues", () => {
 
             const removedBlock = createBasicBlock<IMarkdownContent>({
                 id: '0x02',
+                root: "100",
                 content: {
                     type: 'markdown',
                     data: 'removed block',
@@ -145,6 +162,8 @@ describe("BlocksStoreUndoQueues", () => {
                 removedBlock,
                 createBasicBlock<IMarkdownContent>({
                     id: '0x04',
+                    root: "100",
+                    parent: "100",
                     content: {
                         type: 'markdown',
                         data: 'updated block',
@@ -157,6 +176,8 @@ describe("BlocksStoreUndoQueues", () => {
 
             const addedBlock = createBasicBlock<IMarkdownContent>({
                 id: '0x03',
+                root: "100",
+                parent: "100",
                 content: {
                     type: 'markdown',
                     data: 'added block',
@@ -170,6 +191,8 @@ describe("BlocksStoreUndoQueues", () => {
                 addedBlock,
                 createBasicBlock<IMarkdownContent>({
                     id: '0x04',
+                    root: "100",
+                    parent: "100",
                     content: {
                         type: 'markdown',
                         data: 'updated block 2',
@@ -191,6 +214,8 @@ describe("BlocksStoreUndoQueues", () => {
                         "uid": "1234",
                         "created": "2012-03-02T11:38:50.321Z",
                         "updated": "2012-03-02T11:38:50.321Z",
+                        "root": "100",
+                        "parent": "100",
                         "content": {
                             "type": "markdown",
                             "data": "added block"
@@ -212,6 +237,7 @@ describe("BlocksStoreUndoQueues", () => {
                         "uid": "1234",
                         "created": "2012-03-02T11:38:49.321Z",
                         "updated": "2012-03-02T11:38:49.321Z",
+                        "root": "100",
                         "content": {
                             "type": "markdown",
                             "data": "removed block"
@@ -234,6 +260,8 @@ describe("BlocksStoreUndoQueues", () => {
                         "uid": "1234",
                         "created": "2012-03-02T11:38:49.321Z",
                         "updated": "2012-03-02T11:38:49.321Z",
+                        "root": "100",
+                        "parent": "100",
                         "content": {
                             "type": "markdown",
                             "data": "updated block"
@@ -251,6 +279,8 @@ describe("BlocksStoreUndoQueues", () => {
                         "uid": "1234",
                         "created": "2012-03-02T11:38:50.321Z",
                         "updated": "2012-03-02T11:38:50.321Z",
+                        "root": "100",
+                        "parent": "100",
                         "content": {
                             "type": "markdown",
                             "data": "updated block 2"
@@ -335,6 +365,8 @@ describe("BlocksStoreUndoQueues", () => {
         it("items", () => {
 
             const before = createBasicBlock<IMarkdownContent>({
+                root: "100",
+                parent: "100",
                 content: {
                     type: 'markdown',
                     data: 'hello world',
@@ -343,6 +375,8 @@ describe("BlocksStoreUndoQueues", () => {
             });
 
             const after = createBasicBlock<IMarkdownContent>({
+                root: "100",
+                parent: "100",
                 content: {
                     type: 'markdown',
                     data: 'hello world'
@@ -357,6 +391,8 @@ describe("BlocksStoreUndoQueues", () => {
         it("content", () => {
 
             const before = createBasicBlock<IMarkdownContent>({
+                root: "100",
+                parent: "100",
                 content: {
                     type: 'markdown',
                     data: 'hello world'
@@ -364,6 +400,8 @@ describe("BlocksStoreUndoQueues", () => {
             });
 
             const after = createBasicBlock<IMarkdownContent>({
+                root: "100",
+                parent: "100",
                 content: {
                     type: 'markdown',
                     data: 'hello world 2'
@@ -377,6 +415,8 @@ describe("BlocksStoreUndoQueues", () => {
         it("items-and-content", () => {
 
             const before = createBasicBlock<IMarkdownContent>({
+                root: "100",
+                parent: "100",
                 content: {
                     type: 'markdown',
                     data: 'hello world'
@@ -385,6 +425,8 @@ describe("BlocksStoreUndoQueues", () => {
             });
 
             const after = createBasicBlock<IMarkdownContent>({
+                root: "100",
+                parent: "100",
                 content: {
                     type: 'markdown',
                     data: 'hello world 2'
@@ -400,6 +442,8 @@ describe("BlocksStoreUndoQueues", () => {
         it("no mutation", () => {
 
             const before = createBasicBlock<IMarkdownContent>({
+                root: "100",
+                parent: "100",
                 content: {
                     type: 'markdown',
                     data: 'hello world'
@@ -408,6 +452,8 @@ describe("BlocksStoreUndoQueues", () => {
             });
 
             const after = createBasicBlock<IMarkdownContent>({
+                root: "100",
+                parent: "100",
                 content: {
                     type: 'markdown',
                     data: 'hello world'

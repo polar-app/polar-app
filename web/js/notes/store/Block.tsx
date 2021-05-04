@@ -33,6 +33,8 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
      */
     @observable readonly _uid: UIDStr;
 
+    @observable readonly _root: UIDStr;
+
     @observable private _parent: BlockIDStr | undefined;
 
     @observable private _created: ISODateTimeString;
@@ -58,6 +60,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         this._id = opts.id;
         this._nspace = opts.nspace;
         this._uid = opts.uid;
+        this._root = opts.root;
         this._parent = opts.parent;
         this._created = opts.created;
         this._updated = opts.updated;
@@ -80,6 +83,10 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @computed get uid() {
         return this._uid;
+    }
+
+    @computed get root() {
+        return this._root;
     }
 
     @computed get parent() {
@@ -400,6 +407,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
             id: this._id,
             nspace: this._nspace,
             uid: this._uid,
+            root: this._root,
             parent: this._parent,
             created: this._created,
             updated: this._updated,

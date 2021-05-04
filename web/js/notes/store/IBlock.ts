@@ -42,6 +42,8 @@ export interface IBlock<C extends IBlockContent = IBlockContent> {
 
     readonly uid: UIDStr;
 
+    readonly root: BlockIDStr;
+
     readonly parent: BlockIDStr | undefined;
 
     readonly created: ISODateTimeString;

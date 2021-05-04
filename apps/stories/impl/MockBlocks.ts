@@ -16,6 +16,7 @@ export namespace MockBlocks {
                 id: '102',
                 nspace, uid,
                 parent: undefined,
+                root: '102',
                 created: now,
                 updated: now,
                 content: {
@@ -34,6 +35,7 @@ export namespace MockBlocks {
                 id: '103',
                 nspace, uid,
                 parent: '102',
+                root: '102',
                 created: now,
                 updated: now,
                 content: {
@@ -48,6 +50,7 @@ export namespace MockBlocks {
                 id: '104',
                 nspace, uid,
                 parent: '102',
+                root: '102',
                 created: now,
                 updated: now,
                 content: {
@@ -62,6 +65,7 @@ export namespace MockBlocks {
                 id: '105',
                 nspace, uid,
                 parent: '102',
+                root: '102',
                 created: now,
                 updated: now,
                 content: {
@@ -83,23 +87,24 @@ export namespace MockBlocks {
                 ]),
                 mutation: 0,
             },
-            {
-                id: '100',
-                nspace, uid,
-                parent: undefined,
-                created: now,
-                updated: now,
-                content: {
-                    type: 'markdown',
-                    data: 'World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world\'s countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.',
-                },
-                items: {},
-                links: {},
-                mutation: 0,
-            },
+            // {
+            //     id: '100',
+            //     nspace, uid,
+            //     parent: undefined,
+            //     created: now,
+            //     updated: now,
+            //     content: {
+            //         type: 'markdown',
+            //         data: 'World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world\'s countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.',
+            //     },
+            //     items: {},
+            //     links: {},
+            //     mutation: 0,
+            // },
             {
                 id: '108',
                 nspace, uid,
+                root: '108',
                 parent: undefined,
                 created: now,
                 updated: now,
@@ -114,6 +119,7 @@ export namespace MockBlocks {
             {
                 id: '109',
                 nspace, uid,
+                root: '109',
                 parent: undefined,
                 created: now,
                 updated: now,
@@ -130,6 +136,7 @@ export namespace MockBlocks {
             {
                 id: '111',
                 nspace, uid,
+                root: '109',
                 parent: '109',
                 created: now,
                 updated: now,
@@ -145,6 +152,7 @@ export namespace MockBlocks {
                 id: '106',
                 nspace, uid,
                 parent: '105',
+                root: '102',
                 created: now,
                 updated: now,
                 content: {
@@ -164,6 +172,7 @@ export namespace MockBlocks {
                 id: '107',
                 nspace, uid,
                 parent: undefined,
+                root: '107',
                 created: now,
                 updated: now,
                 content: {
@@ -180,6 +189,7 @@ export namespace MockBlocks {
                 id: '110',
                 nspace, uid,
                 parent: '107',
+                root: '101',
                 created: now,
                 updated: now,
                 content: {
@@ -199,6 +209,7 @@ export namespace MockBlocks {
                 id: '112',
                 nspace, uid,
                 parent: undefined,
+                root: '112',
                 created: now,
                 updated: now,
                 content: {

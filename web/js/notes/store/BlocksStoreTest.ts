@@ -141,20 +141,6 @@ describe('BlocksStore', function() {
         assertJSON(store, {
             "_expanded": {},
             "_index": {
-                "100": {
-                    "_content": {
-                        "_data": "World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world's countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.",
-                        "_type": "markdown"
-                    },
-                    "_created": "2012-03-02T11:38:49.321Z",
-                    "_id": "100",
-                    "_items": {},
-                    "_links": {},
-                    "_mutation": 0,
-                    "_nspace": "ns101",
-                    "_uid": "123",
-                    "_updated": "2012-03-02T11:38:49.321Z"
-                },
                 "102": {
                     "_content": {
                         "_data": "World War II",
@@ -170,6 +156,7 @@ describe('BlocksStore', function() {
                     "_links": {},
                     "_mutation": 0,
                     "_nspace": "ns101",
+                    "_root": "102",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
@@ -185,6 +172,7 @@ describe('BlocksStore', function() {
                     "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "102",
+                    "_root": "102",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
@@ -200,6 +188,7 @@ describe('BlocksStore', function() {
                     "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "102",
+                    "_root": "102",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
@@ -226,6 +215,7 @@ describe('BlocksStore', function() {
                     "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "102",
+                    "_root": "102",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
@@ -246,6 +236,7 @@ describe('BlocksStore', function() {
                     "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "105",
+                    "_root": "102",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
@@ -262,6 +253,7 @@ describe('BlocksStore', function() {
                     "_links": {},
                     "_mutation": 0,
                     "_nspace": "ns101",
+                    "_root": "107",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
@@ -276,6 +268,7 @@ describe('BlocksStore', function() {
                     "_links": {},
                     "_mutation": 0,
                     "_nspace": "ns101",
+                    "_root": "108",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
@@ -292,6 +285,7 @@ describe('BlocksStore', function() {
                     "_links": {},
                     "_mutation": 0,
                     "_nspace": "ns101",
+                    "_root": "109",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
@@ -312,6 +306,7 @@ describe('BlocksStore', function() {
                     "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "107",
+                    "_root": "101",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
@@ -327,6 +322,7 @@ describe('BlocksStore', function() {
                     "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "109",
+                    "_root": "109",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
@@ -341,6 +337,7 @@ describe('BlocksStore', function() {
                     "_links": {},
                     "_mutation": 0,
                     "_nspace": "ns101",
+                    "_root": "112",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 }
@@ -404,7 +401,7 @@ describe('BlocksStore', function() {
 
             const store = createStore();
 
-            assertJSON(store.getBlock('102')?.toJSON(), {
+            assertJSON(store.getBlock('102')?.toJSON(),{
                 "content": {
                     "data": "World War II",
                     "type": "name"
@@ -419,6 +416,7 @@ describe('BlocksStore', function() {
                 "links": {},
                 "mutation": 0,
                 "nspace": "ns101",
+                "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
             });
@@ -443,6 +441,7 @@ describe('BlocksStore', function() {
                 "links": {},
                 "mutation": 1,
                 "nspace": "ns101",
+                "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:50.321Z"
             });
@@ -461,6 +460,7 @@ describe('BlocksStore', function() {
                 "mutation": 1,
                 "nspace": "ns101",
                 "parent": "102",
+                "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:50.321Z"
             });
@@ -488,7 +488,7 @@ describe('BlocksStore', function() {
 
             const store = createStore();
 
-            assertJSON(store.getBlock('102')?.toJSON(), {
+            assertJSON(store.getBlock('102')?.toJSON(),{
                 "content": {
                     "data": "World War II",
                     "type": "name"
@@ -503,6 +503,7 @@ describe('BlocksStore', function() {
                 "links": {},
                 "mutation": 0,
                 "nspace": "ns101",
+                "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
             });
@@ -521,6 +522,7 @@ describe('BlocksStore', function() {
                 "mutation": 0,
                 "nspace": "ns101",
                 "parent": "102",
+                "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
             });
@@ -539,6 +541,7 @@ describe('BlocksStore', function() {
                 "mutation": 1,
                 "nspace": "ns101",
                 "parent": "103",
+                "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
             });
@@ -547,7 +550,7 @@ describe('BlocksStore', function() {
 
             store.unIndentBlock('104');
 
-            assertJSON(store.getBlock('104')?.toJSON(), {
+            assertJSON(store.getBlock('104')?.toJSON(),{
                 "content": {
                     "data": "Axis Powers: Germany, Italy, Japan",
                     "type": "markdown"
@@ -559,6 +562,7 @@ describe('BlocksStore', function() {
                 "mutation": 2,
                 "nspace": "ns101",
                 "parent": "102",
+                "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
             });
@@ -578,6 +582,7 @@ describe('BlocksStore', function() {
                 "links": {},
                 "mutation": 2,
                 "nspace": "ns101",
+                "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
             });
@@ -613,7 +618,6 @@ describe('BlocksStore', function() {
         const store = createStore();
 
         assertJSON(Object.keys(store.index), [
-            "100",
             "102",
             "103",
             "104",
@@ -637,15 +641,20 @@ describe('BlocksStore', function() {
 
         assertJSON(Arrays.first(Object.values(store.index))?.toJSON(), {
             "content": {
-                "data": "World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world's countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.",
-                "type": "markdown"
+                "data": "World War II",
+                "type": "name"
             },
             "created": "2012-03-02T11:38:49.321Z",
-            "id": "100",
-            "items": {},
+            "id": "102",
+            "items": {
+                "1": "103",
+                "2": "104",
+                "3": "105"
+            },
             "links": {},
             "mutation": 0,
             "nspace": "ns101",
+            "root": "102",
             "uid": "123",
             "updated": "2012-03-02T11:38:49.321Z"
         });
@@ -759,6 +768,7 @@ describe('BlocksStore', function() {
                 "mutation": 1,
                 "nspace": "ns101",
                 "parent": "102",
+                "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:50.321Z"
             });
@@ -807,6 +817,7 @@ describe('BlocksStore', function() {
                     "links": {},
                     "mutation": 0,
                     "nspace": "ns101",
+                    "root": "102",
                     "uid": "123",
                     "updated": "2012-03-02T11:38:49.321Z"
                 });
@@ -817,7 +828,7 @@ describe('BlocksStore', function() {
                     block.setContent({type: 'name', data: "World War Two"})
                 })
 
-                assertJSON(block?.toJSON(), {
+                assertJSON(block?.toJSON(),{
                     "content": {
                         "data": "World War Two",
                         "type": "name"
@@ -832,6 +843,7 @@ describe('BlocksStore', function() {
                     "links": {},
                     "mutation": 1,
                     "nspace": "ns101",
+                    "root": "102",
                     "uid": "123",
                     "updated": "2012-03-02T11:38:50.321Z"
                 });
@@ -880,7 +892,7 @@ describe('BlocksStore', function() {
 
             const block = store.getBlock('102');
 
-            assertJSON(block?.toJSON(),{
+            assertJSON(block?.toJSON(), {
                 "content": {
                     "data": "World War II",
                     "type": "name"
@@ -894,6 +906,7 @@ describe('BlocksStore', function() {
                 "links": {},
                 "mutation": 1,
                 "nspace": "ns101",
+                "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
             })
@@ -911,7 +924,7 @@ describe('BlocksStore', function() {
 
             const block = store.getBlock('102');
 
-            assertJSON(block?.toJSON(), {
+            assertJSON(block?.toJSON(),{
                 "content": {
                     "data": "World War II",
                     "type": "name"
@@ -922,6 +935,7 @@ describe('BlocksStore', function() {
                 "links": {},
                 "mutation": 3,
                 "nspace": "ns101",
+                "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
             })
@@ -1043,6 +1057,7 @@ describe('BlocksStore', function() {
                     "links": {},
                     "mutation": 1,
                     "nspace": "ns101",
+                    "root": "102",
                     "uid": "123",
                     "updated": "2012-03-02T11:38:49.321Z"
                 });
@@ -1073,6 +1088,7 @@ describe('BlocksStore', function() {
                     "mutation": 1,
                     "nspace": "ns101",
                     "parent": "102",
+                    "root": "102",
                     "uid": "123",
                     "updated": "2012-03-02T11:38:49.321Z"
                 });
@@ -1089,6 +1105,7 @@ describe('BlocksStore', function() {
                     "mutation": 0,
                     "nspace": "ns101",
                     "parent": "102",
+                    "root": "102",
                     "uid": "1234",
                     "updated": "2012-03-02T11:38:49.321Z"
                 });
