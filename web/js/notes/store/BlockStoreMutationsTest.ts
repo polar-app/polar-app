@@ -114,6 +114,59 @@ describe('BlockStoreMutations', () => {
         });
 
     });
+    describe("computeItemPositionPatches", () => {
+
+        it("remove", () => {
+
+            assertJSON(BlockStoreMutations.computeItemPositionPatches(PositionalArrays.create(['1']), PositionalArrays.create([])), [
+                {
+                    "type": "remove",
+                    "key": "1",
+                    "id": "1"
+                }
+            ]);
+
+        });
+
+        it("unshift", () => {
+
+            assertJSON(BlockStoreMutations.computeItemPositionPatches(PositionalArrays.create([]), PositionalArrays.create(['1'])), [
+                {
+                    "type": "insert",
+                    "key": "1",
+                    "id": "1"
+                }
+            ]);
+
+        });
+
+        it("insert after", () => {
+
+            assertJSON(BlockStoreMutations.computeItemPositionPatches(PositionalArrays.create(['1']), PositionalArrays.create(['1', '2'])), [
+                {
+                    "type": "insert",
+                    "key": "2",
+                    "id": "2"
+                }
+            ]);
+
+        });
+
+
+        it("insert before", () => {
+
+            assertJSON(BlockStoreMutations.computeItemPositionPatches(PositionalArrays.create(['1']), PositionalArrays.create(['2', '1'])), [
+                {
+                    "type": "insert",
+                    "key": "1",
+                    "id": "2"
+                }
+            ]);
+
+        });
+
+
+    });
 
 
 });

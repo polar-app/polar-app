@@ -1,9 +1,6 @@
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
 import {assertJSON} from "../../test/Assertions";
-import {IBlock, IBlockLink} from "./IBlock";
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {BlockIDStr, BlocksStore, IBlockContent} from "./BlocksStore";
-import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {BlocksStore} from "./BlocksStore";
 import {IMarkdownContent} from "../content/IMarkdownContent";
 import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
 import {UndoQueues2} from "../../undo/UndoQueues2";
@@ -324,60 +321,6 @@ describe("BlocksStoreUndoQueues", () => {
             assertJSON(identifiers, [
                 "105",
                 "106"
-            ]);
-
-        });
-
-
-    });
-
-    describe("computeItemPositionPatches", () => {
-
-        it("remove", () => {
-
-            assertJSON(BlocksStoreUndoQueues.computeItemPositionPatches(PositionalArrays.create(['1']), PositionalArrays.create([])), [
-                {
-                    "type": "remove",
-                    "key": "1",
-                    "id": "1"
-                }
-            ]);
-
-        });
-
-        it("unshift", () => {
-
-            assertJSON(BlocksStoreUndoQueues.computeItemPositionPatches(PositionalArrays.create([]), PositionalArrays.create(['1'])), [
-                {
-                    "type": "insert",
-                    "key": "1",
-                    "id": "1"
-                }
-            ]);
-
-        });
-
-        it("insert after", () => {
-
-            assertJSON(BlocksStoreUndoQueues.computeItemPositionPatches(PositionalArrays.create(['1']), PositionalArrays.create(['1', '2'])), [
-                {
-                    "type": "insert",
-                    "key": "2",
-                    "id": "2"
-                }
-            ]);
-
-        });
-
-
-        it("insert before", () => {
-
-            assertJSON(BlocksStoreUndoQueues.computeItemPositionPatches(PositionalArrays.create(['1']), PositionalArrays.create(['2', '1'])), [
-                {
-                    "type": "insert",
-                    "key": "1",
-                    "id": "2"
-                }
             ]);
 
         });

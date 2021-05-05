@@ -18,6 +18,8 @@ export namespace BlocksStoreUndoQueues {
     import IBlocksStoreMutationAdded = BlockStoreMutations.IBlocksStoreMutationAdded;
     import IBlocksStoreMutationRemoved = BlockStoreMutations.IBlocksStoreMutationRemoved;
     import computeMutationTargets = BlockStoreMutations.computeMutationTargets;
+    import IItemsPositionPatch = BlockStoreMutations.IItemsPositionPatch;
+    import computeItemPositionPatches = BlockStoreMutations.computeItemPositionPatches;
 
     export interface IUndoMutation {
         readonly parent: IBlock | undefined;
@@ -553,68 +555,5 @@ export namespace BlocksStoreUndoQueues {
 
     }
 
-    /**
-     * Instruction to remove and item from the items.
-     */
-    export interface IItemsPositionPatchRemove {
-        readonly type: 'remove';
-        readonly key: PositionalArrayPositionStr;
-        readonly id: BlockIDStr;
-    }
-
-    export interface IItemsPositionPatchInsert {
-        readonly type: 'insert';
-        readonly key: PositionalArrayPositionStr;
-        readonly id: BlockIDStr
-    }
-
-    export type IItemsPositionPatch = IItemsPositionPatchRemove | IItemsPositionPatchInsert;
-
-    // TODO: Why did we go with the exact remove/insert model? I think this is
-    // actually wrong because if we undo/redo it's better to have the position
-    // in the tree to avoid a collision with another edit.
-    export function computeItemPositionPatches(before: PositionalArray<BlockIDStr>,
-                                               after: PositionalArray<BlockIDStr>): ReadonlyArray<IItemsPositionPatch> {
-
-        const removed = SetArrays.difference(PositionalArrays.toArray(before), PositionalArrays.toArray(after));
-        const added = SetArrays.difference(PositionalArrays.toArray(after), PositionalArrays.toArray(before));
-
-        const toRemoved = (id: BlockIDStr): IItemsPositionPatchRemove => {
-
-            const key = PositionalArrays.keyForValue(before, id);
-
-            if (key === undefined) {
-                throw new Error("Could know find key for value: " + id);
-            }
-
-            return {
-                type: 'remove',
-                key,
-                id
-            };
-        }
-
-        const toAdded = (id: BlockIDStr): IItemsPositionPatchInsert => {
-
-            const key = PositionalArrays.keyForValue(after, id);
-
-            if (key === undefined) {
-                throw new Error("Could know find key for value: " + id);
-            }
-
-            return {
-                type: 'insert',
-                key,
-                id
-            }
-
-        }
-
-        return [
-            ...removed.map(toRemoved),
-            ...added.map(toAdded)
-        ];
-
-    }
 
 }
