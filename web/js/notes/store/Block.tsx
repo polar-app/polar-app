@@ -9,7 +9,8 @@ import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 import PositionalArrayPositionStr = PositionalArrays.PositionalArrayPositionStr;
 import deepEqual from "deep-equal";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
-import IItemsPositionPatch = BlocksStoreUndoQueues.IItemsPositionPatch;
+import {BlockStoreMutations} from "./BlockStoreMutations";
+import IItemsPositionPatch = BlockStoreMutations.IItemsPositionPatch;
 
 /**
  * Opts for withMutation normally used for undo.
