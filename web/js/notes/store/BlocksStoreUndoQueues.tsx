@@ -7,51 +7,24 @@ import {UndoQueues2} from "../../undo/UndoQueues2";
 import {PositionalArrays} from "./PositionalArrays";
 import {IWithMutationOpts} from "./Block";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {BlockStoreMutations} from "./BlockStoreMutations";
 
 export namespace BlocksStoreUndoQueues {
 
     import PositionalArray = PositionalArrays.PositionalArray;
     import PositionalArrayPositionStr = PositionalArrays.PositionalArrayPositionStr;
+    import IBlocksStoreMutation = BlockStoreMutations.IBlocksStoreMutation;
+    import IBlocksStoreMutationUpdated = BlockStoreMutations.IBlocksStoreMutationUpdated;
+    import IBlocksStoreMutationAdded = BlockStoreMutations.IBlocksStoreMutationAdded;
+    import IBlocksStoreMutationRemoved = BlockStoreMutations.IBlocksStoreMutationRemoved;
 
     export interface IUndoMutation {
         readonly parent: IBlock | undefined;
         readonly child: IBlock;
     }
 
-    export type BlockUpdateMutationType = 'added' | 'removed' | 'updated';
-
-    export interface IBlocksStoreMutationAdded {
-        readonly id: BlockIDStr;
-        readonly type: 'added';
-
-        /**
-         * The actual block added.
-         */
-        readonly before: IBlock;
-
-    }
-
-    export interface IBlocksStoreMutationRemoved {
-
-        readonly id: BlockIDStr;
-        readonly type: 'removed';
-
-        /**
-         * The actual block removed.
-         */
-        readonly before: IBlock;
-
-    }
-    export interface IBlocksStoreMutationUpdated {
-        readonly id: BlockIDStr;
-        readonly type: 'updated';
-        readonly before: IBlock;
-        readonly after: IBlock;
-    }
-
-    export type IBlocksStoreMutation = IBlocksStoreMutationAdded | IBlocksStoreMutationRemoved | IBlocksStoreMutationUpdated;
-
     export interface IUndoCapture {
+
         readonly capture: () => void;
 
         /**
