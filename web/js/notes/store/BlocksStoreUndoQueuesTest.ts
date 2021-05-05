@@ -5,45 +5,16 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {BlockIDStr, BlocksStore, IBlockContent} from "./BlocksStore";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IMarkdownContent} from "../content/IMarkdownContent";
-import {assert} from 'chai';
 import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {JSDOMParser} from "./BlocksStoreTest";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {PositionalArrays} from "./PositionalArrays";
-import PositionalArray = PositionalArrays.PositionalArray;
-import IBlocksStoreMutation = BlocksStoreUndoQueues.IBlocksStoreMutation;
+import {BlockStoreTests} from "./BlockStoreTests";
+import createBasicBlock = BlockStoreTests.createBasicBlock;
+import {BlockStoreMutations} from "./BlockStoreMutations";
+import IBlocksStoreMutation = BlockStoreMutations.IBlocksStoreMutation;
 
-interface IBasicBlockOpts<C> {
-    readonly id?: BlockIDStr;
-    readonly root: BlockIDStr;
-    readonly parent?: BlockIDStr;
-    readonly content: C;
-    readonly items?: PositionalArray<BlockIDStr>;
-    readonly links?: PositionalArray<IBlockLink>;
-    readonly mutation?: number;
-}
-function createBasicBlock<C extends IBlockContent = IBlockContent>(opts: IBasicBlockOpts<C>): IBlock<C> {
-
-    const nspace = '234'
-    const uid = '1234'
-    const created = ISODateTimeStrings.create();
-
-    return {
-        id: opts.id || Hashcodes.createRandomID(),
-        nspace,
-        uid,
-        created,
-        updated: created,
-        ...opts,
-        root: opts.root,
-        parent: opts.parent || undefined,
-        items: opts.items || {},
-        links: opts.links || {},
-        mutation: opts.mutation || 0
-    }
-
-}
 
 function createStore() {
     const blocks = MockBlocks.create();
@@ -360,7 +331,7 @@ describe("BlocksStoreUndoQueues", () => {
 
     });
 
-    describe("computeMutationType", () => {
+    describe("computeMutationTargets", () => {
 
         it("items", () => {
 
