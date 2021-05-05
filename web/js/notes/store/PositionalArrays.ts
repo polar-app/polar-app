@@ -67,17 +67,21 @@ export namespace PositionalArrays {
         return Object.entries(positionalArray);
     }
 
+    export function compare<T>(a: PositionalArrayEntry<T>, b: PositionalArrayEntry<T>) {
+        return parseFloat(a[0]) - parseFloat(b[0]);
+    }
+
     export function insert<T>(positionalArray: PositionalArray<T>,
                               ref: T,
                               value: T,
                               pos: 'before' | 'after'): PositionalArray<T> {
 
         const sorted = arrayStream(entries(positionalArray))
-            .sort((a, b) => parseFloat(a[0]) - parseFloat(b[0]))
+            .sort((a, b) => compare(a, b))
             .collect();
 
         const pointers = arrayStream(Tuples.createSiblings(sorted))
-              .sort((a, b) => parseFloat(a.curr[0]) - parseFloat(b.curr[0]))
+              .sort((a, b) => compare(a.curr, b.curr))
               .collect();
 
         const ptr = arrayStream(pointers)

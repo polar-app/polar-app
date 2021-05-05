@@ -67,23 +67,31 @@ export interface IBlocksStore {
     setActiveWithPosition(active: BlockIDStr | undefined,
                           activePos: NavPosition | undefined): void;
 
+    // TODO: undo
     expand(id: BlockIDStr): void;
+    // TODO: undo
     collapse(id: BlockIDStr): void;
+
     toggleExpand(id: BlockIDStr): void;
+
     setSelectionRange(fromBlock: BlockIDStr, toBlock: BlockIDStr): void;
 
     isExpanded(id: BlockIDStr): boolean;
     isSelected(id: BlockIDStr): boolean;
 
+    // TODO: undo / cursor
     indentBlock(id: BlockIDStr): ReadonlyArray<DoIndentResult>;
+    // TODO: undo / cursor
     unIndentBlock(id: BlockIDStr): ReadonlyArray<DoUnIndentResult>;
 
     requiredAutoUnIndent(id: BlockIDStr): boolean;
 
+    // TODO: undo / cursor
     deleteBlocks(blockIDs: ReadonlyArray<BlockIDStr>): void;
 
     updateBlocks(blocks: ReadonlyArray<IBlock>): void;
 
+    // TODO: undo / cursor
     createNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock | undefined;
 
     createLinkToBlock<C extends IBlockContent = IBlockContent>(sourceID: BlockIDStr,
