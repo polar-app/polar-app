@@ -4,6 +4,7 @@ import {BlockStoreMutations} from "../store/BlockStoreMutations";
 import IBlocksStoreMutation = BlockStoreMutations.IBlocksStoreMutation;
 import {BlockIDStr} from "../store/BlocksStore";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import firebase from 'firebase';
 
 export interface IBlocksPersistence {
 
@@ -17,55 +18,28 @@ export function useBlocksPersistence() {
 
     return React.useCallback((mutations: ReadonlyArray<IBlocksStoreMutation>) => {
 
-        // FIXME: convert the firestore mutations to a batch...
+        const firestoreMutations = BlocksPersistence.convertToFirestoreMutations(mutations);
 
         const collection = firestore.collection('block');
         const batch = firestore.batch();
 
-        // FIXME: make this testable so that we convert the mutations to
-        // firestore direct operations.
-        for(const mutation of mutations) {
+        // convert the firestore mutations to a batch...
+        for(const firestoreMutation of firestoreMutations) {
 
-            const doc = collection.doc(mutation.id);
+            const doc = collection.doc(firestoreMutation.id);
 
-            switch (mutation.type) {
+            switch (firestoreMutation.type) {
 
-                case "added":
-                    batch.set(doc, mutation.before);
+                case "set-doc":
+                    batch.set(doc, firestoreMutation.value);
                     break;
-                case "removed":
+                case "delete-doc":
                     batch.delete(doc)
                     break;
-                case "updated":
-
-                    // FIXME: we have to compute the operation types here and
-                    // patch the datastore with updatesd. because we have to
-                    // patch teh fields..
-
-                    const mutationTargets = BlockStoreMutations.computeMutationTargets(mutation.before, mutation.after);
-
-                    // FIXME: compute the patch changes to the items.
-
-                    const setData: any = {
-                        updated: mutation.after.updated,
-                        mutation: mutation.after.mutation,
-                    }
-
-                    if (mutationTargets.includes('items')) {
-                        setData.parent = mutation.after.parent;
-                    }
-
-                    if (mutationTargets.includes('parent')) {
-                        setData.parent = mutation.after.parent;
-                    }
-
-                    if (mutationTargets.includes('content')) {
-                        setData.content = mutation.after.content;
-                        setData.links = mutation.after.links;
-                    }
-
-                    // batch.update(doc, ...setData);
-
+                case "update-path":
+                    batch.update(doc, firestoreMutation.path, firestoreMutation.value)
+                case "update-delete-field-value":
+                    batch.update(doc, firestoreMutation.path, firebase.firestore.FieldValue.delete())
                     break;
 
             }
@@ -81,6 +55,10 @@ export namespace BlocksPersistence {
     import MutationTarget = BlockStoreMutations.MutationTarget;
     import IItemsPositionPatch = BlockStoreMutations.IItemsPositionPatch;
 
+    /**
+     * Convert the mutation for Firestore mutations which can then me mapped
+     * directly to a Firestore Batch.
+     */
     export function convertToFirestoreMutations(mutations: ReadonlyArray<IBlocksStoreMutation>): ReadonlyArray<IFirestoreMutation> {
 
         const toFirestoreMutation = (mutation: IBlocksStoreMutation): ReadonlyArray<IFirestoreMutation> => {

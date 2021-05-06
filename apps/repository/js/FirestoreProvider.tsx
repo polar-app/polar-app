@@ -5,12 +5,11 @@ import {Firebase} from "../../../web/js/firebase/Firebase";
 import {deepMemo} from "../../../web/js/react/ReactUtils";
 import {useAsyncWithError} from "../../../web/js/hooks/ReactLifecycleHooks";
 import firebase from 'firebase/app'
-import {IFirestore} from "polar-snapshot-cache/src/store/IFirestore";
 
 export interface IFirestoreContext {
     readonly uid: string | undefined;
     readonly user: firebase.User | undefined;
-    readonly firestore: IFirestore;
+    readonly firestore: firebase.firestore.Firestore;
 }
 
 // Firestore context which will now ALWAYS be defined anywhere in the app as
