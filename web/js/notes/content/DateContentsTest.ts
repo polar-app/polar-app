@@ -46,7 +46,7 @@ describe('DateContents', function() {
             "timezone": "America/Bogota",
             "type": "date"
         });
-        //
+
         // assertJSON(DateContents.create({timezone: "America/Bogota", locale: 'ja-JP'}), {
         //     "data": "Enero 5, 2012",
         //     "format": "MMMM D, YYYY",
