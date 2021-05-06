@@ -42,9 +42,21 @@ export interface IBlock<C extends IBlockContent = IBlockContent> {
 
     readonly uid: UIDStr;
 
+    /**
+     * The root parent of this block.
+     */
     readonly root: BlockIDStr;
 
+    /**
+     * The immediate parent of this block.
+     */
     readonly parent: BlockIDStr | undefined;
+
+    /**
+     * All parents as a path back to the root.  This will be an empty array if
+     * its the root.
+     */
+    // readonly parents: ReadonlyArray<BlockIDStr>;
 
     readonly created: ISODateTimeString;
 
@@ -68,13 +80,20 @@ export interface IBlock<C extends IBlockContent = IBlockContent> {
     readonly mutation: TMutation;
 
     /**
-     * Specify the heading type of this note. Changes the formatting of the note for markdown content
+     * Specify the heading type of this note. Changes the formatting of the note
+     * for markdown content.  The default is 'normal'
      */
-    // readonly heading: 'h1' | 'h2' | 'h3'
+    // readonly heading?: 'normal' | 'h1' | 'h2' | 'h3'
 
     /**
-     * Specify how the items are rendered. Should they be bullets or numbered or not shown (document)
+     * Specify how the items are rendered. Should they be bullets or numbered or
+     * not shown (document). The default is 'bullet'
      */
-    // readonly itemsViewType: 'bullet' | 'document' | 'numbered';
+    // readonly itemsViewType?: 'bullet' | 'document' | 'numbered';
+
+    /**
+     * Specify how an item is aligned (left is the default).
+     */
+    // readonly alignment?: 'left' | 'center' | 'right';
 
 }
