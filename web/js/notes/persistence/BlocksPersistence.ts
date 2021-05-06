@@ -9,18 +9,6 @@ import {IBlock} from "../store/IBlock";
 import {IQuerySnapshot} from "polar-snapshot-cache/src/store/IQuerySnapshot";
 import {IDocumentChange} from "polar-snapshot-cache/src/store/IDocumentChange";
 
-export interface IBlocksPersistence {
-
-    /**
-     * Write to the persistence layer by taking the raw mutations and mapping
-     * them to Firestore primitives
-     *
-     * @param mutations
-     */
-    write(mutations: ReadonlyArray<IBlocksStoreMutation>): Promise<void>;
-
-}
-
 export type BlocksPersistenceWriter = (mutations: ReadonlyArray<IBlocksStoreMutation>) => Promise<void>;
 
 export function useFirestoreBlocksPersistenceWriter(): BlocksPersistenceWriter {
@@ -252,7 +240,7 @@ export interface IBlocksPersistenceSnapshot {
 /**
  * This is just a hook that will be re-called from within the UI...
  */
-export type BlocksPersistenceSnapshotHook = () => IBlocksPersistenceSnapshot;
+export type BlocksPersistenceSnapshotsHook = () => IBlocksPersistenceSnapshot;
 
 /**
  * Use blocks to create mock snapshots where everything is 'added'
@@ -292,7 +280,7 @@ export function createEmptyBlocksPersistenceSnapshot(): IBlocksPersistenceSnapsh
 
 }
 
-export function useFirestoreBlocksPersistenceSnapshot(): IBlocksPersistenceSnapshot {
+export function useFirestoreBlocksPersistenceSnapshots(): IBlocksPersistenceSnapshot {
 
     const {user, firestore} = useFirestore();
     const [snapshot, setSnapshot] = React.useState<IBlocksPersistenceSnapshot>(createEmptyBlocksPersistenceSnapshot());
