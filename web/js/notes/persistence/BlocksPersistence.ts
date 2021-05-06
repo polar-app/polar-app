@@ -18,11 +18,11 @@ export interface IBlocksPersistence {
 
 }
 
-export function useBlocksPersistence() {
+export function useFirestoreBlocksPersistence() {
 
     const {firestore} = useFirestore();
 
-    return React.useCallback((mutations: ReadonlyArray<IBlocksStoreMutation>) => {
+    return React.useCallback(async (mutations: ReadonlyArray<IBlocksStoreMutation>) => {
 
         const firestoreMutations = BlocksPersistence.convertToFirestoreMutations(mutations);
 
@@ -51,6 +51,8 @@ export function useBlocksPersistence() {
             }
 
         }
+
+        await batch.commit();
 
     }, [firestore]);
 
