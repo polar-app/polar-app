@@ -67,5 +67,14 @@ export interface IBlock<C extends IBlockContent = IBlockContent> {
      */
     readonly mutation: TMutation;
 
+    /**
+     * Specify the heading type of this note. Changes the formatting of the note for markdown content
+     */
+    // readonly heading: 'h1' | 'h2' | 'h3'
+
+    /**
+     * Specify how the items are rendered. Should they be bullets or numbered or not shown (document)
+     */
+    // readonly itemsViewType: 'bullet' | 'document' | 'numbered';
 
 }
