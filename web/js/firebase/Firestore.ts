@@ -40,11 +40,11 @@ export namespace Firestore {
         return instance;
     }
 
-    export async function getInstance(): Promise<firebase.firestore.Firestore> {
+    export async function getInstance(): Promise<IFirestore> {
         await init();
 
-        return instance!;
-        // return await StoreCaches.create().build(instance! as any)
+        // return instance!;
+        return await StoreCaches.create().build(instance! as any)
 
     }
 
