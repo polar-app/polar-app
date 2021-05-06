@@ -1,11 +1,11 @@
 import {IMarkdownContent} from "../content/IMarkdownContent";
 import {PositionalArrays} from "./PositionalArrays";
 import {assertJSON} from "../../test/Assertions";
-import {BlockStoreTests} from "./BlockStoreTests";
-import createBasicBlock = BlockStoreTests.createBasicBlock;
-import {BlockStoreMutations} from "./BlockStoreMutations";
+import {BlocksStoreTests} from "./BlocksStoreTests";
+import createBasicBlock = BlocksStoreTests.createBasicBlock;
+import {BlocksStoreMutations} from "./BlocksStoreMutations";
 
-describe('BlockStoreMutations', () => {
+describe('BlocksStoreMutations', () => {
 
     describe("computeMutationTargets", () => {
 
@@ -14,6 +14,7 @@ describe('BlockStoreMutations', () => {
             const before = createBasicBlock<IMarkdownContent>({
                 root: "100",
                 parent: "100",
+                parents: ["100"],
                 content: {
                     type: 'markdown',
                     data: 'hello world',
@@ -24,6 +25,7 @@ describe('BlockStoreMutations', () => {
             const after = createBasicBlock<IMarkdownContent>({
                 root: "100",
                 parent: "100",
+                parents: ["100"],
                 content: {
                     type: 'markdown',
                     data: 'hello world'
@@ -31,7 +33,7 @@ describe('BlockStoreMutations', () => {
                 items: PositionalArrays.create(['1', '2', '3'])
             });
 
-            assertJSON(BlockStoreMutations.computeMutationTargets(before, after), ['items']);
+            assertJSON(BlocksStoreMutations.computeMutationTargets(before, after), ['items']);
 
         });
 
@@ -40,6 +42,7 @@ describe('BlockStoreMutations', () => {
             const before = createBasicBlock<IMarkdownContent>({
                 root: "100",
                 parent: "100",
+                parents: ["100"],
                 content: {
                     type: 'markdown',
                     data: 'hello world'
@@ -49,13 +52,14 @@ describe('BlockStoreMutations', () => {
             const after = createBasicBlock<IMarkdownContent>({
                 root: "100",
                 parent: "100",
+                parents: ["100"],
                 content: {
                     type: 'markdown',
                     data: 'hello world 2'
                 }
             });
 
-            assertJSON(BlockStoreMutations.computeMutationTargets(before, after), ['content']);
+            assertJSON(BlocksStoreMutations.computeMutationTargets(before, after), ['content']);
 
         });
 
@@ -64,6 +68,7 @@ describe('BlockStoreMutations', () => {
             const before = createBasicBlock<IMarkdownContent>({
                 root: "100",
                 parent: "100",
+                parents: ["100"],
                 content: {
                     type: 'markdown',
                     data: 'hello world'
@@ -74,6 +79,7 @@ describe('BlockStoreMutations', () => {
             const after = createBasicBlock<IMarkdownContent>({
                 root: "100",
                 parent: "100",
+                parents: ["100"],
                 content: {
                     type: 'markdown',
                     data: 'hello world 2'
@@ -82,7 +88,7 @@ describe('BlockStoreMutations', () => {
 
             });
 
-            assertJSON(BlockStoreMutations.computeMutationTargets(before, after), ['items', 'content']);
+            assertJSON(BlocksStoreMutations.computeMutationTargets(before, after), ['items', 'content']);
 
         });
 
@@ -91,6 +97,7 @@ describe('BlockStoreMutations', () => {
             const before = createBasicBlock<IMarkdownContent>({
                 root: "100",
                 parent: "100",
+                parents: ["100"],
                 content: {
                     type: 'markdown',
                     data: 'hello world'
@@ -101,6 +108,7 @@ describe('BlockStoreMutations', () => {
             const after = createBasicBlock<IMarkdownContent>({
                 root: "100",
                 parent: "100",
+                parents: ["100"],
                 content: {
                     type: 'markdown',
                     data: 'hello world'
@@ -109,7 +117,7 @@ describe('BlockStoreMutations', () => {
 
             });
 
-            assertJSON(BlockStoreMutations.computeMutationTargets(before, after), []);
+            assertJSON(BlocksStoreMutations.computeMutationTargets(before, after), []);
 
         });
 
@@ -118,7 +126,7 @@ describe('BlockStoreMutations', () => {
 
         it("remove", () => {
 
-            assertJSON(BlockStoreMutations.computeItemPositionPatches(PositionalArrays.create(['1']), PositionalArrays.create([])), [
+            assertJSON(BlocksStoreMutations.computeItemPositionPatches(PositionalArrays.create(['1']), PositionalArrays.create([])), [
                 {
                     "type": "remove",
                     "key": "1",
@@ -130,7 +138,7 @@ describe('BlockStoreMutations', () => {
 
         it("unshift", () => {
 
-            assertJSON(BlockStoreMutations.computeItemPositionPatches(PositionalArrays.create([]), PositionalArrays.create(['1'])), [
+            assertJSON(BlocksStoreMutations.computeItemPositionPatches(PositionalArrays.create([]), PositionalArrays.create(['1'])), [
                 {
                     "type": "insert",
                     "key": "1",
@@ -142,7 +150,7 @@ describe('BlockStoreMutations', () => {
 
         it("insert after", () => {
 
-            assertJSON(BlockStoreMutations.computeItemPositionPatches(PositionalArrays.create(['1']), PositionalArrays.create(['1', '2'])), [
+            assertJSON(BlocksStoreMutations.computeItemPositionPatches(PositionalArrays.create(['1']), PositionalArrays.create(['1', '2'])), [
                 {
                     "type": "insert",
                     "key": "2",
@@ -155,7 +163,7 @@ describe('BlockStoreMutations', () => {
 
         it("insert before", () => {
 
-            assertJSON(BlockStoreMutations.computeItemPositionPatches(PositionalArrays.create(['1']), PositionalArrays.create(['2', '1'])), [
+            assertJSON(BlocksStoreMutations.computeItemPositionPatches(PositionalArrays.create(['1']), PositionalArrays.create(['2', '1'])), [
                 {
                     "type": "insert",
                     "key": "1",

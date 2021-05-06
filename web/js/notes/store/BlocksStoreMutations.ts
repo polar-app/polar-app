@@ -4,7 +4,7 @@ import deepEqual from "deep-equal";
 import {PositionalArrays} from "./PositionalArrays";
 import {SetArrays} from "polar-shared/src/util/SetArrays";
 
-export namespace BlockStoreMutations {
+export namespace BlocksStoreMutations {
 
     import PositionalArrayPositionStr = PositionalArrays.PositionalArrayPositionStr;
     import PositionalArray = PositionalArrays.PositionalArray;
@@ -56,7 +56,7 @@ export namespace BlockStoreMutations {
      * - items-and-content: both the items and content were changed.
      *
      */
-    export type MutationTarget = 'items' | 'content' | 'parent';
+    export type MutationTarget = 'items' | 'content' | 'parent' | 'parents';
 
     /**
      * Given a before block, and an after block, compute the mutations that were
@@ -64,17 +64,18 @@ export namespace BlockStoreMutations {
      */
     export function computeMutationTargets(before: IBlock, after: IBlock): ReadonlyArray<MutationTarget> {
 
-        const itemsMuted = ! deepEqual(before.items, after.items);
-        const contentMuted = ! deepEqual(before.content, after.content);
-
         const result: MutationTarget[] = [];
 
-        if (itemsMuted) {
+        if (! deepEqual(before.items, after.items)) {
             result.push('items');
         }
 
-        if (contentMuted) {
+        if (! deepEqual(before.content, after.content)) {
             result.push('content');
+        }
+
+        if (! deepEqual(before.parents, after.parents)) {
+            result.push('parents');
         }
 
         if (before.parent !== after.parent) {

@@ -156,6 +156,7 @@ describe('BlocksStore', function() {
                     "_links": {},
                     "_mutation": 0,
                     "_nspace": "ns101",
+                    "_parents": [],
                     "_root": "102",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
@@ -172,6 +173,9 @@ describe('BlocksStore', function() {
                     "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "102",
+                    "_parents": [
+                        "102"
+                    ],
                     "_root": "102",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
@@ -188,6 +192,9 @@ describe('BlocksStore', function() {
                     "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "102",
+                    "_parents": [
+                        "102"
+                    ],
                     "_root": "102",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
@@ -215,6 +222,9 @@ describe('BlocksStore', function() {
                     "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "102",
+                    "_parents": [
+                        "102"
+                    ],
                     "_root": "102",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
@@ -236,6 +246,10 @@ describe('BlocksStore', function() {
                     "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "105",
+                    "_parents": [
+                        "102",
+                        "105"
+                    ],
                     "_root": "102",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
@@ -253,6 +267,7 @@ describe('BlocksStore', function() {
                     "_links": {},
                     "_mutation": 0,
                     "_nspace": "ns101",
+                    "_parents": [],
                     "_root": "107",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
@@ -268,6 +283,7 @@ describe('BlocksStore', function() {
                     "_links": {},
                     "_mutation": 0,
                     "_nspace": "ns101",
+                    "_parents": [],
                     "_root": "108",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
@@ -285,6 +301,7 @@ describe('BlocksStore', function() {
                     "_links": {},
                     "_mutation": 0,
                     "_nspace": "ns101",
+                    "_parents": [],
                     "_root": "109",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
@@ -306,6 +323,9 @@ describe('BlocksStore', function() {
                     "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "107",
+                    "_parents": [
+                        "107"
+                    ],
                     "_root": "101",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
@@ -322,6 +342,9 @@ describe('BlocksStore', function() {
                     "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "109",
+                    "_parents": [
+                        "109"
+                    ],
                     "_root": "109",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
@@ -337,6 +360,7 @@ describe('BlocksStore', function() {
                     "_links": {},
                     "_mutation": 0,
                     "_nspace": "ns101",
+                    "_parents": [],
                     "_root": "112",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
@@ -416,6 +440,7 @@ describe('BlocksStore', function() {
                 "links": {},
                 "mutation": 0,
                 "nspace": "ns101",
+                "parents": [],
                 "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
@@ -441,6 +466,7 @@ describe('BlocksStore', function() {
                 "links": {},
                 "mutation": 1,
                 "nspace": "ns101",
+                "parents": [],
                 "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:50.321Z"
@@ -460,6 +486,9 @@ describe('BlocksStore', function() {
                 "mutation": 1,
                 "nspace": "ns101",
                 "parent": "102",
+                "parents": [
+                    "102"
+                ],
                 "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:50.321Z"
@@ -503,6 +532,7 @@ describe('BlocksStore', function() {
                 "links": {},
                 "mutation": 0,
                 "nspace": "ns101",
+                "parents": [],
                 "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
@@ -522,6 +552,9 @@ describe('BlocksStore', function() {
                 "mutation": 0,
                 "nspace": "ns101",
                 "parent": "102",
+                "parents": [
+                    "102"
+                ],
                 "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
@@ -541,6 +574,9 @@ describe('BlocksStore', function() {
                 "mutation": 1,
                 "nspace": "ns101",
                 "parent": "103",
+                "parents": [
+                    "102", "103"
+                ],
                 "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
@@ -562,6 +598,9 @@ describe('BlocksStore', function() {
                 "mutation": 2,
                 "nspace": "ns101",
                 "parent": "102",
+                "parents": [
+                    "102"
+                ],
                 "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
@@ -582,6 +621,7 @@ describe('BlocksStore', function() {
                 "links": {},
                 "mutation": 2,
                 "nspace": "ns101",
+                "parents": [],
                 "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
@@ -654,6 +694,7 @@ describe('BlocksStore', function() {
             "links": {},
             "mutation": 0,
             "nspace": "ns101",
+            "parents": [],
             "root": "102",
             "uid": "123",
             "updated": "2012-03-02T11:38:49.321Z"
@@ -768,6 +809,9 @@ describe('BlocksStore', function() {
                 "mutation": 1,
                 "nspace": "ns101",
                 "parent": "102",
+                "parents": [
+                    "102"
+                ],
                 "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:50.321Z"
@@ -817,6 +861,7 @@ describe('BlocksStore', function() {
                     "links": {},
                     "mutation": 0,
                     "nspace": "ns101",
+                    "parents": [],
                     "root": "102",
                     "uid": "123",
                     "updated": "2012-03-02T11:38:49.321Z"
@@ -843,6 +888,7 @@ describe('BlocksStore', function() {
                     "links": {},
                     "mutation": 1,
                     "nspace": "ns101",
+                    "parents": [],
                     "root": "102",
                     "uid": "123",
                     "updated": "2012-03-02T11:38:50.321Z"
@@ -906,6 +952,7 @@ describe('BlocksStore', function() {
                 "links": {},
                 "mutation": 1,
                 "nspace": "ns101",
+                "parents": [],
                 "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
@@ -935,6 +982,7 @@ describe('BlocksStore', function() {
                 "links": {},
                 "mutation": 3,
                 "nspace": "ns101",
+                "parents": [],
                 "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
@@ -1057,6 +1105,7 @@ describe('BlocksStore', function() {
                     "links": {},
                     "mutation": 1,
                     "nspace": "ns101",
+                    "parents": [],
                     "root": "102",
                     "uid": "123",
                     "updated": "2012-03-02T11:38:49.321Z"
@@ -1088,6 +1137,9 @@ describe('BlocksStore', function() {
                     "mutation": 1,
                     "nspace": "ns101",
                     "parent": "102",
+                    "parents": [
+                        "102"
+                    ],
                     "root": "102",
                     "uid": "123",
                     "updated": "2012-03-02T11:38:49.321Z"
@@ -1105,6 +1157,9 @@ describe('BlocksStore', function() {
                     "mutation": 0,
                     "nspace": "ns101",
                     "parent": "102",
+                    "parents": [
+                        "102"
+                    ],
                     "root": "102",
                     "uid": "1234",
                     "updated": "2012-03-02T11:38:49.321Z"

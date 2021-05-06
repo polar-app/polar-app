@@ -7,19 +7,19 @@ import {UndoQueues2} from "../../undo/UndoQueues2";
 import {PositionalArrays} from "./PositionalArrays";
 import {IWithMutationOpts} from "./Block";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {BlockStoreMutations} from "./BlockStoreMutations";
+import {BlocksStoreMutations} from "./BlocksStoreMutations";
 
 export namespace BlocksStoreUndoQueues {
 
     import PositionalArray = PositionalArrays.PositionalArray;
     import PositionalArrayPositionStr = PositionalArrays.PositionalArrayPositionStr;
-    import IBlocksStoreMutation = BlockStoreMutations.IBlocksStoreMutation;
-    import IBlocksStoreMutationUpdated = BlockStoreMutations.IBlocksStoreMutationUpdated;
-    import IBlocksStoreMutationAdded = BlockStoreMutations.IBlocksStoreMutationAdded;
-    import IBlocksStoreMutationRemoved = BlockStoreMutations.IBlocksStoreMutationRemoved;
-    import computeMutationTargets = BlockStoreMutations.computeMutationTargets;
-    import IItemsPositionPatch = BlockStoreMutations.IItemsPositionPatch;
-    import computeItemPositionPatches = BlockStoreMutations.computeItemPositionPatches;
+    import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
+    import IBlocksStoreMutationUpdated = BlocksStoreMutations.IBlocksStoreMutationUpdated;
+    import IBlocksStoreMutationAdded = BlocksStoreMutations.IBlocksStoreMutationAdded;
+    import IBlocksStoreMutationRemoved = BlocksStoreMutations.IBlocksStoreMutationRemoved;
+    import computeMutationTargets = BlocksStoreMutations.computeMutationTargets;
+    import IItemsPositionPatch = BlocksStoreMutations.IItemsPositionPatch;
+    import computeItemPositionPatches = BlocksStoreMutations.computeItemPositionPatches;
 
     export interface IUndoMutation {
         readonly parent: IBlock | undefined;
@@ -317,8 +317,12 @@ export namespace BlocksStoreUndoQueues {
                         block.setItemsUsingPatches(computeTransformedItemPositionPatches());
                     }
 
-                    if (mutationTargets.includes('parent') && comparisonBlock.parent !== undefined) {
+                    if (mutationTargets.includes('parent')) {
                         block.setParent(comparisonBlock.parent);
+                    }
+
+                    if (mutationTargets.includes('parents')) {
+                        block.setParents(comparisonBlock.parents);
                     }
 
                 }, opts);

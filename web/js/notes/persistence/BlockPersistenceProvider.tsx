@@ -4,8 +4,8 @@ import {
     BlocksPersistenceWriter, createMockBlocksPersistenceSnapshot,
     useFirestoreBlocksPersistenceWriter
 } from "./BlocksPersistence";
-import {BlockStoreMutations} from "../store/BlockStoreMutations";
-import IBlocksStoreMutation = BlockStoreMutations.IBlocksStoreMutation;
+import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
+import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
 
 function createNullBlockPersistence(): BlocksPersistenceWriter {

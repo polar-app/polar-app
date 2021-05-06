@@ -7,10 +7,10 @@ import {UndoQueues2} from "../../undo/UndoQueues2";
 import {JSDOMParser} from "./BlocksStoreTest";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {PositionalArrays} from "./PositionalArrays";
-import {BlockStoreTests} from "./BlockStoreTests";
-import createBasicBlock = BlockStoreTests.createBasicBlock;
-import {BlockStoreMutations} from "./BlockStoreMutations";
-import IBlocksStoreMutation = BlockStoreMutations.IBlocksStoreMutation;
+import {BlocksStoreTests} from "./BlocksStoreTests";
+import createBasicBlock = BlocksStoreTests.createBasicBlock;
+import {BlocksStoreMutations} from "./BlocksStoreMutations";
+import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 
 
 function createStore() {
@@ -24,6 +24,7 @@ const root = createBasicBlock({
     id: '100',
     root: '100',
     parent: undefined,
+    parents: [],
     content: {
         type: 'name',
         data: "United States"
@@ -49,6 +50,7 @@ describe("BlocksStoreUndoQueues", () => {
                     "uid": "123",
                     "root": "100",
                     "parent": "102",
+                    "parents": ["102"],
                     "created": "2012-03-02T11:38:49.321Z",
                     "updated": "2012-03-02T11:38:49.321Z",
                     "items": {},
@@ -65,6 +67,7 @@ describe("BlocksStoreUndoQueues", () => {
                     "uid": "123",
                     "root": "100",
                     "parent": "102",
+                    "parents": ["102"],
                     "created": "2012-03-02T11:38:49.321Z",
                     "updated": "2012-03-02T11:38:49.321Z",
                     "items": {},
@@ -108,6 +111,7 @@ describe("BlocksStoreUndoQueues", () => {
                 id: '0x01',
                 root: "100",
                 parent: "100",
+                parents: ["100"],
                 content: {
                     type: 'markdown',
                     data: 'static block',
@@ -118,6 +122,8 @@ describe("BlocksStoreUndoQueues", () => {
             const removedBlock = createBasicBlock<IMarkdownContent>({
                 id: '0x02',
                 root: "100",
+                parent: "100",
+                parents: ["100"],
                 content: {
                     type: 'markdown',
                     data: 'removed block',
@@ -132,6 +138,7 @@ describe("BlocksStoreUndoQueues", () => {
                     id: '0x04',
                     root: "100",
                     parent: "100",
+                    parents: ["100"],
                     content: {
                         type: 'markdown',
                         data: 'updated block',
@@ -146,6 +153,7 @@ describe("BlocksStoreUndoQueues", () => {
                 id: '0x03',
                 root: "100",
                 parent: "100",
+                parents: ["100"],
                 content: {
                     type: 'markdown',
                     data: 'added block',
@@ -161,6 +169,7 @@ describe("BlocksStoreUndoQueues", () => {
                     id: '0x04',
                     root: "100",
                     parent: "100",
+                    parents: ["100"],
                     content: {
                         type: 'markdown',
                         data: 'updated block 2',
@@ -184,6 +193,9 @@ describe("BlocksStoreUndoQueues", () => {
                         "updated": "2012-03-02T11:38:50.321Z",
                         "root": "100",
                         "parent": "100",
+                        "parents": [
+                            "100"
+                        ],
                         "content": {
                             "type": "markdown",
                             "data": "added block"
@@ -206,6 +218,10 @@ describe("BlocksStoreUndoQueues", () => {
                         "created": "2012-03-02T11:38:49.321Z",
                         "updated": "2012-03-02T11:38:49.321Z",
                         "root": "100",
+                        "parent": "100",
+                        "parents": [
+                            "100"
+                        ],
                         "content": {
                             "type": "markdown",
                             "data": "removed block"
@@ -230,6 +246,9 @@ describe("BlocksStoreUndoQueues", () => {
                         "updated": "2012-03-02T11:38:49.321Z",
                         "root": "100",
                         "parent": "100",
+                        "parents": [
+                            "100"
+                        ],
                         "content": {
                             "type": "markdown",
                             "data": "updated block"
@@ -249,6 +268,9 @@ describe("BlocksStoreUndoQueues", () => {
                         "updated": "2012-03-02T11:38:50.321Z",
                         "root": "100",
                         "parent": "100",
+                        "parents": [
+                            "100"
+                        ],
                         "content": {
                             "type": "markdown",
                             "data": "updated block 2"

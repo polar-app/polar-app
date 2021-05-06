@@ -9,8 +9,8 @@ import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 import PositionalArrayPositionStr = PositionalArrays.PositionalArrayPositionStr;
 import deepEqual from "deep-equal";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
-import {BlockStoreMutations} from "./BlockStoreMutations";
-import IItemsPositionPatch = BlockStoreMutations.IItemsPositionPatch;
+import {BlocksStoreMutations} from "./BlocksStoreMutations";
+import IItemsPositionPatch = BlocksStoreMutations.IItemsPositionPatch;
 
 /**
  * Opts for withMutation normally used for undo.
@@ -38,6 +38,8 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @observable private _parent: BlockIDStr | undefined;
 
+    @observable private _parents: ReadonlyArray<BlockIDStr>;
+
     @observable private _created: ISODateTimeString;
 
     @observable private _updated: ISODateTimeString;
@@ -63,6 +65,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         this._uid = opts.uid;
         this._root = opts.root;
         this._parent = opts.parent;
+        this._parents = opts.parents;
         this._created = opts.created;
         this._updated = opts.updated;
         this._items = {...opts.items};
@@ -92,6 +95,10 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @computed get parent() {
         return this._parent;
+    }
+
+    @computed get parents() {
+        return this._parents;
     }
 
     @computed get created() {
@@ -144,10 +151,29 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     }
 
-    @action setParent(id: BlockIDStr): boolean {
+    @action setParent(id: BlockIDStr | undefined): boolean {
 
         if (this._parent !== id) {
             this._parent = id;
+            this._updated = ISODateTimeStrings.create();
+            return true;
+        }
+
+        return false;
+
+    }
+
+    /**
+     * Return true if the given content has been mutated vs the current content.
+     */
+    public hasParentsMutated(parents: ReadonlyArray<BlockIDStr>): boolean {
+        return ! deepEqual(this._parents, parents);
+    }
+
+    @action setParents(parents: ReadonlyArray<BlockIDStr>): boolean {
+
+        if (this.hasParentsMutated(parents)) {
+            this._parents = [...parents];
             this._updated = ISODateTimeStrings.create();
             return true;
         }
@@ -410,6 +436,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
             uid: this._uid,
             root: this._root,
             parent: this._parent,
+            parents: this._parents,
             created: this._created,
             updated: this._updated,
             items: {...this._items},

@@ -1,7 +1,7 @@
 import React from 'react';
 import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
-import {BlockStoreMutations} from "../store/BlockStoreMutations";
-import IBlocksStoreMutation = BlockStoreMutations.IBlocksStoreMutation;
+import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
+import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 import {BlockIDStr} from "../store/BlocksStore";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import firebase from 'firebase';
@@ -57,8 +57,8 @@ export function useFirestoreBlocksPersistenceWriter(): BlocksPersistenceWriter {
 
 export namespace BlocksPersistence {
 
-    import MutationTarget = BlockStoreMutations.MutationTarget;
-    import IItemsPositionPatch = BlockStoreMutations.IItemsPositionPatch;
+    import MutationTarget = BlocksStoreMutations.MutationTarget;
+    import IItemsPositionPatch = BlocksStoreMutations.IItemsPositionPatch;
 
     export interface IFirestoreMutationSetDoc {
         readonly id: BlockIDStr;
@@ -168,7 +168,7 @@ export namespace BlocksPersistence {
 
                                 }
 
-                                const patches = BlockStoreMutations.computeItemPositionPatches(mutation.before.items,
+                                const patches = BlocksStoreMutations.computeItemPositionPatches(mutation.before.items,
                                                                                                mutation.after.items);
 
                                 return patches.map(current => patchToFirestoreMutation(current));
@@ -192,11 +192,21 @@ export namespace BlocksPersistence {
                                     }
                                 ];
 
+                            case "parents":
+                                return [
+                                    {
+                                        id: mutation.id,
+                                        type: 'update-path',
+                                        path: 'parents',
+                                        value: mutation.after.parents
+                                    }
+                                ];
+
                         }
 
                     }
 
-                    const mutationTargets = BlockStoreMutations.computeMutationTargets(mutation.before, mutation.after);
+                    const mutationTargets = BlocksStoreMutations.computeMutationTargets(mutation.before, mutation.after);
 
                     const firestoreMutations = arrayStream(mutationTargets.map(current => convertToFirebaseMutation(current)))
                             .flatMap(current => current)

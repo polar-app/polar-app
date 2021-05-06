@@ -56,7 +56,7 @@ export interface IBlock<C extends IBlockContent = IBlockContent> {
      * All parents as a path back to the root.  This will be an empty array if
      * its the root.
      */
-    // readonly parents: ReadonlyArray<BlockIDStr>;
+    readonly parents: ReadonlyArray<BlockIDStr>;
 
     readonly created: ISODateTimeString;
 

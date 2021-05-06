@@ -4,14 +4,15 @@ import {IBlock, IBlockLink} from "./IBlock";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {PositionalArrays} from "./PositionalArrays";
 
-export namespace BlockStoreTests {
+export namespace BlocksStoreTests {
 
     import PositionalArray = PositionalArrays.PositionalArray;
 
     export interface IBasicBlockOpts<C> {
         readonly id?: BlockIDStr;
         readonly root: BlockIDStr;
-        readonly parent?: BlockIDStr;
+        readonly parent: BlockIDStr | undefined;
+        readonly parents: ReadonlyArray<BlockIDStr>
         readonly content: C;
         readonly items?: PositionalArray<BlockIDStr>;
         readonly links?: PositionalArray<IBlockLink>;
@@ -33,6 +34,7 @@ export namespace BlockStoreTests {
             ...opts,
             root: opts.root,
             parent: opts.parent || undefined,
+            parents: opts.parents,
             items: opts.items || {},
             links: opts.links || {},
             mutation: opts.mutation || 0

@@ -956,6 +956,7 @@ export class BlocksStore implements IBlocksStore {
                 uid: this.uid,
                 root: newBlockID,
                 parent: undefined,
+                parents: [],
                 content: Contents.create({
                     type: 'name',
                     data: name
@@ -1215,6 +1216,7 @@ export class BlocksStore implements IBlocksStore {
                 return {
                     id: newBlockID,
                     parent: parentBlock.id,
+                    parents: [...parentBlock.parents, parentBlock.id],
                     nspace: parentBlock.nspace,
                     uid: this.uid,
                     root: parentBlock.root,
@@ -1468,6 +1470,7 @@ export class BlocksStore implements IBlocksStore {
 
                 block.withMutation(() => {
                     block.setParent(newParentBlock.id);
+                    block.setParents([...newParentBlock.parents, newParentBlock.id]);
                 })
 
                 this.expand(newParentID);
@@ -1582,6 +1585,7 @@ export class BlocksStore implements IBlocksStore {
 
             block.withMutation(() => {
                 block.setParent(newParentBlock.id);
+                block.setParents([...newParentBlock.parents, newParentBlock.id]);
             })
 
             newParentBlock.withMutation(() => {
