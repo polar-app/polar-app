@@ -18,6 +18,10 @@ function createNullBlockPersistence(): IBlocksPersistence {
 
 const BlockPersistenceProviderContext = React.createContext<IBlocksPersistence>(createNullBlockPersistence())
 
+export function useBlocksPersistence() {
+    return React.useContext(BlockPersistenceProviderContext);
+}
+
 export const BlockPersistenceProvider = () => {
 
     const write = useFirestoreBlocksPersistence();

@@ -28,6 +28,7 @@ import {UndoQueues2} from "../../undo/UndoQueues2";
 import {useUndoQueue} from "../../undo/UndoQueueProvider2";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
 import {PositionalArrays} from "./PositionalArrays";
+import { useBlocksPersistence } from "../persistence/BlockPersistenceProvider";
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
@@ -1866,6 +1867,7 @@ export class BlocksStore implements IBlocksStore {
 export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore(() => {
     const {uid} = useBlocksStoreContext();
     const undoQueue = useUndoQueue();
+    const blocksPersistence = useBlocksPersistence();
     return new BlocksStore(uid, undoQueue);
 })
 
