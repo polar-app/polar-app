@@ -644,3 +644,18 @@ allow write if block.nspace == get(/databases/$(database)/documents/block_permis
 - relanote
 - 
 
+
+# Reading/Writing Data 
+
+        [ Firestore ]                   [ BlocksStore ]                      [ React ]
+             <----------- useSnapshots -------|        
+             |----------- snapshot data ------> 
+                                              |------- updated data ------------->
+                                              <------------ doPut, doDelete -----|                                   
+             <------------ write -------------|
+             
+             
+             
+             
+             
+             
