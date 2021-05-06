@@ -6,6 +6,8 @@ import {BlockIDStr} from "../store/BlocksStore";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import firebase from 'firebase';
 import {IBlock} from "../store/IBlock";
+import {IQuerySnapshot} from "polar-snapshot-cache/src/store/IQuerySnapshot";
+import {IDocumentChange} from "polar-snapshot-cache/src/store/IDocumentChange";
 
 export interface IBlocksPersistence {
 
@@ -231,7 +233,9 @@ export namespace BlocksPersistence {
 export type  DocumentChangeType = 'added' |  'modified' | 'removed';
 
 export interface DocumentChange<T> {
-
+    readonly id: string;
+    readonly type: DocumentChangeType;
+    readonly data: T;
 }
 
 export interface ISnapshotMetadata {
@@ -249,3 +253,72 @@ export interface IBlocksPersistenceSnapshot {
  * This is just a hook that will be re-called from within the UI...
  */
 export type BlocksPersistenceSnapshotHook = () => IBlocksPersistenceSnapshot;
+
+function createEmptySnapshot(): IBlocksPersistenceSnapshot {
+
+    return {
+        empty: true,
+        metadata: {
+            hasPendingWrites: false,
+            fromCache: true
+        },
+        docChanges: []
+    }
+
+}
+
+export function useFirestoreBlocksPersistenceSnapshot(): IBlocksPersistenceSnapshot {
+
+    const {user, firestore} = useFirestore();
+    const [snapshot, setSnapshot] = React.useState<IBlocksPersistenceSnapshot>(createEmptySnapshot());
+
+    // FIXME: we need to get access to the users namespaces (nspace) to which they are subscribed
+    // to get all the values.  They might have other places to which they can write.
+
+    React.useEffect(() => {
+
+        if (! user) {
+            return;
+        }
+
+        const convertSnapshot = (current: IQuerySnapshot): IBlocksPersistenceSnapshot => {
+
+            const convertDocChange = (current: IDocumentChange): DocumentChange<IBlock> => {
+
+                const data: IBlock = current.doc.data() as IBlock;
+
+                return {
+                    id: current.id,
+                    type: current.type,
+                    data
+                }
+            }
+
+            return {
+                empty: current.empty,
+                metadata: {
+                    hasPendingWrites: current.metadata.hasPendingWrites,
+                    fromCache: current.metadata.fromCache
+                },
+                docChanges: current.docChanges().map(current => convertDocChange(current))
+            }
+
+        }
+
+        const convertSnapshotMutateState = (current: IQuerySnapshot): void => {
+            setSnapshot(convertSnapshot(current));
+        }
+
+        const collection = firestore.collection('blocks');
+        const snapshotUnsubscriber = collection.where('uid', '==', user.uid)
+                                               .onSnapshot(current => convertSnapshotMutateState(current))
+
+        return () => {
+            snapshotUnsubscriber();
+        }
+
+    }, [firestore, user])
+
+    return snapshot;
+
+}
