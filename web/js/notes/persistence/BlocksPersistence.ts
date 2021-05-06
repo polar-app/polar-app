@@ -8,6 +8,12 @@ import firebase from 'firebase';
 
 export interface IBlocksPersistence {
 
+    /**
+     * Write to the persistence layer by taking the raw mutations and mapping
+     * them to Firestore primitives
+     *
+     * @param mutations
+     */
     write(mutations: ReadonlyArray<IBlocksStoreMutation>): Promise<void>;
 
 }
