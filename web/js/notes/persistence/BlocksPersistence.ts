@@ -254,7 +254,32 @@ export interface IBlocksPersistenceSnapshot {
  */
 export type BlocksPersistenceSnapshotHook = () => IBlocksPersistenceSnapshot;
 
-function createEmptySnapshot(): IBlocksPersistenceSnapshot {
+/**
+ * Use blocks to create mock snapshots where everything is 'added'
+ */
+export function createMockBlocksPersistenceSnapshot(blocks: ReadonlyArray<IBlock>): IBlocksPersistenceSnapshot {
+
+    const convertBlockToDocChange = (block: IBlock): DocumentChange<IBlock> => {
+
+        return {
+            id: block.id,
+            type: 'added',
+            data: block
+        }
+    }
+
+    return {
+        empty: blocks.length === 0,
+        metadata: {
+            hasPendingWrites: false,
+            fromCache: true
+        },
+        docChanges: blocks.map(current => convertBlockToDocChange(current))
+    };
+
+}
+
+export function createEmptyBlocksPersistenceSnapshot(): IBlocksPersistenceSnapshot {
 
     return {
         empty: true,
@@ -270,7 +295,7 @@ function createEmptySnapshot(): IBlocksPersistenceSnapshot {
 export function useFirestoreBlocksPersistenceSnapshot(): IBlocksPersistenceSnapshot {
 
     const {user, firestore} = useFirestore();
-    const [snapshot, setSnapshot] = React.useState<IBlocksPersistenceSnapshot>(createEmptySnapshot());
+    const [snapshot, setSnapshot] = React.useState<IBlocksPersistenceSnapshot>(createEmptyBlocksPersistenceSnapshot());
 
     // FIXME: we need to get access to the users namespaces (nspace) to which they are subscribed
     // to get all the values.  They might have other places to which they can write.
