@@ -5,6 +5,7 @@ import IBlocksStoreMutation = BlockStoreMutations.IBlocksStoreMutation;
 import {BlockIDStr} from "../store/BlocksStore";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import firebase from 'firebase';
+import {IBlock} from "../store/IBlock";
 
 export interface IBlocksPersistence {
 
@@ -18,7 +19,31 @@ export interface IBlocksPersistence {
 
 }
 
-export function useFirestoreBlocksPersistence() {
+export type BlocksPersistenceWriter = (mutations: ReadonlyArray<IBlocksStoreMutation>) => Promise<void>;
+
+export type  DocumentChangeType = 'added' |  'modified' | 'removed';
+
+export interface DocumentChange<T> {
+
+}
+
+export interface ISnapshotMetadata {
+    readonly hasPendingWrites: boolean;
+    readonly fromCache: boolean;
+}
+
+export interface IBlocksPersistenceSnapshot {
+    readonly empty: boolean;
+    readonly metadata: ISnapshotMetadata;
+    readonly docChanges: ReadonlyArray<DocumentChange<IBlock>>;
+}
+
+/**
+ * This is just a hook that will be re-called from within the UI...
+ */
+export type BlocksPersistenceSnapshotHook = () => IBlocksPersistenceSnapshot;
+
+export function useFirestoreBlocksPersistenceWriter(): BlocksPersistenceWriter {
 
     const {firestore} = useFirestore();
 
@@ -39,11 +64,15 @@ export function useFirestoreBlocksPersistence() {
                 case "set-doc":
                     batch.set(doc, firestoreMutation.value);
                     break;
-                case "delete-doc":
+
+                    case "delete-doc":
                     batch.delete(doc)
                     break;
+
                 case "update-path":
-                    batch.update(doc, firestoreMutation.path, firestoreMutation.value)
+                    batch.update(doc, firestoreMutation.path, firestoreMutation.value);
+                    break;
+
                 case "update-delete-field-value":
                     batch.update(doc, firestoreMutation.path, firebase.firestore.FieldValue.delete())
                     break;
@@ -212,7 +241,6 @@ export interface IFirestoreMutationUpdateFieldValueDelete {
     readonly id: BlockIDStr;
     readonly type: 'update-delete-field-value';
     readonly path: string;
-    // FieldValue.delete()
 }
 
 export type IFirestoreMutation =

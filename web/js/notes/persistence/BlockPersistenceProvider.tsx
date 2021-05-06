@@ -1,35 +1,35 @@
 import React from 'react';
-import {IBlocksPersistence, useFirestoreBlocksPersistence} from "./BlocksPersistence";
+import {BlocksPersistenceWriter, IBlocksPersistence, useFirestoreBlocksPersistenceWriter} from "./BlocksPersistence";
 import {BlockStoreMutations} from "../store/BlockStoreMutations";
 import IBlocksStoreMutation = BlockStoreMutations.IBlocksStoreMutation;
 
 
-function createNullBlockPersistence(): IBlocksPersistence {
+function createNullBlockPersistence(): BlocksPersistenceWriter {
 
-    const write = async (mutations: ReadonlyArray<IBlocksStoreMutation>) => {
+    return async (mutations: ReadonlyArray<IBlocksStoreMutation>) => {
         // noop
     }
 
-    return {
-        write
-    };
-
 }
 
-const BlockPersistenceProviderContext = React.createContext<IBlocksPersistence>(createNullBlockPersistence())
+const BlockPersistenceWriterContext = React.createContext<BlocksPersistenceWriter>(createNullBlockPersistence())
 
-export function useBlocksPersistence() {
-    return React.useContext(BlockPersistenceProviderContext);
+export function useBlocksPersistenceWriter() {
+    return React.useContext(BlockPersistenceWriterContext);
 }
 
-export const BlockPersistenceProvider = () => {
+interface IProps {
+    readonly children: JSX.Element;
+}
 
-    const write = useFirestoreBlocksPersistence();
+export const BlockPersistenceProvider = (props: IProps) => {
+
+    const firestoreBlocksPersistenceWriter = useFirestoreBlocksPersistenceWriter();
 
     return (
-        <BlockPersistenceProviderContext.Provider value={{write}}>
-
-        </BlockPersistenceProviderContext.Provider>
+        <BlockPersistenceWriterContext.Provider value={firestoreBlocksPersistenceWriter}>
+            {props.children}
+        </BlockPersistenceWriterContext.Provider>
     );
 
 }

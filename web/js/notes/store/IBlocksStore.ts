@@ -40,6 +40,7 @@ export interface IBlocksStore {
 
     doDelete(blockIDs: ReadonlyArray<BlockIDStr>): void;
     doPut(blocks: ReadonlyArray<IBlock>, opts?: DoPutOpts): void;
+
     doCreateNewNamedBlock(name: BlockNameStr, ref: BlockIDStr): BlockIDStr;
 
     selected(): StringSetMap;
