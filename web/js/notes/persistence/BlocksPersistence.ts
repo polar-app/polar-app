@@ -21,28 +21,6 @@ export interface IBlocksPersistence {
 
 export type BlocksPersistenceWriter = (mutations: ReadonlyArray<IBlocksStoreMutation>) => Promise<void>;
 
-export type  DocumentChangeType = 'added' |  'modified' | 'removed';
-
-export interface DocumentChange<T> {
-
-}
-
-export interface ISnapshotMetadata {
-    readonly hasPendingWrites: boolean;
-    readonly fromCache: boolean;
-}
-
-export interface IBlocksPersistenceSnapshot {
-    readonly empty: boolean;
-    readonly metadata: ISnapshotMetadata;
-    readonly docChanges: ReadonlyArray<DocumentChange<IBlock>>;
-}
-
-/**
- * This is just a hook that will be re-called from within the UI...
- */
-export type BlocksPersistenceSnapshotHook = () => IBlocksPersistenceSnapshot;
-
 export function useFirestoreBlocksPersistenceWriter(): BlocksPersistenceWriter {
 
     const {firestore} = useFirestore();
@@ -91,6 +69,37 @@ export namespace BlocksPersistence {
 
     import MutationTarget = BlockStoreMutations.MutationTarget;
     import IItemsPositionPatch = BlockStoreMutations.IItemsPositionPatch;
+
+    export interface IFirestoreMutationSetDoc {
+        readonly id: BlockIDStr;
+        readonly type: 'set-doc';
+        readonly value: any;
+    }
+
+    export interface IFirestoreMutationDeleteDoc {
+        readonly id: BlockIDStr;
+        readonly type: 'delete-doc';
+    }
+    export interface IFirestoreMutationUpdatePath {
+        readonly id: BlockIDStr;
+        readonly type: 'update-path';
+        readonly path: string;
+        readonly value: any;
+    }
+
+// https://stackoverflow.com/questions/48145962/firestore-delete-a-field-inside-an-object
+    export interface IFirestoreMutationUpdateFieldValueDelete {
+        readonly id: BlockIDStr;
+        readonly type: 'update-delete-field-value';
+        readonly path: string;
+    }
+
+    export type IFirestoreMutation =
+        IFirestoreMutationSetDoc |
+        IFirestoreMutationDeleteDoc |
+        IFirestoreMutationUpdatePath |
+        IFirestoreMutationUpdateFieldValueDelete;
+
 
     /**
      * Convert the mutation for Firestore mutations which can then me mapped
@@ -219,32 +228,24 @@ export namespace BlocksPersistence {
 
 }
 
-export interface IFirestoreMutationSetDoc {
-    readonly id: BlockIDStr;
-    readonly type: 'set-doc';
-    readonly value: any;
+export type  DocumentChangeType = 'added' |  'modified' | 'removed';
+
+export interface DocumentChange<T> {
+
 }
 
-export interface IFirestoreMutationDeleteDoc {
-    readonly id: BlockIDStr;
-    readonly type: 'delete-doc';
-}
-export interface IFirestoreMutationUpdatePath {
-    readonly id: BlockIDStr;
-    readonly type: 'update-path';
-    readonly path: string;
-    readonly value: any;
+export interface ISnapshotMetadata {
+    readonly hasPendingWrites: boolean;
+    readonly fromCache: boolean;
 }
 
-// https://stackoverflow.com/questions/48145962/firestore-delete-a-field-inside-an-object
-export interface IFirestoreMutationUpdateFieldValueDelete {
-    readonly id: BlockIDStr;
-    readonly type: 'update-delete-field-value';
-    readonly path: string;
+export interface IBlocksPersistenceSnapshot {
+    readonly empty: boolean;
+    readonly metadata: ISnapshotMetadata;
+    readonly docChanges: ReadonlyArray<DocumentChange<IBlock>>;
 }
 
-export type IFirestoreMutation =
-    IFirestoreMutationSetDoc |
-    IFirestoreMutationDeleteDoc |
-    IFirestoreMutationUpdatePath |
-    IFirestoreMutationUpdateFieldValueDelete;
+/**
+ * This is just a hook that will be re-called from within the UI...
+ */
+export type BlocksPersistenceSnapshotHook = () => IBlocksPersistenceSnapshot;

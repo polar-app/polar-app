@@ -1,8 +1,7 @@
 import React from 'react';
-import {BlocksPersistenceWriter, IBlocksPersistence, useFirestoreBlocksPersistenceWriter} from "./BlocksPersistence";
+import {BlocksPersistenceWriter, useFirestoreBlocksPersistenceWriter} from "./BlocksPersistence";
 import {BlockStoreMutations} from "../store/BlockStoreMutations";
 import IBlocksStoreMutation = BlockStoreMutations.IBlocksStoreMutation;
-
 
 function createNullBlockPersistence(): BlocksPersistenceWriter {
 
