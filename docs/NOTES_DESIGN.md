@@ -364,12 +364,20 @@ like a photoURL, etc.
 
 ## org
 
+Metadata about an organization.  This is not mutable directly and must be changed via a 
+cloud function.
+
+### main operations
+
+- for a user, get their namespaces.
+
+### schema
 
 ```text
 org {
 
     // random ID for this org
-    id: IDStr;
+    id: OrgIDStr;
 
     // time the org was created
     created: ISODateTimeString;
@@ -377,14 +385,29 @@ org {
     // name of this organization
     name: SlugStr;
     
+    // a description of this organization
     description: string;
 
     owners: ReadonlyArray<UIDStr>
     
     members: ReadonlyArray<UIDStr>
     
+    // the list of namespaces associated with this org
     nspaces: ReadonlyArray<IDStr>;
     
+}
+```
+
+## org_user
+
+Denormalized list of organizations a user is a member of.  The user can not work
+with this data directly and it's computed via a cloud function to mediate
+permissions.
+
+```
+org_user {
+    id: UIDStr 
+    orgs: ReadonlyArray<OrgIDStr>
 }
 ```
 
@@ -406,20 +429,33 @@ nspace {
     /**
      * The ID of this namespace.
      */
-    id: IDStr;
-
-    /**
-      * org or profile handle (acme or burtonator)
-      */
-    owner: HandleStr;
+    id: NSpaceIDStr;
     
     name: NSpaceNameStr;
     
     description: string;
     
     created: ISODateTimeStr;
+
+    updated: ISODateTimeStr;
+
+    owners: ReadonlyArray<UIDStr>;
+
+    members: ReadonlyArray<UIDStr>;
+
 }
 ```
+
+## nspace_user
+
+```text
+nspace_user {
+
+    id: UIDStr;
+    nspaces: ReadonlyArray<NSpaceIDStr>;
+}
+```
+
 
 ## block_permission
 
@@ -518,13 +554,13 @@ block_permission_log
     uid, 
     
 
-## user_block_permission
+## block_permission_user
 
 Each user can get their own permissions to with they were granted by reading
 from user_note_permission and looking at the user column.
 
 ```text
-user_block_permission
+block_permission_user
     uid: UIDStr;
     notes_ro: ReadonlyArray<NodeIDStr>
     notes_rw: ReadonlyArray<NodeIDStr>
@@ -538,7 +574,7 @@ permissions... it's updated by ChangeBlockPermission web function.
 TODO the user_block_permission would be for the USER not for the web. wWe would
 need some structure for this so that SEO content can easily determine if it's public.
 
-## web_block_permission
+## block_permission_web
 
 Table for web content so that we can lookup via block ID to see if the content is public 
 and what the permissions are
@@ -546,7 +582,7 @@ and what the permissions are
 TODO: what about commenting here...  I do think that should be a high level permission
 
 ```text
-web_block_permission
+block_permission_web
     // the block ID that's been published
     id: BlockIDStr
     permission: 'ro' | 'rw'
