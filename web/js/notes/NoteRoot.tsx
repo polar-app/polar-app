@@ -38,7 +38,7 @@ export const NoteRoot = observer((props: IProps) => {
 
     if (! block) {
         return (
-            <div>No note for target: {props.target}</div>
+            <div>No note for: '{props.target}'</div>
         );
     }
 
