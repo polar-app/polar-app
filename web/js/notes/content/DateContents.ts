@@ -2,6 +2,12 @@ import {IDateContent, LocaleStr, TimezoneStr} from "./IDateContent";
 
 export namespace DateContents {
 
+    export interface IDate {
+        readonly year: number;
+        readonly month: number;
+        readonly day: number;
+    }
+
     interface ICreateOpts {
         readonly timezone?: TimezoneStr;
         readonly locale?: LocaleStr;
@@ -31,6 +37,22 @@ export namespace DateContents {
             data: ts,
             format
         }
+
+    }
+
+    export function parse(name: string): IDate | undefined {
+
+        const match = name.match(/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/);
+
+        if (match !== null) {
+            const year = parseInt(match[1]);
+            const month = parseInt(match[2]);
+            const day = parseInt(match[3]);
+
+            return {year, month, day}
+        }
+
+        return undefined;
 
     }
 

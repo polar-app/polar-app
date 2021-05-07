@@ -61,4 +61,23 @@ describe('DateContents', function() {
 
     });
 
+
+    it('parse', () => {
+
+        assertJSON(DateContents.parse('2020-01-01'), {
+            "day": 1,
+            "month": 1,
+            "year": 2020
+        });
+
+        assertJSON(DateContents.parse('2020-11-20'), {
+            "day": 20,
+            "month": 11,
+            "year": 2020
+        });
+
+        assert.isUndefined(DateContents.parse('asdf2020-01-01'))
+
+    });
+
 });

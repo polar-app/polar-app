@@ -44,7 +44,6 @@ export type ReverseBlocksIndex = {[id: string /* BlockIDStr */]: BlockIDStr[]};
 
 export type StringSetMap = {[key: string]: boolean};
 
-// export type NoteContent = string | ITypedContent<'markdown'> | ITypedContent<'name'>;
 export type IBlockContent = IMarkdownContent | INameContent | IImageContent | IDateContent;
 export type BlockContent = (MarkdownContent | NameContent | ImageContent | DateContent) & IBaseBlockContent;
 // export type BlockContent = MarkdownContent | NameContent ;
