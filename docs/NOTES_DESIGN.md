@@ -535,8 +535,22 @@ user_block_permission
 This table is ro, but not rw or the user would be able to change their own
 permissions... it's updated by ChangeBlockPermission web function.
 
-FIXME the user_block_permission would be for the USER not for the web so we
-would need some structure for this but it could be a dedicate table.
+TODO the user_block_permission would be for the USER not for the web. wWe would
+need some structure for this so that SEO content can easily determine if it's public.
+
+## web_block_permission
+
+Table for web content so that we can lookup via block ID to see if the content is public 
+and what the permissions are
+
+TODO: what about commenting here...  I do think that should be a high level permission
+
+```text
+web_block_permission
+    // the block ID that's been published
+    id: BlockIDStr
+    permission: 'ro' | 'rw'
+```
 
 ## user_nspace 
 
@@ -650,11 +664,13 @@ allow write if block.nspace == get(/databases/$(database)/documents/block_permis
         [ Firestore ]                   [ BlocksStore ]                      [ React ]
              <----------- useSnapshots -------|        
              |----------- snapshot data ------> 
-                                              |------- updated data ------------->
+                                              |--- updated data ----------------->                  [1]
                                               <------------ doPut, doDelete -----|                                   
              <------------ write -------------|
              
              
+1.  The UI would be updated here via RJXS and MobX
+2. 
              
              
              
