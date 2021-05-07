@@ -77,7 +77,7 @@ export namespace BlocksPersistence {
         readonly value: any;
     }
 
-// https://stackoverflow.com/questions/48145962/firestore-delete-a-field-inside-an-object
+    // https://stackoverflow.com/questions/48145962/firestore-delete-a-field-inside-an-object
     export interface IFirestoreMutationUpdateFieldValueDelete {
         readonly id: BlockIDStr;
         readonly type: 'update-delete-field-value';
@@ -332,7 +332,8 @@ export function useFirestoreBlocksPersistenceSnapshots(): IBlocksPersistenceSnap
             setSnapshot(convertSnapshot(current));
         }
 
-        const collection = firestore.collection('blocks');
+        // we have to have an 'in' clause here...
+        const collection = firestore.collection('block');
         const snapshotUnsubscriber = collection.where('uid', '==', user.uid)
                                                .onSnapshot(current => convertSnapshotMutateState(current))
 
