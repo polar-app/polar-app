@@ -29,11 +29,13 @@ import {useUndoQueue} from "../../undo/UndoQueueProvider2";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
 import {PositionalArrays} from "./PositionalArrays";
 import { useBlocksPersistenceWriter } from "../persistence/BlockPersistenceProvider";
+import {IDateContent} from "../content/IDateContent";
+import {DateContent} from "../content/DateContent";
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
 
-export type BlockType = 'name' | 'markdown' | 'image';
+export type BlockType = 'name' | 'markdown' | 'image' | 'date';
 
 export type BlocksIndex = {[id: string /* BlockIDStr */]: Block};
 export type BlocksIndexByName = {[name: string /* BlockNameStr */]: BlockIDStr};
@@ -43,8 +45,8 @@ export type ReverseBlocksIndex = {[id: string /* BlockIDStr */]: BlockIDStr[]};
 export type StringSetMap = {[key: string]: boolean};
 
 // export type NoteContent = string | ITypedContent<'markdown'> | ITypedContent<'name'>;
-export type IBlockContent = IMarkdownContent | INameContent | IImageContent;
-export type BlockContent = (MarkdownContent | NameContent | ImageContent) & IBaseBlockContent;
+export type IBlockContent = IMarkdownContent | INameContent | IImageContent | IDateContent;
+export type BlockContent = (MarkdownContent | NameContent | ImageContent | DateContent) & IBaseBlockContent;
 // export type BlockContent = MarkdownContent | NameContent ;
 
 /**
