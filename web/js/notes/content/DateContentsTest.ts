@@ -22,28 +22,22 @@ describe('DateContents', function() {
         assert.equal(ISODateTimeStrings.create(), "2012-01-01T00:00:00.000Z");
 
         assertJSON(DateContents.create({timezone: "America/Bogota", locale: 'en-US'}), {
-            "data": "December 31, 2011",
-            "format": "MMMM D, YYYY",
-            "locale": "en-US",
-            "timezone": "America/Bogota",
+            "data": "2011-12-31",
+            "format": "YYYY-MM-DD",
             "type": "date"
         });
 
         TestingTime.forward('5d');
 
         assertJSON(DateContents.create({timezone: "America/Bogota", locale: 'en-US'}), {
-            "data": "January 5, 2012",
-            "format": "MMMM D, YYYY",
-            "locale": "en-US",
-            "timezone": "America/Bogota",
+            "data": "2012-01-05",
+            "format": "YYYY-MM-DD",
             "type": "date"
         });
 
         assertJSON(DateContents.create({timezone: "America/Bogota", locale: 'es-US'}), {
-            "data": "Enero 5, 2012",
-            "format": "MMMM D, YYYY",
-            "locale": "es-US",
-            "timezone": "America/Bogota",
+            "data": "2012-01-05",
+            "format": "YYYY-MM-DD",
             "type": "date"
         });
 

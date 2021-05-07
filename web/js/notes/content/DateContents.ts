@@ -1,4 +1,3 @@
-import { Strings } from "polar-shared/src/util/Strings";
 import {IDateContent, LocaleStr, TimezoneStr} from "./IDateContent";
 
 export namespace DateContents {
@@ -14,24 +13,22 @@ export namespace DateContents {
     export function create(opts?: ICreateOpts): IDateContent {
 
         const resolvedOptions = Intl.DateTimeFormat().resolvedOptions();
-        const timezone = opts?.timezone || resolvedOptions.timeZone;
+        const timeZone = opts?.timezone || resolvedOptions.timeZone;
         const locale = opts?.locale || resolvedOptions.locale;
 
-        const format = 'MMMM D, YYYY';
+        const format = 'YYYY-MM-DD';
 
         const now = new Date();
 
-        const month = now.toLocaleString(locale, { month: "long" });
-        const day = now.toLocaleString(locale, { day: "numeric" });
-        const year = now.toLocaleString(locale, { year: "numeric" });
+        const month = now.toLocaleString(locale, { month: "2-digit", timeZone });
+        const day = now.toLocaleString(locale, { day: "2-digit", timeZone });
+        const year = now.toLocaleString(locale, { year: "numeric", timeZone });
 
-        const ts = `${Strings.upperFirst(month)} ${day}, ${year}`;
+        const ts = `${year}-${month}-${day}`;
 
         return {
             type: 'date',
             data: ts,
-            timezone,
-            locale,
             format
         }
 
