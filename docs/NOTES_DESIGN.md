@@ -1,11 +1,11 @@
 
 # Overview
 
-The notes system uses is a hierarchical tree structure composed of pages
-which, when combined forms a [graph](https://en.wikipedia.org/wiki/Graph)
+The notes system uses is a hierarchical tree structure composed of pages which,
+when combined forms a [graph](https://en.wikipedia.org/wiki/Graph)
 
-A page is basically a tree with a name. So for example "World War II" could be a 
-page with children under it.  
+A page is basically a tree with a name. So for example "World War II" could be a
+page with children under it.
 
 A page is a [tree](https://en.wikipedia.org/wiki/Tree_(graph_theory)) which
 means it has no cycles back to the root and all children are descendants of the
@@ -15,7 +15,7 @@ parent.
 
 When we discuss concurrency here we're talking about the concurrency of multi-person edits.
 
-Persistence and concurrency are related because if we were to design the
+Persistence and concurrency are connected since if we were to design the
 persistence layer without thinking about concurrent edits it would be possible
 for someone to accidentally overwrite someone else's edits which would defeat
 the entire point of collaboration.
@@ -32,10 +32,10 @@ Instead, we designed a system based on
 [LSeq](https://www.researchgate.net/publication/262162421_LSEQ_an_Adaptive_Structure_for_Sequences_in_Distributed_Collaborative_Editing)
 (linear sequences) which is a somewhat straight forward algorithm and maps well to Firestore concurrent write primitives.
 
-This means that two or more people can edit the same page/tree and generally not conflict.  
+This means that two or more people can edit the same page/tree and generally not conflict.   
 
-It's an optimistic concurrency model which assumes that it's very rare that two people would edit the same bullet 
-point at the same time.
+It's an optimistic concurrency model which assumes that it's very rare that two
+people would edit the same bullet point at the same time.
 
 The *main* area of corruption would involve people overwriting the 'items' of a block thereby potentially losing
 children which LSeq solves.
@@ -84,7 +84,7 @@ would yield a list of
 The persistence model of this is somewhat straight forward.
 
 When we go to mutate a block in Firestore we don't do a set on the full
-document. Instead, we use a Firestore 'field path' to set some of the field and
+document. Instead, we use a Firestore 'field path' to set some fields and
 then to use ```FieldValue.delete()``` to remove a value or just update to insert
 new values.
 
@@ -179,15 +179,15 @@ stored in the text.  This way we support cross-namespace linking.
 
 We support the following general permissions model:
 
-    - a page is collection of blocks that form a tree and has a name
+    - A page is collection of blocks that form a tree and has a name.  For example, "World War II" 
       
     - pages are grouped into a collection called a namespace. Which we call a
       nspace to avoid collision with the Typescript 'namespace' keyword.
       
-    - namespaces can be connected to either users or organizations.
+    - namespaces can be connected to either users or organizations and have owners.  
     
     - There is a default namespace for both users and organizations that can't
-      be deleted and is where all blocks go by default.
+      be deleted and is where all blocks go by default.  Each user and 
       
     - Both pages and namespaces support permissions and setting perimssions on a
       page will be merged with the permissions for the namespace with the
@@ -196,8 +196,17 @@ We support the following general permissions model:
       effective permissions will be 'read'.
       
     - We have the following permission levels:
-         - owner: read, write, comment,  
-      
+         - owner: User has all write permissions and can also:
+            - delete this object (org, namespace, etc)
+            - grant other people access
+            - change SEO permissions
+            - update metadata for an object
+                - for a block - change the cover sheet, icon
+                - update title, description, image, etc for a namepsace. 
+         - write: All comment permissions but user can also write to the block.
+         - comment: All read permissions and user can add comments to the block.
+         - read: User can read this block.
+         
     - Note paths and namespaces.
     
         - When the user is in the current namespace the page name paths are just [[MyPage]] with
@@ -259,7 +268,8 @@ from a constant but there IS no constant.
 
 # Applying Permissions to Firebase Rules
 
-The ```block_permission``` table stores the underlying permissions structure and
+FIXME:
+The ```notes_permission``` table stores the underlying permissions structure and
 rules.  These are applied, and an effective* permissions system is then computed
 and saved into ```user_block_permission``` table which we then lookup during
 Firebase security rules during read/write.
@@ -450,7 +460,11 @@ nspace {
 
     owners: ReadonlyArray<UIDStr>;
 
-    members: ReadonlyArray<UIDStr>;
+    writers: ReadonlyArray<UIDStr>;
+
+    commenters: ReadonlyArray<UIDStr>;
+
+    viewers: ReadonlyArray<UIDStr>;
 
 }
 ```
@@ -468,6 +482,8 @@ nspace_user {
 }
 ```
 
+# FIXME each permission object should have a base set of properties that gets normalized out...
+# writers, commenters, readers, and a set of permissions for SEO too (when that comes online) 
 
 ## block_permission
 
@@ -477,27 +493,9 @@ Holds the permission that the user has set for nodes...
 block_permission:
 
     /**
-     * The uid of the user that created this permission object so that the user
-     * can enumerate the permissions they've created.  We can track the chain
-     * back to the root this way.
-     */
-    uid: UIDStr
-
-    /**
-     * The original owner of the block. 
-     */
-    owner: UIDStr;
-
-    /**
-     * The namespace that this permission applies to. If it's a page that we're
-     * sharing the 'page' attribute is set *along* with the nspace attribute.
-     */
-    nspace: NSpaceIDStr;
-
-    /**
-     * The block (root) that we're sharing.
-     */
-    page?: BlockIDStr
+      * Same ID of the block root which we're changing permission.
+      */
+    id: BlockIDStr;
     
     /**
      * Set when the user is sharing it with another user.
@@ -509,34 +507,6 @@ block_permission:
      */
     web?: boolean;
         
-    /**
-     * Permisions for anyone who's a member of this organization.
-     */
-    organization?: OrganizationIDStr;
-        
-    // edit: can view, comment, and edit
-    // comment: can view and comment
-    // view: can view but not comment
-    
-    /**
-     * The actual permissions:
-     *
-     * ro: read-only
-     * rw: read-write 
-     */
-    permissions: 'ro' | 'rw';
-    
-    /**
-     * Do not allow the user to comment.
-     */
-    noComment?: boolean;
-    
-    /**
-     * When true, do not allow allow this user to share this document with other
-     * people.
-     */
-    noDelegate?: boolean;
-    
     /**
      * For SEO set the noindex flag.
      */    
@@ -557,36 +527,40 @@ block_permission:
      */
     noFollow?: boolean;   
 }
-```
 
 /**
  * History of the permission changes
  */ 
 block_permission_log
     uid, 
-    
 
-## block_permission_user
+```
+
+## notes_permission_user
 
 Each user can get their own permissions to with they were granted by reading
-from user_note_permission and looking at the user column.
+from ```notes_permission_user``` collection for the user.
+
+Note that this we apply the permission based on namespaces and blocks here and 
+the minimum permission applies. 
 
 ```text
-block_permission_user
+notes_permission_user
     uid: UIDStr;
-    notes_ro: ReadonlyArray<NodeIDStr>
-    notes_rw: ReadonlyArray<NodeIDStr>
+    blocks_ro: ReadonlyArray<NodeIDStr>
+    blocks_rw: ReadonlyArray<NodeIDStr>
     nspaces_ro: ReadonlyArray<NamespaceIDStr>
     nspaces_rw: ReadonlyArray<NamespaceIDStr>
 ```
 
-This table is ro, but not rw or the user would be able to change their own
-permissions... it's updated by ChangeBlockPermission web function.
+This collection is ro, but not rw or the user would be able to change their own
+permissions... it's updated by ```ChangeBlockPermission``` web function.
 
-TODO the user_block_permission would be for the USER not for the web. wWe would
-need some structure for this so that SEO content can easily determine if it's public.
+FIXME the user_block_permission would be for the USER not for the web. we would
+need some structure for this so that SEO content can easily determine if it's
+public.
 
-## block_permission_web
+## notes_permission_web
 
 Table for web content so that we can lookup via block ID to see if the content is public 
 and what the permissions are
@@ -632,27 +606,20 @@ match /user_nspace/{document=**} {
 
 match /block/{document=**} {
     
-    function getUserBlockPermission() {
-        return get(/databases/$(database)/documents/user_block_permission/$(request.auth.uid);
+    function getNotesPermissionUser() {
+        return get(/databases/$(database)/documents/notes_permission_user/$(request.auth.uid);
     }
 
-    // FIXMEL write out the matrix here... 
+    allow read: if getNotesPermissionUser().ro_blocks.hasAny(resource.data.root);
+    allow read, write: if getNotesPermissionUser().rw_blocks.hasAny(resource.data.root);
 
-    allow read: if getUserBlockPermission().ro_blocks.hasAny(resource.data.root);
-    allow read, write: if getUserBlockPermission().rw_blocks.hasAny(resource.data.root);
-
-    allow read: if getUserBlockPermission().ro_nspaces.hasAny(resource.data.nspace);
-    allow read, write: if getUserBlockPermission().rw_nspaces.hasAny(resource.data.nspace);
+    allow read: if getNotesPermissionUser().ro_nspaces.hasAny(resource.data.nspace);
+    allow read, write: if getNotesPermissionUser().rw_nspaces.hasAny(resource.data.nspace);
 
 }
 
 ```
 
--- allow a write if the block uid is the same as the auth uid.     
-# allow write if block.uid === auth.uid;;    
-  
--- allow a write if the delegatedFrom record has noDelegate=false and the permissions aren't escalations   
-    
 ## block rules
 
 Rules for writing blocks should be straight forward if we basically allow a write if ANY of the parents 
@@ -685,6 +652,9 @@ allow write if block.nspace == get(/databases/$(database)/documents/block_permis
 
     
 ## TODO
+
+- FIXME: TODO for v1 we can/should allow nspace to be undefined which means that there actually IS no namespace
+  and the permissions are just done on a per user bases... 
 
 - FIXME: how does a user see who has access to a note so that they can change permissions and it would also be nice
   to know who they are collaborating with.
