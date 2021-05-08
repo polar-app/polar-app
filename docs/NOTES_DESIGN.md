@@ -423,6 +423,13 @@ of the organization.
 The permission builder can source the members from the org and then the rules there
 get saved to determine who can have access to the permissions.
 
+The namespace has the following permissions:
+
+owners:
+    - can delete the namespace (if it's not the main namespace for a user or org)
+    - can invite other users as owners to this namespace
+    - can grant other users permissions to manipulate and work with the namespace.
+
 ```text
 nspace {
 
@@ -433,6 +440,8 @@ nspace {
     
     name: NSpaceNameStr;
     
+    main: boolean;
+
     description: string;
     
     created: ISODateTimeStr;
@@ -447,6 +456,9 @@ nspace {
 ```
 
 ## nspace_user
+
+Allows a user to list the organizations to which they below AND to assert
+permissions on reading them.
 
 ```text
 nspace_user {
