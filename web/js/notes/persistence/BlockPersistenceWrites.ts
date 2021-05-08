@@ -9,11 +9,40 @@ import {useBlocksPersistenceWriter} from "./BlockPersistenceProvider";
 import IBlocksStoreMutationUpdated = BlocksStoreMutations.IBlocksStoreMutationUpdated;
 import IBlocksStoreMutationAdded = BlocksStoreMutations.IBlocksStoreMutationAdded;
 
-export function useBlocksDeleteHandler() {
+export type AsyncCommitCallback = () => Promise<void>;
+
+export interface IBlocksStoreMutationsHandler {
+    readonly handleDelete: (blocksStore: IBlocksStore, blockIDs: ReadonlyArray<BlockIDStr>) => AsyncCommitCallback;
+    readonly handlePut: (blocksStore: IBlocksStore, blocks: ReadonlyArray<IBlock>) => AsyncCommitCallback;
+}
+
+export function createMockBlocksStoreMutationsHandler(): IBlocksStoreMutationsHandler {
+
+    const handleDelete = () => {
+
+        return async () => {
+            // noop
+        }
+
+    }
+    const handlePut = () => {
+
+        return async () => {
+            // noop
+        }
+
+    }
+
+    return {
+        handleDelete, handlePut
+    }
+}
+
+export function useBlocksStoreMutationsHandler(): IBlocksStoreMutationsHandler {
 
     const writer = useBlocksPersistenceWriter();
 
-    return React.useCallback(async (blocksStore: IBlocksStore, blockIDs: ReadonlyArray<BlockIDStr>) => {
+    const handleDelete = React.useCallback((blocksStore: IBlocksStore, blockIDs: ReadonlyArray<BlockIDStr>): AsyncCommitCallback => {
 
         function toMutation(block: IBlock): IBlocksStoreMutationRemoved {
             return {
@@ -31,17 +60,13 @@ export function useBlocksDeleteHandler() {
                 .map(current => toMutation(current))
                 .collect()
 
-        await writer(mutations);
+        return async () => {
+            await writer(mutations);
+        }
 
     }, [writer]);
 
-}
-
-export function useBlocksPutHandler() {
-
-    const writer = useBlocksPersistenceWriter();
-
-    return React.useCallback(async (blocksStore: IBlocksStore, blocks: ReadonlyArray<IBlock>) => {
+    const handlePut = React.useCallback((blocksStore: IBlocksStore, blocks: ReadonlyArray<IBlock>): AsyncCommitCallback => {
 
         function toMutation(before: IBlock | undefined, after: IBlock): IBlocksStoreMutationUpdated | IBlocksStoreMutationAdded {
 
@@ -70,8 +95,12 @@ export function useBlocksPutHandler() {
                 })
                 .collect()
 
-        await writer(mutations);
+        return async () => {
+            await writer(mutations);
+        }
 
     }, [writer]);
+
+    return {handleDelete, handlePut}
 
 }

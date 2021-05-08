@@ -28,9 +28,9 @@ import {UndoQueues2} from "../../undo/UndoQueues2";
 import {useUndoQueue} from "../../undo/UndoQueueProvider2";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
 import {PositionalArrays} from "./PositionalArrays";
-import { useBlocksPersistenceWriter } from "../persistence/BlockPersistenceProvider";
 import {IDateContent} from "../content/IDateContent";
 import {DateContent} from "../content/DateContent";
+import {createMockBlocksStoreMutationsHandler, IBlocksStoreMutationsHandler, useBlocksStoreMutationsHandler} from "../persistence/BlockPersistenceWrites";
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
@@ -259,7 +259,8 @@ export class BlocksStore implements IBlocksStore {
      */
     @observable _selectedAnchor: IDStr | undefined = undefined;
 
-    constructor(uid: UIDStr, undoQueue: UndoQueues2.UndoQueue) {
+    constructor(uid: UIDStr, undoQueue: UndoQueues2.UndoQueue,
+                readonly blocksStoreMutationsHandler: IBlocksStoreMutationsHandler = createMockBlocksStoreMutationsHandler()) {
         this.uid = uid;
         this.root = undefined;
         this.undoQueue = undoQueue;
@@ -1633,6 +1634,8 @@ export class BlocksStore implements IBlocksStore {
 
     @action public doDelete(blockIDs: ReadonlyArray<BlockIDStr>, opts: IDoDeleteOpts = {}) {
 
+        const doCommit = this.blocksStoreMutationsHandler.handleDelete(this, blockIDs);
+
         interface NextActive {
             readonly active: BlockIDStr;
             readonly activePos: NavPosition;
@@ -1772,6 +1775,9 @@ export class BlocksStore implements IBlocksStore {
             // we have to clear now because the blocks we deleted might have been selected
             this.clearSelected('doDelete');
 
+            doCommit()
+                .catch(err => console.log("Error when trying to commit: ", err));
+
         }
 
     }
@@ -1872,8 +1878,9 @@ export class BlocksStore implements IBlocksStore {
 export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore(() => {
     const {uid} = useBlocksStoreContext();
     const undoQueue = useUndoQueue();
-    const blocksPersistence = useBlocksPersistenceWriter();
-    return new BlocksStore(uid, undoQueue);
+    // const blocksStoreMutationsHandler = useBlocksStoreMutationsHandler();
+    const blocksStoreMutationsHandler = createMockBlocksStoreMutationsHandler();
+    return new BlocksStore(uid, undoQueue, blocksStoreMutationsHandler);
 })
 
 export function useBlocksStore(): IBlocksStore {
