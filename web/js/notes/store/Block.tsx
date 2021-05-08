@@ -26,7 +26,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     /**
      * The graph to which this page belongs.
      */
-    @observable private _nspace: NamespaceIDStr | undefined;
+    @observable private _nspace: NamespaceIDStr | UIDStr;
 
     /**
      * The owner of this block.
