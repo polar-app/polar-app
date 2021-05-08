@@ -8,7 +8,6 @@ import PositionalArray = PositionalArrays.PositionalArray;
 import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 import PositionalArrayPositionStr = PositionalArrays.PositionalArrayPositionStr;
 import deepEqual from "deep-equal";
-import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import IItemsPositionPatch = BlocksStoreMutations.IItemsPositionPatch;
 
@@ -27,7 +26,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     /**
      * The graph to which this page belongs.
      */
-    @observable private _nspace: NamespaceIDStr;
+    @observable private _nspace: NamespaceIDStr | undefined;
 
     /**
      * The owner of this block.

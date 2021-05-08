@@ -38,7 +38,7 @@ export interface IBlock<C extends IBlockContent = IBlockContent> {
 
     readonly id: BlockIDStr;
 
-    readonly nspace: NamespaceIDStr;
+    readonly nspace: NamespaceIDStr | undefined;
 
     readonly uid: UIDStr;
 
