@@ -71,6 +71,21 @@ service cloud.firestore {
 
     }
 
+    match /block/{document=**} {
+        // allow reads on resources that aren't present.  This is critical because if
+        // we do not have this rule then when a user tries to read a document that
+        // does not exist then they will get a "permission failed" error/exception.
+        // We also need to do this FIRST so that no other rule is evaluated since
+        // they might result in null pointer exceptions when trying to read the data
+        // property on a record that does not exist.
+        allow delete, read: if resource == null || resource.data == null;
+
+        // only allow the user to read their own account
+        allow read, write: if (resource == null || request.auth.uid == resource.data.uid);
+
+
+    }
+
     match /contact/{document=**} {
 
         allow read, write: if request.auth.uid == resource.data.uid;
@@ -177,6 +192,11 @@ service cloud.firestore {
         // allow reads by ID which would give us metadata about a doc before I added it
         // to the repo
         allow read;
+
+    }
+
+    match /event/{document=**} {
+        allow write;
 
     }
 
@@ -456,6 +476,51 @@ service cloud.firestore {
     }
 
     match /user_pref/{document=**} {
+        // allow reads on resources that aren't present.  This is critical because if
+        // we do not have this rule then when a user tries to read a document that
+        // does not exist then they will get a "permission failed" error/exception.
+        // We also need to do this FIRST so that no other rule is evaluated since
+        // they might result in null pointer exceptions when trying to read the data
+        // property on a record that does not exist.
+        allow delete, read: if resource == null || resource.data == null;
+
+        // only allow the user to read their own account
+        allow read, write: if (resource == null || request.auth.uid == resource.data.uid);
+
+
+    }
+
+    match /user_referral/{document=**} {
+        // allow reads on resources that aren't present.  This is critical because if
+        // we do not have this rule then when a user tries to read a document that
+        // does not exist then they will get a "permission failed" error/exception.
+        // We also need to do this FIRST so that no other rule is evaluated since
+        // they might result in null pointer exceptions when trying to read the data
+        // property on a record that does not exist.
+        allow delete, read: if resource == null || resource.data == null;
+
+        // only allow the user to read their own account
+        allow read, write: if (resource == null || request.auth.uid == resource.data.uid);
+
+
+    }
+
+    match /user_referral_claim/{document=**} {
+        // allow reads on resources that aren't present.  This is critical because if
+        // we do not have this rule then when a user tries to read a document that
+        // does not exist then they will get a "permission failed" error/exception.
+        // We also need to do this FIRST so that no other rule is evaluated since
+        // they might result in null pointer exceptions when trying to read the data
+        // property on a record that does not exist.
+        allow delete, read: if resource == null || resource.data == null;
+
+        // only allow the user to read their own account
+        allow read, write: if (resource == null || request.auth.uid == resource.data.uid);
+
+
+    }
+
+    match /user_trait/{document=**} {
         // allow reads on resources that aren't present.  This is critical because if
         // we do not have this rule then when a user tries to read a document that
         // does not exist then they will get a "permission failed" error/exception.
