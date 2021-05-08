@@ -7,7 +7,7 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {BlockTargetStr} from "../NoteLinkLoader";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {IBlock, UIDStr} from "./IBlock";
+import {IBlock, NamespaceIDStr, UIDStr} from "./IBlock";
 import {ReverseIndex} from "./ReverseIndex";
 import {Block} from "./Block";
 import { arrayStream } from "polar-shared/src/util/ArrayStreams";
@@ -214,6 +214,20 @@ export interface IDoDeleteOpts {
     readonly noDeleteItems?: boolean;
 
 }
+
+export interface ICreateNewNamedBlockOptsWithNSpace {
+    readonly newBlockID?: BlockIDStr;
+    readonly nspace: NamespaceIDStr;
+    readonly ref?: undefined;
+}
+
+export interface ICreateNewNamedBlockOptsWithRef {
+    readonly newBlockID?: BlockIDStr;
+    readonly nspace?: undefined;
+    readonly ref: BlockIDStr;
+}
+
+export type ICreateNewNamedBlockOpts = ICreateNewNamedBlockOptsWithNSpace | ICreateNewNamedBlockOptsWithRef;
 
 export class BlocksStore implements IBlocksStore {
 
@@ -933,8 +947,9 @@ export class BlocksStore implements IBlocksStore {
      *
      */
     @action public doCreateNewNamedBlock(name: BlockNameStr,
-                                         ref: BlockIDStr,
-                                         newBlockID: BlockIDStr = Hashcodes.createRandomID()): BlockIDStr {
+                                         opts?: ICreateNewNamedBlockOpts): BlockIDStr {
+
+        const newBlockID = opts?.newBlockID || Hashcodes.createRandomID();
 
         const existingBlock = this.getBlockByName(name);
 
@@ -944,17 +959,33 @@ export class BlocksStore implements IBlocksStore {
 
         const createNewBlock = (): IBlock => {
 
-            const refBlock = this.getBlock(ref);
+            const computeNamespace = (): NamespaceIDStr => {
 
-            if (! refBlock) {
-                throw new Error("Reference block doesn't exist");
+                if (opts?.ref) {
+
+                    const refBlock = this.getBlock(opts.ref);
+
+                    if (! refBlock) {
+                        throw new Error("Reference block doesn't exist");
+                    }
+
+                }
+
+                if (opts?.nspace) {
+                    return opts.nspace;
+                }
+
+                throw new Error("No namespace");
+
             }
 
+
             const now = ISODateTimeStrings.create();
+            const nspace = computeNamespace();
 
             return {
                 id: newBlockID,
-                nspace: refBlock.nspace,
+                nspace,
                 uid: this.uid,
                 root: newBlockID,
                 parent: undefined,
@@ -1033,7 +1064,7 @@ export class BlocksStore implements IBlocksStore {
             // to get it from the element when we're changing it.
 
             // create the new block - the sourceID is used for the ref to compute the nspace.
-            const targetID = this.doCreateNewNamedBlock(targetName, sourceID);
+            const targetID = this.doCreateNewNamedBlock(targetName, {newBlockID: sourceID, nspace: sourceBlock.nspace});
 
             const block = this.getBlock(sourceID);
 

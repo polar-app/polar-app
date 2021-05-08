@@ -11,7 +11,7 @@ import {
     BlockNameStr,
     IBlockMerge,
     BlocksIndex,
-    IDropTarget, INewBlockOpts, DoPutOpts, IBlockContent
+    IDropTarget, INewBlockOpts, DoPutOpts, IBlockContent, ICreateNewNamedBlockOpts
 } from "./BlocksStore";
 import {IBlock} from "./IBlock";
 import {Block} from "./Block";
@@ -41,7 +41,8 @@ export interface IBlocksStore {
     doDelete(blockIDs: ReadonlyArray<BlockIDStr>): void;
     doPut(blocks: ReadonlyArray<IBlock>, opts?: DoPutOpts): void;
 
-    doCreateNewNamedBlock(name: BlockNameStr, ref: BlockIDStr): BlockIDStr;
+    doCreateNewNamedBlock(name: BlockNameStr,
+                          opts?: ICreateNewNamedBlockOpts): BlockIDStr;
 
     selected(): StringSetMap;
     selectedIDs(): ReadonlyArray<BlockIDStr>;
