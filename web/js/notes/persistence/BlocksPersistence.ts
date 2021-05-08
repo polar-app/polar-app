@@ -90,7 +90,6 @@ export namespace BlocksPersistence {
         IFirestoreMutationUpdatePath |
         IFirestoreMutationUpdateFieldValueDelete;
 
-
     /**
      * Convert the mutation for Firestore mutations which can then me mapped
      * directly to a Firestore Batch.

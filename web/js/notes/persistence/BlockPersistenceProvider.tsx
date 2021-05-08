@@ -8,7 +8,9 @@ import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
 import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
 
-function createNullBlockPersistence(): BlocksPersistenceWriter {
+const IS_NODE = typeof window === 'undefined';
+
+function createMockBlocksPersistenceWriter(): BlocksPersistenceWriter {
 
     return async (mutations: ReadonlyArray<IBlocksStoreMutation>) => {
         // noop
@@ -25,12 +27,17 @@ function createNullBlockPersistenceSnapshots(): BlocksPersistenceSnapshotsHook {
 
 }
 
-const BlockPersistenceWriterContext = React.createContext<BlocksPersistenceWriter>(createNullBlockPersistence())
+const BlockPersistenceWriterContext = React.createContext<BlocksPersistenceWriter>(createMockBlocksPersistenceWriter())
 
-const BlockPersistenceSnapshotsContext = React.createContext<BlocksPersistenceSnapshotsHook>(createNullBlockPersistenceSnapshots())
+export function useBlocksPersistenceWriter(): BlocksPersistenceWriter {
 
-export function useBlocksPersistenceWriter() {
-    return React.useContext(BlockPersistenceWriterContext);
+    if (IS_NODE) {
+        return createMockBlocksPersistenceWriter();
+    }
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    return useFirestoreBlocksPersistenceWriter();
+
 }
 
 interface IProps {
