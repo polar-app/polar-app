@@ -89,7 +89,7 @@ export interface IBlock<C extends IBlockContent = IBlockContent> {
      * Specify how the items are rendered. Should they be bullets or numbered or
      * not shown (document). The default is 'bullet'
      */
-    // readonly itemsViewType?: 'bullet' | 'document' | 'numbered';
+    // readonly itemsViewType?: 'bullet' | 'numbered' | 'document' ;
 
     /**
      * Specify how an item is aligned (left is the default).
