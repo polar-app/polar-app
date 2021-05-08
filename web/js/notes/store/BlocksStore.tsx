@@ -1904,8 +1904,6 @@ export class BlocksStore implements IBlocksStore {
 
 }
 
-
-
 export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore(() => {
     const {uid} = useBlocksStoreContext();
     const undoQueue = useUndoQueue();
