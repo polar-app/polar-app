@@ -24,6 +24,7 @@ import {VerticalDynamicScroller} from './DynamicScroller';
 import {DateContents} from "../notes/content/DateContents";
 import {useBlocksStore} from "../notes/store/BlocksStore";
 import { observer } from "mobx-react-lite"
+import { autorun } from 'mobx'
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -150,16 +151,20 @@ const NotesButton = observer(function NotesButton() {
 
     React.useEffect(() => {
 
-        if (! blocksStore.hasSnapshot) {
-            // dont' do anything yet.
-            return;
-        }
+        autorun(() => {
 
-        const block = blocksStore.getBlockByName(dateContent.data);
+            if (! blocksStore.hasSnapshot) {
+                // dont' do anything yet.
+                return;
+            }
 
-        if (! block) {
-            blocksStore.doCreateNewNamedBlock(dateContent.data);
-        }
+            const block = blocksStore.getBlockByName(dateContent.data);
+
+            if (! block) {
+                blocksStore.doCreateNewNamedBlock(dateContent.data);
+            }
+
+        });
 
     }, [blocksStore, dateContent.data]);
 
