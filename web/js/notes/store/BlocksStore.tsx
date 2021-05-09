@@ -31,6 +31,7 @@ import {PositionalArrays} from "./PositionalArrays";
 import {IDateContent} from "../content/IDateContent";
 import {DateContent} from "../content/DateContent";
 import {createMockBlocksStoreMutationsHandler, IBlocksStoreMutationsHandler, useBlocksStoreMutationsHandler} from "../persistence/BlockPersistenceWrites";
+import {IBlocksPersistenceSnapshot, useBlocksPersistenceSnapshots} from "../persistence/BlocksPersistenceSnapshots";
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
@@ -175,34 +176,6 @@ export namespace ActiveBlockNonces {
     export function create() {
         return value++;
     }
-
-}
-
-/**
- * The RAW store with just the data that we can use to restore undo/redo data.
- */
-export interface IBlocksStoreSnapshot {
-
-    _index: BlocksIndex;
-
-    _indexByName: BlocksIndexByName;
-
-    // FIXME: this won't work with restore...
-    _reverse: ReverseIndex;
-
-    root: BlockIDStr | undefined;
-
-    _active: IActiveBlock | undefined;
-
-    _expanded: StringSetMap;
-
-    _selected: StringSetMap;
-
-    _dropTarget: IDropTarget | undefined;
-
-    _dropSource: BlockIDStr | undefined;
-
-    _selectedAnchor: IDStr | undefined;
 
 }
 
@@ -381,6 +354,13 @@ export class BlocksStore implements IBlocksStore {
     @action private doPutInternal(blocks: ReadonlyArray<IBlock>, opts: DoPutOpts = {}) {
 
         for (const blockData of blocks) {
+
+            const existingBlock = this.getBlock(blockData.id);
+
+            if (existingBlock && existingBlock.mutation === blockData.mutation) {
+                // skip this update as it hasn't changed
+                continue;
+            }
 
             const block = new Block(blockData);
             this._index[blockData.id] = block;
@@ -1831,6 +1811,31 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
+    @action public handleSnapshot(snapshot: IBlocksPersistenceSnapshot) {
+
+        console.log("Handling blocks store snapshot: ", snapshot);
+
+        for (const docChange of snapshot.docChanges) {
+            switch(docChange.type) {
+
+                case "added":
+                    this.doPutInternal([docChange.data]);
+                    break;
+
+                case "modified":
+                    this.doPutInternal([docChange.data]);
+                    break;
+
+                case "removed":
+                    this.doDeleteInternal([docChange.data.id]);
+                    break;
+
+            }
+
+        }
+
+    }
+
     /**
      * Compute the path to a block from its parent but not including the actual block.
      */
@@ -1926,8 +1931,15 @@ export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore
     const {uid} = useBlocksStoreContext();
     const undoQueue = useUndoQueue();
     const blocksStoreMutationsHandler = useBlocksStoreMutationsHandler();
-    // const blocksStoreMutationsHandler = createMockBlocksStoreMutationsHandler();
-    return new BlocksStore(uid, undoQueue, blocksStoreMutationsHandler);
+
+    const blocksStore = React.useMemo(() => new BlocksStore(uid, undoQueue, blocksStoreMutationsHandler), [blocksStoreMutationsHandler, uid, undoQueue]);
+
+    useBlocksPersistenceSnapshots((snapshot) => {
+        blocksStore.handleSnapshot(snapshot);
+    });
+
+
+    return blocksStore;
 })
 
 export function useBlocksStore(): IBlocksStore {

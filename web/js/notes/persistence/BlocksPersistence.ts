@@ -45,6 +45,8 @@ export function useFirestoreBlocksPersistenceWriter(): BlocksPersistenceWriter {
 
     return React.useCallback(async (mutations: ReadonlyArray<IBlocksStoreMutation>) => {
 
+        console.log("Writing mutations to firestore: ", mutations);
+
         const firestoreMutations = BlocksPersistence.convertToFirestoreMutations(mutations);
 
         const collection = firestore.collection('block');

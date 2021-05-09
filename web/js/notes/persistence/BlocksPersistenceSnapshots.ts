@@ -79,10 +79,9 @@ export function createEmptyBlocksPersistenceSnapshot(): IBlocksPersistenceSnapsh
 
 // FIXME write a function to take the snapshot and update teh store..
 
-export function useFirestoreBlocksPersistenceSnapshots(): IBlocksPersistenceSnapshot {
+export function useFirestoreBlocksPersistenceSnapshots(listener: (snapshot: IBlocksPersistenceSnapshot) => void) {
 
     const {user, firestore} = useFirestore();
-    const [snapshot, setSnapshot] = React.useState<IBlocksPersistenceSnapshot>(createEmptyBlocksPersistenceSnapshot());
 
     React.useEffect(() => {
 
@@ -115,31 +114,31 @@ export function useFirestoreBlocksPersistenceSnapshots(): IBlocksPersistenceSnap
         }
 
         const convertSnapshotMutateState = (current: IQuerySnapshot): void => {
-            setSnapshot(convertSnapshot(current));
+            listener(convertSnapshot(current));
         }
 
         // we have to have an 'in' clause here...
         const collection = firestore.collection('block');
         const snapshotUnsubscriber = collection.where('nspace', 'in', [user.uid])
-            .onSnapshot(current => convertSnapshotMutateState(current))
+            .onSnapshot(current => convertSnapshotMutateState(current), err => {
+                console.log("Received snapshot error: ", err);
+            })
 
         return () => {
             snapshotUnsubscriber();
         }
 
-    }, [firestore, user])
-
-    return snapshot;
+    }, [firestore, listener, user])
 
 }
 
-export function useBlocksPersistenceSnapshots(): IBlocksPersistenceSnapshot {
+export function useBlocksPersistenceSnapshots(listener: (snapshot: IBlocksPersistenceSnapshot) => void) {
 
     if (IS_NODE) {
-        return createMockBlocksPersistenceSnapshot(MockBlocks.create());
+        listener(createMockBlocksPersistenceSnapshot(MockBlocks.create()));
     }
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    return useFirestoreBlocksPersistenceSnapshots();
+    useFirestoreBlocksPersistenceSnapshots(listener);
 
 }
