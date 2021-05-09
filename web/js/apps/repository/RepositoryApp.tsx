@@ -68,6 +68,7 @@ import {ZenModeGlobalHotKeys} from "../../mui/ZenModeGlobalHotKeys";
 import {ZenModeDeactivateButton} from "../../mui/ZenModeDeactivateButton";
 import {UserTagsDataLoader} from "../../../../apps/repository/js/persistence_layer/UserTagsDataLoader";
 import {NotesRouter} from "../../notes/NotesRouter";
+import {NotesContainer} from "../../notes/NotesContainer";
 
 interface IProps {
     readonly app: App;
@@ -248,37 +249,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
     const NotesScreen = () => {
 
-        interface FixedWidthContainer {
-            readonly children: JSX.Element;
-        }
-
-        const FixedWidthContainer = React.memo(function FixedWidthContainer(props: FixedWidthContainer) {
-
-            return (
-                <div className="FixedWidthContainer"
-                     style={{
-                         maxWidth: '1000px',
-                         flexGrow: 1,
-                         marginLeft: 'auto',
-                         marginRight: 'auto'
-                     }}>
-                    {props.children}
-                </div>
-            );
-
-        });
-
         return (
-            <div className="NotesStoryInner"
-                 style={{
-                     display: 'flex',
-                     flexGrow: 1
-                 }}>
-
-                <FixedWidthContainer>
-                    <NotesRouter/>
-                </FixedWidthContainer>
-            </div>
+            <NotesContainer>
+                <NotesRouter/>
+            </NotesContainer>
         );
     }
 
