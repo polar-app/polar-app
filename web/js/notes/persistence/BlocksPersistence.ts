@@ -6,11 +6,8 @@ import {BlockIDStr, IBlockContent} from "../store/BlocksStore";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import firebase from 'firebase';
 import {IBlock} from "../store/IBlock";
-import {IQuerySnapshot} from "polar-snapshot-cache/src/store/IQuerySnapshot";
-import {IDocumentChange} from "polar-snapshot-cache/src/store/IDocumentChange";
 
 export type BlocksPersistenceWriter = (mutations: ReadonlyArray<IBlocksStoreMutation>) => Promise<void>;
-
 
 // export interface IFirestoreBlock<C extends IBlockContent = IBlockContent> extends Exclude<IBlock<C>, 'parent'> {
 //
@@ -255,124 +252,5 @@ export namespace BlocksPersistence {
             .collect();
 
     }
-
-}
-
-export type  DocumentChangeType = 'added' |  'modified' | 'removed';
-
-export interface DocumentChange<T> {
-    readonly id: string;
-    readonly type: DocumentChangeType;
-    readonly data: T;
-}
-
-export interface ISnapshotMetadata {
-    readonly hasPendingWrites: boolean;
-    readonly fromCache: boolean;
-}
-
-export interface IBlocksPersistenceSnapshot {
-    readonly empty: boolean;
-    readonly metadata: ISnapshotMetadata;
-    readonly docChanges: ReadonlyArray<DocumentChange<IBlock>>;
-}
-
-/**
- * This is just a hook that will be re-called from within the UI...
- */
-export type BlocksPersistenceSnapshotsHook = () => IBlocksPersistenceSnapshot;
-
-/**
- * Use blocks to create mock snapshots where everything is 'added'
- */
-export function createMockBlocksPersistenceSnapshot(blocks: ReadonlyArray<IBlock>): IBlocksPersistenceSnapshot {
-
-    const convertBlockToDocChange = (block: IBlock): DocumentChange<IBlock> => {
-
-        return {
-            id: block.id,
-            type: 'added',
-            data: block
-        }
-    }
-
-    return {
-        empty: blocks.length === 0,
-        metadata: {
-            hasPendingWrites: false,
-            fromCache: true
-        },
-        docChanges: blocks.map(current => convertBlockToDocChange(current))
-    };
-
-}
-
-export function createEmptyBlocksPersistenceSnapshot(): IBlocksPersistenceSnapshot {
-
-    return {
-        empty: true,
-        metadata: {
-            hasPendingWrites: false,
-            fromCache: true
-        },
-        docChanges: []
-    }
-
-}
-
-export function useFirestoreBlocksPersistenceSnapshots(): IBlocksPersistenceSnapshot {
-
-    const {user, firestore} = useFirestore();
-    const [snapshot, setSnapshot] = React.useState<IBlocksPersistenceSnapshot>(createEmptyBlocksPersistenceSnapshot());
-
-    // FIXME: we need to get access to the users namespaces (nspace) to which they are subscribed
-    // to get all the values.  They might have other places to which they can write.
-
-    React.useEffect(() => {
-
-        if (! user) {
-            return;
-        }
-
-        const convertSnapshot = (current: IQuerySnapshot): IBlocksPersistenceSnapshot => {
-
-            const convertDocChange = (current: IDocumentChange): DocumentChange<IBlock> => {
-
-                const data: IBlock = current.doc.data() as IBlock;
-
-                return {
-                    id: current.id,
-                    type: current.type,
-                    data
-                }
-            }
-
-            return {
-                empty: current.empty,
-                metadata: {
-                    hasPendingWrites: current.metadata.hasPendingWrites,
-                    fromCache: current.metadata.fromCache
-                },
-                docChanges: current.docChanges().map(current => convertDocChange(current))
-            }
-
-        }
-
-        const convertSnapshotMutateState = (current: IQuerySnapshot): void => {
-            setSnapshot(convertSnapshot(current));
-        }
-
-        // we have to have an 'in' clause here...
-        const collection = firestore.collection('block');
-        const snapshotUnsubscriber = collection.where('uid', '==', user.uid)
-                                               .onSnapshot(current => convertSnapshotMutateState(current))
-
-        return () => {
-            snapshotUnsubscriber();
-        }
-
-    }, [firestore, user])
-
-    return snapshot;
 
 }
