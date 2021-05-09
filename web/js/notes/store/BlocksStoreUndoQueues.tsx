@@ -132,6 +132,8 @@ export namespace BlocksStoreUndoQueues {
 
         }
 
+        // FIXME: I can inject persistence handlers here...
+
         const undo = () => {
             const mutations = computeMutatedBlocks(beforeBlocks, afterBlocks);
             doMutations(blocksStore, 'undo', mutations);
@@ -396,6 +398,8 @@ export namespace BlocksStoreUndoQueues {
 
         const handleMutation = (mutation: IBlocksStoreMutation) => {
 
+            const beforeBlock = blocksStore.getBlock(mutation.id);
+
             switch (mutation.type) {
 
                 case "modified":
@@ -411,6 +415,17 @@ export namespace BlocksStoreUndoQueues {
                     break;
 
             }
+
+            const afterBlock = blocksStore.getBlock(mutation.id);
+            //
+            // if (beforeBlock !== undefined && afterBlock === undefined) {
+            //     return {
+            //         id: mutation.id,
+            //         type: 'removed',
+            //
+            //     }
+            // }
+            //
 
         }
 

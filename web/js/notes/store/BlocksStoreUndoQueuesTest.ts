@@ -237,7 +237,7 @@ describe("BlocksStoreUndoQueues", () => {
                 },
                 {
                     "id": "0x04",
-                    "type": "updated",
+                    "type": "modified",
                     "before": {
                         "id": "0x04",
                         "nspace": "234",

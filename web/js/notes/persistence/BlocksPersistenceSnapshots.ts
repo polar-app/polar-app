@@ -91,6 +91,10 @@ export function useFirestoreBlocksPersistenceSnapshots(listener: (snapshot: IBlo
 
         const convertSnapshot = (current: IQuerySnapshot): IBlocksPersistenceSnapshot => {
 
+            // FIXME: this is actually a Firestore block and I have to convert
+            // it or  'parent' could be null
+            //
+            // FirestoreBlocks
             const convertDocChange = (current: IDocumentChange): DocumentChange<IBlock> => {
 
                 const data: IBlock = current.doc.data() as IBlock;

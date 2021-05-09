@@ -15,27 +15,31 @@ export type BlocksPersistenceWriter = (mutations: ReadonlyArray<IBlocksStoreMuta
 //
 // }
 
-function toFirestoreBlock(block: IBlock) {
+export namespace FirestoreBlocks {
 
-    const result: any = {...block};
+    export function toFirestoreBlock(block: IBlock) {
 
-    if (result.parent === undefined) {
-        result.parent = null;
+        const result: any = {...block};
+
+        if (result.parent === undefined) {
+            result.parent = null;
+        }
+
+        return result
+
     }
 
-    return result
+    export function fromFirestoreBlock(block: any): IBlock {
 
-}
+        const result: any = {...block};
 
-function fromFirestoreBlock(block: any): IBlock {
+        if (result.parent === null) {
+            result.parent = undefined;
+        }
 
-    const result: any = {...block};
+        return result;
 
-    if (result.parent === null) {
-        result.parent = undefined;
     }
-
-    return result;
 
 }
 
@@ -49,6 +53,8 @@ export function useFirestoreBlocksPersistenceWriter(): BlocksPersistenceWriter {
 
         const firestoreMutations = BlocksPersistence.convertToFirestoreMutations(mutations);
 
+        console.log("Writing firestoreMutations to firestore: ", firestoreMutations);
+
         const collection = firestore.collection('block');
         const batch = firestore.batch();
 
@@ -60,7 +66,7 @@ export function useFirestoreBlocksPersistenceWriter(): BlocksPersistenceWriter {
             switch (firestoreMutation.type) {
 
                 case "set-doc":
-                    batch.set(doc, toFirestoreBlock(firestoreMutation.value));
+                    batch.set(doc, FirestoreBlocks.toFirestoreBlock(firestoreMutation.value));
                     break;
 
                     case "delete-doc":
@@ -243,11 +249,21 @@ export namespace BlocksPersistence {
 
                     const baseMutations = createBaseMutations();
 
-                    return [...baseMutations, ...firestoreMutations];
+                    console.log("FIXME convertToFirestoreMutations: mutationTargets: ", mutationTargets);
+                    console.log("FIXME convertToFirestoreMutations: baseMutations: ", baseMutations);
+                    console.log("FIXME convertToFirestoreMutations: firestoreMutations: ", firestoreMutations);
+
+                    const result = [...baseMutations, ...firestoreMutations];
+
+                    console.log("FIXME convertToFirestoreMutations: result of mutations and firestoreMutations: ", result);
+
+                    return result;
 
             }
 
         }
+
+        console.log("FIXME convertToFirestoreMutations.1: mutations: ", mutations);
 
         return arrayStream(mutations.map(current => toFirestoreMutation(current)))
             .flatMap(current => current)

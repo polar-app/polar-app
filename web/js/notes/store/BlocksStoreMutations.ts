@@ -64,6 +64,10 @@ export namespace BlocksStoreMutations {
      */
     export function computeMutationTargets(before: IBlock, after: IBlock): ReadonlyArray<MutationTarget> {
 
+        if (before.mutation === after.mutation) {
+            console.warn("computeMutationTargets: both before and after blocks at same mutation level");
+        }
+
         const result: MutationTarget[] = [];
 
         if (! deepEqual(before.items, after.items)) {

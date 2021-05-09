@@ -69,6 +69,9 @@ export function useBlocksStoreMutationsHandler(): IBlocksStoreMutationsHandler {
 
     const handlePut = React.useCallback((blocksStore: IBlocksStore, blocks: ReadonlyArray<IBlock>): AsyncCommitCallback => {
 
+        // FIXME: the undo system to just work with the persistence system... That is the problem here...
+        // FIXME: this is the problem because I think we need to capture the blocks before and after...
+
         const toExternalBlock = (block: IBlock) => {
 
             if ((block as any).toJSON) {
@@ -98,16 +101,18 @@ export function useBlocksStoreMutationsHandler(): IBlocksStoreMutationsHandler {
 
         }
 
-        const mutations: ReadonlyArray<IBlocksStoreMutationUpdated | IBlocksStoreMutationAdded> =
-            arrayStream(blocks)
-                .map(current => toExternalBlock(current))
-                .map(current => {
-                    const before = blocksStore.getBlock(current.id)?.toJSON();
-                    return toMutation(before, current);
-                })
-                .collect()
+        const snapshot = blocks.map(current => toExternalBlock(current));
 
         return async () => {
+
+            const mutations: ReadonlyArray<IBlocksStoreMutationUpdated | IBlocksStoreMutationAdded> =
+                arrayStream(snapshot)
+                    .map(before => {
+                        const after = blocksStore.getBlock(before.id)?.toJSON();
+                        return toMutation(before, after!);
+                    })
+                    .collect()
+
             await writer(mutations);
         }
 
