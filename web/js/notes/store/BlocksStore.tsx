@@ -1675,9 +1675,7 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    @action public doDelete(blockIDs: ReadonlyArray<BlockIDStr>, opts: IDoDeleteOpts = {}) {
-
-        const doCommit = this.blocksStoreMutationsHandler.handleDelete(this, blockIDs);
+    @action private doDeleteInternal(blockIDs: ReadonlyArray<BlockIDStr>, opts: IDoDeleteOpts = {}) {
 
         interface NextActive {
             readonly active: BlockIDStr;
@@ -1818,10 +1816,18 @@ export class BlocksStore implements IBlocksStore {
             // we have to clear now because the blocks we deleted might have been selected
             this.clearSelected('doDelete');
 
-            doCommit()
-                .catch(err => console.log("Error when trying to commit: ", err));
-
         }
+
+    }
+
+    @action public doDelete(blockIDs: ReadonlyArray<BlockIDStr>, opts: IDoDeleteOpts = {}) {
+
+        const doCommit = this.blocksStoreMutationsHandler.handleDelete(this, blockIDs);
+
+        this.doDeleteInternal(blockIDs);
+
+        doCommit()
+            .catch(err => console.log("Error when trying to commit: ", err));
 
     }
 
