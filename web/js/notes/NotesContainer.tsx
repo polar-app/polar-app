@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import * as React from 'react';
 import {deepMemo} from "../react/ReactUtils";
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
         root: {
             display: 'flex',

@@ -14,7 +14,7 @@ export namespace BlocksStoreUndoQueues {
     import PositionalArray = PositionalArrays.PositionalArray;
     import PositionalArrayPositionStr = PositionalArrays.PositionalArrayPositionStr;
     import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
-    import IBlocksStoreMutationUpdated = BlocksStoreMutations.IBlocksStoreMutationUpdated;
+    import IBlocksStoreMutationUpdated = BlocksStoreMutations.IBlocksStoreMutationModified;
     import IBlocksStoreMutationAdded = BlocksStoreMutations.IBlocksStoreMutationAdded;
     import IBlocksStoreMutationRemoved = BlocksStoreMutations.IBlocksStoreMutationRemoved;
     import computeMutationTargets = BlocksStoreMutations.computeMutationTargets;
@@ -182,7 +182,7 @@ export namespace BlocksStoreUndoQueues {
                                 updated,
                                 mutation: mutation.before.mutation,
                             }
-                        case "updated":
+                        case "modified":
                             return {
                                 updated,
                                 mutation: mutation.before.mutation + 1,
@@ -194,7 +194,7 @@ export namespace BlocksStoreUndoQueues {
 
         }
 
-        const handleUpdated = (mutation: IBlocksStoreMutationUpdated) => {
+        const handleModified = (mutation: IBlocksStoreMutationUpdated) => {
 
             // updated means we need to restore it to the older version.
 
@@ -398,8 +398,8 @@ export namespace BlocksStoreUndoQueues {
 
             switch (mutation.type) {
 
-                case "updated":
-                    handleUpdated(mutation);
+                case "modified":
+                    handleModified(mutation);
                     break;
 
                 case "added":
@@ -419,13 +419,13 @@ export namespace BlocksStoreUndoQueues {
 
         console.log("===== Apply updated mutations");
 
-        mutations.filter(current => current.type === 'updated')
+        mutations.filter(current => current.type === 'modified')
                  .map(handleMutation)
 
         console.log("===== Apply ! updated mutations");
 
         // *** once we've handled updated, process the rest
-        mutations.filter(current => current.type !== 'updated')
+        mutations.filter(current => current.type !== 'modified')
                  .map(handleMutation)
 
     }
@@ -521,7 +521,7 @@ export namespace BlocksStoreUndoQueues {
                     if (afterBlock.mutation !== beforeBlock.mutation || afterBlock.updated !== beforeBlock.updated) {
                         return {
                             id: beforeBlock.id,
-                            type: 'updated',
+                            type: 'modified',
                             before: beforeBlock,
                             after: afterBlock
                         };

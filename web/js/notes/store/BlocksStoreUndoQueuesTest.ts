@@ -43,7 +43,7 @@ describe("BlocksStoreUndoQueues", () => {
 
             const mutation0: IBlocksStoreMutation = {
                 "id": "104",
-                "type": "updated",
+                "type": "modified",
                 "before": {
                     "id": "104",
                     "nspace": "ns101",
