@@ -30,8 +30,10 @@ import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
 import {PositionalArrays} from "./PositionalArrays";
 import {IDateContent} from "../content/IDateContent";
 import {DateContent} from "../content/DateContent";
-import {createMockBlocksStoreMutationsHandler, IBlocksStoreMutationsHandler, useBlocksStoreMutationsHandler} from "../persistence/BlockPersistenceWrites";
 import {IBlocksPersistenceSnapshot, useBlocksPersistenceSnapshots} from "../persistence/BlocksPersistenceSnapshots";
+import {BlocksPersistenceWriter} from "../persistence/BlocksPersistence";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {useBlocksPersistenceWriter} from "../persistence/BlockPersistenceWriters";
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
@@ -252,7 +254,7 @@ export class BlocksStore implements IBlocksStore {
     @observable _hasSnapshot: boolean = false;
 
     constructor(uid: UIDStr, undoQueue: UndoQueues2.UndoQueue,
-                readonly blocksStoreMutationsHandler: IBlocksStoreMutationsHandler = createMockBlocksStoreMutationsHandler()) {
+                readonly blocksPersistenceWriter: BlocksPersistenceWriter = NULL_FUNCTION) {
         this.uid = uid;
         this.root = undefined;
         this.undoQueue = undoQueue;
@@ -360,7 +362,7 @@ export class BlocksStore implements IBlocksStore {
         return this._reverse.get(id);
     }
 
-    @action private doPutInternal(blocks: ReadonlyArray<IBlock>, opts: DoPutOpts = {}) {
+    @action public doPut(blocks: ReadonlyArray<IBlock>, opts: DoPutOpts = {}) {
 
         for (const blockData of blocks) {
 
@@ -389,17 +391,6 @@ export class BlocksStore implements IBlocksStore {
         if (opts.newExpand) {
             this._expanded[opts.newExpand] = true;
         }
-
-    }
-
-    @action public doPut(blocks: ReadonlyArray<IBlock>, opts: DoPutOpts = {}) {
-
-        const doCommit = this.blocksStoreMutationsHandler.handlePut(this, blocks);
-
-        this.doPutInternal(blocks, opts);
-
-        doCommit()
-            .catch(err => console.log("Error when trying to commit: ", err));
 
     }
 
@@ -1672,7 +1663,7 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    @action private doDeleteInternal(blockIDs: ReadonlyArray<BlockIDStr>, opts: IDoDeleteOpts = {}) {
+    @action public doDelete(blockIDs: ReadonlyArray<BlockIDStr>, opts: IDoDeleteOpts = {}) {
 
         interface NextActive {
             readonly active: BlockIDStr;
@@ -1817,17 +1808,6 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    @action public doDelete(blockIDs: ReadonlyArray<BlockIDStr>, opts: IDoDeleteOpts = {}) {
-
-        const doCommit = this.blocksStoreMutationsHandler.handleDelete(this, blockIDs);
-
-        this.doDeleteInternal(blockIDs);
-
-        doCommit()
-            .catch(err => console.log("Error when trying to commit: ", err));
-
-    }
-
     @action public handleSnapshot(snapshot: IBlocksPersistenceSnapshot) {
 
         console.log("Handling blocks store snapshot: ", snapshot);
@@ -1836,15 +1816,15 @@ export class BlocksStore implements IBlocksStore {
             switch(docChange.type) {
 
                 case "added":
-                    this.doPutInternal([docChange.data]);
+                    this.doPut([docChange.data]);
                     break;
 
                 case "modified":
-                    this.doPutInternal([docChange.data]);
+                    this.doPut([docChange.data]);
                     break;
 
                 case "removed":
-                    this.doDeleteInternal([docChange.data.id]);
+                    this.doDelete([docChange.data.id]);
                     break;
 
             }
@@ -1933,7 +1913,7 @@ export class BlocksStore implements IBlocksStore {
 
     private doUndoPush<T>(identifiers: ReadonlyArray<BlockIDStr>, redoDelegate: () => T): T {
         console.log("Item pushed to undo queue...");
-        return BlocksStoreUndoQueues.doUndoPush(this, this.undoQueue, identifiers, redoDelegate);
+        return BlocksStoreUndoQueues.doUndoPush(this, this.undoQueue, identifiers, mutations => this.blocksPersistenceWriter(mutations), redoDelegate);
     }
 
     public undo() {
@@ -1949,7 +1929,7 @@ export class BlocksStore implements IBlocksStore {
 export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore(() => {
     const {uid} = useBlocksStoreContext();
     const undoQueue = useUndoQueue();
-    const blocksStoreMutationsHandler = useBlocksStoreMutationsHandler();
+    const blocksStoreMutationsHandler = useBlocksPersistenceWriter();
 
     const blocksStore = React.useMemo(() => new BlocksStore(uid, undoQueue, blocksStoreMutationsHandler), [blocksStoreMutationsHandler, uid, undoQueue]);
 

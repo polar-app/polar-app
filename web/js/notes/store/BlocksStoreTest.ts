@@ -391,7 +391,6 @@ describe('BlocksStore', function() {
                 }
             },
             "_selected": {},
-            "blocksStoreMutationsHandler": {},
             "uid": "1234",
             "undoQueue": {
                 "limit": 50

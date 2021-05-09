@@ -7,6 +7,7 @@ import {PositionalArrays} from "./PositionalArrays";
 import {IWithMutationOpts} from "./Block";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
+import { BlocksPersistenceWriter } from "../persistence/BlocksPersistence";
 
 export namespace BlocksStoreUndoQueues {
 
@@ -37,6 +38,8 @@ export namespace BlocksStoreUndoQueues {
          */
         readonly redo: () => void;
 
+        readonly persist: () => void;
+
     }
 
     export interface IUndoCaptureOpts {
@@ -45,14 +48,11 @@ export namespace BlocksStoreUndoQueues {
 
     /**
      * Do an undo operation and push it into the undo queue.
-     * @param blocksStore
-     * @param undoQueue
-     * @param identifiers
-     * @param redoDelegate
      */
     export function doUndoPush<T>(blocksStore: BlocksStore,
                                   undoQueue: UndoQueues2.UndoQueue,
                                   identifiers: ReadonlyArray<BlockIDStr>,
+                                  blocksPersistenceWriter: BlocksPersistenceWriter,
                                   redoDelegate: () => T): T {
 
         // TODO: dont' allow undo on pages that aren't currently the root because when the user
@@ -60,7 +60,7 @@ export namespace BlocksStoreUndoQueues {
         // but maybe the trick here is to create a new undo context when the route changes.
 
         // this captures the state before the initial transaction
-        const undoCapture = createUndoCapture(blocksStore, identifiers);
+        const undoCapture = createUndoCapture(blocksStore, identifiers, blocksPersistenceWriter);
 
         let captured: boolean = false;
 
@@ -88,7 +88,13 @@ export namespace BlocksStoreUndoQueues {
             undoCapture.undo();
         }
 
-        return undoQueue.push({redo, undo}).value;
+       try {
+
+           return undoQueue.push({redo, undo}).value;
+
+       } finally {
+            undoCapture.persist();
+       }
 
     }
     /**
@@ -96,7 +102,8 @@ export namespace BlocksStoreUndoQueues {
      * parent
      */
     export function createUndoCapture(blocksStore: BlocksStore,
-                                      identifiers: ReadonlyArray<BlockIDStr>): IUndoCapture {
+                                      identifiers: ReadonlyArray<BlockIDStr>,
+                                      blocksPersistenceWriter: BlocksPersistenceWriter): BlocksStoreUndoQueues.IUndoCapture {
 
         if (identifiers.length === 0) {
             throw new Error("Not given any identifiers");
@@ -129,19 +136,22 @@ export namespace BlocksStoreUndoQueues {
 
         }
 
-        // FIXME: I can inject persistence handlers here...
-
         const undo = () => {
             const mutations = computeMutatedBlocks(beforeBlocks, afterBlocks);
-            doMutations(blocksStore, 'undo', mutations);
+            blocksPersistenceWriter(doMutations(blocksStore, 'undo', mutations));
         }
 
         const redo = () => {
             const mutations = computeMutatedBlocks(beforeBlocks, afterBlocks);
-            doMutations(blocksStore, 'redo', mutations);
+            blocksPersistenceWriter(doMutations(blocksStore, 'redo', mutations));
         }
 
-        return {capture, undo, redo};
+        const persist = () => {
+            const mutations = computeMutatedBlocks(beforeBlocks, afterBlocks);
+            blocksPersistenceWriter(mutations);
+        }
+
+        return {capture, undo, redo, persist};
 
     }
 

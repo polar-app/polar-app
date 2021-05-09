@@ -7,7 +7,7 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import firebase from 'firebase';
 import {IBlock} from "../store/IBlock";
 
-export type BlocksPersistenceWriter = (mutations: ReadonlyArray<IBlocksStoreMutation>) => Promise<void>;
+export type BlocksPersistenceWriter = (mutations: ReadonlyArray<IBlocksStoreMutation>) => void;
 
 // export interface IFirestoreBlock<C extends IBlockContent = IBlockContent> extends Exclude<IBlock<C>, 'parent'> {
 //
@@ -47,7 +47,7 @@ export function useFirestoreBlocksPersistenceWriter(): BlocksPersistenceWriter {
 
     const {firestore} = useFirestore();
 
-    return React.useCallback(async (mutations: ReadonlyArray<IBlocksStoreMutation>) => {
+    return React.useCallback((mutations: ReadonlyArray<IBlocksStoreMutation>) => {
 
         console.log("Writing mutations to firestore: ", mutations);
 
@@ -85,7 +85,9 @@ export function useFirestoreBlocksPersistenceWriter(): BlocksPersistenceWriter {
 
         }
 
-        await batch.commit();
+        // TODO use a dialog handler for this...
+        batch.commit()
+            .catch(err => console.log("Unable to commit mutations: ", err, mutations));
 
     }, [firestore]);
 
