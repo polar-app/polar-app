@@ -378,9 +378,7 @@ export class BlocksStore implements IBlocksStore {
         return this._reverse.get(id);
     }
 
-    @action public doPut(blocks: ReadonlyArray<IBlock>, opts: DoPutOpts = {}) {
-
-        const doCommit = this.blocksStoreMutationsHandler.handlePut(this, blocks);
+    @action private doPutInternal(blocks: ReadonlyArray<IBlock>, opts: DoPutOpts = {}) {
 
         for (const blockData of blocks) {
 
@@ -402,6 +400,14 @@ export class BlocksStore implements IBlocksStore {
         if (opts.newExpand) {
             this._expanded[opts.newExpand] = true;
         }
+
+    }
+
+    @action public doPut(blocks: ReadonlyArray<IBlock>, opts: DoPutOpts = {}) {
+
+        const doCommit = this.blocksStoreMutationsHandler.handlePut(this, blocks);
+
+        this.doPutInternal(blocks, opts);
 
         doCommit()
             .catch(err => console.log("Error when trying to commit: ", err));
