@@ -435,7 +435,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
             uid: this._uid,
             root: this._root,
             parent: this._parent,
-            parents: this._parents,
+            parents: [...this._parents],
             created: this._created,
             updated: this._updated,
             items: {...this._items},
