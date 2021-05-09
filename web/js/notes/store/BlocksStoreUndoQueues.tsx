@@ -152,7 +152,7 @@ export namespace BlocksStoreUndoQueues {
      */
     export function doMutations(blocksStore: BlocksStore,
                                 mutationType: UndoMutationType,
-                                mutations: ReadonlyArray<IBlocksStoreMutation>) {
+                                mutations: ReadonlyArray<IBlocksStoreMutation>): ReadonlyArray<IBlocksStoreMutation> {
 
         const createWithMutationOpts =  (mutation: IBlocksStoreMutation): IWithMutationOpts => {
 
@@ -473,19 +473,13 @@ export namespace BlocksStoreUndoQueues {
 
         }
 
-        // *** first process updated so that items are re-parented, otherwise,
-        // we can delete items recursively.
-
-        console.log("===== Apply updated mutations");
-
-        mutations.filter(current => current.type === 'modified')
-                 .map(handleMutation)
-
-        console.log("===== Apply not updated mutations");
-
-        // *** once we've handled updated, process the rest
-        mutations.filter(current => current.type !== 'modified')
-                 .map(handleMutation)
+        return arrayStream([
+            ...mutations.filter(current => current.type === 'modified')
+                        .map(handleMutation),
+            ...mutations.filter(current => current.type !== 'modified')
+                        .map(handleMutation)])
+            .filterPresent()
+            .collect();
 
     }
 
