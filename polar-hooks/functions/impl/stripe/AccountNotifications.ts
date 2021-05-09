@@ -53,13 +53,11 @@ export namespace AccountNotifications {
 }
 
 function createSubject(sub: V2Subscription, userPersona: IUserPersona): string {
-    return `Hey ${userPersona.firstName || ''}, Thanks for Buying Polar ${sub.plan.level.toUpperCase()}!`;
+    return `Thanks for Buying Polar ${sub.plan.level.toUpperCase()}!`;
 }
 
 function createBody(sub: V2Subscription, persona: IPersona, userPersona: IUserPersona): string {
-    return `Hey ${userPersona.firstName || ''}
-
-<p>
+    return `<p>
 I'm ${persona.firstName}, one of the founders here at Polar.
 </p>
 
