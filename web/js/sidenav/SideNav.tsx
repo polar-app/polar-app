@@ -9,6 +9,7 @@ import TimelineIcon from '@material-ui/icons/Timeline';
 import {ActiveTabButton} from "./ActiveTabButton";
 import SettingsIcon from '@material-ui/icons/Settings';
 import NoteIcon from '@material-ui/icons/Note';
+import NotesIcon from '@material-ui/icons/Notes';
 import DescriptionIcon from '@material-ui/icons/Description';
 import {createContextMenu} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
 import {SideNavContextMenu} from "./SideNavContextMenu";
@@ -176,7 +177,7 @@ const NotesButton = observer(function NotesButton() {
     return (
         <SideNavHistoryButton title="Notes"
                               path={path}>
-            <NoteIcon className={classes.secondaryIcon}/>
+            <NotesIcon className={classes.secondaryIcon}/>
         </SideNavHistoryButton>
     );
 
