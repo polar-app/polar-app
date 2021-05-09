@@ -23,6 +23,7 @@ import { SideNavQuestionButton } from './SideNavQuestionButton';
 import {VerticalDynamicScroller} from './DynamicScroller';
 import {DateContents} from "../notes/content/DateContents";
 import {useBlocksStore} from "../notes/store/BlocksStore";
+import { observer } from "mobx-react-lite"
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -138,7 +139,7 @@ const AnnotationsButton = React.memo(function AnnotationsButton() {
     )
 });
 
-const NotesButton = React.memo(function AnnotationsButton() {
+const NotesButton = observer(function NotesButton() {
 
     const classes = useStyles();
     const blocksStore = useBlocksStore();
@@ -149,6 +150,11 @@ const NotesButton = React.memo(function AnnotationsButton() {
 
     React.useEffect(() => {
 
+        if (! blocksStore.hasSnapshot) {
+            // dont' do anything yet.
+            return;
+        }
+
         const block = blocksStore.getBlockByName(dateContent.data);
 
         if (! block) {
@@ -156,6 +162,11 @@ const NotesButton = React.memo(function AnnotationsButton() {
         }
 
     }, [blocksStore, dateContent.data]);
+
+    if (! blocksStore.hasSnapshot) {
+        // dont' do anything yet.
+        return null;
+    }
 
     return (
         <SideNavHistoryButton title="Notes"

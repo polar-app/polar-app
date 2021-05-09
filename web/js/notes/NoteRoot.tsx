@@ -9,6 +9,7 @@ import { observer } from "mobx-react-lite"
 import {NoteSelectionHandler} from "./NoteSelectionHandler";
 import {ActionMenuPopup} from "../mui/action_menu/ActionMenuPopup";
 import { ActionMenuStoreProvider } from "../mui/action_menu/ActionStore";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 interface IProps {
     readonly target: BlockIDStr;
@@ -35,6 +36,12 @@ export const NoteRoot = observer((props: IProps) => {
         }
 
     }, [block, blocksStore, target])
+
+    if (! blocksStore.hasSnapshot) {
+        return (
+            <LinearProgress />
+        );
+    }
 
     if (! block) {
         return (

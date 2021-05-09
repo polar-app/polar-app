@@ -246,6 +246,11 @@ export class BlocksStore implements IBlocksStore {
      */
     @observable _selectedAnchor: IDStr | undefined = undefined;
 
+    /**
+     * True when we've received our first snapshot.
+     */
+    @observable _hasSnapshot: boolean = false;
+
     constructor(uid: UIDStr, undoQueue: UndoQueues2.UndoQueue,
                 readonly blocksStoreMutationsHandler: IBlocksStoreMutationsHandler = createMockBlocksStoreMutationsHandler()) {
         this.uid = uid;
@@ -331,6 +336,10 @@ export class BlocksStore implements IBlocksStore {
     @action public clearDrop() {
         this._dropTarget = undefined;
         this._dropSource = undefined;
+    }
+
+    @computed get hasSnapshot() {
+        return this._hasSnapshot;
     }
 
     /**
@@ -910,6 +919,7 @@ export class BlocksStore implements IBlocksStore {
 
             })
 
+            this.doPut([targetBlock]);
 
             const deleteSourceBlock = () => {
                 // we have to set items to an empty array or doDelete will also remove the children recursively.
@@ -1025,7 +1035,10 @@ export class BlocksStore implements IBlocksStore {
                     block.setContent(content);
                 })
 
+                this.doPut([block]);
+
             }
+
 
         }
 
@@ -1107,6 +1120,8 @@ export class BlocksStore implements IBlocksStore {
                 })
 
             }, restore);
+
+            this.doPut([block]);
 
             this.setActiveWithPosition(block.id, 'end');
 
@@ -1260,10 +1275,6 @@ export class BlocksStore implements IBlocksStore {
             // const split = opts.split;
             const newBlockInheritItems = split?.suffix !== undefined && split?.suffix !== '';
 
-            const restore = {
-                block: currentBlock.toJSON(),
-            }
-
             const newBlockPosition = computeNewBlockPosition();
 
             const {parentBlock} = newBlockPosition;
@@ -1307,6 +1318,8 @@ export class BlocksStore implements IBlocksStore {
                 }
 
             })
+
+            this.doPut([currentBlock, parentBlock]);
 
             this.setActiveWithPosition(newBlock.id, 'start');
 
@@ -1498,6 +1511,8 @@ export class BlocksStore implements IBlocksStore {
                     block.setParents([...newParentBlock.parents, newParentBlock.id]);
                 })
 
+                this.doPut([block, newParentBlock, parentBlock]);
+
                 this.expand(newParentID);
 
                 return {value: newParentBlock.id};
@@ -1620,6 +1635,8 @@ export class BlocksStore implements IBlocksStore {
             parentBlock.withMutation(() => {
                 parentBlock.removeItem(id);
             })
+
+            this.doPut([block, newParentBlock, parentBlock]);
 
             return {value: id};
 
@@ -1833,6 +1850,8 @@ export class BlocksStore implements IBlocksStore {
             }
 
         }
+
+        this._hasSnapshot = true;
 
     }
 

@@ -38,6 +38,8 @@ export interface IBlocksStore {
     reverse: ReverseIndex;
     index: BlocksIndex;
 
+    hasSnapshot: boolean;
+
     doDelete(blockIDs: ReadonlyArray<BlockIDStr>): void;
     doPut(blocks: ReadonlyArray<IBlock>, opts?: DoPutOpts): void;
 
