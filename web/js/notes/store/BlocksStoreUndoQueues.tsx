@@ -412,7 +412,44 @@ export namespace BlocksStoreUndoQueues {
 
         const handleMutation = (mutation: IBlocksStoreMutation) => {
 
-            const beforeBlock = blocksStore.getBlock(mutation.id);
+            const toNewMutation = (beforeBlock: IBlock | undefined, afterBlock: IBlock | undefined): IBlocksStoreMutation | undefined => {
+
+                if (beforeBlock && ! afterBlock) {
+                    return {
+                        id: mutation.id,
+                        type: 'removed',
+                        removed: beforeBlock
+                    }
+                }
+
+                if (! beforeBlock && afterBlock) {
+                    return {
+                        id: mutation.id,
+                        type: 'added',
+                        added: afterBlock
+                    }
+                }
+
+                if (beforeBlock && afterBlock) {
+
+                    if (beforeBlock.mutation !== afterBlock.mutation) {
+
+                        return {
+                            id: mutation.id,
+                            type: 'modified',
+                            before: beforeBlock,
+                            after: afterBlock
+                        }
+
+                    }
+
+                }
+
+                return undefined;
+
+            }
+
+            const beforeBlock = blocksStore.getBlock(mutation.id)?.toJSON();
 
             switch (mutation.type) {
 
@@ -430,16 +467,9 @@ export namespace BlocksStoreUndoQueues {
 
             }
 
-            const afterBlock = blocksStore.getBlock(mutation.id);
-            //
-            // if (beforeBlock !== undefined && afterBlock === undefined) {
-            //     return {
-            //         id: mutation.id,
-            //         type: 'removed',
-            //
-            //     }
-            // }
-            //
+            const afterBlock = blocksStore.getBlock(mutation.id)?.toJSON();
+
+            return toNewMutation(beforeBlock, afterBlock);
 
         }
 
@@ -451,7 +481,7 @@ export namespace BlocksStoreUndoQueues {
         mutations.filter(current => current.type === 'modified')
                  .map(handleMutation)
 
-        console.log("===== Apply ! updated mutations");
+        console.log("===== Apply not updated mutations");
 
         // *** once we've handled updated, process the rest
         mutations.filter(current => current.type !== 'modified')
