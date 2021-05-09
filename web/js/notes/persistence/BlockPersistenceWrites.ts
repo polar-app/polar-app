@@ -91,7 +91,7 @@ export function useBlocksStoreMutationsHandler(): IBlocksStoreMutationsHandler {
             } else {
                 return {
                     id: after.id,
-                    type: 'updated',
+                    type: 'modified',
                     before, after
                 }
             }

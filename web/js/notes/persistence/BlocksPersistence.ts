@@ -147,7 +147,7 @@ export namespace BlocksPersistence {
                         }
                     ];
 
-                case "updated":
+                case "modified":
 
                     const createBaseMutations = (): ReadonlyArray<IFirestoreMutation> => {
                         return [
