@@ -53,7 +53,7 @@ export namespace AccountNotifications {
 }
 
 function createSubject(sub: V2Subscription, userPersona: IUserPersona): string {
-    return `Hey ${userPersona.firstName || ''}, Thanks for Buying Polar ${sub.plan.level}!`;
+    return `Hey ${userPersona.firstName || ''}, Thanks for Buying Polar ${sub.plan.level.toUpperCase()}!`;
 }
 
 function createBody(sub: V2Subscription, persona: IPersona, userPersona: IUserPersona): string {
@@ -64,7 +64,7 @@ I'm ${persona.firstName}, one of the founders here at Polar.
 </p>
 
 <p>
-I just wanted to say thanks for subscribing to Polar ${sub.plan.level}!  We really 
+I just wanted to say thanks for subscribing to Polar ${sub.plan.level.toUpperCase()}!  We really 
 appreciate the support!
 </p>
 

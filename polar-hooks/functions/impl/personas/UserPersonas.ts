@@ -33,7 +33,7 @@ export namespace UserPersonas {
 
     }
 
-    function computeFirstName(displayName: string | undefined) {
+    function computeFirstName(displayName: string | undefined): string | undefined {
 
         if (displayName === undefined) {
             return undefined;
