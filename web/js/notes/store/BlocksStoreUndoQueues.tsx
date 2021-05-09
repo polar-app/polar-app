@@ -2,7 +2,6 @@ import {IBlock} from "./IBlock";
 import {SetArrays} from "polar-shared/src/util/SetArrays";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {BlockIDStr, BlocksStore} from "./BlocksStore";
-import deepEqual from "deep-equal";
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {PositionalArrays} from "./PositionalArrays";
 import {IWithMutationOpts} from "./Block";
@@ -11,8 +10,6 @@ import {BlocksStoreMutations} from "./BlocksStoreMutations";
 
 export namespace BlocksStoreUndoQueues {
 
-    import PositionalArray = PositionalArrays.PositionalArray;
-    import PositionalArrayPositionStr = PositionalArrays.PositionalArrayPositionStr;
     import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
     import IBlocksStoreMutationUpdated = BlocksStoreMutations.IBlocksStoreMutationModified;
     import IBlocksStoreMutationAdded = BlocksStoreMutations.IBlocksStoreMutationAdded;
@@ -163,10 +160,25 @@ export namespace BlocksStoreUndoQueues {
 
                 case "undo":
 
-                    return {
-                        updated: mutation.before.updated,
-                        mutation: mutation.before.mutation
-                    };
+                    switch (mutation.type) {
+
+                        case "added":
+                            return {
+                                updated: mutation.added.updated,
+                                mutation: mutation.added?.mutation
+                            };
+                        case "removed":
+                            return {
+                                updated: mutation.removed.updated,
+                                mutation: mutation.removed?.mutation
+                            };
+                        case "modified":
+                            return {
+                                updated: mutation.before.updated,
+                                mutation: mutation.before?.mutation
+                            };
+
+                    }
 
                 case "redo":
 
@@ -182,7 +194,7 @@ export namespace BlocksStoreUndoQueues {
                         case "removed":
                             return {
                                 updated,
-                                mutation: mutation.before.mutation,
+                                mutation: mutation.removed.mutation,
                             }
                         case "modified":
                             return {
@@ -338,20 +350,22 @@ export namespace BlocksStoreUndoQueues {
 
         const handleDelete = (mutation: IBlocksStoreMutationAdded | IBlocksStoreMutationRemoved) => {
 
-            if (blocksStore.containsBlock(mutation.before.id)) {
-                blocksStore.doDelete([mutation.before.id], {noDeleteItems: true});
+            if (blocksStore.containsBlock(mutation.id)) {
+                blocksStore.doDelete([mutation.id], {noDeleteItems: true});
             } else {
-                throw new Error("Block missing: " + mutation.before.id)
+                throw new Error("Block missing: " + mutation.id)
             }
 
         }
 
         const handlePut = (mutation: IBlocksStoreMutationAdded | IBlocksStoreMutationRemoved) => {
 
-            if (! blocksStore.containsBlock(mutation.before.id)) {
-                blocksStore.doPut([mutation.before]);
+            const block = mutation.type === 'added' ? mutation.added : mutation.removed;
+
+            if (! blocksStore.containsBlock(mutation.id)) {
+                blocksStore.doPut([block]);
             } else {
-                throw new Error("Block missing: " + mutation.before.id)
+                throw new Error("Block missing: " + mutation.id)
             }
 
         }
@@ -558,11 +572,23 @@ export namespace BlocksStoreUndoQueues {
         const updated = computeUpdated();
 
         const toMutation = (block: IBlock, type: 'added' | 'removed'): IBlocksStoreMutationAdded | IBlocksStoreMutationRemoved=> {
-            return {
-                id: block.id,
-                before: block,
-                type
-            };
+
+            switch (type) {
+
+                case "added":
+                    return {
+                        id: block.id,
+                        type,
+                        added: block
+                    }
+                case "removed":
+                    return {
+                        id: block.id,
+                        type,
+                        removed: block,
+                    }
+
+            }
 
         }
 

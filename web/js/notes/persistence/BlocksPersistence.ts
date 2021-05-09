@@ -142,7 +142,7 @@ export namespace BlocksPersistence {
                         {
                             id: mutation.id,
                             type: 'set-doc',
-                            value: mutation.before
+                            value: mutation.added
                         }
                     ];
 
@@ -249,13 +249,7 @@ export namespace BlocksPersistence {
 
                     const baseMutations = createBaseMutations();
 
-                    console.log("FIXME convertToFirestoreMutations: mutationTargets: ", mutationTargets);
-                    console.log("FIXME convertToFirestoreMutations: baseMutations: ", baseMutations);
-                    console.log("FIXME convertToFirestoreMutations: firestoreMutations: ", firestoreMutations);
-
                     const result = [...baseMutations, ...firestoreMutations];
-
-                    console.log("FIXME convertToFirestoreMutations: result of mutations and firestoreMutations: ", result);
 
                     return result;
 

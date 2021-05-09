@@ -49,7 +49,7 @@ export function useBlocksStoreMutationsHandler(): IBlocksStoreMutationsHandler {
             return {
                 id: block.id,
                 type: 'removed',
-                before: block
+                removed: block,
             };
         }
 
@@ -88,14 +88,14 @@ export function useBlocksStoreMutationsHandler(): IBlocksStoreMutationsHandler {
                 return {
                     id: after.id,
                     type: 'added',
-                    // TODO: this is a bug and should be called 'block'
-                    before: after
+                    added: after,
                 }
             } else {
                 return {
                     id: after.id,
                     type: 'modified',
-                    before, after
+                    before,
+                    after
                 }
             }
 

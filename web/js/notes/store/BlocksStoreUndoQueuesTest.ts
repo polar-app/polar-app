@@ -185,7 +185,8 @@ describe("BlocksStoreUndoQueues", () => {
             assertJSON(mutatedBlocks, [
                 {
                     "id": "0x03",
-                    "before": {
+                    "type": "added",
+                    "added": {
                         "id": "0x03",
                         "nspace": "234",
                         "uid": "1234",
@@ -206,12 +207,12 @@ describe("BlocksStoreUndoQueues", () => {
                         },
                         "links": {},
                         "mutation": 0
-                    },
-                    "type": "added"
+                    }
                 },
                 {
                     "id": "0x02",
-                    "before": {
+                    "type": "removed",
+                    "removed": {
                         "id": "0x02",
                         "nspace": "234",
                         "uid": "1234",
@@ -232,8 +233,7 @@ describe("BlocksStoreUndoQueues", () => {
                         },
                         "links": {},
                         "mutation": 0
-                    },
-                    "type": "removed"
+                    }
                 },
                 {
                     "id": "0x04",

@@ -15,10 +15,7 @@ export namespace BlocksStoreMutations {
         readonly id: BlockIDStr;
         readonly type: 'added';
 
-        /**
-         * The actual block added.
-         */
-        readonly before: IBlock;
+        readonly added: IBlock;
 
     }
 
@@ -27,10 +24,7 @@ export namespace BlocksStoreMutations {
         readonly id: BlockIDStr;
         readonly type: 'removed';
 
-        /**
-         * The actual block removed.
-         */
-        readonly before: IBlock;
+        readonly removed: IBlock;
 
     }
     export interface IBlocksStoreMutationModified {
