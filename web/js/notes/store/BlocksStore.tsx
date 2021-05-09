@@ -380,6 +380,8 @@ export class BlocksStore implements IBlocksStore {
 
     @action public doPut(blocks: ReadonlyArray<IBlock>, opts: DoPutOpts = {}) {
 
+        const doCommit = this.blocksStoreMutationsHandler.handlePut(this, blocks);
+
         for (const blockData of blocks) {
 
             const block = new Block(blockData);
@@ -400,6 +402,9 @@ export class BlocksStore implements IBlocksStore {
         if (opts.newExpand) {
             this._expanded[opts.newExpand] = true;
         }
+
+        doCommit()
+            .catch(err => console.log("Error when trying to commit: ", err));
 
     }
 
@@ -508,7 +513,6 @@ export class BlocksStore implements IBlocksStore {
         return undefined;
 
     }
-
 
     public getActiveBlock(id: BlockIDStr): Block | undefined {
 
@@ -949,6 +953,8 @@ export class BlocksStore implements IBlocksStore {
     @action public doCreateNewNamedBlock(name: BlockNameStr,
                                          opts?: ICreateNewNamedBlockOpts): BlockIDStr {
 
+        // NOTE that the ID always has to be random. We can't make it a hash
+        // based on the name as the name can change.
         const newBlockID = opts?.newBlockID || Hashcodes.createRandomID();
 
         const existingBlock = this.getBlockByName(name);
@@ -975,7 +981,7 @@ export class BlocksStore implements IBlocksStore {
                     return opts.nspace;
                 }
 
-                throw new Error("No namespace");
+                return this.uid;
 
             }
 
@@ -993,7 +999,7 @@ export class BlocksStore implements IBlocksStore {
                 content: Contents.create({
                     type: 'name',
                     data: name
-                }),
+                }).toJSON(),
                 created: now,
                 updated: now,
                 items: {},
@@ -1253,7 +1259,7 @@ export class BlocksStore implements IBlocksStore {
                     nspace: parentBlock.nspace,
                     uid: this.uid,
                     root: parentBlock.root,
-                    content: Contents.create(content),
+                    content: Contents.create(content).toJSON(),
                     created: now,
                     updated: now,
                     items,
@@ -1907,8 +1913,8 @@ export class BlocksStore implements IBlocksStore {
 export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore(() => {
     const {uid} = useBlocksStoreContext();
     const undoQueue = useUndoQueue();
-    // const blocksStoreMutationsHandler = useBlocksStoreMutationsHandler();
-    const blocksStoreMutationsHandler = createMockBlocksStoreMutationsHandler();
+    const blocksStoreMutationsHandler = useBlocksStoreMutationsHandler();
+    // const blocksStoreMutationsHandler = createMockBlocksStoreMutationsHandler();
     return new BlocksStore(uid, undoQueue, blocksStoreMutationsHandler);
 })
 

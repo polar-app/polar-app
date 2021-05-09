@@ -8,6 +8,7 @@ import {IBlock} from "../store/IBlock";
 import {useBlocksPersistenceWriter} from "./BlockPersistenceProvider";
 import IBlocksStoreMutationUpdated = BlocksStoreMutations.IBlocksStoreMutationUpdated;
 import IBlocksStoreMutationAdded = BlocksStoreMutations.IBlocksStoreMutationAdded;
+import { Block } from '../store/Block';
 
 export type AsyncCommitCallback = () => Promise<void>;
 
@@ -18,17 +19,17 @@ export interface IBlocksStoreMutationsHandler {
 
 export function createMockBlocksStoreMutationsHandler(): IBlocksStoreMutationsHandler {
 
-    const handleDelete = () => {
+    const handleDelete = (blocksStore: IBlocksStore, blockIDs: ReadonlyArray<BlockIDStr>) => {
 
         return async () => {
-            // noop
+            console.log("notes: mock persistence: handleDelete: ", blockIDs)
         }
 
     }
-    const handlePut = () => {
+    const handlePut = (blocksStore: IBlocksStore, blocks: ReadonlyArray<IBlock>) => {
 
         return async () => {
-            // noop
+            console.log("notes: mock persistence: handlePut: ", blocks)
         }
 
     }
@@ -68,6 +69,16 @@ export function useBlocksStoreMutationsHandler(): IBlocksStoreMutationsHandler {
 
     const handlePut = React.useCallback((blocksStore: IBlocksStore, blocks: ReadonlyArray<IBlock>): AsyncCommitCallback => {
 
+        const toExternalBlock = (block: IBlock) => {
+
+            if ((block as any).toJSON) {
+                return (block as Block).toJSON()
+            }
+
+            return block
+        }
+
+
         function toMutation(before: IBlock | undefined, after: IBlock): IBlocksStoreMutationUpdated | IBlocksStoreMutationAdded {
 
             if (before === undefined) {
@@ -89,6 +100,7 @@ export function useBlocksStoreMutationsHandler(): IBlocksStoreMutationsHandler {
 
         const mutations: ReadonlyArray<IBlocksStoreMutationUpdated | IBlocksStoreMutationAdded> =
             arrayStream(blocks)
+                .map(current => toExternalBlock(current))
                 .map(current => {
                     const before = blocksStore.getBlock(current.id)?.toJSON();
                     return toMutation(before, current);

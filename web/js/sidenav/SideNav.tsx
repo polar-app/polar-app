@@ -21,6 +21,8 @@ import {ZenModeActiveContainer} from "../mui/ZenModeActiveContainer";
 import { Intercom } from '../apps/repository/integrations/Intercom';
 import { SideNavQuestionButton } from './SideNavQuestionButton';
 import {VerticalDynamicScroller} from './DynamicScroller';
+import {DateContents} from "../notes/content/DateContents";
+import {useBlocksStore} from "../notes/store/BlocksStore";
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -84,6 +86,10 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
+export function useNotesEnabled() {
+    return localStorage.getItem('notes.enabled') === 'true';
+}
+
 interface HistoryButtonProps {
     readonly path: string;
     readonly title: string;
@@ -132,7 +138,33 @@ const AnnotationsButton = React.memo(function AnnotationsButton() {
     )
 });
 
+const NotesButton = React.memo(function AnnotationsButton() {
 
+    const classes = useStyles();
+    const blocksStore = useBlocksStore();
+
+    const dateContent = DateContents.create();
+
+    const path = `/notes/${dateContent.data}`;
+
+    React.useEffect(() => {
+
+        const block = blocksStore.getBlockByName(dateContent.data);
+
+        if (! block) {
+            blocksStore.doCreateNewNamedBlock(dateContent.data);
+        }
+
+    }, [blocksStore, dateContent.data]);
+
+    return (
+        <SideNavHistoryButton title="Notes"
+                              path={path}>
+            <NoteIcon className={classes.secondaryIcon}/>
+        </SideNavHistoryButton>
+    );
+
+});
 
 const StatsButton = React.memo(function StatsButton() {
 
@@ -236,6 +268,8 @@ export const SideNav = React.memo(function SideNav() {
 
     const {tabs} = useSideNavStore(['tabs']);
 
+    const notesEnabled = useNotesEnabled();
+
     return (
         <>
             <SideNavCommandMenu/>
@@ -251,6 +285,11 @@ export const SideNav = React.memo(function SideNav() {
 
                     <HomeButton/>
                     <AnnotationsButton/>
+
+                    {notesEnabled && (
+                        <NotesButton/>
+                    )}
+
                     <StatsButton/>
 
                     {tabs.length > 0 && (

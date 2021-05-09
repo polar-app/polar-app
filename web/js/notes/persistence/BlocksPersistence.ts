@@ -2,7 +2,7 @@ import React from 'react';
 import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
 import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
 import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
-import {BlockIDStr} from "../store/BlocksStore";
+import {BlockIDStr, IBlockContent} from "../store/BlocksStore";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import firebase from 'firebase';
 import {IBlock} from "../store/IBlock";
@@ -10,6 +10,37 @@ import {IQuerySnapshot} from "polar-snapshot-cache/src/store/IQuerySnapshot";
 import {IDocumentChange} from "polar-snapshot-cache/src/store/IDocumentChange";
 
 export type BlocksPersistenceWriter = (mutations: ReadonlyArray<IBlocksStoreMutation>) => Promise<void>;
+
+
+// export interface IFirestoreBlock<C extends IBlockContent = IBlockContent> extends Exclude<IBlock<C>, 'parent'> {
+//
+//     readonly parent: BlockIDStr | null;
+//
+// }
+
+function toFirestoreBlock(block: IBlock) {
+
+    const result: any = {...block};
+
+    if (result.parent === undefined) {
+        result.parent = null;
+    }
+
+    return result
+
+}
+
+function fromFirestoreBlock(block: any): IBlock {
+
+    const result: any = {...block};
+
+    if (result.parent === null) {
+        result.parent = undefined;
+    }
+
+    return result;
+
+}
 
 export function useFirestoreBlocksPersistenceWriter(): BlocksPersistenceWriter {
 
@@ -30,7 +61,7 @@ export function useFirestoreBlocksPersistenceWriter(): BlocksPersistenceWriter {
             switch (firestoreMutation.type) {
 
                 case "set-doc":
-                    batch.set(doc, firestoreMutation.value);
+                    batch.set(doc, toFirestoreBlock(firestoreMutation.value));
                     break;
 
                     case "delete-doc":
@@ -38,7 +69,7 @@ export function useFirestoreBlocksPersistenceWriter(): BlocksPersistenceWriter {
                     break;
 
                 case "update-path":
-                    batch.update(doc, firestoreMutation.path, firestoreMutation.value);
+                    batch.update(doc, firestoreMutation.path, firestoreMutation.value !== undefined ? firestoreMutation.value : null);
                     break;
 
                 case "update-delete-field-value":
@@ -63,7 +94,7 @@ export namespace BlocksPersistence {
     export interface IFirestoreMutationSetDoc {
         readonly id: BlockIDStr;
         readonly type: 'set-doc';
-        readonly value: any;
+        readonly value: IBlock;
     }
 
     export interface IFirestoreMutationDeleteDoc {

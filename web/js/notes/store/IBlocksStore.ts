@@ -58,7 +58,8 @@ export interface IBlocksStore {
 
     setRoot(root: BlockIDStr | undefined): void;
 
-    getBlockByTarget(target: BlockIDStr | BlockTargetStr): Block | undefined;
+    getBlockByName(name: BlockNameStr): Block | undefined;
+    getBlockByTarget(target: BlockIDStr | BlockNameStr): Block | undefined;
 
     getBlockActivated(id: BlockIDStr): IBlockActivated | undefined;
 
