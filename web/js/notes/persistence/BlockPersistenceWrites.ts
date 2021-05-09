@@ -5,7 +5,7 @@ import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
 import IBlocksStoreMutationRemoved = BlocksStoreMutations.IBlocksStoreMutationRemoved;
 import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 import {IBlock} from "../store/IBlock";
-import {useBlocksPersistenceWriter} from "./BlockPersistenceProvider";
+import {useBlocksPersistenceWriter} from "./BlockPersistenceWriters";
 import IBlocksStoreMutationUpdated = BlocksStoreMutations.IBlocksStoreMutationUpdated;
 import IBlocksStoreMutationAdded = BlocksStoreMutations.IBlocksStoreMutationAdded;
 import { Block } from '../store/Block';
