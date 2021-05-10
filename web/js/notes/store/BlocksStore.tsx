@@ -5,7 +5,7 @@ import {IDStr, MarkdownStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {BlockTargetStr} from "../NoteLinkLoader";
-import {isPresent} from "polar-shared/src/Preconditions";
+import {isPresent, Preconditions} from "polar-shared/src/Preconditions";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {IBlock, NamespaceIDStr, UIDStr} from "./IBlock";
 import {ReverseIndex} from "./ReverseIndex";
@@ -675,10 +675,12 @@ export class BlocksStore implements IBlocksStore {
     private computeLinearExpansionTree(id: BlockIDStr,
                                        root: boolean = true): ReadonlyArray<BlockIDStr> {
 
+        Preconditions.assertString(id, "id");
+
         const block = this._index[id];
 
         if (! block) {
-            console.warn("computeLinearExpansionTree: No block: ", id);
+            console.warn("computeLinearExpansionTree: No block: " + id);
             return [];
         }
 
