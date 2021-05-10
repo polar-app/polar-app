@@ -190,6 +190,12 @@ export interface IDoDeleteOpts {
 
 }
 
+export interface ICreateNewNamedBlockOptsBasic {
+    readonly newBlockID?: BlockIDStr;
+    readonly nspace?: NamespaceIDStr;
+    readonly ref?: BlockIDStr;
+}
+
 export interface ICreateNewNamedBlockOptsWithNSpace {
     readonly newBlockID?: BlockIDStr;
     readonly nspace: NamespaceIDStr;
@@ -202,7 +208,7 @@ export interface ICreateNewNamedBlockOptsWithRef {
     readonly ref: BlockIDStr;
 }
 
-export type ICreateNewNamedBlockOpts = ICreateNewNamedBlockOptsWithNSpace | ICreateNewNamedBlockOptsWithRef;
+export type ICreateNewNamedBlockOpts = ICreateNewNamedBlockOptsBasic | ICreateNewNamedBlockOptsWithNSpace | ICreateNewNamedBlockOptsWithRef;
 
 export class BlocksStore implements IBlocksStore {
 
@@ -938,11 +944,11 @@ export class BlocksStore implements IBlocksStore {
      *
      */
     @action public doCreateNewNamedBlock(name: BlockNameStr,
-                                         opts?: ICreateNewNamedBlockOpts): BlockIDStr {
+                                         opts: ICreateNewNamedBlockOpts): BlockIDStr {
 
         // NOTE that the ID always has to be random. We can't make it a hash
         // based on the name as the name can change.
-        const newBlockID = opts?.newBlockID || Hashcodes.createRandomID();
+        const newBlockID = opts.newBlockID || Hashcodes.createRandomID();
 
         const existingBlock = this.getBlockByName(name);
 
@@ -950,57 +956,77 @@ export class BlocksStore implements IBlocksStore {
             return existingBlock.id;
         }
 
-        const createNewBlock = (): IBlock => {
+        const redo = (): BlockIDStr => {
 
-            const computeNamespace = (): NamespaceIDStr => {
+            const createNewBlock = (): IBlock => {
 
-                if (opts?.ref) {
+                const computeNamespace = (): NamespaceIDStr => {
 
-                    const refBlock = this.getBlock(opts.ref);
+                    if (opts?.ref) {
 
-                    if (! refBlock) {
-                        throw new Error("Reference block doesn't exist");
+                        const refBlock = this.getBlock(opts.ref);
+
+                        if (! refBlock) {
+                            throw new Error("Reference block doesn't exist");
+                        }
+
                     }
 
+                    if (opts?.nspace) {
+                        return opts.nspace;
+                    }
+
+                    return this.uid;
+
                 }
 
-                if (opts?.nspace) {
-                    return opts.nspace;
-                }
 
-                return this.uid;
+                const now = ISODateTimeStrings.create();
+                const nspace = computeNamespace();
 
-            }
+                return {
+                    id: newBlockID,
+                    nspace,
+                    uid: this.uid,
+                    root: newBlockID,
+                    parent: undefined,
+                    parents: [],
+                    content: Contents.create({
+                        type: 'name',
+                        data: name
+                    }).toJSON(),
+                    created: now,
+                    updated: now,
+                    items: {},
+                    links: {},
+                    mutation: 0
+                };
 
-
-            const now = ISODateTimeStrings.create();
-            const nspace = computeNamespace();
-
-            return {
-                id: newBlockID,
-                nspace,
-                uid: this.uid,
-                root: newBlockID,
-                parent: undefined,
-                parents: [],
-                content: Contents.create({
-                    type: 'name',
-                    data: name
-                }).toJSON(),
-                created: now,
-                updated: now,
-                items: {},
-                links: {},
-                mutation: 0
             };
 
-        };
+            const newBlock = createNewBlock();
 
-        const newBlock = createNewBlock();
+            this.doPut([newBlock]);
 
-        this.doPut([newBlock]);
+            return newBlockID;
 
-        return newBlockID;
+        }
+
+        return this.doUndoPush([newBlockID], redo);
+
+    }
+
+    @action public createNewNamedBlock(name: BlockNameStr,
+                                       opts: ICreateNewNamedBlockOpts): BlockIDStr {
+
+        const newBlockID = Hashcodes.createRandomID();
+
+        const redo = (): BlockIDStr => {
+            return this.doCreateNewNamedBlock(name, {...opts, newBlockID});
+
+        }
+
+        return this.doUndoPush([newBlockID], redo);
 
     }
 

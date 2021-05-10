@@ -162,7 +162,7 @@ const NotesButton = observer(function NotesButton() {
             const block = blocksStore.getBlockByName(dateContent.data);
 
             if (! block) {
-                blocksStore.doCreateNewNamedBlock(dateContent.data);
+                blocksStore.createNewNamedBlock(dateContent.data, {});
             }
 
         });

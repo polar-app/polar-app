@@ -181,7 +181,7 @@ export const BlockContentEditable = observer((props: IProps) => {
             divRef.current!.innerHTML = props.content;
 
             if (divRef.current && blocksStore.active) {
-                updateCursorPosition(divRef.current, blocksStore.active, true);
+                updateCursorPosition(divRef.current, {...blocksStore.active, pos: 'end'}, true);
             }
 
         }
