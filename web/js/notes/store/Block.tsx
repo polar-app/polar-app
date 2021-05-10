@@ -141,6 +141,10 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @action setContent(content: C | IBlockContent) {
 
+        if (this._content.type !== content.type) {
+            throw new Error(`Can not change content types from ${this._content.type} to ${content.type}`);
+        }
+
         if (this.hasContentMutated(content)) {
             this._content.update(content);
             return true;

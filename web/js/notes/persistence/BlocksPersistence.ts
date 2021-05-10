@@ -49,11 +49,11 @@ export function useFirestoreBlocksPersistenceWriter(): BlocksPersistenceWriter {
 
     return React.useCallback((mutations: ReadonlyArray<IBlocksStoreMutation>) => {
 
-        console.log("Writing mutations to firestore: ", mutations);
+        // console.log("Writing mutations to firestore: ", mutations);
 
         const firestoreMutations = BlocksPersistence.convertToFirestoreMutations(mutations);
 
-        console.log("Writing firestoreMutations to firestore: ", firestoreMutations);
+        // console.log("Writing firestoreMutations to firestore: ", firestoreMutations);
 
         const collection = firestore.collection('block');
         const batch = firestore.batch();
@@ -259,7 +259,7 @@ export namespace BlocksPersistence {
 
         }
 
-        console.log("FIXME convertToFirestoreMutations.1: mutations: ", mutations);
+        // console.log("convertToFirestoreMutations: mutations: ", mutations);
 
         return arrayStream(mutations.map(current => toFirestoreMutation(current)))
             .flatMap(current => current)
