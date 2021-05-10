@@ -22,7 +22,8 @@ import {
 import {
     IDocDescriptor,
     IDocScale,
-    useDocViewerCallbacks
+    useDocViewerCallbacks,
+    useDocViewerStore
 } from "../../DocViewerStore";
 import {useDocFindCallbacks} from "../../DocFindStore";
 import {PageNavigator} from "../../PageNavigator";
@@ -41,7 +42,6 @@ import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {KnownPrefs} from "../../../../../web/js/util/prefs/KnownPrefs";
 import {useAnnotationBar} from "../../AnnotationBarHooks";
 import {DocumentInit} from "../DocumentInitHook";
-import {useDocViewerPageJumpListener} from '../../DocViewerAnnotationHook';
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {IOutlineItem} from "../../outline/IOutlineItem";
 import Outline = _pdfjs.Outline;
@@ -54,6 +54,7 @@ import {usePrefsContext} from "../../../../repository/js/persistence_layer/Prefs
 import { usePDFUpgrader } from './PDFUpgrader';
 import {ViewerElements} from "../ViewerElements";
 import {useDocumentViewerVisibleElemFocus} from '../UseSidenavDocumentChangeCallbackHook';
+import {AreaHighlightCreator} from '../../annotations/AreaHighlightDrawer';
 
 interface DocViewer {
     readonly eventBus: EventBus;
@@ -456,6 +457,7 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
     return active && (
         <>
+            <AreaHighlightCreator />
             <DocumentInit/>
             {props.children}
         </>

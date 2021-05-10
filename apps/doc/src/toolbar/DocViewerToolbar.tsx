@@ -14,7 +14,6 @@ import {useDocViewerCallbacks, useDocViewerStore} from "../DocViewerStore";
 import Divider from "@material-ui/core/Divider";
 import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {useDocFindStore} from "../DocFindStore";
-import {DocumentWriteStatus} from "../../../../web/js/apps/repository/connectivity/DocumentWriteStatus";
 import {MUIDocFlagButton} from "../../../repository/js/doc_repo/buttons/MUIDocFlagButton";
 import {MUIDocArchiveButton} from "../../../repository/js/doc_repo/buttons/MUIDocArchiveButton";
 import {DocViewerToolbarOverflowButton} from "../DocViewerToolbarOverflowButton";
@@ -28,6 +27,9 @@ import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {DockLayoutToggleButton} from "../../../../web/js/ui/doc_layout/DockLayoutToggleButton";
 import {ZenModeActiveContainer} from "../../../../web/js/mui/ZenModeActiveContainer";
 import {ZenModeButton} from "./ZenModeButton";
+import ImageIcon from "@material-ui/icons/Image";
+import {StandardToggleButton} from "../../../repository/js/doc_repo/buttons/StandardToggleButton";
+import {MUIDocAreaHighlightModeToggle} from "../../../repository/js/doc_repo/buttons/MUIDocAreaHighlightModeToggle";
 
 const getScaleLevelTuple = (scale: ScaleLevel) => (
     arrayStream(ScaleLevelTuples)
@@ -37,10 +39,10 @@ const getScaleLevelTuple = (scale: ScaleLevel) => (
 
 export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
 
-    const {docScale, pageNavigator, scaleLeveler, docMeta}
-        = useDocViewerStore(['docScale', 'pageNavigator', 'scaleLeveler', 'docMeta']);
+    const {docScale, pageNavigator, scaleLeveler, docMeta, areaHighlightModeActive}
+        = useDocViewerStore(['docScale', 'pageNavigator', 'scaleLeveler', 'docMeta', 'areaHighlightModeActive']);
     const {finder} = useDocFindStore(['finder']);
-    const {setScale, onDocTagged, doZoom, toggleDocArchived, toggleDocFlagged} = useDocViewerCallbacks();
+    const {setScale, onDocTagged, doZoom, toggleDocArchived, toggleDocFlagged, setAreaHighlightModeActive} = useDocViewerCallbacks();
 
     const handleScaleChange = React.useCallback((scale: ScaleLevel) => {
 
@@ -163,6 +165,13 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
 
 
                                 {/* TODO: implement keyboard shortcuts for these. */}
+                                <MUIDocAreaHighlightModeToggle
+                                    onClick={() => setAreaHighlightModeActive(!areaHighlightModeActive)}
+                                    active={areaHighlightModeActive}
+                                />
+
+                                <Divider orientation="vertical" flexItem/>
+
                                 <MUIDocTagButton size="small"
                                                  onClick={onDocTagged}/>
 
@@ -174,7 +183,7 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
                                                   onClick={toggleDocFlagged}
                                                   active={docMeta?.docInfo?.flagged}/>
 
-                                <Divider orientation="vertical" flexItem={true}/>
+                                <Divider orientation="vertical" flexItem/>
 
                                 {/*
                                 <div className="ml-3 mr-2" style={{display: 'flex'}}>
