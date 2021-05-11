@@ -5,7 +5,7 @@ import {IDStr, MarkdownStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {BlockTargetStr} from "../NoteLinkLoader";
-import {isPresent} from "polar-shared/src/Preconditions";
+import {isPresent, Preconditions} from "polar-shared/src/Preconditions";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {IBlock, NamespaceIDStr, UIDStr} from "./IBlock";
 import {ReverseIndex} from "./ReverseIndex";
@@ -190,6 +190,12 @@ export interface IDoDeleteOpts {
 
 }
 
+export interface ICreateNewNamedBlockOptsBasic {
+    readonly newBlockID?: BlockIDStr;
+    readonly nspace?: NamespaceIDStr;
+    readonly ref?: BlockIDStr;
+}
+
 export interface ICreateNewNamedBlockOptsWithNSpace {
     readonly newBlockID?: BlockIDStr;
     readonly nspace: NamespaceIDStr;
@@ -202,7 +208,7 @@ export interface ICreateNewNamedBlockOptsWithRef {
     readonly ref: BlockIDStr;
 }
 
-export type ICreateNewNamedBlockOpts = ICreateNewNamedBlockOptsWithNSpace | ICreateNewNamedBlockOptsWithRef;
+export type ICreateNewNamedBlockOpts = ICreateNewNamedBlockOptsBasic | ICreateNewNamedBlockOptsWithNSpace | ICreateNewNamedBlockOptsWithRef;
 
 export class BlocksStore implements IBlocksStore {
 
@@ -669,10 +675,12 @@ export class BlocksStore implements IBlocksStore {
     private computeLinearExpansionTree(id: BlockIDStr,
                                        root: boolean = true): ReadonlyArray<BlockIDStr> {
 
+        Preconditions.assertString(id, "id");
+
         const block = this._index[id];
 
         if (! block) {
-            console.warn("computeLinearExpansionTree: No block: ", id);
+            console.warn("computeLinearExpansionTree: No block: " + id);
             return [];
         }
 
@@ -938,11 +946,11 @@ export class BlocksStore implements IBlocksStore {
      *
      */
     @action public doCreateNewNamedBlock(name: BlockNameStr,
-                                         opts?: ICreateNewNamedBlockOpts): BlockIDStr {
+                                         opts: ICreateNewNamedBlockOpts): BlockIDStr {
 
         // NOTE that the ID always has to be random. We can't make it a hash
         // based on the name as the name can change.
-        const newBlockID = opts?.newBlockID || Hashcodes.createRandomID();
+        const newBlockID = opts.newBlockID || Hashcodes.createRandomID();
 
         const existingBlock = this.getBlockByName(name);
 
@@ -950,57 +958,77 @@ export class BlocksStore implements IBlocksStore {
             return existingBlock.id;
         }
 
-        const createNewBlock = (): IBlock => {
+        const redo = (): BlockIDStr => {
 
-            const computeNamespace = (): NamespaceIDStr => {
+            const createNewBlock = (): IBlock => {
 
-                if (opts?.ref) {
+                const computeNamespace = (): NamespaceIDStr => {
 
-                    const refBlock = this.getBlock(opts.ref);
+                    if (opts?.ref) {
 
-                    if (! refBlock) {
-                        throw new Error("Reference block doesn't exist");
+                        const refBlock = this.getBlock(opts.ref);
+
+                        if (! refBlock) {
+                            throw new Error("Reference block doesn't exist");
+                        }
+
                     }
 
+                    if (opts?.nspace) {
+                        return opts.nspace;
+                    }
+
+                    return this.uid;
+
                 }
 
-                if (opts?.nspace) {
-                    return opts.nspace;
-                }
 
-                return this.uid;
+                const now = ISODateTimeStrings.create();
+                const nspace = computeNamespace();
 
-            }
+                return {
+                    id: newBlockID,
+                    nspace,
+                    uid: this.uid,
+                    root: newBlockID,
+                    parent: undefined,
+                    parents: [],
+                    content: Contents.create({
+                        type: 'name',
+                        data: name
+                    }).toJSON(),
+                    created: now,
+                    updated: now,
+                    items: {},
+                    links: {},
+                    mutation: 0
+                };
 
-
-            const now = ISODateTimeStrings.create();
-            const nspace = computeNamespace();
-
-            return {
-                id: newBlockID,
-                nspace,
-                uid: this.uid,
-                root: newBlockID,
-                parent: undefined,
-                parents: [],
-                content: Contents.create({
-                    type: 'name',
-                    data: name
-                }).toJSON(),
-                created: now,
-                updated: now,
-                items: {},
-                links: {},
-                mutation: 0
             };
 
-        };
+            const newBlock = createNewBlock();
 
-        const newBlock = createNewBlock();
+            this.doPut([newBlock]);
 
-        this.doPut([newBlock]);
+            return newBlockID;
 
-        return newBlockID;
+        }
+
+        return this.doUndoPush([newBlockID], redo);
+
+    }
+
+    @action public createNewNamedBlock(name: BlockNameStr,
+                                       opts: ICreateNewNamedBlockOpts): BlockIDStr {
+
+        const newBlockID = Hashcodes.createRandomID();
+
+        const redo = (): BlockIDStr => {
+            return this.doCreateNewNamedBlock(name, {...opts, newBlockID});
+
+        }
+
+        return this.doUndoPush([newBlockID], redo);
 
     }
 
@@ -1037,12 +1065,12 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    @action public createLinkToBlock<C extends IBlockContent = IBlockContent>(sourceID: BlockIDStr,
+    @action public createLinkToBlock<C extends IBlockContent = IBlockContent>(sourceBlockID: BlockIDStr,
                                                                               targetName: BlockNameStr,
                                                                               undoContent: MarkdownStr,
                                                                               content: MarkdownStr) {
 
-        const sourceBlock = this.getBlock(sourceID)!;
+        const sourceBlock = this.getBlock(sourceBlockID)!;
 
         // if the existing target block exists, use that block name.
         const targetBlock = this.getBlockByName(targetName);
@@ -1056,65 +1084,66 @@ export class BlocksStore implements IBlocksStore {
 
         const redo = () => {
 
+            console.log(`Creating link from ${sourceBlockID} to ${targetName}`)
+
             // TODO: we have to setContent here too but I need to figure out how
             // to get it from the element when we're changing it.
 
+            const sourceBlock = this.getBlock(sourceBlockID);
+
+            if (! sourceBlock) {
+                throw new Error("Unable to find block: " + sourceBlockID);
+            }
+
+            if (sourceBlock.content.type !== 'markdown') {
+                throw new Error("Source block not markdown: " + sourceBlock.content.type);
+            }
+
             // create the new block - the sourceID is used for the ref to compute the nspace.
-            const targetID = this.doCreateNewNamedBlock(targetName, {newBlockID: sourceID, nspace: sourceBlock.nspace});
+            const targetID = this.doCreateNewNamedBlock(targetName, {newBlockID: sourceBlockID, nspace: sourceBlock.nspace});
 
-            const block = this.getBlock(sourceID);
+            sourceBlock.withMutation(() => {
 
-            if (! block) {
-                throw new Error("Unable to find block: " + sourceID);
-            }
+                sourceBlock.addLink({
+                    id: targetID,
+                    text: targetName
+                });
 
-            // think this won't trigger the undo/redo system...
-            if (block) {
+                sourceBlock.setContent({
+                    type: "markdown",
+                    data: content
+                });
 
-                block.withMutation(() => {
+            })
 
-                    block.addLink({
-                        id: targetID,
-                        text: targetName
-                    });
+            this.doPut([sourceBlock]);
 
-                    block.setContent({
-                        type: "markdown",
-                        data: content
-                    });
-
-                })
-
-                this.doPut([block]);
-
-                this.setActiveWithPosition(block.id, 'end');
-
-            }
+            this.setActiveWithPosition(sourceBlock.id, 'end');
 
         }
 
         const undo = () => {
 
-            const block = this.getBlock(sourceID);
+            const sourceBlock = this.getBlock(sourceBlockID);
 
-            if (! block) {
-                throw new Error("Unable to find block: " + sourceID);
+            if (! sourceBlock) {
+                throw new Error("Unable to find block: " + sourceBlockID);
             }
 
-            block.withMutation(() => {
+            sourceBlock.withMutation(() => {
 
-                block.removeLink(targetID);
+                sourceBlock.removeLink(targetID);
 
-                block.setContent({
+                sourceBlock.setContent({
                     type: "markdown",
                     data: undoContent
                 })
 
             }, restore);
 
-            this.doPut([block]);
+            this.doPut([sourceBlock]);
 
-            this.setActiveWithPosition(block.id, 'end');
+            this.setActiveWithPosition(sourceBlock.id, 'end');
 
         }
 
@@ -1810,7 +1839,7 @@ export class BlocksStore implements IBlocksStore {
 
     @action public handleSnapshot(snapshot: IBlocksPersistenceSnapshot) {
 
-        console.log("Handling blocks store snapshot: ", snapshot);
+        // console.log("Handling BlocksStore snapshot: ", snapshot);
 
         for (const docChange of snapshot.docChanges) {
             switch(docChange.type) {
@@ -1912,7 +1941,7 @@ export class BlocksStore implements IBlocksStore {
     }
 
     private doUndoPush<T>(identifiers: ReadonlyArray<BlockIDStr>, redoDelegate: () => T): T {
-        console.log("Item pushed to undo queue...");
+        // console.log("Item pushed to undo queue...");
         return BlocksStoreUndoQueues.doUndoPush(this, this.undoQueue, identifiers, mutations => this.blocksPersistenceWriter(mutations), redoDelegate);
     }
 

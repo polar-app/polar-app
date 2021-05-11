@@ -28,14 +28,14 @@ export const NoteRoot = observer((props: IProps) => {
 
     React.useEffect(() => {
 
-        autorun(() => {
+        // autorun(() => {
 
             if (block) {
                 blocksStore.setRoot(block.id);
                 blocksStore.setActive(block.id);
             }
-
-        });
+        //
+        // });
 
     }, [block, blocksStore, target])
 
