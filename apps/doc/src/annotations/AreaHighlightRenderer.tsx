@@ -37,21 +37,18 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
     const [draggable, setDraggable] = React.useState(false);
 
     React.useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.ctrlKey || e.metaKey) {
+        const handleKey = (e: KeyboardEvent) => {
+            if (e.shiftKey && !e.metaKey && !e.ctrlKey && !e.altKey) {
                 setDraggable(true);
-            }
-        };
-        const handleKeyUp = (e: KeyboardEvent) => {
-            if (!e.ctrlKey && !e.metaKey) {
+            } else {
                 setDraggable(false);
             }
         };
-        window.addEventListener('keydown', handleKeyDown, {passive: true});
-        window.addEventListener('keyup', handleKeyUp, {passive: true});
+        window.addEventListener('keydown', handleKey, {passive: true});
+        window.addEventListener('keyup', handleKey, {passive: true});
         return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-            window.removeEventListener('keyup', handleKeyUp);
+            window.removeEventListener('keydown', handleKey);
+            window.removeEventListener('keyup', handleKey);
         };
     }, [setDraggable]);
 
