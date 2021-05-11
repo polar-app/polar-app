@@ -90,6 +90,27 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
 
         const areaHighlightRect = AreaHighlightRects.createFromRect(rect);
         const overlayRect = toOverlayRect(areaHighlightRect);
+        const [draggable, setDraggable] = React.useState(false);
+
+        // TODO: REVIEW. This is the part I don't like very much
+        React.useEffect(() => {
+            const handleKeyDown = (e: KeyboardEvent) => {
+                if (e.ctrlKey || e.metaKey) {
+                    setDraggable(true);
+                }
+            };
+            const handleKeyUp = (e: KeyboardEvent) => {
+                if (!e.ctrlKey && !e.metaKey) {
+                    setDraggable(false);
+                }
+            };
+            window.addEventListener('keydown', handleKeyDown, {passive: true});
+            window.addEventListener('keyup', handleKeyUp, {passive: true});
+            return () => {
+                window.removeEventListener('keydown', handleKeyDown);
+                window.removeEventListener('keyup', handleKeyUp);
+            };
+        }, []);
 
         if (! overlayRect) {
             return null;
@@ -106,6 +127,7 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
             <ResizeBox
                  id={id}
                  data-type="area-highlight"
+                 draggable={draggable}
                  data-doc-fingerprint={fingerprint}
                  data-area-highlight-id={areaHighlight.id}
                  data-annotation-id={areaHighlight.id}

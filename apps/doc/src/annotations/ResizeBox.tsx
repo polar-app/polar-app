@@ -25,6 +25,7 @@ interface IProps {
 
     readonly document?: Document;
     readonly window?: Window;
+    readonly draggable?: boolean;
 
     /**
      * Used to compute the initial position of the resize box during initial
@@ -80,42 +81,6 @@ function deriveStateFromInitialPosition(computeInitialPosition: () => ILTRect): 
 
 }
 
-function computeNewBox(box: IBox, direction: ResizeDirection, delta: ResizableDelta): IBox {
-
-    if (direction.startsWith('left') || direction.startsWith('top')) {
-        return {
-            x: box.x - delta.width,
-            width: box.width + delta.width,
-            y: box.y - delta.height,
-            height: box.height + delta.height
-        };
-    }
-
-    if (direction.startsWith('right') || direction.startsWith('bottom')) {
-        return {
-            x: box.x,
-            y: box.y,
-            width: box.width + delta.width,
-            height: box.height + delta.height
-        };
-    }
-
-    throw new Error("unhandled direction: " + direction);
-
-}
-
-function toggleUserSelect(doc: Document, resizing: boolean) {
-    // this is a hack to disable user select of the document to prevent
-    // parts of the UI from being selected
-
-    if (resizing) {
-        doc.body.style.userSelect = 'none';
-    } else {
-        doc.body.style.userSelect = 'auto';
-    }
-
-}
-
 export const ResizeBox = deepMemo(function ResizeBox(props: IProps) {
 
     const computeNewState = () => deriveStateFromInitialPosition(props.computePosition);
@@ -136,6 +101,8 @@ export const ResizeBox = deepMemo(function ResizeBox(props: IProps) {
         scrollIntoViewRef(rndRef.current ? rndRef.current.getSelfElement() : null);
 
     }, [scrollIntoViewRef]);
+
+
 
     const handleResize = React.useCallback((newState: IState,
                                             direction: ResizeDirection) => {
@@ -227,7 +194,6 @@ export const ResizeBox = deepMemo(function ResizeBox(props: IProps) {
     }
 
     const position = computePosition(state);
-    const doc = props.document || document;
 
     return (
         <>
@@ -244,32 +210,29 @@ export const ResizeBox = deepMemo(function ResizeBox(props: IProps) {
                     width: state.width,
                     height: state.height
                 }}
-                onMouseDown={() => toggleUserSelect(doc, true)}
-                onMouseUp={() => toggleUserSelect(doc, false)}
                 position={position}
-                // onMouseOver={() => handleOnMouseOver()}
-                // onMouseOut={() => handleOnMouseOut()}
-                onDragStop={(e, d) => {
-                    // handleResize({
-                    //     ...state,
-                    //     x: d.x,
-                    //     y: d.y
-                    // });
+                onDragStop={(_, d) => {
+                    handleResize({
+                        ...state,
+                        x: d.x,
+                        y: d.y
+                    }, "right");
                 }}
-                onResizeStop={(event,
+                disableDragging={!props.draggable}
+                onResizeStop={(_,
                                direction,
-                               elementRef,
-                               delta) => {
-
-                    const box = computeNewBox(state, direction, delta);
+                               ref,
+                               _1,
+                               position) => {
 
                     handleResize({
                         ...state,
-                        ...box,
+                        ...position,
+                        width: parseInt(ref.style.width),
+                        height: parseInt(ref.style.height),
                     }, direction);
 
                 }}
-                disableDragging={true}
                 enableResizing={props.enableResizing}
                 resizeHandleStyles={{
                     top: {
@@ -327,7 +290,8 @@ export const ResizeBox = deepMemo(function ResizeBox(props: IProps) {
                 }}
                 style={{
                     ...props.style,
-                    pointerEvents: 'none',
+                    pointerEvents: props.draggable ? 'auto' : 'none',
+                    cursor: props.draggable ? 'move' : 'auto',
                 }}
                 {...dataProps}>
                 {/*<div onContextMenu={props.onContextMenu}*/}
