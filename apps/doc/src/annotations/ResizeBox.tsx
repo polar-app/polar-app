@@ -81,6 +81,20 @@ function deriveStateFromInitialPosition(computeInitialPosition: () => ILTRect): 
 
 }
 
+function toggleUserSelect(doc: Document, resizing: boolean) {
+    // this is a hack to disable user select of the document to prevent
+    // parts of the UI from being selected
+
+    if (resizing) {
+        doc.body.style.userSelect = 'none';
+        doc.body.style.webkitUserSelect = 'none';
+    } else {
+        doc.body.style.userSelect = 'auto';
+        doc.body.style.webkitUserSelect = 'auto';
+    }
+
+}
+
 export const ResizeBox = deepMemo(function ResizeBox(props: IProps) {
 
     const computeNewState = () => deriveStateFromInitialPosition(props.computePosition);
@@ -194,6 +208,7 @@ export const ResizeBox = deepMemo(function ResizeBox(props: IProps) {
     }
 
     const position = computePosition(state);
+    const doc = props.document || document;
 
     return (
         <>
@@ -211,12 +226,15 @@ export const ResizeBox = deepMemo(function ResizeBox(props: IProps) {
                     height: state.height
                 }}
                 position={position}
+                onDragStart={() => toggleUserSelect(doc, true)}
+                onResizeStart={() => toggleUserSelect(doc, true)}
                 onDragStop={(_, d) => {
                     handleResize({
                         ...state,
                         x: d.x,
                         y: d.y
                     }, "right");
+                    toggleUserSelect(doc, false)
                 }}
                 disableDragging={!props.draggable}
                 onResizeStop={(_,
@@ -231,7 +249,7 @@ export const ResizeBox = deepMemo(function ResizeBox(props: IProps) {
                         width: parseInt(ref.style.width),
                         height: parseInt(ref.style.height),
                     }, direction);
-
+                    toggleUserSelect(doc, false)
                 }}
                 enableResizing={props.enableResizing}
                 resizeHandleStyles={{
