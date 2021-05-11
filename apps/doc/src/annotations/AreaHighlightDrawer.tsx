@@ -32,7 +32,7 @@ export const AreaHighlightCreator: React.FC = () => {
         if (viewerContainer) {
             viewerContainer.classList[areaHighlightMode ? "add" : "remove"](classes.viewerContainer);
         }
-    }, [areaHighlightMode]);
+    }, [areaHighlightMode, docViewerElements, classes]);
 
     const createAreaHighlight = React.useCallback(({ rect, pageNum }) => {
         onAreaHighlightCreated({ pageNum, rectWithinPageElement: rect });
@@ -99,12 +99,14 @@ const updateDOMRect = (rectElem: HTMLDivElement, { top, left, width, height }: I
 
 export const usePDFRectangleDrawer = (callback: IUsePDFRectangleDrawerCallback, opts?: IUsePDFRectangleDrawerOpts) => {
     const {threshold = { x: 20, y: 20 }, enabled = true} = opts || {};
-    const docViewerElements = useDocViewerElementsContext();
+    const docViewerElementsRef =  useRefWithUpdates(useDocViewerElementsContext());
     const classes = useStyles();
     const callbackRef = useRefWithUpdates(callback);
 
     React.useEffect(() => {
-        if (!enabled) return;
+        if (!enabled) {
+            return;
+        }
         let start: IPoint | undefined = undefined;
         let pageRect: IRect | undefined;
         let pageElement: HTMLElement | undefined;
@@ -141,7 +143,9 @@ export const usePDFRectangleDrawer = (callback: IUsePDFRectangleDrawerCallback, 
         };
         
         const cleanup = (endPosition: IPoint) => {
-            if (!pageElement || !rectElem || !start || !pageRect) return;
+            if (!pageElement || !rectElem || !start || !pageRect) {
+                return;
+            }
 
             const rect = calculateRectDimensions(start, endPosition, pageRect);
             pageElement.removeChild(rectElem);
@@ -164,7 +168,9 @@ export const usePDFRectangleDrawer = (callback: IUsePDFRectangleDrawerCallback, 
         };
 
         const handleMouseMove = (e: MouseEvent) => {
-            if (!start || !pageRect || !rectElem) return;
+            if (!start || !pageRect || !rectElem) {
+                return;
+            }
             e.preventDefault();
             const rect = calculateRectDimensions(start, { x: e.clientX, y: e.clientY }, pageRect);
             updateDOMRect(rectElem, rect);
@@ -190,7 +196,9 @@ export const usePDFRectangleDrawer = (callback: IUsePDFRectangleDrawerCallback, 
         let lastPosition: IPoint;
 
         const handleTouchMove = (e: TouchEvent) => {
-            if (!start || !pageRect || !rectElem) return;
+            if (!start || !pageRect || !rectElem) {
+                return;
+            }
             e.preventDefault();
             const touch = e.touches[e.touches.length - 1];
             lastPosition = { x: touch.clientX, y: touch.clientY };
@@ -204,7 +212,7 @@ export const usePDFRectangleDrawer = (callback: IUsePDFRectangleDrawerCallback, 
         };
 
         const targets = ControlledAnnotationBars
-            .computeTargets("pdf", docViewerElements.getDocViewerElement);
+            .computeTargets("pdf", docViewerElementsRef.current.getDocViewerElement);
 
         for (let target of targets) {
             target.addEventListener("mousedown", handleMouseDown);
@@ -217,5 +225,5 @@ export const usePDFRectangleDrawer = (callback: IUsePDFRectangleDrawerCallback, 
                 target.removeEventListener("touchstart", handleTouchStart);
             }
         };
-    }, [enabled, classes]);
+    }, [enabled, classes, callbackRef, threshold, docViewerElementsRef]);
 };

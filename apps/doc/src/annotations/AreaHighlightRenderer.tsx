@@ -34,6 +34,27 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
 
     const pageElement = docViewerElementsContext.getPageElementForPage(pageNum);
 
+    const [draggable, setDraggable] = React.useState(false);
+
+    React.useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.ctrlKey || e.metaKey) {
+                setDraggable(true);
+            }
+        };
+        const handleKeyUp = (e: KeyboardEvent) => {
+            if (!e.ctrlKey && !e.metaKey) {
+                setDraggable(false);
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown, {passive: true});
+        window.addEventListener('keyup', handleKeyUp, {passive: true});
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('keyup', handleKeyUp);
+        };
+    }, [setDraggable]);
+
     const toOverlayRect = React.useCallback((areaHighlightRect: AreaHighlightRect): ILTRect | undefined => {
 
         if (! pageElement) {
@@ -90,27 +111,6 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
 
         const areaHighlightRect = AreaHighlightRects.createFromRect(rect);
         const overlayRect = toOverlayRect(areaHighlightRect);
-        const [draggable, setDraggable] = React.useState(false);
-
-        // TODO: REVIEW. This is the part I don't like very much
-        React.useEffect(() => {
-            const handleKeyDown = (e: KeyboardEvent) => {
-                if (e.ctrlKey || e.metaKey) {
-                    setDraggable(true);
-                }
-            };
-            const handleKeyUp = (e: KeyboardEvent) => {
-                if (!e.ctrlKey && !e.metaKey) {
-                    setDraggable(false);
-                }
-            };
-            window.addEventListener('keydown', handleKeyDown, {passive: true});
-            window.addEventListener('keyup', handleKeyUp, {passive: true});
-            return () => {
-                window.removeEventListener('keydown', handleKeyDown);
-                window.removeEventListener('keyup', handleKeyUp);
-            };
-        }, []);
 
         if (! overlayRect) {
             return null;
@@ -152,7 +152,7 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
             container,
             id);
 
-    }, [areaHighlight, createID, fingerprint, handleRegionResize, pageNum, toOverlayRect]);
+    }, [areaHighlight, createID, fingerprint, handleRegionResize, pageNum, toOverlayRect, draggable]);
 
     // const rect = Arrays.first(Object.values(areaHighlight.rects));
     //
