@@ -10,6 +10,7 @@ import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 import {DocViewerAppURLs} from "./DocViewerAppURLs";
 import {DockLayoutGlobalHotKeys} from "../../../web/js/ui/doc_layout/DockLayoutGlobalHotKeys";
 import {SideNavGlobalHotKeys} from "../../../web/js/sidenav/SideNavGlobalHotKeys";
+import {useRefWithUpdates} from "../../../web/js/hooks/ReactHooks";
 
 const globalKeyMap = keyMapWithGroup({
     group: "Document Viewer",
@@ -62,8 +63,13 @@ const globalKeyMap = keyMapWithGroup({
         ARCHIVE: {
             name: "Archive",
             description: "Archive doc",
-            sequences: ['a']
+            sequences: ['shift+A']
         },
+        TOGGLE_AREA_HIGHLIGHT_MODE: {
+            name: "Area Highlight Mode",
+            description: "Toggle area higlight mode",
+            sequences: ['a'],
+        }
 
     }
 });
@@ -71,7 +77,16 @@ const globalKeyMap = keyMapWithGroup({
 export const DocViewerGlobalHotKeys = React.memo(function DocViewerGlobalHotKeys() {
 
     const findCallbacks = useDocFindCallbacks();
-    const {onPagePrev, onPageNext, doZoom, doZoomRestore, onDocTagged, toggleDocArchived, toggleDocFlagged} = useDocViewerCallbacks();
+    const {
+        onPagePrev,
+        onPageNext,
+        doZoom,
+        doZoomRestore,
+        onDocTagged,
+        toggleDocArchived,
+        toggleDocFlagged,
+        toggleAreaHighlightMode,
+    } = useDocViewerCallbacks();
     const {docMeta} = useDocViewerStore(['docMeta']);
 
     const globalKeyHandlers = {
@@ -85,6 +100,7 @@ export const DocViewerGlobalHotKeys = React.memo(function DocViewerGlobalHotKeys
         TAG: onDocTagged,
         FLAG: toggleDocFlagged,
         ARCHIVE: toggleDocArchived,
+        TOGGLE_AREA_HIGHLIGHT_MODE: toggleAreaHighlightMode,
     };
 
     const location = useLocationWithPathOnly();

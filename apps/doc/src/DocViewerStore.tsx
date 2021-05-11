@@ -135,7 +135,7 @@ export interface IDocViewerStore {
 
     readonly outlineNavigator?: OutlineNavigator;
 
-    readonly areaHighlightModeActive: boolean;
+    readonly areaHighlightMode: boolean;
 }
 
 export interface IPagemarkCoverage {
@@ -307,7 +307,7 @@ export interface IDocViewerCallbacks {
 
     readonly setColumnLayout: (columLayout: number) => void;
 
-    readonly setAreaHighlightModeActive: (state: boolean) => void;
+    readonly toggleAreaHighlightMode: () => void;
 }
 
 const initialStore: IDocViewerStore = {
@@ -315,7 +315,7 @@ const initialStore: IDocViewerStore = {
     docLoaded: false,
     pendingWrites: 0,
     fluidPagemarkFactory: new NullFluidPagemarkFactory(),
-    areaHighlightModeActive: false,
+    areaHighlightMode: false,
 }
 
 interface Mutator {
@@ -1001,9 +1001,9 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
             Analytics.event2('doc-columnLayoutChanged', { columns: columnLayout });
         }
 
-        function setAreaHighlightModeActive(state: boolean) {
+        function toggleAreaHighlightMode() {
             const store = storeProvider();
-            setStore({...store, areaHighlightModeActive: state});
+            setStore({...store, areaHighlightMode: !store.areaHighlightMode});
         }
 
         return {
@@ -1034,7 +1034,7 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
             setOutlineNavigator,
             docMetaProvider,
             setColumnLayout,
-            setAreaHighlightModeActive,
+            toggleAreaHighlightMode,
         };
     }, [log, docMetaContext, persistenceLayerContext, annotationSidebarCallbacks,
         dialogs, annotationMutationCallbacksFactory, setStore, storeProvider]);

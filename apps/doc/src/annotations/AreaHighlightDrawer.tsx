@@ -8,6 +8,7 @@ import {useAreaHighlightHooks} from '../annotations/AreaHighlightHooks';
 import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {useDocViewerCallbacks, useDocViewerStore} from '../DocViewerStore';
 import {useDocViewerElementsContext} from '../renderers/DocViewerElementsContext';
+import {useRefWithUpdates} from "../../../../web/js/hooks/ReactHooks";
 
 const useAreaHighlightCreatorStyles = makeStyles(() =>
     createStyles({
@@ -20,25 +21,27 @@ const useAreaHighlightCreatorStyles = makeStyles(() =>
 );
 
 export const AreaHighlightCreator: React.FC = () => {
-    const {areaHighlightModeActive} = useDocViewerStore(["areaHighlightModeActive"]);
+    const {areaHighlightMode} = useDocViewerStore(["areaHighlightMode"]);
     const {onAreaHighlightCreated} = useAreaHighlightHooks();
-    const {setAreaHighlightModeActive} = useDocViewerCallbacks();
+    const {toggleAreaHighlightMode} = useDocViewerCallbacks();
     const docViewerElements = useDocViewerElementsContext();
     const classes = useAreaHighlightCreatorStyles();
 
     React.useEffect(() => {
         const viewerContainer = docViewerElements.getDocViewerElement().querySelector("#viewerContainer");
         if (viewerContainer) {
-            viewerContainer.classList[areaHighlightModeActive ? "add" : "remove"](classes.viewerContainer);
+            viewerContainer.classList[areaHighlightMode ? "add" : "remove"](classes.viewerContainer);
         }
-    }, [areaHighlightModeActive]);
+    }, [areaHighlightMode]);
 
     const createAreaHighlight = React.useCallback(({ rect, pageNum }) => {
         onAreaHighlightCreated({ pageNum, rectWithinPageElement: rect });
-        setAreaHighlightModeActive(false);
-    }, [onAreaHighlightCreated, setAreaHighlightModeActive])
+        if (areaHighlightMode) {
+            toggleAreaHighlightMode();
+        }
+    }, [onAreaHighlightCreated, areaHighlightMode, toggleAreaHighlightMode])
 
-    usePDFRectangleDrawer(createAreaHighlight, { enabled: areaHighlightModeActive });
+    usePDFRectangleDrawer(createAreaHighlight, { enabled: areaHighlightMode });
 
     return null;
 };
@@ -98,8 +101,7 @@ export const usePDFRectangleDrawer = (callback: IUsePDFRectangleDrawerCallback, 
     const {threshold = { x: 20, y: 20 }, enabled = true} = opts || {};
     const docViewerElements = useDocViewerElementsContext();
     const classes = useStyles();
-    const callbackRef = React.useRef<IUsePDFRectangleDrawerCallback>(callback);
-    callbackRef.current = callback;
+    const callbackRef = useRefWithUpdates(callback);
 
     React.useEffect(() => {
         if (!enabled) return;
@@ -157,6 +159,7 @@ export const usePDFRectangleDrawer = (callback: IUsePDFRectangleDrawerCallback, 
             e.stopPropagation();
             if (init(e.target, { x: e.clientX, y: e.clientY })) {
                 window.addEventListener("mousemove", handleMouseMove);
+                window.addEventListener("mouseup", handleMouseUp, {once: true});
             }
         };
 
@@ -179,6 +182,7 @@ export const usePDFRectangleDrawer = (callback: IUsePDFRectangleDrawerCallback, 
                 const master = e.touches[0];
                 if (init(e.target, { x: master.clientX, y: master.clientY })) {
                     window.addEventListener("touchmove", handleTouchMove);
+                    window.addEventListener("touchend", handleTouchEnd, {once: true});
                 }
             }
         };
@@ -202,8 +206,6 @@ export const usePDFRectangleDrawer = (callback: IUsePDFRectangleDrawerCallback, 
         const targets = ControlledAnnotationBars
             .computeTargets("pdf", docViewerElements.getDocViewerElement);
 
-        window.addEventListener("mouseup", handleMouseUp);
-        window.addEventListener("touchend", handleTouchEnd);
         for (let target of targets) {
             target.addEventListener("mousedown", handleMouseDown);
             target.addEventListener("touchstart", handleTouchStart);
@@ -214,8 +216,6 @@ export const usePDFRectangleDrawer = (callback: IUsePDFRectangleDrawerCallback, 
                 target.removeEventListener("mousedown", handleMouseDown);
                 target.removeEventListener("touchstart", handleTouchStart);
             }
-            window.removeEventListener("mouseup", handleMouseUp);
-            window.removeEventListener("touchend", handleTouchStart);
         };
     }, [enabled, classes]);
 };

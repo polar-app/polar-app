@@ -27,8 +27,6 @@ import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {DockLayoutToggleButton} from "../../../../web/js/ui/doc_layout/DockLayoutToggleButton";
 import {ZenModeActiveContainer} from "../../../../web/js/mui/ZenModeActiveContainer";
 import {ZenModeButton} from "./ZenModeButton";
-import ImageIcon from "@material-ui/icons/Image";
-import {StandardToggleButton} from "../../../repository/js/doc_repo/buttons/StandardToggleButton";
 import {MUIDocAreaHighlightModeToggle} from "../../../repository/js/doc_repo/buttons/MUIDocAreaHighlightModeToggle";
 
 const getScaleLevelTuple = (scale: ScaleLevel) => (
@@ -39,10 +37,10 @@ const getScaleLevelTuple = (scale: ScaleLevel) => (
 
 export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
 
-    const {docScale, pageNavigator, scaleLeveler, docMeta, areaHighlightModeActive}
-        = useDocViewerStore(['docScale', 'pageNavigator', 'scaleLeveler', 'docMeta', 'areaHighlightModeActive']);
+    const {docScale, pageNavigator, scaleLeveler, docMeta, areaHighlightMode}
+        = useDocViewerStore(['docScale', 'pageNavigator', 'scaleLeveler', 'docMeta', 'areaHighlightMode']);
     const {finder} = useDocFindStore(['finder']);
-    const {setScale, onDocTagged, doZoom, toggleDocArchived, toggleDocFlagged, setAreaHighlightModeActive} = useDocViewerCallbacks();
+    const {setScale, onDocTagged, doZoom, toggleDocArchived, toggleDocFlagged, toggleAreaHighlightMode} = useDocViewerCallbacks();
 
     const handleScaleChange = React.useCallback((scale: ScaleLevel) => {
 
@@ -164,10 +162,9 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
                             <MUIButtonBar>
 
 
-                                {/* TODO: implement keyboard shortcuts for these. */}
                                 <MUIDocAreaHighlightModeToggle
-                                    onClick={() => setAreaHighlightModeActive(!areaHighlightModeActive)}
-                                    active={areaHighlightModeActive}
+                                    onClick={toggleAreaHighlightMode}
+                                    active={areaHighlightMode}
                                 />
 
                                 <Divider orientation="vertical" flexItem/>
