@@ -16,6 +16,8 @@ import {SelectedContents} from "../../../../../web/js/highlights/text/selection/
 import {TextHighlighter} from "../../text_highlighter/TextHighlighter";
 import {useAnnotationMutationsContext} from "../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {useRefWithUpdates} from "../../../../../web/js/hooks/ReactHooks";
+import {DEFAULT_STATE, reducer, ACTIONS} from "./AnnotationPopupReducer";
+import {AutoFlashcardHandlerState} from "../../../../../web/js/annotation_sidebar/AutoFlashcardHook";
 
 export function usePrevious<T>(value: T): React.MutableRefObject<T | undefined>['current'] {
   const ref = React.useRef<T>();
@@ -49,6 +51,8 @@ type IAnnotationPopupActionContext = {
     onCreateAnnotation: () => void;
     annotation?: IDocAnnotation;
     selectionEvent?: ActiveSelectionEvent;
+    setAiFlashcardStatus: (status: AutoFlashcardHandlerState) => void;
+    aiFlashcardStatus: AutoFlashcardHandlerState,
 };
 
 const toAnnotation = (docMeta: IDocMeta, activeHighlight: ActiveHighlightData): IDocAnnotation | undefined => {
@@ -64,91 +68,6 @@ const toAnnotation = (docMeta: IDocMeta, activeHighlight: ActiveHighlightData): 
     return undefined;
 };
 
-type IAnnotationPopupState = {
-    annotation?: IDocAnnotation;
-    selectionEvent?: ActiveSelectionEvent;
-    type?: "selection" | "annotation";
-    annotationId?: string;
-    activeAction?: AnnotationPopupActionEnum;
-    pendingAction?: AnnotationPopupActionEnum;
-};
-
-type Action<K, T = undefined> = {
-    type: K;
-    payload?: T;
-};
-
-const ACTIONS = {
-    SELECTION_CREATED: "SELECTION_CREATED",
-    SELECTION_DESTROYED: "SELECTION_DESTROYED",
-    ACTION_TOGGLED: "ACTION_TOGGLED",
-    ANNOTATION_SET: "ANNOTATION_SET",
-    RESET: "RESET",
-} as const;
-
-const DEFAULT_STATE: IAnnotationPopupState = {};
-
-type ISelectionCreatedAction = Action<typeof ACTIONS.SELECTION_CREATED, ActiveSelectionEvent>;
-type ISelectionDestroyed     = Action<typeof ACTIONS.SELECTION_DESTROYED>
-type IActionToggledAction    = Action<typeof ACTIONS.ACTION_TOGGLED, AnnotationPopupActionEnum>;
-type IAnnotationSetAction    = Action<typeof ACTIONS.ANNOTATION_SET, IDocAnnotation>;
-type IResetAction            = Action<typeof ACTIONS.RESET>;
-
-
-type IAnnotationPopupReducerActions = 
-    ISelectionCreatedAction |
-    ISelectionDestroyed |
-    IActionToggledAction |
-    IAnnotationSetAction |
-    IResetAction;
-
-
-type IAnnotationPopupReducer = React.Reducer<IAnnotationPopupState, IAnnotationPopupReducerActions>;
-
-
-const reducer: IAnnotationPopupReducer = (state = {...DEFAULT_STATE}, action) => {
-    switch (action.type) {
-    case ACTIONS.SELECTION_CREATED:
-        return {...DEFAULT_STATE, type: "selection", selectionEvent: action.payload};
-    case ACTIONS.SELECTION_DESTROYED:
-        if (state.annotation && state.type === "annotation") {
-            return state;
-        } else {
-            return {...DEFAULT_STATE};
-        }
-    case ACTIONS.ACTION_TOGGLED:
-        if (state.annotation) {
-            return {...state, activeAction: state.activeAction === action.payload ? undefined : action.payload};
-        } else {
-            return {...state, activeAction: action.payload, pendingAction: action.payload};
-        }
-    case ACTIONS.ANNOTATION_SET:
-        if (state.pendingAction) {
-            return {
-                ...DEFAULT_STATE,
-                annotation: action.payload,
-                type: "annotation",
-                activeAction: state.pendingAction,
-                annotationId: action.payload?.guid,
-            };
-        } else if (action.payload && action.payload.guid !== state.annotationId) {
-            return {
-                ...DEFAULT_STATE,
-                type: "annotation",
-                annotation: action.payload,
-                annotationId: action.payload?.guid,
-            };
-        } else {
-            return {
-                ...state,
-                annotation: action.payload,
-                annotationId: action.payload?.guid,
-            };
-        }
-    case ACTIONS.RESET:
-        return {...DEFAULT_STATE};
-    }
-};
 
 export const AnnotationPopupActionProvider: React.FC<IAnnotationPopupActionProviderProps> = (props) => {
     const {docMeta, docScale, ...restProps} = props;
@@ -178,7 +97,7 @@ export const AnnotationPopupActionProvider: React.FC<IAnnotationPopupActionProvi
                 if (event.type === "created") {
                     dispatch({ type: ACTIONS.SELECTION_CREATED, payload: event });
                 } else {
-                    dispatch({ type: ACTIONS.SELECTION_DESTROYED });
+                    dispatch({ type: ACTIONS.SELECTION_DESTROYED, payload: undefined });
                 }
                 setActiveHighlight(undefined);
             }
@@ -250,7 +169,7 @@ export const AnnotationPopupActionProvider: React.FC<IAnnotationPopupActionProvi
     }, [annotation, handleCreateAnnotation, dispatch]);
 
     const clear = React.useCallback(() => {
-        dispatch({ type: ACTIONS.ACTION_TOGGLED });
+        dispatch({ type: ACTIONS.ACTION_TOGGLED, payload: undefined });
     }, []);
 
     const value: IAnnotationPopupActionContext = {
@@ -260,6 +179,8 @@ export const AnnotationPopupActionProvider: React.FC<IAnnotationPopupActionProvi
         annotation,
         onCreateAnnotation: handleCreateAnnotation,
         selectionEvent,
+        setAiFlashcardStatus: (status) => dispatch({ type: ACTIONS.UPDATE_AI_FLASHCARD_STATUS, payload: status }),
+        aiFlashcardStatus: state.ai_flashcard_status,
     };
 
     return <AnnotationPopupActionContext.Provider value={value} {...restProps} />;

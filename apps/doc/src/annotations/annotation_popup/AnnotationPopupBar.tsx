@@ -18,36 +18,8 @@ import {useAnnotationPopupStyles} from "./AnnotationPopup";
 import {AnnotationPopupActionEnum, useAnnotationPopupAction} from "./AnnotationPopupActionContext";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 
-
-type IActionButtonProps = {
-    action: AnnotationPopupActionEnum;
-    tooltip: string;
-};
-
-export const ActionButton: React.FC<IActionButtonProps> = (props) => {
-    const {action, children, tooltip} = props;
-    const {activeAction, toggleAction} = useAnnotationPopupAction();
-    const theme = useTheme();
-
-    return (
-        <StandardIconButton
-            tooltip={tooltip}
-            size="small"
-            color="primary"
-            style={{
-                color: action === activeAction
-                    ? theme.palette.primary.main
-                    : theme.palette.text.secondary,
-            }}
-            onClick={toggleAction(action)}
-        >
-            <>{children}</>
-        </StandardIconButton>
-    );
-};
-
 export const AnnotationPopupBar: React.FC = () => {
-    const {activeAction, toggleAction, annotation} = useAnnotationPopupAction();
+    const {activeAction, toggleAction, annotation, aiFlashcardStatus} = useAnnotationPopupAction();
     const theme = useTheme();
 
     const annotationPopupClasses = useAnnotationPopupStyles();
@@ -82,7 +54,7 @@ export const AnnotationPopupBar: React.FC = () => {
                     tooltip="Create flashcard automatically"
                     action={AnnotationPopupActionEnum.CREATE_AI_FLASHCARD}
                 >
-                    {activeAction === AnnotationPopupActionEnum.CREATE_AI_FLASHCARD
+                    {aiFlashcardStatus === "waiting"
                         ? <CircularProgress size={ theme.typography.pxToRem(24) } color="secondary"/>
                         : <FlashAutoIcon/>
                     }
@@ -130,12 +102,38 @@ const ColorChanger: React.FC<IColorChangerProps> = ({ onToggle, isOpen, annotati
             <StandardIconButton
                 tooltip="Change color"
                 size="small"
-                color="primary"
                 onClick={NULL_FUNCTION}
             >
                 <PaletteIcon style={annotation ? { color: annotation.color } : {}} />
             </StandardIconButton>
             <MUIDropdownCaret style={{ transform: `rotate(${isOpen ? 0 : Math.PI}rad)` }} />
         </Box>
+    );
+};
+
+
+type IActionButtonProps = {
+    action: AnnotationPopupActionEnum;
+    tooltip: string;
+};
+
+export const ActionButton: React.FC<IActionButtonProps> = (props) => {
+    const {action, children, tooltip} = props;
+    const {activeAction, toggleAction} = useAnnotationPopupAction();
+    const theme = useTheme();
+
+    return (
+        <StandardIconButton
+            tooltip={tooltip}
+            size="small"
+            style={{
+                color: action === activeAction
+                    ? theme.palette.primary.main
+                    : theme.palette.text.secondary,
+            }}
+            onClick={toggleAction(action)}
+        >
+            <>{children}</>
+        </StandardIconButton>
     );
 };

@@ -17,6 +17,7 @@ export interface StandardButtonProps extends ButtonProps {
     readonly tooltip: string;
     readonly children: JSX.Element;
     readonly disabled?: boolean;
+    readonly style?: React.CSSProperties;
 }
 
 export const StandardIconButton = React.memo(function StandardIconButton(props: StandardButtonProps) {
@@ -26,6 +27,7 @@ export const StandardIconButton = React.memo(function StandardIconButton(props: 
         <MUITooltip title={props.tooltip}>
             <IconButton size={props.size || 'small'}
                         className={classes.root}
+                        style={props.style || {}}
                         disableRipple={true}
                         onClick={props.onClick}
                         disabled={props.disabled}

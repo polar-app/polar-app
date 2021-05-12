@@ -163,6 +163,7 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
 
                                 <TextHighlightTrigger />
 
+                                <Divider orientation="vertical" flexItem/>
                                 {/* TODO: implement keyboard shortcuts for these. */}
                                 <MUIDocTagButton size="small"
                                                  onClick={onDocTagged}/>
@@ -175,7 +176,7 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
                                                   onClick={toggleDocFlagged}
                                                   active={docMeta?.docInfo?.flagged}/>
 
-                                <Divider orientation="vertical" flexItem={true}/>
+                                <Divider orientation="vertical" flexItem/>
 
                                 {/*
                                 <div className="ml-3 mr-2" style={{display: 'flex'}}>
