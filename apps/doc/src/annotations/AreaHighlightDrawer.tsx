@@ -70,7 +70,7 @@ const useStyles = makeStyles(() =>
     }),
 );
 
-const rangeConstrain = (val: number, min: number, max: number) => Math.max(min, Math.min(val, max));
+export const rangeConstrain = (val: number, min: number, max: number) => Math.max(min, Math.min(val, max));
 
 const calculateRectDimensions = (start: IPoint, position: IPoint, pageRect: ClientRect): ILTRect => {
     const {x, y} = getRelativePosition(position, pageRect);

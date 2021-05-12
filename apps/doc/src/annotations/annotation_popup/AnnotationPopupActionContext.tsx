@@ -18,6 +18,8 @@ import {useAnnotationMutationsContext} from "../../../../../web/js/annotation_si
 import {useRefWithUpdates} from "../../../../../web/js/hooks/ReactHooks";
 import {DEFAULT_STATE, reducer, ACTIONS} from "./AnnotationPopupReducer";
 import {AutoFlashcardHandlerState} from "../../../../../web/js/annotation_sidebar/AutoFlashcardHook";
+import {ColorStr} from "../../../../../web/js/ui/colors/ColorSelectorBox";
+import {MAIN_HIGHLIGHT_COLORS} from "../../../../../web/js/ui/ColorMenu";
 
 export function usePrevious<T>(value: T): React.MutableRefObject<T | undefined>['current'] {
   const ref = React.useRef<T>();
@@ -45,14 +47,14 @@ type IAnnotationPopupActionProviderProps = {
 };
 
 type IAnnotationPopupActionContext = {
-    activeAction?: AnnotationPopupActionEnum;
-    toggleAction: (action: AnnotationPopupActionEnum) => () => void;
-    clear: () => void;
-    onCreateAnnotation: () => void;
+    onCreateAnnotation: (color: ColorStr) => void;
     annotation?: IDocAnnotation;
     selectionEvent?: ActiveSelectionEvent;
     setAiFlashcardStatus: (status: AutoFlashcardHandlerState) => void;
     aiFlashcardStatus: AutoFlashcardHandlerState,
+    activeAction?: AnnotationPopupActionEnum;
+    toggleAction: (action: AnnotationPopupActionEnum) => () => void;
+    clear: () => void;
 };
 
 const toAnnotation = (docMeta: IDocMeta, activeHighlight: ActiveHighlightData): IDocAnnotation | undefined => {
@@ -112,7 +114,7 @@ export const AnnotationPopupActionProvider: React.FC<IAnnotationPopupActionProvi
     }, [textHighlightColor, setActiveHighlight, fileType, docViewerElementsRef]);
 
 
-    const handleCreateAnnotation = React.useCallback(() => {
+    const handleCreateAnnotation = React.useCallback((color: ColorStr) => {
         if (selectionEvent) {
             const selectedContent = SelectedContents.computeFromSelection(selectionEvent.selection, {
                 noRectTexts: fileType === "epub",
@@ -143,7 +145,7 @@ export const AnnotationPopupActionProvider: React.FC<IAnnotationPopupActionProvi
                     pageElement,
                     selectedContent,
                     pageNum,
-                    highlightColor: "red",
+                    highlightColor: color,
                 });
 
             annotationMutations.onTextHighlight({
@@ -164,7 +166,7 @@ export const AnnotationPopupActionProvider: React.FC<IAnnotationPopupActionProvi
     const toggleAction = React.useCallback((action: AnnotationPopupActionEnum) => () => {
         dispatch({ type: ACTIONS.ACTION_TOGGLED, payload: action });
         if (!annotation) {
-            handleCreateAnnotation();
+            handleCreateAnnotation(MAIN_HIGHLIGHT_COLORS[0]);
         }
     }, [annotation, handleCreateAnnotation, dispatch]);
 

@@ -1,14 +1,18 @@
 import React from "react";
 import {createStyles, Grow, makeStyles} from "@material-ui/core";
 import {useDocViewerContext} from "../../renderers/DocRenderer";
-import {IDocScale, useDocViewerStore} from "../../DocViewerStore";
-import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
+import {useDocViewerStore} from "../../DocViewerStore";
 import {AnnotationPopupActionProvider, useAnnotationPopupAction} from "./AnnotationPopupActionContext";
 import {AnnotationPopupBar} from "./AnnotationPopupBar";
 import {AnnotationPopupActions} from "./AnnotationPopupActions";
 import {usePopupBarPosition} from "./AnnotationPopupHooks";
 import {useRefWithUpdates} from "../../../../../web/js/hooks/ReactHooks";
 import {useDocViewerElementsContext} from "../../renderers/DocViewerElementsContext";
+import {useResizeObserver} from "../../renderers/pdf/PinchToZoomHooks";
+import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
+import {rangeConstrain} from "../AreaHighlightDrawer";
+
+const CONTAINER_SPACING = 10;
 
 export const useAnnotationPopupStyles = makeStyles((theme) =>
     createStyles({
@@ -22,32 +26,26 @@ export const useAnnotationPopupStyles = makeStyles((theme) =>
             padding: 8,
         },
         outer: {
-            zIndex: theme.zIndex.modal,
+            position: "absolute",
+            willChange: "transform",
+            top: 0,
+            left: 0,
+            zIndex: 10,
         },
+        inner: {
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+        }
     }),
 );
 
 const AnnotationPopupContents = React.forwardRef<HTMLDivElement>((_, ref) => {
+    const classes = useAnnotationPopupStyles();
     return (
-        <div
-            style={{
-                position: "absolute",
-                willChange: "transform",
-                top: 0,
-                left: 0,
-                zIndex: 10,
-            }}
-            ref={ref}
-        >
+        <div className={classes.outer} ref={ref}>
             <Grow in>
-                <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "flex-start",
-                    }}
-                    id="fudge"
-                >
+                <div className={classes.inner}>
                     <AnnotationPopupActions />
                     <AnnotationPopupBar />
                 </div>
@@ -56,82 +54,108 @@ const AnnotationPopupContents = React.forwardRef<HTMLDivElement>((_, ref) => {
     );
 });
 
-const AnnotationPopupPDFRenderer: React.FC = () => {
-    const {selectionEvent, annotation} = useAnnotationPopupAction();
-    const rect = usePopupBarPosition({ annotation, selectionEvent });
+const constrainToContainer = (container: HTMLElement, popup: HTMLElement, rect: ILTRect): ILTRect => {
+    const containerRect = container.getBoundingClientRect();
+    const popupRect = popup.getBoundingClientRect();
+    return {
+        ...rect,
+        top: rangeConstrain(
+            Math.round(rect.top - popupRect.height),
+            CONTAINER_SPACING,
+            containerRect.height - CONTAINER_SPACING - rect.height,
+        ),
+        left: rangeConstrain(
+            Math.round(rect.left + rect.width / 2 - popupRect.width / 2),
+            CONTAINER_SPACING,
+            containerRect.width - CONTAINER_SPACING - popupRect.width,
+        ),
+    };
+};
+
+type IAnnotationPopupPDFRendererProps = {
+    rect: ILTRect;
+};
+
+const AnnotationPopupPDFRenderer: React.FC<IAnnotationPopupPDFRendererProps> = ({ rect }) => {
+    const docViewerElementsRef = useRefWithUpdates(useDocViewerElementsContext());
     const ref = React.useRef<HTMLDivElement>(null);
 
-    React.useEffect(() => {
-        if (!ref.current || !rect) {
+    const updatePosition = React.useCallback(() => {
+        const elem = ref.current;
+        const viewerElem = docViewerElementsRef.current.getDocViewerElement().querySelector<HTMLDivElement>("#viewer");
+        if (!elem || !viewerElem) {
             return;
         }
-        const left = rect.left + rect.width / 2;
-        const top = rect.top;
-        ref.current!.style.transform = `translate3d(calc(${left}px - 50%), calc(${top}px - 100%), 0)`;
-    }, [rect]);
 
-    if (!rect) {
-        return null;
-    }
+        const {left, top} = constrainToContainer(viewerElem, elem, rect);
+        ref.current!.style.transform = `translate3d(calc(${left}px), calc(${top}px), 0)`;
+    }, [rect, docViewerElementsRef]);
+
+    useResizeObserver(updatePosition, ref);
+
+    React.useEffect(updatePosition, [updatePosition]);
 
     return <AnnotationPopupContents ref={ref} />;
 };
 
-const AnnotationPopupEPUBRenderer: React.FC = () => {
-    const {selectionEvent, annotation} = useAnnotationPopupAction();
-    const docViewerElementsRef = useRefWithUpdates(useDocViewerElementsContext());
-    const rect = usePopupBarPosition({ annotation, selectionEvent });
-    const ref = React.useRef<HTMLDivElement>(null);
+type IAnnotationPopupEPUBRendererProps = {
+    rect: ILTRect;
+};
 
-    React.useEffect(() => {
-        if (!ref.current || !rect) {
-            return;
-        }
-        const iframeWindow = docViewerElementsRef
+const AnnotationPopupEPUBRenderer: React.FC<IAnnotationPopupEPUBRendererProps> = ({ rect }) => {
+    const docViewerElementsRef = useRefWithUpdates(useDocViewerElementsContext());
+    const ref = React.useRef<HTMLDivElement>(null);
+    const iframeWindow = React.useMemo(() => (
+        docViewerElementsRef
             .current
             .getDocViewerElement()
             .querySelector("iframe")
-            ?.contentWindow;
+            ?.contentWindow
+    ), [docViewerElementsRef]);
+
+    const updatePosition = React.useCallback((elem: HTMLElement) => {
         if (iframeWindow) {
-            const updatePosition = () => {
-                const left = rect.left + rect.width / 2;
-                const top = rect.top - iframeWindow.scrollY;
-                ref.current!.style.transform = `translate3d(calc(${left}px - 50%), calc(${top}px - 100%), 0)`;
-            };
-            updatePosition();
-            iframeWindow.addEventListener("scroll", updatePosition, {passive: true});
-            return () => iframeWindow.removeEventListener("scroll", updatePosition);
+            const {top, left} = constrainToContainer(iframeWindow.document.body, elem, rect);
+            elem.style.transform = `translate3d(calc(${left}px), calc(${top - iframeWindow.scrollY}px), 0)`;
+        }
+    }, [rect, iframeWindow]);
+
+    React.useEffect(() => {
+        const elem = ref.current;
+        if (elem && iframeWindow) {
+            updatePosition(elem);
+            const onScroll = () => updatePosition(elem);
+            iframeWindow.addEventListener("scroll", onScroll, {passive: true});
+            return () => iframeWindow.removeEventListener("scroll", onScroll);
         }
         return;
-    }, [rect, docViewerElementsRef]);
+    }, [docViewerElementsRef, updatePosition, iframeWindow]);
+
+    useResizeObserver(() => {
+        if (ref.current) {
+            updatePosition(ref.current);
+        }
+    }, ref);
+
+    return <AnnotationPopupContents ref={ref} />;
+};
+
+export const AnnotationPopupRenderer: React.FC = () => {
+    const {selectionEvent, annotation} = useAnnotationPopupAction();
+    const rect = usePopupBarPosition({ annotation, selectionEvent });
+    const {fileType} = useDocViewerContext();
 
     if (!rect) {
         return null;
     }
 
-    return <AnnotationPopupContents ref={ref} />;
-};
+    if (fileType === "pdf") {
+        return <AnnotationPopupPDFRenderer rect={rect} />;
+    } else if (fileType === "epub") {
+        return <AnnotationPopupEPUBRenderer rect={rect} />;
+    }
 
-type IAnnotationPopupRendererProps = {
-    docScale: IDocScale;
-    docMeta: IDocMeta;
-};
-
-export const AnnotationPopupRenderer: React.FC<IAnnotationPopupRendererProps> = ({ docMeta, docScale }) => {
-    const {fileType} = useDocViewerContext();
-    return (
-        <AnnotationPopupActionProvider
-            docMeta={docMeta}
-            docScale={docScale}
-        >
-            {fileType === "pdf"
-                ? <AnnotationPopupPDFRenderer />
-                : fileType === "epub"
-                    ? <AnnotationPopupEPUBRenderer />
-                    : null
-            }
-        </AnnotationPopupActionProvider>
-    );
+    return null;
 };
 
 export const AnnotationPopup: React.FC = () => {
@@ -141,6 +165,13 @@ export const AnnotationPopup: React.FC = () => {
         return null;
     }
 
-    return <AnnotationPopupRenderer docMeta={docMeta} docScale={docScale} />
+    return (
+        <AnnotationPopupActionProvider
+            docMeta={docMeta}
+            docScale={docScale}
+        >
+            <AnnotationPopupRenderer />
+        </AnnotationPopupActionProvider>
+    );
 };
 

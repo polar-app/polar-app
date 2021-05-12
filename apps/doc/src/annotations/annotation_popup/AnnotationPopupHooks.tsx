@@ -195,6 +195,6 @@ export const usePopupBarPosition = (opts: IUsePopupBarPositionOpts): ILTRect | u
             }
         }
         return;
-        // TODO: Prevent rerenders if the annotation rects hasn't changed
+        // TODO: Prevent rerenders if the annotation rects haven't changed
     }, [fileType, annotation, selectionEvent, docScale, textIndex, docViewerElementsRef]);
 };
