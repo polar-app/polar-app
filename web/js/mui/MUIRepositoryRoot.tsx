@@ -5,8 +5,6 @@ import {UserInfoProvider} from "../apps/repository/auth_handler/UserInfoProvider
 import {BrowserTabsStoreProvider} from "../browser_tabs/BrowserTabsStore";
 import {MUIAppRoot} from "./MUIAppRoot";
 import {SideNavStoreProvider} from "../sidenav/SideNavStore";
-import { BlocksStoreProvider } from "../notes/store/BlocksStore";
-import {BlockStoreDefaultContextProvider} from "../notes/store/BlockStoreContextProvider";
 
 interface IProps {
     readonly children: React.ReactNode;
@@ -23,13 +21,9 @@ export const MUIRepositoryRoot = React.memo(function MUIRepositoryRoot(props: IP
 
                         <FirestoreProvider>
                             <UserInfoProvider>
-                                <BlockStoreDefaultContextProvider>
-                                    <BlocksStoreProvider>
-                                        <>
-                                            {props.children}
-                                        </>
-                                    </BlocksStoreProvider>
-                                </BlockStoreDefaultContextProvider>
+                                <>
+                                    {props.children}
+                                </>
                             </UserInfoProvider>
                         </FirestoreProvider>
                     </>
