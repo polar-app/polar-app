@@ -28,6 +28,7 @@ import {DockLayoutToggleButton} from "../../../../web/js/ui/doc_layout/DockLayou
 import {ZenModeActiveContainer} from "../../../../web/js/mui/ZenModeActiveContainer";
 import {ZenModeButton} from "./ZenModeButton";
 import {TextHighlightTrigger} from "./TextHighlightTrigger";
+import {MUIDocAreaHighlightModeToggle} from "../../../repository/js/doc_repo/buttons/MUIDocAreaHighlightModeToggle";
 
 const getScaleLevelTuple = (scale: ScaleLevel) => (
     arrayStream(ScaleLevelTuples)
@@ -37,10 +38,10 @@ const getScaleLevelTuple = (scale: ScaleLevel) => (
 
 export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
 
-    const {docScale, pageNavigator, scaleLeveler, docMeta}
-        = useDocViewerStore(['docScale', 'pageNavigator', 'scaleLeveler', 'docMeta']);
+    const {docScale, pageNavigator, scaleLeveler, docMeta, areaHighlightMode}
+        = useDocViewerStore(['docScale', 'pageNavigator', 'scaleLeveler', 'docMeta', 'areaHighlightMode']);
     const {finder} = useDocFindStore(['finder']);
-    const {setScale, onDocTagged, doZoom, toggleDocArchived, toggleDocFlagged} = useDocViewerCallbacks();
+    const {setScale, onDocTagged, doZoom, toggleDocArchived, toggleDocFlagged, toggleAreaHighlightMode} = useDocViewerCallbacks();
 
     const handleScaleChange = React.useCallback((scale: ScaleLevel) => {
 
@@ -163,8 +164,13 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
 
                                 <TextHighlightTrigger />
 
+                                <MUIDocAreaHighlightModeToggle
+                                    onClick={toggleAreaHighlightMode}
+                                    active={areaHighlightMode}
+                                />
+
                                 <Divider orientation="vertical" flexItem/>
-                                {/* TODO: implement keyboard shortcuts for these. */}
+
                                 <MUIDocTagButton size="small"
                                                  onClick={onDocTagged}/>
 

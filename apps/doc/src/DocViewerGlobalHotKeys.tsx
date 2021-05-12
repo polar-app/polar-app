@@ -64,23 +64,37 @@ const globalKeyMap = keyMapWithGroup({
         ARCHIVE: {
             name: "Archive",
             description: "Archive doc",
-            sequences: ['a']
+            sequences: ['shift+A']
         },
         TEXT_HIGHLIGHT_MODE: {
             name: "Text Highlight Mode",
             description: "Toggle text highlight mode",
             sequences: ['v'],
-        }
-
+        },
+        TOGGLE_AREA_HIGHLIGHT_MODE: {
+            name: "Area Highlight Mode",
+            description: "Toggle area higlight mode",
+            sequences: ['a'],
+        },
     }
 });
 
 export const DocViewerGlobalHotKeys = React.memo(function DocViewerGlobalHotKeys() {
 
     const findCallbacks = useDocFindCallbacks();
-    const {onPagePrev, onPageNext, doZoom, doZoomRestore, onDocTagged, toggleDocArchived, toggleDocFlagged, setTextHighlightColor} = useDocViewerCallbacks();
     const {docMeta, textHighlightColor} = useDocViewerStore(['docMeta', 'textHighlightColor']);
     const toggleTextHighlightMode = useRefWithUpdates(() => setTextHighlightColor(textHighlightColor ? undefined : MAIN_HIGHLIGHT_COLORS[0]));
+    const {
+        onPagePrev,
+        onPageNext,
+        doZoom,
+        doZoomRestore,
+        onDocTagged,
+        toggleDocArchived,
+        toggleDocFlagged,
+        toggleAreaHighlightMode,
+        setTextHighlightColor,
+    } = useDocViewerCallbacks();
 
     const globalKeyHandlers = {
         FIND: () => findCallbacks.setActive(true),
@@ -94,6 +108,7 @@ export const DocViewerGlobalHotKeys = React.memo(function DocViewerGlobalHotKeys
         FLAG: toggleDocFlagged,
         ARCHIVE: toggleDocArchived,
         TEXT_HIGHLIGHT_MODE: () => toggleTextHighlightMode.current(),
+        TOGGLE_AREA_HIGHLIGHT_MODE: toggleAreaHighlightMode,
     };
 
     const location = useLocationWithPathOnly();

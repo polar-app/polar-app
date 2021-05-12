@@ -22,7 +22,8 @@ import {
 import {
     IDocDescriptor,
     IDocScale,
-    useDocViewerCallbacks
+    useDocViewerCallbacks,
+    useDocViewerStore
 } from "../../DocViewerStore";
 import {useDocFindCallbacks} from "../../DocFindStore";
 import {PageNavigator} from "../../PageNavigator";
@@ -54,6 +55,7 @@ import { usePDFUpgrader } from './PDFUpgrader';
 import {ViewerElements} from "../ViewerElements";
 import {useDocumentViewerVisibleElemFocus} from '../UseSidenavDocumentChangeCallbackHook';
 import {AnnotationPopup} from '../../annotations/annotation_popup/AnnotationPopup';
+import {AreaHighlightCreator} from '../../annotations/AreaHighlightDrawer';
 
 interface DocViewer {
     readonly eventBus: EventBus;
@@ -452,6 +454,7 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
     return active && (
         <>
+            <AreaHighlightCreator />
             <DocumentInit/>
             <TextHighlightHandler/>
             <AnnotationPopup/>
