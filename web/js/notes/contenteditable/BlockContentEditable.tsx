@@ -43,7 +43,7 @@ interface IProps {
 
 const NoteContentEditableElementContext = React.createContext<React.RefObject<HTMLElement | null>>({current: null});
 
-export function useNoteContentEditableElement() {
+export function useBlockContentEditableElement() {
     return React.useContext(NoteContentEditableElementContext);
 }
 
@@ -181,7 +181,7 @@ export const BlockContentEditable = observer((props: IProps) => {
             divRef.current!.innerHTML = props.content;
 
             if (divRef.current && blocksStore.active) {
-                updateCursorPosition(divRef.current, blocksStore.active, true);
+                updateCursorPosition(divRef.current, {...blocksStore.active, pos: 'end'}, true);
             }
 
         }
@@ -352,7 +352,12 @@ export const BlockContentEditable = observer((props: IProps) => {
 
                 if (blocksStore.hasSelected()) {
                     abortEvent();
-                    blocksStore.deleteBlocks([]);
+
+                    const selected = blocksStore.selectedIDs();
+
+                    if (selected.length > 0) {
+                        blocksStore.deleteBlocks(selected);
+                    }
                     break;
                 }
 
@@ -409,7 +414,7 @@ export const BlockContentEditable = observer((props: IProps) => {
                              trigger="[["
                              actionsProvider={createNoteActionsProvider}
                              onAction={(id) => ({
-                                type: 'note-link',
+                                type: 'link-to-block',
                                 target: id
                             })}>
 

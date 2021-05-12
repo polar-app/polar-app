@@ -1,46 +1,96 @@
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
 import {assertJSON} from "../../test/Assertions";
-import {IBlock, IBlockLink} from "./IBlock";
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {BlockIDStr, BlocksStore, IBlockContent} from "./BlocksStore";
-import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {BlocksStore} from "./BlocksStore";
 import {IMarkdownContent} from "../content/IMarkdownContent";
-import {assert} from 'chai';
 import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {JSDOMParser} from "./BlocksStoreTest";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
+import {PositionalArrays} from "./PositionalArrays";
+import {BlocksStoreTests} from "./BlocksStoreTests";
+import createBasicBlock = BlocksStoreTests.createBasicBlock;
+import {BlocksStoreMutations} from "./BlocksStoreMutations";
+import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 
-interface IBasicBlockOpts<C> {
-    readonly id?: BlockIDStr;
-    readonly parent?: BlockIDStr;
-    readonly content: C;
-    readonly items?: ReadonlyArray<BlockIDStr>;
-    readonly links?: ReadonlyArray<IBlockLink>;
-    readonly mutation?: number;
+
+function createStore() {
+    const blocks = MockBlocks.create();
+    const store = new BlocksStore('1234', UndoQueues2.create({limit: 50}));
+    store.doPut(blocks);
+    return store;
 }
-function createBasicBlock<C extends IBlockContent = IBlockContent>(opts: IBasicBlockOpts<C>): IBlock<C> {
 
-    const nspace = '234'
-    const uid = '1234'
-    const created = ISODateTimeStrings.create();
-
-    return {
-        id: opts.id || Hashcodes.createRandomID(),
-        nspace,
-        uid,
-        created,
-        updated: created,
-        ...opts,
-        parent: opts.parent || undefined,
-        items: opts.items || [],
-        links: opts.links || [],
-        mutation: opts.mutation || 0
+const root = createBasicBlock({
+    id: '100',
+    root: '100',
+    parent: undefined,
+    parents: [],
+    content: {
+        type: 'name',
+        data: "United States"
     }
-
-}
+})
 
 describe("BlocksStoreUndoQueues", () => {
+
+    describe("doMutations", () => {
+
+        // we should test the undo/redo code directly here...
+        // TODO: that content is not restored when the mutation is updated
+        // TODO: that content and items works but the items are not restored
+
+        it("undo/redo mutation block", () => {
+
+            const mutation0: IBlocksStoreMutation = {
+                "id": "104",
+                "type": "modified",
+                "before": {
+                    "id": "104",
+                    "nspace": "ns101",
+                    "uid": "123",
+                    "root": "100",
+                    "parent": "102",
+                    "parents": ["102"],
+                    "created": "2012-03-02T11:38:49.321Z",
+                    "updated": "2012-03-02T11:38:49.321Z",
+                    "items": {},
+                    "content": {
+                        "type": "markdown",
+                        "data": "Axis Powers: Germany, Italy, Japan"
+                    },
+                    "links": {},
+                    "mutation": 0
+                },
+                "after": {
+                    "id": "104",
+                    "nspace": "ns101",
+                    "uid": "123",
+                    "root": "100",
+                    "parent": "102",
+                    "parents": ["102"],
+                    "created": "2012-03-02T11:38:49.321Z",
+                    "updated": "2012-03-02T11:38:49.321Z",
+                    "items": {},
+                    "content": {
+                        "type": "markdown",
+                        "data": "Axis "
+                    },
+                    "links": {},
+                    "mutation": 1
+                }
+            };
+
+            const blocksStore = createStore();
+
+            blocksStore.doPut([mutation0.after]);
+
+            BlocksStoreUndoQueues.doMutations(blocksStore, 'undo', [mutation0]);
+
+            assertJSON(mutation0.before, blocksStore.getBlock('104')?.toJSON())
+
+        });
+
+    });
 
     describe("computeMutatedBlocks", () => {
 
@@ -59,20 +109,26 @@ describe("BlocksStoreUndoQueues", () => {
 
             const staticBlock = createBasicBlock<IMarkdownContent>({
                 id: '0x01',
+                root: "100",
+                parent: "100",
+                parents: ["100"],
                 content: {
                     type: 'markdown',
                     data: 'static block',
                 },
-                items: ['1', '2']
+                items: PositionalArrays.create(['1', '2'])
             });
 
             const removedBlock = createBasicBlock<IMarkdownContent>({
                 id: '0x02',
+                root: "100",
+                parent: "100",
+                parents: ["100"],
                 content: {
                     type: 'markdown',
                     data: 'removed block',
                 },
-                items: ['1', '2']
+                items: PositionalArrays.create(['1', '2'])
             });
 
             const beforeBlocks = [
@@ -80,11 +136,14 @@ describe("BlocksStoreUndoQueues", () => {
                 removedBlock,
                 createBasicBlock<IMarkdownContent>({
                     id: '0x04',
+                    root: "100",
+                    parent: "100",
+                    parents: ["100"],
                     content: {
                         type: 'markdown',
                         data: 'updated block',
                     },
-                    items: ['1', '2']
+                    items: PositionalArrays.create(['1', '2'])
                 }),
             ];
 
@@ -92,11 +151,14 @@ describe("BlocksStoreUndoQueues", () => {
 
             const addedBlock = createBasicBlock<IMarkdownContent>({
                 id: '0x03',
+                root: "100",
+                parent: "100",
+                parents: ["100"],
                 content: {
                     type: 'markdown',
                     data: 'added block',
                 },
-                items: ['1', '2']
+                items: PositionalArrays.create(['1', '2'])
             });
 
 
@@ -105,11 +167,14 @@ describe("BlocksStoreUndoQueues", () => {
                 addedBlock,
                 createBasicBlock<IMarkdownContent>({
                     id: '0x04',
+                    root: "100",
+                    parent: "100",
+                    parents: ["100"],
                     content: {
                         type: 'markdown',
                         data: 'updated block 2',
                     },
-                    items: ['1', '2'],
+                    items: PositionalArrays.create(['1', '2']),
                     mutation: 1
                 }),
 
@@ -117,67 +182,82 @@ describe("BlocksStoreUndoQueues", () => {
 
             const mutatedBlocks = BlocksStoreUndoQueues.computeMutatedBlocks(beforeBlocks, afterBlocks);
 
-            assertJSON(mutatedBlocks,[
+            assertJSON(mutatedBlocks, [
                 {
                     "id": "0x03",
-                    "block": {
+                    "type": "added",
+                    "added": {
                         "id": "0x03",
                         "nspace": "234",
                         "uid": "1234",
                         "created": "2012-03-02T11:38:50.321Z",
                         "updated": "2012-03-02T11:38:50.321Z",
+                        "root": "100",
+                        "parent": "100",
+                        "parents": [
+                            "100"
+                        ],
                         "content": {
                             "type": "markdown",
                             "data": "added block"
                         },
-                        "items": [
-                            "1",
-                            "2"
-                        ],
-                        "links": [],
+                        "items": {
+                            "1": "1",
+                            "2": "2"
+                        },
+                        "links": {},
                         "mutation": 0
-                    },
-                    "type": "added"
+                    }
                 },
                 {
                     "id": "0x02",
-                    "block": {
+                    "type": "removed",
+                    "removed": {
                         "id": "0x02",
                         "nspace": "234",
                         "uid": "1234",
                         "created": "2012-03-02T11:38:49.321Z",
                         "updated": "2012-03-02T11:38:49.321Z",
+                        "root": "100",
+                        "parent": "100",
+                        "parents": [
+                            "100"
+                        ],
                         "content": {
                             "type": "markdown",
                             "data": "removed block"
                         },
-                        "items": [
-                            "1",
-                            "2"
-                        ],
-                        "links": [],
+                        "items": {
+                            "1": "1",
+                            "2": "2"
+                        },
+                        "links": {},
                         "mutation": 0
-                    },
-                    "type": "removed"
+                    }
                 },
                 {
                     "id": "0x04",
-                    "type": "updated",
+                    "type": "modified",
                     "before": {
                         "id": "0x04",
                         "nspace": "234",
                         "uid": "1234",
                         "created": "2012-03-02T11:38:49.321Z",
                         "updated": "2012-03-02T11:38:49.321Z",
+                        "root": "100",
+                        "parent": "100",
+                        "parents": [
+                            "100"
+                        ],
                         "content": {
                             "type": "markdown",
                             "data": "updated block"
                         },
-                        "items": [
-                            "1",
-                            "2"
-                        ],
-                        "links": [],
+                        "items": {
+                            "1": "1",
+                            "2": "2"
+                        },
+                        "links": {},
                         "mutation": 0
                     },
                     "after": {
@@ -186,16 +266,21 @@ describe("BlocksStoreUndoQueues", () => {
                         "uid": "1234",
                         "created": "2012-03-02T11:38:50.321Z",
                         "updated": "2012-03-02T11:38:50.321Z",
+                        "root": "100",
+                        "parent": "100",
+                        "parents": [
+                            "100"
+                        ],
                         "content": {
                             "type": "markdown",
                             "data": "updated block 2"
                         },
-                        "items": [
-                            "1",
-                            "2"
-                        ],
+                        "items": {
+                            "1": "1",
+                            "2": "2"
+                        },
                         "mutation": 1,
-                        "links": [],
+                        "links": {}
                     }
                 }
             ]);
@@ -205,13 +290,6 @@ describe("BlocksStoreUndoQueues", () => {
     });
 
     describe("expandToParentAndChildren", () => {
-
-        function createStore() {
-            const blocks = MockBlocks.create();
-            const store = new BlocksStore('1234', UndoQueues2.create({limit: 50}));
-            store.doPut(blocks);
-            return store;
-        }
 
         it('single root and children', () => {
 
@@ -265,152 +343,6 @@ describe("BlocksStoreUndoQueues", () => {
             assertJSON(identifiers, [
                 "105",
                 "106"
-            ]);
-
-        });
-
-
-    });
-
-    describe("computeMutationType", () => {
-
-        it("items", () => {
-
-            const before = createBasicBlock<IMarkdownContent>({
-                content: {
-                    type: 'markdown',
-                    data: 'hello world',
-                },
-                items: ['1', '2']
-            });
-
-            const after = createBasicBlock<IMarkdownContent>({
-                content: {
-                    type: 'markdown',
-                    data: 'hello world'
-                },
-                items: ['1', '2', '3']
-            });
-
-            assert.equal(BlocksStoreUndoQueues.computeMutationType(before, after), 'items');
-
-        });
-
-        it("content", () => {
-
-            const before = createBasicBlock<IMarkdownContent>({
-                content: {
-                    type: 'markdown',
-                    data: 'hello world'
-                }
-            });
-
-            const after = createBasicBlock<IMarkdownContent>({
-                content: {
-                    type: 'markdown',
-                    data: 'hello world 2'
-                }
-            });
-
-            assert.equal(BlocksStoreUndoQueues.computeMutationType(before, after), 'content');
-
-        });
-
-        it("items-and-content", () => {
-
-            const before = createBasicBlock<IMarkdownContent>({
-                content: {
-                    type: 'markdown',
-                    data: 'hello world'
-                },
-                items: ['1', '2']
-            });
-
-            const after = createBasicBlock<IMarkdownContent>({
-                content: {
-                    type: 'markdown',
-                    data: 'hello world 2'
-                },
-                items: ['1', '2', '3']
-
-            });
-
-            assert.equal(BlocksStoreUndoQueues.computeMutationType(before, after), 'items-and-content');
-
-        });
-
-        it("no mutation", () => {
-
-            const before = createBasicBlock<IMarkdownContent>({
-                content: {
-                    type: 'markdown',
-                    data: 'hello world'
-                },
-                items: ['1', '2']
-            });
-
-            const after = createBasicBlock<IMarkdownContent>({
-                content: {
-                    type: 'markdown',
-                    data: 'hello world'
-                },
-                items: ['1', '2']
-
-            });
-
-            assert.isUndefined(BlocksStoreUndoQueues.computeMutationType(before, after));
-
-        });
-
-    });
-
-    describe("computeItemsPatches", () => {
-
-        it("remove", () => {
-
-            assertJSON(BlocksStoreUndoQueues.computeItemsPatches(['1'], []), [
-                {
-                    "type": "remove",
-                    "id": "1"
-                }
-            ]);
-
-        });
-
-        it("unshift", () => {
-
-            assertJSON(BlocksStoreUndoQueues.computeItemsPatches([], ['1']), [
-                {
-                    "type": "unshift",
-                    "id": "1"
-                }
-            ]);
-
-        });
-
-        it("insert after", () => {
-
-            assertJSON(BlocksStoreUndoQueues.computeItemsPatches(['1'], ['1', '2']), [
-                {
-                    "type": "insert",
-                    "ref": "1",
-                    "id": "2",
-                    "pos": "after"
-                }
-            ]);
-
-        });
-
-
-        it("insert before", () => {
-
-            assertJSON(BlocksStoreUndoQueues.computeItemsPatches(['1'], ['2', '1']), [
-                {
-                    "type": "insert",
-                    "ref": "1",
-                    "id": "2",
-                    "pos": "before"
-                }
             ]);
 
         });

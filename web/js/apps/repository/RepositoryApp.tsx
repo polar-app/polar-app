@@ -67,6 +67,8 @@ import {SignInScreen} from "../../../../apps/repository/js/login/SignInScreen";
 import {ZenModeGlobalHotKeys} from "../../mui/ZenModeGlobalHotKeys";
 import {ZenModeDeactivateButton} from "../../mui/ZenModeDeactivateButton";
 import {UserTagsDataLoader} from "../../../../apps/repository/js/persistence_layer/UserTagsDataLoader";
+import {NotesRouter} from "../../notes/NotesRouter";
+import {NotesContainer} from "../../notes/NotesContainer";
 
 interface IProps {
     readonly app: App;
@@ -245,6 +247,15 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
         return null;
     }
 
+    const NotesScreen = () => {
+
+        return (
+            <NotesContainer>
+                <NotesRouter/>
+            </NotesContainer>
+        );
+    }
+
     return (
         <RepoDocMetaManagerContext.Provider value={repoDocMetaManager}>
             <MUIRepositoryRoot>
@@ -368,6 +379,9 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                                                                                     <Route exact path="/feature-requests"
                                                                                                            component={FeatureRequestsScreen}/>
+
+                                                                                                    <Route path="/notes"
+                                                                                                           component={NotesScreen}/>
 
                                                                                                 </Switch>
 

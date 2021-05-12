@@ -6,6 +6,18 @@ import { Contents } from "../content/Contents";
 import {PositionalArrays} from "./PositionalArrays";
 import PositionalArray = PositionalArrays.PositionalArray;
 import { arrayStream } from "polar-shared/src/util/ArrayStreams";
+import PositionalArrayPositionStr = PositionalArrays.PositionalArrayPositionStr;
+import deepEqual from "deep-equal";
+import {BlocksStoreMutations} from "./BlocksStoreMutations";
+import IItemsPositionPatch = BlocksStoreMutations.IItemsPositionPatch;
+
+/**
+ * Opts for withMutation normally used for undo.
+ */
+export interface IWithMutationOpts {
+    readonly updated: ISODateTimeString;
+    readonly mutation: TMutation;
+}
 
 export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
@@ -14,14 +26,18 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     /**
      * The graph to which this page belongs.
      */
-    @observable private _nspace: NamespaceIDStr;
+    @observable private _nspace: NamespaceIDStr | UIDStr;
 
     /**
      * The owner of this block.
      */
     @observable readonly _uid: UIDStr;
 
+    @observable readonly _root: UIDStr;
+
     @observable private _parent: BlockIDStr | undefined;
+
+    @observable private _parents: ReadonlyArray<BlockIDStr>;
 
     @observable private _created: ISODateTimeString;
 
@@ -46,12 +62,14 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         this._id = opts.id;
         this._nspace = opts.nspace;
         this._uid = opts.uid;
+        this._root = opts.root;
         this._parent = opts.parent;
+        this._parents = opts.parents;
         this._created = opts.created;
         this._updated = opts.updated;
-        this._items = PositionalArrays.create([...opts.items]);
+        this._items = {...opts.items};
         this._content = Contents.create(opts.content);
-        this._links = PositionalArrays.create([...opts.links]);
+        this._links = {...opts.links};
         this._mutation = opts.mutation;
 
         makeObservable(this)
@@ -70,8 +88,16 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         return this._uid;
     }
 
+    @computed get root() {
+        return this._root;
+    }
+
     @computed get parent() {
         return this._parent;
+    }
+
+    @computed get parents() {
+        return this._parents;
     }
 
     @computed get created() {
@@ -82,7 +108,11 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         return this._updated;
     }
 
-    @computed get items(): ReadonlyArray<BlockIDStr> {
+    @computed get items(): PositionalArray<BlockIDStr> {
+        return this._items;
+    }
+
+    @computed get itemsAsArray(): ReadonlyArray<BlockIDStr> {
         return PositionalArrays.toArray(this._items);
     }
 
@@ -90,7 +120,11 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         return this._content;
     }
 
-    @computed get links(): ReadonlyArray<IBlockLink> {
+    @computed get links(): PositionalArray<IBlockLink> {
+        return this._links;
+    }
+
+    @computed get linksAsArray(): ReadonlyArray<IBlockLink> {
         return PositionalArrays.toArray(this._links);
     }
 
@@ -98,62 +132,236 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         return this._mutation;
     }
 
+    /**
+     * Return true if the given content has been mutated vs the current content.
+     */
+    public hasContentMutated(content: C | IBlockContent): boolean {
+        return ! deepEqual(this._content, content);
+    }
+
     @action setContent(content: C | IBlockContent) {
 
-        this._content.update(content);
-        this._updated = ISODateTimeStrings.create();
-        this._mutation = this._mutation + 1;
-
-    }
-
-    @action setParent(id: BlockIDStr) {
-        this._parent = id;
-        this._updated = ISODateTimeStrings.create();
-        this._mutation = this._mutation + 1;
-    }
-
-    @action setItems(items: ReadonlyArray<BlockIDStr>) {
-        PositionalArrays.set(this._items, items);
-        this._updated = ISODateTimeStrings.create();
-        this._mutation = this._mutation + 1;
-    }
-
-    @action addItem(id: BlockIDStr, pos?: INewChildPosition | 'unshift') {
-
-        if (pos === 'unshift') {
-            PositionalArrays.unshift(this._items, id);
-        } else if (pos) {
-            PositionalArrays.insert(this._items, pos.ref, id, pos.pos);
-        } else {
-            PositionalArrays.append(this._items, id);
+        if (this._content.type !== content.type) {
+            throw new Error(`Can not change content types from ${this._content.type} to ${content.type}`);
         }
 
-        this._updated = ISODateTimeStrings.create();
-        this._mutation = this._mutation + 1;
+        if (this.hasContentMutated(content)) {
+            this._content.update(content);
+            return true;
+        }
+
+        return false;
+
     }
 
-    @action removeItem(id: BlockIDStr) {
+    @action setParent(id: BlockIDStr | undefined): boolean {
 
-        PositionalArrays.remove(this._items, id);
+        if (this._parent !== id) {
+            this._parent = id;
+            this._updated = ISODateTimeStrings.create();
+            return true;
+        }
 
-        this._updated = ISODateTimeStrings.create();
-        this._mutation = this._mutation + 1;
+        return false;
+
+    }
+
+    /**
+     * Return true if the given content has been mutated vs the current content.
+     */
+    public hasParentsMutated(parents: ReadonlyArray<BlockIDStr>): boolean {
+        return ! deepEqual(this._parents, parents);
+    }
+
+    @action setParents(parents: ReadonlyArray<BlockIDStr>): boolean {
+
+        if (this.hasParentsMutated(parents)) {
+            this._parents = [...parents];
+            this._updated = ISODateTimeStrings.create();
+            return true;
+        }
+
+        return false;
+
+    }
+
+    public hasItemsMutated(items: ReadonlyArray<BlockIDStr>): boolean {
+        return ! deepEqual(PositionalArrays.toArray(this._items), items);
+
+    }
+
+    @action setItems(items: ReadonlyArray<BlockIDStr>): boolean {
+
+        if (this.hasItemsMutated(items)) {
+            PositionalArrays.set(this._items, items);
+            this._updated = ISODateTimeStrings.create();
+            return true;
+        }
+
+        return false;
+
+    }
+
+    @action public setItemsUsingPatches(itemPositionPatches: ReadonlyArray<IItemsPositionPatch>): boolean {
+
+        let mutated: boolean = false;
+
+        for(const itemPositionPatch of itemPositionPatches) {
+
+            switch (itemPositionPatch.type) {
+
+                case "insert":
+
+                    if (! this.hasItem(itemPositionPatch.id)) {
+
+                        if (this.doPutItem(itemPositionPatch.key, itemPositionPatch.id)) {
+                            mutated = true;
+                        }
+
+                    }
+
+                    break;
+
+                case "remove":
+
+                    if (this.hasItem(itemPositionPatch.id)) {
+                        if (this.doRemoveItem(itemPositionPatch.id)) {
+                            mutated = true;
+                        }
+                    }
+
+                    break;
+
+            }
+
+        }
+
+        return mutated;
+
+    }
+
+    @action addItem(id: BlockIDStr, pos?: INewChildPosition | 'unshift'): boolean {
+
+        try {
+            if (!this.hasItem(id)) {
+
+                if (pos === 'unshift') {
+                    PositionalArrays.unshift(this._items, id);
+                } else if (pos) {
+                    PositionalArrays.insert(this._items, pos.ref, id, pos.pos);
+                } else {
+                    PositionalArrays.append(this._items, id);
+                }
+
+                this._updated = ISODateTimeStrings.create();
+
+                return true;
+
+            }
+
+            return false;
+        } catch (e) {
+            throw new Error(`addItem failed on in block: ${this.id}: ` + e.message)
+        }
+
+    }
+
+    @action private doRemoveItem(id: BlockIDStr): boolean {
+
+        if (this.hasItem(id)) {
+
+            PositionalArrays.remove(this._items, id);
+            return true;
+
+        }
+
+        return false;
+
+    }
+
+    @action removeItem(id: BlockIDStr): boolean {
+
+        if (this.doRemoveItem(id)) {
+
+            this._updated = ISODateTimeStrings.create();
+            return true;
+
+        }
+
+        return false;
+
+    }
+
+    @action private doPutItem(key: PositionalArrayPositionStr, id: BlockIDStr): boolean {
+
+        if (! this.hasItem(id)) {
+
+            PositionalArrays.put(this._items, key, id);
+
+            return true;
+
+        }
+
+        return false;
+
+    }
+
+    @action putItem(key: PositionalArrayPositionStr, id: BlockIDStr): boolean {
+
+        if (this.doPutItem(key, id)) {
+
+            this._updated = ISODateTimeStrings.create();
+
+            return true;
+
+        }
+
+        return false;
+
+    }
+
+    public hasItem(id: BlockIDStr): boolean {
+        return PositionalArrays.toArray(this._items).includes(id);
+    }
+
+    public hasLinksMutated(links: ReadonlyArray<IBlockLink>): boolean {
+        return ! deepEqual(PositionalArrays.toArray(this._links), links);
 
     }
 
     @action setLinks(links: ReadonlyArray<IBlockLink>) {
-        PositionalArrays.set(this._links, links);
-        this._updated = ISODateTimeStrings.create();
-        this._mutation = this._mutation + 1;
+
+        if (this.hasLinksMutated(links)) {
+            PositionalArrays.set(this._links, links);
+            this._updated = ISODateTimeStrings.create();
+            return true;
+        }
+
+        return false;
+
     }
 
     @action addLink(link: IBlockLink) {
-        PositionalArrays.append(this._links, link);
-        this._updated = ISODateTimeStrings.create();
-        this._mutation = this._mutation + 1;
+
+        if (! this.hasLink(link.id)) {
+            PositionalArrays.append(this._links, link);
+            this._updated = ISODateTimeStrings.create();
+            return true;
+        }
+
+        return false;
+
     }
 
-    @action removeLink(id: BlockIDStr) {
+    public hasLink(id: BlockIDStr): boolean {
+
+        return arrayStream(PositionalArrays.toArray(this._links)).
+                filter(current => current.id === id)
+                .first() !== undefined;
+
+    }
+
+    @action removeLink(id: BlockIDStr): boolean {
 
         const link =
             arrayStream(Object.values(this._links))
@@ -163,8 +371,10 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         if (link) {
             PositionalArrays.remove(this._links, link);
             this._updated = ISODateTimeStrings.create();
-            this._mutation = this._mutation + 1;
+            return true;
         }
+
+        return false;
 
     }
 
@@ -177,9 +387,47 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         this._content.update(block.content)
         PositionalArrays.set(this._links, block.links);
 
-        // the mutation still has to be incremented here, even in an undo
-        // operation because technically the content has been mutated again.
-        this._mutation = this._mutation + 1;
+    }
+
+    /**
+     * Perform a bulk/single mutation of the Block.
+     */
+    public withMutation(delegate: () => void, opts?: IWithMutationOpts): boolean {
+
+        const before = this.toJSON();
+
+        delegate();
+
+        const after = this.toJSON();
+
+        let result: boolean = false;
+
+        if (! deepEqual(before, after)) {
+
+            this._updated = opts?.updated || ISODateTimeStrings.create();
+            this._mutation = opts?.mutation || (this._mutation + 1);
+            result = true;
+        }
+
+        if (opts) {
+
+            if (this._mutation !== opts.mutation) {
+
+                this._mutation = opts.mutation;
+                result = true;
+
+            }
+
+            if (this._updated !== opts.updated) {
+
+                this._updated = opts.updated;
+                result = true;
+
+            }
+
+        }
+
+        return result;
 
     }
 
@@ -189,12 +437,14 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
             id: this._id,
             nspace: this._nspace,
             uid: this._uid,
+            root: this._root,
             parent: this._parent,
+            parents: [...this._parents],
             created: this._created,
             updated: this._updated,
-            items: PositionalArrays.toArray(this._items),
+            items: {...this._items},
             content: this._content.toJSON() as any,
-            links: PositionalArrays.toArray(this._links),
+            links: {...this._links},
             mutation: this._mutation
         };
 

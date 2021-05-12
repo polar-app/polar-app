@@ -30,8 +30,8 @@ export namespace UndoQueues2 {
          * there are no more undo actions if we're not at the head of the queue.
          */
         readonly push: <R,U> (action: IUndoQueueAction<R, U>) => IPushResult<R>;
-        readonly undo: () => UndoResult;
-        readonly redo: () => RedoResult;
+        readonly undo: () => UndoStatus;
+        readonly redo: () => RedoStatus;
         readonly size: () => number;
 
         /**
@@ -55,9 +55,9 @@ export namespace UndoQueues2 {
         readonly value: R;
     }
 
-    export type UndoResult = 'at-head' | 'executed';
+    export type UndoStatus = 'at-head' | 'executed';
 
-    export type RedoResult = 'at-tail' | 'executed';
+    export type RedoStatus = 'at-tail' | 'executed';
 
     /**
      * Create an UndoQueue. You should also immediately push a state to restore
@@ -108,7 +108,7 @@ export namespace UndoQueues2 {
 
         }
 
-        function undo(): UndoResult {
+        function undo(): UndoStatus {
 
             if (ptr < 0) {
                 // we are at the head of the queue so nothing left to complete.
@@ -124,7 +124,7 @@ export namespace UndoQueues2 {
 
         }
 
-        function redo(): RedoResult {
+        function redo(): RedoStatus {
 
             const end = actions.length - 1;
 

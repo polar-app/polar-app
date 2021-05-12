@@ -1,4 +1,6 @@
+import {Devices} from "polar-shared/src/util/Devices";
 import React from "react";
+import {debounce} from "throttle-debounce";
 import {useDocViewerCallbacks, useDocViewerStore} from "../../DocViewerStore";
 import {useFakePinchToZoom} from "../../PinchHooks";
 import {ScaleLevelTuple, ScaleLevelTuples} from "../../ScaleLevels";
@@ -11,12 +13,12 @@ type UseElemWidthChangedOpts = {
 export const useElemWidthChanged = (callback: () => void, opts: UseElemWidthChangedOpts) => {
     const {threshold = 5, elemRef} = opts;
     const oldWidthRef = React.useRef<number>(window.innerWidth);
-    useResizeObserver(React.useCallback(({ contentRect: { width } }) => {
+    useResizeObserver(debounce(100, React.useCallback(({ contentRect: { width } }) => {
         if (Math.abs(oldWidthRef.current - width) > threshold) {
             oldWidthRef.current = width;
             callback();
         }
-    }, [oldWidthRef, callback, threshold]), elemRef);
+    }, [oldWidthRef, callback, threshold])), elemRef);
 };
 
 type UseResizeObserverCallback = (entry: ResizeObserverEntry) => void;
@@ -58,7 +60,12 @@ export const usePDFPinchToZoom = ({ containerRef, wrapperRef }: IUsePDFPinchToZo
         }
     }, [docScale]);
 
-    // useElemWidthChanged(() => setScale(ScaleLevelTuples[1]), { elemRef: wrapperRef });
+    useElemWidthChanged(() => {
+        const devices = Devices.get();
+        if (~["phone", "tablet"].indexOf(devices)) {
+            setScale(ScaleLevelTuples[1])
+        }
+    }, { elemRef: wrapperRef, threshold: 200 });
 
     const shouldUpdate = React.useCallback((zoom: number): boolean => {
         const min = initialScale.current!, max = 4;

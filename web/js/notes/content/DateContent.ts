@@ -1,17 +1,20 @@
 import {makeObservable, observable, computed} from "mobx"
-import {IMarkdownContent} from "./IMarkdownContent";
+import {INameContent} from "./INameContent";
 import {IBlockContent} from "../store/BlocksStore";
 import {IBaseBlockContent} from "./IBaseBlockContent";
+import {DateContentFormat, IDateContent} from "./IDateContent";
 
-export class MarkdownContent implements IMarkdownContent, IBaseBlockContent {
+export class DateContent implements IDateContent, IBaseBlockContent {
 
-    @observable private readonly _type: 'markdown';
+    @observable private readonly _type: 'date';
     @observable private _data: string;
+    @observable private _format: DateContentFormat;
 
-    constructor(opts: IMarkdownContent) {
+    constructor(opts: IDateContent) {
 
         this._type = opts.type;
         this._data = opts.data;
+        this._format = opts.format;
 
         makeObservable(this)
 
@@ -25,9 +28,13 @@ export class MarkdownContent implements IMarkdownContent, IBaseBlockContent {
         return this._data;
     }
 
+    @computed get format() {
+        return this._format;
+    }
+
     public update(content: IBlockContent) {
 
-        if (content.type === 'markdown') {
+        if (content.type === 'date') {
             this._data = content.data;
         } else {
             throw new Error("Invalid type: " +  content.type)
@@ -35,10 +42,11 @@ export class MarkdownContent implements IMarkdownContent, IBaseBlockContent {
 
     }
 
-    public toJSON(): IMarkdownContent {
+    public toJSON(): IDateContent {
         return {
             type: this._type,
-            data: this._data
+            data: this._data,
+            format: this._format
         }
     }
 

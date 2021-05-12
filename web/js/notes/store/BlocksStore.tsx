@@ -1,13 +1,13 @@
 import * as React from "react";
 import {createReactiveStore} from "../../react/store/ReactiveStore";
 import {action, computed, makeObservable, observable} from "mobx"
-import {IDStr} from "polar-shared/src/util/Strings";
+import {IDStr, MarkdownStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {BlockTargetStr} from "../NoteLinkLoader";
-import {isPresent} from "polar-shared/src/Preconditions";
+import {isPresent, Preconditions} from "polar-shared/src/Preconditions";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {IBlock, UIDStr} from "./IBlock";
+import {IBlock, NamespaceIDStr, UIDStr} from "./IBlock";
 import {ReverseIndex} from "./ReverseIndex";
 import {Block} from "./Block";
 import { arrayStream } from "polar-shared/src/util/ArrayStreams";
@@ -27,11 +27,18 @@ import { IBaseBlockContent } from "../content/IBaseBlockContent";
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {useUndoQueue} from "../../undo/UndoQueueProvider2";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
+import {PositionalArrays} from "./PositionalArrays";
+import {IDateContent} from "../content/IDateContent";
+import {DateContent} from "../content/DateContent";
+import {IBlocksPersistenceSnapshot, useBlocksPersistenceSnapshots} from "../persistence/BlocksPersistenceSnapshots";
+import {BlocksPersistenceWriter} from "../persistence/BlocksPersistence";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {useBlocksPersistenceWriter} from "../persistence/BlockPersistenceWriters";
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
 
-export type BlockType = 'name' | 'markdown' | 'image';
+export type BlockType = 'name' | 'markdown' | 'image' | 'date';
 
 export type BlocksIndex = {[id: string /* BlockIDStr */]: Block};
 export type BlocksIndexByName = {[name: string /* BlockNameStr */]: BlockIDStr};
@@ -40,9 +47,8 @@ export type ReverseBlocksIndex = {[id: string /* BlockIDStr */]: BlockIDStr[]};
 
 export type StringSetMap = {[key: string]: boolean};
 
-// export type NoteContent = string | ITypedContent<'markdown'> | ITypedContent<'name'>;
-export type IBlockContent = IMarkdownContent | INameContent | IImageContent;
-export type BlockContent = (MarkdownContent | NameContent | ImageContent) & IBaseBlockContent;
+export type IBlockContent = IMarkdownContent | INameContent | IImageContent | IDateContent;
+export type BlockContent = (MarkdownContent | NameContent | ImageContent | DateContent) & IBaseBlockContent;
 // export type BlockContent = MarkdownContent | NameContent ;
 
 /**
@@ -175,33 +181,34 @@ export namespace ActiveBlockNonces {
 
 }
 
-/**
- * The RAW store with just the data that we can use to restore undo/redo data.
- */
-export interface IBlocksStoreSnapshot {
+export interface IDoDeleteOpts {
 
-    _index: BlocksIndex;
-
-    _indexByName: BlocksIndexByName;
-
-    // FIXME: this won't work with restore...
-    _reverse: ReverseIndex;
-
-    root: BlockIDStr | undefined;
-
-    _active: IActiveBlock | undefined;
-
-    _expanded: StringSetMap;
-
-    _selected: StringSetMap;
-
-    _dropTarget: IDropTarget | undefined;
-
-    _dropSource: BlockIDStr | undefined;
-
-    _selectedAnchor: IDStr | undefined;
+    /**
+     * Do not delete items recursively.
+     */
+    readonly noDeleteItems?: boolean;
 
 }
+
+export interface ICreateNewNamedBlockOptsBasic {
+    readonly newBlockID?: BlockIDStr;
+    readonly nspace?: NamespaceIDStr;
+    readonly ref?: BlockIDStr;
+}
+
+export interface ICreateNewNamedBlockOptsWithNSpace {
+    readonly newBlockID?: BlockIDStr;
+    readonly nspace: NamespaceIDStr;
+    readonly ref?: undefined;
+}
+
+export interface ICreateNewNamedBlockOptsWithRef {
+    readonly newBlockID?: BlockIDStr;
+    readonly nspace?: undefined;
+    readonly ref: BlockIDStr;
+}
+
+export type ICreateNewNamedBlockOpts = ICreateNewNamedBlockOptsBasic | ICreateNewNamedBlockOptsWithNSpace | ICreateNewNamedBlockOptsWithRef;
 
 export class BlocksStore implements IBlocksStore {
 
@@ -247,7 +254,13 @@ export class BlocksStore implements IBlocksStore {
      */
     @observable _selectedAnchor: IDStr | undefined = undefined;
 
-    constructor(uid: UIDStr, undoQueue: UndoQueues2.UndoQueue) {
+    /**
+     * True when we've received our first snapshot.
+     */
+    @observable _hasSnapshot: boolean = false;
+
+    constructor(uid: UIDStr, undoQueue: UndoQueues2.UndoQueue,
+                readonly blocksPersistenceWriter: BlocksPersistenceWriter = NULL_FUNCTION) {
         this.uid = uid;
         this.root = undefined;
         this.undoQueue = undoQueue;
@@ -333,6 +346,10 @@ export class BlocksStore implements IBlocksStore {
         this._dropSource = undefined;
     }
 
+    @computed get hasSnapshot() {
+        return this._hasSnapshot;
+    }
+
     /**
      * Return true if the given block is active.
      */
@@ -343,7 +360,7 @@ export class BlocksStore implements IBlocksStore {
     public lookup(blocks: ReadonlyArray<BlockIDStr>): ReadonlyArray<IBlock> {
 
         return blocks.map(current => this._index[current])
-            .filter(current => current !== null && current !== undefined);
+                     .filter(current => current !== null && current !== undefined);
 
     }
 
@@ -355,6 +372,13 @@ export class BlocksStore implements IBlocksStore {
 
         for (const blockData of blocks) {
 
+            const existingBlock = this.getBlock(blockData.id);
+
+            if (existingBlock && existingBlock.mutation === blockData.mutation) {
+                // skip this update as it hasn't changed
+                continue;
+            }
+
             const block = new Block(blockData);
             this._index[blockData.id] = block;
 
@@ -362,7 +386,7 @@ export class BlocksStore implements IBlocksStore {
                 this._indexByName[blockData.content.data] = block.id;
             }
 
-            for (const link of block.links) {
+            for (const link of block.linksAsArray) {
                 this._reverse.add(link.id, block.id);
             }
 
@@ -422,16 +446,16 @@ export class BlocksStore implements IBlocksStore {
 
         if (parent) {
 
-            const idx = parent.items.indexOf(id);
+            const idx = parent.itemsAsArray.indexOf(id);
 
             if (idx !== -1) {
 
                 switch (type) {
 
                     case "prev":
-                        return Arrays.prevSibling(parent.items, idx);
+                        return Arrays.prevSibling(parent.itemsAsArray, idx);
                     case "next":
-                        return Arrays.nextSibling(parent.items, idx);
+                        return Arrays.nextSibling(parent.itemsAsArray, idx);
 
                 }
 
@@ -481,7 +505,6 @@ export class BlocksStore implements IBlocksStore {
         return undefined;
 
     }
-
 
     public getActiveBlock(id: BlockIDStr): Block | undefined {
 
@@ -652,17 +675,20 @@ export class BlocksStore implements IBlocksStore {
     private computeLinearExpansionTree(id: BlockIDStr,
                                        root: boolean = true): ReadonlyArray<BlockIDStr> {
 
+        Preconditions.assertString(id, "id");
+
         const block = this._index[id];
 
         if (! block) {
-            console.warn("computeLinearExpansionTree: No block: ", id);
+            console.warn("computeLinearExpansionTree: No block: " + id);
             return [];
         }
 
         const isExpanded = root ? true : this._expanded[id];
 
         if (isExpanded) {
-            const items = (block.items || []);
+
+            const items = (block.itemsAsArray || []);
 
             const result = [];
 
@@ -691,7 +717,7 @@ export class BlocksStore implements IBlocksStore {
         const isExpanded = this._expanded[id] || id === this.root;
 
         if (isExpanded) {
-            const items = (block.items || []);
+            const items = (block.itemsAsArray || []);
 
             const result = [];
 
@@ -831,7 +857,8 @@ export class BlocksStore implements IBlocksStore {
 
                 if (sourceBlock.parent === targetBlock.id) {
 
-                    const firstChild = targetBlock.items.indexOf(sourceBlock.id) === 0;
+                    const targetBlockItems = PositionalArrays.toArray(targetBlock.items);
+                    const firstChild = targetBlockItems.indexOf(sourceBlock.id) === 0;
 
                     if (firstChild) {
                         return true;
@@ -849,59 +876,81 @@ export class BlocksStore implements IBlocksStore {
 
     @action public mergeBlocks(target: BlockIDStr, source: BlockIDStr) {
 
-        const targetBlock = this._index[target];
-        const sourceBlock = this._index[source];
+        const redo = () => {
 
-        if (! this.canMergeTypes(sourceBlock, targetBlock)) {
+            const targetBlock = this._index[target];
+            const sourceBlock = this._index[source];
 
-            if (this.canMergeWithDelete(sourceBlock, targetBlock)) {
-                // this is an edge case where a merge to the parent isn't
-                // possible but the child is empty so we just delete the child.
-                this.doDelete([sourceBlock.id]);
-                this.setActiveWithPosition(targetBlock.id, 'end');
-                return 'block-merged-with-delete';
+            if (! this.canMergeTypes(sourceBlock, targetBlock)) {
+
+                if (this.canMergeWithDelete(sourceBlock, targetBlock)) {
+                    // this is an edge case where a merge to the parent isn't
+                    // possible but the child is empty so we just delete the child.
+                    this.doDelete([sourceBlock.id]);
+                    this.setActiveWithPosition(targetBlock.id, 'end');
+                    return 'block-merged-with-delete';
+                }
+
+                console.warn("Block types are incompatible and can't be merged");
+                return 'incompatible-block-types';
             }
 
-            console.warn("Block types are incompatible and can't be merged");
-            return 'incompatible-block-types';
+            if (sourceBlock.content.type !== 'markdown' || targetBlock.content.type !== 'markdown') {
+                throw new Error("Attempt to merge invalid content types");
+            }
+
+            const offset = CursorPositions.renderedTextLength(targetBlock.content.data);
+
+            const items = [...targetBlock.itemsAsArray, ...sourceBlock.itemsAsArray];
+            const links = [...targetBlock.linksAsArray, ...sourceBlock.linksAsArray];
+
+            const newContent = targetBlock.content.data + sourceBlock.content.data;
+
+            targetBlock.withMutation(() => {
+
+                targetBlock.setContent(new MarkdownContent({
+                    type: 'markdown',
+                    data: newContent
+                }));
+
+                targetBlock.setItems(items);
+                targetBlock.setLinks(links);
+
+            })
+
+            this.doPut([targetBlock]);
+
+            const deleteSourceBlock = () => {
+                // we have to set items to an empty array or doDelete will also remove the children recursively.
+                sourceBlock.setItems([]);
+                this.doDelete([sourceBlock.id]);
+            }
+
+            deleteSourceBlock();
+
+            this.setActiveWithPosition(targetBlock.id, offset);
+
+            return undefined;
+
         }
 
-        if (sourceBlock.content.type !== 'markdown' || targetBlock.content.type !== 'markdown') {
-            throw new Error("Attempt to merge invalid content types");
-        }
-
-        const offset = CursorPositions.renderedTextLength(targetBlock.content.data);
-
-        const items = [...targetBlock.items, ...sourceBlock.items];
-        const links = [...targetBlock.links, ...sourceBlock.links];
-
-        const newContent = targetBlock.content.data + sourceBlock.content.data;
-
-        targetBlock.setContent(new MarkdownContent({
-            type: 'markdown',
-            data: newContent
-        }));
-        targetBlock.setItems(items);
-        targetBlock.setLinks(links);
-
-        const deleteSourceBlock = () => {
-            // we have to set items to an empty array or doDelete will also remove the children recursively.
-            sourceBlock.setItems([]);
-            this.doDelete([sourceBlock.id]);
-        }
-
-        deleteSourceBlock();
-
-        this.setActiveWithPosition(targetBlock.id, offset);
-
-        return undefined;
+        return this.doUndoPush([source, target], redo);
 
     }
 
     /**
      * Create a new named block but only when a block with this name does not exist.
+     *
+     * The 'ref' block is used to compute the namespace in which this blocks
+     * should be stored.
+     *
      */
-    @action public createNewNamedBlock(name: BlockNameStr, ref: BlockIDStr): BlockIDStr {
+    @action public doCreateNewNamedBlock(name: BlockNameStr,
+                                         opts: ICreateNewNamedBlockOpts): BlockIDStr {
+
+        // NOTE that the ID always has to be random. We can't make it a hash
+        // based on the name as the name can change.
+        const newBlockID = opts.newBlockID || Hashcodes.createRandomID();
 
         const existingBlock = this.getBlockByName(name);
 
@@ -909,57 +958,196 @@ export class BlocksStore implements IBlocksStore {
             return existingBlock.id;
         }
 
-        const createNewBlock = (): IBlock => {
+        const redo = (): BlockIDStr => {
 
-            const refBlock = this.getBlock(ref);
+            const createNewBlock = (): IBlock => {
 
-            if (! refBlock) {
-                throw new Error("Reference block doesn't exist");
-            }
+                const computeNamespace = (): NamespaceIDStr => {
 
-            const now = ISODateTimeStrings.create()
-            return {
-                id: Hashcodes.createRandomID(),
-                nspace: refBlock.nspace,
-                uid: this.uid,
-                parent: undefined,
-                content: Contents.create({
-                    type: 'name',
-                    data: name
-                }),
-                created: now,
-                updated: now,
-                items: [],
-                links: [],
-                mutation: 0
+                    if (opts?.ref) {
+
+                        const refBlock = this.getBlock(opts.ref);
+
+                        if (! refBlock) {
+                            throw new Error("Reference block doesn't exist");
+                        }
+
+                    }
+
+                    if (opts?.nspace) {
+                        return opts.nspace;
+                    }
+
+                    return this.uid;
+
+                }
+
+
+                const now = ISODateTimeStrings.create();
+                const nspace = computeNamespace();
+
+                return {
+                    id: newBlockID,
+                    nspace,
+                    uid: this.uid,
+                    root: newBlockID,
+                    parent: undefined,
+                    parents: [],
+                    content: Contents.create({
+                        type: 'name',
+                        data: name
+                    }).toJSON(),
+                    created: now,
+                    updated: now,
+                    items: {},
+                    links: {},
+                    mutation: 0
+                };
+
             };
-        };
 
-        const newBlock = createNewBlock();
+            const newBlock = createNewBlock();
 
-        this.doPut([newBlock]);
+            this.doPut([newBlock]);
 
-        return newBlock.id;
+            return newBlockID;
+
+        }
+
+        return this.doUndoPush([newBlockID], redo);
+
+    }
+
+    @action public createNewNamedBlock(name: BlockNameStr,
+                                       opts: ICreateNewNamedBlockOpts): BlockIDStr {
+
+        const newBlockID = Hashcodes.createRandomID();
+
+        const redo = (): BlockIDStr => {
+            return this.doCreateNewNamedBlock(name, {...opts, newBlockID});
+
+        }
+
+        return this.doUndoPush([newBlockID], redo);
 
     }
 
     public deleteBlocks(blockIDs: ReadonlyArray<BlockIDStr>) {
 
-        // const restoreBlocks =
-        //     blockIDs.map(current => this.getBlock(current)!.toJSON());
-        //
-        // const redo = () => {
-        //     this.doDelete(blockIDs);
-        // }
-        //
-        // const undo = () => {
-        //
-        //     // FIXME: we also need to link it from the parent. and the position in the parent.. .
-        //     this.doPut([restoreBlocks]);
-        //
-        // }
+        const redo = () => {
+            this.doDelete(blockIDs);
+        }
 
-        this.doDelete(blockIDs);
+        return this.doUndoPush(blockIDs, redo);
+
+    }
+
+    @action public setBlockContent<C extends IBlockContent = IBlockContent>(id: BlockIDStr, content: C) {
+
+        const redo = () => {
+
+            const block = this.getBlock(id);
+
+            if (block) {
+
+                block.withMutation(() => {
+                    block.setContent(content);
+                })
+
+                this.doPut([block]);
+
+            }
+
+
+        }
+
+        return this.doUndoPush([id], redo);
+
+    }
+
+    @action public createLinkToBlock<C extends IBlockContent = IBlockContent>(sourceBlockID: BlockIDStr,
+                                                                              targetName: BlockNameStr,
+                                                                              undoContent: MarkdownStr,
+                                                                              content: MarkdownStr) {
+
+        const sourceBlock = this.getBlock(sourceBlockID)!;
+
+        // if the existing target block exists, use that block name.
+        const targetBlock = this.getBlockByName(targetName);
+
+        const targetID = targetBlock?.id || Hashcodes.createRandomID();
+
+        const restore = {
+            updated: sourceBlock.updated,
+            mutation: sourceBlock.mutation
+        }
+
+        const redo = () => {
+
+            console.log(`Creating link from ${sourceBlockID} to ${targetName}`)
+
+            // TODO: we have to setContent here too but I need to figure out how
+            // to get it from the element when we're changing it.
+
+            const sourceBlock = this.getBlock(sourceBlockID);
+
+            if (! sourceBlock) {
+                throw new Error("Unable to find block: " + sourceBlockID);
+            }
+
+            if (sourceBlock.content.type !== 'markdown') {
+                throw new Error("Source block not markdown: " + sourceBlock.content.type);
+            }
+
+            // create the new block - the sourceID is used for the ref to compute the nspace.
+            const targetID = this.doCreateNewNamedBlock(targetName, {newBlockID: sourceBlockID, nspace: sourceBlock.nspace});
+
+            sourceBlock.withMutation(() => {
+
+                sourceBlock.addLink({
+                    id: targetID,
+                    text: targetName
+                });
+
+                sourceBlock.setContent({
+                    type: "markdown",
+                    data: content
+                });
+
+            })
+
+            this.doPut([sourceBlock]);
+
+            this.setActiveWithPosition(sourceBlock.id, 'end');
+
+        }
+
+        const undo = () => {
+
+            const sourceBlock = this.getBlock(sourceBlockID);
+
+            if (! sourceBlock) {
+                throw new Error("Unable to find block: " + sourceBlockID);
+            }
+
+            sourceBlock.withMutation(() => {
+
+                sourceBlock.removeLink(targetID);
+
+                sourceBlock.setContent({
+                    type: "markdown",
+                    data: undoContent
+                })
+
+            }, restore);
+
+            this.doPut([sourceBlock]);
+
+            this.setActiveWithPosition(sourceBlock.id, 'end');
+
+        }
+
+        this.undoQueue.push({redo, undo});
 
     }
 
@@ -1078,7 +1266,7 @@ export class BlocksStore implements IBlocksStore {
             const createNewBlock = (parentBlock: Block): IBlock => {
                 const now = ISODateTimeStrings.create()
 
-                const items = newBlockInheritItems ? currentBlock.items : [];
+                const items = newBlockInheritItems ? currentBlock.items : {};
 
                 const content = opts.content || {
                     type: 'markdown',
@@ -1088,13 +1276,15 @@ export class BlocksStore implements IBlocksStore {
                 return {
                     id: newBlockID,
                     parent: parentBlock.id,
+                    parents: [...parentBlock.parents, parentBlock.id],
                     nspace: parentBlock.nspace,
                     uid: this.uid,
-                    content: Contents.create(content),
+                    root: parentBlock.root,
+                    content: Contents.create(content).toJSON(),
                     created: now,
                     updated: now,
                     items,
-                    links: [],
+                    links: {},
                     mutation: 0
                 };
 
@@ -1105,10 +1295,6 @@ export class BlocksStore implements IBlocksStore {
             // const split = opts.split;
             const newBlockInheritItems = split?.suffix !== undefined && split?.suffix !== '';
 
-            const restore = {
-                block: currentBlock.toJSON(),
-            }
-
             const newBlockPosition = computeNewBlockPosition();
 
             const {parentBlock} = newBlockPosition;
@@ -1117,33 +1303,43 @@ export class BlocksStore implements IBlocksStore {
 
             this.doPut([newBlock]);
 
-            switch (newBlockPosition.type) {
+            parentBlock.withMutation(() => {
 
-                case "relative":
-                    parentBlock.addItem(newBlock.id, newBlockPosition);
-                    break;
-                case "first-child":
-                    parentBlock.addItem(newBlock.id, 'unshift');
-                    break;
+                switch (newBlockPosition.type) {
 
-            }
+                    case "relative":
+                        parentBlock.addItem(newBlock.id, newBlockPosition);
+                        break;
+                    case "first-child":
+                        parentBlock.addItem(newBlock.id, 'unshift');
+                        break;
 
-            if (split?.suffix !== undefined && newBlock.items.length > 0) {
+                }
+
+            })
+
+            if (split?.suffix !== undefined && Object.keys(newBlock.items).length > 0) {
                 this.expand(newBlock.id);
             }
 
-            if (split?.prefix !== undefined) {
+            currentBlock.withMutation(() => {
 
-                currentBlock.setContent({
-                    type: 'markdown',
-                    data: split.prefix
-                });
+                if (split?.prefix !== undefined) {
 
-                if (newBlockInheritItems) {
-                    currentBlock.setItems([]);
+                    currentBlock.setContent({
+                        type: 'markdown',
+                        data: split.prefix
+                    });
+
+                    if (newBlockInheritItems) {
+                        currentBlock.setItems([]);
+                    }
+
                 }
 
-            }
+            })
+
+            this.doPut([currentBlock, parentBlock]);
 
             this.setActiveWithPosition(newBlock.id, 'start');
 
@@ -1248,7 +1444,7 @@ export class BlocksStore implements IBlocksStore {
             return false;
         }
 
-        return parentBlock.items.indexOf(id) !== 0;
+        return parentBlock.itemsAsArray.indexOf(id) !== 0;
 
     }
 
@@ -1268,6 +1464,23 @@ export class BlocksStore implements IBlocksStore {
      * @return The new parent BlockID or the code as to why it couldn't be re-parented.
      */
     public indentBlock(id: BlockIDStr): ReadonlyArray<DoIndentResult> {
+
+        const computeTargetIdentifiers = () => {
+
+            if (this.hasSelected()) {
+                return this.computeSelectedIndentableBlockIDs();
+            } else {
+                return [id];
+            }
+
+        }
+
+        const targetIdentifiers = computeTargetIdentifiers();
+
+        const root = this.getBlock(id)!.root;
+
+        const undoIdentifiers
+            = BlocksStoreUndoQueues.expandToParentAndChildren(this, [root])
 
         const doExec = (id: BlockIDStr): DoIndentResult => {
 
@@ -1290,7 +1503,7 @@ export class BlocksStore implements IBlocksStore {
                 return {error: 'no-parent-block'};
             }
 
-            const parentItems = (parentBlock.items || []);
+            const parentItems = (parentBlock.itemsAsArray || []);
 
             // figure out the sibling index in the parent
             const siblingIndex = parentItems.indexOf(id);
@@ -1303,13 +1516,23 @@ export class BlocksStore implements IBlocksStore {
 
                 // *** remove myself from my parent
 
-                parentBlock.removeItem(id);
+                parentBlock.withMutation(() => {
+                    parentBlock.removeItem(id);
+                })
 
                 // ***: add myself to my newParent
 
-                newParentBlock.addItem(id);
+                newParentBlock.withMutation(() => {
+                    newParentBlock.addItem(id);
+                })
 
-                block.setParent(newParentBlock.id);
+                block.withMutation(() => {
+                    block.setParent(newParentBlock.id);
+                    block.setParents([...newParentBlock.parents, newParentBlock.id]);
+                })
+
+                this.doPut([block, newParentBlock, parentBlock]);
+
                 this.expand(newParentID);
 
                 return {value: newParentBlock.id};
@@ -1322,17 +1545,19 @@ export class BlocksStore implements IBlocksStore {
 
         const cursorOffset = this.cursorOffsetCapture();
 
-        try {
+        const redo = () => {
 
-            if (this.hasSelected()) {
-                return this.computeSelectedIndentableBlockIDs().map(id => doExec(id));
-            } else {
-                return [doExec(id)];
+            try {
+
+                return targetIdentifiers.map(id => doExec(id));
+
+            } finally {
+                this.cursorOffsetRestore(cursorOffset);
             }
 
-        } finally {
-            this.cursorOffsetRestore(cursorOffset);
         }
+
+        return this.doUndoPush(undoIdentifiers, redo);
 
     }
 
@@ -1371,6 +1596,23 @@ export class BlocksStore implements IBlocksStore {
 
     public unIndentBlock(id: BlockIDStr): ReadonlyArray<DoUnIndentResult> {
 
+        const computeTargetIdentifiers = () => {
+
+            if (this.hasSelected()) {
+                return this.computeSelectedUnIndentableBlockIDs();
+            } else {
+                return [id];
+            }
+
+        }
+
+        const targetIdentifiers = computeTargetIdentifiers();
+
+        const root = this.getBlock(id)!.root;
+
+        const undoIdentifiers
+            = BlocksStoreUndoQueues.expandToParentAndChildren(this, [root])
+
         const doExec = (id: BlockIDStr): DoUnIndentResult => {
 
             console.log("doUnIndent: " + id);
@@ -1401,9 +1643,20 @@ export class BlocksStore implements IBlocksStore {
                 return {error: 'no-parent-block-parent-block'};
             }
 
-            block.setParent(newParentBlock.id);
-            newParentBlock.addItem(id, {pos: 'after', ref: parentBlock.id});
-            parentBlock.removeItem(id);
+            block.withMutation(() => {
+                block.setParent(newParentBlock.id);
+                block.setParents([...newParentBlock.parents, newParentBlock.id]);
+            })
+
+            newParentBlock.withMutation(() => {
+                newParentBlock.addItem(id, {pos: 'after', ref: parentBlock.id});
+            })
+
+            parentBlock.withMutation(() => {
+                parentBlock.removeItem(id);
+            })
+
+            this.doPut([block, newParentBlock, parentBlock]);
 
             return {value: id};
 
@@ -1411,17 +1664,19 @@ export class BlocksStore implements IBlocksStore {
 
         const cursorOffset = this.cursorOffsetCapture();
 
-        try {
+        const redo = () => {
 
-            if (this.hasSelected()) {
-                return this.computeSelectedUnIndentableBlockIDs().map(id => doExec(id));
-            } else {
-                return [doExec(id)];
+            try {
+
+                return targetIdentifiers.map(id => doExec(id));
+
+            } finally {
+                this.cursorOffsetRestore(cursorOffset);
             }
 
-        } finally {
-            this.cursorOffsetRestore(cursorOffset);
         }
+
+        return this.doUndoPush(undoIdentifiers, redo);
 
     }
 
@@ -1437,7 +1692,7 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    @action public doDelete(blockIDs: ReadonlyArray<BlockIDStr>) {
+    @action public doDelete(blockIDs: ReadonlyArray<BlockIDStr>, opts: IDoDeleteOpts = {}) {
 
         interface NextActive {
             readonly active: BlockIDStr;
@@ -1446,7 +1701,7 @@ export class BlocksStore implements IBlocksStore {
 
         const computeNextActive = (): NextActive | undefined => {
 
-            const blockID = blocksToDelete[0];
+            const blockID = blockIDs[0];
             const block = this._index[blockID];
 
             if (! block) {
@@ -1461,7 +1716,7 @@ export class BlocksStore implements IBlocksStore {
 
             const linearExpansionTree = this.computeLinearExpansionTree(block.parent);
 
-            const deleteIndexes = arrayStream(blocksToDelete)
+            const deleteIndexes = arrayStream(blockIDs)
                 .map(current => linearExpansionTree.indexOf(current))
                 .filter(current => current !== -1)
                 .sort((a, b) => a - b)
@@ -1512,7 +1767,9 @@ export class BlocksStore implements IBlocksStore {
                     // *** first delete all children,  We have to do this first
                     // or else they won't have parents.
 
-                    handleDelete(block.items);
+                    if (! opts.noDeleteItems) {
+                        handleDelete(block.itemsAsArray);
+                    }
 
                     // *** delete the id for this block from the parents items.
 
@@ -1525,7 +1782,9 @@ export class BlocksStore implements IBlocksStore {
                             continue;
                         }
 
-                        parentBlock.removeItem(block.id);
+                        parentBlock.withMutation(() => {
+                            parentBlock.removeItem(block.id);
+                        })
 
                     }
 
@@ -1559,17 +1818,13 @@ export class BlocksStore implements IBlocksStore {
 
         };
 
-        const selected = this.selectedIDs();
-
-        const blocksToDelete = selected.length > 0 ? selected : blockIDs;
-
-        if (blocksToDelete.length === 0) {
+        if (blockIDs.length === 0) {
             return;
         }
 
         const nextActive = computeNextActive();
 
-        if (handleDelete(blocksToDelete) > 0) {
+        if (handleDelete(blockIDs) > 0) {
 
             if (nextActive) {
                 this.setActiveWithPosition(nextActive.active, nextActive.activePos);
@@ -1579,6 +1834,33 @@ export class BlocksStore implements IBlocksStore {
             this.clearSelected('doDelete');
 
         }
+
+    }
+
+    @action public handleSnapshot(snapshot: IBlocksPersistenceSnapshot) {
+
+        // console.log("Handling BlocksStore snapshot: ", snapshot);
+
+        for (const docChange of snapshot.docChanges) {
+            switch(docChange.type) {
+
+                case "added":
+                    this.doPut([docChange.data]);
+                    break;
+
+                case "modified":
+                    this.doPut([docChange.data]);
+                    break;
+
+                case "removed":
+                    this.doDelete([docChange.data.id]);
+                    break;
+
+            }
+
+        }
+
+        this._hasSnapshot = true;
 
     }
 
@@ -1627,7 +1909,7 @@ export class BlocksStore implements IBlocksStore {
             return false;
         }
 
-        return parentBlock.items.indexOf(id) === parentBlock.items.length - 1;
+        return parentBlock.itemsAsArray.indexOf(id) === parentBlock.itemsAsArray.length - 1;
 
     }
 
@@ -1642,27 +1924,50 @@ export class BlocksStore implements IBlocksStore {
             .collect();
     }
 
+    /**
+     * Create a snapshot but without the mutation property because for some use
+     * cases that might be irrelevant. Usually testing.
+     */
+    public createSnapshotWithoutMutation(identifiers: ReadonlyArray<BlockIDStr>): ReadonlyArray<Exclude<IBlock, 'mutation'>> {
+
+        const removeMutation = (block: IBlock): Exclude<IBlock, 'mutation'> => {
+            delete (block as any).mutation;
+            return block;
+        }
+
+        return this.createSnapshot(identifiers)
+            .map(current => removeMutation(current));
+
+    }
 
     private doUndoPush<T>(identifiers: ReadonlyArray<BlockIDStr>, redoDelegate: () => T): T {
-        return BlocksStoreUndoQueues.doUndoPush(this, this.undoQueue, identifiers, redoDelegate);
+        // console.log("Item pushed to undo queue...");
+        return BlocksStoreUndoQueues.doUndoPush(this, this.undoQueue, identifiers, mutations => this.blocksPersistenceWriter(mutations), redoDelegate);
     }
 
     public undo() {
-        this.undoQueue.undo();
+        return this.undoQueue.undo();
     }
 
     public redo() {
-        this.undoQueue.redo();
+        return this.undoQueue.redo();
     }
 
 }
 
-
-
 export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore(() => {
     const {uid} = useBlocksStoreContext();
     const undoQueue = useUndoQueue();
-    return new BlocksStore(uid, undoQueue);
+    const blocksStoreMutationsHandler = useBlocksPersistenceWriter();
+
+    const blocksStore = React.useMemo(() => new BlocksStore(uid, undoQueue, blocksStoreMutationsHandler), [blocksStoreMutationsHandler, uid, undoQueue]);
+
+    useBlocksPersistenceSnapshots((snapshot) => {
+        blocksStore.handleSnapshot(snapshot);
+    });
+
+
+    return blocksStore;
 })
 
 export function useBlocksStore(): IBlocksStore {

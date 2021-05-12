@@ -44,6 +44,41 @@ function assertTextBlock(content: BlockContent): asserts content is MarkdownCont
 }
 
 
+/**
+ * Run the action but also undo and redo it and verify the result.  This way
+ * every basic test can have an undo/redo operation test assertion too.
+ */
+export function createUndoRunner(blocksStore: BlocksStore,
+                                 identifiers: ReadonlyArray<BlockIDStr>,
+                                 action: () => void) {
+
+    identifiers = BlocksStoreUndoQueues.expandToParentAndChildren(blocksStore, identifiers)
+
+    const before = blocksStore.createSnapshot(identifiers);
+
+    console.log("Executing main action... ");
+    action();
+    console.log("Executing main action... done");
+
+    const after = blocksStore.createSnapshot(identifiers);
+
+    console.log("Execute undo() and verify ... ");
+    blocksStore.undo();
+
+    console.log("Verifying undo snapshot with before snapshot... ");
+    assertJSON(blocksStore.createSnapshot(identifiers), before);
+    console.log("Verifying undo snapshot with before snapshot... done");
+
+    console.log("Execute undo() and verify ... done");
+
+    console.log("Execute redo() and verify ... ");
+
+    blocksStore.redo();
+
+    assertJSON(blocksStore.createSnapshot(identifiers), after);
+    console.log("Execute redo() and verify ... done");
+
+}
 
 describe('BlocksStore', function() {
 
@@ -105,21 +140,8 @@ describe('BlocksStore', function() {
 
         assertJSON(store, {
             "_expanded": {},
+            "_hasSnapshot": false,
             "_index": {
-                "100": {
-                    "_content": {
-                        "_data": "World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world's countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.",
-                        "_type": "markdown"
-                    },
-                    "_created": "2012-03-02T11:38:49.321Z",
-                    "_id": "100",
-                    "_items": {},
-                    "_links": {},
-                    "_mutation": 0,
-                    "_nspace": "ns101",
-                    "_uid": "123",
-                    "_updated": "2012-03-02T11:38:49.321Z"
-                },
                 "102": {
                     "_content": {
                         "_data": "World War II",
@@ -135,6 +157,8 @@ describe('BlocksStore', function() {
                     "_links": {},
                     "_mutation": 0,
                     "_nspace": "ns101",
+                    "_parents": [],
+                    "_root": "102",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
@@ -150,6 +174,10 @@ describe('BlocksStore', function() {
                     "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "102",
+                    "_parents": [
+                        "102"
+                    ],
+                    "_root": "102",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
@@ -165,6 +193,10 @@ describe('BlocksStore', function() {
                     "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "102",
+                    "_parents": [
+                        "102"
+                    ],
+                    "_root": "102",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
@@ -191,6 +223,10 @@ describe('BlocksStore', function() {
                     "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "102",
+                    "_parents": [
+                        "102"
+                    ],
+                    "_root": "102",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
@@ -211,6 +247,11 @@ describe('BlocksStore', function() {
                     "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "105",
+                    "_parents": [
+                        "102",
+                        "105"
+                    ],
+                    "_root": "102",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
@@ -227,6 +268,8 @@ describe('BlocksStore', function() {
                     "_links": {},
                     "_mutation": 0,
                     "_nspace": "ns101",
+                    "_parents": [],
+                    "_root": "107",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
@@ -241,6 +284,8 @@ describe('BlocksStore', function() {
                     "_links": {},
                     "_mutation": 0,
                     "_nspace": "ns101",
+                    "_parents": [],
+                    "_root": "108",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
@@ -257,6 +302,8 @@ describe('BlocksStore', function() {
                     "_links": {},
                     "_mutation": 0,
                     "_nspace": "ns101",
+                    "_parents": [],
+                    "_root": "109",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
@@ -277,6 +324,10 @@ describe('BlocksStore', function() {
                     "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "107",
+                    "_parents": [
+                        "107"
+                    ],
+                    "_root": "101",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
@@ -292,6 +343,10 @@ describe('BlocksStore', function() {
                     "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "109",
+                    "_parents": [
+                        "109"
+                    ],
+                    "_root": "109",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
@@ -306,6 +361,8 @@ describe('BlocksStore', function() {
                     "_links": {},
                     "_mutation": 0,
                     "_nspace": "ns101",
+                    "_parents": [],
+                    "_root": "112",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 }
@@ -369,21 +426,23 @@ describe('BlocksStore', function() {
 
             const store = createStore();
 
-            assertJSON(store.getBlock('102')?.toJSON(), {
+            assertJSON(store.getBlock('102')?.toJSON(),{
                 "content": {
                     "data": "World War II",
                     "type": "name"
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "102",
-                "items": [
-                    "103",
-                    "104",
-                    "105"
-                ],
-                "links": [],
+                "items": {
+                    "1": "103",
+                    "2": "104",
+                    "3": "105"
+                },
+                "links": {},
                 "mutation": 0,
                 "nspace": "ns101",
+                "parents": [],
+                "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
             });
@@ -401,13 +460,15 @@ describe('BlocksStore', function() {
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "102",
-                "items": [
-                    "103",
-                    "105"
-                ],
-                "links": [],
+                "items": {
+                    "1": "103",
+                    "3": "105"
+                },
+                "links": {},
                 "mutation": 1,
                 "nspace": "ns101",
+                "parents": [],
+                "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:50.321Z"
             });
@@ -419,13 +480,17 @@ describe('BlocksStore', function() {
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "103",
-                "items": [
-                    "104"
-                ],
-                "links": [],
+                "items": {
+                    "1": "104"
+                },
+                "links": {},
                 "mutation": 1,
                 "nspace": "ns101",
                 "parent": "102",
+                "parents": [
+                    "102"
+                ],
+                "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:50.321Z"
             });
@@ -453,21 +518,23 @@ describe('BlocksStore', function() {
 
             const store = createStore();
 
-            assertJSON(store.getBlock('102')?.toJSON(), {
+            assertJSON(store.getBlock('102')?.toJSON(),{
                 "content": {
                     "data": "World War II",
                     "type": "name"
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "102",
-                "items": [
-                    "103",
-                    "104",
-                    "105"
-                ],
-                "links": [],
+                "items": {
+                    "1": "103",
+                    "2": "104",
+                    "3": "105"
+                },
+                "links": {},
                 "mutation": 0,
                 "nspace": "ns101",
+                "parents": [],
+                "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
             });
@@ -481,11 +548,15 @@ describe('BlocksStore', function() {
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "104",
-                "items": [],
-                "links": [],
+                "items": {},
+                "links": {},
                 "mutation": 0,
                 "nspace": "ns101",
                 "parent": "102",
+                "parents": [
+                    "102"
+                ],
+                "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
             });
@@ -499,11 +570,15 @@ describe('BlocksStore', function() {
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "104",
-                "items": [],
-                "links": [],
+                "items": {},
+                "links": {},
                 "mutation": 1,
                 "nspace": "ns101",
                 "parent": "103",
+                "parents": [
+                    "102", "103"
+                ],
+                "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
             });
@@ -512,18 +587,22 @@ describe('BlocksStore', function() {
 
             store.unIndentBlock('104');
 
-            assertJSON(store.getBlock('104')?.toJSON(), {
+            assertJSON(store.getBlock('104')?.toJSON(),{
                 "content": {
                     "data": "Axis Powers: Germany, Italy, Japan",
                     "type": "markdown"
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "104",
-                "items": [],
-                "links": [],
+                "items": {},
+                "links": {},
                 "mutation": 2,
                 "nspace": "ns101",
                 "parent": "102",
+                "parents": [
+                    "102"
+                ],
+                "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
             });
@@ -535,14 +614,16 @@ describe('BlocksStore', function() {
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "102",
-                "items": [
-                    "103",
-                    "104",
-                    "105"
-                ],
-                "links": [],
+                "items": {
+                    "1": "103",
+                    "2": "104",
+                    "3": "105"
+                },
+                "links": {},
                 "mutation": 2,
                 "nspace": "ns101",
+                "parents": [],
+                "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
             });
@@ -578,7 +659,6 @@ describe('BlocksStore', function() {
         const store = createStore();
 
         assertJSON(Object.keys(store.index), [
-            "100",
             "102",
             "103",
             "104",
@@ -602,15 +682,21 @@ describe('BlocksStore', function() {
 
         assertJSON(Arrays.first(Object.values(store.index))?.toJSON(), {
             "content": {
-                "data": "World War II (WWII or WW2), also known as the Second World War, was a global war that lasted from 1939 to 1945. It involved the vast majority of the world's countries—including all the great powers—forming two opposing military alliances: the Allies and the Axis.",
-                "type": "markdown"
+                "data": "World War II",
+                "type": "name"
             },
             "created": "2012-03-02T11:38:49.321Z",
-            "id": "100",
-            "items": [],
-            "links": [],
+            "id": "102",
+            "items": {
+                "1": "103",
+                "2": "104",
+                "3": "105"
+            },
+            "links": {},
             "mutation": 0,
             "nspace": "ns101",
+            "parents": [],
+            "root": "102",
             "uid": "123",
             "updated": "2012-03-02T11:38:49.321Z"
         });
@@ -669,12 +755,12 @@ describe('BlocksStore', function() {
 
             const block = store.getBlock('102')!;
 
-            assertJSON(block.items, [
-                createdBlock.id,
-                '103',
-                '104',
-                '105'
-            ]);
+            assertJSON(block.items, {
+                "0": createdBlock?.id,
+                "1": "103",
+                "2": "104",
+                "3": "105"
+            });
 
             const newBlock = store.getBlock(createdBlock.id)!;
 
@@ -687,11 +773,11 @@ describe('BlocksStore', function() {
 
             assert.equal(store.mergeBlocks(block.id, newBlock.id), 'block-merged-with-delete');
 
-            assertJSON(store.getBlock('102')!.items, [
-                '103',
-                '104',
-                '105'
-            ]);
+            assertJSON(store.getBlock('102')!.items, {
+                "1": "103",
+                "2": "104",
+                "3": "105"
+            });
 
             assert.isUndefined(store.getBlock(createdBlock.id));
 
@@ -705,6 +791,9 @@ describe('BlocksStore', function() {
 
             TestingTime.forward(1000);
 
+            assert.equal(store.getBlock('103')?.mutation, 0);
+            assert.equal(store.getBlock('104')?.mutation, 0);
+
             store.mergeBlocks('103', '104');
 
             assert.isUndefined(store.getBlock('104'));
@@ -716,11 +805,15 @@ describe('BlocksStore', function() {
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "103",
-                "items": [],
-                "links": [],
-                "mutation": 3,
+                "items": {},
+                "links": {},
+                "mutation": 1,
                 "nspace": "ns101",
                 "parent": "102",
+                "parents": [
+                    "102"
+                ],
+                "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:50.321Z"
             });
@@ -752,44 +845,52 @@ describe('BlocksStore', function() {
 
                 const block = store.getBlock('102')
 
-                assertJSON(block?.toJSON(), {
+                assertPresent(block);
+
+                assertJSON(block.toJSON(), {
                     "content": {
                         "data": "World War II",
                         "type": "name"
                     },
                     "created": "2012-03-02T11:38:49.321Z",
                     "id": "102",
-                    "items": [
-                        "103",
-                        "104",
-                        "105"
-                    ],
-                    "links": [],
+                    "items": {
+                        "1": "103",
+                        "2": "104",
+                        "3": "105"
+                    },
+                    "links": {},
                     "mutation": 0,
                     "nspace": "ns101",
+                    "parents": [],
+                    "root": "102",
                     "uid": "123",
                     "updated": "2012-03-02T11:38:49.321Z"
                 });
 
                 TestingTime.forward(1000);
 
-                block!.setContent({type: 'name', data: "World War Two"})
+                block.withMutation(() => {
+                    block.setContent({type: 'name', data: "World War Two"})
+                })
 
-                assertJSON(block?.toJSON(), {
+                assertJSON(block?.toJSON(),{
                     "content": {
                         "data": "World War Two",
                         "type": "name"
                     },
                     "created": "2012-03-02T11:38:49.321Z",
                     "id": "102",
-                    "items": [
-                        "103",
-                        "104",
-                        "105"
-                    ],
-                    "links": [],
+                    "items": {
+                        "1": "103",
+                        "2": "104",
+                        "3": "105"
+                    },
+                    "links": {},
                     "mutation": 1,
                     "nspace": "ns101",
+                    "parents": [],
+                    "root": "102",
                     "uid": "123",
                     "updated": "2012-03-02T11:38:50.321Z"
                 });
@@ -800,19 +901,33 @@ describe('BlocksStore', function() {
 
     });
 
+    it("deleteBlocks", () => {
+
+        it("basic", () => {
+
+            const blocksStore = createStore();
+
+            createUndoRunner(blocksStore, ['102'], () => {
+                blocksStore.deleteBlocks(['102']);
+            });
+
+        });
+
+    });
+
     describe("doDelete", () => {
 
         it("basic", () => {
 
-            const store = createStore();
+            const blocksStore = createStore();
 
-            assertJSON(store.lookupReverse('102'), [
+            assertJSON(blocksStore.lookupReverse('102'), [
                 "110"
             ]);
 
-            store.deleteBlocks(['102']);
+            blocksStore.deleteBlocks(['102']);
 
-            assertJSON(store.lookupReverse('102'), []);
+            assertJSON(blocksStore.lookupReverse('102'), []);
 
         });
 
@@ -831,13 +946,15 @@ describe('BlocksStore', function() {
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "102",
-                "items": [
-                    "103",
-                    "105"
-                ],
-                "links": [],
+                "items": {
+                    "1": "103",
+                    "3": "105"
+                },
+                "links": {},
                 "mutation": 1,
                 "nspace": "ns101",
+                "parents": [],
+                "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
             })
@@ -855,17 +972,19 @@ describe('BlocksStore', function() {
 
             const block = store.getBlock('102');
 
-            assertJSON(block?.toJSON(), {
+            assertJSON(block?.toJSON(),{
                 "content": {
                     "data": "World War II",
                     "type": "name"
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "102",
-                "items": [],
-                "links": [],
+                "items": {},
+                "links": {},
                 "mutation": 3,
                 "nspace": "ns101",
+                "parents": [],
+                "root": "102",
                 "uid": "123",
                 "updated": "2012-03-02T11:38:49.321Z"
             })
@@ -954,200 +1073,100 @@ describe('BlocksStore', function() {
 
     describe("createNewBlock", () => {
 
-        it("undo", () => {
+        // TODO : test redo and the functions should do patches after the first redo...
+        //
 
-            const store = createStore();
+        it("basic undo and redo", () => {
 
-            const identifiers = BlocksStoreUndoQueues.expandToParentAndChildren(store, ['102'])
-            const before = store.createSnapshot(identifiers);
+            const blocksStore = createStore();
 
-            const createdBlock = store.createNewBlock('102');
+            const identifiers = ['102'];
 
-            assertJSON(store.getBlock('102')?.toJSON(), {
-                "content": {
-                    "data": "World War II",
-                    "type": "name"
-                },
-                "created": "2012-03-02T11:38:49.321Z",
-                "id": "102",
-                "items": [
-                    createdBlock?.id,
-                    "103",
-                    "104",
-                    "105"
-                ],
-                "links": [],
-                "mutation": 1,
-                "nspace": "ns101",
-                "uid": "123",
-                "updated": "2012-03-02T11:38:49.321Z"
-            });
+            // FIXME: there's a bug here... if we restore, and EVERYTHING looks
+            // the same, except the mutation, and updated, then we have to restore that
+            // too... .
 
-            store.undo();
+            createUndoRunner(blocksStore, identifiers, () => {
 
-            assertJSON(store.getBlock('102')?.toJSON(), {
-                "content": {
-                    "data": "World War II",
-                    "type": "name"
-                },
-                "created": "2012-03-02T11:38:49.321Z",
-                "id": "102",
-                "items": [
-                    "103",
-                    "104",
-                    "105"
-                ],
-                "links": [],
-                "mutation": 3,
-                "nspace": "ns101",
-                "uid": "123",
-                "updated": "2012-03-02T11:38:49.321Z"
-            });
+                const createdBlock = blocksStore.createNewBlock('102');
 
-            assertJSON(before, [
-                {
+                assertJSON(blocksStore.getBlock('102')?.toJSON(), {
+                    "content": {
+                        "data": "World War II",
+                        "type": "name"
+                    },
+                    "created": "2012-03-02T11:38:49.321Z",
                     "id": "102",
-                    "nspace": "ns101",
-                    "uid": "123",
-                    "created": "2012-03-02T11:38:49.321Z",
-                    "updated": "2012-03-02T11:38:49.321Z",
-                    "items": [
-                        "103",
-                        "104",
-                        "105"
-                    ],
-                    "content": {
-                        "type": "name",
-                        "data": "World War II"
+                    "items": {
+                        "0": createdBlock?.id,
+                        "1": "103",
+                        "2": "104",
+                        "3": "105"
                     },
-                    "links": [],
-                    "mutation": 0
-                },
-                {
-                    "id": "103",
+                    "links": {},
+                    "mutation": 1,
                     "nspace": "ns101",
+                    "parents": [],
+                    "root": "102",
                     "uid": "123",
-                    "parent": "102",
-                    "created": "2012-03-02T11:38:49.321Z",
-                    "updated": "2012-03-02T11:38:49.321Z",
-                    "items": [],
-                    "content": {
-                        "type": "markdown",
-                        "data": "[Lasted](https://www.example.com) from 1939 to 1945"
-                    },
-                    "links": [],
-                    "mutation": 0
-                },
-                {
-                    "id": "104",
-                    "nspace": "ns101",
-                    "uid": "123",
-                    "parent": "102",
-                    "created": "2012-03-02T11:38:49.321Z",
-                    "updated": "2012-03-02T11:38:49.321Z",
-                    "items": [],
-                    "content": {
-                        "type": "markdown",
-                        "data": "Axis Powers: Germany, Italy, Japan"
-                    },
-                    "links": [],
-                    "mutation": 0
-                },
-                {
-                    "id": "105",
-                    "nspace": "ns101",
-                    "uid": "123",
-                    "parent": "102",
-                    "created": "2012-03-02T11:38:49.321Z",
-                    "updated": "2012-03-02T11:38:49.321Z",
-                    "items": [
-                        "106"
-                    ],
-                    "content": {
-                        "type": "markdown",
-                        "data": "Allied Powers: United States, United Kingdom, [[Canada]], [[Russia]]."
-                    },
-                    "links": [
-                        {
-                            "id": "109",
-                            "text": "Canada"
-                        },
-                        {
-                            "id": "108",
-                            "text": "Russia"
-                        }
-                    ],
-                    "mutation": 0
-                },
-                {
-                    "id": "106",
-                    "nspace": "ns101",
-                    "uid": "123",
-                    "parent": "105",
-                    "created": "2012-03-02T11:38:49.321Z",
-                    "updated": "2012-03-02T11:38:49.321Z",
-                    "items": [],
-                    "content": {
-                        "type": "markdown",
-                        "data": "Lead by Franklin D. Roosevelt, [[Winston Churchill]], and Joseph Stalin "
-                    },
-                    "links": [
-                        {
-                            "id": "112",
-                            "text": "Winston Churchill"
-                        }
-                    ],
-                    "mutation": 0
-                }
-            ]);
+                    "updated": "2012-03-02T11:38:49.321Z"
+                });
+
+            })
 
         });
 
         it("undo with split", () => {
 
-            const store = createStore();
+            const blocksStore = createStore();
 
-            const identifiers = BlocksStoreUndoQueues.expandToParentAndChildren(store, ['104'])
-            const before = store.createSnapshot(identifiers);
+            const identifiers = ['104'];
 
-            const createdBlock = store.createNewBlock('104', {split: {prefix: 'Axis ', suffix: 'Powers: Germany, Italy, Japan'}});
+            createUndoRunner(blocksStore, identifiers, () => {
 
-            assertJSON(store.getBlock('104')?.toJSON(), {
-                "content": {
-                    "data": "Axis ",
-                    "type": "markdown"
-                },
-                "created": "2012-03-02T11:38:49.321Z",
-                "id": "104",
-                "items": [],
-                "links": [],
-                "mutation": 2,
-                "nspace": "ns101",
-                "parent": "102",
-                "uid": "123",
-                "updated": "2012-03-02T11:38:49.321Z"
+                const createdBlock = blocksStore.createNewBlock('104', {split: {prefix: 'Axis ', suffix: 'Powers: Germany, Italy, Japan'}});
+
+                assertJSON(blocksStore.getBlock('104')?.toJSON(), {
+                    "content": {
+                        "data": "Axis ",
+                        "type": "markdown"
+                    },
+                    "created": "2012-03-02T11:38:49.321Z",
+                    "id": "104",
+                    "items": {},
+                    "links": {},
+                    "mutation": 1,
+                    "nspace": "ns101",
+                    "parent": "102",
+                    "parents": [
+                        "102"
+                    ],
+                    "root": "102",
+                    "uid": "123",
+                    "updated": "2012-03-02T11:38:49.321Z"
+                });
+
+                assertJSON(blocksStore.getBlock(createdBlock!.id)?.toJSON(), {
+                    "content": {
+                        "data": "Powers: Germany, Italy, Japan",
+                        "type": "markdown"
+                    },
+                    "created": "2012-03-02T11:38:49.321Z",
+                    "id": createdBlock!.id,
+                    "items": {},
+                    "links": {},
+                    "mutation": 0,
+                    "nspace": "ns101",
+                    "parent": "102",
+                    "parents": [
+                        "102"
+                    ],
+                    "root": "102",
+                    "uid": "1234",
+                    "updated": "2012-03-02T11:38:49.321Z"
+                });
+
             });
-
-            assertJSON(store.getBlock(createdBlock!.id)?.toJSON(), {
-                "content": {
-                    "data": "Powers: Germany, Italy, Japan",
-                    "type": "markdown"
-                },
-                "created": "2012-03-02T11:38:49.321Z",
-                "id": createdBlock!.id,
-                "items": [],
-                "links": [],
-                "mutation": 0,
-                "nspace": "ns101",
-                "parent": "102",
-                "uid": "1234",
-                "updated": "2012-03-02T11:38:49.321Z"
-            });
-
-            store.undo();
-
-            const after = store.createSnapshot(identifiers);
-            assertJSON(before, after);
 
         });
 
@@ -1161,22 +1180,22 @@ describe('BlocksStore', function() {
 
             const now = ISODateTimeStrings.create();
 
-            assertJSON(block!.items, [
-                "103",
-                "104",
-                "105"
-            ]);
+            assertJSON(block!.items, {
+                "1": "103",
+                "2": "104",
+                "3": "105"
+            });
 
             const createdBlock = store.createNewBlock('102');
 
             assertPresent(createdBlock);
 
-            assertJSON(block!.items, [
-                createdBlock.id,
-                "103",
-                "104",
-                "105"
-            ]);
+            assertJSON(block!.items, {
+                "0": createdBlock.id,
+                "1": "103",
+                "2": "104",
+                "3": "105"
+            });
 
             const newBlock = store.getBlock(createdBlock.id)!;
 
@@ -1198,15 +1217,14 @@ describe('BlocksStore', function() {
 
             store.deleteBlocks(['103', '104', '105']);
 
-            assertJSON(block!.items, [
-            ]);
+            assertJSON(block!.items, {});
 
             const createdBlock = store.createNewBlock('102');
             assertPresent(createdBlock);
 
-            assertJSON(block!.items, [
-                createdBlock.id,
-            ]);
+            assertJSON(block!.items, {
+                "-1": createdBlock.id
+            });
 
         });
 
@@ -1223,12 +1241,12 @@ describe('BlocksStore', function() {
 
                 const block = store.getBlock('102');
 
-                assertJSON(block!.items, [
-                    "103",
-                    "104",
-                    "105",
-                    createdBlock.id
-                ]);
+                assertJSON(block!.items, {
+                    "1": "103",
+                    "2": "104",
+                    "3": "105",
+                    "4": createdBlock?.id
+                });
 
             }
 
@@ -1242,10 +1260,10 @@ describe('BlocksStore', function() {
 
                 const block = store.getBlock('105');
 
-                assertJSON(block!.items, [
-                    createdBlock.id,
-                    "106"
-                ]);
+                assertJSON(block!.items, {
+                    "0": createdBlock?.id,
+                    "1": "106"
+                });
 
             }
 
@@ -1273,12 +1291,12 @@ describe('BlocksStore', function() {
                 const createdBlock = store.createNewBlock(id, {split: {prefix: '', suffix: originalBlock!.content.data}});
                 assertPresent(createdBlock);
 
-                assertJSON(store.getBlock(originalBlock!.parent!)!.items, [
-                    "103",
-                    "104",
-                    "105",
-                    createdBlock.id
-                ]);
+                assertJSON(store.getBlock(originalBlock!.parent!)!.items, {
+                    "1": "103",
+                    "2": "104",
+                    "3": "105",
+                    "4": createdBlock.id
+                });
 
                 return createdBlock.id;
 
@@ -1295,13 +1313,13 @@ describe('BlocksStore', function() {
                 const createdBlock = store.createNewBlock(id, {split: {prefix: '', suffix: originalBlock!.content.data}});
                 assertPresent(createdBlock);
 
-                assertJSON(store.getBlock(originalBlock!.parent!)!.items, [
-                    "103",
-                    "104",
-                    "105",
-                    id,
-                    createdBlock.id
-                ]);
+                assertJSON(store.getBlock(originalBlock!.parent!)!.items, {
+                    "1": "103",
+                    "2": "104",
+                    "3": "105",
+                    "4": id,
+                    "5": createdBlock.id
+                });
 
             }
 
