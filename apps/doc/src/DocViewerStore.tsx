@@ -58,6 +58,7 @@ import { IOutline } from './outline/IOutline';
 import {OutlineNavigator} from "./outline/IOutlineItem";
 import {Analytics} from '../../../web/js/analytics/Analytics';
 import {ColorStr} from "../../../web/js/ui/colors/ColorSelectorBox";
+import {ActiveHighlightData} from './annotations/annotation_popup/AnnotationPopupHooks';
 
 /**
  * Lightweight metadata describing the currently loaded document.
@@ -136,7 +137,9 @@ export interface IDocViewerStore {
 
     readonly outlineNavigator?: OutlineNavigator;
 
-    readonly textHighlightColor: ColorStr | null;
+    readonly textHighlightColor?: ColorStr;
+
+    readonly activeHighlight?: ActiveHighlightData;
 }
 
 export interface IPagemarkCoverage {
@@ -308,14 +311,14 @@ export interface IDocViewerCallbacks {
 
     readonly setColumnLayout: (columLayout: number) => void;
 
-    readonly setTextHighlightColor: (color: ColorStr | null) => void;
+    readonly setTextHighlightColor: (color?: ColorStr) => void;
+    readonly setActiveHighlight: (data?: ActiveHighlightData) => void;
 }
 
 const initialStore: IDocViewerStore = {
     page: 1,
     docLoaded: false,
     pendingWrites: 0,
-    textHighlightColor: null,
     fluidPagemarkFactory: new NullFluidPagemarkFactory()
 }
 
@@ -477,9 +480,14 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
             setStore({...store, docScale});
         }
 
-        function setTextHighlightColor(color: ColorStr | null) {
+        function setTextHighlightColor(color?: ColorStr) {
             const store = storeProvider();
             setStore({...store, textHighlightColor: color});
+        }
+
+        function setActiveHighlight(activeHighlight?: ActiveHighlightData) {
+            const store = storeProvider();
+            setStore({...store, activeHighlight});
         }
 
         function setDocLoaded(docLoaded: boolean) {
@@ -1036,6 +1044,7 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
             docMetaProvider,
             setColumnLayout,
             setTextHighlightColor,
+            setActiveHighlight,
         };
     }, [log, docMetaContext, persistenceLayerContext, annotationSidebarCallbacks,
         dialogs, annotationMutationCallbacksFactory, setStore, storeProvider]);

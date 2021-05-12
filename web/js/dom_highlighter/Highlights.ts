@@ -108,11 +108,15 @@ export namespace Highlights {
 
             }
 
+            function notCollapsed(item: IHighlightViewportPosition) {
+                return item.width !== 0 && item.height !== 0;
+            }
+
             return arrayStream(highlightViewportPositions)
                       .group(toKey)
                       .map(merge)
+                      .filter(notCollapsed)
                       .collect();
-
         }
 
         // take each NodeTextRegion and split them out into one character each..

@@ -53,6 +53,7 @@ import {usePrefsContext} from "../../../../repository/js/persistence_layer/Prefs
 import { usePDFUpgrader } from './PDFUpgrader';
 import {ViewerElements} from "../ViewerElements";
 import {useDocumentViewerVisibleElemFocus} from '../UseSidenavDocumentChangeCallbackHook';
+import {AnnotationPopup} from '../../annotations/annotation_popup/AnnotationPopup';
 
 interface DocViewer {
     readonly eventBus: EventBus;
@@ -270,7 +271,6 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
             // PageContextMenus.start()
 
             onPagesInit();
-
         });
 
         const resizeDebouncer = Debouncers.create(() => resize());
@@ -454,6 +454,7 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
         <>
             <DocumentInit/>
             <TextHighlightHandler/>
+            <AnnotationPopup/>
             {props.children}
         </>
     ) || null;

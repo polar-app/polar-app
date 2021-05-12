@@ -39,7 +39,7 @@ export function useAutoFlashcardHandler(annotation: IDocAnnotationRef): AutoFlas
 
             if (AutoFlashcards.isError(response)) {
                 log.error("Unable to automatically compute flashcard: ", response.error);
-                return;
+                throw response;
             }
 
             const fields = {

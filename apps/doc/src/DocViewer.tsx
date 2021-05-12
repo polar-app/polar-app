@@ -55,7 +55,7 @@ const Main = React.memo(function Main() {
             <div className="DocViewer.Main.Body"
                  style={{
                      minHeight: 0,
-                     overflow: 'auto',
+                     overflow: 'hidden',
                      flexGrow: 1,
                      position: 'relative'
                  }}>

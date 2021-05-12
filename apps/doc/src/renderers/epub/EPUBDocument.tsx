@@ -48,6 +48,7 @@ import {usePrefsContext} from "../../../../repository/js/persistence_layer/Prefs
 import {ViewerElements} from "../ViewerElements";
 import {DocViewerAppURLs} from "../../DocViewerAppURLs";
 import {TextHighlightHandler} from '../../TextHighlightHandler';
+import {AnnotationPopup} from '../../annotations/annotation_popup/AnnotationPopup';
 
 interface IProps {
     readonly docURL: URLStr;
@@ -218,7 +219,6 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
             handleLinkClicks(pageElement, linkLoader);
 
             // applyCSS();
-
             incrRenderIter();
 
         });
@@ -438,7 +438,8 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
     return renderIter && (
         <DOMTextIndexProvider>
             <DocumentInit/>
-            <TextHighlightHandler key={renderIter}/>
+            <TextHighlightHandler key={`highlightHandler-${renderIter}`}/>
+            <AnnotationPopup key={`popup-${renderIter}`}/>
             <EPUBFindRenderer/>
             <EPUBContextMenuRoot/>
             {props.children}

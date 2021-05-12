@@ -8,7 +8,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import {useDocViewerCallbacks, useDocViewerStore} from "../DocViewerStore";
 
 type IUseStylesProps = {
-    textHighlightColor: ColorStr | null;
+    textHighlightColor?: ColorStr;
 }
 
 const useStyles = makeStyles<Theme, IUseStylesProps>((theme) =>
@@ -42,7 +42,7 @@ export const TextHighlightTrigger: React.FC = () => {
 
     const handleClick = React.useCallback(() => {
         if (textHighlightColor) {
-            setTextHighlightColor(null);
+            setTextHighlightColor(undefined);
         } else {
             setTextHighlightColor(selectedColor);
         }
@@ -72,7 +72,7 @@ export const TextHighlightTrigger: React.FC = () => {
                 open={open}
                 anchorEl={anchorRef.current}
                 role={undefined}
-                placement="top-end"
+                placement="bottom"
                 style={{ zIndex: theme.zIndex.modal }}
                 transition
                 disablePortal

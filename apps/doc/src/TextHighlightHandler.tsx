@@ -1,5 +1,5 @@
 import * as React from "react";
-import {IDocViewerStore, useDocViewerStore} from "./DocViewerStore";
+import {IDocViewerStore, useDocViewerCallbacks, useDocViewerStore} from "./DocViewerStore";
 import {
     ITextHighlightCreate,
     useAnnotationMutationsContext
@@ -11,11 +11,13 @@ import {ISelectedContent} from "../../../web/js/highlights/text/selection/ISelec
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import { IDocViewerElements, useDocViewerElementsContext } from "./renderers/DocViewerElementsContext";
 import {IDStr} from "polar-shared/src/util/Strings";
-import {ActiveSelectionListener, ActiveSelections} from "../../../web/js/ui/popup/ActiveSelections";
+import {ActiveSelectionEvent, ActiveSelectionListener, ActiveSelections} from "../../../web/js/ui/popup/ActiveSelections";
 import {FileType} from "../../../web/js/apps/main/file_loaders/FileType";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {Elements} from "../../../web/js/util/Elements";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
+import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
+import {DocID} from "../../../web/js/tags/related/RelatedTagsManager";
 
 
 /**
@@ -39,7 +41,7 @@ interface ICreateTextHighlightCallbackOpts {
 
 type CreateTextHighlightCallback = (opts: ICreateTextHighlightCallbackOpts) => ITextHighlight | null;
 
-function useCreateTextHighlightCallback(): CreateTextHighlightCallback {
+export function useCreateTextHighlightCallback(): CreateTextHighlightCallback {
 
     const annotationMutations = useAnnotationMutationsContext();
     const {docMeta, docScale} = useDocViewerStore(['docMeta', 'docScale']);
@@ -82,7 +84,7 @@ function useCreateTextHighlightCallback(): CreateTextHighlightCallback {
  */
 export type AnnotationBarEventListenerRegisterer = () => void;
 
-function computeTargets(fileType: FileType, docViewerElementProvider: () => HTMLElement): ReadonlyArray<HTMLElement> {
+export function computeTargets(fileType: FileType, docViewerElementProvider: () => HTMLElement): ReadonlyArray<HTMLElement> {
 
     const docViewerElement = docViewerElementProvider();
 
@@ -109,8 +111,37 @@ function computeTargets(fileType: FileType, docViewerElementProvider: () => HTML
     }
 }
 
+export const activeSelectionEventToTextHighlight = (event: ActiveSelectionEvent, fileType: FileType, docViewerElements: IDocViewerElements) => {
+    const getPageNumberForPageElement = () => {
+        const getNumber = (pageElement: HTMLElement) => (
+            parseInt(pageElement.getAttribute("data-page-number")!, 10));
+        switch (fileType) {
+            case "pdf":
+                const pdfPageElement = Elements.untilRoot(event.element, ".page");
+                return getNumber(pdfPageElement);
+            case "epub":
+                const docViewerElement = docViewerElements.getDocViewerElement();
+                const epubPageElement = docViewerElement.querySelector('.page') as HTMLElement;
+                return getNumber(epubPageElement);
+        }
+    }
+
+    const selectedContent = SelectedContents.computeFromSelection(event.selection, {
+        noRectTexts: fileType === "epub",
+        fileType,
+    });
+
+    const pageNum = getPageNumberForPageElement()!;
+
+    return {
+        selectedContent,
+        pageNum,
+    };
+};
+
 export const TextHighlightHandler: React.FC = () => {
     const store = React.useRef<Pick<IDocViewerStore, 'docMeta' | 'textHighlightColor'>>();
+    const {setActiveHighlight} = useDocViewerCallbacks();
     const createTextHighlightCallback = React.useRef<CreateTextHighlightCallback>()
     const docViewerElements = React.useRef<IDocViewerElements>();
     const {fileType} = useDocViewerContext();
@@ -130,39 +161,27 @@ export const TextHighlightHandler: React.FC = () => {
                 return;
             }
 
-            const getPageNumberForPageElement = () => {
-                const getNumber = (pageElement: HTMLElement) => (
-                    parseInt(pageElement.getAttribute("data-page-number")!, 10));
-                switch (fileType) {
-                    case "pdf":
-                        const pdfPageElement = Elements.untilRoot(event.element, ".page");
-                        return getNumber(pdfPageElement);
-                    case "epub":
-                        const docViewerElement = docViewerElements.current!.getDocViewerElement();
-                        const epubPageElement = docViewerElement.querySelector('.page') as HTMLElement;
-                        return getNumber(epubPageElement);
-                }
-            }
-
-            const selectedContent = SelectedContents.computeFromSelection(selection, {
-                noRectTexts: fileType === "epub",
-                fileType,
-            });
-
-            selection.empty();
-
             const docID = docMeta?.docInfo.fingerprint;
 
             if (docID) {
 
-                const pageNum = getPageNumberForPageElement()!;
+                const {selectedContent, pageNum} = activeSelectionEventToTextHighlight(
+                    event,
+                    fileType,
+                    docViewerElements.current!
+                );
+                selection.empty();
 
-                createTextHighlightCallback.current!({
+                const textHighlight = createTextHighlightCallback.current!({
+                    pageNum,
                     selectedContent,
                     highlightColor: textHighlightColor,
                     docID,
-                    pageNum,
                 });
+
+                if (textHighlight) {
+                    setActiveHighlight({ highlightID: textHighlight.guid, type: AnnotationType.TEXT_HIGHLIGHT, pageNum });
+                }
             } else {
                 console.warn("No docID")
             }
@@ -173,7 +192,7 @@ export const TextHighlightHandler: React.FC = () => {
             cleanupListeners.push(ActiveSelections.addEventListener(handleSelection, target));
         }
         return () => cleanupListeners.forEach(cleanup => cleanup());
-    }, [fileType]);
+    }, [fileType, setActiveHighlight]);
 
     return null;
 }
