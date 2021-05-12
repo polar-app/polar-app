@@ -10,6 +10,8 @@ import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 import {DocViewerAppURLs} from "./DocViewerAppURLs";
 import {DockLayoutGlobalHotKeys} from "../../../web/js/ui/doc_layout/DockLayoutGlobalHotKeys";
 import {SideNavGlobalHotKeys} from "../../../web/js/sidenav/SideNavGlobalHotKeys";
+import {MAIN_HIGHLIGHT_COLORS} from "../../../web/js/ui/ColorMenu";
+import {useRefWithUpdates} from "../../../web/js/hooks/ReactHooks";
 
 const globalKeyMap = keyMapWithGroup({
     group: "Document Viewer",
@@ -64,6 +66,11 @@ const globalKeyMap = keyMapWithGroup({
             description: "Archive doc",
             sequences: ['a']
         },
+        TEXT_HIGHLIGHT_MODE: {
+            name: "Text Highlight Mode",
+            description: "Toggle text highlight mode",
+            sequences: ['v'],
+        }
 
     }
 });
@@ -71,8 +78,9 @@ const globalKeyMap = keyMapWithGroup({
 export const DocViewerGlobalHotKeys = React.memo(function DocViewerGlobalHotKeys() {
 
     const findCallbacks = useDocFindCallbacks();
-    const {onPagePrev, onPageNext, doZoom, doZoomRestore, onDocTagged, toggleDocArchived, toggleDocFlagged} = useDocViewerCallbacks();
-    const {docMeta} = useDocViewerStore(['docMeta']);
+    const {onPagePrev, onPageNext, doZoom, doZoomRestore, onDocTagged, toggleDocArchived, toggleDocFlagged, setTextHighlightColor} = useDocViewerCallbacks();
+    const {docMeta, textHighlightColor} = useDocViewerStore(['docMeta', 'textHighlightColor']);
+    const toggleTextHighlightMode = useRefWithUpdates(() => setTextHighlightColor(textHighlightColor ? undefined : MAIN_HIGHLIGHT_COLORS[0]));
 
     const globalKeyHandlers = {
         FIND: () => findCallbacks.setActive(true),
@@ -85,6 +93,7 @@ export const DocViewerGlobalHotKeys = React.memo(function DocViewerGlobalHotKeys
         TAG: onDocTagged,
         FLAG: toggleDocFlagged,
         ARCHIVE: toggleDocArchived,
+        TEXT_HIGHLIGHT_MODE: () => toggleTextHighlightMode.current(),
     };
 
     const location = useLocationWithPathOnly();
