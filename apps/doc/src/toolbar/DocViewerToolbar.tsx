@@ -27,7 +27,7 @@ import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {DockLayoutToggleButton} from "../../../../web/js/ui/doc_layout/DockLayoutToggleButton";
 import {ZenModeActiveContainer} from "../../../../web/js/mui/ZenModeActiveContainer";
 import {ZenModeButton} from "./ZenModeButton";
-import {MUIDocAreaHighlightModeToggle} from "../../../repository/js/doc_repo/buttons/MUIDocAreaHighlightModeToggle";
+import {AreaHighlightToggle} from "./AreaHighlightModeToggle";
 
 const getScaleLevelTuple = (scale: ScaleLevel) => (
     arrayStream(ScaleLevelTuples)
@@ -37,10 +37,10 @@ const getScaleLevelTuple = (scale: ScaleLevel) => (
 
 export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
 
-    const {docScale, pageNavigator, scaleLeveler, docMeta, areaHighlightMode}
+    const {docScale, pageNavigator, scaleLeveler, docMeta}
         = useDocViewerStore(['docScale', 'pageNavigator', 'scaleLeveler', 'docMeta', 'areaHighlightMode']);
     const {finder} = useDocFindStore(['finder']);
-    const {setScale, onDocTagged, doZoom, toggleDocArchived, toggleDocFlagged, toggleAreaHighlightMode} = useDocViewerCallbacks();
+    const {setScale, onDocTagged, doZoom, toggleDocArchived, toggleDocFlagged} = useDocViewerCallbacks();
 
     const handleScaleChange = React.useCallback((scale: ScaleLevel) => {
 
@@ -161,13 +161,7 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
 
                             <MUIButtonBar>
 
-
-                                <MUIDocAreaHighlightModeToggle
-                                    onClick={toggleAreaHighlightMode}
-                                    active={areaHighlightMode}
-                                />
-
-                                <Divider orientation="vertical" flexItem/>
+                                <AreaHighlightToggle />
 
                                 <MUIDocTagButton size="small"
                                                  onClick={onDocTagged}/>
@@ -206,4 +200,3 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
         </ZenModeActiveContainer>
     );
 });
-

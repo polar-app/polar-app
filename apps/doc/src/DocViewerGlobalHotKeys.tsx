@@ -64,13 +64,7 @@ const globalKeyMap = keyMapWithGroup({
             name: "Archive",
             description: "Archive doc",
             sequences: ['shift+A']
-        },
-        TOGGLE_AREA_HIGHLIGHT_MODE: {
-            name: "Area Highlight Mode",
-            description: "Toggle area higlight mode",
-            sequences: ['a'],
         }
-
     }
 });
 
@@ -85,7 +79,6 @@ export const DocViewerGlobalHotKeys = React.memo(function DocViewerGlobalHotKeys
         onDocTagged,
         toggleDocArchived,
         toggleDocFlagged,
-        toggleAreaHighlightMode,
     } = useDocViewerCallbacks();
     const {docMeta} = useDocViewerStore(['docMeta']);
 
@@ -100,7 +93,6 @@ export const DocViewerGlobalHotKeys = React.memo(function DocViewerGlobalHotKeys
         TAG: onDocTagged,
         FLAG: toggleDocFlagged,
         ARCHIVE: toggleDocArchived,
-        TOGGLE_AREA_HIGHLIGHT_MODE: toggleAreaHighlightMode,
     };
 
     const location = useLocationWithPathOnly();

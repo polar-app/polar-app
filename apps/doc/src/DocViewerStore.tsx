@@ -307,6 +307,7 @@ export interface IDocViewerCallbacks {
 
     readonly setColumnLayout: (columLayout: number) => void;
 
+    readonly setAreaHighlightMode: (state: boolean) => void;
     readonly toggleAreaHighlightMode: () => void;
 }
 
@@ -1006,6 +1007,11 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
             setStore({...store, areaHighlightMode: !store.areaHighlightMode});
         }
 
+        function setAreaHighlightMode(state: boolean) {
+            const store = storeProvider();
+            setStore({...store, areaHighlightMode: state});
+        }
+
         return {
             updateDocMeta,
             setDocMeta,
@@ -1035,6 +1041,7 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
             docMetaProvider,
             setColumnLayout,
             toggleAreaHighlightMode,
+            setAreaHighlightMode,
         };
     }, [log, docMetaContext, persistenceLayerContext, annotationSidebarCallbacks,
         dialogs, annotationMutationCallbacksFactory, setStore, storeProvider]);
