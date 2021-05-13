@@ -14,6 +14,7 @@ import {Elements} from "../../../../../web/js/util/Elements";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {useDOMTextIndexContext} from "../DOMTextIndexContext";
 import {useRefWithUpdates} from "../../../../../web/js/hooks/ReactHooks";
+import {Texts} from "polar-shared/src/metadata/Texts";
 
 export type ActiveHighlightData = {
     highlightID: string;
@@ -44,7 +45,7 @@ namespace AnnotationPositionCalculator {
             epubDocument &&
             html
         ) {
-            const hit = domTextIndex.find(annotation.text, {caseInsensitive: true});
+            const hit = domTextIndex.find(Texts.toText(annotationObject.text) || "", {caseInsensitive: true});
             if (hit) {
                 const positions = Highlights
                     .toHighlightViewportPositions(hit.regions)
