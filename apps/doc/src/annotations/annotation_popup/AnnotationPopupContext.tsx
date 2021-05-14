@@ -290,10 +290,11 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
     };
     const activeHandlers = React.useMemo(() => ({
         ESCAPE: () => {
+            setActiveHighlight(undefined);
             selectionEvent?.selection.empty();
-            dispatch({ type: ACTIONS.RESET, payload: undefined })
+            dispatch({ type: ACTIONS.RESET, payload: undefined });
         },
-    }), [dispatch, selectionEvent]);
+    }), [dispatch, selectionEvent, setActiveHighlight]);
 
     return (
         <>
