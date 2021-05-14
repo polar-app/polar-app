@@ -59,7 +59,10 @@ interface ActiveKeyBindingGroupProps {
 
 const ActiveBindingGroup = (props: ActiveKeyBindingGroupProps) => {
 
-    const bindings = [...props.shortcuts].sort((a, b) => a.name.localeCompare(b.name))
+    const bindings = [...props.shortcuts].sort((a, b) => (
+        ((a.priority || Infinity) - (b.priority || Infinity)) ||
+        a.name.localeCompare(b.name)
+    ))
 
     return (
         <>
