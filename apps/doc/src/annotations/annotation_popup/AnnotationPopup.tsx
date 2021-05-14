@@ -2,7 +2,7 @@ import React from "react";
 import {createStyles, Grow, makeStyles} from "@material-ui/core";
 import {useDocViewerContext} from "../../renderers/DocRenderer";
 import {useDocViewerStore} from "../../DocViewerStore";
-import {AnnotationPopupActionProvider, useAnnotationPopupAction} from "./AnnotationPopupActionContext";
+import {AnnotationPopupProvider, useAnnotationPopup} from "./AnnotationPopupContext";
 import {AnnotationPopupBar} from "./AnnotationPopupBar";
 import {AnnotationPopupActions} from "./AnnotationPopupActions";
 import {usePopupBarPosition} from "./AnnotationPopupHooks";
@@ -11,6 +11,7 @@ import {useDocViewerElementsContext} from "../../renderers/DocViewerElementsCont
 import {useResizeObserver} from "../../renderers/pdf/PinchToZoomHooks";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {rangeConstrain} from "../AreaHighlightDrawer";
+import {AnnotationPopupShortcuts} from "./AnnotationPopupShortcuts";
 
 const CONTAINER_SPACING = 10;
 
@@ -44,6 +45,7 @@ const AnnotationPopupContents = React.forwardRef<HTMLDivElement>((_, ref) => {
     const classes = useAnnotationPopupStyles();
     return (
         <div className={classes.outer} ref={ref}>
+            <AnnotationPopupShortcuts />
             <Grow in>
                 <div className={classes.inner}>
                     <AnnotationPopupActions />
@@ -141,7 +143,7 @@ const AnnotationPopupEPUBRenderer: React.FC<IAnnotationPopupEPUBRendererProps> =
 };
 
 export const AnnotationPopupRenderer: React.FC = () => {
-    const {selectionEvent, annotation} = useAnnotationPopupAction();
+    const {selectionEvent, annotation} = useAnnotationPopup();
     const rect = usePopupBarPosition({ annotation, selectionEvent });
     const {fileType} = useDocViewerContext();
 
@@ -166,12 +168,12 @@ export const AnnotationPopup: React.FC = () => {
     }
 
     return (
-        <AnnotationPopupActionProvider
+        <AnnotationPopupProvider
             docMeta={docMeta}
             docScale={docScale}
         >
             <AnnotationPopupRenderer />
-        </AnnotationPopupActionProvider>
+        </AnnotationPopupProvider>
     );
 };
 

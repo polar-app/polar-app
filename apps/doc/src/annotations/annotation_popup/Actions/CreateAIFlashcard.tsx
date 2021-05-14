@@ -2,11 +2,11 @@ import React from "react";
 import {useAIFlashcardVerifiedAction} from "../../../../../repository/js/ui/AIFlashcardVerifiedAction";
 import {useAutoFlashcardHandler} from "../../../../../../web/js/annotation_sidebar/AutoFlashcardHook";
 import {useDialogManager} from "../../../../../../web/js/mui/dialogs/MUIDialogControllers";
-import {useAnnotationPopupAction} from "../AnnotationPopupActionContext";
+import {useAnnotationPopup} from "../AnnotationPopupContext";
 import {IAnnotationPopupActionProps} from "../AnnotationPopupActions";
 
 export const CreateAIFlashcard: React.FC<IAnnotationPopupActionProps> = ({ annotation }) => {
-    const {clear, setAiFlashcardStatus} = useAnnotationPopupAction();
+    const {clear, setAiFlashcardStatus} = useAnnotationPopup();
     const [_, handler] = useAutoFlashcardHandler(annotation);
     const dialogs = useDialogManager();
 

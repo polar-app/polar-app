@@ -1,5 +1,5 @@
 import React from "react";
-import {useAnnotationPopupAction} from "../AnnotationPopupActionContext";
+import {useAnnotationPopup} from "../AnnotationPopupContext";
 import {useAnnotationMutationsContext} from "../../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {useDialogManager} from "../../../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {SimpleInputForm, InputOptions} from "./SimpleInputForm";
@@ -11,7 +11,7 @@ type EditAnnotationForm = {
 
 export const EditAnnotation: React.FC<IAnnotationPopupActionProps> = (props) => {
     const {className = "", style = {}, annotation} = props;
-    const {clear} = useAnnotationPopupAction();
+    const {clear} = useAnnotationPopup();
     const annotationMutations = useAnnotationMutationsContext();
     const dialogs = useDialogManager();
 

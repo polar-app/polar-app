@@ -2,7 +2,7 @@ import React from "react";
 import clsx from "clsx";
 import {createStyles, Grow, makeStyles} from "@material-ui/core";
 import {useAnnotationPopupStyles} from "./AnnotationPopup";
-import {AnnotationPopupActionEnum, useAnnotationPopupAction} from "./AnnotationPopupActionContext";
+import {AnnotationPopupActionEnum, useAnnotationPopup} from "./AnnotationPopupContext";
 import {useAnnotationMutationsContext} from "../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {ColorMenu} from "../../../../../web/js/ui/ColorMenu";
 import {ColorStr} from "../../../../../web/js/ui/colors/ColorSelectorBox";
@@ -13,6 +13,7 @@ import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnota
 import {CopyAnnotation} from "./Actions/CopyAnnotation";
 import {CreateAIFlashcard} from "./Actions/CreateAIFlashcard";
 import {EditTags} from "./Actions/EditTags";
+import {DeleteAnnotation} from "./Actions/DeleteAnnotation";
 
 
 export type IAnnotationPopupActionProps = {
@@ -22,8 +23,8 @@ export type IAnnotationPopupActionProps = {
 };
 
 const ColorPicker: React.FC<IAnnotationPopupActionProps> = (props) => {
-    const { className = "", annotation, style = {} } = props;
-    const {clear} = useAnnotationPopupAction();
+    const {className = "", style = {}, annotation} = props;
+    const {clear} = useAnnotationPopup();
     const annotationMutations = useAnnotationMutationsContext();
 
     const handleColor = annotationMutations.createColorCallback({selected: [annotation]});
@@ -61,10 +62,11 @@ const ACTIONS: Record<AnnotationPopupActionEnum, React.FC<IAnnotationPopupAction
     [AnnotationPopupActionEnum.CREATE_AI_FLASHCARD]: CreateAIFlashcard,
     [AnnotationPopupActionEnum.EDIT_TAGS]: EditTags,
     [AnnotationPopupActionEnum.COPY]: CopyAnnotation,
+    [AnnotationPopupActionEnum.DELETE]: DeleteAnnotation,
 };
 
 export const AnnotationPopupActions: React.FC = () => {
-    const {activeAction, annotation} = useAnnotationPopupAction();
+    const {activeAction, annotation} = useAnnotationPopup();
     const classes = useStyles();
     const annotationPopupClasses = useAnnotationPopupStyles();
     const ActionComponent = activeAction ? ACTIONS[activeAction] : null;

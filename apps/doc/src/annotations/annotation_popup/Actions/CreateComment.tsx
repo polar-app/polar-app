@@ -4,7 +4,7 @@ import {useDialogManager} from "../../../../../../web/js/mui/dialogs/MUIDialogCo
 import {SimpleInputForm, InputOptions} from "./SimpleInputForm";
 import {Refs} from "polar-shared/src/metadata/Refs";
 import {IAnnotationPopupActionProps} from "../AnnotationPopupActions";
-import {useAnnotationPopupAction} from "../AnnotationPopupActionContext";
+import {useAnnotationPopup} from "../AnnotationPopupContext";
 
 type CreateCommentForm = {
     body: string;
@@ -16,7 +16,7 @@ const FORM_INPUTS: InputOptions<CreateCommentForm> = {
 
 export const CreateComment: React.FC<IAnnotationPopupActionProps> = (props) => {
     const {style = {}, className = "", annotation} = props;
-    const {clear} = useAnnotationPopupAction();
+    const {clear} = useAnnotationPopup();
     const annotationMutations = useAnnotationMutationsContext();
     const dialogs = useDialogManager();
     const createComment = annotationMutations.createCommentCallback(annotation);

@@ -4,7 +4,7 @@ import {Clipboards} from "../../../../../../web/js/util/system/clipboard/Clipboa
 import {IDocAnnotation} from "../../../../../../web/js/annotation_sidebar/DocAnnotation";
 import {AnnotationTypes} from "../../../../../../web/js/metadata/AnnotationTypes";
 import {IAnnotationPopupActionProps} from "../AnnotationPopupActions";
-import {useAnnotationPopupAction} from "../AnnotationPopupActionContext";
+import {useAnnotationPopup} from "../AnnotationPopupContext";
 
 
 const copyAnnotationToClipboard = (annotation: IDocAnnotation) => {
@@ -14,7 +14,7 @@ const copyAnnotationToClipboard = (annotation: IDocAnnotation) => {
     }
 };
 export const CopyAnnotation: React.FC<IAnnotationPopupActionProps> = ({ annotation }) => {
-    const {clear} = useAnnotationPopupAction();
+    const {clear} = useAnnotationPopup();
     const dialogs = useDialogManager();
 
     React.useEffect(() => {

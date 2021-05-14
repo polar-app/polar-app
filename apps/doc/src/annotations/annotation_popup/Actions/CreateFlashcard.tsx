@@ -1,5 +1,5 @@
 import React from "react";
-import {useAnnotationPopupAction} from "../AnnotationPopupActionContext";
+import {useAnnotationPopup} from "../AnnotationPopupContext";
 import {useAnnotationMutationsContext} from "../../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {useDialogManager} from "../../../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {SimpleInputForm, InputOptions} from "./SimpleInputForm";
@@ -24,7 +24,7 @@ type CreatableFlashcardType = FlashcardType.CLOZE | FlashcardType.BASIC_FRONT_BA
 
 export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) => {
     const {annotation, style = {}, className = ""} = props;
-    const {clear} = useAnnotationPopupAction();
+    const {clear} = useAnnotationPopup();
     const annotationMutations = useAnnotationMutationsContext();
     const dialogs = useDialogManager();
     const [flashcardType, setFlashcardType] = React.useState<CreatableFlashcardType>(() => getDefaultFlashcardType());

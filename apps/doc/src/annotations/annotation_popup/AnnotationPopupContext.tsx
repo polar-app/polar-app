@@ -21,14 +21,6 @@ import {AutoFlashcardHandlerState} from "../../../../../web/js/annotation_sideba
 import {ColorStr} from "../../../../../web/js/ui/colors/ColorSelectorBox";
 import {MAIN_HIGHLIGHT_COLORS} from "../../../../../web/js/ui/ColorMenu";
 
-export function usePrevious<T>(value: T): React.MutableRefObject<T | undefined>['current'] {
-  const ref = React.useRef<T>();
-  React.useEffect(() => {
-    ref.current = value;
-  }, [value]);
-  return ref.current;
-}
-
 export enum AnnotationPopupActionEnum {
     CHANGE_COLOR = "CHANGE_COLOR",
     EDIT = "EDIT",
@@ -37,16 +29,17 @@ export enum AnnotationPopupActionEnum {
     CREATE_AI_FLASHCARD = "CREATE_AI_FLASHCARD",
     EDIT_TAGS = "EDIT_TAGS",
     COPY = "COPY",
+    DELETE = "DELETE",
 };
 
-const AnnotationPopupActionContext = React.createContext<IAnnotationPopupActionContext | null>(null);
+const AnnotationPopupContext = React.createContext<IAnnotationPopupContext | null>(null);
 
-type IAnnotationPopupActionProviderProps = {
+type IAnnotationPopupProviderProps = {
     docMeta: IDocMeta;
     docScale: IDocScale;
 };
 
-type IAnnotationPopupActionContext = {
+type IAnnotationPopupContext = {
     onCreateAnnotation: (color: ColorStr) => void;
     annotation?: IDocAnnotation;
     selectionEvent?: ActiveSelectionEvent;
@@ -71,7 +64,7 @@ const toAnnotation = (docMeta: IDocMeta, activeHighlight: ActiveHighlightData): 
 };
 
 
-export const AnnotationPopupActionProvider: React.FC<IAnnotationPopupActionProviderProps> = (props) => {
+export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = (props) => {
     const {docMeta, docScale, ...restProps} = props;
     const [state, dispatch] = React.useReducer(reducer, DEFAULT_STATE);
     const {annotation, selectionEvent, activeAction} = state;
@@ -174,7 +167,7 @@ export const AnnotationPopupActionProvider: React.FC<IAnnotationPopupActionProvi
         dispatch({ type: ACTIONS.ACTION_TOGGLED, payload: undefined });
     }, []);
 
-    const value: IAnnotationPopupActionContext = {
+    const value: IAnnotationPopupContext = {
         toggleAction,
         activeAction,
         clear,
@@ -182,16 +175,16 @@ export const AnnotationPopupActionProvider: React.FC<IAnnotationPopupActionProvi
         onCreateAnnotation: handleCreateAnnotation,
         selectionEvent,
         setAiFlashcardStatus: (status) => dispatch({ type: ACTIONS.UPDATE_AI_FLASHCARD_STATUS, payload: status }),
-        aiFlashcardStatus: state.ai_flashcard_status,
+        aiFlashcardStatus: state.aiFlashcardStatus,
     };
 
-    return <AnnotationPopupActionContext.Provider value={value} {...restProps} />;
+    return <AnnotationPopupContext.Provider value={value} {...restProps} />;
 };
 
-export const useAnnotationPopupAction = () => {
-    const context = React.useContext(AnnotationPopupActionContext);
+export const useAnnotationPopup = () => {
+    const context = React.useContext(AnnotationPopupContext);
     if (!context) {
-        throw new Error("useAnnotationPopupAction must be used within a component that's rendered within the AnnotationPopupActionContextProvider");
+        throw new Error("useAnnotationPopup must be used within a component that's rendered within the AnnotationPopupContextProvider");
     }
     return context;
 }

@@ -1,7 +1,7 @@
 import {AutoFlashcardHandlerState} from "../../../../../web/js/annotation_sidebar/AutoFlashcardHook";
 import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
 import {ActiveSelectionEvent} from "../../../../../web/js/ui/popup/ActiveSelections";
-import {AnnotationPopupActionEnum} from "./AnnotationPopupActionContext";
+import {AnnotationPopupActionEnum} from "./AnnotationPopupContext";
 
 type IAnnotationPopupState = {
     annotation?: IDocAnnotation;
@@ -10,7 +10,7 @@ type IAnnotationPopupState = {
     annotationId?: string;
     activeAction?: AnnotationPopupActionEnum;
     pendingAction?: AnnotationPopupActionEnum;
-    ai_flashcard_status: AutoFlashcardHandlerState;
+    aiFlashcardStatus: AutoFlashcardHandlerState;
 };
 
 type Action<K, T = undefined> = {
@@ -28,7 +28,7 @@ export const ACTIONS = {
 } as const;
 
 export const DEFAULT_STATE: IAnnotationPopupState = {
-    ai_flashcard_status: "idle",
+    aiFlashcardStatus: "idle",
 };
 
 type ISelectionCreatedAction  = Action<typeof ACTIONS.SELECTION_CREATED, ActiveSelectionEvent>;
@@ -51,7 +51,7 @@ type IAnnotationPopupReducerActions =
 type IAnnotationPopupReducer = React.Reducer<IAnnotationPopupState, IAnnotationPopupReducerActions>;
 
 
-export const reducer: IAnnotationPopupReducer = (state = {...DEFAULT_STATE}, action) => {
+export const reducer: IAnnotationPopupReducer = (state = {...DEFAULT_STATE}, action): IAnnotationPopupState => {
     switch (action.type) {
     case ACTIONS.SELECTION_CREATED:
         return {...DEFAULT_STATE, type: "selection", selectionEvent: action.payload};
@@ -91,7 +91,7 @@ export const reducer: IAnnotationPopupReducer = (state = {...DEFAULT_STATE}, act
             };
         }
     case ACTIONS.UPDATE_AI_FLASHCARD_STATUS:
-        return {...state, ai_flashcard_status: action.payload};        
+        return {...state, aiFlashcardStatus: action.payload};        
     case ACTIONS.RESET:
         return {...DEFAULT_STATE};
     }

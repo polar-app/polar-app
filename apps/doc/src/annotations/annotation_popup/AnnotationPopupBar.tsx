@@ -5,6 +5,7 @@ import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnota
 import NoteIcon from "@material-ui/icons/Note";
 import FlashOnIcon from "@material-ui/icons/FlashOn";
 import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
 import FlashAutoIcon from "@material-ui/icons/FlashAuto";
 import CommentIcon from "@material-ui/icons/Comment";
 import PaletteIcon from "@material-ui/icons/Palette";
@@ -15,11 +16,11 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useAnnotationMutationsContext} from "../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {MUIDropdownCaret} from "../../../../../web/js/mui/MUIDropdownCaret";
 import {useAnnotationPopupStyles} from "./AnnotationPopup";
-import {AnnotationPopupActionEnum, useAnnotationPopupAction} from "./AnnotationPopupActionContext";
+import {AnnotationPopupActionEnum, useAnnotationPopup} from "./AnnotationPopupContext";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 
 export const AnnotationPopupBar: React.FC = () => {
-    const {activeAction, toggleAction, annotation, aiFlashcardStatus} = useAnnotationPopupAction();
+    const {activeAction, toggleAction, annotation, aiFlashcardStatus} = useAnnotationPopup();
     const theme = useTheme();
 
     const annotationPopupClasses = useAnnotationPopupStyles();
@@ -66,21 +67,14 @@ export const AnnotationPopupBar: React.FC = () => {
                 <ActionButton tooltip="Copy" action={AnnotationPopupActionEnum.COPY}>
                     <NoteIcon />
                 </ActionButton>
-                {annotation && <DeleteButton annotation={annotation} />}
+                {annotation && (
+                    <ActionButton tooltip="Delete" action={AnnotationPopupActionEnum.DELETE}>
+                        <DeleteIcon/>
+                    </ActionButton>
+                )}
             </MUIButtonBar>
         </Box>
     );
-};
-
-type IDeleteButtonProps = {
-    annotation: IDocAnnotation;
-};
-
-const DeleteButton: React.FC<IDeleteButtonProps> = ({ annotation }) => {
-    const annotationMutations = useAnnotationMutationsContext();
-    const handleDelete = annotationMutations.createDeletedCallback({selected: [annotation]});
-
-    return <MUIDocDeleteButton onClick={handleDelete} />;
 };
 
 type IColorChangerProps = {
@@ -119,7 +113,7 @@ type IActionButtonProps = {
 
 export const ActionButton: React.FC<IActionButtonProps> = (props) => {
     const {action, children, tooltip} = props;
-    const {activeAction, toggleAction} = useAnnotationPopupAction();
+    const {activeAction, toggleAction} = useAnnotationPopup();
     const theme = useTheme();
 
     return (
