@@ -12,6 +12,7 @@ import {useResizeObserver} from "../../renderers/pdf/PinchToZoomHooks";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {rangeConstrain} from "../AreaHighlightDrawer";
 import {AnnotationPopupShortcuts} from "./AnnotationPopupShortcuts";
+import {usePrefsContext} from "../../../../repository/js/persistence_layer/PrefsContext2";
 
 const CONTAINER_SPACING = 10;
 
@@ -177,3 +178,8 @@ export const AnnotationPopup: React.FC = () => {
     );
 };
 
+
+export const useAnnotationPopupBarEnabled = () => {
+    const prefs = usePrefsContext();
+    return React.useRef(prefs.isMarked("new-highlight-bar", false)).current;
+};

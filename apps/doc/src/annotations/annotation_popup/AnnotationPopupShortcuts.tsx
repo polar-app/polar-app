@@ -67,18 +67,20 @@ export const AnnotationPopupShortcuts: React.FC = () => {
         }
     });
 
+    const toggleActionRef = useRefWithUpdates((action: AnnotationPopupActionEnum) => {
+        toggleAction(action)();
+    });
+
     const handlers = React.useMemo<HandlerMap>(() => ({
         CREATE_ANNOTATION: e => handleColorChange.current(e as KeyboardEvent),
-        EDIT_ANNOTATION: toggleAction(AnnotationPopupActionEnum.EDIT),
-        COPY_ANNOTATION: toggleAction(AnnotationPopupActionEnum.COPY),
-        CREATE_COMMENT: toggleAction(AnnotationPopupActionEnum.CREATE_COMMENT),
-        CREATE_FLASHCARD: toggleAction(AnnotationPopupActionEnum.CREATE_FLASHCARD),
-        CREATE_AI_FLASHCARD: toggleAction(AnnotationPopupActionEnum.CREATE_AI_FLASHCARD),
-        EDIT_TAGS: toggleAction(AnnotationPopupActionEnum.EDIT_TAGS),
-        DELETE: toggleAction(AnnotationPopupActionEnum.DELETE),
-    }), [toggleAction, handleColorChange]);
+        EDIT_ANNOTATION: () => toggleActionRef.current(AnnotationPopupActionEnum.EDIT),
+        COPY_ANNOTATION: () => toggleActionRef.current(AnnotationPopupActionEnum.COPY),
+        CREATE_COMMENT: () => toggleActionRef.current(AnnotationPopupActionEnum.CREATE_COMMENT),
+        CREATE_FLASHCARD: () => toggleActionRef.current(AnnotationPopupActionEnum.CREATE_FLASHCARD),
+        CREATE_AI_FLASHCARD: () => toggleActionRef.current(AnnotationPopupActionEnum.CREATE_AI_FLASHCARD),
+        EDIT_TAGS: () => toggleActionRef.current(AnnotationPopupActionEnum.EDIT_TAGS),
+        DELETE: () => toggleActionRef.current(AnnotationPopupActionEnum.DELETE),
+    }), [toggleActionRef, handleColorChange]);
 
-    return (
-        <GlobalKeyboardShortcuts keyMap={globalKeyMap} handlerMap={handlers}/>
-    );
+    return <GlobalKeyboardShortcuts keyMap={globalKeyMap} handlerMap={handlers}/>;
 };

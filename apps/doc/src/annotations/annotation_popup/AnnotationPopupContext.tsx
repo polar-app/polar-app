@@ -197,7 +197,6 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
     const textHighlightColorRef = useRefWithUpdates(textHighlightColor);
     const {fileType} = useDocViewerContext();
     const {setActiveHighlight} = useDocViewerCallbacks();
-    const annotationMutations = useAnnotationMutationsContext();
 
     const handleCreateAnnotation = React.useCallback((color: ColorStr, event = selectionEvent) => {
         if (event) {
@@ -226,7 +225,6 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
         }
     }, [
         docMeta,
-        annotationMutations,
         setActiveHighlight,
         fileType,
         selectionEvent,

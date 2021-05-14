@@ -29,6 +29,7 @@ import {ZenModeActiveContainer} from "../../../../web/js/mui/ZenModeActiveContai
 import {ZenModeButton} from "./ZenModeButton";
 import {TextHighlightTrigger} from "./TextHighlightTrigger";
 import {AreaHighlightModeToggle} from "./AreaHighlightModeToggle";
+import {useAnnotationPopupBarEnabled} from "../annotations/annotation_popup/AnnotationPopup";
 
 const getScaleLevelTuple = (scale: ScaleLevel) => (
     arrayStream(ScaleLevelTuples)
@@ -42,6 +43,7 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
         = useDocViewerStore(['docScale', 'pageNavigator', 'scaleLeveler', 'docMeta', 'areaHighlightMode']);
     const {finder} = useDocFindStore(['finder']);
     const {setScale, onDocTagged, doZoom, toggleDocArchived, toggleDocFlagged} = useDocViewerCallbacks();
+    const newAnnotationBarEnabled = useAnnotationPopupBarEnabled();
 
     const handleScaleChange = React.useCallback((scale: ScaleLevel) => {
 
@@ -162,7 +164,7 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
 
                             <MUIButtonBar>
 
-                                <TextHighlightTrigger />
+                                {newAnnotationBarEnabled && <TextHighlightTrigger />}
 
                                 <AreaHighlightModeToggle />
 
