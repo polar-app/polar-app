@@ -6,17 +6,19 @@ import PaletteIcon from "@material-ui/icons/Palette";
 
 export const MAIN_HIGHLIGHT_COLORS: ReadonlyArray<ColorStr> = [
     "#E8EC3A",
-    "#7EEC3A",
-    "#3AECE1",
-    "#EC3A7A",
-    "#2B5C6B",
     "#EC3A3A",
+    "#3A76EC",
     "#E83AEC",
+    "#7EEC3A",
+
+    "#ECAF3A",
+    "#EC3A7A",
     "#4C8B65",
     "#CBB958",
     "#7E4A79",
-    "#3A76EC",
-    "#ECAF3A",
+
+    "#3AECE1",
+    "#2B5C6B",
     "#6C50A9",
     "#F3D848",
     "#B02F2F",
@@ -32,10 +34,6 @@ const useStyles = makeStyles(() =>
         item: {
             padding: 6,
             cursor: "pointer",
-            "&.selected": {
-            },
-            "&:hover": {
-            },
         }
     }),
 );
@@ -45,7 +43,7 @@ type IColorMenuProps = {
     onChange: (color: ColorStr) => void;
 };
 
-export const ColorMenu= React.forwardRef<HTMLDivElement, IColorMenuProps>(({ selected, onChange }, ref) => {
+export const ColorMenu = React.forwardRef<HTMLDivElement, IColorMenuProps>(({ selected, onChange }, ref) => {
     const classes = useStyles();
 
     return (
