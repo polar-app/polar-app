@@ -206,7 +206,7 @@ export namespace BlocksPersistence {
                                 }
 
                                 const patches = BlocksStoreMutations.computeItemPositionPatches(mutation.before.items,
-                                                                                               mutation.after.items);
+                                                                                                mutation.after.items);
 
                                 return patches.map(current => patchToFirestoreMutation(current));
 

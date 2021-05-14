@@ -692,7 +692,15 @@ export class BlocksStore implements IBlocksStore {
 
             const result = [];
 
+            console.log("FIXME: items: ", items);
+
             for (const item of items) {
+
+                if (typeof item !== 'string') {
+                    console.warn("FIXME: wrong item: ", {...(item as any)});
+                }
+
+                Preconditions.assertString(item, "item");
                 result.push(item);
                 result.push(...this.computeLinearExpansionTree(item, false));
             }
@@ -1842,6 +1850,9 @@ export class BlocksStore implements IBlocksStore {
         // console.log("Handling BlocksStore snapshot: ", snapshot);
 
         for (const docChange of snapshot.docChanges) {
+
+            console.log("FIXME docChange: ", docChange);
+
             switch(docChange.type) {
 
                 case "added":

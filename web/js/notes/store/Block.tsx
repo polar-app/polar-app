@@ -10,6 +10,7 @@ import PositionalArrayPositionStr = PositionalArrays.PositionalArrayPositionStr;
 import deepEqual from "deep-equal";
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import IItemsPositionPatch = BlocksStoreMutations.IItemsPositionPatch;
+import {Preconditions} from "polar-shared/src/Preconditions";
 
 /**
  * Opts for withMutation normally used for undo.
@@ -58,6 +59,8 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     @observable private _mutation: TMutation;
 
     constructor(opts: IBlock<C | IBlockContent>) {
+
+        Object.values(opts.items).map(current => Preconditions.assertString(current, 'current'));
 
         this._id = opts.id;
         this._nspace = opts.nspace;
@@ -192,8 +195,10 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @action setItems(items: ReadonlyArray<BlockIDStr>): boolean {
 
+        items.map(current => Preconditions.assertString(current, 'current'));
+
         if (this.hasItemsMutated(items)) {
-            PositionalArrays.set(this._items, items);
+            PositionalArrays.set(this._items, [...items]);
             this._updated = ISODateTimeStrings.create();
             return true;
         }
@@ -242,7 +247,10 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @action addItem(id: BlockIDStr, pos?: INewChildPosition | 'unshift'): boolean {
 
+        Preconditions.assertString(id, 'id');
+
         try {
+
             if (!this.hasItem(id)) {
 
                 if (pos === 'unshift') {
@@ -268,6 +276,8 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @action private doRemoveItem(id: BlockIDStr): boolean {
 
+        Preconditions.assertString(id, 'id');
+
         if (this.hasItem(id)) {
 
             PositionalArrays.remove(this._items, id);
@@ -280,6 +290,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     }
 
     @action removeItem(id: BlockIDStr): boolean {
+        Preconditions.assertString(id, 'id');
 
         if (this.doRemoveItem(id)) {
 
@@ -293,6 +304,8 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     }
 
     @action private doPutItem(key: PositionalArrayPositionStr, id: BlockIDStr): boolean {
+
+        Preconditions.assertString(id, 'id');
 
         if (! this.hasItem(id)) {
 
@@ -308,6 +321,8 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @action putItem(key: PositionalArrayPositionStr, id: BlockIDStr): boolean {
 
+        Preconditions.assertString(id, 'id');
+
         if (this.doPutItem(key, id)) {
 
             this._updated = ISODateTimeStrings.create();
@@ -321,6 +336,8 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     }
 
     public hasItem(id: BlockIDStr): boolean {
+        Preconditions.assertString(id, 'id');
+
         return PositionalArrays.toArray(this._items).includes(id);
     }
 
