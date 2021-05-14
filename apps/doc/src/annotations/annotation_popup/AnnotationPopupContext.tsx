@@ -7,19 +7,23 @@ import {Elements} from "../../../../../web/js/util/Elements";
 import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
 import {IDocScale, useDocViewerCallbacks, useDocViewerStore} from "../../DocViewerStore";
 import {useDocViewerContext} from "../../renderers/DocRenderer";
-import {useDocViewerElementsContext} from "../../renderers/DocViewerElementsContext";
-import {computeTargets} from "../../TextHighlightHandler";
+import {IDocViewerElements, useDocViewerElementsContext} from "../../renderers/DocViewerElementsContext";
 import {DocAnnotations} from "../../../../../web/js/annotation_sidebar/DocAnnotations";
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {ActiveHighlightData} from "./AnnotationPopupHooks";
 import {SelectedContents} from "../../../../../web/js/highlights/text/selection/SelectedContents";
 import {TextHighlighter} from "../../text_highlighter/TextHighlighter";
-import {useAnnotationMutationsContext} from "../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
+import {ITextHighlightCreate, useAnnotationMutationsContext} from "../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {useRefWithUpdates} from "../../../../../web/js/hooks/ReactHooks";
 import {DEFAULT_STATE, reducer, ACTIONS} from "./AnnotationPopupReducer";
 import {AutoFlashcardHandlerState} from "../../../../../web/js/annotation_sidebar/AutoFlashcardHook";
 import {ColorStr} from "../../../../../web/js/ui/colors/ColorSelectorBox";
 import {MAIN_HIGHLIGHT_COLORS} from "../../../../../web/js/ui/ColorMenu";
+import {FileType} from "../../../../../web/js/apps/main/file_loaders/FileType";
+import {IDStr} from "polar-shared/src/util/Strings";
+import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
+import {ISelectedContent} from "../../../../../web/js/highlights/text/selection/ISelectedContent";
+import {isPresent} from "polar-shared/src/Preconditions";
 
 export enum AnnotationPopupActionEnum {
     CHANGE_COLOR = "CHANGE_COLOR",
@@ -63,6 +67,121 @@ const toAnnotation = (docMeta: IDocMeta, activeHighlight: ActiveHighlightData): 
     return undefined;
 };
 
+export function computeTargets(fileType: FileType, docViewerElementProvider: () => HTMLElement): ReadonlyArray<HTMLElement> {
+
+    const docViewerElement = docViewerElementProvider();
+
+    function computeTargetsForPDF(): ReadonlyArray<HTMLElement> {
+        return Array.from(docViewerElement.querySelectorAll(".page")) as HTMLElement[];
+    }
+
+    function computeTargetsForEPUB(): ReadonlyArray<HTMLElement> {
+        return Array.from(docViewerElement.querySelectorAll("iframe"))
+                    .map(iframe => iframe.contentDocument)
+                    .filter(contentDocument => isPresent(contentDocument))
+                    .map(contentDocument => contentDocument!)
+                    .map(contentDocument => contentDocument.documentElement)
+    }
+
+    switch(fileType) {
+
+        case "pdf":
+            return computeTargetsForPDF();
+
+        case "epub":
+            return computeTargetsForEPUB();
+
+    }
+}
+
+/**
+ * The minimum properties we need to annotate without having to have the full
+ * store context like docMeta.
+ */
+interface ICreateTextHighlightCallbackOpts {
+
+    /**
+     * The document ID (fingerprint) in this this document as created.
+     */
+    readonly docID: IDStr;
+
+    readonly pageNum: number;
+
+    readonly highlightColor: HighlightColor;
+
+    readonly selectedContent: ISelectedContent;
+
+}
+
+type CreateTextHighlightCallback = (opts: ICreateTextHighlightCallbackOpts) => ITextHighlight | null;
+export function useCreateTextHighlightCallback(): CreateTextHighlightCallback {
+
+    const annotationMutations = useAnnotationMutationsContext();
+    const {docMeta, docScale} = useDocViewerStore(['docMeta', 'docScale']);
+    const docViewerElementsContext = useDocViewerElementsContext();
+
+    return (opts: ICreateTextHighlightCallbackOpts): ITextHighlight | null => {
+
+        if (docMeta === undefined) {
+            throw new Error("No docMeta");
+        }
+
+        if (docScale === undefined) {
+            throw new Error("No docScale");
+        }
+
+        if (docMeta.docInfo.fingerprint !== opts.docID) {
+            // this text highlight is from another doc.
+            return null;
+        }
+
+        // TODO: what if this page isn't visible
+        const pageElement = docViewerElementsContext.getPageElementForPage(opts.pageNum)!;
+
+        const {pageMeta, textHighlight}
+            = TextHighlighter.createTextHighlight({...opts, docMeta, docScale, pageElement});
+
+        const mutation: ITextHighlightCreate = {
+            type: 'create',
+            docMeta, pageMeta, textHighlight
+        }
+
+        annotationMutations.onTextHighlight(mutation);
+        return textHighlight;
+    };
+}
+
+export const activeSelectionEventToTextHighlight = (
+    event: ActiveSelectionEvent,
+    fileType: FileType,
+    docViewerElements: IDocViewerElements
+) => {
+    const getPageNumberForPageElement = () => {
+        const getNumber = (pageElement: HTMLElement) => (
+            parseInt(pageElement.getAttribute("data-page-number")!, 10));
+        switch (fileType) {
+            case "pdf":
+                const pdfPageElement = Elements.untilRoot(event.element, ".page");
+                return getNumber(pdfPageElement);
+            case "epub":
+                const docViewerElement = docViewerElements.getDocViewerElement();
+                const epubPageElement = docViewerElement.querySelector('.page') as HTMLElement;
+                return getNumber(epubPageElement);
+        }
+    }
+
+    const selectedContent = SelectedContents.computeFromSelection(event.selection, {
+        noRectTexts: fileType === "epub",
+        fileType,
+    });
+
+    const pageNum = getPageNumberForPageElement()!;
+
+    return {
+        selectedContent,
+        pageNum,
+    };
+};
 
 export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = (props) => {
     const {docMeta, docScale, ...restProps} = props;
@@ -71,6 +190,8 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
     const {activeHighlight, textHighlightColor}
         = useDocViewerStore(["activeHighlight", "textHighlightColor"]);
     const docViewerElementsRef = useRefWithUpdates(useDocViewerElementsContext());
+    const createTextHighlightRef = useRefWithUpdates(useCreateTextHighlightCallback());
+    const textHighlightColorRef = useRefWithUpdates(textHighlightColor);
     const {fileType} = useDocViewerContext();
     const {setActiveHighlight} = useDocViewerCallbacks();
     const annotationMutations = useAnnotationMutationsContext();
@@ -88,7 +209,11 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
     React.useEffect(() => {
         const targets = computeTargets(fileType, docViewerElementsRef.current.getDocViewerElement);
         const handleSelection: ActiveSelectionListener = (event) => {
-            if (!textHighlightColor) {
+            if (textHighlightColorRef.current) {
+                if (event.type === "created") {
+                    handleCreateAnnotation(textHighlightColorRef.current, event);
+                }
+            } else {
                 if (event.type === "created") {
                     dispatch({ type: ACTIONS.SELECTION_CREATED, payload: event });
                 } else {
@@ -104,55 +229,33 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
             cleanupListeners.push(ActiveSelections.addEventListener(handleSelection, target));
         }
         return () => cleanupListeners.forEach(cleanup => cleanup());
-    }, [textHighlightColor, setActiveHighlight, fileType, docViewerElementsRef]);
+    }, [textHighlightColorRef, setActiveHighlight, fileType, docViewerElementsRef]);
 
 
-    const handleCreateAnnotation = React.useCallback((color: ColorStr) => {
-        if (selectionEvent) {
-            const selectedContent = SelectedContents.computeFromSelection(selectionEvent.selection, {
-                noRectTexts: fileType === "epub",
+    const handleCreateAnnotation = React.useCallback((color: ColorStr, event = selectionEvent) => {
+        if (event) {
+            const {selectedContent, pageNum} = activeSelectionEventToTextHighlight(
+                event,
                 fileType,
-            });
+                docViewerElementsRef.current
+            );
             if (selectedContent.text.length === 0) {
                 return;
             }
-            const getPageNumberForPageElement = () => {
-                const getNumber = (pageElement: HTMLElement) => (
-                    parseInt(pageElement.getAttribute("data-page-number")!, 10));
-                switch (fileType) {
-                    case "pdf":
-                        const pdfPageElement = Elements.untilRoot(selectionEvent.element, ".page");
-                        return getNumber(pdfPageElement);
-                    case "epub":
-                        const docViewerElement = docViewerElementsRef.current.getDocViewerElement();
-                        const epubPageElement = docViewerElement.querySelector('.page') as HTMLElement;
-                        return getNumber(epubPageElement);
-                }
-            };
-            const pageNum = getPageNumberForPageElement()!;
-
-            const pageElement = docViewerElementsRef.current.getPageElementForPage(pageNum)!;
-            const {textHighlight} = TextHighlighter.createTextHighlight({
-                    docMeta,
-                    docScale,
-                    pageElement,
-                    selectedContent,
-                    pageNum,
-                    highlightColor: color,
-                });
-
-            annotationMutations.onTextHighlight({
-                type: 'create',
-                docMeta,
-                pageMeta: docMeta.pageMetas[pageNum],
-                textHighlight,
-            });
-            setActiveHighlight({
-                highlightID: textHighlight.guid,
-                type: AnnotationType.TEXT_HIGHLIGHT,
+            event.selection.empty();
+            const textHighlight = createTextHighlightRef.current({
                 pageNum,
+                selectedContent,
+                highlightColor: color,
+                docID: docMeta.docInfo.fingerprint,
             });
-            selectionEvent.selection.empty();
+            if (textHighlight) {
+                setActiveHighlight({
+                    highlightID: textHighlight.guid,
+                    type: AnnotationType.TEXT_HIGHLIGHT,
+                    pageNum
+                });
+            }
         }
     }, [docMeta, docScale, annotationMutations, setActiveHighlight, fileType, selectionEvent, docViewerElementsRef]);
 

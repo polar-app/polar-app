@@ -47,7 +47,6 @@ import { Devices } from 'polar-shared/src/util/Devices';
 import {usePrefsContext} from "../../../../repository/js/persistence_layer/PrefsContext2";
 import {ViewerElements} from "../ViewerElements";
 import {DocViewerAppURLs} from "../../DocViewerAppURLs";
-import {TextHighlightHandler} from '../../TextHighlightHandler';
 import {AnnotationPopup} from '../../annotations/annotation_popup/AnnotationPopup';
 
 interface IProps {
@@ -438,7 +437,6 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
     return renderIter && (
         <DOMTextIndexProvider>
             <DocumentInit/>
-            <TextHighlightHandler key={`highlightHandler-${renderIter}`}/>
             <AnnotationPopup key={`popup-${renderIter}`}/>
             <EPUBFindRenderer/>
             <EPUBContextMenuRoot/>

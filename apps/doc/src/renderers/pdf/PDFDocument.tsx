@@ -40,7 +40,6 @@ import {
 import {ExtendPagemark} from "polar-pagemarks-auto/src/AutoPagemarker";
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {KnownPrefs} from "../../../../../web/js/util/prefs/KnownPrefs";
-import {TextHighlightHandler} from "../../TextHighlightHandler";
 import {DocumentInit} from "../DocumentInitHook";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {IOutlineItem} from "../../outline/IOutlineItem";
@@ -456,7 +455,6 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
         <>
             <AreaHighlightCreator />
             <DocumentInit/>
-            <TextHighlightHandler/>
             <AnnotationPopup/>
             {props.children}
         </>
