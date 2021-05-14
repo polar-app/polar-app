@@ -6,6 +6,8 @@ import {ColorMenu, MAIN_HIGHLIGHT_COLORS} from "../../../../web/js/ui/ColorMenu"
 import {StandardIconButton} from "../../../repository/js/doc_repo/buttons/StandardIconButton";
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import {useDocViewerCallbacks, useDocViewerStore} from "../DocViewerStore";
+import {GlobalKeyboardShortcuts, keyMapWithGroup} from "../../../../web/js/keyboard_shortcuts/GlobalKeyboardShortcuts";
+import {useRefWithUpdates} from "../../../../web/js/hooks/ReactHooks";
 
 type IUseStylesProps = {
     textHighlightColor?: ColorStr;
@@ -25,9 +27,20 @@ const useStyles = makeStyles<Theme, IUseStylesProps>((theme) =>
     }),
 );
 
+const globalKeyMap = keyMapWithGroup({
+    group: "Document Viewer",
+    keyMap: {
+        TOGGLE: {
+            name: "Text Highlight Mode",
+            description: "Toggle text highlight mode",
+            sequences: ["v"],
+        },
+    }
+});
+
 export const TextHighlightTrigger: React.FC = () => {
     const theme = useTheme();
-    const {textHighlightColor} = useDocViewerStore(['textHighlightColor']);
+    const {textHighlightColor} = useDocViewerStore(["textHighlightColor"]);
     const [selectedColor, setSelectedColor] = React.useState<ColorStr>(MAIN_HIGHLIGHT_COLORS[0]);
     const {setTextHighlightColor} = useDocViewerCallbacks();
     const anchorRef = React.useRef<HTMLDivElement>(null);
@@ -40,14 +53,6 @@ export const TextHighlightTrigger: React.FC = () => {
         setSelectedColor(color);
     }, [setOpen, setTextHighlightColor, setSelectedColor]);
 
-    const handleClick = React.useCallback(() => {
-        if (textHighlightColor) {
-            setTextHighlightColor(undefined);
-        } else {
-            setTextHighlightColor(selectedColor);
-        }
-    }, [textHighlightColor, setTextHighlightColor, selectedColor]);
-
     const handleToggle = React.useCallback(() => setOpen(prevOpen => !prevOpen), [setOpen]);
 
     const handleClose = React.useCallback((event: React.MouseEvent<Document, MouseEvent>) => {
@@ -59,11 +64,19 @@ export const TextHighlightTrigger: React.FC = () => {
         setOpen(false);
     }, [setOpen]);
 
+    const handleClick = useRefWithUpdates(() => {
+        setTextHighlightColor(textHighlightColor ? undefined : selectedColor);
+    });
+
+
+    const shortcutHandlers = {
+        TOGGLE: () => handleClick.current(),
+    };
 
     return (
         <>
             <div ref={anchorRef} className={classes.root}>
-                <StandardIconButton tooltip="Text highlight mode" onClick={handleClick}>
+                <StandardIconButton tooltip="Text highlight mode" onClick={handleClick.current}>
                     <PaletteIcon className={classes.triggerIcon}/>
                 </StandardIconButton>
                 <ArrowDropDownIcon className={classes.dropdown} onClick={handleToggle} />
@@ -90,6 +103,9 @@ export const TextHighlightTrigger: React.FC = () => {
                     </Grow>
                 )}
             </Popper>
+            <GlobalKeyboardShortcuts
+                keyMap={globalKeyMap}
+                handlerMap={shortcutHandlers}/>
         </>
     );
 };

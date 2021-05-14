@@ -22,7 +22,7 @@ const globalKeyMap = keyMapWithGroup({
 
 const escapeMap = { ESCAPE: ['Escape'] };
 
-export const AreaHighlightToggle: React.FC = () => {
+export const AreaHighlightModeToggle: React.FC = () => {
     const {toggleAreaHighlightMode, setAreaHighlightMode} = useDocViewerCallbacks();
     const {areaHighlightMode}
         = useDocViewerStore(["areaHighlightMode"]);
@@ -53,7 +53,6 @@ export const AreaHighlightToggle: React.FC = () => {
                     }
                 </>
             )}
-            <Divider orientation="vertical" flexItem/>
         </>
     );
 };

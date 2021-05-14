@@ -10,8 +10,6 @@ import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
 import {DocViewerAppURLs} from "./DocViewerAppURLs";
 import {DockLayoutGlobalHotKeys} from "../../../web/js/ui/doc_layout/DockLayoutGlobalHotKeys";
 import {SideNavGlobalHotKeys} from "../../../web/js/sidenav/SideNavGlobalHotKeys";
-import {MAIN_HIGHLIGHT_COLORS} from "../../../web/js/ui/ColorMenu";
-import {useRefWithUpdates} from "../../../web/js/hooks/ReactHooks";
 
 const globalKeyMap = keyMapWithGroup({
     group: "Document Viewer",
@@ -72,8 +70,7 @@ const globalKeyMap = keyMapWithGroup({
 export const DocViewerGlobalHotKeys = React.memo(function DocViewerGlobalHotKeys() {
 
     const findCallbacks = useDocFindCallbacks();
-    const {docMeta, textHighlightColor} = useDocViewerStore(['docMeta', 'textHighlightColor']);
-    const toggleTextHighlightMode = useRefWithUpdates(() => setTextHighlightColor(textHighlightColor ? undefined : MAIN_HIGHLIGHT_COLORS[0]));
+    const {docMeta} = useDocViewerStore(['docMeta']);
     const {
         onPagePrev,
         onPageNext,
