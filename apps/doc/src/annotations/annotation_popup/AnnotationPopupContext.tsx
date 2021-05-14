@@ -24,6 +24,7 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import {HighlightColor} from "polar-shared/src/metadata/IBaseHighlight";
 import {ISelectedContent} from "../../../../../web/js/highlights/text/selection/ISelectedContent";
 import {isPresent} from "polar-shared/src/Preconditions";
+import {GlobalHotKeys} from "react-hotkeys";
 
 export enum AnnotationPopupActionEnum {
     CHANGE_COLOR = "CHANGE_COLOR",
@@ -183,8 +184,10 @@ export const activeSelectionEventToTextHighlight = (
     };
 };
 
+const escapeMap = { ESCAPE: ['Escape'] };
+
 export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = (props) => {
-    const {docMeta, docScale, ...restProps} = props;
+    const {docMeta, ...restProps} = props;
     const [state, dispatch] = React.useReducer(reducer, DEFAULT_STATE);
     const {annotation, selectionEvent, activeAction} = state;
     const {activeHighlight, textHighlightColor}
@@ -195,6 +198,41 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
     const {fileType} = useDocViewerContext();
     const {setActiveHighlight} = useDocViewerCallbacks();
     const annotationMutations = useAnnotationMutationsContext();
+
+    const handleCreateAnnotation = React.useCallback((color: ColorStr, event = selectionEvent) => {
+        if (event) {
+            const {selectedContent, pageNum} = activeSelectionEventToTextHighlight(
+                event,
+                fileType,
+                docViewerElementsRef.current
+            );
+            if (selectedContent.text.length === 0) {
+                return;
+            }
+            event.selection.empty();
+            const textHighlight = createTextHighlightRef.current({
+                pageNum,
+                selectedContent,
+                highlightColor: color,
+                docID: docMeta.docInfo.fingerprint,
+            });
+            if (textHighlight) {
+                setActiveHighlight({
+                    highlightID: textHighlight.guid,
+                    type: AnnotationType.TEXT_HIGHLIGHT,
+                    pageNum
+                });
+            }
+        }
+    }, [
+        docMeta,
+        annotationMutations,
+        setActiveHighlight,
+        fileType,
+        selectionEvent,
+        createTextHighlightRef,
+        docViewerElementsRef,
+    ]);
 
     React.useEffect(() => {
         if (activeHighlight) {
@@ -229,39 +267,11 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
             cleanupListeners.push(ActiveSelections.addEventListener(handleSelection, target));
         }
         return () => cleanupListeners.forEach(cleanup => cleanup());
-    }, [textHighlightColorRef, setActiveHighlight, fileType, docViewerElementsRef]);
-
-
-    const handleCreateAnnotation = React.useCallback((color: ColorStr, event = selectionEvent) => {
-        if (event) {
-            const {selectedContent, pageNum} = activeSelectionEventToTextHighlight(
-                event,
-                fileType,
-                docViewerElementsRef.current
-            );
-            if (selectedContent.text.length === 0) {
-                return;
-            }
-            event.selection.empty();
-            const textHighlight = createTextHighlightRef.current({
-                pageNum,
-                selectedContent,
-                highlightColor: color,
-                docID: docMeta.docInfo.fingerprint,
-            });
-            if (textHighlight) {
-                setActiveHighlight({
-                    highlightID: textHighlight.guid,
-                    type: AnnotationType.TEXT_HIGHLIGHT,
-                    pageNum
-                });
-            }
-        }
-    }, [docMeta, docScale, annotationMutations, setActiveHighlight, fileType, selectionEvent, docViewerElementsRef]);
+    }, [textHighlightColorRef, setActiveHighlight, fileType, docViewerElementsRef, handleCreateAnnotation]);
 
     const toggleAction = React.useCallback((action: AnnotationPopupActionEnum) => () => {
         dispatch({ type: ACTIONS.ACTION_TOGGLED, payload: action });
-        if (!annotation) {
+        if (!annotation && action !== AnnotationPopupActionEnum.DELETE) {
             handleCreateAnnotation(MAIN_HIGHLIGHT_COLORS[0]);
         }
     }, [annotation, handleCreateAnnotation, dispatch]);
@@ -280,8 +290,21 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
         setAiFlashcardStatus: (status) => dispatch({ type: ACTIONS.UPDATE_AI_FLASHCARD_STATUS, payload: status }),
         aiFlashcardStatus: state.aiFlashcardStatus,
     };
+    const activeHandlers = React.useMemo(() => ({
+        ESCAPE: () => {
+            selectionEvent?.selection.empty();
+            dispatch({ type: ACTIONS.RESET, payload: undefined })
+        },
+    }), [dispatch, selectionEvent]);
 
-    return <AnnotationPopupContext.Provider value={value} {...restProps} />;
+    return (
+        <>
+            {(annotation || selectionEvent) && (
+                <GlobalHotKeys keyMap={escapeMap} handlers={activeHandlers} />
+            )}
+            <AnnotationPopupContext.Provider value={value} {...restProps} />;
+        </>
+    );
 };
 
 export const useAnnotationPopup = () => {

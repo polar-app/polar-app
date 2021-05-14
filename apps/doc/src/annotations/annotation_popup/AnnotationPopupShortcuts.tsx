@@ -76,7 +76,7 @@ export const AnnotationPopupShortcuts: React.FC = () => {
         CREATE_AI_FLASHCARD: toggleAction(AnnotationPopupActionEnum.CREATE_AI_FLASHCARD),
         EDIT_TAGS: toggleAction(AnnotationPopupActionEnum.EDIT_TAGS),
         DELETE: toggleAction(AnnotationPopupActionEnum.DELETE),
-    }), [toggleAction]);
+    }), [toggleAction, handleColorChange]);
 
     return (
         <GlobalKeyboardShortcuts keyMap={globalKeyMap} handlerMap={handlers}/>
