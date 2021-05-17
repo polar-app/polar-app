@@ -31,7 +31,7 @@ import {PositionalArrays} from "./PositionalArrays";
 import {IDateContent} from "../content/IDateContent";
 import {DateContent} from "../content/DateContent";
 import {IBlocksPersistenceSnapshot, useBlocksPersistenceSnapshots} from "../persistence/BlocksPersistenceSnapshots";
-import {BlocksPersistenceWriter} from "../persistence/BlocksPersistence";
+import {BlocksPersistenceWriter} from "../persistence/FirestoreBlocksStoreMutations";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useBlocksPersistenceWriter} from "../persistence/BlockPersistenceWriters";
 

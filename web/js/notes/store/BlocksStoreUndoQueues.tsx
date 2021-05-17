@@ -7,7 +7,7 @@ import {PositionalArrays} from "./PositionalArrays";
 import {IWithMutationOpts} from "./Block";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
-import { BlocksPersistenceWriter } from "../persistence/BlocksPersistence";
+import { BlocksPersistenceWriter } from "../persistence/FirestoreBlocksStoreMutations";
 
 export namespace BlocksStoreUndoQueues {
 

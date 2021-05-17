@@ -5,7 +5,7 @@ import {FIREBASE_PASS, FIREBASE_USER} from "../../firebase/FirebaseTesting";
 
 describe("BlocksPersistence", () => {
 
-    it("basic", async () => {
+    it("basic - new block", async () => {
 
         const app = Firebase.init();
 
@@ -19,5 +19,6 @@ describe("BlocksPersistence", () => {
         assert.equal(true, true);
 
     });
+
 });
 

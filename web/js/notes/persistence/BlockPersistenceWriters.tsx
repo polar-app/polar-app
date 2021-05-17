@@ -1,7 +1,8 @@
 import React from 'react';
-import {BlocksPersistenceWriter,useFirestoreBlocksPersistenceWriter} from "./BlocksPersistence";
+import {BlocksPersistenceWriter} from "./FirestoreBlocksStoreMutations";
 import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
 import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
+import {useFirestoreBlocksPersistenceWriter} from "./FirestoreBlocksPersistenceWriter";
 
 const IS_NODE = typeof window === 'undefined';
 
