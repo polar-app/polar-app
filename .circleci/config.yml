@@ -126,7 +126,7 @@ jobs:
       - build_setup
       - run:
           name: karma
-          command: cd packages/polar-bookshelf && npm run-script karma
+          command: cd packages/polar-bookshelf && npm run-script webpack && npm run-script karma
 
   end2end:
 
