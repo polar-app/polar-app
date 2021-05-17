@@ -108,6 +108,26 @@ jobs:
           name: test
           command: npx lerna run test
 
+  karma:
+
+    parameters:
+      executor:
+        description: "The CircleCI executor to use."
+        type: executor
+
+    executor: << parameters.executor>>
+
+    working_directory: ~/repo
+
+    description: "Run our karma tests in the browser."
+
+    steps:
+
+      - build_setup
+      - run:
+          name: karma
+          command: cd packages/polar-bookshelf && npm run-script karma
+
   end2end:
 
     parameters:
@@ -309,6 +329,8 @@ workflows:
 #
       - build:
           executor: my-docker
+      - karma:
+          executor: my-docker
       - build-webapp:
           executor: my-docker
       - build-site:
@@ -318,12 +340,14 @@ workflows:
           type: approval
           requires:
             - build
+            - karma
             - build-webapp
 
       - hold_beta_getpolarized_io:
           type: approval
           requires:
             - build
+            - karma
             - build-webapp
 
       - deploy_app_getpolarized_io:
