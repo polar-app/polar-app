@@ -39,21 +39,21 @@ export namespace FirestoreBlocksPersistenceWriter {
 
                 case "update-path-number":
                     Asserts.assertNumber(firestoreMutation.value);
-                    batch.update(doc, firestoreMutation.path, firestoreMutation.value);
+                    batch.update(doc, new firebase.firestore.FieldPath(...firestoreMutation.path), firestoreMutation.value);
                     break;
                 case "update-path-string":
                     Asserts.assertString(firestoreMutation.value);
-                    batch.update(doc, firestoreMutation.path, firestoreMutation.value);
+                    batch.update(doc, new firebase.firestore.FieldPath(...firestoreMutation.path), firestoreMutation.value);
                     break;
                 case "update-path-object":
                     Asserts.assertObject(firestoreMutation.value);
-                    batch.update(doc, firestoreMutation.path, firestoreMutation.value);
+                    batch.update(doc, new firebase.firestore.FieldPath(...firestoreMutation.path), firestoreMutation.value);
                     break;
                 case "update-path-string-array":
-                    batch.update(doc, firestoreMutation.path, firestoreMutation.value);
+                    batch.update(doc, new firebase.firestore.FieldPath(...firestoreMutation.path), firestoreMutation.value);
                     break;
                 case "update-delete-field-value":
-                    batch.update(doc, firestoreMutation.path, firebase.firestore.FieldValue.delete())
+                    batch.update(doc, new firebase.firestore.FieldPath(...firestoreMutation.path), firebase.firestore.FieldValue.delete())
                     break;
 
             }

@@ -31,35 +31,35 @@ export namespace FirestoreBlocksStoreMutations {
     export interface IFirestoreMutationUpdatePath {
         readonly id: BlockIDStr;
         readonly type: 'update-path';
-        readonly path: string;
+        readonly path: ReadonlyArray<string>;
         readonly value: any;
     }
 
     export interface IFirestoreMutationUpdatePathNumber {
         readonly id: BlockIDStr;
         readonly type: 'update-path-number';
-        readonly path: string;
+        readonly path: ReadonlyArray<string>;
         readonly value: number;
     }
 
     export interface IFirestoreMutationUpdatePathString {
         readonly id: BlockIDStr;
         readonly type: 'update-path-string';
-        readonly path: string;
+        readonly path: ReadonlyArray<string>;
         readonly value: string;
     }
 
     export interface IFirestoreMutationUpdatePathObject {
         readonly id: BlockIDStr;
         readonly type: 'update-path-object';
-        readonly path: string;
+        readonly path: ReadonlyArray<string>;
         readonly value: object;
     }
 
     export interface IFirestoreMutationUpdatePathStringArray {
         readonly id: BlockIDStr;
         readonly type: 'update-path-string-array';
-        readonly path: string;
+        readonly path: ReadonlyArray<string>;
         readonly value: ReadonlyArray<string>;
     }
 
@@ -67,7 +67,7 @@ export namespace FirestoreBlocksStoreMutations {
     export interface IFirestoreMutationUpdateFieldValueDelete {
         readonly id: BlockIDStr;
         readonly type: 'update-delete-field-value';
-        readonly path: string;
+        readonly path: ReadonlyArray<string>;
     }
 
     export type IFirestoreMutation =
@@ -115,13 +115,13 @@ export namespace FirestoreBlocksStoreMutations {
                             {
                                 id: mutation.id,
                                 type: 'update-path-string',
-                                path: 'updated',
+                                path: ['updated'],
                                 value: mutation.after.updated
                             },
                             {
                                 id: mutation.id,
                                 type: 'update-path-number',
-                                path: 'mutation',
+                                path: ['mutation'],
                                 value: mutation.after.mutation
                             }
 
@@ -138,17 +138,21 @@ export namespace FirestoreBlocksStoreMutations {
 
                                     switch (patch.type) {
 
+                                        // FIXME: this is the bug as the '.' is not being encoded.
+                                        // FIXME: I could use FieldPath with this... that might work but that
+                                        // might require snapshot cache changed :-/
+
                                         case "remove":
                                             return {
                                                 id: mutation.id,
                                                 type: 'update-delete-field-value',
-                                                path: `items.${patch.key}`
+                                                path: ['items', patch.key]
                                             }
                                         case "insert":
                                             return {
                                                 id: mutation.id,
                                                 type: 'update-path-string',
-                                                path: `items.${patch.key}`,
+                                                path: ['items', patch.key],
                                                 value: patch.id
                                             }
 
@@ -166,7 +170,7 @@ export namespace FirestoreBlocksStoreMutations {
                                     {
                                         id: mutation.id,
                                         type: 'update-path-object',
-                                        path: 'content',
+                                        path: ['content'],
                                         value: mutation.after.content
                                     }
                                 ];
@@ -177,7 +181,7 @@ export namespace FirestoreBlocksStoreMutations {
                                         {
                                             id: mutation.id,
                                             type: 'update-path-string',
-                                            path: 'parent',
+                                            path: ['parent'],
                                             value: mutation.after.parent
                                         }
                                     ];
@@ -187,7 +191,7 @@ export namespace FirestoreBlocksStoreMutations {
                                         {
                                             id: mutation.id,
                                             type: 'update-delete-field-value',
-                                            path: 'parent',
+                                            path: ['parent'],
                                         }
                                     ];
                                 }
@@ -198,7 +202,7 @@ export namespace FirestoreBlocksStoreMutations {
                                     {
                                         id: mutation.id,
                                         type: 'update-path-string-array',
-                                        path: 'parents',
+                                        path: ['parents'],
                                         value: mutation.after.parents
                                     }
                                 ];
@@ -206,6 +210,8 @@ export namespace FirestoreBlocksStoreMutations {
                         }
 
                     }
+
+                    // FIXME: the INTEGER path has a 'dot' in it.. so that's fucking us!
 
                     const mutationTargets = BlocksStoreMutations.computeMutationTargets(mutation.before, mutation.after);
 
