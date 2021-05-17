@@ -115,7 +115,7 @@ export namespace FirestoreBlocksStoreMutations {
                             {
                                 id: mutation.id,
                                 type: 'update-path-string',
-                                path: 'update',
+                                path: 'updated',
                                 value: mutation.after.updated
                             },
                             {

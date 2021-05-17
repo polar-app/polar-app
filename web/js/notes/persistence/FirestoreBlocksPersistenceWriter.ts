@@ -60,7 +60,6 @@ export namespace FirestoreBlocksPersistenceWriter {
 
         }
 
-        // TODO use a dialog handler for this...
         await batch.commit();
 
     }
@@ -73,6 +72,7 @@ export function useFirestoreBlocksPersistenceWriter(): BlocksPersistenceWriter {
 
     return React.useCallback((mutations: ReadonlyArray<IBlocksStoreMutation>) => {
 
+        // TODO use a dialog handler for this...
         FirestoreBlocksPersistenceWriter.doExec(firestore, mutations)
             .catch(err => console.log("Unable to commit mutations: ", err, mutations));
 
