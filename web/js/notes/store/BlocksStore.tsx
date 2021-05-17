@@ -692,12 +692,10 @@ export class BlocksStore implements IBlocksStore {
 
             const result = [];
 
-            console.log("FIXME: items: ", items);
-
             for (const item of items) {
 
                 if (typeof item !== 'string') {
-                    console.warn("FIXME: wrong item: ", {...(item as any)});
+                    console.warn("wrong item: ", {...(item as any)});
                 }
 
                 Preconditions.assertString(item, "item");
