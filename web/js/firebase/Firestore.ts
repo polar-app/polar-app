@@ -13,6 +13,8 @@ const ENABLE_PERSISTENCE = StoreCaches.config.backing === 'none';
 
 // const ENABLE_PERSISTENCE = false;
 
+const IS_NODE = typeof window === 'undefined';
+
 export namespace Firestore {
 
     let instance: firebase.firestore.Firestore | undefined;
@@ -92,9 +94,12 @@ export namespace Firestore {
                 // but the viewer windows complain that they do not have access to
                 // work with the disk persistence.
 
-                console.log("Enabling firestore persistence....");
-                await firestore.enablePersistence({synchronizeTabs: true});
-                console.log("Enabling firestore persistence....done");
+                if (! IS_NODE) {
+                    console.log("Enabling firestore persistence....");
+                    await firestore.enablePersistence({synchronizeTabs: true});
+                    console.log("Enabling firestore persistence....done");
+                }
+
 
             } catch (e) {
                 // we've probably exceeded the local quota so we can't run with caching for now.
