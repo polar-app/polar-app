@@ -9,10 +9,14 @@ module.exports = (config) => {
   config.set({
     // ... normal karma configuration
 
+    // browsers: ['Chrome'],
+    browsers: ['ChromeHeadless'],
+
     // make sure to include webpack as a framework
     frameworks: ['mocha', 'webpack'],
-    
+
     plugins: [
+      'karma-chrome-launcher',
       'karma-webpack',
       'karma-mocha',
     ],
