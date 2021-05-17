@@ -1,7 +1,8 @@
 const webpackConfig = require("./webpack.config");
 
-
-// process.env.CHROME_BIN = require('puppeteer').executablePath();
+if (process.env.CIRCLECI === 'true') {
+   process.env.CHROME_BIN = require('puppeteer').executablePath();
+}
 
 // TODO: do not run the karma-typescript directly.
 // instead run npx tsc --watch and then have these run under chrome so I can
