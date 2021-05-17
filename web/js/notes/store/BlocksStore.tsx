@@ -1849,8 +1849,6 @@ export class BlocksStore implements IBlocksStore {
 
         for (const docChange of snapshot.docChanges) {
 
-            console.log("FIXME docChange: ", docChange);
-
             switch(docChange.type) {
 
                 case "added":
