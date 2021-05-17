@@ -33,6 +33,7 @@ module.exports = (config) => {
       'apps/**/*.ts': ['webpack'],
       'web/**/*.ts': ['webpack'],
     },
+    singleRun: true,
 
     webpack: {
       // karma watches the test entry points
