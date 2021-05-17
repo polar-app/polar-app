@@ -144,6 +144,60 @@ describe("BlocksPersistence", () => {
 
     });
 
+    it("updated block with float values", async () => {
+
+        const firestore = await Firestore.getInstance();
+
+        const before = createBasicBlock<IMarkdownContent>({
+            id: ID,
+            root: "100",
+            parent: "100",
+            parents: ["100"],
+            content: {
+                type: 'markdown',
+                data: 'updated block',
+            },
+            items: {
+                '1': '0x001',
+                '2': '0x002',
+            }
+        });
+
+        const mutation: IBlocksStoreMutation = {
+            "id": before.id,
+            "type": "added",
+            "added": before
+        };
+
+        await FirestoreBlocksPersistenceWriter.doExec(firestore, [
+            mutation
+        ]);
+
+        const after = createBasicBlock<IMarkdownContent>({
+            id: ID,
+            root: "100",
+            parent: "102",
+            parents: ["100", "102"],
+            content: {
+                type: 'markdown',
+                data: 'updated block 2',
+            },
+            items: {
+                '1': '0x001',
+                '1.5': '0x003',
+                '2': '0x002',
+            },
+            mutation: 1
+        });
+
+        const mutations = BlocksStoreUndoQueues.computeMutatedBlocks([before], [after]);
+
+        await FirestoreBlocksPersistenceWriter.doExec(firestore, mutations);
+
+        assertJSON(await FirestoreBlocks.get(ID), after);
+
+    });
+
 });
 
 namespace FirestoreBlocks {
