@@ -1,6 +1,7 @@
 const webpackConfig = require("./webpack.config");
 
 if (process.env.CIRCLECI === 'true') {
+   console.log("Setting up CHROME_BIN for circleci");
    process.env.CHROME_BIN = require('puppeteer').executablePath();
 }
 
