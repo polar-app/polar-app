@@ -1,4 +1,5 @@
 import {Firestore} from "../../firebase/Firestore";
+import {assert} from "chai";
 
 describe("BlocksPersistence", () => {
 
@@ -7,6 +8,8 @@ describe("BlocksPersistence", () => {
 
         const firestore = await Firestore.getInstance();
 
+        console.log(firestore);
+        assert.equal(true, true);
     });
 });
 

@@ -1,40 +1,44 @@
+const webpackConfig = require("./webpack.config");
+
 // TODO: do not run the karma-typescript directly.
 // instead run npx tsc --watch and then have these run under chrome so I can
 // watch the output.
 //
 
 module.exports = (config) => {
-    config.set({
-        browsers: ['Chrome'],
-        // browsers: ['ChromeHeadless'],
-        frameworks: ['mocha', 'karma-typescript'],
-        files: [
-            { pattern: 'apps/**/*.ts', watched: false },
-            { pattern: 'web/**/*.ts', watched: false },
-        ],
-        exclude: [
-            'apps/**/*.d.ts',
-            'apps/**/*Test.ts',
-            'web/**/*.d.ts',
-            'web/**/*Test.ts'
-        ],
+  config.set({
+    // ... normal karma configuration
 
-        preprocessors: {
-            'apps/**/*.ts': ['karma-typescript'],
-            'web/**/*.ts': ['karma-typescript'],
-        },
+    // make sure to include webpack as a framework
+    frameworks: ['mocha', 'webpack'],
+    
+    plugins: [
+      'karma-webpack',
+      'karma-mocha',
+    ],
 
-        reporters: ["dots", "karma-typescript"],
+    files: [
+      // { pattern: 'web/js/**/*Test.ts', watched: false },
+      // { pattern: 'apps/**/*Test.ts', watched: false },
+      { pattern: 'web/**/*Karma.ts', watched: false },
 
-        singleRun: true,
+    ],
 
-        karmaTypescriptConfig: {
-            tsconfig: "./tsconfig.json",
-            bundlerOptions: {
-                transforms: [
-                    require("karma-typescript-es6-transform")()
-                ]
-            }
-        },
-    });
-};
+    preprocessors: {
+      // add webpack as preprocessor
+      'apps/**/*.ts': ['webpack'],
+      'web/**/*.ts': ['webpack'],
+    },
+
+    webpack: {
+      // karma watches the test entry points
+      // Do NOT specify the entry option
+      // webpack watches dependencies
+
+      // webpack configuration
+      ...webpackConfig,
+      entry: undefined,
+      devtool: "eval",
+    },
+  });
+}
