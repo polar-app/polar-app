@@ -333,8 +333,8 @@ workflows:
 #
       - build:
           executor: my-docker
-      - karma:
-          executor: my-docker
+#      - karma:
+#          executor: my-docker
       - build-webapp:
           executor: my-docker
       - build-site:
@@ -344,14 +344,14 @@ workflows:
           type: approval
           requires:
             - build
-            - karma
+#            - karma
             - build-webapp
 
       - hold_beta_getpolarized_io:
           type: approval
           requires:
             - build
-            - karma
+#            - karma
             - build-webapp
 
       - deploy_app_getpolarized_io:
