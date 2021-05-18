@@ -129,6 +129,7 @@ jobs:
           command: |
             cd packages/polar-bookshelf
             sudo apt-get install chromium
+            export CHROME_BIN='/usr/bin/chromium'
             npm run-script webpack
             npm run-script karma
 
@@ -333,8 +334,8 @@ workflows:
 #
       - build:
           executor: my-docker
-#      - karma:
-#          executor: my-docker
+      - karma:
+          executor: my-docker
       - build-webapp:
           executor: my-docker
       - build-site:
@@ -344,7 +345,7 @@ workflows:
           type: approval
           requires:
             - build
-#            - karma
+            - karma
             - build-webapp
 
       - hold_beta_getpolarized_io:
