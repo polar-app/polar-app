@@ -127,6 +127,8 @@ jobs:
       - run:
           name: karma
           command: |
+            # this postinstall is a hack because npm v7 doesn't properly run postinstall
+            (cd node_modules/puppeteer &&  npm run-script postinstall)
             cd packages/polar-bookshelf
             ls /home/circleci/repo/node_modules/
             ls /home/circleci/repo/node_modules/puppeteer/
