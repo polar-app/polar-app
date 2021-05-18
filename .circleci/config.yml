@@ -126,7 +126,16 @@ jobs:
       - build_setup
       - run:
           name: karma
-          command: cd packages/polar-bookshelf && npm run-script webpack && npm run-script karma
+          command: |
+          cd packages/polar-bookshelf
+          ls /home/circleci/repo/node_modules/
+          ls /home/circleci/repo/node_modules/puppeteer/
+          ls /home/circleci/repo/node_modules/puppeteer/.local-chromium/
+          ls /home/circleci/repo/node_modules/puppeteer/.local-chromium/linux-869685
+          ls /home/circleci/repo/node_modules/puppeteer/.local-chromium/linux-869685/chrome-linux
+          ls /home/circleci/repo/node_modules/puppeteer/.local-chromium/linux-869685/chrome-linux/chrome
+          npm run-script webpack
+          npm run-script karma
 
   end2end:
 
