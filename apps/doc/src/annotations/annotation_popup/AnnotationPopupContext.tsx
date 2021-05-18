@@ -301,7 +301,7 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
             {(annotation || selectionEvent) && (
                 <GlobalHotKeys keyMap={escapeMap} handlers={activeHandlers} />
             )}
-            <AnnotationPopupContext.Provider value={value} {...restProps} />;
+            <AnnotationPopupContext.Provider value={value} {...restProps} />
         </>
     );
 };
