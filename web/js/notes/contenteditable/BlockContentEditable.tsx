@@ -17,7 +17,7 @@ import {IImageContent} from "../content/IImageContent";
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed
-const ENABLE_CURSOR_RESET = false;
+const ENABLE_CURSOR_RESET = true;
 const ENABLE_CURSOR_RESET_TRACE = true;
 
 interface IProps {
