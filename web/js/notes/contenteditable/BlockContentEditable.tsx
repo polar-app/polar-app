@@ -15,7 +15,10 @@ import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
 import {IPasteImageData, usePasteHandler } from '../clipboard/PasteHandlers';
 import {IImageContent} from "../content/IImageContent";
 
-const ENABLE_TRACE_CURSOR_RESET = true;
+// NOT we don't need this yet as we haven't turned on collaboration but at some point
+// this will be needed
+const ENABLE_CURSOR_RESET = false;
+const ENABLE_CURSOR_RESET_TRACE = true;
 
 interface IProps {
 
@@ -119,7 +122,7 @@ export const BlockContentEditable = observer((props: IProps) => {
             return;
         }
 
-        if (ENABLE_TRACE_CURSOR_RESET) {
+        if (ENABLE_CURSOR_RESET_TRACE) {
             console.log("==== update handleChange: ")
             console.log(`    contentRef.current:  '${contentRef.current}'`, );
             console.log(`    newContent:          '${newContent}'`, );
@@ -164,10 +167,12 @@ export const BlockContentEditable = observer((props: IProps) => {
 
         if (props.content.valueOf() !== contentRef.current.valueOf()) {
 
-            if (ENABLE_TRACE_CURSOR_RESET) {
+            if (ENABLE_CURSOR_RESET_TRACE) {
+
                 console.log(`=== content differs for ${props.id} (cursor will be reset): `);
                 console.log(`    props.content:      '${props.content}'`);
                 console.log(`    contentRef.current: '${contentRef.current}'`);
+
             }
 
             contentRef.current = props.content;
@@ -178,10 +183,15 @@ export const BlockContentEditable = observer((props: IProps) => {
             // (though this might be optional) and then set the innerHTML
             // directly.  React has a bug which won't work on empty strings.
 
-            divRef.current!.innerHTML = props.content;
+            if (ENABLE_CURSOR_RESET) {
 
-            if (divRef.current && blocksStore.active) {
-                updateCursorPosition(divRef.current, {...blocksStore.active, pos: 'end'}, true);
+                divRef.current!.innerHTML = props.content;
+
+                // TODO: only update if WE are active so the cursor doesn't jump.
+                if (divRef.current && blocksStore.active) {
+                    updateCursorPosition(divRef.current, {...blocksStore.active, pos: 'end'}, true);
+                }
+
             }
 
         }
