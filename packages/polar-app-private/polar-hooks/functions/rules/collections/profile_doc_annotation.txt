@@ -1,0 +1,3 @@
+// for now all annotations on this user profile are public for their public documents 
+allow read;
+
