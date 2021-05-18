@@ -5,6 +5,22 @@ import {FlashcardInputForCloze} from './FlashcardInputForCloze';
 import {FlashcardInputForFrontAndBack} from './FlashcardInputForFrontAndBack';
 import {Flashcard} from '../../../../metadata/Flashcard';
 
+export const getDefaultFlashcardType = () => {
+    const defaultFlashcardType = window.localStorage.getItem('default-flashcard-type');
+
+    switch (defaultFlashcardType) {
+
+        case FlashcardType.BASIC_FRONT_BACK:
+            return FlashcardType.BASIC_FRONT_BACK;
+
+        case FlashcardType.CLOZE:
+            return FlashcardType.CLOZE;
+
+        default:
+            return FlashcardType.BASIC_FRONT_BACK;
+    }
+};
+
 export interface IProps {
 
     readonly id: string;
@@ -45,7 +61,7 @@ export class FlashcardInput extends React.Component<IProps, IState> {
 
             // TODO: maybe read this from localStorage so the users prefs
             // are kept
-            flashcardType: this.props.flashcardType || this.defaultFlashcardType()
+            flashcardType: this.props.flashcardType || getDefaultFlashcardType()
         };
 
     }
@@ -77,24 +93,6 @@ export class FlashcardInput extends React.Component<IProps, IState> {
     private onFlashcardChangeType(flashcardType: FlashcardType) {
         this.setState({...this.state, flashcardType});
         this.setDefaultFlashcardType(flashcardType);
-    }
-
-    private defaultFlashcardType() {
-
-        const defaultFlashcardType = window.localStorage.getItem('default-flashcard-type');
-
-        switch (defaultFlashcardType) {
-
-            case FlashcardType.BASIC_FRONT_BACK:
-                return FlashcardType.BASIC_FRONT_BACK;
-
-            case FlashcardType.CLOZE:
-                return FlashcardType.CLOZE;
-
-            default:
-                return FlashcardType.BASIC_FRONT_BACK;
-        }
-
     }
 
     private setDefaultFlashcardType(flashcardType: FlashcardType) {

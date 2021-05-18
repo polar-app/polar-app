@@ -57,6 +57,8 @@ import {UUIDs} from "../../../web/js/metadata/UUIDs";
 import { IOutline } from './outline/IOutline';
 import {OutlineNavigator} from "./outline/IOutlineItem";
 import {Analytics} from '../../../web/js/analytics/Analytics';
+import {ColorStr} from "../../../web/js/ui/colors/ColorSelectorBox";
+import {ActiveHighlightData} from './annotations/annotation_popup/AnnotationPopupHooks';
 
 /**
  * Lightweight metadata describing the currently loaded document.
@@ -135,6 +137,9 @@ export interface IDocViewerStore {
 
     readonly outlineNavigator?: OutlineNavigator;
 
+    readonly textHighlightColor?: ColorStr;
+
+    readonly activeHighlight?: ActiveHighlightData;
     readonly areaHighlightMode: boolean;
 }
 
@@ -307,6 +312,9 @@ export interface IDocViewerCallbacks {
 
     readonly setColumnLayout: (columLayout: number) => void;
 
+    readonly setTextHighlightColor: (color?: ColorStr) => void;
+    readonly setActiveHighlight: (data?: ActiveHighlightData) => void;
+    readonly setAreaHighlightMode: (state: boolean) => void;
     readonly toggleAreaHighlightMode: () => void;
 }
 
@@ -474,6 +482,16 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
         function setDocScale(docScale: IDocScale) {
             const store = storeProvider();
             setStore({...store, docScale});
+        }
+
+        function setTextHighlightColor(color?: ColorStr) {
+            const store = storeProvider();
+            setStore({...store, textHighlightColor: color});
+        }
+
+        function setActiveHighlight(activeHighlight?: ActiveHighlightData) {
+            const store = storeProvider();
+            setStore({...store, activeHighlight});
         }
 
         function setDocLoaded(docLoaded: boolean) {
@@ -1006,6 +1024,11 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
             setStore({...store, areaHighlightMode: !store.areaHighlightMode});
         }
 
+        function setAreaHighlightMode(state: boolean) {
+            const store = storeProvider();
+            setStore({...store, areaHighlightMode: state});
+        }
+
         return {
             updateDocMeta,
             setDocMeta,
@@ -1034,7 +1057,10 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
             setOutlineNavigator,
             docMetaProvider,
             setColumnLayout,
+            setTextHighlightColor,
+            setActiveHighlight,
             toggleAreaHighlightMode,
+            setAreaHighlightMode,
         };
     }, [log, docMetaContext, persistenceLayerContext, annotationSidebarCallbacks,
         dialogs, annotationMutationCallbacksFactory, setStore, storeProvider]);

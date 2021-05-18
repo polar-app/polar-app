@@ -27,7 +27,9 @@ import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {DockLayoutToggleButton} from "../../../../web/js/ui/doc_layout/DockLayoutToggleButton";
 import {ZenModeActiveContainer} from "../../../../web/js/mui/ZenModeActiveContainer";
 import {ZenModeButton} from "./ZenModeButton";
-import {MUIDocAreaHighlightModeToggle} from "../../../repository/js/doc_repo/buttons/MUIDocAreaHighlightModeToggle";
+import {TextHighlightTrigger} from "./TextHighlightTrigger";
+import {AreaHighlightModeToggle} from "./AreaHighlightModeToggle";
+import {useAnnotationPopupBarEnabled} from "../annotations/annotation_popup/AnnotationPopup";
 
 const getScaleLevelTuple = (scale: ScaleLevel) => (
     arrayStream(ScaleLevelTuples)
@@ -37,10 +39,11 @@ const getScaleLevelTuple = (scale: ScaleLevel) => (
 
 export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
 
-    const {docScale, pageNavigator, scaleLeveler, docMeta, areaHighlightMode}
+    const {docScale, pageNavigator, scaleLeveler, docMeta}
         = useDocViewerStore(['docScale', 'pageNavigator', 'scaleLeveler', 'docMeta', 'areaHighlightMode']);
     const {finder} = useDocFindStore(['finder']);
-    const {setScale, onDocTagged, doZoom, toggleDocArchived, toggleDocFlagged, toggleAreaHighlightMode} = useDocViewerCallbacks();
+    const {setScale, onDocTagged, doZoom, toggleDocArchived, toggleDocFlagged} = useDocViewerCallbacks();
+    const newAnnotationBarEnabled = useAnnotationPopupBarEnabled();
 
     const handleScaleChange = React.useCallback((scale: ScaleLevel) => {
 
@@ -161,11 +164,9 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
 
                             <MUIButtonBar>
 
+                                {newAnnotationBarEnabled && <TextHighlightTrigger />}
 
-                                <MUIDocAreaHighlightModeToggle
-                                    onClick={toggleAreaHighlightMode}
-                                    active={areaHighlightMode}
-                                />
+                                <AreaHighlightModeToggle />
 
                                 <Divider orientation="vertical" flexItem/>
 
@@ -206,4 +207,3 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
         </ZenModeActiveContainer>
     );
 });
-

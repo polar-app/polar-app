@@ -13,6 +13,7 @@ interface IProps extends IHighlightViewportPosition {
     readonly id: string;
     readonly color?: string;
     readonly className?: string;
+    readonly onClick: React.EventHandler<React.MouseEvent>;
 }
 
 function useSideNavDocChangeActivated() {
@@ -48,6 +49,7 @@ export const DOMHighlightRow = deepMemo(function DOMHighlightRow(props: IProps) 
             <div id={props.id}
                  ref={scrollIntoViewRef}
                  className={props.className}
+                 onClick={props.onClick}
                  style={{
                      position: 'absolute',
                      ...absolutePosition
@@ -63,11 +65,11 @@ export const DOMHighlightRow = deepMemo(function DOMHighlightRow(props: IProps) 
             <div id={props.id}
                  ref={scrollIntoViewRef}
                  {...dataAttributes}
+                 onClick={props.onClick}
                  className={"polar-ui " + props.className || ''}
                  style={{
                      backgroundColor: `${backgroundColor}`,
                      position: 'absolute',
-                     pointerEvents: 'none',
                      mixBlendMode: theme.palette.type === 'light' ? 'multiply' : 'screen',
                      ...absolutePosition
                  }}>

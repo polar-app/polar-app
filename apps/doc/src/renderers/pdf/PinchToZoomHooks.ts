@@ -1,6 +1,7 @@
 import {Devices} from "polar-shared/src/util/Devices";
 import React from "react";
 import {debounce} from "throttle-debounce";
+import {useRefWithUpdates} from "../../../../../web/js/hooks/ReactHooks";
 import {useDocViewerCallbacks, useDocViewerStore} from "../../DocViewerStore";
 import {useFakePinchToZoom} from "../../PinchHooks";
 import {ScaleLevelTuple, ScaleLevelTuples} from "../../ScaleLevels";
@@ -24,24 +25,20 @@ export const useElemWidthChanged = (callback: () => void, opts: UseElemWidthChan
 type UseResizeObserverCallback = (entry: ResizeObserverEntry) => void;
 
 export const useResizeObserver = (callback: UseResizeObserverCallback, elemRef: React.RefObject<HTMLElement>) => {
-    const callbackRef = React.useRef<UseResizeObserverCallback>(callback);
+    const callbackRef = useRefWithUpdates<UseResizeObserverCallback>(callback);
 
-    const baseCallback: ResizeObserverCallback = React.useCallback((entries) => {
-        callbackRef.current(entries[0]);
-    }, []);
-
-    React.useEffect(() => {
-        callbackRef.current = callback;
-    }, [callback]);
-
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         if (!elemRef.current) {
             return;
         }
-        const resizeObserver = new ResizeObserver(baseCallback)
+        let resizeObserver = new ResizeObserver(([entry]) => {
+            callbackRef.current(entry);
+        });
         resizeObserver.observe(elemRef.current);
-        return () => resizeObserver.disconnect();
-    }, [elemRef, baseCallback]);
+        return () => {
+            resizeObserver.disconnect();
+        };
+    }, [elemRef, callbackRef]);
 };
 
 interface IUsePDFPinchToZoomArgs {
