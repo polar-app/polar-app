@@ -19,7 +19,7 @@ commands:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-{{ arch }}-dependencies-{{ checksum "package.json" }}
+            - v1-{{ arch }}-dependencies-{{ checksum "package-lock.json" }}
 
       # I think bytesafe might not work with npm v7
       #- run:
