@@ -30,7 +30,7 @@ commands:
           name: Install global node modules
           command: |
             sudo npm -g install lerna@4.0.0
-            sudo npm -g install npm@7.7.5
+            sudo npm -g install npm@7.13.0
             sudo npm -g install firebase-tools@9.8.0
 
       - run:
