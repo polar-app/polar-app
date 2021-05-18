@@ -23,7 +23,7 @@ const useAreaHighlightCreatorStyles = makeStyles(() =>
 export const AreaHighlightCreator: React.FC = () => {
     const {areaHighlightMode} = useDocViewerStore(["areaHighlightMode"]);
     const {onAreaHighlightCreated} = useAreaHighlightHooks();
-    const {toggleAreaHighlightMode} = useDocViewerCallbacks();
+    const {setAreaHighlightMode} = useDocViewerCallbacks();
     const docViewerElements = useDocViewerElementsContext();
     const classes = useAreaHighlightCreatorStyles();
 
@@ -36,10 +36,8 @@ export const AreaHighlightCreator: React.FC = () => {
 
     const createAreaHighlight = React.useCallback(({ rect, pageNum }) => {
         onAreaHighlightCreated({ pageNum, rectWithinPageElement: rect });
-        if (areaHighlightMode) {
-            toggleAreaHighlightMode();
-        }
-    }, [onAreaHighlightCreated, areaHighlightMode, toggleAreaHighlightMode])
+        setAreaHighlightMode(false);
+    }, [onAreaHighlightCreated, setAreaHighlightMode])
 
     usePDFRectangleDrawer(createAreaHighlight, { enabled: areaHighlightMode });
 
@@ -70,7 +68,7 @@ const useStyles = makeStyles(() =>
     }),
 );
 
-const rangeConstrain = (val: number, min: number, max: number) => Math.max(min, Math.min(val, max));
+export const rangeConstrain = (val: number, min: number, max: number) => Math.max(min, Math.min(val, max));
 
 const calculateRectDimensions = (start: IPoint, position: IPoint, pageRect: ClientRect): ILTRect => {
     const {x, y} = getRelativePosition(position, pageRect);

@@ -40,7 +40,6 @@ import {
 import {ExtendPagemark} from "polar-pagemarks-auto/src/AutoPagemarker";
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {KnownPrefs} from "../../../../../web/js/util/prefs/KnownPrefs";
-import {useAnnotationBar} from "../../AnnotationBarHooks";
 import {DocumentInit} from "../DocumentInitHook";
 import {deepMemo} from "../../../../../web/js/react/ReactUtils";
 import {IOutlineItem} from "../../outline/IOutlineItem";
@@ -54,7 +53,9 @@ import {usePrefsContext} from "../../../../repository/js/persistence_layer/Prefs
 import { usePDFUpgrader } from './PDFUpgrader';
 import {ViewerElements} from "../ViewerElements";
 import {useDocumentViewerVisibleElemFocus} from '../UseSidenavDocumentChangeCallbackHook';
+import {AnnotationPopup, useAnnotationPopupBarEnabled} from '../../annotations/annotation_popup/AnnotationPopup';
 import {AreaHighlightCreator} from '../../annotations/AreaHighlightDrawer';
+import {useAnnotationBar} from '../../AnnotationBarHooks';
 
 interface DocViewer {
     readonly eventBus: EventBus;
@@ -149,10 +150,10 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
     const {setFinder} = useDocFindCallbacks();
     const {persistenceLayerProvider} = usePersistenceLayerContext();
     const prefs = usePrefsContext();
-    const annotationBarInjector = useAnnotationBar();
-
     const hasPagesInitRef = React.useRef(false);
     const hasLoadRef = React.useRef(false);
+    const annotationBarInjector = useAnnotationBar()
+    const newAnnotationBarEnabled = useAnnotationPopupBarEnabled();
 
     const hasLoadStartedRef = React.useRef(false);
 
@@ -272,10 +273,12 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
         docViewer.eventBus.on('pagesinit', () => {
 
             // PageContextMenus.start()
-            annotationBarInjector();
+            
+            if (!newAnnotationBarEnabled) {
+                annotationBarInjector();
+            }
 
             onPagesInit();
-
         });
 
         const resizeDebouncer = Debouncers.create(() => resize());
@@ -432,7 +435,7 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
     }, [annotationBarInjector, dispatchPDFDocMeta, docMetaProvider, docURL, log, onLoaded,
         onPagesInit, pdfUpgrader, persistenceLayerProvider, prefs, resize, scaleLeveler,
         setDocScale, setFinder, setOutline, setOutlineNavigator, setPageNavigator,
-        setResizer, setScaleLeveler]);
+        setResizer, setScaleLeveler, newAnnotationBarEnabled]);
 
     React.useEffect(() => {
 
@@ -459,6 +462,7 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
         <>
             <AreaHighlightCreator />
             <DocumentInit/>
+            {newAnnotationBarEnabled && <AnnotationPopup/>}
             {props.children}
         </>
     ) || null;

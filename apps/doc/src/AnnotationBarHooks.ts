@@ -23,6 +23,7 @@ import {useMessageListener} from "./text_highlighter/PostMessageHooks";
 import {MessageListeners} from "./text_highlighter/MessageListeners";
 import { useDocViewerElementsContext } from "./renderers/DocViewerElementsContext";
 import {IDStr} from "polar-shared/src/util/Strings";
+import {CreateTextHighlightCallback, useCreateTextHighlightCallback} from "./annotations/annotation_popup/AnnotationPopupContext";
 
 
 /**
@@ -41,46 +42,6 @@ interface ICreateTextHighlightCallbackOpts {
     readonly highlightColor: HighlightColor;
 
     readonly selectedContent: ISelectedContent;
-
-}
-
-type CreateTextHighlightCallback = (opts: ICreateTextHighlightCallbackOpts) => void;
-
-function useCreateTextHighlightCallback(): CreateTextHighlightCallback {
-
-    const annotationMutations = useAnnotationMutationsContext();
-    const {docMeta, docScale} = useDocViewerStore(['docMeta', 'docScale']);
-    const docViewerElementsContext = useDocViewerElementsContext();
-
-    return (opts: ICreateTextHighlightCallbackOpts) => {
-
-        if (docMeta === undefined) {
-            throw new Error("No docMeta");
-        }
-
-        if (docScale === undefined) {
-            throw new Error("No docScale");
-        }
-
-        if (docMeta.docInfo.fingerprint !== opts.docID) {
-            // this text highlight is from another doc.
-            return;
-        }
-
-        // TODO: what if this page isn't visible
-        const pageElement = docViewerElementsContext.getPageElementForPage(opts.pageNum)!;
-
-        const {pageMeta, textHighlight}
-            = TextHighlighter.createTextHighlight({...opts, docMeta, docScale, pageElement});
-
-        const mutation: ITextHighlightCreate = {
-            type: 'create',
-            docMeta, pageMeta, textHighlight
-        }
-
-        annotationMutations.onTextHighlight(mutation);
-
-    };
 
 }
 

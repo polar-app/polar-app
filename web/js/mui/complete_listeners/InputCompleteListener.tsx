@@ -41,44 +41,36 @@ export function useInputCompleteListener(opts: InputCompleteListenerOpts) {
 
     const completable = opts.completable || Providers.of(true);
 
-    // TODO: I think this is technically wrong because we have to
-    // listen and unmount the key listeners on both unmount but also
-    // when dependencies change.
+    React.useEffect(() => {
+        const onKeyDown = (event: KeyboardEvent) => {
 
-    const onKeyDown = React.useCallback((event: KeyboardEvent) => {
+            if (! completable()) {
+                return;
+            }
 
-        if (! completable()) {
-            return;
-        }
+            // note that react-hotkeys is broken when you listen to 'Enter' on
+            // ObserveKeys when using an <input> but it doesn't matter because we
+            // can just listen to the key directly
 
-        // note that react-hotkeys is broken when you listen to 'Enter' on
-        // ObserveKeys when using an <input> but it doesn't matter because we
-        // can just listen to the key directly
+            if (isInputCompleteEvent(opts.type, event)) {
+                opts.onComplete();
+                event.preventDefault();
+                event.stopPropagation();
+                return;
+            }
 
-        if (isInputCompleteEvent(opts.type, event)) {
-            opts.onComplete();
-            event.preventDefault();
-            event.stopPropagation();
-            return;
-        }
+            if (event.key === 'Escape' && opts.onCancel) {
+                opts.onCancel();
+                event.preventDefault();
+                event.stopPropagation();
+                return;
+            }
 
-        if (event.key === 'Escape' && opts.onCancel) {
-            opts.onCancel();
-            event.preventDefault();
-            event.stopPropagation();
-            return;
-        }
+        };
 
-    }, [completable, opts]);
-
-    useComponentDidMount(() => {
         window.addEventListener('keydown', onKeyDown, {capture: true});
-    });
-
-    useComponentWillUnmount(() => {
-        window.removeEventListener('keydown', onKeyDown, {capture: true});
-    });
-
+        return () => window.removeEventListener('keydown', onKeyDown, {capture: true});
+    }, [completable, opts]);
 }
 
 const InputCompleteSuggestion = () => {

@@ -131,8 +131,7 @@ export const PersistentRoute = deepMemo(function PersistentRoute(props: IProps) 
     const className = computeClassName(active);
 
     return (
-
-        <>
+        <PersistentRouteContext.Provider value={{ active }}>
             <Switch>
 
                 <Route path="/">
@@ -148,8 +147,7 @@ export const PersistentRoute = deepMemo(function PersistentRoute(props: IProps) 
                     <MountListener onMounted={setActive}/>
                 </Route>
             </Switch>
-
-       </>
+       </PersistentRouteContext.Provider>
     );
 
 });
