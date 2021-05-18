@@ -142,7 +142,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
     const sectionRef = React.useRef<Section | undefined>(undefined);
     const stylesheet = useStylesheetURL();
     const linkLoader = useLinkLoader();
-    const annotationBarInjector = useAnnotationBar();
+    const annotationBarInjector = useAnnotationBar({ noRectTexts: true });
     const newAnnotationBarEnabled = useAnnotationPopupBarEnabled();
 
     const doLoad = React.useCallback(async () => {

@@ -114,14 +114,14 @@ interface ICreateTextHighlightCallbackOpts {
 
 }
 
-type CreateTextHighlightCallback = (opts: ICreateTextHighlightCallbackOpts) => ITextHighlight | null;
+export type CreateTextHighlightCallback = (opts: ICreateTextHighlightCallbackOpts) => ITextHighlight | null;
 export function useCreateTextHighlightCallback(): CreateTextHighlightCallback {
 
     const annotationMutations = useAnnotationMutationsContext();
     const {docMeta, docScale} = useDocViewerStore(['docMeta', 'docScale']);
     const docViewerElementsContext = useDocViewerElementsContext();
 
-    return (opts: ICreateTextHighlightCallbackOpts): ITextHighlight | null => {
+    return React.useCallback((opts: ICreateTextHighlightCallbackOpts): ITextHighlight | null => {
 
         if (docMeta === undefined) {
             throw new Error("No docMeta");
@@ -149,7 +149,7 @@ export function useCreateTextHighlightCallback(): CreateTextHighlightCallback {
 
         annotationMutations.onTextHighlight(mutation);
         return textHighlight;
-    };
+    }, [docMeta, docScale, annotationMutations, docViewerElementsContext]);
 }
 
 export const activeSelectionEventToTextHighlight = (
@@ -252,10 +252,10 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
             } else {
                 if (event.type === "created") {
                     dispatch({ type: ACTIONS.SELECTION_CREATED, payload: event });
+                    setActiveHighlight(undefined);
                 } else {
                     dispatch({ type: ACTIONS.SELECTION_DESTROYED, payload: undefined });
                 }
-                setActiveHighlight(undefined);
             }
         };
 

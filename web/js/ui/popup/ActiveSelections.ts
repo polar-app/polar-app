@@ -89,6 +89,8 @@ export class ActiveSelections {
 
                         eventFired = 'created';
 
+                    } else {
+                        handleDestroyedSelection();
                     }
 
                 } finally {
