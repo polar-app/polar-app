@@ -77,7 +77,7 @@ commands:
       - save_cache:
           paths:
             - node_modules
-          key: v1-{{ arch }}-dependencies-{{ checksum "package.json" }}
+          key: v1-{{ arch }}-dependencies-{{ checksum "package-lock.json" }}
 
       #- run:
       #    name: Required Linux packages (when on Linux)
