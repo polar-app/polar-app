@@ -19,7 +19,7 @@ commands:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-{{ arch }}-dependencies-{{ checksum "package.json" }}
+            - v1-{{ arch }}-dependencies-{{ checksum "package-lock.json" }}
 
       # I think bytesafe might not work with npm v7
       #- run:
@@ -30,7 +30,7 @@ commands:
           name: Install global node modules
           command: |
             sudo npm -g install lerna@4.0.0
-            sudo npm -g install npm@7.7.5
+            sudo npm -g install npm@7.13.0
             sudo npm -g install firebase-tools@9.8.0
 
       - run:
