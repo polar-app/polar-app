@@ -352,7 +352,7 @@ workflows:
           type: approval
           requires:
             - build
-#            - karma
+            - karma
             - build-webapp
 
       - deploy_app_getpolarized_io:
