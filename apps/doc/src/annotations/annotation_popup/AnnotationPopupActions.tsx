@@ -14,6 +14,7 @@ import {CopyAnnotation} from "./Actions/CopyAnnotation";
 import {CreateAIFlashcard} from "./Actions/CreateAIFlashcard";
 import {EditTags} from "./Actions/EditTags";
 import {DeleteAnnotation} from "./Actions/DeleteAnnotation";
+import {ANNOTATION_COLOR_SHORTCUT_KEYS} from "./AnnotationPopupShortcuts";
 
 
 export type IAnnotationPopupActionProps = {
@@ -35,7 +36,12 @@ const ColorPicker: React.FC<IAnnotationPopupActionProps> = (props) => {
 
     return (
         <div className={className} style={{ ...style, width: "auto" }}>
-            <ColorMenu selected={annotation.color} onChange={handleChange} />
+            <ColorMenu
+                selected={annotation.color}
+                onChange={handleChange}
+                hintLimit={ANNOTATION_COLOR_SHORTCUT_KEYS.length}
+                withHints
+            />
         </div>
     );
 };
