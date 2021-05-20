@@ -8,6 +8,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import {useDocViewerCallbacks, useDocViewerStore} from "../DocViewerStore";
 import {GlobalKeyboardShortcuts, keyMapWithGroup} from "../../../../web/js/keyboard_shortcuts/GlobalKeyboardShortcuts";
 import {useRefWithUpdates} from "../../../../web/js/hooks/ReactHooks";
+import {usePersistentRouteContext} from "../../../../web/js/apps/repository/PersistentRoute";
 
 type IUseStylesProps = {
     textHighlightColor?: ColorStr;
@@ -34,12 +35,14 @@ const globalKeyMap = keyMapWithGroup({
             name: "Text Highlight Mode",
             description: "Toggle text highlight mode",
             sequences: ["v"],
+            priority: 1,
         },
     }
 });
 
-export const TextHighlightTrigger: React.FC = () => {
+export const TextHighlightModeToggle: React.FC = () => {
     const theme = useTheme();
+    const {active} = usePersistentRouteContext();
     const {textHighlightColor} = useDocViewerStore(["textHighlightColor"]);
     const [selectedColor, setSelectedColor] = React.useState<ColorStr>(MAIN_HIGHLIGHT_COLORS[0]);
     const {setTextHighlightColor} = useDocViewerCallbacks();
@@ -103,9 +106,11 @@ export const TextHighlightTrigger: React.FC = () => {
                     </Grow>
                 )}
             </Popper>
-            <GlobalKeyboardShortcuts
-                keyMap={globalKeyMap}
-                handlerMap={shortcutHandlers}/>
+            {active && 
+                <GlobalKeyboardShortcuts
+                    keyMap={globalKeyMap}
+                    handlerMap={shortcutHandlers}/>
+            }
         </>
     );
 };
