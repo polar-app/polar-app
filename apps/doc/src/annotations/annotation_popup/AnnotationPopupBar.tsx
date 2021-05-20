@@ -11,9 +11,7 @@ import CommentIcon from "@material-ui/icons/Comment";
 import PaletteIcon from "@material-ui/icons/Palette";
 import {StandardIconButton} from "../../../../repository/js/doc_repo/buttons/StandardIconButton";
 import {MUIButtonBar} from "../../../../../web/js/mui/MUIButtonBar";
-import {MUIDocDeleteButton} from "../../../../repository/js/doc_repo/buttons/MUIDocDeleteButton";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {useAnnotationMutationsContext} from "../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {MUIDropdownCaret} from "../../../../../web/js/mui/MUIDropdownCaret";
 import {useAnnotationPopupStyles} from "./AnnotationPopup";
 import {AnnotationPopupActionEnum, useAnnotationPopup} from "./AnnotationPopupContext";
@@ -39,20 +37,20 @@ export const AnnotationPopupBar: React.FC = () => {
                     onToggle={toggleAction(AnnotationPopupActionEnum.CHANGE_COLOR)}
                 />
                 <Divider orientation="vertical" flexItem />
-                <ActionButton tooltip="Edit highlight" action={AnnotationPopupActionEnum.EDIT}>
+                <ActionButton tooltip="Edit highlight (e)" action={AnnotationPopupActionEnum.EDIT}>
                     <EditIcon />
                 </ActionButton>
-                <ActionButton tooltip="Comment" action={AnnotationPopupActionEnum.CREATE_COMMENT}>
+                <ActionButton tooltip="Comment (c)" action={AnnotationPopupActionEnum.CREATE_COMMENT}>
                     <CommentIcon />
                 </ActionButton>
                 <ActionButton
-                    tooltip="Create flashcard manually"
+                    tooltip="Create flashcard manually (f)"
                     action={AnnotationPopupActionEnum.CREATE_FLASHCARD}
                 >
                     <FlashOnIcon />
                 </ActionButton>
                 <ActionButton
-                    tooltip="Create flashcard automatically"
+                    tooltip="Create flashcard automatically (g)"
                     action={AnnotationPopupActionEnum.CREATE_AI_FLASHCARD}
                 >
                     {aiFlashcardStatus === "waiting"
@@ -60,7 +58,7 @@ export const AnnotationPopupBar: React.FC = () => {
                         : <FlashAutoIcon/>
                     }
                 </ActionButton>
-                <ActionButton tooltip="Tag highlight" action={AnnotationPopupActionEnum.EDIT_TAGS}>
+                <ActionButton tooltip="Tag highlight (t)" action={AnnotationPopupActionEnum.EDIT_TAGS}>
                     <LocalOfferIcon />
                 </ActionButton>
                 <Divider orientation="vertical" flexItem />
@@ -68,7 +66,7 @@ export const AnnotationPopupBar: React.FC = () => {
                     <NoteIcon />
                 </ActionButton>
                 {annotation && (
-                    <ActionButton tooltip="Delete" action={AnnotationPopupActionEnum.DELETE}>
+                    <ActionButton tooltip="Delete (d)" action={AnnotationPopupActionEnum.DELETE}>
                         <DeleteIcon/>
                     </ActionButton>
                 )}

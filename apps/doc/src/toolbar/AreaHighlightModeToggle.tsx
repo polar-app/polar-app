@@ -40,7 +40,7 @@ export const AreaHighlightModeToggle: React.FC = () => {
             <StandardToggleButton
                 onClick={toggleAreaHighlightMode}
                 active={areaHighlightMode}
-                tooltip="Area highlight mode"
+                tooltip="Area highlight mode (a)"
             >
                 <PhotoSizeSelectLargeIcon/>
             </StandardToggleButton>

@@ -79,7 +79,7 @@ export const TextHighlightModeToggle: React.FC = () => {
     return (
         <>
             <div ref={anchorRef} className={classes.root}>
-                <StandardIconButton tooltip="Text highlight mode" onClick={handleClick.current}>
+                <StandardIconButton tooltip="Text highlight mode (v)" onClick={handleClick.current}>
                     <PaletteIcon className={classes.triggerIcon}/>
                 </StandardIconButton>
                 <ArrowDropDownIcon className={classes.dropdown} onClick={handleToggle} />
