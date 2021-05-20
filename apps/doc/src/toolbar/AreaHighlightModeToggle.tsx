@@ -6,8 +6,6 @@ import {GlobalKeyboardShortcuts, keyMapWithGroup} from "../../../../web/js/keybo
 import {useDocViewerCallbacks, useDocViewerStore} from "../DocViewerStore";
 import {useDocViewerContext} from "../renderers/DocRenderer";
 import {StandardToggleButton} from "../../../repository/js/doc_repo/buttons/StandardToggleButton";
-import {Divider} from "@material-ui/core";
-
 
 const globalKeyMap = keyMapWithGroup({
     group: "Document Viewer",
@@ -16,6 +14,7 @@ const globalKeyMap = keyMapWithGroup({
             name: "Area Highlight Mode",
             description: "Toggle area higlight mode",
             sequences: ["a"],
+            priority: 1,
         },
     },
 });
