@@ -34,12 +34,19 @@ export interface IKeyboardShortcutWithHandler extends IKeyboardShortcut {
     readonly handler: KeyboardShortcutEventHandler;
 }
 
+export type ShortcutEntry = {
+    registered: IKeyboardShortcutWithHandler[],
+    active: IKeyboardShortcutWithHandler,
+};
+
 interface IKeyboardShortcutsStore {
 
     /**
      * The current keyboard bindings.
      */
-    readonly shortcuts: {[binding: string]: IKeyboardShortcutWithHandler};
+    readonly shortcuts: {
+        [binding: string]: ShortcutEntry;
+    };
 
     /**
      * True when the keyboard bindings are active so we could disable them
@@ -76,7 +83,14 @@ function callbacksFactory(storeProvider: Provider<IKeyboardShortcutsStore>,
         const store = storeProvider();
         const shortcuts = {...store.shortcuts};
         const sequence = Arrays.first(shortcut.sequences)!;
-        shortcuts[sequence] = shortcut;
+        let storedShortcut = shortcuts[sequence];
+        if (!storedShortcut) {
+            storedShortcut = { registered: [shortcut], active: shortcut };
+        } else {
+            storedShortcut.registered.unshift(shortcut);
+            storedShortcut.active = shortcut;
+        }
+        shortcuts[sequence] = storedShortcut;
         setStore({...store, shortcuts});
     }
 
@@ -84,8 +98,15 @@ function callbacksFactory(storeProvider: Provider<IKeyboardShortcutsStore>,
         const store = storeProvider();
         const shortcuts = {...store.shortcuts};
         const sequence = Arrays.first(shortcut.sequences)!;
-        delete shortcuts[sequence];
-        setStore({...store, shortcuts});
+        const storedShortcut = shortcuts[sequence];
+        if (storedShortcut) {
+            storedShortcut.registered = storedShortcut.registered.filter(x => shortcut !== x);
+            storedShortcut.active = storedShortcut.registered[0];
+            if (storedShortcut.registered.length === 0) {
+                delete shortcuts[sequence];
+            }
+            setStore({...store, shortcuts});
+        }
     }
 
     function setActive(active: boolean) {
