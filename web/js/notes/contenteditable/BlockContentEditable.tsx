@@ -14,6 +14,7 @@ import {CursorPositions} from "./CursorPositions";
 import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
 import {IPasteImageData, usePasteHandler } from '../clipboard/PasteHandlers';
 import {IImageContent} from "../content/IImageContent";
+import {debounce} from 'throttle-debounce';
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed
@@ -98,6 +99,8 @@ export const BlockContentEditable = observer((props: IProps) => {
 
     const createNoteActionsProvider = React.useMemo(() => createActionsProvider(noteLinkActions), [noteLinkActions]);
 
+    const onChange = React.useMemo(() => debounceCalls(350, 20, props.onChange), [props.onChange]);
+
     const handleChange = React.useCallback(() => {
 
         if (! divRef.current) {
@@ -129,9 +132,8 @@ export const BlockContentEditable = observer((props: IProps) => {
         }
 
         contentRef.current = newContent;
-        props.onChange(newContent);
-
-    }, [props]);
+        onChange(newContent);
+    }, [onChange]);
 
     const updateMarkdownFromEditable = React.useCallback(() => {
         handleChange();
@@ -524,4 +526,32 @@ function doUpdateCursorPosition(editor: HTMLDivElement, pos: 'start' | 'end' | n
 
     }
 
+}
+
+
+type GenericFunction = (...args: any[]) => any;
+type DebouncedFunction<T extends GenericFunction> = (...args: Parameters<T>) => any;
+
+export function debounceCalls<T extends GenericFunction>(
+    delay = 0,
+    calls = 0,
+    callback: T,
+): DebouncedFunction<T> {
+    let count = 0;
+    const executor: DebouncedFunction<T> = (...args) => {
+        count = 0;
+        callback(...args);
+    };
+    let debounced = debounce(delay, executor);
+
+    return (...args) => {
+        count += 1;
+        if (count >= calls) {
+            executor(...args);
+            debounced.cancel();
+            debounced = debounce(delay, executor);
+        } else {
+            debounced(...args);
+        }
+    };
 }
