@@ -10,8 +10,8 @@ commit_repo() {
 
 npm run-script dist-version &&
 commit_repo .
-commit_repo packages/polar-app-private
-commit_repo packages/polar-app-public
-commit_repo packages/polar-bookshelf
-commit_repo packages/polar-bookshelf-secrets
-commit_repo packages/polar-site2
+#commit_repo packages/polar-app-private
+#commit_repo packages/polar-app-public
+#commit_repo packages/polar-bookshelf
+#commit_repo packages/polar-bookshelf-secrets
+#commit_repo packages/polar-site2
