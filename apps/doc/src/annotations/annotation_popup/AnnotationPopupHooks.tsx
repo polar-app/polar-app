@@ -15,6 +15,8 @@ import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {useDOMTextIndexContext} from "../DOMTextIndexContext";
 import {useRefWithUpdates} from "../../../../../web/js/hooks/ReactHooks";
 import {Texts} from "polar-shared/src/metadata/Texts";
+import {rangeConstrain} from "../AreaHighlightDrawer";
+import {useResizeObserver} from "../../renderers/pdf/PinchToZoomHooks";
 
 export type ActiveHighlightData = {
     highlightID: string;
@@ -140,14 +142,21 @@ namespace AnnotationPositionCalculator {
             if (!pageElem || !viewerElem || !docViewerElem || !rects.length) {
                 return;
             }
+            const pageStyles = window.getComputedStyle(pageElem);
+            const border = {
+                top: +pageStyles.borderTopWidth.slice(0, -2),
+                left: +pageStyles.borderLeftWidth.slice(0, -2),
+                bottom: +pageStyles.borderBottomWidth.slice(0, -2),
+                right: +pageStyles.borderRightWidth.slice(0, -2),
+            };
             const pageRect = pageElem.getBoundingClientRect();
             const viewerRect = viewerElem.getBoundingClientRect();
             const rect = rects.reduce(TextHighlightMerger.mergeRects);
             const scale = docScale.scaleValue;
 
             return {
-                left: rect.left * scale + pageRect.left - viewerRect.left, 
-                top: rect.top * scale + pageRect.top - viewerRect.top,
+                left: rect.left * scale + pageRect.left - viewerRect.left + border.left, 
+                top: rect.top * scale + pageRect.top - viewerRect.top + border.top,
                 width: rect.width * scale,
                 height: rect.height * scale,
             };
@@ -198,4 +207,71 @@ export const usePopupBarPosition = (opts: IUsePopupBarPositionOpts): ILTRect | u
         return;
         // TODO: Prevent rerenders if the annotation rects haven't changed
     }, [fileType, annotation, selectionEvent, docScale, textIndex, docViewerElementsRef]);
+};
+
+const CONTAINER_SPACING = 10;
+const constrainToContainer = (container: HTMLElement, scrollY: number, popup: HTMLElement, rect: ILTRect): { rect: ILTRect, isTop: boolean } => {
+    const containerRect = container.getBoundingClientRect();
+    const popupRect = popup.getBoundingClientRect();
+    const isTop = rect.top + (rect.height / 2) - scrollY >= containerRect.height / 2;
+
+    const obj = {
+        isTop,
+        rect: {
+            ...rect,
+            top: (isTop
+                ? Math.round(rect.top - popupRect.height) - CONTAINER_SPACING
+                : rect.top + rect.height) - scrollY + CONTAINER_SPACING,
+            left: rangeConstrain(
+                Math.round(rect.left + rect.width / 2 - popupRect.width / 2),
+                CONTAINER_SPACING,
+                containerRect.width - CONTAINER_SPACING - popupRect.width,
+            ),
+        },
+    };
+    return obj;
+};
+
+type IUseAnnotationPopupPositionUpdaterProps = {
+    boundsElement: HTMLElement | null;
+    scrollElement: HTMLElement | Window | null;
+    rect: ILTRect;
+    noScroll?: boolean;
+};
+
+const isWindow = (x: any): x is Window => {
+    return x.window === x;
+};
+
+export const useAnnotationPopupPositionUpdater = (
+    opts: IUseAnnotationPopupPositionUpdaterProps
+): React.RefObject<HTMLDivElement> => {
+    const {boundsElement, scrollElement, rect, noScroll = false} = opts;
+    const ref = React.useRef<HTMLDivElement>(null);
+    const updatePosition = React.useCallback(() => {
+        const popupElem = ref.current;
+        if (!popupElem || !boundsElement || !scrollElement) {
+            return;
+        }
+
+        const scrollY = isWindow(scrollElement) ? scrollElement.scrollY : scrollElement.scrollTop;
+        const {rect: {left, top}, isTop} = constrainToContainer(boundsElement, scrollY, popupElem, rect);
+        popupElem.style.transform = `translate3d(calc(${left}px), calc(${top + (noScroll ? scrollY : 0)}px), 0)`;
+        popupElem.classList[isTop ? "remove" : "add"]("flipped");
+    }, [rect, boundsElement, scrollElement, ref]);
+
+    React.useEffect(() => {
+        const popupElem = ref.current;
+        if (!popupElem || !boundsElement || !scrollElement) {
+            return;
+        }
+        updatePosition();
+        const onScroll = () => updatePosition();
+        scrollElement.addEventListener("scroll", onScroll, {passive: true});
+        return () => scrollElement.removeEventListener("scroll", onScroll);
+    }, [boundsElement, scrollElement, updatePosition, ref]);
+
+    useResizeObserver(updatePosition, {current: boundsElement || null});
+
+    return ref;
 };

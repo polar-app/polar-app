@@ -53,6 +53,7 @@ const useStyles = makeStyles((theme) =>
             transformOrigin: "bottom center",
             boxShadow: theme.shadows[8],
             width: "100%",
+            zIndex: 2,
         },
     }),
 );
