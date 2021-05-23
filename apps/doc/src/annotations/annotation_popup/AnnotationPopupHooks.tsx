@@ -110,7 +110,9 @@ namespace AnnotationPositionCalculator {
         const docViewerElem = docViewerElements.getDocViewerElement();
         const viewerElem = docViewerElem
             .querySelector<HTMLDivElement>("#viewer");
-        if (!pageElem || !viewerElem || !docViewerElem) {
+        const viewerContainer = docViewerElem
+            .querySelector<HTMLDivElement>("#viewerContainer");
+        if (!pageElem || !viewerElem || !docViewerElem || !viewerContainer) {
             return;
         }
 
@@ -118,7 +120,7 @@ namespace AnnotationPositionCalculator {
         const viewerRect = viewerElem.getBoundingClientRect();
 
         return {
-            left: sRect.left - viewerRect.left,
+            left: sRect.left - viewerRect.left + viewerContainer.scrollLeft,
             top: sRect.top - viewerRect.top,
             width: sRect.width,
             height: sRect.height,
@@ -210,9 +212,16 @@ export const usePopupBarPosition = (opts: IUsePopupBarPositionOpts): ILTRect | u
 };
 
 const CONTAINER_SPACING = 10;
-const constrainToContainer = (container: HTMLElement, scrollY: number, popup: HTMLElement, rect: ILTRect): { rect: ILTRect, isTop: boolean } => {
+const constrainToContainer = (
+    container: HTMLElement,
+    scrollElem: HTMLElement | Window,
+    popup: HTMLElement,
+    rect: ILTRect
+): { rect: ILTRect, isTop: boolean } => {
     const containerRect = container.getBoundingClientRect();
     const popupRect = popup.getBoundingClientRect();
+    const scrollY = isWindow(scrollElem) ? scrollElem.scrollY : scrollElem.scrollTop;
+    const scrollX = isWindow(scrollElem) ? scrollElem.scrollX : scrollElem.scrollLeft;
     const isTop = rect.top + (rect.height / 2) - scrollY >= containerRect.height / 2;
 
     const obj = {
@@ -225,7 +234,7 @@ const constrainToContainer = (container: HTMLElement, scrollY: number, popup: HT
             left: rangeConstrain(
                 Math.round(rect.left + rect.width / 2 - popupRect.width / 2),
                 CONTAINER_SPACING,
-                containerRect.width - CONTAINER_SPACING - popupRect.width,
+                containerRect.width - CONTAINER_SPACING - popupRect.width + scrollX - 10,
             ),
         },
     };
@@ -255,7 +264,7 @@ export const useAnnotationPopupPositionUpdater = (
         }
 
         const scrollY = isWindow(scrollElement) ? scrollElement.scrollY : scrollElement.scrollTop;
-        const {rect: {left, top}, isTop} = constrainToContainer(boundsElement, scrollY, popupElem, rect);
+        const {rect: {left, top}, isTop} = constrainToContainer(boundsElement, scrollElement, popupElem, rect);
         popupElem.style.transform = `translate3d(calc(${left}px), calc(${top + (noScroll ? scrollY : 0)}px), 0)`;
         popupElem.classList[isTop ? "remove" : "add"]("flipped");
     }, [rect, boundsElement, scrollElement, ref]);

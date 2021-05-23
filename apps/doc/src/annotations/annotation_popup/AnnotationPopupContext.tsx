@@ -238,13 +238,16 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
             if (!annotation) {
                 setActiveHighlight(undefined);
             }
-            dispatch({ type: ACTIONS.ANNOTATION_SET, payload: annotation });
+            setTimeout(() => {
+                dispatch({ type: ACTIONS.ANNOTATION_SET, payload: annotation });
+            }, 50);
         }
     }, [activeHighlight, setActiveHighlight, docMeta]);
     
     React.useEffect(() => {
         const targets = computeTargets(fileType, docViewerElementsRef.current.getDocViewerElement);
         const handleSelection: ActiveSelectionListener = (event) => {
+            dispatch({ type: ACTIONS.RESET, payload: undefined });
             if (textHighlightColorRef.current) {
                 if (event.type === "created") {
                     handleCreateAnnotation(textHighlightColorRef.current, event);

@@ -91,15 +91,11 @@ type IAnnotationPopupEPUBRendererProps = {
 const AnnotationPopupEPUBRenderer: React.FC<IAnnotationPopupEPUBRendererProps> = ({ rect }) => {
     const docViewerElementsRef = useRefWithUpdates(useDocViewerElementsContext());
     const boundsElement = React.useMemo(() => (
-        docViewerElementsRef.current.getDocViewerElement()
+        docViewerElementsRef.current.getDocViewerElement().querySelector<HTMLIFrameElement>("iframe")
     ), [docViewerElementsRef]);
     const scrollElement = React.useMemo(() => (
-        docViewerElementsRef
-            .current
-            .getDocViewerElement()
-            .querySelector<HTMLIFrameElement>("iframe")
-            ?.contentWindow || null
-    ), [docViewerElementsRef]);
+        boundsElement?.contentWindow || null
+    ), [docViewerElementsRef, boundsElement]);
 
     const ref = useAnnotationPopupPositionUpdater({
         rect,
