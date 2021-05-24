@@ -29,6 +29,7 @@ export const ActiveKeyboardShortcutsTable2 = React.memo((props: ActiveKeyboardSh
     const classes = useStyles();
 
     const filtered = Object.values(shortcuts)
+        .map(x => x.active)
         .filter(shortcut => filter === undefined || shortcut.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1);
 
     const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
