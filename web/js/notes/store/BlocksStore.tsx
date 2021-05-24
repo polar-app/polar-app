@@ -386,6 +386,8 @@ export class BlocksStore implements IBlocksStore {
                 this._indexByName[blockData.content.data] = block.id;
             }
 
+            // FIXME: there's a bug here in that I think if a link is removed,
+            // vs the existing link, we don't remove the old one.
             for (const link of block.linksAsArray) {
                 this._reverse.add(link.id, block.id);
             }
