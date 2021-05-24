@@ -267,7 +267,7 @@ export const useAnnotationPopupPositionUpdater = (
         const {rect: {left, top}, isTop} = constrainToContainer(boundsElement, scrollElement, popupElem, rect);
         popupElem.style.transform = `translate3d(calc(${left}px), calc(${top + (noScroll ? scrollY : 0)}px), 0)`;
         popupElem.classList[isTop ? "remove" : "add"]("flipped");
-    }, [rect, boundsElement, scrollElement, ref]);
+    }, [rect, boundsElement, scrollElement, ref, noScroll]);
 
     React.useEffect(() => {
         const popupElem = ref.current;

@@ -93,9 +93,7 @@ const AnnotationPopupEPUBRenderer: React.FC<IAnnotationPopupEPUBRendererProps> =
     const boundsElement = React.useMemo(() => (
         docViewerElementsRef.current.getDocViewerElement().querySelector<HTMLIFrameElement>("iframe")
     ), [docViewerElementsRef]);
-    const scrollElement = React.useMemo(() => (
-        boundsElement?.contentWindow || null
-    ), [docViewerElementsRef, boundsElement]);
+    const scrollElement = React.useMemo(() => boundsElement?.contentWindow || null, [boundsElement]);
 
     const ref = useAnnotationPopupPositionUpdater({
         rect,
