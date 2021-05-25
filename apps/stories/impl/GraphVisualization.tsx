@@ -65,6 +65,7 @@ export const GraphVisualization = () => {
             lineWidth: 2,
           },
         },
+      }
       });
     }
     const nodes = data.nodes;
