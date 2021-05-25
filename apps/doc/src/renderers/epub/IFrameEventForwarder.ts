@@ -5,6 +5,8 @@
  */
 import {IFrames} from "polar-shared/src/util/IFrames";
 
+const ALLOWED_KEYS = ["ArrowRight", "ArrowLeft", "ArrowUp", "ArrowDown", "PageDown", "PageUp"];
+
 export namespace IFrameEventForwarder {
 
     export function start(iframe: HTMLIFrameElement, target: HTMLElement) {
@@ -76,8 +78,10 @@ export namespace IFrameEventForwarder {
         const newEvent = new anyEvent.constructor(event.type, event);
         target.dispatchEvent(newEvent);
 
-        event.preventDefault();
-        event.stopPropagation();
+        if (ALLOWED_KEYS.indexOf(event.key) === -1) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
     }
 
 }

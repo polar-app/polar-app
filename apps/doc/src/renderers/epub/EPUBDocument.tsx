@@ -49,6 +49,7 @@ import {ViewerElements} from "../ViewerElements";
 import {DocViewerAppURLs} from "../../DocViewerAppURLs";
 import {AnnotationPopup, useAnnotationPopupBarEnabled} from '../../annotations/annotation_popup/AnnotationPopup';
 import {useAnnotationBar} from '../../AnnotationBarHooks';
+import {useDocumentViewerVisibleElemFocus} from '../UseSidenavDocumentChangeCallbackHook';
 
 interface IProps {
     readonly docURL: URLStr;
@@ -144,6 +145,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
     const linkLoader = useLinkLoader();
     const annotationBarInjector = useAnnotationBar({ noRectTexts: true });
     const newAnnotationBarEnabled = useAnnotationPopupBarEnabled();
+    const docViewerElements = useDocViewerElementsContext();
 
     const doLoad = React.useCallback(async () => {
 
@@ -439,6 +441,11 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
         doLoad()
             .catch(err => log.error("Could not load EPUB: ", err));
     })
+
+    useDocumentViewerVisibleElemFocus(
+        props.docMeta.docInfo.fingerprint,
+        docViewerElements.getDocViewerElement().querySelector<HTMLIFrameElement>("iframe") || undefined
+    );
 
     return renderIter && (
         <DOMTextIndexProvider>
