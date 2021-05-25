@@ -15,10 +15,10 @@ interface IProps {
 export const UndoQueueProvider2 = deepMemo(function UndoQueueProvider(props: IProps) {
     return (
         // <UndoQueueContext.Provider>
-            <>
-                {/*<UndoQueueGlobalHotKeys/>*/}
-                {props.children}
-            </>
+        <>
+            {/*<UndoQueueGlobalHotKeys/>*/}
+            {props.children}
+        </>
         // </UndoQueueContext.Provider>
     );
 });
