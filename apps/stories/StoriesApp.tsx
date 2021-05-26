@@ -267,11 +267,10 @@ const stories = createStoryIndex([
         name: 'ExportDefaultComponentStory',
         component: <ExportDefaultComponentStory/>
     },
-    {
-      name: 'GraphVisualization',
-      component: <GraphVisualization />,
-    },
-
+    // {
+    //   name: 'GraphVisualization',
+    //   component: <GraphVisualization />,
+    // },
 
 ]);
 
