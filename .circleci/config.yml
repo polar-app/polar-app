@@ -347,22 +347,38 @@ workflows:
             - build
             - karma
             - build-webapp
+          filters:
+            branches:
+              only:
+                - master
 
       - deploy_app_getpolarized_io:
           executor: my-docker
           firebase_hosting_target: polar-webapp
           requires:
             - hold_app_getpolarized_io
+          filters:
+            branches:
+              only:
+                - master
 
       - hold_getpolarized_io:
           type: approval
           requires:
             - build-site
+          filters:
+            branches:
+              only:
+                - master
 
       - deploy_getpolarized_io:
           executor: my-docker
           requires:
             - hold_getpolarized_io
+          filters:
+            branches:
+              only:
+                - master
 
   feature_branches:
     jobs:
