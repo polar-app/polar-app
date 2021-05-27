@@ -76,7 +76,7 @@ declare module 'pdfjs-dist' {
   export import RenderParameters = _pdfjs.RenderParameters;
   export import PDFViewerOptions = _pdfjs.PDFViewerOptions;
   export import DocumentLoadingProgress = _pdfjs.DocumentLoadingProgress;
-
+git p
   //
   // All other types. Warning: this should only be used to access types, not
   // functions or variables.
