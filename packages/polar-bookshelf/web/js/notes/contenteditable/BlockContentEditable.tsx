@@ -9,12 +9,10 @@ import {NoteFormatPopper} from "../NoteFormatPopper";
 import {BlockContentCanonicalizer} from "./BlockContentCanonicalizer";
 import {BlockAction} from "./BlockAction";
 import { useHistory } from 'react-router-dom';
-import { autorun } from 'mobx'
 import {CursorPositions} from "./CursorPositions";
 import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
 import {IPasteImageData, usePasteHandler } from '../clipboard/PasteHandlers';
 import {IImageContent} from "../content/IImageContent";
-import {debounce} from 'throttle-debounce';
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed
@@ -99,7 +97,6 @@ export const BlockContentEditable = observer((props: IProps) => {
 
     const createNoteActionsProvider = React.useMemo(() => createActionsProvider(noteLinkActions), [noteLinkActions]);
 
-    const onChange = React.useMemo(() => debounceCalls(350, 20, props.onChange), [props.onChange]);
 
     const handleChange = React.useCallback(() => {
 
@@ -132,8 +129,8 @@ export const BlockContentEditable = observer((props: IProps) => {
         }
 
         contentRef.current = newContent;
-        onChange(newContent);
-    }, [onChange]);
+        props.onChange(newContent);
+    }, [props]);
 
     const updateMarkdownFromEditable = React.useCallback(() => {
         handleChange();
@@ -147,23 +144,19 @@ export const BlockContentEditable = observer((props: IProps) => {
 
     }, [handleChange]);
 
-    React.useEffect(() =>
-        autorun(() => {
+    React.useEffect(() => {
+        if (blocksStore.active?.id === props.id) {
+            if (divRef.current) {
 
-            if (blocksStore.active?.id === props.id) {
-
-                if (divRef.current) {
-
-                    if (blocksStore.active.pos !== undefined) {
-                        updateCursorPosition(divRef.current, blocksStore.active)
-                    }
-
-                    divRef.current.focus();
-
+                if (blocksStore.active.pos !== undefined) {
+                    updateCursorPosition(divRef.current, blocksStore.active)
                 }
 
+                divRef.current.focus();
+
             }
-        }));
+        }
+    }, [props.id, updateCursorPosition, blocksStore.active]);
 
     React.useEffect(() => {
 
@@ -526,32 +519,4 @@ function doUpdateCursorPosition(editor: HTMLDivElement, pos: 'start' | 'end' | n
 
     }
 
-}
-
-
-type GenericFunction = (...args: any[]) => any;
-type DebouncedFunction<T extends GenericFunction> = (...args: Parameters<T>) => any;
-
-export function debounceCalls<T extends GenericFunction>(
-    delay = 0,
-    calls = 0,
-    callback: T,
-): DebouncedFunction<T> {
-    let count = 0;
-    const executor: DebouncedFunction<T> = (...args) => {
-        count = 0;
-        callback(...args);
-    };
-    let debounced = debounce(delay, executor);
-
-    return (...args) => {
-        count += 1;
-        if (count >= calls) {
-            executor(...args);
-            debounced.cancel();
-            debounced = debounce(delay, executor);
-        } else {
-            debounced(...args);
-        }
-    };
 }
