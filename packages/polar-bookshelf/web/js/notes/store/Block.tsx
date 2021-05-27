@@ -1,6 +1,6 @@
 import {IBlock, IBlockLink, NamespaceIDStr, TMutation, UIDStr} from "./IBlock";
 import {INewChildPosition, BlockIDStr, BlockContent, IBlockContent} from "./BlocksStore";
-import {action, computed, makeObservable, observable} from "mobx"
+import {action, computed, makeObservable, observable, toJS} from "mobx"
 import { ISODateTimeString, ISODateTimeStrings } from "polar-shared/src/metadata/ISODateTimeStrings";
 import { Contents } from "../content/Contents";
 import {PositionalArrays} from "./PositionalArrays";
@@ -54,7 +54,6 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     /**
      * The linked wiki references to other blocks.
      */
-    @observable private _links: PositionalArray<IBlockLink>;
 
     @observable private _mutation: TMutation;
 
@@ -72,7 +71,6 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         this._updated = opts.updated;
         this._items = {...opts.items};
         this._content = Contents.create(opts.content);
-        this._links = {...opts.links};
         this._mutation = opts.mutation;
 
         makeObservable(this)
@@ -121,14 +119,6 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @computed get content() {
         return this._content;
-    }
-
-    @computed get links(): PositionalArray<IBlockLink> {
-        return this._links;
-    }
-
-    @computed get linksAsArray(): ReadonlyArray<IBlockLink> {
-        return PositionalArrays.toArray(this._links);
     }
 
     @computed get mutation() {
@@ -341,6 +331,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         return PositionalArrays.toArray(this._items).includes(id);
     }
 
+    /*
     public hasLinksMutated(links: ReadonlyArray<IBlockLink>): boolean {
         return ! deepEqual(PositionalArrays.toArray(this._links), links);
 
@@ -405,6 +396,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         PositionalArrays.set(this._links, block.links);
 
     }
+    */
 
     /**
      * Perform a bulk/single mutation of the Block.
@@ -459,10 +451,9 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
             parents: [...this._parents],
             created: this._created,
             updated: this._updated,
-            items: {...this._items},
-            content: this._content.toJSON() as any,
-            links: {...this._links},
-            mutation: this._mutation
+            items: toJS(this.items),
+            content: this._content.toJSON() as C,
+            mutation: this._mutation,
         };
 
     }

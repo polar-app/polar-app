@@ -18,6 +18,7 @@ describe('BlocksStoreMutations', () => {
                 content: {
                     type: 'markdown',
                     data: 'hello world',
+                    links: [],
                 },
                 items: PositionalArrays.create(['1', '2'])
             });
@@ -28,7 +29,8 @@ describe('BlocksStoreMutations', () => {
                 parents: ["100"],
                 content: {
                     type: 'markdown',
-                    data: 'hello world'
+                    data: 'hello world',
+                    links: [],
                 },
                 items: PositionalArrays.create(['1', '2', '3'])
             });
@@ -45,7 +47,8 @@ describe('BlocksStoreMutations', () => {
                 parents: ["100"],
                 content: {
                     type: 'markdown',
-                    data: 'hello world'
+                    data: 'hello world',
+                    links: [],
                 }
             });
 
@@ -55,7 +58,8 @@ describe('BlocksStoreMutations', () => {
                 parents: ["100"],
                 content: {
                     type: 'markdown',
-                    data: 'hello world 2'
+                    data: 'hello world 2',
+                    links: [],
                 }
             });
 
@@ -71,7 +75,8 @@ describe('BlocksStoreMutations', () => {
                 parents: ["100"],
                 content: {
                     type: 'markdown',
-                    data: 'hello world'
+                    data: 'hello world',
+                    links: [],
                 },
                 items: PositionalArrays.create(['1', '2'])
             });
@@ -82,7 +87,8 @@ describe('BlocksStoreMutations', () => {
                 parents: ["100"],
                 content: {
                     type: 'markdown',
-                    data: 'hello world 2'
+                    data: 'hello world 2',
+                    links: [],
                 },
                 items: PositionalArrays.create(['1', '2', '3'])
 
@@ -100,7 +106,8 @@ describe('BlocksStoreMutations', () => {
                 parents: ["100"],
                 content: {
                     type: 'markdown',
-                    data: 'hello world'
+                    data: 'hello world',
+                    links: [],
                 },
                 items: PositionalArrays.create(['1', '2'])
             });
@@ -111,7 +118,8 @@ describe('BlocksStoreMutations', () => {
                 parents: ["100"],
                 content: {
                     type: 'markdown',
-                    data: 'hello world'
+                    data: 'hello world',
+                    links: [],
                 },
                 items: PositionalArrays.create(['1', '2'])
 

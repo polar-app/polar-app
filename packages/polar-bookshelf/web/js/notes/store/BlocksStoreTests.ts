@@ -36,7 +36,6 @@ export namespace BlocksStoreTests {
             parent: opts.parent || undefined,
             parents: opts.parents,
             items: opts.items || {},
-            links: opts.links || {},
             mutation: opts.mutation || 0
         }
 

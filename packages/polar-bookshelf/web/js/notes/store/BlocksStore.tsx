@@ -1,6 +1,6 @@
 import * as React from "react";
 import {createReactiveStore} from "../../react/store/ReactiveStore";
-import {action, computed, makeObservable, observable} from "mobx"
+import {action, computed, makeObservable, observable, toJS} from "mobx"
 import {IDStr, MarkdownStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Arrays} from "polar-shared/src/util/Arrays";
@@ -84,6 +84,10 @@ export interface DoPutOpts {
      */
     readonly newExpand?: BlockIDStr;
 
+    /**
+     * Force update
+     */
+    readonly forceUpdate?: boolean;
 }
 
 export type NewBlockPosition = 'before' | 'after' | 'split';
@@ -374,7 +378,7 @@ export class BlocksStore implements IBlocksStore {
 
             const existingBlock = this.getBlock(blockData.id);
 
-            if (existingBlock && existingBlock.mutation === blockData.mutation) {
+            if (!opts.forceUpdate && existingBlock && existingBlock.mutation >= blockData.mutation) {
                 // skip this update as it hasn't changed
                 continue;
             }
@@ -386,12 +390,16 @@ export class BlocksStore implements IBlocksStore {
                 this._indexByName[blockData.content.data] = block.id;
             }
 
-            // FIXME: there's a bug here in that I think if a link is removed,
-            // vs the existing link, we don't remove the old one.
-            for (const link of block.linksAsArray) {
-                this._reverse.add(link.id, block.id);
+            if (block.content.type === "markdown") {
+                if (existingBlock && existingBlock.content.type === "markdown") {
+                    for (const link of existingBlock.content.links) {
+                        this._reverse.remove(link.id, block.id);
+                    }
+                }
+                for (const link of block.content.links) {
+                    this._reverse.add(link.id, block.id);
+                }
             }
-
         }
 
         this._active = opts.newActive ? opts.newActive : this._active;
@@ -411,7 +419,11 @@ export class BlocksStore implements IBlocksStore {
     }
 
     public getBlock(id: BlockIDStr): Block | undefined {
-        return this._index[id] || undefined;
+        const block = this._index[id];
+        if (block) {
+            return new Block(block.toJSON());
+        }
+        return undefined;
     }
 
     public getBlockContentData(id: BlockIDStr): string | undefined {
@@ -910,7 +922,7 @@ export class BlocksStore implements IBlocksStore {
             const offset = CursorPositions.renderedTextLength(targetBlock.content.data);
 
             const items = [...targetBlock.itemsAsArray, ...sourceBlock.itemsAsArray];
-            const links = [...targetBlock.linksAsArray, ...sourceBlock.linksAsArray];
+            const links = [...targetBlock.content.links, ...sourceBlock.content.links];
 
             const newContent = targetBlock.content.data + sourceBlock.content.data;
 
@@ -918,11 +930,11 @@ export class BlocksStore implements IBlocksStore {
 
                 targetBlock.setContent(new MarkdownContent({
                     type: 'markdown',
-                    data: newContent
+                    data: newContent,
+                    links,
                 }));
 
                 targetBlock.setItems(items);
-                targetBlock.setLinks(links);
 
             })
 
@@ -1008,7 +1020,6 @@ export class BlocksStore implements IBlocksStore {
                     created: now,
                     updated: now,
                     items: {},
-                    links: {},
                     mutation: 0
                 };
 
@@ -1077,7 +1088,6 @@ export class BlocksStore implements IBlocksStore {
                                                                               targetName: BlockNameStr,
                                                                               undoContent: MarkdownStr,
                                                                               content: MarkdownStr) {
-
         const sourceBlock = this.getBlock(sourceBlockID)!;
 
         // if the existing target block exists, use that block name.
@@ -1103,23 +1113,23 @@ export class BlocksStore implements IBlocksStore {
                 throw new Error("Unable to find block: " + sourceBlockID);
             }
 
-            if (sourceBlock.content.type !== 'markdown') {
+            if (sourceBlock.content.type !== 'markdown' ) {
                 throw new Error("Source block not markdown: " + sourceBlock.content.type);
             }
 
             // create the new block - the sourceID is used for the ref to compute the nspace.
             const targetBlockID = this.doCreateNewNamedBlock(targetName, {newBlockID: targetID, nspace: sourceBlock.nspace});
+            const blockContent = sourceBlock.content;
 
             sourceBlock.withMutation(() => {
 
-                sourceBlock.addLink({
-                    id: targetBlockID,
-                    text: targetName
-                });
-
                 sourceBlock.setContent({
                     type: "markdown",
-                    data: content
+                    data: content,
+                    links: [
+                        ...toJS(blockContent.links),
+                        {id: targetBlockID, text: targetName},
+                    ],
                 });
 
             })
@@ -1138,13 +1148,18 @@ export class BlocksStore implements IBlocksStore {
                 throw new Error("Unable to find block: " + sourceBlockID);
             }
 
-            sourceBlock.withMutation(() => {
+            if (! (sourceBlock.content instanceof MarkdownContent)) {
+                throw new Error("Source block not markdown: " + sourceBlock.content.type);
+            }
 
-                sourceBlock.removeLink(targetID);
+            const sourceMarkdownBlock = sourceBlock as Block<MarkdownContent>;
+
+            sourceBlock.withMutation(() => {
 
                 sourceBlock.setContent({
                     type: "markdown",
-                    data: undoContent
+                    data: undoContent,
+                    links: sourceMarkdownBlock.content.links.filter(({id}) => id !== targetID),
                 })
 
             }, restore);
@@ -1277,7 +1292,8 @@ export class BlocksStore implements IBlocksStore {
 
                 const content = opts.content || {
                     type: 'markdown',
-                    data: split?.suffix || ''
+                    data: split?.suffix || '',
+                    links: [],
                 };
 
                 return {
@@ -1291,7 +1307,6 @@ export class BlocksStore implements IBlocksStore {
                     created: now,
                     updated: now,
                     items,
-                    links: {},
                     mutation: 0
                 };
 
@@ -1335,7 +1350,8 @@ export class BlocksStore implements IBlocksStore {
 
                     currentBlock.setContent({
                         type: 'markdown',
-                        data: split.prefix
+                        data: split.prefix,
+                        links: currentBlock.content.type === "markdown" ? currentBlock.content.links : [],
                     });
 
                     if (newBlockInheritItems) {

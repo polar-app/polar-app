@@ -3,7 +3,6 @@ import {IBlock} from "../../../web/js/notes/store/IBlock";
 import {PositionalArrays} from "../../../web/js/notes/store/PositionalArrays";
 
 export namespace MockBlocks {
-    import PositionalArray = PositionalArrays.PositionalArray;
 
     export function create() {
 
@@ -29,7 +28,6 @@ export namespace MockBlocks {
                     '104',
                     '105'
                 ]),
-                links: {},
                 mutation: 0
             },
             {
@@ -42,10 +40,10 @@ export namespace MockBlocks {
                 updated: now,
                 content: {
                     type: 'markdown',
-                    data: '[Lasted](https://www.example.com) from 1939 to 1945'
+                    data: '[Lasted](https://www.example.com) from 1939 to 1945',
+                    links: [],
                 },
                 items: {},
-                links: {},
                 mutation: 0
             },
             {
@@ -58,10 +56,10 @@ export namespace MockBlocks {
                 updated: now,
                 content: {
                     type: 'markdown',
-                    data: 'Axis Powers: Germany, Italy, Japan'
+                    data: 'Axis Powers: Germany, Italy, Japan',
+                    links: [],
                 },
                 items: {},
-                links: {},
                 mutation: 0
             },
             {
@@ -74,18 +72,18 @@ export namespace MockBlocks {
                 updated: now,
                 content: {
                     type: 'markdown',
-                    data: 'Allied Powers: United States, United Kingdom, [[Canada]], [[Russia]].'
+                    data: 'Allied Powers: United States, United Kingdom, [[Canada]], [[Russia]].',
+                    links: [
+                        {
+                            id: '109',
+                            text: 'Canada'
+                        },
+                        {
+                            id: '108',
+                            text: 'Russia'
+                        }
+                    ],
                 },
-                links: PositionalArrays.create([
-                    {
-                        id: '109',
-                        text: 'Canada'
-                    },
-                    {
-                        id: '108',
-                        text: 'Russia'
-                    }
-                ]),
                 items: PositionalArrays.create([
                     '106'
                 ]),
@@ -118,7 +116,6 @@ export namespace MockBlocks {
                     data: "Russia"
                 },
                 items: {},
-                links: {},
                 mutation: 0,
             },
             {
@@ -136,7 +133,6 @@ export namespace MockBlocks {
                 items: PositionalArrays.create([
                     '111'
                 ]),
-                links: {},
                 mutation: 0,
             },
             {
@@ -149,10 +145,10 @@ export namespace MockBlocks {
                 updated: now,
                 content: {
                     type: 'markdown',
-                    data: 'Canada is north of the United States'
+                    data: 'Canada is north of the United States',
+                    links: [],
                 },
                 items: {},
-                links: {},
                 mutation: 0,
             },
             {
@@ -165,15 +161,15 @@ export namespace MockBlocks {
                 updated: now,
                 content: {
                     type: 'markdown',
-                    data: 'Lead by Franklin D. Roosevelt, [[Winston Churchill]], and Joseph Stalin '
+                    data: 'Lead by Franklin D. Roosevelt, [[Winston Churchill]], and Joseph Stalin ',
+                    links: [
+                        {
+                            id: '112',
+                            text: 'Winston Churchill'
+                        }
+                    ],
                 },
                 items: {},
-                links: PositionalArrays.create([
-                    {
-                        id: '112',
-                        text: 'Winston Churchill'
-                    }
-                ]),
                 mutation: 0,
             },
             {
@@ -188,7 +184,6 @@ export namespace MockBlocks {
                     type: 'name',
                     data: "Germany"
                 },
-                links: {},
                 items: PositionalArrays.create([
                     '110'
                 ]),
@@ -204,14 +199,14 @@ export namespace MockBlocks {
                 updated: now,
                 content: {
                     type: 'markdown',
-                    data: 'Germany Germany (German: Deutschland, German pronunciation: [ˈdɔʏtʃlant]), officially the Federal Republic of Germany (German: Bundesrepublik Deutschland, About this soundlisten),[e] is a country in Central and Western Europe and one of the major participants of [[World War II]]'
+                    data: 'Germany Germany (German: Deutschland, German pronunciation: [ˈdɔʏtʃlant]), officially the Federal Republic of Germany (German: Bundesrepublik Deutschland, About this soundlisten),[e] is a country in Central and Western Europe and one of the major participants of [[World War II]]',
+                    links: [
+                        {
+                            id: '102',
+                            text: 'World War II'
+                        }
+                    ]
                 },
-                links: PositionalArrays.create([
-                    {
-                        id: '102',
-                        text: 'World War II'
-                    }
-                ]),
                 items: {},
                 mutation: 0,
             },
@@ -227,7 +222,6 @@ export namespace MockBlocks {
                     type: 'name',
                     data: 'Winston Churchill'
                 },
-                links: {},
                 items: {},
                 mutation: 0,
             }

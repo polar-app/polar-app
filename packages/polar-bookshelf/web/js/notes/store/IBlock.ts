@@ -70,11 +70,6 @@ export interface IBlock<C extends IBlockContent = IBlockContent> {
     readonly content: C;
 
     /**
-     * The linked wiki references to other notes.
-     */
-    readonly links: PositionalArray<IBlockLink>;
-
-    /**
      * The unique mutation number that's incremented each time we change the object.
      */
     readonly mutation: TMutation;
