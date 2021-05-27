@@ -1,42 +1,46 @@
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import stream from 'stream'
+import stream, {PassThrough} from 'stream'
 import * as util from 'util'
 import {Datastores} from "../datastore/Datastores";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Lazy} from "polar-shared/src/util/Lazy";
 import {File} from '@google-cloud/storage';
 import {ArchiveWritable} from "./ArchiveWritable";
-import {SnapshotTransformer} from "./SnapshotTransformer";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
+import {SnapshotTransformer} from "./SnapshotTransformer";
 
 const storageConfig = Lazy.create(() => Datastores.createStorage());
 const storage = Lazy.create(() => storageConfig().storage);
 const firebaseApp = Lazy.create(() => FirebaseAdmin.app());
 
-export namespace ArchiveStreams {
+export namespace UserBackupCreator {
 
     interface IUserDataArchive {
         readonly url: string;
     }
 
-    async function copyCollectionToStorageFile(config: {
+    const mergeStreams = (...streams: any[]) => {
+        let pass = new PassThrough({
+            objectMode: true,
+        })
+        let waiting = streams.length
+        for (let stream of streams) {
+            pass = stream.pipe(pass, {end: false})
+            stream.once('end', () => --waiting === 0 && pass.emit('end'))
+        }
+        return pass
+    }
+
+    async function createStreamFromCollection(config: {
         collection: string,
         uid: string,
-        storageFile: File,
     }) {
-        const collectionStream = firebaseApp()
+        return firebaseApp()
             .firestore()
             .collection(config.collection)
             .where('uid', '==', config.uid)
-            .stream();
-
-        await util.promisify(stream.pipeline)(
-            collectionStream,
-            new SnapshotTransformer(config.collection, {highWaterMark: 1}),
-            new ArchiveWritable(config.storageFile.createWriteStream(), {highWaterMark: 1})
-        );
-
-        return true;
+            .stream()
+            .pipe(new SnapshotTransformer(config.collection, {highWaterMark: 1}));
     }
 
     export async function create(uid: IDStr): Promise<IUserDataArchive> {
@@ -45,17 +49,24 @@ export namespace ArchiveStreams {
         const filename = `${now}.zip`;
         const storageFile = createFileInTmpBucket(`snapshots/${filename}`);
 
-        await copyCollectionToStorageFile({
+        const writeStream = storageFile.createWriteStream();
+
+        const streamForDocMeta = await createStreamFromCollection({
             collection: 'doc_meta',
             uid,
-            storageFile,
         });
 
-        await copyCollectionToStorageFile({
+        const streamForDocInfo = await createStreamFromCollection({
             collection: 'doc_info',
             uid,
-            storageFile,
         });
+
+        await util.promisify(stream.pipeline)(
+            mergeStreams(streamForDocMeta, streamForDocInfo),
+            new ArchiveWritable(writeStream, {highWaterMark: 1})
+        )
+
+        writeStream.end();
 
         await storageFile.setMetadata({contentDisposition: `attachment; filename="${filename}"`})
 

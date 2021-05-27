@@ -1,5 +1,5 @@
 import {IDUser} from '../util/IDUsers';
-import {ArchiveStreams} from "./ArchiveStreams";
+import {UserBackupCreator} from "./UserBackupCreator";
 import {Sendgrid} from "../Sendgrid";
 
 export interface CreateSnapshotRequest {
@@ -15,7 +15,7 @@ export class CreateSnapshotFunctions {
     public static async exec(idUser: IDUser,
                              request: CreateSnapshotRequest): Promise<CreateSnapshotResponse> {
 
-        const {url} = await ArchiveStreams.create(idUser.uid);
+        const {url} = await UserBackupCreator.create(idUser.uid);
 
         await Sendgrid.send({
             to: idUser.user.email,
