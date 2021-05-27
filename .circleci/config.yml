@@ -348,24 +348,11 @@ workflows:
             - karma
             - build-webapp
 
-      - hold_beta_getpolarized_io:
-          type: approval
-          requires:
-            - build
-            - karma
-            - build-webapp
-
       - deploy_app_getpolarized_io:
           executor: my-docker
           firebase_hosting_target: polar-webapp
           requires:
             - hold_app_getpolarized_io
-
-      - deploy_app_getpolarized_io:
-          executor: my-docker
-          firebase_hosting_target: polar-beta
-          requires:
-            - hold_beta_getpolarized_io
 
       - hold_getpolarized_io:
           type: approval

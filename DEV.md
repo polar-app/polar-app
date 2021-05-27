@@ -13,7 +13,10 @@
 
 - Follow the following instructions
 
-- login to bytesafe and then use npm login with your credentials.
+- Copy the bytesafe npm credentials to your main .npmrc 
+
+```cp ./npmrc.bytesafe ~/.npmrc```
+
 
 ```bash
 

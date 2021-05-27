@@ -53,7 +53,9 @@ console.log("__dirname:    " + __dirname);
 // dist/public is setup and that webpack was run first.
 
 if (isDev && bundle === null) {
-    throw new Error("MUST export WEBPACK_BUNDLE to either 'repository' or 'stories' in serve mode.");
+    console.error("ERROR: WEBPACK_BUNDLE not defined!");
+    console.error("MUST export WEBPACK_BUNDLE to either 'repository' or 'stories' in serve mode.");
+    process.exit(1);
 }
 
 function createRules() {

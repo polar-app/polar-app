@@ -9,7 +9,6 @@ import {NoteFormatPopper} from "../NoteFormatPopper";
 import {BlockContentCanonicalizer} from "./BlockContentCanonicalizer";
 import {BlockAction} from "./BlockAction";
 import { useHistory } from 'react-router-dom';
-import { autorun } from 'mobx'
 import {CursorPositions} from "./CursorPositions";
 import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
 import {IPasteImageData, usePasteHandler } from '../clipboard/PasteHandlers';
@@ -98,6 +97,7 @@ export const BlockContentEditable = observer((props: IProps) => {
 
     const createNoteActionsProvider = React.useMemo(() => createActionsProvider(noteLinkActions), [noteLinkActions]);
 
+
     const handleChange = React.useCallback(() => {
 
         if (! divRef.current) {
@@ -130,7 +130,6 @@ export const BlockContentEditable = observer((props: IProps) => {
 
         contentRef.current = newContent;
         props.onChange(newContent);
-
     }, [props]);
 
     const updateMarkdownFromEditable = React.useCallback(() => {
@@ -145,23 +144,19 @@ export const BlockContentEditable = observer((props: IProps) => {
 
     }, [handleChange]);
 
-    React.useEffect(() =>
-        autorun(() => {
+    React.useEffect(() => {
+        if (blocksStore.active?.id === props.id) {
+            if (divRef.current) {
 
-            if (blocksStore.active?.id === props.id) {
-
-                if (divRef.current) {
-
-                    if (blocksStore.active.pos !== undefined) {
-                        updateCursorPosition(divRef.current, blocksStore.active)
-                    }
-
-                    divRef.current.focus();
-
+                if (blocksStore.active.pos !== undefined) {
+                    updateCursorPosition(divRef.current, blocksStore.active)
                 }
 
+                divRef.current.focus();
+
             }
-        }));
+        }
+    }, [props.id, updateCursorPosition, blocksStore.active]);
 
     React.useEffect(() => {
 

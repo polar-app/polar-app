@@ -56,9 +56,9 @@ describe("BlocksStoreUndoQueues", () => {
                     "items": {},
                     "content": {
                         "type": "markdown",
-                        "data": "Axis Powers: Germany, Italy, Japan"
+                        "data": "Axis Powers: Germany, Italy, Japan",
+                        "links": [],
                     },
-                    "links": {},
                     "mutation": 0
                 },
                 "after": {
@@ -73,9 +73,9 @@ describe("BlocksStoreUndoQueues", () => {
                     "items": {},
                     "content": {
                         "type": "markdown",
-                        "data": "Axis "
+                        "data": "Axis ",
+                        "links": [],
                     },
-                    "links": {},
                     "mutation": 1
                 }
             };
@@ -115,6 +115,7 @@ describe("BlocksStoreUndoQueues", () => {
                 content: {
                     type: 'markdown',
                     data: 'static block',
+                    links: [],
                 },
                 items: PositionalArrays.create(['1', '2'])
             });
@@ -127,6 +128,7 @@ describe("BlocksStoreUndoQueues", () => {
                 content: {
                     type: 'markdown',
                     data: 'removed block',
+                    links: [],
                 },
                 items: PositionalArrays.create(['1', '2'])
             });
@@ -142,6 +144,7 @@ describe("BlocksStoreUndoQueues", () => {
                     content: {
                         type: 'markdown',
                         data: 'updated block',
+                        links: [],
                     },
                     items: PositionalArrays.create(['1', '2'])
                 }),
@@ -157,6 +160,7 @@ describe("BlocksStoreUndoQueues", () => {
                 content: {
                     type: 'markdown',
                     data: 'added block',
+                    links: [],
                 },
                 items: PositionalArrays.create(['1', '2'])
             });
@@ -173,6 +177,7 @@ describe("BlocksStoreUndoQueues", () => {
                     content: {
                         type: 'markdown',
                         data: 'updated block 2',
+                        links: [],
                     },
                     items: PositionalArrays.create(['1', '2']),
                     mutation: 1
@@ -199,13 +204,13 @@ describe("BlocksStoreUndoQueues", () => {
                         ],
                         "content": {
                             "type": "markdown",
-                            "data": "added block"
+                            "data": "added block",
+                            "links": [],
                         },
                         "items": {
                             "1": "1",
                             "2": "2"
                         },
-                        "links": {},
                         "mutation": 0
                     }
                 },
@@ -225,13 +230,13 @@ describe("BlocksStoreUndoQueues", () => {
                         ],
                         "content": {
                             "type": "markdown",
-                            "data": "removed block"
+                            "data": "removed block",
+                            "links": [],
                         },
                         "items": {
                             "1": "1",
                             "2": "2"
                         },
-                        "links": {},
                         "mutation": 0
                     }
                 },
@@ -251,13 +256,13 @@ describe("BlocksStoreUndoQueues", () => {
                         ],
                         "content": {
                             "type": "markdown",
-                            "data": "updated block"
+                            "data": "updated block",
+                            "links": [],
                         },
                         "items": {
                             "1": "1",
                             "2": "2"
                         },
-                        "links": {},
                         "mutation": 0
                     },
                     "after": {
@@ -273,14 +278,14 @@ describe("BlocksStoreUndoQueues", () => {
                         ],
                         "content": {
                             "type": "markdown",
-                            "data": "updated block 2"
+                            "data": "updated block 2",
+                            "links": [],
                         },
                         "items": {
                             "1": "1",
                             "2": "2"
                         },
                         "mutation": 1,
-                        "links": {}
                     }
                 }
             ]);

@@ -67,13 +67,13 @@ describe("BlocksPersistence", () => {
                 ],
                 "content": {
                     "type": "markdown",
-                    "data": "added block"
+                    "data": "added block",
+                    "links": [],
                 },
                 "items": {
                     "1": "1",
                     "2": "2"
                 },
-                "links": {},
                 "mutation": 0
             }
         };
@@ -102,6 +102,7 @@ describe("BlocksPersistence", () => {
             content: {
                 type: 'markdown',
                 data: 'updated block',
+                links: [],
             },
             items: PositionalArrays.create(['1', '2'])
         });
@@ -126,6 +127,7 @@ describe("BlocksPersistence", () => {
             content: {
                 type: 'markdown',
                 data: 'updated block 2',
+                links: [],
             },
             items: PositionalArrays.create(['1', '2', '3']),
             mutation: 1
@@ -156,6 +158,7 @@ describe("BlocksPersistence", () => {
             content: {
                 type: 'markdown',
                 data: 'updated block',
+                links: [],
             },
             items: {
                 '1': '0x001',
@@ -181,6 +184,7 @@ describe("BlocksPersistence", () => {
             content: {
                 type: 'markdown',
                 data: 'updated block 2',
+                links: [],
             },
             items: {
                 '1': '0x001',

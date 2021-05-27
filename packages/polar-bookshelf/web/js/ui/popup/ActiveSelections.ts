@@ -63,10 +63,6 @@ export class ActiveSelections {
                         return;
                     }
 
-                    if (activeSelection) {
-                        handleDestroyedSelection();
-                    }
-
                     if (hasActiveTextSelection) {
 
                         const mouseDirection: MouseDirection = point.y - originPoint!.y < 0 ? 'up' : 'down';

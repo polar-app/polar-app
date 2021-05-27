@@ -1,6 +1,7 @@
 import {
     IBaseKeyboardShortcut,
     IKeyboardShortcutWithHandler,
+    ShortcutEntry,
 } from "../keyboard_shortcuts/KeyboardShortcutsStore";
 import React from "react";
 import Table from "@material-ui/core/Table";
@@ -12,7 +13,7 @@ import {ArrayListMultimap} from "polar-shared/src/util/Multimap";
 import useTheme from "@material-ui/core/styles/useTheme";
 
 interface IProps {
-    readonly shortcuts: {[binding: string]: IKeyboardShortcutWithHandler};
+    readonly shortcuts: {[binding: string]: ShortcutEntry};
 }
 
 export const ActiveKeyboardShortcutsTable = (props: IProps) => {
@@ -23,7 +24,7 @@ export const ActiveKeyboardShortcutsTable = (props: IProps) => {
 
         const multimap = new ArrayListMultimap<string, IKeyboardShortcutWithHandler>();
 
-        for (const shortcut of Object.values(shortcuts)) {
+        for (const {active: shortcut} of Object.values(shortcuts)) {
             multimap.put(shortcut.group || '', shortcut);
         }
 

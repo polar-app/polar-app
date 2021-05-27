@@ -35,7 +35,7 @@ export namespace AccountActions {
 
                 if (key !== null) {
 
-                    if (key.startsWith('pref:') || key.startsWith('cache":')) {
+                    if (key.startsWith('pref:') || key.startsWith('cache:')) {
                         localStorage.removeItem(key);
                     }
 

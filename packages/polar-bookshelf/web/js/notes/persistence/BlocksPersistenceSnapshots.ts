@@ -77,8 +77,6 @@ export function createEmptyBlocksPersistenceSnapshot(): IBlocksPersistenceSnapsh
 
 }
 
-// FIXME write a function to take the snapshot and update teh store..
-
 export function useFirestoreBlocksPersistenceSnapshots(listener: (snapshot: IBlocksPersistenceSnapshot) => void) {
 
     const {user, firestore} = useFirestore();

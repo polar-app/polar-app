@@ -61,9 +61,17 @@ module.exports = {
         //     "FunctionExpression": {
         //         "parameters": "off"
         //     },
-        //     "SwitchCase": 1,e
-        //     "MemberExpression": "off"
-        // }
+        //     // "SwitchCase": 1,
+        //     "outerIIFEBody": "off",
+        //     "MemberExpression": "off",
+        //     "CallExpression": {
+        //         "arguments": "first"
+        //     },
+        //     "ArrayExpression": "off",
+        //     "ObjectExpression": "off",
+        //     // "ImportExpression": "off",
+        //     "SwitchCase": 1
+        // }],
         //
         // ]
         // "@typescript-eslint/adjacent-overload-signatures": "error",

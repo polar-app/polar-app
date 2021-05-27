@@ -20,7 +20,7 @@ computeRemotes() {
 }
 
 computeRemoteIDs() {
-
+I
     for origin in `computeRemotes`; do
         echo -n "${origin}: "
         fetchRemoteID ${origin}

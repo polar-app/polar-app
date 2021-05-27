@@ -237,6 +237,7 @@ export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
         }
 
         return arrayStream(Object.values(shortcutsRef.current))
+            .map(x => x.active)
             .flatMap(toKeyToHandler)
             .collect();
 

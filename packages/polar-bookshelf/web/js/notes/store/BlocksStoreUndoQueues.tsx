@@ -320,19 +320,18 @@ export namespace BlocksStoreUndoQueues {
 
             }
 
-            const doHandleUpdated = (): boolean => {
+            const doHandleUpdated = () => {
 
                 const comparisonBlock = computeComparisonBlock();
 
                 const opts = createWithMutationOpts(mutation);
 
-                return block.withMutation(() => {
+                block.withMutation(() => {
 
                     if (mutationTargets.includes('content')) {
 
                         withMutationComparison(() => {
                             block.setContent(comparisonBlock.content);
-                            block.setLinks(PositionalArrays.toArray(comparisonBlock.links));
                         });
 
                     }
@@ -351,6 +350,7 @@ export namespace BlocksStoreUndoQueues {
 
                 }, opts);
 
+                blocksStore.doPut([block], {forceUpdate: true});
             }
 
             doHandleUpdated();
@@ -373,7 +373,7 @@ export namespace BlocksStoreUndoQueues {
             const block = mutation.type === 'added' ? mutation.added : mutation.removed;
 
             if (! blocksStore.containsBlock(mutation.id)) {
-                blocksStore.doPut([block]);
+                blocksStore.doPut([block], {forceUpdate: true});
             } else {
                 throw new Error("Block missing: " + mutation.id)
             }
