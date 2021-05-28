@@ -9,7 +9,7 @@ describe('WikiLinksToHTML', function() {
 
     });
 
-    it("escape and unescape", async function() {
+    it("escape and unescape", function() {
 
         const input = "[[Hello World]]"
 
@@ -21,5 +21,11 @@ describe('WikiLinksToHTML', function() {
 
     });
 
+    it("should not allow brackets inside of the special link notation", function() {
+        const input = "Potato [[ test [[hello]]";
+        const expected = "Potato [[ test <a href=\"#hello\">hello</a>";
+
+        assert.equal(WikiLinksToHTML.escape(input), expected);
+    });
 });
 
