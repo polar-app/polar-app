@@ -8,7 +8,7 @@ import {useBlockContentEditableElement} from "./BlockContentEditable";
 import { observer } from "mobx-react-lite"
 import {BlockIDStr, useBlocksStore} from '../store/BlocksStore';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import {MarkdownContentEscaper} from "../MarkdownContentEscaper";
+import {MarkdownContentConverter} from "../MarkdownContentConverter";
 
 const THINSP = ' ';
 
@@ -128,10 +128,10 @@ function useContentEditableMarkdownReader() {
 
     return React.useCallback(() => {
 
-        const escaper = MarkdownContentEscaper;
+        const converter = MarkdownContentConverter;
         const div = divRef.current!.cloneNode(true) as HTMLElement;
         const html = div.innerHTML;
-        return escaper.unescape(html);
+        return converter.toMarkdown(html);
 
     }, [divRef]);
 
@@ -295,11 +295,11 @@ export const BlockAction = observer((props: IProps) => {
 
     const captureInitialMarkdownContent = React.useCallback(() => {
 
-        const escaper = MarkdownContentEscaper;
+        const converter = MarkdownContentConverter;
         const div = divRef.current!.cloneNode(true) as HTMLElement;
         div.querySelector('.action-input')!.outerHTML = '';
         const html = div.innerHTML;
-        return escaper.unescape(html);
+        return converter.toMarkdown(html);
 
     }, [divRef]);
 

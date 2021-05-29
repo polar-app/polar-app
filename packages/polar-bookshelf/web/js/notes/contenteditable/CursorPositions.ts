@@ -1,5 +1,5 @@
 import {MarkdownStr} from "polar-shared/src/util/Strings";
-import {MarkdownContentEscaper} from "../MarkdownContentEscaper";
+import {MarkdownContentConverter} from "../MarkdownContentConverter";
 
 export namespace CursorPositions {
 
@@ -192,7 +192,7 @@ export namespace CursorPositions {
      * same length because of issues like **bold**.
      */
     export function renderedTextLength(markdown: MarkdownStr) {
-        const html = MarkdownContentEscaper.escape(markdown);
+        const html = MarkdownContentConverter.toHTML(markdown);
         const div = document.createElement('div');
         div.innerHTML = html;
         return (div.innerText || div.textContent || '').length;
