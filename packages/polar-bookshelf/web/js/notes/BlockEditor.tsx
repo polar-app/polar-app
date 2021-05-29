@@ -3,7 +3,7 @@ import {NoteNavigation} from "./NoteNavigation";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
-import {MarkdownContentEscaper} from "./MarkdownContentEscaper";
+import {MarkdownContentConverter} from "./MarkdownContentConverter";
 import {BlockIDStr, useBlocksStore} from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
 import {BlockContentEditable} from "./contenteditable/BlockContentEditable";
@@ -89,11 +89,11 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
     const block = blocksStore.getBlock(id);
     const data = blocksStore.getBlockContentData(id);
 
-    const escaper = MarkdownContentEscaper;
+    const converter = MarkdownContentConverter;
 
     const handleChange = React.useCallback((content: HTMLStr) => {
 
-        const markdown = escaper.unescape(content);
+        const markdown = converter.toMarkdown(content);
         const block = blocksStore.getBlock(id);
 
         if (block && block.content.type === "markdown") {
@@ -104,11 +104,11 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
             }))
         }
 
-    }, [escaper, blocksStore, id]);
+    }, [converter, blocksStore, id]);
 
     const content = React.useMemo(() => {
-        return data !== undefined ? escaper.escape(data) : '';
-    }, [data, escaper]);
+        return data !== undefined ? converter.toHTML(data) : '';
+    }, [data, converter]);
 
     const onClick = React.useCallback((event: React.MouseEvent) => {
 
@@ -128,8 +128,8 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
 
             if (split) {
 
-                const prefix = escaper.unescape(ContentEditables.fragmentToHTML(split.prefix));
-                const suffix = escaper.unescape(ContentEditables.fragmentToHTML(split.suffix));
+                const prefix = converter.toMarkdown(ContentEditables.fragmentToHTML(split.prefix));
+                const suffix = converter.toMarkdown(ContentEditables.fragmentToHTML(split.suffix));
 
                 blocksStore.createNewBlock(id, {split: {prefix, suffix}});
 
@@ -137,7 +137,7 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
 
         }
 
-    }, [escaper, id, ref, blocksStore]);
+    }, [converter, id, ref, blocksStore]);
 
 
     const handleEnter = React.useCallback(() => {

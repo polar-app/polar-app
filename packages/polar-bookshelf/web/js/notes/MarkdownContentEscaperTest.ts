@@ -1,17 +1,33 @@
 import {assert} from 'chai';
-import {MarkdownContentEscaper} from "./MarkdownContentEscaper";
+import {MarkdownContentConverter} from "./MarkdownContentConverter";
 
 describe('MarkdownContentEscaper', function() {
 
+    function testTwoWayConversionFromMarkdown(markdown: string, expected: string) {
+
+        const escaped = MarkdownContentConverter.toHTML(markdown);
+        assert.equal(escaped, expected);
+
+        const unescaped = MarkdownContentConverter.toMarkdown(escaped);
+        assert.equal(unescaped, markdown);
+
+    }
+
+    function testTwoWayConversionFromHTML(html: string, expected: string) {
+
+        const convertedMarkdown = MarkdownContentConverter.toMarkdown(html);
+        assert.equal(convertedMarkdown, expected);
+
+        // const unescaped = MarkdownContentEscaper.escape(escaped);
+        // assert.equal(unescaped, input);
+
+    }
+
+
     it("escape and unescape", async function() {
 
-        const input = "This is some **bold** text and this is a wiki link [[Hello World]]"
-
-        const escaped = MarkdownContentEscaper.escape(input);
-        assert.equal(escaped, "This is some <b>bold</b> text and this is a wiki link <a href=\"#Hello World\">Hello World</a>");
-
-        const unescaped = MarkdownContentEscaper.unescape(escaped);
-        assert.equal(unescaped, input);
+        testTwoWayConversionFromMarkdown("This is some **bold** text and this is a wiki link [[Hello World]]",
+                                         "This is some <b>bold</b> text and this is a wiki link <a href=\"#Hello World\">Hello World</a>")
 
     });
 
@@ -19,17 +35,17 @@ describe('MarkdownContentEscaper', function() {
 
         const input = "hello 'world'"
 
-        const escaped = MarkdownContentEscaper.escape(input);
+        const escaped = MarkdownContentConverter.toHTML(input);
         assert.equal(escaped, "hello 'world'");
 
-        const unescaped = MarkdownContentEscaper.unescape(escaped);
+        const unescaped = MarkdownContentConverter.toMarkdown(escaped);
         assert.equal(unescaped, input);
 
     });
 
     it("with spans", () => {
 
-        const unescaped = MarkdownContentEscaper.unescape("this is some <span>text</span>");
+        const unescaped = MarkdownContentConverter.toMarkdown("this is some <span>text</span>");
         assert.equal(unescaped, "this is some text");
 
     });
