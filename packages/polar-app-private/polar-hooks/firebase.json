@@ -114,6 +114,10 @@
         "destination": "/apps/stories/index.html"
       },
       {
+        "source": "/notes/:id",
+        "destination": "/apps/repository/index.html"
+      },
+      {
         "source": "**",
         "function": "webapp"
       },
