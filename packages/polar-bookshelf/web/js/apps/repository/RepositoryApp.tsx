@@ -44,8 +44,6 @@ import {AddFileDropzoneScreen} from './upload/AddFileDropzoneScreen';
 import {AnkiSyncController} from "../../controller/AnkiSyncController";
 import {ErrorScreen} from "../../../../apps/repository/js/ErrorScreen";
 import {ListenablePersistenceLayerProvider} from "../../datastore/PersistenceLayer";
-import {RepoHeader3} from "../../../../apps/repository/js/repo_header/RepoHeader3";
-import {RepoFooter} from "../../../../apps/repository/js/repo_footer/RepoFooter";
 import {MUIDialogController} from "../../mui/dialogs/MUIDialogController";
 import {UseLocationChangeStoreProvider} from '../../../../apps/doc/src/annotations/UseLocationChangeStore';
 import {UseLocationChangeRoot} from "../../../../apps/doc/src/annotations/UseLocationChangeRoot";
@@ -388,8 +386,6 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                                                                                    component={NotesScreen}/>
 
                                                                                                         </Switch>
-
-                                                                                                        <RepoFooter/>
 
                                                                                                     </div>
                                                                                                 </div>
