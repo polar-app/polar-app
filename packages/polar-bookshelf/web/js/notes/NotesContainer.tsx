@@ -4,12 +4,16 @@ import clsx from 'clsx';
 import * as React from 'react';
 import {deepMemo} from "../react/ReactUtils";
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
             display: 'flex',
             flexGrow: 1,
-            fontSize: '18px'
+            fontSize: '18px',
+            marginLeft: theme.spacing(2),
+            marginRight: theme.spacing(2),
+            marginBottom: theme.spacing(2),
+            overflow: 'auto'
         },
     }),
 );
