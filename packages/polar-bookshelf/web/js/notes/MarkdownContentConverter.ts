@@ -26,8 +26,13 @@ export const MarkdownContentConverter = {
 
         const markdown = markdown2html(WikiLinksToHTML.escape(srcMarkdown));
 
-        const result = markdown.replace(/^<p>/, '')
-                               .replace(/<\/p>\n?$/, '')
+        // TODO/FIXME we only handle &quot; now and not ALL HTML entities...
+        // https://github.com/markedjs/marked/discussions/1737
+
+        const result = markdown.replace(/^<p>/g, '')
+                               .replace(/<\/p>\n?$/g, '')
+                               .replace(/&quot;/g, '"')
+                               .replace(/&amp;/g, '&')
                                .trim();
 
         doTrace('toHTML', markdown, result);

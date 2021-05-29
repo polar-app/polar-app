@@ -5,11 +5,11 @@ describe('MarkdownContentEscaper', function() {
 
     function testTwoWayConversionFromMarkdown(markdown: string, expected: string) {
 
-        const escaped = MarkdownContentConverter.toHTML(markdown);
-        assert.equal(escaped, expected);
+        const convertedHTML = MarkdownContentConverter.toHTML(markdown);
+        assert.equal(convertedHTML, expected);
 
-        const unescaped = MarkdownContentConverter.toMarkdown(escaped);
-        assert.equal(unescaped, markdown);
+        const convertedMarkdown = MarkdownContentConverter.toMarkdown(convertedHTML);
+        assert.equal(convertedMarkdown, markdown);
 
     }
 
@@ -18,8 +18,8 @@ describe('MarkdownContentEscaper', function() {
         const convertedMarkdown = MarkdownContentConverter.toMarkdown(html);
         assert.equal(convertedMarkdown, expected);
 
-        // const unescaped = MarkdownContentEscaper.escape(escaped);
-        // assert.equal(unescaped, input);
+        const convertedHTML = MarkdownContentConverter.toHTML(convertedMarkdown);
+        assert.equal(convertedHTML, html);
 
     }
 
@@ -30,6 +30,20 @@ describe('MarkdownContentEscaper', function() {
                                          "This is some <b>bold</b> text and this is a wiki link <a href=\"#Hello World\">Hello World</a>")
 
     });
+
+    it("quote", async function() {
+
+        testTwoWayConversionFromHTML("this is a \" \"",
+                                     "this is a \" \"")
+    });
+
+    it("amp", async function() {
+
+        testTwoWayConversionFromHTML("this & that & the other",
+                                     "this & that & the other")
+
+    });
+
 
     it("with single quote", () => {
 
