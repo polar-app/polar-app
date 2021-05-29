@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { useZenModeStore } from '../../../mui/ZenModeStore';
 import {createIntercomClient} from "../../../analytics/intercom/IntercomAnalytics";
 import {useIntercomData} from "./IntercomHooks";
+import {Devices} from "polar-shared/src/util/Devices";
 
 export function useIntercom() {
 
@@ -13,6 +14,11 @@ export function useIntercom() {
     const booted = React.useRef(false);
     const intercomClient = createIntercomClient();
     const intercomData = useIntercomData();
+
+    if (! Devices.isDesktop()) {
+        // for right now, intercom on a tablet doesn't make a ton of sense.
+        return;
+    }
 
     if (! intercomClient) {
         return;

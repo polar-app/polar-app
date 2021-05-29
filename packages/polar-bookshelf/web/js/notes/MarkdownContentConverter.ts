@@ -6,8 +6,7 @@ import {WikiLinksToHTML} from "./WikiLinksToHTML";
 import {WikiLinksToMarkdown} from "./WikiLinksToMarkdown";
 import {Mappers} from "polar-shared/src/util/Mapper";
 import {ContentEditableWhitespace} from "./ContentEditableWhitespace";
-import {ContentEscaper} from "./ContentEscaper";
-import {MarkdownStr} from "polar-shared/src/util/Strings";
+import {MarkdownStr, HTMLStr} from "polar-shared/src/util/Strings";
 
 const TRACE = false;
 
@@ -21,30 +20,35 @@ function doTrace(name: string,
 
 }
 
-export const MarkdownContentEscaper: ContentEscaper<MarkdownStr> = {
+export const MarkdownContentConverter = {
 
-    escape: input => {
+    toHTML: (srcMarkdown: MarkdownStr) => {
 
-        const markdown = markdown2html(WikiLinksToHTML.escape(input));
+        const markdown = markdown2html(WikiLinksToHTML.escape(srcMarkdown));
 
-        const result = markdown.replace(/^<p>/, '')
-                               .replace(/<\/p>\n?$/, '')
+        // TODO/FIXME we only handle &quot; now and not ALL HTML entities...
+        // https://github.com/markedjs/marked/discussions/1737
+
+        const result = markdown.replace(/^<p>/g, '')
+                               .replace(/<\/p>\n?$/g, '')
+                               .replace(/&quot;/g, '"')
+                               .replace(/&amp;/g, '&')
                                .trim();
 
-        doTrace('escape', input, result);
+        doTrace('toHTML', markdown, result);
 
         return result;
 
     },
-    unescape: html => {
+    toMarkdown: (srcHTML: HTMLStr) => {
 
-        const result = Mappers.create(html)
+        const result = Mappers.create(srcHTML)
                               .map(ContentEditableWhitespace.trim)
                               .map(html2markdown)
                               .map(WikiLinksToMarkdown.unescape)
                               .collect();
 
-        doTrace('unescape', html, result);
+        doTrace('toMarkdown', srcHTML, result);
 
         return result;
 
