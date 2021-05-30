@@ -162,6 +162,7 @@ const NotesButton = observer(function NotesButton() {
             const block = blocksStore.getBlockByName(dateContent.data);
 
             if (! block) {
+                // FIXME this is wrong... must be a date block..
                 blocksStore.createNewNamedBlock(dateContent.data, {});
             }
 

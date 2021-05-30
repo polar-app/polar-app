@@ -277,13 +277,23 @@ export const BlockInner = observer((props: IProps) => {
                                     <BlockExpandToggleButton id={props.id}/>
                                 )}
 
-                                <BlockBulletButton target={props.id}/>
+                                {block.parent && <BlockBulletButton target={props.id}/>}
 
                             </div>
 
-                            {BlockPredicates.isTextBlock(block) && (
+                            {(block.content.type === 'date' || block.content.type === 'name' || block.content.type === 'markdown') && (
                                 <BlockEditor key={props.id} parent={props.parent} id={props.id} />
                             )}
+
+                            {/*{(block.content.type === 'date' || block.content.type === 'name') && (*/}
+                            {/*    <div style={{*/}
+                            {/*             fontSize: '20px',*/}
+                            {/*             fontWeight: 'bold'*/}
+                            {/*         }}*/}
+                            {/*         key={props.id}>*/}
+                            {/*        {block.content.data}*/}
+                            {/*    </div>*/}
+                            {/*)}*/}
 
                             {block.content.type === 'image' && (
                                 <BlockImageContent src={block.content.src}
