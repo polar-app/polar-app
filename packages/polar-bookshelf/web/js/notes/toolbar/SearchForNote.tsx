@@ -3,13 +3,13 @@ import Autocomplete from "@material-ui/lab/Autocomplete"
 import TextField from '@material-ui/core/TextField';
 import {useBlocksStore} from "../store/BlocksStore";
 import { observer } from "mobx-react-lite"
-import { useHistory } from 'react-router-dom';
+import {useNoteLinkLoader} from "../NoteLinkLoader";
 
 
 export const SearchForNote = observer(() => {
 
     const blocksStore = useBlocksStore();
-    const history = useHistory();
+    const noteLinkLoader = useNoteLinkLoader();
 
     const namedNodes = blocksStore.getNamedNodes();
 
@@ -26,9 +26,7 @@ export const SearchForNote = observer(() => {
                 }}
                 onChange={(event, value, reason, details) => {
                     if (value) {
-                        // TODO: I think there's a note jump component or
-                        // something for this rather than using history directly
-                        history.push(`/notes/${value}`);
+                        noteLinkLoader(value);
                     }
                 }}
                 renderInput={(params) => <TextField {...params}
