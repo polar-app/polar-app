@@ -13,20 +13,24 @@ export const SearchForNote = observer(() => {
 
     const namedNodes = blocksStore.getNamedNodes();
 
+    const [inputValue, setInputValue] = React.useState('');
+
     return (
         <div>
             <Autocomplete
                 options={[...namedNodes]}
                 getOptionLabel={(option) => option}
-                inputValue={''}
+                inputValue={inputValue}
                 value={''}
                 blurOnSelect={true}
                 style={{ width: 300 }}
                 onInputChange={(event, nextInputValue, reason) => {
+                    setInputValue(nextInputValue);
                 }}
                 onChange={(event, value, reason, details) => {
                     if (value) {
                         noteLinkLoader(value);
+                        setInputValue('');
                     }
                 }}
                 renderInput={(params) => <TextField {...params}
