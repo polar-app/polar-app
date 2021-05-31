@@ -101,6 +101,7 @@ function useActionExecutor(id: BlockIDStr) {
                     coveringRange.deleteContents();
 
                     const a = document.createElement('a');
+                    a.setAttribute("contenteditable", "false");
                     a.setAttribute("href", "#" + actionOp.target);
                     a.appendChild(document.createTextNode(actionOp.target));
                     coveringRange.insertNode(a);

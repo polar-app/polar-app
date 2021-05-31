@@ -27,7 +27,7 @@ describe('MarkdownContentEscaper', function() {
     it("escape and unescape", async function() {
 
         testTwoWayConversionFromMarkdown("This is some **bold** text and this is a wiki link [[Hello World]]",
-                                         "This is some <b>bold</b> text and this is a wiki link <a href=\"#Hello World\">Hello World</a>")
+                                         "This is some <b>bold</b> text and this is a wiki link <a contenteditable=\"false\" href=\"#Hello World\">Hello World</a>")
 
     });
 

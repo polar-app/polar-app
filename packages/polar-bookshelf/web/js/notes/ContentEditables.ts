@@ -203,5 +203,10 @@ export namespace ContentEditables {
 
     }
 
-
+    export function createEmptySpacer() {
+        const span = document.createElement('span');
+        span.style.whiteSpace = 'pre-wrap';
+        span.appendChild(document.createTextNode(' '));
+        return span;
+    }
 }

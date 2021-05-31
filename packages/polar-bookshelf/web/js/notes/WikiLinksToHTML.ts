@@ -1,11 +1,11 @@
 export namespace WikiLinksToHTML {
 
     export function escape(markdown: string) {
-        return markdown.replace(/\[\[([^\]\[]+)\]\]/g, (substring, args) => `<a href="#${args}">${args}</a>`);
+        return markdown.replace(/\[\[([^\]\[]+)\]\]/g, (_, args) => `<a contenteditable="false" href="#${args}">${args}</a>`);
     }
 
-    export function unescape(markdown: string) {
-        return markdown.replace(/<a href="([^"]+)">([^<]+)<\/a>/g, (substring, match0, match1) => `[[${match1}]]`);
+    export function unescape(html: string) {
+        return html.replace(/<a contenteditable="false" href="([^"]+)">([^<]+)<\/a>/g, (_, _1, match1) => `[[${match1}]]`);
     }
 
 }
