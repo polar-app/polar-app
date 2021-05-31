@@ -13,6 +13,7 @@ import {CursorPositions} from "./CursorPositions";
 import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
 import {IPasteImageData, usePasteHandler } from '../clipboard/PasteHandlers';
 import {IImageContent} from "../content/IImageContent";
+import {MarkdownContentConverter} from "../MarkdownContentConverter";
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed
@@ -56,7 +57,7 @@ export function useBlockContentEditableElement() {
  */
 export const BlockContentEditable = observer((props: IProps) => {
 
-    const [content, setContent] = React.useState(props.content);
+    const [content] = React.useState(() => MarkdownContentConverter.toHTML(props.content));
     const divRef = React.useRef<HTMLDivElement | null>(null);
     const contentRef = React.useRef(props.content);
     const blocksStore = useBlocksStore();
@@ -115,7 +116,7 @@ export const BlockContentEditable = observer((props: IProps) => {
 
         }
 
-        const newContent = computeNewContent();
+        const newContent = MarkdownContentConverter.toMarkdown(computeNewContent());
 
         if (newContent === contentRef.current) {
             // there was no change so skip this.
@@ -155,6 +156,8 @@ export const BlockContentEditable = observer((props: IProps) => {
                 divRef.current.focus();
 
             }
+        } else if (divRef.current) {
+            insertEmptySpacer(divRef.current);
         }
     }, [props.id, updateCursorPosition, blocksStore.active]);
 
@@ -179,8 +182,8 @@ export const BlockContentEditable = observer((props: IProps) => {
             // directly.  React has a bug which won't work on empty strings.
 
             if (ENABLE_CURSOR_RESET) {
-
-                divRef.current!.innerHTML = props.content;
+                divRef.current!.innerHTML = MarkdownContentConverter.toHTML(props.content);
+                insertEmptySpacer(divRef.current!);
 
                 // TODO: only update if WE are active so the cursor doesn't jump.
                 if (divRef.current && blocksStore.active) {
@@ -473,6 +476,14 @@ function useUpdateCursorPosition() {
     }, []);
 
 }
+
+const insertEmptySpacer = (elem: HTMLElement) => {
+    const TAGS = ["</a>"];
+    const trimmed = elem.innerHTML.trim();
+    if (TAGS.some(tag => trimmed.endsWith(tag))) {
+        elem.appendChild(ContentEditables.createEmptySpacer());
+    }
+};
 
 function doUpdateCursorPosition(editor: HTMLDivElement, pos: 'start' | 'end' | number) {
 
