@@ -1,16 +1,11 @@
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
-import {StoragePath} from './FirebaseDatastore';
-import {StorageSettings} from './FirebaseDatastore';
-import {FirebaseDocMetaID} from './FirebaseDatastore';
+import {FirebaseDocMetaID, StoragePath, StorageSettings} from './FirebaseDatastore';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {CloudFunctions} from './firebase/CloudFunctions';
-import {Firebase, UserID} from '../firebase/Firebase';
-import firebase from 'firebase/app'
-import {Preconditions} from 'polar-shared/src/Preconditions';
+import {UserID} from '../firebase/Firebase';
 import {FileRef} from "polar-shared/src/datastore/FileRef";
-import {Logger} from "polar-shared/src/logger/Logger";
 import {UserIDStr} from "polar-firebase/src/firebase/om/Profiles";
 
 export class FirebaseDatastores {
@@ -28,14 +23,14 @@ export class FirebaseDatastores {
 
         const suffix = ext.map(value => {
 
-                if ( ! value.startsWith('.') ) {
-                    // if the suffix doesn't begin with a '.' then add it.
-                    value = '.' + value;
-                }
+            if (!value.startsWith('.')) {
+                // if the suffix doesn't begin with a '.' then add it.
+                value = '.' + value;
+            }
 
-                return value;
+            return value;
 
-            })
+        })
             .getOrElse('');
 
         const settings = this.computeStorageSettings(ext).getOrUndefined();
