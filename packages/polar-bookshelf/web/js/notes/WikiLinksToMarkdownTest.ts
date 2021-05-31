@@ -11,7 +11,7 @@ describe('WikiLinksToMarkdown', function() {
         assert.equal(WikiLinksToMarkdown.unescape("[Hello World](#Hello World)"), "[[Hello World]]");
     });
 
-    it("escape and unescape", async function() {
+    it("escape and unescape", function() {
 
         const input = "[[Hello World]]"
 
@@ -23,5 +23,21 @@ describe('WikiLinksToMarkdown', function() {
 
     });
 
+    /*
+     * This happens when we're trying to create a link before an existing link
+     * It should ignore the opening bracket (which is the trigger for creating links)
+     */
+    it("should not allow brackets inside of links", function () {
+        const input = "Potatos are really [Nice [Hello World](#Hello World)";
+        const expected = "Potatos are really [Nice [[Hello World]]";
+        assert.equal(WikiLinksToMarkdown.unescape(input), expected);
+    });
+
+    it("random test case", function () {
+        const input = "]Nice [Hello World](#Hello World) Foo ]][";
+
+        const expected = "]Nice [[Hello World]] Foo ]][";
+        assert.equal(WikiLinksToMarkdown.unescape(input), expected);
+    });
 });
 

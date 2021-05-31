@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) =>
             //     userSelect: 'none'
             // },
             "& a": {
-                cursor: 'hand'
+                cursor: 'pointer'
             },
             "& a:not([href^=http])": {
                 textDecorationStyle: 'dotted',

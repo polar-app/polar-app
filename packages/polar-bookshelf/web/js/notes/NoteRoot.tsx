@@ -10,6 +10,7 @@ import {NoteSelectionHandler} from "./NoteSelectionHandler";
 import {ActionMenuPopup} from "../mui/action_menu/ActionMenuPopup";
 import { ActionMenuStoreProvider } from "../mui/action_menu/ActionStore";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import {NotesToolbar} from "./NotesToolbar";
 
 interface IProps {
     readonly target: BlockIDStr;
@@ -50,6 +51,8 @@ export const NoteRoot = observer((props: IProps) => {
             <NoteSelectionHandler style={{flexGrow: 1}}>
                 <NoteStyle>
                     <MUIBrowserLinkStyle style={{flexGrow: 1}}>
+                        
+                        <NotesToolbar/>
 
                         <Block parent={undefined} id={id}/>
 

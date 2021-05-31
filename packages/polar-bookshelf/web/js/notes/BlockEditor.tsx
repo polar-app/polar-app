@@ -3,12 +3,12 @@ import {NoteNavigation} from "./NoteNavigation";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
-import {MarkdownContentEscaper} from "./MarkdownContentEscaper";
+import {MarkdownContentConverter} from "./MarkdownContentConverter";
 import {BlockIDStr, useBlocksStore} from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
 import {BlockContentEditable} from "./contenteditable/BlockContentEditable";
 import {ContentEditables} from "./ContentEditables";
-import { HTMLStr } from "polar-shared/src/util/Strings";
+import { HTMLStr, MarkdownStr } from "polar-shared/src/util/Strings";
 import {BlockPredicates} from "./store/BlockPredicates";
 import {MarkdownContent} from "./content/MarkdownContent";
 
@@ -89,11 +89,9 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
     const block = blocksStore.getBlock(id);
     const data = blocksStore.getBlockContentData(id);
 
-    const escaper = MarkdownContentEscaper;
+    const converter = MarkdownContentConverter;
 
-    const handleChange = React.useCallback((content: HTMLStr) => {
-
-        const markdown = escaper.unescape(content);
+    const handleChange = React.useCallback((markdown: MarkdownStr) => {
         const block = blocksStore.getBlock(id);
 
         if (block && block.content.type === "markdown") {
@@ -104,11 +102,7 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
             }))
         }
 
-    }, [escaper, blocksStore, id]);
-
-    const content = React.useMemo(() => {
-        return data !== undefined ? escaper.escape(data) : '';
-    }, [data, escaper]);
+    }, [blocksStore, id]);
 
     const onClick = React.useCallback((event: React.MouseEvent) => {
 
@@ -128,8 +122,8 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
 
             if (split) {
 
-                const prefix = escaper.unescape(ContentEditables.fragmentToHTML(split.prefix));
-                const suffix = escaper.unescape(ContentEditables.fragmentToHTML(split.suffix));
+                const prefix = converter.toMarkdown(ContentEditables.fragmentToHTML(split.prefix));
+                const suffix = converter.toMarkdown(ContentEditables.fragmentToHTML(split.suffix));
 
                 blocksStore.createNewBlock(id, {split: {prefix, suffix}});
 
@@ -137,7 +131,7 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
 
         }
 
-    }, [escaper, id, ref, blocksStore]);
+    }, [converter, id, ref, blocksStore]);
 
 
     const handleEnter = React.useCallback(() => {
@@ -180,7 +174,7 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
         <BlockContentEditable id={props.id}
                               parent={props.parent}
                               innerRef={ref}
-                              content={content}
+                              content={data || ''}
                               onChange={handleChange}
                               onClick={onClick}
                               onKeyDown={onKeyDown}/>
