@@ -15,14 +15,16 @@
     "chai": "4.2.0",
     "mocha": "=8.2.1",
     "tslint": "6.1.2",
-    "typescript": "=4.2.3"
+    "typescript": "=4.2.3",
+    "@types/markdown-it": "=12.0.1",
+    "@types/marked": "=1.2.0",
+    "@types/turndown": "=5.0.0"
   },
   "dependencies": {
-    "@types/marked": "=1.2.0",
-    "@types/turndown": "=5.0.0",
     "marked": "=1.2.5",
     "turndown": "=7.0.0",
-    "turndown-plugin-gfm": "=1.0.2"
+    "turndown-plugin-gfm": "=1.0.2",
+    "markdown-it": "=12.0.6"
   },
   "files": [
     "**/*.js",

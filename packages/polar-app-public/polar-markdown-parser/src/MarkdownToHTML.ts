@@ -1,49 +1,17 @@
-import marked from 'marked';
+import {MarkdownToHTMLUsingMarked} from "./MarkdownToHTMLUsingMarked";
 
-// class MyTokenizer extends marked.Tokenizer {
-//
-//     public autolink() {
-//         return null!;
-//     }
-//
-//     public url() {
-//         return null!;
-//     }
-//
-// }
+const DELEGATE = 'marked';
 
-// Overrides.
-marked.use({
-    // tokenizer: new MyTokenizer()
-});
-
-class MyRenderer extends marked.Renderer {
-
-    strong(text: string): string {
-        return '<b>' + text + '</b>';
-    }
-
-    em(text: string): string {
-        return '<i>' + text + '</i>';
-    }
-
+function requireDelegate() {
+    return require('./MarkdownToHTMLUsingMarked') as (typeof MarkdownToHTMLUsingMarked);
 }
 
 export namespace MarkdownToHTML {
 
+    const delegate = requireDelegate();
+
     export function markdown2html(markdown: string) {
-
-        return marked.parse( markdown, {
-            gfm: true,
-            breaks: true,
-            // tables: true,
-            xhtml: true,
-            headerIds: false,
-            smartypants: false,
-            renderer: new MyRenderer()
-        }).replace(/&#39;/g, "'")
-          .trim();
-
+        return delegate.markdown2html(markdown);
     }
 
 }
