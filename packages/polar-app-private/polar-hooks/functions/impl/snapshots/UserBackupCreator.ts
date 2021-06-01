@@ -62,7 +62,7 @@ export namespace UserBackupCreator {
 
         const writeStream = storageFile.createWriteStream();
 
-        const transformedStreamsForZipFile: SnapshotTransformer[] = [];
+        const streams = [];
 
         // Iterate the Firestore collections we need to backup
         const collectionsToBackup = [
@@ -79,43 +79,28 @@ export namespace UserBackupCreator {
                 uid,
             });
 
-            transformedStreamsForZipFile.push(
-                // Push a "transformed" version of the original stream of Firestore documents
-                // Transformed version emits values that are suitable as inputs for the "archiver" library,
-                // which is the one we use for creating the .zip file with the backup
+            // Push a "transformed" version of the original Stream. The transformed Stream converts original
+            // Firestore document snapshots to chunks of objects that are accepted as input by the "archiver"
+            // library, which ArchiveWritable.ts (the target of these Readable streams) uses internally later
+            streams.push(
                 stream.pipe(new SnapshotTransformer(collectionToBackup, {highWaterMark: 5}))
             );
         }
 
-        // const file = getFirebaseFile({
-        //     uid: "3j5Lr2zxamMyNIkzWJkq5sxY4f63",
-        //     name: "12Ji9JDcRn-availability.pdf",
-        //     hashcode: {
-        //         alg: HashAlgorithm.KECCAK256,
-        //         data: "12Ji9JDcRnZT27jeckr4HusYY29QVwj4Wv2J6iYc5YXjtzn3ZJT",
-        //         enc: HashEncoding.BASE58CHECK,
-        //     },
-        // });
-        //
-        // const expires = new Date(new Date().setHours(new Date().getHours() + 4));
-        //
-        // const signedURL = await file.getSignedUrl({
-        //     expires,
-        //     action: "read",
-        // })
+        // Also push a Readable stream that provide raw Cloud Storage PDF/EPUB files as output
+        streams.push(await createStreamFromFilestorage(uid));
 
+        // Combine all collected Readable streams and pipe them to a single Writable stream
         await util.promisify(stream.pipeline)(
-            mergeStreams(
-                ...transformedStreamsForZipFile,
-                await createStreamFromFilestorage(uid)
-            ),
+            mergeStreams(...streams),
             new ArchiveWritable(writeStream, {highWaterMark: 3})
         )
 
-        // Flush the write stream so the process can end
+        // Flush the Writable stream (to a temporary Google Cloud Storage file)
         writeStream.end();
 
-        // Force the file to be downloaded instead of opened natively within the browser
+        // When the temporary file URL is visited in the browser, force it to download instead of being
+        // opened by the native Browser viewer
         await storageFile.setMetadata({contentDisposition: `attachment; filename="${filename}"`})
 
         // Make the file publicly downloadable through its link
