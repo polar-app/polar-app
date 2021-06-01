@@ -20,7 +20,8 @@ export namespace MarkdownToHTML {
     const delegate = requireDelegate();
 
     export function markdown2html(markdown: string) {
-        return delegate.markdown2html(markdown);
+        // FIXME: the delegate does not work now..
+        return MarkdownToHTMLUsingMarkdownIT.markdown2html(markdown);
     }
 
 }
