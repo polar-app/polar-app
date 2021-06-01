@@ -1,9 +1,18 @@
 import {MarkdownToHTMLUsingMarked} from "./MarkdownToHTMLUsingMarked";
+import {MarkdownToHTMLUsingMarkdownIT} from "./MarkdownToHTMLUsingMarkdownIT";
 
-const DELEGATE = 'marked';
+const DELEGATE: 'Marked' | 'MarkdownIT' = 'MarkdownIT';
 
 function requireDelegate() {
-    return require('./MarkdownToHTMLUsingMarked') as (typeof MarkdownToHTMLUsingMarked);
+
+    switch(DELEGATE) {
+
+        case "Marked":
+            return require('./MarkdownToHTMLUsingMarked') as (typeof MarkdownToHTMLUsingMarked);
+        case "MarkdownIT":
+            return require('./MarkdownToHTMLUsingMarkdownIT') as (typeof MarkdownToHTMLUsingMarkdownIT);
+    }
+
 }
 
 export namespace MarkdownToHTML {
