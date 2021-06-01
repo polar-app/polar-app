@@ -331,61 +331,6 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         return PositionalArrays.toArray(this._items).includes(id);
     }
 
-    /*
-    public hasLinksMutated(links: ReadonlyArray<IBlockLink>): boolean {
-        return ! deepEqual(PositionalArrays.toArray(this._links), links);
-
-    }
-
-    @action setLinks(links: ReadonlyArray<IBlockLink>) {
-
-        if (this.hasLinksMutated(links)) {
-            PositionalArrays.set(this._links, links);
-            this._updated = ISODateTimeStrings.create();
-            return true;
-        }
-
-        return false;
-
-    }
-
-    @action addLink(link: IBlockLink) {
-
-        if (! this.hasLink(link.id)) {
-            PositionalArrays.append(this._links, link);
-            this._updated = ISODateTimeStrings.create();
-            return true;
-        }
-
-        return false;
-
-    }
-
-    public hasLink(id: BlockIDStr): boolean {
-
-        return arrayStream(PositionalArrays.toArray(this._links)).
-                filter(current => current.id === id)
-                .first() !== undefined;
-
-    }
-
-    @action removeLink(id: BlockIDStr): boolean {
-
-        const link =
-            arrayStream(Object.values(this._links))
-                .filter(current => current.id === id)
-                .first();
-
-        if (link) {
-            PositionalArrays.remove(this._links, link);
-            this._updated = ISODateTimeStrings.create();
-            return true;
-        }
-
-        return false;
-
-    }
-
     @action set(block: IBlock) {
 
         this._parent = block.parent;
@@ -393,10 +338,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         this._updated = block.updated;
         PositionalArrays.set(this._items, block.items);
         this._content.update(block.content)
-        PositionalArrays.set(this._links, block.links);
-
     }
-    */
 
     /**
      * Perform a bulk/single mutation of the Block.
@@ -451,7 +393,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
             parents: [...this._parents],
             created: this._created,
             updated: this._updated,
-            items: toJS(this.items),
+            items: toJS(this._items),
             content: this._content.toJSON() as C,
             mutation: this._mutation,
         };

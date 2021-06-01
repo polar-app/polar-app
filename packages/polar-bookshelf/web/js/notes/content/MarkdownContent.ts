@@ -1,6 +1,6 @@
 import {makeObservable, observable, computed, toJS} from "mobx"
 import {IMarkdownContent} from "./IMarkdownContent";
-import {IBlockContent} from "../store/BlocksStore";
+import {BlockIDStr, IBlockContent} from "../store/BlocksStore";
 import {IBaseBlockContent} from "./IBaseBlockContent";
 import {IBlockLink} from "../store/IBlock";
 
@@ -49,8 +49,25 @@ export class MarkdownContent implements IMarkdownContent, IBaseBlockContent {
             type: this._type,
             data: this._data,
             links: toJS(this._links),
-        }
+        };
     }
 
+    public addLink(link: IBlockLink) {
+        this._links = [...this.links, link];
+    }
+
+    public removeLink(id: BlockIDStr) {
+        const newLinks = [];
+        let removed = false;
+        // Only remove the first occurrence since we might have multiple links to the same block
+        for (let link of this.links) {
+            if (!removed && id === link.id) {
+                removed = true;
+                continue;
+            }
+            newLinks.push(link);
+        }
+        this._links = newLinks;
+    }
 }
 
