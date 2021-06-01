@@ -4,8 +4,16 @@
 // We also need to do this FIRST so that no other rule is evaluated since
 // they might result in null pointer exceptions when trying to read the data
 // property on a record that does not exist.
+
 allow delete, read: if resource == null || resource.data == null;
 
-// only allow the user to read their own account
-allow read, write: if (resource == null || (request.auth.uid == resource.data.uid && request.auth.uid == request.data.nspace));
+// *** updates for default nspace - nspace is the same as their uid (default namespace)
 
+// write new objects
+allow write: (if resource == null || resource.data == null) && request.auth.uid == request.resource.data.nspace;
+
+// read but only when the uid is the nspace
+allow read: if request.auth.uid == resource.data.nspace;
+
+// write of existing objects
+allow write: request.auth.uid == request.resource.data.nspace && resource.data.nspace == request.resource.data.nspace;
