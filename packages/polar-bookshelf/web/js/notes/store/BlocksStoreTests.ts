@@ -1,8 +1,9 @@
 import { ISODateTimeStrings } from "polar-shared/src/metadata/ISODateTimeStrings";
 import {BlockIDStr, IBlockContent} from "./BlocksStore";
-import {IBlock, IBlockLink} from "./IBlock";
+import {IBlock, IBlockLink, NamespaceIDStr} from "./IBlock";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {PositionalArrays} from "./PositionalArrays";
+import {UserIDStr} from "../../firebase/Firebase";
 
 export namespace BlocksStoreTests {
 
@@ -11,6 +12,8 @@ export namespace BlocksStoreTests {
     export interface IBasicBlockOpts<C> {
         readonly id?: BlockIDStr;
         readonly root: BlockIDStr;
+        readonly uid?: UserIDStr;
+        readonly nspace?: NamespaceIDStr;
         readonly parent: BlockIDStr | undefined;
         readonly parents: ReadonlyArray<BlockIDStr>
         readonly content: C;
@@ -27,8 +30,8 @@ export namespace BlocksStoreTests {
 
         return {
             id: opts.id || Hashcodes.createRandomID(),
-            nspace,
-            uid,
+            uid: opts.uid || uid,
+            nspace: opts.nspace || nspace,
             created,
             updated: created,
             ...opts,

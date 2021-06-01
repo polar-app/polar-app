@@ -118,6 +118,14 @@ export namespace FirestoreBlocksStoreMutations {
                                 path: ['updated'],
                                 value: mutation.after.updated
                             },
+                            // while nspace doesn't ever get updated - it needs to be set so that the firestore rules
+                            // can work with it properly.  We read from the data correctly.
+                            {
+                                id: mutation.id,
+                                type: 'update-path-string',
+                                path: ['nspace'],
+                                value: mutation.after.nspace
+                            },
                             {
                                 id: mutation.id,
                                 type: 'update-path-number',
