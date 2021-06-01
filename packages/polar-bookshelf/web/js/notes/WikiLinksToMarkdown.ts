@@ -1,7 +1,8 @@
 export namespace WikiLinksToMarkdown {
+    export const WIKI_LINK_REGEX = /\[\[([^\]]+)\]\]/g;
 
     export function escape(markdown: string) {
-        return markdown.replace(/\[\[([^\]]+)\]\]/g, (substring, args) => `[${args}](#${args})`);
+        return markdown.replace(WIKI_LINK_REGEX, (_, args) => `[${args}](#${args})`);
     }
 
     /**
@@ -12,7 +13,7 @@ export namespace WikiLinksToMarkdown {
      * @param markdown
      */
     export function unescape(markdown: string) {
-        return markdown.replace(/\[([^\]\[]+)\]\(#([^\]\[]+)\)/g, (substring, args) => `[[${args}]]`);
+        return markdown.replace(/\[([^\]\[]+)\]\(#([^\]\[]+)\)/g, (_, args) => `[[${args}]]`);
     }
 
 }

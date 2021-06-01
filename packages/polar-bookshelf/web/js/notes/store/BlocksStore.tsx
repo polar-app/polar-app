@@ -7,7 +7,7 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {BlockTargetStr} from "../NoteLinkLoader";
 import {isPresent, Preconditions} from "polar-shared/src/Preconditions";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {IBlock, NamespaceIDStr, UIDStr} from "./IBlock";
+import {IBlock, IBlockLink, NamespaceIDStr, UIDStr} from "./IBlock";
 import {ReverseIndex} from "./ReverseIndex";
 import {Block} from "./Block";
 import { arrayStream } from "polar-shared/src/util/ArrayStreams";
@@ -34,6 +34,7 @@ import {IBlocksPersistenceSnapshot, useBlocksPersistenceSnapshots} from "../pers
 import {BlocksPersistenceWriter} from "../persistence/FirestoreBlocksStoreMutations";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useBlocksPersistenceWriter} from "../persistence/BlockPersistenceWriters";
+import {WikiLinksToMarkdown} from "../WikiLinksToMarkdown";
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
@@ -1123,15 +1124,9 @@ export class BlocksStore implements IBlocksStore {
 
             sourceBlock.withMutation(() => {
 
-                sourceBlock.setContent({
-                    type: "markdown",
-                    data: content,
-                    links: [
-                        ...toJS(blockContent.links),
-                        {id: targetBlockID, text: targetName},
-                    ],
-                });
-
+                const newContent = new MarkdownContent(blockContent.toJSON());
+                newContent.addLink({id: targetBlockID, text: targetName});
+                sourceBlock.setContent(newContent);
             })
 
             this.doPut([sourceBlock]);
@@ -1229,6 +1224,11 @@ export class BlocksStore implements IBlocksStore {
                 readonly parentBlock: Block;
             }
 
+            const parseLinksFromContent = (origLinks: ReadonlyArray<IBlockLink>, content: string): ReadonlyArray<IBlockLink> => (
+                [...content.matchAll(WikiLinksToMarkdown.WIKI_LINK_REGEX)]
+                    .map(([, text]) => ({ id: origLinks.find((o) => o.text === text)!.id, text }))
+            );
+
             const computeNewBlockPosition = (): INewBlockPositionRelative | INewBlockPositionFirstChild => {
 
                 const computeNextLinearExpansionID = () => {
@@ -1290,10 +1290,11 @@ export class BlocksStore implements IBlocksStore {
 
                 const items = newBlockInheritItems ? currentBlock.items : {};
 
+                const data = split?.suffix || '';
                 const content = opts.content || {
                     type: 'markdown',
-                    data: split?.suffix || '',
-                    links: [],
+                    data,
+                    links: parseLinksFromContent(links, data),
                 };
 
                 return {
@@ -1313,8 +1314,11 @@ export class BlocksStore implements IBlocksStore {
             }
 
             const currentBlock = this.getBlock(id)!;
-            const split = currentBlock.content.type === 'markdown' ? opts.split : undefined;
-            // const split = opts.split;
+            let split: ISplitBlock | undefined, links: ReadonlyArray<IBlockLink>;
+            if (currentBlock.content.type === 'markdown') {
+                split = opts.split;
+                links = currentBlock.content.links;
+            }
             const newBlockInheritItems = split?.suffix !== undefined && split?.suffix !== '';
 
             const newBlockPosition = computeNewBlockPosition();
@@ -1351,7 +1355,7 @@ export class BlocksStore implements IBlocksStore {
                     currentBlock.setContent({
                         type: 'markdown',
                         data: split.prefix,
-                        links: currentBlock.content.type === "markdown" ? currentBlock.content.links : [],
+                        links: parseLinksFromContent(links, split.prefix),
                     });
 
                     if (newBlockInheritItems) {

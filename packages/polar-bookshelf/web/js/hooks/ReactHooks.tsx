@@ -148,3 +148,26 @@ export function useForceMount(): ForceMountTuple {
     return [forceMountRefCallback, mounted];
 
 }
+
+type IUseMutationsObserverOpts = {
+    elem: HTMLElement | null;
+    config: MutationObserverInit;
+};
+
+export function useMutationObserver(callback: MutationCallback, opts: IUseMutationsObserverOpts): void {
+    const {config, elem} = opts;
+    const callbackRef = useRefWithUpdates(callback);
+    const observer = React.useMemo(() => (
+        new MutationObserver((mutationList, observer) => {
+            callbackRef.current(mutationList, observer);
+        })
+    ), [callback]);
+
+    React.useEffect(() => {
+        if (elem) {
+            observer.observe(elem, config);
+            return () => observer.disconnect();
+        }
+        return;
+    }, [elem, config]);
+}
