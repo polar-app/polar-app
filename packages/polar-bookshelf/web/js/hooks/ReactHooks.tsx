@@ -161,7 +161,7 @@ export function useMutationObserver(callback: MutationCallback, opts: IUseMutati
         new MutationObserver((mutationList, observer) => {
             callbackRef.current(mutationList, observer);
         })
-    ), [callback]);
+    ), [callbackRef]);
 
     React.useEffect(() => {
         if (elem) {
@@ -169,5 +169,5 @@ export function useMutationObserver(callback: MutationCallback, opts: IUseMutati
             return () => observer.disconnect();
         }
         return;
-    }, [elem, config]);
+    }, [elem, config, observer]);
 }
