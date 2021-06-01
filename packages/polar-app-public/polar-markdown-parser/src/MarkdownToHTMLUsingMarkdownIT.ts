@@ -1,6 +1,8 @@
 import MarkdownIt from 'markdown-it';
 
-const md = new MarkdownIt();
+const md = new MarkdownIt({
+    linkify: false
+});
 
 export namespace MarkdownToHTMLUsingMarkdownIT {
 
