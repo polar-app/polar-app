@@ -38,14 +38,13 @@ describe("BlocksPersistence", () => {
         TestingTime.unfreeze();
     });
 
-    xit("no mutations", async () => {
+    it("no mutations", async () => {
 
         const firestore = await Firestore.getInstance();
 
         await FirestoreBlocksPersistenceWriter.doExec(firestore, []);
 
     });
-
 
     it("new document", async () => {
 

@@ -17,6 +17,11 @@ export namespace FirestoreBlocksPersistenceWriter {
 
         const firestoreMutations = FirestoreBlocksStoreMutations.convertToFirestoreMutations(mutations);
 
+        if (firestoreMutations.length === 0) {
+            // nothing to do
+            return;
+        }
+
         // console.log("Writing firestoreMutations to firestore: ", firestoreMutations);
 
         const collection = firestore.collection('block');
@@ -30,7 +35,8 @@ export namespace FirestoreBlocksPersistenceWriter {
             switch (firestoreMutation.type) {
 
                 case "set-doc":
-                    batch.set(doc, FirestoreBlocks.toFirestoreBlock(firestoreMutation.value));
+                    const firestoreBlock = FirestoreBlocks.toFirestoreBlock(firestoreMutation.value);
+                    batch.set(doc, firestoreBlock);
                     break;
 
                 case "delete-doc":

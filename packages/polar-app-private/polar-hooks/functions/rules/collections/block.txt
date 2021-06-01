@@ -10,10 +10,10 @@ allow delete, read: if resource == null || resource.data == null;
 // *** updates for default nspace - nspace is the same as their uid (default namespace)
 
 // write new objects
-allow write: (if resource == null || resource.data == null) && request.auth.uid == request.resource.data.nspace;
+allow write: if (resource == null || resource.data == null) && request.auth.uid == request.resource.data.nspace;
 
-// read but only when the uid is the nspace
-allow read: if request.auth.uid == resource.data.nspace;
+// read or delete but only when the uid is the nspace
+allow read, delete: if request.auth.uid == resource.data.nspace;
 
-// write of existing objects
-allow write: request.auth.uid == request.resource.data.nspace && resource.data.nspace == request.resource.data.nspace;
+// write of existing objects if the nspace is correct
+allow write: if request.auth.uid == request.resource.data.nspace && resource.data.nspace == request.resource.data.nspace;
