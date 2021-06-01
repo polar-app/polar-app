@@ -145,9 +145,12 @@ export namespace CursorPositions {
 
     }
 
-    export function toTextNode(node: Node, offset: number): ICursorPosition {
+    export function toTextNode(node: Node | undefined, offset: number): ICursorPosition | undefined {
+        if (!node) {
+            return  undefined;
+        }
         if (node.nodeType === Node.ELEMENT_NODE) {
-            return toTextNode(node.childNodes[Math.min(node.childNodes.length - 1, offset)], 0);
+            return toTextNode(node.childNodes[offset], 0);
         }
 
         return {node, offset};
@@ -161,21 +164,25 @@ export namespace CursorPositions {
 
         if (selection && selection.rangeCount) {
             const range = selection.getRangeAt(0);
-            const {offset, node} = toTextNode(range.startContainer, range.startOffset);
+            const positionInTextNode = toTextNode(range.startContainer, range.startOffset);
 
-            // NOTE: this is O(N) but N is almost always insanely small.
-            for (let idx = 0; idx < lookup.length; ++idx) {
+            if (positionInTextNode) {
+                const {node, offset} = positionInTextNode;
 
-                const curr = lookup[idx];
+                // NOTE: this is O(N) but N is almost always insanely small.
+                for (let idx = 0; idx < lookup.length; ++idx) {
 
-                if (node === curr.node) {
+                    const curr = lookup[idx];
 
-                    if (offset === curr.offset) {
-                        return idx;
+                    if (node === curr.node) {
+
+                        if (offset === curr.offset) {
+                            return idx;
+                        }
+
                     }
 
                 }
-
             }
         }
 
