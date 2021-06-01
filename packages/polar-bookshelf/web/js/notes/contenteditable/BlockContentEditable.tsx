@@ -183,13 +183,16 @@ export const BlockContentEditable = observer((props: IProps) => {
             // (though this might be optional) and then set the innerHTML
             // directly.  React has a bug which won't work on empty strings.
 
-            if (ENABLE_CURSOR_RESET) {
-                divRef.current!.innerHTML = MarkdownContentConverter.toHTML(props.content);
+            if (divRef.current && ENABLE_CURSOR_RESET) {
+                const pos = CursorPositions.computeCurrentOffset(divRef.current);
+
+                divRef.current.innerHTML = MarkdownContentConverter.toHTML(props.content);
                 insertEmptySpacer(divRef.current!);
 
+
                 // TODO: only update if WE are active so the cursor doesn't jump.
-                if (divRef.current && blocksStore.active) {
-                    updateCursorPosition(divRef.current, {...blocksStore.active, pos: 'end'}, true);
+                if (blocksStore.active) {
+                    updateCursorPosition(divRef.current, {...blocksStore.active, pos}, true);
                 }
 
             }
