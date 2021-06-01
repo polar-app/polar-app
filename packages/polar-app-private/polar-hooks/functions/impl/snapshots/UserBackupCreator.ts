@@ -1,5 +1,5 @@
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import stream, {PassThrough, Readable} from 'stream'
+import stream, {PassThrough, Readable, Transform} from 'stream'
 import * as util from 'util'
 import {Datastores} from "../datastore/Datastores";
 import {IDStr} from "polar-shared/src/util/Strings";
@@ -11,6 +11,9 @@ import {SnapshotTransformer} from "./SnapshotTransformer";
 import {FirebaseDatastores} from "../../../../../polar-bookshelf/web/js/datastore/FirebaseDatastores";
 import {FileRef} from "../polar-shared/datastore/Datastore";
 import {Backend} from "polar-shared/src/datastore/Backend";
+import {QueryDocumentSnapshot} from "firebase-functions/lib/providers/firestore";
+import {ZipStreamChunk} from "./ZipStreamChunk";
+import path from "path";
 
 const storageConfig = Lazy.create(() => Datastores.createStorage());
 const storage = Lazy.create(() => storageConfig().storage);
@@ -47,6 +50,7 @@ export namespace UserBackupCreator {
             .firestore()
             .collection(config.collection)
             .where('uid', '==', config.uid)
+            .limit(100) // @TODO figure out why it doesn't work with the full set
             .stream();
     }
 
@@ -58,7 +62,7 @@ export namespace UserBackupCreator {
 
         const writeStream = storageFile.createWriteStream();
 
-        const streamsForZipFile: SnapshotTransformer[] = [];
+        const transformedStreamsForZipFile: SnapshotTransformer[] = [];
 
         // Iterate the Firestore collections we need to backup
         const collectionsToBackup = [
@@ -75,11 +79,11 @@ export namespace UserBackupCreator {
                 uid,
             });
 
-            streamsForZipFile.push(
+            transformedStreamsForZipFile.push(
                 // Push a "transformed" version of the original stream of Firestore documents
-                // Transformed version emits values that are suitable as inputs for the "archiver" library
-                // for creating zip files
-                stream.pipe(new SnapshotTransformer(collectionToBackup, {highWaterMark: 1}))
+                // Transformed version emits values that are suitable as inputs for the "archiver" library,
+                // which is the one we use for creating the .zip file with the backup
+                stream.pipe(new SnapshotTransformer(collectionToBackup, {highWaterMark: 5}))
             );
         }
 
@@ -102,10 +106,10 @@ export namespace UserBackupCreator {
 
         await util.promisify(stream.pipeline)(
             mergeStreams(
-                ...streamsForZipFile,
+                ...transformedStreamsForZipFile,
                 await createStreamFromFilestorage(uid)
             ),
-            new ArchiveWritable(writeStream, {highWaterMark: 1})
+            new ArchiveWritable(writeStream, {highWaterMark: 3})
         )
 
         // Flush the write stream so the process can end
@@ -152,14 +156,88 @@ export namespace UserBackupCreator {
         return new File(bucket, file);
     }
 
-    function createStreamFromFilestorage(uid: string) {
-        const stream = new Readable();
+    async function createStreamFromFilestorage(uid: string) {
+        const stream = await createStreamFromCollection({
+            collection: 'doc_meta',
+            uid,
+        });
 
-        // @TODO Read the files from Cloud Storage, download them and pipe their local path to the stream
+        const transformerFirebaseObjectToLocalFile = new Transform({
+            objectMode: true,
+            highWaterMark: 3,
+            transform(chunk, encoding, callback) {
+                (async () => { // wrap in a self executing async block
+                    const snapshot = chunk as QueryDocumentSnapshot;
 
-        // Mark the stream as "finished"
-        stream.push(null);
+                    const id = snapshot.data().id;
 
-        return stream;
+                    console.log(id, 'transformerFirebaseObjectToLocalFile._transform()');
+
+                    const name = snapshot.data().value.docInfo.filename;
+                    const hashcode = snapshot.data().value.docInfo.hashcode;
+
+                    if (!name) {
+                        console.error(id, 'Encountered a document with no filename and hashcode field: ' + snapshot.data().id);
+                        // console.error(id, JSON.stringify(snapshot.data(), null, 2))
+                        callback(null, null);
+                        return;
+                    }
+                    // console.log(JSON.stringify(snapshot.data().value.docInfo, null, 2));
+                    console.log(id, name, hashcode);
+
+                    const file = getFirebaseFile({
+                        uid,
+                        name,
+                        hashcode: hashcode ? hashcode : undefined,
+                    });
+
+                    const backend = Backend.STASH;
+                    const fileRef = {
+                        name: name,
+                        backend
+                    };
+                    const filePath = FirebaseDatastores.computeStoragePath(backend, fileRef, uid)
+
+                    console.log('filePath', filePath.path);
+                    try {
+                        const exists = (await file.exists())[0];
+                        console.log(filePath.path, 'exists', exists);
+                        if (!exists) {
+                            console.error(id, 'Filename does not exist', name);
+                            callback(null, null);
+                            return;
+                        }
+                    } catch (e) {
+                        console.error(id, 'Filename does not exist', name);
+                        console.error(id, e);
+                        callback(null, null);
+                        return;
+                    }
+
+
+                    // Build a ZipStreamChunk object that is suitable as entry chunks for the "archiver" package
+
+                    const zipEntry: ZipStreamChunk = {
+                        source: file.createReadStream(),
+                        data: {
+                            name: filePath.path,
+                        }
+                    }
+
+                    callback(null, zipEntry)
+                })();
+            }
+        });
+
+        return stream.pipe(transformerFirebaseObjectToLocalFile);
+
+        // const stream = new Readable();
+        //
+        // // @TODO Read the files from Cloud Storage, download them and pipe their local path to the stream
+        //
+        // // Mark the stream as "finished"
+        // stream.push(null);
+        //
+        // return stream;
     }
 }

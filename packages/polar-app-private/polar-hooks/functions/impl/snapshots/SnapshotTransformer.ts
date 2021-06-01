@@ -4,8 +4,12 @@ import {ZipStreamChunk} from "./ZipStreamChunk";
 
 export class SnapshotTransformer extends Transform {
 
-    constructor(private readonly collection: string,
-                options: Omit<TransformOptions, 'objectMode'> = {}) {
+    constructor(
+        // The Firebase collection from which the objects will be coming from (to be transformed)
+        private readonly collection: string,
+        // The NodeJS Transform class options
+        options: Omit<TransformOptions, 'objectMode'> = {},
+    ) {
         super({...options, objectMode: true})
     }
 
@@ -14,6 +18,7 @@ export class SnapshotTransformer extends Transform {
         console.log('SnapshotTransformer._transform()');
         const snapshot = chunk as QueryDocumentSnapshot;
 
+        // Build a ZipStreamChunk object that is suitable as entry chunks for the "archiver" package
         const zipEntry: ZipStreamChunk = {
             source: JSON.stringify(snapshot.data(), null, '  '),
             data: {

@@ -80,6 +80,7 @@ export class ArchiveWritable extends Writable {
         }
         this.archive.once('entry', entryCB)
         this.archive.once('error', errorCB)
+        console.log(this.count, chunk.data);
         this.archive.append(chunk.source, chunk.data)
     }
 
