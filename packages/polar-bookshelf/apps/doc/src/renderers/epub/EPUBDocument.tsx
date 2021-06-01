@@ -445,7 +445,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
     }, [annotationBarInjector, docMeta.docInfo.fingerprint, docURL, epubResizer, finder,
         incrRenderIter, linkLoader, props.docMeta.docInfo.fingerprint, setDocDescriptor,
         setDocScale, setFinder, setFluidPagemarkFactory, setOutline, setOutlineNavigator,
-        setPage, setPageNavigator, setResizer, setSection, stylesheet, newAnnotationBarEnabled,setScaleLeveler, setScale, scaleLeveler]);
+        setPage, setPageNavigator, setResizer, setSection, stylesheet, newAnnotationBarEnabled,setScaleLeveler, scaleLeveler]);
 
     useWindowResizeEventListener('epub-resizer', epubResizer);
 
