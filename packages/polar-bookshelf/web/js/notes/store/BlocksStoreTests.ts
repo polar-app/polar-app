@@ -30,8 +30,8 @@ export namespace BlocksStoreTests {
 
         return {
             id: opts.id || Hashcodes.createRandomID(),
-            uid: opts.uid || uid,
             nspace: opts.nspace || nspace,
+            uid: opts.uid || uid,
             created,
             updated: created,
             ...opts,
