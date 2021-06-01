@@ -6,11 +6,7 @@ import {StorageSettings} from './FirebaseDatastore';
 import {FirebaseDocMetaID} from './FirebaseDatastore';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {CloudFunctions} from './firebase/CloudFunctions';
-import {Firebase, UserID} from '../firebase/Firebase';
-import firebase from 'firebase/app'
-import {Preconditions} from 'polar-shared/src/Preconditions';
 import {FileRef} from "polar-shared/src/datastore/FileRef";
-import {Logger} from "polar-shared/src/logger/Logger";
 import {UserIDStr} from "polar-firebase/src/firebase/om/Profiles";
 
 export class FirebaseDatastores {
@@ -143,7 +139,7 @@ export class FirebaseDatastores {
     // later, sign in with Facebook to continue using your app.
 
     public static computeDocMetaID(fingerprint: string,
-                                   uid: UserID): FirebaseDocMetaID {
+                                   uid: UserIDStr): FirebaseDocMetaID {
 
         return Hashcodes.createID(uid + ':' + fingerprint, 32);
 
