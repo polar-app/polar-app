@@ -23,11 +23,13 @@ export interface IGenericSnapshotMetadata {
     readonly fromCache: boolean;
 }
 
-export interface IBlocksPersistenceSnapshot {
+export interface IGenericSnapshot<T> {
     readonly empty: boolean;
     readonly metadata: IGenericSnapshotMetadata;
-    readonly docChanges: ReadonlyArray<IGenericDocumentChange<IBlock>>;
+    readonly docChanges: ReadonlyArray<IGenericDocumentChange<T>>;
 }
+
+export type IBlocksPersistenceSnapshot = IGenericSnapshot<IBlock>;
 
 /**
  * This is just a hook that will be re-called from within the UI...
