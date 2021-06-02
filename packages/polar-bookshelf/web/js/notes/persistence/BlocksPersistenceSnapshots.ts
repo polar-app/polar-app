@@ -4,30 +4,10 @@ import {IBlock} from "../store/IBlock";
 import {IQuerySnapshot} from "polar-snapshot-cache/src/store/IQuerySnapshot";
 import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
 import {IDocumentChange} from "polar-snapshot-cache/src/store/IDocumentChange";
+import {IGenericSnapshot} from "./IGenericSnapshot";
+import {IGenericDocumentChange} from "./IGenericDocumentChange";
 
 const IS_NODE = typeof window === 'undefined';
-
-export type  DocumentChangeType = 'added' |  'modified' | 'removed';
-
-/**
- * Provides a Firebase-like snapshot API bug uses generics and actual coverted objects.
- */
-export interface IGenericDocumentChange<T> {
-    readonly id: string;
-    readonly type: DocumentChangeType;
-    readonly data: T;
-}
-
-export interface IGenericSnapshotMetadata {
-    readonly hasPendingWrites: boolean;
-    readonly fromCache: boolean;
-}
-
-export interface IGenericSnapshot<T> {
-    readonly empty: boolean;
-    readonly metadata: IGenericSnapshotMetadata;
-    readonly docChanges: ReadonlyArray<IGenericDocumentChange<T>>;
-}
 
 export type IBlocksPersistenceSnapshot = IGenericSnapshot<IBlock>;
 
