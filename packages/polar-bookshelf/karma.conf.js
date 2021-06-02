@@ -13,7 +13,11 @@ const webpackConfig = require("./webpack.config");
 module.exports = (config) => {
   config.set({
     // ... normal karma configuration
-
+    client: {
+      mocha: {
+        timeout : 10000
+      }
+    },
     // browsers: ['Chrome'],
     browsers: ['ChromeHeadless'],
 
