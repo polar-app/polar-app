@@ -2,28 +2,31 @@ import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
 import React from "react";
 import {IBlock} from "../store/IBlock";
 import {IQuerySnapshot} from "polar-snapshot-cache/src/store/IQuerySnapshot";
-import {IDocumentChange} from "polar-snapshot-cache/src/store/IDocumentChange";
 import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
+import {IDocumentChange} from "polar-snapshot-cache/src/store/IDocumentChange";
 
 const IS_NODE = typeof window === 'undefined';
 
 export type  DocumentChangeType = 'added' |  'modified' | 'removed';
 
-export interface DocumentChange<T> {
+/**
+ * Provides a Firebase-like snapshot API bug uses generics and actual coverted objects.
+ */
+export interface IGenericDocumentChange<T> {
     readonly id: string;
     readonly type: DocumentChangeType;
     readonly data: T;
 }
 
-export interface ISnapshotMetadata {
+export interface IGenericSnapshotMetadata {
     readonly hasPendingWrites: boolean;
     readonly fromCache: boolean;
 }
 
 export interface IBlocksPersistenceSnapshot {
     readonly empty: boolean;
-    readonly metadata: ISnapshotMetadata;
-    readonly docChanges: ReadonlyArray<DocumentChange<IBlock>>;
+    readonly metadata: IGenericSnapshotMetadata;
+    readonly docChanges: ReadonlyArray<IGenericDocumentChange<IBlock>>;
 }
 
 /**
@@ -44,7 +47,7 @@ function createNullBlockPersistenceSnapshots(): BlocksPersistenceSnapshotsHook {
  */
 export function createMockBlocksPersistenceSnapshot(blocks: ReadonlyArray<IBlock>): IBlocksPersistenceSnapshot {
 
-    const convertBlockToDocChange = (block: IBlock): DocumentChange<IBlock> => {
+    const convertBlockToDocChange = (block: IBlock): IGenericDocumentChange<IBlock> => {
 
         return {
             id: block.id,
@@ -93,7 +96,7 @@ export function useFirestoreBlocksPersistenceSnapshots(listener: (snapshot: IBlo
             // it or  'parent' could be null
             //
             // FirestoreBlocks
-            const convertDocChange = (current: IDocumentChange): DocumentChange<IBlock> => {
+            const convertDocChange = (current: IDocumentChange): IGenericDocumentChange<IBlock> => {
 
                 const data: IBlock = current.doc.data() as IBlock;
 
