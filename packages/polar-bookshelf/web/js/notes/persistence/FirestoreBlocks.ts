@@ -1,5 +1,4 @@
 import {IBlock} from "../store/IBlock";
-import {toJS} from "mobx"
 
 export namespace FirestoreBlocks {
 
@@ -17,7 +16,7 @@ export namespace FirestoreBlocks {
 
     export function fromFirestoreBlock(block: any): IBlock {
 
-        const result: any = {...toJS(block)};
+        const result: any = {...block};
 
         if (result.parent === null) {
             result.parent = undefined;
