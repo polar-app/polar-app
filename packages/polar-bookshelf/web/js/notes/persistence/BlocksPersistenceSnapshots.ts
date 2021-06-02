@@ -16,14 +16,6 @@ export type IBlocksPersistenceSnapshot = IGenericSnapshot<IBlock>;
  */
 export type BlocksPersistenceSnapshotsHook = () => IBlocksPersistenceSnapshot;
 
-function createNullBlockPersistenceSnapshots(): BlocksPersistenceSnapshotsHook {
-
-    return () => {
-        return createMockBlocksPersistenceSnapshot(MockBlocks.create());
-    }
-
-}
-
 /**
  * Use blocks to create mock snapshots where everything is 'added'
  */
