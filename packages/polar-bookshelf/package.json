@@ -29,7 +29,8 @@
     "webpack-serve": "node  --max_old_space_size=4096 node_modules/.bin/webpack serve",
     "find-unhandled-promises": "npm run-script tslint | grep 'Promises must be handled appropriately' | grep -v 'web/test' ; true",
     "serve": "node scripts/serve.js",
-    "karma": "../../node_modules/karma/bin/karma start"
+    "karma": "../../node_modules/.bin/karma start",
+    "karma:dev": "../../node_modules/.bin/karma start --browsers Chrome --singleRun false"
   },
   "repository": "https://github.com/burtonator/polar-bookshelf",
   "keywords": [
