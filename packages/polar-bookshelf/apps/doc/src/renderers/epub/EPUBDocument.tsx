@@ -10,7 +10,7 @@ import {EPUBFindRenderer} from "./EPUBFindRenderer";
 import {EPUBFindControllers} from "./EPUBFindControllers";
 import {useDocFindCallbacks} from "../../DocFindStore";
 import {IFrameEventForwarder} from "./IFrameEventForwarder";
-import {SCALE_VALUE_PAGE_WIDTH} from '../../ScaleLevels';
+import {SCALE_VALUE_PAGE_WIDTH, ScaleLevelTuple} from '../../ScaleLevels';
 import './EPUBDocument.css';
 import {DocumentInit} from "../DocumentInitHook";
 import {DOMTextIndexProvider} from "../../annotations/DOMTextIndexContext";
@@ -125,7 +125,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
 
     const {docURL, docMeta} = props;
 
-    const {setDocDescriptor, setPageNavigator, setDocScale, setResizer, setFluidPagemarkFactory, setPage, setOutline, setOutlineNavigator}
+    const {setDocDescriptor, setPageNavigator, setDocScale, setResizer, setFluidPagemarkFactory, setPage, setOutline, setOutlineNavigator, setScaleLeveler}
         = useDocViewerCallbacks();
 
     const {setFinder}
@@ -147,6 +147,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
     const newAnnotationBarEnabled = useAnnotationPopupBarEnabled();
     const docViewerElements = useDocViewerElementsContext();
 
+
     const doLoad = React.useCallback(async () => {
 
         function doInitialCallbacks() {
@@ -160,7 +161,6 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
         }
 
         doInitialCallbacks();
-
         const book = ePub(docURL);
 
         const docID = props.docMeta.docInfo.fingerprint;
@@ -193,6 +193,32 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
 
         });
 
+        const setScale = (scale: ScaleLevelTuple) => {
+            const iframe = docViewerElements.getDocViewerElement().querySelector(".epub-view iframe") as HTMLIFrameElement
+            const percentageScaleValue = Number(scale.value) * 100
+            rendition.themes.fontSize(`${percentageScaleValue}%`)
+
+            if (iframe.contentDocument) {
+                const images = iframe.contentDocument.querySelectorAll('img')
+                const items: HTMLImageElement[] = Array.prototype.slice.call(images)
+
+                items.forEach((item) =>{
+                    item.setAttribute('style', 'max-width: none !important')
+                    const newWidth = item.clientWidth * Number(scale.value)
+                    const newHeight = item.clientHeight * Number(scale.value)
+                    item.style.width = `${newWidth}px`
+                    item.style.height = `${newHeight}px`
+                })
+            }
+
+            return Number(scale.value)
+        }
+
+        const scaleLeveler = (scale: ScaleLevelTuple) => {
+            return setScale(scale);
+        }
+        setScaleLeveler(scaleLeveler);
+
         function createResizer(): Resizer {
             return () => {
                 epubResizer()
@@ -212,7 +238,6 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
 
         rendition.on('rendered', (section: Section) => {
             console.log('epubjs event: rendered: ');
-
             epubResizer();
 
             // we have to update the section here as we jumped within the EPUB
@@ -433,7 +458,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
     }, [annotationBarInjector, docMeta.docInfo.fingerprint, docURL, epubResizer, finder,
         incrRenderIter, linkLoader, props.docMeta.docInfo.fingerprint, setDocDescriptor,
         setDocScale, setFinder, setFluidPagemarkFactory, setOutline, setOutlineNavigator,
-        setPage, setPageNavigator, setResizer, setSection, stylesheet, newAnnotationBarEnabled]);
+        setPage, setPageNavigator, setSection, stylesheet, newAnnotationBarEnabled, setResizer, setScaleLeveler,docViewerElements]);
 
     useWindowResizeEventListener('epub-resizer', epubResizer);
 
