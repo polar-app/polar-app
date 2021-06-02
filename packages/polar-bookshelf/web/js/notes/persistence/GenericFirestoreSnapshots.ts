@@ -21,10 +21,6 @@ export function useGenericFirestoreSnapshots<T>(collectionName: string,
 
     React.useEffect(() => {
 
-        if (! user) {
-            return;
-        }
-
         const convertSnapshot = (current: IQuerySnapshot): IGenericSnapshot<T> => {
 
             const convertDocChange = (current: IDocumentChange): IGenericDocumentChange<T> => {
