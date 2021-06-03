@@ -50,7 +50,6 @@ export namespace UserBackupCreator {
             .firestore()
             .collection(config.collection)
             .where('uid', '==', config.uid)
-            .limit(100) // @TODO figure out why it doesn't work with the full set
             .stream();
     }
 
@@ -155,6 +154,7 @@ export namespace UserBackupCreator {
         for (let doc of data.docs) {
             readable.push(doc.data());
         }
+        readable.push(null);
 
         // const stream = await createStreamFromCollection({
         //     collection: 'doc_meta',

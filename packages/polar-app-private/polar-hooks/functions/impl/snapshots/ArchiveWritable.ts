@@ -9,7 +9,7 @@ import {ZipStreamChunk} from './ZipStreamChunk';
  * @returns a writable object stream. The objects should be of type ZipStreamChunk
  */
 export class ArchiveWritable extends Writable {
-    archive = archiver('zip', {zlib: {level: 9}});
+    archive = archiver('tar', {gzip: true, gzipOptions: {level: 6}});
     output: NodeJS.WritableStream;
     count = 0;
     lastLogTime = Date.now();
