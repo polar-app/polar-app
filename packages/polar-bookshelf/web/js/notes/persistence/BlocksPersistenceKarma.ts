@@ -2,7 +2,6 @@ import {Firestore} from "../../firebase/Firestore";
 import {assert} from "chai";
 import {Firebase} from "../../firebase/Firebase";
 import {FIREBASE_PASS, FIREBASE_USER} from "../../firebase/FirebaseTesting";
-import {FirestoreBlocksPersistenceWriter} from "./FirestoreBlocksPersistenceWriter";
 import {BlockIDStr} from "../store/BlocksStore";
 import {IBlock} from "../store/IBlock";
 import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
@@ -15,6 +14,7 @@ import {BlocksStoreTests} from "../store/BlocksStoreTests";
 import createBasicBlock = BlocksStoreTests.createBasicBlock;
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
+import {FirestoreBlocksPersistenceWriter} from "./BlockPersistenceWriters";
 
 const ID = Hashcodes.createRandomID();
 
