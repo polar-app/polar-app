@@ -2,21 +2,56 @@ import React from 'react';
 import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
 import {IFirestore} from "polar-snapshot-cache/src/store/IFirestore";
 import { IBlockExpand } from './BlockExpandSnapshots';
+import {BlockIDStr} from "../store/BlocksStore";
+import firebase from 'firebase';
 
 const IS_NODE = typeof window === 'undefined';
 
-export type BlockExpandPersistenceWriter = (mutation: IBlockExpand) => void;
+export type BlockExpandPersistenceWriter = (mutations: ReadonlyArray<IBlockExpandMutation>) => void;
+
+export type BlockExpandMutationType = 'added' | 'removed';
+
+export interface IBlockExpandMutation {
+    readonly type: BlockExpandMutationType;
+    readonly id: BlockIDStr;
+}
 
 export namespace FirestoreBlockExpandPersistenceWriter {
 
     export async function doExec(firestore: IFirestore,
-                                 mutation: IBlockExpand) {
+                                 user: firebase.User,
+                                 mutations: ReadonlyArray<IBlockExpandMutation>) {
 
         const collection = firestore.collection('block_expand');
 
-        const doc = collection.doc(mutation.id);
+        const batch = firestore.batch();
 
-        await doc.set(mutation);
+        // convert the firestore mutations to a batch...
+        for(const mutation of mutations) {
+
+            const doc = collection.doc(mutation.id);
+
+            switch (mutation.type) {
+
+                case "added":
+
+                    const blockExpand: IBlockExpand = {
+                        id: mutation.id,
+                        uid: user.uid
+                    }
+
+                    batch.set(doc, blockExpand);
+
+                    break;
+                case "removed":
+                    batch.delete(doc);
+                    break;
+
+            }
+
+        }
+
+        await batch.commit();
 
     }
 
@@ -24,21 +59,25 @@ export namespace FirestoreBlockExpandPersistenceWriter {
 
 export function useFirestoreBlockExpandWriter(): BlockExpandPersistenceWriter {
 
-    const {firestore} = useFirestore();
+    const {firestore, user} = useFirestore();
 
-    return React.useCallback((mutation: IBlockExpand) => {
+    return React.useCallback((mutations: ReadonlyArray<IBlockExpandMutation>) => {
+
+        if (! user) {
+            return;
+        }
 
         // // TODO use a dialog handler for this...
-        FirestoreBlockExpandPersistenceWriter.doExec(firestore, mutation)
-            .catch(err => console.log("Unable to commit mutations: ", err, mutation));
+        FirestoreBlockExpandPersistenceWriter.doExec(firestore, user, mutations)
+            .catch(err => console.log("Unable to commit mutations: ", err, mutations));
 
-    }, [firestore]);
+    }, [firestore, user]);
 
 }
 
 function createMockBlockExpandWriter(): BlockExpandPersistenceWriter {
 
-    return (mutation: IBlockExpand) => {
+    return (mutations: ReadonlyArray<IBlockExpandMutation>) => {
         // noop
     }
 

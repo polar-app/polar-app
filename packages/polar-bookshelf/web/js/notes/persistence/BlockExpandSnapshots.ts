@@ -22,16 +22,12 @@ export type BlocksPersistenceSnapshotsHook = () => IBlocksPersistenceSnapshot;
 export interface IBlockExpand {
 
     /**
-     * "The ID of this record which is just the UID.
+     * "The block ID of this record which is just the
      */
-    readonly id: UIDStr;
+    readonly id: BlockIDStr;
 
     readonly uid: UIDStr;
 
-    /**
-     * The blocks that are currently expanded.
-     */
-    readonly expanded: ReadonlyArray<BlockIDStr>;
 }
 
 export function useFirestoreBlocksExpandSnapshots(listener: (snapshot: IGenericSnapshot<IBlockExpand>) => void) {
