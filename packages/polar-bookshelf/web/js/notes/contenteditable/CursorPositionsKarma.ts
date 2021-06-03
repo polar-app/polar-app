@@ -1,33 +1,10 @@
 import {CursorPositions} from "./CursorPositions";
 import {assert} from "chai";
 import {Asserts} from "polar-shared/src/Asserts";
+import {ContentEditables} from "../ContentEditables";
 
 describe('CursorPositions', () => {
     describe('computeCurrentOffset', () => {
-        const setCaretPosition = (elem: Node, position: 'start' | 'end' | number) => {
-            const range = new Range();
-            switch (position) {
-                case 'start':
-                    range.setStartBefore(elem);
-                    range.setEndBefore(elem);
-                    break;
-                case 'end':
-                    range.setStartAfter(elem);
-                    range.setEndAfter(elem);
-                    break;
-                default:
-                    range.setStart(elem, position);
-                    range.setStart(elem, position);
-                    break;
-            }
-            const selection = document.getSelection();
-            Asserts.assertPresent(selection);
-
-            selection.removeAllRanges();
-            selection.addRange(range);
-
-        };
-
         beforeEach(() => {
             document.body.setAttribute("contenteditable", "true");
         });
@@ -43,7 +20,7 @@ describe('CursorPositions', () => {
             document.body.innerHTML = `<div class="foo">hello<h1><span>world</span></h1></div>`;
             const span = document.querySelector<HTMLSpanElement>("span");
             Asserts.assertPresent(span);
-            setCaretPosition(span, 'start');
+            ContentEditables.setCaretPosition(span, 'start');
             const pos = CursorPositions.computeCurrentOffset(document.body);
 
             assert.equal(pos, 5);
@@ -53,7 +30,7 @@ describe('CursorPositions', () => {
             document.body.innerHTML = `Hello world`;
             const textNode = document.body.firstChild;
             Asserts.assertPresent(textNode);
-            setCaretPosition(textNode, 3);
+            ContentEditables.setCaretPosition(textNode, 3);
             const pos = CursorPositions.computeCurrentOffset(document.body);
 
             assert.equal(pos, 3);
@@ -61,7 +38,7 @@ describe('CursorPositions', () => {
 
         it('random test case 1', () => {
             document.body.innerHTML = `types<span>are bad</span>`;
-            setCaretPosition(document.body, 1); // The second child of document.body
+            ContentEditables.setCaretPosition(document.body, 1); // The second child of document.body
             const pos = CursorPositions.computeCurrentOffset(document.body);
 
             assert.equal(pos, 5);
@@ -71,7 +48,7 @@ describe('CursorPositions', () => {
             document.body.innerHTML = `types<span contenteditable="false">are bad</span> `;
             const span = document.querySelector<HTMLSpanElement>('span');
             Asserts.assertPresent(span);
-            setCaretPosition(span, 'end');
+            ContentEditables.setCaretPosition(span, 'end');
             const pos = CursorPositions.computeCurrentOffset(document.body);
 
             assert.equal(pos, document.body.textContent!.length - 1);
@@ -81,7 +58,7 @@ describe('CursorPositions', () => {
             document.body.innerHTML = `types<span contenteditable="false"></span> `;
             const span = document.querySelector<HTMLSpanElement>('span');
             Asserts.assertPresent(span);
-            setCaretPosition(span, 'start');
+            ContentEditables.setCaretPosition(span, 'start');
             const pos = CursorPositions.computeCurrentOffset(document.body);
 
             assert.equal(pos, 'end');
@@ -105,6 +82,40 @@ describe('CursorPositions', () => {
 
             const pos = CursorPositions.computeCurrentOffset(document.body);
             assert.equal(pos, 15);
+        });
+    });
+
+    describe('setCaretPosition', () => {
+        it('should set position to "end" within nested html', () => {
+            document.body.innerHTML = `test<span>123<div>hello</div></span>`;
+
+            CursorPositions.setCaretPosition(document.body, 'end');
+            const pos = CursorPositions.computeCurrentOffset(document.body);
+            assert.equal(pos, 'end');
+        });
+
+        it('should set position to "start" within nested html', () => {
+            document.body.innerHTML = `test<span>123<div>hello</div></span>`;
+
+            CursorPositions.setCaretPosition(document.body, 'start');
+            const pos = CursorPositions.computeCurrentOffset(document.body);
+            assert.equal(pos, 0);
+        });
+
+        it('should set position to a specific offset within simple html', () => {
+            document.body.innerHTML = `helloworld`;
+
+            CursorPositions.setCaretPosition(document.body.firstChild!, 5);
+            const pos = CursorPositions.computeCurrentOffset(document.body);
+            assert.equal(pos, 5);
+        });
+
+        it('should set position to a specific offset within nested html', () => {
+            document.body.innerHTML = `test<span>123<div>hello</div></span>`;
+
+            CursorPositions.setCaretPosition(document.body, 1); // 2nd child node
+            const pos = CursorPositions.computeCurrentOffset(document.body);
+            assert.equal(pos, 4);
         });
     });
 });

@@ -1124,15 +1124,15 @@ export class BlocksStore implements IBlocksStore {
 
             sourceBlock.withMutation(() => {
 
-                const newContent = new MarkdownContent(blockContent.toJSON());
+                const newContent = new MarkdownContent({
+                    ...blockContent.toJSON(),
+                    data: content,
+                });
                 newContent.addLink({id: targetBlockID, text: targetName});
                 sourceBlock.setContent(newContent);
             })
 
             this.doPut([sourceBlock]);
-
-            this.setActiveWithPosition(sourceBlock.id, 'end');
-
         }
 
         const undo = () => {

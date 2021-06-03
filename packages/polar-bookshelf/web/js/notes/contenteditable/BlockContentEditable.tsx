@@ -485,9 +485,20 @@ function useUpdateCursorPosition() {
 }
 
 const insertEmptySpacer = (elem: HTMLElement) => {
-    const TAGS = ["</a>"];
-    const trimmed = elem.innerHTML.trim();
-    if (TAGS.some(tag => trimmed.endsWith(tag))) {
+    const isFocusable = (node: Node | null): boolean => {
+        if (!node) {
+            return true;
+        }
+        if (!node.textContent?.length) {
+            return isFocusable(node.previousSibling);
+        }
+        if (node.nodeType === Node.ELEMENT_NODE) {
+            const elem = node as Element;
+            return elem.getAttribute('contenteditable') !== 'false';
+        }
+        return true;
+    };
+    if (!isFocusable(elem.lastChild)) {
         elem.appendChild(ContentEditables.createEmptySpacer());
     }
 };

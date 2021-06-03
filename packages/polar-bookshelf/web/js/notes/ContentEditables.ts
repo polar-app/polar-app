@@ -209,4 +209,28 @@ export namespace ContentEditables {
         span.appendChild(document.createTextNode(' '));
         return span;
     }
+
+    export function setCaretPosition(elem: Node, position: 'start' | 'end' | number) {
+        const range = new Range();
+        switch (position) {
+            case 'start':
+                range.setStartBefore(elem);
+                range.setEndBefore(elem);
+                break;
+            case 'end':
+                range.setStartAfter(elem);
+                range.setEndAfter(elem);
+                break;
+            default:
+                range.setStart(elem, position);
+                range.setStart(elem, position);
+                break;
+        }
+        const selection = document.getSelection();
+
+        if (selection) {
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+    };
 }
