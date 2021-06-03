@@ -40,7 +40,6 @@ export function useFirestoreBlocksExpandSnapshots(listener: (snapshot: IGenericS
 
     return useGenericFirestoreSnapshots('block_expand', ['uid', '==', user?.uid], listener);
 
-
 }
 
 export function useBlockExpandSnapshots(listener: (snapshot: IGenericSnapshot<IBlockExpand>) => void) {
