@@ -33,7 +33,7 @@ import {DateContent} from "../content/DateContent";
 import {IBlocksPersistenceSnapshot, useBlocksPersistenceSnapshots} from "../persistence/BlocksPersistenceSnapshots";
 import {BlocksPersistenceWriter} from "../persistence/FirestoreBlocksStoreMutations";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {useBlocksPersistenceWriter} from "../persistence/BlockPersistenceWriters";
+import {useBlocksPersistenceWriter} from "../persistence/BlocksPersistenceWriters";
 import {WikiLinksToMarkdown} from "../WikiLinksToMarkdown";
 
 export type BlockIDStr = IDStr;
