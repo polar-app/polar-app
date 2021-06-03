@@ -29,29 +29,6 @@ export namespace UserBackupCreator {
         uid: string;
     }
 
-    const mergeStreams = (...streams: any[]) => {
-        let pass = new PassThrough({
-            objectMode: true,
-        })
-        let waiting = streams.length
-        for (let stream of streams) {
-            pass = stream.pipe(pass, {end: false})
-            stream.once('end', () => --waiting === 0 && pass.emit('end'))
-        }
-        return pass
-    }
-
-
-    async function createStreamFromCollection(config: {
-        collection: string,
-        uid: string,
-    }) {
-        return firebaseApp()
-            .firestore()
-            .collection(config.collection)
-            .where('uid', '==', config.uid)
-            .stream();
-    }
 
     export async function create(uid: IDStr): Promise<IUserDataArchive> {
         const now = ISODateTimeStrings.create();
@@ -108,10 +85,30 @@ export namespace UserBackupCreator {
         return {
             url: storageFile.publicUrl(),
         };
+    }
 
-        // @TODO Archive all PDFs that back these docs into a zip file as well
-        // @TODO Create a metadata file within the root of the zip files that defines the version of the backup tool
-        // @TODO return just one zip file as a result
+    const mergeStreams = (...streams: any[]) => {
+        let pass = new PassThrough({
+            objectMode: true,
+        })
+        let waiting = streams.length
+        for (let stream of streams) {
+            pass = stream.pipe(pass, {end: false})
+            stream.once('end', () => --waiting === 0 && pass.emit('end'))
+        }
+        return pass
+    }
+
+
+    async function createStreamFromCollection(config: {
+        collection: string,
+        uid: string,
+    }) {
+        return firebaseApp()
+            .firestore()
+            .collection(config.collection)
+            .where('uid', '==', config.uid)
+            .stream();
     }
 
 
