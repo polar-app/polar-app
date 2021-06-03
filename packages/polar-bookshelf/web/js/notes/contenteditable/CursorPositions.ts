@@ -145,25 +145,45 @@ export namespace CursorPositions {
 
     }
 
+    export function toTextNode(node: Node | undefined, offset: number): ICursorPosition | undefined {
+        if (!node) {
+            return  undefined;
+        }
+        if (node.nodeType === Node.ELEMENT_NODE) {
+            return toTextNode(node.childNodes[offset], 0);
+        }
+
+        return {node, offset};
+    }
+
     export function computeCurrentOffset(element: HTMLElement): 'end' | number | undefined {
 
         const lookup = computeCursorLookupArray(element);
 
-        const range = document.getSelection()!.getRangeAt(0);
+        const selection = document.getSelection();
 
-        // NOTE: this is O(N) but N is almost always insanely small.
-        for (let idx = 0; idx < lookup.length; ++idx) {
+        if (selection && selection.rangeCount) {
+            const range = selection.getRangeAt(0);
+            const positionInTextNode = toTextNode(range.startContainer, range.startOffset);
 
-            const curr = lookup[idx];
+            if (positionInTextNode) {
+                const {node, offset} = positionInTextNode;
 
-            if (range.startContainer === curr.node) {
+                // NOTE: this is O(N) but N is almost always insanely small.
+                for (let idx = 0; idx < lookup.length; ++idx) {
 
-                if (range.startOffset === curr.offset) {
-                    return idx;
+                    const curr = lookup[idx];
+
+                    if (node === curr.node) {
+
+                        if (offset === curr.offset) {
+                            return idx;
+                        }
+
+                    }
+
                 }
-
             }
-
         }
 
         return 'end';

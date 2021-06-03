@@ -138,7 +138,7 @@ export class FirebaseDatastores {
     // later, sign in with Facebook to continue using your app.
 
     public static computeDocMetaID(fingerprint: string,
-                                   uid: UserID): FirebaseDocMetaID {
+                                   uid: UserIDStr): FirebaseDocMetaID {
 
         return Hashcodes.createID(uid + ':' + fingerprint, 32);
 

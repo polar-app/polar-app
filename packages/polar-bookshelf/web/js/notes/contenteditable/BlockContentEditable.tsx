@@ -14,6 +14,8 @@ import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
 import {IPasteImageData, usePasteHandler } from '../clipboard/PasteHandlers';
 import {IImageContent} from "../content/IImageContent";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
+import {useMutationObserver} from '../../../../web/js/hooks/ReactHooks';
+import {MarkdownContent} from '../content/MarkdownContent';
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed
@@ -181,13 +183,16 @@ export const BlockContentEditable = observer((props: IProps) => {
             // (though this might be optional) and then set the innerHTML
             // directly.  React has a bug which won't work on empty strings.
 
-            if (ENABLE_CURSOR_RESET) {
-                divRef.current!.innerHTML = MarkdownContentConverter.toHTML(props.content);
+            if (divRef.current && ENABLE_CURSOR_RESET) {
+                const pos = CursorPositions.computeCurrentOffset(divRef.current);
+
+                divRef.current.innerHTML = MarkdownContentConverter.toHTML(props.content);
                 insertEmptySpacer(divRef.current!);
 
+
                 // TODO: only update if WE are active so the cursor doesn't jump.
-                if (divRef.current && blocksStore.active) {
-                    updateCursorPosition(divRef.current, {...blocksStore.active, pos: 'end'}, true);
+                if (blocksStore.active) {
+                    updateCursorPosition(divRef.current, {...blocksStore.active, pos}, true);
                 }
 
             }
@@ -412,6 +417,8 @@ export const BlockContentEditable = observer((props: IProps) => {
 
     }, [hasEditorSelection, history, platform, props, blocksStore]);
 
+    useHandleLinkDeletion({ elem: divRef.current, blockID: props.id });
+
     return (
         <NoteContentEditableElementContext.Provider value={divRef}>
 
@@ -531,3 +538,45 @@ function doUpdateCursorPosition(editor: HTMLDivElement, pos: 'start' | 'end' | n
     }
 
 }
+
+type IUseHandleLinkDeletionOpts = {
+    elem: HTMLElement | null;
+    blockID: BlockIDStr;
+};
+const useHandleLinkDeletion = ({ blockID, elem }: IUseHandleLinkDeletionOpts) => {
+    const mutationObserverConfig = React.useMemo(() => ({ childList: true }), []);
+    const blocksStore = useBlocksStore();
+
+    useMutationObserver((mutations) => {
+        const isElement = (node: Node): node is Element => node.nodeType === Node.ELEMENT_NODE;
+        const mutationNodesToWikiLinks = (nodes: NodeList) => 
+            Array.from(nodes)
+                .filter(isElement)
+                .filter(elem => elem.tagName === 'A')
+                .filter(elem => elem.getAttribute('href')?.startsWith('#'));
+
+        const compareLinks = (link1: Element) => (link2: Element) => 
+            link1.getAttribute('href') === link2.getAttribute('href') &&
+            link1.textContent === link2.textContent;
+
+        for (let mutation of mutations) {
+            const added = mutationNodesToWikiLinks(mutation.addedNodes);
+            const removed = mutationNodesToWikiLinks(mutation.removedNodes)
+            const removedLinks = removed.filter((elem) => !added.some(compareLinks(elem)));
+
+            for (let removedLink of removedLinks) {
+                const block = blocksStore.getBlock(blockID);
+                const linkedBlock = blocksStore.getBlockByName(removedLink.getAttribute('href')!.slice(1));
+                if (block && linkedBlock && block.content.type === 'markdown') {
+                    const newContent = new MarkdownContent(block.content.toJSON());
+                    newContent.removeLink(linkedBlock.id);
+                    blocksStore.setBlockContent(blockID, newContent);
+                }
+            }
+        }
+    }, {
+        elem,
+        config: mutationObserverConfig
+    })
+};
+
