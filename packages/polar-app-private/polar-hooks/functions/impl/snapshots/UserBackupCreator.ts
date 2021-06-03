@@ -83,7 +83,7 @@ export namespace UserBackupCreator {
             // Firestore document snapshots to chunks of objects that are accepted as input by the "archiver"
             // library, which ArchiveWritable.ts (the target of these Readable streams) uses internally later
             streams.push(
-                stream.pipe(new SnapshotTransformer(collectionToBackup, {highWaterMark: 5}))
+                stream.pipe(new SnapshotTransformer(collectionToBackup, {highWaterMark: 1}))
             );
         }
 
@@ -93,7 +93,7 @@ export namespace UserBackupCreator {
         // Combine all collected Readable streams and pipe them to a single Writable stream
         await util.promisify(stream.pipeline)(
             mergeStreams(...streams),
-            new ArchiveWritable(writeStream, {highWaterMark: 3})
+            new ArchiveWritable(writeStream, {highWaterMark: 1})
         )
 
         // Flush the Writable stream (to a temporary Google Cloud Storage file)
@@ -144,7 +144,7 @@ export namespace UserBackupCreator {
     async function createStreamFromFilestorage(uid: string) {
         const readable = new Readable({
             objectMode: true,
-            highWaterMark: 5,
+            highWaterMark: 1,
         });
         const data = await firebaseApp()
             .firestore()
@@ -163,7 +163,7 @@ export namespace UserBackupCreator {
 
         const transformerFirebaseObjectToLocalFile = new Transform({
             objectMode: true,
-            highWaterMark: 3,
+            highWaterMark: 1,
             transform(firebaseObject, encoding, callback) {
                 (async () => { // wrap in a self executing async block
 
