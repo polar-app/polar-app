@@ -142,32 +142,44 @@ export namespace UserBackupCreator {
     }
 
     async function createStreamFromFilestorage(uid: string) {
-        const stream = await createStreamFromCollection({
-            collection: 'doc_meta',
-            uid,
+        const readable = new Readable({
+            objectMode: true,
+            highWaterMark: 5,
         });
+        const data = await firebaseApp()
+            .firestore()
+            .collection('doc_meta')
+            .where('uid', '==', uid)
+            .get();
+        // data.docs.map(doc => console.log('doc.id', doc.id))
+        for (let doc of data.docs) {
+            readable.push(doc.data());
+        }
+
+        // const stream = await createStreamFromCollection({
+        //     collection: 'doc_meta',
+        //     uid,
+        // });
 
         const transformerFirebaseObjectToLocalFile = new Transform({
             objectMode: true,
             highWaterMark: 3,
-            transform(chunk, encoding, callback) {
+            transform(firebaseObject, encoding, callback) {
                 (async () => { // wrap in a self executing async block
-                    const snapshot = chunk as QueryDocumentSnapshot;
 
-                    const id = snapshot.data().id;
+                    const id = firebaseObject.id;
 
                     console.log(id, 'transformerFirebaseObjectToLocalFile._transform()');
 
-                    const name = snapshot.data().value.docInfo.filename;
-                    const hashcode = snapshot.data().value.docInfo.hashcode;
+                    const name = firebaseObject.value.docInfo.filename;
+                    const hashcode = firebaseObject.value.docInfo.hashcode;
 
                     if (!name) {
-                        console.error(id, 'Encountered a document with no filename and hashcode field: ' + snapshot.data().id);
-                        // console.error(id, JSON.stringify(snapshot.data(), null, 2))
+                        console.error(id, 'Encountered a document with no filename and hashcode field: ' + firebaseObject.id);
+                        console.error(id, JSON.stringify(firebaseObject, null, 2))
                         callback(null, null);
                         return;
                     }
-                    // console.log(JSON.stringify(snapshot.data().value.docInfo, null, 2));
                     console.log(id, name, hashcode);
 
                     const file = getFirebaseFile({
@@ -176,17 +188,10 @@ export namespace UserBackupCreator {
                         hashcode: hashcode ? hashcode : undefined,
                     });
 
-                    const backend = Backend.STASH;
-                    const fileRef = {
-                        name: name,
-                        backend
-                    };
-                    const filePath = FirebaseDatastores.computeStoragePath(backend, fileRef, uid)
+                    const filePath = FirebaseDatastores.computeStoragePath(Backend.STASH, {name}, uid)
 
-                    console.log('filePath', filePath.path);
                     try {
                         const exists = (await file.exists())[0];
-                        console.log(filePath.path, 'exists', exists);
                         if (!exists) {
                             console.error(id, 'Filename does not exist', name);
                             callback(null, null);
@@ -201,7 +206,6 @@ export namespace UserBackupCreator {
 
 
                     // Build a ZipStreamChunk object that is suitable as entry chunks for the "archiver" package
-
                     const zipEntry: ZipStreamChunk = {
                         source: file.createReadStream(),
                         data: {
@@ -214,15 +218,6 @@ export namespace UserBackupCreator {
             }
         });
 
-        return stream.pipe(transformerFirebaseObjectToLocalFile);
-
-        // const stream = new Readable();
-        //
-        // // @TODO Read the files from Cloud Storage, download them and pipe their local path to the stream
-        //
-        // // Mark the stream as "finished"
-        // stream.push(null);
-        //
-        // return stream;
+        return readable.pipe(transformerFirebaseObjectToLocalFile);
     }
 }
