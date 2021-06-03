@@ -1,12 +1,12 @@
-import { FirebaseAdmin } from "polar-firebase-admin/src/FirebaseAdmin";
+import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {Lazy} from "../util/Lazy";
-import {ArchiveStreams} from "./ArchiveStreams";
+import {UserBackupCreator} from "./UserBackupCreator";
 
 const firebaseProvider = Lazy.create(() => FirebaseAdmin.app());
 
-xdescribe('ArchiveStreams', function() {
+describe('ArchiveStreams', function () {
 
-    it("basic", async function() {
+    it("basic", async function () {
 
         const firebase = firebaseProvider();
 
@@ -17,10 +17,8 @@ xdescribe('ArchiveStreams', function() {
 
         const uid = user!.uid;
 
-        const {url} = await ArchiveStreams.create(uid);
-
+        const {url} = await UserBackupCreator.create(uid);
         console.log("url: " + url);
-
     });
 
 });
