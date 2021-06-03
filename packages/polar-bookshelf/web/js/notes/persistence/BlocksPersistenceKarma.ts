@@ -14,7 +14,7 @@ import {BlocksStoreTests} from "../store/BlocksStoreTests";
 import createBasicBlock = BlocksStoreTests.createBasicBlock;
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
-import {FirestoreBlocksPersistenceWriter} from "./BlockPersistenceWriters";
+import { FirestoreBlocksPersistenceWriter } from "./BlocksPersistenceWriters";
 
 const ID = Hashcodes.createRandomID();
 
