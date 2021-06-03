@@ -14,6 +14,7 @@ import {Backend} from "polar-shared/src/datastore/Backend";
 import {QueryDocumentSnapshot} from "firebase-functions/lib/providers/firestore";
 import {ZipStreamChunk} from "./ZipStreamChunk";
 import path from "path";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 const storageConfig = Lazy.create(() => Datastores.createStorage());
 const storage = Lazy.create(() => storageConfig().storage);
@@ -33,7 +34,7 @@ export namespace UserBackupCreator {
     export async function create(uid: IDStr): Promise<IUserDataArchive> {
         const now = ISODateTimeStrings.create();
 
-        const filename = `${now}.zip`;
+        const filename = `${Hashcodes.createRandomID()}-${now}.zip`;
         const storageFile = createFileInTmpBucket(`snapshots/${filename}`);
 
         const writeStream = storageFile.createWriteStream();
