@@ -36,7 +36,10 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useBlocksPersistenceWriter} from "../persistence/BlocksPersistenceWriters";
 import {WikiLinksToMarkdown} from "../WikiLinksToMarkdown";
 import {useBlockExpandSnapshots, IBlockExpandSnapshot} from "../persistence/BlockExpandSnapshots";
-import {useBlockExpandPersistenceWriter} from "../persistence/BlockExpandWriters";
+import {
+    BlockExpandPersistenceWriter,
+    useBlockExpandPersistenceWriter
+} from "../persistence/BlockExpandWriters";
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
@@ -266,11 +269,14 @@ export class BlocksStore implements IBlocksStore {
     @observable _hasSnapshot: boolean = false;
 
     constructor(uid: UIDStr, undoQueue: UndoQueues2.UndoQueue,
-                readonly blocksPersistenceWriter: BlocksPersistenceWriter = NULL_FUNCTION) {
+                readonly blocksPersistenceWriter: BlocksPersistenceWriter = NULL_FUNCTION,
+                readonly blockExpandPersistenceWriter: BlockExpandPersistenceWriter = NULL_FUNCTION) {
+
         this.uid = uid;
         this.root = undefined;
         this.undoQueue = undoQueue;
         makeObservable(this);
+
     }
 
     @computed get index() {
@@ -553,14 +559,29 @@ export class BlocksStore implements IBlocksStore {
     }
 
     @action public expand(id: BlockIDStr) {
-        // FIXME: persist this
+
         this.doExpand(id, true);
+
+        this.blockExpandPersistenceWriter([
+            {
+                id,
+                type: 'added'
+            },
+        ]);
+
         this.setActiveWithPosition(id, 'start');
     }
 
     @action public collapse(id: BlockIDStr) {
-        // FIXME: persist this
         this.doExpand(id, false);
+
+        this.blockExpandPersistenceWriter([
+            {
+                id,
+                type: 'removed'
+            },
+        ]);
+
         this.setActiveWithPosition(id, 'start');
     }
 
@@ -2024,9 +2045,10 @@ export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore
     const {uid} = useBlocksStoreContext();
     const undoQueue = useUndoQueue();
     const blocksPersistenceWriter = useBlocksPersistenceWriter();
-    useBlockExpandPersistenceWriter()
+    const blockExpandPersistenceWriter = useBlockExpandPersistenceWriter()
 
-    const blocksStore = React.useMemo(() => new BlocksStore(uid, undoQueue, blocksPersistenceWriter), [blocksPersistenceWriter, uid, undoQueue]);
+    const blocksStore = React.useMemo(() => new BlocksStore(uid, undoQueue, blocksPersistenceWriter, blockExpandPersistenceWriter),
+                                      [blockExpandPersistenceWriter, blocksPersistenceWriter, uid, undoQueue]);
 
     useBlocksPersistenceSnapshots((snapshot) => {
         blocksStore.handleBlocksPersistenceSnapshot(snapshot);
