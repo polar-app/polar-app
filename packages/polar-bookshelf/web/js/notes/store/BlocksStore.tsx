@@ -1,6 +1,6 @@
 import * as React from "react";
 import {createReactiveStore} from "../../react/store/ReactiveStore";
-import {action, computed, makeObservable, observable, toJS} from "mobx"
+import {action, computed, makeObservable, observable} from "mobx"
 import {IDStr, MarkdownStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Arrays} from "polar-shared/src/util/Arrays";
@@ -490,6 +490,13 @@ export class BlocksStore implements IBlocksStore {
         return this.doSibling(id, 'next');
     }
 
+    public children(id: BlockIDStr): ReadonlyArray<BlockIDStr> {
+        const block = this.getBlock(id);
+        if (block) {
+            return block.itemsAsArray;
+        }
+        return [];
+    }
 
     public getBlockByTarget(target: BlockIDStr | BlockTargetStr): Block | undefined {
 
@@ -823,15 +830,15 @@ export class BlocksStore implements IBlocksStore {
      * Return true if this block can be merged. Meaning it has a previous sibling
      * we can merge with or a parent.
      */
-    public canMerge(id: BlockIDStr): IBlockMerge | undefined {
+    public canMergePrev(id: BlockIDStr): IBlockMerge | undefined {
 
-        const prevSibling = this.prevSibling(id);
+        const sibling = this.prevSibling(id);
 
-        if (prevSibling) {
+        if (sibling) {
             return {
                 source: id,
-                target: prevSibling
-            }
+                target: sibling
+            };
         }
 
         const block = this.getBlock(id);
@@ -843,12 +850,10 @@ export class BlocksStore implements IBlocksStore {
             if (parentBlock) {
 
                 if (this.canMergeTypes(block, parentBlock)) {
-
                     return {
                         source: id,
                         target: block.parent
-                    }
-
+                    };
                 }
 
                 if (this.canMergeWithDelete(block, parentBlock)) {
@@ -864,6 +869,47 @@ export class BlocksStore implements IBlocksStore {
 
         return undefined;
 
+    }
+
+    public canMergeNext(id: BlockIDStr): IBlockMerge | undefined {
+        const children = this.children(id);
+
+        if (children.length > 0) {
+            const child = Arrays.first(children)!;
+            const nestedChildren = this.children(child);
+            if (nestedChildren.length === 0) {
+                return {
+                    source: child,
+                    target: id
+                };
+            } else {
+                return undefined;
+            }
+        }
+
+        // TODO: come up with a better name for this.
+        const getNextIndirectSibling = (id: BlockIDStr): string | undefined => {
+            const next = this.nextSibling(id);
+            if (next) {
+                return next;
+            } else {
+                const parent = this.getParent(id);
+                if (parent) {
+                    return getNextIndirectSibling(parent.id);
+                }
+            }
+            return undefined;
+        };
+
+        const sibling = getNextIndirectSibling(id);
+
+        if (sibling) {
+            return {
+                source: sibling,
+                target: id
+            };
+        }
+        return undefined;
     }
 
     public canMergeTypes(sourceBlock: IBlock, targetBlock: IBlock): boolean {
@@ -899,8 +945,12 @@ export class BlocksStore implements IBlocksStore {
 
         const redo = () => {
 
-            const targetBlock = this._index[target];
-            const sourceBlock = this._index[source];
+            const targetBlock = this.getBlock(target);
+            const sourceBlock = this.getBlock(source);
+
+            if (!targetBlock || !sourceBlock) {
+                return;
+            }
 
             if (! this.canMergeTypes(sourceBlock, targetBlock)) {
 
