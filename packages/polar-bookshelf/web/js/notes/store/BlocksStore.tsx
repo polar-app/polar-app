@@ -2022,9 +2022,9 @@ export class BlocksStore implements IBlocksStore {
 export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore(() => {
     const {uid} = useBlocksStoreContext();
     const undoQueue = useUndoQueue();
-    const blocksStoreMutationsHandler = useBlocksPersistenceWriter();
+    const blocksPersistenceWriter = useBlocksPersistenceWriter();
 
-    const blocksStore = React.useMemo(() => new BlocksStore(uid, undoQueue, blocksStoreMutationsHandler), [blocksStoreMutationsHandler, uid, undoQueue]);
+    const blocksStore = React.useMemo(() => new BlocksStore(uid, undoQueue, blocksPersistenceWriter), [blocksPersistenceWriter, uid, undoQueue]);
 
     useBlocksPersistenceSnapshots((snapshot) => {
         blocksStore.handleBlocksPersistenceSnapshot(snapshot);
