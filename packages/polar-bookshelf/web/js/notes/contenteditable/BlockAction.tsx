@@ -4,11 +4,12 @@ import useTheme from '@material-ui/core/styles/useTheme';
 import {ActionMenuItemsProvider, useActionMenuStore} from "../../mui/action_menu/ActionStore";
 import {ContentEditables} from "../ContentEditables";
 import INodeOffset = ContentEditables.INodeOffset;
-import {useBlockContentEditableElement} from "./BlockContentEditable";
+import {BlockContentEditable, useBlockContentEditableElement} from "./BlockContentEditable";
 import { observer } from "mobx-react-lite"
 import {BlockIDStr, useBlocksStore} from '../store/BlocksStore';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
+import {CursorPositions} from './CursorPositions';
 
 const THINSP = ' ';
 
@@ -101,14 +102,14 @@ function useActionExecutor(id: BlockIDStr) {
                     coveringRange.deleteContents();
 
                     const a = document.createElement('a');
-                    a.setAttribute("contenteditable", "false");
-                    a.setAttribute("href", "#" + actionOp.target);
+                    const node = document.createTextNode(' ');
+                    a.setAttribute('contenteditable', 'false');
+                    a.setAttribute('href', '#' + actionOp.target);
                     a.appendChild(document.createTextNode(actionOp.target));
+                    coveringRange.insertNode(node);
                     coveringRange.insertNode(a);
-
-                    window.getSelection()!.getRangeAt(0).setStartAfter(a);
-                    window.getSelection()!.getRangeAt(0).setEndAfter(a);
-
+                    ContentEditables.setCaretPosition(node, 'start');
+                    node.remove();
                 }
 
                 updateSelection();

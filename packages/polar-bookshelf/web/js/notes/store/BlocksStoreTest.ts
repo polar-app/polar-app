@@ -710,13 +710,13 @@ describe('BlocksStore', function() {
 
     });
 
-    describe("canMerge", () => {
+    describe("canMergePrev", () => {
 
         it("mergeable", () => {
 
             const store = createStore()
 
-            assertJSON(store.canMerge('104'), {
+            assertJSON(store.canMergePrev('104'), {
                 "source": "104",
                 "target": "103"
             });
@@ -727,8 +727,59 @@ describe('BlocksStore', function() {
 
             const store = createStore()
 
-            assert.isUndefined(store.canMerge('103'));
+            assert.isUndefined(store.canMergePrev('103'));
 
+        });
+    });
+
+    describe("canMergeNext", () => {
+        it("should allow merging blocks in the same level", () => {
+            const store = createStore();
+
+            assertJSON(store.canMergeNext('103'), {
+                "source": "104",
+                "target": "103"
+            });
+        });
+
+        it("should allow merging a parent with its first child", () => {
+            const store = createStore();
+
+            assertJSON(store.canMergeNext('102'), {
+                "source": "103",
+                "target": "102"
+            });
+        });
+
+        it("shouldn't allow merging blocks that have no siblings after them", () => {
+            const store = createStore();
+
+            assert.isUndefined(store.canMergeNext('110'));
+        });
+
+        it("should allow merging a block with its parent's next sibling no matter what depth the current block is at", () => {
+            const store = createStore();
+
+            /*
+                111
+                    level1Block
+                        level2Block <---| We should be able to merge these two
+                parentNextSibling <-----|
+            */
+
+            const parentNextSibling = store.createNewBlock('111');
+            Asserts.assertPresent(parentNextSibling);
+            const level1Block = store.createNewBlock('111');
+            Asserts.assertPresent(level1Block);
+            store.indentBlock(level1Block.id);
+            const level2Block = store.createNewBlock(level1Block.id)!;
+            Asserts.assertPresent(level2Block);
+            store.indentBlock(level2Block.id);
+
+            assertJSON(store.canMergeNext(level2Block.id), {
+                "source": parentNextSibling.id,
+                "target": level2Block.id
+            });
         });
     });
 
@@ -757,7 +808,7 @@ describe('BlocksStore', function() {
 
             assert.equal(newBlock.content.data, '');
 
-            assert.ok(store.canMerge(newBlock.id));
+            assert.ok(store.canMergePrev(newBlock.id));
             assert.ok(store.canMergeWithDelete(newBlock, block));
 
             assert.equal(store.mergeBlocks(block.id, newBlock.id), 'block-merged-with-delete');
