@@ -1,8 +1,6 @@
 import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
 import React from "react";
-import {IBlock} from "../store/IBlock";
 import {IQuerySnapshot} from "polar-snapshot-cache/src/store/IQuerySnapshot";
-import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
 import {IDocumentChange} from "polar-snapshot-cache/src/store/IDocumentChange";
 import {IGenericSnapshot} from "./IGenericSnapshot";
 import {IGenericDocumentChange} from "./IGenericDocumentChange";
@@ -28,7 +26,7 @@ export function useGenericFirestoreSnapshots<T>(collectionName: string,
                 const data: T = current.doc.data() as T;
 
                 return {
-                    id: current.id,
+                    id: current.doc.id,
                     type: current.type,
                     data
                 }

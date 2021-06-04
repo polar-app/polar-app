@@ -1928,8 +1928,6 @@ export class BlocksStore implements IBlocksStore {
 
     @action public handleBlockExpandSnapshot(snapshot: IBlockExpandSnapshot) {
 
-        // console.log("Handling BlocksStore snapshot: ", snapshot);
-
         for (const docChange of snapshot.docChanges) {
 
             switch(docChange.type) {
