@@ -33,8 +33,13 @@ import {DateContent} from "../content/DateContent";
 import {IBlocksPersistenceSnapshot, useBlocksPersistenceSnapshots} from "../persistence/BlocksPersistenceSnapshots";
 import {BlocksPersistenceWriter} from "../persistence/FirestoreBlocksStoreMutations";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {useBlocksPersistenceWriter} from "../persistence/BlockPersistenceWriters";
+import {useBlocksPersistenceWriter} from "../persistence/BlocksPersistenceWriters";
 import {WikiLinksToMarkdown} from "../WikiLinksToMarkdown";
+import {useBlockExpandSnapshots, IBlockExpandSnapshot} from "../persistence/BlockExpandSnapshots";
+import {
+    BlockExpandPersistenceWriter,
+    useBlockExpandPersistenceWriter
+} from "../persistence/BlockExpandWriters";
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
@@ -50,7 +55,6 @@ export type StringSetMap = {[key: string]: boolean};
 
 export type IBlockContent = IMarkdownContent | INameContent | IImageContent | IDateContent;
 export type BlockContent = (MarkdownContent | NameContent | ImageContent | DateContent) & IBaseBlockContent;
-// export type BlockContent = MarkdownContent | NameContent ;
 
 /**
  * A offset into the content of a not where we should place the cursor.
@@ -265,11 +269,14 @@ export class BlocksStore implements IBlocksStore {
     @observable _hasSnapshot: boolean = false;
 
     constructor(uid: UIDStr, undoQueue: UndoQueues2.UndoQueue,
-                readonly blocksPersistenceWriter: BlocksPersistenceWriter = NULL_FUNCTION) {
+                readonly blocksPersistenceWriter: BlocksPersistenceWriter = NULL_FUNCTION,
+                readonly blockExpandPersistenceWriter: BlockExpandPersistenceWriter = NULL_FUNCTION) {
+
         this.uid = uid;
         this.root = undefined;
         this.undoQueue = undoQueue;
         makeObservable(this);
+
     }
 
     @computed get index() {
@@ -548,14 +555,41 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
+    @action private doExpand(id: BlockIDStr, expand: boolean) {
+
+        if (expand) {
+            this._expanded[id] = true;
+        } else {
+            delete this._expanded[id];
+        }
+
+    }
 
     @action public expand(id: BlockIDStr) {
-        this._expanded[id] = true;
+
+        this.doExpand(id, true);
+
+        this.blockExpandPersistenceWriter([
+            {
+                id,
+                type: 'added'
+            },
+        ]);
+
         this.setActiveWithPosition(id, 'start');
     }
 
     @action public collapse(id: BlockIDStr) {
-        delete this._expanded[id];
+
+        this.doExpand(id, false);
+
+        this.blockExpandPersistenceWriter([
+            {
+                id,
+                type: 'removed'
+            },
+        ]);
+
         this.setActiveWithPosition(id, 'start');
     }
 
@@ -1914,7 +1948,7 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    @action public handleSnapshot(snapshot: IBlocksPersistenceSnapshot) {
+    @action public handleBlocksPersistenceSnapshot(snapshot: IBlocksPersistenceSnapshot) {
 
         // console.log("Handling BlocksStore snapshot: ", snapshot);
 
@@ -1941,6 +1975,29 @@ export class BlocksStore implements IBlocksStore {
         this._hasSnapshot = true;
 
     }
+
+    @action public handleBlockExpandSnapshot(snapshot: IBlockExpandSnapshot) {
+
+        for (const docChange of snapshot.docChanges) {
+
+            switch(docChange.type) {
+
+                case "added":
+                    this.doExpand(docChange.id, true);
+                    break;
+
+                case "removed":
+                    this.doExpand(docChange.id, false);
+                    break;
+
+            }
+
+        }
+
+        this._hasSnapshot = true;
+
+    }
+
 
     /**
      * Compute the path to a block from its parent but not including the actual block.
@@ -2036,14 +2093,19 @@ export class BlocksStore implements IBlocksStore {
 export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore(() => {
     const {uid} = useBlocksStoreContext();
     const undoQueue = useUndoQueue();
-    const blocksStoreMutationsHandler = useBlocksPersistenceWriter();
+    const blocksPersistenceWriter = useBlocksPersistenceWriter();
+    const blockExpandPersistenceWriter = useBlockExpandPersistenceWriter()
 
-    const blocksStore = React.useMemo(() => new BlocksStore(uid, undoQueue, blocksStoreMutationsHandler), [blocksStoreMutationsHandler, uid, undoQueue]);
+    const blocksStore = React.useMemo(() => new BlocksStore(uid, undoQueue, blocksPersistenceWriter, blockExpandPersistenceWriter),
+                                      [blockExpandPersistenceWriter, blocksPersistenceWriter, uid, undoQueue]);
 
     useBlocksPersistenceSnapshots((snapshot) => {
-        blocksStore.handleSnapshot(snapshot);
+        blocksStore.handleBlocksPersistenceSnapshot(snapshot);
     });
 
+    useBlockExpandSnapshots((snapshot) => {
+        blocksStore.handleBlockExpandSnapshot(snapshot);
+    })
 
     return blocksStore;
 })

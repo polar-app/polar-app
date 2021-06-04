@@ -19,7 +19,7 @@ import {useBlockKeyDownHandler} from './BlockHooks';
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed
 const ENABLE_CURSOR_RESET = true;
-const ENABLE_CURSOR_RESET_TRACE = true;
+const ENABLE_CURSOR_RESET_TRACE = false;
 
 interface IProps {
 
@@ -357,13 +357,13 @@ const useHandleLinkDeletion = ({ blockID, elem }: IUseHandleLinkDeletionOpts) =>
 
     useMutationObserver((mutations) => {
         const isElement = (node: Node): node is Element => node.nodeType === Node.ELEMENT_NODE;
-        const mutationNodesToWikiLinks = (nodes: NodeList) => 
+        const mutationNodesToWikiLinks = (nodes: NodeList) =>
             Array.from(nodes)
                 .filter(isElement)
                 .filter(elem => elem.tagName === 'A')
                 .filter(elem => elem.getAttribute('href')?.startsWith('#'));
 
-        const compareLinks = (link1: Element) => (link2: Element) => 
+        const compareLinks = (link1: Element) => (link2: Element) =>
             link1.getAttribute('href') === link2.getAttribute('href') &&
             link1.textContent === link2.textContent;
 

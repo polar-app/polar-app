@@ -146,10 +146,6 @@ export namespace FirestoreBlocksStoreMutations {
 
                                     switch (patch.type) {
 
-                                        // FIXME: this is the bug as the '.' is not being encoded.
-                                        // FIXME: I could use FieldPath with this... that might work but that
-                                        // might require snapshot cache changed :-/
-
                                         case "remove":
                                             return {
                                                 id: mutation.id,
@@ -218,8 +214,6 @@ export namespace FirestoreBlocksStoreMutations {
                         }
 
                     }
-
-                    // FIXME: the INTEGER path has a 'dot' in it.. so that's fucking us!
 
                     const mutationTargets = BlocksStoreMutations.computeMutationTargets(mutation.before, mutation.after);
 
