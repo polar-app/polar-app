@@ -573,6 +573,7 @@ export class BlocksStore implements IBlocksStore {
     }
 
     @action public collapse(id: BlockIDStr) {
+
         this.doExpand(id, false);
 
         this.blockExpandPersistenceWriter([

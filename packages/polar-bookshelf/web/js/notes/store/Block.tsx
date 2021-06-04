@@ -343,7 +343,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
     /**
      * Perform a bulk/single mutation of the Block.
      */
-    public withMutation(delegate: () => void, opts?: IWithMutationOpts): boolean {
+    @action public withMutation(delegate: () => void, opts?: IWithMutationOpts): boolean {
 
         const before = this.toJSON();
 
