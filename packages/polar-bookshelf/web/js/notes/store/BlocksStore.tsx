@@ -1124,15 +1124,15 @@ export class BlocksStore implements IBlocksStore {
 
             sourceBlock.withMutation(() => {
 
-                const newContent = new MarkdownContent(blockContent.toJSON());
+                const newContent = new MarkdownContent({
+                    ...blockContent.toJSON(),
+                    data: content,
+                });
                 newContent.addLink({id: targetBlockID, text: targetName});
                 sourceBlock.setContent(newContent);
             })
 
             this.doPut([sourceBlock]);
-
-            this.setActiveWithPosition(sourceBlock.id, 'end');
-
         }
 
         const undo = () => {
@@ -1314,11 +1314,11 @@ export class BlocksStore implements IBlocksStore {
             }
 
             const currentBlock = this.getBlock(id)!;
-            let split: ISplitBlock | undefined, links: ReadonlyArray<IBlockLink>;
-            if (currentBlock.content.type === 'markdown') {
-                split = opts.split;
-                links = currentBlock.content.links;
-            }
+            const getSplit = (): ISplitBlock | undefined => currentBlock.content.type === 'markdown' ? opts.split : undefined;
+            const getLinks = (): ReadonlyArray<IBlockLink> => currentBlock.content.type === 'markdown' ? currentBlock.content.links : [];
+
+            const split = getSplit();
+            const links = getLinks();
             const newBlockInheritItems = split?.suffix !== undefined && split?.suffix !== '';
 
             const newBlockPosition = computeNewBlockPosition();

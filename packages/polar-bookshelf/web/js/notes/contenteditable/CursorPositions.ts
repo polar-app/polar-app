@@ -33,9 +33,9 @@ export namespace CursorPositions {
 
     export type CursorLookupTestArray = ReadonlyArray<ICursorPositionTest>;
 
-    export function jumpToPosition(element: HTMLElement, offset: number) {
+    export function jumpToPosition(node: Node, offset: number) {
 
-        const lookup = computeCursorLookupArray(element);
+        const lookup = computeCursorLookupArray(node);
 
         const position = lookup[offset];
 
@@ -75,7 +75,7 @@ export namespace CursorPositions {
      * node and local offset for that text so that we can place our cursor
      * there.
      */
-    export function computeCursorLookupArray(element: HTMLElement): CursorLookupArray {
+    export function computeCursorLookupArray(node: Node): CursorLookupArray {
 
         const lookup: ICursorPosition[] = [];
 
@@ -113,7 +113,7 @@ export namespace CursorPositions {
 
         }
 
-        doBuild(0, element);
+        doBuild(0, node);
 
         return lookup;
 
@@ -218,4 +218,27 @@ export namespace CursorPositions {
         return (div.innerText || div.textContent || '').length;
     }
 
+    export function setCaretPosition(elem: Node, position: 'start' | 'end' | number) {
+        const range = new Range();
+        switch (position) {
+            case 'start':
+                range.setStartBefore(elem);
+                range.setEndBefore(elem);
+                break;
+            case 'end':
+                range.setStartAfter(elem);
+                range.setEndAfter(elem);
+                break;
+            default:
+                range.setStart(elem, position);
+                range.setStart(elem, position);
+                break;
+        }
+        const selection = document.getSelection();
+
+        if (selection) {
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+    };
 }
