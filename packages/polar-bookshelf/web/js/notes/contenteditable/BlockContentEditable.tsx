@@ -8,14 +8,13 @@ import {createActionsProvider} from "../../mui/action_menu/ActionStore";
 import {NoteFormatPopper} from "../NoteFormatPopper";
 import {BlockContentCanonicalizer} from "./BlockContentCanonicalizer";
 import {BlockAction} from "./BlockAction";
-import { useHistory } from 'react-router-dom';
 import {CursorPositions} from "./CursorPositions";
-import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
 import {IPasteImageData, usePasteHandler } from '../clipboard/PasteHandlers';
 import {IImageContent} from "../content/IImageContent";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {useMutationObserver} from '../../../../web/js/hooks/ReactHooks';
 import {MarkdownContent} from '../content/MarkdownContent';
+import {useBlockKeyDownHandler} from './BlockHooks';
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed
@@ -63,9 +62,6 @@ export const BlockContentEditable = observer((props: IProps) => {
     const divRef = React.useRef<HTMLDivElement | null>(null);
     const contentRef = React.useRef(props.content);
     const blocksStore = useBlocksStore();
-    const history = useHistory();
-
-    const platform = React.useMemo(() => Platforms.get(), []);
 
     const updateCursorPosition = useUpdateCursorPosition();
 
@@ -211,218 +207,19 @@ export const BlockContentEditable = observer((props: IProps) => {
 
     }, [props]);
 
-    const hasEditorSelection = React.useCallback((): boolean => {
-
-        const selection = window.getSelection();
-
-        if (selection) {
-            const range = selection.getRangeAt(0);
-            return range.cloneContents().textContent !== '';
-        } else {
-            return false;
-        }
-
-    }, []);
-
-    const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
-
-        if (! divRef.current) {
-            return;
-        }
-
-        const cursorAtStart = ContentEditables.cursorAtStart(divRef.current);
-        const cursorAtEnd = ContentEditables.cursorAtEnd(divRef.current);
-
-        function abortEvent() {
-            event.stopPropagation();
-            event.preventDefault();
-        }
-
-        const opts: NavOpts = {
-            shiftKey: event.shiftKey
-        }
-
-        const hasModifiers = event.ctrlKey || event.shiftKey || event.metaKey || event.altKey;
-
-        switch (event.key) {
-
-            case 'ArrowUp':
-
-                if (event.ctrlKey || event.metaKey) {
-                    blocksStore.collapse(props.id)
-                    abortEvent();
-                    break;
-                }
-
-                if (event.shiftKey && ! ContentEditables.selectionAtStart(divRef.current)) {
-                    if (! blocksStore.hasSelected()) {
-                        // don't handle shift until we allow the range to be selected.
-                        break;
-                    }
-                }
-
-                abortEvent();
-                blocksStore.navPrev('start', opts);
-                break;
-
-            case 'ArrowDown':
-
-                if (event.ctrlKey || event.metaKey) {
-                    blocksStore.expand(props.id);
-                    abortEvent();
-                    break;
-                }
-
-                if (event.shiftKey && ! ContentEditables.selectionAtEnd(divRef.current)) {
-                    if (! blocksStore.hasSelected()) {
-                        // don't handle shift until we allow the range to be selected.
-                        break;
-                    }
-                }
-
-                abortEvent();
-                blocksStore.navNext('start', opts);
-
-                break;
-
-            case 'ArrowLeft':
-
-                if (event.metaKey) {
-                    console.log("History back");
-                    // FIXME: this doesn't seem to work...
-                    history.go(-1);
-                    abortEvent();
-                    break;
-                }
-
-                if (! hasEditorSelection()) {
-
-                    if ((platform === Platform.MACOS && event.shiftKey && event.metaKey) ||
-                        (platform === Platform.WINDOWS && event.shiftKey && event.altKey)) {
-
-                        blocksStore.unIndentBlock(props.id);
-                        break;
-
-                    }
-
-                }
-
-                if (! hasModifiers) {
-
-                    if (cursorAtStart) {
-                        abortEvent();
-                        blocksStore.navPrev('end', opts);
-                    }
-
-                }
-
-                break;
-
-            case 'ArrowRight':
-
-                if (event.metaKey) {
-                    console.log("History forward");
-                    history.goForward();
-                    abortEvent();
-                    break;
-                }
-
-                if (! hasEditorSelection()) {
-
-                    if ((platform === Platform.MACOS && event.shiftKey && event.metaKey) ||
-                        (platform === Platform.WINDOWS && event.shiftKey && event.altKey)) {
-                        blocksStore.indentBlock(props.id);
-                        break;
-                    }
-
-                }
-
-                if (! hasModifiers) {
-
-                    if (cursorAtEnd) {
-                        abortEvent();
-                        blocksStore.navNext('start', opts);
-                    }
-
-                }
-
-                break;
-
-            case 'Backspace':
-
-                if (hasEditorSelection()) {
-                    console.log("Not handling Backspace");
-                    break;
-                }
-
-                // TODO: only do this if there aren't any modifiers I think...
-                // don't do a manual delete and just always merge.
-                // if (props.parent !== undefined && store.noteIsEmpty(props.id)) {
-                //     abortEvent();
-                //     store.doDelete([props.id]);
-                //     break;
-                // }
-
-                if (blocksStore.hasSelected()) {
-                    abortEvent();
-
-                    const selected = blocksStore.selectedIDs();
-
-                    if (selected.length > 0) {
-                        blocksStore.deleteBlocks(selected);
-                    }
-                    break;
-                }
-
-                if (cursorAtStart) {
-
-                    // we're at the beginning of a note...
-
-                    const mergeTarget = blocksStore.canMerge(props.id);
-
-                    if (mergeTarget) {
-                        abortEvent();
-                        blocksStore.mergeBlocks(mergeTarget.target, mergeTarget.source);
-                        break;
-                    }
-
-                }
-
-                break;
-
-            case 'Tab':
-
-                if (props.parent !== undefined) {
-
-                    abortEvent();
-
-                    if (event.shiftKey) {
-                        blocksStore.unIndentBlock(props.id);
-                    } else {
-                        blocksStore.indentBlock(props.id);
-                    }
-
-                }
-
-                break;
-
-            default:
-                break;
-
-        }
-
-        if (props.onKeyDown) {
-            props.onKeyDown(event);
-        }
-
-    }, [hasEditorSelection, history, platform, props, blocksStore]);
+    const {onKeyDown} = useBlockKeyDownHandler({
+        contentEditableRef: divRef,
+        blockID: props.id,
+        parent: props.parent,
+        onKeyDown: props.onKeyDown,
+    });
 
     useHandleLinkDeletion({ elem: divRef.current, blockID: props.id });
 
     return (
         <NoteContentEditableElementContext.Provider value={divRef}>
 
-            <div onKeyDown={handleKeyDown}
+            <div onKeyDown={onKeyDown}
                  onKeyUp={handleKeyUp}>
 
                 <BlockAction id={props.id}

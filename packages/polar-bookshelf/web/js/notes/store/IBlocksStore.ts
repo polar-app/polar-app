@@ -115,7 +115,8 @@ export interface IBlocksStore {
 
     mergeBlocks(target: BlockIDStr, source: BlockIDStr): void;
 
-    canMerge(id: BlockIDStr): IBlockMerge | undefined;
+    canMergePrev(id: BlockIDStr): IBlockMerge | undefined;
+    canMergeNext(id: BlockIDStr): IBlockMerge | undefined;
 
     navPrev(pos: NavPosition, opts: NavOpts): void;
     navNext(pos: NavPosition, opts: NavOpts): void;
