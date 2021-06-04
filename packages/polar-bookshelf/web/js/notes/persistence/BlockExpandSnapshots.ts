@@ -1,23 +1,12 @@
 import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
-import React from "react";
-import {IBlock, UIDStr} from "../store/IBlock";
-import {IQuerySnapshot} from "polar-snapshot-cache/src/store/IQuerySnapshot";
-import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
-import {IDocumentChange} from "polar-snapshot-cache/src/store/IDocumentChange";
+import {UIDStr} from "../store/IBlock";
 import {createMockSnapshot, IGenericSnapshot} from "./IGenericSnapshot";
-import {IGenericDocumentChange} from "./IGenericDocumentChange";
 import {useGenericFirestoreSnapshots} from "./GenericFirestoreSnapshots";
 import {BlockIDStr} from "../store/BlocksStore";
-import {IDStr} from "polar-shared/src/util/Strings";
 
 const IS_NODE = typeof window === 'undefined';
 
-export type IBlocksPersistenceSnapshot = IGenericSnapshot<IBlock>;
-
-/**
- * This is just a hook that will be re-called from within the UI...
- */
-export type BlocksPersistenceSnapshotsHook = () => IBlocksPersistenceSnapshot;
+export type IBlockExpandSnapshot = IGenericSnapshot<IBlockExpand>;
 
 export interface IBlockExpand {
 
@@ -30,7 +19,7 @@ export interface IBlockExpand {
 
 }
 
-export function useFirestoreBlocksExpandSnapshots(listener: (snapshot: IGenericSnapshot<IBlockExpand>) => void) {
+export function useFirestoreBlocksExpandSnapshots(listener: (snapshot: IBlockExpandSnapshot) => void) {
 
     const {user} = useFirestore();
 
@@ -38,7 +27,7 @@ export function useFirestoreBlocksExpandSnapshots(listener: (snapshot: IGenericS
 
 }
 
-export function useBlockExpandSnapshots(listener: (snapshot: IGenericSnapshot<IBlockExpand>) => void) {
+export function useBlockExpandSnapshots(listener: (snapshot: IBlockExpandSnapshot) => void) {
 
     if (IS_NODE) {
         listener(createMockSnapshot([]));

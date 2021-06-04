@@ -35,6 +35,7 @@ import {BlocksPersistenceWriter} from "../persistence/FirestoreBlocksStoreMutati
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useBlocksPersistenceWriter} from "../persistence/BlocksPersistenceWriters";
 import {WikiLinksToMarkdown} from "../WikiLinksToMarkdown";
+import {useBlockExpandSnapshots, IBlockExpandSnapshot} from "../persistence/BlockExpandSnapshots";
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
@@ -50,7 +51,6 @@ export type StringSetMap = {[key: string]: boolean};
 
 export type IBlockContent = IMarkdownContent | INameContent | IImageContent | IDateContent;
 export type BlockContent = (MarkdownContent | NameContent | ImageContent | DateContent) & IBaseBlockContent;
-// export type BlockContent = MarkdownContent | NameContent ;
 
 /**
  * A offset into the content of a not where we should place the cursor.
@@ -541,14 +541,25 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
+    @action private doExpand(id: BlockIDStr, expand: boolean) {
+
+        if (expand) {
+            this._expanded[id] = true;
+        } else {
+            delete this._expanded[id];
+        }
+
+    }
 
     @action public expand(id: BlockIDStr) {
-        this._expanded[id] = true;
+        // FIXME: persist this
+        this.doExpand(id, true);
         this.setActiveWithPosition(id, 'start');
     }
 
     @action public collapse(id: BlockIDStr) {
-        delete this._expanded[id];
+        // FIXME: persist this
+        this.doExpand(id, false);
         this.setActiveWithPosition(id, 'start');
     }
 
@@ -1864,7 +1875,7 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    @action public handleSnapshot(snapshot: IBlocksPersistenceSnapshot) {
+    @action public handleBlocksPersistenceSnapshot(snapshot: IBlocksPersistenceSnapshot) {
 
         // console.log("Handling BlocksStore snapshot: ", snapshot);
 
@@ -1891,6 +1902,31 @@ export class BlocksStore implements IBlocksStore {
         this._hasSnapshot = true;
 
     }
+
+    @action public handleBlockExpandSnapshot(snapshot: IBlockExpandSnapshot) {
+
+        // console.log("Handling BlocksStore snapshot: ", snapshot);
+
+        for (const docChange of snapshot.docChanges) {
+
+            switch(docChange.type) {
+
+                case "added":
+                    this.doExpand(docChange.id, true);
+                    break;
+
+                case "removed":
+                    this.doExpand(docChange.id, false);
+                    break;
+
+            }
+
+        }
+
+        this._hasSnapshot = true;
+
+    }
+
 
     /**
      * Compute the path to a block from its parent but not including the actual block.
@@ -1991,9 +2027,12 @@ export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore
     const blocksStore = React.useMemo(() => new BlocksStore(uid, undoQueue, blocksStoreMutationsHandler), [blocksStoreMutationsHandler, uid, undoQueue]);
 
     useBlocksPersistenceSnapshots((snapshot) => {
-        blocksStore.handleSnapshot(snapshot);
+        blocksStore.handleBlocksPersistenceSnapshot(snapshot);
     });
 
+    useBlockExpandSnapshots((snapshot) => {
+        blocksStore.handleBlockExpandSnapshot(snapshot);
+    })
 
     return blocksStore;
 })
