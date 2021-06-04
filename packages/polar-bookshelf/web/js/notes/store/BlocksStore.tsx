@@ -36,6 +36,7 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useBlocksPersistenceWriter} from "../persistence/BlocksPersistenceWriters";
 import {WikiLinksToMarkdown} from "../WikiLinksToMarkdown";
 import {useBlockExpandSnapshots, IBlockExpandSnapshot} from "../persistence/BlockExpandSnapshots";
+import {useBlockExpandPersistenceWriter} from "../persistence/BlockExpandWriters";
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
@@ -2023,6 +2024,7 @@ export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore
     const {uid} = useBlocksStoreContext();
     const undoQueue = useUndoQueue();
     const blocksPersistenceWriter = useBlocksPersistenceWriter();
+    useBlockExpandPersistenceWriter()
 
     const blocksStore = React.useMemo(() => new BlocksStore(uid, undoQueue, blocksPersistenceWriter), [blocksPersistenceWriter, uid, undoQueue]);
 

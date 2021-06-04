@@ -57,7 +57,7 @@ export namespace FirestoreBlockExpandPersistenceWriter {
 
 }
 
-export function useFirestoreBlockExpandWriter(): BlockExpandPersistenceWriter {
+export function useFirestoreBlockExpandPersistenceWriter(): BlockExpandPersistenceWriter {
 
     const {firestore, user} = useFirestore();
 
@@ -75,7 +75,7 @@ export function useFirestoreBlockExpandWriter(): BlockExpandPersistenceWriter {
 
 }
 
-function createMockBlockExpandWriter(): BlockExpandPersistenceWriter {
+function createMockBlockExpandPersistenceWriter(): BlockExpandPersistenceWriter {
 
     return (mutations: ReadonlyArray<IBlockExpandMutation>) => {
         // noop
@@ -83,13 +83,13 @@ function createMockBlockExpandWriter(): BlockExpandPersistenceWriter {
 
 }
 
-export function useBlockExpandWriter(): BlockExpandPersistenceWriter {
+export function useBlockExpandPersistenceWriter(): BlockExpandPersistenceWriter {
 
     if (IS_NODE) {
-        return createMockBlockExpandWriter();
+        return createMockBlockExpandPersistenceWriter();
     }
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    return useFirestoreBlockExpandWriter();
+    return useFirestoreBlockExpandPersistenceWriter();
 
 }
