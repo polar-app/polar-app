@@ -1308,17 +1308,19 @@ export class BlocksStore implements IBlocksStore {
                 readonly parentBlock: Block;
             }
 
+            type INewBlockPosition = INewBlockPositionFirstChild | INewBlockPositionRelative;
+
             const parseLinksFromContent = (origLinks: ReadonlyArray<IBlockLink>, content: string): ReadonlyArray<IBlockLink> => (
                 [...content.matchAll(WikiLinksToMarkdown.WIKI_LINK_REGEX)]
                     .map(([, text]) => ({ id: origLinks.find((o) => o.text === text)!.id, text }))
             );
 
-            const computeNewBlockPosition = (): INewBlockPositionRelative | INewBlockPositionFirstChild => {
+            const computeNewBlockPosition = (): INewBlockPosition => {
 
                 const computeNextLinearExpansionID = () => {
                     const linearExpansionTree = this.computeLinearExpansionTree2(id);
                     return Arrays.first(linearExpansionTree);
-                }
+                };
 
                 const nextSiblingID = this.nextSibling(id);
                 const nextLinearExpansionID = computeNextLinearExpansionID();
@@ -1335,6 +1337,18 @@ export class BlocksStore implements IBlocksStore {
                         pos
                     };
 
+                };
+
+                const block = this.getBlock(id)!;
+                const hasChildren = this.children(block.id).length > 0;
+
+                // Block has no parent (in the case of a root block), or a block that has children
+                // with suffix of an empty string
+                if (!block.parent || (hasChildren && split?.suffix === '')) {
+                    return {
+                        type: 'first-child',
+                        parentBlock: block
+                    };
                 }
 
                 if (nextSiblingID && split !== undefined) {
@@ -1342,32 +1356,10 @@ export class BlocksStore implements IBlocksStore {
                 } else if (nextLinearExpansionID && split === undefined) {
                     return createNewBlockPositionRelative(nextLinearExpansionID, 'before')
                 } else {
-
-                    const block = this.getBlock(id)!;
-
-                    if (block.parent) {
-
-                        const parentBlock = this.getBlock(block.parent)!;
-
-                        return {
-                            type: 'relative',
-                            parentBlock,
-                            ref: id,
-                            pos: 'after'
-                        }
-
-                    } else {
-
-                        return {
-                            type: 'first-child',
-                            parentBlock: block
-                        }
-
-                    }
-
+                    return createNewBlockPositionRelative(id, 'after');
                 }
 
-            }
+            };
 
             const createNewBlock = (parentBlock: Block): IBlock => {
                 const now = ISODateTimeStrings.create()
@@ -1395,7 +1387,7 @@ export class BlocksStore implements IBlocksStore {
                     mutation: 0
                 };
 
-            }
+            };
 
             const currentBlock = this.getBlock(id)!;
             const getSplit = (): ISplitBlock | undefined => currentBlock.content.type === 'markdown' ? opts.split : undefined;
@@ -1448,7 +1440,7 @@ export class BlocksStore implements IBlocksStore {
 
                 }
 
-            })
+            });
 
             this.doPut([currentBlock, parentBlock]);
 
