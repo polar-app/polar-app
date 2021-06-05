@@ -86,7 +86,7 @@ export const SideNavCommandMenu = () => {
                        maxWidth="md">
 
                 <MUICommandMenu onCommand={handleCommand}
-                                title="Open Documents"
+                                title="Jump to Open Document"
                                 className={classes.commandMenu}
                                 onClose={() => setActive(false)}
                                 commandsProvider={commandsProvider}/>
