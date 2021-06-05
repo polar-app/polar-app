@@ -225,7 +225,6 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
 type IUseBlockKeyDownHandlerOpts = {
     contentEditableRef: React.RefObject<HTMLDivElement>,
     blockID: BlockIDStr;
-    parent?: BlockIDStr;
     onKeyDown?: React.EventHandler<React.KeyboardEvent>;
 };
 
@@ -234,10 +233,9 @@ type IUseBlockKeyDownHandlerBinds = {
 };
 
 export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseBlockKeyDownHandlerBinds => {
-    const { contentEditableRef, blockID, parent, onKeyDown } = opts;
+    const { contentEditableRef, blockID, onKeyDown } = opts;
     const blocksStore = useBlocksStore();
     const platform = React.useMemo(() => Platforms.get(), []);
-    const history = useHistory();
 
     const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
         const elem = contentEditableRef.current;
@@ -263,7 +261,7 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
             onKeyDown(event);
         }
 
-    }, [onKeyDown, parent, blockID, history, platform, blocksStore, contentEditableRef]);
+    }, [onKeyDown, blockID, platform, blocksStore, contentEditableRef]);
 
     return { onKeyDown: handleKeyDown };
 };

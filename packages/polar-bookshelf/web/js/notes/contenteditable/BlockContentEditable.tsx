@@ -210,7 +210,6 @@ export const BlockContentEditable = observer((props: IProps) => {
     const {onKeyDown} = useBlockKeyDownHandler({
         contentEditableRef: divRef,
         blockID: props.id,
-        parent: props.parent,
         onKeyDown: props.onKeyDown,
     });
 
