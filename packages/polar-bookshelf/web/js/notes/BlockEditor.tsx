@@ -82,14 +82,11 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
 
     const {id} = props;
     const blocksStore = useBlocksStore()
-    const noteActivated = blocksStore.getBlockActivated(props.id);
     const linkNavigationClickHandler = useLinkNavigationClickHandler();
     const ref = React.createRef<HTMLDivElement | null>();
 
     const block = blocksStore.getBlock(id);
     const data = blocksStore.getBlockContentData(id);
-
-    const converter = MarkdownContentConverter;
 
     const handleChange = React.useCallback((markdown: MarkdownStr) => {
         const block = blocksStore.getBlock(id);
@@ -114,56 +111,6 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
 
     }, [linkNavigationClickHandler, props.id, blocksStore]);
 
-    const handleCreateNewNote = React.useCallback(() => {
-
-        if (ref.current) {
-
-            const split = ContentEditables.splitAtCursor(ref.current);
-
-            if (split) {
-
-                const prefix = converter.toMarkdown(ContentEditables.fragmentToHTML(split.prefix));
-                const suffix = converter.toMarkdown(ContentEditables.fragmentToHTML(split.suffix));
-
-                blocksStore.createNewBlock(id, {split: {prefix, suffix}});
-
-            }
-
-        }
-
-    }, [converter, id, ref, blocksStore]);
-
-
-    const handleEnter = React.useCallback(() => {
-
-        if (ref.current) {
-            if (blocksStore.requiredAutoUnIndent(props.id)) {
-                blocksStore.unIndentBlock(props.id);
-            } else {
-                handleCreateNewNote();
-            }
-        }
-
-    }, [handleCreateNewNote, props.id, ref, blocksStore]);
-
-    const onKeyDown = React.useCallback((event: React.KeyboardEvent) => {
-
-        function abortEvent() {
-            event.stopPropagation();
-            event.preventDefault();
-        }
-
-        switch (event.key) {
-
-            case 'Enter':
-                handleEnter();
-                abortEvent();
-                break;
-
-        }
-
-    }, [handleEnter]);
-
     if (! block) {
         // this can happen when a note is deleted but the component hasn't yet
         // been unmounted.
@@ -176,8 +123,7 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
                               innerRef={ref}
                               content={data || ''}
                               onChange={handleChange}
-                              onClick={onClick}
-                              onKeyDown={onKeyDown}/>
+                              onClick={onClick} />
     );
 
 });
