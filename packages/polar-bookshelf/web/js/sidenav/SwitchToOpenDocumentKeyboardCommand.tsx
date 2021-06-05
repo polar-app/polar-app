@@ -4,7 +4,7 @@ import {TabDescriptor, useSideNavCallbacks, useSideNavStore} from "./SideNavStor
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import { MUICommandMenuKeyboardShortcut } from "../mui/command_menu/MUICommandMenuKeyboardShortcut";
 
-export const JumpToOpenDocumentKeyboardCommand = () => {
+export const SwitchToOpenDocumentKeyboardCommand = () => {
 
     const {tabs, activeTab} = useSideNavStore(['tabs', 'activeTab']);
     const {setActiveTab} = useSideNavCallbacks();
@@ -32,8 +32,8 @@ export const JumpToOpenDocumentKeyboardCommand = () => {
 
     return (
         <MUICommandMenuKeyboardShortcut group="Documents"
-                                        name="Jump to Open Document"
-                                        description="Jump / switch to an open document"
+                                        name="Switch to Open Document"
+                                        description="Switch to an open document"
                                         sequences={['shift+command+e', 'shift+ctrl+E']}
                                         onCommand={handleCommand}
                                         commandsProvider={commandsProvider}/>
