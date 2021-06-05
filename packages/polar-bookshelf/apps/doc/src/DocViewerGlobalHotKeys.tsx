@@ -80,12 +80,46 @@ const globalKeyMap = keyMapWithGroup({
         ZOOM_IN: {
             name: "Zoom In",
             description: "Zoom in",
-            sequences: ['command+shift+=', 'command+=', 'ctrl+shift+=', 'ctrl+=']
+            sequences: [
+                {
+                    keys: 'command+shift+=',
+                    platforms: ['macos']
+                },
+                {
+                    keys: 'command+=',
+                    platforms: ['macos']
+                },
+                {
+                    keys: 'ctrl+shift+=',
+                    platforms: ['linux', 'windows']
+                },
+                {
+                    keys: 'ctrl+=',
+                    platforms: ['linux', 'windows']
+                }
+            ]
         },
         ZOOM_OUT: {
             name: "Zoom Out",
             description: "Zoom out",
-            sequences: ['command+shift+-', 'command+-', 'ctrl+shift+-', 'ctrl+-']
+            sequences: [
+                {
+                    keys: 'command+shift+-',
+                    platforms: ['macos']
+                },
+                {
+                    keys: 'command+-',
+                    platforms: ['macos']
+                },
+                {
+                    keys: 'ctrl+shift+-',
+                    platforms: ['linux', 'windows']
+                },
+                {
+                    keys: 'ctrl+-',
+                    platforms: ['linux', 'windows']
+                }
+            ]
         },
         ZOOM_RESTORE: {
             name: "Zoom Restore",
