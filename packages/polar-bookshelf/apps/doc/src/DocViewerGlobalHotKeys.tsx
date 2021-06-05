@@ -124,22 +124,47 @@ const globalKeyMap = keyMapWithGroup({
         ZOOM_RESTORE: {
             name: "Zoom Restore",
             description: "Restore default zoom",
-            sequences: ['command+0', 'ctrl+0']
+            sequences: [
+                {
+                    keys: 'command+0',
+                    platforms: ['macos']
+                },
+                {
+                    keys: 'ctrl+0',
+                    platforms: ['linux', 'windows']
+                }
+            ]
         },
         TAG: {
             name: "Tag",
             description: "Tag doc",
-            sequences: ['t']
+            sequences: [
+                {
+                    keys: 't',
+                    platforms: ['macos', 'linux', 'windows']
+                },
+            ]
         },
         FLAG: {
             name: "Flag",
             description: "Flag doc",
-            sequences: ['f']
+            sequences: [
+                {
+                    keys: 'f',
+                    platforms: ['macos', 'linux', 'windows']
+                }
+            ]
         },
         ARCHIVE: {
             name: "Archive",
             description: "Archive doc",
-            sequences: ['shift+A']
+            sequences: [
+                {
+                    keys: 'shift+A',
+                    platforms: ['macos', 'linux', 'windows'
+                    ]
+                }
+            ]
         }
     }
 });
