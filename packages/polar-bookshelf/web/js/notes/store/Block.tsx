@@ -1,5 +1,5 @@
 import {IBlock, IBlockLink, NamespaceIDStr, TMutation, UIDStr} from "./IBlock";
-import {INewChildPosition, BlockIDStr, BlockContent, IBlockContent} from "./BlocksStore";
+import {INewChildPosition, BlockIDStr, BlockContent, IBlockContent, BlockType} from "./BlocksStore";
 import {action, computed, makeObservable, observable, toJS} from "mobx"
 import { ISODateTimeString, ISODateTimeStrings } from "polar-shared/src/metadata/ISODateTimeStrings";
 import { Contents } from "../content/Contents";
@@ -11,6 +11,8 @@ import deepEqual from "deep-equal";
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import IItemsPositionPatch = BlocksStoreMutations.IItemsPositionPatch;
 import {Preconditions} from "polar-shared/src/Preconditions";
+
+const NON_EDITABLE_BLOCK_TYPES: BlockType[] = ['name', 'date'];
 
 /**
  * Opts for withMutation normally used for undo.
@@ -123,6 +125,10 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     @computed get mutation() {
         return this._mutation;
+    }
+
+    @computed get editable() {
+        return NON_EDITABLE_BLOCK_TYPES.indexOf(this._content.type) === -1;
     }
 
     /**

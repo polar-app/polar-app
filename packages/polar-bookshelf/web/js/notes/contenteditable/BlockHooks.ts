@@ -24,6 +24,7 @@ type IUseBlockKeyDownHandlerOpts = {
     blockID: BlockIDStr;
     parent?: BlockIDStr;
     onKeyDown?: React.EventHandler<React.KeyboardEvent>;
+    allowEdits?: boolean;
 };
 
 type IUseBlockKeyDownHandlerBinds = {
@@ -31,7 +32,7 @@ type IUseBlockKeyDownHandlerBinds = {
 };
 
 export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseBlockKeyDownHandlerBinds => {
-    const { contentEditableRef, blockID, parent, onKeyDown } = opts;
+    const { contentEditableRef, blockID, parent, onKeyDown, allowEdits = true } = opts;
     const blocksStore = useBlocksStore();
     const platform = React.useMemo(() => Platforms.get(), []);
     const history = useHistory();
@@ -162,6 +163,10 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
 
             case 'Backspace':
             case 'Delete':
+                if (!allowEdits) {
+                    abortEvent();
+                    break;
+                }
 
                 if (hasEditorSelection()) {
                     console.log("Not handling Backspace");
@@ -219,6 +224,9 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
                 break;
 
             default:
+                if (!allowEdits) {
+                    abortEvent();
+                }
                 break;
 
         }

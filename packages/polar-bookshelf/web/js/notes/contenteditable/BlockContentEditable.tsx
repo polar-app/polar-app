@@ -43,6 +43,7 @@ interface IProps {
 
     readonly onKeyDown?: (event: React.KeyboardEvent) => void;
 
+    readonly readonly?: boolean;
 }
 
 const NoteContentEditableElementContext = React.createContext<React.RefObject<HTMLElement | null>>({current: null});
@@ -212,6 +213,7 @@ export const BlockContentEditable = observer((props: IProps) => {
         blockID: props.id,
         parent: props.parent,
         onKeyDown: props.onKeyDown,
+        allowEdits: props.readonly,
     });
 
     useHandleLinkDeletion({ elem: divRef.current, blockID: props.id });

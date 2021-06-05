@@ -176,6 +176,7 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
                               innerRef={ref}
                               content={data || ''}
                               onChange={handleChange}
+                              readonly={block.editable}
                               onClick={onClick}
                               onKeyDown={onKeyDown}/>
     );
