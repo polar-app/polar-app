@@ -1,8 +1,6 @@
 import React from "react";
 import {useDocRepoCallbacks} from "./doc_repo/DocRepoStore2";
-import {BrowserRouter, Route, Switch, useHistory} from "react-router-dom";
-import {ReactRouters} from "../../../web/js/react/router/ReactRouters";
-import useLocationWithPathOnly = ReactRouters.useLocationWithPathOnly;
+import {useHistory} from "react-router-dom";
 import {
     GlobalKeyboardShortcuts,
     keyMapWithGroup
@@ -15,7 +13,17 @@ const globalKeyMap = keyMapWithGroup(
             DOCUMENTS: {
                 name: "Go to Documents",
                 description: "Go to the documents view.",
-                sequences: ['command+1', 'ctrl+1']
+                sequences: [
+
+                    {
+                        keys: 'command+1',
+                        platforms: ['macos']
+                    },
+                    {
+                        keys: 'ctrl+1',
+                        platforms: ['windows', 'linux']
+                    }
+                ]
             }
 
         }

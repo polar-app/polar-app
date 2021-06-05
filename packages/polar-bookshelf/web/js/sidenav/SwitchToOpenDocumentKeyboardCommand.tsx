@@ -34,7 +34,16 @@ export const SwitchToOpenDocumentKeyboardCommand = () => {
         <MUICommandMenuKeyboardShortcut group="Documents"
                                         name="Switch to Open Document"
                                         description="Switch to an open document"
-                                        sequences={['shift+command+e', 'shift+ctrl+E']}
+                                        sequences={[
+                                            {
+                                                keys: 'shift+command+e',
+                                                platforms: ['macos']
+                                            },
+                                            {
+                                                keys: 'shift+ctrl+E',
+                                                platforms: ['windows', 'linux']
+                                            }
+                                        ]}
                                         onCommand={handleCommand}
                                         commandsProvider={commandsProvider}/>
     );

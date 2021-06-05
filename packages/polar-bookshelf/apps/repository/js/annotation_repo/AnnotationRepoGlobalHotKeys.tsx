@@ -13,12 +13,26 @@ const globalKeyMap = keyMapWithGroup(
             TAG: {
                 name: "Tag",
                 description: "Tag the current annotation.",
-                sequences: ['t'],
+                sequences: [
+                    {
+                        keys: 't',
+                        platforms: ['macos', 'linux', 'windows']
+                    },
+                ],
             },
             DELETE: {
                 name: "Delete",
                 description: "Delete the current annotation.",
-                sequences: ['Delete', 'Backspace'],
+                sequences: [
+                    {
+                        keys: 'Delete',
+                        platforms: ['macos', 'linux', 'windows']
+                    },
+                    {
+                        keys: 'Backspace',
+                        platforms: ['macos', 'linux', 'windows']
+                    }
+                ],
             }
         }
     });

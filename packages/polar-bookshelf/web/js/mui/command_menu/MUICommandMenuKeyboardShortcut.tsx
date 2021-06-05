@@ -5,6 +5,7 @@ import {MUIDialog} from "../../ui/dialogs/MUIDialog";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import {Devices} from "polar-shared/src/util/Devices";
+import {KeyBinding} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -26,7 +27,7 @@ interface IProps {
     readonly group: string;
     readonly name: string;
     readonly description: string;
-    readonly sequences: ReadonlyArray<string>;
+    readonly sequences: ReadonlyArray<KeyBinding>;
     readonly commandsProvider: CommandsProvider;
     readonly onCommand: (command: ICommand) => void;
 }

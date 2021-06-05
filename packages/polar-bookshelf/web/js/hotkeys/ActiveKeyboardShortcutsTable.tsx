@@ -11,6 +11,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from '@material-ui/core/TableCell';
 import {ArrayListMultimap} from "polar-shared/src/util/Multimap";
 import useTheme from "@material-ui/core/styles/useTheme";
+import {Platform, Platforms} from "polar-shared/src/util/Platforms";
 
 interface IProps {
     readonly shortcuts: {[binding: string]: ShortcutEntry};
@@ -60,10 +61,11 @@ interface ActiveKeyBindingGroupProps {
 
 const ActiveBindingGroup = (props: ActiveKeyBindingGroupProps) => {
 
-    const bindings = [...props.shortcuts].sort((a, b) => (
-        ((a.priority || Infinity) - (b.priority || Infinity)) ||
-        a.name.localeCompare(b.name)
-    ))
+    const bindings = [...props.shortcuts]
+        .sort((a, b) => (
+            ((a.priority || Infinity) - (b.priority || Infinity)) ||
+            a.name.localeCompare(b.name)
+        ));
 
     return (
         <>
@@ -82,6 +84,30 @@ interface ActiveKeyBindingProps extends IBaseKeyboardShortcut {}
 
 const ActiveBinding = (props: ActiveKeyBindingProps) => {
 
+    // FIXME filter the sequences here...
+
+    const sequences = [...props.sequences]
+                      .filter(current => {
+
+                        // console.log("FIXME: ", current);
+                        //
+                        // const platform = Platforms.get();
+                        //
+                        // if (platform === Platform.WINDOWS || platform === Platform.LINUX) {
+                        //     console.log("FIXMEL win")
+                        //     return current.keys.indexOf('command');
+                        // }
+                        //
+                        // if (platform === Platform.MACOS) {
+                        //     console.log("FIXMEL mac...")
+                        //     return current.indexOf('ctrl');
+                        // }
+                        //
+                        // return false;
+
+                          return true;
+                    });
+
     return (
         <TableRow>
 
@@ -95,7 +121,7 @@ const ActiveBinding = (props: ActiveKeyBindingProps) => {
 
             <TableCell>
                 <div style={{display: 'flex'}}>
-                    {props.sequences.map((current, idx) =>
+                    {sequences.map((current, idx) =>
                         <KeySequence key={idx} sequence={current}/>)}
                 </div>
             </TableCell>

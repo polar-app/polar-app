@@ -17,22 +17,65 @@ const globalKeyMap = keyMapWithGroup({
         FIND: {
             name: "Find",
             description: "Search text",
-            sequences: ['ctrl+f', 'command+f']
+            sequences: [
+                {
+                    keys: 'ctrl+f',
+                    platforms: ['windows', 'linux']
+                },
+                {
+                    keys: 'command+f',
+                    platforms: ['macos']
+                }
+            ]
         },
         FIND_NEXT: {
             name: "Find Next Match",
             description: "Next match",
-            sequences: ['ctrl+g', 'command+g']
+            sequences: [
+                {
+                    keys: 'ctrl+g',
+                    platforms: ['linux', 'windows']
+                },
+                {
+                    keys: 'command+g',
+                    platforms: ['macos', 'linux', 'windows']
+                }
+            ]
         },
         PAGE_NEXT: {
             name: "Next Page",
             description: "Jump to next page",
-            sequences: ['n', 'j', 'ArrowRight']
+            sequences: [
+                {
+                    keys: 'n',
+                    platforms: ['macos', 'linux', 'windows']
+                },
+                {
+                    keys: 'j',
+                    platforms: ['macos', 'linux', 'windows']
+                },
+                {
+                    keys: 'ArrowRight',
+                    platforms: ['macos', 'linux', 'windows']
+                }
+            ]
         },
         PAGE_PREV: {
             name: "Previous Page",
             description: "Jump to previous page",
-            sequences: ['p', 'k', 'ArrowLeft']
+            sequences: [
+                {
+                    keys: 'p',
+                    platforms: ['macos', 'linux', 'windows']
+                },
+                {
+                    keys: 'k',
+                    platforms: ['macos', 'linux', 'windows']
+                },
+                {
+                    keys: 'ArrowLeft',
+                    platforms: ['macos', 'linux', 'windows']
+                }]
         },
         ZOOM_IN: {
             name: "Zoom In",

@@ -13,13 +13,23 @@ const globalKeyMap = keyMapWithGroup({
             icon: <MenuIcon/>,
             name: "Toggle Zen Mode",
             description: "Toggle 'zen' mode",
-            sequences: ['F9']
+            sequences: [
+                {
+                    keys: 'F9',
+                    platforms: ['macos', 'windows', 'linux']
+                }
+            ]
         },
         TOGGLE_FULL_SCREEN: {
             icon: <MenuIcon/>,
             name: "Toggle Full Screen",
             description: "Toggle Full Screen",
-            sequences: ['F10']
+            sequences: [
+                {
+                    keys: 'F10',
+                    platforms: ['macos', 'windows', 'linux']
+                }
+            ]
         },
 
     }
