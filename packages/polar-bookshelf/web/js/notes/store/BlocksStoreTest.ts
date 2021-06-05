@@ -322,7 +322,7 @@ describe('BlocksStore', function() {
                     "_parents": [
                         "107"
                     ],
-                    "_root": "101",
+                    "_root": "107",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
                 },
