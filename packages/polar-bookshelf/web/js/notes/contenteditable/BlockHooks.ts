@@ -189,9 +189,6 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
 
                 const isBackspace = event.key === 'Backspace';
                 if (isBackspace ? cursorAtStart : cursorAtEnd) {
-
-                    // we're at the beginning of a note...
-
                     const mergeTarget = blocksStore[isBackspace ? 'canMergePrev' : 'canMergeNext'](blockID);
 
                     if (mergeTarget) {

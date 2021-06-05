@@ -4,6 +4,22 @@ import {PositionalArrays} from "../../../web/js/notes/store/PositionalArrays";
 
 export namespace MockBlocks {
 
+    /*
+     * Visual representation of the following block structure (to make it easier to debug).
+     *
+     * - 102
+     *      - 103
+     *      - 104
+     *      - 105
+     *          - 106
+     *  - 107
+     *      - 110
+     *  - 108
+     *  - 109
+     *      - 111
+     *  - 112
+     *
+     */
     export function create() {
 
         const now = ISODateTimeStrings.create();

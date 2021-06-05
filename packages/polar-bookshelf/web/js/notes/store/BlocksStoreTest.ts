@@ -860,6 +860,87 @@ describe('BlocksStore', function() {
 
         });
 
+        it('should handle merging 2 blocks that have children', () => {
+            const store = createStore()
+            const createdBlock1 = store.createNewBlock('104');
+            assertPresent(createdBlock1);
+            store.indentBlock(createdBlock1.id);
+
+            const createdBlock2 = store.createNewBlock('106');
+            assertPresent(createdBlock2);
+            store.indentBlock(createdBlock2.id);
+            const createdBlock3 = store.createNewBlock(createdBlock2.id);
+            assertPresent(createdBlock3);
+            store.indentBlock(createdBlock3.id);
+            /*
+             *   104----------------------------|
+             *       createdBlock1              |-- We're merging these 2
+             *   105 ---------------------------|
+             *       106
+             *           createdBlock2
+             *                  createdBlock3
+             *   
+             *
+             *   We should end up with
+             *   104
+             *       createdBlock1
+             *       106
+             *           createdBlock2
+             *                  createdBlock3
+            */
+
+            store.mergeBlocks('104', '105');
+
+            const block104 = store.getBlock('104');
+            const block105 = store.getBlock('105');
+            const block106 = store.getBlock('106');
+            const block1 = store.getBlock(createdBlock1.id);
+            const block2 = store.getBlock(createdBlock2.id);
+            const block3 = store.getBlock(createdBlock3.id);
+
+            assertPresent(block104);
+            assertPresent(block106);
+            assertPresent(block1);
+            assertPresent(block2);
+            assertPresent(block3);
+
+            // 105 should be deleted
+            assert.isUndefined(block105);
+
+            // 104 should have the correct children
+            assert.deepEqual([...block104.itemsAsArray].sort(), [block1.id, '106'].sort());
+
+            // block1
+                // parents
+                assert.deepEqual([...block1.parents], ['102', '104'], 'Block1 should have the correct parents');
+                // parent
+                assert.equal(block1.parent, '104', 'Block1 should have the correct parent');
+                // items
+                assert.deepEqual([...block1.itemsAsArray].sort(), [], 'Block1 should have the correct items');
+            // 106
+                // parents
+                assert.deepEqual([...block106.parents], ['102', '104'], 'Block106 should have the correct parents');
+                // parent
+                assert.equal(block106.parent, '104', 'Block106 should have the correct parent');
+                // items
+                assert.deepEqual([...block106.itemsAsArray].sort(), [block2.id].sort(), 'Block2 should have the correct items');
+            
+            // block2
+                // parents
+                assert.deepEqual([...block2.parents], ['102', '104', '106'], 'Block2 should have the correct parents');
+                // parent
+                assert.equal(block2.parent, '106', 'Block2 should have the correct parent');
+                // items
+                assert.deepEqual([...block2.itemsAsArray].sort(), [block3.id].sort(), 'Block2 should have the correct items');
+
+            // block3
+                // parents
+                assert.deepEqual([...block3.parents], ['102', '104', '106', block2.id], 'Block3 should have the correct parents');
+                // parent
+                assert.equal(block3.parent, block2.id, 'Block3 should have the correct parent');
+                // items
+                assert.deepEqual([...block3.itemsAsArray].sort(), [].sort(), 'Block3 should have the correct items');
+        });
     });
 
     describe("Blocks", () => {
