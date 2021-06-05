@@ -5,7 +5,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Dialog from '@material-ui/core/Dialog';
 import {deepMemo} from '../react/ReactUtils';
-import {GlobalKeyboardShortcuts} from "../keyboard_shortcuts/GlobalKeyboardShortcuts";
+import {GlobalKeyboardShortcuts, KeyMap} from "../keyboard_shortcuts/GlobalKeyboardShortcuts";
 import { useActiveKeyboardShortcutsStore, useActiveKeyboardShortcutsCallbacks } from './ActiveKeyboardShortcutsStore';
 import { ActiveKeyboardShortcutsTable } from './ActiveKeyboardShortcutsTable';
 import {useKeyboardShortcutsCallbacks, useKeyboardShortcutsStore} from "../keyboard_shortcuts/KeyboardShortcutsStore";
@@ -23,12 +23,21 @@ const useStyles = makeStyles(() =>
 );
 
 
-const keyMap = {
+const keyMap: KeyMap = {
     SHOW_ALL_HOTKEYS: {
         group: 'Help',
         name: 'Show Keyboard Shortcuts',
         description: "Show active keyboard shortcuts",
-        sequences: ["shift+?", '/'],
+        sequences: [
+            {
+                keys: "shift+?",
+                platforms: ['macos', 'linux', 'windows']
+            },
+            {
+                keys: '/',
+                platforms: ['macos', 'linux', 'windows']
+            }
+        ],
         priority: -1
     }
 };
