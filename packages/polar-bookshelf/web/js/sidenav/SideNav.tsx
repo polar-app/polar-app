@@ -17,7 +17,7 @@ import {SideNavButton} from "./SideNavButton";
 import {AccountAvatar} from "../ui/cloud_auth/AccountAvatar";
 import SyncIcon from '@material-ui/icons/Sync';
 import {useAnkiSyncCallback} from "./AnkiSyncHook";
-import {SideNavCommandMenu} from "./SideNavCommand";
+import {JumpToOpenDocumentKeyboardCommand} from "./JumpToOpenDocumentKeyboardCommand";
 import {ZenModeActiveContainer} from "../mui/ZenModeActiveContainer";
 import { Intercom } from '../apps/repository/integrations/Intercom';
 import { SideNavQuestionButton } from './SideNavQuestionButton';
@@ -290,7 +290,7 @@ export const SideNav = React.memo(function SideNav() {
 
     return (
         <>
-            <SideNavCommandMenu/>
+            <JumpToOpenDocumentKeyboardCommand/>
 
             <Intercom/>
 

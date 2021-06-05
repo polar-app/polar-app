@@ -4,7 +4,7 @@ import {TabDescriptor, useSideNavCallbacks, useSideNavStore} from "./SideNavStor
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import { MUICommandMenuKeyboardShortcut } from "../mui/command_menu/MUICommandMenuKeyboardShortcut";
 
-export const SideNavCommandMenu = () => {
+export const JumpToOpenDocumentKeyboardCommand = () => {
 
     const {tabs, activeTab} = useSideNavStore(['tabs', 'activeTab']);
     const {setActiveTab} = useSideNavCallbacks();
