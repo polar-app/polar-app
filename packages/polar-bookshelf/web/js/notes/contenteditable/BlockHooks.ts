@@ -235,7 +235,7 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
             onKeyDown(event);
         }
 
-    }, [onKeyDown, parent, blockID, history, platform, blocksStore, contentEditableRef]);
+    }, [onKeyDown, parent, blockID, history, platform, blocksStore, allowEdits, contentEditableRef]);
 
     return { onKeyDown: handleKeyDown };
 };
