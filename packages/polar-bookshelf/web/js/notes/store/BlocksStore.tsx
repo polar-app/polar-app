@@ -1049,7 +1049,7 @@ export class BlocksStore implements IBlocksStore {
             sourceBlock.withMutation(() => sourceBlock.setItems([]));
 
             this.doPut([sourceBlock, targetBlock]);
-                this.doDelete([sourceBlock.id]);
+            this.doDelete([sourceBlock.id]);
 
             // Update the "parent" & "parents" properties of the children (recursively)
             directChildrenBlocks.forEach(updateParents(targetBlock.id));
