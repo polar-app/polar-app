@@ -1044,17 +1044,20 @@ export class BlocksStore implements IBlocksStore {
                 targetBlock.setItems(items);
             });
 
-            // Update the source block remove the children to prepare it for deletion
-            // (this is done to void deleting the children when deleting the block)
-            sourceBlock.withMutation(() => sourceBlock.setItems([]));
-
-            this.doPut([sourceBlock, targetBlock]);
-            this.doDelete([sourceBlock.id]);
+            this.doPut([targetBlock]);
 
             // Update the "parent" & "parents" properties of the children (recursively)
             directChildrenBlocks.forEach(updateParents(targetBlock.id));
 
             this.setActiveWithPosition(targetBlock.id, offset);
+
+            // Update the source block remove the children to prepare it for deletion
+            // (this is done to void deleting the children when deleting the block)
+            sourceBlock.withMutation(() => sourceBlock.setItems([]));
+
+            // Delete after we're done with everything
+            this.doPut([sourceBlock]);
+            this.doDelete([sourceBlock.id]);
 
             return undefined;
         };
@@ -1950,6 +1953,13 @@ export class BlocksStore implements IBlocksStore {
 
                     for (const inboundID of inboundIDs) {
                         this.reverse.remove(block.id, inboundID);
+                    }
+
+                    // *** Delete the references to other items
+                    if (block.content.type === 'markdown') {
+                        for (const link of block.content.links) {
+                            this.reverse.remove(link.id, block.id);                            
+                        }
                     }
 
                     this.collapse(blockID);

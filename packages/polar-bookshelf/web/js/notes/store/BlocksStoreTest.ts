@@ -43,6 +43,11 @@ function assertTextBlock(content: BlockContent): asserts content is MarkdownCont
 
 }
 
+function assertMarkdownBlock(block: Block): asserts block is Block<MarkdownContent> {
+    if (block.content.type !== 'markdown') {
+        throw new Error("wrong type: " + block.content.type);
+    }
+}
 
 /**
  * Run the action but also undo and redo it and verify the result.  This way
@@ -940,6 +945,52 @@ describe('BlocksStore', function() {
                 assert.equal(block3.parent, block2.id, 'Block3 should have the correct parent');
                 // items
                 assert.deepEqual([...block3.itemsAsArray].sort(), [].sort(), 'Block3 should have the correct items');
+        });
+
+        it('should update the link index properly when merging blocks that have links', () => {
+            const store = createStore()
+            const linkBlock1 = store.createNewBlock('102');
+            const linkBlock2 = store.createNewBlock('102');
+            assertPresent(linkBlock1);
+            assertPresent(linkBlock2);
+
+            const createdBlock1 = store.createNewBlock('102');
+            assertPresent(createdBlock1);
+            store.setBlockContent(createdBlock1.id, new MarkdownContent({
+                type: 'markdown',
+                data: 'hello [[world]]',
+                links: [
+                    {id: linkBlock1.id, text: 'world'},
+                ]
+            }));
+
+            const createdBlock2 = store.createNewBlock(createdBlock1.id);
+            assertPresent(createdBlock2);
+            store.indentBlock(createdBlock2.id);
+            store.setBlockContent(createdBlock2.id, new MarkdownContent({
+                type: 'markdown',
+                data: 'new [[block]]',
+                links: [
+                    {id: linkBlock2.id, text: 'block'},
+                ]
+            }));
+
+            store.mergeBlocks(createdBlock1.id, createdBlock2.id);
+
+            const block1 = store.getBlock(createdBlock1.id);
+            const block2 = store.getBlock(createdBlock2.id);
+
+            assertPresent(block1);
+            assertMarkdownBlock(block1);
+            assert.isUndefined(block2);
+
+            assert.deepEqual(block1.content.links, [
+                {id: linkBlock1.id, text: 'world'},
+                {id: linkBlock2.id, text: 'block'},
+            ]);
+
+            assert.deepEqual(store.reverse.get(linkBlock1.id), [block1.id]);
+            assert.deepEqual(store.reverse.get(linkBlock2.id), [block1.id]);
         });
     });
 
