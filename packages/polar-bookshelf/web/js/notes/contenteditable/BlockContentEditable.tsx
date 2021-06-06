@@ -14,7 +14,7 @@ import {IImageContent} from "../content/IImageContent";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {useMutationObserver} from '../../../../web/js/hooks/ReactHooks';
 import {MarkdownContent} from '../content/MarkdownContent';
-import {useBlockKeyDownHandler} from './BlockHooks';
+import {useBlockKeyDownHandler} from './BlockKeyboardHandlers';
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed
@@ -210,7 +210,6 @@ export const BlockContentEditable = observer((props: IProps) => {
     const {onKeyDown} = useBlockKeyDownHandler({
         contentEditableRef: divRef,
         blockID: props.id,
-        parent: props.parent,
         onKeyDown: props.onKeyDown,
     });
 
