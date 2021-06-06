@@ -199,19 +199,23 @@ export interface IDoDeleteOpts {
 
 }
 
-export interface ICreateNewNamedBlockOptsBasic {
+interface ICreateNewNamedBlockBase {
+    readonly type: 'name' | 'date';
+}
+
+export interface ICreateNewNamedBlockOptsBasic extends ICreateNewNamedBlockBase {
     readonly newBlockID?: BlockIDStr;
     readonly nspace?: NamespaceIDStr;
     readonly ref?: BlockIDStr;
 }
 
-export interface ICreateNewNamedBlockOptsWithNSpace {
+export interface ICreateNewNamedBlockOptsWithNSpace extends ICreateNewNamedBlockBase {
     readonly newBlockID?: BlockIDStr;
     readonly nspace: NamespaceIDStr;
     readonly ref?: undefined;
 }
 
-export interface ICreateNewNamedBlockOptsWithRef {
+export interface ICreateNewNamedBlockOptsWithRef  extends ICreateNewNamedBlockBase{
     readonly newBlockID?: BlockIDStr;
     readonly nspace?: undefined;
     readonly ref: BlockIDStr;
@@ -394,7 +398,7 @@ export class BlocksStore implements IBlocksStore {
             const block = new Block(blockData);
             this._index[blockData.id] = block;
 
-            if (blockData.content.type === 'name') {
+            if (blockData.content.type === 'name' || blockData.content.type === 'date') {
                 this._indexByName[blockData.content.data] = block.id;
             }
 
@@ -1091,6 +1095,14 @@ export class BlocksStore implements IBlocksStore {
                 const now = ISODateTimeStrings.create();
                 const nspace = computeNamespace();
 
+                const createContent = () => {
+                    if (opts.type === 'date') {
+                        return Contents.create({type: 'date', data: name, format: 'YYYY-MM-DD'}).toJSON();
+                    } else {
+                        return Contents.create({type: 'name', data: name}).toJSON();
+                    }
+                };
+
                 return {
                     id: newBlockID,
                     nspace,
@@ -1098,10 +1110,7 @@ export class BlocksStore implements IBlocksStore {
                     root: newBlockID,
                     parent: undefined,
                     parents: [],
-                    content: Contents.create({
-                        type: 'name',
-                        data: name
-                    }).toJSON(),
+                    content: createContent(),
                     created: now,
                     updated: now,
                     items: {},
@@ -1203,7 +1212,11 @@ export class BlocksStore implements IBlocksStore {
             }
 
             // create the new block - the sourceID is used for the ref to compute the nspace.
-            const targetBlockID = this.doCreateNewNamedBlock(targetName, {newBlockID: targetID, nspace: sourceBlock.nspace});
+            const targetBlockID = this.doCreateNewNamedBlock(targetName, {
+                newBlockID: targetID,
+                nspace: sourceBlock.nspace,
+                type: 'name',
+            });
             const blockContent = sourceBlock.content;
 
             sourceBlock.withMutation(() => {
