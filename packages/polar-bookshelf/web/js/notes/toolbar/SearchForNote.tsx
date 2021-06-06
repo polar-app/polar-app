@@ -13,7 +13,7 @@ export const SearchForNote = observer(() => {
     const blocksStore = useBlocksStore();
     const noteLinkLoader = useNoteLinkLoader();
 
-    const namedNodes = blocksStore.getNamedNodes();
+    const namedBlocks = blocksStore.getNamedBlocks();
 
     const [inputValue, setInputValue] = React.useState('');
 
@@ -21,7 +21,7 @@ export const SearchForNote = observer(() => {
         <div>
             <Autocomplete
                 size="medium"
-                options={[...namedNodes]}
+                options={[...namedBlocks]}
                 getOptionLabel={(option) => option}
                 inputValue={inputValue}
                 value={''}

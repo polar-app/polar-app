@@ -89,7 +89,7 @@ export const BlockContentEditable = observer((props: IProps) => {
 
     const handlePaste = usePasteHandler({onPasteImage, onPasteError});
 
-    const noteLinkActions = blocksStore.getNamedNodes().map(current => ({
+    const noteLinkActions = blocksStore.getNamedBlocks().map(current => ({
         id: current,
         text: current
     }));

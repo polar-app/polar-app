@@ -290,7 +290,7 @@ export class BlocksStore implements IBlocksStore {
     /**
      * Get all the nodes by name.
      */
-    getNamedNodes(): ReadonlyArray<string> {
+    getNamedBlocks(): ReadonlyArray<string> {
         return Object.keys(this._indexByName);
     }
 
