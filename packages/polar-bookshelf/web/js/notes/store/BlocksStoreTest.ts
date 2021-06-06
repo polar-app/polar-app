@@ -1368,6 +1368,38 @@ describe('BlocksStore', function() {
 
         });
 
+        it("should create a new child in a block with children (when suffix is empty)", () => {
+
+            const store = createStore();
+
+
+            const id = '105'
+
+            let originalBlock = store.getBlock(id);
+
+            assertPresent(originalBlock);
+
+            assertTextBlock(originalBlock.content);
+
+            const createdBlock = store.createNewBlock(id, {split: {prefix: originalBlock.content.data, suffix: ''}});
+            assertPresent(createdBlock);
+
+            originalBlock = store.getBlock(id);
+
+            assertPresent(originalBlock);
+
+            assert.deepEqual(originalBlock.itemsAsArray, [
+                createdBlock.id,
+                '106'
+            ]);
+
+            const newBlock = store.getBlock(createdBlock.id);
+            assertPresent(newBlock);
+
+            assert.equal(newBlock.parent, id);
+            assert.deepEqual(newBlock.parents, [...originalBlock.parents, id]);
+        });
+
     });
 
 });
