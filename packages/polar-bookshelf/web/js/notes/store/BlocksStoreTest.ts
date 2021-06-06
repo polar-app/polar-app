@@ -43,6 +43,11 @@ function assertTextBlock(content: BlockContent): asserts content is MarkdownCont
 
 }
 
+function assertMarkdownBlock(block: Block): asserts block is Block<MarkdownContent> {
+    if (block.content.type !== 'markdown') {
+        throw new Error("wrong type: " + block.content.type);
+    }
+}
 
 /**
  * Run the action but also undo and redo it and verify the result.  This way
@@ -860,6 +865,133 @@ describe('BlocksStore', function() {
 
         });
 
+        it('should handle merging 2 blocks that have children', () => {
+            const store = createStore()
+            const createdBlock1 = store.createNewBlock('104');
+            assertPresent(createdBlock1);
+            store.indentBlock(createdBlock1.id);
+
+            const createdBlock2 = store.createNewBlock('106');
+            assertPresent(createdBlock2);
+            store.indentBlock(createdBlock2.id);
+            const createdBlock3 = store.createNewBlock(createdBlock2.id);
+            assertPresent(createdBlock3);
+            store.indentBlock(createdBlock3.id);
+            /*
+             *   104----------------------------|
+             *       createdBlock1              |-- We're merging these 2
+             *   105 ---------------------------|
+             *       106
+             *           createdBlock2
+             *                  createdBlock3
+             *   
+             *
+             *   We should end up with
+             *   104
+             *       createdBlock1
+             *       106
+             *           createdBlock2
+             *                  createdBlock3
+            */
+
+            store.mergeBlocks('104', '105');
+
+            const block104 = store.getBlock('104');
+            const block105 = store.getBlock('105');
+            const block106 = store.getBlock('106');
+            const block1 = store.getBlock(createdBlock1.id);
+            const block2 = store.getBlock(createdBlock2.id);
+            const block3 = store.getBlock(createdBlock3.id);
+
+            assertPresent(block104);
+            assertPresent(block106);
+            assertPresent(block1);
+            assertPresent(block2);
+            assertPresent(block3);
+
+            // 105 should be deleted
+            assert.isUndefined(block105);
+
+            // 104 should have the correct children
+            assert.deepEqual([...block104.itemsAsArray].sort(), [block1.id, '106'].sort());
+
+            // block1
+                // parents
+                assert.deepEqual([...block1.parents], ['102', '104'], 'Block1 should have the correct parents');
+                // parent
+                assert.equal(block1.parent, '104', 'Block1 should have the correct parent');
+                // items
+                assert.deepEqual([...block1.itemsAsArray].sort(), [], 'Block1 should have the correct items');
+            // 106
+                // parents
+                assert.deepEqual([...block106.parents], ['102', '104'], 'Block106 should have the correct parents');
+                // parent
+                assert.equal(block106.parent, '104', 'Block106 should have the correct parent');
+                // items
+                assert.deepEqual([...block106.itemsAsArray].sort(), [block2.id].sort(), 'Block2 should have the correct items');
+            
+            // block2
+                // parents
+                assert.deepEqual([...block2.parents], ['102', '104', '106'], 'Block2 should have the correct parents');
+                // parent
+                assert.equal(block2.parent, '106', 'Block2 should have the correct parent');
+                // items
+                assert.deepEqual([...block2.itemsAsArray].sort(), [block3.id].sort(), 'Block2 should have the correct items');
+
+            // block3
+                // parents
+                assert.deepEqual([...block3.parents], ['102', '104', '106', block2.id], 'Block3 should have the correct parents');
+                // parent
+                assert.equal(block3.parent, block2.id, 'Block3 should have the correct parent');
+                // items
+                assert.deepEqual([...block3.itemsAsArray].sort(), [].sort(), 'Block3 should have the correct items');
+        });
+
+        it('should update the link index properly when merging blocks that have links', () => {
+            const store = createStore()
+            const linkBlock1 = store.createNewBlock('102');
+            const linkBlock2 = store.createNewBlock('102');
+            assertPresent(linkBlock1);
+            assertPresent(linkBlock2);
+
+            const createdBlock1 = store.createNewBlock('102');
+            assertPresent(createdBlock1);
+            store.setBlockContent(createdBlock1.id, new MarkdownContent({
+                type: 'markdown',
+                data: 'hello [[world]]',
+                links: [
+                    {id: linkBlock1.id, text: 'world'},
+                ]
+            }));
+
+            const createdBlock2 = store.createNewBlock(createdBlock1.id);
+            assertPresent(createdBlock2);
+            store.indentBlock(createdBlock2.id);
+            store.setBlockContent(createdBlock2.id, new MarkdownContent({
+                type: 'markdown',
+                data: 'new [[block]]',
+                links: [
+                    {id: linkBlock2.id, text: 'block'},
+                ]
+            }));
+
+            store.mergeBlocks(createdBlock1.id, createdBlock2.id);
+
+            const block1 = store.getBlock(createdBlock1.id);
+            const block2 = store.getBlock(createdBlock2.id);
+
+            assertPresent(block1);
+            assertMarkdownBlock(block1);
+            assert.isUndefined(block2);
+
+            assert.deepEqual(block1.content.links, [
+                {id: linkBlock1.id, text: 'world'},
+                {id: linkBlock2.id, text: 'block'},
+            ]);
+
+            assert.deepEqual(store.reverse.get(linkBlock1.id), [block1.id]);
+            assert.deepEqual(store.reverse.get(linkBlock2.id), [block1.id]);
+        });
     });
 
     describe("Blocks", () => {

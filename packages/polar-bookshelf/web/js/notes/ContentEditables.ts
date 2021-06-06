@@ -1,3 +1,4 @@
+import {Browsers} from "polar-browsers/src/Browsers";
 
 export namespace ContentEditables {
 
@@ -203,10 +204,18 @@ export namespace ContentEditables {
 
     }
 
+    export function getEmptyCharacter() {
+        const browser = Browsers.get();
+        if (browser && browser.id === 'firefox') {
+            return ' ';
+        }
+        return '&#xFEFF;';
+    }
+
     export function createEmptySpacer() {
         const span = document.createElement('span');
         span.style.whiteSpace = 'pre-wrap';
-        span.appendChild(document.createTextNode(' '));
+        span.innerHTML = getEmptyCharacter();
         return span;
     }
 

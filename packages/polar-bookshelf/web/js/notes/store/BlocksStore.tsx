@@ -1015,8 +1015,26 @@ export class BlocksStore implements IBlocksStore {
 
             const newContent = targetBlock.content.data + sourceBlock.content.data;
 
-            targetBlock.withMutation(() => {
 
+            const idsToBlocks = (ids: ReadonlyArray<BlockIDStr>) => ids
+                .map(id => this.getBlock(id))
+                .filter((block): block is Block => !!block);
+
+            const updateParents = (newParent: BlockIDStr) => (block: Block) => {
+                const rebuildTreeParents = (block: Block) => {
+                    block.withMutation(() => block.setParents(this.getParentsPath(block)));
+                    this.doPut([block]);
+                    idsToBlocks(block.itemsAsArray).forEach(rebuildTreeParents);
+                };
+
+                block.withMutation(() => block.setParent(newParent));
+                rebuildTreeParents(block);
+            };
+
+            const directChildrenBlocks = idsToBlocks(items);
+
+            // Update target block
+            targetBlock.withMutation(() => {
                 targetBlock.setContent(new MarkdownContent({
                     type: 'markdown',
                     data: newContent,
@@ -1024,27 +1042,42 @@ export class BlocksStore implements IBlocksStore {
                 }));
 
                 targetBlock.setItems(items);
-
-            })
+            });
 
             this.doPut([targetBlock]);
 
-            const deleteSourceBlock = () => {
-                // we have to set items to an empty array or doDelete will also remove the children recursively.
-                sourceBlock.setItems([]);
-                this.doDelete([sourceBlock.id]);
-            }
-
-            deleteSourceBlock();
+            // Update the "parent" & "parents" properties of the children (recursively)
+            directChildrenBlocks.forEach(updateParents(targetBlock.id));
 
             this.setActiveWithPosition(targetBlock.id, offset);
 
-            return undefined;
+            // Update the source block remove the children to prepare it for deletion
+            // (this is done to void deleting the children when deleting the block)
+            sourceBlock.withMutation(() => sourceBlock.setItems([]));
 
-        }
+            // Delete after we're done with everything
+            this.doPut([sourceBlock]);
+            this.doDelete([sourceBlock.id]);
+
+            return undefined;
+        };
 
         return this.doUndoPush([source, target], redo);
 
+    }
+
+    /*
+     * Build the *parents* property of a block
+     * by traversing parents all the way up the tree.
+     */
+    private getParentsPath(block: Block): ReadonlyArray<BlockIDStr> {
+        if (block.parent) {
+            const parent = this._index[block.parent];
+            if (parent) {
+                return [...this.getParentsPath(parent), parent.id];
+            }
+        }
+        return [];
     }
 
     /**
@@ -1920,6 +1953,13 @@ export class BlocksStore implements IBlocksStore {
 
                     for (const inboundID of inboundIDs) {
                         this.reverse.remove(block.id, inboundID);
+                    }
+
+                    // *** Delete the references to other items
+                    if (block.content.type === 'markdown') {
+                        for (const link of block.content.links) {
+                            this.reverse.remove(link.id, block.id);                            
+                        }
                     }
 
                     this.collapse(blockID);

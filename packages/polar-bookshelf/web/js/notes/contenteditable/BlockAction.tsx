@@ -102,14 +102,14 @@ function useActionExecutor(id: BlockIDStr) {
                     coveringRange.deleteContents();
 
                     const a = document.createElement('a');
-                    const node = document.createTextNode(' ');
+                    const span = document.createElement('span');
+                    span.innerHTML = ContentEditables.getEmptyCharacter();
                     a.setAttribute('contenteditable', 'false');
                     a.setAttribute('href', '#' + actionOp.target);
                     a.appendChild(document.createTextNode(actionOp.target));
-                    coveringRange.insertNode(node);
+                    coveringRange.insertNode(span);
                     coveringRange.insertNode(a);
-                    ContentEditables.setCaretPosition(node, 'start');
-                    node.remove();
+                    ContentEditables.setCaretPosition(span, 'start');
                 }
 
                 updateSelection();
