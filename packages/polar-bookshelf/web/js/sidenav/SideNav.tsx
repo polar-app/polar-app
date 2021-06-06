@@ -17,7 +17,7 @@ import {SideNavButton} from "./SideNavButton";
 import {AccountAvatar} from "../ui/cloud_auth/AccountAvatar";
 import SyncIcon from '@material-ui/icons/Sync';
 import {useAnkiSyncCallback} from "./AnkiSyncHook";
-import {SideNavCommandMenu} from "./SideNavCommand";
+import {SwitchToOpenDocumentKeyboardCommand} from "./SwitchToOpenDocumentKeyboardCommand";
 import {ZenModeActiveContainer} from "../mui/ZenModeActiveContainer";
 import { Intercom } from '../apps/repository/integrations/Intercom';
 import { SideNavQuestionButton } from './SideNavQuestionButton';
@@ -162,8 +162,7 @@ const NotesButton = observer(function NotesButton() {
             const block = blocksStore.getBlockByName(dateContent.data);
 
             if (! block) {
-                // FIXME this is wrong... must be a date block..
-                blocksStore.createNewNamedBlock(dateContent.data, {});
+                blocksStore.createNewNamedBlock(dateContent.data, {type: 'date'});
             }
 
         });
@@ -290,7 +289,7 @@ export const SideNav = React.memo(function SideNav() {
 
     return (
         <>
-            <SideNavCommandMenu/>
+            <SwitchToOpenDocumentKeyboardCommand/>
 
             <Intercom/>
 

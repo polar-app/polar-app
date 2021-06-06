@@ -199,19 +199,23 @@ export interface IDoDeleteOpts {
 
 }
 
-export interface ICreateNewNamedBlockOptsBasic {
+interface ICreateNewNamedBlockBase {
+    readonly type: 'name' | 'date';
+}
+
+export interface ICreateNewNamedBlockOptsBasic extends ICreateNewNamedBlockBase {
     readonly newBlockID?: BlockIDStr;
     readonly nspace?: NamespaceIDStr;
     readonly ref?: BlockIDStr;
 }
 
-export interface ICreateNewNamedBlockOptsWithNSpace {
+export interface ICreateNewNamedBlockOptsWithNSpace extends ICreateNewNamedBlockBase {
     readonly newBlockID?: BlockIDStr;
     readonly nspace: NamespaceIDStr;
     readonly ref?: undefined;
 }
 
-export interface ICreateNewNamedBlockOptsWithRef {
+export interface ICreateNewNamedBlockOptsWithRef  extends ICreateNewNamedBlockBase{
     readonly newBlockID?: BlockIDStr;
     readonly nspace?: undefined;
     readonly ref: BlockIDStr;
@@ -290,7 +294,7 @@ export class BlocksStore implements IBlocksStore {
     /**
      * Get all the nodes by name.
      */
-    getNamedNodes(): ReadonlyArray<string> {
+    getNamedBlocks(): ReadonlyArray<string> {
         return Object.keys(this._indexByName);
     }
 
@@ -394,7 +398,7 @@ export class BlocksStore implements IBlocksStore {
             const block = new Block(blockData);
             this._index[blockData.id] = block;
 
-            if (blockData.content.type === 'name') {
+            if (blockData.content.type === 'name' || blockData.content.type === 'date') {
                 this._indexByName[blockData.content.data] = block.id;
             }
 
@@ -1121,6 +1125,14 @@ export class BlocksStore implements IBlocksStore {
                 const now = ISODateTimeStrings.create();
                 const nspace = computeNamespace();
 
+                const createContent = () => {
+                    if (opts.type === 'date') {
+                        return Contents.create({type: 'date', data: name, format: 'YYYY-MM-DD'}).toJSON();
+                    } else {
+                        return Contents.create({type: 'name', data: name}).toJSON();
+                    }
+                };
+
                 return {
                     id: newBlockID,
                     nspace,
@@ -1128,10 +1140,7 @@ export class BlocksStore implements IBlocksStore {
                     root: newBlockID,
                     parent: undefined,
                     parents: [],
-                    content: Contents.create({
-                        type: 'name',
-                        data: name
-                    }).toJSON(),
+                    content: createContent(),
                     created: now,
                     updated: now,
                     items: {},
@@ -1233,7 +1242,11 @@ export class BlocksStore implements IBlocksStore {
             }
 
             // create the new block - the sourceID is used for the ref to compute the nspace.
-            const targetBlockID = this.doCreateNewNamedBlock(targetName, {newBlockID: targetID, nspace: sourceBlock.nspace});
+            const targetBlockID = this.doCreateNewNamedBlock(targetName, {
+                newBlockID: targetID,
+                nspace: sourceBlock.nspace,
+                type: 'name',
+            });
             const blockContent = sourceBlock.content;
 
             sourceBlock.withMutation(() => {
@@ -1338,17 +1351,19 @@ export class BlocksStore implements IBlocksStore {
                 readonly parentBlock: Block;
             }
 
+            type INewBlockPosition = INewBlockPositionFirstChild | INewBlockPositionRelative;
+
             const parseLinksFromContent = (origLinks: ReadonlyArray<IBlockLink>, content: string): ReadonlyArray<IBlockLink> => (
                 [...content.matchAll(WikiLinksToMarkdown.WIKI_LINK_REGEX)]
                     .map(([, text]) => ({ id: origLinks.find((o) => o.text === text)!.id, text }))
             );
 
-            const computeNewBlockPosition = (): INewBlockPositionRelative | INewBlockPositionFirstChild => {
+            const computeNewBlockPosition = (): INewBlockPosition => {
 
                 const computeNextLinearExpansionID = () => {
                     const linearExpansionTree = this.computeLinearExpansionTree2(id);
                     return Arrays.first(linearExpansionTree);
-                }
+                };
 
                 const nextSiblingID = this.nextSibling(id);
                 const nextLinearExpansionID = computeNextLinearExpansionID();
@@ -1365,6 +1380,18 @@ export class BlocksStore implements IBlocksStore {
                         pos
                     };
 
+                };
+
+                const block = this.getBlock(id)!;
+                const hasChildren = this.children(block.id).length > 0;
+
+                // Block has no parent (in the case of a root block), or a block that has children
+                // with suffix of an empty string
+                if (!block.parent || (hasChildren && split?.suffix === '')) {
+                    return {
+                        type: 'first-child',
+                        parentBlock: block
+                    };
                 }
 
                 if (nextSiblingID && split !== undefined) {
@@ -1372,32 +1399,10 @@ export class BlocksStore implements IBlocksStore {
                 } else if (nextLinearExpansionID && split === undefined) {
                     return createNewBlockPositionRelative(nextLinearExpansionID, 'before')
                 } else {
-
-                    const block = this.getBlock(id)!;
-
-                    if (block.parent) {
-
-                        const parentBlock = this.getBlock(block.parent)!;
-
-                        return {
-                            type: 'relative',
-                            parentBlock,
-                            ref: id,
-                            pos: 'after'
-                        }
-
-                    } else {
-
-                        return {
-                            type: 'first-child',
-                            parentBlock: block
-                        }
-
-                    }
-
+                    return createNewBlockPositionRelative(id, 'after');
                 }
 
-            }
+            };
 
             const createNewBlock = (parentBlock: Block): IBlock => {
                 const now = ISODateTimeStrings.create()
@@ -1425,7 +1430,7 @@ export class BlocksStore implements IBlocksStore {
                     mutation: 0
                 };
 
-            }
+            };
 
             const currentBlock = this.getBlock(id)!;
             const getSplit = (): ISplitBlock | undefined => currentBlock.content.type === 'markdown' ? opts.split : undefined;
@@ -1478,7 +1483,7 @@ export class BlocksStore implements IBlocksStore {
 
                 }
 
-            })
+            });
 
             this.doPut([currentBlock, parentBlock]);
 

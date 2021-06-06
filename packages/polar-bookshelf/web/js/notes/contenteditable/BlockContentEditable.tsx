@@ -14,7 +14,7 @@ import {IImageContent} from "../content/IImageContent";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {useMutationObserver} from '../../../../web/js/hooks/ReactHooks';
 import {MarkdownContent} from '../content/MarkdownContent';
-import {useBlockKeyDownHandler} from './BlockHooks';
+import {useBlockKeyDownHandler} from './BlockKeyboardHandlers';
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed
@@ -43,6 +43,7 @@ interface IProps {
 
     readonly onKeyDown?: (event: React.KeyboardEvent) => void;
 
+    readonly readonly?: boolean;
 }
 
 const NoteContentEditableElementContext = React.createContext<React.RefObject<HTMLElement | null>>({current: null});
@@ -89,7 +90,7 @@ export const BlockContentEditable = observer((props: IProps) => {
 
     const handlePaste = usePasteHandler({onPasteImage, onPasteError});
 
-    const noteLinkActions = blocksStore.getNamedNodes().map(current => ({
+    const noteLinkActions = blocksStore.getNamedBlocks().map(current => ({
         id: current,
         text: current
     }));
@@ -210,8 +211,8 @@ export const BlockContentEditable = observer((props: IProps) => {
     const {onKeyDown} = useBlockKeyDownHandler({
         contentEditableRef: divRef,
         blockID: props.id,
-        parent: props.parent,
         onKeyDown: props.onKeyDown,
+        readonly: props.readonly,
     });
 
     useHandleLinkDeletion({ elem: divRef.current, blockID: props.id });

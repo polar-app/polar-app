@@ -210,7 +210,7 @@ export namespace MockBlocks {
                 nspace, uid,
                 parent: '107',
                 parents: ['107'],
-                root: '101',
+                root: '107',
                 created: now,
                 updated: now,
                 content: {
