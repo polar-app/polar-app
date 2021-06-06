@@ -121,7 +121,7 @@ export interface IBlocksStore {
     navPrev(pos: NavPosition, opts: NavOpts): void;
     navNext(pos: NavPosition, opts: NavOpts): void;
 
-    getNamedNodes(): ReadonlyArray<string>;
+    getNamedBlocks(): ReadonlyArray<string>;
 
     setBlockContent<C extends IBlockContent = IBlockContent>(id: BlockIDStr, content: C): void;
 
