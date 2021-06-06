@@ -1,6 +1,5 @@
 import {Platform, Platforms} from "polar-shared/src/util/Platforms";
 import React from "react";
-import {useHistory} from "react-router";
 import {ContentEditables} from "../ContentEditables";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {BlockIDStr, useBlocksStore} from "../store/BlocksStore";
@@ -34,6 +33,7 @@ type KeydownHandlerOpts = {
     platform: Platform;
     blocksStore: IBlocksStore; 
     blockID: string;
+    readonly: boolean;
 };
 type KeydownHandler = (opts: KeydownHandlerOpts) => void;
 
@@ -159,8 +159,8 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
             }
         }
     },
-    Backspace: ({ event, blocksStore, blockID, contentEditableElem }) => {
-        if (hasEditorSelection()) {
+    Backspace: ({ event, blocksStore, blockID, contentEditableElem, readonly }) => {
+        if (readonly || hasEditorSelection()) {
             console.log("Not handling Backspace");
             return;
         }
@@ -193,8 +193,8 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
             }
         }
     },
-    Delete: ({ event, blocksStore, blockID, contentEditableElem }) => {
-        if (hasEditorSelection()) {
+    Delete: ({ event, blocksStore, blockID, contentEditableElem, readonly }) => {
+        if (readonly || hasEditorSelection()) {
             console.log("Not handling Delete");
             return;
         }
@@ -226,6 +226,7 @@ type IUseBlockKeyDownHandlerOpts = {
     contentEditableRef: React.RefObject<HTMLDivElement>,
     blockID: BlockIDStr;
     onKeyDown?: React.EventHandler<React.KeyboardEvent>;
+    readonly?: boolean;
 };
 
 type IUseBlockKeyDownHandlerBinds = {
@@ -233,7 +234,7 @@ type IUseBlockKeyDownHandlerBinds = {
 };
 
 export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseBlockKeyDownHandlerBinds => {
-    const { contentEditableRef, blockID, onKeyDown } = opts;
+    const { contentEditableRef, blockID, onKeyDown, readonly = false } = opts;
     const blocksStore = useBlocksStore();
     const platform = React.useMemo(() => Platforms.get(), []);
 
@@ -251,7 +252,10 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
                 event,
                 blocksStore,
                 blockID, 
+                readonly
             });
+        } else if (readonly) {
+            abortEvent(event);
         }
         if (blocksStore.hasSelected()) {
             abortEvent(event);
@@ -261,7 +265,7 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
             onKeyDown(event);
         }
 
-    }, [onKeyDown, blockID, platform, blocksStore, contentEditableRef]);
+    }, [onKeyDown, blockID, platform, blocksStore, contentEditableRef, readonly]);
 
     return { onKeyDown: handleKeyDown };
 };

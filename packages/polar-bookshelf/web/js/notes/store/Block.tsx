@@ -127,8 +127,8 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         return this._mutation;
     }
 
-    @computed get editable() {
-        return NON_EDITABLE_BLOCK_TYPES.indexOf(this._content.type) === -1;
+    @computed get readonly() {
+        return NON_EDITABLE_BLOCK_TYPES.indexOf(this._content.type) > -1;
     }
 
     /**

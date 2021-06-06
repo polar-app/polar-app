@@ -63,12 +63,6 @@ export const NotesInbound = deepMemo(function NotesInbound(props: IProps) {
     const inboundNoteIDs = blocksStore.lookupReverse(props.id);
     const inbound = blocksStore.lookup(inboundNoteIDs);
 
-    /*
-    React.useEffect(() => {
-        blocksStore.deleteBlocks(Object.keys(blocksStore.index));
-    }, []);
-    */
-
     return (
         <div className="NotesInbound">
 

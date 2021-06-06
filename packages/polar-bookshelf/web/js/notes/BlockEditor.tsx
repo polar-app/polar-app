@@ -3,13 +3,10 @@ import {NoteNavigation} from "./NoteNavigation";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
-import {MarkdownContentConverter} from "./MarkdownContentConverter";
 import {BlockIDStr, useBlocksStore} from "./store/BlocksStore";
-import { observer } from "mobx-react-lite"
+import {observer} from "mobx-react-lite"
 import {BlockContentEditable} from "./contenteditable/BlockContentEditable";
-import {ContentEditables} from "./ContentEditables";
-import { HTMLStr, MarkdownStr } from "polar-shared/src/util/Strings";
-import {BlockPredicates} from "./store/BlockPredicates";
+import {MarkdownStr} from "polar-shared/src/util/Strings";
 import {MarkdownContent} from "./content/MarkdownContent";
 
 interface ILinkNavigationEvent {
@@ -123,7 +120,7 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
                               innerRef={ref}
                               content={data || ''}
                               onChange={handleChange}
-                              readonly={block.editable}
+                              readonly={block.readonly}
                               onClick={onClick} />
     );
 
