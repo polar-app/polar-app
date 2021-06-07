@@ -17,6 +17,6 @@
   },
   "dependencies": {
     "@google-cloud/firestore": "=4.9.8",
-    "firebase-admin": "=9.5.0"
+    "firebase-admin": "=9.9.0"
   }
 }
