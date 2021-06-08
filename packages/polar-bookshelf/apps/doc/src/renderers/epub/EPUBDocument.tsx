@@ -139,6 +139,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
 
     const finder = useEPUBFindController();
     const epubResizer = useEPUBResizer();
+    const epubZoom = useEPubZoom
     const log = useLogger();
     const sectionRef = React.useRef<Section | undefined>(undefined);
     const stylesheet = useStylesheetURL();
@@ -193,30 +194,33 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
 
         });
 
-        const setScale = (scale: ScaleLevelTuple) => {
-            const iframe = docViewerElements.getDocViewerElement().querySelector(".epub-view iframe") as HTMLIFrameElement
-            const percentageScaleValue = Number(scale.value) * 100
-            rendition.themes.fontSize(`${percentageScaleValue}%`)
+        // const setScale = (scale: ScaleLevelTuple) => {
+        //     const iframe = docViewerElements.getDocViewerElement().querySelector(".epub-view iframe") as HTMLIFrameElement
+        //     const percentageScaleValue = Number(scale.value) * 100
+        //     rendition.themes.fontSize(`${percentageScaleValue}%`)
 
-            if (iframe.contentDocument) {
-                const images = iframe.contentDocument.querySelectorAll('img')
-                const items: HTMLImageElement[] = Array.prototype.slice.call(images)
+        //     if (iframe.contentDocument) {
+        //         const images = iframe.contentDocument.querySelectorAll('img')
+        //         const items: HTMLImageElement[] = Array.prototype.slice.call(images)
 
-                items.forEach((item) =>{
-                    item.setAttribute('style', 'max-width: none !important')
-                    const newWidth = item.clientWidth * Number(scale.value)
-                    const newHeight = item.clientHeight * Number(scale.value)
-                    item.style.width = `${newWidth}px`
-                    item.style.height = `${newHeight}px`
-                })
-            }
+        //         items.forEach((item) =>{
+        //             item.setAttribute('style', 'max-width: none !important')
+        //             const newWidth = item.clientWidth * Number(scale.value)
+        //             const newHeight = item.clientHeight * Number(scale.value)
+        //             item.style.width = `${newWidth}px`
+        //             item.style.height = `${newHeight}px`
+        //         })
+        //     }
 
-            return Number(scale.value)
-        }
+        //     return Number(scale.value)
+        // }
 
-        const scaleLeveler = (scale: ScaleLevelTuple) => {
-            return setScale(scale);
-        }
+        // const scaleLeveler = (scale: ScaleLevelTuple) => {
+        //     return setScale(scale);
+        // }
+        const scaleLeveler = (scale: ScaleLevelTuple): number => epubZoom(scale)
+            
+        
         setScaleLeveler(scaleLeveler);
 
         function createResizer(): Resizer {
@@ -578,3 +582,33 @@ function useEPUBResizer() {
     }, [docViewerElements, fixedWidth]);
 
 }
+
+function useEPubZoom(scale: ScaleLevelTuple) {
+
+    const docViewerElements = useDocViewerElementsContext();
+    console.log({scale})
+
+    return React.useCallback(() => {
+        const setScale = (scale: ScaleLevelTuple) => {
+            const iframe = docViewerElements.getDocViewerElement().querySelector(".epub-view iframe") as HTMLIFrameElement
+            const percentageScaleValue = Number(scale.value) * 100
+            // rendition.themes.fontSize(`${percentageScaleValue}%`)
+
+            if (iframe.contentDocument) {
+                const images = iframe.contentDocument.querySelectorAll('img')
+                const items: HTMLImageElement[] = Array.prototype.slice.call(images)
+
+                items.forEach((item) => {
+                    item.setAttribute('style', 'max-width: none !important')
+                    const newWidth = item.clientWidth * Number(scale.value)
+                    const newHeight = item.clientHeight * Number(scale.value)
+                    item.style.width = `${newWidth}px`
+                    item.style.height = `${newHeight}px`
+                })
+            }
+
+            return Number(scale.value)
+        }
+
+        return setScale(scale);
+    },[docViewerElements,scale])
