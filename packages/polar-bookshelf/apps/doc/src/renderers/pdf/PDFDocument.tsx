@@ -53,7 +53,7 @@ import {usePrefsContext} from "../../../../repository/js/persistence_layer/Prefs
 import { usePDFUpgrader } from './PDFUpgrader';
 import {ViewerElements} from "../ViewerElements";
 import {useDocumentViewerVisibleElemFocus} from '../UseSidenavDocumentChangeCallbackHook';
-import {AnnotationPopup, useAnnotationPopupBarEnabled} from '../../annotations/annotation_popup/AnnotationPopup';
+import {AnnotationPopup} from '../../annotations/annotation_popup/AnnotationPopup';
 import {AreaHighlightCreator} from '../../annotations/AreaHighlightDrawer';
 import {useAnnotationBar} from '../../AnnotationBarHooks';
 
@@ -152,8 +152,6 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
     const prefs = usePrefsContext();
     const hasPagesInitRef = React.useRef(false);
     const hasLoadRef = React.useRef(false);
-    const annotationBarInjector = useAnnotationBar()
-    const newAnnotationBarEnabled = useAnnotationPopupBarEnabled();
 
     const hasLoadStartedRef = React.useRef(false);
 
@@ -273,10 +271,6 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
         docViewer.eventBus.on('pagesinit', () => {
 
             // PageContextMenus.start()
-            
-            if (!newAnnotationBarEnabled) {
-                annotationBarInjector();
-            }
 
             onPagesInit();
         });
@@ -432,10 +426,10 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
 
         onLoaded()
 
-    }, [annotationBarInjector, dispatchPDFDocMeta, docMetaProvider, docURL, log, onLoaded,
+    }, [dispatchPDFDocMeta, docMetaProvider, docURL, log, onLoaded,
         onPagesInit, pdfUpgrader, persistenceLayerProvider, prefs, resize, scaleLeveler,
         setDocScale, setFinder, setOutline, setOutlineNavigator, setPageNavigator,
-        setResizer, setScaleLeveler, newAnnotationBarEnabled]);
+        setResizer, setScaleLeveler]);
 
     React.useEffect(() => {
 
@@ -461,8 +455,8 @@ export const PDFDocument = deepMemo(function PDFDocument(props: IProps) {
     return active && (
         <>
             <AreaHighlightCreator />
+            <AnnotationPopup/>
             <DocumentInit/>
-            {newAnnotationBarEnabled && <AnnotationPopup/>}
             {props.children}
         </>
     ) || null;
