@@ -1,7 +1,7 @@
-import {FirebaseDocMetaID} from './FirebaseDatastore';
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {SharingDatastore} from './SharingDatastore';
 import {URLStr} from "polar-shared/src/util/Strings";
+import {FirebaseDocMetaID} from "polar-shared/src/datastore/FirebaseDatastores";
 
 
 export class SharingDatastores {

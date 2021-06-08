@@ -8,13 +8,11 @@ import {File} from '@google-cloud/storage';
 import {ArchiveWritable} from "./ArchiveWritable";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {SnapshotTransformer} from "./SnapshotTransformer";
-import {FirebaseDatastores} from "../../../../../polar-bookshelf/web/js/datastore/FirebaseDatastores";
 import {FileRef} from "../polar-shared/datastore/Datastore";
 import {Backend} from "polar-shared/src/datastore/Backend";
-import {QueryDocumentSnapshot} from "firebase-functions/lib/providers/firestore";
 import {ZipStreamChunk} from "./ZipStreamChunk";
-import path from "path";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {FirebaseDatastores} from "polar-shared/src/datastore/FirebaseDatastores";
 
 const storageConfig = Lazy.create(() => Datastores.createStorage());
 const storage = Lazy.create(() => storageConfig().storage);
