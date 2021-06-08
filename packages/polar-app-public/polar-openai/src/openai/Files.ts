@@ -13,6 +13,16 @@ export namespace Files {
         readonly metadata?: {[key: string]: string};
     }
 
+    export interface IUploadResponse {
+        readonly id: string;
+        readonly object: 'file',
+        readonly bytes: number;
+        readonly created_at: number;
+        readonly filename: "string";
+    }
+
+    // FIXME: this is wrong as it uses multipart form data.
+
     export async function upload(file: ReadonlyArray<IAnswerData>, purpose: UploadPurpose) {
         const endpoint = "https://api.openai.com/v1/files";
 
@@ -30,6 +40,12 @@ export namespace Files {
             },
             body
         });
+
     }
 
 }
+//
+// curl https://api.openai.com/v1/files \
+//     -H "Authorization: Bearer ${OPENAI_API_KEY}" \
+//   -F purpose="answers" \
+//   -F file='@puppy.jsonl'
