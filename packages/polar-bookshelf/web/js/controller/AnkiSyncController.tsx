@@ -124,7 +124,7 @@ export const AnkiSyncController = React.memo(function AnkiSyncController() {
                     title: "Could not sync to Anki",
                     subtitle: (
                         <>
-                            We were unable to sync to Anki.  But don't worry - it's probably one of the following
+                            We are unable to sync to Anki.  But don't worry - it's probably one of the following
                             items:
 
                             <ul>
@@ -140,6 +140,11 @@ export const AnkiSyncController = React.memo(function AnkiSyncController() {
                                         </MUILinkLoaderButton>
                                     </p>
 
+                                </li>
+
+                                <li>
+                                    You now need to allow Polar to connect to your Anki Connect.
+                                    Please follow <a href="https://www.reddit.com/r/PolarBookshelf/comments/nv65ev/workaround_to_fix_polar_sync_issues_in_latest_anki/?">these instructions</a>.
                                 </li>
 
                                 <li>
