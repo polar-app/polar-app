@@ -12,11 +12,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "firebase-tools": "=8.15.0",
+    "firebase-tools": "=9.11.1",
     "typescript": "=4.2.3"
   },
   "dependencies": {
-    "@google-cloud/firestore": "=4.9.8",
+    "@google-cloud/firestore": "=4.12.1",
     "firebase-admin": "=9.9.0"
   }
 }
