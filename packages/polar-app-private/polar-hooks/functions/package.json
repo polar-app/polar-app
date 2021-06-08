@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "engines": {
-    "node": "12"
+    "node": "14"
   },
   "scripts": {
     "tslint": "tslint --project tsconfig.json --config tslint.yaml",
