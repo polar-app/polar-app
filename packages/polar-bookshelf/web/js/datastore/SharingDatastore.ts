@@ -19,9 +19,7 @@ import {DatastoreMutation} from './DatastoreMutation';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
 import {FirebaseDatastore} from './FirebaseDatastore';
-import {FirebaseDocMetaID} from './FirebaseDatastore';
 import {DocMetas} from '../metadata/DocMetas';
-import {DocMeta} from '../metadata/DocMeta';
 import {BackendFileRefs} from './BackendFileRefs';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
@@ -30,6 +28,7 @@ import {
     GetFileOpts,
     NetworkLayers
 } from "polar-shared/src/datastore/IDatastore";
+import { FirebaseDocMetaID } from 'polar-shared/src/datastore/FirebaseDatastores';
 
 const log = Logger.create();
 

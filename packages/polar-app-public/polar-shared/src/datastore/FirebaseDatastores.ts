@@ -1,19 +1,28 @@
-import {Backend} from 'polar-shared/src/datastore/Backend';
-import {FilePaths} from 'polar-shared/src/util/FilePaths';
-import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
-import {FirebaseDocMetaID, StoragePath, StorageSettings} from './FirebaseDatastore';
-import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {CloudFunctions} from './firebase/CloudFunctions';
-import {UserID} from '../firebase/Firebase';
-import {FileRef} from "polar-shared/src/datastore/FileRef";
-import {UserIDStr} from "polar-firebase/src/firebase/om/Profiles";
+import {Backend} from './Backend';
+import {FilePaths} from '../util/FilePaths';
+import {Hashcodes} from '../util/Hashcodes';
+import {Optional} from '../util/ts/Optional';
+import {FileRef} from "./FileRef";
+
+export interface StoragePath {
+    readonly path: string;
+    readonly settings?: StorageSettings;
+}
+
+export interface StorageSettings {
+    readonly cacheControl: string;
+    readonly contentType: string;
+}
+
+/**
+ * A specific type of document ID derived from the fingerprint and only
+ * available within Firebase.
+ */
+export type FirebaseDocMetaID = string;
+
+export type UserIDStr = string;
 
 export class FirebaseDatastores {
-
-    public static computeDatastoreGetFileURL(request: DatastoreGetFileRequest) {
-        const endpoint = CloudFunctions.createEndpoint();
-        return `${endpoint}/datastoreGetFile/?data=` + encodeURIComponent(JSON.stringify(request));
-    }
 
     public static computeStoragePath(backend: Backend,
                                      fileRef: FileRef,
@@ -144,11 +153,4 @@ export class FirebaseDatastores {
 
     }
 
-}
-
-interface DatastoreGetFileRequest {
-    readonly idToken: string;
-    readonly docID: string;
-    readonly backend: Backend;
-    readonly fileRef: FileRef;
 }
