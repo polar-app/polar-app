@@ -70,6 +70,9 @@ function allowAnkiSyncOrigin() {
 
         console.log("Adding Access-Control-Allow-Origin for Anki sync: " + origin);
 
+        // TODO: if the request is OPTIONS and Anki gives us a non-200 result
+        // just reject it and substitute our own.
+
         const additionalHeaders = {
             "Access-Control-Allow-Origin": [origin],
             "Access-Control-Allow-Headers": '*'
