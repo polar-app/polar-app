@@ -35,6 +35,63 @@ describe('SetArrays', function() {
 
         });
 
+        it("Production test", function () {
+
+            const oldPositionalArrayEntries = [
+                ['1', '14SqXCxSH7'],
+                ['2', '1u6HgNYwi1'],
+                ['3', '12ei8khyNG'],
+                ['4', '324jKL234j'],
+            ];
+
+            const newPositionalArrayEntries = [
+                ['1', '14SqXCxSH7'],
+                ['2.5', '12ix7CTNgt'],
+                ['4', '324jKL234j'],
+            ];
+
+            const deleted = SetArrays.difference(oldPositionalArrayEntries, newPositionalArrayEntries);
+            const added = SetArrays.difference(newPositionalArrayEntries, oldPositionalArrayEntries);
+
+            assert.equal(deleted, [['2', '1u6HgNYwi1'], ['3', '12ei8khyNG']]);
+            assert.equal(added, [['2.5', '12ix7CTNgt']]);
+
+        });
+
+    });
+
+    describe('differenceDeep', function() {
+
+        it("Empty sets", function() {
+
+            assert.deepEqual(SetArrays.differenceDeep([], []), []);
+
+        });
+
+        it("One element", function() {
+
+            assert.deepEqual(SetArrays.differenceDeep([{a: 'a'}], []), [{a: 'a'}]);
+
+        });
+
+        it("Equivalent", function() {
+
+            assert.deepEqual(SetArrays.differenceDeep([[1, 2, 3, 4]], [[1, 2, 3, 4]]), []);
+
+        });
+
+        it("Extra", function() {
+
+            assert.deepEqual(SetArrays.differenceDeep([[1, 2]], [[1, 2], [3, 4]]), []);
+
+        });
+
+        it("Complex", function () {
+
+            assert.deepEqual(SetArrays.differenceDeep([[1, 2, [3]], [4, 5, 6]], [[1, 2, [3]]]), [[4, 5, 6]]);
+
+        });
+
         it("production test", function () {
 
             const currentAnnotationsIDs = [
@@ -56,7 +113,6 @@ describe('SetArrays', function() {
             assert.equal(deleteIDs[0], '12ix7CTNgt');
 
         });
-
     });
 
     describe('union', function() {
