@@ -74,3 +74,24 @@ ada        What is the curse of the pharaohs?                                   
 ada        How tall was King Tut?                                                 ['He was approximately 167 cm (5 ft 6 in) tall.']
 ada        How tall was King Tut in feet?                                         ['He was about 168 cm (5 ft 6 in) tall.']
 ada        How did King Tut die?                                                  ['He was killed by his own hand.']
+
+# Now reworking by specifying the search model
+
+We have to do this because the way the API works is that it first finds applicable documents, then runs the completions API across them.
+
+We could shop a first version that uses a combination of Elasticsearch to find the docs, and then the OpenAI completions API.
+
+davinci
+max_tokens: 35
+search_model: ada
+====
+davinci    Who did Tutankhamun marry?                                             ['Ankhesenamun.']
+davinci    How old was Tutankhamun when he rose to the throne?                    ['Eight or nine years old.']
+davinci    Who restored the Ancient Egyptian religion?                            ['Tutankhamun.']
+davinci    Where did King Tut move his father's remains?                          ['To the Valley of the Kings.']
+davinci    Who funded Howard Carter's discovery of Tutankhamun's tomb?            ['Lord Carnarvon.']
+davinci    What was the status of King Tut's tomb when it was found?              ['It was intact.']
+davinci    What is the curse of the pharaohs?                                     ['The curse of the pharaohs is a curse said to be attached to any person who disturbs the mummy of an Ancient Egyptian person, especially a pharaoh.']
+davinci    How tall was King Tut?                                                 ['King Tut was 5\'6" tall.']
+davinci    How tall was King Tut in feet?                                         ['5\'6"']
+davinci    How did King Tut die?                                                  ['He was murdered.']

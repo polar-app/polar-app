@@ -19,12 +19,14 @@ questions = [
 # models = ["curie", "davinci"]
 # models = ["davinci"]
 # models = ["curie"]
-models = ["ada"]
+models = ["davinci"]
+max_tokens=35
+search_model='ada'
 
 def doAnswer(model, question):
 
     response = openai.Answer.create(
-      search_model=model,
+      search_model=search_model,
       model=model,
       question=question,
       file="file-BW3Opoe0JbJJzto76qSn7wOp",
@@ -32,7 +34,7 @@ def doAnswer(model, question):
       examples=[
         ["What is human life expectancy in the United States?","78 years."]
       ],
-      max_tokens=25,
+      max_tokens=max_tokens,
       stop=["\n", "<|endoftext|>"],
     )
 
@@ -40,6 +42,8 @@ def doAnswer(model, question):
 
 for model in models:
     print(model)
+    print("max_tokens: %s" % max_tokens)
+    print("search_model: %s" % search_model)
     print("====")
     for question in questions:
         doAnswer(model, question)
