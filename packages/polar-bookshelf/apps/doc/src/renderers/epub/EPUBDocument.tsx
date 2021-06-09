@@ -36,8 +36,7 @@ import {Devices} from 'polar-shared/src/util/Devices';
 import {usePrefsContext} from "../../../../repository/js/persistence_layer/PrefsContext2";
 import {ViewerElements} from "../ViewerElements";
 import {DocViewerAppURLs} from "../../DocViewerAppURLs";
-import {AnnotationPopup, useAnnotationPopupBarEnabled} from '../../annotations/annotation_popup/AnnotationPopup';
-import {useAnnotationBar} from '../../AnnotationBarHooks';
+import {AnnotationPopup} from '../../annotations/annotation_popup/AnnotationPopup';
 import {useDocumentViewerVisibleElemFocus} from '../UseSidenavDocumentChangeCallbackHook';
 import useEPUBFindController = EPUBFindControllers.useEPUBFindController;
 
@@ -146,6 +145,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
     const linkLoader = useLinkLoader();
     const annotationBarInjector = useAnnotationBar({noRectTexts: true});
     const newAnnotationBarEnabled = useAnnotationPopupBarEnabled();
+
     const docViewerElements = useDocViewerElementsContext();
 
 
@@ -228,9 +228,6 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
 
             forwardEvents(pageElement);
             handleLinkClicks(pageElement, linkLoader);
-            if (!newAnnotationBarEnabled) {
-                annotationBarInjector();
-            }
 
             // applyCSS();
             incrRenderIter();
@@ -437,10 +434,11 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
 
         console.log("Loaded epub");
 
-    }, [annotationBarInjector, docMeta.docInfo.fingerprint, docURL, epubResizer, finder,
+    }, [docMeta.docInfo.fingerprint, docURL, epubResizer, finder,
         incrRenderIter, linkLoader, props.docMeta.docInfo.fingerprint, setDocDescriptor,
         setDocScale, setFinder, setFluidPagemarkFactory, setOutline, setOutlineNavigator,
         setPage, setPageNavigator, setSection, stylesheet, newAnnotationBarEnabled, setResizer, setScaleLeveler, epubZoom]);
+
 
     useWindowResizeEventListener('epub-resizer', epubResizer);
 
@@ -457,7 +455,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
     return renderIter && (
         <DOMTextIndexProvider>
             <DocumentInit/>
-            {newAnnotationBarEnabled && <AnnotationPopup key={`popup-${renderIter}`}/>}
+            <AnnotationPopup key={`popup-${renderIter}`}/>
             <EPUBFindRenderer/>
             <EPUBContextMenuRoot/>
             {props.children}

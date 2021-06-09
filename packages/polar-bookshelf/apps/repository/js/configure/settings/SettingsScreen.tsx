@@ -111,12 +111,6 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
                                    prefs={prefs}
                                    preview={true}/>
 
-                    <SettingToggle title="BETA: New Highlight Bar"
-                                   description="Enables the new highlight bar"
-                                   name="new-highlight-bar"
-                                   prefs={prefs}
-                                   defaultValue={false}/>
-
                     {/*<DeviceRouters.Desktop>*/}
                     {/*    <SettingEntry*/}
                     {/*        title="Table and phone reading"*/}
