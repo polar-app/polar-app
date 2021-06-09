@@ -225,7 +225,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
                 case "remove":
 
                     if (this.hasItemWithKey(key, id)) {
-                        PositionalArrays.remove(this._items, id);
+                        PositionalArrays.removeKey(this._items, key);
                         mutated = true;
                     }
 

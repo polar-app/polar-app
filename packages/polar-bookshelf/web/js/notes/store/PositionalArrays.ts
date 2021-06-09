@@ -197,6 +197,11 @@ export namespace PositionalArrays {
 
     }
 
+    export function removeKey<T>(positionalArray: PositionalArray<T>, key: string): PositionalArray<T> {
+        delete positionalArray[key];
+        return positionalArray;
+    }
+
     export function clear<T>(positionalArray: PositionalArray<T>) {
 
         for(const key of Object.keys(positionalArray)) {
