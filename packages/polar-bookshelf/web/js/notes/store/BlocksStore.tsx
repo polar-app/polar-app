@@ -2133,10 +2133,6 @@ export class BlocksStore implements IBlocksStore {
     }
 
     @action public moveBlock(id: BlockIDStr, delta: number) {
-        if (! this.root) {
-            throw new Error("No root");
-        }
-
         const block = this.getBlock(id);
 
         if (!block) {

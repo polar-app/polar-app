@@ -904,6 +904,61 @@ describe('BlocksStore', function() {
         });
     });
 
+    describe("moveBlock", () => {
+        it("should not be able to move a root block", () => {
+            const store = createStore();
+            const id = '102';
+            const blockBefore = store.getBlock(id)!.toJSON();
+            store.moveBlock(id, -1);
+            const blockAfter = store.getBlock(id)!.toJSON();
+            assertBlocksEqual(blockBefore, blockAfter);
+        });
+
+        it("should not be able to move a block that's already the first child in its parent's", () => {
+            const store = createStore();
+            const id = '103';
+            const block = store.getBlock(id);
+            assertPresent(block);
+            assertPresent(block.parent);
+            let parent = store.getBlock(block.parent);
+            assertPresent(parent);
+            assert.deepEqual(parent.itemsAsArray, ['103', '104', '105']);
+            store.moveBlock(id, -5);
+            parent = store.getBlock(block.parent);
+            assertPresent(parent);
+            assert.deepEqual(parent.itemsAsArray, ['103', '104', '105']);
+        });
+
+        it("should be able to move a block upwards/downwards", () => {
+            const store = createStore();
+            const id = '105';
+            const block = store.getBlock(id);
+            assertPresent(block);
+            const parentID = block.parent;
+            assertPresent(parentID);
+            let parent = store.getBlock(parentID);
+            assertPresent(parent);
+            assert.deepEqual(parent.itemsAsArray, ['103', '104', '105']);
+
+            // Upwards
+            createUndoRunner(store, [parent.id], () => {
+                store.moveBlock(id, -5);
+                parent = store.getBlock(parentID);
+                assertPresent(parent);
+                assert.deepEqual(parent.itemsAsArray, ['105', '103', '104']);
+            });
+            
+
+            // Downwards
+            createUndoRunner(store, [parent.id], () => {
+                store.moveBlock(id, 1);
+                parent = store.getBlock(parentID);
+                assertPresent(parent);
+                assert.deepEqual(parent.itemsAsArray, ['103', '105', '104']);
+            });
+        });
+    });
+
     describe("mergeBlocks", () => {
 
         it("Merge empty first child with named block root", () => {
