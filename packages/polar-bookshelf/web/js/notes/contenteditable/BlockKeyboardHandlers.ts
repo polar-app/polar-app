@@ -45,6 +45,12 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
             return;
         }
 
+        if (event.altKey && event.shiftKey && !blocksStore.hasSelected()) {
+            blocksStore.moveBlock(blockID, -1);
+            abortEvent(event);
+            return;
+        }
+
         if (event.shiftKey && ! ContentEditables.selectionAtStart(contentEditableElem)) {
             if (! blocksStore.hasSelected()) {
                 // don't handle shift until we allow the range to be selected.
@@ -58,6 +64,12 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
     ArrowDown: ({ event, blocksStore, blockID, contentEditableElem }) => {
         if (event.ctrlKey || event.metaKey) {
             blocksStore.expand(blockID);
+            abortEvent(event);
+            return;
+        }
+
+        if (event.altKey && event.shiftKey && !blocksStore.hasSelected()) {
+            blocksStore.moveBlock(blockID, 1);
             abortEvent(event);
             return;
         }

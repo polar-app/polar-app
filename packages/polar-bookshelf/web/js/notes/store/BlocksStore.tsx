@@ -2132,6 +2132,55 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
+    @action public moveBlock(id: BlockIDStr, delta: number) {
+        if (! this.root) {
+            throw new Error("No root");
+        }
+
+        const block = this.getBlock(id);
+
+        if (!block) {
+            throw new Error("Block to be moved was not found");
+        }
+
+        const getSibling = (id: BlockIDStr, delta: number): BlockIDStr => {
+            if (delta === 0) {
+                return id;
+            }
+
+            const sibling = this.doSibling(id, delta < 0 ? 'prev' : 'next');
+            if (!sibling) {
+                return id;
+            }
+
+            const newDelta = delta + (delta > 0 ? -1 : 1);
+            return getSibling(sibling, newDelta);
+        };
+
+        const siblingID = getSibling(id, delta);
+        const parentID = block.parent;
+
+        if (siblingID === id || !parentID) {
+            console.log("Block cannot be moved");
+            return;
+        }
+        
+        const redo = () => {
+            const parent = this.getBlock(parentID)!;
+            parent.withMutation(() => {
+                parent.removeItem(id);
+                parent.addItem(id, {ref: siblingID, pos: delta > 0 ? 'after' : 'before'});
+            });
+            this.doPut([parent]);
+        };
+
+        this.doUndoPush([parentID], redo);
+    }
+
+    private idsToBlocks(ids: ReadonlyArray<BlockIDStr>): Block[] {
+        return ids.map(id => this.getBlock(id))
+            .filter((block): block is Block => !!block);
+    }
 
     /**
      * Get the blocks that apply here and convert them to JSON objects.

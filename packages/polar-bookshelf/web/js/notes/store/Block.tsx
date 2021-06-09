@@ -207,17 +207,16 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
         let mutated: boolean = false;
 
-        for(const itemPositionPatch of itemPositionPatches) {
+        for(const {type, id, key} of itemPositionPatches) {
 
-            switch (itemPositionPatch.type) {
+            switch (type) {
 
                 case "insert":
 
-                    if (! this.hasItem(itemPositionPatch.id)) {
+                    if (! this.hasItemWithKey(key, id)) {
 
-                        if (this.doPutItem(itemPositionPatch.key, itemPositionPatch.id)) {
-                            mutated = true;
-                        }
+                        PositionalArrays.put(this._items, key, id);
+                        mutated = true;
 
                     }
 
@@ -225,10 +224,9 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
                 case "remove":
 
-                    if (this.hasItem(itemPositionPatch.id)) {
-                        if (this.doRemoveItem(itemPositionPatch.id)) {
-                            mutated = true;
-                        }
+                    if (this.hasItemWithKey(key, id)) {
+                        PositionalArrays.remove(this._items, id);
+                        mutated = true;
                     }
 
                     break;
@@ -335,6 +333,13 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         Preconditions.assertString(id, 'id');
 
         return PositionalArrays.toArray(this._items).includes(id);
+    }
+
+    public hasItemWithKey(key: string, id: BlockIDStr): boolean {
+        Preconditions.assertString(key, 'key');
+        Preconditions.assertString(id, 'id');
+
+        return PositionalArrays.entries(this._items).some(([xkey, xid]) => xid === id && xkey === key);
     }
 
     @action set(block: IBlock) {
