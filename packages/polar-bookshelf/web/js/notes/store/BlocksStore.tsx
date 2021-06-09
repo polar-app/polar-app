@@ -719,6 +719,32 @@ export class BlocksStore implements IBlocksStore {
         return this.doNav('next', pos, opts);
     }
 
+    private computeLinearTree(id: BlockIDStr): ReadonlyArray<BlockIDStr> {
+        const block = this._index[id];
+
+        if (! block) {
+            console.warn("computeLinearTree: No block: " + id);
+            return [];
+        }
+
+        const items = (block.itemsAsArray || []);
+
+        const result = [];
+
+        for (const item of items) {
+
+            if (typeof item !== 'string') {
+                console.warn("wrong item: ", {...(item as any)});
+            }
+
+            Preconditions.assertString(item, "item");
+            result.push(item);
+            result.push(...this.computeLinearTree(item));
+        }
+
+        return result;
+    }
+
     /**
      * A 'linear' expansion tree is are the list of expanded nodes as a series
      * as if you enumerated them from top to bottom.
@@ -1014,24 +1040,16 @@ export class BlocksStore implements IBlocksStore {
             const links = [...targetBlock.content.links, ...sourceBlock.content.links];
 
             const newContent = targetBlock.content.data + sourceBlock.content.data;
+            const directChildrenBlocks = this.idsToBlocks(items);
+            const nestedChildrenIds = items.flatMap(this.computeLinearTree.bind(this));
 
-
-            const idsToBlocks = (ids: ReadonlyArray<BlockIDStr>) => ids
-                .map(id => this.getBlock(id))
-                .filter((block): block is Block => !!block);
-
-            const updateParents = (newParent: BlockIDStr) => (block: Block) => {
-                const rebuildTreeParents = (block: Block) => {
-                    block.withMutation(() => block.setParents(this.getParentsPath(block)));
-                    this.doPut([block]);
-                    idsToBlocks(block.itemsAsArray).forEach(rebuildTreeParents);
-                };
-
-                block.withMutation(() => block.setParent(newParent));
-                rebuildTreeParents(block);
+            const updateParent = (newParent: BlockIDStr) => (block: Block) => {
+                block.withMutation(() => {
+                    block.setParent(newParent);
+                    block.setParents(this.getParentsPath(block));
+                });
+                this.doPut([block]);
             };
-
-            const directChildrenBlocks = idsToBlocks(items);
 
             // Update target block
             targetBlock.withMutation(() => {
@@ -1047,9 +1065,8 @@ export class BlocksStore implements IBlocksStore {
             this.doPut([targetBlock]);
 
             // Update the "parent" & "parents" properties of the children (recursively)
-            directChildrenBlocks.forEach(updateParents(targetBlock.id));
-
-            this.setActiveWithPosition(targetBlock.id, offset);
+            directChildrenBlocks.forEach(updateParent(targetBlock.id));
+            this.idsToBlocks(nestedChildrenIds).forEach(this.rebuildParents.bind(this));
 
             // Update the source block remove the children to prepare it for deletion
             // (this is done to void deleting the children when deleting the block)
@@ -1059,11 +1076,18 @@ export class BlocksStore implements IBlocksStore {
             this.doPut([sourceBlock]);
             this.doDelete([sourceBlock.id]);
 
+            this.setActiveWithPosition(targetBlock.id, offset);
+
             return undefined;
         };
 
         return this.doUndoPush([source, target], redo);
 
+    }
+
+    @action private rebuildParents(block: Block) {
+        block.withMutation(() => block.setParents(this.getParentsPath(block)));
+        this.doPut([block]);
     }
 
     /*
@@ -1449,7 +1473,22 @@ export class BlocksStore implements IBlocksStore {
 
             const newBlock = createNewBlock(parentBlock);
 
+            const updateParent = (newParent: BlockIDStr) => (block: Block) => {
+                block.withMutation(() => {
+                    block.setParent(newParent);
+                    block.setParents(this.getParentsPath(block));
+                });
+                this.doPut([block]);
+            };
+
             this.doPut([newBlock]);
+
+            if (newBlockInheritItems) {
+                const items = currentBlock.itemsAsArray;
+                this.idsToBlocks(items).map(updateParent(newBlock.id));
+                const nestedChildrenIds = items.flatMap(this.computeLinearTree.bind(this));
+                this.idsToBlocks(nestedChildrenIds).forEach(this.rebuildParents.bind(this));
+            }
 
             parentBlock.withMutation(() => {
 

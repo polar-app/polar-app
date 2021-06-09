@@ -1,5 +1,5 @@
 import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
-import {BlockContent, BlockIDStr, BlocksStore} from "./BlocksStore";
+import {BlockContent, BlockIDStr, BlocksStore, IBlockContent} from "./BlocksStore";
 import {assertJSON} from "../../test/Assertions";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
@@ -15,6 +15,8 @@ import {Asserts} from "polar-shared/src/Asserts";
 import assertPresent = Asserts.assertPresent;
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
+import {IBlock} from "./IBlock";
+import {PositionalArrays} from "./PositionalArrays";
 
 // TODO:
 
@@ -49,6 +51,52 @@ function assertMarkdownBlock(block: Block): asserts block is Block<MarkdownConte
     }
 }
 
+function assertBlocksEqual(block1: IBlock, block2: IBlock) {
+    assert.equal(block1.id, block2.id, `${block1.id} & ${block2.id} Should have the same id`);
+    assert.equal(block1.nspace, block2.nspace, `${block1.id} & ${block2.id} Should have the same namespace`);
+    assert.equal(block1.uid, block2.uid, `${block1.id} & ${block2.id} Should have the same uid`);
+    assert.equal(block1.parent, block2.parent, `${block1.id} & ${block2.id} Should have the same parent`);
+    assert.equal(block1.created, block2.created, `${block1.id} & ${block2.id} Should have the same creation date`);
+    assert.equal(block1.updated, block2.updated, `${block1.id} & ${block2.id} Should have the same update date`);
+    assert.deepEqual(block1.content, block2.content, `${block1.id} & ${block2.id} Should have the same content`);
+    assert.deepEqual(block1.parents, block2.parents, `${block1.id} & ${block2.id} Should have the same parents path`);
+    assert.deepEqual(
+        PositionalArrays.toArray(block1.items),
+        PositionalArrays.toArray(block2.items),
+        `${block1.id} & ${block2.id} Should have the same items`,
+    );
+}
+
+function assertBlockParents(store: BlocksStore, parents: ReadonlyArray<BlockIDStr>) {
+    return (blockID: BlockIDStr) =>  {
+        const block = store.getBlock(blockID);
+        assertPresent(block);
+        assert.equal(block.parent, parents[parents.length - 1], `Block ${blockID} doesn't have the correct parent`);
+        assert.deepEqual(block.parents, parents, `Block ${blockID} doesn't have the correct parents`);
+        block.itemsAsArray.forEach(assertBlockParents(store, [...parents, block.id]));
+    };
+}
+
+function assertBlocksStoreSnapshotsEqual(
+    snapshot1: ReadonlyArray<IBlock<IBlockContent>>,
+    snapshot2: ReadonlyArray<IBlock<IBlockContent>>,
+) {
+    const toIds = (arr: IBlock<IBlockContent>[]) =>
+        arr.sort((a, b) => a.id.localeCompare(b.id)).map(block => block.id);
+
+    assert.deepEqual(
+        toIds([...snapshot1]),
+        toIds([...snapshot2]),
+        "Should have the same blocks"
+    );
+
+    for (let i = 0; i < snapshot1.length; i += 1) {
+        const block1 = snapshot1[i];
+        const block2 = snapshot2.find(block => block.id === block1.id)!;
+        assertBlocksEqual(block1, block2);
+    }
+}
+
 /**
  * Run the action but also undo and redo it and verify the result.  This way
  * every basic test can have an undo/redo operation test assertion too.
@@ -71,7 +119,7 @@ export function createUndoRunner(blocksStore: BlocksStore,
     blocksStore.undo();
 
     console.log("Verifying undo snapshot with before snapshot... ");
-    assertJSON(blocksStore.createSnapshot(identifiers), before);
+    assertBlocksStoreSnapshotsEqual(blocksStore.createSnapshot(identifiers), before);
     console.log("Verifying undo snapshot with before snapshot... done");
 
     console.log("Execute undo() and verify ... done");
@@ -80,7 +128,7 @@ export function createUndoRunner(blocksStore: BlocksStore,
 
     blocksStore.redo();
 
-    assertJSON(blocksStore.createSnapshot(identifiers), after);
+    assertBlocksStoreSnapshotsEqual(blocksStore.createSnapshot(identifiers), after);
     console.log("Execute redo() and verify ... done");
 
 }
@@ -192,7 +240,7 @@ describe('BlocksStore', function() {
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "104",
-                    "_items": {},
+                    "_items": {"1": "116"},
                     "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "102",
@@ -246,7 +294,9 @@ describe('BlocksStore', function() {
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "106",
-                    "_items": {},
+                    "_items": {
+                        "1": "117",
+                    },
                     "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "105",
@@ -364,7 +414,60 @@ describe('BlocksStore', function() {
                     "_root": "112",
                     "_uid": "123",
                     "_updated": "2012-03-02T11:38:49.321Z"
-                }
+                },
+                "116": {
+                    "_id": '116',
+                    "_nspace": "ns101",
+                    "_parent": "104",
+                    "_parents": ["102", "104"],
+                    "_root": "102",
+                    "_created": "2012-03-02T11:38:49.321Z",
+                    "_updated": "2012-03-02T11:38:49.321Z",
+                    "_content": {
+                        "_type": 'markdown',
+                        "_data": 'Some random markdown',
+                        "_links": [],
+                    },
+                    "_items": {},
+                    "_uid": "123",
+                    "_mutation": 0,
+                },
+                "117": {
+                    "_id": '117',
+                    "_nspace": "ns101",
+                    "_parent": "106",
+                    "_parents": ["102", "105", "106"],
+                    "_root": "102",
+                    "_created": "2012-03-02T11:38:49.321Z",
+                    "_updated": "2012-03-02T11:38:49.321Z",
+                    "_uid": "123",
+                    "_content": {
+                        "_type": 'markdown',
+                        "_data": 'Nested child with links [[Winston]]',
+                        "_links": [{ id: '112', text: 'Winston' }],
+                    },
+                    "_items": {
+                        "1": "118"
+                    },
+                    "_mutation": 0,
+                },
+                "118": {
+                    "_id": '118',
+                    "_nspace": "ns101",
+                    "_parent": "117",
+                    "_parents": ["102", "105", "106", "117"],
+                    "_root": "102",
+                    "_created": "2012-03-02T11:38:49.321Z",
+                    "_uid": "123",
+                    "_updated": "2012-03-02T11:38:49.321Z",
+                    "_content": {
+                        "_type": 'markdown',
+                        "_data": 'Deeply nested child',
+                        "_links": [],
+                    },
+                    "_items": {},
+                    "_mutation": 0,
+                },
             },
             "_indexByName": {
                 "Canada": "109",
@@ -385,8 +488,9 @@ describe('BlocksStore', function() {
                         "105"
                     ],
                     "112": [
-                        "106"
-                    ]
+                        "106",
+                        "117",
+                    ],
                 }
             },
             "_selected": {},
@@ -396,6 +500,15 @@ describe('BlocksStore', function() {
             }
         });
 
+    });
+
+    it('should not have corrupted data', () => {
+        const store = createStore();
+        const rootBlocks = Object.keys(store.index)
+            .map(id => store.getBlock(id)!)
+            .filter(block => !block.parent);
+
+        rootBlocks.map(block => block.id).forEach(assertBlockParents(store, []));
     });
 
     it("initial reverse index", async function() {
@@ -545,7 +658,7 @@ describe('BlocksStore', function() {
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "104",
-                "items": {},
+                "items": {"1": "116"},
                 "mutation": 0,
                 "nspace": "ns101",
                 "parent": "102",
@@ -567,7 +680,7 @@ describe('BlocksStore', function() {
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "104",
-                "items": {},
+                "items": {"1": "116"},
                 "mutation": 1,
                 "nspace": "ns101",
                 "parent": "103",
@@ -591,7 +704,7 @@ describe('BlocksStore', function() {
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "104",
-                "items": {},
+                "items": {"1": "116"},
                 "mutation": 2,
                 "nspace": "ns101",
                 "parent": "102",
@@ -664,7 +777,10 @@ describe('BlocksStore', function() {
             "109",
             "110",
             "111",
-            "112"
+            "112",
+            "116",
+            "117",
+            "118",
         ]);
 
         assertJSON(Object.keys(store.indexByName), [
@@ -851,7 +967,7 @@ describe('BlocksStore', function() {
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "103",
-                "items": {},
+                "items": {"1": "116"},
                 "mutation": 1,
                 "nspace": "ns101",
                 "parent": "102",
@@ -878,73 +994,69 @@ describe('BlocksStore', function() {
             assertPresent(createdBlock3);
             store.indentBlock(createdBlock3.id);
             /*
-             *   104----------------------------|
-             *       createdBlock1              |-- We're merging these 2
+             *   104----------------------------|-- We're merging these 2
+             *       116                        |
+             *       createdBlock1              |
              *   105 ---------------------------|
              *       106
+             *           117
+             *               118
              *           createdBlock2
-             *                  createdBlock3
+             *               createdBlock3
              *   
              *
              *   We should end up with
              *   104
+             *       116
              *       createdBlock1
              *       106
+             *           117
+             *               118
              *           createdBlock2
              *                  createdBlock3
             */
 
-            store.mergeBlocks('104', '105');
-
-            const block104 = store.getBlock('104');
-            const block105 = store.getBlock('105');
-            const block106 = store.getBlock('106');
-            const block1 = store.getBlock(createdBlock1.id);
-            const block2 = store.getBlock(createdBlock2.id);
-            const block3 = store.getBlock(createdBlock3.id);
-
-            assertPresent(block104);
-            assertPresent(block106);
-            assertPresent(block1);
-            assertPresent(block2);
-            assertPresent(block3);
-
-            // 105 should be deleted
-            assert.isUndefined(block105);
-
-            // 104 should have the correct children
-            assert.deepEqual([...block104.itemsAsArray].sort(), [block1.id, '106'].sort());
-
-            // block1
-                // parents
-                assert.deepEqual([...block1.parents], ['102', '104'], 'Block1 should have the correct parents');
-                // parent
-                assert.equal(block1.parent, '104', 'Block1 should have the correct parent');
-                // items
-                assert.deepEqual([...block1.itemsAsArray].sort(), [], 'Block1 should have the correct items');
-            // 106
-                // parents
-                assert.deepEqual([...block106.parents], ['102', '104'], 'Block106 should have the correct parents');
-                // parent
-                assert.equal(block106.parent, '104', 'Block106 should have the correct parent');
-                // items
-                assert.deepEqual([...block106.itemsAsArray].sort(), [block2.id].sort(), 'Block2 should have the correct items');
+            const identifiers = [
+                '104',
+                '105',
+            ];
             
-            // block2
-                // parents
-                assert.deepEqual([...block2.parents], ['102', '104', '106'], 'Block2 should have the correct parents');
-                // parent
-                assert.equal(block2.parent, '106', 'Block2 should have the correct parent');
-                // items
-                assert.deepEqual([...block2.itemsAsArray].sort(), [block3.id].sort(), 'Block2 should have the correct items');
+            createUndoRunner(store, identifiers, () => {
+                store.mergeBlocks('104', '105');
 
-            // block3
-                // parents
-                assert.deepEqual([...block3.parents], ['102', '104', '106', block2.id], 'Block3 should have the correct parents');
-                // parent
-                assert.equal(block3.parent, block2.id, 'Block3 should have the correct parent');
-                // items
-                assert.deepEqual([...block3.itemsAsArray].sort(), [].sort(), 'Block3 should have the correct items');
+                const block104 = store.getBlock('104');
+                const block105 = store.getBlock('105');
+                const block106 = store.getBlock('106');
+                const block1 = store.getBlock(createdBlock1.id);
+                const block2 = store.getBlock(createdBlock2.id);
+                const block3 = store.getBlock(createdBlock3.id);
+
+                assertPresent(block104);
+                assertPresent(block106);
+                assertPresent(block1);
+                assertPresent(block2);
+                assertPresent(block3);
+
+                // 105 should be deleted
+                assert.isUndefined(block105);
+
+                // 104 should have the correct children
+                assert.deepEqual([...block104.itemsAsArray], ['116', block1.id, '106']);
+
+                // block1 items
+                assert.deepEqual([...block1.itemsAsArray].sort(), [], 'Block1 should have the correct items');
+                // 106 items
+                assert.deepEqual([...block106.itemsAsArray], ['117', block2.id], 'Block106 should have the correct items');
+                
+                // block2 items
+                assert.deepEqual([...block2.itemsAsArray], [block3.id], 'Block2 should have the correct items');
+
+                // block3 items
+                assert.deepEqual([...block3.itemsAsArray], [], 'Block3 should have the correct items');
+
+                // Check parent & parents for items under 104 (recursively)
+                assertBlockParents(store, ['102'])('104');
+            });
         });
 
         it('should update the link index properly when merging blocks that have links', () => {
@@ -1301,8 +1413,8 @@ describe('BlocksStore', function() {
                     },
                     "created": "2012-03-02T11:38:49.321Z",
                     "id": "104",
-                    "items": {},
                     "mutation": 1,
+                    "items": {},
                     "nspace": "ns101",
                     "parent": "102",
                     "parents": [
@@ -1321,7 +1433,7 @@ describe('BlocksStore', function() {
                     },
                     "created": "2012-03-02T11:38:49.321Z",
                     "id": createdBlock!.id,
-                    "items": {},
+                    "items": {"1": "116"},
                     "mutation": 0,
                     "nspace": "ns101",
                     "parent": "102",
@@ -1455,19 +1567,27 @@ describe('BlocksStore', function() {
 
                 const originalBlock = store.getBlock(id);
 
-                assert.isDefined(originalBlock);
+                assertPresent(originalBlock);
 
-                assertTextBlock(originalBlock!.content);
+                assertMarkdownBlock(originalBlock);
 
                 const createdBlock = store.createNewBlock(id, {split: {prefix: '', suffix: originalBlock!.content.data}});
                 assertPresent(createdBlock);
 
-                assertJSON(store.getBlock(originalBlock!.parent!)!.items, {
+                const newBlock = store.getBlock(createdBlock.id);
+                assertPresent(newBlock);
+                assertPresent(newBlock.parent);
+                const parentBlock = store.getBlock(newBlock.parent);
+                assertPresent(parentBlock);
+
+                assertJSON(parentBlock.items, {
                     "1": "103",
                     "2": "104",
                     "3": "105",
                     "4": createdBlock.id
                 });
+                
+                newBlock.itemsAsArray.forEach(assertBlockParents(store, [...newBlock.parents, newBlock.id]));
 
                 return createdBlock.id;
 
@@ -1477,14 +1597,21 @@ describe('BlocksStore', function() {
 
                 const originalBlock = store.getBlock(id);
 
-                assert.isDefined(originalBlock);
-
-                assertTextBlock(originalBlock!.content);
+                assertPresent(originalBlock);
+                assertMarkdownBlock(originalBlock);
 
                 const createdBlock = store.createNewBlock(id, {split: {prefix: '', suffix: originalBlock!.content.data}});
+
                 assertPresent(createdBlock);
 
-                assertJSON(store.getBlock(originalBlock!.parent!)!.items, {
+                const newBlock = store.getBlock(createdBlock.id);
+                assertPresent(newBlock);
+                assertPresent(newBlock.parent);
+                const parentBlock = store.getBlock(newBlock.parent);
+                assertPresent(parentBlock);
+                assertPresent(createdBlock);
+
+                assertJSON(parentBlock.items, {
                     "1": "103",
                     "2": "104",
                     "3": "105",
@@ -1492,12 +1619,42 @@ describe('BlocksStore', function() {
                     "5": createdBlock.id
                 });
 
+                newBlock.itemsAsArray.forEach(assertBlockParents(store, [...newBlock.parents, newBlock.id]));
             }
 
             const firstSplitBlockID = doFirstSplit();
 
             doSecondSplit(firstSplitBlockID);
 
+        });
+
+        it('should properly split a block with multiple levels of nested children', () => {
+            const store = createStore();
+            const id = '105';
+            const originalBlock = store.getBlock(id);
+
+            assertPresent(originalBlock);
+            assertMarkdownBlock(originalBlock);
+
+            const createdBlock = store.createNewBlock(id, {split: {prefix: '', suffix: originalBlock!.content.data}});
+
+            assertPresent(createdBlock);
+
+            const newBlock = store.getBlock(createdBlock.id);
+            assertPresent(newBlock);
+            assertPresent(newBlock.parent);
+            const parentBlock = store.getBlock(newBlock.parent);
+            assertPresent(parentBlock);
+            assertPresent(createdBlock);
+
+            assertJSON(parentBlock.items, {
+                "1": "103",
+                "2": "104",
+                "3": "105",
+                "4": createdBlock.id
+            });
+
+            newBlock.itemsAsArray.forEach(assertBlockParents(store, [...newBlock.parents, newBlock.id]));
         });
 
         it("should create a new child in a block with children (when suffix is empty)", () => {
