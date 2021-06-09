@@ -1,7 +1,7 @@
 import * as React from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
-import {useSideNavStore, TabDescriptor} from './SideNavStore';
+import {useSideNavStore} from './SideNavStore';
 import Divider from '@material-ui/core/Divider';
 import {PolarSVGIcon} from "../ui/svg_icons/PolarSVGIcon";
 import {useHistory} from 'react-router-dom';
@@ -17,15 +17,18 @@ import {SideNavButton} from "./SideNavButton";
 import {AccountAvatar} from "../ui/cloud_auth/AccountAvatar";
 import SyncIcon from '@material-ui/icons/Sync';
 import {useAnkiSyncCallback} from "./AnkiSyncHook";
-import {SwitchToOpenDocumentKeyboardCommand} from "./SwitchToOpenDocumentKeyboardCommand";
+// @ts-ignore
+import {SideNavCommandMenu} from "./SideNavCommand";
 import {ZenModeActiveContainer} from "../mui/ZenModeActiveContainer";
-import { Intercom } from '../apps/repository/integrations/Intercom';
-import { SideNavQuestionButton } from './SideNavQuestionButton';
+import {Intercom} from '../apps/repository/integrations/Intercom';
+import {SideNavQuestionButton} from './SideNavQuestionButton';
 import {VerticalDynamicScroller} from './DynamicScroller';
 import {DateContents} from "../notes/content/DateContents";
 import {useBlocksStore} from "../notes/store/BlocksStore";
-import { observer } from "mobx-react-lite"
-import { autorun } from 'mobx'
+import {observer} from "mobx-react-lite"
+import {autorun} from 'mobx'
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
+import MenuIcon from '@material-ui/icons/Menu';
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -46,7 +49,8 @@ const useStyles = makeStyles((theme) =>
             minWidth: SIDENAV_WIDTH,
             color: theme.palette.text.secondary,
             backgroundColor: theme.palette.background.default,
-            alignItems: 'center'
+            alignItems: 'center',
+            height: '100%'
         },
         logo: {
             display: 'flex',
@@ -154,22 +158,24 @@ const NotesButton = observer(function NotesButton() {
 
         autorun(() => {
 
-            if (! blocksStore.hasSnapshot) {
+            if (!blocksStore.hasSnapshot) {
                 // dont' do anything yet.
                 return;
             }
 
             const block = blocksStore.getBlockByName(dateContent.data);
 
-            if (! block) {
-                blocksStore.createNewNamedBlock(dateContent.data, {type: 'date'});
+            if (!block) {
+                // FIXME this is wrong... must be a date block..
+                // @ts-ignore
+                blocksStore.createNewNamedBlock(dateContent.data, {});
             }
 
         });
 
     }, [blocksStore, dateContent.data]);
 
-    if (! blocksStore.hasSnapshot) {
+    if (!blocksStore.hasSnapshot) {
         // dont' do anything yet.
         return null;
     }
@@ -230,7 +236,7 @@ const PolarButton = React.memo(function PolarButton() {
     return (
         <div className={classes.logo}
              onClick={() => history.push('')}>
-            <PolarSVGIcon width={ w } height={ w } />
+            <PolarSVGIcon width={w} height={w}/>
         </div>
     );
 
@@ -287,15 +293,33 @@ export const SideNav = React.memo(function SideNav() {
 
     const notesEnabled = useNotesEnabled();
 
+    const [hidden, setHide] = useToggle()
+
     return (
-        <>
-            <SwitchToOpenDocumentKeyboardCommand/>
+        <div style={hidden ? {height: '100%',zIndex: 2, transform: "translateX(-57px)", position: "absolute"} : {height: '100%'}}>
+            <SideNavCommandMenu/>
 
             <Intercom/>
 
             <ZenModeActiveContainer>
                 <div className={classes.root}>
-
+                    <div onClick={() =>setHide(true)} style={{
+                        position: "absolute",
+                        bottom: 0,
+                        zIndex: 1,
+                        width: 41,
+                        height: 40,
+                        textAlign: "center",
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: "rgba(48, 48, 48,0.8)",
+                        left: 56,
+                        borderRadius: '0px 4px 4px 0px',
+                        cursor: 'pointer',
+                        display: 'flex'
+                    }}>
+                        {hidden ?<MenuIcon/> : <MenuOpenIcon />}
+                    </div>
                     <PolarButton/>
 
                     <SideNavDividerTop/>
@@ -327,7 +351,16 @@ export const SideNav = React.memo(function SideNav() {
 
                 </div>
             </ZenModeActiveContainer>
-        </>
+        </div>
     );
 
 });
+
+const useToggle = (initialState: boolean = false): [boolean, any] => {
+    // Initialize the state
+    const [state, setState] = React.useState<boolean>(initialState);
+    // Define and memorize toggler function in case we pass down the comopnent,
+    // This function change the boolean value to it's opposite value
+    const toggle = React.useCallback((): void => setState(state => !state), []);
+    return [state, toggle]
+}
