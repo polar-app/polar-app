@@ -7,7 +7,11 @@ import {GPTCompletionPrompts} from "./GPTCompletionPrompts";
 
 export namespace GPTCompletions {
 
-    export async function exec(request: AutoFlashcards.AutoFlashcardRequest): Promise<AutoFlashcards.AutoFlashcardResponse | undefined> {
+    interface IExecOpts {
+        readonly model?: 'davinci' | 'curie' | 'babbage' | 'ada';
+    }
+
+    export async function exec(request: AutoFlashcards.AutoFlashcardRequest, opts: IExecOpts = {}): Promise<AutoFlashcards.AutoFlashcardResponse | undefined> {
 
         // this will have the openapi GPT3 apiKey
         const config = GPTConfigs.getConfig();
@@ -29,7 +33,9 @@ export namespace GPTCompletions {
             prompt
         };
 
-        const response = await Fetches.fetch('https://api.openai.com/v1/engines/davinci/completions', {
+        const model = opts.model || 'davinci';
+
+        const response = await Fetches.fetch(`https://api.openai.com/v1/engines/${model}/completions`, {
             method: 'POST',
             body: JSON.stringify(body),
             headers: {
