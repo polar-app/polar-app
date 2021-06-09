@@ -2,6 +2,8 @@ open AI key..
 
 API_KEY="sk-pYHAElnbhpnfcoN8rqbMK0gCmXLHUzpFvOwRaFtD"
 
+export OPENAI_API_KEY="sk-pYHAElnbhpnfcoN8rqbMK0gCmXLHUzpFvOwRaFtD"
+
 
 GPT_API_KEY
 
