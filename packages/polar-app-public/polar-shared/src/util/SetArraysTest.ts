@@ -37,25 +37,23 @@ describe('SetArrays', function() {
 
         it("Production test", function () {
 
-            const oldPositionalArrayEntries = [
-                ['1', '14SqXCxSH7'],
-                ['2', '1u6HgNYwi1'],
-                ['3', '12ei8khyNG'],
-                ['4', '324jKL234j'],
+            const currentAnnotationsIDs = [
+                "14SqXCxSH7",
+                "1u6HgNYwi1",
+                "12ei8khyNG",
+                "12ix7CTNgt"
             ];
 
-            const newPositionalArrayEntries = [
-                ['1', '14SqXCxSH7'],
-                ['2.5', '12ix7CTNgt'],
-                ['4', '324jKL234j'],
+            const newAnnotationIDs = [
+                "14SqXCxSH7",
+                "1u6HgNYwi1",
+                "12ei8khyNG"
             ];
 
-            const deleted = SetArrays.difference(oldPositionalArrayEntries, newPositionalArrayEntries);
-            const added = SetArrays.difference(newPositionalArrayEntries, oldPositionalArrayEntries);
+            const deleteIDs = SetArrays.difference(currentAnnotationsIDs, newAnnotationIDs);
 
-            assert.equal(deleted, [['2', '1u6HgNYwi1'], ['3', '12ei8khyNG']]);
-            assert.equal(added, [['2.5', '12ix7CTNgt']]);
-
+            assert.equal(deleteIDs.length, 1);
+            assert.equal(deleteIDs[0], '12ix7CTNgt');
         });
 
     });
@@ -92,25 +90,25 @@ describe('SetArrays', function() {
 
         });
 
-        it("production test", function () {
-
-            const currentAnnotationsIDs = [
-                "14SqXCxSH7",
-                "1u6HgNYwi1",
-                "12ei8khyNG",
-                "12ix7CTNgt"
+        it("Production test", function () {
+            const oldPositionalArrayEntries = [
+                ['1', '14SqXCxSH7'],
+                ['2', '1u6HgNYwi1'],
+                ['3', '12ei8khyNG'],
+                ['4', '324jKL234j'],
             ];
 
-            const newAnnotationIDs = [
-                "14SqXCxSH7",
-                "1u6HgNYwi1",
-                "12ei8khyNG"
+            const newPositionalArrayEntries = [
+                ['1', '14SqXCxSH7'],
+                ['2.5', '12ix7CTNgt'],
+                ['4', '324jKL234j'],
             ];
 
-            const deleteIDs = SetArrays.difference(currentAnnotationsIDs, newAnnotationIDs);
+            const deleted = SetArrays.differenceDeep(oldPositionalArrayEntries, newPositionalArrayEntries);
+            const added = SetArrays.differenceDeep(newPositionalArrayEntries, oldPositionalArrayEntries);
 
-            assert.equal(deleteIDs.length, 1);
-            assert.equal(deleteIDs[0], '12ix7CTNgt');
+            assert.deepEqual(deleted, [['2', '1u6HgNYwi1'], ['3', '12ei8khyNG']]);
+            assert.deepEqual(added, [['2.5', '12ix7CTNgt']]);
 
         });
     });
