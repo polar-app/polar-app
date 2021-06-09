@@ -143,8 +143,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
     const sectionRef = React.useRef<Section | undefined>(undefined);
     const stylesheet = useStylesheetURL();
     const linkLoader = useLinkLoader();
-    const annotationBarInjector = useAnnotationBar({noRectTexts: true});
-    const newAnnotationBarEnabled = useAnnotationPopupBarEnabled();
+
 
     const docViewerElements = useDocViewerElementsContext();
 
@@ -437,7 +436,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
     }, [docMeta.docInfo.fingerprint, docURL, epubResizer, finder,
         incrRenderIter, linkLoader, props.docMeta.docInfo.fingerprint, setDocDescriptor,
         setDocScale, setFinder, setFluidPagemarkFactory, setOutline, setOutlineNavigator,
-        setPage, setPageNavigator, setSection, stylesheet, newAnnotationBarEnabled, setResizer, setScaleLeveler, epubZoom]);
+        setPage, setPageNavigator, setSection, stylesheet, setResizer, setScaleLeveler, epubZoom]);
 
 
     useWindowResizeEventListener('epub-resizer', epubResizer);
