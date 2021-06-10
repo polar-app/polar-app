@@ -1102,68 +1102,62 @@ export class BlocksStore implements IBlocksStore {
             return existingBlock.id;
         }
 
-        const redo = (): BlockIDStr => {
 
-            const createNewBlock = (): IBlock => {
+        const createNewBlock = (): IBlock => {
 
-                const computeNamespace = (): NamespaceIDStr => {
+            const computeNamespace = (): NamespaceIDStr => {
 
-                    if (opts?.ref) {
+                if (opts?.ref) {
 
-                        const refBlock = this.getBlock(opts.ref);
+                    const refBlock = this.getBlock(opts.ref);
 
-                        if (! refBlock) {
-                            throw new Error("Reference block doesn't exist");
-                        }
-
+                    if (! refBlock) {
+                        throw new Error("Reference block doesn't exist");
                     }
-
-                    if (opts?.nspace) {
-                        return opts.nspace;
-                    }
-
-                    return this.uid;
 
                 }
 
+                if (opts?.nspace) {
+                    return opts.nspace;
+                }
 
-                const now = ISODateTimeStrings.create();
-                const nspace = computeNamespace();
+                return this.uid;
 
-                const createContent = () => {
-                    if (opts.type === 'date') {
-                        return Contents.create({type: 'date', data: name, format: 'YYYY-MM-DD'}).toJSON();
-                    } else {
-                        return Contents.create({type: 'name', data: name}).toJSON();
-                    }
-                };
+            }
 
-                return {
-                    id: newBlockID,
-                    nspace,
-                    uid: this.uid,
-                    root: newBlockID,
-                    parent: undefined,
-                    parents: [],
-                    content: createContent(),
-                    created: now,
-                    updated: now,
-                    items: {},
-                    mutation: 0
-                };
 
+            const now = ISODateTimeStrings.create();
+            const nspace = computeNamespace();
+
+            const createContent = () => {
+                if (opts.type === 'date') {
+                    return Contents.create({type: 'date', data: name, format: 'YYYY-MM-DD'}).toJSON();
+                } else {
+                    return Contents.create({type: 'name', data: name}).toJSON();
+                }
             };
 
-            const newBlock = createNewBlock();
+            return {
+                id: newBlockID,
+                nspace,
+                uid: this.uid,
+                root: newBlockID,
+                parent: undefined,
+                parents: [],
+                content: createContent(),
+                created: now,
+                updated: now,
+                items: {},
+                mutation: 0
+            };
 
-            this.doPut([newBlock]);
+        };
 
-            return newBlockID;
+        const newBlock = createNewBlock();
 
-        }
+        this.doPut([newBlock]);
 
-        return this.doUndoPush('doCreateNewNamedBlock', [newBlockID], redo);
-
+        return newBlockID;
     }
 
     @action public createNewNamedBlock(name: BlockNameStr,
