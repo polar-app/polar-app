@@ -32,6 +32,12 @@ export const NoteRoot = observer((props: IProps) => {
         }
     }, [block, blocksStore]);
 
+    React.useEffect(() => {
+        if (block) {
+            blocksStore.setActiveWithPosition(block.id, 'end');
+        }
+    }, [block?.id, blocksStore]);
+
     if (! blocksStore.hasSnapshot) {
         return (
             <LinearProgress />
