@@ -33,7 +33,16 @@ export const JumpToNoteKeyboardCommand = observer(() => {
         <MUICommandMenuKeyboardShortcut group="Notes"
                                         name="Jump to Note by Name"
                                         description="Jump to a note by name"
-                                        sequences={['shift+command+g', 'shift+ctrl+G']}
+                                        sequences={[
+                                            {
+                                                keys: 'shift+command+g',
+                                                platforms: ['macos']
+                                            },
+                                            {
+                                                keys: 'shift+ctrl+G',
+                                                platforms: ['windows', 'linux']
+                                            }
+                                        ]}
                                         onCommand={handleCommand}
                                         commandsProvider={commandsProvider}/>
     );

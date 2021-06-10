@@ -6,6 +6,7 @@ import clsx from "clsx";
 import * as React from "react";
 import {KeySequences} from "../../hotkeys/KeySequences";
 import { MUIListItemRight } from "./MUIListItemRight";
+import {KeyBinding} from "../../keyboard_shortcuts/KeyboardShortcutsStore";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -38,7 +39,7 @@ interface IProps {
      */
     readonly selected?: boolean;
 
-    readonly sequences?: ReadonlyArray<string>;
+    readonly sequences?: ReadonlyArray<KeyBinding>;
 
     readonly onSelected: () => void;
 

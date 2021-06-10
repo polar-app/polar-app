@@ -13,7 +13,17 @@ const globalKeyMap = keyMapWithGroup({
         SHOW_ANSWER: {
             name: "Show Answer",
             description: "Show answer",
-            sequences: [' ', 'Enter']
+            sequences: [
+                {
+                    keys: ' ',
+                    platforms: ['macos', 'linux', 'windows']
+                },
+                {
+                    keys: 'Enter',
+                    platforms: ['macos', 'linux', 'windows']
+                }
+            ]
+
         },
 
     }

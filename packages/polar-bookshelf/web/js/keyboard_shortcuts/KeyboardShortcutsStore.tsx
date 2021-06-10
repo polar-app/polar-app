@@ -15,7 +15,22 @@ export type KeyboardEventHandlerUsingPredicate = (event: KeyboardEvent) => boole
 export type KeyBindingArray2 = readonly [string, string];
 export type KeyBindingArray1 = readonly [string];
 
-export type KeyBinding = string;
+export type KeyBindingPlatform = 'macos' | 'windows' | 'linux'
+
+export interface KeyBinding {
+
+    readonly keys: string;
+
+    /**
+     * Platforms MUST be specified, rather than inferred, because each OS has
+     * its own conflict map that we have to deal with.
+     *
+     * Even simple bindings like F10 might not be workable on certain platforms even though
+     * it doesn't contain a command or a control.
+     */
+    readonly platforms: ReadonlyArray<KeyBindingPlatform>;
+
+};
 
 export interface IBaseKeyboardShortcut {
     readonly name: string;
@@ -83,14 +98,14 @@ function callbacksFactory(storeProvider: Provider<IKeyboardShortcutsStore>,
         const store = storeProvider();
         const shortcuts = {...store.shortcuts};
         const sequence = Arrays.first(shortcut.sequences)!;
-        let storedShortcut = shortcuts[sequence];
+        let storedShortcut = shortcuts[sequence.keys];
         if (!storedShortcut) {
             storedShortcut = { registered: [shortcut], active: shortcut };
         } else {
             storedShortcut.registered.unshift(shortcut);
             storedShortcut.active = shortcut;
         }
-        shortcuts[sequence] = storedShortcut;
+        shortcuts[sequence.keys] = storedShortcut;
         setStore({...store, shortcuts});
     }
 
@@ -98,12 +113,12 @@ function callbacksFactory(storeProvider: Provider<IKeyboardShortcutsStore>,
         const store = storeProvider();
         const shortcuts = {...store.shortcuts};
         const sequence = Arrays.first(shortcut.sequences)!;
-        const storedShortcut = shortcuts[sequence];
+        const storedShortcut = shortcuts[sequence.keys];
         if (storedShortcut) {
             storedShortcut.registered = storedShortcut.registered.filter(x => shortcut !== x);
             storedShortcut.active = storedShortcut.registered[0];
             if (storedShortcut.registered.length === 0) {
-                delete shortcuts[sequence];
+                delete shortcuts[sequence.keys];
             }
             setStore({...store, shortcuts});
         }

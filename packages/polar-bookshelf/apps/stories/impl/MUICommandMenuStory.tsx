@@ -69,20 +69,38 @@ const Example3 = () => {
             id: 'ac',
             text: 'Turn On the AC',
             icon: <AcUnitIcon/>,
-            sequences: ["command+1"]
-
+            sequences: [
+                {
+                    keys: "command+1",
+                    platforms: ['macos']
+                },
+            ]
         },
         {
             id: 'alarm',
             text: 'Turn On the Alarm',
             icon: <AccessAlarmIcon/>,
-            sequences: ["command+2", 'ctrl+2']
+            sequences: [
+                {
+                    keys: "command+2",
+                    platforms: ['macos']
+                },
+                {
+                    keys: 'ctrl+2',
+                    platforms: ['macos']
+                }
+            ]
         },
         {
             id: 'wheelchair',
             text: 'Enable Wheelchair Access',
             icon: <AccessibleIcon/>,
-            sequences: ["shift+ArrowRight"]
+            sequences: [
+                {
+                    keys: "shift+ArrowRight",
+                    platforms: ['macos']
+                }
+            ]
         },
     ];
 

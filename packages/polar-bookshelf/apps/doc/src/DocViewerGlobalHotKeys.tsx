@@ -17,52 +17,154 @@ const globalKeyMap = keyMapWithGroup({
         FIND: {
             name: "Find",
             description: "Search text",
-            sequences: ['ctrl+f', 'command+f']
+            sequences: [
+                {
+                    keys: 'ctrl+f',
+                    platforms: ['windows', 'linux']
+                },
+                {
+                    keys: 'command+f',
+                    platforms: ['macos']
+                }
+            ]
         },
         FIND_NEXT: {
             name: "Find Next Match",
             description: "Next match",
-            sequences: ['ctrl+g', 'command+g']
+            sequences: [
+                {
+                    keys: 'ctrl+g',
+                    platforms: ['linux', 'windows']
+                },
+                {
+                    keys: 'command+g',
+                    platforms: ['macos', 'linux', 'windows']
+                }
+            ]
         },
         PAGE_NEXT: {
             name: "Next Page",
             description: "Jump to next page",
-            sequences: ['n', 'j', 'ArrowRight']
+            sequences: [
+                {
+                    keys: 'n',
+                    platforms: ['macos', 'linux', 'windows']
+                },
+                {
+                    keys: 'j',
+                    platforms: ['macos', 'linux', 'windows']
+                },
+                {
+                    keys: 'ArrowRight',
+                    platforms: ['macos', 'linux', 'windows']
+                }
+            ]
         },
         PAGE_PREV: {
             name: "Previous Page",
             description: "Jump to previous page",
-            sequences: ['p', 'k', 'ArrowLeft']
+            sequences: [
+                {
+                    keys: 'p',
+                    platforms: ['macos', 'linux', 'windows']
+                },
+                {
+                    keys: 'k',
+                    platforms: ['macos', 'linux', 'windows']
+                },
+                {
+                    keys: 'ArrowLeft',
+                    platforms: ['macos', 'linux', 'windows']
+                }]
         },
         ZOOM_IN: {
             name: "Zoom In",
             description: "Zoom in",
-            sequences: ['command+shift+=', 'command+=', 'ctrl+shift+=', 'ctrl+=']
+            sequences: [
+                {
+                    keys: 'command+shift+=',
+                    platforms: ['macos']
+                },
+                {
+                    keys: 'command+=',
+                    platforms: ['macos']
+                },
+                {
+                    keys: 'ctrl+shift+=',
+                    platforms: ['linux', 'windows']
+                },
+                {
+                    keys: 'ctrl+=',
+                    platforms: ['linux', 'windows']
+                }
+            ]
         },
         ZOOM_OUT: {
             name: "Zoom Out",
             description: "Zoom out",
-            sequences: ['command+shift+-', 'command+-', 'ctrl+shift+-', 'ctrl+-']
+            sequences: [
+                {
+                    keys: 'command+shift+-',
+                    platforms: ['macos']
+                },
+                {
+                    keys: 'command+-',
+                    platforms: ['macos']
+                },
+                {
+                    keys: 'ctrl+shift+-',
+                    platforms: ['linux', 'windows']
+                },
+                {
+                    keys: 'ctrl+-',
+                    platforms: ['linux', 'windows']
+                }
+            ]
         },
         ZOOM_RESTORE: {
             name: "Zoom Restore",
             description: "Restore default zoom",
-            sequences: ['command+0', 'ctrl+0']
+            sequences: [
+                {
+                    keys: 'command+0',
+                    platforms: ['macos']
+                },
+                {
+                    keys: 'ctrl+0',
+                    platforms: ['linux', 'windows']
+                }
+            ]
         },
         TAG: {
             name: "Tag",
             description: "Tag doc",
-            sequences: ['t']
+            sequences: [
+                {
+                    keys: 't',
+                    platforms: ['macos', 'linux', 'windows']
+                },
+            ]
         },
         FLAG: {
             name: "Flag",
             description: "Flag doc",
-            sequences: ['f']
+            sequences: [
+                {
+                    keys: 'f',
+                    platforms: ['macos', 'linux', 'windows']
+                }
+            ]
         },
         ARCHIVE: {
             name: "Archive",
             description: "Archive doc",
-            sequences: ['shift+A']
+            sequences: [
+                {
+                    keys: 'shift+A',
+                    platforms: ['macos', 'linux', 'windows'
+                    ]
+                }
+            ]
         }
     }
 });

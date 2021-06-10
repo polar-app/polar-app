@@ -14,17 +14,32 @@ const globalKeyMap = keyMapWithGroup({
         AGAIN: {
             name: "Again",
             description: "Rate the item 'again'",
-            sequences: ['1']
+            sequences: [
+                {
+                    keys: '1',
+                    platforms: ['macos', 'windows', 'linux']
+                }
+            ]
         },
         GOOD: {
             name: "Good",
             description: "Rate the item 'good'",
-            sequences: ['2']
+            sequences: [
+                {
+                    keys: '2',
+                    platforms: ['macos', 'windows', 'linux']
+                }
+            ]
         },
         EASY: {
             name: "Easy",
             description: "Rate the item 'easy'",
-            sequences: ['3']
+            sequences: [
+                {
+                    keys: '3',
+                    platforms: ['macos', 'windows', 'linux']
+                }
+            ]
         },
 
     }

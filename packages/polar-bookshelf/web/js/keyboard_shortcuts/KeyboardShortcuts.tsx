@@ -142,7 +142,7 @@ function createHandler(sequence: KeyBinding, handler: KeyboardShortcutEventHandl
 
     function createPredicate() {
 
-        switch (sequence) {
+        switch (sequence.keys) {
 
             // HACK this is just a hack for + key bindings and we should migrate to a better parser eventually
             case "command++":
@@ -153,7 +153,7 @@ function createHandler(sequence: KeyBinding, handler: KeyboardShortcutEventHandl
 
         }
 
-        const keys = sequence.split('+');
+        const keys = sequence.keys.split('+');
 
         switch (keys.length) {
             case 1:
@@ -214,7 +214,7 @@ function isIgnorableKeyboardEvent(event: KeyboardEvent): boolean {
 
 
 type SequenceToHandler = [string, KeyboardShortcutEventHandler];
-type SequenceToKeyboardEventHandlerPredicate = [string, KeyboardEventHandlerPredicate];
+type SequenceToKeyboardEventHandlerPredicate = [KeyBinding, KeyboardEventHandlerPredicate];
 
 export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
 
@@ -224,11 +224,9 @@ export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
 
     function computeKeyToHandlers() {
 
-        function toKeyToHandler(keyboardShortcut: IKeyboardShortcutWithHandler):
+        function toKeyToHandler(keyboardShortcut: IKeyboardShortcutWithHandler): ReadonlyArray<SequenceToKeyboardEventHandlerPredicate> {
 
-            ReadonlyArray<SequenceToKeyboardEventHandlerPredicate> {
-
-            function toKeyboardEventHandlerPredicate(seq: string) {
+            function toKeyboardEventHandlerPredicate(seq: KeyBinding) {
                 return createHandler(seq, keyboardShortcut.handler);
             }
 
