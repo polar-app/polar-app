@@ -52,7 +52,6 @@ import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
 import {Stopwatches} from 'polar-shared/src/util/Stopwatches';
 import {URLs} from 'polar-shared/src/util/URLs';
 import {Datastores} from './Datastores';
-import {FirebaseDatastores} from './FirebaseDatastores';
 import {DocPermissions} from "./sharing/db/DocPermissions";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
@@ -67,8 +66,9 @@ import {
 import {IQuerySnapshot} from "polar-snapshot-cache/src/store/IQuerySnapshot";
 import {IDocumentChange} from "polar-snapshot-cache/src/store/IDocumentChange";
 import {IDocumentReference} from "polar-snapshot-cache/src/store/IDocumentReference";
-import { IDocumentSnapshot } from 'polar-snapshot-cache/src/store/IDocumentSnapshot';
+import {IDocumentSnapshot} from 'polar-snapshot-cache/src/store/IDocumentSnapshot';
 import {IFirestore} from "polar-snapshot-cache/src/store/IFirestore";
+import {StoragePath, FirebaseDatastores} from 'polar-shared/src/datastore/FirebaseDatastores';
 
 const log = Logger.create();
 
@@ -1221,22 +1221,6 @@ function toMutationType(docChangeType: firebase.firestore.DocumentChangeType): M
 
 }
 
-export interface StoragePath {
-    readonly path: string;
-    readonly settings?: StorageSettings;
-}
-
-export interface StorageSettings {
-    readonly cacheControl: string;
-    readonly contentType: string;
-}
-
-/**
- * A specific type of document ID derived from the fingerprint and only
- * available within Firebase.
- */
-export type FirebaseDocMetaID = string;
-
 export class DownloadURLs {
 
     public static async checkExistence(url: string): Promise<boolean> {
@@ -1265,26 +1249,6 @@ export class DownloadURLs {
         return this.computeDownloadURLDirectly(backend, ref, storagePath, opts);
 
     }
-
-    private static async computeDownloadURLWithStorageRef(storageRef: firebase.storage.Reference): Promise<string | undefined> {
-
-        try {
-
-            return await storageRef.getDownloadURL();
-
-        } catch (e) {
-
-            if (e.code === "storage/object-not-found") {
-                return undefined;
-            }
-
-            // some other type of exception ias occurred
-            throw e;
-
-        }
-
-    }
-
     private static computeDownloadURLDirectly(backend: Backend,
                                               ref: FileRef,
                                               storagePath: StoragePath,

@@ -13,7 +13,7 @@ import {DatastoreCollection, RecordHolder} from '../FirebaseDatastore';
 import {BackendFileRefs} from '../BackendFileRefs';
 import {Either} from '../../util/Either';
 import {DocRefs} from './db/DocRefs';
-import {FirebaseDatastores} from '../FirebaseDatastores';
+import {FirebaseDatastoreResources} from '../FirebaseDatastoreResources';
 import {GroupDocsAdd} from './rpc/GroupDocsAdd';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
@@ -115,7 +115,7 @@ export class GroupDatastores {
 
             const uid = (await Firebase.currentUserID())!;
 
-            const docID = FirebaseDatastores.computeDocMetaID(fingerprint, uid);
+            const docID = FirebaseDatastoreResources.computeDocMetaID(fingerprint, uid);
 
             return {...docRef, docID};
 
@@ -135,7 +135,7 @@ export class GroupDatastores {
                 return await importDocMeta(backendFileRef);
 
             } else {
-                const docID = FirebaseDatastores.computeDocMetaID(fingerprint, uid);
+                const docID = FirebaseDatastoreResources.computeDocMetaID(fingerprint, uid);
                 return DocRefs.fromDocMeta(docID, docMeta);
             }
 
