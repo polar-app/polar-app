@@ -125,4 +125,5 @@ export interface IBlocksStore {
 
     setBlockContent<C extends IBlockContent = IBlockContent>(id: BlockIDStr, content: C): void;
 
+    moveBlock(id: BlockIDStr, delta: number): void
 }

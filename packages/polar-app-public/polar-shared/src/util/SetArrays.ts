@@ -1,6 +1,7 @@
 /**
  * Set theoretic operations for Typescript arrays.
  */
+import deepEqual from "deep-equal";
 import {Arrays, PrimitiveArray} from "./Arrays";
 import {Sets} from "./Sets";
 
@@ -14,6 +15,29 @@ export class SetArrays {
     public static difference<T>(a: ReadonlyArray<T>, b: ReadonlyArray<T>): ReadonlyArray<T> {
         return a.filter(x => ! b.includes(x));
     }
+
+    /**
+     * Difference (a \ b): create a set that contains those elements of set a
+     * that are not in set b (with deep comparison)
+     *
+     */
+    public static differenceDeep<T>(a: ReadonlyArray<T>, b: ReadonlyArray<T>): ReadonlyArray<T> {
+        const result = [];
+        for (const x of a) {
+            let found = false;
+            for (const y of b) {
+                if (deepEqual(x, y)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                result.push(x);
+            }
+        }
+        return result;
+    }
+
 
     /**
      * Compute a union of all the given sets.

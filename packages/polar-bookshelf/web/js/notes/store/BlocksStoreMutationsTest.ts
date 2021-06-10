@@ -4,6 +4,7 @@ import {assertJSON} from "../../test/Assertions";
 import {BlocksStoreTests} from "./BlocksStoreTests";
 import createBasicBlock = BlocksStoreTests.createBasicBlock;
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
+import {cloneDeep} from "lodash";
 
 describe('BlocksStoreMutations', () => {
 
@@ -157,8 +158,17 @@ describe('BlocksStoreMutations', () => {
         });
 
         it("insert after", () => {
+            const current = PositionalArrays.create(['1']);
+            const before = cloneDeep(current);
 
-            assertJSON(BlocksStoreMutations.computeItemPositionPatches(PositionalArrays.create(['1']), PositionalArrays.create(['1', '2'])), [
+            PositionalArrays.insert(
+                current,
+                PositionalArrays.keyForValue(before, '1'),
+                '2',
+                'after'
+            );
+
+            assertJSON(BlocksStoreMutations.computeItemPositionPatches(before, current), [
                 {
                     "type": "insert",
                     "key": "2",
@@ -170,17 +180,60 @@ describe('BlocksStoreMutations', () => {
 
 
         it("insert before", () => {
+            const current = PositionalArrays.create(['1']);
+            const before = cloneDeep(current);
 
-            assertJSON(BlocksStoreMutations.computeItemPositionPatches(PositionalArrays.create(['1']), PositionalArrays.create(['2', '1'])), [
+            PositionalArrays.insert(
+                current,
+                PositionalArrays.keyForValue(before, '1'),
+                '2',
+                'before'
+            );
+
+
+            assertJSON(
+                BlocksStoreMutations.computeItemPositionPatches(before, current), [
                 {
                     "type": "insert",
-                    "key": "1",
+                    "key": "0",
                     "id": "2"
                 }
             ]);
 
         });
 
+        it("Change position of an item", () => {
+            const current = PositionalArrays.create(['1', '2', '3']);
+            const before = cloneDeep(current);
+
+            PositionalArrays.remove(
+                current,
+                '2',
+            );
+
+            PositionalArrays.insert(
+                current,
+                PositionalArrays.keyForValue(before, '3'),
+                '2',
+                'after'
+            );
+
+
+            assertJSON(
+                BlocksStoreMutations.computeItemPositionPatches(before, current), [
+                {
+                    "type": "remove",
+                    "key": "2",
+                    "id": "2"
+                },
+                {
+                    "type": "insert",
+                    "key": "4",
+                    "id": "2"
+                }
+            ]);
+
+        });
 
     });
 
