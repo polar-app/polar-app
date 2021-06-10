@@ -2162,7 +2162,7 @@ export class BlocksStore implements IBlocksStore {
             console.log("Block cannot be moved");
             return;
         }
-        
+
         const redo = () => {
             const parent = this.getBlock(parentID)!;
             parent.withMutation(() => {
@@ -2172,7 +2172,8 @@ export class BlocksStore implements IBlocksStore {
             this.doPut([parent]);
         };
 
-        this.doUndoPush([parentID], redo);
+        this.doUndoPush('moveBlock', [parentID], redo);
+
     }
 
     private idsToBlocks(ids: ReadonlyArray<BlockIDStr>): Block[] {
