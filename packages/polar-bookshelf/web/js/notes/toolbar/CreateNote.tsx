@@ -21,7 +21,7 @@ export const CreateNote = () => {
                 history.push(`/notes/${id}`);
             }
         });
-    }, [dialogs, history]);
+    }, [dialogs, history, blocksStore]);
     
     return (
         <Button id="add-content-dropdown"
