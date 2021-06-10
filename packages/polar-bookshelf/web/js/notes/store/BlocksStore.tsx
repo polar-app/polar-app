@@ -41,6 +41,8 @@ import {
     useBlockExpandPersistenceWriter
 } from "../persistence/BlockExpandWriters";
 
+export const ENABLE_UNDO_TRACING = false;
+
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
 
@@ -1062,7 +1064,7 @@ export class BlocksStore implements IBlocksStore {
             return undefined;
         };
 
-        return this.doUndoPush([source, target], redo);
+        return this.doUndoPush('mergeBlocks', [source, target], redo);
 
     }
 
@@ -1160,7 +1162,7 @@ export class BlocksStore implements IBlocksStore {
 
         }
 
-        return this.doUndoPush([newBlockID], redo);
+        return this.doUndoPush('doCreateNewNamedBlock', [newBlockID], redo);
 
     }
 
@@ -1174,7 +1176,7 @@ export class BlocksStore implements IBlocksStore {
 
         }
 
-        return this.doUndoPush([newBlockID], redo);
+        return this.doUndoPush('createNewNamedBlock', [newBlockID], redo);
 
     }
 
@@ -1184,7 +1186,7 @@ export class BlocksStore implements IBlocksStore {
             this.doDelete(blockIDs);
         }
 
-        return this.doUndoPush(blockIDs, redo);
+        return this.doUndoPush('deleteBlocks', blockIDs, redo);
 
     }
 
@@ -1207,7 +1209,7 @@ export class BlocksStore implements IBlocksStore {
 
         }
 
-        return this.doUndoPush([id], redo);
+        return this.doUndoPush('setBlockContent', [id], redo);
 
     }
 
@@ -1295,7 +1297,7 @@ export class BlocksStore implements IBlocksStore {
 
         }
 
-        return this.doUndoPush([sourceBlockID], redo);
+        return this.doUndoPush('createLinkToBlock', [sourceBlockID], redo);
     }
 
     @action public updateBlocks(blocks: ReadonlyArray<IBlock>): void {
@@ -1499,7 +1501,7 @@ export class BlocksStore implements IBlocksStore {
 
         }
 
-        return this.doUndoPush([id, newBlockID], redo);
+        return this.doUndoPush('createNewBlock', [id, newBlockID], redo);
 
     }
 
@@ -1706,7 +1708,7 @@ export class BlocksStore implements IBlocksStore {
 
         }
 
-        return this.doUndoPush(undoIdentifiers, redo);
+        return this.doUndoPush('indentBlock', undoIdentifiers, redo);
 
     }
 
@@ -1825,7 +1827,7 @@ export class BlocksStore implements IBlocksStore {
 
         }
 
-        return this.doUndoPush(undoIdentifiers, redo);
+        return this.doUndoPush('unIndentBlock', undoIdentifiers, redo);
 
     }
 
@@ -1958,7 +1960,7 @@ export class BlocksStore implements IBlocksStore {
                     // *** Delete the references to other items
                     if (block.content.type === 'markdown') {
                         for (const link of block.content.links) {
-                            this.reverse.remove(link.id, block.id);                            
+                            this.reverse.remove(link.id, block.id);
                         }
                     }
 
@@ -2120,8 +2122,14 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    private doUndoPush<T>(identifiers: ReadonlyArray<BlockIDStr>, redoDelegate: () => T): T {
-        // console.log("Item pushed to undo queue...");
+    private doUndoPush<T>(id: IDStr,
+                          identifiers: ReadonlyArray<BlockIDStr>,
+                          redoDelegate: () => T): T {
+
+        if (ENABLE_UNDO_TRACING) {
+            console.log(`doUndoPush: ${id} `, new Error("UNDO_QUEUE_PUSH"));
+        }
+
         return BlocksStoreUndoQueues.doUndoPush(this, this.undoQueue, identifiers, mutations => this.blocksPersistenceWriter(mutations), redoDelegate);
     }
 

@@ -130,6 +130,7 @@ export const BlockContentEditable = observer((props: IProps) => {
 
         contentRef.current = newContent;
         props.onChange(newContent);
+
     }, [props]);
 
     const updateMarkdownFromEditable = React.useCallback(() => {
