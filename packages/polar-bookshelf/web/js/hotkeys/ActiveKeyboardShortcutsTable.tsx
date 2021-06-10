@@ -89,23 +89,19 @@ const ActiveBinding = (props: ActiveKeyBindingProps) => {
     const sequences = [...props.sequences]
                       .filter(current => {
 
-                        // console.log("FIXME: ", current);
-                        //
-                        // const platform = Platforms.get();
-                        //
-                        // if (platform === Platform.WINDOWS || platform === Platform.LINUX) {
-                        //     console.log("FIXMEL win")
-                        //     return current.keys.indexOf('command');
-                        // }
-                        //
-                        // if (platform === Platform.MACOS) {
-                        //     console.log("FIXMEL mac...")
-                        //     return current.indexOf('ctrl');
-                        // }
-                        //
-                        // return false;
+                        const platform = Platforms.get();
 
-                          return true;
+                        switch (platform) {
+                            case Platform.MACOS:
+                                return current.platforms.includes('macos');
+                            case Platform.WINDOWS:
+                                return current.platforms.includes('windows');
+                            case Platform.LINUX:
+                                return current.platforms.includes('linux');
+                            default:
+                                return false;
+                        }
+
                     });
 
     return (
