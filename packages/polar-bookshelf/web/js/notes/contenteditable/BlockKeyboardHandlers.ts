@@ -160,7 +160,11 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
         }
     },
     Backspace: ({ event, blocksStore, blockID, contentEditableElem, readonly }) => {
-        if (readonly || hasEditorSelection()) {
+        if (readonly) {
+            return abortEvent(event);
+        }
+
+        if (hasEditorSelection()) {
             console.log("Not handling Backspace");
             return;
         }
@@ -194,7 +198,11 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
         }
     },
     Delete: ({ event, blocksStore, blockID, contentEditableElem, readonly }) => {
-        if (readonly || hasEditorSelection()) {
+        if (readonly) {
+            return abortEvent(event);
+        }
+
+        if (hasEditorSelection()) {
             console.log("Not handling Delete");
             return;
         }

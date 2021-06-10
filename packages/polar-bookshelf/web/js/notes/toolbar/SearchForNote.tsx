@@ -18,15 +18,15 @@ export const SearchForNote = observer(() => {
     const [inputValue, setInputValue] = React.useState('');
 
     return (
-        <div>
+        <div style={{ width: 300, margin: 5 }}>
             <Autocomplete
                 size="medium"
                 options={[...namedBlocks]}
                 getOptionLabel={(option) => option}
                 inputValue={inputValue}
                 value={''}
+                fullWidth
                 blurOnSelect={true}
-                style={{ width: 300 }}
                 onInputChange={(event, nextInputValue, reason) => {
                     setInputValue(nextInputValue);
                 }}
@@ -47,7 +47,6 @@ export const SearchForNote = observer(() => {
                                                             </InputAdornment>
                                                         ),
                                                     }}
-                                                    style={{margin: '5px'}}
                                                     placeholder="Find note by name... "
                                                     variant="standard" />}
             />
