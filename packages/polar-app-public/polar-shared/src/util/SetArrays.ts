@@ -1,7 +1,7 @@
 /**
  * Set theoretic operations for Typescript arrays.
  */
-import equal from "deep-equal";
+import deepEqual from "deep-equal";
 import {Arrays, PrimitiveArray} from "./Arrays";
 import {Sets} from "./Sets";
 
@@ -26,7 +26,7 @@ export class SetArrays {
         for (const x of a) {
             let found = false;
             for (const y of b) {
-                if (equal(x, y)) {
+                if (deepEqual(x, y)) {
                     found = true;
                     break;
                 }
