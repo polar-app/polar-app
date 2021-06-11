@@ -2,8 +2,8 @@
 title: "Hiring: Senior Frontend Engineer"
 date: 2021-06-10 08:00:00 -0800
 layout: post
-large_image: https://imgur.com/fwFtpFK.png
-description: We here at Polar are looking to add a Senior Frontend Engineer to our team
+large_image: https://i.imgur.com/a7bN3HY.png
+description: Polar is looking for a Senior Frontend Engineer to join our team
 ---
 
 Date: Spring 2021
@@ -12,15 +12,18 @@ Date: Spring 2021
 
 ## Overview
 
-We at Polar are looking for a Senior Frontend Engineer to join our team as soon as possible.
-We are a team of two founders and a slowly growing engineering team with previous experience in startups, tech, and growth. We are
-looking for someone with strong frontend experience and preferably previous startup
-experience. Compensation is competitive and a mix of cash and equity
+Polar is looking for a Senior Frontend Engineer to join our team as soon as possible.
+
+We are a team of two founders and a slowly growing engineering team with
+previous experience in startups, tech, and growth. We are looking for someone
+with strong frontend experience and preferably previous startup experience.
+Compensation is competitive and a mix of cash and equity
 
 # Role requirements
 
 Our ideal candidate has a strong background in frontend development, a fullstack interest, and
 preferably some AI experience. Specifically:
+
 - Min 5 years of frontend experience - Javascript, React, React Native, PWAs, NodeJS
 - Decent understanding of developing on phone, mobile, and desktop
 - Understanding of web browser internals and modern APIs (service workers, PWAs,
