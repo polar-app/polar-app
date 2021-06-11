@@ -37,7 +37,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
     const blocksStore = useBlocksStore();
 
     const block = blocksStore.getBlock(props.id);
-    const selected = blocksStore.selected();
+    const selected = blocksStore.selected;
 
     const {active} = blocksStore;
 

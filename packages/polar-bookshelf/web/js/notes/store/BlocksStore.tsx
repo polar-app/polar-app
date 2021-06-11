@@ -316,7 +316,7 @@ export class BlocksStore implements IBlocksStore {
         return this._active;
     }
 
-    public selected() {
+    @computed get selected() {
         return this._selected;
     }
 
@@ -410,9 +410,11 @@ export class BlocksStore implements IBlocksStore {
                         this._reverse.remove(link.id, block.id);
                     }
                 }
+
                 for (const link of block.content.links) {
                     this._reverse.add(link.id, block.id);
                 }
+
             }
         }
 

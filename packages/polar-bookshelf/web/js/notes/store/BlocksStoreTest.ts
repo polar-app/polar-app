@@ -166,6 +166,10 @@ describe('BlocksStore', function() {
             assert.isTrue(isObservableProp(store, 'indexByName'));
             assert.isTrue(isObservableProp(store, 'reverse'));
             assert.isTrue(isObservableProp(store, 'expanded'));
+            assert.isTrue(isObservableProp(store, 'selected'));
+            assert.isTrue(isObservableProp(store, 'dropTarget'));
+            assert.isTrue(isObservableProp(store, 'dropSource'));
+
         });
 
         it("Block", () => {
@@ -177,8 +181,11 @@ describe('BlocksStore', function() {
             assert.isTrue(isObservableProp(block, 'items'));
             assert.isTrue(isObservableProp(block, 'updated'));
             assert.isTrue(isObservableProp(block, 'created'));
+            assert.isTrue(isObservableProp(block, 'root'));
             assert.isTrue(isObservableProp(block, 'parent'));
-            assert.isTrue(isObservableProp(block, 'items'));
+            assert.isTrue(isObservableProp(block, 'parents'));
+            assert.isTrue(isObservableProp(block, 'nspace'));
+            assert.isTrue(isObservableProp(block, 'mutation'));
 
             // assert.isTrue(isObservableProp(note.content.type, 'type'));
 
@@ -947,7 +954,7 @@ describe('BlocksStore', function() {
                 assertPresent(parent);
                 assert.deepEqual(parent.itemsAsArray, ['105', '103', '104']);
             });
-            
+
 
             // Downwards
             createUndoRunner(store, [parent.id], () => {
@@ -1058,7 +1065,7 @@ describe('BlocksStore', function() {
              *               118
              *           createdBlock2
              *               createdBlock3
-             *   
+             *
              *
              *   We should end up with
              *   104
@@ -1075,7 +1082,7 @@ describe('BlocksStore', function() {
                 '104',
                 '105',
             ];
-            
+
             createUndoRunner(store, identifiers, () => {
                 store.mergeBlocks('104', '105');
 
@@ -1102,7 +1109,7 @@ describe('BlocksStore', function() {
                 assert.deepEqual([...block1.itemsAsArray].sort(), [], 'Block1 should have the correct items');
                 // 106 items
                 assert.deepEqual([...block106.itemsAsArray], ['117', block2.id], 'Block106 should have the correct items');
-                
+
                 // block2 items
                 assert.deepEqual([...block2.itemsAsArray], [block3.id], 'Block2 should have the correct items');
 
@@ -1641,7 +1648,7 @@ describe('BlocksStore', function() {
                     "3": "105",
                     "4": createdBlock.id
                 });
-                
+
                 newBlock.itemsAsArray.forEach(assertBlockParents(store, [...newBlock.parents, newBlock.id]));
 
                 return createdBlock.id;
