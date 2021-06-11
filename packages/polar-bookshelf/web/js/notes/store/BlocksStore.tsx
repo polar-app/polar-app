@@ -1048,11 +1048,8 @@ export class BlocksStore implements IBlocksStore {
             const nestedChildrenIds = items.flatMap(this.computeLinearTree.bind(this));
 
             const updateParent = (newParent: BlockIDStr) => (block: Block) => {
-                block.withMutation(() => {
-                    block.setParent(newParent);
-                    block.setParents(this.getParentsPath(block));
-                });
-                this.doPut([block]);
+                this.doUpdateParent(block, newParent);
+                this.doRebuildParents(block);
             };
 
             // Update target block
@@ -1070,7 +1067,7 @@ export class BlocksStore implements IBlocksStore {
 
             // Update the "parent" & "parents" properties of the children (recursively)
             directChildrenBlocks.forEach(updateParent(targetBlock.id));
-            this.idsToBlocks(nestedChildrenIds).forEach(this.rebuildParents.bind(this));
+            this.idsToBlocks(nestedChildrenIds).forEach(this.doRebuildParents.bind(this));
 
             // Update the source block remove the children to prepare it for deletion
             // (this is done to void deleting the children when deleting the block)
@@ -1089,8 +1086,13 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    @action private rebuildParents(block: Block) {
-        block.withMutation(() => block.setParents(this.getParentsPath(block)));
+    @action private doRebuildParents(block: Block) {
+        block.withMutation(() => block.setParents(this.pathToBlock(block.id).map(b => b.id)));
+        this.doPut([block]);
+    }
+
+    @action private doUpdateParent(block: Block, newParentID: BlockIDStr) {
+        block.withMutation(() => block.setParent(newParentID));
         this.doPut([block]);
     }
 
@@ -1098,14 +1100,20 @@ export class BlocksStore implements IBlocksStore {
      * Build the *parents* property of a block
      * by traversing parents all the way up the tree.
      */
-    private getParentsPath(block: Block): ReadonlyArray<BlockIDStr> {
-        if (block.parent) {
+    public pathToBlock(blockID: BlockIDStr): ReadonlyArray<Block> {
+        const result: Block[] = [];
+
+        let block = this._index[blockID]; 
+
+        while (block && block.parent) {
             const parent = this._index[block.parent];
             if (parent) {
-                return [...this.getParentsPath(parent), parent.id];
+                result.unshift(parent);
             }
+            block = parent;
         }
-        return [];
+
+        return result;
     }
 
     /**
@@ -1235,19 +1243,11 @@ export class BlocksStore implements IBlocksStore {
 
     @action public createLinkToBlock<C extends IBlockContent = IBlockContent>(sourceBlockID: BlockIDStr,
                                                                               targetName: BlockNameStr,
-                                                                              undoContent: MarkdownStr,
                                                                               content: MarkdownStr) {
-        const sourceBlock = this.getBlock(sourceBlockID)!;
-
         // if the existing target block exists, use that block name.
         const targetBlock = this.getBlockByName(targetName);
 
         const targetID = targetBlock?.id || Hashcodes.createRandomID();
-
-        const restore = {
-            updated: sourceBlock.updated,
-            mutation: sourceBlock.mutation
-        }
 
         const redo = () => {
 
@@ -1285,39 +1285,9 @@ export class BlocksStore implements IBlocksStore {
             })
 
             this.doPut([sourceBlock]);
-        }
+        };
 
-        const undo = () => {
-
-            const sourceBlock = this.getBlock(sourceBlockID);
-
-            if (! sourceBlock) {
-                throw new Error("Unable to find block: " + sourceBlockID);
-            }
-
-            if (! (sourceBlock.content instanceof MarkdownContent)) {
-                throw new Error("Source block not markdown: " + sourceBlock.content.type);
-            }
-
-            const sourceMarkdownBlock = sourceBlock as Block<MarkdownContent>;
-
-            sourceBlock.withMutation(() => {
-
-                sourceBlock.setContent({
-                    type: "markdown",
-                    data: undoContent,
-                    links: sourceMarkdownBlock.content.links.filter(({id}) => id !== targetID),
-                })
-
-            }, restore);
-
-            this.doPut([sourceBlock]);
-
-            this.setActiveWithPosition(sourceBlock.id, 'end');
-
-        }
-
-        return this.doUndoPush('createLinkToBlock', [sourceBlockID], redo);
+        return this.doUndoPush('createLinkToBlock', [sourceBlockID, targetID], redo);
     }
 
     @action public updateBlocks(blocks: ReadonlyArray<IBlock>): void {
@@ -1472,11 +1442,8 @@ export class BlocksStore implements IBlocksStore {
             const newBlock = createNewBlock(parentBlock);
 
             const updateParent = (newParent: BlockIDStr) => (block: Block) => {
-                block.withMutation(() => {
-                    block.setParent(newParent);
-                    block.setParents(this.getParentsPath(block));
-                });
-                this.doPut([block]);
+                this.doUpdateParent(block, newParent);
+                this.doRebuildParents(block);
             };
 
             this.doPut([newBlock]);
@@ -1485,7 +1452,7 @@ export class BlocksStore implements IBlocksStore {
                 const items = currentBlock.itemsAsArray;
                 this.idsToBlocks(items).map(updateParent(newBlock.id));
                 const nestedChildrenIds = items.flatMap(this.computeLinearTree.bind(this));
-                this.idsToBlocks(nestedChildrenIds).forEach(this.rebuildParents.bind(this));
+                this.idsToBlocks(nestedChildrenIds).forEach(this.doRebuildParents.bind(this));
             }
 
             parentBlock.withMutation(() => {
@@ -2080,26 +2047,6 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-
-    /**
-     * Compute the path to a block from its parent but not including the actual block.
-     */
-    public pathToBlock(id: BlockIDStr): ReadonlyArray<Block> {
-
-        let current = this._index[id];
-
-        const result = [];
-
-        while (current.parent) {
-            const parentBlock = this._index[current.parent];
-            result.push(parentBlock);
-            current = parentBlock;
-        }
-
-        return result.reverse();
-
-    }
-
     public requiredAutoUnIndent(id: BlockIDStr): boolean {
 
         const block = this.getBlock(id);
@@ -2172,7 +2119,7 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    private idsToBlocks(ids: ReadonlyArray<BlockIDStr>): Block[] {
+    public idsToBlocks(ids: ReadonlyArray<BlockIDStr>): ReadonlyArray<Block> {
         return ids.map(id => this.getBlock(id))
             .filter((block): block is Block => !!block);
     }
