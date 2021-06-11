@@ -1,15 +1,16 @@
 ---
-title: "Hiring: Senior Frontend Engineer"
-date: 2021-06-10 08:00:00 -0800
+title:  Hiring: Senior Frontend Engineer
+date:   2021-06-10 08:00:00 -0800
 layout: post
-large_image: https://i.imgur.com/a7bN3HY.png
-description: Polar is looking to add a Senior Frontend Engineer to help re-invent EDTech!
+large_image: https://imgur.com/fwFtpFK.png
+description: We here at Polar are looking to add a Senior Frontend Engineer to our team
 ---
+
+Date: Spring 2021
 
 # Polar Senior Frontend Engineer
 
 ## Overview
-
 
 We at Polar are looking for a Senior Frontend Engineer to join our team as soon as possible.
 We are a team of two founders and a slowly growing engineering team with previous experience in startups, tech, and growth. We are
