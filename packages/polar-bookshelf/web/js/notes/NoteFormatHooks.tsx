@@ -51,11 +51,11 @@ export function useNoteFormatHandlers(type: BlockType | undefined, onUpdated: ()
         doExecCommand('removeFormat');
     }, [doExecCommand]);
 
-    const doLink = React.useCallback((link: URLStr) => {
-        doExecCommand('createlink', link)
+    const onLink = React.useCallback((link: URLStr) => {
+        doExecCommand('createLink', link)
     }, [doExecCommand]);
 
-    return {onBold, onItalic, onQuote, onUnderline, onStrikethrough, onSubscript, onSuperscript, doLink, onRemoveFormat}
+    return {onBold, onItalic, onQuote, onUnderline, onStrikethrough, onSubscript, onSuperscript, onLink, onRemoveFormat};
 
 }
 

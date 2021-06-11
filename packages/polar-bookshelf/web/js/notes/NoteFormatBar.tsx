@@ -125,7 +125,6 @@ const LinkBar = (props: LinkBarProps) => {
 
     const handleClick = React.useCallback((event: React.MouseEvent) => {
         event.stopPropagation();
-        event.preventDefault();
     }, []);
 
     // FIXME: hover says "please fill out this field"
@@ -134,11 +133,11 @@ const LinkBar = (props: LinkBarProps) => {
         <>
             <TextField required
                        // variant="outlined"
-                       autoFocus={true}
                        placeholder="https://example.com"
                        // InputProps={{
                        //     style: {padding: '35px'}
                        // }}
+                       autoFocus
                        style={{
                            fontSize: '14px',
                            minWidth: '35ch'
@@ -221,7 +220,7 @@ const NoteFormatBarInner = (props: NoteFormatBarInnerProps) => {
     );
 }
 
-export interface NoteFormatBarProps {
+export interface FormatBarActions {
     readonly onBold?: () => void;
     readonly onItalic?: () => void;
     readonly onQuote?: () => void;
@@ -231,30 +230,33 @@ export interface NoteFormatBarProps {
     readonly onSuperscript?: () => void;
     readonly onLink?: (url: URLStr) => void;
     readonly onRemoveFormat?: () => void;
+}
 
+export interface NoteFormatBarProps extends FormatBarActions {
     /**
      * Called when the bar should be removed/disposed.
      */
     readonly onDispose?: () => void;
 
 
+    readonly mode: BarMode;
+    readonly setMode: (mode: BarMode) => void;
 }
+
+export type BarMode = 'link' | 'format';
 
 export const NoteFormatBar = React.memo(function NoteFormatBar(props: NoteFormatBarProps) {
 
     const classes = useStyles();
-
-    const [mode, setMode] = React.useState<'link' | 'format'>('format');
 
     const changeToLinkMode = React.useCallback((event: React.MouseEvent) => {
 
         event.preventDefault();
         event.stopPropagation();
 
-        // FIXME: as soon as I setMode here, we lose the region...
-        setMode('link')
+        props.setMode('link');
 
-    }, []);
+    }, [props]);
 
     const handleMouseEvent = React.useCallback((event: React.MouseEvent) => {
         event.preventDefault();
@@ -266,11 +268,11 @@ export const NoteFormatBar = React.memo(function NoteFormatBar(props: NoteFormat
             <MUIButtonBar onMouseDown={handleMouseEvent}
                           onMouseUp={handleMouseEvent}>
 
-                {mode === 'format' && (
+                {props.mode === 'format' && (
                     <NoteFormatBarInner {...props} onLink={changeToLinkMode}/>
                 )}
 
-                {mode === 'link' && (
+                {props.mode === 'link' && (
                     <LinkBar onDispose={props.onDispose} onLink={props.onLink}/>
                 )}
 
