@@ -115,7 +115,7 @@ function useActionExecutor(id: BlockIDStr) {
                 updateSelection();
 
                 const content = contentEditableMarkdownReader();
-                blocksStore.createLinkToBlock(id, actionOp.target, actionOp.undoContent, content);
+                blocksStore.createLinkToBlock(id, actionOp.target, content);
                 break;
 
         }

@@ -37,9 +37,9 @@ export interface IBlocksStore {
     dropTarget: IDropTarget | undefined;
     reverse: ReverseIndex;
     index: BlocksIndex;
+    selected: StringSetMap;
 
     hasSnapshot: boolean;
-    selected: StringSetMap;
 
     doDelete(blockIDs: ReadonlyArray<BlockIDStr>): void;
     doPut(blocks: ReadonlyArray<IBlock>, opts?: DoPutOpts): void;
@@ -72,6 +72,8 @@ export interface IBlocksStore {
     setActiveWithPosition(active: BlockIDStr | undefined,
                           activePos: NavPosition | undefined): void;
 
+    idsToBlocks(ids: ReadonlyArray<BlockIDStr>): ReadonlyArray<Block>;
+
     // TODO: undo
     expand(id: BlockIDStr): void;
     // TODO: undo
@@ -103,7 +105,6 @@ export interface IBlocksStore {
 
     createLinkToBlock<C extends IBlockContent = IBlockContent>(sourceID: BlockIDStr,
                                                                targetName: BlockNameStr,
-                                                               undoContent: MarkdownStr,
                                                                content: MarkdownStr): void;
 
     filterByName(filter: string): ReadonlyArray<BlockNameStr>;
