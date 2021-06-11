@@ -1,6 +1,6 @@
 ---
-title:  Hiring: Senior Frontend Engineer
-date:   2021-06-10 08:00:00 -0800
+title: "Hiring: Senior Frontend Engineer"
+date: 2021-06-10 08:00:00 -0800
 layout: post
 large_image: https://imgur.com/fwFtpFK.png
 description: We here at Polar are looking to add a Senior Frontend Engineer to our team
