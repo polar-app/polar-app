@@ -1,4 +1,10 @@
-Date: Spring 2021
+---
+title: "Hiring: Senior Frontend Engineer"
+date: 2021-06-10 08:00:00 -0800
+layout: post
+large_image: https://i.imgur.com/a7bN3HY.png
+description: Polar is looking to add a Senior Frontend Engineer to help re-invent EDTech!
+---
 
 # Polar Senior Frontend Engineer
 
@@ -22,7 +28,7 @@ offline, etc)
 - Experience with PDFs or EPUBs big plus
 - Strong preference for previous startup experience
 - Analytical thinking. Deep respect for the scientific method and objective data analysis
-- Location: Brazil, Argentina, Mexico, Spain
+- Location: Anywhere with preference for South/Latin America, Eastern Europe, Egypt
 
 You will be one of the first people on the team, so this is a crucial decision for us. We strongly respect your work life
 balance but we are looking for someone who is passionate about the product and role, not just
