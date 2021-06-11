@@ -39,6 +39,7 @@ export interface IBlocksStore {
     index: BlocksIndex;
 
     hasSnapshot: boolean;
+    selected: StringSetMap;
 
     doDelete(blockIDs: ReadonlyArray<BlockIDStr>): void;
     doPut(blocks: ReadonlyArray<IBlock>, opts?: DoPutOpts): void;
@@ -46,7 +47,6 @@ export interface IBlocksStore {
     doCreateNewNamedBlock(name: BlockNameStr,
                           opts?: ICreateNewNamedBlockOpts): BlockIDStr;
 
-    selected(): StringSetMap;
     selectedIDs(): ReadonlyArray<BlockIDStr>;
 
     clearSelected(reason: string): void;
@@ -125,4 +125,5 @@ export interface IBlocksStore {
 
     setBlockContent<C extends IBlockContent = IBlockContent>(id: BlockIDStr, content: C): void;
 
+    moveBlock(id: BlockIDStr, delta: number): void
 }

@@ -46,6 +46,45 @@ describe("PositionalArrays", () => {
 
     });
 
+    it("removeKey basic", () => {
+
+        let arr: PositionalArray<string> = {};
+
+        arr = PositionalArrays.append(arr, '0x123');
+        arr = PositionalArrays.append(arr, '0x200');
+
+        assertJSON(arr, {
+            "1": "0x123",
+            "2": "0x200",
+        });
+
+        arr = PositionalArrays.removeKey(arr, '1');
+
+        assertJSON(arr, {
+            "2": "0x200",
+        });
+    });
+
+    it("removeKey that doesn't exist", () => {
+
+        let arr: PositionalArray<string> = {};
+
+        arr = PositionalArrays.append(arr, '0x123');
+        arr = PositionalArrays.append(arr, '0x200');
+
+        assertJSON(arr, {
+            "1": "0x123",
+            "2": "0x200",
+        });
+
+        arr = PositionalArrays.removeKey(arr, '5');
+
+        assertJSON(arr, {
+            "1": "0x123",
+            "2": "0x200",
+        });
+    });
+
     it("insert after", () => {
 
         let arr: PositionalArray<string> = {};

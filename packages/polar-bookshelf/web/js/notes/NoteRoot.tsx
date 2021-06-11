@@ -23,13 +23,12 @@ interface INoteRootProps {
 
 export const NoteRootRenderer: React.FC<INoteRootRendererProps> = ({ block }) => {
     const blocksStore = useBlocksStore();
+    const id = block.id;
 
     React.useEffect(() => {
-        blocksStore.setRoot(block.id);
-        blocksStore.setActiveWithPosition(block.id, 'end');
-    }, [block, blocksStore]);
-
-    const id = block?.id;
+        blocksStore.setRoot(id);
+        blocksStore.setActiveWithPosition(id, 'end');
+    }, [id, blocksStore]);
 
     return (
         <ActionMenuStoreProvider>

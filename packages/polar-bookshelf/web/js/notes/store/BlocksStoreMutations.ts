@@ -108,43 +108,17 @@ export namespace BlocksStoreMutations {
     export function computeItemPositionPatches(before: PositionalArray<BlockIDStr>,
                                                after: PositionalArray<BlockIDStr>): ReadonlyArray<IItemsPositionPatch> {
 
-        const removed = SetArrays.difference(PositionalArrays.toArray(before), PositionalArrays.toArray(after));
-        const added = SetArrays.difference(PositionalArrays.toArray(after), PositionalArrays.toArray(before));
-
-        const toRemoved = (id: BlockIDStr): IItemsPositionPatchRemove => {
-
-            const key = PositionalArrays.keyForValue(before, id);
-
-            if (key === undefined) {
-                throw new Error("Could know find key for value: " + id);
-            }
-
-            return {
-                type: 'remove',
-                key,
-                id
-            };
-        }
-
-        const toAdded = (id: BlockIDStr): IItemsPositionPatchInsert => {
-
-            const key = PositionalArrays.keyForValue(after, id);
-
-            if (key === undefined) {
-                throw new Error("Could know find key for value: " + id);
-            }
-
-            return {
-                type: 'insert',
-                key,
-                id
-            }
-
-        }
+        const removed = SetArrays.differenceDeep(PositionalArrays.entries(before), PositionalArrays.entries(after));
+        const added = SetArrays.differenceDeep(PositionalArrays.entries(after), PositionalArrays.entries(before));
+        const toPatch = (type: 'remove' | 'insert') => ([key, id]: [string, string]): IItemsPositionPatch => ({
+            type,
+            key,
+            id
+        });
 
         return [
-            ...removed.map(toRemoved),
-            ...added.map(toAdded)
+            ...removed.map(toPatch('remove')),
+            ...added.map(toPatch('insert')),
         ];
 
     }
