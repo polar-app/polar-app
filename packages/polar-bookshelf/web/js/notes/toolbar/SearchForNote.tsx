@@ -7,9 +7,20 @@ import {useNoteLinkLoader} from "../NoteLinkLoader";
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Box from '@material-ui/core/Box';
 import SearchIcon from '@material-ui/icons/Search';
+import {createStyles, makeStyles} from '@material-ui/core';
+
+const useStyles = makeStyles(() =>
+    createStyles({
+        root: {
+            width: 300,
+            margin: 5,
+        },
+    }),
+);
 
 export const SearchForNote = observer(() => {
 
+    const classes = useStyles();
     const blocksStore = useBlocksStore();
     const noteLinkLoader = useNoteLinkLoader();
 
@@ -18,7 +29,7 @@ export const SearchForNote = observer(() => {
     const [inputValue, setInputValue] = React.useState('');
 
     return (
-        <div style={{ width: 300, margin: 5 }}>
+        <div className={classes.root}>
             <Autocomplete
                 size="medium"
                 options={[...namedBlocks]}
