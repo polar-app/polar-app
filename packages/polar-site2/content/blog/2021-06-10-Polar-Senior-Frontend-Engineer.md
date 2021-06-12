@@ -12,16 +12,9 @@ Polar is looking for a Senior Frontend Engineer to join our team to reinvent EdT
 
 ## Overview
 
-At Polar, we believe that the next generation of knowledge tools will organize data
-similarly to how the brain is structured, making it easier to manage and recall 
- 
- but also pair this with Artificial
-Intelligence to radically improve human cognition.
-
-We're laser-focused on making it easier for our users to learn more efficiently. 
-
-Either you can learn more in less time or decide to go full genius and beat out
-your competition by simply being smarter.
+At Polar, we believe that the next generation of knowledge tools will organize
+data similarly to how the brain is structured.  When paired with artificial
+intelligence we believe this will radically improve human cognition.
 
 To achieve this, we are looking for a Senior Frontend Engineer to join our team
 as soon as possible.
@@ -55,6 +48,9 @@ about building an early stage startup as we are.
 Your compensation package will be a mix of cash and equity - with the exact
 split depending on your experience and your personal preference.
 
-- TODO: life work balance
-- TODO: work with brilliant people
-- TODO: how to contact us... 
+If you’re interested, please reach out via the Intercom button in our app.
+Please include your resume, LinkedIn, and github. Please also add a few summary
+sentences about you and your interest in Polar.
+
+We are looking to fill this role as soon as possible, and are hiring on a
+rolling basis. We’re looking forward to your application!
