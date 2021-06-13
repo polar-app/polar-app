@@ -4,7 +4,7 @@ import {BlocksStore} from "./BlocksStore";
 import {IMarkdownContent} from "../content/IMarkdownContent";
 import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
 import {UndoQueues2} from "../../undo/UndoQueues2";
-import {JSDOMParser} from "./BlocksStoreTest";
+import {JSDOMParser} from "./BlocksStoreTestNK";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {PositionalArrays} from "./PositionalArrays";
 import {BlocksStoreTests} from "./BlocksStoreTests";

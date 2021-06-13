@@ -1,7 +1,7 @@
 {
   "name": "polar-npm",
   "version": "2.1.66",
-  "description": "Basic internal NPM commnds",
+  "description": "Basic internal NPM commands which extend NPM functionality",
   "main": "index.js",
   "scripts": {
     "test": "echo no test",
@@ -12,7 +12,8 @@
   "license": "ISC",
   "bin": {
     "hello": "src/hello.js",
-    "npm-upgrade-pkg": "src/npm-upgrade-pkg.js"
+    "npm-upgrade-pkg": "src/npm-upgrade-pkg.js",
+    "npm-stagnant": "src/npm-stagnant.js"
   },
   "devDependencies": {
     "@types/node": "=14.14.35",
