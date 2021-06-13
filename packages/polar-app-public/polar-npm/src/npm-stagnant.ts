@@ -60,6 +60,8 @@ async function main() {
 
     async function doPackages(referenceMap: PackageReferenceMap) {
 
+        // TODO: this is SUPER slow and we might have to run multiple npm views at once.
+
         for(const packageName of Object.keys(referenceMap)) {
             const semVersion = referenceMap[packageName];
             const publishedVersion = await getPackageVersionFromNPM(packageName);
