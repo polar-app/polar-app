@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 
 import fs from 'fs';
+import { promisify } from 'util';
+
+const exec = promisify(require('child_process').exec)
 
 function die(msg: string) {
     console.error(msg);
@@ -21,7 +24,7 @@ function readPackageData(): PackageData {
 
 }
 
-function exec() {
+async function main() {
 
     if (! fs.existsSync('./package.json')) {
         die("package.json does not exist");
@@ -29,18 +32,31 @@ function exec() {
 
     const packageData = readPackageData();
 
-    function doPackages(referenceMap: PackageReferenceMap) {
+    async function getPackageVersionFromNPM(packageName: string) {
+        const publishedVersion = await exec(`npm show ${packageName} version`);
+
+        if (publishedVersion.stderr !== '') {
+            throw new Error(publishedVersion.stder)
+        }
+
+        return publishedVersion.stdout.trim();
+
+    }
+
+    async function doPackages(referenceMap: PackageReferenceMap) {
 
         for(const packageName of Object.keys(referenceMap)) {
             const semVersion = referenceMap[packageName];
-            console.log(`${packageName} => ${semVersion}`);
+            const publishedVersion = await getPackageVersionFromNPM(packageName);
+            console.log(`${packageName} => ${semVersion} vs ${publishedVersion}`);
         }
 
     }
 
-    doPackages(packageData.dependencies || {});
-    doPackages(packageData.devDependencies || {});
+    await doPackages(packageData.dependencies || {});
+    await doPackages(packageData.devDependencies || {});
 
 }
 
-exec();
+main()
+    .catch(err => console.error(err))
