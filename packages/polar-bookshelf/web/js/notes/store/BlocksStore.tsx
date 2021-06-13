@@ -633,12 +633,23 @@ export class BlocksStore implements IBlocksStore {
         const min = Math.min(fromBlockIdx, toBlockIdx);
         const max = Math.max(fromBlockIdx, toBlockIdx);
 
-        const newSelected
-            = arrayStream(Numbers.range(min, max))
-                 .map(current => linearExpansionTree[current])
-                 .toMap2(current => current, () => true);
+        const newSelected = new Set(
+            arrayStream(Numbers.range(min, max))
+                .map(current => linearExpansionTree[current])
+                .collect()
+        );
 
-        this._selected = newSelected;
+        const isParentSelected = (id: BlockIDStr) =>
+            this._index[id].parents.some(parent => newSelected.has(parent));
+
+        // Remove redundant blocks
+        newSelected.forEach((id) => {
+            if (isParentSelected(id)) {
+                newSelected.delete(id);
+            }
+        });
+
+        this._selected = arrayStream(Array.from(newSelected)).toMap2(c => c, () => true);
 
     }
 
@@ -723,7 +734,7 @@ export class BlocksStore implements IBlocksStore {
         return this.doNav('next', pos, opts);
     }
 
-    private computeLinearTree(id: BlockIDStr): ReadonlyArray<BlockIDStr> {
+    public computeLinearTree(id: BlockIDStr): ReadonlyArray<BlockIDStr> {
         const block = this._index[id];
 
         if (! block) {
