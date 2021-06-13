@@ -13,6 +13,7 @@ function die(msg: string) {
 type PackageReferenceMap = {[key: string]: string};
 
 interface PackageData {
+    readonly name: string;
     readonly devDependencies: PackageReferenceMap;
     readonly dependencies: PackageReferenceMap;
 }
@@ -31,6 +32,9 @@ async function main() {
     }
 
     const packageData = readPackageData();
+
+    console.log("Determining stagnant packages for: " + packageData.name);
+    console.log("=======")
 
     async function getPackageVersionFromNPM(packageName: string) {
         const publishedVersion = await exec(`npm show ${packageName} version`);
@@ -78,6 +82,8 @@ async function main() {
 
     await doPackages(packageData.dependencies || {});
     await doPackages(packageData.devDependencies || {});
+
+    console.log();
 
 }
 
