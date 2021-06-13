@@ -35,7 +35,11 @@ module.exports = (config) => {
       // { pattern: 'apps/**/*Test.ts', watched: false },
       // { pattern: 'web/**/*Test.ts', watched: false },
       { pattern: 'apps/**/*Test.ts', watched: false },
-      { pattern: 'web/**/*Test.ts', watched: false },
+
+      // TODO: looks like this won't work because jsdom won't compile in webpack
+      // due to child_process.
+
+      // { pattern: 'web/**/*Test.ts', watched: false },
       { pattern: 'apps/**/*Karma.ts', watched: false },
       { pattern: 'web/**/*Karma.ts', watched: false },
 
