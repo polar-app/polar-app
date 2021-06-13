@@ -1,27 +1,17 @@
 {
   "name": "polar-mocha",
   "version": "2.1.66",
-  "description": "",
-  "main": "index.js",
+  "description": "Basic mocha dependencies and utilities.",
   "scripts": {
-    "test": "echo no test",
-    "compile": "tsc"
+    "test": "echo",
+    "compile": "echo"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bin": "src/polar-mocha.js",
   "dependencies": {
-    "polar-shared": "^2.1.66"
-  },
-  "devDependencies": {
-    "@types/node": "=14.14.35",
-    "tslint": "6.1.2",
-    "typescript": "=4.2.3"
-  },
-  "files": [
-    "**/*.js",
-    "**/*.d.ts",
-    "package.json"
-  ]
+    "@types/mocha": "=8.0.4",
+    "mocha": "=8.2.1",
+    "mocha-junit-reporter": "^1.18.0"
+  }
 }
