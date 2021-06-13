@@ -41,7 +41,11 @@ import {
     useBlockExpandPersistenceWriter
 } from "../persistence/BlockExpandWriters";
 
-export const ENABLE_UNDO_TRACING = false;
+function hasLocalStorage() {
+    return typeof localStorage !== 'undefined';
+}
+
+export const ENABLE_UNDO_TRACING = hasLocalStorage() ? localStorage.getItem('notes.undo.trace') === 'true' : 'false';
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
@@ -1103,7 +1107,7 @@ export class BlocksStore implements IBlocksStore {
     public pathToBlock(blockID: BlockIDStr): ReadonlyArray<Block> {
         const result: Block[] = [];
 
-        let block = this._index[blockID]; 
+        let block = this._index[blockID];
 
         while (block && block.parent) {
             const parent = this._index[block.parent];
