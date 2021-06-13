@@ -18,25 +18,6 @@ import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
 import {IBlock} from "./IBlock";
 import {PositionalArrays} from "./PositionalArrays";
 
-// TODO:
-
-//
-// - migrate all operations to merge/join not delete / create
-//
-// - when we create a new note the active isn't set right
-
-
-// - the actions no longer work... need to fix them.
-
-// - make sure when we update nodes that the graph is updated when we add links
-//
-// - how do we make react hooks that work with observability
-//
-// - doCreateNode should always 'split' even if we're at the beginning or end of
-//   a node because it would yield an empty prefix or suffix and this way the same
-//   code path is used.
-//
-
 function assertTextBlock(content: BlockContent): asserts content is MarkdownContent | NameContent {
 
     if (content.type !== 'markdown' && content.type !== 'name') {
