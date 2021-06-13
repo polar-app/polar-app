@@ -17,7 +17,6 @@ import {UndoQueues2} from "../../undo/UndoQueues2";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
 import {IBlock} from "./IBlock";
 import {PositionalArrays} from "./PositionalArrays";
-import {TestingRuntimes} from "../../../../../polar-app-public/polar-test/src/test/TestingRuntimes";
 
 // TODO:
 
@@ -1762,7 +1761,7 @@ export namespace JSDOMParser {
 
     export function makeGlobal(html: string = '') {
 
-        if (TestingRuntimes.isKarma()) {
+        if (typeof window !== 'undefined') {
             return;
         }
 

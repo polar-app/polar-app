@@ -1,7 +1,6 @@
 export namespace TestingRuntimes {
 
     export function compute(): 'karma' | 'mocha' | undefined {
-
         // *** detect karma
         if ((<any>window).__karma__ !== undefined) {
             return 'karma';
