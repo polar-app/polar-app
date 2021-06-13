@@ -7,9 +7,11 @@ function die(msg: string) {
     process.exit(1);
 }
 
+type PackageReferenceMap = {[key: string]: string};
+
 interface PackageData {
-    readonly devDependencies: {[key: string]: string};
-    readonly dependencies: {[key: string]: string};
+    readonly devDependencies: PackageReferenceMap;
+    readonly dependencies: PackageReferenceMap;
 }
 
 function readPackageData(): PackageData {
@@ -26,6 +28,18 @@ function exec() {
     }
 
     const packageData = readPackageData();
+
+    function doPackages(referenceMap: PackageReferenceMap) {
+
+        for(const packageName of Object.keys(referenceMap)) {
+            const semVersion = referenceMap[packageName];
+            console.log(`${packageName} => ${semVersion}`);
+        }
+
+    }
+
+    doPackages(packageData.dependencies || {});
+    doPackages(packageData.devDependencies || {});
 
 }
 
