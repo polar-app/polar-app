@@ -7,15 +7,20 @@ import {FirestoreBlocks} from "./FirestoreBlocks";
 import {Asserts} from "polar-shared/src/Asserts";
 import {IFirestore} from "polar-snapshot-cache/src/store/IFirestore";
 import firebase from 'firebase';
+import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
 
 const IS_NODE = typeof window === 'undefined';
+
+export const ENABLE_TRACING = LocalStorageFeatureToggles.isEnabled('notes.persistence.trace');
 
 export namespace FirestoreBlocksPersistenceWriter {
 
     export async function doExec(firestore: IFirestore,
                                  mutations: ReadonlyArray<IBlocksStoreMutation>) {
 
-        // console.log("Writing mutations to firestore: ", mutations);
+        if (ENABLE_TRACING) {
+            console.log("Writing mutations to firestore: ", mutations);
+        }
 
         const firestoreMutations = FirestoreBlocksStoreMutations.convertToFirestoreMutations(mutations);
 
