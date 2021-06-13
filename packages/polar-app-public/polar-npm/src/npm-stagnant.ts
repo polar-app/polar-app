@@ -43,12 +43,35 @@ async function main() {
 
     }
 
+    function versionsDiffer(currentSemver: string, nextVersion: string): boolean | undefined {
+
+        if (currentSemver.startsWith('=')) {
+            const [prefix, suffix] = currentSemver.split('=');
+            return suffix !== nextVersion;
+        }
+
+        return undefined;
+
+    }
+
     async function doPackages(referenceMap: PackageReferenceMap) {
 
         for(const packageName of Object.keys(referenceMap)) {
             const semVersion = referenceMap[packageName];
             const publishedVersion = await getPackageVersionFromNPM(packageName);
-            console.log(`${packageName} => ${semVersion} vs ${publishedVersion}`);
+
+            const verDiff = versionsDiffer(semVersion, publishedVersion);
+
+            const desc = `${packageName} => ${semVersion} vs ${publishedVersion}`;
+
+            if (verDiff === true) {
+                console.warn(`${desc}: UPDATE REQUIRED`);
+            } else if (verDiff === false) {
+                console.warn(`${desc}: OK`);
+            } else {
+                console.warn(`${desc}: SKIPPED`);
+            }
+
         }
 
     }
