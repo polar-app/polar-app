@@ -40,12 +40,9 @@ import {
     BlockExpandPersistenceWriter,
     useBlockExpandPersistenceWriter
 } from "../persistence/BlockExpandWriters";
+import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
 
-function hasLocalStorage() {
-    return typeof localStorage !== 'undefined';
-}
-
-export const ENABLE_UNDO_TRACING = hasLocalStorage() ? localStorage.getItem('notes.undo.trace') === 'true' : 'false';
+export const ENABLE_UNDO_TRACING = LocalStorageFeatureToggles.iEnabled('notes.undo.trace');
 
 export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
