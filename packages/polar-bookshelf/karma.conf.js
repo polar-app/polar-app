@@ -25,9 +25,11 @@ module.exports = (config) => {
     frameworks: ['mocha', 'webpack'],
 
     plugins: [
-      'karma-chrome-launcher',
-      'karma-webpack',
-      'karma-mocha',
+        'karma-chrome-launcher',
+        'karma-webpack',
+        'karma-mocha',
+        'karma-spec-reporter',
+        'karma-junit-reporter'
     ],
 
     files: [
@@ -53,6 +55,8 @@ module.exports = (config) => {
       'web/**/*.ts': ['webpack'],
     },
     singleRun: true,
+
+    reporters: ['junit', 'spec'],
 
     webpack: {
       // karma watches the test entry points
