@@ -45,8 +45,9 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
             return;
         }
 
-        if (event.altKey && event.shiftKey && !blocksStore.hasSelected()) {
-            blocksStore.moveBlock(blockID, -1);
+        if (event.altKey && event.shiftKey) {
+            const selectedIDs = blocksStore.hasSelected() ? blocksStore.selectedIDs() : [blockID];
+            blocksStore.moveBlocks(selectedIDs, -1);
             abortEvent(event);
             return;
         }
@@ -68,8 +69,9 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
             return;
         }
 
-        if (event.altKey && event.shiftKey && !blocksStore.hasSelected()) {
-            blocksStore.moveBlock(blockID, 1);
+        if (event.altKey && event.shiftKey) {
+            const selectedIDs = blocksStore.hasSelected() ? blocksStore.selectedIDs() : [blockID];
+            blocksStore.moveBlocks(selectedIDs, 1);
             abortEvent(event);
             return;
         }

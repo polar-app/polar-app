@@ -17,6 +17,7 @@ import {UndoQueues2} from "../../undo/UndoQueues2";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
 import {IBlock} from "./IBlock";
 import {PositionalArrays} from "./PositionalArrays";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 function assertTextBlock(content: BlockContent): asserts content is MarkdownContent | NameContent {
 
@@ -841,6 +842,42 @@ describe('BlocksStore', function() {
         });
     });
 
+    describe("setSelectionRange", () => {
+        let store: BlocksStore;
+
+        beforeEach(() => {
+            store = createStore();
+            store.setRoot('102');
+            store.computeLinearTree('102').forEach(store.expand.bind(store));
+        });
+
+        it("should handle basic selection ranges (siblings only)", () => {
+            store.setSelectionRange('103', '104');
+
+            assert.deepEqual(store.selected, arrayStream(['103', '104']).toMap2(c => c, () => true));
+        });
+
+        it("should handle complex structures (siblings with children)", () => {
+            store.setSelectionRange('103', '106');
+
+            assert.deepEqual(store.selected, arrayStream(['103', '104', '105']).toMap2(c => c, () => true));
+        });
+
+        it("should handle bottom to top selections", () => {
+            store.setSelectionRange('106', '104');
+
+            assert.deepEqual(store.selected, arrayStream(['104', '105']).toMap2(c => c, () => true));
+        });
+
+        it("should have the correct selected items when setting the selection multiple times with a complex structure", () => {
+            store.setSelectionRange('102', '104');
+            store.setSelectionRange('102', '117');
+            store.setSelectionRange('102', '118');
+
+            assert.deepEqual(store.selected, arrayStream(['102']).toMap2(c => c, () => true));
+        });
+    });
+
     describe("canMergeNext", () => {
         it("should allow merging blocks in the same level", () => {
             const store = createStore();
@@ -897,7 +934,7 @@ describe('BlocksStore', function() {
             const store = createStore();
             const id = '102';
             const blockBefore = store.getBlock(id)!.toJSON();
-            store.moveBlock(id, -1);
+            store.moveBlocks([id], -1);
             const blockAfter = store.getBlock(id)!.toJSON();
             assertBlocksEqual(blockBefore, blockAfter);
         });
@@ -911,7 +948,7 @@ describe('BlocksStore', function() {
             let parent = store.getBlock(block.parent);
             assertPresent(parent);
             assert.deepEqual(parent.itemsAsArray, ['103', '104', '105']);
-            store.moveBlock(id, -5);
+            store.moveBlocks([id], -5);
             parent = store.getBlock(block.parent);
             assertPresent(parent);
             assert.deepEqual(parent.itemsAsArray, ['103', '104', '105']);
@@ -930,7 +967,7 @@ describe('BlocksStore', function() {
 
             // Upwards
             createUndoRunner(store, [parent.id], () => {
-                store.moveBlock(id, -5);
+                store.moveBlocks([id], -5);
                 parent = store.getBlock(parentID);
                 assertPresent(parent);
                 assert.deepEqual(parent.itemsAsArray, ['105', '103', '104']);
@@ -939,10 +976,48 @@ describe('BlocksStore', function() {
 
             // Downwards
             createUndoRunner(store, [parent.id], () => {
-                store.moveBlock(id, 1);
+                store.moveBlocks([id], 1);
                 parent = store.getBlock(parentID);
                 assertPresent(parent);
                 assert.deepEqual(parent.itemsAsArray, ['103', '105', '104']);
+            });
+        });
+
+        it("should be able to move multiple blocks properly (upwards)", () => {
+            const store = createStore();
+            const id = '102';
+            const parent = store.getBlock(id);
+            assertPresent(parent);
+            assert.deepEqual(parent.itemsAsArray, ['103', '104', '105']);
+
+            createUndoRunner(store, [parent.id], () => {
+                store.moveBlocks(['105', '104'], -5);
+                const parent = store.getBlock(id);
+                assertPresent(parent);
+                assert.deepEqual(parent.itemsAsArray, ['104', '105', '103']);
+            });
+
+        });
+
+        it("should be able to move multiple blocks properly (downwards)", () => {
+            const store = createStore();
+            const id = '102';
+            const parent = store.getBlock(id);
+            assertPresent(parent);
+            assert.deepEqual(parent.itemsAsArray, ['103', '104', '105']);
+
+            createUndoRunner(store, [parent.id], () => {
+                store.moveBlocks(['103', '105'], 5);
+                const parent = store.getBlock(id);
+                assertPresent(parent);
+                assert.deepEqual(parent.itemsAsArray, ['104', '103', '105']);
+            });
+
+            createUndoRunner(store, [parent.id], () => {
+                store.moveBlocks(['105', '104'], -1);
+                const parent = store.getBlock(id);
+                assertPresent(parent);
+                assert.deepEqual(parent.itemsAsArray, ['104', '105', '103']);
             });
         });
     });
