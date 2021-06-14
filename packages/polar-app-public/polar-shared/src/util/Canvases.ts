@@ -3,7 +3,7 @@ import {Preconditions} from '../Preconditions';
 import {DataURL, DataURLs} from './DataURLs';
 import {IDimensions} from "./IDimensions";
 import {ImageType} from "./ImageType";
-
+import {Images} from "./Images";
 
 const DEFAULT_IMAGE_TYPE = 'image/png';
 const DEFAULT_IMAGE_QUALITY = 1.0;
@@ -32,7 +32,7 @@ export interface ImageData {
 
 export namespace ImageDatas {
 
-    export function toDataURL(image: ImageData): string {
+    export function toDataURL(image: ImageData): DataURL {
 
         switch (image.format) {
 
@@ -42,6 +42,26 @@ export namespace ImageDatas {
                 return <string> image.data;
 
         }
+
+    }
+
+    export async function toDataURLWithSizeConstraint(dataURL: DataURL, maxSize: number): Promise<DataURL> {
+
+        if (dataURL.length > maxSize) {
+
+            const rescaleFactor = maxSize / dataURL.length;
+            const dim = await Images.getDimensions(dataURL);
+
+            const newWidth = rescaleFactor * dim.width;
+            const newHeight = rescaleFactor * dim.height;
+
+            const newDimensions = {width: newWidth, height: newHeight};
+
+            const resizedImage = await Canvases.resize(dataURL, newDimensions);
+            return toDataURL(resizedImage);
+        }
+
+        return dataURL;
 
     }
 

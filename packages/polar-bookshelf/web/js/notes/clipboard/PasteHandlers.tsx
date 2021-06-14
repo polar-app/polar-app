@@ -1,8 +1,9 @@
 import React from "react";
-import {DataURLs} from "polar-shared/src/util/DataURLs";
+import {DataURL, DataURLs} from "polar-shared/src/util/DataURLs";
 import {URLStr} from "polar-shared/src/util/Strings";
 import { Blobs } from "polar-shared/src/util/Blobs";
 import {Images} from "polar-shared/src/util/Images";
+import { Canvases, ImageDatas } from "polar-shared/src/util/Canvases";
 
 export interface IPasteImageData {
     readonly url: URLStr;
@@ -108,8 +109,13 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
 
                         if (file) {
 
-                            const ab = await Blobs.toArrayBuffer(file)
-                            const dataURL = DataURLs.encode(ab, pasteItem.type);
+                            const toDataURL = async (): Promise<DataURL> => {
+                                const ab = await Blobs.toArrayBuffer(file);
+                                const MAX_FIREBASE_SIZE = 900000;
+                                return await ImageDatas.toDataURLWithSizeConstraint(DataURLs.encode(ab, pasteItem.type), MAX_FIREBASE_SIZE);
+                            }
+
+                            const dataURL = await toDataURL();
 
                             // const resolution = await ImageResolutions.compute(file);
 
