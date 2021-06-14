@@ -953,7 +953,7 @@ describe('BlocksStore', function() {
             const store = createStore();
             const id = '102';
             const blockBefore = store.getBlock(id)!.toJSON();
-            store.moveBlock(id, -1);
+            store.moveBlocks([id], -1);
             const blockAfter = store.getBlock(id)!.toJSON();
             assertBlocksEqual(blockBefore, blockAfter);
         });
@@ -967,7 +967,7 @@ describe('BlocksStore', function() {
             let parent = store.getBlock(block.parent);
             assertPresent(parent);
             assert.deepEqual(parent.itemsAsArray, ['103', '104', '105']);
-            store.moveBlock(id, -5);
+            store.moveBlocks([id], -5);
             parent = store.getBlock(block.parent);
             assertPresent(parent);
             assert.deepEqual(parent.itemsAsArray, ['103', '104', '105']);
@@ -986,7 +986,7 @@ describe('BlocksStore', function() {
 
             // Upwards
             createUndoRunner(store, [parent.id], () => {
-                store.moveBlock(id, -5);
+                store.moveBlocks([id], -5);
                 parent = store.getBlock(parentID);
                 assertPresent(parent);
                 assert.deepEqual(parent.itemsAsArray, ['105', '103', '104']);
@@ -995,10 +995,48 @@ describe('BlocksStore', function() {
 
             // Downwards
             createUndoRunner(store, [parent.id], () => {
-                store.moveBlock(id, 1);
+                store.moveBlocks([id], 1);
                 parent = store.getBlock(parentID);
                 assertPresent(parent);
                 assert.deepEqual(parent.itemsAsArray, ['103', '105', '104']);
+            });
+        });
+
+        it("should be able to move multiple blocks properly (upwards)", () => {
+            const store = createStore();
+            const id = '102';
+            const parent = store.getBlock(id);
+            assertPresent(parent);
+            assert.deepEqual(parent.itemsAsArray, ['103', '104', '105']);
+
+            createUndoRunner(store, [parent.id], () => {
+                store.moveBlocks(['105', '104'], -5);
+                const parent = store.getBlock(id);
+                assertPresent(parent);
+                assert.deepEqual(parent.itemsAsArray, ['104', '105', '103']);
+            });
+
+        });
+
+        it("should be able to move multiple blocks properly (downwards)", () => {
+            const store = createStore();
+            const id = '102';
+            const parent = store.getBlock(id);
+            assertPresent(parent);
+            assert.deepEqual(parent.itemsAsArray, ['103', '104', '105']);
+
+            createUndoRunner(store, [parent.id], () => {
+                store.moveBlocks(['103', '105'], 5);
+                const parent = store.getBlock(id);
+                assertPresent(parent);
+                assert.deepEqual(parent.itemsAsArray, ['104', '103', '105']);
+            });
+
+            createUndoRunner(store, [parent.id], () => {
+                store.moveBlocks(['105', '104'], -1);
+                const parent = store.getBlock(id);
+                assertPresent(parent);
+                assert.deepEqual(parent.itemsAsArray, ['104', '105', '103']);
             });
         });
     });

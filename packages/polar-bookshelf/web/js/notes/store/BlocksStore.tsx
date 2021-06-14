@@ -2088,41 +2088,55 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    @action public moveBlock(id: BlockIDStr, delta: number) {
-        const block = this.getBlock(id);
+    @action public moveBlocks(ids: ReadonlyArray<BlockIDStr>, delta: number) {
+        const blocks = this.idsToBlocks(ids);
 
-        if (!block) {
-            throw new Error("Block to be moved was not found");
-        }
-
-        const getSibling = (id: BlockIDStr, delta: number): BlockIDStr => {
-            if (delta === 0) {
-                return id;
-            }
-
-            const sibling = this.doSibling(id, delta < 0 ? 'prev' : 'next');
-            if (!sibling) {
-                return id;
-            }
-
-            const newDelta = delta + (delta > 0 ? -1 : 1);
-            return getSibling(sibling, newDelta);
-        };
-
-        const siblingID = getSibling(id, delta);
-        const parentID = block.parent;
-
-        if (siblingID === id || !parentID) {
-            console.log("Block cannot be moved");
+        if (blocks.length === 0) {
             return;
         }
 
+        const parentID = blocks[0].parent;
+
+        if (!parentID) {
+            return console.log("moveBlock: can\'t move blocks with no parents");
+        }
+
+        const parent = this._index[parentID];
+        const allHaveSameParent = blocks.every(block => block.parent === parent.id);
+
+        if (! allHaveSameParent) { // This technically would never happen because our selection system only allows siblings
+            throw new Error("Only sibling blocks can be moved");
+        }
+        
+        const idsToPositionsMap = (ids: ReadonlyArray<BlockIDStr>) =>
+            ids.reduce((m, x, i) => m.set(x, i), new Map<string, number>())
+
+        const items = parent.itemsAsArray;
+        const itemPositions = idsToPositionsMap(items);
+        const orderedIds = ids
+            .map<[string, number]>(x => [x, itemPositions.get(x)!])
+            .sort(([, ai], [, bi]) => ai - bi)
+            .map(([x]) => x);
+
         const redo = () => {
-            const parent = this.getBlock(parentID)!;
-            parent.withMutation(() => {
-                parent.removeItem(id);
-                parent.addItem(id, {ref: siblingID, pos: delta > 0 ? 'after' : 'before'});
-            });
+            const pos = delta > 0 ? 'after' : 'before';
+            const ids = delta > 0 ? [...orderedIds].reverse() : orderedIds;
+            const idPositions = idsToPositionsMap(orderedIds);
+
+            const updatePosition = (blockID: BlockIDStr) => {
+                const idx = idPositions.get(blockID)!;
+                const min = idx;
+                const max = (items.length - 1) - (ids.length - 1 - idx);
+                const newIdx = Math.max(min, Math.min(itemPositions.get(blockID)! + delta, max));
+                const siblingID = parent.itemsAsArray[newIdx] as string | undefined;
+                if (siblingID && siblingID !== blockID) {
+                    parent.removeItem(blockID);
+                    parent.addItem(blockID, {ref: siblingID, pos});
+                }
+            };
+
+            parent.withMutation(() => ids.forEach(updatePosition));
+
             this.doPut([parent]);
         };
 
