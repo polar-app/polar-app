@@ -12,7 +12,7 @@ import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import IItemsPositionPatch = BlocksStoreMutations.IItemsPositionPatch;
 import {Preconditions} from "polar-shared/src/Preconditions";
 
-const NON_EDITABLE_BLOCK_TYPES: BlockType[] = ['name', 'date'];
+const NON_EDITABLE_BLOCK_TYPES: BlockType[] = ['name', 'date', 'image'];
 
 /**
  * Opts for withMutation normally used for undo.

@@ -242,4 +242,24 @@ export namespace ContentEditables {
             selection.addRange(range);
         }
     };
+
+    export function insertEmptySpacer(elem: HTMLElement) {
+        const isFocusable = (node: Node | null): boolean => {
+            if (!node) {
+                return true;
+            }
+            if (!node.textContent?.length) {
+                return isFocusable(node.previousSibling);
+            }
+            if (node.nodeType === Node.ELEMENT_NODE) {
+                const elem = node as Element;
+                return elem.getAttribute('contenteditable') !== 'false';
+            }
+            return true;
+        };
+
+        if (!isFocusable(elem.lastChild)) {
+            elem.appendChild(ContentEditables.createEmptySpacer());
+        }
+    }
 }
