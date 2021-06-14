@@ -48,6 +48,7 @@ export const BlockImageContent = observer((props: IProps) => {
     const handleKeyDown = React.useCallback((e: React.KeyboardEvent) => {
         if ((e.key === 'Backspace' || e.key === 'Delete') && !hasModifiers(e)) {
             blocksStore.deleteBlocks([id]);
+            e.preventDefault();
         } else if (onKeyDown) {
             onKeyDown(e);
         }
