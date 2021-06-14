@@ -24,8 +24,8 @@ const abortEvent = (event: React.KeyboardEvent): void => {
     event.preventDefault();
 };
 
-const hasModifiers = (event: React.KeyboardEvent): boolean =>
-    event.ctrlKey || event.shiftKey || event.metaKey || event.altKey;
+export const hasModifiers = (event: React.KeyboardEvent, includeShift: boolean = true): boolean =>
+    event.ctrlKey || event.metaKey || event.altKey || (includeShift && event.shiftKey);
 
 type KeydownHandlerOpts = {
     event: React.KeyboardEvent;
@@ -85,14 +85,13 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
         blocksStore.navNext('start', { shiftKey: event.shiftKey });
     },
     ArrowLeft: ({ event, platform, blockID, blocksStore, contentEditableElem }) => {
-        if (event.metaKey || event.altKey) {
-            return;
-        }
 
         if (! hasEditorSelection()) {
 
-            if ((platform === Platform.MACOS && event.shiftKey && event.metaKey) ||
-                (platform === Platform.WINDOWS && event.shiftKey && event.altKey)) {
+            const isMacOS = platform === Platform.MACOS;
+            const isPC = [Platform.LINUX, Platform.WINDOWS].indexOf(platform) > -1;
+            if ((isMacOS && event.shiftKey && event.metaKey) ||
+                (isPC && event.shiftKey && event.altKey)) {
 
                 blocksStore.unIndentBlock(blockID);
                 return;
@@ -111,15 +110,13 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
         }
     },
     ArrowRight: ({ event, platform, blocksStore, blockID, contentEditableElem }) => {
-        
-        if (event.metaKey || event.altKey) {
-            return;
-        }
 
         if (! hasEditorSelection()) {
 
-            if ((platform === Platform.MACOS && event.shiftKey && event.metaKey) ||
-                (platform === Platform.WINDOWS && event.shiftKey && event.altKey)) {
+            const isMacOS = platform === Platform.MACOS;
+            const isPC = [Platform.LINUX, Platform.WINDOWS].indexOf(platform) > -1;
+            if ((isMacOS && event.shiftKey && event.metaKey) ||
+                (isPC && event.shiftKey && event.altKey)) {
                 blocksStore.indentBlock(blockID);
                 return;
             }
@@ -134,6 +131,7 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
             }
 
         }
+
     },
     Tab: ({ event, blockID, blocksStore }) => {
 
@@ -243,7 +241,7 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
 
 
 type IUseBlockKeyDownHandlerOpts = {
-    contentEditableRef: React.RefObject<HTMLDivElement>,
+    contentEditableRef: React.RefObject<HTMLDivElement | null>,
     blockID: BlockIDStr;
     onKeyDown?: React.EventHandler<React.KeyboardEvent>;
     readonly?: boolean;
@@ -274,7 +272,7 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
                 blockID, 
                 readonly
             });
-        } else if (readonly) {
+        } else if (readonly && !hasModifiers(event, false)) {
             abortEvent(event);
         }
         if (blocksStore.hasSelected()) {
@@ -286,6 +284,20 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
         }
 
     }, [onKeyDown, blockID, platform, blocksStore, contentEditableRef, readonly]);
+
+    React.useEffect(() => {
+        const elem = contentEditableRef.current;
+        if (! readonly || ! elem) {
+            return;
+        }
+        const abort = (e: Event) => e.preventDefault();
+        elem.addEventListener('cut', abort);
+        elem.addEventListener('paste', abort);
+        return () => {
+            elem.removeEventListener('cut', abort);
+            elem.removeEventListener('paste', abort);
+        };
+    }, [readonly, contentEditableRef]);
 
     return { onKeyDown: handleKeyDown };
 };

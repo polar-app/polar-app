@@ -1,8 +1,8 @@
-import { HTMLStr } from 'polar-shared/src/util/Strings';
+import {HTMLStr} from 'polar-shared/src/util/Strings';
 import React from 'react';
 import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
-import { observer } from "mobx-react-lite"
-import {NavOpts, BlockIDStr, useBlocksStore, IActiveBlock} from '../store/BlocksStore';
+import {observer} from "mobx-react-lite"
+import {BlockIDStr, useBlocksStore, IActiveBlock} from '../store/BlocksStore';
 import {ContentEditables} from "../ContentEditables";
 import {createActionsProvider} from "../../mui/action_menu/ActionStore";
 import {NoteFormatPopper} from "../NoteFormatPopper";
@@ -14,36 +14,19 @@ import {IImageContent} from "../content/IImageContent";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {useMutationObserver} from '../../../../web/js/hooks/ReactHooks';
 import {MarkdownContent} from '../content/MarkdownContent';
-import {useBlockKeyDownHandler} from './BlockKeyboardHandlers';
+import {BlockEditorGenericProps} from '../BlockEditor';
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed
 const ENABLE_CURSOR_RESET = true;
 const ENABLE_CURSOR_RESET_TRACE = false;
 
-interface IProps {
-
-    readonly id: BlockIDStr;
-
-    readonly parent: BlockIDStr | undefined;
-
+interface IProps extends BlockEditorGenericProps {
     readonly content: HTMLStr;
 
     readonly onChange: (content: HTMLStr) => void;
 
-    readonly className?: string;
-
     readonly spellCheck?: boolean;
-
-    readonly style?: React.CSSProperties;
-
-    readonly innerRef?: React.MutableRefObject<HTMLDivElement | null>;
-
-    readonly onClick?: (event: React.MouseEvent) => void;
-
-    readonly onKeyDown?: (event: React.KeyboardEvent) => void;
-
-    readonly readonly?: boolean;
 }
 
 const NoteContentEditableElementContext = React.createContext<React.RefObject<HTMLElement | null>>({current: null});
@@ -146,22 +129,6 @@ export const BlockContentEditable = observer((props: IProps) => {
     }, [handleChange]);
 
     React.useEffect(() => {
-        if (blocksStore.active?.id === props.id) {
-            if (divRef.current) {
-
-                if (blocksStore.active.pos !== undefined) {
-                    updateCursorPosition(divRef.current, blocksStore.active)
-                }
-
-                divRef.current.focus();
-
-            }
-        } else if (divRef.current) {
-            insertEmptySpacer(divRef.current);
-        }
-    }, [props.id, updateCursorPosition, blocksStore.active]);
-
-    React.useEffect(() => {
 
         if (props.content.valueOf() !== contentRef.current.valueOf()) {
 
@@ -185,7 +152,7 @@ export const BlockContentEditable = observer((props: IProps) => {
                 const pos = CursorPositions.computeCurrentOffset(divRef.current);
 
                 divRef.current.innerHTML = MarkdownContentConverter.toHTML(props.content);
-                insertEmptySpacer(divRef.current!);
+                ContentEditables.insertEmptySpacer(divRef.current!);
 
 
                 // TODO: only update if WE are active so the cursor doesn't jump.
@@ -209,19 +176,12 @@ export const BlockContentEditable = observer((props: IProps) => {
 
     }, [props]);
 
-    const {onKeyDown} = useBlockKeyDownHandler({
-        contentEditableRef: divRef,
-        blockID: props.id,
-        onKeyDown: props.onKeyDown,
-        readonly: props.readonly,
-    });
-
     useHandleLinkDeletion({ elem: divRef.current, blockID: props.id });
 
     return (
         <NoteContentEditableElementContext.Provider value={divRef}>
 
-            <div onKeyDown={onKeyDown}
+            <div onKeyDown={props.onKeyDown}
                  onKeyUp={handleKeyUp}>
 
                 <BlockAction id={props.id}
@@ -241,6 +201,8 @@ export const BlockContentEditable = observer((props: IProps) => {
                              className={props.className}
                              style={{
                                  outline: 'none',
+                                 whiteSpace: 'pre-wrap',
+                                 wordBreak: 'break-word',
                                  ...props.style
                              }}
                              dangerouslySetInnerHTML={{__html: content}}/>
@@ -258,7 +220,7 @@ export const BlockContentEditable = observer((props: IProps) => {
 /**
  * Hook which keeps track of the last nonce we updated to avoid double updates.
  */
-function useUpdateCursorPosition() {
+export function useUpdateCursorPosition() {
 
     const nonceRef = React.useRef(-1);
 
@@ -282,25 +244,6 @@ function useUpdateCursorPosition() {
     }, []);
 
 }
-
-const insertEmptySpacer = (elem: HTMLElement) => {
-    const isFocusable = (node: Node | null): boolean => {
-        if (!node) {
-            return true;
-        }
-        if (!node.textContent?.length) {
-            return isFocusable(node.previousSibling);
-        }
-        if (node.nodeType === Node.ELEMENT_NODE) {
-            const elem = node as Element;
-            return elem.getAttribute('contenteditable') !== 'false';
-        }
-        return true;
-    };
-    if (!isFocusable(elem.lastChild)) {
-        elem.appendChild(ContentEditables.createEmptySpacer());
-    }
-};
 
 function doUpdateCursorPosition(editor: HTMLDivElement, pos: 'start' | 'end' | number) {
 

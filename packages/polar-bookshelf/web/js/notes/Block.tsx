@@ -280,10 +280,7 @@ export const BlockInner = observer((props: IProps) => {
                                 {block.parent && <BlockBulletButton target={props.id}/>}
 
                             </div>
-
-                            {(block.content.type === 'date' || block.content.type === 'name' || block.content.type === 'markdown') && (
-                                <BlockEditor key={props.id} parent={props.parent} id={props.id} />
-                            )}
+                            <BlockEditor key={props.id} parent={props.parent} id={props.id} />
 
                             {/*{(block.content.type === 'date' || block.content.type === 'name') && (*/}
                             {/*    <div style={{*/}
@@ -294,13 +291,6 @@ export const BlockInner = observer((props: IProps) => {
                             {/*        {block.content.data}*/}
                             {/*    </div>*/}
                             {/*)}*/}
-
-                            {block.content.type === 'image' && (
-                                <BlockImageContent src={block.content.src}
-                                                   width={block.content.width}
-                                                   height={block.content.height}/>
-                            )}
-
                         </div>
 
                         {(expanded || id === root) && (

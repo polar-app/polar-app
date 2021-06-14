@@ -23,7 +23,7 @@ const FixedWidthContainer = React.memo(function FixedWidthContainer(props: {chil
     return (
         <div className="FixedWidthContainer"
              style={{
-                 maxWidth: '1000px',
+                 maxWidth: '100%',
                  flexGrow: 1,
                  marginLeft: 'auto',
                  marginRight: 'auto'
