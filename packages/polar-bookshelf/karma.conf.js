@@ -15,7 +15,7 @@ module.exports = (config) => {
     // ... normal karma configuration
     client: {
       mocha: {
-        timeout : 10000
+        timeout : 15000
       }
     },
     // browsers: ['Chrome'],
@@ -23,21 +23,28 @@ module.exports = (config) => {
 
     // make sure to include webpack as a framework
     frameworks: ['mocha', 'webpack'],
-    client: {
-        mocha: {
-            timeout: 15000
-        },
-    },
 
     plugins: [
-      'karma-chrome-launcher',
-      'karma-webpack',
-      'karma-mocha',
+        'karma-chrome-launcher',
+        'karma-webpack',
+        'karma-mocha',
+        'karma-spec-reporter',
+        'karma-junit-reporter'
     ],
 
     files: [
       // { pattern: 'web/js/**/*Test.ts', watched: false },
       // { pattern: 'apps/**/*Test.ts', watched: false },
+      // { pattern: 'web/**/*Test.ts', watched: false },
+
+      { pattern: 'apps/**/*Test.ts', watched: false },
+
+      // TODO: looks like this won't work because jsdom won't compile in webpack
+      // due to child_process.
+
+      { pattern: 'web/**/*TestK.ts', watched: false },
+      { pattern: 'web/**/*TestNK.ts', watched: false },
+      { pattern: 'apps/**/*Karma.ts', watched: false },
       { pattern: 'web/**/*Karma.ts', watched: false },
 
     ],
@@ -48,6 +55,8 @@ module.exports = (config) => {
       'web/**/*.ts': ['webpack'],
     },
     singleRun: true,
+
+    reporters: ['junit', 'spec'],
 
     webpack: {
       // karma watches the test entry points

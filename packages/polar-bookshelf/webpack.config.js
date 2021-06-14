@@ -283,6 +283,7 @@ module.exports = {
             fs: false,
             net: false,
             tls: false,
+            child_process: false
         }
     },
     devtool,

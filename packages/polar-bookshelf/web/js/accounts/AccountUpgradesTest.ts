@@ -3,8 +3,6 @@ import {AccountUpgrades, AccountUsage} from "./AccountUpgrades";
 import { TestingTime } from 'polar-shared/src/test/TestingTime';
 import { Plans } from 'polar-accounts/src/Plans';
 import {Billing} from "polar-accounts/src/Billing";
-import V2PlanPlus = Billing.V2PlanPlus;
-import V2PlanPro = Billing.V2PlanPro;
 import { assertJSON } from '../test/Assertions';
 import V2Plan = Billing.V2Plan;
 import V2PlanFree = Billing.V2PlanFree;
