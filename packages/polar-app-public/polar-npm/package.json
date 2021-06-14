@@ -1,6 +1,6 @@
 {
   "name": "polar-npm",
-  "version": "2.1.66",
+  "version": "2.1.67",
   "description": "Basic internal NPM commands which extend NPM functionality",
   "main": "index.js",
   "scripts": {
