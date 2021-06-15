@@ -5,23 +5,25 @@ import {ColorStr} from "./colors/ColorSelectorBox";
 import PaletteIcon from "@material-ui/icons/Palette";
 
 export const MAIN_HIGHLIGHT_COLORS: ReadonlyArray<ColorStr> = [
-    "#E8EC3A",
-    "#EC3A3A",
-    "#3A76EC",
-    "#E83AEC",
-    "#7EEC3A",
+    "yellow",
+    "#8DFF76",
+    "#F78DA7",
 
-    "#ECAF3A",
-    "#EC3A7A",
-    "#4C8B65",
-    "#CBB958",
-    "#7E4A79",
+    "red",
+    "green",
+    "#FFFF00",
 
-    "#3AECE1",
-    "#2B5C6B",
-    "#6C50A9",
-    "#F3D848",
-    "#B02F2F",
+    "#00D084",
+    "#8ED1FC",
+    "#F96676",
+
+    "#9900EF",
+    "#0693E3",
+    "#FCB900",
+
+    "#FF6900",
+    "#EB144C",
+    "#7BDCB5",
 ];
 
 const useStyles = makeStyles((theme) =>
