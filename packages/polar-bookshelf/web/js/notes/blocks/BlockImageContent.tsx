@@ -6,6 +6,7 @@ import React from "react";
 import {BlockEditorGenericProps} from "../BlockEditor";
 import {DataURLStr} from "../content/IImageContent";
 import {hasModifiers} from "../contenteditable/BlockKeyboardHandlers";
+import {ContentEditables} from "../ContentEditables";
 import {useBlocksStore} from "../store/BlocksStore";
 
 interface IProps extends BlockEditorGenericProps {
@@ -15,15 +16,13 @@ interface IProps extends BlockEditorGenericProps {
     readonly height: number;
 }
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
         root: {
+            whiteSpace: 'pre-wrap',
             "& img": {
                 boxSizing: 'content-box',
-            },
-            "&.active img": {
-                boxShadow: `0 0 0 2px ${theme.palette.primary.main}`,
-            },
+            }
         },
     }),
 );
@@ -59,19 +58,28 @@ export const BlockImageContent = observer((props: IProps) => {
         if (!elem) {
             return;
         }
+        const getSpacer = () => {
+            const span = document.createElement('span');
+            span.style.display = 'inline-block';
+            span.style.height = '100%';
+            span.appendChild(document.createTextNode(' '));
+            return span;
+        };
 
         const img = document.createElement('img');
         img.src = src;
         img.width = width;
         img.height = height;
         elem.innerHTML = '';
+        elem.appendChild(getSpacer());
         elem.appendChild(img);
+        elem.appendChild(getSpacer());
     }, [src, width, height]);
 
     return (
         <div onClick={onClick}
              onKeyDown={handleKeyDown}
-             className={clsx(classes.root, {active: blocksStore.active?.id === id })}
+             className={classes.root}
              contentEditable
              ref={handleRef} />
     );
