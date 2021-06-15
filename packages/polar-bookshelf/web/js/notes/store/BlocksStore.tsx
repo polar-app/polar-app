@@ -114,6 +114,7 @@ export interface ISplitBlock {
 export interface INewBlockOpts {
     readonly split?: ISplitBlock;
     readonly content?: IBlockContent;
+    readonly asChild?: boolean;
 }
 
 export interface DeleteBlockRequest {
@@ -1393,7 +1394,7 @@ export class BlocksStore implements IBlocksStore {
 
                 // Block has no parent (in the case of a root block), or a block that has children
                 // with suffix of an empty string
-                if (!block.parent || (hasChildren && split?.suffix === '')) {
+                if (opts.asChild || ! block.parent || (hasChildren && split?.suffix === '')) {
                     return {
                         type: 'first-child',
                         parentBlock: block
