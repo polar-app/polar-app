@@ -1,12 +1,14 @@
 ---
-title: "Hiring: Senior Frontend Engineer"
+title: "Hiring: Senior Frontend React Engineer"
 date: 2021-06-10 08:00:00 -0800
 layout: post
 large_image: https://i.imgur.com/a7bN3HY.png
-description: Polar is looking for a Senior Frontend Engineer to join our team to reinvent EdTech
+description: Polar is looking for a Senior Frontend React Engineer to join our team to reinvent EdTech
 ---
 
-# Polar Senior Frontend Engineer
+# Polar Senior Frontend React Engineer
+
+<img alt="React" src="https://i.imgur.com/a7bN3HY.png">
 
 Polar is looking for a Senior Frontend Engineer to join our team to reinvent EdTech!
 
