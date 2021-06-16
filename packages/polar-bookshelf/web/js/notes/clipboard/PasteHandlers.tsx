@@ -2,7 +2,6 @@ import React from "react";
 import {DataURLs} from "polar-shared/src/util/DataURLs";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {Blobs} from "polar-shared/src/util/Blobs";
-import {Elements} from "../../util/Elements";
 import {HTMLToBlocks, IBlockContentStructure} from "../HTMLToBlocks";
 import {Images} from "polar-shared/src/util/Images";
 
@@ -39,11 +38,20 @@ interface IPasteItemForHTML {
 }
 
 interface IPasteItemForUnknown {
-    readonly kind: 'unknown'
+    readonly kind: 'unknown';
     readonly type: string;
 }
 
-export type PasteItem = IPasteItemForImage | IPasteItemForHTML | IPasteItemForUnknown;
+interface IPasteItemForPolarBlocks {
+    readonly kind: 'polarblocks';
+    readonly dataTransferItem: DataTransferItem;
+}
+
+export type PasteItem =
+    IPasteItemForImage |
+    IPasteItemForHTML |
+    IPasteItemForPolarBlocks |
+    IPasteItemForUnknown;
 
 function toPasteItem(item: DataTransferItem): PasteItem {
     switch (item.type) {
@@ -66,6 +74,12 @@ function toPasteItem(item: DataTransferItem): PasteItem {
                 dataTransferItem: item,
             };
 
+        case 'application/polarblocks+json':
+            return {
+                kind: 'polarblocks',
+                dataTransferItem: item,
+            };
+
         default:
             return {
                 kind: 'unknown',
@@ -79,9 +93,30 @@ function toPasteItem(item: DataTransferItem): PasteItem {
 type PasteType = PasteItem['kind'];
 type PasteTypesMap = { [K in PasteItem as K['kind']]: K };
 
-const isPasteType = (xs: ReadonlyArray<PasteItem>, type: PasteType) => xs.some(x => x.kind === type);
 const getPasteItem = <T extends PasteType>(xs: ReadonlyArray<PasteItem>, type: T) =>
     xs.find((item): item is PasteTypesMap[T] => item.kind === type)
+
+
+
+type PasteHandler = {
+    type: PasteType;
+    handler: () => Promise<void>;
+};
+
+const executePasteHandlers = async (
+    handlers: ReadonlyArray<PasteHandler>,
+    onError: (err: Error) => void,
+) => {
+    for (const {handler, type} of handlers) {
+        try {
+            await handler();
+        } catch (e) {
+            console.error(`Error: Failed to execute pasteHandler for ${type}, falling back to the next one.`);
+            onError(e);
+            continue;
+        }
+    }
+}
 
 /**
  * Clipboard paste handler that takes clipboard data given to us via an onPaste
@@ -122,10 +157,8 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
                     }
 
                     onPasteImage(image);
-
                 }
             }
-
         }
 
         async function extractHTML() {
@@ -140,12 +173,37 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
             }
         }
 
-        if (isPasteType(pasteItems, 'image')) {
+        async function extractPolarBlocks() {
+            const blocksStructureItem = getPasteItem(pasteItems, 'polarblocks');
+            if (blocksStructureItem) {
+                const getJSONString = (): Promise<string> => new Promise((resolve) => (
+                    blocksStructureItem.dataTransferItem.getAsString(resolve)
+                ));
+                try {
+                    const json = JSON.parse(await getJSONString());
+                    // TODO: Might need to validate the structure here.
+                    onPasteBlocks(json);
+
+                } catch (e) {
+                    console.error('Error: failed to parse application/polarblocks+json', e);
+                }
+            }
+        }
+
+        const canBeHandled = pasteItems
+            .some(item => ~['html', 'image', 'polarblocks'].indexOf(item.kind));
+
+        if (canBeHandled) {
             event.preventDefault();
-            extractImage().catch(err => onPasteError(err));
-        } else if (isPasteType(pasteItems, 'html')) {
-            event.preventDefault();
-            extractHTML().catch(err => onPasteError(err));
+            executePasteHandlers(
+                [
+                    // The following array represents priority
+                    {type: 'polarblocks', handler: extractPolarBlocks},
+                    {type: 'html', handler: extractHTML},
+                    {type: 'image', handler: extractImage},
+                ],
+                onPasteError,
+            );
         }
 
     }, [onPasteError, onPasteImage, onPasteBlocks])
