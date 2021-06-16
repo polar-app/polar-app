@@ -20,6 +20,7 @@ describe('HTMLToBlocks', () => {
             }
         }
     });
+
     describe('parse', () => {
         it('should parse basic unordered lists', async () => {
             const input = `<meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -200,6 +201,34 @@ function myFunction() {
                 {content: HTMLToBlocks.createMarkdownContent("World"), children: []},
                 {content: HTMLToBlocks.createMarkdownContent("Foo"), children: []},
                 {content: HTMLToBlocks.createMarkdownContent("bar"), children: []},
+            ];
+
+            assert.deepEqual(await HTMLToBlocks.parse(input), output);
+        });
+
+        it('should work with nested lists that have <ul>s inside of <li>s (our own block to html converter)', async () => {
+            const input = `<ul><li>What i<a href=\"https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png\">s happening?</a><ul><ul><ul><li>Foo</li></ul><li>Bar<ul><ul><li>5ffasdfas</li></ul><li>World<ul><li>foo</li></ul></li></ul></li></ul><li>Dude</li></ul></li></ul>`;
+
+            const output: IBlockContentStructure[] = [
+                {
+                    content: HTMLToBlocks.createMarkdownContent("What i[s happening?](https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png)"),
+                    children: [
+                        {content: HTMLToBlocks.createMarkdownContent("Foo"), children: []},
+                        {
+                            content: HTMLToBlocks.createMarkdownContent("Bar"),
+                            children: [
+                                {content: HTMLToBlocks.createMarkdownContent("5ffasdfas"), children: []},
+                                {
+                                    content: HTMLToBlocks.createMarkdownContent("World"),
+                                    children: [
+                                        {content: HTMLToBlocks.createMarkdownContent("foo"), children: []},
+                                    ]
+                                },
+                            ]
+                        },
+                        {content: HTMLToBlocks.createMarkdownContent("Dude"), children: []},
+                    ]
+                },
             ];
 
             assert.deepEqual(await HTMLToBlocks.parse(input), output);
