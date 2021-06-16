@@ -40,6 +40,7 @@ import {
     BlockExpandPersistenceWriter,
     useBlockExpandPersistenceWriter
 } from "../persistence/BlockExpandWriters";
+import {IBlockContentStructure} from "../HTMLToBlocks";
 
 export const ENABLE_UNDO_TRACING = false;
 
@@ -114,6 +115,8 @@ export interface ISplitBlock {
 export interface INewBlockOpts {
     readonly split?: ISplitBlock;
     readonly content?: IBlockContent;
+    readonly asChild?: boolean;
+    readonly newBlockID?: BlockIDStr;
 }
 
 export interface DeleteBlockRequest {
@@ -133,6 +136,10 @@ export interface IBlockMerge {
 
 export interface NavOpts {
     readonly shiftKey: boolean;
+}
+
+export interface IInsertBlocksContentStructureOpts {
+    blockIDs?: ReadonlyArray<BlockIDStr>;
 }
 
 /**
@@ -424,6 +431,47 @@ export class BlocksStore implements IBlocksStore {
             this._expanded[opts.newExpand] = true;
         }
 
+    }
+
+    @action public insertFromBlockContentStructure(
+        blocks: ReadonlyArray<IBlockContentStructure>,
+        opts: IInsertBlocksContentStructureOpts = {},
+    ): ReadonlyArray<BlockIDStr> {
+        const refID = this.active?.id || this.root;
+
+        if (!refID) {
+            throw new Error('Don\'t know where to insert the new blocks');
+        }
+
+        const countBlocks = (blocks: ReadonlyArray<IBlockContentStructure>): number => blocks.length + blocks.reduce((sum, {children}) => sum + countBlocks(children), 0);
+        const count = countBlocks(blocks);
+        const ids: ReadonlyArray<BlockIDStr> = opts.blockIDs || Array.from({ length: count }).map(() => Hashcodes.createRandomID());
+
+        if (ids.length !== count) {
+            throw new Error('Not enough custom ids provided');
+        }
+
+        let i = 0;
+        const redo = () => {
+            const storeBlocks = (blocks: ReadonlyArray<IBlockContentStructure>, ref: BlockIDStr, isParent: boolean = false) => {
+                [...blocks]
+                    .reverse()
+                    .forEach(({ children, content }) => {
+                        const newBlockID = ids[i++];
+                        const newBlock = this.doCreateNewBlock(ref, { asChild: isParent, content, newBlockID });
+                        if (newBlock) {
+                            storeBlocks(children, newBlock.id, true);
+                        }
+                    });
+            };
+            storeBlocks(blocks, refID, false);
+            return ids;
+        };
+
+        // We have to reverse the ids here so when undoing children get deleted before the parents
+        // otherwise doDelete would skip some children if their parent get deleted first
+        const identifiers = [...[...ids].reverse(), this._index[refID].parent || refID];
+        return this.doUndoPush('insertFromBlockContentStructure', identifiers, redo);
     }
 
     public hasSelected(): boolean {
@@ -1305,10 +1353,16 @@ export class BlocksStore implements IBlocksStore {
         this.doPut(blocks);
     }
 
+    @action public createNewBlock(id: BlockIDStr, opts: INewBlockOpts = {}): ICreatedBlock | undefined {
+        const newBlockID = Hashcodes.createRandomID();
+        const redo = () => this.doCreateNewBlock(id, {...opts, newBlockID});
+        return this.doUndoPush('createNewBlock', [id, newBlockID], redo);
+    }
+
     /**
      * Create a new block in reference to the block with given ID.
      */
-    @action public createNewBlock(id: BlockIDStr, opts: INewBlockOpts = {}): ICreatedBlock | undefined {
+    @action public doCreateNewBlock(id: BlockIDStr, opts: INewBlockOpts = {}): ICreatedBlock | undefined {
 
         // *** we first have to compute the new parent this has to be computed
         // based on the expansion tree because if the current block setup is like:
@@ -1337,185 +1391,179 @@ export class BlocksStore implements IBlocksStore {
         // - second
 
         // create the newBlock ID here so that it can be reliably used in undo/redo operations.
-        const newBlockID = Hashcodes.createRandomID();
+        const newBlockID = opts.newBlockID || Hashcodes.createRandomID();
         // ... we also have to keep track of the active note ... right?
 
-        const redo = () => {
-            /**
-             * A new block instruction that creates the block relative to a sibling
-             * and provides the parent.
-             */
-            interface INewBlockPositionRelative {
-                readonly type: 'relative';
-                readonly parentBlock: Block;
-                readonly ref: BlockIDStr;
-                readonly pos: NewChildPos;
-            }
-
-            interface INewBlockPositionFirstChild {
-                readonly type: 'first-child';
-                readonly parentBlock: Block;
-            }
-
-            type INewBlockPosition = INewBlockPositionFirstChild | INewBlockPositionRelative;
-
-            const parseLinksFromContent = (origLinks: ReadonlyArray<IBlockLink>, content: string): ReadonlyArray<IBlockLink> => (
-                [...content.matchAll(WikiLinksToMarkdown.WIKI_LINK_REGEX)]
-                    .map(([, text]) => ({ id: origLinks.find((o) => o.text === text)!.id, text }))
-            );
-
-            const computeNewBlockPosition = (): INewBlockPosition => {
-
-                const computeNextLinearExpansionID = () => {
-                    const linearExpansionTree = this.computeLinearExpansionTree2(id);
-                    return Arrays.first(linearExpansionTree);
-                };
-
-                const nextSiblingID = this.nextSibling(id);
-                const nextLinearExpansionID = computeNextLinearExpansionID();
-
-                const createNewBlockPositionRelative = (ref: BlockIDStr, pos: NewChildPos): INewBlockPositionRelative => {
-
-                    const block = this.getBlock(ref)!;
-                    const parentBlock = this.getBlock(block.parent!)!;
-
-                    return {
-                        type: 'relative',
-                        parentBlock,
-                        ref,
-                        pos
-                    };
-
-                };
-
-                const block = this.getBlock(id)!;
-                const hasChildren = this.children(block.id).length > 0;
-
-                // Block has no parent (in the case of a root block), or a block that has children
-                // with suffix of an empty string
-                if (!block.parent || (hasChildren && split?.suffix === '')) {
-                    return {
-                        type: 'first-child',
-                        parentBlock: block
-                    };
-                }
-
-                if (nextSiblingID && split !== undefined) {
-                    return createNewBlockPositionRelative(nextSiblingID, 'before')
-                } else if (nextLinearExpansionID && split === undefined) {
-                    return createNewBlockPositionRelative(nextLinearExpansionID, 'before')
-                } else {
-                    return createNewBlockPositionRelative(id, 'after');
-                }
-
-            };
-
-            const createNewBlock = (parentBlock: Block): IBlock => {
-                const now = ISODateTimeStrings.create()
-
-                const items = newBlockInheritItems ? currentBlock.items : {};
-
-                const data = split?.suffix || '';
-                const content = opts.content || {
-                    type: 'markdown',
-                    data,
-                    links: parseLinksFromContent(links, data),
-                };
-
-                return {
-                    id: newBlockID,
-                    parent: parentBlock.id,
-                    parents: [...parentBlock.parents, parentBlock.id],
-                    nspace: parentBlock.nspace,
-                    uid: this.uid,
-                    root: parentBlock.root,
-                    content: Contents.create(content).toJSON(),
-                    created: now,
-                    updated: now,
-                    items,
-                    mutation: 0
-                };
-
-            };
-
-            const currentBlock = this.getBlock(id)!;
-            const getSplit = (): ISplitBlock | undefined => currentBlock.content.type === 'markdown' ? opts.split : undefined;
-            const getLinks = (): ReadonlyArray<IBlockLink> => currentBlock.content.type === 'markdown' ? currentBlock.content.links : [];
-
-            const split = getSplit();
-            const links = getLinks();
-            const newBlockInheritItems = split?.suffix !== undefined && split?.suffix !== '';
-
-            const newBlockPosition = computeNewBlockPosition();
-
-            const {parentBlock} = newBlockPosition;
-
-            const newBlock = createNewBlock(parentBlock);
-
-            const updateParent = (newParent: BlockIDStr) => (block: Block) => {
-                this.doUpdateParent(block, newParent);
-                this.doRebuildParents(block);
-            };
-
-            this.doPut([newBlock]);
-
-            if (newBlockInheritItems) {
-                const items = currentBlock.itemsAsArray;
-                this.idsToBlocks(items).map(updateParent(newBlock.id));
-                const nestedChildrenIds = items.flatMap(this.computeLinearTree.bind(this));
-                this.idsToBlocks(nestedChildrenIds).forEach(this.doRebuildParents.bind(this));
-            }
-
-            parentBlock.withMutation(() => {
-
-                switch (newBlockPosition.type) {
-
-                    case "relative":
-                        parentBlock.addItem(newBlock.id, newBlockPosition);
-                        break;
-                    case "first-child":
-                        parentBlock.addItem(newBlock.id, 'unshift');
-                        break;
-
-                }
-
-            })
-
-            if (split?.suffix !== undefined && Object.keys(newBlock.items).length > 0) {
-                this.expand(newBlock.id);
-            }
-
-            currentBlock.withMutation(() => {
-
-                if (split?.prefix !== undefined) {
-
-                    currentBlock.setContent({
-                        type: 'markdown',
-                        data: split.prefix,
-                        links: parseLinksFromContent(links, split.prefix),
-                    });
-
-                    if (newBlockInheritItems) {
-                        currentBlock.setItems([]);
-                    }
-
-                }
-
-            });
-
-            this.doPut([currentBlock, parentBlock]);
-
-            this.setActiveWithPosition(newBlock.id, 'start');
-
-            return {
-                id: newBlock.id,
-                parent: newBlock.parent!
-            };
-
+        /**
+         * A new block instruction that creates the block relative to a sibling
+         * and provides the parent.
+         */
+        interface INewBlockPositionRelative {
+            readonly type: 'relative';
+            readonly parentBlock: Block;
+            readonly ref: BlockIDStr;
+            readonly pos: NewChildPos;
         }
 
-        return this.doUndoPush('createNewBlock', [id, newBlockID], redo);
+        interface INewBlockPositionFirstChild {
+            readonly type: 'first-child';
+            readonly parentBlock: Block;
+        }
 
+        type INewBlockPosition = INewBlockPositionFirstChild | INewBlockPositionRelative;
+
+        const parseLinksFromContent = (origLinks: ReadonlyArray<IBlockLink>, content: string): ReadonlyArray<IBlockLink> => (
+            [...content.matchAll(WikiLinksToMarkdown.WIKI_LINK_REGEX)]
+                .map(([, text]) => ({ id: origLinks.find((o) => o.text === text)!.id, text }))
+        );
+
+        const computeNewBlockPosition = (): INewBlockPosition => {
+
+            const computeNextLinearExpansionID = () => {
+                const linearExpansionTree = this.computeLinearExpansionTree2(id);
+                return Arrays.first(linearExpansionTree);
+            };
+
+            const nextSiblingID = this.nextSibling(id);
+            const nextLinearExpansionID = computeNextLinearExpansionID();
+
+            const createNewBlockPositionRelative = (ref: BlockIDStr, pos: NewChildPos): INewBlockPositionRelative => {
+
+                const block = this.getBlock(ref)!;
+                const parentBlock = this.getBlock(block.parent!)!;
+
+                return {
+                    type: 'relative',
+                    parentBlock,
+                    ref,
+                    pos
+                };
+
+            };
+
+            const block = this.getBlock(id)!;
+            const hasChildren = this.children(block.id).length > 0;
+
+            // Block has no parent (in the case of a root block), or a block that has children
+            // with suffix of an empty string
+            if (opts.asChild || ! block.parent || (hasChildren && split?.suffix === '')) {
+                return {
+                    type: 'first-child',
+                    parentBlock: block
+                };
+            }
+
+            if (nextSiblingID && split !== undefined) {
+                return createNewBlockPositionRelative(nextSiblingID, 'before')
+            } else if (nextLinearExpansionID && split === undefined) {
+                return createNewBlockPositionRelative(nextLinearExpansionID, 'before')
+            } else {
+                return createNewBlockPositionRelative(id, 'after');
+            }
+
+        };
+
+        const createNewBlock = (parentBlock: Block): IBlock => {
+            const now = ISODateTimeStrings.create()
+
+            const items = newBlockInheritItems ? currentBlock.items : {};
+
+            const data = split?.suffix || '';
+            const content = opts.content || {
+                type: 'markdown',
+                data,
+                links: parseLinksFromContent(links, data),
+            };
+
+            return {
+                id: newBlockID,
+                parent: parentBlock.id,
+                parents: [...parentBlock.parents, parentBlock.id],
+                nspace: parentBlock.nspace,
+                uid: this.uid,
+                root: parentBlock.root,
+                content: Contents.create(content).toJSON(),
+                created: now,
+                updated: now,
+                items,
+                mutation: 0
+            };
+
+        };
+
+        const currentBlock = this.getBlock(id)!;
+        const getSplit = (): ISplitBlock | undefined => currentBlock.content.type === 'markdown' ? opts.split : undefined;
+        const getLinks = (): ReadonlyArray<IBlockLink> => currentBlock.content.type === 'markdown' ? currentBlock.content.links : [];
+
+        const split = getSplit();
+        const links = getLinks();
+        const newBlockInheritItems = split?.suffix !== undefined && split?.suffix !== '';
+
+        const newBlockPosition = computeNewBlockPosition();
+
+        const {parentBlock} = newBlockPosition;
+
+        const newBlock = createNewBlock(parentBlock);
+
+        const updateParent = (newParent: BlockIDStr) => (block: Block) => {
+            this.doUpdateParent(block, newParent);
+            this.doRebuildParents(block);
+        };
+
+        this.doPut([newBlock]);
+
+        if (newBlockInheritItems) {
+            const items = currentBlock.itemsAsArray;
+            this.idsToBlocks(items).map(updateParent(newBlock.id));
+            const nestedChildrenIds = items.flatMap(this.computeLinearTree.bind(this));
+            this.idsToBlocks(nestedChildrenIds).forEach(this.doRebuildParents.bind(this));
+        }
+
+        parentBlock.withMutation(() => {
+
+            switch (newBlockPosition.type) {
+
+                case "relative":
+                    parentBlock.addItem(newBlock.id, newBlockPosition);
+                    break;
+                case "first-child":
+                    parentBlock.addItem(newBlock.id, 'unshift');
+                    break;
+
+            }
+
+        })
+
+        if (split?.suffix !== undefined && Object.keys(newBlock.items).length > 0) {
+            this.expand(newBlock.id);
+        }
+
+        currentBlock.withMutation(() => {
+
+            if (split?.prefix !== undefined) {
+
+                currentBlock.setContent({
+                    type: 'markdown',
+                    data: split.prefix,
+                    links: parseLinksFromContent(links, split.prefix),
+                });
+
+                if (newBlockInheritItems) {
+                    currentBlock.setItems([]);
+                }
+
+            }
+
+        });
+
+        this.doPut([currentBlock, parentBlock]);
+
+        this.setActiveWithPosition(newBlock.id, 'start');
+
+        return {
+            id: newBlock.id,
+            parent: newBlock.parent!
+        };
     }
 
     private cursorOffsetCapture(): IActiveBlock | undefined {

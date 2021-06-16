@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) =>
             display: 'flex',
             flexGrow: 1,
             fontSize: '18px',
+            justifyContent: 'center',
             marginLeft: theme.spacing(2),
             marginRight: theme.spacing(2),
             marginBottom: theme.spacing(2),
@@ -23,10 +24,8 @@ const FixedWidthContainer = React.memo(function FixedWidthContainer(props: {chil
     return (
         <div className="FixedWidthContainer"
              style={{
-                 maxWidth: '100%',
-                 flexGrow: 1,
-                 marginLeft: 'auto',
-                 marginRight: 'auto'
+                 maxWidth: '1000px',
+                flexGrow: 1,
              }}>
             {props.children}
         </div>

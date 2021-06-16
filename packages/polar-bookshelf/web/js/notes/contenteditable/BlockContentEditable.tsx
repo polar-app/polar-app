@@ -15,6 +15,7 @@ import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {useMutationObserver} from '../../../../web/js/hooks/ReactHooks';
 import {MarkdownContent} from '../content/MarkdownContent';
 import {BlockEditorGenericProps} from '../BlockEditor';
+import {IBlockContentStructure} from '../HTMLToBlocks';
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed
@@ -65,13 +66,17 @@ export const BlockContentEditable = observer((props: IProps) => {
 
     }, [blocksStore, props.id]);
 
+    const onPasteBlocks = React.useCallback((blocks: ReadonlyArray<IBlockContentStructure>) => {
+        blocksStore.insertFromBlockContentStructure(blocks);
+    }, [blocksStore]);
+
     const onPasteError = React.useCallback((err: Error) => {
         console.error("Got paste error: ", err);
 
 
     }, []);
 
-    const handlePaste = usePasteHandler({onPasteImage, onPasteError});
+    const handlePaste = usePasteHandler({onPasteImage, onPasteError, onPasteBlocks});
 
     const noteLinkActions = blocksStore.getNamedBlocks().map(current => ({
         id: current,
