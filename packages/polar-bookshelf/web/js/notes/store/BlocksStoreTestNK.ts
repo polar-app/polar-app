@@ -18,6 +18,8 @@ import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
 import {IBlock} from "./IBlock";
 import {PositionalArrays} from "./PositionalArrays";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {HTMLToBlocks, IBlockContentStructure} from "../HTMLToBlocks";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 function assertTextBlock(content: BlockContent): asserts content is MarkdownContent | NameContent {
 
@@ -1776,11 +1778,9 @@ describe('BlocksStore', function() {
         });
 
         it("should create a new child in a block with children (when suffix is empty)", () => {
-
             const store = createStore();
 
-
-            const id = '105'
+            const id = '105';
 
             let originalBlock = store.getBlock(id);
 
@@ -1807,8 +1807,112 @@ describe('BlocksStore', function() {
             assert.deepEqual(newBlock.parents, [...originalBlock.parents, id]);
         });
 
+        it("should create a new child in the refed block (when the asChild option is true)", () => {
+            const store = createStore();
+
+            const id = '105';
+
+            let originalBlock = store.getBlock(id);
+
+            assertPresent(originalBlock);
+
+            assertTextBlock(originalBlock.content);
+
+            const createdBlock = store.createNewBlock(id, {asChild: true});
+            assertPresent(createdBlock);
+
+            originalBlock = store.getBlock(id);
+
+            assertPresent(originalBlock);
+
+            assert.deepEqual(originalBlock.itemsAsArray, [
+                createdBlock.id,
+                '106'
+            ]);
+
+            const newBlock = store.getBlock(createdBlock.id);
+            assertPresent(newBlock);
+
+            assert.equal(newBlock.parent, id);
+            assert.deepEqual(newBlock.parents, [...originalBlock.parents, id]);
+        });
     });
 
+    describe("insertFromBlockContentStructure", () => {
+        it("should insert a block structure properly", () => {
+            const blocksStructure: ReadonlyArray<IBlockContentStructure> = [
+                {content: HTMLToBlocks.createMarkdownContent("item1"), children: []},
+                {
+                    content: HTMLToBlocks.createMarkdownContent("item2"),
+                    children: [
+                        {content: HTMLToBlocks.createMarkdownContent("hmm"), children: []},
+                        {
+                            content: HTMLToBlocks.createMarkdownContent("world"),
+                            children: [
+                                {content: HTMLToBlocks.createMarkdownContent("potato"), children: []},
+                            ]
+                        },
+                    ]
+                },
+                {content: HTMLToBlocks.createMarkdownContent("item3"), children: []},
+                {content: HTMLToBlocks.createMarkdownContent("Test bold italics linethrough underline"), children: []},
+                {content: HTMLToBlocks.createMarkdownContent("What is going on right now"), children: []},
+                {content: HTMLToBlocks.createMarkdownContent("Hello"), children: []},
+                {content: HTMLToBlocks.createMarkdownContent("World"), children: []},
+                {content: HTMLToBlocks.createMarkdownContent("Foo"), children: []},
+                {content: HTMLToBlocks.createMarkdownContent("bar"), children: []},
+            ];
+
+            const store = createStore();
+            const id = '112';
+
+            store.setRoot(id);
+            store.setActive(id);
+            const blockIDs = Array.from({ length: 12 }).map(() => Hashcodes.createRandomID());
+
+            createUndoRunner(store, ['112', ...blockIDs], () => {
+                store.insertFromBlockContentStructure(blocksStructure, {blockIDs});
+                const block102 = store.getBlock(id);
+                assertPresent(block102);
+                const content = [
+                    "item1",
+                    "item2",
+                    "item3",
+                    "Test bold italics linethrough underline",
+                    "What is going on right now",
+                    "Hello",
+                    "World",
+                    "Foo",
+                    "bar",
+                ];
+                const items = block102.itemsAsArray;
+                items.forEach((blockID, i) => {
+                    const block = store.getBlock(blockID);
+                    assertPresent(block);
+                    assertMarkdownBlock(block);
+                    assert.equal(block.content.data, content[i]);
+                });
+
+                const secondBlock = store.getBlock(items[1]);
+                assertPresent(secondBlock);
+
+                const level1Child1 = store.getBlock(secondBlock.itemsAsArray[0]);
+                assertPresent(level1Child1);
+                assertMarkdownBlock(level1Child1);
+                assert.equal(level1Child1.content.data, "hmm");
+
+                const level2Child2 = store.getBlock(secondBlock.itemsAsArray[1]);
+                assertPresent(level2Child2);
+                assertMarkdownBlock(level2Child2);
+                assert.equal(level2Child2.content.data, "world");
+
+                const level3Child = store.getBlock(level2Child2.itemsAsArray[0]);
+                assertPresent(level3Child);
+                assertMarkdownBlock(level3Child);
+                assert.equal(level3Child.content.data, "potato");
+            });
+        });
+    });
 });
 
 

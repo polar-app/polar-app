@@ -15,9 +15,9 @@ import {
 } from "./BlocksStore";
 import {IBlock} from "./IBlock";
 import {Block} from "./Block";
-import {BlockTargetStr} from "../NoteLinkLoader";
 import {ReverseIndex} from "./ReverseIndex";
 import {MarkdownStr} from "polar-shared/src/util/Strings";
+import {IBlockContentStructure} from "../HTMLToBlocks";
 
 /**
  * deleteBlocks
@@ -106,6 +106,8 @@ export interface IBlocksStore {
     createLinkToBlock<C extends IBlockContent = IBlockContent>(sourceID: BlockIDStr,
                                                                targetName: BlockNameStr,
                                                                content: MarkdownStr): void;
+
+    insertFromBlockContentStructure(blocks: ReadonlyArray<IBlockContentStructure>): ReadonlyArray<BlockIDStr>;
 
     filterByName(filter: string): ReadonlyArray<BlockNameStr>;
 
