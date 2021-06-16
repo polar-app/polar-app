@@ -67,14 +67,8 @@ export const BlockContentEditable = observer((props: IProps) => {
     }, [blocksStore, props.id]);
 
     const onPasteBlocks = React.useCallback((blocks: ReadonlyArray<IBlockContentStructure>) => {
-        const storeBlocks = (ref: BlockIDStr, isParent: boolean = false) => (block: IBlockContentStructure) => {
-            const newBlock = blocksStore.createNewBlock(ref, { asChild: isParent, content: block.content });
-            if (newBlock) {
-                [...block.children].reverse().forEach(storeBlocks(newBlock.id, true));
-            }
-        };
-        [...blocks].reverse().forEach(storeBlocks(props.id));
-    }, [blocksStore, props.id]);
+        blocksStore.insertFromBlockContentStructure(blocks);
+    }, [blocksStore]);
 
     const onPasteError = React.useCallback((err: Error) => {
         console.error("Got paste error: ", err);

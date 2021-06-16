@@ -135,7 +135,6 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
                     htmlItem.dataTransferItem.getAsString(resolve)
                 ));
                 const html = await getHTMLString();
-                console.log(html);
                 const blocks = await HTMLToBlocks.parse(html);
                 onPasteBlocks(blocks);
             }
@@ -149,6 +148,6 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
             extractHTML().catch(err => onPasteError(err));
         }
 
-    }, [onPasteError, onPasteImage])
+    }, [onPasteError, onPasteImage, onPasteBlocks])
 
 }
