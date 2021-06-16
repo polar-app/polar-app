@@ -34,8 +34,8 @@
         "paths": {
             "*": ["node_modules/*"]
         },
-        "lib": ["es2019", "es2020.string", "dom"]
-
+        "lib": ["es2019", "es2020.string", "dom"],
+        "skipLibCheck": true
     },
     "include": [
         "test/sandbox/**/*",
