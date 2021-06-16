@@ -53,6 +53,7 @@ import {MinimalContentEditableStory} from "./impl/MinimalContentEditableStory";
 import {MUICommandActionMenuStory} from './impl/MUICommandActionMenuStory';
 import {ExportDefaultComponentStory} from "./impl/ExportDefaultComponentStory";
 import {VerticalDynamicScrollerStory} from './impl/VerticalDynamicScrollerStory';
+import { GraphVisualization } from './impl/GraphVisualization';
 
 interface IStory {
     readonly name: string;
@@ -265,10 +266,10 @@ const stories = createStoryIndex([
         name: 'ExportDefaultComponentStory',
         component: <ExportDefaultComponentStory/>
     },
-    // {
-    //   name: 'GraphVisualization',
-    //   component: <GraphVisualization />,
-    // },
+    {
+      name: 'GraphVisualization',
+      component: <GraphVisualization />,
+    },
 
 ]);
 
