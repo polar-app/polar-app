@@ -277,7 +277,7 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
         } else if (readonly && !hasModifiers(event, false)) {
             abortEvent(event);
         }
-        if (blocksStore.hasSelected()) {
+        if (blocksStore.hasSelected() && !hasModifiers(event, false)) {
             abortEvent(event);
         }
 

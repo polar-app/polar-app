@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { observer } from "mobx-react-lite"
-import { useBlocksStore } from './store/BlocksStore';
+import {observer} from "mobx-react-lite"
+import {useBlocksStore} from './store/BlocksStore';
+import {useCutCopyHandler} from './clipboard/CutCopyHandler';
 
 interface IProps {
     readonly children: JSX.Element;
@@ -49,6 +50,10 @@ export const NoteSelectionHandler = observer(function NoteSelectionHandler(props
                 break;
 
             default:
+                // Ignore Ctr+C & Ctrl+X
+                if ((event.ctrlKey || event.metaKey) && event.key === 'c' || event.key === 'x') {
+                    break;
+                }
                 blocksStore.clearSelected("NoteSelectionHandler: other char");
                 break;
 
@@ -56,8 +61,10 @@ export const NoteSelectionHandler = observer(function NoteSelectionHandler(props
 
     }, [handleDelete, blocksStore]);
 
+    const ref = useCutCopyHandler();
+
     return (
-        <div style={props.style} onKeyDown={onKeyDown}>
+        <div ref={ref} style={props.style} onKeyDown={onKeyDown}>
             {props.children}
         </div>
     );
