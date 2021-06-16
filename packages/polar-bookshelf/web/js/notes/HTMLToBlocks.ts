@@ -15,9 +15,17 @@ type IBlockContentMergableStructure<T = IBlockContent> = IBlockContentStructure<
     children: ReadonlyArray<IBlockContentMergableStructure>;
 };
 
+type ParserState = {
+    withinList: boolean;
+};
+
+const INITIAL_STATE = {
+    withinList: false, 
+};
+
 export namespace HTMLToBlocks {
 
-    async function createImageContent(dataurl: string): Promise<IImageContent> {
+    export async function createImageContent(dataurl: string): Promise<IImageContent> {
         const {width, height} = await Images.getDimensions(dataurl);
         return {
             type: 'image',
@@ -53,8 +61,12 @@ export namespace HTMLToBlocks {
             };
         };
 
-        const isMergable = (a: IBlockContentMergableStructure, b: IBlockContentMergableStructure) =>
-            a.mergable && b.mergable && a.content.type === "markdown" && b.content.type === "markdown";
+        const isMergable = (a: IBlockContentMergableStructure, b: IBlockContentMergableStructure): boolean =>
+            (a.content.type === "markdown" && b.content.type === "markdown") && 
+                (
+                    (a.mergable && b.mergable) ||
+                    (a.content.data.trim().length === 0 || b.content.data.trim().length === 0)
+                );
 
         return TextHighlightMerger
             .groupAdjacent(blocks, isMergable)
@@ -66,8 +78,10 @@ export namespace HTMLToBlocks {
 
     export async function HTMLToBlockStructure(
         nodes: ReadonlyArray<Node>,
-        initialCurrent = ""
+        initialCurrent = "",
+        state: ParserState = INITIAL_STATE
     ): Promise<ReadonlyArray<IBlockContentMergableStructure>> {
+        const {withinList} = state;
         let blocks: IBlockContentMergableStructure[] = [];
         let current: string = initialCurrent;
 
@@ -86,9 +100,10 @@ export namespace HTMLToBlocks {
         const getChildrenBlocks = async (
             elem: HTMLElement,
             mergable: boolean = true,
-            parent: IBlockContentMergableStructure | undefined = undefined
+            parent: IBlockContentMergableStructure | undefined = undefined,
+            newState: ParserState = state,
         ) => {
-            const children = (await HTMLToBlockStructure(Array.prototype.slice.call(elem.childNodes), current));
+            const children = (await HTMLToBlockStructure(Array.prototype.slice.call(elem.childNodes), current, newState));
             current = "";
 
             if (parent) {
@@ -118,26 +133,29 @@ export namespace HTMLToBlocks {
                             });
                         } else if (/^https?/.test(src)) {
                             blocks.push({
-                                content: createMarkdownContent(`![](${src})`),
+                                content: createMarkdownContent(`${current}![](${src})`),
+                                children: [],
+                                mergable: true,
+                            });
+                            current = "";
+                        }
+                        break;
+                    case 'A':
+                        const anchor = elem as HTMLAnchorElement;
+                        // TODO: Not sure if this is enough to prevent XSS
+                        if (! anchor.href.toLowerCase().startsWith("javascript")) {
+                            flush(true);
+                            blocks.push({
+                                content: createMarkdownContent(`[${elem.textContent || anchor}](${anchor.href})`),
                                 children: [],
                                 mergable: true,
                             });
                         }
                         break;
-                    case 'A':
-                        flush(true);
-                        const anchor = elem as HTMLAnchorElement;
-                        blocks.push({
-                            // TODO: Sanitize anchor.href to prevent XSS
-                            content: createMarkdownContent(`[${elem.textContent || anchor}](${anchor.href})`),
-                            children: [],
-                            mergable: true,
-                        });
-                        break;
                     case 'PRE':
                         flush(true);
                         blocks.push({
-                            content: createMarkdownContent(`\`\`\`\n${elem.textContent}\n\`\`\``),
+                            content: createMarkdownContent(`\`\`\`\n${elem.textContent || ''}\n\`\`\``),
                             children: [],
                             mergable: true,
                         });
@@ -159,8 +177,8 @@ export namespace HTMLToBlocks {
                         break;
                     case 'UL':
                     case 'OL':
-                        const trimmed = current.replace(/\s\s+/g, ' ');
-                        if (trimmed.length) {
+                        if (current.length) {
+                            const trimmed = current.replace(/\s\s+/g, ' ');
                             const newBlock: IBlockContentMergableStructure = {
                                 content: createMarkdownContent(trimmed),
                                 children: [],
@@ -168,12 +186,11 @@ export namespace HTMLToBlocks {
                             };
                             current = '';
                             blocks.push(newBlock);
-                            await getChildrenBlocks(elem, false, newBlock);
-                        } else if (i > 0) {
-                            // TODO There's a bug here with nested lists that are coming from google docs
-                            await getChildrenBlocks(elem, false, blocks[blocks.length - 1]);
+                            await getChildrenBlocks(elem, false, newBlock, { withinList: true });
+                        } else if (withinList && i > 0) {
+                            await getChildrenBlocks(elem, false, blocks[blocks.length - 1], { withinList: true });
                         } else {
-                            await getChildrenBlocks(elem);
+                            await getChildrenBlocks(elem, false, undefined, { withinList: true });
                         }
                         break;
                     default:
@@ -191,8 +208,21 @@ export namespace HTMLToBlocks {
     export async function parse(html: string): Promise<ReadonlyArray<IBlockContentStructure>>  {
         const nodes = Elements.createWrapperElementHTML(html).childNodes;
         const blocks = await HTMLToBlockStructure(Array.prototype.slice.call(nodes));
+        const flatten = (block: IBlockContentMergableStructure): ReadonlyArray<IBlockContentMergableStructure> =>
+            block.content.type === 'markdown' && block.content.data.trim().length === 0
+                ? block.children
+                : [block];
+        const trim = (block: IBlockContentMergableStructure) => {
+            if (block.content.type === 'markdown') {
+                block.content = createMarkdownContent(block.content.data.trim())
+                return block;
+            }
+            return block;
+        };
         const normalize = (blocks: ReadonlyArray<IBlockContentMergableStructure>): ReadonlyArray<IBlockContentStructure> => {
             return blocks
+                .flatMap(flatten)
+                .map(trim)
                 .map(({ content, children }) => ({ content, children }))
                 .map(block => ({ ...block, children: normalize(block.children) }));
         };
