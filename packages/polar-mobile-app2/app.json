@@ -19,7 +19,8 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "io.getpolarized.polar",
-      "buildNumber": "12.0.84"
+      "buildNumber": "12.0.84",
+      "icon": "./assets/icon_NO_TRANSPARENCY.png"
     },
     "android": {
       "adaptiveIcon": {
@@ -27,14 +28,12 @@
         "backgroundColor": "#FFFFFF"
       },
       "permissions": [
-
         "android.permission.ACCESS_NETWORK_STATE",
         "android.permission.INTERNET",
         "android.permission.SYSTEM_ALERT_WINDOW",
         "android.permission.WAKE_LOCK",
         "android.permission.STORAGE",
-        "android.permission.RECEIVE_BOOT_COMPLETED",
-        
+        "android.permission.RECEIVE_BOOT_COMPLETED"
       ],
       "package": "io.getpolarized.polar",
       "versionCode": 2
