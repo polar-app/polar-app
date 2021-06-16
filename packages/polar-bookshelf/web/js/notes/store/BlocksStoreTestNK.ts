@@ -1838,9 +1838,76 @@ describe('BlocksStore', function() {
         });
     });
 
+    describe("blocksToBlockContentStructure", () => {
+        it("should convert the ids of blocks (including their children) to a content structure", () => {
+            const store = createStore();
+
+            const output = store.createBlockContentStructure(['102']);
+
+            const block102 = store.getBlock('102');
+            const block103 = store.getBlock('103');
+            const block104 = store.getBlock('104');
+            const block116 = store.getBlock('116');
+            const block105 = store.getBlock('105');
+            const block106 = store.getBlock('106');
+            const block117 = store.getBlock('117');
+            const block118 = store.getBlock('118');
+
+            assertPresent(block102);
+            assertPresent(block103);
+            assertPresent(block104);
+            assertPresent(block116);
+            assertPresent(block105);
+            assertPresent(block106);
+            assertPresent(block117);
+            assertPresent(block118);
+            assertMarkdownBlock(block103);
+            assertMarkdownBlock(block104);
+            assertMarkdownBlock(block116);
+            assertMarkdownBlock(block105);
+            assertMarkdownBlock(block106);
+            assertMarkdownBlock(block117);
+            assertMarkdownBlock(block118);
+
+            const expected = [
+                {
+                    content: block102.content.toJSON(),
+                    children: [
+                        {content: block103.content.toJSON(), children: []},
+                        {
+                            content: block104.content.toJSON(),
+                            children: [
+                                {content: block116.content.toJSON(), children: []}
+                            ]
+                        },
+                        {
+                            content: block105.content.toJSON(),
+                            children: [
+                                {
+                                    content: block106.content.toJSON(),
+                                    children: [
+                                        {
+                                            content: block117.content.toJSON(),
+                                            children: [
+                                                {content: block118.content.toJSON(), children: []},
+                                            ]
+                                        },
+                                    ]
+                                }
+                            ]
+                        },
+                        
+                    ]
+                },
+            ];
+            
+            assert.deepEqual(output, expected);
+        });
+    });
+
     describe("insertFromBlockContentStructure", () => {
         it("should insert a block structure properly", () => {
-            const blocksStructure: ReadonlyArray<IBlockContentStructure> = [
+            const blockStructure: ReadonlyArray<IBlockContentStructure> = [
                 {content: HTMLToBlocks.createMarkdownContent("item1"), children: []},
                 {
                     content: HTMLToBlocks.createMarkdownContent("item2"),
@@ -1871,7 +1938,7 @@ describe('BlocksStore', function() {
             const blockIDs = Array.from({ length: 12 }).map(() => Hashcodes.createRandomID());
 
             createUndoRunner(store, ['112', ...blockIDs], () => {
-                store.insertFromBlockContentStructure(blocksStructure, {blockIDs});
+                store.insertFromBlockContentStructure(blockStructure, {blockIDs});
                 const block102 = store.getBlock(id);
                 assertPresent(block102);
                 const content = [

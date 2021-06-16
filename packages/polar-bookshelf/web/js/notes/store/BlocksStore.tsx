@@ -1904,6 +1904,17 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
+    public createBlockContentStructure(ids: ReadonlyArray<BlockIDStr>): ReadonlyArray<IBlockContentStructure> {
+        const construct = (block: Block): IBlockContentStructure => {
+            return {
+                content: block.content.toJSON(),
+                children: this.idsToBlocks(block.itemsAsArray).map(construct)
+            };
+        };
+
+        return this.idsToBlocks(ids).map(construct);
+    }
+
     @action public doDelete(blockIDs: ReadonlyArray<BlockIDStr>, opts: IDoDeleteOpts = {}) {
 
         interface NextActive {

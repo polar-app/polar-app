@@ -108,6 +108,7 @@ export interface IBlocksStore {
                                                                content: MarkdownStr): void;
 
     insertFromBlockContentStructure(blocks: ReadonlyArray<IBlockContentStructure>): ReadonlyArray<BlockIDStr>;
+    createBlockContentStructure(ids: ReadonlyArray<BlockIDStr>): ReadonlyArray<IBlockContentStructure>;
 
     filterByName(filter: string): ReadonlyArray<BlockNameStr>;
 
