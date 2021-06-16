@@ -16,7 +16,10 @@ const annotationBarColorsKeyMap = keyMapWithGroup({
         CHANGE_COLOR: {
             name: "Change Annotation Color",
             description: "Change the color of the selected annotation", 
-            sequences: ANNOTATION_COLOR_SHORTCUT_KEYS,
+            sequences: ANNOTATION_COLOR_SHORTCUT_KEYS.map(k => ({
+                keys: k,
+                platforms: ['macos', 'windows','linux']
+            })),
             priority: 1,
         },
     },
@@ -28,43 +31,43 @@ const annotationBarKeyMap = keyMapWithGroup({
         EDIT_ANNOTATION: {
             name: "Edit Annotation",
             description: "Edit the selected annotation",
-            sequences: ["e"],
+            sequences: [{keys: "e", platforms: ['macos', 'windows', 'linux']}],
             priority: 2,
         },
         CREATE_COMMENT: {
             name: "Add Comment",
             description: "Add a comment to the selected annotation",
-            sequences: ["c"],
+            sequences: [{ keys: "c", platforms: ['macos', 'windows', 'linux']}],
             priority: 3,
         },
         CREATE_FLASHCARD: {
             name: "Create Manual Flashcard",
             description: "Create a manual flashcard for the selected annotation",
-            sequences: ["f"],
+            sequences: [{ keys: "f", platforms: ['macos', 'windows', 'linux']}],
             priority: 4,
         },
         CREATE_AI_FLASHCARD: {
             name: "Create AI Flashcard",
             description: "Generate an AI flashcard for the selected annotation",
-            sequences: ["g"],
+            sequences: [{ keys: "g", platforms: ['macos', 'windows', 'linux']}],
             priority: 5,
         },
         EDIT_TAGS: {
             name: "Edit Tags",
             description: "Edit the tags of the selected annotation",
-            sequences: ["t"],
+            sequences: [{ keys: "t", platforms: ['macos', 'windows', 'linux']}],
             priority: 6,
         },
         COPY_ANNOTATION: {
             name: "Copy Annotation",
             description: "Copy the text of the selected annotation",
-            sequences: ["ctrl+c", "command+c"],
+            sequences: [{ keys: "ctrl+c", platforms: ['windows','linux']}, {keys: "command+c", platforms: ['macos']}],
             priority: 7,
         },
         DELETE: {
             name: "Delete Annotation",
             description: "Deleted the selected annotation",
-            sequences: ["d"],
+            sequences: [{ keys: "d", platforms: ['macos', 'windows', 'linux']}],
             priority: 8,
         },
     },

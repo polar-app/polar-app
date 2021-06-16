@@ -1,6 +1,7 @@
 import {IDUser} from '../util/IDUsers';
-import {ArchiveStreams} from "./ArchiveStreams";
+import {UserBackupCreator} from "./UserBackupCreator";
 import {Sendgrid} from "../Sendgrid";
+import {ExpressFunctions} from "../util/ExpressFunctions";
 
 export interface CreateSnapshotRequest {
 
@@ -10,12 +11,12 @@ export interface CreateSnapshotResponse {
 
 }
 
-export class CreateSnapshotFunctions {
+class CreateSnapshotFunctions {
 
     public static async exec(idUser: IDUser,
                              request: CreateSnapshotRequest): Promise<CreateSnapshotResponse> {
 
-        const {url} = await ArchiveStreams.create(idUser.uid);
+        const {url} = await UserBackupCreator.create(idUser.uid);
 
         await Sendgrid.send({
             to: idUser.user.email,
@@ -29,3 +30,6 @@ export class CreateSnapshotFunctions {
     }
 
 }
+
+export const CreateSnapshotFunction = ExpressFunctions.createRPCHook('CreateSnapshotFunction', CreateSnapshotFunctions.exec);
+

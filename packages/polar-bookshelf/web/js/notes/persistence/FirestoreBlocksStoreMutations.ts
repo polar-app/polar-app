@@ -118,6 +118,14 @@ export namespace FirestoreBlocksStoreMutations {
                                 path: ['updated'],
                                 value: mutation.after.updated
                             },
+                            // while nspace doesn't ever get updated - it needs to be set so that the firestore rules
+                            // can work with it properly.  We read from the data correctly.
+                            {
+                                id: mutation.id,
+                                type: 'update-path-string',
+                                path: ['nspace'],
+                                value: mutation.after.nspace
+                            },
                             {
                                 id: mutation.id,
                                 type: 'update-path-number',
@@ -137,10 +145,6 @@ export namespace FirestoreBlocksStoreMutations {
                                 const patchToFirestoreMutation = (patch: IItemsPositionPatch): IFirestoreMutation => {
 
                                     switch (patch.type) {
-
-                                        // FIXME: this is the bug as the '.' is not being encoded.
-                                        // FIXME: I could use FieldPath with this... that might work but that
-                                        // might require snapshot cache changed :-/
 
                                         case "remove":
                                             return {
@@ -210,8 +214,6 @@ export namespace FirestoreBlocksStoreMutations {
                         }
 
                     }
-
-                    // FIXME: the INTEGER path has a 'dot' in it.. so that's fucking us!
 
                     const mutationTargets = BlocksStoreMutations.computeMutationTargets(mutation.before, mutation.after);
 

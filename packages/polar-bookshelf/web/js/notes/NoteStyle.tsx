@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) =>
             //     userSelect: 'none'
             // },
             "& a": {
-                cursor: 'hand'
+                cursor: 'pointer'
             },
             "& a:not([href^=http])": {
                 textDecorationStyle: 'dotted',
@@ -28,6 +28,12 @@ const useStyles = makeStyles((theme) =>
             },
             "& h1, h2, h3, h4, h5": {
                 lineHeight: 0
+            },
+            "& img": {
+                maxWidth: '100%',
+            },
+            "& pre": {
+                margin: 0,
             },
             flexGrow: 1
         }

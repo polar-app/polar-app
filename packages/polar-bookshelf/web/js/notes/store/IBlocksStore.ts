@@ -15,9 +15,9 @@ import {
 } from "./BlocksStore";
 import {IBlock} from "./IBlock";
 import {Block} from "./Block";
-import {BlockTargetStr} from "../NoteLinkLoader";
 import {ReverseIndex} from "./ReverseIndex";
 import {MarkdownStr} from "polar-shared/src/util/Strings";
+import {IBlockContentStructure} from "../HTMLToBlocks";
 
 /**
  * deleteBlocks
@@ -37,6 +37,7 @@ export interface IBlocksStore {
     dropTarget: IDropTarget | undefined;
     reverse: ReverseIndex;
     index: BlocksIndex;
+    selected: StringSetMap;
 
     hasSnapshot: boolean;
 
@@ -46,7 +47,6 @@ export interface IBlocksStore {
     doCreateNewNamedBlock(name: BlockNameStr,
                           opts?: ICreateNewNamedBlockOpts): BlockIDStr;
 
-    selected(): StringSetMap;
     selectedIDs(): ReadonlyArray<BlockIDStr>;
 
     clearSelected(reason: string): void;
@@ -71,6 +71,8 @@ export interface IBlocksStore {
 
     setActiveWithPosition(active: BlockIDStr | undefined,
                           activePos: NavPosition | undefined): void;
+
+    idsToBlocks(ids: ReadonlyArray<BlockIDStr>): ReadonlyArray<Block>;
 
     // TODO: undo
     expand(id: BlockIDStr): void;
@@ -103,8 +105,9 @@ export interface IBlocksStore {
 
     createLinkToBlock<C extends IBlockContent = IBlockContent>(sourceID: BlockIDStr,
                                                                targetName: BlockNameStr,
-                                                               undoContent: MarkdownStr,
                                                                content: MarkdownStr): void;
+
+    insertFromBlockContentStructure(blocks: ReadonlyArray<IBlockContentStructure>): ReadonlyArray<BlockIDStr>;
 
     filterByName(filter: string): ReadonlyArray<BlockNameStr>;
 
@@ -115,13 +118,15 @@ export interface IBlocksStore {
 
     mergeBlocks(target: BlockIDStr, source: BlockIDStr): void;
 
-    canMerge(id: BlockIDStr): IBlockMerge | undefined;
+    canMergePrev(id: BlockIDStr): IBlockMerge | undefined;
+    canMergeNext(id: BlockIDStr): IBlockMerge | undefined;
 
     navPrev(pos: NavPosition, opts: NavOpts): void;
     navNext(pos: NavPosition, opts: NavOpts): void;
 
-    getNamedNodes(): ReadonlyArray<string>;
+    getNamedBlocks(): ReadonlyArray<string>;
 
     setBlockContent<C extends IBlockContent = IBlockContent>(id: BlockIDStr, content: C): void;
 
+    moveBlocks(ids: ReadonlyArray<BlockIDStr>, delta: number): void
 }

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {FixedNav, FixedNavBody} from '../FixedNav';
-import {RepoFooter} from '../repo_footer/RepoFooter';
 import {UserInfo} from "../../../../web/js/apps/repository/auth_handler/AuthHandler";
 import {Billing} from "polar-accounts/src/Billing";
 import {EmailAddressParser} from "../../../../web/js/util/EmailAddressParser";
@@ -54,8 +53,6 @@ export class InviteScreen extends React.Component<IProps> {
                     </div>
 
                 </FixedNavBody>
-
-                <RepoFooter/>
 
             </FixedNav>
 

@@ -12,14 +12,23 @@ const globalKeyMap = keyMapWithGroup({
             icon: <MenuIcon/>,
             name: "Toggle outline",
             description: "Hide/show outline",
-            sequences: ['[']
+            sequences: [
+                {
+                    keys: '[',
+                    platforms: ['windows', 'linux', 'macos']
+                }
+            ]
         },
 
         TOGGLE_RIGHT: {
             icon: <MenuIcon/>,
             name: "Toggle annotations sidebar",
             description: "Hide/show annotations sidebar",
-            sequences: [']']
+            sequences: [
+                {
+                    keys: ']',
+                    platforms: ['windows', 'linux', 'macos']
+                }]
         },
 
     }

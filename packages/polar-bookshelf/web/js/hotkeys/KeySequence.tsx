@@ -4,6 +4,7 @@ import grey from "@material-ui/core/colors/grey";
 import createStyles from "@material-ui/core/styles/createStyles";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {MUITooltip} from "../mui/MUITooltip";
+import {KeyBinding} from "../keyboard_shortcuts/KeyboardShortcutsStore";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) =>
 );
 
 interface IProps {
-    readonly sequence: string;
+    readonly sequence: KeyBinding;
 }
 
 export const KeySequence = deepMemo(function KeySequence(props: IProps) {
@@ -37,7 +38,7 @@ export const KeySequence = deepMemo(function KeySequence(props: IProps) {
 
     function toKeys() {
 
-        let result = props.sequence;
+        let result = props.sequence.keys;
 
         if (result === ' ') {
             result = 'space';

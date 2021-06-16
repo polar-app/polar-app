@@ -19,7 +19,9 @@ export namespace BlockContentCanonicalizer {
         for (const childNode of childNodes) {
 
             if (needsRewrite(childNode)) {
-                childNode.replaceWith(...Array.from(childNode.childNodes));
+                const children = Array.from(childNode.childNodes);
+                childNode.replaceWith(...children);
+                children.forEach(child => result.appendChild(child));
             } else {
                 result.appendChild(childNode);
             }

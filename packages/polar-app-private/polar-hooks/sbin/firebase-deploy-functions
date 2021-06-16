@@ -2,8 +2,9 @@
 
 set -e
 
-time firebase deploy --only functions:webapp
+time firebase deploy --only functions:datastoreGetFile
 time firebase deploy --only functions:CloudFunctionsWarmer
+time firebase deploy --only functions:webapp
 time firebase deploy --only functions:GroupDocMetaWriteFunction
 time firebase deploy --only functions:StartTokenAuth
 time firebase deploy --only functions:StripeCancelSubscription
@@ -16,7 +17,6 @@ time firebase deploy --only functions:StripeWebhook
 time firebase deploy --only functions:StripeWebhookTest
 time firebase deploy --only functions:VerifyTokenAuth
 time firebase deploy --only functions:autoFlashcard
-time firebase deploy --only functions:datastoreGetFile
 time firebase deploy --only functions:datastoreImportFile
 time firebase deploy --only functions:docChangeVisibility
 time firebase deploy --only functions:hello

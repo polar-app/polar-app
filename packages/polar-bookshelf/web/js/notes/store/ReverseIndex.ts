@@ -43,4 +43,8 @@ export class ReverseIndex {
 
     }
 
+    public toJSON(): string {
+        return JSON.stringify(this.index);
+    }
+
 }

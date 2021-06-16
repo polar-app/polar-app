@@ -2,7 +2,6 @@ import {Firestore} from "../../firebase/Firestore";
 import {assert} from "chai";
 import {Firebase} from "../../firebase/Firebase";
 import {FIREBASE_PASS, FIREBASE_USER} from "../../firebase/FirebaseTesting";
-import {FirestoreBlocksPersistenceWriter} from "./FirestoreBlocksPersistenceWriter";
 import {BlockIDStr} from "../store/BlocksStore";
 import {IBlock} from "../store/IBlock";
 import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
@@ -15,8 +14,9 @@ import {BlocksStoreTests} from "../store/BlocksStoreTests";
 import createBasicBlock = BlocksStoreTests.createBasicBlock;
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
+import { FirestoreBlocksPersistenceWriter } from "./BlocksPersistenceWriters";
 
-const ID = Hashcodes.createID('0x01');
+const ID = Hashcodes.createRandomID();
 
 describe("BlocksPersistence", () => {
 
@@ -46,18 +46,19 @@ describe("BlocksPersistence", () => {
 
     });
 
-
     it("new document", async () => {
 
         const firestore = await Firestore.getInstance();
+
+        const uid = (await Firebase.currentUserID())!;
 
         const mutation: IBlocksStoreMutation = {
             "id": ID,
             "type": "added",
             "added": {
                 "id": ID,
-                "nspace": "234",
-                "uid": "1234",
+                "nspace": uid,
+                "uid": uid,
                 "created": "2012-03-02T11:38:50.321Z",
                 "updated": "2012-03-02T11:38:50.321Z",
                 "root": "100",
@@ -94,11 +95,15 @@ describe("BlocksPersistence", () => {
 
         const firestore = await Firestore.getInstance();
 
+        const uid = (await Firebase.currentUserID())!;
+
         const before = createBasicBlock<IMarkdownContent>({
             id: ID,
             root: "100",
             parent: "100",
             parents: ["100"],
+            uid,
+            nspace: uid,
             content: {
                 type: 'markdown',
                 data: 'updated block',
@@ -124,6 +129,8 @@ describe("BlocksPersistence", () => {
             root: "100",
             parent: "102",
             parents: ["100", "102"],
+            uid,
+            nspace: uid,
             content: {
                 type: 'markdown',
                 data: 'updated block 2',
@@ -146,15 +153,18 @@ describe("BlocksPersistence", () => {
 
     });
 
-    it("updated block with float values", async () => {
+    it("updated block with float values for items", async () => {
 
         const firestore = await Firestore.getInstance();
+        const uid = (await Firebase.currentUserID())!;
 
         const before = createBasicBlock<IMarkdownContent>({
             id: ID,
             root: "100",
             parent: "100",
             parents: ["100"],
+            uid,
+            nspace: uid,
             content: {
                 type: 'markdown',
                 data: 'updated block',
@@ -181,6 +191,8 @@ describe("BlocksPersistence", () => {
             root: "100",
             parent: "102",
             parents: ["100", "102"],
+            uid,
+            nspace: uid,
             content: {
                 type: 'markdown',
                 data: 'updated block 2',

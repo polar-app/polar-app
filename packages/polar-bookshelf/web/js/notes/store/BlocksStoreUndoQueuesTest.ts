@@ -4,7 +4,7 @@ import {BlocksStore} from "./BlocksStore";
 import {IMarkdownContent} from "../content/IMarkdownContent";
 import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
 import {UndoQueues2} from "../../undo/UndoQueues2";
-import {JSDOMParser} from "./BlocksStoreTest";
+import {JSDOMParser} from "./BlocksStoreTestNK";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
 import {PositionalArrays} from "./PositionalArrays";
 import {BlocksStoreTests} from "./BlocksStoreTests";
@@ -307,7 +307,10 @@ describe("BlocksStoreUndoQueues", () => {
                 "103",
                 "104",
                 "105",
-                "106"
+                "106",
+                "116",
+                "117",
+                "118",
             ]);
 
         });
@@ -325,7 +328,7 @@ describe("BlocksStoreUndoQueues", () => {
 
         });
 
-        it(' child off root with few children', () => {
+        it('child off root with few children', () => {
 
             const blocksStore = createStore();
 
@@ -334,12 +337,14 @@ describe("BlocksStoreUndoQueues", () => {
             assertJSON(identifiers, [
                 "102",
                 "105",
-                "106"
+                "106",
+                "117",
+                "118",
             ]);
 
         });
 
-        it(' child with parent but parent is not root', () => {
+        it('child with parent but parent is not root', () => {
 
             const blocksStore = createStore();
 
@@ -347,7 +352,9 @@ describe("BlocksStoreUndoQueues", () => {
 
             assertJSON(identifiers, [
                 "105",
-                "106"
+                "106",
+                "117",
+                "118",
             ]);
 
         });

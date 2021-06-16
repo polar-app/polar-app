@@ -13,7 +13,12 @@ const globalKeyMap = keyMapWithGroup({
         TOGGLE: {
             name: "Area Highlight Mode",
             description: "Toggle area higlight mode",
-            sequences: ["a"],
+            sequences: [
+                {
+                    keys: "a",
+                    platforms: ['macos', 'linux', 'windows']
+                }
+            ],
             priority: 1,
         },
     },

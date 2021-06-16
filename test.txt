@@ -1,0 +1,22 @@
+// Open the table
+Table *T = OpenOrDie("/bigtable/web/webtable");
+// Write a new anchor and delete an old anchor RowMutation r1(T, "com.cnn.www"); r1.Set("anchor:www.c-span.org", "CNN"); r1.Delete("anchor:www.abc.com");
+Operation op;
+Apply(&op, &r1);
+Figure 2: Writing to Bigtable.
+Scanner scanner(T);
+ScanStream *stream;
+stream = scanner.FetchColumnFamily("anchor"); stream->SetReturnAllVersions(); scanner.Lookup("com.cnn.www");
+for (; !stream->Done(); stream->Next()) {
+applications. Applications that need to avoid collisions must generate unique timestamps themselves. Different versions of a cell are stored in decreasing timestamp or- der, so that the most recent versions can be read first.
+To make the management of versioned data less oner- ous, we support two per-column-family settings that tell Bigtable to garbage-collect cell versions automatically. The client can specify either that only the last n versions of a cell be kept, or that only new-enough versions be kept (e.g., only keep values that were written in the last seven days).
+In our Webtable example, we set the timestamps of the crawled pages stored in the contents: column to the times at which these page versions were actually crawled. The garbage-collection mechanism described above lets us keep only the most recent three versions of every page.
+3 API
+The Bigtable API provides functions for creating and deleting tables and column families. It also provides functions for changing cluster, table, and column family metadata, such as access control rights.
+Client applications can write or delete values in Bigtable, look up values from individual rows, or iter- ate over a subset of the data in a table. Figure 2 shows C++ code that uses a RowMutation abstraction to per- form a series of updates. (Irrelevant details were elided to keep the example short.) The call to Apply performs an atomic mutation to the Webtable: it adds one anchor to www.cnn.com and deletes a different anchor.
+Figure 3 shows C++ code that uses a Scanner ab- straction to iterate over all anchors in a particular row. Clients can iterate over multiple column families, and there are several mechanisms for limiting the rows, columns, and timestamps produced by a scan. For ex- ample, we could restrict the scan above to only produce anchors whose columns match the regular expression anchor:*.cnn.com, or to only produce anchors whose timestamps fall within ten days of the current time.
+Bigtable supports several other features that allow the user to manipulate data in more complex ways. First, Bigtable supports single-row transactions, which can be used to perform atomic read-modify-write sequences on data stored under a single row key. Bigtable does not cur- rently support general transactions across row keys, al- though it provides an interface for batching writes across row keys at the clients. Second, Bigtable allows cells to be used as integer counters. Finally, Bigtable sup- ports the execution of client-supplied scripts in the ad- dress spaces of the servers. The scripts are written in a language developed at Google for processing data called Sawzall [28]. At the moment, our Sawzall-based API does not allow client scripts to write back into Bigtable, but it does allow various forms of data transformation, filtering based on arbitrary expressions, and summariza- tion via a variety of operators.
+Bigtable can be used with MapReduce [12], a frame- work for running large-scale parallel computations de- veloped at Google. We have written a set of wrappers that allow a Bigtable to be used both as an input source and as an output target for MapReduce jobs.
+4 Building Blocks
+Bigtable is built on several other pieces of Google in- frastructure. Bigtable uses the distributed Google File System (GFS) [17] to store log and data files. A Bigtable cluster typically operates in a shared pool of machines that run a wide variety of other distributed applications, and Bigtable processes often share the same machines with processes from other applications. Bigtable de- pends on a cluster management system for scheduling jobs, managing resources on shared machines, dealing with machine failures, and monitoring machine status.
+The Google SSTable file format is used internally to store Bigtable data. An SSTable provides a persistent, ordered immutable map from keys to values, where both keys and values are arbitrary byte strings. Operations are provided to look up the value associated with a specified

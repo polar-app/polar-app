@@ -34,7 +34,12 @@ const globalKeyMap = keyMapWithGroup({
         TOGGLE: {
             name: "Text Highlight Mode",
             description: "Toggle text highlight mode",
-            sequences: ["v"],
+            sequences: [
+                {
+                    keys: "v",
+                    platforms: ['macos', 'linux', 'windows']
+                },
+            ],
             priority: 1,
         },
     }
@@ -106,7 +111,7 @@ export const TextHighlightModeToggle: React.FC = () => {
                     </Grow>
                 )}
             </Popper>
-            {active && 
+            {active &&
                 <GlobalKeyboardShortcuts
                     keyMap={globalKeyMap}
                     handlerMap={shortcutHandlers}/>

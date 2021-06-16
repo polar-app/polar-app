@@ -3,12 +3,13 @@ import {KeySequences} from "./KeySequences";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import { ListItemRight } from "./ListItemRight";
+import {KeyBinding} from "../keyboard_shortcuts/KeyboardShortcutsStore";
 
 interface IProps {
     readonly icon?: React.ReactNode;
     readonly text: string;
     readonly selected?: boolean;
-    readonly sequences: ReadonlyArray<string>;
+    readonly sequences: ReadonlyArray<KeyBinding>;
     readonly onClick: (event: React.MouseEvent) => void;
 }
 

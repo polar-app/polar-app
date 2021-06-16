@@ -16,37 +16,76 @@ const globalKeyMap = keyMapWithGroup(
             TAG: {
                 name: "Tag",
                 description: "Tag selected doc",
-                sequences: ['t'],
+                sequences: [
+                    {
+                        keys: 't',
+                        platforms: ['macos', 'linux', 'windows']
+                    }
+                ],
             },
             DELETE: {
                 name: "Delete",
                 description: "Delete selected doc",
-                sequences: ['Delete', 'Backspace'],
+                sequences: [
+                    {
+                        keys: 'Delete',
+                        platforms: ['macos', 'linux', 'windows']
+                    },
+                    {
+                        keys: 'Backspace',
+                        platforms: ['macos', 'linux', 'windows']
+                    }
+                ],
             },
             FLAG: {
                 name: "Flag",
                 description: "Flag selected doc",
-                sequences: ['f']
+                sequences: [
+                    {
+                        keys: 'f',
+                        platforms: ['macos', 'linux', 'windows']
+                    }
+                ]
             },
             ARCHIVE: {
                 name: "Archive",
                 description: "Archive selected doc",
-                sequences: ['a']
+                sequences: [
+                    {
+                        keys: 'a',
+                        platforms: ['macos', 'linux', 'windows']
+                    }
+                ]
             },
             RENAME: {
                 name: "Rename",
                 description: "Rename selected doc",
-                sequences: ['r']
+                sequences: [
+                    {
+                        keys: 'r',
+                        platforms: ['macos', 'linux', 'windows']
+                    }
+                ]
             },
             OPEN: {
                 name: "Open",
                 description: "Open selected doc in doc viewer",
-                sequences: ['Enter']
+                sequences: [
+                    {
+                        keys: 'Enter',
+                        platforms: ['macos', 'linux', 'windows']
+                    }
+                ]
             },
             UPDATE_METADATA: {
                 name: "Update Document Metadata",
                 description: "Update doc metadata",
-                sequences: ['m']
+                sequences: [
+                    {
+                        keys: 'm',
+                        platforms: ['macos', 'linux', 'windows']
+                    }
+                ]
             },
 
         }

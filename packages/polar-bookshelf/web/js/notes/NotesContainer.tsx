@@ -4,12 +4,17 @@ import clsx from 'clsx';
 import * as React from 'react';
 import {deepMemo} from "../react/ReactUtils";
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
             display: 'flex',
             flexGrow: 1,
-            fontSize: '18px'
+            fontSize: '18px',
+            justifyContent: 'center',
+            marginLeft: theme.spacing(2),
+            marginRight: theme.spacing(2),
+            marginBottom: theme.spacing(2),
+            overflow: 'auto'
         },
     }),
 );
@@ -20,9 +25,7 @@ const FixedWidthContainer = React.memo(function FixedWidthContainer(props: {chil
         <div className="FixedWidthContainer"
              style={{
                  maxWidth: '1000px',
-                 flexGrow: 1,
-                 marginLeft: 'auto',
-                 marginRight: 'auto'
+                flexGrow: 1,
              }}>
             {props.children}
         </div>

@@ -1,46 +1,33 @@
-import { HTMLStr } from 'polar-shared/src/util/Strings';
+import {HTMLStr} from 'polar-shared/src/util/Strings';
 import React from 'react';
 import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
-import { observer } from "mobx-react-lite"
-import {NavOpts, BlockIDStr, useBlocksStore, IActiveBlock} from '../store/BlocksStore';
+import {observer} from "mobx-react-lite"
+import {BlockIDStr, useBlocksStore, IActiveBlock} from '../store/BlocksStore';
 import {ContentEditables} from "../ContentEditables";
 import {createActionsProvider} from "../../mui/action_menu/ActionStore";
 import {NoteFormatPopper} from "../NoteFormatPopper";
 import {BlockContentCanonicalizer} from "./BlockContentCanonicalizer";
 import {BlockAction} from "./BlockAction";
-import { useHistory } from 'react-router-dom';
 import {CursorPositions} from "./CursorPositions";
-import {Platform, Platforms} from 'polar-shared/src/util/Platforms';
 import {IPasteImageData, usePasteHandler } from '../clipboard/PasteHandlers';
 import {IImageContent} from "../content/IImageContent";
+import {MarkdownContentConverter} from "../MarkdownContentConverter";
+import {useMutationObserver} from '../../../../web/js/hooks/ReactHooks';
+import {MarkdownContent} from '../content/MarkdownContent';
+import {BlockEditorGenericProps} from '../BlockEditor';
+import {IBlockContentStructure} from '../HTMLToBlocks';
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed
 const ENABLE_CURSOR_RESET = true;
-const ENABLE_CURSOR_RESET_TRACE = true;
+const ENABLE_CURSOR_RESET_TRACE = false;
 
-interface IProps {
-
-    readonly id: BlockIDStr;
-
-    readonly parent: BlockIDStr | undefined;
-
+interface IProps extends BlockEditorGenericProps {
     readonly content: HTMLStr;
 
     readonly onChange: (content: HTMLStr) => void;
 
-    readonly className?: string;
-
     readonly spellCheck?: boolean;
-
-    readonly style?: React.CSSProperties;
-
-    readonly innerRef?: React.MutableRefObject<HTMLDivElement | null>;
-
-    readonly onClick?: (event: React.MouseEvent) => void;
-
-    readonly onKeyDown?: (event: React.KeyboardEvent) => void;
-
 }
 
 const NoteContentEditableElementContext = React.createContext<React.RefObject<HTMLElement | null>>({current: null});
@@ -56,13 +43,10 @@ export function useBlockContentEditableElement() {
  */
 export const BlockContentEditable = observer((props: IProps) => {
 
-    const [content, setContent] = React.useState(props.content);
+    const [content] = React.useState(() => MarkdownContentConverter.toHTML(props.content));
     const divRef = React.useRef<HTMLDivElement | null>(null);
     const contentRef = React.useRef(props.content);
     const blocksStore = useBlocksStore();
-    const history = useHistory();
-
-    const platform = React.useMemo(() => Platforms.get(), []);
 
     const updateCursorPosition = useUpdateCursorPosition();
 
@@ -82,15 +66,19 @@ export const BlockContentEditable = observer((props: IProps) => {
 
     }, [blocksStore, props.id]);
 
+    const onPasteBlocks = React.useCallback((blocks: ReadonlyArray<IBlockContentStructure>) => {
+        blocksStore.insertFromBlockContentStructure(blocks);
+    }, [blocksStore]);
+
     const onPasteError = React.useCallback((err: Error) => {
         console.error("Got paste error: ", err);
 
 
     }, []);
 
-    const handlePaste = usePasteHandler({onPasteImage, onPasteError});
+    const handlePaste = usePasteHandler({onPasteImage, onPasteError, onPasteBlocks});
 
-    const noteLinkActions = blocksStore.getNamedNodes().map(current => ({
+    const noteLinkActions = blocksStore.getNamedBlocks().map(current => ({
         id: current,
         text: current
     }));
@@ -115,7 +103,7 @@ export const BlockContentEditable = observer((props: IProps) => {
 
         }
 
-        const newContent = computeNewContent();
+        const newContent = MarkdownContentConverter.toMarkdown(computeNewContent());
 
         if (newContent === contentRef.current) {
             // there was no change so skip this.
@@ -130,6 +118,7 @@ export const BlockContentEditable = observer((props: IProps) => {
 
         contentRef.current = newContent;
         props.onChange(newContent);
+
     }, [props]);
 
     const updateMarkdownFromEditable = React.useCallback(() => {
@@ -143,20 +132,6 @@ export const BlockContentEditable = observer((props: IProps) => {
         handleChange();
 
     }, [handleChange]);
-
-    React.useEffect(() => {
-        if (blocksStore.active?.id === props.id) {
-            if (divRef.current) {
-
-                if (blocksStore.active.pos !== undefined) {
-                    updateCursorPosition(divRef.current, blocksStore.active)
-                }
-
-                divRef.current.focus();
-
-            }
-        }
-    }, [props.id, updateCursorPosition, blocksStore.active]);
 
     React.useEffect(() => {
 
@@ -178,13 +153,16 @@ export const BlockContentEditable = observer((props: IProps) => {
             // (though this might be optional) and then set the innerHTML
             // directly.  React has a bug which won't work on empty strings.
 
-            if (ENABLE_CURSOR_RESET) {
+            if (divRef.current && ENABLE_CURSOR_RESET) {
+                const pos = CursorPositions.computeCurrentOffset(divRef.current);
 
-                divRef.current!.innerHTML = props.content;
+                divRef.current.innerHTML = MarkdownContentConverter.toHTML(props.content);
+                ContentEditables.insertEmptySpacer(divRef.current!);
+
 
                 // TODO: only update if WE are active so the cursor doesn't jump.
-                if (divRef.current && blocksStore.active) {
-                    updateCursorPosition(divRef.current, {...blocksStore.active, pos: 'end'}, true);
+                if (blocksStore.active) {
+                    updateCursorPosition(divRef.current, {...blocksStore.active, pos}, true);
                 }
 
             }
@@ -203,216 +181,12 @@ export const BlockContentEditable = observer((props: IProps) => {
 
     }, [props]);
 
-    const hasEditorSelection = React.useCallback((): boolean => {
-
-        const selection = window.getSelection();
-
-        if (selection) {
-            const range = selection.getRangeAt(0);
-            return range.cloneContents().textContent !== '';
-        } else {
-            return false;
-        }
-
-    }, []);
-
-    const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
-
-        if (! divRef.current) {
-            return;
-        }
-
-        const cursorAtStart = ContentEditables.cursorAtStart(divRef.current);
-        const cursorAtEnd = ContentEditables.cursorAtEnd(divRef.current);
-
-        function abortEvent() {
-            event.stopPropagation();
-            event.preventDefault();
-        }
-
-        const opts: NavOpts = {
-            shiftKey: event.shiftKey
-        }
-
-        const hasModifiers = event.ctrlKey || event.shiftKey || event.metaKey || event.altKey;
-
-        switch (event.key) {
-
-            case 'ArrowUp':
-
-                if (event.ctrlKey || event.metaKey) {
-                    blocksStore.collapse(props.id)
-                    abortEvent();
-                    break;
-                }
-
-                if (event.shiftKey && ! ContentEditables.selectionAtStart(divRef.current)) {
-                    if (! blocksStore.hasSelected()) {
-                        // don't handle shift until we allow the range to be selected.
-                        break;
-                    }
-                }
-
-                abortEvent();
-                blocksStore.navPrev('start', opts);
-                break;
-
-            case 'ArrowDown':
-
-                if (event.ctrlKey || event.metaKey) {
-                    blocksStore.expand(props.id);
-                    abortEvent();
-                    break;
-                }
-
-                if (event.shiftKey && ! ContentEditables.selectionAtEnd(divRef.current)) {
-                    if (! blocksStore.hasSelected()) {
-                        // don't handle shift until we allow the range to be selected.
-                        break;
-                    }
-                }
-
-                abortEvent();
-                blocksStore.navNext('start', opts);
-
-                break;
-
-            case 'ArrowLeft':
-
-                if (event.metaKey) {
-                    console.log("History back");
-                    // FIXME: this doesn't seem to work...
-                    history.go(-1);
-                    abortEvent();
-                    break;
-                }
-
-                if (! hasEditorSelection()) {
-
-                    if ((platform === Platform.MACOS && event.shiftKey && event.metaKey) ||
-                        (platform === Platform.WINDOWS && event.shiftKey && event.altKey)) {
-
-                        blocksStore.unIndentBlock(props.id);
-                        break;
-
-                    }
-
-                }
-
-                if (! hasModifiers) {
-
-                    if (cursorAtStart) {
-                        abortEvent();
-                        blocksStore.navPrev('end', opts);
-                    }
-
-                }
-
-                break;
-
-            case 'ArrowRight':
-
-                if (event.metaKey) {
-                    console.log("History forward");
-                    history.goForward();
-                    abortEvent();
-                    break;
-                }
-
-                if (! hasEditorSelection()) {
-
-                    if ((platform === Platform.MACOS && event.shiftKey && event.metaKey) ||
-                        (platform === Platform.WINDOWS && event.shiftKey && event.altKey)) {
-                        blocksStore.indentBlock(props.id);
-                        break;
-                    }
-
-                }
-
-                if (! hasModifiers) {
-
-                    if (cursorAtEnd) {
-                        abortEvent();
-                        blocksStore.navNext('start', opts);
-                    }
-
-                }
-
-                break;
-
-            case 'Backspace':
-
-                if (hasEditorSelection()) {
-                    console.log("Not handling Backspace");
-                    break;
-                }
-
-                // TODO: only do this if there aren't any modifiers I think...
-                // don't do a manual delete and just always merge.
-                // if (props.parent !== undefined && store.noteIsEmpty(props.id)) {
-                //     abortEvent();
-                //     store.doDelete([props.id]);
-                //     break;
-                // }
-
-                if (blocksStore.hasSelected()) {
-                    abortEvent();
-
-                    const selected = blocksStore.selectedIDs();
-
-                    if (selected.length > 0) {
-                        blocksStore.deleteBlocks(selected);
-                    }
-                    break;
-                }
-
-                if (cursorAtStart) {
-
-                    // we're at the beginning of a note...
-
-                    const mergeTarget = blocksStore.canMerge(props.id);
-
-                    if (mergeTarget) {
-                        abortEvent();
-                        blocksStore.mergeBlocks(mergeTarget.target, mergeTarget.source);
-                        break;
-                    }
-
-                }
-
-                break;
-
-            case 'Tab':
-
-                if (props.parent !== undefined) {
-
-                    abortEvent();
-
-                    if (event.shiftKey) {
-                        blocksStore.unIndentBlock(props.id);
-                    } else {
-                        blocksStore.indentBlock(props.id);
-                    }
-
-                }
-
-                break;
-
-            default:
-                break;
-
-        }
-
-        if (props.onKeyDown) {
-            props.onKeyDown(event);
-        }
-
-    }, [hasEditorSelection, history, platform, props, blocksStore]);
+    useHandleLinkDeletion({ elem: divRef.current, blockID: props.id });
 
     return (
         <NoteContentEditableElementContext.Provider value={divRef}>
 
-            <div onKeyDown={handleKeyDown}
+            <div onKeyDown={props.onKeyDown}
                  onKeyUp={handleKeyUp}>
 
                 <BlockAction id={props.id}
@@ -432,6 +206,8 @@ export const BlockContentEditable = observer((props: IProps) => {
                              className={props.className}
                              style={{
                                  outline: 'none',
+                                 whiteSpace: 'pre-wrap',
+                                 wordBreak: 'break-word',
                                  ...props.style
                              }}
                              dangerouslySetInnerHTML={{__html: content}}/>
@@ -449,7 +225,7 @@ export const BlockContentEditable = observer((props: IProps) => {
 /**
  * Hook which keeps track of the last nonce we updated to avoid double updates.
  */
-function useUpdateCursorPosition() {
+export function useUpdateCursorPosition() {
 
     const nonceRef = React.useRef(-1);
 
@@ -520,3 +296,45 @@ function doUpdateCursorPosition(editor: HTMLDivElement, pos: 'start' | 'end' | n
     }
 
 }
+
+type IUseHandleLinkDeletionOpts = {
+    elem: HTMLElement | null;
+    blockID: BlockIDStr;
+};
+const useHandleLinkDeletion = ({ blockID, elem }: IUseHandleLinkDeletionOpts) => {
+    const mutationObserverConfig = React.useMemo(() => ({ childList: true }), []);
+    const blocksStore = useBlocksStore();
+
+    useMutationObserver((mutations) => {
+        const isElement = (node: Node): node is Element => node.nodeType === Node.ELEMENT_NODE;
+        const mutationNodesToWikiLinks = (nodes: NodeList) =>
+            Array.from(nodes)
+                .filter(isElement)
+                .filter(elem => elem.tagName === 'A')
+                .filter(elem => elem.getAttribute('href')?.startsWith('#'));
+
+        const compareLinks = (link1: Element) => (link2: Element) =>
+            link1.getAttribute('href') === link2.getAttribute('href') &&
+            link1.textContent === link2.textContent;
+
+        for (let mutation of mutations) {
+            const added = mutationNodesToWikiLinks(mutation.addedNodes);
+            const removed = mutationNodesToWikiLinks(mutation.removedNodes)
+            const removedLinks = removed.filter((elem) => !added.some(compareLinks(elem)));
+
+            for (let removedLink of removedLinks) {
+                const block = blocksStore.getBlock(blockID);
+                const linkedBlock = blocksStore.getBlockByName(removedLink.getAttribute('href')!.slice(1));
+                if (block && linkedBlock && block.content.type === 'markdown') {
+                    const newContent = new MarkdownContent(block.content.toJSON());
+                    newContent.removeLink(linkedBlock.id);
+                    blocksStore.setBlockContent(blockID, newContent);
+                }
+            }
+        }
+    }, {
+        elem,
+        config: mutationObserverConfig
+    })
+};
+

@@ -1,3 +1,4 @@
+import {Browsers} from "polar-browsers/src/Browsers";
 
 export namespace ContentEditables {
 
@@ -203,5 +204,62 @@ export namespace ContentEditables {
 
     }
 
+    export function getEmptyCharacter() {
+        const browser = Browsers.get();
+        if (browser && browser.id === 'firefox') {
+            return ' ';
+        }
+        return '&#xFEFF;';
+    }
 
+    export function createEmptySpacer() {
+        const span = document.createElement('span');
+        span.style.whiteSpace = 'pre-wrap';
+        span.innerHTML = getEmptyCharacter();
+        return span;
+    }
+
+    export function setCaretPosition(elem: Node, position: 'start' | 'end' | number) {
+        const range = new Range();
+        switch (position) {
+            case 'start':
+                range.setStartBefore(elem);
+                range.setEndBefore(elem);
+                break;
+            case 'end':
+                range.setStartAfter(elem);
+                range.setEndAfter(elem);
+                break;
+            default:
+                range.setStart(elem, position);
+                range.setStart(elem, position);
+                break;
+        }
+        const selection = document.getSelection();
+
+        if (selection) {
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+    };
+
+    export function insertEmptySpacer(elem: HTMLElement) {
+        const isFocusable = (node: Node | null): boolean => {
+            if (!node) {
+                return true;
+            }
+            if (!node.textContent?.length) {
+                return isFocusable(node.previousSibling);
+            }
+            if (node.nodeType === Node.ELEMENT_NODE) {
+                const elem = node as Element;
+                return elem.getAttribute('contenteditable') !== 'false';
+            }
+            return true;
+        };
+
+        if (!isFocusable(elem.lastChild)) {
+            elem.appendChild(ContentEditables.createEmptySpacer());
+        }
+    }
 }

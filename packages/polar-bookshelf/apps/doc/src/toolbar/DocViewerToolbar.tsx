@@ -28,7 +28,6 @@ import {DockLayoutToggleButton} from "../../../../web/js/ui/doc_layout/DockLayou
 import {ZenModeActiveContainer} from "../../../../web/js/mui/ZenModeActiveContainer";
 import {ZenModeButton} from "./ZenModeButton";
 import {AreaHighlightModeToggle} from "./AreaHighlightModeToggle";
-import {useAnnotationPopupBarEnabled} from "../annotations/annotation_popup/AnnotationPopup";
 import {TextHighlightModeToggle} from "./TextHighlightModeToggle";
 
 const getScaleLevelTuple = (scale: ScaleLevel) => (
@@ -43,7 +42,6 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
         = useDocViewerStore(['docScale', 'pageNavigator', 'scaleLeveler', 'docMeta', 'areaHighlightMode']);
     const {finder} = useDocFindStore(['finder']);
     const {setScale, onDocTagged, doZoom, toggleDocArchived, toggleDocFlagged} = useDocViewerCallbacks();
-    const newAnnotationBarEnabled = useAnnotationPopupBarEnabled();
 
     const handleScaleChange = React.useCallback((scale: ScaleLevel) => {
 
@@ -164,7 +162,7 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
 
                             <MUIButtonBar>
 
-                                {newAnnotationBarEnabled && <TextHighlightModeToggle />}
+                                <TextHighlightModeToggle />
 
                                 <AreaHighlightModeToggle />
 

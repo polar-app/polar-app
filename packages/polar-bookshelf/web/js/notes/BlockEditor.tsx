@@ -3,18 +3,36 @@ import {NoteNavigation} from "./NoteNavigation";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
-import {MarkdownContentEscaper} from "./MarkdownContentEscaper";
 import {BlockIDStr, useBlocksStore} from "./store/BlocksStore";
-import { observer } from "mobx-react-lite"
-import {BlockContentEditable} from "./contenteditable/BlockContentEditable";
-import {ContentEditables} from "./ContentEditables";
-import { HTMLStr } from "polar-shared/src/util/Strings";
-import {BlockPredicates} from "./store/BlockPredicates";
+import {observer} from "mobx-react-lite"
+import {BlockContentEditable, useUpdateCursorPosition} from "./contenteditable/BlockContentEditable";
+import {MarkdownStr} from "polar-shared/src/util/Strings";
 import {MarkdownContent} from "./content/MarkdownContent";
+import {BlockImageContent} from "./blocks/BlockImageContent";
+import {useBlockKeyDownHandler} from "./contenteditable/BlockKeyboardHandlers";
+import {ContentEditables} from "./ContentEditables";
 
 interface ILinkNavigationEvent {
     readonly abortEvent: () => void;
     readonly target: EventTarget | null;
+}
+
+export interface BlockEditorGenericProps {
+    readonly id: BlockIDStr;
+
+    readonly onClick?: (event: React.MouseEvent) => void;
+
+    readonly innerRef?: React.MutableRefObject<HTMLDivElement | null>;
+
+    readonly parent: BlockIDStr | undefined;
+
+    readonly onKeyDown?: (event: React.KeyboardEvent) => void;
+
+    readonly style?: React.CSSProperties;
+
+    readonly className?: string;
+
+    readonly readonly?: boolean;
 }
 
 function useLinkNavigationEventListener() {
@@ -82,18 +100,14 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
 
     const {id} = props;
     const blocksStore = useBlocksStore()
-    const noteActivated = blocksStore.getBlockActivated(props.id);
     const linkNavigationClickHandler = useLinkNavigationClickHandler();
     const ref = React.createRef<HTMLDivElement | null>();
+    const updateCursorPosition = useUpdateCursorPosition();
 
     const block = blocksStore.getBlock(id);
     const data = blocksStore.getBlockContentData(id);
 
-    const escaper = MarkdownContentEscaper;
-
-    const handleChange = React.useCallback((content: HTMLStr) => {
-
-        const markdown = escaper.unescape(content);
+    const handleChange = React.useCallback((markdown: MarkdownStr) => {
         const block = blocksStore.getBlock(id);
 
         if (block && block.content.type === "markdown") {
@@ -104,11 +118,23 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
             }))
         }
 
-    }, [escaper, blocksStore, id]);
+    }, [blocksStore, id]);
 
-    const content = React.useMemo(() => {
-        return data !== undefined ? escaper.escape(data) : '';
-    }, [data, escaper]);
+    React.useEffect(() => {
+        if (blocksStore.active?.id === props.id) {
+            if (ref.current) {
+
+                if (blocksStore.active.pos !== undefined) {
+                    updateCursorPosition(ref.current, blocksStore.active)
+                }
+
+                ref.current.focus();
+
+            }
+        } else if (ref.current) {
+            ContentEditables.insertEmptySpacer(ref.current);
+        }
+    }, [props.id, updateCursorPosition, blocksStore.active, ref]);
 
     const onClick = React.useCallback((event: React.MouseEvent) => {
 
@@ -120,55 +146,11 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
 
     }, [linkNavigationClickHandler, props.id, blocksStore]);
 
-    const handleCreateNewNote = React.useCallback(() => {
-
-        if (ref.current) {
-
-            const split = ContentEditables.splitAtCursor(ref.current);
-
-            if (split) {
-
-                const prefix = escaper.unescape(ContentEditables.fragmentToHTML(split.prefix));
-                const suffix = escaper.unescape(ContentEditables.fragmentToHTML(split.suffix));
-
-                blocksStore.createNewBlock(id, {split: {prefix, suffix}});
-
-            }
-
-        }
-
-    }, [escaper, id, ref, blocksStore]);
-
-
-    const handleEnter = React.useCallback(() => {
-
-        if (ref.current) {
-            if (blocksStore.requiredAutoUnIndent(props.id)) {
-                blocksStore.unIndentBlock(props.id);
-            } else {
-                handleCreateNewNote();
-            }
-        }
-
-    }, [handleCreateNewNote, props.id, ref, blocksStore]);
-
-    const onKeyDown = React.useCallback((event: React.KeyboardEvent) => {
-
-        function abortEvent() {
-            event.stopPropagation();
-            event.preventDefault();
-        }
-
-        switch (event.key) {
-
-            case 'Enter':
-                handleEnter();
-                abortEvent();
-                break;
-
-        }
-
-    }, [handleEnter]);
+    const {onKeyDown} = useBlockKeyDownHandler({
+        contentEditableRef: ref,
+        blockID: props.id,
+        readonly: block?.readonly,
+    });
 
     if (! block) {
         // this can happen when a note is deleted but the component hasn't yet
@@ -176,16 +158,35 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
         return null;
     }
 
-    return (
-        <BlockContentEditable id={props.id}
-                              parent={props.parent}
-                              innerRef={ref}
-                              content={content}
-                              onChange={handleChange}
-                              onClick={onClick}
-                              onKeyDown={onKeyDown}/>
-    );
+    if (~["markdown", "date", "name"].indexOf(block.content.type)) {
+        return (
+            <BlockContentEditable id={props.id}
+                                  parent={props.parent}
+                                  innerRef={ref}
+                                  content={data || ''}
+                                  onKeyDown={onKeyDown}
+                                  onChange={handleChange}
+                                  readonly={block.readonly}
+                                  onClick={onClick} />
+        );
+    }
 
+    if (block.content.type === "image") {
+        const {width, height, src} = block.content;
+        return (
+            <BlockImageContent id={props.id}
+                               parent={props.parent}
+                               width={width}
+                               height={height}
+                               src={src}
+                               innerRef={ref}
+                               onClick={onClick}
+                               readonly={block.readonly}
+                               onKeyDown={onKeyDown} />
+        );
+    }
+
+    return null;
 });
 
 const NoteEditorWithEditorStore = observer(function NoteEditorWithEditorStore(props: IProps) {
@@ -221,3 +222,5 @@ export const BlockEditor = observer(function BlockEditor(props: IProps) {
     );
 
 });
+
+

@@ -3,7 +3,7 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import * as React from 'react';
 import {FAHomeIcon} from "../../../web/js/mui/MUIFontAwesome";
-import {NoteFormatBar} from "../../../web/js/notes/NoteFormatBar";
+import {BarMode, NoteFormatBar} from "../../../web/js/notes/NoteFormatBar";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -18,11 +18,12 @@ const useStyles = makeStyles((theme) =>
 export const ScratchStory = () => {
 
     const classes = useStyles();
+    const [mode, setMode] = React.useState<BarMode>('format');
 
     return (
 
         <div>
-            <NoteFormatBar/>
+            <NoteFormatBar mode={mode} setMode={setMode}/>
         </div>
 
     );

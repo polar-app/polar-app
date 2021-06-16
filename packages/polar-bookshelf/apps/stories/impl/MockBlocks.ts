@@ -4,6 +4,25 @@ import {PositionalArrays} from "../../../web/js/notes/store/PositionalArrays";
 
 export namespace MockBlocks {
 
+    /*
+     * Visual representation of the following block structure (to make it easier to debug).
+     *
+     * - 102
+     *      - 103
+     *      - 104
+     *          - 116
+     *      - 105
+     *          - 106
+     *              - 117
+     *                  - 118
+     *  - 107
+     *      - 110
+     *  - 108
+     *  - 109
+     *      - 111
+     *  - 112
+     *
+     */
     export function create() {
 
         const now = ISODateTimeStrings.create();
@@ -59,7 +78,7 @@ export namespace MockBlocks {
                     data: 'Axis Powers: Germany, Italy, Japan',
                     links: [],
                 },
-                items: {},
+                items: PositionalArrays.create(['116']),
                 mutation: 0
             },
             {
@@ -169,7 +188,7 @@ export namespace MockBlocks {
                         }
                     ],
                 },
-                items: {},
+                items: PositionalArrays.create(['117']),
                 mutation: 0,
             },
             {
@@ -194,7 +213,7 @@ export namespace MockBlocks {
                 nspace, uid,
                 parent: '107',
                 parents: ['107'],
-                root: '101',
+                root: '107',
                 created: now,
                 updated: now,
                 content: {
@@ -221,6 +240,54 @@ export namespace MockBlocks {
                 content: {
                     type: 'name',
                     data: 'Winston Churchill'
+                },
+                items: {},
+                mutation: 0,
+            },
+            {
+                id: '116',
+                nspace, uid,
+                parent: '104',
+                parents: ['102', '104'],
+                root: '102',
+                created: now,
+                updated: now,
+                content: {
+                    type: 'markdown',
+                    data: 'Some random markdown',
+                    links: [],
+                },
+                items: {},
+                mutation: 0,
+            },
+            {
+                id: '117',
+                nspace, uid,
+                parent: '106',
+                parents: ['102', '105', '106'],
+                root: '102',
+                created: now,
+                updated: now,
+                content: {
+                    type: 'markdown',
+                    data: 'Nested child with links [[Winston]]',
+                    links: [{ id: '112', text: 'Winston' }],
+                },
+                items: PositionalArrays.create(['118']),
+                mutation: 0,
+            },
+            {
+                id: '118',
+                nspace, uid,
+                parent: '117',
+                parents: ['102', '105', '106', '117'],
+                root: '102',
+                created: now,
+                updated: now,
+                content: {
+                    type: 'markdown',
+                    data: 'Deeply nested child',
+                    links: [],
                 },
                 items: {},
                 mutation: 0,

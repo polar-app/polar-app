@@ -139,9 +139,3 @@ export const AnnotationPopup: React.FC = () => {
         </AnnotationPopupProvider>
     );
 };
-
-
-export const useAnnotationPopupBarEnabled = () => {
-    const prefs = usePrefsContext();
-    return React.useRef(prefs.isMarked("new-highlight-bar", false)).current;
-};

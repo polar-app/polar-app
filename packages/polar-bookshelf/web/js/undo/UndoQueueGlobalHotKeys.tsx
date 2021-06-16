@@ -12,13 +12,31 @@ const globalKeyMap = keyMapWithGroup({
         UNDO: {
             name: "Undo",
             description: "Undo the last action",
-            sequences: ['ctrl+z', 'command+Z']
+            sequences: [
+                {
+                    keys: 'ctrl+z',
+                    platforms: ['windows', 'linux']
+                },
+                {
+                    keys: 'command+Z',
+                    platforms: ['macos']
+                }
+            ]
         },
 
         REDO: {
             name: "Redo",
             description: "Redo the last action",
-            sequences: ['shift+ctrl+z', 'shift+command+Z']
+            sequences: [
+                {
+                    keys: 'shift+ctrl+z',
+                    platforms: ['windows', 'linux']
+                },
+                {
+                    keys: 'shift+command+Z',
+                    platforms: ['macos']
+                }
+            ]
         },
 
     }

@@ -8,17 +8,42 @@ const globalKeyMap = keyMapWithGroup({
         CLOSE_CURRENT_TAB: {
             name: "Close doc",
             description: "Close doc",
-            sequences: ['shift+ctrl+L', 'shift+command+l']
+            sequences: [
+                {
+                    keys: 'shift+ctrl+L',
+                    platforms: ['windows', 'linux']
+                },
+                {
+                    keys: 'shift+command+l',
+                    platforms: ['macos']
+                }]
         },
         PREV_TAB: {
             name: "Jump to previous doc",
             description: "Jump to previous doc",
-            sequences: ['shift+command+ArrowUp', 'shift+ctrl+ArrowUp']
+            sequences: [
+                {
+                    keys: 'shift+command+ArrowUp',
+                    platforms: ['macos']
+                },
+                {
+                    keys: 'shift+ctrl+ArrowUp',
+                    platforms: ['windows', 'linux']
+                }]
         },
         NEXT_TAB: {
             name: "Jump to next doc",
             description: "Jump to next doc",
-            sequences: ['shift+command+ArrowDown', 'shift+ctrl+ArrowDown']
+            sequences: [
+                {
+                    keys: 'shift+command+ArrowDown',
+                    platforms: ['macos']
+                },
+                {
+                    keys: 'shift+ctrl+ArrowDown',
+                    platforms: ['windows', 'linux']
+                }
+            ]
         }
     }
 });
