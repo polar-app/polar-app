@@ -108,13 +108,15 @@ export const GraphVisualization = () => {
     }, []);
 
 
-    return <div ref={ref}>
-        <SimpleDialog open={open} onClose={handleClose}>
-            <li>{selectedValue?.createdBy}</li>
-            <li>{selectedValue?.createdAt}</li>
-            <li>{selectedValue?.updatedAt}</li>
-        </SimpleDialog>
-    </div>;
+    return (
+        <div ref={ref}>
+            <SimpleDialog open={open} onClose={handleClose}>
+                <li>{selectedValue?.createdBy}</li>
+                <li>{selectedValue?.createdAt}</li>
+                <li>{selectedValue?.updatedAt}</li>
+            </SimpleDialog>
+        </div>
+    );
 };
 
 const COLORS = {
