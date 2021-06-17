@@ -18,15 +18,10 @@ export namespace BlockContentStructureConverter {
     }
     
     export function toHTML(blocks: ReadonlyArray<IBlockContentStructure>): HTMLStr {
-        if (blocks.length === 0) {
-            return '';
-        }
+        const html = blocks
+            .map(({ content, children }) => `<li>${convertContentToHTML(content)}${toHTML(children)}</li>`)
+            .join("");
 
-        const html = blocks.reduce((output, { content, children }) => {
-            const htmlChildren = toHTML(children);
-            return `${output}<li>${convertContentToHTML(content)}${htmlChildren}</li>`;
-        }, "");
-
-        return `<ul>${html}</ul>`;
+        return blocks.length > 0 ? `<ul>${html}</ul>` : '';
     }
 }
