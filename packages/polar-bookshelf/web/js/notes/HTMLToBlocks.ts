@@ -105,7 +105,7 @@ export namespace HTMLToBlocks {
             parent: IBlockContentMergableStructure | undefined = undefined,
             newState: ParserState = state,
         ) => {
-            const children = (await HTMLToBlockStructure(Array.prototype.slice.call(elem.childNodes), current, newState));
+            const children = (await HTMLToBlockStructure(Array.from(elem.childNodes), current, newState));
             current = "";
 
             if (parent) {
