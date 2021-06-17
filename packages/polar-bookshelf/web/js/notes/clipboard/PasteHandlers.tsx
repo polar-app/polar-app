@@ -203,7 +203,7 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
                     {type: 'image', handler: extractImage},
                 ],
                 onPasteError,
-            );
+            ).catch(e => console.log(e));
         }
 
     }, [onPasteError, onPasteImage, onPasteBlocks])
