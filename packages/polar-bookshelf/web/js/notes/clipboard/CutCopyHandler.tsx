@@ -4,44 +4,33 @@ import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {useBlocksStore} from "../store/BlocksStore";
 
 
-export const useCutCopyHandler = (): React.RefCallback<HTMLElement> => {
+export const useCutCopyHandler = () => {
     const blocksStore = useBlocksStore();
-    const callbackRef: React.RefCallback<HTMLElement> = React.useCallback((elem) => {
-        if (! elem) {
-            return;
+
+    const copy = React.useCallback((e: React.ClipboardEvent<HTMLElement>): boolean => {
+        if (e.clipboardData && blocksStore.hasSelected()) {
+            const selectedIDs = blocksStore.selectedIDs();
+            const blockContentStructure = blocksStore.createBlockContentStructure(selectedIDs);
+            e.preventDefault();
+            const html = BlockContentStructureConverter.toHTML(blockContentStructure);
+            const markdown = MarkdownContentConverter.toMarkdown(html);
+            e.clipboardData.setData('text/plain', markdown);
+            e.clipboardData.setData('text/markdown', markdown);
+            e.clipboardData.setData('text/html', html);
+            e.clipboardData.setData('application/polarblocks+json', JSON.stringify(blockContentStructure));
+            return true;
         }
-
-        const copy = (e: ClipboardEvent): boolean => {
-            if (e.clipboardData && blocksStore.hasSelected()) {
-                const selectedIDs = blocksStore.selectedIDs();
-                const blockContentStructure = blocksStore.createBlockContentStructure(selectedIDs);
-                e.preventDefault();
-                const html = BlockContentStructureConverter.toHTML(blockContentStructure);
-                const markdown = MarkdownContentConverter.toMarkdown(html);
-                e.clipboardData.setData('text/plain', markdown);
-                e.clipboardData.setData('text/markdown', markdown);
-                e.clipboardData.setData('text/html', html);
-                e.clipboardData.setData('application/polarblocks+json', JSON.stringify(blockContentStructure));
-                return true;
-            }
-            return false;
-        };
-
-        const handleCopy = (e: ClipboardEvent) => copy(e);
-
-        const handleCut = (e: ClipboardEvent) => {
-            if (copy(e)) {
-                blocksStore.doDelete(blocksStore.selectedIDs());
-            }
-        };
-
-        elem.addEventListener('copy', handleCopy);
-        elem.addEventListener('cut', handleCut);
-        return () => {
-            elem.removeEventListener('copy', handleCopy);
-            elem.removeEventListener('cut', handleCut); 
-        };
+        return false;
     }, [blocksStore]);
 
-    return callbackRef;
+    const onCut: React.ClipboardEventHandler<HTMLElement> = React.useCallback((e) => {
+        if (copy(e)) {
+            blocksStore.doDelete(blocksStore.selectedIDs());
+        }
+    }, [copy, blocksStore]);
+
+    const onCopy: React.ClipboardEventHandler<HTMLElement> = React.useCallback((e) => copy(e), [copy]);
+
+
+    return {onCopy, onCut};
 };

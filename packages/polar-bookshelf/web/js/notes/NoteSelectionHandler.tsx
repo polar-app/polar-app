@@ -50,7 +50,7 @@ export const NoteSelectionHandler = observer(function NoteSelectionHandler(props
                 break;
 
             default:
-                // Ignore Ctr+C & Ctrl+X
+                // Ignore Ctr+C & Ctrl+X because we need to handle these directly (check below).
                 if ((event.ctrlKey || event.metaKey) && event.key === 'c' || event.key === 'x') {
                     break;
                 }
@@ -61,10 +61,10 @@ export const NoteSelectionHandler = observer(function NoteSelectionHandler(props
 
     }, [handleDelete, blocksStore]);
 
-    const ref = useCutCopyHandler();
+    const binds = useCutCopyHandler();
 
     return (
-        <div ref={ref} style={props.style} onKeyDown={onKeyDown}>
+        <div {...binds} style={props.style} onKeyDown={onKeyDown}>
             {props.children}
         </div>
     );
