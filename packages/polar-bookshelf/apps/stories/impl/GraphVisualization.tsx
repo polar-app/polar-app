@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import G6, { Graph, INode, StateStyles } from "@antv/g6";
 import { SimpleDialog } from "./SimpleDialog";
 
+// TOO: how do we pick the center of the layout
+
 export const GraphVisualization = () => {
     const ref = useRef<HTMLDivElement | null>(null);
 
@@ -16,7 +18,6 @@ export const GraphVisualization = () => {
         setOpen(false);
         setSelectedValue(null);
     };
-
 
     useEffect(() => {
         let graph: Graph | null = null;
@@ -51,12 +52,19 @@ export const GraphVisualization = () => {
                         color: COLORS.gray100,
                     },
                     layout: {
-                        type: "fruchterman",
+                        type: "force",
                         gpuEnabled: true,
                         workerEnabled: true,
-                        clustering: true,
+                        // clustering: true,
                         gravity: 20,
                         speed: 2,
+                        maxIteration: 500,
+                        // for rendering after each iteration
+                        tick: () => {
+                            if (graph) {
+                                graph.refreshPositions()
+                            }
+                        }
                     },
                     nodeStateStyles: {
                         hover: {
@@ -70,26 +78,26 @@ export const GraphVisualization = () => {
         }
         const nodes = data.nodes;
 
-        nodes.forEach(
-            (node) => {
-                switch (node.cluster) {
-                    case "b": {
-                        node.size = 40;
-                        node.style = {
-                            fill: COLORS.violet,
-                        };
-                        break;
-                    }
-                    case "c": {
-                        node.size = 30;
-                        node.style = {
-                            fill:  COLORS.violet100,
-                        };
-                        break;
-                    }
-                }
-            }
-        );
+        // nodes.forEach(
+        //     (node) => {
+        //         switch (node.cluster) {
+        //             case "b": {
+        //                 node.size = 40;
+        //                 node.style = {
+        //                     fill: COLORS.violet,
+        //                 };
+        //                 break;
+        //             }
+        //             case "c": {
+        //                 node.size = 30;
+        //                 node.style = {
+        //                     fill:  COLORS.violet100,
+        //                 };
+        //                 break;
+        //             }
+        //         }
+        //     }
+        // );
 
         graph.data(data);
         graph.render();
@@ -135,7 +143,6 @@ type metaType = {
 type NodesType = {
     id: string;
     label: string;
-    cluster: string;
     size: number;
     meta: metaType
 } & StateStyles
@@ -145,7 +152,6 @@ const data = {
             {
                 id: "0",
                 label: "TypeScript",
-                cluster: "b",
                 meta: {
                     createdAt: Date.now(),
                     updatedAt: '2020/21/2',
@@ -155,7 +161,6 @@ const data = {
             {
               id: "1",
               label: "JavaScript",
-              cluster: "a",
               meta: {
                 createdAt: Date.now(),
                 updatedAt: '2020/21/2',
@@ -165,7 +170,6 @@ const data = {
             {
               id: "2",
               label: "Haskell",
-              cluster: "a",
               meta: {
                 createdAt: Date.now(),
                 updatedAt: '2020/21/2',
@@ -175,7 +179,6 @@ const data = {
             {
               id: "3",
               label: "JAVA",
-              cluster: "a",
               meta: {
                 createdAt: Date.now(),
                 updatedAt: '2020/21/2',
@@ -185,7 +188,6 @@ const data = {
             {
               id: "4",
               label: "FORTAN",
-              cluster: "a",
               meta: {
                 createdAt: Date.now(),
                 updatedAt: '2020/21/2',
@@ -195,7 +197,6 @@ const data = {
             {
               id: "5",
               label: "LISP",
-              cluster: "a",
               meta: {
                 createdAt: Date.now(),
                 updatedAt: '2020/21/2',
@@ -205,7 +206,6 @@ const data = {
             {
               id: "6",
               label: "C#",
-              cluster: "c",
               meta: {
                 createdAt: Date.now(),
                 updatedAt: '2020/21/2',
@@ -215,7 +215,6 @@ const data = {
             {
               id: "7",
               label: "Ruby",
-              cluster: "a",
               meta: {
                 createdAt: Date.now(),
                 updatedAt: '2020/21/2',
@@ -225,7 +224,6 @@ const data = {
             {
               id: "8",
               label: "PHP",
-              cluster: "a",
               meta: {
                 createdAt: Date.now(),
                 updatedAt: '2020/21/2',
@@ -235,7 +233,6 @@ const data = {
             {
               id: "9",
               label: "GO",
-              cluster: "a",
               meta: {
                 createdAt: Date.now(),
                 updatedAt: '2020/21/2',
