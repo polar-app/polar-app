@@ -63,11 +63,16 @@ export const NotesInbound = deepMemo(function NotesInbound(props: IProps) {
     const inboundNoteIDs = blocksStore.lookupReverse(props.id);
     const inbound = blocksStore.lookup(inboundNoteIDs);
 
+    if (inbound.length === 0) {
+        return null;
+    }
+
     return (
         <div className="NotesInbound">
 
             <Box color="text.secondary">
-                <h3>All notes that reference this note:</h3>
+                {/* TODO: Maybe use a package here for pluralization or write a helper function somewhere */}
+                <h3>All notes that reference this note: { inbound.length } linked reference{inbound.length === 1 ? '' : 's'}.</h3>
             </Box>
 
             <UL>
