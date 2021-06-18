@@ -199,7 +199,7 @@ export const BlockContentEditable = observer((props: IProps) => {
 
                     <NoteFormatPopper onUpdated={updateMarkdownFromEditable} id={props.id}>
                         <div ref={handleRef}
-                             onPaste={event => handlePaste(event)}
+                             onPaste={handlePaste}
                              onClick={props.onClick}
                              contentEditable={true}
                              spellCheck={props.spellCheck}

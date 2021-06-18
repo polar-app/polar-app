@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) =>
             },
             "& img": {
                 maxWidth: '100%',
+                verticalAlign: 'top',
             },
             "& pre": {
                 margin: 0,

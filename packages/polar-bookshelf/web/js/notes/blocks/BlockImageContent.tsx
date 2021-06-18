@@ -58,22 +58,13 @@ export const BlockImageContent = observer((props: IProps) => {
         if (!elem) {
             return;
         }
-        const getSpacer = () => {
-            const span = document.createElement('span');
-            span.style.display = 'inline-block';
-            span.style.height = '100%';
-            span.appendChild(document.createTextNode(' '));
-            return span;
-        };
 
         const img = document.createElement('img');
         img.src = src;
         img.width = width;
         img.height = height;
         elem.innerHTML = '';
-        elem.appendChild(getSpacer());
         elem.appendChild(img);
-        elem.appendChild(getSpacer());
     }, [src, width, height]);
 
     return (
