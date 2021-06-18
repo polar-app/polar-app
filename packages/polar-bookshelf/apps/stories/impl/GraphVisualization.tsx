@@ -103,6 +103,12 @@ export const GraphVisualizationInner = (props: IGraphVisualizationInnerProps) =>
                     defaultEdge: {
                         size: 1,
                         color: COLORS.gray100,
+                        style: {
+                            endArrow: {
+                                path: 'M 0,0 L 8,4 L 8,-4 Z',
+                                fill: '#e2e2e2',
+                            },
+                        },
                     },
                     layout: {
                         type: "force",
@@ -110,7 +116,7 @@ export const GraphVisualizationInner = (props: IGraphVisualizationInnerProps) =>
                         workerEnabled: true,
                         // clustering: true,
                         gravity: 20,
-                        speed: 2,
+                        speed: 10,
                         maxIteration: 500,
                         // for rendering after each iteration
                         tick: () => {
