@@ -101,13 +101,13 @@ export const GraphVisualizationInner = (props: IGraphVisualizationInnerProps) =>
                         }
                     },
                     defaultEdge: {
+                        type: 'polyline',
                         size: 1,
                         color: COLORS.gray100,
                         style: {
-                            endArrow: {
-                                path: 'M 0,0 L 8,4 L 8,-4 Z',
-                                fill: '#e2e2e2',
-                            },
+                            radius: 10,
+                            offset: 30,
+                            endArrow: true
                         },
                     },
                     layout: {
@@ -156,8 +156,6 @@ export const GraphVisualizationInner = (props: IGraphVisualizationInnerProps) =>
         //         }
         //     }
         // );
-
-        console.log("FIXME: edges: ", blocksGraph.edges);
 
         graph.data(blocksGraph as any);
         graph.render();
