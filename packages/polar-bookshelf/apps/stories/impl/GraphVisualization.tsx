@@ -1,14 +1,62 @@
 import React, { useEffect, useState, useRef } from "react";
 import G6, { Graph, INode, StateStyles } from "@antv/g6";
 import { SimpleDialog } from "./SimpleDialog";
+import ContainerDimensions from 'react-container-dimensions'
+import {IBlock} from "../../../web/js/notes/store/IBlock";
+import {MockBlocks} from "./MockBlocks";
+import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {BlocksToGraph} from "../../../web/js/notes/viz/BlocksToGraph";
 
 // TOO: how do we pick the center of the layout
 
-export const GraphVisualization = () => {
+interface IGraphVisualizationInnerProps {
+    readonly width: number;
+    readonly height: number;
+    readonly blocks: ReadonlyArray<IBlock>;
+}
+
+
+const COLORS = {
+    gray100: "#e2e2e2",
+    babyblue: "#0089e4",
+    violet: "#7a6ae6",
+    violet100: "#5549a0"
+}
+
+type MetaType = {
+    createdAt: ISODateTimeString;
+    updatedAt: ISODateTimeString;
+}
+
+// type NodeType = {
+//     id: string;
+//     label: string;
+//     meta: MetaType
+// } & StateStyles
+
+type NodeType = {
+    id: string;
+    label: string;
+    meta: MetaType
+}
+
+export interface IGraphData {
+    readonly nodes: ReadonlyArray<NodeType>;
+    readonly edges: ReadonlyArray<IEdgeType>;
+}
+
+export interface IEdgeType {
+    readonly source: string;
+    readonly target: string;
+}
+
+export const GraphVisualizationInner = (props: IGraphVisualizationInnerProps) => {
+
     const ref = useRef<HTMLDivElement | null>(null);
 
     const [open, setOpen] = useState(false);
-    const [selectedValue, setSelectedValue] = useState<metaType | null>(null);
+    const [selectedValue, setSelectedValue] = useState<MetaType | null>(null);
+    const blocksGraph = React.useMemo(() => BlocksToGraph.convertBlocksToGraph(props.blocks), [props.blocks]);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -20,14 +68,19 @@ export const GraphVisualization = () => {
     };
 
     useEffect(() => {
+
         let graph: Graph | null = null;
+
+        const MINIMAP_HEIGHT = 100;
+
         if (!graph) {
-            const minimap = new G6.Minimap();
+
+            const minimap = new G6.Minimap({height: MINIMAP_HEIGHT});
 
             graph = new G6.Graph({
                 container: ref.current,
-                width: 800,
-                height: 1000,
+                width: props.width,
+                height: props.height - MINIMAP_HEIGHT,
                 modes: {
                     default: ["drag-canvas", "drag-node", "zoom-canvas"],
                 },
@@ -50,6 +103,12 @@ export const GraphVisualization = () => {
                     defaultEdge: {
                         size: 1,
                         color: COLORS.gray100,
+                        style: {
+                            endArrow: {
+                                path: 'M 0,0 L 8,4 L 8,-4 Z',
+                                fill: '#e2e2e2',
+                            },
+                        },
                     },
                     layout: {
                         type: "force",
@@ -57,7 +116,7 @@ export const GraphVisualization = () => {
                         workerEnabled: true,
                         // clustering: true,
                         gravity: 20,
-                        speed: 2,
+                        speed: 10,
                         maxIteration: 500,
                         // for rendering after each iteration
                         tick: () => {
@@ -76,7 +135,6 @@ export const GraphVisualization = () => {
                 }
             });
         }
-        const nodes = data.nodes;
 
         // nodes.forEach(
         //     (node) => {
@@ -99,27 +157,33 @@ export const GraphVisualization = () => {
         //     }
         // );
 
-        graph.data(data);
+        console.log("FIXME: edges: ", blocksGraph.edges);
+
+        graph.data(blocksGraph as any);
         graph.render();
 
         graph.on("node:mouseenter", (evt) => graph?.setItemState(evt.item!, "hover", true));
         graph.on("node:mouseleave", (evt) => graph?.setItemState(evt.item!, "hover", false));
 
         graph.on("node:click", (evt) => {
-            const item = evt.item?.getModel().meta as metaType
+            const item = evt.item?.getModel().meta as MetaType
             if (item) {
                 setSelectedValue(item)
                 handleClickOpen()
             }
         });
 
-    }, []);
+        return () => {
+            if (graph) {
+                graph.destroy()
+            }
+        }
 
+    }, [blocksGraph, blocksGraph.nodes, props.height, props.width]);
 
     return (
         <div ref={ref}>
             <SimpleDialog open={open} onClose={handleClose}>
-                <li>{selectedValue?.createdBy}</li>
                 <li>{selectedValue?.createdAt}</li>
                 <li>{selectedValue?.updatedAt}</li>
             </SimpleDialog>
@@ -127,239 +191,14 @@ export const GraphVisualization = () => {
     );
 };
 
-const COLORS = {
-    gray100: "#e2e2e2",
-    babyblue: "#0089e4",
-    violet: "#7a6ae6",
-    violet100: "#5549a0"
-}
+export const GraphVisualization = () => {
+    return (
+        <GraphVisualizationInner  width={800} height={600} blocks={MockBlocks.create()}/>
+    );
 
-type metaType = {
-    createdAt: number;
-    updatedAt: string;
-    createdBy: string;
-}
-
-type NodesType = {
-    id: string;
-    label: string;
-    size: number;
-    meta: metaType
-} & StateStyles
-
-const data = {
-    nodes: [
-            {
-                id: "0",
-                label: "TypeScript",
-                meta: {
-                    createdAt: Date.now(),
-                    updatedAt: '2020/21/2',
-                    createdBy: 'mohamed'
-                }
-            },
-            {
-              id: "1",
-              label: "JavaScript",
-              meta: {
-                createdAt: Date.now(),
-                updatedAt: '2020/21/2',
-                createdBy: 'mohamed'
-              }
-            },
-            {
-              id: "2",
-              label: "Haskell",
-              meta: {
-                createdAt: Date.now(),
-                updatedAt: '2020/21/2',
-                createdBy: 'mohamed'
-              }
-            },
-            {
-              id: "3",
-              label: "JAVA",
-              meta: {
-                createdAt: Date.now(),
-                updatedAt: '2020/21/2',
-                createdBy: 'mohamed'
-              }
-            },
-            {
-              id: "4",
-              label: "FORTAN",
-              meta: {
-                createdAt: Date.now(),
-                updatedAt: '2020/21/2',
-                createdBy: 'mohamed'
-              }
-            },
-            {
-              id: "5",
-              label: "LISP",
-              meta: {
-                createdAt: Date.now(),
-                updatedAt: '2020/21/2',
-                createdBy: 'mohamed'
-              }
-            },
-            {
-              id: "6",
-              label: "C#",
-              meta: {
-                createdAt: Date.now(),
-                updatedAt: '2020/21/2',
-                createdBy: 'mohamed'
-              }
-            },
-            {
-              id: "7",
-              label: "Ruby",
-              meta: {
-                createdAt: Date.now(),
-                updatedAt: '2020/21/2',
-                createdBy: 'mohamed'
-              }
-            },
-            {
-              id: "8",
-              label: "PHP",
-              meta: {
-                createdAt: Date.now(),
-                updatedAt: '2020/21/2',
-                createdBy: 'mohamed'
-              }
-            },
-            {
-              id: "9",
-              label: "GO",
-              meta: {
-                createdAt: Date.now(),
-                updatedAt: '2020/21/2',
-                createdBy: 'Ahmed'
-              }
-            },
-    ] as NodesType[],
-    edges: [
-            {
-              source: "0",
-              target: "1",
-            },
-            {
-              source: "0",
-              target: "2",
-            },
-            {
-              source: "0",
-              target: "3",
-            },
-            {
-              source: "0",
-              target: "4",
-            },
-            {
-              source: "0",
-              target: "5",
-            },
-            {
-              source: "0",
-              target: "7",
-            },
-            {
-              source: "0",
-              target: "8",
-            },
-            {
-              source: "0",
-              target: "9",
-            },
-            {
-              source: "0",
-              target: "10",
-            },
-            {
-              source: "0",
-              target: "11",
-            },
-            {
-              source: "0",
-              target: "13",
-            },
-            {
-              source: "0",
-              target: "14",
-            },
-            {
-              source: "0",
-              target: "15",
-            },
-            {
-              source: "0",
-              target: "16",
-            },
-            {
-              source: "2",
-              target: "3",
-            },
-            {
-              source: "4",
-              target: "5",
-            },
-            {
-              source: "4",
-              target: "6",
-            },
-            {
-              source: "5",
-              target: "6",
-            },
-            {
-              source: "7",
-              target: "13",
-            },
-            {
-              source: "8",
-              target: "14",
-            },
-            {
-              source: "9",
-              target: "10",
-            },
-            {
-              source: "10",
-              target: "22",
-            },
-            {
-              source: "10",
-              target: "14",
-            },
-            {
-              source: "10",
-              target: "12",
-            },
-            {
-              source: "10",
-              target: "24",
-            },
-            {
-              source: "10",
-              target: "21",
-            },
-            {
-              source: "10",
-              target: "20",
-            },
-            {
-              source: "11",
-              target: "24",
-            },
-            {
-              source: "11",
-              target: "22",
-            },
-            {
-              source: "11",
-              target: "14",
-            },
-    ],
+    // return (
+    //     <ContainerDimensions>
+    //         {({height, width}) => <GraphVisualizationInner height={height} width={width}/>}
+    //     </ContainerDimensions>
+    // );
 };
