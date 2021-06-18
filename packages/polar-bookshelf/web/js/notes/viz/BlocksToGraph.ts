@@ -5,7 +5,7 @@ import { ISODateTimeString } from "polar-shared/src/metadata/ISODateTimeStrings"
 
 export namespace BlocksToGraph {
 
-    type IMetaType = {
+    export type IMetaType = {
         createdAt: ISODateTimeString;
         updatedAt: ISODateTimeString;
     }
@@ -24,6 +24,14 @@ export namespace BlocksToGraph {
     export interface IEdgeType {
         readonly source: string;
         readonly target: string;
+    }
+
+    export function computeNamedBlocks(blocks: ReadonlyArray<IBlock>) {
+
+        return arrayStream(blocks)
+            .filter(current => current.content.type === 'name')
+            .collect();
+
     }
 
     export function convertBlocksToGraph(blocks: ReadonlyArray<IBlock>): IGraphData {
@@ -47,8 +55,6 @@ export namespace BlocksToGraph {
 
         const toEdges = (block: IBlock) => {
 
-            console.log("FIXME toEdges: block: ", block)
-
             // TODO in this dataset... we have have all the child blocks so
             // to look these up is easy but with filtering we might have to
             // dive into the BlocksStore
@@ -57,14 +63,14 @@ export namespace BlocksToGraph {
 
                 if (markdownBlock.content.type === 'markdown') {
 
-                    arrayStream(markdownBlock.content.links)
+                    return arrayStream(markdownBlock.content.links)
                         .map(current => {
                             return {
                                 source: block.id,
                                 target: current.id
                             };
                         })
-                        // .unique(current => current.target)
+                        .unique(current => current.target)
                         .collect();
 
                 }
@@ -72,17 +78,6 @@ export namespace BlocksToGraph {
                 return [];
 
             }
-
-            const bar = arrayStream(blocks)
-                .filter(current => current.root === block.id)
-                .filter(current => current.content.type === 'markdown')
-                .map(current => convertFromMarkdownToEdges(current))
-                // .flatMap(current => current)
-                // .unique(current => current.target)
-                .collect();
-
-
-            console.log("FIXME: bar: ", bar);
 
             return arrayStream(blocks)
                 .filter(current => current.root === block.id)
@@ -94,22 +89,15 @@ export namespace BlocksToGraph {
 
         }
 
-        const nodes = blocks.filter(current => current.content.type === 'name')
-            .map(current => toNode(current));
-        //
-        // const foo = arrayStream(blocks)
-        //     .filter(current => current.content.type === 'name')
-        //     // .map(current => toEdges(current))
-        //     // .flatMap(current => current)
-        //     .collect();
-        //
-        // console.log("FIXME: foo: ", foo);
+        const nodes
+            = computeNamedBlocks(blocks)
+                .map(current => toNode(current));
 
-        const edges = arrayStream(blocks)
-            .filter(current => current.content.type === 'name')
-            .map(current => toEdges(current))
-            .flatMap(current => current)
-            .collect();
+        const edges
+            = arrayStream(computeNamedBlocks(blocks))
+                .map(current => toEdges(current))
+                .flatMap(current => current)
+                .collect();
 
         return {nodes, edges};
 
