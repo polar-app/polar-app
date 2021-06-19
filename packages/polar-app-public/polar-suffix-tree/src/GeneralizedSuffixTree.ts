@@ -2,6 +2,7 @@ import { STNode } from "./STNode";
 import {ResultInfo} from "./ResultInfo";
 import { STEdge } from "./STEdge";
 import { Pair } from "./Pair";
+import {StringUtils} from "./StringUtils";
 
 /**
  * A Generalized Suffix Tree, based on the Ukkonen's paper "On-line construction of suffix trees"
@@ -74,7 +75,7 @@ export class GeneralizedSuffixTree {
      */
     public searchWithLimit(word: string, results: number) {
         const tmpNode = this.searchNode(word);
-        if (tmpNode == null) {
+        if (tmpNode === null) {
             return [];
         }
         return tmpNode.getDataWithLimit(results);
@@ -126,7 +127,7 @@ export class GeneralizedSuffixTree {
                 //     return null;
                 // }
 
-                if (!regionMatches(word, i, label, 0, lenToMatch)) {
+                if (!StringUtils.regionMatches(word, i, label, 0, lenToMatch)) {
                     // the label on the edge does not correspond to the one in the string to search
                     return null;
                 }
@@ -421,28 +422,5 @@ export class GeneralizedSuffixTree {
     public computeCount(): number {
         return this.root.computeAndCacheCount();
     }
-
-}
-
-export function regionMatches(src: string,
-                              srcOffset: number,
-                              target: string,
-                              targetOffset: number,
-                              len: number) {
-
-    if ((target.length - targetOffset) < len) {
-        // not enough data in target so definitely not.
-        return false;
-    }
-
-    let si = srcOffset;
-    let to = targetOffset;
-
-    while (len-- > 0) {
-        if (src[si++] !== target[to++]) {
-            return false;
-        }
-    }
-    return true;
 
 }
