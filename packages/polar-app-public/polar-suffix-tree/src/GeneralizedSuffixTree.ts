@@ -250,6 +250,7 @@ export class GeneralizedSuffixTree {
 
         } else {
             const e = s.getEdge(t);
+
             if (null === e) {
                 // if there is no t-transtion from s
                 return new Pair(false, s);

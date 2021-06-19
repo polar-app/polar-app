@@ -1,13 +1,16 @@
 import {GeneralizedSuffixTree} from "./GeneralizedSuffixTree";
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe("GeneralizedSuffixTree", function() {
+
     it("basic", () => {
 
         const gst = new GeneralizedSuffixTree();
-        gst.put("hello", 0);
-        gst.put("world", 0);
+        gst.put("hello", 1);
+        gst.put("world", 2);
 
-        gst.search('ell');
+        assertJSON(gst.search('hell'), []);
 
     });
+
 })

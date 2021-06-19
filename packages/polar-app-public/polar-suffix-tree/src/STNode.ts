@@ -222,7 +222,7 @@ export class STNode {
     }
 
     getEdge(ch: string) {
-        return this.edges[ch];
+        return this.edges[ch] || null;
     }
 
     getEdges() {
