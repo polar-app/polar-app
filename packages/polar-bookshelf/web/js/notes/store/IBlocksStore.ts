@@ -81,17 +81,17 @@ export interface IBlocksStore {
 
     toggleExpand(id: BlockIDStr): void;
 
-    setSelectionRange(fromBlock: BlockIDStr, toBlock: BlockIDStr): void;
+    setSelectionRange(fromBlock: BlockIDStr, toBlock: BlockIDStr, root?: BlockIDStr): void;
 
     isExpanded(id: BlockIDStr): boolean;
     isSelected(id: BlockIDStr): boolean;
 
     // TODO: undo / cursor
-    indentBlock(id: BlockIDStr): ReadonlyArray<DoIndentResult>;
+    indentBlock(id: BlockIDStr, root?: BlockIDStr): ReadonlyArray<DoIndentResult>;
     // TODO: undo / cursor
-    unIndentBlock(id: BlockIDStr): ReadonlyArray<DoUnIndentResult>;
+    unIndentBlock(id: BlockIDStr, root?: BlockIDStr): ReadonlyArray<DoUnIndentResult>;
 
-    requiredAutoUnIndent(id: BlockIDStr): boolean;
+    requiredAutoUnIndent(id: BlockIDStr, root?: BlockIDStr): boolean;
 
     // TODO: undo / cursor
     deleteBlocks(blockIDs: ReadonlyArray<BlockIDStr>): void;
@@ -121,8 +121,8 @@ export interface IBlocksStore {
     canMergePrev(id: BlockIDStr): IBlockMerge | undefined;
     canMergeNext(id: BlockIDStr): IBlockMerge | undefined;
 
-    navPrev(pos: NavPosition, opts: NavOpts): void;
-    navNext(pos: NavPosition, opts: NavOpts): void;
+    navPrev(pos: NavPosition, opts: NavOpts, root?: BlockIDStr): void;
+    navNext(pos: NavPosition, opts: NavOpts, root?: BlockIDStr): void;
 
     getNamedBlocks(): ReadonlyArray<string>;
 

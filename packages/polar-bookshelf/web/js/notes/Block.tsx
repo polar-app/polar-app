@@ -13,8 +13,6 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
 import { BlockDragIndicator } from "./BlockDragIndicator";
-import {BlockImageContent} from "./blocks/BlockImageContent";
-import {BlockPredicates} from "./store/BlockPredicates";
 import {useUndoQueue} from "../undo/UndoQueueProvider2";
 
 const useStyles = makeStyles((theme) =>
@@ -28,6 +26,7 @@ const useStyles = makeStyles((theme) =>
 interface IProps {
     readonly parent: BlockIDStr | undefined;
     readonly id: BlockIDStr;
+    readonly root: BlockIDStr;
 }
 
 export interface IBlockContextMenuOrigin {
@@ -39,7 +38,7 @@ export const [BlockContextMenu, useBlockContextMenu]
 
 export const BlockInner = observer((props: IProps) => {
 
-    const {id} = props;
+    const {id, root} = props;
 
     const blocksStore = useBlocksStore();
     const classes = useStyles();
@@ -55,8 +54,6 @@ export const BlockInner = observer((props: IProps) => {
     const divRef = React.useRef<HTMLDivElement | null>(null);
     const dragActive = React.useRef<boolean>(false);
 
-    const root = blocksStore.root;
-
     const handleMouseDown = React.useCallback((event: React.MouseEvent) => {
 
         if (event.shiftKey) {
@@ -65,7 +62,7 @@ export const BlockInner = observer((props: IProps) => {
 
                 if (blocksStore.active?.id !== id) {
 
-                    blocksStore.setSelectionRange(blocksStore.active.id, id);
+                    blocksStore.setSelectionRange(blocksStore.active.id, id, root);
 
                     window.getSelection()!.removeAllRanges();
 
@@ -82,10 +79,6 @@ export const BlockInner = observer((props: IProps) => {
         }
 
     }, [id, blocksStore]);
-
-    if (! block) {
-        return null;
-    }
 
     const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -233,6 +226,10 @@ export const BlockInner = observer((props: IProps) => {
 
     }, []);
 
+    if (! block) {
+        return null;
+    }
+
     const items = blocksStore.lookup(block.itemsAsArray || []);
 
     const hasItems = items.length > 0;
@@ -280,7 +277,7 @@ export const BlockInner = observer((props: IProps) => {
                                 {block.parent && <BlockBulletButton target={props.id}/>}
 
                             </div>
-                            <BlockEditor key={props.id} parent={props.parent} id={props.id} />
+                            <BlockEditor root={root} key={props.id} parent={props.parent} id={props.id} />
 
                             {/*{(block.content.type === 'date' || block.content.type === 'name') && (*/}
                             {/*    <div style={{*/}
@@ -294,7 +291,7 @@ export const BlockInner = observer((props: IProps) => {
                         </div>
 
                         {(expanded || id === root) && (
-                            <BlockItems parent={props.id} notes={items}/>
+                            <BlockItems root={root} parent={props.id} notes={items}/>
                         )}
                 </>
             </BlockDragIndicator>

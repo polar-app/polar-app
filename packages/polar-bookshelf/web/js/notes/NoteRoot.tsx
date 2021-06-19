@@ -38,7 +38,7 @@ export const NoteRootRenderer: React.FC<INoteRootRendererProps> = ({ block }) =>
                         
                         <NotesToolbar/>
 
-                        <Block parent={undefined} id={id}/>
+                        <Block root={id} parent={undefined} id={id}/>
 
                         <NotesInbound id={id}/>
 
