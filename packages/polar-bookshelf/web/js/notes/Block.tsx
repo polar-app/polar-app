@@ -78,7 +78,7 @@ export const BlockInner = observer((props: IProps) => {
             blocksStore.clearSelected('Note: handleMouseDown');
         }
 
-    }, [id, blocksStore]);
+    }, [id, blocksStore, root]);
 
     const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 

@@ -113,7 +113,7 @@ export const SideNavHistoryButton = React.memo(function SideNavHistoryButton(pro
         } else {
             history.push(path);
         }
-    }, [history, onClick]);
+    }, [history, onClick, path]);
 
     return (
         <ActiveTabButton title={title}

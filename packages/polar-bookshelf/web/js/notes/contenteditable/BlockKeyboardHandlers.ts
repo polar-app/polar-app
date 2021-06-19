@@ -288,7 +288,7 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
             onKeyDown(event);
         }
 
-    }, [onKeyDown, blockID, platform, blocksStore, contentEditableRef, readonly]);
+    }, [onKeyDown, blockID, platform, blocksStore, contentEditableRef, readonly, root]);
 
     React.useEffect(() => {
         const elem = contentEditableRef.current;
