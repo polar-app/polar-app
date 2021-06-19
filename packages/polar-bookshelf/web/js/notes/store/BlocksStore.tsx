@@ -1587,15 +1587,11 @@ export class BlocksStore implements IBlocksStore {
 
         const block = this.getBlock(id);
 
-        if (id === root) {
-            return false;
-        }
-
         if (! block) {
             return false;
         }
 
-        if (! block.parent) {
+        if (! block.parent || id === root) {
             return false;
         }
 
@@ -1737,7 +1733,7 @@ export class BlocksStore implements IBlocksStore {
             return false;
         }
 
-        if (! block.parent) {
+        if (! block.parent || id === root) {
             // this is the root...
             return false;
         }
@@ -1804,7 +1800,7 @@ export class BlocksStore implements IBlocksStore {
                 return {error: 'no-parent-block'};
             }
 
-            if (! parentBlock.parent) {
+            if (! parentBlock.parent || block.parent === root) {
                 return {error: 'no-parent-block-parent'};
             }
 

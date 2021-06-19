@@ -802,10 +802,12 @@ describe('BlocksStore', function() {
         });
 
         it("should unindent properly with a custom root", () => {
-            store.computeLinearTree('106', {includeInitial: true})
+            const root = '106';
+            store.computeLinearTree(root, {includeInitial: true})
                 .forEach(block => store.expanded[block] = true);
-            store.setSelectionRange('118', '118', '106');
-            store.unIndentBlock('118', '106')
+            // With a selection
+            store.setSelectionRange('118', '118', root);
+            store.unIndentBlock('118', root);
 
             const blockTree: BlockTree = [
                 {
@@ -823,11 +825,21 @@ describe('BlocksStore', function() {
             assertBlockTree(store, blockTree);
 
             // Unindenting again shouldn't be allowed
-            store.unIndentBlock('118', '106')
-            store.unIndentBlock('118', '106')
-            store.unIndentBlock('118', '106')
-            store.unIndentBlock('118', '106')
+            store.unIndentBlock('118', root);
+            store.unIndentBlock('118', root);
+            store.unIndentBlock('118', root);
+            store.unIndentBlock('118', root);
 
+            assertBlockTree(store, blockTree);
+
+            // without a selection
+            store.clearSelected('indent/unindent test');
+            store.indentBlock('118', root);
+
+            store.unIndentBlock('118', root);
+            store.unIndentBlock('118', root);
+            store.unIndentBlock('118', root);
+            store.unIndentBlock('118', root);
             assertBlockTree(store, blockTree);
         });
 
