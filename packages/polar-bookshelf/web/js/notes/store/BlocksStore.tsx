@@ -232,6 +232,25 @@ export interface ICreateNewNamedBlockOptsWithRef  extends ICreateNewNamedBlockBa
 
 export type ICreateNewNamedBlockOpts = ICreateNewNamedBlockOptsBasic | ICreateNewNamedBlockOptsWithNSpace | ICreateNewNamedBlockOptsWithRef;
 
+export interface IComputeLinearTreeOpts {
+    /*
+     * Include the parent
+     */
+    includeInitial?: boolean;
+
+    /*
+     * Only include expanded blocks
+     */
+    expanded?: boolean;
+
+    /*
+     * A custom root block
+     * This is useful when showing trees in the references section
+     * Where we don't have the entire tree
+     */
+    root?: BlockIDStr;
+};
+
 export class BlocksStore implements IBlocksStore {
 
     private readonly uid: UIDStr;
@@ -334,6 +353,8 @@ export class BlocksStore implements IBlocksStore {
     /**
      * Compute notes that are the selected roots that have no parent that is
      * also selected.
+     *
+     * TODO: Remove this, because selections do this by default now.
      */
     public computeSelectedRoots() {
         const selected = this.selectedIDs();
@@ -437,10 +458,11 @@ export class BlocksStore implements IBlocksStore {
         blocks: ReadonlyArray<IBlockContentStructure>,
         opts: IInsertBlocksContentStructureOpts = {},
     ): ReadonlyArray<BlockIDStr> {
-        const refID = this.active?.id || this.root;
+        const refID = this.active?.id;
 
-        if (!refID) {
-            throw new Error('Don\'t know where to insert the new blocks');
+        if (! refID) {
+            console.error('Don\'t know where to insert the new blocks');
+            return [];
         }
 
         const countBlocks = (blocks: ReadonlyArray<IBlockContentStructure>): number => blocks.length + blocks.reduce((sum, {children}) => sum + countBlocks(children), 0);
@@ -468,8 +490,6 @@ export class BlocksStore implements IBlocksStore {
             return ids;
         };
 
-        // We have to reverse the ids here so when undoing children get deleted before the parents
-        // otherwise doDelete would skip some children if their parent get deleted first
         const identifiers = [...[...ids].reverse(), this._index[refID].parent || refID];
         return this.doUndoPush('insertFromBlockContentStructure', identifiers, redo);
     }
@@ -659,19 +679,20 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    @action public setSelectionRange(fromBlock: BlockIDStr, toBlock: BlockIDStr) {
-
-        if (! this.root) {
+    @action public setSelectionRange(fromBlockID: BlockIDStr,
+                                     toBlockID: BlockIDStr,
+                                     root: BlockIDStr | undefined = this.root) {
+        if (! root) {
             throw new Error("No root");
         }
 
-        const linearExpansionTree = [this.root, ...this.computeLinearExpansionTree2(this.root)];
+        const linearExpansionTree = this.computeLinearTree(root, {expanded: true, includeInitial: true, root});
 
-        const fromBlockIdx = linearExpansionTree.indexOf(fromBlock);
-        const toBlockIdx = linearExpansionTree.indexOf(toBlock);
+        const fromBlockIdx = linearExpansionTree.indexOf(fromBlockID);
+        const toBlockIdx = linearExpansionTree.indexOf(toBlockID);
 
         if (fromBlockIdx === -1) {
-            throw new Error("selectedAnchor not found: " + fromBlock);
+            throw new Error("selectedAnchor not found: " + fromBlockID);
         }
 
         if (toBlockIdx === -1) {
@@ -703,9 +724,11 @@ export class BlocksStore implements IBlocksStore {
 
     @action public doNav(delta: 'prev' | 'next',
                          pos: NavPosition,
-                         opts: NavOpts): boolean {
+                         opts: NavOpts,
+                         root: BlockIDStr | undefined = this.root): boolean {
 
-        if (this.root === undefined) {
+                             
+        if (root === undefined) {
             console.warn("No currently active root");
             return false;
         }
@@ -715,17 +738,7 @@ export class BlocksStore implements IBlocksStore {
             return false;
         }
 
-        const rootBlock = Arrays.first(this.lookup([this.root]));
-
-        if (! rootBlock) {
-            console.warn("No block in index for ID: ", this.root);
-            return false;
-        }
-
-        const items = [
-            this.root,
-            ...this.computeLinearExpansionTree(this.root)
-        ];
+        const items = this.computeLinearTree(root, {expanded: true, includeInitial: true, root});
 
         const childIndex = items.indexOf(this._active?.id);
 
@@ -744,7 +757,7 @@ export class BlocksStore implements IBlocksStore {
         if (opts.shiftKey) {
 
             if (this.hasSelected()) {
-                this.setSelectionRange(this._selectedAnchor!, newActive);
+                this.setSelectionRange(this._selectedAnchor!, newActive, root);
             } else {
 
                 // only select the entire/current node at first.
@@ -774,38 +787,12 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    public navPrev(pos: NavPosition, opts: NavOpts) {
-        return this.doNav('prev', pos, opts);
+    public navPrev(pos: NavPosition, opts: NavOpts, root?: BlockIDStr) {
+        return this.doNav('prev', pos, opts, root);
     }
 
-    public navNext(pos: NavPosition, opts: NavOpts) {
-        return this.doNav('next', pos, opts);
-    }
-
-    public computeLinearTree(id: BlockIDStr): ReadonlyArray<BlockIDStr> {
-        const block = this._index[id];
-
-        if (! block) {
-            console.warn("computeLinearTree: No block: " + id);
-            return [];
-        }
-
-        const items = (block.itemsAsArray || []);
-
-        const result = [];
-
-        for (const item of items) {
-
-            if (typeof item !== 'string') {
-                console.warn("wrong item: ", {...(item as any)});
-            }
-
-            Preconditions.assertString(item, "item");
-            result.push(item);
-            result.push(...this.computeLinearTree(item));
-        }
-
-        return result;
+    public navNext(pos: NavPosition, opts: NavOpts, root?: BlockIDStr) {
+        return this.doNav('next', pos, opts, root);
     }
 
     /**
@@ -821,74 +808,33 @@ export class BlocksStore implements IBlocksStore {
      *
      * The result would be [A, B, C, D]
      */
-    private computeLinearExpansionTree(id: BlockIDStr,
-                                       root: boolean = true): ReadonlyArray<BlockIDStr> {
+    public computeLinearTree(id: BlockIDStr, opts?: IComputeLinearTreeOpts): ReadonlyArray<BlockIDStr> {
+        const { expanded = false, includeInitial = false, root } = opts || {};
 
-        Preconditions.assertString(id, "id");
+        const computeTree = (block: Block, requireExpansion: boolean): ReadonlyArray<BlockIDStr> => {
+            if (requireExpansion && ! this._expanded[block.id]) {
+                return [];
+            }
+
+            return this.idsToBlocks(block.itemsAsArray)
+                .reduce<BlockIDStr[]>((result, item) => {
+                    result.push(item.id);
+                    result.push(...computeTree(item, expanded));
+                    return result;
+                }, []);
+        };
 
         const block = this._index[id];
 
         if (! block) {
-            console.warn("computeLinearExpansionTree: No block: " + id);
+            console.warn("computeLinearTree: No block: " + id);
             return [];
         }
 
-        const isExpanded = root ? true : this._expanded[id];
+        const result = computeTree(block, expanded && block.id !== (root || block.root));
 
-        if (isExpanded) {
-
-            const items = (block.itemsAsArray || []);
-
-            const result = [];
-
-            for (const item of items) {
-
-                if (typeof item !== 'string') {
-                    console.warn("wrong item: ", {...(item as any)});
-                }
-
-                Preconditions.assertString(item, "item");
-                result.push(item);
-                result.push(...this.computeLinearExpansionTree(item, false));
-            }
-
-            return result;
-
-        } else {
-            return [];
-        }
-
+        return includeInitial ? [id, ...result] : result;
     }
-
-    private computeLinearExpansionTree2(id: BlockIDStr): ReadonlyArray<BlockIDStr> {
-
-        const block = this._index[id];
-
-        if (! block) {
-            console.warn("computeLinearExpansionTree2: No block: ", id);
-            return [];
-        }
-
-        const isExpanded = this._expanded[id] || id === this.root;
-
-        if (isExpanded) {
-            const items = (block.itemsAsArray || []);
-
-            const result = [];
-
-            for (const item of items) {
-                result.push(item);
-                result.push(...this.computeLinearExpansionTree(item, false));
-            }
-
-            return result;
-
-        } else {
-            return [];
-        }
-
-    }
-
 
     @action public setActive(active: BlockIDStr | undefined) {
 
@@ -1104,7 +1050,7 @@ export class BlocksStore implements IBlocksStore {
 
             const newContent = targetBlock.content.data + sourceBlock.content.data;
             const directChildrenBlocks = this.idsToBlocks(items);
-            const nestedChildrenIds = items.flatMap(this.computeLinearTree.bind(this));
+            const nestedChildrenIDs = items.flatMap(item => this.computeLinearTree(item));
 
             const updateParent = (newParent: BlockIDStr) => (block: Block) => {
                 this.doUpdateParent(block, newParent);
@@ -1126,7 +1072,7 @@ export class BlocksStore implements IBlocksStore {
 
             // Update the "parent" & "parents" properties of the children (recursively)
             directChildrenBlocks.forEach(updateParent(targetBlock.id));
-            this.idsToBlocks(nestedChildrenIds).forEach(this.doRebuildParents.bind(this));
+            this.idsToBlocks(nestedChildrenIDs).forEach(this.doRebuildParents.bind(this));
 
             // Update the source block remove the children to prepare it for deletion
             // (this is done to void deleting the children when deleting the block)
@@ -1420,7 +1366,7 @@ export class BlocksStore implements IBlocksStore {
         const computeNewBlockPosition = (): INewBlockPosition => {
 
             const computeNextLinearExpansionID = () => {
-                const linearExpansionTree = this.computeLinearExpansionTree2(id);
+                const linearExpansionTree = this.computeLinearTree(id, {expanded: true});
                 return Arrays.first(linearExpansionTree);
             };
 
@@ -1515,8 +1461,8 @@ export class BlocksStore implements IBlocksStore {
         if (newBlockInheritItems) {
             const items = currentBlock.itemsAsArray;
             this.idsToBlocks(items).map(updateParent(newBlock.id));
-            const nestedChildrenIds = items.flatMap(this.computeLinearTree.bind(this));
-            this.idsToBlocks(nestedChildrenIds).forEach(this.doRebuildParents.bind(this));
+            const nestedChildrenIDs = items.flatMap(item => this.computeLinearTree(item));
+            this.idsToBlocks(nestedChildrenIDs).forEach(this.doRebuildParents.bind(this));
         }
 
         parentBlock.withMutation(() => {
@@ -1637,7 +1583,7 @@ export class BlocksStore implements IBlocksStore {
      * child in that parent. IE it must have a previous sibling so that we can
      * be
      */
-    public isIndentable(id: BlockIDStr): boolean {
+    public isIndentable(id: BlockIDStr, root: BlockIDStr | undefined): boolean {
 
         const block = this.getBlock(id);
 
@@ -1645,7 +1591,7 @@ export class BlocksStore implements IBlocksStore {
             return false;
         }
 
-        if (! block.parent) {
+        if (! block.parent || id === root) {
             return false;
         }
 
@@ -1656,16 +1602,16 @@ export class BlocksStore implements IBlocksStore {
             return false;
         }
 
-        return parentBlock.itemsAsArray.indexOf(id) !== 0;
+        return true;
 
     }
 
-    private computeSelectedIndentableBlockIDs(): ReadonlyArray<BlockIDStr> {
+    private computeSelectedIndentableBlockIDs(root: BlockIDStr): ReadonlyArray<BlockIDStr> {
 
         const selectedRoots = this.computeSelectedRoots();
 
         return selectedRoots
-                   .filter(current => this.isIndentable(current.id))
+                   .filter(current => this.isIndentable(current.id, root))
                    .map(current => current.id);
 
     }
@@ -1675,12 +1621,17 @@ export class BlocksStore implements IBlocksStore {
      *
      * @return The new parent BlockID or the code as to why it couldn't be re-parented.
      */
-    public indentBlock(id: BlockIDStr): ReadonlyArray<DoIndentResult> {
+    public indentBlock(id: BlockIDStr,
+                       root: BlockIDStr | undefined = this.root): ReadonlyArray<DoIndentResult> {
+
+        if (! root) {
+            throw new Error("No root");
+        }
 
         const computeTargetIdentifiers = () => {
 
             if (this.hasSelected()) {
-                return this.computeSelectedIndentableBlockIDs();
+                return this.computeSelectedIndentableBlockIDs(root);
             } else {
                 return [id];
             }
@@ -1688,8 +1639,6 @@ export class BlocksStore implements IBlocksStore {
         }
 
         const targetIdentifiers = computeTargetIdentifiers();
-
-        const root = this.getBlock(id)!.root;
 
         const undoIdentifiers
             = BlocksStoreUndoQueues.expandToParentAndChildren(this, [root])
@@ -1704,7 +1653,7 @@ export class BlocksStore implements IBlocksStore {
                 return {error: 'no-block'};
             }
 
-            if (! block.parent) {
+            if (! block.parent || id === root) {
                 return {error: 'no-parent'};
             }
 
@@ -1741,7 +1690,10 @@ export class BlocksStore implements IBlocksStore {
                 block.withMutation(() => {
                     block.setParent(newParentBlock.id);
                     block.setParents([...newParentBlock.parents, newParentBlock.id]);
-                })
+                });
+
+                const nestedChildrenIDs = this.computeLinearTree(block.id);
+                this.idsToBlocks(nestedChildrenIDs).forEach(this.doRebuildParents.bind(this));
 
                 this.doPut([block, newParentBlock, parentBlock]);
 
@@ -1773,11 +1725,7 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    public isUnIndentable(id: BlockIDStr) {
-
-        if (id === this.root) {
-            return false;
-        }
+    public isUnIndentable(id: BlockIDStr, root: BlockIDStr | undefined) {
 
         const block = this.getBlock(id);
 
@@ -1785,12 +1733,12 @@ export class BlocksStore implements IBlocksStore {
             return false;
         }
 
-        if (! block.parent) {
+        if (! block.parent || id === root) {
             // this is the root...
             return false;
         }
 
-        if (block.parent === this.root) {
+        if (block.parent === root) {
             return false;
         }
 
@@ -1798,29 +1746,36 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    private computeSelectedUnIndentableBlockIDs(): ReadonlyArray<BlockIDStr> {
+    private computeSelectedUnIndentableBlockIDs(root: BlockIDStr): ReadonlyArray<BlockIDStr> {
 
         const selectedRoots = this.computeSelectedRoots();
-        return selectedRoots.filter(current => this.isUnIndentable(current.id))
+        return selectedRoots.filter(current => this.isUnIndentable(current.id, root))
                             .map(current => current.id);
 
     }
 
-    public unIndentBlock(id: BlockIDStr): ReadonlyArray<DoUnIndentResult> {
+    public unIndentBlock(id: BlockIDStr,
+                         root: BlockIDStr | undefined = this.root): ReadonlyArray<DoUnIndentResult> {
+
+        if (! root) {
+            throw new Error("No root");
+        }
 
         const computeTargetIdentifiers = () => {
 
             if (this.hasSelected()) {
-                return this.computeSelectedUnIndentableBlockIDs();
+                return this.computeSelectedUnIndentableBlockIDs(root);
             } else {
                 return [id];
             }
 
-        }
+        };
 
         const targetIdentifiers = computeTargetIdentifiers();
 
-        const root = this.getBlock(id)!.root;
+        if (targetIdentifiers.length === 0) {
+            return [];
+        }
 
         const undoIdentifiers
             = BlocksStoreUndoQueues.expandToParentAndChildren(this, [root])
@@ -1835,7 +1790,7 @@ export class BlocksStore implements IBlocksStore {
                 return {error: 'no-block'};
             }
 
-            if (! block.parent) {
+            if (! block.parent || id === root) {
                 return {error: 'no-parent'};
             }
 
@@ -1845,7 +1800,7 @@ export class BlocksStore implements IBlocksStore {
                 return {error: 'no-parent-block'};
             }
 
-            if (! parentBlock.parent) {
+            if (! parentBlock.parent || block.parent === root) {
                 return {error: 'no-parent-block-parent'};
             }
 
@@ -1937,7 +1892,7 @@ export class BlocksStore implements IBlocksStore {
                 return undefined;
             }
 
-            const linearExpansionTree = this.computeLinearExpansionTree(block.parent);
+            const linearExpansionTree = this.computeLinearTree(block.parent, {expanded: true});
 
             const deleteIndexes = arrayStream(blockIDs)
                 .map(current => linearExpansionTree.indexOf(current))
@@ -2117,7 +2072,7 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    public requiredAutoUnIndent(id: BlockIDStr): boolean {
+    public requiredAutoUnIndent(id: BlockIDStr, root: BlockIDStr | undefined = this.root): boolean {
 
         const block = this.getBlock(id);
 
@@ -2139,7 +2094,7 @@ export class BlocksStore implements IBlocksStore {
             return false;
         }
 
-        if (this.root === parentBlock.id) {
+        if (root === parentBlock.id) {
             return false;
         }
 

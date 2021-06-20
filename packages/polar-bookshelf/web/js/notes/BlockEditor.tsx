@@ -149,6 +149,7 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
     const {onKeyDown} = useBlockKeyDownHandler({
         contentEditableRef: ref,
         blockID: props.id,
+        root: props.root,
         readonly: block?.readonly,
     });
 
@@ -204,6 +205,8 @@ const NoteEditorWithEditorStore = observer(function NoteEditorWithEditorStore(pr
 interface IProps {
 
     readonly parent: BlockIDStr | undefined;
+
+    readonly root: BlockIDStr;
 
     readonly id: BlockIDStr;
 
