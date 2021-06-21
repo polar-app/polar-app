@@ -26,6 +26,7 @@ import {DateContents} from "../notes/content/DateContents";
 import {useBlocksStore} from "../notes/store/BlocksStore";
 import { observer } from "mobx-react-lite"
 import { autorun } from 'mobx'
+import {URLPathStr} from 'polar-shared/src/url/PathToRegexps';
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -95,20 +96,32 @@ export function useNotesEnabled() {
 
 interface HistoryButtonProps {
     readonly path: string;
+    readonly onClick?: React.MouseEventHandler<HTMLElement>;
     readonly title: string;
     readonly children: JSX.Element | string;
+    readonly canonicalizer?: (path: URLPathStr) => URLPathStr;
 }
 
 export const SideNavHistoryButton = React.memo(function SideNavHistoryButton(props: HistoryButtonProps) {
 
+    const {path, title, children, onClick, canonicalizer} = props;
     const history = useHistory();
 
+    const handleClick = React.useCallback((e) => {
+        if (onClick) {
+            onClick(e);
+        } else {
+            history.push(path);
+        }
+    }, [history, onClick, path]);
+
     return (
-        <ActiveTabButton title={props.title}
-                         path={props.path}
+        <ActiveTabButton title={title}
+                         path={path}
+                         canonicalizer={canonicalizer}
                          noContextMenu={true}
-                         onClick={() => history.push(props.path)}>
-            {props.children}
+                         onClick={handleClick}>
+            {children}
         </ActiveTabButton>
     )
 });
@@ -142,32 +155,26 @@ const AnnotationsButton = React.memo(function AnnotationsButton() {
 });
 
 const NotesButton = observer(function NotesButton() {
-
     const classes = useStyles();
     const blocksStore = useBlocksStore();
+    const history = useHistory();
 
-    const dateContent = DateContents.create();
+    const handleClick = React.useCallback(() => {
+        if (! blocksStore.hasSnapshot) {
+            // dont' do anything yet.
+            return;
+        }
+        const dateContent = DateContents.create();
 
-    const path = `/notes/${dateContent.data}`;
+        const block = blocksStore.getBlockByName(dateContent.data);
 
-    React.useEffect(() => {
+        if (! block) {
+            blocksStore.createNewNamedBlock(dateContent.data, {type: 'date'});
+        }
+        history.push(`/notes/${dateContent.data}`);
+    }, [blocksStore, history]);
 
-        autorun(() => {
-
-            if (! blocksStore.hasSnapshot) {
-                // dont' do anything yet.
-                return;
-            }
-
-            const block = blocksStore.getBlockByName(dateContent.data);
-
-            if (! block) {
-                blocksStore.createNewNamedBlock(dateContent.data, {type: 'date'});
-            }
-
-        });
-
-    }, [blocksStore, dateContent.data]);
+    const pathCanonicalizer = React.useCallback(path => path.startsWith('/notes') ? '/notes' : path, []);
 
     if (! blocksStore.hasSnapshot) {
         // dont' do anything yet.
@@ -176,7 +183,9 @@ const NotesButton = observer(function NotesButton() {
 
     return (
         <SideNavHistoryButton title="Notes"
-                              path={path}>
+                              onClick={handleClick}
+                              canonicalizer={pathCanonicalizer}
+                              path="/notes">
             <NotesIcon className={classes.secondaryIcon}/>
         </SideNavHistoryButton>
     );

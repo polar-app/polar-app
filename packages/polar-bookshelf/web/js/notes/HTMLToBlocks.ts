@@ -51,12 +51,12 @@ export namespace HTMLToBlocks {
 
     function mergeBlockStructures(blocks: ReadonlyArray<IBlockContentMergableStructure>, isParentMergable: boolean) {
         const mergeBlockContentStructures = (
-            a: IBlockContentStructure<IMarkdownContent>,
-            b: IBlockContentStructure<IMarkdownContent>
+            a: IBlockContentMergableStructure<IMarkdownContent>,
+            b: IBlockContentMergableStructure<IMarkdownContent>
         ): IBlockContentMergableStructure<IMarkdownContent> => {
             return {
                 content: mergeMarkdownContent(a.content, b.content),
-                children: [],
+                children: [...a.children, ...b.children],
                 mergable: isParentMergable,
             };
         };
@@ -94,6 +94,8 @@ export namespace HTMLToBlocks {
                     mergable,
                 });
                 current = "";
+            } else if (! mergable && blocks.length !== 0) {
+                blocks[blocks.length - 1].mergable = false;
             }
         };
 
@@ -103,7 +105,7 @@ export namespace HTMLToBlocks {
             parent: IBlockContentMergableStructure | undefined = undefined,
             newState: ParserState = state,
         ) => {
-            const children = (await HTMLToBlockStructure(Array.prototype.slice.call(elem.childNodes), current, newState));
+            const children = (await HTMLToBlockStructure(Array.from(elem.childNodes), current, newState));
             current = "";
 
             if (parent) {
@@ -155,7 +157,7 @@ export namespace HTMLToBlocks {
                     case 'PRE':
                         flush(true);
                         blocks.push({
-                            content: createMarkdownContent(`\`\`\`\n${elem.textContent || ''}\n\`\`\``),
+                            content: createMarkdownContent(`\n\`\`\`\n${elem.textContent || ''}\n\`\`\`\n`),
                             children: [],
                             mergable: true,
                         });
@@ -177,20 +179,21 @@ export namespace HTMLToBlocks {
                         break;
                     case 'UL':
                     case 'OL':
+                        let newBlock: IBlockContentMergableStructure | undefined;
                         if (current.length) {
                             const trimmed = current.replace(/\s\s+/g, ' ');
-                            const newBlock: IBlockContentMergableStructure = {
+                            newBlock = {
                                 content: createMarkdownContent(trimmed),
                                 children: [],
                                 mergable: false,
                             };
                             current = '';
                             blocks.push(newBlock);
-                            await getChildrenBlocks(elem, false, newBlock, { withinList: true });
-                        } else if (withinList && i > 0) {
+                        }
+                        if (withinList && i > 0) {
                             await getChildrenBlocks(elem, false, blocks[blocks.length - 1], { withinList: true });
                         } else {
-                            await getChildrenBlocks(elem, false, undefined, { withinList: true });
+                            await getChildrenBlocks(elem, false, newBlock, { withinList: true });
                         }
                         break;
                     default:

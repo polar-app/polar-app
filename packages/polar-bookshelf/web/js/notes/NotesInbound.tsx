@@ -3,6 +3,7 @@ import { deepMemo } from '../react/ReactUtils';
 import Box from '@material-ui/core/Box';
 import { UL } from './UL';
 import {BlockEditor} from "./BlockEditor";
+import {Block} from "./Block";
 import {BlockIDStr, useBlocksStore } from './store/BlocksStore';
 import { observer } from "mobx-react-lite"
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
@@ -25,7 +26,7 @@ const InboundNoteRef = observer((props: InboundNoteRefProps) => {
     return (
         <>
 
-            <div style={{display: 'flex'}}>
+            <div style={{display: 'flex', marginLeft: 20}}>
                 <Breadcrumbs>
 
                     {pathToNote.filter(BlockPredicates.isTextBlock)
@@ -41,10 +42,9 @@ const InboundNoteRef = observer((props: InboundNoteRefProps) => {
                      // whiteSpace: 'nowrap',
                      // textOverflow: 'ellipsis',
                      // maxWidth: '50ch',
-                     display: 'flex'
                  }}>
 
-                <BlockEditor parent={undefined} id={props.id} immutable={true}/>
+                <Block root={props.id} parent={undefined} id={props.id} />
 
             </div>
         </>
@@ -56,18 +56,23 @@ interface IProps {
     readonly id: BlockIDStr;
 }
 
-export const NotesInbound = deepMemo(function NotesInbound(props: IProps) {
+export const NotesInbound = deepMemo(observer(function NotesInbound(props: IProps) {
 
     const blocksStore = useBlocksStore();
 
     const inboundNoteIDs = blocksStore.lookupReverse(props.id);
     const inbound = blocksStore.lookup(inboundNoteIDs);
 
+    if (inbound.length === 0) {
+        return null;
+    }
+
     return (
         <div className="NotesInbound">
 
             <Box color="text.secondary">
-                <h3>All notes that reference this note:</h3>
+                {/* TODO: Maybe use a package here for pluralization or write a helper function somewhere */}
+                <h3>All notes that reference this note: { inbound.length } linked reference{inbound.length === 1 ? '' : 's'}.</h3>
             </Box>
 
             <UL>
@@ -81,4 +86,4 @@ export const NotesInbound = deepMemo(function NotesInbound(props: IProps) {
             </UL>
         </div>
     );
-});
+}));
