@@ -903,7 +903,11 @@ export class BlocksStore implements IBlocksStore {
      * Return true if this block can be merged. Meaning it has a previous sibling
      * we can merge with or a parent.
      */
-    public canMergePrev(id: BlockIDStr): IBlockMerge | undefined {
+    public canMergePrev(id: BlockIDStr, root: BlockIDStr | undefined = this.root): IBlockMerge | undefined {
+
+        if (id === root) {
+            return undefined;
+        }
 
         const sibling = this.prevSibling(id);
 
@@ -944,7 +948,7 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    public canMergeNext(id: BlockIDStr): IBlockMerge | undefined {
+    public canMergeNext(id: BlockIDStr, root: BlockIDStr | undefined = this.root): IBlockMerge | undefined {
         const children = this.children(id);
 
         if (children.length > 0) {
@@ -960,14 +964,13 @@ export class BlocksStore implements IBlocksStore {
             }
         }
 
-        // TODO: come up with a better name for this.
         const getNextIndirectSibling = (id: BlockIDStr): string | undefined => {
             const next = this.nextSibling(id);
             if (next) {
                 return next;
             } else {
                 const parent = this.getParent(id);
-                if (parent) {
+                if (parent && parent.id !== root) {
                     return getNextIndirectSibling(parent.id);
                 }
             }

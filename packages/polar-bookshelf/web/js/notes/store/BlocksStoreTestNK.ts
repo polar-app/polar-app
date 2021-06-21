@@ -1091,6 +1091,13 @@ describe('BlocksStore', function() {
             assert.isUndefined(store.canMergePrev('103'));
 
         });
+
+        it("should not allow merging a custom root with its previous sibling", () => {
+            const store = createStore();
+
+            assert.isUndefined(store.canMergePrev('104', '104'));
+            assert.isUndefined(store.canMergePrev('106', '106'));
+        });
     });
 
     describe("setSelectionRange", () => {
@@ -1190,6 +1197,13 @@ describe('BlocksStore', function() {
                 "source": parentNextSibling.id,
                 "target": level2Block.id
             });
+        });
+
+        it("shouldn't allow merging with a block that isn't under a custom root", () => {
+            const store = createStore();
+
+            assert.isUndefined(store.canMergeNext('116', '104'));
+            assert.isUndefined(store.canMergeNext('118', '105'));
         });
     });
 
