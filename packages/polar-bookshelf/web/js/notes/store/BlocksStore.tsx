@@ -749,10 +749,13 @@ export class BlocksStore implements IBlocksStore {
 
         const deltaIndex = delta === 'prev' ? -1 : 1;
 
-        const activeIndexWithoutBound = childIndex + deltaIndex;
-        const activeIndex = Math.min(Math.max(0, activeIndexWithoutBound), items.length -1);
-
+        const activeIndex = childIndex + deltaIndex;
         const newActive = items[activeIndex];
+        
+        if (! newActive) {
+            this.setActiveWithPosition(this._active.id, delta === 'prev' ? 'start' : 'end');
+            return true;
+        }
 
         if (opts.shiftKey) {
 

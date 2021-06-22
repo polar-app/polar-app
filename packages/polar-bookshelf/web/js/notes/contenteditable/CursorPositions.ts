@@ -183,6 +183,8 @@ export namespace CursorPositions {
                     }
 
                 }
+            } else {
+                return 0;
             }
         }
 
