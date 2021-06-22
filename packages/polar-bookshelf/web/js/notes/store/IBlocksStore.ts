@@ -66,6 +66,7 @@ export interface IBlocksStore {
     getBlockActivated(id: BlockIDStr): IBlockActivated | undefined;
 
     getBlock(id: BlockIDStr): Block | undefined;
+    getReadonlyBlock(id: BlockIDStr): Readonly<Block> | undefined;
 
     getBlockContentData(id: BlockIDStr): string | undefined;
 

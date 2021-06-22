@@ -141,7 +141,7 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
     },
     Tab: ({ event, blockID, blocksStore, root }) => {
 
-        const {parent} = blocksStore.getBlock(blockID)!;
+        const {parent} = blocksStore.getReadonlyBlock(blockID)!;
         if (parent !== undefined) {
 
             abortEvent(event);

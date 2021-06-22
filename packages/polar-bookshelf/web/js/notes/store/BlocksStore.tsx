@@ -359,7 +359,7 @@ export class BlocksStore implements IBlocksStore {
     public computeSelectedRoots() {
         const selected = this.selectedIDs();
 
-        return selected.map(current => this.getBlock(current))
+        return selected.map(current => this.getReadonlyBlock(current))
                        .filter(current => current !== undefined)
                        .map(current => current!)
                        .filter(current => current.parent === undefined || ! selected.includes(current.parent))
@@ -367,7 +367,7 @@ export class BlocksStore implements IBlocksStore {
     }
 
     @action public clearSelected(reason: string) {
-        this._selected = {};
+        this.selectedIDs().forEach(id => delete this._selected[id]);
         this._selectedAnchor = undefined;
     }
 
@@ -418,7 +418,7 @@ export class BlocksStore implements IBlocksStore {
 
         for (const blockData of blocks) {
 
-            const existingBlock = this.getBlock(blockData.id);
+            const existingBlock = this.getReadonlyBlock(blockData.id);
 
             if (!opts.forceUpdate && existingBlock && existingBlock.mutation >= blockData.mutation) {
                 // skip this update as it hasn't changed
@@ -499,7 +499,7 @@ export class BlocksStore implements IBlocksStore {
     }
 
     public containsBlock(id: BlockIDStr): boolean {
-        return this.getBlock(id) !== undefined;
+        return this.getReadonlyBlock(id) !== undefined;
     }
 
     public getBlock(id: BlockIDStr): Block | undefined {
@@ -510,9 +510,13 @@ export class BlocksStore implements IBlocksStore {
         return undefined;
     }
 
+    public getReadonlyBlock(id: BlockIDStr): Readonly<Block> | undefined {
+        return this._index[id];
+    }
+
     public getBlockContentData(id: BlockIDStr): string | undefined {
 
-        const block = this.getBlock(id);
+        const block = this.getReadonlyBlock(id);
 
         if (! block?.content) {
             return ''
@@ -574,7 +578,7 @@ export class BlocksStore implements IBlocksStore {
     }
 
     public children(id: BlockIDStr): ReadonlyArray<BlockIDStr> {
-        const block = this.getBlock(id);
+        const block = this.getReadonlyBlock(id);
         if (block) {
             return block.itemsAsArray;
         }
@@ -718,8 +722,9 @@ export class BlocksStore implements IBlocksStore {
             }
         });
 
-        this._selected = arrayStream(Array.from(newSelected)).toMap2(c => c, () => true);
 
+        this.selectedIDs().forEach(id => delete this._selected[id]);
+        [...newSelected].forEach(id => this._selected[id] = true);
     }
 
     @action public doNav(delta: 'prev' | 'next',
@@ -780,8 +785,7 @@ export class BlocksStore implements IBlocksStore {
 
         } else {
             // no shift key so by definition nothing is selected so clear the selections
-            this._selected = {};
-            this._selectedAnchor = undefined;
+            this.clearSelected('doNav');
         }
 
         this.setActiveWithPosition(newActive, pos);
@@ -921,11 +925,11 @@ export class BlocksStore implements IBlocksStore {
             };
         }
 
-        const block = this.getBlock(id);
+        const block = this.getReadonlyBlock(id);
 
         if (block?.parent) {
 
-            const parentBlock = this.getBlock(block.parent);
+            const parentBlock = this.getReadonlyBlock(block.parent);
 
             if (parentBlock) {
 
@@ -1154,7 +1158,7 @@ export class BlocksStore implements IBlocksStore {
 
                 if (opts?.ref) {
 
-                    const refBlock = this.getBlock(opts.ref);
+                    const refBlock = this.getReadonlyBlock(opts.ref);
 
                     if (! refBlock) {
                         throw new Error("Reference block doesn't exist");
@@ -1591,7 +1595,7 @@ export class BlocksStore implements IBlocksStore {
      */
     public isIndentable(id: BlockIDStr, root: BlockIDStr | undefined): boolean {
 
-        const block = this.getBlock(id);
+        const block = this.getReadonlyBlock(id);
 
         if (! block) {
             return false;
@@ -1601,7 +1605,7 @@ export class BlocksStore implements IBlocksStore {
             return false;
         }
 
-        const parentBlock = this.getBlock(block.parent);
+        const parentBlock = this.getReadonlyBlock(block.parent);
 
         if (! parentBlock) {
             // this is a bug and shouldn't happen
@@ -1733,7 +1737,7 @@ export class BlocksStore implements IBlocksStore {
 
     public isUnIndentable(id: BlockIDStr, root: BlockIDStr | undefined) {
 
-        const block = this.getBlock(id);
+        const block = this.getReadonlyBlock(id);
 
         if (! block) {
             return false;
@@ -2080,7 +2084,7 @@ export class BlocksStore implements IBlocksStore {
 
     public requiredAutoUnIndent(id: BlockIDStr, root: BlockIDStr | undefined = this.root): boolean {
 
-        const block = this.getBlock(id);
+        const block = this.getReadonlyBlock(id);
 
         if (! block) {
             return false;
@@ -2094,7 +2098,7 @@ export class BlocksStore implements IBlocksStore {
             return false;
         }
 
-        const parentBlock = this.getBlock(block.parent);
+        const parentBlock = this.getReadonlyBlock(block.parent);
 
         if (! parentBlock) {
             return false;
@@ -2165,7 +2169,7 @@ export class BlocksStore implements IBlocksStore {
     }
 
     public idsToBlocks(ids: ReadonlyArray<BlockIDStr>): ReadonlyArray<Block> {
-        return ids.map(id => this.getBlock(id))
+        return ids.map(id => this.getReadonlyBlock(id))
             .filter((block): block is Block => !!block);
     }
 
@@ -2173,7 +2177,7 @@ export class BlocksStore implements IBlocksStore {
      * Get the blocks that apply here and convert them to JSON objects.
      */
     public createSnapshot(identifiers: ReadonlyArray<BlockIDStr>): ReadonlyArray<IBlock> {
-        return arrayStream(identifiers.map(id => this.getBlock(id)))
+        return arrayStream(identifiers.map(id => this.getReadonlyBlock(id)))
             .filterPresent()
             .map(current => current.toJSON())
             .collect();
