@@ -9,11 +9,11 @@ import { NameContent } from "../content/NameContent";
  */
 export namespace BlockPredicates {
 
-    export function isTextBlock(block: Block): block is Block<MarkdownContent | NameContent> {
+    export function isTextBlock(block: Readonly<Block>): block is Block<MarkdownContent | NameContent> {
         return block.content.type === 'markdown' || block.content.type === 'name' || block.content.type === 'date';
     }
 
-    export function isEditableBlock(block: Block): block is Block<MarkdownContent | NameContent> {
+    export function isEditableBlock(block: Readonly<Block>): block is Block<MarkdownContent | NameContent> {
         return block.content.type === 'markdown';
     }
 

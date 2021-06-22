@@ -169,7 +169,7 @@ export const BlockContentEditable = observer((props: IProps) => {
 
         }
 
-    }, [props.content, props.id, blocksStore.active, updateCursorPosition]);
+    }, [props.content, props.id, blocksStore, updateCursorPosition]);
 
     const handleRef = React.useCallback((current: HTMLDivElement | null) => {
 
@@ -323,7 +323,7 @@ const useHandleLinkDeletion = ({ blockID, elem }: IUseHandleLinkDeletionOpts) =>
             const removedLinks = removed.filter((elem) => !added.some(compareLinks(elem)));
 
             for (let removedLink of removedLinks) {
-                const block = blocksStore.getBlock(blockID);
+                const block = blocksStore.getReadonlyBlock(blockID);
                 const linkedBlock = blocksStore.getBlockByName(removedLink.getAttribute('href')!.slice(1));
                 if (block && linkedBlock && block.content.type === 'markdown') {
                     const newContent = new MarkdownContent(block.content.toJSON());
