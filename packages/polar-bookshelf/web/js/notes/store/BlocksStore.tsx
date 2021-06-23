@@ -1300,6 +1300,11 @@ export class BlocksStore implements IBlocksStore {
             })
 
             this.doPut([sourceBlock]);
+
+            const cursorPos = this.cursorOffsetCapture();
+            if (cursorPos) {
+                this.setActiveWithPosition(cursorPos.id, cursorPos.pos);
+            }
         };
 
         return this.doUndoPush('createLinkToBlock', [sourceBlockID, targetID], redo);
@@ -1532,7 +1537,7 @@ export class BlocksStore implements IBlocksStore {
         };
     }
 
-    private cursorOffsetCapture(): IActiveBlock | undefined {
+    public cursorOffsetCapture(): IActiveBlock | undefined {
 
         const captureOffset = (): 'end' | number | undefined => {
 
