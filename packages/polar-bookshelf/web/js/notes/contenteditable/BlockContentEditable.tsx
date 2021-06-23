@@ -257,7 +257,6 @@ function doUpdateCursorPosition(editor: HTMLDivElement, pos: 'start' | 'end' | n
         function defineNewRange(range: Range) {
 
             const sel = window.getSelection();
-            editor.focus();
 
             if (sel) {
                 sel.removeAllRanges();
@@ -267,8 +266,9 @@ function doUpdateCursorPosition(editor: HTMLDivElement, pos: 'start' | 'end' | n
         }
 
         // console.log("Updating cursor position to: ", pos);
+        editor.focus();
 
-        if (pos === 'start') {
+        if (pos === 'start' || pos === 0) {
 
             const range = document.createRange();
             const firstChild = editor.firstChild;

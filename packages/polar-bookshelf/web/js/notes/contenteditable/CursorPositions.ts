@@ -43,8 +43,10 @@ export namespace CursorPositions {
 
         if (position) {
 
-            range.setStart(position.node, position.offset);
-            range.setEnd(position.node, position.offset);
+            if (isContentEditable(position.node)) {
+                range.setStart(position.node, position.offset);
+                range.setEnd(position.node, position.offset);
+            }
 
         } else if (offset === lookup.length) {
 
@@ -143,6 +145,21 @@ export namespace CursorPositions {
 
         throw new Error("Invalid node type: " + node.nodeType);
 
+    }
+
+    export function isContentEditable(node: Node | null): boolean {
+        if (node === null) {
+            return false;
+        }
+
+        if (node.nodeType === node.ELEMENT_NODE) {
+
+            const element = node as HTMLElement;
+
+            return element.isContentEditable;
+        }
+
+        return isContentEditable(node.parentElement);
     }
 
     export function toTextNode(node: Node | undefined, offset: number): ICursorPosition | undefined {
