@@ -2094,6 +2094,38 @@ describe('BlocksStore', function() {
             assert.equal(newBlock.parent, id);
             assert.deepEqual(newBlock.parents, [...originalBlock.parents, id]);
         });
+
+        it("should expand the parent if the new block is being added as a child", () => {
+            const store = createStore();
+            const id = '105';
+            // collapse the parent node to make sure it gets expanded when the child is created
+            store.collapse(id);
+            const createdBlock = store.createNewBlock(id, {asChild: true});
+            assertPresent(createdBlock);
+            assert.equal(store.isExpanded(id), true);
+        });
+
+        it("should copy the expand state from the old block to the new one if the new block is inheriting the items", () => {
+            const store = createStore();
+            const id = '105';
+            const oldBlock = store.getBlock(id);
+            assertPresent(oldBlock);
+            assertMarkdownBlock(oldBlock);
+            // collapse the parent node to make sure it gets expanded when the child is created
+            store.collapse(id);
+            const createdBlock = store.createNewBlock(id, {split: {prefix: '', suffix: oldBlock.content.data}});
+            assertPresent(createdBlock);
+            assert.equal(store.isExpanded(createdBlock.id), false);
+
+            const block1 = store.getBlock(createdBlock.id);
+            assertPresent(block1);
+            assertMarkdownBlock(block1);
+
+            store.expand(block1.id);
+            const createdBlock2 = store.createNewBlock(block1.id, {split: {prefix: '', suffix: block1.content.data}});
+            assertPresent(createdBlock2);
+            assert.equal(store.isExpanded(createdBlock2.id), true);
+        });
     });
 
     describe("blocksToBlockContentStructure", () => {

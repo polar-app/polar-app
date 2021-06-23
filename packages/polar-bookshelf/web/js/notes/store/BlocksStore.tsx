@@ -1368,10 +1368,13 @@ export class BlocksStore implements IBlocksStore {
 
         type INewBlockPosition = INewBlockPositionFirstChild | INewBlockPositionRelative;
 
-        const parseLinksFromContent = (origLinks: ReadonlyArray<IBlockLink>, content: string): ReadonlyArray<IBlockLink> => (
-            [...content.matchAll(WikiLinksToMarkdown.WIKI_LINK_REGEX)]
-                .map(([, text]) => ({ id: origLinks.find((o) => o.text === text)!.id, text }))
-        );
+        const parseLinksFromContent = (origLinks: ReadonlyArray<IBlockLink>, content: string): ReadonlyArray<IBlockLink> => {
+            const map = origLinks
+                .reduce((map, link) => map.set(link.text, link), new Map<string, IBlockLink>());
+            return [...content.matchAll(WikiLinksToMarkdown.WIKI_LINK_REGEX)]
+                .map(([, text]) => map.get(text))
+                .filter((link): link is NonNullable<typeof link> => !!link);
+        };
 
         const computeNewBlockPosition = (): INewBlockPosition => {
 
@@ -1490,10 +1493,6 @@ export class BlocksStore implements IBlocksStore {
 
         })
 
-        if (split?.suffix !== undefined && Object.keys(newBlock.items).length > 0) {
-            this.expand(newBlock.id);
-        }
-
         currentBlock.withMutation(() => {
 
             if (split?.prefix !== undefined) {
@@ -1515,6 +1514,17 @@ export class BlocksStore implements IBlocksStore {
         this.doPut([currentBlock, parentBlock]);
 
         this.setActiveWithPosition(newBlock.id, 'start');
+
+        // Expand the parent if the new block is being added as a child
+        if (newBlockPosition.type === "first-child") {
+            this.expand(currentBlock.id);
+        }
+
+        // Copy the expand state from the old block to the new one if the new one is inheriting the items
+        if (newBlockInheritItems) {
+            const isExpanded = this._expanded[currentBlock.id] 
+            this[isExpanded ? 'expand' : 'collapse'](newBlock.id);
+        }
 
         return {
             id: newBlock.id,
