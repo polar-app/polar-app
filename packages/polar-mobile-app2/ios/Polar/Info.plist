@@ -63,5 +63,7 @@
     <true/>
     <key>CFBundleDisplayName</key>
     <string>Polar</string>
+    <key>NSUserTrackingUsageDescription</key>
+    <string>We use analytics tools to better understand usage of the features within the app.</string>
   </dict>
 </plist>

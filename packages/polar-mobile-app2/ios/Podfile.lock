@@ -28,6 +28,8 @@ PODS:
     - UMCore
   - EXStructuredHeaders (1.0.1):
     - UMCore
+  - EXTrackingTransparency (1.0.1):
+    - UMCore
   - EXUpdates (0.5.5):
     - EXStructuredHeaders
     - React-Core
@@ -40,6 +42,9 @@ PODS:
     - React-Core (= 0.64.2)
     - React-jsi (= 0.64.2)
     - ReactCommon/turbomodule/core (= 0.64.2)
+  - GCDWebServer (3.5.4):
+    - GCDWebServer/Core (= 3.5.4)
+  - GCDWebServer/Core (3.5.4)
   - glog (0.3.5)
   - RCT-Folly (2020.01.13.00):
     - boost-for-react-native
@@ -234,6 +239,9 @@ PODS:
     - React-jsi (= 0.64.2)
     - React-perflogger (= 0.64.2)
   - React-jsinspector (0.64.2)
+  - react-native-static-server (0.5.0):
+    - GCDWebServer (~> 3.0)
+    - React
   - react-native-user-agent (2.1.0):
     - React
   - react-native-webview (11.6.4):
@@ -336,6 +344,12 @@ PODS:
   - RNScreens (3.4.0):
     - React-Core
     - React-RCTImage
+  - Stripe (21.5.1):
+    - Stripe/Stripe3DS2 (= 21.5.1)
+  - stripe-react-native (0.1.1):
+    - React
+    - Stripe (~> 21.5.1)
+  - Stripe/Stripe3DS2 (21.5.1)
   - UMAppLoader (2.1.0)
   - UMBarCodeScannerInterface (6.1.0):
     - UMCore
@@ -348,7 +362,7 @@ PODS:
   - UMFileSystemInterface (6.1.0)
   - UMFontInterface (6.1.0)
   - UMImageLoaderInterface (6.1.0)
-  - UMPermissionsInterface (6.1.0):
+  - UMPermissionsInterface (6.2.0):
     - UMCore
   - UMReactNativeAdapter (6.2.2):
     - React-Core
@@ -372,6 +386,7 @@ DEPENDENCIES:
   - EXPermissions (from `../node_modules/react-native-unimodules/node_modules/expo-permissions/ios`)
   - EXSplashScreen (from `../node_modules/expo-splash-screen/ios`)
   - EXStructuredHeaders (from `../node_modules/expo-structured-headers/ios`)
+  - EXTrackingTransparency (from `../node_modules/expo-tracking-transparency/ios`)
   - EXUpdates (from `../node_modules/expo-updates/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
@@ -389,6 +404,7 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
+  - react-native-static-server (from `../node_modules/react-native-static-server`)
   - react-native-user-agent (from `../node_modules/react-native-user-agent`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -406,6 +422,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - "stripe-react-native (from `../node_modules/@stripe/stripe-react-native`)"
   - UMAppLoader (from `../node_modules/react-native-unimodules/node_modules/unimodules-app-loader/ios`)
   - UMBarCodeScannerInterface (from `../node_modules/react-native-unimodules/node_modules/unimodules-barcode-scanner-interface/ios`)
   - UMCameraInterface (from `../node_modules/react-native-unimodules/node_modules/unimodules-camera-interface/ios`)
@@ -415,7 +432,7 @@ DEPENDENCIES:
   - UMFileSystemInterface (from `../node_modules/react-native-unimodules/node_modules/unimodules-file-system-interface/ios`)
   - UMFontInterface (from `../node_modules/react-native-unimodules/node_modules/unimodules-font-interface/ios`)
   - UMImageLoaderInterface (from `../node_modules/react-native-unimodules/node_modules/unimodules-image-loader-interface/ios`)
-  - UMPermissionsInterface (from `../node_modules/react-native-unimodules/node_modules/unimodules-permissions-interface/ios`)
+  - UMPermissionsInterface (from `../node_modules/unimodules-permissions-interface/ios`)
   - "UMReactNativeAdapter (from `../node_modules/@unimodules/react-native-adapter/ios`)"
   - UMSensorsInterface (from `../node_modules/react-native-unimodules/node_modules/unimodules-sensors-interface/ios`)
   - UMTaskManagerInterface (from `../node_modules/react-native-unimodules/node_modules/unimodules-task-manager-interface/ios`)
@@ -424,6 +441,8 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - boost-for-react-native
+    - GCDWebServer
+    - Stripe
 
 EXTERNAL SOURCES:
   DoubleConversion:
@@ -448,6 +467,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-splash-screen/ios"
   EXStructuredHeaders:
     :path: "../node_modules/expo-structured-headers/ios"
+  EXTrackingTransparency:
+    :path: "../node_modules/expo-tracking-transparency/ios"
   EXUpdates:
     :path: "../node_modules/expo-updates/ios"
   FBLazyVector:
@@ -478,6 +499,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
+  react-native-static-server:
+    :path: "../node_modules/react-native-static-server"
   react-native-user-agent:
     :path: "../node_modules/react-native-user-agent"
   react-native-webview:
@@ -512,6 +535,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  stripe-react-native:
+    :path: "../node_modules/@stripe/stripe-react-native"
   UMAppLoader:
     :path: "../node_modules/react-native-unimodules/node_modules/unimodules-app-loader/ios"
   UMBarCodeScannerInterface:
@@ -531,7 +556,7 @@ EXTERNAL SOURCES:
   UMImageLoaderInterface:
     :path: "../node_modules/react-native-unimodules/node_modules/unimodules-image-loader-interface/ios"
   UMPermissionsInterface:
-    :path: "../node_modules/react-native-unimodules/node_modules/unimodules-permissions-interface/ios"
+    :path: "../node_modules/unimodules-permissions-interface/ios"
   UMReactNativeAdapter:
     :path: "../node_modules/@unimodules/react-native-adapter/ios"
   UMSensorsInterface:
@@ -554,9 +579,11 @@ SPEC CHECKSUMS:
   EXPermissions: ea8d63dd052737765bd350b2ca7cee9bcfd5e18e
   EXSplashScreen: b59a58feda693c17f1af73c715e4e058919fcb7c
   EXStructuredHeaders: 0c3b4c8030ec5ed2c3bc0b64f5af81005b9cb5c8
+  EXTrackingTransparency: ea1f4c054b2e0908d2a781faca6f4a5402278220
   EXUpdates: 3bcd7a0fda56c88951ff3eaa207e68dcaabe9f19
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
   FBReactNativeSpec: 5a84068b6ca2a174c2082f916fa8e25ef58a02e1
+  GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: 6d3e854f0e7260a648badd0d44fc364bc9da9728
@@ -569,6 +596,7 @@ SPEC CHECKSUMS:
   React-jsi: 67747b9722f6dab2ffe15b011bcf6b3f2c3f1427
   React-jsiexecutor: 80c46bd381fd06e418e0d4f53672dc1d1945c4c3
   React-jsinspector: cc614ec18a9ca96fd275100c16d74d62ee11f0ae
+  react-native-static-server: 201b2a945a35096be3ae7f43e367c65bcbd61343
   react-native-user-agent: 6ca9356042c87659876db9307109ebd653fd4429
   react-native-webview: 4288b81c682bca4dcc9037afb3ee118af2655c03
   React-perflogger: 25373e382fed75ce768a443822f07098a15ab737
@@ -586,6 +614,8 @@ SPEC CHECKSUMS:
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNReanimated: 9c13c86454bfd54dab7505c1a054470bfecd2563
   RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
+  Stripe: 515db5536fd659b5d79a0898ce1b882b61ab597e
+  stripe-react-native: 20c5bff876a1f20d63d8d99e3d8f597180d5b6c4
   UMAppLoader: aae896b81e3fcaa6528992e2e19ec8db38c2cedd
   UMBarCodeScannerInterface: 96a01d81ff0c7febbfefc2d7396db9e7462d8c68
   UMCameraInterface: 8ad433fdadca22703ebeb614d42b814092d38d69
@@ -595,7 +625,7 @@ SPEC CHECKSUMS:
   UMFileSystemInterface: 4a92ee36e6c2757833031718f8496690fa931280
   UMFontInterface: 81a951117d03f57aa636fba3992adefd0191f200
   UMImageLoaderInterface: 5cd09b41630dc8aef7619fabc497c01c0f6b715c
-  UMPermissionsInterface: 4351145563e703c521fe2299e08227bc3584b94a
+  UMPermissionsInterface: 445acbfbdc2a675cedae79bbfb93ff7d83a96ff1
   UMReactNativeAdapter: 7b458ca3d4497b5114e6bb766b223432bad22d8a
   UMSensorsInterface: 50439b47826e716a514cbd7384aebe9ab4fde5f4
   UMTaskManagerInterface: 482155764886069beb1bc7fcf6036f12e4ad0751

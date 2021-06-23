@@ -41,6 +41,9 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": "Polar - Read. Learn. Never Forget."
+    "description": "Polar - Read. Learn. Never Forget.",
+    "plugins": [
+      "expo-tracking-transparency"
+    ]
   }
 }

@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@expo/metro-config": "^0.1.74",
+    "@stripe/stripe-react-native": "0.1.1",
     "expo": "~41.0.1",
     "expo-splash-screen": "~0.10.2",
     "expo-status-bar": "~1.0.4",
@@ -18,10 +19,12 @@
     "react-native-gesture-handler": "~1.10.3",
     "react-native-reanimated": "~2.2.0",
     "react-native-screens": "~3.4.0",
+    "react-native-static-server": "^0.5.0",
     "react-native-unimodules": "~0.13.3",
     "react-native-user-agent": "=2.1.0",
     "react-native-web": "~0.17.0",
-    "react-native-webview": "=11.6.4"
+    "react-native-webview": "=11.6.4",
+    "expo-tracking-transparency": "~1.0.1"
   },
   "devDependencies": {
     "@babel/core": "~7.14.6",
