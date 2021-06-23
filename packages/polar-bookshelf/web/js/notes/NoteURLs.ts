@@ -18,7 +18,7 @@ export namespace NoteURLs {
         const target = Arrays.last(url.split('/'));
 
         if (target) {
-            return {target};
+            return {target: decodeURIComponent(target)};
         } else {
             return undefined;
         }
