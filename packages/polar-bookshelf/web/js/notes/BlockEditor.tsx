@@ -122,10 +122,9 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
     }, [blocksStore, id]);
 
     React.useEffect(() => {
-        const isActive = () => blocksStore.active?.id === props.id;
-        const focusBlock = (isActive: boolean) => {
+        const focusBlock = () => {
             const active = blocksStore.active;
-            if (isActive && active) {
+            if (active && active.id === props.id) {
                 if (ref.current) {
 
                     if (active.pos !== undefined) {
@@ -137,8 +136,8 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
                 ContentEditables.insertEmptySpacer(ref.current);
             }
         };
-        focusBlock(isActive());
-        const disposer = reaction(isActive, focusBlock);
+        focusBlock();
+        const disposer = reaction(() => blocksStore.active?.nonce, focusBlock);
         return () => disposer();
     }, [props.id, updateCursorPosition, blocksStore, ref]);
 
