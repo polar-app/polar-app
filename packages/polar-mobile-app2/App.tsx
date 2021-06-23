@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
 //google blocks oath via WebView, this hides the fact that
 // the app runs in web view.
 function getUserAgent() {
+
   //
   // let userAgent = UserAgent.getUserAgent();
   // userAgent = userAgent.replace("wv", "");
@@ -35,4 +36,5 @@ function getUserAgent() {
   // return userAgent;
 
   return "Mozilla/5.0 (Linux; Android 9; Android SDK built for x86_64 Build/PSR1.180720.075) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/69.0.3497.100 Mobile Safari/537.36";
+
 }
