@@ -1,11 +1,26 @@
 import React, {Component} from 'react';
-import {Alert, Button, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {Alert, Button, Platform, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import WebView from "react-native-webview";
 import {requestTrackingPermissionsAsync} from "expo-tracking-transparency";
+import * as RNIap from 'react-native-iap';
+import {Product} from "react-native-iap";
 
 interface State {
     trackingEnabled?: boolean,
+    products: Product[],
 }
+
+/**
+ * @see https://react-native-iap.dooboolab.com/docs/usage_instructions/retrieve_available
+ */
+const productIds = Platform.select({
+    ios: [
+        'plan_plus'
+    ],
+    android: [
+        'test'
+    ]
+});
 
 class MainApp extends Component<any, State> {
 
@@ -15,10 +30,11 @@ class MainApp extends Component<any, State> {
         super(props);
         this.state = {
             trackingEnabled: undefined,
+            products: [],
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this._isMounted = true;
 
         requestTrackingPermissionsAsync().then((trackingEnabled) => {
@@ -30,6 +46,19 @@ class MainApp extends Component<any, State> {
                 trackingEnabled: trackingEnabled.granted,
             })
         });
+
+        /**
+         * @see https://react-native-iap.dooboolab.com/docs/usage_instructions/retrieve_available
+         */
+        try {
+            await RNIap.initConnection();
+            const products: Product[] = await RNIap.getProducts(productIds!);
+            this.setState({products});
+        } catch (err) {
+            console.warn(err.code); // standardized err.code and err.message available
+            console.warn(err.message); // standardized err.code and err.message available
+            console.warn(JSON.stringify(err)); // standardized err.code and err.message available
+        }
     }
 
     componentWillUnmount() {
