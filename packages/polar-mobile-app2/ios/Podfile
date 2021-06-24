@@ -18,4 +18,6 @@ target 'Polar' do
   #     flipper_post_install(installer)
   #   end
   # end
+  pod 'RNIap', :path => '../node_modules/react-native-iap'
+
 end
