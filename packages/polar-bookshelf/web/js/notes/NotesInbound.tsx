@@ -61,7 +61,7 @@ export const NotesInbound = deepMemo(observer(function NotesInbound(props: IProp
     const blocksStore = useBlocksStore();
 
     const inboundNoteIDs = blocksStore.lookupReverse(props.id);
-    const inbound = React.useMemo(() => blocksStore.lookup(inboundNoteIDs), [inboundNoteIDs]);
+    const inbound = React.useMemo(() => blocksStore.lookup(inboundNoteIDs), [inboundNoteIDs, blocksStore]);
 
     if (inbound.length === 0) {
         return null;

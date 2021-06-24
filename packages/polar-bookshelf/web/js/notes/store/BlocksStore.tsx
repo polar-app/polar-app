@@ -324,7 +324,8 @@ export class BlocksStore implements IBlocksStore {
      * Get all the nodes by name.
      */
     getNamedBlocks(): ReadonlyArray<string> {
-        return Object.keys(this._indexByName);
+        return (this.idsToBlocks(Object.values(this._indexByName)) as ReadonlyArray<Block<NameContent>>)
+            .map(block => block.content.data);
     }
 
     @computed get reverse() {
@@ -430,7 +431,7 @@ export class BlocksStore implements IBlocksStore {
             this._index[blockData.id] = block;
 
             if (blockData.content.type === 'name' || blockData.content.type === 'date') {
-                this._indexByName[blockData.content.data] = block.id;
+                this._indexByName[blockData.content.data.toLowerCase()] = block.id;
             }
 
             if (block.content.type === "markdown") {
@@ -594,19 +595,13 @@ export class BlocksStore implements IBlocksStore {
             return blockByID;
         }
 
-        const blockRefByName = this._indexByName[target];
-
-        if (blockRefByName) {
-            return this._index[blockRefByName] || undefined;
-        }
-
-        return undefined;
+        return this.getBlockByName(target);
 
     }
 
     public getBlockByName(name: BlockNameStr): Block | undefined {
 
-        const blockRefByName = this._indexByName[name];
+        const blockRefByName = this._indexByName[name.toLowerCase()];
 
         if (blockRefByName) {
             return this._index[blockRefByName] || undefined;
@@ -1981,7 +1976,7 @@ export class BlocksStore implements IBlocksStore {
 
                     // *** delete the block from name index by name.
                     if (block.content.type === 'name') {
-                        delete this._indexByName[block.content.data];
+                        delete this._indexByName[block.content.data.toLowerCase()];
                     }
 
                     // *** delete the reverse index for this item

@@ -477,11 +477,11 @@ describe('BlocksStore', function() {
                 },
             },
             "_indexByName": {
-                "Canada": "109",
-                "Germany": "107",
-                "Russia": "108",
-                "Winston Churchill": "112",
-                "World War II": "102"
+                "canada": "109",
+                "germany": "107",
+                "russia": "108",
+                "winston churchill": "112",
+                "world war ii": "102"
             },
             "_reverse": {
                 "index": {
@@ -910,11 +910,11 @@ describe('BlocksStore', function() {
         ]);
 
         assertJSON(Object.keys(store.indexByName), [
-            "World War II",
-            "Russia",
-            "Canada",
-            "Germany",
-            "Winston Churchill"
+            "world war ii",
+            "russia",
+            "canada",
+            "germany",
+            "winston churchill"
         ]);
 
         assertJSON(Arrays.first(Object.values(store.index))?.toJSON(), {
