@@ -4,6 +4,8 @@ import {ISibling, Tuples} from "polar-shared/src/util/Tuples";
 
 export namespace ESDigester {
 
+    import IElasticResponse = ESRequests.IElasticResponse;
+
     export interface IAttachment {
         readonly content_type: string;
         // FIXME this is the main content we want.
@@ -16,8 +18,10 @@ export namespace ESDigester {
         readonly attachment: IAttachment;
     }
 
-    export interface IElasticResponse<T> {
-        readonly _source: T;
+    export interface IDigestDocument {
+        readonly idx: number;
+        readonly text: string;
+
     }
 
     async function doGetExtract(id: string): Promise<IElasticResponse<IExtract>> {

@@ -3,6 +3,23 @@ import {Fetches} from "polar-shared/src/util/Fetch";
 
 export namespace ESRequests {
 
+    export interface IElasticResponse<T> {
+        readonly _source: T;
+    }
+
+    export interface IElasticSearchHitsTotal {
+        readonly value: number;
+    }
+
+    export interface IElasticSearchHits<T> {
+        readonly total: IElasticSearchHitsTotal;
+        readonly hits: ReadonlyArray<IElasticResponse<T>>;
+    }
+
+    export interface IElasticSearchResponse<T> {
+        readonly hits: IElasticSearchHits<T>;
+    }
+
     export async function doPut(url: string, body: object) {
 
         const credentials = ESCredentials.get();
