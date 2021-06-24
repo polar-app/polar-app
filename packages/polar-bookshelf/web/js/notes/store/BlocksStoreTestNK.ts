@@ -483,6 +483,7 @@ describe('BlocksStore', function() {
                 "winston churchill": "112",
                 "world war ii": "102"
             },
+            "_activeBlocksIndex": {},
             "_reverse": {
                 "index": {
                     "102": [

@@ -28,6 +28,8 @@ interface IProps extends BlockEditorGenericProps {
 
     readonly onChange: (content: HTMLStr) => void;
 
+    readonly onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
+
     readonly spellCheck?: boolean;
 }
 
@@ -208,6 +210,7 @@ export const BlockContentEditable = observer((props: IProps) => {
                         <div ref={handleRef}
                              onPaste={handlePaste}
                              onClick={props.onClick}
+                             onMouseDown={props.onMouseDown}
                              contentEditable={true}
                              spellCheck={props.spellCheck}
                              className={props.className}

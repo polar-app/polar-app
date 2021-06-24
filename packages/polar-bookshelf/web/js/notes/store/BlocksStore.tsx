@@ -50,6 +50,7 @@ export type BlockNameStr = string;
 
 export type BlockType = 'name' | 'markdown' | 'image' | 'date';
 
+export type ActiveBlocksIndex = {[id: string /* BlockIDStr */]: IActiveBlock };
 export type BlocksIndex = {[id: string /* BlockIDStr */]: Block};
 export type BlocksIndexByName = {[name: string /* BlockNameStr */]: BlockIDStr};
 
@@ -300,6 +301,11 @@ export class BlocksStore implements IBlocksStore {
      * True when we've received our first snapshot.
      */
     @observable _hasSnapshot: boolean = false;
+
+    /*
+     * Used to keep track of cursor positions in every note
+     */
+    private _activeBlocksIndex: ActiveBlocksIndex = {}; 
 
     constructor(uid: UIDStr, undoQueue: UndoQueues2.UndoQueue,
                 readonly blocksPersistenceWriter: BlocksPersistenceWriter = NULL_FUNCTION,
@@ -866,6 +872,19 @@ export class BlocksStore implements IBlocksStore {
             this._active = undefined;
         }
 
+    }
+
+    public getActiveBlockForNote(id: BlockIDStr): IActiveBlock | undefined {
+        return this._activeBlocksIndex[id];
+    }
+
+    public saveActiveBlockForNote(id: BlockIDStr): void {
+        const active = this.cursorOffsetCapture();
+        if (active) {
+            this._activeBlocksIndex[id] = active;
+        } else {
+            delete this._activeBlocksIndex[id];
+        }
     }
 
     @action public setRoot(root: BlockIDStr | undefined) {

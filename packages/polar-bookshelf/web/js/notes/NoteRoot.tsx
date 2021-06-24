@@ -27,7 +27,12 @@ export const NoteRootRenderer: React.FC<INoteRootRendererProps> = ({ block }) =>
 
     React.useEffect(() => {
         blocksStore.setRoot(id);
-        blocksStore.setActiveWithPosition(id, 'end');
+        const activeBlock = blocksStore.getActiveBlockForNote(id);
+        if (activeBlock) {
+            blocksStore.setActiveWithPosition(activeBlock.id, activeBlock.pos || 'start');
+        } else {
+            blocksStore.setActiveWithPosition(id, 'end');
+        }
     }, [id, blocksStore]);
 
     return (
