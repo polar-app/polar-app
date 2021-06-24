@@ -1,4 +1,6 @@
 import {ESRequests} from "./ESRequests";
+import {SentenceSplitter} from "./SentenceSplitter";
+import {ISibling, Tuples} from "polar-shared/src/util/Tuples";
 
 export namespace ESDigester {
 
@@ -28,10 +30,59 @@ export namespace ESDigester {
 
         const extract = await doGetExtract(id);
 
-        console.log(extract._source.attachment.content);
+        const content = extract._source.attachment.content;
+        const sentences = await SentenceSplitter.split(content);
+
+        console.log("Found N sentences: " + sentences.length);
+
+        const sentenceShingles = computeSentenceShingles(sentences);
+
+        // TODO: we need to keep the following in the digest index
+        //
+        // - document ID
+        // - the prev and next sentence shingle IDs
 
         // split it on sentences
         // index it as overlapping sentences...
+
+        console.log("Writing sentence shingles...");
+
+        for (const sentenceShingle of sentenceShingles) {
+
+            const digestID = `${id}:${sentenceShingle.idx}`
+            await ESRequests.doPut(`/answer_digest/_doc/${digestID}`, {
+                idx: sentenceShingle.idx,
+                text: sentenceShingle.text
+            });
+
+        }
+
+        console.log("Writing sentence shingles...done");
+
+    }
+
+    export interface ISentenceShingle {
+        readonly idx: number;
+        readonly text: string;
+    }
+
+    function computeSentenceShingles(sentences: ReadonlyArray<string>): ReadonlyArray<ISentenceShingle> {
+
+        const tuples = Tuples.createSiblings(sentences);
+
+        const toShingle = (sibling: ISibling<string>, idx: number): ISentenceShingle => {
+            const text = (sibling.prev !== undefined ? (sibling.prev + " ") : "") +
+                         sibling.curr +
+                         (sibling.next !== undefined ? (sibling.next + " ") : "");
+
+            return {
+                idx,
+                text
+            };
+
+        }
+
+        return tuples.map((current, idx) => toShingle(current, idx));
 
     }
 

@@ -5,7 +5,6 @@ process.env.GOOGLE_APPLICATION_CREDENTIALS="./cloud-language.json"
 
 export namespace SentenceSplitter {
 
-
     export async function split(text: string): Promise<ReadonlyArray<string>> {
         // Imports the Google Cloud client library
 
@@ -18,6 +17,10 @@ export namespace SentenceSplitter {
         };
 
         // Detects the sentiment of the text
+
+        // FIXME: don't call analyzeSentiment - we just need to split and don't
+        // care about sentiment
+
         const [result] = await client.analyzeSentiment({document});
         const sentiment = result.documentSentiment;
 
