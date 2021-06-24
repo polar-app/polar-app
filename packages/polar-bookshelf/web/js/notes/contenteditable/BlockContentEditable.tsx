@@ -204,6 +204,7 @@ export const BlockContentEditable = observer((props: IProps) => {
                              contentEditable={true}
                              spellCheck={props.spellCheck}
                              className={props.className}
+                             id={`${BLOCK_ID_PREFIX}${props.id}`}
                              style={{
                                  outline: 'none',
                                  whiteSpace: 'pre-wrap',
@@ -339,3 +340,6 @@ const useHandleLinkDeletion = ({ blockID, elem }: IUseHandleLinkDeletionOpts) =>
     })
 };
 
+export const getBlockContentEditableRoot = (id: BlockIDStr): HTMLDivElement | null => {
+    return document.querySelector<HTMLDivElement>(`#${BLOCK_ID_PREFIX}${id}`);
+};

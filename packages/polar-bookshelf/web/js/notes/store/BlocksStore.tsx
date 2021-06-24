@@ -41,6 +41,7 @@ import {
     useBlockExpandPersistenceWriter
 } from "../persistence/BlockExpandWriters";
 import {IBlockContentStructure} from "../HTMLToBlocks";
+import {getBlockContentEditableRoot} from "../contenteditable/BlockContentEditable";
 
 export const ENABLE_UNDO_TRACING = false;
 
@@ -1551,57 +1552,24 @@ export class BlocksStore implements IBlocksStore {
     }
 
     public cursorOffsetCapture(): IActiveBlock | undefined {
+        if (this.active) {
 
-        const captureOffset = (): 'end' | number | undefined => {
+            const id = this.active.id;
+            const contentEditableRoot = getBlockContentEditableRoot(id);
 
-            if (this.active !== undefined) {
+            if (contentEditableRoot) {
+                const pos = CursorPositions.computeCurrentOffset(contentEditableRoot);
 
-                function firstRange(): Range | undefined {
-
-                    const sel = document.getSelection();
-
-                    if (! sel) {
-                        return undefined;
-                    }
-
-                    if (sel.rangeCount === 0) {
-                        return undefined;
-                    }
-
-                    return sel.getRangeAt(0);
-
-                }
-
-                const range = firstRange();
-
-                if (range) {
-                    const contenteditable = CursorPositions.computeContentEditableRoot(range.startContainer);
-                    return CursorPositions.computeCurrentOffset(contenteditable);
-                } else {
-                    return 0;
-                }
-
+                return {
+                    id,
+                    pos,
+                    nonce: ActiveBlockNonces.create()
+                };
             }
 
-            return undefined;
-
         }
 
-        if (this.active) {
-            const id = this.active.id;
-            const pos = captureOffset();
-
-            return {
-                id,
-                pos,
-                nonce: ActiveBlockNonces.create()
-            };
-
-        } else {
-            return undefined;
-        }
-
-
+        return undefined;
     }
 
     @action private cursorOffsetRestore(active: IActiveBlock | undefined) {
