@@ -36,18 +36,18 @@ function assertMarkdownBlock(block: Block): asserts block is Block<MarkdownConte
 }
 
 function assertBlocksEqual(block1: IBlock, block2: IBlock) {
-    assert.equal(block1.id, block2.id, `${block1.id} & ${block2.id} Should have the same id`);
-    assert.equal(block1.nspace, block2.nspace, `${block1.id} & ${block2.id} Should have the same namespace`);
-    assert.equal(block1.uid, block2.uid, `${block1.id} & ${block2.id} Should have the same uid`);
-    assert.equal(block1.parent, block2.parent, `${block1.id} & ${block2.id} Should have the same parent`);
-    assert.equal(block1.created, block2.created, `${block1.id} & ${block2.id} Should have the same creation date`);
-    assert.equal(block1.updated, block2.updated, `${block1.id} & ${block2.id} Should have the same update date`);
-    assert.deepEqual(block1.content, block2.content, `${block1.id} & ${block2.id} Should have the same content`);
-    assert.deepEqual(block1.parents, block2.parents, `${block1.id} & ${block2.id} Should have the same parents path`);
+    assert.equal(block1.id, block2.id, `${block1.id} should have the correct id`);
+    assert.equal(block1.nspace, block2.nspace, `${block1.id} should have the correct namespace`);
+    assert.equal(block1.uid, block2.uid, `${block1.id}  should have the correct uid`);
+    assert.equal(block1.parent, block2.parent, `${block1.id} should have the correct parent`);
+    assert.equal(block1.created, block2.created, `${block1.id} should have the correct creation date`);
+    assert.equal(block1.updated, block2.updated, `${block1.id} should have the correct update date`);
+    assert.deepEqual(block1.content, block2.content, `${block1.id} should have the correct content`);
+    assert.deepEqual(block1.parents, block2.parents, `${block1.id}  should have the correct parents path`);
     assert.deepEqual(
         PositionalArrays.toArray(block1.items),
         PositionalArrays.toArray(block2.items),
-        `${block1.id} & ${block2.id} Should have the same items`,
+        `${block1.id} should have the correct items`,
     );
 }
 
@@ -71,7 +71,7 @@ function assertBlocksStoreSnapshotsEqual(
     assert.deepEqual(
         toIds([...snapshot1]),
         toIds([...snapshot2]),
-        "Should have the same blocks"
+        "Snapshots should have the same blocks"
     );
 
     for (let i = 0; i < snapshot1.length; i += 1) {

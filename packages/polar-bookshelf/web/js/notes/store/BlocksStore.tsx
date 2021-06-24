@@ -1055,12 +1055,13 @@ export class BlocksStore implements IBlocksStore {
 
             const offset = CursorPositions.renderedTextLength(targetBlock.content.data);
 
+            const sourceItems = sourceBlock.itemsAsArray;
             const items = [...targetBlock.itemsAsArray, ...sourceBlock.itemsAsArray];
             const links = [...targetBlock.content.links, ...sourceBlock.content.links];
 
             const newContent = targetBlock.content.data + sourceBlock.content.data;
-            const directChildrenBlocks = this.idsToBlocks(items);
-            const nestedChildrenIDs = items.flatMap(item => this.computeLinearTree(item));
+            const directChildrenBlocks = this.idsToBlocks(sourceItems);
+            const nestedChildrenIDs = sourceItems.flatMap(item => this.computeLinearTree(item));
 
             const updateParent = (newParent: BlockIDStr) => (block: Block) => {
                 this.doUpdateParent(block, newParent);
@@ -1076,6 +1077,10 @@ export class BlocksStore implements IBlocksStore {
                 }));
 
                 targetBlock.setItems(items);
+
+                if (sourceBlock.parent === targetBlock.id) {
+                    targetBlock.removeItem(sourceBlock.id);
+                }
             });
 
             this.doPut([targetBlock]);
@@ -1084,11 +1089,19 @@ export class BlocksStore implements IBlocksStore {
             directChildrenBlocks.forEach(updateParent(targetBlock.id));
             this.idsToBlocks(nestedChildrenIDs).forEach(this.doRebuildParents.bind(this));
 
-            // Update the source block remove the children to prepare it for deletion
-            // (this is done to void deleting the children when deleting the block)
-            sourceBlock.withMutation(() => sourceBlock.setItems([]));
-
-            // Delete after we're done with everything
+            // Delete the source block
+            sourceBlock.withMutation(() => {
+                // TODO: This is a bit ugly but we're doing this to avoid doDelete from bumping up
+                // the mutation number after we just did in the case of merging a child with its parent
+                if (sourceBlock.parent) {
+                    const parent = this._index[sourceBlock.parent];
+                    parent.withMutation(() => {
+                        parent.removeItem(sourceBlock.id);
+                        sourceBlock.setParent(undefined);
+                        sourceBlock.setItems([]);
+                    });
+                }
+            });
             this.doPut([sourceBlock]);
             this.doDelete([sourceBlock.id]);
 
@@ -1518,8 +1531,6 @@ export class BlocksStore implements IBlocksStore {
 
         this.doPut([currentBlock, parentBlock]);
 
-        this.setActiveWithPosition(newBlock.id, 'start');
-
         // Expand the parent if the new block is being added as a child
         if (newBlockPosition.type === "first-child") {
             this.expand(currentBlock.id);
@@ -1530,6 +1541,8 @@ export class BlocksStore implements IBlocksStore {
             const isExpanded = this._expanded[currentBlock.id] 
             this[isExpanded ? 'expand' : 'collapse'](newBlock.id);
         }
+
+        this.setActiveWithPosition(newBlock.id, 'start');
 
         return {
             id: newBlock.id,
