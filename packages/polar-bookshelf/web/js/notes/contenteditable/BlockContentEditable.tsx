@@ -21,6 +21,7 @@ import {IBlockContentStructure} from '../HTMLToBlocks';
 // this will be needed
 const ENABLE_CURSOR_RESET = true;
 const ENABLE_CURSOR_RESET_TRACE = false;
+const BLOCK_ID_PREFIX = 'block-';
 
 interface IProps extends BlockEditorGenericProps {
     readonly content: HTMLStr;
@@ -153,16 +154,22 @@ export const BlockContentEditable = observer((props: IProps) => {
             // (though this might be optional) and then set the innerHTML
             // directly.  React has a bug which won't work on empty strings.
 
-            if (divRef.current && ENABLE_CURSOR_RESET) {
-                const pos = CursorPositions.computeCurrentOffset(divRef.current);
+            const div = divRef.current;
+            if (div && ENABLE_CURSOR_RESET) {
+                const active = blocksStore.active;
+                const isActive = active && active.id === props.id;
 
-                divRef.current.innerHTML = MarkdownContentConverter.toHTML(props.content);
-                ContentEditables.insertEmptySpacer(divRef.current!);
+                // Remove the cursor from the block if it's not active to prevent it from being reset to the start when innerHTML is set
+                if (! isActive) {
+                    div.blur();
+                }
+
+                div.innerHTML = MarkdownContentConverter.toHTML(props.content);
+                ContentEditables.insertEmptySpacer(div);
 
 
-                // TODO: only update if WE are active so the cursor doesn't jump.
-                if (blocksStore.active) {
-                    updateCursorPosition(divRef.current, {...blocksStore.active, pos}, true);
+                if (active && isActive) {
+                    updateCursorPosition(div, {...active}, true);
                 }
 
             }
