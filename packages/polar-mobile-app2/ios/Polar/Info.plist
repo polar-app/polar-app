@@ -48,8 +48,6 @@
     </array>
     <key>UIViewControllerBasedStatusBarAppearance</key>
     <false/>
-    <key>UIUserInterfaceStyle</key>
-    <string>Light</string>
     <key>CFBundleURLTypes</key>
     <array>
       <dict>
@@ -61,9 +59,11 @@
     </array>
     <key>UIRequiresFullScreen</key>
     <true/>
+    <key>NSUserTrackingUsageDescription</key>
+    <string>Allow this app to collect app-related data that can be used for tracking you or your device.</string>
+    <key>UIUserInterfaceStyle</key>
+    <string>Light</string>
     <key>CFBundleDisplayName</key>
     <string>Polar</string>
-    <key>NSUserTrackingUsageDescription</key>
-    <string>We use analytics tools to better understand usage of the features within the app.</string>
   </dict>
 </plist>

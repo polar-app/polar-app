@@ -3,7 +3,7 @@
 <plist version="1.0">
   <dict>
     <key>EXUpdatesSDKVersion</key>
-    <string>39.0.0</string>
+    <string>41.0.0</string>
     <key>EXUpdatesURL</key>
     <string>https://exp.host/@polar-dzhuneyt/polar-mobile-app</string>
     <key>EXUpdatesEnabled</key>
