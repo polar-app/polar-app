@@ -48,7 +48,7 @@ export namespace CursorPositions {
                 range.setEnd(position.node, position.offset);
             }
 
-        } else if (offset === lookup.length) {
+        } else if (offset >= lookup.length) {
 
             function computeRangeNode() {
 
@@ -66,8 +66,6 @@ export namespace CursorPositions {
             range.setStart(rangeNode, rangeOffset);
             range.setEnd(rangeNode, rangeOffset);
 
-        } else {
-            console.warn(`No lookup position for offset ${offset} with N lookup elements: ` + lookup.length);
         }
 
     }
