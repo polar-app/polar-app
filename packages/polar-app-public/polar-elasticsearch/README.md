@@ -51,3 +51,10 @@ curl --user "elastic:jCvX1l8nC0HIe4l2rjcDvhIX" -X GET "https://polar-search0.es.
     }}
 '
 curl --user "elastic:jCvX1l8nC0HIe4l2rjcDvhIX" -X GET "https://polar-search0.es.us-central1.gcp.cloud.es.io:9243/my-index/_mapping?pretty"
+
+
+curl -v --user "elastic:jCvX1l8nC0HIe4l2rjcDvhIX" -X PUT "https://polar-search0.es.us-central1.gcp.cloud.es.io:9243/my-index/_doc/101?pipeline=attachment&pretty" -H 'Content-Type: application/json' -d'
+{
+  "data": "e1xydGYxXGFuc2kNCkxvcmVtIGlwc3VtIGRvbG9yIHNpdCBhbWV0DQpccGFyIH0="
+}
+'
