@@ -4,12 +4,11 @@ import useTheme from '@material-ui/core/styles/useTheme';
 import {ActionMenuItemsProvider, useActionMenuStore} from "../../mui/action_menu/ActionStore";
 import {ContentEditables} from "../ContentEditables";
 import INodeOffset = ContentEditables.INodeOffset;
-import {BlockContentEditable, useBlockContentEditableElement} from "./BlockContentEditable";
+import {useBlockContentEditableElement} from "./BlockContentEditable";
 import { observer } from "mobx-react-lite"
 import {BlockIDStr, useBlocksStore} from '../store/BlocksStore';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
-import {CursorPositions} from './CursorPositions';
 
 const THINSP = ' ';
 
