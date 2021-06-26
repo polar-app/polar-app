@@ -18,6 +18,8 @@ interface IProps extends FirebaseUIAuthOptions {
 
 }
 
+const ENABLE_OAUTH = false;
+
 export const LoginScreen = React.memo(function LoginScreen(props: IProps) {
 
     const [pending, setPending] = React.useState(true);
@@ -36,15 +38,19 @@ export const LoginScreen = React.memo(function LoginScreen(props: IProps) {
 
         if (! user) {
 
-            const providerURL = ProviderURLs.parse(document.location);
+            if (ENABLE_OAUTH) {
 
-            const authOptions: FirebaseUIAuthOptions = {
-                ...props,
-                signInSuccessUrl,
-                provider: providerURL.provider
+                const providerURL = ProviderURLs.parse(document.location);
+
+                const authOptions: FirebaseUIAuthOptions = {
+                    ...props,
+                    signInSuccessUrl,
+                    provider: providerURL.provider
+                }
+
+                FirebaseUIAuth.login(authOptions);
+
             }
-
-            FirebaseUIAuth.login(authOptions);
 
         } else {
             console.log("Already authenticated as " + user.email);
