@@ -11,6 +11,7 @@ import {MarkdownContent} from "./content/MarkdownContent";
 import {BlockImageContent} from "./blocks/BlockImageContent";
 import {useBlockKeyDownHandler} from "./contenteditable/BlockKeyboardHandlers";
 import {ContentEditables} from "./ContentEditables";
+import {reaction} from "mobx";
 
 interface ILinkNavigationEvent {
     readonly abortEvent: () => void;
@@ -104,11 +105,11 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
     const ref = React.createRef<HTMLDivElement | null>();
     const updateCursorPosition = useUpdateCursorPosition();
 
-    const block = blocksStore.getBlock(id);
+    const block = blocksStore.getReadonlyBlock(id);
     const data = blocksStore.getBlockContentData(id);
 
     const handleChange = React.useCallback((markdown: MarkdownStr) => {
-        const block = blocksStore.getBlock(id);
+        const block = blocksStore.getReadonlyBlock(id);
 
         if (block && block.content.type === "markdown") {
             blocksStore.setBlockContent(id, new MarkdownContent({
@@ -121,20 +122,24 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
     }, [blocksStore, id]);
 
     React.useEffect(() => {
-        if (blocksStore.active?.id === props.id) {
-            if (ref.current) {
+        const focusBlock = () => {
+            const active = blocksStore.active;
+            if (active && active.id === props.id) {
+                if (ref.current) {
 
-                if (blocksStore.active.pos !== undefined) {
-                    updateCursorPosition(ref.current, blocksStore.active)
+                    if (active.pos !== undefined) {
+                        updateCursorPosition(ref.current, active)
+                    }
+
                 }
-
-                ref.current.focus();
-
+            } else if (ref.current) {
+                ContentEditables.insertEmptySpacer(ref.current);
             }
-        } else if (ref.current) {
-            ContentEditables.insertEmptySpacer(ref.current);
-        }
-    }, [props.id, updateCursorPosition, blocksStore.active, ref]);
+        };
+        focusBlock();
+        const disposer = reaction(() => blocksStore.active?.nonce, focusBlock);
+        return () => disposer();
+    }, [props.id, updateCursorPosition, blocksStore, ref]);
 
     const onClick = React.useCallback((event: React.MouseEvent) => {
 
