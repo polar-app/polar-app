@@ -73,6 +73,9 @@ export interface IBlocksStore {
     setActiveWithPosition(active: BlockIDStr | undefined,
                           activePos: NavPosition | undefined): void;
 
+    getActiveBlockForNote(id: BlockIDStr): IActiveBlock | undefined;
+    saveActiveBlockForNote(id: BlockIDStr): void;
+
     idsToBlocks(ids: ReadonlyArray<BlockIDStr>): ReadonlyArray<Block>;
 
     // TODO: undo

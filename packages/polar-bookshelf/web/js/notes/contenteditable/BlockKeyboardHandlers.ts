@@ -4,6 +4,7 @@ import {ContentEditables} from "../ContentEditables";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {BlockIDStr, useBlocksStore} from "../store/BlocksStore";
 import {IBlocksStore} from "../store/IBlocksStore";
+import {CursorPositions} from "./CursorPositions";
 
 
 const hasEditorSelection = (): boolean => {
@@ -61,7 +62,8 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
         }
 
         abortEvent(event);
-        blocksStore.navPrev('start', { shiftKey: event.shiftKey }, root);
+        const pos = CursorPositions.computeCurrentOffset(contentEditableElem);
+        blocksStore.navPrev(pos || 'start', { shiftKey: event.shiftKey }, root);
     },
     ArrowDown: ({ event, blocksStore, blockID, contentEditableElem, root }) => {
         if (event.ctrlKey || event.metaKey) {
@@ -85,7 +87,8 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
         }
 
         abortEvent(event);
-        blocksStore.navNext('start', { shiftKey: event.shiftKey }, root);
+        const pos = CursorPositions.computeCurrentOffset(contentEditableElem);
+        blocksStore.navNext(pos || 'start', { shiftKey: event.shiftKey }, root);
     },
     ArrowLeft: ({ event, platform, blockID, blocksStore, contentEditableElem, root }) => {
 

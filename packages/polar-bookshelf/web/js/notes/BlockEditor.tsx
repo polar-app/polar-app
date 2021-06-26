@@ -158,6 +158,12 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
         readonly: block?.readonly,
     });
 
+    const handleMouseDown = React.useCallback<React.MouseEventHandler<HTMLDivElement>>(({target}) => {
+        if (target instanceof HTMLAnchorElement) {
+            blocksStore.saveActiveBlockForNote(props.root);
+        }
+    }, [props.root, blocksStore]);
+
     if (! block) {
         // this can happen when a note is deleted but the component hasn't yet
         // been unmounted.
@@ -170,6 +176,7 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
                                   parent={props.parent}
                                   innerRef={ref}
                                   content={data || ''}
+                                  onMouseDown={handleMouseDown}
                                   onKeyDown={onKeyDown}
                                   onChange={handleChange}
                                   readonly={block.readonly}

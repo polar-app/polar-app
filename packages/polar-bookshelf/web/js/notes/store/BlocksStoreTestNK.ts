@@ -36,18 +36,18 @@ function assertMarkdownBlock(block: Block): asserts block is Block<MarkdownConte
 }
 
 function assertBlocksEqual(block1: IBlock, block2: IBlock) {
-    assert.equal(block1.id, block2.id, `${block1.id} & ${block2.id} Should have the same id`);
-    assert.equal(block1.nspace, block2.nspace, `${block1.id} & ${block2.id} Should have the same namespace`);
-    assert.equal(block1.uid, block2.uid, `${block1.id} & ${block2.id} Should have the same uid`);
-    assert.equal(block1.parent, block2.parent, `${block1.id} & ${block2.id} Should have the same parent`);
-    assert.equal(block1.created, block2.created, `${block1.id} & ${block2.id} Should have the same creation date`);
-    assert.equal(block1.updated, block2.updated, `${block1.id} & ${block2.id} Should have the same update date`);
-    assert.deepEqual(block1.content, block2.content, `${block1.id} & ${block2.id} Should have the same content`);
-    assert.deepEqual(block1.parents, block2.parents, `${block1.id} & ${block2.id} Should have the same parents path`);
+    assert.equal(block1.id, block2.id, `${block1.id} should have the correct id`);
+    assert.equal(block1.nspace, block2.nspace, `${block1.id} should have the correct namespace`);
+    assert.equal(block1.uid, block2.uid, `${block1.id}  should have the correct uid`);
+    assert.equal(block1.parent, block2.parent, `${block1.id} should have the correct parent`);
+    assert.equal(block1.created, block2.created, `${block1.id} should have the correct creation date`);
+    assert.equal(block1.updated, block2.updated, `${block1.id} should have the correct update date`);
+    assert.deepEqual(block1.content, block2.content, `${block1.id} should have the correct content`);
+    assert.deepEqual(block1.parents, block2.parents, `${block1.id}  should have the correct parents path`);
     assert.deepEqual(
         PositionalArrays.toArray(block1.items),
         PositionalArrays.toArray(block2.items),
-        `${block1.id} & ${block2.id} Should have the same items`,
+        `${block1.id} should have the correct items`,
     );
 }
 
@@ -71,7 +71,7 @@ function assertBlocksStoreSnapshotsEqual(
     assert.deepEqual(
         toIds([...snapshot1]),
         toIds([...snapshot2]),
-        "Should have the same blocks"
+        "Snapshots should have the same blocks"
     );
 
     for (let i = 0; i < snapshot1.length; i += 1) {
@@ -477,12 +477,13 @@ describe('BlocksStore', function() {
                 },
             },
             "_indexByName": {
-                "Canada": "109",
-                "Germany": "107",
-                "Russia": "108",
-                "Winston Churchill": "112",
-                "World War II": "102"
+                "canada": "109",
+                "germany": "107",
+                "russia": "108",
+                "winston churchill": "112",
+                "world war ii": "102"
             },
+            "_activeBlocksIndex": {},
             "_reverse": {
                 "index": {
                     "102": [
@@ -910,11 +911,11 @@ describe('BlocksStore', function() {
         ]);
 
         assertJSON(Object.keys(store.indexByName), [
-            "World War II",
-            "Russia",
-            "Canada",
-            "Germany",
-            "Winston Churchill"
+            "world war ii",
+            "russia",
+            "canada",
+            "germany",
+            "winston churchill"
         ]);
 
         assertJSON(Arrays.first(Object.values(store.index))?.toJSON(), {
@@ -2093,6 +2094,38 @@ describe('BlocksStore', function() {
 
             assert.equal(newBlock.parent, id);
             assert.deepEqual(newBlock.parents, [...originalBlock.parents, id]);
+        });
+
+        it("should expand the parent if the new block is being added as a child", () => {
+            const store = createStore();
+            const id = '105';
+            // collapse the parent node to make sure it gets expanded when the child is created
+            store.collapse(id);
+            const createdBlock = store.createNewBlock(id, {asChild: true});
+            assertPresent(createdBlock);
+            assert.equal(store.isExpanded(id), true);
+        });
+
+        it("should copy the expand state from the old block to the new one if the new block is inheriting the items", () => {
+            const store = createStore();
+            const id = '105';
+            const oldBlock = store.getBlock(id);
+            assertPresent(oldBlock);
+            assertMarkdownBlock(oldBlock);
+            // collapse the parent node to make sure it gets expanded when the child is created
+            store.collapse(id);
+            const createdBlock = store.createNewBlock(id, {split: {prefix: '', suffix: oldBlock.content.data}});
+            assertPresent(createdBlock);
+            assert.equal(store.isExpanded(createdBlock.id), false);
+
+            const block1 = store.getBlock(createdBlock.id);
+            assertPresent(block1);
+            assertMarkdownBlock(block1);
+
+            store.expand(block1.id);
+            const createdBlock2 = store.createNewBlock(block1.id, {split: {prefix: '', suffix: block1.content.data}});
+            assertPresent(createdBlock2);
+            assert.equal(store.isExpanded(createdBlock2.id), true);
         });
     });
 
