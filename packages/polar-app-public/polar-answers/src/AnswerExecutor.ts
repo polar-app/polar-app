@@ -54,12 +54,17 @@ export namespace AnswerExecutor {
             examples,
             max_tokens,
             stop,
-            documents
+            documents,
+            n: 10
         }
 
         const answerResponse = await OpenAIAnswersClient.exec(request);
 
+        console.log("Raw response: === ")
         console.log(answerResponse);
+
+        console.log("question: " + question);
+        console.log("answers: ", answerResponse.answers)
 
     }
 
