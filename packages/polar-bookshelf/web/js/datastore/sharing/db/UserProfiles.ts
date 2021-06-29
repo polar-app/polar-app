@@ -1,7 +1,7 @@
 import {Profiles} from "./Profiles";
 import {CacheFirstThenServerGetOptions, GetOptions} from "../../../firebase/firestore/DocumentReferences";
 import {isPresent} from 'polar-shared/src/Preconditions';
-import {Profile, ProfileIDStr} from "polar-firebase/src/firebase/om/Profiles";
+import {IProfile, ProfileIDStr} from "polar-firebase/src/firebase/om/Profiles";
 
 export class UserProfiles {
 
@@ -37,7 +37,7 @@ export class UserProfiles {
 
 export interface UserProfile {
 
-    readonly profile: Profile;
+    readonly profile: IProfile;
 
     /**
      * True if this profile represents myself.
