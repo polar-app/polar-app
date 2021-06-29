@@ -32,4 +32,5 @@ export default function XGridStory() {
   //     checkboxSelection
   //   />
   // );
+    return null;
 }
