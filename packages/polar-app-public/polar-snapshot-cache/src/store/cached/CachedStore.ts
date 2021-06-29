@@ -352,9 +352,12 @@ export namespace CachedStore {
 
                 private readonly _clauses: IWhereClause[] = [];
 
-                private _startAfter: string | undefined = undefined;
+                private _startAt: string[] | undefined = undefined;
+                private _startAfter: string[] | undefined = undefined;
 
                 private _limit: number | undefined = undefined;
+
+                private _offset: number | undefined = undefined;
 
                 private _order: IQueryOrderBy[] = [];
 
@@ -553,13 +556,23 @@ export namespace CachedStore {
                     return this;
                 }
 
+
+                public offset(offset: number): IQuery {
+                    throw new Error("Not implemented");
+                }
                 public orderBy(fieldPath: string, directionStr?: TOrderByDirection): IQuery {
                     this._order.push({fieldPath, directionStr});
                     return this;
                 }
 
-                public startAfter(startAfter: string | undefined): IQuery {
-                    this._startAfter = startAfter;
+                public startAt(...fieldValues: string[]): IQuery {
+                    throw new Error("Not implemented");
+                    // this._startAt = fieldValues;
+                    // return this;
+                }
+
+                public startAfter(...fieldValues: string[]): IQuery {
+                    this._startAfter = fieldValues;
                     return this;
                 }
 
