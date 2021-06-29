@@ -2,12 +2,59 @@ import {WriteBatchLike} from "../../polar-firebase/src/firebase/Collections";
 import { IFirestore } from "./IFirestore";
 import {IDocumentReference} from "./IDocumentReference";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
+import {
+    Clause,
+    OrderByClause,
+    ValueType
+} from "../../../polar-app-private/polar-hooks/functions/impl/groups/db/Collections";
+import {Preconditions} from "polar-shared/src/Preconditions";
+import { IQuerySnapshot } from "./IQuerySnapshot";
 
 export namespace Collections {
+
+    export type WhereFilterOp =
+        | '<'
+        | '<='
+        | '=='
+        | '!='
+        | '>='
+        | '>'
+        | 'array-contains'
+        | 'in'
+        | 'not-in'
+        | 'array-contains-any';
+
+    export type ValueType = object | string | number;
+
+    export type Clause = [string, WhereFilterOp, ValueType];
+
+    export interface ListOpts {
+        readonly limit?: number;
+        readonly after?: any[];
+        readonly orderBy?: ReadonlyArray<OrderByClause>;
+
+    }
 
     export interface GetOrCreateRecord<T> {
         readonly created: boolean;
         readonly record: T;
+    }
+
+    namespace Clauses {
+
+        export function assertPresent(clause: Clause) {
+            const [field, op, value] = clause;
+            Preconditions.assertPresent(value, 'value missing for field ' + field);
+        }
+
+        export function fields(clauses: ReadonlyArray<Clause>) {
+            return clauses.map(current => current[0]);
+        }
+
+        export function values(clauses: ReadonlyArray<Clause>) {
+            return clauses.map(current => current[2]);
+        }
+
     }
 
     export async function getOrCreate<T>(firestore: IFirestore,
@@ -55,19 +102,81 @@ export namespace Collections {
 
     }
 
+
+    export async function set<T>(firestore: IFirestore,
+                                 collection: string,
+                                 id: string, value: T) {
+
+        value = Dictionaries.onlyDefinedProperties(value);
+        const ref = firestore.collection(collection).doc(id);
+        await ref.set(value);
+
+    }
     //
-    // public async set<T>(id: string, value: T) {
-    //     value = Dictionaries.onlyDefinedProperties(value);
-    //     const ref = this.firestore.collection(this.name).doc(id);
-    //     await ref.set(value);
+    // function createQuery(clauses: ReadonlyArray<Clause>, opts: ListOpts = {}) {
+    //
+    //     // TODO: should work without any clauses and just list all the records
+    //     // which is fine for small collections
+    //
+    //     const clause = clauses[0];
+    //     const [field, op, value] = clause;
+    //
+    //     Clauses.assertPresent(clause);
+    //
+    //     let query = this.firestore
+    //         .collection(this.name)
+    //         .where(field, op, value);
+    //
+    //     for (const clause of clauses.slice(1)) {
+    //         const [field, op, value] = clause;
+    //         Clauses.assertPresent(clause);
+    //         query = query.where(field, op, value);
+    //     }
+    //
+    //     for (const orderBy of opts.orderBy || []) {
+    //         query = query.orderBy(orderBy[0], orderBy[1]);
+    //     }
+    //
+    //     if (opts.startAfter) {
+    //         query = query.startAfter(...opts.startAfter);
+    //     }
+    //
+    //     if (opts.startAt) {
+    //         query = query.startAt(...opts.startAt);
+    //     }
+    //
+    //     if (opts.limit !== undefined) {
+    //         query = query.limit(opts.limit);
+    //     }
+    //
+    //     if (opts.offset !== undefined) {
+    //         query = query.offset(opts.offset);
+    //     }
+    //
+    //     return query;
+    //
     // }
+
+    function snapshotToRecords<T>(snapshot: IQuerySnapshot) {
+        return snapshot.docs.map(current => <T> current.data());
+    }
+
+    export async function list<T>(clauses: ReadonlyArray<Clause>,
+                                  opts: ListOpts = {}): Promise<ReadonlyArray<T>> {
+
+        const query = createQuery(clauses, opts);
+
+        const snapshot = await query.get();
+
+        return snapshotToRecords(snapshot);
+
+    }
     //
-    //
-    //
-    // public async getByFieldValue<T>(field: string, value: ValueType): Promise<T | undefined> {
-    //     const results = await this.list<T>([[field, '==', value]]);
-    //     return this.first([field], results);
+    // export async function getByFieldValue<T>(field: string, value: ValueType): Promise<T | undefined> {
+    //     const results = await list<T>([[field, '==', value]]);
+    //     return first([field], results);
     // }
+
     //
     // public async getByFieldValues<T>(clauses: ReadonlyArray<Clause>): Promise<T | undefined> {
     //     const results = await this.list<T>(clauses);
