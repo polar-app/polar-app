@@ -221,54 +221,6 @@ export namespace Collections {
     //     return this.list([[field, '==', value]]);
     // }
     //
-    // private createQuery(clauses: ReadonlyArray<Clause>, opts: ListOpts = {}) {
-    //
-    //     // TODO: should work without any clauses and just list all the records
-    //     // which is fine for small collections
-    //
-    //     const clause = clauses[0];
-    //     const [field, op, value] = clause;
-    //
-    //     Clauses.assertPresent(clause);
-    //
-    //     let query = this.firestore
-    //         .collection(this.name)
-    //         .where(field, op, value);
-    //
-    //     for (const clause of clauses.slice(1)) {
-    //         const [field, op, value] = clause;
-    //         Clauses.assertPresent(clause);
-    //         query = query.where(field, op, value);
-    //     }
-    //
-    //     for (const orderBy of opts.orderBy || []) {
-    //         query = query.orderBy(orderBy[0], orderBy[1]);
-    //     }
-    //
-    //     if (opts.startAfter) {
-    //         query = query.startAfter(...opts.startAfter);
-    //     }
-    //
-    //     if (opts.startAt) {
-    //         query = query.startAt(...opts.startAt);
-    //     }
-    //
-    //     if (opts.limit !== undefined) {
-    //         query = query.limit(opts.limit);
-    //     }
-    //
-    //     if (opts.offset !== undefined) {
-    //         query = query.offset(opts.offset);
-    //     }
-    //
-    //     return query;
-    //
-    // }
-    //
-    // private snapshotToRecords<T>(snapshot: QuerySnapshotLike) {
-    //     return snapshot.docs.map(current => <T> current.data());
-    // }
-    //
     // public collection() {
     //     return this.firestore.collection(this.name);
     // }
