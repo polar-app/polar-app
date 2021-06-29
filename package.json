@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "deps-install": "docker build --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) -f dockerfiles/deps-install/Dockerfile -t polar-deps-install . && docker run -v $(PWD):/app:delegated -w /app -u $(id -u ${USER}):$(id -g ${USER}) --rm polar-deps-install",
     "compile": "lerna run compile",
     "publish": "lerna exec --no-private -- npm publish --no-bail",
     "test": "echo \"Error: no test specified\" && exit 1",
