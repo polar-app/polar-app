@@ -47,6 +47,10 @@ export namespace MockStore {
 
         class Batch implements IWriteBatch {
 
+            create(documentRef: IDocumentReference, data: TDocumentData): IWriteBatch {
+                throw new Error("Not implemented");
+            }
+
             delete(documentRef: IDocumentReference): IWriteBatch {
                 const collectionName = documentRef.parent.id;
                 requireCollection(collectionName);

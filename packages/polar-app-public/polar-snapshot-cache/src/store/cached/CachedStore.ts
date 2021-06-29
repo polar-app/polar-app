@@ -609,6 +609,10 @@ export namespace CachedStore {
 
             private ops: BatchOp[] = [];
 
+            create(documentRef: IDocumentReference, data: TDocumentData): IWriteBatch {
+                throw new Error("not implemented");
+            }
+
             delete(documentRef: IDocumentReference): IWriteBatch {
                 this.ops.push({id: documentRef.id, type: 'delete', documentRef});
                 this._batch.delete(documentRef);
