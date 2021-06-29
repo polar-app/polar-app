@@ -1,9 +1,9 @@
-import {ICollectionReference} from "./ICollectionReference";
-import {IWriteBatch} from "./IWriteBatch";
+import { ICollectionReference } from "./ICollectionReference";
+import { IWriteBatch } from "./IWriteBatch";
 
 /**
- * Firestore mimic interface.
- * @deprecated use polar-firestore-like
+ * Firestore mimic interface so that the firestore client SDK and admin SDK can
+ * both be used with the same code.
  */
 export interface IFirestore {
 

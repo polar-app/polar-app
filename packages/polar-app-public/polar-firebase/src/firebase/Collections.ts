@@ -4,6 +4,8 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 
 /**
  * Generic functions for working with Firebase collections
+ *
+ * @deprecated use polar-firestore-like/src/Collections.ts
  */
 export class Collections {
 

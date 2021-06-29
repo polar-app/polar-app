@@ -1,5 +1,5 @@
 import { IDocumentReference } from "./IDocumentReference";
-import {IQuery} from "./IQuery";
+import { IQuery } from "./IQuery";
 
 export type TWhereFilterOp =
     | '<'
@@ -21,9 +21,6 @@ export interface IWhereClause {
     readonly value: TWhereValue;
 }
 
-/**
- * @deprecated use polar-firestore-like
- */
 export interface ICollectionReference {
 
     /** The collection's identifier. */

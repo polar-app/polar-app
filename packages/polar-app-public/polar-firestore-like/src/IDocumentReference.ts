@@ -2,7 +2,7 @@ import { IDocumentSnapshot } from "./IDocumentSnapshot";
 import {IGetOptions} from "./IGetOptions";
 import {ICollectionReference} from "./ICollectionReference";
 import {ISnapshotListenOptions} from "./ISnapshotListenOptions";
-import {IQuerySnapshotObserver, SnapshotUnsubscriber} from "./IQuery";
+import {SnapshotUnsubscriber} from "./IQuery";
 import {IFirestoreError} from "./IFirestoreError";
 import {TDocumentData} from "./TDocumentData";
 
@@ -21,8 +21,6 @@ export function isDocumentSnapshotObserver(arg: any): arg is IDocumentSnapshotOb
  * and can be used to write, read, or listen to the location. The document at
  * the referenced location may or may not exist. A `DocumentReference` can
  * also be used to create a `CollectionReference` to a subcollection.
- *
- * @deprecated use polar-firestore-like
  */
 export interface IDocumentReference {
 

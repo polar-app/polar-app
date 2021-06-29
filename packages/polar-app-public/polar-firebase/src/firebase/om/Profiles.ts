@@ -1,6 +1,9 @@
 import {Image} from './Images';
 import {TagStr} from "polar-shared/src/tags/Tags";
 import {PlainTextStr, URLStr} from "polar-shared/src/util/Strings";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {IFirestore} from "polar-firestore-like/src/IFirestore";
+import {Collections} from "polar-firestore-like/src/Collections";
 
 export interface IProfileInit {
 
@@ -77,3 +80,67 @@ export interface ProfileIDRecord {
 
 export type ProfileRecordTuple<T> = [T, IProfile | undefined];
 
+export namespace Profiles {
+
+    export const COLLECTION = 'profile';
+
+    export function createID() {
+        return Hashcodes.createRandomID(20);
+    }
+
+    export async function get(firestore: IFirestore, id: ProfileIDStr): Promise<IProfile | undefined> {
+        return await Collections.getByID(firestore, this.COLLECTION, id);
+    }
+
+    // export async function set(batch: WriteBatch,
+    //                           id: ProfileIDStr,
+    //                           user: UserRecord,
+    //                           profileInit: ProfileInit) {
+    //
+    //     const image = Users.createImage(user);
+    //
+    //     const lastUpdated = ISODateTimeStrings.create();
+    //
+    //     const profile: Profile = {
+    //         id,
+    //         image,
+    //         lastUpdated,
+    //         ...profileInit
+    //     };
+    //
+    //     const firebase = Firestore.getInstance();
+    //
+    //     const ref = firebase.collection(this.COLLECTION).doc(id);
+    //
+    //     batch.set(ref, Dictionaries.onlyDefinedProperties(profile));
+    //
+    // }
+    //
+    // public static async delete(batch: WriteBatch, id: ProfileIDStr) {
+    //     await Collections.deleteByID(batch, this.COLLECTION, async () => [{id}] );
+    // }
+    //
+    // public static async userProfile(uid: UserIDStr): Promise<Profile | undefined> {
+    //
+    //     if (! uid) {
+    //         return undefined;
+    //     }
+    //
+    //     const profileOwner = await ProfileOwners.get(uid);
+    //
+    //     if (! profileOwner) {
+    //         // getting their user from the database and writing it back out...
+    //         return undefined;
+    //     }
+    //
+    //     const profile = await this.get(profileOwner.profileID);
+    //
+    //     if ( ! profile) {
+    //         return undefined;
+    //     }
+    //
+    //     return profile;
+    //
+    // }
+
+}

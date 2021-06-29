@@ -9,7 +9,7 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 
 /**
  * Generic functions for working with Firebase collections
- * @deprecated Use the new collections ramework...
+ * @deprecated Use the new collections framework...
  */
 export class Collections {
 

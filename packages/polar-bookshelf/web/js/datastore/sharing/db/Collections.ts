@@ -8,6 +8,9 @@ import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 
 const log = Logger.create();
 
+/**
+ * @deprecated use polar-firestore-like
+ */
 export class Collections {
 
     public static async getByID<T>(collection: string, id: string): Promise<T | undefined> {
