@@ -3,7 +3,6 @@ import {Objects} from "polar-shared/src/util/Objects";
 import firebase from 'firebase/app'
 import { IQuery } from 'polar-firestore-like/src/IQuery';
 import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
-import unified from "../../../../../node_modules.bak/unified/types";
 
 /**
  * Build a simple query cursor for Firestore queries.
