@@ -1,30 +1,37 @@
 import {CacheProvider, TCacheDocTupleWithID} from "../../CacheProvider";
 import {ICacheKeyCalculator} from "../../ICacheKeyCalculator";
-import {ICollectionReference, IWhereClause, TWhereFilterOp, TWhereValue} from "../ICollectionReference";
-import {IWriteBatch} from "../IWriteBatch";
-import {IDocumentReference, IDocumentSnapshotObserver, isDocumentSnapshotObserver} from "../IDocumentReference";
-import {IGetOptions} from "../IGetOptions";
-import {TDocumentData} from "../TDocumentData";
-import {IDocumentSnapshot} from "../IDocumentSnapshot";
-import {IFirestoreError} from "../IFirestoreError";
-import {ISnapshotListenOptions} from "../ISnapshotListenOptions";
+import {CachedQueries} from "../../CachedQueries";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {ICachedDoc} from "../../ICachedDoc";
+import {Preconditions} from "polar-shared/src/Preconditions";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {IGetOptions} from "polar-firestore-like/src/IGetOptions";
+import {ISnapshotListenOptions} from "polar-firestore-like/src/ISnapshotListenOptions";
+import {IFirestoreError} from "polar-firestore-like/src/IFirestoreError";
 import {
     IQuery,
     IQueryOrderBy,
     IQuerySnapshotObserver,
     isQuerySnapshotObserver,
-    SnapshotUnsubscriber,
-    TOrderByDirection
-} from "../IQuery";
-import {IQuerySnapshot} from "../IQuerySnapshot";
-import {CachedQueries} from "../../CachedQueries";
-import {IDocumentChange} from "../IDocumentChange";
-import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {ICachedDoc} from "../../ICachedDoc";
-import {Preconditions} from "polar-shared/src/Preconditions";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import { IFirestore } from "../IFirestore";
-import {TUpdateData} from "../TUpdateData";
+    SnapshotUnsubscriber, TOrderByDirection
+} from "polar-firestore-like/src/IQuery";
+import {
+    ICollectionReference,
+    IWhereClause,
+    TWhereFilterOp,
+    TWhereValue
+} from "polar-firestore-like/src/ICollectionReference";
+import {IFirestore} from "polar-firestore-like/src/IFirestore";
+import {
+    IDocumentReference,
+    IDocumentSnapshotObserver,
+    isDocumentSnapshotObserver
+} from "polar-firestore-like/src/IDocumentReference";
+import {IDocumentSnapshot} from "polar-firestore-like/src/IDocumentSnapshot";
+import {TDocumentData} from "polar-firestore-like/src/TDocumentData";
+import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
+import {IDocumentChange} from "polar-firestore-like/src/IDocumentChange";
+import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 
 export namespace CachedStore {
 

@@ -1,7 +1,7 @@
-import { IDocumentSnapshot } from "./store/IDocumentSnapshot";
-import {IDocumentReference} from "./store/IDocumentReference";
-import {IDocumentChange} from "./store/IDocumentChange";
 import {ICachedQueryMetadata} from "./ICachedQueryMetadata";
+import {IDocumentSnapshot} from "polar-firestore-like/src/IDocumentSnapshot";
+import {IDocumentChange} from "polar-firestore-like/src/IDocumentChange";
+import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
 
 export interface ICacheKeyCalculator {
 
