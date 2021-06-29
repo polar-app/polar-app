@@ -65,7 +65,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
     const blocksStore = useBlocksStore();
 
-    const block = blocksStore.getReadonlyBlock(props.id);
+    const block = blocksStore.getBlock(props.id);
     const selected = blocksStore.selected;
 
     const handleSetMode = React.useCallback((mode: BarMode) => {

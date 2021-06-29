@@ -53,7 +53,7 @@ function assertBlocksEqual(block1: IBlock, block2: IBlock) {
 
 function assertBlockParents(store: BlocksStore, parents: ReadonlyArray<BlockIDStr>) {
     return (blockID: BlockIDStr) =>  {
-        const block = store.getBlock(blockID);
+        const block = store.getBlockForMutation(blockID);
         assertPresent(block);
         assert.equal(block.parent, parents[parents.length - 1], `Block ${blockID} doesn't have the correct parent`);
         assert.deepEqual(block.parents, parents, `Block ${blockID} doesn't have the correct parents`);
@@ -121,7 +121,7 @@ type BlockTree = ReadonlyArray<{id: BlockIDStr,  children: BlockTree}>;
 
 const assertBlockTree = (store: BlocksStore, blockTree: BlockTree, parent?: Block) => {
     for (const item of blockTree) {
-        const block = store.getBlock(item.id);
+        const block = store.getBlockForMutation(item.id);
         assertPresent(block);
         if (parent) {
             assert.equal(block.parent, parent.id, `Block ${block.id} should have the correct parent`);
@@ -513,7 +513,7 @@ describe('BlocksStore', function() {
     it('should not have corrupted data', () => {
         const store = createStore();
         const rootBlocks = Object.keys(store.index)
-            .map(id => store.getBlock(id)!)
+            .map(id => store.getBlockForMutation(id)!)
             .filter(block => !block.parent);
 
         rootBlocks.map(block => block.id).forEach(assertBlockParents(store, []));
@@ -549,7 +549,7 @@ describe('BlocksStore', function() {
         });
 
         it("second child block", async function() {
-            assertJSON(store.getBlock('102')?.toJSON(),{
+            assertJSON(store.getBlockForMutation('102')?.toJSON(),{
                 "content": {
                     "data": "World War II",
                     "type": "name",
@@ -575,7 +575,7 @@ describe('BlocksStore', function() {
 
             const indentResult = store.indentBlock('104')
 
-            assertJSON(store.getBlock('102')?.toJSON(), {
+            assertJSON(store.getBlockForMutation('102')?.toJSON(), {
                 "content": {
                     "data": "World War II",
                     "type": "name"
@@ -594,7 +594,7 @@ describe('BlocksStore', function() {
                 "updated": "2012-03-02T11:38:50.321Z"
             });
 
-            assertJSON(store.getBlock(indentResult[0].value!)?.toJSON(), {
+            assertJSON(store.getBlockForMutation(indentResult[0].value!)?.toJSON(), {
                 "content": {
                     "data": "[Lasted](https://www.example.com) from 1939 to 1945",
                     "type": "markdown",
@@ -633,7 +633,7 @@ describe('BlocksStore', function() {
         });
 
         it("indent then unindent and make sure we do a full restore to the original", () => {
-            assertJSON(store.getBlock('102')?.toJSON(),{
+            assertJSON(store.getBlockForMutation('102')?.toJSON(),{
                 "content": {
                     "data": "World War II",
                     "type": "name"
@@ -655,7 +655,7 @@ describe('BlocksStore', function() {
 
             assertJSON(store.expanded, {});
 
-            assertJSON(store.getBlock('104')?.toJSON(), {
+            assertJSON(store.getBlockForMutation('104')?.toJSON(), {
                 "content": {
                     "data": "Axis Powers: Germany, Italy, Japan",
                     "type": "markdown",
@@ -677,7 +677,7 @@ describe('BlocksStore', function() {
 
             store.indentBlock('104')
 
-            assertJSON(store.getBlock('104')?.toJSON(), {
+            assertJSON(store.getBlockForMutation('104')?.toJSON(), {
                 "content": {
                     "data": "Axis Powers: Germany, Italy, Japan",
                     "type": "markdown",
@@ -697,11 +697,11 @@ describe('BlocksStore', function() {
                 "updated": "2012-03-02T11:38:49.321Z"
             });
 
-            assert.equal(store.getBlock('104')!.parent, '103');
+            assert.equal(store.getBlockForMutation('104')!.parent, '103');
 
             store.unIndentBlock('104');
 
-            assertJSON(store.getBlock('104')?.toJSON(),{
+            assertJSON(store.getBlockForMutation('104')?.toJSON(),{
                 "content": {
                     "data": "Axis Powers: Germany, Italy, Japan",
                     "type": "markdown",
@@ -721,7 +721,7 @@ describe('BlocksStore', function() {
                 "updated": "2012-03-02T11:38:49.321Z"
             });
 
-            assertJSON(store.getBlock('102')?.toJSON(), {
+            assertJSON(store.getBlockForMutation('102')?.toJSON(), {
                 "content": {
                     "data": "World War II",
                     "type": "name"
@@ -1212,23 +1212,23 @@ describe('BlocksStore', function() {
         it("should not be able to move a root block", () => {
             const store = createStore();
             const id = '102';
-            const blockBefore = store.getBlock(id)!.toJSON();
+            const blockBefore = store.getBlockForMutation(id)!.toJSON();
             store.moveBlocks([id], -1);
-            const blockAfter = store.getBlock(id)!.toJSON();
+            const blockAfter = store.getBlockForMutation(id)!.toJSON();
             assertBlocksEqual(blockBefore, blockAfter);
         });
 
         it("should not be able to move a block that's already the first child in its parent's", () => {
             const store = createStore();
             const id = '103';
-            const block = store.getBlock(id);
+            const block = store.getBlockForMutation(id);
             assertPresent(block);
             assertPresent(block.parent);
-            let parent = store.getBlock(block.parent);
+            let parent = store.getBlockForMutation(block.parent);
             assertPresent(parent);
             assert.deepEqual(parent.itemsAsArray, ['103', '104', '105']);
             store.moveBlocks([id], -5);
-            parent = store.getBlock(block.parent);
+            parent = store.getBlockForMutation(block.parent);
             assertPresent(parent);
             assert.deepEqual(parent.itemsAsArray, ['103', '104', '105']);
         });
@@ -1236,18 +1236,18 @@ describe('BlocksStore', function() {
         it("should be able to move a block upwards/downwards", () => {
             const store = createStore();
             const id = '105';
-            const block = store.getBlock(id);
+            const block = store.getBlockForMutation(id);
             assertPresent(block);
             const parentID = block.parent;
             assertPresent(parentID);
-            let parent = store.getBlock(parentID);
+            let parent = store.getBlockForMutation(parentID);
             assertPresent(parent);
             assert.deepEqual(parent.itemsAsArray, ['103', '104', '105']);
 
             // Upwards
             createUndoRunner(store, [parent.id], () => {
                 store.moveBlocks([id], -5);
-                parent = store.getBlock(parentID);
+                parent = store.getBlockForMutation(parentID);
                 assertPresent(parent);
                 assert.deepEqual(parent.itemsAsArray, ['105', '103', '104']);
             });
@@ -1256,7 +1256,7 @@ describe('BlocksStore', function() {
             // Downwards
             createUndoRunner(store, [parent.id], () => {
                 store.moveBlocks([id], 1);
-                parent = store.getBlock(parentID);
+                parent = store.getBlockForMutation(parentID);
                 assertPresent(parent);
                 assert.deepEqual(parent.itemsAsArray, ['103', '105', '104']);
             });
@@ -1265,13 +1265,13 @@ describe('BlocksStore', function() {
         it("should be able to move multiple blocks properly (upwards)", () => {
             const store = createStore();
             const id = '102';
-            const parent = store.getBlock(id);
+            const parent = store.getBlockForMutation(id);
             assertPresent(parent);
             assert.deepEqual(parent.itemsAsArray, ['103', '104', '105']);
 
             createUndoRunner(store, [parent.id], () => {
                 store.moveBlocks(['105', '104'], -5);
-                const parent = store.getBlock(id);
+                const parent = store.getBlockForMutation(id);
                 assertPresent(parent);
                 assert.deepEqual(parent.itemsAsArray, ['104', '105', '103']);
             });
@@ -1281,20 +1281,20 @@ describe('BlocksStore', function() {
         it("should be able to move multiple blocks properly (downwards)", () => {
             const store = createStore();
             const id = '102';
-            const parent = store.getBlock(id);
+            const parent = store.getBlockForMutation(id);
             assertPresent(parent);
             assert.deepEqual(parent.itemsAsArray, ['103', '104', '105']);
 
             createUndoRunner(store, [parent.id], () => {
                 store.moveBlocks(['103', '105'], 5);
-                const parent = store.getBlock(id);
+                const parent = store.getBlockForMutation(id);
                 assertPresent(parent);
                 assert.deepEqual(parent.itemsAsArray, ['104', '103', '105']);
             });
 
             createUndoRunner(store, [parent.id], () => {
                 store.moveBlocks(['105', '104'], -1);
-                const parent = store.getBlock(id);
+                const parent = store.getBlockForMutation(id);
                 assertPresent(parent);
                 assert.deepEqual(parent.itemsAsArray, ['104', '105', '103']);
             });
@@ -1311,7 +1311,7 @@ describe('BlocksStore', function() {
 
             assertPresent(createdBlock);
 
-            const block = store.getBlock('102')!;
+            const block = store.getBlockForMutation('102')!;
 
             assertJSON(block.items, {
                 "0": createdBlock?.id,
@@ -1320,7 +1320,7 @@ describe('BlocksStore', function() {
                 "3": "105"
             });
 
-            const newBlock = store.getBlock(createdBlock.id)!;
+            const newBlock = store.getBlockForMutation(createdBlock.id)!;
 
             assertTextBlock(newBlock!.content);
 
@@ -1331,13 +1331,13 @@ describe('BlocksStore', function() {
 
             assert.equal(store.mergeBlocks(block.id, newBlock.id), 'block-merged-with-delete');
 
-            assertJSON(store.getBlock('102')!.items, {
+            assertJSON(store.getBlockForMutation('102')!.items, {
                 "1": "103",
                 "2": "104",
                 "3": "105"
             });
 
-            assert.isUndefined(store.getBlock(createdBlock.id));
+            assert.isUndefined(store.getBlockForMutation(createdBlock.id));
 
         });
 
@@ -1349,14 +1349,14 @@ describe('BlocksStore', function() {
 
             TestingTime.forward(1000);
 
-            assert.equal(store.getBlock('103')?.mutation, 0);
-            assert.equal(store.getBlock('104')?.mutation, 0);
+            assert.equal(store.getBlockForMutation('103')?.mutation, 0);
+            assert.equal(store.getBlockForMutation('104')?.mutation, 0);
 
             store.mergeBlocks('103', '104');
 
-            assert.isUndefined(store.getBlock('104'));
+            assert.isUndefined(store.getBlockForMutation('104'));
 
-            assertJSON(store.getBlock('103')?.toJSON(), {
+            assertJSON(store.getBlockForMutation('103')?.toJSON(), {
                 "content": {
                     "data": "[Lasted](https://www.example.com) from 1939 to 1945Axis Powers: Germany, Italy, Japan",
                     "type": "markdown",
@@ -1468,8 +1468,8 @@ describe('BlocksStore', function() {
 
             store.mergeBlocks(createdBlock1.id, createdBlock2.id);
 
-            const block1 = store.getBlock(createdBlock1.id);
-            const block2 = store.getBlock(createdBlock2.id);
+            const block1 = store.getBlockForMutation(createdBlock1.id);
+            const block2 = store.getBlockForMutation(createdBlock2.id);
 
             assertPresent(block1);
             assertMarkdownBlock(block1);
@@ -1506,7 +1506,7 @@ describe('BlocksStore', function() {
 
                 const store = createStore();
 
-                const block = store.getBlock('102')
+                const block = store.getBlockForMutation('102')
 
                 assertPresent(block);
 
@@ -1598,7 +1598,7 @@ describe('BlocksStore', function() {
 
             store.deleteBlocks(['104']);
 
-            const block = store.getBlock('102');
+            const block = store.getBlockForMutation('102');
 
             assertJSON(block?.toJSON(), {
                 "content": {
@@ -1630,7 +1630,7 @@ describe('BlocksStore', function() {
 
             store.deleteBlocks(['103', '104', '105']);
 
-            const block = store.getBlock('102');
+            const block = store.getBlockForMutation('102');
 
             assertJSON(block?.toJSON(),{
                 "content": {
@@ -1749,7 +1749,7 @@ describe('BlocksStore', function() {
 
                 const createdBlock = blocksStore.createNewBlock('102');
 
-                assertJSON(blocksStore.getBlock('102')?.toJSON(), {
+                assertJSON(blocksStore.getBlockForMutation('102')?.toJSON(), {
                     "content": {
                         "data": "World War II",
                         "type": "name",
@@ -1784,7 +1784,7 @@ describe('BlocksStore', function() {
 
                 const createdBlock = blocksStore.createNewBlock('104', {split: {prefix: 'Axis ', suffix: 'Powers: Germany, Italy, Japan'}});
 
-                assertJSON(blocksStore.getBlock('104')?.toJSON(), {
+                assertJSON(blocksStore.getBlockForMutation('104')?.toJSON(), {
                     "content": {
                         "data": "Axis ",
                         "type": "markdown",
@@ -1804,7 +1804,7 @@ describe('BlocksStore', function() {
                     "updated": "2012-03-02T11:38:49.321Z"
                 });
 
-                assertJSON(blocksStore.getBlock(createdBlock!.id)?.toJSON(), {
+                assertJSON(blocksStore.getBlockForMutation(createdBlock!.id)?.toJSON(), {
                     "content": {
                         "data": "Powers: Germany, Italy, Japan",
                         "type": "markdown",
@@ -1832,7 +1832,7 @@ describe('BlocksStore', function() {
 
             const store = createStore();
 
-            let block = store.getBlock('102');
+            let block = store.getBlockForMutation('102');
 
             TestingTime.forward(60 * 1000);
 
@@ -1848,7 +1848,7 @@ describe('BlocksStore', function() {
 
             assertPresent(createdBlock);
 
-            block = store.getBlock('102');
+            block = store.getBlockForMutation('102');
 
             assertJSON(block!.items, {
                 "0": createdBlock.id,
@@ -1857,7 +1857,7 @@ describe('BlocksStore', function() {
                 "3": "105"
             });
 
-            const newBlock = store.getBlock(createdBlock.id)!;
+            const newBlock = store.getBlockForMutation(createdBlock.id)!;
 
             assert.equal(newBlock.created, now);
             assert.equal(newBlock.updated, now);
@@ -1873,16 +1873,16 @@ describe('BlocksStore', function() {
 
             const store = createStore();
 
-            let block = store.getBlock('102');
+            let block = store.getBlockForMutation('102');
 
             store.deleteBlocks(['103', '104', '105']);
 
-            block = store.getBlock('102');
+            block = store.getBlockForMutation('102');
             assertJSON(block!.items, {});
 
             const createdBlock = store.createNewBlock('102');
             assertPresent(createdBlock);
-            block = store.getBlock('102');
+            block = store.getBlockForMutation('102');
 
             assertJSON(block!.items, {
                 "-1": createdBlock.id
@@ -1901,7 +1901,7 @@ describe('BlocksStore', function() {
 
                 assert.equal(createdBlock.parent, '102');
 
-                const block = store.getBlock('102');
+                const block = store.getBlockForMutation('102');
 
                 assertJSON(block!.items, {
                     "1": "103",
@@ -1920,7 +1920,7 @@ describe('BlocksStore', function() {
 
                 assert.equal(createdBlock.parent, '105');
 
-                const block = store.getBlock('105');
+                const block = store.getBlockForMutation('105');
 
                 assertJSON(block!.items, {
                     "0": createdBlock?.id,
@@ -1944,7 +1944,7 @@ describe('BlocksStore', function() {
 
                 const id = '105'
 
-                const originalBlock = store.getBlock(id);
+                const originalBlock = store.getBlockForMutation(id);
 
                 assertPresent(originalBlock);
 
@@ -1953,10 +1953,10 @@ describe('BlocksStore', function() {
                 const createdBlock = store.createNewBlock(id, {split: {prefix: '', suffix: originalBlock!.content.data}});
                 assertPresent(createdBlock);
 
-                const newBlock = store.getBlock(createdBlock.id);
+                const newBlock = store.getBlockForMutation(createdBlock.id);
                 assertPresent(newBlock);
                 assertPresent(newBlock.parent);
-                const parentBlock = store.getBlock(newBlock.parent);
+                const parentBlock = store.getBlockForMutation(newBlock.parent);
                 assertPresent(parentBlock);
 
                 assertJSON(parentBlock.items, {
@@ -1974,7 +1974,7 @@ describe('BlocksStore', function() {
 
             function doSecondSplit(id: BlockIDStr) {
 
-                const originalBlock = store.getBlock(id);
+                const originalBlock = store.getBlockForMutation(id);
 
                 assertPresent(originalBlock);
                 assertMarkdownBlock(originalBlock);
@@ -1983,10 +1983,10 @@ describe('BlocksStore', function() {
 
                 assertPresent(createdBlock);
 
-                const newBlock = store.getBlock(createdBlock.id);
+                const newBlock = store.getBlockForMutation(createdBlock.id);
                 assertPresent(newBlock);
                 assertPresent(newBlock.parent);
-                const parentBlock = store.getBlock(newBlock.parent);
+                const parentBlock = store.getBlockForMutation(newBlock.parent);
                 assertPresent(parentBlock);
                 assertPresent(createdBlock);
 
@@ -2010,7 +2010,7 @@ describe('BlocksStore', function() {
         it('should properly split a block with multiple levels of nested children', () => {
             const store = createStore();
             const id = '105';
-            const originalBlock = store.getBlock(id);
+            const originalBlock = store.getBlockForMutation(id);
 
             assertPresent(originalBlock);
             assertMarkdownBlock(originalBlock);
@@ -2019,10 +2019,10 @@ describe('BlocksStore', function() {
 
             assertPresent(createdBlock);
 
-            const newBlock = store.getBlock(createdBlock.id);
+            const newBlock = store.getBlockForMutation(createdBlock.id);
             assertPresent(newBlock);
             assertPresent(newBlock.parent);
-            const parentBlock = store.getBlock(newBlock.parent);
+            const parentBlock = store.getBlockForMutation(newBlock.parent);
             assertPresent(parentBlock);
             assertPresent(createdBlock);
 
@@ -2041,7 +2041,7 @@ describe('BlocksStore', function() {
 
             const id = '105';
 
-            let originalBlock = store.getBlock(id);
+            let originalBlock = store.getBlockForMutation(id);
 
             assertPresent(originalBlock);
 
@@ -2050,7 +2050,7 @@ describe('BlocksStore', function() {
             const createdBlock = store.createNewBlock(id, {split: {prefix: originalBlock.content.data, suffix: ''}});
             assertPresent(createdBlock);
 
-            originalBlock = store.getBlock(id);
+            originalBlock = store.getBlockForMutation(id);
 
             assertPresent(originalBlock);
 
@@ -2059,7 +2059,7 @@ describe('BlocksStore', function() {
                 '106'
             ]);
 
-            const newBlock = store.getBlock(createdBlock.id);
+            const newBlock = store.getBlockForMutation(createdBlock.id);
             assertPresent(newBlock);
 
             assert.equal(newBlock.parent, id);
@@ -2071,7 +2071,7 @@ describe('BlocksStore', function() {
 
             const id = '105';
 
-            let originalBlock = store.getBlock(id);
+            let originalBlock = store.getBlockForMutation(id);
 
             assertPresent(originalBlock);
 
@@ -2080,7 +2080,7 @@ describe('BlocksStore', function() {
             const createdBlock = store.createNewBlock(id, {asChild: true});
             assertPresent(createdBlock);
 
-            originalBlock = store.getBlock(id);
+            originalBlock = store.getBlockForMutation(id);
 
             assertPresent(originalBlock);
 
@@ -2089,7 +2089,7 @@ describe('BlocksStore', function() {
                 '106'
             ]);
 
-            const newBlock = store.getBlock(createdBlock.id);
+            const newBlock = store.getBlockForMutation(createdBlock.id);
             assertPresent(newBlock);
 
             assert.equal(newBlock.parent, id);
@@ -2109,7 +2109,7 @@ describe('BlocksStore', function() {
         it("should copy the expand state from the old block to the new one if the new block is inheriting the items", () => {
             const store = createStore();
             const id = '105';
-            const oldBlock = store.getBlock(id);
+            const oldBlock = store.getBlockForMutation(id);
             assertPresent(oldBlock);
             assertMarkdownBlock(oldBlock);
             // collapse the parent node to make sure it gets expanded when the child is created
@@ -2118,7 +2118,7 @@ describe('BlocksStore', function() {
             assertPresent(createdBlock);
             assert.equal(store.isExpanded(createdBlock.id), false);
 
-            const block1 = store.getBlock(createdBlock.id);
+            const block1 = store.getBlockForMutation(createdBlock.id);
             assertPresent(block1);
             assertMarkdownBlock(block1);
 
@@ -2135,14 +2135,14 @@ describe('BlocksStore', function() {
 
             const output = store.createBlockContentStructure(['102']);
 
-            const block102 = store.getBlock('102');
-            const block103 = store.getBlock('103');
-            const block104 = store.getBlock('104');
-            const block116 = store.getBlock('116');
-            const block105 = store.getBlock('105');
-            const block106 = store.getBlock('106');
-            const block117 = store.getBlock('117');
-            const block118 = store.getBlock('118');
+            const block102 = store.getBlockForMutation('102');
+            const block103 = store.getBlockForMutation('103');
+            const block104 = store.getBlockForMutation('104');
+            const block116 = store.getBlockForMutation('116');
+            const block105 = store.getBlockForMutation('105');
+            const block106 = store.getBlockForMutation('106');
+            const block117 = store.getBlockForMutation('117');
+            const block118 = store.getBlockForMutation('118');
 
             assertPresent(block102);
             assertPresent(block103);
@@ -2230,7 +2230,7 @@ describe('BlocksStore', function() {
 
             createUndoRunner(store, ['112', ...blockIDs], () => {
                 store.insertFromBlockContentStructure(blockStructure, {blockIDs});
-                const block102 = store.getBlock(id);
+                const block102 = store.getBlockForMutation(id);
                 assertPresent(block102);
                 const content = [
                     "item1",
@@ -2245,26 +2245,26 @@ describe('BlocksStore', function() {
                 ];
                 const items = block102.itemsAsArray;
                 items.forEach((blockID, i) => {
-                    const block = store.getBlock(blockID);
+                    const block = store.getBlockForMutation(blockID);
                     assertPresent(block);
                     assertMarkdownBlock(block);
                     assert.equal(block.content.data, content[i]);
                 });
 
-                const secondBlock = store.getBlock(items[1]);
+                const secondBlock = store.getBlockForMutation(items[1]);
                 assertPresent(secondBlock);
 
-                const level1Child1 = store.getBlock(secondBlock.itemsAsArray[0]);
+                const level1Child1 = store.getBlockForMutation(secondBlock.itemsAsArray[0]);
                 assertPresent(level1Child1);
                 assertMarkdownBlock(level1Child1);
                 assert.equal(level1Child1.content.data, "hmm");
 
-                const level2Child2 = store.getBlock(secondBlock.itemsAsArray[1]);
+                const level2Child2 = store.getBlockForMutation(secondBlock.itemsAsArray[1]);
                 assertPresent(level2Child2);
                 assertMarkdownBlock(level2Child2);
                 assert.equal(level2Child2.content.data, "world");
 
-                const level3Child = store.getBlock(level2Child2.itemsAsArray[0]);
+                const level3Child = store.getBlockForMutation(level2Child2.itemsAsArray[0]);
                 assertPresent(level3Child);
                 assertMarkdownBlock(level3Child);
                 assert.equal(level3Child.content.data, "potato");

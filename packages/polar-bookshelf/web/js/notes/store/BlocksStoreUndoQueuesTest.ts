@@ -86,7 +86,7 @@ describe("BlocksStoreUndoQueues", () => {
 
             BlocksStoreUndoQueues.doMutations(blocksStore, 'undo', [mutation0]);
 
-            assertJSON(mutation0.before, blocksStore.getBlock('104')?.toJSON())
+            assertJSON(mutation0.before, blocksStore.getBlockForMutation('104')?.toJSON())
 
         });
 

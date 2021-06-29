@@ -49,7 +49,7 @@ export const BlockInner = observer((props: IProps) => {
 
     const expanded = blocksStore.isExpanded(id);
     const selected = blocksStore.isSelected(id);
-    const block = blocksStore.getReadonlyBlock(id);
+    const block = blocksStore.getBlock(id);
 
     const divRef = React.useRef<HTMLDivElement | null>(null);
     const dragActive = React.useRef<boolean>(false);
