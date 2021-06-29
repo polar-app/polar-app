@@ -97,12 +97,12 @@ export namespace Profiles {
         return Hashcodes.createRandomID(20);
     }
 
-    export async function get(firestore: IFirestore, id: ProfileIDStr): Promise<IProfile | undefined> {
+    export async function get(firestore: IFirestore<unknown>, id: ProfileIDStr): Promise<IProfile | undefined> {
         return await Collections.getByID(firestore, COLLECTION, id);
     }
 
-    export async function set(firestore: IFirestore,
-                              batch: IWriteBatch,
+    export async function set(firestore: IFirestore<unknown>,
+                              batch: IWriteBatch<unknown>,
                               id: ProfileIDStr,
                               user: IUserRecord,
                               profileInit: IProfileInit) {
@@ -124,8 +124,8 @@ export namespace Profiles {
 
     }
 
-    export async function doDelete(firestore: IFirestore,
-                                   batch: IWriteBatch,
+    export async function doDelete(firestore: IFirestore<unknown>,
+                                   batch: IWriteBatch<unknown>,
                                    id: ProfileIDStr) {
 
         await Collections.deleteByID(firestore, COLLECTION, batch, async () => [{id}] );
