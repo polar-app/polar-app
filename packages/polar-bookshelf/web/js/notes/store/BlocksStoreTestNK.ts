@@ -2036,10 +2036,11 @@ describe('BlocksStore', function() {
             newBlock.itemsAsArray.forEach(assertBlockParents(store, [...newBlock.parents, newBlock.id]));
         });
 
-        it("should create a new child in a block with children (when suffix is empty)", () => {
+        it("should create a new child in a block with children (when suffix is empty and the block is expanded)", () => {
             const store = createStore();
 
             const id = '105';
+            store.expand(id);
 
             let originalBlock = store.getBlock(id);
 
@@ -2065,6 +2066,40 @@ describe('BlocksStore', function() {
             assert.equal(newBlock.parent, id);
             assert.deepEqual(newBlock.parents, [...originalBlock.parents, id]);
         });
+
+        it("should create a new sibling in a block with children if the block is collapsed (even when suffix is empty)", () => {
+            const store = createStore();
+
+            const id = '105';
+
+            let originalBlock = store.getBlock(id);
+
+            assertPresent(originalBlock);
+
+            assertTextBlock(originalBlock.content);
+
+            const createdBlock = store.createNewBlock(id, {split: {prefix: originalBlock.content.data, suffix: ''}});
+            assertPresent(createdBlock);
+            assertPresent(originalBlock.parent);
+
+            const parent = store.getBlock(originalBlock.parent);
+
+            assertPresent(parent);
+
+            assert.deepEqual(parent.itemsAsArray, [
+                '103',
+                '104',
+                '105',
+                createdBlock.id,
+            ]);
+
+            const newBlock = store.getBlock(createdBlock.id);
+            assertPresent(newBlock);
+
+            assert.equal(newBlock.parent, originalBlock.parent);
+            assert.deepEqual(newBlock.parents, [...originalBlock.parents]);
+        });
+
 
         it("should create a new child in the refed block (when the asChild option is true)", () => {
             const store = createStore();
