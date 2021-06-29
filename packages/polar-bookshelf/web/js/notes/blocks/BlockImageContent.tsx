@@ -1,13 +1,11 @@
 import {makeStyles} from "@material-ui/core";
 import {createStyles} from "@material-ui/styles";
-import clsx from "clsx";
 import {observer} from "mobx-react-lite";
 import React from "react";
 import {BlockEditorGenericProps} from "../BlockEditor";
+import {useBlocksTreeStore} from "../BlocksTree";
 import {DataURLStr} from "../content/IImageContent";
 import {hasModifiers} from "../contenteditable/BlockKeyboardHandlers";
-import {ContentEditables} from "../ContentEditables";
-import {useBlocksStore} from "../store/BlocksStore";
 
 interface IProps extends BlockEditorGenericProps {
     readonly src: DataURLStr;
@@ -32,7 +30,7 @@ export const BlockImageContent = observer((props: IProps) => {
     const divRef = React.useRef<HTMLDivElement | null>(null);
     const {id, src, width, height, innerRef, onClick, onKeyDown} = props;
     const classes = useStyles();
-    const blocksStore = useBlocksStore();
+    const blocksTreeStore = useBlocksTreeStore();
 
     const handleRef = React.useCallback((current: HTMLDivElement | null) => {
 
@@ -45,13 +43,13 @@ export const BlockImageContent = observer((props: IProps) => {
     }, [innerRef]);
 
     const handleKeyDown = React.useCallback((e: React.KeyboardEvent) => {
-        if ((e.key === 'Backspace' || e.key === 'Delete') && !hasModifiers(e)) {
-            blocksStore.deleteBlocks([id]);
+        if ((e.key === 'Backspace' || e.key === 'Delete') && ! hasModifiers(e)) {
+            blocksTreeStore.deleteBlocks([id]);
             e.preventDefault();
         } else if (onKeyDown) {
             onKeyDown(e);
         }
-    }, [blocksStore, id, onKeyDown]);
+    }, [blocksTreeStore, id, onKeyDown]);
 
     React.useEffect(() => {
         const elem = divRef.current;

@@ -4,12 +4,12 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import React from "react";
 import {useHistory} from "react-router";
 import {useDialogManager} from "../../mui/dialogs/MUIDialogControllers";
-import {useBlocksStore} from "../store/BlocksStore";
+import {useBlocksTreeStore} from "../BlocksTree";
 
 export const CreateNote = () => {
     const dialogs = useDialogManager();
     const history = useHistory();
-    const blocksStore = useBlocksStore();
+    const blocksTreeStore = useBlocksTreeStore();
 
     const handleCreateNote = React.useCallback(() => {
         dialogs.prompt({
@@ -17,11 +17,11 @@ export const CreateNote = () => {
             autoFocus: true,
             onCancel: NULL_FUNCTION,
             onDone: (text) => {
-                const id = blocksStore.createNewNamedBlock(text, {type: 'name'});
+                const id = blocksTreeStore.createNewNamedBlock(text, {type: 'name'});
                 history.push(`/notes/${id}`);
             }
         });
-    }, [dialogs, history, blocksStore]);
+    }, [dialogs, history, blocksTreeStore]);
     
     return (
         <Button id="add-content-dropdown"

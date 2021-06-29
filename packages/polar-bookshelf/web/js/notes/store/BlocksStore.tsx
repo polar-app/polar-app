@@ -5,25 +5,25 @@ import {IDStr, MarkdownStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {BlockTargetStr} from "../NoteLinkLoader";
-import {isPresent, Preconditions} from "polar-shared/src/Preconditions";
+import {isPresent} from "polar-shared/src/Preconditions";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {IBlock, IBlockLink, NamespaceIDStr, UIDStr} from "./IBlock";
 import {ReverseIndex} from "./ReverseIndex";
 import {Block} from "./Block";
-import { arrayStream } from "polar-shared/src/util/ArrayStreams";
-import { Numbers } from "polar-shared/src/util/Numbers";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {Numbers} from "polar-shared/src/util/Numbers";
 import {CursorPositions} from "../contenteditable/CursorPositions";
 import {useBlocksStoreContext} from "./BlockStoreContextProvider";
 import {IBlocksStore} from "./IBlocksStore";
 import {IImageContent} from "../content/IImageContent";
-import { BlockPredicates } from "./BlockPredicates";
+import {BlockPredicates} from "./BlockPredicates";
 import {MarkdownContent} from "../content/MarkdownContent";
 import {NameContent} from "../content/NameContent";
-import { ImageContent } from "../content/ImageContent";
-import { IMarkdownContent } from "../content/IMarkdownContent";
+import {ImageContent} from "../content/ImageContent";
+import {IMarkdownContent} from "../content/IMarkdownContent";
 import {INameContent} from "../content/INameContent";
-import { Contents } from "../content/Contents";
-import { IBaseBlockContent } from "../content/IBaseBlockContent";
+import {Contents} from "../content/Contents";
+import {IBaseBlockContent} from "../content/IBaseBlockContent";
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {useUndoQueue} from "../../undo/UndoQueueProvider2";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
@@ -269,11 +269,6 @@ export class BlocksStore implements IBlocksStore {
     @observable _reverse: ReverseIndex = new ReverseIndex();
 
     /**
-     * The current root block
-     */
-    @observable public root: BlockIDStr | undefined = undefined;
-
-    /**
      * The currently active block.
      */
     @observable _active: IActiveBlock | undefined = undefined;
@@ -312,7 +307,6 @@ export class BlocksStore implements IBlocksStore {
                 readonly blockExpandPersistenceWriter: BlockExpandPersistenceWriter = NULL_FUNCTION) {
 
         this.uid = uid;
-        this.root = undefined;
         this.undoQueue = undoQueue;
         makeObservable(this);
 
@@ -412,10 +406,7 @@ export class BlocksStore implements IBlocksStore {
     }
 
     public lookup(blocks: ReadonlyArray<BlockIDStr>): ReadonlyArray<IBlock> {
-
-        return blocks.map(current => this._index[current])
-                     .filter(current => current !== null && current !== undefined);
-
+        return this.idsToBlocks(blocks).map(block => block.toJSON());
     }
 
     public lookupReverse(id: BlockIDStr): ReadonlyArray<BlockIDStr> {
@@ -621,7 +612,7 @@ export class BlocksStore implements IBlocksStore {
 
         const active = this._active;
 
-        if ( ! active) {
+        if (! active) {
             return undefined;
         }
 
@@ -685,9 +676,9 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    @action public setSelectionRange(fromBlockID: BlockIDStr,
-                                     toBlockID: BlockIDStr,
-                                     root: BlockIDStr | undefined = this.root) {
+    @action public setSelectionRange(root: BlockIDStr,
+                                     fromBlockID: BlockIDStr,
+                                     toBlockID: BlockIDStr) {
         if (! root) {
             throw new Error("No root");
         }
@@ -729,10 +720,10 @@ export class BlocksStore implements IBlocksStore {
         [...newSelected].forEach(id => this._selected[id] = true);
     }
 
-    @action public doNav(delta: 'prev' | 'next',
+    @action public doNav(root: BlockIDStr,
+                         delta: 'prev' | 'next',
                          pos: NavPosition,
-                         opts: NavOpts,
-                         root: BlockIDStr | undefined = this.root): boolean {
+                         opts: NavOpts): boolean {
 
                              
         if (root === undefined) {
@@ -796,12 +787,12 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    public navPrev(pos: NavPosition, opts: NavOpts, root?: BlockIDStr) {
-        return this.doNav('prev', pos, opts, root);
+    public navPrev(root: BlockIDStr, pos: NavPosition, opts: NavOpts) {
+        return this.doNav(root, 'prev', pos, opts);
     }
 
-    public navNext(pos: NavPosition, opts: NavOpts, root?: BlockIDStr) {
-        return this.doNav('next', pos, opts, root);
+    public navNext(root: BlockIDStr, pos: NavPosition, opts: NavOpts) {
+        return this.doNav(root, 'next', pos, opts);
     }
 
     /**
@@ -887,10 +878,6 @@ export class BlocksStore implements IBlocksStore {
         }
     }
 
-    @action public setRoot(root: BlockIDStr | undefined) {
-        this.root = root;
-    }
-
     public isExpanded(id: BlockIDStr): boolean {
         return isPresent(this._expanded[id]);
     }
@@ -925,7 +912,7 @@ export class BlocksStore implements IBlocksStore {
      * Return true if this block can be merged. Meaning it has a previous sibling
      * we can merge with or a parent.
      */
-    public canMergePrev(id: BlockIDStr, root: BlockIDStr | undefined = this.root): IBlockMerge | undefined {
+    public canMergePrev(root: BlockIDStr, id: BlockIDStr): IBlockMerge | undefined {
 
         if (id === root) {
             return undefined;
@@ -970,7 +957,7 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    public canMergeNext(id: BlockIDStr, root: BlockIDStr | undefined = this.root): IBlockMerge | undefined {
+    public canMergeNext(root: BlockIDStr, id: BlockIDStr): IBlockMerge | undefined {
         const children = this.children(id);
 
         if (children.length > 0) {
@@ -1603,7 +1590,7 @@ export class BlocksStore implements IBlocksStore {
      * child in that parent. IE it must have a previous sibling so that we can
      * be
      */
-    public isIndentable(id: BlockIDStr, root: BlockIDStr | undefined): boolean {
+    public isIndentable(root: BlockIDStr, id: BlockIDStr): boolean {
 
         const block = this.getBlock(id);
 
@@ -1631,7 +1618,7 @@ export class BlocksStore implements IBlocksStore {
         const selectedRoots = this.computeSelectedRoots();
 
         return selectedRoots
-                   .filter(current => this.isIndentable(current.id, root))
+                   .filter(current => this.isIndentable(root, current.id))
                    .map(current => current.id);
 
     }
@@ -1641,8 +1628,7 @@ export class BlocksStore implements IBlocksStore {
      *
      * @return The new parent BlockID or the code as to why it couldn't be re-parented.
      */
-    public indentBlock(id: BlockIDStr,
-                       root: BlockIDStr | undefined = this.root): ReadonlyArray<DoIndentResult> {
+    public indentBlock(root: BlockIDStr, id: BlockIDStr): ReadonlyArray<DoIndentResult> {
 
         if (! root) {
             throw new Error("No root");
@@ -1745,7 +1731,7 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    public isUnIndentable(id: BlockIDStr, root: BlockIDStr | undefined) {
+    public isUnIndentable(root: BlockIDStr, id: BlockIDStr) {
 
         const block = this.getBlock(id);
 
@@ -1769,13 +1755,12 @@ export class BlocksStore implements IBlocksStore {
     private computeSelectedUnIndentableBlockIDs(root: BlockIDStr): ReadonlyArray<BlockIDStr> {
 
         const selectedRoots = this.computeSelectedRoots();
-        return selectedRoots.filter(current => this.isUnIndentable(current.id, root))
+        return selectedRoots.filter(current => this.isUnIndentable(root, current.id))
                             .map(current => current.id);
 
     }
 
-    public unIndentBlock(id: BlockIDStr,
-                         root: BlockIDStr | undefined = this.root): ReadonlyArray<DoUnIndentResult> {
+    public unIndentBlock(root: BlockIDStr, id: BlockIDStr): ReadonlyArray<DoUnIndentResult> {
 
         if (! root) {
             throw new Error("No root");
@@ -2092,7 +2077,7 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    public requiredAutoUnIndent(id: BlockIDStr, root: BlockIDStr | undefined = this.root): boolean {
+    public requiredAutoUnIndent(root: BlockIDStr, id: BlockIDStr): boolean {
 
         const block = this.getBlock(id);
 
@@ -2245,7 +2230,7 @@ export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore
 
     useBlockExpandSnapshots((snapshot) => {
         blocksStore.handleBlockExpandSnapshot(snapshot);
-    })
+    });
 
     return blocksStore;
 })

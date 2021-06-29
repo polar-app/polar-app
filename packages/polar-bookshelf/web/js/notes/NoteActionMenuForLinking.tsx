@@ -1,15 +1,16 @@
 import React from "react";
 import {ActionMenuItemProvider, IActionMenuItem, NoteActionMenu} from "./NoteActionMenu";
-import {BlockIDStr, useBlocksStore} from "./store/BlocksStore";
-import { observer } from "mobx-react-lite"
+import {BlockIDStr} from "./store/BlocksStore";
+import {observer} from "mobx-react-lite"
+import {useBlocksTreeStore} from "./BlocksTree";
 
 function useItemsProvider(): ActionMenuItemProvider {
 
-    const blocksStore = useBlocksStore();
+    const blocksTreeStore = useBlocksTreeStore();
 
     return React.useCallback((prompt: string): ReadonlyArray<IActionMenuItem> => {
 
-        const filteredNoteNames = blocksStore.filterByName(prompt);
+        const filteredNoteNames = blocksTreeStore.filterByName(prompt);
 
         return filteredNoteNames.map(key => {
             return {
@@ -23,7 +24,7 @@ function useItemsProvider(): ActionMenuItemProvider {
             }
         });
 
-    }, [blocksStore]);
+    }, [blocksTreeStore]);
 
 }
 
