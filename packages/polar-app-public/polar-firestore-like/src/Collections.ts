@@ -1,16 +1,19 @@
-import {WriteBatchLike} from "../../polar-firebase/src/firebase/Collections";
 import { IFirestore } from "./IFirestore";
 import {IDocumentReference} from "./IDocumentReference";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
-import {
-    Clause,
-    OrderByClause,
-    ValueType
-} from "../../../polar-app-private/polar-hooks/functions/impl/groups/db/Collections";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import { IQuerySnapshot } from "./IQuerySnapshot";
+import {IWriteBatch} from "./IWriteBatch";
 
 export namespace Collections {
+
+    /**
+     * The direction of a `Query.orderBy()` clause is specified as 'desc' or 'asc'
+     * (descending or ascending).
+     */
+    export type OrderByDirection = 'desc' | 'asc';
+
+    export type OrderByClause = [string, OrderByDirection | undefined];
 
     export type WhereFilterOp =
         | '<'
@@ -59,7 +62,7 @@ export namespace Collections {
 
     export async function getOrCreate<T>(firestore: IFirestore,
                                          collection: string,
-                                         batch: WriteBatchLike,
+                                         batch: IWriteBatch,
                                          documentReference: IDocumentReference,
                                          createRecord: () => T): Promise<GetOrCreateRecord<T>> {
 
