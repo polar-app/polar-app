@@ -32,6 +32,7 @@ import {TDocumentData} from "polar-firestore-like/src/TDocumentData";
 import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
 import {IDocumentChange} from "polar-firestore-like/src/IDocumentChange";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
+import {IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapshotClient";
 
 export namespace CachedStore {
 
@@ -168,30 +169,30 @@ export namespace CachedStore {
 
         Preconditions.assertPresent(cacheKeyCalculator, 'cacheKeyCalculator');
 
-        function collection(collectionName: string): ICollectionReference {
+        function collection(collectionName: string): ICollectionReference<IDocumentSnapshotClient> {
 
             const _collection = delegate.collection(collectionName);
 
-            class DocumentReference implements IDocumentReference {
-                private getter: GetHandler<IDocumentSnapshot>;
-                private snapshotter: SnapshotHandler<IDocumentSnapshot>;
+            class DocumentReference implements IDocumentReference<IDocumentSnapshotClient> {
+                private getter: GetHandler<IDocumentSnapshotClient>;
+                private snapshotter: SnapshotHandler<IDocumentSnapshotClient>;
 
                 constructor(public readonly id: string,
-                            public readonly parent: ICollectionReference,
-                            private readonly doc: IDocumentReference) {
+                            public readonly parent: ICollectionReference<IDocumentSnapshotClient>,
+                            private readonly doc: IDocumentReference<IDocumentSnapshotClient>) {
 
-                    this.getter = createGetHandler<IDocumentSnapshot>(() => this.readFromCache(),
-                                                                      value => this.writeToCache(value),
-                                                                      (options) => this.doc.get(options));
+                    this.getter = createGetHandler<IDocumentSnapshotClient>(() => this.readFromCache(),
+                                                                            value => this.writeToCache(value),
+                                                                            (options) => this.doc.get(options));
 
-                    this.snapshotter = createSnapshotHandler<IDocumentSnapshot>(() => this.readFromCache(),
-                                                                                value => this.writeToCache(value),
-                                                                                (options, onNext, onError, onCompletion) => this.doc.onSnapshot(options, onNext, onError, onCompletion));
+                    this.snapshotter = createSnapshotHandler<IDocumentSnapshotClient>(() => this.readFromCache(),
+                                                                                      value => this.writeToCache(value),
+                                                                                      (options, onNext, onError, onCompletion) => this.doc.onSnapshot(options, onNext, onError, onCompletion));
 
 
                 }
 
-                private async readFromCache(): Promise<IDocumentSnapshot | undefined> {
+                private async readFromCache(): Promise<IDocumentSnapshotClient | undefined> {
 
                     const cacheKey = cacheKeyCalculator.computeForDoc(this.doc.parent.id, this.doc);
 
@@ -216,7 +217,7 @@ export namespace CachedStore {
 
                 }
 
-                private async writeToCache(snapshot: IDocumentSnapshot) {
+                private async writeToCache(snapshot: IDocumentSnapshotClient) {
 
                     const cacheKey = cacheKeyCalculator.computeForDoc(this.doc.parent.id, this.doc);
 
@@ -246,7 +247,7 @@ export namespace CachedStore {
 
                 }
 
-                public get(options?: IGetOptions): Promise<IDocumentSnapshot> {
+                public get(options?: IGetOptions): Promise<IDocumentSnapshotClient> {
                     return this.getter(options);
                 }
 
@@ -286,7 +287,7 @@ export namespace CachedStore {
                 }
 
                 private onSnapshotWithOptionsAndCallbacks(options: ISnapshotListenOptions,
-                                                          onNext: (snapshot: IDocumentSnapshot) => void,
+                                                          onNext: (snapshot: IDocumentSnapshotClient) => void,
                                                           onError?: (error: IFirestoreError) => void,
                                                           onCompletion?: () => void): SnapshotUnsubscriber {
 
@@ -338,7 +339,7 @@ export namespace CachedStore {
 
             }
 
-            function doc(documentPath?: string): IDocumentReference {
+            function doc(documentPath?: string): IDocumentReference<IDocumentSnapshotClient> {
 
                 const _doc = _collection.doc(documentPath);
                 return new DocumentReference(_doc.id, _collection, _doc, )

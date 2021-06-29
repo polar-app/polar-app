@@ -6,8 +6,8 @@ import {SnapshotUnsubscriber} from "./IQuery";
 import {IFirestoreError} from "./IFirestoreError";
 import {TDocumentData} from "./TDocumentData";
 
-export interface IDocumentSnapshotObserver {
-    readonly next?: (snapshot: IDocumentSnapshot) => void;
+export interface IDocumentSnapshotObserver<DS extends IDocumentSnapshot = IDocumentSnapshot> {
+    readonly next?: (snapshot: DS) => void;
     readonly error?: (error: IFirestoreError) => void;
     readonly complete?: () => void;
 }
@@ -35,15 +35,15 @@ export interface IDocumentReference<DS extends IDocumentSnapshot = IDocumentSnap
     set(data: TDocumentData): Promise<void>;
     delete(): Promise<void>;
 
-    onSnapshot(observer: IDocumentSnapshotObserver): SnapshotUnsubscriber;
-    onSnapshot(options: ISnapshotListenOptions, observer: IDocumentSnapshotObserver): SnapshotUnsubscriber;
+    onSnapshot(observer: IDocumentSnapshotObserver<DS>): SnapshotUnsubscriber;
+    onSnapshot(options: ISnapshotListenOptions, observer: IDocumentSnapshotObserver<DS>): SnapshotUnsubscriber;
 
-    onSnapshot(onNext: (snapshot: IDocumentSnapshot) => void,
+    onSnapshot(onNext: (snapshot: DS) => void,
                onError?: (error: IFirestoreError) => void,
                onCompletion?: () => void): SnapshotUnsubscriber;
 
     onSnapshot(options: ISnapshotListenOptions,
-               onNext: (snapshot: IDocumentSnapshot) => void,
+               onNext: (snapshot: DS) => void,
                onError?: (error: IFirestoreError) => void,
                onCompletion?: () => void): SnapshotUnsubscriber;
 

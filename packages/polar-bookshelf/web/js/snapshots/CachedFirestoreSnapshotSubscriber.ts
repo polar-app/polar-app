@@ -2,7 +2,7 @@ import {ISnapshot} from "./CachedSnapshotSubscriberContext";
 import {LocalCache} from "./CachedSnapshotSubscriber";
 import {OnErrorCallback, SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
-import {IDocumentSnapshot} from "polar-firestore-like/src/IDocumentSnapshot";
+import {IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapshotClient";
 
 /**
  * Snapshot listener. The snapshot is only undefined on startup ad you can
@@ -19,7 +19,7 @@ interface CachedFirestoreSnapshotSubscriberOpts<V> {
      */
     readonly id: string;
 
-    readonly ref: IDocumentReference;
+    readonly ref: IDocumentReference<IDocumentSnapshotClient>;
 
     readonly onNext: OnNextCachedSnapshot<V>;
 
@@ -36,7 +36,7 @@ export function createCachedFirestoreSnapshotSubscriber<V>(opts: CachedFirestore
         opts.onNext(cachedSnapshot);
     }
 
-    const onNext = (firestoreSnapshot: IDocumentSnapshot | undefined) => {
+    const onNext = (firestoreSnapshot: IDocumentSnapshotClient | undefined) => {
 
         function toSnapshot(): ISnapshot<V> | undefined {
 
