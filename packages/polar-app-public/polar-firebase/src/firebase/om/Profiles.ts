@@ -4,6 +4,11 @@ import {PlainTextStr, URLStr} from "polar-shared/src/util/Strings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {Collections} from "polar-firestore-like/src/Collections";
+import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
+import {IUserRecord} from "polar-firestore-like/src/IUserRecord";
+import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {Users} from "./Users";
+import { Dictionaries } from 'polar-shared/src/util/Dictionaries';
 
 export interface IProfileInit {
 
@@ -11,6 +16,10 @@ export interface IProfileInit {
      * The user's UID which is used when assigning permissions.
      */
     readonly uid: UserIDStr;
+
+    readonly created: ISODateTimeString;
+
+    readonly updated: ISODateTimeString;
 
     /**
      * The user handle of this profile.  A unique name for this account that's
@@ -89,36 +98,39 @@ export namespace Profiles {
     }
 
     export async function get(firestore: IFirestore, id: ProfileIDStr): Promise<IProfile | undefined> {
-        return await Collections.getByID(firestore, this.COLLECTION, id);
+        return await Collections.getByID(firestore, COLLECTION, id);
     }
 
-    // export async function set(batch: WriteBatch,
-    //                           id: ProfileIDStr,
-    //                           user: UserRecord,
-    //                           profileInit: ProfileInit) {
-    //
-    //     const image = Users.createImage(user);
-    //
-    //     const lastUpdated = ISODateTimeStrings.create();
-    //
-    //     const profile: Profile = {
-    //         id,
-    //         image,
-    //         lastUpdated,
-    //         ...profileInit
-    //     };
-    //
-    //     const firebase = Firestore.getInstance();
-    //
-    //     const ref = firebase.collection(this.COLLECTION).doc(id);
-    //
-    //     batch.set(ref, Dictionaries.onlyDefinedProperties(profile));
-    //
-    // }
-    //
-    // public static async delete(batch: WriteBatch, id: ProfileIDStr) {
-    //     await Collections.deleteByID(batch, this.COLLECTION, async () => [{id}] );
-    // }
+    export async function set(firestore: IFirestore,
+                              batch: IWriteBatch,
+                              id: ProfileIDStr,
+                              user: IUserRecord,
+                              profileInit: IProfileInit) {
+
+        const image = Users.createImage(user);
+
+        const updated = ISODateTimeStrings.create();
+
+        const profile: IProfile = {
+            ...profileInit,
+            id,
+            image,
+            updated,
+        };
+
+        const ref = firestore.collection(COLLECTION).doc(id);
+
+        batch.set(ref, Dictionaries.onlyDefinedProperties(profile));
+
+    }
+
+    export async function doDelete(firestore: IFirestore,
+                                   batch: IWriteBatch,
+                                   id: ProfileIDStr) {
+
+        await Collections.deleteByID(firestore, COLLECTION, batch, async () => [{id}] );
+
+    }
     //
     // public static async userProfile(uid: UserIDStr): Promise<Profile | undefined> {
     //

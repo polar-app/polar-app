@@ -4,6 +4,7 @@ import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import { IQuerySnapshot } from "./IQuerySnapshot";
 import {IWriteBatch} from "./IWriteBatch";
+import {IDRecord} from "polar-shared/src/util/IDMaps";
 
 export namespace Collections {
 
@@ -207,6 +208,24 @@ export namespace Collections {
         return first(collection, [field], results);
     }
 
+    export async function deleteByID(firestore: IFirestore,
+                                     collection: string,
+                                     batch: IWriteBatch,
+                                     provider: () => Promise<ReadonlyArray<IDRecord>>) {
+
+        const records = await provider();
+
+        for (const record of records) {
+
+            const doc = firestore.collection(collection)
+                                 .doc(record.id);
+
+            batch.delete(doc);
+
+        }
+
+    }
+
     //
     // public async getByFieldValues<T>(clauses: ReadonlyArray<Clause>): Promise<T | undefined> {
     //     const results = await this.list<T>(clauses);
@@ -286,20 +305,5 @@ export namespace Collections {
     //
     // }
     //
-    // public async deleteByID(batch: WriteBatchLike,
-    //                         provider: () => Promise<ReadonlyArray<IDRecord>>) {
-    //
-    //     const records = await provider();
-    //
-    //     for (const record of records) {
-    //
-    //         const doc = this.firestore.collection(this.name)
-    //             .doc(record.id);
-    //
-    //         batch.delete(doc);
-    //
-    //     }
-    //
-    // }
 
 }
