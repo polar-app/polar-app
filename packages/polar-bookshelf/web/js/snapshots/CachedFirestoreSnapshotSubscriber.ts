@@ -1,7 +1,7 @@
 import {ISnapshot} from "./CachedSnapshotSubscriberContext";
 import {LocalCache} from "./CachedSnapshotSubscriber";
 import {OnErrorCallback, SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
-import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
+import {IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
 import {IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapshot";
 
 /**
@@ -19,7 +19,7 @@ interface CachedFirestoreSnapshotSubscriberOpts<V> {
      */
     readonly id: string;
 
-    readonly ref: IDocumentReference<IDocumentSnapshotClient>;
+    readonly ref: IDocumentReferenceClient;
 
     readonly onNext: OnNextCachedSnapshot<V>;
 

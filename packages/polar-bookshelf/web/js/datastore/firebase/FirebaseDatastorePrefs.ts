@@ -13,11 +13,11 @@ import {
     SnapshotUnsubscriber
 } from 'polar-shared/src/util/Snapshots';
 import firebase from 'firebase/app'
-import { IFirestore } from "polar-firestore-like/src//IFirestore";
+import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 
 export class FirebaseDatastorePrefs extends DictionaryPrefs implements IPersistentPrefs {
 
-    private firestore: IFirestore | undefined;
+    private firestore: IFirestoreClient | undefined;
     private user: firebase.User | undefined;
 
     private initLatch = new Latch<boolean>();

@@ -1,6 +1,5 @@
 import { TDocumentData } from "./TDocumentData";
-import {ISnapshotMetadata} from "../../../../polar-app-public/polar-firestore-like/src/ISnapshotMetadata";
-import {IQuerySnapshot} from "../../../../polar-app-public/polar-firestore-like/src/IQuerySnapshot";
+import {ISnapshotMetadata} from "./ISnapshotMetadata";
 
 export interface IDocumentSnapshot<M> {
 

@@ -12,7 +12,7 @@ import {
 } from 'polar-shared/src/util/Snapshots';
 import {ISnapshot} from "../../snapshots/CachedSnapshotSubscriberContext";
 import {createCachedFirestoreSnapshotSubscriber} from "../../snapshots/CachedFirestoreSnapshotSubscriber";
-import {IFirestore} from "packages/polar-app-public/polar-firestore-like/src/IFirestore";
+import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 
 export type UserPrefCallback = (data: IUserPref | undefined) => void;
 
@@ -60,7 +60,7 @@ export namespace UserPrefs {
 
     }
 
-    export function onSnapshot(firestore: IFirestore,
+    export function onSnapshot(firestore: IFirestoreClient,
                                uid: UserIDStr,
                                onSnapshot: UserPrefCallback,
                                onError?: OnErrorCallback): SnapshotUnsubscriber {
@@ -85,7 +85,7 @@ export namespace UserPrefs {
 
     export type UserPrefCallback2 = (data: ISnapshot<IUserPref> | undefined) => void;
 
-    export function onSnapshot2(firestore: IFirestore,
+    export function onSnapshot2(firestore: IFirestoreClient,
                                 uid: UserIDStr,
                                 onSnapshot: UserPrefCallback2,
                                 onError?: OnErrorCallback): SnapshotUnsubscriber {

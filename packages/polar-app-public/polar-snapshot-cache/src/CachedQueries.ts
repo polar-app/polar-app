@@ -2,18 +2,18 @@ import {ICachedQuery} from "./ICachedQuery";
 import {ICacheQueryDocument} from "./ICacheQueryDocument";
 import {ICachedDoc} from "./ICachedDoc";
 import {ICachedQueryMetadata} from "./ICachedQueryMetadata";
-import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
-import {IQueryDocumentSnapshot} from "polar-firestore-like/src/IQueryDocumentSnapshot";
-import {IDocumentChange} from "polar-firestore-like/src/IDocumentChange";
+import {IQuerySnapshot, IQuerySnapshotClient} from "polar-firestore-like/src/IQuerySnapshot";
+import {IQueryDocumentSnapshot, IQueryDocumentSnapshotClient} from "polar-firestore-like/src/IQueryDocumentSnapshot";
+import {IDocumentChange, IDocumentChangeClient} from "polar-firestore-like/src/IDocumentChange";
 
 export namespace CachedQueries {
 
     export function toCache(metadata: ICachedQueryMetadata,
-                            snapshot: IQuerySnapshot): ICachedQuery {
+                            snapshot: IQuerySnapshotClient): ICachedQuery {
 
         const docs = snapshot.docs;
 
-        function toDoc(doc: IQueryDocumentSnapshot): ICacheQueryDocument {
+        function toDoc(doc: IQueryDocumentSnapshotClient): ICacheQueryDocument {
             return {
                 exists: doc.exists,
                 id: doc.id,
@@ -31,11 +31,11 @@ export namespace CachedQueries {
 
     }
 
-    export function fromCache(snapshot: ICachedQuery, index: {[id: string]: ICachedDoc}): IQuerySnapshot {
+    export function fromCache(snapshot: ICachedQuery, index: {[id: string]: ICachedDoc}): IQuerySnapshotClient {
 
 
 
-        function toDoc(doc: ICacheQueryDocument): IQueryDocumentSnapshot {
+        function toDoc(doc: ICacheQueryDocument): IQueryDocumentSnapshotClient {
 
             const cacheEntry = index[doc.id];
 
@@ -47,7 +47,7 @@ export namespace CachedQueries {
             };
         }
 
-        function toDocChange(doc: IQueryDocumentSnapshot): IDocumentChange {
+        function toDocChange(doc: IQueryDocumentSnapshotClient): IDocumentChangeClient {
             return {
                 id: doc.id,
                 type: 'added',
@@ -57,7 +57,7 @@ export namespace CachedQueries {
 
         const docs = snapshot.docs.map(toDoc);
 
-        const docChanges = (): ReadonlyArray<IDocumentChange> => {
+        const docChanges = (): ReadonlyArray<IDocumentChangeClient> => {
             return docs.map(toDocChange)
         }
 

@@ -3,8 +3,8 @@ import React from "react";
 import {IGenericSnapshot} from "./IGenericSnapshot";
 import {IGenericDocumentChange} from "./IGenericDocumentChange";
 import {TWhereFilterOp} from "polar-firestore-like/src/ICollectionReference";
-import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
-import {IDocumentChange} from "polar-firestore-like/src/IDocumentChange";
+import {IQuerySnapshot, IQuerySnapshotClient} from "polar-firestore-like/src/IQuerySnapshot";
+import {IDocumentChange, IDocumentChangeClient} from "polar-firestore-like/src/IDocumentChange";
 
 /**
  * tuple of field path, op, and value.
@@ -19,9 +19,9 @@ export function useGenericFirestoreSnapshots<T>(collectionName: string,
 
     React.useEffect(() => {
 
-        const convertSnapshot = (current: IQuerySnapshot): IGenericSnapshot<T> => {
+        const convertSnapshot = (current: IQuerySnapshotClient): IGenericSnapshot<T> => {
 
-            const convertDocChange = (current: IDocumentChange): IGenericDocumentChange<T> => {
+            const convertDocChange = (current: IDocumentChangeClient): IGenericDocumentChange<T> => {
 
                 const data: T = current.doc.data() as T;
 
@@ -43,7 +43,7 @@ export function useGenericFirestoreSnapshots<T>(collectionName: string,
 
         }
 
-        const convertSnapshotMutateState = (current: IQuerySnapshot): void => {
+        const convertSnapshotMutateState = (current: IQuerySnapshotClient): void => {
             listener(convertSnapshot(current));
         }
 

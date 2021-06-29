@@ -1,6 +1,6 @@
 import { IDocumentReference } from "./IDocumentReference";
 import { IQuery } from "./IQuery";
-import {IDocumentSnapshot} from "./IDocumentSnapshot";
+import {ISnapshotMetadata} from "./ISnapshotMetadata";
 
 export type TWhereFilterOp =
     | '<'
@@ -35,5 +35,9 @@ export interface ICollectionReference<SM> {
 
     // FIXME doc
     // FIXME onSnapshot
+
+}
+
+export interface ICollectionReferenceClient extends ICollectionReference<ISnapshotMetadata> {
 
 }

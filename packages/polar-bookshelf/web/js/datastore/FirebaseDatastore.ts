@@ -64,9 +64,9 @@ import {
     SnapshotUnsubscriber
 } from 'polar-shared/src/util/Snapshots';
 import {IQuerySnapshot, IQuerySnapshotClient} from "polar-firestore-like/src/IQuerySnapshot";
-import {IDocumentChange} from "polar-firestore-like/src/IDocumentChange";
+import {IDocumentChange, IDocumentChangeClient} from "polar-firestore-like/src/IDocumentChange";
 import {IDocumentReference, IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
-import {IFirestore, IFirestoreClient} from "polar-firestore-like/src/IFirestore";
+import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 import {StoragePath, FirebaseDatastores} from 'polar-shared/src/datastore/FirebaseDatastores';
 import {IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapshot";
 
@@ -971,7 +971,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     }
 
-    private handleDatastoreMutations(ref: IDocumentReference,
+    private handleDatastoreMutations(ref: IDocumentReferenceClient,
                                      datastoreMutation: DatastoreMutation<boolean>,
                                      op: 'write' | 'delete') {
 
@@ -1021,7 +1021,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
      *    first but then then immediately resolved from the cache and added
      *    locally.
      */
-    private handleDocMetaSnapshot(snapshot: IQuerySnapshot,
+    private handleDocMetaSnapshot(snapshot: IQuerySnapshotClient,
                                   docMetaSnapshotEventListener: DocMetaSnapshotEventListener,
                                   batchID: number) {
 
@@ -1075,7 +1075,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         };
 
-        const toDocMetaMutationFromDocChange = (docChange: IDocumentChange) => {
+        const toDocMetaMutationFromDocChange = (docChange: IDocumentChangeClient) => {
             const record = <RecordHolder<DocMetaHolder>> docChange.doc.data();
             const fromCache = docChange.doc.metadata.fromCache;
             const hasPendingWrites = docChange.doc.metadata.hasPendingWrites;
@@ -1108,7 +1108,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     }
 
-    private toConsistency(snapshot: IQuerySnapshot): DatastoreConsistency {
+    private toConsistency(snapshot: IQuerySnapshotClient): DatastoreConsistency {
         return snapshot.metadata.fromCache ? 'written' : 'committed';
     }
 

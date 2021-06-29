@@ -6,8 +6,6 @@ import DocumentChangeType = firebase.firestore.DocumentChangeType;
 import OrderByDirection = firebase.firestore.OrderByDirection;
 import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 
-const log = Logger.create();
-
 /**
  * @deprecated use polar-firestore-like
  */
@@ -226,7 +224,7 @@ export type QuerySnapshotErrorHandler = (err: Error, collection: string, clauses
 
 const DefaultQuerySnapshotErrorHandler = (err: Error, collection: string, clauses: ReadonlyArray<Clause>) => {
 
-    log.error(`Unable to handle snapshot for collection ${collection}: `, clauses, err);
+    console.error(`Unable to handle snapshot for collection ${collection}: `, clauses, err);
 
 };
 
@@ -234,7 +232,7 @@ export type SnapshotErrorHandler = (err: Error, collection: string) => void;
 
 const DefaultSnapshotErrorHandler = (err: Error, collection: string) => {
 
-    log.error(`Unable to handle snapshot for collection ${collection}: `, err);
+    console.error(`Unable to handle snapshot for collection ${collection}: `, err);
 
 };
 

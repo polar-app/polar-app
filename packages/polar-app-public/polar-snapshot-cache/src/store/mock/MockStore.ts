@@ -1,9 +1,9 @@
 import {TUpdateData} from "../TUpdateData";
 import {TDocumentData} from "polar-firestore-like/src/TDocumentData";
-import {IFirestore} from "polar-firestore-like/src/IFirestore";
-import {ICollectionReference} from "polar-firestore-like/src/ICollectionReference";
-import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
-import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
+import {IFirestore, IFirestoreClient} from "polar-firestore-like/src/IFirestore";
+import {ICollectionReference, ICollectionReferenceClient} from "polar-firestore-like/src/ICollectionReference";
+import {IWriteBatch, IWriteBatchClient} from "polar-firestore-like/src/IWriteBatch";
+import {IDocumentReference, IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
 
 /**
  * This is a mock store that works just like Firestore but runs out of RAM so that
@@ -23,9 +23,9 @@ export namespace MockStore {
 
     }
 
-    export function create(): IFirestore {
+    export function create(): IFirestoreClient {
 
-        function collection(collectionName: string): ICollectionReference {
+        function collection(collectionName: string): ICollectionReferenceClient {
             //
             // function doc(documentPath?: string): IDocumentReference {
             //
@@ -45,20 +45,20 @@ export namespace MockStore {
 
         }
 
-        class Batch implements IWriteBatch {
+        class Batch implements IWriteBatchClient {
 
-            create(documentRef: IDocumentReference, data: TDocumentData): IWriteBatch {
+            create(documentRef: IDocumentReferenceClient, data: TDocumentData): IWriteBatchClient {
                 throw new Error("Not implemented");
             }
 
-            delete(documentRef: IDocumentReference): IWriteBatch {
+            delete(documentRef: IDocumentReferenceClient): IWriteBatchClient {
                 const collectionName = documentRef.parent.id;
                 requireCollection(collectionName);
                 delete collections[collectionName][documentRef.id];
                 return this;
             }
 
-            set(documentRef: IDocumentReference, data: TDocumentData): IWriteBatch {
+            set(documentRef: IDocumentReferenceClient, data: TDocumentData): IWriteBatchClient {
                 const collectionName = documentRef.parent.id;
                 requireCollection(collectionName);
                 collections[collectionName][documentRef.id] = data;
@@ -69,7 +69,7 @@ export namespace MockStore {
             //     throw new Error("Not implemented");
             // }
 
-            update(documentRef: IDocumentReference, path: string, value: any): IWriteBatch {
+            update(documentRef: IDocumentReferenceClient, path: string, value: any): IWriteBatchClient {
                 throw new Error("Not implemented");
             }
 
@@ -80,7 +80,7 @@ export namespace MockStore {
 
         }
 
-        function batch(): IWriteBatch {
+        function batch(): IWriteBatchClient {
             return new Batch();
         }
 

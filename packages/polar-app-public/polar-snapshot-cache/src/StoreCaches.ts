@@ -44,7 +44,7 @@ export namespace StoreCaches {
     }
 
     export interface IStoreBuilder {
-        readonly build: (delegate: IFirestoreClient) => Promise<IFirestore>;
+        readonly build: (delegate: IFirestoreClient) => Promise<IFirestoreClient>;
     }
 
     export function create(): IStoreBuilder {

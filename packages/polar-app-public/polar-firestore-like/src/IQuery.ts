@@ -3,6 +3,7 @@ import {IQuerySnapshot} from "./IQuerySnapshot";
 import {ISnapshotListenOptions} from "./ISnapshotListenOptions";
 import {IFirestoreError} from "./IFirestoreError";
 import {TWhereFilterOp} from "./ICollectionReference";
+import {ISnapshotMetadata} from "./ISnapshotMetadata";
 
 export type SnapshotUnsubscriber = () => void;
 
@@ -59,5 +60,9 @@ export interface IQuery<SM> {
 
     startAt(...fieldValues: any[]): IQuery<SM>;
     startAfter(...fieldValues: any[]): IQuery<SM>;
+
+}
+
+export interface IQueryClient extends IQuery<ISnapshotMetadata> {
 
 }

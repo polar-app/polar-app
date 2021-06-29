@@ -9,29 +9,29 @@ import {IGetOptions} from "polar-firestore-like/src/IGetOptions";
 import {ISnapshotListenOptions} from "polar-firestore-like/src/ISnapshotListenOptions";
 import {IFirestoreError} from "polar-firestore-like/src/IFirestoreError";
 import {
-    IQuery,
+    IQuery, IQueryClient,
     IQueryOrderBy,
     IQuerySnapshotObserver,
     isQuerySnapshotObserver,
     SnapshotUnsubscriber, TOrderByDirection
 } from "polar-firestore-like/src/IQuery";
 import {
-    ICollectionReference,
+    ICollectionReference, ICollectionReferenceClient,
     IWhereClause,
     TWhereFilterOp,
     TWhereValue
 } from "polar-firestore-like/src/ICollectionReference";
 import {IFirestore, IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 import {
-    IDocumentReference,
-    IDocumentSnapshotObserver,
+    IDocumentReference, IDocumentReferenceClient,
+    IDocumentSnapshotObserver, IDocumentSnapshotObserverClient,
     isDocumentSnapshotObserver
 } from "polar-firestore-like/src/IDocumentReference";
 import {IDocumentSnapshot} from "polar-firestore-like/src/IDocumentSnapshot";
 import {TDocumentData} from "polar-firestore-like/src/TDocumentData";
-import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
+import {IQuerySnapshot, IQuerySnapshotClient} from "polar-firestore-like/src/IQuerySnapshot";
 import {IDocumentChange} from "polar-firestore-like/src/IDocumentChange";
-import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
+import {IWriteBatch, IWriteBatchClient} from "polar-firestore-like/src/IWriteBatch";
 import {IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapshot";
 import {ISnapshotMetadata} from "polar-firestore-like/src/ISnapshotMetadata";
 
@@ -170,17 +170,17 @@ export namespace CachedStore {
 
         Preconditions.assertPresent(cacheKeyCalculator, 'cacheKeyCalculator');
 
-        function collection(collectionName: string): ICollectionReference<IDocumentSnapshotClient> {
+        function collection(collectionName: string): ICollectionReferenceClient {
 
             const _collection = delegate.collection(collectionName);
 
-            class DocumentReference implements IDocumentReference<IDocumentSnapshotClient> {
+            class DocumentReference implements IDocumentReferenceClient {
                 private getter: GetHandler<IDocumentSnapshotClient>;
                 private snapshotter: SnapshotHandler<IDocumentSnapshotClient>;
 
                 constructor(public readonly id: string,
-                            public readonly parent: ICollectionReference<IDocumentSnapshotClient>,
-                            private readonly doc: IDocumentReference<IDocumentSnapshotClient>) {
+                            public readonly parent: ICollectionReferenceClient,
+                            private readonly doc: IDocumentReferenceClient) {
 
                     this.getter = createGetHandler<IDocumentSnapshotClient>(() => this.readFromCache(),
                                                                             value => this.writeToCache(value),
@@ -296,9 +296,9 @@ export namespace CachedStore {
 
                 }
 
-                public onSnapshot(observer: IDocumentSnapshotObserver<ISnapshotMetadata>): SnapshotUnsubscriber;
+                public onSnapshot(observer: IDocumentSnapshotObserverClient): SnapshotUnsubscriber;
                 public onSnapshot(options: ISnapshotListenOptions, observer: IDocumentSnapshotObserver<ISnapshotMetadata>): SnapshotUnsubscriber;
-                public onSnapshot(onNext: (snapshot: IDocumentSnapshot<ISnapshotMetadata>) => void,
+                public onSnapshot(onNext: (snapshot: IDocumentSnapshotClient) => void,
                                   onError?: (error: IFirestoreError) => void,
                                   onCompletion?: () => void): SnapshotUnsubscriber;
                 public onSnapshot(options: ISnapshotListenOptions,
@@ -340,17 +340,17 @@ export namespace CachedStore {
 
             }
 
-            function doc(documentPath?: string): IDocumentReference<IDocumentSnapshotClient> {
+            function doc(documentPath?: string): IDocumentReferenceClient {
 
                 const _doc = _collection.doc(documentPath);
                 return new DocumentReference(_doc.id, _collection, _doc, )
 
             }
 
-            class Query implements IQuery {
+            class Query implements IQueryClient {
 
-                private readonly getter: GetHandler<IQuerySnapshot>;
-                private readonly snapshotter: SnapshotHandler<IQuerySnapshot>;
+                private readonly getter: GetHandler<IQuerySnapshotClient>;
+                private readonly snapshotter: SnapshotHandler<IQuerySnapshotClient>;
 
                 private readonly _clauses: IWhereClause[] = [];
 
@@ -469,13 +469,13 @@ export namespace CachedStore {
 
                 }
 
-                public where(fieldPath: string, opStr: TWhereFilterOp, value: TWhereValue): IQuery {
+                public where(fieldPath: string, opStr: TWhereFilterOp, value: TWhereValue): IQueryClient {
                     this._clauses.push({fieldPath, opStr, value});
                     this._query.where(fieldPath, opStr, value);
                     return this;
                 }
 
-                async get(options?: IGetOptions): Promise<IQuerySnapshot> {
+                async get(options?: IGetOptions): Promise<IQuerySnapshotClient> {
                     return this.getter(options);
                 }
 
@@ -602,7 +602,7 @@ export namespace CachedStore {
 
             readonly type: 'delete';
 
-            readonly documentRef: IDocumentReference;
+            readonly documentRef: IDocumentReferenceClient;
         }
 
         interface BatchSet {
@@ -612,35 +612,35 @@ export namespace CachedStore {
             readonly id: string;
 
             readonly type: 'set';
-            readonly documentRef: IDocumentReference;
+            readonly documentRef: IDocumentReferenceClient;
             readonly data: TDocumentData;
         }
 
         type BatchOp = BatchDelete | BatchSet;
 
-        class Batch implements IWriteBatch {
+        class Batch implements IWriteBatchClient {
 
             private _batch = delegate.batch();
 
             private ops: BatchOp[] = [];
 
-            create(documentRef: IDocumentReference, data: TDocumentData): IWriteBatch {
+            create(documentRef: IDocumentReferenceClient, data: TDocumentData): IWriteBatchClient {
                 throw new Error("not implemented");
             }
 
-            delete(documentRef: IDocumentReference): IWriteBatch {
+            delete(documentRef: IDocumentReferenceClient): IWriteBatchClient {
                 this.ops.push({id: documentRef.id, type: 'delete', documentRef});
                 this._batch.delete(documentRef);
                 return this;
             }
 
-            set(documentRef: IDocumentReference, data: TDocumentData): IWriteBatch {
+            set(documentRef: IDocumentReferenceClient, data: TDocumentData): IWriteBatchClient {
                 this.ops.push({id: documentRef.id, type: 'set', documentRef, data});
                 this._batch.set(documentRef, data);
                 return this;
             }
 
-            update(documentRef: IDocumentReference, path: string, value: any): IWriteBatch {
+            update(documentRef: IDocumentReferenceClient, path: string, value: any): IWriteBatchClient {
                 throw new Error("Not implemented");
                 // this._batch.update(documentRef, path, data)
                 // return this;
@@ -698,7 +698,7 @@ export namespace CachedStore {
 
         }
 
-        function batch(): IWriteBatch {
+        function batch(): IWriteBatchClient {
             return new Batch();
         }
 

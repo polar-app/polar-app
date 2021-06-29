@@ -5,11 +5,11 @@ import {FirestoreLike} from "polar-firebase/src/firebase/Collections";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {DocPreviews} from "polar-firebase/src/firebase/om/DocPreviews";
 import {Heartbeats} from "polar-firebase/src/firebase/om/Heartbeats";
-import {IFirestore} from "packages/polar-app-public/polar-firestore-like/src/IFirestore";
+import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 
 export class FirestoreCollections {
 
-    public static async configure(firestore?: IFirestore) {
+    public static async configure(firestore?: IFirestoreClient) {
 
         firestore = firestore || await Firestore.getInstance();
 

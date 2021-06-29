@@ -13,6 +13,10 @@ export interface IDocumentSnapshotObserver<SM> {
     readonly complete?: () => void;
 }
 
+export interface IDocumentSnapshotObserverClient extends IDocumentSnapshotObserver<ISnapshotMetadata> {
+
+}
+
 export function isDocumentSnapshotObserver<SM>(arg: any): arg is IDocumentSnapshotObserver<SM> {
     return arg.next !== undefined || arg.error !== undefined || arg.complete !== undefined;
 }

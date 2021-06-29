@@ -1,5 +1,6 @@
 import {IDocumentReference} from "./IDocumentReference";
 import {TDocumentData} from "./TDocumentData";
+import {ISnapshotMetadata} from "./ISnapshotMetadata";
 
 export type TFieldPath = any;
 
@@ -26,5 +27,9 @@ export interface IWriteBatch<SM> {
     // ): WriteBatch;
 
     commit(): Promise<void>;
+
+}
+
+export interface IWriteBatchClient extends IWriteBatch<ISnapshotMetadata> {
 
 }
