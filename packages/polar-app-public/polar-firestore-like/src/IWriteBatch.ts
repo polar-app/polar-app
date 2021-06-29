@@ -5,6 +5,8 @@ export type TFieldPath = any;
 
 export interface IWriteBatch {
 
+    create(documentRef: IDocumentReference, data: TDocumentData): IWriteBatch;
+
     /**
      * The implementation needs to delete this from the cache.
      */
