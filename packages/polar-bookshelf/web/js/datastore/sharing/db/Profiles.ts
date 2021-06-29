@@ -9,7 +9,7 @@ import {
 } from "../../../firebase/firestore/DocumentReferences";
 import {
     HandleStr,
-    Profile,
+    IProfile,
     ProfileIDRecord,
     ProfileIDStr,
     ProfileRecordTuple
@@ -26,10 +26,10 @@ export class Profiles {
         return [id, doc];
     }
 
-    public static async get(id: ProfileIDStr, opts: GetOptions = {}): Promise<Profile | undefined> {
+    public static async get(id: ProfileIDStr, opts: GetOptions = {}): Promise<IProfile | undefined> {
         const [_, ref] = await this.doc(id);
         const doc = await DocumentReferences.get(ref, opts);
-        return <Profile> doc.data();
+        return <IProfile> doc.data();
     }
 
     /**
@@ -63,7 +63,7 @@ export class Profiles {
 
     }
 
-    public static async currentProfile(opts: GetOptions = new CacheFirstThenServerGetOptions()): Promise<Profile | undefined> {
+    public static async currentProfile(opts: GetOptions = new CacheFirstThenServerGetOptions()): Promise<IProfile | undefined> {
 
         const app = Firebase.init();
         const user = app.auth().currentUser;
