@@ -12,6 +12,7 @@ import {ActionMenuStoreProvider} from "../mui/action_menu/ActionStore";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import {NotesToolbar} from "./NotesToolbar";
 import {Block as BlockClass} from "./store/Block";
+import {BlockTitle} from "./BlockTitle";
 
 interface INoteRootRendererProps {
     readonly block: BlockClass;
@@ -27,7 +28,12 @@ export const NoteRootRenderer: React.FC<INoteRootRendererProps> = ({ block }) =>
 
     React.useEffect(() => {
         blocksStore.setRoot(id);
-        blocksStore.setActiveWithPosition(id, 'end');
+        const activeBlock = blocksStore.getActiveBlockForNote(id);
+        if (activeBlock) {
+            blocksStore.setActiveWithPosition(activeBlock.id, activeBlock.pos || 'start');
+        } else {
+            blocksStore.setActiveWithPosition(id, 'end');
+        }
     }, [id, blocksStore]);
 
     return (
@@ -35,9 +41,9 @@ export const NoteRootRenderer: React.FC<INoteRootRendererProps> = ({ block }) =>
             <NoteSelectionHandler style={{flexGrow: 1}}>
                 <NoteStyle>
                     <MUIBrowserLinkStyle style={{flexGrow: 1}}>
-                        
                         <NotesToolbar/>
 
+                        <BlockTitle id={id}/>
                         <Block root={id} parent={undefined} id={id}/>
 
                         <NotesInbound id={id}/>

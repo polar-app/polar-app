@@ -7,7 +7,7 @@ import {BlockIDStr, useBlocksStore } from './store/BlocksStore';
 import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {URLStr} from 'polar-shared/src/util/Strings';
 import {createStyles, makeStyles} from '@material-ui/core';
-import {trace} from 'mobx';
+import {reaction, trace} from 'mobx';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -65,11 +65,8 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
     const blocksStore = useBlocksStore();
 
-    const block = blocksStore.getBlock(props.id);
+    const block = blocksStore.getReadonlyBlock(props.id);
     const selected = blocksStore.selected;
-
-    const {active} = blocksStore;
-
 
     const handleSetMode = React.useCallback((mode: BarMode) => {
         const container = containerRef.current;
@@ -180,11 +177,14 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
     React.useEffect(() => {
 
-        if (active?.id !== props.id) {
-            clearPopup();
-        }
+        const dispose = reaction(() => blocksStore.active?.id === props.id, (isActive) => {
+            if (! isActive) {
+                clearPopup();
+            }
+        });
 
-    }, [active?.id, clearPopup, props.id]);
+        return () => dispose();
+    }, [blocksStore, clearPopup, props.id]);
 
     React.useEffect(() => {
 

@@ -1,7 +1,7 @@
 import {IBlock} from "./IBlock";
 import {SetArrays} from "polar-shared/src/util/SetArrays";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {BlockIDStr, BlocksStore} from "./BlocksStore";
+import {BlockIDStr, BlocksStore, IActiveBlock} from "./BlocksStore";
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {PositionalArrays} from "./PositionalArrays";
 import {IWithMutationOpts} from "./Block";
@@ -130,31 +130,39 @@ export namespace BlocksStoreUndoQueues {
         }
 
         const beforeBlocks: ReadonlyArray<IBlock> = computeApplicableBlocks(blocksStore.createSnapshot(identifiers));
+        const oldActive: IActiveBlock | undefined = blocksStore.cursorOffsetCapture();
 
         let afterBlocks: ReadonlyArray<IBlock> = [];
+        let newActive: IActiveBlock | undefined;
 
         const capture = () => {
 
             const snapshot = blocksStore.createSnapshot(identifiers);
 
             afterBlocks = computeApplicableBlocks(snapshot);
-
-        }
+            newActive = blocksStore.cursorOffsetCapture();
+        };
 
         const undo = () => {
             const mutations = computeMutatedBlocks(beforeBlocks, afterBlocks);
             blocksPersistenceWriter(doMutations(blocksStore, 'undo', mutations));
-        }
+            if (oldActive) {
+                blocksStore.setActiveWithPosition(oldActive.id, oldActive.pos);
+            }
+        };
 
         const redo = () => {
             const mutations = computeMutatedBlocks(beforeBlocks, afterBlocks);
             blocksPersistenceWriter(doMutations(blocksStore, 'redo', mutations));
-        }
+            if (newActive) {
+                blocksStore.setActiveWithPosition(newActive.id, newActive.pos);
+            }
+        };
 
         const persist = () => {
             const mutations = computeMutatedBlocks(beforeBlocks, afterBlocks);
             blocksPersistenceWriter(mutations);
-        }
+        };
 
         return {capture, undo, redo, persist};
 

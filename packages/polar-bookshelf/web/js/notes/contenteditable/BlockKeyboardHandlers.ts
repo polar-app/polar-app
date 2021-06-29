@@ -4,6 +4,7 @@ import {ContentEditables} from "../ContentEditables";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {BlockIDStr, useBlocksStore} from "../store/BlocksStore";
 import {IBlocksStore} from "../store/IBlocksStore";
+import {CursorPositions} from "./CursorPositions";
 
 
 const hasEditorSelection = (): boolean => {
@@ -61,7 +62,8 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
         }
 
         abortEvent(event);
-        blocksStore.navPrev('start', { shiftKey: event.shiftKey }, root);
+        const pos = CursorPositions.computeCurrentOffset(contentEditableElem);
+        blocksStore.navPrev(pos || 'start', { shiftKey: event.shiftKey }, root);
     },
     ArrowDown: ({ event, blocksStore, blockID, contentEditableElem, root }) => {
         if (event.ctrlKey || event.metaKey) {
@@ -85,7 +87,8 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
         }
 
         abortEvent(event);
-        blocksStore.navNext('start', { shiftKey: event.shiftKey }, root);
+        const pos = CursorPositions.computeCurrentOffset(contentEditableElem);
+        blocksStore.navNext(pos || 'start', { shiftKey: event.shiftKey }, root);
     },
     ArrowLeft: ({ event, platform, blockID, blocksStore, contentEditableElem, root }) => {
 
@@ -138,7 +141,7 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
     },
     Tab: ({ event, blockID, blocksStore, root }) => {
 
-        const {parent} = blocksStore.getBlock(blockID)!;
+        const {parent} = blocksStore.getReadonlyBlock(blockID)!;
         if (parent !== undefined) {
 
             abortEvent(event);
@@ -172,7 +175,7 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
             }
         }
     },
-    Backspace: ({ event, blocksStore, blockID, contentEditableElem, readonly }) => {
+    Backspace: ({ event, blocksStore, blockID, contentEditableElem, readonly, root }) => {
         if (readonly) {
             return abortEvent(event);
         }
@@ -202,7 +205,7 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
         }
 
         if (ContentEditables.cursorAtStart(contentEditableElem)) {
-            const mergeTarget = blocksStore.canMergePrev(blockID);
+            const mergeTarget = blocksStore.canMergePrev(blockID, root);
 
             if (mergeTarget) {
                 abortEvent(event);
@@ -210,7 +213,7 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
             }
         }
     },
-    Delete: ({ event, blocksStore, blockID, contentEditableElem, readonly }) => {
+    Delete: ({ event, blocksStore, blockID, contentEditableElem, readonly, root }) => {
         if (readonly) {
             return abortEvent(event);
         }
@@ -232,7 +235,7 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
         }
 
         if (ContentEditables.cursorAtEnd(contentEditableElem)) {
-            const mergeTarget = blocksStore.canMergeNext(blockID);
+            const mergeTarget = blocksStore.canMergeNext(blockID, root);
 
             if (mergeTarget) {
                 abortEvent(event);

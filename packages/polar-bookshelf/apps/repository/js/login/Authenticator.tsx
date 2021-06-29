@@ -215,7 +215,7 @@ const EmailTokenAuthButton = () => {
 
     const [pending, setPending] = React.useState(false);
     const [alert, setAlert] = React.useState<IAlert | undefined>();
-    const [active, setActive] = React.useState(false);
+    const [active, setActive] = React.useState(true);
     const [triggered, setTriggered, triggeredRef] = useStateRef(false);
 
     const triggerStartTokenAuth = useTriggerStartTokenAuth();
@@ -559,7 +559,7 @@ const Main = React.memo(function Main(props: IProps) {
                          flexDirection: 'column'
                      }}>
 
-                    <GoogleAuthButton/>
+                    {/*<GoogleAuthButton/>*/}
 
                     <EmailTokenAuthButton/>
 

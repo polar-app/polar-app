@@ -21,11 +21,14 @@ import {IBlockContentStructure} from '../HTMLToBlocks';
 // this will be needed
 const ENABLE_CURSOR_RESET = true;
 const ENABLE_CURSOR_RESET_TRACE = false;
+const BLOCK_ID_PREFIX = 'block-';
 
 interface IProps extends BlockEditorGenericProps {
     readonly content: HTMLStr;
 
     readonly onChange: (content: HTMLStr) => void;
+
+    readonly onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
 
     readonly spellCheck?: boolean;
 }
@@ -153,23 +156,29 @@ export const BlockContentEditable = observer((props: IProps) => {
             // (though this might be optional) and then set the innerHTML
             // directly.  React has a bug which won't work on empty strings.
 
-            if (divRef.current && ENABLE_CURSOR_RESET) {
-                const pos = CursorPositions.computeCurrentOffset(divRef.current);
+            const div = divRef.current;
+            if (div && ENABLE_CURSOR_RESET) {
+                const active = blocksStore.active;
+                const isActive = active && active.id === props.id;
 
-                divRef.current.innerHTML = MarkdownContentConverter.toHTML(props.content);
-                ContentEditables.insertEmptySpacer(divRef.current!);
+                // Remove the cursor from the block if it's not active to prevent it from being reset to the start when innerHTML is set
+                if (! isActive) {
+                    div.blur();
+                }
+
+                div.innerHTML = MarkdownContentConverter.toHTML(props.content);
+                ContentEditables.insertEmptySpacer(div);
 
 
-                // TODO: only update if WE are active so the cursor doesn't jump.
-                if (blocksStore.active) {
-                    updateCursorPosition(divRef.current, {...blocksStore.active, pos}, true);
+                if (active && isActive) {
+                    updateCursorPosition(div, {...active}, true);
                 }
 
             }
 
         }
 
-    }, [props.content, props.id, blocksStore.active, updateCursorPosition]);
+    }, [props.content, props.id, blocksStore, updateCursorPosition]);
 
     const handleRef = React.useCallback((current: HTMLDivElement | null) => {
 
@@ -201,9 +210,11 @@ export const BlockContentEditable = observer((props: IProps) => {
                         <div ref={handleRef}
                              onPaste={handlePaste}
                              onClick={props.onClick}
+                             onMouseDown={props.onMouseDown}
                              contentEditable={true}
                              spellCheck={props.spellCheck}
                              className={props.className}
+                             id={`${BLOCK_ID_PREFIX}${props.id}`}
                              style={{
                                  outline: 'none',
                                  whiteSpace: 'pre-wrap',
@@ -258,8 +269,6 @@ function doUpdateCursorPosition(editor: HTMLDivElement, pos: 'start' | 'end' | n
 
             const sel = window.getSelection();
 
-            editor.focus();
-
             if (sel) {
                 sel.removeAllRanges();
                 sel.addRange(range);
@@ -268,16 +277,19 @@ function doUpdateCursorPosition(editor: HTMLDivElement, pos: 'start' | 'end' | n
         }
 
         // console.log("Updating cursor position to: ", pos);
-
         editor.focus();
 
-        if (pos === 'start') {
-            const range = document.createRange();
-            range.setStartAfter(editor)
-            range.setEndAfter(editor)
-        }
+        if (pos === 'start' || pos === 0) {
 
-        if (pos === 'end') {
+            const range = document.createRange();
+            const firstChild = editor.firstChild;
+            if (firstChild) {
+                range.setStartBefore(firstChild)
+                range.setEndBefore(firstChild)
+                defineNewRange(range);
+            }
+
+        } else if (pos === 'end') {
 
             const end = ContentEditables.computeEndNodeOffset(editor);
 
@@ -287,10 +299,10 @@ function doUpdateCursorPosition(editor: HTMLDivElement, pos: 'start' | 'end' | n
 
             defineNewRange(range);
 
-        }
+        } else if (typeof pos === 'number') {
 
-        if (typeof pos === 'number') {
             CursorPositions.jumpToPosition(editor, pos)
+
         }
 
     }
@@ -323,7 +335,7 @@ const useHandleLinkDeletion = ({ blockID, elem }: IUseHandleLinkDeletionOpts) =>
             const removedLinks = removed.filter((elem) => !added.some(compareLinks(elem)));
 
             for (let removedLink of removedLinks) {
-                const block = blocksStore.getBlock(blockID);
+                const block = blocksStore.getReadonlyBlock(blockID);
                 const linkedBlock = blocksStore.getBlockByName(removedLink.getAttribute('href')!.slice(1));
                 if (block && linkedBlock && block.content.type === 'markdown') {
                     const newContent = new MarkdownContent(block.content.toJSON());
@@ -338,3 +350,6 @@ const useHandleLinkDeletion = ({ blockID, elem }: IUseHandleLinkDeletionOpts) =>
     })
 };
 
+export const getBlockContentEditableRoot = (id: BlockIDStr): HTMLDivElement | null => {
+    return document.querySelector<HTMLDivElement>(`#${BLOCK_ID_PREFIX}${id}`);
+};

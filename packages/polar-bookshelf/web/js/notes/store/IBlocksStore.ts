@@ -66,11 +66,15 @@ export interface IBlocksStore {
     getBlockActivated(id: BlockIDStr): IBlockActivated | undefined;
 
     getBlock(id: BlockIDStr): Block | undefined;
+    getReadonlyBlock(id: BlockIDStr): Readonly<Block> | undefined;
 
     getBlockContentData(id: BlockIDStr): string | undefined;
 
     setActiveWithPosition(active: BlockIDStr | undefined,
                           activePos: NavPosition | undefined): void;
+
+    getActiveBlockForNote(id: BlockIDStr): IActiveBlock | undefined;
+    saveActiveBlockForNote(id: BlockIDStr): void;
 
     idsToBlocks(ids: ReadonlyArray<BlockIDStr>): ReadonlyArray<Block>;
 
@@ -119,8 +123,8 @@ export interface IBlocksStore {
 
     mergeBlocks(target: BlockIDStr, source: BlockIDStr): void;
 
-    canMergePrev(id: BlockIDStr): IBlockMerge | undefined;
-    canMergeNext(id: BlockIDStr): IBlockMerge | undefined;
+    canMergePrev(id: BlockIDStr, root?: BlockIDStr): IBlockMerge | undefined;
+    canMergeNext(id: BlockIDStr, root?: BlockIDStr): IBlockMerge | undefined;
 
     navPrev(pos: NavPosition, opts: NavOpts, root?: BlockIDStr): void;
     navNext(pos: NavPosition, opts: NavOpts, root?: BlockIDStr): void;
