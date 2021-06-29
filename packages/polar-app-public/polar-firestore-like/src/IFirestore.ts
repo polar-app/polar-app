@@ -13,6 +13,13 @@ export interface IFirestore {
 
     readonly terminate: () => Promise<void>;
 
+}
+
+/**
+ * Specific behavior for the client interface.
+ */
+export interface IFirestoreClient extends IFirestore {
+
     readonly clearPersistence: () => Promise<void>;
 
 }
