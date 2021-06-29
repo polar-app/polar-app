@@ -161,16 +161,16 @@ export namespace Collections {
         return snapshot.docs.map(current => <T> current.data());
     }
 
-    export async function list<T>(clauses: ReadonlyArray<Clause>,
-                                  opts: ListOpts = {}): Promise<ReadonlyArray<T>> {
-
-        const query = createQuery(clauses, opts);
-
-        const snapshot = await query.get();
-
-        return snapshotToRecords(snapshot);
-
-    }
+    // export async function list<T>(clauses: ReadonlyArray<Clause>,
+    //                               opts: ListOpts = {}): Promise<ReadonlyArray<T>> {
+    //
+    //     const query = createQuery(clauses, opts);
+    //
+    //     const snapshot = await query.get();
+    //
+    //     return snapshotToRecords(snapshot);
+    //
+    // }
     //
     // export async function getByFieldValue<T>(field: string, value: ValueType): Promise<T | undefined> {
     //     const results = await list<T>([[field, '==', value]]);
