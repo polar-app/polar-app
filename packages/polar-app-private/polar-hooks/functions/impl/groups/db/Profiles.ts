@@ -22,6 +22,7 @@ import {FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
  *
  * profileID => profile
  *
+ * @deprecated use polar-firebase for this...
  */
 export class Profiles {
 
