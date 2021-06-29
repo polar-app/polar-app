@@ -21,7 +21,7 @@ import {
     TWhereFilterOp,
     TWhereValue
 } from "polar-firestore-like/src/ICollectionReference";
-import {IFirestore} from "polar-firestore-like/src/IFirestore";
+import {IFirestore, IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 import {
     IDocumentReference,
     IDocumentSnapshotObserver,
@@ -162,9 +162,9 @@ export namespace CachedStore {
 
     }
 
-    export function create(delegate: IFirestore,
+    export function create(delegate: IFirestoreClient,
                            cacheProvider: CacheProvider,
-                           cacheKeyCalculator: ICacheKeyCalculator): IFirestore {
+                           cacheKeyCalculator: ICacheKeyCalculator): IFirestoreClient {
 
         Preconditions.assertPresent(cacheKeyCalculator, 'cacheKeyCalculator');
 

@@ -1,13 +1,15 @@
 import { ICollectionReference } from "./ICollectionReference";
 import { IWriteBatch } from "./IWriteBatch";
+import {IDocumentSnapshot} from "./IDocumentSnapshot";
+import {IDocumentSnapshotClient} from "./IDocumentSnapshotClient";
 
 /**
  * Firestore mimic interface so that the firestore client SDK and admin SDK can
  * both be used with the same code.
  */
-export interface IFirestore {
+export interface IFirestore<DS extends IDocumentSnapshot = IDocumentSnapshot> {
 
-    readonly collection: (collectionName: string) => ICollectionReference;
+    readonly collection: (collectionName: string) => ICollectionReference<DS>;
 
     readonly batch: () => IWriteBatch;
 
@@ -18,7 +20,7 @@ export interface IFirestore {
 /**
  * Specific behavior for the client interface.
  */
-export interface IFirestoreClient extends IFirestore {
+export interface IFirestoreClient extends IFirestore<IDocumentSnapshotClient> {
 
     readonly clearPersistence: () => Promise<void>;
 

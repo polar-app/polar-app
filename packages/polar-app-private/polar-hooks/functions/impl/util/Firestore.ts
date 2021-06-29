@@ -1,8 +1,9 @@
 import {FirebaseAdmin} from 'polar-firebase-admin/src/FirebaseAdmin';
+import {IFirestore} from "polar-firestore-like/src/IFirestore";
 
-export class Firestore {
+export namespace Firestore {
 
-    public static getInstance() {
+    export function getInstance(): IFirestore {
         const app = FirebaseAdmin.app();
         return app.firestore();
     }

@@ -22,16 +22,16 @@ export function isDocumentSnapshotObserver(arg: any): arg is IDocumentSnapshotOb
  * the referenced location may or may not exist. A `DocumentReference` can
  * also be used to create a `CollectionReference` to a subcollection.
  */
-export interface IDocumentReference {
+export interface IDocumentReference<DS extends IDocumentSnapshot = IDocumentSnapshot> {
 
     /**
      * The Collection this `DocumentReference` belongs to.
      */
-    readonly parent: ICollectionReference;
+    readonly parent: ICollectionReference<DS>;
 
     readonly id: string;
 
-    get(options?: IGetOptions): Promise<IDocumentSnapshot>;
+    get(options?: IGetOptions): Promise<DS>;
     set(data: TDocumentData): Promise<void>;
     delete(): Promise<void>;
 

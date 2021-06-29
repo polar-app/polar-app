@@ -1,5 +1,6 @@
 import { IDocumentReference } from "./IDocumentReference";
 import { IQuery } from "./IQuery";
+import {IDocumentSnapshot} from "./IDocumentSnapshot";
 
 export type TWhereFilterOp =
     | '<'
@@ -21,12 +22,12 @@ export interface IWhereClause {
     readonly value: TWhereValue;
 }
 
-export interface ICollectionReference {
+export interface ICollectionReference<DS extends IDocumentSnapshot = IDocumentSnapshot> {
 
     /** The collection's identifier. */
     readonly id: string;
 
-    readonly doc: (documentPath?: string) => IDocumentReference;
+    readonly doc: (documentPath?: string) => IDocumentReference<DS>;
 
     readonly where: (fieldPath: string, opStr: TWhereFilterOp, value: any) => IQuery;
 
