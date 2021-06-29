@@ -19,10 +19,7 @@
 
 
 ```bash
-
-# pull down all repositories locally
-./sbin/init
-                            
+                      
 # will install lerna globally
 npm install -g lerna                   
 

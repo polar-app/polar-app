@@ -2,24 +2,39 @@ import {Image} from './Images';
 import {TagStr} from "polar-shared/src/tags/Tags";
 import {PlainTextStr, URLStr} from "polar-shared/src/util/Strings";
 
-export interface ProfileInit {
+export interface IProfileInit {
+
+    /**
+     * The user's UID which is used when assigning permissions.
+     */
+    readonly uid: UserIDStr;
+
+    /**
+     * The user handle of this profile.  A unique name for this account that's
+     * a global reference for this user like 'alice101' or 'burtonator'.
+     */
+    readonly handle: HandleStr;
 
     /**
      * The name of the user.
      */
-    readonly name?: string;
+    readonly name: string;
+
+    /**
+     * The primary email for the user.
+     */
+    readonly email: EmailStr;
+
+    /**
+     * All other emails associated with that user.
+     */
+    readonly emails: ReadonlyArray<EmailStr>;
 
     /**
      * The image of the user from their profile.  We can also cache this on our
      * own so this is the URL metadata we prefer.
      */
     readonly image?: Image;
-
-    /**
-     * The user handle of this profile.  A unique name for this account that's
-     * a global reference for this user like 'alice101' or 'burtonator'.
-     */
-    readonly handle?: HandleStr;
 
     /**
      * User entered bio for their profile.  This is text explaining
@@ -42,15 +57,9 @@ export interface ProfileInit {
      */
     readonly location?: string;
 
-    //
-    //
-    // readonly fieldOfStudy?: FieldOfStudy;
-    //
-    // readonly university?: University;
-
 }
 
-export interface Profile extends ProfileInit {
+export interface IProfile extends IProfileInit {
     readonly id: ProfileIDStr;
 }
 
@@ -66,5 +75,5 @@ export interface ProfileIDRecord {
     readonly profileID?: ProfileIDStr;
 }
 
-export type ProfileRecordTuple<T> = [T, Profile | undefined];
+export type ProfileRecordTuple<T> = [T, IProfile | undefined];
 
