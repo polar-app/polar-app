@@ -2,7 +2,7 @@ import {IQueryDocumentSnapshot} from "./IQueryDocumentSnapshot";
 
 export type TDocumentChangeType = 'added' | 'modified' | 'removed';
 
-export interface IDocumentChange {
+export interface IDocumentChange<SM> {
 
     /**
      * The ID of the document.
@@ -13,6 +13,6 @@ export interface IDocumentChange {
     readonly type: TDocumentChangeType;
 
     /** The document affected by this change. */
-    readonly doc: IQueryDocumentSnapshot;
+    readonly doc: IQueryDocumentSnapshot<SM>;
 
 }

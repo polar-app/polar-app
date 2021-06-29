@@ -5,7 +5,7 @@ import {Firebase} from './Firebase';
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Tracer} from 'polar-shared/src/util/Tracer';
 import {StoreCaches} from "polar-snapshot-cache/src/StoreCaches";
-import {IFirestore} from "polar-firestore-like/src/IFirestore";
+import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 
 const log = Logger.create();
 
@@ -42,7 +42,7 @@ export namespace Firestore {
         return instance;
     }
 
-    export async function getInstance(): Promise<IFirestore> {
+    export async function getInstance(): Promise<IFirestoreClient> {
         await init();
 
         // return instance!;

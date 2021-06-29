@@ -3,20 +3,20 @@ import {TDocumentData} from "./TDocumentData";
 
 export type TFieldPath = any;
 
-export interface IWriteBatch {
+export interface IWriteBatch<SM> {
 
-    create(documentRef: IDocumentReference, data: TDocumentData): IWriteBatch;
+    create(documentRef: IDocumentReference<SM>, data: TDocumentData): IWriteBatch<SM>;
 
     /**
      * The implementation needs to delete this from the cache.
      */
-    delete(documentRef: IDocumentReference): IWriteBatch;
+    delete(documentRef: IDocumentReference<SM>): IWriteBatch<SM>;
 
-    set(documentRef: IDocumentReference, data: TDocumentData): IWriteBatch;
+    set(documentRef: IDocumentReference<SM>, data: TDocumentData): IWriteBatch<SM>;
 
     // update(documentRef: IDocumentReference, data: TUpdateData): IWriteBatch;
 
-    update(documentRef: IDocumentReference, field: string | TFieldPath, value: any): IWriteBatch;
+    update(documentRef: IDocumentReference<SM>, field: string | TFieldPath, value: any): IWriteBatch<SM>;
 
     // update(
     //     documentRef: DocumentReference<any>,

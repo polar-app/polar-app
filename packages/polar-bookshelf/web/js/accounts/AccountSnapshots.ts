@@ -5,7 +5,7 @@ import {
     SnapshotUnsubscriber
 } from "polar-shared/src/util/Snapshots";
 import {createCachedFirestoreSnapshotSubscriber, OnNextCachedSnapshot, CachedSnapshotSubscriber} from "../snapshots/CachedFirestoreSnapshotSubscriber";
-import { IFirestore } from "polar-firestore-like/src/IFirestore";
+import { IFirestore } from "packages/polar-app-public/polar-firestore-like/src/IFirestore";
 
 const COLLECTION_NAME = "account";
 

@@ -1,5 +1,4 @@
 import {
-    PersistenceLayerManager,
     PersistenceLayerType
 } from '../datastore/PersistenceLayerManager';
 import {Firestore} from '../firebase/Firestore';
@@ -38,7 +37,7 @@ export class MachineDatastores {
 
     }
 
-    private static toDoc(snapshot: IDocumentSnapshot) {
+    private static toDoc(snapshot: IDocumentSnapshot<any>) {
 
         if (! snapshot.exists) {
             return;

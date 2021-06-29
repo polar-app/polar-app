@@ -12,7 +12,7 @@ import {
 } from 'polar-shared/src/util/Snapshots';
 import {ISnapshot} from "../../snapshots/CachedSnapshotSubscriberContext";
 import {createCachedFirestoreSnapshotSubscriber} from "../../snapshots/CachedFirestoreSnapshotSubscriber";
-import {IFirestore} from "polar-firestore-like/src/IFirestore";
+import {IFirestore} from "packages/polar-app-public/polar-firestore-like/src/IFirestore";
 
 export type UserPrefCallback = (data: IUserPref | undefined) => void;
 

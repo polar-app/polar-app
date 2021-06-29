@@ -12,7 +12,7 @@ const IS_NODE = typeof window === 'undefined';
 
 export namespace FirestoreBlocksPersistenceWriter {
 
-    export async function doExec(firestore: IFirestore,
+    export async function doExec(firestore: IFirestore<unknown>,
                                  mutations: ReadonlyArray<IBlocksStoreMutation>) {
 
         // console.log("Writing mutations to firestore: ", mutations);

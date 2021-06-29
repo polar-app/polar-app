@@ -66,11 +66,11 @@ export namespace Collections {
 
     }
 
-    export async function getOrCreate<T>(firestore: IFirestore,
-                                         collection: string,
-                                         batch: IWriteBatch,
-                                         documentReference: IDocumentReference,
-                                         createRecord: () => T): Promise<GetOrCreateRecord<T>> {
+    export async function getOrCreate<SM, T>(firestore: IFirestore<SM>,
+                                             collection: string,
+                                             batch: IWriteBatch<SM>,
+                                             documentReference: IDocumentReference<SM>,
+                                             createRecord: () => T): Promise<GetOrCreateRecord<T>> {
 
         const doc = await documentReference.get();
 
@@ -96,7 +96,7 @@ export namespace Collections {
 
     }
 
-    export async function get<T>(firestore: IFirestore,
+    export async function get<SM, T>(firestore: IFirestore<SM>,
                                  collection: string,
                                  id: string): Promise<T | undefined> {
         const ref = firestore.collection(collection).doc(id);
@@ -104,7 +104,7 @@ export namespace Collections {
         return <T> doc.data();
     }
 
-    export async function getByID<T>(firestore: IFirestore,
+    export async function getByID<SM, T>(firestore: IFirestore<SM>,
                                      collection: string,
                                      id: string): Promise<T | undefined> {
 
@@ -113,9 +113,9 @@ export namespace Collections {
     }
 
 
-    export async function set<T>(firestore: IFirestore,
-                                 collection: string,
-                                 id: string, value: T) {
+    export async function set<SM, T>(firestore: IFirestore<SM>,
+                                     collection: string,
+                                     id: string, value: T) {
 
         value = Dictionaries.onlyDefinedProperties(value);
         const ref = firestore.collection(collection).doc(id);
@@ -123,9 +123,9 @@ export namespace Collections {
 
     }
 
-    function createQuery(firestore: IFirestore,
-                         collection: string,
-                         clauses: ReadonlyArray<Clause>, opts: ListOpts = {}) {
+    function createQuery<SM>(firestore: IFirestore<SM>,
+                             collection: string,
+                             clauses: ReadonlyArray<Clause>, opts: ListOpts = {}) {
 
         // TODO: should work without any clauses and just list all the records
         // which is fine for small collections
@@ -169,11 +169,11 @@ export namespace Collections {
 
     }
 
-    function snapshotToRecords<T>(snapshot: IQuerySnapshot) {
+    function snapshotToRecords<SM, T>(snapshot: IQuerySnapshot<SM>) {
         return snapshot.docs.map(current => <T> current.data());
     }
 
-    export async function list<T>(firestore: IFirestore,
+    export async function list<SM, T>(firestore: IFirestore<SM>,
                                   collection: string,
                                   clauses: ReadonlyArray<Clause>,
                                   opts: ListOpts = {}): Promise<ReadonlyArray<T>> {
@@ -200,18 +200,20 @@ export namespace Collections {
 
     }
 
-    export async function getByFieldValue<T>(firestore: IFirestore,
-                                             collection: string,
-                                             field: string,
-                                             value: ValueType): Promise<T | undefined> {
-        const results = await list<T>(firestore, collection, [[field, '==', value]]);
+    export async function getByFieldValue<SM, T>(firestore: IFirestore<SM>,
+                                                 collection: string,
+                                                 field: string,
+                                                 value: ValueType): Promise<T | undefined> {
+
+        const results = await list<SM, T>(firestore, collection, [[field, '==', value]]);
         return first(collection, [field], results);
+
     }
 
-    export async function deleteByID(firestore: IFirestore,
-                                     collection: string,
-                                     batch: IWriteBatch,
-                                     provider: () => Promise<ReadonlyArray<IDRecord>>) {
+    export async function deleteByID<SM>(firestore: IFirestore<SM>,
+                                         collection: string,
+                                         batch: IWriteBatch<SM>,
+                                         provider: () => Promise<ReadonlyArray<IDRecord>>) {
 
         const records = await provider();
 

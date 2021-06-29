@@ -3,7 +3,7 @@ import {useFirestore} from "../../../apps/repository/js/FirestoreProvider";
 import {MachineIDs} from "polar-shared/src/util/MachineIDs";
 import {OnErrorCallback} from "polar-shared/src/util/Snapshots";
 import {useSnapshots} from "../ui/data_loader/UseSnapshotSubscriber";
-import {IDocumentSnapshot} from "polar-firestore-like/src/IDocumentSnapshot";
+import {IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapshot";
 
 export namespace MachineDatastoreHooks {
 
@@ -21,7 +21,7 @@ export namespace MachineDatastoreHooks {
 
     }
 
-    function toDoc(snapshot: IDocumentSnapshot) {
+    function toDoc(snapshot: IDocumentSnapshotClient) {
 
         if (! snapshot.exists) {
             return;
@@ -41,7 +41,7 @@ export namespace MachineDatastoreHooks {
         return (onNext: (machineDatastore: MachineDatastore) => void,
                 onError: OnErrorCallback = ERR_HANDLER) => {
 
-            return ref.onSnapshot((snapshot: IDocumentSnapshot) => {
+            return ref.onSnapshot((snapshot: IDocumentSnapshotClient) => {
 
                 const doc = toDoc(snapshot);
 

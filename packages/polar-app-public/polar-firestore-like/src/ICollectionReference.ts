@@ -22,14 +22,14 @@ export interface IWhereClause {
     readonly value: TWhereValue;
 }
 
-export interface ICollectionReference<DS extends IDocumentSnapshot = IDocumentSnapshot> {
+export interface ICollectionReference<SM> {
 
     /** The collection's identifier. */
     readonly id: string;
 
-    readonly doc: (documentPath?: string) => IDocumentReference<DS>;
+    readonly doc: (documentPath?: string) => IDocumentReference<SM>;
 
-    readonly where: (fieldPath: string, opStr: TWhereFilterOp, value: any) => IQuery;
+    readonly where: (fieldPath: string, opStr: TWhereFilterOp, value: any) => IQuery<SM>;
 
     // readonly get(options?: IGetOptions) => Promise<QuerySnapshot<T>>;
 

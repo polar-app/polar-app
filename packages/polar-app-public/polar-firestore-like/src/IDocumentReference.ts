@@ -5,14 +5,15 @@ import {ISnapshotListenOptions} from "./ISnapshotListenOptions";
 import {SnapshotUnsubscriber} from "./IQuery";
 import {IFirestoreError} from "./IFirestoreError";
 import {TDocumentData} from "./TDocumentData";
+import {ISnapshotMetadata} from "./ISnapshotMetadata";
 
-export interface IDocumentSnapshotObserver<DS extends IDocumentSnapshot = IDocumentSnapshot> {
-    readonly next?: (snapshot: DS) => void;
+export interface IDocumentSnapshotObserver<SM> {
+    readonly next?: (snapshot: IDocumentSnapshot<SM>) => void;
     readonly error?: (error: IFirestoreError) => void;
     readonly complete?: () => void;
 }
 
-export function isDocumentSnapshotObserver(arg: any): arg is IDocumentSnapshotObserver {
+export function isDocumentSnapshotObserver<SM>(arg: any): arg is IDocumentSnapshotObserver<SM> {
     return arg.next !== undefined || arg.error !== undefined || arg.complete !== undefined;
 }
 
@@ -22,29 +23,33 @@ export function isDocumentSnapshotObserver(arg: any): arg is IDocumentSnapshotOb
  * the referenced location may or may not exist. A `DocumentReference` can
  * also be used to create a `CollectionReference` to a subcollection.
  */
-export interface IDocumentReference<DS extends IDocumentSnapshot = IDocumentSnapshot> {
+export interface IDocumentReference<SM> {
 
     /**
      * The Collection this `DocumentReference` belongs to.
      */
-    readonly parent: ICollectionReference<DS>;
+    readonly parent: ICollectionReference<SM>;
 
     readonly id: string;
 
-    get(options?: IGetOptions): Promise<DS>;
+    get(options?: IGetOptions): Promise<IDocumentSnapshot<SM>>;
     set(data: TDocumentData): Promise<void>;
     delete(): Promise<void>;
 
-    onSnapshot(observer: IDocumentSnapshotObserver<DS>): SnapshotUnsubscriber;
-    onSnapshot(options: ISnapshotListenOptions, observer: IDocumentSnapshotObserver<DS>): SnapshotUnsubscriber;
+    onSnapshot(observer: IDocumentSnapshotObserver<SM>): SnapshotUnsubscriber;
+    onSnapshot(options: ISnapshotListenOptions, observer: IDocumentSnapshotObserver<SM>): SnapshotUnsubscriber;
 
-    onSnapshot(onNext: (snapshot: DS) => void,
+    onSnapshot(onNext: (snapshot: IDocumentSnapshot<SM>) => void,
                onError?: (error: IFirestoreError) => void,
                onCompletion?: () => void): SnapshotUnsubscriber;
 
     onSnapshot(options: ISnapshotListenOptions,
-               onNext: (snapshot: DS) => void,
+               onNext: (snapshot: IDocumentSnapshot<SM>) => void,
                onError?: (error: IFirestoreError) => void,
                onCompletion?: () => void): SnapshotUnsubscriber;
+
+}
+
+export interface IDocumentReferenceClient extends IDocumentReference<ISnapshotMetadata> {
 
 }

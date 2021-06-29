@@ -18,7 +18,7 @@ export interface IBlockExpandMutation {
 
 export namespace FirestoreBlockExpandPersistenceWriter {
 
-    export async function doExec(firestore: IFirestore,
+    export async function doExec(firestore: IFirestore<unknown>,
                                  user: firebase.User,
                                  mutations: ReadonlyArray<IBlockExpandMutation>) {
 

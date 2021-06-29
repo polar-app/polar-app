@@ -63,12 +63,12 @@ import {
 import {
     SnapshotUnsubscriber
 } from 'polar-shared/src/util/Snapshots';
-import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
+import {IQuerySnapshot, IQuerySnapshotClient} from "polar-firestore-like/src/IQuerySnapshot";
 import {IDocumentChange} from "polar-firestore-like/src/IDocumentChange";
-import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
-import {IDocumentSnapshot} from 'polar-firestore-like/src/IDocumentSnapshot';
-import {IFirestore} from "polar-firestore-like/src/IFirestore";
+import {IDocumentReference, IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
+import {IFirestore, IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 import {StoragePath, FirebaseDatastores} from 'polar-shared/src/datastore/FirebaseDatastores';
+import {IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapshot";
 
 const log = Logger.create();
 
@@ -80,7 +80,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     private app?: firebase.app.App;
 
-    private firestore?: IFirestore;
+    private firestore?: IFirestoreClient;
 
     private storage?: firebase.storage.Storage;
 
@@ -175,7 +175,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             committed: 0
         };
 
-        const onNextForSnapshot = (snapshot: IQuerySnapshot) => {
+        const onNextForSnapshot = (snapshot: IQuerySnapshotClient) => {
 
             try {
 
@@ -329,7 +329,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         let unsubscriber: SnapshotUnsubscriber = NULL_FUNCTION;
 
-        const onNext = (snapshot: IDocumentSnapshot) => {
+        const onNext = (snapshot: IDocumentSnapshotClient) => {
 
             // WARNING: do not use cache for any meaningful use because the cache
             // doesn't mean 'local' as something can be written and we receive a
@@ -954,7 +954,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
      * Wait for the record to be fully committed to the remote datastore - not
      * just written to the local cache.
      */
-    private waitForCommit(ref: IDocumentReference): Promise<void> {
+    private waitForCommit(ref: IDocumentReferenceClient): Promise<void> {
 
         return new Promise(resolve => {
 

@@ -5,7 +5,7 @@ import {Firebase} from "../../../web/js/firebase/Firebase";
 import {deepMemo} from "../../../web/js/react/ReactUtils";
 import {useAsyncWithError} from "../../../web/js/hooks/ReactLifecycleHooks";
 import firebase from 'firebase/app'
-import {IFirestore} from "polar-firestore-like/src/IFirestore";
+import {IFirestore} from "packages/polar-app-public/polar-firestore-like/src/IFirestore";
 
 export interface IFirestoreContext {
     readonly uid: string | undefined;

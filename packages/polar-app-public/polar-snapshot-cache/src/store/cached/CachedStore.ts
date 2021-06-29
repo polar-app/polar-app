@@ -32,7 +32,8 @@ import {TDocumentData} from "polar-firestore-like/src/TDocumentData";
 import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
 import {IDocumentChange} from "polar-firestore-like/src/IDocumentChange";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
-import {IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapshotClient";
+import {IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapshot";
+import {ISnapshotMetadata} from "polar-firestore-like/src/ISnapshotMetadata";
 
 export namespace CachedStore {
 
@@ -267,18 +268,18 @@ export namespace CachedStore {
 
                 }
 
-                private onSnapshotWithObserver(observer: IDocumentSnapshotObserver): SnapshotUnsubscriber {
+                private onSnapshotWithObserver(observer: IDocumentSnapshotObserver<ISnapshotMetadata>): SnapshotUnsubscriber {
                     const onNext = observer.next || NULL_FUNCTION;
                     return this.snapshotter({}, onNext, observer.error, observer.complete);
                 }
 
                 private onSnapshotWithOptionsAndObserver(options: ISnapshotListenOptions,
-                                                         observer: IDocumentSnapshotObserver): SnapshotUnsubscriber {
+                                                         observer: IDocumentSnapshotObserver<ISnapshotMetadata>): SnapshotUnsubscriber {
                     const onNext = observer.next || NULL_FUNCTION;
                     return this.snapshotter(options, onNext, observer.error, observer.complete);
                 }
 
-                private onSnapshotWithCallbacks(onNext: (snapshot: IDocumentSnapshot) => void,
+                private onSnapshotWithCallbacks(onNext: (snapshot: IDocumentSnapshot<ISnapshotMetadata>) => void,
                                                 onError?: (error: IFirestoreError) => void,
                                                 onCompletion?: () => void): SnapshotUnsubscriber {
 
@@ -295,18 +296,18 @@ export namespace CachedStore {
 
                 }
 
-                public onSnapshot(observer: IDocumentSnapshotObserver): SnapshotUnsubscriber;
-                public onSnapshot(options: ISnapshotListenOptions, observer: IDocumentSnapshotObserver): SnapshotUnsubscriber;
-                public onSnapshot(onNext: (snapshot: IDocumentSnapshot) => void,
+                public onSnapshot(observer: IDocumentSnapshotObserver<ISnapshotMetadata>): SnapshotUnsubscriber;
+                public onSnapshot(options: ISnapshotListenOptions, observer: IDocumentSnapshotObserver<ISnapshotMetadata>): SnapshotUnsubscriber;
+                public onSnapshot(onNext: (snapshot: IDocumentSnapshot<ISnapshotMetadata>) => void,
                                   onError?: (error: IFirestoreError) => void,
                                   onCompletion?: () => void): SnapshotUnsubscriber;
                 public onSnapshot(options: ISnapshotListenOptions,
-                                  onNext: (snapshot: IDocumentSnapshot) => void,
+                                  onNext: (snapshot: IDocumentSnapshot<ISnapshotMetadata>) => void,
                                   onError?: (error: IFirestoreError) => void,
                                   onCompletion?: () => void): SnapshotUnsubscriber;
 
-                public onSnapshot(arg0: IDocumentSnapshotObserver | ISnapshotListenOptions | ((snapshot: IDocumentSnapshot) => void),
-                                  arg1?: IDocumentSnapshotObserver | ((error: IFirestoreError) => void) | ((snapshot: IDocumentSnapshot) => void),
+                public onSnapshot(arg0: IDocumentSnapshotObserver<ISnapshotMetadata> | ISnapshotListenOptions | ((snapshot: IDocumentSnapshot<ISnapshotMetadata>) => void),
+                                  arg1?: IDocumentSnapshotObserver<ISnapshotMetadata> | ((error: IFirestoreError) => void) | ((snapshot: IDocumentSnapshot<ISnapshotMetadata>) => void),
                                   arg2?: (() => void) | ((error: IFirestoreError) => void),
                                   arg3?: () => void): SnapshotUnsubscriber | (() => void) {
 
@@ -367,14 +368,14 @@ export namespace CachedStore {
                  * @param _query The underlying query delegate.
                  * @param _collection The collection we're querying
                  */
-                constructor(private readonly _query: IQuery,
-                            private readonly _collection: ICollectionReference) {
+                constructor(private readonly _query: IQuery<ISnapshotMetadata>,
+                            private readonly _collection: ICollectionReference<ISnapshotMetadata>) {
 
-                    this.getter = createGetHandler<IQuerySnapshot>(() => this.readFromCache(),
+                    this.getter = createGetHandler<IQuerySnapshot<ISnapshotMetadata>>(() => this.readFromCache(),
                                                                    value => this.writeToCache(value),
                                                                    (options) => this._query.get(options));
 
-                    this.snapshotter = createSnapshotHandler<IQuerySnapshot>(() => this.readFromCache(),
+                    this.snapshotter = createSnapshotHandler<IQuerySnapshot<ISnapshotMetadata>>(() => this.readFromCache(),
                                                                              value => this.writeToCache(value),
                                                                              (options, onNext, onError, onCompletion) => this._query.onSnapshot(options, onNext, onError, onCompletion));
 
@@ -389,7 +390,7 @@ export namespace CachedStore {
                     });
                 }
 
-                private async readFromCache(): Promise<IQuerySnapshot | undefined> {
+                private async readFromCache(): Promise<IQuerySnapshot<ISnapshotMetadata> | undefined> {
 
                     Preconditions.assertPresent(cacheKeyCalculator, 'cacheKeyCalculator');
 
@@ -414,7 +415,7 @@ export namespace CachedStore {
 
                 }
 
-                private async writeToCache(snapshot: IQuerySnapshot) {
+                private async writeToCache(snapshot: IQuerySnapshot<ISnapshotMetadata>) {
 
                     Preconditions.assertPresent(cacheKeyCalculator, 'cacheKeyCalculator');
 
@@ -432,7 +433,7 @@ export namespace CachedStore {
 
                     const docChanges = snapshot.docChanges();
 
-                    function toCacheEntry(docChange: IDocumentChange): TCacheDocTupleWithID {
+                    function toCacheEntry(docChange: IDocumentChange<ISnapshotMetadata>): TCacheDocTupleWithID {
 
                         switch (docChange.type) {
 
@@ -478,18 +479,18 @@ export namespace CachedStore {
                     return this.getter(options);
                 }
 
-                private onSnapshotWithObserver(observer: IQuerySnapshotObserver): SnapshotUnsubscriber {
+                private onSnapshotWithObserver(observer: IQuerySnapshotObserver<ISnapshotMetadata>): SnapshotUnsubscriber {
                     const onNext = observer.next || NULL_FUNCTION;
                     return this.snapshotter({}, onNext, observer.error, observer.complete);
                 }
 
                 private onSnapshotWithOptionsAndObserver(options: ISnapshotListenOptions,
-                                                         observer: IQuerySnapshotObserver): SnapshotUnsubscriber {
+                                                         observer: IQuerySnapshotObserver<ISnapshotMetadata>): SnapshotUnsubscriber {
                     const onNext = observer.next || NULL_FUNCTION;
                     return this.snapshotter(options, onNext, observer.error, observer.complete);
                 }
 
-                private onSnapshotWithCallbacks(onNext: (snapshot: IQuerySnapshot) => void,
+                private onSnapshotWithCallbacks(onNext: (snapshot: IQuerySnapshot<ISnapshotMetadata>) => void,
                                                 onError?: (error: IFirestoreError) => void,
                                                 onCompletion?: () => void): SnapshotUnsubscriber {
 
@@ -498,7 +499,7 @@ export namespace CachedStore {
                 }
 
                 private onSnapshotWithOptionsAndCallbacks(options: ISnapshotListenOptions,
-                                                          onNext: (snapshot: IQuerySnapshot) => void,
+                                                          onNext: (snapshot: IQuerySnapshot<ISnapshotMetadata>) => void,
                                                           onError?: (error: IFirestoreError) => void,
                                                           onCompletion?: () => void): SnapshotUnsubscriber {
 
@@ -506,22 +507,22 @@ export namespace CachedStore {
 
                 }
 
-                public onSnapshot(observer: IQuerySnapshotObserver): SnapshotUnsubscriber;
+                public onSnapshot(observer: IQuerySnapshotObserver<ISnapshotMetadata>): SnapshotUnsubscriber;
 
                 public onSnapshot(options: ISnapshotListenOptions,
-                                  observer: IQuerySnapshotObserver): SnapshotUnsubscriber;
+                                  observer: IQuerySnapshotObserver<ISnapshotMetadata>): SnapshotUnsubscriber;
 
-                public onSnapshot(onNext: (snapshot: IQuerySnapshot) => void,
+                public onSnapshot(onNext: (snapshot: IQuerySnapshot<ISnapshotMetadata>) => void,
                                   onError?: (error: IFirestoreError) => void,
                                   onCompletion?: () => void): () => void;
 
                 public onSnapshot(options: ISnapshotListenOptions,
-                                  onNext: (snapshot: IQuerySnapshot) => void,
+                                  onNext: (snapshot: IQuerySnapshot<ISnapshotMetadata>) => void,
                                   onError?: (error: IFirestoreError) => void,
                                   onCompletion?: () => void): SnapshotUnsubscriber;
 
-                public onSnapshot(arg0: IQuerySnapshotObserver | ISnapshotListenOptions | ((snapshot: IQuerySnapshot) => void),
-                                  arg1?: IQuerySnapshotObserver | ((error: IFirestoreError) => void) | ((snapshot: IQuerySnapshot) => void),
+                public onSnapshot(arg0: IQuerySnapshotObserver<ISnapshotMetadata> | ISnapshotListenOptions | ((snapshot: IQuerySnapshot<ISnapshotMetadata>) => void),
+                                  arg1?: IQuerySnapshotObserver<ISnapshotMetadata> | ((error: IFirestoreError) => void) | ((snapshot: IQuerySnapshot<ISnapshotMetadata>) => void),
                                   arg2?: (() => void) | ((error: IFirestoreError) => void),
                                   arg3?: () => void): SnapshotUnsubscriber | (() => void) {
 
@@ -552,34 +553,34 @@ export namespace CachedStore {
 
                 }
 
-                public limit(count: number): IQuery {
+                public limit(count: number): IQuery<ISnapshotMetadata> {
                     this._limit = count;
                     return this;
                 }
 
 
-                public offset(offset: number): IQuery {
+                public offset(offset: number): IQuery<ISnapshotMetadata> {
                     throw new Error("Not implemented");
                 }
-                public orderBy(fieldPath: string, directionStr?: TOrderByDirection): IQuery {
+                public orderBy(fieldPath: string, directionStr?: TOrderByDirection): IQuery<ISnapshotMetadata> {
                     this._order.push({fieldPath, directionStr});
                     return this;
                 }
 
-                public startAt(...fieldValues: string[]): IQuery {
+                public startAt(...fieldValues: string[]): IQuery<ISnapshotMetadata> {
                     throw new Error("Not implemented");
                     // this._startAt = fieldValues;
                     // return this;
                 }
 
-                public startAfter(...fieldValues: string[]): IQuery {
+                public startAfter(...fieldValues: string[]): IQuery<ISnapshotMetadata> {
                     this._startAfter = fieldValues;
                     return this;
                 }
 
             }
 
-            function where(fieldPath: string, opStr: TWhereFilterOp, value: TWhereValue): IQuery {
+            function where(fieldPath: string, opStr: TWhereFilterOp, value: TWhereValue): IQuery<ISnapshotMetadata> {
                 const _query = _collection.where(fieldPath, opStr, value);
                 const query = new Query(_query, _collection);
                 return query.where(fieldPath, opStr, value);
