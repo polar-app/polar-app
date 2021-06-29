@@ -1,7 +1,6 @@
 import {Firestore} from '../../../firebase/Firestore';
 import {Firebase} from '../../../firebase/Firebase';
 import {ProfileOwners} from './ProfileOwners';
-import firebase from 'firebase/app'
 import {
     CacheFirstThenServerGetOptions,
     DocumentReferences,

@@ -12,12 +12,19 @@ import { Dictionaries } from 'polar-shared/src/util/Dictionaries';
 
 export interface IProfileInit {
 
+    readonly id: ProfileIDStr;
+
+    readonly created: ISODateTimeString;
+
+}
+
+export interface IProfileUpdate {
+
     /**
      * The user's UID which is used when assigning permissions.
      */
     readonly uid: UserIDStr;
 
-    readonly created: ISODateTimeString;
 
     readonly updated: ISODateTimeString;
 
@@ -71,8 +78,7 @@ export interface IProfileInit {
 
 }
 
-export interface IProfile extends IProfileInit {
-    readonly id: ProfileIDStr;
+export interface IProfile extends IProfileInit, IProfileUpdate {
 }
 
 export type ProfileIDStr = string;

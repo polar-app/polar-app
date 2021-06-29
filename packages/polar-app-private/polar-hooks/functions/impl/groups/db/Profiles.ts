@@ -89,6 +89,9 @@ export class Profiles {
 
 }
 
+/**
+ * @deprecated
+ */
 export interface ProfileBase {
 
     /**
@@ -116,6 +119,9 @@ export interface ProfileBase {
 }
 
 
+/**
+ * @deprecated
+ */
 export interface ProfileInit extends ProfileBase {
 
     readonly name?: string;
@@ -130,6 +136,9 @@ export interface ProfileInit extends ProfileBase {
 
 export type ProfileHandleStr = string;
 
+/**
+ * @deprecated
+ */
 export interface Profile extends ProfileInit {
 
     readonly id: ProfileIDStr;
@@ -138,14 +147,32 @@ export interface Profile extends ProfileInit {
 
 }
 
+/**
+ * @deprecated
+ */
 export type ProfileIDStr = string;
 
+/**
+ * @deprecated
+ */
 export type HandleStr = string;
 
+/**
+ * @deprecated
+ */
 export type UserIDStr = string;
 
+/**
+ * @deprecated
+ */
 export type EmailStr = string;
 
+/**
+ * @deprecated
+ */
 export type UserProfileProvider = (uid: UserIDStr) => Promise<Profile | undefined>;
 
+/**
+ * @deprecated
+ */
 export const defaultUserProfileProvider = async (uid: UserIDStr) => await Profiles.userProfile(uid);
