@@ -122,7 +122,9 @@ export namespace Collections {
 
     }
 
-    function createQuery(clauses: ReadonlyArray<Clause>, opts: ListOpts = {}) {
+    function createQuery(firestore: IFirestore,
+                         collection: string,
+                         clauses: ReadonlyArray<Clause>, opts: ListOpts = {}) {
 
         // TODO: should work without any clauses and just list all the records
         // which is fine for small collections
@@ -132,8 +134,8 @@ export namespace Collections {
 
         Clauses.assertPresent(clause);
 
-        let query = this.firestore
-            .collection(this.name)
+        let query = firestore
+            .collection(collection)
             .where(field, op, value);
 
         for (const clause of clauses.slice(1)) {
@@ -170,21 +172,40 @@ export namespace Collections {
         return snapshot.docs.map(current => <T> current.data());
     }
 
-    // export async function list<T>(clauses: ReadonlyArray<Clause>,
-    //                               opts: ListOpts = {}): Promise<ReadonlyArray<T>> {
-    //
-    //     const query = createQuery(clauses, opts);
-    //
-    //     const snapshot = await query.get();
-    //
-    //     return snapshotToRecords(snapshot);
-    //
-    // }
-    //
-    // export async function getByFieldValue<T>(field: string, value: ValueType): Promise<T | undefined> {
-    //     const results = await list<T>([[field, '==', value]]);
-    //     return first([field], results);
-    // }
+    export async function list<T>(firestore: IFirestore,
+                                  collection: string,
+                                  clauses: ReadonlyArray<Clause>,
+                                  opts: ListOpts = {}): Promise<ReadonlyArray<T>> {
+
+        const query = createQuery(firestore, collection, clauses, opts);
+
+        const snapshot = await query.get();
+
+        return snapshotToRecords(snapshot);
+
+    }
+
+    function first<T>(collection: string,
+                      fields: ReadonlyArray<string>,
+                      results: ReadonlyArray<T>): T | undefined {
+
+        if (results.length === 0) {
+            return undefined;
+        } else if (results.length === 1) {
+            return results[0];
+        } else {
+            throw new Error(`Too many records on collection ${collection} for fields ${fields} ` + results.length);
+        }
+
+    }
+
+    export async function getByFieldValue<T>(firestore: IFirestore,
+                                             collection: string,
+                                             field: string,
+                                             value: ValueType): Promise<T | undefined> {
+        const results = await list<T>(firestore, collection, [[field, '==', value]]);
+        return first(collection, [field], results);
+    }
 
     //
     // public async getByFieldValues<T>(clauses: ReadonlyArray<Clause>): Promise<T | undefined> {
@@ -195,18 +216,6 @@ export namespace Collections {
     //     return this.first(fields, results);
     // }
     //
-    // private first<T>(fields: ReadonlyArray<string>,
-    //                  results: ReadonlyArray<T>): T | undefined {
-    //
-    //     if (results.length === 0) {
-    //         return undefined;
-    //     } else if (results.length === 1) {
-    //         return results[0];
-    //     } else {
-    //         throw new Error(`Too many records on collection ${this.name} for fields ${fields} ` + results.length);
-    //     }
-    //
-    // }
     //
     // public async listByFieldValue<T>(field: string, value: ValueType): Promise<ReadonlyArray<T>> {
     //     return this.list([[field, '==', value]]);

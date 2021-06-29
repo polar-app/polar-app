@@ -50,11 +50,14 @@ export interface IQuery {
      */
     limit(count: number): IQuery;
 
+    offset(offset: number): IQuery;
+
     // You can also order by multiple fields. For example, if you wanted to
     // order by state, and within each state order by population in descending
     // order:
     orderBy(fieldPath: string, directionStr?: TOrderByDirection): IQuery;
 
-    startAfter(startAfter: string | undefined): IQuery;
+    startAt(...fieldValues: string[]): IQuery;
+    startAfter(...fieldValues: string[]): IQuery;
 
 }
