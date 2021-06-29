@@ -758,7 +758,7 @@ export class BlocksStore implements IBlocksStore {
         if (opts.shiftKey) {
 
             if (this.hasSelected()) {
-                this.setSelectionRange(this._selectedAnchor!, newActive, root);
+                this.setSelectionRange(root, newActive, this._selectedAnchor!);
             } else {
 
                 // only select the entire/current node at first.
