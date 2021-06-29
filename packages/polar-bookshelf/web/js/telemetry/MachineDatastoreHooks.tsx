@@ -1,11 +1,9 @@
 import {MachineDatastore} from "./MachineDatastores";
 import {useFirestore} from "../../../apps/repository/js/FirestoreProvider";
 import {MachineIDs} from "polar-shared/src/util/MachineIDs";
-import firebase from 'firebase/app'
 import {OnErrorCallback} from "polar-shared/src/util/Snapshots";
-import DocumentSnapshot = firebase.firestore.DocumentSnapshot;
 import {useSnapshots} from "../ui/data_loader/UseSnapshotSubscriber";
-import {IDocumentSnapshot} from "polar-snapshot-cache/src/store/IDocumentSnapshot";
+import {IDocumentSnapshot} from "polar-firestore-like/src/IDocumentSnapshot";
 
 export namespace MachineDatastoreHooks {
 

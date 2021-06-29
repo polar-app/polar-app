@@ -1,7 +1,5 @@
 
 import {Firestore} from '../../../firebase/Firestore';
-import firebase from 'firebase/app'
-import DocumentReference = firebase.firestore.DocumentReference;
 import {Firebase} from "../../../firebase/Firebase";
 import {DocumentReferences, GetOptions} from "../../../firebase/firestore/DocumentReferences";
 import {
@@ -9,7 +7,7 @@ import {
     HandleStr, ProfileIDStr,
     UserIDStr
 } from "polar-firebase/src/firebase/om/Profiles";
-import { IDocumentReference } from 'polar-snapshot-cache/src/store/IDocumentReference';
+import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
 
 export class ProfileOwners {
 

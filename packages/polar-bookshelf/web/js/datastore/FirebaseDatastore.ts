@@ -63,11 +63,11 @@ import {
 import {
     SnapshotUnsubscriber
 } from 'polar-shared/src/util/Snapshots';
-import {IQuerySnapshot} from "polar-snapshot-cache/src/store/IQuerySnapshot";
-import {IDocumentChange} from "polar-snapshot-cache/src/store/IDocumentChange";
-import {IDocumentReference} from "polar-snapshot-cache/src/store/IDocumentReference";
-import {IDocumentSnapshot} from 'polar-snapshot-cache/src/store/IDocumentSnapshot';
-import {IFirestore} from "polar-snapshot-cache/src/store/IFirestore";
+import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
+import {IDocumentChange} from "polar-firestore-like/src/IDocumentChange";
+import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
+import {IDocumentSnapshot} from 'polar-firestore-like/src/IDocumentSnapshot';
+import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {StoragePath, FirebaseDatastores} from 'polar-shared/src/datastore/FirebaseDatastores';
 
 const log = Logger.create();

@@ -14,8 +14,11 @@ import {
     ProfileIDStr,
     ProfileRecordTuple
 } from "polar-firebase/src/firebase/om/Profiles";
-import { IDocumentReference } from 'polar-snapshot-cache/src/store/IDocumentReference';
+import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
 
+/**
+ * @Deprecated migrate to polar-firestore
+ */
 export class Profiles {
 
     public static readonly COLLECTION = 'profile';

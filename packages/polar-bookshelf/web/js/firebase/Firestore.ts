@@ -5,7 +5,7 @@ import {Firebase} from './Firebase';
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Tracer} from 'polar-shared/src/util/Tracer';
 import {StoreCaches} from "polar-snapshot-cache/src/StoreCaches";
-import {IFirestore} from 'polar-snapshot-cache/src/store/IFirestore';
+import {IFirestore} from "polar-firestore-like/src/IFirestore";
 
 const log = Logger.create();
 

@@ -13,7 +13,7 @@ import {
     SnapshotUnsubscriber
 } from 'polar-shared/src/util/Snapshots';
 import firebase from 'firebase/app'
-import { IFirestore } from "polar-snapshot-cache/src/store/IFirestore";
+import { IFirestore } from "polar-firestore-like/src//IFirestore";
 
 export class FirebaseDatastorePrefs extends DictionaryPrefs implements IPersistentPrefs {
 

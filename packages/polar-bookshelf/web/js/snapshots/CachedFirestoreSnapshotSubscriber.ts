@@ -1,8 +1,8 @@
 import {ISnapshot} from "./CachedSnapshotSubscriberContext";
 import {LocalCache} from "./CachedSnapshotSubscriber";
 import {OnErrorCallback, SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
-import {IDocumentReference} from "polar-snapshot-cache/src/store/IDocumentReference";
-import {IDocumentSnapshot} from "polar-snapshot-cache/src/store/IDocumentSnapshot";
+import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
+import {IDocumentSnapshot} from "polar-firestore-like/src/IDocumentSnapshot";
 
 /**
  * Snapshot listener. The snapshot is only undefined on startup ad you can

@@ -1,10 +1,10 @@
 import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
 import React from "react";
-import {IQuerySnapshot} from "polar-snapshot-cache/src/store/IQuerySnapshot";
-import {IDocumentChange} from "polar-snapshot-cache/src/store/IDocumentChange";
 import {IGenericSnapshot} from "./IGenericSnapshot";
 import {IGenericDocumentChange} from "./IGenericDocumentChange";
-import {TWhereFilterOp} from "polar-snapshot-cache/src/store/ICollectionReference";
+import {TWhereFilterOp} from "polar-firestore-like/src/ICollectionReference";
+import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
+import {IDocumentChange} from "polar-firestore-like/src/IDocumentChange";
 
 /**
  * tuple of field path, op, and value.

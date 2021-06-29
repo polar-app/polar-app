@@ -1,8 +1,8 @@
 import {Firestore} from './Firestore';
 import {Objects} from "polar-shared/src/util/Objects";
 import firebase from 'firebase/app'
-import { IQuery } from 'polar-snapshot-cache/src/store/IQuery';
-import {IQuerySnapshot} from "polar-snapshot-cache/src/store/IQuerySnapshot";
+import { IQuery } from 'polar-firestore-like/src/IQuery';
+import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
 
 /**
  * Build a simple query cursor for Firestore queries.
