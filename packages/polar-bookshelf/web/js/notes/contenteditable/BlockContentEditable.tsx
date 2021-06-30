@@ -22,7 +22,6 @@ import {useBlocksTreeStore} from '../BlocksTree';
 // this will be needed
 const ENABLE_CURSOR_RESET = true;
 const ENABLE_CURSOR_RESET_TRACE = false;
-const BLOCK_ID_PREFIX = 'block-';
 
 interface IProps extends BlockEditorGenericProps {
     readonly content: HTMLStr;
@@ -214,8 +213,9 @@ export const BlockContentEditable = observer((props: IProps) => {
                              onMouseDown={props.onMouseDown}
                              contentEditable={true}
                              spellCheck={props.spellCheck}
+                             data-id={props.id}
                              className={props.className}
-                             id={`${BLOCK_ID_PREFIX}${props.id}`}
+                             id={`${DOMBlocks.BLOCK_ID_PREFIX}${props.id}`}
                              style={{
                                  outline: 'none',
                                  whiteSpace: 'pre-wrap',
@@ -351,6 +351,60 @@ const useHandleLinkDeletion = ({ blockID, elem }: IUseHandleLinkDeletionOpts) =>
     })
 };
 
-export const getBlockContentEditableRoot = (id: BlockIDStr): HTMLDivElement | null => {
-    return document.querySelector<HTMLDivElement>(`#${BLOCK_ID_PREFIX}${id}`);
-};
+export namespace DOMBlocks {
+    export const BLOCK_ID_PREFIX = 'block-';
+
+    export const getBlockHTMLID = (id: BlockIDStr) => `${BLOCK_ID_PREFIX}${id}`;
+
+    export const getBlockElement = (id: BlockIDStr) =>
+        document.querySelector<HTMLDivElement>(`#${getBlockHTMLID(id)}`);
+
+    export function isBlockElement(node: Node): node is HTMLElement {
+        if (node.nodeType === Node.ELEMENT_NODE) {
+            const element = node as HTMLElement;
+            if (element.id && element.id.startsWith(BLOCK_ID_PREFIX)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    export function getSiblingID(id: BlockIDStr, delta: 'next' | 'prev'): string | null {
+        const currBlockElem = getBlockElement(id);
+        if (currBlockElem) {
+            const newActiveBlockElem = findSiblingBlock(currBlockElem, delta);
+            if (newActiveBlockElem && newActiveBlockElem.dataset.id) {
+                return newActiveBlockElem.dataset.id;
+            }
+        }
+        return null;
+    }
+
+    export function findSiblingBlock(node: Node, delta: 'next' | 'prev'): HTMLElement | null {
+        const sibling = delta === 'next'
+                ? node.nextSibling
+                : node.previousSibling;
+
+        if (! sibling) {
+            if (node.parentElement) {
+                return findSiblingBlock(node.parentElement, delta);
+            }
+            return null;
+        }
+
+        if (sibling.nodeType === Node.ELEMENT_NODE) {
+            const siblingElem = sibling as HTMLElement;
+            const elements = siblingElem.querySelectorAll<HTMLDivElement>(`[id^="${BLOCK_ID_PREFIX}"]`);
+            if (elements.length > 0) {
+                const idx = delta === 'next' ? 0 : elements.length - 1;
+                return elements[idx];
+            }
+        }
+
+        if (isBlockElement(sibling)) {
+            return sibling;
+        }
+
+        return findSiblingBlock(sibling, delta);
+    }
+}
