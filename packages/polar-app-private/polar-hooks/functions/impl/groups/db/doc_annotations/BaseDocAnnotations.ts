@@ -6,12 +6,12 @@ import {IComment} from "polar-shared/src/metadata/IComment";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
-import {ProfileIDStr, UserIDStr} from "../Profiles";
 import {IDRecord} from "../Collections";
 import {DocRefs} from "./DocRefs";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {ProfileIDStr, UserIDStr } from "polar-firebase/src/firebase/om/Profiles";
 
 export class BaseDocAnnotations {
 

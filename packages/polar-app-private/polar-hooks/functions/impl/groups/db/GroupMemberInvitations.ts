@@ -5,8 +5,6 @@ import {Groups} from './Groups';
 import {Firestore} from '../../util/Firestore';
 import {Image} from './Users';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
-import {EmailStr} from "./Profiles";
-import {ProfileIDStr} from './Profiles';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {UserGroups} from './UserGroups';
@@ -15,6 +13,7 @@ import {Arrays, asArray} from "polar-shared/src/util/Arrays";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
 import {Collections} from "polar-firestore-like/src/Collections";
+import {EmailStr, ProfileIDStr} from 'polar-firebase/src/firebase/om/Profiles';
 
 export class GroupMemberInvitations {
 

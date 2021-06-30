@@ -1,11 +1,9 @@
 import {AbstractDocAnnotationsDelegate} from "./AbstractDocAnnotationsDelegate";
 import {BaseDocAnnotation} from "./BaseDocAnnotations";
-import {ProfileHandleStr, ProfileIDStr} from "../Profiles";
-import {WriteBatch} from "@google-cloud/firestore";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
-
+import {ProfileIDStr} from "polar-firebase/src/firebase/om/Profiles";
 
 export class ProfileDocAnnotations {
 

@@ -1,6 +1,3 @@
-import {Query} from "@google-cloud/firestore";
-import {EmailStr} from './Profiles';
-import {ProfileIDStr} from './Profiles';
 import {IDUser} from '../../util/IDUsers';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Firestore} from '../../util/Firestore';
@@ -16,6 +13,7 @@ import {FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {IQuery} from "polar-firestore-like/src/IQuery";
+import { EmailStr, ProfileIDStr } from 'polar-firebase/src/firebase/om/Profiles';
 
 export class Contacts {
 
