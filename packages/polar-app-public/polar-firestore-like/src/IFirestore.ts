@@ -9,18 +9,6 @@ import firebase from 'firebase/app';
 import * as admin from '@google-cloud/firestore';
 
 /**
- * FirestoreLike which contains just the basic functionality of the min of the client SDK and admin SDK.
- */
-// export type FirestoreLike = firebase.firestore.Firestore | admin.Firestore;
-// export type WriteBatchLike = firebase.firestore.WriteBatch | admin.WriteBatch;
-// export type CollectionReferenceLike = firebase.firestore.CollectionReference | admin.CollectionReference;
-// export type QueryLike = firebase.firestore.Query | admin.Query;
-// export type DocumentReferenceLike = firebase.firestore.DocumentReference | admin.DocumentReference;
-// export type DocumentSnapshotLike = firebase.firestore.DocumentSnapshot | admin.DocumentSnapshot;
-// export type DocumentChangeLike = firebase.firestore.DocumentChange | admin.DocumentChange;
-// export type QueryDocumentSnapshotLike = firebase.firestore.QueryDocumentSnapshot | admin.QueryDocumentSnapshot;
-
-/**
  * Easy type reference for the client SDK
  */
 export type FirestoreClient = firebase.firestore.Firestore;
