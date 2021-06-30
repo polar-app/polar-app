@@ -12,7 +12,7 @@ RUN npm -v
 
 # Install Lerna globally
 RUN npm i -g lerna @lerna/global-options
-
+RUN npm i -g --force yarn
 
 # Change the UID of the user and group so files created/modified by this user
 # match the UID of the Host machine user
@@ -21,9 +21,13 @@ RUN npm i -g lerna @lerna/global-options
 RUN usermod -u $USER_ID -g $GROUP_ID node
 USER node
 
-COPY .npmrc.bytesafe /home/node/.npmrc
+COPY --chown=node:node .npmrc.bytesafe /home/node/.npmrc
 
 WORKDIR /app
+
+# Always pass auth tokens to Bytesafe
+# This is important!
+RUN npm config set always-auth true
 
 CMD ["cat", "/home/node/.npmrc"]
 CMD ["lerna", "bootstrap"]
