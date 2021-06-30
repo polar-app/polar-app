@@ -8,10 +8,11 @@ import {GroupDocActions} from './db/GroupDocActions';
 import {WriteBatch} from '@google-cloud/firestore';
 import {GroupMemberInvitations} from './db/GroupMemberInvitations';
 import {UserProfile} from './db/UserRefs';
+import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 
 export class GroupLeaves {
 
-    public static async leave(batch: WriteBatch,
+    public static async leave(batch: IWriteBatch<unknown>,
                               groupID: GroupIDStr,
                               userProfile: UserProfile) {
 

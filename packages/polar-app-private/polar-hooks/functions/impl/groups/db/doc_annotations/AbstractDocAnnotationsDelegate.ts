@@ -6,6 +6,8 @@ import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {BaseDocAnnotation} from "./BaseDocAnnotations";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {IDStr} from "polar-shared/src/util/Strings";
+import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
+import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 
 export class AbstractDocAnnotationsDelegate {
 
@@ -13,7 +15,7 @@ export class AbstractDocAnnotationsDelegate {
 
     }
 
-    public doc(record: BaseDocAnnotation): [GroupMemberInvitationIDStr, DocumentReference] {
+    public doc(record: BaseDocAnnotation): [GroupMemberInvitationIDStr, IDocumentReference<unknown>] {
 
         const firestore = Firestore.getInstance();
         const parent = (<any> record) [this.parentColumnName];
@@ -28,7 +30,7 @@ export class AbstractDocAnnotationsDelegate {
         return await Collections.list<T>(this.collection, [[this.parentColumnName, '==', parent]]);
     }
 
-    public write<T extends BaseDocAnnotation>(batch: WriteBatch, record: T) {
+    public write<T extends BaseDocAnnotation>(batch: IWriteBatch<unknown>, record: T) {
 
         const [id, ref] = this.doc(record);
 
@@ -36,7 +38,7 @@ export class AbstractDocAnnotationsDelegate {
 
     }
 
-    public delete<T extends BaseDocAnnotation>(batch: WriteBatch, id: IDStr) {
+    public delete<T extends BaseDocAnnotation>(batch: IWriteBatch<unknown>, id: IDStr) {
 
         const firestore = Firestore.getInstance();
         const ref = firestore.collection(this.collection).doc(id);

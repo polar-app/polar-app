@@ -1,15 +1,12 @@
-import {WriteBatch} from "@google-cloud/firestore";
 import * as admin from 'firebase-admin';
 import FieldValue = admin.firestore.FieldValue;
 import {GroupIDStr, GroupVisibility} from "./Groups";
-import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {DocPermissions} from "./DocPermissions";
 import {GroupDocs} from "./GroupDocs";
 import {IDUser} from "../../util/IDUsers";
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {DocIDStr} from 'polar-shared/src/groups/DocRef';
 import {GroupDocInfos} from "./GroupDocInfos";
-import {WriteBatchLike} from "polar-firestore-like/src/IFirestore";
 import {Firestore} from "../../util/Firestore";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 

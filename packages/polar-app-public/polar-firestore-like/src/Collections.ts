@@ -5,6 +5,7 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 import { IQuerySnapshot } from "./IQuerySnapshot";
 import {IWriteBatch} from "./IWriteBatch";
 import {IDRecord} from "polar-shared/src/util/IDMaps";
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 export namespace Collections {
 
@@ -66,11 +67,11 @@ export namespace Collections {
 
     }
 
-    export async function getOrCreate<SM, T>(firestore: IFirestore<SM>,
-                                             collection: string,
-                                             batch: IWriteBatch<SM>,
-                                             documentReference: IDocumentReference<SM>,
-                                             createRecord: () => T): Promise<GetOrCreateRecord<T>> {
+    export async function getOrCreate<T, SM = unknown>(firestore: IFirestore<SM>,
+                                                       collection: string,
+                                                       batch: IWriteBatch<SM>,
+                                                       documentReference: IDocumentReference<SM>,
+                                                       createRecord: () => T): Promise<GetOrCreateRecord<T>> {
 
         const doc = await documentReference.get();
 
@@ -96,26 +97,27 @@ export namespace Collections {
 
     }
 
-    export async function get<SM, T>(firestore: IFirestore<SM>,
-                                 collection: string,
-                                 id: string): Promise<T | undefined> {
+    export async function get<T, SM = unknown>(firestore: IFirestore<SM>,
+                                               collection: string,
+                                                id: string): Promise<T | undefined> {
         const ref = firestore.collection(collection).doc(id);
         const doc = await ref.get();
         return <T> doc.data();
     }
 
-    export async function getByID<SM, T>(firestore: IFirestore<SM>,
-                                     collection: string,
-                                     id: string): Promise<T | undefined> {
+    export async function getByID<T, SM = unknown>(firestore: IFirestore<SM>,
+                                                   collection: string,
+                                                   id: string): Promise<T | undefined> {
 
         return get(firestore, collection, id);
 
     }
 
 
-    export async function set<SM, T>(firestore: IFirestore<SM>,
-                                     collection: string,
-                                     id: string, value: T) {
+    export async function set<T, SM = unknown>(firestore: IFirestore<SM>,
+                                               collection: string,
+                                               id: string,
+                                               value: T) {
 
         value = Dictionaries.onlyDefinedProperties(value);
         const ref = firestore.collection(collection).doc(id);
@@ -123,9 +125,9 @@ export namespace Collections {
 
     }
 
-    function createQuery<SM>(firestore: IFirestore<SM>,
-                             collection: string,
-                             clauses: ReadonlyArray<Clause>, opts: ListOpts = {}) {
+    function createQuery<SM = unknown>(firestore: IFirestore<SM>,
+                                       collection: string,
+                                       clauses: ReadonlyArray<Clause>, opts: ListOpts = {}) {
 
         // TODO: should work without any clauses and just list all the records
         // which is fine for small collections
@@ -169,14 +171,14 @@ export namespace Collections {
 
     }
 
-    function snapshotToRecords<SM, T>(snapshot: IQuerySnapshot<SM>) {
+    function snapshotToRecords<T, SM = unknown>(snapshot: IQuerySnapshot<SM>) {
         return snapshot.docs.map(current => <T> current.data());
     }
 
-    export async function list<SM, T>(firestore: IFirestore<SM>,
-                                      collection: string,
-                                      clauses: ReadonlyArray<Clause>,
-                                      opts: ListOpts = {}): Promise<ReadonlyArray<T>> {
+    export async function list<T, SM = unknown>(firestore: IFirestore<SM>,
+                                                collection: string,
+                                                clauses: ReadonlyArray<Clause>,
+                                                opts: ListOpts = {}): Promise<ReadonlyArray<T>> {
 
         const query = createQuery(firestore, collection, clauses, opts);
 
@@ -187,8 +189,8 @@ export namespace Collections {
     }
 
     function firstRecord<T>(collection: string,
-                      fields: ReadonlyArray<string>,
-                      results: ReadonlyArray<T>): T | undefined {
+                            fields: ReadonlyArray<string>,
+                            results: ReadonlyArray<T>): T | undefined {
 
         if (results.length === 0) {
             return undefined;
@@ -200,20 +202,20 @@ export namespace Collections {
 
     }
 
-    export async function getByFieldValue<SM, T>(firestore: IFirestore<SM>,
-                                                 collection: string,
-                                                 field: string,
-                                                 value: ValueType): Promise<T | undefined> {
+    export async function getByFieldValue<T, SM = unknown>(firestore: IFirestore<SM>,
+                                                           collection: string,
+                                                           field: string,
+                                                           value: ValueType): Promise<T | undefined> {
 
-        const results = await list<SM, T>(firestore, collection, [[field, '==', value]]);
-        return firstRecord(collection, [field], results);
+        const results = await list<T, SM>(firestore, collection, [[field, '==', value]]);
+        return firstRecord<T>(collection, [field], results);
 
     }
 
-    export async function deleteByID<SM>(firestore: IFirestore<SM>,
-                                         collection: string,
-                                         batch: IWriteBatch<SM>,
-                                         provider: () => Promise<ReadonlyArray<IDRecord>>) {
+    export async function deleteByID<SM = unknown>(firestore: IFirestore<SM>,
+                                                   collection: string,
+                                                   batch: IWriteBatch<SM>,
+                                                   provider: () => Promise<ReadonlyArray<IDRecord>>) {
 
         const records = await provider();
 
@@ -228,8 +230,13 @@ export namespace Collections {
 
     }
 
-    export async function listByFieldValue<T>(field: string, value: ValueType): Promise<ReadonlyArray<T>> {
-        return this.list([[field, '==', value]]);
+    export async function listByFieldValue<T, SM = unknown>(firestore: IFirestore<SM>,
+                                                            collection: string,
+                                                            field: string,
+                                                            value: ValueType): Promise<ReadonlyArray<T>> {
+
+        return list(firestore, collection, [[field, '==', value]]);
+
     }
 
     //
@@ -246,67 +253,71 @@ export namespace Collections {
     // public collection() {
     //     return this.firestore.collection(this.name);
     // }
-    //
-    // public async list<T>(clauses: ReadonlyArray<Clause>,
-    //                      opts: ListOpts = {}): Promise<ReadonlyArray<T>> {
-    //
-    //     const query = this.createQuery(clauses, opts);
-    //
-    //     const snapshot = await query.get();
-    //
-    //     return this.snapshotToRecords(snapshot);
-    //
-    // }
-    //
-    // public async iterate<T>(clauses: ReadonlyArray<Clause>,
-    //                         opts: IterateOpts = {}): Promise<Cursor<T>> {
-    //
-    //     const limit = opts.limit || 100;
-    //
-    //     let startAfter: any[] | undefined;
-    //
-    //     // we always have at least one page...
-    //     let hasNext: boolean = true;
-    //
-    //     const next = async (): Promise<ReadonlyArray<T>> => {
-    //
-    //         const query = this.createQuery(clauses, {...opts, startAfter});
-    //         const snapshot = await query.get();
-    //
-    //         hasNext = snapshot.docs.length === limit;
-    //
-    //         if (hasNext) {
-    //
-    //             const last = Arrays.last(snapshot.docs)!;
-    //
-    //             const computeStartAfter = () => {
-    //
-    //                 const result: any[] = [];
-    //
-    //                 for (const orderByClause of opts.orderBy || []) {
-    //                     result.push(last.get(orderByClause[0]));
-    //                 }
-    //
-    //                 return result;
-    //
-    //             };
-    //
-    //             startAfter = computeStartAfter();
-    //
-    //         }
-    //
-    //         return this.snapshotToRecords(snapshot);
-    //
-    //     };
-    //
-    //     return {
-    //         next,
-    //         hasNext(): boolean {
-    //             return hasNext;
-    //         }
-    //     };
-    //
-    // }
-    //
 
+    export async function iterate<T, SM = unknown>(firestore: IFirestore<SM>,
+                                                   collection: string,
+                                                   clauses: ReadonlyArray<Clause>,
+                                                   opts: IterateOpts = {}): Promise<Cursor<T>> {
+
+        const limit = opts.limit || 100;
+
+        let startAfter: any[] | undefined;
+
+        // we always have at least one page...
+        let hasNext: boolean = true;
+
+        const next = async (): Promise<ReadonlyArray<T>> => {
+
+            const query = createQuery(firestore, collection, clauses, {...opts, startAfter});
+            const snapshot = await query.get();
+
+            hasNext = snapshot.docs.length === limit;
+
+            if (hasNext) {
+
+                const last = Arrays.last(snapshot.docs)!;
+
+                const computeStartAfter = () => {
+
+                    const result: any[] = [];
+
+                    for (const orderByClause of opts.orderBy || []) {
+                        // FIXME: this isn't right?
+                        result.push(last.get(orderByClause[0]));
+                    }
+
+                    return result;
+
+                };
+
+                startAfter = computeStartAfter();
+
+            }
+
+            return snapshotToRecords(snapshot);
+
+        };
+
+        return {
+            next,
+            hasNext(): boolean {
+                return hasNext;
+            }
+        };
+
+    }
+
+    export interface GetOrCreateRecord<T> {
+        readonly created: boolean;
+        readonly record: T;
+    }
+
+    /**
+     * A cursor for easily paging through all results on the data.
+     */
+    export interface Cursor<T> {
+        hasNext(): boolean;
+        next(): Promise<ReadonlyArray<T>>;
+    }
 }
+

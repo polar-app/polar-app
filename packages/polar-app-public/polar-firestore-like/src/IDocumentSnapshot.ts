@@ -21,6 +21,8 @@ export interface IDocumentSnapshot<M> {
 
     readonly metadata: M;
 
+    get(fieldPath: string /* | FieldPath */): any;
+
 }
 
 export interface IDocumentSnapshotClient extends IDocumentSnapshot<ISnapshotMetadata> {

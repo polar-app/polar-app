@@ -8,6 +8,7 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
 import {Collections} from "polar-firestore-like/src/Collections";
+import GetOrCreateRecord = Collections.GetOrCreateRecord;
 
 export class GroupDocInfos {
 
@@ -35,6 +36,8 @@ export class GroupDocInfos {
     public static async getOrCreate(batch: IWriteBatch<unknown>,
                                     groupDocInfoInit: GroupDocInfoInit): Promise<GetOrCreateRecord<GroupDocInfo>> {
 
+        const firestore = Firestore.getInstance();
+
         const {groupID, fingerprint} = groupDocInfoInit;
 
         const ref = this.createDocumentReference(groupID, fingerprint);
@@ -52,7 +55,7 @@ export class GroupDocInfos {
 
         // TODO: make it so that we increment a nrReaders field.
 
-        return await Collections.getOrCreate(batch, ref, createRecord);
+        return await Collections.getOrCreate(firestore, this.COLLECTION, batch, ref, createRecord);
 
     }
 

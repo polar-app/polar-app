@@ -10,6 +10,7 @@ import {ISODateTimeStrings, ISODateTimeString} from 'polar-shared/src/metadata/I
 import {ProfileOwners} from "./ProfileOwners";
 import UserRecord = admin.auth.UserRecord;
 import {FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
+import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 
 /**
  * Metadata index about a profile to allow anyone to read a profile by profileID
@@ -36,7 +37,7 @@ export class Profiles {
         return await Collections.getByID(this.COLLECTION, id);
     }
 
-    public static set(batch: WriteBatch,
+    public static set(batch: IWriteBatch<unknown>,
                       id: ProfileIDStr,
                       user: UserRecord,
                       profileInit: ProfileInit) {
@@ -60,7 +61,7 @@ export class Profiles {
 
     }
 
-    public static async delete(batch: WriteBatch, id: ProfileIDStr) {
+    public static async delete(batch: IWriteBatch<unknown>, id: ProfileIDStr) {
         await Collections.deleteByID(batch, this.COLLECTION, async () => [{id}] );
     }
 

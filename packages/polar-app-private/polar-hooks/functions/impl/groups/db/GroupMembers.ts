@@ -1,12 +1,13 @@
 import {GroupIDStr} from './Groups';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Firestore} from '../../util/Firestore';
-import {DocumentReference, WriteBatch} from '@google-cloud/firestore';
 import {ProfileIDStr} from './Profiles';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {Collections} from './Collections';
 import {GetOrCreateRecord} from './Collections';
 import {ISODateTimeStrings, ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
+import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
+import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
 
 export class GroupMembers {
 
@@ -16,21 +17,21 @@ export class GroupMembers {
         return Hashcodes.createID({profileID, groupID}, 20);
     }
 
-    public static doc(profileID: ProfileIDStr, groupID: GroupIDStr): [GroupMemberIDStr, DocumentReference] {
+    public static doc(profileID: ProfileIDStr, groupID: GroupIDStr): [GroupMemberIDStr, IDocumentReference<unknown>] {
         const firestore = Firestore.getInstance();
         const id = this.createID(profileID, groupID);
         const doc = firestore.collection(this.COLLECTION).doc(id);
         return [id, doc];
     }
 
-    public static async deleteByGroupID(batch: WriteBatch,
+    public static async deleteByGroupID(batch: IWriteBatch<unknown>,
                                         groupID: GroupIDStr) {
 
         await Collections.deleteByID(batch, this.COLLECTION, () => this.list(groupID));
 
     }
 
-    public static async delete(batch: WriteBatch,
+    public static async delete(batch: IWriteBatch<unknown>,
                                groupID: GroupIDStr,
                                profileID: ProfileIDStr): Promise<boolean> {
 
@@ -50,7 +51,7 @@ export class GroupMembers {
         return await Collections.listByFieldValue(this.COLLECTION, 'groupID', groupID);
     }
 
-    public static async getOrCreate(batch: WriteBatch, groupMemberInit: GroupMemberInit): Promise<GetOrCreateRecord<GroupMember>> {
+    public static async getOrCreate(batch: IWriteBatch<unknown>, groupMemberInit: GroupMemberInit): Promise<GetOrCreateRecord<GroupMember>> {
 
         const [id, ref] = this.doc(groupMemberInit.profileID, groupMemberInit.groupID);
 

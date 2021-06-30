@@ -108,7 +108,7 @@ export namespace Profiles {
     }
 
     export async function getByUserID(firestore: IFirestore<unknown>, uid: UserIDStr): Promise<IProfile | undefined> {
-        const results = await Collections.list<unknown, IProfile>(firestore, COLLECTION, [['uid', '==', uid]]);
+        const results = await Collections.list<IProfile>(firestore, COLLECTION, [['uid', '==', uid]]);
         return Arrays.first(results);
     }
 

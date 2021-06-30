@@ -12,10 +12,11 @@ import {UserRef} from './db/UserRefs';
 import {EmailStr} from './db/Profiles';
 import {EmailAddress, Mandrill} from "../util/Mandrill";
 import {GroupJoins} from "./GroupJoins";
+import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 
 export class GroupInvites {
 
-    public static async invite(batch: WriteBatch,
+    public static async invite(batch: IWriteBatch<unknown>,
                                idUser: IDUser,
                                groupID: GroupIDStr,
                                from: Sender,

@@ -1,4 +1,3 @@
-import {DocumentReference, WriteBatch} from "@google-cloud/firestore";
 import * as admin from 'firebase-admin';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Group, GroupIDStr} from './Groups';
@@ -14,6 +13,8 @@ import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {UserGroups} from './UserGroups';
 import UserRecord = admin.auth.UserRecord;
 import {Arrays, asArray} from "polar-shared/src/util/Arrays";
+import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
+import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
 
 export class GroupMemberInvitations {
 
@@ -27,7 +28,7 @@ export class GroupMemberInvitations {
         return Hashcodes.createID({to, groupID}, 20);
     }
 
-    public static doc(to: EmailStr, groupID: GroupIDStr): [GroupMemberInvitationIDStr, DocumentReference] {
+    public static doc(to: EmailStr, groupID: GroupIDStr): [GroupMemberInvitationIDStr, IDocumentReference<unknown>] {
         const firestore = Firestore.getInstance();
         const id = this.createID(to, groupID);
         const doc = firestore.collection(this.COLLECTION).doc(id);
@@ -40,12 +41,12 @@ export class GroupMemberInvitations {
         return <GroupMemberInvitation> doc.data();
     }
 
-    public static delete(batch: WriteBatch, email: EmailStr, groupID: GroupIDStr) {
+    public static delete(batch: IWriteBatch<unknown>, email: EmailStr, groupID: GroupIDStr) {
         const [_, ref] = this.doc(email, groupID);
         batch.delete(ref);
     }
 
-    public static create(batch: WriteBatch, invitation: GroupMemberInvitationInit) {
+    public static create(batch: IWriteBatch<unknown>, invitation: GroupMemberInvitationInit) {
 
         const [id, ref] = this.doc(invitation.to, invitation.groupID);
 
@@ -64,7 +65,7 @@ export class GroupMemberInvitations {
         ]);
     }
 
-    public static async deleteByGroupID(batch: WriteBatch,
+    public static async deleteByGroupID(batch: IWriteBatch<unknown>,
                                         groupID: GroupIDStr) {
 
         await Collections.deleteByID(batch, this.COLLECTION, () => this.list(groupID));
