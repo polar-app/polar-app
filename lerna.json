@@ -10,8 +10,9 @@
   "version": "2.1.70",
   "concurrency": 3,
   "mutex": "network",
-  "ci": true,
+  "useWorkspaces": true,
   "npmClient": "yarn",
-  "npmClientArgs": ["--verbose", "--link-duplicates"],
-  "useWorkspaces": true
+  "npmClientArgs": [
+    "--verbose"
+  ]
 }
