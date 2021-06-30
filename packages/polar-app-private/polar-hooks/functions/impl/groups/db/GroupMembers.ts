@@ -1,13 +1,13 @@
 import {GroupIDStr} from './Groups';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Firestore} from '../../util/Firestore';
-import {ProfileIDStr} from './Profiles';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
-import {Collections} from './Collections';
 import {GetOrCreateRecord} from './Collections';
 import {ISODateTimeStrings, ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
+import { ProfileIDStr } from 'polar-firebase/src/firebase/om/Profiles';
+import {Collections} from "polar-firestore-like/src/Collections";
 
 export class GroupMembers {
 
@@ -26,9 +26,8 @@ export class GroupMembers {
 
     public static async deleteByGroupID(batch: IWriteBatch<unknown>,
                                         groupID: GroupIDStr) {
-
-        await Collections.deleteByID(batch, this.COLLECTION, () => this.list(groupID));
-
+        const firestore = Firestore.getInstance();
+        await Collections.deleteByID(firestore, this.COLLECTION, batch, () => this.list(groupID));
     }
 
     public static async delete(batch: IWriteBatch<unknown>,
@@ -48,7 +47,8 @@ export class GroupMembers {
     }
 
     public static async list(groupID: GroupIDStr): Promise<ReadonlyArray<GroupMember>> {
-        return await Collections.listByFieldValue(this.COLLECTION, 'groupID', groupID);
+        const firestore = Firestore.getInstance();
+        return await Collections.listByFieldValue(firestore, this.COLLECTION, 'groupID', groupID);
     }
 
     public static async getOrCreate(batch: IWriteBatch<unknown>, groupMemberInit: GroupMemberInit): Promise<GetOrCreateRecord<GroupMember>> {

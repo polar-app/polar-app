@@ -1,11 +1,9 @@
-import {WriteBatch} from "@google-cloud/firestore";
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Firestore} from '../../util/Firestore';
 import * as admin from 'firebase-admin';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import FieldValue = admin.firestore.FieldValue;
 import {UserGroups} from './UserGroups';
-import {UserIDStr} from './Profiles';
 import {ISODateTimeStrings, ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {GroupSlugs} from './GroupSlugs';
@@ -13,10 +11,12 @@ import {IDUser} from '../../util/IDUsers';
 import {GroupAdmins} from './GroupAdmins';
 import UserRecord = admin.auth.UserRecord;
 import {PlainTextStr, URLStr} from "polar-shared/src/util/Strings";
-import {Clause, Collections} from "./Collections";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
+import {UserIDStr} from "polar-firebase/src/firebase/om/Profiles";
+import {Collections} from "polar-firestore-like/src/Collections";
+import Clause = Collections.Clause;
 
 const HASHCODE_LEN = 20;
 
@@ -91,7 +91,9 @@ export class Groups {
             ['name', '==', name]
         ];
 
-        return Collections.getByFieldValues(this.COLLECTION, clauses);
+        const firestore = Firestore.getInstance();
+
+        return Collections.getByFieldValues(firestore, this.COLLECTION, clauses);
 
     }
 
