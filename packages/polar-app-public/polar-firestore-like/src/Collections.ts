@@ -228,6 +228,10 @@ export namespace Collections {
 
     }
 
+    export async function listByFieldValue<T>(field: string, value: ValueType): Promise<ReadonlyArray<T>> {
+        return this.list([[field, '==', value]]);
+    }
+
     //
     // public async getByFieldValues<T>(clauses: ReadonlyArray<Clause>): Promise<T | undefined> {
     //     const results = await this.list<T>(clauses);
@@ -238,9 +242,6 @@ export namespace Collections {
     // }
     //
     //
-    // public async listByFieldValue<T>(field: string, value: ValueType): Promise<ReadonlyArray<T>> {
-    //     return this.list([[field, '==', value]]);
-    // }
     //
     // public collection() {
     //     return this.firestore.collection(this.name);

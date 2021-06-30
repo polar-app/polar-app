@@ -1,6 +1,7 @@
 import {IDocumentReference} from "./IDocumentReference";
 import {TDocumentData} from "./TDocumentData";
 import {ISnapshotMetadata} from "./ISnapshotMetadata";
+import { TUpdateData } from "./TUpdateData";
 
 export type TFieldPath = any;
 
@@ -15,7 +16,7 @@ export interface IWriteBatch<SM> {
 
     set(documentRef: IDocumentReference<SM>, data: TDocumentData): IWriteBatch<SM>;
 
-    // update(documentRef: IDocumentReference, data: TUpdateData): IWriteBatch;
+    update(documentRef: IDocumentReference<any>, data: TUpdateData): IWriteBatch<SM>;
 
     update(documentRef: IDocumentReference<SM>, field: string | TFieldPath, value: any): IWriteBatch<SM>;
 

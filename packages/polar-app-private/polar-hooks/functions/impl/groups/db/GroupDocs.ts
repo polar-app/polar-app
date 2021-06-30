@@ -1,5 +1,4 @@
 import {DocumentReference, WriteBatch} from "@google-cloud/firestore";
-import {ProfileIDStr} from './Profiles';
 import {GroupMemberInvitationIDStr} from './GroupMemberInvitations';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Firestore} from '../../util/Firestore';
@@ -12,6 +11,9 @@ import {DocIDStr} from 'polar-shared/src/groups/DocRef';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {ISODateTimeStrings, ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
+import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
+import { ProfileIDStr } from "polar-firebase/src/firebase/om/Profiles";
 
 export class GroupDocs {
 
@@ -25,14 +27,14 @@ export class GroupDocs {
         return Hashcodes.createID({docID, profileID, groupID}, 20);
     }
 
-    public static doc(docID: DocIDStr, profileID: ProfileIDStr, groupID: GroupIDStr): [GroupMemberInvitationIDStr, DocumentReference] {
+    public static doc(docID: DocIDStr, profileID: ProfileIDStr, groupID: GroupIDStr): [GroupMemberInvitationIDStr, IDocumentReference<unknown>] {
         const firestore = Firestore.getInstance();
         const id = this.createID(docID, profileID, groupID);
         const doc = firestore.collection(this.COLLECTION).doc(id);
         return [id, doc];
     }
 
-    public static async deleteByGroupID(batch: WriteBatch, groupID: GroupIDStr) {
+    public static async deleteByGroupID(batch: IWriteBatch<unknown>, groupID: GroupIDStr) {
         await Collections.deleteByID(batch, this.COLLECTION, () => this.listByGroupID(groupID));
     }
 
@@ -74,7 +76,7 @@ export class GroupDocs {
         return await Collections.listByFieldValue(this.COLLECTION, 'groupID', groupID);
     }
 
-    public static async set(batch: WriteBatch,
+    public static async set(batch: IWriteBatch<unknown>,
                             idUser: IDUser,
                             groupID: GroupIDStr,
                             docRef: DocRef) {

@@ -6,6 +6,8 @@ import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import OrderByDirection = FirebaseFirestore.OrderByDirection;
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
+import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
 
 /**
  * Generic functions for working with Firebase collections
@@ -13,6 +15,9 @@ import {Arrays} from "polar-shared/src/util/Arrays";
  */
 export class Collections {
 
+    /**
+     * @deprecated
+     */
     public static async getOrCreate<T>(batch: WriteBatch,
                                        documentReference: DocumentReference,
                                        createRecord: () => T): Promise<GetOrCreateRecord<T>> {
@@ -126,7 +131,7 @@ export class Collections {
 
     }
 
-    private static snapshotToRecords<T>(snapshot: FirebaseFirestore.QuerySnapshot) {
+    private static snapshotToRecords<T>(snapshot: IQuerySnapshot<unknown>) {
         return snapshot.docs.map(current => <T> current.data());
     }
 
@@ -142,7 +147,7 @@ export class Collections {
 
     }
 
-    public static async deleteByID(batch: WriteBatch,
+    public static async deleteByID(batch: IWriteBatch<unknown>,
                                    collection: string,
                                    provider: () => Promise<ReadonlyArray<IDRecord>>) {
 
@@ -164,18 +169,31 @@ export class Collections {
 
 /**
  * A cursor for easily paging through all results on the data.
+ * @Deprecated
  */
 export interface Cursor<T> {
     hasNext(): boolean;
     next(): Promise<ReadonlyArray<T>>;
 }
 
+/**
+ *
+ * @Deprecated
+ */
 export interface IterateOpts {
     readonly limit?: number;
 }
 
+/**
+ *
+ * @Deprecated
+ */
 export type OrderByClause = [string, OrderByDirection | undefined];
 
+/**
+ *
+ * @Deprecated
+ */
 export interface ListOpts {
     readonly limit?: number;
     readonly after?: any[];
@@ -183,10 +201,22 @@ export interface ListOpts {
 
 }
 
+/**
+ *
+ * @Deprecated
+ */
 export type ValueType = object | string | number;
 
+/**
+ *
+ * @Deprecated
+ */
 export type Clause = [string, WhereFilterOp, ValueType];
 
+/**
+ *
+ * @Deprecated
+ */
 export class Clauses {
 
     public static assertPresent(clause: Clause) {
@@ -204,10 +234,18 @@ export class Clauses {
 
 }
 
+/**
+ *
+ * @Deprecated
+ */
 export interface IDRecord {
     readonly id: string;
 }
 
+/**
+ *
+ * @Deprecated
+ */
 export interface GetOrCreateRecord<T> {
     readonly created: boolean;
     readonly record: T;

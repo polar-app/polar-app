@@ -27,6 +27,7 @@ export interface ICollectionReference<SM> {
     /** The collection's identifier. */
     readonly id: string;
 
+    // FIXME admin SDK has get vs doc?
     readonly doc: (documentPath?: string) => IDocumentReference<SM>;
 
     readonly where: (fieldPath: string, opStr: TWhereFilterOp, value: any) => IQuery<SM>;

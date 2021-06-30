@@ -9,6 +9,9 @@ import {IDUser} from "../../util/IDUsers";
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {DocIDStr} from 'polar-shared/src/groups/DocRef';
 import {GroupDocInfos} from "./GroupDocInfos";
+import {WriteBatchLike} from "polar-firestore-like/src/IFirestore";
+import {Firestore} from "../../util/Firestore";
+import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 
 /**
  * Handles mutations for DocInfo, DocMeta, and DocPermission as these need to all be
@@ -19,7 +22,7 @@ export class GroupDocActions {
 
     private static readonly COLLECTIONS = ['doc_meta', 'doc_info', 'doc_permission'];
 
-    public static async addToGroup(batch: WriteBatch,
+    public static async addToGroup(batch: IWriteBatch<unknown>,
                                    idUser: IDUser,
                                    groupID: GroupIDStr,
                                    doc: DocRef,
@@ -71,7 +74,7 @@ export class GroupDocActions {
 
     }
 
-    public static async removeFromGroup(batch: WriteBatch,
+    public static async removeFromGroup(batch: IWriteBatch<unknown>,
                                         groupID: GroupIDStr,
                                         docID: DocIDStr) {
 
@@ -81,12 +84,11 @@ export class GroupDocActions {
 
     }
 
-    public static setVisibility(batch: WriteBatch,
+    public static setVisibility(batch: IWriteBatch<unknown>,
                                 docID: DocIDStr,
                                 visibility: GroupVisibility) {
 
-        const app = FirebaseAdmin.app();
-        const firestore = app.firestore();
+        const firestore = Firestore.getInstance();
 
         for (const collection of this.COLLECTIONS) {
 
@@ -100,14 +102,13 @@ export class GroupDocActions {
 
     }
 
-    private static addToGroupForCollection(batch: WriteBatch,
+    private static addToGroupForCollection(batch: IWriteBatch<unknown>,
                                            collection: string,
                                            groupID: GroupIDStr,
                                            docID: DocIDStr,
                                            visibility: VisibilityMutation) {
 
-        const app = FirebaseAdmin.app();
-        const firestore = app.firestore();
+        const firestore = Firestore.getInstance();
 
         const ref = firestore.collection(collection).doc(docID);
 
@@ -135,13 +136,12 @@ export class GroupDocActions {
 
     }
 
-    private static async leaveGroupForCollection(batch: WriteBatch,
+    private static async leaveGroupForCollection(batch: IWriteBatch<unknown>,
                                                  collection: string,
                                                  groupID: GroupIDStr,
                                                  docID: DocIDStr) {
 
-        const app = FirebaseAdmin.app();
-        const firestore = app.firestore();
+        const firestore = Firestore.getInstance();
 
         const ref = firestore.collection(collection).doc(docID);
 

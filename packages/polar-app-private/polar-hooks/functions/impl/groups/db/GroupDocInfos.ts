@@ -1,19 +1,21 @@
-import {DocumentReference, WriteBatch} from "@google-cloud/firestore";
 import {Firestore} from "../../util/Firestore";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {ISODateString, ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {Collections, GetOrCreateRecord} from "./Collections";
 import {GroupIDStr} from "./Groups";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {GroupDoc} from "./GroupDocs";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
+import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
+import {Collections} from "polar-firestore-like/src/Collections";
 
 export class GroupDocInfos {
 
     public static readonly COLLECTION = 'group_doc_info';
 
     public static createDocumentReference(groupID: GroupIDStr,
-                                          fingerprint: DocFingerprintStr): DocumentReference {
+                                          fingerprint: DocFingerprintStr): IDocumentReference<unknown> {
+
         const firestore = Firestore.getInstance();
 
         const id = Hashcodes.create({groupID, fingerprint});
@@ -24,11 +26,13 @@ export class GroupDocInfos {
 
     public static async listByGroupID(groupID: GroupIDStr): Promise<ReadonlyArray<GroupDoc>> {
         Preconditions.assertPresent(groupID, 'groupID');
+        const firestore = Firestore.getInstance();
 
-        return await Collections.listByFieldValue(this.COLLECTION, 'groupID', groupID);
+        return await Collections.listByFieldValue(firestore, this.COLLECTION, 'groupID', groupID);
+
     }
 
-    public static async getOrCreate(batch: WriteBatch,
+    public static async getOrCreate(batch: IWriteBatch<unknown>,
                                     groupDocInfoInit: GroupDocInfoInit): Promise<GetOrCreateRecord<GroupDocInfo>> {
 
         const {groupID, fingerprint} = groupDocInfoInit;
