@@ -210,7 +210,10 @@ export namespace CachedStore {
                                 fromCache: true
                             },
                             exists: cacheData.exists,
-                            data: () => cacheData.data
+                            data: () => cacheData.data,
+                            get: () => {
+                                throw new Error('not implemented')
+                            }
                         }
                     }
 
@@ -243,7 +246,10 @@ export namespace CachedStore {
                             hasPendingWrites: false,
                             fromCache: true,
                         },
-                        data: () => undefined
+                        data: () => undefined,
+                        get: () => {
+                            throw new Error("not implemented");
+                        }
                     }).catch(err => console.error("Unable to update cache: ", err));
 
                 }
@@ -261,7 +267,10 @@ export namespace CachedStore {
                             hasPendingWrites: false,
                             fromCache: true,
                         },
-                        data: () => data
+                        data: () => data,
+                        get: () => {
+                            throw new Error("not implemented");
+                        }
                     }).catch(err => console.error("Unable to update cache: ", err));
 
                     return this.doc.set(data);
@@ -634,16 +643,24 @@ export namespace CachedStore {
                 return this;
             }
 
-            set(documentRef: IDocumentReferenceClient, data: TDocumentData): IWriteBatchClient {
-                this.ops.push({id: documentRef.id, type: 'set', documentRef, data});
-                this._batch.set(documentRef, data);
-                return this;
+            // set(documentRef: IDocumentReferenceClient, data: TDocumentData): IWriteBatchClient {
+            //     this.ops.push({id: documentRef.id, type: 'set', documentRef, data});
+            //     this._batch.set(documentRef, data);
+            //     return this;
+            // }
+
+            // update(documentRef: IDocumentReferenceClient, path: string, value: any): IWriteBatchClient {
+            //     throw new Error("Not implemented");
+            //     // this._batch.update(documentRef, path, data)
+            //     // return this;
+            // }
+
+            set(a: any, b: any, c?: any): IWriteBatchClient {
+                throw new Error("not implemented");
             }
 
-            update(documentRef: IDocumentReferenceClient, path: string, value: any): IWriteBatchClient {
-                throw new Error("Not implemented");
-                // this._batch.update(documentRef, path, data)
-                // return this;
+            update(a: any, b: any, c?: any): IWriteBatchClient {
+                throw new Error("not implemented");
             }
 
             async commit(): Promise<void> {

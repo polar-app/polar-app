@@ -43,7 +43,10 @@ export namespace CachedQueries {
                 exists: doc.exists,
                 id: doc.id,
                 metadata: {...doc.metadata},
-                data: () => cacheEntry.data!
+                data: () => cacheEntry.data!,
+                get: () => {
+                    throw new Error("not implemented");
+                }
             };
         }
 

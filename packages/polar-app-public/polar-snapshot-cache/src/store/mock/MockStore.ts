@@ -58,21 +58,28 @@ export namespace MockStore {
                 return this;
             }
 
-            set(documentRef: IDocumentReferenceClient, data: TDocumentData): IWriteBatchClient {
-                const collectionName = documentRef.parent.id;
-                requireCollection(collectionName);
-                collections[collectionName][documentRef.id] = data;
-                return this;
-            }
+            // set(documentRef: IDocumentReferenceClient, data: TDocumentData): IWriteBatchClient {
+            //     const collectionName = documentRef.parent.id;
+            //     requireCollection(collectionName);
+            //     collections[collectionName][documentRef.id] = data;
+            //     return this;
+            // }
 
             // update(documentRef: IDocumentReference, data: TUpdateData): IWriteBatch {
             //     throw new Error("Not implemented");
             // }
 
-            update(documentRef: IDocumentReferenceClient, path: string, value: any): IWriteBatchClient {
-                throw new Error("Not implemented");
+            // update(documentRef: IDocumentReferenceClient, path: string, value: any): IWriteBatchClient {
+            //     throw new Error("Not implemented");
+            // }
+
+            set(a: any, b: any, c?: any): IWriteBatchClient {
+                throw new Error("not implemented");
             }
 
+            update(a: any, b: any, c?: any): IWriteBatchClient {
+                throw new Error("not implemented");
+            }
 
             async commit(): Promise<void> {
                 // noop
