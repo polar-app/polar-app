@@ -41,7 +41,7 @@ import {
     useBlockExpandPersistenceWriter
 } from "../persistence/BlockExpandWriters";
 import {IBlockContentStructure} from "../HTMLToBlocks";
-import {getBlockContentEditableRoot} from "../contenteditable/BlockContentEditable";
+import {DOMBlocks} from "../contenteditable/BlockContentEditable";
 
 export const ENABLE_UNDO_TRACING = false;
 
@@ -750,6 +750,14 @@ export class BlocksStore implements IBlocksStore {
         const activeIndex = childIndex + deltaIndex;
         const newActive = items[activeIndex];
         
+        if (! newActive && ! opts.shiftKey) {
+            const siblingID = DOMBlocks.getSiblingID(this._active.id, delta);
+            if (siblingID) {
+                this.setActiveWithPosition(siblingID, pos);
+            }
+            return true;
+        }
+
         if (! newActive) {
             this.setActiveWithPosition(this._active.id, delta === 'prev' ? 'start' : 'end');
             return true;
@@ -1556,7 +1564,7 @@ export class BlocksStore implements IBlocksStore {
         if (this.active) {
 
             const id = this.active.id;
-            const contentEditableRoot = getBlockContentEditableRoot(id);
+            const contentEditableRoot = DOMBlocks.getBlockElement(id);
 
             if (contentEditableRoot) {
                 const pos = CursorPositions.computeCurrentOffset(contentEditableRoot);
@@ -1570,7 +1578,7 @@ export class BlocksStore implements IBlocksStore {
 
         }
 
-        return undefined;
+        return this._active;
     }
 
     @action private cursorOffsetRestore(active: IActiveBlock | undefined) {
