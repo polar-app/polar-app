@@ -1,7 +1,6 @@
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {ProfileDocAnnotation, ProfileDocAnnotations} from "./ProfileDocAnnotation";
 import {GroupDocAnnotation, GroupDocAnnotations} from "./GroupDocAnnotations";
-import {defaultUserProfileProvider, ProfileIDStr, UserIDStr, UserProfileProvider} from "../Profiles";
 import {BaseDocAnnotation, BaseDocAnnotations} from "./BaseDocAnnotations";
 import {IDRecord, IDRecordMutations} from "../mutations/IDRecordMutations";
 import {GroupIDStr} from "../Groups";
@@ -9,6 +8,15 @@ import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {UserID} from "../../../../sandbox/test";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
+import {Firestore} from "../../../util/Firestore";
+import {IProfile, ProfileIDStr, Profiles, UserIDStr} from "polar-firebase/src/firebase/om/Profiles";
+
+export type UserProfileProvider = (uid: UserIDStr) => Promise<IProfile | undefined>;
+
+export const defaultUserProfileProvider = async (uid: UserIDStr) => {
+    const firestore = Firestore.getInstance();
+    return await Profiles.userProfile(firestore, uid);
+}
 
 export class DocAnnotations {
 

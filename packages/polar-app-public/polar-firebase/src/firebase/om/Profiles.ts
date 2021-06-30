@@ -144,28 +144,16 @@ export namespace Profiles {
         await Collections.deleteByID(firestore, COLLECTION, batch, async () => [{id}] );
 
     }
-    //
-    // public static async userProfile(uid: UserIDStr): Promise<Profile | undefined> {
-    //
-    //     if (! uid) {
-    //         return undefined;
-    //     }
-    //
-    //     const profileOwner = await ProfileOwners.get(uid);
-    //
-    //     if (! profileOwner) {
-    //         // getting their user from the database and writing it back out...
-    //         return undefined;
-    //     }
-    //
-    //     const profile = await this.get(profileOwner.profileID);
-    //
-    //     if ( ! profile) {
-    //         return undefined;
-    //     }
-    //
-    //     return profile;
-    //
-    // }
+
+    export async function userProfile(firestore: IFirestore<unknown>,
+                                      uid: UserIDStr): Promise<IProfile | undefined> {
+
+        if (! uid) {
+            return undefined;
+        }
+
+        return getByUserID(firestore, uid);
+
+    }
 
 }

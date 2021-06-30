@@ -2,7 +2,6 @@ import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {TagStr} from './Groups';
 import * as admin from 'firebase-admin';
 import {Image, Users} from './Users';
-import {WriteBatch} from '@google-cloud/firestore';
 import {Firestore} from '../../util/Firestore';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {Collections} from './Collections';
@@ -167,13 +166,3 @@ export type UserIDStr = string;
  * @deprecated
  */
 export type EmailStr = string;
-
-/**
- * @deprecated
- */
-export type UserProfileProvider = (uid: UserIDStr) => Promise<Profile | undefined>;
-
-/**
- * @deprecated
- */
-export const defaultUserProfileProvider = async (uid: UserIDStr) => await Profiles.userProfile(uid);
