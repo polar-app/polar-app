@@ -111,22 +111,24 @@ export namespace Profiles {
                               batch: IWriteBatch<unknown>,
                               id: ProfileIDStr,
                               user: IUserRecord,
-                              profileInit: IProfileInit) {
+                              update: IProfileUpdate) {
 
         const image = Users.createImage(user);
 
         const updated = ISODateTimeStrings.create();
 
-        const profile: IProfile = {
-            ...profileInit,
-            id,
-            image,
-            updated,
-        };
+        // TODO need to handle this properly. Not sure the right strategy right now
 
-        const ref = firestore.collection(COLLECTION).doc(id);
-
-        batch.set(ref, Dictionaries.onlyDefinedProperties(profile));
+        // const profile: IProfile = {
+        //     ...update,
+        //     id,
+        //     image,
+        //     updated,
+        // };
+        //
+        // const ref = firestore.collection(COLLECTION).doc(id);
+        //
+        // batch.set(ref, Dictionaries.onlyDefinedProperties(profile));
 
     }
 
