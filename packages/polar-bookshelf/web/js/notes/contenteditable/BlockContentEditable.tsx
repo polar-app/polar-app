@@ -2,7 +2,7 @@ import {HTMLStr} from 'polar-shared/src/util/Strings';
 import React from 'react';
 import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import {observer} from "mobx-react-lite"
-import {BlockIDStr, useBlocksStore, IActiveBlock} from '../store/BlocksStore';
+import {BlockIDStr, IActiveBlock} from '../store/BlocksStore';
 import {ContentEditables} from "../ContentEditables";
 import {createActionsProvider} from "../../mui/action_menu/ActionStore";
 import {NoteFormatPopper} from "../NoteFormatPopper";
@@ -16,6 +16,7 @@ import {useMutationObserver} from '../../../../web/js/hooks/ReactHooks';
 import {MarkdownContent} from '../content/MarkdownContent';
 import {BlockEditorGenericProps} from '../BlockEditor';
 import {IBlockContentStructure} from '../HTMLToBlocks';
+import {useBlocksTreeStore} from '../BlocksTree';
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed
@@ -49,7 +50,7 @@ export const BlockContentEditable = observer((props: IProps) => {
     const [content] = React.useState(() => MarkdownContentConverter.toHTML(props.content));
     const divRef = React.useRef<HTMLDivElement | null>(null);
     const contentRef = React.useRef(props.content);
-    const blocksStore = useBlocksStore();
+    const blocksTreeStore = useBlocksTreeStore();
 
     const updateCursorPosition = useUpdateCursorPosition();
 
@@ -65,13 +66,13 @@ export const BlockContentEditable = observer((props: IProps) => {
             naturalHeight: image.height
         };
 
-        blocksStore.createNewBlock(props.id, {content});
+        blocksTreeStore.createNewBlock(props.id, {content});
 
-    }, [blocksStore, props.id]);
+    }, [blocksTreeStore, props.id]);
 
     const onPasteBlocks = React.useCallback((blocks: ReadonlyArray<IBlockContentStructure>) => {
-        blocksStore.insertFromBlockContentStructure(blocks);
-    }, [blocksStore]);
+        blocksTreeStore.insertFromBlockContentStructure(blocks);
+    }, [blocksTreeStore]);
 
     const onPasteError = React.useCallback((err: Error) => {
         console.error("Got paste error: ", err);
@@ -81,7 +82,7 @@ export const BlockContentEditable = observer((props: IProps) => {
 
     const handlePaste = usePasteHandler({onPasteImage, onPasteError, onPasteBlocks});
 
-    const noteLinkActions = blocksStore.getNamedBlocks().map(current => ({
+    const noteLinkActions = blocksTreeStore.getNamedBlocks().map(current => ({
         id: current,
         text: current
     }));
@@ -158,7 +159,7 @@ export const BlockContentEditable = observer((props: IProps) => {
 
             const div = divRef.current;
             if (div && ENABLE_CURSOR_RESET) {
-                const active = blocksStore.active;
+                const active = blocksTreeStore.active;
                 const isActive = active && active.id === props.id;
 
                 // Remove the cursor from the block if it's not active to prevent it from being reset to the start when innerHTML is set
@@ -178,7 +179,7 @@ export const BlockContentEditable = observer((props: IProps) => {
 
         }
 
-    }, [props.content, props.id, blocksStore, updateCursorPosition]);
+    }, [props.content, props.id, blocksTreeStore, updateCursorPosition]);
 
     const handleRef = React.useCallback((current: HTMLDivElement | null) => {
 
@@ -315,7 +316,7 @@ type IUseHandleLinkDeletionOpts = {
 };
 const useHandleLinkDeletion = ({ blockID, elem }: IUseHandleLinkDeletionOpts) => {
     const mutationObserverConfig = React.useMemo(() => ({ childList: true }), []);
-    const blocksStore = useBlocksStore();
+    const blocksTreeStore = useBlocksTreeStore();
 
     useMutationObserver((mutations) => {
         const isElement = (node: Node): node is Element => node.nodeType === Node.ELEMENT_NODE;
@@ -335,12 +336,12 @@ const useHandleLinkDeletion = ({ blockID, elem }: IUseHandleLinkDeletionOpts) =>
             const removedLinks = removed.filter((elem) => !added.some(compareLinks(elem)));
 
             for (let removedLink of removedLinks) {
-                const block = blocksStore.getBlock(blockID);
-                const linkedBlock = blocksStore.getBlockByName(removedLink.getAttribute('href')!.slice(1));
+                const block = blocksTreeStore.getBlock(blockID);
+                const linkedBlock = blocksTreeStore.getBlockByName(removedLink.getAttribute('href')!.slice(1));
                 if (block && linkedBlock && block.content.type === 'markdown') {
                     const newContent = new MarkdownContent(block.content.toJSON());
                     newContent.removeLink(linkedBlock.id);
-                    blocksStore.setBlockContent(blockID, newContent);
+                    blocksTreeStore.setBlockContent(blockID, newContent);
                 }
             }
         }

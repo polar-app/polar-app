@@ -3,8 +3,7 @@ import {MUIBrowserLinkStyle} from "../mui/MUIBrowserLinkStyle";
 import {NotesInbound} from "./NotesInbound";
 import {Block} from "./Block";
 import {NoteStyle} from "./NoteStyle";
-import {BlockIDStr} from "./store/BlocksStore";
-import {useBlocksStore} from "./store/BlocksStore";
+import {BlockIDStr, useBlocksStore} from "./store/BlocksStore";
 import {observer} from "mobx-react-lite"
 import {NoteSelectionHandler} from "./NoteSelectionHandler";
 import {ActionMenuPopup} from "../mui/action_menu/ActionMenuPopup";
@@ -13,6 +12,7 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import {NotesToolbar} from "./NotesToolbar";
 import {Block as BlockClass} from "./store/Block";
 import {BlockTitle} from "./BlockTitle";
+import {BlocksTreeProvider} from "./BlocksTree";
 
 interface INoteRootRendererProps {
     readonly block: BlockClass;
@@ -27,7 +27,6 @@ export const NoteRootRenderer: React.FC<INoteRootRendererProps> = ({ block }) =>
     const id = block.id;
 
     React.useEffect(() => {
-        blocksStore.setRoot(id);
         const activeBlock = blocksStore.getActiveBlockForNote(id);
         if (activeBlock) {
             blocksStore.setActiveWithPosition(activeBlock.id, activeBlock.pos || 'start');
@@ -41,13 +40,15 @@ export const NoteRootRenderer: React.FC<INoteRootRendererProps> = ({ block }) =>
             <NoteSelectionHandler style={{flexGrow: 1}}>
                 <NoteStyle>
                     <MUIBrowserLinkStyle style={{flexGrow: 1}}>
-                        <NotesToolbar/>
+                        <BlocksTreeProvider root={id}>
+                        
+                            <NotesToolbar/>
+                            <BlockTitle id={id}/>
+                            <Block parent={undefined} id={id}/>
 
-                        <BlockTitle id={id}/>
-                        <Block root={id} parent={undefined} id={id}/>
+                            <NotesInbound id={id}/>
 
-                        <NotesInbound id={id}/>
-
+                        </BlocksTreeProvider>
                     </MUIBrowserLinkStyle>
                     <ActionMenuPopup/>
                 </NoteStyle>

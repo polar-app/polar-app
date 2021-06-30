@@ -1,13 +1,13 @@
 import React from 'react';
 import Autocomplete from "@material-ui/lab/Autocomplete"
 import TextField from '@material-ui/core/TextField';
-import {useBlocksStore} from "../store/BlocksStore";
-import { observer } from "mobx-react-lite"
+import {observer} from "mobx-react-lite"
 import {useNoteLinkLoader} from "../NoteLinkLoader";
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Box from '@material-ui/core/Box';
 import SearchIcon from '@material-ui/icons/Search';
 import {createStyles, makeStyles} from '@material-ui/core';
+import {useBlocksTreeStore} from '../BlocksTree';
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -21,10 +21,10 @@ const useStyles = makeStyles(() =>
 export const SearchForNote = observer(() => {
 
     const classes = useStyles();
-    const blocksStore = useBlocksStore();
+    const blocksTreeStore = useBlocksTreeStore();
     const noteLinkLoader = useNoteLinkLoader();
 
-    const namedBlocks = blocksStore.getNamedBlocks();
+    const namedBlocks = blocksTreeStore.getNamedBlocks();
 
     const [inputValue, setInputValue] = React.useState('');
 
@@ -38,10 +38,10 @@ export const SearchForNote = observer(() => {
                 value={''}
                 fullWidth
                 blurOnSelect={true}
-                onInputChange={(event, nextInputValue, reason) => {
+                onInputChange={(_, nextInputValue) => {
                     setInputValue(nextInputValue);
                 }}
-                onChange={(event, value, reason, details) => {
+                onChange={(_, value) => {
                     if (value) {
                         noteLinkLoader(value);
                         setInputValue('');

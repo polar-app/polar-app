@@ -6,14 +6,15 @@ import {createContextMenu} from "../../../apps/repository/js/doc_repo/MUIContext
 import {IDocViewerContextMenuOrigin} from "../../../apps/doc/src/DocViewerMenu";
 import {BlockContextMenuItems} from "./BlockContextMenuItems";
 import useTheme from "@material-ui/core/styles/useTheme";
-import { BlockExpandToggleButton } from "./BlockExpandToggleButton";
-import { BlockIDStr, useBlocksStore } from "./store/BlocksStore";
-import { observer,  } from "mobx-react-lite"
+import {BlockExpandToggleButton} from "./BlockExpandToggleButton";
+import {BlockIDStr} from "./store/BlocksStore";
+import {observer} from "mobx-react-lite"
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
-import { BlockDragIndicator } from "./BlockDragIndicator";
+import {BlockDragIndicator} from "./BlockDragIndicator";
 import {useUndoQueue} from "../undo/UndoQueueProvider2";
+import {useBlocksTreeStore} from "./BlocksTree";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -26,7 +27,6 @@ const useStyles = makeStyles((theme) =>
 interface IProps {
     readonly parent: BlockIDStr | undefined;
     readonly id: BlockIDStr;
-    readonly root: BlockIDStr;
 }
 
 export interface IBlockContextMenuOrigin {
@@ -37,19 +37,20 @@ export const [BlockContextMenu, useBlockContextMenu]
     = createContextMenu<IDocViewerContextMenuOrigin>(BlockContextMenuItems, {name: 'notes'});
 
 export const BlockInner = observer((props: IProps) => {
+    const blocksTreeStore = useBlocksTreeStore();
 
-    const {id, root} = props;
+    const {id} = props;
+    const {root} = blocksTreeStore;
 
-    const blocksStore = useBlocksStore();
     const classes = useStyles();
     const undoQueue = useUndoQueue();
 
     const theme = useTheme();
     const contextMenuHandlers = useBlockContextMenu();
 
-    const expanded = blocksStore.isExpanded(id);
-    const selected = blocksStore.isSelected(id);
-    const block = blocksStore.getBlock(id);
+    const expanded = blocksTreeStore.isExpanded(id);
+    const selected = blocksTreeStore.isSelected(id);
+    const block = blocksTreeStore.getBlock(id);
 
     const divRef = React.useRef<HTMLDivElement | null>(null);
     const dragActive = React.useRef<boolean>(false);
@@ -58,11 +59,11 @@ export const BlockInner = observer((props: IProps) => {
 
         if (event.shiftKey) {
 
-            if (blocksStore.active !== undefined) {
+            if (blocksTreeStore.active !== undefined) {
 
-                if (blocksStore.active?.id !== id) {
+                if (blocksTreeStore.active?.id !== id) {
 
-                    blocksStore.setSelectionRange(blocksStore.active.id, id, root);
+                    blocksTreeStore.setSelectionRange(blocksTreeStore.active.id, id);
 
                     window.getSelection()!.removeAllRanges();
 
@@ -75,10 +76,10 @@ export const BlockInner = observer((props: IProps) => {
             event.stopPropagation();
 
         } else {
-            blocksStore.clearSelected('Note: handleMouseDown');
+            blocksTreeStore.clearSelected('Note: handleMouseDown');
         }
 
-    }, [id, blocksStore, root]);
+    }, [id, blocksTreeStore]);
 
     const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -153,10 +154,10 @@ export const BlockInner = observer((props: IProps) => {
     }, [undoQueue]);
 
     const handleDragStart = React.useCallback((event: React.DragEvent) => {
-        blocksStore.setDropSource(props.id);
+        blocksTreeStore.setDropSource(props.id);
         // event.preventDefault();
         // event.stopPropagation();
-    }, [props.id, blocksStore]);
+    }, [props.id, blocksTreeStore]);
 
     const computeDragPosition = React.useCallback((event: React.DragEvent | React.MouseEvent) => {
 
@@ -183,11 +184,11 @@ export const BlockInner = observer((props: IProps) => {
 
         const pos = computeDragPosition(event);
 
-        blocksStore.setDropTarget({
+        blocksTreeStore.setDropTarget({
             id: props.id, pos
         });
 
-    }, [computeDragPosition, props.id, blocksStore]);
+    }, [computeDragPosition, props.id, blocksTreeStore]);
 
     const handleDragEnter = React.useCallback((event: React.DragEvent) => {
 
@@ -230,11 +231,11 @@ export const BlockInner = observer((props: IProps) => {
         return null;
     }
 
-    const items = blocksStore.lookup(block.itemsAsArray || []);
+    const items = blocksTreeStore.lookup(block.itemsAsArray || []);
 
     const hasItems = items.length > 0;
 
-    const dropActive = blocksStore.dropTarget?.id === props.id && blocksStore.dropSource !== props.id;
+    const dropActive = blocksTreeStore.dropTarget?.id === props.id && blocksTreeStore.dropSource !== props.id;
 
     return (
         <div ref={divRef}
@@ -244,7 +245,7 @@ export const BlockInner = observer((props: IProps) => {
              onDragStart={event => handleDragStart(event)}
              onDragEnter={event => handleDragEnter(event)}
              onDragLeave={event => handleDragExit(event)}
-             onDragEnd={() => blocksStore.clearDrop()}
+             onDragEnd={() => blocksTreeStore.clearDrop()}
              onDrop={event => handleDrop(event)}
              className={clsx(['Block', selected ? classes.selected : undefined])}>
 
@@ -277,7 +278,7 @@ export const BlockInner = observer((props: IProps) => {
                                 {block.parent && <BlockBulletButton target={props.id}/>}
 
                             </div>
-                            <BlockEditor root={root} key={props.id} parent={props.parent} id={props.id} />
+                            <BlockEditor key={props.id} parent={props.parent} id={props.id} />
 
                             {/*{(block.content.type === 'date' || block.content.type === 'name') && (*/}
                             {/*    <div style={{*/}
@@ -291,7 +292,7 @@ export const BlockInner = observer((props: IProps) => {
                         </div>
 
                         {(expanded || id === root) && (
-                            <BlockItems root={root} parent={props.id} notes={items}/>
+                            <BlockItems parent={props.id} notes={items}/>
                         )}
                 </>
             </BlockDragIndicator>

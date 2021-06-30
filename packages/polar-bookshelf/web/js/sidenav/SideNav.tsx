@@ -19,14 +19,14 @@ import SyncIcon from '@material-ui/icons/Sync';
 import {useAnkiSyncCallback} from "./AnkiSyncHook";
 import {SwitchToOpenDocumentKeyboardCommand} from "./SwitchToOpenDocumentKeyboardCommand";
 import {ZenModeActiveContainer} from "../mui/ZenModeActiveContainer";
-import { Intercom } from '../apps/repository/integrations/Intercom';
-import { SideNavQuestionButton } from './SideNavQuestionButton';
+import {Intercom} from '../apps/repository/integrations/Intercom';
+import {SideNavQuestionButton} from './SideNavQuestionButton';
 import {VerticalDynamicScroller} from './DynamicScroller';
 import {DateContents} from "../notes/content/DateContents";
-import {useBlocksStore} from "../notes/store/BlocksStore";
-import { observer } from "mobx-react-lite"
-import { autorun } from 'mobx'
+import {observer} from "mobx-react-lite"
 import {URLPathStr} from 'polar-shared/src/url/PathToRegexps';
+import {useBlocksTreeStore} from '../notes/BlocksTree';
+import {useBlocksStore} from '../notes/store/BlocksStore';
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -164,6 +164,7 @@ const NotesButton = observer(function NotesButton() {
             // dont' do anything yet.
             return;
         }
+
         const dateContent = DateContents.create();
 
         const block = blocksStore.getBlockByName(dateContent.data);

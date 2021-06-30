@@ -160,7 +160,6 @@ describe('BlocksStore', function() {
             const store = new BlocksStore('1234', UndoQueues2.create());
 
             assert.isTrue(isObservable(store));
-            assert.isTrue(isObservableProp(store, 'root'));
             assert.isTrue(isObservableProp(store, 'active'));
             assert.isTrue(isObservableProp(store, 'index'));
             assert.isTrue(isObservableProp(store, 'indexByName'));
@@ -540,12 +539,12 @@ describe('BlocksStore', function() {
 
     });
 
-    describe("indent/unindentBlock", () => {
+    describe("indent/unindent Block", () => {
+        const root = '102';
         let store: BlocksStore;
 
         beforeEach(() => {
             store = createStore();
-            store.setRoot('102');
         });
 
         it("second child block", async function() {
@@ -573,7 +572,7 @@ describe('BlocksStore', function() {
 
             TestingTime.forward(1000);
 
-            const indentResult = store.indentBlock('104')
+            const indentResult = store.indentBlock(root, '104')
 
             assertJSON(store.getBlockForMutation('102')?.toJSON(), {
                 "content": {
@@ -623,8 +622,8 @@ describe('BlocksStore', function() {
         });
 
         it("indent node and try to indent it again to make sure it fails properly", async function() {
-            const indent0 = store.indentBlock('104');
-            const indent1 = store.indentBlock('104');
+            const indent0 = store.indentBlock(root, '104');
+            const indent1 = store.indentBlock(root, '104');
 
             assert.equal(indent1.length, 1);
 
@@ -675,7 +674,7 @@ describe('BlocksStore', function() {
                 "updated": "2012-03-02T11:38:49.321Z"
             });
 
-            store.indentBlock('104')
+            store.indentBlock(root, '104')
 
             assertJSON(store.getBlockForMutation('104')?.toJSON(), {
                 "content": {
@@ -699,7 +698,7 @@ describe('BlocksStore', function() {
 
             assert.equal(store.getBlockForMutation('104')!.parent, '103');
 
-            store.unIndentBlock('104');
+            store.unIndentBlock(root, '104');
 
             assertJSON(store.getBlockForMutation('104')?.toJSON(),{
                 "content": {
@@ -744,9 +743,7 @@ describe('BlocksStore', function() {
         });
 
         it("indent on a root node", () => {
-            store.setRoot('108');
-
-            const indentResult = store.indentBlock('108')
+            const indentResult = store.indentBlock('108', '108')
 
             assert.equal(indentResult[0].error!, 'no-parent');
 
@@ -755,7 +752,7 @@ describe('BlocksStore', function() {
         it("indent the first node and fail properly", () => {
             // this should not work because there should be no previous sibling
             // to make as the new parent.
-            const indentResult = store.indentBlock('103')
+            const indentResult = store.indentBlock(root, '103')
 
             assert.equal(indentResult[0].error!, 'no-sibling');
 
@@ -768,9 +765,10 @@ describe('BlocksStore', function() {
         });
 
         it("should work with multiple blocks selected and update the parents of nested children", () => {
-            store.computeLinearTree('102').forEach(block => store.expanded[block] = true);
-            store.setSelectionRange('103', '117');
-            store.indentBlock('105')
+            store = createStore();
+            store.computeLinearTree(root).forEach(block => store.expanded[block] = true);
+            store.setSelectionRange(root, '103', '117');
+            store.indentBlock(root, '105');
 
             const blockTree: BlockTree = [
                 {
@@ -798,7 +796,6 @@ describe('BlocksStore', function() {
                 }
             ];
 
-
             assertBlockTree(store, blockTree);
         });
 
@@ -807,8 +804,8 @@ describe('BlocksStore', function() {
             store.computeLinearTree(root, {includeInitial: true})
                 .forEach(block => store.expanded[block] = true);
             // With a selection
-            store.setSelectionRange('118', '118', root);
-            store.unIndentBlock('118', root);
+            store.setSelectionRange(root, '118', '118');
+            store.unIndentBlock(root, '118');
 
             const blockTree: BlockTree = [
                 {
@@ -826,21 +823,21 @@ describe('BlocksStore', function() {
             assertBlockTree(store, blockTree);
 
             // Unindenting again shouldn't be allowed
-            store.unIndentBlock('118', root);
-            store.unIndentBlock('118', root);
-            store.unIndentBlock('118', root);
-            store.unIndentBlock('118', root);
+            store.unIndentBlock(root, '118');
+            store.unIndentBlock(root, '118');
+            store.unIndentBlock(root, '118');
+            store.unIndentBlock(root, '118');
 
             assertBlockTree(store, blockTree);
 
             // without a selection
             store.clearSelected('indent/unindent test');
-            store.indentBlock('118', root);
+            store.indentBlock(root, '118');
 
-            store.unIndentBlock('118', root);
-            store.unIndentBlock('118', root);
-            store.unIndentBlock('118', root);
-            store.unIndentBlock('118', root);
+            store.unIndentBlock(root, '118');
+            store.unIndentBlock(root, '118');
+            store.unIndentBlock(root, '118');
+            store.unIndentBlock(root, '118');
             assertBlockTree(store, blockTree);
         });
 
@@ -848,7 +845,7 @@ describe('BlocksStore', function() {
             const root = '105';
             store.computeLinearTree(root, {includeInitial: true})
                 .forEach(block => store.expanded[block] = true);
-            store.setSelectionRange('105', '118', root);
+            store.setSelectionRange(root, '105', '118');
             store.unIndentBlock(root, root)
             store.unIndentBlock(root, root)
 
@@ -883,7 +880,7 @@ describe('BlocksStore', function() {
         });
 
         it("should not allow unindenting root blocks", () => {
-            const indentResult = store.unIndentBlock('102');
+            const indentResult = store.unIndentBlock('102', '102');
 
             assert.equal(indentResult[0].error!, 'no-parent');
         });
@@ -941,18 +938,18 @@ describe('BlocksStore', function() {
     });
     
     describe("navPrev", () => {
+        const root = '102';
         let store: BlocksStore;
 
         beforeEach(() => {
             store = createStore();
-            store.setRoot('102');
         });
 
         it("Should set the previous block as active properly (with all blocks expanded)", () => {
             store.computeLinearTree('102').forEach(block => store.expanded[block] = true);
             store.setActive('116');
 
-            store.navPrev('start', {shiftKey: false});
+            store.navPrev(root, 'start', {shiftKey: false});
             const {active} = store;
             assertPresent(active);
             assert.equal(active.id, '104');
@@ -963,7 +960,7 @@ describe('BlocksStore', function() {
             store.expanded['104'] = false;
             store.setActive('105');
 
-            store.navPrev('end', {shiftKey: false});
+            store.navPrev(root, 'end', {shiftKey: false});
             const {active} = store;
             assertPresent(active);
             assert.equal(active.id, '104');
@@ -972,12 +969,12 @@ describe('BlocksStore', function() {
         it("Should set the position of the cursor properly", () => {
             store.setActive('104');
 
-            store.navPrev('end', {shiftKey: false});
+            store.navPrev(root, 'end', {shiftKey: false});
             assertPresent(store.active);
             assert.equal(store.active.pos, 'end');
             assert.equal(store.active.id, '103');
 
-            store.navPrev('start', {shiftKey: false});
+            store.navPrev(root, 'start', {shiftKey: false});
             assertPresent(store.active);
             assert.equal(store.active.pos, 'start');
             assert.equal(store.active.id, '102');
@@ -986,28 +983,28 @@ describe('BlocksStore', function() {
         it("Should constrain the cursor movement within a specified root block", () => {
             const customRoot = '105';
             store.setActive('106');
-            store.navPrev('end', {shiftKey: false}, customRoot);
-            store.navPrev('end', {shiftKey: false}, customRoot);
-            store.navPrev('end', {shiftKey: false}, customRoot);
-            store.navPrev('end', {shiftKey: false}, customRoot);
+            store.navPrev(customRoot, 'end', {shiftKey: false});
+            store.navPrev(customRoot, 'end', {shiftKey: false});
+            store.navPrev(customRoot, 'end', {shiftKey: false});
+            store.navPrev(customRoot, 'end', {shiftKey: false});
             assertPresent(store.active);
             assert.equal(store.active.id, '105');
         });
     });
     
     describe("navNext", () => {
+        const root = '102';
         let store: BlocksStore;
 
         beforeEach(() => {
             store = createStore();
-            store.setRoot('102');
         });
 
         it("Should set the next block as active properly (with all blocks expanded)", () => {
             store.computeLinearTree('102').forEach(block => store.expanded[block] = true);
             store.setActive('116');
 
-            store.navNext('start', {shiftKey: false});
+            store.navNext(root, 'start', {shiftKey: false});
             const {active} = store;
             assertPresent(active);
             assert.equal(active.id, '105');
@@ -1018,7 +1015,7 @@ describe('BlocksStore', function() {
             store.expanded['104'] = false;
             store.setActive('104');
 
-            store.navNext('end', {shiftKey: false});
+            store.navNext(root, 'end', {shiftKey: false});
             const {active} = store;
             assertPresent(active);
             assert.equal(active.id, '105');
@@ -1028,13 +1025,13 @@ describe('BlocksStore', function() {
             store.computeLinearTree('102').forEach(block => store.expanded[block] = false);
             store.setActive('104');
 
-            store.navNext('end', {shiftKey: false});
+            store.navNext(root, 'end', {shiftKey: false});
             assertPresent(store.active);
             assert.equal(store.active.pos, 'end');
             assert.equal(store.active.id, '105');
 
             store.expanded['105'] = true;
-            store.navNext('start', {shiftKey: false});
+            store.navNext(root, 'start', {shiftKey: false});
             assertPresent(store.active);
             assert.equal(store.active.pos, 'start');
             assert.equal(store.active.id, '106');
@@ -1044,10 +1041,10 @@ describe('BlocksStore', function() {
             store.computeLinearTree('102').forEach(block => store.expanded[block] = true);
             const customRoot = '105';
             store.setActive('106');
-            store.navNext('end', {shiftKey: false}, customRoot);
-            store.navNext('end', {shiftKey: false}, customRoot);
-            store.navNext('end', {shiftKey: false}, customRoot);
-            store.navNext('end', {shiftKey: false}, customRoot);
+            store.navNext(customRoot, 'end', {shiftKey: false});
+            store.navNext(customRoot, 'end', {shiftKey: false});
+            store.navNext(customRoot, 'end', {shiftKey: false});
+            store.navNext(customRoot, 'end', {shiftKey: false});
             assertPresent(store.active);
             assert.equal(store.active.id, '118');
         });
@@ -1077,8 +1074,9 @@ describe('BlocksStore', function() {
         it("mergeable", () => {
 
             const store = createStore()
+            const root = '102';
 
-            assertJSON(store.canMergePrev('104'), {
+            assertJSON(store.canMergePrev(root, '104'), {
                 "source": "104",
                 "target": "103"
             });
@@ -1088,8 +1086,9 @@ describe('BlocksStore', function() {
         it("unmergeable", () => {
 
             const store = createStore()
+            const root = '102';
 
-            assert.isUndefined(store.canMergePrev('103'));
+            assert.isUndefined(store.canMergePrev(root, '103'));
 
         });
 
@@ -1102,36 +1101,36 @@ describe('BlocksStore', function() {
     });
 
     describe("setSelectionRange", () => {
+        const root = '102';
         let store: BlocksStore;
 
         beforeEach(() => {
             store = createStore();
-            store.setRoot('102');
             store.computeLinearTree('102').forEach(store.expand.bind(store));
         });
 
         it("should handle basic selection ranges (siblings only)", () => {
-            store.setSelectionRange('103', '104');
+            store.setSelectionRange(root, '103', '104');
 
             assert.deepEqual(store.selected, arrayStream(['103', '104']).toMap2(c => c, () => true));
         });
 
         it("should handle complex structures (siblings with children)", () => {
-            store.setSelectionRange('103', '106');
+            store.setSelectionRange(root, '103', '106');
 
             assert.deepEqual(store.selected, arrayStream(['103', '104', '105']).toMap2(c => c, () => true));
         });
 
         it("should handle bottom to top selections", () => {
-            store.setSelectionRange('106', '104');
+            store.setSelectionRange(root, '106', '104');
 
             assert.deepEqual(store.selected, arrayStream(['104', '105']).toMap2(c => c, () => true));
         });
 
         it("should have the correct selected items when setting the selection multiple times with a complex structure", () => {
-            store.setSelectionRange('102', '104');
-            store.setSelectionRange('102', '117');
-            store.setSelectionRange('102', '118');
+            store.setSelectionRange(root, '102', '104');
+            store.setSelectionRange(root, '102', '117');
+            store.setSelectionRange(root, '102', '118');
 
             assert.deepEqual(store.selected, arrayStream(['102']).toMap2(c => c, () => true));
         });
@@ -1139,7 +1138,7 @@ describe('BlocksStore', function() {
         it("should work with a custom root", () => {
             // we're collapsing the parent to make sure it is being ignored when doing the selection
             store.collapse('105');
-            store.setSelectionRange('117', '118', '106');
+            store.setSelectionRange('106', '117', '118');
 
             
             assert.deepEqual(store.selected, arrayStream(['117']).toMap2(c => c, () => true));
@@ -1148,38 +1147,31 @@ describe('BlocksStore', function() {
 
     describe("canMergeNext", () => {
         let store: BlocksStore;
+        const root = '102';
 
         beforeEach(() => {
             store = createStore();
-            store.setRoot('102');
         });
 
         it("should allow merging blocks in the same level", () => {
-            const store = createStore();
-
-            assertJSON(store.canMergeNext('103'), {
+            assertJSON(store.canMergeNext(root, '103'), {
                 "source": "104",
                 "target": "103"
             });
         });
 
         it("should allow merging a parent with its first child", () => {
-            assertJSON(store.canMergeNext('102'), {
+            assertJSON(store.canMergeNext(root, '102'), {
                 "source": "103",
                 "target": "102"
             });
         });
 
         it("shouldn't allow merging blocks that have no siblings after them", () => {
-            const store = createStore();
-
-            assert.isUndefined(store.canMergeNext('110'));
+            assert.isUndefined(store.canMergeNext(root, '110'));
         });
 
         it("should allow merging a block with its parent's next sibling no matter what depth the current block is at", () => {
-            const store = createStore();
-            store.setRoot('102');
-
             /*
                 111
                     level1Block
@@ -1194,7 +1186,7 @@ describe('BlocksStore', function() {
             const level2Block = store.createNewBlock(level1Block.id, {asChild: true});
             assertPresent(level2Block);
 
-            assertJSON(store.canMergeNext(level2Block.id), {
+            assertJSON(store.canMergeNext(root, level2Block.id), {
                 "source": parentNextSibling.id,
                 "target": level2Block.id
             });
@@ -1203,8 +1195,8 @@ describe('BlocksStore', function() {
         it("shouldn't allow merging with a block that isn't under a custom root", () => {
             const store = createStore();
 
-            assert.isUndefined(store.canMergeNext('116', '104'));
-            assert.isUndefined(store.canMergeNext('118', '105'));
+            assert.isUndefined(store.canMergeNext('104', '116'));
+            assert.isUndefined(store.canMergeNext('105', '118'));
         });
     });
 
@@ -1308,6 +1300,7 @@ describe('BlocksStore', function() {
             const store = createStore()
 
             const createdBlock = store.createNewBlock('102');
+            const root = '102';
 
             assertPresent(createdBlock);
 
@@ -1326,7 +1319,7 @@ describe('BlocksStore', function() {
 
             assert.equal(newBlock.content.data, '');
 
-            assert.ok(store.canMergePrev(newBlock.id));
+            assert.ok(store.canMergePrev(root, newBlock.id));
             assert.ok(store.canMergeWithDelete(newBlock, block));
 
             assert.equal(store.mergeBlocks(block.id, newBlock.id), 'block-merged-with-delete');
@@ -1439,7 +1432,7 @@ describe('BlocksStore', function() {
 
         it('should update the link index properly when merging blocks that have links', () => {
             const store = createStore()
-            store.setRoot('102');
+            const root = '102';
             const linkBlock1 = store.createNewBlock('102');
             const linkBlock2 = store.createNewBlock('102');
             assertPresent(linkBlock1);
@@ -1457,7 +1450,7 @@ describe('BlocksStore', function() {
 
             const createdBlock2 = store.createNewBlock(createdBlock1.id);
             assertPresent(createdBlock2);
-            store.indentBlock(createdBlock2.id);
+            store.indentBlock(root, createdBlock2.id);
             store.setBlockContent(createdBlock2.id, new MarkdownContent({
                 type: 'markdown',
                 data: 'new [[block]]',
@@ -2259,7 +2252,6 @@ describe('BlocksStore', function() {
             const store = createStore();
             const id = '112';
 
-            store.setRoot(id);
             store.setActive(id);
             const blockIDs = Array.from({ length: 12 }).map(() => Hashcodes.createRandomID());
 
