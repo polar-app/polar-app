@@ -13,7 +13,7 @@ export const BlockTitle = observer((props: IProps) => {
     const {id} = props;
 
     const blocksStore = useBlocksStore();
-    const block = blocksStore.getReadonlyBlock(id);
+    const block = blocksStore.getBlock(id);
 
     const title = React.useMemo(() : string => {
 

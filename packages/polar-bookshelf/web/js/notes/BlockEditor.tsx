@@ -105,11 +105,11 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
     const ref = React.createRef<HTMLDivElement | null>();
     const updateCursorPosition = useUpdateCursorPosition();
 
-    const block = blocksStore.getReadonlyBlock(id);
+    const block = blocksStore.getBlock(id);
     const data = blocksStore.getBlockContentData(id);
 
     const handleChange = React.useCallback((markdown: MarkdownStr) => {
-        const block = blocksStore.getReadonlyBlock(id);
+        const block = blocksStore.getBlock(id);
 
         if (block && block.content.type === "markdown") {
             blocksStore.setBlockContent(id, new MarkdownContent({

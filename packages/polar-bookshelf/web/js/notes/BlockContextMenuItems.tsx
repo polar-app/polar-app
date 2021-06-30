@@ -20,7 +20,7 @@ export const BlockContextMenuItems = observer(function MUIDocDropdownMenuItems()
             return;
         }
 
-        const activeBlock = blocksStore.getReadonlyBlock(active.id);
+        const activeBlock = blocksStore.getBlock(active.id);
 
         if (! activeBlock) {
             return;

@@ -367,7 +367,7 @@ export class BlocksStore implements IBlocksStore {
     public computeSelectedRoots() {
         const selected = this.selectedIDs();
 
-        return selected.map(current => this.getReadonlyBlock(current))
+        return selected.map(current => this.getBlock(current))
                        .filter(current => current !== undefined)
                        .map(current => current!)
                        .filter(current => current.parent === undefined || ! selected.includes(current.parent))
@@ -426,7 +426,7 @@ export class BlocksStore implements IBlocksStore {
 
         for (const blockData of blocks) {
 
-            const existingBlock = this.getReadonlyBlock(blockData.id);
+            const existingBlock = this.getBlock(blockData.id);
 
             if (!opts.forceUpdate && existingBlock && existingBlock.mutation >= blockData.mutation) {
                 // skip this update as it hasn't changed
@@ -507,10 +507,10 @@ export class BlocksStore implements IBlocksStore {
     }
 
     public containsBlock(id: BlockIDStr): boolean {
-        return this.getReadonlyBlock(id) !== undefined;
+        return this.getBlock(id) !== undefined;
     }
 
-    public getBlock(id: BlockIDStr): Block | undefined {
+    public getBlockForMutation(id: BlockIDStr): Block | undefined {
         const block = this._index[id];
         if (block) {
             return new Block(block.toJSON());
@@ -518,13 +518,13 @@ export class BlocksStore implements IBlocksStore {
         return undefined;
     }
 
-    public getReadonlyBlock(id: BlockIDStr): Readonly<Block> | undefined {
+    public getBlock(id: BlockIDStr): Readonly<Block> | undefined {
         return this._index[id];
     }
 
     public getBlockContentData(id: BlockIDStr): string | undefined {
 
-        const block = this.getReadonlyBlock(id);
+        const block = this.getBlock(id);
 
         if (! block?.content) {
             return ''
@@ -586,7 +586,7 @@ export class BlocksStore implements IBlocksStore {
     }
 
     public children(id: BlockIDStr): ReadonlyArray<BlockIDStr> {
-        const block = this.getReadonlyBlock(id);
+        const block = this.getBlock(id);
         if (block) {
             return block.itemsAsArray;
         }
@@ -940,11 +940,11 @@ export class BlocksStore implements IBlocksStore {
             };
         }
 
-        const block = this.getReadonlyBlock(id);
+        const block = this.getBlock(id);
 
         if (block?.parent) {
 
-            const parentBlock = this.getReadonlyBlock(block.parent);
+            const parentBlock = this.getBlock(block.parent);
 
             if (parentBlock) {
 
@@ -1043,8 +1043,8 @@ export class BlocksStore implements IBlocksStore {
 
         const redo = () => {
 
-            const targetBlock = this.getBlock(target);
-            const sourceBlock = this.getBlock(source);
+            const targetBlock = this.getBlockForMutation(target);
+            const sourceBlock = this.getBlockForMutation(source);
 
             if (!targetBlock || !sourceBlock) {
                 return;
@@ -1186,7 +1186,7 @@ export class BlocksStore implements IBlocksStore {
 
                 if (opts?.ref) {
 
-                    const refBlock = this.getReadonlyBlock(opts.ref);
+                    const refBlock = this.getBlock(opts.ref);
 
                     if (! refBlock) {
                         throw new Error("Reference block doesn't exist");
@@ -1265,7 +1265,7 @@ export class BlocksStore implements IBlocksStore {
 
         const redo = () => {
 
-            const block = this.getBlock(id);
+            const block = this.getBlockForMutation(id);
 
             if (block) {
 
@@ -1299,7 +1299,7 @@ export class BlocksStore implements IBlocksStore {
             // TODO: we have to setContent here too but I need to figure out how
             // to get it from the element when we're changing it.
 
-            const sourceBlock = this.getBlock(sourceBlockID);
+            const sourceBlock = this.getBlockForMutation(sourceBlockID);
 
             if (! sourceBlock) {
                 throw new Error("Unable to find block: " + sourceBlockID);
@@ -1421,8 +1421,8 @@ export class BlocksStore implements IBlocksStore {
 
             const createNewBlockPositionRelative = (ref: BlockIDStr, pos: NewChildPos): INewBlockPositionRelative => {
 
-                const block = this.getBlock(ref)!;
-                const parentBlock = this.getBlock(block.parent!)!;
+                const block = this.getBlockForMutation(ref)!;
+                const parentBlock = this.getBlockForMutation(block.parent!)!;
 
                 return {
                     type: 'relative',
@@ -1433,7 +1433,7 @@ export class BlocksStore implements IBlocksStore {
 
             };
 
-            const block = this.getBlock(id)!;
+            const block = this.getBlockForMutation(id)!;
             const hasChildren = this.children(block.id).length > 0;
 
             // Block has no parent (in the case of a root block), or a block that has children
@@ -1483,7 +1483,7 @@ export class BlocksStore implements IBlocksStore {
 
         };
 
-        const currentBlock = this.getBlock(id)!;
+        const currentBlock = this.getBlockForMutation(id)!;
         const getSplit = (): ISplitBlock | undefined => currentBlock.content.type === 'markdown' ? opts.split : undefined;
         const getLinks = (): ReadonlyArray<IBlockLink> => currentBlock.content.type === 'markdown' ? currentBlock.content.links : [];
 
@@ -1605,7 +1605,7 @@ export class BlocksStore implements IBlocksStore {
      */
     public isIndentable(id: BlockIDStr, root: BlockIDStr | undefined): boolean {
 
-        const block = this.getReadonlyBlock(id);
+        const block = this.getBlock(id);
 
         if (! block) {
             return false;
@@ -1615,7 +1615,7 @@ export class BlocksStore implements IBlocksStore {
             return false;
         }
 
-        const parentBlock = this.getReadonlyBlock(block.parent);
+        const parentBlock = this.getBlock(block.parent);
 
         if (! parentBlock) {
             // this is a bug and shouldn't happen
@@ -1747,7 +1747,7 @@ export class BlocksStore implements IBlocksStore {
 
     public isUnIndentable(id: BlockIDStr, root: BlockIDStr | undefined) {
 
-        const block = this.getReadonlyBlock(id);
+        const block = this.getBlock(id);
 
         if (! block) {
             return false;
@@ -2094,7 +2094,7 @@ export class BlocksStore implements IBlocksStore {
 
     public requiredAutoUnIndent(id: BlockIDStr, root: BlockIDStr | undefined = this.root): boolean {
 
-        const block = this.getReadonlyBlock(id);
+        const block = this.getBlock(id);
 
         if (! block) {
             return false;
@@ -2108,7 +2108,7 @@ export class BlocksStore implements IBlocksStore {
             return false;
         }
 
-        const parentBlock = this.getReadonlyBlock(block.parent);
+        const parentBlock = this.getBlock(block.parent);
 
         if (! parentBlock) {
             return false;
@@ -2179,7 +2179,7 @@ export class BlocksStore implements IBlocksStore {
     }
 
     public idsToBlocks(ids: ReadonlyArray<BlockIDStr>): ReadonlyArray<Block> {
-        return ids.map(id => this.getReadonlyBlock(id))
+        return ids.map(id => this.getBlock(id))
             .filter((block): block is Block => !!block);
     }
 
@@ -2187,7 +2187,7 @@ export class BlocksStore implements IBlocksStore {
      * Get the blocks that apply here and convert them to JSON objects.
      */
     public createSnapshot(identifiers: ReadonlyArray<BlockIDStr>): ReadonlyArray<IBlock> {
-        return arrayStream(identifiers.map(id => this.getReadonlyBlock(id)))
+        return arrayStream(identifiers.map(id => this.getBlock(id)))
             .filterPresent()
             .map(current => current.toJSON())
             .collect();
