@@ -1,12 +1,12 @@
 import {GroupIDStr} from './Groups';
 import * as admin from 'firebase-admin';
 import {IDUser} from '../../util/IDUsers';
-import {Collections} from './Collections';
 import FieldValue = admin.firestore.FieldValue;
 import {FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {Firestore} from "../../util/Firestore";
 import { UserIDStr } from 'polar-firebase/src/firebase/om/Profiles';
+import {Collections} from "polar-firestore-like/src/Collections";
 
 
 export class UserGroups {
@@ -14,7 +14,8 @@ export class UserGroups {
     public static readonly COLLECTION = 'user_group';
 
     public static async get(uid: UserIDStr): Promise<UserGroup | undefined> {
-        return await Collections.getByID(this.COLLECTION, uid);
+        const firestore = Firestore.getInstance();
+        return await Collections.getByID(firestore, this.COLLECTION, uid);
     }
 
     public static doc(uid: UserIDStr) {

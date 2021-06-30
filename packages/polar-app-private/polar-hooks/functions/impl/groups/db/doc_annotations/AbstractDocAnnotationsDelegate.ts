@@ -1,6 +1,4 @@
-import {Collections} from "../Collections";
 import {GroupMemberInvitationIDStr} from "../GroupMemberInvitations";
-import {DocumentReference, WriteBatch} from "@google-cloud/firestore";
 import {Firestore} from "../../../util/Firestore";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {BaseDocAnnotation} from "./BaseDocAnnotations";
@@ -8,6 +6,7 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
+import {Collections} from "polar-firestore-like/src/Collections";
 
 export class AbstractDocAnnotationsDelegate {
 
@@ -27,7 +26,8 @@ export class AbstractDocAnnotationsDelegate {
     }
 
     public async list<T extends BaseDocAnnotation>(parent: string) {
-        return await Collections.list<T>(this.collection, [[this.parentColumnName, '==', parent]]);
+        const firestore = Firestore.getInstance();
+        return await Collections.list<T>(firestore, this.collection, [[this.parentColumnName, '==', parent]]);
     }
 
     public write<T extends BaseDocAnnotation>(batch: IWriteBatch<unknown>, record: T) {
