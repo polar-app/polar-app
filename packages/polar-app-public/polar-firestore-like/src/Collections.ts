@@ -239,14 +239,18 @@ export namespace Collections {
 
     }
 
-    //
-    // public async getByFieldValues<T>(clauses: ReadonlyArray<Clause>): Promise<T | undefined> {
-    //     const results = await this.list<T>(clauses);
-    //
-    //     const fields = clauses.map(current => current[0]);
-    //
-    //     return this.first(fields, results);
-    // }
+
+    export async function getByFieldValues<T, SM = unknown>(firestore: IFirestore<SM>,
+                                                            collection: string,
+                                                            clauses: ReadonlyArray<Clause>): Promise<T | undefined> {
+
+        const results = await list<T>(firestore, collection, clauses);
+
+        const fields = clauses.map(current => current[0]);
+
+        return firstRecord(collection, fields, results);
+
+    }
     //
     //
     //

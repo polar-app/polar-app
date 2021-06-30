@@ -7,7 +7,6 @@ import {Image} from './Users';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {EmailStr} from "./Profiles";
 import {ProfileIDStr} from './Profiles';
-import {Collections} from './Collections';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {UserGroups} from './UserGroups';
@@ -15,6 +14,7 @@ import UserRecord = admin.auth.UserRecord;
 import {Arrays, asArray} from "polar-shared/src/util/Arrays";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
+import {Collections} from "polar-firestore-like/src/Collections";
 
 export class GroupMemberInvitations {
 
@@ -59,7 +59,9 @@ export class GroupMemberInvitations {
     }
 
     public static async getByGroupIDAndTo(groupID: GroupIDStr, to: EmailStr): Promise<GroupMemberInvitation | undefined> {
-        return await Collections.getByFieldValues(this.COLLECTION, [
+        const firestore = Firestore.getInstance();
+
+        return await Collections.getByFieldValues(firestore, this.COLLECTION, [
             ['groupID', '==', groupID],
             ['to', '==', to]
         ]);
@@ -67,13 +69,16 @@ export class GroupMemberInvitations {
 
     public static async deleteByGroupID(batch: IWriteBatch<unknown>,
                                         groupID: GroupIDStr) {
+        const firestore = Firestore.getInstance();
 
-        await Collections.deleteByID(batch, this.COLLECTION, () => this.list(groupID));
+        await Collections.deleteByID(firestore, this.COLLECTION, batch, () => this.list(groupID));
 
     }
 
     public static async list(groupID: GroupIDStr): Promise<ReadonlyArray<GroupMemberInvitation>> {
-        return await Collections.listByFieldValue(this.COLLECTION, 'groupID', groupID);
+        const firestore = Firestore.getInstance();
+
+        return await Collections.listByFieldValue(firestore, this.COLLECTION, 'groupID', groupID);
     }
 
     /**
