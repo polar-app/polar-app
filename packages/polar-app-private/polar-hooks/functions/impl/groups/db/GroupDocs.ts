@@ -4,7 +4,6 @@ import {Firestore} from '../../util/Firestore';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {IDUser} from '../../util/IDUsers';
 import {GroupIDStr} from './Groups';
-import {Clause} from './Collections';
 import {DocIDStr} from 'polar-shared/src/groups/DocRef';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {ISODateTimeStrings, ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
@@ -13,6 +12,7 @@ import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
 import {ProfileIDStr} from "polar-firebase/src/firebase/om/Profiles";
 import {Collections} from "polar-firestore-like/src/Collections";
+import Clause = Collections.Clause;
 
 export class GroupDocs {
 

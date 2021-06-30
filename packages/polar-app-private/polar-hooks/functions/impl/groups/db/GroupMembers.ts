@@ -7,7 +7,7 @@ import {ISODateTimeStrings, ISODateTimeString} from 'polar-shared/src/metadata/I
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
 import { ProfileIDStr } from 'polar-firebase/src/firebase/om/Profiles';
-import {Collections} from "polar-firestore-like/src/Collections";
+import { Collections } from 'polar-firestore-like/src/Collections';
 
 export class GroupMembers {
 
