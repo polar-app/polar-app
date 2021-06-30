@@ -8,7 +8,7 @@ import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {IUserRecord} from "polar-firestore-like/src/IUserRecord";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Users} from "./Users";
-import { Dictionaries } from 'polar-shared/src/util/Dictionaries';
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 export interface IProfileInit {
 
@@ -105,6 +105,10 @@ export namespace Profiles {
 
     export async function get(firestore: IFirestore<unknown>, id: ProfileIDStr): Promise<IProfile | undefined> {
         return await Collections.getByID(firestore, COLLECTION, id);
+    }
+
+    export async function getByUserID(firestore: IFirestore<unknown>, uid: UserIDStr) {
+        return Arrays.first(await Collections.list(firestore, COLLECTION, [['uid', '==', uid]]));
     }
 
     export async function set(firestore: IFirestore<unknown>,

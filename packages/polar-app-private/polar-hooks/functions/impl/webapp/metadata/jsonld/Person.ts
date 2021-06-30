@@ -1,9 +1,8 @@
 import {BaseType} from "./BaseType";
-import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {Profile} from "../../../groups/db/Profiles";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {IImageObject, ImageObjects} from "./ImageObject";
 import {URLStr} from "polar-shared/src/util/Strings";
+import {IProfile} from "polar-firebase/src/firebase/om/Profiles";
 
 export interface IPersonInit {
 
@@ -20,7 +19,7 @@ export interface IPerson extends IPersonInit, BaseType {
 
 export class Persons {
 
-    public static convert(profile: Profile | undefined) {
+    public static convert(profile: IProfile | undefined) {
 
         // TODO: create a profile URL and include this so that everyone
         // has their own profile page.  We can do this if the user has a

@@ -79,7 +79,11 @@ export class GroupDocs {
                             groupID: GroupIDStr,
                             docRef: DocRef) {
 
-        const profileID = idUser.profileID;
+        if (! idUser.profile) {
+            throw new Error("No profile");
+        }
+
+        const profileID = idUser.profile.id;
 
         const [id, ref] = this.doc(docRef.docID, profileID, groupID);
         const created = ISODateTimeStrings.create();

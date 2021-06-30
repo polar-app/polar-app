@@ -174,9 +174,9 @@ export namespace Collections {
     }
 
     export async function list<SM, T>(firestore: IFirestore<SM>,
-                                  collection: string,
-                                  clauses: ReadonlyArray<Clause>,
-                                  opts: ListOpts = {}): Promise<ReadonlyArray<T>> {
+                                      collection: string,
+                                      clauses: ReadonlyArray<Clause>,
+                                      opts: ListOpts = {}): Promise<ReadonlyArray<T>> {
 
         const query = createQuery(firestore, collection, clauses, opts);
 
@@ -186,7 +186,7 @@ export namespace Collections {
 
     }
 
-    function first<T>(collection: string,
+    function firstRecord<T>(collection: string,
                       fields: ReadonlyArray<string>,
                       results: ReadonlyArray<T>): T | undefined {
 
@@ -206,7 +206,7 @@ export namespace Collections {
                                                  value: ValueType): Promise<T | undefined> {
 
         const results = await list<SM, T>(firestore, collection, [[field, '==', value]]);
-        return first(collection, [field], results);
+        return firstRecord(collection, [field], results);
 
     }
 

@@ -21,8 +21,6 @@ export interface IFirestore<SM> {
  */
 export interface IFirestoreAdmin extends IFirestore<undefined> {
 
-    readonly clearPersistence: () => Promise<void>;
-
 }
 
 /**

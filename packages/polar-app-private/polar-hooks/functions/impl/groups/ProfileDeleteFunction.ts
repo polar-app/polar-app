@@ -15,7 +15,12 @@ export class ProfileDeleteFunctions {
 
         const batch = firestore.batch();
 
-        const profileID = idUser.profileID;
+        if (! idUser.profile) {
+            throw new Error("No profile");
+        }
+
+        const profileID = idUser.profile.id;
+
         const profile = await Profiles.get(firestore, profileID);
 
         if (profile) {
