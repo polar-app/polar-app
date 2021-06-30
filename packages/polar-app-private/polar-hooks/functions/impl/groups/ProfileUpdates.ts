@@ -65,19 +65,19 @@ export class ProfileUpdates {
 
     }
 
-    public static async getOrCreateProfile(uid: UserIDStr, user: UserRecord): Promise<ProfileIDStr> {
-
-        const profileOwner = await ProfileOwners.get(uid);
-
-        if (profileOwner) {
-            return profileOwner.profileID;
-        } else {
-            const request = ProfileUpdateRequests.fromUser(user);
-            const {id} = await ProfileUpdates.doExec(uid, user, request);
-            return id;
-        }
-
-    }
+    // public static async getOrCreateProfile(uid: UserIDStr, user: UserRecord): Promise<ProfileIDStr> {
+    //
+    //     const profileOwner = await ProfileOwners.get(uid);
+    //
+    //     if (profileOwner) {
+    //         return profileOwner.profileID;
+    //     } else {
+    //         const request = ProfileUpdateRequests.fromUser(user);
+    //         const {id} = await ProfileUpdates.doExec(uid, user, request);
+    //         return id;
+    //     }
+    //
+    // }
 
 }
 
@@ -87,14 +87,14 @@ export interface ProfileUpdateResponse {
 
 export class ProfileUpdateRequests {
 
-    public static fromUser(user: UserRecord): IProfileUpdate {
-
-        const image: Image | undefined = user!.photoURL ? {url: user!.photoURL, size: null} : undefined;
-
-        return {
-            name: user.displayName,
-            image
-        };
-    }
+    // public static fromUser(user: UserRecord): IProfileUpdate {
+    //
+    //     const image: Image | undefined = user!.photoURL ? {url: user!.photoURL, size: null} : undefined;
+    //
+    //     return {
+    //         name: user.displayName,
+    //         image
+    //     };
+    // }
 
 }
