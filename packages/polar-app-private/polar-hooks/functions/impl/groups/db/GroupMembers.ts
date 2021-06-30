@@ -2,12 +2,12 @@ import {GroupIDStr} from './Groups';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Firestore} from '../../util/Firestore';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
-import {GetOrCreateRecord} from './Collections';
 import {ISODateTimeStrings, ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
 import { ProfileIDStr } from 'polar-firebase/src/firebase/om/Profiles';
 import { Collections } from 'polar-firestore-like/src/Collections';
+import GetOrCreateRecord = Collections.GetOrCreateRecord;
 
 export class GroupMembers {
 
