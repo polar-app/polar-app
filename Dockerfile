@@ -1,11 +1,7 @@
 FROM node:14-buster
 
-ARG USER_ID=1000
-ARG GROUP_ID=1000
-
-## Install base OS prerequisites
-RUN apt update && apt upgrade -y && \
-    apt install -y sudo lsof
+ARG USER_ID
+ARG GROUP_ID
 
 RUN node -v
 RUN npm -v

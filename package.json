@@ -11,6 +11,11 @@
 		"packages/polar-bookshelf-secrets",
 		"packages/polar-site2"
 	],
+	"resolutions": {
+		"**/@types/jsdom": "*",
+		"**/@types/jsdom-global": "*",
+		"**/@google-cloud/firestore": "*"
+	},
 	"scripts": {
 		"bash": "docker build --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) -f Dockerfile -t polar . && docker run -v $(PWD):/app:delegated -w /app -u $(id -u ${USER}):$(id -g ${USER}) -ti --rm --init --ulimit memlock=819200000:819200000 polar bash",
 		"compile": "lerna run compile",
