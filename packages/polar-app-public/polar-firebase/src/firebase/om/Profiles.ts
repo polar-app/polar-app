@@ -35,11 +35,6 @@ export interface IProfileUpdate {
     readonly handle: HandleStr;
 
     /**
-     * The name of the user.
-     */
-    readonly name: string;
-
-    /**
      * The primary email for the user.
      */
     readonly email: EmailStr;
@@ -48,6 +43,11 @@ export interface IProfileUpdate {
      * All other emails associated with that user.
      */
     readonly emails: ReadonlyArray<EmailStr>;
+
+    /**
+     * The name of the user.
+     */
+    readonly name?: string;
 
     /**
      * The image of the user from their profile.  We can also cache this on our

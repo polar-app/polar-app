@@ -4,7 +4,6 @@ import {ProfileOwners} from './db/ProfileOwners';
 import {ProfileHandles} from './db/ProfileHandles';
 import {TagsValidator} from './rpc/TagsValidator';
 import * as admin from 'firebase-admin';
-import {Image} from './db/Images';
 import UserRecord = admin.auth.UserRecord;
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {IProfileUpdate, ProfileIDStr, Profiles, UserIDStr} from "polar-firebase/src/firebase/om/Profiles";

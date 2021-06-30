@@ -1,9 +1,7 @@
 import {FirebaseAdmin} from 'polar-firebase-admin/src/FirebaseAdmin';
 import * as admin from 'firebase-admin';
-import {UserIDStr} from '../groups/db/Profiles';
-import {ProfileIDStr} from '../groups/db/Profiles';
-import {ProfileUpdates} from '../groups/ProfileUpdates';
 import UserRecord = admin.auth.UserRecord;
+import {UserIDStr} from 'polar-firebase/src/firebase/om/Profiles';
 
 export class IDUsers {
 
@@ -25,16 +23,15 @@ export class IDUsers {
 
     public static async fromUser(user: UserRecord): Promise<IDUser> {
         const {uid} = user;
-        const profileID = await ProfileUpdates.getOrCreateProfile(uid, user);
+        // const profileID = await ProfileUpdates.getOrCreateProfile(uid, user);
 
-        return {uid, user, profileID};
+        return {uid, user};
     }
 
 }
 
 export interface IDUser {
 
-    readonly profileID: ProfileIDStr;
     readonly uid: UserIDStr;
     readonly user: UserRecord;
 
