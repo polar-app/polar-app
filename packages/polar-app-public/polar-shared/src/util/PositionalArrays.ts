@@ -1,5 +1,5 @@
-import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {Tuples} from "polar-shared/src/util/Tuples";
+import {arrayStream} from "src/util/ArrayStreams";
+import {Tuples} from "src/util/Tuples";
 
 /**
  * Positional Arrays are based on LSeq:

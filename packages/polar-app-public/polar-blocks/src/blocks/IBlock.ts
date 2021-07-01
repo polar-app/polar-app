@@ -1,5 +1,5 @@
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {PositionalArrays} from "../PositionalArrays";
+import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {IMarkdownContent} from "./content/IMarkdownContent";
 import {INameContent} from "./content/INameContent";

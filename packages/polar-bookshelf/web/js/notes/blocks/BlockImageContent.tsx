@@ -25,7 +25,6 @@ const useStyles = makeStyles(() =>
     }),
 );
 
-
 export const BlockImageContent = observer((props: IProps) => {
     const divRef = React.useRef<HTMLDivElement | null>(null);
     const {id, src, width, height, innerRef, onClick, onKeyDown} = props;
