@@ -13,6 +13,9 @@ import {useBlockKeyDownHandler} from "./contenteditable/BlockKeyboardHandlers";
 import {ContentEditables} from "./ContentEditables";
 import {reaction} from "mobx";
 import {useBlocksTreeStore} from "./BlocksTree";
+import {useHistory} from "react-router";
+import {NoteURLs} from "./NoteURLs";
+import {HashURLs} from "polar-shared/src/util/HashURLs";
 
 interface ILinkNavigationEvent {
     readonly abortEvent: () => void;
@@ -41,6 +44,7 @@ function useLinkNavigationEventListener() {
 
     const linkLoaderRef = useLinkLoaderRef();
     const noteLinkLoader = useNoteLinkLoader();
+    const blocksTreeStore = useBlocksTreeStore();
 
     return React.useCallback((event: ILinkNavigationEvent): boolean => {
 
@@ -57,9 +61,41 @@ function useLinkNavigationEventListener() {
                     const anchor = Arrays.last(href.split("#"));
 
                     if (anchor) {
-                        noteLinkLoader(anchor);
-                        abortEvent();
-                        return true;
+                        const getPanes = (): ReadonlyArray<string> => {
+                            const {searchParams} = new URL(window.location.href);
+                            const panes = searchParams.get('panes');
+                            if (panes) {
+                                return panes.split(',');
+                            }
+                            return [];
+                        };
+
+                        const rootPaneURL = NoteURLs.parse(location.pathname)!;
+                        const {hash: targetNoteID} = new URL(target.href);
+                        const targetBlock = blocksTreeStore.getBlockByTarget(targetNoteID.slice(1));
+                        const rootPaneBlock = blocksTreeStore.getBlockByTarget(rootPaneURL.target);
+                        if (targetBlock && rootPaneBlock) {
+                            const panes = getPanes();
+                            const idx = panes.indexOf(blocksTreeStore.root);
+                            const getBasePanes = () => {
+                                if (rootPaneBlock.id === blocksTreeStore.root) {
+                                    return [];
+                                } else if (idx === -1) {
+                                    return [...panes];
+                                } else {
+                                    return panes.slice(0, idx + 1);
+                                }
+                            }
+                            const basePanes = getBasePanes();
+                            const newPanes = [...basePanes, targetBlock.id].join(',');
+                            noteLinkLoader(`${rootPaneURL.target}?panes=${newPanes}`);
+                            abortEvent();
+                        }
+                        /*
+                            noteLinkLoader(anchor);
+                            abortEvent();
+                            return true;
+                        */
                     }
 
                 } else {
@@ -75,7 +111,7 @@ function useLinkNavigationEventListener() {
 
         return false;
 
-    }, [linkLoaderRef, noteLinkLoader]);
+    }, [linkLoaderRef, noteLinkLoader, blocksTreeStore]);
 
 }
 
@@ -106,6 +142,7 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
     const linkNavigationClickHandler = useLinkNavigationClickHandler();
     const ref = React.createRef<HTMLDivElement | null>();
     const updateCursorPosition = useUpdateCursorPosition();
+    const history = useHistory();
 
     const block = blocksTreeStore.getBlock(id);
     const data = blocksTreeStore.getBlockContentData(id);
@@ -159,11 +196,12 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
         readonly: block?.readonly,
     });
 
-    const handleMouseDown = React.useCallback<React.MouseEventHandler<HTMLDivElement>>(({target}) => {
+    const handleMouseDown = React.useCallback<React.MouseEventHandler<HTMLDivElement>>((evt) => {
+        const {target} = evt;
         if (target instanceof HTMLAnchorElement) {
             blocksTreeStore.saveActiveBlockForNote(root);
         }
-    }, [root, blocksTreeStore]);
+    }, [root, blocksTreeStore, history]);
 
     if (! block) {
         // this can happen when a note is deleted but the component hasn't yet

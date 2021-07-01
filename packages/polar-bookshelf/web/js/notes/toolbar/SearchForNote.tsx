@@ -7,7 +7,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Box from '@material-ui/core/Box';
 import SearchIcon from '@material-ui/icons/Search';
 import {createStyles, makeStyles} from '@material-ui/core';
-import {useBlocksTreeStore} from '../BlocksTree';
+import {useBlocksStore} from '../store/BlocksStore';
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -21,10 +21,10 @@ const useStyles = makeStyles(() =>
 export const SearchForNote = observer(() => {
 
     const classes = useStyles();
-    const blocksTreeStore = useBlocksTreeStore();
+    const blocksStore = useBlocksStore();
     const noteLinkLoader = useNoteLinkLoader();
 
-    const namedBlocks = blocksTreeStore.getNamedBlocks();
+    const namedBlocks = blocksStore.getNamedBlocks();
 
     const [inputValue, setInputValue] = React.useState('');
 

@@ -3,6 +3,7 @@ import {useLocation} from 'react-router-dom';
 import {NoteURLs} from "./NoteURLs";
 import {NoteRoot} from "./NoteRoot";
 
+
 export const NoteScreen = () => {
 
     const location = useLocation();
@@ -16,5 +17,4 @@ export const NoteScreen = () => {
     return (
         <NoteRoot target={noteURL.target}/>
     );
-
-}
+};

@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) =>
             //     color: theme.palette.text.disabled,
             //     userSelect: 'none'
             // },
+            height: '100%',
             "& a": {
                 cursor: 'pointer'
             },
