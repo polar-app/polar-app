@@ -1,5 +1,5 @@
 {
-  "name": "polar-firebase-admin",
+  "name": "polar-block-permissions",
   "version": "2.1.71",
   "description": "Code to connect to firebase as an admin user",
   "main": "index.js",
@@ -22,10 +22,9 @@
     "typescript": "=4.2.3"
   },
   "dependencies": {
-    "@google-cloud/storage": "=5.8.2",
-    "firebase-admin": "=9.9.0",
     "polar-firebase": "^2.1.71",
+    "polar-shared": "^2.1.71",
     "polar-firestore-like": "^2.1.71",
-    "polar-shared": "^2.1.71"
+    "polar-firebase-admin": "^2.1.71"
   }
 }
