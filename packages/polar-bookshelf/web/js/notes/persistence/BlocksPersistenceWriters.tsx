@@ -5,14 +5,14 @@ import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
 import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 import {FirestoreBlocks} from "./FirestoreBlocks";
 import {Asserts} from "polar-shared/src/Asserts";
-import {IFirestore} from "polar-snapshot-cache/src/store/IFirestore";
 import firebase from 'firebase';
+import {IFirestore} from "polar-firestore-like/src/IFirestore";
 
 const IS_NODE = typeof window === 'undefined';
 
 export namespace FirestoreBlocksPersistenceWriter {
 
-    export async function doExec(firestore: IFirestore,
+    export async function doExec(firestore: IFirestore<unknown>,
                                  mutations: ReadonlyArray<IBlocksStoreMutation>) {
 
         // console.log("Writing mutations to firestore: ", mutations);

@@ -2,20 +2,20 @@ import {GroupMemberInvitations} from './db/GroupMemberInvitations';
 import {Sender} from './db/GroupMemberInvitations';
 import {Contacts} from './db/Contacts';
 import {MutableContactInit} from './db/Contacts';
-import {WriteBatch} from '@google-cloud/firestore';
 import {GroupIDStr} from './db/Groups';
 import {IDUser} from '../util/IDUsers';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {ProfileOwners} from './db/ProfileOwners';
 import {UserGroups} from './db/UserGroups';
 import {UserRef} from './db/UserRefs';
-import {EmailStr} from './db/Profiles';
 import {EmailAddress, Mandrill} from "../util/Mandrill";
 import {GroupJoins} from "./GroupJoins";
+import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
+import {EmailStr} from "polar-firebase/src/firebase/om/Profiles";
 
 export class GroupInvites {
 
-    public static async invite(batch: WriteBatch,
+    public static async invite(batch: IWriteBatch<unknown>,
                                idUser: IDUser,
                                groupID: GroupIDStr,
                                from: Sender,

@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "polar-shared": "^2.1.70",
-    "polar-spaced-repetition-api": "^2.1.70"
+    "polar-spaced-repetition-api": "^2.1.70",
+    "polar-firestore-like": "^2.1.70"
   }
 }

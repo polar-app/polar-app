@@ -15,7 +15,11 @@ export class GroupInviteFunctions {
     public static async exec(idUser: IDUser,
                              request: GroupInviteRequest): Promise<GroupInviteResponse> {
 
-        const {uid, user, profileID} = idUser;
+        const {uid, user, profile} = idUser;
+
+        if (! profile) {
+            throw new Error("No profile");
+        }
 
         const firestore = Firestore.getInstance();
 
@@ -28,7 +32,7 @@ export class GroupInviteFunctions {
 
         const batch = firestore.batch();
 
-        const from = Senders.create(user, profileID);
+        const from = Senders.create(user, profile.id);
 
         const invitations = await UserRefs.toInvitations(request.invitations);
 

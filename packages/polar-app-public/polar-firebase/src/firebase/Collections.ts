@@ -4,6 +4,8 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 
 /**
  * Generic functions for working with Firebase collections
+ *
+ * @deprecated
  */
 export class Collections {
 
@@ -11,6 +13,7 @@ export class Collections {
      *
      * @param firestore  The firestore instance
      * @param name The name of of the collection.
+     * @deprecated
      */
     public constructor(private readonly firestore: FirestoreLike,
                        private readonly name: CollectionNameStr) {

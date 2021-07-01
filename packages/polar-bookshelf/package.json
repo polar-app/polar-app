@@ -177,6 +177,7 @@
     "polar-pdf": "^2.1.70",
     "polar-react": "^2.1.70",
     "polar-release-metadata": "^2.1.70",
+    "polar-firestore-like": "^2.1.70",
     "polar-shared": "^2.1.70",
     "polar-shared-webserver": "^2.1.70",
     "polar-snapshot-cache": "^2.1.70",

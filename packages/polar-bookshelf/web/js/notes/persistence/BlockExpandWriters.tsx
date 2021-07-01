@@ -1,6 +1,6 @@
 import React from 'react';
 import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
-import {IFirestore} from "polar-snapshot-cache/src/store/IFirestore";
+import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import { IBlockExpand } from './BlockExpandSnapshots';
 import {BlockIDStr} from "../store/BlocksStore";
 import firebase from 'firebase';
@@ -18,7 +18,7 @@ export interface IBlockExpandMutation {
 
 export namespace FirestoreBlockExpandPersistenceWriter {
 
-    export async function doExec(firestore: IFirestore,
+    export async function doExec(firestore: IFirestore<unknown>,
                                  user: firebase.User,
                                  mutations: ReadonlyArray<IBlockExpandMutation>) {
 

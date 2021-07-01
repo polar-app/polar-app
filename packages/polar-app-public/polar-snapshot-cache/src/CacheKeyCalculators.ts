@@ -1,9 +1,9 @@
 import {ICacheKeyCalculator} from "./ICacheKeyCalculator";
-import {IDocumentSnapshot} from "./store/IDocumentSnapshot";
-import {IDocumentReference} from "./store/IDocumentReference";
-import {IDocumentChange} from "./store/IDocumentChange";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ICachedQueryMetadata} from "./ICachedQueryMetadata";
+import {IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapshot";
+import {IDocumentChangeClient} from "polar-firestore-like/src/IDocumentChange";
+import {IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
 
 export namespace CacheKeyCalculators {
 
@@ -16,7 +16,7 @@ export namespace CacheKeyCalculators {
      */
     export function createGeneric(): ICacheKeyCalculator {
 
-        function computeForDoc(collectionName: string, documentSnapshot: IDocumentSnapshot | IDocumentReference | IDocumentChange): string {
+        function computeForDoc(collectionName: string, documentSnapshot: IDocumentSnapshotClient | IDocumentReferenceClient | IDocumentChangeClient): string {
             return collectionName + ':' + documentSnapshot.id;
         }
 

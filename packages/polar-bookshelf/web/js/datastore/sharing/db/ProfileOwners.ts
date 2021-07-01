@@ -1,7 +1,5 @@
 
 import {Firestore} from '../../../firebase/Firestore';
-import firebase from 'firebase/app'
-import DocumentReference = firebase.firestore.DocumentReference;
 import {Firebase} from "../../../firebase/Firebase";
 import {DocumentReferences, GetOptions} from "../../../firebase/firestore/DocumentReferences";
 import {
@@ -9,13 +7,13 @@ import {
     HandleStr, ProfileIDStr,
     UserIDStr
 } from "polar-firebase/src/firebase/om/Profiles";
-import { IDocumentReference } from 'polar-snapshot-cache/src/store/IDocumentReference';
+import {IDocumentReference, IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
 
 export class ProfileOwners {
 
     public static readonly COLLECTION = 'profile_owner';
 
-    public static async doc(id: UserIDStr): Promise<[HandleStr, IDocumentReference]> {
+    public static async doc(id: UserIDStr): Promise<[HandleStr, IDocumentReferenceClient]> {
         const firestore = await Firestore.getInstance();
         const doc = firestore.collection(this.COLLECTION).doc(id);
         return [id, doc];

@@ -1,7 +1,6 @@
 import {Firestore} from '../../../firebase/Firestore';
 import {Firebase} from '../../../firebase/Firebase';
 import {ProfileOwners} from './ProfileOwners';
-import firebase from 'firebase/app'
 import {
     CacheFirstThenServerGetOptions,
     DocumentReferences,
@@ -14,13 +13,16 @@ import {
     ProfileIDStr,
     ProfileRecordTuple
 } from "polar-firebase/src/firebase/om/Profiles";
-import { IDocumentReference } from 'polar-snapshot-cache/src/store/IDocumentReference';
+import {IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
 
+/**
+ * @Deprecated migrate to polar-firestore
+ */
 export class Profiles {
 
     public static readonly COLLECTION = 'profile';
 
-    public static async doc(id: ProfileIDStr): Promise<[HandleStr, IDocumentReference]> {
+    public static async doc(id: ProfileIDStr): Promise<[HandleStr, IDocumentReferenceClient]> {
         const firestore = await Firestore.getInstance();
         const doc = firestore.collection(this.COLLECTION).doc(id);
         return [id, doc];

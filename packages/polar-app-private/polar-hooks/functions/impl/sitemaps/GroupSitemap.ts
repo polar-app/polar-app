@@ -2,8 +2,9 @@ import * as functions from "firebase-functions";
 import {Group, Groups} from "../groups/db/Groups";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Firestore} from "../util/Firestore";
-import {Collections, OrderByClause} from "polar-firebase/src/firebase/Collections";
 import {GroupDocAnnotation} from "../groups/db/doc_annotations/GroupDocAnnotations";
+import {Collections} from "polar-firestore-like/src/Collections";
+import OrderByClause = Collections.OrderByClause;
 
 /**
  * Sitemaps for a specific group. This will return URLs that can be index as permalinks.
@@ -36,14 +37,12 @@ export const GroupSitemap = functions.https.onRequest((req, resp) => {
 
         const firestore = Firestore.getInstance();
 
-        const collections = new Collections(firestore, 'group_doc_annotation');
-
         const orderBy: ReadonlyArray<OrderByClause> = [
             ['lastUpdated', 'desc'],
             ['id', 'asc'],
         ];
 
-        return await collections.iterate<GroupDocAnnotation>([['groupID', '==', group.id]], {orderBy, limit: 500});
+        return await Collections.iterate<GroupDocAnnotation>(firestore, 'group_doc_annotation', [['groupID', '==', group.id]], {orderBy, limit: 500});
 
     };
 

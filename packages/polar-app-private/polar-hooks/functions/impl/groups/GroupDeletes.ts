@@ -6,7 +6,7 @@ import {GroupMembers} from "./db/GroupMembers";
 import {GroupAdmins} from "./db/GroupAdmins";
 import {GroupMemberInvitations} from "./db/GroupMemberInvitations";
 import {UserGroups} from "./db/UserGroups";
-import {UserIDStr} from "./db/Profiles";
+import { UserIDStr } from "polar-firebase/src/firebase/om/Profiles";
 
 export class GroupDeletes {
 

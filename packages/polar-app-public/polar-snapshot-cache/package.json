@@ -23,7 +23,8 @@
   },
   "dependencies": {
     "idb-keyval": "=5.0.4",
-    "polar-shared": "^2.1.70"
+    "polar-shared": "^2.1.70",
+    "polar-firestore-like": "^2.1.70"
   },
   "files": [
     "**/*.js",
