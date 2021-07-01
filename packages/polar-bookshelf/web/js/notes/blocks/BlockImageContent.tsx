@@ -4,8 +4,8 @@ import {observer} from "mobx-react-lite";
 import React from "react";
 import {BlockEditorGenericProps} from "../BlockEditor";
 import {useBlocksTreeStore} from "../BlocksTree";
-import {DataURLStr} from "../content/IImageContent";
 import {hasModifiers} from "../contenteditable/BlockKeyboardHandlers";
+import {DataURLStr} from "polar-blocks/src/blocks/content/IImageContent";
 
 interface IProps extends BlockEditorGenericProps {
     readonly src: DataURLStr;

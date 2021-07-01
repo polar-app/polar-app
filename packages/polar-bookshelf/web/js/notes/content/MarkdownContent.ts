@@ -1,7 +1,7 @@
 import {makeObservable, observable, computed, toJS} from "mobx"
-import {IBaseBlockContent} from "./IBaseBlockContent";
 import {BlockIDStr, IBlockContent, IBlockLink} from "polar-blocks/src/blocks/IBlock";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
+import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 
 export class MarkdownContent implements IMarkdownContent, IBaseBlockContent {
 

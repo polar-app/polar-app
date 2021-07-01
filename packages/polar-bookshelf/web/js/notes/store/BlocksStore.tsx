@@ -19,7 +19,6 @@ import {MarkdownContent} from "../content/MarkdownContent";
 import {NameContent} from "../content/NameContent";
 import {ImageContent} from "../content/ImageContent";
 import {Contents} from "../content/Contents";
-import {IBaseBlockContent} from "../content/IBaseBlockContent";
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {useUndoQueue} from "../../undo/UndoQueueProvider2";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
@@ -35,6 +34,7 @@ import {BlockExpandPersistenceWriter, useBlockExpandPersistenceWriter} from "../
 import {IBlockContentStructure} from "../HTMLToBlocks";
 import {DOMBlocks} from "../contenteditable/BlockContentEditable";
 import {BlockIDStr, IBlock, IBlockContent, IBlockLink, NamespaceIDStr, UIDStr} from "polar-blocks/src/blocks/IBlock";
+import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 
 export const ENABLE_UNDO_TRACING = false;
 

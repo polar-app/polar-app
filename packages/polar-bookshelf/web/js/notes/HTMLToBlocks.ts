@@ -1,9 +1,9 @@
 import {TextHighlightMerger} from "../../../apps/doc/src/text_highlighter/TextHighlightMerger";
 import {Images} from "polar-shared/src/util/Images";
-import {IImageContent} from "./content/IImageContent";
 import {Elements} from "../util/Elements";
 import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
+import {IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
 
 export type IBlockContentStructure<T = IBlockContent> = {
     content: T;
