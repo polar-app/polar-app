@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { deepMemo } from '../react/ReactUtils';
+import {deepMemo} from '../react/ReactUtils';
 import Box from '@material-ui/core/Box';
-import { UL } from './UL';
-import {BlockEditor} from "./BlockEditor";
+import {UL} from './UL';
 import {Block} from "./Block";
-import {BlockIDStr, useBlocksStore } from './store/BlocksStore';
-import { observer } from "mobx-react-lite"
+import {observer} from "mobx-react-lite"
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import {NoteBreadcrumbLink} from "./NoteBreadcrumbLink";
 import {BlockPredicates} from "./store/BlockPredicates";
 import {IBlockPredicates} from "./store/IBlockPredicates";
+import {BlocksTreeProvider, useBlocksTreeStore} from './BlocksTree';
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 interface InboundNoteRefProps {
     readonly id: BlockIDStr;
@@ -19,9 +19,10 @@ interface InboundNoteRefProps {
 
 const InboundNoteRef = observer((props: InboundNoteRefProps) => {
 
-    const blocksStore = useBlocksStore();
+    const {id} = props;
+    const blocksTreeStore = useBlocksTreeStore();
 
-    const pathToNote = blocksStore.pathToBlock(props.id);
+    const pathToNote = blocksTreeStore.pathToBlock(id);
 
     return (
         <>
@@ -44,7 +45,9 @@ const InboundNoteRef = observer((props: InboundNoteRefProps) => {
                      // maxWidth: '50ch',
                  }}>
 
-                <Block root={props.id} parent={undefined} id={props.id} />
+                <BlocksTreeProvider root={id}>
+                    <Block parent={undefined} id={id} />
+                </BlocksTreeProvider>
 
             </div>
         </>
@@ -58,10 +61,13 @@ interface IProps {
 
 export const NotesInbound = deepMemo(observer(function NotesInbound(props: IProps) {
 
-    const blocksStore = useBlocksStore();
+    const blocksTreeStore = useBlocksTreeStore();
 
-    const inboundNoteIDs = blocksStore.lookupReverse(props.id);
-    const inbound = React.useMemo(() => blocksStore.lookup(inboundNoteIDs), [inboundNoteIDs, blocksStore]);
+    const inboundNoteIDs = blocksTreeStore.lookupReverse(props.id);
+    const inbound = React.useMemo(() => {
+        const blocks = [...blocksTreeStore.idsToBlocks(inboundNoteIDs)].filter(BlockPredicates.isTextBlock);
+        return blocks.sort((a, b) => (new Date(b.created)).getTime() - (new Date(a.created).getTime()));
+    }, [inboundNoteIDs, blocksTreeStore]);
 
     if (inbound.length === 0) {
         return null;

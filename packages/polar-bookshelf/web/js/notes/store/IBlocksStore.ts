@@ -2,7 +2,6 @@ import {
     IBlockActivated,
     NavOpts,
     NavPosition,
-    BlockIDStr,
     StringSetMap,
     DoIndentResult,
     DoUnIndentResult,
@@ -11,13 +10,13 @@ import {
     BlockNameStr,
     IBlockMerge,
     BlocksIndex,
-    IDropTarget, INewBlockOpts, DoPutOpts, IBlockContent, ICreateNewNamedBlockOpts
+    IDropTarget, INewBlockOpts, DoPutOpts, ICreateNewNamedBlockOpts
 } from "./BlocksStore";
-import {IBlock} from "./IBlock";
 import {Block} from "./Block";
 import {ReverseIndex} from "./ReverseIndex";
 import {MarkdownStr} from "polar-shared/src/util/Strings";
 import {IBlockContentStructure} from "../HTMLToBlocks";
+import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
 
 /**
  * deleteBlocks
@@ -31,7 +30,6 @@ import {IBlockContentStructure} from "../HTMLToBlocks";
  */
 export interface IBlocksStore {
 
-    root: BlockIDStr | undefined;
     active: IActiveBlock | undefined;
     dropSource: BlockIDStr | undefined;
     dropTarget: IDropTarget | undefined;
@@ -58,15 +56,13 @@ export interface IBlocksStore {
 
     setActive(active: BlockIDStr | undefined): void;
 
-    setRoot(root: BlockIDStr | undefined): void;
-
     getBlockByName(name: BlockNameStr): Block | undefined;
     getBlockByTarget(target: BlockIDStr | BlockNameStr): Block | undefined;
 
     getBlockActivated(id: BlockIDStr): IBlockActivated | undefined;
 
-    getBlock(id: BlockIDStr): Block | undefined;
-    getReadonlyBlock(id: BlockIDStr): Readonly<Block> | undefined;
+    getBlockForMutation(id: BlockIDStr): Block | undefined;
+    getBlock(id: BlockIDStr): Readonly<Block> | undefined;
 
     getBlockContentData(id: BlockIDStr): string | undefined;
 
@@ -85,17 +81,17 @@ export interface IBlocksStore {
 
     toggleExpand(id: BlockIDStr): void;
 
-    setSelectionRange(fromBlock: BlockIDStr, toBlock: BlockIDStr, root?: BlockIDStr): void;
+    setSelectionRange(root: BlockIDStr, fromBlock: BlockIDStr, toBlock: BlockIDStr): void;
 
     isExpanded(id: BlockIDStr): boolean;
     isSelected(id: BlockIDStr): boolean;
 
     // TODO: undo / cursor
-    indentBlock(id: BlockIDStr, root?: BlockIDStr): ReadonlyArray<DoIndentResult>;
+    indentBlock(root: BlockIDStr, id: BlockIDStr): ReadonlyArray<DoIndentResult>;
     // TODO: undo / cursor
-    unIndentBlock(id: BlockIDStr, root?: BlockIDStr): ReadonlyArray<DoUnIndentResult>;
+    unIndentBlock(root: BlockIDStr, id: BlockIDStr): ReadonlyArray<DoUnIndentResult>;
 
-    requiredAutoUnIndent(id: BlockIDStr, root?: BlockIDStr): boolean;
+    requiredAutoUnIndent(root: BlockIDStr, id: BlockIDStr): boolean;
 
     // TODO: undo / cursor
     deleteBlocks(blockIDs: ReadonlyArray<BlockIDStr>): void;
@@ -123,11 +119,11 @@ export interface IBlocksStore {
 
     mergeBlocks(target: BlockIDStr, source: BlockIDStr): void;
 
-    canMergePrev(id: BlockIDStr, root?: BlockIDStr): IBlockMerge | undefined;
-    canMergeNext(id: BlockIDStr, root?: BlockIDStr): IBlockMerge | undefined;
+    canMergePrev(root: BlockIDStr, id: BlockIDStr): IBlockMerge | undefined;
+    canMergeNext(root: BlockIDStr, id: BlockIDStr): IBlockMerge | undefined;
 
-    navPrev(pos: NavPosition, opts: NavOpts, root?: BlockIDStr): void;
-    navNext(pos: NavPosition, opts: NavOpts, root?: BlockIDStr): void;
+    navPrev(root: BlockIDStr, pos: NavPosition, opts: NavOpts): void;
+    navNext(root: BlockIDStr, pos: NavPosition, opts: NavOpts): void;
 
     getNamedBlocks(): ReadonlyArray<string>;
 

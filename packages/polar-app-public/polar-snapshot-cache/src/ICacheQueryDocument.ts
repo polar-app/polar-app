@@ -1,5 +1,4 @@
-import {ISnapshotMetadata} from "./store/ISnapshotMetadata";
-import {TDocumentData} from "./store/TDocumentData";
+import {ISnapshotMetadata} from "polar-firestore-like/src/ISnapshotMetadata";
 
 export interface ICacheQueryDocument {
 

@@ -5,8 +5,7 @@ import {UL} from "./UL";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
-import {BlockIDStr} from "./store/BlocksStore";
-import {IBlock} from "./store/IBlock";
+import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -19,7 +18,6 @@ const useStyles = makeStyles((theme) =>
 
 interface NotesProps {
     readonly parent: BlockIDStr;
-    readonly root: BlockIDStr;
     readonly notes: ReadonlyArray<IBlock> | undefined;
 }
 
@@ -43,7 +41,6 @@ export const BlockItems = deepMemo(function NoteItems(props: NotesProps) {
 
                     return (
                         <Block key={key}
-                               root={props.root}
                                parent={props.parent}
                                id={note.id}/>);
                 })}

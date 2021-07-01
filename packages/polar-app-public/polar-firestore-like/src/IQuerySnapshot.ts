@@ -3,7 +3,7 @@ import {ISnapshotMetadata} from "./ISnapshotMetadata";
 import {ISnapshotListenOptions} from "./ISnapshotListenOptions";
 import { IDocumentChange } from "./IDocumentChange";
 
-export interface IQuerySnapshot {
+export interface IQuerySnapshot<SM> {
 
     readonly empty: boolean;
 
@@ -11,7 +11,7 @@ export interface IQuerySnapshot {
 
     readonly metadata: ISnapshotMetadata;
 
-    readonly docs: ReadonlyArray<IQueryDocumentSnapshot>;
+    readonly docs: ReadonlyArray<IQueryDocumentSnapshot<SM>>;
 
     /**
      * Returns an array of the documents changes since the last snapshot. If this
@@ -21,6 +21,10 @@ export interface IQuerySnapshot {
      * changes (i.e. only `DocumentSnapshot.metadata` changed) should trigger
      * snapshot events.
      */
-    readonly docChanges: (options?: ISnapshotListenOptions) => ReadonlyArray<IDocumentChange>;
+    readonly docChanges: (options?: ISnapshotListenOptions) => ReadonlyArray<IDocumentChange<SM>>;
+
+}
+
+export interface IQuerySnapshotClient extends IQuerySnapshot<ISnapshotMetadata> {
 
 }

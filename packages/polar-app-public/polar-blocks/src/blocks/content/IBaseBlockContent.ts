@@ -1,4 +1,4 @@
-import {IBlockContent} from "../store/BlocksStore";
+import {IBlockContent} from "../IBlock";
 
 export interface IBaseBlockContent {
     update: (content: IBlockContent) => void;

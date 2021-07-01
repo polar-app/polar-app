@@ -1,9 +1,9 @@
 import * as React from "react";
 import {ICommand} from "../mui/command_menu/MUICommandMenu";
-import { MUICommandMenuKeyboardShortcut } from "../mui/command_menu/MUICommandMenuKeyboardShortcut";
-import { observer } from "mobx-react-lite"
-import {useBlocksStore} from "./store/BlocksStore";
+import {MUICommandMenuKeyboardShortcut} from "../mui/command_menu/MUICommandMenuKeyboardShortcut";
+import {observer} from "mobx-react-lite"
 import {useNoteLinkLoader} from "./NoteLinkLoader";
+import {useBlocksStore} from "./store/BlocksStore";
 
 export const JumpToNoteKeyboardCommand = observer(() => {
 

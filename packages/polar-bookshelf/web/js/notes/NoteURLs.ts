@@ -1,6 +1,6 @@
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {BlockTargetStr} from "./NoteLinkLoader";
-import {BlockIDStr} from "./store/BlocksStore";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 export interface INoteURL {
 

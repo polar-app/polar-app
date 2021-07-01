@@ -1,5 +1,6 @@
 import { IDocumentReference } from "./IDocumentReference";
-import {IQuery} from "./IQuery";
+import { IQuery } from "./IQuery";
+import {ISnapshotMetadata} from "./ISnapshotMetadata";
 
 export type TWhereFilterOp =
     | '<'
@@ -21,18 +22,23 @@ export interface IWhereClause {
     readonly value: TWhereValue;
 }
 
-export interface ICollectionReference {
+export interface ICollectionReference<SM> {
 
     /** The collection's identifier. */
     readonly id: string;
 
-    readonly doc: (documentPath?: string) => IDocumentReference;
+    // FIXME admin SDK has get vs doc?
+    readonly doc: (documentPath?: string) => IDocumentReference<SM>;
 
-    readonly where: (fieldPath: string, opStr: TWhereFilterOp, value: any) => IQuery;
+    readonly where: (fieldPath: string, opStr: TWhereFilterOp, value: any) => IQuery<SM>;
 
     // readonly get(options?: IGetOptions) => Promise<QuerySnapshot<T>>;
 
     // FIXME doc
     // FIXME onSnapshot
+
+}
+
+export interface ICollectionReferenceClient extends ICollectionReference<ISnapshotMetadata> {
 
 }
