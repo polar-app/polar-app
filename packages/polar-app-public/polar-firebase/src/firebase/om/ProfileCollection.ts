@@ -7,7 +7,6 @@ import {Collections} from "polar-firestore-like/src/Collections";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {IUserRecord} from "polar-firestore-like/src/IUserRecord";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {Users} from "./Users";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import { Dictionaries } from 'polar-shared/src/util/Dictionaries';
 

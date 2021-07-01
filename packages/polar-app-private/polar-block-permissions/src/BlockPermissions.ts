@@ -1,6 +1,7 @@
-import {UserIDStr} from "packages/polar-app-public/polar-firebase/src/firebase/om/ProfileCollection";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {UserIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
+import {BlockCollection} from "polar-firebase/src/firebase/om/BlockCollection";
 
 export namespace BlockPermissions {
 
@@ -14,7 +15,22 @@ export namespace BlockPermissions {
                                                   id: BlockIDStr,
                                                   permissions: ReadonlyArray<IPermission>) {
 
+
+        // ** verify that this block exists and that it's the right type.
+
+        const block = await BlockCollection.get(firestore, id);
+
+        if (! block) {
+            throw new Error("No block for id: " + id);
+        }
+
+        if (block.parent !== undefined) {
+            throw new Error("Not root block");
+        }
+
         // ** get the current permissions for this page
+
+
 
         // ** verify that the user is admin
 
