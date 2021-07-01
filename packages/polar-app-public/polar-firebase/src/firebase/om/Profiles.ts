@@ -9,6 +9,7 @@ import {IUserRecord} from "polar-firestore-like/src/IUserRecord";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Users} from "./Users";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import { Dictionaries } from 'polar-shared/src/util/Dictionaries';
 
 export interface IProfileInit {
 
@@ -118,22 +119,14 @@ export namespace Profiles {
                               user: IUserRecord,
                               update: IProfileUpdate) {
 
-        const image = Users.createImage(user);
-
         const updated = ISODateTimeStrings.create();
 
-        // TODO need to handle this properly. Not sure the right strategy right now
+        const ref = firestore.collection(COLLECTION).doc(id);
 
-        // const profile: IProfile = {
-        //     ...update,
-        //     id,
-        //     image,
-        //     updated,
-        // };
-        //
-        // const ref = firestore.collection(COLLECTION).doc(id);
-        //
-        // batch.set(ref, Dictionaries.onlyDefinedProperties(profile));
+        batch.set(ref, Dictionaries.onlyDefinedProperties({
+            ...update,
+            updated
+        }), {merge: true});
 
     }
 
