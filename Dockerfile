@@ -25,5 +25,7 @@ WORKDIR /app
 # This is important!
 RUN npm config set always-auth true
 
+EXPOSE 8050
+
 CMD ["cat", "/home/node/.npmrc"]
 CMD ["lerna", "bootstrap"]

@@ -116,5 +116,5 @@ declare module 'pdfjs-dist/web/pdf_viewer' {
 
 // Webpack version.
 declare module 'pdfjs-dist/webpack' {
-  export * from 'pdfjs-dist';
+  export * from 'packages/polar-app-public/@types/pdfjs-dist/pdf';
 }

@@ -14,10 +14,12 @@
 	"resolutions": {
 		"**/@types/jsdom": "*",
 		"**/@types/jsdom-global": "*",
-		"**/@google-cloud/firestore": "*"
+		"**/@types/react": "*",
+		"**/@google-cloud/firestore": "*",
+		"**/@sentry/integrations": "*"
 	},
 	"scripts": {
-		"bash": "docker build --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) -f Dockerfile -t polar . && docker run -v $(PWD):/app:delegated -w /app -u $(id -u ${USER}):$(id -g ${USER}) -ti --rm --init --ulimit memlock=819200000:819200000 polar bash",
+		"bash": "docker build --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) -f Dockerfile -t polar . && docker run -v $(PWD):/app:delegated -w /app -u $(id -u ${USER}):$(id -g ${USER}) -p 8050:8050 -ti --rm --init --ulimit memlock=819200000:819200000 polar bash",
 		"compile": "lerna run compile",
 		"publish": "lerna exec --no-private -- npm publish --no-bail",
 		"test": "echo \"Error: no test specified\" && exit 1",

@@ -41,7 +41,7 @@ rm -f dist/public/service-worker.js
 npx webpack serve
 ```
 
-This *should* mean you have all code running and Polar should load in your 
+This *should* me  an you have all code running and Polar should load in your 
 browser.
 
 # Potential Errors / Gotchas

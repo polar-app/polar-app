@@ -8,7 +8,7 @@
     "packages/polar-site2"
   ],
   "version": "2.1.70",
-  "concurrency": 3,
+  "concurrency": 5,
   "mutex": "network",
   "useWorkspaces": true,
   "npmClient": "yarn",

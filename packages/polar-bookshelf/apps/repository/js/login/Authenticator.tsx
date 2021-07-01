@@ -305,7 +305,7 @@ const EmailTokenAuthButton = () => {
 
     }, [doTriggerStartTokenAuth, triggeredRef])
 
-    const handleKeyPressEnter = React.useCallback((event: React.KeyboardEvent, callback: () => void) => {
+    const handleKeyPressEnter = React.useCallback((event: React.KeyboardEvent<any>, callback: () => void) => {
 
         if (event.key === 'Enter') {
             callback();
@@ -443,7 +443,7 @@ const EmailAuthButton = () => {
 
     }, [doTriggerAuth])
 
-    const handleKeyPress = React.useCallback((event: React.KeyboardEvent) => {
+    const handleKeyPress = React.useCallback((event: React.KeyboardEvent<any>) => {
 
         if (event.key === 'Enter') {
             handleAuth();
