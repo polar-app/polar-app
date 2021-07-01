@@ -1,11 +1,11 @@
 import { ISODateTimeString } from "polar-shared/src/metadata/ISODateTimeStrings";
-import {PositionalArrays} from "./PositionalArrays";
+import {PositionalArrays} from "../PositionalArrays";
 import PositionalArray = PositionalArrays.PositionalArray;
 import {IDStr} from "polar-shared/src/util/Strings";
 import {IMarkdownContent} from "./content/IMarkdownContent";
-import {INameContent} from "../../../polar-bookshelf/web/js/notes/content/INameContent";
-import {IImageContent} from "../../../polar-bookshelf/web/js/notes/content/IImageContent";
-import {IDateContent} from "../../../polar-bookshelf/web/js/notes/content/IDateContent";
+import {INameContent} from "../../../../polar-bookshelf/web/js/notes/content/INameContent";
+import {IImageContent} from "../../../../polar-bookshelf/web/js/notes/content/IImageContent";
+import {IDateContent} from "../../../../polar-bookshelf/web/js/notes/content/IDateContent";
 
 export type BlockIDStr = IDStr;
 
