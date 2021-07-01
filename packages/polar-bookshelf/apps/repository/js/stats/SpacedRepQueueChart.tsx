@@ -1,7 +1,7 @@
 import * as React from 'react';
 import StatTitle from './StatTitle';
 import {ResponsiveLine, Serie, Datum} from '@nivo/line';
-import {SpacedRepStat, StatType} from "polar-firebase/src/firebase/om/SpacedRepStats";
+import {SpacedRepStat, StatType} from "packages/polar-app-public/polar-firebase/src/firebase/om/SpacedRepStatCollection";
 import {Statistics} from "polar-shared/src/util/Statistics";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";

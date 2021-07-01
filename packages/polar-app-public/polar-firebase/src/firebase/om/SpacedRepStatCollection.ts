@@ -8,7 +8,7 @@ import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/I
  * Stores card stats for a user each time they compute a new queue so that we can keep track
  * of things over time and show the user stats regarding much work they have left.
  */
-export class SpacedRepStats {
+export class SpacedRepStatCollection {
 
     public static firestoreProvider: FirestoreProvider;
 

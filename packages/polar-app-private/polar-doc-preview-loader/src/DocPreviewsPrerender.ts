@@ -1,4 +1,4 @@
-import {DocPreviews} from "polar-firebase/src/firebase/om/DocPreviews";
+import {DocPreviews} from "packages/polar-app-public/polar-firebase/src/firebase/om/DocPreviewCollection";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {SendToQueue} from "./SendToQueue";
 import {DocPreviewURLs} from "../../../polar-app-public/polar-webapp-links/src/docs/DocPreviewURLs";

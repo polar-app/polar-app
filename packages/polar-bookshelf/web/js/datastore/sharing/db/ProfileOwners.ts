@@ -6,7 +6,7 @@ import {
     EmailStr,
     HandleStr, ProfileIDStr,
     UserIDStr
-} from "polar-firebase/src/firebase/om/Profiles";
+} from "packages/polar-app-public/polar-firebase/src/firebase/om/ProfileCollection";
 import {IDocumentReference, IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
 
 export class ProfileOwners {

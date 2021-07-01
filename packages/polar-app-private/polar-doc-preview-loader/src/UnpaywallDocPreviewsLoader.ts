@@ -8,7 +8,7 @@ import {
     DocPreview,
     DocPreviews,
     DocPreviewUncached
-} from "polar-firebase/src/firebase/om/DocPreviews";
+} from "packages/polar-app-public/polar-firebase/src/firebase/om/DocPreviewCollection";
 import {ArrayStreams} from "polar-shared/src/util/ArrayStreams";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {DocPreviewHashcodes} from "polar-firebase/src/firebase/om/DocPreviewHashcodes";

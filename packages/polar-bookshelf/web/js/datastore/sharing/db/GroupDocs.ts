@@ -4,7 +4,7 @@ import {GroupIDStr} from '../../Datastore';
 import {Collections, DocumentChange, OrderByClause} from './Collections';
 import {Clause} from './Collections';
 import {SnapshotListener} from './Collections';
-import {ProfileIDStr} from "polar-firebase/src/firebase/om/Profiles";
+import {ProfileIDStr} from "packages/polar-app-public/polar-firebase/src/firebase/om/ProfileCollection";
 
 export class GroupDocs {
 

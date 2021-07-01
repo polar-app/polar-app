@@ -1,7 +1,7 @@
 import * as React from "react";
 import {ReviewerTasks} from "./ReviewerTasks";
 import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {SpacedRep, SpacedReps} from "polar-firebase/src/firebase/om/SpacedReps";
+import {SpacedRep, SpacedReps} from "packages/polar-app-public/polar-firebase/src/firebase/om/SpacedRepCollection";
 import {
     Rating,
     RepetitionMode,
@@ -18,7 +18,7 @@ import {Preconditions} from "polar-shared/src/Preconditions";
 import {
     SpacedRepStat,
     SpacedRepStats
-} from "polar-firebase/src/firebase/om/SpacedRepStats";
+} from "packages/polar-app-public/polar-firebase/src/firebase/om/SpacedRepStatCollection";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {ReadingTaskAction} from "./cards/ReadingTaskAction";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";

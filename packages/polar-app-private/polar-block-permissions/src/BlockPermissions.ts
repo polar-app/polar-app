@@ -1,4 +1,4 @@
-import {UserIDStr} from "polar-firebase/src/firebase/om/Profiles";
+import {UserIDStr} from "packages/polar-app-public/polar-firebase/src/firebase/om/ProfileCollection";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 

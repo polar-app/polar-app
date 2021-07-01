@@ -1,8 +1,8 @@
-import {IProfile, ProfileIDStr} from "./Profiles";
+import {IProfile, ProfileIDStr} from "./ProfileCollection";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {Collections} from "polar-firestore-like/src/Collections";
 
-export namespace BlockPermissionPage {
+export namespace BlockPermissionPageCollection {
 
     export const COLLECTION = 'block_permission_page';
 

@@ -12,7 +12,7 @@ import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
 import {
     DocPreviewCached,
     DocPreviews
-} from "polar-firebase/src/firebase/om/DocPreviews";
+} from "packages/polar-app-public/polar-firebase/src/firebase/om/DocPreviewCollection";
 import {AnalyticsInitializer} from "../../web/js/analytics/AnalyticsInitializer";
 import {FirestoreCollections} from "../repository/js/reviewer/FirestoreCollections";
 import {Version} from 'polar-shared/src/util/Version';

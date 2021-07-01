@@ -1,5 +1,5 @@
 import {IAnalytics, IAnalyticsUser, IEventArgs, IPageEvent, TraitsMap} from "../IAnalytics";
-import {Heartbeats} from "polar-firebase/src/firebase/om/Heartbeats";
+import {Heartbeats} from "packages/polar-app-public/polar-firebase/src/firebase/om/HeartbeatCollection";
 import {Firebase} from "../../firebase/Firebase";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {UserTraits} from "../../datastore/firebase/UserTraits";

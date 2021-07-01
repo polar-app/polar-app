@@ -96,7 +96,7 @@ export interface ProfileIDRecord {
 
 export type ProfileRecordTuple<T> = [T, IProfile | undefined];
 
-export namespace Profiles {
+export namespace ProfileCollection {
 
     export const COLLECTION = 'profile';
 

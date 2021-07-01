@@ -4,7 +4,7 @@ import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Version, VersionStr} from "polar-shared/src/util/Version";
 import {MachineID, MachineIDs} from "polar-shared/src/util/MachineIDs";
 
-export class UserMachines {
+export class UserMachineCollection {
 
     public static firestoreProvider: FirestoreProvider;
 

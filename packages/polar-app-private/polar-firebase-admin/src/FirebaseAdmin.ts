@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
 import {StorageOptions} from '@google-cloud/storage';
 import {FirebaseConfig} from './FirebaseConfig';
-import {DocPreviews} from "polar-firebase/src/firebase/om/DocPreviews";
+import {DocPreviews} from "polar-firebase/src/firebase/om/DocPreviewCollection";
 
 let app: admin.app.App;
 
