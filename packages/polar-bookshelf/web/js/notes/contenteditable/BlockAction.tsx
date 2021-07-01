@@ -6,10 +6,10 @@ import {ContentEditables} from "../ContentEditables";
 import INodeOffset = ContentEditables.INodeOffset;
 import {useBlockContentEditableElement} from "./BlockContentEditable";
 import { observer } from "mobx-react-lite"
-import {BlockIDStr} from '../store/BlocksStore';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {useBlocksTreeStore} from '../BlocksTree';
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 const THINSP = ' ';
 

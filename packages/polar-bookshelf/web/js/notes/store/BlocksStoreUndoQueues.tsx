@@ -1,13 +1,12 @@
-import {IBlock} from "./IBlock";
 import {SetArrays} from "polar-shared/src/util/SetArrays";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {BlockIDStr, BlocksStore, IActiveBlock} from "./BlocksStore";
+import {BlocksStore, IActiveBlock} from "./BlocksStore";
 import {UndoQueues2} from "../../undo/UndoQueues2";
-import {PositionalArrays} from "./PositionalArrays";
 import {IWithMutationOpts} from "./Block";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import { BlocksPersistenceWriter } from "../persistence/FirestoreBlocksStoreMutations";
+import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
 
 export namespace BlocksStoreUndoQueues {
 

@@ -1,4 +1,4 @@
-import {IBlockLink} from "../store/IBlock";
+import {IBlockLink} from "../IBlock";
 
 export interface IMarkdownContent {
     readonly type: 'markdown';

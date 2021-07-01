@@ -1,4 +1,4 @@
-import {IBlock} from "../store/IBlock";
+import {IBlock} from "polar-blocks/src/blocks/IBlock";
 
 export namespace FirestoreBlocks {
 

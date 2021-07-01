@@ -1,8 +1,8 @@
 import React from "react";
 import {ActionMenuItemProvider, IActionMenuItem, NoteActionMenu} from "./NoteActionMenu";
-import {BlockIDStr} from "./store/BlocksStore";
 import {observer} from "mobx-react-lite"
 import {useBlocksTreeStore} from "./BlocksTree";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 function useItemsProvider(): ActionMenuItemProvider {
 

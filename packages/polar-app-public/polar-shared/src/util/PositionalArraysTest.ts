@@ -1,6 +1,6 @@
+import { assertJSON } from "polar-test/src/test/Assertions";
 import {PositionalArrays} from "./PositionalArrays";
 import PositionalArray = PositionalArrays.PositionalArray;
-import {assertJSON} from "../../test/Assertions";
 
 describe("PositionalArrays", () => {
 

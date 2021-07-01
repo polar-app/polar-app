@@ -2,7 +2,7 @@ import {HTMLStr} from 'polar-shared/src/util/Strings';
 import React from 'react';
 import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import {observer} from "mobx-react-lite"
-import {BlockIDStr, IActiveBlock} from '../store/BlocksStore';
+import {IActiveBlock} from '../store/BlocksStore';
 import {ContentEditables} from "../ContentEditables";
 import {createActionsProvider} from "../../mui/action_menu/ActionStore";
 import {NoteFormatPopper} from "../NoteFormatPopper";
@@ -10,13 +10,14 @@ import {BlockContentCanonicalizer} from "./BlockContentCanonicalizer";
 import {BlockAction} from "./BlockAction";
 import {CursorPositions} from "./CursorPositions";
 import {IPasteImageData, usePasteHandler } from '../clipboard/PasteHandlers';
-import {IImageContent} from "../content/IImageContent";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {useMutationObserver} from '../../../../web/js/hooks/ReactHooks';
 import {MarkdownContent} from '../content/MarkdownContent';
 import {BlockEditorGenericProps} from '../BlockEditor';
 import {IBlockContentStructure} from '../HTMLToBlocks';
 import {useBlocksTreeStore} from '../BlocksTree';
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed

@@ -2,10 +2,10 @@ import React, { useEffect, useState, useRef } from "react";
 import G6, { Graph, INode, StateStyles } from "@antv/g6";
 import { SimpleDialog } from "./SimpleDialog";
 import ContainerDimensions from 'react-container-dimensions'
-import {IBlock} from "../../../web/js/notes/store/IBlock";
 import {MockBlocks} from "./MockBlocks";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {BlocksToGraph} from "../../../web/js/notes/viz/BlocksToGraph";
+import {IBlock} from "polar-blocks/src/blocks/IBlock";
 
 // TOO: how do we pick the center of the layout
 

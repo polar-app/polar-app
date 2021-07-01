@@ -7,7 +7,6 @@ import {IDocViewerContextMenuOrigin} from "../../../apps/doc/src/DocViewerMenu";
 import {BlockContextMenuItems} from "./BlockContextMenuItems";
 import useTheme from "@material-ui/core/styles/useTheme";
 import {BlockExpandToggleButton} from "./BlockExpandToggleButton";
-import {BlockIDStr} from "./store/BlocksStore";
 import {observer} from "mobx-react-lite"
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
@@ -15,6 +14,7 @@ import clsx from "clsx";
 import {BlockDragIndicator} from "./BlockDragIndicator";
 import {useUndoQueue} from "../undo/UndoQueueProvider2";
 import {useBlocksTreeStore} from "./BlocksTree";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 const useStyles = makeStyles((theme) =>
     createStyles({

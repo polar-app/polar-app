@@ -1,9 +1,6 @@
-import {FirebaseAdmin} from 'polar-firebase-admin/src/FirebaseAdmin';
+import {FirebaseAdmin} from './FirebaseAdmin';
 import {IFirestoreAdmin} from "polar-firestore-like/src/IFirestore";
 
-/**
- * @deprecated use polar-firebase-admin/src/Firestore
- */
 export namespace Firestore {
 
     export function getInstance(): IFirestoreAdmin {

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import {BlockIDStr} from "./store/BlocksStore";
 import { observer } from "mobx-react-lite"
 import {useBlocksTreeStore} from './BlocksTree';
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 interface IProps {
     readonly parent: BlockIDStr | undefined;

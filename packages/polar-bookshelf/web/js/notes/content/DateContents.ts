@@ -1,4 +1,4 @@
-import {IDateContent, LocaleStr, TimezoneStr} from "./IDateContent";
+import {IDateContent, LocaleStr, TimezoneStr} from "polar-blocks/src/blocks/content/IDateContent";
 
 export namespace DateContents {
 

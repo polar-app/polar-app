@@ -2,7 +2,6 @@ import {
     IBlockActivated,
     NavOpts,
     NavPosition,
-    BlockIDStr,
     StringSetMap,
     DoIndentResult,
     DoUnIndentResult,
@@ -11,13 +10,13 @@ import {
     BlockNameStr,
     IBlockMerge,
     BlocksIndex,
-    IDropTarget, INewBlockOpts, DoPutOpts, IBlockContent, ICreateNewNamedBlockOpts
+    IDropTarget, INewBlockOpts, DoPutOpts, ICreateNewNamedBlockOpts
 } from "./BlocksStore";
-import {IBlock} from "./IBlock";
 import {Block} from "./Block";
 import {ReverseIndex} from "./ReverseIndex";
 import {MarkdownStr} from "polar-shared/src/util/Strings";
 import {IBlockContentStructure} from "../HTMLToBlocks";
+import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
 
 /**
  * deleteBlocks

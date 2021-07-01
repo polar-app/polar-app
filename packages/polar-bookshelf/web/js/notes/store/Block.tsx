@@ -1,16 +1,15 @@
-import {IBlock, IBlockLink, NamespaceIDStr, TMutation, UIDStr} from "./IBlock";
-import {INewChildPosition, BlockIDStr, BlockContent, IBlockContent, BlockType} from "./BlocksStore";
+import {INewChildPosition, BlockContent, BlockType} from "./BlocksStore";
 import {action, computed, makeObservable, observable, toJS} from "mobx"
 import { ISODateTimeString, ISODateTimeStrings } from "polar-shared/src/metadata/ISODateTimeStrings";
 import { Contents } from "../content/Contents";
 import {PositionalArrays} from "./PositionalArrays";
 import PositionalArray = PositionalArrays.PositionalArray;
-import { arrayStream } from "polar-shared/src/util/ArrayStreams";
 import PositionalArrayPositionStr = PositionalArrays.PositionalArrayPositionStr;
 import deepEqual from "deep-equal";
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import IItemsPositionPatch = BlocksStoreMutations.IItemsPositionPatch;
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {BlockIDStr, IBlock, IBlockContent, NamespaceIDStr, TMutation, UIDStr} from "polar-blocks/src/blocks/IBlock";
 
 const NON_EDITABLE_BLOCK_TYPES: BlockType[] = ['name', 'date', 'image'];
 

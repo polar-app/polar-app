@@ -5,8 +5,7 @@ import {UL} from "./UL";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
-import {BlockIDStr} from "./store/BlocksStore";
-import {IBlock} from "./store/IBlock";
+import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
 
 const useStyles = makeStyles((theme) =>
     createStyles({

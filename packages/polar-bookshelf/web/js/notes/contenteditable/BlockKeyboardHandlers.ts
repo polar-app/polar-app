@@ -4,8 +4,8 @@ import {BlocksTreeStore} from "../BlocksTreeStore";
 import {useBlocksTreeStore} from "../BlocksTree";
 import {ContentEditables} from "../ContentEditables";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
-import {BlockIDStr} from "../store/BlocksStore";
 import {CursorPositions} from "./CursorPositions";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 
 const hasEditorSelection = (): boolean => {
@@ -275,7 +275,7 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
                 platform,
                 event,
                 blocksTreeStore,
-                blockID, 
+                blockID,
                 readonly
             });
         } else if (readonly && !hasModifiers(event, false)) {

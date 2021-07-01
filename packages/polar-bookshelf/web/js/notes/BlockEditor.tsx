@@ -3,7 +3,6 @@ import {NoteNavigation} from "./NoteNavigation";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
-import {BlockIDStr} from "./store/BlocksStore";
 import {observer} from "mobx-react-lite"
 import {BlockContentEditable, useUpdateCursorPosition} from "./contenteditable/BlockContentEditable";
 import {MarkdownStr} from "polar-shared/src/util/Strings";
@@ -13,6 +12,7 @@ import {useBlockKeyDownHandler} from "./contenteditable/BlockKeyboardHandlers";
 import {ContentEditables} from "./ContentEditables";
 import {reaction} from "mobx";
 import {useBlocksTreeStore} from "./BlocksTree";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 interface ILinkNavigationEvent {
     readonly abortEvent: () => void;

@@ -1,7 +1,13 @@
-import { ISODateTimeString } from "polar-shared/src/metadata/ISODateTimeStrings";
-import {BlockIDStr, IBlockContent} from "./BlocksStore";
-import {PositionalArrays} from "./PositionalArrays";
+import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
+import {IDStr} from "polar-shared/src/util/Strings";
+import {IMarkdownContent} from "./content/IMarkdownContent";
+import {INameContent} from "./content/INameContent";
+import {IImageContent} from "./content/IImageContent";
+import {IDateContent} from "./content/IDateContent";
 import PositionalArray = PositionalArrays.PositionalArray;
+
+export type BlockIDStr = IDStr;
 
 export type UIDStr = string;
 export type NamespaceIDStr = string;
@@ -19,6 +25,8 @@ export type UnsignedInteger = number;
  *
  */
 export type TMutation = UnsignedInteger;
+
+export type IBlockContent = IMarkdownContent | INameContent | IImageContent | IDateContent;
 
 export interface IBlockLink {
 
@@ -92,3 +100,4 @@ export interface IBlock<C extends IBlockContent = IBlockContent> {
     // readonly alignment?: 'left' | 'center' | 'right';
 
 }
+

@@ -3,7 +3,7 @@ import {MUIBrowserLinkStyle} from "../mui/MUIBrowserLinkStyle";
 import {NotesInbound} from "./NotesInbound";
 import {Block} from "./Block";
 import {NoteStyle} from "./NoteStyle";
-import {BlockIDStr, useBlocksStore} from "./store/BlocksStore";
+import {useBlocksStore} from "./store/BlocksStore";
 import {observer} from "mobx-react-lite"
 import {NoteSelectionHandler} from "./NoteSelectionHandler";
 import {ActionMenuPopup} from "../mui/action_menu/ActionMenuPopup";
@@ -13,6 +13,7 @@ import {NotesToolbar} from "./NotesToolbar";
 import {Block as BlockClass} from "./store/Block";
 import {BlockTitle} from "./BlockTitle";
 import {BlocksTreeProvider} from "./BlocksTree";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 interface INoteRootRendererProps {
     readonly block: BlockClass;
@@ -41,7 +42,7 @@ export const NoteRootRenderer: React.FC<INoteRootRendererProps> = ({ block }) =>
                 <NoteStyle>
                     <MUIBrowserLinkStyle style={{flexGrow: 1}}>
                         <BlocksTreeProvider root={id}>
-                        
+
                             <NotesToolbar/>
                             <BlockTitle id={id}/>
                             <Block parent={undefined} id={id}/>

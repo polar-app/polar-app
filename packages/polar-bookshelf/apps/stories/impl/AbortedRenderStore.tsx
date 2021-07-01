@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Provider} from "polar-shared/src/util/Providers";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {createObservableStore, SetStore} from "../../../web/js/react/store/ObservableStore";
-import {IBlock} from "../../../web/js/notes/store/IBlock";
+import {IBlock} from "polar-blocks/src/blocks/IBlock";
 
 export type NoteIDStr = IDStr;
 export type NoteNameStr = string;
