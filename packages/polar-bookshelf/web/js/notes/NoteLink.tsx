@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {BlockIDStr} from "./store/BlocksStore";
 import {createNoteLink} from "./NoteLinkLoader";
 import {Link} from "react-router-dom";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 interface IProps {
     readonly target: BlockIDStr;

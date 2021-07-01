@@ -1,9 +1,10 @@
 import React from "react";
 import {BlocksTreeStore} from "./BlocksTreeStore";
-import {BlockIDStr, useBlocksStore} from "./store/BlocksStore";
+import {useBlocksStore} from "./store/BlocksStore";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 
-type BlocksTreeContextData = BlocksTreeStore; 
+type BlocksTreeContextData = BlocksTreeStore;
 
 const BlocksTreeContext = React.createContext<BlocksTreeContextData | undefined>(undefined);
 

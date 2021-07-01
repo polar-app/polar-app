@@ -1,8 +1,7 @@
-import {BlockIDStr} from "./BlocksStore";
-import {IBlock} from "./IBlock";
 import deepEqual from "deep-equal";
 import {PositionalArrays} from "./PositionalArrays";
 import {SetArrays} from "polar-shared/src/util/SetArrays";
+import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
 
 export namespace BlocksStoreMutations {
 

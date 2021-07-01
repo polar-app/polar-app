@@ -1,6 +1,6 @@
 import {UserIDStr} from "polar-firebase/src/firebase/om/Profiles";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
-import {BlockIDStr} from "../../../polar-bookshelf/web/js/notes/store/BlocksStore";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 export namespace BlockPermissions {
 

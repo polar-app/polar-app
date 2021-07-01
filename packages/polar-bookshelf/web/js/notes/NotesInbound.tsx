@@ -3,13 +3,13 @@ import {deepMemo} from '../react/ReactUtils';
 import Box from '@material-ui/core/Box';
 import {UL} from './UL';
 import {Block} from "./Block";
-import {BlockIDStr} from './store/BlocksStore';
 import {observer} from "mobx-react-lite"
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import {NoteBreadcrumbLink} from "./NoteBreadcrumbLink";
 import {BlockPredicates} from "./store/BlockPredicates";
 import {IBlockPredicates} from "./store/IBlockPredicates";
 import {BlocksTreeProvider, useBlocksTreeStore} from './BlocksTree';
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 interface InboundNoteRefProps {
     readonly id: BlockIDStr;

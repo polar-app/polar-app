@@ -1,8 +1,7 @@
 import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
 import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
-import {BlockIDStr, IBlockContent} from "../store/BlocksStore";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {IBlock} from "../store/IBlock";
+import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
 
 export type BlocksPersistenceWriter = (mutations: ReadonlyArray<IBlocksStoreMutation>) => void;
 

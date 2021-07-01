@@ -7,7 +7,6 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {BlockTargetStr} from "../NoteLinkLoader";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {IBlock, IBlockLink, NamespaceIDStr, UIDStr} from "./IBlock";
 import {ReverseIndex} from "./ReverseIndex";
 import {Block} from "./Block";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
@@ -15,37 +14,30 @@ import {Numbers} from "polar-shared/src/util/Numbers";
 import {CursorPositions} from "../contenteditable/CursorPositions";
 import {useBlocksStoreContext} from "./BlockStoreContextProvider";
 import {IBlocksStore} from "./IBlocksStore";
-import {IImageContent} from "../content/IImageContent";
 import {BlockPredicates} from "./BlockPredicates";
 import {MarkdownContent} from "../content/MarkdownContent";
 import {NameContent} from "../content/NameContent";
 import {ImageContent} from "../content/ImageContent";
-import {IMarkdownContent} from "../content/IMarkdownContent";
-import {INameContent} from "../content/INameContent";
 import {Contents} from "../content/Contents";
 import {IBaseBlockContent} from "../content/IBaseBlockContent";
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {useUndoQueue} from "../../undo/UndoQueueProvider2";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
 import {PositionalArrays} from "./PositionalArrays";
-import {IDateContent} from "../content/IDateContent";
 import {DateContent} from "../content/DateContent";
 import {IBlocksPersistenceSnapshot, useBlocksPersistenceSnapshots} from "../persistence/BlocksPersistenceSnapshots";
 import {BlocksPersistenceWriter} from "../persistence/FirestoreBlocksStoreMutations";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useBlocksPersistenceWriter} from "../persistence/BlocksPersistenceWriters";
 import {WikiLinksToMarkdown} from "../WikiLinksToMarkdown";
-import {useBlockExpandSnapshots, IBlockExpandSnapshot} from "../persistence/BlockExpandSnapshots";
-import {
-    BlockExpandPersistenceWriter,
-    useBlockExpandPersistenceWriter
-} from "../persistence/BlockExpandWriters";
+import {IBlockExpandSnapshot, useBlockExpandSnapshots} from "../persistence/BlockExpandSnapshots";
+import {BlockExpandPersistenceWriter, useBlockExpandPersistenceWriter} from "../persistence/BlockExpandWriters";
 import {IBlockContentStructure} from "../HTMLToBlocks";
 import {DOMBlocks} from "../contenteditable/BlockContentEditable";
+import {BlockIDStr, IBlock, IBlockContent, IBlockLink, NamespaceIDStr, UIDStr} from "polar-blocks/src/blocks/IBlock";
 
 export const ENABLE_UNDO_TRACING = false;
 
-export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
 
 export type BlockType = 'name' | 'markdown' | 'image' | 'date';
@@ -58,7 +50,6 @@ export type ReverseBlocksIndex = {[id: string /* BlockIDStr */]: BlockIDStr[]};
 
 export type StringSetMap = {[key: string]: boolean};
 
-export type IBlockContent = IMarkdownContent | INameContent | IImageContent | IDateContent;
 export type BlockContent = (MarkdownContent | NameContent | ImageContent | DateContent) & IBaseBlockContent;
 
 /**
@@ -300,7 +291,7 @@ export class BlocksStore implements IBlocksStore {
     /*
      * Used to keep track of cursor positions in every note
      */
-    private _activeBlocksIndex: ActiveBlocksIndex = {}; 
+    private _activeBlocksIndex: ActiveBlocksIndex = {};
 
     constructor(uid: UIDStr, undoQueue: UndoQueues2.UndoQueue,
                 readonly blocksPersistenceWriter: BlocksPersistenceWriter = NULL_FUNCTION,
@@ -725,7 +716,7 @@ export class BlocksStore implements IBlocksStore {
                          pos: NavPosition,
                          opts: NavOpts): boolean {
 
-                             
+
         if (root === undefined) {
             console.warn("No currently active root");
             return false;
@@ -749,7 +740,7 @@ export class BlocksStore implements IBlocksStore {
 
         const activeIndex = childIndex + deltaIndex;
         const newActive = items[activeIndex];
-        
+
         if (! newActive && ! opts.shiftKey) {
             const siblingID = DOMBlocks.getSiblingID(this._active.id, delta);
             if (siblingID) {
@@ -1141,7 +1132,7 @@ export class BlocksStore implements IBlocksStore {
     public pathToBlock(blockID: BlockIDStr): ReadonlyArray<Block> {
         const result: Block[] = [];
 
-        let block = this._index[blockID]; 
+        let block = this._index[blockID];
 
         while (block && block.parent) {
             const parent = this._index[block.parent];
@@ -1548,7 +1539,7 @@ export class BlocksStore implements IBlocksStore {
 
         // Copy the expand state from the old block to the new one if the new one is inheriting the items
         if (newBlockInheritItems) {
-            const isExpanded = this._expanded[currentBlock.id] 
+            const isExpanded = this._expanded[currentBlock.id]
             this[isExpanded ? 'expand' : 'collapse'](newBlock.id);
         }
 
@@ -2134,7 +2125,7 @@ export class BlocksStore implements IBlocksStore {
         if (! allHaveSameParent) { // This technically would never happen because our selection system only allows siblings
             throw new Error("Only sibling blocks can be moved");
         }
-        
+
         const idsToPositionsMap = (ids: ReadonlyArray<BlockIDStr>) =>
             ids.reduce((m, x, i) => m.set(x, i), new Map<string, number>())
 

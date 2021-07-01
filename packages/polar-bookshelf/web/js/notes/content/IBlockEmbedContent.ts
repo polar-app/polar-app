@@ -1,4 +1,4 @@
-import {BlockIDStr} from "../store/BlocksStore";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 /**
  * A reference to another block rather than duplicating content.

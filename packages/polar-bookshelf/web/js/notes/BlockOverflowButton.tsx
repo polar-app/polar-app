@@ -3,10 +3,10 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import createStyles from "@material-ui/core/styles/createStyles";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import clsx from "clsx";
-import {BlockIDStr} from "./store/BlocksStore";
 import {observer} from "mobx-react-lite"
 import {useBlockContextMenu} from "./Block";
 import {useBlocksTreeStore} from "./BlocksTree";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 const useStyles = makeStyles((theme) =>
     createStyles({

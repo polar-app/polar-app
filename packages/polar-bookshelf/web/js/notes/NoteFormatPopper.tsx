@@ -3,12 +3,12 @@ import React from 'react';
 import {BarMode, FormatBarActions, NoteFormatBar} from "./NoteFormatBar";
 import {useNoteFormatHandlers, useNoteFormatKeyboardHandler} from "./NoteFormatHooks";
 import {observer} from "mobx-react-lite"
-import {BlockIDStr} from './store/BlocksStore';
 import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {URLStr} from 'polar-shared/src/util/Strings';
 import {createStyles, makeStyles} from '@material-ui/core';
 import {reaction} from 'mobx';
 import {useBlocksTreeStore} from './BlocksTree';
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -204,7 +204,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
         setFakeRangePosition(undefined);
         noteFormatHandlers.onLink(url);
     }, [noteFormatHandlers, restore]);
-    
+
     return (
 
         <div onMouseDown={onMouseDown}
@@ -214,7 +214,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
                 <div style={{ position: 'relative' }}>
                     {fakeRangePosition &&
                         <div className={classes.fakeRange} style={fakeRangePosition}></div>}
-                
+
                     {props.children}
                 </div>
 

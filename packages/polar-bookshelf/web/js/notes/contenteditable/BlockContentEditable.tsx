@@ -2,7 +2,7 @@ import {HTMLStr} from 'polar-shared/src/util/Strings';
 import React from 'react';
 import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import {observer} from "mobx-react-lite"
-import {BlockIDStr, IActiveBlock} from '../store/BlocksStore';
+import {IActiveBlock} from '../store/BlocksStore';
 import {ContentEditables} from "../ContentEditables";
 import {createActionsProvider} from "../../mui/action_menu/ActionStore";
 import {NoteFormatPopper} from "../NoteFormatPopper";
@@ -17,6 +17,7 @@ import {MarkdownContent} from '../content/MarkdownContent';
 import {BlockEditorGenericProps} from '../BlockEditor';
 import {IBlockContentStructure} from '../HTMLToBlocks';
 import {useBlocksTreeStore} from '../BlocksTree';
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed

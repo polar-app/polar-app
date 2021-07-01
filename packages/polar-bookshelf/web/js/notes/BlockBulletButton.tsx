@@ -2,12 +2,12 @@ import React from "react";
 import {MiddleDot} from "./MiddleDot";
 import {BlockTargetStr} from "./NoteLinkLoader";
 import {NoteButton} from "./NoteButton";
-import {BlockIDStr} from "./store/BlocksStore";
 import {observer} from "mobx-react-lite"
 import {NoteLink} from "./NoteLink";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import useTheme from "@material-ui/core/styles/useTheme";
 import {useBlocksTreeStore} from "./BlocksTree";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 
 interface IProps {

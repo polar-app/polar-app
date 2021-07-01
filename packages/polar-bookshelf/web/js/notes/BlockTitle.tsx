@@ -1,9 +1,9 @@
 import React from "react";
-import {BlockIDStr} from "./store/BlocksStore";
 import {observer} from "mobx-react-lite"
 import {Helmet} from "react-helmet";
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
 import {useBlocksTreeStore} from "./BlocksTree";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 interface IProps {
     readonly id: BlockIDStr;

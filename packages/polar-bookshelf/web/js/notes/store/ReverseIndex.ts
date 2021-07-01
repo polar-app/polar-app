@@ -1,5 +1,5 @@
-import {BlockIDStr} from "./BlocksStore";
 import {action, computed, observable} from "mobx"
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 export class ReverseIndex {
 

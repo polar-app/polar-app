@@ -1,7 +1,6 @@
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
 import {assertJSON} from "../../test/Assertions";
 import {BlocksStore} from "./BlocksStore";
-import {IMarkdownContent} from "../content/IMarkdownContent";
 import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {JSDOMParser} from "./BlocksStoreTestNK";
@@ -11,7 +10,7 @@ import {BlocksStoreTests} from "./BlocksStoreTests";
 import createBasicBlock = BlocksStoreTests.createBasicBlock;
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
-
+import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
 
 function createStore() {
     const blocks = MockBlocks.create();

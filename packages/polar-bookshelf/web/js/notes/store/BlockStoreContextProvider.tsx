@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {UIDStr} from "./IBlock";
 import {useUserInfoContext} from "../../apps/repository/auth_handler/UserInfoProvider";
+import {UIDStr} from "polar-blocks/src/blocks/IBlock";
 
 export interface IBlockStoreContext {
     readonly uid: UIDStr;

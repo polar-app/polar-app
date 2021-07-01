@@ -1,8 +1,8 @@
 import {makeObservable, observable, computed} from "mobx"
 import {INameContent} from "./INameContent";
-import {IBlockContent} from "../store/BlocksStore";
 import {IBaseBlockContent} from "./IBaseBlockContent";
 import {DateContentFormat, IDateContent} from "./IDateContent";
+import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 
 export class DateContent implements IDateContent, IBaseBlockContent {
 

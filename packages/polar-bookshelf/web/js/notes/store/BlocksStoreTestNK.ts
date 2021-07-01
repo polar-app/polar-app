@@ -1,5 +1,5 @@
 import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
-import {BlockContent, BlockIDStr, BlocksStore, IBlockContent} from "./BlocksStore";
+import {BlockContent, BlocksStore} from "./BlocksStore";
 import {assertJSON} from "../../test/Assertions";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
@@ -15,11 +15,11 @@ import {Asserts} from "polar-shared/src/Asserts";
 import assertPresent = Asserts.assertPresent;
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
-import {IBlock} from "./IBlock";
 import {PositionalArrays} from "./PositionalArrays";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {HTMLToBlocks, IBlockContentStructure} from "../HTMLToBlocks";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
 
 function assertTextBlock(content: BlockContent): asserts content is MarkdownContent | NameContent {
 
@@ -775,7 +775,7 @@ describe('BlocksStore', function() {
                     id: '102',
                     children: [
                         {
-                            id: '103', 
+                            id: '103',
                             children: [
                                 {id: '104', children: [{id: '116', children: []}]},
                                 {
@@ -936,7 +936,7 @@ describe('BlocksStore', function() {
         });
 
     });
-    
+
     describe("navPrev", () => {
         const root = '102';
         let store: BlocksStore;
@@ -991,7 +991,7 @@ describe('BlocksStore', function() {
             assert.equal(store.active.id, '105');
         });
     });
-    
+
     describe("navNext", () => {
         const root = '102';
         let store: BlocksStore;
@@ -1140,7 +1140,7 @@ describe('BlocksStore', function() {
             store.collapse('105');
             store.setSelectionRange('106', '117', '118');
 
-            
+
             assert.deepEqual(store.selected, arrayStream(['117']).toMap2(c => c, () => true));
         });
     });
@@ -2215,11 +2215,11 @@ describe('BlocksStore', function() {
                                 }
                             ]
                         },
-                        
+
                     ]
                 },
             ];
-            
+
             assert.deepEqual(output, expected);
         });
     });

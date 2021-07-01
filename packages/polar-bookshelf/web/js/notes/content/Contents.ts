@@ -1,12 +1,13 @@
 import {MarkdownContent} from "./MarkdownContent";
 import {NameContent} from "./NameContent";
-import {BlockContent, IBlockContent} from "../store/BlocksStore";
+import {BlockContent} from "../store/BlocksStore";
 import {ImageContent} from "./ImageContent";
-import { IMarkdownContent } from "./IMarkdownContent";
+import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
 import {INameContent} from "./INameContent";
 import {IImageContent} from "./IImageContent";
 import {IDateContent} from "./IDateContent";
 import {DateContent} from "./DateContent";
+import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 
 export namespace Contents {
 

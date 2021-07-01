@@ -1,11 +1,11 @@
-import { ISODateTimeString } from "polar-shared/src/metadata/ISODateTimeStrings";
+import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {PositionalArrays} from "../PositionalArrays";
-import PositionalArray = PositionalArrays.PositionalArray;
 import {IDStr} from "polar-shared/src/util/Strings";
 import {IMarkdownContent} from "./content/IMarkdownContent";
-import {INameContent} from "../../../../polar-bookshelf/web/js/notes/content/INameContent";
-import {IImageContent} from "../../../../polar-bookshelf/web/js/notes/content/IImageContent";
-import {IDateContent} from "../../../../polar-bookshelf/web/js/notes/content/IDateContent";
+import {INameContent} from "./content/INameContent";
+import {IImageContent} from "./content/IImageContent";
+import {IDateContent} from "./content/IDateContent";
+import PositionalArray = PositionalArrays.PositionalArray;
 
 export type BlockIDStr = IDStr;
 
@@ -100,3 +100,4 @@ export interface IBlock<C extends IBlockContent = IBlockContent> {
     // readonly alignment?: 'left' | 'center' | 'right';
 
 }
+

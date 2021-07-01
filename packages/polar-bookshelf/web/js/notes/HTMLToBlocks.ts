@@ -1,9 +1,9 @@
 import {TextHighlightMerger} from "../../../apps/doc/src/text_highlighter/TextHighlightMerger";
 import {Images} from "polar-shared/src/util/Images";
 import {IImageContent} from "./content/IImageContent";
-import {IMarkdownContent} from "./content/IMarkdownContent";
-import {IBlockContent} from "./store/BlocksStore";
 import {Elements} from "../util/Elements";
+import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
+import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
 
 export type IBlockContentStructure<T = IBlockContent> = {
     content: T;
@@ -20,7 +20,7 @@ type ParserState = {
 };
 
 const INITIAL_STATE = {
-    withinList: false, 
+    withinList: false,
 };
 
 export namespace HTMLToBlocks {
@@ -62,7 +62,7 @@ export namespace HTMLToBlocks {
         };
 
         const isMergable = (a: IBlockContentMergableStructure, b: IBlockContentMergableStructure): boolean =>
-            (a.content.type === "markdown" && b.content.type === "markdown") && 
+            (a.content.type === "markdown" && b.content.type === "markdown") &&
                 (
                     (a.mergable && b.mergable) ||
                     (a.content.data.trim().length === 0 || b.content.data.trim().length === 0)
