@@ -1,5 +1,5 @@
-import {arrayStream} from "src/util/ArrayStreams";
-import {Tuples} from "src/util/Tuples";
+import {arrayStream} from "./ArrayStreams";
+import {Tuples} from "./Tuples";
 
 /**
  * Positional Arrays are based on LSeq:
