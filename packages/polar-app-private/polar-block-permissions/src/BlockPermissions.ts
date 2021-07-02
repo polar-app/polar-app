@@ -1,7 +1,8 @@
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
-import {UserIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 import {BlockCollection} from "polar-firebase/src/firebase/om/BlockCollection";
+import {BlockPermissionNSpaceCollection} from "polar-firebase/src/firebase/om/BlockPermissionNSpaceCollection";
+import {IBlockPermission} from "polar-firebase/src/firebase/om/IBlockPermission";
 
 export namespace BlockPermissions {
 
@@ -13,8 +14,7 @@ export namespace BlockPermissions {
      */
     export async function doUpdatePagePermissions(firestore: IFirestore<unknown>,
                                                   id: BlockIDStr,
-                                                  permissions: ReadonlyArray<IPermission>) {
-
+                                                  permissions: ReadonlyArray<IBlockPermission>) {
 
         // ** verify that this block exists and that it's the right type.
 
@@ -29,7 +29,7 @@ export namespace BlockPermissions {
         }
 
         // ** get the current permissions for this page
-
+        BlockPermissionNSpaceCollection.get(firestore, id);
 
 
         // ** verify that the user is admin
@@ -45,11 +45,3 @@ export namespace BlockPermissions {
 
 }
 
-
-export type AccessType = 'read' | 'comment' | 'write';
-
-export interface IPermission {
-    readonly id: UserIDStr;
-    readonly uid: UserIDStr;
-    readonly access: AccessType;
-}

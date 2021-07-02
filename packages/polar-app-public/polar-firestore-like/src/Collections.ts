@@ -99,12 +99,15 @@ export namespace Collections {
 
     export async function get<T, SM = unknown>(firestore: IFirestore<SM>,
                                                collection: string,
-                                                id: string): Promise<T | undefined> {
+                                               id: string): Promise<T | undefined> {
         const ref = firestore.collection(collection).doc(id);
         const doc = await ref.get();
         return <T> doc.data();
     }
 
+    /**
+     * @deprecated use get()
+     */
     export async function getByID<T, SM = unknown>(firestore: IFirestore<SM>,
                                                    collection: string,
                                                    id: string): Promise<T | undefined> {

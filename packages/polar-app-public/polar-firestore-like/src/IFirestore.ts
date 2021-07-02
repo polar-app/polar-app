@@ -19,6 +19,11 @@ export type FirestoreClient = firebase.firestore.Firestore;
 export type FirestoreAdmin = admin.Firestore;
 
 /**
+ * A firestore UID type.
+ */
+export type UserIDStr = string;
+
+/**
  * Firestore mimic interface so that the firestore client SDK and admin SDK can
  * both be used with the same code.
  */
