@@ -17,7 +17,7 @@ export namespace BlockPermissions {
     export async function doUpdatePagePermissions(firestore: IFirestore<unknown>,
                                                   uid: UserIDStr,
                                                   id: BlockIDStr,
-                                                  permissions: ReadonlyArray<IBlockPermission>) {
+                                                  permissions: BlockPermissionMap) {
 
         // ** verify that this block exists and that it's the right type.
 
@@ -38,6 +38,15 @@ export namespace BlockPermissions {
         const effectivePerms = computeEffectivePermissionsForPage(pagePerms, nspacePerms);
 
         // ** verify that the user is admin
+        if (effectivePerms[uid]?.access !== 'admin') {
+            throw new Error("User does not have admin to change permissions on this page: " + id);
+        }
+
+        if (permissions['__public__']?.access === 'admin') {
+            throw new Error("Not allowed to set __public__ permissions to 'admin'" + id);
+        }
+
+        // FIXME: now apply this to block_permission_user and persist..
 
     }
 

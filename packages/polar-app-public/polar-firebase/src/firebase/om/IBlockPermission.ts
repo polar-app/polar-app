@@ -1,6 +1,6 @@
 import {UserIDStr} from "polar-firestore-like/src/IFirestore";
 
-export type AccessType = 'read' | 'comment' | 'write';
+export type AccessType = 'read' | 'comment' | 'write' | 'admin';
 
 /**
  * This is a magic string to denote public access for a resource.
