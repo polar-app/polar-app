@@ -436,7 +436,7 @@ module.exports = {
         contentBase: path.resolve('dist/public'),
         compress: true,
         // Required to allow Webpack dev server host and port to be exposed outside the Docker container
-        host: "0.0.0.",
+        host: "0.0.0.0",
         port,
         open: true,
         openPage,
