@@ -1,4 +1,4 @@
-import {IBlockPermission} from "./IBlockPermission";
+import {BlockPermissionUserIDStr, IBlockPermission} from "./IBlockPermission";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import { ISODateTimeString } from "polar-shared/src/metadata/ISODateTimeStrings";
 
@@ -11,7 +11,7 @@ import { ISODateTimeString } from "polar-shared/src/metadata/ISODateTimeStrings"
  */
 export type BlockPermissionRecordType = 'page' | 'nspace' | 'effective';
 
-export type BlockPermissionMap = {[uid: string /** BlockPermissionUserIDStr */]: IBlockPermission}
+export type BlockPermissionMap = {[uid in BlockPermissionUserIDStr]: IBlockPermission}
 
 export interface IBlockPermissionRecord<T extends BlockPermissionRecordType> {
     readonly id: BlockIDStr;
