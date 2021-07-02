@@ -74,6 +74,7 @@ commands:
           # command: npm run-script purge-node-modules && npx lerna bootstrap
           command: |
             npm config set legacy-peer-deps true
+            yarn global add node-gyp
             npx lerna bootstrap
 
       - save_cache:
