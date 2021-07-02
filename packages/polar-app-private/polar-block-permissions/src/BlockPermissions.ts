@@ -31,7 +31,6 @@ export namespace BlockPermissions {
         // ** get the current permissions for this page
         BlockPermissionNSpaceCollection.get(firestore, id);
 
-
         // ** verify that the user is admin
 
     }
