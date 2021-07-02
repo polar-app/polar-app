@@ -6,9 +6,9 @@ import {
 import {Files} from "polar-shared/src/util/Files";
 import {
     DocPreview,
-    DocPreviews,
+    DocPreviewCollection,
     DocPreviewUncached
-} from "packages/polar-app-public/polar-firebase/src/firebase/om/DocPreviewCollection";
+} from "polar-firebase/src/firebase/om/DocPreviewCollection";
 import {ArrayStreams} from "polar-shared/src/util/ArrayStreams";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {DocPreviewHashcodes} from "polar-firebase/src/firebase/om/DocPreviewHashcodes";
@@ -138,13 +138,13 @@ export class UnpaywallDocPreviewsLoader {
 
         for (const docPreview of docPreviews) {
 
-            if (await DocPreviews.get(docPreview.urlHash)) {
+            if (await DocPreviewCollection.get(docPreview.urlHash)) {
                 console.log('skipping');
                 continue;
             }
 
             console.log('writing');
-            await DocPreviews.set(docPreview);
+            await DocPreviewCollection.set(docPreview);
 
             await SendToQueue.send(toImportURL(docPreview));
 
