@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
 import {StorageOptions} from '@google-cloud/storage';
 import {FirebaseConfig} from './FirebaseConfig';
-import {DocPreviews} from "polar-firebase/src/firebase/om/DocPreviewCollection";
+import {DocPreviewCollection} from "polar-firebase/src/firebase/om/DocPreviewCollection";
 
 let app: admin.app.App;
 
@@ -39,7 +39,7 @@ export class FirebaseAdmin {
         const initializeFirestore = () => {
             const firestore = app.firestore();
 
-            DocPreviews.firestoreProvider = () => firestore;
+            DocPreviewCollection.firestoreProvider = () => firestore;
 
         };
 
