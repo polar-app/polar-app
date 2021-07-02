@@ -6,7 +6,7 @@ import {
 } from "polar-spaced-repetition/src/spaced_repetition/scheduler/S2Plus/TasksCalculator";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
-import {SpacedReps} from "packages/polar-app-public/polar-firebase/src/firebase/om/SpacedRepCollection";
+import {SpacedRepCollection} from "polar-firebase/src/firebase/om/SpacedRepCollection";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
 import {Firebase} from "../../../../web/js/firebase/Firebase";
 import {RepetitionMode, Task, TaskRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
@@ -15,7 +15,7 @@ import {FlashcardTaskActions} from "./cards/FlashcardTaskActions";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Reducers} from "polar-shared/src/util/Reducers";
-import {SpacedRepStats} from "packages/polar-app-public/polar-firebase/src/firebase/om/SpacedRepStatCollection";
+import {SpacedRepStatCollection} from "polar-firebase/src/firebase/om/SpacedRepStatCollection";
 import {FirestoreCollections} from "./FirestoreCollections";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {ReadingTaskAction} from "./cards/ReadingTaskAction";
@@ -133,7 +133,7 @@ export class ReviewerTasks {
             throw new Error("Not authenticated");
         }
 
-        const spacedReps = await SpacedReps.list(uid);
+        const spacedReps = await SpacedRepCollection.list(uid);
 
         const spacedRepsMap = IDMaps.create(spacedReps);
 
@@ -176,7 +176,7 @@ export class ReviewerTasks {
             return false;
         }
 
-        return await SpacedRepStats.hasStats(uid);
+        return await SpacedRepStatCollection.hasStats(uid);
 
     }
 

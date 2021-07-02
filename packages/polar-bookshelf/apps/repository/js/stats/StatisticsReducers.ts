@@ -1,5 +1,5 @@
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {SpacedRepStat, SpacedRepStatRecord} from "packages/polar-app-public/polar-firebase/src/firebase/om/SpacedRepStatCollection";
+import {SpacedRepStat, SpacedRepStatRecord} from "polar-firebase/src/firebase/om/SpacedRepStatCollection";
 import {StageCountsCalculator} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 
 export const firstDatapointsReducer = (timestamp: ISODateTimeString,

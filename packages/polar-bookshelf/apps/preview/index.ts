@@ -11,8 +11,8 @@ import {
 import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
 import {
     DocPreviewCached,
-    DocPreviews
-} from "packages/polar-app-public/polar-firebase/src/firebase/om/DocPreviewCollection";
+    DocPreviewCollection
+} from "polar-firebase/src/firebase/om/DocPreviewCollection";
 import {AnalyticsInitializer} from "../../web/js/analytics/AnalyticsInitializer";
 import {FirestoreCollections} from "../repository/js/reviewer/FirestoreCollections";
 import {Version} from 'polar-shared/src/util/Version';
@@ -29,7 +29,7 @@ async function getDocPreview(): Promise<DocPreviewCached> {
 
     if (parsedURL) {
 
-        const docPreview = await DocPreviews.get(parsedURL.id);
+        const docPreview = await DocPreviewCollection.get(parsedURL.id);
 
         if (! docPreview) {
             throw new Error("No doc for: " + parsedURL.id);

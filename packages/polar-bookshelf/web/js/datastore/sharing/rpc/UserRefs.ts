@@ -4,7 +4,7 @@
  * resolve to a user + profile.
  */
 import {EmailStr} from "polar-shared/src/util/Strings";
-import {ProfileIDStr} from "packages/polar-app-public/polar-firebase/src/firebase/om/ProfileCollection";
+import {ProfileIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 
 export class UserRefs {
 

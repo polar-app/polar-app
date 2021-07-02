@@ -3,7 +3,7 @@ import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Firebase} from '../../../firebase/Firebase';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Collections, DocumentChange} from './Collections';
-import {ProfileIDStr} from "packages/polar-app-public/polar-firebase/src/firebase/om/ProfileCollection";
+import {ProfileIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 
 export class GroupMembers {
 

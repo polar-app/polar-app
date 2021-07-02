@@ -7,7 +7,7 @@ import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IDStr} from "polar-shared/src/util/Strings";
-import {ProfileIDStr} from "packages/polar-app-public/polar-firebase/src/firebase/om/ProfileCollection";
+import {ProfileIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 
 export interface BaseDocAnnotation {
 

@@ -46,7 +46,8 @@ export namespace BlockPermissions {
             throw new Error("Not allowed to set __public__ permissions to 'admin'" + id);
         }
 
-        // FIXME: now apply this to block_permission_user and persist..
+        // FIXME: now apply this to block_permission_user and persist.. we have
+        // to fetch each record from the DB though...  build it as a map and pass that in as the exicting values...
 
     }
 

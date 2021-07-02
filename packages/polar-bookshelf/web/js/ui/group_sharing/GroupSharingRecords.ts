@@ -13,7 +13,7 @@ import {Contact} from '../../datastore/sharing/db/Contacts';
 import {UserGroups} from "../../datastore/sharing/db/UserGroups";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {UserGroupMembership} from "../../datastore/sharing/db/UserGroupMembership";
-import {IProfile} from "packages/polar-app-public/polar-firebase/src/firebase/om/ProfileCollection";
+import {IProfile} from "polar-firebase/src/firebase/om/ProfileCollection";
 
 const log = Logger.create();
 

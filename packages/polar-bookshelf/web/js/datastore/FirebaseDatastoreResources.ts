@@ -2,7 +2,7 @@ import {Backend} from 'polar-shared/src/datastore/Backend';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {CloudFunctions} from './firebase/CloudFunctions';
 import {FileRef} from "polar-shared/src/datastore/FileRef";
-import {UserIDStr} from "packages/polar-app-public/polar-firebase/src/firebase/om/ProfileCollection";
+import {UserIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 import {FirebaseDocMetaID} from "polar-shared/src/datastore/FirebaseDatastores";
 
 export class FirebaseDatastoreResources {

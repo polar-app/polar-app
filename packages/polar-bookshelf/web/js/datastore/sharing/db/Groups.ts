@@ -6,7 +6,7 @@ import {ExternalLink} from "../rpc/GroupProvisions";
 import {Clause, Collections, OrderByClause} from "./Collections";
 import {PlainTextStr, URLStr} from "polar-shared/src/util/Strings";
 import {Arrays} from "polar-shared/src/util/Arrays";
-import {UserIDStr} from "packages/polar-app-public/polar-firebase/src/firebase/om/ProfileCollection";
+import {UserIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 
 const HASHCODE_LEN = 20;
 

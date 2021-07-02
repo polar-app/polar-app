@@ -2,7 +2,7 @@ import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Firebase} from '../../../firebase/Firebase';
 import {Collections, DocumentChange} from './Collections';
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {EmailStr} from "packages/polar-app-public/polar-firebase/src/firebase/om/ProfileCollection";
+import {EmailStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 
 export class Contacts {
 
