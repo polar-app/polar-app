@@ -1,5 +1,4 @@
 import React from 'react';
-import {NotesRouter} from "../../../web/js/notes/NotesRouter";
 import Fab from '@material-ui/core/Fab';
 import HelpIcon from '@material-ui/icons/Help';
 import Dialog from '@material-ui/core/Dialog';
@@ -73,8 +72,6 @@ const NotesStoryInner = () => (
              display: 'flex',
              flexGrow: 1
          }}>
-
-        <NotesRouter/>
 
         <NotesStoryDebugButton/>
 
