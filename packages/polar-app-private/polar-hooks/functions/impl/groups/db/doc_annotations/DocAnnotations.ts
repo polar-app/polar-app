@@ -9,13 +9,13 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import {UserID} from "../../../../sandbox/test";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {Firestore} from "../../../util/Firestore";
-import {IProfile, ProfileIDStr, Profiles, UserIDStr} from "polar-firebase/src/firebase/om/Profiles";
+import {IProfile, ProfileIDStr, ProfileCollection, UserIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 
 export type UserProfileProvider = (uid: UserIDStr) => Promise<IProfile | undefined>;
 
 export const defaultUserProfileProvider = async (uid: UserIDStr) => {
     const firestore = Firestore.getInstance();
-    return await Profiles.userProfile(firestore, uid);
+    return await ProfileCollection.userProfile(firestore, uid);
 }
 
 export class DocAnnotations {

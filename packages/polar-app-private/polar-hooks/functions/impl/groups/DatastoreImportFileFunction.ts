@@ -8,7 +8,7 @@ import {ExpressFunctions} from '../util/ExpressFunctions';
 import {UserRequests} from '../util/UserRequests';
 import {Backend} from "polar-firebase/src/firebase/datastore/Backend";
 import {Lazy} from "polar-shared/src/util/Lazy";
-import {UserIDStr} from "polar-firebase/src/firebase/om/Profiles";
+import {UserIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 
 const storageConfig = Lazy.create(() => Datastores.createStorage());
 const storage = Lazy.create(() => storageConfig().storage);

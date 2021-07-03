@@ -6,7 +6,7 @@ import {TagsValidator} from './rpc/TagsValidator';
 import * as admin from 'firebase-admin';
 import UserRecord = admin.auth.UserRecord;
 import {Arrays} from "polar-shared/src/util/Arrays";
-import {IProfileUpdate, ProfileIDStr, Profiles, UserIDStr} from "polar-firebase/src/firebase/om/Profiles";
+import {IProfileUpdate, ProfileIDStr, ProfileCollection, UserIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 
 export class ProfileUpdates {
 
@@ -29,7 +29,7 @@ export class ProfileUpdates {
 
         const profileOwner = await ProfileOwners.get(uid);
 
-        const profileID = profileOwner ? profileOwner.profileID : Profiles.createID();
+        const profileID = profileOwner ? profileOwner.profileID : ProfileCollection.createID();
 
         if (profileOwner && profileOwner.handle) {
             // the previous handle has to be deleted as the user is changing
@@ -56,7 +56,7 @@ export class ProfileUpdates {
             handle: update.handle
         });
 
-        Profiles.set(firestore, batch, profileID, user, update);
+        ProfileCollection.set(firestore, batch, profileID, user, update);
 
         await batch.commit();
 

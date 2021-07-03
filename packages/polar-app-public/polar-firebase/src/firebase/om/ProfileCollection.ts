@@ -112,11 +112,11 @@ export namespace ProfileCollection {
         return Arrays.first(results);
     }
 
-    export async function set(firestore: IFirestore<unknown>,
-                              batch: IWriteBatch<unknown>,
-                              id: ProfileIDStr,
-                              user: IUserRecord,
-                              update: IProfileUpdate) {
+    export function set(firestore: IFirestore<unknown>,
+                        batch: IWriteBatch<unknown>,
+                        id: ProfileIDStr,
+                        user: IUserRecord,
+                        update: IProfileUpdate) {
 
         const updated = ISODateTimeStrings.create();
 

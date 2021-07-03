@@ -13,7 +13,7 @@ import {Arrays, asArray} from "polar-shared/src/util/Arrays";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
 import {Collections} from "polar-firestore-like/src/Collections";
-import {EmailStr, ProfileIDStr} from 'polar-firebase/src/firebase/om/Profiles';
+import {EmailStr, ProfileIDStr} from 'polar-firebase/src/firebase/om/ProfileCollection';
 
 export class GroupMemberInvitations {
 
