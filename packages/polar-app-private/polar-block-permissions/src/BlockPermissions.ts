@@ -8,15 +8,19 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 export namespace BlockPermissions {
 
+    export type PermissionTarget = 'page' | 'nspace';
+
     /**
      *
      * @param firestore  The Firestore instance to use
+     * @param target: where to apply the permissions.
      * @param uid: The user making the permission changes.
      * @param id The ID of the page which needs permissions mutated.
      * @param effectivePerms The current effective permissions.
      * @param newPermissions The array of permissions to apply.
      */
     async function doUpdatePermissions(firestore: IFirestore<unknown> & IFirestoreLib,
+                                       target: PermissionTarget,
                                        uid: UserIDStr,
                                        id: BlockIDStr,
                                        effectivePerms: Readonly<BlockPermissionMap>,
@@ -39,8 +43,7 @@ export namespace BlockPermissions {
 
         const permissionChanges = computePermissionChanges(id, oldPermissions, newPermissions);
 
-        // FIXME: page or nspace her...
-        await applyPermissionChanges(firestore, 'page', permissionChanges);
+        await applyPermissionChanges(firestore, target, permissionChanges);
 
     }
 
@@ -72,7 +75,7 @@ export namespace BlockPermissions {
 
         const effectivePerms = computeEffectivePermissionsForPage(pagePerms, nspacePerms);
 
-        await doUpdatePermissions(firestore, uid, id, effectivePerms, newPermissions);
+        await doUpdatePermissions(firestore, 'page', uid, id, effectivePerms, newPermissions);
 
     }
 
@@ -87,7 +90,7 @@ export namespace BlockPermissions {
 
         const effectivePerms = nspacePerms?.permissions || {};
 
-        await doUpdatePermissions(firestore, uid, id, effectivePerms, newPermissions);
+        await doUpdatePermissions(firestore, 'nspace', uid, id, effectivePerms, newPermissions);
 
     }
 
@@ -212,7 +215,7 @@ export namespace BlockPermissions {
     }
 
     export async function applyPermissionChanges(firestore: IFirestore<unknown> & IFirestoreLib,
-                                                 type: 'page' | 'nspace',
+                                                 target: PermissionTarget,
                                                  permissionChanges: ReadonlyArray<IPermissionChange>) {
 
         const collection = firestore.collection('block_permission_user');
@@ -225,7 +228,7 @@ export namespace BlockPermissions {
 
         function computePermKeyNames(): IPermKeyNames {
 
-            switch (type) {
+            switch (target) {
 
                 case "page":
                     return {
