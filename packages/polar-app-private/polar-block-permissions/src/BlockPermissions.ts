@@ -1,7 +1,7 @@
 import {IFirestore, IFirestoreLib, UserIDStr} from "polar-firestore-like/src/IFirestore";
 import {BlockIDStr, UIDStr} from "polar-blocks/src/blocks/IBlock";
 import {BlockCollection} from "polar-firebase/src/firebase/om/BlockCollection";
-import {AccessType, AccessTypes, PermissionType} from "polar-firebase/src/firebase/om/IBlockPermission";
+import {AccessTypes, PermissionType} from "polar-firebase/src/firebase/om/IBlockPermission";
 import {BlockPermissionMap, IBlockPermissionRecord} from "polar-firebase/src/firebase/om/IBlockPermissionRecord";
 import {BlockPermissionCollection} from "polar-firebase/src/firebase/om/BlockPermissionCollection";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
@@ -15,7 +15,7 @@ export namespace BlockPermissions {
      * @param id The ID of the page which needs permissions mutated.
      * @param newPermissions The array of permissions to apply.
      */
-    export async function doUpdatePagePermissions(firestore: IFirestore<unknown>,
+    export async function doUpdatePagePermissions(firestore: IFirestore<unknown> & IFirestoreLib,
                                                   uid: UserIDStr,
                                                   id: BlockIDStr,
                                                   newPermissions: BlockPermissionMap) {
@@ -49,20 +49,14 @@ export namespace BlockPermissions {
         }
 
         // now get the current permissions...
-        const currentPermissionsRecord = await BlockPermissionCollection.get(firestore, id);
+        const oldPermissionsRecord = await BlockPermissionCollection.get(firestore, id);
 
-        const currentPermissions = currentPermissionsRecord?.permissions || {};
+        const oldPermissions = oldPermissionsRecord?.permissions || {};
 
-        // FIXME: now apply this to block_permission_user and persist.. we have
-        // to fetch each record from the DB though...  build it as a map and pass that in as the exicting values...
-
-        // FIXME if we LOSE permissions make sure they are removed too.
-        // FIXME: we also need to handle upgrade and downgrade of permissions
-
+        const permissionChanges = computePermissionChanges(id, oldPermissions, newPermissions);
+        await applyPermissionChanges(firestore, 'page', permissionChanges);
 
     }
-
-
 
     /**
      * Take the nspace permissions and merge them with the page permissions.
@@ -116,9 +110,9 @@ export namespace BlockPermissions {
      * Convert the old permissions to a set of new IPermissionChange objects so
      * that we can apply the operations to the database directly.
      */
-    export function computePermissionChange(id: BlockIDStr,
-                                            oldPermissions: Readonly<BlockPermissionMap>,
-                                            newPermissions: Readonly<BlockPermissionMap>): ReadonlyArray<IPermissionChange> {
+    export function computePermissionChanges(id: BlockIDStr,
+                                             oldPermissions: Readonly<BlockPermissionMap>,
+                                             newPermissions: Readonly<BlockPermissionMap>): ReadonlyArray<IPermissionChange> {
 
         // compute all the unique UIDs in both sets.  This is needed because we have to compute
         // added or removed permissions.
@@ -184,10 +178,38 @@ export namespace BlockPermissions {
     }
 
     export async function applyPermissionChanges(firestore: IFirestore<unknown> & IFirestoreLib,
+                                                 type: 'page' | 'nspace',
                                                  permissionChanges: ReadonlyArray<IPermissionChange>) {
 
         const collection = firestore.collection('block_permission_user');
         const batch = firestore.batch();
+
+        interface IPermKeyNames {
+            readonly ro: 'pages_ro' | 'nspaces_ro';
+            readonly rw: 'pages_rw' | 'nspaces_rw';
+        }
+
+        function computePermKeyNames(): IPermKeyNames {
+
+            switch (type) {
+
+                case "page":
+                    return {
+                        ro: 'pages_ro',
+                        rw: 'pages_rw',
+                    };
+
+                case "nspace":
+                    return {
+                        ro: 'nspaces_ro',
+                        rw: 'nspaces_rw',
+                    }
+
+            }
+
+        };
+
+        const keyNames = computePermKeyNames();
 
         const applyToBatch = (change: IPermissionChange) => {
 
@@ -197,8 +219,8 @@ export namespace BlockPermissions {
 
                 case "removed":
                     // we just have to remove this from both rw and ro and we're done.
-                    batch.update(doc, 'pages_ro', firestore.FieldValue.arrayRemove(change.id));
-                    batch.update(doc, 'pages_rw', firestore.FieldValue.arrayRemove(change.id));
+                    batch.update(doc, keyNames.ro, firestore.FieldValue.arrayRemove(change.id));
+                    batch.update(doc, keyNames.rw, firestore.FieldValue.arrayRemove(change.id));
                     break;
 
                 case "added":
@@ -208,12 +230,12 @@ export namespace BlockPermissions {
                     // long as we remove/union both ways.
                     switch(change.after) {
                         case 'ro':
-                            batch.update(doc, 'pages_ro', firestore.FieldValue.arrayUnion(change.id));
-                            batch.update(doc, 'pages_rw', firestore.FieldValue.arrayRemove(change.id));
+                            batch.update(doc, keyNames.ro, firestore.FieldValue.arrayUnion(change.id));
+                            batch.update(doc, keyNames.rw, firestore.FieldValue.arrayRemove(change.id));
                             break;
                         case 'rw':
-                            batch.update(doc, 'pages_ro', firestore.FieldValue.arrayRemove(change.id));
-                            batch.update(doc, 'pages_rw', firestore.FieldValue.arrayUnion(change.id));
+                            batch.update(doc, keyNames.ro, firestore.FieldValue.arrayRemove(change.id));
+                            batch.update(doc, keyNames.rw, firestore.FieldValue.arrayUnion(change.id));
                             break;
                     }
 
