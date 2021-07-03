@@ -12,12 +12,12 @@ export namespace BlockPermissions {
      * @param firestore  The Firestore instance to use
      * @param uid: The user making the permission changes.
      * @param id The ID of the page which needs permissions mutated.
-     * @param permissions The array of permissions to apply.
+     * @param newPermissions The array of permissions to apply.
      */
     export async function doUpdatePagePermissions(firestore: IFirestore<unknown>,
                                                   uid: UserIDStr,
                                                   id: BlockIDStr,
-                                                  permissions: BlockPermissionMap) {
+                                                  newPermissions: BlockPermissionMap) {
 
         // ** verify that this block exists and that it's the right type.
 
@@ -42,12 +42,18 @@ export namespace BlockPermissions {
             throw new Error("User does not have admin to change permissions on this page: " + id);
         }
 
-        if (permissions['__public__']?.access === 'admin') {
+        if (newPermissions['__public__']?.access === 'admin') {
             throw new Error("Not allowed to set __public__ permissions to 'admin'" + id);
         }
 
+        const currentPermissions = BlockPermissionCollection.get(firestore, id);
+
         // FIXME: now apply this to block_permission_user and persist.. we have
         // to fetch each record from the DB though...  build it as a map and pass that in as the exicting values...
+
+        // FIXME if we LOSE permissions make sure they are removed too.
+        // FIXME: we also need to handle upgrade and downgrade of permissions
+
 
     }
 
