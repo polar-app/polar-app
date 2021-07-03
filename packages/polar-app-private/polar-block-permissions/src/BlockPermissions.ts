@@ -1,4 +1,4 @@
-import {IFirestore, UserIDStr} from "polar-firestore-like/src/IFirestore";
+import {IFirestore, IFirestoreLib, UserIDStr} from "polar-firestore-like/src/IFirestore";
 import {BlockIDStr, UIDStr} from "polar-blocks/src/blocks/IBlock";
 import {BlockCollection} from "polar-firebase/src/firebase/om/BlockCollection";
 import {AccessType, AccessTypes, PermissionType} from "polar-firebase/src/firebase/om/IBlockPermission";
@@ -84,6 +84,7 @@ export namespace BlockPermissions {
      * The user was added to the permissions set (they weren't present before)
      */
     export interface IPermissionChangeAdded {
+        readonly id: BlockIDStr,
         readonly uid: UserIDStr;
         readonly type: 'added';
         readonly before: undefined;
@@ -94,6 +95,7 @@ export namespace BlockPermissions {
      * The user was added to the permissions set (they were present before but had it revoked.)
      */
     export interface IPermissionChangeRemoved {
+        readonly id: BlockIDStr,
         readonly uid: UserIDStr;
         readonly type: 'removed';
         readonly before: PermissionType;
@@ -101,6 +103,7 @@ export namespace BlockPermissions {
     }
 
     export interface IPermissionChangeModified {
+        readonly id: BlockIDStr,
         readonly uid: UserIDStr;
         readonly type: 'modified';
         readonly before: PermissionType;
@@ -109,14 +112,12 @@ export namespace BlockPermissions {
 
     export type IPermissionChange = IPermissionChangeAdded | IPermissionChangeRemoved | IPermissionChangeModified;
 
-
     /**
-     * Convert the old permissions to a set of new permissions.
-     *
-     * @param oldPermissions
-     * @param newPermissions
+     * Convert the old permissions to a set of new IPermissionChange objects so
+     * that we can apply the operations to the database directly.
      */
-    export function computePermissionChange(oldPermissions: Readonly<BlockPermissionMap>,
+    export function computePermissionChange(id: BlockIDStr,
+                                            oldPermissions: Readonly<BlockPermissionMap>,
                                             newPermissions: Readonly<BlockPermissionMap>): ReadonlyArray<IPermissionChange> {
 
         // compute all the unique UIDs in both sets.  This is needed because we have to compute
@@ -135,6 +136,7 @@ export namespace BlockPermissions {
 
             if (oldPerm && ! newPerm) {
                 return {
+                    id,
                     uid,
                     type: 'removed',
                     before:AccessTypes.convertToPermissionType(oldPerm.access),
@@ -144,6 +146,7 @@ export namespace BlockPermissions {
 
             if (! oldPerm && newPerm) {
                 return {
+                    id,
                     uid,
                     type: 'added',
                     before: undefined,
@@ -156,6 +159,7 @@ export namespace BlockPermissions {
                 if (oldPerm.access !== newPerm.access) {
 
                     return {
+                        id,
                         uid,
                         type: 'modified',
                         before: AccessTypes.convertToPermissionType(oldPerm.access),
@@ -179,6 +183,52 @@ export namespace BlockPermissions {
 
     }
 
+    export async function applyPermissionChanges(firestore: IFirestore<unknown> & IFirestoreLib,
+                                                 permissionChanges: ReadonlyArray<IPermissionChange>) {
+
+        const collection = firestore.collection('block_permission_user');
+        const batch = firestore.batch();
+
+        const applyToBatch = (change: IPermissionChange) => {
+
+            const doc = collection.doc(change.uid);
+
+            switch (change.type) {
+
+                case "removed":
+                    // we just have to remove this from both rw and ro and we're done.
+                    batch.update(doc, 'pages_ro', firestore.FieldValue.arrayRemove(change.id));
+                    batch.update(doc, 'pages_rw', firestore.FieldValue.arrayRemove(change.id));
+                    break;
+
+                case "added":
+                case "modified":
+
+                    // added and modified can be implemented the same way as
+                    // long as we remove/union both ways.
+                    switch(change.after) {
+                        case 'ro':
+                            batch.update(doc, 'pages_ro', firestore.FieldValue.arrayUnion(change.id));
+                            batch.update(doc, 'pages_rw', firestore.FieldValue.arrayRemove(change.id));
+                            break;
+                        case 'rw':
+                            batch.update(doc, 'pages_ro', firestore.FieldValue.arrayRemove(change.id));
+                            batch.update(doc, 'pages_rw', firestore.FieldValue.arrayUnion(change.id));
+                            break;
+                    }
+
+                    break;
+
+
+            }
+
+        }
+
+        permissionChanges.map(applyToBatch);
+
+        await batch.commit();
+
+    }
 
 }
 

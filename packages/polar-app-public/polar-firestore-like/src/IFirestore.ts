@@ -52,3 +52,32 @@ export interface IFirestoreClient extends IFirestore<ISnapshotMetadata> {
     readonly clearPersistence: () => Promise<void>;
 
 }
+
+/**
+ * Extra methods needed to use Firestore that are part of the lib but not the
+ * main interface but still need to be abstracted.
+ */
+export interface IFirestoreLib {
+
+    readonly FieldPath: (...fields: string[]) => IFieldPath;
+
+    readonly FieldValue: IFieldValueFactory;
+
+}
+
+export interface IFieldPath {
+
+}
+
+export interface IFieldValueFactory {
+
+    arrayUnion(...elements: any[]): IFieldValue;
+    arrayRemove(...elements: any[]): IFieldValue;
+    delete(): IFieldValue;
+
+}
+
+export interface IFieldValue {
+
+
+}
