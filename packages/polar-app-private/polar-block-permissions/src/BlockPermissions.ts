@@ -13,30 +13,14 @@ export namespace BlockPermissions {
      * @param firestore  The Firestore instance to use
      * @param uid: The user making the permission changes.
      * @param id The ID of the page which needs permissions mutated.
+     * @param effectivePerms The current effective permissions.
      * @param newPermissions The array of permissions to apply.
      */
-    export async function doUpdatePagePermissions(firestore: IFirestore<unknown> & IFirestoreLib,
-                                                  uid: UserIDStr,
-                                                  id: BlockIDStr,
-                                                  newPermissions: BlockPermissionMap) {
-
-        // ** verify that this block exists and that it's the right type.
-
-        const block = await BlockCollection.get(firestore, id);
-
-        if (! block) {
-            throw new Error("No block for id: " + id);
-        }
-
-        if (block.parent !== undefined) {
-            throw new Error("Not root block");
-        }
-
-        // ** get the current permissions for this page
-        const pagePerms: IBlockPermissionRecord<'page'> | undefined = await BlockPermissionCollection.get(firestore, block.id);
-        const nspacePerms: IBlockPermissionRecord<'nspace'> | undefined = await BlockPermissionCollection.get(firestore, block.nspace);
-
-        const effectivePerms = computeEffectivePermissionsForPage(pagePerms, nspacePerms);
+    async function doUpdatePermissions(firestore: IFirestore<unknown> & IFirestoreLib,
+                                       uid: UserIDStr,
+                                       id: BlockIDStr,
+                                       effectivePerms: Readonly<BlockPermissionMap>,
+                                       newPermissions: Readonly<BlockPermissionMap>) {
 
         // ** verify that the user is admin
         if (effectivePerms[uid]?.access !== 'admin') {
@@ -54,13 +38,63 @@ export namespace BlockPermissions {
         const oldPermissions = oldPermissionsRecord?.permissions || {};
 
         const permissionChanges = computePermissionChanges(id, oldPermissions, newPermissions);
+
+        // FIXME: page or nspace her...
         await applyPermissionChanges(firestore, 'page', permissionChanges);
 
     }
 
-    /**
-     * Take the nspace permissions and merge them with the page permissions.
-     */
+    async function getBlock(firestore: IFirestore<unknown>, id: BlockIDStr) {
+
+        const block = await BlockCollection.get(firestore, id);
+
+        if (! block) {
+            throw new Error("No block for id: " + id);
+        }
+
+        if (block.parent !== undefined) {
+            throw new Error("Not root block");
+        }
+
+        return block;
+
+    }
+
+    async function doUpdatePagePermissions(firestore: IFirestore<unknown> & IFirestoreLib,
+                                           uid: UserIDStr,
+                                           id: BlockIDStr,
+                                           newPermissions: Readonly<BlockPermissionMap>) {
+
+        const block = await getBlock(firestore, id);
+
+        const pagePerms: IBlockPermissionRecord<'page'> | undefined = await BlockPermissionCollection.get(firestore, block.id);
+        const nspacePerms: IBlockPermissionRecord<'nspace'> | undefined = await BlockPermissionCollection.get(firestore, block.nspace);
+
+        const effectivePerms = computeEffectivePermissionsForPage(pagePerms, nspacePerms);
+
+        await doUpdatePermissions(firestore, uid, id, effectivePerms, newPermissions);
+
+    }
+
+    async function doUpdateNSpacePermissions(firestore: IFirestore<unknown> & IFirestoreLib,
+                                             uid: UserIDStr,
+                                             id: BlockIDStr,
+                                             newPermissions: Readonly<BlockPermissionMap>) {
+
+        const block = await getBlock(firestore, id);
+
+        const nspacePerms: IBlockPermissionRecord<'nspace'> | undefined = await BlockPermissionCollection.get(firestore, block.nspace);
+
+        const effectivePerms = nspacePerms?.permissions || {};
+
+        await doUpdatePermissions(firestore, uid, id, effectivePerms, newPermissions);
+
+    }
+
+
+   /**
+    * Take the nspace permissions and merge them with the page permissions.
+    */
     export function computeEffectivePermissionsForPage(page: IBlockPermissionRecord<'page'> | undefined,
                                                        nspace: IBlockPermissionRecord<'nspace'> | undefined): Readonly<BlockPermissionMap> {
 
