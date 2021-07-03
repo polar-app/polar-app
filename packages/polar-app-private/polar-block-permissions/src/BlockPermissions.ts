@@ -1,9 +1,10 @@
 import {IFirestore, UserIDStr} from "polar-firestore-like/src/IFirestore";
-import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {BlockIDStr, UIDStr} from "polar-blocks/src/blocks/IBlock";
 import {BlockCollection} from "polar-firebase/src/firebase/om/BlockCollection";
-import {IBlockPermission} from "polar-firebase/src/firebase/om/IBlockPermission";
+import {AccessType, AccessTypes, PermissionType} from "polar-firebase/src/firebase/om/IBlockPermission";
 import {BlockPermissionMap, IBlockPermissionRecord} from "polar-firebase/src/firebase/om/IBlockPermissionRecord";
 import {BlockPermissionCollection} from "polar-firebase/src/firebase/om/BlockPermissionCollection";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 export namespace BlockPermissions {
 
@@ -42,11 +43,15 @@ export namespace BlockPermissions {
             throw new Error("User does not have admin to change permissions on this page: " + id);
         }
 
+        // tslint:disable-next-line:no-string-literal
         if (newPermissions['__public__']?.access === 'admin') {
             throw new Error("Not allowed to set __public__ permissions to 'admin'" + id);
         }
 
-        const currentPermissions = BlockPermissionCollection.get(firestore, id);
+        // now get the current permissions...
+        const currentPermissionsRecord = await BlockPermissionCollection.get(firestore, id);
+
+        const currentPermissions = currentPermissionsRecord?.permissions || {};
 
         // FIXME: now apply this to block_permission_user and persist.. we have
         // to fetch each record from the DB though...  build it as a map and pass that in as the exicting values...
@@ -56,6 +61,8 @@ export namespace BlockPermissions {
 
 
     }
+
+
 
     /**
      * Take the nspace permissions and merge them with the page permissions.
@@ -72,6 +79,106 @@ export namespace BlockPermissions {
         return result;
 
     }
+
+    /**
+     * The user was added to the permissions set (they weren't present before)
+     */
+    export interface IPermissionChangeAdded {
+        readonly uid: UserIDStr;
+        readonly type: 'added';
+        readonly before: undefined;
+        readonly after: PermissionType;
+    }
+
+    /**
+     * The user was added to the permissions set (they were present before but had it revoked.)
+     */
+    export interface IPermissionChangeRemoved {
+        readonly uid: UserIDStr;
+        readonly type: 'removed';
+        readonly before: PermissionType;
+        readonly after: undefined;
+    }
+
+    export interface IPermissionChangeModified {
+        readonly uid: UserIDStr;
+        readonly type: 'modified';
+        readonly before: PermissionType;
+        readonly after: PermissionType;
+    }
+
+    export type IPermissionChange = IPermissionChangeAdded | IPermissionChangeRemoved | IPermissionChangeModified;
+
+
+    /**
+     * Convert the old permissions to a set of new permissions.
+     *
+     * @param oldPermissions
+     * @param newPermissions
+     */
+    export function computePermissionChange(oldPermissions: Readonly<BlockPermissionMap>,
+                                            newPermissions: Readonly<BlockPermissionMap>): ReadonlyArray<IPermissionChange> {
+
+        // compute all the unique UIDs in both sets.  This is needed because we have to compute
+        // added or removed permissions.
+        const uids = arrayStream([
+                ...Object.keys(oldPermissions),
+                ...Object.keys(newPermissions)
+            ])
+            .unique()
+            .collect();
+
+        const toPermissionChange = (uid: UIDStr): IPermissionChange | undefined => {
+
+            const oldPerm = oldPermissions[uid];
+            const newPerm = newPermissions[uid];
+
+            if (oldPerm && ! newPerm) {
+                return {
+                    uid,
+                    type: 'removed',
+                    before:AccessTypes.convertToPermissionType(oldPerm.access),
+                    after: undefined
+                };
+            }
+
+            if (! oldPerm && newPerm) {
+                return {
+                    uid,
+                    type: 'added',
+                    before: undefined,
+                    after: AccessTypes.convertToPermissionType(newPerm.access)
+                };
+            }
+
+            if (oldPerm && newPerm) {
+
+                if (oldPerm.access !== newPerm.access) {
+
+                    return {
+                        uid,
+                        type: 'modified',
+                        before: AccessTypes.convertToPermissionType(oldPerm.access),
+                        after: AccessTypes.convertToPermissionType(newPerm.access)
+                    };
+
+                } else {
+                    // we don't need to do anything here as this user permissions did not change.
+                }
+
+            }
+
+            return undefined;
+
+        }
+
+        return arrayStream(uids)
+                .map(current => toPermissionChange(current))
+                .filterPresent()
+                .collect();
+
+    }
+
 
 }
 

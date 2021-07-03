@@ -8,7 +8,7 @@
     "packages/polar-site2"
   ],
   "version": "2.1.71",
-  "concurrency": 1,
+  "concurrency": 8,
   "hoist": true,
   "mutex": "network",
   "ci": true
