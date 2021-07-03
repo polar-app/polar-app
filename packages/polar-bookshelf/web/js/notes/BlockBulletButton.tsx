@@ -15,7 +15,6 @@ interface IProps {
 }
 
 export const BlockBulletButton = observer(function NoteBulletButton(props: IProps) {
-
     const theme = useTheme();
     const {root} = useBlocksTreeStore();
 
@@ -25,8 +24,8 @@ export const BlockBulletButton = observer(function NoteBulletButton(props: IProp
 
     return (
         <NoteLink target={props.target}
-                  style={{color: theme.palette.text.hint}}
-                  draggable={true}>
+                  style={{color: theme.palette.text.primary, fontSize: 20}}
+                  draggable>
             <NoteButton onClick={NULL_FUNCTION}
                         disabled={disabled}>
                 <MiddleDot/>
