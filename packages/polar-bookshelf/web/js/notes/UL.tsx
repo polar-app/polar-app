@@ -17,10 +17,9 @@ const useStyles = makeStyles(() =>
 interface IProps {
     readonly className?: string;
     readonly style?: React.CSSProperties;
-    readonly children: JSX.Element;
 }
 
-export const UL = deepMemo(function UL(props: IProps) {
+export const UL: React.FC<IProps> = deepMemo(function UL(props) {
     const classes = useStyles();
 
     return (

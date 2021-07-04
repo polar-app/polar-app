@@ -1,37 +1,32 @@
 import * as React from 'react';
 import {deepMemo} from '../react/ReactUtils';
 import Box from '@material-ui/core/Box';
-import {UL} from './UL';
 import {Block} from "./Block";
 import {observer} from "mobx-react-lite"
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import {NoteBreadcrumbLink} from "./NoteBreadcrumbLink";
 import {BlockPredicates} from "./store/BlockPredicates";
-import {IBlockPredicates} from "./store/IBlockPredicates";
 import {BlocksTreeProvider, useBlocksTreeStore} from './BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {UL} from './UL';
+import {ExpandToggle} from './BlockExpandToggleButton';
+import {createStyles, makeStyles} from '@material-ui/core';
 
 interface InboundNoteRefProps {
     readonly id: BlockIDStr;
-    readonly name: string | undefined;
-    readonly content: string | undefined;
 }
 
 const InboundNoteRef = observer((props: InboundNoteRefProps) => {
 
     const {id} = props;
     const blocksTreeStore = useBlocksTreeStore();
-
-    const pathToNote = blocksTreeStore.pathToBlock(id);
+    const pathToNote = blocksTreeStore.pathToBlock(id).filter(BlockPredicates.isTextBlock);
 
     return (
-        <>
-
-            <div style={{display: 'flex', marginLeft: 20}}>
+        <Box mb={1}>
+            <div style={{display: 'flex'}}>
                 <Breadcrumbs>
-
-                    {pathToNote.filter(BlockPredicates.isTextBlock)
-                               .map(current => <NoteBreadcrumbLink key={current.id}
+                    {pathToNote.map(current => <NoteBreadcrumbLink key={current.id}
                                                                    id={current.id}
                                                                    content={current.content.data}/>)}
 
@@ -50,7 +45,7 @@ const InboundNoteRef = observer((props: InboundNoteRefProps) => {
                 </BlocksTreeProvider>
 
             </div>
-        </>
+        </Box>
     )
 
 });
@@ -59,9 +54,22 @@ interface IProps {
     readonly id: BlockIDStr;
 }
 
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        expandToggle: {
+            color: theme.palette.text.hint,
+            marginRight: 8,
+        },
+    }),
+);
+
 export const NotesInbound = deepMemo(observer(function NotesInbound(props: IProps) {
 
+    const classes = useStyles();
     const blocksTreeStore = useBlocksTreeStore();
+    const [expanded, setExpanded] = React.useState(false);
+
+    const onToggleExpand = React.useCallback(() => setExpanded(expanded => !expanded), []);
 
     const inboundNoteIDs = blocksTreeStore.lookupReverse(props.id);
     const inbound = React.useMemo(() => {
@@ -76,20 +84,21 @@ export const NotesInbound = deepMemo(observer(function NotesInbound(props: IProp
     return (
         <div className="NotesInbound">
 
-            <Box color="text.secondary">
-                {/* TODO: Maybe use a package here for pluralization or write a helper function somewhere */}
-                <h3>All notes that reference this note: { inbound.length } linked reference{inbound.length === 1 ? '' : 's'}.</h3>
+            <Box color="text.secondary" display="flex" alignItems="center">
+                <ExpandToggle
+                    expanded={expanded}
+                    onToggle={onToggleExpand}
+                    className={classes.expandToggle}
+                />
+
+                <h3>Linked references ({ inbound.length })</h3>
             </Box>
 
-            <UL>
-                <>
-                    {inbound.filter(IBlockPredicates.isTextBlock)
-                            .map((current, idx) => <InboundNoteRef key={idx}
-                                                                   id={current.id}
-                                                                   name={current.content.data}
-                                                                   content={current.content.data}/>)}
-                </>
-            </UL>
+            {expanded &&
+                <UL>
+                    {inbound.map((current, idx) => <InboundNoteRef key={idx} id={current.id} />)}
+                </UL>
+            }
         </div>
     );
 }));

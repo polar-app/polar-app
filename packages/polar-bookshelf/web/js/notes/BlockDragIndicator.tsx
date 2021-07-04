@@ -6,10 +6,9 @@ import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 interface IProps {
     readonly id: BlockIDStr;
-    readonly children: JSX.Element;
 }
 
-export const BlockDragIndicator = observer((props: IProps) => {
+export const BlockDragIndicator: React.FC<IProps> = observer((props) => {
 
     const {dropTarget} = useBlocksTreeStore();
 
