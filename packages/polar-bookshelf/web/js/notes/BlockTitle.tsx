@@ -2,8 +2,8 @@ import React from "react";
 import {observer} from "mobx-react-lite"
 import {Helmet} from "react-helmet";
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
-import {useBlocksTreeStore} from "./BlocksTree";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {useBlocksStore} from "./store/BlocksStore";
 
 interface IProps {
     readonly id: BlockIDStr;
@@ -13,8 +13,8 @@ export const BlockTitle = observer((props: IProps) => {
 
     const {id} = props;
 
-    const blocksTreeStore = useBlocksTreeStore();
-    const block = blocksTreeStore.getBlock(id);
+    const blocksStore = useBlocksStore();
+    const block = blocksStore.getBlock(id);
 
     const title = React.useMemo(() : string => {
 

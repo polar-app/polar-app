@@ -327,10 +327,6 @@ export class BlocksStore implements IBlocksStore {
         return this._expanded;
     }
 
-    // @computed get root() {
-    //     return this._root;
-    // }
-
     @computed get active() {
         return this._active;
     }

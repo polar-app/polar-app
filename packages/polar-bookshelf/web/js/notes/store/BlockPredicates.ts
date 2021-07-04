@@ -14,6 +14,10 @@ export namespace BlockPredicates {
         return block.content.type === 'markdown' || block.content.type === 'name' || block.content.type === 'date';
     }
 
+    export function isDateBlock(block: Readonly<Block>): block is Block<DateContent> {
+        return block.content.type === 'date';
+    }
+
     export function isEditableBlock(block: Readonly<Block>): block is Block<MarkdownContent | NameContent> {
         return block.content.type === 'markdown';
     }

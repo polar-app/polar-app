@@ -13,7 +13,7 @@ const useStyles = makeStyles(() =>
     }),
 );
 
-export const NotesContainer = deepMemo(function NotesContainer(props: {children: JSX.Element})  {
+export const NotesContainer: React.FC = deepMemo(function NotesContainer(props)  {
 
     const classes = useStyles();
 

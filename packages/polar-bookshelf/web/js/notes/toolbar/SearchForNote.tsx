@@ -5,14 +5,14 @@ import {observer} from "mobx-react-lite"
 import {useNoteLinkLoader} from "../NoteLinkLoader";
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
-import {useBlocksTreeStore} from '../BlocksTree';
+import {useBlocksStore} from '../store/BlocksStore';
 
 export const SearchForNote = observer(() => {
 
-    const blocksTreeStore = useBlocksTreeStore();
+    const blocksStore = useBlocksStore();
     const noteLinkLoader = useNoteLinkLoader();
 
-    const namedBlocks = blocksTreeStore.getNamedBlocks();
+    const namedBlocks = blocksStore.getNamedBlocks();
 
     const [inputValue, setInputValue] = React.useState('');
 
