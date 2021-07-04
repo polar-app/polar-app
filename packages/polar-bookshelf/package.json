@@ -152,7 +152,6 @@
     "mobx": "=6.3.2",
     "mobx-react-lite": "=3.2.0",
     "moment": "^2.24.0",
-    "opencollective-postinstall": "~2.0.1",
     "path-to-regexp": "^3.0.0",
     "pdfjs-dist": "=2.8.250-polar.3",
     "polar-blocks": "^2.1.71",
@@ -224,9 +223,5 @@
     "universal-analytics": "~0.4.23",
     "use-local-storage-state": "=6.0.0",
     "uuid": "3.3.3"
-  },
-  "collective": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/polar-bookshelf"
   }
 }
