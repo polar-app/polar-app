@@ -100,7 +100,8 @@ export interface IBlocksStore {
     updateBlocks(blocks: ReadonlyArray<IBlock>): void;
 
     // TODO: undo / cursor
-    createNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock | undefined;
+    createNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock;
+    doCreateNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock;
 
     createNewNamedBlock(name: BlockNameStr, opts: ICreateNewNamedBlockOpts): BlockIDStr;
 
