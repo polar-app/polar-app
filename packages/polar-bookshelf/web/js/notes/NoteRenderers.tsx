@@ -3,9 +3,8 @@ import React from "react";
 import {useBlocksStore} from "./store/BlocksStore";
 import {Block as BlockClass} from "./store/Block";
 import {DateContent} from "./content/DateContent";
-import {observer} from "mobx-react-lite";
 import {BlockPredicates} from "./store/BlockPredicates";
-import {reaction} from "mobx";
+import {autorun} from "mobx";
 import {useInView} from "react-intersection-observer";
 import {Helmet} from "react-helmet";
 import {NotePaper} from "./NotePaper";
@@ -15,10 +14,13 @@ import {Block} from "./Block";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {BlockTitle} from "./BlockTitle";
 import {useStateRef} from "../hooks/ReactHooks";
+import equal from "deep-equal";
+import {NameContent} from "./content/NameContent";
+import {DateContents} from "./content/DateContents";
 
 const DAILY_NOTES_CHUNK_SIZE = 3;
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme) =>
     createStyles({
         noteContentOuter: {
             width: '100%',
@@ -28,51 +30,72 @@ const useStyles = makeStyles(() =>
             justifyContent: 'center',
             padding: '16px 26px',
         },
+        faded: {
+            color: theme.palette.text.hint,
+        }
     }),
 );
 
-export const DailyNotesRenderer: React.FC = () => {
+type NamedBlock = BlockClass<NameContent | DateContent>;
+
+export const useNamedBlocks = () => {
     const blocksStore = useBlocksStore();
-    const classes = useStyles();
-    const [threshold, setThreshold, thresholdRef] = useStateRef(0);
-    const [dailyNotes, setDailyNotes] = React.useState<ReadonlyArray<BlockClass<DateContent>>>([]);
+    const [namedBlocks, setNamedBlocks] = React.useState<ReadonlyArray<NamedBlock>>([]);
+    const prevNamedBlocksIDsRef = React.useRef<BlockIDStr[] | null>(null);
 
     React.useEffect(() => {
-        const getDateBlocks = () => blocksStore
-            .idsToBlocks(Object.values(blocksStore.indexByName))
-            .filter(BlockPredicates.isDateBlock);
-
-        const updateDailyNotes = (dateBlocks: ReadonlyArray<BlockClass<DateContent>>) => {
-            const descendingDateSorter = (
-                a: Readonly<BlockClass<DateContent>>,
-                b: Readonly<BlockClass<DateContent>>
-            ) => (new Date(b.content.data)).getTime() - (new Date(a.content.data)).getTime();
-
-            const notes = [...dateBlocks].sort(descendingDateSorter);
-            setDailyNotes(notes);
-        };
-
-        updateDailyNotes(getDateBlocks());
-        const disposer = reaction(getDateBlocks, updateDailyNotes);
+        const disposer = autorun(() => {
+            const namedBlocksIDs = Object.values(blocksStore.indexByName);
+            if (! equal(prevNamedBlocksIDsRef.current, namedBlocksIDs)) {
+                const namedBlocks = blocksStore.idsToBlocks(namedBlocksIDs) as ReadonlyArray<NamedBlock>;
+                setNamedBlocks(namedBlocks);
+                prevNamedBlocksIDsRef.current = namedBlocksIDs;
+            }
+        });
 
         return () => disposer();
     }, [blocksStore]);
 
-    const visibleNotes = React.useMemo(() => dailyNotes.slice(0, threshold), [dailyNotes, threshold]);
+    return namedBlocks;
+};
+
+export const DailyNotesRenderer: React.FC = () => {
+    const classes = useStyles();
+    const [threshold, setThreshold, thresholdRef] = useStateRef(0);
+    const [dailyNotes, setDailyNotes, dailyNotesRef] = useStateRef<ReadonlyArray<BlockClass<DateContent>>>([]);
+    const namedBlocks = useNamedBlocks();
+
+    React.useEffect(() => {
+        const dateBlocks = namedBlocks.filter(BlockPredicates.isDateBlock)
+        const descendingDateSorter = (
+            a: Readonly<BlockClass<DateContent>>,
+            b: Readonly<BlockClass<DateContent>>
+        ) => (new Date(b.content.data)).getTime() - (new Date(a.content.data)).getTime();
+
+        const notes = [...dateBlocks].sort(descendingDateSorter);
+        setDailyNotes(notes);
+    }, [namedBlocks, setDailyNotes]);
+
 
     const rootRef = React.useRef<HTMLDivElement>(null);
+    const visibleNotes = React.useMemo(() => dailyNotes.slice(0, threshold), [dailyNotes, threshold]);
+
+    const hasMore = threshold === visibleNotes.length;
     const {ref, inView} = useInView({
         root: rootRef.current,
         threshold: 0,
         rootMargin: '50px 0px',
+        initialInView: true,
+        skip: !hasMore
     });
 
     React.useEffect(() => {
         const threshold = thresholdRef.current;
-        if (inView && threshold < dailyNotes.length) {
+        if (inView) {
             setThreshold(threshold + DAILY_NOTES_CHUNK_SIZE);
         }
-    }, [inView, dailyNotes, thresholdRef, setThreshold]);
+    }, [inView, dailyNotesRef, thresholdRef, setThreshold]);
+
 
     return (
         <>
@@ -89,7 +112,26 @@ export const DailyNotesRenderer: React.FC = () => {
                             </BlocksTreeProvider>
                         </div>
                     ))}
-                    <div ref={ref} />
+                    {hasMore &&
+                        <Box display="flex" m={2} justifyContent="flex-end">
+                            <Typography
+                                variant="h6"
+                                className={classes.faded}
+                                onClick={() => setThreshold(threshold + DAILY_NOTES_CHUNK_SIZE)}
+                                style={{ cursor: 'pointer' }}
+                                ref={ref}
+                            >
+                                VIEW MORE
+                            </Typography>
+                        </Box>
+                    }
+                    {!hasMore && 
+                        <Box display="flex" m={2} justifyContent="center">
+                            <Typography variant="h6" className={classes.faded}>
+                                You've reached the end!
+                            </Typography>
+                        </Box>
+                    }
                 </NotePaper>
             </div>
         </>
