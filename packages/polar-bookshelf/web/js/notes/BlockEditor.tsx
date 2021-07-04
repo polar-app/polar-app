@@ -100,7 +100,7 @@ function useLinkNavigationClickHandler() {
 
 const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
 
-    const {id, parent} = props;
+    const {id, parent, style = {}, className = ""} = props;
     const {root} = useBlocksTreeStore();
     const blocksTreeStore = useBlocksTreeStore()
     const linkNavigationClickHandler = useLinkNavigationClickHandler();
@@ -176,6 +176,8 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
             <BlockContentEditable id={id}
                                   parent={parent}
                                   innerRef={ref}
+                                  style={style}
+                                  className={className}
                                   content={data || ''}
                                   onMouseDown={handleMouseDown}
                                   onKeyDown={onKeyDown}
@@ -191,6 +193,8 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
             <BlockImageContent id={id}
                                parent={parent}
                                width={width}
+                               style={style}
+                               className={className}
                                height={height}
                                src={src}
                                innerRef={ref}
@@ -227,6 +231,9 @@ interface IProps {
      */
     readonly immutable?: boolean;
 
+    readonly className?: string;
+
+    readonly style?: React.CSSProperties;
 }
 
 export const BlockEditor = observer(function BlockEditor(props: IProps) {

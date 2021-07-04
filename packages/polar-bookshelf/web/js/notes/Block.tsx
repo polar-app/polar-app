@@ -15,11 +15,16 @@ import {BlockDragIndicator} from "./BlockDragIndicator";
 import {useUndoQueue} from "../undo/UndoQueueProvider2";
 import {useBlocksTreeStore} from "./BlocksTree";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {Divider} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
         selected: {
             background: theme.palette.primary.main
+        },
+        titleBlock: {
+            fontWeight: 'bold',
+            fontSize: 22,
         },
     }),
 );
@@ -27,6 +32,9 @@ const useStyles = makeStyles((theme) =>
 interface IProps {
     readonly parent: BlockIDStr | undefined;
     readonly id: BlockIDStr;
+    readonly withHeader?: boolean;
+    readonly noExpand?: boolean;
+    readonly noBullet?: boolean;
 }
 
 export interface IBlockContextMenuOrigin {
@@ -39,7 +47,7 @@ export const [BlockContextMenu, useBlockContextMenu]
 export const BlockInner = observer((props: IProps) => {
     const blocksTreeStore = useBlocksTreeStore();
 
-    const {id} = props;
+    const {id, parent, withHeader = false, noExpand = false, noBullet = false} = props;
     const {root} = blocksTreeStore;
 
     const classes = useStyles();
@@ -153,7 +161,7 @@ export const BlockInner = observer((props: IProps) => {
 
     }, [undoQueue]);
 
-    const handleDragStart = React.useCallback((event: React.DragEvent) => {
+    const handleDragStart = React.useCallback((_: React.DragEvent) => {
         blocksTreeStore.setDropSource(props.id);
         // event.preventDefault();
         // event.stopPropagation();
@@ -237,6 +245,8 @@ export const BlockInner = observer((props: IProps) => {
 
     const dropActive = blocksTreeStore.dropTarget?.id === props.id && blocksTreeStore.dropSource !== props.id;
 
+    const isRoot = id === root;
+
     return (
         <div ref={divRef}
              onMouseDown={handleMouseDown}
@@ -247,9 +257,9 @@ export const BlockInner = observer((props: IProps) => {
              onDragLeave={event => handleDragExit(event)}
              onDragEnd={() => blocksTreeStore.clearDrop()}
              onDrop={event => handleDrop(event)}
-             className={clsx(['Block', selected ? classes.selected : undefined])}>
+             className={clsx('Block', { [classes.selected]: selected }) }>
 
-                <BlockDragIndicator id={props.id}>
+                <BlockDragIndicator id={id}>
                     <>
                         <div {...contextMenuHandlers}
                              style={{
@@ -261,38 +271,47 @@ export const BlockInner = observer((props: IProps) => {
                                  // background: dropActive ? 'red' : 'inherit'
                              }}>
 
-                            <div style={{
-                                     display: 'flex',
-                                     alignItems: 'center',
-                                     minWidth: '3em',
-                                     justifyContent: 'flex-end',
-                                     marginRight: theme.spacing(0.5)
-                                 }}>
+                            {!(noExpand && noBullet) && (
+                                <div style={{
+                                         display: 'flex',
+                                         alignItems: 'center',
+                                         minWidth: '3em',
+                                         justifyContent: 'flex-end',
+                                         marginRight: theme.spacing(0.5),
+                                     }}>
 
-                                {/*<NoteOverflowButton id={props.id}/>*/}
 
-                                {hasItems && id !== root && (
-                                    <BlockExpandToggleButton id={props.id}/>
-                                )}
+                                    {hasItems && !noExpand && (
+                                        <BlockExpandToggleButton id={id}/>
+                                    )}
 
-                                {block.parent && <BlockBulletButton target={props.id}/>}
+                                    {!noBullet && <BlockBulletButton target={id}/>}
 
-                            </div>
-                            <BlockEditor key={props.id} parent={props.parent} id={props.id} />
+                                </div>
+                            )}
 
-                            {/*{(block.content.type === 'date' || block.content.type === 'name') && (*/}
-                            {/*    <div style={{*/}
-                            {/*             fontSize: '20px',*/}
-                            {/*             fontWeight: 'bold'*/}
-                            {/*         }}*/}
-                            {/*         key={props.id}>*/}
-                            {/*        {block.content.data}*/}
-                            {/*    </div>*/}
-                            {/*)}*/}
+                            {withHeader && isRoot
+                                ? (
+                                    <BlockEditor
+                                        parent={parent}
+                                        id={id}
+                                        className={classes.titleBlock}
+                                    />
+                                ) : (
+                                    <BlockEditor
+                                        parent={parent}
+                                        id={id}
+                                    />
+                                )
+                            }
                         </div>
 
-                        {(expanded || id === root) && (
-                            <BlockItems parent={props.id} notes={items}/>
+                        {withHeader && isRoot &&
+                            <Divider style={{ margin: '13px 0 22px' }} />
+                        }
+
+                        {(expanded || (isRoot && noExpand)) && (
+                            <BlockItems parent={id} notes={items} indent={!withHeader} />
                         )}
                 </>
             </BlockDragIndicator>
@@ -301,8 +320,6 @@ export const BlockInner = observer((props: IProps) => {
 });
 
 export const Block = observer(function Note(props: IProps) {
-
-    // useLifecycleTracer('Note');
 
     return (
         <BlockContextMenu>

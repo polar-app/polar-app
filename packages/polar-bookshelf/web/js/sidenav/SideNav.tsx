@@ -156,35 +156,11 @@ const AnnotationsButton = React.memo(function AnnotationsButton() {
 
 const NotesButton = observer(function NotesButton() {
     const classes = useStyles();
-    const blocksStore = useBlocksStore();
-    const history = useHistory();
-
-    const handleClick = React.useCallback(() => {
-        if (! blocksStore.hasSnapshot) {
-            // dont' do anything yet.
-            return;
-        }
-
-        const dateContent = DateContents.create();
-
-        const block = blocksStore.getBlockByName(dateContent.data);
-
-        if (! block) {
-            blocksStore.createNewNamedBlock(dateContent.data, {type: 'date'});
-        }
-        history.push(`/notes/${dateContent.data}`);
-    }, [blocksStore, history]);
 
     const pathCanonicalizer = React.useCallback(path => path.startsWith('/notes') ? '/notes' : path, []);
 
-    if (! blocksStore.hasSnapshot) {
-        // dont' do anything yet.
-        return null;
-    }
-
     return (
         <SideNavHistoryButton title="Notes"
-                              onClick={handleClick}
                               canonicalizer={pathCanonicalizer}
                               path="/notes">
             <NotesIcon className={classes.secondaryIcon}/>
