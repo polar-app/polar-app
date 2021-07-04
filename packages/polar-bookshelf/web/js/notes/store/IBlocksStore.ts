@@ -10,7 +10,7 @@ import {
     BlockNameStr,
     IBlockMerge,
     BlocksIndex,
-    IDropTarget, INewBlockOpts, DoPutOpts, ICreateNewNamedBlockOpts
+    IDropTarget, INewBlockOpts, DoPutOpts, ICreateNewNamedBlockOpts, BlocksIndexByName
 } from "./BlocksStore";
 import {Block} from "./Block";
 import {ReverseIndex} from "./ReverseIndex";
@@ -35,6 +35,7 @@ export interface IBlocksStore {
     dropTarget: IDropTarget | undefined;
     reverse: ReverseIndex;
     index: BlocksIndex;
+    indexByName: BlocksIndexByName;
     selected: StringSetMap;
 
     hasSnapshot: boolean;
@@ -99,7 +100,8 @@ export interface IBlocksStore {
     updateBlocks(blocks: ReadonlyArray<IBlock>): void;
 
     // TODO: undo / cursor
-    createNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock | undefined;
+    createNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock;
+    doCreateNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock;
 
     createNewNamedBlock(name: BlockNameStr, opts: ICreateNewNamedBlockOpts): BlockIDStr;
 

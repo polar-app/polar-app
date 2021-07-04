@@ -2,7 +2,7 @@ import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {
     DocPreview,
     DocPreviewCached
-} from "polar-firebase/src/firebase/om/DocPreviews";
+} from "polar-firebase/src/firebase/om/DocPreviewCollection";
 import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
 import {Fetches} from "polar-shared/src/util/Fetch";
 

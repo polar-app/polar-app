@@ -1,20 +1,29 @@
 import * as React from 'react';
-import {useLocation} from 'react-router-dom';
-import {NoteURLs} from "./NoteURLs";
+import {Route, RouteComponentProps, Switch} from 'react-router-dom';
 import {NoteRoot} from "./NoteRoot";
+import {LinearProgress} from '@material-ui/core';
+import {useBlocksStore} from './store/BlocksStore';
+import {JumpToNoteKeyboardCommand} from './JumpToNoteKeyboardCommand';
+import {observer} from 'mobx-react-lite';
+import {NotesContainer} from './NotesContainer';
 
-export const NoteScreen = () => {
+export const NotesScreen: React.FC<RouteComponentProps> = observer(() => {
+    const blocksStore = useBlocksStore();
 
-    const location = useLocation();
-
-    const noteURL = NoteURLs.parse(location.pathname);
-
-    if (! noteURL) {
-        return null;
+    if (! blocksStore.hasSnapshot) {
+        return (
+            <LinearProgress />
+        );
     }
 
     return (
-        <NoteRoot target={noteURL.target}/>
+        <NotesContainer>
+            <JumpToNoteKeyboardCommand />
+            <Switch>
+                <Route path="/notes/:id" component={NoteRoot} />
+                <Route path="/notes" component={NoteRoot} />
+            </Switch>
+        </NotesContainer>
     );
 
-}
+});

@@ -1,9 +1,13 @@
 import * as React from 'react';
 
-export const ArrowRight = React.memo(function ArrowRight() {
+interface IArrowRightProps {
+    style?: React.CSSProperties;
+}
+
+export const ArrowRight: React.FC<IArrowRightProps> = React.memo(function ArrowRight({ style = {} }) {
     return (
-        <>
+        <div style={{...style}}>
             &#x25B8;
-        </>
+        </div>
     );
 });

@@ -1,5 +1,5 @@
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
-import {DocPreview} from "polar-firebase/src/firebase/om/DocPreviews";
+import {DocPreview} from "polar-firebase/src/firebase/om/DocPreviewCollection";
 import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
 
 export class DocPreviewsIndexGenerator {

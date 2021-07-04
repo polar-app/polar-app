@@ -3,7 +3,7 @@ import {BaseDocAnnotation} from "./BaseDocAnnotations";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
-import {ProfileIDStr} from "polar-firebase/src/firebase/om/Profiles";
+import {ProfileIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 
 export class ProfileDocAnnotations {
 

@@ -2,7 +2,7 @@ import {Firestore} from '../../util/Firestore';
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
-import {EmailStr, HandleStr, ProfileIDStr, UserIDStr } from 'polar-firebase/src/firebase/om/Profiles';
+import {EmailStr, HandleStr, ProfileIDStr, UserIDStr } from 'polar-firebase/src/firebase/om/ProfileCollection';
 import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
 import {Collections} from "polar-firestore-like/src/Collections";
 

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {PersistenceLayerManager} from '../../datastore/PersistenceLayerManager';
-import {BrowserRouter, Route, Switch, useHistory} from 'react-router-dom';
+import {BrowserRouter, Route, RouteComponentProps, Switch, useHistory} from 'react-router-dom';
 import {RepoDocMetaManager} from '../../../../apps/repository/js/RepoDocMetaManager';
 import {RepoDocMetaLoader} from '../../../../apps/repository/js/RepoDocMetaLoader';
 import WhatsNewScreen
@@ -65,10 +65,9 @@ import {SignInScreen} from "../../../../apps/repository/js/login/SignInScreen";
 import {ZenModeGlobalHotKeys} from "../../mui/ZenModeGlobalHotKeys";
 import {ZenModeDeactivateButton} from "../../mui/ZenModeDeactivateButton";
 import {UserTagsDataLoader} from "../../../../apps/repository/js/persistence_layer/UserTagsDataLoader";
-import {NotesRouter} from "../../notes/NotesRouter";
-import {NotesContainer} from "../../notes/NotesContainer";
 import {BlocksStoreProvider} from "../../notes/store/BlocksStore";
 import {BlockStoreDefaultContextProvider} from "../../notes/store/BlockStoreContextProvider";
+import {NotesScreen} from '../../notes/NoteScreen';
 
 interface IProps {
     readonly app: App;
@@ -246,16 +245,6 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
         document.location.href = 'http://feedback.getpolarized.io/feature-requests';
         return null;
     }
-
-    const NotesScreen = () => {
-
-        return (
-            <NotesContainer>
-                <NotesRouter/>
-            </NotesContainer>
-        );
-    }
-
     return (
         <RepoDocMetaManagerContext.Provider value={repoDocMetaManager}>
             <MUIRepositoryRoot>

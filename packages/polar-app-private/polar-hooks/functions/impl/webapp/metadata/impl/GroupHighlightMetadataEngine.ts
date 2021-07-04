@@ -17,7 +17,7 @@ import {Permalinks} from "../Permalinks";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {ProfileOwners} from "../../../groups/db/ProfileOwners";
 import {FirebaseFileStorage} from "polar-firebase/src/firebase/files/FirebaseFileStorage";
-import {ProfileIDStr, Profiles, UserIDStr} from "polar-firebase/src/firebase/om/Profiles";
+import {ProfileCollection, ProfileIDStr, UserIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 import {Firestore} from "../../../util/Firestore";
 
 const log = Logger.create();
@@ -53,7 +53,7 @@ export class GroupHighlightMetadataEngine implements MetadataEngine {
                 return ANONYMOUS_PERSON;
             }
 
-            const profile = await Profiles.get(firestore, profileID);
+            const profile = await ProfileCollection.get(firestore, profileID);
 
             if (! profile) {
                 throw new Error("No profile");

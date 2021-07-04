@@ -1,4 +1,4 @@
-import { UserIDStr } from "polar-firebase/src/firebase/om/Profiles";
+import { UserIDStr } from "polar-firebase/src/firebase/om/ProfileCollection";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {FirebaseDocMetaID} from "../groups/db/DocPermissions";
 

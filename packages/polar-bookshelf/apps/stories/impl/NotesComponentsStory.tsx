@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {BlockBulletButton} from "../../../web/js/notes/BlockBulletButton";
-import {ArrowDown} from "../../../web/js/notes/ArrowDown";
 import {ArrowRight} from "../../../web/js/notes/ArrowRight";
 import {NoteButton} from "../../../web/js/notes/NoteButton";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
@@ -13,10 +12,6 @@ export const NotesComponentsStory = () => {
                 <h3>NoteBullet</h3>
 
                 <BlockBulletButton target='asdf'/>
-
-                <h3>ArrowDown</h3>
-
-                <ArrowDown/>
 
                 <h3>ArrowRight</h3>
 

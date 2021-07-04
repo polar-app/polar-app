@@ -395,24 +395,24 @@ nspace:  The declaration of a namespace, it's id, name, and description
 nspace_user: The namespaces that a user owns. Each has a unique id, uid, and a nspace_id
 nspace_org: The namespaces that an org owns.  Each has a unique id, uid,   
 
-block_permission_page: permission structure configured by an 'admin' for a
-                       specific page and who has access to the page. This
-                       controls the high level permissions so that when 
-                       the admin wants to enumerate who has access and to
-                       restore those permissions when admin opens a dialog to
-                       change the permissions. Other user can see the data 
-                       here but can not make changes.
+block_permission: 
 
-block_permission_nspace: Same as block_permission_page but for namespaces.
-                   
-block_permission_user: The effective permissions for a user and which pages and
-                       namespaces they have access to. This table serves two
-                       main purposes. 1.  The user reads this table so they 
-                       can knows which blocks they can access. 2.  The Firestore
-                       rules system uses this table to assert permissions so 
-                       that a user can't read/write data which they're 
-                       not allowed to access.
-                        
+    Permission structure configured by an 'admin' for a page or nspace and
+    specifies who has access to the page. This controls the high level
+    permissions so that when the admin wants to enumerate who has access and to
+    restore those permissions the admin opens a dialog to change the
+    permissions. Other user can see the data here but can not make changes. 
+    There are two types of permissions stored here, page and nspace.  The ID is
+    computed using either the nspace ID or the block ID.
+
+block_permission_user: 
+    
+    The effective permissions for a user and which pages and namespaces they
+    have access to. This table serves two main purposes. 1.  The user reads this
+    table so they can knows which blocks they can access. 2.  The Firestore
+    rules system uses this table to assert permissions so that a user can't
+    read/write data which they're not allowed to access.
+                            
 
 ```
 

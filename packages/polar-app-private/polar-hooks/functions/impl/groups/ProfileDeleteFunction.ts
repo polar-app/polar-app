@@ -4,7 +4,7 @@ import {ProfileOwners} from './db/ProfileOwners';
 import {ExpressFunctions} from '../util/ExpressFunctions';
 import {ProfileHandles} from './db/ProfileHandles';
 import {UserRequests} from '../util/UserRequests';
-import {Profiles} from "polar-firebase/src/firebase/om/Profiles";
+import {ProfileCollection} from "polar-firebase/src/firebase/om/ProfileCollection";
 
 export class ProfileDeleteFunctions {
 
@@ -21,12 +21,12 @@ export class ProfileDeleteFunctions {
 
         const profileID = idUser.profile.id;
 
-        const profile = await Profiles.get(firestore, profileID);
+        const profile = await ProfileCollection.get(firestore, profileID);
 
         if (profile) {
 
             await ProfileOwners.delete(batch, idUser.uid);
-            await Profiles.doDelete(firestore, batch, profileID);
+            await ProfileCollection.doDelete(firestore, batch, profileID);
 
             if (profile.handle) {
                 ProfileHandles.delete(batch, profile.handle);

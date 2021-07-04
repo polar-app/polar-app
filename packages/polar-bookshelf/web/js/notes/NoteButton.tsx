@@ -3,6 +3,7 @@ import useTheme from '@material-ui/core/styles/useTheme';
 
 interface IProps {
     readonly className?: string;
+    readonly style?: React.CSSProperties;
     readonly disabled?: boolean;
     readonly onClick: (event: React.MouseEvent) => void;
     readonly children: JSX.Element;
@@ -58,7 +59,8 @@ export const NoteButton = React.memo(function NoteButton(props: IProps) {
                  height: '1em',
                  lineHeight: '1em',
                  cursor: 'pointer',
-                 userSelect: 'none'
+                 userSelect: 'none',
+                 ...props.style,
              }}>
             <div style={{
                      display: 'flex',

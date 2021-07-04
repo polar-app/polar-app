@@ -9,8 +9,8 @@ import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
 import {
     DocPreview,
     DocPreviewCached,
-    DocPreviews
-} from "polar-firebase/src/firebase/om/DocPreviews";
+    DocPreviewCollection
+} from "polar-firebase/src/firebase/om/DocPreviewCollection";
 import {DocPreviewHashcodes} from "polar-firebase/src/firebase/om/DocPreviewHashcodes";
 import {Slugs} from "polar-shared/src/util/Slugs";
 import {PDFMetadata} from "polar-pdf/src/pdf/PDFMetadata";
@@ -131,7 +131,7 @@ export const DocPreviewFunction = functions.https.onRequest(async (req, res) => 
     console.log(`Handling full URL: ${fullURL}`);
 
     const parsedURL = AddURLs.parse(fullURL);
-    
+
     if (! parsedURL) {
         throw new Error("Wrong URL: " + fullURL);
     }
@@ -141,7 +141,7 @@ export const DocPreviewFunction = functions.https.onRequest(async (req, res) => 
 
     const urlHash = DocPreviewHashcodes.urlHash(parsedURL.target);
 
-    const docPreview = await DocPreviews.get(urlHash);
+    const docPreview = await DocPreviewCollection.get(urlHash);
 
     console.log("Parsed URL as: " + JSON.stringify(parsedURL, null, "   "));
     console.log("Imported doc to: " + JSON.stringify(importedDoc, null, "   "));
@@ -171,7 +171,7 @@ export const DocPreviewFunction = functions.https.onRequest(async (req, res) => 
                 slug
             };
 
-            await DocPreviews.set(docPreviewCached);
+            await DocPreviewCollection.set(docPreviewCached);
 
             return docPreviewCached;
 

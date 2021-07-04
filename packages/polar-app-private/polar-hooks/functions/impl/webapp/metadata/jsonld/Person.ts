@@ -2,7 +2,7 @@ import {BaseType} from "./BaseType";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {IImageObject, ImageObjects} from "./ImageObject";
 import {URLStr} from "polar-shared/src/util/Strings";
-import {IProfile} from "polar-firebase/src/firebase/om/Profiles";
+import {IProfile} from "polar-firebase/src/firebase/om/ProfileCollection";
 
 export interface IPersonInit {
 

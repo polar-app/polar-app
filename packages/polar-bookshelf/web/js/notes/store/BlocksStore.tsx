@@ -327,10 +327,6 @@ export class BlocksStore implements IBlocksStore {
         return this._expanded;
     }
 
-    // @computed get root() {
-    //     return this._root;
-    // }
-
     @computed get active() {
         return this._active;
     }
@@ -1328,7 +1324,7 @@ export class BlocksStore implements IBlocksStore {
         this.doPut(blocks);
     }
 
-    @action public createNewBlock(id: BlockIDStr, opts: INewBlockOpts = {}): ICreatedBlock | undefined {
+    @action public createNewBlock(id: BlockIDStr, opts: INewBlockOpts = {}): ICreatedBlock {
         const newBlockID = Hashcodes.createRandomID();
         const redo = () => this.doCreateNewBlock(id, {...opts, newBlockID});
         return this.doUndoPush('createNewBlock', [id, newBlockID], redo);
@@ -1337,7 +1333,7 @@ export class BlocksStore implements IBlocksStore {
     /**
      * Create a new block in reference to the block with given ID.
      */
-    @action public doCreateNewBlock(id: BlockIDStr, opts: INewBlockOpts = {}): ICreatedBlock | undefined {
+    @action public doCreateNewBlock(id: BlockIDStr, opts: INewBlockOpts = {}): ICreatedBlock {
 
         // *** we first have to compute the new parent this has to be computed
         // based on the expansion tree because if the current block setup is like:

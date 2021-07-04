@@ -8,7 +8,7 @@ import {Preconditions} from "polar-shared/src/Preconditions";
  * state of the card so that next time we want to access it we can just fetch it
  * directly.
  */
-export class SpacedReps {
+export class SpacedRepCollection {
 
     public static firestoreProvider: FirestoreProvider;
 
