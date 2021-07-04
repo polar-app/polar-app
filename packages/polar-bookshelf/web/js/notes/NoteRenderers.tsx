@@ -17,6 +17,7 @@ import {useStateRef} from "../hooks/ReactHooks";
 import equal from "deep-equal";
 import {NameContent} from "./content/NameContent";
 import {DateContents} from "./content/DateContents";
+import {IBlocksStore} from "./store/IBlocksStore";
 
 const DAILY_NOTES_CHUNK_SIZE = 3;
 
@@ -37,6 +38,14 @@ const useStyles = makeStyles((theme) =>
 );
 
 type NamedBlock = BlockClass<NameContent | DateContent>;
+
+const focusFirstChild = (blocksStore: IBlocksStore, id: BlockIDStr) => {
+    const root = blocksStore.getBlock(id);
+    if (root) {
+        const firstChildID = root.itemsAsArray[0] || blocksStore.createNewBlock(root.id).id;
+        blocksStore.setActiveWithPosition(firstChildID, 'start');
+    }
+};
 
 export const useNamedBlocks = () => {
     const blocksStore = useBlocksStore();
@@ -64,6 +73,7 @@ export const DailyNotesRenderer: React.FC = () => {
     const [threshold, setThreshold, thresholdRef] = useStateRef(0);
     const [dailyNotes, setDailyNotes, dailyNotesRef] = useStateRef<ReadonlyArray<BlockClass<DateContent>>>([]);
     const namedBlocks = useNamedBlocks();
+    const blocksStore = useBlocksStore();
 
     React.useEffect(() => {
         const dateBlocks = namedBlocks.filter(BlockPredicates.isDateBlock)
@@ -75,7 +85,20 @@ export const DailyNotesRenderer: React.FC = () => {
         const notes = [...dateBlocks].sort(descendingDateSorter);
         setDailyNotes(notes);
     }, [namedBlocks, setDailyNotes]);
-
+    
+    React.useEffect(() => {
+        // Add a note for today if it doesn't exist & focus the first child
+        const dateContent = DateContents.create();
+        const getTodaysBlockID = () => {
+            const todaysBlock = blocksStore.getBlockByTarget(dateContent.data);
+            if (todaysBlock) {
+                return todaysBlock.id;
+            }
+            return blocksStore.createNewNamedBlock(dateContent.data, {type: 'date'});
+        };
+        const todaysBlockID = getTodaysBlockID();
+        focusFirstChild(blocksStore, todaysBlockID);
+    }, [blocksStore]);
 
     const rootRef = React.useRef<HTMLDivElement>(null);
     const visibleNotes = React.useMemo(() => dailyNotes.slice(0, threshold), [dailyNotes, threshold]);
@@ -158,7 +181,7 @@ export const SingleNoteRendrer: React.FC<ISingleNoteRendererProps> = ({ target }
         if (activeBlock) {
             blocksStore.setActiveWithPosition(activeBlock.id, activeBlock.pos || 'start');
         } else {
-            blocksStore.setActiveWithPosition(root.id, 'end');
+            focusFirstChild(blocksStore, root.id);
         }
     }, [root, blocksStore]);
 
