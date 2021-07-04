@@ -13,7 +13,7 @@ import {FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {IQuery} from "polar-firestore-like/src/IQuery";
-import { EmailStr, ProfileIDStr } from 'polar-firebase/src/firebase/om/Profiles';
+import { EmailStr, ProfileIDStr } from 'polar-firebase/src/firebase/om/ProfileCollection';
 
 export class Contacts {
 

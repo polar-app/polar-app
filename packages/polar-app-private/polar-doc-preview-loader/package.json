@@ -27,6 +27,7 @@
     "firebase-admin": "=9.9.0",
     "polar-firebase": "^2.1.71",
     "polar-firebase-admin": "^2.1.71",
-    "polar-shared": "^2.1.71"
+    "polar-shared": "^2.1.71",
+    "polar-webapp-links": "^2.1.71"
   }
 }

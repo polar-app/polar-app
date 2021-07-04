@@ -1,9 +1,9 @@
 import * as functions from "firebase-functions";
 import {
-    DocPreviews,
+    DocPreviewCollection,
     ListOpts,
     Range
-} from "polar-firebase/src/firebase/om/DocPreviews";
+} from "polar-firebase/src/firebase/om/DocPreviewCollection";
 import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
 
 export const DocPreviewSitemapFunction = functions.https.onRequest((req, resp) => {
@@ -78,7 +78,7 @@ export const DocPreviewSitemapFunction = functions.https.onRequest((req, resp) =
         const opts = parseListOpts();
 
         console.log("Using list opts: ", opts);
-        const docPreviews = await DocPreviews.list(opts);
+        const docPreviews = await DocPreviewCollection.list(opts);
 
         for (const docPreview of docPreviews) {
 

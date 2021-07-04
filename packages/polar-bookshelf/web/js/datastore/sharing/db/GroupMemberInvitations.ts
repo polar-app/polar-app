@@ -7,7 +7,7 @@ import {Collections, DocumentChange} from './Collections';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Clause} from './Collections';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {EmailStr, ProfileIDStr} from "polar-firebase/src/firebase/om/Profiles";
+import {EmailStr, ProfileIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 
 const log = Logger.create();
 

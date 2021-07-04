@@ -11,7 +11,7 @@ import {UserRef} from './db/UserRefs';
 import {EmailAddress, Mandrill} from "../util/Mandrill";
 import {GroupJoins} from "./GroupJoins";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
-import {EmailStr} from "polar-firebase/src/firebase/om/Profiles";
+import {EmailStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 
 export class GroupInvites {
 

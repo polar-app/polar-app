@@ -12,7 +12,7 @@ import {
     ProfileIDRecord,
     ProfileIDStr,
     ProfileRecordTuple
-} from "polar-firebase/src/firebase/om/Profiles";
+} from "polar-firebase/src/firebase/om/ProfileCollection";
 import {IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
 
 /**
