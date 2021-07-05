@@ -10,7 +10,7 @@
   you are good to go.
 
 - Run `npm run bash` which launches a Docker container and steps you into the `bash` terminal of that container. Note
-  that the Polar source code is "mounted" to the /app folder within the container. Any change you do to files within
+  that the Polar source code is "mounted" to the /polar-app folder within the container. Any change you do to files within
   that folder within the container, is reflected outside the container and vice versa.
 
 - Now is the time to install all dependencies of all packages. Use `lerna bootstrap` to do that (remember that we need
