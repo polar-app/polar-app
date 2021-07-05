@@ -32,7 +32,8 @@ commands:
             sudo npm -g install lerna@4.0.0
             sudo npm -g install npm@7.19.1
             sudo npm -g install firebase-tools@9.12.1
-            sudo npm -g install yarn@1.22.10
+
+#            sudo npm -g install yarn@1.22.10
 
       - run:
           name: Node and NPM version
