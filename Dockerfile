@@ -1,4 +1,4 @@
-FROM node:14-buster
+FROM node:14.14-buster
 
 ARG USER_ID
 ARG GROUP_ID
@@ -24,5 +24,8 @@ WORKDIR /app
 # Always pass auth tokens to Bytesafe
 # This is important!
 RUN npm config set always-auth true
+
+# Mount the yarn cache to presist on different containers
+RUN yarn config set cache-folder /polar-app/.cache
 
 EXPOSE 8050
