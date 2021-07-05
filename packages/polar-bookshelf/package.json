@@ -56,6 +56,12 @@
   },
   "license": "GPL-3.0-only",
   "devDependencies": {
+    "eslint-config-prettier": "=8.1.0",
+    "eslint-plugin-react-hooks": "=4.2.0",
+    "eslint-plugin-jsdoc": "=32.3.0",
+    "eslint-plugin-import": "=2.22.1",
+    "eslint-plugin-prefer-arrow": "=1.2.2",
+    "prettier": "=2.3.2",
     "@types/amplitude-js": "^7.0.0",
     "@types/blueimp-md5": "^2.7.0",
     "@types/chai": "4.2.11",
