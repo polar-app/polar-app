@@ -18,6 +18,7 @@ import {IBlockContentStructure} from '../HTMLToBlocks';
 import {useBlocksTreeStore} from '../BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
+import {useNamedBlocks} from '../NoteRenderers';
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed
@@ -45,7 +46,7 @@ export function useBlockContentEditableElement() {
  * https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand
  *
  */
-export const BlockContentEditable = observer((props: IProps) => {
+export const BlockContentEditable = (props: IProps) => {
 
     const [content] = React.useState(() => MarkdownContentConverter.toHTML(props.content));
     const divRef = React.useRef<HTMLDivElement | null>(null);
@@ -81,11 +82,14 @@ export const BlockContentEditable = observer((props: IProps) => {
     }, []);
 
     const handlePaste = usePasteHandler({onPasteImage, onPasteError, onPasteBlocks});
+    const namedBlocks = useNamedBlocks();
 
-    const noteLinkActions = blocksTreeStore.getNamedBlocks().map(current => ({
-        id: current,
-        text: current
-    }));
+    const noteLinkActions = React.useMemo(() => {
+        return namedBlocks.map((block) => ({
+            id: block.content.data,
+            text: block.content.data,
+        }));
+    }, [namedBlocks]);
 
     const createNoteActionsProvider = React.useMemo(() => createActionsProvider(noteLinkActions), [noteLinkActions]);
 
@@ -233,7 +237,7 @@ export const BlockContentEditable = observer((props: IProps) => {
         </NoteContentEditableElementContext.Provider>
     );
 
-});
+};
 
 /**
  * Hook which keeps track of the last nonce we updated to avoid double updates.

@@ -6,7 +6,7 @@ import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import {ProfileOwner} from './ProfileOwners';
 import {UserRefInvitations} from '../GroupInvites';
 import {Invitations} from '../GroupInvites';
-import {EmailStr, IProfile, ProfileIDStr, Profiles} from "polar-firebase/src/firebase/om/Profiles";
+import {EmailStr, IProfile, ProfileIDStr, ProfileCollection} from "polar-firebase/src/firebase/om/ProfileCollection";
 import {Firestore} from "../../util/Firestore";
 
 /**
@@ -56,7 +56,7 @@ export class UserProfiles {
                 return undefined;
             }
 
-            return await Profiles.get(firestore, profileOwner.profileID);
+            return await ProfileCollection.get(firestore, profileOwner.profileID);
 
         });
 
@@ -120,7 +120,7 @@ export class UserProfiles {
                 return undefined;
             }
 
-            return await Profiles.get(firestore, profileOwner.profileID);
+            return await ProfileCollection.get(firestore, profileOwner.profileID);
 
         });
 
@@ -168,7 +168,7 @@ export class UserProfiles {
         });
 
         const getProfile = AsyncProviders.memoize(async () => {
-            const profile = await Profiles.get(firestore, profileID);
+            const profile = await ProfileCollection.get(firestore, profileID);
             Preconditions.assertPresent(profile, 'profile');
             return profile!;
         });

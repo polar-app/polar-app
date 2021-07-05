@@ -75,7 +75,7 @@ export interface ListOpts {
     readonly range?: Range;
 }
 
-export class DocPreviews {
+export class DocPreviewCollection {
 
     public static firestoreProvider: FirestoreProvider;
 
@@ -107,7 +107,7 @@ export class DocPreviews {
                            .orderBy('urlHash', 'asc')
                            .startAt(opts.range.start)
                            .endBefore(opts.range.end);
-                
+
             }
 
             console.log("Using full list query");

@@ -10,7 +10,7 @@ import {ISODateTimeStrings, ISODateTimeString} from 'polar-shared/src/metadata/I
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
-import {ProfileIDStr} from "polar-firebase/src/firebase/om/Profiles";
+import {ProfileIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 import {Collections} from "polar-firestore-like/src/Collections";
 import Clause = Collections.Clause;
 

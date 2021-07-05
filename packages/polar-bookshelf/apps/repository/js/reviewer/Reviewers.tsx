@@ -1,7 +1,7 @@
 import * as React from "react";
 import {ReviewerTasks} from "./ReviewerTasks";
 import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {SpacedRep, SpacedReps} from "polar-firebase/src/firebase/om/SpacedReps";
+import {SpacedRep, SpacedRepCollection} from "polar-firebase/src/firebase/om/SpacedRepCollection";
 import {
     Rating,
     RepetitionMode,
@@ -17,8 +17,8 @@ import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {
     SpacedRepStat,
-    SpacedRepStats
-} from "polar-firebase/src/firebase/om/SpacedRepStats";
+    SpacedRepStatCollection
+} from "polar-firebase/src/firebase/om/SpacedRepStatCollection";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {ReadingTaskAction} from "./cards/ReadingTaskAction";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
@@ -82,7 +82,7 @@ export namespace Reviewers {
                 ...calculatedTaskReps.stageCounts
             };
 
-            await SpacedRepStats.write(uid, spacedRepStats);
+            await SpacedRepStatCollection.write(uid, spacedRepStats);
 
         };
 
@@ -120,7 +120,7 @@ export namespace Reviewers {
                 ...completedStageCounts
             };
 
-            await SpacedRepStats.write(uid, spacedRepStats);
+            await SpacedRepStatCollection.write(uid, spacedRepStats);
 
             console.log("Wrote completed state counts");
 
@@ -128,13 +128,13 @@ export namespace Reviewers {
 
         const doWriteSuspendedCounts = async (taskRep: TaskRep<ReadingTaskAction>) => {
 
-            const convertedSpacedRep = SpacedReps.convertFromTaskRep(uid, taskRep);
+            const convertedSpacedRep = SpacedRepCollection.convertFromTaskRep(uid, taskRep);
             const spacedRep: SpacedRep = {
                 ...convertedSpacedRep,
                 suspended: true
             };
 
-            await SpacedReps.set(taskRep.id, spacedRep);
+            await SpacedRepCollection.set(taskRep.id, spacedRep);
 
         }
 
@@ -163,7 +163,7 @@ export namespace Reviewers {
 
             incrCompletedStageCounts(taskRep);
 
-            await SpacedReps.set(next.id, spacedRep)
+            await SpacedRepCollection.set(next.id, spacedRep)
 
         };
 
