@@ -19,7 +19,7 @@ USER node
 
 COPY --chown=node:node .npmrc.bytesafe /home/node/.npmrc
 
-WORKDIR /app
+WORKDIR /polar-app
 
 # Always pass auth tokens to Bytesafe
 # This is important!
