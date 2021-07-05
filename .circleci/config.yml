@@ -19,7 +19,7 @@ commands:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-{{ arch }}-dependencies-{{ checksum "package-lock.json" }}
+            - v1-{{ arch }}-dependencies-{{ checksum "yarn.lock" }}
 
       # I think bytesafe might not work with npm v7
       #- run:
@@ -79,7 +79,7 @@ commands:
       - save_cache:
           paths:
             - node_modules
-          key: v1-{{ arch }}-dependencies-{{ checksum "package-lock.json" }}
+          key: v1-{{ arch }}-dependencies-{{ checksum "yarn.lock" }}
 
       #- run:
       #    name: Required Linux packages (when on Linux)
