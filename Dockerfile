@@ -1,4 +1,4 @@
-FROM node:14-buster
+FROM node:14.14-buster
 
 ARG USER_ID
 ARG GROUP_ID
@@ -19,13 +19,13 @@ USER node
 
 COPY --chown=node:node .npmrc.bytesafe /home/node/.npmrc
 
-WORKDIR /app
+WORKDIR /polar-app
 
 # Always pass auth tokens to Bytesafe
 # This is important!
 RUN npm config set always-auth true
 
-EXPOSE 8050
+# Mount the yarn cache to presist on different containers
+RUN yarn config set cache-folder /polar-app/.cache
 
-CMD ["cat", "/home/node/.npmrc"]
-CMD ["lerna", "bootstrap"]
+EXPOSE 8050
