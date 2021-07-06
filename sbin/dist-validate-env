@@ -10,8 +10,8 @@ die() {
 
 ## make sure we are logged in via NPM
 validate_npm_auth() {
-    echo "Validating npm auth..."
-    npm whoami > /dev/null
+    #echo "Validating npm auth..."
+    #npm whoami > /dev/null
 }
 
 #validate_snapcraft_auth() {
