@@ -253,9 +253,7 @@ jobs:
           command: |
             source packages/polar-bookshelf-secrets/credentials.sh
             yarn run set-registry-bytesafe-rw
-            npm ping
             export FIREBASE_HOSTING_TARGET=<< parameters.firebase_hosting_target >>
-            pwd
             rm -rfv packages/polar-app-private/polar-hooks/functions/node_modules
             yarn run dist-release-webapp-release
 
