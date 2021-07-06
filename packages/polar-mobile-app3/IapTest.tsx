@@ -1,14 +1,16 @@
 import * as RNIap from 'react-native-iap';
-import {Platform, Text, FlatList, StyleSheet, View, EmitterSubscription} from 'react-native';
 import {
     InAppPurchase,
     Product,
-    ProductPurchase, PurchaseError,
+    ProductPurchase,
+    PurchaseError,
     purchaseErrorListener,
     purchaseUpdatedListener,
     SubscriptionPurchase
 } from 'react-native-iap';
+import {Alert, EmitterSubscription, FlatList, Platform, StyleSheet, Text, View} from 'react-native';
 import React, {Component} from 'react';
+import {Billing} from "./Billing";
 
 class PolarBackendService {
     static validateReceiptOnServer(transactionReceipt: string) {
@@ -32,55 +34,81 @@ export class IapTest extends Component<any,
     purchaseErrorSubscription: EmitterSubscription | null = null
 
     componentDidMount() {
-        const productIds = Platform.select({
-            ios: ['plan_plus'],
-            android: ['com.example.coins100'],
-        });
+        this.getPurchases().then(value => {
+            console.log(value);
+            Alert.alert('dsa');
+        }).catch(reason => {
+            Alert.alert(reason.toString());
+        })
+        RNIap.initConnection().then((res: boolean) => {
+            if (!res) {
+                Alert.alert("Can not make in app purchases");
+                return;
+            }
 
-        RNIap.getProducts(productIds!)
-            .then(products => {
-                this.setState({products});
-                console.log(products);
-            })
-            .catch(reason => {
-                console.warn(reason.code);
-                console.warn(reason.message);
+
+            const productIds = Platform.select({
+                ios: ['plan_plus'],
+                android: ['com.example.coins100'],
             });
 
-        this.purchaseUpdateSubscription = purchaseUpdatedListener((purchase: InAppPurchase | SubscriptionPurchase | ProductPurchase) => {
-            console.log('purchaseUpdatedListener', purchase);
-            const receipt = purchase.transactionReceipt;
-            console.log('receipt', receipt);
-            if (receipt) {
-                PolarBackendService.validateReceiptOnServer(purchase.transactionReceipt)
-                    .then(async (deliveryResult) => {
-                        if (isSuccess(deliveryResult)) {
-                            // Tell the store that you have delivered what has been paid for.
-                            // Failure to do this will result in the purchase being refunded on Android and
-                            // the purchase event will reappear on every relaunch of the app until you succeed
-                            // in doing the below. It will also be impossible for the user to purchase consumables
-                            // again until you do this.
+            RNIap.getProducts(productIds!)
+                .then(products => {
+                    this.setState({products});
+                    console.log('Products:');
+                    console.log(products);
+                })
+                .catch(reason => {
+                    console.warn('Can not retrieve products:');
+                    console.warn(reason.code);
+                    console.warn(reason.message);
+                });
 
-                            try {
-                                await RNIap.finishTransaction(purchase, true);
-                                // If not consumable
-                                await RNIap.finishTransaction(purchase, false);
-                            } catch (e) {
-                                console.error(e);
+            this.purchaseUpdateSubscription = purchaseUpdatedListener((purchase: InAppPurchase | SubscriptionPurchase | ProductPurchase) => {
+                console.log('purchaseUpdatedListener', purchase);
+                const receipt = purchase.transactionReceipt;
+                console.log('receipt', receipt);
+                if (receipt) {
+                    PolarBackendService.validateReceiptOnServer(purchase.transactionReceipt)
+                        .then(async (deliveryResult) => {
+                            if (isSuccess(deliveryResult)) {
+                                // Tell the store that you have delivered what has been paid for.
+                                // Failure to do this will result in the purchase being refunded on Android and
+                                // the purchase event will reappear on every relaunch of the app until you succeed
+                                // in doing the below. It will also be impossible for the user to purchase consumables
+                                // again until you do this.
+
+                                try {
+                                    await RNIap.finishTransaction(purchase, true);
+                                    // If not consumable
+                                    await RNIap.finishTransaction(purchase, false);
+                                } catch (e) {
+                                    console.error(e);
+                                }
+                            } else {
+                                // Retry / conclude the purchase is fraudulent, etc...
                             }
-                        } else {
-                            // Retry / conclude the purchase is fraudulent, etc...
-                        }
-                    });
-            }
+                        });
+                }
+            });
+
+            this.purchaseErrorSubscription = purchaseErrorListener((error: PurchaseError) => {
+                console.warn('purchaseErrorListener', error);
+                switch (error.code) {
+                    case "E_USER_CANCELLED":
+                        Alert.alert("Purchase cancelled. Please try again");
+                        break;
+                    default:
+                        Alert.alert(String(error.code), error.message);
+                        break;
+                }
+            });
         });
 
-        this.purchaseErrorSubscription = purchaseErrorListener((error: PurchaseError) => {
-            console.warn('purchaseErrorListener', error);
-        });
     }
 
     render() {
+        return <></>;
         return (
             <View>
                 <Text style={styles.text}>Products available for purchase:</Text>
@@ -104,6 +132,16 @@ export class IapTest extends Component<any,
                 />
             </View>
         );
+    }
+
+    getPurchases = async () => {
+        try {
+            const result = await Billing.getPurchasedProductIds();
+            Alert.alert(result.toString());
+            return;
+        } catch (err) {
+            Alert.alert(err.code, err.message);
+        }
     }
 }
 
