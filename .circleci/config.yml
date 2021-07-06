@@ -27,6 +27,11 @@ commands:
       #    command: sudo npm -g install npm
 
       - run:
+          name: NPM node_modules cache stats
+          command: |
+            df -h ./node_modules
+
+      - run:
           name: Install global node modules
           command: |
             sudo npm -g install lerna@4.0.0
@@ -61,7 +66,7 @@ commands:
           command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get update && sudo apt-get install libvips libvips-dev pngquant; fi
 
       - run:
-          name: npm setup
+          name: NPM setup
           command: |
             cp .npmrc.bytesafe ~/.npmrc
             cat ~/.npmrc
