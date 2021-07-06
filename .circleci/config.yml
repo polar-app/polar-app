@@ -29,7 +29,7 @@ commands:
       - run:
           name: NPM node_modules cache stats
           command: |
-            du -h ./node_modules
+            du -h ./node_modules | tail -1
 
       - run:
           name: Install global node modules
