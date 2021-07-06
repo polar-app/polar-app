@@ -19,7 +19,9 @@ commands:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-{{ arch }}-dependencies-{{ checksum "yarn.lock" }}
+            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-v1-{{ .Branch }}-
+            - yarn-packages-v1-
 
       # I think bytesafe might not work with npm v7
       #- run:
@@ -38,7 +40,7 @@ commands:
             sudo npm -g install npm@7.19.1
             sudo npm -g install firebase-tools@9.12.1
 
-#            sudo npm -g install yarn@1.22.10
+      #            sudo npm -g install yarn@1.22.10
 
       - run:
           name: Node and NPM version
@@ -83,12 +85,12 @@ commands:
           # command: npm run-script purge-node-modules && npx lerna bootstrap
           command: |
             npm config set legacy-peer-deps true
-            npx lerna bootstrap
+            npx lerna bootstrap --ci
 
       - save_cache:
           paths:
-            - node_modules
-          key: v1-{{ arch }}-dependencies-{{ checksum "yarn.lock" }}
+            - ~/.cache/yarn
+          key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
 
       #- run:
       #    name: Required Linux packages (when on Linux)
@@ -100,7 +102,6 @@ commands:
 
 jobs:
   build:
-
     parameters:
       executor:
         description: "The CircleCI executor to use."
@@ -113,14 +114,12 @@ jobs:
     description: "Build the main code and run 'npm test'"
 
     steps:
-
       - build_setup
       - run:
           name: test
           command: npx lerna run test
 
   karma:
-
     parameters:
       executor:
         description: "The CircleCI executor to use."
@@ -133,7 +132,6 @@ jobs:
     description: "Run our karma tests in the browser."
 
     steps:
-
       - build_setup
       - run:
           name: karma
@@ -145,7 +143,6 @@ jobs:
             yarn run karma
 
   end2end:
-
     parameters:
       executor:
         description: "The CircleCI executor to use."
@@ -174,7 +171,6 @@ jobs:
           background: true
 
   build-webapp:
-
     parameters:
       executor:
         description: "The CircleCI executor to use."
@@ -271,7 +267,6 @@ jobs:
     executor: << parameters.executor>>
     working_directory: ~/repo
     steps:
-
       - run:
           name: deploy
           command: |
@@ -336,11 +331,11 @@ workflows:
   version: 2
   main:
     jobs:
-#      - build_with_executor:
-#          executor:
-#            name: win/default
-#            shell: bash.exe
-#
+      #      - build_with_executor:
+      #          executor:
+      #            name: win/default
+      #            shell: bash.exe
+      #
       - build:
           executor: my-docker
       - karma:
@@ -388,7 +383,6 @@ workflows:
             branches:
               only:
                 - master
-
 #  cypress:
 #    jobs:
 #      - cypress:
@@ -415,6 +409,4 @@ workflows:
 #      - end2end:
 #          executor: my-macos
 #
-
-
 
