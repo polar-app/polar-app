@@ -9,11 +9,33 @@ import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 
 const log = Logger.create();
 
+const IS_NODE = typeof window === 'undefined';
+
+// **** BEGIN iOS IndexDB lock workaround
+//
+// This has to be called during the import EARLY so that this fixes any Safari
+// bugs documented here:
+//
+// https://github.com/firebase/firebase-js-sdk/issues/4076
+// https://bugs.webkit.org/show_bug.cgi?id=226547
+
+if (! IS_NODE) {
+
+    const idb = globalThis.indexedDB || window.indexedDB;
+
+    if (idb) {
+        const dummyDbName = 'safariIdbFix';
+        indexedDB.open(dummyDbName);
+        indexedDB.deleteDatabase(dummyDbName);
+    }
+
+}
+
+// **** BEGIN iOS IndexDB lock workaround
+
 const ENABLE_PERSISTENCE = StoreCaches.config.backing === 'none';
 
 // const ENABLE_PERSISTENCE = false;
-
-const IS_NODE = typeof window === 'undefined';
 
 export namespace Firestore {
 
