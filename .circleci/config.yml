@@ -19,7 +19,7 @@ commands:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-{{ arch }}-dependencies-{{ checksum "package-lock.json" }}
+            - v1-{{ arch }}-dependencies-{{ checksum "yarn.lock" }}
 
       # I think bytesafe might not work with npm v7
       #- run:
@@ -27,11 +27,18 @@ commands:
       #    command: sudo npm -g install npm
 
       - run:
+          name: NPM node_modules cache stats
+          command: |
+            df -h ./node_modules
+
+      - run:
           name: Install global node modules
           command: |
             sudo npm -g install lerna@4.0.0
-            sudo npm -g install npm@7.7.5
+            sudo npm -g install npm@7.19.1
             sudo npm -g install firebase-tools@9.12.1
+
+#            sudo npm -g install yarn@1.22.10
 
       - run:
           name: Node and NPM version
@@ -40,6 +47,8 @@ commands:
             node --version
             echo -n "NPM version: "
             npm --version
+            echo -n "Yarn version: "
+            yarn --version
             echo -n "Lerna version: "
             lerna --version
             echo -n "firebase version: "
@@ -57,7 +66,7 @@ commands:
           command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get update && sudo apt-get install libvips libvips-dev pngquant; fi
 
       - run:
-          name: npm setup
+          name: NPM setup
           command: |
             cp .npmrc.bytesafe ~/.npmrc
             cat ~/.npmrc
@@ -79,7 +88,7 @@ commands:
       - save_cache:
           paths:
             - node_modules
-          key: v1-{{ arch }}-dependencies-{{ checksum "package-lock.json" }}
+          key: v1-{{ arch }}-dependencies-{{ checksum "yarn.lock" }}
 
       #- run:
       #    name: Required Linux packages (when on Linux)
@@ -132,8 +141,8 @@ jobs:
             cd packages/polar-bookshelf
             sudo apt-get install chromium
             export CHROME_BIN='/usr/bin/chromium'
-            npm run-script webpack
-            npm run-script karma
+            yarn run webpack
+            yarn run karma
 
   end2end:
 
@@ -188,7 +197,7 @@ jobs:
           command: |
             cd packages/polar-bookshelf && \
             free -m && \
-            npm run-script build-webapp && \
+            yarn run build-webapp && \
             echo "Webapp Built Successfully" && \
             pwd && \
             cat dist/public/repository-bundle.js | gzip -c > dist/public/repository-bundle.js.gz
@@ -216,10 +225,8 @@ jobs:
           name: build and verify site (getpolarized.io)
           command: |
             pwd
-            # this postinstall is a hack because npm v7 doesn't properly run postinstall
-            (cd node_modules/pngquant-bin &&  npm run-script postinstall)
             cd packages/polar-site2
-            npm run-script dist
+            yarn run dist
 
   deploy_app_getpolarized_io:
     parameters:
@@ -240,20 +247,20 @@ jobs:
           no_output_timeout: 120m
           command: |
             source packages/polar-bookshelf-secrets/credentials.sh
-            npm run-script set-registry-bytesafe-rw
-            npm run-script dist-release-webapp-init
+            yarn run set-registry-bytesafe-rw
+            yarn run dist-release-webapp-init
 
       - run:
           name: release
           no_output_timeout: 120m
           command: |
             source packages/polar-bookshelf-secrets/credentials.sh
-            npm run-script set-registry-bytesafe-rw
+            yarn run set-registry-bytesafe-rw
             npm ping
             export FIREBASE_HOSTING_TARGET=<< parameters.firebase_hosting_target >>
             pwd
             rm -rfv packages/polar-app-private/polar-hooks/functions/node_modules
-            npm run-script dist-release-webapp-release
+            yarn run dist-release-webapp-release
 
   deploy_getpolarized_io:
     parameters:
@@ -270,7 +277,7 @@ jobs:
           command: |
             pwd
             cd packages/polar-site2
-            npm run-script dist-release
+            yarn run dist-release
   cypress:
     parameters:
       executor:

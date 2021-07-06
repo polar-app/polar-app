@@ -41,6 +41,7 @@ export namespace SentryBrowser {
                 // more options...
 
                 integrations: [
+                    // @ts-ignore
                     new CaptureConsole({
                         levels: ['error']
                     }),

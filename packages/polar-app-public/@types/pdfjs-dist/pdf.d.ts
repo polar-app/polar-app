@@ -114,7 +114,8 @@ declare module 'pdfjs-dist/web/pdf_viewer' {
 
 }
 
+// @TODO This was probably never working since the path doesn't exist
 // Webpack version.
-declare module 'pdfjs-dist/webpack' {
-  export * from 'pdfjs-dist';
-}
+// declare module 'pdfjs-dist/webpack' {
+//   export * from 'packages/pdfjs-dist/pdf';
+// }
