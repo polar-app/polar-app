@@ -1,5 +1,5 @@
 import {JSONRPC} from '../rpc/JSONRPC';
-import {ProfileInit} from "polar-firebase/src/firebase/om/Profiles";
+import {IProfileInit} from "polar-firebase/src/firebase/om/ProfileCollection";
 
 export class ProfileUpdates {
 
@@ -9,6 +9,6 @@ export class ProfileUpdates {
 
 }
 
-export interface ProfileUpdateRequest extends ProfileInit {
+export interface ProfileUpdateRequest extends IProfileInit {
 
 }

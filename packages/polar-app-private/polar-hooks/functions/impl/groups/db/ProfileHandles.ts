@@ -1,8 +1,8 @@
-import {ProfileIDStr} from './Profiles';
-import {HandleStr} from './Profiles';
 import {Firestore} from '../../util/Firestore';
-import {DocumentReference, WriteBatch} from '@google-cloud/firestore';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
+import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
+import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
+import { HandleStr, ProfileIDStr } from 'polar-firebase/src/firebase/om/ProfileCollection';
 
 /**
  * Lookup from a handle (alice101) to their profileID.
@@ -11,7 +11,7 @@ export class ProfileHandles {
 
     public static readonly COLLECTION = 'profile_handle';
 
-    public static doc(handle: HandleStr): [HandleStr, DocumentReference] {
+    public static doc(handle: HandleStr): [HandleStr, IDocumentReference<unknown>] {
         const firestore = Firestore.getInstance();
         const id = handle;
         const doc = firestore.collection(this.COLLECTION).doc(id);
@@ -24,12 +24,12 @@ export class ProfileHandles {
         return <ProfileHandle> doc.data();
     }
 
-    public static create(batch: WriteBatch, handle: HandleStr, profileHandle: ProfileHandle) {
+    public static create(batch: IWriteBatch<unknown>, handle: HandleStr, profileHandle: ProfileHandle) {
         const [_, ref] = this.doc(handle);
         batch.create(ref, Dictionaries.onlyDefinedProperties(profileHandle));
     }
 
-    public static delete(batch: WriteBatch, handle: HandleStr) {
+    public static delete(batch: IWriteBatch<unknown>, handle: HandleStr) {
         const [_, ref] = this.doc(handle);
         batch.delete(ref);
     }

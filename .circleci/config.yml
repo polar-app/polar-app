@@ -72,7 +72,9 @@ commands:
           name: lerna bootstrap
           no_output_timeout: 30m
           # command: npm run-script purge-node-modules && npx lerna bootstrap
-          command: npx lerna bootstrap
+          command: |
+            npm config set legacy-peer-deps true
+            npx lerna bootstrap
 
       - save_cache:
           paths:

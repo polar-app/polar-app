@@ -1,10 +1,10 @@
-import {Profiles} from './db/Profiles';
 import {IDUser} from '../util/IDUsers';
 import {Firestore} from '../util/Firestore';
 import {ProfileOwners} from './db/ProfileOwners';
 import {ExpressFunctions} from '../util/ExpressFunctions';
 import {ProfileHandles} from './db/ProfileHandles';
 import {UserRequests} from '../util/UserRequests';
+import {ProfileCollection} from "polar-firebase/src/firebase/om/ProfileCollection";
 
 export class ProfileDeleteFunctions {
 
@@ -15,13 +15,18 @@ export class ProfileDeleteFunctions {
 
         const batch = firestore.batch();
 
-        const profileID = idUser.profileID;
-        const profile = await Profiles.get(profileID);
+        if (! idUser.profile) {
+            throw new Error("No profile");
+        }
+
+        const profileID = idUser.profile.id;
+
+        const profile = await ProfileCollection.get(firestore, profileID);
 
         if (profile) {
 
             await ProfileOwners.delete(batch, idUser.uid);
-            await Profiles.delete(batch, profileID);
+            await ProfileCollection.doDelete(firestore, batch, profileID);
 
             if (profile.handle) {
                 ProfileHandles.delete(batch, profile.handle);

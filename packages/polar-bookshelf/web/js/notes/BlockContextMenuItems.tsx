@@ -4,23 +4,23 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import {Clipboards} from "../util/system/clipboard/Clipboards";
 import FileCopyIcon from '@material-ui/icons/FileCopy';
-import { useBlocksStore } from './store/BlocksStore';
-import { observer } from "mobx-react-lite"
+import {observer} from "mobx-react-lite"
 import {BlockPredicates} from "./store/BlockPredicates";
+import {useBlocksTreeStore} from './BlocksTree';
 
 export const BlockContextMenuItems = observer(function MUIDocDropdownMenuItems() {
 
-    const blocksStore = useBlocksStore();
+    const blocksTreeStore = useBlocksTreeStore();
 
     const onCopyMarkdown = React.useCallback(() => {
 
-        const active = blocksStore.active;
+        const active = blocksTreeStore.active;
 
         if (! active) {
             return;
         }
 
-        const activeBlock = blocksStore.getReadonlyBlock(active.id);
+        const activeBlock = blocksTreeStore.getBlock(active.id);
 
         if (! activeBlock) {
             return;
@@ -34,7 +34,7 @@ export const BlockContextMenuItems = observer(function MUIDocDropdownMenuItems()
 
         Clipboards.writeText(markdown);
 
-    }, [blocksStore]);
+    }, [blocksTreeStore]);
 
     return (
         <>

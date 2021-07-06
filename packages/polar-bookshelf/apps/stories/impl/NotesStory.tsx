@@ -1,5 +1,4 @@
 import React from 'react';
-import {NotesRouter} from "../../../web/js/notes/NotesRouter";
 import Fab from '@material-ui/core/Fab';
 import HelpIcon from '@material-ui/icons/Help';
 import Dialog from '@material-ui/core/Dialog';
@@ -26,7 +25,6 @@ const NotesStoryDebug = observer(() => {
         <div>
             <b>active id: {store.active?.id}</b><br/>
             <b>active pos: {store.active?.pos}</b><br/>
-            <b>root: {store.root}</b><br/>
             <b>index: </b><br/>
             <pre>
             {JSON.stringify(store.index, null, '  ')}
@@ -74,8 +72,6 @@ const NotesStoryInner = () => (
              display: 'flex',
              flexGrow: 1
          }}>
-
-        <NotesRouter/>
 
         <NotesStoryDebugButton/>
 

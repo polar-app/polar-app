@@ -63,12 +63,12 @@ import {
 import {
     SnapshotUnsubscriber
 } from 'polar-shared/src/util/Snapshots';
-import {IQuerySnapshot} from "polar-snapshot-cache/src/store/IQuerySnapshot";
-import {IDocumentChange} from "polar-snapshot-cache/src/store/IDocumentChange";
-import {IDocumentReference} from "polar-snapshot-cache/src/store/IDocumentReference";
-import {IDocumentSnapshot} from 'polar-snapshot-cache/src/store/IDocumentSnapshot';
-import {IFirestore} from "polar-snapshot-cache/src/store/IFirestore";
+import {IQuerySnapshot, IQuerySnapshotClient} from "polar-firestore-like/src/IQuerySnapshot";
+import {IDocumentChange, IDocumentChangeClient} from "polar-firestore-like/src/IDocumentChange";
+import {IDocumentReference, IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
+import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 import {StoragePath, FirebaseDatastores} from 'polar-shared/src/datastore/FirebaseDatastores';
+import {IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapshot";
 
 const log = Logger.create();
 
@@ -80,7 +80,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     private app?: firebase.app.App;
 
-    private firestore?: IFirestore;
+    private firestore?: IFirestoreClient;
 
     private storage?: firebase.storage.Storage;
 
@@ -175,7 +175,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
             committed: 0
         };
 
-        const onNextForSnapshot = (snapshot: IQuerySnapshot) => {
+        const onNextForSnapshot = (snapshot: IQuerySnapshotClient) => {
 
             try {
 
@@ -329,7 +329,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         let unsubscriber: SnapshotUnsubscriber = NULL_FUNCTION;
 
-        const onNext = (snapshot: IDocumentSnapshot) => {
+        const onNext = (snapshot: IDocumentSnapshotClient) => {
 
             // WARNING: do not use cache for any meaningful use because the cache
             // doesn't mean 'local' as something can be written and we receive a
@@ -954,7 +954,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
      * Wait for the record to be fully committed to the remote datastore - not
      * just written to the local cache.
      */
-    private waitForCommit(ref: IDocumentReference): Promise<void> {
+    private waitForCommit(ref: IDocumentReferenceClient): Promise<void> {
 
         return new Promise(resolve => {
 
@@ -971,7 +971,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     }
 
-    private handleDatastoreMutations(ref: IDocumentReference,
+    private handleDatastoreMutations(ref: IDocumentReferenceClient,
                                      datastoreMutation: DatastoreMutation<boolean>,
                                      op: 'write' | 'delete') {
 
@@ -1021,7 +1021,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
      *    first but then then immediately resolved from the cache and added
      *    locally.
      */
-    private handleDocMetaSnapshot(snapshot: IQuerySnapshot,
+    private handleDocMetaSnapshot(snapshot: IQuerySnapshotClient,
                                   docMetaSnapshotEventListener: DocMetaSnapshotEventListener,
                                   batchID: number) {
 
@@ -1075,7 +1075,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         };
 
-        const toDocMetaMutationFromDocChange = (docChange: IDocumentChange) => {
+        const toDocMetaMutationFromDocChange = (docChange: IDocumentChangeClient) => {
             const record = <RecordHolder<DocMetaHolder>> docChange.doc.data();
             const fromCache = docChange.doc.metadata.fromCache;
             const hasPendingWrites = docChange.doc.metadata.hasPendingWrites;
@@ -1108,7 +1108,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
     }
 
-    private toConsistency(snapshot: IQuerySnapshot): DatastoreConsistency {
+    private toConsistency(snapshot: IQuerySnapshotClient): DatastoreConsistency {
         return snapshot.metadata.fromCache ? 'written' : 'committed';
     }
 

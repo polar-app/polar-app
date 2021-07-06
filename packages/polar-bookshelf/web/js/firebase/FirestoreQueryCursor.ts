@@ -1,8 +1,8 @@
 import {Firestore} from './Firestore';
 import {Objects} from "polar-shared/src/util/Objects";
 import firebase from 'firebase/app'
-import { IQuery } from 'polar-snapshot-cache/src/store/IQuery';
-import {IQuerySnapshot} from "polar-snapshot-cache/src/store/IQuerySnapshot";
+import { IQuery } from 'polar-firestore-like/src/IQuery';
+import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
 
 /**
  * Build a simple query cursor for Firestore queries.
@@ -15,7 +15,7 @@ export class FirestoreQueryCursor {
     private readonly whereClause: WhereClause;
     private readonly options: FirestoreQueryCursorOptions;
 
-    private querySnapshot: IQuerySnapshot | undefined;
+    private querySnapshot: IQuerySnapshot<unknown> | undefined;
 
     private startAfter: string | undefined;
 
@@ -33,13 +33,13 @@ export class FirestoreQueryCursor {
         return this.querySnapshot === undefined || this.querySnapshot.size >= this.options.limit;
     }
 
-    public async next(): Promise<IQuerySnapshot> {
+    public async next(): Promise<IQuerySnapshot<unknown>> {
 
         console.log("=========================");
 
         const firestore = await Firestore.getInstance();
 
-        let query: IQuery;
+        let query: IQuery<unknown>;
 
         if (this.querySnapshot === undefined) {
 

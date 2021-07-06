@@ -3,9 +3,10 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import createStyles from "@material-ui/core/styles/createStyles";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import clsx from "clsx";
-import { BlockIDStr, useBlocksStore } from "./store/BlocksStore";
-import { observer } from "mobx-react-lite"
-import { useBlockContextMenu } from "./Block";
+import {observer} from "mobx-react-lite"
+import {useBlockContextMenu} from "./Block";
+import {useBlocksTreeStore} from "./BlocksTree";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -23,11 +24,11 @@ interface IProps {
 
 export const BlockOverflowButton = observer(function NoteOverflow(props: IProps) {
 
-    const blocksStore = useBlocksStore();
+    const blocksTreeStore = useBlocksTreeStore();
     const classes = useStyles();
     const contextMenuHandlers = useBlockContextMenu();
 
-    const noteActivated = blocksStore.getBlockActivated(props.id);
+    const noteActivated = blocksTreeStore.getBlockActivated(props.id);
 
     const className=clsx(classes.root, 'NoteOverflow');
 

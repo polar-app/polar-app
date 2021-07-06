@@ -98,4 +98,17 @@ describe('Strings', function() {
         });
 
     });
+
+    describe('replaceUsingMarkers', function() {
+
+        it("basic", function() {
+
+            const content = 'hello <!-- start -->world<!-- end -->';
+
+            assert.equal(Strings.replaceUsingMarkers(content, 'polar', '<!-- start -->', '<!-- end -->'), 'hello polar');
+
+        });
+
+    });
+
 });

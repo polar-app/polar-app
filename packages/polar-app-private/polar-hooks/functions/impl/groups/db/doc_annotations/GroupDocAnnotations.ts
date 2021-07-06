@@ -1,10 +1,11 @@
 import {AbstractDocAnnotationsDelegate} from "./AbstractDocAnnotationsDelegate";
 import {BaseDocAnnotation} from "./BaseDocAnnotations";
 import {GroupIDStr} from "../Groups";
-import {WriteBatch} from "@google-cloud/firestore";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {Collections} from "../Collections";
+import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
+import {Collections} from "polar-firestore-like/src/Collections";
+import {Firestore} from "../../../util/Firestore";
 
 export class GroupDocAnnotations {
 
@@ -13,7 +14,8 @@ export class GroupDocAnnotations {
     private static delegate = new AbstractDocAnnotationsDelegate(GroupDocAnnotations.COLLECTION, 'groupID');
 
     public static async get(id: IDStr): Promise<GroupDocAnnotation | undefined> {
-        return Collections.getByIDWithQuery(this.COLLECTION, id);
+        const firestore = Firestore.getInstance();
+        return Collections.getByID(firestore, this.COLLECTION, id);
     }
 
     public static createID(groupID: GroupIDStr, id: IDStr) {
@@ -29,14 +31,14 @@ export class GroupDocAnnotations {
         return this.delegate.list(parent);
     }
 
-    public static write(batch: WriteBatch,
+    public static write(batch: IWriteBatch<unknown>,
                         record: GroupDocAnnotation) {
 
         this.delegate.write(batch, record);
 
     }
 
-    public static delete(batch: WriteBatch, id: IDStr) {
+    public static delete(batch: IWriteBatch<unknown>, id: IDStr) {
         this.delegate.delete(batch, id);
     }
 

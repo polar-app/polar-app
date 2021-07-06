@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {observer} from "mobx-react-lite"
-import {useBlocksStore} from './store/BlocksStore';
 import {useCutCopyHandler} from './clipboard/CutCopyHandler';
+import {useBlocksStore} from './store/BlocksStore';
 
 interface IProps {
     readonly children: JSX.Element;

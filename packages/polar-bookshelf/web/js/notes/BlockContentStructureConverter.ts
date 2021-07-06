@@ -1,7 +1,7 @@
 import {HTMLStr} from "polar-shared/src/util/Strings";
 import {IBlockContentStructure} from "./HTMLToBlocks";
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
-import {IBlockContent} from "./store/BlocksStore";
+import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 
 export namespace BlockContentStructureConverter {
 
@@ -16,7 +16,7 @@ export namespace BlockContentStructureConverter {
                 return MarkdownContentConverter.toHTML(content.data);
         }
     }
-    
+
     export function toHTML(blocks: ReadonlyArray<IBlockContentStructure>): HTMLStr {
         const html = blocks
             .map(({ content, children }) => `<li>${convertContentToHTML(content)}${toHTML(children)}</li>`)

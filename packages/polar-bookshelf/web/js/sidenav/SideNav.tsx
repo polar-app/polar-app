@@ -19,14 +19,14 @@ import SyncIcon from '@material-ui/icons/Sync';
 import {useAnkiSyncCallback} from "./AnkiSyncHook";
 import {SwitchToOpenDocumentKeyboardCommand} from "./SwitchToOpenDocumentKeyboardCommand";
 import {ZenModeActiveContainer} from "../mui/ZenModeActiveContainer";
-import { Intercom } from '../apps/repository/integrations/Intercom';
-import { SideNavQuestionButton } from './SideNavQuestionButton';
+import {Intercom} from '../apps/repository/integrations/Intercom';
+import {SideNavQuestionButton} from './SideNavQuestionButton';
 import {VerticalDynamicScroller} from './DynamicScroller';
 import {DateContents} from "../notes/content/DateContents";
-import {useBlocksStore} from "../notes/store/BlocksStore";
-import { observer } from "mobx-react-lite"
-import { autorun } from 'mobx'
+import {observer} from "mobx-react-lite"
 import {URLPathStr} from 'polar-shared/src/url/PathToRegexps';
+import {useBlocksTreeStore} from '../notes/BlocksTree';
+import {useBlocksStore} from '../notes/store/BlocksStore';
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -156,34 +156,11 @@ const AnnotationsButton = React.memo(function AnnotationsButton() {
 
 const NotesButton = observer(function NotesButton() {
     const classes = useStyles();
-    const blocksStore = useBlocksStore();
-    const history = useHistory();
-
-    const handleClick = React.useCallback(() => {
-        if (! blocksStore.hasSnapshot) {
-            // dont' do anything yet.
-            return;
-        }
-        const dateContent = DateContents.create();
-
-        const block = blocksStore.getBlockByName(dateContent.data);
-
-        if (! block) {
-            blocksStore.createNewNamedBlock(dateContent.data, {type: 'date'});
-        }
-        history.push(`/notes/${dateContent.data}`);
-    }, [blocksStore, history]);
 
     const pathCanonicalizer = React.useCallback(path => path.startsWith('/notes') ? '/notes' : path, []);
 
-    if (! blocksStore.hasSnapshot) {
-        // dont' do anything yet.
-        return null;
-    }
-
     return (
         <SideNavHistoryButton title="Notes"
-                              onClick={handleClick}
                               canonicalizer={pathCanonicalizer}
                               path="/notes">
             <NotesIcon className={classes.secondaryIcon}/>

@@ -1,12 +1,12 @@
-import {WriteBatch} from "@google-cloud/firestore";
 import {GroupIDStr} from './Groups';
-import {FirebaseAdmin} from 'polar-firebase-admin/src/FirebaseAdmin';
 import * as admin from 'firebase-admin';
-import {UserIDStr} from './Profiles';
 import {IDUser} from '../../util/IDUsers';
-import {Collections} from './Collections';
 import FieldValue = admin.firestore.FieldValue;
 import {FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
+import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
+import {Firestore} from "../../util/Firestore";
+import { UserIDStr } from 'polar-firebase/src/firebase/om/ProfileCollection';
+import {Collections} from "polar-firestore-like/src/Collections";
 
 
 export class UserGroups {
@@ -14,16 +14,16 @@ export class UserGroups {
     public static readonly COLLECTION = 'user_group';
 
     public static async get(uid: UserIDStr): Promise<UserGroup | undefined> {
-        return await Collections.getByID(this.COLLECTION, uid);
+        const firestore = Firestore.getInstance();
+        return await Collections.getByID(firestore, this.COLLECTION, uid);
     }
 
     public static doc(uid: UserIDStr) {
-        const app = FirebaseAdmin.app();
-        const firestore = app.firestore();
+        const firestore = Firestore.getInstance()
         return firestore.collection(this.COLLECTION).doc(uid);
     }
 
-    public static deleteByGroupID(batch: WriteBatch,
+    public static deleteByGroupID(batch: IWriteBatch<unknown>,
                                   uid: UserIDStr,
                                   groupID: GroupIDStr) {
 
@@ -39,7 +39,7 @@ export class UserGroups {
 
     }
 
-    public static updateOrCreate(batch: WriteBatch,
+    public static updateOrCreate(batch: IWriteBatch<unknown>,
                                  idUser: IDUser,
                                  groupID: GroupIDStr,
                                  isAdmin: boolean = false,
@@ -67,7 +67,7 @@ export class UserGroups {
 
     }
 
-    public static addInvitation(batch: WriteBatch,
+    public static addInvitation(batch: IWriteBatch<unknown>,
                                 idUser: IDUser,
                                 groupID: GroupIDStr) {
 
@@ -82,7 +82,7 @@ export class UserGroups {
 
     }
 
-    public static removeInvitation(batch: WriteBatch,
+    public static removeInvitation(batch: IWriteBatch<unknown>,
                                    idUser: IDUser,
                                    groupID: GroupIDStr) {
 

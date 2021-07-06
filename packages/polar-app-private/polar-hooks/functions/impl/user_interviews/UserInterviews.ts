@@ -1,7 +1,8 @@
-import {Collections} from "../groups/db/Collections";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {UserInterview} from "./UserInterview";
 import {EmailStr} from "polar-shared/src/util/Strings";
+import {Firestore} from "../util/Firestore";
+import {Collections} from "polar-firestore-like/src/Collections";
 
 /**
  * Work with user interviews directly.
@@ -11,7 +12,8 @@ export class UserInterviews {
     public static readonly COLLECTION = 'user_interview';
 
     public static async get(email: EmailStr): Promise<UserInterview | undefined> {
-        return await Collections.getByID(this.COLLECTION, email);
+        const firestore = Firestore.getInstance();
+        return await Collections.getByID(firestore, this.COLLECTION, email);
     }
 
     public static doc(email: EmailStr) {

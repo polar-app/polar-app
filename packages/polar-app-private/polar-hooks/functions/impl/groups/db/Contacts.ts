@@ -1,7 +1,3 @@
-import {Query} from "@google-cloud/firestore";
-import {WriteBatch} from "@google-cloud/firestore";
-import {EmailStr} from './Profiles';
-import {ProfileIDStr} from './Profiles';
 import {IDUser} from '../../util/IDUsers';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Firestore} from '../../util/Firestore';
@@ -15,7 +11,9 @@ import * as admin from 'firebase-admin';
 import UserRecord = admin.auth.UserRecord;
 import {FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
 import {Arrays} from "polar-shared/src/util/Arrays";
-
+import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
+import {IQuery} from "polar-firestore-like/src/IQuery";
+import { EmailStr, ProfileIDStr } from 'polar-firebase/src/firebase/om/ProfileCollection';
 
 export class Contacts {
 
@@ -29,7 +27,7 @@ export class Contacts {
         return Hashcodes.createRandomID(20);
     }
 
-    public static async createOrUpdate(batch: WriteBatch, idUser: IDUser, contactInit: ContactInit) {
+    public static async createOrUpdate(batch: IWriteBatch<unknown>, idUser: IDUser, contactInit: ContactInit) {
 
         const getExisting = async () => {
 
@@ -168,7 +166,7 @@ export class Contacts {
 
     }
 
-    private static async firstRecord(query: Query): Promise<Contact | undefined> {
+    private static async firstRecord(query: IQuery<unknown>): Promise<Contact | undefined> {
 
         const snapshot = await query.get();
 

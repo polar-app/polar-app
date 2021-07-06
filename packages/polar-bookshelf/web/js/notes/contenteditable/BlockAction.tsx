@@ -6,9 +6,10 @@ import {ContentEditables} from "../ContentEditables";
 import INodeOffset = ContentEditables.INodeOffset;
 import {useBlockContentEditableElement} from "./BlockContentEditable";
 import { observer } from "mobx-react-lite"
-import {BlockIDStr, useBlocksStore} from '../store/BlocksStore';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
+import {useBlocksTreeStore} from '../BlocksTree';
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 const THINSP = ' ';
 
@@ -75,7 +76,7 @@ interface IProps {
  */
 function useActionExecutor(id: BlockIDStr) {
 
-    const blocksStore = useBlocksStore();
+    const blocksTreeStore = useBlocksTreeStore();
 
     const contentEditableMarkdownReader = useContentEditableMarkdownReader();
 
@@ -114,12 +115,12 @@ function useActionExecutor(id: BlockIDStr) {
                 updateSelection();
 
                 const content = contentEditableMarkdownReader();
-                blocksStore.createLinkToBlock(id, actionOp.target, content);
+                blocksTreeStore.createLinkToBlock(id, actionOp.target, content);
                 break;
 
         }
 
-    }, [contentEditableMarkdownReader, blocksStore, id])
+    }, [contentEditableMarkdownReader, blocksTreeStore, id])
 
 }
 

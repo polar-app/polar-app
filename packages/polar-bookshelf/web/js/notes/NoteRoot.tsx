@@ -1,77 +1,56 @@
 import React from "react";
 import {MUIBrowserLinkStyle} from "../mui/MUIBrowserLinkStyle";
-import {NotesInbound} from "./NotesInbound";
-import {Block} from "./Block";
 import {NoteStyle} from "./NoteStyle";
-import {BlockIDStr} from "./store/BlocksStore";
-import {useBlocksStore} from "./store/BlocksStore";
-import {observer} from "mobx-react-lite"
 import {NoteSelectionHandler} from "./NoteSelectionHandler";
 import {ActionMenuPopup} from "../mui/action_menu/ActionMenuPopup";
 import {ActionMenuStoreProvider} from "../mui/action_menu/ActionStore";
-import LinearProgress from "@material-ui/core/LinearProgress";
 import {NotesToolbar} from "./NotesToolbar";
-import {Block as BlockClass} from "./store/Block";
-import {BlockTitle} from "./BlockTitle";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {createStyles, makeStyles} from "@material-ui/core";
+import {RouteComponentProps} from "react-router-dom";
+import {DailyNotesRenderer, SingleNoteRendrer} from "./NoteRenderers";
 
-interface INoteRootRendererProps {
-    readonly block: BlockClass;
-}
+const useStyles = makeStyles(() =>
+    createStyles({
+        noteOuter: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'stretch',
+            height: '100%',
+        },
+    }),
+);
 
-interface INoteRootProps {
-    readonly target: BlockIDStr;
-}
 
-export const NoteRootRenderer: React.FC<INoteRootRendererProps> = ({ block }) => {
-    const blocksStore = useBlocksStore();
-    const id = block.id;
-
-    React.useEffect(() => {
-        blocksStore.setRoot(id);
-        const activeBlock = blocksStore.getActiveBlockForNote(id);
-        if (activeBlock) {
-            blocksStore.setActiveWithPosition(activeBlock.id, activeBlock.pos || 'start');
-        } else {
-            blocksStore.setActiveWithPosition(id, 'end');
-        }
-    }, [id, blocksStore]);
+export const NoteProviders: React.FC = ({ children }) => {
+    const classes = useStyles();
 
     return (
         <ActionMenuStoreProvider>
-            <NoteSelectionHandler style={{flexGrow: 1}}>
+            <NoteSelectionHandler style={{ height: '100%' }}>
                 <NoteStyle>
-                    <MUIBrowserLinkStyle style={{flexGrow: 1}}>
-                        <NotesToolbar/>
-
-                        <BlockTitle id={id}/>
-                        <Block root={id} parent={undefined} id={id}/>
-
-                        <NotesInbound id={id}/>
-
+                    <MUIBrowserLinkStyle className={classes.noteOuter}>
+                        <NotesToolbar />
+                        {children}
+                        <ActionMenuPopup />
                     </MUIBrowserLinkStyle>
-                    <ActionMenuPopup/>
                 </NoteStyle>
             </NoteSelectionHandler>
         </ActionMenuStoreProvider>
     );
-
 };
 
 
-export const NoteRoot: React.FC<INoteRootProps> = observer(({ target }) => {
-    const blocksStore = useBlocksStore();
+interface INoteRootParams {
+    id: BlockIDStr;
+};
 
-    const block = blocksStore.getBlockByTarget(target);
+export const NoteRoot: React.FC<RouteComponentProps<INoteRootParams>> = (props) => {
+    const { match: { params } } = props;
 
-    if (! blocksStore.hasSnapshot) {
-        return (
-            <LinearProgress />
-        );
-    }
-
-    if (!block) {
-        return <div>No note for: '{target}'</div>;
-    }
-
-    return <NoteRootRenderer block={block} />;
-});
+    return (
+        <NoteProviders>
+            {params.id ? <SingleNoteRendrer target={params.id} /> : <DailyNotesRenderer />}
+        </NoteProviders>
+    );
+};

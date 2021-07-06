@@ -1,8 +1,9 @@
 import React from "react";
-import { BlockIDStr, useBlocksStore } from "./store/BlocksStore";
-import { observer,  } from "mobx-react-lite"
+import {observer} from "mobx-react-lite"
 import {Helmet} from "react-helmet";
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {useBlocksStore} from "./store/BlocksStore";
 
 interface IProps {
     readonly id: BlockIDStr;
@@ -13,7 +14,7 @@ export const BlockTitle = observer((props: IProps) => {
     const {id} = props;
 
     const blocksStore = useBlocksStore();
-    const block = blocksStore.getReadonlyBlock(id);
+    const block = blocksStore.getBlock(id);
 
     const title = React.useMemo(() : string => {
 

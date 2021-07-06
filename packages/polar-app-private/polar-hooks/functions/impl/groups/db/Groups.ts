@@ -1,11 +1,9 @@
-import {WriteBatch} from "@google-cloud/firestore";
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Firestore} from '../../util/Firestore';
 import * as admin from 'firebase-admin';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import FieldValue = admin.firestore.FieldValue;
 import {UserGroups} from './UserGroups';
-import {UserIDStr} from './Profiles';
 import {ISODateTimeStrings, ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {GroupSlugs} from './GroupSlugs';
@@ -13,9 +11,12 @@ import {IDUser} from '../../util/IDUsers';
 import {GroupAdmins} from './GroupAdmins';
 import UserRecord = admin.auth.UserRecord;
 import {PlainTextStr, URLStr} from "polar-shared/src/util/Strings";
-import {Clause, Collections} from "./Collections";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
+import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
+import {UserIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
+import {Collections} from "polar-firestore-like/src/Collections";
+import Clause = Collections.Clause;
 
 const HASHCODE_LEN = 20;
 
@@ -46,7 +47,7 @@ export class Groups {
 
     }
 
-    public static async getOrCreate(batch: WriteBatch, groupID: GroupIDStr, groupInit: GroupInit): Promise<Group> {
+    public static async getOrCreate(batch: IWriteBatch<unknown>, groupID: GroupIDStr, groupInit: GroupInit): Promise<Group> {
 
         Preconditions.assertPresent(groupInit.visibility, "visibility");
 
@@ -90,7 +91,9 @@ export class Groups {
             ['name', '==', name]
         ];
 
-        return Collections.getByFieldValues(this.COLLECTION, clauses);
+        const firestore = Firestore.getInstance();
+
+        return Collections.getByFieldValues(firestore, this.COLLECTION, clauses);
 
     }
 
@@ -115,7 +118,7 @@ export class Groups {
     /**
      * Increment the count of the group members.
      */
-    public static incrementNrMembers(batch: WriteBatch, groupID: GroupIDStr, delta: number = 1) {
+    public static incrementNrMembers(batch: IWriteBatch<unknown>, groupID: GroupIDStr, delta: number = 1) {
 
         const firestore = Firestore.getInstance();
         const ref = firestore.collection(this.COLLECTION).doc(groupID);
@@ -126,7 +129,7 @@ export class Groups {
 
     }
 
-    public static markDeleted(batch: WriteBatch, groupID: GroupIDStr) {
+    public static markDeleted(batch: IWriteBatch<unknown>, groupID: GroupIDStr) {
 
         const firestore = Firestore.getInstance();
         const groupRef = firestore.collection(this.COLLECTION).doc(groupID);
@@ -135,7 +138,7 @@ export class Groups {
 
     }
 
-    public static delete(batch: WriteBatch, groupID: GroupIDStr) {
+    public static delete(batch: IWriteBatch<unknown>, groupID: GroupIDStr) {
 
         const firestore = Firestore.getInstance();
         const ref = firestore.collection(this.COLLECTION).doc(groupID);

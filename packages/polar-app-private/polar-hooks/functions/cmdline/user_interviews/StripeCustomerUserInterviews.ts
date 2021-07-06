@@ -1,19 +1,8 @@
 import {StripeUtils} from "../../impl/stripe/StripeUtils";
-import {Firestore} from "../../impl/util/Firestore";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {UserInterviews} from "./UserInterviews";
 
 export namespace SendgridCustomerUserInterviews {
-
-    export async function acquireFirestoreLock(id: string) {
-
-        const firestore = Firestore.getInstance();
-
-        const ref = firestore.collection('user_interview');
-
-        const doc = await ref.get();
-
-    }
 
     export async function compute() {
 

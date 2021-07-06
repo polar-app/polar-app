@@ -1,22 +1,22 @@
 import {Firestore} from "../../../../web/js/firebase/Firestore";
-import {SpacedReps} from "polar-firebase/src/firebase/om/SpacedReps";
-import {SpacedRepStats} from "polar-firebase/src/firebase/om/SpacedRepStats";
+import {SpacedRepCollection} from "polar-firebase/src/firebase/om/SpacedRepCollection";
+import {SpacedRepStatCollection} from "polar-firebase/src/firebase/om/SpacedRepStatCollection";
 import {FirestoreLike} from "polar-firebase/src/firebase/Collections";
 import {isPresent} from "polar-shared/src/Preconditions";
-import {DocPreviews} from "polar-firebase/src/firebase/om/DocPreviews";
-import {Heartbeats} from "polar-firebase/src/firebase/om/Heartbeats";
-import {IFirestore} from "polar-snapshot-cache/src/store/IFirestore";
+import {DocPreviewCollection} from "polar-firebase/src/firebase/om/DocPreviewCollection";
+import {HeartbeatCollection} from "polar-firebase/src/firebase/om/HeartbeatCollection";
+import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 
 export class FirestoreCollections {
 
-    public static async configure(firestore?: IFirestore) {
+    public static async configure(firestore?: IFirestoreClient) {
 
         firestore = firestore || await Firestore.getInstance();
 
         // TODO: try to migrate firebaseProvider to async as all the functions
         // should be async...
 
-        for (const firestoreBacked of [SpacedReps, SpacedRepStats, DocPreviews, Heartbeats]) {
+        for (const firestoreBacked of [SpacedRepCollection, SpacedRepStatCollection, DocPreviewCollection, HeartbeatCollection]) {
             if (isPresent(firestoreBacked.firestoreProvider)) {
                 // already configured
                 continue;

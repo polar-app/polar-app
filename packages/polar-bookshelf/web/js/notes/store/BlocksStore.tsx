@@ -5,47 +5,39 @@ import {IDStr, MarkdownStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {BlockTargetStr} from "../NoteLinkLoader";
-import {isPresent, Preconditions} from "polar-shared/src/Preconditions";
+import {isPresent} from "polar-shared/src/Preconditions";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {IBlock, IBlockLink, NamespaceIDStr, UIDStr} from "./IBlock";
 import {ReverseIndex} from "./ReverseIndex";
 import {Block} from "./Block";
-import { arrayStream } from "polar-shared/src/util/ArrayStreams";
-import { Numbers } from "polar-shared/src/util/Numbers";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {Numbers} from "polar-shared/src/util/Numbers";
 import {CursorPositions} from "../contenteditable/CursorPositions";
 import {useBlocksStoreContext} from "./BlockStoreContextProvider";
 import {IBlocksStore} from "./IBlocksStore";
-import {IImageContent} from "../content/IImageContent";
-import { BlockPredicates } from "./BlockPredicates";
+import {BlockPredicates} from "./BlockPredicates";
 import {MarkdownContent} from "../content/MarkdownContent";
 import {NameContent} from "../content/NameContent";
-import { ImageContent } from "../content/ImageContent";
-import { IMarkdownContent } from "../content/IMarkdownContent";
-import {INameContent} from "../content/INameContent";
-import { Contents } from "../content/Contents";
-import { IBaseBlockContent } from "../content/IBaseBlockContent";
+import {ImageContent} from "../content/ImageContent";
+import {Contents} from "../content/Contents";
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {useUndoQueue} from "../../undo/UndoQueueProvider2";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
 import {PositionalArrays} from "./PositionalArrays";
-import {IDateContent} from "../content/IDateContent";
 import {DateContent} from "../content/DateContent";
 import {IBlocksPersistenceSnapshot, useBlocksPersistenceSnapshots} from "../persistence/BlocksPersistenceSnapshots";
 import {BlocksPersistenceWriter} from "../persistence/FirestoreBlocksStoreMutations";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useBlocksPersistenceWriter} from "../persistence/BlocksPersistenceWriters";
 import {WikiLinksToMarkdown} from "../WikiLinksToMarkdown";
-import {useBlockExpandSnapshots, IBlockExpandSnapshot} from "../persistence/BlockExpandSnapshots";
-import {
-    BlockExpandPersistenceWriter,
-    useBlockExpandPersistenceWriter
-} from "../persistence/BlockExpandWriters";
+import {IBlockExpandSnapshot, useBlockExpandSnapshots} from "../persistence/BlockExpandSnapshots";
+import {BlockExpandPersistenceWriter, useBlockExpandPersistenceWriter} from "../persistence/BlockExpandWriters";
 import {IBlockContentStructure} from "../HTMLToBlocks";
-import {getBlockContentEditableRoot} from "../contenteditable/BlockContentEditable";
+import {DOMBlocks} from "../contenteditable/BlockContentEditable";
+import {BlockIDStr, IBlock, IBlockContent, IBlockLink, NamespaceIDStr, UIDStr} from "polar-blocks/src/blocks/IBlock";
+import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 
 export const ENABLE_UNDO_TRACING = false;
 
-export type BlockIDStr = IDStr;
 export type BlockNameStr = string;
 
 export type BlockType = 'name' | 'markdown' | 'image' | 'date';
@@ -58,7 +50,6 @@ export type ReverseBlocksIndex = {[id: string /* BlockIDStr */]: BlockIDStr[]};
 
 export type StringSetMap = {[key: string]: boolean};
 
-export type IBlockContent = IMarkdownContent | INameContent | IImageContent | IDateContent;
 export type BlockContent = (MarkdownContent | NameContent | ImageContent | DateContent) & IBaseBlockContent;
 
 /**
@@ -269,11 +260,6 @@ export class BlocksStore implements IBlocksStore {
     @observable _reverse: ReverseIndex = new ReverseIndex();
 
     /**
-     * The current root block
-     */
-    @observable public root: BlockIDStr | undefined = undefined;
-
-    /**
      * The currently active block.
      */
     @observable _active: IActiveBlock | undefined = undefined;
@@ -305,14 +291,13 @@ export class BlocksStore implements IBlocksStore {
     /*
      * Used to keep track of cursor positions in every note
      */
-    private _activeBlocksIndex: ActiveBlocksIndex = {}; 
+    private _activeBlocksIndex: ActiveBlocksIndex = {};
 
     constructor(uid: UIDStr, undoQueue: UndoQueues2.UndoQueue,
                 readonly blocksPersistenceWriter: BlocksPersistenceWriter = NULL_FUNCTION,
                 readonly blockExpandPersistenceWriter: BlockExpandPersistenceWriter = NULL_FUNCTION) {
 
         this.uid = uid;
-        this.root = undefined;
         this.undoQueue = undoQueue;
         makeObservable(this);
 
@@ -342,10 +327,6 @@ export class BlocksStore implements IBlocksStore {
         return this._expanded;
     }
 
-    // @computed get root() {
-    //     return this._root;
-    // }
-
     @computed get active() {
         return this._active;
     }
@@ -367,7 +348,7 @@ export class BlocksStore implements IBlocksStore {
     public computeSelectedRoots() {
         const selected = this.selectedIDs();
 
-        return selected.map(current => this.getReadonlyBlock(current))
+        return selected.map(current => this.getBlock(current))
                        .filter(current => current !== undefined)
                        .map(current => current!)
                        .filter(current => current.parent === undefined || ! selected.includes(current.parent))
@@ -412,10 +393,7 @@ export class BlocksStore implements IBlocksStore {
     }
 
     public lookup(blocks: ReadonlyArray<BlockIDStr>): ReadonlyArray<IBlock> {
-
-        return blocks.map(current => this._index[current])
-                     .filter(current => current !== null && current !== undefined);
-
+        return this.idsToBlocks(blocks).map(block => block.toJSON());
     }
 
     public lookupReverse(id: BlockIDStr): ReadonlyArray<BlockIDStr> {
@@ -426,7 +404,7 @@ export class BlocksStore implements IBlocksStore {
 
         for (const blockData of blocks) {
 
-            const existingBlock = this.getReadonlyBlock(blockData.id);
+            const existingBlock = this.getBlock(blockData.id);
 
             if (!opts.forceUpdate && existingBlock && existingBlock.mutation >= blockData.mutation) {
                 // skip this update as it hasn't changed
@@ -507,10 +485,10 @@ export class BlocksStore implements IBlocksStore {
     }
 
     public containsBlock(id: BlockIDStr): boolean {
-        return this.getReadonlyBlock(id) !== undefined;
+        return this.getBlock(id) !== undefined;
     }
 
-    public getBlock(id: BlockIDStr): Block | undefined {
+    public getBlockForMutation(id: BlockIDStr): Block | undefined {
         const block = this._index[id];
         if (block) {
             return new Block(block.toJSON());
@@ -518,13 +496,13 @@ export class BlocksStore implements IBlocksStore {
         return undefined;
     }
 
-    public getReadonlyBlock(id: BlockIDStr): Readonly<Block> | undefined {
+    public getBlock(id: BlockIDStr): Readonly<Block> | undefined {
         return this._index[id];
     }
 
     public getBlockContentData(id: BlockIDStr): string | undefined {
 
-        const block = this.getReadonlyBlock(id);
+        const block = this.getBlock(id);
 
         if (! block?.content) {
             return ''
@@ -586,7 +564,7 @@ export class BlocksStore implements IBlocksStore {
     }
 
     public children(id: BlockIDStr): ReadonlyArray<BlockIDStr> {
-        const block = this.getReadonlyBlock(id);
+        const block = this.getBlock(id);
         if (block) {
             return block.itemsAsArray;
         }
@@ -621,7 +599,7 @@ export class BlocksStore implements IBlocksStore {
 
         const active = this._active;
 
-        if ( ! active) {
+        if (! active) {
             return undefined;
         }
 
@@ -685,9 +663,9 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    @action public setSelectionRange(fromBlockID: BlockIDStr,
-                                     toBlockID: BlockIDStr,
-                                     root: BlockIDStr | undefined = this.root) {
+    @action public setSelectionRange(root: BlockIDStr,
+                                     fromBlockID: BlockIDStr,
+                                     toBlockID: BlockIDStr) {
         if (! root) {
             throw new Error("No root");
         }
@@ -729,12 +707,12 @@ export class BlocksStore implements IBlocksStore {
         [...newSelected].forEach(id => this._selected[id] = true);
     }
 
-    @action public doNav(delta: 'prev' | 'next',
+    @action public doNav(root: BlockIDStr,
+                         delta: 'prev' | 'next',
                          pos: NavPosition,
-                         opts: NavOpts,
-                         root: BlockIDStr | undefined = this.root): boolean {
+                         opts: NavOpts): boolean {
 
-                             
+
         if (root === undefined) {
             console.warn("No currently active root");
             return false;
@@ -758,7 +736,15 @@ export class BlocksStore implements IBlocksStore {
 
         const activeIndex = childIndex + deltaIndex;
         const newActive = items[activeIndex];
-        
+
+        if (! newActive && ! opts.shiftKey) {
+            const siblingID = DOMBlocks.getSiblingID(this._active.id, delta);
+            if (siblingID) {
+                this.setActiveWithPosition(siblingID, pos);
+            }
+            return true;
+        }
+
         if (! newActive) {
             this.setActiveWithPosition(this._active.id, delta === 'prev' ? 'start' : 'end');
             return true;
@@ -767,7 +753,7 @@ export class BlocksStore implements IBlocksStore {
         if (opts.shiftKey) {
 
             if (this.hasSelected()) {
-                this.setSelectionRange(this._selectedAnchor!, newActive, root);
+                this.setSelectionRange(root, newActive, this._selectedAnchor!);
             } else {
 
                 // only select the entire/current node at first.
@@ -796,12 +782,12 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    public navPrev(pos: NavPosition, opts: NavOpts, root?: BlockIDStr) {
-        return this.doNav('prev', pos, opts, root);
+    public navPrev(root: BlockIDStr, pos: NavPosition, opts: NavOpts) {
+        return this.doNav(root, 'prev', pos, opts);
     }
 
-    public navNext(pos: NavPosition, opts: NavOpts, root?: BlockIDStr) {
-        return this.doNav('next', pos, opts, root);
+    public navNext(root: BlockIDStr, pos: NavPosition, opts: NavOpts) {
+        return this.doNav(root, 'next', pos, opts);
     }
 
     /**
@@ -887,10 +873,6 @@ export class BlocksStore implements IBlocksStore {
         }
     }
 
-    @action public setRoot(root: BlockIDStr | undefined) {
-        this.root = root;
-    }
-
     public isExpanded(id: BlockIDStr): boolean {
         return isPresent(this._expanded[id]);
     }
@@ -925,7 +907,7 @@ export class BlocksStore implements IBlocksStore {
      * Return true if this block can be merged. Meaning it has a previous sibling
      * we can merge with or a parent.
      */
-    public canMergePrev(id: BlockIDStr, root: BlockIDStr | undefined = this.root): IBlockMerge | undefined {
+    public canMergePrev(root: BlockIDStr, id: BlockIDStr): IBlockMerge | undefined {
 
         if (id === root) {
             return undefined;
@@ -940,11 +922,11 @@ export class BlocksStore implements IBlocksStore {
             };
         }
 
-        const block = this.getReadonlyBlock(id);
+        const block = this.getBlock(id);
 
         if (block?.parent) {
 
-            const parentBlock = this.getReadonlyBlock(block.parent);
+            const parentBlock = this.getBlock(block.parent);
 
             if (parentBlock) {
 
@@ -970,7 +952,7 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    public canMergeNext(id: BlockIDStr, root: BlockIDStr | undefined = this.root): IBlockMerge | undefined {
+    public canMergeNext(root: BlockIDStr, id: BlockIDStr): IBlockMerge | undefined {
         const children = this.children(id);
 
         if (children.length > 0) {
@@ -1043,8 +1025,8 @@ export class BlocksStore implements IBlocksStore {
 
         const redo = () => {
 
-            const targetBlock = this.getBlock(target);
-            const sourceBlock = this.getBlock(source);
+            const targetBlock = this.getBlockForMutation(target);
+            const sourceBlock = this.getBlockForMutation(source);
 
             if (!targetBlock || !sourceBlock) {
                 return;
@@ -1146,7 +1128,7 @@ export class BlocksStore implements IBlocksStore {
     public pathToBlock(blockID: BlockIDStr): ReadonlyArray<Block> {
         const result: Block[] = [];
 
-        let block = this._index[blockID]; 
+        let block = this._index[blockID];
 
         while (block && block.parent) {
             const parent = this._index[block.parent];
@@ -1186,7 +1168,7 @@ export class BlocksStore implements IBlocksStore {
 
                 if (opts?.ref) {
 
-                    const refBlock = this.getReadonlyBlock(opts.ref);
+                    const refBlock = this.getBlock(opts.ref);
 
                     if (! refBlock) {
                         throw new Error("Reference block doesn't exist");
@@ -1265,7 +1247,7 @@ export class BlocksStore implements IBlocksStore {
 
         const redo = () => {
 
-            const block = this.getBlock(id);
+            const block = this.getBlockForMutation(id);
 
             if (block) {
 
@@ -1299,7 +1281,7 @@ export class BlocksStore implements IBlocksStore {
             // TODO: we have to setContent here too but I need to figure out how
             // to get it from the element when we're changing it.
 
-            const sourceBlock = this.getBlock(sourceBlockID);
+            const sourceBlock = this.getBlockForMutation(sourceBlockID);
 
             if (! sourceBlock) {
                 throw new Error("Unable to find block: " + sourceBlockID);
@@ -1342,7 +1324,7 @@ export class BlocksStore implements IBlocksStore {
         this.doPut(blocks);
     }
 
-    @action public createNewBlock(id: BlockIDStr, opts: INewBlockOpts = {}): ICreatedBlock | undefined {
+    @action public createNewBlock(id: BlockIDStr, opts: INewBlockOpts = {}): ICreatedBlock {
         const newBlockID = Hashcodes.createRandomID();
         const redo = () => this.doCreateNewBlock(id, {...opts, newBlockID});
         return this.doUndoPush('createNewBlock', [id, newBlockID], redo);
@@ -1351,7 +1333,7 @@ export class BlocksStore implements IBlocksStore {
     /**
      * Create a new block in reference to the block with given ID.
      */
-    @action public doCreateNewBlock(id: BlockIDStr, opts: INewBlockOpts = {}): ICreatedBlock | undefined {
+    @action public doCreateNewBlock(id: BlockIDStr, opts: INewBlockOpts = {}): ICreatedBlock {
 
         // *** we first have to compute the new parent this has to be computed
         // based on the expansion tree because if the current block setup is like:
@@ -1421,8 +1403,8 @@ export class BlocksStore implements IBlocksStore {
 
             const createNewBlockPositionRelative = (ref: BlockIDStr, pos: NewChildPos): INewBlockPositionRelative => {
 
-                const block = this.getBlock(ref)!;
-                const parentBlock = this.getBlock(block.parent!)!;
+                const block = this.getBlockForMutation(ref)!;
+                const parentBlock = this.getBlockForMutation(block.parent!)!;
 
                 return {
                     type: 'relative',
@@ -1433,12 +1415,12 @@ export class BlocksStore implements IBlocksStore {
 
             };
 
-            const block = this.getBlock(id)!;
+            const block = this.getBlockForMutation(id)!;
             const hasChildren = this.children(block.id).length > 0;
 
             // Block has no parent (in the case of a root block), or a block that has children
             // with suffix of an empty string
-            if (opts.asChild || ! block.parent || (hasChildren && split?.suffix === '')) {
+            if (opts.asChild || ! block.parent || (hasChildren && split?.suffix === '' && this.isExpanded(block.id))) {
                 return {
                     type: 'first-child',
                     parentBlock: block
@@ -1483,7 +1465,7 @@ export class BlocksStore implements IBlocksStore {
 
         };
 
-        const currentBlock = this.getBlock(id)!;
+        const currentBlock = this.getBlockForMutation(id)!;
         const getSplit = (): ISplitBlock | undefined => currentBlock.content.type === 'markdown' ? opts.split : undefined;
         const getLinks = (): ReadonlyArray<IBlockLink> => currentBlock.content.type === 'markdown' ? currentBlock.content.links : [];
 
@@ -1553,7 +1535,7 @@ export class BlocksStore implements IBlocksStore {
 
         // Copy the expand state from the old block to the new one if the new one is inheriting the items
         if (newBlockInheritItems) {
-            const isExpanded = this._expanded[currentBlock.id] 
+            const isExpanded = this._expanded[currentBlock.id]
             this[isExpanded ? 'expand' : 'collapse'](newBlock.id);
         }
 
@@ -1569,7 +1551,7 @@ export class BlocksStore implements IBlocksStore {
         if (this.active) {
 
             const id = this.active.id;
-            const contentEditableRoot = getBlockContentEditableRoot(id);
+            const contentEditableRoot = DOMBlocks.getBlockElement(id);
 
             if (contentEditableRoot) {
                 const pos = CursorPositions.computeCurrentOffset(contentEditableRoot);
@@ -1583,7 +1565,7 @@ export class BlocksStore implements IBlocksStore {
 
         }
 
-        return undefined;
+        return this._active;
     }
 
     @action private cursorOffsetRestore(active: IActiveBlock | undefined) {
@@ -1603,9 +1585,9 @@ export class BlocksStore implements IBlocksStore {
      * child in that parent. IE it must have a previous sibling so that we can
      * be
      */
-    public isIndentable(id: BlockIDStr, root: BlockIDStr | undefined): boolean {
+    public isIndentable(root: BlockIDStr, id: BlockIDStr): boolean {
 
-        const block = this.getReadonlyBlock(id);
+        const block = this.getBlock(id);
 
         if (! block) {
             return false;
@@ -1615,7 +1597,7 @@ export class BlocksStore implements IBlocksStore {
             return false;
         }
 
-        const parentBlock = this.getReadonlyBlock(block.parent);
+        const parentBlock = this.getBlock(block.parent);
 
         if (! parentBlock) {
             // this is a bug and shouldn't happen
@@ -1631,7 +1613,7 @@ export class BlocksStore implements IBlocksStore {
         const selectedRoots = this.computeSelectedRoots();
 
         return selectedRoots
-                   .filter(current => this.isIndentable(current.id, root))
+                   .filter(current => this.isIndentable(root, current.id))
                    .map(current => current.id);
 
     }
@@ -1641,8 +1623,7 @@ export class BlocksStore implements IBlocksStore {
      *
      * @return The new parent BlockID or the code as to why it couldn't be re-parented.
      */
-    public indentBlock(id: BlockIDStr,
-                       root: BlockIDStr | undefined = this.root): ReadonlyArray<DoIndentResult> {
+    public indentBlock(root: BlockIDStr, id: BlockIDStr): ReadonlyArray<DoIndentResult> {
 
         if (! root) {
             throw new Error("No root");
@@ -1745,9 +1726,9 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    public isUnIndentable(id: BlockIDStr, root: BlockIDStr | undefined) {
+    public isUnIndentable(root: BlockIDStr, id: BlockIDStr) {
 
-        const block = this.getReadonlyBlock(id);
+        const block = this.getBlock(id);
 
         if (! block) {
             return false;
@@ -1769,13 +1750,12 @@ export class BlocksStore implements IBlocksStore {
     private computeSelectedUnIndentableBlockIDs(root: BlockIDStr): ReadonlyArray<BlockIDStr> {
 
         const selectedRoots = this.computeSelectedRoots();
-        return selectedRoots.filter(current => this.isUnIndentable(current.id, root))
+        return selectedRoots.filter(current => this.isUnIndentable(root, current.id))
                             .map(current => current.id);
 
     }
 
-    public unIndentBlock(id: BlockIDStr,
-                         root: BlockIDStr | undefined = this.root): ReadonlyArray<DoUnIndentResult> {
+    public unIndentBlock(root: BlockIDStr, id: BlockIDStr): ReadonlyArray<DoUnIndentResult> {
 
         if (! root) {
             throw new Error("No root");
@@ -2092,9 +2072,9 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    public requiredAutoUnIndent(id: BlockIDStr, root: BlockIDStr | undefined = this.root): boolean {
+    public requiredAutoUnIndent(root: BlockIDStr, id: BlockIDStr): boolean {
 
-        const block = this.getReadonlyBlock(id);
+        const block = this.getBlock(id);
 
         if (! block) {
             return false;
@@ -2108,7 +2088,7 @@ export class BlocksStore implements IBlocksStore {
             return false;
         }
 
-        const parentBlock = this.getReadonlyBlock(block.parent);
+        const parentBlock = this.getBlock(block.parent);
 
         if (! parentBlock) {
             return false;
@@ -2141,7 +2121,7 @@ export class BlocksStore implements IBlocksStore {
         if (! allHaveSameParent) { // This technically would never happen because our selection system only allows siblings
             throw new Error("Only sibling blocks can be moved");
         }
-        
+
         const idsToPositionsMap = (ids: ReadonlyArray<BlockIDStr>) =>
             ids.reduce((m, x, i) => m.set(x, i), new Map<string, number>())
 
@@ -2179,7 +2159,7 @@ export class BlocksStore implements IBlocksStore {
     }
 
     public idsToBlocks(ids: ReadonlyArray<BlockIDStr>): ReadonlyArray<Block> {
-        return ids.map(id => this.getReadonlyBlock(id))
+        return ids.map(id => this.getBlock(id))
             .filter((block): block is Block => !!block);
     }
 
@@ -2187,7 +2167,7 @@ export class BlocksStore implements IBlocksStore {
      * Get the blocks that apply here and convert them to JSON objects.
      */
     public createSnapshot(identifiers: ReadonlyArray<BlockIDStr>): ReadonlyArray<IBlock> {
-        return arrayStream(identifiers.map(id => this.getReadonlyBlock(id)))
+        return arrayStream(identifiers.map(id => this.getBlock(id)))
             .filterPresent()
             .map(current => current.toJSON())
             .collect();
@@ -2245,7 +2225,7 @@ export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore
 
     useBlockExpandSnapshots((snapshot) => {
         blocksStore.handleBlockExpandSnapshot(snapshot);
-    })
+    });
 
     return blocksStore;
 })
