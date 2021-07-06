@@ -243,7 +243,7 @@ jobs:
       - build_setup
 
       - run:
-          name: init
+          name: init - setup credentials and bytesafe
           no_output_timeout: 120m
           command: |
             source packages/polar-bookshelf-secrets/credentials.sh
