@@ -28,10 +28,11 @@ commands:
       #    name: "Install latest NPM"
       #    command: sudo npm -g install npm
 
-      - run:
-          name: NPM node_modules cache stats
-          command: |
-            du -h ./node_modules | tail -1
+      # Comment out the stage for now
+      # - run:
+      #     name: NPM node_modules cache stats
+      #     command: |
+      #       du -h ./node_modules | tail -1
 
       - run:
           name: Install global node modules
