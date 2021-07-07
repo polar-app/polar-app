@@ -73,6 +73,7 @@ commands:
           command: |
             cp .npmrc.bytesafe ~/.npmrc
             cat ~/.npmrc
+            npm config set always-auth true
             echo "npm ping: ======"
             npm ping
             echo "npm config list: ======"
