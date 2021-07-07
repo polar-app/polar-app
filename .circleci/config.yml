@@ -246,7 +246,12 @@ jobs:
             npm config set always-auth true
             source packages/polar-bookshelf-secrets/credentials.sh
             yarn run set-registry-bytesafe-rw
-            yarn run dist-release-webapp-init
+            lerna bootstrap
+            lerna run compile
+            lerna run test
+            yarn run dist-validate-env
+            lerna exec --concurrency=1 --parallel=false --no-private  --no-bail -- yarn publish --verbose
+            (cd packages/polar-app-private/polar-webapp-dist && yarn run dist)
 
       - run:
           name: release
