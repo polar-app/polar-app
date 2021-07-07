@@ -8,20 +8,20 @@ function getBlockPermissionUser() {
 
 function hasBlockPermissionRead(block_id, nspace_id) {
 
-    if (hasBlockPermissionUser()) {
-        return getBlockPermissionUser().pages_ro.hasAny([block_id]) ||
-               getBlockPermissionUser().nspaces_ro.hasAny([nspace_id]) ||
-               getBlockPermissionUser().pages_rw.hasAny([block_id]) ||
-               getBlockPermissionUser().nspaces_rw.hasAny([nspace_id]);
-    }
+    return hasBlockPermissionUser() && (
+        getBlockPermissionUser().pages_ro.hasAny([block_id]) ||
+        getBlockPermissionUser().nspaces_ro.hasAny([nspace_id]) ||
+        getBlockPermissionUser().pages_rw.hasAny([block_id]) ||
+        getBlockPermissionUser().nspaces_rw.hasAny([nspace_id])
+    );
 
 }
 
 function hasBlockPermissionWrite(block_id, nspace_id) {
 
-    if (hasBlockPermissionUser()) {
-        return getBlockPermissionUser().pages_rw.hasAny([block_id]) ||
-               getBlockPermissionUser().nspaces_rw.hasAny([nspace_id]);
-    }
+    return hasBlockPermissionUser() && (
+        getBlockPermissionUser().pages_rw.hasAny([block_id]) ||
+        getBlockPermissionUser().nspaces_rw.hasAny([nspace_id])
+    );
 
 }

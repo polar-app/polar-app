@@ -12,21 +12,21 @@ service cloud.firestore {
     
     function hasBlockPermissionRead(block_id, nspace_id) {
     
-        if (hasBlockPermissionUser()) {
-            return getBlockPermissionUser().pages_ro.hasAny([block_id]) ||
-                   getBlockPermissionUser().nspaces_ro.hasAny([nspace_id]) ||
-                   getBlockPermissionUser().pages_rw.hasAny([block_id]) ||
-                   getBlockPermissionUser().nspaces_rw.hasAny([nspace_id]);
-        }
+        return hasBlockPermissionUser() && (
+            getBlockPermissionUser().pages_ro.hasAny([block_id]) ||
+            getBlockPermissionUser().nspaces_ro.hasAny([nspace_id]) ||
+            getBlockPermissionUser().pages_rw.hasAny([block_id]) ||
+            getBlockPermissionUser().nspaces_rw.hasAny([nspace_id])
+        );
     
     }
     
     function hasBlockPermissionWrite(block_id, nspace_id) {
     
-        if (hasBlockPermissionUser()) {
-            return getBlockPermissionUser().pages_rw.hasAny([block_id]) ||
-                   getBlockPermissionUser().nspaces_rw.hasAny([nspace_id]);
-        }
+        return hasBlockPermissionUser() && (
+            getBlockPermissionUser().pages_rw.hasAny([block_id]) ||
+            getBlockPermissionUser().nspaces_rw.hasAny([nspace_id])
+        );
     
     }
         function existsGroup() {
@@ -153,7 +153,7 @@ service cloud.firestore {
     }
         
     match /block_permission/{document=**} {
-        # only allow people to read the permissions if they have ANY permission to this page or namespace
+        // only allow people to read the permissions if they have ANY permission to this page or namespace
         
         allow read: if request.auth.uid == resource.data.nspace;
         allow read: if request.auth.uid == request.resource.data.nspace && resource.data.nspace == request.resource.data.nspace;
