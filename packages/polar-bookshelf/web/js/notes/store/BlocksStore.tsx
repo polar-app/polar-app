@@ -135,7 +135,7 @@ export interface IInsertBlocksContentStructureOpts {
     blockIDs?: ReadonlyArray<BlockIDStr>;
 }
 
-export type Interstitial = {target: IDropTarget, blobURL: string, type: 'image', id: string};
+export type Interstitial = {position: 'top' | 'bottom', blobURL: string, type: 'image', id: string};
 export type InterstitialMap = { [key: string]: Interstitial[] | undefined };
 
 /**
@@ -178,11 +178,11 @@ export interface IActiveBlock {
 
 }
 
-export type DropPosition = 'top' | 'bottom';
+export type IDropPosition = 'top' | 'bottom';
 
 export interface IDropTarget {
     readonly id: BlockIDStr;
-    readonly pos: DropPosition;
+    readonly pos: IDropPosition;
 }
 
 export namespace ActiveBlockNonces {
@@ -340,6 +340,10 @@ export class BlocksStore implements IBlocksStore {
         return this._selected;
     }
 
+    @computed get interstitials() {
+        return this._interstitials;
+    }
+
     public selectedIDs() {
         return Object.keys(this._selected);
     }
@@ -376,7 +380,11 @@ export class BlocksStore implements IBlocksStore {
     @action removeInterstitial(id: BlockIDStr, interstitialID: string): void {
         const blockInterstitials = this._interstitials[id];
         if (blockInterstitials) {
-            this._interstitials[id] = blockInterstitials.filter(({id}) => id !== interstitialID);
+            const newInterstitials = blockInterstitials.filter(({id}) => id !== interstitialID);
+            this._interstitials[id] = newInterstitials
+            if (newInterstitials.length === 0) {
+                delete this._interstitials[id];
+            }
         }
     }
 

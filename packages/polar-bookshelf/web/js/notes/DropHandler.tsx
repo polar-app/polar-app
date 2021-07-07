@@ -113,7 +113,7 @@ export const useDropHandler = (): (opts: IDropHandlersCallbackOpts) => Promise<R
         for (const {id, file, type} of knownFiles) {
             if (type === 'image') {
                 const blobURL = URL.createObjectURL(file);
-                blocksTreeStore.addInterstitial(blockID, { type, target: dropTarget, id, blobURL });
+                blocksTreeStore.addInterstitial(blockID, { type, position: dropTarget.pos, id, blobURL });
             }
         }
 
@@ -198,7 +198,6 @@ export const useDragDropHandler = ({ id, isRoot }: IUseDragDropHandlerOpts) => {
     const updateDropTarget = React.useCallback((event: React.DragEvent | React.MouseEvent) => {
 
         const pos = computeDragPosition(event);
-        console.log(id, pos);
 
         blocksTreeStore.setDropTarget({id, pos});
 

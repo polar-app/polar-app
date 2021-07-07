@@ -1,5 +1,5 @@
 import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
-import {BlockContent, BlocksStore} from "./BlocksStore";
+import {BlockContent, BlocksStore, Interstitial} from "./BlocksStore";
 import {assertJSON} from "../../test/Assertions";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
@@ -168,6 +168,7 @@ describe('BlocksStore', function() {
             assert.isTrue(isObservableProp(store, 'selected'));
             assert.isTrue(isObservableProp(store, 'dropTarget'));
             assert.isTrue(isObservableProp(store, 'dropSource'));
+            assert.isTrue(isObservableProp(store, 'interstitials'));
 
         });
 
@@ -500,6 +501,7 @@ describe('BlocksStore', function() {
                     ],
                 }
             },
+            "_interstitials": {},
             "_selected": {},
             "uid": "1234",
             "undoQueue": {
@@ -537,6 +539,94 @@ describe('BlocksStore', function() {
 
         });
 
+    });
+
+    describe("interstitials", () => {
+        describe("addInterstitial", () => {
+            it("should be able to add interstitials properly", () => {
+                const store = createStore();
+
+                store.addInterstitial('102', {
+                    type: 'image',
+                    id: 'someid',
+                    position: 'top',
+                    blobURL: 'url',
+                });
+
+                assert.deepEqual(store.interstitials,{
+                    '102': [{
+                        type: 'image',
+                        id: 'someid',
+                        position: 'top',
+                        blobURL: 'url',
+                    }]
+                });
+            });
+
+            it("should store new interstitials that belong to the same block first", () => {
+                const store = createStore();
+
+                store.addInterstitial('102', {
+                    type: 'image',
+                    id: 'id1',
+                    position: 'top',
+                    blobURL: 'url1',
+                });
+                store.addInterstitial('102', {
+                    type: 'image',
+                    id: 'id2',
+                    position: 'top',
+                    blobURL: 'url2',
+                });
+
+                assert.deepEqual(store.interstitials,{
+                    '102': [{
+                        type: 'image',
+                        id: 'id2',
+                        position: 'top',
+                        blobURL: 'url2',
+                    }, {
+                        type: 'image',
+                        id: 'id1',
+                        position: 'top',
+                        blobURL: 'url1',
+                    }]
+                });
+            });
+        });
+
+        describe("removeInterstitial", () => {
+            it("should delete interstitials that belong to a specific block properly", () => {
+                const store = createStore();
+
+                store.addInterstitial('102', {
+                    type: 'image',
+                    id: 'id1',
+                    position: 'top',
+                    blobURL: 'url1',
+                });
+
+                store.removeInterstitial('102', 'id1');
+
+                assert.deepEqual(store.interstitials, {});
+            });
+        });
+
+        describe("getInterstitials", () => {
+            it("should get all the interstitials for a specific block", () => {
+                const store = createStore();
+                const interstitial: Interstitial = {
+                    type: 'image',
+                    id: 'id1',
+                    position: 'top',
+                    blobURL: 'url1',
+                };
+
+                store.addInterstitial('102', interstitial);
+
+                assert.deepEqual(store.getInterstitials('102'), [interstitial]);
+            });
+        });
     });
 
     describe("indent/unindent Block", () => {

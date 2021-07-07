@@ -164,8 +164,8 @@ export const BlockInner = observer((props: IProps) => {
     }, [undoQueue]);
 
 
-    const topInterstitials = React.useMemo(() => interstitials.filter(({target}) => target.pos === 'top'), [interstitials]);
-    const bottomInterstitials = React.useMemo(() => interstitials.filter(({target}) => target.pos === 'bottom'), [interstitials]);
+    const topInterstitials = React.useMemo(() => interstitials.filter(({position}) => position === 'top'), [interstitials]);
+    const bottomInterstitials = React.useMemo(() => interstitials.filter(({position}) => position === 'bottom'), [interstitials]);
 
     if (! block) {
         return null;

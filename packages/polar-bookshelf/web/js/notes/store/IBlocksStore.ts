@@ -10,7 +10,7 @@ import {
     BlockNameStr,
     IBlockMerge,
     BlocksIndex,
-    IDropTarget, INewBlockOpts, DoPutOpts, ICreateNewNamedBlockOpts, BlocksIndexByName, Interstitial
+    IDropTarget, INewBlockOpts, DoPutOpts, ICreateNewNamedBlockOpts, BlocksIndexByName, Interstitial, IDropPosition
 } from "./BlocksStore";
 import {Block} from "./Block";
 import {ReverseIndex} from "./ReverseIndex";
@@ -133,7 +133,7 @@ export interface IBlocksStore {
 
     moveBlocks(ids: ReadonlyArray<BlockIDStr>, delta: number): void
 
-    getInterstitials(id: BlockIDStr): ReadonlyArray<Interstitial>;
+    getInterstitials(id: BlockIDStr, position?: IDropPosition): ReadonlyArray<Interstitial>;
     addInterstitial(id: BlockIDStr, interstitial: Interstitial): void;
     removeInterstitial(id: BlockIDStr, interstitialID: string): void;
 

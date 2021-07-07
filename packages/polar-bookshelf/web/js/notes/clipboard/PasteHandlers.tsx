@@ -156,7 +156,7 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
                     blocksTreeStore.addInterstitial(id, {
                         id: fileName,
                         type: 'image',
-                        target: {id, pos: 'bottom'},
+                        position: 'bottom',
                         blobURL,
                     });
 
