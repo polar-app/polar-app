@@ -18,4 +18,5 @@ allow read, delete: if request.auth.uid == resource.data.nspace;
 // write of existing objects if the nspace is correct
 allow write: if request.auth.uid == request.resource.data.nspace && resource.data.nspace == request.resource.data.nspace;
 
-// ** FIXME this isn't setup to to use block_permission_user to see what OTHER blocks they can access...
+// FIXME we need the same permissions but READ only for the block_permission table and and something similar for
+// block_permission_user so that users can READ their own block permissions.
