@@ -18,4 +18,13 @@ allow read, delete: if request.auth.uid == resource.data.nspace;
 // write of existing objects if the nspace is correct
 allow write: if request.auth.uid == request.resource.data.nspace && resource.data.nspace == request.resource.data.nspace;
 
-// ** FIXME this isn't setup to to use block_permission_user to see what OTHER blocks they can access...
+// *** updates when the data is in block_permission_user
+
+// allow writes of new data.
+allow write: if (resource == null || resource.data == null) && hasBlockPermissionWrite(request.resource.data.root, request.resource.data.nspace);
+
+// allow update of existing objects.
+allow write: if hasBlockPermissionWrite(request.resource.data.root, request.resource.data.nspace);
+
+// allow reads...
+allow read: if hasBlockPermissionRead(request.resource.data.root, request.resource.data.nspace);
