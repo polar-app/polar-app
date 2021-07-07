@@ -73,7 +73,6 @@ commands:
           command: |
             cp .npmrc.bytesafe ~/.npmrc
             cat ~/.npmrc
-            npm config set always-auth true
             echo "npm ping: ======"
             npm ping
             echo "npm config list: ======"
@@ -244,10 +243,15 @@ jobs:
           name: init - setup credentials and bytesafe
           no_output_timeout: 120m
           command: |
-            yarn config list
+            npm config set always-auth true
             source packages/polar-bookshelf-secrets/credentials.sh
             yarn run set-registry-bytesafe-rw
-            yarn run dist-release-webapp-init
+            lerna bootstrap
+            lerna run compile
+            lerna run test
+            yarn run dist-validate-env
+            lerna exec --concurrency=1 --parallel=false --no-private  --no-bail -- yarn publish --verbose
+            (cd packages/polar-app-private/polar-webapp-dist && yarn run dist)
 
       - run:
           name: release
