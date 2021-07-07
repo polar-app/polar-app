@@ -243,6 +243,7 @@ jobs:
           name: init - setup credentials and bytesafe
           no_output_timeout: 120m
           command: |
+            yarn config list
             source packages/polar-bookshelf-secrets/credentials.sh
             yarn run set-registry-bytesafe-rw
             yarn run dist-release-webapp-init
