@@ -16,6 +16,8 @@ import {useUndoQueue} from "../undo/UndoQueueProvider2";
 import {useBlocksTreeStore} from "./BlocksTree";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {Divider} from "@material-ui/core";
+import {useDragDropHandler} from "./DropHandler";
+import {Interstitial} from "./Interstitial";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -49,6 +51,8 @@ export const BlockInner = observer((props: IProps) => {
 
     const {id, parent, withHeader = false, noExpand = false, noBullet = false} = props;
     const {root} = blocksTreeStore;
+    const isRoot = id === root;
+    const dragDropBinds = useDragDropHandler({ id, isRoot });
 
     const classes = useStyles();
     const undoQueue = useUndoQueue();
@@ -58,10 +62,8 @@ export const BlockInner = observer((props: IProps) => {
 
     const expanded = blocksTreeStore.isExpanded(id);
     const selected = blocksTreeStore.isSelected(id);
+    const interstitials = blocksTreeStore.getInterstitials(id);
     const block = blocksTreeStore.getBlock(id);
-
-    const divRef = React.useRef<HTMLDivElement | null>(null);
-    const dragActive = React.useRef<boolean>(false);
 
     const handleMouseDown = React.useCallback((event: React.MouseEvent) => {
 
@@ -161,79 +163,9 @@ export const BlockInner = observer((props: IProps) => {
 
     }, [undoQueue]);
 
-    const handleDragStart = React.useCallback((_: React.DragEvent) => {
-        blocksTreeStore.setDropSource(props.id);
-        // event.preventDefault();
-        // event.stopPropagation();
-    }, [props.id, blocksTreeStore]);
 
-    const computeDragPosition = React.useCallback((event: React.DragEvent | React.MouseEvent) => {
-
-        // FIXME: if this is a root note then we can only drag BELOW it...
-
-        if (divRef.current) {
-
-            const bcr = divRef.current.getBoundingClientRect();
-
-            const deltaTop = Math.abs(event.clientY - bcr.top);
-            const deltaBottom = Math.abs(event.clientY - bcr.bottom);
-
-            if (deltaTop < deltaBottom) {
-                return 'top';
-            }
-
-        }
-
-        return 'bottom';
-
-    }, []);
-
-    const updateDropTarget = React.useCallback((event: React.DragEvent | React.MouseEvent) => {
-
-        const pos = computeDragPosition(event);
-
-        blocksTreeStore.setDropTarget({
-            id: props.id, pos
-        });
-
-    }, [computeDragPosition, props.id, blocksTreeStore]);
-
-    const handleDragEnter = React.useCallback((event: React.DragEvent) => {
-
-        updateDropTarget(event);
-
-        dragActive.current = true;
-
-        event.preventDefault();
-        event.stopPropagation();
-
-    }, [updateDropTarget]);
-
-    const handleDragExit = React.useCallback((event: React.DragEvent) => {
-
-        dragActive.current = false;
-
-        event.preventDefault();
-        event.stopPropagation();
-    }, []);
-
-    const handleMouseMove = React.useCallback((event: React.MouseEvent) => {
-
-        if (dragActive.current) {
-            updateDropTarget(event);
-        }
-
-    }, [updateDropTarget]);
-
-    const handleDrop = React.useCallback((event: React.DragEvent) => {
-
-        event.preventDefault();
-
-        // FIXME: do the move now... and actually move the item
-
-        console.log("FIXME: DROP")
-
-    }, []);
+    const topInterstitials = React.useMemo(() => interstitials.filter(({target}) => target.pos === 'top'), [interstitials]);
+    const bottomInterstitials = React.useMemo(() => interstitials.filter(({target}) => target.pos === 'bottom'), [interstitials]);
 
     if (! block) {
         return null;
@@ -243,78 +175,71 @@ export const BlockInner = observer((props: IProps) => {
 
     const hasItems = items.length > 0;
 
-    const dropActive = blocksTreeStore.dropTarget?.id === props.id && blocksTreeStore.dropSource !== props.id;
-
-    const isRoot = id === root;
-
     return (
-        <div ref={divRef}
-             onMouseDown={handleMouseDown}
-             onMouseMove={handleMouseMove}
+        <div onMouseDown={handleMouseDown}
              onKeyDown={handleKeyDown}
-             onDragStart={event => handleDragStart(event)}
-             onDragEnter={event => handleDragEnter(event)}
-             onDragLeave={event => handleDragExit(event)}
-             onDragEnd={() => blocksTreeStore.clearDrop()}
-             onDrop={event => handleDrop(event)}
-             className={clsx('Block', { [classes.selected]: selected }) }>
+             data-blockID={id}
+             className={clsx('Block', { [classes.selected]: selected }) }
+             {...dragDropBinds}>
 
-                <BlockDragIndicator id={id}>
-                    <>
-                        <div {...contextMenuHandlers}
-                             style={{
-                                 display: 'flex',
-                                 alignItems: 'flex-start',
-                                 boxSizing: 'border-box',
-                                 paddingTop: theme.spacing(0.5),
-                                 paddingBottom: theme.spacing(0.5),
-                                 // background: dropActive ? 'red' : 'inherit'
-                             }}>
+            {topInterstitials.map(interstitial => <Interstitial key={interstitial.id} interstitial={interstitial} />) }
+            <BlockDragIndicator id={id}>
+                <>
+                    <div {...contextMenuHandlers}
+                         style={{
+                             display: 'flex',
+                             alignItems: 'flex-start',
+                             boxSizing: 'border-box',
+                             paddingTop: theme.spacing(0.5),
+                             paddingBottom: theme.spacing(0.5),
+                             // background: dropActive ? 'red' : 'inherit'
+                         }}>
 
-                            {!(noExpand && noBullet) && (
-                                <div style={{
-                                         display: 'flex',
-                                         alignItems: 'center',
-                                         minWidth: '3em',
-                                         justifyContent: 'flex-end',
-                                         marginRight: theme.spacing(0.5),
-                                     }}>
+                        {!(noExpand && noBullet) && (
+                            <div style={{
+                                     display: 'flex',
+                                     alignItems: 'center',
+                                     minWidth: '3em',
+                                     justifyContent: 'flex-end',
+                                     marginRight: theme.spacing(0.5),
+                                 }}>
 
 
-                                    {hasItems && !noExpand && (
-                                        <BlockExpandToggleButton id={id}/>
-                                    )}
+                                {hasItems && !noExpand && (
+                                    <BlockExpandToggleButton id={id}/>
+                                )}
 
-                                    {!noBullet && <BlockBulletButton target={id}/>}
+                                {!noBullet && <BlockBulletButton target={id}/>}
 
-                                </div>
-                            )}
-
-                            {withHeader && isRoot
-                                ? (
-                                    <BlockEditor
-                                        parent={parent}
-                                        id={id}
-                                        className={classes.titleBlock}
-                                    />
-                                ) : (
-                                    <BlockEditor
-                                        parent={parent}
-                                        id={id}
-                                    />
-                                )
-                            }
-                        </div>
-
-                        {withHeader && isRoot &&
-                            <Divider style={{ margin: '13px 0 22px' }} />
-                        }
-
-                        {(expanded || (isRoot && noExpand)) && (
-                            <BlockItems parent={id} notes={items} indent={!withHeader} />
+                            </div>
                         )}
+
+                        {withHeader && isRoot
+                            ? (
+                                <BlockEditor
+                                    parent={parent}
+                                    id={id}
+                                    className={classes.titleBlock}
+                                />
+                            ) : (
+                                <BlockEditor
+                                    parent={parent}
+                                    id={id}
+                                />
+                            )
+                        }
+                    </div>
+
+                    {withHeader && isRoot &&
+                        <Divider style={{ margin: '13px 0 22px' }} />
+                    }
+
+                    {(expanded || (isRoot && noExpand)) && (
+                        <BlockItems parent={id} notes={items} indent={!withHeader} />
+                    )}
                 </>
             </BlockDragIndicator>
+            {bottomInterstitials.map(interstitial => <Interstitial key={interstitial.id} interstitial={interstitial} />) }
         </div>
     );
 });

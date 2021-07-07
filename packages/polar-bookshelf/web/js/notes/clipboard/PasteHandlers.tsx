@@ -1,9 +1,13 @@
 import React from "react";
-import {DataURLs} from "polar-shared/src/util/DataURLs";
 import {URLStr} from "polar-shared/src/util/Strings";
-import {Blobs} from "polar-shared/src/util/Blobs";
 import {HTMLToBlocks, IBlockContentStructure} from "../HTMLToBlocks";
 import {Images} from "polar-shared/src/util/Images";
+import {useBlocksTreeStore} from "../BlocksTree";
+import {fileUploader, generateFileName} from "../DropHandler";
+import {Backend} from "polar-shared/src/datastore/Backend";
+import {useUserInfoContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
+import {FirebaseDatastores} from "polar-shared/src/datastore/FirebaseDatastores";
+import {BlockIDStr} from "../../../../../polar-app-public/polar-blocks/src/blocks/IBlock";
 
 export interface IPasteImageData {
     readonly url: URLStr;
@@ -15,6 +19,7 @@ export interface IPasteHandlerOpts {
     readonly onPasteImage: (image: IPasteImageData) => void;
     readonly onPasteBlocks: (blocks: ReadonlyArray<IBlockContentStructure>) => void; 
     readonly onPasteError: (err: Error) => void;
+    readonly id: BlockIDStr;
 }
 
 export type PasteImageType =
@@ -124,7 +129,9 @@ const executePasteHandlers = async (
  */
 export function usePasteHandler(opts: IPasteHandlerOpts) {
 
-    const {onPasteImage, onPasteBlocks, onPasteError} = opts;
+    const {onPasteImage, onPasteBlocks, onPasteError, id} = opts;
+    const blocksTreeStore = useBlocksTreeStore();
+    const userInfo = useUserInfoContext();
 
     return React.useCallback((event: React.ClipboardEvent) => {
 
@@ -139,24 +146,34 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
         async function extractImage() {
 
             const imageItem = getPasteItem(pasteItems, 'image');
-            if (imageItem) {
+            const uid = userInfo?.userInfo?.uid;
+            if (imageItem && uid) {
                 const file = imageItem.dataTransferItem.getAsFile()
 
                 if (file) {
+                    const fileName = generateFileName(file.name, uid);
+                    const blobURL = URL.createObjectURL(file);
+                    blocksTreeStore.addInterstitial(id, {
+                        id: fileName,
+                        type: 'image',
+                        target: {id, pos: 'bottom'},
+                        blobURL,
+                    });
 
-                    const ab = await Blobs.toArrayBuffer(file)
-                    const dataURL = DataURLs.encode(ab, imageItem.type);
+                    try {
+                        const uploadedFile = await fileUploader({ type: 'image', file, id: fileName });
 
-                    // const resolution = await ImageResolutions.compute(file);
+                        const dimensions = await Images.getDimensions(blobURL);
 
-                    const dimensions = await Images.getDimensions(dataURL);
+                        const image: IPasteImageData = {
+                            url: uploadedFile.url,
+                            ...dimensions
+                        };
+                        onPasteImage(image);
+                    } finally {
 
-                    const image: IPasteImageData = {
-                        url: dataURL,
-                        ...dimensions
+                        blocksTreeStore.removeInterstitial(id, fileName);
                     }
-
-                    onPasteImage(image);
                 }
             }
         }
@@ -206,6 +223,6 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
             ).catch(e => console.log(e));
         }
 
-    }, [onPasteError, onPasteImage, onPasteBlocks])
+    }, [onPasteError, onPasteImage, onPasteBlocks, blocksTreeStore])
 
 }

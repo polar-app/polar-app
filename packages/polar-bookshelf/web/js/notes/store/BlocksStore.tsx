@@ -135,6 +135,9 @@ export interface IInsertBlocksContentStructureOpts {
     blockIDs?: ReadonlyArray<BlockIDStr>;
 }
 
+export type Interstitial = {target: IDropTarget, blobURL: string, type: 'image', id: string};
+export type InterstitialMap = { [key: string]: Interstitial[] | undefined };
+
 /**
  * The result of a createBlock operation.
  */
@@ -288,6 +291,8 @@ export class BlocksStore implements IBlocksStore {
      */
     @observable _hasSnapshot: boolean = false;
 
+    @observable _interstitials: InterstitialMap = {};
+
     /*
      * Used to keep track of cursor positions in every note
      */
@@ -355,6 +360,26 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
+    getInterstitials(id: BlockIDStr): ReadonlyArray<Interstitial> {
+        return this._interstitials[id] || [];
+    }
+
+    @action addInterstitial(id: BlockIDStr, interstitial: Interstitial): void {
+        const current = this._interstitials[id];
+        if (! current) {
+            this._interstitials[id] = [interstitial];
+        } else {
+            this._interstitials[id] = [interstitial, ...current];
+        }
+    }
+
+    @action removeInterstitial(id: BlockIDStr, interstitialID: string): void {
+        const blockInterstitials = this._interstitials[id];
+        if (blockInterstitials) {
+            this._interstitials[id] = blockInterstitials.filter(({id}) => id !== interstitialID);
+        }
+    }
+
     @action public clearSelected(reason: string) {
         this.selectedIDs().forEach(id => delete this._selected[id]);
         this._selectedAnchor = undefined;
@@ -379,6 +404,10 @@ export class BlocksStore implements IBlocksStore {
     @action public clearDrop() {
         this._dropTarget = undefined;
         this._dropSource = undefined;
+    }
+
+    @action public clearDropTarget() {
+        this._dropTarget = undefined;
     }
 
     @computed get hasSnapshot() {

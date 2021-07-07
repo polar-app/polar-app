@@ -10,7 +10,7 @@ import {
     BlockNameStr,
     IBlockMerge,
     BlocksIndex,
-    IDropTarget, INewBlockOpts, DoPutOpts, ICreateNewNamedBlockOpts, BlocksIndexByName
+    IDropTarget, INewBlockOpts, DoPutOpts, ICreateNewNamedBlockOpts, BlocksIndexByName, Interstitial
 } from "./BlocksStore";
 import {Block} from "./Block";
 import {ReverseIndex} from "./ReverseIndex";
@@ -101,7 +101,6 @@ export interface IBlocksStore {
 
     // TODO: undo / cursor
     createNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock;
-    doCreateNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock;
 
     createNewNamedBlock(name: BlockNameStr, opts: ICreateNewNamedBlockOpts): BlockIDStr;
 
@@ -115,6 +114,7 @@ export interface IBlocksStore {
     filterByName(filter: string): ReadonlyArray<BlockNameStr>;
 
     clearDrop(): void;
+    clearDropTarget(): void;
 
     setDropSource(dropSource: BlockIDStr): void;
     setDropTarget(dropTarget: IDropTarget): void;
@@ -132,4 +132,11 @@ export interface IBlocksStore {
     setBlockContent<C extends IBlockContent = IBlockContent>(id: BlockIDStr, content: C): void;
 
     moveBlocks(ids: ReadonlyArray<BlockIDStr>, delta: number): void
+
+    getInterstitials(id: BlockIDStr): ReadonlyArray<Interstitial>;
+    addInterstitial(id: BlockIDStr, interstitial: Interstitial): void;
+    removeInterstitial(id: BlockIDStr, interstitialID: string): void;
+
+    prevSibling(id: BlockIDStr): BlockIDStr | undefined;
+    nextSibling(id: BlockIDStr): BlockIDStr | undefined;
 }
