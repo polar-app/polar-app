@@ -19,19 +19,29 @@ commands:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-{{ arch }}-dependencies-{{ checksum "package-lock.json" }}
+            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-v1-{{ .Branch }}-
+            - yarn-packages-v1-
 
       # I think bytesafe might not work with npm v7
       #- run:
       #    name: "Install latest NPM"
       #    command: sudo npm -g install npm
 
+      # Comment out the stage for now
+      # - run:
+      #     name: NPM node_modules cache stats
+      #     command: |
+      #       du -h ./node_modules | tail -1
+
       - run:
           name: Install global node modules
           command: |
             sudo npm -g install lerna@4.0.0
-            sudo npm -g install npm@7.7.5
+            sudo npm -g install npm@7.19.1
             sudo npm -g install firebase-tools@9.12.1
+
+      #            sudo npm -g install yarn@1.22.10
 
       - run:
           name: Node and NPM version
@@ -40,6 +50,8 @@ commands:
             node --version
             echo -n "NPM version: "
             npm --version
+            echo -n "Yarn version: "
+            yarn --version
             echo -n "Lerna version: "
             lerna --version
             echo -n "firebase version: "
@@ -57,10 +69,11 @@ commands:
           command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get update && sudo apt-get install libvips libvips-dev pngquant; fi
 
       - run:
-          name: npm setup
+          name: NPM setup
           command: |
             cp .npmrc.bytesafe ~/.npmrc
             cat ~/.npmrc
+            npm config set always-auth true
             echo "npm ping: ======"
             npm ping
             echo "npm config list: ======"
@@ -74,12 +87,12 @@ commands:
           # command: npm run-script purge-node-modules && npx lerna bootstrap
           command: |
             npm config set legacy-peer-deps true
-            npx lerna bootstrap
+            npx lerna bootstrap --ci
 
       - save_cache:
           paths:
-            - node_modules
-          key: v1-{{ arch }}-dependencies-{{ checksum "package-lock.json" }}
+            - ~/.cache/yarn
+          key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
 
       #- run:
       #    name: Required Linux packages (when on Linux)
@@ -91,7 +104,6 @@ commands:
 
 jobs:
   build:
-
     parameters:
       executor:
         description: "The CircleCI executor to use."
@@ -104,14 +116,12 @@ jobs:
     description: "Build the main code and run 'npm test'"
 
     steps:
-
       - build_setup
       - run:
           name: test
           command: npx lerna run test
 
   karma:
-
     parameters:
       executor:
         description: "The CircleCI executor to use."
@@ -124,7 +134,6 @@ jobs:
     description: "Run our karma tests in the browser."
 
     steps:
-
       - build_setup
       - run:
           name: karma
@@ -132,11 +141,10 @@ jobs:
             cd packages/polar-bookshelf
             sudo apt-get install chromium
             export CHROME_BIN='/usr/bin/chromium'
-            npm run-script webpack
-            npm run-script karma
+            yarn run webpack
+            yarn run karma
 
   end2end:
-
     parameters:
       executor:
         description: "The CircleCI executor to use."
@@ -165,7 +173,6 @@ jobs:
           background: true
 
   build-webapp:
-
     parameters:
       executor:
         description: "The CircleCI executor to use."
@@ -188,7 +195,7 @@ jobs:
           command: |
             cd packages/polar-bookshelf && \
             free -m && \
-            npm run-script build-webapp && \
+            yarn run build-webapp && \
             echo "Webapp Built Successfully" && \
             pwd && \
             cat dist/public/repository-bundle.js | gzip -c > dist/public/repository-bundle.js.gz
@@ -216,10 +223,8 @@ jobs:
           name: build and verify site (getpolarized.io)
           command: |
             pwd
-            # this postinstall is a hack because npm v7 doesn't properly run postinstall
-            (cd node_modules/pngquant-bin &&  npm run-script postinstall)
             cd packages/polar-site2
-            npm run-script dist
+            yarn run dist
 
   deploy_app_getpolarized_io:
     parameters:
@@ -236,24 +241,23 @@ jobs:
       - build_setup
 
       - run:
-          name: init
+          name: init - setup credentials and bytesafe
           no_output_timeout: 120m
           command: |
+            yarn config list
             source packages/polar-bookshelf-secrets/credentials.sh
-            npm run-script set-registry-bytesafe-rw
-            npm run-script dist-release-webapp-init
+            yarn run set-registry-bytesafe-rw
+            yarn run dist-release-webapp-init
 
       - run:
           name: release
           no_output_timeout: 120m
           command: |
             source packages/polar-bookshelf-secrets/credentials.sh
-            npm run-script set-registry-bytesafe-rw
-            npm ping
+            yarn run set-registry-bytesafe-rw
             export FIREBASE_HOSTING_TARGET=<< parameters.firebase_hosting_target >>
-            pwd
             rm -rfv packages/polar-app-private/polar-hooks/functions/node_modules
-            npm run-script dist-release-webapp-release
+            yarn run dist-release-webapp-release
 
   deploy_getpolarized_io:
     parameters:
@@ -264,13 +268,12 @@ jobs:
     executor: << parameters.executor>>
     working_directory: ~/repo
     steps:
-
       - run:
           name: deploy
           command: |
             pwd
             cd packages/polar-site2
-            npm run-script dist-release
+            yarn run dist-release
   cypress:
     parameters:
       executor:
@@ -329,11 +332,11 @@ workflows:
   version: 2
   main:
     jobs:
-#      - build_with_executor:
-#          executor:
-#            name: win/default
-#            shell: bash.exe
-#
+      #      - build_with_executor:
+      #          executor:
+      #            name: win/default
+      #            shell: bash.exe
+      #
       - build:
           executor: my-docker
       - karma:
@@ -381,7 +384,6 @@ workflows:
             branches:
               only:
                 - master
-
 #  cypress:
 #    jobs:
 #      - cypress:
@@ -408,6 +410,4 @@ workflows:
 #      - end2end:
 #          executor: my-macos
 #
-
-
 
