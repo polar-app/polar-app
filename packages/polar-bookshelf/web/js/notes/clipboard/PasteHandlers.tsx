@@ -223,6 +223,6 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
             ).catch(e => console.log(e));
         }
 
-    }, [onPasteError, onPasteImage, onPasteBlocks, blocksTreeStore])
+    }, [onPasteError, onPasteImage, onPasteBlocks, blocksTreeStore, userInfo, id])
 
 }

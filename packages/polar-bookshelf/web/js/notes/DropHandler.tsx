@@ -54,9 +54,10 @@ export const fileUploader = (dropFile: DropFile): Promise<GenericUploadedFile> =
         firebase.storage.TaskEvent.STATE_CHANGED
         , NULL_FUNCTION
         , (err: firebase.storage.FirebaseStorageError) => reject(err)
-        , async () => {
-            const url = await uploader.snapshot.ref.getDownloadURL();
-            resolve({type: dropFile.type, url});
+        , () => {
+            uploader.snapshot.ref.getDownloadURL()
+                .then((url) => resolve({type: dropFile.type, url}))
+                .catch(reject);
         }
     );
 });
@@ -142,7 +143,7 @@ export const useDropHandler = (): (opts: IDropHandlersCallbackOpts) => Promise<R
         }
 
         return uploadedFiles;
-    }, [blocksTreeStore]);
+    }, [blocksTreeStore, userInfo]);
 };
 
 const getBlockContent = (uploadedFile: UploadedFile) => {
@@ -220,7 +221,7 @@ export const useDragDropHandler = ({ id, isRoot }: IUseDragDropHandlerOpts) => {
 
         event.preventDefault();
         event.stopPropagation();
-    }, [blocksTreeStore]);
+    }, []);
 
     const handleDrop = React.useCallback((event: DragEvent) => {
         const dropTarget = blocksTreeStore.dropTarget;
@@ -268,7 +269,7 @@ export const useDragDropHandler = ({ id, isRoot }: IUseDragDropHandlerOpts) => {
 
         blocksTreeStore.clearDrop();
 
-    }, [blocksTreeStore, id, isRoot]);
+    }, [blocksTreeStore, id, isRoot, dropHandler]);
 
     const onDrop = React.useCallback((event: React.DragEvent) => {
 
@@ -277,7 +278,7 @@ export const useDragDropHandler = ({ id, isRoot }: IUseDragDropHandlerOpts) => {
 
         handleDrop(event.nativeEvent);
 
-    }, [blocksTreeStore, handleDrop]);
+    }, [handleDrop]);
 
     return {
         ref: divRef,
