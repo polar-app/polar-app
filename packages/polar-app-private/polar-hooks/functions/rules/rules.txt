@@ -2,7 +2,34 @@
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    function existsGroup() {
+    function hasBlockPermissionUser() {
+        return exists(/databases/$(database)/documents/block_permission_user/$(request.auth.uid));
+    }
+    
+    function getBlockPermissionUser() {
+        return get(/databases/$(database)/documents/block_permission_user/$(request.auth.uid));
+    }
+    
+    function hasBlockPermissionRead(block_id, nspace_id) {
+    
+        if (hasBlockPermissionUser()) {
+            return getBlockPermissionUser().pages_ro.hasAny([block_id]) ||
+                   getBlockPermissionUser().nspaces_ro.hasAny([nspace_id]) ||
+                   getBlockPermissionUser().pages_rw.hasAny([block_id]) ||
+                   getBlockPermissionUser().nspaces_rw.hasAny([nspace_id]);
+        }
+    
+    }
+    
+    function hasBlockPermissionWrite(block_id, nspace_id) {
+    
+        if (hasBlockPermissionUser()) {
+            return getBlockPermissionUser().pages_rw.hasAny([block_id]) ||
+                   getBlockPermissionUser().nspaces_rw.hasAny([nspace_id]);
+        }
+    
+    }
+        function existsGroup() {
         return exists(/databases/$(database)/documents/group/$(resource.data.groupID));
     }
     
@@ -92,6 +119,17 @@ service cloud.firestore {
         // write of existing objects if the nspace is correct
         allow write: if request.auth.uid == request.resource.data.nspace && resource.data.nspace == request.resource.data.nspace;
         
+        // *** updates when the data is in block_permission_user
+        
+        // allow writes of new data.
+        allow write: if (resource == null || resource.data == null) && hasBlockPermissionWrite(request.resource.data.root, request.resource.data.nspace);
+        
+        // allow update of existing objects.
+        allow write: if hasBlockPermissionWrite(request.resource.data.root, request.resource.data.nspace);
+        
+        // allow reads...
+        allow read: if hasBlockPermissionRead(request.resource.data.root, request.resource.data.nspace);
+        
     }
         
     match /block_expand/{document=**} {
@@ -111,6 +149,29 @@ service cloud.firestore {
         
         // write of existing data and verify both resources
         allow write: if request.resource.data.uid == request.auth.uid && resource.data.uid == request.auth.uid;
+        
+    }
+        
+    match /block_permission/{document=**} {
+        # only allow people to read the permissions if they have ANY permission to this page or namespace
+        
+        allow read: if request.auth.uid == resource.data.nspace;
+        allow read: if request.auth.uid == request.resource.data.nspace && resource.data.nspace == request.resource.data.nspace;
+        
+        allow read: if hasBlockPermissionWrite(request.resource.data.root, request.resource.data.nspace);
+        allow read: if hasBlockPermissionRead(request.resource.data.root, request.resource.data.nspace);
+        
+    }
+        
+    match /block_permission_user/{document=**} {
+        
+        // a user should be able to read their own block_permission_user table to see
+        // what they can read but they should NOT be able to perform any type of
+        // mutation on it and this needs to be mediated via a cloud function.
+        
+        allow read: if resource == null || resource.data == null;
+        
+        allow read: if request.auth.uid == resource.data.uid;
         
     }
         
