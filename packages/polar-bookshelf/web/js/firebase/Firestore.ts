@@ -150,7 +150,7 @@ export namespace Firestore {
                     await withinAnimationFrameAsync(async () => {
 
                         console.log("Enabling firestore persistence (within animation frame)....");
-                        await firestore.enablePersistence({synchronizeTabs: true});
+                        await firestore.enablePersistence({synchronizeTabs: false});
                         console.log("Enabling firestore persistence (within animation frame)....done");
 
                     })
@@ -168,6 +168,12 @@ export namespace Firestore {
         // seems to not impact performance at all.
         await Tracer.async(doExecAsync, 'Firestore.enablePersistence');
 
+    }
+
+    export async function terminate() {
+        console.log("Terminating Firestore...")
+        await instance?.terminate();
+        console.log("terminating firestore...done")
     }
 
 }
