@@ -6,3 +6,4 @@ fetch-retries=5
 fetch-timeout=1200000
 fetch-retry-mintimeout=1200000
 fetch-retry-maxtimeout=1200000
+always-auth=true

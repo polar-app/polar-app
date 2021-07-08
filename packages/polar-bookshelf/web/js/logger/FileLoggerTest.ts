@@ -3,7 +3,7 @@ import {FileLogger} from './FileLogger';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {Files} from 'polar-shared/src/util/Files';
 
-describe('FileLogger', function() {
+xdescribe('FileLogger', function() {
 
     it("Basic", async function() {
 
