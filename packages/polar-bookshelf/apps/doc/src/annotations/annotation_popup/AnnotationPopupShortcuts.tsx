@@ -7,6 +7,7 @@ import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnota
 import {useAnnotationMutationsContext} from "../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {ColorStr} from "../../../../../web/js/ui/colors/ColorSelectorBox";
 import {usePersistentRouteContext} from "../../../../../web/js/apps/repository/PersistentRoute";
+import {useCopyAnnotation} from "./AnnotationPopupBar";
 
 export const ANNOTATION_COLOR_SHORTCUT_KEYS = ["1", "2", "3", "4", "5", "6"];
 
@@ -76,20 +77,20 @@ const annotationBarKeyMap = keyMapWithGroup({
 export const AnnotationPopupShortcuts: React.FC = () => {
     const {toggleAction} = useAnnotationPopup();
     const {active} = usePersistentRouteContext();
+    const copyAnnotation = useCopyAnnotation();
 
-    const toggleActionRef = useRefWithUpdates((action: AnnotationPopupActionEnum) => {
-        toggleAction(action)();
-    });
+    const toggleActionRef = useRefWithUpdates((action: AnnotationPopupActionEnum) => toggleAction(action)());
+    const copyAnnotationRef = useRefWithUpdates(() => copyAnnotation());
 
     const handlers = React.useMemo<HandlerMap>(() => ({
         EDIT_ANNOTATION: () => toggleActionRef.current(AnnotationPopupActionEnum.EDIT),
-        COPY_ANNOTATION: () => toggleActionRef.current(AnnotationPopupActionEnum.COPY),
+        COPY_ANNOTATION: () => copyAnnotationRef.current(),
         CREATE_COMMENT: () => toggleActionRef.current(AnnotationPopupActionEnum.CREATE_COMMENT),
         CREATE_FLASHCARD: () => toggleActionRef.current(AnnotationPopupActionEnum.CREATE_FLASHCARD),
         CREATE_AI_FLASHCARD: () => toggleActionRef.current(AnnotationPopupActionEnum.CREATE_AI_FLASHCARD),
         EDIT_TAGS: () => toggleActionRef.current(AnnotationPopupActionEnum.EDIT_TAGS),
         DELETE: () => toggleActionRef.current(AnnotationPopupActionEnum.DELETE),
-    }), [toggleActionRef]);
+    }), [toggleActionRef, copyAnnotationRef]);
 
     if (!active) {
         return null;
