@@ -7,6 +7,7 @@ import {Account} from "../../../accounts/Account";
 import {Accounts} from "../../../accounts/Accounts";
 import {SignInSuccessURLs} from "../../../../../apps/repository/js/login/SignInSuccessURLs";
 import firebase from 'firebase/app'
+import {Firestore} from "../../../firebase/Firestore";
 
 // TODO: I don't like this so we're going to have to find a solution long term.
 const POLAR_APP_SITES = [
@@ -171,7 +172,8 @@ export class BrowserAuthHandler extends FirebaseAuthHandler {
         // TODO useHistory here to push so that the app doesn't have to
         // reload but the problem is that we need to use hooks for this...
 
-        window.location.href = newLocation;
+        Firestore.terminateAndRedirect(newLocation)
+            .catch(err => console.error(err));
 
     }
 

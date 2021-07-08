@@ -6,6 +6,7 @@ import {Logger} from "polar-shared/src/logger/Logger";
 import {Tracer} from 'polar-shared/src/util/Tracer';
 import {StoreCaches} from "polar-snapshot-cache/src/StoreCaches";
 import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
+import {URLStr} from "polar-shared/src/util/Strings";
 
 const log = Logger.create();
 
@@ -174,6 +175,15 @@ export namespace Firestore {
         console.log("Terminating Firestore...")
         await instance?.terminate();
         console.log("terminating firestore...done")
+    }
+
+    /**
+     * Used when we have to redirect to a new URL because Firestore has to be
+     * terminated or it won't work with Safari and will lock up the browser.
+     */
+    export async function terminateAndRedirect(url: URLStr) {
+        await terminate();
+        window.location.href = url;
     }
 
 }
