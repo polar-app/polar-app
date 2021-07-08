@@ -150,7 +150,7 @@ export namespace Firestore {
                     await withinAnimationFrameAsync(async () => {
 
                         console.log("Enabling firestore persistence (within animation frame)....");
-                        await firestore.enablePersistence({synchronizeTabs: false});
+                        await firestore.enablePersistence({synchronizeTabs: true});
                         console.log("Enabling firestore persistence (within animation frame)....done");
 
                     })

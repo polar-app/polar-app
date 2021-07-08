@@ -21,6 +21,8 @@ function handleAuthResult(authResult: firebase.auth.UserCredential, isNewUser: b
         Analytics.event2('auth:handleAuthResult', {isNewUser, redirectURL});
 
         async function doAsync() {
+            // The terminate is important and needed for Safari IndexDB to
+            // prevent a lockup
             await Firestore.terminate();
             document.location.href = redirectURL;
         }
