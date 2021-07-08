@@ -7,7 +7,7 @@ describe('Files', function() {
 
     describe('atomic writes', async function() {
 
-        const tmp = FilePaths.join(os.tmpdir(), 'atomic-write.txt');
+        const tmp = FilePaths.join(os.tmpdir(), 'files-atomic-write.txt');
         await Files.writeFileAsync(tmp, 'this is the data', {atomic: true});
 
     });
@@ -267,10 +267,10 @@ describe('Files', function() {
 
         it("from FileRef", async function() {
 
-            const dataInputPath = FilePaths.join(tmpdir, "data-input.txt");
+            const dataInputPath = FilePaths.join(tmpdir, "from-FileRef-data-input.txt");
             await Files.writeFileAsync(dataInputPath, "hello world");
 
-            const dataOutputPath = FilePaths.join(tmpdir, "data-output.txt");
+            const dataOutputPath = FilePaths.join(tmpdir, "from-FileRef-data-output.txt");
 
             const fileRef: FileHandle = {path: dataInputPath};
 
