@@ -35,6 +35,8 @@ import {IBlockContentStructure} from "../HTMLToBlocks";
 import {DOMBlocks} from "../contenteditable/BlockContentEditable";
 import {BlockIDStr, IBlock, IBlockContent, IBlockLink, NamespaceIDStr, UIDStr} from "polar-blocks/src/blocks/IBlock";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
+import {WriteController, WriteFileProgress} from "../../../../web/js/datastore/Datastore";
+import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
 
 export const ENABLE_UNDO_TRACING = false;
 
@@ -135,7 +137,17 @@ export interface IInsertBlocksContentStructureOpts {
     blockIDs?: ReadonlyArray<BlockIDStr>;
 }
 
-export type Interstitial = {position: 'top' | 'bottom', blobURL: string, type: 'image', id: string};
+export type InterstitialTypes = 'image';
+
+export type Interstitial = {
+    position: IDropPosition;
+    blobURL: string;
+    type: InterstitialTypes;
+    id: string;
+    controller: WriteController;
+    progressTracker: ProgressTrackerManager<WriteFileProgress>;
+};
+
 export type InterstitialMap = { [key: string]: Interstitial[] | undefined };
 
 /**

@@ -20,6 +20,8 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {HTMLToBlocks, IBlockContentStructure} from "../HTMLToBlocks";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
+import {WriteController, WriteFileProgress} from "../../datastore/Datastore";
+import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
 
 function assertTextBlock(content: BlockContent): asserts content is MarkdownContent | NameContent {
 
@@ -542,6 +544,18 @@ describe('BlocksStore', function() {
     });
 
     describe("interstitials", () => {
+        let controller: WriteController;
+        let progressTracker: ProgressTrackerManager<WriteFileProgress>;
+
+        beforeEach(() => {
+            controller = {
+                pause: () => false,
+                resume: () => false,
+                cancel: () => false,
+            };
+            progressTracker = new ProgressTrackerManager();
+        });
+
         describe("addInterstitial", () => {
             it("should be able to add interstitials properly", () => {
                 const store = createStore();
@@ -551,14 +565,18 @@ describe('BlocksStore', function() {
                     id: 'someid',
                     position: 'top',
                     blobURL: 'url',
+                    controller,
+                    progressTracker,
                 });
 
-                assert.deepEqual(store.interstitials,{
+                assertJSON(store.interstitials, {
                     '102': [{
                         type: 'image',
                         id: 'someid',
                         position: 'top',
                         blobURL: 'url',
+                        controller,
+                        progressTracker,
                     }]
                 });
             });
@@ -571,25 +589,33 @@ describe('BlocksStore', function() {
                     id: 'id1',
                     position: 'top',
                     blobURL: 'url1',
+                    controller,
+                    progressTracker,
                 });
                 store.addInterstitial('102', {
                     type: 'image',
                     id: 'id2',
                     position: 'top',
                     blobURL: 'url2',
+                    controller,
+                    progressTracker,
                 });
 
-                assert.deepEqual(store.interstitials,{
+                assertJSON(store.interstitials,{
                     '102': [{
                         type: 'image',
                         id: 'id2',
                         position: 'top',
                         blobURL: 'url2',
+                        controller,
+                        progressTracker,
                     }, {
                         type: 'image',
                         id: 'id1',
                         position: 'top',
                         blobURL: 'url1',
+                        controller,
+                        progressTracker,
                     }]
                 });
             });
@@ -604,11 +630,13 @@ describe('BlocksStore', function() {
                     id: 'id1',
                     position: 'top',
                     blobURL: 'url1',
+                    controller,
+                    progressTracker,
                 });
 
                 store.removeInterstitial('102', 'id1');
 
-                assert.deepEqual(store.interstitials, {});
+                assertJSON(store.interstitials, {});
             });
         });
 
@@ -620,11 +648,13 @@ describe('BlocksStore', function() {
                     id: 'id1',
                     position: 'top',
                     blobURL: 'url1',
+                    controller,
+                    progressTracker,
                 };
 
                 store.addInterstitial('102', interstitial);
 
-                assert.deepEqual(store.getInterstitials('102'), [interstitial]);
+                assertJSON(store.getInterstitials('102'), [interstitial]);
             });
         });
     });
