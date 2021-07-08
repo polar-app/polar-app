@@ -2,6 +2,7 @@ import {assert} from 'chai';
 import {Files, FileHandle} from './Files';
 import {FilePaths} from './FilePaths';
 import os from "os";
+import {TestingFiles} from "../test/TestingFiles";
 
 describe('Files', function() {
 
@@ -267,10 +268,10 @@ describe('Files', function() {
 
         it("from FileRef", async function() {
 
-            const dataInputPath = FilePaths.join(tmpdir, "from-FileRef-data-input.txt");
+            const dataInputPath = TestingFiles.createPath();
             await Files.writeFileAsync(dataInputPath, "hello world");
 
-            const dataOutputPath = FilePaths.join(tmpdir, "from-FileRef-data-output.txt");
+            const dataOutputPath = TestingFiles.createPath();
 
             const fileRef: FileHandle = {path: dataInputPath};
 
