@@ -144,7 +144,7 @@ export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
 
     }
 
-    protected async currentUser(): Promise<firebase.User | undefined> {
+    protected async currentUser(): Promise<firebase.User | null> {
         return await Firebase.currentUserAsync();
     }
 

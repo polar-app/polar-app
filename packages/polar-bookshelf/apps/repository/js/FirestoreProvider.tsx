@@ -30,8 +30,14 @@ interface IProps {
 
 async function doAsync(): Promise<IFirestoreContext> {
 
+    console.log("FIXME: trying to get firestore via async...");
     const firestore = await Firestore.getInstance();
+    console.log("FIXME: trying to get firestore via async...done");
+
+    console.log("FIXME: trying to get current user ....")
     const user = await Firebase.currentUserAsync();
+    console.log("FIXME: trying to get current user ....done");
+
     const uid = user?.uid;
 
     await FirestoreCollections.configure(firestore);

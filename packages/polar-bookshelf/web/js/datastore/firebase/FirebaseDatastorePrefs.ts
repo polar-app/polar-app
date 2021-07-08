@@ -18,7 +18,7 @@ import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 export class FirebaseDatastorePrefs extends DictionaryPrefs implements IPersistentPrefs {
 
     private firestore: IFirestoreClient | undefined;
-    private user: firebase.User | undefined;
+    private user: firebase.User | null = null;
 
     private initLatch = new Latch<boolean>();
 
