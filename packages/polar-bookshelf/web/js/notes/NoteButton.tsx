@@ -6,6 +6,7 @@ interface IProps {
     readonly style?: React.CSSProperties;
     readonly disabled?: boolean;
     readonly onClick: (event: React.MouseEvent) => void;
+    readonly onMouseDown?: (event: React.MouseEvent) => void;
     readonly children: JSX.Element;
 }
 
@@ -49,6 +50,7 @@ export const NoteButton = React.memo(function NoteButton(props: IProps) {
     return (
         <div onMouseEnter={handleMouseEnter}
              onMouseLeave={handleMouseLeave}
+             onMouseDown={props.onMouseDown}
              onClick={handleClick}
              className={props.className}
              style={{
