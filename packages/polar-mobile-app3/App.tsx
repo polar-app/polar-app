@@ -28,24 +28,25 @@ const App = () => {
                     flexDirection: 'column',
                 }}>
                 <View style={{flex: 1}}>
-                    <InAppLiteServer onBuy={async (planName) => {
-                        const products = await billing.getProducts({ios: ['plan_' + planName]});
+                    <InAppLiteServer
+                        onBuy={async (planName) => {
+                            const products = await billing.getProducts({ios: ['plan_' + planName]});
 
-                        // Get first product that matches this codename
-                        const product = products.find(() => true);
+                            // Get first product that matches this codename
+                            const product = products.find(() => true);
 
-                        if (!product) {
-                            Alert.alert("Can not find IAP product for the selected plan: " + planName);
-                            return;
-                        }
+                            if (!product) {
+                                Alert.alert("Can not find a configured Apple product for the selected plan: " + planName);
+                                return;
+                            }
 
-                        try {
-                            await billing.requestPurchase(product.productId);
-                            // @TODO attach listeners for new purchase, just like I did it experimentally in IapTest.tsx
-                        } catch (err) {
-                            Alert.alert(err.code, err.message);
-                        }
-                    }}/>
+                            try {
+                                await billing.requestPurchase(product.productId);
+                                // @TODO attach listeners for new purchase, just like I did it experimentally in IapTest.tsx
+                            } catch (err) {
+                                Alert.alert(err.code, err.message);
+                            }
+                        }}/>
                 </View>
                 <View style={{height: "auto"}}>
                     <IapTest/>

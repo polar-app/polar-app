@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import RNFS from 'react-native-fs';
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, Button, StyleSheet, Text, View} from 'react-native';
 import WebView from 'react-native-webview';
 // @ts-ignore
 import StaticServer from 'react-native-static-server';
 
 interface Props {
     // Callback invoked when user wants to buy a plan
-    onBuy: (planName: string) => void;
+    onBuy: (planName: "plus" | "pro") => void;
 }
 
 export class InAppLiteServer extends Component<Props, {
@@ -20,8 +20,11 @@ export class InAppLiteServer extends Component<Props, {
 
     constructor(props: any) {
         super(props);
-        let path = RNFS.MainBundlePath + '/static/polar';
-        this.server = new StaticServer(9000, path);
+        // Switch between the real Polar Bookshelf /dist and a dummy frontend by using one variable or another
+        const realFrontendPath = RNFS.MainBundlePath + '/static/polar';
+        const dummyFrontendPath = RNFS.MainBundlePath + '/static/dummy-frontend';
+
+        this.server = new StaticServer(9000, dummyFrontendPath);
         this.state = {
             isRunning: false,
             url: '',
@@ -47,15 +50,22 @@ export class InAppLiteServer extends Component<Props, {
 
     render() {
         if (!this.state.isRunning) {
-            return <Text style={styles.text}>Server not running yet</Text>;
+            return <ActivityIndicator size="large"/>
         }
         const runFirst = `
             // Allow the React app to read this and do stuff based on the fact, e.g. show or hide UI elements
             window.isNativeApp = true;
-            window.onerror = function(message, sourcefile, lineno, colno, error) {
-              alert("Message: " + message + " - Source: " + sourcefile + " Line: " + lineno + ":" + colno);
-              return true;
-            };
+            
+            // Propagate all logs from the WebView to the native app through the WebView bridge using postMessage
+             const consoleLog = (type, log) => window.ReactNativeWebView.postMessage(JSON.stringify({'action': 'console_log', 'data': {'type': type, 'log': log}}));
+              console = {
+                  log: (log) => consoleLog('log', log),
+                  debug: (log) => consoleLog('debug', log),
+                  info: (log) => consoleLog('info', log),
+                  warn: (log) => consoleLog('warn', log),
+                  error: (log) => consoleLog('error', log),
+                };
+    
             true; // note: this is required, or you'll sometimes get silent failures
         `;
         return (
@@ -84,18 +94,39 @@ export class InAppLiteServer extends Component<Props, {
                     style={{marginTop: 20}}
                     injectedJavaScriptBeforeContentLoaded={runFirst}
                     onMessage={(event) => {
-                        const payload: {
-                            action: string,
-                            data: {
-                                plan: string,
-                            },
-                        } = JSON.parse(event.nativeEvent.data);
+                        let dataPayload;
+                        try {
+                            dataPayload = JSON.parse(event.nativeEvent.data);
+                        } catch (e) {
+                        }
 
-                        this.props.onBuy(payload.data.plan);
+                        if (dataPayload) {
+                            if (dataPayload.type === 'Console') {
+                                console.info(`[Console] ${JSON.stringify(dataPayload.data)}`);
+                                return;
+                            } else {
+                                console.log(dataPayload)
 
-                        // @ts-ignore
-                        alert('Initiating purchase of plan: ' + payload.data.plan);
-                        console.log(payload);
+                                const payload: {
+                                    action: "console_log" | "buy_play",
+                                    data?: {
+                                        plan?: "plus" | "pro",
+                                    },
+                                } = JSON.parse(event.nativeEvent.data);
+
+                                switch (payload.action) {
+                                    case "console_log":
+                                        break;
+                                    case "buy_play":
+                                        console.log(payload);
+                                        this.props.onBuy(payload.data!.plan!);
+                                        break;
+                                }
+
+
+                            }
+                        }
+
 
                     }}
                 />

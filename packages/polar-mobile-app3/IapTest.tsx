@@ -34,75 +34,73 @@ export class IapTest extends Component<any,
     purchaseErrorSubscription: EmitterSubscription | null = null
 
     componentDidMount() {
-        this.getPurchases().then(value => {
-            console.log(value);
-            Alert.alert('dsa');
-        }).catch(reason => {
-            Alert.alert(reason.toString());
-        })
+        // this.getPurchases().then(value => {
+        //     console.log(value);
+        // }).catch(reason => {
+        //     Alert.alert(reason.toString());
+        // })
         RNIap.initConnection().then((res: boolean) => {
-            if (!res) {
-                Alert.alert("Can not make in app purchases");
-                return;
-            }
-
-
-            const productIds = Platform.select({
-                ios: ['plan_plus'],
-                android: ['com.example.coins100'],
-            });
-
-            RNIap.getProducts(productIds!)
-                .then(products => {
-                    this.setState({products});
-                    console.log('Products:');
-                    console.log(products);
-                })
-                .catch(reason => {
-                    console.warn('Can not retrieve products:');
-                    console.warn(reason.code);
-                    console.warn(reason.message);
-                });
-
-            this.purchaseUpdateSubscription = purchaseUpdatedListener((purchase: InAppPurchase | SubscriptionPurchase | ProductPurchase) => {
-                console.log('purchaseUpdatedListener', purchase);
-                const receipt = purchase.transactionReceipt;
-                console.log('receipt', receipt);
-                if (receipt) {
-                    PolarBackendService.validateReceiptOnServer(purchase.transactionReceipt)
-                        .then(async (deliveryResult) => {
-                            if (isSuccess(deliveryResult)) {
-                                // Tell the store that you have delivered what has been paid for.
-                                // Failure to do this will result in the purchase being refunded on Android and
-                                // the purchase event will reappear on every relaunch of the app until you succeed
-                                // in doing the below. It will also be impossible for the user to purchase consumables
-                                // again until you do this.
-
-                                try {
-                                    await RNIap.finishTransaction(purchase, true);
-                                    // If not consumable
-                                    await RNIap.finishTransaction(purchase, false);
-                                } catch (e) {
-                                    console.error(e);
-                                }
-                            } else {
-                                // Retry / conclude the purchase is fraudulent, etc...
-                            }
-                        });
-                }
-            });
-
-            this.purchaseErrorSubscription = purchaseErrorListener((error: PurchaseError) => {
-                console.warn('purchaseErrorListener', error);
-                switch (error.code) {
-                    case "E_USER_CANCELLED":
-                        Alert.alert("Purchase cancelled. Please try again");
-                        break;
-                    default:
-                        Alert.alert(String(error.code), error.message);
-                        break;
-                }
-            });
+            // if (!res) {
+            //     Alert.alert("Can not make in app purchases");
+            //     return;
+            // }
+            //
+            // const productIds = Platform.select({
+            //     ios: ['plan_plus'],
+            //     android: ['com.example.coins100'],
+            // });
+            //
+            // RNIap.getProducts(productIds!)
+            //     .then(products => {
+            //         this.setState({products});
+            //         console.log('Products:');
+            //         console.log(products);
+            //     })
+            //     .catch(reason => {
+            //         console.warn('Can not retrieve products:');
+            //         console.warn(reason.code);
+            //         console.warn(reason.message);
+            //     });
+            //
+            // this.purchaseUpdateSubscription = purchaseUpdatedListener((purchase: InAppPurchase | SubscriptionPurchase | ProductPurchase) => {
+            //     console.log('purchaseUpdatedListener', purchase);
+            //     const receipt = purchase.transactionReceipt;
+            //     console.log('receipt', receipt);
+            //     if (receipt) {
+            //         PolarBackendService.validateReceiptOnServer(purchase.transactionReceipt)
+            //             .then(async (deliveryResult) => {
+            //                 if (isSuccess(deliveryResult)) {
+            //                     // Tell the store that you have delivered what has been paid for.
+            //                     // Failure to do this will result in the purchase being refunded on Android and
+            //                     // the purchase event will reappear on every relaunch of the app until you succeed
+            //                     // in doing the below. It will also be impossible for the user to purchase consumables
+            //                     // again until you do this.
+            //
+            //                     try {
+            //                         await RNIap.finishTransaction(purchase, true);
+            //                         // If not consumable
+            //                         await RNIap.finishTransaction(purchase, false);
+            //                     } catch (e) {
+            //                         console.error(e);
+            //                     }
+            //                 } else {
+            //                     // Retry / conclude the purchase is fraudulent, etc...
+            //                 }
+            //             });
+            //     }
+            // });
+            //
+            // this.purchaseErrorSubscription = purchaseErrorListener((error: PurchaseError) => {
+            //     console.warn('purchaseErrorListener', error);
+            //     switch (error.code) {
+            //         case "E_USER_CANCELLED":
+            //             Alert.alert("Purchase cancelled. Please try again");
+            //             break;
+            //         default:
+            //             Alert.alert(String(error.code), error.message);
+            //             break;
+            //     }
+            // });
         });
 
     }

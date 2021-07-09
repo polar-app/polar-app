@@ -1,25 +1,43 @@
-<style>
-    html, body {
-        margin: 0;
-        padding: 0;
-    }
-</style>
+<html>
+<head>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+</head>
+
 <body>
 <div style="text-align: center;margin-top: 40px;">
-    <h1 style="font-size: 80px;">
+    <div>
+        <img src="./logo-e66969952d7d23385b2b3d00a4486944.svg" style="max-width: 80%; min-width: 180px;" alt=""/>
+    </div>
+    <h1>
         Welcome to Polar!
     </h1>
+    <hr/>
     <div>
-        <img src="./logo-e66969952d7d23385b2b3d00a4486944.svg" style="width: 300px;" alt=""/>
-    </div>
-    <div>
-        <button style="font-size: 80px;" type="button" onclick="buyPlan('plus')">Buy the Plus plan</button>
+        <h3>
+            Buy a plan:
+        </h3>
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                type="button" onclick="buyPlan('plus')">Plus
+        </button>
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                type="button" onclick="buyPlan('pro')">Pro
+        </button>
     </div>
 </div>
 <script>
     function buyPlan(planName) {
         window.ReactNativeWebView.postMessage(JSON.stringify({
-            action: 'buyPlan',
+            action: 'buy_play',
             data: {
                 plan: planName,
             }
@@ -27,3 +45,5 @@
     }
 </script>
 </body>
+
+</html>
