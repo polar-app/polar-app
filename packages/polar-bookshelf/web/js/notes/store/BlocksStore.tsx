@@ -685,7 +685,6 @@ export class BlocksStore implements IBlocksStore {
             },
         ]);
 
-        this.setActiveWithPosition(id, 'start');
     }
 
     @action public collapse(id: BlockIDStr) {
@@ -699,7 +698,6 @@ export class BlocksStore implements IBlocksStore {
             },
         ]);
 
-        this.setActiveWithPosition(id, 'start');
     }
 
     public toggleExpand(id: BlockIDStr) {
