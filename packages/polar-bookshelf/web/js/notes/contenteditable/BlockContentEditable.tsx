@@ -81,7 +81,7 @@ export const BlockContentEditable = (props: IProps) => {
 
     }, []);
 
-    const handlePaste = usePasteHandler({onPasteImage, onPasteError, onPasteBlocks});
+    const handlePaste = usePasteHandler({onPasteImage, onPasteError, onPasteBlocks, id: props.id});
     const namedBlocks = useNamedBlocks();
 
     const noteLinkActions = React.useMemo(() => {
