@@ -62,6 +62,7 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
 
     return (
         <SimpleInputForm<ClozeForm | BasicFrontBackForm>
+            key={flashcardType}
             className={className}
             style={style}
             inputs={inputs}
