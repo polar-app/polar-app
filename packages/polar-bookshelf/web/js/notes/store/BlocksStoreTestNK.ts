@@ -1,5 +1,5 @@
 import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
-import {BlockContent, BlocksStore} from "./BlocksStore";
+import {BlockContent, BlocksStore, Interstitial} from "./BlocksStore";
 import {assertJSON} from "../../test/Assertions";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
@@ -20,6 +20,8 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {HTMLToBlocks, IBlockContentStructure} from "../HTMLToBlocks";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
+import {WriteController, WriteFileProgress} from "../../datastore/Datastore";
+import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
 
 function assertTextBlock(content: BlockContent): asserts content is MarkdownContent | NameContent {
 
@@ -168,6 +170,7 @@ describe('BlocksStore', function() {
             assert.isTrue(isObservableProp(store, 'selected'));
             assert.isTrue(isObservableProp(store, 'dropTarget'));
             assert.isTrue(isObservableProp(store, 'dropSource'));
+            assert.isTrue(isObservableProp(store, 'interstitials'));
 
         });
 
@@ -500,6 +503,7 @@ describe('BlocksStore', function() {
                     ],
                 }
             },
+            "_interstitials": {},
             "_selected": {},
             "uid": "1234",
             "undoQueue": {
@@ -537,6 +541,122 @@ describe('BlocksStore', function() {
 
         });
 
+    });
+
+    describe("interstitials", () => {
+        let controller: WriteController;
+        let progressTracker: ProgressTrackerManager<WriteFileProgress>;
+
+        beforeEach(() => {
+            controller = {
+                pause: () => false,
+                resume: () => false,
+                cancel: () => false,
+            };
+            progressTracker = new ProgressTrackerManager();
+        });
+
+        describe("addInterstitial", () => {
+            it("should be able to add interstitials properly", () => {
+                const store = createStore();
+
+                store.addInterstitial('102', {
+                    type: 'image',
+                    id: 'someid',
+                    position: 'top',
+                    blobURL: 'url',
+                    controller,
+                    progressTracker,
+                });
+
+                assertJSON(store.interstitials, {
+                    '102': [{
+                        type: 'image',
+                        id: 'someid',
+                        position: 'top',
+                        blobURL: 'url',
+                        controller,
+                        progressTracker,
+                    }]
+                });
+            });
+
+            it("should store new interstitials that belong to the same block first", () => {
+                const store = createStore();
+
+                store.addInterstitial('102', {
+                    type: 'image',
+                    id: 'id1',
+                    position: 'top',
+                    blobURL: 'url1',
+                    controller,
+                    progressTracker,
+                });
+                store.addInterstitial('102', {
+                    type: 'image',
+                    id: 'id2',
+                    position: 'top',
+                    blobURL: 'url2',
+                    controller,
+                    progressTracker,
+                });
+
+                assertJSON(store.interstitials,{
+                    '102': [{
+                        type: 'image',
+                        id: 'id2',
+                        position: 'top',
+                        blobURL: 'url2',
+                        controller,
+                        progressTracker,
+                    }, {
+                        type: 'image',
+                        id: 'id1',
+                        position: 'top',
+                        blobURL: 'url1',
+                        controller,
+                        progressTracker,
+                    }]
+                });
+            });
+        });
+
+        describe("removeInterstitial", () => {
+            it("should delete interstitials that belong to a specific block properly", () => {
+                const store = createStore();
+
+                store.addInterstitial('102', {
+                    type: 'image',
+                    id: 'id1',
+                    position: 'top',
+                    blobURL: 'url1',
+                    controller,
+                    progressTracker,
+                });
+
+                store.removeInterstitial('102', 'id1');
+
+                assertJSON(store.interstitials, {});
+            });
+        });
+
+        describe("getInterstitials", () => {
+            it("should get all the interstitials for a specific block", () => {
+                const store = createStore();
+                const interstitial: Interstitial = {
+                    type: 'image',
+                    id: 'id1',
+                    position: 'top',
+                    blobURL: 'url1',
+                    controller,
+                    progressTracker,
+                };
+
+                store.addInterstitial('102', interstitial);
+
+                assertJSON(store.getInterstitials('102'), [interstitial]);
+            });
+        });
     });
 
     describe("indent/unindent Block", () => {

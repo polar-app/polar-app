@@ -99,21 +99,6 @@ export namespace Accounts {
             .collection(COLLECTION_NAME)
             .doc(id);
 
-        const onConfirm = () => {
-
-            const url = new URL(document.location.href);
-            url.hash = "#";
-
-            const newLocation = url.toString();
-
-            if (document.location.href === newLocation) {
-                document.location.reload();
-            } else {
-                document.location.href = newLocation;
-            }
-
-        };
-
         let account: Account | undefined;
 
         // TODO: move this to the collections class for dealing with snapshots.

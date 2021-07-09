@@ -260,8 +260,9 @@ jobs:
             source packages/polar-bookshelf-secrets/credentials.sh
             yarn run set-registry-bytesafe-rw
             export FIREBASE_HOSTING_TARGET=<< parameters.firebase_hosting_target >>
-            rm -rfv packages/polar-app-private/polar-hooks/functions/node_modules
-            yarn run dist-release-webapp-release
+            (cd packages/polar-app-private/polar-hooks/functions && rm -rf node_modules && npm install)
+            (cd packages/polar-app-private/polar-hooks/functions && echo Pushing to target ${FIREBASE_HOSTING_TARGET} && firebase use polar-32b0f && firebase target:clear hosting app.getpolarized.io && firebase target:apply hosting app.getpolarized.io ${FIREBASE_HOSTING_TARGET} && firebase deploy --only hosting,storage,firestore)
+            (cd packages/polar-app-private/polar-hooks/ && ./sbin/firebase-deploy-functions)
 
   deploy_getpolarized_io:
     parameters:

@@ -48,9 +48,11 @@ interface INoteRootParams {
 export const NoteRoot: React.FC<RouteComponentProps<INoteRootParams>> = (props) => {
     const { match: { params } } = props;
 
+    const target = React.useMemo(() => params.id ? decodeURIComponent(params.id) : undefined, [params.id]);
+
     return (
         <NoteProviders>
-            {params.id ? <SingleNoteRendrer target={params.id} /> : <DailyNotesRenderer />}
+            {target ? <SingleNoteRendrer target={target} /> : <DailyNotesRenderer />}
         </NoteProviders>
     );
 };

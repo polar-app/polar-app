@@ -14,10 +14,10 @@ type IBlocksTreeProviderProps = {
 
 export const BlocksTreeProvider: React.FC<IBlocksTreeProviderProps> = ({ root, children }) => {
     const blocksStore = useBlocksStore();
-    const blocks = new BlocksTreeStore(root, blocksStore);
+    const blocksTreeStore = React.useMemo(() => new BlocksTreeStore(root, blocksStore), [blocksStore, root]);
 
     return (
-        <BlocksTreeContext.Provider children={children} value={blocks} />
+        <BlocksTreeContext.Provider children={children} value={blocksTreeStore} />
     );
 };
 
