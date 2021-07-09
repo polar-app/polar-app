@@ -31,6 +31,7 @@ import {StartTokenAuthFunction} from "./impl/token_auth/StartTokenAuthFunction";
 import {VerifyTokenAuthFunction} from "./impl/token_auth/VerifyTokenAuthentication";
 import {CloudFunctionsWarmer} from "./impl/CloudFunctionsWarmer";
 import {CreateSnapshotFunction} from "./impl/snapshots/CreateSnapshotFunctions";
+import {AppleIapCallback} from "./impl/billing/AppleIapCallback";
 
 // import {DocPreviewFunction} from "./impl/docs/DocPreviewFunctions";
 // import {DocPreviewSitemapFunction} from "./impl/sitemaps/DocPreviewSitemapFunction";
@@ -72,3 +73,4 @@ exports.StartTokenAuth = StartTokenAuthFunction;
 exports.VerifyTokenAuth = VerifyTokenAuthFunction;
 exports.CloudFunctionsWarmer = CloudFunctionsWarmer;
 exports.CreateSnapshotFunction = CreateSnapshotFunction;
+exports.AppleIapCallback = AppleIapCallback;
