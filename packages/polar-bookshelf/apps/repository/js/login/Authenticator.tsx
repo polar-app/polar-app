@@ -4,7 +4,6 @@ import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import Button from '@material-ui/core/Button';
 import {FAGoogleIcon} from "../../../../web/js/mui/MUIFontAwesome";
 import EmailIcon from '@material-ui/icons/Email';
-import CheckIcon from '@material-ui/icons/Check';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import TextField from '@material-ui/core/TextField';
