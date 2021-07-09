@@ -7,8 +7,65 @@ import {FirestoreBlocks} from "./FirestoreBlocks";
 import {Asserts} from "polar-shared/src/Asserts";
 import firebase from 'firebase';
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
+import {IBlock, IBlockContent} from '../../../../../polar-app-public/polar-blocks/src/blocks/IBlock';
+import {URLStr} from '../../../../../polar-app-public/polar-shared/src/util/Strings';
+import {getConfig} from '../../firebase/Firebase';
+import {ISODateTimeStrings} from '../../../../../polar-app-public/polar-shared/src/metadata/ISODateTimeStrings';
 
 const IS_NODE = typeof window === 'undefined';
+
+
+export namespace FileTombstoneWriter {
+    const STORAGE_BUCKET = getConfig().storageBucket;
+
+    export function getFileNameFromBlock(block: IBlock<IBlockContent>) {
+        switch (block.content.type) {
+            case 'image':
+                return getFileNameFromStorageURL(block.content.src);
+        }
+
+        return undefined;
+    }
+
+    export function isCloudStorageURL(url: URLStr): boolean {
+        return url.indexOf(STORAGE_BUCKET) > -1;
+    }
+
+    export function getFileNameFromStorageURL(url: URLStr): string | undefined {
+        if (! isCloudStorageURL(url)) {
+            return undefined;
+        }
+        const { pathname } = new URL(url);
+        const pathnameParts = pathname.split('/');
+        return pathnameParts[pathnameParts.length - 1];
+    }
+
+    export async function doExec(firestore: IFirestore<unknown>,
+                                 blockMutations: ReadonlyArray<IBlocksStoreMutation>) {
+        const collection = firestore.collection('cloud_storage_tombstone');
+        const batch = firestore.batch();
+
+        for (const mutation of blockMutations) {
+
+            if (mutation.type === "added") {
+                const fileName = getFileNameFromBlock(mutation.added);
+                if (fileName) {
+                    const doc = collection.doc(fileName);
+                    batch.delete(doc);
+                }
+            } else if (mutation.type === "removed") {
+                const fileName = getFileNameFromBlock(mutation.removed);
+                if (fileName) {
+                    const doc = collection.doc(fileName);
+                    batch.set(doc, { created: ISODateTimeStrings.create() });
+                }
+            }
+        }
+
+        await batch.commit();
+    }
+}
+
 
 export namespace FirestoreBlocksPersistenceWriter {
 
@@ -83,6 +140,8 @@ export function useFirestoreBlocksPersistenceWriter(): BlocksPersistenceWriter {
         // TODO use a dialog handler for this...
         FirestoreBlocksPersistenceWriter.doExec(firestore, mutations)
             .catch(err => console.log("Unable to commit mutations: ", err, mutations));
+        FileTombstoneWriter.doExec(firestore, mutations)
+            .catch(err => console.log("Unable to commit storage tombstone updates for mutations: : ", err, mutations));
 
     }, [firestore]);
 
