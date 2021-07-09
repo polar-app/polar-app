@@ -178,7 +178,6 @@ export const BlockInner = observer((props: IProps) => {
     return (
         <div onMouseDown={handleMouseDown}
              onKeyDown={handleKeyDown}
-             data-blockID={id}
              className={clsx('Block', { [classes.selected]: selected }) }
              {...dragDropBinds}>
 
