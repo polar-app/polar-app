@@ -56,6 +56,7 @@ export class DefaultRewrites {
             },
             {
                 "source": [
+                    "/notes",
                     "/notes/:id",
                 ],
                 "destination": "/apps/repository/index.html"
