@@ -35,6 +35,8 @@ import {IBlockContentStructure} from "../HTMLToBlocks";
 import {DOMBlocks} from "../contenteditable/BlockContentEditable";
 import {BlockIDStr, IBlock, IBlockContent, IBlockLink, NamespaceIDStr, UIDStr} from "polar-blocks/src/blocks/IBlock";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
+import {WriteController, WriteFileProgress} from "../../../../web/js/datastore/Datastore";
+import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
 
 export const ENABLE_UNDO_TRACING = false;
 
@@ -135,6 +137,19 @@ export interface IInsertBlocksContentStructureOpts {
     blockIDs?: ReadonlyArray<BlockIDStr>;
 }
 
+export type InterstitialTypes = 'image';
+
+export type Interstitial = {
+    position: IDropPosition;
+    blobURL: string;
+    type: InterstitialTypes;
+    id: string;
+    controller: WriteController;
+    progressTracker: ProgressTrackerManager<WriteFileProgress>;
+};
+
+export type InterstitialMap = { [key: string]: Interstitial[] | undefined };
+
 /**
  * The result of a createBlock operation.
  */
@@ -175,11 +190,11 @@ export interface IActiveBlock {
 
 }
 
-export type DropPosition = 'top' | 'bottom';
+export type IDropPosition = 'top' | 'bottom';
 
 export interface IDropTarget {
     readonly id: BlockIDStr;
-    readonly pos: DropPosition;
+    readonly pos: IDropPosition;
 }
 
 export namespace ActiveBlockNonces {
@@ -288,6 +303,8 @@ export class BlocksStore implements IBlocksStore {
      */
     @observable _hasSnapshot: boolean = false;
 
+    @observable _interstitials: InterstitialMap = {};
+
     /*
      * Used to keep track of cursor positions in every note
      */
@@ -335,6 +352,10 @@ export class BlocksStore implements IBlocksStore {
         return this._selected;
     }
 
+    @computed get interstitials() {
+        return this._interstitials;
+    }
+
     public selectedIDs() {
         return Object.keys(this._selected);
     }
@@ -353,6 +374,30 @@ export class BlocksStore implements IBlocksStore {
                        .map(current => current!)
                        .filter(current => current.parent === undefined || ! selected.includes(current.parent))
 
+    }
+
+    getInterstitials(id: BlockIDStr): ReadonlyArray<Interstitial> {
+        return this._interstitials[id] || [];
+    }
+
+    @action addInterstitial(id: BlockIDStr, interstitial: Interstitial): void {
+        const current = this._interstitials[id];
+        if (! current) {
+            this._interstitials[id] = [interstitial];
+        } else {
+            this._interstitials[id] = [interstitial, ...current];
+        }
+    }
+
+    @action removeInterstitial(id: BlockIDStr, interstitialID: string): void {
+        const blockInterstitials = this._interstitials[id];
+        if (blockInterstitials) {
+            const newInterstitials = blockInterstitials.filter(({id}) => id !== interstitialID);
+            this._interstitials[id] = newInterstitials
+            if (newInterstitials.length === 0) {
+                delete this._interstitials[id];
+            }
+        }
     }
 
     @action public clearSelected(reason: string) {
@@ -379,6 +424,10 @@ export class BlocksStore implements IBlocksStore {
     @action public clearDrop() {
         this._dropTarget = undefined;
         this._dropSource = undefined;
+    }
+
+    @action public clearDropTarget() {
+        this._dropTarget = undefined;
     }
 
     @computed get hasSnapshot() {

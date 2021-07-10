@@ -42,7 +42,7 @@ type NamedBlock = BlockClass<NameContent | DateContent>;
 const focusFirstChild = (blocksStore: IBlocksStore, id: BlockIDStr) => {
     const root = blocksStore.getBlock(id);
     if (root) {
-        const firstChildID = root.itemsAsArray[0] || blocksStore.createNewBlock(root.id).id;
+        const firstChildID = root.itemsAsArray[0] || blocksStore.createNewBlock(root.id, { asChild: true }).id;
         blocksStore.setActiveWithPosition(firstChildID, 'start');
     }
 };

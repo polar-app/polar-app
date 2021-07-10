@@ -77,7 +77,7 @@ export function SimpleInputForm<
     return (
         <form onSubmit={handleSubmit} style={style} className={clsx(className, "p-3")}>
             <Box display="flex" flexDirection="column">
-                {Object.keys(inputs).map((key) => (
+                {Object.keys(inputs).map((key, i) => (
                     <div key={key} className={classes.textFieldOuter}>
                         <InputCompleteListener
                             type="meta+enter"
@@ -87,6 +87,7 @@ export function SimpleInputForm<
                         >
                             <TextField
                                 multiline
+                                autoFocus={i === 0}
                                 name={key}
                                 variant="outlined"
                                 rows={inputs[key].rows || 2}

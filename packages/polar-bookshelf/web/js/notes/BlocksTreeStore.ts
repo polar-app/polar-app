@@ -1,7 +1,7 @@
 import {MarkdownStr} from "polar-shared/src/util/Strings";
 import {IBlockContentStructure} from "./HTMLToBlocks";
 import {Block} from "./store/Block";
-import {BlockNameStr, DoIndentResult, DoUnIndentResult, IActiveBlock, IBlockActivated, IBlockMerge, ICreatedBlock, ICreateNewNamedBlockOpts, IDropTarget, INewBlockOpts, NavOpts, NavPosition} from "./store/BlocksStore";
+import {BlockNameStr, DoIndentResult, DoUnIndentResult, IActiveBlock, IBlockActivated, IBlockMerge, ICreatedBlock, ICreateNewNamedBlockOpts, IDropTarget, INewBlockOpts, Interstitial, NavOpts, NavPosition} from "./store/BlocksStore";
 import {IBlocksStore} from "./store/IBlocksStore";
 import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
 
@@ -88,7 +88,7 @@ export class BlocksTreeStore {
 
     createNewBlock(id: BlockIDStr, opts: INewBlockOpts = {}): ICreatedBlock | undefined {
         if (this.root === id) {
-            return this.blocksStore.createNewBlock(id, {asChild: true});
+            return this.blocksStore.createNewBlock(id, {...opts, asChild: true});
         }
         return this.blocksStore.createNewBlock(id, opts);
     }
@@ -173,6 +173,10 @@ export class BlocksTreeStore {
         return this.blocksStore.clearDrop();
     }
 
+    clearDropTarget(): void {
+        return this.blocksStore.clearDropTarget();
+    }
+
     isSelected(id: BlockIDStr): boolean {
         return this.blocksStore.isSelected(id);
     }
@@ -207,5 +211,25 @@ export class BlocksTreeStore {
 
     filterByName(filter: string): ReadonlyArray<BlockNameStr> {
         return this.blocksStore.filterByName(filter);
+    }
+
+    getInterstitials(id: BlockIDStr): ReadonlyArray<Interstitial> {
+        return this.blocksStore.getInterstitials(id);
+    }
+
+    addInterstitial(id: BlockIDStr, interstitial: Interstitial): void {
+        return this.blocksStore.addInterstitial(id, interstitial);
+    }
+
+    removeInterstitial(id: BlockIDStr, interstitialID: string): void {
+        return this.blocksStore.removeInterstitial(id, interstitialID);
+    }
+
+    prevSibling(id: BlockIDStr) {
+        return this.blocksStore.prevSibling(id);
+    }
+
+    nextSibling(id: BlockIDStr) {
+        return this.blocksStore.nextSibling(id);
     }
 }

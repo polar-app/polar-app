@@ -10,7 +10,6 @@ import {EditAnnotation} from "./Actions/EditAnnotation";
 import {CreateComment} from "./Actions/CreateComment";
 import {CreateFlashcard} from "./Actions/CreateFlashcard";
 import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
-import {CopyAnnotation} from "./Actions/CopyAnnotation";
 import {CreateAIFlashcard} from "./Actions/CreateAIFlashcard";
 import {EditTags} from "./Actions/EditTags";
 import {DeleteAnnotation} from "./Actions/DeleteAnnotation";
@@ -68,7 +67,6 @@ const ACTIONS: Record<AnnotationPopupActionEnum, React.FC<IAnnotationPopupAction
     [AnnotationPopupActionEnum.CREATE_FLASHCARD]: CreateFlashcard,
     [AnnotationPopupActionEnum.CREATE_AI_FLASHCARD]: CreateAIFlashcard,
     [AnnotationPopupActionEnum.EDIT_TAGS]: EditTags,
-    [AnnotationPopupActionEnum.COPY]: CopyAnnotation,
     [AnnotationPopupActionEnum.DELETE]: DeleteAnnotation,
 };
 
