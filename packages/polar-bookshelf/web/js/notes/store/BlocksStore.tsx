@@ -1597,9 +1597,9 @@ export class BlocksStore implements IBlocksStore {
     }
 
     public cursorOffsetCapture(): IActiveBlock | undefined {
-        if (this.active) {
+        if (this._active) {
 
-            const id = this.active.id;
+            const id = this._active.id;
             const contentEditableRoot = DOMBlocks.getBlockElement(id);
 
             if (contentEditableRoot) {

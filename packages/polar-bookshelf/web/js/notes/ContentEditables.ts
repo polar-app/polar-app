@@ -133,6 +133,27 @@ export namespace ContentEditables {
 
     }
 
+     export function getEmptyCharacter() {
+        const browser = Browsers.get();
+        if (browser && browser.id === 'firefox') {
+            return ' ';
+        }
+        return '&#xFEFF;';
+    }
+
+    export function createEmptySpacer() {
+        const span = document.createElement('span');
+        span.style.whiteSpace = 'pre-wrap';
+        span.innerHTML = getEmptyCharacter();
+        return span;
+    }
+
+    export function insertEmptySpacer(elem: HTMLElement) {
+        if (! isContentEditable(elem.lastChild)) {
+            elem.appendChild(ContentEditables.createEmptySpacer());
+        }
+    }
+
     /**
      * Compute a range that covers the entire node.
      */
@@ -204,21 +225,6 @@ export namespace ContentEditables {
 
     }
 
-    export function getEmptyCharacter() {
-        const browser = Browsers.get();
-        if (browser && browser.id === 'firefox') {
-            return ' ';
-        }
-        return '&#xFEFF;';
-    }
-
-    export function createEmptySpacer() {
-        const span = document.createElement('span');
-        span.style.whiteSpace = 'pre-wrap';
-        span.innerHTML = getEmptyCharacter();
-        return span;
-    }
-
     export function setCaretPosition(elem: Node, position: 'start' | 'end' | number) {
         const range = new Range();
         switch (position) {
@@ -243,23 +249,50 @@ export namespace ContentEditables {
         }
     };
 
-    export function insertEmptySpacer(elem: HTMLElement) {
-        const isFocusable = (node: Node | null): boolean => {
-            if (!node) {
-                return true;
-            }
-            if (!node.textContent?.length) {
-                return isFocusable(node.previousSibling);
-            }
-            if (node.nodeType === Node.ELEMENT_NODE) {
-                const elem = node as Element;
-                return elem.getAttribute('contenteditable') !== 'false';
-            }
-            return true;
-        };
+    export function computeContentEditableFalseRoot(node: Node | null): HTMLElement {
 
-        if (!isFocusable(elem.lastChild)) {
-            elem.appendChild(ContentEditables.createEmptySpacer());
+        if (node === null) {
+            throw new Error("Unable to find content editable root");
         }
+
+        if (node.nodeType === node.TEXT_NODE) {
+            return computeContentEditableFalseRoot(node.parentElement);
+        }
+
+        if (node.nodeType === node.ELEMENT_NODE) {
+
+            const element = node as HTMLElement;
+
+            if (
+                element.getAttribute('contenteditable') === 'false' &&
+                element.parentElement && element.parentElement.isContentEditable
+            ) {
+                return element;
+            }
+
+            if (element.isContentEditable) { // Fallback
+                return element;
+            }
+
+            return computeContentEditableFalseRoot(element.parentElement);
+
+        }
+
+        throw new Error("Invalid node type: " + node.nodeType);
+    }
+
+    export function isContentEditable(node: Node | null): boolean {
+        if (node === null) {
+            return false;
+        }
+
+        if (node.nodeType === node.ELEMENT_NODE) {
+
+            const element = node as HTMLElement;
+
+            return element.isContentEditable;
+        }
+
+        return isContentEditable(node.parentElement);
     }
 }
