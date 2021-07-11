@@ -35,15 +35,7 @@ export namespace SSR {
      * Read the File and return the content
      */
     export async function readIndexHTML(): Promise<string> {
-
-        const resolvedPackagePath = require.resolve('polar-bookshelf/package.json');
-        const resolvedPackageDir = path.dirname(resolvedPackagePath);
-
-        const directory = resolvedPackageDir + '/dist/public/index.html';
-
-        const buff = await Files.readFileAsync(directory);
-        return buff.toString('utf-8');
-
+        return await IndexHTML.get();
     }
 
     /**
@@ -69,3 +61,35 @@ export namespace SSR {
     }
 
 }
+
+/**
+ * Read and cache the index.html file we're going to serve.
+ */
+namespace IndexHTML {
+
+    let value: string | undefined;
+
+    export async function get(): Promise<string> {
+
+        if (value) {
+            return value;
+        }
+
+        return value = await read();
+
+    }
+
+    async function read(): Promise<string> {
+
+        const resolvedPackagePath = require.resolve('polar-bookshelf/package.json');
+        const resolvedPackageDir = path.dirname(resolvedPackagePath);
+
+        const directory = resolvedPackageDir + '/dist/public/index.html';
+
+        const buff = await Files.readFileAsync(directory);
+        return buff.toString('utf-8');
+
+    }
+
+}
+

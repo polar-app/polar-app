@@ -2,6 +2,19 @@ import {ExpressFunctions} from "../util/ExpressFunctions";
 import {SSR} from "./SSR";
 
 export const SSRFunction = ExpressFunctions.createHook('SSRFunction', async (req, res) => {
-    const content = SSR.render();
-    res.send(content);
+
+    // tslint:disable-next-line:no-string-literal
+    if (req.cookies['__session']) {
+
+        // there is a cookie so this needs to just work as normal...
+
+        res.set('Cache-Control', 'private');
+
+        res.send(await SSR.readIndexHTML());
+
+    } else {
+        res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
+        res.send(await SSR.render());
+    }
+
 });
