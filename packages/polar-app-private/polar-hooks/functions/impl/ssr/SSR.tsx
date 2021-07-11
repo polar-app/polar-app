@@ -10,6 +10,15 @@ import { Files } from 'polar-shared/src/util/Files';
 //
 // how do we determine, from an HTTP request, if there is a current user.
 
+// we need to use a __session HTTP param and
+
+// https://firebase.google.com/docs/hosting/manage-cache
+//
+// When present, the __session cookie is automatically made a part of the cache
+// key, meaning that it's impossible for two users with different cookies to
+// receive the other's cached response. Only use the __session cookie if your
+// app serves different content depending on user authorization.
+
 // https://firebase.google.com/docs/hosting/manage-cache
 // https://firebase.google.com/docs/auth/admin/manage-cookies
 export namespace SSR {
