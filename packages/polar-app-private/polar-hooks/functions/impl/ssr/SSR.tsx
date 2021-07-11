@@ -1,6 +1,5 @@
 import React from 'react';
 import path from 'path';
-import express from 'express';
 import { renderToString } from 'react-dom/server';
 import { Strings } from 'polar-shared/src/util/Strings';
 import { HelloServerSideRender } from 'polar-bookshelf/web/js/ssr/HelloServerSideRender';
