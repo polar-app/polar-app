@@ -122,6 +122,10 @@
         "function": "webapp"
       },
       {
+        "source": "/hello-ssr",
+        "function": "SSRFunction"
+      },
+      {
         "source": "/dlink/**",
         "dynamicLinks": true
       }
