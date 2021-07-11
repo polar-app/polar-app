@@ -1,10 +1,5 @@
 import {Express} from "express";
 import {Webserver} from "polar-shared-webserver/src/webserver/Webserver";
-import {
-    MetadataEngineHandlerRef,
-    MetadataEngines
-} from "./metadata/MetadataEngines";
-import {StaticIndexGenerator} from "./StaticIndexGenerator";
 import {DefaultRewrites} from "polar-backend-shared/src/webserver/DefaultRewrites";
 import {
     DestinationRewrite,
@@ -21,11 +16,6 @@ export class Webapps {
     public static createRewrites(): ReadonlyArray<DirectRewrite> {
 
         const defaultRewrites = DefaultRewrites.create();
-        const metadataEngineHandlerRefs = MetadataEngines.handlers();
-
-        interface RewriteMap {
-            [id: string]: DirectRewrite;
-        }
 
         function toDirectRewrites(rewrite: DestinationRewrite): ReadonlyArray<DirectRewrite> {
 
@@ -49,26 +39,7 @@ export class Webapps {
 
         const idDefaultRewrites = IDMaps.create(directRewrites);
 
-        function toMetadataEngineHandlerRefs(): RewriteMap {
-
-            function toDirectRewrite(ref: MetadataEngineHandlerRef): DirectRewrite {
-                return {
-                    id: ref.source,
-                    source: ref.source,
-                    destination: (url: string) => StaticIndexGenerator.generate(url)
-                };
-            }
-
-            // now convert the static assets to dynamic so that we can serve custom content for SEO.
-            return IDMaps.create(metadataEngineHandlerRefs.map(current => toDirectRewrite(current)));
-
-        }
-
-        const idMetadataEngineHandlerRefs = toMetadataEngineHandlerRefs();
-
-        const combined = {...idDefaultRewrites, ...idMetadataEngineHandlerRefs};
-
-        return Object.values(combined);
+        return Object.values(idDefaultRewrites);
 
     }
 
