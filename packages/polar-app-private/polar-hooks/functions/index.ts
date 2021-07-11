@@ -20,7 +20,6 @@ import {Webapp} from "./impl/webapp/Webapp";
 import {Sitemap} from "./impl/sitemaps/Sitemap";
 import {GroupSitemap} from "./impl/sitemaps/GroupSitemap";
 import {SearchFunction} from "./impl/search/SearchFunction";
-import {SSRFunction} from "./impl/impl/ssr/SSRFunction";
 import {HelloWorldFunction} from "./impl/impl/ssr/HelloWorldFunction";
 import {StripeCreateSessionFunction} from "./impl/stripe/StripeCreateSessionFunction";
 import {AutoFlashcardFunction} from "./impl/gpt3/AutoFlashcardFunction";
@@ -37,7 +36,6 @@ import {CreateSnapshotFunction} from "./impl/snapshots/CreateSnapshotFunctions";
 
 exports.hello = HelloWorldFunction;
 // exports.docPreviewSitemap = DocPreviewSitemapFunction;
-exports.ssr = SSRFunction;
 exports.mailinglist = MailinglistFunction;
 exports.StripeWebhook = createStripeWebhookFunction('live');
 exports.StripeWebhookTest = createStripeWebhookFunction('test');
