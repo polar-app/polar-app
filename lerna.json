@@ -13,7 +13,6 @@
   "useWorkspaces": true,
   "npmClient": "yarn",
   "npmClientArgs": [
-    "--verbose",
     "--no-optional"
   ]
 }
