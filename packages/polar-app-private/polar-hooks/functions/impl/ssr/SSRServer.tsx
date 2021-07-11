@@ -7,7 +7,8 @@ import { Files } from 'polar-shared/src/util/Files';
 
 // TODO:
 //
-// how do we determine, from an HTTP request, if there is a current user.
+// - when the app loads, and ssr = true then we have to call hydrate on the app
+//   and I think we have to make sure to hydrate with the RIGHT component too.
 
 // we need to use a __session HTTP param and
 
@@ -20,7 +21,7 @@ import { Files } from 'polar-shared/src/util/Files';
 
 // https://firebase.google.com/docs/hosting/manage-cache
 // https://firebase.google.com/docs/auth/admin/manage-cookies
-export namespace SSR {
+export namespace SSRServer {
 
     /**
      * Render the React Component using React-Dom
