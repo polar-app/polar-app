@@ -6,7 +6,12 @@ import { Strings } from 'polar-shared/src/util/Strings';
 import { HelloServerSideRender } from 'polar-bookshelf/web/js/ssr/HelloServerSideRender';
 import { Files } from 'polar-shared/src/util/Files';
 
+// TODO:
+//
+// how do we determine, from an HTTP request, if there is a current user.
 
+// https://firebase.google.com/docs/hosting/manage-cache
+// https://firebase.google.com/docs/auth/admin/manage-cookies
 export namespace SSR {
 
     /**
