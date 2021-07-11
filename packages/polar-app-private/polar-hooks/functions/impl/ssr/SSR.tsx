@@ -37,7 +37,7 @@ export namespace SSR {
      */
     export async function render(): Promise<string> {
 
-        const file = await readIndexFile();
+        const file = await readIndexHTML();
         const rendered = renderComponent();
 
         const setssr = file.replace(
