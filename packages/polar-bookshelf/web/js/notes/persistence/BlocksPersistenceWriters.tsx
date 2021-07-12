@@ -15,7 +15,7 @@ import {ISODateTimeStrings} from '../../../../../polar-app-public/polar-shared/s
 const IS_NODE = typeof window === 'undefined';
 
 
-export namespace FileTombstoneWriter {
+export namespace FileTombstone {
     const STORAGE_BUCKET = getConfig().storageBucket;
 
     export function getFileNameFromBlock(block: IBlock<IBlockContent>) {
@@ -39,31 +39,6 @@ export namespace FileTombstoneWriter {
         const pathnameParts = pathname.split('/');
         return pathnameParts[pathnameParts.length - 1];
     }
-
-    export async function doExec(firestore: IFirestore<unknown>,
-                                 blockMutations: ReadonlyArray<IBlocksStoreMutation>) {
-        const collection = firestore.collection('cloud_storage_tombstone');
-        const batch = firestore.batch();
-
-        for (const mutation of blockMutations) {
-
-            if (mutation.type === "added") {
-                const fileName = getFileNameFromBlock(mutation.added);
-                if (fileName) {
-                    const doc = collection.doc(fileName);
-                    batch.delete(doc);
-                }
-            } else if (mutation.type === "removed") {
-                const fileName = getFileNameFromBlock(mutation.removed);
-                if (fileName) {
-                    const doc = collection.doc(fileName);
-                    batch.set(doc, { created: ISODateTimeStrings.create() });
-                }
-            }
-        }
-
-        await batch.commit();
-    }
 }
 
 
@@ -84,6 +59,7 @@ export namespace FirestoreBlocksPersistenceWriter {
         // console.log("Writing firestoreMutations to firestore: ", firestoreMutations);
 
         const collection = firestore.collection('block');
+        const tombstoneCollection = firestore.collection('cloud_storage_tombstone');
         const batch = firestore.batch();
 
         // convert the firestore mutations to a batch...
@@ -96,10 +72,22 @@ export namespace FirestoreBlocksPersistenceWriter {
                 case "set-doc":
                     const firestoreBlock = FirestoreBlocks.toFirestoreBlock(firestoreMutation.value);
                     batch.set(doc, firestoreBlock);
+
+                    const addedFileName = FileTombstone.getFileNameFromBlock(firestoreMutation.value);
+                    if (addedFileName) {
+                        const doc = tombstoneCollection.doc(addedFileName);
+                        batch.delete(doc);
+                    }
                     break;
 
                 case "delete-doc":
                     batch.delete(doc)
+
+                    const deletedFileName = FileTombstone.getFileNameFromBlock(firestoreMutation.value);
+                    if (deletedFileName) {
+                        const doc = collection.doc(deletedFileName);
+                        batch.delete(doc);
+                    }
                     break;
 
                 case "update-path-number":
@@ -140,8 +128,6 @@ export function useFirestoreBlocksPersistenceWriter(): BlocksPersistenceWriter {
         // TODO use a dialog handler for this...
         FirestoreBlocksPersistenceWriter.doExec(firestore, mutations)
             .catch(err => console.log("Unable to commit mutations: ", err, mutations));
-        FileTombstoneWriter.doExec(firestore, mutations)
-            .catch(err => console.log("Unable to commit storage tombstone updates for mutations: : ", err, mutations));
 
     }, [firestore]);
 
