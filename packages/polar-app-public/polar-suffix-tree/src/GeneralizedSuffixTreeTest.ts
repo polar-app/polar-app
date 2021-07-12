@@ -9,7 +9,7 @@ describe("GeneralizedSuffixTree", function() {
         gst.put("hello", 1);
         gst.put("world", 2);
 
-        assertJSON(gst.search('ello'), []);
+        assertJSON(gst.search('ello'), {});
 
     });
 
