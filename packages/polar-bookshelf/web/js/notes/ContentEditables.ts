@@ -149,7 +149,7 @@ export namespace ContentEditables {
     }
 
     export function insertEmptySpacer(elem: HTMLElement) {
-        if (! isContentEditable(elem.lastChild)) {
+        if (elem.lastChild && ! isContentEditable(elem.lastChild)) {
             elem.appendChild(ContentEditables.createEmptySpacer());
         }
     }
