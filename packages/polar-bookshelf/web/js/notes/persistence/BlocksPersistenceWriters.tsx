@@ -85,8 +85,8 @@ export namespace FirestoreBlocksPersistenceWriter {
 
                     const deletedFileName = FileTombstone.getFileNameFromBlock(firestoreMutation.value);
                     if (deletedFileName) {
-                        const doc = collection.doc(deletedFileName);
-                        batch.delete(doc);
+                        const doc = tombstoneCollection.doc(deletedFileName);
+                        batch.set(doc, { created: ISODateTimeStrings.create(), uid: firestoreMutation.value.uid });
                     }
                     break;
 
