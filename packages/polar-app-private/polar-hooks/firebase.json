@@ -46,10 +46,6 @@
         "function": "docPreview"
       },
       {
-        "source": "/d/**",
-        "function": "ssr"
-      },
-      {
         "source": "/hello/**",
         "function": "hello"
       },
