@@ -11,7 +11,6 @@ import {useRefWithUpdates} from "../../../../../web/js/hooks/ReactHooks";
 import {useDocViewerElementsContext} from "../../renderers/DocViewerElementsContext";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {AnnotationPopupShortcuts} from "./AnnotationPopupShortcuts";
-import {usePrefsContext} from "../../../../repository/js/persistence_layer/PrefsContext2";
 import clsx from "clsx";
 
 export const useAnnotationPopupStyles = makeStyles((theme) =>

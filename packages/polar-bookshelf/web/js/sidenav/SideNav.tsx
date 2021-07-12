@@ -19,13 +19,14 @@ import SyncIcon from '@material-ui/icons/Sync';
 import {useAnkiSyncCallback} from "./AnkiSyncHook";
 import {SwitchToOpenDocumentKeyboardCommand} from "./SwitchToOpenDocumentKeyboardCommand";
 import {ZenModeActiveContainer} from "../mui/ZenModeActiveContainer";
-import { Intercom } from '../apps/repository/integrations/Intercom';
-import { SideNavQuestionButton } from './SideNavQuestionButton';
+import {Intercom} from '../apps/repository/integrations/Intercom';
+import {SideNavQuestionButton} from './SideNavQuestionButton';
 import {VerticalDynamicScroller} from './DynamicScroller';
 import {DateContents} from "../notes/content/DateContents";
-import {useBlocksStore} from "../notes/store/BlocksStore";
-import { observer } from "mobx-react-lite"
-import { autorun } from 'mobx'
+import {observer} from "mobx-react-lite"
+import {URLPathStr} from 'polar-shared/src/url/PathToRegexps';
+import {useBlocksTreeStore} from '../notes/BlocksTree';
+import {useBlocksStore} from '../notes/store/BlocksStore';
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -95,20 +96,32 @@ export function useNotesEnabled() {
 
 interface HistoryButtonProps {
     readonly path: string;
+    readonly onClick?: React.MouseEventHandler<HTMLElement>;
     readonly title: string;
     readonly children: JSX.Element | string;
+    readonly canonicalizer?: (path: URLPathStr) => URLPathStr;
 }
 
 export const SideNavHistoryButton = React.memo(function SideNavHistoryButton(props: HistoryButtonProps) {
 
+    const {path, title, children, onClick, canonicalizer} = props;
     const history = useHistory();
 
+    const handleClick = React.useCallback((e) => {
+        if (onClick) {
+            onClick(e);
+        } else {
+            history.push(path);
+        }
+    }, [history, onClick, path]);
+
     return (
-        <ActiveTabButton title={props.title}
-                         path={props.path}
+        <ActiveTabButton title={title}
+                         path={path}
+                         canonicalizer={canonicalizer}
                          noContextMenu={true}
-                         onClick={() => history.push(props.path)}>
-            {props.children}
+                         onClick={handleClick}>
+            {children}
         </ActiveTabButton>
     )
 });
@@ -142,41 +155,14 @@ const AnnotationsButton = React.memo(function AnnotationsButton() {
 });
 
 const NotesButton = observer(function NotesButton() {
-
     const classes = useStyles();
-    const blocksStore = useBlocksStore();
 
-    const dateContent = DateContents.create();
-
-    const path = `/notes/${dateContent.data}`;
-
-    React.useEffect(() => {
-
-        autorun(() => {
-
-            if (! blocksStore.hasSnapshot) {
-                // dont' do anything yet.
-                return;
-            }
-
-            const block = blocksStore.getBlockByName(dateContent.data);
-
-            if (! block) {
-                blocksStore.createNewNamedBlock(dateContent.data, {type: 'date'});
-            }
-
-        });
-
-    }, [blocksStore, dateContent.data]);
-
-    if (! blocksStore.hasSnapshot) {
-        // dont' do anything yet.
-        return null;
-    }
+    const pathCanonicalizer = React.useCallback(path => path.startsWith('/notes') ? '/notes' : path, []);
 
     return (
         <SideNavHistoryButton title="Notes"
-                              path={path}>
+                              canonicalizer={pathCanonicalizer}
+                              path="/notes">
             <NotesIcon className={classes.secondaryIcon}/>
         </SideNavHistoryButton>
     );

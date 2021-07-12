@@ -37,6 +37,8 @@ export const useFakePinchToZoom = ({
             elem.style.transformOrigin = `${x}px ${y}px`;
             elem.style.willChange = "transform";
             pinchingRef.current = true;
+            const textLayers = elem.querySelectorAll<HTMLDivElement>('.textLayer');
+            textLayers.forEach(layer => layer.style.display = 'none');
         }
         elem.style.transform = `scale(${newScale})`;
     }, [zoomRef, pinchingRef, shouldUpdate, elemRef, wrapperRef]);

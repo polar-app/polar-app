@@ -3,9 +3,27 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "workspaces": [
+    "packages/polar-app-private/*",
+    "packages/polar-app-private/polar-hooks/functions",
+    "packages/polar-app-public/*",
+    "packages/polar-bookshelf",
+    "packages/polar-bookshelf-secrets",
+    "packages/polar-site2"
+  ],
+  "resolutions": {
+    "**/@types/jsdom": "*",
+    "**/@types/jsdom-global": "*",
+    "**/@types/react": "*",
+    "**/firebase-admin": "*",
+    "**/@google-cloud/firestore": "*",
+    "**/@sentry/integrations": "*",
+    "**/@types/pdfjs-dist": "2.1.71-polar.2"
+  },
   "scripts": {
+    "bash": "docker build --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) -f Dockerfile -t polar . && docker run -v $(pwd):/polar-app:delegated -w /polar-app -u $(id -u ${USER}):$(id -g ${USER}) -e WEBPACK_BUNDLE=repository -p 8050:8050 -ti --rm --init --ulimit memlock=819200000:819200000 polar bash",
     "compile": "lerna run compile",
-    "publish": "lerna exec --no-private -- npm publish --no-bail",
+    "publish": "lerna exec --no-private -- yarn publish --no-bail",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dist-validate-env": "./sbin/dist-validate-env",
     "set-registry-bytesafe-rw": "rm -f ~/.npmrc && cat .npmrc.bytesafe > ~/.npmrc",
@@ -13,7 +31,7 @@
     "lerna-run-compile": "lerna run --concurrency=1 --parallel=false compile",
     "lerna-run-dist": "lerna run --concurrency=1 --parallel=false --stream dist",
     "lerna-run-test": "lerna run --concurrency=1 --parallel=false test",
-    "lerna-npm-publish": "npm run-script dist-validate-env && lerna exec --concurrency=1 --parallel=false --no-private  --no-bail -- npm publish && echo 'Packages successfully published'",
+    "lerna-npm-publish": "npm run-script dist-validate-env && lerna exec --concurrency=1 --parallel=false --no-private  --no-bail -- yarn publish && echo 'Packages successfully published'",
     "rebuild": "npm run-script purge-node-modules && lerna bootstrap && npm run-script lerna-run-compile",
     "dist-version": "lerna --yes --no-git-tag-version version patch && lerna bootstrap",
     "dist-version-for-release": "./sbin/dist-version-for-release",
@@ -46,9 +64,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "private": true
 }
-
-

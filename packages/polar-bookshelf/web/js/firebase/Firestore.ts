@@ -5,15 +5,54 @@ import {Firebase} from './Firebase';
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Tracer} from 'polar-shared/src/util/Tracer';
 import {StoreCaches} from "polar-snapshot-cache/src/StoreCaches";
-import {IFirestore} from 'polar-snapshot-cache/src/store/IFirestore';
+import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
+import {URLStr} from "polar-shared/src/util/Strings";
 
 const log = Logger.create();
+
+const IS_NODE = typeof window === 'undefined';
+
+// **** BEGIN iOS IndexDB lock workaround
+//
+// This has to be called during the import EARLY so that this fixes any Safari
+// bugs documented here:
+//
+// https://github.com/firebase/firebase-js-sdk/issues/4076
+// https://bugs.webkit.org/show_bug.cgi?id=226547
+
+function execIndexedDBWorkaround() {
+
+    if (! IS_NODE) {
+
+        const idb = globalThis.indexedDB || window.indexedDB;
+
+        if (idb) {
+
+            console.log("Running IndexedDB workaround... ");
+
+            const dummyDbName = 'safariIdbFix';
+            indexedDB.open(dummyDbName);
+            indexedDB.deleteDatabase(dummyDbName);
+
+            console.log("Running IndexedDB workaround... done");
+
+        } else {
+            console.warn("IndexedDB workaround not run: no IDB");
+        }
+
+    } else {
+        console.warn("IndexedDB workaround not run: node");
+    }
+
+}
+
+execIndexedDBWorkaround();
+
+// **** BEGIN iOS IndexDB lock workaround
 
 const ENABLE_PERSISTENCE = StoreCaches.config.backing === 'none';
 
 // const ENABLE_PERSISTENCE = false;
-
-const IS_NODE = typeof window === 'undefined';
 
 export namespace Firestore {
 
@@ -42,7 +81,7 @@ export namespace Firestore {
         return instance;
     }
 
-    export async function getInstance(): Promise<IFirestore> {
+    export async function getInstance(): Promise<IFirestoreClient> {
         await init();
 
         // return instance!;
@@ -83,10 +122,23 @@ export namespace Firestore {
 
     }
 
+    async function withinAnimationFrameAsync<T>(callback: () => Promise<T>) {
+
+        return new Promise<T>((resolve, reject) => {
+
+            requestAnimationFrame(() => {
+                callback()
+                    .then(result => resolve(result))
+                    .catch(err => reject(err));
+            });
+
+        })
+
+    }
+
     async function enablePersistence(firestore: firebase.firestore.Firestore) {
 
         const doExecAsync = async () => {
-
 
             try {
 
@@ -95,9 +147,15 @@ export namespace Firestore {
                 // work with the disk persistence.
 
                 if (! IS_NODE) {
-                    console.log("Enabling firestore persistence....");
-                    await firestore.enablePersistence({synchronizeTabs: true});
-                    console.log("Enabling firestore persistence....done");
+
+                    await withinAnimationFrameAsync(async () => {
+
+                        console.log("Enabling firestore persistence (within animation frame)....");
+                        await firestore.enablePersistence({synchronizeTabs: true});
+                        console.log("Enabling firestore persistence (within animation frame)....done");
+
+                    })
+
                 }
 
 
@@ -111,6 +169,21 @@ export namespace Firestore {
         // seems to not impact performance at all.
         await Tracer.async(doExecAsync, 'Firestore.enablePersistence');
 
+    }
+
+    export async function terminate() {
+        console.log("Terminating Firestore...")
+        await instance?.terminate();
+        console.log("terminating firestore...done")
+    }
+
+    /**
+     * Used when we have to redirect to a new URL because Firestore has to be
+     * terminated or it won't work with Safari and will lock up the browser.
+     */
+    export async function terminateAndRedirect(url: URLStr) {
+        await terminate();
+        window.location.href = url;
     }
 
 }

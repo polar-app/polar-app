@@ -1,5 +1,5 @@
 import {Button} from "@material-ui/core";
-import AddIcon from '@material-ui/icons/Add';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import React from "react";
 import {useHistory} from "react-router";
@@ -25,11 +25,14 @@ export const CreateNote = () => {
     
     return (
         <Button id="add-content-dropdown"
-                variant="outlined"
-                startIcon={<AddIcon/>}
+                color="primary"
+                style={{ height: 38 }}
+                variant="contained"
+                disableElevation
+                startIcon={<AddCircleOutlineIcon style={{ fontSize: 24 }} />}
                 onClick={handleCreateNote}
                 size="medium">
-            Create Note
+            New
         </Button>
     );
 };

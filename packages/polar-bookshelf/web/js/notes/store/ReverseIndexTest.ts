@@ -37,5 +37,14 @@ describe("ReverseIndex", () => {
     });
 
 
+    it("should ignore duplicate values", () => {
+        const index = new ReverseIndex();
+        index.add('101', '102');
+        index.add('101', '102');
+        index.add('101', '102');
+        index.add('101', '102');
+        index.add('101', '103');
+        assertJSON(index.toJSON(), {"101": ["102", "103"]});
+    });
 });
 

@@ -1,7 +1,6 @@
 import {Firestore} from '../../../firebase/Firestore';
 import {Firebase} from '../../../firebase/Firebase';
 import {ProfileOwners} from './ProfileOwners';
-import firebase from 'firebase/app'
 import {
     CacheFirstThenServerGetOptions,
     DocumentReferences,
@@ -9,27 +8,30 @@ import {
 } from "../../../firebase/firestore/DocumentReferences";
 import {
     HandleStr,
-    Profile,
+    IProfile,
     ProfileIDRecord,
     ProfileIDStr,
     ProfileRecordTuple
-} from "polar-firebase/src/firebase/om/Profiles";
-import { IDocumentReference } from 'polar-snapshot-cache/src/store/IDocumentReference';
+} from "polar-firebase/src/firebase/om/ProfileCollection";
+import {IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
 
+/**
+ * @Deprecated migrate to polar-firestore
+ */
 export class Profiles {
 
     public static readonly COLLECTION = 'profile';
 
-    public static async doc(id: ProfileIDStr): Promise<[HandleStr, IDocumentReference]> {
+    public static async doc(id: ProfileIDStr): Promise<[HandleStr, IDocumentReferenceClient]> {
         const firestore = await Firestore.getInstance();
         const doc = firestore.collection(this.COLLECTION).doc(id);
         return [id, doc];
     }
 
-    public static async get(id: ProfileIDStr, opts: GetOptions = {}): Promise<Profile | undefined> {
+    public static async get(id: ProfileIDStr, opts: GetOptions = {}): Promise<IProfile | undefined> {
         const [_, ref] = await this.doc(id);
         const doc = await DocumentReferences.get(ref, opts);
-        return <Profile> doc.data();
+        return <IProfile> doc.data();
     }
 
     /**
@@ -63,7 +65,7 @@ export class Profiles {
 
     }
 
-    public static async currentProfile(opts: GetOptions = new CacheFirstThenServerGetOptions()): Promise<Profile | undefined> {
+    public static async currentProfile(opts: GetOptions = new CacheFirstThenServerGetOptions()): Promise<IProfile | undefined> {
 
         const app = Firebase.init();
         const user = app.auth().currentUser;

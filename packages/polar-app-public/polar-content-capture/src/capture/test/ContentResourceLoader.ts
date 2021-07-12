@@ -7,6 +7,7 @@ export class ContentResourceLoader extends ResourceLoader {
         super();
     }
 
+    // @ts-ignore
     public fetch(url: string, options: FetchOptions): Promise<Buffer> | null {
 
         const content = this.contentMap[url];

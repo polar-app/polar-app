@@ -1,17 +1,18 @@
-import {DocumentReference, WriteBatch} from "@google-cloud/firestore";
-import {ProfileIDStr} from './Profiles';
 import {GroupMemberInvitationIDStr} from './GroupMemberInvitations';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {Firestore} from '../../util/Firestore';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {IDUser} from '../../util/IDUsers';
 import {GroupIDStr} from './Groups';
-import {Collections} from './Collections';
-import {Clause} from './Collections';
 import {DocIDStr} from 'polar-shared/src/groups/DocRef';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {ISODateTimeStrings, ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
+import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
+import {ProfileIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
+import {Collections} from "polar-firestore-like/src/Collections";
+import Clause = Collections.Clause;
 
 export class GroupDocs {
 
@@ -25,15 +26,16 @@ export class GroupDocs {
         return Hashcodes.createID({docID, profileID, groupID}, 20);
     }
 
-    public static doc(docID: DocIDStr, profileID: ProfileIDStr, groupID: GroupIDStr): [GroupMemberInvitationIDStr, DocumentReference] {
+    public static doc(docID: DocIDStr, profileID: ProfileIDStr, groupID: GroupIDStr): [GroupMemberInvitationIDStr, IDocumentReference<unknown>] {
         const firestore = Firestore.getInstance();
         const id = this.createID(docID, profileID, groupID);
         const doc = firestore.collection(this.COLLECTION).doc(id);
         return [id, doc];
     }
 
-    public static async deleteByGroupID(batch: WriteBatch, groupID: GroupIDStr) {
-        await Collections.deleteByID(batch, this.COLLECTION, () => this.listByGroupID(groupID));
+    public static async deleteByGroupID(batch: IWriteBatch<unknown>, groupID: GroupIDStr) {
+        const firestore = Firestore.getInstance();
+        await Collections.deleteByID(firestore, this.COLLECTION, batch, () => this.listByGroupID(groupID));
     }
 
     public static async listByGroupIDAndProfileID(groupID: GroupIDStr, profileID: ProfileIDStr): Promise<ReadonlyArray<GroupDoc>> {
@@ -46,7 +48,9 @@ export class GroupDocs {
             ['profileID', '==', profileID]
         ];
 
-        return await Collections.list(this.COLLECTION, clauses);
+        const firestore = Firestore.getInstance();
+
+        return await Collections.list(firestore, this.COLLECTION, clauses);
 
     }
 
@@ -64,22 +68,29 @@ export class GroupDocs {
             ['profileID', '==', profileID]
         ];
 
-        return await Collections.list(this.COLLECTION, clauses);
+        const firestore = Firestore.getInstance();
+
+        return await Collections.list(firestore, this.COLLECTION, clauses);
 
     }
 
     public static async listByGroupID(groupID: GroupIDStr): Promise<ReadonlyArray<GroupDoc>> {
         Preconditions.assertPresent(groupID, 'groupID');
+        const firestore = Firestore.getInstance();
 
-        return await Collections.listByFieldValue(this.COLLECTION, 'groupID', groupID);
+        return await Collections.listByFieldValue(firestore, this.COLLECTION, 'groupID', groupID);
     }
 
-    public static async set(batch: WriteBatch,
+    public static async set(batch: IWriteBatch<unknown>,
                             idUser: IDUser,
                             groupID: GroupIDStr,
                             docRef: DocRef) {
 
-        const profileID = idUser.profileID;
+        if (! idUser.profile) {
+            throw new Error("No profile");
+        }
+
+        const profileID = idUser.profile.id;
 
         const [id, ref] = this.doc(docRef.docID, profileID, groupID);
         const created = ISODateTimeStrings.create();

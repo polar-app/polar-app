@@ -1,6 +1,6 @@
-import { IBlock } from "./IBlock"
 import { MarkdownContent } from "../content/MarkdownContent";
 import { NameContent } from "../content/NameContent";
+import {IBlock} from "polar-blocks/src/blocks/IBlock";
 
 export namespace IBlockPredicates {
 

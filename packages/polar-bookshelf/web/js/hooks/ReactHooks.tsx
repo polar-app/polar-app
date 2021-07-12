@@ -36,10 +36,10 @@ export function useStateRef<V>(value: V): RefStateTuple<V> {
     const [state, setStateDelegate] = React.useState(value);
     const ref = React.useRef<V>(value);
 
-    function setState(newValue: V) {
+    const setState = React.useCallback((newValue: V) => {
         ref.current = newValue;
         setStateDelegate(newValue);
-    }
+    }, [ref, setStateDelegate]);
 
     return [state, setState, ref];
 

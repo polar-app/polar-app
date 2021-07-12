@@ -29,7 +29,14 @@ const useStyles = makeStyles((theme) =>
             "& h1, h2, h3, h4, h5": {
                 lineHeight: 0
             },
-            flexGrow: 1
+            "& img": {
+                maxWidth: '100%',
+                verticalAlign: 'top',
+            },
+            "& pre": {
+                margin: 0,
+            },
+            height: '100%',
         }
 
     }),

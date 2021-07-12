@@ -9,16 +9,16 @@ import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {ITextHighlights} from "polar-shared/src/metadata/ITextHighlights";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {HTMLSanitizer} from "polar-html/src/sanitize/HTMLSanitizer";
-import {DEFAULT_IMG} from "./DefaultMetadataEngine";
 import {Articles} from "../jsonld/Article";
 import {DEFAULT_IMAGE_OBJECT, IImageObject, ImageObjects} from "../jsonld/ImageObject";
-import {ProfileIDStr, Profiles, UserIDStr} from "../../../groups/db/Profiles";
 import {ANONYMOUS_PERSON, Persons} from "../jsonld/Person";
 import {DEFAULT_PUBLISHER} from "../jsonld/Organization";
 import {Permalinks} from "../Permalinks";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {ProfileOwners} from "../../../groups/db/ProfileOwners";
 import {FirebaseFileStorage} from "polar-firebase/src/firebase/files/FirebaseFileStorage";
+import {ProfileCollection, ProfileIDStr, UserIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
+import {Firestore} from "../../../util/Firestore";
 
 const log = Logger.create();
 
@@ -30,6 +30,8 @@ const log = Logger.create();
 export class GroupHighlightMetadataEngine implements MetadataEngine {
 
     public async compute(url: URLStr): Promise<Page | undefined> {
+
+        const firestore = Firestore.getInstance();
 
         const parsedURL = GroupHighlightURLs.parse(url);
 
@@ -51,7 +53,11 @@ export class GroupHighlightMetadataEngine implements MetadataEngine {
                 return ANONYMOUS_PERSON;
             }
 
-            const profile = await Profiles.get(profileID);
+            const profile = await ProfileCollection.get(firestore, profileID);
+
+            if (! profile) {
+                throw new Error("No profile");
+            }
             return Persons.convert(profile);
 
         };

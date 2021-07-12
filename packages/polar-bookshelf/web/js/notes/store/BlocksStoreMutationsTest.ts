@@ -1,10 +1,10 @@
-import {IMarkdownContent} from "../content/IMarkdownContent";
 import {PositionalArrays} from "./PositionalArrays";
 import {assertJSON} from "../../test/Assertions";
 import {BlocksStoreTests} from "./BlocksStoreTests";
 import createBasicBlock = BlocksStoreTests.createBasicBlock;
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import {cloneDeep} from "lodash";
+import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
 
 describe('BlocksStoreMutations', () => {
 

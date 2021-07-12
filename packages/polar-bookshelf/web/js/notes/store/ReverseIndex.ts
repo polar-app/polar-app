@@ -1,5 +1,5 @@
-import {BlockIDStr} from "./BlocksStore";
-import {action, computed, makeObservable, observable} from "mobx"
+import {action, computed, observable} from "mobx"
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 export class ReverseIndex {
 
@@ -14,7 +14,9 @@ export class ReverseIndex {
         const current = this.index[target];
 
         if (current) {
-            current.push(inbound);
+            if (current.indexOf(inbound) === -1) {
+                current.push(inbound);
+            }
         } else {
             this.index[target] = [inbound];
         }

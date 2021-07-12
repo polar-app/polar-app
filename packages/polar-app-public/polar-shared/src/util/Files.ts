@@ -748,7 +748,7 @@ export interface FileHandle {
 
 export class FileHandles {
 
-    public static isFileHandle(obj: any): boolean {
+    public static isFileHandle(obj: any): obj is FileHandle {
         return typeof obj === 'object' && isPresent(obj.path);
     }
 

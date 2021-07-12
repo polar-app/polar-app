@@ -1,18 +1,24 @@
 import React from "react";
+import {Theme} from "@material-ui/core";
 import {deepMemo} from "../react/ReactUtils";
-import { Block } from "./Block";
+import {Block} from "./Block";
 import {UL} from "./UL";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
-import {BlockIDStr} from "./store/BlocksStore";
-import {IBlock} from "./store/IBlock";
+import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
 
-const useStyles = makeStyles((theme) =>
+interface IBlockItemsStylesProps {
+    indent: boolean;
+}
+
+const useStyles = makeStyles<Theme, IBlockItemsStylesProps>(() =>
     createStyles({
-        root: {
-            flexGrow: 1,
-            // borderLeft: `1px solid ${theme.palette.divider}`
+        root(props) {
+            return {
+                flexGrow: 1,
+                padding: props.indent ? undefined : 0,
+            };
         },
     }),
 );
@@ -20,13 +26,14 @@ const useStyles = makeStyles((theme) =>
 interface NotesProps {
     readonly parent: BlockIDStr;
     readonly notes: ReadonlyArray<IBlock> | undefined;
+    readonly indent?: boolean;
 }
 
 export const BlockItems = deepMemo(function NoteItems(props: NotesProps) {
+    const {notes, parent, indent = true} = props;
+    const classes = useStyles({ indent });
 
-    const classes = useStyles();
-
-    if ( ! props.notes) {
+    if (! notes) {
         return null;
     }
 
@@ -34,7 +41,7 @@ export const BlockItems = deepMemo(function NoteItems(props: NotesProps) {
 
         <UL className={clsx(classes.root, 'NoteItems')}>
             <>
-                {props.notes.map((note) => {
+                {notes.map((note) => {
 
                     // WARN: do not use id + updated because this will cause the
                     // components to constantly unmount
@@ -42,7 +49,7 @@ export const BlockItems = deepMemo(function NoteItems(props: NotesProps) {
 
                     return (
                         <Block key={key}
-                               parent={props.parent}
+                               parent={parent}
                                id={note.id}/>);
                 })}
             </>

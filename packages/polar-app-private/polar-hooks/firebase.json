@@ -46,10 +46,6 @@
         "function": "docPreview"
       },
       {
-        "source": "/d/**",
-        "function": "ssr"
-      },
-      {
         "source": "/hello/**",
         "function": "hello"
       },
@@ -115,6 +111,10 @@
       },
       {
         "source": "/notes/:id",
+        "destination": "/apps/repository/index.html"
+      },
+      {
+        "source": "/notes",
         "destination": "/apps/repository/index.html"
       },
       {

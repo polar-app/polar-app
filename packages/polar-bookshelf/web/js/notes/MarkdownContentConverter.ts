@@ -20,9 +20,9 @@ function doTrace(name: string,
 
 }
 
-export const MarkdownContentConverter = {
+export namespace MarkdownContentConverter {
 
-    toHTML: (srcMarkdown: MarkdownStr) => {
+    export function toHTML(srcMarkdown: MarkdownStr) {
 
         const markdown = markdown2html(WikiLinksToHTML.escape(srcMarkdown));
 
@@ -39,8 +39,16 @@ export const MarkdownContentConverter = {
 
         return result;
 
-    },
-    toMarkdown: (srcHTML: HTMLStr) => {
+    }
+
+    export function toText(srcMarkdown: MarkdownStr) {
+        const html = toHTML(srcMarkdown);
+        const div = document.createElement('div');
+        div.innerHTML = html;
+        return div.innerText;
+    }
+
+    export function toMarkdown(srcHTML: HTMLStr) {
 
         const result = Mappers.create(srcHTML)
                               .map(ContentEditableWhitespace.trim)

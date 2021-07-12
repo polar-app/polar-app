@@ -76,7 +76,9 @@ export namespace AccountActions {
 
             // right now we can't trigger opening the URL here as it's blocked
             // because it's not computed within the event.
-            document.location.href = response.url;
+
+            Firestore.terminateAndRedirect(response.url)
+                .catch(err => console.log(err));
 
             // linkLoader(response.url, {
             //     newWindow: true,

@@ -43,10 +43,12 @@ export namespace CursorPositions {
 
         if (position) {
 
-            range.setStart(position.node, position.offset);
-            range.setEnd(position.node, position.offset);
+            if (isContentEditable(position.node)) {
+                range.setStart(position.node, position.offset);
+                range.setEnd(position.node, position.offset);
+            }
 
-        } else if (offset === lookup.length) {
+        } else if (offset >= lookup.length) {
 
             function computeRangeNode() {
 
@@ -64,8 +66,6 @@ export namespace CursorPositions {
             range.setStart(rangeNode, rangeOffset);
             range.setEnd(rangeNode, rangeOffset);
 
-        } else {
-            console.warn(`No lookup position for offset ${offset} with N lookup elements: ` + lookup.length);
         }
 
     }
@@ -145,6 +145,21 @@ export namespace CursorPositions {
 
     }
 
+    export function isContentEditable(node: Node | null): boolean {
+        if (node === null) {
+            return false;
+        }
+
+        if (node.nodeType === node.ELEMENT_NODE) {
+
+            const element = node as HTMLElement;
+
+            return element.isContentEditable;
+        }
+
+        return isContentEditable(node.parentElement);
+    }
+
     export function toTextNode(node: Node | undefined, offset: number): ICursorPosition | undefined {
         if (!node) {
             return  undefined;
@@ -183,6 +198,8 @@ export namespace CursorPositions {
                     }
 
                 }
+            } else {
+                return 0;
             }
         }
 

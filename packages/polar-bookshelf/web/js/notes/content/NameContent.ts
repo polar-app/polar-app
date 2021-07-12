@@ -1,7 +1,7 @@
 import {makeObservable, observable, computed} from "mobx"
-import {INameContent} from "./INameContent";
-import {IBlockContent} from "../store/BlocksStore";
-import {IBaseBlockContent} from "./IBaseBlockContent";
+import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
+import {INameContent} from "polar-blocks/src/blocks/content/INameContent";
+import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 
 export class NameContent implements INameContent, IBaseBlockContent {
 

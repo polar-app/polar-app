@@ -13,7 +13,7 @@ import { Billing } from 'polar-accounts/src/Billing';
 import V2PlanFree = Billing.V2PlanFree;
 import {Plans} from "polar-accounts/src/Plans";
 import {ISnapshot} from "../../../snapshots/CachedSnapshotSubscriberContext";
-import {Analytics, useAnalytics} from "../../../analytics/Analytics";
+import {useAnalytics} from "../../../analytics/Analytics";
 
 interface IUserInfoContext {
 

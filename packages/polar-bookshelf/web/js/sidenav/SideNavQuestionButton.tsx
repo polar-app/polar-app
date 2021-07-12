@@ -219,7 +219,7 @@ export function SideNavQuestionButton() {
 
                 <Divider/>
 
-                <MenuItems.SendVideoFeedback/>
+                {/*<MenuItems.SendVideoFeedback/>*/}
 
                 <MenuItems.RequestFeatures/>
 

@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {useHistory} from "react-router-dom";
 import {useRefValue} from "../hooks/ReactHooks";
-import {BlockNameStr, BlockIDStr} from "./store/BlocksStore";
+import {BlockNameStr} from "./store/BlocksStore";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 export type BlockTargetStr = BlockIDStr | BlockNameStr;
 

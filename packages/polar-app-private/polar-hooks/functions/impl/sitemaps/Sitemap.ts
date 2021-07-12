@@ -1,7 +1,8 @@
 import * as functions from "firebase-functions";
 import {Firestore} from "../util/Firestore";
-import {Collections, OrderByClause} from "polar-firebase/src/firebase/Collections";
 import {Group} from "../groups/db/Groups";
+import {Collections} from "polar-firestore-like/src/Collections";
+import OrderByClause = Collections.OrderByClause;
 
 /**
  * The high level sitemap for the entire site.
@@ -9,16 +10,15 @@ import {Group} from "../groups/db/Groups";
 export const Sitemap = functions.https.onRequest((req, resp) => {
 
     const createIterator = async () => {
-        const firestore = Firestore.getInstance();
 
-        const collections = new Collections(firestore, 'group');
+        const firestore = Firestore.getInstance();
 
         const orderBy: ReadonlyArray<OrderByClause> = [
             ['created', 'asc'],
             ['id', 'asc'],
         ];
 
-        return await collections.iterate<Group>([['visibility', '==', 'public']], {orderBy, limit: 500});
+        return await Collections.iterate<Group>(firestore, 'group', [['visibility', '==', 'public']], {orderBy, limit: 500});
 
     };
 

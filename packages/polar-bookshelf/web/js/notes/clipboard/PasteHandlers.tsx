@@ -1,8 +1,9 @@
 import React from "react";
-import {DataURLs} from "polar-shared/src/util/DataURLs";
 import {URLStr} from "polar-shared/src/util/Strings";
-import { Blobs } from "polar-shared/src/util/Blobs";
-import {Images} from "polar-shared/src/util/Images";
+import {HTMLToBlocks, IBlockContentStructure} from "../HTMLToBlocks";
+import {useBlocksTreeStore} from "../BlocksTree";
+import {BlockIDStr} from "../../../../../polar-app-public/polar-blocks/src/blocks/IBlock";
+import {useUploadHandler} from "../UploadHandler";
 
 export interface IPasteImageData {
     readonly url: URLStr;
@@ -12,7 +13,9 @@ export interface IPasteImageData {
 
 export interface IPasteHandlerOpts {
     readonly onPasteImage: (image: IPasteImageData) => void;
+    readonly onPasteBlocks: (blocks: ReadonlyArray<IBlockContentStructure>) => void; 
     readonly onPasteError: (err: Error) => void;
+    readonly id: BlockIDStr;
 }
 
 export type PasteImageType =
@@ -25,20 +28,33 @@ export type PasteImageType =
     'image/apng';
 
 interface IPasteItemForImage {
-    readonly kind: 'image'
+    readonly kind: 'image';
     readonly type: PasteImageType;
     readonly dataTransferItem: DataTransferItem;
 }
 
+interface IPasteItemForHTML {
+    readonly kind: 'html';
+    readonly dataTransferItem: DataTransferItem;
+}
+
 interface IPasteItemForUnknown {
-    readonly kind: 'unknown'
+    readonly kind: 'unknown';
     readonly type: string;
 }
 
-export type PasteItem = IPasteItemForImage | IPasteItemForUnknown;
+interface IPasteItemForPolarBlocks {
+    readonly kind: 'polarblocks';
+    readonly dataTransferItem: DataTransferItem;
+}
+
+export type PasteItem =
+    IPasteItemForImage |
+    IPasteItemForHTML |
+    IPasteItemForPolarBlocks |
+    IPasteItemForUnknown;
 
 function toPasteItem(item: DataTransferItem): PasteItem {
-
     switch (item.type) {
         case 'image/webp':
         case 'image/png':
@@ -47,38 +63,61 @@ function toPasteItem(item: DataTransferItem): PasteItem {
         case 'image/svg+xml':
         case 'image/avif':
         case 'image/apng':
-
             return {
                 kind: 'image',
                 type: item.type,
                 dataTransferItem: item,
-            }
+            };
+
+        case 'text/html':
+            return {
+                kind: 'html',
+                dataTransferItem: item,
+            };
+
+        case 'application/polarblocks+json':
+            return {
+                kind: 'polarblocks',
+                dataTransferItem: item,
+            };
+
         default:
             return {
                 kind: 'unknown',
                 type: item.type,
-            }
+            };
 
     }
 
 }
 
-function isImagePaste(pasteItems: ReadonlyArray<PasteItem>): boolean {
+type PasteType = PasteItem['kind'];
+type PasteTypesMap = { [K in PasteItem as K['kind']]: K };
 
-    for (const pasteItem of pasteItems) {
+const getPasteItem = <T extends PasteType>(xs: ReadonlyArray<PasteItem>, type: T) =>
+    xs.find((item): item is PasteTypesMap[T] => item.kind === type)
 
-        switch (pasteItem.kind) {
-            case 'image':
-                return true;
+
+
+type PasteHandler = {
+    type: PasteType;
+    handler: () => Promise<void>;
+};
+
+const executePasteHandlers = async (
+    handlers: ReadonlyArray<PasteHandler>,
+    onError: (err: Error) => void,
+) => {
+    for (const {handler, type} of handlers) {
+        try {
+            await handler();
+        } catch (e) {
+            console.error(`Error: Failed to execute pasteHandler for ${type}, falling back to the next one.`);
+            onError(e);
+            continue;
         }
-
     }
-
-    return false;
-
 }
-
-
 
 /**
  * Clipboard paste handler that takes clipboard data given to us via an onPaste
@@ -86,7 +125,8 @@ function isImagePaste(pasteItems: ReadonlyArray<PasteItem>): boolean {
  */
 export function usePasteHandler(opts: IPasteHandlerOpts) {
 
-    const {onPasteImage, onPasteError} = opts;
+    const {onPasteImage, onPasteBlocks, onPasteError, id} = opts;
+    const uploadHandler = useUploadHandler();
 
     return React.useCallback((event: React.ClipboardEvent) => {
 
@@ -98,74 +138,67 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
         const pasteItems = Array.from(event.clipboardData.items)
                                 .map(toPasteItem);
 
-        async function doAsync() {
+        async function extractImage() {
 
-            for (const pasteItem of pasteItems) {
+            const imageItem = getPasteItem(pasteItems, 'image');
+            if (imageItem) {
+                const file = imageItem.dataTransferItem.getAsFile()
 
-                switch (pasteItem.kind) {
-                    case 'image':
-                        const file = pasteItem.dataTransferItem.getAsFile()
+                if (file) {
+                    const uploadedFile = await uploadHandler({ file, target: { id, pos: 'bottom' } });
 
-                        if (file) {
-
-                            const ab = await Blobs.toArrayBuffer(file)
-                            const dataURL = DataURLs.encode(ab, pasteItem.type);
-
-                            // const resolution = await ImageResolutions.compute(file);
-
-                            const dimensions = await Images.getDimensions(dataURL);
-
-                            const image: IPasteImageData = {
-                                url: dataURL,
-                                ...dimensions
-                            }
-
-                            onPasteImage(image);
-
-                        }
-
-                        break;
+                    if (uploadedFile) {
+                        onPasteImage(uploadedFile);
+                    }
                 }
-
-                // FIXME: need to handle HTML too which would read in a lot nodes from ul and li items...
-
-                // if (originalEvent.clipboardData.types.includes('text/html')) {
-                //
-                //     const srcHTML = originalEvent.clipboardData.getData('text/html');
-                //     const sanitizedHTML = HTMLSanitizer.sanitizePasteData(srcHTML);
-                //
-                //     const spanElement = document.createElement('span');
-                //     spanElement.innerHTML = sanitizedHTML;
-                //
-                //     this.insertNode(spanElement);
-                //
-                //     originalEvent.preventDefault();
-                //     originalEvent.stopPropagation();
-                //
-                // }
-
             }
-
         }
 
-        if (isImagePaste(pasteItems)) {
-            // do not go async if there are no images...
-
-            doAsync().catch(err => onPasteError(err));
-
-            const unknownPasteItems = pasteItems.filter(current => current.kind === 'unknown');
-
-            if (unknownPasteItems.length === 0) {
-
-                // must call preventDefault before we return because the async will
-                // happen after the event is handled but ONLY do this if there are
-                // items that can be imported.
-                event.preventDefault();
-
+        async function extractHTML() {
+            const htmlItem = getPasteItem(pasteItems, 'html');
+            if (htmlItem) {
+                const getHTMLString = (): Promise<string> => new Promise((resolve) => (
+                    htmlItem.dataTransferItem.getAsString(resolve)
+                ));
+                const html = await getHTMLString();
+                const blocks = await HTMLToBlocks.parse(html);
+                onPasteBlocks(blocks);
             }
-
         }
 
-    }, [onPasteError, onPasteImage])
+        async function extractPolarBlocks() {
+            const blocksStructureItem = getPasteItem(pasteItems, 'polarblocks');
+            if (blocksStructureItem) {
+                const getJSONString = (): Promise<string> => new Promise((resolve) => (
+                    blocksStructureItem.dataTransferItem.getAsString(resolve)
+                ));
+                try {
+                    const json = JSON.parse(await getJSONString());
+                    // TODO: Might need to validate the structure here.
+                    onPasteBlocks(json);
+
+                } catch (e) {
+                    console.error('Error: failed to parse application/polarblocks+json', e);
+                }
+            }
+        }
+
+        const canBeHandled = pasteItems
+            .some(item => ~['html', 'image', 'polarblocks'].indexOf(item.kind));
+
+        if (canBeHandled) {
+            event.preventDefault();
+            executePasteHandlers(
+                [
+                    // The following array represents priority
+                    {type: 'polarblocks', handler: extractPolarBlocks},
+                    {type: 'html', handler: extractHTML},
+                    {type: 'image', handler: extractImage},
+                ],
+                onPasteError,
+            ).catch(e => console.log(e));
+        }
+
+    }, [onPasteError, onPasteImage, onPasteBlocks, uploadHandler, id])
 
 }

@@ -33,7 +33,6 @@ export enum AnnotationPopupActionEnum {
     CREATE_FLASHCARD = "CREATE_FLASHCARD",
     CREATE_AI_FLASHCARD = "CREATE_AI_FLASHCARD",
     EDIT_TAGS = "EDIT_TAGS",
-    COPY = "COPY",
     DELETE = "DELETE",
 };
 

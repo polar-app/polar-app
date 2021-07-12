@@ -1,13 +1,14 @@
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import React from 'react';
-import {BarMode, FormatBarActions, NoteFormatBar, NoteFormatBarProps} from "./NoteFormatBar";
+import {BarMode, FormatBarActions, NoteFormatBar} from "./NoteFormatBar";
 import {useNoteFormatHandlers, useNoteFormatKeyboardHandler} from "./NoteFormatHooks";
-import { observer } from "mobx-react-lite"
-import {BlockIDStr, useBlocksStore } from './store/BlocksStore';
+import {observer} from "mobx-react-lite"
 import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {URLStr} from 'polar-shared/src/util/Strings';
 import {createStyles, makeStyles} from '@material-ui/core';
-import {trace} from 'mobx';
+import {reaction} from 'mobx';
+import {useBlocksTreeStore} from './BlocksTree';
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -63,13 +64,10 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
     const {save, restore, getPosition} = useRangeSaver();
     const [fakeRangePosition, setFakeRangePosition] = React.useState<ILTRect | undefined>();
 
-    const blocksStore = useBlocksStore();
+    const blocksTreeStore = useBlocksTreeStore();
 
-    const block = blocksStore.getBlock(props.id);
-    const selected = blocksStore.selected;
-
-    const {active} = blocksStore;
-
+    const block = blocksTreeStore.getBlock(props.id);
+    const selected = blocksTreeStore.selected;
 
     const handleSetMode = React.useCallback((mode: BarMode) => {
         const container = containerRef.current;
@@ -85,7 +83,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
     const doPopup = React.useCallback((): boolean => {
 
-        if (blocksStore.hasSelected()) {
+        if (blocksTreeStore.hasSelected()) {
             return false;
         }
 
@@ -110,7 +108,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
         return true;
 
-    }, [setPosition, blocksStore]);
+    }, [setPosition, blocksTreeStore]);
 
     const clearPopup = React.useCallback(() => {
 
@@ -180,21 +178,24 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
 
     React.useEffect(() => {
 
-        if (active?.id !== props.id) {
-            clearPopup();
-        }
+        const dispose = reaction(() => blocksTreeStore.active?.id === props.id, (isActive) => {
+            if (! isActive) {
+                clearPopup();
+            }
+        });
 
-    }, [active?.id, clearPopup, props.id]);
+        return () => dispose();
+    }, [blocksTreeStore, clearPopup, props.id]);
 
     React.useEffect(() => {
 
         // FIXME: this just isn't being fired reliably
 
-        if (blocksStore.hasSelected()) {
+        if (blocksTreeStore.hasSelected()) {
             clearPopup();
         }
 
-    }, [clearPopup, selected, blocksStore]);
+    }, [clearPopup, selected, blocksTreeStore]);
 
     const noteFormatHandlers = useNoteFormatHandlers(block?.content.type, props.onUpdated);
 
@@ -203,7 +204,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
         setFakeRangePosition(undefined);
         noteFormatHandlers.onLink(url);
     }, [noteFormatHandlers, restore]);
-    
+
     return (
 
         <div onMouseDown={onMouseDown}
@@ -213,7 +214,7 @@ export const NoteFormatPopper = observer(function NoteFormatPopper(props: IProps
                 <div style={{ position: 'relative' }}>
                     {fakeRangePosition &&
                         <div className={classes.fakeRange} style={fakeRangePosition}></div>}
-                
+
                     {props.children}
                 </div>
 

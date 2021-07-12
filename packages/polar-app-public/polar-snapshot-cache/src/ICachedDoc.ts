@@ -1,5 +1,5 @@
 import { ICachedDocMetadata } from "./ICachedDocMetadata";
-import {TDocumentData} from "./store/TDocumentData";
+import {TDocumentData} from "polar-firestore-like/src/TDocumentData";
 
 export interface ICachedDoc extends ICachedDocMetadata {
 

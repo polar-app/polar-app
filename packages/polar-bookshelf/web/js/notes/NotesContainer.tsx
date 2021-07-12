@@ -4,45 +4,22 @@ import clsx from 'clsx';
 import * as React from 'react';
 import {deepMemo} from "../react/ReactUtils";
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
         root: {
-            display: 'flex',
-            flexGrow: 1,
-            fontSize: '18px',
-            marginLeft: theme.spacing(2),
-            marginRight: theme.spacing(2),
-            marginBottom: theme.spacing(2),
-            overflow: 'auto'
+            fontSize: '16px',
+            height: '100%',
         },
     }),
 );
 
-const FixedWidthContainer = React.memo(function FixedWidthContainer(props: {children: JSX.Element}) {
-
-    return (
-        <div className="FixedWidthContainer"
-             style={{
-                 maxWidth: '100%',
-                 flexGrow: 1,
-                 marginLeft: 'auto',
-                 marginRight: 'auto'
-             }}>
-            {props.children}
-        </div>
-    );
-
-});
-export const NotesContainer = deepMemo(function NotesContainer(props: {children: JSX.Element})  {
+export const NotesContainer: React.FC = deepMemo(function NotesContainer(props)  {
 
     const classes = useStyles();
 
     return (
         <div className={clsx(["NotesContainer", classes.root])}>
-
-            <FixedWidthContainer>
-                {props.children}
-            </FixedWidthContainer>
+            {props.children}
         </div>
     )
 
