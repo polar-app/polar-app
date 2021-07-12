@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import {HelloServerSideRender} from "./HelloServerSideRender";
 import Cookies from "js-cookie";
 
