@@ -24,9 +24,9 @@ export const BlockBulletButton = observer(function NoteBulletButton(props: IProp
 
     return (
         <NoteLink target={props.target}
-                  style={{color: theme.palette.text.primary, fontSize: 20}}
+                  style={{color: theme.palette.text.primary}}
                   draggable>
-            <NoteButton onClick={NULL_FUNCTION}
+            <NoteButton style={{ fontSize: 20 }} onClick={NULL_FUNCTION}
                         disabled={disabled}>
                 <MiddleDot/>
             </NoteButton>

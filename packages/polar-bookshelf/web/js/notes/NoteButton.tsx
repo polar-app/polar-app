@@ -53,21 +53,19 @@ export const NoteButton = React.memo(function NoteButton(props: IProps) {
              className={props.className}
              style={{
                  display: 'inline-block',
-                 borderRadius: '1em',
                  backgroundColor,
-                 width: '1em',
-                 height: '1em',
-                 lineHeight: '1em',
+                 width: 20,
+                 height: 20,
                  cursor: 'pointer',
                  userSelect: 'none',
                  ...props.style,
              }}>
             <div style={{
+                     height: '100%',
                      display: 'flex',
                      alignItems: 'center',
                      justifyContent: 'center',
-                     lineHeight: '1em',
-                     userSelect: 'none'
+                     userSelect: 'none',
                  }}>
 
                 {props.children}
