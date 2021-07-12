@@ -202,7 +202,9 @@ export const SingleNoteRendrer: React.FC<ISingleNoteRendererProps> = ({ target }
                 <NotePaper>
                     <BlocksTreeProvider root={rootID}>
                         <Block parent={undefined} id={rootID} withHeader noExpand noBullet />
-                        <NotesInbound id={rootID} />
+                        <div style={{ marginTop: 64 }}>
+                            <NotesInbound id={rootID} />
+                        </div>
                     </BlocksTreeProvider>
                 </NotePaper>
             </div>
