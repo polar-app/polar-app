@@ -131,6 +131,12 @@ export interface IBlockMerge {
 
 export interface NavOpts {
     readonly shiftKey: boolean;
+
+    /*
+     * This is used to determine whether roots should be treated as expanded, which is usually the case
+     * Except for when dealing with the references of a note which can be collapsed.
+     */
+    readonly autoExpandRoot?: boolean;
 }
 
 export interface IInsertBlocksContentStructureOpts {
@@ -761,18 +767,17 @@ export class BlocksStore implements IBlocksStore {
                          pos: NavPosition,
                          opts: NavOpts): boolean {
 
-
-        if (root === undefined) {
-            console.warn("No currently active root");
-            return false;
-        }
-
+        const {shiftKey, autoExpandRoot} = opts;
         if (this._active === undefined) {
             console.warn("No currently active node");
             return false;
         }
 
-        const items = this.computeLinearTree(root, {expanded: true, includeInitial: true, root});
+        const items = this.computeLinearTree(root, {
+            expanded: true,
+            includeInitial: true,
+            root: autoExpandRoot ? root : undefined,
+        });
 
         const childIndex = items.indexOf(this._active?.id);
 
@@ -786,9 +791,10 @@ export class BlocksStore implements IBlocksStore {
         const activeIndex = childIndex + deltaIndex;
         const newActive = items[activeIndex];
 
-        if (! newActive && ! opts.shiftKey) {
+        if (! newActive && ! shiftKey) {
             const siblingID = DOMBlocks.getSiblingID(this._active.id, delta);
             if (siblingID) {
+                this.clearSelected('doNav');
                 this.setActiveWithPosition(siblingID, pos);
             }
             return true;
@@ -799,7 +805,7 @@ export class BlocksStore implements IBlocksStore {
             return true;
         }
 
-        if (opts.shiftKey) {
+        if (shiftKey) {
 
             if (this.hasSelected()) {
                 this.setSelectionRange(root, newActive, this._selectedAnchor!);

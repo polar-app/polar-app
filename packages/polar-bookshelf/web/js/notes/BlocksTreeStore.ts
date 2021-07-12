@@ -8,10 +8,12 @@ import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock"
 export class BlocksTreeStore {
     public readonly root: BlockIDStr;
     private readonly blocksStore: IBlocksStore;
+    private readonly rootAutoExpanded: boolean;
 
-    constructor(root: BlockIDStr, blocksStore: IBlocksStore) {
+    constructor(root: BlockIDStr, blocksStore: IBlocksStore, autoExpandRoot: boolean) {
         this.root = root;
         this.blocksStore = blocksStore;
+        this.rootAutoExpanded = autoExpandRoot;
     }
 
     get selected() {
@@ -67,11 +69,11 @@ export class BlocksTreeStore {
     }
 
     navPrev(pos: NavPosition, opts: NavOpts): void {
-        return this.blocksStore.navPrev(this.root, pos, opts);
+        return this.blocksStore.navPrev(this.root, pos, { ...opts, autoExpandRoot: this.rootAutoExpanded });
     }
 
     navNext(pos: NavPosition, opts: NavOpts): void {
-        return this.blocksStore.navNext(this.root, pos, opts);
+        return this.blocksStore.navNext(this.root, pos, { ...opts, autoExpandRoot: this.rootAutoExpanded });
     }
 
     indentBlock(id: BlockIDStr): ReadonlyArray<DoIndentResult> {

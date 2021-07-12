@@ -7,6 +7,7 @@ import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {CursorPositions} from "./CursorPositions";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
+const PAGE_NAV_BLOCKS_JUMP_COUNT = 10; 
 
 const hasEditorSelection = (): boolean => {
 
@@ -24,6 +25,16 @@ const hasEditorSelection = (): boolean => {
 const abortEvent = (event: React.KeyboardEvent): void => {
     event.stopPropagation();
     event.preventDefault();
+};
+
+export const navNBlocks = (blocksTreeStore: BlocksTreeStore, delta: 'prev' | 'next', shiftKey: boolean) => {
+    const nav = () => blocksTreeStore[delta === 'prev' ? 'navPrev' : 'navNext']('start', { shiftKey: shiftKey });
+
+    for (
+        let i = 0;
+        i < PAGE_NAV_BLOCKS_JUMP_COUNT && nav();
+        i += 1
+    );
 };
 
 export const hasModifiers = (event: React.KeyboardEvent, includeShift: boolean = true): boolean =>
@@ -242,6 +253,14 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
                 blocksTreeStore.mergeBlocks(mergeTarget.target, mergeTarget.source);
             }
         }
+    },
+    PageUp: ({ blocksTreeStore, event }) => {
+        abortEvent(event);
+        navNBlocks(blocksTreeStore, 'prev', event.shiftKey);
+    },
+    PageDown: ({ blocksTreeStore, event }) => {
+        abortEvent(event);
+        navNBlocks(blocksTreeStore, 'next', event.shiftKey);
     },
 };
 

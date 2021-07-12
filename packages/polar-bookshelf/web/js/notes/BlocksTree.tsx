@@ -10,11 +10,13 @@ const BlocksTreeContext = React.createContext<BlocksTreeContextData | undefined>
 
 type IBlocksTreeProviderProps = {
     root: BlockIDStr;
+    autoExpandRoot?: boolean;
 };
 
-export const BlocksTreeProvider: React.FC<IBlocksTreeProviderProps> = ({ root, children }) => {
+export const BlocksTreeProvider: React.FC<IBlocksTreeProviderProps> = (props) => {
+    const { root, children, autoExpandRoot = false } = props;
     const blocksStore = useBlocksStore();
-    const blocksTreeStore = React.useMemo(() => new BlocksTreeStore(root, blocksStore), [blocksStore, root]);
+    const blocksTreeStore = React.useMemo(() => new BlocksTreeStore(root, blocksStore, autoExpandRoot), [blocksStore, root]);
 
     return (
         <BlocksTreeContext.Provider children={children} value={blocksTreeStore} />
