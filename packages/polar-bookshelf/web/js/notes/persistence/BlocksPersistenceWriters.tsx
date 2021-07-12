@@ -7,13 +7,13 @@ import {FirestoreBlocks} from "./FirestoreBlocks";
 import {Asserts} from "polar-shared/src/Asserts";
 import firebase from 'firebase';
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
-import {IBlock, IBlockContent} from '../../../../../polar-app-public/polar-blocks/src/blocks/IBlock';
-import {URLStr} from '../../../../../polar-app-public/polar-shared/src/util/Strings';
 import {getConfig} from '../../firebase/Firebase';
-import {ISODateTimeStrings} from '../../../../../polar-app-public/polar-shared/src/metadata/ISODateTimeStrings';
-import {IWriteBatch} from '../../../../../polar-app-public/polar-firestore-like/src/IWriteBatch';
-import {ICollectionReference} from '../../../../../polar-app-public/polar-firestore-like/src/ICollectionReference';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
+import {IBlock, IBlockContent} from 'polar-blocks/src/blocks/IBlock';
+import {URLStr} from 'polar-shared/src/util/Strings';
+import {ICollectionReference} from 'polar-firestore-like/src/ICollectionReference';
+import {IWriteBatch} from 'polar-firestore-like/src/IWriteBatch';
+import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 
 const IS_NODE = typeof window === 'undefined';
 
