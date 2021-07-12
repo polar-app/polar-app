@@ -11,6 +11,9 @@ import {IBlock, IBlockContent} from '../../../../../polar-app-public/polar-block
 import {URLStr} from '../../../../../polar-app-public/polar-shared/src/util/Strings';
 import {getConfig} from '../../firebase/Firebase';
 import {ISODateTimeStrings} from '../../../../../polar-app-public/polar-shared/src/metadata/ISODateTimeStrings';
+import {IWriteBatch} from '../../../../../polar-app-public/polar-firestore-like/src/IWriteBatch';
+import {ICollectionReference} from '../../../../../polar-app-public/polar-firestore-like/src/ICollectionReference';
+import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 
 const IS_NODE = typeof window === 'undefined';
 
@@ -38,6 +41,28 @@ export namespace FileTombstone {
         const { pathname } = new URL(url);
         const pathnameParts = pathname.split('/');
         return pathnameParts[pathnameParts.length - 1];
+    }
+
+    export function handleBlockAdded(collection: ICollectionReference<unknown>, batch: IWriteBatch<unknown>, block: IBlock<IBlockContent>) {
+        const addedFileName = FileTombstone.getFileNameFromBlock(block);
+        if (addedFileName) {
+            const identifier = Hashcodes.create(addedFileName);
+            const doc = collection.doc(identifier);
+            batch.delete(doc);
+        }
+    }
+
+    export function handleBlockRemoved(collection: ICollectionReference<unknown>, batch: IWriteBatch<unknown>, block: IBlock<IBlockContent>) {
+        const deletedFileName = FileTombstone.getFileNameFromBlock(block);
+        if (deletedFileName) {
+            const identifier = Hashcodes.create(deletedFileName);
+            const doc = collection.doc(identifier);
+            batch.set(doc, {
+                created: ISODateTimeStrings.create(),
+                uid: block.uid,
+                filename: deletedFileName,
+            });
+        }
     }
 }
 
@@ -72,22 +97,12 @@ export namespace FirestoreBlocksPersistenceWriter {
                 case "set-doc":
                     const firestoreBlock = FirestoreBlocks.toFirestoreBlock(firestoreMutation.value);
                     batch.set(doc, firestoreBlock);
-
-                    const addedFileName = FileTombstone.getFileNameFromBlock(firestoreMutation.value);
-                    if (addedFileName) {
-                        const doc = tombstoneCollection.doc(addedFileName);
-                        batch.delete(doc);
-                    }
+                    FileTombstone.handleBlockAdded(tombstoneCollection, batch, firestoreMutation.value);
                     break;
 
                 case "delete-doc":
                     batch.delete(doc)
-
-                    const deletedFileName = FileTombstone.getFileNameFromBlock(firestoreMutation.value);
-                    if (deletedFileName) {
-                        const doc = tombstoneCollection.doc(deletedFileName);
-                        batch.set(doc, { created: ISODateTimeStrings.create(), uid: firestoreMutation.value.uid });
-                    }
+                    FileTombstone.handleBlockRemoved(tombstoneCollection, batch, firestoreMutation.value);
                     break;
 
                 case "update-path-number":
