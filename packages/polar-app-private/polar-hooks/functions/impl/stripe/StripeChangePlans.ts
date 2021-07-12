@@ -22,7 +22,7 @@ export namespace StripeChangePlans {
 
         await Accounts.validate(opts.email, opts.uid);
         await StripeCustomers.changePlan(opts.stripeMode, opts.email, plan, opts.interval);
-        await Accounts.changePlanViaEmail(opts.email, account.customer.customerID, plan, opts.interval);
+        await Accounts.changePlanViaEmail(opts.email, {type: 'stripe', customerID: account.customer.customerID}, plan, opts.interval);
 
     }
 
