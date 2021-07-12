@@ -122,12 +122,15 @@ function isFileTransfer(event: DragEvent) {
 
         if (event.dataTransfer.types.includes('Files') ||
             event.dataTransfer.types.includes('application/x-moz-file')) {
-            const {files} = event.dataTransfer;
+            const {files, items} = event.dataTransfer;
+
+            const isAllowedMime = (mime: string) => ALLOWED_MIMES.indexOf(mime) > -1;
+            const toType = (item: File | DataTransferItem) => item.type;
+            const array = items.length > 0 ? Array.from(items).map(toType) : Array.from(files).map(toType);
+
 
             // Only allow pdfs and epubs
-            return files.length > 0 &&
-                Array.from(files)
-                    .every(file => ALLOWED_MIMES.indexOf(file.type) > -1);
+            return array.every(isAllowedMime);
         }
 
     }
