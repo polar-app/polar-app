@@ -24,6 +24,7 @@ export namespace SSRClient {
 
         if (hasPublicAnonUser() && hasSSRMeta()) {
 
+            console.log("Hydrating SSR in client.")
             // TODO: we need some sort of path matching system.
             ReactDOM.hydrate(<HelloServerSideRender/>, document.getElementById('root'));
 
