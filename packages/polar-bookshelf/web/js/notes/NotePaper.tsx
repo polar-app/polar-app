@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) =>
         wrapper: {
             maxWidth: 1024,
             height: '100%',
-            borderRadius: 6,
+            borderRadius: 4,
             overflow: 'hidden',
             flex: 1,
         }
