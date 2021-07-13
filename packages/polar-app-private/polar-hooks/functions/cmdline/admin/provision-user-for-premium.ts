@@ -19,7 +19,7 @@ async function provisionUserForLevel(email: string, plan: V2Plan) {
 
     const account = await StripeCustomerAccounts.get('live', email);
     await StripeCustomers.changePlan('live', email, plan, interval);
-    await Accounts.changePlanViaEmail(email, account.customer.customerID, plan, interval);
+    await Accounts.changePlanViaEmail(email, {type: 'stripe', customerID: account.customer.customerID}, plan, interval);
 
 }
 

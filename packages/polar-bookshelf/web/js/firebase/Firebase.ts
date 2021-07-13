@@ -29,6 +29,11 @@ const PROJECTS: {[project: string]: any} = {
 
 };
 
+export const getConfig = () => {
+    // Return different values based on the environment.
+    return PROJECTS['prod'];
+};
+
 export class Firebase {
 
     private static app?: firebase.app.App;
