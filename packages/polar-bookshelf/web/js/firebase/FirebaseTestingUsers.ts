@@ -8,7 +8,7 @@ export const FIREBASE_PASS1="mk9z79vlquixvqd";
 export const FIREBASE_USER2="getpolarized.test+test2@gmail.com";
 export const FIREBASE_PASS2="mk9z79vlquixvqd";
 
-export class FirebaseTesting {
+export class FirebaseTestingUsers {
 
     public static validateUsers() {
 
