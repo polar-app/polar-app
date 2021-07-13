@@ -1,9 +1,21 @@
-<html>
+<!DOCTYPE>
+<html lang="en">
 <head>
+    <title>Polar</title>
     <style>
         html, body {
             margin: 0;
             padding: 0;
+        }
+
+        .logo {
+            max-width: 80%;
+            min-width: 180px;
+        }
+
+        .wrapper {
+            text-align: center;
+            margin-top: 40px;
         }
     </style>
     <meta name="viewport" content="width=device-width">
@@ -14,9 +26,9 @@
 </head>
 
 <body>
-<div style="text-align: center;margin-top: 40px;">
+<div class="wrapper">
     <div>
-        <img src="./logo-e66969952d7d23385b2b3d00a4486944.svg" style="max-width: 80%; min-width: 180px;" alt=""/>
+        <img src="./logo-e66969952d7d23385b2b3d00a4486944.svg" class="logo" alt=""/>
     </div>
     <h1>
         Welcome to Polar!
@@ -26,6 +38,11 @@
         <h3>
             Buy a plan:
         </h3>
+        <div>
+            For this user:
+            <input type="email" id="email" placeholder="Email"/>
+        </div>
+        <br/>
         <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
                 type="button" onclick="buyPlan('plus')">Plus
         </button>
@@ -36,10 +53,12 @@
 </div>
 <script>
     function buyPlan(planName) {
+        const emailField = document.getElementById('email');
         window.ReactNativeWebView.postMessage(JSON.stringify({
             action: 'buy_play',
             data: {
                 plan: planName,
+                email: emailField.value,
             }
         }))
     }

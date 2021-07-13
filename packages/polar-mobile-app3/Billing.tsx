@@ -1,25 +1,42 @@
 import * as RNIap from "react-native-iap";
 import {Alert, EmitterSubscription, Platform} from "react-native";
-import {
-    InAppPurchase,
-    ProductPurchase, PurchaseError,
-    purchaseErrorListener,
-    purchaseUpdatedListener,
-    SubscriptionPurchase
-} from "react-native-iap";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // @TODO Move to own file
 class PolarBackendService {
-    static validateReceiptOnServer(transactionReceipt: string) {
-        console.log(transactionReceipt);
-        return new Promise(resolve => {
-            resolve(true);
+    static async validateReceiptOnServer(transactionReceipt: string, email: string) {
+        const url = 'https://us-central1-polar-32b0f.cloudfunctions.net/AppleIapCallback';
+
+        console.log(`Validating receipt with ${url}`);
+
+        const result = await fetch(url, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                receipt: transactionReceipt,
+                email: email,
+            })
         });
+
+        if (result.ok) {
+            return true;
+        }
+
+        console.error('Failed to validate transaction in our Cloud Function');
+        console.log(result.ok);
+        console.log(await result.json());
+        console.log(result.status);
+        console.log(result.statusText);
+
+        return false;
     }
 }
 
-function isSuccess(serverResponse: unknown) {
-    return true;
+function isSuccess(serverResponse: boolean) {
+    return serverResponse;
 }
 
 export class Billing {
@@ -44,44 +61,44 @@ export class Billing {
 
         await RNIap.clearTransactionIOS()
 
-        this.purchaseUpdateSubscription = purchaseUpdatedListener((purchase: InAppPurchase | SubscriptionPurchase | ProductPurchase) => {
+        this.purchaseUpdateSubscription = RNIap.purchaseUpdatedListener((purchase: RNIap.InAppPurchase | RNIap.SubscriptionPurchase | RNIap.ProductPurchase) => {
             console.log('purchaseUpdatedListener', purchase);
             const receipt = purchase.transactionReceipt;
             console.log('receipt', receipt);
             if (receipt) {
-                PolarBackendService.validateReceiptOnServer(purchase.transactionReceipt)
-                    .then(async (deliveryResult) => {
-                        if (isSuccess(deliveryResult)) {
-                            // Tell the store that you have delivered what has been paid for.
-                            // Failure to do this will result in the purchase being refunded on Android and
-                            // the purchase event will reappear on every relaunch of the app until you succeed
-                            // in doing the below. It will also be impossible for the user to purchase consumables
-                            // again until you do this.
-
-
-                            try {
-                                await RNIap.finishTransaction(purchase, true);
-                                // If not consumable
-                                await RNIap.finishTransaction(purchase, false);
-                            } catch (e) {
-                                console.error(e);
+                AsyncStorage.getItem(
+                    '@polar:buyer_email',
+                ).then(buyerEmail => {
+                    PolarBackendService.validateReceiptOnServer(purchase.transactionReceipt, buyerEmail!)
+                        .then(async (deliveryResult) => {
+                            if (isSuccess(deliveryResult)) {
+                                // Tell the store that you have delivered what has been paid for.
+                                // Failure to do this will result in the purchase being refunded on Android and
+                                // the purchase event will reappear on every relaunch of the app until you succeed
+                                // in doing the below. It will also be impossible for the user to purchase consumables
+                                // again until you do this.
+                                try {
+                                    await RNIap.finishTransaction(purchase, true);
+                                    // If not consumable
+                                    await RNIap.finishTransaction(purchase, false);
+                                } catch (e) {
+                                    console.error(e);
+                                }
+                            } else {
+                                // Retry / conclude the purchase is fraudulent, etc...
                             }
-                        } else {
-                            // Retry / conclude the purchase is fraudulent, etc...
-                        }
-                    });
+                        });
+                });
+
             }
         });
 
-        this.purchaseErrorSubscription = purchaseErrorListener((error: PurchaseError) => {
+        this.purchaseErrorSubscription = RNIap.purchaseErrorListener((error: RNIap.PurchaseError) => {
             console.warn('purchaseErrorListener', error);
-            switch (error.code) {
-                case "E_USER_CANCELLED":
-                    Alert.alert("Purchase cancelled. Please try again");
-                    break;
-                default:
-                    Alert.alert(String(error.code), error.message);
-                    break;
+            if (error.code === "E_USER_CANCELLED") {
+                Alert.alert("Purchase cancelled. Please try again");
+            } else {
+                Alert.alert(String(error.code), error.message);
             }
         });
     }
@@ -103,7 +120,6 @@ export class Billing {
     async requestPurchase(productId: string) {
         try {
             await RNIap.requestPurchase(productId, false);
-            // @TODO attach listeners for new purchase, just like I did it experimentally in IapTest.tsx
         } catch (err) {
             Alert.alert(err.code, err.message);
         }

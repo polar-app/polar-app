@@ -9,27 +9,36 @@
  */
 
 import React from 'react';
-import {Alert, Platform, SafeAreaView, StyleSheet, View} from 'react-native';
+import {Alert, SafeAreaView, StyleSheet, View} from 'react-native';
 import {InAppLiteServer} from './InAppLiteServer';
 import {IapTest} from './IapTest';
-import * as RNIap from "react-native-iap";
 import {Billing} from "./Billing";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const App = () => {
     const billing = new Billing();
-    billing.init().then(r => {
+    billing.init().then((r) => {
     });
 
     return (
         <SafeAreaView style={styles.container}>
             <View
-                style={{
-                    flex: 1,
-                    flexDirection: 'column',
-                }}>
-                <View style={{flex: 1}}>
+                style={styles.container}>
+                <View style={styles.container}>
                     <InAppLiteServer
-                        onBuy={async (planName) => {
+                        onBuy={async (planName, email) => {
+
+                            try {
+                                await AsyncStorage.setItem(
+                                    '@polar:buyer_email',
+                                    email
+                                );
+                            } catch (error) {
+                                // Error saving data
+                                console.error('Can not store buyer Email');
+                                console.error(error);
+                            }
+
                             const products = await billing.getProducts({ios: ['plan_' + planName]});
 
                             // Get first product that matches this codename
@@ -42,7 +51,8 @@ const App = () => {
 
                             try {
                                 await billing.requestPurchase(product.productId);
-                                // @TODO attach listeners for new purchase, just like I did it experimentally in IapTest.tsx
+                                // Callback for new purchases is attached inside Billing.ts
+                                // Rest of procedure follows asynchronously there
                             } catch (err) {
                                 Alert.alert(err.code, err.message);
                             }
@@ -60,6 +70,7 @@ export default App;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        flexDirection: 'column',
     },
     text: {
         color: '#922f2f',

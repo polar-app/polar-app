@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import RNFS from 'react-native-fs';
-import {ActivityIndicator, Button, StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, Button, StyleSheet, View} from 'react-native';
 import WebView from 'react-native-webview';
 // @ts-ignore
 import StaticServer from 'react-native-static-server';
 
 interface Props {
     // Callback invoked when user wants to buy a plan
-    onBuy: (planName: "plus" | "pro") => void;
+    onBuy: (planName: "plus" | "pro", email: string) => void;
 }
 
 export class InAppLiteServer extends Component<Props, {
@@ -24,7 +24,7 @@ export class InAppLiteServer extends Component<Props, {
         const realFrontendPath = RNFS.MainBundlePath + '/static/polar';
         const dummyFrontendPath = RNFS.MainBundlePath + '/static/dummy-frontend';
 
-        this.server = new StaticServer(8050, realFrontendPath);
+        this.server = new StaticServer(8050, dummyFrontendPath);
         this.state = {
             isRunning: false,
             url: '',
@@ -105,12 +105,14 @@ export class InAppLiteServer extends Component<Props, {
                                 console.info(`[Console] ${JSON.stringify(dataPayload.data)}`);
                                 return;
                             } else {
+                                // Buying a plan
                                 console.log(dataPayload)
 
                                 const payload: {
                                     action: "console_log" | "buy_play",
                                     data?: {
                                         plan?: "plus" | "pro",
+                                        email: string,
                                     },
                                 } = JSON.parse(event.nativeEvent.data);
 
@@ -119,7 +121,7 @@ export class InAppLiteServer extends Component<Props, {
                                         break;
                                     case "buy_play":
                                         console.log(payload);
-                                        this.props.onBuy(payload.data!.plan!);
+                                        this.props.onBuy(payload.data!.plan!, payload.data!.email!);
                                         break;
                                 }
 
