@@ -962,12 +962,14 @@ export class BlocksStore implements IBlocksStore {
             return undefined;
         }
 
-        const sibling = this.prevSibling(id);
+        const expansionTree = this.computeLinearTree(root, { expanded: true, root });
+        const currentIdx = expansionTree.indexOf(id);
+        const target = expansionTree[currentIdx - 1];
 
-        if (sibling) {
+        if (currentIdx > -1 && target) {
             return {
                 source: id,
-                target: sibling
+                target: target,
             };
         }
 
@@ -979,14 +981,10 @@ export class BlocksStore implements IBlocksStore {
 
             if (parentBlock) {
 
-                if (this.canMergeTypes(block, parentBlock)) {
-                    return {
-                        source: id,
-                        target: block.parent
-                    };
-                }
-
-                if (this.canMergeWithDelete(block, parentBlock)) {
+                if (
+                    this.canMergeTypes(block, parentBlock) ||
+                    this.canMergeWithDelete(block, parentBlock)
+                ) {
                     return {
                         source: id,
                         target: block.parent
@@ -1049,20 +1047,8 @@ export class BlocksStore implements IBlocksStore {
 
         if (! this.canMergeTypes(sourceBlock, targetBlock)) {
 
-            if (this.blockIsEmpty(sourceBlock.id)) {
-
-                if (sourceBlock.parent === targetBlock.id) {
-
-                    const targetBlockItems = PositionalArrays.toArray(targetBlock.items);
-                    const firstChild = targetBlockItems.indexOf(sourceBlock.id) === 0;
-
-                    if (firstChild) {
-                        return true;
-                    }
-
-                }
-
-            }
+            return this.blockIsEmpty(sourceBlock.id) &&
+                   this.children(sourceBlock.id).length === 0;
 
         }
 
