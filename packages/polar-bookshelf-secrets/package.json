@@ -3,7 +3,6 @@
   "version": "2.1.76",
   "description": "",
   "main": "index.js",
-  "private": true,
   "scripts": {
     "compile": "echo nothing to compile",
     "dist": "echo noop"
