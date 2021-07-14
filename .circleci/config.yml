@@ -71,7 +71,7 @@ commands:
       - run:
           name: NPM setup
           command: |
-            cp .npmrc.bytesafe ~/.npmrc
+            cp .npmrc ~/.npmrc
             cat ~/.npmrc
             echo "npm ping: ======"
             npm ping
