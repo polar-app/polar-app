@@ -30,11 +30,7 @@ const abortEvent = (event: React.KeyboardEvent): void => {
 export const navNBlocks = (blocksTreeStore: BlocksTreeStore, delta: 'prev' | 'next', shiftKey: boolean) => {
     const nav = () => blocksTreeStore[delta === 'prev' ? 'navPrev' : 'navNext']('start', { shiftKey: shiftKey });
 
-    for (
-        let i = 0;
-        i < PAGE_NAV_BLOCKS_JUMP_COUNT && nav();
-        i += 1
-    );
+    for (let i = 0; i < PAGE_NAV_BLOCKS_JUMP_COUNT && nav(); i += 1) {};
 };
 
 export const hasModifiers = (event: React.KeyboardEvent, includeShift: boolean = true): boolean =>

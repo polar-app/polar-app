@@ -16,7 +16,8 @@ type IBlocksTreeProviderProps = {
 export const BlocksTreeProvider: React.FC<IBlocksTreeProviderProps> = (props) => {
     const { root, children, autoExpandRoot = false } = props;
     const blocksStore = useBlocksStore();
-    const blocksTreeStore = React.useMemo(() => new BlocksTreeStore(root, blocksStore, autoExpandRoot), [blocksStore, root]);
+    const blocksTreeStore = React.useMemo(() =>
+        new BlocksTreeStore(root, blocksStore, autoExpandRoot), [blocksStore, root, autoExpandRoot]);
 
     return (
         <BlocksTreeContext.Provider children={children} value={blocksTreeStore} />
