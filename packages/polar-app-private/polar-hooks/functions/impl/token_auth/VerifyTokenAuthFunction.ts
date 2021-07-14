@@ -132,6 +132,11 @@ export const VerifyTokenAuthFunction = ExpressFunctions.createHookAsync('VerifyT
         isNewUser: authUser.isNewUser
     };
 
+    // set a session token with the user's UID so that the request is unique for
+    // SSR so that it doesn't mess with the cache.  Note that we have to clear
+    // this on logout but we purge all cookies right now anyway on logout.
+    res.cookie('__session', authUser.user.uid, {maxAge: 9999999999999, httpOnly: true});
+
     ExpressFunctions.sendResponse(res, response);
 
 });

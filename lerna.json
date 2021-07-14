@@ -7,13 +7,12 @@
     "packages/polar-bookshelf-secrets",
     "packages/polar-site2"
   ],
-  "version": "2.1.74",
+  "version": "2.1.76",
   "concurrency": 10,
   "mutex": "network",
   "useWorkspaces": true,
   "npmClient": "yarn",
   "npmClientArgs": [
-    "--verbose",
     "--no-optional"
   ]
 }

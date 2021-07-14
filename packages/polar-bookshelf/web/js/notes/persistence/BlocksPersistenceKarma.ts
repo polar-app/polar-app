@@ -1,7 +1,7 @@
 import {Firestore} from "../../firebase/Firestore";
 import {assert} from "chai";
 import {Firebase} from "../../firebase/Firebase";
-import {FIREBASE_PASS, FIREBASE_USER} from "../../firebase/FirebaseTesting";
+import {FIREBASE_PASS, FIREBASE_USER} from "../../firebase/FirebaseTestingUsers";
 import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
 import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 import {assertJSON} from "../../test/Assertions";

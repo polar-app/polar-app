@@ -25,6 +25,8 @@ export interface AccountInit {
 
 export namespace Accounts {
 
+    export type Customer = StripeCustomer;
+
     /**
      * Validate that the given HTTP request has the right uid or someone
      * is just trying to monkey with someone's account.
@@ -64,12 +66,12 @@ export namespace Accounts {
             throw new Error(msg);
         }
 
-        await changePlanViaEmail(email, customerID, to.plan, to.interval);
+        await changePlanViaEmail(email, {type: 'stripe', customerID}, to.plan, to.interval);
 
     }
 
     export async function changePlanViaEmail(email: string | undefined | null,
-                                             customerID: IDStr,
+                                             customer: Customer,
                                              plan: Billing.Plan,
                                              interval: Billing.Interval) {
 
@@ -80,11 +82,6 @@ export namespace Accounts {
         const user = await auth().getUserByEmail(email);
 
         const lastModified = new Date().toISOString();
-
-        const customer: StripeCustomer = {
-            type: 'stripe',
-            customerID
-        };
 
         const account: Account = {
             id: user.uid,
