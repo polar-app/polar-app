@@ -1,40 +1,27 @@
 {
+  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "react-native start",
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject"
   },
   "dependencies": {
-    "@expo/metro-config": "^0.1.76",
-    "expo": "~41.0.1",
-    "expo-splash-screen": "~0.10.2",
-    "expo-status-bar": "~1.0.4",
-    "expo-tracking-transparency": "~1.0.1",
-    "expo-updates": "~0.5.4",
+    "expo": "~39.0.2",
+    "expo-status-bar": "~1.0.2",
     "react": "16.13.1",
-    "react-dom": "17.0.2",
-    "react-native": "~0.63.4",
-    "react-native-gesture-handler": "~1.10.3",
-    "react-native-iap": "^6.2.3",
-    "react-native-reanimated": "~2.2.0",
-    "react-native-safe-area-context": "3.2.0",
-    "react-native-screens": "~3.4.0",
-    "react-native-static-server": "^0.5.0",
-    "react-native-unimodules": "~0.13.3",
+    "react-dom": "16.13.1",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.4.tar.gz",
+    "react-native-web": "~0.13.12",
     "react-native-user-agent": "=2.1.0",
-    "react-native-web": "~0.17.1",
-    "react-native-webview": "=11.6.4"
+    "react-native-webview": "=10.10.2"
   },
   "devDependencies": {
-    "@babel/core": "~7.14.6",
-    "@types/react": "~17.0.11",
-    "@types/react-dom": "~17.0.8",
-    "@types/react-native": "~0.64.10",
-    "typescript": "~4.3.4"
-  },
-  "private": true,
-  "name": "polar-mobile-app2",
-  "version": "1.0.0"
+    "@babel/core": "~7.9.0",
+    "@types/react": "~16.9.35",
+    "@types/react-dom": "~16.9.8",
+    "@types/react-native": "~0.63.2",
+    "typescript": "~3.9.5"
+  }
 }

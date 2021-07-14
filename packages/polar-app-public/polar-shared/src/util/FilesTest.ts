@@ -253,10 +253,10 @@ describe('Files', function() {
 
         it("from stream", async function() {
 
-            const dataInputPath = FilePaths.join(tmpdir, "data-input-from-stream.txt");
+            const dataInputPath = TestingFiles.createPath();
             await Files.writeFileAsync(dataInputPath, "hello world");
 
-            const dataOutputPath = FilePaths.join(tmpdir, "data-output-from-stream.txt");
+            const dataOutputPath = TestingFiles.createPath();
 
             await Files.writeFileAsync(dataOutputPath, Files.createReadStream(dataInputPath));
 
@@ -290,7 +290,7 @@ describe('Files', function() {
 
         it("basic", async function() {
 
-            const path = FilePaths.join(tmpdir, "write-file-async.txt");
+            const path = TestingFiles.createPath();
 
             await Files.writeFileAsync(path, "hello world");
 

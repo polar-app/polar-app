@@ -1,3 +1,4 @@
+import {Firebase} from "./Firebase";
 
 export const FIREBASE_USER="getpolarized.test+test@gmail.com";
 export const FIREBASE_PASS="mk9z79vlquixvqd";
@@ -8,9 +9,9 @@ export const FIREBASE_PASS1="mk9z79vlquixvqd";
 export const FIREBASE_USER2="getpolarized.test+test2@gmail.com";
 export const FIREBASE_PASS2="mk9z79vlquixvqd";
 
-export class FirebaseTestingUsers {
+export namespace FirebaseTestingUsers {
 
-    public static validateUsers() {
+    export function validateUsers() {
 
         const validateEnv = (name: string) => {
 
@@ -27,6 +28,28 @@ export class FirebaseTestingUsers {
         validateEnv('FIREBASE_USER2');
         validateEnv('FIREBASE_PASS2');
 
+    }
+
+    async function authWithUser(user: string, pass: string) {
+
+        const app = Firebase.init();
+
+        const auth = app.auth();
+
+        await auth.signInWithEmailAndPassword(user, pass);
+
+    }
+
+    export async function authWithUser0() {
+        await authWithUser(FIREBASE_USER, FIREBASE_PASS);
+    }
+
+    export async function authWithUser1() {
+        await authWithUser(FIREBASE_USER1, FIREBASE_PASS1);
+    }
+
+    export async function authWithUser2() {
+        await authWithUser(FIREBASE_USER2, FIREBASE_PASS2);
     }
 
 }
