@@ -3,7 +3,6 @@
   "version": "2.1.76",
   "description": "Provides support for calling our backend REST APIs in the polar cloud.",
   "main": "index.js",
-  "private": true,
   "scripts": {
     "test": "echo noop",
     "compile": "tsc",

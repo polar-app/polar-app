@@ -3,7 +3,6 @@
   "version": "2.1.76",
   "main": "index.js",
   "license": "MIT",
-  "private": true,
   "engines": {
     "node": "14"
   },

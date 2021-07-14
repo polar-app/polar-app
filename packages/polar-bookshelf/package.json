@@ -2,7 +2,6 @@
   "name": "polar-bookshelf",
   "version": "2.1.76",
   "description": "Polar",
-  "private": true,
   "scripts": {
     "testit": "echo ./dist/polar-bookshelf_${npm_package_version}_amd64.snap",
     "clean": "rm -rf web/dist && rm -rf dist/public && rm -rf .webpack-cache-loader && rm -rf .terser-webpack-plugin && rm -rf tsconfig.tsbuildinfo",
