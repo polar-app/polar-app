@@ -768,6 +768,7 @@ export class BlocksStore implements IBlocksStore {
                          opts: NavOpts): boolean {
 
         const {shiftKey, autoExpandRoot} = opts;
+
         if (this._active === undefined) {
             console.warn("No currently active node");
             return false;
@@ -881,7 +882,7 @@ export class BlocksStore implements IBlocksStore {
             return [];
         }
 
-        const result = computeTree(block, expanded && block.id !== (root || block.root));
+        const result = computeTree(block, expanded && block.id !== root);
 
         return includeInitial ? [id, ...result] : result;
     }
@@ -1947,7 +1948,12 @@ export class BlocksStore implements IBlocksStore {
                 return undefined;
             }
 
-            const linearExpansionTree = this.computeLinearTree(block.parent, {expanded: true});
+            // Collapse all the deleted blocks so we don't get their children in the expansion tree
+            blockIDs.forEach((id) => this.collapse(id));
+            const linearExpansionTree = this.computeLinearTree(block.parent, {
+                expanded: true,
+                root: block.parent,
+            });
 
             const deleteIndexes = arrayStream(blockIDs)
                 .map(current => linearExpansionTree.indexOf(current))

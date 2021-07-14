@@ -1066,7 +1066,8 @@ describe('BlocksStore', function() {
         });
 
         it("Should set the previous block as active properly (with all blocks expanded)", () => {
-            store.computeLinearTree('102').forEach(block => store.expanded[block] = true);
+            store.computeLinearTree(root, {includeInitial: true})
+                .forEach(block => store.expanded[block] = true);
             store.setActive('116');
 
             store.navPrev(root, 'start', {shiftKey: false});
@@ -1076,7 +1077,8 @@ describe('BlocksStore', function() {
         });
 
         it("Should skip over the children of a collapsed blocks", () => {
-            store.computeLinearTree('102').forEach(block => store.expanded[block] = true);
+            store.computeLinearTree(root, {includeInitial: true})
+                .forEach(block => store.expanded[block] = true);
             store.expanded['104'] = false;
             store.setActive('105');
 
@@ -1089,12 +1091,12 @@ describe('BlocksStore', function() {
         it("Should set the position of the cursor properly", () => {
             store.setActive('104');
 
-            store.navPrev(root, 'end', {shiftKey: false});
+            store.navPrev(root, 'end', {shiftKey: false, autoExpandRoot: true});
             assertPresent(store.active);
             assert.equal(store.active.pos, 'end');
             assert.equal(store.active.id, '103');
 
-            store.navPrev(root, 'start', {shiftKey: false});
+            store.navPrev(root, 'start', {shiftKey: false, autoExpandRoot: true});
             assertPresent(store.active);
             assert.equal(store.active.pos, 'start');
             assert.equal(store.active.id, '102');
@@ -1103,10 +1105,10 @@ describe('BlocksStore', function() {
         it("Should constrain the cursor movement within a specified root block", () => {
             const customRoot = '105';
             store.setActive('106');
-            store.navPrev(customRoot, 'end', {shiftKey: false});
-            store.navPrev(customRoot, 'end', {shiftKey: false});
-            store.navPrev(customRoot, 'end', {shiftKey: false});
-            store.navPrev(customRoot, 'end', {shiftKey: false});
+            store.navPrev(customRoot, 'end', {shiftKey: false, autoExpandRoot: true});
+            store.navPrev(customRoot, 'end', {shiftKey: false, autoExpandRoot: true});
+            store.navPrev(customRoot, 'end', {shiftKey: false, autoExpandRoot: true});
+            store.navPrev(customRoot, 'end', {shiftKey: false, autoExpandRoot: true});
             assertPresent(store.active);
             assert.equal(store.active.id, '105');
         });
@@ -1121,7 +1123,8 @@ describe('BlocksStore', function() {
         });
 
         it("Should set the next block as active properly (with all blocks expanded)", () => {
-            store.computeLinearTree('102').forEach(block => store.expanded[block] = true);
+            store.computeLinearTree(root, {includeInitial: true})
+                .forEach(block => store.expanded[block] = true);
             store.setActive('116');
 
             store.navNext(root, 'start', {shiftKey: false});
@@ -1131,7 +1134,8 @@ describe('BlocksStore', function() {
         });
 
         it("Should skip over the children of a collapsed blocks", () => {
-            store.computeLinearTree('102').forEach(block => store.expanded[block] = true);
+            store.computeLinearTree(root, {includeInitial: true})
+                .forEach(block => store.expanded[block] = true);
             store.expanded['104'] = false;
             store.setActive('104');
 
@@ -1142,7 +1146,9 @@ describe('BlocksStore', function() {
         });
 
         it("Should set the position of the cursor properly", () => {
-            store.computeLinearTree('102').forEach(block => store.expanded[block] = false);
+            store.computeLinearTree(root, {includeInitial: true})
+                .forEach(block => store.expanded[block] = true);
+            store.expanded['104'] = false;
             store.setActive('104');
 
             store.navNext(root, 'end', {shiftKey: false});
@@ -1158,7 +1164,8 @@ describe('BlocksStore', function() {
         });
 
         it("Should constrain the cursor movement within a specified root block", () => {
-            store.computeLinearTree('102').forEach(block => store.expanded[block] = true);
+            store.computeLinearTree(root, {includeInitial: true})
+                .forEach(block => store.expanded[block] = true);
             const customRoot = '105';
             store.setActive('106');
             store.navNext(customRoot, 'end', {shiftKey: false});
