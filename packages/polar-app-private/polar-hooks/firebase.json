@@ -118,6 +118,10 @@
         "destination": "/apps/repository/index.html"
       },
       {
+        "source": "/hello-ssr",
+        "function": "SSRFunction"
+      },
+      {
         "source": "**",
         "function": "webapp"
       },

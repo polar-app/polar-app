@@ -68,6 +68,7 @@ import {UserTagsDataLoader} from "../../../../apps/repository/js/persistence_lay
 import {BlocksStoreProvider} from "../../notes/store/BlocksStore";
 import {BlockStoreDefaultContextProvider} from "../../notes/store/BlockStoreContextProvider";
 import {NotesScreen} from '../../notes/NoteScreen';
+import {HelloServerSideRender} from "../../ssr/HelloServerSideRender";
 
 interface IProps {
     readonly app: App;
@@ -373,6 +374,9 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                                                                                             <Route path="/notes"
                                                                                                                    component={NotesScreen}/>
+
+                                                                                                            <Route path="/hello-ssr"
+                                                                                                                   component={HelloServerSideRender}/>
 
                                                                                                         </Switch>
 

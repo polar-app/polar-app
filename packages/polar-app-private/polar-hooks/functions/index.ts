@@ -27,9 +27,10 @@ import {StripeCreateCustomerPortalFunction} from "./impl/stripe/StripeCreateCust
 import {StripeStudentDiscountVerifyFunction} from "./impl/stripe/StripeStudentDiscountVerifyFunction";
 import {StripeStudentDiscountFunction} from "./impl/stripe/StripeStudentDiscountFunction";
 import {StartTokenAuthFunction} from "./impl/token_auth/StartTokenAuthFunction";
-import {VerifyTokenAuthFunction} from "./impl/token_auth/VerifyTokenAuthentication";
+import {VerifyTokenAuthFunction} from "./impl/token_auth/VerifyTokenAuthFunction";
 import {CloudFunctionsWarmer} from "./impl/CloudFunctionsWarmer";
 import {CreateSnapshotFunction} from "./impl/snapshots/CreateSnapshotFunctions";
+import {SSRFunction} from "./impl/ssr/SSRFunction";
 
 // import {DocPreviewFunction} from "./impl/docs/DocPreviewFunctions";
 // import {DocPreviewSitemapFunction} from "./impl/sitemaps/DocPreviewSitemapFunction";
@@ -70,3 +71,4 @@ exports.StartTokenAuth = StartTokenAuthFunction;
 exports.VerifyTokenAuth = VerifyTokenAuthFunction;
 exports.CloudFunctionsWarmer = CloudFunctionsWarmer;
 exports.CreateSnapshotFunction = CreateSnapshotFunction;
+exports.SSRFunction = SSRFunction;

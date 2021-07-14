@@ -58,6 +58,7 @@
     "polar-url": "^2.1.75",
     "polar-webapp-dist": "^2.1.75",
     "polar-webapp-links": "^2.1.75",
+    "polar-bookshelf": "^2.1.75",
     "prerender-node": "^3.2.5",
     "prompts": "^2.3.2",
     "rollbar": "=2.19.4",
