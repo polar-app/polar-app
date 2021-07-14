@@ -17,7 +17,7 @@ RUN npm i -g --force yarn
 RUN usermod -u $USER_ID -g $GROUP_ID node
 USER node
 
-COPY --chown=node:node .npmrc.bytesafe /home/node/.npmrc
+COPY --chown=node:node .npmrc /home/node/.npmrc
 
 WORKDIR /polar-app
 
