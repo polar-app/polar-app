@@ -1,7 +1,6 @@
 {
   "name": "polar-bookshelf",
   "version": "2.1.77",
-  "private": true,
   "description": "Polar",
   "scripts": {
     "testit": "echo ./dist/polar-bookshelf_${npm_package_version}_amd64.snap",
