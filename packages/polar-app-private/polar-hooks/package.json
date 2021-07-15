@@ -3,6 +3,7 @@
   "version": "2.1.77",
   "description": "Performs HTTP auth for us using a token scheme",
   "main": "index.js",
+  "private": true,
   "repository": "git@github.com:burtonator/polar-proxy.git",
   "author": "burton@getpolarized.io",
   "license": "MIT",
