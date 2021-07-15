@@ -3,6 +3,7 @@
   "version": "2.1.77",
   "description": "",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "test": "echo no tests",
     "compile": "npx tsc",

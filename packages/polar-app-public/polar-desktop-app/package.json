@@ -3,6 +3,7 @@
   "version": "2.1.77",
   "description": "Polar",
   "main": "./main-bundle.js",
+  "private": true,
   "scripts": {
     "start": "electron .",
     "dist-linux": "npx webpack && electron-builder --config=electron-builder.yml --linux appimage deb tar.gz --publish always",
