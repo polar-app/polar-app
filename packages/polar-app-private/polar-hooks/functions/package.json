@@ -2,6 +2,7 @@
   "name": "polar-hooks-functions",
   "version": "2.1.77",
   "main": "index.js",
+  "private": true,
   "license": "MIT",
   "engines": {
     "node": "14"
@@ -45,7 +46,6 @@
     "polar-accounts": "^2.1.77",
     "polar-backend-api": "^2.1.77",
     "polar-backend-shared": "^2.1.77",
-    "polar-bookshelf": "^2.1.77",
     "polar-firebase": "^2.1.77",
     "polar-firebase-admin": "^2.1.77",
     "polar-firestore-like": "^2.1.77",
