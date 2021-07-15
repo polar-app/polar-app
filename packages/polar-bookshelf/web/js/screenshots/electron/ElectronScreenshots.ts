@@ -14,9 +14,9 @@ import {
     WebContentsID
 } from './ScreenshotDelegate';
 import {remote} from 'electron';
-import {Promises} from '../../util/Promises';
 import {AnnotationToggler} from '../AnnotationToggler';
 import { AppRuntime } from 'polar-shared/src/util/AppRuntime';
+import {Promises} from "polar-shared/src/util/Promises";
 
 const log = Logger.create();
 
