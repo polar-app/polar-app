@@ -1,12 +1,12 @@
 {
   "name": "polar-hooks",
-  "version": "2.1.76",
+  "version": "2.1.77",
   "description": "Performs HTTP auth for us using a token scheme",
   "main": "index.js",
+  "private": true,
   "repository": "git@github.com:burtonator/polar-proxy.git",
   "author": "burton@getpolarized.io",
   "license": "MIT",
-  "private": true,
   "scripts": {
     "emulator": "firebase emulators:start",
     "firebase-deploy-functions": "./sbin/firebase-deploy-functions",
@@ -22,9 +22,9 @@
     "@types/escape-html": "0.0.20",
     "@types/uuid": "3.4.5",
     "escape-html": "^1.0.3",
-    "polar-backend-shared": "^2.1.76",
-    "polar-firebase": "^2.1.76",
-    "polar-webapp-dist": "^2.1.76",
+    "polar-backend-shared": "^2.1.77",
+    "polar-firebase": "^2.1.77",
+    "polar-webapp-dist": "^2.1.77",
     "uuid": "3.3.3"
   }
 }

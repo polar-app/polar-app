@@ -2,7 +2,7 @@ import React from 'react';
 import path from 'path';
 import { renderToString } from 'react-dom/server';
 import { Strings } from 'polar-shared/src/util/Strings';
-import { HelloServerSideRender } from 'polar-bookshelf/web/js/ssr/HelloServerSideRender';
+// import { HelloServerSideRender } from 'polar-bookshelf/web/js/ssr/HelloServerSideRender';
 import { Files } from 'polar-shared/src/util/Files';
 
 // TODO:
@@ -28,7 +28,8 @@ export namespace SSRServer {
      * @returns String
      */
     export function renderComponent(): string {
-        return renderToString(<HelloServerSideRender />);
+        // return renderToString(<HelloServerSideRender />);
+        return renderToString(<div />);
     }
 
     /**
@@ -81,14 +82,15 @@ namespace IndexHTML {
 
     async function read(): Promise<string> {
 
-        const resolvedPackagePath = require.resolve('polar-bookshelf/package.json');
-        const resolvedPackageDir = path.dirname(resolvedPackagePath);
+        // const resolvedPackagePath = require.resolve('polar-bookshelf/package.json');
+        // const resolvedPackageDir = path.dirname(resolvedPackagePath);
+        //
+        // const directory = resolvedPackageDir + '/dist/public/index.html';
+        //
+        // const buff = await Files.readFileAsync(directory);
+        // return buff.toString('utf-8');
 
-        const directory = resolvedPackageDir + '/dist/public/index.html';
-
-        const buff = await Files.readFileAsync(directory);
-        return buff.toString('utf-8');
-
+        return '';
     }
 
 }

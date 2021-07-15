@@ -251,6 +251,9 @@ export namespace StripeCustomers {
 
         await stripe.subscriptions.del(subscription.id);
 
+        // TODO: I think we ACTUALLY have to call cancel_at_period_end not delete.
+        // await stripe.subscriptions.update(subscription.id, {cancel_at_period_end: true});
+
         // TODO: right now we MUST delete the customer because when checkout
         // kicks in again we get another customer with the same email.
         await stripe.customers.del(customer.id);
