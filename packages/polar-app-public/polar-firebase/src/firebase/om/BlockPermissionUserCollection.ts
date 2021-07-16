@@ -2,7 +2,7 @@ import {IBlockPermissionUser} from "./IBlockPermissionUser";
 import {IFirestore, UserIDStr} from "polar-firestore-like/src/IFirestore";
 import {Collections} from "polar-firestore-like/src/Collections";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {BlockPermissionUserIDStr} from "./IBlockPermission";
+import {BlockPermissionUserIDStr} from "./IBlockPermissionEntry";
 
 export namespace BlockPermissionUserCollection {
 

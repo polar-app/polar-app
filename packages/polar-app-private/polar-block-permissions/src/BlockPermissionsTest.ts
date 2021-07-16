@@ -1,7 +1,6 @@
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {BlockPermissions} from "./BlockPermissions";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
-import {BlockPermissionMap} from "polar-firebase/src/firebase/om/IBlockPermissionRecord";
 import {FirebaseTestingUsers} from "polar-firebase-test/src/firebase/FirebaseTestingUsers";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
@@ -12,13 +11,22 @@ import {assertJSON} from "polar-test/src/test/Assertions";
 import { BlockPermissionCollection } from "polar-firebase/src/firebase/om/BlockPermissionCollection";
 import { UserIDStr } from "polar-firestore-like/src/IFirestore";
 import {EmailStr} from "polar-shared/src/util/Strings";
+import {BlockPermissionMap, IBlockPermission} from "polar-firebase/src/firebase/om/IBlockPermission";
 
 describe("BlockPermissions", function() {
 
     this.timeout(10000);
 
+    function canonicalizeBlockPermission(blockPermission: IBlockPermission<any> | undefined) {
 
+        if (blockPermission === undefined) {
+            return undefined;
+        }
 
+        (blockPermission as any).updated = 'xxx';
+        return blockPermission;
+
+    }
 
     function createFakePageBlock(id: BlockIDStr,
                                  uid: UserIDStr): IBlock {
@@ -114,12 +122,28 @@ describe("BlockPermissions", function() {
 
         await BlockPermissions.doUpdatePagePermissions(firestore, uid, blockID, newPermissions);
 
+        const blockPermission = await BlockPermissionCollection.get(firestore, block.id)
+
+        assertJSON(canonicalizeBlockPermission(blockPermission), {
+            "id": "12TthmtosP",
+            "permissions": {
+                "rgLitBszZKagk0Q5C5hBccYKVMd2": {
+                    "access": "read",
+                    "id": "rgLitBszZKagk0Q5C5hBccYKVMd2",
+                    "uid": "rgLitBszZKagk0Q5C5hBccYKVMd2"
+                }
+            },
+            "type": "page",
+            "updated": "xxx"
+        });
+
+        const blockPermissionUser = await BlockPermissionUserCollection.get(firestore, user0)
+
+        // assertJSON(blockPermissionUser, {});
+
 
     });
 
-    // const blockPermission = await BlockPermissionCollection.get(firestore, block.id)
-    //
-    // assertJSON(blockPermission, {});
     //
     // const blockPermissionUser = await BlockPermissionUserCollection.get(firestore, uid)
     //
