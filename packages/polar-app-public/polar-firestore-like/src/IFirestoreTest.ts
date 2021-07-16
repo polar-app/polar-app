@@ -6,4 +6,8 @@ function adminUsage() {
     //
     // const foo = firestore.
 
+    const doc = firestore.collection('123').doc('456')
+    // doc.se
+    doc.update()
+
 }

@@ -5,6 +5,8 @@ import {AccessTypes, PermissionType} from "polar-firebase/src/firebase/om/IBlock
 import {BlockPermissionMap, IBlockPermissionRecord} from "polar-firebase/src/firebase/om/IBlockPermissionRecord";
 import {BlockPermissionCollection} from "polar-firebase/src/firebase/om/BlockPermissionCollection";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {IBlockPermissionUser} from "polar-firebase/src/firebase/om/IBlockPermissionUser";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 export namespace BlockPermissions {
 
@@ -260,16 +262,16 @@ export namespace BlockPermissions {
 
         const keyNames = computePermKeyNames();
 
-        const applyToBatch = (change: IPermissionChange) => {
+        const applyToBatch = (permissionChange: IPermissionChange) => {
 
-            const doc = collection.doc(change.uid);
+            const doc = collection.doc(permissionChange.uid);
 
-            switch (change.type) {
+            switch (permissionChange.type) {
 
                 case "removed":
                     // we just have to remove this from both rw and ro and we're done.
-                    batch.update(doc, keyNames.ro, firestore.FieldValue.arrayRemove(change.id));
-                    batch.update(doc, keyNames.rw, firestore.FieldValue.arrayRemove(change.id));
+                    batch.update(doc, keyNames.ro, firestore.FieldValue.arrayRemove(permissionChange.id));
+                    batch.update(doc, keyNames.rw, firestore.FieldValue.arrayRemove(permissionChange.id));
                     break;
 
                 case "added":
@@ -277,14 +279,14 @@ export namespace BlockPermissions {
 
                     // added and modified can be implemented the same way as
                     // long as we remove/union both ways.
-                    switch(change.after) {
+                    switch(permissionChange.after) {
                         case 'ro':
-                            batch.update(doc, keyNames.ro, firestore.FieldValue.arrayUnion(change.id));
-                            batch.update(doc, keyNames.rw, firestore.FieldValue.arrayRemove(change.id));
+                            batch.update(doc, keyNames.ro, firestore.FieldValue.arrayUnion(permissionChange.id));
+                            batch.update(doc, keyNames.rw, firestore.FieldValue.arrayRemove(permissionChange.id));
                             break;
                         case 'rw':
-                            batch.update(doc, keyNames.ro, firestore.FieldValue.arrayRemove(change.id));
-                            batch.update(doc, keyNames.rw, firestore.FieldValue.arrayUnion(change.id));
+                            batch.update(doc, keyNames.ro, firestore.FieldValue.arrayRemove(permissionChange.id));
+                            batch.update(doc, keyNames.rw, firestore.FieldValue.arrayUnion(permissionChange.id));
                             break;
                     }
 
@@ -297,6 +299,40 @@ export namespace BlockPermissions {
 
         permissionChanges.map(applyToBatch);
 
+        /**
+         * There's no way to do a conditional operation in Firestore so we just
+         * let this one error. If the document is already created then nothing
+         * happens.
+         */
+        async function createInitialBlockPermissionUserRecords() {
+
+            const userIDs = arrayStream(permissionChanges).map(current => current.uid).unique().collect();
+
+            const now = ISODateTimeStrings.create();
+
+            for (const userID of userIDs) {
+
+                const empty: IBlockPermissionUser = {
+                    id: userID,
+                    uid: userID,
+                    updated: now,
+                    pages_ro: [],
+                    pages_rw: [],
+                    nspaces_ro: [],
+                    nspaces_rw: []
+                };
+
+                try {
+                    await collection.doc(userID).create(empty);
+                } catch(err) {
+                    // noop
+                }
+
+            }
+
+        }
+
+        await createInitialBlockPermissionUserRecords();
         await batch.commit();
 
     }
