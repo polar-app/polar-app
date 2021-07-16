@@ -1,6 +1,6 @@
 import {AnnotationStyle} from './electron/ElectronScreenshots';
 import {StyleRestore} from './electron/ElectronScreenshots';
-import {Promises} from '../util/Promises';
+import {Promises} from "polar-shared/src/util/Promises";
 
 const MIN_PAINT_INTERVAL = 1000 / 60;
 

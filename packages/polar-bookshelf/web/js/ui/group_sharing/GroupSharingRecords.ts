@@ -7,13 +7,13 @@ import {Image} from '../../datastore/sharing/db/Images';
 import {Group, Groups} from '../../datastore/sharing/db/Groups';
 import {Profiles} from '../../datastore/sharing/db/Profiles';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {Promises} from '../../util/Promises';
 import {Contacts} from '../../datastore/sharing/db/Contacts';
 import {Contact} from '../../datastore/sharing/db/Contacts';
 import {UserGroups} from "../../datastore/sharing/db/UserGroups";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {UserGroupMembership} from "../../datastore/sharing/db/UserGroupMembership";
 import {IProfile} from "polar-firebase/src/firebase/om/ProfileCollection";
+import {Promises} from "polar-shared/src/util/Promises";
 
 const log = Logger.create();
 

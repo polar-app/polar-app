@@ -1,8 +1,5 @@
-import {Logger} from 'polar-shared/src/logger/Logger';
-import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
-import {Latch} from "polar-shared/src/util/Latch";
-
-const log = Logger.create();
+import {NULL_FUNCTION} from './Functions';
+import {Latch} from "./Latch";
 
 export class Promises {
 
@@ -33,7 +30,7 @@ export class Promises {
         for (const promise of promises) {
 
             promise.then(value => latch.resolve(value))
-                   .catch(err => onError(err));
+                .catch(err => onError(err));
 
         }
 
@@ -50,7 +47,7 @@ export class Promises {
 
         for (const promise of promises) {
             promise.then(NULL_FUNCTION)
-                   .catch(err => errorHandler(err));
+                .catch(err => errorHandler(err));
         }
 
     }
@@ -99,7 +96,7 @@ export class Promises {
 
             setTimeout(() => {
                 callback().then(result => resolve(result))
-                          .catch(err => reject(err));
+                    .catch(err => reject(err));
             }, timeout);
 
         });
@@ -119,7 +116,7 @@ export class Promises {
      * @param func
      */
     public static executeLogged(func: () => Promise<any>) {
-        func().catch(err => log.error("Caught error: ", err));
+        func().catch(err => console.error("Caught error: ", err));
     }
 
     public static requestAnimationFrame(callback: () => void = NULL_FUNCTION) {

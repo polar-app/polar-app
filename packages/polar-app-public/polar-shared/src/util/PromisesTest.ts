@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import {Promises} from './Promises';
-import {Latch} from "polar-shared/src/util/Latch";
+import {Latch} from "./Latch";
 
 describe('Promises', function() {
 
