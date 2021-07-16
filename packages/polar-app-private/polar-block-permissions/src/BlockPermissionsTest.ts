@@ -7,6 +7,9 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {IBlock} from "polar-blocks/src/blocks/IBlock";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {BlockCollection} from "polar-firebase/src/firebase/om/BlockCollection";
+import {BlockPermissionUserCollection} from "polar-firebase/src/firebase/om/BlockPermissionUserCollection";
+import {assertJSON} from "polar-test/src/test/Assertions";
+import { BlockPermissionCollection } from "polar-firebase/src/firebase/om/BlockPermissionCollection";
 
 describe("BlockPermissions", function() {
 
@@ -19,6 +22,15 @@ describe("BlockPermissions", function() {
         const auth = app.auth();
         const {uid} = await auth.getUserByEmail(FirebaseTestingUsers.FIREBASE_USER);
         const blockID = Hashcodes.createID({uid, key: '0x0001'});
+
+        /**
+         * cleanup data from previous tests, when necessary.
+         */
+        async function doCleanup() {
+            await BlockPermissionUserCollection.doDelete(firestore, uid);
+        }
+
+        await doCleanup();
 
         const newPermissions: Readonly<BlockPermissionMap> = {
 
@@ -47,10 +59,6 @@ describe("BlockPermissions", function() {
         await BlockCollection.set(firestore, block);
 
         await BlockPermissions.doUpdatePagePermissions(firestore, uid, blockID, newPermissions);
-
-        // now just make sure we have EMPTY secondary tables...
-
-        //
 
     });
 
