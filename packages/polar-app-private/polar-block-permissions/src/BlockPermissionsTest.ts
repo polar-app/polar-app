@@ -3,24 +3,54 @@ import {BlockPermissions} from "./BlockPermissions";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {BlockPermissionMap} from "polar-firebase/src/firebase/om/IBlockPermissionRecord";
 import {FirebaseTestingUsers} from "polar-firebase-test/src/firebase/FirebaseTestingUsers";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {IBlock} from "polar-blocks/src/blocks/IBlock";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {BlockCollection} from "polar-firebase/src/firebase/om/BlockCollection";
 
 describe("BlockPermissions", function() {
 
-    it("basic", async function() {
+    this.timeout(10000);
+
+    it("basic with empty permissions", async function() {
 
         const firestore = FirestoreAdmin.getInstance();
         const app = FirebaseAdmin.app();
         const auth = app.auth();
         const {uid} = await auth.getUserByEmail(FirebaseTestingUsers.FIREBASE_USER);
-        const block = '0x001';
+        const blockID = Hashcodes.createID({uid, key: '0x0001'});
 
         const newPermissions: Readonly<BlockPermissionMap> = {
 
         };
 
-        await BlockPermissions.doUpdatePagePermissions(firestore, uid, block, newPermissions);
+        const now = ISODateTimeStrings.create()
+
+        const block: IBlock = {
+            id: blockID,
+            nspace: uid,
+            uid,
+            root: blockID,
+            parent: undefined,
+            parents: [],
+            items: {},
+            created: now,
+            updated: now,
+            content: {
+                type: 'name',
+                data: 'Hello World'
+            },
+            mutation: 0
+        }
+        // create a fake/empty block for this user and write it out ...
+
+        await BlockCollection.set(firestore, block);
+
+        await BlockPermissions.doUpdatePagePermissions(firestore, uid, blockID, newPermissions);
 
         // now just make sure we have EMPTY secondary tables...
+
+        //
 
     });
 

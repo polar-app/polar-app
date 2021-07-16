@@ -1,5 +1,5 @@
 import {IFirestore, IFirestoreLib, UserIDStr} from "polar-firestore-like/src/IFirestore";
-import {BlockIDStr, UIDStr} from "polar-blocks/src/blocks/IBlock";
+import {BlockIDStr, IBlock, UIDStr} from "polar-blocks/src/blocks/IBlock";
 import {BlockCollection} from "polar-firebase/src/firebase/om/BlockCollection";
 import {AccessTypes, PermissionType} from "polar-firebase/src/firebase/om/IBlockPermission";
 import {BlockPermissionMap, IBlockPermissionRecord} from "polar-firebase/src/firebase/om/IBlockPermissionRecord";
@@ -29,7 +29,7 @@ export namespace BlockPermissions {
 
         // ** verify that the user is admin
         if (effectivePerms[uid]?.access !== 'admin') {
-            throw new Error("User does not have admin to change permissions on this page: " + id);
+            throw new Error(`User does not have admin to change permissions on this page: ${id} with uid=${uid}`);
         }
 
         // tslint:disable-next-line:no-string-literal
@@ -74,7 +74,7 @@ export namespace BlockPermissions {
         const pagePerms: IBlockPermissionRecord<'page'> | undefined = await BlockPermissionCollection.get(firestore, block.id);
         const nspacePerms: IBlockPermissionRecord<'nspace'> | undefined = await BlockPermissionCollection.get(firestore, block.nspace);
 
-        const effectivePerms = computeEffectivePermissionsForPage(pagePerms, nspacePerms);
+        const effectivePerms = computeEffectivePermissionsForPage(uid, block, pagePerms, nspacePerms);
 
         await doUpdatePermissions(firestore, 'page', uid, id, effectivePerms, newPermissions);
 
@@ -99,7 +99,9 @@ export namespace BlockPermissions {
    /**
     * Take the nspace permissions and merge them with the page permissions.
     */
-    export function computeEffectivePermissionsForPage(page: IBlockPermissionRecord<'page'> | undefined,
+    export function computeEffectivePermissionsForPage(uid: UserIDStr,
+                                                       block: IBlock,
+                                                       page: IBlockPermissionRecord<'page'> | undefined,
                                                        nspace: IBlockPermissionRecord<'nspace'> | undefined): Readonly<BlockPermissionMap> {
 
         const result: BlockPermissionMap = {};
@@ -107,6 +109,15 @@ export namespace BlockPermissions {
         Object.values(nspace?.permissions || {}).map(current => result[current.uid] = current);
 
         Object.values(page?.permissions || {}).map(current => result[current.uid] = current);
+
+        if (block.nspace === uid) {
+            // this is a users default namespace so by definition they have 'admin' permission
+            result[uid] = {
+                id: uid,
+                uid,
+                access: 'admin'
+            }
+        }
 
         return result;
 
