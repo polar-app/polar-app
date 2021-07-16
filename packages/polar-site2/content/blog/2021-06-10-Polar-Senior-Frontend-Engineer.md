@@ -25,13 +25,17 @@ as soon as possible.
 
 ## Our culture
 
-We are a remote-first startup. We initially founded the startup in SF but moved fully remote in late 2019. At Polar, we're building a culture of mutual trust, openness, and strong ownership by each individual.
+We are still a small team and you are one of our very first hires. This means, you joining us will
+make a huge impact. We want to make sure that this vision is in line with what you’re looking for.
 
-We are still a small team and you are one of our very first hires. This means, you joining us is a crucial decision. Based on our previous startup experience, we have a very clear idea what kind of startup we want to build. We want to make sure that this vision is in line with your ideal work place. 
+We are also looking to hire for the long-term. Our ideal candidate will share our interest in
+candidates who share our passion for education, our vision of democratizing education, and
+how we can get there as a team. 
 
-In addition, we are looking to hire for the long-term. We are only interested in candidates who share our passion for education, our vision of democratizing education, and how we can get there as a team. 
-
-We strongly respect your work life balance but we are looking for someone who is passionate about the product and role, not just another 9-5 job. We want someone whose incentives are aligned with ours and who is as passionate about building an early stage startup as we are. We are funded right now and plan to raise a round next year.
+We strongly respect your work life balance and we are looking
+for someone who is passionate about the product and role, not just another 9-5 job. We want
+someone whose incentives are aligned with ours and who is as passionate about building an
+early stage startup as we are.
 
 # Role requirements
 
