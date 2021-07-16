@@ -8,6 +8,6 @@ function adminUsage() {
 
     const doc = firestore.collection('123').doc('456')
     // doc.se
-    doc.update()
+    // doc.update()
 
 }
