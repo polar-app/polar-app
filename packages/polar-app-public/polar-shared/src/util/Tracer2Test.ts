@@ -1,6 +1,6 @@
-import {Promises} from "../../../../polar-bookshelf/web/js/util/Promises";
 import {Tracer2} from "./Tracer2";
 import {assert} from 'chai';
+import {Promises} from "./Promises";
 
 describe('Tracer2', function() {
 
