@@ -11,10 +11,11 @@ export namespace BlockPermissions {
     export type PermissionTarget = 'page' | 'nspace';
 
     /**
+     * Update permissions directly in Firestore.
      *
      * @param firestore  The Firestore instance to use
      * @param target: where to apply the permissions.
-     * @param uid: The user making the permission changes.
+     * @param uid The user making the permission changes.
      * @param id The ID of the page which needs permissions mutated.
      * @param effectivePerms The current effective permissions.
      * @param newPermissions The array of permissions to apply.
@@ -63,10 +64,10 @@ export namespace BlockPermissions {
 
     }
 
-    async function doUpdatePagePermissions(firestore: IFirestore<unknown> & IFirestoreLib,
-                                           uid: UserIDStr,
-                                           id: BlockIDStr,
-                                           newPermissions: Readonly<BlockPermissionMap>) {
+    export async function doUpdatePagePermissions(firestore: IFirestore<unknown> & IFirestoreLib,
+                                                  uid: UserIDStr,
+                                                  id: BlockIDStr,
+                                                  newPermissions: Readonly<BlockPermissionMap>) {
 
         const block = await getBlock(firestore, id);
 
@@ -79,10 +80,10 @@ export namespace BlockPermissions {
 
     }
 
-    async function doUpdateNSpacePermissions(firestore: IFirestore<unknown> & IFirestoreLib,
-                                             uid: UserIDStr,
-                                             id: BlockIDStr,
-                                             newPermissions: Readonly<BlockPermissionMap>) {
+    export async function doUpdateNSpacePermissions(firestore: IFirestore<unknown> & IFirestoreLib,
+                                                    uid: UserIDStr,
+                                                    id: BlockIDStr,
+                                                    newPermissions: Readonly<BlockPermissionMap>) {
 
         const block = await getBlock(firestore, id);
 

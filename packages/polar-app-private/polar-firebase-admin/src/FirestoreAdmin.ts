@@ -2,7 +2,7 @@ import * as _firestore from '@google-cloud/firestore';
 import {FirebaseAdmin} from './FirebaseAdmin';
 import {IFieldValueFactory, IFirestoreAdmin, IFirestoreLib} from "polar-firestore-like/src/IFirestore";
 
-export namespace Firestore {
+export namespace FirestoreAdmin {
 
     export function getInstance(): IFirestoreAdmin & IFirestoreLib {
 
