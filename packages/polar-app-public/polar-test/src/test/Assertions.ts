@@ -4,7 +4,7 @@
 // and takes hours to fix and this is a 1 line resolution.
 import {Diffs} from "./Diffs";
 
-const {assert} = require("chai");
+import {assert} from 'chai';
 
 export interface ToJSONOpts {
     readonly ignoreWhitespace?: boolean;
@@ -18,6 +18,12 @@ export interface CompareOpts extends ToJSONOpts {
 export function assertJSON(actual: any,
                            expected: any,
                            opts: CompareOpts = {}) {
+
+    assert.isDefined(actual, "'actual' must not be undefined");
+    assert.isDefined(expected, "'expected' must not be undefined");
+
+    assert.isNotNull(actual, "'actual' must not be null");
+    assert.isNotNull(expected, "'expected' must not be null");
 
     // first convert both to JSON if necessary.
     actual = toJSON(actual, opts);
