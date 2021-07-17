@@ -23,7 +23,7 @@
     "polar-shared": "^2.1.79"
   },
   "peerDependencies": {
-    "firebase": "=8.6.7",
-    "firebase-admin": "=9.9.0"
+    "firebase": "=8.7.1",
+    "firebase-admin": "=9.11.0"
   }
 }
