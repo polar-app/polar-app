@@ -1,20 +1,23 @@
 import {IFirestore, IFirestoreLib, UserIDStr} from "polar-firestore-like/src/IFirestore";
-import {BlockIDStr, UIDStr} from "polar-blocks/src/blocks/IBlock";
+import {BlockIDStr, IBlock, NamespaceIDStr, UIDStr} from "polar-blocks/src/blocks/IBlock";
 import {BlockCollection} from "polar-firebase/src/firebase/om/BlockCollection";
-import {AccessTypes, PermissionType} from "polar-firebase/src/firebase/om/IBlockPermission";
-import {BlockPermissionMap, IBlockPermissionRecord} from "polar-firebase/src/firebase/om/IBlockPermissionRecord";
+import {BlockPermissionMap, IBlockPermission} from "polar-firebase/src/firebase/om/IBlockPermission";
 import {BlockPermissionCollection} from "polar-firebase/src/firebase/om/BlockPermissionCollection";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {IBlockPermissionUser} from "polar-firebase/src/firebase/om/IBlockPermissionUser";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {AccessTypes, PermissionType} from "polar-firebase/src/firebase/om/IBlockPermissionEntry";
 
 export namespace BlockPermissions {
 
     export type PermissionTarget = 'page' | 'nspace';
 
     /**
+     * Update permissions directly in Firestore.
      *
      * @param firestore  The Firestore instance to use
      * @param target: where to apply the permissions.
-     * @param uid: The user making the permission changes.
+     * @param uid The user making the permission changes.
      * @param id The ID of the page which needs permissions mutated.
      * @param effectivePerms The current effective permissions.
      * @param newPermissions The array of permissions to apply.
@@ -22,13 +25,13 @@ export namespace BlockPermissions {
     async function doUpdatePermissions(firestore: IFirestore<unknown> & IFirestoreLib,
                                        target: PermissionTarget,
                                        uid: UserIDStr,
-                                       id: BlockIDStr,
+                                       id: BlockIDStr | NamespaceIDStr,
                                        effectivePerms: Readonly<BlockPermissionMap>,
                                        newPermissions: Readonly<BlockPermissionMap>) {
 
         // ** verify that the user is admin
         if (effectivePerms[uid]?.access !== 'admin') {
-            throw new Error("User does not have admin to change permissions on this page: " + id);
+            throw new Error(`User does not have admin to change permissions on this page: ${id} with uid=${uid}`);
         }
 
         // tslint:disable-next-line:no-string-literal
@@ -43,7 +46,7 @@ export namespace BlockPermissions {
 
         const permissionChanges = computePermissionChanges(id, oldPermissions, newPermissions);
 
-        await applyPermissionChanges(firestore, target, permissionChanges);
+        await applyPermissionChanges(firestore, id, target, newPermissions, permissionChanges);
 
     }
 
@@ -63,30 +66,30 @@ export namespace BlockPermissions {
 
     }
 
-    async function doUpdatePagePermissions(firestore: IFirestore<unknown> & IFirestoreLib,
-                                           uid: UserIDStr,
-                                           id: BlockIDStr,
-                                           newPermissions: Readonly<BlockPermissionMap>) {
+    export async function doUpdatePagePermissions(firestore: IFirestore<unknown> & IFirestoreLib,
+                                                  uid: UserIDStr,
+                                                  id: BlockIDStr,
+                                                  newPermissions: Readonly<BlockPermissionMap>) {
 
         const block = await getBlock(firestore, id);
 
-        const pagePerms: IBlockPermissionRecord<'page'> | undefined = await BlockPermissionCollection.get(firestore, block.id);
-        const nspacePerms: IBlockPermissionRecord<'nspace'> | undefined = await BlockPermissionCollection.get(firestore, block.nspace);
+        const pagePerms: IBlockPermission<'page'> | undefined = await BlockPermissionCollection.get(firestore, block.id);
+        const nspacePerms: IBlockPermission<'nspace'> | undefined = await BlockPermissionCollection.get(firestore, block.nspace);
 
-        const effectivePerms = computeEffectivePermissionsForPage(pagePerms, nspacePerms);
+        const effectivePerms = computeEffectivePermissionsForPage(uid, block, pagePerms, nspacePerms);
 
         await doUpdatePermissions(firestore, 'page', uid, id, effectivePerms, newPermissions);
 
     }
 
-    async function doUpdateNSpacePermissions(firestore: IFirestore<unknown> & IFirestoreLib,
-                                             uid: UserIDStr,
-                                             id: BlockIDStr,
-                                             newPermissions: Readonly<BlockPermissionMap>) {
+    export async function doUpdateNSpacePermissions(firestore: IFirestore<unknown> & IFirestoreLib,
+                                                    uid: UserIDStr,
+                                                    id: NamespaceIDStr,
+                                                    newPermissions: Readonly<BlockPermissionMap>) {
 
         const block = await getBlock(firestore, id);
 
-        const nspacePerms: IBlockPermissionRecord<'nspace'> | undefined = await BlockPermissionCollection.get(firestore, block.nspace);
+        const nspacePerms: IBlockPermission<'nspace'> | undefined = await BlockPermissionCollection.get(firestore, block.nspace);
 
         const effectivePerms = nspacePerms?.permissions || {};
 
@@ -98,14 +101,25 @@ export namespace BlockPermissions {
    /**
     * Take the nspace permissions and merge them with the page permissions.
     */
-    export function computeEffectivePermissionsForPage(page: IBlockPermissionRecord<'page'> | undefined,
-                                                       nspace: IBlockPermissionRecord<'nspace'> | undefined): Readonly<BlockPermissionMap> {
+    export function computeEffectivePermissionsForPage(uid: UserIDStr,
+                                                       block: IBlock,
+                                                       page: IBlockPermission<'page'> | undefined,
+                                                       nspace: IBlockPermission<'nspace'> | undefined): Readonly<BlockPermissionMap> {
 
         const result: BlockPermissionMap = {};
 
         Object.values(nspace?.permissions || {}).map(current => result[current.uid] = current);
 
         Object.values(page?.permissions || {}).map(current => result[current.uid] = current);
+
+        if (block.nspace === uid) {
+            // this is a users default namespace so by definition they have 'admin' permission
+            result[uid] = {
+                id: uid,
+                uid,
+                access: 'admin'
+            }
+        }
 
         return result;
 
@@ -215,76 +229,136 @@ export namespace BlockPermissions {
     }
 
     export async function applyPermissionChanges(firestore: IFirestore<unknown> & IFirestoreLib,
+                                                 id: BlockIDStr | NamespaceIDStr,
                                                  target: PermissionTarget,
+                                                 permissions: Readonly<BlockPermissionMap>,
                                                  permissionChanges: ReadonlyArray<IPermissionChange>) {
 
-        const collection = firestore.collection('block_permission_user');
         const batch = firestore.batch();
 
-        interface IPermKeyNames {
-            readonly ro: 'pages_ro' | 'nspaces_ro';
-            readonly rw: 'pages_rw' | 'nspaces_rw';
+        async function doBlockPermission() {
+
+            const collection = firestore.collection('block_permission');
+
+            const now = ISODateTimeStrings.create();
+
+            const blockPermission: IBlockPermission<any> = {
+                id,
+                type: target,
+                updated: now,
+                permissions,
+            }
+
+            batch.set(collection.doc(id), blockPermission);
+
         }
 
-        function computePermKeyNames(): IPermKeyNames {
+        async function doBlockPermissionUser() {
 
-            switch (target) {
+            const collection = firestore.collection('block_permission_user');
 
-                case "page":
-                    return {
-                        ro: 'pages_ro',
-                        rw: 'pages_rw',
+            interface IPermKeyNames {
+                readonly ro: 'pages_ro' | 'nspaces_ro';
+                readonly rw: 'pages_rw' | 'nspaces_rw';
+            }
+
+            function computePermKeyNames(): IPermKeyNames {
+
+                switch (target) {
+
+                    case "page":
+                        return {
+                            ro: 'pages_ro',
+                            rw: 'pages_rw',
+                        };
+
+                    case "nspace":
+                        return {
+                            ro: 'nspaces_ro',
+                            rw: 'nspaces_rw',
+                        }
+
+                }
+
+            };
+
+            const keyNames = computePermKeyNames();
+
+            const applyToBatch = (permissionChange: IPermissionChange) => {
+
+                const doc = collection.doc(permissionChange.uid);
+
+                switch (permissionChange.type) {
+
+                    case "removed":
+                        // we just have to remove this from both rw and ro and we're done.
+                        batch.update(doc, keyNames.ro, firestore.FieldValue.arrayRemove(permissionChange.id));
+                        batch.update(doc, keyNames.rw, firestore.FieldValue.arrayRemove(permissionChange.id));
+                        break;
+
+                    case "added":
+                    case "modified":
+
+                        // added and modified can be implemented the same way as
+                        // long as we remove/union both ways.
+                        switch(permissionChange.after) {
+                            case 'ro':
+                                batch.update(doc, keyNames.ro, firestore.FieldValue.arrayUnion(permissionChange.id));
+                                batch.update(doc, keyNames.rw, firestore.FieldValue.arrayRemove(permissionChange.id));
+                                break;
+                            case 'rw':
+                                batch.update(doc, keyNames.ro, firestore.FieldValue.arrayRemove(permissionChange.id));
+                                batch.update(doc, keyNames.rw, firestore.FieldValue.arrayUnion(permissionChange.id));
+                                break;
+                        }
+
+                        break;
+
+
+                }
+
+            }
+
+            permissionChanges.map(applyToBatch);
+
+            /**
+             * There's no way to do a conditional operation in Firestore so we just
+             * let this one error. If the document is already created then nothing
+             * happens.
+             */
+            async function createInitialBlockPermissionUserRecords() {
+
+                const userIDs = arrayStream(permissionChanges).map(current => current.uid).unique().collect();
+
+                const now = ISODateTimeStrings.create();
+
+                for (const userID of userIDs) {
+
+                    const empty: IBlockPermissionUser = {
+                        id: userID,
+                        uid: userID,
+                        updated: now,
+                        pages_ro: [],
+                        pages_rw: [],
+                        nspaces_ro: [],
+                        nspaces_rw: []
                     };
 
-                case "nspace":
-                    return {
-                        ro: 'nspaces_ro',
-                        rw: 'nspaces_rw',
+                    try {
+                        await collection.doc(userID).create(empty);
+                    } catch(err) {
+                        // noop
                     }
+
+                }
 
             }
 
-        };
-
-        const keyNames = computePermKeyNames();
-
-        const applyToBatch = (change: IPermissionChange) => {
-
-            const doc = collection.doc(change.uid);
-
-            switch (change.type) {
-
-                case "removed":
-                    // we just have to remove this from both rw and ro and we're done.
-                    batch.update(doc, keyNames.ro, firestore.FieldValue.arrayRemove(change.id));
-                    batch.update(doc, keyNames.rw, firestore.FieldValue.arrayRemove(change.id));
-                    break;
-
-                case "added":
-                case "modified":
-
-                    // added and modified can be implemented the same way as
-                    // long as we remove/union both ways.
-                    switch(change.after) {
-                        case 'ro':
-                            batch.update(doc, keyNames.ro, firestore.FieldValue.arrayUnion(change.id));
-                            batch.update(doc, keyNames.rw, firestore.FieldValue.arrayRemove(change.id));
-                            break;
-                        case 'rw':
-                            batch.update(doc, keyNames.ro, firestore.FieldValue.arrayRemove(change.id));
-                            batch.update(doc, keyNames.rw, firestore.FieldValue.arrayUnion(change.id));
-                            break;
-                    }
-
-                    break;
-
-
-            }
-
+            await createInitialBlockPermissionUserRecords();
         }
 
-        permissionChanges.map(applyToBatch);
-
+        await doBlockPermission();
+        await doBlockPermissionUser();
         await batch.commit();
 
     }

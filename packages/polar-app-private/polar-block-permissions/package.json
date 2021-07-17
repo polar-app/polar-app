@@ -26,6 +26,7 @@
     "polar-firebase": "^2.1.79",
     "polar-firebase-admin": "^2.1.79",
     "polar-firestore-like": "^2.1.79",
-    "polar-shared": "^2.1.79"
+    "polar-shared": "^2.1.79",
+    "polar-test": "^2.1.79"
   }
 }
