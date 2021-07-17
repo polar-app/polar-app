@@ -237,6 +237,10 @@ export namespace CachedStore {
 
                 }
 
+                public async create(data: TDocumentData): Promise<void> {
+                    throw new Error("not implemented");
+                }
+
                 public async delete(): Promise<void> {
 
                     this.writeToCache({
