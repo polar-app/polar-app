@@ -9,30 +9,33 @@ import {IGetOptions} from "polar-firestore-like/src/IGetOptions";
 import {ISnapshotListenOptions} from "polar-firestore-like/src/ISnapshotListenOptions";
 import {IFirestoreError} from "polar-firestore-like/src/IFirestoreError";
 import {
-    IQuery, IQueryClient,
+    IQuery,
+    IQueryClient,
     IQueryOrderBy,
     IQuerySnapshotObserver,
     isQuerySnapshotObserver,
-    SnapshotUnsubscriber, TOrderByDirection
+    SnapshotUnsubscriber,
+    TOrderByDirection
 } from "polar-firestore-like/src/IQuery";
 import {
-    ICollectionReference, ICollectionReferenceClient,
+    ICollectionReference,
+    ICollectionReferenceClient,
     IWhereClause,
     TWhereFilterOp,
     TWhereValue
 } from "polar-firestore-like/src/ICollectionReference";
-import {IFirestore, IFirestoreClient} from "polar-firestore-like/src/IFirestore";
+import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 import {
-    IDocumentReference, IDocumentReferenceClient,
-    IDocumentSnapshotObserver, IDocumentSnapshotObserverClient,
+    IDocumentReferenceClient,
+    IDocumentSnapshotObserver,
+    IDocumentSnapshotObserverClient,
     isDocumentSnapshotObserver
 } from "polar-firestore-like/src/IDocumentReference";
-import {IDocumentSnapshot} from "polar-firestore-like/src/IDocumentSnapshot";
+import {IDocumentSnapshot, IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapshot";
 import {TDocumentData} from "polar-firestore-like/src/TDocumentData";
 import {IQuerySnapshot, IQuerySnapshotClient} from "polar-firestore-like/src/IQuerySnapshot";
 import {IDocumentChange} from "polar-firestore-like/src/IDocumentChange";
-import {IWriteBatch, IWriteBatchClient} from "polar-firestore-like/src/IWriteBatch";
-import {IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapshot";
+import {IWriteBatchClient} from "polar-firestore-like/src/IWriteBatch";
 import {ISnapshotMetadata} from "polar-firestore-like/src/ISnapshotMetadata";
 
 export namespace CachedStore {
