@@ -4616,7 +4616,7 @@ ajv-keywords@^3.1.0, ajv-keywords@^3.4.1, ajv-keywords@^3.5.2:
   resolved "https://polar-app.bytesafe.dev/r/default/-/pull/ajv-keywords/3.5.2#31f29da5ab6e00d1c2d329acf7b5929614d5014d"
   integrity sha512-5p6WTN0DdTGVQk6VjcEju19IgaHudalcfabD7yhDGeA6bcQnmL+CpveLJq/3hvfwd1aof6L386Ougkx6RfyMIQ==
 
-ajv@^6.1.0, ajv@^6.10.0, ajv@^6.10.2, ajv@^6.12.0, ajv@^6.12.2, ajv@^6.12.3, ajv@^6.12.4, ajv@^6.12.5:
+ajv@^6.1.0, ajv@^6.10.0, ajv@^6.10.2, ajv@^6.12.0, ajv@^6.12.2, ajv@^6.12.3, ajv@^6.12.4, ajv@^6.12.5, ajv@^6.12.6:
   version "6.12.6"
   resolved "https://polar-app.bytesafe.dev/r/default/-/pull/ajv/6.12.6#baf5a62e802b07d977034586f8c3baf5adf26df4"
   integrity sha512-j3fVLgvTo527anyYyJOGTYJbG+vnnQYvE0m5mmkc1TK+nxAppkCLMIL0aZ4dblVCNoGShhm+kzE4ZUykBoMg4g==
@@ -10508,15 +10508,16 @@ firebase-functions@=3.14.1:
     express "^4.17.1"
     lodash "^4.17.14"
 
-firebase-tools@=9.12.1:
-  version "9.12.1"
-  resolved "https://polar-app.bytesafe.dev/r/default/-/pull/firebase-tools/9.12.1#c4676f77f95bbaba0a7399c18c15d7edc633cf7b"
-  integrity sha512-izgpgUiG36UwIV12oBu3X8ndACGsxh2cuREnGgTAoTs6P5OC2nEV3riwAak9eQpkuqHfZ6vEuw5ogSbMNqRIgA==
+firebase-tools@=9.16.0:
+  version "9.16.0"
+  resolved "https://polar-app.bytesafe.dev/r/default/-/pull/firebase-tools/9.16.0#e6a1f5bf5efeb8fd940612815bb3b28810fe63bc"
+  integrity sha512-H/zyDDrQuZKM6ZFyI8t2kDEC+/Ewhk771sM8NLZyEXIQnX5qKAwhi3sJUB+5yrXt+SJQYqUYksBLK6/gqxe9Eg==
   dependencies:
     "@google-cloud/pubsub" "^2.7.0"
     "@types/archiver" "^5.1.0"
     JSONStream "^1.2.1"
     abort-controller "^3.0.0"
+    ajv "^6.12.6"
     archiver "^5.0.0"
     body-parser "^1.19.0"
     chokidar "^3.0.2"

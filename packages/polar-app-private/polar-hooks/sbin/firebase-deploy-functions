@@ -24,8 +24,8 @@ time firebase deploy --only functions:mailinglist
 time firebase deploy --only functions:profileDelete
 time firebase deploy --only functions:profileUpdate
 time firebase deploy --only functions:search
-time firebase deploy --only functions:sitemap
-time firebase deploy --only functions:ssr
+# time firebase deploy --only functions:sitemap
+time firebase deploy --only functions:SSRFunction
 
 # Function, called by the React Native app with the "receipt", returned from Apple IAP
 time firebase deploy --only functions:AppleIapCallback --debug
