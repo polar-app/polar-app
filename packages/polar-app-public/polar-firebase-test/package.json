@@ -1,6 +1,6 @@
 {
   "name": "polar-firebase-test",
-  "version": "2.1.78",
+  "version": "2.1.79",
   "description": "Testing code for Firebase shared across multiple modules",
   "main": "index.js",
   "scripts": {
