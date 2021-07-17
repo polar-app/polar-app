@@ -22,6 +22,10 @@ export namespace MockBlocks {
      *      - 111
      *  - 112
      *
+     *  - 113
+     *     - 114image
+     *     - 115
+     *
      */
     export function create() {
 
@@ -204,7 +208,7 @@ export namespace MockBlocks {
                     data: "Germany"
                 },
                 items: PositionalArrays.create([
-                    '110'
+                    '110',
                 ]),
                 mutation: 0,
             },
@@ -291,8 +295,60 @@ export namespace MockBlocks {
                 },
                 items: {},
                 mutation: 0,
+            },
+            {
+                id: '113',
+                nspace, uid,
+                parent: undefined,
+                parents: [],
+                root: '113',
+                created: now,
+                updated: now,
+                content: {
+                    type: 'name',
+                    data: 'Image parent',
+                },
+                items:  PositionalArrays.create([
+                    '114image',
+                    '115',
+                ]),
+                mutation: 0,
+            },
+            {
+                id: '114image',
+                nspace, uid,
+                parent: '113',
+                parents: ['113'],
+                root: '113',
+                created: now,
+                updated: now,
+                content: {
+                    type: 'image',
+                    src: 'https://google.com',
+                    naturalHeight: 100,
+                    naturalWidth: 100,
+                    width: 100,
+                    height: 100,
+                },
+                items: {}, 
+                mutation: 0,
+            },
+            {
+                id: '115',
+                nspace, uid,
+                parent: '113',
+                parents: ['113'],
+                root: '113',
+                created: now,
+                updated: now,
+                content: {
+                    type: 'markdown',
+                    data: '',
+                    links: [],
+                },
+                items: {}, 
+                mutation: 0,
             }
-
         ];
         return blocks;
     }

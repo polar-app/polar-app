@@ -24,7 +24,7 @@ const openPage = determineOpenPage(bundle);
 
 const workers = os.cpus().length - 1;
 
-const output = path.resolve(__dirname, 'dist/public');
+const output = process.env.OUTPUT_PATH || path.resolve(__dirname, 'dist/public');
 
 console.log("Usage: ===================");
 
@@ -435,10 +435,8 @@ module.exports = {
     devServer: {
         contentBase: path.resolve('dist/public'),
         compress: true,
-        // Required to allow Webpack dev server host and port to be exposed outside the Docker container
-        host: "0.0.0.0",
         port,
-        open: true,
+        open: false,
         openPage,
         overlay: true,
         hot: true,

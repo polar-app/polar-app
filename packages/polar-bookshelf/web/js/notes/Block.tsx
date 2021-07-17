@@ -26,7 +26,8 @@ const useStyles = makeStyles((theme) =>
         },
         titleBlock: {
             fontWeight: 'bold',
-            fontSize: 22,
+            fontSize: 24,
+            letterSpacing: 0.5,
         },
     }),
 );
@@ -198,7 +199,7 @@ export const BlockInner = observer((props: IProps) => {
                             <div style={{
                                      display: 'flex',
                                      alignItems: 'center',
-                                     minWidth: '3em',
+                                     minWidth: 40,
                                      justifyContent: 'flex-end',
                                      marginRight: theme.spacing(0.5),
                                  }}>
@@ -230,7 +231,7 @@ export const BlockInner = observer((props: IProps) => {
                     </div>
 
                     {withHeader && isRoot &&
-                        <Divider style={{ margin: '13px 0 22px' }} />
+                        <Divider style={{ margin: '16px 0' }} />
                     }
 
                     {(expanded || (isRoot && noExpand)) && (

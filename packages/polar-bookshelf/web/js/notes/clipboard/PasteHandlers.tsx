@@ -192,8 +192,8 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
                 [
                     // The following array represents priority
                     {type: 'polarblocks', handler: extractPolarBlocks},
-                    {type: 'html', handler: extractHTML},
                     {type: 'image', handler: extractImage},
+                    {type: 'html', handler: extractHTML},
                 ],
                 onPasteError,
             ).catch(e => console.log(e));

@@ -7,7 +7,6 @@ import {deepMemo} from "../react/ReactUtils";
 const useStyles = makeStyles(() =>
     createStyles({
         root: {
-            fontSize: '16px',
             height: '100%',
         },
     }),

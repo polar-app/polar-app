@@ -86,38 +86,4 @@ describe('CursorPositions', () => {
             assert.equal(pos, 15);
         });
     });
-
-    describe('setCaretPosition', () => {
-        xit('should set position to "end" within nested html', () => {
-            document.body.innerHTML = `test<span>123<div>hello</div></span>`;
-
-            CursorPositions.setCaretPosition(document.body, 'end');
-            const pos = CursorPositions.computeCurrentOffset(document.body);
-            assert.equal(pos, 'end');
-        });
-
-        it('should set position to "start" within nested html', () => {
-            document.body.innerHTML = `test<span>123<div>hello</div></span>`;
-
-            CursorPositions.setCaretPosition(document.body, 'start');
-            const pos = CursorPositions.computeCurrentOffset(document.body);
-            assert.equal(pos, 0);
-        });
-
-        it('should set position to a specific offset within simple html', () => {
-            document.body.innerHTML = `helloworld`;
-
-            CursorPositions.setCaretPosition(document.body.firstChild!, 5);
-            const pos = CursorPositions.computeCurrentOffset(document.body);
-            assert.equal(pos, 5);
-        });
-
-        it('should set position to a specific offset within nested html', () => {
-            document.body.innerHTML = `test<span>123<div>hello</div></span>`;
-
-            CursorPositions.setCaretPosition(document.body, 1); // 2nd child node
-            const pos = CursorPositions.computeCurrentOffset(document.body);
-            assert.equal(pos, 4);
-        });
-    });
 });
