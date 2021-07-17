@@ -8,10 +8,18 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {BlockCollection} from "polar-firebase/src/firebase/om/BlockCollection";
 import {BlockPermissionUserCollection} from "polar-firebase/src/firebase/om/BlockPermissionUserCollection";
 import {assertJSON} from "polar-test/src/test/Assertions";
-import { BlockPermissionCollection } from "polar-firebase/src/firebase/om/BlockPermissionCollection";
-import { UserIDStr } from "polar-firestore-like/src/IFirestore";
+import {BlockPermissionCollection} from "polar-firebase/src/firebase/om/BlockPermissionCollection";
+import {UserIDStr} from "polar-firestore-like/src/IFirestore";
 import {EmailStr} from "polar-shared/src/util/Strings";
-import {BlockPermissionMap, IBlockPermission} from "polar-firebase/src/firebase/om/IBlockPermission";
+import {BlockPermissionMap} from "polar-firebase/src/firebase/om/IBlockPermission";
+
+// TODO: more tests
+//
+// - go from read to write
+// - go from write to read
+// - multiple users
+// - all these for namespaces too
+// - compute the effective permissions when namespaces and page permissions are set in both situations
 
 describe("BlockPermissions", function() {
 
