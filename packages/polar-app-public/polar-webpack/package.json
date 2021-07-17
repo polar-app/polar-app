@@ -1,6 +1,6 @@
 {
   "name": "polar-webpack",
-  "version": "2.1.77",
+  "version": "2.1.78",
   "description": "Basic webpack dependencies and utilities.",
   "scripts": {
     "test": "echo",

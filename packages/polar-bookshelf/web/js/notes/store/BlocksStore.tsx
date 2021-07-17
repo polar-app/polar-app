@@ -131,6 +131,12 @@ export interface IBlockMerge {
 
 export interface NavOpts {
     readonly shiftKey: boolean;
+
+    /*
+     * This is used to determine whether roots should be treated as expanded, which is usually the case
+     * Except for when dealing with the references of a note which can be collapsed.
+     */
+    readonly autoExpandRoot?: boolean;
 }
 
 export interface IInsertBlocksContentStructureOpts {
@@ -759,18 +765,18 @@ export class BlocksStore implements IBlocksStore {
                          pos: NavPosition,
                          opts: NavOpts): boolean {
 
-
-        if (root === undefined) {
-            console.warn("No currently active root");
-            return false;
-        }
+        const {shiftKey, autoExpandRoot} = opts;
 
         if (this._active === undefined) {
             console.warn("No currently active node");
             return false;
         }
 
-        const items = this.computeLinearTree(root, {expanded: true, includeInitial: true, root});
+        const items = this.computeLinearTree(root, {
+            expanded: true,
+            includeInitial: true,
+            root: autoExpandRoot ? root : undefined,
+        });
 
         const childIndex = items.indexOf(this._active?.id);
 
@@ -784,9 +790,10 @@ export class BlocksStore implements IBlocksStore {
         const activeIndex = childIndex + deltaIndex;
         const newActive = items[activeIndex];
 
-        if (! newActive && ! opts.shiftKey) {
+        if (! newActive && ! shiftKey) {
             const siblingID = DOMBlocks.getSiblingID(this._active.id, delta);
             if (siblingID) {
+                this.clearSelected('doNav');
                 this.setActiveWithPosition(siblingID, pos);
             }
             return true;
@@ -797,7 +804,7 @@ export class BlocksStore implements IBlocksStore {
             return true;
         }
 
-        if (opts.shiftKey) {
+        if (shiftKey) {
 
             if (this.hasSelected()) {
                 this.setSelectionRange(root, newActive, this._selectedAnchor!);
@@ -873,7 +880,7 @@ export class BlocksStore implements IBlocksStore {
             return [];
         }
 
-        const result = computeTree(block, expanded && block.id !== (root || block.root));
+        const result = computeTree(block, expanded && block.id !== root);
 
         return includeInitial ? [id, ...result] : result;
     }
@@ -960,12 +967,14 @@ export class BlocksStore implements IBlocksStore {
             return undefined;
         }
 
-        const sibling = this.prevSibling(id);
+        const expansionTree = this.computeLinearTree(root, { expanded: true, root });
+        const currentIdx = expansionTree.indexOf(id);
+        const target = expansionTree[currentIdx - 1];
 
-        if (sibling) {
+        if (currentIdx > -1 && target) {
             return {
                 source: id,
-                target: sibling
+                target: target,
             };
         }
 
@@ -977,14 +986,10 @@ export class BlocksStore implements IBlocksStore {
 
             if (parentBlock) {
 
-                if (this.canMergeTypes(block, parentBlock)) {
-                    return {
-                        source: id,
-                        target: block.parent
-                    };
-                }
-
-                if (this.canMergeWithDelete(block, parentBlock)) {
+                if (
+                    this.canMergeTypes(block, parentBlock) ||
+                    this.canMergeWithDelete(block, parentBlock)
+                ) {
                     return {
                         source: id,
                         target: block.parent
@@ -1047,20 +1052,8 @@ export class BlocksStore implements IBlocksStore {
 
         if (! this.canMergeTypes(sourceBlock, targetBlock)) {
 
-            if (this.blockIsEmpty(sourceBlock.id)) {
-
-                if (sourceBlock.parent === targetBlock.id) {
-
-                    const targetBlockItems = PositionalArrays.toArray(targetBlock.items);
-                    const firstChild = targetBlockItems.indexOf(sourceBlock.id) === 0;
-
-                    if (firstChild) {
-                        return true;
-                    }
-
-                }
-
-            }
+            return this.blockIsEmpty(sourceBlock.id) &&
+                   this.children(sourceBlock.id).length === 0;
 
         }
 
@@ -1595,9 +1588,9 @@ export class BlocksStore implements IBlocksStore {
     }
 
     public cursorOffsetCapture(): IActiveBlock | undefined {
-        if (this.active) {
+        if (this._active) {
 
-            const id = this.active.id;
+            const id = this._active.id;
             const contentEditableRoot = DOMBlocks.getBlockElement(id);
 
             if (contentEditableRoot) {
@@ -1939,7 +1932,12 @@ export class BlocksStore implements IBlocksStore {
                 return undefined;
             }
 
-            const linearExpansionTree = this.computeLinearTree(block.parent, {expanded: true});
+            // Collapse all the deleted blocks so we don't get their children in the expansion tree
+            blockIDs.forEach((id) => this.collapse(id));
+            const linearExpansionTree = this.computeLinearTree(block.parent, {
+                expanded: true,
+                root: block.parent,
+            });
 
             const deleteIndexes = arrayStream(blockIDs)
                 .map(current => linearExpansionTree.indexOf(current))

@@ -129,7 +129,7 @@ export const DailyNotesRenderer: React.FC = () => {
                 <NotePaper ref={rootRef}>
                     {visibleNotes.map(({ id }) => (
                         <div key={id} className="NoteTree">
-                            <BlocksTreeProvider root={id}>
+                            <BlocksTreeProvider root={id} autoExpandRoot>
                                 <Block parent={undefined} id={id} withHeader noExpand noBullet />
                                 <NotesInbound id={id} />
                             </BlocksTreeProvider>
@@ -148,7 +148,7 @@ export const DailyNotesRenderer: React.FC = () => {
                             </Typography>
                         </Box>
                     }
-                    {!hasMore && 
+                    {! hasMore && 
                         <Box display="flex" m={2} justifyContent="center">
                             <Typography variant="h6" className={classes.faded}>
                                 You've reached the end!
@@ -200,7 +200,7 @@ export const SingleNoteRendrer: React.FC<ISingleNoteRendererProps> = ({ target }
             <BlockTitle id={rootID}/>
             <div className={classes.noteContentOuter}>
                 <NotePaper>
-                    <BlocksTreeProvider root={rootID}>
+                    <BlocksTreeProvider root={rootID} autoExpandRoot>
                         <Block parent={undefined} id={rootID} withHeader noExpand noBullet />
                         <div style={{ marginTop: 64 }}>
                             <NotesInbound id={rootID} />

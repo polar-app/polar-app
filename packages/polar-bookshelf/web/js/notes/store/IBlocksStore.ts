@@ -43,9 +43,6 @@ export interface IBlocksStore {
     doDelete(blockIDs: ReadonlyArray<BlockIDStr>): void;
     doPut(blocks: ReadonlyArray<IBlock>, opts?: DoPutOpts): void;
 
-    doCreateNewNamedBlock(name: BlockNameStr,
-                          opts?: ICreateNewNamedBlockOpts): BlockIDStr;
-
     selectedIDs(): ReadonlyArray<BlockIDStr>;
 
     clearSelected(reason: string): void;

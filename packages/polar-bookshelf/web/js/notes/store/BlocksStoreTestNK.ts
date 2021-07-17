@@ -466,8 +466,8 @@ describe('BlocksStore', function() {
                     "_parent": "117",
                     "_parents": ["102", "105", "106", "117"],
                     "_root": "102",
-                    "_created": "2012-03-02T11:38:49.321Z",
                     "_uid": "123",
+                    "_created": "2012-03-02T11:38:49.321Z",
                     "_updated": "2012-03-02T11:38:49.321Z",
                     "_content": {
                         "_type": 'markdown',
@@ -477,13 +477,69 @@ describe('BlocksStore', function() {
                     "_items": {},
                     "_mutation": 0,
                 },
+                "113": {
+                    "_id": '113',
+                    "_uid": "123",
+                    "_parents": [],
+                    "_nspace": 'ns101',
+                    "_root": '113',
+                    "_created": "2012-03-02T11:38:49.321Z",
+                    "_updated": "2012-03-02T11:38:49.321Z",
+                    "_content": {
+                        "_type": 'name',
+                        "_data": 'Image parent',
+                    },
+                    "_items":  PositionalArrays.create([
+                        '114image',
+                        '115',
+                    ]),
+                    "_mutation": 0,
+                },
+                "114image": {
+                    "_id": '114image',
+                    "_nspace": 'ns101',
+                    "_parent": '113',
+                    "_parents": ['113'],
+                    "_root": '113',
+                    "_uid": "123",
+                    "_created": "2012-03-02T11:38:49.321Z",
+                    "_updated": "2012-03-02T11:38:49.321Z",
+                    "_content": {
+                        "_type": 'image',
+                        "_src": 'https://google.com',
+                        "_naturalHeight": 100,
+                        "_naturalWidth": 100,
+                        "_width": 100,
+                        "_height": 100,
+                    },
+                    "_items": {}, 
+                    "_mutation": 0,
+                },
+                "115": {
+                    "_id": '115',
+                    "_nspace": 'ns101',
+                    "_uid": "123",
+                    "_parent": '113',
+                    "_parents": ['113'],
+                    "_root": '113',
+                    "_created": "2012-03-02T11:38:49.321Z",
+                    "_updated": "2012-03-02T11:38:49.321Z",
+                    "_content": {
+                        "_type": 'markdown',
+                        "_data": '',
+                        "_links": [],
+                    },
+                    "_items": {}, 
+                    "_mutation": 0,
+                }
             },
             "_indexByName": {
                 "canada": "109",
                 "germany": "107",
                 "russia": "108",
                 "winston churchill": "112",
-                "world war ii": "102"
+                "world war ii": "102",
+                "image parent": "113",
             },
             "_activeBlocksIndex": {},
             "_reverse": {
@@ -1010,7 +1066,7 @@ describe('BlocksStore', function() {
 
         const store = createStore();
 
-        assertJSON(Object.keys(store.index), [
+        assert.deepEqual(new Set(Object.keys(store.index)), new Set([
             "102",
             "103",
             "104",
@@ -1025,14 +1081,18 @@ describe('BlocksStore', function() {
             "116",
             "117",
             "118",
-        ]);
+            "113",
+            "114image",
+            "115",
+        ]), "The store index should have the correct blocks");
 
         assertJSON(Object.keys(store.indexByName), [
             "world war ii",
             "russia",
             "canada",
             "germany",
-            "winston churchill"
+            "winston churchill",
+            "image parent",
         ]);
 
         assertJSON(Arrays.first(Object.values(store.index))?.toJSON(), {
@@ -1066,7 +1126,8 @@ describe('BlocksStore', function() {
         });
 
         it("Should set the previous block as active properly (with all blocks expanded)", () => {
-            store.computeLinearTree('102').forEach(block => store.expanded[block] = true);
+            store.computeLinearTree(root, {includeInitial: true})
+                .forEach(block => store.expanded[block] = true);
             store.setActive('116');
 
             store.navPrev(root, 'start', {shiftKey: false});
@@ -1076,7 +1137,8 @@ describe('BlocksStore', function() {
         });
 
         it("Should skip over the children of a collapsed blocks", () => {
-            store.computeLinearTree('102').forEach(block => store.expanded[block] = true);
+            store.computeLinearTree(root, {includeInitial: true})
+                .forEach(block => store.expanded[block] = true);
             store.expanded['104'] = false;
             store.setActive('105');
 
@@ -1089,12 +1151,12 @@ describe('BlocksStore', function() {
         it("Should set the position of the cursor properly", () => {
             store.setActive('104');
 
-            store.navPrev(root, 'end', {shiftKey: false});
+            store.navPrev(root, 'end', {shiftKey: false, autoExpandRoot: true});
             assertPresent(store.active);
             assert.equal(store.active.pos, 'end');
             assert.equal(store.active.id, '103');
 
-            store.navPrev(root, 'start', {shiftKey: false});
+            store.navPrev(root, 'start', {shiftKey: false, autoExpandRoot: true});
             assertPresent(store.active);
             assert.equal(store.active.pos, 'start');
             assert.equal(store.active.id, '102');
@@ -1103,10 +1165,10 @@ describe('BlocksStore', function() {
         it("Should constrain the cursor movement within a specified root block", () => {
             const customRoot = '105';
             store.setActive('106');
-            store.navPrev(customRoot, 'end', {shiftKey: false});
-            store.navPrev(customRoot, 'end', {shiftKey: false});
-            store.navPrev(customRoot, 'end', {shiftKey: false});
-            store.navPrev(customRoot, 'end', {shiftKey: false});
+            store.navPrev(customRoot, 'end', {shiftKey: false, autoExpandRoot: true});
+            store.navPrev(customRoot, 'end', {shiftKey: false, autoExpandRoot: true});
+            store.navPrev(customRoot, 'end', {shiftKey: false, autoExpandRoot: true});
+            store.navPrev(customRoot, 'end', {shiftKey: false, autoExpandRoot: true});
             assertPresent(store.active);
             assert.equal(store.active.id, '105');
         });
@@ -1121,7 +1183,8 @@ describe('BlocksStore', function() {
         });
 
         it("Should set the next block as active properly (with all blocks expanded)", () => {
-            store.computeLinearTree('102').forEach(block => store.expanded[block] = true);
+            store.computeLinearTree(root, {includeInitial: true})
+                .forEach(block => store.expanded[block] = true);
             store.setActive('116');
 
             store.navNext(root, 'start', {shiftKey: false});
@@ -1131,7 +1194,8 @@ describe('BlocksStore', function() {
         });
 
         it("Should skip over the children of a collapsed blocks", () => {
-            store.computeLinearTree('102').forEach(block => store.expanded[block] = true);
+            store.computeLinearTree(root, {includeInitial: true})
+                .forEach(block => store.expanded[block] = true);
             store.expanded['104'] = false;
             store.setActive('104');
 
@@ -1142,7 +1206,9 @@ describe('BlocksStore', function() {
         });
 
         it("Should set the position of the cursor properly", () => {
-            store.computeLinearTree('102').forEach(block => store.expanded[block] = false);
+            store.computeLinearTree(root, {includeInitial: true})
+                .forEach(block => store.expanded[block] = true);
+            store.expanded['104'] = false;
             store.setActive('104');
 
             store.navNext(root, 'end', {shiftKey: false});
@@ -1158,7 +1224,8 @@ describe('BlocksStore', function() {
         });
 
         it("Should constrain the cursor movement within a specified root block", () => {
-            store.computeLinearTree('102').forEach(block => store.expanded[block] = true);
+            store.computeLinearTree(root, {includeInitial: true})
+                .forEach(block => store.expanded[block] = true);
             const customRoot = '105';
             store.setActive('106');
             store.navNext(customRoot, 'end', {shiftKey: false});
@@ -1217,6 +1284,31 @@ describe('BlocksStore', function() {
 
             assert.isUndefined(store.canMergePrev('104', '104'));
             assert.isUndefined(store.canMergePrev('106', '106'));
+        });
+
+        it("should allow merging a block with its previous expansion sibling", () => {
+            const store = createStore();
+
+            store.expand('104');
+            const blockMerge = store.canMergePrev('102', '105');
+
+            assert.deepEqual(blockMerge, { source: '105', target: '116' });
+        });
+
+        it("should allow merging a first child with its parent", () => {
+            const store = createStore();
+
+            store.expand('104');
+            const blockMerge = store.canMergePrev('102', '116');
+
+            assert.deepEqual(blockMerge, { source: '116', target: '104' });
+        });
+
+        it("should allow merging 2 blocks of different types of the second one is empty", () => {
+            const store = createStore();
+
+            const blockMerge = store.canMergePrev('113', '115');
+            assert.deepEqual(blockMerge, { source: '115', target: '114image' });
         });
     });
 

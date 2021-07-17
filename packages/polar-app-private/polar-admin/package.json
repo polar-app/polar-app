@@ -1,8 +1,9 @@
 {
   "name": "polar-admin",
-  "version": "2.1.77",
+  "version": "2.1.78",
   "description": "",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "test": "echo no tests",
     "compile": "npx tsc",
