@@ -2,6 +2,9 @@ import {Button, CircularProgress, createStyles, LinearProgress, makeStyles} from
 import React from "react";
 import {Interstitial as InterstitialType} from "./store/BlocksStore";
 import CancelIcon from '@material-ui/icons/Cancel';
+import {MiddleDot} from "./MiddleDot";
+import {NoteButton} from "./NoteButton";
+import {NULL_FUNCTION} from "../../../../polar-app-public/polar-shared/src/util/Functions";
 
 type IInterstitialProps = {
     interstitial: InterstitialType;
@@ -63,16 +66,16 @@ const ImageInterstitial: React.FC<IInterstitialProps> = ({ interstitial }) => {
             <LinearProgress
                 className={classes.linearProgress}
                 variant="determinate"
-                color="secondary"
+                color="primary"
                 value={progress}
             />
             <div className={classes.overlay}>
                 <div className={classes.overlayInner}>
-                    <CircularProgress color="secondary" />
+                    <CircularProgress color="primary" />
                     <Button
                         style={{ marginTop: 20 }}
                         variant="outlined"
-                        color="secondary"
+                        color="primary"
                         onClick={handleCancel}
                         startIcon={<CancelIcon />}
                     >
@@ -87,11 +90,18 @@ const ImageInterstitial: React.FC<IInterstitialProps> = ({ interstitial }) => {
 const useStyles = makeStyles(() =>
     createStyles({
         root: {
-            marginLeft: '3rem',
-            '&:not(:first-child)': {
-                marginTop: 16
-            }
+            display: 'flex',
+            border: '3px solid transparent'
         },
+        interstitialOuter: {
+            marginLeft: 4,
+        },
+        actionsArea: {
+            minWidth: 40,
+            flex: '0 1 40px',
+            display: 'flex',
+            justifyContent: 'flex-end',
+        }
     }),
 );
 export const Interstitial: React.FC<IInterstitialProps> = ({ interstitial }) => {
@@ -100,7 +110,14 @@ export const Interstitial: React.FC<IInterstitialProps> = ({ interstitial }) => 
     if (interstitial.type === 'image') {
         return (
             <div className={classes.root}>
-                <ImageInterstitial interstitial={interstitial} />
+                <div className={classes.actionsArea}>
+                    <NoteButton onClick={NULL_FUNCTION} style={{ fontSize: 20 }}>
+                        <MiddleDot />
+                    </NoteButton>
+                </div>
+                <div className={classes.interstitialOuter}>
+                    <ImageInterstitial interstitial={interstitial} />
+                </div>
             </div>
         );
     }
