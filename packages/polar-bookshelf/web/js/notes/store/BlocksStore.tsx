@@ -685,7 +685,6 @@ export class BlocksStore implements IBlocksStore {
             },
         ]);
 
-        this.setActiveWithPosition(id, 'start');
     }
 
     @action public collapse(id: BlockIDStr) {
@@ -699,7 +698,6 @@ export class BlocksStore implements IBlocksStore {
             },
         ]);
 
-        this.setActiveWithPosition(id, 'start');
     }
 
     public toggleExpand(id: BlockIDStr) {
@@ -1597,9 +1595,9 @@ export class BlocksStore implements IBlocksStore {
     }
 
     public cursorOffsetCapture(): IActiveBlock | undefined {
-        if (this.active) {
+        if (this._active) {
 
-            const id = this.active.id;
+            const id = this._active.id;
             const contentEditableRoot = DOMBlocks.getBlockElement(id);
 
             if (contentEditableRoot) {

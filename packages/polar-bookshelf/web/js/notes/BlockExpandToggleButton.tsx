@@ -35,6 +35,8 @@ export const ExpandToggle: React.FC<IExpandButtonProps> = (props) => {
     return (
         <NoteButton className={clsx(classes.root, className)}
                     style={{ ...style, fontSize: 20 }}
+                    // To prevent losing focus of the focused block
+                    onMouseDown={e => e.preventDefault()}
                     onClick={onToggle}>
             <ArrowRightIcon
                 style= {{

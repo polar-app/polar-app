@@ -230,7 +230,7 @@ export const BlockInner = observer((props: IProps) => {
                     </div>
 
                     {withHeader && isRoot &&
-                        <Divider style={{ margin: '13px 0 22px' }} />
+                        <Divider style={{ margin: '16px 0' }} />
                     }
 
                     {(expanded || (isRoot && noExpand)) && (
