@@ -17,14 +17,100 @@ describe("BlockPermissions", function() {
 
     this.timeout(10000);
 
-    function canonicalizeBlockPermission(blockPermission: IBlockPermission<any> | undefined) {
 
-        if (blockPermission === undefined) {
+    it("basic with empty permissions", async function() {
+
+        const firestore = FirestoreAdmin.getInstance();
+        const uid = await getUserIDByEmail(FirebaseTestingUsers.FIREBASE_USER);
+        const blockID = Hashcodes.createID({uid, key: '0x0001'});
+        const block = createFakePageBlock(blockID, uid);
+
+        await doCleanup(uid, blockID, [uid]);
+
+        const newPermissions: Readonly<BlockPermissionMap> = {
+
+        };
+
+        // create a fake/empty block for this user and write it out ...
+
+        await BlockCollection.set(firestore, block);
+
+        await BlockPermissions.doUpdatePagePermissions(firestore, uid, blockID, newPermissions);
+
+    });
+
+    it('basic with just one permission', async function() {
+
+        const firestore = FirestoreAdmin.getInstance();
+        const uid = await getUserIDByEmail(FirebaseTestingUsers.FIREBASE_USER);
+        const blockID = Hashcodes.createID({uid, key: '0x0001'});
+        const block = createFakePageBlock(blockID, uid);
+        const user0 = await getUserIDByEmail(FirebaseTestingUsers.FIREBASE_USER1);
+
+        await doCleanup(uid, blockID, [uid, user0]);
+
+        const newPermissions: Readonly<BlockPermissionMap> = {
+            [user0]: {
+                id: user0,
+                uid: user0,
+                access: 'read'
+            }
+        };
+
+
+        await BlockCollection.set(firestore, block);
+
+        await BlockPermissions.doUpdatePagePermissions(firestore, uid, blockID, newPermissions);
+
+        const blockPermission = await BlockPermissionCollection.get(firestore, block.id)
+
+        assertJSON(canonicalizeUpdated(blockPermission), {
+            "id": "12TthmtosP",
+            "permissions": {
+                "rgLitBszZKagk0Q5C5hBccYKVMd2": {
+                    "access": "read",
+                    "id": "rgLitBszZKagk0Q5C5hBccYKVMd2",
+                    "uid": "rgLitBszZKagk0Q5C5hBccYKVMd2"
+                }
+            },
+            "type": "page",
+            "updated": "xxx"
+        });
+
+        const blockPermissionUser = await BlockPermissionUserCollection.get(firestore, user0)
+
+        assertJSON(canonicalizeUpdated(blockPermissionUser), {
+            "id": "rgLitBszZKagk0Q5C5hBccYKVMd2",
+            "nspaces_ro": [],
+            "nspaces_rw": [],
+            "pages_ro": [
+                blockID
+            ],
+            "pages_rw": [],
+            "uid": "rgLitBszZKagk0Q5C5hBccYKVMd2",
+            "updated": "xxx"
+        });
+
+
+    });
+
+    interface IUpdatedObj {
+        readonly updated: ISODateTimeStrings;
+    }
+
+    function canonicalizeUpdated(updatedObj: IUpdatedObj | undefined) {
+
+        if (updatedObj === undefined) {
             return undefined;
         }
 
-        (blockPermission as any).updated = 'xxx';
-        return blockPermission;
+        const val = updatedObj as any;
+
+        if (typeof val.updated === 'string') {
+            val.updated = 'xxx';
+        }
+
+        return updatedObj;
 
     }
 
@@ -56,17 +142,23 @@ describe("BlockPermissions", function() {
 
 
     /**
-     * cleanup data from previous tests, when necessary.
+     * Cleanup data from previous tests, when necessary.
+     * @param uid The user that's executing the change permission operation.
+     * @param blockID The block ID that we're changing permission on
      */
-    async function doCleanup() {
+    async function doCleanup(uid: UserIDStr, blockID: BlockIDStr, users: ReadonlyArray<UserIDStr>) {
 
         const firestore = FirestoreAdmin.getInstance();
-        const app = FirebaseAdmin.app();
-        const auth = app.auth();
 
-        const {uid} = await auth.getUserByEmail(FirebaseTestingUsers.FIREBASE_USER);
+        // wipe out BlockPermission too each time or else the changes can not be computed
+        await BlockPermissionCollection.doDelete(firestore, uid);
 
-        await BlockPermissionUserCollection.doDelete(firestore, uid);
+        // wipe out all users permissions involved
+
+        for (const userID of users) {
+            await BlockPermissionUserCollection.doDelete(firestore, userID);
+        }
+
     }
 
     async function getUserIDByEmail(email: EmailStr): Promise<UserIDStr> {
@@ -75,84 +167,6 @@ describe("BlockPermissions", function() {
         const {uid} = await auth.getUserByEmail(FirebaseTestingUsers.FIREBASE_USER);
         return uid;
     }
-
-    it("basic with empty permissions", async function() {
-
-        const firestore = FirestoreAdmin.getInstance();
-        const uid = await getUserIDByEmail(FirebaseTestingUsers.FIREBASE_USER);
-
-        await doCleanup();
-
-        const newPermissions: Readonly<BlockPermissionMap> = {
-
-        };
-
-        const blockID = Hashcodes.createID({uid, key: '0x0001'});
-        const block = createFakePageBlock(blockID, uid);
-
-        // create a fake/empty block for this user and write it out ...
-
-        await BlockCollection.set(firestore, block);
-
-        await BlockPermissions.doUpdatePagePermissions(firestore, uid, blockID, newPermissions);
-
-    });
-
-    it('basic with just one permission', async function() {
-
-        const firestore = FirestoreAdmin.getInstance();
-        const uid = await getUserIDByEmail(FirebaseTestingUsers.FIREBASE_USER);
-
-        await doCleanup();
-
-        const user0 = await getUserIDByEmail(FirebaseTestingUsers.FIREBASE_USER1);
-
-        const newPermissions: Readonly<BlockPermissionMap> = {
-            [user0]: {
-                id: user0,
-                uid: user0,
-                access: 'read'
-            }
-        };
-
-        const blockID = Hashcodes.createID({uid, key: '0x0001'});
-        const block = createFakePageBlock(blockID, uid);
-
-        await BlockCollection.set(firestore, block);
-
-        await BlockPermissions.doUpdatePagePermissions(firestore, uid, blockID, newPermissions);
-
-        const blockPermission = await BlockPermissionCollection.get(firestore, block.id)
-
-        assertJSON(canonicalizeBlockPermission(blockPermission), {
-            "id": "12TthmtosP",
-            "permissions": {
-                "rgLitBszZKagk0Q5C5hBccYKVMd2": {
-                    "access": "read",
-                    "id": "rgLitBszZKagk0Q5C5hBccYKVMd2",
-                    "uid": "rgLitBszZKagk0Q5C5hBccYKVMd2"
-                }
-            },
-            "type": "page",
-            "updated": "xxx"
-        });
-
-        const blockPermissionUser = await BlockPermissionUserCollection.get(firestore, user0)
-
-        // assertJSON(blockPermissionUser, {});
-
-
-    });
-
-    //
-    // const blockPermissionUser = await BlockPermissionUserCollection.get(firestore, uid)
-    //
-    // // assertJSON(blockPermissionUser, {});
-    //
-    // // now just make sure we have EMPTY secondary tables...
-    //
-    // //
-
 
 });
 

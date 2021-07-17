@@ -30,4 +30,8 @@ export namespace BlockPermissionCollection {
 
     }
 
+    export async function doDelete(firestore: IFirestore<unknown>, id: BlockIDStr | NamespaceIDStr) {
+        return await Collections.doDelete(firestore, COLLECTION, id);
+    }
+
 }
