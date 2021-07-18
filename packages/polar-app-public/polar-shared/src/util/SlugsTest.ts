@@ -15,4 +15,12 @@ describe('Slugs', function() {
 
     });
 
+    it("intl", async function() {
+
+        assert.equal(Slugs.calculateIntl('United States'), 'United-States');
+        assert.equal(Slugs.calculateIntl('United States (Colorado)'), 'United-States-(Colorado)');
+
+    });
+
+
 });
