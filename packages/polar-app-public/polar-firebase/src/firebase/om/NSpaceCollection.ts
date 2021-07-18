@@ -9,12 +9,7 @@ export namespace NSpaceCollection {
     import LangStr = EPUBGenerator.LangStr;
     export type NSpaceName = string;
 
-    export interface INSpace {
-
-        /**
-         * A unique ID / hashcode for this namespace. We use a random ID here
-         */
-        readonly id: IDStr;
+    export interface INSpaceInit {
 
         /**
          * The computed internationalized slug.
@@ -37,6 +32,15 @@ export namespace NSpaceCollection {
          * All the langs for this namespace.
          */
         readonly langs: ReadonlyArray<LangStr> | undefined;
+
+    }
+
+    export interface INSpace extends INSpaceInit {
+
+        /**
+         * A unique ID / hashcode for this namespace. We use a random ID here
+         */
+        readonly id: IDStr;
 
     }
 
