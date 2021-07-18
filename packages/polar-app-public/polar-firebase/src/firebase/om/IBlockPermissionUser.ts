@@ -22,5 +22,15 @@ export interface IBlockPermissionUser {
     readonly nspaces_ro: ReadonlyArray<NamespaceIDStr>;
     readonly nspaces_rw: ReadonlyArray<NamespaceIDStr>;
 
+    // // *** specific page permissions
+    // readonly pages_read: ReadonlyArray<BlockIDStr>;
+    // readonly pages_write: ReadonlyArray<BlockIDStr>;
+    // readonly pages_comment: ReadonlyArray<BlockIDStr>;
+    //
+    // // *** specific nspace permissions
+    // readonly nspaces_read: ReadonlyArray<BlockIDStr>;
+    // readonly nspaces_write: ReadonlyArray<BlockIDStr>;
+    // readonly nspaces_comment: ReadonlyArray<BlockIDStr>;
+
 }
 
