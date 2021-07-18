@@ -10,11 +10,14 @@ describe("NSpaces", function() {
 
     this.timeout(10000);
 
+    // FIXME: make sure the same user can't create two namespaces with the same name.
+
     it("basic with default permissions", async function() {
 
         // FIXME: cleanup...
         //
         // - delete all namespaces for this user
+        // - delete all the block permissions for this user too
         // -
 
         const firestore = FirestoreAdmin.getInstance();
