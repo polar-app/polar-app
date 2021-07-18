@@ -17,6 +17,7 @@ import {BlockPermissionMap} from "polar-firebase/src/firebase/om/IBlockPermissio
 //
 // - multiple users
 // - compute the effective permissions when namespaces and page permissions are set in both situations
+// - remove someone from permissions and make so those are removed.
 
 describe("BlockPermissions", function() {
 
