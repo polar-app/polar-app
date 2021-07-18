@@ -31,7 +31,7 @@ export namespace BlockPermissions {
 
         // ** verify that the user is admin
         if (effectivePerms[uid]?.access !== 'admin') {
-            throw new Error(`User does not have admin to change permissions on this page: ${id} with uid=${uid}`);
+            throw new Error(`User does not have admin to change permissions on this ${target}: ${id} with uid=${uid}`);
         }
 
         // tslint:disable-next-line:no-string-literal
@@ -87,11 +87,15 @@ export namespace BlockPermissions {
                                                     id: NamespaceIDStr,
                                                     newPermissions: Readonly<BlockPermissionMap>) {
 
-        const block = await getBlock(firestore, id);
+        const nspacePerms: IBlockPermission<'nspace'> | undefined = await BlockPermissionCollection.get(firestore, id);
 
-        const nspacePerms: IBlockPermission<'nspace'> | undefined = await BlockPermissionCollection.get(firestore, block.nspace);
-
-        const effectivePerms = nspacePerms?.permissions || {};
+        const effectivePerms = nspacePerms?.permissions || {
+            [uid]: {
+                id: uid,
+                uid,
+                access: 'admin'
+            }
+        };
 
         await doUpdatePermissions(firestore, 'nspace', uid, id, effectivePerms, newPermissions);
 

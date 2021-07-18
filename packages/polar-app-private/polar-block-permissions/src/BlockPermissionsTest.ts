@@ -97,9 +97,7 @@ describe("BlockPermissions", function() {
             "updated": "xxx"
         });
 
-
     });
-
 
 
     it('go from read to write', async function() {
@@ -173,6 +171,60 @@ describe("BlockPermissions", function() {
 
 
     });
+
+
+    it('change permissions on a namespace, not a page', async function() {
+
+        const firestore = FirestoreAdmin.getInstance();
+        const uid = await getUserIDByEmail(FirebaseTestingUsers.FIREBASE_USER);
+        const nspaceID = uid;
+        const blockID = Hashcodes.createID({uid, key: '0x0001'});
+        const user0 = await getUserIDByEmail(FirebaseTestingUsers.FIREBASE_USER1);
+
+        await doCleanup(uid, blockID, [uid, user0]);
+
+        const newPermissions: Readonly<BlockPermissionMap> = {
+            [user0]: {
+                id: user0,
+                uid: user0,
+                access: 'read'
+            }
+        };
+
+        await BlockPermissions.doUpdateNSpacePermissions(firestore, uid, nspaceID, newPermissions);
+
+        const blockPermission = await BlockPermissionCollection.get(firestore, nspaceID)
+
+        assertJSON(canonicalizeUpdated(blockPermission), {
+            "id": "rgLitBszZKagk0Q5C5hBccYKVMd2",
+            "permissions": {
+                "rgLitBszZKagk0Q5C5hBccYKVMd2": {
+                    "access": "read",
+                    "id": "rgLitBszZKagk0Q5C5hBccYKVMd2",
+                    "uid": "rgLitBszZKagk0Q5C5hBccYKVMd2"
+                }
+            },
+            "type": "nspace",
+            "updated": "xxx"
+        });
+
+        const blockPermissionUser = await BlockPermissionUserCollection.get(firestore, user0)
+
+        assertJSON(canonicalizeUpdated(blockPermissionUser), {
+            "id": "rgLitBszZKagk0Q5C5hBccYKVMd2",
+            "nspaces_ro": [
+                "rgLitBszZKagk0Q5C5hBccYKVMd2"
+            ],
+            "nspaces_rw": [],
+            "pages_ro": [
+            ],
+            "pages_rw": [],
+            "uid": "rgLitBszZKagk0Q5C5hBccYKVMd2",
+            "updated": "xxx"
+        });
+
+    });
+
     interface IUpdatedObj {
         readonly updated: ISODateTimeStrings;
     }
