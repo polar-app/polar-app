@@ -223,26 +223,6 @@ describe("BlockPermissions", function() {
 
     });
 
-    interface IUpdatedObj {
-        readonly updated: ISODateTimeStrings;
-    }
-
-    function canonicalizeUpdated(updatedObj: IUpdatedObj | undefined) {
-
-        if (updatedObj === undefined) {
-            return undefined;
-        }
-
-        const val = updatedObj as any;
-
-        if (typeof val.updated === 'string') {
-            val.updated = 'xxx';
-        }
-
-        return updatedObj;
-
-    }
-
     function createFakePageBlock(id: BlockIDStr,
                                  uid: UserIDStr): IBlock {
 
@@ -308,6 +288,27 @@ export async function getUserIDByEmail(email: EmailStr): Promise<UserIDStr> {
     const auth = app.auth();
     const {uid} = await auth.getUserByEmail(FirebaseTestingUsers.FIREBASE_USER);
     return uid;
+}
+
+
+export interface IUpdatedObj {
+    readonly updated: ISODateTimeStrings;
+}
+
+export function canonicalizeUpdated(updatedObj: IUpdatedObj | undefined) {
+
+    if (updatedObj === undefined) {
+        return undefined;
+    }
+
+    const val = updatedObj as any;
+
+    if (typeof val.updated === 'string') {
+        val.updated = 'xxx';
+    }
+
+    return updatedObj;
+
 }
 
 
