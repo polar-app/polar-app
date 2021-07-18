@@ -10,12 +10,6 @@ export interface IBlockPermissionResponse {
 
 export namespace BlockPermissionFunctions {
 
-    /**
-     *
-     * @param idUser has Firebase user information
-     * @param request has the request we want to execute.  We need to define the request
-     * params need but this is send with the original POST with what we want to classify.
-     */
     export async function exec(idUser: IDUser,
                                request: IBlockPermission<'page' | 'nspace'>): Promise<IBlockPermissionResponse> {
 

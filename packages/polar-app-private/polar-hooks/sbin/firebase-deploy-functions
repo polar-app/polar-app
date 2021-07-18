@@ -26,6 +26,7 @@ time firebase deploy --only functions:profileUpdate
 time firebase deploy --only functions:search
 time firebase deploy --only functions:SSRFunction
 time firebase deploy --only functions:BlockPermissionFunction
+time firebase deploy --only functions:NSpaceCreateFunction
 
 time firebase deploy --only functions:AppleIapCallback --debug
 time firebase deploy --only functions:AppstoreServerNotification --debug
