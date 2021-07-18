@@ -15,8 +15,6 @@ import {BlockPermissionMap} from "polar-firebase/src/firebase/om/IBlockPermissio
 
 // TODO: more tests
 //
-// - go from read to write
-// - go from write to read
 // - multiple users
 // - all these for namespaces too
 // - compute the effective permissions when namespaces and page permissions are set in both situations
@@ -226,6 +224,7 @@ describe("BlockPermissions", function() {
      * Cleanup data from previous tests, when necessary.
      * @param uid The user that's executing the change permission operation.
      * @param blockID The block ID that we're changing permission on
+     * @param users The users that have had permissions changed so we can wipe these out.
      */
     async function doCleanup(uid: UserIDStr, blockID: BlockIDStr, users: ReadonlyArray<UserIDStr>) {
 
