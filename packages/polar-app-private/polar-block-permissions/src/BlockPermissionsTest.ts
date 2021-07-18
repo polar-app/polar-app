@@ -301,13 +301,13 @@ describe("BlockPermissions", function() {
 
     }
 
-    async function getUserIDByEmail(email: EmailStr): Promise<UserIDStr> {
-        const app = FirebaseAdmin.app();
-        const auth = app.auth();
-        const {uid} = await auth.getUserByEmail(FirebaseTestingUsers.FIREBASE_USER);
-        return uid;
-    }
-
 });
+
+export async function getUserIDByEmail(email: EmailStr): Promise<UserIDStr> {
+    const app = FirebaseAdmin.app();
+    const auth = app.auth();
+    const {uid} = await auth.getUserByEmail(FirebaseTestingUsers.FIREBASE_USER);
+    return uid;
+}
 
 

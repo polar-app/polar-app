@@ -18,26 +18,13 @@ export namespace NSpaces {
                                  uid: UserIDStr,
                                  init: INSpaceInit): Promise<INSpace> {
 
-        // TODO: make sure the user doesn't already have a namespace with this name/slug
+        // FIXME: make sure the user doesn't already have a namespace with this name/slug
 
         const id = Hashcodes.createRandomID();
-
+        const slug = Slugs.calculateIntl(init.name);
         const nspace: INSpace = {
-            id, ...init
+            id, slug, ...init
         };
-
-        function validateSlug() {
-
-            // Make sure the slug was created properly because technically it could be an invalid slug
-
-            const correctSlug = Slugs.calculateIntl(nspace.name)
-            if (nspace.slug !== correctSlug) {
-                throw new Error(`Slug incorrect: ${nspace.slug} - ${correctSlug}`)
-            }
-
-        }
-
-        validateSlug();
 
         async function doWrite() {
 

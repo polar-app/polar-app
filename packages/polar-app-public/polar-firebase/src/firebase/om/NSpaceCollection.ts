@@ -13,11 +13,6 @@ export namespace NSpaceCollection {
     export interface INSpaceInit {
 
         /**
-         * The computed internationalized slug.
-         */
-        readonly slug: SlugIntlStr;
-
-        /**
          * The name for this slug.
          */
         readonly name: string;
@@ -42,6 +37,11 @@ export namespace NSpaceCollection {
          * A unique ID / hashcode for this namespace. We use a random ID here
          */
         readonly id: IDStr;
+
+        /**
+         * The computed internationalized slug.
+         */
+        readonly slug: SlugIntlStr;
 
     }
 
