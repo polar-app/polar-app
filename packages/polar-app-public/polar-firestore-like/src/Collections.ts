@@ -121,11 +121,18 @@ export namespace Collections {
     export async function set<T, SM = unknown>(firestore: IFirestore<SM>,
                                                collection: string,
                                                id: string,
-                                               value: T) {
+                                               value: T,
+                                               batch?: IWriteBatch<SM>) {
+
+        const b = batch || firestore.batch();
 
         value = Dictionaries.onlyDefinedProperties(value);
         const ref = firestore.collection(collection).doc(id);
         await ref.set(value);
+
+        if (! batch) {
+            await b.commit();
+        }
 
     }
 

@@ -24,13 +24,14 @@ time firebase deploy --only functions:mailinglist
 time firebase deploy --only functions:profileDelete
 time firebase deploy --only functions:profileUpdate
 time firebase deploy --only functions:search
-# time firebase deploy --only functions:sitemap
 time firebase deploy --only functions:SSRFunction
+time firebase deploy --only functions:BlockPermissionFunction
+time firebase deploy --only functions:NSpaceCreateFunction
 
-# Function, called by the React Native app with the "receipt", returned from Apple IAP
 time firebase deploy --only functions:AppleIapCallback --debug
 time firebase deploy --only functions:AppstoreServerNotification --debug
 
+# time firebase deploy --only functions:sitemap
 # time firebase deploy --only functions:groupDelete
 # time firebase deploy --only functions:groupDocsAdd
 # time firebase deploy --only functions:groupGet

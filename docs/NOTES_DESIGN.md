@@ -392,6 +392,10 @@ org_user: All the users and roles for the org. This stores the users and their
   
 org_group: All the groups associated with an org, their id, name, description.
 nspace:  The declaration of a namespace, it's id, name, and description 
+
+# FIXME: these aren't actually required because we can write
+# block_permission_user records and store the 'owner' permission for the nspace
+ 
 nspace_user: The namespaces that a user owns. Each has a unique id, uid, and a nspace_id
 nspace_org: The namespaces that an org owns.  Each has a unique id, uid,   
 
