@@ -1,6 +1,8 @@
 import {IDStr} from "polar-shared/src/util/Strings";
 import {EPUBGenerator} from "polar-epub-generator/src/EPUBGenerator";
 import {SlugIntlStr} from "polar-shared/src/util/Slugs";
+import {IFirestore} from "polar-firestore-like/src/IFirestore";
+import {Collections} from "polar-firestore-like/src/Collections";
 
 export namespace NSpaceCollection {
 
@@ -36,6 +38,16 @@ export namespace NSpaceCollection {
          */
         readonly langs: ReadonlyArray<LangStr> | undefined;
 
+    }
+
+    export const COLLECTION = 'nspace';
+
+    export async function get(firestore: IFirestore<unknown>, id: IDStr): Promise<INSpace | undefined> {
+        return await Collections.get(firestore, COLLECTION, id);
+    }
+
+    export async function set(firestore: IFirestore<unknown>, nspace: INSpace) {
+        return await Collections.set(firestore, COLLECTION, nspace.id, nspace);
     }
 
 }
