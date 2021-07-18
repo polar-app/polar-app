@@ -7,6 +7,7 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {IBlockPermissionUser} from "polar-firebase/src/firebase/om/IBlockPermissionUser";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {AccessTypes, PermissionType} from "polar-firebase/src/firebase/om/IBlockPermissionEntry";
+import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 
 export namespace BlockPermissions {
 
@@ -132,8 +133,8 @@ export namespace BlockPermissions {
     /**
      * The user was added to the permissions set (they weren't present before)
      */
-    export interface IPermissionChangeAdded {
-        readonly id: BlockIDStr,
+    export interface IBlockPermissionChangeAdded {
+        readonly id: BlockIDStr | NamespaceIDStr,
         readonly uid: UserIDStr;
         readonly type: 'added';
         readonly before: undefined;
@@ -143,23 +144,23 @@ export namespace BlockPermissions {
     /**
      * The user was added to the permissions set (they were present before but had it revoked.)
      */
-    export interface IPermissionChangeRemoved {
-        readonly id: BlockIDStr,
+    export interface IBlockPermissionChangeRemoved {
+        readonly id: BlockIDStr | NamespaceIDStr,
         readonly uid: UserIDStr;
         readonly type: 'removed';
         readonly before: PermissionType;
         readonly after: undefined;
     }
 
-    export interface IPermissionChangeModified {
-        readonly id: BlockIDStr,
+    export interface IBlockPermissionChangeModified {
+        readonly id: BlockIDStr | NamespaceIDStr,
         readonly uid: UserIDStr;
         readonly type: 'modified';
         readonly before: PermissionType;
         readonly after: PermissionType;
     }
 
-    export type IPermissionChange = IPermissionChangeAdded | IPermissionChangeRemoved | IPermissionChangeModified;
+    export type IBlockPermissionChange = IBlockPermissionChangeAdded | IBlockPermissionChangeRemoved | IBlockPermissionChangeModified;
 
     /**
      * Convert the old permissions to a set of new IPermissionChange objects so
@@ -167,7 +168,7 @@ export namespace BlockPermissions {
      */
     export function computePermissionChanges(id: BlockIDStr,
                                              oldPermissions: Readonly<BlockPermissionMap>,
-                                             newPermissions: Readonly<BlockPermissionMap>): ReadonlyArray<IPermissionChange> {
+                                             newPermissions: Readonly<BlockPermissionMap>): ReadonlyArray<IBlockPermissionChange> {
 
         // compute all the unique UIDs in both sets.  This is needed because we have to compute
         // added or removed permissions.
@@ -178,7 +179,7 @@ export namespace BlockPermissions {
             .unique()
             .collect();
 
-        const toPermissionChange = (uid: UIDStr): IPermissionChange | undefined => {
+        const toPermissionChange = (uid: UIDStr): IBlockPermissionChange | undefined => {
 
             const oldPerm = oldPermissions[uid];
             const newPerm = newPermissions[uid];
@@ -236,9 +237,10 @@ export namespace BlockPermissions {
                                                  id: BlockIDStr | NamespaceIDStr,
                                                  target: PermissionTarget,
                                                  permissions: Readonly<BlockPermissionMap>,
-                                                 permissionChanges: ReadonlyArray<IPermissionChange>) {
+                                                 permissionChanges: ReadonlyArray<IBlockPermissionChange>,
+                                                 batch?: IWriteBatch<unknown>) {
 
-        const batch = firestore.batch();
+        const b = batch || firestore.batch();
 
         async function doBlockPermission() {
 
@@ -253,7 +255,7 @@ export namespace BlockPermissions {
                 permissions,
             }
 
-            batch.set(collection.doc(id), blockPermission);
+            b.set(collection.doc(id), blockPermission);
 
         }
 
@@ -288,7 +290,7 @@ export namespace BlockPermissions {
 
             const keyNames = computePermKeyNames();
 
-            const applyToBatch = (permissionChange: IPermissionChange) => {
+            const applyToBatch = (permissionChange: IBlockPermissionChange) => {
 
                 const doc = collection.doc(permissionChange.uid);
 
@@ -296,8 +298,8 @@ export namespace BlockPermissions {
 
                     case "removed":
                         // we just have to remove this from both rw and ro and we're done.
-                        batch.update(doc, keyNames.ro, firestore.FieldValue.arrayRemove(permissionChange.id));
-                        batch.update(doc, keyNames.rw, firestore.FieldValue.arrayRemove(permissionChange.id));
+                        b.update(doc, keyNames.ro, firestore.FieldValue.arrayRemove(permissionChange.id));
+                        b.update(doc, keyNames.rw, firestore.FieldValue.arrayRemove(permissionChange.id));
                         break;
 
                     case "added":
@@ -307,12 +309,12 @@ export namespace BlockPermissions {
                         // long as we remove/union both ways.
                         switch(permissionChange.after) {
                             case 'ro':
-                                batch.update(doc, keyNames.ro, firestore.FieldValue.arrayUnion(permissionChange.id));
-                                batch.update(doc, keyNames.rw, firestore.FieldValue.arrayRemove(permissionChange.id));
+                                b.update(doc, keyNames.ro, firestore.FieldValue.arrayUnion(permissionChange.id));
+                                b.update(doc, keyNames.rw, firestore.FieldValue.arrayRemove(permissionChange.id));
                                 break;
                             case 'rw':
-                                batch.update(doc, keyNames.ro, firestore.FieldValue.arrayRemove(permissionChange.id));
-                                batch.update(doc, keyNames.rw, firestore.FieldValue.arrayUnion(permissionChange.id));
+                                b.update(doc, keyNames.ro, firestore.FieldValue.arrayRemove(permissionChange.id));
+                                b.update(doc, keyNames.rw, firestore.FieldValue.arrayUnion(permissionChange.id));
                                 break;
                         }
 
@@ -363,7 +365,7 @@ export namespace BlockPermissions {
 
         await doBlockPermission();
         await doBlockPermissionUser();
-        await batch.commit();
+        await b.commit();
 
     }
 

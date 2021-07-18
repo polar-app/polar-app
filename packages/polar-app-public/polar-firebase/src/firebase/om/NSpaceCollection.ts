@@ -3,6 +3,7 @@ import {EPUBGenerator} from "polar-epub-generator/src/EPUBGenerator";
 import {SlugIntlStr} from "polar-shared/src/util/Slugs";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {Collections} from "polar-firestore-like/src/Collections";
+import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 
 export namespace NSpaceCollection {
 
@@ -50,8 +51,8 @@ export namespace NSpaceCollection {
         return await Collections.get(firestore, COLLECTION, id);
     }
 
-    export async function set(firestore: IFirestore<unknown>, nspace: INSpace) {
-        return await Collections.set(firestore, COLLECTION, nspace.id, nspace);
+    export async function set(firestore: IFirestore<unknown>, nspace: INSpace, batch?: IWriteBatch<unknown>) {
+        return await Collections.set(firestore, COLLECTION, nspace.id, nspace, batch);
     }
 
 }

@@ -3,6 +3,7 @@ import {Collections} from "polar-firestore-like/src/Collections";
 import {BlockIDStr, NamespaceIDStr} from "polar-blocks/src/blocks/IBlock";
 import {BlockPermissionRecordType, IBlockPermission} from "./IBlockPermission";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 
 export namespace BlockPermissionCollection {
 
@@ -17,7 +18,8 @@ export namespace BlockPermissionCollection {
 
     export async function set<T extends Exclude<BlockPermissionRecordType, 'effective'>>(firestore: IFirestore<unknown>,
                                                                                          id: BlockIDStr | NamespaceIDStr,
-                                                                                         record: IBlockPermission<T>) {
+                                                                                         record: IBlockPermission<T>,
+                                                                                         batch?: IWriteBatch<unknown>) {
 
         const updated = ISODateTimeStrings.create();
 
@@ -26,7 +28,7 @@ export namespace BlockPermissionCollection {
             updated
         }
 
-        return await Collections.set(firestore, COLLECTION, id, newRecord);
+        return await Collections.set(firestore, COLLECTION, id, newRecord, batch);
 
     }
 
