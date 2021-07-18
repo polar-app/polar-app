@@ -5,12 +5,14 @@ import {NSpaces} from "./NSpaces";
 import {NSpaceCollection} from "polar-firebase/src/firebase/om/NSpaceCollection";
 import {assertJSON} from "polar-bookshelf/web/js/test/Assertions";
 import {BlockPermissionCollection} from "polar-firebase/src/firebase/om/BlockPermissionCollection";
+import {BlockPermissionUserCollection} from "polar-firebase/src/firebase/om/BlockPermissionUserCollection";
 
 describe("NSpaces", function() {
 
     this.timeout(10000);
 
     // FIXME: make sure the same user can't create two namespaces with the same name.
+
 
     it("basic with default permissions", async function() {
 
@@ -43,7 +45,26 @@ describe("NSpaces", function() {
             },
             "type": "nspace",
             "updated": "xxx"
-        })
+        });
+
+        // assertJSON(canonicalizeUpdated(await BlockPermissionUserCollection.get(firestore, uid)), {
+        //     "id": "rgLitBszZKagk0Q5C5hBccYKVMd2",
+        //     "nspaces_ro": [
+        //         "rgLitBszZKagk0Q5C5hBccYKVMd2"
+        //     ],
+        //     "nspaces_rw": [
+        //         "12eCykomUT",
+        //         "13apGG8bj6",
+        //         "1Q8SP9VB2E",
+        //         "1iNPUcMJFq",
+        //         "12acFhWWQF",
+        //         "15156HH6Uo"
+        //     ],
+        //     "pages_ro": [],
+        //     "pages_rw": [],
+        //     "uid": "rgLitBszZKagk0Q5C5hBccYKVMd2",
+        //     "updated": "xxx"
+        // });
 
     });
 
