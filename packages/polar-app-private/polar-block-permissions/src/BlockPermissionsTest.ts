@@ -102,6 +102,79 @@ describe("BlockPermissions", function() {
 
     });
 
+
+
+    it('go from read to write', async function() {
+
+        const firestore = FirestoreAdmin.getInstance();
+        const uid = await getUserIDByEmail(FirebaseTestingUsers.FIREBASE_USER);
+        const blockID = Hashcodes.createID({uid, key: '0x0001'});
+        const block = createFakePageBlock(blockID, uid);
+        const user0 = await getUserIDByEmail(FirebaseTestingUsers.FIREBASE_USER1);
+
+        await doCleanup(uid, blockID, [uid, user0]);
+
+        await BlockCollection.set(firestore, block);
+
+        await BlockPermissions.doUpdatePagePermissions(firestore, uid, blockID, {
+            [user0]: {
+                id: user0,
+                uid: user0,
+                access: 'read'
+            }
+        });
+
+        assertJSON(canonicalizeUpdated(await BlockPermissionCollection.get(firestore, block.id)), {
+            "id": "12TthmtosP",
+            "permissions": {
+                "rgLitBszZKagk0Q5C5hBccYKVMd2": {
+                    "access": "read",
+                    "id": "rgLitBszZKagk0Q5C5hBccYKVMd2",
+                    "uid": "rgLitBszZKagk0Q5C5hBccYKVMd2"
+                }
+            },
+            "type": "page",
+            "updated": "xxx"
+        });
+
+        await BlockPermissions.doUpdatePagePermissions(firestore, uid, blockID, {
+            [user0]: {
+                id: user0,
+                uid: user0,
+                access: 'write'
+            }
+        });
+
+        assertJSON(canonicalizeUpdated(await BlockPermissionCollection.get(firestore, block.id)), {
+            "id": "12TthmtosP",
+            "permissions": {
+                "rgLitBszZKagk0Q5C5hBccYKVMd2": {
+                    "access": "write",
+                    "id": "rgLitBszZKagk0Q5C5hBccYKVMd2",
+                    "uid": "rgLitBszZKagk0Q5C5hBccYKVMd2"
+                }
+            },
+            "type": "page",
+            "updated": "xxx"
+        });
+
+        const blockPermissionUser = await BlockPermissionUserCollection.get(firestore, user0)
+
+        assertJSON(canonicalizeUpdated(blockPermissionUser), {
+            "id": "rgLitBszZKagk0Q5C5hBccYKVMd2",
+            "nspaces_ro": [],
+            "nspaces_rw": [],
+            "pages_ro": [
+            ],
+            "pages_rw": [
+                blockID
+            ],
+            "uid": "rgLitBszZKagk0Q5C5hBccYKVMd2",
+            "updated": "xxx"
+        });
+
+
+    });
     interface IUpdatedObj {
         readonly updated: ISODateTimeStrings;
     }
