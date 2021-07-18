@@ -3,7 +3,7 @@ import {BlockPermissions} from "./BlockPermissions";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {FirebaseTestingUsers} from "polar-firebase-test/src/firebase/FirebaseTestingUsers";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
+import {BlockIDStr, IBlock, NamespaceIDStr} from "polar-blocks/src/blocks/IBlock";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {BlockCollection} from "polar-firebase/src/firebase/om/BlockCollection";
 import {BlockPermissionUserCollection} from "polar-firebase/src/firebase/om/BlockPermissionUserCollection";
@@ -16,13 +16,11 @@ import {BlockPermissionMap} from "polar-firebase/src/firebase/om/IBlockPermissio
 // TODO: more tests
 //
 // - multiple users
-// - all these for namespaces too
 // - compute the effective permissions when namespaces and page permissions are set in both situations
 
 describe("BlockPermissions", function() {
 
     this.timeout(10000);
-
 
     it("basic with empty permissions", async function() {
 
@@ -31,7 +29,7 @@ describe("BlockPermissions", function() {
         const blockID = Hashcodes.createID({uid, key: '0x0001'});
         const block = createFakePageBlock(blockID, uid);
 
-        await doCleanup(uid, blockID, [uid]);
+        await doCleanup(uid, blockID, undefined, [uid]);
 
         const newPermissions: Readonly<BlockPermissionMap> = {
 
@@ -53,7 +51,7 @@ describe("BlockPermissions", function() {
         const block = createFakePageBlock(blockID, uid);
         const user0 = await getUserIDByEmail(FirebaseTestingUsers.FIREBASE_USER1);
 
-        await doCleanup(uid, blockID, [uid, user0]);
+        await doCleanup(uid, blockID, undefined, [uid, user0]);
 
         const newPermissions: Readonly<BlockPermissionMap> = {
             [user0]: {
@@ -108,7 +106,7 @@ describe("BlockPermissions", function() {
         const block = createFakePageBlock(blockID, uid);
         const user0 = await getUserIDByEmail(FirebaseTestingUsers.FIREBASE_USER1);
 
-        await doCleanup(uid, blockID, [uid, user0]);
+        await doCleanup(uid, blockID, undefined, [uid, user0]);
 
         await BlockCollection.set(firestore, block);
 
@@ -178,10 +176,9 @@ describe("BlockPermissions", function() {
         const firestore = FirestoreAdmin.getInstance();
         const uid = await getUserIDByEmail(FirebaseTestingUsers.FIREBASE_USER);
         const nspaceID = uid;
-        const blockID = Hashcodes.createID({uid, key: '0x0001'});
         const user0 = await getUserIDByEmail(FirebaseTestingUsers.FIREBASE_USER1);
 
-        await doCleanup(uid, blockID, [uid, user0]);
+        await doCleanup(uid, undefined, nspaceID, [uid, user0]);
 
         const newPermissions: Readonly<BlockPermissionMap> = {
             [user0]: {
@@ -276,14 +273,24 @@ describe("BlockPermissions", function() {
      * Cleanup data from previous tests, when necessary.
      * @param uid The user that's executing the change permission operation.
      * @param blockID The block ID that we're changing permission on
+     * @param nspaceID The namespace ID that we're changing permission on
      * @param users The users that have had permissions changed so we can wipe these out.
      */
-    async function doCleanup(uid: UserIDStr, blockID: BlockIDStr, users: ReadonlyArray<UserIDStr>) {
+    async function doCleanup(uid: UserIDStr,
+                             blockID: BlockIDStr | undefined,
+                             nspaceID: NamespaceIDStr | undefined,
+                             users: ReadonlyArray<UserIDStr>) {
 
         const firestore = FirestoreAdmin.getInstance();
 
         // wipe out BlockPermission too each time or else the changes can not be computed
-        await BlockPermissionCollection.doDelete(firestore, uid);
+        if (blockID) {
+            await BlockPermissionCollection.doDelete(firestore, blockID);
+        }
+
+        if (nspaceID) {
+            await BlockPermissionCollection.doDelete(firestore, nspaceID);
+        }
 
         // wipe out all users permissions involved
 
