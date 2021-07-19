@@ -12,6 +12,9 @@ export namespace SignInSuccessURLs {
         return Optional.first(getCustom(), getDefault()).get();
     }
 
+    /**
+     * Create a sign in URL but only if we need to redirect to a different URL on login.
+     */
     export function createSignInURL(signInSuccessUrl: string | undefined,
                                     baseURL: string = document.location?.href) {
 
