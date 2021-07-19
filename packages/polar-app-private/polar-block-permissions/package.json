@@ -1,6 +1,6 @@
 {
   "name": "polar-block-permissions",
-  "version": "2.1.80",
+  "version": "2.1.81",
   "description": "Code to connect to firebase as an admin user",
   "main": "index.js",
   "scripts": {
@@ -22,11 +22,11 @@
     "typescript": "=4.2.3"
   },
   "dependencies": {
-    "polar-blocks": "^2.1.80",
-    "polar-firebase": "^2.1.80",
-    "polar-firebase-admin": "^2.1.80",
-    "polar-firestore-like": "^2.1.80",
-    "polar-shared": "^2.1.80",
-    "polar-test": "^2.1.80"
+    "polar-blocks": "^2.1.81",
+    "polar-firebase": "^2.1.81",
+    "polar-firebase-admin": "^2.1.81",
+    "polar-firestore-like": "^2.1.81",
+    "polar-shared": "^2.1.81",
+    "polar-test": "^2.1.81"
   }
 }
