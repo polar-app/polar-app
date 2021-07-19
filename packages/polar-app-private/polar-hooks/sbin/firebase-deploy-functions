@@ -5,13 +5,11 @@ mode="parallel"
 
 set -e
 
-if ["${mode}" == "parallel"]; then
-
+if [ "${mode}" == "parallel" ]; then
     time firebase deploy --only functions
-
 fi
 
-if ["${mode}" == "serial"]; then
+if [ "${mode}" == "serial" ]; then
 
     time firebase deploy --only functions:datastoreGetFile
     time firebase deploy --only functions:CloudFunctionsWarmer
