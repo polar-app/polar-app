@@ -92,18 +92,20 @@ export const AppleIapCallback = ExpressFunctions.createHookAsync('AppleIapCallba
         return;
     }
 
-    const customer: Accounts.Customer = {
-        type: "apple_iap",
-        customerID: latestActiveReceipt.original_transaction_id,
-    }; // @TODO this is Stripe customer, work around this because this callback is from Apple not Stripe
-
-    const plan: Billing.Plan = {
-        ver: "v2",
-        level: latestActiveReceipt.product_id.replace('plan_', '') as Billing.V2PlanLevel, // remove the "plan_" prefix
-    };
-    const interval = 'month';
-
-    await Accounts.changePlanViaEmail(email, customer, plan, interval);
+    // Commented because moving this code to AppstoreServerNotification.ts, which
+    // is called by Apple Server-To-Server
+    // const customer: Accounts.Customer = {
+    //     type: "apple_iap",
+    //     customerID: latestActiveReceipt.original_transaction_id,
+    // }; // @TODO this is Stripe customer, work around this because this callback is from Apple not Stripe
+    //
+    // const plan: Billing.Plan = {
+    //     ver: "v2",
+    //     level: latestActiveReceipt.product_id.replace('plan_', '') as Billing.V2PlanLevel, // remove the "plan_" prefix
+    // };
+    // const interval = 'month';
+    //
+    // await Accounts.changePlanViaEmail(email, customer, plan, interval);
 
     const response: Response = {
         code: 'ok',

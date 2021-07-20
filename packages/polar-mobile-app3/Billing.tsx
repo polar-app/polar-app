@@ -5,7 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 // @TODO Move to own file
 class PolarBackendService {
     static async validateReceiptOnServer(transactionReceipt: string, email: string) {
-        const url = 'https://us-central1-polar-32b0f.cloudfunctions.net/AppleIapCallback';
+        const url = 'https://ql77r00mvi.execute-api.us-east-1.amazonaws.com/prod/billing/apple/verify-receipt';
 
         console.log(`Validating receipt with ${url}`);
 
@@ -22,7 +22,7 @@ class PolarBackendService {
         });
 
         if (result.ok) {
-            return true;
+            return await result.json();
         }
 
         console.error('Failed to validate transaction in our Cloud Function');
@@ -62,6 +62,7 @@ export class Billing {
         await RNIap.clearTransactionIOS()
 
         this.purchaseUpdateSubscription = RNIap.purchaseUpdatedListener((purchase: RNIap.InAppPurchase | RNIap.SubscriptionPurchase | RNIap.ProductPurchase) => {
+            console.log(new Date().toISOString());
             console.log('purchaseUpdatedListener', purchase);
             const receipt = purchase.transactionReceipt;
             console.log('receipt', receipt);
@@ -70,8 +71,13 @@ export class Billing {
                     '@polar:buyer_email',
                 ).then(buyerEmail => {
                     PolarBackendService.validateReceiptOnServer(purchase.transactionReceipt, buyerEmail!)
-                        .then(async (deliveryResult) => {
-                            if (isSuccess(deliveryResult)) {
+                        .then(async (serverVerifyReceiptResponse) => {
+
+                            console.log('deliveryResult');
+                            console.log(serverVerifyReceiptResponse);
+
+                            if (isSuccess(serverVerifyReceiptResponse)) {
+                                console.log('Finishing transaction with App Store');
                                 // Tell the store that you have delivered what has been paid for.
                                 // Failure to do this will result in the purchase being refunded on Android and
                                 // the purchase event will reappear on every relaunch of the app until you succeed
@@ -85,6 +91,7 @@ export class Billing {
                                     console.error(e);
                                 }
                             } else {
+                                console.error('Transaction receipt not valid. Can not finish transaction');
                                 // Retry / conclude the purchase is fraudulent, etc...
                             }
                         });
