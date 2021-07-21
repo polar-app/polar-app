@@ -1,9 +1,16 @@
 import {PathOrURLStr} from "polar-shared/src/util/Strings";
 import {URLs} from "polar-shared/src/util/URLs";
-import {PageViewport, TextContent, Util} from "pdfjs-dist";
+import {PageViewport, TextContent, Transform, Util} from "pdfjs-dist";
 import {PDFDocs} from "./PDFDocs";
 
 export namespace PDFText {
+
+    import TextItem = _pdfjs.TextItem;
+
+    export interface IPDFTextItem extends TextItem {
+        readonly pageNum: number;
+        readonly tx: Transform;
+    }
 
     export interface IPDFTextContent {
         readonly pageNum: number;

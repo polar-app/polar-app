@@ -1,4 +1,5 @@
 import {Arrays} from "./Arrays";
+import {ISibling, Tuples} from "./Tuples";
 
 export type ToKeyFunction<T> = (value: T, idx: number) => string;
 
@@ -156,6 +157,10 @@ export class ArrayStream<T> {
     public reverse(): ArrayStream<T> {
         const reversed = [...this.values].reverse();
         return new ArrayStream(reversed);
+    }
+
+    public siblings(): ArrayStream<ISibling<T>> {
+        return new ArrayStream(Tuples.createSiblings(this.values));
     }
 
     // public tail(limit: number): ArrayStream<T> {
