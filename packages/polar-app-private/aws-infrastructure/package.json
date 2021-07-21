@@ -5,19 +5,15 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "test": "jest",
     "cdk": "cdk"
   },
   "devDependencies": {
     "@aws-cdk/assert": "^1.114.0",
     "@google-cloud/firestore": "^4.13.2",
-    "@types/jest": "^26.0.24",
     "@types/node": "^16.3.3",
     "aws-cdk": "^1.114.0",
     "esbuild": "^0.12.15",
     "firebase-admin": "^9.11.0",
-    "jest": "^27.0.6",
-    "ts-jest": "^27.0.3",
     "ts-node": "^10.1.0",
     "typescript": "^4.3.5"
   },
