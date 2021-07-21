@@ -5,8 +5,7 @@
     "packages/polar-app-public/*",
     "packages/polar-bookshelf",
     "packages/polar-bookshelf-secrets",
-    "packages/polar-site2",
-    "packages/aws-infrastructure"
+    "packages/polar-site2"
   ],
   "version": "2.1.81",
   "concurrency": 10,
