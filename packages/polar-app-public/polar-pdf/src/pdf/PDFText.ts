@@ -58,28 +58,13 @@ export namespace PDFText {
 
 export namespace PDFTextWordMerger {
 
-    import IPDFTextItem = PDFText.IPDFTextItem;
-
-    interface IPDFTextWord {
+    export interface IPDFTextWord {
         readonly pageNum: number;
         readonly x: number;
         readonly y: number;
         readonly width: number;
         readonly height: number;
         readonly str: string;
-    }
-
-    export function toWord(item: IPDFTextItem): IPDFTextWord {
-        const x = item.tx[4];
-        const y = item.tx[5];
-
-        return {
-            pageNum: item.pageNum,
-            x, y,
-            width: item.width,
-            height: item.height,
-            str: item.str
-        }
     }
 
     export function canMerge(a: IPDFTextWord | undefined, b: IPDFTextWord | undefined): boolean {
@@ -93,7 +78,7 @@ export namespace PDFTextWordMerger {
             return false;
         }
 
-        const delta = a.height * 0.0;
+        const delta = a.height * 0.1;
 
         const cutoff = (a.x + a.width + delta);
 
@@ -105,7 +90,7 @@ export namespace PDFTextWordMerger {
 
     }
 
-    export function doMergeWords(data: ReadonlyArray<IPDFTextItem>): ReadonlyArray<IPDFTextWord> {
+    export function doMergeWords(data: ReadonlyArray<IPDFTextWord>): ReadonlyArray<IPDFTextWord> {
 
         interface IPDFTextWordMerged extends IPDFTextWord {
             // merged to the previous word...
@@ -161,7 +146,6 @@ export namespace PDFTextWordMerger {
         }
 
         return arrayStream(data)
-            .map(toWord)
             .siblings()
             .map(current => toMerged(current.prev, current.curr))
             .siblings()

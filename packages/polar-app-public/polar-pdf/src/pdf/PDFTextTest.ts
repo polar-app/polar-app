@@ -6,6 +6,7 @@ import IPDFTextContent = PDFText.IPDFTextContent;
 import TextItem = _pdfjs.TextItem;
 import IPDFTextItem = PDFText.IPDFTextItem;
 import {assert} from 'chai';
+import IPDFTextWord = PDFTextWordMerger.IPDFTextWord;
 
 // TODO:
 //
@@ -35,58 +36,37 @@ describe('PDFText', function() {
 
             const {viewport, pageNum} = pdfTextContent;
 
-            function toTextItem(textItem: TextItem): IPDFTextItem {
+            function toPDFTextWord(textItem: TextItem): IPDFTextWord {
                 const tx = Util.transform(viewport.transform, textItem.transform);
+                const x = tx[4];
+                const y = tx[5];
                 return {
                     pageNum,
-                    tx,
-                    ...textItem
+                    x, y,
+                    width: textItem.width,
+                    height: textItem.height,
+                    str: textItem.str,
                 };
             }
 
-            const toTextIItemGroup = (item: IPDFTextItem): string => {
-                const y = item.tx[5];
+            const toTextIItemGroup = (item: IPDFTextWord): string => {
+                const y = item.y;
                 return `${y}:${item.height}`;
             }
 
-            const grouped = Arrays.groupBy(pdfTextContent.textContent.items.map(toTextItem), toTextIItemGroup);
+            const textWords = pdfTextContent.textContent.items.map(toPDFTextWord);
 
-            // TODO: we have to merge adjacent terms that overlap on the x-axis
-            // and in this example we have:
-            //
-            // Bigtable:,A Distrib,uted,Storage,System,for,Structur,ed,Data
-            //
-            // and some of these words are the same.
+            const grouped = Arrays.groupBy(textWords, toTextIItemGroup);
 
-            function doDebug<T>(value: T): T {
-                console.log(value);
-                return value;
-            }
+            // const merged = PDFTextWordMerger.doMergeWords(textItems);
 
+            // FIXME: rework this
             const lines = Object.values(grouped)
-                .map(current => current.map(item => item.str))
-                .map(current => current.join(" "));
+                .map(current => PDFTextWordMerger.doMergeWords(current).map(item => item.str).join(" "))
+                .join("\n")
 
-            console.log("lines: ", lines)
 
-            // for(const item of textContent.items) {
-            //
-            //     // https://github.com/mozilla/pdf.js/issues/5643
-            //
-            //     const tx = Util.transform(viewport.transform, item.transform);
-            //
-            //     console.log(item.str);
-            //
-            //     // TODO: after transform I think the last two params , x and y, are height.
-            //
-            //     console.log('  tx: ', tx);
-            //     console.log('  pageNum: ', pageNum);
-            //     console.log('  dir: ', item.dir);
-            //     console.log('  fontName: ', item.fontName);
-            //     console.log('  transform: ', item.transform);
-            //     console.log('  height: ', item.height);
-            //
-            // }
+            console.log("lines: \n", lines)
 
         };
 
@@ -136,22 +116,6 @@ describe('PDFText', function() {
                 "height": 14.3462,
                 "width": 17.9744528,
                 "str": "for"
-            },
-            {
-                "pageNum": 1,
-                "x": 389.55134000000004,
-                "y": 124.44000000000005,
-                "height": 14.3462,
-                "width": 66.6811376,
-                "str": "Structured"
-            },
-            {
-                "pageNum": 1,
-                "x": 459.7126400000001,
-                "y": 124.44000000000005,
-                "height": 14.3462,
-                "width": 29.481441,
-                "str": "Data"
             }
         ]);
 
@@ -159,104 +123,63 @@ describe('PDFText', function() {
 
     it('canMerge', () => {
 
-        assert.isFalse(PDFTextWordMerger.canMerge(PDFTextWordMerger.toWord(MERGE_DATA[0]), PDFTextWordMerger.toWord(MERGE_DATA[1])))
-        assert.isTrue( PDFTextWordMerger.canMerge(PDFTextWordMerger.toWord(MERGE_DATA[1]), PDFTextWordMerger.toWord(MERGE_DATA[2])))
-        assert.isFalse(PDFTextWordMerger.canMerge(PDFTextWordMerger.toWord(MERGE_DATA[2]), PDFTextWordMerger.toWord(MERGE_DATA[3])))
-        assert.isFalse(PDFTextWordMerger.canMerge(PDFTextWordMerger.toWord(MERGE_DATA[3]), PDFTextWordMerger.toWord(MERGE_DATA[4])))
+        assert.isFalse(PDFTextWordMerger.canMerge(MERGE_DATA[0], MERGE_DATA[1]));
+        assert.isTrue( PDFTextWordMerger.canMerge(MERGE_DATA[1], MERGE_DATA[2]));
+        assert.isFalse(PDFTextWordMerger.canMerge(MERGE_DATA[2], MERGE_DATA[3]));
+        assert.isFalse(PDFTextWordMerger.canMerge(MERGE_DATA[3], MERGE_DATA[4]));
 
     });
 
 });
 
-const MERGE_DATA: ReadonlyArray<IPDFTextItem> = [
+const MERGE_DATA: ReadonlyArray<IPDFTextWord> = [
     {
         pageNum: 1,
-        tx: [ 14.3462, 0, 0, -14.3462, 122.52, 124.44000000000005 ],
+        x: 122.52,
+        y: 124.44000000000005,
         str: 'Bigtable:',
-        dir: 'ltr',
         width: 55.7493332,
         height: 14.3462,
-        transform: [ 14.3462, 0, 0, 14.3462, 122.52, 667.56 ],
-        fontName: 'g_d0_f1'
     },
     {
         pageNum: 1,
-        tx: [ 14.3462, 0, 0, -14.3462, 182.7095, 124.44000000000005 ],
+        x: 182.7095,
+        y: 124.44000000000005,
         str: 'A Distrib',
-        dir: 'ltr',
         width: 56.853076599999994,
         height: 14.3462,
-        transform: [ 14.3462, 0, 0, 14.3462, 182.7095, 667.56 ],
-        fontName: 'g_d0_f1'
     },
     {
         pageNum: 1,
-        tx: [ 14.3462, 0, 0, -14.3462, 239.3227, 124.44000000000005 ],
+        x: 239.3227,
+        y: 124.44000000000005,
         str: 'uted',
-        dir: 'ltr',
         width: 26.9852022,
         height: 14.3462,
-        transform: [ 14.3462, 0, 0, 14.3462, 239.3227, 667.56 ],
-        fontName: 'g_d0_f1'
     },
     {
         pageNum: 1,
-        tx: [ 14.3462, 0, 0, -14.3462, 270.0279, 124.44000000000005 ],
+        x: 270.0279,
+        y: 124.44000000000005,
         str: 'Storage',
-        dir: 'ltr',
         width: 46.98380499999999,
         height: 14.3462,
-        transform: [ 14.3462, 0, 0, 14.3462, 270.0279, 667.56 ],
-        fontName: 'g_d0_f1'
     },
     {
         pageNum: 1,
-        tx: [ 14.3462, 0, 0, -14.3462, 320.6118, 124.44000000000005 ],
+        x: 320.6118,
+        y: 124.44000000000005,
         str: 'System',
-        dir: 'ltr',
         width: 43.885025799999994,
         height: 14.3462,
-        transform: [ 14.3462, 0, 0, 14.3462, 320.6118, 667.56 ],
-        fontName: 'g_d0_f1'
     },
     {
         pageNum: 1,
-        tx: [ 14.3462, 0, 0, -14.3462, 367.9769, 124.44000000000005 ],
+        x: 367.9769,
+        y: 124.44000000000005,
         str: 'for',
-        dir: 'ltr',
         width: 17.9744528,
         height: 14.3462,
-        transform: [ 14.3462, 0, 0, 14.3462, 367.9769, 667.56 ],
-        fontName: 'g_d0_f1'
     },
-    {
-        pageNum: 1,
-        tx: [ 14.3462, 0, 0, -14.3462, 389.55134000000004, 124.44000000000005 ],
-        str: 'Structur',
-        dir: 'ltr',
-        width: 52.4066686,
-        height: 14.3462,
-        transform: [ 14.3462, 0, 0, 14.3462, 389.55134000000004, 667.56 ],
-        fontName: 'g_d0_f1'
-    },
-    {
-        pageNum: 1,
-        tx: [ 14.3462, 0, 0, -14.3462, 441.71814000000006, 124.44000000000005 ],
-        str: 'ed',
-        dir: 'ltr',
-        width: 14.274469,
-        height: 14.3462,
-        transform: [ 14.3462, 0, 0, 14.3462, 441.71814000000006, 667.56 ],
-        fontName: 'g_d0_f1'
-    },
-    {
-        pageNum: 1,
-        tx: [ 14.3462, 0, 0, -14.3462, 459.7126400000001, 124.44000000000005 ],
-        str: 'Data',
-        dir: 'ltr',
-        width: 29.481441,
-        height: 14.3462,
-        transform: [ 14.3462, 0, 0, 14.3462, 459.7126400000001, 667.56 ],
-        fontName: 'g_d0_f1'
-    }
+
 ];
