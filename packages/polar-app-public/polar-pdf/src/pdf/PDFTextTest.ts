@@ -37,8 +37,6 @@ describe('PDFText', function() {
 
             const content = extract.map(current => current.map(word => word.str).join(" ")).join("\n");
 
-            // console.log("extract: \n", extract)
-
             console.log("pageNum: ", pageNum);
             console.log("content: \n", content)
 
@@ -59,7 +57,7 @@ describe('PDFText', function() {
         //
         //
 
-        await PDFText.getText('/Users/burton/projects/polar-app/packages/polar-bookshelf/docs/examples/pdf/bigtable.pdf', dumpTextContent, {maxPages: 2});
+        await PDFText.getText('/Users/burton/projects/polar-app/packages/polar-bookshelf/docs/examples/pdf/bigtable.pdf', dumpTextContent, {maxPages: 1});
 
     });
 
