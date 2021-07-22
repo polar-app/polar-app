@@ -177,7 +177,6 @@ export class ArrayStream<T> {
 
         this.values.forEach((value, idx) => {
             const key = toKey(value, idx);
-
             const entry = map[key] || [];
             map[key] = [...entry, value];
         })
