@@ -24,7 +24,7 @@ export class InAppLiteServer extends Component<Props, {
         const realFrontendPath = RNFS.MainBundlePath + '/static/polar';
         const dummyFrontendPath = RNFS.MainBundlePath + '/static/dummy-frontend';
 
-        this.server = new StaticServer(8050, dummyFrontendPath);
+        this.server = new StaticServer(8050, realFrontendPath);
         this.state = {
             isRunning: false,
             url: '',

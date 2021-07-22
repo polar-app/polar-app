@@ -13,15 +13,16 @@ questions = [
     "What is the curse of the pharaohs?",
     "How tall was King Tut?",
     "How tall was King Tut in feet?",
+    "How tall was King Tut in cm?",
     "How did King Tut die?",
 ]
 
 # models = ["curie", "davinci"]
 # models = ["davinci"]
-# models = ["curie"]
 models = ["davinci"]
+#models = ["davinci"]
 max_tokens=35
-search_model='ada'
+search_model='curie'
 
 def doAnswer(model, question):
 
@@ -38,7 +39,9 @@ def doAnswer(model, question):
       stop=["\n", "<|endoftext|>"],
     )
 
-    print("%-10s %-70s %s" % (model, question, response.answers))
+    # print(response)
+    #print("%-10s %-70s %s" % (model, question, response.answers))
+    print("%-70s\n   %s" % (question, response.answers[0]))
 
 for model in models:
     print(model)
