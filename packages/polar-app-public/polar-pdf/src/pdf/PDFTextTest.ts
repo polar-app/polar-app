@@ -33,12 +33,13 @@ describe('PDFText', function() {
     it("basic read", async function () {
 
         const dumpTextContent = (pdfTextContent: IPDFTextContent) => {
-            const {extract} = pdfTextContent;
+            const {extract, pageNum} = pdfTextContent;
 
             const content = extract.map(current => current.map(word => word.str).join(" ")).join("\n");
 
-            console.log("extract: \n", extract)
+            // console.log("extract: \n", extract)
 
+            console.log("pageNum: ", pageNum);
             console.log("content: \n", content)
 
         };
@@ -49,11 +50,16 @@ describe('PDFText', function() {
         //   - this might be a unicode char ?
         //
         // - we need a lang categorizer
+        //    - use nlp.js for this... but use it in another package so that this code can ALSO be used
+        //      in the front end.  Technically this code should post-process the content into a
+        //      higher level structure
         //
         // - we need to join words with hyphens into their original text... but
         //   maybe also keep the hyphenated text too.
+        //
+        //
 
-        await PDFText.getText('/Users/burton/projects/polar-app/packages/polar-bookshelf/docs/examples/pdf/bigtable.pdf', dumpTextContent, {maxPages: 1});
+        await PDFText.getText('/Users/burton/projects/polar-app/packages/polar-bookshelf/docs/examples/pdf/bigtable.pdf', dumpTextContent, {maxPages: 2});
 
     });
 
