@@ -10,6 +10,7 @@ import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 export namespace PDFText {
 
     import TextItem = _pdfjs.TextItem;
+    import IPDFTextWord = PDFTextWordMerger.IPDFTextWord;
 
     export interface IPDFTextItem extends TextItem {
         readonly pageNum: number;
@@ -18,7 +19,7 @@ export namespace PDFText {
 
     export interface IPDFTextContent {
         readonly pageNum: number;
-        readonly textContent: TextContent;
+        readonly extract: ReadonlyArray<ReadonlyArray<IPDFTextWord>>;
         readonly viewport: PageViewport;
     }
 
@@ -48,7 +49,31 @@ export namespace PDFText {
                 disableCombineTextItems: false
             });
 
-            callback({pageNum, textContent, viewport});
+            function toPDFTextWord(textItem: TextItem): IPDFTextWord {
+                const tx = Util.transform(viewport.transform, textItem.transform);
+                const x = tx[4];
+                const y = tx[5];
+                return {
+                    pageNum,
+                    x, y,
+                    width: textItem.width,
+                    height: textItem.height,
+                    str: textItem.str,
+                };
+            }
+
+            const toTextIItemGroup = (item: IPDFTextWord): string => {
+                const y = item.y;
+                return `${y}:${item.height}`;
+            }
+
+            const textWords = textContent.items.map(toPDFTextWord);
+            const grouped = Arrays.groupBy(textWords, toTextIItemGroup);
+
+            const extract = Object.values(grouped)
+                .map(current => PDFTextWordMerger.doMergeWords(current));
+
+            callback({pageNum, extract, viewport});
 
         }
 

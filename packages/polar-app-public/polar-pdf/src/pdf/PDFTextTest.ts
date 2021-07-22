@@ -33,42 +33,25 @@ describe('PDFText', function() {
     it("basic read", async function () {
 
         const dumpTextContent = (pdfTextContent: IPDFTextContent) => {
+            const {extract} = pdfTextContent;
 
-            const {viewport, pageNum} = pdfTextContent;
+            const content = extract.map(current => current.map(word => word.str).join(" ")).join("\n");
 
-            function toPDFTextWord(textItem: TextItem): IPDFTextWord {
-                const tx = Util.transform(viewport.transform, textItem.transform);
-                const x = tx[4];
-                const y = tx[5];
-                return {
-                    pageNum,
-                    x, y,
-                    width: textItem.width,
-                    height: textItem.height,
-                    str: textItem.str,
-                };
-            }
+            console.log("extract: \n", extract)
 
-            const toTextIItemGroup = (item: IPDFTextWord): string => {
-                const y = item.y;
-                return `${y}:${item.height}`;
-            }
-
-            const textWords = pdfTextContent.textContent.items.map(toPDFTextWord);
-
-            const grouped = Arrays.groupBy(textWords, toTextIItemGroup);
-
-            // const merged = PDFTextWordMerger.doMergeWords(textItems);
-
-            // FIXME: rework this
-            const lines = Object.values(grouped)
-                .map(current => PDFTextWordMerger.doMergeWords(current).map(item => item.str).join(" "))
-                .join("\n")
-
-
-            console.log("lines: \n", lines)
+            console.log("content: \n", content)
 
         };
+
+        // FIXME: still missing characters like:
+
+        // tion 6 describes some of the re nements that we made
+        //   - this might be a unicode char ?
+        //
+        // - we need a lang categorizer
+        //
+        // - we need to join words with hyphens into their original text... but
+        //   maybe also keep the hyphenated text too.
 
         await PDFText.getText('/Users/burton/projects/polar-app/packages/polar-bookshelf/docs/examples/pdf/bigtable.pdf', dumpTextContent, {maxPages: 1});
 
