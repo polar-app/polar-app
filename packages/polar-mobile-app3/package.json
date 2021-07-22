@@ -1,6 +1,6 @@
 {
-  "name": "polarreactnative",
-  "version": "0.0.1",
+  "name": "polar-cdk",
+  "version": "2.1.81",
   "private": true,
   "scripts": {
     "android": "react-native run-android",

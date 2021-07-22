@@ -10,7 +10,8 @@
       "http://localhost:9050",
       "http://127.0.0.1:9050",
       "chrome-extension://jkfdkjomocoaljglgddnmhcbolldcafd",
-      "chrome-extension://mklidoahhflhlpcpigokeckcipaibopd"
+      "chrome-extension://mklidoahhflhlpcpigokeckcipaibopd",
+      "http://192.168.*.*"
     ],
     "requestHeader": [
       "Content-Type",
