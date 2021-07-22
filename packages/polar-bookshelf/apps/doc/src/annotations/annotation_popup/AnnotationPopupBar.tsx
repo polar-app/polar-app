@@ -16,9 +16,34 @@ import {MUIDropdownCaret} from "../../../../../web/js/mui/MUIDropdownCaret";
 import {useAnnotationPopupStyles} from "./AnnotationPopup";
 import {AnnotationPopupActionEnum, useAnnotationPopup} from "./AnnotationPopupContext";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
+import {SelectedContents} from "../../../../../web/js/highlights/text/selection/SelectedContents";
+import {useDocViewerContext} from "../../renderers/DocRenderer";
+import {AnnotationTypes} from "../../../../../web/js/metadata/AnnotationTypes";
+import {Clipboards} from "../../../../../web/js/util/system/clipboard/Clipboards";
+
+export const useCopyAnnotation = () => {
+    const {annotation, selectionEvent} = useAnnotationPopup();
+    const {fileType} = useDocViewerContext();
+
+    return React.useCallback(() => {
+        if (annotation) {
+            const annotationOriginal = annotation.original;
+            if (AnnotationTypes.isTextHighlight(annotationOriginal, annotation.annotationType)) {
+                Clipboards.writeText(annotation.text || "");
+            }
+        } else if (selectionEvent) {
+            const selectedContent = SelectedContents.computeFromSelection(selectionEvent.selection, {
+                noRectTexts: fileType === "epub",
+                fileType,
+            });
+            Clipboards.writeText(selectedContent.text);
+        }
+    }, [selectionEvent, fileType, annotation]);
+};
 
 export const AnnotationPopupBar: React.FC = () => {
     const {activeAction, toggleAction, annotation, aiFlashcardStatus} = useAnnotationPopup();
+    const copyAnnotation = useCopyAnnotation();
     const theme = useTheme();
 
     const annotationPopupClasses = useAnnotationPopupStyles();
@@ -62,9 +87,13 @@ export const AnnotationPopupBar: React.FC = () => {
                     <LocalOfferIcon />
                 </ActionButton>
                 <Divider orientation="vertical" flexItem />
-                <ActionButton tooltip="Copy" action={AnnotationPopupActionEnum.COPY}>
+                <StandardIconButton
+                    tooltip="Copy"
+                    size="small"
+                    onClick={copyAnnotation}
+                >
                     <NoteIcon />
-                </ActionButton>
+                </StandardIconButton>
                 {annotation && (
                     <ActionButton tooltip="Delete (d)" action={AnnotationPopupActionEnum.DELETE}>
                         <DeleteIcon/>

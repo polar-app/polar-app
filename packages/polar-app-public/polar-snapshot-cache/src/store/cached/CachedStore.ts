@@ -1,30 +1,42 @@
 import {CacheProvider, TCacheDocTupleWithID} from "../../CacheProvider";
 import {ICacheKeyCalculator} from "../../ICacheKeyCalculator";
-import {ICollectionReference, IWhereClause, TWhereFilterOp, TWhereValue} from "../ICollectionReference";
-import {IWriteBatch} from "../IWriteBatch";
-import {IDocumentReference, IDocumentSnapshotObserver, isDocumentSnapshotObserver} from "../IDocumentReference";
-import {IGetOptions} from "../IGetOptions";
-import {TDocumentData} from "../TDocumentData";
-import {IDocumentSnapshot} from "../IDocumentSnapshot";
-import {IFirestoreError} from "../IFirestoreError";
-import {ISnapshotListenOptions} from "../ISnapshotListenOptions";
+import {CachedQueries} from "../../CachedQueries";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {ICachedDoc} from "../../ICachedDoc";
+import {Preconditions} from "polar-shared/src/Preconditions";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import {IGetOptions} from "polar-firestore-like/src/IGetOptions";
+import {ISnapshotListenOptions} from "polar-firestore-like/src/ISnapshotListenOptions";
+import {IFirestoreError} from "polar-firestore-like/src/IFirestoreError";
 import {
     IQuery,
+    IQueryClient,
     IQueryOrderBy,
     IQuerySnapshotObserver,
     isQuerySnapshotObserver,
     SnapshotUnsubscriber,
     TOrderByDirection
-} from "../IQuery";
-import {IQuerySnapshot} from "../IQuerySnapshot";
-import {CachedQueries} from "../../CachedQueries";
-import {IDocumentChange} from "../IDocumentChange";
-import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {ICachedDoc} from "../../ICachedDoc";
-import {Preconditions} from "polar-shared/src/Preconditions";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import { IFirestore } from "../IFirestore";
-import {TUpdateData} from "../TUpdateData";
+} from "polar-firestore-like/src/IQuery";
+import {
+    ICollectionReference,
+    ICollectionReferenceClient,
+    IWhereClause,
+    TWhereFilterOp,
+    TWhereValue
+} from "polar-firestore-like/src/ICollectionReference";
+import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
+import {
+    IDocumentReferenceClient,
+    IDocumentSnapshotObserver,
+    IDocumentSnapshotObserverClient,
+    isDocumentSnapshotObserver
+} from "polar-firestore-like/src/IDocumentReference";
+import {IDocumentSnapshot, IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapshot";
+import {TDocumentData} from "polar-firestore-like/src/TDocumentData";
+import {IQuerySnapshot, IQuerySnapshotClient} from "polar-firestore-like/src/IQuerySnapshot";
+import {IDocumentChange} from "polar-firestore-like/src/IDocumentChange";
+import {IWriteBatchClient} from "polar-firestore-like/src/IWriteBatch";
+import {ISnapshotMetadata} from "polar-firestore-like/src/ISnapshotMetadata";
 
 export namespace CachedStore {
 
@@ -155,36 +167,36 @@ export namespace CachedStore {
 
     }
 
-    export function create(delegate: IFirestore,
+    export function create(delegate: IFirestoreClient,
                            cacheProvider: CacheProvider,
-                           cacheKeyCalculator: ICacheKeyCalculator): IFirestore {
+                           cacheKeyCalculator: ICacheKeyCalculator): IFirestoreClient {
 
         Preconditions.assertPresent(cacheKeyCalculator, 'cacheKeyCalculator');
 
-        function collection(collectionName: string): ICollectionReference {
+        function collection(collectionName: string): ICollectionReferenceClient {
 
             const _collection = delegate.collection(collectionName);
 
-            class DocumentReference implements IDocumentReference {
-                private getter: GetHandler<IDocumentSnapshot>;
-                private snapshotter: SnapshotHandler<IDocumentSnapshot>;
+            class DocumentReference implements IDocumentReferenceClient {
+                private getter: GetHandler<IDocumentSnapshotClient>;
+                private snapshotter: SnapshotHandler<IDocumentSnapshotClient>;
 
                 constructor(public readonly id: string,
-                            public readonly parent: ICollectionReference,
-                            private readonly doc: IDocumentReference) {
+                            public readonly parent: ICollectionReferenceClient,
+                            private readonly doc: IDocumentReferenceClient) {
 
-                    this.getter = createGetHandler<IDocumentSnapshot>(() => this.readFromCache(),
-                                                                      value => this.writeToCache(value),
-                                                                      (options) => this.doc.get(options));
+                    this.getter = createGetHandler<IDocumentSnapshotClient>(() => this.readFromCache(),
+                                                                            value => this.writeToCache(value),
+                                                                            (options) => this.doc.get(options));
 
-                    this.snapshotter = createSnapshotHandler<IDocumentSnapshot>(() => this.readFromCache(),
-                                                                                value => this.writeToCache(value),
-                                                                                (options, onNext, onError, onCompletion) => this.doc.onSnapshot(options, onNext, onError, onCompletion));
+                    this.snapshotter = createSnapshotHandler<IDocumentSnapshotClient>(() => this.readFromCache(),
+                                                                                      value => this.writeToCache(value),
+                                                                                      (options, onNext, onError, onCompletion) => this.doc.onSnapshot(options, onNext, onError, onCompletion));
 
 
                 }
 
-                private async readFromCache(): Promise<IDocumentSnapshot | undefined> {
+                private async readFromCache(): Promise<IDocumentSnapshotClient | undefined> {
 
                     const cacheKey = cacheKeyCalculator.computeForDoc(this.doc.parent.id, this.doc);
 
@@ -201,7 +213,10 @@ export namespace CachedStore {
                                 fromCache: true
                             },
                             exists: cacheData.exists,
-                            data: () => cacheData.data
+                            data: () => cacheData.data,
+                            get: () => {
+                                throw new Error('not implemented')
+                            }
                         }
                     }
 
@@ -209,7 +224,7 @@ export namespace CachedStore {
 
                 }
 
-                private async writeToCache(snapshot: IDocumentSnapshot) {
+                private async writeToCache(snapshot: IDocumentSnapshotClient) {
 
                     const cacheKey = cacheKeyCalculator.computeForDoc(this.doc.parent.id, this.doc);
 
@@ -225,6 +240,10 @@ export namespace CachedStore {
 
                 }
 
+                public async create(data: TDocumentData): Promise<void> {
+                    throw new Error("not implemented");
+                }
+
                 public async delete(): Promise<void> {
 
                     this.writeToCache({
@@ -234,12 +253,15 @@ export namespace CachedStore {
                             hasPendingWrites: false,
                             fromCache: true,
                         },
-                        data: () => undefined
+                        data: () => undefined,
+                        get: () => {
+                            throw new Error("not implemented");
+                        }
                     }).catch(err => console.error("Unable to update cache: ", err));
 
                 }
 
-                public get(options?: IGetOptions): Promise<IDocumentSnapshot> {
+                public get(options?: IGetOptions): Promise<IDocumentSnapshotClient> {
                     return this.getter(options);
                 }
 
@@ -252,25 +274,28 @@ export namespace CachedStore {
                             hasPendingWrites: false,
                             fromCache: true,
                         },
-                        data: () => data
+                        data: () => data,
+                        get: () => {
+                            throw new Error("not implemented");
+                        }
                     }).catch(err => console.error("Unable to update cache: ", err));
 
                     return this.doc.set(data);
 
                 }
 
-                private onSnapshotWithObserver(observer: IDocumentSnapshotObserver): SnapshotUnsubscriber {
+                private onSnapshotWithObserver(observer: IDocumentSnapshotObserver<ISnapshotMetadata>): SnapshotUnsubscriber {
                     const onNext = observer.next || NULL_FUNCTION;
                     return this.snapshotter({}, onNext, observer.error, observer.complete);
                 }
 
                 private onSnapshotWithOptionsAndObserver(options: ISnapshotListenOptions,
-                                                         observer: IDocumentSnapshotObserver): SnapshotUnsubscriber {
+                                                         observer: IDocumentSnapshotObserver<ISnapshotMetadata>): SnapshotUnsubscriber {
                     const onNext = observer.next || NULL_FUNCTION;
                     return this.snapshotter(options, onNext, observer.error, observer.complete);
                 }
 
-                private onSnapshotWithCallbacks(onNext: (snapshot: IDocumentSnapshot) => void,
+                private onSnapshotWithCallbacks(onNext: (snapshot: IDocumentSnapshot<ISnapshotMetadata>) => void,
                                                 onError?: (error: IFirestoreError) => void,
                                                 onCompletion?: () => void): SnapshotUnsubscriber {
 
@@ -279,7 +304,7 @@ export namespace CachedStore {
                 }
 
                 private onSnapshotWithOptionsAndCallbacks(options: ISnapshotListenOptions,
-                                                          onNext: (snapshot: IDocumentSnapshot) => void,
+                                                          onNext: (snapshot: IDocumentSnapshotClient) => void,
                                                           onError?: (error: IFirestoreError) => void,
                                                           onCompletion?: () => void): SnapshotUnsubscriber {
 
@@ -287,18 +312,18 @@ export namespace CachedStore {
 
                 }
 
-                public onSnapshot(observer: IDocumentSnapshotObserver): SnapshotUnsubscriber;
-                public onSnapshot(options: ISnapshotListenOptions, observer: IDocumentSnapshotObserver): SnapshotUnsubscriber;
-                public onSnapshot(onNext: (snapshot: IDocumentSnapshot) => void,
+                public onSnapshot(observer: IDocumentSnapshotObserverClient): SnapshotUnsubscriber;
+                public onSnapshot(options: ISnapshotListenOptions, observer: IDocumentSnapshotObserver<ISnapshotMetadata>): SnapshotUnsubscriber;
+                public onSnapshot(onNext: (snapshot: IDocumentSnapshotClient) => void,
                                   onError?: (error: IFirestoreError) => void,
                                   onCompletion?: () => void): SnapshotUnsubscriber;
                 public onSnapshot(options: ISnapshotListenOptions,
-                                  onNext: (snapshot: IDocumentSnapshot) => void,
+                                  onNext: (snapshot: IDocumentSnapshot<ISnapshotMetadata>) => void,
                                   onError?: (error: IFirestoreError) => void,
                                   onCompletion?: () => void): SnapshotUnsubscriber;
 
-                public onSnapshot(arg0: IDocumentSnapshotObserver | ISnapshotListenOptions | ((snapshot: IDocumentSnapshot) => void),
-                                  arg1?: IDocumentSnapshotObserver | ((error: IFirestoreError) => void) | ((snapshot: IDocumentSnapshot) => void),
+                public onSnapshot(arg0: IDocumentSnapshotObserver<ISnapshotMetadata> | ISnapshotListenOptions | ((snapshot: IDocumentSnapshot<ISnapshotMetadata>) => void),
+                                  arg1?: IDocumentSnapshotObserver<ISnapshotMetadata> | ((error: IFirestoreError) => void) | ((snapshot: IDocumentSnapshot<ISnapshotMetadata>) => void),
                                   arg2?: (() => void) | ((error: IFirestoreError) => void),
                                   arg3?: () => void): SnapshotUnsubscriber | (() => void) {
 
@@ -331,23 +356,26 @@ export namespace CachedStore {
 
             }
 
-            function doc(documentPath?: string): IDocumentReference {
+            function doc(documentPath?: string): IDocumentReferenceClient {
 
                 const _doc = _collection.doc(documentPath);
                 return new DocumentReference(_doc.id, _collection, _doc, )
 
             }
 
-            class Query implements IQuery {
+            class Query implements IQueryClient {
 
-                private readonly getter: GetHandler<IQuerySnapshot>;
-                private readonly snapshotter: SnapshotHandler<IQuerySnapshot>;
+                private readonly getter: GetHandler<IQuerySnapshotClient>;
+                private readonly snapshotter: SnapshotHandler<IQuerySnapshotClient>;
 
                 private readonly _clauses: IWhereClause[] = [];
 
-                private _startAfter: string | undefined = undefined;
+                private _startAt: string[] | undefined = undefined;
+                private _startAfter: string[] | undefined = undefined;
 
                 private _limit: number | undefined = undefined;
+
+                private _offset: number | undefined = undefined;
 
                 private _order: IQueryOrderBy[] = [];
 
@@ -356,14 +384,14 @@ export namespace CachedStore {
                  * @param _query The underlying query delegate.
                  * @param _collection The collection we're querying
                  */
-                constructor(private readonly _query: IQuery,
-                            private readonly _collection: ICollectionReference) {
+                constructor(private readonly _query: IQuery<ISnapshotMetadata>,
+                            private readonly _collection: ICollectionReference<ISnapshotMetadata>) {
 
-                    this.getter = createGetHandler<IQuerySnapshot>(() => this.readFromCache(),
+                    this.getter = createGetHandler<IQuerySnapshot<ISnapshotMetadata>>(() => this.readFromCache(),
                                                                    value => this.writeToCache(value),
                                                                    (options) => this._query.get(options));
 
-                    this.snapshotter = createSnapshotHandler<IQuerySnapshot>(() => this.readFromCache(),
+                    this.snapshotter = createSnapshotHandler<IQuerySnapshot<ISnapshotMetadata>>(() => this.readFromCache(),
                                                                              value => this.writeToCache(value),
                                                                              (options, onNext, onError, onCompletion) => this._query.onSnapshot(options, onNext, onError, onCompletion));
 
@@ -378,7 +406,7 @@ export namespace CachedStore {
                     });
                 }
 
-                private async readFromCache(): Promise<IQuerySnapshot | undefined> {
+                private async readFromCache(): Promise<IQuerySnapshot<ISnapshotMetadata> | undefined> {
 
                     Preconditions.assertPresent(cacheKeyCalculator, 'cacheKeyCalculator');
 
@@ -403,7 +431,7 @@ export namespace CachedStore {
 
                 }
 
-                private async writeToCache(snapshot: IQuerySnapshot) {
+                private async writeToCache(snapshot: IQuerySnapshot<ISnapshotMetadata>) {
 
                     Preconditions.assertPresent(cacheKeyCalculator, 'cacheKeyCalculator');
 
@@ -421,7 +449,7 @@ export namespace CachedStore {
 
                     const docChanges = snapshot.docChanges();
 
-                    function toCacheEntry(docChange: IDocumentChange): TCacheDocTupleWithID {
+                    function toCacheEntry(docChange: IDocumentChange<ISnapshotMetadata>): TCacheDocTupleWithID {
 
                         switch (docChange.type) {
 
@@ -457,28 +485,28 @@ export namespace CachedStore {
 
                 }
 
-                public where(fieldPath: string, opStr: TWhereFilterOp, value: TWhereValue): IQuery {
+                public where(fieldPath: string, opStr: TWhereFilterOp, value: TWhereValue): IQueryClient {
                     this._clauses.push({fieldPath, opStr, value});
                     this._query.where(fieldPath, opStr, value);
                     return this;
                 }
 
-                async get(options?: IGetOptions): Promise<IQuerySnapshot> {
+                async get(options?: IGetOptions): Promise<IQuerySnapshotClient> {
                     return this.getter(options);
                 }
 
-                private onSnapshotWithObserver(observer: IQuerySnapshotObserver): SnapshotUnsubscriber {
+                private onSnapshotWithObserver(observer: IQuerySnapshotObserver<ISnapshotMetadata>): SnapshotUnsubscriber {
                     const onNext = observer.next || NULL_FUNCTION;
                     return this.snapshotter({}, onNext, observer.error, observer.complete);
                 }
 
                 private onSnapshotWithOptionsAndObserver(options: ISnapshotListenOptions,
-                                                         observer: IQuerySnapshotObserver): SnapshotUnsubscriber {
+                                                         observer: IQuerySnapshotObserver<ISnapshotMetadata>): SnapshotUnsubscriber {
                     const onNext = observer.next || NULL_FUNCTION;
                     return this.snapshotter(options, onNext, observer.error, observer.complete);
                 }
 
-                private onSnapshotWithCallbacks(onNext: (snapshot: IQuerySnapshot) => void,
+                private onSnapshotWithCallbacks(onNext: (snapshot: IQuerySnapshot<ISnapshotMetadata>) => void,
                                                 onError?: (error: IFirestoreError) => void,
                                                 onCompletion?: () => void): SnapshotUnsubscriber {
 
@@ -487,7 +515,7 @@ export namespace CachedStore {
                 }
 
                 private onSnapshotWithOptionsAndCallbacks(options: ISnapshotListenOptions,
-                                                          onNext: (snapshot: IQuerySnapshot) => void,
+                                                          onNext: (snapshot: IQuerySnapshot<ISnapshotMetadata>) => void,
                                                           onError?: (error: IFirestoreError) => void,
                                                           onCompletion?: () => void): SnapshotUnsubscriber {
 
@@ -495,22 +523,22 @@ export namespace CachedStore {
 
                 }
 
-                public onSnapshot(observer: IQuerySnapshotObserver): SnapshotUnsubscriber;
+                public onSnapshot(observer: IQuerySnapshotObserver<ISnapshotMetadata>): SnapshotUnsubscriber;
 
                 public onSnapshot(options: ISnapshotListenOptions,
-                                  observer: IQuerySnapshotObserver): SnapshotUnsubscriber;
+                                  observer: IQuerySnapshotObserver<ISnapshotMetadata>): SnapshotUnsubscriber;
 
-                public onSnapshot(onNext: (snapshot: IQuerySnapshot) => void,
+                public onSnapshot(onNext: (snapshot: IQuerySnapshot<ISnapshotMetadata>) => void,
                                   onError?: (error: IFirestoreError) => void,
                                   onCompletion?: () => void): () => void;
 
                 public onSnapshot(options: ISnapshotListenOptions,
-                                  onNext: (snapshot: IQuerySnapshot) => void,
+                                  onNext: (snapshot: IQuerySnapshot<ISnapshotMetadata>) => void,
                                   onError?: (error: IFirestoreError) => void,
                                   onCompletion?: () => void): SnapshotUnsubscriber;
 
-                public onSnapshot(arg0: IQuerySnapshotObserver | ISnapshotListenOptions | ((snapshot: IQuerySnapshot) => void),
-                                  arg1?: IQuerySnapshotObserver | ((error: IFirestoreError) => void) | ((snapshot: IQuerySnapshot) => void),
+                public onSnapshot(arg0: IQuerySnapshotObserver<ISnapshotMetadata> | ISnapshotListenOptions | ((snapshot: IQuerySnapshot<ISnapshotMetadata>) => void),
+                                  arg1?: IQuerySnapshotObserver<ISnapshotMetadata> | ((error: IFirestoreError) => void) | ((snapshot: IQuerySnapshot<ISnapshotMetadata>) => void),
                                   arg2?: (() => void) | ((error: IFirestoreError) => void),
                                   arg3?: () => void): SnapshotUnsubscriber | (() => void) {
 
@@ -541,24 +569,34 @@ export namespace CachedStore {
 
                 }
 
-                public limit(count: number): IQuery {
+                public limit(count: number): IQuery<ISnapshotMetadata> {
                     this._limit = count;
                     return this;
                 }
 
-                public orderBy(fieldPath: string, directionStr?: TOrderByDirection): IQuery {
+
+                public offset(offset: number): IQuery<ISnapshotMetadata> {
+                    throw new Error("Not implemented");
+                }
+                public orderBy(fieldPath: string, directionStr?: TOrderByDirection): IQuery<ISnapshotMetadata> {
                     this._order.push({fieldPath, directionStr});
                     return this;
                 }
 
-                public startAfter(startAfter: string | undefined): IQuery {
-                    this._startAfter = startAfter;
+                public startAt(...fieldValues: string[]): IQuery<ISnapshotMetadata> {
+                    throw new Error("Not implemented");
+                    // this._startAt = fieldValues;
+                    // return this;
+                }
+
+                public startAfter(...fieldValues: string[]): IQuery<ISnapshotMetadata> {
+                    this._startAfter = fieldValues;
                     return this;
                 }
 
             }
 
-            function where(fieldPath: string, opStr: TWhereFilterOp, value: TWhereValue): IQuery {
+            function where(fieldPath: string, opStr: TWhereFilterOp, value: TWhereValue): IQuery<ISnapshotMetadata> {
                 const _query = _collection.where(fieldPath, opStr, value);
                 const query = new Query(_query, _collection);
                 return query.where(fieldPath, opStr, value);
@@ -580,7 +618,7 @@ export namespace CachedStore {
 
             readonly type: 'delete';
 
-            readonly documentRef: IDocumentReference;
+            readonly documentRef: IDocumentReferenceClient;
         }
 
         interface BatchSet {
@@ -590,34 +628,46 @@ export namespace CachedStore {
             readonly id: string;
 
             readonly type: 'set';
-            readonly documentRef: IDocumentReference;
+            readonly documentRef: IDocumentReferenceClient;
             readonly data: TDocumentData;
         }
 
         type BatchOp = BatchDelete | BatchSet;
 
-        class Batch implements IWriteBatch {
+        class Batch implements IWriteBatchClient {
 
             private _batch = delegate.batch();
 
             private ops: BatchOp[] = [];
 
-            delete(documentRef: IDocumentReference): IWriteBatch {
+            create(documentRef: IDocumentReferenceClient, data: TDocumentData): IWriteBatchClient {
+                throw new Error("not implemented");
+            }
+
+            delete(documentRef: IDocumentReferenceClient): IWriteBatchClient {
                 this.ops.push({id: documentRef.id, type: 'delete', documentRef});
                 this._batch.delete(documentRef);
                 return this;
             }
 
-            set(documentRef: IDocumentReference, data: TDocumentData): IWriteBatch {
-                this.ops.push({id: documentRef.id, type: 'set', documentRef, data});
-                this._batch.set(documentRef, data);
-                return this;
+            // set(documentRef: IDocumentReferenceClient, data: TDocumentData): IWriteBatchClient {
+            //     this.ops.push({id: documentRef.id, type: 'set', documentRef, data});
+            //     this._batch.set(documentRef, data);
+            //     return this;
+            // }
+
+            // update(documentRef: IDocumentReferenceClient, path: string, value: any): IWriteBatchClient {
+            //     throw new Error("Not implemented");
+            //     // this._batch.update(documentRef, path, data)
+            //     // return this;
+            // }
+
+            set(a: any, b: any, c?: any): IWriteBatchClient {
+                throw new Error("not implemented");
             }
 
-            update(documentRef: IDocumentReference, path: string, value: any): IWriteBatch {
-                throw new Error("Not implemented");
-                // this._batch.update(documentRef, path, data)
-                // return this;
+            update(a: any, b: any, c?: any): IWriteBatchClient {
+                throw new Error("not implemented");
             }
 
             async commit(): Promise<void> {
@@ -672,7 +722,7 @@ export namespace CachedStore {
 
         }
 
-        function batch(): IWriteBatch {
+        function batch(): IWriteBatchClient {
             return new Batch();
         }
 

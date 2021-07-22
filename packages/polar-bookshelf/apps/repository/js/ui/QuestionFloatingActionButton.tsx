@@ -222,7 +222,7 @@ export function QuestionFloatingActionButton() {
 
                             <Divider/>
 
-                            <MenuItems.SendVideoFeedback/>
+                            {/*<MenuItems.SendVideoFeedback/>*/}
 
                             <MenuItems.RequestFeatures/>
 

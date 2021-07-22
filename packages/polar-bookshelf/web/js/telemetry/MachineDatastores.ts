@@ -1,21 +1,12 @@
 import {
-    PersistenceLayerManager,
     PersistenceLayerType
 } from '../datastore/PersistenceLayerManager';
 import {Firestore} from '../firebase/Firestore';
 import {
     ISODateTimeString,
-    ISODateTimeStrings
 } from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {Executors} from '../util/Executors';
-import {Logger} from 'polar-shared/src/logger/Logger';
-import firebase from 'firebase/app'
 import {MachineID, MachineIDs} from "polar-shared/src/util/MachineIDs";
-import {AppRuntime} from "polar-shared/src/util/AppRuntime";
-import DocumentSnapshot = firebase.firestore.DocumentSnapshot;
-import {IDocumentSnapshot} from "polar-snapshot-cache/src/store/IDocumentSnapshot";
-
-const log = Logger.create();
+import {IDocumentSnapshot} from "polar-firestore-like/src/IDocumentSnapshot";
 
 /**
  * Computes and stores stats for each machine's datastore.
@@ -46,7 +37,7 @@ export class MachineDatastores {
 
     }
 
-    private static toDoc(snapshot: IDocumentSnapshot) {
+    private static toDoc(snapshot: IDocumentSnapshot<any>) {
 
         if (! snapshot.exists) {
             return;

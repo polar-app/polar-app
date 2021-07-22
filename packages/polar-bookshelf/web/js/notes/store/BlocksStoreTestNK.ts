@@ -1,5 +1,5 @@
 import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
-import {BlockContent, BlockIDStr, BlocksStore, IBlockContent} from "./BlocksStore";
+import {BlockContent, BlocksStore, Interstitial} from "./BlocksStore";
 import {assertJSON} from "../../test/Assertions";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
@@ -15,11 +15,13 @@ import {Asserts} from "polar-shared/src/Asserts";
 import assertPresent = Asserts.assertPresent;
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
-import {IBlock} from "./IBlock";
 import {PositionalArrays} from "./PositionalArrays";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {HTMLToBlocks, IBlockContentStructure} from "../HTMLToBlocks";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
+import {WriteController, WriteFileProgress} from "../../datastore/Datastore";
+import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
 
 function assertTextBlock(content: BlockContent): asserts content is MarkdownContent | NameContent {
 
@@ -36,24 +38,24 @@ function assertMarkdownBlock(block: Block): asserts block is Block<MarkdownConte
 }
 
 function assertBlocksEqual(block1: IBlock, block2: IBlock) {
-    assert.equal(block1.id, block2.id, `${block1.id} & ${block2.id} Should have the same id`);
-    assert.equal(block1.nspace, block2.nspace, `${block1.id} & ${block2.id} Should have the same namespace`);
-    assert.equal(block1.uid, block2.uid, `${block1.id} & ${block2.id} Should have the same uid`);
-    assert.equal(block1.parent, block2.parent, `${block1.id} & ${block2.id} Should have the same parent`);
-    assert.equal(block1.created, block2.created, `${block1.id} & ${block2.id} Should have the same creation date`);
-    assert.equal(block1.updated, block2.updated, `${block1.id} & ${block2.id} Should have the same update date`);
-    assert.deepEqual(block1.content, block2.content, `${block1.id} & ${block2.id} Should have the same content`);
-    assert.deepEqual(block1.parents, block2.parents, `${block1.id} & ${block2.id} Should have the same parents path`);
+    assert.equal(block1.id, block2.id, `${block1.id} should have the correct id`);
+    assert.equal(block1.nspace, block2.nspace, `${block1.id} should have the correct namespace`);
+    assert.equal(block1.uid, block2.uid, `${block1.id}  should have the correct uid`);
+    assert.equal(block1.parent, block2.parent, `${block1.id} should have the correct parent`);
+    assert.equal(block1.created, block2.created, `${block1.id} should have the correct creation date`);
+    assert.equal(block1.updated, block2.updated, `${block1.id} should have the correct update date`);
+    assert.deepEqual(block1.content, block2.content, `${block1.id} should have the correct content`);
+    assert.deepEqual(block1.parents, block2.parents, `${block1.id}  should have the correct parents path`);
     assert.deepEqual(
         PositionalArrays.toArray(block1.items),
         PositionalArrays.toArray(block2.items),
-        `${block1.id} & ${block2.id} Should have the same items`,
+        `${block1.id} should have the correct items`,
     );
 }
 
 function assertBlockParents(store: BlocksStore, parents: ReadonlyArray<BlockIDStr>) {
     return (blockID: BlockIDStr) =>  {
-        const block = store.getBlock(blockID);
+        const block = store.getBlockForMutation(blockID);
         assertPresent(block);
         assert.equal(block.parent, parents[parents.length - 1], `Block ${blockID} doesn't have the correct parent`);
         assert.deepEqual(block.parents, parents, `Block ${blockID} doesn't have the correct parents`);
@@ -71,7 +73,7 @@ function assertBlocksStoreSnapshotsEqual(
     assert.deepEqual(
         toIds([...snapshot1]),
         toIds([...snapshot2]),
-        "Should have the same blocks"
+        "Snapshots should have the same blocks"
     );
 
     for (let i = 0; i < snapshot1.length; i += 1) {
@@ -121,7 +123,7 @@ type BlockTree = ReadonlyArray<{id: BlockIDStr,  children: BlockTree}>;
 
 const assertBlockTree = (store: BlocksStore, blockTree: BlockTree, parent?: Block) => {
     for (const item of blockTree) {
-        const block = store.getBlock(item.id);
+        const block = store.getBlockForMutation(item.id);
         assertPresent(block);
         if (parent) {
             assert.equal(block.parent, parent.id, `Block ${block.id} should have the correct parent`);
@@ -160,7 +162,6 @@ describe('BlocksStore', function() {
             const store = new BlocksStore('1234', UndoQueues2.create());
 
             assert.isTrue(isObservable(store));
-            assert.isTrue(isObservableProp(store, 'root'));
             assert.isTrue(isObservableProp(store, 'active'));
             assert.isTrue(isObservableProp(store, 'index'));
             assert.isTrue(isObservableProp(store, 'indexByName'));
@@ -169,6 +170,7 @@ describe('BlocksStore', function() {
             assert.isTrue(isObservableProp(store, 'selected'));
             assert.isTrue(isObservableProp(store, 'dropTarget'));
             assert.isTrue(isObservableProp(store, 'dropSource'));
+            assert.isTrue(isObservableProp(store, 'interstitials'));
 
         });
 
@@ -464,8 +466,8 @@ describe('BlocksStore', function() {
                     "_parent": "117",
                     "_parents": ["102", "105", "106", "117"],
                     "_root": "102",
-                    "_created": "2012-03-02T11:38:49.321Z",
                     "_uid": "123",
+                    "_created": "2012-03-02T11:38:49.321Z",
                     "_updated": "2012-03-02T11:38:49.321Z",
                     "_content": {
                         "_type": 'markdown',
@@ -475,14 +477,71 @@ describe('BlocksStore', function() {
                     "_items": {},
                     "_mutation": 0,
                 },
+                "113": {
+                    "_id": '113',
+                    "_uid": "123",
+                    "_parents": [],
+                    "_nspace": 'ns101',
+                    "_root": '113',
+                    "_created": "2012-03-02T11:38:49.321Z",
+                    "_updated": "2012-03-02T11:38:49.321Z",
+                    "_content": {
+                        "_type": 'name',
+                        "_data": 'Image parent',
+                    },
+                    "_items":  PositionalArrays.create([
+                        '114image',
+                        '115',
+                    ]),
+                    "_mutation": 0,
+                },
+                "114image": {
+                    "_id": '114image',
+                    "_nspace": 'ns101',
+                    "_parent": '113',
+                    "_parents": ['113'],
+                    "_root": '113',
+                    "_uid": "123",
+                    "_created": "2012-03-02T11:38:49.321Z",
+                    "_updated": "2012-03-02T11:38:49.321Z",
+                    "_content": {
+                        "_type": 'image',
+                        "_src": 'https://google.com',
+                        "_naturalHeight": 100,
+                        "_naturalWidth": 100,
+                        "_width": 100,
+                        "_height": 100,
+                    },
+                    "_items": {}, 
+                    "_mutation": 0,
+                },
+                "115": {
+                    "_id": '115',
+                    "_nspace": 'ns101',
+                    "_uid": "123",
+                    "_parent": '113',
+                    "_parents": ['113'],
+                    "_root": '113',
+                    "_created": "2012-03-02T11:38:49.321Z",
+                    "_updated": "2012-03-02T11:38:49.321Z",
+                    "_content": {
+                        "_type": 'markdown',
+                        "_data": '',
+                        "_links": [],
+                    },
+                    "_items": {}, 
+                    "_mutation": 0,
+                }
             },
             "_indexByName": {
-                "Canada": "109",
-                "Germany": "107",
-                "Russia": "108",
-                "Winston Churchill": "112",
-                "World War II": "102"
+                "canada": "109",
+                "germany": "107",
+                "russia": "108",
+                "winston churchill": "112",
+                "world war ii": "102",
+                "image parent": "113",
             },
+            "_activeBlocksIndex": {},
             "_reverse": {
                 "index": {
                     "102": [
@@ -500,6 +559,7 @@ describe('BlocksStore', function() {
                     ],
                 }
             },
+            "_interstitials": {},
             "_selected": {},
             "uid": "1234",
             "undoQueue": {
@@ -512,7 +572,7 @@ describe('BlocksStore', function() {
     it('should not have corrupted data', () => {
         const store = createStore();
         const rootBlocks = Object.keys(store.index)
-            .map(id => store.getBlock(id)!)
+            .map(id => store.getBlockForMutation(id)!)
             .filter(block => !block.parent);
 
         rootBlocks.map(block => block.id).forEach(assertBlockParents(store, []));
@@ -539,16 +599,132 @@ describe('BlocksStore', function() {
 
     });
 
-    describe("indent/unindentBlock", () => {
+    describe("interstitials", () => {
+        let controller: WriteController;
+        let progressTracker: ProgressTrackerManager<WriteFileProgress>;
+
+        beforeEach(() => {
+            controller = {
+                pause: () => false,
+                resume: () => false,
+                cancel: () => false,
+            };
+            progressTracker = new ProgressTrackerManager();
+        });
+
+        describe("addInterstitial", () => {
+            it("should be able to add interstitials properly", () => {
+                const store = createStore();
+
+                store.addInterstitial('102', {
+                    type: 'image',
+                    id: 'someid',
+                    position: 'top',
+                    blobURL: 'url',
+                    controller,
+                    progressTracker,
+                });
+
+                assertJSON(store.interstitials, {
+                    '102': [{
+                        type: 'image',
+                        id: 'someid',
+                        position: 'top',
+                        blobURL: 'url',
+                        controller,
+                        progressTracker,
+                    }]
+                });
+            });
+
+            it("should store new interstitials that belong to the same block first", () => {
+                const store = createStore();
+
+                store.addInterstitial('102', {
+                    type: 'image',
+                    id: 'id1',
+                    position: 'top',
+                    blobURL: 'url1',
+                    controller,
+                    progressTracker,
+                });
+                store.addInterstitial('102', {
+                    type: 'image',
+                    id: 'id2',
+                    position: 'top',
+                    blobURL: 'url2',
+                    controller,
+                    progressTracker,
+                });
+
+                assertJSON(store.interstitials,{
+                    '102': [{
+                        type: 'image',
+                        id: 'id2',
+                        position: 'top',
+                        blobURL: 'url2',
+                        controller,
+                        progressTracker,
+                    }, {
+                        type: 'image',
+                        id: 'id1',
+                        position: 'top',
+                        blobURL: 'url1',
+                        controller,
+                        progressTracker,
+                    }]
+                });
+            });
+        });
+
+        describe("removeInterstitial", () => {
+            it("should delete interstitials that belong to a specific block properly", () => {
+                const store = createStore();
+
+                store.addInterstitial('102', {
+                    type: 'image',
+                    id: 'id1',
+                    position: 'top',
+                    blobURL: 'url1',
+                    controller,
+                    progressTracker,
+                });
+
+                store.removeInterstitial('102', 'id1');
+
+                assertJSON(store.interstitials, {});
+            });
+        });
+
+        describe("getInterstitials", () => {
+            it("should get all the interstitials for a specific block", () => {
+                const store = createStore();
+                const interstitial: Interstitial = {
+                    type: 'image',
+                    id: 'id1',
+                    position: 'top',
+                    blobURL: 'url1',
+                    controller,
+                    progressTracker,
+                };
+
+                store.addInterstitial('102', interstitial);
+
+                assertJSON(store.getInterstitials('102'), [interstitial]);
+            });
+        });
+    });
+
+    describe("indent/unindent Block", () => {
+        const root = '102';
         let store: BlocksStore;
 
         beforeEach(() => {
             store = createStore();
-            store.setRoot('102');
         });
 
         it("second child block", async function() {
-            assertJSON(store.getBlock('102')?.toJSON(),{
+            assertJSON(store.getBlockForMutation('102')?.toJSON(),{
                 "content": {
                     "data": "World War II",
                     "type": "name",
@@ -572,9 +748,9 @@ describe('BlocksStore', function() {
 
             TestingTime.forward(1000);
 
-            const indentResult = store.indentBlock('104')
+            const indentResult = store.indentBlock(root, '104')
 
-            assertJSON(store.getBlock('102')?.toJSON(), {
+            assertJSON(store.getBlockForMutation('102')?.toJSON(), {
                 "content": {
                     "data": "World War II",
                     "type": "name"
@@ -593,7 +769,7 @@ describe('BlocksStore', function() {
                 "updated": "2012-03-02T11:38:50.321Z"
             });
 
-            assertJSON(store.getBlock(indentResult[0].value!)?.toJSON(), {
+            assertJSON(store.getBlockForMutation(indentResult[0].value!)?.toJSON(), {
                 "content": {
                     "data": "[Lasted](https://www.example.com) from 1939 to 1945",
                     "type": "markdown",
@@ -622,8 +798,8 @@ describe('BlocksStore', function() {
         });
 
         it("indent node and try to indent it again to make sure it fails properly", async function() {
-            const indent0 = store.indentBlock('104');
-            const indent1 = store.indentBlock('104');
+            const indent0 = store.indentBlock(root, '104');
+            const indent1 = store.indentBlock(root, '104');
 
             assert.equal(indent1.length, 1);
 
@@ -632,7 +808,7 @@ describe('BlocksStore', function() {
         });
 
         it("indent then unindent and make sure we do a full restore to the original", () => {
-            assertJSON(store.getBlock('102')?.toJSON(),{
+            assertJSON(store.getBlockForMutation('102')?.toJSON(),{
                 "content": {
                     "data": "World War II",
                     "type": "name"
@@ -654,7 +830,7 @@ describe('BlocksStore', function() {
 
             assertJSON(store.expanded, {});
 
-            assertJSON(store.getBlock('104')?.toJSON(), {
+            assertJSON(store.getBlockForMutation('104')?.toJSON(), {
                 "content": {
                     "data": "Axis Powers: Germany, Italy, Japan",
                     "type": "markdown",
@@ -674,9 +850,9 @@ describe('BlocksStore', function() {
                 "updated": "2012-03-02T11:38:49.321Z"
             });
 
-            store.indentBlock('104')
+            store.indentBlock(root, '104')
 
-            assertJSON(store.getBlock('104')?.toJSON(), {
+            assertJSON(store.getBlockForMutation('104')?.toJSON(), {
                 "content": {
                     "data": "Axis Powers: Germany, Italy, Japan",
                     "type": "markdown",
@@ -696,11 +872,11 @@ describe('BlocksStore', function() {
                 "updated": "2012-03-02T11:38:49.321Z"
             });
 
-            assert.equal(store.getBlock('104')!.parent, '103');
+            assert.equal(store.getBlockForMutation('104')!.parent, '103');
 
-            store.unIndentBlock('104');
+            store.unIndentBlock(root, '104');
 
-            assertJSON(store.getBlock('104')?.toJSON(),{
+            assertJSON(store.getBlockForMutation('104')?.toJSON(),{
                 "content": {
                     "data": "Axis Powers: Germany, Italy, Japan",
                     "type": "markdown",
@@ -720,7 +896,7 @@ describe('BlocksStore', function() {
                 "updated": "2012-03-02T11:38:49.321Z"
             });
 
-            assertJSON(store.getBlock('102')?.toJSON(), {
+            assertJSON(store.getBlockForMutation('102')?.toJSON(), {
                 "content": {
                     "data": "World War II",
                     "type": "name"
@@ -743,9 +919,7 @@ describe('BlocksStore', function() {
         });
 
         it("indent on a root node", () => {
-            store.setRoot('108');
-
-            const indentResult = store.indentBlock('108')
+            const indentResult = store.indentBlock('108', '108')
 
             assert.equal(indentResult[0].error!, 'no-parent');
 
@@ -754,7 +928,7 @@ describe('BlocksStore', function() {
         it("indent the first node and fail properly", () => {
             // this should not work because there should be no previous sibling
             // to make as the new parent.
-            const indentResult = store.indentBlock('103')
+            const indentResult = store.indentBlock(root, '103')
 
             assert.equal(indentResult[0].error!, 'no-sibling');
 
@@ -767,16 +941,17 @@ describe('BlocksStore', function() {
         });
 
         it("should work with multiple blocks selected and update the parents of nested children", () => {
-            store.computeLinearTree('102').forEach(block => store.expanded[block] = true);
-            store.setSelectionRange('103', '117');
-            store.indentBlock('105')
+            store = createStore();
+            store.computeLinearTree(root).forEach(block => store.expanded[block] = true);
+            store.setSelectionRange(root, '103', '117');
+            store.indentBlock(root, '105');
 
             const blockTree: BlockTree = [
                 {
                     id: '102',
                     children: [
                         {
-                            id: '103', 
+                            id: '103',
                             children: [
                                 {id: '104', children: [{id: '116', children: []}]},
                                 {
@@ -797,7 +972,6 @@ describe('BlocksStore', function() {
                 }
             ];
 
-
             assertBlockTree(store, blockTree);
         });
 
@@ -806,8 +980,8 @@ describe('BlocksStore', function() {
             store.computeLinearTree(root, {includeInitial: true})
                 .forEach(block => store.expanded[block] = true);
             // With a selection
-            store.setSelectionRange('118', '118', root);
-            store.unIndentBlock('118', root);
+            store.setSelectionRange(root, '118', '118');
+            store.unIndentBlock(root, '118');
 
             const blockTree: BlockTree = [
                 {
@@ -825,21 +999,21 @@ describe('BlocksStore', function() {
             assertBlockTree(store, blockTree);
 
             // Unindenting again shouldn't be allowed
-            store.unIndentBlock('118', root);
-            store.unIndentBlock('118', root);
-            store.unIndentBlock('118', root);
-            store.unIndentBlock('118', root);
+            store.unIndentBlock(root, '118');
+            store.unIndentBlock(root, '118');
+            store.unIndentBlock(root, '118');
+            store.unIndentBlock(root, '118');
 
             assertBlockTree(store, blockTree);
 
             // without a selection
             store.clearSelected('indent/unindent test');
-            store.indentBlock('118', root);
+            store.indentBlock(root, '118');
 
-            store.unIndentBlock('118', root);
-            store.unIndentBlock('118', root);
-            store.unIndentBlock('118', root);
-            store.unIndentBlock('118', root);
+            store.unIndentBlock(root, '118');
+            store.unIndentBlock(root, '118');
+            store.unIndentBlock(root, '118');
+            store.unIndentBlock(root, '118');
             assertBlockTree(store, blockTree);
         });
 
@@ -847,7 +1021,7 @@ describe('BlocksStore', function() {
             const root = '105';
             store.computeLinearTree(root, {includeInitial: true})
                 .forEach(block => store.expanded[block] = true);
-            store.setSelectionRange('105', '118', root);
+            store.setSelectionRange(root, '105', '118');
             store.unIndentBlock(root, root)
             store.unIndentBlock(root, root)
 
@@ -882,7 +1056,7 @@ describe('BlocksStore', function() {
         });
 
         it("should not allow unindenting root blocks", () => {
-            const indentResult = store.unIndentBlock('102');
+            const indentResult = store.unIndentBlock('102', '102');
 
             assert.equal(indentResult[0].error!, 'no-parent');
         });
@@ -892,7 +1066,7 @@ describe('BlocksStore', function() {
 
         const store = createStore();
 
-        assertJSON(Object.keys(store.index), [
+        assert.deepEqual(new Set(Object.keys(store.index)), new Set([
             "102",
             "103",
             "104",
@@ -907,14 +1081,18 @@ describe('BlocksStore', function() {
             "116",
             "117",
             "118",
-        ]);
+            "113",
+            "114image",
+            "115",
+        ]), "The store index should have the correct blocks");
 
         assertJSON(Object.keys(store.indexByName), [
-            "World War II",
-            "Russia",
-            "Canada",
-            "Germany",
-            "Winston Churchill"
+            "world war ii",
+            "russia",
+            "canada",
+            "germany",
+            "winston churchill",
+            "image parent",
         ]);
 
         assertJSON(Arrays.first(Object.values(store.index))?.toJSON(), {
@@ -938,31 +1116,33 @@ describe('BlocksStore', function() {
         });
 
     });
-    
+
     describe("navPrev", () => {
+        const root = '102';
         let store: BlocksStore;
 
         beforeEach(() => {
             store = createStore();
-            store.setRoot('102');
         });
 
         it("Should set the previous block as active properly (with all blocks expanded)", () => {
-            store.computeLinearTree('102').forEach(block => store.expanded[block] = true);
+            store.computeLinearTree(root, {includeInitial: true})
+                .forEach(block => store.expanded[block] = true);
             store.setActive('116');
 
-            store.navPrev('start', {shiftKey: false});
+            store.navPrev(root, 'start', {shiftKey: false});
             const {active} = store;
             assertPresent(active);
             assert.equal(active.id, '104');
         });
 
         it("Should skip over the children of a collapsed blocks", () => {
-            store.computeLinearTree('102').forEach(block => store.expanded[block] = true);
+            store.computeLinearTree(root, {includeInitial: true})
+                .forEach(block => store.expanded[block] = true);
             store.expanded['104'] = false;
             store.setActive('105');
 
-            store.navPrev('end', {shiftKey: false});
+            store.navPrev(root, 'end', {shiftKey: false});
             const {active} = store;
             assertPresent(active);
             assert.equal(active.id, '104');
@@ -971,12 +1151,12 @@ describe('BlocksStore', function() {
         it("Should set the position of the cursor properly", () => {
             store.setActive('104');
 
-            store.navPrev('end', {shiftKey: false});
+            store.navPrev(root, 'end', {shiftKey: false, autoExpandRoot: true});
             assertPresent(store.active);
             assert.equal(store.active.pos, 'end');
             assert.equal(store.active.id, '103');
 
-            store.navPrev('start', {shiftKey: false});
+            store.navPrev(root, 'start', {shiftKey: false, autoExpandRoot: true});
             assertPresent(store.active);
             assert.equal(store.active.pos, 'start');
             assert.equal(store.active.id, '102');
@@ -985,68 +1165,73 @@ describe('BlocksStore', function() {
         it("Should constrain the cursor movement within a specified root block", () => {
             const customRoot = '105';
             store.setActive('106');
-            store.navPrev('end', {shiftKey: false}, customRoot);
-            store.navPrev('end', {shiftKey: false}, customRoot);
-            store.navPrev('end', {shiftKey: false}, customRoot);
-            store.navPrev('end', {shiftKey: false}, customRoot);
+            store.navPrev(customRoot, 'end', {shiftKey: false, autoExpandRoot: true});
+            store.navPrev(customRoot, 'end', {shiftKey: false, autoExpandRoot: true});
+            store.navPrev(customRoot, 'end', {shiftKey: false, autoExpandRoot: true});
+            store.navPrev(customRoot, 'end', {shiftKey: false, autoExpandRoot: true});
             assertPresent(store.active);
             assert.equal(store.active.id, '105');
         });
     });
-    
+
     describe("navNext", () => {
+        const root = '102';
         let store: BlocksStore;
 
         beforeEach(() => {
             store = createStore();
-            store.setRoot('102');
         });
 
         it("Should set the next block as active properly (with all blocks expanded)", () => {
-            store.computeLinearTree('102').forEach(block => store.expanded[block] = true);
+            store.computeLinearTree(root, {includeInitial: true})
+                .forEach(block => store.expanded[block] = true);
             store.setActive('116');
 
-            store.navNext('start', {shiftKey: false});
+            store.navNext(root, 'start', {shiftKey: false});
             const {active} = store;
             assertPresent(active);
             assert.equal(active.id, '105');
         });
 
         it("Should skip over the children of a collapsed blocks", () => {
-            store.computeLinearTree('102').forEach(block => store.expanded[block] = true);
+            store.computeLinearTree(root, {includeInitial: true})
+                .forEach(block => store.expanded[block] = true);
             store.expanded['104'] = false;
             store.setActive('104');
 
-            store.navNext('end', {shiftKey: false});
+            store.navNext(root, 'end', {shiftKey: false});
             const {active} = store;
             assertPresent(active);
             assert.equal(active.id, '105');
         });
 
         it("Should set the position of the cursor properly", () => {
-            store.computeLinearTree('102').forEach(block => store.expanded[block] = false);
+            store.computeLinearTree(root, {includeInitial: true})
+                .forEach(block => store.expanded[block] = true);
+            store.expanded['104'] = false;
             store.setActive('104');
 
-            store.navNext('end', {shiftKey: false});
+            store.navNext(root, 'end', {shiftKey: false});
             assertPresent(store.active);
             assert.equal(store.active.pos, 'end');
             assert.equal(store.active.id, '105');
 
             store.expanded['105'] = true;
-            store.navNext('start', {shiftKey: false});
+            store.navNext(root, 'start', {shiftKey: false});
             assertPresent(store.active);
             assert.equal(store.active.pos, 'start');
             assert.equal(store.active.id, '106');
         });
 
         it("Should constrain the cursor movement within a specified root block", () => {
-            store.computeLinearTree('102').forEach(block => store.expanded[block] = true);
+            store.computeLinearTree(root, {includeInitial: true})
+                .forEach(block => store.expanded[block] = true);
             const customRoot = '105';
             store.setActive('106');
-            store.navNext('end', {shiftKey: false}, customRoot);
-            store.navNext('end', {shiftKey: false}, customRoot);
-            store.navNext('end', {shiftKey: false}, customRoot);
-            store.navNext('end', {shiftKey: false}, customRoot);
+            store.navNext(customRoot, 'end', {shiftKey: false});
+            store.navNext(customRoot, 'end', {shiftKey: false});
+            store.navNext(customRoot, 'end', {shiftKey: false});
+            store.navNext(customRoot, 'end', {shiftKey: false});
             assertPresent(store.active);
             assert.equal(store.active.id, '118');
         });
@@ -1076,8 +1261,9 @@ describe('BlocksStore', function() {
         it("mergeable", () => {
 
             const store = createStore()
+            const root = '102';
 
-            assertJSON(store.canMergePrev('104'), {
+            assertJSON(store.canMergePrev(root, '104'), {
                 "source": "104",
                 "target": "103"
             });
@@ -1087,8 +1273,9 @@ describe('BlocksStore', function() {
         it("unmergeable", () => {
 
             const store = createStore()
+            const root = '102';
 
-            assert.isUndefined(store.canMergePrev('103'));
+            assert.isUndefined(store.canMergePrev(root, '103'));
 
         });
 
@@ -1098,39 +1285,64 @@ describe('BlocksStore', function() {
             assert.isUndefined(store.canMergePrev('104', '104'));
             assert.isUndefined(store.canMergePrev('106', '106'));
         });
+
+        it("should allow merging a block with its previous expansion sibling", () => {
+            const store = createStore();
+
+            store.expand('104');
+            const blockMerge = store.canMergePrev('102', '105');
+
+            assert.deepEqual(blockMerge, { source: '105', target: '116' });
+        });
+
+        it("should allow merging a first child with its parent", () => {
+            const store = createStore();
+
+            store.expand('104');
+            const blockMerge = store.canMergePrev('102', '116');
+
+            assert.deepEqual(blockMerge, { source: '116', target: '104' });
+        });
+
+        it("should allow merging 2 blocks of different types of the second one is empty", () => {
+            const store = createStore();
+
+            const blockMerge = store.canMergePrev('113', '115');
+            assert.deepEqual(blockMerge, { source: '115', target: '114image' });
+        });
     });
 
     describe("setSelectionRange", () => {
+        const root = '102';
         let store: BlocksStore;
 
         beforeEach(() => {
             store = createStore();
-            store.setRoot('102');
             store.computeLinearTree('102').forEach(store.expand.bind(store));
         });
 
         it("should handle basic selection ranges (siblings only)", () => {
-            store.setSelectionRange('103', '104');
+            store.setSelectionRange(root, '103', '104');
 
             assert.deepEqual(store.selected, arrayStream(['103', '104']).toMap2(c => c, () => true));
         });
 
         it("should handle complex structures (siblings with children)", () => {
-            store.setSelectionRange('103', '106');
+            store.setSelectionRange(root, '103', '106');
 
             assert.deepEqual(store.selected, arrayStream(['103', '104', '105']).toMap2(c => c, () => true));
         });
 
         it("should handle bottom to top selections", () => {
-            store.setSelectionRange('106', '104');
+            store.setSelectionRange(root, '106', '104');
 
             assert.deepEqual(store.selected, arrayStream(['104', '105']).toMap2(c => c, () => true));
         });
 
         it("should have the correct selected items when setting the selection multiple times with a complex structure", () => {
-            store.setSelectionRange('102', '104');
-            store.setSelectionRange('102', '117');
-            store.setSelectionRange('102', '118');
+            store.setSelectionRange(root, '102', '104');
+            store.setSelectionRange(root, '102', '117');
+            store.setSelectionRange(root, '102', '118');
 
             assert.deepEqual(store.selected, arrayStream(['102']).toMap2(c => c, () => true));
         });
@@ -1138,47 +1350,40 @@ describe('BlocksStore', function() {
         it("should work with a custom root", () => {
             // we're collapsing the parent to make sure it is being ignored when doing the selection
             store.collapse('105');
-            store.setSelectionRange('117', '118', '106');
+            store.setSelectionRange('106', '117', '118');
 
-            
+
             assert.deepEqual(store.selected, arrayStream(['117']).toMap2(c => c, () => true));
         });
     });
 
     describe("canMergeNext", () => {
         let store: BlocksStore;
+        const root = '102';
 
         beforeEach(() => {
             store = createStore();
-            store.setRoot('102');
         });
 
         it("should allow merging blocks in the same level", () => {
-            const store = createStore();
-
-            assertJSON(store.canMergeNext('103'), {
+            assertJSON(store.canMergeNext(root, '103'), {
                 "source": "104",
                 "target": "103"
             });
         });
 
         it("should allow merging a parent with its first child", () => {
-            assertJSON(store.canMergeNext('102'), {
+            assertJSON(store.canMergeNext(root, '102'), {
                 "source": "103",
                 "target": "102"
             });
         });
 
         it("shouldn't allow merging blocks that have no siblings after them", () => {
-            const store = createStore();
-
-            assert.isUndefined(store.canMergeNext('110'));
+            assert.isUndefined(store.canMergeNext(root, '110'));
         });
 
         it("should allow merging a block with its parent's next sibling no matter what depth the current block is at", () => {
-            const store = createStore();
-            store.setRoot('102');
-
             /*
                 111
                     level1Block
@@ -1193,7 +1398,7 @@ describe('BlocksStore', function() {
             const level2Block = store.createNewBlock(level1Block.id, {asChild: true});
             assertPresent(level2Block);
 
-            assertJSON(store.canMergeNext(level2Block.id), {
+            assertJSON(store.canMergeNext(root, level2Block.id), {
                 "source": parentNextSibling.id,
                 "target": level2Block.id
             });
@@ -1202,8 +1407,8 @@ describe('BlocksStore', function() {
         it("shouldn't allow merging with a block that isn't under a custom root", () => {
             const store = createStore();
 
-            assert.isUndefined(store.canMergeNext('116', '104'));
-            assert.isUndefined(store.canMergeNext('118', '105'));
+            assert.isUndefined(store.canMergeNext('104', '116'));
+            assert.isUndefined(store.canMergeNext('105', '118'));
         });
     });
 
@@ -1211,23 +1416,23 @@ describe('BlocksStore', function() {
         it("should not be able to move a root block", () => {
             const store = createStore();
             const id = '102';
-            const blockBefore = store.getBlock(id)!.toJSON();
+            const blockBefore = store.getBlockForMutation(id)!.toJSON();
             store.moveBlocks([id], -1);
-            const blockAfter = store.getBlock(id)!.toJSON();
+            const blockAfter = store.getBlockForMutation(id)!.toJSON();
             assertBlocksEqual(blockBefore, blockAfter);
         });
 
         it("should not be able to move a block that's already the first child in its parent's", () => {
             const store = createStore();
             const id = '103';
-            const block = store.getBlock(id);
+            const block = store.getBlockForMutation(id);
             assertPresent(block);
             assertPresent(block.parent);
-            let parent = store.getBlock(block.parent);
+            let parent = store.getBlockForMutation(block.parent);
             assertPresent(parent);
             assert.deepEqual(parent.itemsAsArray, ['103', '104', '105']);
             store.moveBlocks([id], -5);
-            parent = store.getBlock(block.parent);
+            parent = store.getBlockForMutation(block.parent);
             assertPresent(parent);
             assert.deepEqual(parent.itemsAsArray, ['103', '104', '105']);
         });
@@ -1235,18 +1440,18 @@ describe('BlocksStore', function() {
         it("should be able to move a block upwards/downwards", () => {
             const store = createStore();
             const id = '105';
-            const block = store.getBlock(id);
+            const block = store.getBlockForMutation(id);
             assertPresent(block);
             const parentID = block.parent;
             assertPresent(parentID);
-            let parent = store.getBlock(parentID);
+            let parent = store.getBlockForMutation(parentID);
             assertPresent(parent);
             assert.deepEqual(parent.itemsAsArray, ['103', '104', '105']);
 
             // Upwards
             createUndoRunner(store, [parent.id], () => {
                 store.moveBlocks([id], -5);
-                parent = store.getBlock(parentID);
+                parent = store.getBlockForMutation(parentID);
                 assertPresent(parent);
                 assert.deepEqual(parent.itemsAsArray, ['105', '103', '104']);
             });
@@ -1255,7 +1460,7 @@ describe('BlocksStore', function() {
             // Downwards
             createUndoRunner(store, [parent.id], () => {
                 store.moveBlocks([id], 1);
-                parent = store.getBlock(parentID);
+                parent = store.getBlockForMutation(parentID);
                 assertPresent(parent);
                 assert.deepEqual(parent.itemsAsArray, ['103', '105', '104']);
             });
@@ -1264,13 +1469,13 @@ describe('BlocksStore', function() {
         it("should be able to move multiple blocks properly (upwards)", () => {
             const store = createStore();
             const id = '102';
-            const parent = store.getBlock(id);
+            const parent = store.getBlockForMutation(id);
             assertPresent(parent);
             assert.deepEqual(parent.itemsAsArray, ['103', '104', '105']);
 
             createUndoRunner(store, [parent.id], () => {
                 store.moveBlocks(['105', '104'], -5);
-                const parent = store.getBlock(id);
+                const parent = store.getBlockForMutation(id);
                 assertPresent(parent);
                 assert.deepEqual(parent.itemsAsArray, ['104', '105', '103']);
             });
@@ -1280,20 +1485,20 @@ describe('BlocksStore', function() {
         it("should be able to move multiple blocks properly (downwards)", () => {
             const store = createStore();
             const id = '102';
-            const parent = store.getBlock(id);
+            const parent = store.getBlockForMutation(id);
             assertPresent(parent);
             assert.deepEqual(parent.itemsAsArray, ['103', '104', '105']);
 
             createUndoRunner(store, [parent.id], () => {
                 store.moveBlocks(['103', '105'], 5);
-                const parent = store.getBlock(id);
+                const parent = store.getBlockForMutation(id);
                 assertPresent(parent);
                 assert.deepEqual(parent.itemsAsArray, ['104', '103', '105']);
             });
 
             createUndoRunner(store, [parent.id], () => {
                 store.moveBlocks(['105', '104'], -1);
-                const parent = store.getBlock(id);
+                const parent = store.getBlockForMutation(id);
                 assertPresent(parent);
                 assert.deepEqual(parent.itemsAsArray, ['104', '105', '103']);
             });
@@ -1307,10 +1512,11 @@ describe('BlocksStore', function() {
             const store = createStore()
 
             const createdBlock = store.createNewBlock('102');
+            const root = '102';
 
             assertPresent(createdBlock);
 
-            const block = store.getBlock('102')!;
+            const block = store.getBlockForMutation('102')!;
 
             assertJSON(block.items, {
                 "0": createdBlock?.id,
@@ -1319,24 +1525,24 @@ describe('BlocksStore', function() {
                 "3": "105"
             });
 
-            const newBlock = store.getBlock(createdBlock.id)!;
+            const newBlock = store.getBlockForMutation(createdBlock.id)!;
 
             assertTextBlock(newBlock!.content);
 
             assert.equal(newBlock.content.data, '');
 
-            assert.ok(store.canMergePrev(newBlock.id));
+            assert.ok(store.canMergePrev(root, newBlock.id));
             assert.ok(store.canMergeWithDelete(newBlock, block));
 
             assert.equal(store.mergeBlocks(block.id, newBlock.id), 'block-merged-with-delete');
 
-            assertJSON(store.getBlock('102')!.items, {
+            assertJSON(store.getBlockForMutation('102')!.items, {
                 "1": "103",
                 "2": "104",
                 "3": "105"
             });
 
-            assert.isUndefined(store.getBlock(createdBlock.id));
+            assert.isUndefined(store.getBlockForMutation(createdBlock.id));
 
         });
 
@@ -1348,14 +1554,14 @@ describe('BlocksStore', function() {
 
             TestingTime.forward(1000);
 
-            assert.equal(store.getBlock('103')?.mutation, 0);
-            assert.equal(store.getBlock('104')?.mutation, 0);
+            assert.equal(store.getBlockForMutation('103')?.mutation, 0);
+            assert.equal(store.getBlockForMutation('104')?.mutation, 0);
 
             store.mergeBlocks('103', '104');
 
-            assert.isUndefined(store.getBlock('104'));
+            assert.isUndefined(store.getBlockForMutation('104'));
 
-            assertJSON(store.getBlock('103')?.toJSON(), {
+            assertJSON(store.getBlockForMutation('103')?.toJSON(), {
                 "content": {
                     "data": "[Lasted](https://www.example.com) from 1939 to 1945Axis Powers: Germany, Italy, Japan",
                     "type": "markdown",
@@ -1438,7 +1644,7 @@ describe('BlocksStore', function() {
 
         it('should update the link index properly when merging blocks that have links', () => {
             const store = createStore()
-            store.setRoot('102');
+            const root = '102';
             const linkBlock1 = store.createNewBlock('102');
             const linkBlock2 = store.createNewBlock('102');
             assertPresent(linkBlock1);
@@ -1456,7 +1662,7 @@ describe('BlocksStore', function() {
 
             const createdBlock2 = store.createNewBlock(createdBlock1.id);
             assertPresent(createdBlock2);
-            store.indentBlock(createdBlock2.id);
+            store.indentBlock(root, createdBlock2.id);
             store.setBlockContent(createdBlock2.id, new MarkdownContent({
                 type: 'markdown',
                 data: 'new [[block]]',
@@ -1467,8 +1673,8 @@ describe('BlocksStore', function() {
 
             store.mergeBlocks(createdBlock1.id, createdBlock2.id);
 
-            const block1 = store.getBlock(createdBlock1.id);
-            const block2 = store.getBlock(createdBlock2.id);
+            const block1 = store.getBlockForMutation(createdBlock1.id);
+            const block2 = store.getBlockForMutation(createdBlock2.id);
 
             assertPresent(block1);
             assertMarkdownBlock(block1);
@@ -1505,7 +1711,7 @@ describe('BlocksStore', function() {
 
                 const store = createStore();
 
-                const block = store.getBlock('102')
+                const block = store.getBlockForMutation('102')
 
                 assertPresent(block);
 
@@ -1597,7 +1803,7 @@ describe('BlocksStore', function() {
 
             store.deleteBlocks(['104']);
 
-            const block = store.getBlock('102');
+            const block = store.getBlockForMutation('102');
 
             assertJSON(block?.toJSON(), {
                 "content": {
@@ -1629,7 +1835,7 @@ describe('BlocksStore', function() {
 
             store.deleteBlocks(['103', '104', '105']);
 
-            const block = store.getBlock('102');
+            const block = store.getBlockForMutation('102');
 
             assertJSON(block?.toJSON(),{
                 "content": {
@@ -1748,7 +1954,7 @@ describe('BlocksStore', function() {
 
                 const createdBlock = blocksStore.createNewBlock('102');
 
-                assertJSON(blocksStore.getBlock('102')?.toJSON(), {
+                assertJSON(blocksStore.getBlockForMutation('102')?.toJSON(), {
                     "content": {
                         "data": "World War II",
                         "type": "name",
@@ -1783,7 +1989,7 @@ describe('BlocksStore', function() {
 
                 const createdBlock = blocksStore.createNewBlock('104', {split: {prefix: 'Axis ', suffix: 'Powers: Germany, Italy, Japan'}});
 
-                assertJSON(blocksStore.getBlock('104')?.toJSON(), {
+                assertJSON(blocksStore.getBlockForMutation('104')?.toJSON(), {
                     "content": {
                         "data": "Axis ",
                         "type": "markdown",
@@ -1803,7 +2009,7 @@ describe('BlocksStore', function() {
                     "updated": "2012-03-02T11:38:49.321Z"
                 });
 
-                assertJSON(blocksStore.getBlock(createdBlock!.id)?.toJSON(), {
+                assertJSON(blocksStore.getBlockForMutation(createdBlock!.id)?.toJSON(), {
                     "content": {
                         "data": "Powers: Germany, Italy, Japan",
                         "type": "markdown",
@@ -1831,7 +2037,7 @@ describe('BlocksStore', function() {
 
             const store = createStore();
 
-            let block = store.getBlock('102');
+            let block = store.getBlockForMutation('102');
 
             TestingTime.forward(60 * 1000);
 
@@ -1847,7 +2053,7 @@ describe('BlocksStore', function() {
 
             assertPresent(createdBlock);
 
-            block = store.getBlock('102');
+            block = store.getBlockForMutation('102');
 
             assertJSON(block!.items, {
                 "0": createdBlock.id,
@@ -1856,7 +2062,7 @@ describe('BlocksStore', function() {
                 "3": "105"
             });
 
-            const newBlock = store.getBlock(createdBlock.id)!;
+            const newBlock = store.getBlockForMutation(createdBlock.id)!;
 
             assert.equal(newBlock.created, now);
             assert.equal(newBlock.updated, now);
@@ -1872,16 +2078,16 @@ describe('BlocksStore', function() {
 
             const store = createStore();
 
-            let block = store.getBlock('102');
+            let block = store.getBlockForMutation('102');
 
             store.deleteBlocks(['103', '104', '105']);
 
-            block = store.getBlock('102');
+            block = store.getBlockForMutation('102');
             assertJSON(block!.items, {});
 
             const createdBlock = store.createNewBlock('102');
             assertPresent(createdBlock);
-            block = store.getBlock('102');
+            block = store.getBlockForMutation('102');
 
             assertJSON(block!.items, {
                 "-1": createdBlock.id
@@ -1900,7 +2106,7 @@ describe('BlocksStore', function() {
 
                 assert.equal(createdBlock.parent, '102');
 
-                const block = store.getBlock('102');
+                const block = store.getBlockForMutation('102');
 
                 assertJSON(block!.items, {
                     "1": "103",
@@ -1919,7 +2125,7 @@ describe('BlocksStore', function() {
 
                 assert.equal(createdBlock.parent, '105');
 
-                const block = store.getBlock('105');
+                const block = store.getBlockForMutation('105');
 
                 assertJSON(block!.items, {
                     "0": createdBlock?.id,
@@ -1943,7 +2149,7 @@ describe('BlocksStore', function() {
 
                 const id = '105'
 
-                const originalBlock = store.getBlock(id);
+                const originalBlock = store.getBlockForMutation(id);
 
                 assertPresent(originalBlock);
 
@@ -1952,10 +2158,10 @@ describe('BlocksStore', function() {
                 const createdBlock = store.createNewBlock(id, {split: {prefix: '', suffix: originalBlock!.content.data}});
                 assertPresent(createdBlock);
 
-                const newBlock = store.getBlock(createdBlock.id);
+                const newBlock = store.getBlockForMutation(createdBlock.id);
                 assertPresent(newBlock);
                 assertPresent(newBlock.parent);
-                const parentBlock = store.getBlock(newBlock.parent);
+                const parentBlock = store.getBlockForMutation(newBlock.parent);
                 assertPresent(parentBlock);
 
                 assertJSON(parentBlock.items, {
@@ -1973,7 +2179,7 @@ describe('BlocksStore', function() {
 
             function doSecondSplit(id: BlockIDStr) {
 
-                const originalBlock = store.getBlock(id);
+                const originalBlock = store.getBlockForMutation(id);
 
                 assertPresent(originalBlock);
                 assertMarkdownBlock(originalBlock);
@@ -1982,10 +2188,10 @@ describe('BlocksStore', function() {
 
                 assertPresent(createdBlock);
 
-                const newBlock = store.getBlock(createdBlock.id);
+                const newBlock = store.getBlockForMutation(createdBlock.id);
                 assertPresent(newBlock);
                 assertPresent(newBlock.parent);
-                const parentBlock = store.getBlock(newBlock.parent);
+                const parentBlock = store.getBlockForMutation(newBlock.parent);
                 assertPresent(parentBlock);
                 assertPresent(createdBlock);
 
@@ -2009,7 +2215,7 @@ describe('BlocksStore', function() {
         it('should properly split a block with multiple levels of nested children', () => {
             const store = createStore();
             const id = '105';
-            const originalBlock = store.getBlock(id);
+            const originalBlock = store.getBlockForMutation(id);
 
             assertPresent(originalBlock);
             assertMarkdownBlock(originalBlock);
@@ -2018,10 +2224,10 @@ describe('BlocksStore', function() {
 
             assertPresent(createdBlock);
 
-            const newBlock = store.getBlock(createdBlock.id);
+            const newBlock = store.getBlockForMutation(createdBlock.id);
             assertPresent(newBlock);
             assertPresent(newBlock.parent);
-            const parentBlock = store.getBlock(newBlock.parent);
+            const parentBlock = store.getBlockForMutation(newBlock.parent);
             assertPresent(parentBlock);
             assertPresent(createdBlock);
 
@@ -2035,7 +2241,38 @@ describe('BlocksStore', function() {
             newBlock.itemsAsArray.forEach(assertBlockParents(store, [...newBlock.parents, newBlock.id]));
         });
 
-        it("should create a new child in a block with children (when suffix is empty)", () => {
+        it("should create a new child in a block with children (when suffix is empty and the block is expanded)", () => {
+            const store = createStore();
+
+            const id = '105';
+            store.expand(id);
+
+            let originalBlock = store.getBlockForMutation(id);
+
+            assertPresent(originalBlock);
+
+            assertTextBlock(originalBlock.content);
+
+            const createdBlock = store.createNewBlock(id, {split: {prefix: originalBlock.content.data, suffix: ''}});
+            assertPresent(createdBlock);
+
+            originalBlock = store.getBlockForMutation(id);
+
+            assertPresent(originalBlock);
+
+            assert.deepEqual(originalBlock.itemsAsArray, [
+                createdBlock.id,
+                '106'
+            ]);
+
+            const newBlock = store.getBlockForMutation(createdBlock.id);
+            assertPresent(newBlock);
+
+            assert.equal(newBlock.parent, id);
+            assert.deepEqual(newBlock.parents, [...originalBlock.parents, id]);
+        });
+
+        it("should create a new sibling in a block with children if the block is collapsed (even when suffix is empty)", () => {
             const store = createStore();
 
             const id = '105';
@@ -2048,29 +2285,33 @@ describe('BlocksStore', function() {
 
             const createdBlock = store.createNewBlock(id, {split: {prefix: originalBlock.content.data, suffix: ''}});
             assertPresent(createdBlock);
+            assertPresent(originalBlock.parent);
 
-            originalBlock = store.getBlock(id);
+            const parent = store.getBlock(originalBlock.parent);
 
-            assertPresent(originalBlock);
+            assertPresent(parent);
 
-            assert.deepEqual(originalBlock.itemsAsArray, [
+            assert.deepEqual(parent.itemsAsArray, [
+                '103',
+                '104',
+                '105',
                 createdBlock.id,
-                '106'
             ]);
 
             const newBlock = store.getBlock(createdBlock.id);
             assertPresent(newBlock);
 
-            assert.equal(newBlock.parent, id);
-            assert.deepEqual(newBlock.parents, [...originalBlock.parents, id]);
+            assert.equal(newBlock.parent, originalBlock.parent);
+            assert.deepEqual(newBlock.parents, [...originalBlock.parents]);
         });
+
 
         it("should create a new child in the refed block (when the asChild option is true)", () => {
             const store = createStore();
 
             const id = '105';
 
-            let originalBlock = store.getBlock(id);
+            let originalBlock = store.getBlockForMutation(id);
 
             assertPresent(originalBlock);
 
@@ -2079,7 +2320,7 @@ describe('BlocksStore', function() {
             const createdBlock = store.createNewBlock(id, {asChild: true});
             assertPresent(createdBlock);
 
-            originalBlock = store.getBlock(id);
+            originalBlock = store.getBlockForMutation(id);
 
             assertPresent(originalBlock);
 
@@ -2088,11 +2329,43 @@ describe('BlocksStore', function() {
                 '106'
             ]);
 
-            const newBlock = store.getBlock(createdBlock.id);
+            const newBlock = store.getBlockForMutation(createdBlock.id);
             assertPresent(newBlock);
 
             assert.equal(newBlock.parent, id);
             assert.deepEqual(newBlock.parents, [...originalBlock.parents, id]);
+        });
+
+        it("should expand the parent if the new block is being added as a child", () => {
+            const store = createStore();
+            const id = '105';
+            // collapse the parent node to make sure it gets expanded when the child is created
+            store.collapse(id);
+            const createdBlock = store.createNewBlock(id, {asChild: true});
+            assertPresent(createdBlock);
+            assert.equal(store.isExpanded(id), true);
+        });
+
+        it("should copy the expand state from the old block to the new one if the new block is inheriting the items", () => {
+            const store = createStore();
+            const id = '105';
+            const oldBlock = store.getBlockForMutation(id);
+            assertPresent(oldBlock);
+            assertMarkdownBlock(oldBlock);
+            // collapse the parent node to make sure it gets expanded when the child is created
+            store.collapse(id);
+            const createdBlock = store.createNewBlock(id, {split: {prefix: '', suffix: oldBlock.content.data}});
+            assertPresent(createdBlock);
+            assert.equal(store.isExpanded(createdBlock.id), false);
+
+            const block1 = store.getBlockForMutation(createdBlock.id);
+            assertPresent(block1);
+            assertMarkdownBlock(block1);
+
+            store.expand(block1.id);
+            const createdBlock2 = store.createNewBlock(block1.id, {split: {prefix: '', suffix: block1.content.data}});
+            assertPresent(createdBlock2);
+            assert.equal(store.isExpanded(createdBlock2.id), true);
         });
     });
 
@@ -2102,14 +2375,14 @@ describe('BlocksStore', function() {
 
             const output = store.createBlockContentStructure(['102']);
 
-            const block102 = store.getBlock('102');
-            const block103 = store.getBlock('103');
-            const block104 = store.getBlock('104');
-            const block116 = store.getBlock('116');
-            const block105 = store.getBlock('105');
-            const block106 = store.getBlock('106');
-            const block117 = store.getBlock('117');
-            const block118 = store.getBlock('118');
+            const block102 = store.getBlockForMutation('102');
+            const block103 = store.getBlockForMutation('103');
+            const block104 = store.getBlockForMutation('104');
+            const block116 = store.getBlockForMutation('116');
+            const block105 = store.getBlockForMutation('105');
+            const block106 = store.getBlockForMutation('106');
+            const block117 = store.getBlockForMutation('117');
+            const block118 = store.getBlockForMutation('118');
 
             assertPresent(block102);
             assertPresent(block103);
@@ -2154,11 +2427,11 @@ describe('BlocksStore', function() {
                                 }
                             ]
                         },
-                        
+
                     ]
                 },
             ];
-            
+
             assert.deepEqual(output, expected);
         });
     });
@@ -2191,13 +2464,12 @@ describe('BlocksStore', function() {
             const store = createStore();
             const id = '112';
 
-            store.setRoot(id);
             store.setActive(id);
             const blockIDs = Array.from({ length: 12 }).map(() => Hashcodes.createRandomID());
 
             createUndoRunner(store, ['112', ...blockIDs], () => {
                 store.insertFromBlockContentStructure(blockStructure, {blockIDs});
-                const block102 = store.getBlock(id);
+                const block102 = store.getBlockForMutation(id);
                 assertPresent(block102);
                 const content = [
                     "item1",
@@ -2212,26 +2484,26 @@ describe('BlocksStore', function() {
                 ];
                 const items = block102.itemsAsArray;
                 items.forEach((blockID, i) => {
-                    const block = store.getBlock(blockID);
+                    const block = store.getBlockForMutation(blockID);
                     assertPresent(block);
                     assertMarkdownBlock(block);
                     assert.equal(block.content.data, content[i]);
                 });
 
-                const secondBlock = store.getBlock(items[1]);
+                const secondBlock = store.getBlockForMutation(items[1]);
                 assertPresent(secondBlock);
 
-                const level1Child1 = store.getBlock(secondBlock.itemsAsArray[0]);
+                const level1Child1 = store.getBlockForMutation(secondBlock.itemsAsArray[0]);
                 assertPresent(level1Child1);
                 assertMarkdownBlock(level1Child1);
                 assert.equal(level1Child1.content.data, "hmm");
 
-                const level2Child2 = store.getBlock(secondBlock.itemsAsArray[1]);
+                const level2Child2 = store.getBlockForMutation(secondBlock.itemsAsArray[1]);
                 assertPresent(level2Child2);
                 assertMarkdownBlock(level2Child2);
                 assert.equal(level2Child2.content.data, "world");
 
-                const level3Child = store.getBlock(level2Child2.itemsAsArray[0]);
+                const level3Child = store.getBlockForMutation(level2Child2.itemsAsArray[0]);
                 assertPresent(level3Child);
                 assertMarkdownBlock(level3Child);
                 assert.equal(level3Child.content.data, "potato");

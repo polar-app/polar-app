@@ -10,6 +10,7 @@ import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Preconditions} from "polar-shared/src/Preconditions";
+import {Firestore} from "../../../../web/js/firebase/Firestore";
 
 export type AuthStatus = 'needs-auth';
 
@@ -19,8 +20,8 @@ function handleAuthResult(authResult: firebase.auth.UserCredential, isNewUser: b
 
         Analytics.event2('auth:handleAuthResult', {isNewUser, redirectURL});
 
-        document.location.href = redirectURL;
-
+        Firestore.terminateAndRedirect(redirectURL)
+            .catch(err => console.error(err));
     }
 
     if (isNewUser) {

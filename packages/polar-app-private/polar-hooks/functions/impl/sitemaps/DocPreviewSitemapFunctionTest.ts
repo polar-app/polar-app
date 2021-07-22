@@ -1,4 +1,4 @@
-import {DocPreviews} from "polar-firebase/src/firebase/om/DocPreviews";
+import {DocPreviewCollection} from "polar-firebase/src/firebase/om/DocPreviewCollection";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 
 describe('DocPreviewSitemapFunction', function() {
@@ -7,7 +7,7 @@ describe('DocPreviewSitemapFunction', function() {
 
         FirebaseAdmin.app();
 
-        const docPreviews = await DocPreviews.list({size: 50000});
+        const docPreviews = await DocPreviewCollection.list({size: 50000});
 
     });
 

@@ -211,6 +211,26 @@ export namespace Strings {
 
     }
 
+    export function replaceUsingMarkers(str: string, replacement: string, marker0: string, marker1: string) {
+
+        const start = str.indexOf(marker0);
+        const end = str.indexOf(marker1);
+
+        if (start === -1) {
+            throw new Error("Could not find first marker: " + marker0);
+        }
+
+        if (end === -1) {
+            throw new Error("Could not find second marker: " + marker1);
+        }
+
+        const prefix = str.substring(0, start);
+        const suffix = str.substring(end + marker1.length, str.length);
+
+        return prefix + replacement + suffix;
+
+    }
+
 }
 
 /**

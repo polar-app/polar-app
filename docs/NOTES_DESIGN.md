@@ -276,7 +276,7 @@ Firebase security rules during read/write.
 
 # Effective Permissions
 
-Page level permissions override namespace level permissions.
+Page level permissions override namespace level permissions.  
 
 So if a user is rw at the namespace level, but ro at the page level, the
 effective permissions are ro.
@@ -371,6 +371,64 @@ custom permissions.
 
 This is a minimal and proposed schema. There might be other fields in the future
 like a photoURL, etc.
+
+## High level list of tables and what they store:
+
+Note that these tables are NOT specific to the block system necessarily because
+I want to try to unify doc_meta and doc_info and make these root page block
+types. 
+
+```text
+
+profile: contains profile data for a user.  
+org: The metadata for an org including the id, name, description. 
+
+org_user: All the users and roles for the org. This stores the users and their
+          roles in the org. We have owner, admin, user.  A user is just a regular user
+          that can create blocks and share with the org. An admin as all the permissions
+          of a user and can add new users to the org, create groups, and change
+          permissions for users in those groups. An owner has all the permissions of an
+          admin but can also change billing for the org and delete the org.
+  
+org_group: All the groups associated with an org, their id, name, description.
+nspace:  The declaration of a namespace, it's id, name, and description 
+
+# FIXME: these aren't actually required because we can write
+# block_permission_user records and store the 'owner' permission for the nspace
+ 
+nspace_user: The namespaces that a user owns. Each has a unique id, uid, and a nspace_id
+nspace_org: The namespaces that an org owns.  Each has a unique id, uid,   
+
+block_permission: 
+
+    Permission structure configured by an 'admin' for a page or nspace and
+    specifies who has access to the page. This controls the high level
+    permissions so that when the admin wants to enumerate who has access and to
+    restore those permissions the admin opens a dialog to change the
+    permissions. Other user can see the data here but can not make changes. 
+    There are two types of permissions stored here, page and nspace.  The ID is
+    computed using either the nspace ID or the block ID.
+
+block_permission_user: 
+    
+    The effective permissions for a user and which pages and namespaces they
+    have access to. This table serves two main purposes. 1.  The user reads this
+    table so they can knows which blocks they can access. 2.  The Firestore
+    rules system uses this table to assert permissions so that a user can't
+    read/write data which they're not allowed to access.
+                            
+
+```
+
+FIXME we're going yto migrate to a uid of __public__ which is a special uid and
+has special rules for public access of content.
+
+There are essentially two types of public access:
+
+- unauthenticated users - Users browsing public pages on the web including googlebot and other robots.
+
+- authenticated users - These are users that the user doesn't explicitly give permissions too other than 'public' but authenticated users 
+                        have the ability to comment + write (not just read). 
 
 ## org
 
@@ -487,7 +545,7 @@ nspace_user {
 
 ## block_permission
 
-Holds the permission that the user has set for nodes... 
+Holds the permission that the user has set for notes... 
 
 ```
 block_permission:
@@ -536,16 +594,16 @@ block_permission_log
 
 ```
 
-## notes_permission_user
+## block_permission_user
 
 Each user can get their own permissions to with they were granted by reading
-from ```notes_permission_user``` collection for the user.
+from ```block_permission_user``` collection for the user.
 
 Note that this we apply the permission based on namespaces and blocks here and 
 the minimum permission applies. 
 
 ```text
-notes_permission_user
+block_permission_user
     uid: UIDStr;
     blocks_ro: ReadonlyArray<NodeIDStr>
     blocks_rw: ReadonlyArray<NodeIDStr>
@@ -576,6 +634,7 @@ block_permission_web
 
 ## user_nspace 
 
+FIXME: this is nspace_user
 FIXME: do we need this?
 
 /**

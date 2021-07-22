@@ -25,7 +25,7 @@ export const useCutCopyHandler = () => {
 
     const onCut: React.ClipboardEventHandler<HTMLElement> = React.useCallback((e) => {
         if (copy(e)) {
-            blocksStore.doDelete(blocksStore.selectedIDs());
+            blocksStore.deleteBlocks(blocksStore.selectedIDs());
         }
     }, [copy, blocksStore]);
 

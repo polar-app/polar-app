@@ -1,6 +1,6 @@
 import {Profiles} from "./Profiles";
 import {Optional} from "polar-shared/src/util/ts/Optional";
-import {Profile, ProfileIDStr} from "polar-firebase/src/firebase/om/Profiles";
+import {IProfile, ProfileIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 
 /**
  * Provides a way to join against profiles so that we can resolve the live profile
@@ -27,7 +27,7 @@ export class ProfileJoins {
 
     public static async join<T extends ProfileIDRecord>(values: ReadonlyArray<T>): Promise<ReadonlyArray<ProfileRecord<T>>> {
 
-        const resolvedProfiles: {[id: string]: Profile} = {};
+        const resolvedProfiles: {[id: string]: IProfile} = {};
 
         const promises = values.map(value => {
 
@@ -86,7 +86,7 @@ export interface ProfileRecord<T extends ProfileIDRecord> {
     /**
      * The profile that we resolved against.
      */
-    readonly profile?: Profile;
+    readonly profile?: IProfile;
 
     readonly profileID?: ProfileIDStr;
 

@@ -523,7 +523,13 @@ export class Files {
 
             }
 
-            Files.createReadStream(fileRef.path).pipe(fs.createWriteStream(path));
+            const stream = Files.createReadStream(fileRef.path).pipe(fs.createWriteStream(path))
+
+            // we must wait until this stream is finished or reject on error
+            return await new Promise((resolve, reject) => {
+                stream.on("finish", resolve);
+                stream.on("error", reject);
+            });
 
         } else {
 
@@ -748,7 +754,7 @@ export interface FileHandle {
 
 export class FileHandles {
 
-    public static isFileHandle(obj: any): boolean {
+    public static isFileHandle(obj: any): obj is FileHandle {
         return typeof obj === 'object' && isPresent(obj.path);
     }
 

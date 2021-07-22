@@ -4,7 +4,7 @@ import {ICacheKeyCalculator} from "./ICacheKeyCalculator";
 import { CacheKeyCalculators } from "./CacheKeyCalculators";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {CachedStore} from "./store/cached/CachedStore";
-import { IFirestore } from "./store/IFirestore";
+import {IFirestore, IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 
 /**
  * The general design here is that we have a snapshot interface that mimics
@@ -44,14 +44,14 @@ export namespace StoreCaches {
     }
 
     export interface IStoreBuilder {
-        readonly build: (delegate: IFirestore) => Promise<IFirestore>;
+        readonly build: (delegate: IFirestoreClient) => Promise<IFirestoreClient>;
     }
 
     export function create(): IStoreBuilder {
 
         let cacheKeyCalculator: ICacheKeyCalculator | undefined;
 
-        async function build(delegate: IFirestore) {
+        async function build(delegate: IFirestoreClient) {
 
             Preconditions.assertPresent(delegate, 'delegate');
 

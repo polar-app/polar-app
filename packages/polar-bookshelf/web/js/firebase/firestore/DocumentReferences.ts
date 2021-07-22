@@ -1,4 +1,4 @@
-import {IDocumentReference} from "polar-snapshot-cache/src/store/IDocumentReference";
+import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
 
 export class DocumentReferences {
 
@@ -6,7 +6,7 @@ export class DocumentReferences {
      * Smarter get semantics with a preference but we fail over to the server
      * if the cache isn't available.
      */
-    public static async get(ref: IDocumentReference, opts: GetOptions = {})   {
+    public static async get(ref: IDocumentReference<unknown>, opts: GetOptions = {})   {
 
         const source = opts.source || 'default';
 
@@ -22,7 +22,7 @@ export class DocumentReferences {
 
     }
 
-    private static async getWithOrder(ref: IDocumentReference,
+    private static async getWithOrder(ref: IDocumentReference<unknown>,
                                       primarySource: DirectSource,
                                       secondarySource: DirectSource) {
 

@@ -1,7 +1,7 @@
 import {makeObservable, observable, computed} from "mobx"
-import {DataURLStr, IImageContent} from "./IImageContent";
-import {IBaseBlockContent} from "./IBaseBlockContent";
-import {IBlockContent} from "../store/BlocksStore";
+import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
+import {DataURLStr, IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
+import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 
 export class ImageContent implements IImageContent, IBaseBlockContent {
 

@@ -6,19 +6,28 @@ import {createContextMenu} from "../../../apps/repository/js/doc_repo/MUIContext
 import {IDocViewerContextMenuOrigin} from "../../../apps/doc/src/DocViewerMenu";
 import {BlockContextMenuItems} from "./BlockContextMenuItems";
 import useTheme from "@material-ui/core/styles/useTheme";
-import { BlockExpandToggleButton } from "./BlockExpandToggleButton";
-import { BlockIDStr, useBlocksStore } from "./store/BlocksStore";
-import { observer,  } from "mobx-react-lite"
+import {BlockExpandToggleButton} from "./BlockExpandToggleButton";
+import {observer} from "mobx-react-lite"
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
-import { BlockDragIndicator } from "./BlockDragIndicator";
+import {BlockDragIndicator} from "./BlockDragIndicator";
 import {useUndoQueue} from "../undo/UndoQueueProvider2";
+import {useBlocksTreeStore} from "./BlocksTree";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {Divider} from "@material-ui/core";
+import {useDragDropHandler} from "./DropHandler";
+import {Interstitial} from "./Interstitial";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
         selected: {
             background: theme.palette.primary.main
+        },
+        titleBlock: {
+            fontWeight: 'bold',
+            fontSize: 24,
+            letterSpacing: 0.5,
         },
     }),
 );
@@ -26,7 +35,9 @@ const useStyles = makeStyles((theme) =>
 interface IProps {
     readonly parent: BlockIDStr | undefined;
     readonly id: BlockIDStr;
-    readonly root: BlockIDStr;
+    readonly withHeader?: boolean;
+    readonly noExpand?: boolean;
+    readonly noBullet?: boolean;
 }
 
 export interface IBlockContextMenuOrigin {
@@ -37,32 +48,33 @@ export const [BlockContextMenu, useBlockContextMenu]
     = createContextMenu<IDocViewerContextMenuOrigin>(BlockContextMenuItems, {name: 'notes'});
 
 export const BlockInner = observer((props: IProps) => {
+    const blocksTreeStore = useBlocksTreeStore();
 
-    const {id, root} = props;
+    const {id, parent, withHeader = false, noExpand = false, noBullet = false} = props;
+    const {root} = blocksTreeStore;
+    const isRoot = id === root;
+    const dragDropBinds = useDragDropHandler({ id, isRoot });
 
-    const blocksStore = useBlocksStore();
     const classes = useStyles();
     const undoQueue = useUndoQueue();
 
     const theme = useTheme();
     const contextMenuHandlers = useBlockContextMenu();
 
-    const expanded = blocksStore.isExpanded(id);
-    const selected = blocksStore.isSelected(id);
-    const block = blocksStore.getBlock(id);
-
-    const divRef = React.useRef<HTMLDivElement | null>(null);
-    const dragActive = React.useRef<boolean>(false);
+    const expanded = blocksTreeStore.isExpanded(id);
+    const selected = blocksTreeStore.isSelected(id);
+    const interstitials = blocksTreeStore.getInterstitials(id);
+    const block = blocksTreeStore.getBlock(id);
 
     const handleMouseDown = React.useCallback((event: React.MouseEvent) => {
 
         if (event.shiftKey) {
 
-            if (blocksStore.active !== undefined) {
+            if (blocksTreeStore.active !== undefined) {
 
-                if (blocksStore.active?.id !== id) {
+                if (blocksTreeStore.active?.id !== id) {
 
-                    blocksStore.setSelectionRange(blocksStore.active.id, id, root);
+                    blocksTreeStore.setSelectionRange(blocksTreeStore.active.id, id);
 
                     window.getSelection()!.removeAllRanges();
 
@@ -75,10 +87,10 @@ export const BlockInner = observer((props: IProps) => {
             event.stopPropagation();
 
         } else {
-            blocksStore.clearSelected('Note: handleMouseDown');
+            blocksTreeStore.clearSelected('Note: handleMouseDown');
         }
 
-    }, [id, blocksStore, root]);
+    }, [id, blocksTreeStore]);
 
     const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -152,156 +164,87 @@ export const BlockInner = observer((props: IProps) => {
 
     }, [undoQueue]);
 
-    const handleDragStart = React.useCallback((event: React.DragEvent) => {
-        blocksStore.setDropSource(props.id);
-        // event.preventDefault();
-        // event.stopPropagation();
-    }, [props.id, blocksStore]);
 
-    const computeDragPosition = React.useCallback((event: React.DragEvent | React.MouseEvent) => {
-
-        // FIXME: if this is a root note then we can only drag BELOW it...
-
-        if (divRef.current) {
-
-            const bcr = divRef.current.getBoundingClientRect();
-
-            const deltaTop = Math.abs(event.clientY - bcr.top);
-            const deltaBottom = Math.abs(event.clientY - bcr.bottom);
-
-            if (deltaTop < deltaBottom) {
-                return 'top';
-            }
-
-        }
-
-        return 'bottom';
-
-    }, []);
-
-    const updateDropTarget = React.useCallback((event: React.DragEvent | React.MouseEvent) => {
-
-        const pos = computeDragPosition(event);
-
-        blocksStore.setDropTarget({
-            id: props.id, pos
-        });
-
-    }, [computeDragPosition, props.id, blocksStore]);
-
-    const handleDragEnter = React.useCallback((event: React.DragEvent) => {
-
-        updateDropTarget(event);
-
-        dragActive.current = true;
-
-        event.preventDefault();
-        event.stopPropagation();
-
-    }, [updateDropTarget]);
-
-    const handleDragExit = React.useCallback((event: React.DragEvent) => {
-
-        dragActive.current = false;
-
-        event.preventDefault();
-        event.stopPropagation();
-    }, []);
-
-    const handleMouseMove = React.useCallback((event: React.MouseEvent) => {
-
-        if (dragActive.current) {
-            updateDropTarget(event);
-        }
-
-    }, [updateDropTarget]);
-
-    const handleDrop = React.useCallback((event: React.DragEvent) => {
-
-        event.preventDefault();
-
-        // FIXME: do the move now... and actually move the item
-
-        console.log("FIXME: DROP")
-
-    }, []);
+    const topInterstitials = React.useMemo(() => interstitials.filter(({position}) => position === 'top'), [interstitials]);
+    const bottomInterstitials = React.useMemo(() => interstitials.filter(({position}) => position === 'bottom'), [interstitials]);
 
     if (! block) {
         return null;
     }
 
-    const items = blocksStore.lookup(block.itemsAsArray || []);
+    const items = blocksTreeStore.lookup(block.itemsAsArray || []);
 
     const hasItems = items.length > 0;
 
-    const dropActive = blocksStore.dropTarget?.id === props.id && blocksStore.dropSource !== props.id;
-
     return (
-        <div ref={divRef}
-             onMouseDown={handleMouseDown}
-             onMouseMove={handleMouseMove}
+        <div onMouseDown={handleMouseDown}
              onKeyDown={handleKeyDown}
-             onDragStart={event => handleDragStart(event)}
-             onDragEnter={event => handleDragEnter(event)}
-             onDragLeave={event => handleDragExit(event)}
-             onDragEnd={() => blocksStore.clearDrop()}
-             onDrop={event => handleDrop(event)}
-             className={clsx(['Block', selected ? classes.selected : undefined])}>
+             className={clsx('Block', { [classes.selected]: selected }) }
+             {...dragDropBinds}>
 
-                <BlockDragIndicator id={props.id}>
-                    <>
-                        <div {...contextMenuHandlers}
-                             style={{
-                                 display: 'flex',
-                                 alignItems: 'flex-start',
-                                 boxSizing: 'border-box',
-                                 paddingTop: theme.spacing(0.5),
-                                 paddingBottom: theme.spacing(0.5),
-                                 // background: dropActive ? 'red' : 'inherit'
-                             }}>
+            {topInterstitials.map(interstitial => <Interstitial key={interstitial.id} interstitial={interstitial} />) }
+            <BlockDragIndicator id={id}>
+                <>
+                    <div {...contextMenuHandlers}
+                         style={{
+                             display: 'flex',
+                             alignItems: 'flex-start',
+                             boxSizing: 'border-box',
+                             paddingTop: theme.spacing(0.5),
+                             paddingBottom: theme.spacing(0.5),
+                             // background: dropActive ? 'red' : 'inherit'
+                         }}>
 
+                        {!(noExpand && noBullet) && (
                             <div style={{
                                      display: 'flex',
                                      alignItems: 'center',
-                                     minWidth: '3em',
+                                     minWidth: 40,
                                      justifyContent: 'flex-end',
-                                     marginRight: theme.spacing(0.5)
+                                     marginRight: theme.spacing(0.5),
                                  }}>
 
-                                {/*<NoteOverflowButton id={props.id}/>*/}
 
-                                {hasItems && id !== root && (
-                                    <BlockExpandToggleButton id={props.id}/>
+                                {hasItems && !noExpand && (
+                                    <BlockExpandToggleButton id={id}/>
                                 )}
 
-                                {block.parent && <BlockBulletButton target={props.id}/>}
+                                {!noBullet && <BlockBulletButton target={id}/>}
 
                             </div>
-                            <BlockEditor root={root} key={props.id} parent={props.parent} id={props.id} />
-
-                            {/*{(block.content.type === 'date' || block.content.type === 'name') && (*/}
-                            {/*    <div style={{*/}
-                            {/*             fontSize: '20px',*/}
-                            {/*             fontWeight: 'bold'*/}
-                            {/*         }}*/}
-                            {/*         key={props.id}>*/}
-                            {/*        {block.content.data}*/}
-                            {/*    </div>*/}
-                            {/*)}*/}
-                        </div>
-
-                        {(expanded || id === root) && (
-                            <BlockItems root={root} parent={props.id} notes={items}/>
                         )}
+
+                        {withHeader && isRoot
+                            ? (
+                                <BlockEditor
+                                    parent={parent}
+                                    id={id}
+                                    className={classes.titleBlock}
+                                />
+                            ) : (
+                                <BlockEditor
+                                    parent={parent}
+                                    id={id}
+                                />
+                            )
+                        }
+                    </div>
+
+                    {withHeader && isRoot &&
+                        <Divider style={{ margin: '16px 0' }} />
+                    }
+
+                    {(expanded || (isRoot && noExpand)) && (
+                        <BlockItems parent={id} notes={items} indent={!withHeader} />
+                    )}
                 </>
             </BlockDragIndicator>
+            {bottomInterstitials.map(interstitial => <Interstitial key={interstitial.id} interstitial={interstitial} />) }
         </div>
     );
 });
 
 export const Block = observer(function Note(props: IProps) {
-
-    // useLifecycleTracer('Note');
 
     return (
         <BlockContextMenu>

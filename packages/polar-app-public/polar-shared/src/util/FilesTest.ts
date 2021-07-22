@@ -2,12 +2,13 @@ import {assert} from 'chai';
 import {Files, FileHandle} from './Files';
 import {FilePaths} from './FilePaths';
 import os from "os";
+import {TestingFiles} from "../test/TestingFiles";
 
 describe('Files', function() {
 
     describe('atomic writes', async function() {
 
-        const tmp = FilePaths.join(os.tmpdir(), 'atomic-write.txt');
+        const tmp = FilePaths.join(os.tmpdir(), 'files-atomic-write.txt');
         await Files.writeFileAsync(tmp, 'this is the data', {atomic: true});
 
     });
@@ -252,10 +253,10 @@ describe('Files', function() {
 
         it("from stream", async function() {
 
-            const dataInputPath = FilePaths.join(tmpdir, "data-input-from-stream.txt");
+            const dataInputPath = TestingFiles.createPath();
             await Files.writeFileAsync(dataInputPath, "hello world");
 
-            const dataOutputPath = FilePaths.join(tmpdir, "data-output-from-stream.txt");
+            const dataOutputPath = TestingFiles.createPath();
 
             await Files.writeFileAsync(dataOutputPath, Files.createReadStream(dataInputPath));
 
@@ -267,10 +268,10 @@ describe('Files', function() {
 
         it("from FileRef", async function() {
 
-            const dataInputPath = FilePaths.join(tmpdir, "data-input.txt");
+            const dataInputPath = TestingFiles.createPath();
             await Files.writeFileAsync(dataInputPath, "hello world");
 
-            const dataOutputPath = FilePaths.join(tmpdir, "data-output.txt");
+            const dataOutputPath = TestingFiles.createPath();
 
             const fileRef: FileHandle = {path: dataInputPath};
 
@@ -289,7 +290,7 @@ describe('Files', function() {
 
         it("basic", async function() {
 
-            const path = FilePaths.join(tmpdir, "write-file-async.txt");
+            const path = TestingFiles.createPath();
 
             await Files.writeFileAsync(path, "hello world");
 

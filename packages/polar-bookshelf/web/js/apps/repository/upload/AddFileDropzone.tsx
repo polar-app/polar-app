@@ -100,6 +100,11 @@ function useDropHandler() {
 
 }
 
+const ALLOWED_MIMES = [
+    'application/pdf',
+    'application/epub+zip',
+];
+
 function isFileTransfer(event: DragEvent) {
 
     if (! event.dataTransfer) {
@@ -117,8 +122,15 @@ function isFileTransfer(event: DragEvent) {
 
         if (event.dataTransfer.types.includes('Files') ||
             event.dataTransfer.types.includes('application/x-moz-file')) {
+            const {files, items} = event.dataTransfer;
 
-            return true;
+            const isAllowedMime = (mime: string) => ALLOWED_MIMES.indexOf(mime) > -1;
+            const toType = (item: File | DataTransferItem) => item.type;
+            const array = items.length > 0 ? Array.from(items).map(toType) : Array.from(files).map(toType);
+
+
+            // Only allow pdfs and epubs
+            return array.every(isAllowedMime);
         }
 
     }
@@ -151,7 +163,9 @@ export function useDragAndDropImportListener() {
 
     const handleDrop = React.useCallback((event: DragEvent) => {
 
-        dropHandler(event);
+        if (isFileTransfer(event)) {
+            dropHandler(event);
+        }
 
     }, [dropHandler]);
 

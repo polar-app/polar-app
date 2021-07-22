@@ -1,8 +1,7 @@
 import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
 import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
-import {BlockIDStr, IBlockContent} from "../store/BlocksStore";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {IBlock} from "../store/IBlock";
+import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
 
 export type BlocksPersistenceWriter = (mutations: ReadonlyArray<IBlocksStoreMutation>) => void;
 
@@ -27,6 +26,7 @@ export namespace FirestoreBlocksStoreMutations {
     export interface IFirestoreMutationDeleteDoc {
         readonly id: BlockIDStr;
         readonly type: 'delete-doc';
+        readonly value: IBlock;
     }
     export interface IFirestoreMutationUpdatePath {
         readonly id: BlockIDStr;
@@ -105,6 +105,7 @@ export namespace FirestoreBlocksStoreMutations {
                         {
                             id: mutation.id,
                             type: 'delete-doc',
+                            value: mutation.removed,
                         }
                     ];
 

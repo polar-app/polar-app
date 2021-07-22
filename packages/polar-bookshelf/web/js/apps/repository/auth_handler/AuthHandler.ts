@@ -7,21 +7,8 @@ import {Account} from "../../../accounts/Account";
 import {Accounts} from "../../../accounts/Accounts";
 import {SignInSuccessURLs} from "../../../../../apps/repository/js/login/SignInSuccessURLs";
 import firebase from 'firebase/app'
-
-// TODO: I don't like this so we're going to have to find a solution long term.
-const POLAR_APP_SITES = [
-    'http://localhost:8050',
-    'http://127.0.0.1:8050',
-    'http://localhost:8500',
-    'http://127.0.0.1:8500',
-    'http://localhost:9000',
-    'http://127.0.0.1:9000',
-    'http://localhost:9500',
-    'http://127.0.0.1:9500',
-    'https://app.getpolarized.io',
-    'https://beta.getpolarized.io',
-    'http://dev.getpolarized.io:8050'
-];
+import {Firestore} from "../../../firebase/Firestore";
+import {AppSites} from "./AppSites";
 
 export interface AuthHandler {
 
@@ -46,7 +33,7 @@ function computeBaseURL() {
     // TODO: this could use origin...
     const base = URLs.toBase(document.location!.href);
 
-    if (! POLAR_APP_SITES.includes(base)) {
+    if (! AppSites.isApp(base)) {
         return 'https://app.getpolarized.io';
     } else {
         return base;
@@ -144,7 +131,7 @@ export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
 
     }
 
-    protected async currentUser(): Promise<firebase.User | undefined> {
+    protected async currentUser(): Promise<firebase.User | null> {
         return await Firebase.currentUserAsync();
     }
 
@@ -171,7 +158,8 @@ export class BrowserAuthHandler extends FirebaseAuthHandler {
         // TODO useHistory here to push so that the app doesn't have to
         // reload but the problem is that we need to use hooks for this...
 
-        window.location.href = newLocation;
+        Firestore.terminateAndRedirect(newLocation)
+            .catch(err => console.error(err));
 
     }
 

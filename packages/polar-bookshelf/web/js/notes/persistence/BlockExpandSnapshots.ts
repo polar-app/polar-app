@@ -1,8 +1,7 @@
 import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
-import {UIDStr} from "../store/IBlock";
 import {createMockSnapshot, IGenericSnapshot} from "./IGenericSnapshot";
 import {useGenericFirestoreSnapshots} from "./GenericFirestoreSnapshots";
-import {BlockIDStr} from "../store/BlocksStore";
+import {BlockIDStr, UIDStr} from "polar-blocks/src/blocks/IBlock";
 
 const IS_NODE = typeof window === 'undefined';
 

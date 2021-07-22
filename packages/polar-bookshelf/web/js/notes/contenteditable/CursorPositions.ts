@@ -1,4 +1,5 @@
 import {MarkdownStr} from "polar-shared/src/util/Strings";
+import {ContentEditables} from "../ContentEditables";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 
 export namespace CursorPositions {
@@ -33,41 +34,75 @@ export namespace CursorPositions {
 
     export type CursorLookupTestArray = ReadonlyArray<ICursorPositionTest>;
 
-    export function jumpToPosition(node: Node, offset: number) {
+    export function defineNewRange(range: Range) {
+        const sel = window.getSelection();
 
-        const lookup = computeCursorLookupArray(node);
+        if (sel) {
+            sel.removeAllRanges();
+            sel.addRange(range);
+        }
+    }
 
-        const position = lookup[offset];
+    /*
+     * This is used to focus stuff that isn't focusable aka contentEditable=false
+     *
+     * We just create an empty text node after the contentEditable=false node and focus that instead.
+     */
+    export function focusEnd(node: Node): void {
+        const range = new Range();
+        const textNode = document.createTextNode("");
+        node.parentNode!.insertBefore(textNode, node.nextSibling);
+        range.setStartAfter(textNode);
+        range.setEndAfter(textNode);
+        defineNewRange(range);
+    }
 
-        const range = window.getSelection()!.getRangeAt(0);
+    export function jumpToPosition(elem: HTMLElement, offset: number | 'start' | 'end') {
 
-        if (position) {
+        elem.focus();
 
-            range.setStart(position.node, position.offset);
-            range.setEnd(position.node, position.offset);
+        if (offset === 'start' || offset === 0) {
+            // Do nothing
+            return;
+        } else if (offset === 'end') {
+            const lastChild = elem.lastChild;
+            if (lastChild) {
+                if (ContentEditables.isContentEditable(lastChild)) { // If the lastChild is editable then just focus it
+                    const range = new Range();
+                    range.setStartAfter(lastChild);
+                    range.setEndAfter(lastChild);
+                    defineNewRange(range);
+                } else { // Otherwise just put it at the end
+                    focusEnd(lastChild);
+                }
+            }
+        } else {
+            const lookup = computeCursorLookupArray(elem);
 
-        } else if (offset === lookup.length) {
+            const position = lookup[offset];
 
-            function computeRangeNode() {
+            if (position) {
 
-                if (lookup.length > 0) {
-                    return lookup[lookup.length - 1].node;
+                if (ContentEditables.isContentEditable(position.node)) {
+                    const range = new Range();
+                    range.setStart(position.node, position.offset);
+                    range.setEnd(position.node, position.offset);
+                    defineNewRange(range);
+                } else {
+                    const contentEditableFalseRoot = ContentEditables.computeContentEditableFalseRoot(position.node);
+                    focusEnd(contentEditableFalseRoot);
                 }
 
-                return range.startContainer;
-
+            } else if (offset >= lookup.length) {
+                jumpToPosition(elem, 'end');
             }
-
-            const rangeNode = computeRangeNode();
-            const rangeOffset = (rangeNode.nodeValue || '').length
-
-            range.setStart(rangeNode, rangeOffset);
-            range.setEnd(rangeNode, rangeOffset);
-
-        } else {
-            console.warn(`No lookup position for offset ${offset} with N lookup elements: ` + lookup.length);
         }
 
+        // Failsafe: if for some reason we still manage to lose the cursor just put it at the start
+        const selection = document.getSelection();
+        if (selection && selection.rangeCount === 0) {
+            elem.focus();
+        }
     }
 
     /**
@@ -119,44 +154,35 @@ export namespace CursorPositions {
 
     }
 
-    export function computeContentEditableRoot(node: Node | null): HTMLElement {
-
-        if (node === null) {
-            throw new Error("Unable to find content editable root");
-        }
-
-        if (node.nodeType === node.TEXT_NODE) {
-            return computeContentEditableRoot(node.parentElement);
-        }
-
-        if (node.nodeType === node.ELEMENT_NODE) {
-
-            const element = node as HTMLElement;
-
-            if (element.getAttribute('contenteditable') === 'true') {
-                return element;
-            }
-
-            return computeContentEditableRoot(element.parentElement);
-
-        }
-
-        throw new Error("Invalid node type: " + node.nodeType);
-
-    }
 
     export function toTextNode(node: Node | undefined, offset: number): ICursorPosition | undefined {
         if (!node) {
             return  undefined;
         }
         if (node.nodeType === Node.ELEMENT_NODE) {
-            return toTextNode(node.childNodes[offset], 0);
+            const childNode = node.childNodes[offset];
+            if (childNode) {
+                return toTextNode(childNode, 0);
+            } else {
+                const lastNode = node.lastChild;
+                if (lastNode) {
+                    return toTextNode(lastNode, (lastNode.textContent || '').length);
+                } else {
+                    return {node, offset: 0};
+                }
+            }
         }
 
         return {node, offset};
     }
 
     export function computeCurrentOffset(element: HTMLElement): 'end' | number | undefined {
+        if (
+            (element.textContent || '').length === 0 &&
+            element.childNodes.length === 0
+        ) {
+            return 0;
+        }
 
         const lookup = computeCursorLookupArray(element);
 
@@ -183,6 +209,8 @@ export namespace CursorPositions {
                     }
 
                 }
+            } else {
+                return 0;
             }
         }
 
@@ -217,28 +245,4 @@ export namespace CursorPositions {
         div.innerHTML = html;
         return (div.innerText || div.textContent || '').length;
     }
-
-    export function setCaretPosition(elem: Node, position: 'start' | 'end' | number) {
-        const range = new Range();
-        switch (position) {
-            case 'start':
-                range.setStartBefore(elem);
-                range.setEndBefore(elem);
-                break;
-            case 'end':
-                range.setStartAfter(elem);
-                range.setEndAfter(elem);
-                break;
-            default:
-                range.setStart(elem, position);
-                range.setStart(elem, position);
-                break;
-        }
-        const selection = document.getSelection();
-
-        if (selection) {
-            selection.removeAllRanges();
-            selection.addRange(range);
-        }
-    };
 }

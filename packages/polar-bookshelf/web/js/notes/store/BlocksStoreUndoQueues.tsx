@@ -1,13 +1,12 @@
-import {IBlock} from "./IBlock";
 import {SetArrays} from "polar-shared/src/util/SetArrays";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {BlockIDStr, BlocksStore} from "./BlocksStore";
+import {BlocksStore, IActiveBlock} from "./BlocksStore";
 import {UndoQueues2} from "../../undo/UndoQueues2";
-import {PositionalArrays} from "./PositionalArrays";
 import {IWithMutationOpts} from "./Block";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import { BlocksPersistenceWriter } from "../persistence/FirestoreBlocksStoreMutations";
+import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
 
 export namespace BlocksStoreUndoQueues {
 
@@ -130,31 +129,39 @@ export namespace BlocksStoreUndoQueues {
         }
 
         const beforeBlocks: ReadonlyArray<IBlock> = computeApplicableBlocks(blocksStore.createSnapshot(identifiers));
+        const oldActive: IActiveBlock | undefined = blocksStore.cursorOffsetCapture();
 
         let afterBlocks: ReadonlyArray<IBlock> = [];
+        let newActive: IActiveBlock | undefined;
 
         const capture = () => {
 
             const snapshot = blocksStore.createSnapshot(identifiers);
 
             afterBlocks = computeApplicableBlocks(snapshot);
-
-        }
+            newActive = blocksStore.cursorOffsetCapture();
+        };
 
         const undo = () => {
             const mutations = computeMutatedBlocks(beforeBlocks, afterBlocks);
             blocksPersistenceWriter(doMutations(blocksStore, 'undo', mutations));
-        }
+            if (oldActive) {
+                blocksStore.setActiveWithPosition(oldActive.id, oldActive.pos);
+            }
+        };
 
         const redo = () => {
             const mutations = computeMutatedBlocks(beforeBlocks, afterBlocks);
             blocksPersistenceWriter(doMutations(blocksStore, 'redo', mutations));
-        }
+            if (newActive) {
+                blocksStore.setActiveWithPosition(newActive.id, newActive.pos);
+            }
+        };
 
         const persist = () => {
             const mutations = computeMutatedBlocks(beforeBlocks, afterBlocks);
             blocksPersistenceWriter(mutations);
-        }
+        };
 
         return {capture, undo, redo, persist};
 
@@ -227,7 +234,7 @@ export namespace BlocksStoreUndoQueues {
 
             // updated means we need to restore it to the older version.
 
-            const block = blocksStore.getBlock(mutation.id);
+            const block = blocksStore.getBlockForMutation(mutation.id);
 
             if (! block) {
                 throw new Error("Could not find updated block: " + mutation.id);
@@ -464,7 +471,7 @@ export namespace BlocksStoreUndoQueues {
 
             }
 
-            const beforeBlock = blocksStore.getBlock(mutation.id)?.toJSON();
+            const beforeBlock = blocksStore.getBlockForMutation(mutation.id)?.toJSON();
 
             switch (mutation.type) {
 
@@ -482,7 +489,7 @@ export namespace BlocksStoreUndoQueues {
 
             }
 
-            const afterBlock = blocksStore.getBlock(mutation.id)?.toJSON();
+            const afterBlock = blocksStore.getBlockForMutation(mutation.id)?.toJSON();
 
             return toNewMutation(beforeBlock, afterBlock);
 
@@ -512,7 +519,7 @@ export namespace BlocksStoreUndoQueues {
 
             const computeChildrenForBlock = (id: BlockIDStr): ReadonlyArray<BlockIDStr> => {
 
-                const items = blocksStore.getBlock(id)?.itemsAsArray || [];
+                const items = blocksStore.getBlockForMutation(id)?.itemsAsArray || [];
 
                 const descendants = arrayStream(items)
                     .map(current => computeChildrenForBlock(current))
@@ -538,7 +545,7 @@ export namespace BlocksStoreUndoQueues {
         const computeParents = (identifiers: ReadonlyArray<BlockIDStr>): ReadonlyArray<BlockIDStr> => {
 
             const getParent = (id: BlockIDStr): BlockIDStr | undefined => {
-                return blocksStore.getBlock(id)?.parent;
+                return blocksStore.getBlockForMutation(id)?.parent;
             }
 
             return arrayStream(identifiers)

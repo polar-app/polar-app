@@ -29,13 +29,26 @@ const PROJECTS: {[project: string]: any} = {
 
 };
 
+export const getConfig = () => {
+    // Return different values based on the environment.
+    return PROJECTS['prod'];
+};
+
 export class Firebase {
 
     private static app?: firebase.app.App;
 
     private static userLatch = new Latch<boolean>();
 
-    private static user?: firebase.User | null;
+    /**
+     * Three states.
+     *
+     * undefined: We don't know who the user is
+     * null: The user is not authenticated
+     * User: The currently active user.
+     * @private
+     */
+    private static user: undefined | null | firebase.User = undefined;
 
     /**
      * Perform init of Firebase with our auth credentials.
@@ -50,9 +63,7 @@ export class Firebase {
 
             log.notice("Initializing firebase...");
 
-            this.app = this.doInit();
-
-            return this.app;
+            return this.app = this.doInit();
 
         } finally {
             log.notice("Initializing firebase...done");
@@ -91,8 +102,7 @@ export class Firebase {
         const auth = firebase.auth();
 
         const onNext = (user: firebase.User | null) => {
-
-            console.log("firebase: auth state next: ", user);
+            console.log("firebase: auth state next: ", describeUser(user));
             this.userLatch.resolve(true);
             return this.user = user;
 
@@ -106,10 +116,19 @@ export class Firebase {
 
     }
 
-    public static async currentUserAsync(): Promise<firebase.User | undefined> {
-        await this.userLatch.get();
+    public static async currentUserAsync(): Promise<firebase.User | null> {
+
         Firebase.init();
-        return this.user || undefined;
+
+        await this.userLatch.get();
+
+        if (this.user === undefined) {
+            // should never happen because we're waiting for the latch
+            throw new Error();
+        }
+
+        return this.user;
+
     }
 
     public static async currentUserID(): Promise<UserIDStr | undefined> {
@@ -122,5 +141,18 @@ export class Firebase {
 export type UserIDStr = string;
 
 export type UserID = UserIDStr;
+
+function describeUser(user: firebase.User | null): any {
+
+    if (user) {
+        return {
+            uid: user.uid,
+            email: user.email
+        };
+    }
+
+    return undefined;
+
+}
 
 

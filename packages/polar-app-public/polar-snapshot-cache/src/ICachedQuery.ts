@@ -1,6 +1,6 @@
 import {ICacheQueryDocument} from "./ICacheQueryDocument";
-import {ISnapshotMetadata} from "./store/ISnapshotMetadata";
 import {ICachedQueryMetadata} from "./ICachedQueryMetadata";
+import {ISnapshotMetadata} from "polar-firestore-like/src/ISnapshotMetadata";
 
 export interface ICachedQuery extends ICachedQueryMetadata {
 

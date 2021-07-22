@@ -1,21 +1,23 @@
 import {HTMLStr} from 'polar-shared/src/util/Strings';
 import React from 'react';
 import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
-import {observer} from "mobx-react-lite"
-import {BlockIDStr, useBlocksStore, IActiveBlock} from '../store/BlocksStore';
-import {ContentEditables} from "../ContentEditables";
+import {IActiveBlock} from '../store/BlocksStore';
 import {createActionsProvider} from "../../mui/action_menu/ActionStore";
 import {NoteFormatPopper} from "../NoteFormatPopper";
 import {BlockContentCanonicalizer} from "./BlockContentCanonicalizer";
 import {BlockAction} from "./BlockAction";
 import {CursorPositions} from "./CursorPositions";
 import {IPasteImageData, usePasteHandler } from '../clipboard/PasteHandlers';
-import {IImageContent} from "../content/IImageContent";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {useMutationObserver} from '../../../../web/js/hooks/ReactHooks';
 import {MarkdownContent} from '../content/MarkdownContent';
 import {BlockEditorGenericProps} from '../BlockEditor';
 import {IBlockContentStructure} from '../HTMLToBlocks';
+import {useBlocksTreeStore} from '../BlocksTree';
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
+import {useNamedBlocks} from '../NoteRenderers';
+import {ContentEditables} from '../ContentEditables';
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed
@@ -26,6 +28,8 @@ interface IProps extends BlockEditorGenericProps {
     readonly content: HTMLStr;
 
     readonly onChange: (content: HTMLStr) => void;
+
+    readonly onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
 
     readonly spellCheck?: boolean;
 }
@@ -41,12 +45,12 @@ export function useBlockContentEditableElement() {
  * https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand
  *
  */
-export const BlockContentEditable = observer((props: IProps) => {
+export const BlockContentEditable = (props: IProps) => {
 
     const [content] = React.useState(() => MarkdownContentConverter.toHTML(props.content));
     const divRef = React.useRef<HTMLDivElement | null>(null);
     const contentRef = React.useRef(props.content);
-    const blocksStore = useBlocksStore();
+    const blocksTreeStore = useBlocksTreeStore();
 
     const updateCursorPosition = useUpdateCursorPosition();
 
@@ -62,13 +66,13 @@ export const BlockContentEditable = observer((props: IProps) => {
             naturalHeight: image.height
         };
 
-        blocksStore.createNewBlock(props.id, {content});
+        blocksTreeStore.createNewBlock(props.id, {content});
 
-    }, [blocksStore, props.id]);
+    }, [blocksTreeStore, props.id]);
 
     const onPasteBlocks = React.useCallback((blocks: ReadonlyArray<IBlockContentStructure>) => {
-        blocksStore.insertFromBlockContentStructure(blocks);
-    }, [blocksStore]);
+        blocksTreeStore.insertFromBlockContentStructure(blocks);
+    }, [blocksTreeStore]);
 
     const onPasteError = React.useCallback((err: Error) => {
         console.error("Got paste error: ", err);
@@ -76,12 +80,15 @@ export const BlockContentEditable = observer((props: IProps) => {
 
     }, []);
 
-    const handlePaste = usePasteHandler({onPasteImage, onPasteError, onPasteBlocks});
+    const handlePaste = usePasteHandler({onPasteImage, onPasteError, onPasteBlocks, id: props.id});
+    const namedBlocks = useNamedBlocks();
 
-    const noteLinkActions = blocksStore.getNamedBlocks().map(current => ({
-        id: current,
-        text: current
-    }));
+    const noteLinkActions = React.useMemo(() => {
+        return namedBlocks.map((block) => ({
+            id: block.content.data,
+            text: block.content.data,
+        }));
+    }, [namedBlocks]);
 
     const createNoteActionsProvider = React.useMemo(() => createActionsProvider(noteLinkActions), [noteLinkActions]);
 
@@ -153,23 +160,28 @@ export const BlockContentEditable = observer((props: IProps) => {
             // (though this might be optional) and then set the innerHTML
             // directly.  React has a bug which won't work on empty strings.
 
-            if (divRef.current && ENABLE_CURSOR_RESET) {
-                const pos = CursorPositions.computeCurrentOffset(divRef.current);
+            const div = divRef.current;
+            if (div && ENABLE_CURSOR_RESET) {
+                const active = blocksTreeStore.active;
+                const isActive = active && active.id === props.id;
 
-                divRef.current.innerHTML = MarkdownContentConverter.toHTML(props.content);
-                ContentEditables.insertEmptySpacer(divRef.current!);
+                // Remove the cursor from the block if it's not active to prevent it from being reset to the start when innerHTML is set
+                if (! isActive) {
+                    div.blur();
+                }
 
+                div.innerHTML = MarkdownContentConverter.toHTML(props.content);
+                ContentEditables.insertEmptySpacer(div);
 
-                // TODO: only update if WE are active so the cursor doesn't jump.
-                if (blocksStore.active) {
-                    updateCursorPosition(divRef.current, {...blocksStore.active, pos}, true);
+                if (active && isActive) {
+                    updateCursorPosition(div, {...active}, true);
                 }
 
             }
 
         }
 
-    }, [props.content, props.id, blocksStore.active, updateCursorPosition]);
+    }, [props.content, props.id, blocksTreeStore, updateCursorPosition]);
 
     const handleRef = React.useCallback((current: HTMLDivElement | null) => {
 
@@ -201,9 +213,12 @@ export const BlockContentEditable = observer((props: IProps) => {
                         <div ref={handleRef}
                              onPaste={handlePaste}
                              onClick={props.onClick}
+                             onMouseDown={props.onMouseDown}
                              contentEditable={true}
                              spellCheck={props.spellCheck}
+                             data-id={props.id}
                              className={props.className}
+                             id={`${DOMBlocks.BLOCK_ID_PREFIX}${props.id}`}
                              style={{
                                  outline: 'none',
                                  whiteSpace: 'pre-wrap',
@@ -220,7 +235,7 @@ export const BlockContentEditable = observer((props: IProps) => {
         </NoteContentEditableElementContext.Provider>
     );
 
-});
+};
 
 /**
  * Hook which keeps track of the last nonce we updated to avoid double updates.
@@ -237,7 +252,7 @@ export function useUpdateCursorPosition() {
 
                 if (activeBlock.pos !== undefined) {
 
-                    doUpdateCursorPosition(editor, activeBlock.pos)
+                    CursorPositions.jumpToPosition(editor, activeBlock.pos);
                 }
 
             } finally {
@@ -250,60 +265,14 @@ export function useUpdateCursorPosition() {
 
 }
 
-function doUpdateCursorPosition(editor: HTMLDivElement, pos: 'start' | 'end' | number) {
-
-    if (pos !== undefined) {
-
-        function defineNewRange(range: Range) {
-
-            const sel = window.getSelection();
-
-            editor.focus();
-
-            if (sel) {
-                sel.removeAllRanges();
-                sel.addRange(range);
-            }
-
-        }
-
-        // console.log("Updating cursor position to: ", pos);
-
-        editor.focus();
-
-        if (pos === 'start') {
-            const range = document.createRange();
-            range.setStartAfter(editor)
-            range.setEndAfter(editor)
-        }
-
-        if (pos === 'end') {
-
-            const end = ContentEditables.computeEndNodeOffset(editor);
-
-            const range = document.createRange();
-            range.setStart(end.node, end.offset);
-            range.setEnd(end.node, end.offset);
-
-            defineNewRange(range);
-
-        }
-
-        if (typeof pos === 'number') {
-            CursorPositions.jumpToPosition(editor, pos)
-        }
-
-    }
-
-}
-
 type IUseHandleLinkDeletionOpts = {
     elem: HTMLElement | null;
     blockID: BlockIDStr;
 };
+
 const useHandleLinkDeletion = ({ blockID, elem }: IUseHandleLinkDeletionOpts) => {
     const mutationObserverConfig = React.useMemo(() => ({ childList: true }), []);
-    const blocksStore = useBlocksStore();
+    const blocksTreeStore = useBlocksTreeStore();
 
     useMutationObserver((mutations) => {
         const isElement = (node: Node): node is Element => node.nodeType === Node.ELEMENT_NODE;
@@ -323,12 +292,12 @@ const useHandleLinkDeletion = ({ blockID, elem }: IUseHandleLinkDeletionOpts) =>
             const removedLinks = removed.filter((elem) => !added.some(compareLinks(elem)));
 
             for (let removedLink of removedLinks) {
-                const block = blocksStore.getBlock(blockID);
-                const linkedBlock = blocksStore.getBlockByName(removedLink.getAttribute('href')!.slice(1));
+                const block = blocksTreeStore.getBlock(blockID);
+                const linkedBlock = blocksTreeStore.getBlockByName(removedLink.getAttribute('href')!.slice(1));
                 if (block && linkedBlock && block.content.type === 'markdown') {
                     const newContent = new MarkdownContent(block.content.toJSON());
                     newContent.removeLink(linkedBlock.id);
-                    blocksStore.setBlockContent(blockID, newContent);
+                    blocksTreeStore.setBlockContent(blockID, newContent);
                 }
             }
         }
@@ -338,3 +307,60 @@ const useHandleLinkDeletion = ({ blockID, elem }: IUseHandleLinkDeletionOpts) =>
     })
 };
 
+export namespace DOMBlocks {
+    export const BLOCK_ID_PREFIX = 'block-';
+
+    export const getBlockHTMLID = (id: BlockIDStr) => `${BLOCK_ID_PREFIX}${id}`;
+
+    export const getBlockElement = (id: BlockIDStr) =>
+        document.querySelector<HTMLDivElement>(`#${getBlockHTMLID(id)}`);
+
+    export function isBlockElement(node: Node): node is HTMLElement {
+        if (node.nodeType === Node.ELEMENT_NODE) {
+            const element = node as HTMLElement;
+            if (element.id && element.id.startsWith(BLOCK_ID_PREFIX)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    export function getSiblingID(id: BlockIDStr, delta: 'next' | 'prev'): string | null {
+        const currBlockElem = getBlockElement(id);
+        if (currBlockElem) {
+            const newActiveBlockElem = findSiblingBlock(currBlockElem, delta);
+            if (newActiveBlockElem && newActiveBlockElem.dataset.id) {
+                return newActiveBlockElem.dataset.id;
+            }
+        }
+        return null;
+    }
+
+    export function findSiblingBlock(node: Node, delta: 'next' | 'prev'): HTMLElement | null {
+        const sibling = delta === 'next'
+                ? node.nextSibling
+                : node.previousSibling;
+
+        if (! sibling) {
+            if (node.parentElement) {
+                return findSiblingBlock(node.parentElement, delta);
+            }
+            return null;
+        }
+
+        if (sibling.nodeType === Node.ELEMENT_NODE) {
+            const siblingElem = sibling as HTMLElement;
+            const elements = siblingElem.querySelectorAll<HTMLDivElement>(`[id^="${BLOCK_ID_PREFIX}"]`);
+            if (elements.length > 0) {
+                const idx = delta === 'next' ? 0 : elements.length - 1;
+                return elements[idx];
+            }
+        }
+
+        if (isBlockElement(sibling)) {
+            return sibling;
+        }
+
+        return findSiblingBlock(sibling, delta);
+    }
+}

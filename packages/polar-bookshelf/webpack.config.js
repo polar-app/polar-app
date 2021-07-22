@@ -17,14 +17,14 @@ const mode = process.env.NODE_ENV || (isDevServer ? 'development' : 'production'
 const isDev = mode === 'development';
 const target = process.env.WEBPACK_TARGET || 'web';
 const devtool = isDev ? (process.env.WEBPACK_DEVTOOL || "inline-source-map") : "source-map";
-const useWorkbox = ! isDevServer;
+const useWorkbox = !isDevServer;
 const bundle = determineBundle();
 const port = determinePort(bundle);
 const openPage = determineOpenPage(bundle);
 
 const workers = os.cpus().length - 1;
 
-const output = path.resolve(__dirname, 'dist/public');
+const output = process.env.OUTPUT_PATH || path.resolve(__dirname, 'dist/public');
 
 console.log("Usage: ===================");
 
@@ -108,8 +108,7 @@ function createRules() {
         },
         {
             test: /\.(png|jpe?g|gif|bmp|ico|webp|woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/i,
-            exclude: [
-            ],
+            exclude: [],
             use: [
                 {
                     loader: 'file-loader',
@@ -124,8 +123,7 @@ function createRules() {
         {
             // make SVGs use data URLs.
             test: /\.(svg)(\?v=\d+\.\d+\.\d+)?$/i,
-            exclude: [
-            ],
+            exclude: [],
             use: [
                 {
                     loader: 'url-loader',
@@ -138,8 +136,7 @@ function createRules() {
         },
         {
             test: /\.css$/i,
-            exclude: [
-            ],
+            exclude: [],
             use: [
                 {
                     loader: 'style-loader',
@@ -173,7 +170,7 @@ function createRules() {
 
         const electronPath = path.resolve(__dirname, '../../node_modules/electron/index.js');
 
-        if (! fs.existsSync(electronPath)) {
+        if (!fs.existsSync(electronPath)) {
             throw new Error("Electron dir doesn't exist: " + electronPath);
         }
 
@@ -276,9 +273,8 @@ module.exports = {
         rules: createRules()
     },
     resolve: {
-        extensions: [ '.tsx', '.ts', '.js', '.jsx'],
-        alias: {
-        },
+        extensions: ['.tsx', '.ts', '.js', '.jsx'],
+        alias: {},
         fallback: {
             fs: false,
             net: false,
@@ -324,7 +320,7 @@ module.exports = {
         // - running with webpack (not webpack-dev-server because it will break)
         //
         // - when the .webpack-cache-loader directory is first removed
-        ! isDevServer && new CopyPlugin({
+        !isDevServer && new CopyPlugin({
             patterns: [
 
                 // ***** pdf.js
@@ -335,31 +331,31 @@ module.exports = {
                 // need to be preserved AND they actually need to be loaded but
                 // PDF.js doesn't link to them directly
 
-                { from: '../../node_modules/pdfjs-dist/web/pdf_viewer.css', to: '.'},
-                { from: '../../node_modules/pdfjs-dist/cmaps', to: './pdfjs-dist/cmaps' },
-                { from: '../../node_modules/pdfjs-dist/build/pdf.worker.js', to: './pdfjs-dist' },
+                {from: '../../node_modules/pdfjs-dist/web/pdf_viewer.css', to: '.'},
+                {from: '../../node_modules/pdfjs-dist/cmaps', to: './pdfjs-dist/cmaps'},
+                {from: '../../node_modules/pdfjs-dist/build/pdf.worker.js', to: './pdfjs-dist'},
 
                 // ***** apps
-                { from: './apps/**/*.html', to: './'},
-                { from: './apps/**/*.css', to: './'},
-                { from: './apps/**/*.svg', to: './'},
-                { from: './apps/init.js', to: './apps'},
-                { from: './apps/service-worker-registration.js', to: './apps'},
-                { from: './pdfviewer-custom/**/*.css', to: './'},
+                {from: './apps/**/*.html', to: './'},
+                {from: './apps/**/*.css', to: './'},
+                {from: './apps/**/*.svg', to: './'},
+                {from: './apps/init.js', to: './apps'},
+                {from: './apps/service-worker-registration.js', to: './apps'},
+                {from: './pdfviewer-custom/**/*.css', to: './'},
 
                 // ***** misc root directory files
 
-                { from: './*.ico', to: './'},
-                { from: './*.png', to: './'},
-                { from: './*.svg', to: './'},
-                { from: './sitemap*.xml', to: './'},
-                { from: './robots.txt', to: './'},
-                { from: './manifest.json', to: './'},
-                { from: './apps/repository/index.html', to: './'},
+                {from: './*.ico', to: './'},
+                {from: './*.png', to: './'},
+                {from: './*.svg', to: './'},
+                {from: './sitemap*.xml', to: './'},
+                {from: './robots.txt', to: './'},
+                {from: './manifest.json', to: './'},
+                {from: './apps/repository/index.html', to: './'},
 
             ],
         }),
-        ! isDevServer && new GenerateSW({
+        !isDevServer && new GenerateSW({
             // include: [
             //     "**"
             // ],
@@ -417,15 +413,16 @@ module.exports = {
         })
     ].filter(Boolean),
     optimization: {
-        minimize: ! isDev,
+        minimize: !isDev,
         minimizer: [new TerserPlugin({
             // disable caching to:  node_modules/.cache/terser-webpack-plugin/
             // because intellij will index this data and lock up my machine
             // and generally waste space and CPU
             // cache: ".terser-webpack-plugin",
             terserOptions: {
-                output: { ascii_only: true },
-            }})
+                output: {ascii_only: true},
+            }
+        })
         ],
         // usedExports: true,
         // removeAvailableModules: true,
@@ -434,13 +431,12 @@ module.exports = {
         //     chunks: 'all'
         // },
     },
-    watchOptions: {
-    },
+    watchOptions: {},
     devServer: {
         contentBase: path.resolve('dist/public'),
         compress: true,
         port,
-        open: true,
+        open: false,
         openPage,
         overlay: true,
         hot: true,
@@ -450,8 +446,8 @@ module.exports = {
         historyApiFallback: {
             rewrites: [
                 // TODO: load DefaultRewrites here and convert them...
-                { from: /^\/login$/, to: '/apps/repository/index.html' },
-                { from: /^\/apps\/stories/, to: '/apps/stories/index.html' },
+                {from: /^\/login$/, to: '/apps/repository/index.html'},
+                {from: /^\/apps\/stories/, to: '/apps/stories/index.html'},
             ]
         }
     },

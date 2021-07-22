@@ -1,13 +1,12 @@
 import {makeStyles} from "@material-ui/core";
 import {createStyles} from "@material-ui/styles";
-import clsx from "clsx";
 import {observer} from "mobx-react-lite";
 import React from "react";
 import {BlockEditorGenericProps} from "../BlockEditor";
-import {DataURLStr} from "../content/IImageContent";
+import {useBlocksTreeStore} from "../BlocksTree";
 import {hasModifiers} from "../contenteditable/BlockKeyboardHandlers";
-import {ContentEditables} from "../ContentEditables";
-import {useBlocksStore} from "../store/BlocksStore";
+import {DataURLStr} from "polar-blocks/src/blocks/content/IImageContent";
+import {DOMBlocks} from "../contenteditable/BlockContentEditable";
 
 interface IProps extends BlockEditorGenericProps {
     readonly src: DataURLStr;
@@ -27,12 +26,11 @@ const useStyles = makeStyles(() =>
     }),
 );
 
-
 export const BlockImageContent = observer((props: IProps) => {
     const divRef = React.useRef<HTMLDivElement | null>(null);
-    const {id, src, width, height, innerRef, onClick, onKeyDown} = props;
+    const {id, src, width, innerRef, onClick, onKeyDown} = props;
     const classes = useStyles();
-    const blocksStore = useBlocksStore();
+    const blocksTreeStore = useBlocksTreeStore();
 
     const handleRef = React.useCallback((current: HTMLDivElement | null) => {
 
@@ -45,13 +43,17 @@ export const BlockImageContent = observer((props: IProps) => {
     }, [innerRef]);
 
     const handleKeyDown = React.useCallback((e: React.KeyboardEvent) => {
-        if ((e.key === 'Backspace' || e.key === 'Delete') && !hasModifiers(e)) {
-            blocksStore.deleteBlocks([id]);
+        if ((e.key === 'Backspace' || e.key === 'Delete') && ! hasModifiers(e)) {
+            if (blocksTreeStore.hasSelected()) {
+                blocksTreeStore.deleteBlocks(blocksTreeStore.selectedIDs());
+            } else {
+                blocksTreeStore.deleteBlocks([id]);
+            }
             e.preventDefault();
         } else if (onKeyDown) {
             onKeyDown(e);
         }
-    }, [blocksStore, id, onKeyDown]);
+    }, [blocksTreeStore, id, onKeyDown]);
 
     React.useEffect(() => {
         const elem = divRef.current;
@@ -62,14 +64,20 @@ export const BlockImageContent = observer((props: IProps) => {
         const img = document.createElement('img');
         img.src = src;
         img.width = width;
-        img.height = height;
         elem.innerHTML = '';
         elem.appendChild(img);
-    }, [src, width, height]);
+    }, [src, width]);
+
+    const handleClick: React.MouseEventHandler = React.useCallback((event) => {
+        onClick?.(event);
+        blocksTreeStore.setActiveWithPosition(id, 'start');
+    }, [blocksTreeStore, id, onClick]);
 
     return (
-        <div onClick={onClick}
+        <div onClick={handleClick}
              onKeyDown={handleKeyDown}
+             id={`${DOMBlocks.BLOCK_ID_PREFIX}${props.id}`}
+             data-id={props.id}
              className={classes.root}
              contentEditable
              ref={handleRef} />

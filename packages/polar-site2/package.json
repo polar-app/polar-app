@@ -1,9 +1,9 @@
 {
   "name": "polar",
-  "private": true,
   "description": "General information, support, and downloads for the polar app",
-  "version": "2.1.69",
+  "version": "2.1.81",
   "author": "Will Kendall / Jonathan Graeupner / Myles <wpk235@gmail.com>",
+  "private": true,
   "scripts": {
     "build": "gatsby build",
     "clean-dev": "gatsby clean && gatsby develop",
@@ -44,8 +44,8 @@
     "ink": "=3.0.8",
     "ink-box": "=1.0.0",
     "pngquant-bin": "=6.0.0",
-    "polar-bookshelf": "^2.1.69",
-    "polar-shared": "^2.1.69",
+    "polar-bookshelf": "^2.1.81",
+    "polar-shared": "^2.1.81",
     "react": "=16.14.0",
     "react-dom": "=16.14.0",
     "react-helmet": "=6.1.0",
@@ -53,7 +53,7 @@
     "typeface-roboto": "=1.1.13"
   },
   "devDependencies": {
-    "prettier": "2.1.2"
+    "prettier": "=2.3.2"
   },
   "keywords": [
     "gatsby"

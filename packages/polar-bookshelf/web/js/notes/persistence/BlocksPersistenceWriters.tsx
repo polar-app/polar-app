@@ -5,14 +5,71 @@ import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
 import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 import {FirestoreBlocks} from "./FirestoreBlocks";
 import {Asserts} from "polar-shared/src/Asserts";
-import {IFirestore} from "polar-snapshot-cache/src/store/IFirestore";
 import firebase from 'firebase';
+import {IFirestore} from "polar-firestore-like/src/IFirestore";
+import {getConfig} from '../../firebase/Firebase';
+import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
+import {IBlock, IBlockContent} from 'polar-blocks/src/blocks/IBlock';
+import {URLStr} from 'polar-shared/src/util/Strings';
+import {ICollectionReference} from 'polar-firestore-like/src/ICollectionReference';
+import {IWriteBatch} from 'polar-firestore-like/src/IWriteBatch';
+import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 
 const IS_NODE = typeof window === 'undefined';
 
+
+export namespace FileTombstone {
+    const STORAGE_BUCKET = getConfig().storageBucket;
+
+    export function getFileNameFromBlock(block: IBlock<IBlockContent>) {
+        switch (block.content.type) {
+            case 'image':
+                return getFileNameFromStorageURL(block.content.src);
+        }
+
+        return undefined;
+    }
+
+    export function isCloudStorageURL(url: URLStr): boolean {
+        return url.indexOf(STORAGE_BUCKET) > -1;
+    }
+
+    export function getFileNameFromStorageURL(url: URLStr): string | undefined {
+        if (! isCloudStorageURL(url)) {
+            return undefined;
+        }
+        const { pathname } = new URL(url);
+        const pathnameParts = pathname.split('/');
+        return pathnameParts[pathnameParts.length - 1];
+    }
+
+    export function handleBlockAdded(collection: ICollectionReference<unknown>, batch: IWriteBatch<unknown>, block: IBlock<IBlockContent>) {
+        const addedFileName = FileTombstone.getFileNameFromBlock(block);
+        if (addedFileName) {
+            const identifier = Hashcodes.create(addedFileName);
+            const doc = collection.doc(identifier);
+            batch.delete(doc);
+        }
+    }
+
+    export function handleBlockRemoved(collection: ICollectionReference<unknown>, batch: IWriteBatch<unknown>, block: IBlock<IBlockContent>) {
+        const deletedFileName = FileTombstone.getFileNameFromBlock(block);
+        if (deletedFileName) {
+            const identifier = Hashcodes.create(deletedFileName);
+            const doc = collection.doc(identifier);
+            batch.set(doc, {
+                created: ISODateTimeStrings.create(),
+                uid: block.uid,
+                filename: deletedFileName,
+            });
+        }
+    }
+}
+
+
 export namespace FirestoreBlocksPersistenceWriter {
 
-    export async function doExec(firestore: IFirestore,
+    export async function doExec(firestore: IFirestore<unknown>,
                                  mutations: ReadonlyArray<IBlocksStoreMutation>) {
 
         // console.log("Writing mutations to firestore: ", mutations);
@@ -27,6 +84,7 @@ export namespace FirestoreBlocksPersistenceWriter {
         // console.log("Writing firestoreMutations to firestore: ", firestoreMutations);
 
         const collection = firestore.collection('block');
+        const tombstoneCollection = firestore.collection('cloud_storage_tombstone');
         const batch = firestore.batch();
 
         // convert the firestore mutations to a batch...
@@ -39,10 +97,12 @@ export namespace FirestoreBlocksPersistenceWriter {
                 case "set-doc":
                     const firestoreBlock = FirestoreBlocks.toFirestoreBlock(firestoreMutation.value);
                     batch.set(doc, firestoreBlock);
+                    FileTombstone.handleBlockAdded(tombstoneCollection, batch, firestoreMutation.value);
                     break;
 
                 case "delete-doc":
                     batch.delete(doc)
+                    FileTombstone.handleBlockRemoved(tombstoneCollection, batch, firestoreMutation.value);
                     break;
 
                 case "update-path-number":

@@ -1,16 +1,16 @@
 import useTheme from '@material-ui/core/styles/useTheme';
 import * as React from 'react';
 import {observer} from "mobx-react-lite"
-import {BlockIDStr, useBlocksStore } from './store/BlocksStore';
+import {useBlocksTreeStore} from './BlocksTree';
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 interface IProps {
     readonly id: BlockIDStr;
-    readonly children: JSX.Element;
 }
 
-export const BlockDragIndicator = observer((props: IProps) => {
+export const BlockDragIndicator: React.FC<IProps> = observer((props) => {
 
-    const {dropTarget} = useBlocksStore();
+    const {dropTarget} = useBlocksTreeStore();
 
     const theme = useTheme();
 

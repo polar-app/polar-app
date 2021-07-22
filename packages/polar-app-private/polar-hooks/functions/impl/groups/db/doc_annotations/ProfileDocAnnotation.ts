@@ -1,10 +1,9 @@
 import {AbstractDocAnnotationsDelegate} from "./AbstractDocAnnotationsDelegate";
 import {BaseDocAnnotation} from "./BaseDocAnnotations";
-import {ProfileHandleStr, ProfileIDStr} from "../Profiles";
-import {WriteBatch} from "@google-cloud/firestore";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-
+import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
+import {ProfileIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 
 export class ProfileDocAnnotations {
 
@@ -24,14 +23,14 @@ export class ProfileDocAnnotations {
         return this.delegate.list(parent);
     }
 
-    public static write(batch: WriteBatch,
+    public static write(batch: IWriteBatch<unknown>,
                         record: ProfileDocAnnotation) {
 
         this.delegate.write(batch, record);
 
     }
 
-    public static delete(batch: WriteBatch, id: IDStr) {
+    public static delete(batch: IWriteBatch<unknown>, id: IDStr) {
         this.delegate.delete(batch, id);
     }
 

@@ -1,7 +1,6 @@
 import {assert} from 'chai';
 import {Throttler} from './Throttler';
-import {Promises} from '../util/Promises';
-import {Latch} from "polar-shared/src/util/Latch";
+import {Promises} from "polar-shared/src/util/Promises";
 
 describe('Throttler', function() {
 

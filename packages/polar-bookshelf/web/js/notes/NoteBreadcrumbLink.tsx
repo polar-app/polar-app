@@ -1,8 +1,8 @@
 import * as React from "react";
-import {BlockIDStr} from "./store/BlocksStore";
 import {NoteLink} from "./NoteLink";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 const useStyles = makeStyles((theme) =>
     createStyles({

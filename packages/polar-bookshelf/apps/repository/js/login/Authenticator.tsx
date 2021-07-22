@@ -4,7 +4,6 @@ import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import Button from '@material-ui/core/Button';
 import {FAGoogleIcon} from "../../../../web/js/mui/MUIFontAwesome";
 import EmailIcon from '@material-ui/icons/Email';
-import CheckIcon from '@material-ui/icons/Check';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import TextField from '@material-ui/core/TextField';
@@ -215,7 +214,7 @@ const EmailTokenAuthButton = () => {
 
     const [pending, setPending] = React.useState(false);
     const [alert, setAlert] = React.useState<IAlert | undefined>();
-    const [active, setActive] = React.useState(false);
+    const [active, setActive] = React.useState(true);
     const [triggered, setTriggered, triggeredRef] = useStateRef(false);
 
     const triggerStartTokenAuth = useTriggerStartTokenAuth();
@@ -305,7 +304,7 @@ const EmailTokenAuthButton = () => {
 
     }, [doTriggerStartTokenAuth, triggeredRef])
 
-    const handleKeyPressEnter = React.useCallback((event: React.KeyboardEvent, callback: () => void) => {
+    const handleKeyPressEnter = React.useCallback((event: React.KeyboardEvent<any>, callback: () => void) => {
 
         if (event.key === 'Enter') {
             callback();
@@ -443,7 +442,7 @@ const EmailAuthButton = () => {
 
     }, [doTriggerAuth])
 
-    const handleKeyPress = React.useCallback((event: React.KeyboardEvent) => {
+    const handleKeyPress = React.useCallback((event: React.KeyboardEvent<any>) => {
 
         if (event.key === 'Enter') {
             handleAuth();
@@ -559,7 +558,7 @@ const Main = React.memo(function Main(props: IProps) {
                          flexDirection: 'column'
                      }}>
 
-                    <GoogleAuthButton/>
+                    {/*<GoogleAuthButton/>*/}
 
                     <EmailTokenAuthButton/>
 

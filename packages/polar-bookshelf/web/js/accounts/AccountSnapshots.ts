@@ -5,13 +5,13 @@ import {
     SnapshotUnsubscriber
 } from "polar-shared/src/util/Snapshots";
 import {createCachedFirestoreSnapshotSubscriber, OnNextCachedSnapshot, CachedSnapshotSubscriber} from "../snapshots/CachedFirestoreSnapshotSubscriber";
-import { IFirestore } from "polar-snapshot-cache/src/store/IFirestore";
+import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 
 const COLLECTION_NAME = "account";
 
 export namespace AccountSnapshots {
 
-    export function create(firestore: IFirestore, uid: string): CachedSnapshotSubscriber<Account> {
+    export function create(firestore: IFirestoreClient, uid: string): CachedSnapshotSubscriber<Account> {
 
         function createRef(uid: UserIDStr) {
 

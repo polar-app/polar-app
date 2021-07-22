@@ -95,6 +95,19 @@ export namespace SelectedContents {
 
             const textNodesRows = TextNodeRows.fromTextNodes(textNodes);
 
+            // Here we have to restore the original selection because TextNodeRows.fromTextNodes above
+            // modifies the selection's dom which results in losing parts of the selection
+            const selection = document.getSelection();
+            if (selection && textNodesRows.length) {
+                selection.removeAllRanges();
+                const range = new Range();
+                const firstNode = textNodesRows[0];
+                const lastNode = textNodesRows[textNodesRows.length - 1];
+                range.setStartBefore(firstNode);
+                range.setEnd(lastNode, (lastNode.textContent || '').length);
+                selection.addRange(range);
+            }
+
             return RectTexts.toRectTexts(textNodesRows);
 
         }

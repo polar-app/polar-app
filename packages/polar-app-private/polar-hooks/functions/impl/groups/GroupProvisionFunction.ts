@@ -43,7 +43,9 @@ export class GroupProvisionFunctions {
 
         await verifyNonExistingGroup(groupID);
 
-        const profileID = idUser.profileID;
+        if (! idUser.profile) {
+            throw new Error("No profile");
+        }
 
         const batch = firestore.batch();
 
@@ -67,14 +69,14 @@ export class GroupProvisionFunctions {
         await GroupAdmins.getOrCreate(batch, groupID, uid);
         UserGroups.updateOrCreate(batch, idUser, groupID, true);
 
-        const from = Senders.create(user, profileID);
+        const from = Senders.create(user, idUser.profile.id);
 
         const invitations = await UserRefs.toInvitations(request.invitations);
 
         await GroupInvites.invite(batch, idUser, groupID, from, invitations, request.docs);
 
         // the creator of the group needs to be a member too so that others can discover them
-        const groupMemberCreation = await GroupMembers.getOrCreate(batch, {profileID, groupID});
+        const groupMemberCreation = await GroupMembers.getOrCreate(batch, {profileID: idUser.profile.id, groupID});
         if (groupMemberCreation.created) {
             Groups.incrementNrMembers(batch, groupID);
         }

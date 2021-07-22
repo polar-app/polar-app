@@ -1,10 +1,13 @@
 import {Platform, Platforms} from "polar-shared/src/util/Platforms";
 import React from "react";
+import {BlocksTreeStore} from "../BlocksTreeStore";
+import {useBlocksTreeStore} from "../BlocksTree";
 import {ContentEditables} from "../ContentEditables";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
-import {BlockIDStr, useBlocksStore} from "../store/BlocksStore";
-import {IBlocksStore} from "../store/IBlocksStore";
+import {CursorPositions} from "./CursorPositions";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
+const PAGE_NAV_BLOCKS_JUMP_COUNT = 10; 
 
 const hasEditorSelection = (): boolean => {
 
@@ -24,6 +27,12 @@ const abortEvent = (event: React.KeyboardEvent): void => {
     event.preventDefault();
 };
 
+export const navNBlocks = (blocksTreeStore: BlocksTreeStore, delta: 'prev' | 'next', shiftKey: boolean) => {
+    const nav = () => blocksTreeStore[delta === 'prev' ? 'navPrev' : 'navNext']('start', { shiftKey: shiftKey });
+
+    for (let i = 0; i < PAGE_NAV_BLOCKS_JUMP_COUNT && nav(); i += 1) {};
+};
+
 export const hasModifiers = (event: React.KeyboardEvent, includeShift: boolean = true): boolean =>
     event.ctrlKey || event.metaKey || event.altKey || (includeShift && event.shiftKey);
 
@@ -31,63 +40,64 @@ type KeydownHandlerOpts = {
     event: React.KeyboardEvent;
     contentEditableElem: HTMLElement;
     platform: Platform;
-    blocksStore: IBlocksStore; 
-    root: BlockIDStr;
+    blocksTreeStore: BlocksTreeStore;
     blockID: BlockIDStr;
     readonly: boolean;
 };
 type KeydownHandler = (opts: KeydownHandlerOpts) => void;
 
 const HANDLERS: Record<string, KeydownHandler | undefined> = {
-    ArrowUp: ({ contentEditableElem, event, blocksStore, blockID, root }) => {
+    ArrowUp: ({ contentEditableElem, blocksTreeStore, event, blockID }) => {
         if (event.ctrlKey || event.metaKey) {
-            blocksStore.collapse(blockID);
+            blocksTreeStore.collapse(blockID);
             abortEvent(event);
             return;
         }
 
         if (event.altKey && event.shiftKey) {
-            const selectedIDs = blocksStore.hasSelected() ? blocksStore.selectedIDs() : [blockID];
-            blocksStore.moveBlocks(selectedIDs, -1);
+            const selectedIDs = blocksTreeStore.hasSelected() ? blocksTreeStore.selectedIDs() : [blockID];
+            blocksTreeStore.moveBlocks(selectedIDs, -1);
             abortEvent(event);
             return;
         }
 
         if (event.shiftKey && ! ContentEditables.selectionAtStart(contentEditableElem)) {
-            if (! blocksStore.hasSelected()) {
+            if (! blocksTreeStore.hasSelected()) {
                 // don't handle shift until we allow the range to be selected.
                 return;
             }
         }
 
         abortEvent(event);
-        blocksStore.navPrev('start', { shiftKey: event.shiftKey }, root);
+        const pos = CursorPositions.computeCurrentOffset(contentEditableElem);
+        blocksTreeStore.navPrev(pos || 'start', { shiftKey: event.shiftKey });
     },
-    ArrowDown: ({ event, blocksStore, blockID, contentEditableElem, root }) => {
+    ArrowDown: ({ event, blockID, contentEditableElem, blocksTreeStore }) => {
         if (event.ctrlKey || event.metaKey) {
-            blocksStore.expand(blockID);
+            blocksTreeStore.expand(blockID);
             abortEvent(event);
             return;
         }
 
         if (event.altKey && event.shiftKey) {
-            const selectedIDs = blocksStore.hasSelected() ? blocksStore.selectedIDs() : [blockID];
-            blocksStore.moveBlocks(selectedIDs, 1);
+            const selectedIDs = blocksTreeStore.hasSelected() ? blocksTreeStore.selectedIDs() : [blockID];
+            blocksTreeStore.moveBlocks(selectedIDs, 1);
             abortEvent(event);
             return;
         }
 
         if (event.shiftKey && ! ContentEditables.selectionAtEnd(contentEditableElem)) {
-            if (! blocksStore.hasSelected()) {
+            if (! blocksTreeStore.hasSelected()) {
                 // don't handle shift until we allow the range to be selected.
                 return;
             }
         }
 
         abortEvent(event);
-        blocksStore.navNext('start', { shiftKey: event.shiftKey }, root);
+        const pos = CursorPositions.computeCurrentOffset(contentEditableElem);
+        blocksTreeStore.navNext(pos || 'start', { shiftKey: event.shiftKey });
     },
-    ArrowLeft: ({ event, platform, blockID, blocksStore, contentEditableElem, root }) => {
+    ArrowLeft: ({ event, platform, blockID, contentEditableElem, blocksTreeStore }) => {
 
         if (! hasEditorSelection()) {
 
@@ -96,7 +106,7 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
             if ((isMacOS && event.shiftKey && event.metaKey) ||
                 (isPC && event.shiftKey && event.altKey)) {
 
-                blocksStore.unIndentBlock(blockID);
+                blocksTreeStore.unIndentBlock(blockID);
                 return;
 
             }
@@ -107,12 +117,12 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
 
             if (ContentEditables.cursorAtStart(contentEditableElem)) {
                 abortEvent(event);
-                blocksStore.navPrev('end', { shiftKey: event.shiftKey }, root);
+                blocksTreeStore.navPrev('end', { shiftKey: event.shiftKey });
             }
 
         }
     },
-    ArrowRight: ({ event, platform, blocksStore, blockID, contentEditableElem, root }) => {
+    ArrowRight: ({ event, platform, blockID, contentEditableElem, blocksTreeStore }) => {
 
         if (! hasEditorSelection()) {
 
@@ -120,7 +130,7 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
             const isPC = [Platform.LINUX, Platform.WINDOWS].indexOf(platform) > -1;
             if ((isMacOS && event.shiftKey && event.metaKey) ||
                 (isPC && event.shiftKey && event.altKey)) {
-                blocksStore.indentBlock(blockID, root);
+                blocksTreeStore.indentBlock(blockID);
                 return;
             }
 
@@ -130,35 +140,35 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
 
             if (ContentEditables.cursorAtEnd(contentEditableElem)) {
                 abortEvent(event);
-                blocksStore.navNext('start', { shiftKey: event.shiftKey }, root);
+                blocksTreeStore.navNext('start', { shiftKey: event.shiftKey });
             }
 
         }
 
     },
-    Tab: ({ event, blockID, blocksStore, root }) => {
+    Tab: ({ event, blockID, blocksTreeStore }) => {
 
-        const {parent} = blocksStore.getBlock(blockID)!;
+        const {parent} = blocksTreeStore.getBlock(blockID)!;
         if (parent !== undefined) {
 
             abortEvent(event);
 
             if (event.shiftKey) {
-                blocksStore.unIndentBlock(blockID, root);
+                blocksTreeStore.unIndentBlock(blockID);
             } else {
-                blocksStore.indentBlock(blockID, root);
+                blocksTreeStore.indentBlock(blockID);
             }
 
         }
     },
-    Enter: ({ event, blockID, blocksStore, contentEditableElem, root }) => {
+    Enter: ({ event, blockID, blocksTreeStore, contentEditableElem }) => {
         abortEvent(event);
-        if (blocksStore.hasSelected()) {
-            blocksStore.clearSelected("keydownHandler: Enter");
+        if (blocksTreeStore.hasSelected()) {
+            blocksTreeStore.clearSelected("keydownHandler: Enter");
             return;
         }
-        if (blocksStore.requiredAutoUnIndent(blockID, root)) {
-            blocksStore.unIndentBlock(blockID, root);
+        if (blocksTreeStore.requiredAutoUnIndent(blockID)) {
+            blocksTreeStore.unIndentBlock(blockID);
         } else {
             const split = ContentEditables.splitAtCursor(contentEditableElem);
 
@@ -167,12 +177,12 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
                 const prefix = MarkdownContentConverter.toMarkdown(ContentEditables.fragmentToHTML(split.prefix));
                 const suffix = MarkdownContentConverter.toMarkdown(ContentEditables.fragmentToHTML(split.suffix));
 
-                blocksStore.createNewBlock(blockID, {split: {prefix, suffix}});
+                blocksTreeStore.createNewBlock(blockID, {split: {prefix, suffix}});
 
             }
         }
     },
-    Backspace: ({ event, blocksStore, blockID, contentEditableElem, readonly, root }) => {
+    Backspace: ({ event, blockID, contentEditableElem, readonly, blocksTreeStore }) => {
         if (readonly) {
             return abortEvent(event);
         }
@@ -190,27 +200,27 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
         //     break;
         // }
 
-        if (blocksStore.hasSelected()) {
+        if (blocksTreeStore.hasSelected()) {
             abortEvent(event);
 
-            const selected = blocksStore.selectedIDs();
+            const selected = blocksTreeStore.selectedIDs();
 
             if (selected.length > 0) {
-                blocksStore.deleteBlocks(selected);
+                blocksTreeStore.deleteBlocks(selected);
             }
             return;
         }
 
         if (ContentEditables.cursorAtStart(contentEditableElem)) {
-            const mergeTarget = blocksStore.canMergePrev(blockID, root);
+            const mergeTarget = blocksTreeStore.canMergePrev(blockID);
 
             if (mergeTarget) {
                 abortEvent(event);
-                blocksStore.mergeBlocks(mergeTarget.target, mergeTarget.source);
+                blocksTreeStore.mergeBlocks(mergeTarget.target, mergeTarget.source);
             }
         }
     },
-    Delete: ({ event, blocksStore, blockID, contentEditableElem, readonly, root }) => {
+    Delete: ({ event, blockID, contentEditableElem, readonly, blocksTreeStore }) => {
         if (readonly) {
             return abortEvent(event);
         }
@@ -220,32 +230,39 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
             return;
         }
 
-        if (blocksStore.hasSelected()) {
+        if (blocksTreeStore.hasSelected()) {
             abortEvent(event);
 
-            const selected = blocksStore.selectedIDs();
+            const selected = blocksTreeStore.selectedIDs();
 
             if (selected.length > 0) {
-                blocksStore.deleteBlocks(selected);
+                blocksTreeStore.deleteBlocks(selected);
             }
             return;
         }
 
         if (ContentEditables.cursorAtEnd(contentEditableElem)) {
-            const mergeTarget = blocksStore.canMergeNext(blockID, root);
+            const mergeTarget = blocksTreeStore.canMergeNext(blockID);
 
             if (mergeTarget) {
                 abortEvent(event);
-                blocksStore.mergeBlocks(mergeTarget.target, mergeTarget.source);
+                blocksTreeStore.mergeBlocks(mergeTarget.target, mergeTarget.source);
             }
         }
+    },
+    PageUp: ({ blocksTreeStore, event }) => {
+        abortEvent(event);
+        navNBlocks(blocksTreeStore, 'prev', event.shiftKey);
+    },
+    PageDown: ({ blocksTreeStore, event }) => {
+        abortEvent(event);
+        navNBlocks(blocksTreeStore, 'next', event.shiftKey);
     },
 };
 
 
 type IUseBlockKeyDownHandlerOpts = {
     contentEditableRef: React.RefObject<HTMLDivElement | null>,
-    root: BlockIDStr;
     blockID: BlockIDStr;
     onKeyDown?: React.EventHandler<React.KeyboardEvent>;
     readonly?: boolean;
@@ -256,8 +273,8 @@ type IUseBlockKeyDownHandlerBinds = {
 };
 
 export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseBlockKeyDownHandlerBinds => {
-    const { contentEditableRef, root, blockID, onKeyDown, readonly = false } = opts;
-    const blocksStore = useBlocksStore();
+    const { contentEditableRef, blockID, onKeyDown, readonly = false } = opts;
+    const blocksTreeStore = useBlocksTreeStore();
     const platform = React.useMemo(() => Platforms.get(), []);
 
     const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
@@ -272,15 +289,14 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
                 contentEditableElem: elem,
                 platform,
                 event,
-                blocksStore,
-                blockID, 
-                root,
+                blocksTreeStore,
+                blockID,
                 readonly
             });
         } else if (readonly && !hasModifiers(event, false)) {
             abortEvent(event);
         }
-        if (blocksStore.hasSelected() && !hasModifiers(event, false)) {
+        if (blocksTreeStore.hasSelected() && !hasModifiers(event, false)) {
             abortEvent(event);
         }
 
@@ -288,7 +304,7 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
             onKeyDown(event);
         }
 
-    }, [onKeyDown, blockID, platform, blocksStore, contentEditableRef, readonly, root]);
+    }, [onKeyDown, blockID, platform, blocksTreeStore, contentEditableRef, readonly]);
 
     React.useEffect(() => {
         const elem = contentEditableRef.current;

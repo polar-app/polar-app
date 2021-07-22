@@ -1,10 +1,10 @@
-import {IWhereClause} from "./store/ICollectionReference";
-import { IQueryOrderBy } from "./store/IQuery";
-
 /**
  * The metadata for a cached query including the collection, clauses, limit, and
  * orderBy used.
  */
+import {IWhereClause} from "polar-firestore-like/src/ICollectionReference";
+import {IQueryOrderBy} from "polar-firestore-like/src/IQuery";
+
 export interface ICachedQueryMetadata {
 
     readonly collection: string;

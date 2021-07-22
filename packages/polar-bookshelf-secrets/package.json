@@ -1,6 +1,6 @@
 {
   "name": "polar-bookshelf-secrets",
-  "version": "2.1.69",
+  "version": "2.1.81",
   "description": "",
   "main": "index.js",
   "private": true,

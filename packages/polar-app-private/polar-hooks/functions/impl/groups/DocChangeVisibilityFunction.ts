@@ -19,7 +19,11 @@ export class DocChangeVisibilityFunctions {
 
         const batch = firestore.batch();
 
-        const profileID = idUser.profileID;
+        if (! idUser.profile) {
+            throw new Error("No profile");
+        }
+
+        const profileID = idUser.profile.id;
         const {docID} = request;
 
         if (request.visibility === 'private') {

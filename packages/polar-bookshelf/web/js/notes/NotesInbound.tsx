@@ -1,36 +1,32 @@
 import * as React from 'react';
-import { deepMemo } from '../react/ReactUtils';
+import {deepMemo} from '../react/ReactUtils';
 import Box from '@material-ui/core/Box';
-import { UL } from './UL';
-import {BlockEditor} from "./BlockEditor";
 import {Block} from "./Block";
-import {BlockIDStr, useBlocksStore } from './store/BlocksStore';
-import { observer } from "mobx-react-lite"
+import {observer} from "mobx-react-lite"
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import {NoteBreadcrumbLink} from "./NoteBreadcrumbLink";
 import {BlockPredicates} from "./store/BlockPredicates";
-import {IBlockPredicates} from "./store/IBlockPredicates";
+import {BlocksTreeProvider, useBlocksTreeStore} from './BlocksTree';
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {UL} from './UL';
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import {createStyles, makeStyles} from '@material-ui/core';
 
 interface InboundNoteRefProps {
     readonly id: BlockIDStr;
-    readonly name: string | undefined;
-    readonly content: string | undefined;
 }
 
 const InboundNoteRef = observer((props: InboundNoteRefProps) => {
 
-    const blocksStore = useBlocksStore();
-
-    const pathToNote = blocksStore.pathToBlock(props.id);
+    const {id} = props;
+    const blocksTreeStore = useBlocksTreeStore();
+    const pathToNote = blocksTreeStore.pathToBlock(id).filter(BlockPredicates.isTextBlock);
 
     return (
-        <>
-
-            <div style={{display: 'flex', marginLeft: 20}}>
+        <Box mb={1}>
+            <div style={{display: 'flex'}}>
                 <Breadcrumbs>
-
-                    {pathToNote.filter(BlockPredicates.isTextBlock)
-                               .map(current => <NoteBreadcrumbLink key={current.id}
+                    {pathToNote.map(current => <NoteBreadcrumbLink key={current.id}
                                                                    id={current.id}
                                                                    content={current.content.data}/>)}
 
@@ -44,10 +40,12 @@ const InboundNoteRef = observer((props: InboundNoteRefProps) => {
                      // maxWidth: '50ch',
                  }}>
 
-                <Block root={props.id} parent={undefined} id={props.id} />
+                <BlocksTreeProvider root={id}>
+                    <Block parent={undefined} id={id} />
+                </BlocksTreeProvider>
 
             </div>
-        </>
+        </Box>
     )
 
 });
@@ -56,12 +54,26 @@ interface IProps {
     readonly id: BlockIDStr;
 }
 
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        expandToggle: {
+            color: theme.palette.text.hint,
+            marginRight: 8,
+        },
+    }),
+);
+
 export const NotesInbound = deepMemo(observer(function NotesInbound(props: IProps) {
+    const blocksTreeStore = useBlocksTreeStore();
+    const [expanded, setExpanded] = React.useState(false);
 
-    const blocksStore = useBlocksStore();
+    const onToggleExpand = React.useCallback(() => setExpanded(expanded => !expanded), []);
 
-    const inboundNoteIDs = blocksStore.lookupReverse(props.id);
-    const inbound = blocksStore.lookup(inboundNoteIDs);
+    const inboundNoteIDs = blocksTreeStore.lookupReverse(props.id);
+    const inbound = React.useMemo(() => {
+        const blocks = [...blocksTreeStore.idsToBlocks(inboundNoteIDs)].filter(BlockPredicates.isTextBlock);
+        return blocks.sort((a, b) => (new Date(b.created)).getTime() - (new Date(a.created).getTime()));
+    }, [inboundNoteIDs, blocksTreeStore]);
 
     if (inbound.length === 0) {
         return null;
@@ -70,20 +82,42 @@ export const NotesInbound = deepMemo(observer(function NotesInbound(props: IProp
     return (
         <div className="NotesInbound">
 
-            <Box color="text.secondary">
-                {/* TODO: Maybe use a package here for pluralization or write a helper function somewhere */}
-                <h3>All notes that reference this note: { inbound.length } linked reference{inbound.length === 1 ? '' : 's'}.</h3>
+            <Box color="text.secondary" display="flex" alignItems="center">
+                <SectionExpandToggle expanded={expanded} onToggleExpand={onToggleExpand} />
+
+                <h3>Linked references ({ inbound.length })</h3>
             </Box>
 
-            <UL>
-                <>
-                    {inbound.filter(IBlockPredicates.isTextBlock)
-                            .map((current, idx) => <InboundNoteRef key={idx}
-                                                                   id={current.id}
-                                                                   name={current.content.data}
-                                                                   content={current.content.data}/>)}
-                </>
-            </UL>
+            {expanded &&
+                <UL>
+                    {inbound.map((current, idx) => <InboundNoteRef key={idx} id={current.id} />)}
+                </UL>
+            }
         </div>
     );
 }));
+
+
+interface ISectionExpandToggleProps {
+    style?: React.CSSProperties;
+    expanded: boolean;
+    onToggleExpand: () => void;
+}
+
+export const SectionExpandToggle: React.FC<ISectionExpandToggleProps> = (props) => {
+    const { style = {}, expanded, onToggleExpand } = props;
+
+    return (
+        <ArrowRightIcon
+            onClick={onToggleExpand}
+            style={{
+                transform: `rotate(${expanded ? 90 : 0}deg)`,
+                transformOrigin: 'center',
+                fontSize: 26,
+                transition: 'transform 100ms ease-in',
+                cursor: 'pointer',
+                ...style,
+            }}
+        />
+    );
+};

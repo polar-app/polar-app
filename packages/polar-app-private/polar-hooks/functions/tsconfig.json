@@ -38,7 +38,8 @@
     "lib": ["es2019", "dom"]
   },
   "include": [
-    "**/*.ts"
+    "**/*.ts",
+    "**/*.tsx"
   ],
   "exclude": [
   ]

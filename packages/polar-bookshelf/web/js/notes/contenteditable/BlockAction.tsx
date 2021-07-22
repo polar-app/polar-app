@@ -4,12 +4,12 @@ import useTheme from '@material-ui/core/styles/useTheme';
 import {ActionMenuItemsProvider, useActionMenuStore} from "../../mui/action_menu/ActionStore";
 import {ContentEditables} from "../ContentEditables";
 import INodeOffset = ContentEditables.INodeOffset;
-import {BlockContentEditable, useBlockContentEditableElement} from "./BlockContentEditable";
+import {useBlockContentEditableElement} from "./BlockContentEditable";
 import { observer } from "mobx-react-lite"
-import {BlockIDStr, useBlocksStore} from '../store/BlocksStore';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
-import {CursorPositions} from './CursorPositions';
+import {useBlocksTreeStore} from '../BlocksTree';
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 const THINSP = ' ';
 
@@ -76,7 +76,7 @@ interface IProps {
  */
 function useActionExecutor(id: BlockIDStr) {
 
-    const blocksStore = useBlocksStore();
+    const blocksTreeStore = useBlocksTreeStore();
 
     const contentEditableMarkdownReader = useContentEditableMarkdownReader();
 
@@ -102,25 +102,24 @@ function useActionExecutor(id: BlockIDStr) {
                     coveringRange.deleteContents();
 
                     const a = document.createElement('a');
-                    const span = document.createElement('span');
-                    span.innerHTML = ContentEditables.getEmptyCharacter();
                     a.setAttribute('contenteditable', 'false');
                     a.setAttribute('href', '#' + actionOp.target);
-                    a.appendChild(document.createTextNode(actionOp.target));
-                    coveringRange.insertNode(span);
+                    a.appendChild(document.createTextNode(actionOp.target.trim()));
+                    const textNode = document.createTextNode('');
+                    coveringRange.insertNode(textNode);
                     coveringRange.insertNode(a);
-                    ContentEditables.setCaretPosition(span, 'start');
+                    ContentEditables.setCaretPosition(textNode, 'end');
                 }
 
                 updateSelection();
 
                 const content = contentEditableMarkdownReader();
-                blocksStore.createLinkToBlock(id, actionOp.target, content);
+                blocksTreeStore.createLinkToBlock(id, actionOp.target, content);
                 break;
 
         }
 
-    }, [contentEditableMarkdownReader, blocksStore, id])
+    }, [contentEditableMarkdownReader, blocksTreeStore, id])
 
 }
 

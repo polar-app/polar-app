@@ -14,7 +14,7 @@ export const StripeCancelSubscriptionFunction = ExpressFunctions.createHookAsync
 
     await Accounts.validate(body.email, body.uid);
     await StripeCustomers.cancelSubscription(body.mode, body.email);
-    await Accounts.changePlanViaEmail(body.email, account.customer.customerID, 'free', 'month');
+    await Accounts.changePlanViaEmail(body.email, {type: 'stripe', customerID: account.customer.customerID}, 'free', 'month');
 
     res.sendStatus(200);
 

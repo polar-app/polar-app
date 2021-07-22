@@ -1,9 +1,9 @@
 import React from "react";
-import {DataURLs} from "polar-shared/src/util/DataURLs";
 import {URLStr} from "polar-shared/src/util/Strings";
-import {Blobs} from "polar-shared/src/util/Blobs";
 import {HTMLToBlocks, IBlockContentStructure} from "../HTMLToBlocks";
-import {Images} from "polar-shared/src/util/Images";
+import {useBlocksTreeStore} from "../BlocksTree";
+import {BlockIDStr} from "../../../../../polar-app-public/polar-blocks/src/blocks/IBlock";
+import {useUploadHandler} from "../UploadHandler";
 
 export interface IPasteImageData {
     readonly url: URLStr;
@@ -15,6 +15,7 @@ export interface IPasteHandlerOpts {
     readonly onPasteImage: (image: IPasteImageData) => void;
     readonly onPasteBlocks: (blocks: ReadonlyArray<IBlockContentStructure>) => void; 
     readonly onPasteError: (err: Error) => void;
+    readonly id: BlockIDStr;
 }
 
 export type PasteImageType =
@@ -124,7 +125,8 @@ const executePasteHandlers = async (
  */
 export function usePasteHandler(opts: IPasteHandlerOpts) {
 
-    const {onPasteImage, onPasteBlocks, onPasteError} = opts;
+    const {onPasteImage, onPasteBlocks, onPasteError, id} = opts;
+    const uploadHandler = useUploadHandler();
 
     return React.useCallback((event: React.ClipboardEvent) => {
 
@@ -143,20 +145,11 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
                 const file = imageItem.dataTransferItem.getAsFile()
 
                 if (file) {
+                    const uploadedFile = await uploadHandler({ file, target: { id, pos: 'bottom' } });
 
-                    const ab = await Blobs.toArrayBuffer(file)
-                    const dataURL = DataURLs.encode(ab, imageItem.type);
-
-                    // const resolution = await ImageResolutions.compute(file);
-
-                    const dimensions = await Images.getDimensions(dataURL);
-
-                    const image: IPasteImageData = {
-                        url: dataURL,
-                        ...dimensions
+                    if (uploadedFile) {
+                        onPasteImage(uploadedFile);
                     }
-
-                    onPasteImage(image);
                 }
             }
         }
@@ -199,13 +192,13 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
                 [
                     // The following array represents priority
                     {type: 'polarblocks', handler: extractPolarBlocks},
-                    {type: 'html', handler: extractHTML},
                     {type: 'image', handler: extractImage},
+                    {type: 'html', handler: extractHTML},
                 ],
                 onPasteError,
             ).catch(e => console.log(e));
         }
 
-    }, [onPasteError, onPasteImage, onPasteBlocks])
+    }, [onPasteError, onPasteImage, onPasteBlocks, uploadHandler, id])
 
 }
