@@ -52,6 +52,7 @@ describe('PDFText', function() {
         //   maybe also keep the hyphenated text too.
         //
         //
+        // https://github.com/axa-group/nlp.js/blob/master/docs/v3/language-guesser.md
 
         await PDFText.getText('/Users/burton/projects/polar-app/packages/polar-bookshelf/docs/examples/pdf/bigtable.pdf', dumpTextContent, {maxPages: 1});
 
