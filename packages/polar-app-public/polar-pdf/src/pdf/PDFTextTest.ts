@@ -1,10 +1,6 @@
 import {PDFText, PDFTextWordMerger} from "./PDFText";
-import {Util} from "pdfjs-dist";
-import {Arrays} from "polar-shared/src/util/Arrays";
 import {assertJSON} from "polar-bookshelf/web/js/test/Assertions";
 import IPDFTextContent = PDFText.IPDFTextContent;
-import TextItem = _pdfjs.TextItem;
-import IPDFTextItem = PDFText.IPDFTextItem;
 import {assert} from 'chai';
 import IPDFTextWord = PDFTextWordMerger.IPDFTextWord;
 
