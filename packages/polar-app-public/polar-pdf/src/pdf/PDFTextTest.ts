@@ -43,14 +43,8 @@ describe('PDFText', function() {
         // tion 6 describes some of the re nements that we made
         //   - this might be a unicode char ?
         //
-        // - we need a lang categorizer
-        //    - use nlp.js for this... but use it in another package so that this code can ALSO be used
-        //      in the front end.  Technically this code should post-process the content into a
-        //      higher level structure
-        //
         // - we need to join words with hyphens into their original text... but
         //   maybe also keep the hyphenated text too.
-        //
         //
         // https://github.com/axa-group/nlp.js/blob/master/docs/v3/language-guesser.md
 
