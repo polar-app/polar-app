@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "polar-shared": "^2.1.69",
+    "polar-google-cloud-language": "^2.1.69",
     "@google-cloud/language": "=4.2.5"
   },
   "files": [
