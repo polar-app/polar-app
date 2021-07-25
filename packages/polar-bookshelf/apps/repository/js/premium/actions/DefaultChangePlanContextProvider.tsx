@@ -11,6 +11,18 @@ import {
 } from "../../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 import {useStripeCheckout} from "./UseStripeCheckout";
 
+const initiateNativeAppleIap = async (email: string, plan: Billing.V2Plan) => {
+    if ((window as any).ReactNativeWebView) {
+        (window as any).ReactNativeWebView.postMessage(JSON.stringify({
+            action: 'buy_play',
+            data: {
+                plan: plan.level,
+                email,
+            }
+        }))
+    }
+};
+
 function usePurchaseOrChangePlanAction() {
 
     const dialogManager = useDialogManager();
@@ -20,10 +32,10 @@ function usePurchaseOrChangePlanAction() {
     const stripeCheckout = useStripeCheckout();
 
     return React.useCallback((newSubscription: Billing.V2Subscription) => {
-
         console.log("Attempting to change to ", newSubscription);
 
         const {interval, plan} = newSubscription;
+
 
         const buyHandler = () => {
             // if we're buying a NEW product go ahead and redirect us to
@@ -36,6 +48,14 @@ function usePurchaseOrChangePlanAction() {
 
                 const doAsync = async () => {
                     dialogManager.snackbar({message: 'One moment.  About to setup your purchase... '});
+
+                    // This boolean flag is injected through the native app's WebView
+                    // and is used to tell the React code (like the one here) that Polar Bookshelf
+                    // is being viewed through the native app's WebView
+                    if ((window as any).isNativeApp) {
+                        await initiateNativeAppleIap(email, newSubscription.plan);
+                        return;
+                    }
                     await stripeCheckout(newSubscription, email);
                 }
 
