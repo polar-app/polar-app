@@ -46,7 +46,32 @@ describe('PDFText', function() {
         // - we need to join words with hyphens into their original text... but
         //   maybe also keep the hyphenated text too.
         //
-        // https://github.com/axa-group/nlp.js/blob/master/docs/v3/language-guesser.md
+        //      - I think we can handle this by making have a set of mutations
+        //        that show which offset words were joined and re-hyphenated so
+        //        that we can reconstruct the original text or have split /
+        //        hyphen points.
+        //
+        //      - We're also, arguably, going to need a way to keep the original
+        //        boxes but I think we could just also anchor just on the raw text
+        //
+        //      - MAYBE I just index both forms / but I'm not sure if ES can do
+        //        this for me. Basically, the idea is to implement BOTH forms as
+        //        terms but not sure...
+
+        // Write this in my standup and we should implement it soon:
+        //
+        // - Built out a framework for extracting PDF text from documents for PoC of AI.
+        // The major blocker is actually hyphenation and whether we store metadata about
+        // the regions of text and where they are located in the document.  What I'm
+        // thinking of doing is storing a 'hyphen' map to document where the chars are
+        // split, and what split char is used. Sometimes, they don't use the normal '-'
+        // char but a wider one from unicode and we should reconstruct the exact original
+        // document.  We could also have a map that stores the text offsets, and the box
+        // (x, y, width, height) in the document where that text is found. This would be
+        // AFTER applying the hyphen map.  This seems like I'm getting ahead of myself but
+        // this is a major issue because without this data we can't jump to the place in
+        // the document where the hit is indexed and I don't want an in-elegant solution
+        // here.
 
         await PDFText.getText('/Users/burton/projects/polar-app/packages/polar-bookshelf/docs/examples/pdf/bigtable.pdf', dumpTextContent, {maxPages: 1});
 
