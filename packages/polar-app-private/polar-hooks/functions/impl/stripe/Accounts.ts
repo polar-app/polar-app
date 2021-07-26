@@ -99,7 +99,7 @@ export namespace Accounts {
 
     }
 
-    export async function get(email: string): Promise<Account | undefined> {
+    export async function get(email: string): Promise<IAccount | undefined> {
 
         const query = firestore()
             .collection('account')
@@ -114,11 +114,11 @@ export namespace Accounts {
 
         const doc = querySnapshot.docs[0].data();
 
-        return <Account> doc;
+        return <IAccount> doc;
 
     }
 
-    export async function write(account: Account) {
+    export async function write(account: IAccount) {
 
         const ref = firestore()
             .collection('account')
@@ -163,6 +163,6 @@ export interface Account extends AccountInit {
 /**
  * An account where the customer is not optional.
  */
-export interface CustomerAccount extends Account {
+export interface CustomerAccount extends IAccount {
     readonly customer: StripeCustomer;
 }
