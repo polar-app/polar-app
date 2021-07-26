@@ -38,7 +38,7 @@ describe('PDFText', function() {
 
         };
 
-        // FIXME: still missing characters like:
+        // TODO: still missing characters like:
 
         // tion 6 describes some of the re nements that we made
         //   - this might be a unicode char ?
