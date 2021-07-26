@@ -71,6 +71,21 @@ function usePurchaseOrChangePlanAction() {
 
                 dialogManager.snackbar({message: `Changing plan to ${plan.level} billed at interval ${interval}.  One moment...`});
 
+                // This boolean flag is injected through the native app's WebView
+                // and is used to tell the React code (like the one here) that Polar Bookshelf
+                // is being viewed through the native app's WebView
+                if ((window as any).isNativeApp) {
+                    const email = userInfoContext?.userInfo?.email;
+                    if (!email) {
+                        alert(`Can not change to plan ${plan.level} without a valid email`);
+                        return;
+                    }
+                    initiateNativeAppleIap(email, plan).then(() => {
+                        console.log('Plan changed to ' + plan);
+                    })
+                    return;
+                }
+
                 AccountActions.changePlan(plan.level, interval)
                     .catch(err => log.error("Unable to upgrade plan: ", err));
 
