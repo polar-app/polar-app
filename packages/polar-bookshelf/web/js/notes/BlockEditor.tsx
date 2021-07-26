@@ -9,10 +9,10 @@ import {MarkdownStr} from "polar-shared/src/util/Strings";
 import {MarkdownContent} from "./content/MarkdownContent";
 import {BlockImageContent} from "./blocks/BlockImageContent";
 import {useBlockKeyDownHandler} from "./contenteditable/BlockKeyboardHandlers";
-import {ContentEditables} from "./ContentEditables";
 import {reaction} from "mobx";
 import {useBlocksTreeStore} from "./BlocksTree";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {ContentEditables} from "./ContentEditables";
 
 interface ILinkNavigationEvent {
     readonly abortEvent: () => void;
@@ -126,16 +126,14 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
     React.useEffect(() => {
         const focusBlock = () => {
             const active = blocksTreeStore.active;
-            if (active && active.id === id) {
-                if (ref.current) {
-
+            if (ref.current) {
+                if (active && active.id === id) {
                     if (active.pos !== undefined) {
                         updateCursorPosition(ref.current, active)
                     }
-
+                } else {
+                    ContentEditables.insertEmptySpacer(ref.current);
                 }
-            } else if (ref.current) {
-                ContentEditables.insertEmptySpacer(ref.current);
             }
         };
         focusBlock();

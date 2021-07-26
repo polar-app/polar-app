@@ -14,12 +14,16 @@ export const SearchForNote = observer(() => {
 
     const namedBlocks = blocksStore.getNamedBlocks();
 
+    const sortedNamedBlocks = React.useMemo(() => {
+        return [...namedBlocks].sort((a, b) => a.localeCompare(b));
+    }, [namedBlocks]);
+
     const [inputValue, setInputValue] = React.useState('');
 
     return (
         <Autocomplete
             size="medium"
-            options={[...namedBlocks]}
+            options={sortedNamedBlocks}
             getOptionLabel={(option) => option}
             inputValue={inputValue}
             value={''}

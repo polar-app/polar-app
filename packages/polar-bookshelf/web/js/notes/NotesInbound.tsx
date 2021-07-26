@@ -9,7 +9,7 @@ import {BlockPredicates} from "./store/BlockPredicates";
 import {BlocksTreeProvider, useBlocksTreeStore} from './BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {UL} from './UL';
-import {ExpandToggle} from './BlockExpandToggleButton';
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import {createStyles, makeStyles} from '@material-ui/core';
 
 interface InboundNoteRefProps {
@@ -64,8 +64,6 @@ const useStyles = makeStyles((theme) =>
 );
 
 export const NotesInbound = deepMemo(observer(function NotesInbound(props: IProps) {
-
-    const classes = useStyles();
     const blocksTreeStore = useBlocksTreeStore();
     const [expanded, setExpanded] = React.useState(false);
 
@@ -85,11 +83,7 @@ export const NotesInbound = deepMemo(observer(function NotesInbound(props: IProp
         <div className="NotesInbound">
 
             <Box color="text.secondary" display="flex" alignItems="center">
-                <ExpandToggle
-                    expanded={expanded}
-                    onToggle={onToggleExpand}
-                    className={classes.expandToggle}
-                />
+                <SectionExpandToggle expanded={expanded} onToggleExpand={onToggleExpand} />
 
                 <h3>Linked references ({ inbound.length })</h3>
             </Box>
@@ -102,3 +96,28 @@ export const NotesInbound = deepMemo(observer(function NotesInbound(props: IProp
         </div>
     );
 }));
+
+
+interface ISectionExpandToggleProps {
+    style?: React.CSSProperties;
+    expanded: boolean;
+    onToggleExpand: () => void;
+}
+
+export const SectionExpandToggle: React.FC<ISectionExpandToggleProps> = (props) => {
+    const { style = {}, expanded, onToggleExpand } = props;
+
+    return (
+        <ArrowRightIcon
+            onClick={onToggleExpand}
+            style={{
+                transform: `rotate(${expanded ? 90 : 0}deg)`,
+                transformOrigin: 'center',
+                fontSize: 26,
+                transition: 'transform 100ms ease-in',
+                cursor: 'pointer',
+                ...style,
+            }}
+        />
+    );
+};

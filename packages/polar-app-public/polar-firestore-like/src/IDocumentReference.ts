@@ -36,6 +36,7 @@ export interface IDocumentReference<SM> {
 
     readonly id: string;
 
+    create(data: TDocumentData): Promise<void>;
     get(options?: IGetOptions): Promise<IDocumentSnapshot<SM>>;
     set(data: TDocumentData): Promise<void>;
     delete(): Promise<void>;

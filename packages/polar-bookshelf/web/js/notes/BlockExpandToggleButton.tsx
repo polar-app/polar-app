@@ -1,13 +1,13 @@
 import React from "react";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {NoteButton} from "./NoteButton";
-import {ArrowRight} from "./ArrowRight";
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import createStyles from "@material-ui/core/styles/createStyles";
 import {observer} from "mobx-react-lite"
 import {useBlocksTreeStore} from "./BlocksTree";
 import clsx from "clsx";
+import {Box} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -34,15 +34,20 @@ export const ExpandToggle: React.FC<IExpandButtonProps> = (props) => {
 
     return (
         <NoteButton className={clsx(classes.root, className)}
-                    style={{ ...style, fontSize: 20 }}
+                    style={{ ...style }}
+                    // To prevent losing focus of the focused block
+                    onMouseDown={e => e.preventDefault()}
                     onClick={onToggle}>
-            <ArrowRightIcon
-                style= {{
-                    transform: `rotate(${expanded ? 90 : 0}deg)`,
-                    transformOrigin: 'center',
-                    transition: 'transform 100ms ease-in',
-                }}
-            />
+            <Box display="flex" alignItems="center">
+                <ChevronRightIcon
+                    style={{
+                        transform: `rotate(${expanded ? 90 : 0}deg)`,
+                        transformOrigin: 'center',
+                        fontSize: 16,
+                        transition: 'transform 100ms ease-in',
+                    }}
+                />
+            </Box>
         </NoteButton>
     );
 };

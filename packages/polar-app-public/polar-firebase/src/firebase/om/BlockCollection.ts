@@ -7,7 +7,11 @@ export namespace BlockCollection {
     export const COLLECTION = 'block';
 
     export async function get(firestore: IFirestore<unknown>, id: BlockIDStr): Promise<IBlock | undefined> {
-        return await Collections.getByID(firestore, COLLECTION, id);
+        return await Collections.get(firestore, COLLECTION, id);
+    }
+
+    export async function set(firestore: IFirestore<unknown>, block: IBlock) {
+        return await Collections.set(firestore, COLLECTION, block.id, block);
     }
 
 }

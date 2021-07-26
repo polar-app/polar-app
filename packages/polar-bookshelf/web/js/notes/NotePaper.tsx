@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) =>
             height: '100%',
             overflowY: 'auto',
             background: theme.palette.background.paper,
-            padding: '13px 20px',
+            padding: '24px 16px',
             '& > .NoteTree + .NoteTree': {
                 marginTop: 70,
             }
@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) =>
         wrapper: {
             maxWidth: 1024,
             height: '100%',
-            borderRadius: 6,
+            borderRadius: 4,
             overflow: 'hidden',
             flex: 1,
         }

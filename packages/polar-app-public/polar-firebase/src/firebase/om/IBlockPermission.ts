@@ -1,44 +1,22 @@
-import {UserIDStr} from "polar-firestore-like/src/IFirestore";
-
-export type AccessType = 'read' | 'comment' | 'write' | 'admin';
+import {BlockPermissionUserIDStr, IBlockPermissionEntry} from "./IBlockPermissionEntry";
+import {BlockIDStr, NamespaceIDStr} from "polar-blocks/src/blocks/IBlock";
+import { ISODateTimeString } from "polar-shared/src/metadata/ISODateTimeStrings";
 
 /**
- * Similar to AccessType but mapped to just read and write.
+ * The type of block record types.
  *
+ * page: permissions for an specific page
+ * nspace: permissions for an entire namespace
+ * effective: the effective / merged permissions for nspace and page.
  */
-export type PermissionType = 'ro' | 'rw';
+export type BlockPermissionRecordType = 'page' | 'nspace' | 'effective';
 
-/**
- * This is a magic string to denote public access for a resource.
- */
-export type PublicUserIDStr = '__public__';
+export type BlockPermissionMap = {[uid in BlockPermissionUserIDStr]: IBlockPermissionEntry}
 
-export type BlockPermissionUserIDStr = UserIDStr | PublicUserIDStr;
-
-export interface IBlockPermission {
-    readonly id: UserIDStr;
-    readonly uid: BlockPermissionUserIDStr;
-    readonly access: AccessType;
+export interface IBlockPermission<T extends BlockPermissionRecordType> {
+    readonly id: BlockIDStr | NamespaceIDStr;
+    readonly type: T;
+    readonly updated: ISODateTimeString;
+    readonly permissions: Readonly<BlockPermissionMap>;
 }
 
-export namespace AccessTypes {
-
-    export function convertToPermissionType(accessType: AccessType): PermissionType {
-
-        switch (accessType) {
-            case "admin":
-                return 'rw';
-
-            case "write":
-                return 'rw';
-
-            case "comment":
-                return 'ro';
-
-            case "read":
-                return 'ro';
-
-        }
-    }
-
-}

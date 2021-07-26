@@ -6,6 +6,7 @@ import { IQuerySnapshot } from "./IQuerySnapshot";
 import {IWriteBatch} from "./IWriteBatch";
 import {IDRecord} from "polar-shared/src/util/IDMaps";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {IDStr} from "polar-shared/src/util/Strings";
 
 export namespace Collections {
 
@@ -120,11 +121,18 @@ export namespace Collections {
     export async function set<T, SM = unknown>(firestore: IFirestore<SM>,
                                                collection: string,
                                                id: string,
-                                               value: T) {
+                                               value: T,
+                                               batch?: IWriteBatch<SM>) {
+
+        const b = batch || firestore.batch();
 
         value = Dictionaries.onlyDefinedProperties(value);
         const ref = firestore.collection(collection).doc(id);
         await ref.set(value);
+
+        if (! batch) {
+            await b.commit();
+        }
 
     }
 
@@ -212,6 +220,14 @@ export namespace Collections {
 
         const results = await list<T, SM>(firestore, collection, [[field, '==', value]]);
         return firstRecord<T>(collection, [field], results);
+
+    }
+
+    export async function doDelete<SM = unknown>(firestore: IFirestore<SM>,
+                                                 collection: string,
+                                                 id: IDStr) {
+
+        await firestore.collection(collection).doc(id).delete();
 
     }
 

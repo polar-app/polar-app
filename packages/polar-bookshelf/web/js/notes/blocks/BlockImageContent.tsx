@@ -6,6 +6,7 @@ import {BlockEditorGenericProps} from "../BlockEditor";
 import {useBlocksTreeStore} from "../BlocksTree";
 import {hasModifiers} from "../contenteditable/BlockKeyboardHandlers";
 import {DataURLStr} from "polar-blocks/src/blocks/content/IImageContent";
+import {DOMBlocks} from "../contenteditable/BlockContentEditable";
 
 interface IProps extends BlockEditorGenericProps {
     readonly src: DataURLStr;
@@ -75,6 +76,8 @@ export const BlockImageContent = observer((props: IProps) => {
     return (
         <div onClick={handleClick}
              onKeyDown={handleKeyDown}
+             id={`${DOMBlocks.BLOCK_ID_PREFIX}${props.id}`}
+             data-id={props.id}
              className={classes.root}
              contentEditable
              ref={handleRef} />

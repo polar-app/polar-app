@@ -1,12 +1,23 @@
 import {PathOrURLStr} from "polar-shared/src/util/Strings";
 import {URLs} from "polar-shared/src/util/URLs";
-import {TextContent} from "pdfjs-dist";
+import {PageViewport, TextContent, Util} from "pdfjs-dist";
 import {PDFDocs} from "./PDFDocs";
 
-export class PDFText {
+export namespace PDFText {
 
-    public static async getText(docPathOrURL: PathOrURLStr,
-                                callback: (pageNum: number, textContent: TextContent) => void) {
+    export interface IPDFTextContent {
+        readonly pageNum: number;
+        readonly textContent: TextContent;
+        readonly viewport: PageViewport;
+    }
+
+    export interface IOpts {
+        readonly maxPages?: number;
+    }
+
+    export async function getText(docPathOrURL: PathOrURLStr,
+                                  callback: (content: IPDFTextContent) => void,
+                                  opts: IOpts = {}) {
 
         const docURL = await URLs.toURL(docPathOrURL);
 
@@ -14,19 +25,22 @@ export class PDFText {
 
         const doc = await pdfLoadingTask.promise;
 
-        for (let pageNum = 1; pageNum <= doc.numPages; pageNum++) {
+        const numPages = Math.min(doc.numPages, opts.maxPages || Number.MAX_VALUE)
+
+        for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+
             const page = await doc.getPage(pageNum);
-            const textContent = await page.getTextContent();
-            callback(pageNum, textContent);
+            const viewport = page.getViewport({scale: 1.0});
+
+            const textContent = await page.getTextContent({
+                normalizeWhitespace: true,
+                disableCombineTextItems: false
+            });
+
+            callback({pageNum, textContent, viewport});
+
         }
 
     }
 
 }
-
-
-export interface PDFMeta {
-
-}
-
-

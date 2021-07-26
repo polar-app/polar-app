@@ -1,9 +1,7 @@
 import {HTMLStr} from 'polar-shared/src/util/Strings';
 import React from 'react';
 import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
-import {observer} from "mobx-react-lite"
 import {IActiveBlock} from '../store/BlocksStore';
-import {ContentEditables} from "../ContentEditables";
 import {createActionsProvider} from "../../mui/action_menu/ActionStore";
 import {NoteFormatPopper} from "../NoteFormatPopper";
 import {BlockContentCanonicalizer} from "./BlockContentCanonicalizer";
@@ -19,6 +17,7 @@ import {useBlocksTreeStore} from '../BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
 import {useNamedBlocks} from '../NoteRenderers';
+import {ContentEditables} from '../ContentEditables';
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed
@@ -174,7 +173,6 @@ export const BlockContentEditable = (props: IProps) => {
                 div.innerHTML = MarkdownContentConverter.toHTML(props.content);
                 ContentEditables.insertEmptySpacer(div);
 
-
                 if (active && isActive) {
                     updateCursorPosition(div, {...active}, true);
                 }
@@ -254,7 +252,7 @@ export function useUpdateCursorPosition() {
 
                 if (activeBlock.pos !== undefined) {
 
-                    doUpdateCursorPosition(editor, activeBlock.pos)
+                    CursorPositions.jumpToPosition(editor, activeBlock.pos);
                 }
 
             } finally {
@@ -267,58 +265,11 @@ export function useUpdateCursorPosition() {
 
 }
 
-function doUpdateCursorPosition(editor: HTMLDivElement, pos: 'start' | 'end' | number) {
-
-    if (pos !== undefined) {
-
-        function defineNewRange(range: Range) {
-
-            const sel = window.getSelection();
-
-            if (sel) {
-                sel.removeAllRanges();
-                sel.addRange(range);
-            }
-
-        }
-
-        // console.log("Updating cursor position to: ", pos);
-        editor.focus();
-
-        if (pos === 'start' || pos === 0) {
-
-            const range = document.createRange();
-            const firstChild = editor.firstChild;
-            if (firstChild) {
-                range.setStartBefore(firstChild)
-                range.setEndBefore(firstChild)
-                defineNewRange(range);
-            }
-
-        } else if (pos === 'end') {
-
-            const end = ContentEditables.computeEndNodeOffset(editor);
-
-            const range = document.createRange();
-            range.setStart(end.node, end.offset);
-            range.setEnd(end.node, end.offset);
-
-            defineNewRange(range);
-
-        } else if (typeof pos === 'number') {
-
-            CursorPositions.jumpToPosition(editor, pos)
-
-        }
-
-    }
-
-}
-
 type IUseHandleLinkDeletionOpts = {
     elem: HTMLElement | null;
     blockID: BlockIDStr;
 };
+
 const useHandleLinkDeletion = ({ blockID, elem }: IUseHandleLinkDeletionOpts) => {
     const mutationObserverConfig = React.useMemo(() => ({ childList: true }), []);
     const blocksTreeStore = useBlocksTreeStore();

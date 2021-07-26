@@ -130,7 +130,7 @@ export namespace Accounts {
 }
 
 export interface StripeCustomer {
-    readonly type: 'stripe';
+    readonly type: 'stripe' | 'apple_iap';
     readonly customerID: IDStr;
 }
 
