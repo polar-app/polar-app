@@ -73,7 +73,7 @@ describe('PDFText', function() {
         // the document where the hit is indexed and I don't want an in-elegant solution
         // here.
 
-        await PDFText.getText('/Users/burton/projects/polar-app/packages/polar-bookshelf/docs/examples/pdf/bigtable.pdf', dumpTextContent, {maxPages: 1});
+        await PDFText.getText('../../../packages/polar-bookshelf/docs/examples/pdf/bigtable.pdf', dumpTextContent, {maxPages: 1});
 
     });
 
