@@ -3,12 +3,12 @@ import {Firebase} from '../../../firebase/Firebase';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Billing} from "polar-accounts/src/Billing";
-import {Account} from "../../../accounts/Account";
 import {Accounts} from "../../../accounts/Accounts";
 import {SignInSuccessURLs} from "../../../../../apps/repository/js/login/SignInSuccessURLs";
 import firebase from 'firebase/app'
 import {Firestore} from "../../../firebase/Firestore";
 import {AppSites} from "./AppSites";
+import { IAccount } from 'polar-firebase/src/firebase/om/AccountCollection';
 
 export interface AuthHandler {
 
@@ -63,7 +63,7 @@ abstract class DefaultAuthHandler implements AuthHandler {
 
 }
 
-export function toUserInfo(user: firebase.User, account: Account | undefined): UserInfo {
+export function toUserInfo(user: firebase.User, account: IAccount | undefined): UserInfo {
 
     const createSubscription = (): Billing.Subscription => {
 

@@ -2229,6 +2229,13 @@
     minimist "^1.2.0"
     on-finished "^2.3.0"
 
+"@google-cloud/language@=4.2.5":
+  version "4.2.5"
+  resolved "https://polar-app.bytesafe.dev/r/default/-/pull/@google-cloud%2Flanguage/4.2.5#6ca51973ed3da60ed6c27ad5b7ae4b4e7605a3e2"
+  integrity sha512-04rlrWn9LGLYm/lmr93CdLuJtcxqeHM+Ys1iKK2cE/A+MRoUGLyq51r3rWw5g0kBeAbF7eQ14rgtcnc78FNFNA==
+  dependencies:
+    google-gax "^2.12.0"
+
 "@google-cloud/paginator@^3.0.0":
   version "3.0.5"
   resolved "https://polar-app.bytesafe.dev/r/default/-/pull/@google-cloud%2Fpaginator/3.0.5#9d6b96c421a89bd560c1bc2c197c7611ef21db6c"
@@ -12638,7 +12645,7 @@ google-gax@^1.9.0:
     semver "^6.0.0"
     walkdir "^0.4.0"
 
-google-gax@^2.17.1:
+google-gax@^2.12.0, google-gax@^2.17.1:
   version "2.19.0"
   resolved "https://polar-app.bytesafe.dev/r/default/-/pull/google-gax/2.19.0#e0e113f48688289e22053528224dfac09f019164"
   integrity sha512-2a6WY+p6YMVMmwXmkRqiLreXx67xHDZhkmflcL8aDUkl1csx9ywxEI01veoDXy6T1l0JJD6zLbl5TIbWimmXrw==

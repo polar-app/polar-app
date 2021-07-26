@@ -5,6 +5,8 @@ import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Lazy} from "../util/Lazy";
+import Stripe from "stripe";
+import {IAccount} from "polar-firebase/src/firebase/om/AccountCollection";
 
 const firebase = Lazy.create(() => FirebaseAdmin.app());
 const firestore = Lazy.create(() => firebase().firestore());
@@ -83,7 +85,7 @@ export namespace Accounts {
 
         const lastModified = new Date().toISOString();
 
-        const account: Account = {
+        const account: IAccount = {
             id: user.uid,
             uid: user.uid,
             plan,
