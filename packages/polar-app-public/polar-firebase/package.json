@@ -23,6 +23,7 @@
     "polar-blocks": "^2.1.81",
     "polar-firestore-like": "^2.1.81",
     "polar-shared": "^2.1.81",
-    "polar-spaced-repetition-api": "^2.1.81"
+    "polar-spaced-repetition-api": "^2.1.81",
+    "polar-accounts": "^2.1.81"
   }
 }

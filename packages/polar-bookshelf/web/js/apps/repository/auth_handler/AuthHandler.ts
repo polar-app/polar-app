@@ -86,6 +86,8 @@ export function toUserInfo(user: firebase.User, account: Account | undefined): U
                 interval: account.interval || 'month'
             };
 
+
+
         } else {
             return {
                 plan: 'free',
