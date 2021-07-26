@@ -2,9 +2,8 @@ import {Billing} from "polar-accounts/src/Billing";
 import {StripeMode, StripeUtils} from "./StripeUtils";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {Logger} from "polar-shared/src/logger/Logger";
-import {IDStr} from "polar-shared/src/util/Strings";
 import {Lazy} from "../util/Lazy";
-import {IAccount} from "polar-firebase/src/firebase/om/AccountCollection";
+import {Customer, IAccount} from "polar-firebase/src/firebase/om/AccountCollection";
 
 const firebase = Lazy.create(() => FirebaseAdmin.app());
 const firestore = Lazy.create(() => firebase().firestore());
@@ -24,8 +23,6 @@ export interface AccountInit {
 }
 
 export namespace Accounts {
-
-    export type Customer = StripeCustomer;
 
     /**
      * Validate that the given HTTP request has the right uid or someone
@@ -129,13 +126,9 @@ export namespace Accounts {
 
 }
 
-export interface StripeCustomer {
-    readonly type: 'stripe' | 'apple_iap';
-    readonly customerID: IDStr;
-}
 /**
  * An account where the customer is not optional.
  */
 export interface CustomerAccount extends IAccount {
-    readonly customer: StripeCustomer;
+    readonly customer: Customer;
 }
