@@ -1,11 +1,9 @@
 import {Billing} from "polar-accounts/src/Billing";
-import {StripeUtils, StripeMode} from "./StripeUtils";
-import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {StripeMode, StripeUtils} from "./StripeUtils";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Lazy} from "../util/Lazy";
-import Stripe from "stripe";
 import {IAccount} from "polar-firebase/src/firebase/om/AccountCollection";
 
 const firebase = Lazy.create(() => FirebaseAdmin.app());
@@ -135,31 +133,6 @@ export interface StripeCustomer {
     readonly type: 'stripe' | 'apple_iap';
     readonly customerID: IDStr;
 }
-
-export interface Account extends AccountInit {
-
-    readonly id: string;
-
-    /**
-     * The users uid in Firebase.
-     */
-    readonly uid: string;
-
-    /**
-     * The accounts primary email address.  We might add more in the future.
-     */
-    readonly email: string;
-
-    /**
-     * The last time any important action was changed on the account. Payment
-     * updated, etc.
-     */
-    readonly lastModified: ISODateTimeString;
-
-    readonly customer?: StripeCustomer;
-
-}
-
 /**
  * An account where the customer is not optional.
  */
