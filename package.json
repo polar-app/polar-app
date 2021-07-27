@@ -11,6 +11,7 @@
     "packages/polar-bookshelf-secrets",
     "packages/polar-site2"
   ],
+  "nohoist": "**",
   "resolutions": {
     "**/@types/jsdom": "*",
     "**/@types/jsdom-global": "*",
