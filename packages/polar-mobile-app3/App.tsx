@@ -31,7 +31,7 @@ const App = () => {
                         if (planName === 'free') {
                             // Redirect to Apple subscriptions page so the user can cancel his plan there
                             // @see https://stackoverflow.com/a/27366385
-                            Linking.openURL('https://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions').catch(err => console.error('Error', err));
+                            Linking.openURL('https://apps.apple.com/account/subscriptions').catch(err => console.error('Error', err));
                             return;
                         }
 
