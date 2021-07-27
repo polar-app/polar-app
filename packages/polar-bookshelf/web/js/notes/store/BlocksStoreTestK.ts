@@ -35,6 +35,16 @@ describe('BlocksStore', () => {
 
     describe('navNext', () => {
         describe('selection', () => {
+            it("Should work with single blocks that have no siblings", () => {
+                const root = '112';
+
+                store.computeLinearTree(root)
+                    .forEach(block => store.expanded[block] = true);
+                store.setActive(root);
+                store.navNext(root, 'end', {shiftKey: true, autoExpandRoot: true});
+                
+                assert.deepEqual(store.selected, { [root]: true });
+            });
             it("Should create a selection range properly when shift is true", () => {
                 const root = '102';
 

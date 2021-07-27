@@ -799,7 +799,7 @@ export class BlocksStore implements IBlocksStore {
             return true;
         }
 
-        if (! newActive) {
+        if (! newActive && ! shiftKey) {
             this.setActiveWithPosition(this._active.id, delta === 'prev' ? 'start' : 'end');
             return true;
         }
