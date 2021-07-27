@@ -693,7 +693,8 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
             title: "Enter a new title for the document:",
             defaultValue: repoDocInfo.title,
             onCancel: NULL_FUNCTION,
-            onDone: (value) => doRename(repoDocInfo, value)
+            onDone: (value) => doRename(repoDocInfo, value),
+            autoHighlight: true,
         });
 
     }
