@@ -71,7 +71,7 @@ commands:
       - run:
           name: NPM setup
           command: |
-            cp .npmrc.bytesafe ~/.npmrc
+            cp .npmrc ~/.npmrc
             cat ~/.npmrc
             echo "npm ping: ======"
             npm ping
@@ -245,7 +245,7 @@ jobs:
           command: |
             npm config set always-auth true
             source packages/polar-bookshelf-secrets/credentials.sh
-            yarn run set-registry-bytesafe-rw
+            rm -f ~/.npmrc && cat .npmrc > ~/.npmrc
             lerna bootstrap
             lerna run compile
             lerna run test

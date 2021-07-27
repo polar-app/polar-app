@@ -10,6 +10,9 @@ RUN npm -v
 RUN npm i -g lerna @lerna/global-options
 RUN npm i -g --force yarn
 
+# Install jq for bumping versions
+RUN wget "http://stedolan.github.io/jq/download/linux64/jq" -O /bin/jq && chmod 755 /bin/jq
+
 # Change the UID of the user and group so files created/modified by this user
 # match the UID of the Host machine user
 # See https://github.com/nodejs/docker-node/blob/main/docs/BestPractices.md#non-root-user
@@ -17,7 +20,7 @@ RUN npm i -g --force yarn
 RUN usermod -u $USER_ID -g $GROUP_ID node
 USER node
 
-COPY --chown=node:node .npmrc.bytesafe /home/node/.npmrc
+COPY --chown=node:node .npmrc /home/node/.npmrc
 
 WORKDIR /polar-app
 

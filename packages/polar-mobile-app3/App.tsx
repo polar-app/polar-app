@@ -10,57 +10,45 @@
 
 import React from 'react';
 import {Alert, SafeAreaView, StyleSheet, View} from 'react-native';
-import {InAppLiteServer} from './InAppLiteServer';
-import {IapTest} from './IapTest';
-import {Billing} from "./Billing";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {InAppLiteServer} from './InAppLiteServer/InAppLiteServer';
+import {Billing} from "./Billing/Billing";
+import {EmailTempStorage} from "./util/EmailTempStorage";
 
 const App = () => {
     const billing = new Billing();
+
     billing.init().then((r) => {
+        console.log('Billing initialized');
     });
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={{flex: 1}}>
             <View
                 style={styles.container}>
-                <View style={styles.container}>
-                    <InAppLiteServer
-                        onBuy={async (planName, email) => {
+                <InAppLiteServer
+                    onBuy={async (planName, email) => {
 
-                            try {
-                                await AsyncStorage.setItem(
-                                    '@polar:buyer_email',
-                                    email
-                                );
-                            } catch (error) {
-                                // Error saving data
-                                console.error('Can not store buyer Email');
-                                console.error(error);
-                            }
+                        if (!await EmailTempStorage.store(email)) {
+                            Alert.alert('Can not store buyer email in local storage. Purchase can not be made because we would not know to which user to link it');
+                            return;
+                        }
 
-                            const products = await billing.getProducts({ios: ['plan_' + planName]});
+                        const product = await billing.getProductByPlanName(planName);
 
-                            // Get first product that matches this codename
-                            const product = products.find(() => true);
+                        if (!product) {
+                            Alert.alert(`Can not find a product with ID=plan_${planName} within Apple Appstore Connect`);
+                            return;
+                        }
 
-                            if (!product) {
-                                Alert.alert("Can not find a configured Apple product for the selected plan: " + planName);
-                                return;
-                            }
-
-                            try {
-                                await billing.requestPurchase(product.productId);
-                                // Callback for new purchases is attached inside Billing.ts
-                                // Rest of procedure follows asynchronously there
-                            } catch (err) {
-                                Alert.alert(err.code, err.message);
-                            }
-                        }}/>
-                </View>
-                <View style={{height: "auto"}}>
-                    <IapTest/>
-                </View>
+                        try {
+                            await billing.requestPurchase(product.productId);
+                            // Callback that handles successful/unsuccessful purchases is attached inside
+                            // the Billing utility class. Follow the rest of the logic there. It's invoked
+                            // asynchronously by Apple
+                        } catch (err) {
+                            Alert.alert(err.code, err.message);
+                        }
+                    }}/>
             </View>
         </SafeAreaView>
     );
@@ -70,9 +58,5 @@ export default App;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'column',
-    },
-    text: {
-        color: '#922f2f',
     },
 });

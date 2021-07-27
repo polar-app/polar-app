@@ -1,6 +1,7 @@
 import findEmailFromTransactionId from "./util/findEmailFromTransactionId";
 import changePlanForEmail from "./util/changePlanForEmail";
 import {AppstoreNotificationRequest} from "./util/types/AppstoreNotificationRequest";
+import downgradeToFree from "./util/downgradeToFree";
 
 export const handler = async (event: {
     body: string,
@@ -17,34 +18,26 @@ export const handler = async (event: {
         case "INITIAL_BUY":
         case "INTERACTIVE_RENEWAL":
         case "DID_CHANGE_RENEWAL_STATUS":
+        case "DID_RENEW":
             // Activate user's purchased plan in Firestore
 
-            // Find the first transaction that is still active (not expired)
-            const activeReceipt = appleRequest.unified_receipt.latest_receipt_info.find(value => parseInt(value.expires_date_ms) > new Date().getTime());
+            const originalTransactionId = appleRequest.unified_receipt.latest_receipt_info.find(value => !!value.original_transaction_id)?.original_transaction_id
 
-            if (!activeReceipt) {
-                // User has no active current subscriptions
-                console.log('User has no currently active subscriptions');
+            if (!originalTransactionId) {
+                const message = "Wanted to update user's plan but can not resolve original transaction ID";
+                console.error(message)
                 return {
                     statusCode: 400,
                     body: JSON.stringify({
-                        message: 'User has no currently active subscriptions',
-                    })
+                        message,
+                    }),
                 }
-
-                // @TODO Downgrade in Firestore?
             }
 
-            // @TODO Marks user as have purchased the plan
-            const productId = activeReceipt.product_id.replace('plan_', '') as "plus" | "pro";
-
-            console.log('User bought product', productId);
-            console.log('activeReceipt.original_transaction_id', activeReceipt.original_transaction_id);
-
-            const email = await findEmailFromTransactionId(activeReceipt.original_transaction_id);
+            const email = await findEmailFromTransactionId(originalTransactionId);
 
             if (!email) {
-                console.error('Can not find email that corresponds to original transaction ID ' + activeReceipt.original_transaction_id);
+                console.error('Can not find email that corresponds to original transaction ID ' + originalTransactionId);
                 return {
                     // Return a 200 even though this is an error, because this REST endpoint is called
                     // by Apple asynchronously as a webhook, so we don't want Apple to retry calling us
@@ -57,6 +50,35 @@ export const handler = async (event: {
             }
 
             console.log('Found an email that corresponds to this transaction:', email);
+
+            // Find the first transaction that is still active (not expired)
+            const activeReceipt = appleRequest.unified_receipt.latest_receipt_info.find(value => parseInt(value.expires_date_ms) > new Date().getTime());
+
+            if (!activeReceipt) {
+                console.log('User has no currently active subscriptions');
+
+                if (!await downgradeToFree(email)) {
+                    const error = `Failed to downgrade user to free plan: ${email}`;
+                    console.error(error);
+                    return {
+                        statusCode: 500,
+                        body: JSON.stringify({error}),
+                    }
+                }
+
+                const message = `User ${email} downgraded to free plan`;
+                console.log(message);
+                return {
+                    statusCode: 200,
+                    body: JSON.stringify({
+                        message,
+                    })
+                }
+            }
+
+            const productId = activeReceipt.product_id.replace('plan_', '') as "plus" | "pro";
+
+            console.log('User bought product', productId);
 
             const changePlanSucceeded = await changePlanForEmail({
                 email,
