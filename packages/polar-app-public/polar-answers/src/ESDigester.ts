@@ -2,6 +2,11 @@ import {ESRequests} from "./ESRequests";
 import {SentenceSplitter} from "./SentenceSplitter";
 import {ISibling, Tuples} from "polar-shared/src/util/Tuples";
 
+// TODO
+//
+// - this must take the target index name
+// - need to come up with a strategy for how to name the indexes
+
 export namespace ESDigester {
 
     import IElasticResponse = ESRequests.IElasticResponse;
