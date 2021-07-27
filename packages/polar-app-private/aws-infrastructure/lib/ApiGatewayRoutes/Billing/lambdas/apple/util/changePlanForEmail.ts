@@ -2,9 +2,17 @@ import getFirebaseAdminApp from "../../../../../shared/getFirebaseAdminApp";
 import {Account} from "./types/Account";
 
 export default async function changePlanForEmail(changePlanConfig: {
+    // Email of the customer
     email: string,
-    productId: "plus" | "pro",
+
+    // The original transaction ID, which doesn't change across monthly billings for the same plan
     customerId: string,
+
+    // The plan code that was purchased
+    productId: "plus" | "pro",
+
+    // Unix timestamp after which the Plan should be no longer considered active
+    expiresAt: number,
 }) {
     const firebaseAdminApp = getFirebaseAdminApp();
 
@@ -31,7 +39,8 @@ export default async function changePlanForEmail(changePlanConfig: {
             customerID: changePlanConfig.customerId,
         },
 
-        lastModified: new Date().toISOString()
+        lastModified: new Date().toISOString(),
+        expiresAt: new Date(changePlanConfig.expiresAt * 1000).toISOString(),
     };
 
     const ref = firebaseAdminApp.firestore()

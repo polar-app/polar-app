@@ -84,6 +84,7 @@ export const handler = async (event: {
                 email,
                 productId,
                 customerId: activeReceipt.original_transaction_id,
+                expiresAt: parseInt(activeReceipt.expires_date_ms) / 1000,
             });
 
             if (!changePlanSucceeded) {

@@ -9,7 +9,7 @@
  */
 
 import React from 'react';
-import {Alert, SafeAreaView, StyleSheet, View} from 'react-native';
+import {Alert, Linking, SafeAreaView, StyleSheet, View} from 'react-native';
 import {InAppLiteServer} from './InAppLiteServer/InAppLiteServer';
 import {Billing} from "./Billing/Billing";
 import {EmailTempStorage} from "./util/EmailTempStorage";
@@ -17,7 +17,7 @@ import {EmailTempStorage} from "./util/EmailTempStorage";
 const App = () => {
     const billing = new Billing();
 
-    billing.init().then((r) => {
+    billing.init().then(() => {
         console.log('Billing initialized');
     });
 
@@ -27,6 +27,13 @@ const App = () => {
                 style={styles.container}>
                 <InAppLiteServer
                     onBuy={async (planName, email) => {
+
+                        if (planName === 'free') {
+                            // Redirect to Apple subscriptions page so the user can cancel his plan there
+                            // @see https://stackoverflow.com/a/27366385
+                            Linking.openURL('https://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions').catch(err => console.error('Error', err));
+                            return;
+                        }
 
                         if (!await EmailTempStorage.store(email)) {
                             Alert.alert('Can not store buyer email in local storage. Purchase can not be made because we would not know to which user to link it');

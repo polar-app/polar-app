@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import RNFS from 'react-native-fs';
-import {ActivityIndicator, Button, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import WebView from 'react-native-webview';
 // @ts-ignore
 import StaticServer from 'react-native-static-server';
@@ -26,7 +26,7 @@ export class InAppLiteServer extends Component<Props, State> {
 
         // Easily switch between the real Polar Bookshelf /dist and a dummy frontend by using one variable or another
         const realFrontendPath = '/static/polar';
-        const dummyFrontendPath = '/static/dummy-frontend';
+        // const dummyFrontendPath = '/static/dummy-frontend';
 
         this.server = new StaticServer(8050, RNFS.MainBundlePath + realFrontendPath);
     }
@@ -119,7 +119,7 @@ export class InAppLiteServer extends Component<Props, State> {
 
 interface Props {
     // Callback invoked when user wants to buy a plan
-    onBuy: (planName: "plus" | "pro", email: string) => void;
+    onBuy: (planName: "plus" | "pro" | "free", email: string) => void;
 }
 
 interface State {
