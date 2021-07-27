@@ -1,6 +1,6 @@
 {
   "name": "polar-cdk",
-  "version": "2.1.83",
+  "version": "2.1.84",
   "private": true,
   "scripts": {
     "build": "tsc",
