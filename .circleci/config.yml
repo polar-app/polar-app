@@ -100,17 +100,9 @@ commands:
 # ~ Workflow Building Blocks
 jobs:
   build:
-    parameters:
-      executor:
-        description: "The CircleCI executor to use."
-        type: executor
-
     executor: << parameters.executor>>
-
     working_directory: ~/repo
-
     description: "Build the main code and run 'npm test'"
-
     steps:
       - build_setup
       - run:
@@ -118,17 +110,9 @@ jobs:
           command: npx lerna run test
 
   karma:
-    parameters:
-      executor:
-        description: "The CircleCI executor to use."
-        type: executor
-
     executor: << parameters.executor>>
-
     working_directory: ~/repo
-
     description: "Run our karma tests in the browser."
-
     steps:
       - build_setup
       - run:
@@ -140,52 +124,11 @@ jobs:
             yarn run webpack
             yarn run karma
 
-  end2end:
-    parameters:
-      executor:
-        description: "The CircleCI executor to use."
-        type: executor
-
-    executor: << parameters.executor>>
-
-    # Specify service dependencies here if necessary
-    # CircleCI maintains a library of pre-built images
-    # documented at https://circleci.com/docs/2.0/circleci-images/
-    # - image: circleci/mongo:3.4.4
-
-    working_directory: ~/repo
-
-    steps:
-      - build_setup
-
-      - run:
-          name: Run X virtual framebuffer (Linux)
-          command: |
-            if [ "$OSTYPE" = 'linux-gnu' ]; then
-              Xvfb -ac :99 -screen 0 1280x1024x16 +extension RANDR > /dev/null 2>&1
-            else
-              echo "Not running Xvfb (not linux)"
-            fi
-          background: true
-
   build-webapp:
-    parameters:
-      executor:
-        description: "The CircleCI executor to use."
-        type: executor
-
     executor: << parameters.executor>>
-
-    # Specify service dependencies here if necessary
-    # CircleCI maintains a library of pre-built images
-    # documented at https://circleci.com/docs/2.0/circleci-images/
-    # - image: circleci/mongo:3.4.4
-
     working_directory: ~/repo
-
     steps:
       - build_setup
-
       - run:
           name: build and verify webapp
           command: |
@@ -198,23 +141,10 @@ jobs:
             find dist/public/repository-bundle.js.gz -size +1300000c |tee /dev/stderr| egrep '.*'
 
   build-site:
-    parameters:
-      executor:
-        description: "The CircleCI executor to use."
-        type: executor
-
     executor: << parameters.executor>>
-
-    # Specify service dependencies here if necessary
-    # CircleCI maintains a library of pre-built images
-    # documented at https://circleci.com/docs/2.0/circleci-images/
-    # - image: circleci/mongo:3.4.4
-
     working_directory: ~/repo
-
     steps:
       - build_setup
-
       - run:
           name: build and verify site (getpolarized.io)
           command: |
@@ -223,19 +153,14 @@ jobs:
             yarn run dist
 
   deploy_app_getpolarized_io:
+    executor: << parameters.executor>>
     parameters:
-      executor:
-        description: "The CircleCI executor to use."
-        type: executor
       firebase_hosting_target:
         description: "The npm target to run in the final step."
         type: string
-
-    executor: << parameters.executor>>
     working_directory: ~/repo
     steps:
       - build_setup
-
       - run:
           name: init - setup credentials and bytesafe
           no_output_timeout: 120m
@@ -249,7 +174,6 @@ jobs:
             yarn run dist-validate-env
             lerna exec --concurrency=1 --parallel=false --no-private  --no-bail -- yarn publish --verbose
             (cd packages/polar-app-private/polar-webapp-dist && yarn run dist)
-
       - run:
           name: release
           no_output_timeout: 120m
@@ -262,11 +186,6 @@ jobs:
             (cd packages/polar-app-private/polar-hooks/ && time firebase deploy --only functions)
 
   deploy_getpolarized_io:
-    parameters:
-      executor:
-        description: "The CircleCI executor to use."
-        type: executor
-
     executor: << parameters.executor>>
     working_directory: ~/repo
     steps:
@@ -276,44 +195,6 @@ jobs:
             pwd
             cd packages/polar-site2
             yarn run dist-release
-  cypress:
-    parameters:
-      executor:
-        description: "The CircleCI executor to use."
-        type: executor
-
-    executor: << parameters.executor>>
-    working_directory: ~/repo
-    steps:
-      - build_setup
-
-      - run:
-          name: install prereqs
-          command: |
-            sudo apt-get update
-            sudo apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
-
-      - run:
-          name: install chromium
-          command: |
-            sudo apt-get update
-            sudo apt-get install chromium
-
-      - run:
-          name: init
-          command: |
-            cd packages/polar-bookshelf
-            npx webpack-dev-server &
-
-            waitport() {
-                while ! nc -z localhost $1 ; do sleep 1 ; done
-            }
-
-            echo "Starting to wait for HTTP server on port 8050"
-            waitport 8050
-            echo "HTTP server running on port 8050! Starting to test now..."
-
-            npx cypress run --browser chromium --headless
 
 # ~ Define Custom Executors
 executors:
