@@ -1,8 +1,8 @@
 import {FirebaseAdmin} from 'polar-firebase-admin/src/FirebaseAdmin';
 import * as admin from 'firebase-admin';
-import UserRecord = admin.auth.UserRecord;
 import {IProfile, ProfileCollection, UserIDStr} from 'polar-firebase/src/firebase/om/ProfileCollection';
-import {Firestore} from "./Firestore";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
+import UserRecord = admin.auth.UserRecord;
 
 export class IDUsers {
 
@@ -24,7 +24,7 @@ export class IDUsers {
 
     public static async fromUser(user: UserRecord): Promise<IDUser> {
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         const {uid} = user;
         const profile = await ProfileCollection.getByUserID(firestore, uid);

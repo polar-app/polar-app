@@ -1,9 +1,9 @@
 import {GroupIDStr} from './Groups';
-import {Firestore} from '../../util/Firestore';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
-import { UserIDStr } from 'polar-firebase/src/firebase/om/ProfileCollection';
+import {UserIDStr} from 'polar-firebase/src/firebase/om/ProfileCollection';
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 export class GroupAdmins {
 
@@ -22,7 +22,7 @@ export class GroupAdmins {
     }
 
     public static create(batch: IWriteBatch<unknown>, id: GroupIDStr, uid: UserIDStr): Promise<GroupAdmin> {
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
         const groupAdminRef = firestore.collection(this.COLLECTION).doc(id);
         const groupAdmin: GroupAdmin = {admins: [uid], moderators: []};
         const record = Dictionaries.onlyDefinedProperties(groupAdmin);
@@ -31,14 +31,14 @@ export class GroupAdmins {
     }
 
     public static async get(id: GroupIDStr): Promise<GroupAdmin | undefined> {
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
         const ref = firestore.collection(this.COLLECTION).doc(id);
         const doc = await ref.get();
         return <GroupAdmin> doc.data();
     }
 
     public static delete(batch: IWriteBatch<unknown>, id: GroupIDStr) {
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
         const ref = firestore.collection(this.COLLECTION).doc(id);
         batch.delete(ref);
     }

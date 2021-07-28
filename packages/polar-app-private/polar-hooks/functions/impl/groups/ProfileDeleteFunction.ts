@@ -1,17 +1,17 @@
 import {IDUser} from '../util/IDUsers';
-import {Firestore} from '../util/Firestore';
 import {ProfileOwners} from './db/ProfileOwners';
 import {ExpressFunctions} from '../util/ExpressFunctions';
 import {ProfileHandles} from './db/ProfileHandles';
 import {UserRequests} from '../util/UserRequests';
 import {ProfileCollection} from "polar-firebase/src/firebase/om/ProfileCollection";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 export class ProfileDeleteFunctions {
 
     public static async exec(idUser: IDUser,
                              request: ProfileDeleteRequest) {
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         const batch = firestore.batch();
 

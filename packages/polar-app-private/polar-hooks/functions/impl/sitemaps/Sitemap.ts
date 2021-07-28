@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
-import {Firestore} from "../util/Firestore";
 import {Group} from "../groups/db/Groups";
 import {Collections} from "polar-firestore-like/src/Collections";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import OrderByClause = Collections.OrderByClause;
 
 /**
@@ -11,7 +11,7 @@ export const Sitemap = functions.https.onRequest((req, resp) => {
 
     const createIterator = async () => {
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         const orderBy: ReadonlyArray<OrderByClause> = [
             ['created', 'asc'],

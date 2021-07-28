@@ -1,14 +1,13 @@
 import * as admin from 'firebase-admin';
-import FieldValue = admin.firestore.FieldValue;
 import {GroupIDStr, GroupVisibility} from "./Groups";
 import {DocPermissions} from "./DocPermissions";
 import {GroupDocs} from "./GroupDocs";
 import {IDUser} from "../../util/IDUsers";
-import {DocRef} from 'polar-shared/src/groups/DocRef';
-import {DocIDStr} from 'polar-shared/src/groups/DocRef';
+import {DocIDStr, DocRef} from 'polar-shared/src/groups/DocRef';
 import {GroupDocInfos} from "./GroupDocInfos";
-import {Firestore} from "../../util/Firestore";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
+import FieldValue = admin.firestore.FieldValue;
 
 /**
  * Handles mutations for DocInfo, DocMeta, and DocPermission as these need to all be
@@ -85,7 +84,7 @@ export class GroupDocActions {
                                 docID: DocIDStr,
                                 visibility: GroupVisibility) {
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         for (const collection of this.COLLECTIONS) {
 
@@ -105,7 +104,7 @@ export class GroupDocActions {
                                            docID: DocIDStr,
                                            visibility: VisibilityMutation) {
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         const ref = firestore.collection(collection).doc(docID);
 
@@ -138,7 +137,7 @@ export class GroupDocActions {
                                                  groupID: GroupIDStr,
                                                  docID: DocIDStr) {
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         const ref = firestore.collection(collection).doc(docID);
 

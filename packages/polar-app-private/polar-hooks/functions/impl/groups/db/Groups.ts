@@ -1,21 +1,21 @@
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {Firestore} from '../../util/Firestore';
 import * as admin from 'firebase-admin';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
-import FieldValue = admin.firestore.FieldValue;
 import {UserGroups} from './UserGroups';
-import {ISODateTimeStrings, ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
+import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {GroupSlugs} from './GroupSlugs';
 import {IDUser} from '../../util/IDUsers';
 import {GroupAdmins} from './GroupAdmins';
-import UserRecord = admin.auth.UserRecord;
 import {PlainTextStr, URLStr} from "polar-shared/src/util/Strings";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {UserIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 import {Collections} from "polar-firestore-like/src/Collections";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
+import FieldValue = admin.firestore.FieldValue;
+import UserRecord = admin.auth.UserRecord;
 import Clause = Collections.Clause;
 
 const HASHCODE_LEN = 20;
@@ -57,7 +57,7 @@ export class Groups {
             return group;
         }
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         const groupRef = firestore.collection(this.COLLECTION).doc(groupID);
 
@@ -77,7 +77,7 @@ export class Groups {
     }
 
     public static async get(id: GroupIDStr): Promise<Group | undefined> {
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
         const ref = firestore.collection(this.COLLECTION).doc(id);
         const doc = await ref.get();
         return <Group> doc.data();
@@ -91,7 +91,7 @@ export class Groups {
             ['name', '==', name]
         ];
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         return Collections.getByFieldValues(firestore, this.COLLECTION, clauses);
 
@@ -120,7 +120,7 @@ export class Groups {
      */
     public static incrementNrMembers(batch: IWriteBatch<unknown>, groupID: GroupIDStr, delta: number = 1) {
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
         const ref = firestore.collection(this.COLLECTION).doc(groupID);
 
         batch.update(ref, {
@@ -131,7 +131,7 @@ export class Groups {
 
     public static markDeleted(batch: IWriteBatch<unknown>, groupID: GroupIDStr) {
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
         const groupRef = firestore.collection(this.COLLECTION).doc(groupID);
 
         batch.update(groupRef, {deleted: true});
@@ -140,7 +140,7 @@ export class Groups {
 
     public static delete(batch: IWriteBatch<unknown>, groupID: GroupIDStr) {
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
         const ref = firestore.collection(this.COLLECTION).doc(groupID);
 
         batch.delete(ref);
