@@ -99,6 +99,7 @@ commands:
 
 # ~ Workflow Building Blocks
 jobs:
+  # @ Run Karma Test Suite
   karma:
     parameters:
       executor:
@@ -117,6 +118,7 @@ jobs:
             yarn run webpack
             yarn run karma
 
+  # @ Build Polar-Bookshelf Webapp
   build-webapp:
     parameters:
       executor:
@@ -136,6 +138,7 @@ jobs:
             cat dist/public/repository-bundle.js | gzip -c > dist/public/repository-bundle.js.gz
             find dist/public/repository-bundle.js.gz -size +1300000c |tee /dev/stderr| egrep '.*'
 
+  # @ Build getpolarized.io Website
   build-site:
     parameters:
       executor:
@@ -151,6 +154,7 @@ jobs:
             cd packages/polar-site2
             yarn run dist
 
+  # @ Deploy Polar-Bookshelf
   deploy_app_getpolarized_io:
     parameters:
       executor:
@@ -185,6 +189,7 @@ jobs:
             (cd packages/polar-app-private/polar-hooks/functions && echo Pushing to target ${FIREBASE_HOSTING_TARGET} && firebase use polar-32b0f && firebase target:clear hosting app.getpolarized.io && firebase target:apply hosting app.getpolarized.io ${FIREBASE_HOSTING_TARGET} && firebase deploy --only hosting,storage,firestore)
             (cd packages/polar-app-private/polar-hooks/ && time firebase deploy --only functions)
 
+  # @ Deploy getpolarized.io
   deploy_getpolarized_io:
     parameters:
       executor:
@@ -212,10 +217,25 @@ workflows:
   version: 2
   main:
     jobs:
+      - cypress/install:
+          pre-steps:
+            - run: "rm -f ~/.npmrc && cp ./.npmrc ~/"
+
+      - cypress/run:
+          requires:
+            - cypress/install
+          start: npx webpack serve
+          wait-on: "http://localhost:8050"
+          working_directory: packages/polar-bookshelf
+          post-steps:
+            - store_artifacts: true
+
       - karma:
           executor: my-docker
+
       - build-webapp:
           executor: my-docker
+
       - build-site:
           executor: my-docker
 
