@@ -1,11 +1,13 @@
+# % >= 2.1 Required for Orbs
 version: 2.1
 
+# @ Custom Orbs
 orbs:
   win: circleci/windows@2.2.0
   cypress: cypress-io/cypress@1.28.0
 
+# ~ Pre-Script Steps to Execute before Jobs
 commands:
-  # TODO Steps to Execute before Stages
   build_setup:
     description: setup the build for commands
     steps:
@@ -312,30 +314,19 @@ jobs:
 
             npx cypress run --browser chromium --headless
 
+# ~ Define Custom Executors
 executors:
+  # ! Default Executor for most jobs
   my-docker:
     docker:
-      # https://circleci.com/docs/2.0/circleci-images/
-      # https://circleci.com/docs/2.0/docker-image-tags.json
       - image: circleci/node:14.16.0-buster
-
-    # https://circleci.com/docs/2.0/configuration-reference/#resource_class
     resource_class: xlarge
 
-  my-macos:
-    macos:
-      # https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions
-      xcode: 12.4.0
-
+# ~ Define Workflow Steps
 workflows:
   version: 2
   main:
     jobs:
-      #      - build_with_executor:
-      #          executor:
-      #            name: win/default
-      #            shell: bash.exe
-      #
       - build:
           executor: my-docker
       - karma:
@@ -383,30 +374,3 @@ workflows:
             branches:
               only:
                 - master
-#  cypress:
-#    jobs:
-#      - cypress:
-#          executor: my-docker
-
-#  macos:
-#    jobs:
-#
-#      - build:
-#          executor: my-macos
-#      - build-webapp:
-#          executor: my-macos
-#      - build-site:
-#          executor: my-macos
-
-#      - end2end:
-#          executor:
-#            name: win/default
-#            shell: bash.exe
-#
-#      - end2end:
-#          executor: my-docker
-#
-#      - end2end:
-#          executor: my-macos
-#
-
