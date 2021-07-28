@@ -224,9 +224,11 @@ workflows:
       - cypress/run:
           requires:
             - cypress/install
+          yarn: true
           start: npx webpack serve
           wait-on: "http://localhost:8050"
-          working_directory: packages/polar-bookshelf
+          command: (cd packages/polar-bookshelf && npx cypress run)
+          attach-workspace: true
 
       - karma:
           executor: my-docker
