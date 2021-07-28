@@ -1,19 +1,18 @@
 import * as admin from 'firebase-admin';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
-import {Group, GroupIDStr} from './Groups';
-import {Groups} from './Groups';
-import {Firestore} from '../../util/Firestore';
+import {Group, GroupIDStr, Groups} from './Groups';
 import {Image} from './Users';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {UserGroups} from './UserGroups';
-import UserRecord = admin.auth.UserRecord;
-import {Arrays, asArray} from "polar-shared/src/util/Arrays";
+import {Arrays} from "polar-shared/src/util/Arrays";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
 import {Collections} from "polar-firestore-like/src/Collections";
 import {EmailStr, ProfileIDStr} from 'polar-firebase/src/firebase/om/ProfileCollection';
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
+import UserRecord = admin.auth.UserRecord;
 
 export class GroupMemberInvitations {
 
@@ -28,7 +27,7 @@ export class GroupMemberInvitations {
     }
 
     public static doc(to: EmailStr, groupID: GroupIDStr): [GroupMemberInvitationIDStr, IDocumentReference<unknown>] {
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
         const id = this.createID(to, groupID);
         const doc = firestore.collection(this.COLLECTION).doc(id);
         return [id, doc];
@@ -58,7 +57,7 @@ export class GroupMemberInvitations {
     }
 
     public static async getByGroupIDAndTo(groupID: GroupIDStr, to: EmailStr): Promise<GroupMemberInvitation | undefined> {
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         return await Collections.getByFieldValues(firestore, this.COLLECTION, [
             ['groupID', '==', groupID],
@@ -68,14 +67,14 @@ export class GroupMemberInvitations {
 
     public static async deleteByGroupID(batch: IWriteBatch<unknown>,
                                         groupID: GroupIDStr) {
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         await Collections.deleteByID(firestore, this.COLLECTION, batch, () => this.list(groupID));
 
     }
 
     public static async list(groupID: GroupIDStr): Promise<ReadonlyArray<GroupMemberInvitation>> {
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         return await Collections.listByFieldValue(firestore, this.COLLECTION, 'groupID', groupID);
     }

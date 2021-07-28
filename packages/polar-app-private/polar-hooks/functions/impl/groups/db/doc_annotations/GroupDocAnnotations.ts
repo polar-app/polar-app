@@ -5,7 +5,7 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {Collections} from "polar-firestore-like/src/Collections";
-import {Firestore} from "../../../util/Firestore";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 export class GroupDocAnnotations {
 
@@ -14,7 +14,7 @@ export class GroupDocAnnotations {
     private static delegate = new AbstractDocAnnotationsDelegate(GroupDocAnnotations.COLLECTION, 'groupID');
 
     public static async get(id: IDStr): Promise<GroupDocAnnotation | undefined> {
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
         return Collections.getByID(firestore, this.COLLECTION, id);
     }
 

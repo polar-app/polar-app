@@ -1,12 +1,12 @@
 import {IDUser} from "../util/IDUsers";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {Sendgrid} from "../Sendgrid";
-import {Firestore} from "../util/Firestore";
 import {Emails} from "polar-shared/src/util/Emails";
 import {Universities, University} from "polar-shared/src/util/Universities";
 import {Domains} from "polar-shared/src/util/Domains";
 import {Arrays} from "polar-shared/src/util/Arrays";
-import { StripeMode } from "./StripeUtils";
+import {StripeMode} from "./StripeUtils";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 export interface StripeStudentDiscountRequest {
     readonly email: string;
@@ -98,7 +98,7 @@ export namespace StudentDiscountVerifications {
                                 email: string,
                                 secret: string) {
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
         const ref = firestore.collection(COLLECTION).doc(id);
 
         const studentDiscountVerification: IStudentDiscountVerification = {
@@ -113,7 +113,7 @@ export namespace StudentDiscountVerifications {
 
     export async function read(id: string): Promise<IStudentDiscountVerification | undefined> {
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         const ref = firestore.collection(COLLECTION).doc(id);
 

@@ -1,17 +1,17 @@
 import {GroupIDStr} from './db/Groups';
 import {IDUser} from '../util/IDUsers';
-import {Firestore} from '../util/Firestore';
 import {ExpressFunctions} from '../util/ExpressFunctions';
 import {UserRequests} from '../util/UserRequests';
 import {GroupLeaves} from './GroupLeaves';
 import {UserProfiles} from './db/UserRefs';
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 export class GroupLeaveFunctions {
 
     public static async exec(idUser: IDUser,
                              request: GroupLeaveRequest) {
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         const batch = firestore.batch();
 

@@ -1,9 +1,9 @@
 import * as functions from 'firebase-functions';
-import {Firestore} from "../util/Firestore";
 import {DocAnnotations} from "./db/doc_annotations/DocAnnotations";
 import {ProfileDocAnnotation, ProfileDocAnnotations} from "./db/doc_annotations/ProfileDocAnnotation";
 import {GroupDocAnnotation, GroupDocAnnotations} from "./db/doc_annotations/GroupDocAnnotations";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 
 // TODO: we have to migrate the code from DocMeta to this so that we have the interfaces on the backend.  This
@@ -13,7 +13,7 @@ export const GroupDocMetaWriteFunction
     = functions.firestore.document('/doc_meta/{document=**}')
         .onWrite(async (change, context) => {
 
-    const firestore = Firestore.getInstance();
+    const firestore = FirestoreAdmin.getInstance();
     const batch = firestore.batch();
 
     const docAnnotations = await DocAnnotations.computeDocAnnotationMutations(change.before, change.after);
