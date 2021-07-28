@@ -222,7 +222,6 @@ workflows:
       - hold_app_getpolarized_io:
           type: approval
           requires:
-            - build
             - karma
             - build-webapp
           filters:
