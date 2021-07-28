@@ -223,6 +223,8 @@ workflows:
             - run: "rm -f ~/.npmrc && cp ./.npmrc ~/"
             - run: "yarn global add lerna@4.0.0 && yarn global add npm@7.19.1"
           install-command: "lerna bootstrap"
+          post-install:
+            - run: "lerna run compile"
 
       - cypress/run:
           executor: cypress/base-14
