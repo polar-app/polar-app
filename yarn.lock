@@ -3047,6 +3047,78 @@
   resolved "https://verdaccio.getpolarized.io/@microsoft%2ffetch-event-source/-/fetch-event-source-2.0.1.tgz#9ceecc94b49fbaa15666e38ae8587f64acce007d"
   integrity sha512-W6CLUJ2eBMw3Rec70qrsEW0jOm/3twwJv21mrmj2yORiaVmVYGS4sSS5yUwvQc1ZlDLYGPnClVWmUUMagKNsfA==
 
+"@microsoft/recognizers-text-choice@~1.3.0":
+  version "1.3.0"
+  resolved "https://verdaccio.getpolarized.io/@microsoft%2frecognizers-text-choice/-/recognizers-text-choice-1.3.0.tgz#200fab99a145d43a238a7256375d0bb675b61d30"
+  integrity sha512-I2LQAJJ9TJthJYWZNzooJD6+5KUkr+H+m54XpjY+vKjR81DPVFUL/SWZVyv+cC7eePFwrDv3gUnkXYS+Lp0hmA==
+  dependencies:
+    "@microsoft/recognizers-text" "~1.3.0"
+    grapheme-splitter "^1.0.2"
+
+"@microsoft/recognizers-text-data-types-timex-expression@~1.3.0":
+  version "1.3.0"
+  resolved "https://verdaccio.getpolarized.io/@microsoft%2frecognizers-text-data-types-timex-expression/-/recognizers-text-data-types-timex-expression-1.3.0.tgz#fc5d586c826e478e8477b7fcb21e9e2830e81c67"
+  integrity sha512-REHUXmMUI1jL3b9v+aSdzKxLxRdejsfg9McYRxY3LW0Gu4UbwD7Q+K6mtSo40cwg8uh6fiV9GY8hDuKXHH6dVA==
+
+"@microsoft/recognizers-text-date-time@~1.3.0":
+  version "1.3.0"
+  resolved "https://verdaccio.getpolarized.io/@microsoft%2frecognizers-text-date-time/-/recognizers-text-date-time-1.3.0.tgz#202f711c5398dc113abd183bc2a7fbfbf8e8aac0"
+  integrity sha512-bgw4TS726maTg53M6SQRHQOzOH0za0zmBWnnGo0wQdbDfK+bgq5aeDSD4k/HhXvfkOD6zzRd3+tG3Dqyp/kFaQ==
+  dependencies:
+    "@microsoft/recognizers-text" "~1.3.0"
+    "@microsoft/recognizers-text-number" "~1.3.0"
+    "@microsoft/recognizers-text-number-with-unit" "~1.3.0"
+    lodash.isequal "^4.5.0"
+    lodash.tonumber "^4.0.3"
+
+"@microsoft/recognizers-text-number-with-unit@~1.3.0":
+  version "1.3.0"
+  resolved "https://verdaccio.getpolarized.io/@microsoft%2frecognizers-text-number-with-unit/-/recognizers-text-number-with-unit-1.3.0.tgz#36ec3f04b16d98b2825b0e44307260bb05b4bb8e"
+  integrity sha512-FxBD1ZQLvr4c+ssVyqUjblg+i21GbzIsDEHd5VWon5wg+2qrqixlmP1mXsXG+iGRV3qqeZCtTFdqkwJ3MWhovA==
+  dependencies:
+    "@microsoft/recognizers-text" "~1.3.0"
+    "@microsoft/recognizers-text-number" "~1.3.0"
+    lodash.escaperegexp "^4.1.2"
+    lodash.last "^3.0.0"
+    lodash.max "^4.0.1"
+
+"@microsoft/recognizers-text-number@~1.3.0":
+  version "1.3.0"
+  resolved "https://verdaccio.getpolarized.io/@microsoft%2frecognizers-text-number/-/recognizers-text-number-1.3.0.tgz#70cc018a7660b57f4483112f048e97ffbba38f9f"
+  integrity sha512-KVFxvaXW9E7UkuF0EYCghvCn0u+N5L7bBXeP4IKB6fXkQd6GAZ9zNA2Acdm9lJzCRxcsBYFbRLcRMrPHwAa32w==
+  dependencies:
+    "@microsoft/recognizers-text" "~1.3.0"
+    bignumber.js "^7.2.1"
+    lodash.escaperegexp "^4.1.2"
+    lodash.sortby "^4.7.0"
+    lodash.trimend "^4.5.1"
+
+"@microsoft/recognizers-text-sequence@~1.3.0":
+  version "1.3.0"
+  resolved "https://verdaccio.getpolarized.io/@microsoft%2frecognizers-text-sequence/-/recognizers-text-sequence-1.3.0.tgz#2fedf013ec2d8ed5af6b8923d5aa9b3ec61e1a3e"
+  integrity sha512-LXZ9AakClrdPVfEphCJFETjw6n8w/LwW1Yoj9ZKcGI9PGvH6RR+haS4GSZuHeMhEacmaa3NkzD+I44qYIvym8Q==
+  dependencies:
+    "@microsoft/recognizers-text" "~1.3.0"
+    grapheme-splitter "^1.0.2"
+
+"@microsoft/recognizers-text-suite@1.3.0":
+  version "1.3.0"
+  resolved "https://verdaccio.getpolarized.io/@microsoft%2frecognizers-text-suite/-/recognizers-text-suite-1.3.0.tgz#2a6ddd0f1090c5518cbc248b88660d74af44989e"
+  integrity sha512-uqG4vzy5N2CmBaeINny0bLdnGp0jDbT1moNoLC+Yim3G8kHOU9lpDfwA6VN6HTYaDM5854SNMEzLjJdS1TPFTw==
+  dependencies:
+    "@microsoft/recognizers-text" "~1.3.0"
+    "@microsoft/recognizers-text-choice" "~1.3.0"
+    "@microsoft/recognizers-text-data-types-timex-expression" "~1.3.0"
+    "@microsoft/recognizers-text-date-time" "~1.3.0"
+    "@microsoft/recognizers-text-number" "~1.3.0"
+    "@microsoft/recognizers-text-number-with-unit" "~1.3.0"
+    "@microsoft/recognizers-text-sequence" "~1.3.0"
+
+"@microsoft/recognizers-text@~1.3.0":
+  version "1.3.0"
+  resolved "https://verdaccio.getpolarized.io/@microsoft%2frecognizers-text/-/recognizers-text-1.3.0.tgz#8ab05719267a7b15d56718600e6fd53a3d4cc616"
+  integrity sha512-0gUhtS/0qSF6veB3Olu55IuJ0Skwg4u1IbJX9KFj1QeK8z6cw69/p637IPD2NgXLlXCy2HEqLvUW/mgbDp3rWg==
+
 "@mikaelkristiansson/domready@^1.0.10":
   version "1.0.11"
   resolved "https://verdaccio.getpolarized.io/@mikaelkristiansson%2fdomready/-/domready-1.0.11.tgz#6a4b5891dccb6402ff4e944de843036ee1ffd4f5"
@@ -3205,6 +3277,474 @@
     d3-delaunay "^5.1.1"
     d3-scale "^3.0.0"
     recompose "^0.30.0"
+
+"@nlpjs/builtin-duckling@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2fbuiltin-duckling/-/builtin-duckling-4.22.0.tgz#a942febaaeeba775952541af3119a2ae075c92ed"
+  integrity sha512-4r+AOml3+b8pwCr1wzBBkU7AJG+bASlMuB++GVUMuB7lGcWKdheRDXyhP/aUgUR1lhy6vQy0fBrMrrbGXuPLyA==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/builtin-microsoft@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2fbuiltin-microsoft/-/builtin-microsoft-4.22.0.tgz#158983fc23cfee378ccbc46535919cbf8b7a9abb"
+  integrity sha512-4JtPy7O5cB0ez7+MqysPKAWI8SZMkPdl+GM34xiiaLsu4Stt8fOcisGVuVLRNiSiWJ9mjYdisH19UIyUUeetrg==
+  dependencies:
+    "@microsoft/recognizers-text-suite" "1.3.0"
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/core-loader@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2fcore-loader/-/core-loader-4.22.0.tgz#2ba407cef78dc37b8b558bb3c72f3fadfb33dcf6"
+  integrity sha512-Qd50j4b9jskEwobZx609Xwz/DnHoX0K6m5tol+a3EXulcxi702vyK3SOPvrqC1JD0toghZyXVlW9gjTU1LRlMA==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+    "@nlpjs/request" "^4.21.1"
+
+"@nlpjs/core@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2fcore/-/core-4.22.0.tgz#908f109a74ada5febd2ff8eb8c36f94d2feda94c"
+  integrity sha512-L7Qb5kP+/ZJ7Wyjoli1nk+SQvvMY0BuuLfYLNvJ2vKL3tMmrSdYBJcXhgmOHEROU6jf4LFgY8VwBpFTsRJV97g==
+
+"@nlpjs/emoji@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2femoji/-/emoji-4.22.0.tgz#31d9b20e39454d129b576a68fd8be1f391b18d3b"
+  integrity sha512-voXA8puAShTe5Tk9KuClS3gaIKbNDvAfOsf/VCMNvS4m25niUDVG9zCrDV+KLAAUQ2QJkw0JZlQEmWSMSGH1FA==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/evaluator@^4.21.1":
+  version "4.21.1"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2fevaluator/-/evaluator-4.21.1.tgz#9928a1ca88b1be95295404121c84beb6a340935a"
+  integrity sha512-v/uv4lljBhmoLBCJGJ0IXh3tuYjdrQQoZLh0oSwO8FbVs4ugfSfkrLwpQUMXN9fhdozPPoCg9Dir6n5xQDBsAQ==
+  dependencies:
+    escodegen "^2.0.0"
+    esprima "^4.0.1"
+
+"@nlpjs/lang-all@^4.22.1":
+  version "4.22.1"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-all/-/lang-all-4.22.1.tgz#5031a68db6b2a20eec3a71883f296711a0d693f2"
+  integrity sha512-MXiu57ZMSimWdY/mZrJXZ474OCjA4LjHqzgAKF0jWp+qOgGhJ3sm/I2YKj6ohWv2vTzl3FOKmDkd8wPCx9tk0g==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+    "@nlpjs/lang-ar" "^4.22.0"
+    "@nlpjs/lang-bn" "^4.22.0"
+    "@nlpjs/lang-ca" "^4.22.0"
+    "@nlpjs/lang-cs" "^4.22.0"
+    "@nlpjs/lang-da" "^4.22.0"
+    "@nlpjs/lang-de" "^4.22.0"
+    "@nlpjs/lang-el" "^4.22.0"
+    "@nlpjs/lang-en" "^4.22.0"
+    "@nlpjs/lang-es" "^4.22.0"
+    "@nlpjs/lang-eu" "^4.22.0"
+    "@nlpjs/lang-fa" "^4.22.0"
+    "@nlpjs/lang-fi" "^4.22.0"
+    "@nlpjs/lang-fr" "^4.22.0"
+    "@nlpjs/lang-ga" "^4.22.0"
+    "@nlpjs/lang-gl" "^4.22.0"
+    "@nlpjs/lang-hi" "^4.22.0"
+    "@nlpjs/lang-hu" "^4.22.0"
+    "@nlpjs/lang-hy" "^4.22.0"
+    "@nlpjs/lang-id" "^4.22.0"
+    "@nlpjs/lang-it" "^4.22.0"
+    "@nlpjs/lang-ja" "^4.22.0"
+    "@nlpjs/lang-ko" "^4.22.0"
+    "@nlpjs/lang-lt" "^4.22.0"
+    "@nlpjs/lang-ms" "^4.22.0"
+    "@nlpjs/lang-ne" "^4.22.0"
+    "@nlpjs/lang-nl" "^4.22.0"
+    "@nlpjs/lang-no" "^4.22.0"
+    "@nlpjs/lang-pl" "^4.22.0"
+    "@nlpjs/lang-pt" "^4.22.0"
+    "@nlpjs/lang-ro" "^4.22.0"
+    "@nlpjs/lang-ru" "^4.22.0"
+    "@nlpjs/lang-sl" "^4.22.0"
+    "@nlpjs/lang-sr" "^4.22.0"
+    "@nlpjs/lang-sv" "^4.22.0"
+    "@nlpjs/lang-ta" "^4.22.0"
+    "@nlpjs/lang-th" "^4.22.0"
+    "@nlpjs/lang-tl" "^4.22.0"
+    "@nlpjs/lang-tr" "^4.22.0"
+    "@nlpjs/lang-uk" "^4.22.0"
+    "@nlpjs/lang-zh" "^4.22.0"
+    "@nlpjs/language" "^4.21.1"
+
+"@nlpjs/lang-ar@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-ar/-/lang-ar-4.22.0.tgz#91c503f3cefc57e22361e046603d5ded7d9a2679"
+  integrity sha512-ykKZXMs5YfRzAwg/BWVKfAjU7RBucPOtjp/vvtCOUEpYvUwReo7WxbRvnU4GhIAEWg0TXTiU6Y1TE7KwQfTmXg==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-bn@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-bn/-/lang-bn-4.22.0.tgz#28d9aec70f4ddf230eb5143796c067d2c43e7bb1"
+  integrity sha512-XVclYi5XvumDEZ0u/cb9PXW9/YPsQBNjF53uS66QyVxj+5QQiKmYY1YUTG+V/csTEIqxIfPoxJgR6W2+w+8pOQ==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-ca@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-ca/-/lang-ca-4.22.0.tgz#cd0108f4cc0ac4e9bf79d14a07c43b779bcbf303"
+  integrity sha512-GZRAHK6J5Kv/OMOC7zkYtOX5g/ZzDoKLd35fIDBtQ4oB96F0qnq01rMOXjR8f395rwwUCqAVS9v9Zid9OIhhgg==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-cs@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-cs/-/lang-cs-4.22.0.tgz#cbfad21f9953284482ef3b2749fb8191d08f309e"
+  integrity sha512-DtjWkl6gSZaaN9MX6TS7jffbMQ2LsYoiZ+Oz3YPj3VZ4Vq0bJPu0MPudmIlzHma04BW4DrtIc9JcaPYaZe/lFg==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-da@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-da/-/lang-da-4.22.0.tgz#d5ea596b914678d8ed8df9c76fcda86015c1f451"
+  integrity sha512-fQhae4FdLtK5vn7F4BoQ70GXT3eSy4kyW1Jo5WEPAA0Zw+FfYm38r2vFmV3peOIJvafxF2O6i96Q+YExkHHnFQ==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-de@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-de/-/lang-de-4.22.0.tgz#a31bb691701a5ce1ab83a3b5342b2184d41e46e6"
+  integrity sha512-GCEYl1jL9fMod9VBmiucEd06mfEc1KGKPECwc5KeLdfAoAsZVm5BzDPxy4qGP7o7WZgwHLXPo0AuqmqFuTxLhQ==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-el@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-el/-/lang-el-4.22.0.tgz#f69499e3020bd1db3031bab8ab5880d732187657"
+  integrity sha512-Wgw6l1raY6lxqNM9JWwfH7JSuZEQZYTj1T1g4bWnC1gGxq3m5vwHI48b0QMCT9ac5S8WLOIs2yXXHJ2RbhkSUA==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-en-min@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-en-min/-/lang-en-min-4.22.0.tgz#51fe6e3d23ce8528470f4b477759ae96fc9d688c"
+  integrity sha512-kmOH5xTTmUcM1hEPJTmN0v44Jp9ZFbSkrS+w8kjV7rFhGhQgIvifT2pVcBuRS7Ho7RSwT2EMSkyR3EiMohjhDQ==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-en@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-en/-/lang-en-4.22.0.tgz#cf4160d2462176f341e0d43ca0a534717a47b2bb"
+  integrity sha512-dtwz/1V6HpKBIvZ3iTBhfQ7cjGAVGmc0g6n88HsBnDYV0subzCAnZcRrzN5r9WBlHgjOMLX77k6pTRCsmR67qw==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+    "@nlpjs/lang-en-min" "^4.22.0"
+
+"@nlpjs/lang-es@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-es/-/lang-es-4.22.0.tgz#c4bc0dc095c799a22eac3312ae08794f1dbc7d09"
+  integrity sha512-O/16imCVu5hW1a7oSN8OtxiN4wHtv372ka1HBnEjLx7VxNX6XVUiypOiz7Pzawl5hfOwrMM4+LNmK515Pe3jKg==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-eu@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-eu/-/lang-eu-4.22.0.tgz#62d1ea957a72f76717ad936be1cacc7ce087d08f"
+  integrity sha512-VjerlStE4KfYt7wL9BUsQiLG0pVMDEjgrCyYBiNXKV1nnYBItMirBUixR+GWH/p4nVg8lYAV1NIfNvuAD4VbwA==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-fa@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-fa/-/lang-fa-4.22.0.tgz#f23a5e588f33b48d32fa4e003628f8ee3a75ada5"
+  integrity sha512-nRawetgplUawHnEmXTSsbJPUzqtogiQCMK2dDBDARFBxiQg+6nUbi46cHbWo1dyitN/kmwsFmN9WghHyYROirQ==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-fi@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-fi/-/lang-fi-4.22.0.tgz#f99442f48d5886f9ee30038b42fc2001792c934a"
+  integrity sha512-gdwmUxUTBu0K2UIH95zDVI2HpgB1kkgvywDsSxlWMuau4mVqjWZ4RDSRNnzvY7a9Tg8y6iL9D0mmQm6CftPOxA==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-fr@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-fr/-/lang-fr-4.22.0.tgz#edfeffbcf47e630342c236aacf1aff206d7d0ad7"
+  integrity sha512-qhooplV3wRJjvnJXypuJGrY5juR4Lps9A3DQ6DhDoqDJq3o7fh4pMG+f/gaEgCzZ159ufOTQSlU0U+ds9vROeg==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-ga@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-ga/-/lang-ga-4.22.0.tgz#28ef131176a43f1612b8b5c0c0304906d17c61fa"
+  integrity sha512-6BJ1kg6qwKsk+d4+wMPBYN7V9WuKkKkZSJcskJ4FEjAuqvtuQcaY1HyNLK/XYW66Oqxi86WMBcsf3ACeXaSe7w==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-gl@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-gl/-/lang-gl-4.22.0.tgz#5c52809bf277d7e152502671bf25b26101dc96e1"
+  integrity sha512-3AZTcjB7tSjQGjkKot3pZ4erdokgAze8kS0DOdGdDfrmSBZQLqenJMi02IPY6mBNH53J5jWRH14a4+1R+YxqVA==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-hi@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-hi/-/lang-hi-4.22.0.tgz#78a33c0a3a0f17bf4b463aee1634b2db0e5ac9f1"
+  integrity sha512-nlBPJ4S/EOiR5iw36GGuv6h/anTPHPbKd4LYlA67OILWU033z9zvW+ZQ0hOqchL3MTAGQpdrK9NG2TzTHxH0EA==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-hu@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-hu/-/lang-hu-4.22.0.tgz#64df791f3d2c930df7dea953f9ee728d8a29762b"
+  integrity sha512-g4/0AlN+PitPw0TWWkVYGcg7GxLbPcPDr9q2Epqh5FHIjWuR7rDykidbvAjtIYytAI+xIYsjxYbYmxYuUFBAJg==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-hy@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-hy/-/lang-hy-4.22.0.tgz#461946fff1cf698af55d675a73da7b597855beb7"
+  integrity sha512-706YCJTCZN5DLSELADsQC8tA0oKFmC0NBXOlRqGJtTK5OZm6mcrdhW0L42wJiz4uvbJlJxNDCS5rpdY5hE0DKA==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-id@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-id/-/lang-id-4.22.0.tgz#a77094a70c238ec1f6ba6814f48cedce5f5dd3bf"
+  integrity sha512-hPGjDiz2LVsOtsCB6f9BHhk4lELKmSY2oZSGv+K27c0OV3pjhk34asK2qpglHxYL1xQCjgBwU8bdeJsdgQH/lg==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-it@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-it/-/lang-it-4.22.0.tgz#a8df2f08c8c0cf8e1b51fafccc643dd3fd1a4f7d"
+  integrity sha512-gMbsBli8ZlPmDWLX8aNbPfIT5KdP4EvuPr+rfZJBoaqG8U0q9Q/gpB3omj0BR1cxOSf51yLUj91Omg2eyT9npg==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-ja@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-ja/-/lang-ja-4.22.0.tgz#e16b59d0b170e31c29f3d5891edaa4816a5cf2f4"
+  integrity sha512-RBA4noRciIvjPYppXWGCV7aw2hQOtKUG3Yfe/YXHh8zci/ukUWqnj36+jBx8C3fMYeh4X0KTNDRfrEM4hsLI3A==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+    kuromoji "^0.1.2"
+
+"@nlpjs/lang-ko@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-ko/-/lang-ko-4.22.0.tgz#df2e59566bfc50ae415cdd7436f81029de3db2b1"
+  integrity sha512-aNs8veJj0bhfUCv6UgPbwseUOOrPxsCFPKQ9bzfQMu3Z/ueTQQLSN29Jsktxz2L4NG/3D5NIFYMFniLFOY9MYQ==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-lt@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-lt/-/lang-lt-4.22.0.tgz#d412b0bdecc58f17a04aae5b28d7f4062cd186ef"
+  integrity sha512-wg4IhNUHY+zyTPFNHukPETPNyehwUqe8gJSx+Gu9ajVc9XrlMVPP2nmtb/oqw0J2Sel4uUPT4MpA2Zeijz+Uaw==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-ms@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-ms/-/lang-ms-4.22.0.tgz#1ddd3d90d92ea93291739ac127fc25dacb004bfe"
+  integrity sha512-XPsU5ddhZGwzR4s16o5F295jdEOalstbf0LZ94/rDqYFny/NxR7gcky4fQikNjwtNwVaS/odZSoS2tE+v/I2iw==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+    "@nlpjs/lang-id" "^4.22.0"
+
+"@nlpjs/lang-ne@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-ne/-/lang-ne-4.22.0.tgz#cdd301acd55dddf6f7eb45dfcc898493b51b6268"
+  integrity sha512-YGYwpqEnVpfNqzqDiyhiMbyb0FcVlgjpihSTnkfbAcAF39wAfOofw9IsRborooK/dFIb7bbjXe9dkVx1DFY0ag==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-nl@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-nl/-/lang-nl-4.22.0.tgz#9c6db23576a0ff3992edf6d26ee4f7f797c2f9fe"
+  integrity sha512-GfyrYV4WzKtRNGskxMUF0PJv4A5oxmIGCrGLCnsKEHtd8Qa2vZjkN6/4ax7iQIAjR4YioMIRnoE8pDMf2/cL0Q==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-no@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-no/-/lang-no-4.22.0.tgz#6476031015c476c60a8a214f0719532f4539ec89"
+  integrity sha512-QSrKvPUeqNn0WUUFS0zezsQFWPPage1Nx91CVEF/B96ASFOG2wyw+QEPGDENR76fR8fLK61KZo32BlsOT8IQKQ==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-pl@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-pl/-/lang-pl-4.22.0.tgz#11f7a4bffe57c4991bd9a62ab69f99fa55eb74f0"
+  integrity sha512-jTiRdY077TkEfnkgNburziNqyhY0NWAuiU62G3G7M2yIIV7LP4zxxbt2aKh7JlYE58w/J4HBUy9E4W2exx0V3w==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-pt@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-pt/-/lang-pt-4.22.0.tgz#103b2a75364c044768118d1f961e2ae4f12f7f33"
+  integrity sha512-ErwrKuVKCTh1RzC0id5UZC06DZOYwTkI7AgwQtd+KqPtns2uJixMN8Lug3mNt8J7sm871NcvPj2AYtupG0tFYw==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-ro@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-ro/-/lang-ro-4.22.0.tgz#4798ad727d5d96e3eed0c6a1b70a24ea0ce6b1f0"
+  integrity sha512-DAyz/QQT+l9+4bc6czX+mOSIp8sP4+sOJmiLAgqrRiEpR6CbtGuGCY+s74n3yqGGKti3TVD7VoSAhjIUh49Ssw==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-ru@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-ru/-/lang-ru-4.22.0.tgz#3f63f74cf29df051f90c08b0d9b64630b9c34301"
+  integrity sha512-a9FoXWIern7Nzg6+gfS1PrXtkF/JZzryrPu6dz2JnRC/KStOcH6OrW/a2/SzJ6SWisjbSZ5m7rol4X72I9DGIw==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-sl@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-sl/-/lang-sl-4.22.0.tgz#b3bbba60d6a45371c2ccd81dc7eabaf08c749d00"
+  integrity sha512-8nCiUvxb1b2VikV9z3h+UDFUU7iwCWNDvjlQ4ghUZxG+zAqaRqByKu04rDnGEk6n5KLdt8owczRnOxAdlBpdFw==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-sr@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-sr/-/lang-sr-4.22.0.tgz#d810958953e9ae79f51b4329067568595e0d61a5"
+  integrity sha512-1gI76OKLJfCLQKY2sPA2DtbAPhpzgpJOi1BOVdLVaGCG1CR5GMmm18LlYC/1FREXWc4rDorAAv4okxdEJAvXOQ==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-sv@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-sv/-/lang-sv-4.22.0.tgz#271a333a5d57701328b752d9c8b39979694c53ed"
+  integrity sha512-VtZt1ABY9XWnD2sN8fNqvPGtS6r76gm2Uvj8izWfNU4tFT4jGCU2NxsGf7sV20/ZLwErBfGTfLnCjJpSZNhniw==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-ta@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-ta/-/lang-ta-4.22.0.tgz#54f9139fd9513ece90cd73b85f79488436ce7df7"
+  integrity sha512-IL3yeB9CdSQ6K2lNtb7SYJ/f604dR7FyH4FbZlFcUFdBTJ5i45q2FYAcM3Az8ooX4nAQArJwfkTtrw7BzEE8qQ==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-th@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-th/-/lang-th-4.22.0.tgz#a3df2ad99c4d5b9e9a9dd4655689186ac518645e"
+  integrity sha512-2cXTm3VgrvMic2yNvZXYGKgnVAXsEY49L0/AsGV8+VqlBL0kBHWxscpxrEhESLIAFLDtb86WFzNGiEUgy+cq3g==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-tl@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-tl/-/lang-tl-4.22.0.tgz#2e215bacb43502ef4fcf5f6fbd62be17cfee36a3"
+  integrity sha512-ZaQgHWU3piytIz0fG0+815AfpBU6X54r5D1QbUyFjjSlFrdar8DgOo/8574kia97OUJookb7R42NlUl2gkayxw==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-tr@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-tr/-/lang-tr-4.22.0.tgz#12e79c7f0d7c4df5777a29e0efbc10115785aea6"
+  integrity sha512-xWh7zVxgPjl/MEkYtN9CRA5ZaQAaqbSJDetGE/BXF6ts5Y8OOBTLoVDP/z5d7q5jAActbpCQ74Ybk3+8JiAgRA==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-uk@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-uk/-/lang-uk-4.22.0.tgz#ea78df3d853377f872da92e4807c8d6eedb02529"
+  integrity sha512-+fvWUo27KcKgWL5vhQr2rYlIguzsBt/hrw7sZ9F/332zxdWuxgKrD1kGZL04qSb6ZHh4wyIz8wtrZJ6k/F6d2A==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/lang-zh@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flang-zh/-/lang-zh-4.22.0.tgz#67d865fd363c0f2ac93a19ead1c9b4bfbf04f711"
+  integrity sha512-KO26saTz85F+6/uQGfCnuOGYvp+3P0ROK917SCwrqielk9gygHZFwC3jjz0oIvAAvh/2lsvVJc9wK/abbtYEeA==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/language-min@^4.21.1":
+  version "4.21.1"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flanguage-min/-/language-min-4.21.1.tgz#d8b4da7530b1fbf7991528c4aa7429d5f0641203"
+  integrity sha512-Xe2IrCmudtc1ytxOekNHWaUwVDOc5MeIiKycN0HN8jyxxmGV1gEAioVCAs7kTvnbTcy95tw/9wqRPwaC4uQHWg==
+
+"@nlpjs/language@^4.21.1":
+  version "4.21.1"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2flanguage/-/language-4.21.1.tgz#3bbb9d97ee11630bbb8c8ddf11273037d4803933"
+  integrity sha512-xaFhH3BhVePrq2n0jL9mp27tLbDs5m/w4Sq0nzCJz1/8r2Ha59FXSmdr9Y5/K6JZNqse6OLXSNxRdX9Mo8xKLQ==
+
+"@nlpjs/ner@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2fner/-/ner-4.22.0.tgz#b34ec7fa0516554123dce612f2ecad45f60f70d9"
+  integrity sha512-V+EEmTw84pDvJovXQUBjNnxvklJHXux5zgJ9hw8I3Nai9mOCdMh9Io3xwWQLm7FZHJZkNWiyZwS/LCKhPLT7EA==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+    "@nlpjs/language-min" "^4.21.1"
+    "@nlpjs/similarity" "^4.21.1"
+
+"@nlpjs/neural@^4.21.1":
+  version "4.21.1"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2fneural/-/neural-4.21.1.tgz#fcd6847c0a889db9d55de047e046cddaab9e8a01"
+  integrity sha512-z3FgR775va3t0bI+RDpX+jC6ooDEEG8MZn4thV5I+hAHMUUYUKTdZQLp6DElKGIkachkmbO9skgRae7oQ8id0A==
+
+"@nlpjs/nlg@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2fnlg/-/nlg-4.22.0.tgz#bbe1223e7921f160077ce4aab03f1340e5c36e6e"
+  integrity sha512-RsK2/IzV/J7IRb5xlS6dGv+hwiRVwyUZt0Cha0yoHGjdc0QkDaeVOxbPPEfz4I93EXei1h9r+AYIjMsqkf/Blg==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+
+"@nlpjs/nlp@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2fnlp/-/nlp-4.22.0.tgz#7fd9857788ee01134324a6e0fab829012a9cb10e"
+  integrity sha512-kQNe4Ix5Pvgou0PEJj9lqxNYvca6+lKlRvUdcy4arNnHrMlcss5cJo3PCWowi5GISeM89ogW17nfymD64T1GQQ==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+    "@nlpjs/ner" "^4.22.0"
+    "@nlpjs/nlg" "^4.22.0"
+    "@nlpjs/nlu" "^4.22.0"
+    "@nlpjs/sentiment" "^4.22.0"
+    "@nlpjs/slot" "^4.21.1"
+
+"@nlpjs/nlu@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2fnlu/-/nlu-4.22.0.tgz#213fcd663fab2a382a74ce0fe446d3fe5a937466"
+  integrity sha512-lYruAc+tLbQcy9T4bMnV9XGvNCRhc50OV1xEbN7CvwDZ0lZjzTfSWSHxpkuFnCqCbFKfphRJaICQC7hsb60eJA==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+    "@nlpjs/language-min" "^4.21.1"
+    "@nlpjs/neural" "^4.21.1"
+    "@nlpjs/similarity" "^4.21.1"
+
+"@nlpjs/request@^4.21.1":
+  version "4.21.1"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2frequest/-/request-4.21.1.tgz#9f7d57f64facbf447da3cca80157dc9af5b21ee1"
+  integrity sha512-yoJtWW0WCiFRFhUt9FRjigHY6nyzg4dnOarwqmx2NtHP73iP0qNfIlxY3uNokQlhfdliA364b9kIHRAIDFuu5w==
+  dependencies:
+    http-proxy-agent "^4.0.1"
+    https-proxy-agent "^5.0.0"
+
+"@nlpjs/sentiment@^4.22.0":
+  version "4.22.0"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2fsentiment/-/sentiment-4.22.0.tgz#ca573c83381843cfbe36e9c90f75601bf40e180e"
+  integrity sha512-KPMToaZm+wJTVLxu4hA3aMWHLVPa1PaSEIr6tkeJ1ztlbkSC90/W0Ts25qEXt/ya2+38AxK5Ni6+rzF7FgRPjw==
+  dependencies:
+    "@nlpjs/core" "^4.22.0"
+    "@nlpjs/language-min" "^4.21.1"
+    "@nlpjs/neural" "^4.21.1"
+
+"@nlpjs/similarity@^4.21.1":
+  version "4.21.1"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2fsimilarity/-/similarity-4.21.1.tgz#c51655a71698547ddddcf544329a4f5b6d307556"
+  integrity sha512-pfs52en3DfG6QSkoYJO3Lq8tq9eZ4s8usyFx3nk9sKOWhg13tGqMrFpDJMnjpdgyY8ZEzOW8YSc5HXihzw7drQ==
+
+"@nlpjs/slot@^4.21.1":
+  version "4.21.1"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2fslot/-/slot-4.21.1.tgz#8a86881cb9f17df56bc58edf14c2f2f3042603dc"
+  integrity sha512-+PVNFuywvj/8YzC4K0eVVZK2MWmjeqebJxyyNxXIxllf41f2a05sio8CF75nq+HwwH/KMc0jyFZVdiucFnkTpQ==
+
+"@nlpjs/xtables@^4.21.1":
+  version "4.21.1"
+  resolved "https://verdaccio.getpolarized.io/@nlpjs%2fxtables/-/xtables-4.21.1.tgz#e9f8d90b5ad81c22e5d58149d7d170a051026a63"
+  integrity sha512-jpKqM7UkTYmywBYNTskTwU1UJyYQQWmfjw/Hzrwcv/9soe3R5cwU16PVsGQQIfljqXF6Ship3dJGfl5UKxnvIw==
+  dependencies:
+    xlsx "^0.16.2"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -5115,6 +5655,14 @@ address@1.1.2, address@^1.0.1:
   resolved "https://verdaccio.getpolarized.io/address/-/address-1.1.2.tgz#bf1116c9c758c51b7a933d296b72c221ed9428b6"
   integrity sha512-aT6camzM4xEA54YVJYSqxz1kv4IHnQZRtThJJHhUMRExaU5spC7jX5ugSwTaTgJliIgs4VhZOk7htClvQ/LmRA==
 
+adler-32@~1.2.0:
+  version "1.2.0"
+  resolved "https://verdaccio.getpolarized.io/adler-32/-/adler-32-1.2.0.tgz#6a3e6bf0a63900ba15652808cb15c6813d1a5f25"
+  integrity sha1-aj5r8KY5ALoVZSgIyxXGgT0aXyU=
+  dependencies:
+    exit-on-epipe "~1.0.1"
+    printj "~1.1.0"
+
 after@0.8.2:
   version "0.8.2"
   resolved "https://verdaccio.getpolarized.io/after/-/after-0.8.2.tgz#fedb394f9f0e02aa9768e702bda23b505fae7e1f"
@@ -5733,7 +6281,7 @@ async@1.5.2, async@^1.3.0:
   resolved "https://verdaccio.getpolarized.io/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
   integrity sha1-7GphrlZIDAw8skHJVhjiCJL5Zyo=
 
-async@^2.6.2:
+async@^2.0.1, async@^2.6.2:
   version "2.6.3"
   resolved "https://verdaccio.getpolarized.io/async/-/async-2.6.3.tgz#d72625e2344a3656e3a3ad4fa749fa83299d82ff"
   integrity sha512-zflvls11DCy+dQWzTW2dzuilv8Z5X/pjfmZOWba6TNIVDm+2UDaJmXSOXlasHKfNBs8oo3M0aT50fDEWfKZjXg==
@@ -6158,6 +6706,11 @@ big.js@^5.2.2:
   version "5.2.2"
   resolved "https://verdaccio.getpolarized.io/big.js/-/big.js-5.2.2.tgz#65f0af382f578bcdc742bd9c281e9cb2d7768328"
   integrity sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==
+
+bignumber.js@^7.2.1:
+  version "7.2.1"
+  resolved "https://verdaccio.getpolarized.io/bignumber.js/-/bignumber.js-7.2.1.tgz#80c048759d826800807c4bfd521e50edbba57a5f"
+  integrity sha512-S4XzBk5sMB+Rcb/LNcpzXr57VRTxgAvaAEDAl1AwRx27j00hT84O6OkteE7u8UB3NuaaygCRrEpqox4uDOrbdQ==
 
 bignumber.js@^9.0.0:
   version "9.0.1"
@@ -6995,6 +7548,15 @@ cdk-assets@1.115.0:
     mime "^2.5.2"
     yargs "^16.2.0"
 
+cfb@^1.1.4:
+  version "1.2.0"
+  resolved "https://verdaccio.getpolarized.io/cfb/-/cfb-1.2.0.tgz#6a4d0872b525ed60349e1ef51fb4b0bf73eca9a8"
+  integrity sha512-sXMvHsKCICVR3Naq+J556K+ExBo9n50iKl6LGarlnvuA2035uMlGA/qVrc0wQtow5P1vJEw9UyrKLCbtIKz+TQ==
+  dependencies:
+    adler-32 "~1.2.0"
+    crc-32 "~1.2.0"
+    printj "~1.1.2"
+
 chai@4.2.0:
   version "4.2.0"
   resolved "https://verdaccio.getpolarized.io/chai/-/chai-4.2.0.tgz#760aa72cf20e3795e84b12877ce0e83737aa29e5"
@@ -7454,6 +8016,14 @@ codemirror@~5.38.0:
   resolved "https://verdaccio.getpolarized.io/codemirror/-/codemirror-5.38.0.tgz#26a9551446e51dbdde36aabe60f72469724fd332"
   integrity sha512-PEPnDg8U3DTGFB/Dn2T/INiRNC9CB5k2vLAQJidYCsHvAgtXbklqnuidEwx7yGrMrdGhl0L0P3iNKW9I07J6tQ==
 
+codepage@~1.14.0:
+  version "1.14.0"
+  resolved "https://verdaccio.getpolarized.io/codepage/-/codepage-1.14.0.tgz#8cbe25481323559d7d307571b0fff91e7a1d2f99"
+  integrity sha1-jL4lSBMjVZ19MHVxsP/5HnodL5k=
+  dependencies:
+    commander "~2.14.1"
+    exit-on-epipe "~1.0.1"
+
 collapse-white-space@^1.0.0, collapse-white-space@^1.0.2:
   version "1.0.6"
   resolved "https://verdaccio.getpolarized.io/collapse-white-space/-/collapse-white-space-1.0.6.tgz#e63629c0016665792060dbbeb79c42239d2c5287"
@@ -7596,6 +8166,16 @@ commander@^7.0.0:
   version "7.2.0"
   resolved "https://verdaccio.getpolarized.io/commander/-/commander-7.2.0.tgz#a36cb57d0b501ce108e4d20559a150a391d97ab7"
   integrity sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==
+
+commander@~2.14.1:
+  version "2.14.1"
+  resolved "https://verdaccio.getpolarized.io/commander/-/commander-2.14.1.tgz#2235123e37af8ca3c65df45b026dbd357b01b9aa"
+  integrity sha512-+YR16o3rK53SmWHU3rEM3tPAh2rwb1yPcQX5irVn7mb0gXbwuCCrnkbV5+PBfETdfg1vui07nM6PCG1zndcjQw==
+
+commander@~2.17.1:
+  version "2.17.1"
+  resolved "https://verdaccio.getpolarized.io/commander/-/commander-2.17.1.tgz#bd77ab7de6de94205ceacc72f1716d29f20a77bf"
+  integrity sha512-wPMUt6FnH2yzG95SA6mzjQOEKUU3aLaDEmzs1ti+1E9h+CsrZghRlqEM/EJ4KscsQVG8uNN4uVreUeT8+drlgg==
 
 comment-parser@1.1.2:
   version "1.1.2"
@@ -7997,7 +8577,7 @@ cosmiconfig@^6.0.0:
     path-type "^4.0.0"
     yaml "^1.7.2"
 
-crc-32@^1.2.0:
+crc-32@^1.2.0, crc-32@~1.2.0:
   version "1.2.0"
   resolved "https://verdaccio.getpolarized.io/crc-32/-/crc-32-1.2.0.tgz#cb2db6e29b88508e32d9dd0ec1693e7b41a18208"
   integrity sha512-1uBwHxF+Y/4yF5G48fwnKq6QsIXheor3ZLPT80yGBV1oEUwpPojlEhQbWKVw1VwcTQyMGHK1/XMmTjmlsmTTGA==
@@ -9387,6 +9967,11 @@ dotenv@^8.2.0:
   version "8.6.0"
   resolved "https://verdaccio.getpolarized.io/dotenv/-/dotenv-8.6.0.tgz#061af664d19f7f4d8fc6e4ff9b584ce237adcb8b"
   integrity sha512-IrPdXQsk2BbzvCBGBOTmmSH5SodmqZNt4ERAZDmW4CT+tL8VtvinqywuANaFu4bOMWki16nqf0e4oC0QIaDr/g==
+
+doublearray@0.0.2:
+  version "0.0.2"
+  resolved "https://verdaccio.getpolarized.io/doublearray/-/doublearray-0.0.2.tgz#63186fe8d34413276d3621f6aa0ec5f79e227ef9"
+  integrity sha1-Yxhv6NNEEydtNiH2qg7F954ifvk=
 
 download@^6.2.2:
   version "6.2.5"
@@ -10856,6 +11441,11 @@ fetch-blob@^2.1.1:
   resolved "https://verdaccio.getpolarized.io/fetch-blob/-/fetch-blob-2.1.2.tgz#a7805db1361bd44c1ef62bb57fb5fe8ea173ef3c"
   integrity sha512-YKqtUDwqLyfyMnmbw8XD6Q8j9i/HggKtPEI+pZ1+8bvheBu78biSmNaXWusx1TauGqtUUGx/cBb1mKdq2rLYow==
 
+fflate@^0.3.8:
+  version "0.3.11"
+  resolved "https://verdaccio.getpolarized.io/fflate/-/fflate-0.3.11.tgz#2c440d7180fdeb819e64898d8858af327b042a5d"
+  integrity sha512-Rr5QlUeGN1mbOHlaqcSYMKVpPbgLy0AWT/W0EHxA6NGI12yO1jpoui2zBBvU2G824ltM6Ut8BFgfHSBGfkmS0A==
+
 figgy-pudding@^3.5.1:
   version "3.5.2"
   resolved "https://verdaccio.getpolarized.io/figgy-pudding/-/figgy-pudding-3.5.2.tgz#b4eee8148abb01dcf1d1ac34367d59e12fa61d6e"
@@ -11438,6 +12028,11 @@ forwarded@0.2.0:
   version "0.2.0"
   resolved "https://verdaccio.getpolarized.io/forwarded/-/forwarded-0.2.0.tgz#2269936428aad4c15c7ebe9779a84bf0b2a81811"
   integrity sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==
+
+frac@~1.1.2:
+  version "1.1.2"
+  resolved "https://verdaccio.getpolarized.io/frac/-/frac-1.1.2.tgz#3d74f7f6478c88a1b5020306d747dc6313c74d0b"
+  integrity sha512-w/XBfkibaTl3YDqASwfDUqkna4Z2p9cFSr1aHDt0WoMTECnRfBOv2WArlZILlqgWlmdIlALXGpM2AOhEk5W3IA==
 
 fragment-cache@^0.2.1:
   version "0.2.1"
@@ -12845,6 +13440,11 @@ graceful-fs@^4.1.10, graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.
   version "1.0.1"
   resolved "https://verdaccio.getpolarized.io/graceful-readlink/-/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
   integrity sha1-TK+tdrxi8C+gObL5Tpo906ORpyU=
+
+grapheme-splitter@^1.0.2:
+  version "1.0.4"
+  resolved "https://verdaccio.getpolarized.io/grapheme-splitter/-/grapheme-splitter-1.0.4.tgz#9cf3a665c6247479896834af35cf1dbb4400767e"
+  integrity sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==
 
 graphlib@^2.1.8:
   version "2.1.8"
@@ -15515,6 +16115,15 @@ kuler@^2.0.0:
   resolved "https://verdaccio.getpolarized.io/kuler/-/kuler-2.0.0.tgz#e2c570a3800388fb44407e851531c1d670b061b3"
   integrity sha512-Xq9nH7KlWZmXAtodXDDRE7vs6DU1gTU8zYDHDiWLSip45Egwq3plLHzPn27NgvzL2r1LMPC1vdqh98sQxtqj4A==
 
+kuromoji@^0.1.2:
+  version "0.1.2"
+  resolved "https://verdaccio.getpolarized.io/kuromoji/-/kuromoji-0.1.2.tgz#293f0d6706df006112137980588d5daac26d0790"
+  integrity sha512-V0dUf+C2LpcPEXhoHLMAop/bOht16Dyr+mDiIE39yX3vqau7p80De/koFqpiTcL1zzdZlc3xuHZ8u5gjYRfFaQ==
+  dependencies:
+    async "^2.0.1"
+    doublearray "0.0.2"
+    zlibjs "^0.3.1"
+
 ky-universal@^0.8.2:
   version "0.8.2"
   resolved "https://verdaccio.getpolarized.io/ky-universal/-/ky-universal-0.8.2.tgz#edc398d54cf495d7d6830aa1ab69559a3cc7f824"
@@ -15858,6 +16467,11 @@ lodash.difference@^4.5.0:
   resolved "https://verdaccio.getpolarized.io/lodash.difference/-/lodash.difference-4.5.0.tgz#9ccb4e505d486b91651345772885a2df27fd017c"
   integrity sha1-nMtOUF1Ia5FlE0V3KIWi3yf9AXw=
 
+lodash.escaperegexp@^4.1.2:
+  version "4.1.2"
+  resolved "https://verdaccio.getpolarized.io/lodash.escaperegexp/-/lodash.escaperegexp-4.1.2.tgz#64762c48618082518ac3df4ccf5d5886dae20347"
+  integrity sha1-ZHYsSGGAglGKw99Mz11YhtriA0c=
+
 lodash.every@^4.6.0:
   version "4.6.0"
   resolved "https://verdaccio.getpolarized.io/lodash.every/-/lodash.every-4.6.0.tgz#eb89984bebc4364279bb3aefbbd1ca19bfa6c6a7"
@@ -15969,10 +16583,20 @@ lodash.keys@~2.4.1:
     lodash._shimkeys "~2.4.1"
     lodash.isobject "~2.4.1"
 
+lodash.last@^3.0.0:
+  version "3.0.0"
+  resolved "https://verdaccio.getpolarized.io/lodash.last/-/lodash.last-3.0.0.tgz#242f663112dd4c6e63728c60a3c909d1bdadbd4c"
+  integrity sha1-JC9mMRLdTG5jcoxgo8kJ0b2tvUw=
+
 lodash.map@^4.6.0:
   version "4.6.0"
   resolved "https://verdaccio.getpolarized.io/lodash.map/-/lodash.map-4.6.0.tgz#771ec7839e3473d9c4cde28b19394c3562f4f6d3"
   integrity sha1-dx7Hg540c9nEzeKLGTlMNWL09tM=
+
+lodash.max@^4.0.1:
+  version "4.0.1"
+  resolved "https://verdaccio.getpolarized.io/lodash.max/-/lodash.max-4.0.1.tgz#8735566c618b35a9f760520b487ae79658af136a"
+  integrity sha1-hzVWbGGLNan3YFILSHrnllivE2o=
 
 lodash.maxby@^4.6.0:
   version "4.6.0"
@@ -16033,6 +16657,16 @@ lodash.toarray@^4.4.0:
   version "4.4.0"
   resolved "https://verdaccio.getpolarized.io/lodash.toarray/-/lodash.toarray-4.4.0.tgz#24c4bfcd6b2fba38bfd0594db1179d8e9b656561"
   integrity sha1-JMS/zWsvuji/0FlNsRedjptlZWE=
+
+lodash.tonumber@^4.0.3:
+  version "4.0.3"
+  resolved "https://verdaccio.getpolarized.io/lodash.tonumber/-/lodash.tonumber-4.0.3.tgz#0b96b31b35672793eb7f5a63ee791f1b9e9025d9"
+  integrity sha1-C5azGzVnJ5Prf1pj7nkfG56QJdk=
+
+lodash.trimend@^4.5.1:
+  version "4.5.1"
+  resolved "https://verdaccio.getpolarized.io/lodash.trimend/-/lodash.trimend-4.5.1.tgz#12804437286b98cad8996b79414e11300114082f"
+  integrity sha1-EoBENyhrmMrYmWt5QU4RMAEUCC8=
 
 lodash.truncate@^4.4.2:
   version "4.4.2"
@@ -17432,6 +18066,27 @@ node-libs-browser@^2.2.1:
     url "^0.11.0"
     util "^0.11.0"
     vm-browserify "^1.0.1"
+
+node-nlp@=4.22.1:
+  version "4.22.1"
+  resolved "https://verdaccio.getpolarized.io/node-nlp/-/node-nlp-4.22.1.tgz#9bebbf7a591470bfc57ffb4391f206d98719f61b"
+  integrity sha512-ofNxCvMD1vbBcf2ZYLqKTViV1RXsPRqwViUJqrdY7yLt2Y+0TT3pVJB5UIcLpScf0RxJpDu9k39NAbLAmsmt2w==
+  dependencies:
+    "@nlpjs/builtin-duckling" "^4.22.0"
+    "@nlpjs/builtin-microsoft" "^4.22.0"
+    "@nlpjs/core-loader" "^4.22.0"
+    "@nlpjs/emoji" "^4.22.0"
+    "@nlpjs/evaluator" "^4.21.1"
+    "@nlpjs/lang-all" "^4.22.1"
+    "@nlpjs/language" "^4.21.1"
+    "@nlpjs/neural" "^4.21.1"
+    "@nlpjs/nlg" "^4.22.0"
+    "@nlpjs/nlp" "^4.22.0"
+    "@nlpjs/nlu" "^4.22.0"
+    "@nlpjs/request" "^4.21.1"
+    "@nlpjs/sentiment" "^4.22.0"
+    "@nlpjs/similarity" "^4.21.1"
+    "@nlpjs/xtables" "^4.21.1"
 
 node-object-hash@^2.0.0:
   version "2.3.7"
@@ -19288,7 +19943,7 @@ pretty-format@^26.0.0, pretty-format@^26.6.2:
     ansi-styles "^4.0.0"
     react-is "^17.0.1"
 
-printj@~1.1.0:
+printj@~1.1.0, printj@~1.1.2:
   version "1.1.2"
   resolved "https://verdaccio.getpolarized.io/printj/-/printj-1.1.2.tgz#d90deb2975a8b9f600fb3a1c94e3f4c53c78a222"
   integrity sha512-zA2SmoLaxZyArQTOPj5LXecR+RagfPSU5Kw1qP+jkWeNlrq+eJZyY2oS68SU1Z/7/myXM4lo9716laOFAVStCQ==
@@ -21976,6 +22631,13 @@ squeak@^1.0.0:
     chalk "^1.0.0"
     console-stream "^0.1.1"
     lpad-align "^1.0.1"
+
+ssf@~0.11.2:
+  version "0.11.2"
+  resolved "https://verdaccio.getpolarized.io/ssf/-/ssf-0.11.2.tgz#0b99698b237548d088fc43cdf2b70c1a7512c06c"
+  integrity sha512-+idbmIXoYET47hH+d7dfm2epdOMUDjqcB4648sTZ+t2JwoyBFL/insLfB/racrDmsKB3diwsDA696pZMieAC5g==
+  dependencies:
+    frac "~1.1.2"
 
 sshpk@^1.7.0:
   version "1.16.1"
@@ -24830,10 +25492,20 @@ winston@^3.0.0:
     triple-beam "^1.3.0"
     winston-transport "^4.4.0"
 
+wmf@~1.0.1:
+  version "1.0.2"
+  resolved "https://verdaccio.getpolarized.io/wmf/-/wmf-1.0.2.tgz#7d19d621071a08c2bdc6b7e688a9c435298cc2da"
+  integrity sha512-/p9K7bEh0Dj6WbXg4JG0xvLQmIadrner1bi45VMJTfnbVHsc7yIajZyoSoK60/dtVBs12Fm6WkUI5/3WAVsNMw==
+
 word-wrap@^1.2.3, word-wrap@~1.2.3:
   version "1.2.3"
   resolved "https://verdaccio.getpolarized.io/word-wrap/-/word-wrap-1.2.3.tgz#610636f6b1f703891bd34771ccb17fb93b47079c"
   integrity sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==
+
+word@~0.3.0:
+  version "0.3.0"
+  resolved "https://verdaccio.getpolarized.io/word/-/word-0.3.0.tgz#8542157e4f8e849f4a363a288992d47612db9961"
+  integrity sha512-OELeY0Q61OXpdUfTp+oweA/vtLVg5VDOXh+3he3PNzLGG/y0oylSOC1xRVj0+l4vQ3tj/bB1HVHv1ocXkQceFA==
 
 wordwrap@>=0.0.2:
   version "1.0.0"
@@ -25307,6 +25979,22 @@ xhr@^2.0.1:
     parse-headers "^2.0.0"
     xtend "^4.0.0"
 
+xlsx@^0.16.2:
+  version "0.16.9"
+  resolved "https://verdaccio.getpolarized.io/xlsx/-/xlsx-0.16.9.tgz#dacd5bb46bda6dd3743940c9c3dc1e2171826256"
+  integrity sha512-gxi1I3EasYvgCX1vN9pGyq920Ron4NO8PNfhuoA3Hpq6Y8f0ECXiy4OLrK4QZBnj1jx3QD+8Fq5YZ/3mPZ5iXw==
+  dependencies:
+    adler-32 "~1.2.0"
+    cfb "^1.1.4"
+    codepage "~1.14.0"
+    commander "~2.17.1"
+    crc-32 "~1.2.0"
+    exit-on-epipe "~1.0.1"
+    fflate "^0.3.8"
+    ssf "~0.11.2"
+    wmf "~1.0.1"
+    word "~0.3.0"
+
 xml-name-validator@^3.0.0:
   version "3.0.0"
   resolved "https://verdaccio.getpolarized.io/xml-name-validator/-/xml-name-validator-3.0.0.tgz#6ae73e06de4d8c6e47f9fb181f78d648ad457c6a"
@@ -25607,6 +26295,11 @@ zip-stream@^4.0.4, zip-stream@^4.1.0:
     archiver-utils "^2.1.0"
     compress-commons "^4.1.0"
     readable-stream "^3.6.0"
+
+zlibjs@^0.3.1:
+  version "0.3.1"
+  resolved "https://verdaccio.getpolarized.io/zlibjs/-/zlibjs-0.3.1.tgz#50197edb28a1c42ca659cc8b4e6a9ddd6d444554"
+  integrity sha1-UBl+2yihxCymWcyLTmqd3W1ERVQ=
 
 zwitch@^1.0.0:
   version "1.0.5"
