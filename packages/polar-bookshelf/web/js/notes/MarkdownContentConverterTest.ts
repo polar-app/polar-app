@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
 
-describe('MarkdownContentEscaper', function() {
+describe('MarkdownContentConverter', function() {
 
     function testTwoWayConversionFromMarkdown(markdown: string, expected: string) {
 
