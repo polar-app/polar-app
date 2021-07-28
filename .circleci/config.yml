@@ -231,7 +231,7 @@ workflows:
           requires:
             - cypress/install
           working_directory: packages/polar-bookshelf
-          start: WEBPACK_BUNLDE=repository npx webpack serve
+          start: export WEBPACK_BUNLDE=repository && npx webpack serve
           wait-on: "http://localhost:8050"
           command: (cd packages/polar-bookshelf && npx cypress run)
           attach-workspace: true
