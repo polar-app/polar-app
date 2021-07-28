@@ -217,24 +217,21 @@ workflows:
   version: 2
   main:
     jobs:
-      - cypress/install:
-          pre-steps:
-            - run: 'echo "//verdaccio.getpolarized.io/:_authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWFsX2dyb3VwcyI6WyJwb2xhciIsIiRhbGwiLCIkYXV0aGVudGljYXRlZCIsIkBhbGwiLCJAYXV0aGVudGljYXRlZCIsImFsbCJdLCJuYW1lIjoicG9sYXIiLCJncm91cHMiOlsicG9sYXIiLCIkYWxsIiwiJGF1dGhlbnRpY2F0ZWQiLCJAYWxsIiwiQGF1dGhlbnRpY2F0ZWQiLCJhbGwiLCIkYWxsIiwiJGF1dGhlbnRpY2F0ZWQiLCJAYWxsIiwiQGF1dGhlbnRpY2F0ZWQiLCJhbGwiLCJwb2xhciIsIiRhbGwiLCIkYXV0aGVudGljYXRlZCIsIkBhbGwiLCJAYXV0aGVudGljYXRlZCIsImFsbCJdLCJpYXQiOjE2MjczNDIwMDAsIm5iZiI6MTYyNzM0MjAwMCwiZXhwIjoxNzEzNzQyMDAwfQ.P6StkZJzKH7S_WcRlSEKcwhVDH_7mV4x91X-alQaMG4" > ~/.npmrc'
-
-      - cypress/run:
-          requires:
-            - cypress/install
-          yarn: true
-          start: npx webpack serve
-          wait-on: "http://localhost:8050"
-          command: (cd packages/polar-bookshelf && npx cypress run)
-          attach-workspace: true
-
       - karma:
           executor: my-docker
 
       - build-webapp:
           executor: my-docker
+
+      - cypress/run:
+          requires:
+            - build-webapp
+          yarn: true
+          working_directory: packages/polar-bookshelf
+          start: npx webpack serve
+          wait-on: "http://localhost:8050"
+          command: (cd packages/polar-bookshelf && npx cypress run)
+          attach-workspace: true
 
       - build-site:
           executor: my-docker
