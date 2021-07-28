@@ -212,8 +212,6 @@ workflows:
   version: 2
   main:
     jobs:
-      - build:
-          executor: my-docker
       - karma:
           executor: my-docker
       - build-webapp:
