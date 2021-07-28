@@ -99,17 +99,10 @@ commands:
 
 # ~ Workflow Building Blocks
 jobs:
-  build:
-    executor: << parameters.executor>>
-    working_directory: ~/repo
-    description: "Build the main code and run 'npm test'"
-    steps:
-      - build_setup
-      - run:
-          name: test
-          command: npx lerna run test
-
   karma:
+    parameters:
+      executor:
+        type: executor
     executor: << parameters.executor>>
     working_directory: ~/repo
     description: "Run our karma tests in the browser."
@@ -125,6 +118,9 @@ jobs:
             yarn run karma
 
   build-webapp:
+    parameters:
+      executor:
+        type: executor
     executor: << parameters.executor>>
     working_directory: ~/repo
     steps:
@@ -141,6 +137,9 @@ jobs:
             find dist/public/repository-bundle.js.gz -size +1300000c |tee /dev/stderr| egrep '.*'
 
   build-site:
+    parameters:
+      executor:
+        type: executor
     executor: << parameters.executor>>
     working_directory: ~/repo
     steps:
@@ -153,11 +152,12 @@ jobs:
             yarn run dist
 
   deploy_app_getpolarized_io:
-    executor: << parameters.executor>>
     parameters:
+      executor:
+        type: executor
       firebase_hosting_target:
-        description: "The npm target to run in the final step."
         type: string
+    executor: << parameters.executor>>
     working_directory: ~/repo
     steps:
       - build_setup
@@ -186,6 +186,9 @@ jobs:
             (cd packages/polar-app-private/polar-hooks/ && time firebase deploy --only functions)
 
   deploy_getpolarized_io:
+    parameters:
+      executor:
+        type: executor
     executor: << parameters.executor>>
     working_directory: ~/repo
     steps:
