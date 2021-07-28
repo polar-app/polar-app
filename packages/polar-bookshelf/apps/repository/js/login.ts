@@ -1,4 +1,4 @@
-import {Firebase} from '../../../web/js/firebase/Firebase';
+import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
 import {FirebaseUIAuth} from '../../../web/js/firebase/FirebaseUIAuth';
 import firebase from 'firebase/app'
 import {ExternalNavigationBlock} from "../../../web/js/electron/navigation/ExternalNavigationBlock";

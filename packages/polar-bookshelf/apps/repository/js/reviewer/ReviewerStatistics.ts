@@ -1,5 +1,5 @@
 import {SpacedRepStatCollection, StatType} from "polar-firebase/src/firebase/om/SpacedRepStatCollection";
-import {Firebase} from "../../../../web/js/firebase/Firebase";
+import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
 import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {FirestoreCollections} from "./FirestoreCollections";
 

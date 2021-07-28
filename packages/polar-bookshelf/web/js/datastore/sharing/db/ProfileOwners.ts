@@ -1,20 +1,15 @@
-
-import {Firestore} from '../../../firebase/Firestore';
-import {Firebase} from "../../../firebase/Firebase";
+import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
 import {DocumentReferences, GetOptions} from "../../../firebase/firestore/DocumentReferences";
-import {
-    EmailStr,
-    HandleStr, ProfileIDStr,
-    UserIDStr
-} from "polar-firebase/src/firebase/om/ProfileCollection";
-import {IDocumentReference, IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
+import {EmailStr, HandleStr, ProfileIDStr, UserIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
+import {IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 export class ProfileOwners {
 
     public static readonly COLLECTION = 'profile_owner';
 
     public static async doc(id: UserIDStr): Promise<[HandleStr, IDocumentReferenceClient]> {
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
         const doc = firestore.collection(this.COLLECTION).doc(id);
         return [id, doc];
     }

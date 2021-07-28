@@ -1,8 +1,8 @@
-import {Firestore} from './Firestore';
 import {Objects} from "polar-shared/src/util/Objects";
 import firebase from 'firebase/app'
-import { IQuery } from 'polar-firestore-like/src/IQuery';
+import {IQuery} from 'polar-firestore-like/src/IQuery';
 import {IQuerySnapshot} from "polar-firestore-like/src/IQuerySnapshot";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 /**
  * Build a simple query cursor for Firestore queries.
@@ -37,7 +37,7 @@ export class FirestoreQueryCursor {
 
         console.log("=========================");
 
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
 
         let query: IQuery<unknown>;
 
