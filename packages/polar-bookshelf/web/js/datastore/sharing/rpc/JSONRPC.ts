@@ -1,4 +1,4 @@
-import {Firebase} from '../../../firebase/Firebase';
+import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
 import {UserRequest} from '../db/UserRequest';
 import {CloudFunctions} from '../../firebase/CloudFunctions';
 

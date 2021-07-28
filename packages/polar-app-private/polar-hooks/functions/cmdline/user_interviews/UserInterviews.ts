@@ -1,5 +1,5 @@
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {Firestore} from "../../impl/util/Firestore";
 
 export namespace UserInterviews {
 
@@ -14,7 +14,7 @@ export namespace UserInterviews {
 
     export async function get(id: string): Promise<IUserInterview | undefined> {
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
         const ref = firestore.collection(COLLECTION).doc(id);
         const doc = await ref.get();
 
@@ -28,7 +28,7 @@ export namespace UserInterviews {
 
     export async function set(id: string, employee: string, customer: string) {
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         const record: IUserInterview = {
             id,

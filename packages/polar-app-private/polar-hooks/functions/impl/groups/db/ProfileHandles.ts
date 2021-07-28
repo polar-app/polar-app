@@ -1,8 +1,8 @@
-import {Firestore} from '../../util/Firestore';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
-import { HandleStr, ProfileIDStr } from 'polar-firebase/src/firebase/om/ProfileCollection';
+import {HandleStr, ProfileIDStr} from 'polar-firebase/src/firebase/om/ProfileCollection';
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 /**
  * Lookup from a handle (alice101) to their profileID.
@@ -12,7 +12,7 @@ export class ProfileHandles {
     public static readonly COLLECTION = 'profile_handle';
 
     public static doc(handle: HandleStr): [HandleStr, IDocumentReference<unknown>] {
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
         const id = handle;
         const doc = firestore.collection(this.COLLECTION).doc(id);
         return [id, doc];

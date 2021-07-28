@@ -1,14 +1,14 @@
 import {URLs} from 'polar-shared/src/util/URLs';
-import {Firebase} from '../../../firebase/Firebase';
+import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Billing} from "polar-accounts/src/Billing";
 import {Accounts} from "../../../accounts/Accounts";
 import {SignInSuccessURLs} from "../../../../../apps/repository/js/login/SignInSuccessURLs";
 import firebase from 'firebase/app'
-import {Firestore} from "../../../firebase/Firestore";
 import {AppSites} from "./AppSites";
-import { IAccount } from 'polar-firebase/src/firebase/om/AccountCollection';
+import {IAccount} from 'polar-firebase/src/firebase/om/AccountCollection';
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 export interface AuthHandler {
 
@@ -160,7 +160,7 @@ export class BrowserAuthHandler extends FirebaseAuthHandler {
         // TODO useHistory here to push so that the app doesn't have to
         // reload but the problem is that we need to use hooks for this...
 
-        Firestore.terminateAndRedirect(newLocation)
+        FirestoreBrowserClient.terminateAndRedirect(newLocation)
             .catch(err => console.error(err));
 
     }

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {Firestore} from "../../../web/js/firebase/Firestore";
 import {useComponentDidMount} from "../../../web/js/hooks/ReactLifecycleHooks";
 import firebase from 'firebase/app'
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 export const FirestoreInitStory = React.memo(function FirestoreInitStory() {
 
@@ -40,7 +40,7 @@ export const FirestoreInitStory = React.memo(function FirestoreInitStory() {
 
     const doAsync = React.useCallback(async () => {
 
-        await Firestore.init();
+        await FirestoreBrowserClient.init();
         setInit(true);
 
     }, []);

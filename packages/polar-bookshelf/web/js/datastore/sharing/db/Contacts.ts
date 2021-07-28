@@ -1,5 +1,5 @@
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {Firebase} from '../../../firebase/Firebase';
+import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
 import {Collections, DocumentChange} from './Collections';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {EmailStr} from "polar-firebase/src/firebase/om/ProfileCollection";

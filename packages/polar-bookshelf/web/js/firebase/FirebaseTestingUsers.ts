@@ -1,4 +1,4 @@
-import {Firebase} from "./Firebase";
+import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
 
 export const FIREBASE_USER="getpolarized.test+test@gmail.com";
 export const FIREBASE_PASS="mk9z79vlquixvqd";

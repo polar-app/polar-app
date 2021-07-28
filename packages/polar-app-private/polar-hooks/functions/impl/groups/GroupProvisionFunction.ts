@@ -4,7 +4,6 @@ import {UserGroups} from './db/UserGroups';
 import {Senders} from './db/GroupMemberInvitations';
 import {ExpressFunctions} from '../util/ExpressFunctions';
 import {IDUser} from '../util/IDUsers';
-import {Firestore} from '../util/Firestore';
 import {GroupDocActions} from "./db/GroupDocActions";
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {UserRequests} from '../util/UserRequests';
@@ -15,6 +14,7 @@ import {GroupMembers} from "./db/GroupMembers";
 import {LinksValidator} from "./rpc/LinksValidator";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {TextSerializer} from "polar-html/src/sanitize/TextSerializer";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 export class GroupProvisionFunctions {
 
@@ -26,7 +26,7 @@ export class GroupProvisionFunctions {
 
         const {uid, user} = idUser;
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         async function verifyNonExistingGroup(groupID: GroupIDStr) {
 

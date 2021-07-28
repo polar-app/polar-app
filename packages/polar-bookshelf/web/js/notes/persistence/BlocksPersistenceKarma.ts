@@ -1,19 +1,19 @@
-import {Firestore} from "../../firebase/Firestore";
 import {assert} from "chai";
-import {Firebase} from "../../firebase/Firebase";
+import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
 import {FIREBASE_PASS, FIREBASE_USER} from "../../firebase/FirebaseTestingUsers";
 import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
-import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 import {assertJSON} from "../../test/Assertions";
 import {PositionalArrays} from "../store/PositionalArrays";
 import {BlocksStoreUndoQueues} from "../store/BlocksStoreUndoQueues";
 import {BlocksStoreTests} from "../store/BlocksStoreTests";
-import createBasicBlock = BlocksStoreTests.createBasicBlock;
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
-import { FirestoreBlocksPersistenceWriter } from "./BlocksPersistenceWriters";
+import {FirestoreBlocksPersistenceWriter} from "./BlocksPersistenceWriters";
 import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
+import createBasicBlock = BlocksStoreTests.createBasicBlock;
 
 const ID = Hashcodes.createRandomID();
 
@@ -39,7 +39,7 @@ describe("BlocksPersistence", () => {
 
     it("no mutations", async () => {
 
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
 
         await FirestoreBlocksPersistenceWriter.doExec(firestore, []);
 
@@ -47,7 +47,7 @@ describe("BlocksPersistence", () => {
 
     it("new document", async () => {
 
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
 
         const uid = (await Firebase.currentUserID())!;
 
@@ -92,7 +92,7 @@ describe("BlocksPersistence", () => {
 
     it("updated block", async () => {
 
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
 
         const uid = (await Firebase.currentUserID())!;
 
@@ -154,7 +154,7 @@ describe("BlocksPersistence", () => {
 
     it("updated block with float values for items", async () => {
 
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
         const uid = (await Firebase.currentUserID())!;
 
         const before = createBasicBlock<IMarkdownContent>({
@@ -219,7 +219,7 @@ namespace FirestoreBlocks {
 
     export async function get(id: BlockIDStr): Promise<IBlock | undefined> {
 
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
 
         const doc = await firestore.collection('block').doc(id).get();
 
@@ -233,7 +233,7 @@ namespace FirestoreBlocks {
 
     export async function doDelete(id: BlockIDStr) {
 
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
 
         await firestore.collection('block').doc(id).delete()
 
