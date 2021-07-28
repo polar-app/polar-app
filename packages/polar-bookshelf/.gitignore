@@ -9,3 +9,5 @@ bower_components/
 .webpack-cache-loader
 tsconfig.tsbuildinfo
 .terser-webpack-plugin
+cypress/screenshots/*
+cypress/videos/*
