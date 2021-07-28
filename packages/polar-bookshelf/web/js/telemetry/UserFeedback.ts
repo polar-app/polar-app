@@ -1,13 +1,13 @@
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {Firestore} from '../firebase/Firestore';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {MachineID} from "polar-shared/src/util/MachineIDs";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 export class UserFeedbacks {
 
     public static async write(userFeedback: UserFeedback) {
 
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
 
         const id = Hashcodes.createRandomID();
 

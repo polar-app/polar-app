@@ -1,8 +1,8 @@
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {Clause, Collections, OrderByClause} from "../datastore/sharing/db/Collections";
+import {Clause, Collections} from "../datastore/sharing/db/Collections";
 import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
-import {Firestore} from "../firebase/Firestore";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 export interface ISyncEntityInit {
     readonly src: IDStr;
@@ -50,7 +50,7 @@ export namespace SyncEntities {
     export async function get(type: string, src: IDStr): Promise<ISyncEntity | undefined> {
         const id = createID(type, src);
         const uid = await Firebase.currentUserID();
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
         const ref = firestore.collection(COLLECTION).doc(id);
         const doc = await ref.get();
         return doc.exists ? <ISyncEntity> doc.data() : undefined;
@@ -59,7 +59,7 @@ export namespace SyncEntities {
     export async function set(type: IDStr, src: IDStr, dest: IDStr) {
         const id = createID(type, src);
         const uid = await Firebase.currentUserID();
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
         const ref = firestore.collection(COLLECTION).doc(id);
         await ref.set({id, uid, src, dest, type});
     }

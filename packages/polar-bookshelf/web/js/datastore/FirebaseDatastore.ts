@@ -19,7 +19,8 @@ import {
     InitResult,
     MutationType,
     SnapshotResult,
-    WritableBinaryMetaDatastore, WriteController,
+    WritableBinaryMetaDatastore,
+    WriteController,
     WriteFileOpts,
     WriteFileProgress,
     WriteOpts
@@ -28,7 +29,6 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {Backend} from 'polar-shared/src/datastore/Backend';
 import {DocFileMeta} from 'polar-shared/src/datastore/DocFileMeta';
-import {Firestore} from '../firebase/Firestore';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {isPresent, Preconditions} from 'polar-shared/src/Preconditions';
 import firebase from 'firebase/app'
@@ -38,10 +38,7 @@ import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {DocMetas} from "../metadata/DocMetas";
 import {Percentages} from 'polar-shared/src/util/Percentages';
-import {
-    Percentage,
-    ProgressTracker
-} from 'polar-shared/src/util/ProgressTracker';
+import {Percentage, ProgressTracker} from 'polar-shared/src/util/ProgressTracker';
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';
@@ -56,19 +53,15 @@ import {DocPermissions} from "./sharing/db/DocPermissions";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {FileRef} from "polar-shared/src/datastore/FileRef";
 import {Latch} from "polar-shared/src/util/Latch";
-import {
-    GetFileOpts,
-    NetworkLayers
-} from "polar-shared/src/datastore/IDatastore";
-import {
-    SnapshotUnsubscriber
-} from 'polar-shared/src/util/Snapshots';
-import {IQuerySnapshot, IQuerySnapshotClient} from "polar-firestore-like/src/IQuerySnapshot";
-import {IDocumentChange, IDocumentChangeClient} from "polar-firestore-like/src/IDocumentChange";
-import {IDocumentReference, IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
+import {GetFileOpts, NetworkLayers} from "polar-shared/src/datastore/IDatastore";
+import {SnapshotUnsubscriber} from 'polar-shared/src/util/Snapshots';
+import {IQuerySnapshotClient} from "polar-firestore-like/src/IQuerySnapshot";
+import {IDocumentChangeClient} from "polar-firestore-like/src/IDocumentChange";
+import {IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
 import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
-import {StoragePath, FirebaseDatastores} from 'polar-shared/src/datastore/FirebaseDatastores';
+import {FirebaseDatastores, StoragePath} from 'polar-shared/src/datastore/FirebaseDatastores';
 import {IDocumentSnapshotClient} from "polar-firestore-like/src/IDocumentSnapshot";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 const log = Logger.create();
 
@@ -107,7 +100,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
 
         // get the firebase app. Make sure we are initialized externally.
         this.app = firebase.app();
-        this.firestore = await Firestore.getInstance();
+        this.firestore = await FirestoreBrowserClient.getInstance();
         this.storage = firebase.storage();
         this.uid = (await Firebase.currentUserID())!;
 

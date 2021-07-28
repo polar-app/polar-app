@@ -1,9 +1,9 @@
 import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
-import {Firestore} from '../firebase/Firestore';
 import {Logger} from "polar-shared/src/logger/Logger";
 import {DocumentReferences} from "../firebase/firestore/DocumentReferences";
 import {OnErrorCallback, OnNextCallback} from "polar-shared/src/util/Snapshots";
 import {IAccount} from "polar-firebase/src/firebase/om/AccountCollection";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 const log = Logger.create();
 
@@ -25,7 +25,7 @@ export namespace Accounts {
             return undefined;
         }
 
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
 
         const id = user.uid;
 
@@ -91,7 +91,7 @@ export namespace Accounts {
             return;
         }
 
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
 
         const id = user.uid;
 

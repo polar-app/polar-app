@@ -1,4 +1,3 @@
-import {Firestore} from '../../../firebase/Firestore';
 import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
 import {ProfileOwners} from './ProfileOwners';
 import {
@@ -14,6 +13,7 @@ import {
     ProfileRecordTuple
 } from "polar-firebase/src/firebase/om/ProfileCollection";
 import {IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 /**
  * @Deprecated migrate to polar-firestore
@@ -23,7 +23,7 @@ export class Profiles {
     public static readonly COLLECTION = 'profile';
 
     public static async doc(id: ProfileIDStr): Promise<[HandleStr, IDocumentReferenceClient]> {
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
         const doc = firestore.collection(this.COLLECTION).doc(id);
         return [id, doc];
     }

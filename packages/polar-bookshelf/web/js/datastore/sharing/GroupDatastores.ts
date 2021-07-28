@@ -3,12 +3,7 @@ import {PersistenceLayer} from '../PersistenceLayer';
 import {GroupIDStr} from '../Datastore';
 import {DocMetas} from '../../metadata/DocMetas';
 import {DatastoreImportFiles} from './rpc/DatastoreImportFiles';
-import {
-    DocIDStr,
-    GroupProvisionRequest,
-    GroupProvisions
-} from './rpc/GroupProvisions';
-import {Firestore} from '../../firebase/Firestore';
+import {DocIDStr, GroupProvisionRequest, GroupProvisions} from './rpc/GroupProvisions';
 import {DatastoreCollection, RecordHolder} from '../FirebaseDatastore';
 import {BackendFileRefs} from '../BackendFileRefs';
 import {Either} from '../../util/Either';
@@ -19,6 +14,7 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
 import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 const log = Logger.create();
 
@@ -41,7 +37,7 @@ export class GroupDatastores {
             async function getDocInfoRecord(docID: DocIDStr) {
                 log.info("Getting doc info record: " + docID);
 
-                const firestore = await Firestore.getInstance();
+                const firestore = await FirestoreBrowserClient.getInstance();
 
                 const ref = firestore
                     .collection(DatastoreCollection.DOC_INFO)
