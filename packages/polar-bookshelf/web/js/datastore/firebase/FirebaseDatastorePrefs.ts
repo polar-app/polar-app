@@ -5,7 +5,7 @@ import {
 } from "../../util/prefs/Prefs";
 import {IUserPref, UserPrefCallback, UserPrefs} from "./UserPrefs";
 import {Firestore} from "../../firebase/Firestore";
-import {Firebase} from "../../firebase/Firebase";
+import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
 import {Latch} from "polar-shared/src/util/Latch";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {

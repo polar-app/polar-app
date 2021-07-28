@@ -1,4 +1,4 @@
-import {UserIDStr} from "../firebase/Firebase";
+import {UserIDStr} from "polar-firebase-browser/src/firebase/Firebase";
 import {
     OnErrorCallback,
     SnapshotUnsubscriber

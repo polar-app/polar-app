@@ -1,5 +1,5 @@
 import {Collections, UserIDStr} from "../sharing/db/Collections";
-import {Firebase} from "../../firebase/Firebase";
+import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 export namespace UserTraits {

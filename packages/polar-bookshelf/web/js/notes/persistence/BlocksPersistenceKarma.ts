@@ -1,6 +1,6 @@
 import {Firestore} from "../../firebase/Firestore";
 import {assert} from "chai";
-import {Firebase} from "../../firebase/Firebase";
+import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
 import {FIREBASE_PASS, FIREBASE_USER} from "../../firebase/FirebaseTestingUsers";
 import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
 import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;

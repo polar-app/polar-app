@@ -45,7 +45,7 @@ import {
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';
-import {Firebase, UserID} from '../firebase/Firebase';
+import {Firebase, UserID} from "polar-firebase-browser/src/firebase/Firebase";
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
 import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';

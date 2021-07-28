@@ -1,7 +1,7 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore';
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
-import {Firebase} from './Firebase';
+import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Tracer} from 'polar-shared/src/util/Tracer';
 import {StoreCaches} from "polar-snapshot-cache/src/StoreCaches";

@@ -1,4 +1,4 @@
-import {Firebase} from '../firebase/Firebase';
+import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
 import {Firestore} from '../firebase/Firestore';
 import {Logger} from "polar-shared/src/logger/Logger";
 import {DocumentReferences} from "../firebase/firestore/DocumentReferences";

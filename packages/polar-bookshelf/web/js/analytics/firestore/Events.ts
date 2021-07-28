@@ -5,7 +5,8 @@ import {
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {Firestore} from "../../firebase/Firestore";
-import {Firebase, UserIDStr} from "../../firebase/Firebase";
+import {Firebase, UserIDStr} from "polar-firebase-browser/src/firebase/Firebase";
+
 import { Dictionaries } from "polar-shared/src/util/Dictionaries";
 
 export class Events {

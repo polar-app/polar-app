@@ -2,7 +2,6 @@ import {useLogger} from "../../../../web/js/mui/MUILogger";
 import React from "react";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {SignInSuccessURLs} from "./SignInSuccessURLs";
-import {Firebase} from "../../../../web/js/firebase/Firebase";
 import {FirebaseUIAuth} from "../../../../web/js/firebase/FirebaseUIAuth";
 import firebase from 'firebase/app'
 import { useHistory } from "react-router-dom";
@@ -11,6 +10,7 @@ import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControll
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Firestore} from "../../../../web/js/firebase/Firestore";
+import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
 
 export type AuthStatus = 'needs-auth';
 

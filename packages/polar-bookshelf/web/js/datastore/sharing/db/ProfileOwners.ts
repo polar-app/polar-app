@@ -1,6 +1,6 @@
 
 import {Firestore} from '../../../firebase/Firestore';
-import {Firebase} from "../../../firebase/Firebase";
+import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
 import {DocumentReferences, GetOptions} from "../../../firebase/firestore/DocumentReferences";
 import {
     EmailStr,

@@ -1,11 +1,11 @@
 import React from 'react';
 import {Firestore} from "../../../web/js/firebase/Firestore";
 import {FirestoreCollections} from "./reviewer/FirestoreCollections";
-import {Firebase} from "../../../web/js/firebase/Firebase";
 import {deepMemo} from "../../../web/js/react/ReactUtils";
 import {useAsyncWithError} from "../../../web/js/hooks/ReactLifecycleHooks";
 import firebase from 'firebase/app'
 import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
+import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
 
 export interface IFirestoreContext {
     readonly uid: string | undefined;

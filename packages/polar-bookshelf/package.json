@@ -195,6 +195,7 @@
     "polar-text-highlighter": "^2.1.85",
     "polar-web-extension-api": "^2.1.85",
     "polar-webapp-links": "^2.1.85",
+    "polar-firebase-browser": "^2.1.85",
     "prop-types": "~15.7.2",
     "react-async": "=10.0.1",
     "react-container-dimensions": "=1.4.1",

@@ -1,7 +1,7 @@
 import { ISODateTimeStrings } from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {PositionalArrays} from "./PositionalArrays";
-import {UserIDStr} from "../../firebase/Firebase";
+import {UserIDStr} from "polar-firebase-browser/src/firebase/Firebase";
 import {BlockIDStr, IBlock, IBlockContent, IBlockLink, NamespaceIDStr} from "polar-blocks/src/blocks/IBlock";
 
 export namespace BlocksStoreTests {
