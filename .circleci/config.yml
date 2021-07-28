@@ -220,7 +220,7 @@ workflows:
       - cypress/install:
           post-checkout:
             - run: "rm -f ~/.npmrc && cp ./.npmrc ~/"
-            - run: "sudo yarn global add lerna@4.0.0 && sudo yarn global add npm@7.19.1"
+            - run: "yarn global add lerna@4.0.0 && yarn global add npm@7.19.1"
           install-command: "lerna bootstrap"
 
       - cypress/run:
