@@ -218,8 +218,6 @@ workflows:
   main:
     jobs:
       - cypress/run:
-          requires:
-            - cypress/install
           install-command: "rm -f ~/.npmrc && cp ./.npmrc ~/ && lerna bootstrap"
           working_directory: packages/polar-bookshelf
           start: npx webpack serve
