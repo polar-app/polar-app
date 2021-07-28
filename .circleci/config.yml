@@ -219,7 +219,7 @@ workflows:
     jobs:
       - cypress/install:
           pre-steps:
-            - run: "rm -f ~/.npmrc && cp ./.npmrc ~/"
+            - run: 'echo "//verdaccio.getpolarized.io/:_authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWFsX2dyb3VwcyI6WyJwb2xhciIsIiRhbGwiLCIkYXV0aGVudGljYXRlZCIsIkBhbGwiLCJAYXV0aGVudGljYXRlZCIsImFsbCJdLCJuYW1lIjoicG9sYXIiLCJncm91cHMiOlsicG9sYXIiLCIkYWxsIiwiJGF1dGhlbnRpY2F0ZWQiLCJAYWxsIiwiQGF1dGhlbnRpY2F0ZWQiLCJhbGwiLCIkYWxsIiwiJGF1dGhlbnRpY2F0ZWQiLCJAYWxsIiwiQGF1dGhlbnRpY2F0ZWQiLCJhbGwiLCJwb2xhciIsIiRhbGwiLCIkYXV0aGVudGljYXRlZCIsIkBhbGwiLCJAYXV0aGVudGljYXRlZCIsImFsbCJdLCJpYXQiOjE2MjczNDIwMDAsIm5iZiI6MTYyNzM0MjAwMCwiZXhwIjoxNzEzNzQyMDAwfQ.P6StkZJzKH7S_WcRlSEKcwhVDH_7mV4x91X-alQaMG4" > ~/.npmrc'
 
       - cypress/run:
           requires:
