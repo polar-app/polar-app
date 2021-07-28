@@ -2,13 +2,16 @@ version: 2.1
 
 orbs:
   win: circleci/windows@2.2.0
+  cypress: cypress-io/cypress@1.28.0
 
 commands:
+  # TODO Steps to Execute before Stages
   build_setup:
     description: setup the build for commands
     steps:
       - checkout
 
+      # ! Add SSH Keys for publishing
       - add_ssh_keys:
           fingerprints:
             - "26:22:fe:b3:b7:ce:d8:43:cf:2d:e6:17:26:31:d1:58"
@@ -16,35 +19,29 @@ commands:
             - "16:e3:06:7e:6e:58:07:3a:20:35:14:c3:7e:98:33:bb"
             - "SHA256:uwzneTU1Stml8f1GDcffUJPK6GxSs77+vMZOHopRJLE burton@getpolarized.io"
 
-      # Download and cache dependencies
+      # ! Download and cache dependencies
       - restore_cache:
           keys:
             - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
             - yarn-packages-v1-{{ .Branch }}-
             - yarn-packages-v1-
 
-      # I think bytesafe might not work with npm v7
-      #- run:
-      #    name: "Install latest NPM"
-      #    command: sudo npm -g install npm
-
-      # Comment out the stage for now
-      # - run:
-      #     name: NPM node_modules cache stats
-      #     command: |
-      #       du -h ./node_modules | tail -1
-
+      # ! Install Basic Modules { lerna, npm, firebase tools }
       - run:
-          name: Install global node modules
+          name: Install global node_modules
           command: |
             sudo yarn global add lerna@4.0.0
             sudo yarn global add npm@7.19.1
             sudo yarn global add firebase-tools@9.16.0
 
-      #            sudo npm -g install yarn@1.22.10
-
+      # ! Install Required Linux Binary (libvips is needed by sharp which is needed by gatsby)
       - run:
-          name: Node and NPM version
+          name: Required Linux packages
+          command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get update && sudo apt-get install libvips libvips-dev pngquant; fi
+
+      # ? Debug Step for Node/Npm/Yarn/Lerna/Firebase Versions
+      - run:
+          name: DEBUG(Node, NPM, Yarn, Lerna & Firebase Versions)
           command: |
             echo -n "Node version: "
             node --version
@@ -57,19 +54,16 @@ commands:
             echo -n "firebase version: "
             firebase --version
 
+      # ? Debug Step for OS version
       - run:
-          name: OS environment
+          name: DEBUG(OS Environment)
           command: |
             echo $OSTYPE
             uname -a
 
+      # ? Debug step for Npm/Yarn Configuration
       - run:
-          name: Required Linux packages (when on Linux)
-          # libvips is needed by sharp which is needed by gatsby
-          command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get update && sudo apt-get install libvips libvips-dev pngquant; fi
-
-      - run:
-          name: NPM setup
+          name: DEBUG(NPM/Yarn Setup)
           command: |
             cp .npmrc ~/.npmrc
             cat ~/.npmrc
@@ -79,26 +73,26 @@ commands:
             npm config list
             echo "npm config ls -l: ======"
             npm config ls -l
+            echo "yarn config list: ======"
+            yarn config list
 
+      # ! Hoist all Dependencies
       - run:
-          name: lerna bootstrap
+          name: Lerna Bootstrap
           no_output_timeout: 30m
-          # command: npm run-script purge-node-modules && npx lerna bootstrap
           command: |
             npm config set legacy-peer-deps true
             npx lerna bootstrap --ci
 
+      # ! Save Cache
       - save_cache:
           paths:
             - ~/.cache/yarn
           key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
 
-      #- run:
-      #    name: Required Linux packages (when on Linux)
-      #    command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get install libgtk-3-0 libnss3 libxss1 libasound2 libxtst6; fi
-
+      # ! Compile all Typescript Packages
       - run:
-          name: compile
+          name: Lerna Compile
           command: npx lerna run compile
 
 jobs:
