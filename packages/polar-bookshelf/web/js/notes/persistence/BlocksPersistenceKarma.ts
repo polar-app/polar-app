@@ -154,7 +154,7 @@ describe("BlocksPersistence", () => {
 
     it("updated block with float values for items", async () => {
 
-        const firestore = await FiresFirestoreBrowserClienttore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
         const uid = (await Firebase.currentUserID())!;
 
         const before = createBasicBlock<IMarkdownContent>({
