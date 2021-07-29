@@ -231,7 +231,8 @@ workflows:
           requires:
             - cypress/install
           working_directory: packages/polar-bookshelf
-          post-checkout: export WEBPACK_BUNDLE=repository && time yarn run webpack
+          post-checkout:
+            - run: "export WEBPACK_BUNDLE=repository && time yarn run webpack"
           start: time yarn run webpack-serve
           wait-on: "http://localhost:8050"
           command: (cd packages/polar-bookshelf && npx cypress run)
