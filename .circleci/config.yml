@@ -97,6 +97,11 @@ commands:
           name: Lerna Compile
           command: npx lerna run compile
 
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - "repo"
+
 # ~ Workflow Building Blocks
 jobs:
   # @ Run Karma Test Suite
@@ -243,6 +248,19 @@ workflows:
 
       - build-webapp:
           executor: my-docker
+
+      - cypress/run:
+          executor: cypress/base-14
+          requires:
+            - build-webapp
+          working_directory: packages/polar-bookshelf
+          post-checkout:
+            - run: "export WEBPACK_BUNDLE=repository"
+            - run: "time yarn run webpack"
+          start: time yarn run webpack-serve
+          wait-on: "http://localhost:8050"
+          command: (cd packages/polar-bookshelf && npx cypress run)
+          attach-workspace: true
 
       - build-site:
           executor: my-docker
