@@ -9,11 +9,11 @@ describe('CursorPositions', () => {
             document.body.setAttribute("contenteditable", "true");
         });
 
-        it('should return end when there\'s no active selection', () => {
+        it('should return 0 when there\'s no active selection', () => {
             document.body.innerHTML = "<h1>Hello</h1>";
 
             const pos = CursorPositions.computeCurrentOffset(document.body);
-            assert.equal(pos, 'end');
+            assert.equal(pos, 0);
         });
 
         it('should work with nested html', () => {
@@ -54,8 +54,7 @@ describe('CursorPositions', () => {
             assert.equal(pos, document.body.textContent!.length - 1);
         });
 
-        // TODO: This is failing because of computeCurrentOffset, it will be fixed soon
-        xit('should work with empty nodes and return "end"', () => {
+        it('should work with empty nodes and return "end"', () => {
             document.body.innerHTML = `types<span contenteditable="false"></span> `;
             const span = document.querySelector<HTMLSpanElement>('span');
             Asserts.assertPresent(span);
@@ -76,8 +75,7 @@ describe('CursorPositions', () => {
             assert.equal(pos, 7);
         });
 
-        // TODO: This is failing because of computeCurrentOffset, it will be fixed soon
-        xit('should work with complex nested html', () => {
+        it('should work with complex nested html', () => {
             document.body.innerHTML = `types<span contenteditable="false">are bad</span><h1><span>world</span></h1>`;
 
             CursorPositions.jumpToPosition(document.body, 15);
