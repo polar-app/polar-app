@@ -9,7 +9,7 @@ import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Preconditions} from "polar-shared/src/Preconditions";
-import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 export type AuthStatus = 'needs-auth';
@@ -112,7 +112,7 @@ export function useAuthHandler() {
 
     async function doAsync(): Promise<AuthStatus | undefined> {
 
-        const user = await Firebase.currentUserAsync()
+        const user = await FirebaseBrowser.currentUserAsync()
 
         const handledEmailLink = await handleEmailLink();
 

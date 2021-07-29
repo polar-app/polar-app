@@ -1,4 +1,4 @@
-import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {DocumentReferences} from "../firebase/firestore/DocumentReferences";
 import {OnErrorCallback, OnNextCallback} from "polar-shared/src/util/Snapshots";
@@ -17,7 +17,7 @@ export namespace Accounts {
 
     export async function createRef() {
 
-        const user = await Firebase.currentUserAsync();
+        const user = await FirebaseBrowser.currentUserAsync();
 
         if (! user) {
             // the user is not logged in so we do not have an account that they
@@ -85,7 +85,7 @@ export namespace Accounts {
 
     export async function listenForPlanUpgrades() {
 
-        const user = await Firebase.currentUserAsync();
+        const user = await FirebaseBrowser.currentUserAsync();
 
         if (! user) {
             return;

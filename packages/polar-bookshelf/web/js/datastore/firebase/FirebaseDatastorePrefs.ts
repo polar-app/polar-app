@@ -1,6 +1,6 @@
 import {DictionaryPrefs, IPersistentPrefs, StringToPrefDict} from "../../util/prefs/Prefs";
 import {IUserPref, UserPrefCallback, UserPrefs} from "./UserPrefs";
-import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
 import {Latch} from "polar-shared/src/util/Latch";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {OnErrorCallback, SnapshotUnsubscriber} from 'polar-shared/src/util/Snapshots';
@@ -22,7 +22,7 @@ export class FirebaseDatastorePrefs extends DictionaryPrefs implements IPersiste
     public async init() {
 
         this.firestore = await FirestoreBrowserClient.getInstance();
-        this.user = await Firebase.currentUserAsync();
+        this.user = await FirebaseBrowser.currentUserAsync();
 
         function onError(err: Error) {
             console.error("Unable to read user prefs:", err);

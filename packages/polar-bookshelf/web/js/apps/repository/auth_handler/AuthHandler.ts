@@ -1,5 +1,5 @@
 import {URLs} from 'polar-shared/src/util/URLs';
-import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Billing} from "polar-accounts/src/Billing";
@@ -118,7 +118,7 @@ export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
      */
     public async userInfo(): Promise<Optional<UserInfo>> {
 
-        Firebase.init();
+        FirebaseBrowser.init();
 
         const user = await this.currentUser();
 
@@ -134,7 +134,7 @@ export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
     }
 
     protected async currentUser(): Promise<firebase.User | null> {
-        return await Firebase.currentUserAsync();
+        return await FirebaseBrowser.currentUserAsync();
     }
 
 }
@@ -145,7 +145,7 @@ export class BrowserAuthHandler extends FirebaseAuthHandler {
 
     public async authenticate(signInSuccessUrl?: string): Promise<void> {
 
-        Firebase.init();
+        FirebaseBrowser.init();
 
         function createLoginURL() {
             const base = computeBaseURL();
@@ -167,7 +167,7 @@ export class BrowserAuthHandler extends FirebaseAuthHandler {
 
     public async status(): Promise<AuthStatus> {
 
-        Firebase.init();
+        FirebaseBrowser.init();
 
         const user = await this.currentUser();
 

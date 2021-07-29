@@ -1,4 +1,4 @@
-import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
 import {DocumentReferences, GetOptions} from "../../../firebase/firestore/DocumentReferences";
 import {EmailStr, HandleStr, ProfileIDStr, UserIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 import {IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
@@ -17,7 +17,7 @@ export class ProfileOwners {
     public static async get(id?: UserIDStr, opts: GetOptions = {}): Promise<ProfileOwner | undefined> {
 
         if (! id) {
-            const user = await Firebase.currentUserAsync();
+            const user = await FirebaseBrowser.currentUserAsync();
 
             if (! user) {
                 return undefined;

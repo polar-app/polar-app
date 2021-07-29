@@ -1,4 +1,4 @@
-import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
 import {FirebaseUIAuth} from '../../../web/js/firebase/FirebaseUIAuth';
 import firebase from 'firebase/app'
 import {ExternalNavigationBlock} from "../../../web/js/electron/navigation/ExternalNavigationBlock";
@@ -35,7 +35,7 @@ class InitialLogin {
 
 window.addEventListener('load', () => {
 
-    Firebase.init();
+    FirebaseBrowser.init();
 
     if (firebase.auth().currentUser === null) {
 
@@ -53,5 +53,5 @@ window.addEventListener('load', () => {
 // disable the external navigation block during login for now.
 ExternalNavigationBlock.set(false);
 
-Firebase.init();
+FirebaseBrowser.init();
 

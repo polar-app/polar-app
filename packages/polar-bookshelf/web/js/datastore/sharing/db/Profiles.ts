@@ -1,4 +1,4 @@
-import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
 import {ProfileOwners} from './ProfileOwners';
 import {
     CacheFirstThenServerGetOptions,
@@ -67,7 +67,7 @@ export class Profiles {
 
     public static async currentProfile(opts: GetOptions = new CacheFirstThenServerGetOptions()): Promise<IProfile | undefined> {
 
-        const app = Firebase.init();
+        const app = FirebaseBrowser.init();
         const user = app.auth().currentUser;
 
         if (! user) {

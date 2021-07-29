@@ -1,6 +1,6 @@
 import {GroupIDStr} from '../../Datastore';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Collections, DocumentChange} from './Collections';
 import {ProfileIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
@@ -10,7 +10,7 @@ export class GroupMembers {
     public static readonly COLLECTION = 'group_member';
 
     public static async list(groupID: GroupIDStr): Promise<ReadonlyArray<GroupMember>> {
-        const user = await Firebase.currentUserAsync();
+        const user = await FirebaseBrowser.currentUserAsync();
         Preconditions.assertPresent(user, 'user');
         return await Collections.list(this.COLLECTION, [['groupID' , '==', groupID]]);
     }

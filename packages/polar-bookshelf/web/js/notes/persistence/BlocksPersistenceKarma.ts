@@ -1,5 +1,5 @@
 import {assert} from "chai";
-import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
 import {FIREBASE_PASS, FIREBASE_USER} from "../../firebase/FirebaseTestingUsers";
 import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
 import {assertJSON} from "../../test/Assertions";
@@ -23,7 +23,7 @@ describe("BlocksPersistence", () => {
 
         TestingTime.freeze();
 
-        const app = Firebase.init();
+        const app = FirebaseBrowser.init();
 
         const auth = app.auth();
 
@@ -49,7 +49,7 @@ describe("BlocksPersistence", () => {
 
         const firestore = await FirestoreBrowserClient.getInstance();
 
-        const uid = (await Firebase.currentUserID())!;
+        const uid = (await FirebaseBrowser.currentUserID())!;
 
         const mutation: IBlocksStoreMutation = {
             "id": ID,
@@ -94,7 +94,7 @@ describe("BlocksPersistence", () => {
 
         const firestore = await FirestoreBrowserClient.getInstance();
 
-        const uid = (await Firebase.currentUserID())!;
+        const uid = (await FirebaseBrowser.currentUserID())!;
 
         const before = createBasicBlock<IMarkdownContent>({
             id: ID,
@@ -155,7 +155,7 @@ describe("BlocksPersistence", () => {
     it("updated block with float values for items", async () => {
 
         const firestore = await FirestoreBrowserClient.getInstance();
-        const uid = (await Firebase.currentUserID())!;
+        const uid = (await FirebaseBrowser.currentUserID())!;
 
         const before = createBasicBlock<IMarkdownContent>({
             id: ID,

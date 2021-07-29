@@ -5,7 +5,7 @@ import {
     StringToPrefDict
 } from "../../util/prefs/Prefs";
 import {Collections, UserIDStr} from "../sharing/db/Collections";
-import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
 import {
     OnErrorCallback,
     SnapshotUnsubscriber
@@ -22,7 +22,7 @@ export namespace UserPrefs {
 
     async function getUserID(): Promise<UserIDStr> {
 
-        const user = await Firebase.currentUserAsync();
+        const user = await FirebaseBrowser.currentUserAsync();
 
         if (! user) {
             throw new Error("No user");

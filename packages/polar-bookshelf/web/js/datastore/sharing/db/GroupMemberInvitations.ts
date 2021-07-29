@@ -1,6 +1,6 @@
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {GroupIDStr} from '../../Datastore';
-import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {Image} from './Images';
 import {Collections, DocumentChange} from './Collections';
@@ -17,7 +17,7 @@ export class GroupMemberInvitations {
 
     public static async list(): Promise<ReadonlyArray<GroupMemberInvitation>> {
 
-        const user = await Firebase.currentUserAsync();
+        const user = await FirebaseBrowser.currentUserAsync();
         Preconditions.assertPresent(user, 'user');
         return await Collections.list(this.COLLECTION, [['to' , '==', user!.email]]);
 
@@ -47,7 +47,7 @@ export class GroupMemberInvitations {
 
     public static async onSnapshot(delegate: (invitations: ReadonlyArray<GroupMemberInvitation>) => void) {
 
-        const user = await Firebase.currentUserAsync();
+        const user = await FirebaseBrowser.currentUserAsync();
 
         if (! user) {
             // no current user so there's nothing we can do yet.

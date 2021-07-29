@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
 import {Fetches, RequestInit} from 'polar-shared/src/util/Fetch';
 import {Billing} from "polar-accounts/src/Billing";
 import firebase from 'firebase/app'
@@ -131,7 +131,7 @@ export namespace AccountActions {
 
     async function createAccountData(): Promise<AccountData> {
 
-        const user = await Firebase.currentUserAsync();
+        const user = await FirebaseBrowser.currentUserAsync();
 
         if (! user) {
             throw new Error("No account");
