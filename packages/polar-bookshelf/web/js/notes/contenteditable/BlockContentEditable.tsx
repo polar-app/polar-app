@@ -105,8 +105,8 @@ export const BlockContentEditable = (props: IProps) => {
                 throw new Error("No element");
             }
 
-            const div = BlockContentCanonicalizer.canonicalizeElement(divRef.current)
-            return ContentEditableWhitespace.trim(div.innerHTML);
+            const div = BlockContentCanonicalizer.canonicalizeElement(divRef.current);
+            return div.innerHTML;
 
         }
 
