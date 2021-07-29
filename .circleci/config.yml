@@ -222,26 +222,26 @@ workflows:
   version: 2
   main:
     jobs:
-      - cypress/install:
-          executor: cypress/base-14
-          post-checkout:
-            - run: "rm -f ~/.npmrc && cp ./.npmrc ~/"
-            - run: "yarn global add lerna@4.0.0 && yarn global add npm@7.19.1"
-          install-command: "lerna bootstrap"
-          post-install:
-            - run: "lerna run compile"
+      # - cypress/install:
+      #     executor: cypress/base-14
+      #     post-checkout:
+      #       - run: "rm -f ~/.npmrc && cp ./.npmrc ~/"
+      #       - run: "yarn global add lerna@4.0.0 && yarn global add npm@7.19.1"
+      #     install-command: "lerna bootstrap"
+      #     post-install:
+      #       - run: "lerna run compile"
 
-      - cypress/run:
-          executor: cypress/base-14
-          requires:
-            - cypress/install
-          working_directory: packages/polar-bookshelf
-          post-checkout:
-            - run: "export WEBPACK_BUNDLE=repository && time yarn run webpack"
-          start: time yarn run webpack-serve
-          wait-on: "http://localhost:8050"
-          command: (cd packages/polar-bookshelf && npx cypress run)
-          attach-workspace: true
+      # - cypress/run:
+      #     executor: cypress/base-14
+      #     requires:
+      #       - cypress/install
+      #     working_directory: packages/polar-bookshelf
+      #     post-checkout:
+      #       - run: "export WEBPACK_BUNDLE=repository && time yarn run webpack"
+      #     start: time yarn run webpack-serve
+      #     wait-on: "http://localhost:8050"
+      #     command: (cd packages/polar-bookshelf && npx cypress run)
+      #     attach-workspace: true
 
       - karma:
           executor: my-docker
@@ -254,10 +254,7 @@ workflows:
           requires:
             - build-webapp
           working_directory: /root/repo/packages/polar-bookshelf
-          post-checkout:
-            - run: "export WEBPACK_BUNDLE=repository"
-            - run: "time yarn run webpack"
-          start: time yarn run webpack-serve
+          start: export WEBPACK_BUNDLE=repository && time yarn run webpack && time yarn run webpack-serve
           wait-on: "http://localhost:8050"
           command: (cd packages/polar-bookshelf && npx cypress run)
           attach-workspace: true
