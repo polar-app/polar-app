@@ -1,6 +1,6 @@
 import React from 'react';
 import {Toaster} from '../toaster/Toaster';
-import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {Group, GroupNameStr, Groups} from '../../datastore/sharing/db/Groups';
 import {Releaser} from '../../reactor/EventListener';
 import {Logger} from 'polar-shared/src/logger/Logger';

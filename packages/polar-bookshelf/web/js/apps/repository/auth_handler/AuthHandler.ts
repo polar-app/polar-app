@@ -1,5 +1,5 @@
 import {URLs} from 'polar-shared/src/util/URLs';
-import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Billing} from "polar-accounts/src/Billing";

@@ -5,7 +5,7 @@ import {FirebaseDatastore} from '../FirebaseDatastore';
 import {AbstractAdvertisingPersistenceLayer} from '../advertiser/AbstractAdvertisingPersistenceLayer';
 import {PersistenceLayer, PersistenceLayerID} from '../PersistenceLayer';
 import {PersistenceLayerEvent} from '../PersistenceLayerEvent';
-import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {SharingDatastores} from '../SharingDatastores';
 import {TracedDatastore} from '../TracedDatastore';
 import {DataFileCacheDatastore} from '../DataFileCacheDatastore';

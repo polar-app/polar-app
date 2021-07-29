@@ -42,7 +42,7 @@ import {Percentage, ProgressTracker} from 'polar-shared/src/util/ProgressTracker
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';
-import {FirebaseBrowser, UserID} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser, UserID} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
 import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';

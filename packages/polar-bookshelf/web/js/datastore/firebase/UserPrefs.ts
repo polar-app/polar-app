@@ -5,7 +5,7 @@ import {
     StringToPrefDict
 } from "../../util/prefs/Prefs";
 import {Collections, UserIDStr} from "../sharing/db/Collections";
-import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {
     OnErrorCallback,
     SnapshotUnsubscriber

@@ -1,5 +1,5 @@
 import {assert} from "chai";
-import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {FIREBASE_PASS, FIREBASE_USER} from "../../firebase/FirebaseTestingUsers";
 import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
 import {assertJSON} from "../../test/Assertions";

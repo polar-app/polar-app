@@ -1,4 +1,4 @@
-import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {DocumentReferences} from "../firebase/firestore/DocumentReferences";
 import {OnErrorCallback, OnNextCallback} from "polar-shared/src/util/Snapshots";

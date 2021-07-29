@@ -1,6 +1,6 @@
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {GroupIDStr} from '../../Datastore';
-import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {Image} from './Images';
 import {Collections, DocumentChange} from './Collections';

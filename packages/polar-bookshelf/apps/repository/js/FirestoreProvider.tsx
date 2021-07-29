@@ -4,7 +4,7 @@ import {deepMemo} from "../../../web/js/react/ReactUtils";
 import {useAsyncWithError} from "../../../web/js/hooks/ReactLifecycleHooks";
 import firebase from 'firebase/app'
 import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
-import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 export interface IFirestoreContext {

@@ -1,7 +1,7 @@
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {FirebaseBrowser, UserIDStr} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser, UserIDStr} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";

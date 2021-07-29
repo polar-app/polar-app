@@ -12,6 +12,10 @@ import {BlockPermissionCollection} from "polar-firebase/src/firebase/om/BlockPer
 import {UserIDStr} from "polar-firestore-like/src/IFirestore";
 import {EmailStr} from "polar-shared/src/util/Strings";
 import {BlockPermissionMap} from "polar-firebase/src/firebase/om/IBlockPermission";
+import {FirebaseBrowserTesting} from "polar-firebase-browser/src/firebase/FirebaseBrowserTesting";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+import {assert} from 'chai';
+import {Asserts} from "polar-shared/src/Asserts";
 
 // TODO: more tests
 //
@@ -223,12 +227,21 @@ describe("BlockPermissions", function() {
 
     });
 
-    it("Create block for userA, give permission to userB, verify userB can access that block and that revoke also works", () => {
+    it("Create block for userA, give permission to userB, verify userB can access that block and that revoke also works", async function() {
 
         // *** create a new block as userA
 
+        const userA = await FirebaseBrowserTesting.authWithUser0();
 
+        assert.isNotNull(userA);
 
+        Asserts.assertNotNull(userA)
+
+        const firestore0 = await FirestoreBrowserClient.getInstance();
+
+        const blockID = Hashcodes.createID({uid: userA.uid, key: '0x0001'});
+
+        const block = createFakePageBlock(blockID, userA.uid)
 
     });
 

@@ -13,7 +13,7 @@ import {GroupDocsAdd} from './rpc/GroupDocsAdd';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
-import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 const log = Logger.create();

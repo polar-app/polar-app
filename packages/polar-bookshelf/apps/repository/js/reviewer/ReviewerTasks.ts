@@ -8,7 +8,7 @@ import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {SpacedRepCollection} from "polar-firebase/src/firebase/om/SpacedRepCollection";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
-import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {RepetitionMode, Task, TaskRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {FlashcardTaskAction} from "./cards/FlashcardTaskAction";
 import {FlashcardTaskActions} from "./cards/FlashcardTaskActions";

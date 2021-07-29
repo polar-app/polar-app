@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {Fetches, RequestInit} from 'polar-shared/src/util/Fetch';
 import {Billing} from "polar-accounts/src/Billing";
 import firebase from 'firebase/app'

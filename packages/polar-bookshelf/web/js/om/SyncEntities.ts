@@ -1,7 +1,7 @@
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {Clause, Collections} from "../datastore/sharing/db/Collections";
-import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 export interface ISyncEntityInit {

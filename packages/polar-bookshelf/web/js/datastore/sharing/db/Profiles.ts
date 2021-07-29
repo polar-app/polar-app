@@ -1,4 +1,4 @@
-import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {ProfileOwners} from './ProfileOwners';
 import {
     CacheFirstThenServerGetOptions,
