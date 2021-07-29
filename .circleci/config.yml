@@ -235,7 +235,7 @@ workflows:
           executor: cypress/base-14
           requires:
             - cypress/install
-          working_directory: packages/polar-bookshelf
+          working_directory: /root/repo/packages/polar-bookshelf
           post-checkout:
             - run: "export WEBPACK_BUNDLE=repository && time yarn run webpack"
           start: time yarn run webpack-serve
