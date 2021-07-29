@@ -2,6 +2,7 @@ import * as React from 'react';
 import {URLStr} from "polar-shared/src/util/Strings";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import { BlockType } from './store/BlocksStore';
+import {useBlocksTreeStore} from './BlocksTree';
 
 export function useNoteFormatHandlers(type: BlockType | undefined, onUpdated: () => void) {
 
@@ -62,6 +63,7 @@ export function useNoteFormatHandlers(type: BlockType | undefined, onUpdated: ()
 export function useNoteFormatKeyboardHandler(type: BlockType | undefined, onUpdated: () => void = NULL_FUNCTION) {
 
     const noteFormatHandlers = useNoteFormatHandlers(type, onUpdated);
+    const blocksTreeStore = useBlocksTreeStore();
 
     return React.useCallback((event: React.KeyboardEvent) => {
 
@@ -76,12 +78,20 @@ export function useNoteFormatKeyboardHandler(type: BlockType | undefined, onUpda
 
                 switch(event.key) {
                     case 'b':
-                        noteFormatHandlers.onBold();
                         abortEvent();
+                        if (blocksTreeStore.hasSelected()) {
+                            blocksTreeStore.styleSelectedBlocks('bold');
+                        } else {
+                            noteFormatHandlers.onBold();
+                        }
                         break;
                     case 'i':
-                        noteFormatHandlers.onItalic();
                         abortEvent();
+                        if (blocksTreeStore.hasSelected()) {
+                            blocksTreeStore.styleSelectedBlocks('italic');
+                        } else {
+                            noteFormatHandlers.onItalic();
+                        }
                         break;
 
                     case 'u':
@@ -95,6 +105,6 @@ export function useNoteFormatKeyboardHandler(type: BlockType | undefined, onUpda
 
         }
 
-    }, [noteFormatHandlers]);
+    }, [noteFormatHandlers, blocksTreeStore]);
 
 }

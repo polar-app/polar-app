@@ -10,13 +10,20 @@ import {
     BlockNameStr,
     IBlockMerge,
     BlocksIndex,
-    IDropTarget, INewBlockOpts, DoPutOpts, ICreateNewNamedBlockOpts, BlocksIndexByName, Interstitial, IDropPosition
+    IDropTarget,
+    INewBlockOpts,
+    DoPutOpts,
+    ICreateNewNamedBlockOpts,
+    BlocksIndexByName,
+    Interstitial,
+    IDropPosition,
 } from "./BlocksStore";
 import {Block} from "./Block";
 import {ReverseIndex} from "./ReverseIndex";
 import {MarkdownStr} from "polar-shared/src/util/Strings";
 import {IBlockContentStructure} from "../HTMLToBlocks";
 import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
+import {DOMBlocks} from "../contenteditable/BlockContentEditable";
 
 /**
  * deleteBlocks
@@ -136,4 +143,6 @@ export interface IBlocksStore {
 
     prevSibling(id: BlockIDStr): BlockIDStr | undefined;
     nextSibling(id: BlockIDStr): BlockIDStr | undefined;
+
+    styleSelectedBlocks(style: DOMBlocks.MarkdownStyle): void;
 }
