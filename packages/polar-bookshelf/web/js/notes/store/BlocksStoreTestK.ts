@@ -75,4 +75,18 @@ describe('BlocksStore', () => {
             });
         });
     });
+
+    describe('styleSelectedBlocks', () => {
+        it('should style selected blocks properly', () => {
+            document.body.innerHTML = `<div id="${DOMBlocks.getBlockHTMLID('109')}" contentEditable="true" data-id="109">hello</div><div id="${DOMBlocks.getBlockHTMLID('111')}" contentEditable="true" data-id="111">world</div>`;
+            store.selected['109'] = true;
+
+            store.styleSelectedBlocks('bold');
+
+            const block = DOMBlocks.getBlockElement('111');
+            Asserts.assertPresent(block);
+            Asserts.assertPresent(block.firstChild);
+            assert.equal((block.firstChild as HTMLElement).tagName, 'B');
+        });
+    });
 });

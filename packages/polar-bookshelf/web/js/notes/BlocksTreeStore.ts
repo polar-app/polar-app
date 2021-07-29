@@ -4,6 +4,7 @@ import {Block} from "./store/Block";
 import {BlockNameStr, DoIndentResult, DoUnIndentResult, IActiveBlock, IBlockActivated, IBlockMerge, ICreatedBlock, ICreateNewNamedBlockOpts, IDropTarget, INewBlockOpts, Interstitial, NavOpts, NavPosition} from "./store/BlocksStore";
 import {IBlocksStore} from "./store/IBlocksStore";
 import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
+import {DOMBlocks} from "./contenteditable/BlockContentEditable";
 
 export class BlocksTreeStore {
     public readonly root: BlockIDStr;
@@ -233,5 +234,9 @@ export class BlocksTreeStore {
 
     nextSibling(id: BlockIDStr) {
         return this.blocksStore.nextSibling(id);
+    }
+
+    styleSelectedBlocks(style: DOMBlocks.MarkdownStyle): void {
+        return this.blocksStore.styleSelectedBlocks(style);
     }
 }
