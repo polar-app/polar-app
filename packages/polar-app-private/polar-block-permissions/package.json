@@ -25,6 +25,7 @@
     "polar-blocks": "^2.1.85",
     "polar-firebase": "^2.1.85",
     "polar-firebase-admin": "^2.1.85",
+    "polar-firebase-browser": "^2.1.85",
     "polar-firestore-like": "^2.1.85",
     "polar-shared": "^2.1.85",
     "polar-test": "^2.1.85"
