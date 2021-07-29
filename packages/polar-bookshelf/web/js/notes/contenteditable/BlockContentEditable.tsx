@@ -308,6 +308,7 @@ const useHandleLinkDeletion = ({ blockID, elem }: IUseHandleLinkDeletionOpts) =>
 };
 
 export namespace DOMBlocks {
+    export type MarkdownStyle = 'bold' | 'italic';
     export const BLOCK_ID_PREFIX = 'block-';
 
     export const getBlockHTMLID = (id: BlockIDStr) => `${BLOCK_ID_PREFIX}${id}`;
@@ -362,5 +363,23 @@ export namespace DOMBlocks {
         }
 
         return findSiblingBlock(sibling, delta);
+    }
+
+    export function applyStyleToBlock(id: BlockIDStr, style: MarkdownStyle) {
+        const blockElem = getBlockElement(id);
+        if (! blockElem) {
+            return;
+        }
+        const firstChild = blockElem.firstChild;
+        const lastChild = blockElem.lastChild;
+        const selection = document.getSelection();
+        if (selection && firstChild && lastChild) {
+            const range = new Range();
+            range.setStartBefore(firstChild);
+            range.setEndAfter(lastChild);
+            selection.removeAllRanges();
+            selection.addRange(range);
+            document.execCommand(style, false);
+        }
     }
 }
