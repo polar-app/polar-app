@@ -223,6 +223,13 @@ describe("BlockPermissions", function() {
 
     });
 
+    it("Create block for userA, give permission to userB, verify userB can access that block and that revoke also works", () => {
+
+        // *** create a new block as userA
+
+
+    });
+
     function createFakePageBlock(id: BlockIDStr,
                                  uid: UserIDStr): IBlock {
 
