@@ -259,13 +259,51 @@ describe("BlockPermissions", function() {
 
         }
 
-        const {blockID} = await init();
+        const {blockID, uidA, uidB} = await init();
 
-        const firestore0 = await FirestoreBrowserClient.getInstance();
+        async function createBlock() {
 
-        const block = createFakePageBlock(blockID, userA.uid)
+            const firestore0 = await FirestoreBrowserClient.getInstance();
 
-        await BlockCollection.set(firestore0, block);
+            const block = createFakePageBlock(blockID, userA.uid)
+
+            await BlockCollection.set(firestore0, block);
+
+            return block;
+
+        }
+
+        const block = await createBlock();
+
+        async function grantPermissions() {
+
+            const newPermissions: Readonly<BlockPermissionMap> = {
+                [uidA]: {
+                    id: uidA,
+                    uid: uidA,
+                    access: 'read'
+                }
+            };
+
+            const firestore = FirestoreAdmin.getInstance();
+
+            await BlockPermissions.doUpdateNSpacePermissions(firestore, uidA, uidA, newPermissions);
+
+        }
+
+        await grantPermissions();
+
+        async function verifyPermissions() {
+
+            const firestore1 = await FirestoreBrowserClient.getInstance();
+
+            const sharedBlock = await BlockCollection.get(firestore1, blockID);
+
+            assertJSON(block, sharedBlock);
+
+        }
+
+        await verifyPermissions();
 
     });
 
