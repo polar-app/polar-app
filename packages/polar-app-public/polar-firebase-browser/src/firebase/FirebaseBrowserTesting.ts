@@ -9,10 +9,13 @@ export namespace FirebaseBrowserTesting {
 
         const auth = app.auth();
 
-        await auth.signInWithEmailAndPassword(user, pass);
+        const userCredential = await auth.signInWithEmailAndPassword(user, pass);
 
-        return auth.currentUser;
+        if (! userCredential.user) {
+            throw new Error("No user");
+        }
 
+        return userCredential.user;
     }
 
     export async function authWithUser0() {

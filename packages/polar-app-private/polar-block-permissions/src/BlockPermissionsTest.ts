@@ -231,17 +231,41 @@ describe("BlockPermissions", function() {
 
         // *** create a new block as userA
 
-        const userA = await FirebaseBrowserTesting.authWithUser0();
-
-        assert.isNotNull(userA);
-
+        const userA = (await FirebaseBrowserTesting.authWithUser0())!;
         Asserts.assertNotNull(userA)
+
+        interface InitMeta {
+            readonly uidA: string;
+            readonly uidB: string;
+            readonly blockID: string;
+        }
+
+        async function init(): Promise<InitMeta> {
+
+            async function getUserID(email: string) {
+                const admin = FirebaseAdmin.app();
+                const user = await admin.auth().getUserByEmail(email)
+                return user.uid;
+            }
+
+            const uidA = await getUserID(FirebaseTestingUsers.FIREBASE_USER)
+            const uidB = await getUserID(FirebaseTestingUsers.FIREBASE_USER1)
+
+            const blockID = Hashcodes.createID({uid: uidA, key: '0x0001'});
+
+            await doCleanup(uidA, blockID, uidA, [uidA, uidB]);
+
+            return {uidA, uidB, blockID};
+
+        }
+
+        const {blockID} = await init();
 
         const firestore0 = await FirestoreBrowserClient.getInstance();
 
-        const blockID = Hashcodes.createID({uid: userA.uid, key: '0x0001'});
-
         const block = createFakePageBlock(blockID, userA.uid)
+
+        await BlockCollection.set(firestore0, block);
 
     });
 
@@ -283,6 +307,10 @@ describe("BlockPermissions", function() {
                              blockID: BlockIDStr | undefined,
                              nspaceID: NamespaceIDStr | undefined,
                              users: ReadonlyArray<UserIDStr>) {
+
+        // TODO: delete ALL blocks in this user default namespace (not just the
+        // one we're creating)
+        //
 
         const firestore = FirestoreAdmin.getInstance();
 
