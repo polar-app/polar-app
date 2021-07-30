@@ -104,6 +104,21 @@ commands:
 
 # ~ Workflow Building Blocks
 jobs:
+  changes:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor>>
+    working_directory: ~/repo
+    description: check if branch is behind master or has no changes
+    steps:
+      - run:
+          name: changes
+          command: |
+            git fetch
+            git diff --exit-code --name-only  origin/master && (echo 'No changes' && exit 1)
+            if [ $(git rev-list --left-only --count origin/master...@) != '0' ]; then echo 'Outdated Branch, Please merge master' && exit 1; fi
+
   # @ Run Karma Test Suite
   karma:
     parameters:
@@ -243,11 +258,18 @@ workflows:
       #     command: (cd packages/polar-bookshelf && npx cypress run)
       #     attach-workspace: true
 
+      - changes:
+          executor: my-docker
+
       - karma:
           executor: my-docker
+          requires:
+            - changes
 
       - build-webapp:
           executor: my-docker
+          requires:
+            - changes
 
       - cypress/run:
           executor: cypress/base-14
