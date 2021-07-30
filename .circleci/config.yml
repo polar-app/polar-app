@@ -112,6 +112,7 @@ jobs:
     working_directory: ~/repo
     description: check if branch is behind master or has no changes
     steps:
+      - checkout
       - run:
           name: changes
           command: |
@@ -283,6 +284,8 @@ workflows:
 
       - build-site:
           executor: my-docker
+          requires:
+            - changes
 
       - hold_app_getpolarized_io:
           type: approval
