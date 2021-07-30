@@ -116,9 +116,9 @@ jobs:
       - run:
           name: changes
           command: |
-            git fetch
-            git diff --exit-code --name-only  origin/master && (echo 'No changes' && exit 1)
-            if [ $(git rev-list --left-only --count origin/master...@) != '0' ]; then echo 'Outdated Branch, Please merge master' && exit 1; fi
+            git fetch --quiet
+            git diff --exit-code --name-only  origin/master && (echo 'echo -e '\033[1mNO CHANGES WERE MADE\033[0m'' && exit 1)
+            if [ $(git rev-list --left-only --count origin/master...@) != '0' ]; then echo 'echo -e '\033[1mOUTDATED BRANCH, PLEASE MERGE MASTER\033[0m'' && exit 1; fi
 
   # @ Run Karma Test Suite
   karma:
