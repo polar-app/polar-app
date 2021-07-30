@@ -17,6 +17,7 @@ import {EmailTempStorage} from "./util/EmailTempStorage";
 const App = () => {
     const billing = new Billing();
 
+    // @TODO useEffect
     billing.init().then(() => {
         console.log('Billing initialized');
     });

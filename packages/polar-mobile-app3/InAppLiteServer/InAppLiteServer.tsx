@@ -28,7 +28,7 @@ export class InAppLiteServer extends Component<Props, State> {
         const realFrontendPath = '/static/polar';
         // const dummyFrontendPath = '/static/dummy-frontend';
 
-        this.server = new StaticServer(8050, RNFS.MainBundlePath + realFrontendPath);
+        this.server = new StaticServer(8050, RNFS.MainBundlePath + realFrontendPath, {localOnly: true});
     }
 
     componentDidMount() {
@@ -39,11 +39,12 @@ export class InAppLiteServer extends Component<Props, State> {
             // When the server is actually started, set the URL within the state
             this.setState({
                 isRunning: true,
-                url,
+                url: 'https://app.getpolarized.io',
             });
-        });
+        }).catch((err: Error) => {
+            alert(err);
+        })
     }
-
 
     render() {
         if (!this.state.isRunning) {
