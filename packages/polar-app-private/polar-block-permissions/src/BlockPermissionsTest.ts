@@ -229,6 +229,14 @@ describe("BlockPermissions", function() {
 
     it("Create block for userA, give permission to userB, verify userB can access that block and that revoke also works", async function() {
 
+        // TODO: try to read a block by page where we have permissions
+
+        // TODO: revoke permissions
+
+        // TODO: make sure we can read block_permission_nspace and that we know
+        // which pages and namespaces to which we have access
+
+
         // *** create a new block as userA
 
         const userA = (await FirebaseBrowserTesting.authWithUser0())!;
@@ -274,6 +282,16 @@ describe("BlockPermissions", function() {
         }
 
         const block = await createBlock();
+
+        async function verifyBlockInaccessibleToSecondUser() {
+
+            const firestore1 = await FirestoreBrowserClient.getInstance();
+
+            await assertThrowsAsync(async () => await BlockCollection.get(firestore1, blockID))
+
+        }
+
+        await verifyBlockInaccessibleToSecondUser();
 
         async function grantPermissions() {
 
@@ -370,6 +388,20 @@ describe("BlockPermissions", function() {
     }
 
 });
+
+async function assertThrowsAsync<T>(delegate: () => Promise<T>): Promise<void> {
+
+    try {
+
+        await delegate();
+
+        assert.fail("Delegate did not throw error.");
+
+    } catch (e) {
+        // expected
+    }
+
+}
 
 export async function getUserIDByEmail(email: EmailStr): Promise<UserIDStr> {
     const app = FirebaseAdmin.app();
