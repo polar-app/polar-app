@@ -1,5 +1,5 @@
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
-import {ProfileOwners} from './ProfileOwners';
+import {ProfileOwnerCollection} from './ProfileOwnerCollection';
 import {
     CacheFirstThenServerGetOptions,
     DocumentReferences,
@@ -18,7 +18,7 @@ import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/Firest
 /**
  * @Deprecated migrate to polar-firestore
  */
-export class Profiles {
+export class ProfileCollection {
 
     public static readonly COLLECTION = 'profile';
 
@@ -74,7 +74,7 @@ export class Profiles {
             return undefined;
         }
 
-        const profileOwner = await ProfileOwners.get(user!.uid, opts);
+        const profileOwner = await ProfileOwnerCollection.get(user!.uid, opts);
 
         if (! profileOwner) {
             // getting their user from the database and writing it back out...

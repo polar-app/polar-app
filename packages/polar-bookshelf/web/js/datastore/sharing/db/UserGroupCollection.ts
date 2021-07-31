@@ -6,7 +6,7 @@ import {UserIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
-export class UserGroups {
+export class UserGroupCollection {
 
     public static readonly COLLECTION = 'user_group';
 
@@ -50,7 +50,7 @@ export class UserGroups {
 
     public static async hasPermissionForGroup(groupID: GroupIDStr): Promise<boolean> {
 
-        const userGroup = await UserGroups.get();
+        const userGroup = await UserGroupCollection.get();
 
         if (! userGroup) {
             return false;
