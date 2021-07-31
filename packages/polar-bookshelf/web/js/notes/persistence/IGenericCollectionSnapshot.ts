@@ -5,6 +5,7 @@ import {IDStr} from "polar-shared/src/util/Strings";
 export interface IGenericCollectionSnapshot<T> {
     readonly empty: boolean;
     readonly metadata: IGenericSnapshotMetadata;
+    readonly docs: ReadonlyArray<T>;
     readonly docChanges: ReadonlyArray<IGenericDocumentChange<T>>;
 }
 
@@ -29,6 +30,7 @@ export function createMockSnapshot<T extends IDRecord>(values: ReadonlyArray<T>)
             hasPendingWrites: false,
             fromCache: true
         },
+        docs: values,
         docChanges: values.map(current => convertToDocChange(current))
     };
 
@@ -42,6 +44,7 @@ export function createEmptySnapshot<T>(): IGenericCollectionSnapshot<T> {
             hasPendingWrites: false,
             fromCache: true
         },
+        docs: [],
         docChanges: []
     }
 

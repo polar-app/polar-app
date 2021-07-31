@@ -38,6 +38,7 @@ export function useGenericFirestoreSnapshots<T>(collectionName: string,
                     hasPendingWrites: current.metadata.hasPendingWrites,
                     fromCache: current.metadata.fromCache
                 },
+                docs: current.docs.map(doc => doc.data() as T),
                 docChanges: current.docChanges().map(current => convertDocChange(current))
             }
 
