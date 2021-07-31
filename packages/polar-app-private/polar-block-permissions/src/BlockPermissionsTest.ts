@@ -266,6 +266,8 @@ describe("BlockPermissions", function() {
 
         const {blockID, uidA, uidB} = await init();
 
+        const namespaceID = uidA;
+
         async function createBlock() {
 
             const firestore0 = await FirestoreBrowserClient.getInstance();
@@ -293,8 +295,8 @@ describe("BlockPermissions", function() {
         async function grantPermissions() {
 
             const newPermissions: Readonly<BlockPermissionMap> = {
-                [uidA]: {
-                    id: uidA,
+                [namespaceID]: {
+                    id: namespaceID,
                     uid: uidA,
                     access: 'read'
                 }
@@ -302,7 +304,7 @@ describe("BlockPermissions", function() {
 
             const firestore = FirestoreAdmin.getInstance();
 
-            await BlockPermissions.doUpdateNSpacePermissions(firestore, uidA, uidA, newPermissions);
+            await BlockPermissions.doUpdateNSpacePermissions(firestore, uidA, namespaceID, newPermissions);
 
         }
 
@@ -333,6 +335,25 @@ describe("BlockPermissions", function() {
 
         await revokePermissions();
 
+        async function blockPermissionUserContainsNamespaceID(): Promise<boolean> {
+
+            const firestore1 = await FirestoreBrowserClient.getInstance();
+
+            const blockPermissionUser = await BlockPermissionUserCollection.get(firestore1, uidB);
+
+            if (! blockPermissionUser) {
+                return false;
+            }
+
+            return blockPermissionUser.nspaces_ro.includes(namespaceID);
+
+        }
+
+        async function verifyBlockPermissionUserMissingNamespaceID() {
+            assert.isFalse(await blockPermissionUserContainsNamespaceID());
+        }
+
+        await verifyBlockPermissionUserMissingNamespaceID();
         await verifyBlockInaccessibleToSecondUser();
 
     });
