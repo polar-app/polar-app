@@ -1,5 +1,5 @@
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {Collections, DocumentChange} from './Collections';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {EmailStr} from "polar-firebase/src/firebase/om/ProfileCollection";
@@ -10,7 +10,7 @@ export class Contacts {
 
     public static async list(): Promise<ReadonlyArray<Contact>> {
 
-        const user = await Firebase.currentUserAsync();
+        const user = await FirebaseBrowser.currentUserAsync();
         const {uid} = Preconditions.assertPresent(user, 'user');
 
         return await Collections.list(this.COLLECTION, [['uid' , '==', uid]]);
@@ -19,7 +19,7 @@ export class Contacts {
 
     public static async onSnapshot(delegate: (records: ReadonlyArray<DocumentChange<Contact>>) => void) {
 
-        const user = await Firebase.currentUserAsync();
+        const user = await FirebaseBrowser.currentUserAsync();
         const {uid} = Preconditions.assertPresent(user, 'user');
 
         return await Collections.onQuerySnapshotChanges(this.COLLECTION, [['uid' , '==', uid]], delegate);

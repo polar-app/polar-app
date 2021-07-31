@@ -30,15 +30,32 @@ export namespace BlockPermissions {
                                        effectivePerms: Readonly<BlockPermissionMap>,
                                        newPermissions: Readonly<BlockPermissionMap>) {
 
-        // ** verify that the user is admin
-        if (effectivePerms[uid]?.access !== 'admin') {
-            throw new Error(`User does not have admin to change permissions on this ${target}: ${id} with uid=${uid}`);
+        function verifyPermissionToUpdate() {
+
+            if (target === 'nspace') {
+
+                if (uid === id) {
+                    // this is the users default namespace so by definition, they have permission.
+                    return true;
+                }
+
+            }
+
+            // ** verify that the user is admin
+            if (effectivePerms[uid]?.access !== 'admin') {
+                throw new Error(`User does not have admin to change permissions on this ${target}: ${id} with uid=${uid}`);
+            }
+
+            // tslint:disable-next-line:no-string-literal
+            if (newPermissions['__public__']?.access === 'admin') {
+                throw new Error("Not allowed to set __public__ permissions to 'admin'" + id);
+            }
+
+            return true;
+
         }
 
-        // tslint:disable-next-line:no-string-literal
-        if (newPermissions['__public__']?.access === 'admin') {
-            throw new Error("Not allowed to set __public__ permissions to 'admin'" + id);
-        }
+        verifyPermissionToUpdate();
 
         // now get the current permissions...
         const oldPermissionsRecord = await BlockPermissionCollection.get(firestore, id);
@@ -46,6 +63,8 @@ export namespace BlockPermissions {
         const oldPermissions = oldPermissionsRecord?.permissions || {};
 
         const permissionChanges = computePermissionChanges(id, oldPermissions, newPermissions);
+
+        console.log("Going to apply permissionChanges: ", permissionChanges);
 
         await applyPermissionChanges(firestore, id, target, newPermissions, permissionChanges);
 
@@ -170,6 +189,8 @@ export namespace BlockPermissions {
                                              oldPermissions: Readonly<BlockPermissionMap>,
                                              newPermissions: Readonly<BlockPermissionMap>): ReadonlyArray<IBlockPermissionChange> {
 
+        console.log("Computing permission changes: ", oldPermissions, newPermissions);
+
         // compute all the unique UIDs in both sets.  This is needed because we have to compute
         // added or removed permissions.
         const uids = arrayStream([
@@ -218,6 +239,7 @@ export namespace BlockPermissions {
 
                 } else {
                     // we don't need to do anything here as this user permissions did not change.
+                    console.warn("Permission did not change: ", oldPerm, newPerm);
                 }
 
             }
