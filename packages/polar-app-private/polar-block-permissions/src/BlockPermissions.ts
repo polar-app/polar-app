@@ -30,15 +30,32 @@ export namespace BlockPermissions {
                                        effectivePerms: Readonly<BlockPermissionMap>,
                                        newPermissions: Readonly<BlockPermissionMap>) {
 
-        // ** verify that the user is admin
-        if (effectivePerms[uid]?.access !== 'admin') {
-            throw new Error(`User does not have admin to change permissions on this ${target}: ${id} with uid=${uid}`);
+        function verifyPermissionToUpdate() {
+
+            if (target === 'nspace') {
+
+                if (uid === id) {
+                    // this is the users default namespace so by definition, they have permission.
+                    return true;
+                }
+
+            }
+
+            // ** verify that the user is admin
+            if (effectivePerms[uid]?.access !== 'admin') {
+                throw new Error(`User does not have admin to change permissions on this ${target}: ${id} with uid=${uid}`);
+            }
+
+            // tslint:disable-next-line:no-string-literal
+            if (newPermissions['__public__']?.access === 'admin') {
+                throw new Error("Not allowed to set __public__ permissions to 'admin'" + id);
+            }
+
+            return true;
+
         }
 
-        // tslint:disable-next-line:no-string-literal
-        if (newPermissions['__public__']?.access === 'admin') {
-            throw new Error("Not allowed to set __public__ permissions to 'admin'" + id);
-        }
+        verifyPermissionToUpdate();
 
         // now get the current permissions...
         const oldPermissionsRecord = await BlockPermissionCollection.get(firestore, id);

@@ -231,11 +231,8 @@ describe("BlockPermissions", function() {
 
         // TODO: try to read a block by page where we have permissions
 
-        // TODO: revoke permissions
-
         // TODO: make sure we can read block_permission_nspace and that we know
         // which pages and namespaces to which we have access
-
 
         // *** create a new block as userA
 
@@ -322,6 +319,21 @@ describe("BlockPermissions", function() {
         }
 
         await verifyPermissions();
+
+        async function revokePermissions() {
+
+            const newPermissions: Readonly<BlockPermissionMap> = {
+            };
+
+            const firestore = FirestoreAdmin.getInstance();
+
+            await BlockPermissions.doUpdateNSpacePermissions(firestore, uidA, uidA, newPermissions);
+
+        }
+
+        await revokePermissions();
+
+        await verifyBlockInaccessibleToSecondUser();
 
     });
 
