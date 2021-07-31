@@ -29,7 +29,7 @@ import {BlocksPersistenceWriter} from "../persistence/FirestoreBlocksStoreMutati
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useBlocksPersistenceWriter} from "../persistence/BlocksPersistenceWriters";
 import {WikiLinksToMarkdown} from "../WikiLinksToMarkdown";
-import {IBlockExpandCollectionSnapshot, useBlockExpandCollectionSnapshots} from "../persistence/BlockExpandSnapshots";
+import {IBlockExpandCollectionSnapshot, useBlockExpandCollectionSnapshots} from "../persistence/BlockExpandCollectionSnapshots";
 import {BlockExpandPersistenceWriter, useBlockExpandPersistenceWriter} from "../persistence/BlockExpandWriters";
 import {IBlockContentStructure} from "../HTMLToBlocks";
 import {DOMBlocks} from "../contenteditable/BlockContentEditable";
