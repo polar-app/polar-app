@@ -86,7 +86,7 @@ describe("PositionalArrays", () => {
             [PositionalArrays.generateKey(2)]: "0x200",
         });
 
-        arr = PositionalArrays.removeKey(arr, '1');
+        arr = PositionalArrays.removeKey(arr, PositionalArrays.generateKey(1));
 
         assertJSON(arr, {
             [PositionalArrays.generateKey(2)]: "0x200",
