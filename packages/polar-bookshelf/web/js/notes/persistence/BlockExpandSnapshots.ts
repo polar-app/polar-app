@@ -5,7 +5,7 @@ import {BlockIDStr, UIDStr} from "polar-blocks/src/blocks/IBlock";
 
 const IS_NODE = typeof window === 'undefined';
 
-export type IBlockExpandSnapshot = IGenericCollectionSnapshot<IBlockExpand>;
+export type IBlockExpandCollectionSnapshot = IGenericCollectionSnapshot<IBlockExpand>;
 
 export interface IBlockExpand {
 
@@ -18,7 +18,7 @@ export interface IBlockExpand {
 
 }
 
-export function useFirestoreBlocksExpandSnapshots(listener: (snapshot: IBlockExpandSnapshot) => void) {
+export function useFirestoreBlocksExpandCollectionSnapshots(listener: (snapshot: IBlockExpandCollectionSnapshot) => void) {
 
     const {user} = useFirestore();
 
@@ -26,13 +26,13 @@ export function useFirestoreBlocksExpandSnapshots(listener: (snapshot: IBlockExp
 
 }
 
-export function useBlockExpandSnapshots(listener: (snapshot: IBlockExpandSnapshot) => void) {
+export function useBlockExpandCollectionSnapshots(listener: (snapshot: IBlockExpandCollectionSnapshot) => void) {
 
     if (IS_NODE) {
         listener(createMockSnapshot([]));
     }
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    useFirestoreBlocksExpandSnapshots(listener);
+    useFirestoreBlocksExpandCollectionSnapshots(listener);
 
 }

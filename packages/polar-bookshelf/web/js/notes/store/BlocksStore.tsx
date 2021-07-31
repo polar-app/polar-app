@@ -29,7 +29,7 @@ import {BlocksPersistenceWriter} from "../persistence/FirestoreBlocksStoreMutati
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useBlocksPersistenceWriter} from "../persistence/BlocksPersistenceWriters";
 import {WikiLinksToMarkdown} from "../WikiLinksToMarkdown";
-import {IBlockExpandSnapshot, useBlockExpandSnapshots} from "../persistence/BlockExpandSnapshots";
+import {IBlockExpandCollectionSnapshot, useBlockExpandCollectionSnapshots} from "../persistence/BlockExpandSnapshots";
 import {BlockExpandPersistenceWriter, useBlockExpandPersistenceWriter} from "../persistence/BlockExpandWriters";
 import {IBlockContentStructure} from "../HTMLToBlocks";
 import {DOMBlocks} from "../contenteditable/BlockContentEditable";
@@ -2130,7 +2130,7 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    @action public handleBlockExpandSnapshot(snapshot: IBlockExpandSnapshot) {
+    @action public handleBlockExpandSnapshot(snapshot: IBlockExpandCollectionSnapshot) {
 
         for (const docChange of snapshot.docChanges) {
 
@@ -2303,7 +2303,7 @@ export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore
         blocksStore.handleBlocksPersistenceSnapshot(snapshot);
     });
 
-    useBlockExpandSnapshots((snapshot) => {
+    useBlockExpandCollectionSnapshots((snapshot) => {
         blocksStore.handleBlockExpandSnapshot(snapshot);
     });
 
