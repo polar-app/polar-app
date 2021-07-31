@@ -64,6 +64,8 @@ export namespace BlockPermissions {
 
         const permissionChanges = computePermissionChanges(id, oldPermissions, newPermissions);
 
+        console.log("Going to apply permissionChanges: ", permissionChanges);
+
         await applyPermissionChanges(firestore, id, target, newPermissions, permissionChanges);
 
     }
@@ -187,6 +189,8 @@ export namespace BlockPermissions {
                                              oldPermissions: Readonly<BlockPermissionMap>,
                                              newPermissions: Readonly<BlockPermissionMap>): ReadonlyArray<IBlockPermissionChange> {
 
+        console.log("Computing permission changes: ", oldPermissions, newPermissions);
+
         // compute all the unique UIDs in both sets.  This is needed because we have to compute
         // added or removed permissions.
         const uids = arrayStream([
@@ -235,6 +239,7 @@ export namespace BlockPermissions {
 
                 } else {
                     // we don't need to do anything here as this user permissions did not change.
+                    console.warn("Permission did not change: ", oldPerm, newPerm);
                 }
 
             }

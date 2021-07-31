@@ -9,7 +9,7 @@ import {BlockCollection} from "polar-firebase/src/firebase/om/BlockCollection";
 import {BlockPermissionUserCollection} from "polar-firebase/src/firebase/om/BlockPermissionUserCollection";
 import {assertJSON} from "polar-test/src/test/Assertions";
 import {BlockPermissionCollection} from "polar-firebase/src/firebase/om/BlockPermissionCollection";
-import {UserIDStr} from "polar-firestore-like/src/IFirestore";
+import {IFirestoreClient, UserIDStr} from "polar-firestore-like/src/IFirestore";
 import {EmailStr} from "polar-shared/src/util/Strings";
 import {BlockPermissionMap} from "polar-firebase/src/firebase/om/IBlockPermission";
 import {FirebaseBrowserTesting} from "polar-firebase-browser/src/firebase/FirebaseBrowserTesting";
@@ -231,18 +231,40 @@ describe("BlockPermissions", function() {
 
         // TODO: try to read a block by page where we have permissions
 
-        // TODO: make sure we can read block_permission_nspace and that we know
-        // which pages and namespaces to which we have access
-
         // *** create a new block as userA
-
-        const userA = (await FirebaseBrowserTesting.authWithUser0())!;
-        Asserts.assertNotNull(userA)
 
         interface InitMeta {
             readonly uidA: string;
             readonly uidB: string;
             readonly blockID: string;
+        }
+
+        interface IUser {
+            readonly uid: string;
+        }
+
+        async function getFirestoreBrowserClient(role: 'userA' | 'userB'): Promise<[IUser, IFirestoreClient]> {
+
+            async function authAsUserRecord() {
+
+                switch(role) {
+                    case "userA":
+                        return await FirebaseBrowserTesting.authWithUser0();
+                    case "userB":
+                        return await FirebaseBrowserTesting.authWithUser1();
+
+                    default:
+                        throw new Error("Unknown role: " + role);
+                }
+
+            }
+
+            const userRecord = await authAsUserRecord();
+
+            const firestore = await FirestoreBrowserClient.getInstance();
+
+            return [userRecord, firestore];
+
         }
 
         async function init(): Promise<InitMeta> {
@@ -256,9 +278,11 @@ describe("BlockPermissions", function() {
             const uidA = await getUserID(FirebaseTestingUsers.FIREBASE_USER)
             const uidB = await getUserID(FirebaseTestingUsers.FIREBASE_USER1)
 
+            const namespaceID = uidA;
+
             const blockID = Hashcodes.createID({uid: uidA, key: '0x0001'});
 
-            await doCleanup(uidA, blockID, uidA, [uidA, uidB]);
+            await doCleanup(uidA, blockID, namespaceID, [uidA, uidB]);
 
             return {uidA, uidB, blockID};
 
@@ -270,11 +294,13 @@ describe("BlockPermissions", function() {
 
         async function createBlock() {
 
-            const firestore0 = await FirestoreBrowserClient.getInstance();
+            const [userA, firestore] = await getFirestoreBrowserClient('userA');
 
             const block = createFakePageBlock(blockID, userA.uid)
 
-            await BlockCollection.set(firestore0, block);
+            await BlockCollection.set(firestore, block);
+
+            console.log("Creating block...done");
 
             return block;
 
@@ -284,9 +310,13 @@ describe("BlockPermissions", function() {
 
         async function verifyBlockInaccessibleToSecondUser() {
 
-            const firestore1 = await FirestoreBrowserClient.getInstance();
+            console.log("Verifying block inaccessible to second user...");
 
-            await assertThrowsAsync(async () => await BlockCollection.get(firestore1, blockID))
+            const [userB, firestore] = await getFirestoreBrowserClient('userB');
+
+            await assertThrowsAsync(async () => await BlockCollection.get(firestore, blockID))
+
+            console.log("Verifying block inaccessible to second user...done");
 
         }
 
@@ -294,10 +324,12 @@ describe("BlockPermissions", function() {
 
         async function grantPermissions() {
 
+            console.log("Granting permissions...");
+
             const newPermissions: Readonly<BlockPermissionMap> = {
-                [namespaceID]: {
+                [uidB]: {
                     id: namespaceID,
-                    uid: uidA,
+                    uid: uidB,
                     access: 'read'
                 }
             };
@@ -306,15 +338,38 @@ describe("BlockPermissions", function() {
 
             await BlockPermissions.doUpdateNSpacePermissions(firestore, uidA, namespaceID, newPermissions);
 
+            console.log("Granting permissions...done");
+
         }
 
         await grantPermissions();
 
+        async function blockPermissionUserContainsNamespaceID(): Promise<boolean> {
+
+            const [userB, firestore] = await getFirestoreBrowserClient('userB');
+
+            const blockPermissionUser = await BlockPermissionUserCollection.get(firestore, uidB);
+
+            if (! blockPermissionUser) {
+                return false;
+            }
+
+            return blockPermissionUser.nspaces_ro.includes(namespaceID);
+
+        }
+        async function verifyBlockPermissionUserContainsNamespaceID() {
+            assert.isTrue(await blockPermissionUserContainsNamespaceID());
+        }
+
+        await verifyBlockPermissionUserContainsNamespaceID();
+
         async function verifyPermissions() {
 
-            const firestore1 = await FirestoreBrowserClient.getInstance();
+            console.log("Verifying permissions...");
 
-            const sharedBlock = await BlockCollection.get(firestore1, blockID);
+            const [userA, firestore] = await getFirestoreBrowserClient('userA');
+
+            const sharedBlock = await BlockCollection.get(firestore, blockID);
 
             assertJSON(block, sharedBlock);
 
@@ -323,6 +378,8 @@ describe("BlockPermissions", function() {
         await verifyPermissions();
 
         async function revokePermissions() {
+
+            console.log("Revoking permissions...");
 
             const newPermissions: Readonly<BlockPermissionMap> = {
             };
@@ -334,20 +391,6 @@ describe("BlockPermissions", function() {
         }
 
         await revokePermissions();
-
-        async function blockPermissionUserContainsNamespaceID(): Promise<boolean> {
-
-            const firestore1 = await FirestoreBrowserClient.getInstance();
-
-            const blockPermissionUser = await BlockPermissionUserCollection.get(firestore1, uidB);
-
-            if (! blockPermissionUser) {
-                return false;
-            }
-
-            return blockPermissionUser.nspaces_ro.includes(namespaceID);
-
-        }
 
         async function verifyBlockPermissionUserMissingNamespaceID() {
             assert.isFalse(await blockPermissionUserContainsNamespaceID());
@@ -405,10 +448,12 @@ describe("BlockPermissions", function() {
 
         // wipe out BlockPermission too each time or else the changes can not be computed
         if (blockID) {
+            console.log("Deleting block_permission for blockID: " + blockID);
             await BlockPermissionCollection.doDelete(firestore, blockID);
         }
 
         if (nspaceID) {
+            console.log("Deleting block_permission for nspaceID: " + nspaceID);
             await BlockPermissionCollection.doDelete(firestore, nspaceID);
         }
 
