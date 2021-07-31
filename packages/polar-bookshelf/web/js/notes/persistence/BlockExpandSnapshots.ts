@@ -1,11 +1,11 @@
 import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
-import {createMockSnapshot, IGenericSnapshot} from "./IGenericSnapshot";
+import {createMockSnapshot, IGenericCollectionSnapshot} from "./IGenericCollectionSnapshot";
 import {useGenericFirestoreSnapshots} from "./GenericFirestoreSnapshots";
 import {BlockIDStr, UIDStr} from "polar-blocks/src/blocks/IBlock";
 
 const IS_NODE = typeof window === 'undefined';
 
-export type IBlockExpandSnapshot = IGenericSnapshot<IBlockExpand>;
+export type IBlockExpandSnapshot = IGenericCollectionSnapshot<IBlockExpand>;
 
 export interface IBlockExpand {
 
