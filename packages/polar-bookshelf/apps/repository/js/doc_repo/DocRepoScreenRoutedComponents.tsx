@@ -16,45 +16,41 @@ export const DocRepoScreenRoutedComponents = React.memo(function DocRepoScreenRo
     const history = useHistory();
 
     return (
+        <Switch location={location}>
 
-        <BrowserRouter>
-            <Switch location={location}>
+            <Route exact path='/'>
 
-                <Route exact path='/'>
+                <Helmet>
+                    <title>Polar: Document Repository</title>
+                </Helmet>
 
-                    <Helmet>
-                        <title>Polar: Document Repository</title>
-                    </Helmet>
+                <DeviceRouters.Desktop>
+                    <DocRepoGlobalHotKeys/>
+                </DeviceRouters.Desktop>
 
-                    <DeviceRouters.Desktop>
-                        <DocRepoGlobalHotKeys/>
-                    </DeviceRouters.Desktop>
+                <DeviceRouter.Handheld>
 
-                    <DeviceRouter.Handheld>
+                    <>
 
-                        <>
+                        <RepoHeader.LeftMenu>
 
-                            <RepoHeader.LeftMenu>
+                            <IconButton onClick={() => history.push({hash: "#folders"})}>
+                                <MenuIcon/>
+                            </IconButton>
 
-                                <IconButton onClick={() => history.push({hash: "#folders"})}>
-                                    <MenuIcon/>
-                                </IconButton>
+                        </RepoHeader.LeftMenu>
 
-                            </RepoHeader.LeftMenu>
+                        <RepoHeader.Right>
+                            <DocRepoFilterBar />
+                        </RepoHeader.Right>
 
-                            <RepoHeader.Right>
-                                <DocRepoFilterBar />
-                            </RepoHeader.Right>
+                    </>
 
-                        </>
+                </DeviceRouter.Handheld>
 
-                    </DeviceRouter.Handheld>
+            </Route>
 
-                </Route>
-
-            </Switch>
-        </BrowserRouter>
-
+        </Switch>
     );
 
 });
