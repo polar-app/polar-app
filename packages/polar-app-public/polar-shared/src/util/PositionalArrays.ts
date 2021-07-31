@@ -1,5 +1,6 @@
-import {arrayStream} from "./ArrayStreams";
-import {Tuples} from "./Tuples";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {Tuples} from "polar-shared/src/util/Tuples";
+import {DeviceIDManager} from "./DeviceIDManager";
 
 /**
  * Positional Arrays are based on LSeq:
@@ -33,10 +34,9 @@ export namespace PositionalArrays {
     // and a spacing of say 10... then when this is filled up another level of 10000
 
     /**
-     * A number encoded as an string that can be used to place something into a
-     * positional array.
+     * A Device ID followed by a 20 digit number that marks the position of the item in the array 
      */
-    export type PositionalArrayPositionStr = string;
+    export type PositionalArrayKey = string;
 
     export type PositionalArray<T> = {[position: string /* PositionalArrayPosition */]: T};
 
@@ -45,10 +45,35 @@ export namespace PositionalArrays {
         readonly value: T;
     }
 
+    export type PositionalArrayParsedKey = {
+        position: string;
+        host: string;
+    };
+
     /**
      * An entry in the dictionary.
      */
-    type PositionalArrayEntry<T> = [string, T];
+    export type PositionalArrayEntry<T> = [PositionalArrayParsedKey, T];
+    export type PositionalArrayRawEntry<T> = [string, T];
+
+    const KEY_PARTS_SEPARATOR = ":";
+
+    export function parseKey(key: string): PositionalArrayParsedKey {
+        const [host, position] = key.split(KEY_PARTS_SEPARATOR);
+        return {host, position};
+    }
+
+    export function padPosition(position: number): string {
+        const isNegative = position < 0;
+        // Check if the number has a decimal dot if so we need to add an extra zero at the start
+        // TODO: What if we end up with a number that uses the scientific notation here we might need to convert it first
+        const padded = Math.abs(position).toString().padStart(position % 1 ===  0 ? 20 : 21, '0');
+        return `${isNegative ? '-' : ''}${padded}`;
+    }
+
+    export function generateKey(position: number) {
+        return `${DeviceIDManager.DEVICE_ID}${KEY_PARTS_SEPARATOR}${padPosition(position)}`;
+    }
 
     export function create<T>(values?: ReadonlyArray<T>): PositionalArray<T> {
 
@@ -63,12 +88,17 @@ export namespace PositionalArrays {
         return result;
     }
 
-    export function entries<T>(positionalArray: PositionalArray<T>): ReadonlyArray<PositionalArrayEntry<T>> {
+
+    export function rawEntries<T>(positionalArray: PositionalArray<T>): ReadonlyArray<PositionalArrayRawEntry<T>> {
         return Object.entries(positionalArray);
     }
 
+    export function entries<T>(positionalArray: PositionalArray<T>): ReadonlyArray<PositionalArrayEntry<T>> {
+        return Object.entries(positionalArray).map(([key, value]) => [parseKey(key), value]);
+    }
+
     export function compare<T>(a: PositionalArrayEntry<T>, b: PositionalArrayEntry<T>) {
-        return parseFloat(a[0]) - parseFloat(b[0]);
+        return parseFloat(a[0].position) - parseFloat(b[0].position);
     }
 
     export function insert<T>(positionalArray: PositionalArray<T>,
@@ -81,25 +111,25 @@ export namespace PositionalArrays {
             .collect();
 
         const pointers = arrayStream(Tuples.createSiblings(sorted))
-            .sort((a, b) => compare(a.curr, b.curr))
-            .collect();
+              .sort((a, b) => compare(a.curr, b.curr))
+              .collect();
 
         const ptr = arrayStream(pointers)
-            .filter(current => current.curr[1] === ref)
-            .first();
+              .filter(current => current.curr[1] === ref)
+              .first();
 
         if (ptr) {
 
             const computeKey = () => {
 
-                const base = parseFloat(ptr.curr[0]);
+                const base = parseFloat(ptr.curr[0].position);
 
                 const computeDelta = () => {
 
                     const computeDeltaFromSibling = (entry: PositionalArrayEntry<T> | undefined) => {
 
                         if (entry !== undefined) {
-                            return Math.abs(parseFloat(entry[0]) - base) / 2;
+                            return Math.abs(parseFloat(entry[0].position) - base) / 2;
                         } else {
                             return 1.0;
                         }
@@ -120,7 +150,7 @@ export namespace PositionalArrays {
                 const delta = computeDelta();
 
                 const idx = base + delta;
-                return `${idx}`;
+                return generateKey(idx);
 
             }
 
@@ -139,7 +169,7 @@ export namespace PositionalArrays {
      * Put a value into the positional array with the exact key position.
      */
     export function put<T>(positionalArray: PositionalArray<T>,
-                           key: PositionalArrayPositionStr,
+                           key: PositionalArrayKey,
                            value: T): PositionalArray<T> {
 
         positionalArray[key] = value;
@@ -151,13 +181,14 @@ export namespace PositionalArrays {
 
         const min
             = arrayStream(Object.keys(positionalArray))
-            .map(parseFloat)
+            .map(parseKey)
+            .map(({ position }) => parseFloat(position))
             .sort((a, b) => a - b)
             .first() || 0.0;
 
         const idx = min - 1.0;
 
-        const key = `${idx}`;
+        const key = generateKey(idx);
 
         positionalArray[key] = value;
 
@@ -168,13 +199,14 @@ export namespace PositionalArrays {
 
         const max
             = arrayStream(Object.keys(positionalArray))
-            .map(parseFloat)
-            .sort((a, b) => a - b)
-            .last() || 0.0;
+                .map(parseKey)
+                .map(({ position }) => parseFloat(position))
+                .sort((a, b) => a - b)
+                .last() || 0.0;
 
         const idx = max + 1.0;
 
-        const key = `${idx}`;
+        const key = generateKey(idx);
 
         positionalArray[key] = value;
 
@@ -184,9 +216,9 @@ export namespace PositionalArrays {
     export function remove<T>(positionalArray: PositionalArray<T>, value: T): PositionalArray<T> {
 
         const key = arrayStream(Object.entries(positionalArray))
-            .filter(current => current[1] === value)
-            .map(current => current[0])
-            .first();
+                        .filter(current => current[1] === value)
+                        .map(current => current[0])
+                        .first();
 
         if (key !== undefined) {
             delete positionalArray[key];
@@ -197,7 +229,7 @@ export namespace PositionalArrays {
 
     }
 
-    export function removeKey<T>(positionalArray: PositionalArray<T>, key: string): PositionalArray<T> {
+    export function removeKey<T>(positionalArray: PositionalArray<T>, key: PositionalArrayKey): PositionalArray<T> {
         delete positionalArray[key];
         return positionalArray;
     }
@@ -255,12 +287,12 @@ export namespace PositionalArrays {
 
     }
 
-    export function keyForValue<T>(positionalArray: PositionalArray<T>, value: T): PositionalArrayPositionStr | undefined {
+    export function keyForValue<T>(positionalArray: PositionalArray<T>, value: T): PositionalArrayKey | undefined {
 
         return arrayStream(Object.entries(positionalArray))
             .filter(current => current[1] === value)
             .map(current => current[0])
-            .first()
+            .first();
 
     }
 
@@ -271,15 +303,15 @@ export namespace PositionalArrays {
 
         const toPosition = (entry: PositionalArrayEntry<T>): IPositionalArrayPosition<T> => {
             return {
-                pos: parseFloat(entry[0]),
+                pos: parseFloat(entry[0].position),
                 value: entry[1]
-            }
+            };
         }
 
-        return Object.entries(positionalArray)
-            .map(toPosition)
-            .sort((a,b) => a.pos - b.pos)
-            .map(current => current.value);
+        return entries(positionalArray)
+                     .map(toPosition)
+                     .sort((a,b) => a.pos - b.pos)
+                     .map(current => current.value);
 
     }
 

@@ -22,7 +22,6 @@ import {Contents} from "../content/Contents";
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {useUndoQueue} from "../../undo/UndoQueueProvider2";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
-import {PositionalArrays} from "./PositionalArrays";
 import {DateContent} from "../content/DateContent";
 import {IBlocksPersistenceSnapshot, useBlocksPersistenceSnapshots} from "../persistence/BlocksPersistenceSnapshots";
 import {BlocksPersistenceWriter} from "../persistence/FirestoreBlocksStoreMutations";
@@ -804,6 +803,10 @@ export class BlocksStore implements IBlocksStore {
 
         if (! newActive && ! shiftKey) {
             this.setActiveWithPosition(this._active.id, delta === 'prev' ? 'start' : 'end');
+            return true;
+        }
+        
+        if (! newActive && shiftKey && this.hasSelected()) {
             return true;
         }
 

@@ -2,9 +2,9 @@ import {INewChildPosition, BlockContent, BlockType} from "./BlocksStore";
 import {action, computed, makeObservable, observable, toJS} from "mobx"
 import { ISODateTimeString, ISODateTimeStrings } from "polar-shared/src/metadata/ISODateTimeStrings";
 import { Contents } from "../content/Contents";
-import {PositionalArrays} from "./PositionalArrays";
+import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import PositionalArray = PositionalArrays.PositionalArray;
-import PositionalArrayPositionStr = PositionalArrays.PositionalArrayPositionStr;
+import PositionalArrayKey = PositionalArrays.PositionalArrayKey;
 import deepEqual from "deep-equal";
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import IItemsPositionPatch = BlocksStoreMutations.IItemsPositionPatch;
@@ -296,7 +296,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     }
 
-    @action private doPutItem(key: PositionalArrayPositionStr, id: BlockIDStr): boolean {
+    @action private doPutItem(key: PositionalArrayKey, id: BlockIDStr): boolean {
 
         Preconditions.assertString(id, 'id');
 
@@ -312,7 +312,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
 
     }
 
-    @action putItem(key: PositionalArrayPositionStr, id: BlockIDStr): boolean {
+    @action putItem(key: PositionalArrayKey, id: BlockIDStr): boolean {
 
         Preconditions.assertString(id, 'id');
 
@@ -338,7 +338,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         Preconditions.assertString(key, 'key');
         Preconditions.assertString(id, 'id');
 
-        return PositionalArrays.entries(this._items).some(([xkey, xid]) => xid === id && xkey === key);
+        return PositionalArrays.rawEntries(this._items).some(([xkey, xid]) => xid === id && xkey === key);
     }
 
     @action set(block: IBlock) {
