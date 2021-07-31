@@ -37,6 +37,9 @@ import {BlockIDStr, IBlock, IBlockContent, IBlockLink, NamespaceIDStr, UIDStr} f
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 import {WriteController, WriteFileProgress} from "../../../../web/js/datastore/Datastore";
 import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
+import {BlockContentCanonicalizer} from "../contenteditable/BlockContentCanonicalizer";
+import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
+import {MarkdownContentConverter} from "../MarkdownContentConverter";
 
 export const ENABLE_UNDO_TRACING = false;
 
@@ -799,7 +802,7 @@ export class BlocksStore implements IBlocksStore {
             return true;
         }
 
-        if (! newActive) {
+        if (! newActive && ! shiftKey) {
             this.setActiveWithPosition(this._active.id, delta === 'prev' ? 'start' : 'end');
             return true;
         }
@@ -1368,6 +1371,38 @@ export class BlocksStore implements IBlocksStore {
         const newBlockID = Hashcodes.createRandomID();
         const redo = () => this.doCreateNewBlock(id, {...opts, newBlockID});
         return this.doUndoPush('createNewBlock', [id, newBlockID], redo);
+    }
+
+    @action public styleSelectedBlocks(style: DOMBlocks.MarkdownStyle): void {
+        const selectedIDs = this.selectedIDs();
+        const ids = selectedIDs.flatMap(id => this.computeLinearTree(id, { includeInitial: true }));
+        const markdownBlocks = this.idsToBlocks(ids).filter(BlockPredicates.isEditableBlock);
+        
+        if (markdownBlocks.length === 0) {
+            return;
+        }
+
+
+        const applyStyle = (style: DOMBlocks.MarkdownStyle) => (block: Block<MarkdownContent>) => {
+            DOMBlocks.applyStyleToBlock(block.id, style);
+            const blockElem = DOMBlocks.getBlockElement(block.id);
+            if (blockElem) {
+                const div = BlockContentCanonicalizer.canonicalizeElement(blockElem)
+                const html = ContentEditableWhitespace.trim(div.innerHTML);
+                const markdown = MarkdownContentConverter.toMarkdown(html);
+                block.withMutation(() => {
+                    const content = block.content.toJSON();
+                    block.setContent({ ...content, data: markdown });
+                });
+                this.doPut([block]);
+            }
+        };
+
+        const redo = () => {
+            markdownBlocks.forEach(applyStyle(style));
+        };
+
+        return this.doUndoPush('styleSelectedBlocks', markdownBlocks.map(({id}) => id), redo);
     }
 
     /**

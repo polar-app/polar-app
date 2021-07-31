@@ -54,7 +54,7 @@ const ENABLE_PERSISTENCE = StoreCaches.config.backing === 'none';
 
 // const ENABLE_PERSISTENCE = false;
 
-export namespace Firestore {
+export namespace FirestoreBrowserClient {
 
     let instance: firebase.firestore.Firestore | undefined;
 
@@ -165,7 +165,7 @@ export namespace Firestore {
             }
 
         }
-            // TODO: this seems super slow and not sure why.  The tab sync
+        // TODO: this seems super slow and not sure why.  The tab sync
         // seems to not impact performance at all.
         await Tracer.async(doExecAsync, 'Firestore.enablePersistence');
 

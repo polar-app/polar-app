@@ -1,13 +1,13 @@
-import {Firestore} from "../util/Firestore";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {URLStr} from "polar-shared/src/util/Strings";
 import {ImportedDoc} from "./DatastoreFetchImports";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 export class DocCaches {
 
     private static createRef(docURL: URLStr) {
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
         const id = Hashcodes.create(docURL);
         return firestore.collection('doc_cache').doc(id);
     }

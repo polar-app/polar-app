@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
 
-describe('MarkdownContentEscaper', function() {
+describe('MarkdownContentConverter', function() {
 
     function testTwoWayConversionFromMarkdown(markdown: string, expected: string) {
 
@@ -62,6 +62,15 @@ describe('MarkdownContentEscaper', function() {
         const unescaped = MarkdownContentConverter.toMarkdown("this is some <span>text</span>");
         assert.equal(unescaped, "this is some text");
 
+    });
+
+    it('Should not collapse whitespace when converting', () => {
+        const data = `    <a contenteditable="false" href="#polar">polar</a>     '    world    `;
+        const markdown = MarkdownContentConverter.toMarkdown(data);
+        assert.equal(markdown, `    [[polar]]     '    world    `);
+
+        const html = MarkdownContentConverter.toHTML(markdown);
+        assert.equal(html, data);
     });
 
 });

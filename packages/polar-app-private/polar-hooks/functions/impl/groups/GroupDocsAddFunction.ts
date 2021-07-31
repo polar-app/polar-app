@@ -1,11 +1,10 @@
-import {GroupIDStr} from './db/Groups';
-import {Groups} from './db/Groups';
-import {Firestore} from '../util/Firestore';
+import {GroupIDStr, Groups} from './db/Groups';
 import {ExpressFunctions} from '../util/ExpressFunctions';
 import {UserRequests} from '../util/UserRequests';
 import {IDUser} from '../util/IDUsers';
 import {GroupDocActions} from "./db/GroupDocActions";
 import {DocRef} from 'polar-shared/src/groups/DocRef';
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 export class GroupDocsAddFunctions {
 
@@ -17,7 +16,7 @@ export class GroupDocsAddFunctions {
 
         const group = await Groups.verifyAccess(uid, groupID);
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
         const batch = firestore.batch();
 
         if (request.docs.length === 0) {

@@ -1,7 +1,5 @@
-import {GroupIDStr} from './db/Groups';
-import {Groups} from './db/Groups';
+import {GroupIDStr, Groups} from './db/Groups';
 import {IDUser} from '../util/IDUsers';
-import {Firestore} from '../util/Firestore';
 import {GroupMemberInvitations} from './db/GroupMemberInvitations';
 import {GroupMembers} from './db/GroupMembers';
 import {ProfileOwners} from './db/ProfileOwners';
@@ -11,6 +9,7 @@ import {Contacts} from './db/Contacts';
 import {GroupDocActions} from "./db/GroupDocActions";
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {UserRequests} from '../util/UserRequests';
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 export class GroupJoinFunctions {
 
@@ -24,7 +23,7 @@ export class GroupJoinFunctions {
 
         const {group, groupMemberInvitation} = groupMemberVerification;
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         const batch = firestore.batch();
 

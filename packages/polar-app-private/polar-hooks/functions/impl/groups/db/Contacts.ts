@@ -1,19 +1,19 @@
 import {IDUser} from '../../util/IDUsers';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
-import {Firestore} from '../../util/Firestore';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {Sets} from 'polar-shared/src/util/Sets';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {FirebaseAdmin} from 'polar-firebase-admin/src/FirebaseAdmin';
 import {ProfileOwners} from './ProfileOwners';
-import {ISODateTimeStrings, ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
+import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import * as admin from 'firebase-admin';
-import UserRecord = admin.auth.UserRecord;
 import {FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {IQuery} from "polar-firestore-like/src/IQuery";
-import { EmailStr, ProfileIDStr } from 'polar-firebase/src/firebase/om/ProfileCollection';
+import {EmailStr, ProfileIDStr} from 'polar-firebase/src/firebase/om/ProfileCollection';
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
+import UserRecord = admin.auth.UserRecord;
 
 export class Contacts {
 
@@ -132,7 +132,7 @@ export class Contacts {
 
         const contact = await(resolveProfileID(await createContact()));
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         const ref = firestore.collection(this.COLLECTION).doc(contact.id);
 
@@ -142,7 +142,7 @@ export class Contacts {
 
     public static async getViaEmail(email: EmailStr, idUser: IDUser): Promise<Contact | undefined> {
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         const query = firestore
             .collection(this.COLLECTION)
@@ -155,7 +155,7 @@ export class Contacts {
 
     public static async getViaProfileID(profileID: ProfileIDStr, idUser: IDUser): Promise<Contact | undefined> {
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         const query = firestore
             .collection(this.COLLECTION)

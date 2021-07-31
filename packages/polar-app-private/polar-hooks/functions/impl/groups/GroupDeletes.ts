@@ -1,18 +1,18 @@
 import {GroupIDStr, Groups} from "./db/Groups";
-import {Firestore} from "../util/Firestore";
 import {GroupDocs} from "./db/GroupDocs";
 import {GroupDocActions} from "./db/GroupDocActions";
 import {GroupMembers} from "./db/GroupMembers";
 import {GroupAdmins} from "./db/GroupAdmins";
 import {GroupMemberInvitations} from "./db/GroupMemberInvitations";
 import {UserGroups} from "./db/UserGroups";
-import { UserIDStr } from "polar-firebase/src/firebase/om/ProfileCollection";
+import {UserIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 export class GroupDeletes {
 
     public static async exec(groupID: GroupIDStr, uid: UserIDStr | undefined) {
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         // TODO: I think this is better as a transaction now that we have to do
         // a READ within it ... but I need to research this more.

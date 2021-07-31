@@ -35,6 +35,16 @@ describe('BlocksStore', () => {
 
     describe('navNext', () => {
         describe('selection', () => {
+            it("Should work with single blocks that have no siblings", () => {
+                const root = '112';
+
+                store.computeLinearTree(root)
+                    .forEach(block => store.expanded[block] = true);
+                store.setActive(root);
+                store.navNext(root, 'end', {shiftKey: true, autoExpandRoot: true});
+                
+                assert.deepEqual(store.selected, { [root]: true });
+            });
             it("Should create a selection range properly when shift is true", () => {
                 const root = '102';
 
@@ -63,6 +73,20 @@ describe('BlocksStore', () => {
                 assert.equal(store.active.id, '107');
                 assert.equal(store.active.pos, 'end');
             });
+        });
+    });
+
+    describe('styleSelectedBlocks', () => {
+        it('should style selected blocks properly', () => {
+            document.body.innerHTML = `<div id="${DOMBlocks.getBlockHTMLID('109')}" contentEditable="true" data-id="109">hello</div><div id="${DOMBlocks.getBlockHTMLID('111')}" contentEditable="true" data-id="111">world</div>`;
+            store.selected['109'] = true;
+
+            store.styleSelectedBlocks('bold');
+
+            const block = DOMBlocks.getBlockElement('111');
+            Asserts.assertPresent(block);
+            Asserts.assertPresent(block.firstChild);
+            assert.equal((block.firstChild as HTMLElement).tagName, 'B');
         });
     });
 });
