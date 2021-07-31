@@ -1,4 +1,4 @@
-import {Profiles} from "./Profiles";
+import {ProfileCollection} from "./ProfileCollection";
 import {Optional} from "polar-shared/src/util/ts/Optional";
 import {IProfile, ProfileIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 
@@ -40,7 +40,7 @@ export class ProfileJoins {
                     return;
                 }
 
-                const profile = await Profiles.get(profileID);
+                const profile = await ProfileCollection.get(profileID);
 
                 if (profile) {
                     resolvedProfiles[profileID] = profile;

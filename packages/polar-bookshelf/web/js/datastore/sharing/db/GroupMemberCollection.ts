@@ -5,7 +5,7 @@ import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Collections, DocumentChange} from './Collections';
 import {ProfileIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 
-export class GroupMembers {
+export class GroupMemberCollection {
 
     public static readonly COLLECTION = 'group_member';
 

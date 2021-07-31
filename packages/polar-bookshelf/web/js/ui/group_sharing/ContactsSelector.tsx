@@ -1,5 +1,5 @@
 import React from 'react';
-import {ContactIDStr} from '../../datastore/sharing/db/Contacts';
+import {ContactIDStr} from '../../datastore/sharing/db/ContactCollection';
 import {NULL_FUNCTION} from 'polar-shared/src/util/Functions';
 import {EmailAddresses} from '../../util/EmailAddresses';
 import {UserRef} from '../../datastore/sharing/rpc/UserRefs';

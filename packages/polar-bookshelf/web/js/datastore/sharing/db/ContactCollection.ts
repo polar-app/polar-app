@@ -4,7 +4,7 @@ import {Collections, DocumentChange} from './Collections';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {EmailStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 
-export class Contacts {
+export class ContactCollection {
 
     public static readonly COLLECTION = 'contact';
 
