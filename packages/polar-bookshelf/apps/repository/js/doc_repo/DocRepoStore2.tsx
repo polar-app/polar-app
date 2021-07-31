@@ -50,6 +50,7 @@ import {RepoDocInfos} from "../RepoDocInfos";
 import TypeConverter = Sorting.TypeConverter;
 import {createObservableStoreWithPrefsContext} from "../../../../web/js/react/store/ObservableStoreWithPrefsContext";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
+import {useSideNavCallbacks} from "../../../../web/js/sidenav/SideNavStore";
 
 interface IDocRepoStore {
 
@@ -240,6 +241,7 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
                             log: ILogger): IDocRepoCallbacks {
 
     const docLoader = useDocLoader();
+    const {updateTab} = useSideNavCallbacks();
 
     function firstSelected() {
         const selected = selectedProvider();
@@ -547,6 +549,7 @@ function useCreateCallbacks(storeProvider: Provider<IDocRepoStore>,
         async function doHandle() {
             mutator.refresh();
             await repoDocMetaManager.writeDocInfoTitle(repoDocInfo, title);
+            updateTab(repoDocInfo.fingerprint, { title });
         }
 
         doHandle()
