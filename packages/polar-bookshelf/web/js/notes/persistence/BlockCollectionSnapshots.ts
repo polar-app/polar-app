@@ -23,7 +23,7 @@ export function useFirestoreBlockCollectionSnapshots(listener: (snapshot: IBlock
     const {user} = useFirestore();
     const [sharedNamespaces, setSharedNamespaces] = React.useState<ReadonlyArray<NamespaceIDStr>>([]);
     const defaultUserNamespace = React.useMemo(() => user?.uid, [user?.uid]);
-    const nspaces = React.useMemo(() => [user?.uid, ...sharedNamespaces], [user?.uid, sharedNamespaces]);
+    const nspaces = React.useMemo(() => [defaultUserNamespace, ...sharedNamespaces], [defaultUserNamespace, sharedNamespaces]);
 
     // We need to also include the namespaces from BlockPersistenceUser then we
     // need to add them here to the list of namespaces we are reading from.
