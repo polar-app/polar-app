@@ -13,7 +13,7 @@ import {GroupDocsAdd} from './rpc/GroupDocsAdd';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {BackendFileRef} from "polar-shared/src/datastore/BackendFileRef";
-import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 const log = Logger.create();
@@ -109,7 +109,7 @@ export class GroupDatastores {
 
             await writeDocMeta();
 
-            const uid = (await Firebase.currentUserID())!;
+            const uid = (await FirebaseBrowser.currentUserID())!;
 
             const docID = FirebaseDatastoreResources.computeDocMetaID(fingerprint, uid);
 
@@ -119,7 +119,7 @@ export class GroupDatastores {
 
         async function doImport(): Promise<DocRef> {
 
-            const uid = (await Firebase.currentUserID())!;
+            const uid = (await FirebaseBrowser.currentUserID())!;
 
             // TODO: in the future would be faster to work with the DocInfo instead
             // but we don't have a getDocInfo method yet.

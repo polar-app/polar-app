@@ -7,7 +7,7 @@ import {FirestoreBlocks} from "./FirestoreBlocks";
 import {Asserts} from "polar-shared/src/Asserts";
 import firebase from 'firebase';
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
-import {getConfig} from "polar-firebase-browser/src/firebase/Firebase";
+import {getConfig} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {IBlock, IBlockContent} from 'polar-blocks/src/blocks/IBlock';
 import {URLStr} from 'polar-shared/src/util/Strings';

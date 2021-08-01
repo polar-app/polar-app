@@ -34,7 +34,7 @@ export const getConfig = () => {
     return PROJECTS['prod'];
 };
 
-export class Firebase {
+export class FirebaseBrowser {
 
     private static app?: firebase.app.App;
 
@@ -118,7 +118,7 @@ export class Firebase {
 
     public static async currentUserAsync(): Promise<firebase.User | null> {
 
-        Firebase.init();
+        FirebaseBrowser.init();
 
         await this.userLatch.get();
 

@@ -1,7 +1,7 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore';
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
-import {Firebase} from './Firebase';
+import {FirebaseBrowser} from './FirebaseBrowser';
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Tracer} from 'polar-shared/src/util/Tracer';
 import {StoreCaches} from "polar-snapshot-cache/src/StoreCaches";
@@ -59,7 +59,7 @@ export namespace FirestoreBrowserClient {
     let instance: firebase.firestore.Firestore | undefined;
 
     async function initDelegate(opts: FirestoreOptions) {
-        Firebase.init();
+        FirebaseBrowser.init();
         return await createInstance(opts)
     }
 

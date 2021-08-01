@@ -8,7 +8,7 @@ import {GroupDocInfos} from "../../../../web/js/datastore/sharing/GroupDocInfos"
 import {Toaster} from "../../../../web/js/ui/toaster/Toaster";
 import {VerticalAlign} from "../../../../web/js/ui/util/VerticalAlign";
 import {GroupData} from "./GroupData";
-import {UserGroups} from "../../../../web/js/datastore/sharing/db/UserGroups";
+import {UserGroupCollection} from "../../../../web/js/datastore/sharing/db/UserGroupCollection";
 import {GroupDeleteButton} from './GroupDeleteButton';
 import {GroupNavbar} from "./GroupNavbar";
 import {GroupURLs} from "polar-webapp-links/src/groups/GroupURLs";
@@ -52,7 +52,7 @@ export class GroupScreen extends React.Component<IProps, IState> {
 
             const groupDocInfos = await GroupDocInfos.list(group.id);
 
-            const userGroup = await UserGroups.get();
+            const userGroup = await UserGroupCollection.get();
 
             this.setState({
                 ...this.state,

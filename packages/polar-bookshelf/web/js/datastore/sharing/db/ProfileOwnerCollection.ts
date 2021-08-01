@@ -1,10 +1,10 @@
-import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {DocumentReferences, GetOptions} from "../../../firebase/firestore/DocumentReferences";
 import {EmailStr, HandleStr, ProfileIDStr, UserIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 import {IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
-export class ProfileOwners {
+export class ProfileOwnerCollection {
 
     public static readonly COLLECTION = 'profile_owner';
 
@@ -14,10 +14,10 @@ export class ProfileOwners {
         return [id, doc];
     }
 
-    public static async get(id?: UserIDStr, opts: GetOptions = {}): Promise<ProfileOwner | undefined> {
+    public static async get(id?: UserIDStr, opts: GetOptions = {}): Promise<IProfileOwner | undefined> {
 
         if (! id) {
-            const user = await Firebase.currentUserAsync();
+            const user = await FirebaseBrowser.currentUserAsync();
 
             if (! user) {
                 return undefined;
@@ -28,12 +28,12 @@ export class ProfileOwners {
 
         const [_, ref] = await this.doc(id);
         const doc = await DocumentReferences.get(ref, opts);
-        return <ProfileOwner> doc.data();
+        return <IProfileOwner> doc.data();
     }
 
 }
 
-export interface ProfileOwner {
+export interface IProfileOwner {
 
     readonly uid: UserIDStr;
 

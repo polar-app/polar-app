@@ -1,7 +1,7 @@
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {Clause, Collections} from "../datastore/sharing/db/Collections";
-import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 export interface ISyncEntityInit {
@@ -36,7 +36,7 @@ export namespace SyncEntities {
 
         // no paging yet.. just top groups to get this working and off the groupnd
 
-        const uid = await Firebase.currentUserID();
+        const uid = await FirebaseBrowser.currentUserID();
 
         const clauses: ReadonlyArray<Clause> = [
             ['type', '==', type],
@@ -49,7 +49,7 @@ export namespace SyncEntities {
 
     export async function get(type: string, src: IDStr): Promise<ISyncEntity | undefined> {
         const id = createID(type, src);
-        const uid = await Firebase.currentUserID();
+        const uid = await FirebaseBrowser.currentUserID();
         const firestore = await FirestoreBrowserClient.getInstance();
         const ref = firestore.collection(COLLECTION).doc(id);
         const doc = await ref.get();
@@ -58,7 +58,7 @@ export namespace SyncEntities {
 
     export async function set(type: IDStr, src: IDStr, dest: IDStr) {
         const id = createID(type, src);
-        const uid = await Firebase.currentUserID();
+        const uid = await FirebaseBrowser.currentUserID();
         const firestore = await FirestoreBrowserClient.getInstance();
         const ref = firestore.collection(COLLECTION).doc(id);
         await ref.set({id, uid, src, dest, type});

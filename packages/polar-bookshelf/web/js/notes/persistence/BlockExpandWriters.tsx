@@ -1,7 +1,7 @@
 import React from 'react';
 import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
-import { IBlockExpand } from './BlockExpandSnapshots';
+import { IBlockExpand } from './BlockExpandCollectionSnapshots';
 import firebase from 'firebase';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
