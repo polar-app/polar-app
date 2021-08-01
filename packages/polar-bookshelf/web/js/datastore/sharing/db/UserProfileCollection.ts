@@ -1,15 +1,15 @@
-import {Profiles} from "./Profiles";
+import {ProfileCollection} from "./ProfileCollection";
 import {CacheFirstThenServerGetOptions, GetOptions} from "../../../firebase/firestore/DocumentReferences";
 import {isPresent} from 'polar-shared/src/Preconditions';
 import {IProfile, ProfileIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 
-export class UserProfiles {
+export class UserProfileCollection {
 
     public static async get(profileID: ProfileIDStr,
-                            opts: GetOptions = new CacheFirstThenServerGetOptions()): Promise<UserProfile | undefined> {
+                            opts: GetOptions = new CacheFirstThenServerGetOptions()): Promise<IUserProfile | undefined> {
 
-        const currentUserProfile = await Profiles.currentProfile(opts);
-        const profile = await Profiles.get(profileID, opts);
+        const currentUserProfile = await ProfileCollection.currentProfile(opts);
+        const profile = await ProfileCollection.get(profileID, opts);
 
         if (! profile) {
             return undefined;
@@ -22,8 +22,8 @@ export class UserProfiles {
 
     }
 
-    public static async currentUserProfile(opts: GetOptions = new CacheFirstThenServerGetOptions()): Promise<UserProfile | undefined> {
-        const profile = await Profiles.currentProfile(opts);
+    public static async currentUserProfile(opts: GetOptions = new CacheFirstThenServerGetOptions()): Promise<IUserProfile | undefined> {
+        const profile = await ProfileCollection.currentProfile(opts);
 
         if (! profile) {
             return undefined;
@@ -35,7 +35,7 @@ export class UserProfiles {
 }
 
 
-export interface UserProfile {
+export interface IUserProfile {
 
     readonly profile: IProfile;
 

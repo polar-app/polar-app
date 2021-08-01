@@ -1,5 +1,5 @@
 import {SpacedRepStatCollection, StatType} from "polar-firebase/src/firebase/om/SpacedRepStatCollection";
-import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {RepetitionMode} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {FirestoreCollections} from "./FirestoreCollections";
 
@@ -9,7 +9,7 @@ export class ReviewerStatistics {
 
         await FirestoreCollections.configure();
 
-        const uid = await Firebase.currentUserID();
+        const uid = await FirebaseBrowser.currentUserID();
 
         if (! uid) {
             // TODO no way to know that we're not authenticated

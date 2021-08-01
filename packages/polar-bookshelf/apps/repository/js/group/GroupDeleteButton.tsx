@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Group} from "../../../../web/js/datastore/sharing/db/Groups";
 import {GroupData} from "./GroupData";
-import {UserGroups} from "../../../../web/js/datastore/sharing/db/UserGroups";
+import {UserGroupCollection} from "../../../../web/js/datastore/sharing/db/UserGroupCollection";
 import {GroupDeletes} from "../../../../web/js/datastore/sharing/rpc/GroupDeletes";
 import {Toaster} from "../../../../web/js/ui/toaster/Toaster";
 import Button from '@material-ui/core/Button';
@@ -27,7 +27,7 @@ export class GroupDeleteButton extends React.Component<IProps, IState> {
 
         const {userGroup, id, group} = groupData;
 
-        const isAdmin = UserGroups.hasAdminForGroup(id, userGroup);
+        const isAdmin = UserGroupCollection.hasAdminForGroup(id, userGroup);
 
         return (
 

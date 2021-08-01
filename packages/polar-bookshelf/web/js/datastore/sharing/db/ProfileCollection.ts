@@ -1,5 +1,5 @@
-import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
-import {ProfileOwners} from './ProfileOwners';
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
+import {ProfileOwnerCollection} from './ProfileOwnerCollection';
 import {
     CacheFirstThenServerGetOptions,
     DocumentReferences,
@@ -18,7 +18,7 @@ import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/Firest
 /**
  * @Deprecated migrate to polar-firestore
  */
-export class Profiles {
+export class ProfileCollection {
 
     public static readonly COLLECTION = 'profile';
 
@@ -67,14 +67,14 @@ export class Profiles {
 
     public static async currentProfile(opts: GetOptions = new CacheFirstThenServerGetOptions()): Promise<IProfile | undefined> {
 
-        const app = Firebase.init();
+        const app = FirebaseBrowser.init();
         const user = app.auth().currentUser;
 
         if (! user) {
             return undefined;
         }
 
-        const profileOwner = await ProfileOwners.get(user!.uid, opts);
+        const profileOwner = await ProfileOwnerCollection.get(user!.uid, opts);
 
         if (! profileOwner) {
             // getting their user from the database and writing it back out...
