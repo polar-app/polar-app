@@ -59,8 +59,11 @@ export namespace PositionalArrays {
     const KEY_PARTS_SEPARATOR = ":";
 
     export function parseKey(key: string): PositionalArrayParsedKey {
-        const [host, position] = key.split(KEY_PARTS_SEPARATOR);
-        return {host, position};
+        if (key.indexOf(KEY_PARTS_SEPARATOR) > -1) {
+            const [host, position] = key.split(KEY_PARTS_SEPARATOR);
+            return {host, position};
+        }
+        return {host: '', position: key};
     }
 
     export function padPosition(position: number): string {

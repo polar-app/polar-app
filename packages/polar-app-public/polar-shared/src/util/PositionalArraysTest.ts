@@ -7,11 +7,18 @@ import PositionalArray = PositionalArrays.PositionalArray;
 describe("PositionalArrays", () => {
 
     describe('parseKey', () => {
-        it('should parse a positional array key properly', () => {
+        it('should parse a host:position positional array key properly', () => {
             const {position, host} = PositionalArrays.parseKey('device_id:-0000000000000000001');
 
             assert.equal(position, '-0000000000000000001');
             assert.equal(host, 'device_id');
+        });
+
+        it('should parse the old format of positional array keys properly', () => {
+            const {position, host} = PositionalArrays.parseKey('55.34234');
+
+            assert.equal(position, '55.34234');
+            assert.equal(host, '');
         });
     });
 
