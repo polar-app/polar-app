@@ -229,7 +229,6 @@ export const BlockContentEditable = (props: IProps) => {
                     </NoteFormatPopper>
 
                 </BlockAction>
-                         <span style={{ color: 'red' }}>{props.id}</span>
 
             </div>
 
