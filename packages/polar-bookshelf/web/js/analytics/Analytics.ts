@@ -6,7 +6,6 @@ import {NullAnalytics} from "./null/NullAnalytics";
 import {AmplitudeAnalytics} from "./amplitude/AmplitudeAnalytics";
 import {FirestoreAnalytics} from "./firestore/FirestoreAnalytics";
 import {OnlineAnalytics} from "./online/OnlineAnalytics";
-import {UserflowAnalytics} from "./userflow/UserflowAnalytics";
 import { ConsoleAnalytics } from "./console/ConsoleAnalytics";
 import {IntercomAnalytics} from "./intercom/IntercomAnalytics";
 import {CannyAnalytics} from "./canny/CannyAnalytics";
@@ -28,7 +27,6 @@ function createDelegates(): ReadonlyArray<IAnalytics> {
         new AmplitudeAnalytics(),
         webExtension ? undefined : new GAAnalytics(),
         webExtension ? undefined : new FirestoreAnalytics(),
-        webExtension ? undefined : new UserflowAnalytics(),
         new ConsoleAnalytics(),
         webExtension ? undefined : new IntercomAnalytics(),
         webExtension ? undefined : new CannyAnalytics(),
@@ -121,3 +119,4 @@ export namespace Analytics {
     }
 
 }
+
