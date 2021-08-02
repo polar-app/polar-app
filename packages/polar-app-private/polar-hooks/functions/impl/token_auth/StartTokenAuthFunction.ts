@@ -30,6 +30,12 @@ interface IChallenge {
     readonly challenge: string;
 }
 
+interface IChallengeWithParts {
+    readonly p0: string;
+    readonly p1: string;
+    readonly challenge: string;
+}
+
 export async function createOrFetchChallenge(email: EmailStr): Promise<IChallenge> {
 
     const fixed = await AuthChallengeFixedCollection.get(email);
@@ -42,7 +48,7 @@ export async function createOrFetchChallenge(email: EmailStr): Promise<IChalleng
 
 }
 
-export function createChallenge(): IChallenge {
+export function createChallenge(): IChallengeWithParts {
 
     const n0 = Math.floor(Math.random() * 999);
     const n1 = Math.floor(Math.random() * 999);
@@ -51,7 +57,7 @@ export function createChallenge(): IChallenge {
     const p1 = Strings.lpad(n1, '0', 3);
 
     const challenge = p0 + p1;
-    return {challenge};
+    return {challenge, p0, p1};
 }
 
 export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTokenAuthFunction', async (req, res) => {
