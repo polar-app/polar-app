@@ -296,19 +296,35 @@ workflows:
             - karma
             - cypress-desktop-chrome
             - cypress-desktop-firefox
+          filters:
+            branches:
+              only:
+                - master
 
       - deploy-polar-app:
           executor: my-docker
           firebase_hosting_target: polar-webapp
           requires:
             - approve-polar-app
+          filters:
+            branches:
+              only:
+                - master
 
       - approve-polar-site:
           type: approval
           requires:
             - build-polar-site
+          filters:
+            branches:
+              only:
+                - master
 
       - deploy-polar-site:
           executor: my-docker
           requires:
             - approve-polar-site
+          filters:
+            branches:
+              only:
+                - master
