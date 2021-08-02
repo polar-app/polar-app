@@ -288,7 +288,7 @@ workflows:
       - cypress/run:
           executor: cypress/base-14
           requires:
-            - build
+            - build-polar-bookshelf
           working_directory: /root/project/packages/polar-bookshelf
           start: export WEBPACK_BUNDLE=repository && time yarn run build-webapp && time yarn run webpack-serve
           wait-on: "http://localhost:8050"
@@ -303,7 +303,7 @@ workflows:
           type: approval
           requires:
             - karma
-            - build-polar-bookshelf
+            - cypress-run
 
       - deploy_polar_bookshelf:
           executor: my-docker
