@@ -20,6 +20,18 @@ commands:
             - "16:e3:06:7e:6e:58:07:3a:20:35:14:c3:7e:98:33:bb"
             - "SHA256:uwzneTU1Stml8f1GDcffUJPK6GxSs77+vMZOHopRJLE burton@getpolarized.io"
 
+  # & Install Global Modules
+  global_modules_setup:
+    description: install global modules
+    steps:
+      # ! Install Basic Modules { lerna, npm, firebase tools }
+      - run:
+          name: Install global node_modules
+          command: |
+            sudo yarn global add lerna@4.0.0
+            sudo yarn global add npm@7.19.1
+            sudo yarn global add firebase-tools@9.16.0
+
   # & Publishing setup steps
   build_setup:
     description: setup the build for commands
@@ -32,14 +44,6 @@ commands:
             - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
             - yarn-packages-v1-{{ .Branch }}-
             - yarn-packages-v1-
-
-      # ! Install Basic Modules { lerna, npm, firebase tools }
-      - run:
-          name: Install global node_modules
-          command: |
-            sudo yarn global add lerna@4.0.0
-            sudo yarn global add npm@7.19.1
-            sudo yarn global add firebase-tools@9.16.0
 
       # ! Install Required Linux Binary (libvips is needed by sharp which is needed by gatsby)
       - run:
@@ -134,6 +138,7 @@ jobs:
     executor: << parameters.executor>>
     description: build the application for all the following steps
     steps:
+      - global_modules_setup
       - build_setup
 
   # @ Run Karma Test Suite
@@ -187,6 +192,7 @@ jobs:
         type: string
     executor: << parameters.executor>>
     steps:
+      - global_modules_setup
       - publishing_setup
       - attach_workspace:
           at: ~/
@@ -219,6 +225,7 @@ jobs:
         type: executor
     executor: << parameters.executor>>
     steps:
+      - global_modules_setup
       - attach_workspace:
           at: ~/
       - run:
