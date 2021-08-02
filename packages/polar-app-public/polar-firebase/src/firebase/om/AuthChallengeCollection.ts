@@ -2,34 +2,33 @@ import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
-export interface IAuthChallenge1 {
-    readonly id: string;
-    readonly email: string;
-    readonly challenge: string;
-}
-
-export interface IAuthChallenge2 {
-    readonly ver: '2';
-    readonly id: string;
-    readonly email: string;
-    readonly challenge: string;
-    readonly created: ISODateTimeString;
-}
-
-export type IAuthChallenge = IAuthChallenge1 | IAuthChallenge2;
-
-export namespace AuthChallenges {
+export namespace AuthChallengeCollection {
 
     const COLLECTION_NAME = 'auth_challenge';
+
+    export interface IAuthChallenge1 {
+        readonly id: string;
+        readonly email: string;
+        readonly challenge: string;
+    }
+
+    export interface IAuthChallenge2 {
+        readonly ver: '2';
+        readonly id: string;
+        readonly email: string;
+        readonly challenge: string;
+        readonly created: ISODateTimeString;
+    }
+
+    export type IAuthChallenge = IAuthChallenge1 | IAuthChallenge2;
 
     export async function write(email: string, challenge: string) {
 
         Preconditions.assertPresent(email, 'email');
 
-        const app = FirebaseAdmin.app();
-
-        const firestore = app.firestore();
+        const firestore = FirestoreAdmin.getInstance();
 
         const id = Hashcodes.createID(email);
 
