@@ -264,7 +264,7 @@ workflows:
             - build
 
       - cypress/run:
-          name: cypress-chrome
+          name: cypress-desktop-chrome
           executor: ff-chrome
           requires:
             - build-polar-app
@@ -275,7 +275,7 @@ workflows:
           attach-workspace: true
 
       - cypress/run:
-          name: cypress-firefox
+          name: cypress-desktop-firefox
           executor: ff-chrome
           requires:
             - build-polar-app
@@ -294,7 +294,8 @@ workflows:
           type: approval
           requires:
             - karma
-            - cypress-electron
+            - cypress-desktop-chrome
+            - cypress-desktop-firefox
 
       - deploy-polar-app:
           executor: my-docker
