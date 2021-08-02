@@ -2,6 +2,7 @@ import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 export namespace AuthChallengeCollection {
 
@@ -27,9 +28,7 @@ export namespace AuthChallengeCollection {
 
         Preconditions.assertPresent(email, 'email');
 
-        const app = FirebaseAdmin.app();
-
-        const firestore = app.firestore();
+        const firestore = FirestoreAdmin.getInstance();
 
         const id = Hashcodes.createID(email);
 
