@@ -109,7 +109,6 @@ jobs:
       executor:
         type: executor
     executor: << parameters.executor>>
-    working_directory: ~/repo
     description: check if branch is behind master or has no changes
     steps:
       - checkout
@@ -136,7 +135,6 @@ jobs:
       executor:
         type: executor
     executor: << parameters.executor>>
-    working_directory: ~/repo
     description: "Run our karma tests in the browser."
     steps:
       - attach_workspace:
@@ -156,7 +154,6 @@ jobs:
       executor:
         type: executor
     executor: << parameters.executor>>
-    working_directory: ~/repo
     steps:
       - attach_workspace:
           at: ~/
@@ -176,7 +173,6 @@ jobs:
       executor:
         type: executor
     executor: << parameters.executor>>
-    working_directory: ~/repo
     steps:
       - attach_workspace:
           at: ~/
@@ -194,7 +190,6 @@ jobs:
       firebase_hosting_target:
         type: string
     executor: << parameters.executor>>
-    working_directory: ~/repo
     steps:
       - run:
           name: init - setup credentials and bytesafe
@@ -226,7 +221,6 @@ jobs:
       executor:
         type: executor
     executor: << parameters.executor>>
-    working_directory: ~/repo
     steps:
       - run:
           name: deploy
@@ -265,7 +259,7 @@ workflows:
           requires:
             - build
 
-      - build-webapp:
+      - build-polar-bookshelf:
           executor: my-docker
           requires:
             - build
@@ -280,35 +274,35 @@ workflows:
           command: (cd packages/polar-bookshelf && npx cypress run)
           attach-workspace: true
 
-      - build-site:
+      - build-getpolarized-io:
           executor: my-docker
           requires:
             - build
 
-      - hold_app_getpolarized_io:
+      - approve_polar_bookshelf:
           type: approval
           requires:
             - karma
-            - build-webapp
+            - build-polar-bookshelf
           filters:
             branches:
               only:
                 - master
 
-      - deploy_app_getpolarized_io:
+      - deploy_polar_bookshelf:
           executor: my-docker
           firebase_hosting_target: polar-webapp
           requires:
-            - hold_app_getpolarized_io
+            - approve_polar_bookshelf
           filters:
             branches:
               only:
                 - master
 
-      - hold_getpolarized_io:
+      - approve_getpolarized_io:
           type: approval
           requires:
-            - build-site
+            - build-getpolarized-io
           filters:
             branches:
               only:
@@ -317,7 +311,7 @@ workflows:
       - deploy_getpolarized_io:
           executor: my-docker
           requires:
-            - hold_getpolarized_io
+            - approve_getpolarized_io
           filters:
             branches:
               only:
