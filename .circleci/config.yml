@@ -197,7 +197,7 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
-          name: init - setup credentials and bytesafe
+          name: Setup Credentials and Deploy Packages to Verdaccio
           no_output_timeout: 120m
           command: |
             npm config set always-auth true
@@ -208,7 +208,7 @@ jobs:
             lerna exec --concurrency=1 --parallel=false --no-private  --no-bail -- yarn publish --verbose
             (cd packages/polar-app-private/polar-webapp-dist && yarn run dist)
       - run:
-          name: release
+          name: Deploy to Firebase Hosting & Cloud Functions
           no_output_timeout: 120m
           command: |
             source packages/polar-bookshelf-secrets/credentials.sh
@@ -290,7 +290,7 @@ workflows:
           requires:
             - build
           working_directory: /root/project/packages/polar-bookshelf
-          start: export WEBPACK_BUNDLE=repository && time yarn run webpack && time yarn run webpack-serve
+          start: export WEBPACK_BUNDLE=repository && time yarn run build-webapp && time yarn run webpack-serve
           wait-on: "http://localhost:8050"
           attach-workspace: true
 
