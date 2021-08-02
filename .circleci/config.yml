@@ -260,13 +260,15 @@ workflows:
           executor: my-docker
           requires:
             - build
-          attach-workspace: true
+          attach_workspace:
+            at: ~/
 
       - build-webapp:
           executor: my-docker
           requires:
             - build
-          attach-workspace: true
+          attach_workspace:
+            at: ~/
 
       - cypress/run:
           executor: cypress/base-14
@@ -282,7 +284,8 @@ workflows:
           executor: my-docker
           requires:
             - build
-          attach-workspace: true
+          attach_workspace:
+            at: ~/
 
       - hold_app_getpolarized_io:
           type: approval
