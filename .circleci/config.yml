@@ -241,6 +241,9 @@ executors:
     docker:
       - image: circleci/node:14.16.0-buster
     resource_class: xlarge
+  ff-chrome:
+    docker:
+      - image: node14.17.0-chrome88-ff89
 
 # ~ Define Workflow Steps
 workflows:
@@ -261,14 +264,25 @@ workflows:
             - build
 
       - cypress/run:
-          name: cypress-electron
-          executor: cypress/base-14
+          name: cypress-chrome
+          executor: ff-chrome
           requires:
             - build-polar-app
           working_directory: /root/project/packages/polar-bookshelf
           start: export WEBPACK_BUNDLE=repository && time yarn run webpack-serve
           wait-on: "http://localhost:8050"
-          command: npx cypress run
+          command: npx cypress install && npx cypress run --browser chrome
+          attach-workspace: true
+
+      - cypress/run:
+          name: cypress-firefox
+          executor: ff-chrome
+          requires:
+            - build-polar-app
+          working_directory: /root/project/packages/polar-bookshelf
+          start: export WEBPACK_BUNDLE=repository && time yarn run webpack-serve
+          wait-on: "http://localhost:8050"
+          command: npx cypress install && npx cypress run --browser firefox
           attach-workspace: true
 
       - build-polar-site:
