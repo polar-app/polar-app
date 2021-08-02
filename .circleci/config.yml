@@ -120,6 +120,16 @@ jobs:
             git diff --exit-code --name-only --quiet  origin/master && (echo -e '\n \033[1mNO CHANGES WERE MADE\033[0m' && exit 1)
             if [ $(git rev-list --left-only --count origin/master...@) != '0' ]; then echo -e '\n \033[1mOUTDATED BRANCH, PLEASE MERGE MASTER\033[0m' && exit 1; fi
 
+  # @ Build the application for the following steps
+  build:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor>>
+    description: build the application for all the following steps
+    steps:
+      - build_setup
+
   # @ Run Karma Test Suite
   karma:
     parameters:
@@ -129,7 +139,6 @@ jobs:
     working_directory: ~/repo
     description: "Run our karma tests in the browser."
     steps:
-      - build_setup
       - run:
           name: karma
           command: |
@@ -147,7 +156,6 @@ jobs:
     executor: << parameters.executor>>
     working_directory: ~/repo
     steps:
-      - build_setup
       - run:
           name: build and verify webapp
           command: |
@@ -167,7 +175,6 @@ jobs:
     executor: << parameters.executor>>
     working_directory: ~/repo
     steps:
-      - build_setup
       - run:
           name: build and verify site (getpolarized.io)
           command: |
@@ -185,7 +192,6 @@ jobs:
     executor: << parameters.executor>>
     working_directory: ~/repo
     steps:
-      - build_setup
       - run:
           name: init - setup credentials and bytesafe
           no_output_timeout: 120m
@@ -238,44 +244,34 @@ workflows:
   version: 2
   main:
     jobs:
-      # - cypress/install:
-      #     executor: cypress/base-14
-      #     post-checkout:
-      #       - run: "rm -f ~/.npmrc && cp ./.npmrc ~/"
-      #       - run: "yarn global add lerna@4.0.0 && yarn global add npm@7.19.1"
-      #     install-command: "lerna bootstrap"
-      #     post-install:
-      #       - run: "lerna run compile"
-
-      # - cypress/run:
-      #     executor: cypress/base-14
-      #     requires:
-      #       - cypress/install
-      #     working_directory: packages/polar-bookshelf
-      #     post-checkout:
-      #       - run: "export WEBPACK_BUNDLE=repository && time yarn run webpack"
-      #     start: time yarn run webpack-serve
-      #     wait-on: "http://localhost:8050"
-      #     command: (cd packages/polar-bookshelf && npx cypress run)
-      #     attach-workspace: true
-
       - changes:
           executor: my-docker
+          filters:
+            branches:
+              ignore:
+                - master
+
+      - build:
+          executor: my-docker
+          requires:
+            - changes
 
       - karma:
           executor: my-docker
           requires:
-            - changes
+            - build
+          attach-workspace: true
 
       - build-webapp:
           executor: my-docker
           requires:
-            - changes
+            - build
+          attach-workspace: true
 
       - cypress/run:
           executor: cypress/base-14
           requires:
-            - build-webapp
+            - build
           working_directory: /root/repo/packages/polar-bookshelf
           start: export WEBPACK_BUNDLE=repository && time yarn run webpack && time yarn run webpack-serve
           wait-on: "http://localhost:8050"
@@ -285,7 +281,8 @@ workflows:
       - build-site:
           executor: my-docker
           requires:
-            - changes
+            - build
+          attach-workspace: true
 
       - hold_app_getpolarized_io:
           type: approval
