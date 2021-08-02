@@ -1,4 +1,4 @@
-import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {UserRequest} from '../db/UserRequest';
 import {CloudFunctions} from '../../firebase/CloudFunctions';
 
@@ -6,9 +6,9 @@ export class JSONRPC {
 
     public static async exec<R, V>(func: string, request: R): Promise<V> {
 
-        const app = Firebase.init();
+        const app = FirebaseBrowser.init();
 
-        const user = await Firebase.currentUserAsync();
+        const user = await FirebaseBrowser.currentUserAsync();
 
         if (! user) {
             throw new Error("User not authenticated");
