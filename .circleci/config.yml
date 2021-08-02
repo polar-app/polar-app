@@ -98,7 +98,7 @@ commands:
           command: npx lerna run compile
 
       - persist_to_workspace:
-          root: ~/
+          root: .
           paths:
             - "repo"
 
