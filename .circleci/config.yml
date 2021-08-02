@@ -149,7 +149,7 @@ jobs:
             yarn run karma
 
   # @ Build Polar-Bookshelf Webapp
-  build-webapp:
+  build-polar-bookshelf:
     parameters:
       executor:
         type: executor
@@ -166,9 +166,13 @@ jobs:
             echo "Webapp Built Successfully" && \
             cat dist/public/repository-bundle.js | gzip -c > dist/public/repository-bundle.js.gz
             find dist/public/repository-bundle.js.gz -size +1300000c |tee /dev/stderr| egrep '.*'
+      - persist_to_workspace:
+          root: /home/circleci/
+          paths:
+            - project
 
   # @ Build getpolarized.io Website
-  build-site:
+  build-getpolarized-io:
     parameters:
       executor:
         type: executor
@@ -183,7 +187,7 @@ jobs:
             yarn run dist
 
   # @ Deploy Polar-Bookshelf
-  deploy_app_getpolarized_io:
+  deploy_polar_bookshelf:
     parameters:
       executor:
         type: executor
@@ -191,6 +195,8 @@ jobs:
         type: string
     executor: << parameters.executor>>
     steps:
+      - attach_workspace:
+          at: ~/
       - run:
           name: init - setup credentials and bytesafe
           no_output_timeout: 120m
@@ -198,8 +204,6 @@ jobs:
             npm config set always-auth true
             source packages/polar-bookshelf-secrets/credentials.sh
             rm -f ~/.npmrc && cat .npmrc > ~/.npmrc
-            lerna bootstrap
-            lerna run compile
             lerna run test
             yarn run dist-validate-env
             lerna exec --concurrency=1 --parallel=false --no-private  --no-bail -- yarn publish --verbose
@@ -222,6 +226,8 @@ jobs:
         type: executor
     executor: << parameters.executor>>
     steps:
+      - attach_workspace:
+          at: ~/
       - run:
           name: deploy
           command: |
@@ -284,35 +290,19 @@ workflows:
           requires:
             - karma
             - build-polar-bookshelf
-          filters:
-            branches:
-              only:
-                - master
 
       - deploy_polar_bookshelf:
           executor: my-docker
           firebase_hosting_target: polar-webapp
           requires:
             - approve_polar_bookshelf
-          filters:
-            branches:
-              only:
-                - master
 
       - approve_getpolarized_io:
           type: approval
           requires:
             - build-getpolarized-io
-          filters:
-            branches:
-              only:
-                - master
 
       - deploy_getpolarized_io:
           executor: my-docker
           requires:
             - approve_getpolarized_io
-          filters:
-            branches:
-              only:
-                - master
