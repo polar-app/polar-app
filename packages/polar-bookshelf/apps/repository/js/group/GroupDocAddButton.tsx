@@ -7,7 +7,7 @@ import {
     GroupDocRef
 } from "../../../../web/js/datastore/sharing/GroupDatastores";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
-import {GroupDocs} from "../../../../web/js/datastore/sharing/db/GroupDocs";
+import {GroupDocCollection} from "../../../../web/js/datastore/sharing/db/GroupDocCollection";
 import {AuthHandlers} from "../../../../web/js/apps/repository/auth_handler/AuthHandler";
 import Button from "@material-ui/core/Button";
 
@@ -58,7 +58,7 @@ export class GroupDocAddButton extends React.PureComponent<IProps, IState> {
 
             Toaster.info("Adding document to your document repository...");
 
-            const docRefs = await GroupDocs.getByFingerprint(groupID, fingerprint);
+            const docRefs = await GroupDocCollection.getByFingerprint(groupID, fingerprint);
 
             if (docRefs.length === 0) {
                 Toaster.error("No group docs to add");

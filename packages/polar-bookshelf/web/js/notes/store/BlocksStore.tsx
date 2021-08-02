@@ -24,12 +24,12 @@ import {useUndoQueue} from "../../undo/UndoQueueProvider2";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
 import {PositionalArrays} from "./PositionalArrays";
 import {DateContent} from "../content/DateContent";
-import {IBlocksPersistenceSnapshot, useBlocksPersistenceSnapshots} from "../persistence/BlocksPersistenceSnapshots";
+import {IBlockCollectionSnapshot, useBlockCollectionSnapshots} from "../persistence/BlockCollectionSnapshots";
 import {BlocksPersistenceWriter} from "../persistence/FirestoreBlocksStoreMutations";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useBlocksPersistenceWriter} from "../persistence/BlocksPersistenceWriters";
 import {WikiLinksToMarkdown} from "../WikiLinksToMarkdown";
-import {IBlockExpandSnapshot, useBlockExpandSnapshots} from "../persistence/BlockExpandSnapshots";
+import {IBlockExpandCollectionSnapshot, useBlockExpandCollectionSnapshots} from "../persistence/BlockExpandCollectionSnapshots";
 import {BlockExpandPersistenceWriter, useBlockExpandPersistenceWriter} from "../persistence/BlockExpandWriters";
 import {IBlockContentStructure} from "../HTMLToBlocks";
 import {DOMBlocks} from "../contenteditable/BlockContentEditable";
@@ -37,6 +37,9 @@ import {BlockIDStr, IBlock, IBlockContent, IBlockLink, NamespaceIDStr, UIDStr} f
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 import {WriteController, WriteFileProgress} from "../../../../web/js/datastore/Datastore";
 import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
+import {BlockContentCanonicalizer} from "../contenteditable/BlockContentCanonicalizer";
+import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
+import {MarkdownContentConverter} from "../MarkdownContentConverter";
 
 export const ENABLE_UNDO_TRACING = false;
 
@@ -1370,6 +1373,38 @@ export class BlocksStore implements IBlocksStore {
         return this.doUndoPush('createNewBlock', [id, newBlockID], redo);
     }
 
+    @action public styleSelectedBlocks(style: DOMBlocks.MarkdownStyle): void {
+        const selectedIDs = this.selectedIDs();
+        const ids = selectedIDs.flatMap(id => this.computeLinearTree(id, { includeInitial: true }));
+        const markdownBlocks = this.idsToBlocks(ids).filter(BlockPredicates.isEditableBlock);
+
+        if (markdownBlocks.length === 0) {
+            return;
+        }
+
+
+        const applyStyle = (style: DOMBlocks.MarkdownStyle) => (block: Block<MarkdownContent>) => {
+            DOMBlocks.applyStyleToBlock(block.id, style);
+            const blockElem = DOMBlocks.getBlockElement(block.id);
+            if (blockElem) {
+                const div = BlockContentCanonicalizer.canonicalizeElement(blockElem)
+                const html = ContentEditableWhitespace.trim(div.innerHTML);
+                const markdown = MarkdownContentConverter.toMarkdown(html);
+                block.withMutation(() => {
+                    const content = block.content.toJSON();
+                    block.setContent({ ...content, data: markdown });
+                });
+                this.doPut([block]);
+            }
+        };
+
+        const redo = () => {
+            markdownBlocks.forEach(applyStyle(style));
+        };
+
+        return this.doUndoPush('styleSelectedBlocks', markdownBlocks.map(({id}) => id), redo);
+    }
+
     /**
      * Create a new block in reference to the block with given ID.
      */
@@ -2067,7 +2102,7 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    @action public handleBlocksPersistenceSnapshot(snapshot: IBlocksPersistenceSnapshot) {
+    @action public handleBlocksPersistenceSnapshot(snapshot: IBlockCollectionSnapshot) {
 
         // console.log("Handling BlocksStore snapshot: ", snapshot);
 
@@ -2095,7 +2130,7 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    @action public handleBlockExpandSnapshot(snapshot: IBlockExpandSnapshot) {
+    @action public handleBlockExpandSnapshot(snapshot: IBlockExpandCollectionSnapshot) {
 
         for (const docChange of snapshot.docChanges) {
 
@@ -2264,11 +2299,11 @@ export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore
     const blocksStore = React.useMemo(() => new BlocksStore(uid, undoQueue, blocksPersistenceWriter, blockExpandPersistenceWriter),
                                       [blockExpandPersistenceWriter, blocksPersistenceWriter, uid, undoQueue]);
 
-    useBlocksPersistenceSnapshots((snapshot) => {
+    useBlockCollectionSnapshots((snapshot) => {
         blocksStore.handleBlocksPersistenceSnapshot(snapshot);
     });
 
-    useBlockExpandSnapshots((snapshot) => {
+    useBlockExpandCollectionSnapshots((snapshot) => {
         blocksStore.handleBlockExpandSnapshot(snapshot);
     });
 

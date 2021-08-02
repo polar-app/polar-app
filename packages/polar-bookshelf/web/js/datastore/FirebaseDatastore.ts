@@ -42,7 +42,7 @@ import {Percentage, ProgressTracker} from 'polar-shared/src/util/ProgressTracker
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import {FilePaths} from 'polar-shared/src/util/FilePaths';
 import {FileHandle, FileHandles} from 'polar-shared/src/util/Files';
-import {Firebase, UserID} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser, UserID} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {ProgressMessage} from '../ui/progress_bar/ProgressMessage';
 import {ProgressMessages} from '../ui/progress_bar/ProgressMessages';
@@ -102,7 +102,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
         this.app = firebase.app();
         this.firestore = await FirestoreBrowserClient.getInstance();
         this.storage = firebase.storage();
-        this.uid = (await Firebase.currentUserID())!;
+        this.uid = (await FirebaseBrowser.currentUserID())!;
 
         if (opts.noInitialSnapshot) {
 
@@ -838,7 +838,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore, W
     public async overview(): Promise<DatastoreOverview | undefined> {
 
         const docMetaRefs = await this.getDocMetaRefs();
-        const user = await Firebase.currentUserAsync();
+        const user = await FirebaseBrowser.currentUserAsync();
 
         return {
             nrDocs: docMetaRefs.length,

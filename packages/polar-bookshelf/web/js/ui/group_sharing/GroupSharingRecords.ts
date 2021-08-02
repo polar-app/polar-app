@@ -1,15 +1,15 @@
-import {GroupMember} from '../../datastore/sharing/db/GroupMembers';
-import {GroupMembers} from '../../datastore/sharing/db/GroupMembers';
+import {GroupMember} from '../../datastore/sharing/db/GroupMemberCollection';
+import {GroupMemberCollection} from '../../datastore/sharing/db/GroupMemberCollection';
 import {GroupMemberInvitation} from '../../datastore/sharing/db/GroupMemberInvitations';
 import {GroupMemberInvitations} from '../../datastore/sharing/db/GroupMemberInvitations';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Image} from '../../datastore/sharing/db/Images';
 import {Group, Groups} from '../../datastore/sharing/db/Groups';
-import {Profiles} from '../../datastore/sharing/db/Profiles';
+import {ProfileCollection} from '../../datastore/sharing/db/ProfileCollection';
 import {Optional} from 'polar-shared/src/util/ts/Optional';
-import {Contacts} from '../../datastore/sharing/db/Contacts';
-import {Contact} from '../../datastore/sharing/db/Contacts';
-import {UserGroups} from "../../datastore/sharing/db/UserGroups";
+import {ContactCollection} from '../../datastore/sharing/db/ContactCollection';
+import {Contact} from '../../datastore/sharing/db/ContactCollection';
+import {UserGroupCollection} from "../../datastore/sharing/db/UserGroupCollection";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {UserGroupMembership} from "../../datastore/sharing/db/UserGroupMembership";
 import {IProfile} from "polar-firebase/src/firebase/om/ProfileCollection";
@@ -32,7 +32,7 @@ export class GroupSharingRecords {
 
         const getGroupMemberInvitations = async (): Promise<ReadonlyArray<MemberRecord>> => {
 
-            const profile = await Profiles.currentProfile();
+            const profile = await ProfileCollection.currentProfile();
 
             if (! profile) {
                 log.warn("No current user profile");
@@ -58,7 +58,7 @@ export class GroupSharingRecords {
 
         const getGroupMembers = async (): Promise<ReadonlyArray<MemberRecord>> => {
 
-            const records = await GroupMembers.list(groupID);
+            const records = await GroupMemberCollection.list(groupID);
 
             const memberRecordInits: MemberRecordWithProfile[] = records.map(current => {
 
@@ -74,7 +74,7 @@ export class GroupSharingRecords {
 
             });
 
-            const resolvedProfiles = await Profiles.resolve(memberRecordInits);
+            const resolvedProfiles = await ProfileCollection.resolve(memberRecordInits);
 
             return resolvedProfiles.map(current => {
                 const [memberRecordInit , profile] = current;
@@ -104,7 +104,7 @@ export class GroupSharingRecords {
 
         const doHandleMembership = async () => {
 
-            if (! await UserGroups.hasPermissionForGroup(groupID)) {
+            if (! await UserGroupCollection.hasPermissionForGroup(groupID)) {
                 return;
             }
 
@@ -135,9 +135,9 @@ export class GroupSharingRecords {
         };
 
         const doHandleContacts = async () => {
-            const contacts = await Contacts.list();
+            const contacts = await ContactCollection.list();
 
-            const resolvedProfiles = await Profiles.resolve(contacts);
+            const resolvedProfiles = await ProfileCollection.resolve(contacts);
 
             const contactProfiles = resolvedProfiles.map(current => {
 

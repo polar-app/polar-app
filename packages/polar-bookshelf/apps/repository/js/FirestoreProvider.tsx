@@ -4,7 +4,7 @@ import {deepMemo} from "../../../web/js/react/ReactUtils";
 import {useAsyncWithError} from "../../../web/js/hooks/ReactLifecycleHooks";
 import firebase from 'firebase/app'
 import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
-import {Firebase} from "polar-firebase-browser/src/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 export interface IFirestoreContext {
@@ -32,7 +32,7 @@ async function doAsync(): Promise<IFirestoreContext> {
 
     const firestore = await FirestoreBrowserClient.getInstance();
 
-    const user = await Firebase.currentUserAsync();
+    const user = await FirebaseBrowser.currentUserAsync();
 
     const uid = user?.uid;
 

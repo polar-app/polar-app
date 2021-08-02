@@ -6,7 +6,7 @@ import {Clause} from './Collections';
 import {SnapshotListener} from './Collections';
 import {ProfileIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 
-export class GroupDocs {
+export class GroupDocCollection {
 
     public static readonly COLLECTION = 'group_doc';
 

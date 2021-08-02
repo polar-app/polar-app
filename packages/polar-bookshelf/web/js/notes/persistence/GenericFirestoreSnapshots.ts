@@ -1,6 +1,6 @@
 import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
 import React from "react";
-import {IGenericSnapshot} from "./IGenericSnapshot";
+import {IGenericCollectionSnapshot} from "./IGenericCollectionSnapshot";
 import {IGenericDocumentChange} from "./IGenericDocumentChange";
 import {TWhereFilterOp} from "polar-firestore-like/src/ICollectionReference";
 import {IQuerySnapshot, IQuerySnapshotClient} from "polar-firestore-like/src/IQuerySnapshot";
@@ -13,13 +13,13 @@ export type GenericClause = [string, TWhereFilterOp, any];
 
 export function useGenericFirestoreSnapshots<T>(collectionName: string,
                                                 clause: GenericClause,
-                                                listener: (snapshot: IGenericSnapshot<T>) => void) {
+                                                listener: (snapshot: IGenericCollectionSnapshot<T>) => void) {
 
     const {user, firestore} = useFirestore();
 
     React.useEffect(() => {
 
-        const convertSnapshot = (current: IQuerySnapshotClient): IGenericSnapshot<T> => {
+        const convertSnapshot = (current: IQuerySnapshotClient): IGenericCollectionSnapshot<T> => {
 
             const convertDocChange = (current: IDocumentChangeClient): IGenericDocumentChange<T> => {
 
@@ -38,6 +38,7 @@ export function useGenericFirestoreSnapshots<T>(collectionName: string,
                     hasPendingWrites: current.metadata.hasPendingWrites,
                     fromCache: current.metadata.fromCache
                 },
+                docs: current.docs.map(doc => doc.data() as T),
                 docChanges: current.docChanges().map(current => convertDocChange(current))
             }
 
