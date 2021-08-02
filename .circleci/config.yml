@@ -292,7 +292,6 @@ workflows:
           working_directory: /root/project/packages/polar-bookshelf
           start: export WEBPACK_BUNDLE=repository && time yarn run build-webapp && time yarn run webpack-serve
           wait-on: "http://localhost:8050"
-          resource_class: xlarge
           attach-workspace: true
 
       - build-getpolarized-io:
