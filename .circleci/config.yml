@@ -303,7 +303,7 @@ workflows:
           type: approval
           requires:
             - karma
-            - cypress-run
+            - cypress/run
 
       - deploy_polar_bookshelf:
           executor: my-docker
