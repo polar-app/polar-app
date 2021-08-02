@@ -139,6 +139,8 @@ jobs:
     working_directory: ~/repo
     description: "Run our karma tests in the browser."
     steps:
+      - attach_workspace:
+          at: ~/
       - run:
           name: karma
           command: |
@@ -156,6 +158,8 @@ jobs:
     executor: << parameters.executor>>
     working_directory: ~/repo
     steps:
+      - attach_workspace:
+          at: ~/
       - run:
           name: build and verify webapp
           command: |
@@ -175,6 +179,8 @@ jobs:
     executor: << parameters.executor>>
     working_directory: ~/repo
     steps:
+      - attach_workspace:
+          at: ~/
       - run:
           name: build and verify site (getpolarized.io)
           command: |
@@ -260,15 +266,11 @@ workflows:
           executor: my-docker
           requires:
             - build
-          attach_workspace:
-            at: ~/
 
       - build-webapp:
           executor: my-docker
           requires:
             - build
-          attach_workspace:
-            at: ~/
 
       - cypress/run:
           executor: cypress/base-14
@@ -284,8 +286,6 @@ workflows:
           executor: my-docker
           requires:
             - build
-          attach_workspace:
-            at: ~/
 
       - hold_app_getpolarized_io:
           type: approval
