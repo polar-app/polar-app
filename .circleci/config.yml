@@ -290,7 +290,7 @@ workflows:
           requires:
             - build-polar-bookshelf
           working_directory: /root/project/packages/polar-bookshelf
-          start: export WEBPACK_BUNDLE=repository && time yarn run build-webapp && time yarn run webpack-serve
+          start: export WEBPACK_BUNDLE=repository && time yarn run webpack-serve
           wait-on: "http://localhost:8050"
           attach-workspace: true
 
