@@ -98,9 +98,9 @@ commands:
           command: npx lerna run compile
 
       - persist_to_workspace:
-          root: .
+          root: /home/circleci/
           paths:
-            - "repo"
+            - project
 
 # ~ Workflow Building Blocks
 jobs:
