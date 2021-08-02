@@ -115,7 +115,7 @@ commands:
 # ~ Workflow Building Blocks
 jobs:
   # @ Build the application for the following steps
-  build:
+  setting-up:
     parameters:
       executor:
         type: executor
@@ -250,18 +250,18 @@ workflows:
   version: 2
   main:
     jobs:
-      - build:
+      - setting-up:
           executor: my-docker
 
       - karma:
           executor: my-docker
           requires:
-            - build
+            - setting-up
 
       - build-polar-app:
           executor: my-docker
           requires:
-            - build
+            - setting-up
 
       - cypress/run:
           name: cypress-desktop-chrome
@@ -288,7 +288,7 @@ workflows:
       - build-polar-site:
           executor: my-docker
           requires:
-            - build
+            - setting-up
 
       - approve-polar-app:
           type: approval
