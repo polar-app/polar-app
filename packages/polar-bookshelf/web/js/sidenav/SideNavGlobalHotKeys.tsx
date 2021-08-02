@@ -1,6 +1,9 @@
 import React from 'react';
+import {useHistory, useLocation} from 'react-router-dom';
+import {useRefWithUpdates} from '../hooks/ReactHooks';
 import {GlobalKeyboardShortcuts, keyMapWithGroup} from "../keyboard_shortcuts/GlobalKeyboardShortcuts";
-import {SIDE_NAV_ENABLED, useSideNavCallbacks} from './SideNavStore';
+import {useNotesEnabled} from './SideNav';
+import {SIDE_NAV_ENABLED, useSideNavCallbacks, useSideNavStore} from './SideNavStore';
 
 const globalKeyMap = keyMapWithGroup({
     group: "Side Navigation",
@@ -50,12 +53,45 @@ const globalKeyMap = keyMapWithGroup({
 
 export const SideNavGlobalHotKeys = React.memo(function SideNavGlobalHotKeys() {
 
-    const {closeCurrentTab, prevTab, nextTab} = useSideNavCallbacks();
+    const {tabs} = useSideNavStore(['tabs']);
+    const {closeCurrentTab} = useSideNavCallbacks()
+    const notesEnabled = useNotesEnabled();
+    const {pathname} = useLocation();
+    const history = useHistory();
+
+    const pages = React.useMemo(() => {
+        const pages = [
+            { path: '/', exact: true }, // Doc Repo
+            { path: '/annotations', exact: false }, // Annotation repo
+            { path: '/stats', exact: false }, // Statistics
+            ...tabs.map(tab => ({ path: tab.url, exact: false })), // Open tabs
+            { path: '/settings', exact: false }, // Settings
+        ];
+
+        if (notesEnabled) {
+            pages.splice(2, 0, { path: '/notes', exact: false });
+        }
+        return pages;
+    }, [tabs, notesEnabled]);
+
+    const doNav = React.useCallback((delta: number) => {
+        const currentPage = pages.find(({ exact, path }) => exact ? path === pathname : pathname.startsWith(path));
+        if (currentPage) {
+            const currentPageIdx = pages.indexOf(currentPage);
+            const newPageIdx = Math.min(pages.length - 1, Math.max(0, currentPageIdx + delta))
+            history.push(pages[newPageIdx].path);
+        }
+    }, [pages, pathname, history]);
+
+    const doNavRef = useRefWithUpdates(doNav);
 
     const globalKeyHandlers = {
-        CLOSE_CURRENT_TAB: closeCurrentTab,
-        PREV_TAB: prevTab,
-        NEXT_TAB: nextTab
+        CLOSE_CURRENT_TAB: () => {
+            closeCurrentTab();
+            console.log('debug: closing');
+        },
+        PREV_TAB: () => doNavRef.current(-1),
+        NEXT_TAB: () => doNavRef.current(+1),
     };
 
     if (! SIDE_NAV_ENABLED) {

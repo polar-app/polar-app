@@ -69,6 +69,7 @@ import {BlocksStoreProvider} from "../../notes/store/BlocksStore";
 import {BlockStoreDefaultContextProvider} from "../../notes/store/BlockStoreContextProvider";
 import {NotesScreen} from '../../notes/NoteScreen';
 import {HelloServerSideRender} from "../../ssr/HelloServerSideRender";
+import {SideNavGlobalHotKeys} from '../../sidenav/SideNavGlobalHotKeys';
 
 interface IProps {
     readonly app: App;
@@ -318,6 +319,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                                                                                     <>
                                                                                                         <ZenModeGlobalHotKeys/>
+                                                                                                        <SideNavGlobalHotKeys/>
                                                                                                         <ZenModeDeactivateButton/>
                                                                                                         <SideNav/>
                                                                                                         <Divider orientation="vertical"/>
