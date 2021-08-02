@@ -8,11 +8,10 @@ orbs:
 
 # ~ Pre-Script Steps to Execute before Jobs
 commands:
-  build_setup:
-    description: setup the build for commands
+  # & Publishing setup steps
+  publishing_setup:
+    description: set the SSH keys and Hashes required to deploy
     steps:
-      - checkout
-
       # ! Add SSH Keys for publishing
       - add_ssh_keys:
           fingerprints:
@@ -20,6 +19,12 @@ commands:
             - "37:a5:24:7a:89:73:b1:cf:11:3d:98:de:b4:50:25:58"
             - "16:e3:06:7e:6e:58:07:3a:20:35:14:c3:7e:98:33:bb"
             - "SHA256:uwzneTU1Stml8f1GDcffUJPK6GxSs77+vMZOHopRJLE burton@getpolarized.io"
+
+  # & Publishing setup steps
+  build_setup:
+    description: setup the build for commands
+    steps:
+      - checkout
 
       # ! Download and cache dependencies
       - restore_cache:
@@ -97,6 +102,7 @@ commands:
           name: Lerna Compile
           command: npx lerna run compile
 
+      # ! Persist the files to carry over to the next stage
       - persist_to_workspace:
           root: /home/circleci/
           paths:
@@ -104,6 +110,7 @@ commands:
 
 # ~ Workflow Building Blocks
 jobs:
+  # @ Check if there are no changes or a behind master
   changes:
     parameters:
       executor:
@@ -171,21 +178,6 @@ jobs:
           paths:
             - project
 
-  # @ Build getpolarized.io Website
-  build-getpolarized-io:
-    parameters:
-      executor:
-        type: executor
-    executor: << parameters.executor>>
-    steps:
-      - attach_workspace:
-          at: ~/
-      - run:
-          name: build and verify site (getpolarized.io)
-          command: |
-            cd /home/circleci/project/packages/polar-site2
-            yarn run dist
-
   # @ Deploy Polar-Bookshelf
   deploy_polar_bookshelf:
     parameters:
@@ -195,6 +187,7 @@ jobs:
         type: string
     executor: << parameters.executor>>
     steps:
+      - publishing_setup
       - attach_workspace:
           at: ~/
       - run:
@@ -219,8 +212,8 @@ jobs:
             (cd packages/polar-app-private/polar-hooks/functions && echo Pushing to target ${FIREBASE_HOSTING_TARGET} && firebase use polar-32b0f && firebase target:clear hosting app.getpolarized.io && firebase target:apply hosting app.getpolarized.io ${FIREBASE_HOSTING_TARGET} && firebase deploy --only hosting,storage,firestore)
             (cd packages/polar-app-private/polar-hooks/ && time firebase deploy --only functions)
 
-  # @ Deploy getpolarized.io
-  deploy_getpolarized_io:
+  # @ Build getpolarized.io Website
+  build-getpolarized-io:
     parameters:
       executor:
         type: executor
@@ -229,10 +222,25 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
+          name: build and verify site (getpolarized.io)
+          command: |
+            cd /home/circleci/project/packages/polar-site2
+            yarn run dist
+
+  # @ Deploy getpolarized.io
+  deploy_getpolarized_io:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor>>
+    steps:
+      - publishing_setup
+      - attach_workspace:
+          at: ~/
+      - run:
           name: deploy
           command: |
-            pwd
-            cd packages/polar-site2
+            cd /home/circleci/project/packages/polar-site2
             yarn run dist-release
 
 # ~ Define Custom Executors
