@@ -145,7 +145,7 @@ jobs:
             yarn run karma
 
   # @ Build Polar-Bookshelf Webapp
-  build-polar-bookshelf:
+  build-polar-app:
     parameters:
       executor:
         type: executor
@@ -168,7 +168,7 @@ jobs:
             - project
 
   # @ Deploy Polar-Bookshelf
-  deploy_polar_bookshelf:
+  deploy-polar-app:
     parameters:
       executor:
         type: executor
@@ -203,7 +203,7 @@ jobs:
             (cd packages/polar-app-private/polar-hooks/ && time firebase deploy --only functions)
 
   # @ Build getpolarized.io Website
-  build-getpolarized-io:
+  build-polar-site:
     parameters:
       executor:
         type: executor
@@ -219,7 +219,7 @@ jobs:
             yarn run dist
 
   # @ Deploy getpolarized.io
-  deploy_getpolarized_io:
+  deploy-polar-site:
     parameters:
       executor:
         type: executor
@@ -255,7 +255,7 @@ workflows:
           requires:
             - build
 
-      - build-polar-bookshelf:
+      - build-polar-app:
           executor: my-docker
           requires:
             - build
@@ -264,35 +264,35 @@ workflows:
           name: cypress-electron
           executor: cypress/base-14
           requires:
-            - build-polar-bookshelf
+            - build-polar-app
           working_directory: /root/project/packages/polar-bookshelf
           start: export WEBPACK_BUNDLE=repository && time yarn run webpack-serve
           wait-on: "http://localhost:8050"
           attach-workspace: true
 
-      - build-getpolarized-io:
+      - build-polar-site:
           executor: my-docker
           requires:
             - build
 
-      - approve_polar_bookshelf:
+      - approve-polar-app:
           type: approval
           requires:
             - karma
             - cypress-electron
 
-      - deploy_polar_bookshelf:
+      - deploy-polar-app:
           executor: my-docker
           firebase_hosting_target: polar-webapp
           requires:
-            - approve_polar_bookshelf
+            - approve-polar-app
 
-      - approve_getpolarized_io:
+      - approve-polar-site:
           type: approval
           requires:
-            - build-getpolarized-io
+            - build-polar-site
 
-      - deploy_getpolarized_io:
+      - deploy-polar-site:
           executor: my-docker
           requires:
-            - approve_getpolarized_io
+            - approve-polar-site
