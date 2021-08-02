@@ -114,22 +114,6 @@ commands:
 
 # ~ Workflow Building Blocks
 jobs:
-  # @ Check if there are no changes or a behind master
-  changes:
-    parameters:
-      executor:
-        type: executor
-    executor: << parameters.executor>>
-    description: check if branch is behind master or has no changes
-    steps:
-      - checkout
-      - run:
-          name: changes
-          command: |
-            git fetch --quiet
-            git diff --exit-code --name-only --quiet  origin/master && (echo -e '\n \033[1mNO CHANGES WERE MADE\033[0m' && exit 1)
-            if [ $(git rev-list --left-only --count origin/master...@) != '0' ]; then echo -e '\n \033[1mOUTDATED BRANCH, PLEASE MERGE MASTER\033[0m' && exit 1; fi
-
   # @ Build the application for the following steps
   build:
     parameters:
@@ -263,17 +247,8 @@ workflows:
   version: 2
   main:
     jobs:
-      - changes:
-          executor: my-docker
-          filters:
-            branches:
-              ignore:
-                - master
-
       - build:
           executor: my-docker
-          requires:
-            - changes
 
       - karma:
           executor: my-docker
