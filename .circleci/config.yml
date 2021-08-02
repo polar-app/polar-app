@@ -286,6 +286,7 @@ workflows:
             - build
 
       - cypress/run:
+          name: cypress-electron
           executor: cypress/base-14
           requires:
             - build-polar-bookshelf
