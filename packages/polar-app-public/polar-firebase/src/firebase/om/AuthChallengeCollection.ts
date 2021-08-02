@@ -5,6 +5,8 @@ import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/I
 
 export namespace AuthChallengeCollection {
 
+    const COLLECTION_NAME = 'auth_challenge';
+
     export interface IAuthChallenge1 {
         readonly id: string;
         readonly email: string;
@@ -20,8 +22,6 @@ export namespace AuthChallengeCollection {
     }
 
     export type IAuthChallenge = IAuthChallenge1 | IAuthChallenge2;
-
-    const COLLECTION_NAME = 'auth_challenge';
 
     export async function write(email: string, challenge: string) {
 

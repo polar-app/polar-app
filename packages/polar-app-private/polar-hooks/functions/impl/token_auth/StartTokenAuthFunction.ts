@@ -1,9 +1,10 @@
 import {Strings} from "polar-shared/src/util/Strings";
-import {AuthChallenges, IAuthChallenge} from "./AuthChallenges";
 import {Sendgrid} from "../Sendgrid";
 import {ExpressFunctions} from "../util/ExpressFunctions";
 import { isPresent } from "polar-shared/src/Preconditions";
 import {Mailgun} from "../Mailgun";
+import {AuthChallengeCollection} from "polar-firebase/src/firebase/om/AuthChallengeCollection";
+import IAuthChallenge = AuthChallengeCollection.IAuthChallenge;
 
 export interface IStartTokenAuthRequest {
     readonly email: string;
@@ -117,7 +118,7 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
         // TODO: the challenges should expire.
         const challenge = createChallenge()
 
-        await AuthChallenges.write(email, challenge.value)
+        await AuthChallengeCollection.write(email, challenge.value)
 
         const provider = 'sendgrid';
 
@@ -133,7 +134,7 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
 
     async function resendMessage() {
 
-        const challenge = await AuthChallenges.get(email);
+        const challenge = await AuthChallengeCollection.get(email);
 
         if (! challenge) {
             throw new Error("No previous challenge sent");
