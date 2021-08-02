@@ -11,7 +11,7 @@ import {
 } from "../../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 import {useStripeCheckout} from "./UseStripeCheckout";
 
-const initiateNativeAppleIap = async (email: string, plan: Billing.V2Plan) => {
+const initiateNativeAppleIap = async (email: string, plan: Billing.V2Plan): Promise<void> => {
     if ((window as any).ReactNativeWebView) {
         (window as any).ReactNativeWebView.postMessage(JSON.stringify({
             action: 'buy_play',
@@ -82,7 +82,11 @@ function usePurchaseOrChangePlanAction() {
                     }
                     initiateNativeAppleIap(email, plan).then(() => {
                         console.log('Plan changed to ' + plan);
-                    })
+                    }, (err) => {
+                        console.error('Attempted to launch an In App Payment within the mobile app but the Promise was rejected')
+                        console.error(err);
+                        alert('Failed to purchase plan: ' + plan);
+                    });
                     return;
                 }
 
