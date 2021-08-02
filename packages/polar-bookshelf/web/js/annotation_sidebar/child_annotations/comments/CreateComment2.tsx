@@ -8,6 +8,7 @@ import {EditComment2} from './EditComment2';
 import {IDocAnnotationRef} from "../../DocAnnotation";
 import {Refs} from 'polar-shared/src/metadata/Refs';
 import {deepMemo} from "../../../react/ReactUtils";
+import {ScrollIntoView} from "../../../ui/ScrollIntoView";
 
 interface IProps {
     readonly parent: IDocAnnotationRef;
@@ -41,8 +42,10 @@ export const CreateComment2 = deepMemo((props: IProps) => {
     }
 
     return (
-        <EditComment2 onCancel={() => annotationInputContext.setActive('none')}
-                      onComment={handleComment}/>
+        <ScrollIntoView>
+            <EditComment2 onCancel={() => annotationInputContext.setActive('none')}
+                          onComment={handleComment}/>
+        </ScrollIntoView>
     );
 
 });
