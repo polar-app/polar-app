@@ -144,7 +144,7 @@ jobs:
       - run:
           name: karma
           command: |
-            cd packages/polar-bookshelf
+            cd /home/circleci/project/packages/polar-bookshelf
             sudo apt-get install chromium
             export CHROME_BIN='/usr/bin/chromium'
             yarn run webpack
@@ -163,11 +163,10 @@ jobs:
       - run:
           name: build and verify webapp
           command: |
-            cd packages/polar-bookshelf && \
+            cd /home/circleci/project/packages/polar-bookshelf && \
             free -m && \
             yarn run build-webapp && \
             echo "Webapp Built Successfully" && \
-            pwd && \
             cat dist/public/repository-bundle.js | gzip -c > dist/public/repository-bundle.js.gz
             find dist/public/repository-bundle.js.gz -size +1300000c |tee /dev/stderr| egrep '.*'
 
@@ -184,8 +183,7 @@ jobs:
       - run:
           name: build and verify site (getpolarized.io)
           command: |
-            pwd
-            cd packages/polar-site2
+            cd /home/circleci/project/packages/polar-site2
             yarn run dist
 
   # @ Deploy Polar-Bookshelf
@@ -276,7 +274,7 @@ workflows:
           executor: cypress/base-14
           requires:
             - build
-          working_directory: /root/repo/packages/polar-bookshelf
+          working_directory: /root/project/packages/polar-bookshelf
           start: export WEBPACK_BUNDLE=repository && time yarn run webpack && time yarn run webpack-serve
           wait-on: "http://localhost:8050"
           command: (cd packages/polar-bookshelf && npx cypress run)
