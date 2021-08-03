@@ -158,7 +158,6 @@ export class GeneralizedSuffixTree {
      */
     public put(key: string, index: number) {
 
-        debugger;
         if (index < this.last) {
             throw new Error("The input index must not be less than any of the previously inserted ones. Got " + index + ", expected at least " + this.last);
         } else {
