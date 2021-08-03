@@ -1,9 +1,11 @@
-import {Strings} from "polar-shared/src/util/Strings";
-import {AuthChallenges, IAuthChallenge} from "./AuthChallenges";
+import {EmailStr, Strings} from "polar-shared/src/util/Strings";
 import {Sendgrid} from "../Sendgrid";
 import {ExpressFunctions} from "../util/ExpressFunctions";
-import { isPresent } from "polar-shared/src/Preconditions";
+import {isPresent} from "polar-shared/src/Preconditions";
 import {Mailgun} from "../Mailgun";
+import {AuthChallengeCollection} from "polar-firebase/src/firebase/om/AuthChallengeCollection";
+import IAuthChallenge = AuthChallengeCollection.IAuthChallenge;
+import {AuthChallengeFixedCollection} from "polar-firebase/src/firebase/om/AuthChallengeFixedCollection";
 
 export interface IStartTokenAuthRequest {
     readonly email: string;
@@ -25,13 +27,28 @@ export interface IStartTokenAuthResponse {
 }
 
 interface IChallenge {
-    readonly p0: string;
-    readonly p1: string;
-    readonly value: string;
     readonly challenge: string;
 }
 
-export function createChallenge(): IChallenge {
+interface IChallengeWithParts {
+    readonly p0: string;
+    readonly p1: string;
+    readonly challenge: string;
+}
+
+export async function createOrFetchChallenge(email: EmailStr): Promise<IChallenge> {
+
+    const fixed = await AuthChallengeFixedCollection.get(email);
+
+    if (fixed) {
+        return {challenge: fixed.challenge};
+    }
+
+    return createChallenge();
+
+}
+
+export function createChallenge(): IChallengeWithParts {
 
     const n0 = Math.floor(Math.random() * 999);
     const n1 = Math.floor(Math.random() * 999);
@@ -39,9 +56,8 @@ export function createChallenge(): IChallenge {
     const p0 = Strings.lpad(n0, '0', 3);
     const p1 = Strings.lpad(n1, '0', 3);
 
-    const value = p0 + p1;
-    return {value, p0, p1, challenge: value};
-
+    const challenge = p0 + p1;
+    return {challenge, p0, p1};
 }
 
 export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTokenAuthFunction', async (req, res) => {
@@ -115,9 +131,9 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
     async function sendInitialMessage() {
 
         // TODO: the challenges should expire.
-        const challenge = createChallenge()
+        const challenge = await createOrFetchChallenge(email)
 
-        await AuthChallenges.write(email, challenge.value)
+        await AuthChallengeCollection.write(email, challenge.challenge)
 
         const provider = 'sendgrid';
 
@@ -133,7 +149,7 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
 
     async function resendMessage() {
 
-        const challenge = await AuthChallenges.get(email);
+        const challenge = await AuthChallengeCollection.get(email);
 
         if (! challenge) {
             throw new Error("No previous challenge sent");

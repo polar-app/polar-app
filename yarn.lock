@@ -5732,9 +5732,9 @@ amdefine@>=0.0.4:
   resolved "https://verdaccio.getpolarized.io/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
   integrity sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=
 
-amplitude-js@^8.1.0:
+amplitude-js@=8.3.1:
   version "8.3.1"
-  resolved "https://verdaccio.getpolarized.io/amplitude-js/-/amplitude-js-8.3.1.tgz#8ce73aa0e5bf327eae571b93602b25cc82d3a1f4"
+  resolved "https://polar-app.bytesafe.dev/r/default/-/pull/amplitude-js/8.3.1#8ce73aa0e5bf327eae571b93602b25cc82d3a1f4"
   integrity sha512-mo1qm3h5vkKkSNJQqvcg/2d06ay348BBi0ma94nx239iMlzlL3XQJ16xgg4a2z62cOsoqn91CRJDmjD39dx9aQ==
   dependencies:
     "@amplitude/ua-parser-js" "0.7.24"
@@ -24802,10 +24802,10 @@ use@^3.1.0:
   resolved "https://verdaccio.getpolarized.io/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
   integrity sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==
 
-userflow.js@=1.8.0:
-  version "1.8.0"
-  resolved "https://verdaccio.getpolarized.io/userflow.js/-/userflow.js-1.8.0.tgz#38aa0984734c4b93af2054e0914a125ce072ec7a"
-  integrity sha512-DXz8AaDFNYkv/RVUGU8BSyrY5wIc+TCs953j8qeXeis8c6WjA7QnzXb3Y8Lf3rpFKtAQ9haL8jteuF25MoYuMQ==
+userflow.js@=2.2.0:
+  version "2.2.0"
+  resolved "https://polar-app.bytesafe.dev/r/default/-/pull/userflow.js/2.2.0#9722581e85ca87416c0ce0de01e0ae7f87666f30"
+  integrity sha512-voimujGKB3xX+ORYt/ZEiqPE2qT9FUtO2zLduNZu3y5tCZLWrMNkJQY9oBt+qcp7a9ivJF66q62l/dTt7s7kew==
 
 utf8-byte-length@^1.0.1:
   version "1.0.4"

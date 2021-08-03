@@ -234,6 +234,7 @@ namespace Device {
                         id: "doc-panel-sidebar",
                         type: 'fixed',
                         side: 'right',
+                        collapsed: true,
                         style: {
                             display: 'flex',
                             flexDirection: 'column',

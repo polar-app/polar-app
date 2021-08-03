@@ -10,6 +10,7 @@ import {
 } from '../../AnnotationMutationsContext';
 import {useAnnotationActiveInputContext} from "../../AnnotationActiveInputContext";
 import {InputCompleteListener} from "../../../mui/complete_listeners/InputCompleteListener";
+import {ScrollIntoView} from "../../../ui/ScrollIntoView";
 
 interface IProps {
     readonly id: string;
@@ -74,7 +75,7 @@ export const EditTextHighlight2 = (props: IProps) => {
     }
 
     return (
-        <>
+        <ScrollIntoView>
             <div className="m-1">
 
                 <InputCompleteListener type='meta+enter' onComplete={onComplete}>
@@ -111,6 +112,6 @@ export const EditTextHighlight2 = (props: IProps) => {
                 </div>
 
             </div>
-        </>
+        </ScrollIntoView>
     );
 };
