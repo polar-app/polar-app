@@ -85,7 +85,7 @@ export class FirebaseBrowser {
 
         const app = firebase.initializeApp(config);
 
-        this.startListeningForUser();
+        this.startListeningForUser(app);
 
         return app;
 
@@ -97,9 +97,9 @@ export class FirebaseBrowser {
      * https://medium.com/firebase-developers/why-is-my-currentuser-null-in-firebase-auth-4701791f74f0
      *
      */
-    private static startListeningForUser() {
+    private static startListeningForUser(app: firebase.app.App) {
 
-        const auth = firebase.auth();
+        const auth = app.auth();
 
         const onNext = (user: firebase.User | null) => {
             console.log("firebase: auth state next: ", describeUser(user));
