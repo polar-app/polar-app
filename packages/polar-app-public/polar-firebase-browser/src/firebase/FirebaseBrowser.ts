@@ -1,5 +1,4 @@
 import firebase from 'firebase/app'
-import 'firebase/auth';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import { Latch } from 'polar-shared/src/util/Latch';
@@ -31,7 +30,10 @@ const PROJECTS: {[project: string]: any} = {
 
 export const getConfig = () => {
     // Return different values based on the environment.
+
+    // tslint:disable-next-line
     return PROJECTS['prod'];
+
 };
 
 export class FirebaseBrowser {
