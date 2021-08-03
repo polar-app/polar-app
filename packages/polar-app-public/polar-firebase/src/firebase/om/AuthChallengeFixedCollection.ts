@@ -9,7 +9,7 @@ import {EmailStr} from "polar-shared/src/util/Strings";
  */
 export namespace AuthChallengeFixedCollection {
 
-    const COLLECTION_NAME = 'auth_challenge_fixed';
+    export const COLLECTION_NAME = 'auth_challenge_fixed';
 
     export interface IAuthChallengeFixed {
         readonly id: EmailStr;

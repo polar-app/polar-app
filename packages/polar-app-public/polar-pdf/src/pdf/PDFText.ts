@@ -12,11 +12,6 @@ export namespace PDFText {
     import TextItem = _pdfjs.TextItem;
     import IPDFTextWord = PDFTextWordMerger.IPDFTextWord;
 
-    export interface IPDFTextItem extends TextItem {
-        readonly pageNum: number;
-        readonly tx: Transform;
-    }
-
     export interface IPDFTextContent {
         readonly pageNum: number;
         readonly extract: ReadonlyArray<ReadonlyArray<IPDFTextWord>>;
