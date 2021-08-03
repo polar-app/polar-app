@@ -1,4 +1,5 @@
 import firebase from 'firebase/app'
+import auth from 'firebase/auth'
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import { Latch } from 'polar-shared/src/util/Latch';
