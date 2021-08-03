@@ -105,6 +105,12 @@ export class FirebaseBrowser {
             throw new Error("No app defined");
         }
 
+        if (typeof app.auth !== 'function') {
+            const msg = "App.auth is not a function.";
+            console.warn(msg, app);
+            throw new Error(msg);
+        }
+
         const auth = app.auth();
 
         const onNext = (user: firebase.User | null) => {
