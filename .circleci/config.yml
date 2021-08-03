@@ -283,6 +283,7 @@ workflows:
           start: export WEBPACK_BUNDLE=repository && time node --max-old-space-size=7000 ./node_modules/.bin/webpack serve
           wait-on: "http://localhost:8050"
           command: npx cypress install && npx cypress run --browser firefox
+          attach-workspace: true
           store_artifacts: true
 
       - build-polar-site:
