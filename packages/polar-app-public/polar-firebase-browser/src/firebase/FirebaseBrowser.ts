@@ -99,6 +99,10 @@ export class FirebaseBrowser {
      */
     private static startListeningForUser(app: firebase.app.App) {
 
+        if (! app) {
+            throw new Error("No app defined");
+        }
+
         const auth = app.auth();
 
         const onNext = (user: firebase.User | null) => {
