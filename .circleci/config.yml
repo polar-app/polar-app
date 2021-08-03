@@ -242,6 +242,7 @@ executors:
   ff-chrome:
     docker:
       - image: cypress/browsers:node14.17.0-chrome88-ff89
+    resource_class: xlarge
 
 # ~ Define Workflow Steps
 workflows:
