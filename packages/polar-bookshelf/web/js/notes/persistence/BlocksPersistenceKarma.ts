@@ -17,7 +17,7 @@ import createBasicBlock = BlocksStoreTests.createBasicBlock;
 
 const ID = Hashcodes.createRandomID();
 
-xdescribe("BlocksPersistence", () => {
+describe("BlocksPersistence", () => {
 
     beforeEach(async () => {
 
