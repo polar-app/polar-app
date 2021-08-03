@@ -249,19 +249,25 @@ workflows:
   version: 2
   main:
     jobs:
+      ## ^ Commonality Between Workflows
+      # @ Setup the repo for the subsquent stages
       - setting-up:
           executor: my-docker
 
+      ## ^ Polar App Workflow Below Here
+      # @ Run Karma Tests
       - karma:
           executor: my-docker
           requires:
             - setting-up
 
+      # @ Build Polar app
       - build-polar-app:
           executor: my-docker
           requires:
             - setting-up
 
+      # @ Run Cypress tests for chrome-desktop (1080p)
       - cypress/run:
           name: cypress-desktop-chrome
           executor: ff-chrome
@@ -274,6 +280,7 @@ workflows:
           attach-workspace: true
           store_artifacts: true
 
+      # @ Run Cypress tests for firefox-desktop (1080p)
       - cypress/run:
           name: cypress-desktop-firefox
           executor: ff-chrome
@@ -282,26 +289,51 @@ workflows:
           working_directory: /root/project/packages/polar-bookshelf
           start: export WEBPACK_BUNDLE=repository && time node --max-old-space-size=7000 ./node_modules/.bin/webpack serve
           wait-on: "http://localhost:8050"
-          command: npx cypress install && npx cypress run --env WIDTH=375,HEIGHT=667 --browser firefox
+          command: npx cypress install && npx cypress run --env WIDTH=1920,HEIGHT=1080 --browser firefox
           attach-workspace: true
           store_artifacts: true
 
-      - build-polar-site:
-          executor: my-docker
+      # @ Run Cypress tests for chrome-mobile (using iPhone 11 pro viewport)
+      - cypress/run:
+          name: cypress-mobile-chrome
+          executor: ff-chrome
           requires:
-            - setting-up
+            - build-polar-app
+          working_directory: /root/project/packages/polar-bookshelf
+          start: export WEBPACK_BUNDLE=repository && time node --max-old-space-size=7000 ./node_modules/.bin/webpack serve
+          wait-on: "http://localhost:8050"
+          command: npx cypress install && npx cypress run --env WIDTH=375,HEIGHT=812 --browser firefox
+          attach-workspace: true
+          store_artifacts: true
 
+      # @ Run Cypress tests for chrome-tablet (using iPad pro viewport)
+      - cypress/run:
+          name: cypress-tablet-chrome
+          executor: ff-chrome
+          requires:
+            - build-polar-app
+          working_directory: /root/project/packages/polar-bookshelf
+          start: export WEBPACK_BUNDLE=repository && time node --max-old-space-size=7000 ./node_modules/.bin/webpack serve
+          wait-on: "http://localhost:8050"
+          command: npx cypress install && npx cypress run --env WIDTH=1024,HEIGHT=1366 --browser firefox
+          attach-workspace: true
+          store_artifacts: true
+
+      # @ Approve Polar app build for deployment
       - approve-polar-app:
           type: approval
           requires:
             - karma
-            - cypress-desktop-chrome
             - cypress-desktop-firefox
+            - cypress-desktop-chrome
+            - cypress-tablet-chrome
+            - cypress-mobile-chrome
           filters:
             branches:
               only:
                 - master
 
+      # @ Deploy Approved Polar app build
       - deploy-polar-app:
           executor: my-docker
           firebase_hosting_target: polar-webapp
@@ -312,6 +344,14 @@ workflows:
               only:
                 - master
 
+      ## ^ Polar Site Workflow Below Here
+      # @ Build Polar Site
+      - build-polar-site:
+          executor: my-docker
+          requires:
+            - setting-up
+
+      # @ Approve Polar Site build for deployment
       - approve-polar-site:
           type: approval
           requires:
@@ -321,6 +361,7 @@ workflows:
               only:
                 - master
 
+      # @ Deploy Approved Polar Site build
       - deploy-polar-site:
           executor: my-docker
           requires:
