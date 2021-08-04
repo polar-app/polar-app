@@ -8,7 +8,7 @@ import { SlugStr } from "polar-shared/src/util/Slugs";
 export namespace DocPreviewCollection {
   export const COLLECTION = "doc_preview";
 
-  export interface BaseDocPreview extends IDocDetail {
+  export interface IBaseDocPreview extends IDocDetail {
     readonly id: IDStr;
 
     /**
@@ -33,7 +33,7 @@ export namespace DocPreviewCollection {
     // readonly broken?: true | undefined;
   }
 
-  export interface DocPreviewCached extends BaseDocPreview {
+  export interface IDocPreviewCached extends IBaseDocPreview {
     /**
      * The hashcode for the doc.
      */
@@ -53,11 +53,11 @@ export namespace DocPreviewCollection {
     readonly slug: SlugStr | undefined;
   }
 
-  export interface DocPreviewUncached extends BaseDocPreview {
+  export interface IDocPreviewUncached extends IBaseDocPreview {
     readonly cached: false;
   }
 
-  export type DocPreview = DocPreviewCached | DocPreviewUncached;
+  export type IDocPreview = IDocPreviewCached | IDocPreviewUncached;
 
   export interface Range {
     readonly start: IDStr;
@@ -78,14 +78,14 @@ export namespace DocPreviewCollection {
       return new Collections(this.firestoreProvider(), this.COLLECTION);
     }
 
-    public static async set(doc: DocPreview): Promise<DocPreview> {
+    public static async set(doc: IDocPreview): Promise<IDocPreview> {
       await this.collections().set(doc.id, doc);
       return doc;
     }
 
     public static async list(
       opts: ListOpts
-    ): Promise<ReadonlyArray<DocPreview>> {
+    ): Promise<ReadonlyArray<IDocPreview>> {
       const createQuery = () => {
         if (opts.range) {
           console.log("Using range query for: ", opts.range);
@@ -110,10 +110,10 @@ export namespace DocPreviewCollection {
 
       const snapshot = await query.get();
 
-      return snapshot.docs.map((doc: any) => doc.data() as DocPreview);
+      return snapshot.docs.map((doc: any) => doc.data() as IDocPreview);
     }
 
-    public static async get(id: IDStr): Promise<DocPreview | undefined> {
+    public static async get(id: IDStr): Promise<IDocPreview | undefined> {
       return this.collections().get(id);
     }
   }

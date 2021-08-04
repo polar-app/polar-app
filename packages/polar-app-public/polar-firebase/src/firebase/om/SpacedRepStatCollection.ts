@@ -18,6 +18,45 @@ import {
 
 export namespace SpacedRepStatCollection {
   /**
+   * A basic stat must have a mode.
+   */
+  export interface IStat {
+    readonly created: ISODateTimeString;
+    readonly mode: RepetitionMode;
+  }
+
+  export type StatType = "queue" | "completed";
+
+  /**
+   * Stats on the queue of items computed to the user has some understanding of how much work they have left.
+   */
+  export interface IQueueStat extends IStat, StageCounts {
+    readonly type: "queue";
+  }
+
+  export interface ICompletedStat extends IStat, StageCounts {
+    readonly type: "completed";
+  }
+
+  export interface ISpacedRepStatRecord {
+    readonly id: IDStr;
+
+    /**
+     * The user ID / owner of this card.
+     */
+    readonly uid: UserIDStr;
+
+    /**
+     * The time this stat was recorded.
+     */
+    readonly created: ISODateTimeString;
+  }
+
+  export type ISpacedRepStat = IQueueStat | ICompletedStat;
+
+  export type ISpacedRepStatRecord = ISpacedRepStat & ISpacedRepStatRecord;
+
+  /**
    * Stores card stats for a user each time they compute a new queue so that we can keep track
    * of things over time and show the user stats regarding much work they have left.
    */
@@ -35,11 +74,11 @@ export namespace SpacedRepStatCollection {
      */
     public static async write(
       uid: UserIDStr,
-      spacedRepStat: SpacedRepStat
-    ): Promise<SpacedRepStatRecord> {
+      spacedRepStat: ISpacedRepStat
+    ): Promise<ISpacedRepStatRecord> {
       const id = Hashcodes.createRandomID();
 
-      const spacedRepStatRecord: SpacedRepStatRecord = {
+      const spacedRepStatRecord: ISpacedRepStatRecord = {
         id,
         uid,
         ...spacedRepStat,
@@ -59,7 +98,7 @@ export namespace SpacedRepStatCollection {
       uid: UserIDStr,
       mode: RepetitionMode,
       type: StatType
-    ): Promise<ReadonlyArray<SpacedRepStatRecord>> {
+    ): Promise<ReadonlyArray<ISpacedRepStatRecord>> {
       const collections = this.collections();
 
       const clauses: ReadonlyArray<Clause> = [
@@ -83,43 +122,4 @@ export namespace SpacedRepStatCollection {
       return result.length > 0;
     }
   }
-
-  /**
-   * A basic stat must have a mode.
-   */
-  export interface IStat {
-    readonly created: ISODateTimeString;
-    readonly mode: RepetitionMode;
-  }
-
-  export type StatType = "queue" | "completed";
-
-  /**
-   * Stats on the queue of items computed to the user has some understanding of how much work they have left.
-   */
-  export interface QueueStat extends IStat, StageCounts {
-    readonly type: "queue";
-  }
-
-  export interface CompletedStat extends IStat, StageCounts {
-    readonly type: "completed";
-  }
-
-  export interface ISpacedRepStatRecord {
-    readonly id: IDStr;
-
-    /**
-     * The user ID / owner of this card.
-     */
-    readonly uid: UserIDStr;
-
-    /**
-     * The time this stat was recorded.
-     */
-    readonly created: ISODateTimeString;
-  }
-
-  export type SpacedRepStat = QueueStat | CompletedStat;
-
-  export type SpacedRepStatRecord = SpacedRepStat & ISpacedRepStatRecord;
 }

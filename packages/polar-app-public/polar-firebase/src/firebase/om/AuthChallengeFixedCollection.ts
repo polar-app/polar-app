@@ -1,7 +1,7 @@
 import { Preconditions } from "polar-shared/src/Preconditions";
 import { FirestoreAdmin } from "polar-firebase-admin/src/FirestoreAdmin";
 import { Collections } from "polar-firestore-like/src/Collections";
-import { EmailStr } from "polar-shared/src/util/Strings";
+import { IDStr, EmailStr } from "polar-shared/src/util/Strings";
 
 /**
  * Support fixed challenge codes by email.
@@ -11,7 +11,7 @@ export namespace AuthChallengeFixedCollection {
   export const COLLECTION_NAME = "auth_challenge_fixed";
 
   export interface IAuthChallengeFixed {
-    readonly id: EmailStr;
+    readonly id: IDStr;
     readonly email: EmailStr;
     readonly challenge: EmailStr;
   }

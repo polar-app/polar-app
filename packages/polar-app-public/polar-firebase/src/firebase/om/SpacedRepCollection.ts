@@ -13,6 +13,18 @@ import {
 import { Preconditions } from "polar-shared/src/Preconditions";
 
 export namespace SpacedRepCollection {
+  export const COLLECTION: CollectionNameStr = "spaced_rep";
+
+  /**
+   * Represent the spaced repetition state for a card.
+   */
+  export interface ISpacedRepWithUID extends ISpacedRep {
+    /**
+     * The user ID / owner of this card.
+     */
+    readonly uid: UserIDStr;
+  }
+
   /**
    * Main class storing spaced repetition for flashcards, annotations, etc.  This stores the
    * state of the card so that next time we want to access it we can just fetch it
@@ -27,13 +39,13 @@ export namespace SpacedRepCollection {
       return new Collections(this.firestoreProvider(), this.COLLECTION);
     }
 
-    public static async set(id: IDStr, spacedRep: SpacedRep) {
+    public static async set(id: IDStr, spacedRep: ISpacedRepWithUID) {
       Preconditions.assertPresent(id, "id");
       const collections = this.collections();
       await collections.set(id, spacedRep);
     }
 
-    public static async get(id: IDStr): Promise<SpacedRep | undefined> {
+    public static async get(id: IDStr): Promise<ISpacedRepWithUID | undefined> {
       Preconditions.assertPresent(id, "id");
       const collections = this.collections();
       return await collections.get(id);
@@ -41,7 +53,7 @@ export namespace SpacedRepCollection {
 
     public static async list(
       uid: UserIDStr
-    ): Promise<ReadonlyArray<SpacedRep>> {
+    ): Promise<ReadonlyArray<ISpacedRepWithUID>> {
       Preconditions.assertPresent(uid, "uid");
       const collections = this.collections();
       const clauses: ReadonlyArray<Clause> = [["uid", "==", uid]];
@@ -51,7 +63,7 @@ export namespace SpacedRepCollection {
     public static convertFromTaskRep(
       uid: UserIDStr,
       taskRep: TaskRep<any>
-    ): SpacedRep {
+    ): ISpacedRepWithUID {
       return {
         uid,
         id: taskRep.id,
@@ -61,15 +73,5 @@ export namespace SpacedRepCollection {
         state: taskRep.state,
       };
     }
-  }
-
-  /**
-   * Represent the spaced repetition state for a card.
-   */
-  export interface SpacedRep extends ISpacedRep {
-    /**
-     * The user ID / owner of this card.
-     */
-    readonly uid: UserIDStr;
   }
 }
