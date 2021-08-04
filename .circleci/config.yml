@@ -20,8 +20,6 @@ commands:
       - restore_cache:
           keys:
             - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - yarn-packages-v1-{{ .Branch }}-
-            - yarn-packages-v1-
 
       # I think bytesafe might not work with npm v7
       #- run:

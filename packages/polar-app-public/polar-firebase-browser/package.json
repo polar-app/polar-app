@@ -4,8 +4,7 @@
   "description": "Code to connect to firebase as an admin user",
   "main": "index.js",
   "scripts": {
-    "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
-    "test": "echo noop",
+    "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "compile": "tsc",
     "dist": "echo noop"
   },
@@ -22,7 +21,7 @@
     "typescript": "=4.2.3"
   },
   "dependencies": {
-    "firebase": "=8.7.1",
+    "firebase": "=8.8.1",
     "polar-firebase-test": "^2.1.86",
     "polar-firestore-like": "^2.1.86",
     "polar-shared": "^2.1.86",
