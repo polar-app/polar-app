@@ -235,10 +235,14 @@ jobs:
 # ~ Define Custom Executors
 executors:
   # ! Default Executor for most jobs
-  my-docker:
+  xlarge:
     docker:
       - image: circleci/node:14.16.0-buster
     resource_class: xlarge
+  medium:
+    docker:
+      - image: circleci/node:14.16.0-buster
+    resource_class: medium
   ff-chrome:
     docker:
       - image: cypress/browsers:node14.17.0-chrome88-ff89
@@ -252,18 +256,18 @@ workflows:
       ## ^ Commonality Between Workflows
       # @ Setup the repo for the subsquent stages
       - setting-up:
-          executor: my-docker
+          executor: xlarge
 
       ## ^ Polar App Workflow Below Here
       # @ Run Karma Tests
       - karma:
-          executor: my-docker
+          executor: medium
           requires:
             - setting-up
 
       # @ Build Polar app
       - build-polar-app:
-          executor: my-docker
+          executor: xlarge
           requires:
             - setting-up
 
@@ -335,7 +339,7 @@ workflows:
 
       # @ Deploy Approved Polar app build
       - deploy-polar-app:
-          executor: my-docker
+          executor: xlarge
           firebase_hosting_target: polar-webapp
           requires:
             - approve-polar-app
@@ -347,7 +351,7 @@ workflows:
       ## ^ Polar Site Workflow Below Here
       # @ Build Polar Site
       - build-polar-site:
-          executor: my-docker
+          executor: medium
           requires:
             - setting-up
 
@@ -363,7 +367,7 @@ workflows:
 
       # @ Deploy Approved Polar Site build
       - deploy-polar-site:
-          executor: my-docker
+          executor: medium
           requires:
             - approve-polar-site
           filters:
