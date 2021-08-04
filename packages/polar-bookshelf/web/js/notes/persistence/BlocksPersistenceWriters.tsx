@@ -7,19 +7,20 @@ import {FirestoreBlocks} from "./FirestoreBlocks";
 import {Asserts} from "polar-shared/src/Asserts";
 import firebase from 'firebase/app';
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
-import {getConfig} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {IBlock, IBlockContent} from 'polar-blocks/src/blocks/IBlock';
 import {URLStr} from 'polar-shared/src/util/Strings';
 import {ICollectionReference} from 'polar-firestore-like/src/ICollectionReference';
 import {IWriteBatch} from 'polar-firestore-like/src/IWriteBatch';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
+import { FirebaseBrowser } from 'polar-firebase-browser/src/firebase/FirebaseBrowser';
 
 const IS_NODE = typeof window === 'undefined';
 
 
 export namespace FileTombstone {
-    const STORAGE_BUCKET = getConfig().storageBucket;
+
+    const STORAGE_BUCKET = FirebaseBrowser.getConfig().storageBucket;
 
     export function getFileNameFromBlock(block: IBlock<IBlockContent>) {
         switch (block.content.type) {

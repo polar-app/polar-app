@@ -1,7 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 
-describe("InitializeTest", function() {
+xdescribe("InitializeTest", function() {
 
     it("basic", () => {
 
@@ -18,6 +18,5 @@ describe("InitializeTest", function() {
         const auth = firebase.auth(app);
 
     });
-
 
 })
