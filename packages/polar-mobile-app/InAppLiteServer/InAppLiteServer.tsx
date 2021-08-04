@@ -87,7 +87,7 @@ export class InAppLiteServer extends Component<Props, State> {
             style={styles.webview}
 
             // Inject JS within the web app
-            injectedJavaScriptBeforeContentLoaded={injectedJavaScriptBeforeContentLoaded}
+            injectedJavaScriptBeforeContentLoaded={injectedJavaScriptBeforeContentLoaded()}
 
             // Listener for window.ReactNativeWebView.postMessage() calls from the JS code
             // of the embedded web app
