@@ -1903,27 +1903,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@firebase/analytics-types@0.4.0":
-  version "0.4.0"
-  resolved "https://verdaccio.getpolarized.io/@firebase%2fanalytics-types/-/analytics-types-0.4.0.tgz#d6716f9fa36a6e340bc0ecfe68af325aa6f60508"
-  integrity sha512-Jj2xW+8+8XPfWGkv9HPv/uR+Qrmq37NPYT352wf7MvE9LrstpLVmFg3LqG6MCRr5miLAom5sen2gZ+iOhVDeRA==
-
 "@firebase/analytics-types@0.5.0":
   version "0.5.0"
   resolved "https://verdaccio.getpolarized.io/@firebase%2fanalytics-types/-/analytics-types-0.5.0.tgz#cfa1dc34034fc478eca360f5faa4b4d0466892ce"
   integrity sha512-VTV5Xtq5gVabbL/4n6pBtMJWcQBgOUDE2XbEHl8EOuwRaU9weyGUS7ofbisDkpl1RlFU1aewnc33pbLcYbi0iQ==
-
-"@firebase/analytics@0.6.14":
-  version "0.6.14"
-  resolved "https://verdaccio.getpolarized.io/@firebase%2fanalytics/-/analytics-0.6.14.tgz#692f88ceb4a12f51f51e4f7549684266482219f5"
-  integrity sha512-u7e9MreZOuv6VHhJvfp2UzNvNXac5QL2ofNhcQmwxUrMyHX80LUJrTLUCoaCpQvv3HJHX8WVj897a9LoB4OO1g==
-  dependencies:
-    "@firebase/analytics-types" "0.4.0"
-    "@firebase/component" "0.5.4"
-    "@firebase/installations" "0.4.30"
-    "@firebase/logger" "0.2.6"
-    "@firebase/util" "1.1.0"
-    tslib "^2.1.0"
 
 "@firebase/analytics@0.6.16":
   version "0.6.16"
@@ -1947,18 +1930,6 @@
   resolved "https://verdaccio.getpolarized.io/@firebase%2fapp-check-types/-/app-check-types-0.2.0.tgz#b938e03914b8139796a8923bb20a9004114d5409"
   integrity sha512-CfZhWtChLK9uNmrxbJyTg1BPtROiwc/VJGu3f39KjS0F5ZvZjHmyRFMrDiSoXDoybM4B6X0pQhJYi9rifT2wpQ==
 
-"@firebase/app-check@0.2.0":
-  version "0.2.0"
-  resolved "https://verdaccio.getpolarized.io/@firebase%2fapp-check/-/app-check-0.2.0.tgz#16679b0bbce073168a8121c4a7b47f8eff495078"
-  integrity sha512-h5eNSYf4ZU9FGawDSLGSGBcaYzdkydVBCGzbQW5urAd7czhB5QF+T4nnTOQ0Gto5upqPGuUH9s9CbQ4Gf49OEw==
-  dependencies:
-    "@firebase/app-check-interop-types" "0.1.0"
-    "@firebase/app-check-types" "0.2.0"
-    "@firebase/component" "0.5.4"
-    "@firebase/logger" "0.2.6"
-    "@firebase/util" "1.1.0"
-    tslib "^2.1.0"
-
 "@firebase/app-check@0.2.1":
   version "0.2.1"
   resolved "https://verdaccio.getpolarized.io/@firebase%2fapp-check/-/app-check-0.2.1.tgz#3dd87dfa1832ee9a662489cce28261eaff23ef5d"
@@ -1971,28 +1942,10 @@
     "@firebase/util" "1.2.0"
     tslib "^2.1.0"
 
-"@firebase/app-types@0.6.2":
-  version "0.6.2"
-  resolved "https://verdaccio.getpolarized.io/@firebase%2fapp-types/-/app-types-0.6.2.tgz#8578cb1061a83ced4570188be9e225d54e0f27fb"
-  integrity sha512-2VXvq/K+n8XMdM4L2xy5bYp2ZXMawJXluUIDzUBvMthVR+lhxK4pfFiqr1mmDbv9ydXvEAuFsD+6DpcZuJcSSw==
-
 "@firebase/app-types@0.6.3":
   version "0.6.3"
   resolved "https://verdaccio.getpolarized.io/@firebase%2fapp-types/-/app-types-0.6.3.tgz#3f10514786aad846d74cd63cb693556309918f4b"
   integrity sha512-/M13DPPati7FQHEQ9Minjk1HGLm/4K4gs9bR4rzLCWJg64yGtVC0zNg9gDpkw9yc2cvol/mNFxqTtd4geGrwdw==
-
-"@firebase/app@0.6.28":
-  version "0.6.28"
-  resolved "https://verdaccio.getpolarized.io/@firebase%2fapp/-/app-0.6.28.tgz#e9fcce34239a3be03f0ca06e70c26cef0ef34c02"
-  integrity sha512-ZsR5372bNDfY9aGMg+0zgoxwUg/Upf8Mq1M82XCByCVdn6krnPwGr486UssiYFCVANweiOR1Mrhrg2y5O01RRw==
-  dependencies:
-    "@firebase/app-types" "0.6.2"
-    "@firebase/component" "0.5.4"
-    "@firebase/logger" "0.2.6"
-    "@firebase/util" "1.1.0"
-    dom-storage "2.1.0"
-    tslib "^2.1.0"
-    xmlhttprequest "1.8.0"
 
 "@firebase/app@0.6.29":
   version "0.6.29"
@@ -2024,14 +1977,6 @@
   dependencies:
     "@firebase/auth-types" "0.10.3"
 
-"@firebase/component@0.5.4":
-  version "0.5.4"
-  resolved "https://verdaccio.getpolarized.io/@firebase%2fcomponent/-/component-0.5.4.tgz#546c3e9c98c9990fb6af7ea9f0b4997312aacc19"
-  integrity sha512-KoLDPTsvxWr6FT9kn/snffJItaWXZLHLJlZVKiiw+flKE6MVA8Eec+ctvM2zcsMZzC2Z47gFnVqywfBlOevmpQ==
-  dependencies:
-    "@firebase/util" "1.1.0"
-    tslib "^2.1.0"
-
 "@firebase/component@0.5.5":
   version "0.5.5"
   resolved "https://verdaccio.getpolarized.io/@firebase%2fcomponent/-/component-0.5.5.tgz#849ccf7cbf0398a43058f274ffcd43620ae9521f"
@@ -2040,32 +1985,12 @@
     "@firebase/util" "1.2.0"
     tslib "^2.1.0"
 
-"@firebase/database-types@0.7.2":
-  version "0.7.2"
-  resolved "https://verdaccio.getpolarized.io/@firebase%2fdatabase-types/-/database-types-0.7.2.tgz#449c4b36ec59a1ad9089797b540e2ba1c0d4fcbf"
-  integrity sha512-cdAd/dgwvC0r3oLEDUR+ULs1vBsEvy0b27nlzKhU6LQgm9fCDzgaH9nFGv8x+S9dly4B0egAXkONkVoWcOAisg==
-  dependencies:
-    "@firebase/app-types" "0.6.2"
-
 "@firebase/database-types@0.7.3", "@firebase/database-types@^0.7.2":
   version "0.7.3"
   resolved "https://verdaccio.getpolarized.io/@firebase%2fdatabase-types/-/database-types-0.7.3.tgz#819f16dd4c767c864b460004458620f265a3f735"
   integrity sha512-dSOJmhKQ0nL8O4EQMRNGpSExWCXeHtH57gGg0BfNAdWcKhC8/4Y+qfKLfWXzyHvrSecpLmO0SmAi/iK2D5fp5A==
   dependencies:
     "@firebase/app-types" "0.6.3"
-
-"@firebase/database@0.10.7":
-  version "0.10.7"
-  resolved "https://verdaccio.getpolarized.io/@firebase%2fdatabase/-/database-0.10.7.tgz#6241b573741ccb45b71d03226c0bfef6d2dbafb8"
-  integrity sha512-7BFj8LFhGL+TmLiPOffOVfkrO2wm44mGcT0jqrkTkt1KydapmjABFJBRvONvlLij5LoWrJK1cSuE8wYDQrDq2Q==
-  dependencies:
-    "@firebase/auth-interop-types" "0.1.6"
-    "@firebase/component" "0.5.4"
-    "@firebase/database-types" "0.7.2"
-    "@firebase/logger" "0.2.6"
-    "@firebase/util" "1.1.0"
-    faye-websocket "0.11.3"
-    tslib "^2.1.0"
 
 "@firebase/database@0.10.9", "@firebase/database@^0.10.0":
   version "0.10.9"
@@ -2100,36 +2025,10 @@
     node-fetch "2.6.1"
     tslib "^2.1.0"
 
-"@firebase/firestore@2.3.8":
-  version "2.3.8"
-  resolved "https://verdaccio.getpolarized.io/@firebase%2ffirestore/-/firestore-2.3.8.tgz#fa747668cc20447d491fb92bc309fc3aff2fb6fc"
-  integrity sha512-76uA4czK+JM7rNbJXWrzA2gZQMGopQOvkQ7EffBfe9d921gvZ+W6naXaih+jYZn6BwuE7no9fx3RdZDszG5u+g==
-  dependencies:
-    "@firebase/component" "0.5.4"
-    "@firebase/firestore-types" "2.3.0"
-    "@firebase/logger" "0.2.6"
-    "@firebase/util" "1.1.0"
-    "@firebase/webchannel-wrapper" "0.5.1"
-    "@grpc/grpc-js" "^1.3.2"
-    "@grpc/proto-loader" "^0.6.0"
-    node-fetch "2.6.1"
-    tslib "^2.1.0"
-
 "@firebase/functions-types@0.4.0", "@firebase/functions-types@=0.4.0":
   version "0.4.0"
   resolved "https://verdaccio.getpolarized.io/@firebase%2ffunctions-types/-/functions-types-0.4.0.tgz#0b789f4fe9a9c0b987606c4da10139345b40f6b9"
   integrity sha512-3KElyO3887HNxtxNF1ytGFrNmqD+hheqjwmT3sI09FaDCuaxGbOnsXAXH2eQ049XRXw9YQpHMgYws/aUNgXVyQ==
-
-"@firebase/functions@0.6.13":
-  version "0.6.13"
-  resolved "https://verdaccio.getpolarized.io/@firebase%2ffunctions/-/functions-0.6.13.tgz#7ea66d4e2560c330f95b3d87851e642ac3efd44c"
-  integrity sha512-BSMXjcGXfe33Tdb/a6esYGndMPY7bhMTRlP1si5W0oL8ovsHpiAllrrECbcqp7VU1qQtAZlC7U/pWF733yIRuw==
-  dependencies:
-    "@firebase/component" "0.5.4"
-    "@firebase/functions-types" "0.4.0"
-    "@firebase/messaging-types" "0.5.0"
-    node-fetch "2.6.1"
-    tslib "^2.1.0"
 
 "@firebase/functions@0.6.14":
   version "0.6.14"
@@ -2146,17 +2045,6 @@
   version "0.3.4"
   resolved "https://verdaccio.getpolarized.io/@firebase%2finstallations-types/-/installations-types-0.3.4.tgz#589a941d713f4f64bf9f4feb7f463505bab1afa2"
   integrity sha512-RfePJFovmdIXb6rYwtngyxuEcWnOrzdZd9m7xAW0gRxDIjBT20n3BOhjpmgRWXo/DAxRmS7bRjWAyTHY9cqN7Q==
-
-"@firebase/installations@0.4.30":
-  version "0.4.30"
-  resolved "https://verdaccio.getpolarized.io/@firebase%2finstallations/-/installations-0.4.30.tgz#fc014ecce69c6434b9aa36cae132e168e14401a5"
-  integrity sha512-7Ci8UVIkeb+V5BzZiA2dfjTYDIeKS4cW7EXit5ZGnd4J9d9NZW9Fnyx/XpvlhrODleBKhXuip/3rF1pfJq+/5Q==
-  dependencies:
-    "@firebase/component" "0.5.4"
-    "@firebase/installations-types" "0.3.4"
-    "@firebase/util" "1.1.0"
-    idb "3.0.2"
-    tslib "^2.1.0"
 
 "@firebase/installations@0.4.31":
   version "0.4.31"
@@ -2179,18 +2067,6 @@
   resolved "https://verdaccio.getpolarized.io/@firebase%2fmessaging-types/-/messaging-types-0.5.0.tgz#c5d0ef309ced1758fda93ef3ac70a786de2e73c4"
   integrity sha512-QaaBswrU6umJYb/ZYvjR5JDSslCGOH6D9P136PhabFAHLTR4TWjsaACvbBXuvwrfCXu10DtcjMxqfhdNIB1Xfg==
 
-"@firebase/messaging@0.7.14":
-  version "0.7.14"
-  resolved "https://verdaccio.getpolarized.io/@firebase%2fmessaging/-/messaging-0.7.14.tgz#3fe7225ad310e623e2a9926eeb61cae63694c739"
-  integrity sha512-qWaaGaDAFA/QejkHXPTRbA17KUi1+Rvip7XMo8Oqrh14E8o0VQwR2e7n54qTkngl4hphOv1YMuM8uXRKU5fVGQ==
-  dependencies:
-    "@firebase/component" "0.5.4"
-    "@firebase/installations" "0.4.30"
-    "@firebase/messaging-types" "0.5.0"
-    "@firebase/util" "1.1.0"
-    idb "3.0.2"
-    tslib "^2.1.0"
-
 "@firebase/messaging@0.7.15":
   version "0.7.15"
   resolved "https://verdaccio.getpolarized.io/@firebase%2fmessaging/-/messaging-0.7.15.tgz#d3b9a053331238480860c71385819babda2076f3"
@@ -2207,18 +2083,6 @@
   version "0.0.13"
   resolved "https://verdaccio.getpolarized.io/@firebase%2fperformance-types/-/performance-types-0.0.13.tgz#58ce5453f57e34b18186f74ef11550dfc558ede6"
   integrity sha512-6fZfIGjQpwo9S5OzMpPyqgYAUZcFzZxHFqOyNtorDIgNXq33nlldTL/vtaUZA8iT9TT5cJlCrF/jthKU7X21EA==
-
-"@firebase/performance@0.4.16":
-  version "0.4.16"
-  resolved "https://verdaccio.getpolarized.io/@firebase%2fperformance/-/performance-0.4.16.tgz#a5ef842ac8dd5cb56b25dbf5de2d7b118c57466a"
-  integrity sha512-todNreR+HPedqPul0FXalKzJYzYIs5Q9jba9ulqKo19vqTRX9YO+8EOmqwS445CgBghCZxeXkKmKm9p//JNZtg==
-  dependencies:
-    "@firebase/component" "0.5.4"
-    "@firebase/installations" "0.4.30"
-    "@firebase/logger" "0.2.6"
-    "@firebase/performance-types" "0.0.13"
-    "@firebase/util" "1.1.0"
-    tslib "^2.1.0"
 
 "@firebase/performance@0.4.17":
   version "0.4.17"
@@ -2246,18 +2110,6 @@
   resolved "https://verdaccio.getpolarized.io/@firebase%2fremote-config-types/-/remote-config-types-0.1.9.tgz#fe6bbe4d08f3b6e92fce30e4b7a9f4d6a96d6965"
   integrity sha512-G96qnF3RYGbZsTRut7NBX0sxyczxt1uyCgXQuH/eAfUCngxjEGcZQnBdy6mvSdqdJh5mC31rWPO4v9/s7HwtzA==
 
-"@firebase/remote-config@0.1.41":
-  version "0.1.41"
-  resolved "https://verdaccio.getpolarized.io/@firebase%2fremote-config/-/remote-config-0.1.41.tgz#4750e8abd836cf130b613f8e995894b683121ac8"
-  integrity sha512-ixySdhripxOz/wUiGxjVwU9hhxPkRy1N9YzLZmbQK9zrD6HPmyIRFRGp9Uh3PukD+gMqrHAwPPdkkwt6I35k9A==
-  dependencies:
-    "@firebase/component" "0.5.4"
-    "@firebase/installations" "0.4.30"
-    "@firebase/logger" "0.2.6"
-    "@firebase/remote-config-types" "0.1.9"
-    "@firebase/util" "1.1.0"
-    tslib "^2.1.0"
-
 "@firebase/remote-config@0.1.42":
   version "0.1.42"
   resolved "https://verdaccio.getpolarized.io/@firebase%2fremote-config/-/remote-config-0.1.42.tgz#84573ac2f1ee49cb9d4327a25c5625f2e274695d"
@@ -2275,17 +2127,6 @@
   resolved "https://verdaccio.getpolarized.io/@firebase%2fstorage-types/-/storage-types-0.4.1.tgz#da6582ae217e3db485c90075dc71100ca5064cc6"
   integrity sha512-IM4cRzAnQ6QZoaxVZ5MatBzqXVcp47hOlE28jd9xXw1M9V7gfjhmW0PALGFQx58tPVmuUwIKyoEbHZjV4qRJwQ==
 
-"@firebase/storage@0.5.6":
-  version "0.5.6"
-  resolved "https://verdaccio.getpolarized.io/@firebase%2fstorage/-/storage-0.5.6.tgz#5bb41124ca8d3d639af5bd0e5918eb912adec68c"
-  integrity sha512-T18/BvLTuuFaNSDxpojr7T0g07aO+q+hJjk03HFwQbifJxyxdsYZIwKu1Bdo+t48Qyh+l2tOjN4TiidIydUN2w==
-  dependencies:
-    "@firebase/component" "0.5.4"
-    "@firebase/storage-types" "0.4.1"
-    "@firebase/util" "1.1.0"
-    node-fetch "2.6.1"
-    tslib "^2.1.0"
-
 "@firebase/storage@0.6.1":
   version "0.6.1"
   resolved "https://verdaccio.getpolarized.io/@firebase%2fstorage/-/storage-0.6.1.tgz#29d1568e78c9234af72a609409a36403346a60b8"
@@ -2295,13 +2136,6 @@
     "@firebase/storage-types" "0.4.1"
     "@firebase/util" "1.2.0"
     node-fetch "2.6.1"
-    tslib "^2.1.0"
-
-"@firebase/util@1.1.0":
-  version "1.1.0"
-  resolved "https://verdaccio.getpolarized.io/@firebase%2futil/-/util-1.1.0.tgz#add2d57d0b2307a932520abdee303b66be0ac8b0"
-  integrity sha512-lfuSASuPKNdfebuFR8rjFamMQUPH9iiZHcKS755Rkm/5gRT0qC7BMhCh3ZkHf7NVbplzIc/GhmX2jM+igDRCag==
-  dependencies:
     tslib "^2.1.0"
 
 "@firebase/util@1.2.0":
@@ -2475,9 +2309,9 @@
     xdg-basedir "^4.0.0"
 
 "@google-cloud/storage@^5.3.0":
-  version "5.11.1"
-  resolved "https://verdaccio.getpolarized.io/@google-cloud%2fstorage/-/storage-5.11.1.tgz#1b32833790e77fc447d5254910a190834a709c72"
-  integrity sha512-DGKHBMqE+OsLPei61yTYOOJKFMvkzVViIafJ+vtCgdXqlSfyEaDK3zXMzIqTb+D9DTJvkEFYi2Wc44eBVo1Gqw==
+  version "5.12.0"
+  resolved "https://verdaccio.getpolarized.io/@google-cloud%2fstorage/-/storage-5.12.0.tgz#e855c96447819d3c1a0e1b00c437e86e9320d765"
+  integrity sha512-K4BwvvIzkGu0DWKoo7IWqUdrLYcauAijedqiWkeBEpJo9/7woNbqyDCZsKjdaCwt49XiPZXWs1hk/k6LZSxDmw==
   dependencies:
     "@google-cloud/common" "^3.7.0"
     "@google-cloud/paginator" "^3.0.0"
@@ -2579,13 +2413,13 @@
     "@graphql-tools/utils" "^7.7.0"
     tslib "~2.2.0"
 
-"@graphql-tools/merge@6.2.16", "@graphql-tools/merge@^6.2.12":
-  version "6.2.16"
-  resolved "https://verdaccio.getpolarized.io/@graphql-tools%2fmerge/-/merge-6.2.16.tgz#5dd5f582075c21ef4d74ef84dfcc4e8d0c2db186"
-  integrity sha512-KjZ1pppzKcr2Uspgb53p8uw5yhWVuGIL+sEroar7vLsClSsuiGib8OKVICAGWjC9wrCxGaL9SjJGavfXpJMQIg==
+"@graphql-tools/merge@6.2.17", "@graphql-tools/merge@^6.2.12":
+  version "6.2.17"
+  resolved "https://verdaccio.getpolarized.io/@graphql-tools%2fmerge/-/merge-6.2.17.tgz#4dedf87d8435a5e1091d7cc8d4f371ed1e029f1f"
+  integrity sha512-G5YrOew39fZf16VIrc49q3c8dBqQDD0ax5LYPiNja00xsXDi0T9zsEWVt06ApjtSdSF6HDddlu5S12QjeN8Tow==
   dependencies:
-    "@graphql-tools/schema" "^8.0.1"
-    "@graphql-tools/utils" "8.0.1"
+    "@graphql-tools/schema" "^8.0.2"
+    "@graphql-tools/utils" "8.0.2"
     tslib "~2.3.0"
 
 "@graphql-tools/schema@^7.0.0", "@graphql-tools/schema@^7.1.5":
@@ -2597,13 +2431,13 @@
     tslib "~2.2.0"
     value-or-promise "1.0.6"
 
-"@graphql-tools/schema@^8.0.1":
-  version "8.0.1"
-  resolved "https://verdaccio.getpolarized.io/@graphql-tools%2fschema/-/schema-8.0.1.tgz#178b734f3784e632a76bdd144ffa8a32169a6f4a"
-  integrity sha512-QG2HGLJjmsNc1wcj+rwZTEArgfMp7rsrb8iVq4P8ce1mDYAt6kRV6bLyPVb9q/j8Ik2zBc/B/Y1jPsnAVUHwdA==
+"@graphql-tools/schema@^8.0.2":
+  version "8.0.2"
+  resolved "https://verdaccio.getpolarized.io/@graphql-tools%2fschema/-/schema-8.0.2.tgz#1d21851ed1ddd9cf8974aa24b7cb6b6af99f6232"
+  integrity sha512-LRO9R4Yi7uBVthdxoBgBTZxRCainfKeTlaBUy8MD/W+u8uUKUmdknrnqeWD4tvNwQjDFcEssm1cKwhvge7OqMA==
   dependencies:
-    "@graphql-tools/merge" "6.2.16"
-    "@graphql-tools/utils" "8.0.1"
+    "@graphql-tools/merge" "6.2.17"
+    "@graphql-tools/utils" "8.0.2"
     tslib "~2.3.0"
     value-or-promise "1.0.10"
 
@@ -2632,10 +2466,10 @@
     valid-url "1.0.9"
     ws "7.4.5"
 
-"@graphql-tools/utils@8.0.1":
-  version "8.0.1"
-  resolved "https://verdaccio.getpolarized.io/@graphql-tools%2futils/-/utils-8.0.1.tgz#bf09e8d6d17c4a0830f0fbf2c69dd725de19058c"
-  integrity sha512-gjQk6sht4b0/hcG+QEVxfMyO8bn5tuU1nIOVhQ4whgFaUmrnb3hx2mwzz1EJzfIOAuHKE8tY0lu6jt3bGTD4yg==
+"@graphql-tools/utils@8.0.2":
+  version "8.0.2"
+  resolved "https://verdaccio.getpolarized.io/@graphql-tools%2futils/-/utils-8.0.2.tgz#795a8383cdfdc89855707d62491c576f439f3c51"
+  integrity sha512-gzkavMOgbhnwkHJYg32Adv6f+LxjbQmmbdD5Hty0+CWxvaiuJq+nU6tzb/7VSU4cwhbNLx/lGu2jbCPEW1McZQ==
   dependencies:
     tslib "~2.3.0"
 
@@ -4873,9 +4707,9 @@
     form-data "^3.0.0"
 
 "@types/node@*", "@types/node@>=10.0.0", "@types/node@>=12.12.47", "@types/node@>=13.7.0", "@types/node@>=8.1.0", "@types/node@^16.4.3":
-  version "16.4.10"
-  resolved "https://verdaccio.getpolarized.io/@types%2fnode/-/node-16.4.10.tgz#e57e2a54fc6da58da94b3571b1cb456d39f88597"
-  integrity sha512-TmVHsm43br64js9BqHWqiDZA+xMtbUpI1MBIA0EyiBmoV9pcEYFOSdj5fr6enZNfh4fChh+AGOLIzGwJnkshyQ==
+  version "16.4.12"
+  resolved "https://verdaccio.getpolarized.io/@types%2fnode/-/node-16.4.12.tgz#961e3091f263e6345d2d84afab4e047a60b4b11b"
+  integrity sha512-zxrTNFl9Z8boMJXs6ieqZP0wAhvkdzmHSxTlJabM16cf5G9xBc1uPRH5Bbv2omEDDiM8MzTfqTJXBf0Ba4xFWA==
 
 "@types/node@=14.14.35":
   version "14.14.35"
@@ -4888,9 +4722,9 @@
   integrity sha512-F0KIgDJfy2nA3zMLmWGKxcH2ZVEtCZXHHdOQs2gSaQ27+lNeEfGxzkIw90aXswATX7AZ33tahPbzy6KAfUreVw==
 
 "@types/node@^14.6.2":
-  version "14.17.7"
-  resolved "https://verdaccio.getpolarized.io/@types%2fnode/-/node-14.17.7.tgz#e106997493e617edeba52fdbd965930da494113b"
-  integrity sha512-SYTdMaW47se8499q8m0fYKZZRlmq0RaRv6oYmlVm6DUm31l0fhOl1D03X8hGxohCKTI2Bg6w7W0TiYB51aJzag==
+  version "14.17.9"
+  resolved "https://verdaccio.getpolarized.io/@types%2fnode/-/node-14.17.9.tgz#b97c057e6138adb7b720df2bd0264b03c9f504fd"
+  integrity sha512-CMjgRNsks27IDwI785YMY0KLt3co/c0cQ5foxHYv/shC2w8oOnVwz5Ubq1QG5KzrcW+AXk6gzdnxIkDnTvzu3g==
 
 "@types/node@^8.5.7":
   version "8.10.66"
@@ -8478,9 +8312,9 @@ constants-browserify@^1.0.0:
   integrity sha1-wguW2MYXdIqvHBYCF2DNJ/y4y3U=
 
 constructs@^3.3.69:
-  version "3.3.112"
-  resolved "https://verdaccio.getpolarized.io/constructs/-/constructs-3.3.112.tgz#31d6f73eb75d7c8aa8b12cde8b7117dd950bfabe"
-  integrity sha512-q+3xcqGemb3WEuijxUNQfwXmr8lgkNlwNLWEgB7cukUYNARkLIY5Nacz/8F/CCM91UEwMAqiCee4LCdcD4Dgrw==
+  version "3.3.113"
+  resolved "https://verdaccio.getpolarized.io/constructs/-/constructs-3.3.113.tgz#6bbcb9509bbdba0f8da5b9a79967cf88a053caf6"
+  integrity sha512-dy8Nhvihh+rmCr9+Z6omfaaknVwFUIUOkC5zKLc/CyNoVXNc8yvQC6395fQ/t25u42cFGTXedxBkTUx1dwf4uQ==
 
 contains-path@^0.1.0:
   version "0.1.0"
@@ -10272,9 +10106,9 @@ electron-publish@22.10.5:
     mime "^2.5.0"
 
 electron-to-chromium@^1.3.793:
-  version "1.3.793"
-  resolved "https://verdaccio.getpolarized.io/electron-to-chromium/-/electron-to-chromium-1.3.793.tgz#c10dff5f3126238004de344db458f1da3641d554"
-  integrity sha512-l9NrGV6Mr4ov5mayYPvIWcwklNw5ROmy6rllzz9dCACw9nKE5y+s5uQk+CBJMetxrWZ6QJFsvEfG6WDcH2IGUg==
+  version "1.3.795"
+  resolved "https://verdaccio.getpolarized.io/electron-to-chromium/-/electron-to-chromium-1.3.795.tgz#91f09b4c77f8dab562dd592ce929b009201c24ff"
+  integrity sha512-4TPxrLf9Fzsi4rVgTlDm+ubxoXm3/TN67/LGHx/a4UkVubKILa6L26O6eTnHewixG/knzU9L3lLmfL39eElwlQ==
 
 electron-updater@=4.3.8:
   version "4.3.8"
@@ -11942,28 +11776,7 @@ firebase-tools@=9.16.0:
     winston-transport "^4.4.0"
     ws "^7.2.3"
 
-firebase@=8.7.1:
-  version "8.7.1"
-  resolved "https://verdaccio.getpolarized.io/firebase/-/firebase-8.7.1.tgz#b22ce063c4df16d849c0160662e6fcf6bc396f32"
-  integrity sha512-OM+pUxIAqd5+XQMGux8InhhWmHDqlzQij67ljomMNblrxGiFOh8bMe+DGU9r8dh7CDaBYNtT6L0KR859BqhkDQ==
-  dependencies:
-    "@firebase/analytics" "0.6.14"
-    "@firebase/app" "0.6.28"
-    "@firebase/app-check" "0.2.0"
-    "@firebase/app-types" "0.6.2"
-    "@firebase/auth" "0.16.8"
-    "@firebase/database" "0.10.7"
-    "@firebase/firestore" "2.3.8"
-    "@firebase/functions" "0.6.13"
-    "@firebase/installations" "0.4.30"
-    "@firebase/messaging" "0.7.14"
-    "@firebase/performance" "0.4.16"
-    "@firebase/polyfill" "0.3.36"
-    "@firebase/remote-config" "0.1.41"
-    "@firebase/storage" "0.5.6"
-    "@firebase/util" "1.1.0"
-
-firebase@^8.7.1:
+firebase@*, firebase@=8.7.1, firebase@=8.8.1, firebase@^8.7.1:
   version "8.8.1"
   resolved "https://verdaccio.getpolarized.io/firebase/-/firebase-8.8.1.tgz#b18dbb7283a9d50d3f3ef5b9deb9c1e15c9466b1"
   integrity sha512-dzqQn3wwHhsStsD2gDs3XfSJ/SIqv5IA9Ht+MySnvrIsljk0V8bI/+EMPsh0h2VlYPSk51bmyNQZ4LvuSKNvlA==
@@ -13443,9 +13256,9 @@ google-gax@^1.9.0:
     walkdir "^0.4.0"
 
 google-gax@^2.12.0, google-gax@^2.17.1:
-  version "2.21.0"
-  resolved "https://verdaccio.getpolarized.io/google-gax/-/google-gax-2.21.0.tgz#a830f2c95429c142ff300053bf205e7e4d83ad01"
-  integrity sha512-lnDt6MMWEb0PnLvbFUovEHbOoIv72ZM2+glR872EC8ugc34cjqNW6XnohmD+1dF5N0+EDg30PiL5Wa139ZtE9A==
+  version "2.21.1"
+  resolved "https://verdaccio.getpolarized.io/google-gax/-/google-gax-2.21.1.tgz#393f18e950a594c8a2edb106271bbff4a24c0367"
+  integrity sha512-hyfau8+yXt75UuYVP3E3n0pKUwsEyiVQXfozfqQn/ZOL36UoZtS/cIzqIm6SYaSLlK5MWWz3JT/o/1ol09gEbA==
   dependencies:
     "@grpc/grpc-js" "~1.3.0"
     "@grpc/proto-loader" "^0.6.1"
@@ -13457,7 +13270,7 @@ google-gax@^2.12.0, google-gax@^2.17.1:
     is-stream-ended "^0.1.4"
     node-fetch "^2.6.1"
     object-hash "^2.1.1"
-    protobufjs "^6.10.2"
+    protobufjs "6.11.2"
     retry-request "^4.0.0"
 
 google-p12-pem@^2.0.0:
@@ -17956,9 +17769,9 @@ name-all-modules-plugin@^1.0.1:
   integrity sha1-Cr+2rYNXGLn7Te8GdOBmV6lUN1w=
 
 nan@^2.12.1, nan@^2.13.2, nan@^2.14.2:
-  version "2.14.2"
-  resolved "https://verdaccio.getpolarized.io/nan/-/nan-2.14.2.tgz#f5376400695168f4cc694ac9393d0c9585eeea19"
-  integrity sha512-M2ufzIiINKCuDfBSAUr1vWQ+vuVcA9kqx8JJUsbQi6yf1uGRyb7HfpdfUr5qLXf3B/t8dPvcjhKMmlfnP47EzQ==
+  version "2.15.0"
+  resolved "https://verdaccio.getpolarized.io/nan/-/nan-2.15.0.tgz#3f34a473ff18e15c1b5626b62903b5ad6e665fee"
+  integrity sha512-8ZtvEnA2c5aYCZYd1cvgdnU6cqwixRoYg70xPLWUws5ORTa/lnw+u4amixRS/Ac5U5mQVgp9pnlSUnbNWFaWZQ==
 
 nanoid@3.1.23, nanoid@^3.1.23:
   version "3.1.23"
@@ -19085,9 +18898,9 @@ parse-entities@^2.0.0:
     is-hexadecimal "^1.0.0"
 
 parse-headers@^2.0.0:
-  version "2.0.3"
-  resolved "https://verdaccio.getpolarized.io/parse-headers/-/parse-headers-2.0.3.tgz#5e8e7512383d140ba02f0c7aa9f49b4399c92515"
-  integrity sha512-QhhZ+DCCit2Coi2vmAKbq5RGTRcQUOE2+REgv8vdyu7MnYx2eZztegqtTx99TZ86GTIwqiy3+4nQTWZ2tgmdCA==
+  version "2.0.4"
+  resolved "https://verdaccio.getpolarized.io/parse-headers/-/parse-headers-2.0.4.tgz#9eaf2d02bed2d1eff494331ce3df36d7924760bf"
+  integrity sha512-psZ9iZoCNFLrgRjZ1d8mn0h9WRqJwFxM9q3x7iUjN/YT2OksthDJ5TiPCu2F38kS4zutqfW+YdVVkBZZx3/1aw==
 
 parse-json@^2.2.0:
   version "2.2.0"
@@ -20185,7 +19998,7 @@ proto-list@~1.2.1:
   resolved "https://verdaccio.getpolarized.io/proto-list/-/proto-list-1.2.4.tgz#212d5bfe1318306a420f6402b8e26ff39647a849"
   integrity sha1-IS1b/hMYMGpCD2QCuOJv85ZHqEk=
 
-protobufjs@^6.10.0, protobufjs@^6.10.2, protobufjs@^6.8.6, protobufjs@^6.8.9:
+protobufjs@6.11.2, protobufjs@^6.10.0, protobufjs@^6.8.6, protobufjs@^6.8.9:
   version "6.11.2"
   resolved "https://verdaccio.getpolarized.io/protobufjs/-/protobufjs-6.11.2.tgz#de39fabd4ed32beaa08e9bb1e30d08544c1edf8b"
   integrity sha512-4BQJoPooKJl2G9j3XftkIXjoC9C0Av2NOrWmbLWT1vH32GcSUHjM0Arra6UfTsVyfMAuFzaLucXn1sadxJydAw==
@@ -23571,9 +23384,9 @@ tar@^4.3.0:
     yallist "^3.0.3"
 
 tar@^6.0.2, tar@^6.1.0:
-  version "6.1.3"
-  resolved "https://verdaccio.getpolarized.io/tar/-/tar-6.1.3.tgz#e44b97ee7d6cc7a4c574e8b01174614538291825"
-  integrity sha512-3rUqwucgVZXTeyJyL2jqtUau8/8r54SioM1xj3AmTX3HnWQdj2AydfJ2qYYayPyIIznSplcvU9mhBb7dR2XF3w==
+  version "6.1.6"
+  resolved "https://verdaccio.getpolarized.io/tar/-/tar-6.1.6.tgz#c23d797b0a1efe5d479b1490805c5443f3560c5d"
+  integrity sha512-oaWyu5dQbHaYcyZCTfyPpC+VmI62/OM2RTUYavTk1MDr1cwW5Boi3baeYQKiZbY2uSQJGr+iMOzb/JFxLrft+g==
   dependencies:
     chownr "^2.0.0"
     fs-minipass "^2.0.0"
