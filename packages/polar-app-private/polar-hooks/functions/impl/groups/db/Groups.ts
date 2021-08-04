@@ -1,19 +1,23 @@
-import {Preconditions} from 'polar-shared/src/Preconditions';
-import * as admin from 'firebase-admin';
-import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
-import {UserGroups} from './UserGroups';
-import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
-import {GroupSlugs} from './GroupSlugs';
-import {IDUser} from '../../util/IDUsers';
-import {GroupAdmins} from './GroupAdmins';
-import {PlainTextStr, URLStr} from "polar-shared/src/util/Strings";
-import {Arrays} from "polar-shared/src/util/Arrays";
-import {FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
-import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
-import {UserIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
-import {Collections} from "polar-firestore-like/src/Collections";
-import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
+import { Preconditions } from "polar-shared/src/Preconditions";
+import * as admin from "firebase-admin";
+import { Dictionaries } from "polar-shared/src/util/Dictionaries";
+import { UserGroups } from "./UserGroups";
+import {
+  ISODateTimeString,
+  ISODateTimeStrings,
+} from "polar-shared/src/metadata/ISODateTimeStrings";
+import { Hashcodes } from "polar-shared/src/util/Hashcodes";
+import { GroupSlugs } from "./GroupSlugs";
+import { IDUser } from "../../util/IDUsers";
+import { GroupAdmins } from "./GroupAdmins";
+import { PlainTextStr, URLStr } from "polar-shared/src/util/Strings";
+import { Arrays } from "polar-shared/src/util/Arrays";
+// import {FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
+import { FirestoreTypedArray } from "polar-firestore-like/src/Collections";
+import { IWriteBatch } from "polar-firestore-like/src/IWriteBatch";
+import { UserIDStr } from "polar-firebase/src/firebase/om/ProfileCollection";
+import { Collections } from "polar-firestore-like/src/Collections";
+import { FirestoreAdmin } from "polar-firebase-admin/src/FirestoreAdmin";
 import FieldValue = admin.firestore.FieldValue;
 import UserRecord = admin.auth.UserRecord;
 import Clause = Collections.Clause;
@@ -21,317 +25,301 @@ import Clause = Collections.Clause;
 const HASHCODE_LEN = 20;
 
 export class Groups {
+  public static readonly COLLECTION = "group";
 
-    public static readonly COLLECTION = 'group';
+  public static createIDForKey(uid: UserIDStr, key: string) {
+    return Hashcodes.createID({ key, uid }, HASHCODE_LEN);
+  }
 
-    public static createIDForKey(uid: UserIDStr, key: string) {
-        return Hashcodes.createID({key, uid}, HASHCODE_LEN);
+  public static createID(idUser: IDUser, request: GroupIDRequest): GroupIDStr {
+    const { uid } = idUser;
+
+    if (request.key) {
+      return this.createIDForKey(uid, request.key);
     }
 
-    public static createID(idUser: IDUser, request: GroupIDRequest): GroupIDStr {
-
-        const {uid} = idUser;
-
-        if (request.key) {
-            return this.createIDForKey(uid, request.key);
-        }
-
-        if (request.name) {
-            // when the user uses a name we go ahead and provision the group
-            // with that name.
-            const slug = GroupSlugs.create(request.name);
-            return Hashcodes.createID(slug, HASHCODE_LEN);
-        }
-
-        return Hashcodes.createRandomID(HASHCODE_LEN);
-
+    if (request.name) {
+      // when the user uses a name we go ahead and provision the group
+      // with that name.
+      const slug = GroupSlugs.create(request.name);
+      return Hashcodes.createID(slug, HASHCODE_LEN);
     }
 
-    public static async getOrCreate(batch: IWriteBatch<unknown>, groupID: GroupIDStr, groupInit: GroupInit): Promise<Group> {
+    return Hashcodes.createRandomID(HASHCODE_LEN);
+  }
 
-        Preconditions.assertPresent(groupInit.visibility, "visibility");
+  public static async getOrCreate(
+    batch: IWriteBatch<unknown>,
+    groupID: GroupIDStr,
+    groupInit: GroupInit
+  ): Promise<Group> {
+    Preconditions.assertPresent(groupInit.visibility, "visibility");
 
-        const group = await this.get(groupID);
+    const group = await this.get(groupID);
 
-        if (group) {
-            return group;
-        }
-
-        const firestore = FirestoreAdmin.getInstance();
-
-        const groupRef = firestore.collection(this.COLLECTION).doc(groupID);
-
-        const created = ISODateTimeStrings.create();
-
-        const newGroup: Group = {
-            id: groupID,
-            nrMembers: 0,
-            created,
-            ...groupInit
-        };
-
-        batch.create(groupRef, Dictionaries.onlyDefinedProperties(newGroup));
-
-        return newGroup;
-
+    if (group) {
+      return group;
     }
 
-    public static async get(id: GroupIDStr): Promise<Group | undefined> {
-        const firestore = FirestoreAdmin.getInstance();
-        const ref = firestore.collection(this.COLLECTION).doc(id);
-        const doc = await ref.get();
-        return <Group> doc.data();
+    const firestore = FirestoreAdmin.getInstance();
+
+    const groupRef = firestore.collection(this.COLLECTION).doc(groupID);
+
+    const created = ISODateTimeStrings.create();
+
+    const newGroup: Group = {
+      id: groupID,
+      nrMembers: 0,
+      created,
+      ...groupInit,
+    };
+
+    batch.create(groupRef, Dictionaries.onlyDefinedProperties(newGroup));
+
+    return newGroup;
+  }
+
+  public static async get(id: GroupIDStr): Promise<Group | undefined> {
+    const firestore = FirestoreAdmin.getInstance();
+    const ref = firestore.collection(this.COLLECTION).doc(id);
+    const doc = await ref.get();
+    return <Group>doc.data();
+  }
+
+  public static async getByName(name: string): Promise<Group | undefined> {
+    // protected and private groups can not have names and these must be public.
+    const clauses: ReadonlyArray<Clause> = [
+      ["visibility", "==", "public"],
+      ["name", "==", name],
+    ];
+
+    const firestore = FirestoreAdmin.getInstance();
+
+    return Collections.getByFieldValues(firestore, this.COLLECTION, clauses);
+  }
+
+  public static async getByRef(groupRef: GroupRef): Promise<Group | undefined> {
+    Preconditions.assertPresent(groupRef, "groupRef");
+
+    if ((<any>groupRef)["name"]) {
+      const groupRefByName = <GroupRefByName>groupRef;
+      return await this.getByName(groupRefByName.name);
     }
 
-    public static async getByName(name: string): Promise<Group | undefined> {
-
-        // protected and private groups can not have names and these must be public.
-        const clauses: ReadonlyArray<Clause> = [
-            ['visibility', '==' , 'public'],
-            ['name', '==', name]
-        ];
-
-        const firestore = FirestoreAdmin.getInstance();
-
-        return Collections.getByFieldValues(firestore, this.COLLECTION, clauses);
-
+    if ((<any>groupRef)["id"]) {
+      const groupRefByID = <GroupRefByID>groupRef;
+      return await this.get(groupRefByID.id);
     }
 
-    public static async getByRef(groupRef: GroupRef): Promise<Group | undefined> {
+    throw new Error("Not a group ref: " + JSON.stringify(groupRef));
+  }
 
-        Preconditions.assertPresent(groupRef, "groupRef");
+  /**
+   * Increment the count of the group members.
+   */
+  public static incrementNrMembers(
+    batch: IWriteBatch<unknown>,
+    groupID: GroupIDStr,
+    delta: number = 1
+  ) {
+    const firestore = FirestoreAdmin.getInstance();
+    const ref = firestore.collection(this.COLLECTION).doc(groupID);
 
-        if ((<any> groupRef)['name']) {
-            const groupRefByName = <GroupRefByName> groupRef;
-            return await this.getByName(groupRefByName.name);
-        }
+    batch.update(ref, {
+      nrMembers: FieldValue.increment(delta),
+    });
+  }
 
-        if ((<any> groupRef)['id']) {
-            const groupRefByID = <GroupRefByID> groupRef;
-            return await this.get(groupRefByID.id);
-        }
+  public static markDeleted(batch: IWriteBatch<unknown>, groupID: GroupIDStr) {
+    const firestore = FirestoreAdmin.getInstance();
+    const groupRef = firestore.collection(this.COLLECTION).doc(groupID);
 
-        throw new Error("Not a group ref: " + JSON.stringify(groupRef));
+    batch.update(groupRef, { deleted: true });
+  }
 
+  public static delete(batch: IWriteBatch<unknown>, groupID: GroupIDStr) {
+    const firestore = FirestoreAdmin.getInstance();
+    const ref = firestore.collection(this.COLLECTION).doc(groupID);
+
+    batch.delete(ref);
+  }
+
+  public static async verifyAccess(
+    uid: UserIDStr,
+    groupID: GroupIDStr
+  ): Promise<Group> {
+    const group = await Groups.get(groupID);
+
+    if (!group) {
+      throw new Error("No group with group ID: " + groupID);
     }
 
-    /**
-     * Increment the count of the group members.
-     */
-    public static incrementNrMembers(batch: IWriteBatch<unknown>, groupID: GroupIDStr, delta: number = 1) {
-
-        const firestore = FirestoreAdmin.getInstance();
-        const ref = firestore.collection(this.COLLECTION).doc(groupID);
-
-        batch.update(ref, {
-            nrMembers: FieldValue.increment(delta)
-        });
-
+    if (["protected", "public"].includes(group.visibility)) {
+      return group;
     }
 
-    public static markDeleted(batch: IWriteBatch<unknown>, groupID: GroupIDStr) {
+    const userGroups = await UserGroups.get(uid);
 
-        const firestore = FirestoreAdmin.getInstance();
-        const groupRef = firestore.collection(this.COLLECTION).doc(groupID);
-
-        batch.update(groupRef, {deleted: true});
-
+    if (
+      userGroups &&
+      Arrays.hasAny([groupID], Arrays.toArray(userGroups.groups))
+    ) {
+      return group;
     }
 
-    public static delete(batch: IWriteBatch<unknown>, groupID: GroupIDStr) {
+    throw new Error("Invalid permissions to access document");
+  }
 
-        const firestore = FirestoreAdmin.getInstance();
-        const ref = firestore.collection(this.COLLECTION).doc(groupID);
+  /**
+   * Get the group and verify it's public before returning.  We give an id object
+   * which represents the provider (which is just a key'd dictionary) and a
+   * provider which returns a group.
+   */
+  public static async verifyPublic(
+    id: { [key: string]: string },
+    provider: () => Promise<Group | undefined>
+  ): Promise<Group> {
+    const group = await provider();
 
-        batch.delete(ref);
+    const describe = () => {
+      return JSON.stringify(id);
+    };
 
+    if (!group) {
+      throw new Error("No group for: " + describe());
     }
 
-    public static async verifyAccess(uid: UserIDStr,
-                                     groupID: GroupIDStr): Promise<Group> {
-
-        const group = await Groups.get(groupID);
-
-        if (! group) {
-            throw new Error("No group with group ID: " + groupID);
-        }
-
-        if (['protected', 'public'].includes(group.visibility)) {
-            return group;
-        }
-
-        const userGroups = await UserGroups.get(uid);
-
-        if (userGroups && Arrays.hasAny([groupID], Arrays.toArray(userGroups.groups))) {
-            return group;
-        }
-
-        throw new Error("Invalid permissions to access document");
-
+    if (group.visibility !== "protected" && group.visibility !== "public") {
+      throw new Error("Group is not public or protected: " + describe());
     }
 
-    /**
-     * Get the group and verify it's public before returning.  We give an id object
-     * which represents the provider (which is just a key'd dictionary) and a
-     * provider which returns a group.
-     */
-    public static async verifyPublic(id: {[key: string]: string},
-                                     provider: () => Promise<Group | undefined>): Promise<Group> {
+    return group;
+  }
 
-        const group = await provider();
+  public static async verifyAdmin(user: UserRecord, groupID: GroupIDStr) {
+    const groupAdmin = await GroupAdmins.get(groupID);
 
-        const describe = () => {
-            return JSON.stringify(id);
-        };
-
-        if (! group) {
-            throw new Error("No group for: " + describe());
-        }
-
-        if (group.visibility !== 'protected' && group.visibility !== 'public') {
-            throw new Error("Group is not public or protected: " + describe());
-        }
-
-        return group;
-
+    if (!groupAdmin) {
+      throw new Error("Group with ID does not exist: " + groupID);
     }
 
-    public static async verifyAdmin(user: UserRecord, groupID: GroupIDStr) {
-
-        const groupAdmin = await GroupAdmins.get(groupID);
-
-        if (! groupAdmin) {
-            throw new Error("Group with ID does not exist: " + groupID);
-        }
-
-        if (Arrays.toArray(groupAdmin.admins).includes(user.uid)) {
-            return;
-        }
-
-        throw new Error("User is not an admin of this group.");
-
+    if (Arrays.toArray(groupAdmin.admins).includes(user.uid)) {
+      return;
     }
 
-    public static toGroupInit(group: Group): GroupInit {
+    throw new Error("User is not an admin of this group.");
+  }
 
-        const result: any = group;
+  public static toGroupInit(group: Group): GroupInit {
+    const result: any = group;
 
-        delete result.id;
-        delete result.nrMembers;
-        delete result.created;
+    delete result.id;
+    delete result.nrMembers;
+    delete result.created;
 
-        return group;
-
-    }
-
+    return group;
+  }
 }
 
 export interface GroupReq {
-    readonly id?: GroupIDStr;
-    readonly name?: GroupNameStr;
+  readonly id?: GroupIDStr;
+  readonly name?: GroupNameStr;
 }
 
 export interface GroupInit {
+  /**
+   * When specified, use the given group name.
+   */
+  readonly name?: string;
 
-    /**
-     * When specified, use the given group name.
-     */
-    readonly name?: string;
+  /**
+   * The primary lang for a group.
+   */
+  readonly lang?: Lang;
 
-    /**
-     * The primary lang for a group.
-     */
-    readonly lang?: Lang;
+  /**
+   * The set of languages that this group supports.  Most of the time a
+   * group will have a primary language but if it's a language learning group
+   * or a multi-lingual group it might have multiple languages.
+   */
+  readonly langs?: FirestoreTypedArray<Lang>;
 
-    /**
-     * The set of languages that this group supports.  Most of the time a
-     * group will have a primary language but if it's a language learning group
-     * or a multi-lingual group it might have multiple languages.
-     */
-    readonly langs?: FirestoreTypedArray<Lang>;
+  /**
+   * Must set the group visibility here so that we inherit the right value.
+   */
+  readonly visibility: GroupVisibility;
 
-    /**
-     * Must set the group visibility here so that we inherit the right value.
-     */
-    readonly visibility: GroupVisibility;
+  /**
+   * A string (not HTML) that is used as a description for this document.
+   */
+  readonly description?: PlainTextStr;
 
-    /**
-     * A string (not HTML) that is used as a description for this document.
-     */
-    readonly description?: PlainTextStr;
+  readonly links?: FirestoreTypedArray<URLStr | ExternalLink>;
 
-    readonly links?: FirestoreTypedArray<URLStr | ExternalLink>;
-
-    readonly tags?: FirestoreTypedArray<TagStr>;
-
+  readonly tags?: FirestoreTypedArray<TagStr>;
 }
 
 export interface GroupIDRequest {
+  /**
+   * Use a user specific 'key' to compute a groupID rather than using a global
+   * name.  They key could be anything as long as it's unique within the users
+   * 'namespace'.  This can be used for computing a unique group for a users
+   * document that they are sharing.
+   */
+  readonly key?: string;
 
-    /**
-     * Use a user specific 'key' to compute a groupID rather than using a global
-     * name.  They key could be anything as long as it's unique within the users
-     * 'namespace'.  This can be used for computing a unique group for a users
-     * document that they are sharing.
-     */
-    readonly key?: string;
-
-    readonly name?: string;
-
+  readonly name?: string;
 }
 
 export interface GroupIDRef extends GroupIDRequest {
-    readonly id?: string;
+  readonly id?: string;
 }
 
 export class GroupIDRefs {
-
-    public static toID(idUser: IDUser, ref: GroupIDRef): GroupIDStr {
-
-        if (ref.id) {
-            return ref.id;
-        }
-
-        return Groups.createID(idUser, ref);
-
+  public static toID(idUser: IDUser, ref: GroupIDRef): GroupIDStr {
+    if (ref.id) {
+      return ref.id;
     }
 
+    return Groups.createID(idUser, ref);
+  }
 }
 
 export interface Group extends GroupInit {
-
-    readonly id: GroupIDStr;
-    readonly nrMembers: number;
-    readonly created: ISODateTimeString;
-
+  readonly id: GroupIDStr;
+  readonly nrMembers: number;
+  readonly created: ISODateTimeString;
 }
 
 export type GroupIDStr = string;
 
-export type GroupVisibility = 'private' | 'protected' | 'public';
+export type GroupVisibility = "private" | "protected" | "public";
 
 export type TagStr = string;
 
 export interface ExternalLink {
-    readonly name: PlainTextStr;
-    readonly url: URLStr;
+  readonly name: PlainTextStr;
+  readonly url: URLStr;
 }
 
 // TODO: add more language codes here
-export type Lang = 'en' | 'es' | 'fr' | 'de';
+export type Lang = "en" | "es" | "fr" | "de";
 
 export class GroupInits {
-    public static equals(g0: GroupInit, g1: GroupInit) {
-        return JSON.stringify(Dictionaries.sorted(g0)) === JSON.stringify(Dictionaries.sorted(g1));
-    }
+  public static equals(g0: GroupInit, g1: GroupInit) {
+    return (
+      JSON.stringify(Dictionaries.sorted(g0)) ===
+      JSON.stringify(Dictionaries.sorted(g1))
+    );
+  }
 }
 
 export interface GroupRefByName {
-    readonly name: GroupNameStr;
+  readonly name: GroupNameStr;
 }
 
 export interface GroupRefByID {
-    readonly id: GroupIDStr;
+  readonly id: GroupIDStr;
 }
 
 export type GroupRef = GroupRefByName | GroupRefByID;
