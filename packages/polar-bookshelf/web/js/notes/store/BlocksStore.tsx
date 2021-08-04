@@ -798,13 +798,14 @@ export class BlocksStore implements IBlocksStore {
             if (siblingID) {
                 this.clearSelected('doNav');
                 this.setActiveWithPosition(siblingID, pos);
+            } else {
+                this.setActiveWithPosition(this._active.id, delta === 'prev' ? 'start' : 'end');
             }
             return true;
         }
 
-        if (! newActive && ! shiftKey) {
-            this.setActiveWithPosition(this._active.id, delta === 'prev' ? 'start' : 'end');
-            return true;
+        if (! newActive) {
+            return false;
         }
 
         if (shiftKey) {
