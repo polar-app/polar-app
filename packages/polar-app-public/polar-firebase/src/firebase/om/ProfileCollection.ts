@@ -1,95 +1,160 @@
-import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
-import {ProfileOwnerCollection} from './ProfileOwnerCollection';
+import { Image } from "./Images";
+import { TagStr } from "polar-shared/src/tags/Tags";
+import { PlainTextStr, URLStr } from "polar-shared/src/util/Strings";
+import { Hashcodes } from "polar-shared/src/util/Hashcodes";
+import { IFirestore } from "polar-firestore-like/src/IFirestore";
+import { Collections } from "polar-firestore-like/src/Collections";
+import { IWriteBatch } from "polar-firestore-like/src/IWriteBatch";
+import { IUserRecord } from "polar-firestore-like/src/IUserRecord";
 import {
-    CacheFirstThenServerGetOptions,
-    DocumentReferences,
-    GetOptions
-} from "../../../firebase/firestore/DocumentReferences";
-import {
-    HandleStr,
-    IProfile,
-    ProfileIDRecord,
-    ProfileIDStr,
-    ProfileRecordTuple
-} from "polar-firebase/src/firebase/om/ProfileCollection";
-import {IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
-import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+  ISODateTimeString,
+  ISODateTimeStrings,
+} from "polar-shared/src/metadata/ISODateTimeStrings";
+import { Arrays } from "polar-shared/src/util/Arrays";
+import { Dictionaries } from "polar-shared/src/util/Dictionaries";
 
-/**
- * @Deprecated migrate to polar-firestore
- */
-export class ProfileCollection {
+export interface IProfileInit {
+  readonly id: ProfileIDStr;
 
-    public static readonly COLLECTION = 'profile';
-
-    public static async doc(id: ProfileIDStr): Promise<[HandleStr, IDocumentReferenceClient]> {
-        const firestore = await FirestoreBrowserClient.getInstance();
-        const doc = firestore.collection(this.COLLECTION).doc(id);
-        return [id, doc];
-    }
-
-    public static async get(id: ProfileIDStr, opts: GetOptions = {}): Promise<IProfile | undefined> {
-        const [_, ref] = await this.doc(id);
-        const doc = await DocumentReferences.get(ref, opts);
-        return <IProfile> doc.data();
-    }
-
-    /**
-     * Lookup all the profile IDs.  This is done in parallel for performance reasons.
-     */
-    public static async resolve<T extends ProfileIDRecord>(profileIDRecords: ReadonlyArray<T>): Promise<ReadonlyArray<ProfileRecordTuple<T>>> {
-
-        // TODO prefer cache-first
-
-        const promises = profileIDRecords.map(current => {
-
-            const handler = async (): Promise<ProfileRecordTuple<T>> => {
-
-                if (current.profileID) {
-                    const profile = await this.get(current.profileID);
-                    return [current, profile];
-                } else {
-                    return [current, undefined];
-                }
-
-            };
-
-            // call the handler but return it as a promise so we can call
-            // promise.all below
-            return handler();
-
-        });
-
-        const resolved = await Promise.all(promises);
-        return resolved.map(current => current);
-
-    }
-
-    public static async currentProfile(opts: GetOptions = new CacheFirstThenServerGetOptions()): Promise<IProfile | undefined> {
-
-        const app = FirebaseBrowser.init();
-        const user = app.auth().currentUser;
-
-        if (! user) {
-            return undefined;
-        }
-
-        const profileOwner = await ProfileOwnerCollection.get(user!.uid, opts);
-
-        if (! profileOwner) {
-            // getting their user from the database and writing it back out...
-            return undefined;
-        }
-
-        const profile = await this.get(profileOwner.profileID, opts);
-
-        if ( ! profile) {
-            return undefined;
-        }
-
-        return profile;
-
-    }
-
+  readonly created: ISODateTimeString;
 }
 
+export interface IProfileUpdate {
+  /**
+   * The user's UID which is used when assigning permissions.
+   */
+  readonly uid: UserIDStr;
+
+  readonly updated: ISODateTimeString;
+
+  /**
+   * The user handle of this profile.  A unique name for this account that's
+   * a global reference for this user like 'alice101' or 'burtonator'.
+   */
+  readonly handle: HandleStr;
+
+  /**
+   * The primary email for the user.
+   */
+  readonly email: EmailStr;
+
+  /**
+   * All other emails associated with that user.
+   */
+  readonly emails: ReadonlyArray<EmailStr>;
+
+  /**
+   * The name of the user.
+   */
+  readonly name?: string;
+
+  /**
+   * The image of the user from their profile.  We can also cache this on our
+   * own so this is the URL metadata we prefer.
+   */
+  readonly image?: Image;
+
+  /**
+   * User entered bio for their profile.  This is text explaining
+   */
+  readonly bio?: PlainTextStr;
+
+  /**
+   * Allow the user to pick at most 5 tags for their profile so people could
+   * search for them by tag..
+   */
+  readonly tags?: ReadonlyArray<TagStr>;
+
+  /**
+   * Links for the user (their Twitter account, Facebook profile, etc).
+   */
+  readonly links?: ReadonlyArray<URLStr>;
+
+  /**
+   * The physical location for the user.
+   */
+  readonly location?: string;
+}
+
+export interface IProfile extends IProfileInit, IProfileUpdate {}
+
+export type ProfileIDStr = string;
+
+export type HandleStr = string;
+
+export type UserIDStr = string;
+
+export type EmailStr = string;
+
+export interface ProfileIDRecord {
+  readonly profileID?: ProfileIDStr;
+}
+
+export type ProfileRecordTuple<T> = [T, IProfile | undefined];
+
+export namespace ProfileCollection {
+  export const COLLECTION = "profile";
+
+  export function createID() {
+    return Hashcodes.createRandomID(20);
+  }
+
+  export async function get(
+    firestore: IFirestore<unknown>,
+    id: ProfileIDStr
+  ): Promise<IProfile | undefined> {
+    return await Collections.getByID(firestore, COLLECTION, id);
+  }
+
+  export async function getByUserID(
+    firestore: IFirestore<unknown>,
+    uid: UserIDStr
+  ): Promise<IProfile | undefined> {
+    const results = await Collections.list<IProfile>(firestore, COLLECTION, [
+      ["uid", "==", uid],
+    ]);
+    return Arrays.first(results);
+  }
+
+  export function set(
+    firestore: IFirestore<unknown>,
+    batch: IWriteBatch<unknown>,
+    id: ProfileIDStr,
+    user: IUserRecord,
+    update: IProfileUpdate
+  ) {
+    const updated = ISODateTimeStrings.create();
+
+    const ref = firestore.collection(COLLECTION).doc(id);
+
+    batch.set(
+      ref,
+      Dictionaries.onlyDefinedProperties({
+        ...update,
+        updated,
+      }),
+      { merge: true }
+    );
+  }
+
+  export async function doDelete(
+    firestore: IFirestore<unknown>,
+    batch: IWriteBatch<unknown>,
+    id: ProfileIDStr
+  ) {
+    await Collections.deleteByID(firestore, COLLECTION, batch, async () => [
+      { id },
+    ]);
+  }
+
+  export async function userProfile(
+    firestore: IFirestore<unknown>,
+    uid: UserIDStr
+  ): Promise<IProfile | undefined> {
+    if (!uid) {
+      return undefined;
+    }
+
+    return getByUserID(firestore, uid);
+  }
+}
