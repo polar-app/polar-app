@@ -261,7 +261,7 @@ workflows:
       ## ^ Polar App Workflow Below Here
       # @ Run Karma Tests
       - karma:
-          executor: medium
+          executor: medium+
           requires:
             - setting-up
 
