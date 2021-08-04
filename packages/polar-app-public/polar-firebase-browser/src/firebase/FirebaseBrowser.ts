@@ -1,5 +1,5 @@
 import firebase from 'firebase/app'
-import 'firebase/auth';
+import auth from 'firebase/auth'
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import { Latch } from 'polar-shared/src/util/Latch';
@@ -31,7 +31,10 @@ const PROJECTS: {[project: string]: any} = {
 
 export const getConfig = () => {
     // Return different values based on the environment.
+
+    // tslint:disable-next-line
     return PROJECTS['prod'];
+
 };
 
 export class FirebaseBrowser {
@@ -85,7 +88,7 @@ export class FirebaseBrowser {
 
         const app = firebase.initializeApp(config);
 
-        this.startListeningForUser();
+        this.startListeningForUser(app);
 
         return app;
 
@@ -97,9 +100,19 @@ export class FirebaseBrowser {
      * https://medium.com/firebase-developers/why-is-my-currentuser-null-in-firebase-auth-4701791f74f0
      *
      */
-    private static startListeningForUser() {
+    private static startListeningForUser(app: firebase.app.App) {
 
-        const auth = firebase.auth();
+        if (! app) {
+            throw new Error("No app defined");
+        }
+
+        if (typeof app.auth !== 'function') {
+            const msg = "App.auth is not a function.";
+            console.warn(msg, app);
+            throw new Error(msg);
+        }
+
+        const auth = app.auth();
 
         const onNext = (user: firebase.User | null) => {
             console.log("firebase: auth state next: ", describeUser(user));
