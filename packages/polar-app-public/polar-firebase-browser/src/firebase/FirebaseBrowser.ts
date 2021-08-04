@@ -1,5 +1,4 @@
-import firebase from 'firebase/app'
-import 'firebase/auth'
+import firebase from 'firebase/app';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import { Latch } from 'polar-shared/src/util/Latch';
@@ -106,9 +105,11 @@ export namespace FirebaseBrowser {
      */
     function startListeningForUser(app: firebase.app.App) {
 
+        console.log("FIXME: firebase: ", firebase);
+        console.log("FIXME: firebase.auth: ", firebase.auth);
         console.log("FIXME: app: ", app);
 
-        const auth = firebase.auth();
+        const auth = app.auth();
 
         const onNext = (nextUser: firebase.User | null) => {
             console.log("firebase: auth state next: ", describeUser(nextUser));
