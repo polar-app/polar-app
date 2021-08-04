@@ -1,28 +1,28 @@
-import {Billing, Trial} from "polar-accounts/src/Billing";
-import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {IDStr} from "polar-shared/src/util/Strings";
+import { Billing, Trial } from "polar-accounts/src/Billing";
+import { ISODateTimeString } from "polar-shared/src/metadata/ISODateTimeStrings";
+import { IDStr } from "polar-shared/src/util/Strings";
 
-export interface IAppleIAPCustomer {
-    readonly type: 'apple_iap';
+export namespace AccountCollection {
+  export const COLLECTION_NAME = "account";
+
+  export interface IAppleIAPCustomer {
+    readonly type: "apple_iap";
     readonly customerID: IDStr;
-}
+  }
 
-export interface IStripeCustomer {
-    readonly type: 'stripe';
+  export interface IStripeCustomer {
+    readonly type: "stripe";
     readonly customerID: IDStr;
-}
+  }
 
-export type Customer = IStripeCustomer | IAppleIAPCustomer;
+  export type Customer = IStripeCustomer | IAppleIAPCustomer;
 
-export interface IAccountInit {
-
+  export interface IAccountInit {
     readonly plan: Billing.Plan;
     readonly interval?: Billing.Interval;
+  }
 
-}
-
-export interface IAccount extends IAccountInit {
-
+  export interface IAccount extends IAccountInit {
     readonly id: string;
 
     /**
@@ -44,5 +44,5 @@ export interface IAccount extends IAccountInit {
     readonly trial?: Trial;
 
     readonly customer?: Customer;
-
+  }
 }

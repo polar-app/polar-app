@@ -1,30 +1,30 @@
-import {Image} from './Images';
-import {TagStr} from "polar-shared/src/tags/Tags";
-import {PlainTextStr, URLStr} from "polar-shared/src/util/Strings";
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {IFirestore} from "polar-firestore-like/src/IFirestore";
-import {Collections} from "polar-firestore-like/src/Collections";
-import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
-import {IUserRecord} from "polar-firestore-like/src/IUserRecord";
-import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {Arrays} from "polar-shared/src/util/Arrays";
-import { Dictionaries } from 'polar-shared/src/util/Dictionaries';
+import { Image } from "./Images";
+import { TagStr } from "polar-shared/src/tags/Tags";
+import { PlainTextStr, URLStr } from "polar-shared/src/util/Strings";
+import { Hashcodes } from "polar-shared/src/util/Hashcodes";
+import { IFirestore } from "polar-firestore-like/src/IFirestore";
+import { Collections } from "polar-firestore-like/src/Collections";
+import { IWriteBatch } from "polar-firestore-like/src/IWriteBatch";
+import { IUserRecord } from "polar-firestore-like/src/IUserRecord";
+import {
+  ISODateTimeString,
+  ISODateTimeStrings,
+} from "polar-shared/src/metadata/ISODateTimeStrings";
+import { Arrays } from "polar-shared/src/util/Arrays";
+import { Dictionaries } from "polar-shared/src/util/Dictionaries";
 
-export interface IProfileInit {
-
+export namespace ProfileCollection {
+  export interface IProfileInit {
     readonly id: ProfileIDStr;
 
     readonly created: ISODateTimeString;
+  }
 
-}
-
-export interface IProfileUpdate {
-
+  export interface IProfileUpdate {
     /**
      * The user's UID which is used when assigning permissions.
      */
     readonly uid: UserIDStr;
-
 
     readonly updated: ISODateTimeString;
 
@@ -75,77 +75,86 @@ export interface IProfileUpdate {
      * The physical location for the user.
      */
     readonly location?: string;
+  }
 
-}
+  export interface IProfile extends IProfileInit, IProfileUpdate {}
 
-export interface IProfile extends IProfileInit, IProfileUpdate {
-}
+  export type ProfileIDStr = string;
 
-export type ProfileIDStr = string;
+  export type HandleStr = string;
 
-export type HandleStr = string;
+  export type UserIDStr = string;
 
-export type UserIDStr = string;
+  export type EmailStr = string;
 
-export type EmailStr = string;
-
-export interface ProfileIDRecord {
+  export interface ProfileIDRecord {
     readonly profileID?: ProfileIDStr;
-}
+  }
 
-export type ProfileRecordTuple<T> = [T, IProfile | undefined];
+  export type ProfileRecordTuple<T> = [T, IProfile | undefined];
 
-export namespace ProfileCollection {
+  export const COLLECTION = "profile";
 
-    export const COLLECTION = 'profile';
+  export function createID() {
+    return Hashcodes.createRandomID(20);
+  }
 
-    export function createID() {
-        return Hashcodes.createRandomID(20);
+  export async function get(
+    firestore: IFirestore<unknown>,
+    id: ProfileIDStr
+  ): Promise<IProfile | undefined> {
+    return await Collections.getByID(firestore, COLLECTION, id);
+  }
+
+  export async function getByUserID(
+    firestore: IFirestore<unknown>,
+    uid: UserIDStr
+  ): Promise<IProfile | undefined> {
+    const results = await Collections.list<IProfile>(firestore, COLLECTION, [
+      ["uid", "==", uid],
+    ]);
+    return Arrays.first(results);
+  }
+
+  export function set(
+    firestore: IFirestore<unknown>,
+    batch: IWriteBatch<unknown>,
+    id: ProfileIDStr,
+    user: IUserRecord,
+    update: IProfileUpdate
+  ) {
+    const updated = ISODateTimeStrings.create();
+
+    const ref = firestore.collection(COLLECTION).doc(id);
+
+    batch.set(
+      ref,
+      Dictionaries.onlyDefinedProperties({
+        ...update,
+        updated,
+      }),
+      { merge: true }
+    );
+  }
+
+  export async function doDelete(
+    firestore: IFirestore<unknown>,
+    batch: IWriteBatch<unknown>,
+    id: ProfileIDStr
+  ) {
+    await Collections.deleteByID(firestore, COLLECTION, batch, async () => [
+      { id },
+    ]);
+  }
+
+  export async function userProfile(
+    firestore: IFirestore<unknown>,
+    uid: UserIDStr
+  ): Promise<IProfile | undefined> {
+    if (!uid) {
+      return undefined;
     }
 
-    export async function get(firestore: IFirestore<unknown>, id: ProfileIDStr): Promise<IProfile | undefined> {
-        return await Collections.getByID(firestore, COLLECTION, id);
-    }
-
-    export async function getByUserID(firestore: IFirestore<unknown>, uid: UserIDStr): Promise<IProfile | undefined> {
-        const results = await Collections.list<IProfile>(firestore, COLLECTION, [['uid', '==', uid]]);
-        return Arrays.first(results);
-    }
-
-    export function set(firestore: IFirestore<unknown>,
-                        batch: IWriteBatch<unknown>,
-                        id: ProfileIDStr,
-                        user: IUserRecord,
-                        update: IProfileUpdate) {
-
-        const updated = ISODateTimeStrings.create();
-
-        const ref = firestore.collection(COLLECTION).doc(id);
-
-        batch.set(ref, Dictionaries.onlyDefinedProperties({
-            ...update,
-            updated
-        }), {merge: true});
-
-    }
-
-    export async function doDelete(firestore: IFirestore<unknown>,
-                                   batch: IWriteBatch<unknown>,
-                                   id: ProfileIDStr) {
-
-        await Collections.deleteByID(firestore, COLLECTION, batch, async () => [{id}] );
-
-    }
-
-    export async function userProfile(firestore: IFirestore<unknown>,
-                                      uid: UserIDStr): Promise<IProfile | undefined> {
-
-        if (! uid) {
-            return undefined;
-        }
-
-        return getByUserID(firestore, uid);
-
-    }
-
+    return getByUserID(firestore, uid);
+  }
 }
