@@ -1,5 +1,5 @@
-import auth from 'firebase/auth'
 import firebase from 'firebase/app'
+import auth from 'firebase/auth'
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import { Latch } from 'polar-shared/src/util/Latch';
@@ -85,18 +85,6 @@ export class FirebaseBrowser {
         const config = PROJECTS[project];
 
         Preconditions.assertPresent(config, "config");
-
-        // FIXME: for some reason this is returning a 'firestore' object not a
-        // firestore.app.App object so when we pass this to
-        // startListeningForUser it is the wrong type. Something is TOTALLY
-        // getting messed up in the compilation.
-        //
-        // Some paths forward to fix this:
-        //
-        // - try to upgrade to the latest firebase
-        // - read up on the firebase import order.  Maybe it's wrong?
-        // - upgrade to the latest typescript?
-        // - try to upgrade to the latest webpack
 
         const app = firebase.initializeApp(config);
 
