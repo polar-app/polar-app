@@ -242,7 +242,7 @@ executors:
   medium:
     docker:
       - image: circleci/node:14.16.0-buster
-    resource_class: medium
+    resource_class: medium+
   ff-chrome:
     docker:
       - image: cypress/browsers:node14.17.0-chrome88-ff89
@@ -261,7 +261,7 @@ workflows:
       ## ^ Polar App Workflow Below Here
       # @ Run Karma Tests
       - karma:
-          executor: medium+
+          executor: medium
           requires:
             - setting-up
 
