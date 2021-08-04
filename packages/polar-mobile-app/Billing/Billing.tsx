@@ -121,7 +121,10 @@ export class Billing {
     }
 
     async getProductByPlanName(planName: string) {
-        const products = await this.getProducts({ios: ['plan_' + planName]});
+        const products = await this.getProducts({
+            ios: ['plan_' + planName],
+            android: ['plan_' + planName],
+        });
 
         // Get the Product object that matches this codename
         return products.find((product) => product.productId === 'plan_' + planName);

@@ -44,7 +44,7 @@ const App = () => {
                         const product = await billing.getProductByPlanName(planName);
 
                         if (!product) {
-                            Alert.alert(`Can not find a product with ID=plan_${planName} within Apple Appstore Connect`);
+                            Alert.alert(`Can not find a product with ID=plan_${planName} within the App Store`);
                             return;
                         }
 

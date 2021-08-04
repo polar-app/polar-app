@@ -7,6 +7,8 @@ import StaticServer from 'react-native-static-server';
 import injectedJavaScriptBeforeContentLoaded from "./util/injectedJavaScriptBeforeContentLoaded";
 import tryParseWebviewPostMessage from "./util/tryParseWebviewPostMessage";
 
+const useEmbeddedServer = false;
+
 export class InAppLiteServer extends Component<Props, State> {
 
     // Reference to the HTTP Server
@@ -20,18 +22,22 @@ export class InAppLiteServer extends Component<Props, State> {
 
         // Initial state
         this.state = {
-            isRunning: false,
-            url: '',
+            isRunning: !useEmbeddedServer,
+            url: !useEmbeddedServer ? 'https://app.getpolarized.io' : '',
         };
 
-        // Easily switch between the real Polar Bookshelf /dist and a dummy frontend by using one variable or another
-        const realFrontendPath = '/static/polar';
-        // const dummyFrontendPath = '/static/dummy-frontend';
-
-        this.server = new StaticServer(8050, RNFS.MainBundlePath + realFrontendPath, {localOnly: true});
+        if (useEmbeddedServer) {
+            // Easily switch between the real Polar Bookshelf /dist and a dummy frontend by using one variable or another
+            const realFrontendPath = '/static/polar';
+            // const dummyFrontendPath = '/static/dummy-frontend';
+            this.server = new StaticServer(8050, RNFS.MainBundlePath + realFrontendPath, {localOnly: true});
+        }
     }
 
     componentDidMount() {
+        if (!useEmbeddedServer) {
+            return;
+        }
         // Start the HTTP server within the mobile app
         this.server.start().then((url: string) => {
             console.log('Serving at URL', url);
@@ -39,7 +45,7 @@ export class InAppLiteServer extends Component<Props, State> {
             // When the server is actually started, set the URL within the state
             this.setState({
                 isRunning: true,
-                url: 'https://app.getpolarized.io',
+                url,
             });
         }).catch((err: Error) => {
             alert(err);
@@ -111,6 +117,9 @@ export class InAppLiteServer extends Component<Props, State> {
     }
 
     componentWillUnmount() {
+        if (!useEmbeddedServer) {
+            return;
+        }
         // Destroy the HTTP server when the component is no longer visible
         if (this.server && this.server.isRunning()) {
             this.server.stop();
