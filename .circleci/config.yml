@@ -239,10 +239,10 @@ executors:
     docker:
       - image: circleci/node:14.16.0-buster
     resource_class: xlarge
-  medium:
+  large:
     docker:
       - image: circleci/node:14.16.0-buster
-    resource_class: medium+
+    resource_class: large
   ff-chrome:
     docker:
       - image: cypress/browsers:node14.17.0-chrome88-ff89
@@ -256,18 +256,18 @@ workflows:
       ## ^ Commonality Between Workflows
       # @ Setup the repo for the subsquent stages
       - setting-up:
-          executor: xlarge
+          executor: large
 
       ## ^ Polar App Workflow Below Here
       # @ Run Karma Tests
       - karma:
-          executor: medium
+          executor: large
           requires:
             - setting-up
 
       # @ Build Polar app
       - build-polar-app:
-          executor: xlarge
+          executor: large
           requires:
             - setting-up
 
@@ -351,7 +351,7 @@ workflows:
       ## ^ Polar Site Workflow Below Here
       # @ Build Polar Site
       - build-polar-site:
-          executor: medium
+          executor: large
           requires:
             - setting-up
 
@@ -367,7 +367,7 @@ workflows:
 
       # @ Deploy Approved Polar Site build
       - deploy-polar-site:
-          executor: medium
+          executor: large
           requires:
             - approve-polar-site
           filters:
