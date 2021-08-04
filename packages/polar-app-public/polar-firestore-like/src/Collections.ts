@@ -344,3 +344,4 @@ export namespace Collections {
     }
 }
 
+export type UserIDStr = string;

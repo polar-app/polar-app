@@ -1,9 +1,11 @@
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {GroupIDStr} from '../../Datastore';
-import {Collections, DocumentChange, OrderByClause} from './Collections';
-import {Clause} from './Collections';
-import {SnapshotListener} from './Collections';
+// import {Collections, DocumentChange, OrderByClause} from './Collections';
+// import {Clause} from './Collections';
+// import {SnapshotListener} from './Collections';
+import {Collections, Clause, SnapshotListener, DocumentChange, OrderByClause} from "polar-firestore-like/src/Collections";
+
 import {ProfileIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 
 export class GroupDocCollection {

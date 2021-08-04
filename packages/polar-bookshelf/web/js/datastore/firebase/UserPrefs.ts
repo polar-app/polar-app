@@ -4,7 +4,11 @@ import {
     Prefs,
     StringToPrefDict
 } from "../../util/prefs/Prefs";
-import {Collections, UserIDStr} from "../sharing/db/Collections";
+// import {Collections, UserIDStr} from "../sharing/db/Collections";
+import {
+  Collections,
+  UserIDStr,
+} from "polar-firestore-like/src/Collections.ts";
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {
     OnErrorCallback,
