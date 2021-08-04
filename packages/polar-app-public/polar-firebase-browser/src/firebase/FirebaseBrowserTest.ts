@@ -6,4 +6,5 @@ describe("FirebaseBrowser", function() {
         FirebaseBrowser.init();
     });
 
+
 })

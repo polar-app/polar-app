@@ -1,4 +1,11 @@
-import firebase from 'firebase/app';
+// import firebase from 'firebase/app';
+
+import firebase from "firebase/app";
+import "firebase/auth";
+
+// import firebase from 'firebase'
+// require('firebase/auth')
+
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import { Latch } from 'polar-shared/src/util/Latch';
@@ -28,11 +35,6 @@ const PROJECTS: {[project: string]: any} = {
 
 };
 
-export const getConfig = () => {
-    // Return different values based on the environment.
-    return PROJECTS['prod'];
-};
-
 export namespace FirebaseBrowser {
 
     let instance: firebase.app.App | undefined;
@@ -48,6 +50,12 @@ export namespace FirebaseBrowser {
      * @private
      */
     let user: undefined | null | firebase.User;
+
+    export function getConfig() {
+        // Return different values based on the environment.
+        // tslint:disable-next-line
+        return PROJECTS['prod'];
+    }
 
     /**
      * Perform init of Firebase with our auth credentials.
@@ -109,7 +117,8 @@ export namespace FirebaseBrowser {
         console.log("FIXME: firebase.auth: ", firebase.auth);
         console.log("FIXME: app: ", app);
 
-        const auth = app.auth();
+        const auth = firebase.auth(app);
+        // const auth = app.auth();
 
         const onNext = (nextUser: firebase.User | null) => {
             console.log("firebase: auth state next: ", describeUser(nextUser));
