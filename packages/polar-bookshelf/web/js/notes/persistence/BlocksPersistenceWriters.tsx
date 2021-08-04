@@ -5,7 +5,7 @@ import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
 import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 import {FirestoreBlocks} from "./FirestoreBlocks";
 import {Asserts} from "polar-shared/src/Asserts";
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {getConfig} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';

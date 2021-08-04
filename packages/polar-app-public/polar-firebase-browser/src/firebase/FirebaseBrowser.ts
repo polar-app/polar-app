@@ -1,5 +1,5 @@
 import firebase from 'firebase/app'
-import 'firebase/auth';
+import 'firebase/auth'
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import { Latch } from 'polar-shared/src/util/Latch';
@@ -34,11 +34,11 @@ export const getConfig = () => {
     return PROJECTS['prod'];
 };
 
-export class FirebaseBrowser {
+export namespace FirebaseBrowser {
 
-    private static app?: firebase.app.App;
+    let instance: firebase.app.App | undefined;
 
-    private static userLatch = new Latch<boolean>();
+    const userLatch = new Latch<boolean>();
 
     /**
      * Three states.
@@ -48,30 +48,37 @@ export class FirebaseBrowser {
      * User: The currently active user.
      * @private
      */
-    private static user: undefined | null | firebase.User = undefined;
+    let user: undefined | null | firebase.User;
 
     /**
      * Perform init of Firebase with our auth credentials.
      */
-    public static init(): firebase.app.App {
+    export function init(): firebase.app.App {
 
-        if (this.app) {
-            return this.app;
+        if (instance) {
+            return instance;
         }
 
         try {
 
-            log.notice("Initializing firebase...");
+            log.notice("Initializing firebase... FIXME ...");
 
-            return this.app = this.doInit();
+            const newInstance = doInit();
+            instance = newInstance;
 
+            console.log("FIXME2: instance is and newInstances is: ", instance, newInstance);
+
+            return instance;
+        } catch (e) {
+            console.error("FIXME: caught excaption: ", e);
+            throw e;
         } finally {
             log.notice("Initializing firebase...done");
         }
 
     }
 
-    private static doInit() {
+    export function doInit() {
 
         const project = process.env.POLAR_TEST_PROJECT || 'prod';
 
@@ -85,7 +92,7 @@ export class FirebaseBrowser {
 
         const app = firebase.initializeApp(config);
 
-        this.startListeningForUser(app);
+        startListeningForUser(app);
 
         return app;
 
@@ -97,14 +104,16 @@ export class FirebaseBrowser {
      * https://medium.com/firebase-developers/why-is-my-currentuser-null-in-firebase-auth-4701791f74f0
      *
      */
-    private static startListeningForUser(app: firebase.app.App) {
+    function startListeningForUser(app: firebase.app.App) {
 
-        const auth = app.auth();
+        console.log("FIXME: app: ", app);
 
-        const onNext = (user: firebase.User | null) => {
-            console.log("firebase: auth state next: ", describeUser(user));
-            this.userLatch.resolve(true);
-            return this.user = user;
+        const auth = firebase.auth();
+
+        const onNext = (nextUser: firebase.User | null) => {
+            console.log("firebase: auth state next: ", describeUser(nextUser));
+            userLatch.resolve(true);
+            return user = nextUser;
 
         }
 
@@ -116,23 +125,23 @@ export class FirebaseBrowser {
 
     }
 
-    public static async currentUserAsync(): Promise<firebase.User | null> {
+    export async function currentUserAsync(): Promise<firebase.User | null> {
 
         FirebaseBrowser.init();
 
-        await this.userLatch.get();
+        await userLatch.get();
 
-        if (this.user === undefined) {
+        if (user === undefined) {
             // should never happen because we're waiting for the latch
             throw new Error();
         }
 
-        return this.user;
+        return user;
 
     }
 
-    public static async currentUserID(): Promise<UserIDStr | undefined> {
-        const user = await this.currentUserAsync();
+    export async function currentUserID(): Promise<UserIDStr | undefined> {
+        const user = await currentUserAsync();
         return user?.uid;
     }
 
