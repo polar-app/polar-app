@@ -1,4 +1,4 @@
-package com.polarreactnative;
+package io.getpolarized.polar;
 
 import com.facebook.react.ReactActivity;
 
