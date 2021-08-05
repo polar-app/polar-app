@@ -21,6 +21,9 @@
     "tslint": "6.1.2",
     "typescript": "=4.2.3"
   },
+  "dependencies": {
+    "polar-shared": "^2.1.88"
+  },
   "files": [
     "**/*.js",
     "**/*.d.ts",
