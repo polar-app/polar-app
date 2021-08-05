@@ -52,7 +52,10 @@ function usePurchaseOrChangePlanAction() {
                     // This boolean flag is injected through the native app's WebView
                     // and is used to tell the React code (like the one here) that Polar Bookshelf
                     // is being viewed through the native app's WebView
-                    if ((window as any).isNativeApp) {
+                    const isMobileApp = (window as any).isNativeApp;
+                    const isIOS = (window as any).mobileOS === 'ios';
+
+                    if (isMobileApp && isIOS) {
                         await initiateNativeAppleIap(email, newSubscription.plan);
                         return;
                     }
