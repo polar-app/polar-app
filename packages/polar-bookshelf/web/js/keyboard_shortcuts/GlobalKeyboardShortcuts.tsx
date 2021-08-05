@@ -75,6 +75,7 @@ export function keyMapWithGroup(opts: IKeyMapWithGroup): KeyMap {
             icon: option.icon,
             description: option.description,
             priority: option.priority,
+            ignorable: option.ignorable,
             group,
             groupPriority: groupPriority !== undefined ? groupPriority : 0
         }
