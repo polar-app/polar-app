@@ -6,8 +6,6 @@ export default (): string => {
             window.isNativeApp = true;
             window.mobileOS = "${Platform.OS}";
             
-            alert(window.mobileOS);
-            
             // Propagate all logs from the WebView to the native app through the WebView bridge using postMessage
              const consoleLog = (type, log) => window.ReactNativeWebView.postMessage(JSON.stringify({'action': 'console_log', 'data': {'type': type, 'log': log}}));
               console = {

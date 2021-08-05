@@ -436,6 +436,7 @@ module.exports = {
         contentBase: path.resolve('dist/public'),
         compress: true,
         port,
+        host: '0.0.0.0',
         open: false,
         openPage,
         overlay: true,

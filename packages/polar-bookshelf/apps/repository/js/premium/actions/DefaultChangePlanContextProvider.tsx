@@ -23,6 +23,16 @@ const initiateNativeAppleIap = async (email: string, plan: Billing.V2Plan): Prom
     }
 };
 
+function isMobilePurchaseFlow() {
+    // This boolean flag is injected through the native app's WebView
+    // and is used to tell the React code (like the one here) that Polar Bookshelf
+    // is being viewed through the native app's WebView
+    const isMobileApp = (window as any).isNativeApp;
+    const isIOS = (window as any).mobileOS === 'ios';
+    const isAndroid = (window as any).mobileOS === 'android';
+    return isMobileApp && (isIOS || isAndroid);
+}
+
 function usePurchaseOrChangePlanAction() {
 
     const dialogManager = useDialogManager();
@@ -49,13 +59,7 @@ function usePurchaseOrChangePlanAction() {
                 const doAsync = async () => {
                     dialogManager.snackbar({message: 'One moment.  About to setup your purchase... '});
 
-                    // This boolean flag is injected through the native app's WebView
-                    // and is used to tell the React code (like the one here) that Polar Bookshelf
-                    // is being viewed through the native app's WebView
-                    const isMobileApp = (window as any).isNativeApp;
-                    const isIOS = (window as any).mobileOS === 'ios';
-
-                    if (isMobileApp && isIOS) {
+                    if (isMobilePurchaseFlow()) {
                         await initiateNativeAppleIap(email, newSubscription.plan);
                         return;
                     }
@@ -74,12 +78,7 @@ function usePurchaseOrChangePlanAction() {
 
                 dialogManager.snackbar({message: `Changing plan to ${plan.level} billed at interval ${interval}.  One moment...`});
 
-                // This boolean flag is injected through the native app's WebView
-                // and is used to tell the React code (like the one here) that Polar Bookshelf
-                // is being viewed through the native app's WebView
-                const isMobileApp = (window as any).isNativeApp;
-                const isIOS = (window as any).mobileOS === 'ios';
-                if (isMobileApp && isIOS) {
+                if (isMobilePurchaseFlow()) {
                     const email = userInfoContext?.userInfo?.email;
                     if (!email) {
                         alert(`Can not change to plan ${plan.level} without a valid email`);
