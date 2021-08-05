@@ -14,6 +14,7 @@ type PackageReferenceMap = {[key: string]: string};
 
 interface PackageData {
     readonly name: string;
+    readonly peerDependencies: PackageReferenceMap;
     readonly devDependencies: PackageReferenceMap;
     readonly dependencies: PackageReferenceMap;
 }
@@ -84,6 +85,7 @@ async function main() {
 
     await doPackages(packageData.dependencies || {});
     await doPackages(packageData.devDependencies || {});
+    await doPackages(packageData.peerDependencies || {});
 
     console.log();
 
