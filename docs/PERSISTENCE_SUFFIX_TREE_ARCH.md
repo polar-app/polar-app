@@ -20,6 +20,10 @@ we don't want to have to update it every single time.
 We can mirror this the way 'log structured merge trees' work in
 Bigtable/Cassandra etc to minimize the write throughput.
 
+Here is the general idea.  
+
+All data is stored into chunks of 1000 records.  Each chunk represents 
+
 # Remaining Issues
 
 

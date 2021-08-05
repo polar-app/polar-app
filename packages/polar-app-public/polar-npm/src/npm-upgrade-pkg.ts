@@ -37,7 +37,7 @@ function parseArgs(): Args {
     return {pkg, version};
 }
 
-type DependencyType = 'dev' | 'normal';
+type DependencyType = 'dev' | 'normal' | 'peer';
 
 interface PackageDependency {
     readonly type: DependencyType;
@@ -69,7 +69,7 @@ function computePackageDependency(packageData: any, name: string): PackageDepend
 
     };
 
-    return compute(packageData.dependencies, 'normal') || compute(packageData.devDependencies, 'dev');
+    return compute(packageData.dependencies, 'normal') || compute(packageData.devDependencies, 'dev') || compute(packageData.peerDependencies, 'dev');
 
 }
 
@@ -96,6 +96,8 @@ function exec() {
         if (args.version) {
 
             if (args.version !== packageDependency.version) {
+                // FIXME: I think this is wrong because we don't use the
+                // devDependencies or peerDependencies
                 packageDependency.dependencies[args.pkg] = args.version;
                 writePackageData(packageData);
                 console.log(`Package successfully upgraded to ${args.version} (${packageDependency.type})`);
