@@ -1,4 +1,5 @@
 import { IFirestore } from "./IFirestore";
+import firebase from 'firebase/app'
 import {IDocumentReference} from "./IDocumentReference";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {Preconditions} from "polar-shared/src/Preconditions";
@@ -7,6 +8,10 @@ import {IWriteBatch} from "./IWriteBatch";
 import {IDRecord} from "polar-shared/src/util/IDMaps";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {IDStr} from "polar-shared/src/util/Strings";
+
+import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
+import DocumentChangeType = firebase.firestore.DocumentChangeType;
+
 
 export namespace Collections {
 
@@ -181,9 +186,45 @@ export namespace Collections {
         return query;
 
     }
+    
+    /**
+     * Query snapshot but only for changed documents.
+     */
+    export async function onQuerySnapshotChanges<T>(collection: string,
+                                                  clauses: ReadonlyArray<Clause>,
+                                                  delegate: (records: ReadonlyArray<DocumentChange<T>>) => void,
+                                                  errHandler: QuerySnapshotErrorHandler = DefaultQuerySnapshotErrorHandler): Promise<SnapshotUnsubscriber> {
+
+        const query = await this.createQuery(collection, clauses);
+
+        return query.onSnapshot((snapshot: { docChanges: () => any[]; }) => {
+
+            const changes = snapshot.docChanges().map((current: { type: any; doc: { data: () => T; }; }) => {
+
+                const type = current.type;
+                const value = <T> current.doc.data();
+                return {
+                    type,
+                    value
+                };
+
+            });
+
+            delegate(changes);
+
+        }, (err: Error) => {
+            errHandler(err, collection, clauses);
+        });
+
+    }
 
     function snapshotToRecords<T, SM = unknown>(snapshot: IQuerySnapshot<SM>) {
         return snapshot.docs.map(current => <T> current.data());
+    }
+ 
+    export async function createRef<SM>(firestore: IFirestore<SM>,collection: string, id: string) {
+        const ref = firestore.collection(collection).doc(id);
+        return ref;
     }
 
     export async function list<T, SM = unknown>(firestore: IFirestore<SM>,
@@ -233,17 +274,24 @@ export namespace Collections {
 
     export async function deleteByID<SM = unknown>(firestore: IFirestore<SM>,
                                                    collection: string,
-                                                   batch: IWriteBatch<SM>,
+                                                   batch: IWriteBatch<SM> | undefined,
                                                    provider: () => Promise<ReadonlyArray<IDRecord>>) {
 
         const records = await provider();
+        const b = batch || firestore.batch();
+
 
         for (const record of records) {
 
             const doc = firestore.collection(collection)
                                  .doc(record.id);
 
-            batch.delete(doc);
+            
+            if(batch){
+                batch.delete(doc);
+            } else{
+                this.doDelete(firestore, collection, record.id);
+            }
 
         }
 
@@ -345,3 +393,57 @@ export namespace Collections {
 }
 
 export type UserIDStr = string;
+
+export interface DocumentChange<T> {
+    readonly type: DocumentChangeType;
+    readonly value: T;
+}
+
+export type WhereFilterOp =
+| '<'
+| '<='
+| '=='
+| '!='
+| '>='
+| '>'
+| 'array-contains'
+| 'in'
+| 'array-contains-any'
+| 'not-in';
+
+export type OrderByDirection = 'desc' | 'asc';
+
+export interface QueryOpts {
+    
+    /**
+     * Limit the number of results.
+     */
+    readonly limit?: number;
+    
+    readonly orderBy?: ReadonlyArray<OrderByClause>;
+    
+}
+
+export type Clause = [string, WhereFilterOp, any];
+
+export type OrderByClause = [string, OrderByDirection | undefined];
+
+export type ValueType = object | string | number;
+
+export type SnapshotListener<T> = (record: ReadonlyArray<T>) => void;
+
+export type QuerySnapshotErrorHandler = (err: Error, collection: string, clauses: ReadonlyArray<Clause>) => void;
+
+const DefaultQuerySnapshotErrorHandler = (err: Error, collection: string, clauses: ReadonlyArray<Clause>) => {
+
+    console.error(`Unable to handle snapshot for collection ${collection}: `, clauses, err);
+
+};
+
+export type SnapshotErrorHandler = (err: Error, collection: string) => void;
+
+const DefaultSnapshotErrorHandler = (err: Error, collection: string) => {
+
+    console.error(`Unable to handle snapshot for collection ${collection}: `, err);
+
+};
