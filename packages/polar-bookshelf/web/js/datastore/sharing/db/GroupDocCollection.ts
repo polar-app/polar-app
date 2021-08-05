@@ -8,12 +8,16 @@ import {Collections, Clause, SnapshotListener, DocumentChange, OrderByClause} fr
 
 import {ProfileIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+
+
 export class GroupDocCollection {
 
     public static readonly COLLECTION = 'group_doc';
 
+
     public static async list(groupID: GroupIDStr): Promise<ReadonlyArray<GroupDoc>> {
-        return await Collections.list(this.COLLECTION, [['groupID', '==', groupID]]);
+        return await Collections.list(await FirestoreBrowserClient.getInstance(), this.COLLECTION, [['groupID', '==', groupID]]);
     }
 
     public static async getByFingerprint(groupID: GroupIDStr,
@@ -29,7 +33,7 @@ export class GroupDocCollection {
             ['created', 'desc']
         ];
 
-        return await Collections.list(this.COLLECTION, clauses, {orderBy, limit});
+        return await Collections.list(await FirestoreBrowserClient.getInstance(), this.COLLECTION, clauses, {orderBy, limit});
 
     }
 

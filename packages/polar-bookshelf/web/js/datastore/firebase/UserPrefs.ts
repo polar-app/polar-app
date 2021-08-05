@@ -5,18 +5,13 @@ import {
     StringToPrefDict
 } from "../../util/prefs/Prefs";
 // import {Collections, UserIDStr} from "../sharing/db/Collections";
-import {
-  Collections,
-  UserIDStr,
-} from "polar-firestore-like/src/Collections.ts";
+import { Collections, UserIDStr } from "polar-firestore-like/src/Collections";
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
-import {
-    OnErrorCallback,
-    SnapshotUnsubscriber
-} from 'polar-shared/src/util/Snapshots';
+import { OnErrorCallback, SnapshotUnsubscriber } from 'polar-shared/src/util/Snapshots';
 import {ISnapshot} from "../../snapshots/CachedSnapshotSubscriberContext";
 import {createCachedFirestoreSnapshotSubscriber} from "../../snapshots/CachedFirestoreSnapshotSubscriber";
 import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 export type UserPrefCallback = (data: IUserPref | undefined) => void;
 
@@ -39,7 +34,7 @@ export namespace UserPrefs {
     export async function get(): Promise<Prefs> {
 
         const uid  = await getUserID();
-        const userPref: IUserPref | undefined = await Collections.getByID(COLLECTION, uid);
+        const userPref: IUserPref | undefined = await Collections.getByID(await FirestoreBrowserClient.getInstance(), COLLECTION, uid);
 
         if (userPref) {
             return new DictionaryPrefs(userPref.value);
@@ -53,7 +48,7 @@ export namespace UserPrefs {
     export async function set(prefs: IPersistentPrefs) {
 
         const uid  = await getUserID();
-        const ref = await Collections.createRef(COLLECTION, uid);
+        const ref = await Collections.createRef(await FirestoreBrowserClient.getInstance(), COLLECTION, uid);
 
         const userPref: IUserPref = {
             uid,
