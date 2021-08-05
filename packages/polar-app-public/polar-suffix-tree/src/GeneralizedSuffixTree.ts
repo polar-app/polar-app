@@ -110,11 +110,8 @@ export class GeneralizedSuffixTree {
         let currentNode = this.root;
         let currentEdge: STEdge;
 
-        console.log("FIXME: here: " + word);
 
         for (let i = 0; i < word.length; ++i) {
-
-            console.log("FIXME: currentNode: ", currentNode)
 
             const ch = word.charAt(i);
             // follow the edge corresponding to this char
@@ -133,7 +130,6 @@ export class GeneralizedSuffixTree {
 
                 if (!StringUtils.regionMatches(word, i, label, 0, lenToMatch)) {
                     // the label on the edge does not correspond to the one in the string to search
-                    console.log(("FIXME: does not match"))
                     return null;
                 }
 
