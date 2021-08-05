@@ -1,5 +1,5 @@
 
-https://devhints.io/typescript
+Check for cheatsheet: https://devhints.io/typescript
 
 # Basic types
 
