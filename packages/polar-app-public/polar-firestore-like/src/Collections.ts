@@ -1,4 +1,4 @@
-import { IFirestore } from "./IFirestore";
+import { IFirestore, IFirestoreClient } from "./IFirestore";
 import firebase from 'firebase/app'
 import {IDocumentReference} from "./IDocumentReference";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
@@ -190,16 +190,16 @@ export namespace Collections {
     /**
      * Query snapshot but only for changed documents.
      */
-    export async function onQuerySnapshotChanges<T>(collection: string,
+    export async function onQuerySnapshotChanges<T = unknown>(firestore: IFirestoreClient,collection: string,
                                                   clauses: ReadonlyArray<Clause>,
                                                   delegate: (records: ReadonlyArray<DocumentChange<T>>) => void,
                                                   errHandler: QuerySnapshotErrorHandler = DefaultQuerySnapshotErrorHandler): Promise<SnapshotUnsubscriber> {
 
-        const query = await this.createQuery(collection, clauses);
+        const query = await createQuery(firestore, collection, clauses);
 
-        return query.onSnapshot((snapshot: { docChanges: () => any[]; }) => {
+        return query.onSnapshot(snapshot => {
 
-            const changes = snapshot.docChanges().map((current: { type: any; doc: { data: () => T; }; }) => {
+            const changes = snapshot.docChanges().map(current => {
 
                 const type = current.type;
                 const value = <T> current.doc.data();
@@ -212,9 +212,10 @@ export namespace Collections {
 
             delegate(changes);
 
-        }, (err: Error) => {
+        }, err => {
             errHandler(err, collection, clauses);
         });
+
 
     }
 
