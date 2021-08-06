@@ -170,7 +170,7 @@ export const NoteRepoScreen: React.FC = () => {
     const handleDoubleClick = React.useCallback(({ id }: GridRowParams) => {
         const block = blocksStore.getBlockByTarget(id as string) as NamedBlock;
         history.push(`/notes/${block.content.data}`);
-    }, [history]);
+    }, [history, blocksStore]);
 
     return (
         <NotesInnerContainer>
