@@ -100,6 +100,7 @@ const BLOCK_TABLE_COLUMNS: GridColDef[] = [
     {
         field: 'actions',
         headerName: ' ',
+        resizable: false,
         align: 'right' as const,
         renderCell({ row }: GridCellParams) {
             return (
@@ -128,9 +129,6 @@ const useStyles = makeStyles((theme) =>
             '&.MuiDataGrid-root .MuiDataGrid-columnsContainer': {
                 borderTop: `1px solid ${theme.palette.background.paper}`,
                 borderBottom: `1px solid ${theme.palette.background.paper}`,
-            },
-            '&.MuiDataGrid-root .MuiDataGrid-columnSeparator': {
-                display: 'none',
             },
             '&.MuiDataGrid-root .MuiDataGrid-columnHeaderTitleContainer': {
                 padding: 0,
