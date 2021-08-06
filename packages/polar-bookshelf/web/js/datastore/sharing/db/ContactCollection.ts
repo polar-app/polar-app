@@ -1,10 +1,12 @@
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
-import {Collections, DocumentChange} from "polar-firestore-like/src/Collections";
+import {Collections} from "polar-firestore-like/src/Collections";
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {EmailStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+
+import DocumentChange = Collections.DocumentChange;
 
 
 export class ContactCollection {

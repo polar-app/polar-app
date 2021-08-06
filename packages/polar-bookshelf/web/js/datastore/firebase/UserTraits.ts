@@ -1,4 +1,5 @@
-import {Collections, UserIDStr} from "polar-firestore-like/src/Collections";
+import {UserIDStr} from "polar-shared/src/util/Strings";
+import {Collections} from "polar-firestore-like/src/Collections";
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
