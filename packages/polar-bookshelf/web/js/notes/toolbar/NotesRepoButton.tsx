@@ -10,12 +10,12 @@ const useStyles = makeStyles(() =>
     }),
 );
 
-export const DailyNotesButton = () => {
+export const NotesRepoButton = () => {
     const classes = useStyles();
 
     return (
-        <Link style={{ textDecoration: 'none' }} to="/notes/daily">
-            <Button className={classes.root} variant="outlined" disableElevation>Daily Notes</Button>
+        <Link style={{ textDecoration: 'none' }} to="/notes/repo">
+            <Button className={classes.root} variant="outlined" disableElevation>All Notes</Button>
         </Link>
     );
 };

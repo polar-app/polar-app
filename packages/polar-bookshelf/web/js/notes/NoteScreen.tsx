@@ -60,9 +60,9 @@ export const NotesScreen: React.FC<RouteComponentProps> = observer(() => {
             <NoteProviders>
                 <JumpToNoteKeyboardCommand />
                 <Switch>
-                    <Route path="/notes/daily" component={DailyNotesScreen} />
+                    <Route path="/notes/repo" component={NoteRepoScreen} />
                     <Route path="/notes/:id" component={SingleNoteScreen} />
-                    <Route path="/notes" component={NoteRepoScreen} />
+                    <Route path="/notes" component={DailyNotesScreen} />
                 </Switch>
             </NoteProviders>
         </NotesContainer>
