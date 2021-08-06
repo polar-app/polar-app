@@ -114,6 +114,9 @@ const BLOCK_TABLE_COLUMNS: GridColDef[] = [
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
+            '&.MuiDataGrid-root': {
+                fontSize: '1.167rem',
+            },
             [`
                 &.MuiDataGrid-root .MuiDataGrid-cell:focus,
                 &.MuiDataGrid-root .MuiDataGrid-cell:focus-within,
