@@ -1,5 +1,6 @@
 import {Platforms, PlatformStr} from "polar-shared/src/util/Platforms";
-import {CollectionNameStr, Collections, FirestoreProvider, UserIDStr} from "../Collections";
+import { UserIDStr} from "polar-shared/src/util/Strings";
+import {CollectionNameStr, Collections, FirestoreProvider,} from "../Collections";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Version, VersionStr} from "polar-shared/src/util/Version";
 import {MachineID, MachineIDs} from "polar-shared/src/util/MachineIDs";

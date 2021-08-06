@@ -1,5 +1,5 @@
-import {IDStr} from "polar-shared/src/util/Strings";
-import {Clause, CollectionNameStr, Collections, FirestoreProvider, UserIDStr} from "../Collections";
+import {IDStr, UserIDStr} from "polar-shared/src/util/Strings";
+import {Clause, CollectionNameStr, Collections, FirestoreProvider} from "../Collections";
 import {RepetitionMode, StageCounts} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";

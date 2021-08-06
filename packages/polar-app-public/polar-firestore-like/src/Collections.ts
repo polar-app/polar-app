@@ -15,13 +15,10 @@ import DocumentChangeType = firebase.firestore.DocumentChangeType;
 
 export namespace Collections {
 
-    /**
-     * The direction of a `Query.orderBy()` clause is specified as 'desc' or 'asc'
-     * (descending or ascending).
-     */
-    export type OrderByDirection = 'desc' | 'asc';
-
-    export type OrderByClause = [string, OrderByDirection | undefined];
+    export interface DocumentChange<T> {
+        readonly type: DocumentChangeType;
+        readonly value: T;
+    }
 
     export type WhereFilterOp =
         | '<'
@@ -32,13 +29,49 @@ export namespace Collections {
         | '>'
         | 'array-contains'
         | 'in'
-        | 'not-in'
-        | 'array-contains-any';
+        | 'array-contains-any'
+        | 'not-in';
+
+    /**
+     * The direction of a `Query.orderBy()` clause is specified as 'desc' or 'asc'
+     * (descending or ascending).
+     */
+    export type OrderByDirection = 'desc' | 'asc';
+
+    export interface QueryOpts {
+
+        /**
+         * Limit the number of results.
+         */
+        readonly limit?: number;
+
+        readonly orderBy?: ReadonlyArray<OrderByClause>;
+
+    }
+
+    export type Clause = [string, WhereFilterOp, any];
+
+    export type OrderByClause = [string, OrderByDirection | undefined];
 
     export type ValueType = object | string | number;
 
-    export type Clause = [string, WhereFilterOp, ValueType];
+    export type SnapshotListener<T> = (record: ReadonlyArray<T>) => void;
 
+    export type QuerySnapshotErrorHandler = (err: Error, collection: string, clauses: ReadonlyArray<Clause>) => void;
+
+    const DefaultQuerySnapshotErrorHandler = (err: Error, collection: string, clauses: ReadonlyArray<Clause>) => {
+
+        console.error(`Unable to handle snapshot for collection ${collection}: `, clauses, err);
+
+    };
+
+    export type SnapshotErrorHandler = (err: Error, collection: string) => void;
+
+    export const DefaultSnapshotErrorHandler = (err: Error, collection: string) => {
+
+        console.error(`Unable to handle snapshot for collection ${collection}: `, err);
+
+    };
 
     export interface IterateOpts {
         readonly limit?: number;
@@ -392,59 +425,3 @@ export namespace Collections {
         next(): Promise<ReadonlyArray<T>>;
     }
 }
-
-export type UserIDStr = string;
-
-export interface DocumentChange<T> {
-    readonly type: DocumentChangeType;
-    readonly value: T;
-}
-
-export type WhereFilterOp =
-| '<'
-| '<='
-| '=='
-| '!='
-| '>='
-| '>'
-| 'array-contains'
-| 'in'
-| 'array-contains-any'
-| 'not-in';
-
-export type OrderByDirection = 'desc' | 'asc';
-
-export interface QueryOpts {
-    
-    /**
-     * Limit the number of results.
-     */
-    readonly limit?: number;
-    
-    readonly orderBy?: ReadonlyArray<OrderByClause>;
-    
-}
-
-export type Clause = [string, WhereFilterOp, any];
-
-export type OrderByClause = [string, OrderByDirection | undefined];
-
-export type ValueType = object | string | number;
-
-export type SnapshotListener<T> = (record: ReadonlyArray<T>) => void;
-
-export type QuerySnapshotErrorHandler = (err: Error, collection: string, clauses: ReadonlyArray<Clause>) => void;
-
-const DefaultQuerySnapshotErrorHandler = (err: Error, collection: string, clauses: ReadonlyArray<Clause>) => {
-
-    console.error(`Unable to handle snapshot for collection ${collection}: `, clauses, err);
-
-};
-
-export type SnapshotErrorHandler = (err: Error, collection: string) => void;
-
-const DefaultSnapshotErrorHandler = (err: Error, collection: string) => {
-
-    console.error(`Unable to handle snapshot for collection ${collection}: `, err);
-
-};
