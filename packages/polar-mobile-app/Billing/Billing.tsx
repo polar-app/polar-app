@@ -32,44 +32,7 @@ export class Billing {
         this.purchaseUpdateSubscription = RNIap.purchaseUpdatedListener((purchase: RNIap.InAppPurchase | RNIap.SubscriptionPurchase | RNIap.ProductPurchase) => {
             console.log(new Date().toISOString());
             console.log('purchaseUpdatedListener', purchase);
-            const receipt = purchase.transactionReceipt;
-            console.log('receipt', receipt);
-
-            if (!receipt) {
-                return;
-            }
-
-            AsyncStorage.getItem(
-                '@polar:buyer_email',
-            ).then(buyerEmail => {
-                BackendService.validateReceiptOnServer(purchase.transactionReceipt, buyerEmail!)
-                    .then(async (serverVerifyReceiptResponse) => {
-
-                        console.log('deliveryResult');
-                        console.log(serverVerifyReceiptResponse);
-
-                        if (isSuccess(serverVerifyReceiptResponse)) {
-                            console.log('Finishing transaction with App Store');
-                            // Tell the store that you have delivered what has been paid for.
-                            // Failure to do this will result in the purchase being refunded on Android and
-                            // the purchase event will reappear on every relaunch of the app until you succeed
-                            // in doing the below. It will also be impossible for the user to purchase consumables
-                            // again until you do this.
-                            try {
-                                await RNIap.finishTransaction(purchase, true);
-                                // If not consumable
-                                await RNIap.finishTransaction(purchase, false);
-                            } catch (e) {
-                                console.error(e);
-                            }
-                        } else {
-                            console.error('Transaction receipt not valid. Can not finish transaction');
-                            // Retry / conclude the purchase is fraudulent, etc...
-                        }
-                    });
-            });
-
-
+            this.handlePurchase(purchase).then()
         });
 
         this.purchaseErrorSubscription = RNIap.purchaseErrorListener((error: RNIap.PurchaseError) => {
@@ -80,6 +43,50 @@ export class Billing {
                 Alert.alert(String(error.code), error.message);
             }
         });
+    }
+
+    private async handlePurchase(purchase: RNIap.InAppPurchase | RNIap.SubscriptionPurchase | RNIap.ProductPurchase) {
+        const receipt = purchase.transactionReceipt;
+        console.log('receipt', receipt);
+
+        if (!receipt) {
+            return;
+        }
+
+        const buyerEmail = await AsyncStorage.getItem(
+            '@polar:buyer_email',
+        );
+
+        if (!buyerEmail) {
+            alert("Can not retrieve previously stored email to finish the purchase procedure");
+            return;
+        }
+
+        const serverVerifyReceiptResponse = await BackendService.validateReceiptOnServer(purchase.transactionReceipt, buyerEmail!, Platform.OS);
+
+        console.log('deliveryResult');
+        console.log(serverVerifyReceiptResponse);
+
+        if (!isSuccess(serverVerifyReceiptResponse)) {
+            console.error('Transaction receipt not valid. Can not finish transaction');
+            alert('Transaction receipt not valid. Can not finish transaction');
+            // Retry / conclude the purchase is fraudulent, etc...
+        }
+
+        console.log('Finishing transaction with App Store');
+
+        // Tell the store that you have delivered what has been paid for.
+        // Failure to do this will result in the purchase being refunded on Android and
+        // the purchase event will reappear on every relaunch of the app until you succeed
+        // in doing the below. It will also be impossible for the user to purchase consumables
+        // again until you do this.
+        try {
+            const finishResult = await RNIap.finishTransaction(purchase, true);
+            console.log('finishResult', finishResult);
+        } catch (e) {
+            console.error(e);
+            alert('Failed to finish transaction on App Store');
+        }
     }
 
     async getProducts(names: {
