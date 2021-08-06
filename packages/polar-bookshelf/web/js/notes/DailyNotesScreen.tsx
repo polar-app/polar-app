@@ -1,74 +1,31 @@
-import {Box, createStyles, makeStyles, Typography} from "@material-ui/core";
 import React from "react";
+import {Box, createStyles, makeStyles, Typography} from "@material-ui/core";
+import {useStateRef} from "../hooks/ReactHooks";
 import {useBlocksStore} from "./store/BlocksStore";
 import {Block as BlockClass} from "./store/Block";
 import {DateContent} from "./content/DateContent";
 import {BlockPredicates} from "./store/BlockPredicates";
-import {autorun} from "mobx";
-import {useInView} from "react-intersection-observer";
-import {Helmet} from "react-helmet";
-import {NotePaper} from "./NotePaper";
-import {BlocksTreeProvider} from "./BlocksTree";
-import {NotesInbound} from "./NotesInbound";
-import {Block} from "./Block";
-import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
-import {BlockTitle} from "./BlockTitle";
-import {useStateRef} from "../hooks/ReactHooks";
-import equal from "deep-equal";
-import {NameContent} from "./content/NameContent";
 import {DateContents} from "./content/DateContents";
-import {IBlocksStore} from "./store/IBlocksStore";
+import {useInView} from "react-intersection-observer";
+import {NotePaper} from "./NotePaper";
+import {Helmet} from "react-helmet";
+import {BlocksTreeProvider} from "./BlocksTree";
+import {Block} from "./Block";
+import {NotesInbound} from "./NotesInbound";
+import {NotesInnerContainer} from "./NotesContainer";
+import {focusFirstChild, useNamedBlocks} from "./NoteUtils";
 
 const DAILY_NOTES_CHUNK_SIZE = 3;
 
 const useStyles = makeStyles((theme) =>
     createStyles({
-        noteContentOuter: {
-            width: '100%',
-            flex: '1 1 0',
-            minHeight: 0,
-            display: 'flex',
-            justifyContent: 'center',
-            padding: '16px 26px',
-        },
         faded: {
             color: theme.palette.text.hint,
         }
     }),
 );
 
-type NamedBlock = BlockClass<NameContent | DateContent>;
-
-const focusFirstChild = (blocksStore: IBlocksStore, id: BlockIDStr) => {
-    const root = blocksStore.getBlock(id);
-    if (root) {
-        const firstChildID = root.itemsAsArray[0] || blocksStore.createNewBlock(root.id, { asChild: true }).id;
-        blocksStore.setActiveWithPosition(firstChildID, 'start');
-    }
-};
-
-export const useNamedBlocks = () => {
-    const blocksStore = useBlocksStore();
-    const [namedBlocks, setNamedBlocks] = React.useState<ReadonlyArray<NamedBlock>>([]);
-    const prevNamedBlocksIDsRef = React.useRef<BlockIDStr[] | null>(null);
-
-    React.useEffect(() => {
-        const disposer = autorun(() => {
-            const namedBlocksIDs = Object.values(blocksStore.indexByName);
-            if (! equal(prevNamedBlocksIDsRef.current, namedBlocksIDs)) {
-                const namedBlocks = blocksStore.idsToBlocks(namedBlocksIDs) as ReadonlyArray<NamedBlock>;
-                setNamedBlocks(namedBlocks);
-                prevNamedBlocksIDsRef.current = namedBlocksIDs;
-            }
-        });
-
-        return () => disposer();
-    }, [blocksStore]);
-
-    return namedBlocks;
-};
-
-export const DailyNotesRenderer: React.FC = () => {
+export const DailyNotesScreen: React.FC = () => {
     const classes = useStyles();
     const [threshold, setThreshold, thresholdRef] = useStateRef(0);
     const [dailyNotes, setDailyNotes, dailyNotesRef] = useStateRef<ReadonlyArray<BlockClass<DateContent>>>([]);
@@ -125,7 +82,7 @@ export const DailyNotesRenderer: React.FC = () => {
             <Helmet>
                 <title>Polar: Daily notes</title>
             </Helmet>
-            <div className={classes.noteContentOuter}>
+            <NotesInnerContainer>
                 <NotePaper ref={rootRef}>
                     {visibleNotes.map(({ id }) => (
                         <div key={id} className="NoteTree">
@@ -156,58 +113,8 @@ export const DailyNotesRenderer: React.FC = () => {
                         </Box>
                     }
                 </NotePaper>
-            </div>
+            </NotesInnerContainer>
         </>
     );
 };
 
-
-interface ISingleNoteRendererProps {
-    readonly target: BlockIDStr;
-}
-
-export const SingleNoteRendrer: React.FC<ISingleNoteRendererProps> = ({ target }) => {
-    const classes = useStyles();
-    const blocksStore = useBlocksStore();
-
-    const root = React.useMemo(() => blocksStore.getBlockByTarget(target), [target, blocksStore]);
-
-    React.useEffect(() => {
-        if (! root) {
-            return;
-        }
-
-        const activeBlock = blocksStore.getActiveBlockForNote(root.id);
-        if (activeBlock) {
-            blocksStore.setActiveWithPosition(activeBlock.id, activeBlock.pos || 'start');
-        } else {
-            focusFirstChild(blocksStore, root.id);
-        }
-    }, [root, blocksStore]);
-
-    if (! root) {
-        return (
-            <Box mt={5} display="flex" justifyContent="center">
-                <Typography variant="h5">Note {target} was not found.</Typography>
-            </Box>
-        );
-    }
-
-    const rootID = root.id;
-
-    return (
-        <>
-            <BlockTitle id={rootID}/>
-            <div className={classes.noteContentOuter}>
-                <NotePaper>
-                    <BlocksTreeProvider root={rootID} autoExpandRoot>
-                        <Block parent={undefined} id={rootID} withHeader noExpand noBullet />
-                        <div style={{ marginTop: 64 }}>
-                            <NotesInbound id={rootID} />
-                        </div>
-                    </BlocksTreeProvider>
-                </NotePaper>
-            </div>
-        </>
-    );
-};

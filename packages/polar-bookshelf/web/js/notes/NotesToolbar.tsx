@@ -2,7 +2,7 @@ import {createStyles, Divider, makeStyles} from '@material-ui/core';
 import React from 'react';
 import {CreateNote} from './toolbar/CreateNote';
 import {SearchForNote} from "./toolbar/SearchForNote";
-import {WorkspaceDropdown} from './toolbar/WorkspaceDropdown';
+import {DailyNotesButton} from './toolbar/DailyNotesButton';
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -37,7 +37,7 @@ export const NotesToolbar = () => {
     return (
         <>
             <div className={classes.root}>
-                <div className={classes.left}><WorkspaceDropdown /></div>
+                <div className={classes.left}><DailyNotesButton /></div>
                 <div className={classes.mid}><SearchForNote /></div>
                 <div className={classes.right}><CreateNote /></div>
             </div>
