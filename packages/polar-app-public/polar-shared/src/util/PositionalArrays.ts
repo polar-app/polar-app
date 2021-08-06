@@ -101,7 +101,8 @@ export namespace PositionalArrays {
     }
 
     export function compare<T>(a: PositionalArrayEntry<T>, b: PositionalArrayEntry<T>) {
-        return parseFloat(a[0].position) - parseFloat(b[0].position);
+        return (parseFloat(a[0].position) - parseFloat(b[0].position)) ||
+               (a[0].host.localeCompare(b[0].host));
     }
 
     export function insert<T>(positionalArray: PositionalArray<T>,
@@ -183,10 +184,9 @@ export namespace PositionalArrays {
     export function unshift<T>(positionalArray: PositionalArray<T>, value: T): PositionalArray<T> {
 
         const min
-            = arrayStream(Object.keys(positionalArray))
-            .map(parseKey)
-            .map(({ position }) => parseFloat(position))
-            .sort((a, b) => a - b)
+            = arrayStream(entries(positionalArray))
+            .sort((a, b) => compare(a, b))
+            .map(([key]) => parseFloat(key.position))
             .first() || 0.0;
 
         const idx = min - 1.0;
@@ -201,10 +201,9 @@ export namespace PositionalArrays {
     export function append<T>(positionalArray: PositionalArray<T>, value: T): PositionalArray<T> {
 
         const max
-            = arrayStream(Object.keys(positionalArray))
-                .map(parseKey)
-                .map(({ position }) => parseFloat(position))
-                .sort((a, b) => a - b)
+            = arrayStream(entries(positionalArray))
+                .sort((a, b) => compare(a, b))
+                .map(([key]) => parseFloat(key.position))
                 .last() || 0.0;
 
         const idx = max + 1.0;
@@ -304,17 +303,10 @@ export namespace PositionalArrays {
      */
     export function toArray<T>(positionalArray: PositionalArray<T>): ReadonlyArray<T> {
 
-        const toPosition = (entry: PositionalArrayEntry<T>): IPositionalArrayPosition<T> => {
-            return {
-                pos: parseFloat(entry[0].position),
-                value: entry[1]
-            };
-        }
-
-        return entries(positionalArray)
-                     .map(toPosition)
-                     .sort((a,b) => a.pos - b.pos)
-                     .map(current => current.value);
+        return arrayStream(entries(positionalArray))
+                     .sort((a, b) => compare(a, b))
+                     .collect()
+                     .map(([, value]) => value);
 
     }
 

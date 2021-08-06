@@ -329,5 +329,15 @@ describe("PositionalArrays", () => {
     });
 
 
+    it("should sort by host if the sequences are identical", () => {
+        const arr: PositionalArray<string> = {
+            "az:-00000000000000000001": "1",
+            "aa:-00000000000000000001": "2",
+            "ab:-00000000000000000001": "3",
+            "ab:-00000000000000000002": "-15",
+        };
+
+        assertJSON(PositionalArrays.toArray(arr), ["-15", "2", "3", "1"]);
+    });
 });
 
