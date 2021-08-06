@@ -38,6 +38,12 @@ export interface IBaseKeyboardShortcut {
     readonly description?: string;
     readonly sequences: ReadonlyArray<KeyBinding>;
     readonly priority?: number;
+
+    /**
+     * This is used to determine whether to ignore the shortcut
+     * if a text editor is currently in focus (input, textarea, or contenteditable)
+     */
+    readonly ignorable?: boolean;
 }
 
 export interface IKeyboardShortcut extends IBaseKeyboardShortcut {
@@ -99,7 +105,7 @@ function callbacksFactory(storeProvider: Provider<IKeyboardShortcutsStore>,
         const shortcuts = {...store.shortcuts};
         const sequence = Arrays.first(shortcut.sequences)!;
         let storedShortcut = shortcuts[sequence.keys];
-        if (!storedShortcut) {
+        if (! storedShortcut) {
             storedShortcut = { registered: [shortcut], active: shortcut };
         } else {
             storedShortcut.registered.unshift(shortcut);

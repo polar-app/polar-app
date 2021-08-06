@@ -36,6 +36,7 @@ export interface PromptDialogProps {
     readonly defaultValue?: string;
     readonly placeholder?: string;
     readonly autoFocus?: boolean;
+    readonly autoHighlight?: boolean;
     readonly inputValidator?: InputValidator;
     readonly type?: 'email' | 'number' | 'search' | 'password'
     readonly onCancel: () => void;
@@ -108,6 +109,12 @@ export const PromptDialog = deepMemo(function PromptDialog(props: PromptDialogPr
         value = text;
     };
 
+    const inputRefCallback = React.useCallback((elem: HTMLInputElement | null) => {
+        if (elem && props.autoHighlight) {
+            elem.select();
+        }
+    }, [props.autoHighlight]);
+
     return (
 
         <MUIDialog open={state.open}
@@ -134,6 +141,7 @@ export const PromptDialog = deepMemo(function PromptDialog(props: PromptDialogPr
                                        onChange={event => handleInput(event.currentTarget.value)}
                                        margin="dense"
                                        id="name"
+                                       inputRef={inputRefCallback}
                                        autoComplete={props.autoComplete}
                                        defaultValue={props.defaultValue}
                                        placeholder={props.placeholder}

@@ -138,7 +138,7 @@ function createPredicate1(keys: ReadonlyArray<string>): KeyboardEventHandlerPred
 }
 
 
-function createHandler(sequence: KeyBinding, handler: KeyboardShortcutEventHandler): KeyboardEventHandlerUsingPredicate {
+function createPredicate(sequence: KeyBinding): KeyboardEventHandlerUsingPredicate {
 
     function createPredicate() {
 
@@ -168,23 +168,7 @@ function createHandler(sequence: KeyBinding, handler: KeyboardShortcutEventHandl
 
     }
 
-    const predicate = createPredicate();
-
-    return (event) => {
-
-        if (predicate(event)) {
-            event.stopPropagation();
-            event.preventDefault();
-
-            console.log("Executing handler for sequence: " + sequence);
-            setTimeout(() => handler(event), 1);
-            return true;
-        }
-
-        return false;
-
-    }
-
+    return createPredicate();
 }
 
 function isIgnorableKeyboardEvent(event: KeyboardEvent): boolean {
@@ -214,7 +198,7 @@ function isIgnorableKeyboardEvent(event: KeyboardEvent): boolean {
 
 
 type SequenceToHandler = [string, KeyboardShortcutEventHandler];
-type SequenceToKeyboardEventHandlerPredicate = [KeyBinding, KeyboardEventHandlerPredicate];
+type SequenceToKeyboardEventHandlerPredicate = [IKeyboardShortcutWithHandler, KeyBinding, KeyboardEventHandlerPredicate];
 
 export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
 
@@ -224,19 +208,24 @@ export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
 
     function computeKeyToHandlers() {
 
-        function toKeyToHandler(keyboardShortcut: IKeyboardShortcutWithHandler): ReadonlyArray<SequenceToKeyboardEventHandlerPredicate> {
+        function toPredicate(keyboardShortcut: IKeyboardShortcutWithHandler): ReadonlyArray<SequenceToKeyboardEventHandlerPredicate> {
 
+            console.log('debug', keyboardShortcut.sequences, keyboardShortcut);
             function toKeyboardEventHandlerPredicate(seq: KeyBinding) {
-                return createHandler(seq, keyboardShortcut.handler);
+                return createPredicate(seq);
             }
 
-            return keyboardShortcut.sequences.map(seq => ([seq, toKeyboardEventHandlerPredicate(seq)]));
+            return keyboardShortcut.sequences.map(seq => ([
+                keyboardShortcut,
+                seq,
+                toKeyboardEventHandlerPredicate(seq),
+            ]));
 
         }
 
         return arrayStream(Object.values(shortcutsRef.current))
             .map(x => x.active)
-            .flatMap(toKeyToHandler)
+            .flatMap(toPredicate)
             .collect();
 
     }
@@ -245,20 +234,25 @@ export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
 
     const handleKeyDown = React.useCallback((event: KeyboardEvent) => {
 
-        if (isIgnorableKeyboardEvent(event)) {
-            return;
-        }
-
         if (! activeRef.current) {
             // key bindings are deactivated.
             return;
         }
 
-        for (const keyToHandler of keyToHandlers.current) {
+        for (const [shortcut, seq, predicate] of keyToHandlers.current) {
+            const { ignorable = true } = shortcut;
 
-            const handler = keyToHandler[1];
+            if (predicate(event)) {
+                console.log('debug', ignorable, seq);
+                if (ignorable && isIgnorableKeyboardEvent(event)) {
+                    return;
+                }
 
-            if (handler(event)) {
+                event.stopPropagation();
+                event.preventDefault();
+
+                console.log("Executing handler for sequence: " + seq);
+                setTimeout(() => shortcut.handler(event), 1);
                 break;
             }
 

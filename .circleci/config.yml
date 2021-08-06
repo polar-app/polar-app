@@ -1,14 +1,18 @@
+# % >= 2.1 Required for Orbs
 version: 2.1
 
+# @ Custom Orbs
 orbs:
   win: circleci/windows@2.2.0
+  cypress: cypress-io/cypress@1.28.0
 
+# ~ Pre-Script Steps to Execute before Jobs
 commands:
-  build_setup:
-    description: setup the build for commands
+  # & Publishing setup steps
+  publishing_setup:
+    description: set the SSH keys and Hashes required to deploy
     steps:
-      - checkout
-
+      # ! Add SSH Keys for publishing
       - add_ssh_keys:
           fingerprints:
             - "26:22:fe:b3:b7:ce:d8:43:cf:2d:e6:17:26:31:d1:58"
@@ -16,35 +20,37 @@ commands:
             - "16:e3:06:7e:6e:58:07:3a:20:35:14:c3:7e:98:33:bb"
             - "SHA256:uwzneTU1Stml8f1GDcffUJPK6GxSs77+vMZOHopRJLE burton@getpolarized.io"
 
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - yarn-packages-v1-{{ .Branch }}-
-            - yarn-packages-v1-
-
-      # I think bytesafe might not work with npm v7
-      #- run:
-      #    name: "Install latest NPM"
-      #    command: sudo npm -g install npm
-
-      # Comment out the stage for now
-      # - run:
-      #     name: NPM node_modules cache stats
-      #     command: |
-      #       du -h ./node_modules | tail -1
-
+  # & Install Global Modules
+  global_modules_setup:
+    description: install global modules
+    steps:
+      # ! Install Basic Modules { lerna, npm, firebase tools }
       - run:
-          name: Install global node modules
+          name: Install global node_modules
           command: |
             sudo yarn global add lerna@4.0.0
             sudo yarn global add npm@7.19.1
             sudo yarn global add firebase-tools@9.16.0
 
-      #            sudo npm -g install yarn@1.22.10
+  # & Publishing setup steps
+  build_setup:
+    description: setup the build for commands
+    steps:
+      - checkout
 
+      # ! Download and cache dependencies
+      - restore_cache:
+          keys:
+            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+
+      # ! Install Required Linux Binary (libvips is needed by sharp which is needed by gatsby)
       - run:
-          name: Node and NPM version
+          name: Required Linux packages
+          command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get update && sudo apt-get install libvips libvips-dev pngquant; fi
+
+      # ? Debug Step for Node/Npm/Yarn/Lerna/Firebase Versions
+      - run:
+          name: DEBUG(Node, NPM, Yarn, Lerna & Firebase Versions)
           command: |
             echo -n "Node version: "
             node --version
@@ -57,19 +63,16 @@ commands:
             echo -n "firebase version: "
             firebase --version
 
+      # ? Debug Step for OS version
       - run:
-          name: OS environment
+          name: DEBUG(OS Environment)
           command: |
             echo $OSTYPE
             uname -a
 
+      # ? Debug step for Npm/Yarn Configuration
       - run:
-          name: Required Linux packages (when on Linux)
-          # libvips is needed by sharp which is needed by gatsby
-          command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get update && sudo apt-get install libvips libvips-dev pngquant; fi
-
-      - run:
-          name: NPM setup
+          name: DEBUG(NPM/Yarn Setup)
           command: |
             cp .npmrc ~/.npmrc
             cat ~/.npmrc
@@ -79,182 +82,115 @@ commands:
             npm config list
             echo "npm config ls -l: ======"
             npm config ls -l
+            echo "yarn config list: ======"
+            yarn config list
 
+      # ! Hoist all Dependencies
       - run:
-          name: lerna bootstrap
+          name: Lerna Bootstrap
           no_output_timeout: 30m
-          # command: npm run-script purge-node-modules && npx lerna bootstrap
           command: |
             npm config set legacy-peer-deps true
             npx lerna bootstrap --ci
 
+      # ! Save Cache
       - save_cache:
           paths:
             - ~/.cache/yarn
           key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
 
-      #- run:
-      #    name: Required Linux packages (when on Linux)
-      #    command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get install libgtk-3-0 libnss3 libxss1 libasound2 libxtst6; fi
-
+      # ! Compile all Typescript Packages
       - run:
-          name: compile
+          name: Lerna Compile
           command: npx lerna run compile
 
+      # ! Persist the files to carry over to the next stage
+      - persist_to_workspace:
+          root: /home/circleci/
+          paths:
+            - project
+
+# ~ Workflow Building Blocks
 jobs:
-  build:
+  # @ Build the application for the following steps
+  setting-up:
     parameters:
       executor:
-        description: "The CircleCI executor to use."
         type: executor
-
     executor: << parameters.executor>>
-
-    working_directory: ~/repo
-
-    description: "Build the main code and run 'npm test'"
-
+    description: build the application for all the following steps
     steps:
+      - global_modules_setup
       - build_setup
-      - run:
-          name: test
-          command: npx lerna run test
 
+  # @ Run Karma Test Suite
   karma:
     parameters:
       executor:
-        description: "The CircleCI executor to use."
         type: executor
-
     executor: << parameters.executor>>
-
-    working_directory: ~/repo
-
     description: "Run our karma tests in the browser."
-
     steps:
-      - build_setup
+      - attach_workspace:
+          at: ~/
       - run:
           name: karma
           command: |
-            cd packages/polar-bookshelf
-            sudo apt-get install chromium
+            cd /home/circleci/project/packages/polar-bookshelf
+            sudo apt-get update && sudo apt-get install chromium --fix-missing
             export CHROME_BIN='/usr/bin/chromium'
             yarn run webpack
             yarn run karma
 
-  end2end:
+  # @ Build Polar-Bookshelf Webapp
+  build-polar-app:
     parameters:
       executor:
-        description: "The CircleCI executor to use."
         type: executor
-
     executor: << parameters.executor>>
-
-    # Specify service dependencies here if necessary
-    # CircleCI maintains a library of pre-built images
-    # documented at https://circleci.com/docs/2.0/circleci-images/
-    # - image: circleci/mongo:3.4.4
-
-    working_directory: ~/repo
-
     steps:
-      - build_setup
-
-      - run:
-          name: Run X virtual framebuffer (Linux)
-          command: |
-            if [ "$OSTYPE" = 'linux-gnu' ]; then
-              Xvfb -ac :99 -screen 0 1280x1024x16 +extension RANDR > /dev/null 2>&1
-            else
-              echo "Not running Xvfb (not linux)"
-            fi
-          background: true
-
-  build-webapp:
-    parameters:
-      executor:
-        description: "The CircleCI executor to use."
-        type: executor
-
-    executor: << parameters.executor>>
-
-    # Specify service dependencies here if necessary
-    # CircleCI maintains a library of pre-built images
-    # documented at https://circleci.com/docs/2.0/circleci-images/
-    # - image: circleci/mongo:3.4.4
-
-    working_directory: ~/repo
-
-    steps:
-      - build_setup
-
+      - attach_workspace:
+          at: ~/
       - run:
           name: build and verify webapp
           command: |
-            cd packages/polar-bookshelf && \
+            cd /home/circleci/project/packages/polar-bookshelf && \
             free -m && \
             yarn run build-webapp && \
             echo "Webapp Built Successfully" && \
-            pwd && \
             cat dist/public/repository-bundle.js | gzip -c > dist/public/repository-bundle.js.gz
             find dist/public/repository-bundle.js.gz -size +1300000c |tee /dev/stderr| egrep '.*'
+      - persist_to_workspace:
+          root: /home/circleci/
+          paths:
+            - project
 
-  build-site:
+  # @ Deploy Polar-Bookshelf
+  deploy-polar-app:
     parameters:
       executor:
-        description: "The CircleCI executor to use."
-        type: executor
-
-    executor: << parameters.executor>>
-
-    # Specify service dependencies here if necessary
-    # CircleCI maintains a library of pre-built images
-    # documented at https://circleci.com/docs/2.0/circleci-images/
-    # - image: circleci/mongo:3.4.4
-
-    working_directory: ~/repo
-
-    steps:
-      - build_setup
-
-      - run:
-          name: build and verify site (getpolarized.io)
-          command: |
-            pwd
-            cd packages/polar-site2
-            yarn run dist
-
-  deploy_app_getpolarized_io:
-    parameters:
-      executor:
-        description: "The CircleCI executor to use."
         type: executor
       firebase_hosting_target:
-        description: "The npm target to run in the final step."
         type: string
-
     executor: << parameters.executor>>
-    working_directory: ~/repo
     steps:
-      - build_setup
-
+      - global_modules_setup
+      - publishing_setup
+      - attach_workspace:
+          at: ~/
       - run:
-          name: init - setup credentials and bytesafe
+          name: Setup Credentials and Deploy Packages to Verdaccio
           no_output_timeout: 120m
           command: |
             npm config set always-auth true
             source packages/polar-bookshelf-secrets/credentials.sh
             rm -f ~/.npmrc && cat .npmrc > ~/.npmrc
-            lerna bootstrap
-            lerna run compile
             lerna run test
             yarn run dist-validate-env
             lerna exec --concurrency=1 --parallel=false --no-private  --no-bail -- yarn publish --verbose
             (cd packages/polar-app-private/polar-webapp-dist && yarn run dist)
-
       - run:
-          name: release
+          name: Deploy to Firebase Hosting & Cloud Functions
           no_output_timeout: 120m
           command: |
             source packages/polar-bookshelf-secrets/credentials.sh
@@ -264,155 +200,177 @@ jobs:
             (cd packages/polar-app-private/polar-hooks/functions && echo Pushing to target ${FIREBASE_HOSTING_TARGET} && firebase use polar-32b0f && firebase target:clear hosting app.getpolarized.io && firebase target:apply hosting app.getpolarized.io ${FIREBASE_HOSTING_TARGET} && firebase deploy --only hosting,storage,firestore)
             (cd packages/polar-app-private/polar-hooks/ && time firebase deploy --only functions)
 
-  deploy_getpolarized_io:
+  # @ Build getpolarized.io Website
+  build-polar-site:
     parameters:
       executor:
-        description: "The CircleCI executor to use."
         type: executor
-
     executor: << parameters.executor>>
-    working_directory: ~/repo
     steps:
+      - global_modules_setup
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: build and verify site (getpolarized.io)
+          command: |
+            cd /home/circleci/project/packages/polar-site2
+            yarn run dist
+
+  # @ Deploy getpolarized.io
+  deploy-polar-site:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor>>
+    steps:
+      - publishing_setup
+      - attach_workspace:
+          at: ~/
       - run:
           name: deploy
           command: |
-            pwd
-            cd packages/polar-site2
+            cd /home/circleci/project/packages/polar-site2
             yarn run dist-release
-  cypress:
-    parameters:
-      executor:
-        description: "The CircleCI executor to use."
-        type: executor
 
-    executor: << parameters.executor>>
-    working_directory: ~/repo
-    steps:
-      - build_setup
-
-      - run:
-          name: install prereqs
-          command: |
-            sudo apt-get update
-            sudo apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
-
-      - run:
-          name: install chromium
-          command: |
-            sudo apt-get update
-            sudo apt-get install chromium
-
-      - run:
-          name: init
-          command: |
-            cd packages/polar-bookshelf
-            npx webpack-dev-server &
-
-            waitport() {
-                while ! nc -z localhost $1 ; do sleep 1 ; done
-            }
-
-            echo "Starting to wait for HTTP server on port 8050"
-            waitport 8050
-            echo "HTTP server running on port 8050! Starting to test now..."
-
-            npx cypress run --browser chromium --headless
-
+# ~ Define Custom Executors
 executors:
-  my-docker:
+  # ! Default Executor for most jobs
+  xlarge:
     docker:
-      # https://circleci.com/docs/2.0/circleci-images/
-      # https://circleci.com/docs/2.0/docker-image-tags.json
       - image: circleci/node:14.16.0-buster
-
-    # https://circleci.com/docs/2.0/configuration-reference/#resource_class
+    resource_class: xlarge
+  large:
+    docker:
+      - image: circleci/node:14.16.0-buster
+    resource_class: large
+  ff-chrome:
+    docker:
+      - image: cypress/browsers:node14.17.0-chrome88-ff89
     resource_class: xlarge
 
-  my-macos:
-    macos:
-      # https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions
-      xcode: 12.4.0
-
+# ~ Define Workflow Steps
 workflows:
   version: 2
   main:
     jobs:
-      #      - build_with_executor:
-      #          executor:
-      #            name: win/default
-      #            shell: bash.exe
-      #
-      - build:
-          executor: my-docker
-      - karma:
-          executor: my-docker
-      - build-webapp:
-          executor: my-docker
-      - build-site:
-          executor: my-docker
+      ## ^ Commonality Between Workflows
+      # @ Setup the repo for the subsquent stages
+      - setting-up:
+          executor: large
 
-      - hold_app_getpolarized_io:
+      ## ^ Polar App Workflow Below Here
+      # @ Run Karma Tests
+      - karma:
+          executor: large
+          requires:
+            - setting-up
+
+      # @ Build Polar app
+      - build-polar-app:
+          executor: large
+          requires:
+            - setting-up
+
+      # @ Run Cypress tests for chrome-desktop (1080p)
+      - cypress/run:
+          name: cypress-desktop-chrome
+          executor: ff-chrome
+          requires:
+            - build-polar-app
+          working_directory: /root/project/packages/polar-bookshelf
+          start: export WEBPACK_BUNDLE=repository && time node --max-old-space-size=7000 ./node_modules/.bin/webpack serve
+          wait-on: "http://localhost:8050"
+          command: npx cypress install && npx cypress run --env WIDTH=1920,HEIGHT=1080 --browser chrome
+          attach-workspace: true
+          store_artifacts: true
+
+      # @ Run Cypress tests for firefox-desktop (1080p)
+      - cypress/run:
+          name: cypress-desktop-firefox
+          executor: ff-chrome
+          requires:
+            - build-polar-app
+          working_directory: /root/project/packages/polar-bookshelf
+          start: export WEBPACK_BUNDLE=repository && time node --max-old-space-size=7000 ./node_modules/.bin/webpack serve
+          wait-on: "http://localhost:8050"
+          command: npx cypress install && npx cypress run --env WIDTH=1920,HEIGHT=1080 --browser firefox
+          attach-workspace: true
+          store_artifacts: true
+
+      # @ Run Cypress tests for chrome-mobile (using iPhone 11 pro viewport)
+      - cypress/run:
+          name: cypress-mobile-chrome
+          executor: ff-chrome
+          requires:
+            - build-polar-app
+          working_directory: /root/project/packages/polar-bookshelf
+          start: export WEBPACK_BUNDLE=repository && time node --max-old-space-size=7000 ./node_modules/.bin/webpack serve
+          wait-on: "http://localhost:8050"
+          command: npx cypress install && npx cypress run --env WIDTH=375,HEIGHT=812 --browser firefox
+          attach-workspace: true
+          store_artifacts: true
+
+      # @ Run Cypress tests for chrome-tablet (using iPad pro viewport)
+      - cypress/run:
+          name: cypress-tablet-chrome
+          executor: ff-chrome
+          requires:
+            - build-polar-app
+          working_directory: /root/project/packages/polar-bookshelf
+          start: export WEBPACK_BUNDLE=repository && time node --max-old-space-size=7000 ./node_modules/.bin/webpack serve
+          wait-on: "http://localhost:8050"
+          command: npx cypress install && npx cypress run --env WIDTH=1024,HEIGHT=1366 --browser firefox
+          attach-workspace: true
+          store_artifacts: true
+
+      # @ Approve Polar app build for deployment
+      - approve-polar-app:
           type: approval
           requires:
-            - build
             - karma
-            - build-webapp
+            - cypress-desktop-firefox
+            - cypress-desktop-chrome
+            - cypress-tablet-chrome
+            - cypress-mobile-chrome
           filters:
             branches:
               only:
                 - master
 
-      - deploy_app_getpolarized_io:
-          executor: my-docker
+      # @ Deploy Approved Polar app build
+      - deploy-polar-app:
+          executor: xlarge
           firebase_hosting_target: polar-webapp
           requires:
-            - hold_app_getpolarized_io
+            - approve-polar-app
           filters:
             branches:
               only:
                 - master
 
-      - hold_getpolarized_io:
+      ## ^ Polar Site Workflow Below Here
+      # @ Build Polar Site
+      - build-polar-site:
+          executor: large
+          requires:
+            - setting-up
+
+      # @ Approve Polar Site build for deployment
+      - approve-polar-site:
           type: approval
           requires:
-            - build-site
+            - build-polar-site
           filters:
             branches:
               only:
                 - master
 
-      - deploy_getpolarized_io:
-          executor: my-docker
+      # @ Deploy Approved Polar Site build
+      - deploy-polar-site:
+          executor: large
           requires:
-            - hold_getpolarized_io
+            - approve-polar-site
           filters:
             branches:
               only:
                 - master
-#  cypress:
-#    jobs:
-#      - cypress:
-#          executor: my-docker
-
-#  macos:
-#    jobs:
-#
-#      - build:
-#          executor: my-macos
-#      - build-webapp:
-#          executor: my-macos
-#      - build-site:
-#          executor: my-macos
-
-#      - end2end:
-#          executor:
-#            name: win/default
-#            shell: bash.exe
-#
-#      - end2end:
-#          executor: my-docker
-#
-#      - end2end:
-#          executor: my-macos
-#
-

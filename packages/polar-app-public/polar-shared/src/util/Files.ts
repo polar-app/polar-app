@@ -722,7 +722,7 @@ export interface FileDeleted {
 
 }
 
-export type CreateReadStreamOptions = string | {
+export type CreateReadStreamOptions = BufferEncoding | {
     flags?: string;
     encoding?: BufferEncoding;
     fd?: number;
@@ -733,7 +733,7 @@ export type CreateReadStreamOptions = string | {
     highWaterMark?: number;
 };
 
-export type CreateWriteStreamOptions = string | {
+export type CreateWriteStreamOptions = BufferEncoding | {
     flags?: string | undefined;
     encoding?: BufferEncoding | undefined;
     fd?: number | undefined;

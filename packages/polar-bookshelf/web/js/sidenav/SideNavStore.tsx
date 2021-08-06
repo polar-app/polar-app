@@ -79,7 +79,7 @@ export interface TabDescriptor extends TabDescriptorInit {
  * Fields that we're allowed to update in a tab.
  */
 interface TabDescriptorUpdate {
-    readonly activeURL: URLStr;
+    readonly activeURL?: URLStr;
     readonly title?: string;
 }
 
