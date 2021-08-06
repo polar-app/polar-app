@@ -34,7 +34,9 @@ export namespace UserPrefs {
     export async function get(): Promise<Prefs> {
 
         const uid  = await getUserID();
-        const userPref: IUserPref | undefined = await Collections.getByID(await FirestoreBrowserClient.getInstance(), COLLECTION, uid);
+        const firestore = await FirestoreBrowserClient.getInstance();
+
+        const userPref: IUserPref | undefined = await Collections.getByID(firestore, COLLECTION, uid);
 
         if (userPref) {
             return new DictionaryPrefs(userPref.value);
@@ -48,7 +50,9 @@ export namespace UserPrefs {
     export async function set(prefs: IPersistentPrefs) {
 
         const uid  = await getUserID();
-        const ref = await Collections.createRef(await FirestoreBrowserClient.getInstance(), COLLECTION, uid);
+        const firestore = await FirestoreBrowserClient.getInstance();
+
+        const ref = await Collections.createRef(firestore, COLLECTION, uid);
 
         const userPref: IUserPref = {
             uid,

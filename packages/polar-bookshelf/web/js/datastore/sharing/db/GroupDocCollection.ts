@@ -17,7 +17,9 @@ export class GroupDocCollection {
 
 
     public static async list(groupID: GroupIDStr): Promise<ReadonlyArray<GroupDoc>> {
-        return await Collections.list(await FirestoreBrowserClient.getInstance(), this.COLLECTION, [['groupID', '==', groupID]]);
+        const firestore = await FirestoreBrowserClient.getInstance();
+
+        return await Collections.list(firestore, this.COLLECTION, [['groupID', '==', groupID]]);
     }
 
     public static async getByFingerprint(groupID: GroupIDStr,
@@ -33,7 +35,10 @@ export class GroupDocCollection {
             ['created', 'desc']
         ];
 
-        return await Collections.list(await FirestoreBrowserClient.getInstance(), this.COLLECTION, clauses, {orderBy, limit});
+        const firestore = await FirestoreBrowserClient.getInstance();
+
+
+        return await Collections.list(firestore, this.COLLECTION, clauses, {orderBy, limit});
 
     }
 

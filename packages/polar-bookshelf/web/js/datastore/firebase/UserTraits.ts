@@ -36,7 +36,9 @@ export namespace UserTraits {
         const promises = userTraits.map(async (current) => {
 
             const key = Hashcodes.createID({uid, name: current.name});
-            const ref = await Collections.createRef(await FirestoreBrowserClient.getInstance(), COLLECTION, key);
+            const firestore = await FirestoreBrowserClient.getInstance();
+
+            const ref = await Collections.createRef(firestore, COLLECTION, key);
             await ref.set(current);
 
         });

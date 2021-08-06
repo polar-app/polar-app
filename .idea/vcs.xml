@@ -3,5 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/pdf.js/test/ttx/fonttools-code" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/polar-app" vcs="Git" />
   </component>
 </project>

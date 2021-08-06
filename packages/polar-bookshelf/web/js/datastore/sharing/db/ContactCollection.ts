@@ -15,8 +15,9 @@ export class ContactCollection {
 
         const user = await FirebaseBrowser.currentUserAsync();
         const {uid} = Preconditions.assertPresent(user, 'user');
+        const firestore = await FirestoreBrowserClient.getInstance();
 
-        return await Collections.list(await FirestoreBrowserClient.getInstance(),this.COLLECTION, [['uid' , '==', uid]]);
+        return await Collections.list(firestore ,this.COLLECTION, [['uid' , '==', uid]]);
 
     }
 
