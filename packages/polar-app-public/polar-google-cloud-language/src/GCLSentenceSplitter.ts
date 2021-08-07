@@ -1,12 +1,16 @@
-
 import path from 'path';
 import language from '@google-cloud/language'
 
 function computeCredentials() {
-    const resolvedPackagePath = require.resolve('polar-google-cloud-language/packages.json');
+
+    // TODO: I realize it's stupid to load and include this path in the repo
+    // but it was a PAIN to get this to work properlty for just a PoC.
+
+    const resolvedPackagePath = require.resolve('polar-google-cloud-language/package.json');
     const resolvedPackageDir = path.dirname(resolvedPackagePath);
 
     return path.join(resolvedPackageDir, '/cloud-language.json');
+
 }
 
 process.env.GOOGLE_APPLICATION_CREDENTIALS=computeCredentials();
