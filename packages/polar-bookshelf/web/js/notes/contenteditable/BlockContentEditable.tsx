@@ -16,7 +16,7 @@ import {IBlockContentStructure} from '../HTMLToBlocks';
 import {useBlocksTreeStore} from '../BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
-import {useNamedBlocks} from '../NoteRenderers';
+import {useNamedBlocks} from '../NoteUtils';
 import {ContentEditables} from '../ContentEditables';
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
