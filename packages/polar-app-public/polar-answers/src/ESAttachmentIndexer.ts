@@ -2,6 +2,9 @@ import {Files} from "polar-shared/src/util/Files";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ESRequests} from "./ESRequests";
 
+/**
+ * @Deprecated PDFText can now extract the content for us.
+ */
 export namespace ESAttachmentIndexer {
 
     export interface LocalPathDataReference {
