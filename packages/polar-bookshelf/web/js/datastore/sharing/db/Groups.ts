@@ -2,11 +2,16 @@ import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {GroupIDStr} from '../../Datastore';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {ExternalLink} from "../rpc/GroupProvisions";
-import {Clause, Collections, OrderByClause} from "./Collections";
 import {PlainTextStr, URLStr} from "polar-shared/src/util/Strings";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {UserIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+
+import {Collections} from "polar-firestore-like/src/Collections";
+
+import Clause = Collections.Clause;
+import OrderByClause = Collections.OrderByClause;
+
 
 const HASHCODE_LEN = 20;
 
@@ -41,8 +46,9 @@ export class Groups {
             ['visibility', '==' , 'public'],
             ['name', '==', name]
         ];
+        const firestore = await FirestoreBrowserClient.getInstance();
 
-        return Collections.getByFieldValues(this.COLLECTION, clauses);
+        return Collections.getByFieldValues(firestore, this.COLLECTION, clauses);
 
     }
 
@@ -56,6 +62,7 @@ export class Groups {
         // search by tag and by number of members descending
 
         // no paging yet.. just top groups to get this working and off the groupnd
+        const firestore = await FirestoreBrowserClient.getInstance();
 
         const visibilityClauses: ReadonlyArray<Clause> = [
             ['visibility', '==' , 'public']
@@ -72,7 +79,7 @@ export class Groups {
 
         const limit = 50;
 
-        return await Collections.list(this.COLLECTION,  clauses, {orderBy, limit});
+        return await Collections.list(firestore, this.COLLECTION,  clauses, {orderBy, limit});
 
     }
 
@@ -87,6 +94,7 @@ export class Groups {
         // search by tag and by number of members descending
 
         // no paging yet.. just top groups to get this working and off the groupnd
+        const firestore = await FirestoreBrowserClient.getInstance();
 
         const visibilityClauses: ReadonlyArray<Clause> = [
             ['visibility', '==' , 'public']
@@ -101,7 +109,7 @@ export class Groups {
 
         const limit = 50;
 
-        return await Collections.list(this.COLLECTION,  clauses, {orderBy, limit});
+        return await Collections.list(firestore, this.COLLECTION,  clauses, {orderBy, limit});
 
     }
 

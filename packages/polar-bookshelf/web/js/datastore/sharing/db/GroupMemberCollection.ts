@@ -1,9 +1,13 @@
-import {GroupIDStr} from '../../Datastore';
+import {GroupIDStr, ProfileIDStr} from 'polar-shared/src/util/Strings';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {Preconditions} from 'polar-shared/src/Preconditions';
-import {Collections, DocumentChange} from './Collections';
-import {ProfileIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
+
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+import {Collections} from "polar-firestore-like/src/Collections";
+
+import DocumentChange = Collections.DocumentChange;
+
 
 export class GroupMemberCollection {
 
@@ -11,8 +15,10 @@ export class GroupMemberCollection {
 
     public static async list(groupID: GroupIDStr): Promise<ReadonlyArray<GroupMember>> {
         const user = await FirebaseBrowser.currentUserAsync();
+        const firestore = await FirestoreBrowserClient.getInstance();
+
         Preconditions.assertPresent(user, 'user');
-        return await Collections.list(this.COLLECTION, [['groupID' , '==', groupID]]);
+        return await Collections.list(firestore, this.COLLECTION, [['groupID' , '==', groupID]]);
     }
 
     /**
@@ -21,8 +27,9 @@ export class GroupMemberCollection {
      */
     public static async onSnapshot(groupID: GroupIDStr,
                                    delegate: (records: ReadonlyArray<DocumentChange<GroupMember>>) => void) {
+        const firestore = await FirestoreBrowserClient.getInstance();
 
-        return await Collections.onQuerySnapshotChanges(this.COLLECTION, [['groupID' , '==', groupID]], delegate);
+        return await Collections.onQuerySnapshotChanges(firestore, this.COLLECTION, [['groupID' , '==', groupID]], delegate);
 
     }
 

@@ -3,11 +3,13 @@ import {GroupIDStr} from '../../Datastore';
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {Image} from './Images';
-import {Collections, DocumentChange} from './Collections';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Clause} from './Collections';
 import {Logger} from 'polar-shared/src/logger/Logger';
 import {EmailStr, ProfileIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
+
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+import {Collections} from "polar-firestore-like/src/Collections";
 
 const log = Logger.create();
 
@@ -17,9 +19,10 @@ export class GroupMemberInvitations {
 
     public static async list(): Promise<ReadonlyArray<GroupMemberInvitation>> {
 
+        const firestore = await FirestoreBrowserClient.getInstance();
         const user = await FirebaseBrowser.currentUserAsync();
         Preconditions.assertPresent(user, 'user');
-        return await Collections.list(this.COLLECTION, [['to' , '==', user!.email]]);
+        return await Collections.list(firestore, this.COLLECTION, [['to' , '==', user!.email]]);
 
     }
 
@@ -28,8 +31,9 @@ export class GroupMemberInvitations {
         const clauses: Clause[] = [
             ['groupID' , '==', groupID],
         ];
+        const firestore = await FirestoreBrowserClient.getInstance();
 
-        return await Collections.list(this.COLLECTION, clauses);
+        return await Collections.list(firestore, this.COLLECTION, clauses);
 
     }
 
@@ -40,13 +44,15 @@ export class GroupMemberInvitations {
             ['groupID' , '==', groupID],
             ['from.profileID' , '==', profileID]
         ];
+        const firestore = await FirestoreBrowserClient.getInstance();
 
-        return await Collections.list(this.COLLECTION, clauses);
+        return await Collections.list(firestore, this.COLLECTION, clauses);
 
     }
 
     public static async onSnapshot(delegate: (invitations: ReadonlyArray<GroupMemberInvitation>) => void) {
 
+        const firestore = await FirestoreBrowserClient.getInstance();
         const user = await FirebaseBrowser.currentUserAsync();
 
         if (! user) {
@@ -55,12 +61,14 @@ export class GroupMemberInvitations {
             return;
         }
 
-        return await Collections.onQuerySnapshot(this.COLLECTION, [['to', '==', user!.email]], delegate);
+        return await Collections.onQuerySnapshot(firestore, this.COLLECTION, [['to', '==', user!.email]], delegate);
 
     }
 
     public static async purge() {
-        await Collections.deleteByID(this.COLLECTION, () => this.list());
+        const firestore = await FirestoreBrowserClient.getInstance();
+
+        await Collections.deleteByID(firestore, this.COLLECTION, undefined,() => this.list());
     }
 
 }

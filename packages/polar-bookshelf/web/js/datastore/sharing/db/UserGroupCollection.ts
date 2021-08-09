@@ -1,8 +1,7 @@
-import {GroupIDStr} from '../../Datastore';
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
-import {Collections} from "./Collections";
+import {Collections} from "polar-firestore-like/src/Collections";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {UserIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
+import {UserIDStr, GroupIDStr} from "polar-shared/src/util/Strings";
 import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
@@ -34,13 +33,14 @@ export class UserGroupCollection {
 
     public static async onSnapshot(handler: (userGroups: UserGroup | undefined) => void): Promise<SnapshotUnsubscriber> {
 
+        const firestore = await FirestoreBrowserClient.getInstance();
         const user = await FirebaseBrowser.currentUserAsync();
 
         if  (! user) {
             return NULL_FUNCTION;
         }
 
-        return await Collections.onDocumentSnapshot<UserGroupRaw>(this.COLLECTION,
+        return await Collections.onDocumentSnapshot<UserGroupRaw>(firestore, this.COLLECTION,
                                                                   user!.uid,
                                                                   userGroupRaw => {
                 handler(this.fromRaw(userGroupRaw));
