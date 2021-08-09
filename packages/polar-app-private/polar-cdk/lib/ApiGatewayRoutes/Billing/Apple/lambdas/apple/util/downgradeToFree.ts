@@ -1,4 +1,4 @@
-import getFirebaseAdminApp from "../../../../../shared/getFirebaseAdminApp";
+import getFirebaseAdminApp from "../../../../../../shared/getFirebaseAdminApp";
 
 export default async function downgradeToFree(email: any) {
     const firebaseAdminApp = getFirebaseAdminApp();
