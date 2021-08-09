@@ -108,7 +108,7 @@ export class FirebaseBrowser {
         }
 
         if (typeof app.auth !== 'function') {
-            const msg = "App.auth is not a function.";
+            const msg = "app.auth is not a function.";
             console.warn(msg, app);
             throw new Error(msg);
         }
