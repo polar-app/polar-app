@@ -11,6 +11,12 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 import {TDocumentChangeType} from "polar-firestore-like/src/IDocumentChange";
 import {TOrderByDirection} from "./IQuery";
+import {
+    Clause,
+    QuerySnapshotErrorHandler,
+    SnapshotErrorHandler
+} from "polar-bookshelf/web/js/datastore/sharing/db/Collections";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 
 export namespace Collections {
@@ -213,7 +219,23 @@ export namespace Collections {
         return query;
 
     }
-    
+    /**
+     * Query snapshot but only for changed documents.
+     */
+    export async function onQuerySnapshot<T>(firestore: IFirestoreClient,collection: string,
+        clauses: ReadonlyArray<Clause>,
+        delegate: (records: ReadonlyArray<T>) => void,
+        errHandler: QuerySnapshotErrorHandler = DefaultQuerySnapshotErrorHandler): Promise<SnapshotUnsubscriber> {
+
+        const query = await createQuery(firestore, collection, clauses);
+
+        return query.onSnapshot(snapshot => {
+            delegate(snapshot.docs.map(current => <T> current.data()));
+        }, err => {
+            errHandler(err, collection, clauses);
+        });
+
+    }
     /**
      * Query snapshot but only for changed documents.
      */
@@ -243,6 +265,32 @@ export namespace Collections {
             errHandler(err, collection, clauses);
         });
 
+
+    }
+    export async function onDocumentSnapshot<T>(firestore: IFirestoreClient, collection: string,
+        id: string,
+        delegate: (record: T | undefined) => void,
+        errHandler: SnapshotErrorHandler = DefaultSnapshotErrorHandler): Promise<SnapshotUnsubscriber> {
+
+        const ref = firestore.collection(collection).doc(id);
+
+        return ref.onSnapshot(snapshot => {
+
+            const toValue = () => {
+
+                if (snapshot.exists) {
+                    return <T> snapshot.data();
+                }
+
+                return undefined;
+
+            };
+
+            delegate(toValue());
+
+        }, err => {
+            errHandler(err, collection);
+        });
 
     }
 
@@ -318,7 +366,7 @@ export namespace Collections {
             if(batch){
                 batch.delete(doc);
             } else{
-                this.doDelete(firestore, collection, record.id);
+                await this.doDelete(firestore, collection, record.id);
             }
 
         }
@@ -346,12 +394,6 @@ export namespace Collections {
         return firstRecord(collection, fields, results);
 
     }
-    //
-    //
-    //
-    // public collection() {
-    //     return this.firestore.collection(this.name);
-    // }
 
     export async function iterate<T, SM = unknown>(firestore: IFirestore<SM>,
                                                    collection: string,
