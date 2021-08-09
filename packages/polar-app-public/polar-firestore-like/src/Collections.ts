@@ -1,5 +1,4 @@
 import { IFirestore, IFirestoreClient } from "./IFirestore";
-import firebase from 'firebase/app'
 import {IDocumentReference} from "./IDocumentReference";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {Preconditions} from "polar-shared/src/Preconditions";
@@ -10,13 +9,14 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {IDStr} from "polar-shared/src/util/Strings";
 
 import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
-import DocumentChangeType = firebase.firestore.DocumentChangeType;
+import {TDocumentChangeType} from "polar-firestore-like/src/IDocumentChange";
+import {TOrderByDirection} from "./IQuery";
 
 
 export namespace Collections {
 
     export interface DocumentChange<T> {
-        readonly type: DocumentChangeType;
+        readonly type: TDocumentChangeType;
         readonly value: T;
     }
 
@@ -32,12 +32,6 @@ export namespace Collections {
         | 'array-contains-any'
         | 'not-in';
 
-    /**
-     * The direction of a `Query.orderBy()` clause is specified as 'desc' or 'asc'
-     * (descending or ascending).
-     */
-    export type OrderByDirection = 'desc' | 'asc';
-
     export interface QueryOpts {
 
         /**
@@ -51,7 +45,7 @@ export namespace Collections {
 
     export type Clause = [string, WhereFilterOp, any];
 
-    export type OrderByClause = [string, OrderByDirection | undefined];
+    export type OrderByClause = [string, TOrderByDirection | undefined];
 
     export type ValueType = object | string | number;
 
