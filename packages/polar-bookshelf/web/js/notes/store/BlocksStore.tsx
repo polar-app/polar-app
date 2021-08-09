@@ -56,6 +56,8 @@ export type StringSetMap = {[key: string]: boolean};
 
 export type BlockContent = (MarkdownContent | NameContent | ImageContent | DateContent) & IBaseBlockContent;
 
+export type NamedBlock = Block<NameContent | DateContent>;
+
 /**
  * A offset into the content of a not where we should place the cursor.
  */
