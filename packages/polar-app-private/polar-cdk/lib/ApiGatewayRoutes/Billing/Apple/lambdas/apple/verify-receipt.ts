@@ -1,5 +1,5 @@
 import {default as fetch} from "node-fetch";
-import getFirebaseAdminApp from "../../../../shared/getFirebaseAdminApp";
+import getFirebaseAdminApp from "../../../../../shared/getFirebaseAdminApp";
 
 interface VerifyReceiptRequest {
     email: string,

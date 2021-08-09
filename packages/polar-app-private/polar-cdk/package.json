@@ -8,21 +8,21 @@
     "cdk": "cdk"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "^1.114.0",
-    "@google-cloud/firestore": "^4.13.2",
-    "@types/node": "^16.4.3",
-    "aws-cdk": "^1.114.0",
-    "esbuild": "^0.12.15",
+    "@aws-cdk/assert": "^1.117.0",
+    "@google-cloud/firestore": "^4.14.1",
+    "@types/node": "^16.4.13",
+    "aws-cdk": "^1.117.0",
+    "esbuild": "^0.12.19",
     "firebase-admin": "^9.11.0",
-    "ts-node": "^10.1.0",
+    "ts-node": "^10.2.0",
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "@aws-cdk/aws-apigateway": "^1.114.0",
-    "@aws-cdk/aws-lambda-nodejs": "^1.114.0",
-    "@aws-cdk/core": "^1.114.0",
-    "@types/node-fetch": "^2.5.11",
-    "firebase": "=8.8.1",
+    "@aws-cdk/aws-apigateway": "^1.117.0",
+    "@aws-cdk/aws-lambda-nodejs": "^1.117.0",
+    "@aws-cdk/core": "^1.117.0",
+    "@types/node-fetch": "^2.5.12",
+    "firebase": "=8.9.0",
     "node-fetch": "^2.6.1",
     "source-map-support": "^0.5.19"
   }

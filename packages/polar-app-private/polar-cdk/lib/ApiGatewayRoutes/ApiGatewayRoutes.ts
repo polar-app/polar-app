@@ -10,7 +10,8 @@ export class ApiGatewayRoutes extends Construct {
         super(scope, id);
 
         new Billing(this, 'Billing', {
-            rootResource: props.apiGateway.root.resourceForPath('billing'),
+            rootResource: props.apiGateway.root
+                .resourceForPath('billing'),
         })
 
     }

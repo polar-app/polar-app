@@ -1,4 +1,4 @@
-import getFirebaseAdminApp from "../../../../../shared/getFirebaseAdminApp";
+import getFirebaseAdminApp from "../../../../../../shared/getFirebaseAdminApp";
 import {Account} from "./types/Account";
 
 export default async function changePlanForEmail(changePlanConfig: {
