@@ -191,12 +191,9 @@ export namespace Collections {
     /**
      * Query snapshot but only for changed documents.
      */
-    export async function onQuerySnapshot<T>(firestore: IFirestoreClient,collection: string,
-        clauses: ReadonlyArray<Clause>,
-        delegate: (records: ReadonlyArray<T>) => void,
-        errHandler: QuerySnapshotErrorHandler = DefaultQuerySnapshotErrorHandler): Promise<SnapshotUnsubscriber> {
+    export function onQuerySnapshot<T>(firestore: IFirestoreClient,collection: string, clauses: ReadonlyArray<Clause>, delegate: (records: ReadonlyArray<T>) => void, errHandler: QuerySnapshotErrorHandler = DefaultQuerySnapshotErrorHandler): SnapshotUnsubscriber {
 
-        const query = await createQuery(firestore, collection, clauses);
+        const query = createQuery(firestore, collection, clauses);
 
         return query.onSnapshot(snapshot => {
             delegate(snapshot.docs.map(current => <T> current.data()));
@@ -233,10 +230,7 @@ export namespace Collections {
 
 
     }
-    export async function onDocumentSnapshot<T>(firestore: IFirestoreClient, collection: string,
-        id: string,
-        delegate: (record: T | undefined) => void,
-        errHandler: SnapshotErrorHandler = DefaultSnapshotErrorHandler): Promise<SnapshotUnsubscriber> {
+    export function onDocumentSnapshot<T>(firestore: IFirestoreClient, collection: string, id: string, delegate: (record: T | undefined) => void, errHandler: SnapshotErrorHandler = DefaultSnapshotErrorHandler): SnapshotUnsubscriber {
 
         const ref = firestore.collection(collection).doc(id);
 
