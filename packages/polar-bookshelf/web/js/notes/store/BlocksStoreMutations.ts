@@ -109,10 +109,10 @@ export namespace BlocksStoreMutations {
 
         const removed = SetArrays.differenceDeep(PositionalArrays.rawEntries(before), PositionalArrays.rawEntries(after));
         const added = SetArrays.differenceDeep(PositionalArrays.rawEntries(after), PositionalArrays.rawEntries(before));
-        const toPatch = (type: 'remove' | 'insert') => ([key, id]: PositionalArrays.PositionalArrayRawEntry<string>): IItemsPositionPatch => ({
+        const toPatch = (type: 'remove' | 'insert') => ({ key, value }: PositionalArrays.PositionalArrayRawEntry<string>): IItemsPositionPatch => ({
             type,
             key,
-            id
+            id: value,
         });
 
         return [

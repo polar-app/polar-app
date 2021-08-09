@@ -338,7 +338,7 @@ export class Block<C extends BlockContent = BlockContent> implements IBlock<C> {
         Preconditions.assertString(key, 'key');
         Preconditions.assertString(id, 'id');
 
-        return PositionalArrays.rawEntries(this._items).some(([xkey, xid]) => xid === id && xkey === key);
+        return PositionalArrays.rawEntries(this._items).some((entry) => entry.value === id && entry.key === key);
     }
 
     @action set(block: IBlock) {

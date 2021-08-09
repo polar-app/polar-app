@@ -53,8 +53,14 @@ export namespace PositionalArrays {
     /**
      * An entry in the dictionary.
      */
-    export type PositionalArrayEntry<T> = [PositionalArrayParsedKey, T];
-    export type PositionalArrayRawEntry<T> = [string, T];
+    export type PositionalArrayEntry<T> = {
+        key: PositionalArrayParsedKey,
+        value: T
+    };
+    export type PositionalArrayRawEntry<T> = {
+        key: PositionalArrayKey,
+        value: T
+    };
 
     const KEY_PARTS_SEPARATOR = ":";
 
@@ -93,16 +99,16 @@ export namespace PositionalArrays {
 
 
     export function rawEntries<T>(positionalArray: PositionalArray<T>): ReadonlyArray<PositionalArrayRawEntry<T>> {
-        return Object.entries(positionalArray);
+        return Object.entries(positionalArray).map(([key, value]) => ({ key, value }));
     }
 
     export function entries<T>(positionalArray: PositionalArray<T>): ReadonlyArray<PositionalArrayEntry<T>> {
-        return Object.entries(positionalArray).map(([key, value]) => [parseKey(key), value]);
+        return Object.entries(positionalArray).map(([key, value]) => ({ key: parseKey(key), value }));
     }
 
     export function compare<T>(a: PositionalArrayEntry<T>, b: PositionalArrayEntry<T>) {
-        return (parseFloat(a[0].position) - parseFloat(b[0].position)) ||
-               (a[0].host.localeCompare(b[0].host));
+        return (parseFloat(a.key.position) - parseFloat(b.key.position)) ||
+               (a.key.host.localeCompare(b.key.host));
     }
 
     export function insert<T>(positionalArray: PositionalArray<T>,
@@ -119,21 +125,21 @@ export namespace PositionalArrays {
               .collect();
 
         const ptr = arrayStream(pointers)
-              .filter(current => current.curr[1] === ref)
+              .filter(current => current.curr.value === ref)
               .first();
 
         if (ptr) {
 
             const computeKey = () => {
 
-                const base = parseFloat(ptr.curr[0].position);
+                const base = parseFloat(ptr.curr.key.position);
 
                 const computeDelta = () => {
 
                     const computeDeltaFromSibling = (entry: PositionalArrayEntry<T> | undefined) => {
 
                         if (entry !== undefined) {
-                            return Math.abs(parseFloat(entry[0].position) - base) / 2;
+                            return Math.abs(parseFloat(entry.key.position) - base) / 2;
                         } else {
                             return 1.0;
                         }
@@ -186,7 +192,7 @@ export namespace PositionalArrays {
         const min
             = arrayStream(entries(positionalArray))
             .sort((a, b) => compare(a, b))
-            .map(([key]) => parseFloat(key.position))
+            .map(({ key }) => parseFloat(key.position))
             .first() || 0.0;
 
         const idx = min - 1.0;
@@ -203,7 +209,7 @@ export namespace PositionalArrays {
         const max
             = arrayStream(entries(positionalArray))
                 .sort((a, b) => compare(a, b))
-                .map(([key]) => parseFloat(key.position))
+                .map(({ key }) => parseFloat(key.position))
                 .last() || 0.0;
 
         const idx = max + 1.0;
@@ -306,7 +312,7 @@ export namespace PositionalArrays {
         return arrayStream(entries(positionalArray))
                      .sort((a, b) => compare(a, b))
                      .collect()
-                     .map(([, value]) => value);
+                     .map(({ value }) => value);
 
     }
 
