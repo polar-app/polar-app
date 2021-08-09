@@ -43,7 +43,7 @@
     "do-release-win": "cd packages/polar-bookshelf && ./scripts/dist-release.sh win",
     "do-release-linux": "cd packages/polar-bookshelf && ./scripts/dist-release.sh linux",
     "dist-release-publish": "npm run-script dist-prepare && npm run-script dist-build && npm run-script dist-publish",
-    "dist-release-webapp": "npm run-script set-registry-bytesafe-rw && lerna bootstrap && lerna run compile && lerna run test && lerna run publish && (cd packages/polar-app-private/polar-webapp-dist && npm run-script dist) && (cd packages/polar-app-private/polar-hooks && npm run-script dist-release)",
+    "dist-release-webapp": "npm run-script set-registry-verdaccio && lerna bootstrap && lerna run compile && lerna run test && lerna run publish && (cd packages/polar-app-private/polar-webapp-dist && npm run-script dist) && (cd packages/polar-app-private/polar-hooks && npm run-script dist-release)",
     "dist-release-webapp-init": "lerna bootstrap && lerna run compile && lerna run test && npm run-script lerna-npm-publish && (cd packages/polar-app-private/polar-webapp-dist && npm run-script dist)",
     "dist-release-webapp-release": "(cd packages/polar-app-private/polar-hooks && npm run-script dist-release)",
     "dist-release-linux": "npm run-script do-release-init && npm run-script do-release-linux",
