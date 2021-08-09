@@ -11,32 +11,15 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 import {TDocumentChangeType} from "polar-firestore-like/src/IDocumentChange";
 import {TOrderByDirection} from "./IQuery";
-import {
-    Clause,
-    QuerySnapshotErrorHandler,
-    SnapshotErrorHandler
-} from "polar-bookshelf/web/js/datastore/sharing/db/Collections";
-import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
+import {TWhereFilterOp} from "polar-firestore-like/src/ICollectionReference";
 
 export namespace Collections {
 
-    export interface DocumentChange<T> {
+    export interface DocumentChangeValue<T> {
         readonly type: TDocumentChangeType;
         readonly value: T;
     }
-
-    export type WhereFilterOp =
-        | '<'
-        | '<='
-        | '=='
-        | '!='
-        | '>='
-        | '>'
-        | 'array-contains'
-        | 'in'
-        | 'array-contains-any'
-        | 'not-in';
 
     export interface QueryOpts {
 
@@ -49,7 +32,7 @@ export namespace Collections {
 
     }
 
-    export type Clause = [string, WhereFilterOp, any];
+    export type Clause = [string, TWhereFilterOp, any];
 
     export type OrderByClause = [string, TOrderByDirection | undefined];
 
@@ -106,11 +89,7 @@ export namespace Collections {
 
     }
 
-    export async function getOrCreate<T, SM = unknown>(firestore: IFirestore<SM>,
-                                                       collection: string,
-                                                       batch: IWriteBatch<SM>,
-                                                       documentReference: IDocumentReference<SM>,
-                                                       createRecord: () => T): Promise<GetOrCreateRecord<T>> {
+    export async function getOrCreate<T, SM = unknown>(firestore: IFirestore<SM>, collection: string, batch: IWriteBatch<SM>, documentReference: IDocumentReference<SM>, createRecord: () => T): Promise<GetOrCreateRecord<T>> {
 
         const doc = await documentReference.get();
 
@@ -136,9 +115,7 @@ export namespace Collections {
 
     }
 
-    export async function get<T, SM = unknown>(firestore: IFirestore<SM>,
-                                               collection: string,
-                                               id: string): Promise<T | undefined> {
+    export async function get<T, SM = unknown>(firestore: IFirestore<SM>, collection: string, id: string): Promise<T | undefined> {
         const ref = firestore.collection(collection).doc(id);
         const doc = await ref.get();
         return <T> doc.data();
@@ -147,20 +124,14 @@ export namespace Collections {
     /**
      * @deprecated use get()
      */
-    export async function getByID<T, SM = unknown>(firestore: IFirestore<SM>,
-                                                   collection: string,
-                                                   id: string): Promise<T | undefined> {
+    export async function getByID<T, SM = unknown>(firestore: IFirestore<SM>, collection: string, id: string): Promise<T | undefined> {
 
         return get(firestore, collection, id);
 
     }
 
 
-    export async function set<T, SM = unknown>(firestore: IFirestore<SM>,
-                                               collection: string,
-                                               id: string,
-                                               value: T,
-                                               batch?: IWriteBatch<SM>) {
+    export async function set<T, SM = unknown>(firestore: IFirestore<SM>, collection: string, id: string, value: T, batch?: IWriteBatch<SM>) {
 
         const b = batch || firestore.batch();
 
@@ -174,9 +145,7 @@ export namespace Collections {
 
     }
 
-    function createQuery<SM = unknown>(firestore: IFirestore<SM>,
-                                       collection: string,
-                                       clauses: ReadonlyArray<Clause>, opts: ListOpts = {}) {
+    function createQuery<SM = unknown>(firestore: IFirestore<SM>, collection: string, clauses: ReadonlyArray<Clause>, opts: ListOpts = {}) {
 
         // TODO: should work without any clauses and just list all the records
         // which is fine for small collections
@@ -239,12 +208,9 @@ export namespace Collections {
     /**
      * Query snapshot but only for changed documents.
      */
-    export async function onQuerySnapshotChanges<T = unknown>(firestore: IFirestoreClient,collection: string,
-                                                  clauses: ReadonlyArray<Clause>,
-                                                  delegate: (records: ReadonlyArray<DocumentChange<T>>) => void,
-                                                  errHandler: QuerySnapshotErrorHandler = DefaultQuerySnapshotErrorHandler): Promise<SnapshotUnsubscriber> {
+    export function onQuerySnapshotChanges<T = unknown>(firestore: IFirestoreClient,collection: string, clauses: ReadonlyArray<Clause>, delegate: (records: ReadonlyArray<DocumentChangeValue<T>>) => void, errHandler: QuerySnapshotErrorHandler = DefaultQuerySnapshotErrorHandler): SnapshotUnsubscriber {
 
-        const query = await createQuery(firestore, collection, clauses);
+        const query = createQuery(firestore, collection, clauses);
 
         return query.onSnapshot(snapshot => {
 
@@ -298,15 +264,12 @@ export namespace Collections {
         return snapshot.docs.map(current => <T> current.data());
     }
  
-    export async function createRef<SM>(firestore: IFirestore<SM>,collection: string, id: string) {
+    export function createRef<SM>(firestore: IFirestore<SM>, collection: string, id: string) {
         const ref = firestore.collection(collection).doc(id);
         return ref;
     }
 
-    export async function list<T, SM = unknown>(firestore: IFirestore<SM>,
-                                                collection: string,
-                                                clauses: ReadonlyArray<Clause>,
-                                                opts: ListOpts = {}): Promise<ReadonlyArray<T>> {
+    export async function list<T, SM = unknown>(firestore: IFirestore<SM>, collection: string, clauses: ReadonlyArray<Clause>, opts: ListOpts = {}): Promise<ReadonlyArray<T>> {
 
         const query = createQuery(firestore, collection, clauses, opts);
 
@@ -330,28 +293,20 @@ export namespace Collections {
 
     }
 
-    export async function getByFieldValue<T, SM = unknown>(firestore: IFirestore<SM>,
-                                                           collection: string,
-                                                           field: string,
-                                                           value: ValueType): Promise<T | undefined> {
+    export async function getByFieldValue<T, SM = unknown>(firestore: IFirestore<SM>, collection: string, field: string, value: ValueType): Promise<T | undefined> {
 
         const results = await list<T, SM>(firestore, collection, [[field, '==', value]]);
         return firstRecord<T>(collection, [field], results);
 
     }
 
-    export async function doDelete<SM = unknown>(firestore: IFirestore<SM>,
-                                                 collection: string,
-                                                 id: IDStr) {
+    export async function doDelete<SM = unknown>(firestore: IFirestore<SM>, collection: string, id: IDStr) {
 
         await firestore.collection(collection).doc(id).delete();
 
     }
 
-    export async function deleteByID<SM = unknown>(firestore: IFirestore<SM>,
-                                                   collection: string,
-                                                   batch: IWriteBatch<SM> | undefined,
-                                                   provider: () => Promise<ReadonlyArray<IDRecord>>) {
+    export async function deleteByID<SM = unknown>(firestore: IFirestore<SM>, collection: string, batch: IWriteBatch<SM> | undefined, provider: () => Promise<ReadonlyArray<IDRecord>>) {
 
         const records = await provider();
         const b = batch || firestore.batch();
@@ -373,19 +328,14 @@ export namespace Collections {
 
     }
 
-    export async function listByFieldValue<T, SM = unknown>(firestore: IFirestore<SM>,
-                                                            collection: string,
-                                                            field: string,
-                                                            value: ValueType): Promise<ReadonlyArray<T>> {
+    export async function listByFieldValue<T, SM = unknown>(firestore: IFirestore<SM>, collection: string, field: string, value: ValueType): Promise<ReadonlyArray<T>> {
 
         return list(firestore, collection, [[field, '==', value]]);
 
     }
 
 
-    export async function getByFieldValues<T, SM = unknown>(firestore: IFirestore<SM>,
-                                                            collection: string,
-                                                            clauses: ReadonlyArray<Clause>): Promise<T | undefined> {
+    export async function getByFieldValues<T, SM = unknown>(firestore: IFirestore<SM>, collection: string, clauses: ReadonlyArray<Clause>): Promise<T | undefined> {
 
         const results = await list<T>(firestore, collection, clauses);
 
@@ -395,10 +345,7 @@ export namespace Collections {
 
     }
 
-    export async function iterate<T, SM = unknown>(firestore: IFirestore<SM>,
-                                                   collection: string,
-                                                   clauses: ReadonlyArray<Clause>,
-                                                   opts: IterateOpts = {}): Promise<Cursor<T>> {
+    export async function iterate<T, SM = unknown>(firestore: IFirestore<SM>, collection: string, clauses: ReadonlyArray<Clause>, opts: IterateOpts = {}): Promise<Cursor<T>> {
 
         const limit = opts.limit || 100;
 

@@ -6,7 +6,7 @@ import {Preconditions} from 'polar-shared/src/Preconditions';
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import {Collections} from "polar-firestore-like/src/Collections";
 
-import DocumentChange = Collections.DocumentChange;
+import DocumentChange = Collections.DocumentChangeValue;
 
 
 export class GroupMemberCollection {
@@ -29,7 +29,7 @@ export class GroupMemberCollection {
                                    delegate: (records: ReadonlyArray<DocumentChange<GroupMember>>) => void) {
         const firestore = await FirestoreBrowserClient.getInstance();
 
-        return await Collections.onQuerySnapshotChanges(firestore, this.COLLECTION, [['groupID' , '==', groupID]], delegate);
+        return Collections.onQuerySnapshotChanges(firestore, this.COLLECTION, [['groupID' , '==', groupID]], delegate);
 
     }
 

@@ -39,7 +39,7 @@ export namespace UserTraits {
             const key = Hashcodes.createID({uid, name: current.name});
             const firestore = await FirestoreBrowserClient.getInstance();
 
-            const ref = await Collections.createRef(firestore, COLLECTION, key);
+            const ref = Collections.createRef(firestore, COLLECTION, key);
             await ref.set(current);
 
         });

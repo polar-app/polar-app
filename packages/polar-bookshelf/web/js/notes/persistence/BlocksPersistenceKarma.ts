@@ -3,7 +3,7 @@ import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrows
 import {FIREBASE_PASS, FIREBASE_USER} from "../../firebase/FirebaseTestingUsers";
 import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
 import {assertJSON} from "../../test/Assertions";
-import {PositionalArrays} from "../store/PositionalArrays";
+import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {BlocksStoreUndoQueues} from "../store/BlocksStoreUndoQueues";
 import {BlocksStoreTests} from "../store/BlocksStoreTests";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";

@@ -8,7 +8,7 @@ import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/Firest
 
 import Clause = Collections.Clause;
 import SnapshotListener = Collections.SnapshotListener;
-import DocumentChange = Collections.DocumentChange;
+import DocumentChange = Collections.DocumentChangeValue;
 import OrderByClause = Collections.OrderByClause;
 
 
@@ -47,7 +47,7 @@ export class GroupDocCollection {
     public static async onSnapshot(groupID: GroupIDStr, handler: SnapshotListener<DocumentChange<GroupDoc>>) {
         const firestore = await FirestoreBrowserClient.getInstance();
 
-        return await Collections.onQuerySnapshotChanges(firestore, this.COLLECTION, [['groupID', '==', groupID]], handler);
+        return Collections.onQuerySnapshotChanges(firestore, this.COLLECTION, [['groupID', '==', groupID]], handler);
     }
 
     public static async onSnapshotForByGroupIDAndFingerprint(groupID: GroupIDStr,
@@ -60,7 +60,7 @@ export class GroupDocCollection {
         ];
         const firestore = await FirestoreBrowserClient.getInstance();
 
-        return await Collections.onQuerySnapshotChanges(firestore, this.COLLECTION, clauses, handler);
+        return Collections.onQuerySnapshotChanges(firestore, this.COLLECTION, clauses, handler);
 
     }
 

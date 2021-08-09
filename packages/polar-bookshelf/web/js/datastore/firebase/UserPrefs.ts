@@ -52,7 +52,7 @@ export namespace UserPrefs {
         const uid  = await getUserID();
         const firestore = await FirestoreBrowserClient.getInstance();
 
-        const ref = await Collections.createRef(firestore, COLLECTION, uid);
+        const ref = Collections.createRef(firestore, COLLECTION, uid);
 
         const userPref: IUserPref = {
             uid,

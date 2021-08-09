@@ -6,7 +6,7 @@ import {EmailStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
-import DocumentChange = Collections.DocumentChange;
+import DocumentChange = Collections.DocumentChangeValue;
 
 
 export class ContactCollection {
@@ -29,7 +29,7 @@ export class ContactCollection {
         const {uid} = Preconditions.assertPresent(user, 'user');
         const firestore = await FirestoreBrowserClient.getInstance();
 
-        return await Collections.onQuerySnapshotChanges(firestore, this.COLLECTION, [['uid' , '==', uid]], delegate);
+        return Collections.onQuerySnapshotChanges(firestore, this.COLLECTION, [['uid' , '==', uid]], delegate);
 
     }
 

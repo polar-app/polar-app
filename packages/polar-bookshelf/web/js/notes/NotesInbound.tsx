@@ -35,9 +35,6 @@ const InboundNoteRef = observer((props: InboundNoteRefProps) => {
 
             <div style={{
                      overflow: 'hidden',
-                     // whiteSpace: 'nowrap',
-                     // textOverflow: 'ellipsis',
-                     // maxWidth: '50ch',
                  }}>
 
                 <BlocksTreeProvider root={id}>
@@ -65,7 +62,7 @@ const useStyles = makeStyles((theme) =>
 
 export const NotesInbound = deepMemo(observer(function NotesInbound(props: IProps) {
     const blocksTreeStore = useBlocksTreeStore();
-    const [expanded, setExpanded] = React.useState(false);
+    const [expanded, setExpanded] = React.useState(true);
 
     const onToggleExpand = React.useCallback(() => setExpanded(expanded => !expanded), []);
 
