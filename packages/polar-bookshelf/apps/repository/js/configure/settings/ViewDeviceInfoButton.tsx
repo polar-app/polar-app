@@ -9,7 +9,7 @@ export const ViewDeviceInfoButton = () => {
     return (
         <Button variant="contained"
                 onClick={() => history.push("/device")}>
-            View Device Info
+            Device Info
         </Button>
     );
 
