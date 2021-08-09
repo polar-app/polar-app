@@ -96,6 +96,20 @@ export namespace Strings {
 
     }
 
+    export function rpad(str: string | number, padd: string, length: number) {
+
+        if (typeof str === 'number') {
+            str = `${str}`;
+        }
+
+        while (str.length < length) {
+            str = str + padd;
+        }
+
+        return str;
+
+    }
+
     export function toUnixLineNewLines(str: string) {
         return str.replace(/\r\n/g, '\n');
     }
