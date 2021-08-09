@@ -61,7 +61,7 @@ export class GroupMemberInvitations {
             return;
         }
 
-        return await Collections.onQuerySnapshot(firestore, this.COLLECTION, [['to', '==', user!.email]], delegate);
+        return Collections.onQuerySnapshot(firestore, this.COLLECTION, [['to', '==', user!.email]], delegate);
 
     }
 

@@ -40,7 +40,7 @@ export class UserGroupCollection {
             return NULL_FUNCTION;
         }
 
-        return await Collections.onDocumentSnapshot<UserGroupRaw>(firestore, this.COLLECTION,
+        return Collections.onDocumentSnapshot<UserGroupRaw>(firestore, this.COLLECTION,
                                                                   user!.uid,
                                                                   userGroupRaw => {
                 handler(this.fromRaw(userGroupRaw));
