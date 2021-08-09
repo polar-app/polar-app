@@ -1,6 +1,6 @@
 {
   "name": "polar-google-cloud-language",
-  "version": "2.1.87",
+  "version": "2.1.89",
   "description": "",
   "main": "index.js",
   "scripts": {

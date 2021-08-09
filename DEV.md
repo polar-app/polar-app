@@ -82,6 +82,10 @@ lerna exec --concurrency=1 --parallel=false --no-bail -- /Users/burton/projects/
 lerna exec --concurrency=1 --parallel=false --no-bail --
 /Users/burton/projects/polar-app/packages/polar-app-public/polar-npm/src/npm-stagnant.js
 
+## Computing all used package versions
+
+lerna exec --concurrency=1 --parallel=false --no-bail -- node /Users/burton/projects/polar-app/packages/polar-app-public/polar-npm/src/npm-dump-dependencies.js | sort |uniq
+
 # Windows
 
 - Install latest Windows Subsystem for Linux

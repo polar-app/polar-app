@@ -17,6 +17,10 @@ import {AuthHandlers} from "./auth_handler/AuthHandler";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 import {ConsoleRecorder} from "polar-shared/src/util/ConsoleRecorder";
 import {SentryBrowser} from "../../logger/SentryBrowser";
+import { LicenseInfo } from '@material-ui/x-grid';
+
+// Add xgrid license
+LicenseInfo.setLicenseKey('e8f3730ab06cd9f0c5cb3e6c2dfcddbaT1JERVI6MjgwMDQsRVhQSVJZPTE2NTk5MDA0NzkwMDAsS0VZVkVSU0lPTj0x');
 
 const log = Logger.create();
 
