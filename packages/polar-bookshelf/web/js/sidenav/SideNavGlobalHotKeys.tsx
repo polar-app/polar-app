@@ -3,27 +3,15 @@ import {useHistory, useLocation} from 'react-router-dom';
 import {useRefWithUpdates} from '../hooks/ReactHooks';
 import {GlobalKeyboardShortcuts, keyMapWithGroup} from "../keyboard_shortcuts/GlobalKeyboardShortcuts";
 import {useNotesEnabled} from './SideNav';
-import {SIDE_NAV_ENABLED, useSideNavCallbacks, useSideNavStore} from './SideNavStore';
+import {SIDE_NAV_ENABLED, useSideNavStore} from './SideNavStore';
 
 const globalKeyMap = keyMapWithGroup({
     group: "Side Navigation",
     keyMap: {
-        CLOSE_CURRENT_TAB: {
-            name: "Close doc",
-            description: "Close doc",
-            sequences: [
-                {
-                    keys: 'shift+ctrl+L',
-                    platforms: ['windows', 'linux']
-                },
-                {
-                    keys: 'shift+command+l',
-                    platforms: ['macos']
-                }]
-        },
         PREV_TAB: {
             name: "Jump to previous doc",
             description: "Jump to previous doc",
+            ignorable: false,
             sequences: [
                 {
                     keys: 'shift+command+ArrowUp',
@@ -37,6 +25,7 @@ const globalKeyMap = keyMapWithGroup({
         NEXT_TAB: {
             name: "Jump to next doc",
             description: "Jump to next doc",
+            ignorable: false,
             sequences: [
                 {
                     keys: 'shift+command+ArrowDown',
@@ -54,7 +43,6 @@ const globalKeyMap = keyMapWithGroup({
 export const SideNavGlobalHotKeys = React.memo(function SideNavGlobalHotKeys() {
 
     const {tabs} = useSideNavStore(['tabs']);
-    const {closeCurrentTab} = useSideNavCallbacks()
     const notesEnabled = useNotesEnabled();
     const {pathname} = useLocation();
     const history = useHistory();
@@ -85,14 +73,11 @@ export const SideNavGlobalHotKeys = React.memo(function SideNavGlobalHotKeys() {
 
     const doNavRef = useRefWithUpdates(doNav);
 
-    const globalKeyHandlers = {
-        CLOSE_CURRENT_TAB: () => {
-            closeCurrentTab();
-            console.log('debug: closing');
-        },
+    const globalKeyHandlers = React.useMemo(() => ({
         PREV_TAB: () => doNavRef.current(-1),
         NEXT_TAB: () => doNavRef.current(+1),
-    };
+    }), [doNavRef]);
+
 
     if (! SIDE_NAV_ENABLED) {
         return null;

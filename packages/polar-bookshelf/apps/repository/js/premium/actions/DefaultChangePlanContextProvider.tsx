@@ -11,7 +11,7 @@ import {
 } from "../../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
 import {useStripeCheckout} from "./UseStripeCheckout";
 
-const initiateNativeAppleIap = async (email: string, plan: Billing.V2Plan) => {
+const initiateNativeAppleIap = async (email: string, plan: Billing.V2Plan): Promise<void> => {
     if ((window as any).ReactNativeWebView) {
         (window as any).ReactNativeWebView.postMessage(JSON.stringify({
             action: 'buy_play',
@@ -22,6 +22,16 @@ const initiateNativeAppleIap = async (email: string, plan: Billing.V2Plan) => {
         }))
     }
 };
+
+function isMobilePurchaseFlow() {
+    // This boolean flag is injected through the native app's WebView
+    // and is used to tell the React code (like the one here) that Polar Bookshelf
+    // is being viewed through the native app's WebView
+    const isMobileApp = (window as any).isNativeApp;
+    const isIOS = (window as any).mobileOS === 'ios';
+    const isAndroid = (window as any).mobileOS === 'android';
+    return isMobileApp && (isIOS || isAndroid);
+}
 
 function usePurchaseOrChangePlanAction() {
 
@@ -49,10 +59,7 @@ function usePurchaseOrChangePlanAction() {
                 const doAsync = async () => {
                     dialogManager.snackbar({message: 'One moment.  About to setup your purchase... '});
 
-                    // This boolean flag is injected through the native app's WebView
-                    // and is used to tell the React code (like the one here) that Polar Bookshelf
-                    // is being viewed through the native app's WebView
-                    if ((window as any).isNativeApp) {
+                    if (isMobilePurchaseFlow()) {
                         await initiateNativeAppleIap(email, newSubscription.plan);
                         return;
                     }
@@ -70,6 +77,22 @@ function usePurchaseOrChangePlanAction() {
             const onAccept = () => {
 
                 dialogManager.snackbar({message: `Changing plan to ${plan.level} billed at interval ${interval}.  One moment...`});
+
+                if (isMobilePurchaseFlow()) {
+                    const email = userInfoContext?.userInfo?.email;
+                    if (!email) {
+                        alert(`Can not change to plan ${plan.level} without a valid email`);
+                        return;
+                    }
+                    initiateNativeAppleIap(email, plan).then(() => {
+                        console.log('Plan changed to ' + plan);
+                    }, (err) => {
+                        console.error('Attempted to launch an In App Payment within the mobile app but the Promise was rejected')
+                        console.error(err);
+                        alert('Failed to purchase plan: ' + plan);
+                    });
+                    return;
+                }
 
                 AccountActions.changePlan(plan.level, interval)
                     .catch(err => log.error("Unable to upgrade plan: ", err));
