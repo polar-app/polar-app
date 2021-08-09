@@ -22,7 +22,6 @@ import {Contents} from "../content/Contents";
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {useUndoQueue} from "../../undo/UndoQueueProvider2";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
-import {PositionalArrays} from "./PositionalArrays";
 import {DateContent} from "../content/DateContent";
 import {IBlockCollectionSnapshot, useBlockCollectionSnapshots} from "../persistence/BlockCollectionSnapshots";
 import {BlocksPersistenceWriter} from "../persistence/FirestoreBlocksStoreMutations";
@@ -812,6 +811,10 @@ export class BlocksStore implements IBlocksStore {
         // If we don't have any active blocks in the current tree and shift is held down and we already have a selection then just skip
         // This is sort of a special case because lets say the cursor is at the first/last block and we're trying to select it.
         // We want to allow selecting it but after that if try to navigate down for example and there's no more blocks then just skip.
+        if (! newActive && shiftKey && this.hasSelected()) {
+            return true;
+        }
+        
         if (! newActive && shiftKey && this.hasSelected()) {
             return true;
         }

@@ -1,5 +1,5 @@
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {PositionalArrays} from "../../../web/js/notes/store/PositionalArrays";
+import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {IBlock} from "polar-blocks/src/blocks/IBlock";
 
 export namespace MockBlocks {

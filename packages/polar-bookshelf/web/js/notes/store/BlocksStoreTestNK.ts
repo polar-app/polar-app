@@ -15,7 +15,7 @@ import {Asserts} from "polar-shared/src/Asserts";
 import assertPresent = Asserts.assertPresent;
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
-import {PositionalArrays} from "./PositionalArrays";
+import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {HTMLToBlocks, IBlockContentStructure} from "../HTMLToBlocks";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
@@ -211,9 +211,9 @@ describe('BlocksStore', function() {
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "102",
                     "_items": {
-                        "1": "103",
-                        "2": "104",
-                        "3": "105"
+                        [PositionalArrays.generateKey(1)]: "103",
+                        [PositionalArrays.generateKey(2)]: "104",
+                        [PositionalArrays.generateKey(3)]: "105"
                     },
                     "_mutation": 0,
                     "_nspace": "ns101",
@@ -249,7 +249,7 @@ describe('BlocksStore', function() {
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "104",
-                    "_items": {"1": "116"},
+                    "_items": {[PositionalArrays.generateKey(1)]: "116"},
                     "_mutation": 0,
                     "_nspace": "ns101",
                     "_parent": "102",
@@ -278,7 +278,7 @@ describe('BlocksStore', function() {
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "105",
                     "_items": {
-                        "1": "106"
+                        [PositionalArrays.generateKey(1)]: "106"
                     },
                     "_mutation": 0,
                     "_nspace": "ns101",
@@ -304,7 +304,7 @@ describe('BlocksStore', function() {
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "106",
                     "_items": {
-                        "1": "117",
+                        [PositionalArrays.generateKey(1)]: "117",
                     },
                     "_mutation": 0,
                     "_nspace": "ns101",
@@ -325,7 +325,7 @@ describe('BlocksStore', function() {
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "107",
                     "_items": {
-                        "1": "110"
+                        [PositionalArrays.generateKey(1)]: "110"
                     },
                     "_mutation": 0,
                     "_nspace": "ns101",
@@ -357,7 +357,7 @@ describe('BlocksStore', function() {
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "109",
                     "_items": {
-                        "1": "111"
+                        [PositionalArrays.generateKey(1)]: "111"
                     },
                     "_mutation": 0,
                     "_nspace": "ns101",
@@ -456,7 +456,7 @@ describe('BlocksStore', function() {
                         "_links": [{ id: '112', text: 'Winston' }],
                     },
                     "_items": {
-                        "1": "118"
+                        [PositionalArrays.generateKey(1)]: "118"
                     },
                     "_mutation": 0,
                 },
@@ -731,11 +731,11 @@ describe('BlocksStore', function() {
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "102",
-                "items": {
-                    "1": "103",
-                    "2": "104",
-                    "3": "105"
-                },
+                "items": PositionalArrays.create([
+                    "103",
+                    "104",
+                    "105"
+                ]),
                 "mutation": 0,
                 "nspace": "ns101",
                 "parents": [],
@@ -758,8 +758,8 @@ describe('BlocksStore', function() {
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "102",
                 "items": {
-                    "1": "103",
-                    "3": "105"
+                    [PositionalArrays.generateKey(1)]: "103",
+                    [PositionalArrays.generateKey(3)]: "105"
                 },
                 "mutation": 1,
                 "nspace": "ns101",
@@ -777,9 +777,7 @@ describe('BlocksStore', function() {
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "103",
-                "items": {
-                    "1": "104"
-                },
+                "items": PositionalArrays.create(["104"]),
                 "mutation": 1,
                 "nspace": "ns101",
                 "parent": "102",
@@ -815,11 +813,11 @@ describe('BlocksStore', function() {
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "102",
-                "items": {
-                    "1": "103",
-                    "2": "104",
-                    "3": "105"
-                },
+                "items": PositionalArrays.create([
+                    "103",
+                    "104",
+                    "105"
+                ]),
                 "mutation": 0,
                 "nspace": "ns101",
                 "parents": [],
@@ -838,7 +836,7 @@ describe('BlocksStore', function() {
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "104",
-                "items": {"1": "116"},
+                "items": PositionalArrays.create(["116"]),
                 "mutation": 0,
                 "nspace": "ns101",
                 "parent": "102",
@@ -860,7 +858,7 @@ describe('BlocksStore', function() {
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "104",
-                "items": {"1": "116"},
+                "items": PositionalArrays.create(["116"]),
                 "mutation": 1,
                 "nspace": "ns101",
                 "parent": "103",
@@ -884,7 +882,7 @@ describe('BlocksStore', function() {
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "104",
-                "items": {"1": "116"},
+                "items": PositionalArrays.create(["116"]),
                 "mutation": 2,
                 "nspace": "ns101",
                 "parent": "102",
@@ -903,11 +901,11 @@ describe('BlocksStore', function() {
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "102",
-                "items": {
-                    "1": "103",
-                    "2": "104",
-                    "3": "105"
-                },
+                "items": PositionalArrays.create([
+                    "103",
+                    "104",
+                    "105"
+                ]),
                 "mutation": 2,
                 "nspace": "ns101",
                 "parents": [],
@@ -1102,11 +1100,11 @@ describe('BlocksStore', function() {
             },
             "created": "2012-03-02T11:38:49.321Z",
             "id": "102",
-            "items": {
-                "1": "103",
-                "2": "104",
-                "3": "105"
-            },
+            "items": PositionalArrays.create([
+                "103",
+                "104",
+                "105"
+            ]),
             "mutation": 0,
             "nspace": "ns101",
             "parents": [],
@@ -1456,7 +1454,6 @@ describe('BlocksStore', function() {
                 assert.deepEqual(parent.itemsAsArray, ['105', '103', '104']);
             });
 
-
             // Downwards
             createUndoRunner(store, [parent.id], () => {
                 store.moveBlocks([id], 1);
@@ -1518,12 +1515,12 @@ describe('BlocksStore', function() {
 
             const block = store.getBlockForMutation('102')!;
 
-            assertJSON(block.items, {
-                "0": createdBlock?.id,
-                "1": "103",
-                "2": "104",
-                "3": "105"
-            });
+            assertJSON(block.itemsAsArray, [
+                createdBlock?.id,
+                "103",
+                "104",
+                "105"
+            ]);
 
             const newBlock = store.getBlockForMutation(createdBlock.id)!;
 
@@ -1536,11 +1533,11 @@ describe('BlocksStore', function() {
 
             assert.equal(store.mergeBlocks(block.id, newBlock.id), 'block-merged-with-delete');
 
-            assertJSON(store.getBlockForMutation('102')!.items, {
-                "1": "103",
-                "2": "104",
-                "3": "105"
-            });
+            assertJSON(store.getBlockForMutation('102')!.itemsAsArray, [
+                "103",
+                "104",
+                "105"
+            ]);
 
             assert.isUndefined(store.getBlockForMutation(createdBlock.id));
 
@@ -1569,7 +1566,7 @@ describe('BlocksStore', function() {
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "103",
-                "items": {"1": "116"},
+                "items": PositionalArrays.create(['116']),
                 "mutation": 1,
                 "nspace": "ns101",
                 "parent": "102",
@@ -1722,11 +1719,11 @@ describe('BlocksStore', function() {
                     },
                     "created": "2012-03-02T11:38:49.321Z",
                     "id": "102",
-                    "items": {
-                        "1": "103",
-                        "2": "104",
-                        "3": "105"
-                    },
+                    "items": PositionalArrays.create([
+                        "103",
+                        "104",
+                        "105"
+                    ]),
                     "mutation": 0,
                     "nspace": "ns101",
                     "parents": [],
@@ -1748,11 +1745,11 @@ describe('BlocksStore', function() {
                     },
                     "created": "2012-03-02T11:38:49.321Z",
                     "id": "102",
-                    "items": {
-                        "1": "103",
-                        "2": "104",
-                        "3": "105"
-                    },
+                    "items": PositionalArrays.create([
+                        "103",
+                        "104",
+                        "105"
+                    ]),
                     "mutation": 1,
                     "nspace": "ns101",
                     "parents": [],
@@ -1813,8 +1810,8 @@ describe('BlocksStore', function() {
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "102",
                 "items": {
-                    "1": "103",
-                    "3": "105"
+                    [PositionalArrays.generateKey(1)]: "103",
+                    [PositionalArrays.generateKey(3)]: "105"
                 },
                 "mutation": 1,
                 "nspace": "ns101",
@@ -1962,10 +1959,10 @@ describe('BlocksStore', function() {
                     "created": "2012-03-02T11:38:49.321Z",
                     "id": "102",
                     "items": {
-                        "0": createdBlock?.id,
-                        "1": "103",
-                        "2": "104",
-                        "3": "105"
+                        [PositionalArrays.generateKey(0)]: createdBlock?.id,
+                        [PositionalArrays.generateKey(1)]: "103",
+                        [PositionalArrays.generateKey(2)]: "104",
+                        [PositionalArrays.generateKey(3)]: "105"
                     },
                     "mutation": 1,
                     "nspace": "ns101",
@@ -2017,7 +2014,7 @@ describe('BlocksStore', function() {
                     },
                     "created": "2012-03-02T11:38:49.321Z",
                     "id": createdBlock!.id,
-                    "items": {"1": "116"},
+                    "items": PositionalArrays.create(['116']),
                     "mutation": 0,
                     "nspace": "ns101",
                     "parent": "102",
@@ -2043,11 +2040,7 @@ describe('BlocksStore', function() {
 
             const now = ISODateTimeStrings.create();
 
-            assertJSON(block!.items, {
-                "1": "103",
-                "2": "104",
-                "3": "105"
-            });
+            assertJSON(block!.itemsAsArray, ["103", "104", "105"]);
 
             const createdBlock = store.createNewBlock('102');
 
@@ -2055,12 +2048,7 @@ describe('BlocksStore', function() {
 
             block = store.getBlockForMutation('102');
 
-            assertJSON(block!.items, {
-                "0": createdBlock.id,
-                "1": "103",
-                "2": "104",
-                "3": "105"
-            });
+            assertJSON(block!.itemsAsArray, [createdBlock.id, "103", "104", "105"]);
 
             const newBlock = store.getBlockForMutation(createdBlock.id)!;
 
@@ -2089,9 +2077,7 @@ describe('BlocksStore', function() {
             assertPresent(createdBlock);
             block = store.getBlockForMutation('102');
 
-            assertJSON(block!.items, {
-                "-1": createdBlock.id
-            });
+            assertJSON(block!.itemsAsArray, [createdBlock.id]);
 
         });
 
@@ -2108,12 +2094,7 @@ describe('BlocksStore', function() {
 
                 const block = store.getBlockForMutation('102');
 
-                assertJSON(block!.items, {
-                    "1": "103",
-                    "2": "104",
-                    "3": "105",
-                    "4": createdBlock?.id
-                });
+                assertJSON(block!.itemsAsArray, ["103", "104", "105", createdBlock?.id]);
 
             }
 
@@ -2127,10 +2108,7 @@ describe('BlocksStore', function() {
 
                 const block = store.getBlockForMutation('105');
 
-                assertJSON(block!.items, {
-                    "0": createdBlock?.id,
-                    "1": "106"
-                });
+                assertJSON(block!.itemsAsArray, [createdBlock?.id, "106"]);
 
             }
 
@@ -2164,12 +2142,12 @@ describe('BlocksStore', function() {
                 const parentBlock = store.getBlockForMutation(newBlock.parent);
                 assertPresent(parentBlock);
 
-                assertJSON(parentBlock.items, {
-                    "1": "103",
-                    "2": "104",
-                    "3": "105",
-                    "4": createdBlock.id
-                });
+                assertJSON(parentBlock.itemsAsArray, [
+                    "103",
+                    "104",
+                    "105",
+                    createdBlock.id
+                ]);
 
                 newBlock.itemsAsArray.forEach(assertBlockParents(store, [...newBlock.parents, newBlock.id]));
 
@@ -2195,13 +2173,13 @@ describe('BlocksStore', function() {
                 assertPresent(parentBlock);
                 assertPresent(createdBlock);
 
-                assertJSON(parentBlock.items, {
-                    "1": "103",
-                    "2": "104",
-                    "3": "105",
-                    "4": id,
-                    "5": createdBlock.id
-                });
+                assertJSON(parentBlock.itemsAsArray, [
+                    "103",
+                    "104",
+                    "105",
+                    id,
+                    createdBlock.id
+                ]);
 
                 newBlock.itemsAsArray.forEach(assertBlockParents(store, [...newBlock.parents, newBlock.id]));
             }
@@ -2231,12 +2209,12 @@ describe('BlocksStore', function() {
             assertPresent(parentBlock);
             assertPresent(createdBlock);
 
-            assertJSON(parentBlock.items, {
-                "1": "103",
-                "2": "104",
-                "3": "105",
-                "4": createdBlock.id
-            });
+            assertJSON(parentBlock.itemsAsArray, [
+                "103",
+                "104",
+                "105",
+                createdBlock.id
+            ]);
 
             newBlock.itemsAsArray.forEach(assertBlockParents(store, [...newBlock.parents, newBlock.id]));
         });
