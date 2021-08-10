@@ -1298,6 +1298,37 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
+    @action public renameBlock(id: BlockIDStr, newName: MarkdownStr) {
+
+        const block = this.getBlock(id);
+
+        if (! block || block.content.type !== 'name') {
+            return;
+        }
+
+        const redo = () => {
+
+            const block = this.getBlockForMutation(id) as Block<NameContent>;
+
+            if (block) {
+
+                delete this._indexByName[block.content.data.toLowerCase()];
+                this._indexByName[newName.toLowerCase()] = id;
+
+                block.withMutation(() => {
+                    block.setContent(new NameContent({ type: 'name', data: newName }));
+                });
+
+                this.doPut([block]);
+
+            }
+
+        };
+
+        return this.doUndoPush('setBlockContent', [id], redo);
+
+    }
+
     @action public setBlockContent<C extends IBlockContent = IBlockContent>(id: BlockIDStr, content: C) {
 
         const redo = () => {

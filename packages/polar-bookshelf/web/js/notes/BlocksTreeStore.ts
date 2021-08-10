@@ -49,6 +49,10 @@ export class BlocksTreeStore {
         return this.blocksStore.setSelectionRange(this.root, fromBlock, toBlock);
     }
 
+    renameBlock(id: BlockIDStr, newName: MarkdownStr): void {
+        return this.blocksStore.renameBlock(id, newName);
+    }
+
     setActive(active: BlockIDStr | undefined): void {
         return this.blocksStore.setActive(active);
     }

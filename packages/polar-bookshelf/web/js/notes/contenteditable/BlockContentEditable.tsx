@@ -1,6 +1,5 @@
 import {HTMLStr} from 'polar-shared/src/util/Strings';
 import React from 'react';
-import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import {IActiveBlock} from '../store/BlocksStore';
 import {createActionsProvider} from "../../mui/action_menu/ActionStore";
 import {NoteFormatPopper} from "../NoteFormatPopper";
@@ -74,13 +73,21 @@ export const BlockContentEditable = (props: IProps) => {
         blocksTreeStore.insertFromBlockContentStructure(blocks);
     }, [blocksTreeStore]);
 
+    const onPasteHTML = React.useCallback((html) => {
+        document.execCommand("insertHTML", false, html);
+    }, [blocksTreeStore, divRef]);
+
     const onPasteError = React.useCallback((err: Error) => {
         console.error("Got paste error: ", err);
-
-
     }, []);
 
-    const handlePaste = usePasteHandler({onPasteImage, onPasteError, onPasteBlocks, id: props.id});
+    const handlePaste = usePasteHandler({
+        onPasteImage,
+        onPasteError,
+        onPasteBlocks,
+        onPasteHTML,
+        id: props.id,
+    });
     const namedBlocks = useNamedBlocks();
 
     const noteLinkActions = React.useMemo(() => {
