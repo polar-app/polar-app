@@ -13,11 +13,8 @@ import {AppRuntime, AppRuntimeID} from "polar-shared/src/util/AppRuntime";
 import {PlatformStr, Platforms} from "polar-shared/src/util/Platforms";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {Device, Devices} from "polar-shared/src/util/Devices";
-import {FirestoreProvider} from "./DocPreviewCollection";
 
 export class HeartbeatCollection {
-
-    public static firestoreProvider: FirestoreProvider;
 
     private static COLLECTION: CollectionNameStr = "heartbeat";
 

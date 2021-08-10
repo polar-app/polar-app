@@ -6,15 +6,11 @@ import {Collections} from "polar-firestore-like/src/Collections";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 import Clause = Collections.Clause;
-import {FirestoreProvider} from "./DocPreviewCollection";
-
 /**
  * Stores card stats for a user each time they compute a new queue so that we can keep track
  * of things over time and show the user stats regarding much work they have left.
  */
 export class SpacedRepStatCollection {
-
-    public static firestoreProvider: FirestoreProvider;
 
     private static COLLECTION: CollectionNameStr = "spaced_rep_stat";
 

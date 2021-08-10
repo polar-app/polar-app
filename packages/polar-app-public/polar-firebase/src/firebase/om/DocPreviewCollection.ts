@@ -86,8 +86,6 @@ export interface ListOpts {
 
 export class DocPreviewCollection {
 
-    public static firestoreProvider: FirestoreProvider;
-
     private static COLLECTION: CollectionNameStr = "doc_preview";
 
     public static async set(doc: DocPreview): Promise<DocPreview> {

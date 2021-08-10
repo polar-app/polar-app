@@ -5,15 +5,12 @@ import {Collections} from "polar-firestore-like/src/Collections";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 import Clause = Collections.Clause;
-import {FirestoreProvider} from "./DocPreviewCollection";
 /**
  * Main class storing spaced repetition for flashcards, annotations, etc.  This stores the
  * state of the card so that next time we want to access it we can just fetch it
  * directly.
  */
 export class SpacedRepCollection {
-
-    public static firestoreProvider: FirestoreProvider;
 
     private static COLLECTION: CollectionNameStr = "spaced_rep";
 
