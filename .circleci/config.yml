@@ -85,11 +85,6 @@ commands:
             echo "yarn config list: ======"
             yarn config list
 
-      # ? Debug step for checking if there are any duplicate packages
-      - run:
-          name: DEBUG(Check if duplicate packages with different versions exist)
-          command: lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-app-public/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d
-
       # ! Hoist all Dependencies
       - run:
           name: Lerna Bootstrap
@@ -98,16 +93,21 @@ commands:
             npm config set legacy-peer-deps true
             npx lerna bootstrap --ci
 
+      # ! Compile all Typescript Packages
+      - run:
+          name: Lerna Compile
+          command: npx lerna run compile
+
+      # ? Debug step for checking if there are any duplicate packages
+      - run:
+          name: DEBUG(Check if duplicate packages with different versions exist)
+          command: lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-app-public/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d
+
       # ! Save Cache
       - save_cache:
           paths:
             - ~/.cache/yarn
           key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-
-      # ! Compile all Typescript Packages
-      - run:
-          name: Lerna Compile
-          command: npx lerna run compile
 
       # ! Persist the files to carry over to the next stage
       - persist_to_workspace:
