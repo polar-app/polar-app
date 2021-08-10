@@ -111,13 +111,14 @@ export namespace PDFThumbnailer {
 
         await view.draw();
 
-        // FIXME: this is the problem. It looks like we're just not getting the
-        // data back in the image on the canvas. it's blank.
-        console.log("FIXME: canvas data ", canvas.toDataURL('image/png'))
+        const pageCanvas = container.querySelector('canvas')
 
-        if (! canvas) {
+        if (! pageCanvas) {
             throw new Error("No canvas");
         }
+
+        console.log("FIXME: canvas data ", pageCanvas.toDataURL('image/png'))
+
 
         const rect: ILTRect = {
             left: 0,
