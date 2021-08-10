@@ -47,7 +47,7 @@ export function useBlockContentEditableElement() {
 export const BlockContentEditable = (props: IProps) => {
 
     const [content] = React.useState(() => MarkdownContentConverter.toHTML(props.content));
-    const divRef = React.useRef<HTMLDivElement>(null);
+    const divRef = React.useRef<HTMLDivElement | null>(null);
     const contentRef = React.useRef(props.content);
     const blocksTreeStore = useBlocksTreeStore();
 
