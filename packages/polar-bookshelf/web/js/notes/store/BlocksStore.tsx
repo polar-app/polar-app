@@ -1302,8 +1302,12 @@ export class BlocksStore implements IBlocksStore {
 
         const block = this.getBlock(id);
 
-        if (! block || block.content.type !== 'name') {
+        if (! block) {
             return;
+        }
+
+        if (block.content.type !== 'name') {
+            throw new Error(`Not allowed rename block of type "${block.content.type}"`);
         }
 
         const redo = () => {
