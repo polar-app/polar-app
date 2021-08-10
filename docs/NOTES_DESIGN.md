@@ -135,11 +135,49 @@ when the user wants to undo/redo.
 This is done by tracking a field called ```mutation``` which is incremented 
 every time the block is changed.
 
-This also enables us to verify that a undo/redo operation isn't changed by
+There's also another field `mutator` (a unique device identifier) which enables us to verify that a undo/redo operation isn't changed by
 someone else because if userA mutates a block that is shared, userB could try to
 undo that operation.  What we do now is that we abort 'content' changes to that
 block but still allow 'items' mutation since the user intent can be preserved
 thanks to LSeq.
+
+Example of multiple users updating content:
+
+**User A**
+
+```json
+{
+    "content": {
+        "type": "Hello",
+        "mutator": "user-a-device-id",
+    },
+    mutation: 1,
+    mutator: "user-a-device-id",
+}
+```
+
+
+<br />
+
+
+
+**User B**
+```json
+{
+    "content": {
+        "type": "Hello world potato?",
+        "mutator": "user-b-device-id",
+    },
+    "mutation": 2,
+}
+```
+
+Now when **User A** tries to undo, they won't be able to, because the last update to `content` was done by **User B**,
+and we can't let **User A** undo the changes of **User B**.
+
+This is done by using a `mutator` field which holds a unique device identifier, and on every change to content we update `mutator`
+to match the device id of the person that did the change.
+
 
 # Undo and Persistence Cooperation
 
