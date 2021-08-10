@@ -151,8 +151,7 @@ Example of multiple users updating content:
         "type": "Hello",
         "mutator": "user-a-device-id",
     },
-    mutation: 1,
-    mutator: "user-a-device-id",
+    "mutation": 1,
 }
 ```
 
