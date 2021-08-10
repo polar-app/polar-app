@@ -21,7 +21,7 @@ export class FirestoreCollections {
                 // already configured
                 continue;
             }
-
+ 
             firestoreBacked.firestoreProvider = () => firestore as any as FirestoreLike;
         }
 
