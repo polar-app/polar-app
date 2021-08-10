@@ -1,4 +1,4 @@
-import PDFJS, {DocumentInitParameters, PDFDocumentProxy} from 'pdfjs-dist';
+import PDFJS, {DocumentInitParameters} from 'pdfjs-dist';
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 
 import {
@@ -14,22 +14,23 @@ import {
     DocPreviewCollection
 } from "polar-firebase/src/firebase/om/DocPreviewCollection";
 import {AnalyticsInitializer} from "../../web/js/analytics/AnalyticsInitializer";
-import {FirestoreCollections} from "../repository/js/reviewer/FirestoreCollections";
 import {Version} from 'polar-shared/src/util/Version';
 import {Analytics} from "../../web/js/analytics/Analytics";
 import {Strings} from "polar-shared/src/util/Strings";
 import {Prerenderer} from "./Prerenderer";
 import {UserAgents} from "./UserAgents";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 PDFJS.GlobalWorkerOptions.workerSrc = '../../node_modules/pdfjs-dist/build/pdf.worker.js';
 
 async function getDocPreview(): Promise<DocPreviewCached> {
 
     const parsedURL = DocPreviewURLs.parse(document.location.href);
+    const firestore = await FirestoreBrowserClient.getInstance();
 
     if (parsedURL) {
 
-        const docPreview = await DocPreviewCollection.get(parsedURL.id);
+        const docPreview = await DocPreviewCollection.get(firestore, parsedURL.id);
 
         if (! docPreview) {
             throw new Error("No doc for: " + parsedURL.id);
@@ -142,8 +143,6 @@ async function doLoad() {
     const version = Version.get();
 
     console.log("Running with version: " + version);
-
-    await FirestoreCollections.configure();
 
     AnalyticsInitializer.doInit();
 

@@ -7,6 +7,7 @@ import {SlugStr} from "polar-shared/src/util/Slugs";
 import OrderByClause = Collections.OrderByClause;
 import Clause = Collections.Clause;
 import {DocumentReferenceLike, QueryLike, WhereFilterOpLike} from "../Collections";
+import {IFirestore} from "polar-firestore-like/src/IFirestore";
 
 export interface CollectionReferenceLike {
     doc(documentPath: string): DocumentReferenceLike;
@@ -16,9 +17,6 @@ export interface CollectionReferenceLike {
 
 export interface FirestoreLike {
     collection(collectionPath: string): CollectionReferenceLike;
-}
-export interface FirestoreProvider {
-    (): FirestoreLike;
 }
 export interface BaseDocPreview extends IDocDetail {
 
@@ -88,16 +86,13 @@ export class DocPreviewCollection {
 
     private static COLLECTION: CollectionNameStr = "doc_preview";
 
-    public static async set(doc: DocPreview): Promise<DocPreview> {
-        const firestore = await FirestoreBrowserClient.getInstance();
-
+    public static async set<SM = unknown>(firestore: IFirestore<SM>, doc: DocPreview): Promise<DocPreview> {
         await Collections.set(firestore, this.COLLECTION, doc.id, doc);
         return doc;
     }
 
-    public static async list(opts: ListOpts): Promise<ReadonlyArray<DocPreview>> {
+    public static async list<SM = unknown>(firestore: IFirestore<SM>, opts: ListOpts): Promise<ReadonlyArray<DocPreview>> {
 
-        const firestore = await FirestoreBrowserClient.getInstance();
         const clauses: ReadonlyArray<Clause> = [];
         const limit = opts && opts.size;
 
@@ -116,9 +111,7 @@ export class DocPreviewCollection {
 
     }
 
-    public static async get(id: IDStr): Promise<DocPreview | undefined> {
-        const firestore = await FirestoreBrowserClient.getInstance();
-
+    public static async get<SM = unknown>(firestore: IFirestore<SM>, id: IDStr): Promise<DocPreview | undefined> {
         return Collections.get(firestore, this.COLLECTION, id);
     }
 

@@ -12,6 +12,7 @@ import {
 import {ArrayStreams} from "polar-shared/src/util/ArrayStreams";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {DocPreviewHashcodes} from "polar-firebase/src/firebase/om/DocPreviewHashcodes";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 const LIMIT = 10000;
 
@@ -87,15 +88,17 @@ export class DocPreviewsLoader {
                                         .head(LIMIT)
                                         .collect();
 
+        const firestore = await FirestoreBrowserClient.getInstance();
+
         for (const docPreview of docPreviews) {
 
-            if (await DocPreviewCollection.get(docPreview.urlHash)) {
+            if (await DocPreviewCollection.get(firestore, docPreview.urlHash)) {
                 console.log('skipping');
                 continue;
             }
 
             console.log('writing');
-            await DocPreviewCollection.set(docPreview);
+            await DocPreviewCollection.set(firestore, docPreview);
 
             console.log("Import URL: " + toImportURL(docPreview));
 

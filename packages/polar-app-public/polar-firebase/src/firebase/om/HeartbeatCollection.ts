@@ -3,8 +3,6 @@ import {
     ISODateTimeString,
     ISODateTimeStrings
 } from "polar-shared/src/metadata/ISODateTimeStrings";
-import {Collections} from "polar-firestore-like/src/Collections";
-import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import {Version, VersionStr} from "polar-shared/src/util/Version";
 import {IDStr, CollectionNameStr, UserIDStr} from "polar-shared/src/util/Strings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
@@ -13,16 +11,15 @@ import {AppRuntime, AppRuntimeID} from "polar-shared/src/util/AppRuntime";
 import {PlatformStr, Platforms} from "polar-shared/src/util/Platforms";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {Device, Devices} from "polar-shared/src/util/Devices";
+import {IFirestore} from "polar-firestore-like/src/IFirestore";
 
 export class HeartbeatCollection {
 
     private static COLLECTION: CollectionNameStr = "heartbeat";
 
-    public static async write(uid: UserIDStr | undefined) {
+    public static async write<SM>(firestore: IFirestore<SM>,uid: UserIDStr | undefined) {
 
         const heartbeat = this.create(uid);
-
-        const firestore = await FirestoreBrowserClient.getInstance();
 
         const doc = firestore.collection(this.COLLECTION)
                              .doc(heartbeat.id);

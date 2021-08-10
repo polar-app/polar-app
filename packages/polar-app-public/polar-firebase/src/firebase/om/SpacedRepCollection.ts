@@ -5,6 +5,7 @@ import {Collections} from "polar-firestore-like/src/Collections";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 import Clause = Collections.Clause;
+import {IFirestore} from "polar-firestore-like/src/IFirestore";
 /**
  * Main class storing spaced repetition for flashcards, annotations, etc.  This stores the
  * state of the card so that next time we want to access it we can just fetch it
@@ -14,22 +15,19 @@ export class SpacedRepCollection {
 
     private static COLLECTION: CollectionNameStr = "spaced_rep";
 
-    public static async set(id: IDStr, spacedRep: SpacedRep) {
-        const firestore = await FirestoreBrowserClient.getInstance();
+    public static async set<SM = unknown>(firestore: IFirestore<SM>, id: IDStr, spacedRep: SpacedRep) {
         Preconditions.assertPresent(id, 'id');
 
         await Collections.set(firestore, this.COLLECTION, id, spacedRep);
     }
 
-    public static async get(id: IDStr): Promise<SpacedRep | undefined> {
-        const firestore = await FirestoreBrowserClient.getInstance();
+    public static async get<SM = unknown>(firestore: IFirestore<SM>, id: IDStr): Promise<SpacedRep | undefined> {
         Preconditions.assertPresent(id, 'id');
 
         return await Collections.get(firestore, this.COLLECTION, id);
     }
 
-    public static async list(uid: UserIDStr): Promise<ReadonlyArray<SpacedRep>> {
-        const firestore = await FirestoreBrowserClient.getInstance();
+    public static async list<SM = unknown>(firestore: IFirestore<SM>, uid: UserIDStr): Promise<ReadonlyArray<SpacedRep>> {
         Preconditions.assertPresent(uid, 'uid');
         const clauses: ReadonlyArray<Clause> = [['uid', '==', uid]];
 

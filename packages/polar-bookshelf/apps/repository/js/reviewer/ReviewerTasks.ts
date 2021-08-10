@@ -16,10 +16,10 @@ import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Reducers} from "polar-shared/src/util/Reducers";
 import {SpacedRepStatCollection} from "polar-firebase/src/firebase/om/SpacedRepStatCollection";
-import {FirestoreCollections} from "./FirestoreCollections";
 import {IDocAnnotation} from "../../../../web/js/annotation_sidebar/DocAnnotation";
 import {ReadingTaskAction} from "./cards/ReadingTaskAction";
 import {Strings} from "polar-shared/src/util/Strings";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 /**
  * Take tasks and then build a
@@ -128,12 +128,13 @@ export class ReviewerTasks {
 
         const potential: ReadonlyArray<Task<A>> = tasksBuilder(repoDocAnnotations);
         const uid = await FirebaseBrowser.currentUserID();
+        const firestore = await FirestoreBrowserClient.getInstance();
 
         if (! uid) {
             throw new Error("Not authenticated");
         }
 
-        const spacedReps = await SpacedRepCollection.list(uid);
+        const spacedReps = await SpacedRepCollection.list(firestore, uid);
 
         const spacedRepsMap = IDMaps.create(spacedReps);
 
@@ -166,8 +167,6 @@ export class ReviewerTasks {
      * Return true if the user is actively using the flashcard/IR reviewer system.
      */
     public static async isReviewer(): Promise<boolean> {
-
-        await FirestoreCollections.configure();
 
         const uid = await FirebaseBrowser.currentUserID();
 

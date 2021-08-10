@@ -6,6 +6,7 @@ import {Collections} from "polar-firestore-like/src/Collections";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 import Clause = Collections.Clause;
+import {IFirestore} from "polar-firestore-like/src/IFirestore";
 /**
  * Stores card stats for a user each time they compute a new queue so that we can keep track
  * of things over time and show the user stats regarding much work they have left.
@@ -17,10 +18,7 @@ export class SpacedRepStatCollection {
     /**
      * Write a new stat to the database.
      */
-    public static async write(uid: UserIDStr,
-                              spacedRepStat: SpacedRepStat): Promise<SpacedRepStatRecord> {
-
-        const firestore = await FirestoreBrowserClient.getInstance();
+    public static async write<SM = unknown>(firestore: IFirestore<SM>, uid: UserIDStr, spacedRepStat: SpacedRepStat): Promise<SpacedRepStatRecord> {
 
         const id = Hashcodes.createRandomID();
 
@@ -38,11 +36,9 @@ export class SpacedRepStatCollection {
     /**
      * Get the most recent stats for for the given mode.
      */
-    public static async list(uid: UserIDStr,
+    public static async list<SM = unknown>(firestore: IFirestore<SM>, uid: UserIDStr,
                              mode: RepetitionMode,
                              type: StatType): Promise<ReadonlyArray<SpacedRepStatRecord>> {
-
-        const firestore = await FirestoreBrowserClient.getInstance();
 
         const clauses: ReadonlyArray<Clause> = [
             ['uid', '==', uid],
