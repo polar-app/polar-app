@@ -7,7 +7,6 @@ import equal from "deep-equal";
 import {useNoteLinkLoader} from "./NoteLinkLoader";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 import {useHistory} from "react-router";
-import {useBlocksTreeStore} from "./BlocksTree";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {BlockPredicates} from "./store/BlockPredicates";
 
@@ -80,7 +79,6 @@ function useLinkNavigationEventListener({ id }: IUseLinkNavigationOpts) {
 
     const linkLoaderRef = useLinkLoaderRef();
     const noteLinkLoader = useNoteLinkLoader();
-    const blocksTreeStore = useBlocksTreeStore();
     const noteWikiLinkCreator = useNoteWikiLinkCreator();
     const history = useHistory();
 
@@ -127,7 +125,7 @@ function useLinkNavigationEventListener({ id }: IUseLinkNavigationOpts) {
 
         return false;
 
-    }, [noteWikiLinkCreator, linkLoaderRef, noteLinkLoader, blocksTreeStore, history, id]);
+    }, [noteWikiLinkCreator, linkLoaderRef, noteLinkLoader, history, id]);
 
 }
 

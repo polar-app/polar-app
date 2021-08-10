@@ -47,7 +47,7 @@ export function useBlockContentEditableElement() {
 export const BlockContentEditable = (props: IProps) => {
 
     const [content] = React.useState(() => MarkdownContentConverter.toHTML(props.content));
-    const divRef = React.useRef<HTMLDivElement | null>(null);
+    const divRef = React.useRef<HTMLDivElement>(null);
     const contentRef = React.useRef(props.content);
     const blocksTreeStore = useBlocksTreeStore();
 
@@ -75,7 +75,7 @@ export const BlockContentEditable = (props: IProps) => {
 
     const onPasteHTML = React.useCallback((html) => {
         document.execCommand("insertHTML", false, html);
-    }, [blocksTreeStore, divRef]);
+    }, []);
 
     const onPasteError = React.useCallback((err: Error) => {
         console.error("Got paste error: ", err);

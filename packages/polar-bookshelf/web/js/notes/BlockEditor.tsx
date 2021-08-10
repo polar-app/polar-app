@@ -81,7 +81,7 @@ const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
                 handleRename(data);
                 break;
         }
-    }, [handleRename, blocksTreeStore]);
+    }, [id, handleRename, blocksTreeStore]);
 };
 
 const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
