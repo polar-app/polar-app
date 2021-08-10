@@ -111,6 +111,8 @@ export namespace PDFThumbnailer {
 
         await view.draw();
 
+        // FIXME: this is the problem. It looks like we're just not getting the
+        // data back in the image on the canvas. it's blank.
         console.log("FIXME: canvas data ", canvas.toDataURL('image/png'))
 
         if (! canvas) {
