@@ -1,3 +1,21 @@
+# Overview
+
+Polar is a lerna multi-module and typescript build system setup in a monorepo
+with all the code kept in one place.
+
+# Stack
+
+- Typescript - Everything is done in Typescript with generics
+- Webpack
+- Lerna - provides our multi-module system
+- Firebase - provides the backend (Firestore)
+
+# External Libraries / Frameworks
+
+- Material UI
+- pdf.js
+- epub.js
+
 # Steps to Build
 
 - If you're on Windows you should download the latest version of Windows Subsystem for Linux.
@@ -22,13 +40,13 @@
   or if you get "JavaScript heap out of memory" errors, an alternative that's slightly slower but uses slightly less
   RAM: `node --max-old-space-size=7000 ./node_modules/.bin/webpack serve`
 
-This *should* mean you have all code running and Polar should load http://127.0.0.1:8050 in your browser.
+This _should_ mean you have all code running and Polar should load http://127.0.0.1:8050 in your browser.
 
 # Potential Errors / Gotchas
 
 ## ulimit
 
-You might need to run ```ulimit -n 1000000``` and then 'ulimit -n' to make sure this setting was accepted by the OS.
+You might need to run `ulimit -n 1000000` and then 'ulimit -n' to make sure this setting was accepted by the OS.
 Some users report a bug with npm that causes it to tail to garbage collect open file handles and this fixes it.
 
 ### increasing file handle limit on macos
@@ -58,7 +76,7 @@ You can use the 'dev2' app for hacking on custom stuff.
 
 You can run
 
-```npx tsc --watch```
+`npx tsc --watch`
 
 in a module to make it compile faster during dev mode.
 
@@ -89,4 +107,4 @@ lerna exec --concurrency=1 --parallel=false --no-bail -- node /Users/burton/proj
 # Windows
 
 - Install latest Windows Subsystem for Linux
-- 
+-
