@@ -1,4 +1,4 @@
-import {PositionalArrays} from "./PositionalArrays";
+import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {assertJSON} from "../../test/Assertions";
 import {BlocksStoreTests} from "./BlocksStoreTests";
 import createBasicBlock = BlocksStoreTests.createBasicBlock;
@@ -138,7 +138,7 @@ describe('BlocksStoreMutations', () => {
             assertJSON(BlocksStoreMutations.computeItemPositionPatches(PositionalArrays.create(['1']), PositionalArrays.create([])), [
                 {
                     "type": "remove",
-                    "key": "1",
+                    "key": PositionalArrays.generateKey(1),
                     "id": "1"
                 }
             ]);
@@ -150,7 +150,7 @@ describe('BlocksStoreMutations', () => {
             assertJSON(BlocksStoreMutations.computeItemPositionPatches(PositionalArrays.create([]), PositionalArrays.create(['1'])), [
                 {
                     "type": "insert",
-                    "key": "1",
+                    "key": PositionalArrays.generateKey(1),
                     "id": "1"
                 }
             ]);
@@ -161,9 +161,10 @@ describe('BlocksStoreMutations', () => {
             const current = PositionalArrays.create(['1']);
             const before = cloneDeep(current);
 
+
             PositionalArrays.insert(
                 current,
-                PositionalArrays.keyForValue(before, '1'),
+                '1',
                 '2',
                 'after'
             );
@@ -171,7 +172,7 @@ describe('BlocksStoreMutations', () => {
             assertJSON(BlocksStoreMutations.computeItemPositionPatches(before, current), [
                 {
                     "type": "insert",
-                    "key": "2",
+                    "key": PositionalArrays.generateKey(2),
                     "id": "2"
                 }
             ]);
@@ -185,7 +186,7 @@ describe('BlocksStoreMutations', () => {
 
             PositionalArrays.insert(
                 current,
-                PositionalArrays.keyForValue(before, '1'),
+                '1',
                 '2',
                 'before'
             );
@@ -195,7 +196,7 @@ describe('BlocksStoreMutations', () => {
                 BlocksStoreMutations.computeItemPositionPatches(before, current), [
                 {
                     "type": "insert",
-                    "key": "0",
+                    "key": PositionalArrays.generateKey(0),
                     "id": "2"
                 }
             ]);
@@ -213,7 +214,7 @@ describe('BlocksStoreMutations', () => {
 
             PositionalArrays.insert(
                 current,
-                PositionalArrays.keyForValue(before, '3'),
+                '3',
                 '2',
                 'after'
             );
@@ -223,12 +224,12 @@ describe('BlocksStoreMutations', () => {
                 BlocksStoreMutations.computeItemPositionPatches(before, current), [
                 {
                     "type": "remove",
-                    "key": "2",
+                    "key": PositionalArrays.generateKey(2),
                     "id": "2"
                 },
                 {
                     "type": "insert",
-                    "key": "4",
+                    "key": PositionalArrays.generateKey(4),
                     "id": "2"
                 }
             ]);

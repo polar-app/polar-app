@@ -36,6 +36,7 @@ if [ "${mode}" == "serial" ]; then
     time firebase deploy --only functions:SSRFunction
     time firebase deploy --only functions:BlockPermissionFunction
     time firebase deploy --only functions:NSpaceCreateFunction
+    time firebase deploy --only functions:CreateSnapshotFunction
 
     time firebase deploy --only functions:AppleIapCallback --debug
     time firebase deploy --only functions:AppstoreServerNotification --debug

@@ -1,6 +1,5 @@
 import {SnapshotSubscriber} from "./Snapshots";
-
-export type SnapshotUnsubscriber = () => void;
+import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 
 export type OnUpdatedCallback = <D>(value: D | undefined) => void;
 
