@@ -2,18 +2,21 @@ import {makeObservable, observable, computed} from "mobx"
 import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {DateContentFormat, IDateContent} from "polar-blocks/src/blocks/content/IDateContent";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
+import {DeviceIDStr} from "polar-shared/src/util/DeviceIDManager";
 
 export class DateContent implements IDateContent, IBaseBlockContent {
 
     @observable private readonly _type: 'date';
     @observable private _data: string;
     @observable private _format: DateContentFormat;
+    @observable private _mutator: DeviceIDStr;
 
     constructor(opts: IDateContent) {
 
         this._type = opts.type;
         this._data = opts.data;
         this._format = opts.format;
+        this._mutator = opts.mutator || '';
 
         makeObservable(this)
 
@@ -31,22 +34,32 @@ export class DateContent implements IDateContent, IBaseBlockContent {
         return this._format;
     }
 
+    @computed get mutator() {
+        return this._mutator;
+    }
+
     public update(content: IBlockContent) {
 
         if (content.type === 'date') {
             this._data = content.data;
+            this._mutator = content.mutator || '';
         } else {
             throw new Error("Invalid type: " +  content.type)
         }
 
     }
 
+    public setMutator(mutator: DeviceIDStr) {
+        this._mutator = mutator;
+    }
+
     public toJSON(): IDateContent {
         return {
             type: this._type,
             data: this._data,
-            format: this._format
-        }
+            format: this._format,
+            mutator: this._mutator,
+        };
     }
 
 }
