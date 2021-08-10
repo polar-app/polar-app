@@ -4,7 +4,6 @@ import {DataURL, DataURLs} from './DataURLs';
 import {IDimensions} from "./IDimensions";
 import {ImageType} from "./ImageType";
 
-
 const DEFAULT_IMAGE_TYPE = 'image/png';
 const DEFAULT_IMAGE_QUALITY = 1.0;
 
@@ -53,6 +52,13 @@ export namespace ImageDatas {
  */
 export namespace Canvases {
 
+    /**
+     * A Canvas type so we can work with node-canvas
+     */
+    export interface ICanvas {
+
+    }
+
     // https://github.com/burtonator/pdf-annotation-exporter/blob/master/webapp/js/pdf-loader.js
     // https://github.com/burtonator/pdf-annotation-exporter/blob/master/webapp/js/extractor.js
     // https://github.com/burtonator/pdf-annotation-exporter/blob/master/webapp/js/debug-canvas.js
@@ -85,11 +91,17 @@ export namespace Canvases {
     export function toArrayBuffer(canvas: HTMLCanvasElement,
                                   opts: ImageOpts = new DefaultImageOpts()): Promise<ArrayBuffer> {
 
+        // FIXME: this seems to be the problem as FileReader is probably not working ...
+
         // https://developer.mozilla.org/en-US/docs/Web/API/Blob
         //
         return new Promise((resolve, reject) => {
 
+            console.log("FIXME: HERE 8")
+
             canvas.toBlob((blob) => {
+
+                console.log("FIXME: HERE 9")
 
                 if (blob) {
 
@@ -251,6 +263,8 @@ export namespace Canvases {
                                   rect: ILTRect,
                                   opts: ImageOpts = new DefaultImageOpts()): Promise<ImageData> {
 
+        console.log("FIXME: HERE 0")
+
         Preconditions.assertPresent(canvas, "canvas");
 
         const xScale = canvas.width / canvas.offsetWidth;
@@ -267,26 +281,56 @@ export namespace Canvases {
 
         const tmpCanvas = document.createElement("canvas");
 
+        console.log("FIXME: HERE 1")
         const tmpCanvasCtx = tmpCanvas.getContext('2d', {alpha: false})!;
+        console.log("FIXME: HERE 2")
         tmpCanvasCtx.imageSmoothingEnabled = false;
+
+        console.log("FIXME: HERE 3")
 
         tmpCanvas.width  = canvasRect.width;
         tmpCanvas.height = canvasRect.height;
+
+        console.log("FIXME: HERE 4")
 
         // copy data from the source canvas to the target
         tmpCanvasCtx.drawImage(canvas,
                                canvasRect.left, canvasRect.top, canvasRect.width, canvasRect.height,
                                0, 0, canvasRect.width, canvasRect.height);
 
-        return await canvasToImageData(tmpCanvas, opts);
+        console.log("FIXME: HERE 5")
 
+        // FIXME: this is the problem.  Can we call tmpCanvas toDataURL here? I think we can...
+
+        const IS_NODE = true;
+
+        if (IS_NODE) {
+
+            const dataURL = canvas.toDataURL('image/png', 1.0);
+            return {
+                data: dataURL,
+                format: 'dataurl',
+                type: 'image/png',
+                width: tmpCanvas.width,
+                height: tmpCanvas.height
+            };
+
+        }
+
+        return await canvasToImageData(tmpCanvas, opts);
 
     }
 
     export async function canvasToImageData(canvas: HTMLCanvasElement,
                                             opts: ImageOpts = new DefaultImageOpts()): Promise<ImageData> {
 
+
+
+        console.log("FIXME: HERE 6")
+
         const data = await toArrayBuffer(canvas, opts);
+
+        console.log("FIXME: HERE 7")
 
         return arrayBufferToImageData(data, {width: canvas.width, height: canvas.height}, opts.type);
 
