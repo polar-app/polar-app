@@ -315,7 +315,7 @@ export namespace Collections {
             if(batch){
                 batch.delete(doc);
             } else{
-                await this.doDelete(firestore, collection, record.id);
+                await doDelete(firestore, collection, record.id);
             }
 
         }
