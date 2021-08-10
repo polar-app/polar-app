@@ -88,7 +88,7 @@ commands:
       # ? Debug step for checking if there are any duplicate packages
       - run:
           name: DEBUG(Check if duplicate packages with different versions exist)
-          command: lerna exec --concurrency=1 --parallel=false --no-bail -- node /polar-app/packages/polar-app-public/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d
+          command: lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-app-public/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d
 
       # ! Hoist all Dependencies
       - run:
