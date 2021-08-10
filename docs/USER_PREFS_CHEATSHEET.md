@@ -41,3 +41,4 @@ To turn on a feature toggle the user is given a URL of:
 https://app.getpolarized.io/enable-feature-toggle?name=foo
 
 Where the feature we're trying to toggle is named 'foo' at which point the toggle is enabled and the app reloaded.
+
