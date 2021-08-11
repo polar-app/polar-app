@@ -1,12 +1,8 @@
-import {
-    PersistenceLayerType
-} from '../datastore/PersistenceLayerManager';
-import {Firestore} from '../firebase/Firestore';
-import {
-    ISODateTimeString,
-} from 'polar-shared/src/metadata/ISODateTimeStrings';
+import {PersistenceLayerType} from '../datastore/PersistenceLayerManager';
+import {ISODateTimeString,} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {MachineID, MachineIDs} from "polar-shared/src/util/MachineIDs";
 import {IDocumentSnapshot} from "polar-firestore-like/src/IDocumentSnapshot";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 /**
  * Computes and stores stats for each machine's datastore.
@@ -17,7 +13,7 @@ export class MachineDatastores {
 
     public static async ref() {
 
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
 
         const id = MachineIDs.get();
 

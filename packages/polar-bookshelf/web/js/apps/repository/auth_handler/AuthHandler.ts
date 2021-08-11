@@ -1,14 +1,14 @@
 import {URLs} from 'polar-shared/src/util/URLs';
-import {Firebase} from '../../../firebase/Firebase';
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {Optional} from 'polar-shared/src/util/ts/Optional';
 import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Billing} from "polar-accounts/src/Billing";
-import {Account} from "../../../accounts/Account";
 import {Accounts} from "../../../accounts/Accounts";
 import {SignInSuccessURLs} from "../../../../../apps/repository/js/login/SignInSuccessURLs";
 import firebase from 'firebase/app'
-import {Firestore} from "../../../firebase/Firestore";
 import {AppSites} from "./AppSites";
+import {IAccount} from 'polar-firebase/src/firebase/om/AccountCollection';
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 export interface AuthHandler {
 
@@ -63,7 +63,7 @@ abstract class DefaultAuthHandler implements AuthHandler {
 
 }
 
-export function toUserInfo(user: firebase.User, account: Account | undefined): UserInfo {
+export function toUserInfo(user: firebase.User, account: IAccount | undefined): UserInfo {
 
     const createSubscription = (): Billing.Subscription => {
 
@@ -85,6 +85,8 @@ export function toUserInfo(user: firebase.User, account: Account | undefined): U
                 plan: account.plan,
                 interval: account.interval || 'month'
             };
+
+
 
         } else {
             return {
@@ -116,7 +118,7 @@ export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
      */
     public async userInfo(): Promise<Optional<UserInfo>> {
 
-        Firebase.init();
+        FirebaseBrowser.init();
 
         const user = await this.currentUser();
 
@@ -132,7 +134,7 @@ export abstract class FirebaseAuthHandler extends DefaultAuthHandler {
     }
 
     protected async currentUser(): Promise<firebase.User | null> {
-        return await Firebase.currentUserAsync();
+        return await FirebaseBrowser.currentUserAsync();
     }
 
 }
@@ -143,7 +145,7 @@ export class BrowserAuthHandler extends FirebaseAuthHandler {
 
     public async authenticate(signInSuccessUrl?: string): Promise<void> {
 
-        Firebase.init();
+        FirebaseBrowser.init();
 
         function createLoginURL() {
             const base = computeBaseURL();
@@ -158,14 +160,14 @@ export class BrowserAuthHandler extends FirebaseAuthHandler {
         // TODO useHistory here to push so that the app doesn't have to
         // reload but the problem is that we need to use hooks for this...
 
-        Firestore.terminateAndRedirect(newLocation)
+        FirestoreBrowserClient.terminateAndRedirect(newLocation)
             .catch(err => console.error(err));
 
     }
 
     public async status(): Promise<AuthStatus> {
 
-        Firebase.init();
+        FirebaseBrowser.init();
 
         const user = await this.currentUser();
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Toaster} from '../toaster/Toaster';
-import {Firebase} from '../../firebase/Firebase';
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {Group, GroupNameStr, Groups} from '../../datastore/sharing/db/Groups';
 import {Releaser} from '../../reactor/EventListener';
 import {Logger} from 'polar-shared/src/logger/Logger';
@@ -77,7 +77,7 @@ export class GroupSharing extends React.Component<IProps, IState> {
 
         const doHandle = async () => {
 
-            const user = await Firebase.currentUserAsync();
+            const user = await FirebaseBrowser.currentUserAsync();
 
             if (! user) {
                 this.onConnectivity('unauthenticated');

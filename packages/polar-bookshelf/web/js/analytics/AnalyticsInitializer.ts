@@ -1,6 +1,6 @@
 import {Analytics} from "./Analytics";
 import {Version} from "polar-shared/src/util/Version";
-import {Firebase} from "../firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {Emails} from "polar-shared/src/util/Emails";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {FirestoreCollections} from "../../../apps/repository/js/reviewer/FirestoreCollections";
@@ -80,7 +80,7 @@ export namespace AnalyticsInitializer {
 
         };
 
-        const user = await Firebase.currentUserAsync();
+        const user = await FirebaseBrowser.currentUserAsync();
 
         if (user) {
 

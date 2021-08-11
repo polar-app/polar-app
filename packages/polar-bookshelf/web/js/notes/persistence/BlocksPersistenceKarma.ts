@@ -1,19 +1,19 @@
-import {Firestore} from "../../firebase/Firestore";
 import {assert} from "chai";
-import {Firebase} from "../../firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {FIREBASE_PASS, FIREBASE_USER} from "../../firebase/FirebaseTestingUsers";
 import {BlocksStoreMutations} from "../store/BlocksStoreMutations";
-import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 import {assertJSON} from "../../test/Assertions";
-import {PositionalArrays} from "../store/PositionalArrays";
+import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {BlocksStoreUndoQueues} from "../store/BlocksStoreUndoQueues";
 import {BlocksStoreTests} from "../store/BlocksStoreTests";
-import createBasicBlock = BlocksStoreTests.createBasicBlock;
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
-import { FirestoreBlocksPersistenceWriter } from "./BlocksPersistenceWriters";
+import {FirestoreBlocksPersistenceWriter} from "./BlocksPersistenceWriters";
 import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
+import createBasicBlock = BlocksStoreTests.createBasicBlock;
 
 const ID = Hashcodes.createRandomID();
 
@@ -23,7 +23,7 @@ describe("BlocksPersistence", () => {
 
         TestingTime.freeze();
 
-        const app = Firebase.init();
+        const app = FirebaseBrowser.init();
 
         const auth = app.auth();
 
@@ -39,7 +39,7 @@ describe("BlocksPersistence", () => {
 
     it("no mutations", async () => {
 
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
 
         await FirestoreBlocksPersistenceWriter.doExec(firestore, []);
 
@@ -47,9 +47,9 @@ describe("BlocksPersistence", () => {
 
     it("new document", async () => {
 
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
 
-        const uid = (await Firebase.currentUserID())!;
+        const uid = (await FirebaseBrowser.currentUserID())!;
 
         const mutation: IBlocksStoreMutation = {
             "id": ID,
@@ -92,9 +92,9 @@ describe("BlocksPersistence", () => {
 
     it("updated block", async () => {
 
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
 
-        const uid = (await Firebase.currentUserID())!;
+        const uid = (await FirebaseBrowser.currentUserID())!;
 
         const before = createBasicBlock<IMarkdownContent>({
             id: ID,
@@ -154,8 +154,8 @@ describe("BlocksPersistence", () => {
 
     it("updated block with float values for items", async () => {
 
-        const firestore = await Firestore.getInstance();
-        const uid = (await Firebase.currentUserID())!;
+        const firestore = await FirestoreBrowserClient.getInstance();
+        const uid = (await FirebaseBrowser.currentUserID())!;
 
         const before = createBasicBlock<IMarkdownContent>({
             id: ID,
@@ -219,7 +219,7 @@ namespace FirestoreBlocks {
 
     export async function get(id: BlockIDStr): Promise<IBlock | undefined> {
 
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
 
         const doc = await firestore.collection('block').doc(id).get();
 
@@ -233,7 +233,7 @@ namespace FirestoreBlocks {
 
     export async function doDelete(id: BlockIDStr) {
 
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
 
         await firestore.collection('block').doc(id).delete()
 

@@ -1,17 +1,17 @@
 import * as React from 'react';
-import {Firebase} from '../firebase/Firebase';
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {Fetches, RequestInit} from 'polar-shared/src/util/Fetch';
 import {Billing} from "polar-accounts/src/Billing";
 import firebase from 'firebase/app'
 import 'firebase/auth';
 import {LoginURLs} from "../apps/viewer/LoginURLs";
-import {Firestore} from "../firebase/Firestore";
 import {StripeMode} from "../../../../polar-app-private/polar-hooks/functions/impl/stripe/StripeUtils";
 import {StripeUtils} from "../../../apps/repository/js/stripe/StripeUtils";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
 import {IStripeCreateCustomerPortalResponse} from "polar-backend-api/src/api/stripe/StripeCreateCustomerPortal";
 import {StoreCaches} from "polar-snapshot-cache/src/StoreCaches";
 import {Analytics} from "../analytics/Analytics";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 export namespace AccountActions {
 
@@ -22,7 +22,7 @@ export namespace AccountActions {
         }
 
         async function clearFirestore() {
-            const firestore = await Firestore.getInstance();
+            const firestore = await FirestoreBrowserClient.getInstance();
             await firestore.terminate();
             await firestore.clearPersistence();
         }
@@ -77,7 +77,7 @@ export namespace AccountActions {
             // right now we can't trigger opening the URL here as it's blocked
             // because it's not computed within the event.
 
-            Firestore.terminateAndRedirect(response.url)
+            FirestoreBrowserClient.terminateAndRedirect(response.url)
                 .catch(err => console.log(err));
 
             // linkLoader(response.url, {
@@ -131,7 +131,7 @@ export namespace AccountActions {
 
     async function createAccountData(): Promise<AccountData> {
 
-        const user = await Firebase.currentUserAsync();
+        const user = await FirebaseBrowser.currentUserAsync();
 
         if (! user) {
             throw new Error("No account");

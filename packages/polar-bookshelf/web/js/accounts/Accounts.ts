@@ -1,9 +1,9 @@
-import {Firebase} from '../firebase/Firebase';
-import {Firestore} from '../firebase/Firestore';
-import {Account} from './Account';
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {DocumentReferences} from "../firebase/firestore/DocumentReferences";
 import {OnErrorCallback, OnNextCallback} from "polar-shared/src/util/Snapshots";
+import {IAccount} from "polar-firebase/src/firebase/om/AccountCollection";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 const log = Logger.create();
 
@@ -17,7 +17,7 @@ export namespace Accounts {
 
     export async function createRef() {
 
-        const user = await Firebase.currentUserAsync();
+        const user = await FirebaseBrowser.currentUserAsync();
 
         if (! user) {
             // the user is not logged in so we do not have an account that they
@@ -25,7 +25,7 @@ export namespace Accounts {
             return undefined;
         }
 
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
 
         const id = user.uid;
 
@@ -38,7 +38,7 @@ export namespace Accounts {
     /**
      * @Deprecated use a snapshot / hook version of this
      */
-    export async function get(): Promise<Account | undefined> {
+    export async function get(): Promise<IAccount | undefined> {
 
         const ref = await createRef();
 
@@ -52,14 +52,14 @@ export namespace Accounts {
             return undefined;
         }
 
-        return <Account> snapshot.data();
+        return <IAccount> snapshot.data();
 
     }
 
     /**
      * Callback for when we have new data for the account.
      */
-    export async function onSnapshot(onNext: OnNextCallback<Account>,
+    export async function onSnapshot(onNext: OnNextCallback<IAccount>,
                                      onError: OnErrorCallback = ERR_HANDLER) {
 
         const ref = await createRef();
@@ -76,7 +76,7 @@ export namespace Accounts {
                 return;
             }
 
-            const account = <Account> snapshot.data();
+            const account = <IAccount> snapshot.data();
             onNext(account);
 
         }, onError);
@@ -85,13 +85,13 @@ export namespace Accounts {
 
     export async function listenForPlanUpgrades() {
 
-        const user = await Firebase.currentUserAsync();
+        const user = await FirebaseBrowser.currentUserAsync();
 
         if (! user) {
             return;
         }
 
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
 
         const id = user.uid;
 
@@ -99,13 +99,13 @@ export namespace Accounts {
             .collection(COLLECTION_NAME)
             .doc(id);
 
-        let account: Account | undefined;
+        let account: IAccount | undefined;
 
         // TODO: move this to the collections class for dealing with snapshots.
 
         ref.onSnapshot(doc => {
 
-            const newAccount = <Account> doc.data();
+            const newAccount = <IAccount> doc.data();
 
             try {
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
-import { IBlockExpand } from './BlockExpandSnapshots';
-import firebase from 'firebase';
+import { IBlockExpand } from './BlockExpandCollectionSnapshots';
+import firebase from 'firebase/app';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 const IS_NODE = typeof window === 'undefined';

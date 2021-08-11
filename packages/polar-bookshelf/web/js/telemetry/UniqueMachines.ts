@@ -1,11 +1,8 @@
-import {Firestore} from '../firebase/Firestore';
-import {
-    ISODateTimeString,
-    ISODateTimeStrings
-} from 'polar-shared/src/metadata/ISODateTimeStrings';
+import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Version} from 'polar-shared/src/util/Version';
 import {MachineID, MachineIDs} from "polar-shared/src/util/MachineIDs";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 /**
  * Does one thing.. records the machine ID to the table and the time it was
@@ -15,7 +12,7 @@ export class UniqueMachines {
 
     public static async write() {
 
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
 
         const id = MachineIDs.get();
 

@@ -4,15 +4,14 @@ import {
     Prefs,
     StringToPrefDict
 } from "../../util/prefs/Prefs";
-import {Collections, UserIDStr} from "../sharing/db/Collections";
-import {Firebase} from "../../firebase/Firebase";
-import {
-    OnErrorCallback,
-    SnapshotUnsubscriber
-} from 'polar-shared/src/util/Snapshots';
+import {UserIDStr} from "polar-shared/src/util/Strings";
+import { Collections, } from "polar-firestore-like/src/Collections";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
+import { OnErrorCallback, SnapshotUnsubscriber } from 'polar-shared/src/util/Snapshots';
 import {ISnapshot} from "../../snapshots/CachedSnapshotSubscriberContext";
 import {createCachedFirestoreSnapshotSubscriber} from "../../snapshots/CachedFirestoreSnapshotSubscriber";
 import {IFirestoreClient} from "polar-firestore-like/src/IFirestore";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 export type UserPrefCallback = (data: IUserPref | undefined) => void;
 
@@ -22,7 +21,7 @@ export namespace UserPrefs {
 
     async function getUserID(): Promise<UserIDStr> {
 
-        const user = await Firebase.currentUserAsync();
+        const user = await FirebaseBrowser.currentUserAsync();
 
         if (! user) {
             throw new Error("No user");
@@ -35,7 +34,9 @@ export namespace UserPrefs {
     export async function get(): Promise<Prefs> {
 
         const uid  = await getUserID();
-        const userPref: IUserPref | undefined = await Collections.getByID(COLLECTION, uid);
+        const firestore = await FirestoreBrowserClient.getInstance();
+
+        const userPref: IUserPref | undefined = await Collections.getByID(firestore, COLLECTION, uid);
 
         if (userPref) {
             return new DictionaryPrefs(userPref.value);
@@ -49,7 +50,9 @@ export namespace UserPrefs {
     export async function set(prefs: IPersistentPrefs) {
 
         const uid  = await getUserID();
-        const ref = await Collections.createRef(COLLECTION, uid);
+        const firestore = await FirestoreBrowserClient.getInstance();
+
+        const ref = Collections.createRef(firestore, COLLECTION, uid);
 
         const userPref: IUserPref = {
             uid,

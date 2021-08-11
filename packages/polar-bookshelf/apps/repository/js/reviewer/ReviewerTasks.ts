@@ -8,7 +8,7 @@ import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {HighlightColors} from "polar-shared/src/metadata/HighlightColor";
 import {SpacedRepCollection} from "polar-firebase/src/firebase/om/SpacedRepCollection";
 import {IDMaps} from "polar-shared/src/util/IDMaps";
-import {Firebase} from "../../../../web/js/firebase/Firebase";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {RepetitionMode, Task, TaskRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {FlashcardTaskAction} from "./cards/FlashcardTaskAction";
 import {FlashcardTaskActions} from "./cards/FlashcardTaskActions";
@@ -127,7 +127,7 @@ export class ReviewerTasks {
         // return the right type of annotation type...
 
         const potential: ReadonlyArray<Task<A>> = tasksBuilder(repoDocAnnotations);
-        const uid = await Firebase.currentUserID();
+        const uid = await FirebaseBrowser.currentUserID();
 
         if (! uid) {
             throw new Error("Not authenticated");
@@ -169,7 +169,7 @@ export class ReviewerTasks {
 
         await FirestoreCollections.configure();
 
-        const uid = await Firebase.currentUserID();
+        const uid = await FirebaseBrowser.currentUserID();
 
         if (!uid) {
             // they aren't logged into Firebase so clearly not...

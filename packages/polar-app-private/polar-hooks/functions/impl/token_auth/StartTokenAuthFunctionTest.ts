@@ -8,12 +8,12 @@ describe('StartTokenAuthFunction', function() {
 
         for(const idx of Numbers.range(1, 100)) {
 
-            const {value, p0, p1} = createChallenge();
+            const {challenge, p0, p1} = createChallenge();
             assert.equal(p0.length, 3);
             assert.equal(p1.length, 3);
-            assert.equal(value.length, 6);
+            assert.equal(challenge.length, 6);
 
-            console.log(value);
+            console.log(challenge);
 
         }
 

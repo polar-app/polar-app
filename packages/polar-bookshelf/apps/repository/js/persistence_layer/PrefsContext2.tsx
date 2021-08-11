@@ -31,6 +31,50 @@ export function usePrefsContext(): IPersistentPrefs {
     return persistentPrefs;
 }
 
+/**
+ * Return true/false based on a feature toggle name.
+ *
+ * @param featureName
+ */
+export function useFeatureToggle(featureName: string): boolean {
+    const prefs = usePrefsContext();
+    return prefs.isMarked(featureName);
+}
+
+/**
+ * Return a feature toggler function so that we can change the value of a feature toggle.
+ */
+export function useFeatureToggler(): (featureName: string) => Promise<void> {
+    const prefs = usePrefsContext();
+
+    return React.useCallback(async featureName => {
+        prefs.mark(featureName);
+        await prefs.commit();
+    }, [prefs]);
+
+}
+
+interface IFeatureToggleProps {
+    readonly featureName: string;
+    readonly children: JSX.Element;
+}
+
+/**
+ * Only render the child component if a feature toggle is enabled.
+ */
+export const FeatureToggle = React.memo((props: IFeatureToggleProps) => {
+
+    const toggled = useFeatureToggle(props.featureName);
+
+    if (toggled) {
+        return props.children;
+    }
+
+    return null;
+
+});
+
+
 export const PrefsContext2 = React.memo((props: IProps) => {
 
     const {firestore, uid} = useFirestore();

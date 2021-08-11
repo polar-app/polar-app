@@ -1,19 +1,17 @@
-import {
-    ISODateTimeString,
-    ISODateTimeStrings
-} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
-import {Firestore} from "../../firebase/Firestore";
-import {Firebase, UserIDStr} from "../../firebase/Firebase";
-import { Dictionaries } from "polar-shared/src/util/Dictionaries";
+import {FirebaseBrowser, UserIDStr} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
+
+import {Dictionaries} from "polar-shared/src/util/Dictionaries";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 export class Events {
 
     public static async write(name: string, data?: any) {
 
-        const firestore = await Firestore.getInstance();
-        const uid = await Firebase.currentUserID();
+        const firestore = await FirestoreBrowserClient.getInstance();
+        const uid = await FirebaseBrowser.currentUserID();
 
         const id = Hashcodes.createRandomID();
         const created = ISODateTimeStrings.create();

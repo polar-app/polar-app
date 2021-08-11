@@ -22,14 +22,13 @@ import {Contents} from "../content/Contents";
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {useUndoQueue} from "../../undo/UndoQueueProvider2";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
-import {PositionalArrays} from "./PositionalArrays";
 import {DateContent} from "../content/DateContent";
-import {IBlocksPersistenceSnapshot, useBlocksPersistenceSnapshots} from "../persistence/BlocksPersistenceSnapshots";
+import {IBlockCollectionSnapshot, useBlockCollectionSnapshots} from "../persistence/BlockCollectionSnapshots";
 import {BlocksPersistenceWriter} from "../persistence/FirestoreBlocksStoreMutations";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {useBlocksPersistenceWriter} from "../persistence/BlocksPersistenceWriters";
 import {WikiLinksToMarkdown} from "../WikiLinksToMarkdown";
-import {IBlockExpandSnapshot, useBlockExpandSnapshots} from "../persistence/BlockExpandSnapshots";
+import {IBlockExpandCollectionSnapshot, useBlockExpandCollectionSnapshots} from "../persistence/BlockExpandCollectionSnapshots";
 import {BlockExpandPersistenceWriter, useBlockExpandPersistenceWriter} from "../persistence/BlockExpandWriters";
 import {IBlockContentStructure} from "../HTMLToBlocks";
 import {DOMBlocks} from "../contenteditable/BlockContentEditable";
@@ -37,6 +36,9 @@ import {BlockIDStr, IBlock, IBlockContent, IBlockLink, NamespaceIDStr, UIDStr} f
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 import {WriteController, WriteFileProgress} from "../../../../web/js/datastore/Datastore";
 import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
+import {BlockContentCanonicalizer} from "../contenteditable/BlockContentCanonicalizer";
+import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
+import {MarkdownContentConverter} from "../MarkdownContentConverter";
 
 export const ENABLE_UNDO_TRACING = false;
 
@@ -53,6 +55,8 @@ export type ReverseBlocksIndex = {[id: string /* BlockIDStr */]: BlockIDStr[]};
 export type StringSetMap = {[key: string]: boolean};
 
 export type BlockContent = (MarkdownContent | NameContent | ImageContent | DateContent) & IBaseBlockContent;
+
+export type NamedBlock = Block<NameContent | DateContent>;
 
 /**
  * A offset into the content of a not where we should place the cursor.
@@ -791,16 +795,27 @@ export class BlocksStore implements IBlocksStore {
         const newActive = items[activeIndex];
 
         if (! newActive && ! shiftKey) {
+            // There's no block that we can navigate to in the current block tree
+            // so use the dom to find the next/prev block
             const siblingID = DOMBlocks.getSiblingID(this._active.id, delta);
             if (siblingID) {
                 this.clearSelected('doNav');
                 this.setActiveWithPosition(siblingID, pos);
+            } else {
+                // if we still can't find a sibling then just go to the start/end of the current block (depending on the nav direction)
+                this.setActiveWithPosition(this._active.id, delta === 'prev' ? 'start' : 'end');
             }
             return true;
         }
 
-        if (! newActive) {
-            this.setActiveWithPosition(this._active.id, delta === 'prev' ? 'start' : 'end');
+        // If we don't have any active blocks in the current tree and shift is held down and we already have a selection then just skip
+        // This is sort of a special case because lets say the cursor is at the first/last block and we're trying to select it.
+        // We want to allow selecting it but after that if try to navigate down for example and there's no more blocks then just skip.
+        if (! newActive && shiftKey && this.hasSelected()) {
+            return true;
+        }
+        
+        if (! newActive && shiftKey && this.hasSelected()) {
             return true;
         }
 
@@ -1368,6 +1383,38 @@ export class BlocksStore implements IBlocksStore {
         const newBlockID = Hashcodes.createRandomID();
         const redo = () => this.doCreateNewBlock(id, {...opts, newBlockID});
         return this.doUndoPush('createNewBlock', [id, newBlockID], redo);
+    }
+
+    @action public styleSelectedBlocks(style: DOMBlocks.MarkdownStyle): void {
+        const selectedIDs = this.selectedIDs();
+        const ids = selectedIDs.flatMap(id => this.computeLinearTree(id, { includeInitial: true }));
+        const markdownBlocks = this.idsToBlocks(ids).filter(BlockPredicates.isEditableBlock);
+
+        if (markdownBlocks.length === 0) {
+            return;
+        }
+
+
+        const applyStyle = (style: DOMBlocks.MarkdownStyle) => (block: Block<MarkdownContent>) => {
+            DOMBlocks.applyStyleToBlock(block.id, style);
+            const blockElem = DOMBlocks.getBlockElement(block.id);
+            if (blockElem) {
+                const div = BlockContentCanonicalizer.canonicalizeElement(blockElem)
+                const html = ContentEditableWhitespace.trim(div.innerHTML);
+                const markdown = MarkdownContentConverter.toMarkdown(html);
+                block.withMutation(() => {
+                    const content = block.content.toJSON();
+                    block.setContent({ ...content, data: markdown });
+                });
+                this.doPut([block]);
+            }
+        };
+
+        const redo = () => {
+            markdownBlocks.forEach(applyStyle(style));
+        };
+
+        return this.doUndoPush('styleSelectedBlocks', markdownBlocks.map(({id}) => id), redo);
     }
 
     /**
@@ -2067,7 +2114,7 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    @action public handleBlocksPersistenceSnapshot(snapshot: IBlocksPersistenceSnapshot) {
+    @action public handleBlocksPersistenceSnapshot(snapshot: IBlockCollectionSnapshot) {
 
         // console.log("Handling BlocksStore snapshot: ", snapshot);
 
@@ -2095,7 +2142,7 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    @action public handleBlockExpandSnapshot(snapshot: IBlockExpandSnapshot) {
+    @action public handleBlockExpandSnapshot(snapshot: IBlockExpandCollectionSnapshot) {
 
         for (const docChange of snapshot.docChanges) {
 
@@ -2264,11 +2311,11 @@ export const [BlocksStoreProvider, useBlocksStoreDelegate] = createReactiveStore
     const blocksStore = React.useMemo(() => new BlocksStore(uid, undoQueue, blocksPersistenceWriter, blockExpandPersistenceWriter),
                                       [blockExpandPersistenceWriter, blocksPersistenceWriter, uid, undoQueue]);
 
-    useBlocksPersistenceSnapshots((snapshot) => {
+    useBlockCollectionSnapshots((snapshot) => {
         blocksStore.handleBlocksPersistenceSnapshot(snapshot);
     });
 
-    useBlockExpandSnapshots((snapshot) => {
+    useBlockExpandCollectionSnapshots((snapshot) => {
         blocksStore.handleBlockExpandSnapshot(snapshot);
     });
 

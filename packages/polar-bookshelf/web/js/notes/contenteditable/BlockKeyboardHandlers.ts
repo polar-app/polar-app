@@ -46,70 +46,87 @@ type KeydownHandlerOpts = {
 };
 type KeydownHandler = (opts: KeydownHandlerOpts) => void;
 
+type Modifier = 'ctrl' | 'alt' | 'shift';
+
+const modifierPredicate = (pressed: Modifier[], event: React.KeyboardEvent) => {
+    const unpressed: Modifier[] = (['ctrl', 'alt', 'shift'] as Modifier[])
+        .filter(mod => pressed.indexOf(mod) === -1);
+
+    const checkModifier = (modifier: Modifier) => {
+        switch (modifier) {
+            case 'ctrl':
+                return event.ctrlKey || event.metaKey;
+            case 'alt':
+                return event.altKey;
+            case 'shift':
+                return event.shiftKey;
+        }
+    };
+
+    return pressed.every(checkModifier) && unpressed.every(mod => ! checkModifier(mod));
+};
+
 const HANDLERS: Record<string, KeydownHandler | undefined> = {
     ArrowUp: ({ contentEditableElem, blocksTreeStore, event, blockID }) => {
-        if (event.ctrlKey || event.metaKey) {
+        if (modifierPredicate(['ctrl'], event)) {
             blocksTreeStore.collapse(blockID);
             abortEvent(event);
             return;
         }
 
-        if (event.altKey && event.shiftKey) {
+        if (modifierPredicate(['alt', 'shift'], event)) {
             const selectedIDs = blocksTreeStore.hasSelected() ? blocksTreeStore.selectedIDs() : [blockID];
             blocksTreeStore.moveBlocks(selectedIDs, -1);
             abortEvent(event);
             return;
         }
 
-        if (event.shiftKey && ! ContentEditables.selectionAtStart(contentEditableElem)) {
+        if (modifierPredicate(['shift'], event) && ! ContentEditables.selectionAtStart(contentEditableElem)) {
             if (! blocksTreeStore.hasSelected()) {
                 // don't handle shift until we allow the range to be selected.
                 return;
             }
         }
 
-        abortEvent(event);
-        const pos = CursorPositions.computeCurrentOffset(contentEditableElem);
-        blocksTreeStore.navPrev(pos || 'start', { shiftKey: event.shiftKey });
+        if (modifierPredicate(['shift'], event) || modifierPredicate([], event)) {
+            abortEvent(event);
+            const pos = CursorPositions.computeCurrentOffset(contentEditableElem);
+            blocksTreeStore.navPrev(pos || 'start', { shiftKey: event.shiftKey });
+        }
     },
     ArrowDown: ({ event, blockID, contentEditableElem, blocksTreeStore }) => {
-        if (event.ctrlKey || event.metaKey) {
+        if (modifierPredicate(['ctrl'], event)) {
             blocksTreeStore.expand(blockID);
             abortEvent(event);
             return;
         }
 
-        if (event.altKey && event.shiftKey) {
+        if (modifierPredicate(['alt', 'shift'], event)) {
             const selectedIDs = blocksTreeStore.hasSelected() ? blocksTreeStore.selectedIDs() : [blockID];
             blocksTreeStore.moveBlocks(selectedIDs, 1);
             abortEvent(event);
             return;
         }
 
-        if (event.shiftKey && ! ContentEditables.selectionAtEnd(contentEditableElem)) {
+        if (modifierPredicate(['shift'], event)  && ! ContentEditables.selectionAtEnd(contentEditableElem)) {
             if (! blocksTreeStore.hasSelected()) {
                 // don't handle shift until we allow the range to be selected.
                 return;
             }
         }
 
-        abortEvent(event);
         const pos = CursorPositions.computeCurrentOffset(contentEditableElem);
-        blocksTreeStore.navNext(pos || 'start', { shiftKey: event.shiftKey });
+        if (modifierPredicate(['shift'], event) || modifierPredicate([], event)) {
+            abortEvent(event);
+            blocksTreeStore.navNext(pos || 'start', { shiftKey: event.shiftKey });
+        }
     },
-    ArrowLeft: ({ event, platform, blockID, contentEditableElem, blocksTreeStore }) => {
+    ArrowLeft: ({ event, blockID, contentEditableElem, blocksTreeStore }) => {
 
-        if (! hasEditorSelection()) {
+        if (! hasEditorSelection() && modifierPredicate(['shift', 'alt'], event)) {
 
-            const isMacOS = platform === Platform.MACOS;
-            const isPC = [Platform.LINUX, Platform.WINDOWS].indexOf(platform) > -1;
-            if ((isMacOS && event.shiftKey && event.metaKey) ||
-                (isPC && event.shiftKey && event.altKey)) {
-
-                blocksTreeStore.unIndentBlock(blockID);
-                return;
-
-            }
+            blocksTreeStore.unIndentBlock(blockID);
+            return;
 
         }
 
@@ -122,17 +139,12 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
 
         }
     },
-    ArrowRight: ({ event, platform, blockID, contentEditableElem, blocksTreeStore }) => {
+    ArrowRight: ({ event, blockID, contentEditableElem, blocksTreeStore }) => {
 
-        if (! hasEditorSelection()) {
+        if (! hasEditorSelection() && modifierPredicate(['shift', 'alt'], event)) {
 
-            const isMacOS = platform === Platform.MACOS;
-            const isPC = [Platform.LINUX, Platform.WINDOWS].indexOf(platform) > -1;
-            if ((isMacOS && event.shiftKey && event.metaKey) ||
-                (isPC && event.shiftKey && event.altKey)) {
-                blocksTreeStore.indentBlock(blockID);
-                return;
-            }
+            blocksTreeStore.indentBlock(blockID);
+            return;
 
         }
 
@@ -293,10 +305,10 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
                 blockID,
                 readonly
             });
-        } else if (readonly && !hasModifiers(event, false)) {
+        } else if (readonly && ! hasModifiers(event, false)) {
             abortEvent(event);
         }
-        if (blocksTreeStore.hasSelected() && !hasModifiers(event, false)) {
+        if (blocksTreeStore.hasSelected() && ! hasModifiers(event, false)) {
             abortEvent(event);
         }
 

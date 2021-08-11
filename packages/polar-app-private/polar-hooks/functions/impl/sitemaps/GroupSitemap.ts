@@ -1,9 +1,9 @@
 import * as functions from "firebase-functions";
 import {Group, Groups} from "../groups/db/Groups";
 import {Arrays} from "polar-shared/src/util/Arrays";
-import {Firestore} from "../util/Firestore";
 import {GroupDocAnnotation} from "../groups/db/doc_annotations/GroupDocAnnotations";
 import {Collections} from "polar-firestore-like/src/Collections";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import OrderByClause = Collections.OrderByClause;
 
 /**
@@ -35,7 +35,7 @@ export const GroupSitemap = functions.https.onRequest((req, resp) => {
 
     const createIterator = async (group: Group) => {
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         const orderBy: ReadonlyArray<OrderByClause> = [
             ['lastUpdated', 'desc'],

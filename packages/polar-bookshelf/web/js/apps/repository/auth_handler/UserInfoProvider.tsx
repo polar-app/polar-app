@@ -7,13 +7,13 @@ import {
     SnapshotSubscribers,
     SnapshotSubscriberWithID
 } from "polar-shared/src/util/Snapshots";
-import {Account} from "../../../accounts/Account";
 import {useSnapshotSubscriber} from "../../../ui/data_loader/UseSnapshotSubscriber";
 import { Billing } from 'polar-accounts/src/Billing';
 import V2PlanFree = Billing.V2PlanFree;
 import {Plans} from "polar-accounts/src/Plans";
 import {ISnapshot} from "../../../snapshots/CachedSnapshotSubscriberContext";
 import {useAnalytics} from "../../../analytics/Analytics";
+import {IAccount} from "polar-firebase/src/firebase/om/AccountCollection";
 
 interface IUserInfoContext {
 
@@ -67,7 +67,7 @@ function useUserInfoContextSnapshotSubscriber(): SnapshotSubscriberWithID<IUserI
 
     const accountSnapshotSubscriber = AccountSnapshots.create(firestore, user.uid);
 
-    function toUserInfoContext(account: ISnapshot<Account> | undefined): IUserInfoContext | undefined {
+    function toUserInfoContext(account: ISnapshot<IAccount> | undefined): IUserInfoContext | undefined {
 
         if (! user) {
             return undefined;
@@ -78,7 +78,7 @@ function useUserInfoContextSnapshotSubscriber(): SnapshotSubscriberWithID<IUserI
 
     }
 
-    const subscribe = SnapshotSubscribers.converted<ISnapshot<Account> | undefined, IUserInfoContext>(accountSnapshotSubscriber, toUserInfoContext);
+    const subscribe = SnapshotSubscribers.converted<ISnapshot<IAccount> | undefined, IUserInfoContext>(accountSnapshotSubscriber, toUserInfoContext);
     return {id: 'user-info-context:' + user.uid, subscribe};
 
 }

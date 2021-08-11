@@ -14,36 +14,32 @@ export const AnnotationRepoRoutedComponents = React.memo(function AnnotationRepo
     const history = useHistory();
 
     return (
+        <Switch location={location}>
 
-        <BrowserRouter>
-            <Switch location={location}>
+            <Route exact path='/annotations'>
 
-                <Route exact path='/annotations'>
+                <Helmet>
+                    <title>Polar: Annotation Repository</title>
+                </Helmet>
 
-                    <Helmet>
-                        <title>Polar: Annotation Repository</title>
-                    </Helmet>
+                <DeviceRouters.Desktop>
+                    <AnnotationRepoGlobalHotKeys/>
+                </DeviceRouters.Desktop>
 
-                    <DeviceRouters.Desktop>
-                        <AnnotationRepoGlobalHotKeys/>
-                    </DeviceRouters.Desktop>
+                <DeviceRouter.Handheld>
 
-                    <DeviceRouter.Handheld>
+                    <>
 
-                        <>
+                        <RepoHeader.Right>
+                            <AnnotationRepoFilterBar2/>
+                        </RepoHeader.Right>
 
-                            <RepoHeader.Right>
-                                <AnnotationRepoFilterBar2/>
-                            </RepoHeader.Right>
+                    </>
+                </DeviceRouter.Handheld>
 
-                        </>
-                    </DeviceRouter.Handheld>
+            </Route>
 
-                </Route>
-
-            </Switch>
-        </BrowserRouter>
-
+        </Switch>
     );
 
 });

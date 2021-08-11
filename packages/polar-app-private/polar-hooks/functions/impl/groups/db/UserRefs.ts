@@ -1,13 +1,11 @@
 import {UserRecord} from 'firebase-functions/lib/providers/auth';
 import {FirebaseAdmin} from 'polar-firebase-admin/src/FirebaseAdmin';
-import {ProfileOwners} from './ProfileOwners';
+import {ProfileOwner, ProfileOwners} from './ProfileOwners';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
-import {ProfileOwner} from './ProfileOwners';
-import {UserRefInvitations} from '../GroupInvites';
-import {Invitations} from '../GroupInvites';
-import {EmailStr, IProfile, ProfileIDStr, ProfileCollection} from "polar-firebase/src/firebase/om/ProfileCollection";
-import {Firestore} from "../../util/Firestore";
+import {Invitations, UserRefInvitations} from '../GroupInvites';
+import {EmailStr, IProfile, ProfileCollection, ProfileIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 /**
  * Takes a reference to a user (either a profileID or an email address)
@@ -31,7 +29,7 @@ export class UserProfiles {
 
     public static async fromUser(user: UserRecord): Promise<UserProfile> {
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         const getUser = async () => {
             return user;
@@ -77,7 +75,7 @@ export class UserProfiles {
 
     public static async fromEmail(email: EmailStr): Promise<UserProfile> {
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         const app = FirebaseAdmin.app();
         const auth = app.auth();
@@ -141,7 +139,7 @@ export class UserProfiles {
 
     public static async fromProfileID(profileID: ProfileIDStr): Promise<UserProfile> {
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         const app = FirebaseAdmin.app();
         const auth = app.auth();

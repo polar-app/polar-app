@@ -1,10 +1,9 @@
-import {Firestore} from '../../../firebase/Firestore';
-import {Logger} from "polar-shared/src/logger/Logger";
 import firebase from 'firebase/app'
+import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import WhereFilterOp = firebase.firestore.WhereFilterOp;
 import DocumentChangeType = firebase.firestore.DocumentChangeType;
 import OrderByDirection = firebase.firestore.OrderByDirection;
-import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 
 /**
  * @deprecated use polar-firestore-like
@@ -13,7 +12,7 @@ export class Collections {
 
     public static async getByID<T>(collection: string, id: string): Promise<T | undefined> {
 
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
 
         const ref = firestore.collection(collection).doc(id);
         const doc = await ref.get();
@@ -23,7 +22,7 @@ export class Collections {
     }
 
     public static async createRef(collection: string, id: string) {
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
         const ref = firestore.collection(collection).doc(id);
         return ref;
     }
@@ -31,7 +30,7 @@ export class Collections {
     public static async deleteByID(collection: string,
                                    provider: () => Promise<ReadonlyArray<IDRecord>>) {
 
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
 
         const records = await provider();
 
@@ -135,7 +134,7 @@ export class Collections {
                                               delegate: (record: T | undefined) => void,
                                               errHandler: SnapshotErrorHandler = DefaultSnapshotErrorHandler): Promise<SnapshotUnsubscriber> {
 
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
 
         const ref = firestore.collection(collection).doc(id);
 
@@ -163,7 +162,7 @@ export class Collections {
                                      clauses: ReadonlyArray<Clause>,
                                      opts: QueryOpts = {}) {
 
-        const firestore = await Firestore.getInstance();
+        const firestore = await FirestoreBrowserClient.getInstance();
 
         const clause = clauses[0];
         const [field, op, value] = clause;

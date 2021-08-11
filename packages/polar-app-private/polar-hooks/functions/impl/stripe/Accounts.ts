@@ -1,10 +1,9 @@
 import {Billing} from "polar-accounts/src/Billing";
-import {StripeUtils, StripeMode} from "./StripeUtils";
-import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {StripeMode, StripeUtils} from "./StripeUtils";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {Logger} from "polar-shared/src/logger/Logger";
-import {IDStr} from "polar-shared/src/util/Strings";
 import {Lazy} from "../util/Lazy";
+import {Customer, IAccount} from "polar-firebase/src/firebase/om/AccountCollection";
 
 const firebase = Lazy.create(() => FirebaseAdmin.app());
 const firestore = Lazy.create(() => firebase().firestore());
@@ -24,8 +23,6 @@ export interface AccountInit {
 }
 
 export namespace Accounts {
-
-    export type Customer = StripeCustomer;
 
     /**
      * Validate that the given HTTP request has the right uid or someone
@@ -83,7 +80,7 @@ export namespace Accounts {
 
         const lastModified = new Date().toISOString();
 
-        const account: Account = {
+        const account: IAccount = {
             id: user.uid,
             uid: user.uid,
             plan,
@@ -97,7 +94,7 @@ export namespace Accounts {
 
     }
 
-    export async function get(email: string): Promise<Account | undefined> {
+    export async function get(email: string): Promise<IAccount | undefined> {
 
         const query = firestore()
             .collection('account')
@@ -112,11 +109,11 @@ export namespace Accounts {
 
         const doc = querySnapshot.docs[0].data();
 
-        return <Account> doc;
+        return <IAccount> doc;
 
     }
 
-    export async function write(account: Account) {
+    export async function write(account: IAccount) {
 
         const ref = firestore()
             .collection('account')
@@ -129,38 +126,9 @@ export namespace Accounts {
 
 }
 
-export interface StripeCustomer {
-    readonly type: 'stripe' | 'apple_iap';
-    readonly customerID: IDStr;
-}
-
-export interface Account extends AccountInit {
-
-    readonly id: string;
-
-    /**
-     * The users uid in Firebase.
-     */
-    readonly uid: string;
-
-    /**
-     * The accounts primary email address.  We might add more in the future.
-     */
-    readonly email: string;
-
-    /**
-     * The last time any important action was changed on the account. Payment
-     * updated, etc.
-     */
-    readonly lastModified: ISODateTimeString;
-
-    readonly customer?: StripeCustomer;
-
-}
-
 /**
  * An account where the customer is not optional.
  */
-export interface CustomerAccount extends Account {
-    readonly customer: StripeCustomer;
+export interface CustomerAccount extends IAccount {
+    readonly customer: Customer;
 }

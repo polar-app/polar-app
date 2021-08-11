@@ -61,21 +61,29 @@ export namespace CursorPositions {
 
         elem.focus();
 
-        if (offset === 'start' || offset === 0) {
-            // Do nothing
-            return;
-        } else if (offset === 'end') {
-            const lastChild = elem.lastChild;
-            if (lastChild) {
-                if (ContentEditables.isContentEditable(lastChild)) { // If the lastChild is editable then just focus it
-                    const range = new Range();
-                    range.setStartAfter(lastChild);
-                    range.setEndAfter(lastChild);
-                    defineNewRange(range);
-                } else { // Otherwise just put it at the end
-                    focusEnd(lastChild);
-                }
+        const focusNode = (node: Node | null, position: 'start' | 'end') => {
+            if (! node) {
+                return;
             }
+            if (ContentEditables.isContentEditable(node)) { // If the child is editable then just focus it
+                const range = new Range();
+                if (position === 'start') {
+                    range.setStartBefore(node);
+                    range.setEndBefore(node);
+                } else {
+                    range.setStartAfter(node);
+                    range.setEndAfter(node);
+                }
+                defineNewRange(range);
+            } else { // Otherwise just put it at the end
+                focusEnd(node);
+            }
+        };
+
+        if (offset === 'start' || offset === 0) {
+            focusNode(elem.firstChild, 'start');
+        } else if (offset === 'end') {
+            focusNode(elem.lastChild, 'end');
         } else {
             const lookup = computeCursorLookupArray(elem);
 

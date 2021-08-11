@@ -1,14 +1,11 @@
-import {Groups} from './db/Groups';
-import {GroupIDRef} from './db/Groups';
-import {GroupIDRefs} from './db/Groups';
+import {GroupIDRef, GroupIDRefs, Groups} from './db/Groups';
 import {Senders} from './db/GroupMemberInvitations';
 import {ExpressFunctions} from '../util/ExpressFunctions';
 import {IDUser} from '../util/IDUsers';
-import {Firestore} from '../util/Firestore';
 import {UserRequests} from '../util/UserRequests';
-import {GroupInvites} from './GroupInvites';
-import {UserRefInvitations} from './GroupInvites';
+import {GroupInvites, UserRefInvitations} from './GroupInvites';
 import {UserRefs} from './db/UserRefs';
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 export class GroupInviteFunctions {
 
@@ -21,7 +18,7 @@ export class GroupInviteFunctions {
             throw new Error("No profile");
         }
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         const groupID = GroupIDRefs.toID(idUser, request);
 

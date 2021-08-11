@@ -5,9 +5,9 @@ import {useFirestore} from "../../../../apps/repository/js/FirestoreProvider";
 import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 import {FirestoreBlocks} from "./FirestoreBlocks";
 import {Asserts} from "polar-shared/src/Asserts";
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
-import {getConfig} from '../../firebase/Firebase';
+import {getConfig} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {IBlock, IBlockContent} from 'polar-blocks/src/blocks/IBlock';
 import {URLStr} from 'polar-shared/src/util/Strings';
@@ -16,7 +16,6 @@ import {IWriteBatch} from 'polar-firestore-like/src/IWriteBatch';
 import {ISODateTimeStrings} from 'polar-shared/src/metadata/ISODateTimeStrings';
 
 const IS_NODE = typeof window === 'undefined';
-
 
 export namespace FileTombstone {
     const STORAGE_BUCKET = getConfig().storageBucket;

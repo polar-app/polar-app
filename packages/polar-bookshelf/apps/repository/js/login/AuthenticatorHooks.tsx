@@ -2,15 +2,15 @@ import {useLogger} from "../../../../web/js/mui/MUILogger";
 import React from "react";
 import {Analytics} from "../../../../web/js/analytics/Analytics";
 import {SignInSuccessURLs} from "./SignInSuccessURLs";
-import {Firebase} from "../../../../web/js/firebase/Firebase";
 import {FirebaseUIAuth} from "../../../../web/js/firebase/FirebaseUIAuth";
 import firebase from 'firebase/app'
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {Preconditions} from "polar-shared/src/Preconditions";
-import {Firestore} from "../../../../web/js/firebase/Firestore";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 export type AuthStatus = 'needs-auth';
 
@@ -20,7 +20,7 @@ function handleAuthResult(authResult: firebase.auth.UserCredential, isNewUser: b
 
         Analytics.event2('auth:handleAuthResult', {isNewUser, redirectURL});
 
-        Firestore.terminateAndRedirect(redirectURL)
+        FirestoreBrowserClient.terminateAndRedirect(redirectURL)
             .catch(err => console.error(err));
     }
 
@@ -112,7 +112,7 @@ export function useAuthHandler() {
 
     async function doAsync(): Promise<AuthStatus | undefined> {
 
-        const user = await Firebase.currentUserAsync()
+        const user = await FirebaseBrowser.currentUserAsync()
 
         const handledEmailLink = await handleEmailLink();
 

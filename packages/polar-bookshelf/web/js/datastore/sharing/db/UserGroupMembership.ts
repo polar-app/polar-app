@@ -2,13 +2,13 @@
  * Allows us to return the group objects the user is a member of.
  */
 import {Group, Groups} from "./Groups";
-import {UserGroups} from "./UserGroups";
+import {UserGroupCollection} from "./UserGroupCollection";
 
 export class UserGroupMembership {
 
     public static async get(): Promise<ReadonlyArray<Group>> {
 
-        const userGroup = await UserGroups.get();
+        const userGroup = await UserGroupCollection.get();
 
         if (! userGroup) {
             return [];

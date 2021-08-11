@@ -1,5 +1,5 @@
 import {GeneralizedSuffixTree} from "./GeneralizedSuffixTree";
-import {assertJSON} from "polar-test/src/test/Assertions";
+import {assert} from "chai";
 
 describe("GeneralizedSuffixTree", function() {
 
@@ -8,8 +8,13 @@ describe("GeneralizedSuffixTree", function() {
         const gst = new GeneralizedSuffixTree();
         gst.put("hello", 1);
         gst.put("world", 2);
+        gst.put("loop", 3);
+        gst.put("little orange", 4);
+        gst.put("hlasdfhadglloo", 5);
 
-        assertJSON(gst.search('ello'), {});
+        const results = gst.search('lo');
+
+        assert.deepEqual(results, new Set([1, 3, 5]));
 
     });
 

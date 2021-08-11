@@ -1,5 +1,4 @@
 import {IDUser} from '../util/IDUsers';
-import {Firestore} from '../util/Firestore';
 import {ExpressFunctions} from '../util/ExpressFunctions';
 import {DocVisibility} from './db/DocPermissions';
 import {GroupDocs} from './db/GroupDocs';
@@ -9,13 +8,14 @@ import {GroupIDStr} from './db/Groups';
 import {DocIDStr} from 'polar-shared/src/groups/DocRef';
 import {ArrayListMultimap, Multimap} from "polar-shared/src/util/Multimap";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 export class DocChangeVisibilityFunctions {
 
     public static async exec(idUser: IDUser,
                              request: DocChangeVisibilityRequest) {
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         const batch = firestore.batch();
 

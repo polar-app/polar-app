@@ -3,6 +3,9 @@ import language from '@google-cloud/language'
 
 process.env.GOOGLE_APPLICATION_CREDENTIALS="./cloud-language.json"
 
+/**
+ * @deprecated use GCPSentenceSplitter
+ */
 export namespace SentenceSplitter {
 
     export async function split(text: string): Promise<ReadonlyArray<string>> {

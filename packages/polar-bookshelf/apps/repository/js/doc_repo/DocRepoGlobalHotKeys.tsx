@@ -110,18 +110,14 @@ export const DocRepoGlobalHotKeys = React.memo(function DocRepoGlobalHotKeys() {
     const location = useLocationWithPathOnly();
 
     return (
+        <Switch location={location}>
 
-        <BrowserRouter>
-            <Switch location={location}>
+            <Route exact path='/'>
+                <GlobalKeyboardShortcuts keyMap={globalKeyMap}
+                                         handlerMap={globalKeyHandlers}/>
+            </Route>
 
-                <Route exact path='/'>
-                    <GlobalKeyboardShortcuts keyMap={globalKeyMap}
-                                             handlerMap={globalKeyHandlers}/>
-                </Route>
-
-            </Switch>
-        </BrowserRouter>
-
+        </Switch>
     );
 
 });

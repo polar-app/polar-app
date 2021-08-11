@@ -1,11 +1,10 @@
 import {GroupIDStr, Groups} from './db/Groups';
 import {IDUser} from '../util/IDUsers';
-import {Firestore} from '../util/Firestore';
 import {ExpressFunctions} from '../util/ExpressFunctions';
 import {UserRequests} from '../util/UserRequests';
 import {GroupLeaves} from './GroupLeaves';
-import {UserProfiles} from './db/UserRefs';
-import {UserRef} from './db/UserRefs';
+import {UserProfiles, UserRef} from './db/UserRefs';
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 /**
  * Allow and admin to force delete a member from a group.
@@ -18,7 +17,7 @@ export class GroupMemberDeleteFunctions {
         const {groupID} = request;
         await Groups.verifyAdmin(idUser.user, groupID);
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         const batch = firestore.batch();
 

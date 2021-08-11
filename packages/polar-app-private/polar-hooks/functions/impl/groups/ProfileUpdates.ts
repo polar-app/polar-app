@@ -1,12 +1,17 @@
 import {IDUser} from '../util/IDUsers';
-import {Firestore} from '../util/Firestore';
 import {ProfileOwners} from './db/ProfileOwners';
 import {ProfileHandles} from './db/ProfileHandles';
 import {TagsValidator} from './rpc/TagsValidator';
 import * as admin from 'firebase-admin';
-import UserRecord = admin.auth.UserRecord;
 import {Arrays} from "polar-shared/src/util/Arrays";
-import {IProfileUpdate, ProfileIDStr, ProfileCollection, UserIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
+import {
+    IProfileUpdate,
+    ProfileCollection,
+    ProfileIDStr,
+    UserIDStr
+} from "polar-firebase/src/firebase/om/ProfileCollection";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
+import UserRecord = admin.auth.UserRecord;
 
 export class ProfileUpdates {
 
@@ -21,7 +26,7 @@ export class ProfileUpdates {
 
         TagsValidator.validate(Arrays.toArray(update.tags));
 
-        const firestore = Firestore.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         const batch = firestore.batch();
 

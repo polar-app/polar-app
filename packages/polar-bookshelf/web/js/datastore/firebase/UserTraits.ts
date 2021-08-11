@@ -1,5 +1,7 @@
-import {Collections, UserIDStr} from "../sharing/db/Collections";
-import {Firebase} from "../../firebase/Firebase";
+import {UserIDStr} from "polar-shared/src/util/Strings";
+import {Collections} from "polar-firestore-like/src/Collections";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 export namespace UserTraits {
@@ -8,7 +10,7 @@ export namespace UserTraits {
 
     async function getUserID(): Promise<UserIDStr | undefined> {
 
-        const user = await Firebase.currentUserAsync();
+        const user = await FirebaseBrowser.currentUserAsync();
         return user?.uid;
 
     }
@@ -35,7 +37,9 @@ export namespace UserTraits {
         const promises = userTraits.map(async (current) => {
 
             const key = Hashcodes.createID({uid, name: current.name});
-            const ref = await Collections.createRef(COLLECTION, key);
+            const firestore = await FirestoreBrowserClient.getInstance();
+
+            const ref = Collections.createRef(firestore, COLLECTION, key);
             await ref.set(current);
 
         });

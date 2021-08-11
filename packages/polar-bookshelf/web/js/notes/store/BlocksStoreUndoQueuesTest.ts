@@ -5,7 +5,7 @@ import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {JSDOMParser} from "./BlocksStoreTestNK";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
-import {PositionalArrays} from "./PositionalArrays";
+import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {BlocksStoreTests} from "./BlocksStoreTests";
 import createBasicBlock = BlocksStoreTests.createBasicBlock;
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
@@ -206,10 +206,10 @@ describe("BlocksStoreUndoQueues", () => {
                             "data": "added block",
                             "links": [],
                         },
-                        "items": {
-                            "1": "1",
-                            "2": "2"
-                        },
+                        "items": PositionalArrays.create([
+                            "1",
+                            "2"
+                        ]),
                         "mutation": 0
                     }
                 },
@@ -232,10 +232,10 @@ describe("BlocksStoreUndoQueues", () => {
                             "data": "removed block",
                             "links": [],
                         },
-                        "items": {
-                            "1": "1",
-                            "2": "2"
-                        },
+                        "items": PositionalArrays.create([
+                            "1",
+                            "2"
+                        ]),
                         "mutation": 0
                     }
                 },
@@ -258,10 +258,10 @@ describe("BlocksStoreUndoQueues", () => {
                             "data": "updated block",
                             "links": [],
                         },
-                        "items": {
-                            "1": "1",
-                            "2": "2"
-                        },
+                        "items": PositionalArrays.create([
+                            "1",
+                            "2"
+                        ]),
                         "mutation": 0
                     },
                     "after": {
@@ -280,10 +280,10 @@ describe("BlocksStoreUndoQueues", () => {
                             "data": "updated block 2",
                             "links": [],
                         },
-                        "items": {
-                            "1": "1",
-                            "2": "2"
-                        },
+                        "items": PositionalArrays.create([
+                            "1",
+                            "2"
+                        ]),
                         "mutation": 1,
                     }
                 }
