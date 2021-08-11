@@ -1,14 +1,7 @@
-import {JSDOM} from "jsdom";
-const dom = new JSDOM(``, {url: 'https://www.example.com'});
-global.document = dom.window.document;
-(global as any).window = dom.window;
-(global as any).localStorage = dom.window.localStorage;
-(global as any).navigator = dom.window.navigator;
-(global as any).performance = dom.window.performance;
-(global as any).window.requestAnimationFrame = (delegate: () => void) => setTimeout(() => delegate(), 1);
-
+import {assert} from 'chai';
+import './JSDOMForPDFThumbnailer';
 import {PDFThumbnailer} from "./PDFThumbnailer";
-import { createCanvas} from 'canvas';
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 describe('PDFThumbnailer', async function() {
 
@@ -16,8 +9,7 @@ describe('PDFThumbnailer', async function() {
 
     it('basic', async function () {
 
-        const canvasFactory = () => createCanvas(612, 792) as any;
-        const containerFactory = () => dom.window.document.createElement('div');
+        const containerFactory = () => document.createElement('div');
 
         // Request URL:
 
@@ -25,11 +17,14 @@ describe('PDFThumbnailer', async function() {
             pathOrURL: "https://storage.googleapis.com/polar-32b0f.appspot.com/stash/12XTZBtjiJUu9XcVChpKnfberQcjQNLWoGbGS7AF.pdf",
             scaleBy: "width",
             value: 200,
-            canvasFactory,
             containerFactory
         });
 
-        console.log(thumbnail);
+        const hash = Hashcodes.createHashcode(thumbnail.data);
+
+        console.log({hash});
+
+        assert.equal(hash.data, "1ELeVJkJqEVVTne4MHNoSHr7GbgtRn37W2Pc2tcGqUwMctbHu3");
 
     });
 

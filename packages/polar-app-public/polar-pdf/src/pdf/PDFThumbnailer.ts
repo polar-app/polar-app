@@ -68,11 +68,6 @@ export namespace PDFThumbnailer {
 
         const container = containerFactory();
 
-        const defaultCanvasFactory = () => container.querySelector('canvas')!;
-        const canvasFactory = opts.canvasFactory || defaultCanvasFactory;
-
-        const canvas = canvasFactory();
-
         const eventBus = new EventBus();
         const viewport = page.getViewport({scale: 1.0});
 
@@ -105,12 +100,6 @@ export namespace PDFThumbnailer {
 
         await view.draw();
 
-        const pageCanvas = container.querySelector('canvas')
-
-        if (! pageCanvas) {
-            throw new Error("No canvas");
-        }
-
         const rect: ILTRect = {
             left: 0,
             top: 0,
@@ -119,6 +108,12 @@ export namespace PDFThumbnailer {
         };
 
         try {
+
+            const canvas = container.querySelector('canvas')
+
+            if (! canvas) {
+                throw new Error("No containerCanvas");
+            }
 
             const imageData = await Canvases.extract(canvas, rect);
 

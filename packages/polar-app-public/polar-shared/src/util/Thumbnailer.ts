@@ -10,7 +10,6 @@ export interface ThumbnailerGenerateOpts {
     readonly pathOrURL: PathOrURLStr;
     readonly scaleBy: 'width' | 'height';
     readonly value: number;
-    readonly canvasFactory?: () => HTMLCanvasElement;
     readonly containerFactory?: () => HTMLDivElement;
 }
 
