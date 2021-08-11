@@ -15,7 +15,7 @@ import {DocPreviewHashcodes} from "polar-firebase/src/firebase/om/DocPreviewHash
 import {SendToQueue} from "./SendToQueue";
 import {isPresent} from "polar-shared/src/Preconditions";
 import {SlugStr} from "polar-shared/src/util/Slugs";
-import { FirestoreBrowserClient } from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 const LIMIT = 20000;
 
@@ -137,7 +137,7 @@ export class UnpaywallDocPreviewsLoader {
 
         let processed: number = 0;
 
-        const firestore = await FirestoreBrowserClient.getInstance();
+        const firestore = await FirestoreAdmin.getInstance();
 
         for (const docPreview of docPreviews) {
 
