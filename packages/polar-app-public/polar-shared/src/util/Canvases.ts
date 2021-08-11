@@ -281,11 +281,11 @@ export namespace Canvases {
 
         if (IS_NODE) {
 
-            const dataURL = canvas.toDataURL('image/png', 1.0);
+            const dataURL = canvas.toDataURL(opts.type, 1.0);
             return {
                 data: dataURL,
                 format: 'dataurl',
-                type: 'image/png',
+                type: opts.type,
                 width: tmpCanvas.width,
                 height: tmpCanvas.height
             };
