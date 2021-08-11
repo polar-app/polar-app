@@ -23,11 +23,12 @@ with all the code kept in one place.
 - Install `docker`. Make sure to follow
   the [post installation steps](https://docs.docker.com/engine/install/linux-postinstall/) as well so you can run
   all `docker` commands without the sudo prefix.
-
 - Validate that you can run Docker container by running exactly this command: `docker run hello-world`. If it succeeds,
   you are good to go.
 
-- Run `npm run bash` which launches a Docker container and steps you into the `bash` terminal of that container. Note
+  - rebooting after installiation of docker is advised.
+
+- Run `npm run bash` (from insite your git repository) which launches a Docker container and steps you into the `bash` terminal of that container. Note
   that the Polar source code is "mounted" to the /polar-app folder within the container. Any change you do to files within
   that folder within the container, is reflected outside the container and vice versa.
 
@@ -108,3 +109,8 @@ lerna exec --concurrency=1 --parallel=false --no-bail -- node /Users/burton/proj
 
 - Install latest Windows Subsystem for Linux
 -
+
+# Further steps
+
+- add the ZenHub chrome extension in order to see the tasks
+- Request permission from kevin to be added to firestore console.

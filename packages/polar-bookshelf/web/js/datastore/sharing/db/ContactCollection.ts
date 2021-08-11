@@ -1,8 +1,13 @@
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
-import {Collections, DocumentChange} from './Collections';
+import {Collections} from "polar-firestore-like/src/Collections";
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {EmailStr} from "polar-firebase/src/firebase/om/ProfileCollection";
+
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+
+import DocumentChange = Collections.DocumentChangeValue;
+
 
 export class ContactCollection {
 
@@ -12,8 +17,9 @@ export class ContactCollection {
 
         const user = await FirebaseBrowser.currentUserAsync();
         const {uid} = Preconditions.assertPresent(user, 'user');
+        const firestore = await FirestoreBrowserClient.getInstance();
 
-        return await Collections.list(this.COLLECTION, [['uid' , '==', uid]]);
+        return await Collections.list(firestore ,this.COLLECTION, [['uid' , '==', uid]]);
 
     }
 
@@ -21,8 +27,9 @@ export class ContactCollection {
 
         const user = await FirebaseBrowser.currentUserAsync();
         const {uid} = Preconditions.assertPresent(user, 'user');
+        const firestore = await FirestoreBrowserClient.getInstance();
 
-        return await Collections.onQuerySnapshotChanges(this.COLLECTION, [['uid' , '==', uid]], delegate);
+        return Collections.onQuerySnapshotChanges(firestore, this.COLLECTION, [['uid' , '==', uid]], delegate);
 
     }
 
@@ -30,7 +37,10 @@ export class ContactCollection {
      * Delete all of the user contacts...
      */
     public static async purge() {
-        await Collections.deleteByID(this.COLLECTION, () => this.list());
+        const firestore = await FirestoreBrowserClient.getInstance();
+        const batch = firestore.batch();
+        
+        await Collections.deleteByID(firestore, this.COLLECTION, batch, () => this.list());
     }
 
 }

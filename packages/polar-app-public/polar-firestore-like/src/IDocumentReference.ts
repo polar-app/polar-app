@@ -2,7 +2,7 @@ import { IDocumentSnapshot } from "./IDocumentSnapshot";
 import {IGetOptions} from "./IGetOptions";
 import {ICollectionReference} from "./ICollectionReference";
 import {ISnapshotListenOptions} from "./ISnapshotListenOptions";
-import {SnapshotUnsubscriber} from "./IQuery";
+import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 import {IFirestoreError} from "./IFirestoreError";
 import {TDocumentData} from "./TDocumentData";
 import {ISnapshotMetadata} from "./ISnapshotMetadata";

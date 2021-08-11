@@ -13,8 +13,9 @@ import {CancelSubscriptionButton} from "../../premium/CancelSubscriptionButton";
 import {MUIButtonBar} from "../../../../../web/js/mui/MUIButtonBar";
 import Box from '@material-ui/core/Box';
 import {ManageSubscriptionButton} from "../../premium/ManageSubscriptionButton";
-import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
+import {FeatureToggle, usePrefsContext} from "../../persistence_layer/PrefsContext2";
 import {useLocalStoragePrefs} from "./LocalStoragePrefs";
+import {ExportDataButton} from "../../premium/ExportDataButton";
 
 export const PREF_PDF_DARK_MODE_OPTIONS = [
     {
@@ -133,6 +134,11 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
                             <ViewDeviceInfoButton/>
                             <CancelSubscriptionButton/>
                             <ManageSubscriptionButton/>
+
+                            <FeatureToggle featureName="export-data">
+                                <ExportDataButton/>
+                            </FeatureToggle>
+
                         </MUIButtonBar>
                     </Box>
 
