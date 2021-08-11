@@ -44,13 +44,9 @@ export namespace PDFThumbnailer {
         const {pathOrURL} = opts;
 
         const task = PDFDocs.getDocument({url: pathOrURL});
-        task.onProgress = (progress) => console.log("FIXME got progress: ", progress);
         const doc = await task.promise;
 
-        // console.log("FIXME: numPages: " + doc.pdfInfo.numPages);
         const page = await doc.getPage(1);
-
-        console.log("FIXME: page: " ,page)
 
         const defaultContainerFactory = () => {
 
@@ -81,8 +77,6 @@ export namespace PDFThumbnailer {
         const viewport = page.getViewport({scale: 1.0});
 
         const defaultViewport: PageViewport = viewport;
-
-        console.log("FIXME: defaultViewport: ", defaultViewport);
 
         // Using PDFPageView is the best option to generate PDFs with the proper
         // resolution. I could use page.render but it message up WRT the correct
@@ -116,9 +110,6 @@ export namespace PDFThumbnailer {
         if (! pageCanvas) {
             throw new Error("No canvas");
         }
-
-        console.log("FIXME: canvas data ", pageCanvas.toDataURL('image/png'))
-
 
         const rect: ILTRect = {
             left: 0,
