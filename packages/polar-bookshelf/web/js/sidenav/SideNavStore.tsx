@@ -9,7 +9,7 @@ import {useRefValue} from '../hooks/ReactHooks';
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {DocViewerAppURLs} from "../../../apps/doc/src/DocViewerAppURLs";
 
-export const SIDE_NAV_ENABLED = 'true';
+export const SIDE_NAV_ENABLED = false;
 
 export type TabID = IDStr;
 

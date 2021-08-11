@@ -8,11 +8,7 @@ import {
 export const [DocRepoSidebarTagStoreProvider, useDocRepoSidebarTagStoreStore, useDocRepoSidebarTagStoreCallbacks] =
     createFolderSidebarStore('doc_repo');
 
-interface IProps {
-    readonly children: JSX.Element;
-}
-
-const StoreBinder = (props: IProps) => {
+const StoreBinder: React.FC = (props) => {
 
     return (
         <FolderSidebarStoreContext.Provider value={useDocRepoSidebarTagStoreStore}>
@@ -25,7 +21,7 @@ const StoreBinder = (props: IProps) => {
 
 }
 
-export const DocRepoSidebarTagStore = (props: IProps) => {
+export const DocRepoSidebarTagStore: React.FC = (props) => {
 
     return (
         <DocRepoSidebarTagStoreProvider>
