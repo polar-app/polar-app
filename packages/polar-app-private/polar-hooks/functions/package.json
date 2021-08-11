@@ -13,7 +13,7 @@
     "test": "echo no tests",
     "compile": "npx tsc",
     "compile:watch": "npx tsc --watch",
-    "dist": "npm run-script compile"
+    "dist": "yarn run compile"
   },
   "dependencies": {
     "@amplitude/node": "^1.1.0",
