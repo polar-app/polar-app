@@ -36,15 +36,6 @@ export class FirebaseAdmin {
 
         const app = initializeApp();
 
-        const initializeFirestore = () => {
-            const firestore = app.firestore();
-
-            DocPreviewCollection.firestoreProvider = () => firestore;
-
-        };
-
-        initializeFirestore();
-
         return app;
 
     }

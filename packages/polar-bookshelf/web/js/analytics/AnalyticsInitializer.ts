@@ -3,7 +3,6 @@ import {Version} from "polar-shared/src/util/Version";
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {Emails} from "polar-shared/src/util/Emails";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {FirestoreCollections} from "../../../apps/repository/js/reviewer/FirestoreCollections";
 import firebase from 'firebase/app'
 
 export namespace AnalyticsInitializer {
@@ -16,10 +15,6 @@ export namespace AnalyticsInitializer {
     }
 
     export async function init() {
-
-        // TODO: this forces Firestore to be initialized, which I don't like and
-        // this should happen somewhere else like a root component.
-        await FirestoreCollections.configure();
 
         initVersion();
         await initAccount();

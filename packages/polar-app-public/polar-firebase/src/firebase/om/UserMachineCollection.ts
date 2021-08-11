@@ -1,25 +1,8 @@
 import {Platforms, PlatformStr} from "polar-shared/src/util/Platforms";
-import { UserIDStr} from "polar-shared/src/util/Strings";
-import {CollectionNameStr, Collections, FirestoreProvider,} from "../Collections";
+import { UserIDStr, CollectionNameStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Version, VersionStr} from "polar-shared/src/util/Version";
 import {MachineID, MachineIDs} from "polar-shared/src/util/MachineIDs";
-
-export class UserMachineCollection {
-
-    public static firestoreProvider: FirestoreProvider;
-
-    private static COLLECTION: CollectionNameStr = "user_machine";
-
-    private static collections() {
-        return new Collections(this.firestoreProvider(), this.COLLECTION);
-    }
-
-    public static async update() {
-
-    }
-
-}
 
 export class UserMachineInits {
 

@@ -20,7 +20,44 @@ export namespace Collections {
         readonly type: TDocumentChangeType;
         readonly value: T;
     }
+    export interface CollectionReferenceLike {
+        doc(documentPath: string): DocumentReferenceLike;
+        where(fieldPath: string, opStr: WhereFilterOpLike, value: any): QueryLike;
+        limit(size: number): QueryLike;
+    }
+    export interface QuerySnapshotLike {
+        readonly docs: QueryDocumentSnapshotLike[];
+    }
+    export interface DocumentSnapshotLike {
+        readonly exists: boolean;
+        data(): DocumentDataLike | undefined;
+    }
+    export interface QueryDocumentSnapshotLike {
+        data(): DocumentDataLike;
+        get(fieldPath: string): any;
+    }
+    export interface SetOptionsLike {
+        readonly merge?: boolean;
+    }
+    export type WhereFilterOpLike = '<' | '<=' | '==' | '>=' | '>' | 'array-contains';
 
+    export type DocumentDataLike = {[field: string]: any};
+
+    export interface QueryLike {
+        get(): Promise<QuerySnapshotLike>;
+        where(fieldPath: string, opStr: WhereFilterOpLike, value: any): QueryLike;
+        limit(limit: number): QueryLike;
+        offset(offset: number): QueryLike;
+        orderBy(fieldPath: string, directionStr?: TOrderByDirection): QueryLike;
+        startAt(...fieldValues: any[]): QueryLike;
+        startAfter(...fieldValues: any[]): QueryLike;
+        endAt(...fieldValues: any[]): QueryLike;
+        endBefore(...fieldValues: any[]): QueryLike;
+    }
+    export interface DocumentReferenceLike {
+        get(): Promise<DocumentSnapshotLike>;
+        set(data: DocumentDataLike, options?: SetOptionsLike): Promise<any>;
+    }
     export interface QueryOpts {
 
         /**
@@ -60,7 +97,8 @@ export namespace Collections {
         readonly limit?: number;
         readonly offset?: number;
         readonly startAfter?: any[];
-        readonly startAt?: any[];
+        readonly startAt?: string;
+        readonly endBefore?: string;
         readonly orderBy?: ReadonlyArray<OrderByClause>;
     }
 

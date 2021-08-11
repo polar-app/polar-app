@@ -82,7 +82,7 @@ export namespace Reviewers {
                 ...calculatedTaskReps.stageCounts
             };
 
-            await SpacedRepStatCollection.write(uid, spacedRepStats);
+            await SpacedRepStatCollection.write(firestore.firestore, uid, spacedRepStats);
 
         };
 
@@ -120,7 +120,7 @@ export namespace Reviewers {
                 ...completedStageCounts
             };
 
-            await SpacedRepStatCollection.write(uid, spacedRepStats);
+            await SpacedRepStatCollection.write(firestore.firestore, uid, spacedRepStats);
 
             console.log("Wrote completed state counts");
 
@@ -134,7 +134,7 @@ export namespace Reviewers {
                 suspended: true
             };
 
-            await SpacedRepCollection.set(taskRep.id, spacedRep);
+            await SpacedRepCollection.set(firestore.firestore, taskRep.id, spacedRep);
 
         }
 
@@ -163,7 +163,7 @@ export namespace Reviewers {
 
             incrCompletedStageCounts(taskRep);
 
-            await SpacedRepCollection.set(next.id, spacedRep)
+            await SpacedRepCollection.set(firestore.firestore, next.id, spacedRep)
 
         };
 
