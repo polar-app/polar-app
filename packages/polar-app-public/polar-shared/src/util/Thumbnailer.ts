@@ -10,6 +10,7 @@ export interface ThumbnailerGenerateOpts {
     readonly pathOrURL: PathOrURLStr;
     readonly scaleBy: 'width' | 'height';
     readonly value: number;
+    readonly containerFactory?: () => HTMLDivElement;
 }
 
 export interface IThumbnail extends ImageData {

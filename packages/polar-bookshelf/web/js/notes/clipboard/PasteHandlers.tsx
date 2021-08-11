@@ -1,9 +1,8 @@
 import React from "react";
-import {URLStr} from "polar-shared/src/util/Strings";
+import {HTMLStr, URLStr} from "polar-shared/src/util/Strings";
 import {HTMLToBlocks, IBlockContentStructure} from "../HTMLToBlocks";
-import {useBlocksTreeStore} from "../BlocksTree";
-import {BlockIDStr} from "../../../../../polar-app-public/polar-blocks/src/blocks/IBlock";
 import {useUploadHandler} from "../UploadHandler";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 
 export interface IPasteImageData {
     readonly url: URLStr;
@@ -15,6 +14,7 @@ export interface IPasteHandlerOpts {
     readonly onPasteImage: (image: IPasteImageData) => void;
     readonly onPasteBlocks: (blocks: ReadonlyArray<IBlockContentStructure>) => void; 
     readonly onPasteError: (err: Error) => void;
+    readonly onPasteHTML: (html: HTMLStr) => void;
     readonly id: BlockIDStr;
 }
 
@@ -125,7 +125,7 @@ const executePasteHandlers = async (
  */
 export function usePasteHandler(opts: IPasteHandlerOpts) {
 
-    const {onPasteImage, onPasteBlocks, onPasteError, id} = opts;
+    const { onPasteImage, onPasteBlocks, onPasteError, onPasteHTML, id } = opts;
     const uploadHandler = useUploadHandler();
 
     return React.useCallback((event: React.ClipboardEvent) => {
@@ -162,7 +162,13 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
                 ));
                 const html = await getHTMLString();
                 const blocks = await HTMLToBlocks.parse(html);
-                onPasteBlocks(blocks);
+
+                // If there's only one block and it has no children then we just wanna paste the content in the currently active block.
+                if (blocks.length === 1 && blocks[0].children.length === 0) {
+                    onPasteHTML(html);
+                } else {
+                    onPasteBlocks(blocks);
+                }
             }
         }
 
@@ -199,6 +205,6 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
             ).catch(e => console.log(e));
         }
 
-    }, [onPasteError, onPasteImage, onPasteBlocks, uploadHandler, id])
+    }, [onPasteHTML, onPasteError, onPasteImage, onPasteBlocks, uploadHandler, id])
 
 }

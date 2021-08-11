@@ -1502,6 +1502,29 @@ describe('BlocksStore', function() {
         });
     });
 
+    describe("renameBlock", () => {
+        it("Should allow renaming a block of type \"name\"", () => {
+            const id = '102';
+            const store = createStore();
+            const oldName = (store.getBlock(id) as Block<NameContent>).content.data;
+
+            store.renameBlock(id, 'New Name');
+
+            const block = store.getBlock(id);
+            assertPresent(block);
+            const content = block.content
+            assertTextBlock(content);
+
+            assert.equal(content.data, 'New Name');
+
+            // Check if the new name got properly inserted into the index
+            assert.isOk(store.indexByName[content.data.toLowerCase()], "The new name should be in indexByName");
+
+            // Check if the old name got removed.
+            assert.isUndefined(store.indexByName[oldName.toLowerCase()], "The old name should be removed from indexByName");
+        });
+    });
+
     describe("mergeBlocks", () => {
 
         it("Merge empty first child with named block root", () => {

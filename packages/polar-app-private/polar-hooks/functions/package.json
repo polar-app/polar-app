@@ -13,7 +13,7 @@
     "test": "echo no tests",
     "compile": "npx tsc",
     "compile:watch": "npx tsc --watch",
-    "dist": "npm run-script compile"
+    "dist": "yarn run compile"
   },
   "dependencies": {
     "@amplitude/node": "^1.1.0",
@@ -42,7 +42,7 @@
     "firebase-functions": "=3.14.1",
     "js-sha3": "0.8.0",
     "mailgun.js": "=3.3.0",
-    "node-fetch": "2.6.0",
+    "node-fetch": "=2.6.1",
     "polar-accounts": "^2.1.90",
     "polar-backend-api": "^2.1.90",
     "polar-backend-shared": "^2.1.90",

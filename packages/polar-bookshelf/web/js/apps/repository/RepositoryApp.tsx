@@ -66,6 +66,7 @@ import {DefaultScreen} from './DefaultScreen';
 import {Initializers} from './Initializers';
 import {DeviceRouters} from "../../ui/DeviceRouter";
 import {DocumentScreens} from './DocumentScreens';
+import {EnableFeatureToggle} from "./EnableFeatureToggle";
 
 interface IProps {
     readonly app: App;
@@ -259,6 +260,8 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                                  persistenceLayerManager={props.persistenceLayerManager}/>
 
                                 <Switch location={ReactRouters.createLocationWithPathOnly()}>
+                                    <Route exact path='/enable-feature-toggle'
+                                           component={EnableFeatureToggle}/>
 
                                     <Route exact path="/whats-new"
                                            render={renderWhatsNewScreen}/>

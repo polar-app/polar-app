@@ -1,28 +1,23 @@
-import {IDStr, UserIDStr} from "polar-shared/src/util/Strings";
-import {Clause, CollectionNameStr, Collections, FirestoreProvider} from "../Collections";
+import {IDStr, UserIDStr, CollectionNameStr} from "polar-shared/src/util/Strings";
 import {RepetitionMode, StageCounts} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {Collections} from "polar-firestore-like/src/Collections";
 
+import Clause = Collections.Clause;
+import {IFirestore} from "polar-firestore-like/src/IFirestore";
 /**
  * Stores card stats for a user each time they compute a new queue so that we can keep track
  * of things over time and show the user stats regarding much work they have left.
  */
 export class SpacedRepStatCollection {
 
-    public static firestoreProvider: FirestoreProvider;
-
     private static COLLECTION: CollectionNameStr = "spaced_rep_stat";
-
-    private static collections() {
-        return new Collections(this.firestoreProvider(), this.COLLECTION);
-    }
 
     /**
      * Write a new stat to the database.
      */
-    public static async write(uid: UserIDStr,
-                              spacedRepStat: SpacedRepStat): Promise<SpacedRepStatRecord> {
+    public static async write<SM = unknown>(firestore: IFirestore<SM>, uid: UserIDStr, spacedRepStat: SpacedRepStat): Promise<SpacedRepStatRecord> {
 
         const id = Hashcodes.createRandomID();
 
@@ -32,8 +27,7 @@ export class SpacedRepStatCollection {
             created: ISODateTimeStrings.create(),
         };
 
-        const collections = this.collections();
-        await collections.set(id, spacedRepStatRecord);
+        await Collections.set(firestore, this.COLLECTION, id, spacedRepStatRecord);
 
         return spacedRepStatRecord;
     }
@@ -41,11 +35,9 @@ export class SpacedRepStatCollection {
     /**
      * Get the most recent stats for for the given mode.
      */
-    public static async list(uid: UserIDStr,
+    public static async list<SM = unknown>(firestore: IFirestore<SM>, uid: UserIDStr,
                              mode: RepetitionMode,
                              type: StatType): Promise<ReadonlyArray<SpacedRepStatRecord>> {
-
-        const collections = this.collections();
 
         const clauses: ReadonlyArray<Clause> = [
             ['uid', '==', uid],
@@ -53,22 +45,20 @@ export class SpacedRepStatCollection {
             ['type', '==', type]
         ];
 
-        return await collections.list(clauses);
+        return await Collections.list(firestore, this.COLLECTION, clauses);
 
     }
 
     /**
      * Return true if this user has stats.
      */
-    public static async hasStats(uid: UserIDStr): Promise<boolean> {
-
-        const collections = this.collections();
+    public static async hasStats<SM = unknown>(firestore: IFirestore<SM>, uid: UserIDStr): Promise<boolean> {
 
         const clauses: ReadonlyArray<Clause> = [
             ['uid', '==', uid],
         ];
 
-        const result = await collections.list(clauses, {limit: 1});
+        const result = await Collections.list(firestore, this.COLLECTION, clauses, {limit: 1});
         return result.length > 0;
 
     }

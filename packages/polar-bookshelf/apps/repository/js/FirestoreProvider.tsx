@@ -1,5 +1,4 @@
 import React from 'react';
-import {FirestoreCollections} from "./reviewer/FirestoreCollections";
 import {deepMemo} from "../../../web/js/react/ReactUtils";
 import {useAsyncWithError} from "../../../web/js/hooks/ReactLifecycleHooks";
 import firebase from 'firebase/app'
@@ -35,8 +34,6 @@ async function doAsync(): Promise<IFirestoreContext> {
     const user = await FirebaseBrowser.currentUserAsync();
 
     const uid = user?.uid;
-
-    await FirestoreCollections.configure(firestore);
 
     return {
         firestore, uid,
