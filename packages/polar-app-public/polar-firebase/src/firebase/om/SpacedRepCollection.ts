@@ -2,7 +2,6 @@ import {IDStr, UserIDStr, CollectionNameStr} from "polar-shared/src/util/Strings
 import {ISpacedRep, TaskRep} from "polar-spaced-repetition-api/src/scheduler/S2Plus/S2Plus";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {Collections} from "polar-firestore-like/src/Collections";
-import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 import Clause = Collections.Clause;
 import {IFirestore} from "polar-firestore-like/src/IFirestore";

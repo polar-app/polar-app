@@ -1,6 +1,6 @@
 import {DocPreviewCollection} from "polar-firebase/src/firebase/om/DocPreviewCollection";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
-import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 describe('DocPreviewSitemapFunction', function() {
 
@@ -8,7 +8,7 @@ describe('DocPreviewSitemapFunction', function() {
 
         FirebaseAdmin.app();
 
-        const firestore = await FirestoreBrowserClient.getInstance();
+        const firestore = await FirestoreAdmin.getInstance();
 
         const docPreviews = await DocPreviewCollection.list(firestore, {size: 50000});
 

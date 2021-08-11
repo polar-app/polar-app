@@ -18,7 +18,7 @@ import {DOIStr, PlainTextStr} from "polar-shared/src/util/Strings";
 import {ARXIVSearchEngine} from "polar-search/src/search/arxiv/ARXIVSearchEngine";
 import {TextSerializer} from "polar-html/src/sanitize/TextSerializer";
 import {DocPreviewsPrerenderer} from "../../cmdline/doc_previews/DocPreviewsPrerenderer";
-import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 // FIXME: this should not just return HTTP 500 (unhandled exception) if something
 // happens but should instead return HTTP 200 or send a redirect to a page
@@ -142,7 +142,7 @@ export const DocPreviewFunction = functions.https.onRequest(async (req, res) => 
 
     const urlHash = DocPreviewHashcodes.urlHash(parsedURL.target);
 
-    const firestore = await FirestoreBrowserClient.getInstance();
+    const firestore = await FirestoreAdmin.getInstance();
 
     const docPreview = await DocPreviewCollection.get(firestore, urlHash);
 

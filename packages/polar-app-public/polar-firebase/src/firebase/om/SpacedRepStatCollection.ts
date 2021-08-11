@@ -3,7 +3,6 @@ import {RepetitionMode, StageCounts} from "polar-spaced-repetition-api/src/sched
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Collections} from "polar-firestore-like/src/Collections";
-import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 import Clause = Collections.Clause;
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
@@ -53,9 +52,7 @@ export class SpacedRepStatCollection {
     /**
      * Return true if this user has stats.
      */
-    public static async hasStats(uid: UserIDStr): Promise<boolean> {
-
-        const firestore = await FirestoreBrowserClient.getInstance();
+    public static async hasStats<SM = unknown>(firestore: IFirestore<SM>, uid: UserIDStr): Promise<boolean> {
 
         const clauses: ReadonlyArray<Clause> = [
             ['uid', '==', uid],

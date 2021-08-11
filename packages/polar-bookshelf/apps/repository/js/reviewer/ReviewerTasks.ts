@@ -169,13 +169,15 @@ export class ReviewerTasks {
     public static async isReviewer(): Promise<boolean> {
 
         const uid = await FirebaseBrowser.currentUserID();
+        const firestore = await FirestoreBrowserClient.getInstance();
+
 
         if (!uid) {
             // they aren't logged into Firebase so clearly not...
             return false;
         }
 
-        return await SpacedRepStatCollection.hasStats(uid);
+        return await SpacedRepStatCollection.hasStats(firestore, uid);
 
     }
 

@@ -1,4 +1,3 @@
-import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import {Collections} from "polar-firestore-like/src/Collections";
 import {IDocDetail} from "polar-shared/src/metadata/IDocDetail";
 import {IDStr, URLStr, CollectionNameStr} from "polar-shared/src/util/Strings";
