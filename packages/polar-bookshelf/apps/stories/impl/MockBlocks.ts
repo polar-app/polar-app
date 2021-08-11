@@ -1,7 +1,7 @@
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {IBlock} from "polar-blocks/src/blocks/IBlock";
-import {DeviceIDManager} from "../../../../polar-app-public/polar-shared/src/util/DeviceIDManager";
+import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 
 export namespace MockBlocks {
 

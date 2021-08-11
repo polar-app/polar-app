@@ -39,7 +39,7 @@ import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
 import {BlockContentCanonicalizer} from "../contenteditable/BlockContentCanonicalizer";
 import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
-import {DeviceIDManager} from "../../../../../polar-app-public/polar-shared/src/util/DeviceIDManager";
+import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 
 export const ENABLE_UNDO_TRACING = false;
 

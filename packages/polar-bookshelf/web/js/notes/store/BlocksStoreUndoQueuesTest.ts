@@ -11,7 +11,7 @@ import createBasicBlock = BlocksStoreTests.createBasicBlock;
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
-import {DeviceIDManager} from "../../../../../polar-app-public/polar-shared/src/util/DeviceIDManager";
+import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 
 function createStore() {
     const blocks = MockBlocks.create();
