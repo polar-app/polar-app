@@ -277,9 +277,7 @@ export namespace Canvases {
                                canvasRect.left, canvasRect.top, canvasRect.width, canvasRect.height,
                                0, 0, canvasRect.width, canvasRect.height);
 
-        // FIXME: this is the problem.  Can we call tmpCanvas toDataURL here? I think we can...
-
-        const IS_NODE = true;
+        const IS_NODE = typeof FileReader === 'undefined';
 
         if (IS_NODE) {
 
