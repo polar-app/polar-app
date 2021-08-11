@@ -48,3 +48,11 @@ Message us directly in the app through the button at the bottom right.
 ### Does Polar have enterprise pricing?
     
 Yes. Please reach out to us [here](mailto:founders@getpolarized.io) for details
+
+### Terms Of Service
+
+Our terms of service: https://getpolarized.io/terms
+
+### Privacy Policy
+
+Policy at: https://getpolarized.io/privacy-policy
