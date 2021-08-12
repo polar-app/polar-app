@@ -92,8 +92,7 @@ const RecentDocsScroller: React.FC<IScrollerProps> = ({ className, style }) => {
     const lastUpdatedDocs = React.useMemo(() => (
         data
             .filter((x) => !!x.lastUpdated)
-            .sort(({ lastUpdated: a }, { lastUpdated: b }) =>
-                (new Date(a!)).getTime() - (new Date(b!).getTime()))
+            .sort(({ lastUpdated: a }, { lastUpdated: b }) => moment(b).diff(a, 'seconds')) 
             .slice(0, HORIZONTAL_SCROLLER_MAX_ITEMS)
     ), [data]);
 
@@ -140,7 +139,7 @@ const RecentNotesScroller: React.FC<IScrollerProps> = ({ className, style }) => 
     const history = useHistory();
     const lastUpdatedNotes = React.useMemo(() => (
         [...namedBlocks]
-            .sort(({ updated: a }, { updated: b }) => moment(a).diff(b, 'seconds'))
+            .sort(({ updated: a }, { updated: b }) => moment(b).diff(a, 'seconds'))
             .slice(0, HORIZONTAL_SCROLLER_MAX_ITEMS)
     ), [namedBlocks]);
 
