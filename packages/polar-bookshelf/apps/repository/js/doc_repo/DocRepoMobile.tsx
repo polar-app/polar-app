@@ -9,6 +9,7 @@ import {useDocRepoCallbacks, useDocRepoStore} from "./DocRepoStore2";
 import {Either} from "../../../../web/js/util/Either";
 import {BackendFileRefs} from "../../../../web/js/datastore/BackendFileRefs";
 import {useDocLoader} from "../../../../web/js/apps/main/DocLoaderHooks";
+
 interface IDocRepoMobileProps {
     className?: string;
     style?: React.CSSProperties;
@@ -194,13 +195,13 @@ export const DocRepoMobile: React.FC<IDocRepoMobileProps> = ({ className, style 
         };
 
         return debounce(updateResults, 1000);
-    }, [setFilters, view, scrollDocsRepoIntoView]);
+    }, [setFilters, scrollDocsRepoIntoView]);
 
     const handleSearchChange: React.ChangeEventHandler<HTMLInputElement> = React.useCallback((e) => {
         const { target: { value } } = e;
         setSearch(value);
         handleSearchTermUpdated(value);
-    }, [setSearch]);
+    }, [setSearch, handleSearchTermUpdated]);
 
     return (
         <div className={clsx(className, classes.root)} style={style} ref={containerRef}>

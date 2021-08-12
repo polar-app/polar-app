@@ -145,7 +145,7 @@ const RecentNotesScroller: React.FC<IScrollerProps> = ({ className, style }) => 
 
     const handleNoteLoad = React.useCallback((note: NamedBlock): React.MouseEventHandler => () => {
         history.push(`/notes/${note.content.data}`);
-    }, []);
+    }, [history]);
 
     const handleCreateNote = React.useCallback(() => {}, []);
 

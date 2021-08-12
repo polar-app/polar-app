@@ -142,7 +142,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                 </RepositoryRoot>
             </MUIRepositoryRoot>
         </RepoDocMetaManagerContext.Provider>
-    ), []);
+    ), [repoDocMetaManager, app.persistenceLayerProvider]);
 
     const RenderAnnotationRepoScreen = React.memo(function RenderAnnotationRepoScreen() {
         return (
