@@ -11,17 +11,34 @@ export class GoogleEndpoints extends Construct {
     }) {
         super(scope, id);
 
-        this.createRTDNendpoint();
+        this.createVerifyReceiptEndpoint();
+        this.createRtdnEndpoint();
     }
 
-    private createRTDNendpoint() {
+    // Create Real-Time Developer Notification endpoint which I also subscribed
+    // to a Google Cloud Pub/Sub topic, which in turn is registered in the Google Play console:
+    // @see https://play.google.com/console/u/0/developers/7756488128869215206/app/4974994442664840134/monetization-setup
+    private createRtdnEndpoint() {
         const lambda = new NodejsFunction(this, './lambdas/rtdn.ts', {
             entry: path.resolve(__dirname, './lambdas/rtdn.ts'),
             description: 'POST /billing/google/real-time-developer-notifications',
             timeout: Duration.seconds(30),
             logRetention: RetentionDays.SIX_MONTHS,
         })
-        this.props.rootResource.resourceForPath('google/real-time-developer-notifications')
+        this.props.rootResource
+            .resourceForPath('google/real-time-developer-notifications')
+            .addMethod('ANY', new LambdaIntegration(lambda));
+    }
+
+    private createVerifyReceiptEndpoint() {
+        const lambda = new NodejsFunction(this, './lambdas/verify-receipt.ts', {
+            entry: path.resolve(__dirname, './lambdas/verify-receipt.ts'),
+            description: 'POST /billing/google/verify-receipt',
+            timeout: Duration.seconds(30),
+            logRetention: RetentionDays.SIX_MONTHS,
+        })
+        this.props.rootResource
+            .resourceForPath('google/verify-receipt')
             .addMethod('ANY', new LambdaIntegration(lambda));
     }
 }
