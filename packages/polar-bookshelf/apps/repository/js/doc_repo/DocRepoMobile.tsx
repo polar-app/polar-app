@@ -184,7 +184,7 @@ export const DocRepoMobile: React.FC<IDocRepoMobileProps> = ({ className, style 
     }, [docLoader]);
 
     const scrollDocsRepoIntoView = React.useCallback(() => {
-        containerRef.current?.scrollIntoView({ behavior: 'smooth' });
+        setTimeout(() => containerRef.current?.scrollIntoView({ behavior: 'smooth' }), 300);
     }, [containerRef]);
 
     const handleSearchTermUpdated = React.useMemo(() => {
