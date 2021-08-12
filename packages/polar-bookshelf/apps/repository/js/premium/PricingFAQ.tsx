@@ -51,6 +51,18 @@ export const PricingFAQ = React.memo(function PricingFAQ() {
                 Yes.  Please reach out pricing for universities, corporations, etc.
             </p>
 
+            <h3>
+                What is your Privacy Policy and Terms of Service?
+            </h3>
+
+            <p>
+                Please see our
+                <a href="https://getpolarized.io/privacy-policy">Privacy Policy</a>
+                and
+                <a href="https://getpolarized.io/terms">Terms of Service</a>
+                for more information.
+            </p>
+
         </div>
     );
 
