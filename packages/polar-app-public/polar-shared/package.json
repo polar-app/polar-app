@@ -40,7 +40,7 @@
     "core-js": "3.6.0",
     "deep-equal": "^1.0.1",
     "js-sha3": "0.8.0",
-    "node-fetch": "2.6.0",
+    "node-fetch": "=2.6.1",
     "stopword": "^0.3.4",
     "timekeeper": "2.2.0",
     "twitter-text": "^3.0.1",

@@ -5,6 +5,7 @@ import {
     Range
 } from "polar-firebase/src/firebase/om/DocPreviewCollection";
 import {DocPreviewURLs} from "polar-webapp-links/src/docs/DocPreviewURLs";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 export const DocPreviewSitemapFunction = functions.https.onRequest((req, resp) => {
 
@@ -76,9 +77,10 @@ export const DocPreviewSitemapFunction = functions.https.onRequest((req, resp) =
         resp.write(`<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`);
 
         const opts = parseListOpts();
+        const firestore =  await FirestoreAdmin.getInstance();
 
         console.log("Using list opts: ", opts);
-        const docPreviews = await DocPreviewCollection.list(opts);
+        const docPreviews = await DocPreviewCollection.list(firestore, opts);
 
         for (const docPreview of docPreviews) {
 

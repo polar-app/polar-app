@@ -3,6 +3,7 @@ import {HeartbeatCollection} from "polar-firebase/src/firebase/om/HeartbeatColle
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {UserTraits} from "../../datastore/firebase/UserTraits";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 const log = Logger.create();
 
@@ -40,8 +41,10 @@ export class FirestoreAnalytics implements IAnalytics {
 
         const doWrite = async () => {
 
+            const firestore = await FirestoreBrowserClient.getInstance();
             const uid = await FirebaseBrowser.currentUserID();
-            await HeartbeatCollection.write(uid);
+
+            await HeartbeatCollection.write(firestore, uid);
 
         };
 

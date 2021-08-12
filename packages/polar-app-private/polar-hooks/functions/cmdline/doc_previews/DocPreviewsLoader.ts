@@ -10,8 +10,8 @@ import {
     DocPreviewUncached
 } from "polar-firebase/src/firebase/om/DocPreviewCollection";
 import {ArrayStreams} from "polar-shared/src/util/ArrayStreams";
-import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {DocPreviewHashcodes} from "polar-firebase/src/firebase/om/DocPreviewHashcodes";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 const LIMIT = 10000;
 
@@ -29,8 +29,6 @@ function getPath() {
 export class DocPreviewsLoader {
 
     public static async load() {
-
-        const app = FirebaseAdmin.app();
 
         const path = getPath();
 
@@ -87,15 +85,17 @@ export class DocPreviewsLoader {
                                         .head(LIMIT)
                                         .collect();
 
+        const firestore = await FirestoreAdmin.getInstance();
+
         for (const docPreview of docPreviews) {
 
-            if (await DocPreviewCollection.get(docPreview.urlHash)) {
+            if (await DocPreviewCollection.get(firestore, docPreview.urlHash)) {
                 console.log('skipping');
                 continue;
             }
 
             console.log('writing');
-            await DocPreviewCollection.set(docPreview);
+            await DocPreviewCollection.set(firestore, docPreview);
 
             console.log("Import URL: " + toImportURL(docPreview));
 

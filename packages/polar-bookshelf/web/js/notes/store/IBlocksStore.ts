@@ -78,6 +78,7 @@ export interface IBlocksStore {
     saveActiveBlockForNote(id: BlockIDStr): void;
 
     idsToBlocks(ids: ReadonlyArray<BlockIDStr>): ReadonlyArray<Block>;
+    renameBlock(id: BlockIDStr, newName: MarkdownStr): void;
 
     // TODO: undo
     expand(id: BlockIDStr): void;

@@ -1,7 +1,8 @@
 import {Block} from "./Block";
 import {MarkdownContent} from "../content/MarkdownContent";
-import { NameContent } from "../content/NameContent";
+import {NameContent} from "../content/NameContent";
 import {DateContent} from "../content/DateContent";
+import {NamedBlock} from "./BlocksStore";
 
 /**
  * Note we have to have IBlockPredicates and BlockPredicates as the typescript
@@ -22,4 +23,7 @@ export namespace BlockPredicates {
         return block.content.type === 'markdown';
     }
 
+    export function isNamedBlock(block: Readonly<Block>): block is NamedBlock {
+        return ['date', 'name'].indexOf(block.content.type) > -1;
+    }
 }
