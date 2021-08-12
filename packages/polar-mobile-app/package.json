@@ -14,7 +14,7 @@
     "react": "17.0.1",
     "react-native": "0.64.1",
     "react-native-fs": "^2.18.0",
-    "react-native-iap": "^6.2.4",
+    "react-native-iap": "^7.2.1",
     "react-native-static-server": "^0.5.0",
     "react-native-webview": "^11.6.4"
   },

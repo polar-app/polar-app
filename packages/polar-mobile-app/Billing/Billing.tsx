@@ -27,7 +27,21 @@ export class Billing {
         }
         this.connected = true;
 
-        await RNIap.clearTransactionIOS()
+        try {
+            if (Platform.OS === 'ios') {
+                await RNIap.clearTransactionIOS()
+            }
+        } catch (e) {
+            console.error(e);
+        }
+        try {
+            if (Platform.OS === 'android') {
+                console.log('Flushing all cached Android transactions');
+                await RNIap.flushFailedPurchasesCachedAsPendingAndroid()
+            }
+        } catch (e) {
+            console.error(e);
+        }
 
         this.purchaseUpdateSubscription = RNIap.purchaseUpdatedListener((purchase: RNIap.InAppPurchase | RNIap.SubscriptionPurchase | RNIap.ProductPurchase) => {
             console.log(new Date().toISOString());
@@ -81,6 +95,11 @@ export class Billing {
         // in doing the below. It will also be impossible for the user to purchase consumables
         // again until you do this.
         try {
+            if (Platform.OS === 'android' && !purchase.isAcknowledgedAndroid && purchase.purchaseToken) {
+                const ack = await RNIap.acknowledgePurchaseAndroid(purchase.purchaseToken);
+                console.log('Acknowledged a purchase for the first time in Android', ack);
+                return;
+            }
             const finishResult = await RNIap.finishTransaction(purchase, true);
             console.log('finishResult', finishResult);
         } catch (e) {
@@ -91,21 +110,21 @@ export class Billing {
 
     async getProducts(names: {
         ios: string[],
-        android?: string[],
+        android: string[],
     }) {
         await this.init();
 
         const productIds = Platform.select({
             ios: names.ios,
-            android: names.android ? names.android : [], // @TODO
+            android: names.android,
         });
 
-        return await RNIap.getProducts(productIds!);
+        return await RNIap.getSubscriptions(productIds!);
     }
 
     async requestPurchase(productId: string) {
         try {
-            await RNIap.requestPurchase(productId, false);
+            await RNIap.requestSubscription(productId, false);
         } catch (err) {
             Alert.alert(err.code, err.message);
         }
@@ -130,10 +149,13 @@ export class Billing {
     async getProductByPlanName(planName: string) {
         const products = await this.getProducts({
             ios: ['plan_' + planName],
-            android: ['plan_' + planName],
+            android: ['subscription_plan_' + planName],
         });
 
         // Get the Product object that matches this codename
+        if (Platform.OS === 'android') {
+            return products.find((product) => product.productId === 'subscription_plan_' + planName);
+        }
         return products.find((product) => product.productId === 'plan_' + planName);
     }
 }

@@ -11,8 +11,10 @@ export default async function changePlanForEmail(changePlanConfig: {
     // The plan code that was purchased
     productId: "plus" | "pro",
 
+    paymentMethod?: "apple_iap" | "google_iap",
+
     // Unix timestamp after which the Plan should be no longer considered active
-    expiresAt: number,
+    expiresAt?: number,
 }) {
     const firebaseAdminApp = getFirebaseAdminApp();
 
@@ -35,13 +37,16 @@ export default async function changePlanForEmail(changePlanConfig: {
         interval: 'month',
 
         customer: {
-            type: 'apple_iap',
+            type: changePlanConfig.paymentMethod ?? 'apple_iap',
             customerID: changePlanConfig.customerId,
         },
 
         lastModified: new Date().toISOString(),
-        expiresAt: new Date(changePlanConfig.expiresAt * 1000).toISOString(),
     };
+
+    if (changePlanConfig.expiresAt) {
+        account.expiresAt = new Date(changePlanConfig.expiresAt * 1000).toISOString();
+    }
 
     const ref = firebaseAdminApp.firestore()
         .collection('account')
