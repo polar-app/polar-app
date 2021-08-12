@@ -39,6 +39,7 @@ import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
 import {BlockContentCanonicalizer} from "../contenteditable/BlockContentCanonicalizer";
 import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
+import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 
 export const ENABLE_UNDO_TRACING = false;
 
@@ -1343,7 +1344,7 @@ export class BlocksStore implements IBlocksStore {
 
                 block.withMutation(() => {
                     block.setContent(content);
-                })
+                });
 
                 this.doPut([block]);
 
@@ -1569,6 +1570,7 @@ export class BlocksStore implements IBlocksStore {
                 type: 'markdown',
                 data,
                 links: parseLinksFromContent(links, data),
+                mutator: DeviceIDManager.DEVICE_ID,
             };
 
             return {

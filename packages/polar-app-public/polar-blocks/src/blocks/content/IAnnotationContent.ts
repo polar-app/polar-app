@@ -2,12 +2,13 @@ import { IDStr } from "polar-shared/src/util/Strings";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import { IComment } from "polar-shared/src/metadata/IComment";
+import {IBaseContent} from "./IBaseContent";
 
 /**
  * Reference to a polar annotation.  We directly extend ITextHighlight and
  * IAnnotationHighlight here and reference the rest as inline metadata.
  */
-interface IAnnotationContent<T, V> {
+interface IAnnotationContent<T, V> extends IBaseContent {
 
     readonly type: T;
 
