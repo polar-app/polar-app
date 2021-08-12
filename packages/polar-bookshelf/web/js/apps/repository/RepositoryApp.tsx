@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {createStyles, makeStyles, Theme} from '@material-ui/core';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {PersistenceLayerManager} from '../../datastore/PersistenceLayerManager';
@@ -29,30 +30,19 @@ import {AnnotationRepoStore2} from "../../../../apps/repository/js/annotation_re
 import {AnnotationRepoScreen2} from "../../../../apps/repository/js/annotation_repo/AnnotationRepoScreen2";
 import {ReviewRouter} from "../../../../apps/repository/js/reviewer/ReviewerRouter";
 import {PersistentRoute} from "./PersistentRoute";
-import {UserTagsProvider} from "../../../../apps/repository/js/persistence_layer/UserTagsProvider2";
-import {DocMetaContextProvider} from "../../annotation_sidebar/DocMetaContextProvider";
-import {DocViewerDocMetaLookupContextProvider} from "../../../../apps/doc/src/DocViewerDocMetaLookupContextProvider";
-import {DocViewerStore} from "../../../../apps/doc/src/DocViewerStore";
-import {DocFindStore} from "../../../../apps/doc/src/DocFindStore";
-import {AnnotationSidebarStoreProvider} from "../../../../apps/doc/src/AnnotationSidebarStore";
-import {DocViewer} from "../../../../apps/doc/src/DocViewer";
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {RepositoryRoot} from "./RepositoryRoot";
 import {AddFileDropzoneScreen} from './upload/AddFileDropzoneScreen';
 import {ErrorScreen} from "../../../../apps/repository/js/ErrorScreen";
-import {ListenablePersistenceLayerProvider} from "../../datastore/PersistenceLayer";
 import {MUIDialogController} from "../../mui/dialogs/MUIDialogController";
 import {UseLocationChangeStoreProvider} from '../../../../apps/doc/src/annotations/UseLocationChangeStore';
 import {UseLocationChangeRoot} from "../../../../apps/doc/src/annotations/UseLocationChangeRoot";
-import {deepMemo} from "../../react/ReactUtils";
-import { PHZMigrationScreen } from './migrations/PHZMigrationScreen';
-import { AddFileDropzoneRoot } from './upload/AddFileDropzoneRoot';
+import {PHZMigrationScreen} from './migrations/PHZMigrationScreen';
+import {AddFileDropzoneRoot} from './upload/AddFileDropzoneRoot';
 import {LogsScreen} from "../../../../apps/repository/js/logs/LogsScreen";
 import {PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {LoginWithCustomTokenScreen} from "../../../../apps/repository/js/login/LoginWithCustomTokenScreen";
 import {WelcomeScreen} from "./WelcomeScreen";
-import {SIDE_NAV_ENABLED, useSideNavStore} from '../../sidenav/SideNavStore';
-import {SideNav} from "../../sidenav/SideNav";
 import Divider from '@material-ui/core/Divider';
 import {AccountDialogScreen} from "../../ui/cloud_auth/AccountDialogScreen";
 import {CreateAccountScreen} from "../../../../apps/repository/js/login/CreateAccountScreen";
@@ -64,9 +54,10 @@ import {NotesScreen} from '../../notes/NoteScreen';
 import {HelloServerSideRender} from "../../ssr/HelloServerSideRender";
 import {DefaultScreen} from './DefaultScreen';
 import {Initializers} from './Initializers';
-import {DeviceRouters} from "../../ui/DeviceRouter";
 import {DocumentScreens} from './DocumentScreens';
 import {EnableFeatureToggle} from "./EnableFeatureToggle";
+import {Nav} from "../../../../apps/repository/js/Nav";
+import {Devices} from '../../../../../polar-app-public/polar-shared/src/util/Devices';
 
 interface IProps {
     readonly app: App;
@@ -78,9 +69,27 @@ interface IProps {
 }
 
 
+interface IRootStylesProps {
+    type: 'vertical' | 'horizontal';
+}
+const useStyles = makeStyles<Theme, IRootStylesProps>(() =>
+    createStyles({
+        root({ type }) {
+            return {
+                display: 'flex',
+                minWidth: 0,
+                minHeight: 0,
+                flexGrow: 1,
+                flexDirection: type === 'vertical' ? 'column-reverse' : 'row',
+            };
+        }
+    }),
+);
+
 export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
-    const {app, repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager} = props;
+    const classes = useStyles({ type: Devices.isPhone() ? 'vertical' : 'horizontal' });
+    const { app, repoDocMetaManager, repoDocMetaLoader, persistenceLayerManager } = props;
 
     Preconditions.assertPresent(app, 'app');
 
@@ -223,20 +232,11 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                 <AuthRequired>
                     <DataProviders>
-                        <div style={{
-                                 display: 'flex',
-                                 minWidth: 0,
-                                 minHeight: 0,
-                                 flexGrow: 1
-                             }}>
+                        <div className={classes.root}>
 
                             <Initializers />
 
-                            <DeviceRouters.NotPhone>
-                                <SideNav />
-                            </DeviceRouters.NotPhone>
-
-                            <Divider orientation="vertical"/>
+                            <Nav />
 
                             <div style={{
                                      display: 'flex',

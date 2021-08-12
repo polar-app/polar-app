@@ -8,8 +8,9 @@ import { Arrays } from 'polar-shared/src/util/Arrays';
 import {useRefValue} from '../hooks/ReactHooks';
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {DocViewerAppURLs} from "../../../apps/doc/src/DocViewerAppURLs";
+import {Devices} from 'polar-shared/src/util/Devices';
 
-export const SIDE_NAV_ENABLED = false;
+export const SIDE_NAV_ENABLED = !Devices.isPhone();
 
 export type TabID = IDStr;
 
