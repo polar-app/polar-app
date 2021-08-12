@@ -16,6 +16,7 @@ import {ManageSubscriptionButton} from "../../premium/ManageSubscriptionButton";
 import {FeatureToggle, usePrefsContext} from "../../persistence_layer/PrefsContext2";
 import {useLocalStoragePrefs} from "./LocalStoragePrefs";
 import {ExportDataButton} from "../../premium/ExportDataButton";
+import Button from "@material-ui/core/Button";
 
 export const PREF_PDF_DARK_MODE_OPTIONS = [
     {
@@ -140,6 +141,17 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
                             </FeatureToggle>
 
                         </MUIButtonBar>
+
+                        <div style={{
+                                 display: 'flex',
+                                 marginTop: '5px',
+                                 marginBottom: '5px',
+                                 justifyContent: 'center'
+                             }}>
+                            <Button href="https://getpolarized.io/privacy-policy">Privacy Policy</Button>
+                            <Button href="https://getpolarized.io/terms">Terms of Service</Button>
+                        </div>
+
                     </Box>
 
                 </div>
