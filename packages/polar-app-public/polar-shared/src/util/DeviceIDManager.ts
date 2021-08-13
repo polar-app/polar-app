@@ -1,6 +1,6 @@
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
-const IS_NODE = typeof window === 'undefined';
+const IS_NODE = typeof window === 'undefined' || process.env.NODE_ENV === 'test';
 
 export type DeviceIDStr = string;
 

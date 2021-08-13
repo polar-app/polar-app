@@ -1,4 +1,5 @@
 import {URLStr} from "polar-shared/src/util/Strings";
+import {IBaseContent} from "./IBaseContent";
 
 export type DataURLStr = string;
 
@@ -11,7 +12,7 @@ export interface IPlayerImage {
 
 }
 
-export interface IPlayerContent {
+export interface IPlayerContent extends IBaseContent {
 
     readonly type: 'player';
     readonly image: IPlayerImage;
