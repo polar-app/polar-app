@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Group} from "../../../../web/js/datastore/sharing/db/Groups";
 import {GroupData} from "./GroupData";
-import {UserGroupCollection} from "../../../../web/js/datastore/sharing/db/UserGroupCollection";
+import {UserGroupCollection} from "polar-firebase/src/firebase/om/UserGroupCollection";
 import {GroupDeletes} from "../../../../web/js/datastore/sharing/rpc/GroupDeletes";
 import {Toaster} from "../../../../web/js/ui/toaster/Toaster";
 import Button from '@material-ui/core/Button';

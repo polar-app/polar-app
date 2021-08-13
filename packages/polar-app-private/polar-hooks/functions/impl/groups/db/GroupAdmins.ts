@@ -2,7 +2,7 @@ import {GroupIDStr} from './Groups';
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
-import {UserIDStr} from 'polar-firebase/src/firebase/om/ProfileCollection';
+import {UserIDStr} from 'polar-shared/src/util/Strings';
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 export class GroupAdmins {

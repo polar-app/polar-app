@@ -1,7 +1,7 @@
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {FirebaseDatastores} from "../../../datastore/FirebaseDatastores";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
-import {DocIDStr, DocRef} from "polar-shared/src/groups/DocRef";
+import {DocRef} from "polar-shared/src/groups/DocRef";
 import {IComment} from "polar-shared/src/metadata/IComment";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
@@ -10,7 +10,7 @@ import {DocRefs} from "./DocRefs";
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {Visibility} from "polar-shared/src/datastore/Visibility";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {ProfileIDStr, UserIDStr } from "polar-firebase/src/firebase/om/ProfileCollection";
+import {ProfileIDStr, UserIDStr, DocIDStr} from "polar-shared/src/util/Strings";
 import { IDRecord } from "polar-shared/src/util/IDMaps";
 
 export class BaseDocAnnotations {

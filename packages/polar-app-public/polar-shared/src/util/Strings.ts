@@ -313,4 +313,7 @@ export type GroupIDStr = string;
 
 export type ProfileIDStr = string;
 
+export type HandleStr = string;
+
+export type DocIDStr = string;
 
