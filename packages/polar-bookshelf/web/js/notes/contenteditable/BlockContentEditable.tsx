@@ -273,7 +273,7 @@ export function useUpdateCursorPosition() {
 
         }
 
-    }, []);
+    }, [isSidenavOpen]);
 
 }
 

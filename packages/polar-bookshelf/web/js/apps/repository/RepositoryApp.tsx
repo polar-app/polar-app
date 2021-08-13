@@ -202,7 +202,7 @@ export const RouteContainer: React.FC = ({ children }) => {
     const sidenavWidth = useSidenavWidth();
     const classes = useRouteContainerStyles({ isSidenavOpen: isOpen, sidenavWidth });
 
-    const closeSidenav = React.useCallback(() => setOpen(false), []);
+    const closeSidenav = React.useCallback(() => setOpen(false), [setOpen]);
 
     return (
         <>
