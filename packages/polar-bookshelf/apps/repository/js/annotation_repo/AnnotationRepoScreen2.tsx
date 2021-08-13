@@ -1,4 +1,5 @@
 import * as React from 'react';
+import useTheme from "@material-ui/core/styles/useTheme";
 import {FixedNav} from '../FixedNav';
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
@@ -11,19 +12,58 @@ import {StartReviewDropdown} from "./filter_bar/StartReviewDropdown";
 import {AnnotationRepoRoutedComponents} from './AnnotationRepoRoutedComponents';
 import {StartReviewSpeedDial} from './StartReviewSpeedDial';
 import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
-import { AnnotationRepoTable2 } from './AnnotationRepoTable2';
-import useTheme from '@material-ui/core/styles/useTheme';
+import {AnnotationRepoTable2} from "./AnnotationRepoTable2";
+import {SidenavTrigger} from "../../../../web/js/sidenav/SidenavTrigger";
+import {SideCar} from "../../../../web/js/sidenav/SideNav";
+
+const Toolbar = React.memo(function Toolbar() {
+    return (
+        <MUIPaperToolbar id="header-filter"
+                         padding={1}>
+
+            <div style={{
+                display: 'flex',
+                alignItems: 'center'
+            }}>
+
+                <SidenavTrigger />
+                <div style={{
+                    flexGrow: 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'flex-end'
+                }}>
+                    <AnnotationRepoFilterBar2 />
+                </div>
+
+            </div>
+
+        </MUIPaperToolbar>
+    );
+});
+
+
+
+const StartReviewHeader = () => {
+
+    const theme = useTheme();
+
+    return (
+        <div style={{ padding: '0 8px', flexGrow: 1 }}>
+            <StartReviewDropdown style={{
+                width: '100%',
+                marginTop: theme.spacing(1),
+                marginBottom: theme.spacing(1)
+            }}/>
+        </div>
+    );
+
+};
 
 namespace Phone {
 
     export const Main = () => (
-        <DockLayout dockPanels={[
-            {
-                id: 'dock-panel-center',
-                type: 'grow',
-                component: <AnnotationListView2/>,
-            },
-        ]}/>
+        <AnnotationListView2/>
     );
 
 }
@@ -58,45 +98,6 @@ namespace Tablet {
 }
 
 namespace Desktop {
-
-    const StartReviewHeader = () => {
-
-        const theme = useTheme();
-
-        return (
-            <StartReviewDropdown style={{
-                flexGrow: 1,
-                marginTop: theme.spacing(1),
-                marginBottom: theme.spacing(1)
-            }}/>
-        );
-
-    };
-
-    const Toolbar = React.memo(function Toolbar() {
-        return (
-            <MUIPaperToolbar id="header-filter"
-                             padding={1}>
-
-                <div style={{
-                    display: 'flex',
-                    alignItems: 'center'
-                }}>
-
-                    <div style={{
-                        flexGrow: 1,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'flex-end'
-                    }}>
-                        <AnnotationRepoFilterBar2/>
-                    </div>
-
-                </div>
-
-            </MUIPaperToolbar>
-        );
-    });
 
     const Right = React.memo(function Right() {
 
@@ -207,10 +208,15 @@ namespace screen {
                              flexGrow: 1,
                              display: 'flex',
                              flexDirection: 'column',
-                             minHeight: 0
+                             minHeight: 0,
+                             maxWidth: '100%',
                          }}>
 
+                        <Toolbar/>
                         <StartReviewSpeedDial/>
+                        <SideCar>
+                            <FolderSidebar2 header={<StartReviewHeader/>}/>
+                        </SideCar>
 
                         <DeviceRouter phone={<Phone.Main />}
                                       tablet={<Tablet.Main />}/>

@@ -15,6 +15,7 @@ import {createStyles, makeStyles} from "@material-ui/core";
 import {NoteRepoScreen} from './NoteRepoScreen';
 import {DailyNotesScreen} from './DailyNotesScreen';
 import {SingleNoteScreen} from './SingleNoteScreen';
+import {SideCar} from '../sidenav/SideNav';
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -58,6 +59,9 @@ export const NotesScreen: React.FC<RouteComponentProps> = observer(() => {
     return (
         <NotesContainer>
             <NoteProviders>
+                <SideCar>
+                    Empty for now
+                </SideCar>
                 <JumpToNoteKeyboardCommand />
                 <Switch>
                     <Route path="/notes/repo" component={NoteRepoScreen} />

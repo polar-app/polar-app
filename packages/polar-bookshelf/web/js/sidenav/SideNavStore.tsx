@@ -89,6 +89,7 @@ interface ISideNavStore {
 
     readonly tabs: ReadonlyArray<TabDescriptor>;
 
+    readonly isOpen: boolean;
 }
 
 interface ISideNavCallbacks {
@@ -101,6 +102,7 @@ interface ISideNavCallbacks {
     readonly prevTab: () => void;
     readonly nextTab: () => void;
     readonly getTabDescriptor: (id: TabID) => TabDescriptor | undefined;
+    readonly setOpen: (state: boolean) => void;
 
     readonly updateTab: (id: TabID, update: TabDescriptorUpdate) => void;
 
@@ -117,11 +119,13 @@ function createInitialTabs(): ReadonlyArray<TabDescriptor> {
 const initialStore: ISideNavStore = {
     activeTab: undefined,
     tabs: createInitialTabs(),
-}
+    isOpen: false,
+};
 
 interface Mutation {
     readonly activeTab: TabID;
     readonly tabs: ReadonlyArray<TabDescriptor>;
+    readonly isOpen: boolean;
 }
 
 interface Mutator {
@@ -400,9 +404,15 @@ function useCallbacksFactory(storeProvider: Provider<ISideNavStore>,
 
         }
 
+        function setOpen(state: boolean) {
+            const store = storeProvider();
+            setStore({ ...store, isOpen: state });
+        }
+
         return {
             addTab, removeTab, setActiveTab, closeCurrentTab, prevTab,
-            nextTab, closeOtherTabs, getTabDescriptor, updateTab, updateTabForPredicate
+            nextTab, closeOtherTabs, getTabDescriptor, updateTab, updateTabForPredicate,
+            setOpen,
         };
 
     }, [historyRef, setStore, storeProvider]);

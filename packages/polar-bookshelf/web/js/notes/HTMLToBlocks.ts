@@ -168,6 +168,7 @@ export namespace HTMLToBlocks {
                     case 'P':
                     case 'DIV':
                     case 'LI':
+                    case 'TR':
                     case 'H1':
                     case 'H2':
                     case 'H3':

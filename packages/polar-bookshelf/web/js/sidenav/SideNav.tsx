@@ -1,7 +1,8 @@
 import * as React from 'react';
+import ReactDOM from 'react-dom';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
-import {useSideNavStore, TabDescriptor} from './SideNavStore';
+import {useSideNavStore} from './SideNavStore';
 import Divider from '@material-ui/core/Divider';
 import {PolarSVGIcon} from "../ui/svg_icons/PolarSVGIcon";
 import {useHistory} from 'react-router-dom';
@@ -22,11 +23,11 @@ import {ZenModeActiveContainer} from "../mui/ZenModeActiveContainer";
 import {Intercom} from '../apps/repository/integrations/Intercom';
 import {SideNavQuestionButton} from './SideNavQuestionButton';
 import {VerticalDynamicScroller} from './DynamicScroller';
-import {DateContents} from "../notes/content/DateContents";
 import {observer} from "mobx-react-lite"
 import {URLPathStr} from 'polar-shared/src/url/PathToRegexps';
-import {useBlocksTreeStore} from '../notes/BlocksTree';
-import {useBlocksStore} from '../notes/store/BlocksStore';
+import {Devices} from 'polar-shared/src/util/Devices';
+import {usePersistentRouteContext} from '../apps/repository/PersistentRoute';
+import {RoutePathnames} from '../apps/repository/RoutePathnames';
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -134,9 +135,9 @@ const HomeButton = React.memo(function HomeButton() {
 
     return (
         <ActiveTabButton title="Documents"
-                         path="/"
+                         path={RoutePathnames.HOME}
                          noContextMenu={true}
-                         onClick={() => history.push('/')}>
+                         onClick={() => history.push(RoutePathnames.HOME)}>
             <DescriptionIcon className={classes.secondaryIcon}/>
         </ActiveTabButton>
     )
@@ -148,7 +149,7 @@ const AnnotationsButton = React.memo(function AnnotationsButton() {
 
     return (
         <SideNavHistoryButton title="Annotations"
-                              path="/annotations">
+                              path={RoutePathnames.ANNOTATIONS}>
             <NoteIcon className={classes.secondaryIcon}/>
         </SideNavHistoryButton>
     )
@@ -157,12 +158,13 @@ const AnnotationsButton = React.memo(function AnnotationsButton() {
 const NotesButton = observer(function NotesButton() {
     const classes = useStyles();
 
-    const pathCanonicalizer = React.useCallback(path => path.startsWith('/notes') ? '/notes' : path, []);
+    const pathCanonicalizer = React.useCallback(path =>
+        path.startsWith(RoutePathnames.NOTES) ? RoutePathnames.NOTES : path, []);
 
     return (
         <SideNavHistoryButton title="Notes"
                               canonicalizer={pathCanonicalizer}
-                              path="/notes">
+                              path={RoutePathnames.NOTES}>
             <NotesIcon className={classes.secondaryIcon}/>
         </SideNavHistoryButton>
     );
@@ -175,7 +177,7 @@ const StatsButton = React.memo(function StatsButton() {
 
     return (
         <SideNavHistoryButton title="Statistics"
-                              path="/stats">
+                              path={RoutePathnames.STATISTICS}>
             <TimelineIcon className={classes.secondaryIcon}/>
         </SideNavHistoryButton>
     )
@@ -187,7 +189,7 @@ const AccountButton = React.memo(function AccountButton() {
 
     return (
         <SideNavHistoryButton title="Account"
-                              path="#account">
+                              path={RoutePathnames.ACCOUNT}>
             <AccountAvatar className={classes.secondaryIcon}/>
         </SideNavHistoryButton>
     )
@@ -199,7 +201,7 @@ const SettingsButton = React.memo(function SettingsButton() {
 
     return (
         <SideNavHistoryButton title="Settings"
-                              path="/settings">
+                              path={RoutePathnames.SETTINGS}>
             <SettingsIcon className={classes.secondaryIcon}/>
         </SideNavHistoryButton>
     )
@@ -215,7 +217,7 @@ const PolarButton = React.memo(function PolarButton() {
 
     return (
         <div className={classes.logo}
-             onClick={() => history.push('')}>
+             onClick={() => history.push(RoutePathnames.HOME)}>
             <PolarSVGIcon width={ w } height={ w } />
         </div>
     );
@@ -230,7 +232,7 @@ const SyncButton = React.memo(function SyncButton() {
 
     return (
         <ActiveTabButton title="Sync"
-                         path="/sync"
+                         path={RoutePathnames.ANKI_SYNC}
                          noContextMenu={true}
                          onClick={ankiSyncCallback}>
             <SyncIcon className={classes.secondaryIcon}/>
@@ -265,22 +267,44 @@ const SideNavDivider = React.memo(function SideNavDivider() {
 export const [SideNavContextMenuProvider, useSideNavContextMenu]
     = createContextMenu(SideNavContextMenu, {name: 'sidenav'});
 
+const useSideNavStyles = makeStyles(() =>
+    createStyles({
+        root: {
+            ...(! Devices.isDesktop() && {
+                position: 'absolute',
+                zIndex: 0,
+                height: '100%',
+                display: 'flex',
+            })
+        },
+        sidecar: {
+            flex: 1,
+        },
+        sidecarInner: {
+            height: '100%',
+            width: `calc(87vw - ${SIDENAV_WIDTH}px)`,
+            maxWidth: `${500 - SIDENAV_WIDTH}px`,
+        },
+    })
+);
+
 export const SideNav = React.memo(function SideNav() {
 
+    const { tabs, isOpen } = useSideNavStore(['tabs', 'isOpen']);
     const classes = useStyles();
+    const sidenavClasses = useSideNavStyles({ isOpen });
 
-    const {tabs} = useSideNavStore(['tabs']);
 
     const notesEnabled = useNotesEnabled();
 
     return (
-        <>
+        <div id="sidenav" className={sidenavClasses.root}>
             <SwitchToOpenDocumentKeyboardCommand/>
 
             <Intercom/>
 
             <ZenModeActiveContainer>
-                <div className={classes.root}>
+                <div className={classes.root} style={{ height: '100%' }}>
 
                     <PolarButton/>
 
@@ -293,7 +317,7 @@ export const SideNav = React.memo(function SideNav() {
                         <NotesButton/>
                     )}
 
-                    <StatsButton/>
+                    {Devices.isDesktop() && <StatsButton/>}
 
                     {tabs.length > 0 && (
                         <SideNavDivider/>
@@ -305,15 +329,30 @@ export const SideNav = React.memo(function SideNav() {
 
                     <div style={{marginBottom: '5px'}}>
                         <SideNavDivider/>
-                        <SyncButton/>
+                        {Devices.isDesktop() && <SyncButton/>}
                         <AccountButton/>
+
                         <SideNavQuestionButton/>
                         <SettingsButton/>
                     </div>
 
                 </div>
             </ZenModeActiveContainer>
-        </>
+            {!Devices.isDesktop() && 
+                <div id="sidenav-sidecar" className={sidenavClasses.sidecar} />}
+        </div>
     );
 
 });
+
+export const SideCar: React.FC = ({ children }) => {
+    const classes = useSideNavStyles();
+    const mountElem = React.useMemo(() => document.querySelector<HTMLDivElement>('#sidenav-sidecar'), []);
+    const {active} = usePersistentRouteContext();
+    
+    if (! mountElem || ! active) { // This technically would never happen.
+        return null;
+    }
+
+    return ReactDOM.createPortal(<div className={classes.sidecarInner} children={children} />, mountElem);
+};

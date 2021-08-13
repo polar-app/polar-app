@@ -17,6 +17,15 @@ import {FeatureToggle, usePrefsContext} from "../../persistence_layer/PrefsConte
 import {useLocalStoragePrefs} from "./LocalStoragePrefs";
 import {ExportDataButton} from "../../premium/ExportDataButton";
 import Button from "@material-ui/core/Button";
+import {createStyles, makeStyles} from "@material-ui/core";
+import BrightnessMediumIcon from "@material-ui/icons/BrightnessMedium";
+import ImportContactsIcon from "@material-ui/icons/ImportContacts";
+import FilterCenterFocusIcon from "@material-ui/icons/FilterCenterFocus";
+import HeightIcon from "@material-ui/icons/Height";
+import BookmarkIcon from "@material-ui/icons/Bookmark";
+import DeveloperModeIcon from "@material-ui/icons/DeveloperMode";
+import InfoIcon from "@material-ui/icons/Info";
+import {FullWidthButton} from './FullWidthButton';
 
 export const PREF_PDF_DARK_MODE_OPTIONS = [
     {
@@ -33,8 +42,22 @@ export const PREF_PDF_DARK_MODE_OPTIONS = [
     }
 ];
 
-export const SettingsScreen = React.memo(function SettingsScreen() {
+const useStyles = makeStyles(() =>
+    createStyles({
+        root: {
+            margin: '16px 0',
+            '& h1, & h2, & h3, & h4, & h5': {
+                margin: 0,
+            }
+        },
+        padded: {
+            margin: '0 16px'
+        }
+    }),
+);
 
+export const SettingsScreen = React.memo(function SettingsScreen() {
+    const classes = useStyles();
     const {theme, setTheme} = useContext(MUIThemeTypeContext);
     const prefs = usePrefsContext();
 
@@ -54,17 +77,20 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
             <ConfigureBody>
                 <ConfigureNavbar/>
 
-                <div className="">
-                    <h1>General</h1>
+                <div className={classes.root}>
+                    <div className={classes.padded}>
+                        <h1>General</h1>
 
-                    <h2>
-                        General settings. Note that some of
-                        these may require you to reload.
-                    </h2>
+                        <p>
+                            General settings. Note that some of
+                            these may require you to reload.
+                        </p>
+                    </div>
 
                     <SettingToggle title="Dark Mode"
                                    description="Enable dark mode which is easier on the eyes in low light environments and just looks better."
                                    name="dark-mode"
+                                   icon={<BrightnessMediumIcon />}
                                    defaultValue={theme === 'dark'}
                                    prefs={prefs}
                                    onChange={handleDarkModeToggle}
@@ -73,6 +99,7 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
                     <SettingSelect title="PDF Dark Mode Handling"
                                    description="Enable custom dark mode handling for PDFs.  This allows to change how the PDF colors are displayed."
                                    name="dark-mode-pdf"
+                                   icon={<ImportContactsIcon />}
                                    options={[
                                        {
                                            id: 'invert',
@@ -92,6 +119,7 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
                         title="Automatically resume reading position"
                         description="This feature restores the document reading position using pagemarks when reopening a document."
                         name="settings-auto-resume"
+                        icon={<FilterCenterFocusIcon />}
                         defaultValue={true}
                         prefs={prefs}/>
 
@@ -99,6 +127,7 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
                     <SettingToggle title="Fixed-width EPUBs"
                                    description="Enables fixed-width EPUBs in desktop mode and limits the document to 800px.  This should make for easier reading for some users."
                                    name="fixed-width-epub"
+                                   icon={<HeightIcon style={{ transform: 'rotate(90deg)' }} />}
                                    prefs={prefs}/>
 
                     {/*<SettingEntry title="Enable groups"*/}
@@ -107,10 +136,12 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
                     {/*              prefs={prefs}*/}
                     {/*              preview={true}/>*/}
 
-                    <SettingToggle title="BETA: Automatic pagemarks"
+                    <SettingToggle title="Automatic pagemarks"
                                    description="Enables auto pagemark creation as you scroll and read a document.  ONLY usable for the PDF documents."
                                    name={KnownPrefs.AUTO_PAGEMARKS}
                                    prefs={prefs}
+                                   beta
+                                   icon={<BookmarkIcon />}
                                    preview={true}/>
 
                     {/*<DeviceRouters.Desktop>*/}
@@ -124,6 +155,7 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
 
                     <SettingToggle title="Development"
                                    description="Enables general development features for software engineers working on Polar."
+                                   icon={<DeveloperModeIcon />}
                                    name="dev"
                                    prefs={prefs}
                                    preview={true}/>
@@ -131,27 +163,25 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
                     <Divider/>
 
                     <Box mt={1}>
-                        <MUIButtonBar>
-                            <ViewDeviceInfoButton/>
-                            <CancelSubscriptionButton/>
-                            <ManageSubscriptionButton/>
+                        <ViewDeviceInfoButton/>
+                        <CancelSubscriptionButton/>
+                        <ManageSubscriptionButton/>
 
-                            <FeatureToggle featureName="export-data">
-                                <ExportDataButton/>
-                            </FeatureToggle>
+                        <FeatureToggle featureName="export-data">
+                            <ExportDataButton/>
+                        </FeatureToggle>
 
-                        </MUIButtonBar>
 
-                        <div style={{
-                                 display: 'flex',
-                                 marginTop: '5px',
-                                 marginBottom: '5px',
-                                 justifyContent: 'center'
-                             }}>
-                            <Button href="https://getpolarized.io/privacy-policy">Privacy Policy</Button>
-                            <Button href="https://getpolarized.io/terms">Terms of Service</Button>
-                        </div>
-
+                         <a target="_blank" style={{ textDecoration: 'none' }} href="https://getpolarized.io/privacy-policy">
+                             <FullWidthButton>
+                                 Privacy Policy
+                             </FullWidthButton>
+                         </a>
+                         <a target="_blank" style={{ textDecoration: 'none' }} href="https://getpolarized.io/terms">
+                             <FullWidthButton>
+                                 Terms of Service
+                             </FullWidthButton>
+                         </a>
                     </Box>
 
                 </div>

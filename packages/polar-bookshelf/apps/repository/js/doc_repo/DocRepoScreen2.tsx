@@ -1,4 +1,5 @@
 import React from "react";
+import useTheme from "@material-ui/core/styles/useTheme";
 import {FixedNav} from "../FixedNav";
 import {DocRepoTable2} from "./DocRepoTable2";
 import {Route, Switch} from "react-router";
@@ -10,10 +11,7 @@ import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {AddContent} from "../ui/AddContentButton";
 import isEqual from "react-fast-compare";
 import {DocRepoScreenRoutedComponents} from "./DocRepoScreenRoutedComponents";
-import {useHistory} from "react-router-dom";
-import useLocationWithHashOnly = ReactRouters.useLocationWithHashOnly;
-import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
-import useTheme from "@material-ui/core/styles/useTheme";
+import {SideCar} from "../../../../web/js/sidenav/SideNav";
 
 namespace main {
 
@@ -44,38 +42,13 @@ const Router = () => (
 
 );
 
-const FolderDrawer = React.memo(function FolderDrawer() {
-
-    const location = useLocationWithHashOnly();
-    const history = useHistory()
-
-    const open = location.hash === '#folders';
-
-    function handleClose() {
-        history.replace({hash: ''});
-    }
-
-    function handleOpen() {
-        history.push({hash: '#folders'});
-    }
-
-    return (
-        <SwipeableDrawer
-            anchor='left'
-            open={open}
-            onClose={handleClose}
-            onOpen={handleOpen}>
-            <main.Folders/>
-        </SwipeableDrawer>
-    );
-
-});
-
 namespace devices {
 
     export const PhoneAndTablet = React.memo(() => (
         <>
-            <FolderDrawer/>
+            <SideCar>
+                <main.Folders/>
+            </SideCar>
             <main.Documents/>
         </>
     ));
