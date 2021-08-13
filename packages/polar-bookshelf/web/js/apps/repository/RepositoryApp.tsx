@@ -54,13 +54,14 @@ import {HelloServerSideRender} from "../../ssr/HelloServerSideRender";
 import {Initializers} from './Initializers';
 import {DocumentRoutes} from './DocumentRoutes';
 import {EnableFeatureToggle} from "./EnableFeatureToggle";
-import {SideNav} from '../../sidenav/SideNav';
+import {SideNav, useSidenavWidth} from '../../sidenav/SideNav';
 import {DocRepoScreen2} from '../../../../apps/repository/js/doc_repo/DocRepoScreen2';
 import {DocRepoSidebarTagStore} from '../../../../apps/repository/js/doc_repo/DocRepoSidebarTagStore';
 import {Devices} from 'polar-shared/src/util/Devices';
 import {useSideNavCallbacks, useSideNavStore} from '../../sidenav/SideNavStore';
 import {RoutePathnames} from './RoutePathnames';
-import {rollUp} from "../../mui/RollUp";
+import {CSSTransition} from "react-transition-group";
+import {withMobilePopup} from "../../mui/MobilePopup";
 
 interface IProps {
     readonly app: App;
@@ -73,15 +74,13 @@ interface IProps {
 
 interface IUseRouteContainerStylesProps {
     isSidenavOpen: boolean;
+    sidenavWidth: number;
 }
 
 
 const useRouteContainerStyles = makeStyles<Theme, IUseRouteContainerStylesProps>((theme) =>
     createStyles({
-        root({ isSidenavOpen }) {
-            const getSidenavWidth = () => {
-                return document.querySelector('#sidenav')!.getBoundingClientRect().width;
-            };
+        root({ isSidenavOpen, sidenavWidth }) {
 
             return {
                 display: 'flex',
@@ -90,12 +89,16 @@ const useRouteContainerStyles = makeStyles<Theme, IUseRouteContainerStylesProps>
                 flexDirection: 'column',
                 flexGrow: 1,
                 maxWidth: '100%',
+                width: '100%',
+                height: '100%',
                 background: theme.palette.background.default,
+                overflowX: 'hidden',
                 ...(! Devices.isDesktop() && {
                     position: 'relative',
+                    top: 0,
                     zIndex: 2,
-                    transform: `translateX(${isSidenavOpen ? `${getSidenavWidth()}px` : 0})`,
-                    transition: 'transform 200ms ease-in-out',
+                    left: isSidenavOpen ? sidenavWidth : 0,
+                    transition: 'left 200ms ease-in-out',
                 })
             };
         },
@@ -110,10 +113,94 @@ const useRouteContainerStyles = makeStyles<Theme, IUseRouteContainerStylesProps>
     })
 );
 
+
+const FeatureRequestsScreen = () => {
+    document.location.href = 'http://feedback.getpolarized.io/feature-requests';
+    return null;
+};
+
+const SHARED_ROUTES = [
+    { path: RoutePathnames.WHATS_NEW, component: withMobilePopup(WhatsNewScreen) },
+    { path: RoutePathnames.INVITE, component: withMobilePopup(InviteScreen) },
+    { path: RoutePathnames.PLANS, component: withMobilePopup(PricingScreen) },
+    { path: RoutePathnames.PREMIUM, component: withMobilePopup(PricingScreen) },
+    { path: RoutePathnames.SUPPORT, component: withMobilePopup(SupportScreen) },
+    { path: RoutePathnames.STATISTICS, component: withMobilePopup(StatsScreen) },
+    { path: RoutePathnames.SETTINGS, component: withMobilePopup(SettingsScreen, "User Settings") },
+    { path: RoutePathnames.LOGS, component: withMobilePopup(LogsScreen, "Logs") },
+    { path: RoutePathnames.DEVICE_INFO, component: withMobilePopup(DeviceScreen, "Device Info") },
+    { path: RoutePathnames.FEATURE_REQUESTS, component: withMobilePopup(FeatureRequestsScreen) },
+];
+
+const useSharedRoutesStyles = makeStyles(() =>
+    createStyles({
+        page: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            zIndex: 1000,
+        },
+        pageEnter: {
+            top: '100%',
+        },
+        pageEnterActive: {
+            transition: 'top 300ms ease-in-out',
+            top: 0,
+        },
+        pageExit: {
+            zIndex: 999,
+            top: 0,
+        },
+    })
+);
+
+const SharedRoutes: React.FC = () => {
+    const classes = useSharedRoutesStyles();
+    const location = Devices.isDesktop()
+        ? ReactRouters.createLocationWithPathOnly()
+        : ReactRouters.createLocationWithHashOnly();
+
+    if (Devices.isDesktop()) {
+        return (
+            <>
+                {SHARED_ROUTES.map((props) => <Route key={props.path} exact location={location} {...props} />)}
+            </>
+        );
+    }
+
+    return (
+        <>
+            {SHARED_ROUTES.map(({ path, component: Component }) => (
+                <Route location={location} key={path} exact path={path}>
+                    {({ match }) => (
+                        <CSSTransition
+                          in={match != null}
+                          timeout={300}
+                          classNames={{
+                            enter: classes.pageEnter,
+                            enterActive: classes.pageEnterActive,
+                            exit: classes.pageExit,
+                          }}
+                          unmountOnExit
+                        >
+                          <div className={classes.page}>
+                            <Component />
+                          </div>
+                        </CSSTransition>
+                    )}
+                </Route>
+            ))}
+        </>
+    );
+};
+
 export const RouteContainer: React.FC = ({ children }) => {
     const { isOpen } = useSideNavStore(['isOpen']);
-    const classes = useRouteContainerStyles({ isSidenavOpen: isOpen });
-    const {setOpen} = useSideNavCallbacks();
+    const { setOpen } = useSideNavCallbacks();
+    const sidenavWidth = useSidenavWidth();
+    const classes = useRouteContainerStyles({ isSidenavOpen: isOpen, sidenavWidth });
 
     const closeSidenav = React.useCallback(() => setOpen(false), []);
 
@@ -213,24 +300,6 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
         );
     });
 
-    const FeatureRequestsScreen = () => {
-        document.location.href = 'http://feedback.getpolarized.io/feature-requests';
-        return null;
-    };
-
-    const SharedRoutes = [
-        <Route exact path={RoutePathnames.WHATS_NEW} component={rollUp(WhatsNewScreen)}/>,
-        <Route exact path={RoutePathnames.INVITE} component={rollUp(InviteScreen)}/>,
-        <Route exact path={RoutePathnames.PLANS} component={rollUp(PricingScreen)}/>,
-        <Route exact path={RoutePathnames.PREMIUM} component={rollUp(PricingScreen)}/>,
-        <Route exact path={RoutePathnames.SUPPORT} component={rollUp(SupportScreen)}/>,
-        <Route exact path={RoutePathnames.STATISTICS} component={rollUp(StatsScreen)}/>,
-        <Route exact path={RoutePathnames.SETTINGS} component={rollUp(SettingsScreen, "User Settings")}/>,
-        <Route exact path={RoutePathnames.LOGS} component={rollUp(LogsScreen)}/>,
-        <Route exact path={RoutePathnames.DEVICE_INFO} component={rollUp(DeviceScreen, "Device Info")}/>,
-        <Route exact path={RoutePathnames.FEATURE_REQUESTS} component={rollUp(FeatureRequestsScreen)}/>,
-    ];
-
     return (
         <GlobalProviders>
             <Switch>
@@ -282,8 +351,6 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                     <Route exact path={RoutePathnames.ENABLE_FEATURE_TOGGLE}
                                            component={EnableFeatureToggle}/>
 
-                                    {Devices.isDesktop() && SharedRoutes}
-
                                     <Route path={RoutePathnames.NOTES}
                                            component={NotesScreen}/>
 
@@ -292,6 +359,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                 </Switch>
 
+                                {Devices.isDesktop() && <SharedRoutes />}
                             </RouteContainer>
                         </div>
 
@@ -308,7 +376,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                 </PersistenceLayerContext.Provider>
                             </Route>
 
-                            {! Devices.isDesktop() && SharedRoutes}
+                            {! Devices.isDesktop() && <SharedRoutes />}
 
                         </Switch>
                     </DataProviders>

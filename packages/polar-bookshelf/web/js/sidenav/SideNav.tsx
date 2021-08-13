@@ -28,6 +28,8 @@ import {URLPathStr} from 'polar-shared/src/url/PathToRegexps';
 import {Devices} from 'polar-shared/src/util/Devices';
 import {usePersistentRouteContext} from '../apps/repository/PersistentRoute';
 import {RoutePathnames} from '../apps/repository/RoutePathnames';
+import {debounce, Theme} from '@material-ui/core';
+import {SideNavInitializer} from './SideNavInitializer';
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -270,83 +272,120 @@ export const [SideNavContextMenuProvider, useSideNavContextMenu]
 const useSideNavStyles = makeStyles(() =>
     createStyles({
         root: {
+            display: 'flex',
             ...(! Devices.isDesktop() && {
                 position: 'absolute',
                 zIndex: 0,
                 height: '100%',
-                display: 'flex',
             })
-        },
-        sidecar: {
-            flex: 1,
-        },
-        sidecarInner: {
-            height: '100%',
-            width: `calc(87vw - ${SIDENAV_WIDTH}px)`,
-            maxWidth: `${500 - SIDENAV_WIDTH}px`,
         },
     })
 );
 
+const SIDENAV_WIDTH_PERCENTAGE = 87; // 87% of the screen width
+const SIDENAV_WIDTH_MAX = 500;
+
+export const useSidenavWidth = () => {
+    const [sidenavWidth, setSidenavWidth] = React.useState(0);
+    React.useEffect(() => {
+        const calculateWidth = () => {
+            setSidenavWidth(Math.min(
+                (SIDENAV_WIDTH_PERCENTAGE / 100) * window.innerWidth,
+                SIDENAV_WIDTH_MAX,
+            ));
+        };
+
+        calculateWidth();
+        const debounced = debounce(calculateWidth, 1000)
+
+        window.addEventListener('resize', debounced);
+
+        return () => window.removeEventListener('resize', debounced);
+    }, [setSidenavWidth]);
+
+    return sidenavWidth;
+};
+
 export const SideNav = React.memo(function SideNav() {
 
-    const { tabs, isOpen } = useSideNavStore(['tabs', 'isOpen']);
+    const { tabs } = useSideNavStore(['tabs', 'isOpen']);
     const classes = useStyles();
-    const sidenavClasses = useSideNavStyles({ isOpen });
+    const sidenavClasses = useSideNavStyles();
 
 
     const notesEnabled = useNotesEnabled();
 
     return (
-        <div id="sidenav" className={sidenavClasses.root}>
-            <SwitchToOpenDocumentKeyboardCommand/>
+        <>
+            <SideNavInitializer />
+            <div id="sidenav" className={sidenavClasses.root}>
+                <SwitchToOpenDocumentKeyboardCommand/>
 
-            <Intercom/>
+                <Intercom/>
 
-            <ZenModeActiveContainer>
-                <div className={classes.root} style={{ height: '100%' }}>
+                <ZenModeActiveContainer>
+                    <div className={classes.root} style={{ height: '100%' }}>
 
-                    <PolarButton/>
+                        <PolarButton/>
 
-                    <SideNavDividerTop/>
+                        <SideNavDividerTop/>
 
-                    <HomeButton/>
-                    <AnnotationsButton/>
+                        <HomeButton/>
+                        <AnnotationsButton/>
 
-                    {notesEnabled && (
-                        <NotesButton/>
-                    )}
+                        {notesEnabled && (
+                            <NotesButton/>
+                        )}
 
-                    {Devices.isDesktop() && <StatsButton/>}
+                        {Devices.isDesktop() && <StatsButton/>}
 
-                    {tabs.length > 0 && (
-                        <SideNavDivider/>
-                    )}
+                        {tabs.length > 0 && (
+                            <SideNavDivider/>
+                        )}
 
-                    <VerticalDynamicScroller className={classes.buttons}>
-                        {tabs.map(tab => <SideNavButton key={tab.id} tab={tab}/>)}
-                    </VerticalDynamicScroller>
+                        <VerticalDynamicScroller className={classes.buttons}>
+                            {tabs.map(tab => <SideNavButton key={tab.id} tab={tab}/>)}
+                        </VerticalDynamicScroller>
 
-                    <div style={{marginBottom: '5px'}}>
-                        <SideNavDivider/>
-                        {Devices.isDesktop() && <SyncButton/>}
-                        <AccountButton/>
+                        <div style={{marginBottom: '5px'}}>
+                            <SideNavDivider/>
+                            {Devices.isDesktop() && <SyncButton/>}
+                            <AccountButton/>
 
-                        <SideNavQuestionButton/>
-                        <SettingsButton/>
+                            <SideNavQuestionButton/>
+                            <SettingsButton/>
+                        </div>
+
                     </div>
-
-                </div>
-            </ZenModeActiveContainer>
-            {!Devices.isDesktop() && 
-                <div id="sidenav-sidecar" className={sidenavClasses.sidecar} />}
-        </div>
+                </ZenModeActiveContainer>
+                <Divider orientation="vertical" />
+                {!Devices.isDesktop() && 
+                    <div id="sidenav-sidecar" style={{ flex: 1 }} />}
+            </div>
+        </>
     );
 
 });
 
+const useSideCarStyles = makeStyles<Theme, IUseSideCarStylesProps>(() =>
+    createStyles({
+        root({ sidenavWidth }) {
+            return {
+                height: '100%',
+                width: `calc(${sidenavWidth}px - ${SIDENAV_WIDTH}px)`,
+            };
+        },
+    })
+);
+
+
+interface IUseSideCarStylesProps {
+    sidenavWidth: number;
+}
+
 export const SideCar: React.FC = ({ children }) => {
-    const classes = useSideNavStyles();
+    const sidenavWidth = useSidenavWidth();
+    const classes = useSideCarStyles({ sidenavWidth });
     const mountElem = React.useMemo(() => document.querySelector<HTMLDivElement>('#sidenav-sidecar'), []);
     const {active} = usePersistentRouteContext();
     
@@ -354,5 +393,5 @@ export const SideCar: React.FC = ({ children }) => {
         return null;
     }
 
-    return ReactDOM.createPortal(<div className={classes.sidecarInner} children={children} />, mountElem);
+    return ReactDOM.createPortal(<div className={classes.root} children={children} />, mountElem);
 };

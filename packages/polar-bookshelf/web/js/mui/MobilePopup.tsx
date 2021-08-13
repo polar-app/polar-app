@@ -7,22 +7,19 @@ import {useHistory} from "react-router";
 const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
-            position: 'absolute',
-            top: '100%',
-            left: 0,
             background: theme.palette.background.default,
-            width: '100%',
-            height: '100%',
-            zIndex: 1000,
             boxShadow: theme.shadows[5],
-            animation: '$rollin 300ms ease-in-out forwards',
-            overflowY: 'auto',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            overflowX: 'hidden',
         },
         topBar: {
             display: 'flex',
             padding: '12px',
             background: darken(theme.palette.background.default, 0.15),
             position: 'sticky',
+            alignItems: 'center',
             top: 0,
             zIndex: 100,
         },
@@ -31,6 +28,11 @@ const useStyles = makeStyles((theme) =>
             fontWeight: 'bold',
             fontSize: 18,
             marginLeft: 20,
+        },
+        content: {
+            minHeight: 0,
+            flex: 1,
+            overflowY: 'auto',
         },
         "@keyframes rollin": {
             "0%": {
@@ -44,7 +46,7 @@ const useStyles = makeStyles((theme) =>
 );
 
 
-export const rollUp = <T, >(Component: React.FC<T> | React.ComponentClass<T>, title?: string): React.FC<T> | React.ComponentClass<T> => {
+export const withMobilePopup = <T, >(Component: React.FC<T> | React.ComponentClass<T>, title?: string): React.FC<T> | React.ComponentClass<T> => {
     if (Devices.isDesktop()) {
         return Component;
     }
@@ -62,10 +64,12 @@ export const rollUp = <T, >(Component: React.FC<T> | React.ComponentClass<T>, ti
                 <div className={classes.topBar}>
                     <ButtonBase onClick={handleGoBack} style={{ borderRadius: '50%', padding: 4 }}>
                         <ArrowBackIcon />
-                        {title && <h2 className={classes.title}>{ title }</h2>}
                     </ButtonBase>
+                    {title && <h2 className={classes.title}>{ title }</h2>}
                 </div>
-                <Component {...props} />
+                <div className={classes.content}>
+                    <Component {...props} />
+                </div>
             </div>
         );
     }
