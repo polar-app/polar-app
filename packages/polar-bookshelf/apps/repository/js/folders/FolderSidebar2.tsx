@@ -71,7 +71,8 @@ export const FolderSidebar2 = React.memo((props: IProps) => {
                     <>
                         {props.header && (
                             <div style={{
-                                     display: 'flex'
+                                     display: 'flex',
+                                     padding: '0 8px',
                                  }}>
                                 {props.header}
                             </div>

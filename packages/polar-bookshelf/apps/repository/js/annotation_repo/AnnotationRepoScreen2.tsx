@@ -49,7 +49,7 @@ const StartReviewHeader = () => {
     const theme = useTheme();
 
     return (
-        <div style={{ padding: '0 8px', flexGrow: 1 }}>
+        <div style={{ flexGrow: 1 }}>
             <StartReviewDropdown style={{
                 width: '100%',
                 marginTop: theme.spacing(1),
