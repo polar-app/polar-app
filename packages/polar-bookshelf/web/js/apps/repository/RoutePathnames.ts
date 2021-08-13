@@ -10,6 +10,7 @@ const createHybrid = (pathname: string) => {
 const HOME = "/";
 const ANNOTATIONS = "/annotations";
 const NOTES = "/notes";
+const NOTES_REPO = "/notes/repo";
 const NOTE = (id: string) => `${NOTES}/${id}`;
 const ANKI_SYNC = "/sync";
 
@@ -24,7 +25,6 @@ const LOGS = createHybrid("/logs");
 const DEVICE_INFO = createHybrid("/device");
 const FEATURE_REQUESTS = createHybrid("/feature-requests");
 const SUPPORT = createHybrid("/support");
-
 const ENABLE_FEATURE_TOGGLE = "/enable-feature-toggle";
 
 const ACCOUNT = "#account";
@@ -47,4 +47,5 @@ export const RoutePathnames = {
     FEATURE_REQUESTS,
     ENABLE_FEATURE_TOGGLE,
     SUPPORT,
+    NOTES_REPO,
 };

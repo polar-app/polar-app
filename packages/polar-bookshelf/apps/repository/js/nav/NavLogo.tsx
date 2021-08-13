@@ -3,6 +3,7 @@ import {IStyleMap} from '../../../../web/js/react/IStyleMap';
 import {PolarSVGIcon} from "../../../../web/js/ui/svg_icons/PolarSVGIcon";
 import {Devices} from "polar-shared/src/util/Devices";
 import {MUIRouterLink} from "../../../../web/js/mui/MUIRouterLink";
+import {RoutePathnames} from '../../../../web/js/apps/repository/RoutePathnames';
 
 const Styles: IStyleMap = {
     child: {
@@ -24,9 +25,9 @@ export const NavLogo = React.memo(function NavLogo() {
     const createLink = () => {
 
         if (Devices.get() === 'desktop') {
-            return '/';
+            return RoutePathnames.HOME;
         } else {
-            return '/annotations';
+            return RoutePathnames.ANNOTATIONS;
         }
 
     };
