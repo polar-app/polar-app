@@ -105,7 +105,7 @@ function useLogoutAction(): Callback {
 
 }
 
-export const AccountControl = memoForwardRefDiv((props: IProps, ref) => {
+export const AccountControl = memoForwardRefDiv(function AccountControl(props: IProps, ref) {
 
     const logoutAction = useLogoutAction();
     const popperController = usePopperController();

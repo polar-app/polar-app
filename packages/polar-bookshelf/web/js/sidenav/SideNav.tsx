@@ -1,7 +1,7 @@
 import * as React from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
-import {useSideNavStore, TabDescriptor} from './SideNavStore';
+import {useSideNavStore} from './SideNavStore';
 import Divider from '@material-ui/core/Divider';
 import {PolarSVGIcon} from "../ui/svg_icons/PolarSVGIcon";
 import {useHistory} from 'react-router-dom';
@@ -22,11 +22,9 @@ import {ZenModeActiveContainer} from "../mui/ZenModeActiveContainer";
 import {Intercom} from '../apps/repository/integrations/Intercom';
 import {SideNavQuestionButton} from './SideNavQuestionButton';
 import {VerticalDynamicScroller} from './DynamicScroller';
-import {DateContents} from "../notes/content/DateContents";
 import {observer} from "mobx-react-lite"
 import {URLPathStr} from 'polar-shared/src/url/PathToRegexps';
-import {useBlocksTreeStore} from '../notes/BlocksTree';
-import {useBlocksStore} from '../notes/store/BlocksStore';
+import {DeviceRouter} from '../ui/DeviceRouter';
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -305,7 +303,8 @@ export const SideNav = React.memo(function SideNav() {
 
                     <div style={{marginBottom: '5px'}}>
                         <SideNavDivider/>
-                        <SyncButton/>
+
+                        <DeviceRouter desktop={<SyncButton/>}/>
                         <AccountButton/>
                         <SideNavQuestionButton/>
                         <SettingsButton/>
