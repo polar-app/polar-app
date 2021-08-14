@@ -1,9 +1,9 @@
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import * as React from "react";
 import {PreviewWarning} from "./PreviewWarning";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
 import {usePrefsContext} from "../../persistence_layer/PrefsContext2";
+import {createStyles, FormControlLabel, makeStyles, Radio, RadioGroup} from "@material-ui/core";
+import {MUIIconText} from "../../../../../web/js/mui/MUIIconText";
 
 interface IProps {
     readonly title: string;
@@ -11,6 +11,7 @@ interface IProps {
     readonly name: string;
     readonly options: ReadonlyArray<IOption>;
     readonly preview?: boolean;
+    readonly icon: JSX.Element;
 }
 
 interface IOption {
@@ -18,17 +19,31 @@ interface IOption {
     readonly label: string;
 }
 
-export const SettingSelect = (props: IProps) => {
+const useStyles = makeStyles(() =>
+    createStyles({
+        radioLabelRoot: {
+            margin: 0,
+            justifyContent: 'space-between',
+            alignItems: 'center',
+        },
+        radioLabel: {
+            fontSize: '1rem',
+        },
+    }),
+);
 
+export const SettingSelect = (props: IProps) => {
+    
+    const classes = useStyles();
     const log = useLogger();
     const prefs = usePrefsContext();
 
     const {name} = props;
 
-    const onChange = (value: string) => {
+    const onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
         console.log("Setting " + name);
 
-        prefs.set(props.name, value);
+        prefs.set(props.name, evt.target.value);
 
         const doCommit = async () => {
             await prefs.commit();
@@ -42,34 +57,38 @@ export const SettingSelect = (props: IProps) => {
                        .getOrElse(props.options[0].id);
 
     return (
-        <div>
-            <div style={{display: 'flex'}}>
+        <div style={{ margin: '30px 16px' }}>
+            <div>
 
-                <div className="mt-auto mb-auto"
-                     style={{flexGrow: 1}}>
-                    <h2><b>{props.title}</b></h2>
+                <div className="mt-auto mb-auto">
+                    <MUIIconText icon={props.icon}>
+                        <h3><b>{props.title}</b></h3>
+                    </MUIIconText>
+                    <p>
+                        {props.description}
+                    </p>
                 </div>
 
                 <div className="mt-auto mb-auto">
 
-                    <Select value={value}
-                            onChange={event => onChange(event.target.value as string)}>
-
+                    <RadioGroup name={name} value={value} onChange={onChange}>
                         {props.options.map(current =>
-                           <MenuItem key={current.id} value={current.id}>
-                               {current.label}
-                           </MenuItem>)}
-
-                    </Select>
+                            <FormControlLabel
+                                key={current.id}
+                                value={current.id}
+                                labelPlacement="start"
+                                classes={{
+                                    root: classes.radioLabelRoot,
+                                    label: classes.radioLabel,
+                                }}
+                                control={<Radio />}
+                                label={current.label}
+                            />
+                        )}
+                    </RadioGroup>
 
                 </div>
 
-            </div>
-
-            <div>
-                <p style={{fontSize: '1.3rem'}}>
-                    {props.description}
-                </p>
             </div>
 
             {props.preview && <PreviewWarning/>}

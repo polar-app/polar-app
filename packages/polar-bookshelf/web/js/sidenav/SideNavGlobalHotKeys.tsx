@@ -1,5 +1,6 @@
 import React from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
+import { RoutePathnames } from '../apps/repository/RoutePathnames';
 import {useRefWithUpdates} from '../hooks/ReactHooks';
 import {GlobalKeyboardShortcuts, keyMapWithGroup} from "../keyboard_shortcuts/GlobalKeyboardShortcuts";
 import {useNotesEnabled} from './SideNav';
@@ -49,15 +50,15 @@ export const SideNavGlobalHotKeys = React.memo(function SideNavGlobalHotKeys() {
 
     const pages = React.useMemo(() => {
         const pages = [
-            { path: '/', exact: true }, // Doc Repo
-            { path: '/annotations', exact: false }, // Annotation repo
-            { path: '/stats', exact: false }, // Statistics
+            { path: RoutePathnames.HOME, exact: true }, // Doc Repo
+            { path: RoutePathnames.ANNOTATIONS, exact: false }, // Annotation repo
+            { path: RoutePathnames.STATISTICS, exact: false }, // Statistics
             ...tabs.map(tab => ({ path: tab.url, exact: false })), // Open tabs
-            { path: '/settings', exact: false }, // Settings
+            { path: RoutePathnames.SETTINGS, exact: false }, // Settings
         ];
 
         if (notesEnabled) {
-            pages.splice(2, 0, { path: '/notes', exact: false });
+            pages.splice(2, 0, { path: RoutePathnames.NOTES, exact: false });
         }
         return pages;
     }, [tabs, notesEnabled]);

@@ -10,6 +10,7 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import {useTheme} from '@material-ui/core';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -28,7 +29,7 @@ const NoOutlineAvailable = React.memo(function NoOutlineAvailable() {
 
     return (
         <div style={{textAlign: 'center'}}>
-            <h2>No Outline Available</h2>
+            <h2 style={{ margin: 0, padding: 8 }}>No Outline Available</h2>
         </div>
     );
 
@@ -143,7 +144,7 @@ const OutlineTreeView = React.memo(function OutlineTreeView() {
 
     return (
 
-        <Box m={1}>
+        <Box p={1} style={{ height: '100%', overflowY: 'auto' }}>
             {outline.items.map((item, idx) => (
                 <OutlineTreeItem key={item.id || idx} item={item}/>
             ))}
@@ -154,10 +155,13 @@ const OutlineTreeView = React.memo(function OutlineTreeView() {
 
 
 export const Outliner = React.memo(function Outliner() {
+    const theme = useTheme();
 
     return (
         <OutlinerStoreProviderDelegate>
-            <OutlineTreeView/>
+            <div style={{ background: theme.palette.background.paper, height: '100%' }}>
+                <OutlineTreeView/>
+            </div>
         </OutlinerStoreProviderDelegate>
     );
 
