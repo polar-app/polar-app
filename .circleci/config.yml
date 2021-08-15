@@ -163,6 +163,7 @@ jobs:
           name: Build
           command: |
             cd /home/circleci/project/packages/polar-app-public/polar-web-extension/
+            export POLAR_EXTENSION_TYPE=PROD
             yarn run dist
 
   # @ Build Polar-Bookshelf Webapp
