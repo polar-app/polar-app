@@ -149,6 +149,22 @@ jobs:
             yarn run webpack
             yarn run karma
 
+  # @ Build polar chrome extension
+  build-chrome-extension:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor>>
+    description: "Build the polar chrome extension"
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Build
+          command: |
+            cd /home/circleci/project/packages/polar-app-public/polar-web-extension/
+            yarn run dist
+
   # @ Build Polar-Bookshelf Webapp
   build-polar-app:
     parameters:
@@ -260,12 +276,19 @@ workflows:
   version: 2
   main:
     jobs:
-      ## ^ Commonality Between Workflows
+      ## ^ Commonality Between Sub-Workflows
       # @ Setup the repo for the subsquent stages
       - setting-up:
           executor: large
 
-      ## ^ Polar App Workflow Below Here
+      ## ^ Chrome Extension Sub-Workflow
+      # @ Setup the repo for the subsquent stages
+      - build-chrome-extension:
+          executor: large
+          requires:
+            - "setting-up"
+
+      ## ^ Polar App Sub-Workflow Below Here
       # @ Run Karma Tests
       - karma:
           executor: large
@@ -355,7 +378,7 @@ workflows:
               only:
                 - master
 
-      ## ^ Polar Site Workflow Below Here
+      ## ^ Polar Site Sub-Workflow Below Here
       # @ Build Polar Site
       - build-polar-site:
           executor: large
