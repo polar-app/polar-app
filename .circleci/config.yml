@@ -45,7 +45,7 @@ commands:
 
       - run:
           name: Accept Buster old-stable changes
-          command: if [ "$OSTYPE" = 'linux-gnu' ]; then apt-get update --allow-releaseinfo-change; fi
+          command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get update --allow-releaseinfo-change; fi
 
       # ! Install Required Linux Binary (libvips is needed by sharp which is needed by gatsby)
       - run:
