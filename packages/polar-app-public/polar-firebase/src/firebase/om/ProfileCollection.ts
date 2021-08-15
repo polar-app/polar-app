@@ -108,22 +108,21 @@ export namespace ProfileCollection {
         return await Collections.get(firestore, COLLECTION, id);
     }
 
-    export async function getWithOpts(id: ProfileIDStr, opts: GetOptions = {}): Promise<IProfile | undefined> {
-        const [_, ref] = await this.doc(id);
-        const doc = await DocumentReferences.get(ref, opts);
-        return <IProfile> doc.data();
+    export async function doc(firestore: IFirestore<unknown>, id: ProfileIDStr): Promise<[string, IDocumentReference<unknown>]> {
+        const doc = firestore.collection(this.COLLECTION).doc(id);
+        return [id, doc];
+    }
+
+    export async function getWithOpts(firestore: IFirestore<unknown>, id: ProfileIDStr, opts: GetOptions = {}): Promise<IProfile | undefined> {
+        const [_, ref] = await doc(firestore, id);
+        const docRef = await DocumentReferences.get(ref, opts);
+        return <IProfile> docRef.data();
     }
 
     export async function getByUserID(firestore: IFirestore<unknown>, uid: UserIDStr): Promise<IProfile | undefined> {
         const results = await Collections.list<IProfile>(firestore, COLLECTION, [['uid', '==', uid]]);
         return Arrays.first(results);
     }
-
-    export async function doc(firestore: IFirestore<unknown>, id: ProfileIDStr): Promise<[string, IDocumentReference<unknown>]> {
-        const doc = firestore.collection(this.COLLECTION).doc(id);
-        return [id, doc];
-    }
-
     export function set(firestore: IFirestore<unknown>,
                         batch: IWriteBatch<unknown>,
                         id: ProfileIDStr,
