@@ -2,7 +2,7 @@ import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {SwitchButton} from "../../../../../web/js/ui/SwitchButton";
 import * as React from "react";
 import {FeatureToggles} from "polar-shared/src/util/FeatureToggles";
-import {PreviewWarning} from "./PreviewWarning";
+import {MUIIconText} from "../../../../../web/js/mui/MUIIconText";
 
 export interface PrefsWriter {
 
@@ -21,6 +21,8 @@ interface IProps {
     readonly prefs: PrefsWriter | undefined;
     readonly preview?: boolean;
     readonly defaultValue?: boolean;
+    readonly icon?: JSX.Element;
+    readonly beta?: boolean;
 
     /**
      * Optional callback to listen to settings.
@@ -59,13 +61,23 @@ export const SettingToggle = (props: IProps) => {
     };
 
     return (
-        <div>
-            <div style={{display: 'flex'}}>
+        <div style={{ margin: '30px 16px' }}>
+            <div style={{display: 'flex', alignItems: 'center'}}>
 
-                <div className="mt-auto mb-auto"
-                     style={{flexGrow: 1}}>
-                    <h2><b>{props.title}</b></h2>
-                </div>
+                <MUIIconText style={{ flex: 1 }} icon={props.icon}>
+                    <h3 style={{ position: 'relative', display: 'inline-block' }}>
+                        <b>{props.title}</b>
+                        {props.beta && (
+                            <div style={{
+                                position: 'absolute',
+                                left: '100%',
+                                top: -10,
+                                color: 'red',
+                                fontSize: 9,
+                            }}>BETA</div>
+                        )} 
+                    </h3>
+                </MUIIconText>
 
                 <div className="mt-auto mb-auto">
                     <SwitchButton size="medium"
@@ -76,9 +88,7 @@ export const SettingToggle = (props: IProps) => {
             </div>
 
             <div>
-                <p style={{fontSize: '1.3rem'}}>
-                    {props.description}
-                </p>
+                <p>{props.description}</p>
             </div>
 
             {/*{props.preview && <PreviewWarning/>}*/}

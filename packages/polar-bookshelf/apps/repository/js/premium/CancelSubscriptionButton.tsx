@@ -1,9 +1,10 @@
 import * as React from 'react';
 import {useUserSubscriptionContext} from "../../../../web/js/apps/repository/auth_handler/UserInfoProvider";
-import Button from "@material-ui/core/Button";
 import {AccountActions} from "../../../../web/js/accounts/AccountActions";
 import {useAsyncActionTaskbar, useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
+import CancelIcon from '@material-ui/icons/Cancel';
+import {FullWidthButton} from '../configure/settings/FullWidthButton';
 
 export const CancelSubscriptionButton = () => {
 
@@ -35,9 +36,8 @@ export const CancelSubscriptionButton = () => {
     }
 
     return (
-        <Button variant="contained"
-                onClick={handleClick}>
+        <FullWidthButton onClick={handleClick} icon={<CancelIcon />}>
             Cancel Subscription
-        </Button>
+        </FullWidthButton>
     );
 }
