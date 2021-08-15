@@ -191,7 +191,7 @@ export namespace ProfileCollection {
 
     }
 
-    export async function currentProfile(opts: GetOptions = new CacheFirstThenServerGetOptions()): Promise<IProfile | undefined> {
+    export async function currentProfile(firestore: IFirestore<unknown>, opts: GetOptions = new CacheFirstThenServerGetOptions()): Promise<IProfile | undefined> {
 
         const app = FirebaseBrowser.init();
         const user = app.auth().currentUser;
@@ -207,7 +207,7 @@ export namespace ProfileCollection {
             return undefined;
         }
 
-        const profile = await getWithOpts(profileOwner.profileID, opts);
+        const profile = await getWithOpts(firestore, profileOwner.profileID, opts);
 
         if ( ! profile) {
             return undefined;
