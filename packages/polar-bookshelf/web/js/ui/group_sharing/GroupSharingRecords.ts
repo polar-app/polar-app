@@ -14,12 +14,14 @@ import {UserGroupMembership} from "../../datastore/sharing/db/UserGroupMembershi
 import {IProfile, ProfileCollection} from "polar-firebase/src/firebase/om/ProfileCollection";
 import {Promises} from "polar-shared/src/util/Promises";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+import {IFirestore} from "polar-firestore-like/src/IFirestore";
 
 const log = Logger.create();
 
 export class GroupSharingRecords {
 
-    public static fetch(groupID: string,
+    public static fetch(firestore: IFirestore<unknown>,
+                        groupID: string,
                         contactsHandler: (contacts: ReadonlyArray<ContactProfile>) => void,
                         membersHandler: (members: ReadonlyArray<MemberRecord>) => void,
                         groupsHandler: (groups: ReadonlyArray<Group>) => void,
@@ -32,7 +34,7 @@ export class GroupSharingRecords {
 
         const getGroupMemberInvitations = async (): Promise<ReadonlyArray<MemberRecord>> => {
 
-            const profile = await ProfileCollection.currentProfile();
+            const profile = await ProfileCollection.currentProfile(firestore);
 
             if (! profile) {
                 log.warn("No current user profile");

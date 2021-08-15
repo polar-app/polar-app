@@ -12,6 +12,7 @@ import {
 } from './GroupSharingRecords';
 import {GroupSharingControl, InvitationRequest} from './GroupSharingControl';
 import {LoginRequired} from "./LoginRequired";
+import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 const log = Logger.create();
 
@@ -93,7 +94,10 @@ export class GroupSharing extends React.Component<IProps, IState> {
 
             const groupID = Groups.createIDForKey(uid, fingerprint);
 
-            GroupSharingRecords.fetch(groupID,
+            const firestore = await FirestoreBrowserClient.getInstance();
+
+            GroupSharingRecords.fetch(firestore,
+                                      groupID,
                                       contacts => contactsHandler(contacts),
                                       members => membersHandler(members),
                                       groups => groupsHandler(groups),
