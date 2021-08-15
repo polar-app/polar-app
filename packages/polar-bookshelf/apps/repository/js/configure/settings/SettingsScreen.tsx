@@ -167,9 +167,7 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
                         <CancelSubscriptionButton/>
                         <ManageSubscriptionButton/>
 
-                        <FeatureToggle featureName="export-data">
-                            <ExportDataButton/>
-                        </FeatureToggle>
+                        <ExportDataButton/>
 
 
                          <a target="_blank" style={{ textDecoration: 'none' }} href="https://getpolarized.io/privacy-policy">

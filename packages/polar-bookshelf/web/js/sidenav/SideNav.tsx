@@ -30,6 +30,7 @@ import {usePersistentRouteContext} from '../apps/repository/PersistentRoute';
 import {RoutePathnames} from '../apps/repository/RoutePathnames';
 import {debounce, Theme} from '@material-ui/core';
 import {SideNavInitializer} from './SideNavInitializer';
+import {DeviceRouter} from '../ui/DeviceRouter';
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -349,7 +350,7 @@ export const SideNav = React.memo(function SideNav() {
 
                         <div style={{marginBottom: '5px'}}>
                             <SideNavDivider/>
-                            {Devices.isDesktop() && <SyncButton/>}
+                            <DeviceRouter desktop={<SyncButton/>}/>
                             <AccountButton/>
 
                             <SideNavQuestionButton/>
@@ -359,7 +360,7 @@ export const SideNav = React.memo(function SideNav() {
                     </div>
                 </ZenModeActiveContainer>
                 <Divider orientation="vertical" />
-                {!Devices.isDesktop() && 
+                {!Devices.isDesktop() &&
                     <div id="sidenav-sidecar" style={{ flex: 1 }} />}
             </div>
         </>
@@ -388,7 +389,7 @@ export const SideCar: React.FC = ({ children }) => {
     const classes = useSideCarStyles({ sidenavWidth });
     const mountElem = React.useMemo(() => document.querySelector<HTMLDivElement>('#sidenav-sidecar'), []);
     const {active} = usePersistentRouteContext();
-    
+
     if (! mountElem || ! active) { // This technically would never happen.
         return null;
     }

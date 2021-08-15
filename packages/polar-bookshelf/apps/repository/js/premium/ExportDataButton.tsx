@@ -10,10 +10,21 @@ export const ExportDataButton = React.memo(function ExportDataButton() {
 
     const onExport = React.useCallback(() => {
 
-        JSONRPC.exec("CreateSnapshotFunction", {})
+        async function doAsync() {
+
+            await JSONRPC.exec("CreateSnapshotFunction", {})
+
+            dialogManager.snackbar({
+                type: 'success',
+                message: 'Data is being exported. Check your email in a few minutes for your download link.'
+            });
+
+        }
+
+        doAsync()
             .catch(err => console.error("Could not create snapshot: ", err));
 
-    }, []);
+    }, [dialogManager]);
 
     const handleClick = React.useCallback(() => {
 
