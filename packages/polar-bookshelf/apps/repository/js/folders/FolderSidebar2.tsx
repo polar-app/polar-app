@@ -15,11 +15,12 @@ import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
         controlBar: {
             display: 'flex',
-            marginTop: theme.spacing(1.125)
+            alignItems: 'center',
+            padding: '2px 10px'
         },
     }),
 );
@@ -62,15 +63,16 @@ export const FolderSidebar2 = React.memo((props: IProps) => {
                           display: 'flex',
                           flexGrow: 1,
                           flexDirection: "column",
+                          height: '100%',
                           minHeight: 0
                       }}>
             <>
-                <MUIPaperToolbar borderBottom
-                                 padding={0.5}>
+                <MUIPaperToolbar borderBottom>
                     <>
                         {props.header && (
                             <div style={{
-                                     display: 'flex'
+                                     display: 'flex',
+                                     padding: '0 8px',
                                  }}>
                                 {props.header}
                             </div>
@@ -83,7 +85,7 @@ export const FolderSidebar2 = React.memo((props: IProps) => {
                                 placeholder="Filter by tag or folder"
                                 autoComplete="off"
                                 style={{
-                                    flexGrow: 1
+                                    flexGrow: 1,
                                 }}
                                 onChange={setFilter}/>
 
@@ -101,7 +103,8 @@ export const FolderSidebar2 = React.memo((props: IProps) => {
                          display: 'flex',
                          flexGrow: 1,
                          flexDirection: 'column',
-                         overflow: 'auto'
+                         overflow: 'auto',
+                         padding: 8,
                      }}>
 
                     {foldersRoot &&

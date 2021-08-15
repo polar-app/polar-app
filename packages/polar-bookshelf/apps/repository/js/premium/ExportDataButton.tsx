@@ -1,7 +1,8 @@
 import * as React from 'react';
-import Button from "@material-ui/core/Button";
 import {useDialogManager} from "../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
+import GetAppIcon from '@material-ui/icons/GetApp';
+import {FullWidthButton} from '../configure/settings/FullWidthButton';
 
 export const ExportDataButton = React.memo(function ExportDataButton() {
 
@@ -36,9 +37,8 @@ export const ExportDataButton = React.memo(function ExportDataButton() {
     }, [dialogManager, onExport]);
 
     return (
-        <Button variant="contained"
-                onClick={handleClick}>
+        <FullWidthButton onClick={handleClick} icon={<GetAppIcon />}>
             Export Data
-        </Button>
+        </FullWidthButton>
     );
 });

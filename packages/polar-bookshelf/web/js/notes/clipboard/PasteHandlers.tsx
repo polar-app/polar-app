@@ -164,8 +164,9 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
                 const blocks = await HTMLToBlocks.parse(html);
 
                 // If there's only one block and it has no children then we just wanna paste the content in the currently active block.
-                if (blocks.length === 1 && blocks[0].children.length === 0) {
-                    onPasteHTML(html);
+                const block = blocks[0];
+                if (blocks.length === 1 && block.children.length === 0 && block.content.type === 'markdown') {
+                    onPasteHTML(block.content.data);
                 } else {
                     onPasteBlocks(blocks);
                 }
