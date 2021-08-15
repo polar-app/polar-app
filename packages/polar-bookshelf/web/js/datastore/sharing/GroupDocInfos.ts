@@ -1,6 +1,6 @@
 import {GroupIDStr} from "../Datastore";
 import {Collections, OrderByClause} from "./db/Collections";
-import {GroupDoc} from "./db/GroupDocCollection";
+import {GroupDoc} from "polar-firebase/src/firebase/om/GroupDocCollection";
 import {Tag} from "polar-shared/src/tags/Tags";
 import {
     ISODateString,

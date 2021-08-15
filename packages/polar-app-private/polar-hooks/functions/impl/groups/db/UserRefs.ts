@@ -4,7 +4,8 @@ import {ProfileOwner, ProfileOwners} from './ProfileOwners';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {AsyncProviders} from 'polar-shared/src/util/Providers';
 import {Invitations, UserRefInvitations} from '../GroupInvites';
-import {EmailStr, IProfile, ProfileCollection, ProfileIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
+import {IProfile, ProfileCollection} from "polar-firebase/src/firebase/om/ProfileCollection";
+import {EmailStr, ProfileIDStr} from "polar-shared/src/util/Strings";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 /**

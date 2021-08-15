@@ -6,8 +6,7 @@ import {Image} from './Images';
 import {Preconditions} from 'polar-shared/src/Preconditions';
 import {Clause} from './Collections';
 import {Logger} from 'polar-shared/src/logger/Logger';
-import {EmailStr, ProfileIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
-
+import {EmailStr, ProfileIDStr} from "polar-shared/src/util/Strings";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import {Collections} from "polar-firestore-like/src/Collections";
 

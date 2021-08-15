@@ -2,7 +2,7 @@
  * Allows us to return the group objects the user is a member of.
  */
 import {Group, Groups} from "./Groups";
-import {UserGroupCollection} from "./UserGroupCollection";
+import {UserGroupCollection} from "polar-firebase/src/firebase/om/UserGroupCollection";
 
 export class UserGroupMembership {
 

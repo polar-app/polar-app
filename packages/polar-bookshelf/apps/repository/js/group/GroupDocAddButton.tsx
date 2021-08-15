@@ -7,7 +7,7 @@ import {
     GroupDocRef
 } from "../../../../web/js/datastore/sharing/GroupDatastores";
 import {PersistenceLayerProvider} from "../../../../web/js/datastore/PersistenceLayer";
-import {GroupDocCollection} from "../../../../web/js/datastore/sharing/db/GroupDocCollection";
+import {GroupDocCollection} from "polar-firebase/src/firebase/om/GroupDocCollection";
 import {AuthHandlers} from "../../../../web/js/apps/repository/auth_handler/AuthHandler";
 import Button from "@material-ui/core/Button";
 

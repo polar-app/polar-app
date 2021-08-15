@@ -2,11 +2,9 @@ import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {GroupIDStr} from '../../Datastore';
 import {Hashcodes} from 'polar-shared/src/util/Hashcodes';
 import {ExternalLink} from "../rpc/GroupProvisions";
-import {PlainTextStr, URLStr} from "polar-shared/src/util/Strings";
+import {PlainTextStr, URLStr, UserIDStr} from "polar-shared/src/util/Strings";
 import {Arrays} from "polar-shared/src/util/Arrays";
-import {UserIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
-
 import {Collections} from "polar-firestore-like/src/Collections";
 
 import Clause = Collections.Clause;
