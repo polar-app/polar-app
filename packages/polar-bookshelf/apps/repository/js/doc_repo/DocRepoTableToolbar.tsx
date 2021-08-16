@@ -34,8 +34,8 @@ const SelectionActiveButtons = React.memo(function SelectionActiveButtons() {
         <MUIButtonBar>
             <>
                 <MUIDocTagButton onClick={callbacks.onTagged} size="medium"/>
-                {Devices.isDesktop() && <MUIDocArchiveButton onClick={callbacks.onArchived} size="medium"/>}
-                {Devices.isDesktop() && <MUIDocFlagButton onClick={callbacks.onFlagged} size="medium"/>}
+                <MUIDocArchiveButton onClick={callbacks.onArchived} size="medium"/>
+                <MUIDocFlagButton onClick={callbacks.onFlagged} size="medium"/>
                 <Divider orientation="vertical" variant="middle" flexItem/>
 
                 <MUIDocDeleteButton size="medium"
@@ -90,7 +90,7 @@ export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
 
                 <ChromeExtensionInstallBar/>
 
-            <DocRepoFilterBar showOnlySearch={selected.length > 0 }/>
+            {selected.length === 0 && <DocRepoFilterBar />}
 
         </Paper>
     );
