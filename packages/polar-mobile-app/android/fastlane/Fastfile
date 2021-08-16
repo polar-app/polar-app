@@ -23,7 +23,13 @@ platform :android do
 
   desc "Deploy a new version to the Google Play internal testers track"
   lane :beta do
-    increment_version_code(gradle_file_path: "./app/build.gradle")
+    version_code = increment_version_code(
+        gradle_file_path: "./app/build.gradle"
+    )
+    android_set_version_name(
+        version_name: version_code.to_s,
+        gradle_file: "app/build.gradle" # optional
+    )
     gradle(task: "clean bundleRelease")
     upload_to_play_store(track: 'internal')
   end

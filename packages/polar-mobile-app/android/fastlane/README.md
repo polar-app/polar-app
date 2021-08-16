@@ -25,10 +25,10 @@ Runs all the tests
 ```
 fastlane android beta
 ```
-Submit a new Beta Build to Crashlytics Beta
-### android deploy
+Deploy a new version to the Google Play internal testers track
+### android production
 ```
-fastlane android deploy
+fastlane android production
 ```
 Deploy a new version to the Google Play
 
