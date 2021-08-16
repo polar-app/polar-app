@@ -1,0 +1,4 @@
+# Plan this file in this location in production
+# Instructions how to generate it using the Google Play Console are available here:
+# https://docs.fastlane.tools/getting-started/android/setup/
+google-play-service-account.json

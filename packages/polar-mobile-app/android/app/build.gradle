@@ -134,7 +134,7 @@ android {
         applicationId "io.getpolarized.polar"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
+        versionCode 11
         versionName "0.8"
         multiDexEnabled true
 
@@ -177,7 +177,7 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
 
             // TODO Remove before creating an actual prod build
-            debuggable true
+            // debuggable true
         }
     }
 
