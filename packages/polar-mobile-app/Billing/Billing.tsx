@@ -72,7 +72,7 @@ export class Billing {
         );
 
         if (!buyerEmail) {
-            alert("Can not retrieve previously stored email to finish the purchase procedure");
+            console.error("Can not retrieve previously stored email to finish the purchase procedure");
             return;
         }
 
