@@ -4,6 +4,7 @@ import {Elements} from "../util/Elements";
 import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
 import {IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
+import {Tuples} from "polar-shared/src/util/Tuples";
 
 export type IBlockContentStructure<T = IBlockContent> = {
     content: T;
@@ -49,7 +50,7 @@ export namespace HTMLToBlocks {
         return createMarkdownContent(content1.data + content2.data);
     }
 
-    function mergeBlockStructures(blocks: ReadonlyArray<IBlockContentMergableStructure>, isParentMergable: boolean) {
+    function mergeBlockStructures(blocks: ReadonlyArray<IBlockContentMergableStructure>) {
         const mergeBlockContentStructures = (
             a: IBlockContentMergableStructure<IMarkdownContent>,
             b: IBlockContentMergableStructure<IMarkdownContent>
@@ -57,23 +58,18 @@ export namespace HTMLToBlocks {
             return {
                 content: mergeMarkdownContent(a.content, b.content),
                 children: [...a.children, ...b.children],
-                mergable: isParentMergable,
+                mergable: true,
             };
         };
 
         const isMergable = (a: IBlockContentMergableStructure, b: IBlockContentMergableStructure): boolean =>
-            (a.content.type === "markdown" && b.content.type === "markdown") &&
-                (
-                    (a.mergable && b.mergable) ||
-                    (a.content.data.trim().length === 0 || b.content.data.trim().length === 0)
-                );
+            (a.content.type === "markdown" && b.content.type === "markdown") && (a.mergable && b.mergable);
 
         return TextHighlightMerger
             .groupAdjacent(blocks, isMergable)
             .map(group =>
                 (group as ReadonlyArray<IBlockContentMergableStructure<IMarkdownContent>>)
-                    .reduce((a, b) => mergeBlockContentStructures(a, b))
-            ).map(child => ({...child, mergable: child.mergable ? isParentMergable : false }));
+                    .reduce((a, b) => mergeBlockContentStructures(a, b)));
     }
 
     export async function HTMLToBlockStructure(
@@ -105,16 +101,17 @@ export namespace HTMLToBlocks {
             parent: IBlockContentMergableStructure | undefined = undefined,
             newState: ParserState = state,
         ) => {
-            const children = (await HTMLToBlockStructure(Array.from(elem.childNodes), current, newState));
+            const children = mergeBlockStructures(await HTMLToBlockStructure(Array.from(elem.childNodes), current, newState))
+                .map(child => ({ ...child, mergable: child.mergable ? mergable : false }));
             current = "";
 
             if (parent) {
                 const newChildren = [...parent.children, ...children];
-                const mergedChildren = mergeBlockStructures(newChildren, mergable);
+                const mergedChildren = mergeBlockStructures(newChildren);
                 parent.children = mergedChildren;
             } else {
                 const newChildren = [...blocks, ...children];
-                const mergedChildren = mergeBlockStructures(newChildren, mergable);
+                const mergedChildren = mergeBlockStructures(newChildren);
                 blocks = mergedChildren;
             }
         };
@@ -212,23 +209,49 @@ export namespace HTMLToBlocks {
     export async function parse(html: string): Promise<ReadonlyArray<IBlockContentStructure>>  {
         const nodes = Elements.createWrapperElementHTML(html).childNodes;
         const blocks = await HTMLToBlockStructure(Array.prototype.slice.call(nodes));
-        const flatten = (block: IBlockContentMergableStructure): ReadonlyArray<IBlockContentMergableStructure> =>
-            block.content.type === 'markdown' && block.content.data.trim().length === 0
-                ? block.children
-                : [block];
-        const trim = (block: IBlockContentMergableStructure) => {
-            if (block.content.type === 'markdown') {
+
+        const isEmpty = (block: IBlockContentStructure) => block.content.type === 'markdown' && block.content.data.trim().length === 0;
+
+        const flatten = (block: IBlockContentStructure[]): ReadonlyArray<IBlockContentStructure> => {
+            const siblings = Tuples.createSiblings(block);
+            const result: IBlockContentStructure[] = [];
+
+            for (let i = siblings.length - 1; i >= 0; i -= 1) {
+                const sibling = siblings[i];
+
+                if (isEmpty(sibling.curr) && sibling.prev) {
+                    sibling.prev.children = [...sibling.prev.children, ...sibling.curr.children];
+                } else {
+                    result.unshift(sibling.curr);
+                }
+            }
+            
+            return result;
+        }
+        const trim = (block: IBlockContentStructure) => {
+            if (block.content.type === 'markdown' && block.children.length === 0) {
                 block.content = createMarkdownContent(block.content.data.trim())
                 return block;
             }
             return block;
         };
-        const normalize = (blocks: ReadonlyArray<IBlockContentMergableStructure>): ReadonlyArray<IBlockContentStructure> => {
-            return blocks
-                .flatMap(flatten)
-                .map(trim)
+
+        const purgeEmpty = (blocks: IBlockContentStructure[]) => {
+            return blocks.flatMap(block => {
+                if (isEmpty(block)) {
+                    return block.children;
+                }
+                return [block];
+            });
+        };
+
+        const normalize = (blocks: ReadonlyArray<IBlockContentStructure>): ReadonlyArray<IBlockContentStructure> => {
+            const normalized = blocks
                 .map(({ content, children }) => ({ content, children }))
-                .map(block => ({ ...block, children: normalize(block.children) }));
+                .map(block => ({ ...block, children: normalize(block.children) }))
+            const flattened = flatten(normalized)
+                .map(trim);
+            return purgeEmpty(flattened);
         };
         return normalize(blocks);
     }
