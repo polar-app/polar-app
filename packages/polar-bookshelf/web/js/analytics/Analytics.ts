@@ -28,7 +28,6 @@ function createDelegates(): ReadonlyArray<IAnalytics> {
         webExtension ? undefined : new GAAnalytics(),
         webExtension ? undefined : new FirestoreAnalytics(),
         new ConsoleAnalytics(),
-        webExtension ? undefined : new IntercomAnalytics(),
         webExtension ? undefined : new CannyAnalytics(),
         new SentryAnalytics()
     ].filter(current => current !== undefined)

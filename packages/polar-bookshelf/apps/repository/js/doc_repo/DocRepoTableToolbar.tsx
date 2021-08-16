@@ -14,6 +14,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
 import {ChromeExtensionInstallBar} from "../ChromeExtensionInstallBar";
 import {SidenavTrigger} from "../../../../web/js/sidenav/SidenavTrigger";
+import {Devices} from "polar-shared/src/util/Devices";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -33,8 +34,8 @@ const SelectionActiveButtons = React.memo(function SelectionActiveButtons() {
         <MUIButtonBar>
             <>
                 <MUIDocTagButton onClick={callbacks.onTagged} size="medium"/>
-                <MUIDocArchiveButton onClick={callbacks.onArchived} size="medium"/>
-                <MUIDocFlagButton onClick={callbacks.onFlagged} size="medium"/>
+                {Devices.isDesktop() && <MUIDocArchiveButton onClick={callbacks.onArchived} size="medium"/>}
+                {Devices.isDesktop() && <MUIDocFlagButton onClick={callbacks.onFlagged} size="medium"/>}
                 <Divider orientation="vertical" variant="middle" flexItem/>
 
                 <MUIDocDeleteButton size="medium"
@@ -89,7 +90,7 @@ export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
 
                 <ChromeExtensionInstallBar/>
 
-                <DocRepoFilterBar/>
+            <DocRepoFilterBar showOnlySearch={selected.length > 0 }/>
 
         </Paper>
     );

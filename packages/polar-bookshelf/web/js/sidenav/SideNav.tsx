@@ -322,8 +322,6 @@ export const SideNav = React.memo(function SideNav() {
             <div id="sidenav" className={sidenavClasses.root}>
                 <SwitchToOpenDocumentKeyboardCommand/>
 
-                <Intercom/>
-
                 <ZenModeActiveContainer>
                     <div className={classes.root} style={{ height: '100%' }}>
 
