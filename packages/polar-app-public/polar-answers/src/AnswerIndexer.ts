@@ -17,6 +17,8 @@ export namespace AnswerIndexer {
 
             // now build the sentence shingles over this...
 
+
+
         });
 
     }

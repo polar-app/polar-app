@@ -1,6 +1,6 @@
-import {SentenceSplitter} from "./SentenceSplitter";
 import {TextStr} from "polar-shared/src/util/Strings";
 import {ISibling, Tuples} from "polar-shared/src/util/Tuples";
+import {GCLSentenceSplitter} from "polar-google-cloud-language/src/GCLSentenceSplitter";
 
 export namespace SentenceShingler {
 
@@ -31,7 +31,7 @@ export namespace SentenceShingler {
 
     export async function computeShinglesFromContent(content: TextStr) {
 
-        const sentences = await SentenceSplitter.split(content);
+        const sentences = await GCLSentenceSplitter.split(content);
 
         console.log("Found N sentences: " + sentences.length);
 

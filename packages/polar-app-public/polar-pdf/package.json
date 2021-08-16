@@ -30,8 +30,7 @@
     "jsdom": "=16.7.0",
     "pdfjs-dist": "=2.8.250-polar.3",
     "polar-shared": "^2.1.91",
-    "polar-test": "^2.1.91",
-    "polar-pdf": "^2.1.91"
+    "polar-test": "^2.1.91"
   },
   "files": [
     "**/*.js",
