@@ -1,22 +1,26 @@
 import * as React from 'react';
 import {DefaultPageLayout} from "../page_layout/DefaultPageLayout";
 import {ExtendedDeviceInfo} from "../repo_header/DeviceInfo";
-import Button from '@material-ui/core/Button';
 import {useHistory} from "react-router-dom";
+import {FullWidthButton} from '../configure/settings/FullWidthButton';
+import {RoutePathnames} from '../../../../web/js/apps/repository/RoutePathnames';
+import SubjectIcon from '@material-ui/icons/Subject';
+import {Divider} from '@material-ui/core';
+
 
 const LogsButton = () => {
 
     const history = useHistory();
 
     const onLogs = React.useCallback(() => {
-        history.push('/logs');
+        history.push(RoutePathnames.LOGS);
     }, [history]);
 
 
     return (
-        <Button variant="contained" onClick={onLogs}>
+        <FullWidthButton icon={<SubjectIcon />} onClick={onLogs}>
             Logs
-        </Button>
+        </FullWidthButton>
     )
 
 }
@@ -26,11 +30,9 @@ export const DeviceScreen = React.memo(function DeviceScreen() {
 
         <DefaultPageLayout>
 
-            <div className=" text-lg">
+            <div className="text-lg" style={{ margin: 16 }}>
 
-                <div className="">
-                    <h2>Device</h2>
-
+                <div>
                     <p>
                         Information about the user's current device.
                     </p>
@@ -39,13 +41,12 @@ export const DeviceScreen = React.memo(function DeviceScreen() {
                         <ExtendedDeviceInfo/>
                     </div>
 
-                    <div>
-                        <LogsButton/>
-                    </div>
 
                 </div>
 
             </div>
+            <Divider style={{ margin: '16px 0' }} />
+            <LogsButton/>
 
         </DefaultPageLayout>
 

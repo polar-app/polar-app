@@ -28,9 +28,8 @@ export const MUISearchBox2 = React.memo((props: IProps) => {
 
     return (
         <OutlinedInput startAdornment={(
-
                            <InputAdornment position="start">
-                               <Box color="text.secondary">
+                               <Box color="text.secondary" display="flex" alignItems="center">
                                    <SearchIcon/>
                                </Box>
                            </InputAdornment>
@@ -39,7 +38,7 @@ export const MUISearchBox2 = React.memo((props: IProps) => {
                        type="search"
                        autoFocus={props.autoFocus}
                        id={props.id}
-                       style={props.style}
+                       style={{ ...props.style, height: 40 }}
                        label={props.label}
                        value={props.value}
                        defaultValue={props.initialValue}

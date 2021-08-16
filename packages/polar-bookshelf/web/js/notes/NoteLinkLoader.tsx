@@ -3,6 +3,7 @@ import {useHistory} from "react-router-dom";
 import {useRefValue} from "../hooks/ReactHooks";
 import {BlockNameStr} from "./store/BlocksStore";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {RoutePathnames} from '../apps/repository/RoutePathnames';
 
 export type BlockTargetStr = BlockIDStr | BlockNameStr;
 
@@ -13,7 +14,7 @@ export function useNoteLinkLoader() {
 
     return React.useCallback((target: BlockTargetStr) => {
 
-        const newURL = '/notes/' + target;
+        const newURL = RoutePathnames.NOTE(target);
         historyRef.current.push(newURL);
 
     }, [historyRef]);
@@ -21,5 +22,5 @@ export function useNoteLinkLoader() {
 }
 
 export function createNoteLink(target: BlockTargetStr) {
-    return '/notes/' + target
+    return RoutePathnames.NOTE(target);
 }

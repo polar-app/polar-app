@@ -3,6 +3,9 @@ import {Version} from "polar-shared/src/util/Version";
 import {Platforms} from "polar-shared/src/util/Platforms";
 import {Devices} from "polar-shared/src/util/Devices";
 import {AppRuntime} from "polar-shared/src/util/AppRuntime";
+import {MUIIconText} from "../../../../web/js/mui/MUIIconText";
+import InfoIcon from '@material-ui/icons/Info';
+import StorageIcon from '@material-ui/icons/Storage';
 
 export const DeviceInfo = () => {
 
@@ -13,7 +16,7 @@ export const DeviceInfo = () => {
 
     return (
         <div>
-            <h2>Device: </h2>
+            <MUIIconText icon={<InfoIcon />}><h2>Device</h2></MUIIconText>
             <div><b>Version: </b> {version}</div>
             <div><b>Device: </b> {device}</div>
             <div><b>Platform: </b> {platform}</div>
@@ -76,9 +79,9 @@ export const StorageInfo = () => {
     if (storageEstimate) {
         return (
             <div>
-                <h2>Storage:</h2>
-                <div><b>quota: </b> <Fmt>{storageEstimate.quota}</Fmt></div>
-                <div><b>usage: </b> <Fmt>{storageEstimate.usage}</Fmt></div>
+                <MUIIconText icon={<StorageIcon/>}><h2>Storage</h2></MUIIconText>
+                <div><b>Quota: </b> <Fmt>{storageEstimate.quota}</Fmt></div>
+                <div><b>Usage: </b> <Fmt>{storageEstimate.usage}</Fmt></div>
             </div>
         );
     } else {

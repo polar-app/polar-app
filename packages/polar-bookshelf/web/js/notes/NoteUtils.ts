@@ -9,6 +9,7 @@ import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 import {useHistory} from "react-router";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {BlockPredicates} from "./store/BlockPredicates";
+import { RoutePathnames } from "../apps/repository/RoutePathnames";
 
 export const focusFirstChild = (blocksStore: IBlocksStore, id: BlockIDStr) => {
     const root = blocksStore.getBlock(id);
@@ -108,7 +109,7 @@ function useLinkNavigationEventListener({ id }: IUseLinkNavigationOpts) {
                     }
 
                 } else {
-                    if (href.startsWith('/notes/')) {
+                    if (href.startsWith(RoutePathnames.NOTE(""))) {
                         history.push(href);
                     } else {
                         const linkLoader = linkLoaderRef.current;

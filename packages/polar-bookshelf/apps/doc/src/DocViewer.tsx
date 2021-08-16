@@ -35,6 +35,8 @@ import {Outliner} from "./outline/Outliner";
 import {useDocViewerSnapshot} from "./UseDocViewerSnapshot";
 import {useZenModeResizer} from "./ZenModeResizer";
 import {useDocumentViewerVisible} from "./renderers/UseSidenavDocumentChangeCallbackHook";
+import {SidenavTrigger} from "../../../web/js/sidenav/SidenavTrigger";
+import {SideCar} from "../../../web/js/sidenav/SideNav";
 
 const Main = React.memo(function Main() {
 
@@ -125,6 +127,7 @@ namespace Device {
                      }}
                      className="">
 
+                    <SidenavTrigger />
                     <DocFindButton className="mr-1"/>
                 </div>
 
@@ -155,6 +158,9 @@ namespace Device {
                 {/*    <Outliner />*/}
 
                 {/*</SwipeableDrawer>*/}
+                <SideCar>
+                    <Outliner/>
+                </SideCar>
 
                 <SwipeableDrawer
                     anchor='right'

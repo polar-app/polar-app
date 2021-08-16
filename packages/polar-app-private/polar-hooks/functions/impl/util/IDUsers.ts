@@ -1,7 +1,8 @@
 import {FirebaseAdmin} from 'polar-firebase-admin/src/FirebaseAdmin';
 import * as admin from 'firebase-admin';
-import {IProfile, ProfileCollection, UserIDStr} from 'polar-firebase/src/firebase/om/ProfileCollection';
+import {IProfile, ProfileCollection} from 'polar-firebase/src/firebase/om/ProfileCollection';
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
+import {UserIDStr } from 'polar-shared/src/util/Strings';
 import UserRecord = admin.auth.UserRecord;
 
 export class IDUsers {
