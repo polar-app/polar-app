@@ -15,8 +15,15 @@ import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 import {AnnotationRepoTable2} from "./AnnotationRepoTable2";
 import {SidenavTrigger} from "../../../../web/js/sidenav/SidenavTrigger";
 import {SideCar} from "../../../../web/js/sidenav/SideNav";
+import {createStyles, IconButton, makeStyles, SwipeableDrawer} from '@material-ui/core';
+import {useAnnotationRepoStore} from './AnnotationRepoStore';
+import MenuIcon from "@material-ui/icons/Menu";
 
-const Toolbar = React.memo(function Toolbar() {
+interface IToolbarProps {
+    handleRightDrawerToggle?: () => void;
+}
+
+const Toolbar: React.FC<IToolbarProps> = React.memo(function Toolbar({ handleRightDrawerToggle }) {
     return (
         <MUIPaperToolbar id="header-filter"
                          padding={1}>
@@ -34,6 +41,13 @@ const Toolbar = React.memo(function Toolbar() {
                     justifyContent: 'flex-end'
                 }}>
                     <AnnotationRepoFilterBar2 />
+                    {handleRightDrawerToggle && (
+                        <DeviceRouter phone={(
+                            <IconButton onClick={handleRightDrawerToggle}>
+                                <MenuIcon/>
+                            </IconButton>
+                        )}/>
+                    )}
                 </div>
 
             </div>
@@ -62,9 +76,48 @@ const StartReviewHeader = () => {
 
 namespace Phone {
 
-    export const Main = () => (
-        <AnnotationListView2/>
+    interface IMainProps {
+        isAnnotationViewerOpen: boolean;
+        setIsAnnotationViewerOpen: (state: boolean) => void;
+    }
+
+    const useStyles = makeStyles(() =>
+        createStyles({
+            drawer: {
+                maxWidth: '100%',
+            },
+        })
     );
+
+    export const Main: React.FC<IMainProps> = ({ isAnnotationViewerOpen, setIsAnnotationViewerOpen }) => {
+        const handleDrawerStateChange = (state: boolean) => () => setIsAnnotationViewerOpen(state);
+        const {selected, view} = useAnnotationRepoStore(['selected', 'view']);
+        const annotation = selected.length > 0 ? view.filter(current => current.id === selected[0])[0] : undefined;
+        const classes = useStyles();
+
+        React.useEffect(() => {
+            if (annotation) {
+                setIsAnnotationViewerOpen(true);
+            }
+        }, [setIsAnnotationViewerOpen, annotation]);
+
+
+        return (
+            <>
+                <AnnotationListView2/>
+                <SwipeableDrawer
+                    anchor="right"
+                    open={isAnnotationViewerOpen}
+                    onClose={handleDrawerStateChange(false)}
+                    onOpen={handleDrawerStateChange(true)}
+                    className={classes.drawer}
+                    classes={{ root: classes.drawer, paper: classes.drawer }}
+                >
+                    <AnnotationInlineViewer2 />
+                </SwipeableDrawer>
+            </>
+        );
+    };
 
 }
 
@@ -195,6 +248,7 @@ namespace Desktop {
 namespace screen {
 
     export const HandheldScreen = () => {
+        const [isAnnotationViewerOpen, setIsAnnotationViewerOpen] = React.useState(false);
 
         return (
 
@@ -212,14 +266,19 @@ namespace screen {
                              maxWidth: '100%',
                          }}>
 
-                        <Toolbar/>
+                        <Toolbar handleRightDrawerToggle={() => setIsAnnotationViewerOpen(state => ! state)}/>
                         <StartReviewSpeedDial/>
                         <SideCar>
                             <FolderSidebar2 header={<StartReviewHeader/>}/>
                         </SideCar>
 
-                        <DeviceRouter phone={<Phone.Main />}
-                                      tablet={<Tablet.Main />}/>
+                        <DeviceRouter phone={
+                                          <Phone.Main
+                                              isAnnotationViewerOpen={isAnnotationViewerOpen}
+                                              setIsAnnotationViewerOpen={setIsAnnotationViewerOpen}
+                                          />
+                                      }
+                                      handheld={<Tablet.Main />}/>
 
                     </div>
                 </FixedNav.Body>

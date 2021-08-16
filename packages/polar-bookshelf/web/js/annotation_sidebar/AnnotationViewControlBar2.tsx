@@ -166,7 +166,7 @@ export const AnnotationViewControlBar2 = React.memo((props: IProps) => {
             <div style={{userSelect: 'none'}}
                  className="pt-1">
 
-                <div style={{display: 'flex'}}>
+                <div style={{display: 'flex', flexWrap: 'wrap'}}>
 
                     <MUIButtonBar>
 
