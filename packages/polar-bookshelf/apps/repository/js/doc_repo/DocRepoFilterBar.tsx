@@ -13,7 +13,6 @@ export interface IProps {
      * FilterBar.
      */
     readonly right?: JSX.Element;
-
 }
 
 export const DocRepoFilterBar = deepMemo(function DocRepoFilterBar(props: IProps) {
@@ -40,14 +39,14 @@ export const DocRepoFilterBar = deepMemo(function DocRepoFilterBar(props: IProps
             <MUIToggleButton id="toggle-flagged"
                              tooltip="Show only flagged docs"
                              size="medium"
-                             label="flagged"
+                             label="Flagged"
                              icon={<FlagIcon/>}
                              initialValue={filters.flagged}
                              onChange={value => setFilters({...filters, flagged: value})}/>
             <MUIToggleButton id="toggle-archived"
                              tooltip="Toggle archived docs"
                              size="medium"
-                             label="archived"
+                             label="Archived"
                              initialValue={filters.archived}
                              onChange={value => setFilters({...filters, archived: value})}/>
             <MUISearchBox2 id="filter_title"
