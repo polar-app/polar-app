@@ -60,6 +60,8 @@ export namespace ESRequests {
             return await response.json();
         }
 
+        throw new Error(`POST to ${url} failed: ${response.status}: ${response.statusText}`);
+
     }
     export async function doGet(url: string): Promise<any> {
 

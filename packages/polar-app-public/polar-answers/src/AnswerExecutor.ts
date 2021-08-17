@@ -41,7 +41,7 @@ export namespace AnswerExecutor {
             size
         });
 
-        // console.log(JSON.stringify(esResponse, null, "  "));
+        console.log("ES response", JSON.stringify(esResponse, null, "  "));
 
         // tslint:disable-next-line:variable-name
         const max_tokens=35
