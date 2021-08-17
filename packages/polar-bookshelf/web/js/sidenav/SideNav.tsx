@@ -31,6 +31,7 @@ import {RoutePathnames} from '../apps/repository/RoutePathnames';
 import {debounce, Theme} from '@material-ui/core';
 import {SideNavInitializer} from './SideNavInitializer';
 import {DeviceRouter} from '../ui/DeviceRouter';
+import {FeatureToggle} from "../ui/FeatureToggle";
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -93,10 +94,6 @@ const useStyles = makeStyles((theme) =>
         }
     }),
 );
-
-export function useNotesEnabled() {
-    return localStorage.getItem('notes.enabled') === 'true';
-}
 
 interface HistoryButtonProps {
     readonly path: string;
@@ -313,9 +310,6 @@ export const SideNav = React.memo(function SideNav() {
     const classes = useStyles();
     const sidenavClasses = useSideNavStyles();
 
-
-    const notesEnabled = useNotesEnabled();
-
     return (
         <>
             <SideNavInitializer />
@@ -334,9 +328,9 @@ export const SideNav = React.memo(function SideNav() {
                         <HomeButton/>
                         <AnnotationsButton/>
 
-                        {notesEnabled && (
+                        <FeatureToggle name="notes-enabled">
                             <NotesButton/>
-                        )}
+                        </FeatureToggle>
 
                         {Devices.isDesktop() && <StatsButton/>}
 
