@@ -2,15 +2,19 @@ import {IDStr, URLStr} from "polar-shared/src/util/Strings";
 import {PDFText} from "polar-pdf/src/pdf/PDFText";
 import {SentenceShingler} from "./SentenceShingler";
 import {ESShingleWriter} from "./ESShingleWriter";
+import {UserIDStr} from "polar-bookshelf/web/js/datastore/sharing/db/Collections";
 
 export namespace AnswerIndexer {
 
     export interface IndexOpts {
         readonly docID: IDStr;
         readonly url: URLStr;
+        readonly uid: UserIDStr;
     }
 
     export async function doIndex(opts: IndexOpts) {
+
+        const {uid, docID} = opts;
 
         await PDFText.getText(opts.url, async pdfTextContent => {
 
@@ -23,7 +27,7 @@ export namespace AnswerIndexer {
             const shingles = await SentenceShingler.computeShinglesFromContent(content);
 
             for(const shingle of shingles) {
-                await ESShingleWriter.write(opts.docID, pageNum, shingle);
+                await ESShingleWriter.write({docID, uid, pageNum, shingle});
             }
 
         });
