@@ -2,7 +2,6 @@ import * as React from 'react';
 import useTheme from "@material-ui/core/styles/useTheme";
 import {FixedNav} from '../FixedNav';
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
-import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 import {FolderSidebar2} from "../folders/FolderSidebar2";
 import {AnnotationListView2} from "./AnnotationListView2";
@@ -18,6 +17,7 @@ import {SideCar} from "../../../../web/js/sidenav/SideNav";
 import {createStyles, IconButton, makeStyles, SwipeableDrawer} from '@material-ui/core';
 import {useAnnotationRepoStore} from './AnnotationRepoStore';
 import MenuIcon from "@material-ui/icons/Menu";
+import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 
 interface IToolbarProps {
     handleRightDrawerToggle?: () => void;
@@ -84,7 +84,8 @@ namespace Phone {
     const useStyles = makeStyles(() =>
         createStyles({
             drawer: {
-                maxWidth: '100%',
+                maxWidth: '500px',
+                width: '100%',
             },
         })
     );
@@ -125,7 +126,7 @@ namespace Tablet {
 
 
     export const Main = () => (
-        <DockLayout dockPanels={[
+        <DockLayout.Root dockPanels={[
             {
                 id: 'dock-panel-center',
                 type: 'fixed',
@@ -137,14 +138,16 @@ namespace Tablet {
                     minHeight: 0,
                 },
                 component: <AnnotationRepoTable2 />,
-                width: 450
+                width: 400
             },
             {
                 id: 'dock-panel-right',
                 type: 'grow',
                 component: <AnnotationInlineViewer2 />
             }
-        ]}/>
+        ]}>
+            <DockLayout.Main/>
+        </DockLayout.Root>
     );
 
 
@@ -165,7 +168,7 @@ namespace Desktop {
 
                 <Toolbar/>
 
-                <DockLayout dockPanels={[
+                <DockLayout.Root dockPanels={[
                     {
                         id: 'dock-panel-center',
                         type: 'fixed',
@@ -203,7 +206,9 @@ namespace Desktop {
                             </MUIElevation>
 
                     }
-                ]}/>
+                ]}>
+                    <DockLayout.Main />
+                </DockLayout.Root>
             </div>
 
         );
@@ -213,7 +218,7 @@ namespace Desktop {
     export const Main = () => {
 
         return (
-            <DockLayout dockPanels={[
+            <DockLayout.Root dockPanels={[
                 {
                     id: 'dock-panel-left',
                     type: 'fixed',
@@ -239,7 +244,9 @@ namespace Desktop {
                         <Right/>
 
                 }
-            ]}/>
+            ]}>
+                <DockLayout.Main />
+            </DockLayout.Root>
         );
     };
 

@@ -30,7 +30,7 @@ import {FileTypes} from "../../../web/js/apps/main/file_loaders/FileTypes";
 import {deepMemo} from "../../../web/js/react/ReactUtils";
 import {useStateRef, useRefValue} from "../../../web/js/hooks/ReactHooks";
 import {NoDocument} from "./NoDocument";
-import {DockLayout2} from "../../../web/js/ui/doc_layout/DockLayout2";
+import {DockLayout} from "../../../web/js/ui/doc_layout/DockLayout";
 import {Outliner} from "./outline/Outliner";
 import {useDocViewerSnapshot} from "./UseDocViewerSnapshot";
 import {useZenModeResizer} from "./ZenModeResizer";
@@ -217,7 +217,7 @@ namespace Device {
 
         return (
 
-            <DockLayout2.Root
+            <DockLayout.Root
                 onResize={onDockLayoutResize}
                 dockPanels={[
                     {
@@ -282,12 +282,12 @@ namespace Device {
                                  minHeight: 0
                              }}>
 
-                            <DockLayout2.Main/>
+                            <DockLayout.Main/>
                         </div>
 
                     </div>
                 </>
-            </DockLayout2.Root>
+            </DockLayout.Root>
 
         );
     });

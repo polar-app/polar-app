@@ -7,11 +7,11 @@ import {Logger} from "polar-shared/src/logger/Logger";
 import {PremiumFeature} from "../../../../web/js/ui/premium_feature/PremiumFeature";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
-import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 import {useRepoDocMetaManager} from "../persistence_layer/PersistenceLayerApp";
 import {useComponentDidMount} from "../../../../web/js/hooks/ReactLifecycleHooks";
 import {ReadingProgressTable} from "./ReadingProgressTable";
 import {Helmet} from "react-helmet";
+import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 
 const log = Logger.create();
 
@@ -224,7 +224,7 @@ const PhoneAndTablet = React.memo(function PhoneAndTablet(props: ReviewerProps) 
 
             <FixedNav.Body className="">
 
-                <DockLayout dockPanels={[
+                <DockLayout.Root dockPanels={[
                     {
                         id: 'dock-panel-center',
                         type: 'grow',
@@ -234,7 +234,9 @@ const PhoneAndTablet = React.memo(function PhoneAndTablet(props: ReviewerProps) 
                             </div>
                         )
                     },
-                ]}/>
+                ]}>
+                    <DockLayout.Main />
+                </DockLayout.Root>
 
             </FixedNav.Body>
 
