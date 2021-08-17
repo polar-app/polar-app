@@ -37,6 +37,7 @@ import {useZenModeResizer} from "./ZenModeResizer";
 import {useDocumentViewerVisible} from "./renderers/UseSidenavDocumentChangeCallbackHook";
 import {SidenavTrigger} from "../../../web/js/sidenav/SidenavTrigger";
 import {SideCar} from "../../../web/js/sidenav/SideNav";
+import {AreaHighlightModeToggle} from "./toolbar/AreaHighlightModeToggle";
 
 const Main = React.memo(function Main() {
 
@@ -136,7 +137,9 @@ namespace Device {
                     <DocFindButton className="mr-1"/>
                 </div>
 
-                <div style={{alignItems: 'center'}}>
+
+                <div style={{ alignItems: 'center', display: 'flex' }}>
+                    <AreaHighlightModeToggle />
                     <IconButton onClick={props.toggleRightDrawer}>
                         <MenuIcon/>
                     </IconButton>
