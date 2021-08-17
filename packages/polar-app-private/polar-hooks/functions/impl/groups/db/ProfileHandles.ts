@@ -1,7 +1,7 @@
 import {Dictionaries} from 'polar-shared/src/util/Dictionaries';
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
-import {HandleStr, ProfileIDStr} from 'polar-firebase/src/firebase/om/ProfileCollection';
+import {HandleStr, ProfileIDStr} from "polar-shared/src/util/Strings";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 /**

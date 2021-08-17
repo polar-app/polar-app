@@ -11,7 +11,7 @@ import {FirestoreTypedArray} from "polar-firebase/src/firebase/Collections";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {IQuery} from "polar-firestore-like/src/IQuery";
-import {EmailStr, ProfileIDStr} from 'polar-firebase/src/firebase/om/ProfileCollection';
+import {EmailStr, ProfileIDStr} from "polar-shared/src/util/Strings";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import UserRecord = admin.auth.UserRecord;
 

@@ -65,8 +65,20 @@ function useIntercomSideNavToggler() {
 
 }
 
-export const Intercom = () => {
+const IntercomInner = () => {
     useIntercom();
     useIntercomSideNavToggler();
     return null;
+}
+
+export const Intercom = () => {
+
+    if (document.location.href.startsWith('https://')) {
+        return (
+            <IntercomInner/>
+        )
+    }
+
+    return null;
+
 }
