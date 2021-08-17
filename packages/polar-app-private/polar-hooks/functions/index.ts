@@ -34,8 +34,8 @@ import {AppleIapCallback} from "./impl/billing/AppleIapCallback";
 import {AppstoreServerNotification} from "./impl/billing/AppstoreServerNotification";
 import {SSRFunction} from "./impl/ssr/SSRFunction";
 import {BlockPermissionFunction} from "./impl/blocks/BlockPermissionFunction";
-import {NSpaceCreateFunctions} from "./impl/blocks/NSpaceCreateFunctions";
 import {NSpaceCreateFunction} from "./impl/blocks/NSpaceFunction";
+import {ThumbnailGenerationRequested} from "./impl/thumbnails/ThumbnailGenerationRequested";
 
 // import {DocPreviewFunction} from "./impl/docs/DocPreviewFunctions";
 // import {DocPreviewSitemapFunction} from "./impl/sitemaps/DocPreviewSitemapFunction";
@@ -81,3 +81,4 @@ exports.AppstoreServerNotification = AppstoreServerNotification;
 exports.SSRFunction = SSRFunction;
 exports.BlockPermissionFunction = BlockPermissionFunction;
 exports.NSpaceCreateFunction = NSpaceCreateFunction
+exports.ThumbnailGenerationRequested = ThumbnailGenerationRequested;
