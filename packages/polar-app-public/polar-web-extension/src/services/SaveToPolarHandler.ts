@@ -44,7 +44,7 @@ export namespace SaveToPolarHandler {
         const url = 'https://app.getpolarized.io/doc/' + writtenDoc.id;
         await Tabs.loadLinkInActiveTab(url);
     }
-    
+
     function saveToPolarAsPDF(capture: SaveToPolarHandler.ICapturedPDF,
                               progressListener: WriteFileProgressListener,
                               errorReporter: (err: Error) => void) {
@@ -91,7 +91,9 @@ export namespace SaveToPolarHandler {
 
         async function doAsync() {
 
+            console.log("Generating EPUB...");
             const epub = await CapturedContentEPUBGenerator.generate(capture);
+            console.log("Generating EPUB...done");
 
             const doc = ArrayBuffers.toBlob(epub);
 
@@ -99,7 +101,9 @@ export namespace SaveToPolarHandler {
 
             const basename = Hashcodes.createRandomID() + '.' + 'epub';
 
+            console.log("Creating persistence layer...");
             const persistenceLayer = await ExtensionPersistenceLayers.create();
+            console.log("Creating persistence layer...done");
 
             // TODO ... Rong... pass the author
 
@@ -119,8 +123,13 @@ export namespace SaveToPolarHandler {
                     webCapture: true
                 }
 
+                console.log("Writing to datastore...");
                 const writtenDoc = await DatastoreWriter.write(opts)
+                console.log("Writing to datastore...done");
+
+                console.log("Loading written doc..");
                 await doLoadWrittenDoc(writtenDoc);
+                console.log("Loading written doc..done");
 
                 const migration = PHZActiveMigrations.get();
 
@@ -132,7 +141,7 @@ export namespace SaveToPolarHandler {
                 }
 
             } finally {
-                persistenceLayer.stop();
+                await persistenceLayer.stop();
             }
 
         }
@@ -217,7 +226,7 @@ function createErrorReporter(sender: chrome.runtime.MessageSender): (err: Error)
 
         // make sure to always report it to the console in the background tab
         // so that we have the error there too.
-        console.error(err);
+        console.error("Caught error: ", err);
 
         if (! sender.tab || ! sender.tab.id) {
             console.warn("Sender is not a tab (not sending progress).");
