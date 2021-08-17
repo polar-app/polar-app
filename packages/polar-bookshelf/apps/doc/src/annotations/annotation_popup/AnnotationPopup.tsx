@@ -49,10 +49,23 @@ export const useAnnotationPopupStyles = makeStyles((theme) =>
     }),
 );
 
+const abortEvent = (event: React.MouseEvent | React.TouchEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+};
+
 const AnnotationPopupContents = React.forwardRef<HTMLDivElement>((_, ref) => {
     const classes = useAnnotationPopupStyles();
     return (
-        <div className={clsx(classes.outer, { ["flipped"]: IS_HANDHELD })} ref={ref}>
+        <div
+            className={clsx(classes.outer, { ["flipped"]: IS_HANDHELD })} ref={ref}
+            // Abort all events to prevent accidentally triggering selection events
+            // when interacting with the annotation bar
+            onMouseDown={abortEvent}
+            onMouseUp={abortEvent}
+            onTouchStart={abortEvent}
+            onTouchEnd={abortEvent}
+        >
             <AnnotationPopupShortcuts />
             <Grow in>
                 <div className={clsx(classes.inner, "annotation_popup-inner")}>
