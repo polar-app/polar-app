@@ -1,6 +1,6 @@
 import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
-import {DocumentReferences, GetOptions} from "../../../firebase/firestore/DocumentReferences";
-import {EmailStr, HandleStr, ProfileIDStr, UserIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
+import {DocumentReferences, GetOptions} from "polar-bookshelf/web/js/firebase/firestore/DocumentReferences";
+import {EmailStr, HandleStr, ProfileIDStr, UserIDStr} from "polar-shared/src/util/Strings";
 import {IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 

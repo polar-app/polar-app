@@ -79,6 +79,10 @@ export class DefaultRewrites {
                 "destination": "/apps/repository/index.html"
             },
             {
+                "source": "/enable-feature-toggle",
+                "destination": "/apps/repository/index.html"
+            },
+            {
                 "source": "/groups",
                 "destination": "/apps/repository/index.html"
             },

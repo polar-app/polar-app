@@ -1,6 +1,6 @@
 import {GroupIDStr} from "../../../../web/js/datastore/Datastore";
 import {GroupDocInfo} from "../../../../web/js/datastore/sharing/GroupDocInfos";
-import {UserGroup} from "../../../../web/js/datastore/sharing/db/UserGroupCollection";
+import {UserGroup} from "polar-firebase/src/firebase/om/UserGroupCollection";
 import {Group} from "../../../../web/js/datastore/sharing/db/Groups";
 
 export interface GroupData {

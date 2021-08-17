@@ -4,7 +4,6 @@ import {DataURL, DataURLs} from './DataURLs';
 import {IDimensions} from "./IDimensions";
 import {ImageType} from "./ImageType";
 
-
 const DEFAULT_IMAGE_TYPE = 'image/png';
 const DEFAULT_IMAGE_QUALITY = 1.0;
 
@@ -278,13 +277,28 @@ export namespace Canvases {
                                canvasRect.left, canvasRect.top, canvasRect.width, canvasRect.height,
                                0, 0, canvasRect.width, canvasRect.height);
 
-        return await canvasToImageData(tmpCanvas, opts);
+        const IS_NODE = typeof FileReader === 'undefined';
 
+        if (IS_NODE) {
+
+            const dataURL = canvas.toDataURL(opts.type, 1.0);
+            return {
+                data: dataURL,
+                format: 'dataurl',
+                type: opts.type,
+                width: tmpCanvas.width,
+                height: tmpCanvas.height
+            };
+
+        }
+
+        return await canvasToImageData(tmpCanvas, opts);
 
     }
 
     export async function canvasToImageData(canvas: HTMLCanvasElement,
                                             opts: ImageOpts = new DefaultImageOpts()): Promise<ImageData> {
+
 
         const data = await toArrayBuffer(canvas, opts);
 

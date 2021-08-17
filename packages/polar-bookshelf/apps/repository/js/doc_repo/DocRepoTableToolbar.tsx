@@ -13,6 +13,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
 import {ChromeExtensionInstallBar} from "../ChromeExtensionInstallBar";
+import {SidenavTrigger} from "../../../../web/js/sidenav/SidenavTrigger";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -67,6 +68,7 @@ export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
         <Paper square
                className={classes.root}>
 
+                <SidenavTrigger />
                 <div style={{
                          display: 'flex',
                          flexGrow: 1

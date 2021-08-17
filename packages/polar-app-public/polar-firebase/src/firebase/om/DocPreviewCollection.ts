@@ -1,13 +1,22 @@
-import {
-    CollectionNameStr,
-    Collections,
-    FirestoreProvider
-} from "../Collections";
-
+import {Collections} from "polar-firestore-like/src/Collections";
 import {IDocDetail} from "polar-shared/src/metadata/IDocDetail";
-import {IDStr, URLStr} from "polar-shared/src/util/Strings";
+import {IDStr, URLStr, CollectionNameStr} from "polar-shared/src/util/Strings";
 import {SlugStr} from "polar-shared/src/util/Slugs";
 
+import OrderByClause = Collections.OrderByClause;
+import Clause = Collections.Clause;
+import {DocumentReferenceLike, QueryLike, WhereFilterOpLike} from "../Collections";
+import {IFirestore} from "polar-firestore-like/src/IFirestore";
+
+export interface CollectionReferenceLike {
+    doc(documentPath: string): DocumentReferenceLike;
+    where(fieldPath: string, opStr: WhereFilterOpLike, value: any): QueryLike;
+    limit(size: number): QueryLike;
+}
+
+export interface FirestoreLike {
+    collection(collectionPath: string): CollectionReferenceLike;
+}
 export interface BaseDocPreview extends IDocDetail {
 
     readonly id: IDStr;
@@ -26,12 +35,6 @@ export interface BaseDocPreview extends IDocDetail {
      * The category for this doc.  Used to help SEO purposes
      */
     readonly category?: string;
-
-    // /**
-    //  * True if this entry is broken , IE the URL could not be fetched so that
-    //  * we can mark this dead and not show up in the UI.
-    //  */
-    // readonly broken?: true | undefined;
 
 }
 
@@ -73,58 +76,42 @@ export interface Range {
 export interface ListOpts {
     readonly size: number;
     readonly range?: Range;
+    readonly startAt?: string;
+    readonly endBefore?: string;
+    readonly orderBy?: ReadonlyArray<OrderByClause>;
 }
 
 export class DocPreviewCollection {
 
-    public static firestoreProvider: FirestoreProvider;
-
     private static COLLECTION: CollectionNameStr = "doc_preview";
 
-    private static collections() {
-        return new Collections(this.firestoreProvider(), this.COLLECTION);
-    }
-
-    public static async set(doc: DocPreview): Promise<DocPreview> {
-        await this.collections().set(doc.id, doc);
+    public static async set<SM = unknown>(firestore: IFirestore<SM>, doc: DocPreview): Promise<DocPreview> {
+        await Collections.set(firestore, this.COLLECTION, doc.id, doc);
         return doc;
     }
 
-    public static async list(opts: ListOpts): Promise<ReadonlyArray<DocPreview>> {
+    public static async list<SM = unknown>(firestore: IFirestore<SM>, opts: ListOpts): Promise<ReadonlyArray<DocPreview>> {
 
-        const createQuery = () => {
+        const clauses: ReadonlyArray<Clause> = [];
+        const limit = opts && opts.size;
 
-            if (opts.range) {
+        if (opts && opts.range) {
+            console.log("Using range query for: ", opts.range);
 
-                console.log("Using range query for: ", opts.range);
+            const startAt = opts && opts.range && opts.range.start;
+            const endBefore = opts && opts.range && opts.range.end;
+            const orderBy: ReadonlyArray<OrderByClause> = [
+                ['urlHash', 'asc']
+            ];
+            return await Collections.list(firestore, this.COLLECTION, clauses, {limit, orderBy, startAt, endBefore});
 
-                // go over a range so that we can specify a subset of the
-                // documents for faster response times.
+        }
+        return await Collections.list(firestore, this.COLLECTION, clauses,{limit});
 
-                return this.collections()
-                           .collection()
-                           .limit(opts.size)
-                           .orderBy('urlHash', 'asc')
-                           .startAt(opts.range.start)
-                           .endBefore(opts.range.end);
-
-            }
-
-            console.log("Using full list query");
-
-            return this.collections().collection().limit(opts.size);
-
-        };
-
-        const query = createQuery();
-
-        const snapshot = await query.get();
-
-        return snapshot.docs.map(doc => doc.data() as DocPreview);
     }
 
-    public static async get(id: IDStr): Promise<DocPreview | undefined> {
-        return this.collections().get(id);
+    public static async get<SM = unknown>(firestore: IFirestore<SM>, id: IDStr): Promise<DocPreview | undefined> {
+        return Collections.get(firestore, this.COLLECTION, id);
     }
 
 }

@@ -22,7 +22,6 @@ import {Contents} from "../content/Contents";
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {useUndoQueue} from "../../undo/UndoQueueProvider2";
 import {BlocksStoreUndoQueues} from "./BlocksStoreUndoQueues";
-import {PositionalArrays} from "./PositionalArrays";
 import {DateContent} from "../content/DateContent";
 import {IBlockCollectionSnapshot, useBlockCollectionSnapshots} from "../persistence/BlockCollectionSnapshots";
 import {BlocksPersistenceWriter} from "../persistence/FirestoreBlocksStoreMutations";
@@ -40,6 +39,7 @@ import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
 import {BlockContentCanonicalizer} from "../contenteditable/BlockContentCanonicalizer";
 import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
+import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 
 export const ENABLE_UNDO_TRACING = false;
 
@@ -815,6 +815,10 @@ export class BlocksStore implements IBlocksStore {
         if (! newActive && shiftKey && this.hasSelected()) {
             return true;
         }
+        
+        if (! newActive && shiftKey && this.hasSelected()) {
+            return true;
+        }
 
         if (shiftKey) {
 
@@ -1295,6 +1299,41 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
+    @action public renameBlock(id: BlockIDStr, newName: MarkdownStr) {
+
+        const block = this.getBlock(id);
+
+        if (! block) {
+            return;
+        }
+
+        if (block.content.type !== 'name') {
+            throw new Error(`Not allowed rename block of type "${block.content.type}"`);
+        }
+
+        const redo = () => {
+
+            const block = this.getBlockForMutation(id) as Block<NameContent>;
+
+            if (block) {
+
+                delete this._indexByName[block.content.data.toLowerCase()];
+                this._indexByName[newName.toLowerCase()] = id;
+
+                block.withMutation(() => {
+                    block.setContent(new NameContent({ type: 'name', data: newName }));
+                });
+
+                this.doPut([block]);
+
+            }
+
+        };
+
+        return this.doUndoPush('setBlockContent', [id], redo);
+
+    }
+
     @action public setBlockContent<C extends IBlockContent = IBlockContent>(id: BlockIDStr, content: C) {
 
         const redo = () => {
@@ -1305,7 +1344,7 @@ export class BlocksStore implements IBlocksStore {
 
                 block.withMutation(() => {
                     block.setContent(content);
-                })
+                });
 
                 this.doPut([block]);
 
@@ -1531,6 +1570,7 @@ export class BlocksStore implements IBlocksStore {
                 type: 'markdown',
                 data,
                 links: parseLinksFromContent(links, data),
+                mutator: DeviceIDManager.DEVICE_ID,
             };
 
             return {

@@ -1,6 +1,7 @@
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {PositionalArrays} from "../../../web/js/notes/store/PositionalArrays";
+import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {IBlock} from "polar-blocks/src/blocks/IBlock";
+import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 
 export namespace MockBlocks {
 
@@ -44,7 +45,8 @@ export namespace MockBlocks {
                 updated: now,
                 content: {
                     type: 'name',
-                    data: "World War II"
+                    data: "World War II",
+                    mutator: DeviceIDManager.TEST_DEVICE_ID,
                 },
                 items: PositionalArrays.create([
                     '103',
@@ -65,6 +67,7 @@ export namespace MockBlocks {
                     type: 'markdown',
                     data: '[Lasted](https://www.example.com) from 1939 to 1945',
                     links: [],
+                    mutator: DeviceIDManager.TEST_DEVICE_ID,
                 },
                 items: {},
                 mutation: 0
@@ -81,6 +84,7 @@ export namespace MockBlocks {
                     type: 'markdown',
                     data: 'Axis Powers: Germany, Italy, Japan',
                     links: [],
+                    mutator: DeviceIDManager.TEST_DEVICE_ID,
                 },
                 items: PositionalArrays.create(['116']),
                 mutation: 0
@@ -106,6 +110,7 @@ export namespace MockBlocks {
                             text: 'Russia'
                         }
                     ],
+                    mutator: DeviceIDManager.TEST_DEVICE_ID,
                 },
                 items: PositionalArrays.create([
                     '106'
@@ -136,7 +141,8 @@ export namespace MockBlocks {
                 updated: now,
                 content: {
                     type: 'name',
-                    data: "Russia"
+                    data: "Russia",
+                    mutator: DeviceIDManager.TEST_DEVICE_ID,
                 },
                 items: {},
                 mutation: 0,
@@ -151,7 +157,8 @@ export namespace MockBlocks {
                 updated: now,
                 content: {
                     type: 'name',
-                    data: "Canada"
+                    data: "Canada",
+                    mutator: DeviceIDManager.TEST_DEVICE_ID,
                 },
                 items: PositionalArrays.create([
                     '111'
@@ -170,6 +177,7 @@ export namespace MockBlocks {
                     type: 'markdown',
                     data: 'Canada is north of the United States',
                     links: [],
+                    mutator: DeviceIDManager.TEST_DEVICE_ID,
                 },
                 items: {},
                 mutation: 0,
@@ -191,6 +199,7 @@ export namespace MockBlocks {
                             text: 'Winston Churchill'
                         }
                     ],
+                    mutator: DeviceIDManager.TEST_DEVICE_ID,
                 },
                 items: PositionalArrays.create(['117']),
                 mutation: 0,
@@ -205,7 +214,8 @@ export namespace MockBlocks {
                 updated: now,
                 content: {
                     type: 'name',
-                    data: "Germany"
+                    data: "Germany",
+                    mutator: DeviceIDManager.TEST_DEVICE_ID,
                 },
                 items: PositionalArrays.create([
                     '110',
@@ -228,7 +238,8 @@ export namespace MockBlocks {
                             id: '102',
                             text: 'World War II'
                         }
-                    ]
+                    ],
+                    mutator: DeviceIDManager.TEST_DEVICE_ID,
                 },
                 items: {},
                 mutation: 0,
@@ -243,7 +254,8 @@ export namespace MockBlocks {
                 updated: now,
                 content: {
                     type: 'name',
-                    data: 'Winston Churchill'
+                    data: 'Winston Churchill',
+                    mutator: DeviceIDManager.TEST_DEVICE_ID,
                 },
                 items: {},
                 mutation: 0,
@@ -260,6 +272,7 @@ export namespace MockBlocks {
                     type: 'markdown',
                     data: 'Some random markdown',
                     links: [],
+                    mutator: DeviceIDManager.TEST_DEVICE_ID,
                 },
                 items: {},
                 mutation: 0,
@@ -276,6 +289,7 @@ export namespace MockBlocks {
                     type: 'markdown',
                     data: 'Nested child with links [[Winston]]',
                     links: [{ id: '112', text: 'Winston' }],
+                    mutator: DeviceIDManager.TEST_DEVICE_ID,
                 },
                 items: PositionalArrays.create(['118']),
                 mutation: 0,
@@ -292,6 +306,7 @@ export namespace MockBlocks {
                     type: 'markdown',
                     data: 'Deeply nested child',
                     links: [],
+                    mutator: DeviceIDManager.TEST_DEVICE_ID,
                 },
                 items: {},
                 mutation: 0,
@@ -307,6 +322,7 @@ export namespace MockBlocks {
                 content: {
                     type: 'name',
                     data: 'Image parent',
+                    mutator: DeviceIDManager.TEST_DEVICE_ID,
                 },
                 items:  PositionalArrays.create([
                     '114image',
@@ -329,6 +345,7 @@ export namespace MockBlocks {
                     naturalWidth: 100,
                     width: 100,
                     height: 100,
+                    mutator: DeviceIDManager.TEST_DEVICE_ID,
                 },
                 items: {}, 
                 mutation: 0,
@@ -345,6 +362,7 @@ export namespace MockBlocks {
                     type: 'markdown',
                     data: '',
                     links: [],
+                    mutator: DeviceIDManager.TEST_DEVICE_ID,
                 },
                 items: {}, 
                 mutation: 0,

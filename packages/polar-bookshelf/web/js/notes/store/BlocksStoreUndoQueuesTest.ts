@@ -5,12 +5,13 @@ import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
 import {UndoQueues2} from "../../undo/UndoQueues2";
 import {JSDOMParser} from "./BlocksStoreTestNK";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
-import {PositionalArrays} from "./PositionalArrays";
+import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {BlocksStoreTests} from "./BlocksStoreTests";
 import createBasicBlock = BlocksStoreTests.createBasicBlock;
 import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import IBlocksStoreMutation = BlocksStoreMutations.IBlocksStoreMutation;
 import {IMarkdownContent} from "polar-blocks/src/blocks/content/IMarkdownContent";
+import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 
 function createStore() {
     const blocks = MockBlocks.create();
@@ -56,6 +57,7 @@ describe("BlocksStoreUndoQueues", () => {
                     "content": {
                         "type": "markdown",
                         "data": "Axis Powers: Germany, Italy, Japan",
+                        "mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "links": [],
                     },
                     "mutation": 0
@@ -73,6 +75,7 @@ describe("BlocksStoreUndoQueues", () => {
                     "content": {
                         "type": "markdown",
                         "data": "Axis ",
+                        "mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "links": [],
                     },
                     "mutation": 1
@@ -85,7 +88,7 @@ describe("BlocksStoreUndoQueues", () => {
 
             BlocksStoreUndoQueues.doMutations(blocksStore, 'undo', [mutation0]);
 
-            assertJSON(mutation0.before, blocksStore.getBlockForMutation('104')?.toJSON())
+            assertJSON({ ...mutation0.before, mutation: 2 }, blocksStore.getBlockForMutation('104')?.toJSON())
 
         });
 
@@ -206,10 +209,10 @@ describe("BlocksStoreUndoQueues", () => {
                             "data": "added block",
                             "links": [],
                         },
-                        "items": {
-                            "1": "1",
-                            "2": "2"
-                        },
+                        "items": PositionalArrays.create([
+                            "1",
+                            "2"
+                        ]),
                         "mutation": 0
                     }
                 },
@@ -232,10 +235,10 @@ describe("BlocksStoreUndoQueues", () => {
                             "data": "removed block",
                             "links": [],
                         },
-                        "items": {
-                            "1": "1",
-                            "2": "2"
-                        },
+                        "items": PositionalArrays.create([
+                            "1",
+                            "2"
+                        ]),
                         "mutation": 0
                     }
                 },
@@ -258,10 +261,10 @@ describe("BlocksStoreUndoQueues", () => {
                             "data": "updated block",
                             "links": [],
                         },
-                        "items": {
-                            "1": "1",
-                            "2": "2"
-                        },
+                        "items": PositionalArrays.create([
+                            "1",
+                            "2"
+                        ]),
                         "mutation": 0
                     },
                     "after": {
@@ -280,10 +283,10 @@ describe("BlocksStoreUndoQueues", () => {
                             "data": "updated block 2",
                             "links": [],
                         },
-                        "items": {
-                            "1": "1",
-                            "2": "2"
-                        },
+                        "items": PositionalArrays.create([
+                            "1",
+                            "2"
+                        ]),
                         "mutation": 1,
                     }
                 }

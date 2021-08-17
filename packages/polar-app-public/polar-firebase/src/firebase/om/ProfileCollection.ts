@@ -1,6 +1,6 @@
 import {Image} from './Images';
 import {TagStr} from "polar-shared/src/tags/Tags";
-import {PlainTextStr, URLStr} from "polar-shared/src/util/Strings";
+import {PlainTextStr, URLStr, UserIDStr, ProfileIDStr, HandleStr, EmailStr} from "polar-shared/src/util/Strings";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {Collections} from "polar-firestore-like/src/Collections";
@@ -9,6 +9,15 @@ import {IUserRecord} from "polar-firestore-like/src/IUserRecord";
 import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import { Dictionaries } from 'polar-shared/src/util/Dictionaries';
+import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
+
+import {
+    CacheFirstThenServerGetOptions,
+    DocumentReferences,
+    GetOptions
+} from "polar-bookshelf/web/js/firebase/firestore/DocumentReferences";
+import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
+import {ProfileOwnerCollection} from "./ProfileOwnerCollection";
 
 export interface IProfileInit {
 
@@ -81,14 +90,6 @@ export interface IProfileUpdate {
 export interface IProfile extends IProfileInit, IProfileUpdate {
 }
 
-export type ProfileIDStr = string;
-
-export type HandleStr = string;
-
-export type UserIDStr = string;
-
-export type EmailStr = string;
-
 export interface ProfileIDRecord {
     readonly profileID?: ProfileIDStr;
 }
@@ -104,14 +105,24 @@ export namespace ProfileCollection {
     }
 
     export async function get(firestore: IFirestore<unknown>, id: ProfileIDStr): Promise<IProfile | undefined> {
-        return await Collections.getByID(firestore, COLLECTION, id);
+        return await Collections.get(firestore, COLLECTION, id);
+    }
+
+    export async function doc(firestore: IFirestore<unknown>, id: ProfileIDStr): Promise<[string, IDocumentReference<unknown>]> {
+        const doc = firestore.collection(this.COLLECTION).doc(id);
+        return [id, doc];
+    }
+
+    export async function getWithOpts(firestore: IFirestore<unknown>, id: ProfileIDStr, opts: GetOptions = {}): Promise<IProfile | undefined> {
+        const [_, ref] = await doc(firestore, id);
+        const docRef = await DocumentReferences.get(ref, opts);
+        return <IProfile> docRef.data();
     }
 
     export async function getByUserID(firestore: IFirestore<unknown>, uid: UserIDStr): Promise<IProfile | undefined> {
         const results = await Collections.list<IProfile>(firestore, COLLECTION, [['uid', '==', uid]]);
         return Arrays.first(results);
     }
-
     export function set(firestore: IFirestore<unknown>,
                         batch: IWriteBatch<unknown>,
                         id: ProfileIDStr,
@@ -145,6 +156,64 @@ export namespace ProfileCollection {
         }
 
         return getByUserID(firestore, uid);
+
+    }
+
+
+    /**
+     * Lookup all the profile IDs.  This is done in parallel for performance reasons.
+     */
+    export async function resolve<T extends ProfileIDRecord, SM = unknown>(firestore: IFirestore<SM>,profileIDRecords: ReadonlyArray<T>): Promise<ReadonlyArray<ProfileRecordTuple<T>>> {
+
+        // TODO prefer cache-first
+
+        const promises = profileIDRecords.map(current => {
+
+            const handler = async (): Promise<ProfileRecordTuple<T>> => {
+
+                if (current.profileID) {
+                    const profile = await get(firestore, current.profileID);
+                    return [current, profile];
+                } else {
+                    return [current, undefined];
+                }
+
+            };
+
+            // call the handler but return it as a promise so we can call
+            // promise.all below
+            return handler();
+
+        });
+
+        const resolved = await Promise.all(promises);
+        return resolved.map(current => current);
+
+    }
+
+    export async function currentProfile(firestore: IFirestore<unknown>, opts: GetOptions = new CacheFirstThenServerGetOptions()): Promise<IProfile | undefined> {
+
+        const app = FirebaseBrowser.init();
+        const user = app.auth().currentUser;
+
+        if (! user) {
+            return undefined;
+        }
+
+        const profileOwner = await ProfileOwnerCollection.get(user!.uid, opts);
+
+        if (! profileOwner) {
+            // getting their user from the database and writing it back out...
+            return undefined;
+        }
+
+        const profile = await getWithOpts(firestore, profileOwner.profileID, opts);
+
+        if ( ! profile) {
+            return undefined;
+        }
+
+        return profile;
 
     }
 

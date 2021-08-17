@@ -8,13 +8,13 @@ import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {IGetOptions} from "polar-firestore-like/src/IGetOptions";
 import {ISnapshotListenOptions} from "polar-firestore-like/src/ISnapshotListenOptions";
 import {IFirestoreError} from "polar-firestore-like/src/IFirestoreError";
+import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 import {
     IQuery,
     IQueryClient,
     IQueryOrderBy,
     IQuerySnapshotObserver,
     isQuerySnapshotObserver,
-    SnapshotUnsubscriber,
     TOrderByDirection
 } from "polar-firestore-like/src/IQuery";
 import {

@@ -1,6 +1,6 @@
 // @NotStale
 import {BaseDocAnnotation} from "./BaseDocAnnotation";
-import {ProfileIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
+import {ProfileIDStr } from 'polar-shared/src/util/Strings';
 
 export interface ProfileDocAnnotation extends BaseDocAnnotation {
     readonly profileID: ProfileIDStr;

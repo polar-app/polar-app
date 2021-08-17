@@ -57,9 +57,9 @@ export namespace CursorPositions {
         defineNewRange(range);
     }
 
-    export function jumpToPosition(elem: HTMLElement, offset: number | 'start' | 'end') {
+    export function jumpToPosition(elem: HTMLElement, offset: number | 'start' | 'end', preventScroll: boolean = false) {
 
-        elem.focus();
+        elem.focus({ preventScroll });
 
         const focusNode = (node: Node | null, position: 'start' | 'end') => {
             if (! node) {

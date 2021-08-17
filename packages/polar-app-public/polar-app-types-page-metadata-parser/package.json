@@ -1,6 +1,6 @@
 {
   "name": "@types/page-metadata-parser",
-  "version": "2.1.89",
+  "version": "2.1.92",
   "description": "",
   "main": "index.js",
   "scripts": {

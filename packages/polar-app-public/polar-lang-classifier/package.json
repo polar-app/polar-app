@@ -1,10 +1,10 @@
 {
   "name": "polar-lang-classifier",
-  "version": "2.1.89",
+  "version": "2.1.92",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npm run-script mocha",
+    "test": "yarn run mocha",
     "mocha": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "compile": "tsc"
   },

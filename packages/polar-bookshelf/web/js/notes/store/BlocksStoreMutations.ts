@@ -1,11 +1,11 @@
 import deepEqual from "deep-equal";
-import {PositionalArrays} from "./PositionalArrays";
+import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {SetArrays} from "polar-shared/src/util/SetArrays";
 import {BlockIDStr, IBlock} from "polar-blocks/src/blocks/IBlock";
 
 export namespace BlocksStoreMutations {
 
-    import PositionalArrayPositionStr = PositionalArrays.PositionalArrayPositionStr;
+    import PositionalArrayKey = PositionalArrays.PositionalArrayKey;
     import PositionalArray = PositionalArrays.PositionalArray;
 
     export type BlockUpdateMutationType = 'added' | 'removed' | 'modified';
@@ -89,13 +89,13 @@ export namespace BlocksStoreMutations {
      */
     export interface IItemsPositionPatchRemove {
         readonly type: 'remove';
-        readonly key: PositionalArrayPositionStr;
+        readonly key: PositionalArrayKey;
         readonly id: BlockIDStr;
     }
 
     export interface IItemsPositionPatchInsert {
         readonly type: 'insert';
-        readonly key: PositionalArrayPositionStr;
+        readonly key: PositionalArrayKey;
         readonly id: BlockIDStr
     }
 
@@ -107,12 +107,12 @@ export namespace BlocksStoreMutations {
     export function computeItemPositionPatches(before: PositionalArray<BlockIDStr>,
                                                after: PositionalArray<BlockIDStr>): ReadonlyArray<IItemsPositionPatch> {
 
-        const removed = SetArrays.differenceDeep(PositionalArrays.entries(before), PositionalArrays.entries(after));
-        const added = SetArrays.differenceDeep(PositionalArrays.entries(after), PositionalArrays.entries(before));
-        const toPatch = (type: 'remove' | 'insert') => ([key, id]: [string, string]): IItemsPositionPatch => ({
+        const removed = SetArrays.differenceDeep(PositionalArrays.rawEntries(before), PositionalArrays.rawEntries(after));
+        const added = SetArrays.differenceDeep(PositionalArrays.rawEntries(after), PositionalArrays.rawEntries(before));
+        const toPatch = (type: 'remove' | 'insert') => ({ key, value }: PositionalArrays.PositionalArrayRawEntry<string>): IItemsPositionPatch => ({
             type,
             key,
-            id
+            id: value,
         });
 
         return [

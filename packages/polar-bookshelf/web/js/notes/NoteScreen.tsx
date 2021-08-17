@@ -15,6 +15,8 @@ import {createStyles, makeStyles} from "@material-ui/core";
 import {NoteRepoScreen} from './NoteRepoScreen';
 import {DailyNotesScreen} from './DailyNotesScreen';
 import {SingleNoteScreen} from './SingleNoteScreen';
+import {SideCar} from '../sidenav/SideNav';
+import { RoutePathnames } from '../apps/repository/RoutePathnames';
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -58,11 +60,14 @@ export const NotesScreen: React.FC<RouteComponentProps> = observer(() => {
     return (
         <NotesContainer>
             <NoteProviders>
+                <SideCar>
+                    <div>Empty for now</div>
+                </SideCar>
                 <JumpToNoteKeyboardCommand />
                 <Switch>
-                    <Route path="/notes/repo" component={NoteRepoScreen} />
-                    <Route path="/notes/:id" component={SingleNoteScreen} />
-                    <Route path="/notes" component={DailyNotesScreen} />
+                    <Route path={RoutePathnames.NOTES_REPO} component={NoteRepoScreen} />
+                    <Route path={RoutePathnames.NOTE(":id")} component={SingleNoteScreen} />
+                    <Route path={RoutePathnames.NOTES} component={DailyNotesScreen} />
                 </Switch>
             </NoteProviders>
         </NotesContainer>

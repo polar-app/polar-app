@@ -5,7 +5,7 @@ import {IFirestoreError} from "./IFirestoreError";
 import {TWhereFilterOp} from "./ICollectionReference";
 import {ISnapshotMetadata} from "./ISnapshotMetadata";
 
-export type SnapshotUnsubscriber = () => void;
+import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 
 export type TOrderByDirection = 'desc' | 'asc';
 

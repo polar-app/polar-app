@@ -12,6 +12,7 @@ import {StandardIconButton} from "../../../apps/repository/js/doc_repo/buttons/S
 import {createContextMenu, MenuComponentProps} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
 import LaunchIcon from "@material-ui/icons/Launch";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { RoutePathnames } from "../apps/repository/RoutePathnames";
 
 const DATE_FORMAT = 'MMMM Do, YYYY';
 
@@ -46,7 +47,7 @@ const RowActionsDropdownItems: React.FC<MenuComponentProps<{}>> = () => {
     const blocksStore = useBlocksStore();
 
     const handleOpen = React.useCallback(() => {
-        window.open(`/notes/${row.title}`, '_blank');
+        window.open(RoutePathnames.NOTE(row.title), '_blank');
     }, [row]);
 
     const handleDelete = React.useCallback(() => {
@@ -170,7 +171,7 @@ export const NoteRepoScreen: React.FC = () => {
 
     const handleDoubleClick = React.useCallback(({ id }: GridRowParams) => {
         const block = blocksStore.getBlockByTarget(id as string) as NamedBlock;
-        history.push(`/notes/${block.content.data}`);
+        history.push(RoutePathnames.NOTE(block.content.data));
     }, [history, blocksStore]);
 
     return (

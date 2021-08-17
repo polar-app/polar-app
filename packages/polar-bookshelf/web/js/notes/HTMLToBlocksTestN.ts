@@ -233,5 +233,66 @@ function myFunction() {
 
             assert.deepEqual(await HTMLToBlocks.parse(input), output);
         });
+
+        it('Random nested lists sample', async () => {
+            const input = `<html>
+            <body>
+            <!--StartFragment--><ul><div 
+                  rem="true"
+                  crt="null"
+                  tags="[]"
+                  valueType="undefined"
+                  
+                  
+                >
+                <li>cs linethroughunderline</li>
+                </div><ul><div 
+                  rem="true"
+                  crt="null"
+                  tags="[]"
+                  valueType="undefined"
+                  
+                  
+                >
+                <li>test</li>
+                </div><div 
+                  rem="true"
+                  crt="null"
+                  tags="[]"
+                  valueType="undefined"
+                  
+                  
+                >
+                <li>world</li>
+                </div><ul><div 
+                  rem="true"
+                  crt="null"
+                  tags="[]"
+                  valueType="undefined"
+                  
+                  
+                >
+                <li>maybe</li>
+                </div></ul></ul></ul><!--EndFragment-->
+            </body>
+            </html>`;
+
+            const output: IBlockContentStructure[] = [
+                {
+                    content: HTMLToBlocks.createMarkdownContent("cs linethroughunderline"),
+                    children: [
+                        {content: HTMLToBlocks.createMarkdownContent("test"), children: []},
+                        {
+                            content: HTMLToBlocks.createMarkdownContent("world"),
+                            children: [
+                                {content: HTMLToBlocks.createMarkdownContent("maybe"), children: []},
+                            ]
+                        },
+                    ]
+                },
+            ];
+
+            assert.deepEqual(await HTMLToBlocks.parse(input), output);
+        });
     });
 });
