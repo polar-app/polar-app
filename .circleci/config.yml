@@ -96,6 +96,7 @@ commands:
           command: |
             npm config set legacy-peer-deps true
             npx lerna bootstrap --ci
+            du -h  . |tail -1
 
       # ! Compile all Typescript Packages
       - run:
