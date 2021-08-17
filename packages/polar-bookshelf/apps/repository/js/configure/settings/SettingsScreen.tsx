@@ -140,7 +140,6 @@ export const SettingsScreen = React.memo(function SettingsScreen() {
                                    description="Enables auto pagemark creation as you scroll and read a document.  ONLY usable for the PDF documents."
                                    name={KnownPrefs.AUTO_PAGEMARKS}
                                    prefs={prefs}
-                                   beta
                                    icon={<BookmarkIcon />}
                                    preview={true}/>
 
