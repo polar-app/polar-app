@@ -15,13 +15,11 @@ export namespace AnswerExecutor {
         readonly question: string;
     }
 
-    export interface IAnswer {
+    export interface IAnswer extends OpenAIAnswersClient.IResponse {
         readonly question: string;
-        readonly answers: ReadonlyArray<string>;
-
     }
 
-    export async function exec(opts: IExecOpts) {
+    export async function exec(opts: IExecOpts): Promise<IAnswer> {
 
         const {question, uid} = opts;
 
@@ -77,11 +75,10 @@ export namespace AnswerExecutor {
 
         const answerResponse = await OpenAIAnswersClient.exec(request);
 
-        console.log("Raw response: === ")
-        console.log(answerResponse);
-
-        console.log("question: " + question);
-        console.log("answers: ", answerResponse.answers)
+        return {
+            question,
+            ...answerResponse
+        }
 
     }
 
