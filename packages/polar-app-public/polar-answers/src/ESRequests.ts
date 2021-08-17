@@ -39,6 +39,8 @@ export namespace ESRequests {
             return await response.json();
         }
 
+        throw new Error(`PUT to ${url} failed: ${response.status}: ${response.statusText}`);
+
     }
 
     export async function doPost(url: string, body: object) {
