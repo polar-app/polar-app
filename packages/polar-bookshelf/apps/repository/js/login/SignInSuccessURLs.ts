@@ -18,6 +18,11 @@ export namespace SignInSuccessURLs {
     export function createSignInURL(signInSuccessUrl: string | undefined,
                                     baseURL: string = document.location?.href) {
 
+        if (signInSuccessUrl && ! URLs.isWebScheme(signInSuccessUrl)) {
+            // this is not a valid URL
+            return baseURL;
+        }
+
         if (! signInSuccessUrl || signInSuccessUrl.indexOf('/login') !== -1) {
             return baseURL;
         }
