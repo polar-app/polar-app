@@ -54,7 +54,7 @@ const Main = React.memo(function Main() {
             <DocViewerGlobalHotKeys/>
             <DocFindBar/>
 
-            <div className="DocViewer.Main.Body"
+            <div id="docviewer-main-body" className="DocViewer.Main.Body"
                  style={{
                      minHeight: 0,
                      overflow: 'auto',
@@ -62,9 +62,14 @@ const Main = React.memo(function Main() {
                      position: 'relative'
                  }}>
 
-                <DocViewerContextMenu>
-                    <DocMain/>
-                </DocViewerContextMenu>
+                <DeviceRouter
+                    handheld={<DocMain/>}
+                    desktop={(
+                        <DocViewerContextMenu>
+                            <DocMain/>
+                        </DocViewerContextMenu>
+                    )}
+                />
             </div>
 
         </div>
