@@ -6,14 +6,24 @@ export namespace ESShingleWriter {
 
     import ISentenceShingle = SentenceShingler.ISentenceShingle;
 
-    export async function write(docID: IDStr, sentenceShingle: ISentenceShingle) {
+    export interface IAnswerDigestRecord {
+        readonly docID: IDStr;
+        readonly pageNum: number;
+        readonly idx: number;
+        readonly text: string;
+    }
+
+    export async function write(docID: IDStr, pageNum: number, sentenceShingle: ISentenceShingle) {
 
         const digestID = `${docID}:${sentenceShingle.idx}`;
 
-        await ESRequests.doPut(`/answer_digest/_doc/${digestID}`, {
+        const record: IAnswerDigestRecord = {
+            docID, pageNum,
             idx: sentenceShingle.idx,
             text: sentenceShingle.text
-        });
+        }
+
+        await ESRequests.doPut(`/answer_digest/_doc/${digestID}`, record);
 
     }
 }

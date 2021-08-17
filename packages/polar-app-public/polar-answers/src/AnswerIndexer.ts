@@ -23,7 +23,7 @@ export namespace AnswerIndexer {
             const shingles = await SentenceShingler.computeShinglesFromContent(content);
 
             for(const shingle of shingles) {
-                await ESShingleWriter.write(opts.docID, shingle);
+                await ESShingleWriter.write(opts.docID, pageNum, shingle);
             }
 
         });
