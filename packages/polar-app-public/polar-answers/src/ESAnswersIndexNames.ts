@@ -4,9 +4,9 @@ import {NamespaceIDStr} from "polar-blocks/src/blocks/IBlock";
  * Compute index names when a namespace is created or when we need get the index
  * for writing docs.
  */
-export namespace ESIndexNames {
+export namespace ESAnswersIndexNames {
 
-    const PREFIX = 'ft-digest-';
+    const PREFIX = 'answers-ft-digest-';
 
     /**
      * Compute the index name for a user.
