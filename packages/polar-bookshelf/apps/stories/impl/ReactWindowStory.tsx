@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { VariableSizeList as List } from 'react-window';
-import {DockLayout2} from "../../../web/js/ui/doc_layout/DockLayout2";
-import {BrowserRouter} from "react-router-dom";
+import {DockLayout} from "../../../web/js/ui/doc_layout/DockLayout";
 import {CaptureSizeContainer, useCaptureSizeCalculator} from "../../../web/js/react/CaptureSizeContainer";
 import {useDockLayoutResized} from "../../../web/js/ui/doc_layout/DockLayoutStore";
 import {useWindowResizeEventListener} from "../../../web/js/react/WindowHooks";
@@ -91,7 +90,7 @@ const WindowListSidebar = () => {
 
 export const ReactWindowStory = () => (
 
-    <DockLayout2.Root dockPanels={[
+    <DockLayout.Root dockPanels={[
             {
                 id: "doc-panel-outline",
                 type: 'fixed',
@@ -120,8 +119,8 @@ export const ReactWindowStory = () => (
                 )
             }
         ]}>
-        <DockLayout2.Main/>
-    </DockLayout2.Root>
+        <DockLayout.Main/>
+    </DockLayout.Root>
 
 
 );

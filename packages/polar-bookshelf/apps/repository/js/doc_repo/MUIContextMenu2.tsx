@@ -4,8 +4,8 @@ import Menu from "@material-ui/core/Menu";
 import {IPoint} from "../../../../web/js/Point";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {createContextMenuStore} from "./MUIContextMenuStore";
-import useLongPress from "../../../../web/js/hooks/UseLongPress";
 import { observer } from "mobx-react-lite"
+import {Devices} from 'polar-shared/src/util/Devices';
 
 export namespace MouseEvents {
     export function fromNativeEvent(event: MouseEvent): IMouseEvent {
@@ -311,6 +311,13 @@ export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContext
         event.preventDefault();
     }, []);
 
+    const backdrops = Devices.isDesktop() ? {}: { style:{ filter: 'blur(3px)' } } ;
+
+    const contextMenuAnchorPos = Devices.isDesktop() ?
+        { top: props.mouseY, left: props.mouseX}
+        :
+        { top: window.innerHeight, left: 0 };
+
     return (
         <Menu
             transitionDuration={0}
@@ -319,12 +326,10 @@ export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContext
             open={true}
             onClose={handleClose}
             onClick={handleClose}
+            BackdropProps={backdrops}
             onContextMenu={handleContextMenu}
             anchorReference="anchorPosition"
-            anchorPosition={{
-                top: props.mouseY,
-                left: props.mouseX
-            }}>
+            anchorPosition={contextMenuAnchorPos}>
 
             <div>
                 {props.children}

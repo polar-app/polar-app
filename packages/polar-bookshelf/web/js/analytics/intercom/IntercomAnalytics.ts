@@ -127,6 +127,7 @@ declare var window: any;
 
 export function createIntercomClient(): IIntercomClient | undefined {
 
+
     if (window.Intercom) {
 
         function boot(data: IntercomData) {

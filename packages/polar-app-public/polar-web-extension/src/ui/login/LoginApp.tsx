@@ -2,6 +2,8 @@ import React from 'react';
 import * as ReactDOM from 'react-dom';
 import {MUIAppRoot} from "polar-bookshelf/web/js/mui/MUIAppRoot";
 import {SignInScreen} from "polar-bookshelf/apps/repository/js/login/SignInScreen";
+import {BrowserRouter, Route, RouteProps, Switch} from 'react-router-dom';
+import {CreateAccountScreen} from "polar-bookshelf/apps/repository/js/login/CreateAccountScreen";
 
 export class LoginApp {
 
@@ -18,6 +20,19 @@ export class LoginApp {
     public static start() {
         ReactDOM.render(
             <MUIAppRoot>
+                <BrowserRouter>
+                    <Switch>
+
+                        <Route exact path={["/create-account"]}>
+                            <CreateAccountScreen/>
+                        </Route>
+
+                        <Route exact path={["/sign-in", "/login", "/login.html"]}>
+                            <SignInScreen/>
+                        </Route>
+
+                    </Switch>
+                </BrowserRouter>
                 <SignInScreen/>
             </MUIAppRoot>
             ,

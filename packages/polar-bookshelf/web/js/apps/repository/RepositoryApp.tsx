@@ -62,6 +62,7 @@ import {useSideNavCallbacks, useSideNavStore} from '../../sidenav/SideNavStore';
 import {RoutePathnames} from './RoutePathnames';
 import {CSSTransition} from "react-transition-group";
 import {withMobilePopup} from "../../mui/MobilePopup";
+import {Intercom} from "./integrations/Intercom";
 
 interface IProps {
     readonly app: App;
@@ -329,6 +330,8 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                             <Initializers />
                             <SideNav />
+
+                            <Intercom></Intercom>
 
                             <RouteContainer>
 

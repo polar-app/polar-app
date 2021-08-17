@@ -16,7 +16,6 @@ import {DeviceRouters} from "../../../../web/js/ui/DeviceRouter";
 import {useDocRepoColumnsPrefs} from "./DocRepoColumnsPrefsHook";
 import {IDocInfo} from "polar-shared/src/metadata/IDocInfo";
 import {AutoBlur} from "./AutoBlur";
-import Checkbox from "@material-ui/core/Checkbox";
 import {OverflowMenuButton} from "./buttons/DocOverflowMenuButton";
 import {MUICheckboxIconButton} from "../../../../web/js/mui/MUICheckboxIconButton";
 import { LinearProgress } from "@material-ui/core";

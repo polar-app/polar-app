@@ -53,7 +53,8 @@ const AnnotationSelected = React.memo(function AnnotationSelected(props : Annota
                       style={{
                           display: 'flex',
                           flexGrow: 1,
-                          flexDirection: 'column'
+                          flexDirection: 'column',
+                          maxWidth: '100%',
                        }}>
 
             <AnnotationActiveInputContextProvider>
