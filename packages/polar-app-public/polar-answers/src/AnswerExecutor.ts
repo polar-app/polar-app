@@ -1,6 +1,8 @@
 import {ESRequests} from "./ESRequests";
 import {ESDigester} from "./ESDigester";
 import {OpenAIAnswersClient} from "./OpenAIAnswersClient";
+import {ESAnswersIndexNames} from "./ESAnswersIndexNames";
+import { UserIDStr } from "polar-shared/src/util/Strings";
 
 export namespace AnswerExecutor {
 
@@ -8,10 +10,23 @@ export namespace AnswerExecutor {
     import QuestionAnswerPair = OpenAIAnswersClient.QuestionAnswerPair;
     import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
 
-    export async function exec(question: string) {
+    export interface IExecOpts {
+        readonly uid: UserIDStr;
+        readonly question: string;
+    }
+
+    export interface IAnswer {
+        readonly question: string;
+        readonly answers: ReadonlyArray<string>;
+
+    }
+
+    export async function exec(opts: IExecOpts) {
+
+        const {question, uid} = opts;
 
         // run this query on the digest ...
-        const index = 'answer_digest';
+        const index = ESAnswersIndexNames.createForUserDocs(uid);
 
         // FIXME this has to be hard coded and we only submit docs that would be
         // applicable to the answer API and we would need a way to easily
