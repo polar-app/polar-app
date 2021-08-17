@@ -20,7 +20,9 @@
   },
   "dependencies": {
     "@google-cloud/language": "=4.2.5",
-    "polar-shared": "^2.1.92"
+    "polar-shared": "^2.1.92",
+    "polar-google-cloud-language": "^2.1.92",
+    "polar-pdf": "^2.1.92"
   },
   "files": [
     "**/*.js",

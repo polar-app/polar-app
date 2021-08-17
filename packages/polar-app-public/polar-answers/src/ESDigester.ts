@@ -1,6 +1,6 @@
 import {ESRequests} from "./ESRequests";
-import {SentenceSplitter} from "./SentenceSplitter";
 import {ISibling, Tuples} from "polar-shared/src/util/Tuples";
+import {GCLSentenceSplitter} from "polar-google-cloud-language/src/GCLSentenceSplitter";
 
 // TODO
 //
@@ -40,7 +40,7 @@ export namespace ESDigester {
         const extract = await doGetExtract(id);
 
         const content = extract._source.attachment.content;
-        const sentences = await SentenceSplitter.split(content);
+        const sentences = await GCLSentenceSplitter.split(content);
 
         console.log("Found N sentences: " + sentences.length);
 
