@@ -1,15 +1,16 @@
-import {URLStr} from "polar-shared/src/util/Strings";
+import {IDStr, URLStr} from "polar-shared/src/util/Strings";
 import {PDFText} from "polar-pdf/src/pdf/PDFText";
 import {SentenceShingler} from "./SentenceShingler";
+import {ESShingleWriter} from "./ESShingleWriter";
 
 export namespace AnswerIndexer {
 
     export interface IndexOpts {
+        readonly docID: IDStr;
         readonly url: URLStr;
     }
 
     export async function doIndex(opts: IndexOpts) {
-
 
         await PDFText.getText(opts.url, async pdfTextContent => {
 
@@ -21,9 +22,9 @@ export namespace AnswerIndexer {
 
             const shingles = await SentenceShingler.computeShinglesFromContent(content);
 
-            // FIXME: now for each shingle, persist it out to ES
-
-            // FIXME: tests to make sure shingles are computed properly.
+            for(const shingle of shingles) {
+                await ESShingleWriter.write(opts.docID, shingle);
+            }
 
         });
 
