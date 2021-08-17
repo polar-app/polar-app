@@ -28,7 +28,7 @@ describe('PDFText', function() {
 
     it("basic read", async function () {
 
-        const dumpTextContent = (pdfTextContent: IPDFTextContent) => {
+        const dumpTextContent = async (pdfTextContent: IPDFTextContent) => {
             const {extract, pageNum} = pdfTextContent;
 
             const content = extract.map(current => current.map(word => word.str).join(" ")).join("\n");
