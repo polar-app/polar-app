@@ -12,6 +12,11 @@ import {useDocViewerElementsContext} from "../../renderers/DocViewerElementsCont
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {AnnotationPopupShortcuts} from "./AnnotationPopupShortcuts";
 import clsx from "clsx";
+import {DeviceRouter} from "../../../../../web/js/ui/DeviceRouter";
+import {Devices} from "polar-shared/src/util/Devices";
+import {FileType} from "../../../../../web/js/apps/main/file_loaders/FileType";
+
+const IS_HANDHELD = ! Devices.isDesktop();
 
 export const useAnnotationPopupStyles = makeStyles((theme) =>
     createStyles({
@@ -44,10 +49,22 @@ export const useAnnotationPopupStyles = makeStyles((theme) =>
     }),
 );
 
+const stopPropagation = (event: React.MouseEvent | React.TouchEvent) => {
+    event.stopPropagation();
+};
+
 const AnnotationPopupContents = React.forwardRef<HTMLDivElement>((_, ref) => {
     const classes = useAnnotationPopupStyles();
     return (
-        <div className={classes.outer} ref={ref}>
+        <div
+            className={clsx(classes.outer, { ["flipped"]: IS_HANDHELD })} ref={ref}
+            // Abort all events to prevent accidentally triggering selection events
+            // when interacting with the annotation bar
+            onMouseDown={stopPropagation}
+            onMouseUp={stopPropagation}
+            onTouchStart={stopPropagation}
+            onTouchEnd={stopPropagation}
+        >
             <AnnotationPopupShortcuts />
             <Grow in>
                 <div className={clsx(classes.inner, "annotation_popup-inner")}>
@@ -75,6 +92,35 @@ const AnnotationPopupPDFRenderer: React.FC<IAnnotationPopupPDFRendererProps> = (
         scrollElement: viewerContainerElem,
         noScroll: true,
     });
+
+    return (
+        <>
+            {viewerContainerElem && ReactDOM.createPortal(<AnnotationPopupContents ref={ref} />, viewerContainerElem)}
+        </>
+    );
+};
+
+interface IAnnotationPopupRendererHandheldProps {
+    fileType: FileType;
+}
+
+const AnnotationPopupRendererHandheld: React.FC<IAnnotationPopupRendererHandheldProps> = () => {
+    const docViewerElementsRef = useRefWithUpdates(useDocViewerElementsContext());
+    const viewerContainerElem = React.useMemo(() => (
+        docViewerElementsRef
+            .current
+            .getDocViewerElement()
+            .querySelector<HTMLDivElement>("#docviewer-main-body")
+    ), [docViewerElementsRef]);
+    const ref = React.useRef<HTMLDivElement>(null);
+
+    React.useEffect(() => {
+        if (ref.current) {
+            ref.current.style.left = "50%";
+            ref.current.style.top = "10px";
+            ref.current.style.transform = "translateX(-50%)";
+        }
+    }, [ref]);
 
     return (
         <>
@@ -114,9 +160,19 @@ export const AnnotationPopupRenderer: React.FC = () => {
     }
 
     if (fileType === "pdf") {
-        return <AnnotationPopupPDFRenderer rect={rect} />;
+        return (
+            <DeviceRouter
+                desktop={<AnnotationPopupPDFRenderer rect={rect} />}
+                handheld={<AnnotationPopupRendererHandheld fileType={fileType} />}
+            />
+        );
     } else if (fileType === "epub") {
-        return <AnnotationPopupEPUBRenderer rect={rect} />;
+        return (
+            <DeviceRouter
+                desktop={<AnnotationPopupEPUBRenderer rect={rect} />}
+                handheld={<AnnotationPopupRendererHandheld fileType={fileType} />}
+            />
+        );
     }
 
     return null;

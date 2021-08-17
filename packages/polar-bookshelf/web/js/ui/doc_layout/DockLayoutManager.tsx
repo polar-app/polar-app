@@ -1,13 +1,13 @@
 import * as React from 'react';
-import {MousePositions} from './MousePositions';
 import {Tuples} from "polar-shared/src/util/Tuples";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {Callback, NULL_FUNCTION} from "polar-shared/src/util/Functions";
-import {Debouncers} from "polar-shared/src/util/Debouncers";
 import {DockSplitter} from "./DockSplitter";
 import {deepMemo} from "../../react/ReactUtils";
 import {useStateRef} from "../../hooks/ReactHooks";
-import { useDockLayoutStore, useDockLayoutCallbacks } from './DockLayoutStore';
+import {useDockLayoutStore, useDockLayoutCallbacks} from './DockLayoutStore';
+import {Point} from '../../Point';
+import {Debouncers} from 'polar-shared/src/util/Debouncers';
 
 class Styles {
 
@@ -24,6 +24,18 @@ export interface DocLayoutProps {
     readonly onResize?: Callback;
 }
 
+function getMousePositionFromEvent(event: React.TouchEvent | TouchEvent, type: 'touch'): Point;
+function getMousePositionFromEvent(event: React.MouseEvent | MouseEvent, type: 'mouse'): Point;
+function getMousePositionFromEvent(event: any, type: any): Point {
+    if (type === 'touch') {
+        const [{ clientX, clientY }] = event.touches;
+        return { x: clientX, y: clientY };
+    } else {
+        const { clientX, clientY } = event;
+        return { x: clientX, y: clientY };
+    }
+};
+
 /**
  * A simple expand/collapse dock with a persistent mode where it stays docked
  * next time you open the UI and a temporary mode too where it expand when the
@@ -32,7 +44,8 @@ export interface DocLayoutProps {
  */
 export const DockLayoutManager = deepMemo(function DockLayoutManager() {
 
-    const mousePosition = React.useRef(MousePositions.get());
+    const mousePosition = React.useRef<Point>({ x: 0, y: 0 });
+    const realtimeMousePosition = React.useRef<Point>({ x: 0, y: 0 });
     const mouseDown = React.useRef(false);
     const {panels, onResize, dockPanels} = useDockLayoutStore(['panels', 'onResize', 'dockPanels']);
     const {setPanels} = useDockLayoutCallbacks();
@@ -63,39 +76,38 @@ export const DockLayoutManager = deepMemo(function DockLayoutManager() {
     }, [setState, stateRef]);
 
 
-    const onMouseUp = React.useCallback(() => {
-        mousePosition.current = MousePositions.get();
+    const onFinish = React.useCallback(() => {
         markResizing(undefined);
     }, [markResizing]);
 
-    const onMouseDown = React.useCallback((resizeTarget: ResizeTarget) => {
+    const onStart = React.useCallback((position: Point, resizeTarget: ResizeTarget, type: 'touch' | 'mouse') => {
 
-        mousePosition.current = MousePositions.get();
+        mousePosition.current = position;
 
         markResizing(resizeTarget);
 
-        window.addEventListener('mouseup', () => {
-            // this code properly handles the mouse leaving the window
-            // during mouse up and then leaving wonky event handlers.
-            onMouseUp();
-        }, {once: true});
+        if (type === 'mouse') {
+            window.addEventListener('mouseup', onFinish, { once: true });
+        } else {
+            window.addEventListener('touchend', onFinish, { once: true });
+        }
 
-    }, [markResizing, onMouseUp]);
+    }, [markResizing, onFinish]);
 
-    const onMouseMove = React.useCallback(() => {
+    const onMove = React.useCallback(() => {
 
         if (! mouseDown.current) {
             return;
         }
 
-        const lastMousePosition = MousePositions.get();
+        const position = realtimeMousePosition.current;
 
         const resizeTarget = stateRef.current.resizing!;
 
         // TODO: this might not be correct with multiple panels
         const mult = resizeTarget.direction === 'left' ? 1 : -1;
 
-        const delta = mult * (lastMousePosition.clientX - mousePosition.current.clientX);
+        const delta = mult * (position.x - mousePosition.current.x);
 
         const panelState = panels[resizeTarget.id];
         const width = panelState.width + delta;
@@ -115,14 +127,24 @@ export const DockLayoutManager = deepMemo(function DockLayoutManager() {
 
         setPanels(newPanels);
 
-        mousePosition.current = lastMousePosition;
+        mousePosition.current = position;
 
     }, [stateRef, panels, onResize, setPanels]);
 
-    // I'm not sure how much CPU this is going to save. It might be test
-    // to show a sort of live preview of where the bar would go, then drop
-    // it there when completed
-    const handleMouseMove = React.useMemo(() => Debouncers.create(() => onMouseMove()), [onMouseMove]);
+    React.useEffect(() => {
+        const onMouseMove = (e: MouseEvent) => realtimeMousePosition.current = getMousePositionFromEvent(e, 'mouse');
+        const onTouchMove = (e: TouchEvent) => realtimeMousePosition.current = getMousePositionFromEvent(e, 'touch');
+
+        window.addEventListener('touchmove', onTouchMove, { passive: true });
+        window.addEventListener('mousemove', onMouseMove, { passive: true });
+
+        return () => {
+            window.removeEventListener('touchmove', onTouchMove);
+            window.removeEventListener('mousemove', onMouseMove);
+        };
+    }, [onMove]);
+
+    const handleMove = React.useMemo(() => Debouncers.create(onMove), [onMove])
 
     const createDockPanels = React.useCallback((): ReadonlyArray<JSX.Element> => {
 
@@ -228,8 +250,11 @@ export const DockLayoutManager = deepMemo(function DockLayoutManager() {
 
             if  (tuple.next !== undefined) {
                 const resizeTarget = computeResizeTarget();
-                const splitter = <DockSplitter key={'splitter-' + tuple.idx}
-                                               onMouseDown={() => onMouseDown(resizeTarget)}/>;
+                const splitter = (
+                    <DockSplitter key={'splitter-' + tuple.idx}
+                                  onMouseDown={e => onStart(getMousePositionFromEvent(e, 'mouse'), resizeTarget, 'mouse')}
+                                  onTouchStart={e => onStart(getMousePositionFromEvent(e, 'touch'), resizeTarget, 'touch')}/>
+                );
                 result.push(splitter);
             }
 
@@ -238,7 +263,7 @@ export const DockLayoutManager = deepMemo(function DockLayoutManager() {
 
         return result;
 
-    }, [onMouseDown, panels, dockPanels, stateRef]);
+    }, [onStart, panels, dockPanels, stateRef]);
 
     const docPanels = createDockPanels();
 
@@ -246,7 +271,8 @@ export const DockLayoutManager = deepMemo(function DockLayoutManager() {
 
         <div className="dock-layout"
              style={{...Styles.Dock}}
-             onMouseMove={() => handleMouseMove()}
+             onMouseMove={() => handleMove()}
+             onTouchMove={() => handleMove()}
              draggable={false}>
 
             {...docPanels}

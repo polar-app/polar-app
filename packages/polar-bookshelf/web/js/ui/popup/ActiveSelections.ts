@@ -3,8 +3,11 @@ import {Logger} from 'polar-shared/src/logger/Logger';
 import {Selections} from '../../highlights/text/selection/Selections';
 import {Ranges} from '../../highlights/text/selection/Ranges';
 import {MouseDirection} from "./MouseDirection";
+import {Devices} from 'polar-shared/src/util/Devices';
 
 const log = Logger.create();
+
+const IS_HANDHELD = ! Devices.isDesktop();
 
 type EventRemover = () => void;
 
@@ -154,13 +157,23 @@ export class ActiveSelections {
 
         const handleMouseDown = (event: MouseEvent) => onMouseDown(event, 'mouse');
         const handleTouchStart = (event: TouchEvent) => onMouseDown(event, 'touch');
+        const handleContextMenu = (event: MouseEvent) => {
+            const element = this.targetElementForEvent(event);
+            onMouseUp(event, element)
+        };
 
         target.addEventListener('mousedown', handleMouseDown);
         target.addEventListener('touchstart', handleTouchStart);
+        if (IS_HANDHELD) {
+            target.addEventListener('contextmenu', handleContextMenu);
+        }
 
         return () => {
             target.removeEventListener('mousedown', handleMouseDown);
             target.removeEventListener('touchstart', handleTouchStart);
+            if (IS_HANDHELD) {
+                target.removeEventListener('contextmenu', handleContextMenu);
+            }
         };
 
         // TODO: this isn't being handled properly and the event doesn't seem
