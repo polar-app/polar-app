@@ -34,14 +34,6 @@ const useStyles = makeStyles((theme) =>
             flex: 1,
             overflowY: 'auto',
         },
-        "@keyframes rollin": {
-            "0%": {
-                top: "100%",
-            },
-            "100%": {
-                top: "0%",
-            }
-        },
     }),
 );
 

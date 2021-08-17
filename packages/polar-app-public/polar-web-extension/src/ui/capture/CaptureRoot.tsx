@@ -40,15 +40,23 @@ export const CaptureRoot = deepMemo(() => {
 
     const saveToPolar = React.useCallback((capture: ICapturedEPUB) => {
 
-        setSaving(true);
+        try {
 
-        const message: SaveToPolarRequestWithEPUB = {
-            type: 'save-to-polar',
-            strategy: 'epub',
-            value: capture
+            setSaving(true);
+
+            const message: SaveToPolarRequestWithEPUB = {
+                type: 'save-to-polar',
+                strategy: 'epub',
+                value: capture
+            }
+
+            console.log("Sending Save to Polar message to chrome runtime: ", message);
+
+            chrome.runtime.sendMessage(message);
+
+        } catch (e) {
+            console.error("Could not send message to chrome runtime: ", e);
         }
-
-        chrome.runtime.sendMessage(message);
 
     }, []);
 

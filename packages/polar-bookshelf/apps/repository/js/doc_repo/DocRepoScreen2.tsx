@@ -5,13 +5,13 @@ import {DocRepoTable2} from "./DocRepoTable2";
 import {Route, Switch} from "react-router";
 import {ReactRouters} from "../../../../web/js/react/router/ReactRouters";
 import {LeftSidebar} from "../../../../web/js/ui/motion/LeftSidebar";
-import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 import {FolderSidebar2} from "../folders/FolderSidebar2";
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
 import {AddContent} from "../ui/AddContentButton";
 import isEqual from "react-fast-compare";
 import {DocRepoScreenRoutedComponents} from "./DocRepoScreenRoutedComponents";
 import {SideCar} from "../../../../web/js/sidenav/SideNav";
+import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 
 namespace main {
 
@@ -26,21 +26,6 @@ namespace main {
 }
 
 const onClose = () => window.history.back();
-
-const Router = () => (
-
-    <Switch location={ReactRouters.createLocationWithHashOnly()}>
-
-        <Route path='#folders'>
-            {/*TODO this is used for mobile and is broken under MUI now*/}
-            <LeftSidebar onClose={onClose}>
-                <main.Folders/>
-            </LeftSidebar>
-        </Route>
-
-    </Switch>
-
-);
 
 namespace devices {
 
@@ -67,7 +52,7 @@ namespace devices {
 
         return (
 
-            <DockLayout dockPanels={[
+            <DockLayout.Root dockPanels={[
                 {
                     id: "dock-panel-left",
                     type: 'fixed',
@@ -86,7 +71,9 @@ namespace devices {
                     type: 'grow',
                     component: <main.Documents/>
                 }
-            ]}/>
+            ]}>
+                <DockLayout.Main />
+            </DockLayout.Root>
 
         );
 

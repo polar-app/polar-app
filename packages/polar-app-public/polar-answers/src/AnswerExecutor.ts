@@ -13,7 +13,9 @@ export namespace AnswerExecutor {
         // run this query on the digest ...
         const index = 'answer_digest';
 
-        // FIXME this has to be hard coded and we only submit docs that would be applicable to the answer API.
+        // FIXME this has to be hard coded and we only submit docs that would be
+        // applicable to the answer API and we would need a way to easily
+        // calculate the short head of the result set
         const size = 100;
 
         const esResponse: IElasticSearchResponse<IDigestDocument> = await ESRequests.doPost(`/${index}/_search`, {

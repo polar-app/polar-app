@@ -15,6 +15,7 @@ export namespace AppSites {
         const result = [];
         for (const scheme of schemes) {
             for (const host of hosts) {
+                result.push(`${scheme}://${host}`); // Support http (80) & https (443) ports
                 for (const port of ports) {
                     result.push(`${scheme}://${host}:${port}`);
                 }

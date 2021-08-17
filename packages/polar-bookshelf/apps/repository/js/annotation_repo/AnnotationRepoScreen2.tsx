@@ -2,7 +2,6 @@ import * as React from 'react';
 import useTheme from "@material-ui/core/styles/useTheme";
 import {FixedNav} from '../FixedNav';
 import {DeviceRouter} from "../../../../web/js/ui/DeviceRouter";
-import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 import {MUIPaperToolbar} from "../../../../web/js/mui/MUIPaperToolbar";
 import {FolderSidebar2} from "../folders/FolderSidebar2";
 import {AnnotationListView2} from "./AnnotationListView2";
@@ -15,8 +14,16 @@ import {MUIElevation} from "../../../../web/js/mui/MUIElevation";
 import {AnnotationRepoTable2} from "./AnnotationRepoTable2";
 import {SidenavTrigger} from "../../../../web/js/sidenav/SidenavTrigger";
 import {SideCar} from "../../../../web/js/sidenav/SideNav";
+import {createStyles, IconButton, makeStyles, SwipeableDrawer} from '@material-ui/core';
+import {useAnnotationRepoStore} from './AnnotationRepoStore';
+import MenuIcon from "@material-ui/icons/Menu";
+import {DockLayout} from "../../../../web/js/ui/doc_layout/DockLayout";
 
-const Toolbar = React.memo(function Toolbar() {
+interface IToolbarProps {
+    handleRightDrawerToggle?: () => void;
+}
+
+const Toolbar: React.FC<IToolbarProps> = React.memo(function Toolbar({ handleRightDrawerToggle }) {
     return (
         <MUIPaperToolbar id="header-filter"
                          padding={1}>
@@ -34,6 +41,13 @@ const Toolbar = React.memo(function Toolbar() {
                     justifyContent: 'flex-end'
                 }}>
                     <AnnotationRepoFilterBar2 />
+                    {handleRightDrawerToggle && (
+                        <DeviceRouter phone={(
+                            <IconButton onClick={handleRightDrawerToggle}>
+                                <MenuIcon/>
+                            </IconButton>
+                        )}/>
+                    )}
                 </div>
 
             </div>
@@ -62,9 +76,49 @@ const StartReviewHeader = () => {
 
 namespace Phone {
 
-    export const Main = () => (
-        <AnnotationListView2/>
+    interface IMainProps {
+        isAnnotationViewerOpen: boolean;
+        setIsAnnotationViewerOpen: (state: boolean) => void;
+    }
+
+    const useStyles = makeStyles(() =>
+        createStyles({
+            drawer: {
+                maxWidth: '500px',
+                width: '100%',
+            },
+        })
     );
+
+    export const Main: React.FC<IMainProps> = ({ isAnnotationViewerOpen, setIsAnnotationViewerOpen }) => {
+        const handleDrawerStateChange = (state: boolean) => () => setIsAnnotationViewerOpen(state);
+        const {selected, view} = useAnnotationRepoStore(['selected', 'view']);
+        const annotation = selected.length > 0 ? view.filter(current => current.id === selected[0])[0] : undefined;
+        const classes = useStyles();
+
+        React.useEffect(() => {
+            if (annotation) {
+                setIsAnnotationViewerOpen(true);
+            }
+        }, [setIsAnnotationViewerOpen, annotation]);
+
+
+        return (
+            <>
+                <AnnotationListView2/>
+                <SwipeableDrawer
+                    anchor="right"
+                    open={isAnnotationViewerOpen}
+                    onClose={handleDrawerStateChange(false)}
+                    onOpen={handleDrawerStateChange(true)}
+                    className={classes.drawer}
+                    classes={{ root: classes.drawer, paper: classes.drawer }}
+                >
+                    <AnnotationInlineViewer2 />
+                </SwipeableDrawer>
+            </>
+        );
+    };
 
 }
 
@@ -72,7 +126,7 @@ namespace Tablet {
 
 
     export const Main = () => (
-        <DockLayout dockPanels={[
+        <DockLayout.Root dockPanels={[
             {
                 id: 'dock-panel-center',
                 type: 'fixed',
@@ -84,14 +138,16 @@ namespace Tablet {
                     minHeight: 0,
                 },
                 component: <AnnotationRepoTable2 />,
-                width: 450
+                width: 400
             },
             {
                 id: 'dock-panel-right',
                 type: 'grow',
                 component: <AnnotationInlineViewer2 />
             }
-        ]}/>
+        ]}>
+            <DockLayout.Main/>
+        </DockLayout.Root>
     );
 
 
@@ -112,7 +168,7 @@ namespace Desktop {
 
                 <Toolbar/>
 
-                <DockLayout dockPanels={[
+                <DockLayout.Root dockPanels={[
                     {
                         id: 'dock-panel-center',
                         type: 'fixed',
@@ -150,7 +206,9 @@ namespace Desktop {
                             </MUIElevation>
 
                     }
-                ]}/>
+                ]}>
+                    <DockLayout.Main />
+                </DockLayout.Root>
             </div>
 
         );
@@ -160,7 +218,7 @@ namespace Desktop {
     export const Main = () => {
 
         return (
-            <DockLayout dockPanels={[
+            <DockLayout.Root dockPanels={[
                 {
                     id: 'dock-panel-left',
                     type: 'fixed',
@@ -186,7 +244,9 @@ namespace Desktop {
                         <Right/>
 
                 }
-            ]}/>
+            ]}>
+                <DockLayout.Main />
+            </DockLayout.Root>
         );
     };
 
@@ -195,6 +255,7 @@ namespace Desktop {
 namespace screen {
 
     export const HandheldScreen = () => {
+        const [isAnnotationViewerOpen, setIsAnnotationViewerOpen] = React.useState(false);
 
         return (
 
@@ -212,14 +273,19 @@ namespace screen {
                              maxWidth: '100%',
                          }}>
 
-                        <Toolbar/>
+                        <Toolbar handleRightDrawerToggle={() => setIsAnnotationViewerOpen(state => ! state)}/>
                         <StartReviewSpeedDial/>
                         <SideCar>
                             <FolderSidebar2 header={<StartReviewHeader/>}/>
                         </SideCar>
 
-                        <DeviceRouter phone={<Phone.Main />}
-                                      tablet={<Tablet.Main />}/>
+                        <DeviceRouter phone={
+                                          <Phone.Main
+                                              isAnnotationViewerOpen={isAnnotationViewerOpen}
+                                              setIsAnnotationViewerOpen={setIsAnnotationViewerOpen}
+                                          />
+                                      }
+                                      handheld={<Tablet.Main />}/>
 
                     </div>
                 </FixedNav.Body>

@@ -35,7 +35,8 @@ const useStyles = makeStyles((theme) =>
 
 
 interface IProps {
-    readonly onMouseDown: () => void;
+    readonly onMouseDown: React.MouseEventHandler<HTMLDivElement>;
+    readonly onTouchStart: React.TouchEventHandler<HTMLDivElement>;
 }
 
 export const DockSplitter = deepMemo(function DockSplitter(props: IProps) {
@@ -45,7 +46,8 @@ export const DockSplitter = deepMemo(function DockSplitter(props: IProps) {
     return (
         <div draggable={false}
              className={classes.root}
-             onMouseDown={() => props.onMouseDown()}>
+             onMouseDown={props.onMouseDown}
+             onTouchStart={props.onTouchStart}>
 
         </div>
     );
