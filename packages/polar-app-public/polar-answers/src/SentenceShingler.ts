@@ -9,29 +9,32 @@ export namespace SentenceShingler {
         readonly text: string;
     }
 
-    function computeShinglesFromSentences(sentences: ReadonlyArray<string>): ReadonlyArray<ISentenceShingle> {
+    function computeShinglesFromSentences(sentences: ReadonlyArray<string>,
+                                          width: number = 4,
+                                          jump: number = 2): ReadonlyArray<ISentenceShingle> {
 
-        const tuples = Tuples.createSiblings(sentences);
+        const result = [];
 
-        const toShingle = (sibling: ISibling<string>, idx: number): ISentenceShingle => {
-            const text = (sibling.prev !== undefined ? (sibling.prev + " ") : "") +
-                sibling.curr +
-                (sibling.next !== undefined ? (sibling.next + " ") : "");
-
-            return {
-                idx,
-                text
-            };
+        let idx = 0;
+        for(let offset = 0; offset < sentences.length; offset = offset + jump) {
+            const end = offset + width;
+            const slice = sentences.slice(offset, end);
+            result.push({
+                idx: idx++,
+                text: slice.join("  ")
+            });
 
         }
 
-        return tuples.map((current, idx) => toShingle(current, idx));
+        return result;
 
     }
 
     export async function computeShinglesFromContent(content: TextStr) {
 
         const sentences = await GCLSentenceSplitter.split(content);
+
+        console.log("FIXME sentences: ", sentences);
 
         console.log("Found N sentences: " + sentences.length);
 
