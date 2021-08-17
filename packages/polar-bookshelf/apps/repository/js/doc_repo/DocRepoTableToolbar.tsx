@@ -33,12 +33,12 @@ const SelectionActiveButtons = React.memo(function SelectionActiveButtons() {
     return (
         <MUIButtonBar>
             <>
-                <MUIDocTagButton onClick={callbacks.onTagged} size="medium"/>
-                <MUIDocArchiveButton onClick={callbacks.onArchived} size="medium"/>
-                <MUIDocFlagButton onClick={callbacks.onFlagged} size="medium"/>
+                <MUIDocTagButton onClick={callbacks.onTagged} size={Devices.isDesktop()?"medium":"small"}/>
+                <MUIDocArchiveButton onClick={callbacks.onArchived} size={Devices.isDesktop()?"medium":"small"}/>
+                <MUIDocFlagButton onClick={callbacks.onFlagged} size={Devices.isDesktop()?"medium":"small"}/>
                 <Divider orientation="vertical" variant="middle" flexItem/>
 
-                <MUIDocDeleteButton size="medium"
+                <MUIDocDeleteButton size={Devices.isDesktop()?"medium":"small"}
                                     onClick={callbacks.onDeleted}/>
             </>
         </MUIButtonBar>
@@ -90,7 +90,10 @@ export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
 
                 <ChromeExtensionInstallBar/>
 
-            {selected.length === 0 && <DocRepoFilterBar />}
+            {/*always show the filter bar for desktop*/}
+            {Devices.isDesktop() && <DocRepoFilterBar />}
+            {/*on mobile, don't show if some rows are checked*/}
+            {!Devices.isDesktop() && selected.length === 0 && <DocRepoFilterBar />}
 
         </Paper>
     );
