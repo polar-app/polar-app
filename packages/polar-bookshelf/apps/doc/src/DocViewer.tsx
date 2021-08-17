@@ -30,11 +30,14 @@ import {FileTypes} from "../../../web/js/apps/main/file_loaders/FileTypes";
 import {deepMemo} from "../../../web/js/react/ReactUtils";
 import {useStateRef, useRefValue} from "../../../web/js/hooks/ReactHooks";
 import {NoDocument} from "./NoDocument";
-import {DockLayout2} from "../../../web/js/ui/doc_layout/DockLayout2";
+import {DockLayout} from "../../../web/js/ui/doc_layout/DockLayout";
 import {Outliner} from "./outline/Outliner";
 import {useDocViewerSnapshot} from "./UseDocViewerSnapshot";
 import {useZenModeResizer} from "./ZenModeResizer";
 import {useDocumentViewerVisible} from "./renderers/UseSidenavDocumentChangeCallbackHook";
+import {SidenavTrigger} from "../../../web/js/sidenav/SidenavTrigger";
+import {SideCar} from "../../../web/js/sidenav/SideNav";
+import {AreaHighlightModeToggle} from "./toolbar/AreaHighlightModeToggle";
 
 const Main = React.memo(function Main() {
 
@@ -52,7 +55,7 @@ const Main = React.memo(function Main() {
             <DocViewerGlobalHotKeys/>
             <DocFindBar/>
 
-            <div className="DocViewer.Main.Body"
+            <div id="docviewer-main-body" className="DocViewer.Main.Body"
                  style={{
                      minHeight: 0,
                      overflow: 'auto',
@@ -60,9 +63,14 @@ const Main = React.memo(function Main() {
                      position: 'relative'
                  }}>
 
-                <DocViewerContextMenu>
-                    <DocMain/>
-                </DocViewerContextMenu>
+                <DeviceRouter
+                    handheld={<DocMain/>}
+                    desktop={(
+                        <DocViewerContextMenu>
+                            <DocMain/>
+                        </DocViewerContextMenu>
+                    )}
+                />
             </div>
 
         </div>
@@ -125,10 +133,13 @@ namespace Device {
                      }}
                      className="">
 
+                    <SidenavTrigger />
                     <DocFindButton className="mr-1"/>
                 </div>
 
-                <div style={{alignItems: 'center'}}>
+
+                <div style={{ alignItems: 'center', display: 'flex' }}>
+                    <AreaHighlightModeToggle />
                     <IconButton onClick={props.toggleRightDrawer}>
                         <MenuIcon/>
                     </IconButton>
@@ -155,6 +166,9 @@ namespace Device {
                 {/*    <Outliner />*/}
 
                 {/*</SwipeableDrawer>*/}
+                <SideCar>
+                    <Outliner/>
+                </SideCar>
 
                 <SwipeableDrawer
                     anchor='right'
@@ -203,7 +217,7 @@ namespace Device {
 
         return (
 
-            <DockLayout2.Root
+            <DockLayout.Root
                 onResize={onDockLayoutResize}
                 dockPanels={[
                     {
@@ -268,12 +282,12 @@ namespace Device {
                                  minHeight: 0
                              }}>
 
-                            <DockLayout2.Main/>
+                            <DockLayout.Main/>
                         </div>
 
                     </div>
                 </>
-            </DockLayout2.Root>
+            </DockLayout.Root>
 
         );
     });

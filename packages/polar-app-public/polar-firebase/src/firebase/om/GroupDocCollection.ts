@@ -1,8 +1,8 @@
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {GroupIDStr} from '../../Datastore';
+import {GroupIDStr} from 'polar-bookshelf/web/js/datastore/Datastore';
 import {Collections} from "polar-firestore-like/src/Collections";
-import {ProfileIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
+import {ProfileIDStr} from "polar-shared/src/util/Strings";
 
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {DocMetadataEditorStory} from "./impl/DocMetadataEditorStory";
 import {MUIAppRoot} from "../../web/js/mui/MUIAppRoot";
-import {DockLayout2} from "../../web/js/ui/doc_layout/DockLayout2";
+import {DockLayout} from "../../web/js/ui/doc_layout/DockLayout";
 import {deepMemo} from "../../web/js/react/ReactUtils";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -385,7 +385,7 @@ export const StoriesApp = () => {
 
             <BrowserRouter>
 
-                <DockLayout2.Root dockPanels={[
+                <DockLayout.Root dockPanels={[
                                     {
                                         id: "doc-panel-outline",
                                         type: 'fixed',
@@ -412,8 +412,8 @@ export const StoriesApp = () => {
                                         )
                                     }
                                 ]}>
-                    <DockLayout2.Main/>
-                </DockLayout2.Root>
+                    <DockLayout.Main/>
+                </DockLayout.Root>
             </BrowserRouter>
 
         </MUIAppRoot>

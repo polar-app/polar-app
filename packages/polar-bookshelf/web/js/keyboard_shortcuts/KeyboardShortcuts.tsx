@@ -210,7 +210,6 @@ export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
 
         function toPredicate(keyboardShortcut: IKeyboardShortcutWithHandler): ReadonlyArray<SequenceToKeyboardEventHandlerPredicate> {
 
-            console.log('debug', keyboardShortcut.sequences, keyboardShortcut);
             function toKeyboardEventHandlerPredicate(seq: KeyBinding) {
                 return createPredicate(seq);
             }

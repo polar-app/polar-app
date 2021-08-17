@@ -5,7 +5,8 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {assert} from 'chai';
 import {GroupIDStr} from "../Groups";
 import {assertJSON} from "polar-test/src/test/Assertions";
-import {IProfile, UserIDStr } from "polar-firebase/src/firebase/om/ProfileCollection";
+import {IProfile } from "polar-firebase/src/firebase/om/ProfileCollection";
+import {UserIDStr } from 'polar-shared/src/util/Strings';
 
 const uid = '10101';
 

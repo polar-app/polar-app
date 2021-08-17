@@ -1,10 +1,7 @@
 import React from "react";
 import {NoteNavigation} from "./NoteNavigation";
-import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
-import {Arrays} from "polar-shared/src/util/Arrays";
-import {useNoteLinkLoader} from "./NoteLinkLoader";
 import {observer} from "mobx-react-lite"
-import {BlockContentEditable, useUpdateCursorPosition} from "./contenteditable/BlockContentEditable";
+import {BlockContentEditable, DOMBlocks, useUpdateCursorPosition} from "./contenteditable/BlockContentEditable";
 import {MarkdownStr} from "polar-shared/src/util/Strings";
 import {MarkdownContent} from "./content/MarkdownContent";
 import {BlockImageContent} from "./blocks/BlockImageContent";
@@ -13,11 +10,12 @@ import {reaction} from "mobx";
 import {useBlocksTreeStore} from "./BlocksTree";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {ContentEditables} from "./ContentEditables";
-
-interface ILinkNavigationEvent {
-    readonly abortEvent: () => void;
-    readonly target: EventTarget | null;
-}
+import {NameContent} from "./content/NameContent";
+import {debounce} from "throttle-debounce";
+import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
+import {MarkdownContentConverter} from "./MarkdownContentConverter";
+import {Block} from "./store/Block";
+import {useLinkNavigationClickHandler} from "./NoteUtils";
 
 export interface BlockEditorGenericProps {
     readonly id: BlockIDStr;
@@ -37,91 +35,68 @@ export interface BlockEditorGenericProps {
     readonly readonly?: boolean;
 }
 
-function useLinkNavigationEventListener() {
+type IUseBlockContentUpdaterOpts = {
+    id: BlockIDStr;
+}
 
-    const linkLoaderRef = useLinkLoaderRef();
-    const noteLinkLoader = useNoteLinkLoader();
+const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
+    const blocksTreeStore = useBlocksTreeStore();
+    const dialogs = useDialogManager();
 
-    return React.useCallback((event: ILinkNavigationEvent): boolean => {
+    const handleRename = React.useMemo(() => {
+        const doRename = (data: MarkdownStr) => {
+            const exists = blocksTreeStore.getBlockByName(data);
+            const block = blocksTreeStore.getBlock(id) as Block<NameContent>;
 
-        const {target, abortEvent} = event;
+            if (! exists || block.content.data.toLowerCase() === data.toLowerCase()) {
+                blocksTreeStore.renameBlock(id, data);
+            } else {
+                dialogs.snackbar({ type: 'error', message: `Another note with the name "${data}" already exists.` });
 
-        if (target instanceof HTMLAnchorElement) {
-
-            const href = target.getAttribute('href');
-
-            if (href !== null) {
-
-                if (href.startsWith('#')) {
-
-                    const anchor = Arrays.last(href.split("#"));
-
-                    if (anchor) {
-                        noteLinkLoader(anchor);
-                        abortEvent();
-                        return true;
-                    }
-
-                } else {
-                    const linkLoader = linkLoaderRef.current;
-                    linkLoader(href, {newWindow: true, focus: true});
-                    abortEvent();
-                    return true;
-                }
-
+                // Reset to old name
+                const blockElem = DOMBlocks.getBlockElement(id)!;
+                blockElem.innerHTML = MarkdownContentConverter.toHTML(block.content.data);
             }
+        };
 
+        return debounce(1500, doRename);
+    }, [blocksTreeStore, dialogs, id]);
+
+    return React.useCallback((data: MarkdownStr) => {
+        const block = blocksTreeStore.getBlock(id);
+
+        if (! block) {
+            return;
         }
 
-        return false;
-
-    }, [linkLoaderRef, noteLinkLoader]);
-
-}
-
-function useLinkNavigationClickHandler() {
-
-    const linkNavigationEventListener = useLinkNavigationEventListener();
-
-    return React.useCallback((event: React.MouseEvent) => {
-
-        function abortEvent() {
-            event.stopPropagation();
-            event.preventDefault();
+        switch (block.content.type) {
+            case 'markdown':
+                blocksTreeStore.setBlockContent(id, new MarkdownContent({
+                    type: 'markdown',
+                    links: block.content.links,
+                    data,
+                }));
+                break;
+            case 'name':
+                handleRename(data);
+                break;
         }
-
-        const target = event.target;
-
-        return linkNavigationEventListener({target, abortEvent});
-
-    }, [linkNavigationEventListener]);
-
-}
+    }, [id, handleRename, blocksTreeStore]);
+};
 
 const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
 
     const {id, parent, style = {}, className = ""} = props;
     const {root} = useBlocksTreeStore();
     const blocksTreeStore = useBlocksTreeStore()
-    const linkNavigationClickHandler = useLinkNavigationClickHandler();
+    const linkNavigationClickHandler = useLinkNavigationClickHandler({ id });
+    const handleBlockContentChange = useBlockContentUpdater({ id });
     const ref = React.createRef<HTMLDivElement | null>();
     const updateCursorPosition = useUpdateCursorPosition();
+    
 
     const block = blocksTreeStore.getBlock(id);
     const data = blocksTreeStore.getBlockContentData(id);
-
-    const handleChange = React.useCallback((markdown: MarkdownStr) => {
-        const block = blocksTreeStore.getBlock(id);
-
-        if (block && block.content.type === "markdown") {
-            blocksTreeStore.setBlockContent(id, new MarkdownContent({
-                type: 'markdown',
-                data: markdown,
-                links: block.content.links,
-            }))
-        }
-
-    }, [blocksTreeStore, id]);
 
     React.useEffect(() => {
         const focusBlock = () => {
@@ -179,7 +154,7 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
                                   content={data || ''}
                                   onMouseDown={handleMouseDown}
                                   onKeyDown={onKeyDown}
-                                  onChange={handleChange}
+                                  onChange={handleBlockContentChange}
                                   readonly={block.readonly}
                                   onClick={onClick} />
         );

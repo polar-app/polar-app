@@ -5,7 +5,6 @@ import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import {MUIMenuItem} from "../../../../web/js/mui/menu/MUIMenuItem";
 import {MUIMenu} from "../../../../web/js/mui/menu/MUIMenu";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
-import Box from '@material-ui/core/Box';
 import {IconWithColor} from "../../../../web/js/ui/IconWithColor";
 
 interface IProps {

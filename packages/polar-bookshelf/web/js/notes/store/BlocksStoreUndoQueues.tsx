@@ -90,15 +90,15 @@ export namespace BlocksStoreUndoQueues {
 
         const undo = () => {
             undoCapture.undo();
-        }
+        };
 
-       try {
+        try {
 
-           return undoQueue.push({redo, undo}).value;
+            return undoQueue.push({redo, undo}).value;
 
-       } finally {
+        } finally {
             undoCapture.persist();
-       }
+        }
 
     }
     /**
@@ -178,6 +178,8 @@ export namespace BlocksStoreUndoQueues {
 
         const createWithMutationOpts =  (mutation: IBlocksStoreMutation): IWithMutationOpts => {
 
+            const newMutationNumber = (blocksStore.getBlock(mutation.id)?.mutation || -1) + 1;
+
             switch (mutationType) {
 
                 case "undo":
@@ -187,17 +189,17 @@ export namespace BlocksStoreUndoQueues {
                         case "added":
                             return {
                                 updated: mutation.added.updated,
-                                mutation: mutation.added?.mutation
+                                mutation: newMutationNumber,
                             };
                         case "removed":
                             return {
                                 updated: mutation.removed.updated,
-                                mutation: mutation.removed?.mutation
+                                mutation: newMutationNumber,
                             };
                         case "modified":
                             return {
                                 updated: mutation.before.updated,
-                                mutation: mutation.before?.mutation
+                                mutation: newMutationNumber,
                             };
 
                     }
@@ -211,17 +213,17 @@ export namespace BlocksStoreUndoQueues {
                         case "added":
                             return {
                                 updated,
-                                mutation: 0,
+                                mutation: newMutationNumber,
                             }
                         case "removed":
                             return {
                                 updated,
-                                mutation: mutation.removed.mutation,
+                                mutation: newMutationNumber,
                             }
                         case "modified":
                             return {
                                 updated,
-                                mutation: mutation.before.mutation + 1,
+                                mutation: newMutationNumber,
                             }
 
                     }
@@ -313,20 +315,16 @@ export namespace BlocksStoreUndoQueues {
 
                 const comparisonBlock = computeComparisonBlock();
 
-                console.log("Handling undo patch for comparison block: ", comparisonBlock);
+                const currentVersion = blocksStore.getBlock(mutation.id);
 
-                const comparisonDelta = mutationType === 'undo' ? 1 : -1;
-
-                const comparisonMutation = comparisonBlock.mutation + comparisonDelta;
-
-                if (comparisonMutation === block.mutation) {
+                if (currentVersion && currentVersion.content.mutator === mutation.after.content.mutator) {
 
                     action(comparisonBlock);
 
                     return true;
 
                 } else {
-                    console.log(`WARN: Skipping update as the mutation number is invalid expected comparisonMutation=${comparisonMutation} but was ${block.mutation} with comparisonDelta=${comparisonDelta}`, mutation);
+                    console.log(`WARN: Skipping update because the mutator is different`, mutation);
                     return false;
                 }
 
@@ -362,7 +360,7 @@ export namespace BlocksStoreUndoQueues {
 
                 }, opts);
 
-                blocksStore.doPut([block], {forceUpdate: true});
+                blocksStore.doPut([block]);
             }
 
             doHandleUpdated();
@@ -385,7 +383,7 @@ export namespace BlocksStoreUndoQueues {
             const block = mutation.type === 'added' ? mutation.added : mutation.removed;
 
             if (! blocksStore.containsBlock(mutation.id)) {
-                blocksStore.doPut([block], {forceUpdate: true});
+                blocksStore.doPut([block]);
             } else {
                 throw new Error("Block missing: " + mutation.id)
             }

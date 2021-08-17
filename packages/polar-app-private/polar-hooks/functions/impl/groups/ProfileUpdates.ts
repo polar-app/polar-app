@@ -7,9 +7,8 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {
     IProfileUpdate,
     ProfileCollection,
-    ProfileIDStr,
-    UserIDStr
 } from "polar-firebase/src/firebase/om/ProfileCollection";
+import { ProfileIDStr, UserIDStr} from "polar-shared/src/util/Strings";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import UserRecord = admin.auth.UserRecord;
 

@@ -23,7 +23,7 @@ export namespace PDFText {
     }
 
     export async function getText(docPathOrURL: PathOrURLStr,
-                                  callback: (content: IPDFTextContent) => void,
+                                  callback: (content: IPDFTextContent) => Promise<void>,
                                   opts: IOpts = {}) {
 
         const docURL = await URLs.toURL(docPathOrURL);
@@ -68,7 +68,7 @@ export namespace PDFText {
             const extract = Object.values(grouped)
                 .map(current => PDFTextWordMerger.doMergeWords(current));
 
-            callback({pageNum, extract, viewport});
+            await callback({pageNum, extract, viewport});
 
         }
 

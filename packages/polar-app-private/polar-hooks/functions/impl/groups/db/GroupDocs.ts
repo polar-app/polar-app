@@ -8,7 +8,7 @@ import {ISODateTimeString, ISODateTimeStrings} from 'polar-shared/src/metadata/I
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
-import {ProfileIDStr} from "polar-firebase/src/firebase/om/ProfileCollection";
+import {ProfileIDStr} from "polar-shared/src/util/Strings";
 import {Collections} from "polar-firestore-like/src/Collections";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import Clause = Collections.Clause;

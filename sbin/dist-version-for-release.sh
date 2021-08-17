@@ -8,7 +8,7 @@ commit_repo() {
     (cd "${dir}" && git commit -m "Commit of version ${version} for release" . && git push)
 }
 
-npm run-script dist-version &&
+yarn run dist-version &&
 commit_repo .
 #commit_repo packages/polar-app-private
 #commit_repo packages/polar-app-public

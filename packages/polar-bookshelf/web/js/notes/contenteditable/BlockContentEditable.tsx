@@ -1,6 +1,5 @@
 import {HTMLStr} from 'polar-shared/src/util/Strings';
 import React from 'react';
-import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import {IActiveBlock} from '../store/BlocksStore';
 import {createActionsProvider} from "../../mui/action_menu/ActionStore";
 import {NoteFormatPopper} from "../NoteFormatPopper";
@@ -18,6 +17,7 @@ import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
 import {useNamedBlocks} from '../NoteUtils';
 import {ContentEditables} from '../ContentEditables';
+import {useSideNavStore} from '../../sidenav/SideNavStore';
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed
@@ -74,13 +74,21 @@ export const BlockContentEditable = (props: IProps) => {
         blocksTreeStore.insertFromBlockContentStructure(blocks);
     }, [blocksTreeStore]);
 
-    const onPasteError = React.useCallback((err: Error) => {
-        console.error("Got paste error: ", err);
-
-
+    const onPasteHTML = React.useCallback((html) => {
+        document.execCommand("insertHTML", false, html);
     }, []);
 
-    const handlePaste = usePasteHandler({onPasteImage, onPasteError, onPasteBlocks, id: props.id});
+    const onPasteError = React.useCallback((err: Error) => {
+        console.error("Got paste error: ", err);
+    }, []);
+
+    const handlePaste = usePasteHandler({
+        onPasteImage,
+        onPasteError,
+        onPasteBlocks,
+        onPasteHTML,
+        id: props.id,
+    });
     const namedBlocks = useNamedBlocks();
 
     const noteLinkActions = React.useMemo(() => {
@@ -243,6 +251,7 @@ export const BlockContentEditable = (props: IProps) => {
 export function useUpdateCursorPosition() {
 
     const nonceRef = React.useRef(-1);
+    const { isOpen: isSidenavOpen } = useSideNavStore(['isOpen']);
 
     return React.useCallback((editor: HTMLDivElement, activeBlock: IActiveBlock, force?: boolean) => {
 
@@ -252,7 +261,10 @@ export function useUpdateCursorPosition() {
 
                 if (activeBlock.pos !== undefined) {
 
-                    CursorPositions.jumpToPosition(editor, activeBlock.pos);
+                    // Here we wanna prevent scrolling to the focused element if the sidenav is open
+                    // because not doing so, completely fucks the layout, apparently the browser doesn't care
+                    // about your CSS, it'll try to focus the element no matter what.
+                    CursorPositions.jumpToPosition(editor, activeBlock.pos, isSidenavOpen);
                 }
 
             } finally {
@@ -261,7 +273,7 @@ export function useUpdateCursorPosition() {
 
         }
 
-    }, []);
+    }, [isSidenavOpen]);
 
 }
 

@@ -43,10 +43,14 @@ commands:
           keys:
             - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
 
+      - run:
+          name: Accept Buster old-stable changes
+          command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get update --allow-releaseinfo-change; fi
+
       # ! Install Required Linux Binary (libvips is needed by sharp which is needed by gatsby)
       - run:
           name: Required Linux packages
-          command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get update && sudo apt-get install libvips libvips-dev pngquant; fi
+          command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt update -y && sudo apt install libvips libvips-dev pngquant -y; fi
 
       # ? Debug Step for Node/Npm/Yarn/Lerna/Firebase Versions
       - run:
@@ -93,16 +97,23 @@ commands:
             npm config set legacy-peer-deps true
             npx lerna bootstrap --ci
 
+      # ! Compile all Typescript Packages
+      - run:
+          name: Lerna Compile
+          command: npx lerna run compile
+
+      # ? Debug step for checking if there are any duplicate packages
+      - run:
+          name: DEBUG(Check if duplicate packages with different versions exist)
+          command: |
+            lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-app-public/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d
+            lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-app-public/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d | if [ $(wc -l) -gt "0" ]; then echo -e '\033[1mPLEASE FIX DUPLICATE PACKAGES WITH DIFFERENT VERSIONS\033[0m' && exit 1; fi
+
       # ! Save Cache
       - save_cache:
           paths:
             - ~/.cache/yarn
           key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-
-      # ! Compile all Typescript Packages
-      - run:
-          name: Lerna Compile
-          command: npx lerna run compile
 
       # ! Persist the files to carry over to the next stage
       - persist_to_workspace:
@@ -137,10 +148,27 @@ jobs:
           name: karma
           command: |
             cd /home/circleci/project/packages/polar-bookshelf
-            sudo apt-get update && sudo apt-get install chromium --fix-missing
+            sudo apt update -y && sudo apt install chromium --fix-missing -y
             export CHROME_BIN='/usr/bin/chromium'
             yarn run webpack
             yarn run karma
+
+  # @ Build polar chrome extension
+  build-chrome-extension:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor>>
+    description: "Build the polar chrome extension"
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Build
+          command: |
+            cd /home/circleci/project/packages/polar-app-public/polar-web-extension/
+            export POLAR_EXTENSION_TYPE=PROD
+            yarn run dist
 
   # @ Build Polar-Bookshelf Webapp
   build-polar-app:
@@ -194,7 +222,7 @@ jobs:
           no_output_timeout: 120m
           command: |
             source packages/polar-bookshelf-secrets/credentials.sh
-            yarn run set-registry-bytesafe-rw
+            yarn run set-registry-verdaccio
             export FIREBASE_HOSTING_TARGET=<< parameters.firebase_hosting_target >>
             (cd packages/polar-app-private/polar-hooks/functions && rm -rf node_modules && npm install)
             (cd packages/polar-app-private/polar-hooks/functions && echo Pushing to target ${FIREBASE_HOSTING_TARGET} && firebase use polar-32b0f && firebase target:clear hosting app.getpolarized.io && firebase target:apply hosting app.getpolarized.io ${FIREBASE_HOSTING_TARGET} && firebase deploy --only hosting,storage,firestore)
@@ -253,12 +281,19 @@ workflows:
   version: 2
   main:
     jobs:
-      ## ^ Commonality Between Workflows
+      ## ^ Commonality Between Sub-Workflows
       # @ Setup the repo for the subsquent stages
       - setting-up:
           executor: large
 
-      ## ^ Polar App Workflow Below Here
+      ## ^ Chrome Extension Sub-Workflow
+      # @ Setup the repo for the subsquent stages
+      - build-chrome-extension:
+          executor: large
+          requires:
+            - "setting-up"
+
+      ## ^ Polar App Sub-Workflow Below Here
       # @ Run Karma Tests
       - karma:
           executor: large
@@ -348,7 +383,7 @@ workflows:
               only:
                 - master
 
-      ## ^ Polar Site Workflow Below Here
+      ## ^ Polar Site Sub-Workflow Below Here
       # @ Build Polar Site
       - build-polar-site:
           executor: large

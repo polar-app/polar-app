@@ -831,14 +831,10 @@ export const [DocRepoStoreProvider, useDocRepoStore, useDocRepoCallbacks, useDoc
 
 DocRepoStoreProvider.displayName='DocRepoStoreProvider';
 
-interface IProps {
-    readonly children: JSX.Element;
-}
-
 /**
  * Once the provider is in place, we load the repo which uses the observer store.
  */
-const DocRepoStoreLoader = React.memo(function DocRepoStoreLoader(props: IProps) {
+const DocRepoStoreLoader: React.FC = React.memo(function DocRepoStoreLoader(props) {
 
     const repoDocMetaLoader = useRepoDocMetaLoader();
     const repoDocMetaManager = useRepoDocMetaManager();
@@ -874,7 +870,7 @@ const DocRepoStoreLoader = React.memo(function DocRepoStoreLoader(props: IProps)
 
 });
 
-export const DocRepoStore2 = React.memo((props: IProps) => {
+export const DocRepoStore2: React.FC = React.memo((props) => {
 
     return (
         <DocRepoStoreProvider>

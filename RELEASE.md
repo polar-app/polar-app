@@ -4,7 +4,7 @@ Instructions for doing releases.
 
 # Requirements
 
-## Install lerna 
+## Install lerna
 
 Must be installed globally because it has its own dependencies and will break node_modules otherwise.
 
@@ -17,7 +17,7 @@ sudo npm install -g lerna
 ## Increment version
 
 ```bash
-npm run-script dist-version
+yarn run dist-version
 ```
 
 ## Publish
@@ -25,7 +25,7 @@ npm run-script dist-version
 Used for publishing new versions of packages.
 
 ```bash
-npm run-script dist-release-publish
+yarn run dist-release-publish
 ```
 
 ## Webapp
@@ -33,45 +33,44 @@ npm run-script dist-release-publish
 In the root of polar-app run:
 
 ```bash
-npm run-script dist-release-webapp
+yarn run dist-release-webapp
 ```
 
 ## MacOS
 
 ```bash
-npm run-script dist-release-macos
+yarn run dist-release-macos
 ```
 
 ## Windows
 
 ```bash
-npm run-script dist-release-win
+yarn run dist-release-win
 ```
 
 ## Linux
 
 ```bash
-npm run-script dist-release-linux
+yarn run dist-release-linux
 ```
 
 # NPM Targets
 
 ## dist-prepare
 
-Does a git clean, makes sure there are no excess files, then pulls down most recent version of code from all modules. 
+Does a git clean, makes sure there are no excess files, then pulls down most recent version of code from all modules.
 
 ## dist-build
 
 Removes node-modules, does lerna bootstrap, does full build, etc
 
-
 ## TODO
 
-- credentials.sh seems to need to be run BEFORE I do the relase which makes no sense ... 
+- credentials.sh seems to need to be run BEFORE I do the relase which makes no sense ...
 
 - remove the git clean, etc. in polar-bookshelf/scripts/dist-release.sh
 
-    "git clean -f -d && git reset --hard HEAD && git pull && npm install && npm run-script dist-${target}"
+  "git clean -f -d && git reset --hard HEAD && git pull && npm install && yarn run dist-${target}"
 
 # Build Env
 
@@ -88,7 +87,7 @@ https://github.com/nodesource/distributions/blob/master/README.md#deb
 curl -sL https://deb.nodesource.com/setup_12.x | bash -
 apt-get install -y nodejs
 
-apt-get install git 
+apt-get install git
 apt-get install jq
 
 ```
@@ -101,7 +100,7 @@ install the latest docker-ci for the windows builds here.
 
 ### Snapcraft
 
-Snaps must be installed via the classic mode and must be via snap or the package 
+Snaps must be installed via the classic mode and must be via snap or the package
 is too old
 
 ```bash
@@ -109,12 +108,9 @@ snap install snapcraft --classic
 ```
 
 # Basic Packages
+
 apt-get install jq nc
-
-
 
 tme4wAZMnKS4ByEfrUl4UfH62dm2
 
 ravi.saive82@gmail.com
-
-

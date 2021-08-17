@@ -11,6 +11,7 @@ import {IDStr} from "polar-shared/src/util/Strings";
 import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 import {TDocumentChangeType} from "polar-firestore-like/src/IDocumentChange";
 import {TOrderByDirection} from "./IQuery";
+
 import {TWhereFilterOp} from "polar-firestore-like/src/ICollectionReference";
 
 export namespace Collections {
@@ -19,7 +20,44 @@ export namespace Collections {
         readonly type: TDocumentChangeType;
         readonly value: T;
     }
+    export interface CollectionReferenceLike {
+        doc(documentPath: string): DocumentReferenceLike;
+        where(fieldPath: string, opStr: WhereFilterOpLike, value: any): QueryLike;
+        limit(size: number): QueryLike;
+    }
+    export interface QuerySnapshotLike {
+        readonly docs: QueryDocumentSnapshotLike[];
+    }
+    export interface DocumentSnapshotLike {
+        readonly exists: boolean;
+        data(): DocumentDataLike | undefined;
+    }
+    export interface QueryDocumentSnapshotLike {
+        data(): DocumentDataLike;
+        get(fieldPath: string): any;
+    }
+    export interface SetOptionsLike {
+        readonly merge?: boolean;
+    }
+    export type WhereFilterOpLike = '<' | '<=' | '==' | '>=' | '>' | 'array-contains';
 
+    export type DocumentDataLike = {[field: string]: any};
+
+    export interface QueryLike {
+        get(): Promise<QuerySnapshotLike>;
+        where(fieldPath: string, opStr: WhereFilterOpLike, value: any): QueryLike;
+        limit(limit: number): QueryLike;
+        offset(offset: number): QueryLike;
+        orderBy(fieldPath: string, directionStr?: TOrderByDirection): QueryLike;
+        startAt(...fieldValues: any[]): QueryLike;
+        startAfter(...fieldValues: any[]): QueryLike;
+        endAt(...fieldValues: any[]): QueryLike;
+        endBefore(...fieldValues: any[]): QueryLike;
+    }
+    export interface DocumentReferenceLike {
+        get(): Promise<DocumentSnapshotLike>;
+        set(data: DocumentDataLike, options?: SetOptionsLike): Promise<any>;
+    }
     export interface QueryOpts {
 
         /**
@@ -59,7 +97,8 @@ export namespace Collections {
         readonly limit?: number;
         readonly offset?: number;
         readonly startAfter?: any[];
-        readonly startAt?: any[];
+        readonly startAt?: string;
+        readonly endBefore?: string;
         readonly orderBy?: ReadonlyArray<OrderByClause>;
     }
 
@@ -187,7 +226,20 @@ export namespace Collections {
         return query;
 
     }
-    
+    /**
+     * Query snapshot but only for changed documents.
+     */
+    export function onQuerySnapshot<T>(firestore: IFirestoreClient,collection: string, clauses: ReadonlyArray<Clause>, delegate: (records: ReadonlyArray<T>) => void, errHandler: QuerySnapshotErrorHandler = DefaultQuerySnapshotErrorHandler): SnapshotUnsubscriber {
+
+        const query = createQuery(firestore, collection, clauses);
+
+        return query.onSnapshot(snapshot => {
+            delegate(snapshot.docs.map(current => <T> current.data()));
+        }, err => {
+            errHandler(err, collection, clauses);
+        });
+
+    }
     /**
      * Query snapshot but only for changed documents.
      */
@@ -214,6 +266,29 @@ export namespace Collections {
             errHandler(err, collection, clauses);
         });
 
+
+    }
+    export function onDocumentSnapshot<T>(firestore: IFirestoreClient, collection: string, id: string, delegate: (record: T | undefined) => void, errHandler: SnapshotErrorHandler = DefaultSnapshotErrorHandler): SnapshotUnsubscriber {
+
+        const ref = firestore.collection(collection).doc(id);
+
+        return ref.onSnapshot(snapshot => {
+
+            const toValue = () => {
+
+                if (snapshot.exists) {
+                    return <T> snapshot.data();
+                }
+
+                return undefined;
+
+            };
+
+            delegate(toValue());
+
+        }, err => {
+            errHandler(err, collection);
+        });
 
     }
 
@@ -278,7 +353,7 @@ export namespace Collections {
             if(batch){
                 batch.delete(doc);
             } else{
-                this.doDelete(firestore, collection, record.id);
+                await doDelete(firestore, collection, record.id);
             }
 
         }
@@ -301,12 +376,6 @@ export namespace Collections {
         return firstRecord(collection, fields, results);
 
     }
-    //
-    //
-    //
-    // public collection() {
-    //     return this.firestore.collection(this.name);
-    // }
 
     export async function iterate<T, SM = unknown>(firestore: IFirestore<SM>, collection: string, clauses: ReadonlyArray<Clause>, opts: IterateOpts = {}): Promise<Cursor<T>> {
 

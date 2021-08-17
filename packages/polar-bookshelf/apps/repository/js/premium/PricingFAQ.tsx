@@ -51,6 +51,10 @@ export const PricingFAQ = React.memo(function PricingFAQ() {
                 Yes.  Please reach out pricing for universities, corporations, etc.
             </p>
 
+            <h3>
+                What is your Privacy Policy and Terms of Service?
+            </h3>
+
         </div>
     );
 

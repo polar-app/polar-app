@@ -1,8 +1,8 @@
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
-const IS_NODE = typeof window === 'undefined';
+const IS_NODE = typeof window === 'undefined' || process.env.NODE_ENV === 'test';
 
-type DeviceIDStr = string;
+export type DeviceIDStr = string;
 
 export namespace DeviceIDManager {
     const LOCAL_STORAGE_KEY = "device_id";

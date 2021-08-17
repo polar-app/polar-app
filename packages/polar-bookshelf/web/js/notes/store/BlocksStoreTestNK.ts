@@ -22,6 +22,7 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {WriteController, WriteFileProgress} from "../../datastore/Datastore";
 import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
+import {DeviceIDManager} from "../../../../../polar-app-public/polar-shared/src/util/DeviceIDManager";
 
 function assertTextBlock(content: BlockContent): asserts content is MarkdownContent | NameContent {
 
@@ -206,6 +207,7 @@ describe('BlocksStore', function() {
                 "102": {
                     "_content": {
                         "_data": "World War II",
+                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "_type": "name",
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
@@ -225,8 +227,9 @@ describe('BlocksStore', function() {
                 "103": {
                     "_content": {
                         "_data": "[Lasted](https://www.example.com) from 1939 to 1945",
-                        "_type": "markdown",
                         "_links": [],
+                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                        "_type": "markdown",
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "103",
@@ -244,8 +247,9 @@ describe('BlocksStore', function() {
                 "104": {
                     "_content": {
                         "_data": "Axis Powers: Germany, Italy, Japan",
+                        "_links": [],
+                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "_type": "markdown",
-                        "_links": []
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "104",
@@ -263,7 +267,6 @@ describe('BlocksStore', function() {
                 "105": {
                     "_content": {
                         "_data": "Allied Powers: United States, United Kingdom, [[Canada]], [[Russia]].",
-                        "_type": "markdown",
                         "_links": [
                             {
                                 "id": "109",
@@ -274,6 +277,8 @@ describe('BlocksStore', function() {
                                 "text": "Russia"
                             }
                         ],
+                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                        "_type": "markdown",
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "105",
@@ -293,13 +298,14 @@ describe('BlocksStore', function() {
                 "106": {
                     "_content": {
                         "_data": "Lead by Franklin D. Roosevelt, [[Winston Churchill]], and Joseph Stalin ",
-                        "_type": "markdown",
                         "_links": [
                             {
                                 "id": "112",
                                 "text": "Winston Churchill"
                             }
-                        ]
+                        ],
+                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                        "_type": "markdown",
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "106",
@@ -320,6 +326,7 @@ describe('BlocksStore', function() {
                 "107": {
                     "_content": {
                         "_data": "Germany",
+                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "_type": "name",
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
@@ -337,6 +344,7 @@ describe('BlocksStore', function() {
                 "108": {
                     "_content": {
                         "_data": "Russia",
+                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "_type": "name",
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
@@ -352,6 +360,7 @@ describe('BlocksStore', function() {
                 "109": {
                     "_content": {
                         "_data": "Canada",
+                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "_type": "name",
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
@@ -369,13 +378,14 @@ describe('BlocksStore', function() {
                 "110": {
                     "_content": {
                         "_data": "Germany Germany (German: Deutschland, German pronunciation: [ˈdɔʏtʃlant]), officially the Federal Republic of Germany (German: Bundesrepublik Deutschland, About this soundlisten),[e] is a country in Central and Western Europe and one of the major participants of [[World War II]]",
-                        "_type": "markdown",
                         "_links": [
                             {
                                 "id": "102",
                                 "text": "World War II"
                             }
                         ],
+                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                        "_type": "markdown",
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "110",
@@ -393,8 +403,9 @@ describe('BlocksStore', function() {
                 "111": {
                     "_content": {
                         "_data": "Canada is north of the United States",
-                        "_type": "markdown",
                         "_links": [],
+                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                        "_type": "markdown",
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_id": "111",
@@ -412,6 +423,7 @@ describe('BlocksStore', function() {
                 "112": {
                     "_content": {
                         "_data": "Winston Churchill",
+                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "_type": "name",
                     },
                     "_created": "2012-03-02T11:38:49.321Z",
@@ -433,9 +445,10 @@ describe('BlocksStore', function() {
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_updated": "2012-03-02T11:38:49.321Z",
                     "_content": {
-                        "_type": 'markdown',
                         "_data": 'Some random markdown',
                         "_links": [],
+                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                        "_type": 'markdown',
                     },
                     "_items": {},
                     "_uid": "123",
@@ -451,9 +464,10 @@ describe('BlocksStore', function() {
                     "_updated": "2012-03-02T11:38:49.321Z",
                     "_uid": "123",
                     "_content": {
-                        "_type": 'markdown',
                         "_data": 'Nested child with links [[Winston]]',
                         "_links": [{ id: '112', text: 'Winston' }],
+                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                        "_type": 'markdown',
                     },
                     "_items": {
                         [PositionalArrays.generateKey(1)]: "118"
@@ -473,6 +487,7 @@ describe('BlocksStore', function() {
                         "_type": 'markdown',
                         "_data": 'Deeply nested child',
                         "_links": [],
+                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
                     },
                     "_items": {},
                     "_mutation": 0,
@@ -486,8 +501,9 @@ describe('BlocksStore', function() {
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_updated": "2012-03-02T11:38:49.321Z",
                     "_content": {
-                        "_type": 'name',
                         "_data": 'Image parent',
+                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                        "_type": 'name',
                     },
                     "_items":  PositionalArrays.create([
                         '114image',
@@ -506,6 +522,7 @@ describe('BlocksStore', function() {
                     "_updated": "2012-03-02T11:38:49.321Z",
                     "_content": {
                         "_type": 'image',
+                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "_src": 'https://google.com',
                         "_naturalHeight": 100,
                         "_naturalWidth": 100,
@@ -525,9 +542,10 @@ describe('BlocksStore', function() {
                     "_created": "2012-03-02T11:38:49.321Z",
                     "_updated": "2012-03-02T11:38:49.321Z",
                     "_content": {
-                        "_type": 'markdown',
                         "_data": '',
+                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "_links": [],
+                        "_type": 'markdown',
                     },
                     "_items": {}, 
                     "_mutation": 0,
@@ -727,6 +745,7 @@ describe('BlocksStore', function() {
             assertJSON(store.getBlockForMutation('102')?.toJSON(),{
                 "content": {
                     "data": "World War II",
+                    "mutator": DeviceIDManager.TEST_DEVICE_ID,
                     "type": "name",
                 },
                 "created": "2012-03-02T11:38:49.321Z",
@@ -753,7 +772,8 @@ describe('BlocksStore', function() {
             assertJSON(store.getBlockForMutation('102')?.toJSON(), {
                 "content": {
                     "data": "World War II",
-                    "type": "name"
+                    "mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "type": "name",
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "102",
@@ -772,8 +792,9 @@ describe('BlocksStore', function() {
             assertJSON(store.getBlockForMutation(indentResult[0].value!)?.toJSON(), {
                 "content": {
                     "data": "[Lasted](https://www.example.com) from 1939 to 1945",
-                    "type": "markdown",
                     "links": [],
+                    "mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "type": "markdown",
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "103",
@@ -809,7 +830,8 @@ describe('BlocksStore', function() {
             assertJSON(store.getBlockForMutation('102')?.toJSON(),{
                 "content": {
                     "data": "World War II",
-                    "type": "name"
+                    "type": "name",
+                    "mutator": DeviceIDManager.TEST_DEVICE_ID,
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "102",
@@ -831,8 +853,9 @@ describe('BlocksStore', function() {
             assertJSON(store.getBlockForMutation('104')?.toJSON(), {
                 "content": {
                     "data": "Axis Powers: Germany, Italy, Japan",
-                    "type": "markdown",
                     "links": [],
+                    "mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "type": "markdown",
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "104",
@@ -853,8 +876,9 @@ describe('BlocksStore', function() {
             assertJSON(store.getBlockForMutation('104')?.toJSON(), {
                 "content": {
                     "data": "Axis Powers: Germany, Italy, Japan",
-                    "type": "markdown",
                     "links": [],
+                    "mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "type": "markdown",
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "104",
@@ -877,8 +901,9 @@ describe('BlocksStore', function() {
             assertJSON(store.getBlockForMutation('104')?.toJSON(),{
                 "content": {
                     "data": "Axis Powers: Germany, Italy, Japan",
-                    "type": "markdown",
                     "links": [],
+                    "mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "type": "markdown",
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "104",
@@ -897,7 +922,8 @@ describe('BlocksStore', function() {
             assertJSON(store.getBlockForMutation('102')?.toJSON(), {
                 "content": {
                     "data": "World War II",
-                    "type": "name"
+                    "mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "type": "name",
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "102",
@@ -1096,7 +1122,8 @@ describe('BlocksStore', function() {
         assertJSON(Arrays.first(Object.values(store.index))?.toJSON(), {
             "content": {
                 "data": "World War II",
-                "type": "name"
+                "mutator": DeviceIDManager.TEST_DEVICE_ID,
+                "type": "name",
             },
             "created": "2012-03-02T11:38:49.321Z",
             "id": "102",
@@ -1502,6 +1529,29 @@ describe('BlocksStore', function() {
         });
     });
 
+    describe("renameBlock", () => {
+        it("Should allow renaming a block of type \"name\"", () => {
+            const id = '102';
+            const store = createStore();
+            const oldName = (store.getBlock(id) as Block<NameContent>).content.data;
+
+            store.renameBlock(id, 'New Name');
+
+            const block = store.getBlock(id);
+            assertPresent(block);
+            const content = block.content
+            assertTextBlock(content);
+
+            assert.equal(content.data, 'New Name');
+
+            // Check if the new name got properly inserted into the index
+            assert.isOk(store.indexByName[content.data.toLowerCase()], "The new name should be in indexByName");
+
+            // Check if the old name got removed.
+            assert.isUndefined(store.indexByName[oldName.toLowerCase()], "The old name should be removed from indexByName");
+        });
+    });
+
     describe("mergeBlocks", () => {
 
         it("Merge empty first child with named block root", () => {
@@ -1561,8 +1611,9 @@ describe('BlocksStore', function() {
             assertJSON(store.getBlockForMutation('103')?.toJSON(), {
                 "content": {
                     "data": "[Lasted](https://www.example.com) from 1939 to 1945Axis Powers: Germany, Italy, Japan",
-                    "type": "markdown",
                     "links": [],
+                    "mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "type": "markdown",
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "103",
@@ -1715,7 +1766,8 @@ describe('BlocksStore', function() {
                 assertJSON(block.toJSON(), {
                     "content": {
                         "data": "World War II",
-                        "type": "name"
+                        "mutator": DeviceIDManager.TEST_DEVICE_ID,
+                        "type": "name",
                     },
                     "created": "2012-03-02T11:38:49.321Z",
                     "id": "102",
@@ -1741,7 +1793,8 @@ describe('BlocksStore', function() {
                 assertJSON(block?.toJSON(),{
                     "content": {
                         "data": "World War Two",
-                        "type": "name"
+                        "mutator": DeviceIDManager.TEST_DEVICE_ID,
+                        "type": "name",
                     },
                     "created": "2012-03-02T11:38:49.321Z",
                     "id": "102",
@@ -1805,7 +1858,8 @@ describe('BlocksStore', function() {
             assertJSON(block?.toJSON(), {
                 "content": {
                     "data": "World War II",
-                    "type": "name"
+                    "mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "type": "name",
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "102",
@@ -1837,7 +1891,8 @@ describe('BlocksStore', function() {
             assertJSON(block?.toJSON(),{
                 "content": {
                     "data": "World War II",
-                    "type": "name"
+                    "mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    "type": "name",
                 },
                 "created": "2012-03-02T11:38:49.321Z",
                 "id": "102",
@@ -1954,6 +2009,7 @@ describe('BlocksStore', function() {
                 assertJSON(blocksStore.getBlockForMutation('102')?.toJSON(), {
                     "content": {
                         "data": "World War II",
+                        "mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "type": "name",
                     },
                     "created": "2012-03-02T11:38:49.321Z",
@@ -1989,8 +2045,9 @@ describe('BlocksStore', function() {
                 assertJSON(blocksStore.getBlockForMutation('104')?.toJSON(), {
                     "content": {
                         "data": "Axis ",
-                        "type": "markdown",
                         "links": [],
+                        "mutator": DeviceIDManager.TEST_DEVICE_ID,
+                        "type": "markdown",
                     },
                     "created": "2012-03-02T11:38:49.321Z",
                     "id": "104",
@@ -2009,8 +2066,9 @@ describe('BlocksStore', function() {
                 assertJSON(blocksStore.getBlockForMutation(createdBlock!.id)?.toJSON(), {
                     "content": {
                         "data": "Powers: Germany, Italy, Japan",
-                        "type": "markdown",
                         "links": [],
+                        "mutator": DeviceIDManager.TEST_DEVICE_ID,
+                        "type": "markdown",
                     },
                     "created": "2012-03-02T11:38:49.321Z",
                     "id": createdBlock!.id,

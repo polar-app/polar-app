@@ -11,7 +11,7 @@ npm install
 gulp dist
 # change the version to add a -polar.x version number
 vi build/dist/package.json
-# then publish to bytesafe... 
+# then publish to verdaccio...
 npm publish
 ```
 
@@ -26,21 +26,19 @@ npm publish
 gulp dist
 ```
 
-To push this version go to 
+To push this version go to
 
-build/dist 
-
+build/dist
 
 cd /tmp
-https://github.com/burtonator/package-polar-pdfjs-dist.git 
+https://github.com/burtonator/package-polar-pdfjs-dist.git
 git clone git fetch --unshallow upstream
 git init
-git add * 
+git add \*
 git commit -m "new build"
 git push --force
 
-
-...  first remove all the files in the tmp dir
+... first remove all the files in the tmp dir
 ... then commit that
 then add the new ones
 then commit and push that
@@ -50,8 +48,8 @@ then commit and push that
 
 - added the following localStorage prefs we can set:
 
-pdfjs.canvas.background         null
-pdfjs.canvas.strokeStyle        #ffffff
-pdfjs.canvas.fillStyle          #ffffff
-pdfjs.canvas.fillColor          #ffffff
-pdfjs.canvas.strokeColor        #ffffff
+pdfjs.canvas.background null
+pdfjs.canvas.strokeStyle #ffffff
+pdfjs.canvas.fillStyle #ffffff
+pdfjs.canvas.fillColor #ffffff
+pdfjs.canvas.strokeColor #ffffff

@@ -1,10 +1,10 @@
 {
   "name": "polar-google-cloud-language",
-  "version": "2.1.90",
+  "version": "2.1.93",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npm run-script mocha",
+    "test": "yarn run mocha",
     "mocha": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "karma": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
     "compile": "tsc"

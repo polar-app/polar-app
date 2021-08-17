@@ -1,14 +1,14 @@
 {
   "name": "polar",
   "description": "General information, support, and downloads for the polar app",
-  "version": "2.1.90",
+  "version": "2.1.93",
   "author": "Will Kendall / Jonathan Graeupner / Myles <wpk235@gmail.com>",
   "private": true,
   "scripts": {
     "build": "gatsby build",
     "clean-dev": "gatsby clean && gatsby develop",
-    "dist": "npm run-script clean && gatsby build",
-    "dist-release": "npm run-script dist && firebase deploy",
+    "dist": "yarn run clean && gatsby build",
+    "dist-release": "yarn run dist && firebase deploy",
     "build-deploy-dev": "gatsby clean && gatsby build && firebase deploy && gatsby develop",
     "prune-dev": "npm prune && gatsby develop",
     "develop": "gatsby develop",
@@ -17,7 +17,7 @@
     "serve": "gatsby serve --port=8000",
     "clean": "gatsby clean && find src/pages/images -name '*.jsx' -exec rm '{}' ';'",
     "get-release": "curl -s https://api.github.com/repos/burtonator/polar-bookshelf/releases/latest |jq -r .name | xargs printf \"export const POLAR_RELEASE = '%s';\n\" > src/components/release.ts",
-    "prebuild": "npm run-script get-release"
+    "prebuild": "yarn run get-release"
   },
   "dependencies": {
     "@material-ui/core": "=4.11.3",
@@ -44,8 +44,8 @@
     "ink": "=3.0.8",
     "ink-box": "=1.0.0",
     "pngquant-bin": "=6.0.0",
-    "polar-bookshelf": "^2.1.90",
-    "polar-shared": "^2.1.90",
+    "polar-bookshelf": "^2.1.93",
+    "polar-shared": "^2.1.93",
     "react": "=16.14.0",
     "react-dom": "=16.14.0",
     "react-helmet": "=6.1.0",
