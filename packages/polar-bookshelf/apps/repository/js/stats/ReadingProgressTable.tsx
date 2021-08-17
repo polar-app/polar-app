@@ -117,7 +117,7 @@ export const ReadingProgressTable = (props: IProps) => {
             </div>
 
             <div className="p-1 pl-5 pr-5 mr-auto ml-auto"
-                 style={{height: '100%', width: '800px'}}>
+                 style={{height: '100%'}}>
 
                 <p className="text-muted">
                     The number of pages read per day.  This is computed by using

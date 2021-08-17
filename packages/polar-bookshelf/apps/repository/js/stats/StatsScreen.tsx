@@ -131,14 +131,17 @@ const Desktop = (props: ReviewerProps) => {
     return (
         <div style={{
                  display: 'flex',
+                 flexDirection: 'column',
                  flexGrow: 1,
                  minWidth: 0,
                  minHeight: 0,
+                 paddingBottom: 20,
                  overflowY: 'auto',
              }}>
 
             <div style={{
                      maxWidth: '1200px',
+                     width: '100%',
                      marginLeft: 'auto',
                      marginRight: 'auto',
                      flexGrow: 1,
