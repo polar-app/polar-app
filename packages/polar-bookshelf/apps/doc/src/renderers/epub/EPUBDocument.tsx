@@ -138,7 +138,7 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
 
     const finder = useEPUBFindController();
     const epubResizer = useEPUBResizer();
-    const epubZoom = useEPubZoom()
+    const epubZoom = useEPubZoom();
     const log = useLogger();
     const sectionRef = React.useRef<Section | undefined>(undefined);
     const stylesheet = useStylesheetURL();
@@ -193,12 +193,9 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
 
         });
 
-
-        const {handleScale, setScaling} = epubZoom
         const scaleLeveler = (scale: ScaleLevelTuple) => {
-            setScaling(scale)
-            return handleScale()
-        }
+            return epubZoom.handleScale(scale)
+        };
         setScaleLeveler(scaleLeveler);
 
         function createResizer(): Resizer {
@@ -559,33 +556,28 @@ function useEPUBResizer() {
 }
 
 function useEPubZoom() {
-    const [scale, setScaling] = React.useState<ScaleLevelTuple>({label: 'page fit', value: 'page-fit'})
     const docViewerElements = useDocViewerElementsContext();
-    const isPageFit = scale.value === 'page-fit'
 
-    const handleScale = React.useCallback(() => {
-        const setScale = () => {
-            const iframe = docViewerElements.getDocViewerElement().querySelector(".epub-view iframe") as HTMLIFrameElement
+    const handleScale = React.useCallback((scale: ScaleLevelTuple) => {
+        const iframe = docViewerElements.getDocViewerElement().querySelector(".epub-view iframe") as HTMLIFrameElement
 
-            if (iframe?.contentDocument && !isPageFit) {
-                iframe.contentDocument.body.style.fontSize = `${Number(scale.value) * 100}%`
-                const images = iframe.contentDocument.querySelectorAll('img')
-                const items: HTMLImageElement[] = Array.prototype.slice.call(images)
+        const isPageFit = scale.value === 'page-fit';
+        if (iframe?.contentDocument && !isPageFit) {
+            iframe.contentDocument.body.style.fontSize = `${Number(scale.value) * 100}%`
+            const images = iframe.contentDocument.querySelectorAll('img')
+            const items: HTMLImageElement[] = Array.prototype.slice.call(images)
 
-                items.forEach((item) => {
-                    item.setAttribute('style', 'max-width: none !important')
-                    const newWidth = item.clientWidth * Number(scale.value)
-                    const newHeight = item.clientHeight * Number(scale.value)
-                    item.style.width = `${newWidth}px`
-                    item.style.height = `${newHeight}px`
-                })
-            }
-
-            return Number(scale.value)
+            items.forEach((item) => {
+                item.setAttribute('style', 'max-width: none !important')
+                const newWidth = item.clientWidth * Number(scale.value)
+                const newHeight = item.clientHeight * Number(scale.value)
+                item.style.width = `${newWidth}px`
+                item.style.height = `${newHeight}px`
+            })
         }
 
-        return setScale();
-    }, [docViewerElements, scale, isPageFit])
-    handleScale()
-    return {setScaling, handleScale}
+        return isPageFit ? 1 : +scale.value;
+    }, [docViewerElements])
+
+    return {handleScale};
 }
