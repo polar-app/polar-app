@@ -4,6 +4,7 @@ import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {Logger} from "polar-shared/src/logger/Logger";
 import {Lazy} from "../util/Lazy";
 import {Customer, IAccount} from "polar-firebase/src/firebase/om/AccountCollection";
+import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 const firebase = Lazy.create(() => FirebaseAdmin.app());
 const firestore = Lazy.create(() => firebase().firestore());
@@ -70,7 +71,8 @@ export namespace Accounts {
     export async function changePlanViaEmail(email: string | undefined | null,
                                              customer: Customer,
                                              plan: Billing.Plan,
-                                             interval: Billing.Interval) {
+                                             interval: Billing.Interval,
+                                             expiresAt?: ISODateTimeString) {
 
         if (!email) {
             throw new Error("Customer has no email address");
@@ -89,6 +91,10 @@ export namespace Accounts {
             interval,
             customer
         };
+
+        if (expiresAt) {
+            account.expiresAt = expiresAt;
+        }
 
         await Accounts.write(account);
 

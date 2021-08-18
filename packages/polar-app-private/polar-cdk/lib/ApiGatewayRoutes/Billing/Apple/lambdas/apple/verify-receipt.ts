@@ -1,5 +1,5 @@
 import {default as fetch} from "node-fetch";
-import getFirebaseAdminApp from "../../../../../shared/getFirebaseAdminApp";
+import {Firebase} from "polar-admin/Firebase";
 
 interface VerifyReceiptRequest {
     email: string,
@@ -99,7 +99,7 @@ export const handler = async (event: {
     const originalTransactionId = latestTransaction.original_transaction_id;
 
     // Store a mapping of this subscription ID and the email that purchased it, for easier retrieval later
-    const ref = getFirebaseAdminApp()
+    const ref = Firebase.getApp()
         .firestore()
         .collection('apple_iap_subscription_to_email_map')
         .doc(originalTransactionId);

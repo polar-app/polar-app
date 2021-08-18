@@ -1,7 +1,8 @@
-import getFirebaseAdminApp from "../../../../../../shared/getFirebaseAdminApp";
-import {Account} from "./types/Account";
+import {Customer} from "polar-firebase/src/firebase/om/AccountCollection";
+import {Accounts} from "polar-hooks-functions/impl/stripe/Accounts";
+import {Billing} from "polar-accounts/src/Billing";
 
-export default async function changePlanForEmail(changePlanConfig: {
+interface ChangePlanConfig {
     // Email of the customer
     email: string,
 
@@ -15,44 +16,23 @@ export default async function changePlanForEmail(changePlanConfig: {
 
     // Unix timestamp after which the Plan should be no longer considered active
     expiresAt?: number,
-}) {
-    const firebaseAdminApp = getFirebaseAdminApp();
+}
 
+export default async function changePlanForEmail(changePlanConfig: ChangePlanConfig) {
     const email = changePlanConfig.email;
 
-    // Find the User from the Firebase Authentication service
-    const user = await firebaseAdminApp.auth().getUserByEmail(email);
-
-    const account: Account = {
-        id: user.uid,
-        uid: user.uid,
-        email,
-        plan: {
-            level: changePlanConfig.productId,
-            ver: "v2",
-        },
-
-        // Interval is fixed to "monthly" because it's configured on the App Store
-        // and can't be changed through parameters
-        interval: 'month',
-
-        customer: {
-            type: changePlanConfig.paymentMethod ?? 'apple_iap',
-            customerID: changePlanConfig.customerId,
-        },
-
-        lastModified: new Date().toISOString(),
+    const customer: Customer = {
+        type: changePlanConfig.paymentMethod ?? 'apple_iap',
+        customerID: changePlanConfig.customerId,
     };
+    const plan: Billing.Plan = {
+        level: changePlanConfig.productId,
+        ver: "v2",
+    };
+    const interval: Billing.Interval = 'month';
+    const expiresAt = changePlanConfig.expiresAt
+        ? new Date(changePlanConfig.expiresAt * 1000).toISOString()
+        : undefined;
 
-    if (changePlanConfig.expiresAt) {
-        account.expiresAt = new Date(changePlanConfig.expiresAt * 1000).toISOString();
-    }
-
-    const ref = firebaseAdminApp.firestore()
-        .collection('account')
-        .doc(account.id);
-
-    const writeResult = await ref.set(account);
-
-    return writeResult.writeTime.toMillis() > 0;
+    await Accounts.changePlanViaEmail(email, customer, plan, interval, expiresAt);
 }
