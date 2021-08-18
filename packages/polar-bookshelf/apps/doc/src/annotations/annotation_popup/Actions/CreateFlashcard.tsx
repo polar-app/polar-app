@@ -8,6 +8,10 @@ import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {FlashcardTypeSelector} from "../../../../../../web/js/annotation_sidebar/child_annotations/flashcards/flashcard_input/FlashcardTypeSelector";
 import {getDefaultFlashcardType} from "../../../../../../web/js/annotation_sidebar/child_annotations/flashcards/flashcard_input/FlashcardInput";
 import {IAnnotationPopupActionProps} from "../AnnotationPopupActions";
+import {MUITooltip} from "../../../../../../web/js/mui/MUITooltip";
+import IconButton from "@material-ui/core/IconButton";
+import {Ranges} from "../../../../../../web/js/highlights/text/selection/Ranges";
+import {ClozeDeletions} from "../../../../../../web/js/annotation_sidebar/child_annotations/flashcards/flashcard_input/ClozeDeletions";
 
 type BasicFrontBackForm = {
     front: string;
@@ -55,11 +59,58 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
     }, [createFlashcard, annotation, clear, dialogs, flashcardType]);
 
     const footer = (
-        <FlashcardTypeSelector
-            flashcardType={flashcardType}
-            onChangeFlashcardType={(type) => setFlashcardType(type as CreatableFlashcardType)} />
-    );
+        <div >
+            <FlashcardTypeSelector
+                flashcardType={flashcardType}
+                onChangeFlashcardType={(type) => setFlashcardType(type as CreatableFlashcardType)} />
 
+            {flashcardType === FlashcardType.CLOZE &&
+                <MUITooltip title="Create cloze deletion for text">
+                    <IconButton onClick={() => onClozeDelete()}>
+                        […]
+                    </IconButton>
+                </MUITooltip>
+            }
+        </div>
+    );
+    function onClozeDelete(): void { // make to a hook or HOF
+            // TODO: don't use the top level window but get it from the proper
+            // event
+            const sel = window.getSelection();
+
+            if (!sel) {
+            return;
+        }
+
+        const range = sel.getRangeAt(0);
+
+        const textNodes = Ranges.getTextNodes(range);
+
+        if (textNodes.length === 0) {
+            return;
+        }
+
+        // compute the next close ID from the text
+        const c = ClozeDeletions.next(fields.text);
+
+        const prefix = document.createTextNode(`{{c${c}::`);
+        const suffix = document.createTextNode('}}');
+
+        const firstNode = textNodes[0];
+        const lastNode = textNodes[textNodes.length - 1];
+
+        firstNode.parentNode!.insertBefore(prefix, firstNode);
+        lastNode.parentNode!.insertBefore(suffix, lastNode.nextSibling);
+
+        sel.removeAllRanges();
+
+        this.fields.text = this.richTextMutator!.currentValue();
+
+        // TODO this improperly sets the focus by moving the cursor to the
+        // beginning
+        this.richTextMutator!.focus();
+
+    }
     return (
         <SimpleInputForm<ClozeForm | BasicFrontBackForm>
             key={flashcardType}

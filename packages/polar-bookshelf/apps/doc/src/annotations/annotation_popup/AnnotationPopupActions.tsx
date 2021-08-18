@@ -14,6 +14,7 @@ import {CreateAIFlashcard} from "./Actions/CreateAIFlashcard";
 import {EditTags} from "./Actions/EditTags";
 import {DeleteAnnotation} from "./Actions/DeleteAnnotation";
 import {ANNOTATION_COLOR_SHORTCUT_KEYS} from "./AnnotationPopupShortcuts";
+import {IDStr} from "polar-shared/src/util/Strings";
 
 
 export type IAnnotationPopupActionProps = {
