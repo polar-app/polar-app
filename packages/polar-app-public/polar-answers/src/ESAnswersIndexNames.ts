@@ -1,4 +1,5 @@
 import {NamespaceIDStr} from "polar-blocks/src/blocks/IBlock";
+import {Base16} from "polar-shared/src/util/Base16";
 
 /**
  * Compute index names when a namespace is created or when we need get the index
@@ -6,7 +7,7 @@ import {NamespaceIDStr} from "polar-blocks/src/blocks/IBlock";
  */
 export namespace ESAnswersIndexNames {
 
-    const PREFIX = 'answers-ft-digest-';
+    const PREFIX = 'answers_ft_digest_';
 
     /**
      * Compute the index name for a user.
@@ -14,7 +15,7 @@ export namespace ESAnswersIndexNames {
      * @param id The namespace ID.
      */
     export function createForUserNotes(uid: string, id: NamespaceIDStr) {
-        return PREFIX + uid + '-notes-' +  + '-' + id;
+        return PREFIX + Base16.encode(uid) + '_notes_' +  + '_' + id;
     }
 
     /**
@@ -22,7 +23,7 @@ export namespace ESAnswersIndexNames {
      * @param uid The UID that owns this index.
      */
     export function createForUserDocs(uid: string) {
-        return PREFIX + uid + '-docs';
+        return PREFIX + Base16.encode(uid) + '_docs';
     }
 
 }

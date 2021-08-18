@@ -36,6 +36,7 @@ export namespace ESShingleWriter {
 
         const indexName = ESAnswersIndexNames.createForUserDocs(uid)
 
+        // const indexName = 'test';
         await ESRequests.doPut(`/${indexName}/_doc/${digestID}`, record);
 
     }
