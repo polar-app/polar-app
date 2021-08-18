@@ -16,6 +16,7 @@ import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
 import {Block} from "./store/Block";
 import {useLinkNavigationClickHandler} from "./NoteUtils";
+import {BlockDocumentContent} from "./blocks/BlockDocumentContent";
 
 export interface BlockEditorGenericProps {
     readonly id: BlockIDStr;
@@ -161,14 +162,14 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
     }
 
     if (block.content.type === "image") {
-        const {width, height, src} = block.content;
+        const { width, height, src } = block.content;
         return (
             <BlockImageContent id={id}
                                parent={parent}
                                width={width}
+                               height={height}
                                style={style}
                                className={className}
-                               height={height}
                                src={src}
                                innerRef={ref}
                                onClick={onClick}
@@ -177,7 +178,20 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
         );
     }
 
-    return null;
+    if (block.content.type === "document") {
+        const { docInfo } = block.content;
+        return (
+            <BlockDocumentContent
+                id={id}
+                parent={parent}
+                className={className}
+                style={style}
+                docInfo={docInfo}
+            />
+        );
+    }
+
+    return <div>Unsupported block type</div>;
 });
 
 const NoteEditorWithEditorStore = observer(function NoteEditorWithEditorStore(props: IProps) {
