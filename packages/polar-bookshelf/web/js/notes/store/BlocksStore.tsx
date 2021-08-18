@@ -40,12 +40,12 @@ import {BlockContentCanonicalizer} from "../contenteditable/BlockContentCanonica
 import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
+import {DocumentContent} from "../content/DocumentContent";
+import {AnnotationContent} from "../content/AnnotationContent";
 
 export const ENABLE_UNDO_TRACING = false;
 
 export type BlockNameStr = string;
-
-export type BlockType = 'name' | 'markdown' | 'image' | 'date';
 
 export type ActiveBlocksIndex = {[id: string /* BlockIDStr */]: IActiveBlock };
 export type BlocksIndex = {[id: string /* BlockIDStr */]: Block};
@@ -55,7 +55,14 @@ export type ReverseBlocksIndex = {[id: string /* BlockIDStr */]: BlockIDStr[]};
 
 export type StringSetMap = {[key: string]: boolean};
 
-export type BlockContent = (MarkdownContent | NameContent | ImageContent | DateContent) & IBaseBlockContent;
+export type BlockContent = (MarkdownContent
+                            | NameContent
+                            | ImageContent
+                            | DateContent
+                            | DocumentContent
+                            | AnnotationContent) & IBaseBlockContent;
+
+export type BlockType = BlockContent['type'];
 
 export type NamedBlock = Block<NameContent | DateContent>;
 
