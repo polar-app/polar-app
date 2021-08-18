@@ -330,7 +330,7 @@ export const SideNav = React.memo(function SideNav() {
                             <NotesButton/>
                         </FeatureToggle>
 
-                        {Devices.isDesktop() && <StatsButton/>}
+                        <DeviceRouter desktop={<StatsButton/>} />
 
                         {tabs.length > 0 && (
                             <SideNavDivider/>
@@ -352,8 +352,7 @@ export const SideNav = React.memo(function SideNav() {
                     </div>
                 </ZenModeActiveContainer>
                 <Divider orientation="vertical" />
-                {!Devices.isDesktop() &&
-                    <div id="sidenav-sidecar" style={{ flex: 1 }} />}
+                <DeviceRouter handheld={<div id="sidenav-sidecar" style={{ flex: 1 }} />} />
             </div>
         </>
     );

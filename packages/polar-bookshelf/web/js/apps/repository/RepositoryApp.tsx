@@ -63,6 +63,7 @@ import {RoutePathnames} from './RoutePathnames';
 import {CSSTransition} from "react-transition-group";
 import {withMobilePopup} from "../../mui/MobilePopup";
 import {Intercom} from "./integrations/Intercom";
+import {DeviceRouter} from "../../ui/DeviceRouter";
 
 interface IProps {
     readonly app: App;
@@ -362,7 +363,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
 
                                 </Switch>
 
-                                {Devices.isDesktop() && <SharedRoutes />}
+                                <DeviceRouter desktop={<SharedRoutes />} />
                             </RouteContainer>
                         </div>
 
@@ -379,7 +380,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                 </PersistenceLayerContext.Provider>
                             </Route>
 
-                            {! Devices.isDesktop() && <SharedRoutes />}
+                            <DeviceRouter handheld={<SharedRoutes />} />
 
                         </Switch>
                     </DataProviders>
