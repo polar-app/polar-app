@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {createStyles, Divider, makeStyles, Theme} from '@material-ui/core';
+import {createStyles, makeStyles, Theme} from '@material-ui/core';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {IDocInfo} from 'polar-shared/src/metadata/IDocInfo';
 import {PersistenceLayerManager} from '../../datastore/PersistenceLayerManager';
-import {BrowserRouter, Route, RouteProps, Switch} from 'react-router-dom';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {RepoDocMetaManager} from '../../../../apps/repository/js/RepoDocMetaManager';
 import {RepoDocMetaLoader} from '../../../../apps/repository/js/RepoDocMetaLoader';
 import WhatsNewScreen
@@ -40,7 +40,7 @@ import {UseLocationChangeRoot} from "../../../../apps/doc/src/annotations/UseLoc
 import {PHZMigrationScreen} from './migrations/PHZMigrationScreen';
 import {AddFileDropzoneRoot} from './upload/AddFileDropzoneRoot';
 import {LogsScreen} from "../../../../apps/repository/js/logs/LogsScreen";
-import {PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
+import {FeatureToggle, PrefsContext2} from "../../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {LoginWithCustomTokenScreen} from "../../../../apps/repository/js/login/LoginWithCustomTokenScreen";
 import {WelcomeScreen} from "./WelcomeScreen";
 import {AccountDialogScreen} from "../../ui/cloud_auth/AccountDialogScreen";
@@ -332,7 +332,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                             <Initializers />
                             <SideNav />
 
-                            <Intercom></Intercom>
+                            <Intercom />
 
                             <RouteContainer>
 
@@ -355,8 +355,10 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                     <Route exact path={RoutePathnames.ENABLE_FEATURE_TOGGLE}
                                            component={EnableFeatureToggle}/>
 
-                                    <Route path={RoutePathnames.NOTES}
-                                           component={NotesScreen}/>
+                                    <FeatureToggle featureName="notes-enabled">
+                                        <Route path={RoutePathnames.NOTES}
+                                               component={NotesScreen}/>
+                                    </FeatureToggle>
 
                                     <Route path="/hello-ssr"
                                            component={HelloServerSideRender}/>

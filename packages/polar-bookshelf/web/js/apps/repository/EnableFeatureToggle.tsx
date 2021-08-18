@@ -27,7 +27,7 @@ export const EnableFeatureToggle = () => {
             console.warn("No feature to toggle: ");
         }
 
-    })
+    }, [featureToggler]);
 
     return (
         <LinearProgress />
