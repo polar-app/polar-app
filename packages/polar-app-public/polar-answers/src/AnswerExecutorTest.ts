@@ -3,6 +3,8 @@ import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 
 xdescribe("AnswerExecutor", async function() {
 
+    this.timeout(60000);
+
     it("basic", async function() {
 
         const app = FirebaseAdmin.app()
@@ -12,7 +14,7 @@ xdescribe("AnswerExecutor", async function() {
 
         const response = await AnswerExecutor.exec({
             uid: user.uid,
-            question: "What is Bigtable?"
+            question: "Does Bigtable support a full relational model?"
         });
 
         console.log(response);
