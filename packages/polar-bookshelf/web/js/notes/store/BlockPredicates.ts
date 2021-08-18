@@ -24,6 +24,6 @@ export namespace BlockPredicates {
     }
 
     export function isNamedBlock(block: Readonly<Block>): block is NamedBlock {
-        return ['date', 'name'].indexOf(block.content.type) > -1;
+        return ['date', 'name', 'document'].indexOf(block.content.type) > -1;
     }
 }

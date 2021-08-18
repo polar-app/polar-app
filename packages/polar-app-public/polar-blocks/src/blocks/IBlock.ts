@@ -36,6 +36,10 @@ export type IBlockContent = IMarkdownContent
                             | IDocumentContent
                             | IAnnotationContent;
 
+export type IBlockNamedContent = INameContent
+                                 | IDateContent
+                                 | IDocumentContent;
+
 export interface IBlockLink {
 
     /**

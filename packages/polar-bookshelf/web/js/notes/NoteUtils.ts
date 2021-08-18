@@ -1,5 +1,5 @@
 import React from "react";
-import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {BlockIDStr, IBlockNamedContent} from "polar-blocks/src/blocks/IBlock";
 import {NamedBlock, useBlocksStore} from "./store/BlocksStore";
 import {IBlocksStore} from "./store/IBlocksStore";
 import {autorun} from "mobx";
@@ -10,12 +10,24 @@ import {useHistory} from "react-router";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {BlockPredicates} from "./store/BlockPredicates";
 import { RoutePathnames } from "../apps/repository/RoutePathnames";
+import {DocInfos} from "../metadata/DocInfos";
 
+// TODO: move this into BlocksStore
 export const focusFirstChild = (blocksStore: IBlocksStore, id: BlockIDStr) => {
     const root = blocksStore.getBlock(id);
-    if (root) {
+    if (root && root.content.type !== "document") {
         const firstChildID = root.itemsAsArray[0] || blocksStore.createNewBlock(root.id, { asChild: true }).id;
         blocksStore.setActiveWithPosition(firstChildID, 'start');
+    }
+};
+
+export const getNamedContentName = (content: IBlockNamedContent): string => {
+    switch (content.type) {
+        case 'date':
+        case 'name':
+            return content.data;
+        case 'document':
+            return DocInfos.bestTitle(content.docInfo);
     }
 };
 
@@ -59,7 +71,7 @@ export const useNoteWikiLinkCreator = () => {
         const targetBlock = blocksStore.getBlock(link.id);
 
         if (targetBlock && BlockPredicates.isNamedBlock(targetBlock)) {
-            return targetBlock.content.data;
+            return getNamedContentName(targetBlock.content);
         }
 
         return null;
