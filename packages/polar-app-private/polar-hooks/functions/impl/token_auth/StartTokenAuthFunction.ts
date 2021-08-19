@@ -6,6 +6,8 @@ import {Mailgun} from "../Mailgun";
 import {AuthChallengeCollection} from "polar-firebase/src/firebase/om/AuthChallengeCollection";
 import IAuthChallenge = AuthChallengeCollection.IAuthChallenge;
 import {AuthChallengeFixedCollection} from "polar-firebase/src/firebase/om/AuthChallengeFixedCollection";
+import {FirestoreAdminClient} from "@google-cloud/firestore/types/v1/firestore_admin_client";
+import { FirestoreAdmin } from "polar-firebase-admin/src/FirestoreAdmin";
 
 export interface IStartTokenAuthRequest {
     readonly email: string;
@@ -38,7 +40,8 @@ interface IChallengeWithParts {
 
 export async function createOrFetchChallenge(email: EmailStr): Promise<IChallenge> {
 
-    const fixed = await AuthChallengeFixedCollection.get(email);
+    const firestore = FirestoreAdmin.getInstance();
+    const fixed = await AuthChallengeFixedCollection.get(firestore, email);
 
     if (fixed) {
         return {challenge: fixed.challenge};
@@ -133,7 +136,8 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
         // TODO: the challenges should expire.
         const challenge = await createOrFetchChallenge(email)
 
-        await AuthChallengeCollection.write(email, challenge.challenge)
+        const firestore = FirestoreAdmin.getInstance();
+        await AuthChallengeCollection.write(firestore, email, challenge.challenge)
 
         const provider = 'sendgrid';
 
@@ -149,7 +153,8 @@ export const StartTokenAuthFunction = ExpressFunctions.createHookAsync('StartTok
 
     async function resendMessage() {
 
-        const challenge = await AuthChallengeCollection.get(email);
+        const firestore = FirestoreAdmin.getInstance();
+        const challenge = await AuthChallengeCollection.get(firestore, email);
 
         if (! challenge) {
             throw new Error("No previous challenge sent");
