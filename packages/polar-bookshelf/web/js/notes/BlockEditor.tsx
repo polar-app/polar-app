@@ -17,6 +17,8 @@ import {MarkdownContentConverter} from "./MarkdownContentConverter";
 import {Block} from "./store/Block";
 import {useLinkNavigationClickHandler} from "./NoteUtils";
 import {BlockDocumentContent} from "./blocks/BlockDocumentContent";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {BlockAnnotationContent} from "./blocks/BlockAnnotationContent/BlockAnnotationContent";
 
 export interface BlockEditorGenericProps {
     readonly id: BlockIDStr;
@@ -179,7 +181,9 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
     }
 
     if (block.content.type === "document") {
+
         const { docInfo } = block.content;
+
         return (
             <BlockDocumentContent
                 id={id}
@@ -189,6 +193,26 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
                 docInfo={docInfo}
             />
         );
+
+    }
+
+    if (block.content.type === AnnotationContentType.TEXT_HIGHLIGHT
+        || block.content.type === AnnotationContentType.AREA_HIGHLIGHT
+        || block.content.type === AnnotationContentType.COMMENT
+        || block.content.type === AnnotationContentType.FLASHCARD) {
+
+        const content = block.content;
+
+        return (
+            <BlockAnnotationContent
+                id={id}
+                parent={parent}
+                className={className}
+                style={style}
+                annotation={content}
+            />
+        );
+
     }
 
     return <div>Unsupported block type</div>;
