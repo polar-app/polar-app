@@ -121,10 +121,10 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
                                         </IconButton>
 
                                             <FormControl variant="outlined" size="small">
-                                                <Select value={zoomValue}
+                                                <Select value={zoomValue} style={{ width: '120px', textAlign:'center' }}
                                                         onChange={event => handleScaleChange(event.target.value as ScaleLevel)}>
                                                     {zoomValue === "custom" &&
-                                                        <MenuItem disabled value="custom">
+                                                        <MenuItem disabled value="custom" >
                                                             {(+docScale.scale.value * 100).toFixed(2)}%
                                                             &nbsp;(Custom)
                                                         </MenuItem>
