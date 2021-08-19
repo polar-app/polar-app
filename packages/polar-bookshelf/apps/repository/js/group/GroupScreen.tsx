@@ -52,16 +52,16 @@ export class GroupScreen extends React.Component<IProps, IState> {
 
             const groupDocInfos = await GroupDocInfos.list(group.id);
 
-            const userGroup = await UserGroupCollection.get();
-
-            this.setState({
-                ...this.state,
-                groupData: {
-                    id: group.id,
-                    group,
-                    groupDocInfos,
-                    userGroup
-                }});
+            // const userGroup = await UserGroupCollection.get();
+            //
+            // this.setState({
+            //     ...this.state,
+            //     groupData: {
+            //         id: group.id,
+            //         group,
+            //         groupDocInfos,
+            //         userGroup
+            //     }});
 
         };
 

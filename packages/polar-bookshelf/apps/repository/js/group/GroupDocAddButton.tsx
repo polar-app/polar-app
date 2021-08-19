@@ -51,32 +51,32 @@ export class GroupDocAddButton extends React.PureComponent<IProps, IState> {
 
         const handler = async () => {
 
-            // TODO: needed for 2.0 when we turn on groups again
-            // await AuthHandlers.requireAuthentication();
-
-            const {groupID, fingerprint} = this.props;
-
-            Toaster.info("Adding document to your document repository...");
-
-            const docRefs = await GroupDocCollection.getByFingerprint(groupID, fingerprint);
-
-            if (docRefs.length === 0) {
-                Toaster.error("No group docs to add");
-                return;
-            }
-
-            const docRef = docRefs[0];
-
-            const groupDocRef: GroupDocRef = {
-                groupID,
-                docRef
-            };
-
-            const persistenceLayer = this.props.persistenceLayerProvider();
-
-            await GroupDatastores.importFromGroup(persistenceLayer, groupDocRef);
-
-            Toaster.success("Adding document to your document repository...done");
+            // // TODO: needed for 2.0 when we turn on groups again
+            // // await AuthHandlers.requireAuthentication();
+            //
+            // const {groupID, fingerprint} = this.props;
+            //
+            // Toaster.info("Adding document to your document repository...");
+            //
+            // const docRefs = await GroupDocCollection.getByFingerprint(groupID, fingerprint);
+            //
+            // if (docRefs.length === 0) {
+            //     Toaster.error("No group docs to add");
+            //     return;
+            // }
+            //
+            // const docRef = docRefs[0];
+            //
+            // const groupDocRef: GroupDocRef = {
+            //     groupID,
+            //     docRef
+            // };
+            //
+            // const persistenceLayer = this.props.persistenceLayerProvider();
+            //
+            // await GroupDatastores.importFromGroup(persistenceLayer, groupDocRef);
+            //
+            // Toaster.success("Adding document to your document repository...done");
 
         };
 

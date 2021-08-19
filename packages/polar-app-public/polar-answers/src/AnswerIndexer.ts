@@ -1,8 +1,7 @@
-import {IDStr, URLStr} from "polar-shared/src/util/Strings";
+import {IDStr, URLStr, UserIDStr} from "polar-shared/src/util/Strings";
 import {PDFText} from "polar-pdf/src/pdf/PDFText";
 import {SentenceShingler} from "./SentenceShingler";
 import {ESShingleWriter} from "./ESShingleWriter";
-import {UserIDStr} from "polar-bookshelf/web/js/datastore/sharing/db/Collections";
 
 export namespace AnswerIndexer {
 

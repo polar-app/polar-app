@@ -1,7 +1,6 @@
 import {ESRequests} from "./ESRequests";
 import {SentenceShingler} from "./SentenceShingler";
-import {IDStr} from "polar-shared/src/util/Strings";
-import {UserIDStr} from "polar-bookshelf/web/js/datastore/sharing/db/Collections";
+import {IDStr, UserIDStr} from "polar-shared/src/util/Strings";
 import {ESAnswersIndexNames} from "./ESAnswersIndexNames";
 
 export namespace ESShingleWriter {

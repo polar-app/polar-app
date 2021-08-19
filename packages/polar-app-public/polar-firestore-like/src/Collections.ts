@@ -9,10 +9,10 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {IDStr} from "polar-shared/src/util/Strings";
 
 import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
-import {TDocumentChangeType} from "polar-firestore-like/src/IDocumentChange";
+import {TDocumentChangeType} from "./IDocumentChange";
 import {TOrderByDirection} from "./IQuery";
 
-import {TWhereFilterOp} from "polar-firestore-like/src/ICollectionReference";
+import {TWhereFilterOp} from "./ICollectionReference";
 
 export namespace Collections {
 
@@ -243,7 +243,11 @@ export namespace Collections {
     /**
      * Query snapshot but only for changed documents.
      */
-    export function onQuerySnapshotChanges<T = unknown>(firestore: IFirestoreClient,collection: string, clauses: ReadonlyArray<Clause>, delegate: (records: ReadonlyArray<DocumentChangeValue<T>>) => void, errHandler: QuerySnapshotErrorHandler = DefaultQuerySnapshotErrorHandler): SnapshotUnsubscriber {
+    export function onQuerySnapshotChanges<T, SM = unknown>(firestore: IFirestore<SM>,
+                                                            collection: string,
+                                                            clauses: ReadonlyArray<Clause>,
+                                                            delegate: (records: ReadonlyArray<DocumentChangeValue<T>>) => void,
+                                                            errHandler: QuerySnapshotErrorHandler = DefaultQuerySnapshotErrorHandler): SnapshotUnsubscriber {
 
         const query = createQuery(firestore, collection, clauses);
 
@@ -295,13 +299,13 @@ export namespace Collections {
     function snapshotToRecords<T, SM = unknown>(snapshot: IQuerySnapshot<SM>) {
         return snapshot.docs.map(current => <T> current.data());
     }
- 
+
     export function createRef<SM>(firestore: IFirestore<SM>, collection: string, id: string) {
         const ref = firestore.collection(collection).doc(id);
         return ref;
     }
 
-    export async function list<T, SM = unknown>(firestore: IFirestore<SM>, collection: string, clauses: ReadonlyArray<Clause>, opts: ListOpts = {}): Promise<ReadonlyArray<T>> {
+    export async function list<T>(firestore: IFirestore<unknown>, collection: string, clauses: ReadonlyArray<Clause>, opts: ListOpts = {}): Promise<ReadonlyArray<T>> {
 
         const query = createQuery(firestore, collection, clauses, opts);
 
@@ -327,7 +331,7 @@ export namespace Collections {
 
     export async function getByFieldValue<T, SM = unknown>(firestore: IFirestore<SM>, collection: string, field: string, value: ValueType): Promise<T | undefined> {
 
-        const results = await list<T, SM>(firestore, collection, [[field, '==', value]]);
+        const results = await list<T>(firestore, collection, [[field, '==', value]]);
         return firstRecord<T>(collection, [field], results);
 
     }
@@ -349,7 +353,7 @@ export namespace Collections {
             const doc = firestore.collection(collection)
                                  .doc(record.id);
 
-            
+
             if(batch){
                 batch.delete(doc);
             } else{

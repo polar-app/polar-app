@@ -5,6 +5,7 @@ import { Hashcodes } from "polar-shared/src/util/Hashcodes";
 import {isPresent, Preconditions} from "polar-shared/src/Preconditions";
 import { UserRecord } from "firebase-functions/lib/providers/auth";
 import {AuthChallengeCollection} from "polar-firebase/src/firebase/om/AuthChallengeCollection";
+import { FirestoreAdmin } from "polar-firebase-admin/src/FirestoreAdmin";
 
 export interface IVerifyTokenAuthRequest {
     readonly email: string;
@@ -54,7 +55,8 @@ export const VerifyTokenAuthFunction = ExpressFunctions.createHookAsync('VerifyT
     Preconditions.assertPresent(email, 'email');
     Preconditions.assertPresent(challenge, 'challenge');
 
-    const authChallenge = await AuthChallengeCollection.get(email);
+    const firestore = FirestoreAdmin.getInstance();
+    const authChallenge = await AuthChallengeCollection.get(firestore, email);
 
     async function sendError(response: IVerifyTokenAuthResponseError) {
         console.error("Could not handle authentication: ", response);
