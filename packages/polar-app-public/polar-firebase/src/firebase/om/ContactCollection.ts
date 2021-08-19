@@ -2,8 +2,7 @@ import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Collections} from "polar-firestore-like/src/Collections";
 import {EmailStr, UserIDStr} from "polar-shared/src/util/Strings";
 import DocumentChange = Collections.DocumentChangeValue;
-import { IFirestore } from 'polar-firestore-like/src/IFirestore';
-
+import {IFirestore} from 'polar-firestore-like/src/IFirestore';
 
 export class ContactCollection {
 
@@ -14,7 +13,7 @@ export class ContactCollection {
     }
 
     public static async onSnapshot<SM = unknown>(firestore: IFirestore<SM>, uid: UserIDStr, delegate: (records: ReadonlyArray<DocumentChange<Contact>>) => void) {
-        return Collections.onQuerySnapshotChanges<SM>(firestore, this.COLLECTION, [['uid' , '==', uid]], delegate);
+        return Collections.onQuerySnapshotChanges<Contact, SM>(firestore, this.COLLECTION, [['uid' , '==', uid]], delegate);
     }
 
     /**

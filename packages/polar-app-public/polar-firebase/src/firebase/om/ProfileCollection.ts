@@ -12,7 +12,11 @@ import { Dictionaries } from 'polar-shared/src/util/Dictionaries';
 import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
 import {ProfileOwnerCollection} from "./ProfileOwnerCollection";
 import {IGetOptions} from "polar-firestore-like/src/IGetOptions";
-import {DocumentReferences, CacheFirstThenServerGetOptions} from "polar-firestore-like/src/DocumentReferences";
+import {
+    DocumentReferences,
+    CacheFirstThenServerGetOptions,
+    IGetOptionsWithOrder
+} from "polar-firestore-like/src/DocumentReferences";
 
 export interface IProfileInit {
 
@@ -108,10 +112,14 @@ export namespace ProfileCollection {
         return [id, doc];
     }
 
-    export async function getWithOpts(firestore: IFirestore<unknown>, id: ProfileIDStr, opts: IGetOptions = {}): Promise<IProfile | undefined> {
+    export async function getWithOpts(firestore: IFirestore<unknown>,
+                                      id: ProfileIDStr,
+                                      opts: IGetOptionsWithOrder = {}): Promise<IProfile | undefined> {
+
         const [_, ref] = await doc(firestore, id);
         const docRef = await DocumentReferences.get(ref, opts);
         return <IProfile> docRef.data();
+
     }
 
     export async function getByUserID(firestore: IFirestore<unknown>, uid: UserIDStr): Promise<IProfile | undefined> {
@@ -188,10 +196,10 @@ export namespace ProfileCollection {
 
     export async function currentProfile(firestore: IFirestore<unknown>,
                                          uid: UserIDStr,
-                                         opts: IGetOptions = new CacheFirstThenServerGetOptions()): Promise<IProfile | undefined> {
+                                         opts: IGetOptionsWithOrder = new CacheFirstThenServerGetOptions()): Promise<IProfile | undefined> {
 
 
-        const profileOwner = await ProfileOwnerCollection.get(uid, opts);
+        const profileOwner = await ProfileOwnerCollection.get(firestore, uid, opts);
 
         if (! profileOwner) {
             // getting their user from the database and writing it back out...

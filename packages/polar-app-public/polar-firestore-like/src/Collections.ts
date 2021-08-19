@@ -243,7 +243,11 @@ export namespace Collections {
     /**
      * Query snapshot but only for changed documents.
      */
-    export function onQuerySnapshotChanges<SM = unknown>(firestore: IFirestore<SM>,collection: string, clauses: ReadonlyArray<Clause>, delegate: (records: ReadonlyArray<DocumentChangeValue<SM>>) => void, errHandler: QuerySnapshotErrorHandler = DefaultQuerySnapshotErrorHandler): SnapshotUnsubscriber {
+    export function onQuerySnapshotChanges<T, SM = unknown>(firestore: IFirestore<SM>,
+                                                            collection: string,
+                                                            clauses: ReadonlyArray<Clause>,
+                                                            delegate: (records: ReadonlyArray<DocumentChangeValue<T>>) => void,
+                                                            errHandler: QuerySnapshotErrorHandler = DefaultQuerySnapshotErrorHandler): SnapshotUnsubscriber {
 
         const query = createQuery(firestore, collection, clauses);
 
@@ -252,7 +256,7 @@ export namespace Collections {
             const changes = snapshot.docChanges().map(current => {
 
                 const type = current.type;
-                const value = <SM> current.doc.data();
+                const value = <T> current.doc.data();
                 return {
                     type,
                     value

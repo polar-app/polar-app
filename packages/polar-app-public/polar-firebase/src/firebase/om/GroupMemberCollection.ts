@@ -21,7 +21,7 @@ export class GroupMemberCollection {
                                                  groupID: GroupIDStr,
                                                  delegate: (records: ReadonlyArray<DocumentChange<GroupMember>>) => void) {
 
-        return Collections.onQuerySnapshotChanges<SM>(firestore, this.COLLECTION, [['groupID' , '==', groupID]], delegate);
+        return Collections.onQuerySnapshotChanges<GroupMember, SM>(firestore, this.COLLECTION, [['groupID' , '==', groupID]], delegate);
 
     }
 
