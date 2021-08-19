@@ -87,7 +87,7 @@ commands:
 
       # ! Hoist all Dependencies
       - run:
-          name: yarn bootstrap
+          name: lerna bootstrap
           no_output_timeout: 30m
           command: |
             npm config set legacy-peer-deps true
