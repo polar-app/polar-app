@@ -10,7 +10,7 @@ import {IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
 import {IDateContent} from "polar-blocks/src/blocks/content/IDateContent";
 import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
 import {DocumentContent} from "./DocumentContent";
-import {IAnnotationContentType,
+import {AnnotationContentType,
         IAreaHighlightAnnotationContent,
         ICommentAnnotationContent,
         IFlashcardAnnotationContent,
@@ -37,13 +37,13 @@ export namespace Contents {
             case "document":
                 return new DocumentContent(opts as IDocumentContent) as C;
 
-            case IAnnotationContentType.AREA_HIGHLIGHT:
+            case AnnotationContentType.AREA_HIGHLIGHT:
                 return new AreaHighlightAnnotationContent(opts as IAreaHighlightAnnotationContent) as C;
-            case IAnnotationContentType.TEXT_HIGHLIGHT:
+            case AnnotationContentType.TEXT_HIGHLIGHT:
                 return new TextHighlightAnnotationContent(opts as ITextHighlightAnnotationContent) as C;
-            case IAnnotationContentType.COMMENT:
+            case AnnotationContentType.COMMENT:
                 return new CommentAnnotationContent(opts as ICommentAnnotationContent) as C;
-            case IAnnotationContentType.FLASHCARD:
+            case AnnotationContentType.FLASHCARD:
                 return new FlashcardAnnotationContent(opts as IFlashcardAnnotationContent) as C;
         }
 
