@@ -2,7 +2,6 @@ import React from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import SendIcon from '@material-ui/icons/Send';
 import DeleteIcon from '@material-ui/icons/Delete';
 import TitleIcon from '@material-ui/icons/Title';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
