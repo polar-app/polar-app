@@ -91,11 +91,11 @@ commands:
 
       # ! Hoist all Dependencies
       - run:
-          name: Lerna Bootstrap
+          name: yarn bootstrap
           no_output_timeout: 30m
           command: |
             npm config set legacy-peer-deps true
-            npx lerna bootstrap --ci
+            yarn bootstrap
 
       # ! Compile all Typescript Packages
       - run:
