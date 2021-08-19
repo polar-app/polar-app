@@ -17,7 +17,7 @@
     "polar-test": "^2.1.95",
     "tslint": "6.1.2",
     "typescript": "=4.2.3",
-    "polar-firebase-admin": "^2.1.94"
+    "polar-firebase-admin": "^2.1.95"
   },
   "dependencies": {
     "@google-cloud/language": "=4.2.5",
