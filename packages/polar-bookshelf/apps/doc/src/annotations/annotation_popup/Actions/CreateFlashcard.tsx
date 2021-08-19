@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef} from "react";
 import {useAnnotationPopup} from "../AnnotationPopupContext";
 import {useAnnotationMutationsContext} from "../../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {useDialogManager} from "../../../../../../web/js/mui/dialogs/MUIDialogControllers";
@@ -10,7 +10,6 @@ import {getDefaultFlashcardType} from "../../../../../../web/js/annotation_sideb
 import {IAnnotationPopupActionProps} from "../AnnotationPopupActions";
 import {MUITooltip} from "../../../../../../web/js/mui/MUITooltip";
 import IconButton from "@material-ui/core/IconButton";
-import {Ranges} from "../../../../../../web/js/highlights/text/selection/Ranges";
 import {ClozeDeletions} from "../../../../../../web/js/annotation_sidebar/child_annotations/flashcards/flashcard_input/ClozeDeletions";
 
 type BasicFrontBackForm = {
@@ -21,6 +20,7 @@ type BasicFrontBackForm = {
 type ClozeForm = {
     text: string;
 };
+
 
 type FormTypes = InputOptions<BasicFrontBackForm> | InputOptions<ClozeForm>;
 
@@ -33,11 +33,12 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
     const dialogs = useDialogManager();
     const [flashcardType, setFlashcardType] = React.useState<CreatableFlashcardType>(() => getDefaultFlashcardType());
     const createFlashcard = annotationMutations.createFlashcardCallback(annotation);
+    const clozeRef = useRef<HTMLInputElement>(null);
 
-    const inputs = React.useMemo<FormTypes>(() => {
+    const [inputs, setInputs]= React.useState<FormTypes>(() => {
         if (flashcardType === FlashcardType.CLOZE) {
             return {
-                text: { placeholder: "Cloze text", rows: 3, initialValue: annotation.text },
+                text: { placeholder: "Cloze text", rows: 3, initialValue: annotation.text, ref: clozeRef},
             };
         } else {
             return {
@@ -45,7 +46,7 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
                 back: { placeholder: "Back", rows: 2, initialValue: annotation.text },
             };
         }
-    }, [annotation, flashcardType]);
+    });
 
     const onSubmit = React.useCallback((data: ClozeForm | BasicFrontBackForm) => {
         createFlashcard({
@@ -66,50 +67,38 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
 
             {flashcardType === FlashcardType.CLOZE &&
                 <MUITooltip title="Create cloze deletion for text">
-                    <IconButton onClick={() => onClozeDelete()}>
+                    <IconButton onMouseDown={onMouseDownHandler}>
                         […]
                     </IconButton>
                 </MUITooltip>
             }
         </div>
     );
-    function onClozeDelete(): void { // make to a hook or HOF
-            // TODO: don't use the top level window but get it from the proper
-            // event
-            const sel = window.getSelection();
-
-            if (!sel) {
+    function onMouseDownHandler(event: React.MouseEvent){
+        onClozeDelete();
+        event.stopPropagation();
+        event.preventDefault();
+    }
+    function onClozeDelete(): void {
+         if(!clozeRef.current || !clozeRef.current.selectionStart || !clozeRef.current.selectionEnd ){
             return;
-        }
-
-        const range = sel.getRangeAt(0);
-
-        const textNodes = Ranges.getTextNodes(range);
-
-        if (textNodes.length === 0) {
-            return;
-        }
-
+         }
         // compute the next close ID from the text
-        const c = ClozeDeletions.next(fields.text);
+        const c = ClozeDeletions.next(clozeRef.current.value);
+        const text = clozeRef.current.value;
+        const clozedText = text.slice(clozeRef.current.selectionStart, clozeRef.current.selectionEnd);
 
-        const prefix = document.createTextNode(`{{c${c}::`);
-        const suffix = document.createTextNode('}}');
+        const firstSection = text.slice(0, clozeRef.current.selectionStart);
 
-        const firstNode = textNodes[0];
-        const lastNode = textNodes[textNodes.length - 1];
+        const newValue = `{{c${c}::${clozedText}}}`;
 
-        firstNode.parentNode!.insertBefore(prefix, firstNode);
-        lastNode.parentNode!.insertBefore(suffix, lastNode.nextSibling);
+        const secondSection = text.slice(clozeRef.current.selectionEnd);
 
-        sel.removeAllRanges();
-
-        this.fields.text = this.richTextMutator!.currentValue();
-
-        // TODO this improperly sets the focus by moving the cursor to the
-        // beginning
-        this.richTextMutator!.focus();
-
+        setInputs({text:
+                            { placeholder: "Cloze text", rows: 3,
+                            initialValue: firstSection + newValue + secondSection, ref: clozeRef}
+                }
+            );
     }
     return (
         <SimpleInputForm<ClozeForm | BasicFrontBackForm>
