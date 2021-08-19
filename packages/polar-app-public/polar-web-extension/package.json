@@ -25,6 +25,7 @@
     "polar-react": "^2.1.95",
     "polar-shared": "^2.1.95",
     "polar-web-extension-api": "^2.1.95",
+    "polar-firebase-browser": "^2.1.95",
     "readability": "0.2.0-polar.2"
   },
   "devDependencies": {
