@@ -31,7 +31,7 @@ export namespace AnswerExecutor {
         // calculate the short head of the result set
         const size = 100;
 
-        const esResponse: IElasticSearchResponse<IDigestDocument> = await ESRequests.doPost(`/${index}/_search`, {
+        const query = {
             "query": {
                 "query_string": {
                     "query": question,
@@ -39,7 +39,9 @@ export namespace AnswerExecutor {
                 }
             },
             size
-        });
+        };
+
+        const esResponse: IElasticSearchResponse<IDigestDocument> = await ESRequests.doPost(`/${index}/_search`, query);
 
         console.log("ES response", JSON.stringify(esResponse, null, "  "));
 
