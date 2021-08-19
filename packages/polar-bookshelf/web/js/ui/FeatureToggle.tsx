@@ -1,11 +1,11 @@
 import React from 'react';
-import {FeatureToggles} from "polar-shared/src/util/FeatureToggles";
+import {FeatureToggleLocalStorage} from "polar-shared/src/util/FeatureToggleLocalStorage";
 
 export class FeatureToggle extends React.Component<IProps, IState> {
 
     public render() {
 
-        if (FeatureToggles.get(this.props.name)) {
+        if (FeatureToggleLocalStorage.get(this.props.name)) {
             return this.props.children;
         }
 

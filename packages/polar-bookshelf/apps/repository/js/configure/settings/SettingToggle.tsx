@@ -1,7 +1,7 @@
 import {useLogger} from "../../../../../web/js/mui/MUILogger";
 import {SwitchButton} from "../../../../../web/js/ui/SwitchButton";
 import * as React from "react";
-import {FeatureToggles} from "polar-shared/src/util/FeatureToggles";
+import {FeatureToggleLocalStorage} from "polar-shared/src/util/FeatureToggleLocalStorage";
 import {MUIIconText} from "../../../../../web/js/mui/MUIIconText";
 
 export interface PrefsWriter {
@@ -44,7 +44,7 @@ export const SettingToggle = (props: IProps) => {
 
     const onChange = (value: boolean) => {
         console.log("Setting " + name);
-        FeatureToggles.set(name, value);
+        FeatureToggleLocalStorage.set(name, value);
         prefs.mark(name, value);
 
         if (props.onChange) {
