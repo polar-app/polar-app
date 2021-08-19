@@ -20,7 +20,6 @@ import SyncIcon from '@material-ui/icons/Sync';
 import {useAnkiSyncCallback} from "./AnkiSyncHook";
 import {SwitchToOpenDocumentKeyboardCommand} from "./SwitchToOpenDocumentKeyboardCommand";
 import {ZenModeActiveContainer} from "../mui/ZenModeActiveContainer";
-import {Intercom} from '../apps/repository/integrations/Intercom';
 import {SideNavQuestionButton} from './SideNavQuestionButton';
 import {VerticalDynamicScroller} from './DynamicScroller';
 import {observer} from "mobx-react-lite"
@@ -31,7 +30,7 @@ import {RoutePathnames} from '../apps/repository/RoutePathnames';
 import {debounce, Theme} from '@material-ui/core';
 import {SideNavInitializer} from './SideNavInitializer';
 import {DeviceRouter} from '../ui/DeviceRouter';
-import {FeatureToggle} from "../ui/FeatureToggle";
+import {FeatureToggle} from '../../../apps/repository/js/persistence_layer/PrefsContext2';
 
 export const SIDENAV_WIDTH = 56;
 export const SIDENAV_BUTTON_SIZE = SIDENAV_WIDTH - 10;
@@ -326,11 +325,11 @@ export const SideNav = React.memo(function SideNav() {
                         <HomeButton/>
                         <AnnotationsButton/>
 
-                        <FeatureToggle name="notes-enabled">
+                        <FeatureToggle featureName="notes-enabled">
                             <NotesButton/>
                         </FeatureToggle>
 
-                        {Devices.isDesktop() && <StatsButton/>}
+                        <DeviceRouter desktop={<StatsButton/>} />
 
                         {tabs.length > 0 && (
                             <SideNavDivider/>
@@ -352,8 +351,7 @@ export const SideNav = React.memo(function SideNav() {
                     </div>
                 </ZenModeActiveContainer>
                 <Divider orientation="vertical" />
-                {!Devices.isDesktop() &&
-                    <div id="sidenav-sidecar" style={{ flex: 1 }} />}
+                <DeviceRouter handheld={<div id="sidenav-sidecar" style={{ flex: 1 }} />} />
             </div>
         </>
     );
