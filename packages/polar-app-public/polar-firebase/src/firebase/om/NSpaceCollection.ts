@@ -1,5 +1,4 @@
 import {IDStr} from "polar-shared/src/util/Strings";
-import {EPUBGenerator} from "polar-epub-generator/src/EPUBGenerator";
 import {SlugIntlStr} from "polar-shared/src/util/Slugs";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {Collections} from "polar-firestore-like/src/Collections";
@@ -7,7 +6,7 @@ import {IWriteBatch} from "polar-firestore-like/src/IWriteBatch";
 
 export namespace NSpaceCollection {
 
-    import LangStr = EPUBGenerator.LangStr;
+    export type LangStr = string;
     export type NSpaceName = string;
 
     export interface INSpaceInit {

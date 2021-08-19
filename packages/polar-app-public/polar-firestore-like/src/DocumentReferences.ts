@@ -1,8 +1,5 @@
-import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
+import {IDocumentReference} from "./IDocumentReference";
 
-/**
- * @Deprecated use polar-firestore-like
- */
 export class DocumentReferences {
 
     /**

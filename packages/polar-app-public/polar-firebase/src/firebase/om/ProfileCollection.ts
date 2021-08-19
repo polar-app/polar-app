@@ -10,14 +10,9 @@ import {ISODateTimeString, ISODateTimeStrings} from "polar-shared/src/metadata/I
 import {Arrays} from "polar-shared/src/util/Arrays";
 import { Dictionaries } from 'polar-shared/src/util/Dictionaries';
 import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
-
-import {
-    CacheFirstThenServerGetOptions,
-    DocumentReferences,
-    GetOptions
-} from "polar-bookshelf/web/js/firebase/firestore/DocumentReferences";
-import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {ProfileOwnerCollection} from "./ProfileOwnerCollection";
+import {IGetOptions} from "polar-firestore-like/src/IGetOptions";
+import {DocumentReferences, CacheFirstThenServerGetOptions} from "polar-firestore-like/src/DocumentReferences";
 
 export interface IProfileInit {
 
@@ -113,7 +108,7 @@ export namespace ProfileCollection {
         return [id, doc];
     }
 
-    export async function getWithOpts(firestore: IFirestore<unknown>, id: ProfileIDStr, opts: GetOptions = {}): Promise<IProfile | undefined> {
+    export async function getWithOpts(firestore: IFirestore<unknown>, id: ProfileIDStr, opts: IGetOptions = {}): Promise<IProfile | undefined> {
         const [_, ref] = await doc(firestore, id);
         const docRef = await DocumentReferences.get(ref, opts);
         return <IProfile> docRef.data();
@@ -191,16 +186,12 @@ export namespace ProfileCollection {
 
     }
 
-    export async function currentProfile(firestore: IFirestore<unknown>, opts: GetOptions = new CacheFirstThenServerGetOptions()): Promise<IProfile | undefined> {
+    export async function currentProfile(firestore: IFirestore<unknown>,
+                                         uid: UserIDStr,
+                                         opts: IGetOptions = new CacheFirstThenServerGetOptions()): Promise<IProfile | undefined> {
 
-        const app = FirebaseBrowser.init();
-        const user = app.auth().currentUser;
 
-        if (! user) {
-            return undefined;
-        }
-
-        const profileOwner = await ProfileOwnerCollection.get(user!.uid, opts);
+        const profileOwner = await ProfileOwnerCollection.get(uid, opts);
 
         if (! profileOwner) {
             // getting their user from the database and writing it back out...

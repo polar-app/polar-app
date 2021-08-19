@@ -8,8 +8,6 @@ import DocumentChange = Collections.DocumentChangeValue;
 import OrderByClause = Collections.OrderByClause;
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 
-
-
 export class GroupDocCollection {
 
     public static readonly COLLECTION = 'group_doc';

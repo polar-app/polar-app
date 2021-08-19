@@ -301,7 +301,7 @@ export namespace Collections {
         return ref;
     }
 
-    export async function list<T, SM = unknown>(firestore: IFirestore<SM>, collection: string, clauses: ReadonlyArray<Clause>, opts: ListOpts = {}): Promise<ReadonlyArray<T>> {
+    export async function list<T>(firestore: IFirestore<unknown>, collection: string, clauses: ReadonlyArray<Clause>, opts: ListOpts = {}): Promise<ReadonlyArray<T>> {
 
         const query = createQuery(firestore, collection, clauses, opts);
 

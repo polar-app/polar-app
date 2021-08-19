@@ -17,13 +17,13 @@ export namespace AuthChallengeFixedCollection {
         readonly challenge: EmailStr;
     }
 
-    export async function get<SM>(firestore: IFirestore<SM>, email: EmailStr): Promise<IAuthChallengeFixed | undefined> {
+    export async function get<SM = unknown>(firestore: IFirestore<SM>, email: EmailStr): Promise<IAuthChallengeFixed | undefined> {
 
         Preconditions.assertPresent(email, 'email');
 
         const id = email;
 
-        return Collections.get(firestore, COLLECTION_NAME, id)
+        return Collections.get<IAuthChallengeFixed, SM>(firestore, COLLECTION_NAME, id)
 
     }
 

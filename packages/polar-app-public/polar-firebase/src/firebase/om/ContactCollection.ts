@@ -1,46 +1,28 @@
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {Collections} from "polar-firestore-like/src/Collections";
-import {Preconditions} from 'polar-shared/src/Preconditions';
-import {EmailStr} from "polar-shared/src/util/Strings";
-
-import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
-
+import {EmailStr, UserIDStr} from "polar-shared/src/util/Strings";
 import DocumentChange = Collections.DocumentChangeValue;
+import { IFirestore } from 'polar-firestore-like/src/IFirestore';
 
 
 export class ContactCollection {
 
     public static readonly COLLECTION = 'contact';
 
-    public static async list(): Promise<ReadonlyArray<Contact>> {
-
-        const user = await FirebaseBrowser.currentUserAsync();
-        const {uid} = Preconditions.assertPresent(user, 'user');
-        const firestore = await FirestoreBrowserClient.getInstance();
-
+    public static async list(firestore: IFirestore<unknown>, uid: UserIDStr): Promise<ReadonlyArray<Contact>> {
         return await Collections.list(firestore ,this.COLLECTION, [['uid' , '==', uid]]);
-
     }
 
-    public static async onSnapshot(delegate: (records: ReadonlyArray<DocumentChange<Contact>>) => void) {
-
-        const user = await FirebaseBrowser.currentUserAsync();
-        const {uid} = Preconditions.assertPresent(user, 'user');
-        const firestore = await FirestoreBrowserClient.getInstance();
-
-        return Collections.onQuerySnapshotChanges(firestore, this.COLLECTION, [['uid' , '==', uid]], delegate);
-
+    public static async onSnapshot<SM = unknown>(firestore: IFirestore<SM>, uid: UserIDStr, delegate: (records: ReadonlyArray<DocumentChange<Contact>>) => void) {
+        return Collections.onQuerySnapshotChanges<SM>(firestore, this.COLLECTION, [['uid' , '==', uid]], delegate);
     }
 
     /**
      * Delete all of the user contacts...
      */
-    public static async purge() {
-        const firestore = await FirestoreBrowserClient.getInstance();
+    public static async purge(firestore: IFirestore<unknown>, uid: UserIDStr) {
         const batch = firestore.batch();
-        
-        await Collections.deleteByID(firestore, this.COLLECTION, batch, () => this.list());
+        await Collections.deleteByID(firestore, this.COLLECTION, batch, () => this.list(firestore, uid));
     }
 
 }
