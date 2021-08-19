@@ -6,6 +6,7 @@ import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {createContextMenuStore} from "./MUIContextMenuStore";
 import { observer } from "mobx-react-lite"
 import {Devices} from 'polar-shared/src/util/Devices';
+import { makeStyles } from "@material-ui/core";
 
 export namespace MouseEvents {
     export function fromNativeEvent(event: MouseEvent): IMouseEvent {
@@ -217,9 +218,6 @@ export function createContextMenu<O>(MenuComponent: (props: MenuComponentProps<O
 
         }, [onContextMenu]);
 
-        // const longPressHandlers = useLongPress(onLongPress, NULL_FUNCTION);
-        // return {onContextMenu, ...longPressHandlers};
-
         return {onContextMenu};
 
     }
@@ -318,12 +316,23 @@ export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContext
         :
         { top: window.innerHeight, left: 0 };
 
+    const useStyles = makeStyles(theme => ({
+        root: { "& .MuiPopover-paper": {
+                bottom: "0",
+                width: "100%",
+                maxWidth: "100%",
+                left: "0 !important",
+            }}}));
+    const classes = useStyles();
+
     return (
         <Menu
             transitionDuration={0}
             keepMounted
+            className={ !Devices.isDesktop()? classes.root : undefined }
             anchorEl={props.anchorEl}
             open={true}
+            style={{padding:0}}
             onClose={handleClose}
             onClick={handleClose}
             BackdropProps={backdrops}
