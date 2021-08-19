@@ -2,9 +2,6 @@ import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
 import {Collections} from "polar-firestore-like/src/Collections";
 import {ProfileIDStr, GroupIDStr} from "polar-shared/src/util/Strings";
-
-import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
-
 import Clause = Collections.Clause;
 import SnapshotListener = Collections.SnapshotListener;
 import DocumentChange = Collections.DocumentChangeValue;
@@ -23,7 +20,7 @@ export class GroupDocCollection {
         return await Collections.list(firestore, this.COLLECTION, [['groupID', '==', groupID]]);
     }
 
-    public static async getByFingerprint(groupID: GroupIDStr,
+    public static async getByFingerprint<SM>(firestore: IFirestore<SM>, groupID: GroupIDStr,
                                          fingerprint: string,
                                          limit: number = 1): Promise<ReadonlyArray<GroupDoc>> {
 
@@ -36,30 +33,25 @@ export class GroupDocCollection {
             ['created', 'desc']
         ];
 
-        const firestore = await FirestoreBrowserClient.getInstance();
-
-
         return await Collections.list(firestore, this.COLLECTION, clauses, {orderBy, limit});
 
     }
 
-    public static async onSnapshot(groupID: GroupIDStr, handler: SnapshotListener<DocumentChange<GroupDoc>>) {
-        const firestore = await FirestoreBrowserClient.getInstance();
+    public static async onSnapshot<SM = unknown>(firestore: IFirestore<SM>, groupID: GroupIDStr, handler: SnapshotListener<DocumentChange<SM>>) {
 
-        return Collections.onQuerySnapshotChanges(firestore, this.COLLECTION, [['groupID', '==', groupID]], handler);
+        return Collections.onQuerySnapshotChanges<SM>(firestore, this.COLLECTION, [['groupID', '==', groupID]], handler);
     }
 
-    public static async onSnapshotForByGroupIDAndFingerprint(groupID: GroupIDStr,
+    public static async onSnapshotForByGroupIDAndFingerprint<SM = unknown>(firestore: IFirestore<SM>, groupID: GroupIDStr,
                                                              fingerprint: string,
-                                                             handler: SnapshotListener<DocumentChange<GroupDoc>> ) {
+                                                             handler: SnapshotListener<DocumentChange<SM>> ) {
 
         const clauses: Clause[] = [
             ['groupID', '==', groupID],
             ['fingerprint', '==', fingerprint],
         ];
-        const firestore = await FirestoreBrowserClient.getInstance();
 
-        return Collections.onQuerySnapshotChanges(firestore, this.COLLECTION, clauses, handler);
+        return Collections.onQuerySnapshotChanges<SM>(firestore, this.COLLECTION, clauses, handler);
 
     }
 
