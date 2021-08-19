@@ -19,7 +19,7 @@
     "mocha": "=9.0.0",
     "tslint": "6.1.2",
     "typescript": "=4.2.3",
-    "polar-test": "^2.1.94"
+    "polar-test": "^2.1.95"
   },
   "dependencies": {
     "@google-cloud/language": "=4.2.5"
