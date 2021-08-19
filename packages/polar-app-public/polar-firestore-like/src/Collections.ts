@@ -9,10 +9,10 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {IDStr} from "polar-shared/src/util/Strings";
 
 import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
-import {TDocumentChangeType} from "polar-firestore-like/src/IDocumentChange";
+import {TDocumentChangeType} from "./IDocumentChange";
 import {TOrderByDirection} from "./IQuery";
 
-import {TWhereFilterOp} from "polar-firestore-like/src/ICollectionReference";
+import {TWhereFilterOp} from "./ICollectionReference";
 
 export namespace Collections {
 
@@ -295,7 +295,7 @@ export namespace Collections {
     function snapshotToRecords<T, SM = unknown>(snapshot: IQuerySnapshot<SM>) {
         return snapshot.docs.map(current => <T> current.data());
     }
- 
+
     export function createRef<SM>(firestore: IFirestore<SM>, collection: string, id: string) {
         const ref = firestore.collection(collection).doc(id);
         return ref;
@@ -349,7 +349,7 @@ export namespace Collections {
             const doc = firestore.collection(collection)
                                  .doc(record.id);
 
-            
+
             if(batch){
                 batch.delete(doc);
             } else{

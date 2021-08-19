@@ -1,8 +1,8 @@
 import {PDFText, PDFTextWordMerger} from "./PDFText";
-import {assertJSON} from "polar-bookshelf/web/js/test/Assertions";
 import IPDFTextContent = PDFText.IPDFTextContent;
 import {assert} from 'chai';
 import IPDFTextWord = PDFTextWordMerger.IPDFTextWord;
+import { assertJSON } from "polar-test/src/test/Assertions";
 
 // TODO:
 //

@@ -1,4 +1,4 @@
-import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {Hashcodes} from "./Hashcodes";
 
 const IS_NODE = typeof window === 'undefined' || process.env.NODE_ENV === 'test';
 
@@ -27,7 +27,7 @@ export namespace DeviceIDManager {
         return deviceID;
     }
 
-    function getStoredDeviceID(): DeviceIDStr | null { 
+    function getStoredDeviceID(): DeviceIDStr | null {
         return window.localStorage.getItem(LOCAL_STORAGE_KEY);
     }
 }
