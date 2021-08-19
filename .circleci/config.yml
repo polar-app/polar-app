@@ -95,7 +95,7 @@ commands:
           no_output_timeout: 30m
           command: |
             npm config set legacy-peer-deps true
-            yarn bootstrap-ci
+            lerna bootstrap --ci && find node_modules -type l -name 'polar*' -exec rm '{}' ';' && lerna link
 
       # ! Compile all Typescript Packages
       - run:
