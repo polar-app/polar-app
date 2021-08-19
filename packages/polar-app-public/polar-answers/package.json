@@ -22,7 +22,9 @@
     "@google-cloud/language": "=4.2.5",
     "polar-google-cloud-language": "^2.1.95",
     "polar-pdf": "^2.1.95",
-    "polar-shared": "^2.1.95"
+    "polar-shared": "^2.1.95",
+    "polar-test": "^2.1.95",
+    "polar-blocks": "^2.1.95"
   },
   "files": [
     "**/*.js",
