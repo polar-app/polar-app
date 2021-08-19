@@ -1,8 +1,7 @@
 import {DocRef} from 'polar-shared/src/groups/DocRef';
 import {ISODateTimeString} from 'polar-shared/src/metadata/ISODateTimeStrings';
-import {GroupIDStr} from 'polar-bookshelf/web/js/datastore/Datastore';
 import {Collections} from "polar-firestore-like/src/Collections";
-import {ProfileIDStr} from "polar-shared/src/util/Strings";
+import {ProfileIDStr, GroupIDStr} from "polar-shared/src/util/Strings";
 
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
@@ -10,6 +9,7 @@ import Clause = Collections.Clause;
 import SnapshotListener = Collections.SnapshotListener;
 import DocumentChange = Collections.DocumentChangeValue;
 import OrderByClause = Collections.OrderByClause;
+import {IFirestore} from "polar-firestore-like/src/IFirestore";
 
 
 
@@ -18,8 +18,7 @@ export class GroupDocCollection {
     public static readonly COLLECTION = 'group_doc';
 
 
-    public static async list(groupID: GroupIDStr): Promise<ReadonlyArray<GroupDoc>> {
-        const firestore = await FirestoreBrowserClient.getInstance();
+    public static async list<SM>(firestore: IFirestore<SM>, groupID: GroupIDStr): Promise<ReadonlyArray<GroupDoc>> {
 
         return await Collections.list(firestore, this.COLLECTION, [['groupID', '==', groupID]]);
     }
