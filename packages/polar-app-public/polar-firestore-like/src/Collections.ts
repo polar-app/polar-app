@@ -327,7 +327,7 @@ export namespace Collections {
 
     export async function getByFieldValue<T, SM = unknown>(firestore: IFirestore<SM>, collection: string, field: string, value: ValueType): Promise<T | undefined> {
 
-        const results = await list<T, SM>(firestore, collection, [[field, '==', value]]);
+        const results = await list<T>(firestore, collection, [[field, '==', value]]);
         return firstRecord<T>(collection, [field], results);
 
     }
