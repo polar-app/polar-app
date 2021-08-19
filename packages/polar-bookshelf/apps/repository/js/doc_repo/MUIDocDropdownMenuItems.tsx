@@ -8,7 +8,7 @@ import FileCopyIcon from '@material-ui/icons/FileCopy';
 import Divider from "@material-ui/core/Divider";
 import FlagIcon from "@material-ui/icons/Flag";
 import ArchiveIcon from "@material-ui/icons/Archive";
-import {FeatureToggleLocalStorage} from "polar-shared/src/util/FeatureToggleLocalStorage";
+import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
 import {useDocRepoCallbacks} from "./DocRepoStore2";
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import {Arrays} from "polar-shared/src/util/Arrays";
@@ -225,7 +225,7 @@ export const MUIDocDropdownMenuItems = React.memo(function MUIDocDropdownMenuIte
                     <ListItemText primary="Copy Original URL"/>
                 </MenuItem>}
 
-            {isSingle && FeatureToggleLocalStorage.get('dev') &&
+            {isSingle && LocalStorageFeatureToggles.get('dev') &&
                 <MenuItem onClick={callbacks.onCopyDocumentID}>
                     <ListItemIcon>
                         <FileCopyIcon fontSize="small"/>
