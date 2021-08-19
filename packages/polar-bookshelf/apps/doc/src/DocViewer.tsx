@@ -122,8 +122,7 @@ namespace Device {
             <div style={{
                      display: 'flex',
                      alignItems: 'center'
-                 }}
-                 className="p-1">
+                 }}>
 
                 <div style={{
                          display: 'flex',
