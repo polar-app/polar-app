@@ -124,6 +124,6 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
             inputs={inputs}
             onCancel={clear}
             onSubmit={onSubmit}
-            footer={footer}></SimpleInputForm>
+            footer={footer}/>
     );
 };

@@ -49,7 +49,6 @@ export function SimpleInputForm<
     onSubmit,
     onCancel = NULL_FUNCTION,
     footer,
-    onKeyDown,
     className = "",
     style = {},
 }: React.PropsWithChildren<ISimpleInputFormProps<T>>): React.ReactElement {
