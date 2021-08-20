@@ -1,7 +1,7 @@
 import {APIGatewayProxyHandler} from 'aws-lambda';
 import changePlanForEmail from "../../Apple/lambdas/apple/util/changePlanForEmail";
 import downgradeToFree from "../../Apple/lambdas/apple/util/downgradeToFree";
-import getFirebaseAdminApp from "../../../../shared/getFirebaseAdminApp";
+import {Firebase} from "polar-admin/Firebase";
 
 export const handler: APIGatewayProxyHandler = async (event) => {
     console.log(event);
@@ -92,7 +92,7 @@ interface DeveloperNotification {
 }
 
 async function getEmailByPurchaseToken(purchaseToken: string) {
-    const ref = getFirebaseAdminApp()
+    const ref = Firebase.getApp()
         .firestore()
         .collection('android_iap_receipt_to_email_map')
         .doc(purchaseToken);

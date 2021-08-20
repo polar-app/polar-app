@@ -22,12 +22,10 @@ export class Firebase {
 
     public static getApp(config: AppConfig = CONFIG_MAIN) {
 
-        const app = admin.initializeApp({
+        return admin.initializeApp({
             credential: admin.credential.cert(config),
             databaseURL: config.databaseURL
         });
-
-        return app;
 
     }
 

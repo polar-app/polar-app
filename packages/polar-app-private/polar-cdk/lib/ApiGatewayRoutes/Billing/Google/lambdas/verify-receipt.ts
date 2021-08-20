@@ -1,5 +1,5 @@
 import {APIGatewayProxyHandler} from 'aws-lambda';
-import getFirebaseAdminApp from "../../../../shared/getFirebaseAdminApp";
+import {Firebase} from "polar-admin/Firebase";
 
 interface GoogleReceipt {
     orderId: string,
@@ -37,7 +37,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     // Store a mapping of this subscription ID and the email that purchased it, for easier retrieval later
     // When Google keeps calling the RTDN endpoint in the background as subscriptions' lifecycle
     // changes in the future (paused, renewed, cancelled, renewed, etc)
-    const ref = getFirebaseAdminApp()
+    const ref = Firebase.getApp()
         .firestore()
         .collection('android_iap_map')
         .doc(receipt.purchaseToken);
