@@ -19,8 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
             color: theme.palette.text.secondary,
         },
         textField: {
-            minWidth: '350px',
-            width: '450px',
+            width: 'fit-content',
             maxWidth: '100vh',
         },
         description: {
