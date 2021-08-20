@@ -1,6 +1,8 @@
 import {ESRequests} from "./ESRequests";
 import {ESDigester} from "./ESDigester";
 import {OpenAIAnswersClient} from "./OpenAIAnswersClient";
+import {ESAnswersIndexNames} from "./ESAnswersIndexNames";
+import { UserIDStr } from "polar-shared/src/util/Strings";
 
 export namespace AnswerExecutor {
 
@@ -8,17 +10,28 @@ export namespace AnswerExecutor {
     import QuestionAnswerPair = OpenAIAnswersClient.QuestionAnswerPair;
     import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
 
-    export async function exec(question: string) {
+    export interface IExecOpts {
+        readonly uid: UserIDStr;
+        readonly question: string;
+    }
+
+    export interface IAnswer extends OpenAIAnswersClient.IResponse {
+        readonly question: string;
+    }
+
+    export async function exec(opts: IExecOpts): Promise<IAnswer> {
+
+        const {question, uid} = opts;
 
         // run this query on the digest ...
-        const index = 'answer_digest';
+        const index = ESAnswersIndexNames.createForUserDocs(uid);
 
         // FIXME this has to be hard coded and we only submit docs that would be
         // applicable to the answer API and we would need a way to easily
         // calculate the short head of the result set
         const size = 100;
 
-        const esResponse: IElasticSearchResponse<IDigestDocument> = await ESRequests.doPost(`/${index}/_search`, {
+        const query = {
             "query": {
                 "query_string": {
                     "query": question,
@@ -26,9 +39,11 @@ export namespace AnswerExecutor {
                 }
             },
             size
-        });
+        };
 
-        // console.log(JSON.stringify(esResponse, null, "  "));
+        const esResponse: IElasticSearchResponse<IDigestDocument> = await ESRequests.doPost(`/${index}/_search`, query);
+
+        console.log("ES response", JSON.stringify(esResponse, null, "  "));
 
         // tslint:disable-next-line:variable-name
         const max_tokens=35
@@ -62,11 +77,10 @@ export namespace AnswerExecutor {
 
         const answerResponse = await OpenAIAnswersClient.exec(request);
 
-        console.log("Raw response: === ")
-        console.log(answerResponse);
-
-        console.log("question: " + question);
-        console.log("answers: ", answerResponse.answers)
+        return {
+            question,
+            ...answerResponse
+        }
 
     }
 

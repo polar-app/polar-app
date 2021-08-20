@@ -1,15 +1,12 @@
-import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
+import {IDocumentReference} from "./IDocumentReference";
 
-/**
- * @Deprecated use polar-firestore-like
- */
 export class DocumentReferences {
 
     /**
      * Smarter get semantics with a preference but we fail over to the server
      * if the cache isn't available.
      */
-    public static async get(ref: IDocumentReference<unknown>, opts: GetOptions = {})   {
+    public static async get(ref: IDocumentReference<unknown>, opts: IGetOptionsWithOrder = {})   {
 
         const source = opts.source || 'default';
 
@@ -43,7 +40,7 @@ export class DocumentReferences {
 
 }
 
-export interface GetOptions {
+export interface IGetOptionsWithOrder {
 
     /**
      * Describes whether we should get from server or cache.
@@ -76,6 +73,6 @@ export type DirectSource = 'server'  | 'cache';
 
 export type GetSource = 'default' | DirectSource | 'cache-then-server' | 'server-then-cache';
 
-export class CacheFirstThenServerGetOptions implements GetOptions {
+export class CacheFirstThenServerGetOptions implements IGetOptionsWithOrder {
     public readonly source: GetSource = 'cache-then-server';
 }

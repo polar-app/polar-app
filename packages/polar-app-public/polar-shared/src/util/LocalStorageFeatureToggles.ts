@@ -6,7 +6,7 @@ const PREFIX = 'feature:';
  * @Deprecated this should go away in favor of prefs - which are not bound to
  * localStorage
  */
-export class FeatureToggles {
+export class LocalStorageFeatureToggles {
 
     /**
      * Get the current value of a feature toggle.

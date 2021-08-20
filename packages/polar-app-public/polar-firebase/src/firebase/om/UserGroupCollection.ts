@@ -1,29 +1,13 @@
-import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
 import {Collections} from "polar-firestore-like/src/Collections";
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {UserIDStr, GroupIDStr} from "polar-shared/src/util/Strings";
 import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
-import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+import {IFirestore, IFirestoreClient} from "polar-firestore-like/src/IFirestore";
 
 export class UserGroupCollection {
 
     public static readonly COLLECTION = 'user_group';
 
-    public static async get(uid?: UserIDStr): Promise<UserGroup | undefined> {
-
-        if (! uid) {
-
-            const user = await FirebaseBrowser.currentUserAsync();
-
-            if (! user) {
-                return undefined;
-            }
-
-            uid = user.uid;
-
-        }
-
-        const firestore = await FirestoreBrowserClient.getInstance();
+    public static async get<SM = unknown>(firestore: IFirestore<SM>, uid: UserIDStr): Promise<UserGroup | undefined> {
 
         const ref = firestore.collection(this.COLLECTION).doc(uid);
         const doc = await ref.get();
@@ -31,26 +15,23 @@ export class UserGroupCollection {
 
     }
 
-    public static async onSnapshot(handler: (userGroups: UserGroup | undefined) => void): Promise<SnapshotUnsubscriber> {
+    public static async onSnapshot<SM = unknown>(firestore: IFirestoreClient, uid: UserIDStr,
+                                                 handler: (userGroups: UserGroup | undefined) => void): Promise<SnapshotUnsubscriber> {
 
-        const firestore = await FirestoreBrowserClient.getInstance();
-        const user = await FirebaseBrowser.currentUserAsync();
-
-        if  (! user) {
-            return NULL_FUNCTION;
-        }
-
-        return Collections.onDocumentSnapshot<UserGroupRaw>(firestore, this.COLLECTION,
-                                                                  user!.uid,
-                                                                  userGroupRaw => {
+        return Collections.onDocumentSnapshot<UserGroupRaw>(firestore,
+                                                            this.COLLECTION,
+                                                            uid,
+                                                            userGroupRaw => {
                 handler(this.fromRaw(userGroupRaw));
         });
 
     }
 
-    public static async hasPermissionForGroup(groupID: GroupIDStr): Promise<boolean> {
+    public static async hasPermissionForGroup<SM = unknown>(firestore: IFirestore<SM>,
+                                                            uid: UserIDStr,
+                                                            groupID: GroupIDStr): Promise<boolean> {
 
-        const userGroup = await UserGroupCollection.get();
+        const userGroup = await UserGroupCollection.get(firestore, uid);
 
         if (! userGroup) {
             return false;

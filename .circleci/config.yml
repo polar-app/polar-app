@@ -43,10 +43,6 @@ commands:
           keys:
             - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
 
-      - run:
-          name: Accept Buster old-stable changes
-          command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt-get update --allow-releaseinfo-change; fi
-
       # ! Install Required Linux Binary (libvips is needed by sharp which is needed by gatsby)
       - run:
           name: Required Linux packages
@@ -91,11 +87,11 @@ commands:
 
       # ! Hoist all Dependencies
       - run:
-          name: Lerna Bootstrap
+          name: lerna bootstrap
           no_output_timeout: 30m
           command: |
             npm config set legacy-peer-deps true
-            npx lerna bootstrap --ci
+            npx lerna bootstrap --ci && find node_modules -type l -name 'polar*' -exec rm '{}' ';' && npx lerna link
 
       # ! Compile all Typescript Packages
       - run:
@@ -107,8 +103,8 @@ commands:
           name: DEBUG(Check if duplicate packages with different versions exist)
           command: |
             DUPLICATES=$(lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-app-public/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d)
-            lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-app-public/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d | if [ $(wc -l) -gt "0" ]; then echo -e '\033[1mPLEASE FIX DUPLICATE PACKAGES WITH DIFFERENT VERSIONS\033[0m' && exit 1; fi
-            echo "\n\n $DUPLICATES \n\n"
+            echo -e "\n\n $DUPLICATES \n\n"
+            lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-app-public/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d | if [ $(wc -l) -gt "0" ]; then echo -e '\n\n\033[1mPLEASE FIX DUPLICATE PACKAGES WITH DIFFERENT VERSIONS\033[0m' && exit 1; fi
 
       # ! Save Cache
       - save_cache:

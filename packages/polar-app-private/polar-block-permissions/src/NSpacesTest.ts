@@ -3,9 +3,8 @@ import {FirebaseTestingUsers} from "polar-firebase-test/src/firebase/FirebaseTes
 import {canonicalizeUpdated, getUserIDByEmail} from "./BlockPermissionsTest";
 import {NSpaces} from "./NSpaces";
 import {NSpaceCollection} from "polar-firebase/src/firebase/om/NSpaceCollection";
-import {assertJSON} from "polar-bookshelf/web/js/test/Assertions";
 import {BlockPermissionCollection} from "polar-firebase/src/firebase/om/BlockPermissionCollection";
-import {BlockPermissionUserCollection} from "polar-firebase/src/firebase/om/BlockPermissionUserCollection";
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe("NSpaces", function() {
 
