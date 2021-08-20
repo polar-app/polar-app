@@ -12,11 +12,9 @@ import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent
 import {DocumentContent} from "./DocumentContent";
 import {AnnotationContentType,
         IAreaHighlightAnnotationContent,
-        ICommentAnnotationContent,
         IFlashcardAnnotationContent,
         ITextHighlightAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {AreaHighlightAnnotationContent,
-        CommentAnnotationContent,
         FlashcardAnnotationContent,
         TextHighlightAnnotationContent} from "./AnnotationContent";
 
@@ -41,8 +39,6 @@ export namespace Contents {
                 return new AreaHighlightAnnotationContent(opts as IAreaHighlightAnnotationContent) as C;
             case AnnotationContentType.TEXT_HIGHLIGHT:
                 return new TextHighlightAnnotationContent(opts as ITextHighlightAnnotationContent) as C;
-            case AnnotationContentType.COMMENT:
-                return new CommentAnnotationContent(opts as ICommentAnnotationContent) as C;
             case AnnotationContentType.FLASHCARD:
                 return new FlashcardAnnotationContent(opts as IFlashcardAnnotationContent) as C;
         }

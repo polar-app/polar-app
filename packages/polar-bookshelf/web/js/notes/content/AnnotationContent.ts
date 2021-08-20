@@ -1,6 +1,5 @@
-import cloneDeep from "lodash/cloneDeep";
 import {computed, makeObservable, observable, toJS} from "mobx";
-import {IAnnotationContent, IAnnotationContentBase, IAreaHighlightAnnotationContent, ICommentAnnotationContent, IFlashcardAnnotationContent, ITextHighlightAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {AnnotationContentType, IAnnotationContent, IAnnotationContentBase, IAreaHighlightAnnotationContent, IFlashcardAnnotationContent, ITextHighlightAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {DeviceIDStr} from "polar-shared/src/util/DeviceIDManager";
@@ -102,12 +101,15 @@ export class TextHighlightAnnotationContent extends AnnotationContentBase<ITextH
 
 export class AreaHighlightAnnotationContent extends AnnotationContentBase<IAreaHighlightAnnotationContent> {}
 
-export class CommentAnnotationContent extends AnnotationContentBase<ICommentAnnotationContent> {}
-
 export class FlashcardAnnotationContent extends AnnotationContentBase<IFlashcardAnnotationContent> {}
 
 
 export type AnnotationContent = TextHighlightAnnotationContent
                                 | AreaHighlightAnnotationContent
-                                | CommentAnnotationContent
                                 | FlashcardAnnotationContent;
+
+export type AnnotationContentTypeMap = {
+    [AnnotationContentType.FLASHCARD]: FlashcardAnnotationContent,
+    [AnnotationContentType.TEXT_HIGHLIGHT]: TextHighlightAnnotationContent,
+    [AnnotationContentType.AREA_HIGHLIGHT]: AreaHighlightAnnotationContent,
+};

@@ -8,11 +8,16 @@ import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 export enum AnnotationContentType {
     TEXT_HIGHLIGHT = "annotation-text-highlight",
     AREA_HIGHLIGHT = "annotation-area-highlight",
-    COMMENT = "annotation-comment",
     FLASHCARD = "annotation-flashcard",
 }
 
 export type IAnnotationContentValue = IAreaHighlight | ITextHighlight | IComment | IFlashcard;
+
+export type IAnnotationContentTypeMap = {
+    [AnnotationContentType.FLASHCARD]: IFlashcardAnnotationContent,
+    [AnnotationContentType.TEXT_HIGHLIGHT]: ITextHighlightAnnotationContent,
+    [AnnotationContentType.AREA_HIGHLIGHT]: IAreaHighlightAnnotationContent,
+};
 
 /**
  * Reference to a polar annotation.  We directly extend ITextHighlight and
@@ -47,15 +52,10 @@ export interface IAreaHighlightAnnotationContent extends IAnnotationContentBase<
 
 }
 
-export interface ICommentAnnotationContent extends IAnnotationContentBase<AnnotationContentType.COMMENT, IComment> {
-
-}
-
 export interface IFlashcardAnnotationContent extends IAnnotationContentBase<AnnotationContentType.FLASHCARD, IFlashcard> {
 
 }
 
 export type IAnnotationContent = ITextHighlightAnnotationContent
                                  | IAreaHighlightAnnotationContent
-                                 | ICommentAnnotationContent
                                  | IFlashcardAnnotationContent;
