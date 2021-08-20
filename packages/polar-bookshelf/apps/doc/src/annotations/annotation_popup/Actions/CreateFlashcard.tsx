@@ -74,6 +74,21 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
             }
         </div>
     );
+    function isKeyboardControlShiftAltC(event: KeyboardEvent) {
+        debugger
+        return event.getModifierState("Control") &&
+            event.getModifierState("Shift") &&
+            event.getModifierState("Alt") &&
+            event.key === "C";
+    }
+    function onKeyDown(event: KeyboardEvent) {
+        debugger
+        if (isKeyboardControlShiftAltC(event)) {
+            onClozeDelete();
+            event.stopPropagation();
+            event.preventDefault();
+        }
+    }
     function onMouseDownHandler(event: React.MouseEvent){
         onClozeDelete();
         event.stopPropagation();
@@ -105,10 +120,10 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
             key={flashcardType}
             className={className}
             style={style}
+            onKeyDown={event => onKeyDown(event)}
             inputs={inputs}
             onCancel={clear}
             onSubmit={onSubmit}
-            footer={footer}
-        />
+            footer={footer}></SimpleInputForm>
     );
 };
