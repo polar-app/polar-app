@@ -2,6 +2,16 @@ import React from "react";
 import {createStyles, debounce, Grow, Popper, ClickAwayListener, makeStyles, Box} from "@material-ui/core";
 import {ColorStr} from "../../../ui/colors/ColorSelectorBox";
 import {ColorMenu} from "../../../ui/ColorMenu";
+import {useHistory} from "react-router";
+import {useAnnotationBlockManager} from "../../NoteUtils";
+import {useBlocksTreeStore} from "../../BlocksTree";
+import {AnnotationPtrs} from "../../../annotation_sidebar/AnnotationPtrs";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {AreaHighlightAnnotationContent, TextHighlightAnnotationContent} from "../../content/AnnotationContent";
+import {AnnotationLinks} from "../../../annotation_sidebar/AnnotationLinks";
+import DeleteIcon from "@material-ui/icons/Delete";
+import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 
 export const useStyles = makeStyles(() =>
     createStyles({
@@ -22,10 +32,11 @@ export const useStyles = makeStyles(() =>
 
 interface IBlockAnnotationActionsWrapperProps {
     actions: React.ReactElement<IBlockAnnotationActionProps>[];
+    active?: boolean;
 }
 
 export const BlockAnnotationActionsWrapper: React.FC<IBlockAnnotationActionsWrapperProps> = (props) => {
-    const { children, actions } = props;
+    const { children, actions, active } = props;
     const classes = useStyles();
     const [hovered, setHovered] = React.useState(false);
 
@@ -41,7 +52,7 @@ export const BlockAnnotationActionsWrapper: React.FC<IBlockAnnotationActionsWrap
             onMouseEnter={handleShow}
             onMouseLeave={handleHide}
         >
-            {hovered && <div className={classes.actionsOuter}>{actions}</div>}
+            {(active || hovered) && <div className={classes.actionsOuter}>{actions}</div>}
             {children}
         </div>
     );
@@ -147,4 +158,46 @@ export const BlockAnnotationColorPickerAction: React.FC<IBlockAnnotationColorPic
             }
         </BlockAnnotationAction>
     );
+};
+
+interface IUseSharedAnnotationBlockActionsOpts {
+    readonly id: BlockIDStr;
+    readonly annotation: TextHighlightAnnotationContent | AreaHighlightAnnotationContent;
+}
+
+export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockActionsOpts) => {
+    const { annotation, id } = opts;
+    const blocksTreeStore = useBlocksTreeStore();
+    const { update, getBlock } = useAnnotationBlockManager();
+    const history = useHistory();
+
+    const handleDelete = React.useCallback(() => {
+        blocksTreeStore.deleteBlocks([id]);
+    }, [blocksTreeStore, id]);
+    
+    const handleOpen = React.useCallback(() => {
+        const ptr = AnnotationPtrs.create({
+            target: annotation.value.id,
+            pageNum: annotation.pageNum,
+            docID: annotation.docID,
+        });
+        history.push(AnnotationLinks.createRelativeURL(ptr));
+    }, [annotation, history]);
+
+    const handleColorChange = React.useCallback((color: ColorStr) => {
+        const block = getBlock(id, AnnotationContentType.TEXT_HIGHLIGHT);
+        if (block) {
+            const content = block.content.toJSON();
+            content.value.color = color;
+            update(id, content);
+        }
+    }, [update, id, getBlock]);
+
+    const color = annotation.value.color
+
+    return React.useMemo(() => [
+        <BlockAnnotationAction key="delete" icon={<DeleteIcon />} onClick={handleDelete} />,
+        <BlockAnnotationAction key="open" icon={<OpenInNewIcon />} onClick={handleOpen} />,
+        <BlockAnnotationColorPickerAction key="color" color={color} onChange={handleColorChange} />,
+    ], [handleDelete, handleOpen, color, handleColorChange]);
 };
