@@ -1,5 +1,5 @@
 import React from "react";
-import {createStyles, debounce, Grow, Popper, ClickAwayListener, makeStyles} from "@material-ui/core";
+import {createStyles, debounce, Grow, Popper, ClickAwayListener, makeStyles, Box} from "@material-ui/core";
 import {ColorStr} from "../../../ui/colors/ColorSelectorBox";
 import {ColorMenu} from "../../../ui/ColorMenu";
 
@@ -117,6 +117,7 @@ interface IBlockAnnotationColorPickerActionProps {
 
 export const BlockAnnotationColorPickerAction: React.FC<IBlockAnnotationColorPickerActionProps> = (props) => {
     const [ref, setRef] = React.useState<HTMLDivElement | null>(null);
+    const [paletteOpen, setPaletteOpen] = React.useState(false);
     const { onChange, color } = props;
 
     return (
@@ -124,22 +125,22 @@ export const BlockAnnotationColorPickerAction: React.FC<IBlockAnnotationColorPic
             key="color"
             ref={elem => setRef(elem)}
             icon={<ColorIcon color={color} />}
-            onClick={() => null}
+            onClick={() => setPaletteOpen(! paletteOpen)}
         >
             {ref &&
                 <Popper
-                    open={true}
+                    open={paletteOpen}
                     anchorEl={ref}
                     placement="left"
                     transition
                 >
                     {({ TransitionProps }) => (
                         <Grow {...TransitionProps}>
-                            <div style={{ marginRight: 10 }}>
+                            <Box boxShadow={5} style={{ marginRight: 10 }}>
                                 <ClickAwayListener onClickAway={() => null}>
                                     <ColorMenu selected={color} onChange={onChange} />
                                 </ClickAwayListener>
-                            </div>
+                            </Box>
                         </Grow>
                     )}
                 </Popper>

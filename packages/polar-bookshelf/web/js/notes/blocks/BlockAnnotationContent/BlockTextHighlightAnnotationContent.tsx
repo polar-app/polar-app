@@ -1,9 +1,8 @@
 import React from "react";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {ITextConverters} from "../../../annotation_sidebar/DocAnnotations";
-import {ITextHighlightAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {DocAnnotationMoment} from "../../../annotation_sidebar/DocAnnotationMoment";
-import {BlockAnnotationContentWrapper} from "../../BlockAnnotationContentWrapper";
+import {BlockAnnotationContentWrapper} from "./BlockAnnotationContentWrapper";
 import {createStyles, makeStyles} from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
@@ -15,11 +14,17 @@ import {AnnotationLinks} from "../../../annotation_sidebar/AnnotationLinks";
 import {useHistory} from "react-router";
 import {useAnnotationBlockManager} from "../../NoteUtils";
 import {ColorStr} from "../../../ui/colors/ColorSelectorBox";
+import {TextHighlightAnnotationContent} from "../../content/AnnotationContent";
+import {BlockContentEditable} from "../../contenteditable/BlockContentEditable";
+import {BlockEditorGenericProps} from "../../BlockEditor";
+import {HTMLStr} from "polar-shared/src/util/Strings";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 
 
-interface IProps {
-    textHighlight: ITextHighlightAnnotationContent;
-    id: BlockIDStr;
+interface IProps extends BlockEditorGenericProps {
+    readonly annotation: TextHighlightAnnotationContent;
+    readonly onChange: (content: HTMLStr) => void;
+    readonly id: BlockIDStr;
 }
 
 export const useStyles = makeStyles(() =>
@@ -40,9 +45,21 @@ export const useStyles = makeStyles(() =>
 );
 
 export const BlockTextHighlightAnnotationContent: React.FC<IProps> = (props) => {
-    const { textHighlight: annotation, id } = props;
+    const {
+        annotation,
+        parent,
+        innerRef,
+        className,
+        style,
+        id,
+        onKeyDown,
+        onClick,
+        onChange,
+        readonly
+    } = props;
+
     const blocksTreeStore = useBlocksTreeStore();
-    const {update} = useAnnotationBlockManager();
+    const { update, getBlock } = useAnnotationBlockManager();
     const history = useHistory();
 
     const highlight = annotation.value;
@@ -65,25 +82,33 @@ export const BlockTextHighlightAnnotationContent: React.FC<IProps> = (props) => 
     }, [annotation]);
 
     const handleColorChange = React.useCallback((color: ColorStr) => {
-        update(id, {
-            ...annotation,
-            value: {
-                ...annotation.value,
-                color,
-            },
-        });
-    }, [update, id, annotation]);
+        const block = getBlock(id, AnnotationContentType.TEXT_HIGHLIGHT);
+        if (block) {
+            const content = block.content.toJSON();
+            content.value.color = color;
+            update(id, content);
+        }
+    }, [update, id, annotation, getBlock]);
 
     const actions = React.useMemo(() => [
         <BlockAnnotationAction key="delete" icon={<DeleteIcon />} onClick={handleDelete} />,
         <BlockAnnotationAction key="open" icon={<OpenInNewIcon />} onClick={handleOpen} />,
         <BlockAnnotationColorPickerAction key="color" color={highlight.color} onChange={handleColorChange} />
-    ], [handleDelete]);
+    ], [handleDelete, highlight]);
 
     return (
         <BlockAnnotationActionsWrapper actions={actions}>
             <BlockAnnotationContentWrapper color={highlight.color}>
-                <div dangerouslySetInnerHTML={{ __html: text || 'no text' }} />
+                <BlockContentEditable id={id}
+                                      parent={parent}
+                                      innerRef={innerRef}
+                                      style={style}
+                                      className={className}
+                                      content={text || ''}
+                                      onKeyDown={onKeyDown}
+                                      onChange={onChange}
+                                      readonly={readonly}
+                                      onClick={onClick} />
                 <DocAnnotationMoment created={highlight.created} />
             </BlockAnnotationContentWrapper>
         </BlockAnnotationActionsWrapper>

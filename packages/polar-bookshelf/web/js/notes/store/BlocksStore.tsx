@@ -43,8 +43,10 @@ import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {DocumentContent} from "../content/DocumentContent";
 import {AnnotationContent} from "../content/AnnotationContent";
 import {INameContent} from "polar-blocks/src/blocks/content/INameContent";
-import {DocInfos} from "../../metadata/DocInfos";
 import {getNamedContentName} from "../NoteUtils";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {ITextConverters} from "../../annotation_sidebar/DocAnnotations";
+import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 
 export const ENABLE_UNDO_TRACING = false;
 
@@ -593,12 +595,20 @@ export class BlocksStore implements IBlocksStore {
 
         const block = this.getBlock(id);
 
-        if (! block?.content) {
-            return ''
+        if (! block) {
+            return "";
         }
 
-        return BlockPredicates.isTextBlock(block) ? block.content.data : '';
+        if (BlockPredicates.isTextBlock(block)) {
+            return block.content.data;
+        }
 
+        if (block.content.type === AnnotationContentType.TEXT_HIGHLIGHT) {
+            const highlight = block.content.value;
+            return ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, highlight).text;
+        }
+
+        return "";
     }
 
     public getParent(id: BlockIDStr): Block | undefined {
@@ -1565,8 +1575,13 @@ export class BlocksStore implements IBlocksStore {
             const hasChildren = this.children(block.id).length > 0;
 
             // Block has no parent (in the case of a root block), or a block that has children
-            // with suffix of an empty string
-            if (opts.asChild || ! block.parent || (hasChildren && split?.suffix === '' && this.isExpanded(block.id))) {
+            // with suffix of an empty string, and annotation blocks
+            if (
+                opts.asChild
+                || ! block.parent
+                || (hasChildren && split?.suffix === '' && this.isExpanded(block.id))
+                || BlockPredicates.isAnnotationBlock(block)
+            ) {
                 return {
                     type: 'first-child',
                     parentBlock: block

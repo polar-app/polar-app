@@ -1,16 +1,17 @@
 import React from "react";
-import {IAreaHighlightAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {DocAnnotationMoment} from "../../../annotation_sidebar/DocAnnotationMoment";
 import {createStyles, makeStyles} from "@material-ui/core";
-import {BlockAnnotationContentWrapper} from "../../BlockAnnotationContentWrapper";
+import {BlockAnnotationContentWrapper} from "./BlockAnnotationContentWrapper";
 import {usePersistenceLayerContext} from "../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {DocFileResolvers} from "../../../datastore/DocFileResolvers";
 import {Images} from "../../../metadata/Images";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {AreaHighlightAnnotationContent} from "../../content/AnnotationContent";
+import {BlockEditorGenericProps} from "../../BlockEditor";
 
 
-interface IProps {
-    areaHighlight: IAreaHighlightAnnotationContent;
+interface IProps extends BlockEditorGenericProps {
+    annotation: AreaHighlightAnnotationContent;
     id: BlockIDStr;
 }
 
@@ -28,7 +29,8 @@ export const useStyles = makeStyles(() =>
 
 export const BlockAreaHighlightAnnotationContent: React.FC<IProps> = (props) => {
     const classes = useStyles();
-    const { areaHighlight: { value: highlight } } = props;
+    const { annotation } = props;
+    const highlight = annotation.value;
     const { persistenceLayerProvider } = usePersistenceLayerContext();
     const image = React.useMemo(() => {
         if (! highlight.image) {

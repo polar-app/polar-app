@@ -3,6 +3,8 @@ import {MarkdownContent} from "../content/MarkdownContent";
 import {NameContent} from "../content/NameContent";
 import {DateContent} from "../content/DateContent";
 import {NamedBlock} from "./BlocksStore";
+import {AnnotationContent} from "../content/AnnotationContent";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 
 /**
  * Note we have to have IBlockPredicates and BlockPredicates as the typescript
@@ -25,5 +27,9 @@ export namespace BlockPredicates {
 
     export function isNamedBlock(block: Readonly<Block>): block is NamedBlock {
         return ['date', 'name', 'document'].indexOf(block.content.type) > -1;
+    }
+
+    export function isAnnotationBlock(block: Readonly<Block>): block is Block<AnnotationContent> {
+        return Object.values(AnnotationContentType).some(type => block.content.type === type);
     }
 }

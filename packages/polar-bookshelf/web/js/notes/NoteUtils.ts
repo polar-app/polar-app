@@ -11,10 +11,11 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {BlockPredicates} from "./store/BlockPredicates";
 import { RoutePathnames } from "../apps/repository/RoutePathnames";
 import {DocInfos} from "../metadata/DocInfos";
-import {IAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {AnnotationContentType, IAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {DocumentContent} from "./content/DocumentContent";
 import {Block} from "./store/Block";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {AnnotationContentTypeMap} from "./content/AnnotationContent";
 
 // TODO: move this into BlocksStore
 export const focusFirstChild = (blocksStore: IBlocksStore, id: BlockIDStr) => {
@@ -42,35 +43,52 @@ export const useAnnotationBlockManager = () => {
             console.error(`Document with fingerprint ${fingerprint} was not found. Annotation block could not be created`);
         }
     }, [blocksStore]);
+    
+    const getBlock = React.useCallback(<T extends AnnotationContentType = AnnotationContentType>(id: BlockIDStr, type?: T): Block<AnnotationContentTypeMap[T]> | undefined => {
+        const block = blocksStore.getBlockForMutation(id);
 
-    const create = React.useCallback(<T extends IAnnotationContent>(fingerprint: string, annotation: T) => {
-        doMutation(fingerprint, (block) => {
-            const content: T = {
-                ...annotation,
-                value: {
-                    ...annotation.value,
-                    lastUpdated: ISODateTimeStrings.create(),
-                },
-            };
-            blocksStore.createNewBlock(block.id, { content });
-        });
-    }, [blocksStore, doMutation]);
-
-    const update = React.useCallback((blockID: BlockIDStr, annotation: IAnnotationContent) => {
-        blocksStore.setBlockContent(blockID, annotation);
-    }, [blocksStore]);
-
-    const remove = React.useCallback((blockID: BlockIDStr) => {
-        const block = blocksStore.getBlock(blockID);
-
-        if (block && block.content.type) {
-            blocksStore.deleteBlocks([blockID]);
-        } else {
-            console.log(`Annotation deletion failed. could not find annotation block with the ID ${blockID}`);
+        if (! block || ! BlockPredicates.isAnnotationBlock(block)) {
+            console.log(`Could not find annotation block with the ID ${id}`);
+            return undefined;
         }
+
+        if (type && type !== block.content.type) {
+            console.log(`Could not find ${type} block with the ID ${id}`);
+            return undefined;
+        }
+
+        return block as Block<AnnotationContentTypeMap[T]>;
     }, [blocksStore]);
 
-    return { create, update, remove };
+    const updateMetadata = React.useCallback(<T extends IAnnotationContent>(annotation: T): T => {
+        return {
+            ...annotation,
+            value: {
+                ...annotation.value,
+                lastUpdated: ISODateTimeStrings.create(),
+            },
+        };
+    }, []);
+
+    const create = React.useCallback((fingerprint: string, annotation: IAnnotationContent) => {
+        doMutation(fingerprint, (block) => {
+            blocksStore.createNewBlock(block.id, { content: updateMetadata(annotation) });
+        });
+    }, [blocksStore, updateMetadata]);
+
+    const update = React.useCallback((id: BlockIDStr, annotation: IAnnotationContent) => {
+        blocksStore.setBlockContent(id, updateMetadata(annotation));
+    }, [blocksStore, getBlock]);
+
+    const remove = React.useCallback((id: BlockIDStr) => {
+        const block = getBlock(id);
+
+        if (block) {
+            blocksStore.deleteBlocks([id]);
+        }
+    }, [blocksStore, getBlock]);
+
+    return { create, update, remove, getBlock };
 };
 
 export const getNamedContentName = (content: IBlockNamedContent): string => {

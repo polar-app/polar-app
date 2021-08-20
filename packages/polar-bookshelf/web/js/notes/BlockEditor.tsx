@@ -15,9 +15,9 @@ import {debounce} from "throttle-debounce";
 import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
 import {Block} from "./store/Block";
-import {useLinkNavigationClickHandler} from "./NoteUtils";
+import {useAnnotationBlockManager, useLinkNavigationClickHandler} from "./NoteUtils";
 import {BlockDocumentContent} from "./blocks/BlockDocumentContent";
-import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {AnnotationContentType, IAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {BlockAnnotationContent} from "./blocks/BlockAnnotationContent/BlockAnnotationContent";
 
 export interface BlockEditorGenericProps {
@@ -44,6 +44,7 @@ type IUseBlockContentUpdaterOpts = {
 
 const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
     const blocksTreeStore = useBlocksTreeStore();
+    const { update: updateAnnotation, getBlock: getAnnotationBlock } = useAnnotationBlockManager();
     const dialogs = useDialogManager();
 
     const handleRename = React.useMemo(() => {
@@ -73,18 +74,23 @@ const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
         }
 
         switch (block.content.type) {
-            case 'markdown':
+            case "markdown":
                 blocksTreeStore.setBlockContent(id, new MarkdownContent({
                     type: 'markdown',
                     links: block.content.links,
                     data,
                 }));
                 break;
-            case 'name':
+            case "name":
                 handleRename(data);
                 break;
+            case AnnotationContentType.TEXT_HIGHLIGHT:
+                const json = block.content.toJSON();
+                const content: IAnnotationContent = { ...json, value: { ...json.value, revisedText: data } };
+                updateAnnotation(id, content);
+                
         }
-    }, [id, handleRename, blocksTreeStore]);
+    }, [id, handleRename, blocksTreeStore, updateAnnotation, getAnnotationBlock]);
 };
 
 const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
@@ -151,11 +157,11 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
         return (
             <BlockContentEditable id={id}
                                   parent={parent}
-                                  innerRef={ref}
                                   style={style}
                                   className={className}
                                   content={data || ''}
                                   onMouseDown={handleMouseDown}
+                                  innerRef={ref}
                                   onKeyDown={onKeyDown}
                                   onChange={handleBlockContentChange}
                                   readonly={block.readonly}
@@ -198,7 +204,6 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
 
     if (block.content.type === AnnotationContentType.TEXT_HIGHLIGHT
         || block.content.type === AnnotationContentType.AREA_HIGHLIGHT
-        || block.content.type === AnnotationContentType.COMMENT
         || block.content.type === AnnotationContentType.FLASHCARD) {
 
         const content = block.content;
@@ -210,6 +215,9 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
                 className={className}
                 style={style}
                 annotation={content}
+                onChange={handleBlockContentChange}
+                onKeyDown={onKeyDown}
+                innerRef={ref}
             />
         );
 
