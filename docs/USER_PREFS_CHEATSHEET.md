@@ -18,13 +18,13 @@ In order to determine the value of a feature toggle you can call:
 
 ```
 
-And if you want to selectively enable something based on a feature toggle use the <FeatureToggle> component.
+And if you want to selectively enable something based on a feature toggle use the <LocalStorageFeatureToggle> component.
 
 ```typescript jsx
 /**
   * Only render the child component if a feature toggle is enabled.
   */
-  export const FeatureToggle = React.memo((props: IFeatureToggleProps) => {
+  export const LocalStorageFeatureToggle = React.memo((props: IFeatureToggleProps) => {
 ```
 
 If you want to change the value of a feature toggle you can call:

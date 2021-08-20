@@ -1,14 +1,12 @@
 import {useAnnotationSidebarCallbacks} from "../../../apps/doc/src/AnnotationSidebarStore";
 import {MUIPaperToolbar} from "../mui/MUIPaperToolbar";
-import Box from "@material-ui/core/Box";
 import {MUISearchBox2} from "../mui/MUISearchBox2";
 import {ExportButton} from "../ui/export/ExportButton";
-import {FeatureToggle} from "../ui/FeatureToggle";
+import {LocalStorageFeatureToggle} from "../ui/LocalStorageFeatureToggle";
 import * as React from "react";
 import {Exporters, ExportFormat} from "../metadata/exporter/Exporters";
 import {useDocMetaContext} from "./DocMetaContextProvider";
 import {usePersistenceLayerContext} from "../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
-import { Logger } from "polar-shared/src/logger/Logger";
 import {useLogger} from "../mui/MUILogger";
 import {MUIButtonBar} from "../mui/MUIButtonBar";
 
@@ -40,11 +38,11 @@ export const AnnotationHeader = () => {
                         <ExportButton onExport={exportCallback}/>
                     </div>
 
-                    <FeatureToggle name='groups'>
+                    <LocalStorageFeatureToggle name='groups'>
                         {/*<GroupSharingButton doc={props.doc}*/}
                         {/*                    datastoreCapabilities={props.datastoreCapabilities}*/}
                         {/*                    onDone={NULL_FUNCTION}/>*/}
-                    </FeatureToggle>
+                    </LocalStorageFeatureToggle>
 
                 </div>
 
