@@ -54,11 +54,24 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
         }
         clozeRef.current.addEventListener('keydown', onKeyDown);
 
+        function isKeyboardControlShiftAltC(event: KeyboardEvent) {
+            return event.getModifierState("Control") &&
+                event.getModifierState("Shift") &&
+                event.getModifierState("Alt") &&
+                event.key === "C";
+        }
+        function onKeyDown(event: KeyboardEvent) {
+            if (isKeyboardControlShiftAltC(event)) {
+                onClozeDelete();
+                event.stopPropagation();
+                event.preventDefault();
+            }
+        }
         return () => {
             removeEventListener('keydown',onKeyDown);
         }
 
-    }, [clozeRef, onKeyDown]);
+    }, [clozeRef]);
 
 
         const onSubmit = React.useCallback((data: ClozeForm | BasicFrontBackForm) => {
@@ -87,19 +100,7 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
             }
         </div>
     );
-    function isKeyboardControlShiftAltC(event: KeyboardEvent) {
-        return event.getModifierState("Control") &&
-            event.getModifierState("Shift") &&
-            event.getModifierState("Alt") &&
-            event.key === "C";
-    }
-    function onKeyDown(event: KeyboardEvent) {
-        if (isKeyboardControlShiftAltC(event)) {
-            onClozeDelete();
-            event.stopPropagation();
-            event.preventDefault();
-        }
-    }
+
     function onMouseDownHandler(event: React.MouseEvent){
         onClozeDelete();
         event.stopPropagation();
