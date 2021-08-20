@@ -38,7 +38,6 @@ type ISimpleInputFormProps<T extends FieldValues = FieldValues> = {
     onCancel?: () => void;
     footer?: React.ReactElement;
     className?: string;
-    onKeyDown?: (e: KeyboardEvent) => void;
     style?: React.CSSProperties;
 };
 

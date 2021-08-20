@@ -48,7 +48,20 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
         }
     });
 
-    const onSubmit = React.useCallback((data: ClozeForm | BasicFrontBackForm) => {
+    React.useEffect(() => {
+        if(!clozeRef || !clozeRef.current) {
+            return;
+        }
+        clozeRef.current.addEventListener('keydown', onKeyDown);
+
+        return () => {
+            removeEventListener('keydown',onKeyDown);
+        }
+
+    }, [clozeRef, onKeyDown]);
+
+
+        const onSubmit = React.useCallback((data: ClozeForm | BasicFrontBackForm) => {
         createFlashcard({
             type: "create",
             parent: Refs.createRef(annotation),
@@ -75,14 +88,12 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
         </div>
     );
     function isKeyboardControlShiftAltC(event: KeyboardEvent) {
-        debugger
         return event.getModifierState("Control") &&
             event.getModifierState("Shift") &&
             event.getModifierState("Alt") &&
             event.key === "C";
     }
     function onKeyDown(event: KeyboardEvent) {
-        debugger
         if (isKeyboardControlShiftAltC(event)) {
             onClozeDelete();
             event.stopPropagation();
@@ -120,7 +131,6 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
             key={flashcardType}
             className={className}
             style={style}
-            onKeyDown={event => onKeyDown(event)}
             inputs={inputs}
             onCancel={clear}
             onSubmit={onSubmit}
