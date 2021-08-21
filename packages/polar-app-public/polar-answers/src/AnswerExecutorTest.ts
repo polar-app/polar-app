@@ -1,5 +1,6 @@
 import {AnswerExecutor} from "./AnswerExecutor";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
+import { Arrays } from "polar-shared/src/util/Arrays";
 
 xdescribe("AnswerExecutor", async function() {
 
@@ -14,10 +15,13 @@ xdescribe("AnswerExecutor", async function() {
 
         const response = await AnswerExecutor.exec({
             uid: user.uid,
-            question: "Does Bigtable support a full relational model?"
+            question: "What happened after a single dose of BNT162b2 vaccine?"
         });
 
+        console.log("answer: ", Arrays.first(response.answers))
+
         console.log(response);
+
 
     });
 

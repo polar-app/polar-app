@@ -44,10 +44,10 @@ export namespace AnswerExecutor {
         const requestURL = `/${index}/_search`;
         const esResponse: IElasticSearchResponse<IDigestDocument> = await ESRequests.doPost(requestURL, query);
 
-        console.log(`ES response to ${requestURL}`, JSON.stringify(esResponse, null, "  "));
+        // console.log(`ES response to ${requestURL}`, JSON.stringify(esResponse, null, "  "));
 
         // tslint:disable-next-line:variable-name
-        const max_tokens=35
+        const max_tokens=150
 
         // tslint:disable-next-line:variable-name
         const search_model='curie';
@@ -63,6 +63,8 @@ export namespace AnswerExecutor {
         const stop = ["\n", "<|endoftext|>"];
 
         const documents = esResponse.hits.hits.map(current => current._source.text);
+
+        // const documents: ReadonlyArray<string> = [];
 
         const request: OpenAIAnswersClient.IRequest = {
             search_model,
