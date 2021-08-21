@@ -41,9 +41,10 @@ export namespace AnswerExecutor {
             size
         };
 
-        const esResponse: IElasticSearchResponse<IDigestDocument> = await ESRequests.doPost(`/${index}/_search`, query);
+        const requestURL = `/${index}/_search`;
+        const esResponse: IElasticSearchResponse<IDigestDocument> = await ESRequests.doPost(requestURL, query);
 
-        console.log("ES response", JSON.stringify(esResponse, null, "  "));
+        console.log(`ES response to ${requestURL}`, JSON.stringify(esResponse, null, "  "));
 
         // tslint:disable-next-line:variable-name
         const max_tokens=35

@@ -25,7 +25,9 @@ export namespace ESShingleWriter {
 
         const {docID, shingle, pageNum, uid} = opts;
 
-        const digestID = `${docID}:${shingle.idx}`;
+        const shingleID = `${docID}:${pageNum}:${shingle.idx}`;
+
+        console.log("Writing shingleID: " + shingleID);
 
         const record: IAnswerDigestRecord = {
             docID, pageNum,
@@ -36,7 +38,7 @@ export namespace ESShingleWriter {
         const indexName = ESAnswersIndexNames.createForUserDocs(uid)
 
         // const indexName = 'test';
-        await ESRequests.doPut(`/${indexName}/_doc/${digestID}`, record);
+        await ESRequests.doPut(`/${indexName}/_doc/${shingleID}`, record);
 
     }
 }
