@@ -4,7 +4,7 @@
     "project": "./tsconfig.json"
   },
   "extends": ["eslint:recommended", "standard", "plugin:@typescript-eslint/recommended", "prettier"],
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "react", "react-hooks"],
   "env": {
     "es6": true,
     "node": true
