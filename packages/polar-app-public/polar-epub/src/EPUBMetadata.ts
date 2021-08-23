@@ -15,7 +15,13 @@ export class EPUBMetadata {
 
         console.log("FIXME 0");
 
+        const coverURL = await book.coverUrl();
+
+        console.log("FIXME 0.1");
+
         await book.opened;
+
+        console.log("FIXME 0.2");
 
         await book.ready;
 
