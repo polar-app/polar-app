@@ -20,6 +20,7 @@ export namespace EPUBDocs {
         (global as any).localStorage = dom.window.localStorage;
         (global as any).navigator = dom.window.navigator;
         (global as any).performance = dom.window.performance;
+        (global as any).XMLHttpRequest = dom.window.XMLHttpRequest;
         (global as any).window.requestAnimationFrame = (delegate: () => void) => setTimeout(() => delegate(), 1);
 
         // async function toArrayBuffer() {

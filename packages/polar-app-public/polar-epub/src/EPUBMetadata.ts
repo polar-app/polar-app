@@ -13,9 +13,15 @@ export class EPUBMetadata {
 
         console.log("FIXME: getDocument... done");
 
-        // console.log("FIXME 1");
+        console.log("FIXME 0");
+
+        await book.opened;
+
+        await book.ready;
+
+        console.log("FIXME 1");
         const metadata = await book.loaded.metadata;
-        // console.log("FIXME 2");
+        console.log("FIXME 2");
         const spine = await book.loaded.spine;
         console.log("FIXME 3");
 
