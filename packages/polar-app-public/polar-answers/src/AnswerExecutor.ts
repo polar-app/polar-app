@@ -19,6 +19,14 @@ export namespace AnswerExecutor {
         readonly question: string;
     }
 
+    export const EXAMPLES_CONTEXT = "In 2017, U.S. life expectancy was 78.6 years.";
+
+    export const EXAMPLES: ReadonlyArray<QuestionAnswerPair> = [
+        ["What is human life expectancy in the United States?", "78 years."],
+        ["Who is the President of Xexptronica", "__UNKNOWN__"],
+        ["What do dinosaurs capilate?", "__UNKNOWN__"]
+    ];
+
     export async function exec(opts: IExecOpts): Promise<IAnswer> {
 
         const {question, uid} = opts;
@@ -54,17 +62,22 @@ export namespace AnswerExecutor {
         const model = 'davinci';
 
         // tslint:disable-next-line:variable-name
-        const examples_context="In 2017, U.S. life expectancy was 78.6 years.";
-
-        const examples: ReadonlyArray<QuestionAnswerPair>= [
-            ["What is human life expectancy in the United States?", "78 years."]
-        ];
+        const examples_context = EXAMPLES_CONTEXT;
+        const examples = EXAMPLES;
 
         const stop = ["\n", "<|endoftext|>"];
 
         const documents = esResponse.hits.hits.map(current => current._source.text);
 
-        // const documents: ReadonlyArray<string> = [];
+        // TODO how do we compute documents which have no known answer?
+
+        // Assuming your temperature is already at 0 (making the API less likely
+        // to confabulate), you can show the API how to say "Unknown" using
+        // examples and examples_context. For instance, one example could be
+        // "Who invented Cottage Cheese?", "Unknown" Another example could be
+        // "When was the first Olympics?", "Unknown" Of course, you'll want
+        // examples that are answered by the examples_context as well. Does this
+        // make sense?
 
         const request: OpenAIAnswersClient.IRequest = {
             search_model,
@@ -75,7 +88,10 @@ export namespace AnswerExecutor {
             max_tokens,
             stop,
             documents,
-            n: 10
+            n: 10,
+
+            // FIXME: I have to play with temperature more...
+            // temperature: 0
         }
 
         const answerResponse = await OpenAIAnswersClient.exec(request);
