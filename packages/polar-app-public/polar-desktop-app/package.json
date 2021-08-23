@@ -9,7 +9,8 @@
     "dist-linux": "npx webpack && electron-builder --config=electron-builder.yml --linux appimage deb tar.gz --publish always",
     "dist-macos": "npx webpack && electron-builder --config=electron-builder.yml --macos dmg zip --publish always",
     "dist-win": "npx webpack && ./build/dist-win.sh",
-    "verify-electron-version": "./scripts/verify-electron-version"
+    "verify-electron-version": "./scripts/verify-electron-version",
+    "eslint": "figlet ${npm_package_name} && eslint -c ../../../.eslintrc.json ."
   },
   "repository": "https://github.com/burtonator/polar-app-public",
   "keywords": [
