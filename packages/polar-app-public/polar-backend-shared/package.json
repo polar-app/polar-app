@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo no tests",
     "compile": "tsc",
+    "eslint": "figlet ${npm_package_name} && eslint -c ../../../.eslintrc.json .",
     "dist": "echo noop"
   },
   "repository": {
