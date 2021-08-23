@@ -7,10 +7,17 @@ export class EPUBMetadata {
 
     public static async getMetadata(docPathOrURL: PathOrURLStr): Promise<IParsedDocMeta> {
 
+        console.log("FIXME: getDocument... ");
+
         const book = await EPUBDocs.getDocument({url: docPathOrURL});
 
+        console.log("FIXME: getDocument... done");
+
+        // console.log("FIXME 1");
         const metadata = await book.loaded.metadata;
+        // console.log("FIXME 2");
         const spine = await book.loaded.spine;
+        console.log("FIXME 3");
 
         if (! spine) {
             throw new Error("EPUB has no spine");
