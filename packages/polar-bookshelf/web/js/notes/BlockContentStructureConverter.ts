@@ -5,7 +5,7 @@ import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 
 export namespace BlockContentStructureConverter {
 
-    export function convertContentToHTML(content: IBlockContent) {
+    export function convertContentToHTML(content: IBlockContent): HTMLStr {
         switch (content.type) {
             case 'name':
             case 'date':
@@ -15,6 +15,8 @@ export namespace BlockContentStructureConverter {
             case 'markdown':
                 return MarkdownContentConverter.toHTML(content.data);
         }
+        // TODO: handle document & annotation types
+        return '';
     }
 
     export function toHTML(blocks: ReadonlyArray<IBlockContentStructure>): HTMLStr {

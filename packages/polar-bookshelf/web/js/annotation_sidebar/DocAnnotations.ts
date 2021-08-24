@@ -360,7 +360,7 @@ interface DocAnnotationInit {
     readonly tags: Readonly<{[id: string]: InheritedTag}> | undefined;
 }
 
-class ITextConverters {
+export class ITextConverters {
 
     public static create(annotationType: AnnotationType,
                          annotation: ITextHighlight | IAreaHighlight | IComment | IFlashcard): ITextConverter {

@@ -17,6 +17,7 @@ import {
     BlocksIndexByName,
     Interstitial,
     IDropPosition,
+    BlocksIndexByDocumentID,
 } from "./BlocksStore";
 import {Block} from "./Block";
 import {ReverseIndex} from "./ReverseIndex";
@@ -43,6 +44,7 @@ export interface IBlocksStore {
     reverse: ReverseIndex;
     index: BlocksIndex;
     indexByName: BlocksIndexByName;
+    indexByDocumentID: BlocksIndexByDocumentID;
     selected: StringSetMap;
 
     hasSnapshot: boolean;
@@ -107,7 +109,7 @@ export interface IBlocksStore {
     // TODO: undo / cursor
     createNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock;
 
-    createNewNamedBlock(name: BlockNameStr, opts: ICreateNewNamedBlockOpts): BlockIDStr;
+    createNewNamedBlock(opts: ICreateNewNamedBlockOpts): BlockIDStr;
 
     createLinkToBlock<C extends IBlockContent = IBlockContent>(sourceID: BlockIDStr,
                                                                targetName: BlockNameStr,

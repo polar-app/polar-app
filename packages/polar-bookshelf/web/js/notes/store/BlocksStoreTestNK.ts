@@ -203,6 +203,7 @@ describe('BlocksStore', function() {
         assertJSON(store, {
             "_expanded": {},
             "_hasSnapshot": false,
+            "_indexByDocumentID": {},
             "_index": {
                 "102": {
                     "_content": {

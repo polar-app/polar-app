@@ -32,32 +32,45 @@ import {IBlockExpandCollectionSnapshot, useBlockExpandCollectionSnapshots} from 
 import {BlockExpandPersistenceWriter, useBlockExpandPersistenceWriter} from "../persistence/BlockExpandWriters";
 import {IBlockContentStructure} from "../HTMLToBlocks";
 import {DOMBlocks} from "../contenteditable/BlockContentEditable";
-import {BlockIDStr, IBlock, IBlockContent, IBlockLink, NamespaceIDStr, UIDStr} from "polar-blocks/src/blocks/IBlock";
+import {BlockIDStr, IBlock, IBlockContent, IBlockLink, IBlockNamedContent, NamespaceIDStr, UIDStr} from "polar-blocks/src/blocks/IBlock";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
-import {WriteController, WriteFileProgress} from "../../../../web/js/datastore/Datastore";
+import {WriteController, WriteFileProgress} from "../../datastore/Datastore";
 import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
 import {BlockContentCanonicalizer} from "../contenteditable/BlockContentCanonicalizer";
 import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
+import {DocumentContent} from "../content/DocumentContent";
+import {AnnotationContent} from "../content/AnnotationContent";
+import {INameContent} from "polar-blocks/src/blocks/content/INameContent";
+import {getNamedContentName} from "../NoteUtils";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {ITextConverters} from "../../annotation_sidebar/DocAnnotations";
+import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 
 export const ENABLE_UNDO_TRACING = false;
 
 export type BlockNameStr = string;
 
-export type BlockType = 'name' | 'markdown' | 'image' | 'date';
-
 export type ActiveBlocksIndex = {[id: string /* BlockIDStr */]: IActiveBlock };
 export type BlocksIndex = {[id: string /* BlockIDStr */]: Block};
 export type BlocksIndexByName = {[name: string /* BlockNameStr */]: BlockIDStr};
+export type BlocksIndexByDocumentID = {[docID: string /* IDStr */]: BlockIDStr};
 
 export type ReverseBlocksIndex = {[id: string /* BlockIDStr */]: BlockIDStr[]};
 
 export type StringSetMap = {[key: string]: boolean};
 
-export type BlockContent = (MarkdownContent | NameContent | ImageContent | DateContent) & IBaseBlockContent;
+export type BlockContent = (MarkdownContent
+                            | NameContent
+                            | ImageContent
+                            | DateContent
+                            | DocumentContent
+                            | AnnotationContent) & IBaseBlockContent;
 
-export type NamedBlock = Block<NameContent | DateContent>;
+export type BlockType = BlockContent['type'];
+
+export type NamedBlock = Block<NameContent | DateContent | DocumentContent>;
 
 /**
  * A offset into the content of a not where we should place the cursor.
@@ -228,7 +241,7 @@ export interface IDoDeleteOpts {
 }
 
 interface ICreateNewNamedBlockBase {
-    readonly type: 'name' | 'date';
+    readonly content: IBlockNamedContent;
 }
 
 export interface ICreateNewNamedBlockOptsBasic extends ICreateNewNamedBlockBase {
@@ -279,6 +292,8 @@ export class BlocksStore implements IBlocksStore {
     @observable _index: BlocksIndex = {};
 
     @observable _indexByName: BlocksIndexByName = {};
+
+    @observable _indexByDocumentID: BlocksIndexByDocumentID = {};
 
     /**
      * The reverse index so that we can build references to this node.
@@ -339,12 +354,16 @@ export class BlocksStore implements IBlocksStore {
         return this._indexByName;
     }
 
+    @computed get indexByDocumentID() {
+        return this._indexByDocumentID;
+    }
+
     /**
      * Get all the nodes by name.
      */
     getNamedBlocks(): ReadonlyArray<string> {
-        return (this.idsToBlocks(Object.values(this._indexByName)) as ReadonlyArray<Block<NameContent>>)
-            .map(block => block.content.data);
+        const blocks = this.idsToBlocks(Object.values(this._indexByName)) as ReadonlyArray<NamedBlock>;
+        return blocks.map(block => getNamedContentName(block.content));
     }
 
     @computed get reverse() {
@@ -474,11 +493,17 @@ export class BlocksStore implements IBlocksStore {
             const block = new Block(blockData);
             this._index[blockData.id] = block;
 
-            if (blockData.content.type === 'name' || blockData.content.type === 'date') {
-                this._indexByName[blockData.content.data.toLowerCase()] = block.id;
+            if (BlockPredicates.isNamedBlock(block)) {
+                const name = getNamedContentName(block.content).toLowerCase();
+                this._indexByName[name] = block.id;
+            }
+
+            if (block.content.type === "document") {
+                this._indexByDocumentID[block.content.docInfo.fingerprint] = block.id;
             }
 
             if (block.content.type === "markdown") {
+
                 if (existingBlock && existingBlock.content.type === "markdown") {
                     for (const link of existingBlock.content.links) {
                         this._reverse.remove(link.id, block.id);
@@ -490,6 +515,7 @@ export class BlocksStore implements IBlocksStore {
                 }
 
             }
+
         }
 
         this._active = opts.newActive ? opts.newActive : this._active;
@@ -564,12 +590,20 @@ export class BlocksStore implements IBlocksStore {
 
         const block = this.getBlock(id);
 
-        if (! block?.content) {
-            return ''
+        if (! block) {
+            return "";
         }
 
-        return BlockPredicates.isTextBlock(block) ? block.content.data : '';
+        if (BlockPredicates.isTextBlock(block)) {
+            return block.content.data;
+        }
 
+        if (block.content.type === AnnotationContentType.TEXT_HIGHLIGHT) {
+            const highlight = block.content.value;
+            return ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, highlight).text;
+        }
+
+        return "";
     }
 
     public getParent(id: BlockIDStr): Block | undefined {
@@ -645,7 +679,8 @@ export class BlocksStore implements IBlocksStore {
 
     public getBlockByName(name: BlockNameStr): Block | undefined {
 
-        const blockRefByName = this._indexByName[name.toLowerCase()];
+        const lowercaseName = name.toLowerCase();
+        const blockRefByName = this._indexByName[lowercaseName];
 
         if (blockRefByName) {
             return this._index[blockRefByName] || undefined;
@@ -1204,14 +1239,13 @@ export class BlocksStore implements IBlocksStore {
      * should be stored.
      *
      */
-    @action public doCreateNewNamedBlock(name: BlockNameStr,
-                                         opts: ICreateNewNamedBlockOpts): BlockIDStr {
+    @action public doCreateNewNamedBlock(opts: ICreateNewNamedBlockOpts): BlockIDStr {
 
         // NOTE that the ID always has to be random. We can't make it a hash
         // based on the name as the name can change.
         const newBlockID = opts.newBlockID || Hashcodes.createRandomID();
 
-        const existingBlock = this.getBlockByName(name);
+        const existingBlock = this.getBlockByName(getNamedContentName(opts.content));
 
         if (existingBlock) {
             return existingBlock.id;
@@ -1244,14 +1278,6 @@ export class BlocksStore implements IBlocksStore {
             const now = ISODateTimeStrings.create();
             const nspace = computeNamespace();
 
-            const createContent = () => {
-                if (opts.type === 'date') {
-                    return Contents.create({type: 'date', data: name, format: 'YYYY-MM-DD'}).toJSON();
-                } else {
-                    return Contents.create({type: 'name', data: name}).toJSON();
-                }
-            };
-
             return {
                 id: newBlockID,
                 nspace,
@@ -1259,7 +1285,7 @@ export class BlocksStore implements IBlocksStore {
                 root: newBlockID,
                 parent: undefined,
                 parents: [],
-                content: createContent(),
+                content: opts.content,
                 created: now,
                 updated: now,
                 items: {},
@@ -1275,15 +1301,13 @@ export class BlocksStore implements IBlocksStore {
         return newBlockID;
     }
 
-    @action public createNewNamedBlock(name: BlockNameStr,
-                                       opts: ICreateNewNamedBlockOpts): BlockIDStr {
+    @action public createNewNamedBlock(opts: ICreateNewNamedBlockOpts): BlockIDStr {
 
         const newBlockID = Hashcodes.createRandomID();
 
         const redo = (): BlockIDStr => {
-            return this.doCreateNewNamedBlock(name, {...opts, newBlockID});
-
-        }
+            return this.doCreateNewNamedBlock({...opts, newBlockID});
+        };
 
         return this.doUndoPush('createNewNamedBlock', [newBlockID], redo);
 
@@ -1383,10 +1407,14 @@ export class BlocksStore implements IBlocksStore {
             }
 
             // create the new block - the sourceID is used for the ref to compute the nspace.
-            const targetBlockID = this.doCreateNewNamedBlock(targetName, {
+            const targetBlockContent: INameContent = {
+                type: 'name',
+                data: targetName,
+            };
+            const targetBlockID = this.doCreateNewNamedBlock({
                 newBlockID: targetID,
                 nspace: sourceBlock.nspace,
-                type: 'name',
+                content: targetBlockContent,
             });
             const blockContent = sourceBlock.content;
 
@@ -1542,8 +1570,13 @@ export class BlocksStore implements IBlocksStore {
             const hasChildren = this.children(block.id).length > 0;
 
             // Block has no parent (in the case of a root block), or a block that has children
-            // with suffix of an empty string
-            if (opts.asChild || ! block.parent || (hasChildren && split?.suffix === '' && this.isExpanded(block.id))) {
+            // with suffix of an empty string, and annotation blocks
+            if (
+                opts.asChild
+                || ! block.parent
+                || (hasChildren && split?.suffix === '' && this.isExpanded(block.id))
+                || BlockPredicates.isAnnotationBlock(block)
+            ) {
                 return {
                     type: 'first-child',
                     parentBlock: block
@@ -2103,8 +2136,9 @@ export class BlocksStore implements IBlocksStore {
                     delete this._index[block.id];
 
                     // *** delete the block from name index by name.
-                    if (block.content.type === 'name') {
-                        delete this._indexByName[block.content.data.toLowerCase()];
+                    if (BlockPredicates.isNamedBlock(block)) {
+                        const name = getNamedContentName(block.content);
+                        delete this._indexByName[name.toLowerCase()];
                     }
 
                     // *** delete the reverse index for this item
@@ -2118,6 +2152,10 @@ export class BlocksStore implements IBlocksStore {
                         for (const link of block.content.links) {
                             this.reverse.remove(link.id, block.id);
                         }
+                    }
+
+                    if (block.content.type === 'document') {
+                        delete this._indexByDocumentID[block.content.docInfo.fingerprint];
                     }
 
                     this.collapse(blockID);
