@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
-    "compile": "npx tsc"
+    "eslint": "figlet ${npm_package_name} && eslint -c ../../../.eslintrc.json .",
+    "compile": "yarn run eslint && tsc"
   },
   "repository": {
     "type": "git",
