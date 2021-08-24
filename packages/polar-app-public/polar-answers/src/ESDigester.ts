@@ -24,6 +24,10 @@ export namespace ESDigester {
     }
 
     export interface IDigestDocument {
+
+        /**
+         * The shingle offset
+         */
         readonly idx: number;
         readonly text: string;
 

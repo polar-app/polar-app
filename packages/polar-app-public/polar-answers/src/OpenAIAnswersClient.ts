@@ -68,6 +68,13 @@ export namespace OpenAIAnswersClient {
 
         readonly stop?: string | ReadonlyArray<string>;
 
+        /**
+         * A special boolean flag for showing metadata. If set to true, each
+         * document entry in the returned JSON will contain a "metadata" field.
+         */
+        readonly return_metadata?: boolean;
+
+
     }
 
     export interface ISelectedDocument {

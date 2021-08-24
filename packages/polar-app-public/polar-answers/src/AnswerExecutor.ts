@@ -70,6 +70,20 @@ export namespace AnswerExecutor {
 
         // tslint:disable-next-line:variable-name
 
+        // FIXME: include metadata here - don't just use the source text.  We
+        // need the metadata as part of the results.
+        function toDocument(doc: IDigestDocument) {
+
+            return {
+                text: doc.text,
+                metadata: {
+                    id: doc.idx
+                }
+
+            }
+
+        }
+
         const documents = esResponse.hits.hits.map(current => current._source.text);
 
         // TODO how do we compute documents which have no known answer?

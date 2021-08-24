@@ -14,6 +14,7 @@ export namespace ESShingleWriter {
         readonly shingle: ISentenceShingle;
     }
 
+    // FIXME unify this with the results from ES so that we know the docID, pageNum, idx, etc,
     export interface IAnswerDigestRecord {
         readonly docID: IDStr;
         readonly pageNum: number;

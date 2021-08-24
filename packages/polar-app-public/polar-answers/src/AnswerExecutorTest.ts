@@ -51,6 +51,40 @@ xdescribe("AnswerExecutor", async function() {
 
     });
 
+    // FIXME: should work
+    it("covid 2", async function() {
+
+        const answer = await executeQuestion("What do two doses of SARS-CoV-2 vaccination induce?");
+
+        assert.equal(answer, "")
+
+    });
+
+    it("covid 3", async function() {
+
+        const answer = await executeQuestion("What neutralized the prototype B virus?");
+
+        // it properly includes this hit BUT is unable to compute the anser
+        //     {
+        //       document: 1,
+        //       object: 'search_result',
+        //       score: 512.517,
+        //       text: 'Neutralization by sera from COVID-19 convalescents.  Sera\n' +
+        //         'from convalescent individuals neutralized prototype B virus with\n' +
+        //         'highly variable potency (NT50 range <5 to 1140, Fig.  3c and e),\n' +
+        //         'though sera from those with mild symptoms were significantly\n' +
+        //         'more potent on average than those with asymptomatic infection\n' +
+        //         '(NT50 438.4 and 38.5, respectively, P = 0.002).  Neutralization\n' +
+        //         'titres against B.1.1.7 were below the limit of detection in 9/12\n' +
+        //         'asymptomatic convalescent individuals but were detectable in all\n' +
+        //         'those with mild symptoms. '
+        //     }
+
+        assert.equal(answer, "")
+
+    });
+
+
     it("bigtable 1", async function() {
 
         const answer = await executeQuestion("Is Bigtable relational?");
@@ -59,5 +93,50 @@ xdescribe("AnswerExecutor", async function() {
 
     });
 
+    it("bigtable single-row transactions", async function() {
+
+        const answer = await executeQuestion("Does Bigtable support single-row transactions?");
+
+        assert.equal(answer, "Yes.")
+
+    });
+
+
+    it("bigtable general transactions", async function() {
+
+        const answer = await executeQuestion("Does Bigtable support general transactions?");
+
+        assert.equal(answer, "No.")
+
+    });
+
+    // FIXME: test return_metadata
+    // FIXME: ES bias for short terms...
+
+    xit("TODO: bigtable type of transactions", async function() {
+
+        // TODO: not supported yet. I need to extend examples and examples_context here
+
+        const answer = await executeQuestion("What types of transactions does bigtable support?");
+
+        assert.equal(answer, "")
+
+    });
+
+    it("bigtable unknown 1", async function() {
+
+        const answer = await executeQuestion("Is Bigtable a foobar?");
+
+        assert.equal(answer, "__UNKNOWN__")
+
+    });
+
+    it("bigtable unknown 2", async function() {
+
+        const answer = await executeQuestion("Where was Bigtable impeached?");
+
+        assert.equal(answer, "__UNKNOWN__")
+
+    });
 
 })
