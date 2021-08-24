@@ -36,6 +36,8 @@ export namespace AnswerExecutor {
 
     export const MODEL = 'davinci';
 
+    export const TEMPERATURE = 0;
+
     export async function exec(opts: IExecOpts): Promise<IAnswer> {
 
         const {question, uid} = opts;
@@ -92,7 +94,7 @@ export namespace AnswerExecutor {
             n: 10,
 
             // FIXME: I have to play with temperature more...
-            temperature: 0
+            temperature: TEMPERATURE
         }
 
         const answerResponse = await OpenAIAnswersClient.exec(request);
