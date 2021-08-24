@@ -4,8 +4,9 @@
   "description": "Firestore interfaces so that we can use both the client and admin SDK and mock the firestore interfaces.",
   "main": "index.js",
   "scripts": {
-    "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
-    "compile": "tsc"
+    "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
+    "eslint": "figlet ${npm_package_name} && eslint -c ../../../.eslintrc.json .",
+    "compile": "yarn run eslint && tsc"
   },
   "keywords": [],
   "author": "",
