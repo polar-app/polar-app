@@ -165,7 +165,6 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
 
                                 <TextHighlightModeToggle />
 
-                                {/*<AreaHighlightModeToggle />*/}
                                 <DocViewerGlobalHotKeys/>
 
                                 <Divider orientation="vertical" flexItem/>

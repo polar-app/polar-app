@@ -293,7 +293,6 @@ export interface IDocViewerCallbacks {
 
     readonly setDocArchived: (archived: boolean) => void;
     readonly onDocTagged: () => void;
-    // readonly onHighlight: () => void;
 
     readonly toggleDocFlagged: () => void;
     readonly toggleDocArchived: () => void;

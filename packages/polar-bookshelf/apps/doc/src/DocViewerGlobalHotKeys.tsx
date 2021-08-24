@@ -189,9 +189,9 @@ export const DocViewerGlobalHotKeys = React.memo(function DocViewerGlobalHotKeys
         doZoom,
         doZoomRestore,
         onDocTagged,
-        onHighlight,
         toggleDocArchived,
         toggleDocFlagged,
+        toggleAreaHighlightMode,
     } = useDocViewerCallbacks();
 
     const globalKeyHandlers = {
@@ -203,7 +203,7 @@ export const DocViewerGlobalHotKeys = React.memo(function DocViewerGlobalHotKeys
         ZOOM_OUT: () => doZoom('-'),
         ZOOM_RESTORE: doZoomRestore,
         TAG: onDocTagged,
-        HIGHLIGHT: onHighlight,
+        HIGHLIGHT: toggleAreaHighlightMode,
         FLAG: toggleDocFlagged,
         ARCHIVE: toggleDocArchived,
     };
