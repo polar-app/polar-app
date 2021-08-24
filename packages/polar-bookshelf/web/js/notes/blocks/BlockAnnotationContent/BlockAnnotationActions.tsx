@@ -1,5 +1,7 @@
-import {createStyles, debounce, makeStyles} from "@material-ui/core";
 import React from "react";
+import {createStyles, debounce, Grow, Popper, ClickAwayListener, makeStyles} from "@material-ui/core";
+import {ColorStr} from "../../../ui/colors/ColorSelectorBox";
+import {ColorMenu} from "../../../ui/ColorMenu";
 
 export const useStyles = makeStyles(() =>
     createStyles({
@@ -48,7 +50,7 @@ export const BlockAnnotationActionsWrapper: React.FC<IBlockAnnotationActionsWrap
 
 
 interface IBlockAnnotationActionProps {
-    icon: ReturnType<React.FC>;
+    icon: React.ReactElement;
     onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
@@ -72,14 +74,76 @@ export const useBlockAnnotationActionStyles = makeStyles((theme) =>
     })
 );
 
-export const BlockAnnotationAction: React.FC<IBlockAnnotationActionProps> = (props) => {
+export const BlockAnnotationAction = React.forwardRef<HTMLDivElement, React.PropsWithChildren<IBlockAnnotationActionProps>>((props, ref) => {
     const { icon, onClick, children } = props;
     const classes = useBlockAnnotationActionStyles();
 
     return (
-        <div className={classes.root} onClick={onClick}>
+        <div className={classes.root} onClick={onClick} ref={ref}>
             {icon}
             {children}
         </div>
+    );
+});
+
+
+export const useColorIconStyles = makeStyles((theme) =>
+    createStyles({
+        root: {
+            width: '1em',
+            height: '1em',
+            borderRadius: '50%',
+            border: `1px solid ${theme.palette.background.default}`,
+        }
+    })
+);
+
+interface IColorIconProps {
+    color?: ColorStr;
+}
+
+const ColorIcon: React.FC<IColorIconProps> = ({ color = 'yellow' }) => {
+    const classes = useColorIconStyles();
+
+    return (
+        <div className={classes.root} style={{ backgroundColor: color }} />
+    );
+};
+
+interface IBlockAnnotationColorPickerActionProps {
+    color?: ColorStr;
+    onChange: (color: ColorStr) => void;
+}
+
+export const BlockAnnotationColorPickerAction: React.FC<IBlockAnnotationColorPickerActionProps> = (props) => {
+    const [ref, setRef] = React.useState<HTMLDivElement | null>(null);
+    const { onChange, color } = props;
+
+    return (
+        <BlockAnnotationAction
+            key="color"
+            ref={elem => setRef(elem)}
+            icon={<ColorIcon color={color} />}
+            onClick={() => null}
+        >
+            {ref &&
+                <Popper
+                    open={true}
+                    anchorEl={ref}
+                    placement="left"
+                    transition
+                >
+                    {({ TransitionProps }) => (
+                        <Grow {...TransitionProps}>
+                            <div style={{ marginRight: 10 }}>
+                                <ClickAwayListener onClickAway={() => null}>
+                                    <ColorMenu selected={color} onChange={onChange} />
+                                </ClickAwayListener>
+                            </div>
+                        </Grow>
+                    )}
+                </Popper>
+            }
+        </BlockAnnotationAction>
     );
 };

@@ -18,6 +18,7 @@ export const useStyles = makeStyles(() =>
             width: 4,
             borderRadius: 2,
             flex: '0 0 4px',
+            backgroundColor: 'yellow', // default color
         },
     }),
 );

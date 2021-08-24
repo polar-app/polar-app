@@ -9,10 +9,12 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 import {useBlocksTreeStore} from "../../BlocksTree";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
-import {BlockAnnotationAction, BlockAnnotationActionsWrapper} from "./BlockAnnotationActions";
+import {BlockAnnotationAction, BlockAnnotationActionsWrapper, BlockAnnotationColorPickerAction} from "./BlockAnnotationActions";
 import {AnnotationPtrs} from "../../../annotation_sidebar/AnnotationPtrs";
 import {AnnotationLinks} from "../../../annotation_sidebar/AnnotationLinks";
 import {useHistory} from "react-router";
+import {useAnnotationBlockManager} from "../../NoteUtils";
+import {ColorStr} from "../../../ui/colors/ColorSelectorBox";
 
 
 interface IProps {
@@ -40,6 +42,7 @@ export const useStyles = makeStyles(() =>
 export const BlockTextHighlightAnnotationContent: React.FC<IProps> = (props) => {
     const { textHighlight: annotation, id } = props;
     const blocksTreeStore = useBlocksTreeStore();
+    const {update} = useAnnotationBlockManager();
     const history = useHistory();
 
     const highlight = annotation.value;
@@ -61,10 +64,20 @@ export const BlockTextHighlightAnnotationContent: React.FC<IProps> = (props) => 
         history.push(AnnotationLinks.createRelativeURL(ptr));
     }, [annotation]);
 
+    const handleColorChange = React.useCallback((color: ColorStr) => {
+        update(id, {
+            ...annotation,
+            value: {
+                ...annotation.value,
+                color,
+            },
+        });
+    }, [update, id, annotation]);
 
     const actions = React.useMemo(() => [
-        <BlockAnnotationAction icon={<DeleteIcon />} onClick={handleDelete} />,
-        <BlockAnnotationAction icon={<OpenInNewIcon />} onClick={handleOpen} />,
+        <BlockAnnotationAction key="delete" icon={<DeleteIcon />} onClick={handleDelete} />,
+        <BlockAnnotationAction key="open" icon={<OpenInNewIcon />} onClick={handleOpen} />,
+        <BlockAnnotationColorPickerAction key="color" color={highlight.color} onChange={handleColorChange} />
     ], [handleDelete]);
 
     return (

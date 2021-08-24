@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) =>
             display: "grid",
             gridTemplateRows: "repeat(3, 1fr)",
             gridAutoFlow: "column",
+            background: theme.palette.background.paper,
             padding: 6,
         },
         iconButton: {
