@@ -55,8 +55,9 @@ const useStyles = makeStyles({
   },
 
   rowHead: {
-    textAlign: "right",
-    padding: "7px 0px 7px 20px",
+    textAlign: "left",
+    width: '25%',
+    padding: "7px 0px 7px 60px",
   },
 
   divider: {
@@ -115,49 +116,31 @@ const DesktopTable = () => {
 
   return (
       <Paper className={classes.tableDesktop}>
+        <div style={{ display: 'flex', justifyContent: 'center', height: '14.5em'}}>
+          <div style={{ width: "26%" }}>
+            <Box className={classes.header}>Free</Box>
+            <Box className={classes.pricing}>
+              <PlanPricing plan='free'/>
+            </Box>
+            <PurchaseOrChangePlanButton newSubscription={{plan: V2PlanFree, interval}} />
+          </div>
+          <div style={{ width: "26%" }}>
+            <Box className={classes.header}>Plus</Box>
+            <Box className={classes.pricing}>
+              <PlanPricing plan='plus'/>
+            </Box>
+            <PurchaseOrChangePlanButton newSubscription={{plan: V2PlanPlus, interval}} />
+          </div>
+          <div style={{ width: "26%" }}>
+            <Box className={classes.header}>Pro</Box>
+            <Box className={classes.pricing}>
+              <PlanPricing plan='pro'/>
+            </Box>
+            <PurchaseOrChangePlanButton newSubscription={{plan: V2PlanPro, interval}} />
+          </div>
+        </div>
         <table>
           <tbody>
-          <tr style={{ height: "100px", verticalAlign: "top" }}>
-            <th style={{ width: "12%" }}>
-              <div className="mt-2 mb-2">
-              </div>
-            </th>
-            <th style={{ width: "22%" }}>
-              <Box className={classes.header}>Free</Box>
-              <Box className={classes.pricing}>
-                <PlanPricing plan='free'/>
-              </Box>
-              {/*<Button className={classes.buttonSignUp}>Get Started</Button>*/}
-            </th>
-            <th style={{ width: "22%" }}>
-              <Box className={classes.header}>Plus</Box>
-              <Box className={classes.pricing}>
-                <PlanPricing plan='plus'/>
-              </Box>
-
-            </th>
-            <th style={{ width: "22%" }}>
-              <Box className={classes.header}>Pro</Box>
-              <Box className={classes.pricing}>
-                <PlanPricing plan='pro'/>
-              </Box>
-
-            </th>
-          </tr>
-
-          <tr>
-            <td></td>
-            <td>
-              <PurchaseOrChangePlanButton newSubscription={{plan: V2PlanFree, interval}} />
-            </td>
-            <td>
-              <PurchaseOrChangePlanButton newSubscription={{plan: V2PlanPlus, interval}} />
-            </td>
-            <td>
-              <PurchaseOrChangePlanButton newSubscription={{plan: V2PlanPro, interval}} />
-            </td>
-          </tr>
-
           <TableRowDivider/>
 
           <tr className={classes.row}>
