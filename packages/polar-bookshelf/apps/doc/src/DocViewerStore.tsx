@@ -290,7 +290,6 @@ export interface IDocViewerCallbacks {
     readonly setPage: (page: number) => void;
     readonly setFluidPagemarkFactory: (fluidPagemarkFactory: FluidPagemarkFactory) => void;
     readonly setDocFlagged: (flagged: boolean) => void;
-
     readonly setDocArchived: (archived: boolean) => void;
     readonly onDocTagged: () => void;
 
@@ -1038,7 +1037,6 @@ function useCallbacksFactory(storeProvider: Provider<IDocViewerStore>,
             setPageNavigator,
             annotationMutations,
             onPagemark,
-            // onHighlight,
             onPageJump,
             onPagePrev,
             onPageNext,
