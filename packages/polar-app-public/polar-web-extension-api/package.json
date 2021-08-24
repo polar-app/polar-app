@@ -4,9 +4,9 @@
   "description": "Provides just the basic API that we can use in both the frontend and backend for API requests and responses.",
   "main": "index.js",
   "scripts": {
-    "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
-    "test": "echo noop",
-    "compile": "tsc",
+    "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
+    "eslint": "figlet ${npm_package_name} && eslint -c ../../../.eslintrc.json .",
+    "compile": "yarn run eslint && tsc",
     "build": "webpack --config webpack.config.js"
   },
   "keywords": [],
