@@ -5,11 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
-    "_compile": "yarn run tsc && yarn run generate-release-metadata",
-    "compile": "yarn run tsc",
-    "_build": "node src/ReleaseMetadataGenerator.js ../../polar-site/_posts/",
-    "build": "echo noop",
-    "tsc": "tsc",
+    "eslint": "figlet ${npm_package_name} && eslint -c ../../../.eslintrc.json .",
+    "compile": "yarn run eslint && tsc && yarn run generate-release-metadata",
+    "build": "node src/ReleaseMetadataGenerator.js ../../polar-site/_posts/",
     "generate-release-metadata": "node src/ReleaseMetadataGenerator.js ../../polar-site/_posts/ > src/release-metadata.json"
   },
   "keywords": [],
