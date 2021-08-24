@@ -15,7 +15,7 @@ import {IBlockContentStructure} from '../HTMLToBlocks';
 import {useBlocksTreeStore} from '../BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
-import {useNamedBlocks} from '../NoteUtils';
+import {getNamedContentName, useNamedBlocks} from '../NoteUtils';
 import {ContentEditables} from '../ContentEditables';
 import {useSideNavStore} from '../../sidenav/SideNavStore';
 
@@ -92,10 +92,13 @@ export const BlockContentEditable = (props: IProps) => {
     const namedBlocks = useNamedBlocks();
 
     const noteLinkActions = React.useMemo(() => {
-        return namedBlocks.map((block) => ({
-            id: block.content.data,
-            text: block.content.data,
-        }));
+        return namedBlocks.map((block) => {
+            const name = getNamedContentName(block.content);
+            return {
+                id: name,
+                text: name,
+            };
+        });
     }, [namedBlocks]);
 
     const createNoteActionsProvider = React.useMemo(() => createActionsProvider(noteLinkActions), [noteLinkActions]);
