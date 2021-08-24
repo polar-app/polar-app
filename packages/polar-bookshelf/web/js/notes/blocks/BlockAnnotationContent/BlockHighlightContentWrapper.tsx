@@ -26,7 +26,7 @@ export const useStyles = makeStyles(() =>
     }),
 );
 
-export const BlockAnnotationContentWrapper: React.FC<IProps> = ({ color, children }) => {
+export const BlockHighlightContentWrapper: React.FC<IProps> = ({ color, children }) => {
     const classes = useStyles();
 
     return (

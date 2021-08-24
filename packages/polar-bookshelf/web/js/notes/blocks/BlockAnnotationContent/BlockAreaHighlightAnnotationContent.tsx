@@ -1,10 +1,9 @@
 import React from "react";
 import {DocAnnotationMoment} from "../../../annotation_sidebar/DocAnnotationMoment";
-import {BlockAnnotationContentWrapper} from "./BlockAnnotationContentWrapper";
+import {BlockHighlightContentWrapper} from "./BlockHighlightContentWrapper";
 import {usePersistenceLayerContext} from "../../../../../apps/repository/js/persistence_layer/PersistenceLayerApp";
 import {DocFileResolvers} from "../../../datastore/DocFileResolvers";
 import {Images} from "../../../metadata/Images";
-import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {AreaHighlightAnnotationContent} from "../../content/AnnotationContent";
 import {BlockEditorGenericProps} from "../../BlockEditor";
 import {BlockAnnotationActionsWrapper, useSharedAnnotationBlockActions} from "./BlockAnnotationActions";
@@ -13,7 +12,6 @@ import {BlockImageContent} from "../BlockImageContent";
 
 interface IProps extends BlockEditorGenericProps {
     annotation: AreaHighlightAnnotationContent;
-    id: BlockIDStr;
 }
 
 export const BlockAreaHighlightAnnotationContent: React.FC<IProps> = (props) => {
@@ -27,7 +25,6 @@ export const BlockAreaHighlightAnnotationContent: React.FC<IProps> = (props) => 
         onKeyDown,
         className,
         style,
-        active,
     } = props;
     const highlight = annotation.value;
     const { persistenceLayerProvider } = usePersistenceLayerContext();
@@ -43,11 +40,10 @@ export const BlockAreaHighlightAnnotationContent: React.FC<IProps> = (props) => 
 
     return (
         <BlockAnnotationActionsWrapper actions={actions}>
-            <BlockAnnotationContentWrapper color={highlight.color}>
+            <BlockHighlightContentWrapper color={highlight.color}>
                 {image && (
                     <BlockImageContent
                         id={id}
-                        active={active}
                         parent={parent}
                         width={image.width}
                         height={image.height}
@@ -60,7 +56,7 @@ export const BlockAreaHighlightAnnotationContent: React.FC<IProps> = (props) => 
                         onKeyDown={onKeyDown} />
                 )}
                 <DocAnnotationMoment created={highlight.created} />
-            </BlockAnnotationContentWrapper>
+            </BlockHighlightContentWrapper>
         </BlockAnnotationActionsWrapper>
     );
 };

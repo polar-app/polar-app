@@ -202,9 +202,7 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
 
     }
 
-    if (block.content.type === AnnotationContentType.TEXT_HIGHLIGHT
-        || block.content.type === AnnotationContentType.AREA_HIGHLIGHT
-        || block.content.type === AnnotationContentType.FLASHCARD) {
+    if (BlockPredicates.isAnnotationBlock(block)) {
 
         const content = block.content;
 

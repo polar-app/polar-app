@@ -33,15 +33,14 @@ export const useStyles = makeStyles(() =>
 
 interface IBlockAnnotationActionsWrapperProps {
     actions: React.ReactElement<IBlockAnnotationActionProps>[];
-    active?: boolean;
 }
 
 export const BlockAnnotationActionsWrapper: React.FC<IBlockAnnotationActionsWrapperProps> = (props) => {
-    const { children, actions, active } = props;
+    const { children, actions } = props;
     const classes = useStyles();
     const [hovered, setHovered] = React.useState(false);
 
-    const handleHide = React.useMemo(() => debounce(() => setHovered(false), 300), [setHovered]);
+    const handleHide = React.useMemo(() => debounce(() => setHovered(false), 50), [setHovered]);
     const handleShow = React.useCallback(() => {
         handleHide.clear();
         setHovered(true);
@@ -53,7 +52,7 @@ export const BlockAnnotationActionsWrapper: React.FC<IBlockAnnotationActionsWrap
             onMouseEnter={handleShow}
             onMouseLeave={handleHide}
         >
-            {(active || hovered) && <div className={classes.actionsOuter}>{actions}</div>}
+            {hovered && <div className={classes.actionsOuter}>{actions}</div>}
             {children}
         </div>
     );
