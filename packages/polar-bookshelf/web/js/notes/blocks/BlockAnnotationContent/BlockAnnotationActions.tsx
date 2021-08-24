@@ -107,8 +107,8 @@ export const BlockAnnotationAction = React.forwardRef<HTMLDivElement, React.Prop
 export const useColorIconStyles = makeStyles((theme) =>
     createStyles({
         root: {
-            width: '1em',
-            height: '1em',
+            width: '16px',
+            height: '16px',
             borderRadius: '50%',
             border: `1px solid ${theme.palette.background.default}`,
         }

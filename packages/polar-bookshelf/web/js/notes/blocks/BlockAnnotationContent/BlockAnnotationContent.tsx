@@ -5,6 +5,7 @@ import {BlockTextHighlightAnnotationContent} from "./BlockTextHighlightAnnotatio
 import {BlockAreaHighlightAnnotationContent} from "./BlockAreaHighlightAnnotationContent";
 import {AnnotationContent} from "../../content/AnnotationContent";
 import {HTMLStr} from "polar-shared/src/util/Strings";
+import {BlockFlashcardAnnotationContent} from "./BlockFlashcardAnnotationContent";
 
 interface IProps extends BlockEditorGenericProps {
     readonly annotation: AnnotationContent;
@@ -20,8 +21,9 @@ export const BlockAnnotationContent: React.FC<IProps> = (props) => {
                 return <BlockTextHighlightAnnotationContent {...props} annotation={annotation} />;
             case AnnotationContentType.AREA_HIGHLIGHT:
                 return <BlockAreaHighlightAnnotationContent {...props} annotation={annotation} />;
+            case AnnotationContentType.FLASHCARD:
+                return <BlockFlashcardAnnotationContent {...props} annotation={annotation} />
         }
-        return null;
     }, [annotation, props]);
 
     return (

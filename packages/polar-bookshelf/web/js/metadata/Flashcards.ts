@@ -41,13 +41,13 @@ export class Flashcards {
 
     }
 
-    public static createCloze(text: HTMLString, ref: Ref) {
+    public static createCloze(text: HTMLString, ref: Ref, type: keyof Text = 'HTML') {
 
         const archetype = this.CLOZE_ARCHETYPE;
 
         const fields: {[key: string]: Text } = {};
 
-        fields.text = Texts.create(text, TextType.HTML);
+        fields.text = Texts.create(text, TextType[type]);
 
         return Flashcards.create(FlashcardType.CLOZE, fields, archetype, ref);
 
@@ -56,25 +56,25 @@ export class Flashcards {
     /**
      * Create a flashcard from the raw, completed, schema form data.
      */
-    public static createFrontBack(front: HTMLString, back: HTMLString, ref: Ref) {
+    public static createFrontBack(front: HTMLString, back: HTMLString, ref: Ref, type: keyof Text = 'HTML') {
 
         const archetype = this.FRONT_BACK_ARCHETYPE;
 
         const fields: {[key: string]: Text } = {};
 
-        fields.front = Texts.create(front, TextType.HTML);
-        fields.back = Texts.create(back, TextType.HTML);
+        fields.front = Texts.create(front, TextType[type]);
+        fields.back = Texts.create(back, TextType[type]);
 
         return Flashcards.create(FlashcardType.BASIC_FRONT_BACK, fields, archetype, ref);
 
     }
 
-    public static convertFieldsToMap(fields: {[key: string]: Text } = {}) {
+    public static convertFieldsToMap(fields: {[key: string]: Text } = {}, type: keyof Text = 'HTML') {
 
         const result: {[name: string]: HTMLString} = {};
 
         for (const key of Object.keys(fields)) {
-            result[key] = fields[key].HTML!;
+            result[key] = fields[key][type] || '';
         }
 
         return result;
