@@ -11,6 +11,10 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {BlockPredicates} from "./store/BlockPredicates";
 import { RoutePathnames } from "../apps/repository/RoutePathnames";
 import {DocInfos} from "../metadata/DocInfos";
+import {IAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {DocumentContent} from "./content/DocumentContent";
+import {Block} from "./store/Block";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 // TODO: move this into BlocksStore
 export const focusFirstChild = (blocksStore: IBlocksStore, id: BlockIDStr) => {
@@ -19,6 +23,54 @@ export const focusFirstChild = (blocksStore: IBlocksStore, id: BlockIDStr) => {
         const firstChildID = root.itemsAsArray[0] || blocksStore.createNewBlock(root.id, { asChild: true }).id;
         blocksStore.setActiveWithPosition(firstChildID, 'start');
     }
+};
+
+export const getBlockForDocument = (blocksStore: IBlocksStore, fingerprint: string) => {
+    const documentBlockID = blocksStore.indexByDocumentID[fingerprint];
+    const block = blocksStore.getBlock(documentBlockID);
+    return block;
+};
+
+export const useAnnotationBlockManager = () => {
+    const blocksStore = useBlocksStore();
+
+    const doMutation = React.useCallback((fingerprint: string, handler: (block: Block<DocumentContent>) => void) => {
+        const block = getBlockForDocument(blocksStore, fingerprint);
+        if (block && block.content.type === "document") {
+            handler(block as Block<DocumentContent>);
+        } else {
+            console.error(`Document with fingerprint ${fingerprint} was not found. Annotation block could not be created`);
+        }
+    }, [blocksStore]);
+
+    const create = React.useCallback(<T extends IAnnotationContent>(fingerprint: string, annotation: T) => {
+        doMutation(fingerprint, (block) => {
+            const content: T = {
+                ...annotation,
+                value: {
+                    ...annotation.value,
+                    lastUpdated: ISODateTimeStrings.create(),
+                },
+            };
+            blocksStore.createNewBlock(block.id, { content });
+        });
+    }, [blocksStore, doMutation]);
+
+    const update = React.useCallback((blockID: BlockIDStr, annotation: IAnnotationContent) => {
+        blocksStore.setBlockContent(blockID, annotation);
+    }, [blocksStore]);
+
+    const remove = React.useCallback((blockID: BlockIDStr) => {
+        const block = blocksStore.getBlock(blockID);
+
+        if (block && block.content.type) {
+            blocksStore.deleteBlocks([blockID]);
+        } else {
+            console.log(`Annotation deletion failed. could not find annotation block with the ID ${blockID}`);
+        }
+    }, [blocksStore]);
+
+    return { create, update, remove };
 };
 
 export const getNamedContentName = (content: IBlockNamedContent): string => {
