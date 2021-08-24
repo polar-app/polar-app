@@ -89,7 +89,7 @@
     "cypress": "^8.0.0",
     "dotenv": "^8.2.0",
     "dtsmake": "0.0.10",
-    "eslint": "=7.23.0",
+    "eslint": "=7.32.0",
     "eslint-config-prettier": "=8.1.0",
     "eslint-plugin-import": "=2.22.1",
     "eslint-plugin-jsdoc": "=32.3.0",
