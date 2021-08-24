@@ -494,12 +494,7 @@ export class BlocksStore implements IBlocksStore {
             this._index[blockData.id] = block;
 
             if (BlockPredicates.isNamedBlock(block)) {
-            }
-
-            if (blockData.content.type === "document"
-                || blockData.content.type === "name"
-                || blockData.content.type === "date") {
-                const name = getNamedContentName(blockData.content).toLowerCase();
+                const name = getNamedContentName(block.content).toLowerCase();
                 this._indexByName[name] = block.id;
             }
 
@@ -2141,10 +2136,7 @@ export class BlocksStore implements IBlocksStore {
                     delete this._index[block.id];
 
                     // *** delete the block from name index by name.
-                    if (block.content.type === 'name'
-                        || block.content.type === 'date'
-                        || block.content.type === 'document'
-                    ) {
+                    if (BlockPredicates.isNamedBlock(block)) {
                         const name = getNamedContentName(block.content);
                         delete this._indexByName[name.toLowerCase()];
                     }

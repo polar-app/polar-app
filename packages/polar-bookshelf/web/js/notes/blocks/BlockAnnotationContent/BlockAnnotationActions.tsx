@@ -187,13 +187,13 @@ export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockA
     }, [annotation, history]);
 
     const handleColorChange = React.useCallback((color: ColorStr) => {
-        const block = getBlock(id, AnnotationContentType.TEXT_HIGHLIGHT);
+        const block = getBlock(id, annotation.type);
         if (block) {
             const content = block.content.toJSON();
             content.value.color = color;
             update(id, content);
         }
-    }, [update, id, getBlock]);
+    }, [update, id, getBlock, annotation.type]);
 
     const color = annotation.value.color
 

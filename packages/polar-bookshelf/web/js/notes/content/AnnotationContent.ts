@@ -104,9 +104,10 @@ export class AreaHighlightAnnotationContent extends AnnotationContentBase<IAreaH
 export class FlashcardAnnotationContent extends AnnotationContentBase<IFlashcardAnnotationContent> {}
 
 
-export type AnnotationContent = TextHighlightAnnotationContent
-                                | AreaHighlightAnnotationContent
-                                | FlashcardAnnotationContent;
+export type AnnotationHighlightContent = TextHighlightAnnotationContent
+                                         | AreaHighlightAnnotationContent;
+
+export type AnnotationContent = AnnotationHighlightContent | FlashcardAnnotationContent;
 
 export type AnnotationContentTypeMap = {
     [AnnotationContentType.FLASHCARD]: FlashcardAnnotationContent,

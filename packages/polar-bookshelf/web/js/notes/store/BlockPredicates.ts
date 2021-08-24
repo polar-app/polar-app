@@ -3,7 +3,7 @@ import {MarkdownContent} from "../content/MarkdownContent";
 import {NameContent} from "../content/NameContent";
 import {DateContent} from "../content/DateContent";
 import {NamedBlock} from "./BlocksStore";
-import {AnnotationContent} from "../content/AnnotationContent";
+import {AnnotationContent, AnnotationHighlightContent} from "../content/AnnotationContent";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 
 /**
@@ -31,5 +31,10 @@ export namespace BlockPredicates {
 
     export function isAnnotationBlock(block: Readonly<Block>): block is Block<AnnotationContent> {
         return Object.values(AnnotationContentType).some(type => block.content.type === type);
+    }
+
+    export function isAnnotationHighlightBlock(block: Readonly<Block>): block is Block<AnnotationHighlightContent> {
+        const highlightTypes = [AnnotationContentType.AREA_HIGHLIGHT, AnnotationContentType.TEXT_HIGHLIGHT];
+        return highlightTypes.some(type => block.content.type === type);
     }
 }
