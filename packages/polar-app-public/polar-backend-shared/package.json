@@ -4,10 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo no tests",
-    "compile": "tsc",
+    "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "eslint": "figlet ${npm_package_name} && eslint -c ../../../.eslintrc.json .",
-    "dist": "echo noop"
+    "compile": "yarn run eslint && tsc"
   },
   "repository": {
     "type": "git",
