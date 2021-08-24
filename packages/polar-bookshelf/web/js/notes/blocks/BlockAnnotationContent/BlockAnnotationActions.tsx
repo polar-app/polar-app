@@ -23,6 +23,7 @@ export const useStyles = makeStyles(() =>
             position: 'absolute',
             top: 0,
             right: 0,
+            zIndex: 10,
             '& > div + div': {
                 marginTop: 4,
             },
@@ -40,7 +41,7 @@ export const BlockAnnotationActionsWrapper: React.FC<IBlockAnnotationActionsWrap
     const classes = useStyles();
     const [hovered, setHovered] = React.useState(false);
 
-    const handleHide = React.useMemo(() => debounce(() => setHovered(false), 100), [setHovered]);
+    const handleHide = React.useMemo(() => debounce(() => setHovered(false), 300), [setHovered]);
     const handleShow = React.useCallback(() => {
         handleHide.clear();
         setHovered(true);
@@ -77,10 +78,10 @@ export const useBlockAnnotationActionStyles = makeStyles((theme) =>
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            '& svg': {
-                width: 16,
-                height: 16,
-            },
+        },
+        actionIcon: {
+            width: 16,
+            height: 16,
         },
     })
 );
@@ -91,7 +92,7 @@ export const BlockAnnotationAction = React.forwardRef<HTMLDivElement, React.Prop
 
     return (
         <div className={classes.root} onClick={onClick} ref={ref}>
-            {icon}
+            {React.cloneElement(icon, { className: classes.actionIcon })}
             {children}
         </div>
     );
@@ -143,6 +144,7 @@ export const BlockAnnotationColorPickerAction: React.FC<IBlockAnnotationColorPic
                     open={paletteOpen}
                     anchorEl={ref}
                     placement="left"
+                    disablePortal
                     transition
                 >
                     {({ TransitionProps }) => (

@@ -14,7 +14,7 @@ interface IProps extends BlockEditorGenericProps {
 export const BlockAnnotationContent: React.FC<IProps> = (props) => {
     const { annotation, className, style } = props;
 
-    const Annotation: ReturnType<React.FC> = React.useMemo(() => {
+    const Annotation: React.ReactElement | null = React.useMemo(() => {
         switch (annotation.type) {
             case AnnotationContentType.TEXT_HIGHLIGHT:
                 return <BlockTextHighlightAnnotationContent {...props} annotation={annotation} />;
@@ -22,7 +22,7 @@ export const BlockAnnotationContent: React.FC<IProps> = (props) => {
                 return <BlockAreaHighlightAnnotationContent {...props} annotation={annotation} />;
         }
         return null;
-    }, [annotation]);
+    }, [annotation, props]);
 
     return (
         <div className={className} style={style}>{Annotation}</div>
