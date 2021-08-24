@@ -91,7 +91,7 @@
     "dtsmake": "0.0.10",
     "eslint": "=7.32.0",
     "eslint-config-prettier": "=8.3.0",
-    "eslint-plugin-import": "=2.22.1",
+    "eslint-plugin-import": "=2.24.1",
     "eslint-plugin-jsdoc": "=32.3.0",
     "eslint-plugin-prefer-arrow": "=1.2.2",
     "eslint-plugin-react-hooks": "=4.2.0",
