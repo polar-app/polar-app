@@ -3,8 +3,8 @@
   "version": "2.1.96",
   "description": "",
   "scripts": {
-    "test": "echo",
-    "compile": "npx tsc"
+    "eslint": "figlet ${npm_package_name} && eslint -c ../../../.eslintrc.json .",
+    "compile": "yarn run eslint && tsc"
   },
   "repository": {
     "type": "git",
