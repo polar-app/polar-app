@@ -3,10 +3,6 @@
   "version": "2.1.96",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo nothing to test",
-    "compile": "echo nothing to compile"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
