@@ -3,7 +3,7 @@ import {AnswerExecutor} from "./AnswerExecutor";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import { Arrays } from "polar-shared/src/util/Arrays";
 
-describe("AnswerExecutor", async function() {
+xdescribe("AnswerExecutor", async function() {
 
     this.timeout(60000);
 
@@ -41,15 +41,23 @@ describe("AnswerExecutor", async function() {
 
     // TODO
     // - bigtable question with no docs
-    // - verify we can link back... 
-    // - test with temperature... 
-    
-    it("basic", async function() {
+    // - verify we can link back...
+
+    it("covid 1", async function() {
 
         const answer = await executeQuestion("What happened after a single dose of BNT162b2 vaccine?");
 
-        assert.equal(answer, "Neutralization was undetectable against B.1.1.7 in 7/11 samples, and in all 11 sera tested against B.1.351.")
+        assert.equal(answer, "Neutralization was on average comparable to that of an asymptomatically infected cohort (NT50 53.8 and 38.5, respectively, P = 0.36), but lower than sera from those who had recovered from mild infection (NT50 438.3, P = 0.003).")
 
     });
+
+    it("bigtable 1", async function() {
+
+        const answer = await executeQuestion("Is Bigtable relational?");
+
+        assert.equal(answer, "No.")
+
+    });
+
 
 })

@@ -24,8 +24,17 @@ export namespace AnswerExecutor {
     export const EXAMPLES: ReadonlyArray<QuestionAnswerPair> = [
         ["What is human life expectancy in the United States?", "78 years."],
         ["Who is the President of Xexptronica", "__UNKNOWN__"],
-        ["What do dinosaurs capilate?", "__UNKNOWN__"]
+        ["What do dinosaurs capilate?", "__UNKNOWN__"],
+        ["Is foo a bar?", "__UNKNOWN__"]
     ];
+
+    export const STOP = ["\n", "<|endoftext|>"];
+
+    export const MAX_TOKENS = 150;
+
+    export const SEARCH_MODEL = 'curie';
+
+    export const MODEL = 'davinci';
 
     export async function exec(opts: IExecOpts): Promise<IAnswer> {
 
@@ -55,17 +64,9 @@ export namespace AnswerExecutor {
         // console.log(`ES response to ${requestURL}`, JSON.stringify(esResponse, null, "  "));
 
         // tslint:disable-next-line:variable-name
-        const max_tokens=150
+        // tslint:disable-next-line:variable-name
 
         // tslint:disable-next-line:variable-name
-        const search_model='curie';
-        const model = 'davinci';
-
-        // tslint:disable-next-line:variable-name
-        const examples_context = EXAMPLES_CONTEXT;
-        const examples = EXAMPLES;
-
-        const stop = ["\n", "<|endoftext|>"];
 
         const documents = esResponse.hits.hits.map(current => current._source.text);
 
@@ -80,18 +81,18 @@ export namespace AnswerExecutor {
         // make sense?
 
         const request: OpenAIAnswersClient.IRequest = {
-            search_model,
-            model,
+            search_model: SEARCH_MODEL,
+            model: MODEL,
             question,
-            examples_context,
-            examples,
-            max_tokens,
-            stop,
+            examples_context: EXAMPLES_CONTEXT,
+            examples: EXAMPLES,
+            max_tokens: MAX_TOKENS,
+            stop: STOP,
             documents,
             n: 10,
 
             // FIXME: I have to play with temperature more...
-            // temperature: 0
+            temperature: 0
         }
 
         const answerResponse = await OpenAIAnswersClient.exec(request);
