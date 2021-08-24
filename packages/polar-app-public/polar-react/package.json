@@ -2,10 +2,6 @@
   "name": "polar-react",
   "version": "2.1.96",
   "description": "Basic React dependencies and utilities.",
-  "scripts": {
-    "test": "echo",
-    "compile": "echo"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
