@@ -141,6 +141,12 @@ const DesktopTable = () => {
         </div>
         <table>
           <tbody>
+          <tr className={classes.row}>
+            <th></th>
+            <th>Free</th>
+            <th>Plus</th>
+            <th>Pro</th>
+          </tr>
           <TableRowDivider/>
 
           <tr className={classes.row}>
