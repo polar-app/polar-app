@@ -4,10 +4,9 @@
   "description": "Code to connect to firebase as an admin user",
   "main": "index.js",
   "scripts": {
-    "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
-    "test": "echo noop",
-    "compile": "tsc",
-    "dist": "echo noop"
+    "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
+    "eslint": "figlet ${npm_package_name} && eslint -c ../../../.eslintrc.json .",
+    "compile": "yarn run eslint && tsc"
   },
   "keywords": [],
   "author": "",
