@@ -26,7 +26,7 @@ interface IProps extends BlockEditorGenericProps {
 export const BlockDocumentContent: React.FC<IProps> = function BlockDocumentContent(props) {
     const { className, style, docInfo } = props;
     const classes = useStyles();
-    const title = React.useMemo(() => DocInfos.bestTitle(docInfo), [docInfo.title]);
+    const title = React.useMemo(() => DocInfos.bestTitle(docInfo), [docInfo]);
     const tags = React.useMemo(() => {
         const tags = Object.values(docInfo.tags || {});
         if (tags.length === 0) {

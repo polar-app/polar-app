@@ -1,12 +1,12 @@
 import {createStyles, makeStyles} from "@material-ui/core";
 import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
-import {HTMLStr, MarkdownStr} from "polar-shared/src/util/Strings";
+import {MarkdownStr} from "polar-shared/src/util/Strings";
 import React from "react";
 import {DocAnnotationMoment} from "../../../annotation_sidebar/DocAnnotationMoment";
 import {BlockEditorGenericProps} from "../../BlockEditor";
 import {FlashcardAnnotationContent} from "../../content/AnnotationContent";
-import {BlockContentEditable, useUpdateCursorPosition} from "../../contenteditable/BlockContentEditable";
+import {BlockContentEditable} from "../../contenteditable/BlockContentEditable";
 import {BlockAnnotationAction, BlockAnnotationActionsWrapper, useSharedAnnotationBlockActions} from "./BlockAnnotationActions";
 import {Flashcards} from "../../../metadata/Flashcards";
 import CachedIcon from '@material-ui/icons/Cached';
@@ -15,9 +15,6 @@ import {AnnotationContentType, IFlashcardAnnotationContent} from "polar-blocks/s
 import {ITextConverters} from "../../../annotation_sidebar/DocAnnotations";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {Refs} from "polar-shared/src/metadata/Refs";
-import {modifierPredicate} from "../../contenteditable/BlockKeyboardHandlers";
-import {useStateRef} from "../../../hooks/ReactHooks";
-import {CursorPositions} from "../../contenteditable/CursorPositions";
 import {useBlocksTreeStore} from "../../BlocksTree";
 import {Texts} from "polar-shared/src/metadata/Texts";
 import {TextType} from "polar-shared/src/metadata/TextType";
@@ -141,7 +138,7 @@ const FrontBackFlashcard: React.FC<IFlashcardProps> = (props) => {
             contentJSON.value.fields[type] = Texts.create(markdown, TextType.MARKDOWN);
             update(id, { ...contentJSON });
         }
-    }, [blocksTreeStore, fields, id]);
+    }, [id, getBlock, update]);
 
     return (
         <>
@@ -150,6 +147,7 @@ const FrontBackFlashcard: React.FC<IFlashcardProps> = (props) => {
                     {...props}
                     onChange={handleChange('front')}
                     onKeyDown={onKeyDown}
+                    innerRef={frontRef}
                     content={front}
                 />
             </div>
@@ -183,7 +181,7 @@ const ClozeFlashcard: React.FC<IFlashcardProps> = (props) => {
             contentJSON.value.fields.text = Texts.create(markdown, TextType.MARKDOWN);
             update(id, { ...contentJSON });
         }
-    }, [blocksTreeStore, fields, id]);
+    }, [id, update, getBlock]);
 
     return (
         <div className="flashcard-wrapper-item">

@@ -74,11 +74,11 @@ export const useAnnotationBlockManager = () => {
         doMutation(fingerprint, (block) => {
             blocksStore.createNewBlock(block.id, { content: updateMetadata(annotation) });
         });
-    }, [blocksStore, updateMetadata]);
+    }, [blocksStore, updateMetadata, doMutation]);
 
     const update = React.useCallback((id: BlockIDStr, annotation: IAnnotationContent) => {
         blocksStore.setBlockContent(id, updateMetadata(annotation));
-    }, [blocksStore, getBlock]);
+    }, [blocksStore, updateMetadata]);
 
     const remove = React.useCallback((id: BlockIDStr) => {
         const block = getBlock(id);

@@ -4,26 +4,8 @@ import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockConte
 import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {DeviceIDStr} from "polar-shared/src/util/DeviceIDManager";
 import {IDStr} from "polar-shared/src/util/Strings";
-
-function cleanse<T extends { [key: string]: any }>(obj: T) {
-    Object.keys(obj).forEach(function(key) {
-        // Get this value and its type
-        var value = obj[key];
-        var type = typeof value;
-        if (type === "object") {
-            // Recurse...
-            cleanse(value);
-            // ...and remove if now "empty" (NOTE: insert your definition of "empty" here)
-            if (!Object.keys(value).length) {
-                delete obj[key]
-            }
-        }
-        else if (type === "undefined") {
-            // Undefined, remove it
-            delete obj[key];
-        }
-    });
-}
+import isNil from "lodash/isNil";
+import omitBy from "lodash/omitBy";
 
 abstract class AnnotationContentBase<T extends IAnnotationContent> implements IAnnotationContentBase<T['type'], T['value']>, IBaseBlockContent {
     @observable private readonly _type: T['type'];
@@ -82,7 +64,7 @@ abstract class AnnotationContentBase<T extends IAnnotationContent> implements IA
 
     private valueToJSON(value: T['value']): T['value'] {
         const serialized = JSON.parse(JSON.stringify(toJS(value)));
-        cleanse(serialized);
+        omitBy(serialized, isNil);
         return { ...serialized };
     }
 

@@ -19,6 +19,7 @@ import {useAnnotationBlockManager, useLinkNavigationClickHandler} from "./NoteUt
 import {BlockDocumentContent} from "./blocks/BlockDocumentContent";
 import {AnnotationContentType, IAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {BlockAnnotationContent} from "./blocks/BlockAnnotationContent/BlockAnnotationContent";
+import {BlockPredicates} from "./store/BlockPredicates";
 
 export interface BlockEditorGenericProps {
     readonly id: BlockIDStr;
@@ -90,7 +91,7 @@ const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
                 updateAnnotation(id, content);
                 
         }
-    }, [id, handleRename, blocksTreeStore, updateAnnotation, getAnnotationBlock]);
+    }, [id, handleRename, blocksTreeStore, updateAnnotation]);
 };
 
 const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
