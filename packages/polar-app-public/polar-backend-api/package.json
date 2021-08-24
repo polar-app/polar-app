@@ -4,10 +4,9 @@
   "description": "Provides request/response APIs and types used between the frontend and backend.",
   "main": "index.js",
   "scripts": {
-    "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
-    "test": "echo nothing to test",
+    "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "eslint": "figlet ${npm_package_name} && eslint -c ../../../.eslintrc.json .",
-    "compile": "tsc"
+    "compile": "yarn run eslint && tsc"
   },
   "keywords": [],
   "author": "",
