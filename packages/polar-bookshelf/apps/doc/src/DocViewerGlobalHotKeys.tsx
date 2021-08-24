@@ -41,6 +41,17 @@ const globalKeyMap = keyMapWithGroup({
                 }
             ]
         },
+        HIGHLIGHT: {
+            name: "Area Highlight Mode",
+            description: "Toggle area higlight mode",
+            sequences: [
+                {
+                    keys: "a",
+                    platforms: ['macos', 'linux', 'windows']
+                }
+            ],
+            priority: 1,
+        },
         PAGE_NEXT: {
             name: "Next Page",
             description: "Jump to next page",
@@ -178,6 +189,7 @@ export const DocViewerGlobalHotKeys = React.memo(function DocViewerGlobalHotKeys
         doZoom,
         doZoomRestore,
         onDocTagged,
+        onHighlight,
         toggleDocArchived,
         toggleDocFlagged,
     } = useDocViewerCallbacks();
@@ -191,6 +203,7 @@ export const DocViewerGlobalHotKeys = React.memo(function DocViewerGlobalHotKeys
         ZOOM_OUT: () => doZoom('-'),
         ZOOM_RESTORE: doZoomRestore,
         TAG: onDocTagged,
+        HIGHLIGHT: onHighlight,
         FLAG: toggleDocFlagged,
         ARCHIVE: toggleDocArchived,
     };

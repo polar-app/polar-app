@@ -29,6 +29,7 @@ import {ZenModeActiveContainer} from "../../../../web/js/mui/ZenModeActiveContai
 import {ZenModeButton} from "./ZenModeButton";
 import {AreaHighlightModeToggle} from "./AreaHighlightModeToggle";
 import {TextHighlightModeToggle} from "./TextHighlightModeToggle";
+import {DocViewerGlobalHotKeys} from "../DocViewerGlobalHotKeys";
 
 const getScaleLevelTuple = (scale: ScaleLevel) => (
     arrayStream(ScaleLevelTuples)
@@ -164,7 +165,8 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
 
                                 <TextHighlightModeToggle />
 
-                                <AreaHighlightModeToggle />
+                                {/*<AreaHighlightModeToggle />*/}
+                                <DocViewerGlobalHotKeys/>
 
                                 <Divider orientation="vertical" flexItem/>
 
