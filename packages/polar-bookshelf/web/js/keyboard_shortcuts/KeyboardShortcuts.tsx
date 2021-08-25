@@ -13,6 +13,52 @@ import {useRefProvider, useRefWithUpdates} from '../hooks/ReactHooks';
 
 type KeyboardEventHandlerPredicate = (event: KeyboardEvent) => boolean;
 
+
+function createPredicateUsingArray(keys: ReadonlyArray<string>): KeyboardEventHandlerPredicate {
+
+    return (event) => {
+
+        function matchesModifier(key: string) {
+
+            // console.log("keyboard shortcuts: key: " + key);
+            // console.log("keyboard shortcuts: ctrlKey: " + event.ctrlKey);
+            // console.log("keyboard shortcuts: metaKey: " + event.metaKey);
+            // console.log("keyboard shortcuts: shiftKey: " + event.shiftKey);
+
+            if (key === 'ctrl' && event.ctrlKey) {
+                return true;
+            }
+
+            if (key === 'command' && event.metaKey) {
+                return true;
+            }
+
+            if (key === 'shift' && event.shiftKey) {
+                return true;
+            }
+
+            return event.key === key;
+
+        }
+
+        for(const current of keys) {
+            if (! matchesModifier(current)) {
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+
+}
+
+
+function createPredicate4(keys: ReadonlyArray<string>): KeyboardEventHandlerPredicate {
+    return createPredicateUsingArray(keys);
+}
+
+
 function createPredicate3(keys: ReadonlyArray<string>): KeyboardEventHandlerPredicate {
 
     // TODO: there's a bug here in that if the user is doing ctrl+h but we are typing
@@ -162,6 +208,8 @@ function createPredicate(sequence: KeyBinding): KeyboardEventHandlerUsingPredica
                 return createPredicate2(keys);
             case 3:
                 return createPredicate3(keys);
+            case 4:
+                return createPredicate4(keys);
             default:
                 throw new Error("Too many keys for event: " + keys.length);
         }
