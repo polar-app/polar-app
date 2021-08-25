@@ -1388,7 +1388,7 @@ export class BlocksStore implements IBlocksStore {
             }
 
             if (! BlockPredicates.canHaveLinks(sourceBlock)) {
-                throw new Error("Source block not markdown: " + sourceBlock.content.type);
+                throw new Error("Source block does not support links: " + sourceBlock.content.type);
             }
 
             // create the new block - the sourceID is used for the ref to compute the nspace.

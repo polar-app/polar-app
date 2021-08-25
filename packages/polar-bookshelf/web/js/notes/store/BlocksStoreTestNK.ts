@@ -1301,11 +1301,22 @@ describe('BlocksStore', function() {
                 content: new NameContent({ data: 'name', type: 'name' })
             });
 
-            const createLinkDateContent = () => store.createLinkToBlock(dateID, '102', 'what');
-            const createLinkNameContent = () => store.createLinkToBlock(nameID, '102', 'what');
+            store.createLinkToBlock(dateID, '102', 'hello');
 
-            assert.throws(createLinkDateContent)
-            assert.throws(createLinkNameContent)
+            const nameBlock = store.getBlockForMutation(nameID);
+            assertPresent(nameBlock);
+            assertBlockType('name', nameBlock);
+            assert.equal(nameBlock.mutation, 0);
+            assert.equal(nameBlock.content.data, 'name');
+
+            store.createLinkToBlock(nameID, '102', 'world');
+            const dateBlock = store.getBlockForMutation(dateID);
+            assertPresent(dateBlock);
+            assertBlockType('date', dateBlock);
+            assertPresent(dateBlock);
+            assert.equal(dateBlock.mutation, 0);
+            assert.equal(dateBlock.content.data, 'date');
+
         });
     });
 
