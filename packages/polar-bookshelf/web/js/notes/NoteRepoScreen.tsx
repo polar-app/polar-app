@@ -13,6 +13,7 @@ import {createContextMenu, MenuComponentProps} from "../../../apps/repository/js
 import LaunchIcon from "@material-ui/icons/Launch";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { RoutePathnames } from "../apps/repository/RoutePathnames";
+import {getNamedContentName} from "./NoteUtils";
 
 const DATE_FORMAT = 'MMMM Do, YYYY';
 
@@ -160,8 +161,8 @@ export const NoteRepoScreen: React.FC = () => {
         const ids = Object.values(blocksStore.indexByName);
         const blocks = (blocksStore.idsToBlocks(ids) as NamedBlock[])
             .map(block => block.toJSON())
-            .map(({ id, content: { data }, created, updated }) => ({
-                title: data,
+            .map(({ id, content, created, updated }) => ({
+                title: getNamedContentName(content),
                 created: new Date(created),
                 id,
                 updated: new Date(updated),
@@ -171,7 +172,7 @@ export const NoteRepoScreen: React.FC = () => {
 
     const handleDoubleClick = React.useCallback(({ id }: GridRowParams) => {
         const block = blocksStore.getBlockByTarget(id as string) as NamedBlock;
-        history.push(RoutePathnames.NOTE(block.content.data));
+        history.push(RoutePathnames.NOTE(getNamedContentName(block.content)));
     }, [history, blocksStore]);
 
     return (

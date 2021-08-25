@@ -289,7 +289,6 @@ export interface IDocViewerCallbacks {
     readonly doZoomRestore: () => void;
     readonly setPage: (page: number) => void;
     readonly setFluidPagemarkFactory: (fluidPagemarkFactory: FluidPagemarkFactory) => void;
-
     readonly setDocFlagged: (flagged: boolean) => void;
     readonly setDocArchived: (archived: boolean) => void;
     readonly onDocTagged: () => void;
