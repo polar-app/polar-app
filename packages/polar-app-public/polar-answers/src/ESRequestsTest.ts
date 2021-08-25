@@ -1,7 +1,7 @@
 import {ESRequests} from "./ESRequests";
-import {ESDigester} from "./ESDigester";
-import IDigestDocument = ESDigester.IDigestDocument;
+import {ESShingleWriter} from "./ESShingleWriter";
 import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
+import IAnswerDigestRecord = ESShingleWriter.IAnswerDigestRecord;
 
 describe("ESRequests", async function() {
 
@@ -19,7 +19,7 @@ describe("ESRequests", async function() {
 
         const url = '/answers_ft_digest_545445733244727031386635397a6645633050336966426f62503932_docs/_search';
 
-        const esResponse: IElasticSearchResponse<IDigestDocument> = await ESRequests.doPost(url, query);
+        const esResponse: IElasticSearchResponse<IAnswerDigestRecord> = await ESRequests.doPost(url, query);
 
         console.log("response: ", JSON.stringify(esResponse, null, "  "));
 
