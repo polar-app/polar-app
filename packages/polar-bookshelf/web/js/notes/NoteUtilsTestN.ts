@@ -33,7 +33,6 @@ describe('BlockTextContentUtils', () => {
 
     const textHighlight = new TextHighlightAnnotationContent({
         type: AnnotationContentType.TEXT_HIGHLIGHT,
-        links: [],
         docID: 'fingerprint',
         pageNum: 11,
         value: {
