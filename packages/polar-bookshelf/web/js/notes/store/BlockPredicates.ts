@@ -36,7 +36,7 @@ export namespace BlockPredicates {
     }
 
     export function canHaveLinks(block: Readonly<Block>): block is Block<MarkdownContent | TextHighlightAnnotationContent> {
-        return ['markdown', AnnotationContentType.TEXT_HIGHLIGHT].indexOf(block.content.type) > -1;
+        return ['markdown'].indexOf(block.content.type) > -1;
     }
 
     export function isAnnotationBlock(block: Readonly<Block>): block is Block<AnnotationContent> {

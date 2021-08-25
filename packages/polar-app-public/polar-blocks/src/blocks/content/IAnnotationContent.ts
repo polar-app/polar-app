@@ -45,7 +45,7 @@ export interface IAnnotationContentBase<T extends `${AnnotationContentType}`, V 
 
 }
 
-export interface ITextHighlightAnnotationContent extends IAnnotationContentBase<AnnotationContentType.TEXT_HIGHLIGHT, ITextHighlight>, IHasLinksContent {
+export interface ITextHighlightAnnotationContent extends IAnnotationContentBase<AnnotationContentType.TEXT_HIGHLIGHT, ITextHighlight> {
 
 }
 
