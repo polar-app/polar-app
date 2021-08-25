@@ -39,6 +39,18 @@ describe("AnswerExecutor", async function() {
 
     }
 
+    async function assertQuestionAndAnswer(question: string, expectedAnswer: string | ReadonlyArray<string>) {
+
+        const answer = await executeQuestion(question);
+
+        if (typeof expectedAnswer === 'string') {
+            assert.equal(answer, expectedAnswer);
+        }
+
+        assert.ok(expectedAnswer.includes(answer), `Answer '${answer}' was not expected: ` + JSON.stringify(expectedAnswer));
+
+    }
+
     // TODO
     // - bigtable question with no docs
     // - verify we can link back...
@@ -133,10 +145,32 @@ describe("AnswerExecutor", async function() {
 
     it("bigtable unknown 2", async function() {
 
-        const answer = await executeQuestion("Where was Bigtable impeached?");
-
-        assert.equal(answer, "__UNKNOWN__")
 
     });
+
+    it("bigtable store logs ", async function() {
+
+        await assertQuestionAndAnswer("How does Bigtable store log and data files?", [
+            "Google File System (GFS)",
+            "GFS.",
+            "In GFS."
+        ])
+
+    })
+
+
+    it("bigtable cluster mgmt system ", async function() {
+
+        // When a master is started by the cluster management system, it needs
+        // to discover the current tablet assignments before it can change
+        // them. The master executes the following steps at startup. (1) The
+        // master grabs a unique master lock in Chubby, which prevents con-
+        // current master instantiations.
+
+        await assertQuestionAndAnswer("What does the master need to do when it is started by the cluster management system?", [
+            "Discover the current tablet assignments."
+        ])
+
+    })
 
 })
