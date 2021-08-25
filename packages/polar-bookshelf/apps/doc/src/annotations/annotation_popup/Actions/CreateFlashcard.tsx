@@ -111,12 +111,17 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
         group: "Document Viewer",
         keyMap: {
             CLOZE: {
-                name: "Archive",
-                description: "Archive doc",
+                name: "Cloze",
+                description: "Cloze doc",
+                ignorable: false,
                 sequences: [
                     {
-                        keys: 'ctrl+shift+alt+c',
-                        platforms: ['macos', 'linux', 'windows']
+                        keys: 'command+shift+alt+C',
+                        platforms: ['macos']
+                    },
+                    {
+                        keys: 'ctrl+shift+alt+C',
+                        platforms: ['linux', 'windows']
                     }
                 ]
             }

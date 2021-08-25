@@ -25,7 +25,7 @@ function createPredicateUsingArray(keys: ReadonlyArray<string>): KeyboardEventHa
             if (key === 'command' && event.metaKey) {
                 return true;
             }
-            if (key === 'alt' && event.shiftKey) {
+            if (key === 'alt' && event.altKey) {
                 return true;
             }
             if (key === 'shift' && event.shiftKey) {
@@ -35,6 +35,7 @@ function createPredicateUsingArray(keys: ReadonlyArray<string>): KeyboardEventHa
             return event.key === key;
 
         }
+
         for(const current of keys) {
             if (! matchesModifier(current)) {
                 return false;
@@ -60,7 +61,7 @@ function createPredicate(sequence: KeyBinding): KeyboardEventHandlerUsingPredica
         }
 
         const keys = sequence.keys.split('+');
-        debugger
+
         switch (keys.length) {
             case 1: case 2: case 3: case 4:
                 return createPredicateUsingArray(keys);
