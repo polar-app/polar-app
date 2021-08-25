@@ -151,6 +151,7 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
                                   className={className}
                                   content={data || ''}
                                   onMouseDown={handleMouseDown}
+                                  canHaveLinks={BlockPredicates.canHaveLinks(block)}
                                   innerRef={ref}
                                   onKeyDown={onKeyDown}
                                   onChange={handleBlockContentChange}

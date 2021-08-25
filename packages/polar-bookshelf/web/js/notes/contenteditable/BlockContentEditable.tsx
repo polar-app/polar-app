@@ -27,11 +27,14 @@ const ENABLE_CURSOR_RESET_TRACE = false;
 interface IProps extends BlockEditorGenericProps {
     readonly content: HTMLStr;
 
+    readonly canHaveLinks?: boolean;
+
     readonly onChange: (content: HTMLStr) => void;
 
     readonly onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
 
     readonly spellCheck?: boolean;
+
 }
 
 const NoteContentEditableElementContext = React.createContext<React.RefObject<HTMLElement | null>>({current: null});
@@ -206,40 +209,48 @@ export const BlockContentEditable = (props: IProps) => {
 
     useHandleLinkDeletion({ elem: divRef.current, blockID: props.id });
 
+    const contentEditableInner = (
+        <NoteFormatPopper onUpdated={updateMarkdownFromEditable} id={props.id}>
+            <div ref={handleRef}
+                 onPaste={handlePaste}
+                 onClick={props.onClick}
+                 onMouseDown={props.onMouseDown}
+                 contentEditable={true}
+                 spellCheck={props.spellCheck}
+                 data-id={props.id}
+                 className={props.className}
+                 id={`${DOMBlocks.BLOCK_ID_PREFIX}${props.id}`}
+                 style={{
+                     outline: 'none',
+                     whiteSpace: 'pre-wrap',
+                     wordBreak: 'break-word',
+                     ...props.style
+                 }}
+                 dangerouslySetInnerHTML={{__html: content}}/>
+        </NoteFormatPopper>
+    );
+
     return (
         <NoteContentEditableElementContext.Provider value={divRef}>
 
             <div onKeyDown={props.onKeyDown}
                  onKeyUp={handleKeyUp}>
 
-                <BlockAction id={props.id}
-                             trigger="[["
-                             actionsProvider={createNoteActionsProvider}
-                             onAction={(id) => ({
-                                type: 'link-to-block',
-                                target: id
-                            })}>
+                {props.canHaveLinks
+                    ? (
+                        <BlockAction id={props.id}
+                                     trigger="[["
+                                     actionsProvider={createNoteActionsProvider}
+                                     onAction={(id) => ({
+                                        type: 'link-to-block',
+                                        target: id
+                                    })}>
 
-                    <NoteFormatPopper onUpdated={updateMarkdownFromEditable} id={props.id}>
-                        <div ref={handleRef}
-                             onPaste={handlePaste}
-                             onClick={props.onClick}
-                             onMouseDown={props.onMouseDown}
-                             contentEditable={true}
-                             spellCheck={props.spellCheck}
-                             data-id={props.id}
-                             className={props.className}
-                             id={`${DOMBlocks.BLOCK_ID_PREFIX}${props.id}`}
-                             style={{
-                                 outline: 'none',
-                                 whiteSpace: 'pre-wrap',
-                                 wordBreak: 'break-word',
-                                 ...props.style
-                             }}
-                             dangerouslySetInnerHTML={{__html: content}}/>
-                    </NoteFormatPopper>
+                            {contentEditableInner}
 
-                </BlockAction>
+                        </BlockAction>
+                    ) : contentEditableInner
+                }
 
             </div>
 
