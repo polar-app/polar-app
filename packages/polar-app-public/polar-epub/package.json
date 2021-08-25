@@ -4,9 +4,11 @@
   "description": "EPUB support in Polar.",
   "main": "index.js",
   "scripts": {
-    "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
+    "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js' --watch",
+    "_test:wach": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "test": "echo nothing to test",
-    "compile": "tsc"
+    "compile": "tsc",
+    "compile:watch": "tsc --watch"
   },
   "keywords": [],
   "author": "",
