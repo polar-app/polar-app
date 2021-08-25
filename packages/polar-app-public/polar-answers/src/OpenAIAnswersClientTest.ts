@@ -10,29 +10,40 @@ import {assert} from "chai";
 
 xdescribe("OpenAIAnswersClient", async function() {
 
-    it("basic", async function() {
+    this.timeout(30000);
 
-        const request: OpenAIAnswersClient.IRequest = {
-            search_model: SEARCH_MODEL,
-            model: MODEL,
-            question: "Is Bigtable relational?",
-            examples_context: EXAMPLES_CONTEXT,
-            examples: EXAMPLES,
-            max_tokens: MAX_TOKENS,
-            stop: STOP,
-            documents: [],
-            n: 10,
+    describe("with no docs", () => {
 
-            // FIXME: I have to play with temperature more...
-            temperature: 0
+        async function assertQuestionAndAnswer(question: string, expectedAnswer: string) {
+
+            const request: OpenAIAnswersClient.IRequest = {
+                search_model: SEARCH_MODEL,
+                model: MODEL,
+                question,
+                examples_context: EXAMPLES_CONTEXT,
+                examples: EXAMPLES,
+                max_tokens: MAX_TOKENS,
+                stop: STOP,
+                documents: [],
+                n: 10,
+                temperature: 0
+            }
+
+            const answerResponse = await OpenAIAnswersClient.exec(request);
+
+            assert.equal(answerResponse.answers[0], expectedAnswer);
+            console.log(answerResponse)
+
         }
 
-        const answerResponse = await OpenAIAnswersClient.exec(request);
-
-        assert.equal("__UNKNOWN__", answerResponse.answers[0]);
-        console.log(answerResponse)
+        it("basic", async function() {
+            await assertQuestionAndAnswer("Is Bigtable relational?", "__UNKNOWN__");
+            await assertQuestionAndAnswer("What is Bigtable?", "__UNKNOWN__");
+            await assertQuestionAndAnswer("Who created Bigtable?", "__UNKNOWN__");
+        });
 
     });
+
 
 })
 
