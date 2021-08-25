@@ -4,6 +4,7 @@ import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {IComment} from "polar-shared/src/metadata/IComment";
 import {IBaseContent} from "./IBaseContent";
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
+import {IHasLinksContent} from "./IHasLinksContent";
 
 export enum AnnotationContentType {
     TEXT_HIGHLIGHT = "annotation-text-highlight",
@@ -44,7 +45,7 @@ export interface IAnnotationContentBase<T extends `${AnnotationContentType}`, V 
 
 }
 
-export interface ITextHighlightAnnotationContent extends IAnnotationContentBase<AnnotationContentType.TEXT_HIGHLIGHT, ITextHighlight> {
+export interface ITextHighlightAnnotationContent extends IAnnotationContentBase<AnnotationContentType.TEXT_HIGHLIGHT, ITextHighlight>, IHasLinksContent {
 
 }
 

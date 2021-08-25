@@ -1,7 +1,7 @@
 import {computed, makeObservable, observable, toJS} from "mobx";
 import {AnnotationContentType, IAnnotationContent, IAnnotationContentBase, IAreaHighlightAnnotationContent, IFlashcardAnnotationContent, ITextHighlightAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
-import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
+import {BlockIDStr, IBlockContent, IBlockLink} from "polar-blocks/src/blocks/IBlock";
 import {DeviceIDStr} from "polar-shared/src/util/DeviceIDManager";
 import {IDStr} from "polar-shared/src/util/Strings";
 import isNil from "lodash/isNil";
@@ -79,7 +79,44 @@ abstract class AnnotationContentBase<T extends IAnnotationContent> implements IA
     }
 }
 
-export class TextHighlightAnnotationContent extends AnnotationContentBase<ITextHighlightAnnotationContent> {}
+
+export class TextHighlightAnnotationContent extends AnnotationContentBase<ITextHighlightAnnotationContent> {
+    // TODO: Refactor this.
+    @observable private _links: ReadonlyArray<IBlockLink>;
+
+    constructor(props: ITextHighlightAnnotationContent) {
+        super(props);
+        this._links = props.links || [];
+
+        makeObservable(this);
+    }
+
+    @computed get links() {
+        return this._links;
+    }
+
+    protected updateLinks(links: ReadonlyArray<IBlockLink>): void {
+        this._links = links;
+    }
+
+    public addLink(link: IBlockLink) {
+        this._links = [...this.links, link];
+    }
+
+    public removeLink(id: BlockIDStr) {
+        const newLinks = [];
+        let removed = false;
+        // Only remove the first occurrence since we might have multiple links to the same block
+        for (let link of this.links) {
+            if (! removed && id === link.id) {
+                removed = true;
+                continue;
+            }
+            newLinks.push(link);
+        }
+        this._links = newLinks;
+    }
+}
 
 export class AreaHighlightAnnotationContent extends AnnotationContentBase<IAreaHighlightAnnotationContent> {}
 
