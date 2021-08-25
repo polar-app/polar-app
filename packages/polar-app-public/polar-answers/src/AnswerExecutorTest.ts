@@ -51,10 +51,6 @@ describe("AnswerExecutor", async function() {
 
     }
 
-    // TODO
-    // - bigtable question with no docs
-    // - verify we can link back...
-
     it("covid 1", async function() {
 
         const answer = await executeQuestion("What happened after a single dose of BNT162b2 vaccine?");
@@ -121,9 +117,6 @@ describe("AnswerExecutor", async function() {
         assert.equal(answer, "No.")
 
     });
-
-    // FIXME: test return_metadata
-    // FIXME: ES bias for short terms...
 
     xit("TODO: bigtable type of transactions", async function() {
 
