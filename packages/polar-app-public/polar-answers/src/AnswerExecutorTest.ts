@@ -3,7 +3,7 @@ import {AnswerExecutor} from "./AnswerExecutor";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import { Arrays } from "polar-shared/src/util/Arrays";
 
-describe("AnswerExecutor", async function() {
+xdescribe("AnswerExecutor", async function() {
 
     this.timeout(60000);
 
@@ -162,6 +162,56 @@ describe("AnswerExecutor", async function() {
 
         await assertQuestionAndAnswer("What does the master need to do when it is started by the cluster management system?", [
             "Discover the current tablet assignments."
+        ])
+
+    })
+
+    xit("bigtable GA 1", async function() {
+
+        //     {
+        //       document: 17,
+        //       object: 'search_result',
+        //       score: 244.793,
+        //       text: 'In the rest of this section, we brie y\n' +
+        //         'describe how three product teams use Bigtable.  8.1 Google Analytics\n' +
+        //         'Google Analytics (analytics.google.com)  is a service\n' +
+        //         'that helps webmasters analyze traf c patterns at their\n' +
+        //         'web sites.  It provides aggregate statistics, such as the\n' +
+        //         'number of unique visitors per day and the page views\n' +
+        //         'per URL per day, as well as site-tracking reports, such as\n' +
+        //         'the percentage of users that made a purchase, given that\n' +
+        //         'they earlier viewed a speci c page.  To enable the service, webmasters embed a  small\n' +
+        //         'JavaScript program in their web pages. '
+        //     },
+
+        // this is properly indexed BUT we're not answering this correctly regardless.
+
+        await assertQuestionAndAnswer("What is Google Analytics?", [
+            ""
+        ])
+
+    })
+
+    xit("bigtable GA 2", async function() {
+
+        // TODO: this doesn't work because I get the following sentence?
+        // This might be because we're improperly computing sentence tokens?
+        // We should be able to get the previous text included.
+
+        //       text: 'It provides aggregate statistics, such as the\n' +
+        //         'number of unique visitors per day and the page views\n' +
+        //         'per URL per day, as well as site-tracking reports, such as\n' +
+        //         'the percentage of users that made a purchase, given that\n' +
+        //         'they earlier viewed a speci c page.  To enable the service, webmasters embed a  small\n' +
+        //         'JavaScript program in their web pages.  This program\n' +
+        //         'is invoked whenever a page is visited.  It records various\n' +
+        //         'information about the request in Google Analytics, such\n' +
+        //         'as a user identi er and information about the page be-\n' +
+        //         'ing fetched. '
+        //     }
+
+        await assertQuestionAndAnswer("What does Google Analytics provide?", [
+            ""
         ])
 
     })
