@@ -47,18 +47,17 @@ const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
     const dialogs = useDialogManager();
 
     const handleRename = React.useMemo(() => {
-        const doRename = (data: MarkdownStr) => {
+        const doRename = (content: NameContent, data: MarkdownStr) => {
             const exists = blocksTreeStore.getBlockByName(data);
-            const block = blocksTreeStore.getBlock(id) as Block<NameContent>;
 
-            if (! exists || block.content.data.toLowerCase() === data.toLowerCase()) {
+            if (! exists || content.data.toLowerCase() === data.toLowerCase()) {
                 blocksTreeStore.renameBlock(id, data);
             } else {
                 dialogs.snackbar({ type: 'error', message: `Another note with the name "${data}" already exists.` });
 
                 // Reset to old name
                 const blockElem = DOMBlocks.getBlockElement(id)!;
-                blockElem.innerHTML = MarkdownContentConverter.toHTML(block.content.data);
+                blockElem.innerHTML = MarkdownContentConverter.toHTML(content.data);
             }
         };
 
@@ -72,8 +71,12 @@ const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
             return;
         }
 
-        if (block.content.type !== AnnotationContentType.FLASHCARD) {
-            const newContent = BlockTextContentUtils.updateTextContentMarkdown(block.content, data)
+        const content = block.content;
+
+        if (content.type === 'name') {
+            handleRename(content, data);
+        } else if (content.type !== AnnotationContentType.FLASHCARD) {
+            const newContent = BlockTextContentUtils.updateTextContentMarkdown(content, data)
             block.setContent(newContent);
         }
     }, [id, handleRename, blocksTreeStore]);
