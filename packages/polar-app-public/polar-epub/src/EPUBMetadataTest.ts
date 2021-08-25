@@ -4,7 +4,7 @@ import * as assert from "assert";
 
 describe('EPUBMetadata', function () {
 
-    it("GIVEN a valid epub THEN it should return the metadata object", async function () {
+    it("GIVEN a valid epub THEN it should return its metadata", async function () {
         // Arrange
         const path = FilePaths.resolve(__dirname, '../alice.epub');
 
@@ -24,5 +24,35 @@ describe('EPUBMetadata', function () {
         });
 
     });
+
+    it('GIVEN a valid epub THEN it should extract the HTML contents of chapters', async function () {
+        const CHAPTER_COUNT = 11;
+
+        // Arrange
+        const epubFile = FilePaths.resolve(__dirname, '../alice.epub');
+
+        // Act
+        const chapterReferences = await EPUBMetadata.getChapterReferences(epubFile);
+
+        // Assert
+        assert.equal(chapterReferences.length, CHAPTER_COUNT, 'Chapters within the .epub do not match');
+
+        // For every chapter extract its HTML contents and validate that it's actually HTML
+        for (let chapterReference of chapterReferences) {
+            const chapterHTMLContents = await EPUBMetadata.getChapterContents(
+                epubFile,
+                chapterReference.file
+            );
+
+            const hasHTML = chapterHTMLContents.toString().includes('<body>');
+
+            // Assert
+            assert.equal(
+                hasHTML,
+                true,
+                'Chapter returned from EPUBMetadata.getChapterContents() is not a valid HTML'
+            );
+        }
+    })
 
 });
