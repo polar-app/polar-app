@@ -33,6 +33,7 @@ describe('PDFText', function() {
 
             const content = extract.map(current => current.map(word => word.str).join(" ")).join("\n");
 
+            console.log("==============")
             console.log("pageNum: ", pageNum);
             console.log("content: \n", content)
 
@@ -73,7 +74,7 @@ describe('PDFText', function() {
         // the document where the hit is indexed and I don't want an in-elegant solution
         // here.
 
-        await PDFText.getText('../../../packages/polar-bookshelf/docs/examples/pdf/bigtable.pdf', dumpTextContent, {maxPages: 1});
+        await PDFText.getText('../../../packages/polar-bookshelf/docs/examples/pdf/bigtable.pdf', dumpTextContent, {initialPage: 3, maxPages: 1});
 
     });
 
@@ -143,6 +144,7 @@ const MERGE_DATA: ReadonlyArray<IPDFTextWord> = [
         str: 'Bigtable:',
         width: 55.7493332,
         height: 14.3462,
+        fontName: 'none'
     },
     {
         pageNum: 1,
@@ -151,6 +153,7 @@ const MERGE_DATA: ReadonlyArray<IPDFTextWord> = [
         str: 'A Distrib',
         width: 56.853076599999994,
         height: 14.3462,
+        fontName: 'none'
     },
     {
         pageNum: 1,
@@ -159,6 +162,7 @@ const MERGE_DATA: ReadonlyArray<IPDFTextWord> = [
         str: 'uted',
         width: 26.9852022,
         height: 14.3462,
+        fontName: 'none'
     },
     {
         pageNum: 1,
@@ -167,6 +171,7 @@ const MERGE_DATA: ReadonlyArray<IPDFTextWord> = [
         str: 'Storage',
         width: 46.98380499999999,
         height: 14.3462,
+        fontName: 'none'
     },
     {
         pageNum: 1,
@@ -175,6 +180,7 @@ const MERGE_DATA: ReadonlyArray<IPDFTextWord> = [
         str: 'System',
         width: 43.885025799999994,
         height: 14.3462,
+        fontName: 'none'
     },
     {
         pageNum: 1,
@@ -183,6 +189,7 @@ const MERGE_DATA: ReadonlyArray<IPDFTextWord> = [
         str: 'for',
         width: 17.9744528,
         height: 14.3462,
+        fontName: 'none'
     },
 
 ];

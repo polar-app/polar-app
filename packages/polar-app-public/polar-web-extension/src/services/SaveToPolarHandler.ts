@@ -73,7 +73,7 @@ export namespace SaveToPolarHandler {
                 await doLoadWrittenDoc(writtenDoc);
 
             } finally {
-                persistenceLayer.stop();
+                await persistenceLayer.stop();
             }
 
         }

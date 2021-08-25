@@ -5,6 +5,7 @@ import {AbstractPHZWriter} from "./AbstractPHZWriter";
 
 /**
  * Write to a new zip output stream.
+ * @Deprecated No longer used in Polar 2.0 and 3.0
  */
 export class PHZWriter extends AbstractPHZWriter {
 
@@ -27,7 +28,7 @@ export class PHZWriter extends AbstractPHZWriter {
      */
     public async close(): Promise<void> {
 
-        super.close();
+        await super.close();
 
         return new Promise((resolve, reject) => {
 

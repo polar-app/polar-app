@@ -19,6 +19,7 @@ export namespace PDFText {
     }
 
     export interface IOpts {
+        readonly initialPage?: number;
         readonly maxPages?: number;
     }
 
@@ -34,7 +35,9 @@ export namespace PDFText {
 
         const numPages = Math.min(doc.numPages, opts.maxPages || Number.MAX_VALUE)
 
-        for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+        const initialPage = opts.initialPage || 1;
+
+        for (let pageNum = initialPage; pageNum < initialPage + numPages; pageNum++) {
 
             const page = await doc.getPage(pageNum);
             const viewport = page.getViewport({scale: 1.0});
@@ -54,6 +57,7 @@ export namespace PDFText {
                     width: textItem.width,
                     height: textItem.height,
                     str: textItem.str,
+                    fontName: textItem.fontName
                 };
             }
 
@@ -63,6 +67,9 @@ export namespace PDFText {
             }
 
             const textWords = textContent.items.map(toPDFTextWord);
+
+            console.log("FIXME: textWords: ", JSON.stringify(textWords, null, "  "));
+
             const grouped = Arrays.groupBy(textWords, toTextIItemGroup);
 
             const extract = Object.values(grouped)
@@ -85,6 +92,7 @@ export namespace PDFTextWordMerger {
         readonly width: number;
         readonly height: number;
         readonly str: string;
+        readonly fontName: string;
     }
 
     export function canMerge(a: IPDFTextWord | undefined, b: IPDFTextWord | undefined): boolean {
@@ -160,7 +168,8 @@ export namespace PDFTextWordMerger {
                 y: first.y,
                 height: first.height,
                 width,
-                str
+                str,
+                fontName: first.fontName
             };
 
         }
