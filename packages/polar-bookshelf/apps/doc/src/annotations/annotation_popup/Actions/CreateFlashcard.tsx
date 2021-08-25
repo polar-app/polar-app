@@ -11,6 +11,12 @@ import {IAnnotationPopupActionProps} from "../AnnotationPopupActions";
 import {MUITooltip} from "../../../../../../web/js/mui/MUITooltip";
 import IconButton from "@material-ui/core/IconButton";
 import {ClozeDeletions} from "../../../../../../web/js/annotation_sidebar/child_annotations/flashcards/flashcard_input/ClozeDeletions";
+import {DocViewerGlobalHotKeys} from "../../../DocViewerGlobalHotKeys";
+import {useDocViewerCallbacks} from "../../../DocViewerStore";
+import {
+    GlobalKeyboardShortcuts,
+    keyMapWithGroup
+} from "../../../../../../web/js/keyboard_shortcuts/GlobalKeyboardShortcuts";
 
 type BasicFrontBackForm = {
     front: string;
@@ -48,33 +54,7 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
         }
     });
 
-    React.useEffect(() => {
-        if(!clozeRef || !clozeRef.current) {
-            return;
-        }
-        clozeRef.current.addEventListener('keydown', onKeyDown);
-
-        function isKeyboardControlShiftAltC(event: KeyboardEvent) {
-            return event.getModifierState("Control") &&
-                event.getModifierState("Shift") &&
-                event.getModifierState("Alt") &&
-                event.key === "C";
-        }
-        function onKeyDown(event: KeyboardEvent) {
-            if (isKeyboardControlShiftAltC(event)) {
-                onClozeDelete();
-                event.stopPropagation();
-                event.preventDefault();
-            }
-        }
-        return () => {
-            removeEventListener('keydown',onKeyDown);
-        }
-
-    }, [clozeRef]);
-
-
-        const onSubmit = React.useCallback((data: ClozeForm | BasicFrontBackForm) => {
+    const onSubmit = React.useCallback((data: ClozeForm | BasicFrontBackForm) => {
         createFlashcard({
             type: "create",
             parent: Refs.createRef(annotation),
@@ -127,14 +107,37 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
                 }
             );
     }
+    const keyMap = keyMapWithGroup({
+        group: "Document Viewer",
+        keyMap: {
+            CLOZE: {
+                name: "Archive",
+                description: "Archive doc",
+                sequences: [
+                    {
+                        keys: 'ctrl+shift+alt+c',
+                        platforms: ['macos', 'linux', 'windows']
+                    }
+                ]
+            }
+        }
+    });
+    const keyHandler = {
+        CLOZE: onClozeDelete
+    };
+
     return (
-        <SimpleInputForm<ClozeForm | BasicFrontBackForm>
-            key={flashcardType}
-            className={className}
-            style={style}
-            inputs={inputs}
-            onCancel={clear}
-            onSubmit={onSubmit}
-            footer={footer}/>
+        <>
+            <GlobalKeyboardShortcuts keyMap={keyMap} handlerMap={keyHandler}/>
+
+            <SimpleInputForm<ClozeForm | BasicFrontBackForm>
+                key={flashcardType}
+                className={className}
+                style={style}
+                inputs={inputs}
+                onCancel={clear}
+                onSubmit={onSubmit}
+                footer={footer}/>
+        </>
     );
 };
