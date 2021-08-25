@@ -20,13 +20,19 @@ export namespace AnswerExecutor {
         readonly question: string;
     }
 
-    export const EXAMPLES_CONTEXT = "In 2017, U.S. life expectancy was 78.6 years.";
+    export const EXAMPLES_CONTEXT: string =
+        [
+            "In 2017, U.S. life expectancy was 78.6 years.",
+            'Google Analytics is a service that helps webmasters analyze traffic patterns at their web sites.  It provides aggregate statistics, such as the number of unique visitors per day and the page views per URL per day, as well as site-tracking reports, such as the percentage of users that made a purchase, given that they earlier viewed a specific page.  To enable the service, webmasters embed a small JavaScript program in their web pages. '
+        ].join("  ");
 
     export const EXAMPLES: ReadonlyArray<QuestionAnswerPair> = [
         ["What is human life expectancy in the United States?", "78 years."],
         ["Who is the President of Xexptronica", "__UNKNOWN__"],
         ["What do dinosaurs capilate?", "__UNKNOWN__"],
-        ["Is foo a bar?", "__UNKNOWN__"]
+        ["Is foo a bar?", "__UNKNOWN__"],
+        ["What is Google Analytics", "Google Analytics is a service that helps webmasters analyze patterns at their web sites."],
+        ["What does Google Analytics provide?", "It provides aggregate statistics, such as the number of unique visitors per day and the page views per URL per day."]
     ];
 
     export const STOP = ["\n", "<|endoftext|>"];
