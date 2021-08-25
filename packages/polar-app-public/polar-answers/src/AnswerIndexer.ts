@@ -19,6 +19,8 @@ export namespace AnswerIndexer {
 
             const {extract, pageNum} = pdfTextContent;
 
+            console.log("Indexing text on page: " + pageNum)
+
             const content = extract.map(current => current.map(word => word.str).join(" ")).join("\n");
 
             // now build the sentence shingles over this...
