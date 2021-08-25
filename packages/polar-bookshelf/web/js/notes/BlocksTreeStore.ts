@@ -140,10 +140,6 @@ export class BlocksTreeStore {
         return this.blocksStore.setBlockContent(id, content);
     }
 
-    getBlockContentData(id: BlockIDStr): string | undefined {
-        return this.blocksStore.getBlockContentData(id);
-    }
-
     insertFromBlockContentStructure(blocks: ReadonlyArray<IBlockContentStructure>): ReadonlyArray<BlockIDStr> {
         return this.blocksStore.insertFromBlockContentStructure(blocks);
     }

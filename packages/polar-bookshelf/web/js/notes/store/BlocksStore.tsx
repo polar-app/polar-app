@@ -14,7 +14,7 @@ import {Numbers} from "polar-shared/src/util/Numbers";
 import {CursorPositions} from "../contenteditable/CursorPositions";
 import {useBlocksStoreContext} from "./BlockStoreContextProvider";
 import {IBlocksStore} from "./IBlocksStore";
-import {BlockPredicates} from "./BlockPredicates";
+import {BlockPredicates, TextContent} from "./BlockPredicates";
 import {MarkdownContent} from "../content/MarkdownContent";
 import {NameContent} from "../content/NameContent";
 import {ImageContent} from "../content/ImageContent";
@@ -32,7 +32,7 @@ import {IBlockExpandCollectionSnapshot, useBlockExpandCollectionSnapshots} from 
 import {BlockExpandPersistenceWriter, useBlockExpandPersistenceWriter} from "../persistence/BlockExpandWriters";
 import {IBlockContentStructure} from "../HTMLToBlocks";
 import {DOMBlocks} from "../contenteditable/BlockContentEditable";
-import {BlockIDStr, IBlock, IBlockContent, IBlockLink, IBlockNamedContent, NamespaceIDStr, UIDStr} from "polar-blocks/src/blocks/IBlock";
+import {BlockIDStr, IBlock, IBlockContent, IBlockLink, NamespaceIDStr, UIDStr} from "polar-blocks/src/blocks/IBlock";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 import {WriteController, WriteFileProgress} from "../../datastore/Datastore";
 import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
@@ -41,12 +41,9 @@ import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {DocumentContent} from "../content/DocumentContent";
-import {AnnotationContent} from "../content/AnnotationContent";
+import {AnnotationContent, AnnotationContentTypeMap} from "../content/AnnotationContent";
 import {INameContent} from "polar-blocks/src/blocks/content/INameContent";
-import {getNamedContentName} from "../NoteUtils";
-import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
-import {ITextConverters} from "../../annotation_sidebar/DocAnnotations";
-import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
+import {BlockTextContentUtils} from "../NoteUtils";
 
 export const ENABLE_UNDO_TRACING = false;
 
@@ -68,9 +65,17 @@ export type BlockContent = (MarkdownContent
                             | DocumentContent
                             | AnnotationContent) & IBaseBlockContent;
 
+export interface BlockContentMap extends AnnotationContentTypeMap {
+    'markdown': MarkdownContent,
+    'name': NameContent,
+    'image': ImageContent,
+    'date': DateContent,
+    'document': DocumentContent,
+};
+
 export type BlockType = BlockContent['type'];
 
-export type NamedBlock = Block<NameContent | DateContent | DocumentContent>;
+export type NamedContent = NameContent | DateContent | DocumentContent;
 
 /**
  * A offset into the content of a not where we should place the cursor.
@@ -241,7 +246,7 @@ export interface IDoDeleteOpts {
 }
 
 interface ICreateNewNamedBlockBase {
-    readonly content: IBlockNamedContent;
+    readonly content: NamedContent;
 }
 
 export interface ICreateNewNamedBlockOptsBasic extends ICreateNewNamedBlockBase {
@@ -362,8 +367,8 @@ export class BlocksStore implements IBlocksStore {
      * Get all the nodes by name.
      */
     getNamedBlocks(): ReadonlyArray<string> {
-        const blocks = this.idsToBlocks(Object.values(this._indexByName)) as ReadonlyArray<NamedBlock>;
-        return blocks.map(block => getNamedContentName(block.content));
+        const blocks = this.idsToBlocks(Object.values(this._indexByName)) as ReadonlyArray<Block<NamedContent>>;
+        return blocks.map(block => BlockTextContentUtils.getTextContentMarkdown(block.content));
     }
 
     @computed get reverse() {
@@ -494,7 +499,7 @@ export class BlocksStore implements IBlocksStore {
             this._index[blockData.id] = block;
 
             if (BlockPredicates.isNamedBlock(block)) {
-                const name = getNamedContentName(block.content).toLowerCase();
+                const name = BlockTextContentUtils.getTextContentMarkdown(block.content).toLowerCase();
                 this._indexByName[name] = block.id;
             }
 
@@ -502,9 +507,9 @@ export class BlocksStore implements IBlocksStore {
                 this._indexByDocumentID[block.content.docInfo.fingerprint] = block.id;
             }
 
-            if (block.content.type === "markdown") {
+            if (BlockPredicates.canHaveLinks(block)) {
 
-                if (existingBlock && existingBlock.content.type === "markdown") {
+                if (existingBlock && BlockPredicates.canHaveLinks(existingBlock)) {
                     for (const link of existingBlock.content.links) {
                         this._reverse.remove(link.id, block.id);
                     }
@@ -584,26 +589,6 @@ export class BlocksStore implements IBlocksStore {
 
     public getBlock(id: BlockIDStr): Readonly<Block> | undefined {
         return this._index[id];
-    }
-
-    public getBlockContentData(id: BlockIDStr): string | undefined {
-
-        const block = this.getBlock(id);
-
-        if (! block) {
-            return "";
-        }
-
-        if (BlockPredicates.isTextBlock(block)) {
-            return block.content.data;
-        }
-
-        if (block.content.type === AnnotationContentType.TEXT_HIGHLIGHT) {
-            const highlight = block.content.value;
-            return ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, highlight).text;
-        }
-
-        return "";
     }
 
     public getParent(id: BlockIDStr): Block | undefined {
@@ -1245,7 +1230,7 @@ export class BlocksStore implements IBlocksStore {
         // based on the name as the name can change.
         const newBlockID = opts.newBlockID || Hashcodes.createRandomID();
 
-        const existingBlock = this.getBlockByName(getNamedContentName(opts.content));
+        const existingBlock = this.getBlockByName(BlockTextContentUtils.getTextContentMarkdown(opts.content));
 
         if (existingBlock) {
             return existingBlock.id;
@@ -1381,9 +1366,10 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    @action public createLinkToBlock<C extends IBlockContent = IBlockContent>(sourceBlockID: BlockIDStr,
-                                                                              targetName: BlockNameStr,
-                                                                              content: MarkdownStr) {
+    @action public createLinkToBlock(sourceBlockID: BlockIDStr,
+                                     targetName: BlockNameStr,
+                                     content: MarkdownStr) {
+
         // if the existing target block exists, use that block name.
         const targetBlock = this.getBlockByName(targetName);
 
@@ -1402,15 +1388,15 @@ export class BlocksStore implements IBlocksStore {
                 throw new Error("Unable to find block: " + sourceBlockID);
             }
 
-            if (sourceBlock.content.type !== 'markdown' ) {
+            if (! BlockPredicates.canHaveLinks(sourceBlock)) {
                 throw new Error("Source block not markdown: " + sourceBlock.content.type);
             }
 
             // create the new block - the sourceID is used for the ref to compute the nspace.
-            const targetBlockContent: INameContent = {
+            const targetBlockContent = new NameContent({
                 type: 'name',
                 data: targetName,
-            };
+            });
             const targetBlockID = this.doCreateNewNamedBlock({
                 newBlockID: targetID,
                 nspace: sourceBlock.nspace,
@@ -1419,13 +1405,8 @@ export class BlocksStore implements IBlocksStore {
             const blockContent = sourceBlock.content;
 
             sourceBlock.withMutation(() => {
-
-                const newContent = new MarkdownContent({
-                    ...blockContent.toJSON(),
-                    data: content,
-                });
-                newContent.addLink({id: targetBlockID, text: targetName});
-                sourceBlock.setContent(newContent);
+                blockContent.addLink({id: targetBlockID, text: targetName});
+                sourceBlock.setContent(BlockTextContentUtils.updateTextContentMarkdown(sourceBlock.content, content));
             })
 
             this.doPut([sourceBlock]);
@@ -1452,14 +1433,14 @@ export class BlocksStore implements IBlocksStore {
     @action public styleSelectedBlocks(style: DOMBlocks.MarkdownStyle): void {
         const selectedIDs = this.selectedIDs();
         const ids = selectedIDs.flatMap(id => this.computeLinearTree(id, { includeInitial: true }));
-        const markdownBlocks = this.idsToBlocks(ids).filter(BlockPredicates.isEditableBlock);
+        const markdownBlocks = this.idsToBlocks(ids).filter(BlockPredicates.isTextBlock);
 
         if (markdownBlocks.length === 0) {
             return;
         }
 
 
-        const applyStyle = (style: DOMBlocks.MarkdownStyle) => (block: Block<MarkdownContent>) => {
+        const applyStyle = (style: DOMBlocks.MarkdownStyle) => (block: Block<TextContent>) => {
             DOMBlocks.applyStyleToBlock(block.id, style);
             const blockElem = DOMBlocks.getBlockElement(block.id);
             if (blockElem) {
@@ -2009,7 +1990,7 @@ export class BlocksStore implements IBlocksStore {
         const block = this._index[id];
 
         if (BlockPredicates.isTextBlock(block)) {
-            return block?.content.data.trim() === '';
+            return BlockTextContentUtils.getTextContentMarkdown(block.content).trim() === '';
         }
 
         return false;
@@ -2137,7 +2118,7 @@ export class BlocksStore implements IBlocksStore {
 
                     // *** delete the block from name index by name.
                     if (BlockPredicates.isNamedBlock(block)) {
-                        const name = getNamedContentName(block.content);
+                        const name = BlockTextContentUtils.getTextContentMarkdown(block.content);
                         delete this._indexByName[name.toLowerCase()];
                     }
 

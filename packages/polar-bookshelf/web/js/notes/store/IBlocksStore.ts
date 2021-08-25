@@ -71,8 +71,6 @@ export interface IBlocksStore {
     getBlockForMutation(id: BlockIDStr): Block | undefined;
     getBlock(id: BlockIDStr): Readonly<Block> | undefined;
 
-    getBlockContentData(id: BlockIDStr): string | undefined;
-
     setActiveWithPosition(active: BlockIDStr | undefined,
                           activePos: NavPosition | undefined): void;
 

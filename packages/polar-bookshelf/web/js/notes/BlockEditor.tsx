@@ -3,7 +3,6 @@ import {NoteNavigation} from "./NoteNavigation";
 import {observer} from "mobx-react-lite"
 import {BlockContentEditable, DOMBlocks, useUpdateCursorPosition} from "./contenteditable/BlockContentEditable";
 import {MarkdownStr} from "polar-shared/src/util/Strings";
-import {MarkdownContent} from "./content/MarkdownContent";
 import {BlockImageContent} from "./blocks/BlockImageContent";
 import {useBlockKeyDownHandler} from "./contenteditable/BlockKeyboardHandlers";
 import {reaction} from "mobx";
@@ -15,11 +14,11 @@ import {debounce} from "throttle-debounce";
 import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
 import {Block} from "./store/Block";
-import {useAnnotationBlockManager, useLinkNavigationClickHandler} from "./NoteUtils";
+import {useLinkNavigationClickHandler, BlockTextContentUtils} from "./NoteUtils";
 import {BlockDocumentContent} from "./blocks/BlockDocumentContent";
-import {AnnotationContentType, IAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {BlockAnnotationContent} from "./blocks/BlockAnnotationContent/BlockAnnotationContent";
 import {BlockPredicates} from "./store/BlockPredicates";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 
 export interface BlockEditorGenericProps {
     readonly id: BlockIDStr;
@@ -45,7 +44,6 @@ type IUseBlockContentUpdaterOpts = {
 
 const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
     const blocksTreeStore = useBlocksTreeStore();
-    const { update: updateAnnotation, getBlock: getAnnotationBlock } = useAnnotationBlockManager();
     const dialogs = useDialogManager();
 
     const handleRename = React.useMemo(() => {
@@ -70,28 +68,15 @@ const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
     return React.useCallback((data: MarkdownStr) => {
         const block = blocksTreeStore.getBlock(id);
 
-        if (! block) {
+        if (! block || ! BlockPredicates.isTextBlock(block)) {
             return;
         }
 
-        switch (block.content.type) {
-            case "markdown":
-                blocksTreeStore.setBlockContent(id, new MarkdownContent({
-                    type: 'markdown',
-                    links: block.content.links,
-                    data,
-                }));
-                break;
-            case "name":
-                handleRename(data);
-                break;
-            case AnnotationContentType.TEXT_HIGHLIGHT:
-                const json = block.content.toJSON();
-                const content: IAnnotationContent = { ...json, value: { ...json.value, revisedText: data } };
-                updateAnnotation(id, content);
-                
+        if (block.content.type !== AnnotationContentType.FLASHCARD) {
+            const newContent = BlockTextContentUtils.updateTextContentMarkdown(block.content, data)
+            block.setContent(newContent);
         }
-    }, [id, handleRename, blocksTreeStore, updateAnnotation]);
+    }, [id, handleRename, blocksTreeStore]);
 };
 
 const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
@@ -106,7 +91,6 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
     
 
     const block = blocksTreeStore.getBlock(id);
-    const data = blocksTreeStore.getBlockContentData(id);
 
     React.useEffect(() => {
         const focusBlock = () => {
@@ -154,7 +138,12 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
         return null;
     }
 
-    if (~["markdown", "date", "name"].indexOf(block.content.type)) {
+    if (block.content.type === "markdown"
+        || block.content.type === "date"
+        || block.content.type === "name") {
+
+        const data = BlockTextContentUtils.getTextContentMarkdown(block.content);
+
         return (
             <BlockContentEditable id={id}
                                   parent={parent}

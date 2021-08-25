@@ -9,15 +9,15 @@ import {CursorPositions} from "./CursorPositions";
 import {IPasteImageData, usePasteHandler } from '../clipboard/PasteHandlers';
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {useMutationObserver} from '../../../../web/js/hooks/ReactHooks';
-import {MarkdownContent} from '../content/MarkdownContent';
 import {BlockEditorGenericProps} from '../BlockEditor';
 import {IBlockContentStructure} from '../HTMLToBlocks';
 import {useBlocksTreeStore} from '../BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
-import {getNamedContentName, useNamedBlocks} from '../NoteUtils';
+import {BlockTextContentUtils, useNamedBlocks} from '../NoteUtils';
 import {ContentEditables} from '../ContentEditables';
 import {useSideNavStore} from '../../sidenav/SideNavStore';
+import {BlockPredicates} from '../store/BlockPredicates';
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed
@@ -93,7 +93,7 @@ export const BlockContentEditable = (props: IProps) => {
 
     const noteLinkActions = React.useMemo(() => {
         return namedBlocks.map((block) => {
-            const name = getNamedContentName(block.content);
+            const name = BlockTextContentUtils.getTextContentMarkdown(block.content);
             return {
                 id: name,
                 text: name,
@@ -309,10 +309,9 @@ const useHandleLinkDeletion = ({ blockID, elem }: IUseHandleLinkDeletionOpts) =>
             for (let removedLink of removedLinks) {
                 const block = blocksTreeStore.getBlock(blockID);
                 const linkedBlock = blocksTreeStore.getBlockByName(removedLink.getAttribute('href')!.slice(1));
-                if (block && linkedBlock && block.content.type === 'markdown') {
-                    const newContent = new MarkdownContent(block.content.toJSON());
-                    newContent.removeLink(linkedBlock.id);
-                    blocksTreeStore.setBlockContent(blockID, newContent);
+                if (block && linkedBlock && BlockPredicates.canHaveLinks(block)) {
+                    block.content.removeLink(linkedBlock.id);
+                    blocksTreeStore.setBlockContent(blockID, block.content);
                 }
             }
         }

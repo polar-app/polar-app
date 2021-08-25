@@ -9,8 +9,8 @@ import {ReverseIndex} from "./ReverseIndex";
 import {Block} from "./Block";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {ConstructorOptions, JSDOM} from "jsdom";
-import { NameContent } from "../content/NameContent";
-import { MarkdownContent } from "../content/MarkdownContent";
+import {NameContent} from "../content/NameContent";
+import {MarkdownContent} from "../content/MarkdownContent";
 import {Asserts} from "polar-shared/src/Asserts";
 import assertPresent = Asserts.assertPresent;
 import {UndoQueues2} from "../../undo/UndoQueues2";
@@ -22,7 +22,7 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {WriteController, WriteFileProgress} from "../../datastore/Datastore";
 import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
-import {DeviceIDManager} from "../../../../../polar-app-public/polar-shared/src/util/DeviceIDManager";
+import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 
 function assertTextBlock(content: BlockContent): asserts content is MarkdownContent | NameContent {
 
