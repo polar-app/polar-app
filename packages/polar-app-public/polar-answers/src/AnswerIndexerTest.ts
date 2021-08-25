@@ -8,7 +8,7 @@ xdescribe("AnswerIndexer", async function() {
 
     it("basic", async function() {
 
-        const url = FilePaths.toURL("/Users/burton/projects/polar-app/packages/polar-bookshelf/docs/examples/pdf/bigtable.pdf");
+        const url = FilePaths.toURL("/Users/burton/projects/polar-app/packages/polar-app-public/polar-answers/data/two-doses-covid-vaccine.pdf");
 
         const app = FirebaseAdmin.app()
 
@@ -20,7 +20,7 @@ xdescribe("AnswerIndexer", async function() {
         }
 
         await AnswerIndexer.doIndex({
-            docID: '1234',
+            docID: '2345',
             uid: user.uid,
             url
         })
