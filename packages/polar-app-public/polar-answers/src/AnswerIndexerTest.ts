@@ -4,7 +4,7 @@ import {AnswerIndexer} from "./AnswerIndexer";
 
 xdescribe("AnswerIndexer", async function() {
 
-    this.timeout(300000);
+    this.timeout(30000000);
 
     async function doIndexDoc(path: string, docID: string) {
 
@@ -29,8 +29,12 @@ xdescribe("AnswerIndexer", async function() {
 
     it("basic", async function() {
 
-        await doIndexDoc("data/bigtable.pdf", '1234')
-        await doIndexDoc("data/two-doses-covid-vaccine.pdf", '2345')
+        // await doIndexDoc("data/bigtable.pdf", '1234')
+        // await doIndexDoc("data/two-doses-covid-vaccine.pdf", '2345')
+
+        // await doIndexDoc("/Users/burton/us-history.pdf", '3456')
+        await doIndexDoc("/Users/burton/astronomy.pdf", '4567')
+
 
     });
 

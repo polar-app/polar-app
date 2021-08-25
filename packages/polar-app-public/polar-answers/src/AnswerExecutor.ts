@@ -37,7 +37,7 @@ export namespace AnswerExecutor {
 
     export const STOP = ["\n", "<|endoftext|>"];
 
-    export const MAX_TOKENS = 150;
+    export const MAX_TOKENS = 250;
 
     export const SEARCH_MODEL = 'curie';
 
