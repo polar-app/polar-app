@@ -6,6 +6,11 @@ export namespace OpenAIAnswersClient {
 
     export type QuestionAnswerPair = [string, string];
 
+    export interface IAnswerDocument {
+        readonly text: string;
+        readonly metadata: {[key: string]: string |  number};
+    }
+
     export interface IRequest {
 
         readonly model: AIModel;
@@ -28,7 +33,7 @@ export namespace OpenAIAnswersClient {
          * be derived. If this is an empty list, the question will be answered
          * based on the question-answer examples.
          */
-        readonly documents: ReadonlyArray<string>;
+        readonly documents: ReadonlyArray<string | IAnswerDocument>;
 
         /**
          * ID of the engine to use for Search.
@@ -73,7 +78,6 @@ export namespace OpenAIAnswersClient {
          * document entry in the returned JSON will contain a "metadata" field.
          */
         readonly return_metadata?: boolean;
-
 
     }
 

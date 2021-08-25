@@ -1,14 +1,15 @@
 import {ESRequests} from "./ESRequests";
-import {ESDigester} from "./ESDigester";
 import {OpenAIAnswersClient} from "./OpenAIAnswersClient";
 import {ESAnswersIndexNames} from "./ESAnswersIndexNames";
 import { UserIDStr } from "polar-shared/src/util/Strings";
+import {ESShingleWriter} from "./ESShingleWriter";
 
 export namespace AnswerExecutor {
 
-    import IDigestDocument = ESDigester.IDigestDocument;
     import QuestionAnswerPair = OpenAIAnswersClient.QuestionAnswerPair;
     import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
+    import IAnswerDocument = OpenAIAnswersClient.IAnswerDocument;
+    import IAnswerDigestRecord = ESShingleWriter.IAnswerDigestRecord;
 
     export interface IExecOpts {
         readonly uid: UserIDStr;
@@ -38,6 +39,8 @@ export namespace AnswerExecutor {
 
     export const TEMPERATURE = 0;
 
+    export const RETURN_METADATA = true;
+
     export async function exec(opts: IExecOpts): Promise<IAnswer> {
 
         const {question, uid} = opts;
@@ -61,29 +64,24 @@ export namespace AnswerExecutor {
         };
 
         const requestURL = `/${index}/_search`;
-        const esResponse: IElasticSearchResponse<IDigestDocument> = await ESRequests.doPost(requestURL, query);
+        const esResponse: IElasticSearchResponse<IAnswerDigestRecord> = await ESRequests.doPost(requestURL, query);
 
-        // console.log(`ES response to ${requestURL}`, JSON.stringify(esResponse, null, "  "));
-
-        // tslint:disable-next-line:variable-name
-        // tslint:disable-next-line:variable-name
-
-        // tslint:disable-next-line:variable-name
-
-        // FIXME: include metadata here - don't just use the source text.  We
-        // need the metadata as part of the results.
-        function toDocument(doc: IDigestDocument) {
+        function toDocument(doc: IAnswerDigestRecord): IAnswerDocument {
 
             return {
                 text: doc.text,
+                // TODO: do we need the ID of the document from ES
                 metadata: {
-                    id: doc.idx
+                    docID: doc.docID,
+                    idx: doc.idx,
+                    pageNum: doc.pageNum
                 }
 
             }
 
         }
 
+        // const documents = esResponse.hits.hits.map(current => toDocument(current._source));
         const documents = esResponse.hits.hits.map(current => current._source.text);
 
         // TODO how do we compute documents which have no known answer?
@@ -106,9 +104,9 @@ export namespace AnswerExecutor {
             stop: STOP,
             documents,
             n: 10,
-
-            // FIXME: I have to play with temperature more...
-            temperature: TEMPERATURE
+            temperature: TEMPERATURE,
+            return_metadata: RETURN_METADATA,
+            logprobs: 10,
         }
 
         const answerResponse = await OpenAIAnswersClient.exec(request);
