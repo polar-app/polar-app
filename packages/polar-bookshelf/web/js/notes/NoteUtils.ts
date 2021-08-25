@@ -230,8 +230,25 @@ export function useLinkNavigationClickHandler({ id }: IUseLinkNavigationOpts) {
 }
 
 export namespace BlockTextContentUtils {
+    export function updateClozeFlashcardContentMarkdown(
+        content: FlashcardAnnotationContent,
+        markdown: MarkdownStr,
+    ): FlashcardAnnotationContent {
+        const flashcardContent = content.toJSON();
+        return new FlashcardAnnotationContent({
+            ...flashcardContent,
+            value: {
+                ...flashcardContent.value,
+                fields: { 'text': Texts.create(markdown, TextType.MARKDOWN) },
+            }
+        });
+    }
 
-    export function updateFlashcardContentMarkdown(content: FlashcardAnnotationContent, markdown: MarkdownStr, field: 'front' | 'back'): FlashcardAnnotationContent {
+    export function updateFrontBackFlashcardContentMarkdown(
+        content: FlashcardAnnotationContent,
+        markdown: MarkdownStr,
+        field: 'front' | 'back'
+    ): FlashcardAnnotationContent {
         const flashcardContent = content.toJSON();
         return new FlashcardAnnotationContent({
             ...flashcardContent,

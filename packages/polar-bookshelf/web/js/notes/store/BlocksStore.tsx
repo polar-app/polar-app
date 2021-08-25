@@ -42,7 +42,6 @@ import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {DocumentContent} from "../content/DocumentContent";
 import {AnnotationContent, AnnotationContentTypeMap} from "../content/AnnotationContent";
-import {INameContent} from "polar-blocks/src/blocks/content/INameContent";
 import {BlockTextContentUtils} from "../NoteUtils";
 
 export const ENABLE_UNDO_TRACING = false;
