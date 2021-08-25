@@ -100,6 +100,13 @@ export class ArchiveWritable extends Writable {
         }
         this.output.once('finish', finishCB)
         this.output.once('error', errorCB)
-        this.archive.finalize()
+
+        this.archive.finalize().catch(err => {
+            if (callback) {
+                callback(err);
+            } else {
+                console.error("Unable to finalize: ", err);
+            }
+        })
     }
 }

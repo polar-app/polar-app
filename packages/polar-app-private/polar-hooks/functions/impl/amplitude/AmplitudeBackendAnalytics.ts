@@ -15,6 +15,7 @@ export namespace AmplitudeBackendAnalytics {
 
     export function event2(event: string, data?: any, user?: IUser): void {
         const standardEventProperties = createStandardEventsProperties();
+
         client.logEvent({
             event_type: event,
             user_id: user?.uid,
@@ -22,7 +23,8 @@ export namespace AmplitudeBackendAnalytics {
                 ...data,
                 ...standardEventProperties
             }
-        });
+        }).catch(err => console.error("Unable to log event: ", err))
+
     }
 
     function createStandardEventsProperties(): any {
