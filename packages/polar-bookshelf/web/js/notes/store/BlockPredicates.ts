@@ -2,9 +2,15 @@ import {Block} from "./Block";
 import {MarkdownContent} from "../content/MarkdownContent";
 import {NameContent} from "../content/NameContent";
 import {DateContent} from "../content/DateContent";
-import {NamedBlock} from "./BlocksStore";
-import {AnnotationContent, AnnotationHighlightContent} from "../content/AnnotationContent";
+import {NamedContent} from "./BlocksStore";
+import {AnnotationContent, AnnotationHighlightContent, FlashcardAnnotationContent, TextHighlightAnnotationContent} from "../content/AnnotationContent";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
+
+export type TextContent = MarkdownContent
+                          | NameContent
+                          | DateContent
+                          | TextHighlightAnnotationContent
+                          | FlashcardAnnotationContent;
 
 /**
  * Note we have to have IBlockPredicates and BlockPredicates as the typescript
@@ -13,20 +19,24 @@ import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotation
  */
 export namespace BlockPredicates {
 
-    export function isTextBlock(block: Readonly<Block>): block is Block<MarkdownContent | NameContent | DateContent> {
-        return block.content.type === 'markdown' || block.content.type === 'name' || block.content.type === 'date';
+    export function isTextBlock(block: Readonly<Block>): block is Block<TextContent> {
+        return block.content.type === 'markdown'
+               || block.content.type === 'name'
+               || block.content.type === 'date'
+               || block.content.type === AnnotationContentType.TEXT_HIGHLIGHT
+               || block.content.type === AnnotationContentType.FLASHCARD;
     }
 
     export function isDateBlock(block: Readonly<Block>): block is Block<DateContent> {
         return block.content.type === 'date';
     }
 
-    export function isEditableBlock(block: Readonly<Block>): block is Block<MarkdownContent> {
-        return block.content.type === 'markdown';
+    export function isNamedBlock(block: Readonly<Block>): block is Block<NamedContent> {
+        return ['date', 'name', 'document'].indexOf(block.content.type) > -1;
     }
 
-    export function isNamedBlock(block: Readonly<Block>): block is NamedBlock {
-        return ['date', 'name', 'document'].indexOf(block.content.type) > -1;
+    export function canHaveLinks(block: Readonly<Block>): block is Block<MarkdownContent> {
+        return ['markdown'].indexOf(block.content.type) > -1;
     }
 
     export function isAnnotationBlock(block: Readonly<Block>): block is Block<AnnotationContent> {
