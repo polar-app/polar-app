@@ -83,9 +83,11 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
     const {setSort} = useDocRepoCallbacks();
     const desktopColumns = useDocRepoColumnsPrefs();
 
-    const mobileColumns: ReadonlyArray<keyof IDocInfo> = ['title', 'progress'];
+    const mobileColumns: ReadonlyArray<keyof IDocInfo> = ['title'];
 
-    const selectedColumns = Devices.isDesktop() ? desktopColumns : mobileColumns;
+    const tabletColumns: ReadonlyArray<keyof IDocInfo> = ['title', 'progress'];
+
+    const selectedColumns = Devices.isDesktop() ? desktopColumns : Devices.isPhone()? mobileColumns : tabletColumns;
 
     const columns = selectedColumns.map(current => COLUMN_MAP[current])
                                    .filter(current => isPresent(current));
@@ -105,8 +107,8 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
                             <TableCell key={column.id}
                                        className={classes.th}
                                        style={{
-                                           width: column.width,
-                                           minWidth: column.width
+                                           width: column.id==='progress' ? '85px': column.width,
+                                           minWidth: column.id==='progress' ? '85px': column.width
                                        }}
                                        padding={column.disablePadding ? 'none' : 'default'}
                                        sortDirection={orderBy === column.id ? order : false}>
@@ -114,6 +116,7 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
                                 <TableSortLabel
                                     active={orderBy === column.id}
                                     direction={order}
+                                    hideSortIcon
                                     onClick={() => setSort(newOrder, column.id)}>
                                     {column.label}
                                     {orderBy === column.id ? (
@@ -133,7 +136,7 @@ export const DocRepoTableHead = React.memo(function DocRepoTableHead() {
                     </DeviceRouter.Desktop>
 
                     <DeviceRouters.NotDesktop>
-                        <TableCell style={{width: '35px'}}>
+                        <TableCell style={{width: '45px'}}>
                         </TableCell>
                     </DeviceRouters.NotDesktop>
 
