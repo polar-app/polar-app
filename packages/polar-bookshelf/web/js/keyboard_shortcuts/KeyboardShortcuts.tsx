@@ -142,7 +142,7 @@ export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
             const { ignorable = true } = shortcut;
 
             if (predicate(event)) {
-                console.log('debug', ignorable, seq);
+
                 if (ignorable && isIgnorableKeyboardEvent(event)) {
                     return;
                 }

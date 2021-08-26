@@ -1,5 +1,5 @@
 import {MockBlocks} from "../../../../apps/stories/impl/MockBlocks";
-import {BlockContent, BlocksStore, Interstitial} from "./BlocksStore";
+import {BlockContent, BlockContentMap, BlocksStore, Interstitial} from "./BlocksStore";
 import {assertJSON} from "../../test/Assertions";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {TestingTime} from "polar-shared/src/test/TestingTime";
@@ -9,8 +9,8 @@ import {ReverseIndex} from "./ReverseIndex";
 import {Block} from "./Block";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {ConstructorOptions, JSDOM} from "jsdom";
-import { NameContent } from "../content/NameContent";
-import { MarkdownContent } from "../content/MarkdownContent";
+import {NameContent} from "../content/NameContent";
+import {MarkdownContent} from "../content/MarkdownContent";
 import {Asserts} from "polar-shared/src/Asserts";
 import assertPresent = Asserts.assertPresent;
 import {UndoQueues2} from "../../undo/UndoQueues2";
@@ -22,7 +22,9 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {WriteController, WriteFileProgress} from "../../datastore/Datastore";
 import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
-import {DeviceIDManager} from "../../../../../polar-app-public/polar-shared/src/util/DeviceIDManager";
+import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
+import {BlockTextContentUtils} from "../NoteUtils";
+import {DateContent} from "../content/DateContent";
 
 function assertTextBlock(content: BlockContent): asserts content is MarkdownContent | NameContent {
 
@@ -32,8 +34,8 @@ function assertTextBlock(content: BlockContent): asserts content is MarkdownCont
 
 }
 
-function assertMarkdownBlock(block: Block): asserts block is Block<MarkdownContent> {
-    if (block.content.type !== 'markdown') {
+function assertBlockType<T extends BlockContent['type']>(type: T, block: Block): asserts block is Block<BlockContentMap[T]> {
+    if (block.content.type !== type) {
         throw new Error("wrong type: " + block.content.type);
     }
 }
@@ -1264,6 +1266,60 @@ describe('BlocksStore', function() {
 
     });
 
+    describe('createLinkToBlock', () => {
+        it('Should create a link to a specified target block properly & update the reverse index properly', () => {
+            const store = createStore();
+            const source = store.getBlockForMutation('110');
+            const target = store.getBlockForMutation('109');
+
+            assertPresent(source);
+            assertPresent(target);
+            assertBlockType('name', target);
+            assertBlockType('markdown', source);
+
+            const targetName = BlockTextContentUtils.getTextContentMarkdown(target.content);
+            const sourceText = BlockTextContentUtils.getTextContentMarkdown(source.content);
+            store.createLinkToBlock(source.id, targetName, sourceText + ` [[targetName]]`);
+
+            const newSource = store.getBlockForMutation('110');
+            assertPresent(newSource);
+            assertBlockType('markdown', newSource);
+
+            const newText = BlockTextContentUtils.getTextContentMarkdown(newSource.content);
+            assert.equal(newText, sourceText + ` [[targetName]]`);
+
+            assert.isTrue(store._reverse.get('109').indexOf('110') > -1);
+        });
+
+        it('Should not allow creating links on name or date blocks', () => {
+            const store = createStore();
+            const dateID = store.createNewNamedBlock({
+                content: new DateContent({ format: 'YYYY-MM-DD', data: 'date', type: 'date' })
+            });
+
+            const nameID = store.createNewNamedBlock({
+                content: new NameContent({ data: 'name', type: 'name' })
+            });
+
+            store.createLinkToBlock(dateID, '102', 'hello');
+
+            const nameBlock = store.getBlockForMutation(nameID);
+            assertPresent(nameBlock);
+            assertBlockType('name', nameBlock);
+            assert.equal(nameBlock.mutation, 0);
+            assert.equal(nameBlock.content.data, 'name');
+
+            store.createLinkToBlock(nameID, '102', 'world');
+            const dateBlock = store.getBlockForMutation(dateID);
+            assertPresent(dateBlock);
+            assertBlockType('date', dateBlock);
+            assertPresent(dateBlock);
+            assert.equal(dateBlock.mutation, 0);
+            assert.equal(dateBlock.content.data, 'date');
+
+        });
+    });
+
     describe("prevSibling", () => {
 
         it("no prev sibling", () => {
@@ -1726,7 +1782,7 @@ describe('BlocksStore', function() {
             const block2 = store.getBlockForMutation(createdBlock2.id);
 
             assertPresent(block1);
-            assertMarkdownBlock(block1);
+            assertBlockType('markdown', block1);
             assert.isUndefined(block2);
 
             assert.deepEqual(block1.content.links, [
@@ -2190,7 +2246,7 @@ describe('BlocksStore', function() {
 
                 assertPresent(originalBlock);
 
-                assertMarkdownBlock(originalBlock);
+                assertBlockType('markdown', originalBlock);
 
                 const createdBlock = store.createNewBlock(id, {split: {prefix: '', suffix: originalBlock!.content.data}});
                 assertPresent(createdBlock);
@@ -2219,7 +2275,7 @@ describe('BlocksStore', function() {
                 const originalBlock = store.getBlockForMutation(id);
 
                 assertPresent(originalBlock);
-                assertMarkdownBlock(originalBlock);
+                assertBlockType('markdown', originalBlock);
 
                 const createdBlock = store.createNewBlock(id, {split: {prefix: '', suffix: originalBlock!.content.data}});
 
@@ -2255,7 +2311,7 @@ describe('BlocksStore', function() {
             const originalBlock = store.getBlockForMutation(id);
 
             assertPresent(originalBlock);
-            assertMarkdownBlock(originalBlock);
+            assertBlockType('markdown', originalBlock);
 
             const createdBlock = store.createNewBlock(id, {split: {prefix: '', suffix: originalBlock!.content.data}});
 
@@ -2388,7 +2444,7 @@ describe('BlocksStore', function() {
             const id = '105';
             const oldBlock = store.getBlockForMutation(id);
             assertPresent(oldBlock);
-            assertMarkdownBlock(oldBlock);
+            assertBlockType('markdown', oldBlock);
             // collapse the parent node to make sure it gets expanded when the child is created
             store.collapse(id);
             const createdBlock = store.createNewBlock(id, {split: {prefix: '', suffix: oldBlock.content.data}});
@@ -2397,7 +2453,7 @@ describe('BlocksStore', function() {
 
             const block1 = store.getBlockForMutation(createdBlock.id);
             assertPresent(block1);
-            assertMarkdownBlock(block1);
+            assertBlockType('markdown', block1);
 
             store.expand(block1.id);
             const createdBlock2 = store.createNewBlock(block1.id, {split: {prefix: '', suffix: block1.content.data}});
@@ -2429,13 +2485,13 @@ describe('BlocksStore', function() {
             assertPresent(block106);
             assertPresent(block117);
             assertPresent(block118);
-            assertMarkdownBlock(block103);
-            assertMarkdownBlock(block104);
-            assertMarkdownBlock(block116);
-            assertMarkdownBlock(block105);
-            assertMarkdownBlock(block106);
-            assertMarkdownBlock(block117);
-            assertMarkdownBlock(block118);
+            assertBlockType('markdown', block103);
+            assertBlockType('markdown', block104);
+            assertBlockType('markdown', block116);
+            assertBlockType('markdown', block105);
+            assertBlockType('markdown', block106);
+            assertBlockType('markdown', block117);
+            assertBlockType('markdown', block118);
 
             const expected = [
                 {
@@ -2523,7 +2579,7 @@ describe('BlocksStore', function() {
                 items.forEach((blockID, i) => {
                     const block = store.getBlockForMutation(blockID);
                     assertPresent(block);
-                    assertMarkdownBlock(block);
+                    assertBlockType('markdown', block);
                     assert.equal(block.content.data, content[i]);
                 });
 
@@ -2532,17 +2588,17 @@ describe('BlocksStore', function() {
 
                 const level1Child1 = store.getBlockForMutation(secondBlock.itemsAsArray[0]);
                 assertPresent(level1Child1);
-                assertMarkdownBlock(level1Child1);
+                assertBlockType('markdown', level1Child1);
                 assert.equal(level1Child1.content.data, "hmm");
 
                 const level2Child2 = store.getBlockForMutation(secondBlock.itemsAsArray[1]);
                 assertPresent(level2Child2);
-                assertMarkdownBlock(level2Child2);
+                assertBlockType('markdown', level2Child2);
                 assert.equal(level2Child2.content.data, "world");
 
                 const level3Child = store.getBlockForMutation(level2Child2.itemsAsArray[0]);
                 assertPresent(level3Child);
-                assertMarkdownBlock(level3Child);
+                assertBlockType('markdown', level3Child);
                 assert.equal(level3Child.content.data, "potato");
             });
         });
