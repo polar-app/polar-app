@@ -4,8 +4,8 @@ import {BlocksTreeStore} from "../BlocksTreeStore";
 import {useBlocksTreeStore} from "../BlocksTree";
 import {ContentEditables} from "../ContentEditables";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
-import {CursorPositions} from "./CursorPositions";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
+import {DOMBlocks} from "./DOMBlocks";
 
 const PAGE_NAV_BLOCKS_JUMP_COUNT = 10; 
 
@@ -28,7 +28,7 @@ const abortEvent = (event: React.KeyboardEvent): void => {
 };
 
 export const navNBlocks = (blocksTreeStore: BlocksTreeStore, delta: 'prev' | 'next', shiftKey: boolean) => {
-    const nav = () => blocksTreeStore[delta === 'prev' ? 'navPrev' : 'navNext']('start', { shiftKey: shiftKey });
+    const nav = () => blocksTreeStore[delta === 'prev' ? 'navPrev' : 'navNext']({ shiftKey: shiftKey });
 
     for (let i = 0; i < PAGE_NAV_BLOCKS_JUMP_COUNT && nav(); i += 1) {};
 };
@@ -90,8 +90,7 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
 
         if (modifierPredicate(['shift'], event) || modifierPredicate([], event)) {
             abortEvent(event);
-            const pos = CursorPositions.computeCurrentOffset(contentEditableElem);
-            blocksTreeStore.navPrev(pos || 'start', { shiftKey: event.shiftKey });
+            blocksTreeStore.navPrev({ shiftKey: event.shiftKey });
         }
     },
     ArrowDown: ({ event, blockID, contentEditableElem, blocksTreeStore }) => {
@@ -115,10 +114,9 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
             }
         }
 
-        const pos = CursorPositions.computeCurrentOffset(contentEditableElem);
         if (modifierPredicate(['shift'], event) || modifierPredicate([], event)) {
             abortEvent(event);
-            blocksTreeStore.navNext(pos || 'start', { shiftKey: event.shiftKey });
+            blocksTreeStore.navNext({ shiftKey: event.shiftKey });
         }
     },
     ArrowLeft: ({ event, blockID, contentEditableElem, blocksTreeStore }) => {
@@ -134,7 +132,7 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
 
             if (ContentEditables.cursorAtStart(contentEditableElem)) {
                 abortEvent(event);
-                blocksTreeStore.navPrev('end', { shiftKey: event.shiftKey });
+                blocksTreeStore.navPrev({ shiftKey: event.shiftKey, pos: 'end' });
             }
 
         }
@@ -152,7 +150,7 @@ const HANDLERS: Record<string, KeydownHandler | undefined> = {
 
             if (ContentEditables.cursorAtEnd(contentEditableElem)) {
                 abortEvent(event);
-                blocksTreeStore.navNext('start', { shiftKey: event.shiftKey });
+                blocksTreeStore.navNext({ shiftKey: event.shiftKey, pos: 'start' });
             }
 
         }
@@ -290,7 +288,12 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
     const platform = React.useMemo(() => Platforms.get(), []);
 
     const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
-        const elem = contentEditableRef.current;
+        if (! (event.target instanceof HTMLElement)) {
+            return;
+        }
+
+        const elem = DOMBlocks.findBlockParent(event.target);
+
         if (! elem) {
             return;
         }
@@ -316,7 +319,7 @@ export const useBlockKeyDownHandler = (opts: IUseBlockKeyDownHandlerOpts): IUseB
             onKeyDown(event);
         }
 
-    }, [onKeyDown, blockID, platform, blocksTreeStore, contentEditableRef, readonly]);
+    }, [onKeyDown, blockID, platform, blocksTreeStore, readonly]);
 
     React.useEffect(() => {
         const elem = contentEditableRef.current;
