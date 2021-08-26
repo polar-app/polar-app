@@ -257,10 +257,26 @@ xdescribe("AnswerExecutor", async function() {
 
     })
 
+    it("US history chap 1 #2", async function() {
+
+        await assertQuestionAndAnswer("Which culture developed the first writing system in the Western Hemisphere?", [
+            "Olmec"
+        ]);
+
+    })
+
     it("US history chap 1 #3", async function() {
 
         await assertQuestionAndAnswer("Which culture developed a road system rivaling that of the Romans?", [
             "Inca"
+        ]);
+
+    })
+
+    it("US history chap 1 #4", async function() {
+
+        await assertQuestionAndAnswer("What were the major differences between the societies of the Aztec, Inca, and Maya and the Native peoples of North America?", [
+            "North American Indians were fewer in number, more widely dispersed, and did not have the population size or organized social structures of the Maya, Aztec, or Inca societies.",
         ]);
 
     })
@@ -273,6 +289,13 @@ xdescribe("AnswerExecutor", async function() {
 
     })
 
+    it("US history chap 1 #6", async function() {
+
+        await assertQuestionAndAnswer("Which city became wealthy by trading with the East?", [
+            "Venice."
+        ]);
+
+    })
     it("US history chap 1 #7", async function() {
 
         await assertQuestionAndAnswer("In 1492, the Spanish forced what two religious groups to either convert or leave.", [
@@ -280,7 +303,14 @@ xdescribe("AnswerExecutor", async function() {
         ]);
 
     })
+    //The lords owned the land; the knights gave military service to a lord and carried out his justice; the serfs worked the land in return for the protection from invaders within the walls of the lord's castle or city.
+    it("US history chap 1 #8", async function() {
 
+        await assertQuestionAndAnswer("How did European feudal society operate?", [
+            "Jews and Muslims"
+        ]);
+
+    })
 
     it("astronomy #1", async function() {
 
