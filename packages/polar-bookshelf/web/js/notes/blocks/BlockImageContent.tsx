@@ -6,7 +6,7 @@ import {BlockEditorGenericProps} from "../BlockEditor";
 import {useBlocksTreeStore} from "../BlocksTree";
 import {hasModifiers} from "../contenteditable/BlockKeyboardHandlers";
 import {DataURLStr} from "polar-blocks/src/blocks/content/IImageContent";
-import {DOMBlocks} from "../contenteditable/BlockContentEditable";
+import {DOMBlocks} from "../contenteditable/DOMBlocks";
 
 interface IProps extends BlockEditorGenericProps {
     readonly src: DataURLStr;

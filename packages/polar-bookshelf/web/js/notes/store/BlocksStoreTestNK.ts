@@ -25,6 +25,9 @@ import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {BlockTextContentUtils} from "../NoteUtils";
 import {DateContent} from "../content/DateContent";
+import {DOMBlocks} from "../contenteditable/DOMBlocks";
+import {IBlocksStore} from "./IBlocksStore";
+import {CursorPositions} from "../contenteditable/CursorPositions";
 
 function assertTextBlock(content: BlockContent): asserts content is MarkdownContent | NameContent {
 
@@ -1141,127 +1144,6 @@ describe('BlocksStore', function() {
             "root": "102",
             "uid": "123",
             "updated": "2012-03-02T11:38:49.321Z"
-        });
-
-    });
-
-    describe("navPrev", () => {
-        const root = '102';
-        let store: BlocksStore;
-
-        beforeEach(() => {
-            store = createStore();
-        });
-
-        it("Should set the previous block as active properly (with all blocks expanded)", () => {
-            store.computeLinearTree(root, {includeInitial: true})
-                .forEach(block => store.expanded[block] = true);
-            store.setActive('116');
-
-            store.navPrev(root, 'start', {shiftKey: false});
-            const {active} = store;
-            assertPresent(active);
-            assert.equal(active.id, '104');
-        });
-
-        it("Should skip over the children of a collapsed blocks", () => {
-            store.computeLinearTree(root, {includeInitial: true})
-                .forEach(block => store.expanded[block] = true);
-            store.expanded['104'] = false;
-            store.setActive('105');
-
-            store.navPrev(root, 'end', {shiftKey: false});
-            const {active} = store;
-            assertPresent(active);
-            assert.equal(active.id, '104');
-        });
-
-        it("Should set the position of the cursor properly", () => {
-            store.setActive('104');
-
-            store.navPrev(root, 'end', {shiftKey: false, autoExpandRoot: true});
-            assertPresent(store.active);
-            assert.equal(store.active.pos, 'end');
-            assert.equal(store.active.id, '103');
-
-            store.navPrev(root, 'start', {shiftKey: false, autoExpandRoot: true});
-            assertPresent(store.active);
-            assert.equal(store.active.pos, 'start');
-            assert.equal(store.active.id, '102');
-        });
-
-        it("Should constrain the cursor movement within a specified root block", () => {
-            const customRoot = '105';
-            store.setActive('106');
-            store.navPrev(customRoot, 'end', {shiftKey: false, autoExpandRoot: true});
-            store.navPrev(customRoot, 'end', {shiftKey: false, autoExpandRoot: true});
-            store.navPrev(customRoot, 'end', {shiftKey: false, autoExpandRoot: true});
-            store.navPrev(customRoot, 'end', {shiftKey: false, autoExpandRoot: true});
-            assertPresent(store.active);
-            assert.equal(store.active.id, '105');
-        });
-    });
-
-    describe("navNext", () => {
-        const root = '102';
-        let store: BlocksStore;
-
-        beforeEach(() => {
-            store = createStore();
-        });
-
-        it("Should set the next block as active properly (with all blocks expanded)", () => {
-            store.computeLinearTree(root, {includeInitial: true})
-                .forEach(block => store.expanded[block] = true);
-            store.setActive('116');
-
-            store.navNext(root, 'start', {shiftKey: false});
-            const {active} = store;
-            assertPresent(active);
-            assert.equal(active.id, '105');
-        });
-
-        it("Should skip over the children of a collapsed blocks", () => {
-            store.computeLinearTree(root, {includeInitial: true})
-                .forEach(block => store.expanded[block] = true);
-            store.expanded['104'] = false;
-            store.setActive('104');
-
-            store.navNext(root, 'end', {shiftKey: false});
-            const {active} = store;
-            assertPresent(active);
-            assert.equal(active.id, '105');
-        });
-
-        it("Should set the position of the cursor properly", () => {
-            store.computeLinearTree(root, {includeInitial: true})
-                .forEach(block => store.expanded[block] = true);
-            store.expanded['104'] = false;
-            store.setActive('104');
-
-            store.navNext(root, 'end', {shiftKey: false});
-            assertPresent(store.active);
-            assert.equal(store.active.pos, 'end');
-            assert.equal(store.active.id, '105');
-
-            store.expanded['105'] = true;
-            store.navNext(root, 'start', {shiftKey: false});
-            assertPresent(store.active);
-            assert.equal(store.active.pos, 'start');
-            assert.equal(store.active.id, '106');
-        });
-
-        it("Should constrain the cursor movement within a specified root block", () => {
-            store.computeLinearTree(root, {includeInitial: true})
-                .forEach(block => store.expanded[block] = true);
-            const customRoot = '105';
-            store.setActive('106');
-            store.navNext(customRoot, 'end', {shiftKey: false});
-            store.navNext(customRoot, 'end', {shiftKey: false});
-            store.navNext(customRoot, 'end', {shiftKey: false});
-            store.navNext(customRoot, 'end', {shiftKey: false});
-            assertPresent(store.active);
-            assert.equal(store.active.id, '118');
         });
 
     });

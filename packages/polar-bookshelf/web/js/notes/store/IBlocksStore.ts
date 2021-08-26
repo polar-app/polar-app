@@ -24,7 +24,7 @@ import {ReverseIndex} from "./ReverseIndex";
 import {MarkdownStr} from "polar-shared/src/util/Strings";
 import {IBlockContentStructure} from "../HTMLToBlocks";
 import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
-import {DOMBlocks} from "../contenteditable/BlockContentEditable";
+import {DOMBlocks} from "../contenteditable/DOMBlocks";
 
 /**
  * deleteBlocks
@@ -129,8 +129,8 @@ export interface IBlocksStore {
     canMergePrev(root: BlockIDStr, id: BlockIDStr): IBlockMerge | undefined;
     canMergeNext(root: BlockIDStr, id: BlockIDStr): IBlockMerge | undefined;
 
-    navPrev(root: BlockIDStr, pos: NavPosition, opts: NavOpts): void;
-    navNext(root: BlockIDStr, pos: NavPosition, opts: NavOpts): void;
+    navPrev(root: BlockIDStr, opts: NavOpts): void;
+    navNext(root: BlockIDStr, opts: NavOpts): void;
 
     getNamedBlocks(): ReadonlyArray<string>;
 
