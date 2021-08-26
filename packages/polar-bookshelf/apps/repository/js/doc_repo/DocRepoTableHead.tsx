@@ -42,7 +42,6 @@ const useStyles = makeStyles((theme: Theme) =>
                 paddingBottom: theme.spacing(1),
                 paddingLeft: 0,
                 paddingRight: 0,
-                width: '85px',
                 borderCollapse: 'collapse',
                 lineHeight: '1em'
             }
