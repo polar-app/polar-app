@@ -10,6 +10,7 @@ import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {BlockTitle} from "./BlockTitle";
 import {NotesInnerContainer} from "./NotesContainer";
 import {focusFirstChild} from "./NoteUtils";
+import {NotesToolbar} from "./NotesToolbar";
 
 interface INoteRootParams {
     id: BlockIDStr;
@@ -49,6 +50,7 @@ export const SingleNoteScreen: React.FC<ISingleNoteScreenProps> = (props) => {
 
     return (
         <>
+            <NotesToolbar />
             <BlockTitle id={rootID}/>
             <NotesInnerContainer>
                 <NotePaper>

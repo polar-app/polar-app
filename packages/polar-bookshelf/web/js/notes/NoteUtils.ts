@@ -28,9 +28,14 @@ import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 // TODO: move this into BlocksStore
 export const focusFirstChild = (blocksStore: IBlocksStore, id: BlockIDStr) => {
     const root = blocksStore.getBlock(id);
-    if (root && root.content.type !== "document") {
-        const firstChildID = root.itemsAsArray[0] || blocksStore.createNewBlock(root.id, { asChild: true }).id;
-        blocksStore.setActiveWithPosition(firstChildID, 'start');
+    if (root) {
+        const getFirstChildID = (): BlockIDStr => {
+            if (root.content.type !== "document") {
+                return root.itemsAsArray[0];
+            }
+            return root.itemsAsArray[0] || blocksStore.createNewBlock(root.id, { asChild: true }).id;
+        };
+        blocksStore.setActiveWithPosition(getFirstChildID(), 'start');
     }
 };
 

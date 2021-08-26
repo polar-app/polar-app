@@ -14,7 +14,7 @@ import {Block} from "./Block";
 import {NotesInbound} from "./NotesInbound";
 import {NotesInnerContainer} from "./NotesContainer";
 import {focusFirstChild, useNamedBlocks} from "./NoteUtils";
-import {IDateContent} from "polar-blocks/src/blocks/content/IDateContent";
+import {NotesToolbar} from "./NotesToolbar";
 
 const DAILY_NOTES_CHUNK_SIZE = 3;
 
@@ -43,7 +43,7 @@ export const DailyNotesScreen: React.FC = () => {
         const notes = [...dateBlocks].sort(descendingDateSorter);
         setDailyNotes(notes);
     }, [namedBlocks, setDailyNotes]);
-    
+
     React.useEffect(() => {
         // Add a note for today if it doesn't exist & focus the first child
         const dateContent = DateContents.create();
@@ -84,6 +84,7 @@ export const DailyNotesScreen: React.FC = () => {
             <Helmet>
                 <title>Polar: Daily notes</title>
             </Helmet>
+            <NotesToolbar />
             <NotesInnerContainer>
                 <NotePaper ref={rootRef}>
                     {visibleNotes.map(({ id }) => (

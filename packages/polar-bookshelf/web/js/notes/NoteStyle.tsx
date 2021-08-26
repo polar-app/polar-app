@@ -28,9 +28,6 @@ const useStyles = makeStyles((theme) =>
                 textUnderlinePosition: 'under'
 
             },
-            "& h1, h2, h3, h4, h5": {
-                lineHeight: 0
-            },
             "& img": {
                 maxWidth: '100%',
                 verticalAlign: 'top',
