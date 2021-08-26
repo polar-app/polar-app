@@ -31,7 +31,7 @@ import {WikiLinksToMarkdown} from "../WikiLinksToMarkdown";
 import {IBlockExpandCollectionSnapshot, useBlockExpandCollectionSnapshots} from "../persistence/BlockExpandCollectionSnapshots";
 import {BlockExpandPersistenceWriter, useBlockExpandPersistenceWriter} from "../persistence/BlockExpandWriters";
 import {IBlockContentStructure} from "../HTMLToBlocks";
-import {DOMBlocks} from "../contenteditable/BlockContentEditable";
+import {DOMBlocks} from "../contenteditable/DOMBlocks";
 import {BlockIDStr, IBlock, IBlockContent, IBlockLink, NamespaceIDStr, UIDStr} from "polar-blocks/src/blocks/IBlock";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 import {WriteController, WriteFileProgress} from "../../datastore/Datastore";
@@ -153,6 +153,8 @@ export interface IBlockMerge {
 
 export interface NavOpts {
     readonly shiftKey: boolean;
+
+    readonly pos?: NavPosition;
 
     /*
      * This is used to determine whether roots should be treated as expanded, which is usually the case
@@ -786,7 +788,6 @@ export class BlocksStore implements IBlocksStore {
 
     @action public doNav(root: BlockIDStr,
                          delta: 'prev' | 'next',
-                         pos: NavPosition,
                          opts: NavOpts): boolean {
 
         const {shiftKey, autoExpandRoot} = opts;
@@ -794,6 +795,15 @@ export class BlocksStore implements IBlocksStore {
         if (this._active === undefined) {
             console.warn("No currently active node");
             return false;
+        }
+
+        if (! shiftKey) {
+            this.clearSelected('doNav');
+            const newBlockID = DOMBlocks.nav(delta, opts.pos);
+            if (newBlockID) {
+                this.setActive(newBlockID);
+            }
+            return true;
         }
 
         const items = this.computeLinearTree(root, {
@@ -814,27 +824,9 @@ export class BlocksStore implements IBlocksStore {
         const activeIndex = childIndex + deltaIndex;
         const newActive = items[activeIndex];
 
-        if (! newActive && ! shiftKey) {
-            // There's no block that we can navigate to in the current block tree
-            // so use the dom to find the next/prev block
-            const siblingID = DOMBlocks.getSiblingID(this._active.id, delta);
-            if (siblingID) {
-                this.clearSelected('doNav');
-                this.setActiveWithPosition(siblingID, pos);
-            } else {
-                // if we still can't find a sibling then just go to the start/end of the current block (depending on the nav direction)
-                this.setActiveWithPosition(this._active.id, delta === 'prev' ? 'start' : 'end');
-            }
-            return true;
-        }
-
         // If we don't have any active blocks in the current tree and shift is held down and we already have a selection then just skip
         // This is sort of a special case because lets say the cursor is at the first/last block and we're trying to select it.
         // We want to allow selecting it but after that if try to navigate down for example and there's no more blocks then just skip.
-        if (! newActive && shiftKey && this.hasSelected()) {
-            return true;
-        }
-        
         if (! newActive && shiftKey && this.hasSelected()) {
             return true;
         }
@@ -865,18 +857,18 @@ export class BlocksStore implements IBlocksStore {
             this.clearSelected('doNav');
         }
 
-        this.setActiveWithPosition(newActive, pos);
+        this.setActiveWithPosition(newActive, delta === 'next' ? 'end' : 'start');
 
         return true;
 
     }
 
-    public navPrev(root: BlockIDStr, pos: NavPosition, opts: NavOpts) {
-        return this.doNav(root, 'prev', pos, opts);
+    public navPrev(root: BlockIDStr, opts: NavOpts) {
+        return this.doNav(root, 'prev', opts);
     }
 
-    public navNext(root: BlockIDStr, pos: NavPosition, opts: NavOpts) {
-        return this.doNav(root, 'next', pos, opts);
+    public navNext(root: BlockIDStr, opts: NavOpts) {
+        return this.doNav(root, 'next', opts);
     }
 
     /**

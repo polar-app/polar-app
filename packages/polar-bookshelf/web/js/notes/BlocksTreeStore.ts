@@ -4,7 +4,7 @@ import {Block} from "./store/Block";
 import {BlockNameStr, DoIndentResult, DoUnIndentResult, IActiveBlock, IBlockActivated, IBlockMerge, ICreatedBlock, ICreateNewNamedBlockOpts, IDropTarget, INewBlockOpts, Interstitial, NavOpts, NavPosition} from "./store/BlocksStore";
 import {IBlocksStore} from "./store/IBlocksStore";
 import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
-import {DOMBlocks} from "./contenteditable/BlockContentEditable";
+import {DOMBlocks} from "./contenteditable/DOMBlocks";
 
 export class BlocksTreeStore {
     public readonly root: BlockIDStr;
@@ -73,12 +73,12 @@ export class BlocksTreeStore {
         return this.blocksStore.canMergeNext(this.root, id);
     }
 
-    navPrev(pos: NavPosition, opts: NavOpts): void {
-        return this.blocksStore.navPrev(this.root, pos, { ...opts, autoExpandRoot: this.rootAutoExpanded });
+    navPrev(opts: NavOpts): void {
+        return this.blocksStore.navPrev(this.root, { ...opts, autoExpandRoot: this.rootAutoExpanded });
     }
 
-    navNext(pos: NavPosition, opts: NavOpts): void {
-        return this.blocksStore.navNext(this.root, pos, { ...opts, autoExpandRoot: this.rootAutoExpanded });
+    navNext(opts: NavOpts): void {
+        return this.blocksStore.navNext(this.root, { ...opts, autoExpandRoot: this.rootAutoExpanded });
     }
 
     indentBlock(id: BlockIDStr): ReadonlyArray<DoIndentResult> {
