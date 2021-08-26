@@ -1,14 +1,15 @@
 import {ESRequests} from "./ESRequests";
-import {ESDigester} from "./ESDigester";
 import {OpenAIAnswersClient} from "./OpenAIAnswersClient";
 import {ESAnswersIndexNames} from "./ESAnswersIndexNames";
 import { UserIDStr } from "polar-shared/src/util/Strings";
+import {ESShingleWriter} from "./ESShingleWriter";
 
 export namespace AnswerExecutor {
 
-    import IDigestDocument = ESDigester.IDigestDocument;
     import QuestionAnswerPair = OpenAIAnswersClient.QuestionAnswerPair;
     import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
+    import IAnswerDocument = OpenAIAnswersClient.IAnswerDocument;
+    import IAnswerDigestRecord = ESShingleWriter.IAnswerDigestRecord;
 
     export interface IExecOpts {
         readonly uid: UserIDStr;
@@ -18,6 +19,27 @@ export namespace AnswerExecutor {
     export interface IAnswer extends OpenAIAnswersClient.IResponse {
         readonly question: string;
     }
+
+    export const EXAMPLES_CONTEXT = "In 2017, U.S. life expectancy was 78.6 years.";
+
+    export const EXAMPLES: ReadonlyArray<QuestionAnswerPair> = [
+        ["What is human life expectancy in the United States?", "78 years."],
+        ["Who is the President of Xexptronica", "__UNKNOWN__"],
+        ["What do dinosaurs capilate?", "__UNKNOWN__"],
+        ["Is foo a bar?", "__UNKNOWN__"]
+    ];
+
+    export const STOP = ["\n", "<|endoftext|>"];
+
+    export const MAX_TOKENS = 150;
+
+    export const SEARCH_MODEL = 'curie';
+
+    export const MODEL = 'davinci';
+
+    export const TEMPERATURE = 0;
+
+    export const RETURN_METADATA = true;
 
     export async function exec(opts: IExecOpts): Promise<IAnswer> {
 
@@ -41,38 +63,50 @@ export namespace AnswerExecutor {
             size
         };
 
-        const esResponse: IElasticSearchResponse<IDigestDocument> = await ESRequests.doPost(`/${index}/_search`, query);
+        const requestURL = `/${index}/_search`;
+        const esResponse: IElasticSearchResponse<IAnswerDigestRecord> = await ESRequests.doPost(requestURL, query);
 
-        console.log("ES response", JSON.stringify(esResponse, null, "  "));
+        function toDocument(doc: IAnswerDigestRecord): IAnswerDocument {
 
-        // tslint:disable-next-line:variable-name
-        const max_tokens=35
+            return {
+                text: doc.text,
+                // TODO: do we need the ID of the document from ES
+                metadata: {
+                    docID: doc.docID,
+                    idx: doc.idx,
+                    pageNum: doc.pageNum
+                }
 
-        // tslint:disable-next-line:variable-name
-        const search_model='curie';
-        const model = 'davinci';
+            }
 
-        // tslint:disable-next-line:variable-name
-        const examples_context="In 2017, U.S. life expectancy was 78.6 years.";
+        }
 
-        const examples: ReadonlyArray<QuestionAnswerPair>= [
-            ["What is human life expectancy in the United States?", "78 years."]
-        ];
-
-        const stop = ["\n", "<|endoftext|>"];
-
+        // const documents = esResponse.hits.hits.map(current => toDocument(current._source));
         const documents = esResponse.hits.hits.map(current => current._source.text);
 
+        // TODO how do we compute documents which have no known answer?
+
+        // Assuming your temperature is already at 0 (making the API less likely
+        // to confabulate), you can show the API how to say "Unknown" using
+        // examples and examples_context. For instance, one example could be
+        // "Who invented Cottage Cheese?", "Unknown" Another example could be
+        // "When was the first Olympics?", "Unknown" Of course, you'll want
+        // examples that are answered by the examples_context as well. Does this
+        // make sense?
+
         const request: OpenAIAnswersClient.IRequest = {
-            search_model,
-            model,
+            search_model: SEARCH_MODEL,
+            model: MODEL,
             question,
-            examples_context,
-            examples,
-            max_tokens,
-            stop,
+            examples_context: EXAMPLES_CONTEXT,
+            examples: EXAMPLES,
+            max_tokens: MAX_TOKENS,
+            stop: STOP,
             documents,
-            n: 10
+            n: 10,
+            temperature: TEMPERATURE,
+            return_metadata: RETURN_METADATA,
+            logprobs: 10,
         }
 
         const answerResponse = await OpenAIAnswersClient.exec(request);
