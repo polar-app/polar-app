@@ -47,6 +47,8 @@ export namespace AnswerExecutor {
 
     export const RETURN_METADATA = true;
 
+    export const N = 10;
+
     export async function exec(opts: IExecOpts): Promise<IAnswer> {
 
         const {question, uid} = opts;
@@ -54,9 +56,10 @@ export namespace AnswerExecutor {
         // run this query on the digest ...
         const index = ESAnswersIndexNames.createForUserDocs(uid);
 
-        // FIXME this has to be hard coded and we only submit docs that would be
+        // TODO this has to be hard coded and we only submit docs that would be
         // applicable to the answer API and we would need a way to easily
-        // calculate the short head of the result set
+        // calculate the short head of the result set.  The OpenAI Answers API
+        // only allows 200 documents so we might just want to hard code this.
         const size = 100;
 
         const query = {
@@ -109,7 +112,7 @@ export namespace AnswerExecutor {
             max_tokens: MAX_TOKENS,
             stop: STOP,
             documents,
-            n: 10,
+            n: N,
             temperature: TEMPERATURE,
             return_metadata: RETURN_METADATA,
             logprobs: 10,
