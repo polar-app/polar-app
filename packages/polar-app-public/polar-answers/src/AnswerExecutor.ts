@@ -20,18 +20,24 @@ export namespace AnswerExecutor {
         readonly question: string;
     }
 
-    export const EXAMPLES_CONTEXT = "In 2017, U.S. life expectancy was 78.6 years.";
+    export const EXAMPLES_CONTEXT: string =
+        [
+            "In 2017, U.S. life expectancy was 78.6 years.",
+            'Google Analytics is a service that helps webmasters analyze traffic patterns at their web sites.  It provides aggregate statistics, such as the number of unique visitors per day and the page views per URL per day, as well as site-tracking reports, such as the percentage of users that made a purchase, given that they earlier viewed a specific page.  To enable the service, webmasters embed a small JavaScript program in their web pages. '
+        ].join("  ");
 
     export const EXAMPLES: ReadonlyArray<QuestionAnswerPair> = [
         ["What is human life expectancy in the United States?", "78 years."],
         ["Who is the President of Xexptronica", "__UNKNOWN__"],
         ["What do dinosaurs capilate?", "__UNKNOWN__"],
-        ["Is foo a bar?", "__UNKNOWN__"]
+        ["Is foo a bar?", "__UNKNOWN__"],
+        ["What is Google Analytics", "Google Analytics is a service that helps webmasters analyze patterns at their web sites."],
+        ["What does Google Analytics provide?", "It provides aggregate statistics, such as the number of unique visitors per day and the page views per URL per day."]
     ];
 
     export const STOP = ["\n", "<|endoftext|>"];
 
-    export const MAX_TOKENS = 150;
+    export const MAX_TOKENS = 250;
 
     export const SEARCH_MODEL = 'curie';
 
@@ -41,6 +47,8 @@ export namespace AnswerExecutor {
 
     export const RETURN_METADATA = true;
 
+    export const N = 10;
+
     export async function exec(opts: IExecOpts): Promise<IAnswer> {
 
         const {question, uid} = opts;
@@ -48,9 +56,10 @@ export namespace AnswerExecutor {
         // run this query on the digest ...
         const index = ESAnswersIndexNames.createForUserDocs(uid);
 
-        // FIXME this has to be hard coded and we only submit docs that would be
+        // TODO this has to be hard coded and we only submit docs that would be
         // applicable to the answer API and we would need a way to easily
-        // calculate the short head of the result set
+        // calculate the short head of the result set.  The OpenAI Answers API
+        // only allows 200 documents so we might just want to hard code this.
         const size = 100;
 
         const query = {
@@ -103,7 +112,7 @@ export namespace AnswerExecutor {
             max_tokens: MAX_TOKENS,
             stop: STOP,
             documents,
-            n: 10,
+            n: N,
             temperature: TEMPERATURE,
             return_metadata: RETURN_METADATA,
             logprobs: 10,
