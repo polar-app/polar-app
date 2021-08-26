@@ -195,9 +195,9 @@ export interface ICreatedBlock {
     readonly parent: BlockIDStr;
 }
 
-export type DoIndentResult = IMutation<'no-block' | 'no-parent' | 'no-parent-block' | 'no-sibling', BlockIDStr>;
+export type DoIndentResult = IMutation<'no-block' | 'no-parent' | 'annotation-block' | 'no-parent-block' | 'no-sibling', BlockIDStr>;
 
-export type DoUnIndentResult = IMutation<'no-block' | 'no-parent' | 'no-parent-block' | 'no-parent-block-parent' | 'no-parent-block-parent-block', BlockIDStr>
+export type DoUnIndentResult = IMutation<'no-block' | 'no-parent' | 'grandparent-is-document' | 'no-parent-block' | 'no-parent-block-parent' | 'no-parent-block-parent-block', BlockIDStr>
 
 /**
  * The active block and the position it should be set to once it's made active.
@@ -1424,9 +1424,9 @@ export class BlocksStore implements IBlocksStore {
     @action public styleSelectedBlocks(style: DOMBlocks.MarkdownStyle): void {
         const selectedIDs = this.selectedIDs();
         const ids = selectedIDs.flatMap(id => this.computeLinearTree(id, { includeInitial: true }));
-        const markdownBlocks = this.idsToBlocks(ids).filter(BlockPredicates.isTextBlock);
+        const textBlocks = this.idsToBlocks(ids).filter(BlockPredicates.isTextBlock);
 
-        if (markdownBlocks.length === 0) {
+        if (textBlocks.length === 0) {
             return;
         }
 
@@ -1447,10 +1447,10 @@ export class BlocksStore implements IBlocksStore {
         };
 
         const redo = () => {
-            markdownBlocks.forEach(applyStyle(style));
+            textBlocks.forEach(applyStyle(style));
         };
 
-        return this.doUndoPush('styleSelectedBlocks', markdownBlocks.map(({id}) => id), redo);
+        return this.doUndoPush('styleSelectedBlocks', textBlocks.map(({ id }) => id), redo);
     }
 
     /**
@@ -1710,9 +1710,7 @@ export class BlocksStore implements IBlocksStore {
     }
 
     /**
-     * A block is only indentable if it has a parent and we are not the first
-     * child in that parent. IE it must have a previous sibling so that we can
-     * be
+     * @deprecated Redundant code (same as isUnIndentable)
      */
     public isIndentable(root: BlockIDStr, id: BlockIDStr): boolean {
 
@@ -1737,6 +1735,9 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
+    /**
+     * @deprecated Selections do this by default
+     */
     private computeSelectedIndentableBlockIDs(root: BlockIDStr): ReadonlyArray<BlockIDStr> {
 
         const selectedRoots = this.computeSelectedRoots();
@@ -1759,14 +1760,8 @@ export class BlocksStore implements IBlocksStore {
         }
 
         const computeTargetIdentifiers = () => {
-
-            if (this.hasSelected()) {
-                return this.computeSelectedIndentableBlockIDs(root);
-            } else {
-                return [id];
-            }
-
-        }
+            return this.hasSelected() ? this.selectedIDs() : [id];
+        };
 
         const targetIdentifiers = computeTargetIdentifiers();
 
@@ -1792,6 +1787,10 @@ export class BlocksStore implements IBlocksStore {
             if (! parentBlock) {
                 console.warn("No parent block for id: " + block.parent);
                 return {error: 'no-parent-block'};
+            }
+
+            if (BlockPredicates.isAnnotationBlock(block)) {
+                return {error: 'annotation-block'};
             }
 
             const parentItems = (parentBlock.itemsAsArray || []);
@@ -1855,6 +1854,9 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
+    /**
+     * @deprecated This code is kind of redundant because we're doing the same checks inside of indentBlock/unIndentBlock
+     */
     public isUnIndentable(root: BlockIDStr, id: BlockIDStr) {
 
         const block = this.getBlock(id);
@@ -1872,10 +1874,22 @@ export class BlocksStore implements IBlocksStore {
             return false;
         }
 
+        const parent = this.getBlock(block.parent);
+        
+        // If the parent is an annotation then we can't unindent
+        // Because the parent of that annotation is a document which only allows annotations beneath it
+        if (! parent || BlockPredicates.isAnnotationHighlightBlock(parent)) {
+            return false;
+        }
+
         return true;
 
     }
 
+
+    /**
+     * @deprecated Selections do this by default now.
+     */
     private computeSelectedUnIndentableBlockIDs(root: BlockIDStr): ReadonlyArray<BlockIDStr> {
 
         const selectedRoots = this.computeSelectedRoots();
@@ -1891,13 +1905,7 @@ export class BlocksStore implements IBlocksStore {
         }
 
         const computeTargetIdentifiers = () => {
-
-            if (this.hasSelected()) {
-                return this.computeSelectedUnIndentableBlockIDs(root);
-            } else {
-                return [id];
-            }
-
+            return this.hasSelected() ? this.selectedIDs() : [id];
         };
 
         const targetIdentifiers = computeTargetIdentifiers();
@@ -1927,6 +1935,10 @@ export class BlocksStore implements IBlocksStore {
 
             if (! parentBlock) {
                 return {error: 'no-parent-block'};
+            }
+            
+            if (BlockPredicates.isAnnotationHighlightBlock(parentBlock)) {
+                return {error: 'grandparent-is-document'};
             }
 
             if (! parentBlock.parent || block.parent === root) {
@@ -2229,7 +2241,7 @@ export class BlocksStore implements IBlocksStore {
 
         const parentBlock = this.getBlock(block.parent);
 
-        if (! parentBlock) {
+        if (! parentBlock || BlockPredicates.isAnnotationBlock(parentBlock)) {
             return false;
         }
 

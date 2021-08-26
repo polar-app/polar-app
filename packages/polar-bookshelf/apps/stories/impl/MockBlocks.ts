@@ -2,6 +2,11 @@ import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {PositionalArrays} from "polar-shared/src/util/PositionalArrays";
 import {IBlock} from "polar-blocks/src/blocks/IBlock";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
+import {PagemarkType} from "polar-shared/src/metadata/PagemarkType";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {Texts} from "polar-shared/src/metadata/Texts";
+import {TextType} from "polar-shared/src/metadata/TextType";
+import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 
 export namespace MockBlocks {
 
@@ -24,8 +29,14 @@ export namespace MockBlocks {
      *  - 112
      *
      *  - 113
-     *     - 114image
-     *     - 115
+     *      - 114image
+     *      - 115
+     *
+     *  - 2020document
+     *      - 2021text
+     *      - 2022area
+     *          - 2023flashcard
+     *          - 2024
      *
      */
     export function create() {
@@ -324,7 +335,7 @@ export namespace MockBlocks {
                     data: 'Image parent',
                     mutator: DeviceIDManager.TEST_DEVICE_ID,
                 },
-                items:  PositionalArrays.create([
+                items: PositionalArrays.create([
                     '114image',
                     '115',
                 ]),
@@ -366,10 +377,144 @@ export namespace MockBlocks {
                 },
                 items: {}, 
                 mutation: 0,
-            }
+            },
+            {
+                id: '2020document',
+                nspace, uid,
+                parent: undefined,
+                parents: [],
+                root: '2020document',
+                created: now,
+                updated: now,
+                content: {
+                    type: 'document',
+                    docInfo: {
+                        flagged: false,
+                        nrPages: 55,
+                        archived: false,
+                        progress: 55,
+                        properties: {},
+                        attachments: {},
+                        fingerprint: '2020document',
+                        pagemarkType: PagemarkType.SINGLE_COLUMN,
+                        title: "Potato document",
+                    },
+                    mutator: DeviceIDManager.TEST_DEVICE_ID,
+                },
+                items: PositionalArrays.create([
+                    '2021text',
+                    '2022area',
+                ]), 
+                mutation: 0,
+            },
+            {
+                id: '2021text',
+                nspace, uid,
+                parent: '2020document',
+                parents: ['2020document'],
+                root: '2020document',
+                created: now,
+                updated: now,
+                content: {
+                    type: AnnotationContentType.TEXT_HIGHLIGHT,
+                    mutator: DeviceIDManager.TEST_DEVICE_ID,
+                    docID: '2020document',
+                    pageNum: 15,
+                    value: {
+                        created: now,
+                        id: '15',
+                        guid: '15',
+                        text: Texts.create('text highlight content', TextType.MARKDOWN),
+                        notes: {},
+                        rects: {},
+                        images: {},
+                        questions: {},
+                        flashcards: {},
+                        lastUpdated: now,
+                        textSelections: {},
+                    }
+                },
+                items: {}, 
+                mutation: 0,
+            },
+            {
+                id: '2022area',
+                nspace, uid,
+                parent: '2020document',
+                parents: ['2020document'],
+                root: '2020document',
+                created: now,
+                updated: now,
+                content: {
+                    type: AnnotationContentType.AREA_HIGHLIGHT,
+                    mutator: DeviceIDManager.TEST_DEVICE_ID,
+                    docID: '2020document',
+                    pageNum: 15,
+                    value: {
+                        created: now,
+                        id: '15',
+                        guid: '15',
+                        notes: {},
+                        rects: {},
+                        images: {},
+                        questions: {},
+                        flashcards: {},
+                        lastUpdated: now,
+                    }
+                },
+                items: PositionalArrays.create([
+                    '2023flashcard',
+                    '2024',
+                ]), 
+                mutation: 0,
+            },
+            {
+                id: '2023flashcard',
+                nspace, uid,
+                parent: '2022area',
+                parents: ['2020document', '2022area'],
+                root: '2020document',
+                created: now,
+                updated: now,
+                content: {
+                    type: AnnotationContentType.FLASHCARD,
+                    mutator: DeviceIDManager.TEST_DEVICE_ID,
+                    docID: '2020document',
+                    pageNum: 15,
+                    value: {
+                        created: now,
+                        id: '15',
+                        guid: '15',
+                        lastUpdated: now,
+                        type: FlashcardType.BASIC_FRONT_BACK,
+                        fields: {
+                            front: Texts.create('front', TextType.MARKDOWN),
+                            back: Texts.create('back', TextType.MARKDOWN),
+                        },
+                        archetype: 'whatever'
+                    }
+                },
+                items: {}, 
+                mutation: 0,
+            },
+            {
+                id: '2024',
+                nspace, uid,
+                parent: '2022area',
+                parents: ['2020document', '2022area'],
+                root: '2020document',
+                created: now,
+                updated: now,
+                content: {
+                    type: 'markdown',
+                    data: 'Annotation markdown child',
+                    links: [],
+                    mutator: DeviceIDManager.TEST_DEVICE_ID,
+                },
+                items: {},
+                mutation: 0,
+            },
         ];
         return blocks;
     }
 }
-
-
