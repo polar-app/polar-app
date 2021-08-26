@@ -10,7 +10,7 @@ import {EPUBFindRenderer} from "./EPUBFindRenderer";
 import {EPUBFindControllers} from "./EPUBFindControllers";
 import {useDocFindCallbacks} from "../../DocFindStore";
 import {IFrameEventForwarder} from "./IFrameEventForwarder";
-import {SCALE_VALUE_PAGE_WIDTH, ScaleLevelTuple} from '../../ScaleLevels';
+import { SCALE_VALUE_PAGE_WIDTH, ScaleLevelTuple} from '../../ScaleLevels';
 import './EPUBDocument.css';
 import {DocumentInit} from "../DocumentInitHook";
 import {DOMTextIndexProvider} from "../../annotations/DOMTextIndexContext";
@@ -193,9 +193,12 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
 
         });
 
+        const {handleScale, setScaling} = epubZoom
         const scaleLeveler = (scale: ScaleLevelTuple) => {
-            return epubZoom.handleScale(scale)
+            setScaling(scale);
+            return handleScale(scale);
         };
+
         setScaleLeveler(scaleLeveler);
 
         function createResizer(): Resizer {
@@ -227,7 +230,6 @@ export const EPUBDocument = React.memo(function EPUBDocument(props: IProps) {
 
             // applyCSS();
             incrRenderIter();
-
         });
 
         const spine = (await book.loaded.spine) as any as ExtendedSpine;
@@ -556,28 +558,35 @@ function useEPUBResizer() {
 }
 
 function useEPubZoom() {
+    const [scale, setScaling] = React.useState<ScaleLevelTuple>({label: 'page fit', value: 'page-fit'});
+
     const docViewerElements = useDocViewerElementsContext();
 
     const handleScale = React.useCallback((scale: ScaleLevelTuple) => {
-        const iframe = docViewerElements.getDocViewerElement().querySelector(".epub-view iframe") as HTMLIFrameElement
 
-        const isPageFit = scale.value === 'page-fit';
-        if (iframe?.contentDocument && !isPageFit) {
-            iframe.contentDocument.body.style.fontSize = `${Number(scale.value) * 100}%`
-            const images = iframe.contentDocument.querySelectorAll('img')
-            const items: HTMLImageElement[] = Array.prototype.slice.call(images)
+        const setScale = () => {
+            const iframe = docViewerElements.getDocViewerElement().querySelector(".epub-view iframe") as HTMLIFrameElement
 
-            items.forEach((item) => {
-                item.setAttribute('style', 'max-width: none !important')
-                const newWidth = item.clientWidth * Number(scale.value)
-                const newHeight = item.clientHeight * Number(scale.value)
-                item.style.width = `${newWidth}px`
-                item.style.height = `${newHeight}px`
-            })
+            if (iframe?.contentDocument) {
+                iframe.contentDocument.body.style.fontSize = `${Number(scale.value) * 100}%`
+                const images = iframe.contentDocument.querySelectorAll('img')
+                const items: HTMLImageElement[] = Array.prototype.slice.call(images)
+
+                items.forEach((item) => {
+                    item.setAttribute('style', 'max-width: none !important')
+                    const newWidth = item.clientWidth * Number(scale.value)
+                    const newHeight = item.clientHeight * Number(scale.value)
+                    item.style.width = `${newWidth}px`
+                    item.style.height = `${newHeight}px`
+                })
+            }
+            return Number(scale.value);
         }
 
-        return isPageFit ? 1 : +scale.value;
+        return setScale();
     }, [docViewerElements])
 
-    return {handleScale};
+    handleScale(scale);
+
+    return {handleScale, setScaling};
 }

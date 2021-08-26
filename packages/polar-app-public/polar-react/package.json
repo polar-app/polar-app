@@ -1,6 +1,6 @@
 {
   "name": "polar-react",
-  "version": "2.1.95",
+  "version": "2.1.97",
   "description": "Basic React dependencies and utilities.",
   "scripts": {
     "test": "echo",

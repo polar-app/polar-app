@@ -34,10 +34,6 @@ export namespace SentenceShingler {
 
         const sentences = await GCLSentenceSplitter.split(content);
 
-        console.log("FIXME sentences: ", sentences);
-
-        console.log("Found N sentences: " + sentences.length);
-
         return computeShinglesFromSentences(sentences);
 
     }

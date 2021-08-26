@@ -1,5 +1,5 @@
-import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {Tuples} from "polar-shared/src/util/Tuples";
+import {arrayStream} from "./ArrayStreams";
+import {Tuples} from "./Tuples";
 import {DeviceIDManager} from "./DeviceIDManager";
 
 /**
@@ -34,7 +34,7 @@ export namespace PositionalArrays {
     // and a spacing of say 10... then when this is filled up another level of 10000
 
     /**
-     * A Device ID followed by a 20 digit number that marks the position of the item in the array 
+     * A Device ID followed by a 20 digit number that marks the position of the item in the array
      */
     export type PositionalArrayKey = string;
 

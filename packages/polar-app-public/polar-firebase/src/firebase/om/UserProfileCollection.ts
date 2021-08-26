@@ -1,16 +1,18 @@
-import {CacheFirstThenServerGetOptions, GetOptions} from "polar-bookshelf/web/js/firebase/firestore/DocumentReferences";
 import {isPresent} from 'polar-shared/src/Preconditions';
-import {IProfile, ProfileCollection} from "polar-firebase/src/firebase/om/ProfileCollection";
 import {ProfileIDStr} from "polar-shared/src/util/Strings";
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
+import {IProfile, ProfileCollection} from "./ProfileCollection";
+import {CacheFirstThenServerGetOptions, IGetOptionsWithOrder} from "polar-firestore-like/src/DocumentReferences"
+import {UserIDStr} from "polar-shared/src/util/Strings";
 
 export class UserProfileCollection {
 
     public static async get(firestore: IFirestore<unknown>,
+                            uid: UserIDStr,
                             profileID: ProfileIDStr,
-                            opts: GetOptions = new CacheFirstThenServerGetOptions()): Promise<IUserProfile | undefined> {
+                            opts: IGetOptionsWithOrder = new CacheFirstThenServerGetOptions()): Promise<IUserProfile | undefined> {
 
-        const currentUserProfile = await ProfileCollection.currentProfile(firestore, opts);
+        const currentUserProfile = await ProfileCollection.currentProfile(firestore, uid, opts);
         const profile = await ProfileCollection.getWithOpts(firestore, profileID, opts);
 
         if (! profile) {
@@ -25,8 +27,9 @@ export class UserProfileCollection {
     }
 
     public static async currentUserProfile(firestore: IFirestore<unknown>,
-                                           opts: GetOptions = new CacheFirstThenServerGetOptions()): Promise<IUserProfile | undefined> {
-        const profile = await ProfileCollection.currentProfile(firestore, opts);
+                                           uid: UserIDStr,
+                                           opts: IGetOptionsWithOrder = new CacheFirstThenServerGetOptions()): Promise<IUserProfile | undefined> {
+        const profile = await ProfileCollection.currentProfile(firestore, uid, opts);
 
         if (! profile) {
             return undefined;

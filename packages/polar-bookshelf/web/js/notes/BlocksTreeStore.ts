@@ -37,8 +37,8 @@ export class BlocksTreeStore {
         return this.blocksStore.dropSource;
     }
 
-    createNewNamedBlock(name: BlockNameStr, opts: ICreateNewNamedBlockOpts): BlockIDStr {
-        return this.blocksStore.createNewNamedBlock(name, opts);
+    createNewNamedBlock(opts: ICreateNewNamedBlockOpts): BlockIDStr {
+        return this.blocksStore.createNewNamedBlock(opts);
     }
 
     createLinkToBlock(sourceID: BlockIDStr, targetName: BlockNameStr, content: MarkdownStr): void {

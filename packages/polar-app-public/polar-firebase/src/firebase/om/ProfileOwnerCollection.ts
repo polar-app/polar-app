@@ -1,32 +1,21 @@
-import {FirebaseBrowser} from "polar-firebase-browser/src/firebase/FirebaseBrowser";
-import {DocumentReferences, GetOptions} from "polar-bookshelf/web/js/firebase/firestore/DocumentReferences";
+import {DocumentReferences, IGetOptionsWithOrder} from "polar-firestore-like/src/DocumentReferences";
 import {EmailStr, HandleStr, ProfileIDStr, UserIDStr} from "polar-shared/src/util/Strings";
-import {IDocumentReferenceClient} from "polar-firestore-like/src/IDocumentReference";
-import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
+import {IDocumentReference} from "polar-firestore-like/src/IDocumentReference";
+import {IFirestore} from "polar-firestore-like/src/IFirestore";
 
 export class ProfileOwnerCollection {
 
     public static readonly COLLECTION = 'profile_owner';
 
-    public static async doc(id: UserIDStr): Promise<[HandleStr, IDocumentReferenceClient]> {
-        const firestore = await FirestoreBrowserClient.getInstance();
-        const doc = firestore.collection(this.COLLECTION).doc(id);
-        return [id, doc];
+    public static async doc<SM = unknown>(firestore: IFirestore<SM>, uid: UserIDStr): Promise<[HandleStr, IDocumentReference<SM>]> {
+        const doc = firestore.collection(this.COLLECTION).doc(uid);
+        return [uid, doc];
     }
 
-    public static async get(id?: UserIDStr, opts: GetOptions = {}): Promise<IProfileOwner | undefined> {
-
-        if (! id) {
-            const user = await FirebaseBrowser.currentUserAsync();
-
-            if (! user) {
-                return undefined;
-            }
-
-            id = user!.uid;
-        }
-
-        const [_, ref] = await this.doc(id);
+    public static async get<SM = unknown>(firestore: IFirestore<SM>,
+                                          uid: UserIDStr,
+                                          opts: IGetOptionsWithOrder = {}): Promise<IProfileOwner | undefined> {
+        const [_, ref] = await this.doc(firestore, uid);
         const doc = await DocumentReferences.get(ref, opts);
         return <IProfileOwner> doc.data();
     }

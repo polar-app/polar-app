@@ -10,9 +10,15 @@ import {BlocksStoreMutations} from "./BlocksStoreMutations";
 import IItemsPositionPatch = BlocksStoreMutations.IItemsPositionPatch;
 import {Preconditions} from "polar-shared/src/Preconditions";
 import {BlockIDStr, IBlock, IBlockContent, NamespaceIDStr, TMutation, UIDStr} from "polar-blocks/src/blocks/IBlock";
-import {DeviceIDManager, DeviceIDStr} from "polar-shared/src/util/DeviceIDManager";
+import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 
-const NON_EDITABLE_BLOCK_TYPES: BlockType[] = ['date', 'image'];
+const NON_EDITABLE_BLOCK_TYPES: BlockType[] = [
+    'date',
+    'image',
+    'document',
+    AnnotationContentType.AREA_HIGHLIGHT,
+];
 
 /**
  * Opts for withMutation normally used for undo.

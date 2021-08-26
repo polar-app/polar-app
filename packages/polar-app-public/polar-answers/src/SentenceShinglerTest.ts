@@ -1,5 +1,5 @@
 import {SentenceShingler} from "./SentenceShingler";
-import {assertJSON} from "polar-bookshelf/web/js/test/Assertions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe("SentenceShingler", async function() {
 
