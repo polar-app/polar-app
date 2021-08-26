@@ -11,6 +11,7 @@ import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {UL} from './UL';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import {createStyles, makeStyles} from '@material-ui/core';
+import {BlockTextContentUtils} from './NoteUtils';
 
 interface InboundNoteRefProps {
     readonly id: BlockIDStr;
@@ -28,7 +29,7 @@ const InboundNoteRef = observer((props: InboundNoteRefProps) => {
                 <Breadcrumbs>
                     {pathToNote.map(current => <NoteBreadcrumbLink key={current.id}
                                                                    id={current.id}
-                                                                   content={current.content.data}/>)}
+                                                                   content={BlockTextContentUtils.getTextContentMarkdown(current.content)}/>)}
 
                 </Breadcrumbs>
             </div>
