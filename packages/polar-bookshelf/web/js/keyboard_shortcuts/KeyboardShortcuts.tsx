@@ -23,11 +23,6 @@ function createPredicate3(keys: ReadonlyArray<string>): KeyboardEventHandlerPred
 
         function matchesModifier(key: string) {
 
-            // console.log("keyboard shortcuts: key: " + key);
-            // console.log("keyboard shortcuts: ctrlKey: " + event.ctrlKey);
-            // console.log("keyboard shortcuts: metaKey: " + event.metaKey);
-            // console.log("keyboard shortcuts: shiftKey: " + event.shiftKey);
-
             if (key === 'ctrl' && event.ctrlKey) {
                 return true;
             }
@@ -85,11 +80,6 @@ function createPredicate2(keys: ReadonlyArray<string>): KeyboardEventHandlerPred
         function matchesKey0() {
 
             const key = keys[0];
-
-            // console.log("keyboard shortcuts: key: " + key);
-            // console.log("keyboard shortcuts: ctrlKey: " + event.ctrlKey);
-            // console.log("keyboard shortcuts: metaKey: " + event.metaKey);
-            // console.log("keyboard shortcuts: shiftKey: " + event.shiftKey);
 
             if (key === 'ctrl' && event.ctrlKey) {
                 return true;
@@ -242,7 +232,7 @@ export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
             const { ignorable = true } = shortcut;
 
             if (predicate(event)) {
-                console.log('debug', ignorable, seq);
+
                 if (ignorable && isIgnorableKeyboardEvent(event)) {
                     return;
                 }
