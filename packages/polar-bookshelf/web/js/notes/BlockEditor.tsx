@@ -15,7 +15,11 @@ import {debounce} from "throttle-debounce";
 import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
 import {Block} from "./store/Block";
-import {useLinkNavigationClickHandler} from "./NoteUtils";
+import {useAnnotationBlockManager, useLinkNavigationClickHandler} from "./NoteUtils";
+import {BlockDocumentContent} from "./blocks/BlockDocumentContent";
+import {AnnotationContentType, IAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {BlockAnnotationContent} from "./blocks/BlockAnnotationContent/BlockAnnotationContent";
+import {BlockPredicates} from "./store/BlockPredicates";
 
 export interface BlockEditorGenericProps {
     readonly id: BlockIDStr;
@@ -41,6 +45,7 @@ type IUseBlockContentUpdaterOpts = {
 
 const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
     const blocksTreeStore = useBlocksTreeStore();
+    const { update: updateAnnotation, getBlock: getAnnotationBlock } = useAnnotationBlockManager();
     const dialogs = useDialogManager();
 
     const handleRename = React.useMemo(() => {
@@ -70,18 +75,23 @@ const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
         }
 
         switch (block.content.type) {
-            case 'markdown':
+            case "markdown":
                 blocksTreeStore.setBlockContent(id, new MarkdownContent({
                     type: 'markdown',
                     links: block.content.links,
                     data,
                 }));
                 break;
-            case 'name':
+            case "name":
                 handleRename(data);
                 break;
+            case AnnotationContentType.TEXT_HIGHLIGHT:
+                const json = block.content.toJSON();
+                const content: IAnnotationContent = { ...json, value: { ...json.value, revisedText: data } };
+                updateAnnotation(id, content);
+                
         }
-    }, [id, handleRename, blocksTreeStore]);
+    }, [id, handleRename, blocksTreeStore, updateAnnotation]);
 };
 
 const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
@@ -148,11 +158,11 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
         return (
             <BlockContentEditable id={id}
                                   parent={parent}
-                                  innerRef={ref}
                                   style={style}
                                   className={className}
                                   content={data || ''}
                                   onMouseDown={handleMouseDown}
+                                  innerRef={ref}
                                   onKeyDown={onKeyDown}
                                   onChange={handleBlockContentChange}
                                   readonly={block.readonly}
@@ -161,14 +171,14 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
     }
 
     if (block.content.type === "image") {
-        const {width, height, src} = block.content;
+        const { width, height, src } = block.content;
         return (
             <BlockImageContent id={id}
                                parent={parent}
                                width={width}
+                               height={height}
                                style={style}
                                className={className}
-                               height={height}
                                src={src}
                                innerRef={ref}
                                onClick={onClick}
@@ -177,7 +187,42 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
         );
     }
 
-    return null;
+    if (block.content.type === "document") {
+
+        const { docInfo } = block.content;
+
+        return (
+            <BlockDocumentContent
+                id={id}
+                parent={parent}
+                className={className}
+                style={style}
+                docInfo={docInfo}
+            />
+        );
+
+    }
+
+    if (BlockPredicates.isAnnotationBlock(block)) {
+
+        const content = block.content;
+
+        return (
+            <BlockAnnotationContent
+                id={id}
+                parent={parent}
+                className={className}
+                style={style}
+                annotation={content}
+                onChange={handleBlockContentChange}
+                onKeyDown={onKeyDown}
+                innerRef={ref}
+            />
+        );
+
+    }
+
+    return <div>Unsupported block type</div>;
 });
 
 const NoteEditorWithEditorStore = observer(function NoteEditorWithEditorStore(props: IProps) {

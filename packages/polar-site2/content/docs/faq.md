@@ -34,10 +34,6 @@ You can download all your reading and annotations as a backup. To download your 
     
 Please see <a href="https://getpolarized.io/docs/anki-sync-for-spaced-repetition.html" target="_blank">Anki Sync for Spaced Repetition</a>.
  
-### What is a typical workflow for Polar?
-    
-See <a href="https://getpolarized.io/docs/Polar-Workflow.html" target="_blank">here</a> for a typical workflow.
- 
 ### How do I report bugs?
 
 Message us directly in the app through the button at the bottom right.
