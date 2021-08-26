@@ -27,6 +27,16 @@ export namespace AnswerExecutor {
         ].join("  ");
 
     export const EXAMPLES: ReadonlyArray<QuestionAnswerPair> = [
+        // ["What is human life expectancy in the United States?", "78 years."],
+        // ["Who is the President of Xexptronica?", "__UNKNOWN__"],
+        // ["What do dinosaurs capilate?", "__UNKNOWN__"],
+        // ["Is foo a bar?", "__UNKNOWN__"],
+        // ["What is Google Analytics?", "Google Analytics is a service that helps webmasters analyze patterns at their web sites."],
+        // ["What does Google Analytics provide?", "It provides aggregate statistics, such as the number of unique visitors per day and the page views per URL per day."]
+
+        // TODO: whether there is a question mark or not here impacts the output
+        // and one of our tests fails and not sure why.  Maybe we need examples
+        // with and without the question mark.
         ["What is human life expectancy in the United States?", "78 years."],
         ["Who is the President of Xexptronica", "__UNKNOWN__"],
         ["What do dinosaurs capilate?", "__UNKNOWN__"],
