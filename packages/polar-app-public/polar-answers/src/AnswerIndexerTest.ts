@@ -2,7 +2,7 @@ import { FilePaths } from "polar-shared/src/util/FilePaths";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {AnswerIndexer} from "./AnswerIndexer";
 
-xdescribe("AnswerIndexer", async function() {
+describe("AnswerIndexer", async function() {
 
     this.timeout(30000000);
 
@@ -31,13 +31,14 @@ xdescribe("AnswerIndexer", async function() {
 
     it("basic", async function() {
 
-        // await doIndexDoc("data/bigtable.pdf", '1234')
-        // await doIndexDoc("data/two-doses-covid-vaccine.pdf", '2345')
+        await doIndexDoc("/Users/burton/projects/polar-app/packages/polar-app-public/polar-answers/data/bigtable.pdf", '1234')
+        // await doIndexDoc("/Users/burton/projects/polar-app/packages/polar-app-public/polar-answers/data/two-doses-covid-vaccine.pdf", '2345')
 
         // await doIndexDoc("/Users/burton/us-history.pdf", '3456')
+        // await doIndexDoc("/Users/burton/astronomy", '4567')
         // await doIndexDoc("/Users/burton/western-civ-2.pdf", '5678')
         // await doIndexDoc("/Users/burton/western-civ-3.pdf", '6789')
-        await doIndexDoc("/Users/burton/history-in-the-making-united-states.pdf", '78910')
+        // await doIndexDoc("/Users/burton/history-in-the-making-united-states.pdf", '78910')
 
 
     });

@@ -7,10 +7,13 @@ export namespace ESShingleWriter {
 
     import ISentenceShingle = SentenceShingler.ISentenceShingle;
 
+    export interface ICreateOpts {
+        readonly uid: UserIDStr;
+    }
+
     export interface IWriteOpts {
         readonly docID: IDStr,
         readonly pageNum: number;
-        readonly uid: UserIDStr;
         readonly shingle: ISentenceShingle;
     }
 
@@ -33,15 +36,19 @@ export namespace ESShingleWriter {
 
     }
 
-    export function create(): IESShingleWriter {
+    export function create(opts: ICreateOpts): IESShingleWriter {
 
         let idx: number = 0;
 
         // TODO write this to support bulk indexing with a sync() method
 
+        // curl -X DELETE "localhost:9200/my-index-000001?pretty"
+
+        const indexName = ESAnswersIndexNames.createForUserDocs(opts.uid)
+
         async function write(opts: IWriteOpts) {
 
-            const {docID, shingle, pageNum, uid} = opts;
+            const {docID, shingle, pageNum} = opts;
 
             const id: ShingleID = `${docID}:${idx}`;
 
@@ -54,13 +61,13 @@ export namespace ESShingleWriter {
                 text: shingle.text
             };
 
-            const indexName = ESAnswersIndexNames.createForUserDocs(uid)
-
             await ESRequests.doPut(`/${indexName}/_doc/${id}`, record);
 
             ++idx;
 
         }
+
+        console.log("Created ESShingleWriter for " + indexName);
 
         return {write};
 

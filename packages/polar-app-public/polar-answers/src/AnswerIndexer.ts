@@ -15,6 +15,8 @@ export namespace AnswerIndexer {
 
         const {uid, docID} = opts;
 
+        const writer = ESShingleWriter.create({uid});
+
         await PDFText.getText(opts.url, async pdfTextContent => {
 
             const {extract, pageNum} = pdfTextContent;
@@ -27,10 +29,8 @@ export namespace AnswerIndexer {
 
             const shingles = await SentenceShingler.computeShinglesFromContent(content);
 
-            const writer = ESShingleWriter.create();
-
             for(const shingle of shingles) {
-                await writer.write({docID, uid, pageNum, shingle});
+                await writer.write({docID, pageNum, shingle});
             }
 
         });
