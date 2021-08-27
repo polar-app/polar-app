@@ -27,8 +27,10 @@ export namespace AnswerIndexer {
 
             const shingles = await SentenceShingler.computeShinglesFromContent(content);
 
+            const writer = ESShingleWriter.create();
+
             for(const shingle of shingles) {
-                await ESShingleWriter.write({docID, uid, pageNum, shingle});
+                await writer.write({docID, uid, pageNum, shingle});
             }
 
         });

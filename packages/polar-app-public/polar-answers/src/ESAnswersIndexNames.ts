@@ -7,7 +7,7 @@ import {Base16} from "polar-shared/src/util/Base16";
  */
 export namespace ESAnswersIndexNames {
 
-    const PREFIX = 'answers_ft_digest_';
+    const PREFIX = 'ai_ft_digest_';
 
     /**
      * Compute the index name for a user.
