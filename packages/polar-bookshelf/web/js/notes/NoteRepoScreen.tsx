@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 import {GridCellParams, GridColDef, GridRowParams, XGrid} from '@material-ui/x-grid';
-import {NamedBlock, useBlocksStore} from "./store/BlocksStore";
+import {NamedContent, useBlocksStore} from "./store/BlocksStore";
 import {NotesInnerContainer} from "./NotesContainer";
 import {autorun} from "mobx";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
@@ -12,7 +12,9 @@ import {StandardIconButton} from "../../../apps/repository/js/doc_repo/buttons/S
 import {createContextMenu, MenuComponentProps} from "../../../apps/repository/js/doc_repo/MUIContextMenu2";
 import LaunchIcon from "@material-ui/icons/Launch";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { RoutePathnames } from "../apps/repository/RoutePathnames";
+import {RoutePathnames} from "../apps/repository/RoutePathnames";
+import {BlockTextContentUtils} from "./NoteUtils";
+import {Block} from "./store/Block";
 
 const DATE_FORMAT = 'MMMM Do, YYYY';
 
@@ -158,10 +160,10 @@ export const NoteRepoScreen: React.FC = () => {
 
     React.useEffect(() => autorun(() => {
         const ids = Object.values(blocksStore.indexByName);
-        const blocks = (blocksStore.idsToBlocks(ids) as NamedBlock[])
+        const blocks = (blocksStore.idsToBlocks(ids) as Block<NamedContent>[])
             .map(block => block.toJSON())
-            .map(({ id, content: { data }, created, updated }) => ({
-                title: data,
+            .map(({ id, content, created, updated }) => ({
+                title: BlockTextContentUtils.getTextContentMarkdown(content),
                 created: new Date(created),
                 id,
                 updated: new Date(updated),
@@ -170,8 +172,8 @@ export const NoteRepoScreen: React.FC = () => {
     }), [blocksStore]);
 
     const handleDoubleClick = React.useCallback(({ id }: GridRowParams) => {
-        const block = blocksStore.getBlockByTarget(id as string) as NamedBlock;
-        history.push(RoutePathnames.NOTE(block.content.data));
+        const block = blocksStore.getBlockByTarget(id as string) as Block<NamedContent>;
+        history.push(RoutePathnames.NOTE(BlockTextContentUtils.getTextContentMarkdown(block.content)));
     }, [history, blocksStore]);
 
     return (

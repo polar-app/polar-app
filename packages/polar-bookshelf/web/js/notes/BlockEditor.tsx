@@ -1,9 +1,8 @@
 import React from "react";
 import {NoteNavigation} from "./NoteNavigation";
 import {observer} from "mobx-react-lite"
-import {BlockContentEditable, DOMBlocks, useUpdateCursorPosition} from "./contenteditable/BlockContentEditable";
+import {BlockContentEditable, useUpdateCursorPosition} from "./contenteditable/BlockContentEditable";
 import {MarkdownStr} from "polar-shared/src/util/Strings";
-import {MarkdownContent} from "./content/MarkdownContent";
 import {BlockImageContent} from "./blocks/BlockImageContent";
 import {useBlockKeyDownHandler} from "./contenteditable/BlockKeyboardHandlers";
 import {reaction} from "mobx";
@@ -14,8 +13,12 @@ import {NameContent} from "./content/NameContent";
 import {debounce} from "throttle-debounce";
 import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
-import {Block} from "./store/Block";
-import {useLinkNavigationClickHandler} from "./NoteUtils";
+import {useLinkNavigationClickHandler, BlockTextContentUtils} from "./NoteUtils";
+import {BlockDocumentContent} from "./blocks/BlockDocumentContent";
+import {BlockAnnotationContent} from "./blocks/BlockAnnotationContent/BlockAnnotationContent";
+import {BlockPredicates} from "./store/BlockPredicates";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {DOMBlocks} from "./contenteditable/DOMBlocks";
 
 export interface BlockEditorGenericProps {
     readonly id: BlockIDStr;
@@ -44,18 +47,17 @@ const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
     const dialogs = useDialogManager();
 
     const handleRename = React.useMemo(() => {
-        const doRename = (data: MarkdownStr) => {
+        const doRename = (content: NameContent, data: MarkdownStr) => {
             const exists = blocksTreeStore.getBlockByName(data);
-            const block = blocksTreeStore.getBlock(id) as Block<NameContent>;
 
-            if (! exists || block.content.data.toLowerCase() === data.toLowerCase()) {
+            if (! exists || content.data.toLowerCase() === data.toLowerCase()) {
                 blocksTreeStore.renameBlock(id, data);
             } else {
                 dialogs.snackbar({ type: 'error', message: `Another note with the name "${data}" already exists.` });
 
                 // Reset to old name
                 const blockElem = DOMBlocks.getBlockElement(id)!;
-                blockElem.innerHTML = MarkdownContentConverter.toHTML(block.content.data);
+                blockElem.innerHTML = MarkdownContentConverter.toHTML(content.data);
             }
         };
 
@@ -65,21 +67,17 @@ const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
     return React.useCallback((data: MarkdownStr) => {
         const block = blocksTreeStore.getBlock(id);
 
-        if (! block) {
+        if (! block || ! BlockPredicates.isTextBlock(block)) {
             return;
         }
 
-        switch (block.content.type) {
-            case 'markdown':
-                blocksTreeStore.setBlockContent(id, new MarkdownContent({
-                    type: 'markdown',
-                    links: block.content.links,
-                    data,
-                }));
-                break;
-            case 'name':
-                handleRename(data);
-                break;
+        const content = block.content;
+
+        if (content.type === 'name') {
+            handleRename(content, data);
+        } else if (content.type !== AnnotationContentType.FLASHCARD) {
+            const newContent = BlockTextContentUtils.updateTextContentMarkdown(content, data)
+            block.setContent(newContent);
         }
     }, [id, handleRename, blocksTreeStore]);
 };
@@ -96,7 +94,6 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
     
 
     const block = blocksTreeStore.getBlock(id);
-    const data = blocksTreeStore.getBlockContentData(id);
 
     React.useEffect(() => {
         const focusBlock = () => {
@@ -144,15 +141,21 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
         return null;
     }
 
-    if (~["markdown", "date", "name"].indexOf(block.content.type)) {
+    if (block.content.type === "markdown"
+        || block.content.type === "date"
+        || block.content.type === "name") {
+
+        const data = BlockTextContentUtils.getTextContentMarkdown(block.content);
+
         return (
             <BlockContentEditable id={id}
                                   parent={parent}
-                                  innerRef={ref}
                                   style={style}
                                   className={className}
                                   content={data || ''}
                                   onMouseDown={handleMouseDown}
+                                  canHaveLinks={BlockPredicates.canHaveLinks(block)}
+                                  innerRef={ref}
                                   onKeyDown={onKeyDown}
                                   onChange={handleBlockContentChange}
                                   readonly={block.readonly}
@@ -161,14 +164,14 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
     }
 
     if (block.content.type === "image") {
-        const {width, height, src} = block.content;
+        const { width, height, src } = block.content;
         return (
             <BlockImageContent id={id}
                                parent={parent}
                                width={width}
+                               height={height}
                                style={style}
                                className={className}
-                               height={height}
                                src={src}
                                innerRef={ref}
                                onClick={onClick}
@@ -177,7 +180,43 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
         );
     }
 
-    return null;
+    if (block.content.type === "document") {
+
+        const { docInfo } = block.content;
+
+        return (
+            <BlockDocumentContent
+                id={id}
+                parent={parent}
+                className={className}
+                style={style}
+                docInfo={docInfo}
+            />
+        );
+
+    }
+
+    if (BlockPredicates.isAnnotationBlock(block)) {
+
+        const content = block.content;
+
+        return (
+            <BlockAnnotationContent
+                id={id}
+                parent={parent}
+                className={className}
+                style={style}
+                annotation={content}
+                onClick={onClick}
+                onChange={handleBlockContentChange}
+                onKeyDown={onKeyDown}
+                innerRef={ref}
+            />
+        );
+
+    }
+
+    return <div>Unsupported block type</div>;
 });
 
 const NoteEditorWithEditorStore = observer(function NoteEditorWithEditorStore(props: IProps) {

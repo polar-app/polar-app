@@ -100,10 +100,7 @@ export const TextHighlightModeToggle: React.FC = () => {
             >
                 {({ TransitionProps }) => (
                     <Grow {...TransitionProps}>
-                        <Paper
-                            className={classes.dropdownMenu}
-                            style={{ background: theme.palette.background.paper }}
-                        >
+                        <Paper className={classes.dropdownMenu}>
                             <ClickAwayListener onClickAway={handleClose}>
                                 <ColorMenu onChange={handleColorChange} selected={selectedColor} />
                             </ClickAwayListener>

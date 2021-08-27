@@ -17,13 +17,14 @@ import {
     BlocksIndexByName,
     Interstitial,
     IDropPosition,
+    BlocksIndexByDocumentID,
 } from "./BlocksStore";
 import {Block} from "./Block";
 import {ReverseIndex} from "./ReverseIndex";
 import {MarkdownStr} from "polar-shared/src/util/Strings";
 import {IBlockContentStructure} from "../HTMLToBlocks";
 import {BlockIDStr, IBlock, IBlockContent} from "polar-blocks/src/blocks/IBlock";
-import {DOMBlocks} from "../contenteditable/BlockContentEditable";
+import {DOMBlocks} from "../contenteditable/DOMBlocks";
 
 /**
  * deleteBlocks
@@ -43,6 +44,7 @@ export interface IBlocksStore {
     reverse: ReverseIndex;
     index: BlocksIndex;
     indexByName: BlocksIndexByName;
+    indexByDocumentID: BlocksIndexByDocumentID;
     selected: StringSetMap;
 
     hasSnapshot: boolean;
@@ -68,8 +70,6 @@ export interface IBlocksStore {
 
     getBlockForMutation(id: BlockIDStr): Block | undefined;
     getBlock(id: BlockIDStr): Readonly<Block> | undefined;
-
-    getBlockContentData(id: BlockIDStr): string | undefined;
 
     setActiveWithPosition(active: BlockIDStr | undefined,
                           activePos: NavPosition | undefined): void;
@@ -107,7 +107,7 @@ export interface IBlocksStore {
     // TODO: undo / cursor
     createNewBlock(id: BlockIDStr, opts?: INewBlockOpts): ICreatedBlock;
 
-    createNewNamedBlock(name: BlockNameStr, opts: ICreateNewNamedBlockOpts): BlockIDStr;
+    createNewNamedBlock(opts: ICreateNewNamedBlockOpts): BlockIDStr;
 
     createLinkToBlock<C extends IBlockContent = IBlockContent>(sourceID: BlockIDStr,
                                                                targetName: BlockNameStr,
@@ -129,8 +129,8 @@ export interface IBlocksStore {
     canMergePrev(root: BlockIDStr, id: BlockIDStr): IBlockMerge | undefined;
     canMergeNext(root: BlockIDStr, id: BlockIDStr): IBlockMerge | undefined;
 
-    navPrev(root: BlockIDStr, pos: NavPosition, opts: NavOpts): void;
-    navNext(root: BlockIDStr, pos: NavPosition, opts: NavOpts): void;
+    navPrev(root: BlockIDStr, opts: NavOpts): void;
+    navNext(root: BlockIDStr, opts: NavOpts): void;
 
     getNamedBlocks(): ReadonlyArray<string>;
 

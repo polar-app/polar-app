@@ -8,6 +8,15 @@ import {IBlockContent} from "polar-blocks/src/blocks/IBlock";
 import {INameContent} from "polar-blocks/src/blocks/content/INameContent";
 import {IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
 import {IDateContent} from "polar-blocks/src/blocks/content/IDateContent";
+import {IDocumentContent} from "polar-blocks/src/blocks/content/IDocumentContent";
+import {DocumentContent} from "./DocumentContent";
+import {AnnotationContentType,
+        IAreaHighlightAnnotationContent,
+        IFlashcardAnnotationContent,
+        ITextHighlightAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {AreaHighlightAnnotationContent,
+        FlashcardAnnotationContent,
+        TextHighlightAnnotationContent} from "./AnnotationContent";
 
 export namespace Contents {
 
@@ -23,7 +32,15 @@ export namespace Contents {
             case "date":
                 return new DateContent(opts as IDateContent) as C;
 
+            case "document":
+                return new DocumentContent(opts as IDocumentContent) as C;
 
+            case AnnotationContentType.AREA_HIGHLIGHT:
+                return new AreaHighlightAnnotationContent(opts as IAreaHighlightAnnotationContent) as C;
+            case AnnotationContentType.TEXT_HIGHLIGHT:
+                return new TextHighlightAnnotationContent(opts as ITextHighlightAnnotationContent) as C;
+            case AnnotationContentType.FLASHCARD:
+                return new FlashcardAnnotationContent(opts as IFlashcardAnnotationContent) as C;
         }
 
     }

@@ -8,7 +8,7 @@ export namespace MockBlocks {
     /*
      * Visual representation of the following block structure (to make it easier to debug).
      *
-     * - 102
+     *  - 102
      *      - 103
      *      - 104
      *          - 116

@@ -14,6 +14,7 @@ import {Block} from "./Block";
 import {NotesInbound} from "./NotesInbound";
 import {NotesInnerContainer} from "./NotesContainer";
 import {focusFirstChild, useNamedBlocks} from "./NoteUtils";
+import {IDateContent} from "polar-blocks/src/blocks/content/IDateContent";
 
 const DAILY_NOTES_CHUNK_SIZE = 3;
 
@@ -51,7 +52,8 @@ export const DailyNotesScreen: React.FC = () => {
             if (todaysBlock) {
                 return todaysBlock.id;
             }
-            return blocksStore.createNewNamedBlock(dateContent.data, {type: 'date'});
+            const content = new DateContent({ type: 'date', data: dateContent.data, format: 'YYYY-MM-DD' });
+            return blocksStore.createNewNamedBlock({ content });
         };
         const todaysBlockID = getTodaysBlockID();
         focusFirstChild(blocksStore, todaysBlockID);

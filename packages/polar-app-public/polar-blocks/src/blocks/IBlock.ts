@@ -6,6 +6,8 @@ import {INameContent} from "./content/INameContent";
 import {IImageContent} from "./content/IImageContent";
 import {IDateContent} from "./content/IDateContent";
 import PositionalArray = PositionalArrays.PositionalArray;
+import {IAnnotationContent} from "./content/IAnnotationContent";
+import {IDocumentContent} from "./content/IDocumentContent";
 
 export type BlockIDStr = IDStr;
 
@@ -26,7 +28,13 @@ export type UnsignedInteger = number;
  */
 export type TMutation = UnsignedInteger;
 
-export type IBlockContent = IMarkdownContent | INameContent | IImageContent | IDateContent;
+export type IBlockContent = IMarkdownContent
+                            | INameContent
+                            | IImageContent
+                            | IDateContent
+                            
+                            | IDocumentContent
+                            | IAnnotationContent;
 
 export interface IBlockLink {
 

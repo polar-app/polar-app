@@ -1,6 +1,6 @@
 import React from "react";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
-import {NamedBlock, useBlocksStore} from "./store/BlocksStore";
+import {NamedContent, useBlocksStore} from "./store/BlocksStore";
 import {IBlocksStore} from "./store/IBlocksStore";
 import {autorun} from "mobx";
 import equal from "deep-equal";
@@ -8,27 +8,107 @@ import {useNoteLinkLoader} from "./NoteLinkLoader";
 import {useLinkLoaderRef} from "../ui/util/LinkLoaderHook";
 import {useHistory} from "react-router";
 import {Arrays} from "polar-shared/src/util/Arrays";
-import {BlockPredicates} from "./store/BlockPredicates";
-import { RoutePathnames } from "../apps/repository/RoutePathnames";
+import {BlockPredicates, TextContent} from "./store/BlockPredicates";
+import {RoutePathnames} from "../apps/repository/RoutePathnames";
+import {DocInfos} from "../metadata/DocInfos";
+import {AnnotationContentType, IAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {DocumentContent} from "./content/DocumentContent";
+import {Block} from "./store/Block";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
+import {AnnotationContentTypeMap, FlashcardAnnotationContent, TextHighlightAnnotationContent} from "./content/AnnotationContent";
+import {MarkdownStr} from "polar-shared/src/util/Strings";
+import {MarkdownContent} from "./content/MarkdownContent";
+import {NameContent} from "./content/NameContent";
+import {DateContent} from "./content/DateContent";
+import {Texts} from "polar-shared/src/metadata/Texts";
+import {TextType} from "polar-shared/src/metadata/TextType";
+import {ITextConverters} from "../annotation_sidebar/DocAnnotations";
+import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 
+// TODO: move this into BlocksStore
 export const focusFirstChild = (blocksStore: IBlocksStore, id: BlockIDStr) => {
     const root = blocksStore.getBlock(id);
-    if (root) {
+    if (root && root.content.type !== "document") {
         const firstChildID = root.itemsAsArray[0] || blocksStore.createNewBlock(root.id, { asChild: true }).id;
         blocksStore.setActiveWithPosition(firstChildID, 'start');
     }
 };
 
+export const getBlockForDocument = (blocksStore: IBlocksStore, fingerprint: string) => {
+    const documentBlockID = blocksStore.indexByDocumentID[fingerprint];
+    const block = blocksStore.getBlock(documentBlockID);
+    return block;
+};
+
+export const useAnnotationBlockManager = () => {
+    const blocksStore = useBlocksStore();
+
+    const doMutation = React.useCallback((fingerprint: string, handler: (block: Block<DocumentContent>) => void) => {
+        const block = getBlockForDocument(blocksStore, fingerprint);
+        if (block && block.content.type === "document") {
+            handler(block as Block<DocumentContent>);
+        } else {
+            console.error(`Document with fingerprint ${fingerprint} was not found. Annotation block could not be created`);
+        }
+    }, [blocksStore]);
+    
+    const getBlock = React.useCallback(<T extends AnnotationContentType = AnnotationContentType>(id: BlockIDStr, type?: T): Block<AnnotationContentTypeMap[T]> | undefined => {
+        const block = blocksStore.getBlockForMutation(id);
+
+        if (! block || ! BlockPredicates.isAnnotationBlock(block)) {
+            console.log(`Could not find annotation block with the ID ${id}`);
+            return undefined;
+        }
+
+        if (type && type !== block.content.type) {
+            console.log(`Could not find ${type} block with the ID ${id}`);
+            return undefined;
+        }
+
+        return block as Block<AnnotationContentTypeMap[T]>;
+    }, [blocksStore]);
+
+    const updateMetadata = React.useCallback(<T extends IAnnotationContent>(annotation: T): T => {
+        return {
+            ...annotation,
+            value: {
+                ...annotation.value,
+                lastUpdated: ISODateTimeStrings.create(),
+            },
+        };
+    }, []);
+
+    const create = React.useCallback((fingerprint: string, annotation: IAnnotationContent) => {
+        doMutation(fingerprint, (block) => {
+            blocksStore.createNewBlock(block.id, { content: updateMetadata(annotation) });
+        });
+    }, [blocksStore, updateMetadata, doMutation]);
+
+    const update = React.useCallback((id: BlockIDStr, annotation: IAnnotationContent) => {
+        blocksStore.setBlockContent(id, updateMetadata(annotation));
+    }, [blocksStore, updateMetadata]);
+
+    const remove = React.useCallback((id: BlockIDStr) => {
+        const block = getBlock(id);
+
+        if (block) {
+            blocksStore.deleteBlocks([id]);
+        }
+    }, [blocksStore, getBlock]);
+
+    return { create, update, remove, getBlock };
+};
+
 export const useNamedBlocks = () => {
     const blocksStore = useBlocksStore();
-    const [namedBlocks, setNamedBlocks] = React.useState<ReadonlyArray<NamedBlock>>([]);
+    const [namedBlocks, setNamedBlocks] = React.useState<ReadonlyArray<Block<NamedContent>>>([]);
     const prevNamedBlocksIDsRef = React.useRef<BlockIDStr[] | null>(null);
 
     React.useEffect(() => {
         const disposer = autorun(() => {
             const namedBlocksIDs = Object.values(blocksStore.indexByName);
             if (! equal(prevNamedBlocksIDsRef.current, namedBlocksIDs)) {
-                const namedBlocks = blocksStore.idsToBlocks(namedBlocksIDs) as ReadonlyArray<NamedBlock>;
+                const namedBlocks = blocksStore.idsToBlocks(namedBlocksIDs) as ReadonlyArray<Block<NamedContent>>;
                 setNamedBlocks(namedBlocks);
                 prevNamedBlocksIDsRef.current = namedBlocksIDs;
             }
@@ -59,7 +139,7 @@ export const useNoteWikiLinkCreator = () => {
         const targetBlock = blocksStore.getBlock(link.id);
 
         if (targetBlock && BlockPredicates.isNamedBlock(targetBlock)) {
-            return targetBlock.content.data;
+            return BlockTextContentUtils.getTextContentMarkdown(targetBlock.content);
         }
 
         return null;
@@ -149,3 +229,71 @@ export function useLinkNavigationClickHandler({ id }: IUseLinkNavigationOpts) {
 
 }
 
+export namespace BlockTextContentUtils {
+    export function updateClozeFlashcardContentMarkdown(
+        content: FlashcardAnnotationContent,
+        markdown: MarkdownStr,
+    ): FlashcardAnnotationContent {
+        const flashcardContent = content.toJSON();
+        return new FlashcardAnnotationContent({
+            ...flashcardContent,
+            value: {
+                ...flashcardContent.value,
+                fields: { 'text': Texts.create(markdown, TextType.MARKDOWN) },
+            }
+        });
+    }
+
+    export function updateFrontBackFlashcardContentMarkdown(
+        content: FlashcardAnnotationContent,
+        markdown: MarkdownStr,
+        field: 'front' | 'back'
+    ): FlashcardAnnotationContent {
+        const flashcardContent = content.toJSON();
+        return new FlashcardAnnotationContent({
+            ...flashcardContent,
+            value: {
+                ...flashcardContent.value,
+                fields: {
+                    ...flashcardContent.value.fields,
+                    [field]: Texts.create(markdown, TextType.MARKDOWN),
+                },
+            }
+        });
+    }
+
+    export function updateTextContentMarkdown(content: Exclude<TextContent, FlashcardAnnotationContent>, markdown: MarkdownStr): TextContent {
+        switch(content.type) {
+            case "markdown":
+                return new MarkdownContent({ ...content.toJSON(), data: markdown });
+            case "date":
+                return new DateContent({ ...content.toJSON(), data: markdown });
+            case "name":
+                return new NameContent({ ...content.toJSON(), data: markdown });
+            case AnnotationContentType.TEXT_HIGHLIGHT:
+                const textHighlightContent = content.toJSON();
+                return new TextHighlightAnnotationContent({
+                    ...textHighlightContent,
+                    value: {
+                        ...textHighlightContent.value,
+                        revisedText: Texts.create(markdown, TextType.MARKDOWN),
+                    }
+                });
+        }
+    };
+
+    export function getTextContentMarkdown(content: TextContent | DocumentContent) {
+        switch (content.type) {
+            case 'date':
+            case 'name':
+            case 'markdown':
+                return content.data;
+            case 'document':
+                return DocInfos.bestTitle(content.docInfo);
+            case AnnotationContentType.TEXT_HIGHLIGHT:
+                return ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, content.value).text || '';
+            case AnnotationContentType.FLASHCARD:
+                return ITextConverters.create(AnnotationType.FLASHCARD, content.value).text || '';
+        }
+    }
+}

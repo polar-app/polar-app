@@ -27,8 +27,9 @@ import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {DockLayoutToggleButton} from "../../../../web/js/ui/doc_layout/DockLayoutToggleButton";
 import {ZenModeActiveContainer} from "../../../../web/js/mui/ZenModeActiveContainer";
 import {ZenModeButton} from "./ZenModeButton";
-import {AreaHighlightModeToggle} from "./AreaHighlightModeToggle";
 import {TextHighlightModeToggle} from "./TextHighlightModeToggle";
+import {DocViewerGlobalHotKeys} from "../DocViewerGlobalHotKeys";
+import {AreaHighlightModeToggle} from "./AreaHighlightModeToggle";
 
 const getScaleLevelTuple = (scale: ScaleLevel) => (
     arrayStream(ScaleLevelTuples)
@@ -163,8 +164,8 @@ export const DocViewerToolbar = deepMemo(function DocViewerToolbar() {
                             <MUIButtonBar>
 
                                 <TextHighlightModeToggle />
-
-                                <AreaHighlightModeToggle />
+                                <AreaHighlightModeToggle/>
+                                <DocViewerGlobalHotKeys/>
 
                                 <Divider orientation="vertical" flexItem/>
 

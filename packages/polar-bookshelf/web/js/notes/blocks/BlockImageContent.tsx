@@ -6,7 +6,7 @@ import {BlockEditorGenericProps} from "../BlockEditor";
 import {useBlocksTreeStore} from "../BlocksTree";
 import {hasModifiers} from "../contenteditable/BlockKeyboardHandlers";
 import {DataURLStr} from "polar-blocks/src/blocks/content/IImageContent";
-import {DOMBlocks} from "../contenteditable/BlockContentEditable";
+import {DOMBlocks} from "../contenteditable/DOMBlocks";
 
 interface IProps extends BlockEditorGenericProps {
     readonly src: DataURLStr;
@@ -26,7 +26,7 @@ const useStyles = makeStyles(() =>
     }),
 );
 
-export const BlockImageContent = observer((props: IProps) => {
+export const BlockImageContent: React.FC<IProps> = observer((props) => {
     const divRef = React.useRef<HTMLDivElement | null>(null);
     const {id, src, width, innerRef, onClick, onKeyDown} = props;
     const classes = useStyles();
