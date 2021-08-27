@@ -20,7 +20,7 @@
     "polar-firebase-admin": "^2.1.98",
     "polar-firebase-browser": "^2.1.98",
     "polar-firebase-test": "^2.1.98",
-    "polar-test": "^2.1.97",
+    "polar-test": "^2.1.98",
     "tslint": "6.1.2",
     "typescript": "=4.2.3"
   },
