@@ -125,9 +125,6 @@ const Annotations = React.memo(function Annotations() {
 
 });
 
-/**
- * @deprecated This has been replaced by a note view of the entire document (which contains all the annotations)
- */
 export const AnnotationSidebar2 = React.memo(function AnnotationSidebar2() {
 
     return (

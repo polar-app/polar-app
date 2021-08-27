@@ -6,6 +6,8 @@ import {Block} from "../notes/Block";
 import {BlocksTreeProvider} from "../notes/BlocksTree";
 import {createStyles, makeStyles} from "@material-ui/core";
 import {useDocViewerStore} from "../../../apps/doc/src/DocViewerStore";
+import {AnnotationSidebar2} from "./AnnotationSidebar2";
+import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../../../apps/doc/src/DocViewer";
 
 type IAnnotationSidebarRendererProps = {
     docFingerprint: string;
@@ -37,7 +39,7 @@ const AnnotationSidebarRenderer: React.FC<IAnnotationSidebarRendererProps> = obs
             return [];
         }
         return blocksStore.idsToBlocks(documentBlock.itemsAsArray)
-    }, [documentBlock]);
+    }, [documentBlock, blocksStore]);
 
     if (! documentBlock) {
         return <h2 className={classes.info}>No document note was found for this document.</h2>
@@ -55,7 +57,6 @@ const AnnotationSidebarRenderer: React.FC<IAnnotationSidebarRendererProps> = obs
                                     key={block.id}
                                     parent={documentBlock.id}
                                     id={block.id}
-                                    withHeader
                                     noExpand
                                     noBullet
                                 />
@@ -76,6 +77,10 @@ export const AnnotationSidebar = () => {
 
     if (! docMeta) {
         return null;
+    }
+
+    if (! NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+        return <AnnotationSidebar2 />
     }
 
     return <AnnotationSidebarRenderer docFingerprint={docMeta.docInfo.fingerprint} />
