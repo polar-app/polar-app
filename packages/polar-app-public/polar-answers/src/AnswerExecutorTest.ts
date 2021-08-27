@@ -3,7 +3,7 @@ import {AnswerExecutor} from "./AnswerExecutor";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import { Arrays } from "polar-shared/src/util/Arrays";
 
-describe("AnswerExecutor", async function() {
+xdescribe("AnswerExecutor", async function() {
 
     this.timeout(60000);
 
