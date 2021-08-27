@@ -46,6 +46,10 @@ import {
     IAreaHighlightMutation, ITextHighlightMutation, ICommentMutation, IFlashcardMutation, IColorMutation
 } from "./AnnotationMutationsContext";
 import {Analytics} from "../analytics/Analytics";
+import {useAnnotationBlockManager} from "../notes/NoteUtils";
+import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../../../apps/doc/src/DocViewer";
+import {TextHighlightAnnotationContent} from "../notes/content/AnnotationContent";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 
 /**
  * @param updateStore: Update the store directly.
@@ -61,6 +65,7 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
     const docMetaLookupContext = useDocMetaLookupContext();
     const tagsContext = useTagsContext();
     const repoDocMetaManager = useRepoDocMetaManager();
+    const {create: createAnnotationBlock} = useAnnotationBlockManager();
     const log = useLogger();
 
     return React.useCallback((updateStore, refresher) => {
@@ -319,6 +324,17 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
                     const {docMeta, pageMeta, textHighlight} = mutation;
                     pageMeta.textHighlights[textHighlight.id] = textHighlight;
 
+                    if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+                        const fingerprint = docMeta.docInfo.fingerprint;
+                        const content = new TextHighlightAnnotationContent({
+                            type: AnnotationContentType.TEXT_HIGHLIGHT,
+                            docID: fingerprint,
+                            pageNum: pageMeta.pageInfo.num,
+                            value: textHighlight,
+                        });
+                        createAnnotationBlock(fingerprint, content);
+                    }
+
                     writeUpdatedDocMetas([docMeta])
                         .then(() => Analytics.event2('doc-highlightCreated', { type: 'text' }))
                         .catch(err => log.error(err));
@@ -423,8 +439,15 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
             onTagged,
         };
 
-    },
-    [dialogs, persistenceLayerContext, docMetaLookupContext, tagsContext, repoDocMetaManager, log]);
+    }, [
+        dialogs,
+        persistenceLayerContext,
+        docMetaLookupContext,
+        tagsContext,
+        repoDocMetaManager,
+        log,
+        createAnnotationBlock
+    ]);
 
 }
 

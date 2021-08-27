@@ -15,7 +15,7 @@ import {AnnotationContentType, IAnnotationContent} from "polar-blocks/src/blocks
 import {DocumentContent} from "./content/DocumentContent";
 import {Block} from "./store/Block";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {AnnotationContentTypeMap, FlashcardAnnotationContent, TextHighlightAnnotationContent} from "./content/AnnotationContent";
+import {AnnotationContentBase, AnnotationContentTypeMap, FlashcardAnnotationContent, TextHighlightAnnotationContent} from "./content/AnnotationContent";
 import {MarkdownStr} from "polar-shared/src/util/Strings";
 import {MarkdownContent} from "./content/MarkdownContent";
 import {NameContent} from "./content/NameContent";
@@ -84,13 +84,19 @@ export const useAnnotationBlockManager = () => {
     }, []);
 
     const create = React.useCallback((fingerprint: string, annotation: IAnnotationContent) => {
+        const annotationJSON = annotation instanceof AnnotationContentBase
+            ? annotation.toJSON()
+            : annotation;
         doMutation(fingerprint, (block) => {
-            blocksStore.createNewBlock(block.id, { content: updateMetadata(annotation) });
+            blocksStore.createNewBlock(block.id, { content: updateMetadata(annotationJSON) });
         });
     }, [blocksStore, updateMetadata, doMutation]);
 
     const update = React.useCallback((id: BlockIDStr, annotation: IAnnotationContent) => {
-        blocksStore.setBlockContent(id, updateMetadata(annotation));
+        const annotationJSON = annotation instanceof AnnotationContentBase
+            ? annotation.toJSON()
+            : annotation;
+        blocksStore.setBlockContent(id, updateMetadata(annotationJSON));
     }, [blocksStore, updateMetadata]);
 
     const remove = React.useCallback((id: BlockIDStr) => {
