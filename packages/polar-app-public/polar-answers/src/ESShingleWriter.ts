@@ -14,7 +14,6 @@ export namespace ESShingleWriter {
         readonly shingle: ISentenceShingle;
     }
 
-    // FIXME unify this with the results from ES so that we know the docID, pageNum, idx, etc,
     export interface IAnswerDigestRecord {
         readonly docID: IDStr;
         readonly pageNum: number;
@@ -22,11 +21,19 @@ export namespace ESShingleWriter {
         readonly text: string;
     }
 
+    // FIXME: I think idx needs to be global across the pages and that the ShigleID should just be
+    // docID:idx so it ALSO works with EPUBs.
+
+    /**
+     * The ID for a shingle which contains docID, pageNum and idx (FIXME)
+     */
+    export type ShingleID = string;
+
     export async function write(opts: IWriteOpts) {
 
         const {docID, shingle, pageNum, uid} = opts;
 
-        const shingleID = `${docID}:${pageNum}:${shingle.idx}`;
+        const shingleID: ShingleID = `${docID}:${pageNum}:${shingle.idx}`;
 
         console.log("Writing shingleID: " + shingleID);
 
@@ -42,4 +49,5 @@ export namespace ESShingleWriter {
         await ESRequests.doPut(`/${indexName}/_doc/${shingleID}`, record);
 
     }
+
 }
