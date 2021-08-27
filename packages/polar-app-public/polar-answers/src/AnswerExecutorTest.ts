@@ -273,7 +273,7 @@ xdescribe("AnswerExecutor", async function() {
 
     });
 
-    describe("US history",async function() {
+    xdescribe("US history",async function() {
 
         it("US history chap 1 #1", async function() {
 
@@ -543,6 +543,133 @@ xdescribe("AnswerExecutor", async function() {
         })
     });
 
+    xdescribe("Astronomy", async function(){
+        // Chapter 2
+        it("astronomy Chapter 2 #1", async function() {
+            await assertQuestionAndAnswer("What fraction of the sky can be seen from the North Pole?", [
+            
+            ]);
+        })
+        it("astronomy Chapter 2 #2", async function() {
+            await assertQuestionAndAnswer("What were four of Galileo’s discoveries that were important to astronomy?", [
+            
+            ]);
+        })
+        it("astronomy Chapter 2 #3", async function() {
+            await assertQuestionAndAnswer("The Sun was once thought to be a planet. Explain why.", [
+            
+            ]);
+        })
+        it("astronomy Chapter 2 #4", async function() {
+            await assertQuestionAndAnswer("Why did Pythagoras believe that Earth should be spherical?", [
+            
+            ]);
+        })
+        it("astronomy Chapter 2 #5", async function() {
+            await assertQuestionAndAnswer("What is an asterism?", [
+            
+            ]);
+        })
+        it("astronomy Chapter 2 #6", async function() {
+            await assertQuestionAndAnswer("What phases would Venus show if the geocentric model were correct?", [
+            
+            ]);
+        })
+        it("astronomy Chapter 2 #7", async function() {
+            await assertQuestionAndAnswer("How are the zodiacal constellations different from the other constellations?", [
+            
+            ]);
+        })
+
+        // Chapter 3
+        it("astronomy Chapter 3 #1", async function() {
+            await assertQuestionAndAnswer("Why did Kepler need Tycho Brahe’s data to formulate his laws?", [
+            
+            ]);
+        })
+        it("astronomy Chapter 3 #2", async function() {
+            await assertQuestionAndAnswer("Write out Newton’s three laws of motion in terms of what happens with the momentum of objects.", [
+            
+            ]);
+        })
+        it("astronomy Chapter 3 #3", async function() {
+            await assertQuestionAndAnswer("Which major planet has the largest semimajor axis?", [
+            
+            ]);
+        })
+        it("astronomy Chapter 3 #4", async function() {
+            await assertQuestionAndAnswer("Which major planet has the largest average orbital speed around the Sun?", [
+            
+            ]);
+        })
+        it("astronomy Chapter 3 #5", async function() {
+            await assertQuestionAndAnswer("Which major planet has the largest orbital period around the Sun?", [
+            
+            ]);
+        })
+        it("astronomy Chapter 3 #6", async function() {
+            await assertQuestionAndAnswer("Which major planet has the largest eccentricity?", [
+            
+            ]);
+        })
+        it("astronomy Chapter 3 #7", async function() {
+            await assertQuestionAndAnswer("Explain how a rocket can propel itself using Newton’s third law.", [
+            
+            ]);
+        })
+
+        // Chapter 4
+        it("astronomy Chapter 4 #1", async function() {
+            await assertQuestionAndAnswer("Why does longitude have no meaning at the North and South Poles?", [
+            
+            ]);
+        })
+        it("astronomy Chapter 4 #2", async function() {
+            await assertQuestionAndAnswer("What are advantages and disadvantages of apparent solar time?", [
+            
+            ]);
+        })
+        it("astronomy Chapter 4 #3", async function() {
+            await assertQuestionAndAnswer("What are the two ways that the tilt of Earth’s axis causes the summers in the United States to be warmer than the winters?", [
+            
+            ]);
+        })
+        it("astronomy Chapter 4 #4", async function() {
+            await assertQuestionAndAnswer("Why is it difficult to construct a practical calendar based on the Moon’s cycle of phases?", [
+            
+            ]);
+        })
+        it("astronomy Chapter 4 #5", async function() {
+            await assertQuestionAndAnswer("What is the phase of the Moon during a total solar eclipse?", [
+            
+            ]);
+        })
+        it("astronomy Chapter 4 #6", async function() {
+            await assertQuestionAndAnswer("Explain the origin of the leap year. Why is it necessary?", [
+            
+            ]);
+        })
+        it("astronomy Chapter 4 #7", async function() {
+            await assertQuestionAndAnswer("Explain why the year 1800 was not a leap year, even though years divisible by four are normally considered to be leap years.", [
+            
+            ]);
+        })
+        it("astronomy Chapter 4 #8", async function() {
+            await assertQuestionAndAnswer("Why don’t lunar eclipses happen during every full moon?", [
+            
+            ]);
+        })
+        it("astronomy Chapter 4 #9", async function() {
+            await assertQuestionAndAnswer("Explain how tidal forces are causing Earth to slow down.", [
+            
+            ]);
+        })
+        it("astronomy Chapter 4 #10", async function() {
+            await assertQuestionAndAnswer("Why do the heights of the tides change over the course of a month?", [
+            
+            ]);
+        })
+    })
 })
 
 
