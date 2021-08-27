@@ -56,6 +56,8 @@ export namespace AnswerExecutor {
         // run this query on the digest ...
         const index = ESAnswersIndexNames.createForUserDocs(uid);
 
+        // TODO make this into a generic search client and don't hard code the ES query here.
+
         // TODO this has to be hard coded and we only submit docs that would be
         // applicable to the answer API and we would need a way to easily
         // calculate the short head of the result set.  The OpenAI Answers API
