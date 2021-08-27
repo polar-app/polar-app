@@ -55,7 +55,7 @@ export const BlockAreaHighlightAnnotationContent: React.FC<IProps> = (props) => 
                         readonly={readonly}
                         onKeyDown={onKeyDown} />
                 )}
-                <DocAnnotationMoment style={{ marginTop: 2 }} created={highlight.created} />
+                <DocAnnotationMoment style={{ marginTop: 4 }} created={highlight.created} />
             </BlockHighlightContentWrapper>
         </BlockAnnotationActionsWrapper>
     );
