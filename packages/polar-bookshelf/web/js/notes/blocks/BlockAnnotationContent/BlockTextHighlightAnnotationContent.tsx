@@ -62,6 +62,7 @@ export const BlockTextHighlightAnnotationContent: React.FC<IProps> = (props) => 
                                       parent={parent}
                                       innerRef={innerRef}
                                       style={style}
+                                      canHaveLinks
                                       className={className}
                                       content={text || ''}
                                       onKeyDown={onKeyDown}

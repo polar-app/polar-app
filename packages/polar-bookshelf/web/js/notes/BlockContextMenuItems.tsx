@@ -7,6 +7,7 @@ import FileCopyIcon from '@material-ui/icons/FileCopy';
 import {observer} from "mobx-react-lite"
 import {BlockPredicates} from "./store/BlockPredicates";
 import {useBlocksTreeStore} from './BlocksTree';
+import {BlockTextContentUtils} from './NoteUtils';
 
 export const BlockContextMenuItems = observer(function MUIDocDropdownMenuItems() {
 
@@ -30,7 +31,7 @@ export const BlockContextMenuItems = observer(function MUIDocDropdownMenuItems()
             return;
         }
 
-        const markdown = activeBlock.content.data;
+        const markdown = BlockTextContentUtils.getTextContentMarkdown(activeBlock.content);
 
         Clipboards.writeText(markdown);
 
