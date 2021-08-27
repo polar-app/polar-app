@@ -25,16 +25,16 @@ describe("AnswerIndexer", async function() {
             url
         })
 
-        console.log("Done.  Finished importing docID: " + docID);
+        console.log(`Done.  Finished importing docID: ${docID}: ${path}`);
 
     }
 
     it("basic", async function() {
 
-        await doIndexDoc("/Users/burton/projects/polar-app/packages/polar-app-public/polar-answers/data/bigtable.pdf", '1234')
+        // await doIndexDoc("/Users/burton/projects/polar-app/packages/polar-app-public/polar-answers/data/bigtable.pdf", '1234')
         // await doIndexDoc("/Users/burton/projects/polar-app/packages/polar-app-public/polar-answers/data/two-doses-covid-vaccine.pdf", '2345')
 
-        // await doIndexDoc("/Users/burton/us-history.pdf", '3456')
+        await doIndexDoc("/Users/burton/us-history.pdf", '3456')
         // await doIndexDoc("/Users/burton/astronomy", '4567')
         // await doIndexDoc("/Users/burton/western-civ-2.pdf", '5678')
         // await doIndexDoc("/Users/burton/western-civ-3.pdf", '6789')
