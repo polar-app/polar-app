@@ -304,7 +304,8 @@ xdescribe("AnswerExecutor", async function() {
             await assertQuestionAndAnswer("What were the major differences between the societies of the Aztec, Inca, and Maya and the Native peoples of North America?", [
                 "North American Indians were fewer in number, more widely dispersed, and did not have the population size or organized social structures of the Maya, Aztec, or Inca societies.",
                 "The Native peoples of North America were more widely dispersed than the Mayan, Aztec, and Incan societies, and did not have their population size or organized social structures.",
-                "The Native peoples of North America were much more widely dispersed than the Mayan, Aztec, and Incan societies, and did not have their population size or organized social structures.  Although the cultivation of corn had made its way north, many Native people still practiced hunting and gathering.  Horses, first introduced by the Spanish, allowed the Plains Natives to more easily follow and hunt the huge herds of bison.  A few societies had evolved into relatively complex forms, but they were already in decline at the time of Christopher Columbus’s arrival."
+                "The Native peoples of North America were much more widely dispersed than the Mayan, Aztec, and Incan societies, and did not have their population size or organized social structures.  Although the cultivation of corn had made its way north, many Native people still practiced hunting and gathering.  Horses, first introduced by the Spanish, allowed the Plains Natives to more easily follow and hunt the huge herds of bison.  A few societies had evolved into relatively complex forms, but they were already in decline at the time of Christopher Columbus’s arrival.",
+                "The Native peoples of North America were not as advanced as the Aztec, Inca, and Maya."
             ]);
 
         })
@@ -319,6 +320,7 @@ xdescribe("AnswerExecutor", async function() {
 
         it("US history chap 1 #6", async function() {
 
+            // TODO: now it's Cairo???
             await assertQuestionAndAnswer("Which city became wealthy by trading with the East?", [
                 "Venice.",
                 "Venice"
@@ -478,7 +480,8 @@ xdescribe("AnswerExecutor", async function() {
                 "A Dutch system of granting tracts of land in New Netherland to encourage colonization",
                 "A system of granting tracts of land in New Netherland",
                 "A patroonship was a large tract of land in the colony of New Netherland, which was granted by the Dutch West India Company to a patroon, or patron, in exchange for settling a specified number of colonists there.",
-                "A patroonship was a large tract of land in the New Netherland colony that was granted to a patroon, or lord, by the Dutch West India Company."
+                "A patroonship was a large tract of land in the New Netherland colony that was granted to a patroon, or lord, by the Dutch West India Company.",
+                "A patroonship was a large tract of land in the Hudson Valley that was granted to a patroon, or lord, by the Dutch West India Company."
             ]);
 
         })
@@ -527,7 +530,8 @@ xdescribe("AnswerExecutor", async function() {
                 "The transatlantic journey that enslaved Africans made to America",
                 "The Middle Passage was the transatlantic journey that enslaved Africans made to America.",
                 "the journey slaves took from Africa to the Americas",
-                "The Middle Passage was the stage of the Atlantic slave trade in which millions of enslaved Africans were forcibly transported to the Americas as part of the triangular slave trade"
+                "The Middle Passage was the stage of the Atlantic slave trade in which millions of enslaved Africans were forcibly transported to the Americas as part of the triangular slave trade",
+                "The Middle Passage was the leg of the triangle trade that connected Africa and the Americas."
             ]);
 
         })
@@ -537,7 +541,8 @@ xdescribe("AnswerExecutor", async function() {
                 "Tribes with ties to Europeans had a distinct advantage in wars",
                 "Guns changed the balance of power among different groups and tribes",
                 "Muskets made combat more deadly",
-                "They made warfare more lethal and changed traditional patterns of authority among tribes."
+                "They made warfare more lethal and changed traditional patterns of authority among tribes.",
+                "European muskets changed life for native peoples in the Americas by making warfare more lethal and changing traditional patterns of authority among tribes."
             ]);
 
         })
