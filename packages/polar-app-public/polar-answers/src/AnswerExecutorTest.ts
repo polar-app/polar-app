@@ -370,6 +370,7 @@ describe("US history",async function(){
     it("US history chap 1 #7", async function() {
 
         await assertQuestionAndAnswer("In 1492, the Spanish forced what two religious groups to either convert or leave.", [
+            "Muslims and Jews",
             "Jews and Muslims"
         ]);
 
@@ -377,7 +378,9 @@ describe("US history",async function(){
     it("US history chap 1 #8", async function() {
 
         await assertQuestionAndAnswer("How did European feudal society operate?", [
-            "Jews and Muslims"
+            "Nobility held lands from the Crown in exchange for military service",
+            "The lords owned the land; knights gave military service to a lord and carried out his justice",
+            "The peasants (villeins or serfs) were obliged to live on their lord's land and give him homage, labour, and a share of the produce"
         ]);
 
     })
@@ -502,6 +505,59 @@ describe("US history",async function(){
         await assertQuestionAndAnswer("What was patroonship?", [
             "A Dutch system of granting tracts of land in New Netherland to encourage colonization",
             "A system of granting tracts of land in New Netherland"
+        ]);
+
+    })
+    //
+    it("US history chap 3 #5", async function() {
+
+        await assertQuestionAndAnswer("Which religious order joined the French settlement in Canada and tried to convert the natives to Christianity?", [
+            "Jesuits"
+        ]);
+
+    })
+    it("US history chap 3 #7", async function() {
+
+        await assertQuestionAndAnswer("What was the most lucrative product of the Chesapeake colonies?", [
+            "tobacco",
+            "The tabacco trade"
+        ]);
+
+    })
+    
+    it("US history chap 3 #8", async function() {
+
+        await assertQuestionAndAnswer("What was the primary cause of Bacon’s Rebellion ?", [
+            "former indentured servants wanted more opportunities to expand their territory",
+            "Bacon and his followers, who saw all Native peoples as an obstacle to their access to land, pursued a policy of extermination"
+        ]);
+
+    }) 
+
+    it("US history chap 3 #9", async function() {
+
+        await assertQuestionAndAnswer("The founders of the Plymouth colony were?", [
+            "Puritans ",
+            "Pilgrims"
+        ]);
+
+    })
+    
+    it("US history chap 3 #12", async function() {
+
+        await assertQuestionAndAnswer("What was the Middle Passage?", [
+            "The transatlantic journey that enslaved Africans made to America",
+            "the journey slaves took from Africa to the Americas",
+            "The Middle Passage was the stage of the Atlantic slave trade in which millions of enslaved Africans were forcibly transported to the Americas as part of the triangular slave trade"
+        ]);
+
+    })
+    it("US history chap 3 #14", async function() {
+
+        await assertQuestionAndAnswer("How did European muskets change life for native peoples in the Americas?", [
+            "Tribes with ties to Europeans had a distinct advantage in wars",
+            "Guns changed the balance of power among different groups and tribes",
+            "Muskets made combat more deadly"
         ]);
 
     })
