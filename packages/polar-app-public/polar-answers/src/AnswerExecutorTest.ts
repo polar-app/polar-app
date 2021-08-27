@@ -3,7 +3,7 @@ import {AnswerExecutor} from "./AnswerExecutor";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import { Arrays } from "polar-shared/src/util/Arrays";
 
-xdescribe("AnswerExecutor", async function() {
+describe("AnswerExecutor", async function() {
 
     this.timeout(60000);
 
@@ -230,7 +230,78 @@ xdescribe("AnswerExecutor", async function() {
 
     })
 
-    // US history chapter 1
+    it("astronomy #1", async function() {
+
+        await assertQuestionAndAnswer("Compare Mars with Mercury and the Moon in terms of overall properties.  What are the similarities and differences?", [
+            "Mars is similar to Mercury and the Moon in that it has no atmosphere, and its surface is heavily cratered.",
+            "Mars is similar to Mercury and the Moon in many ways.  It has no atmosphere, and its surface is heavily cratered.  As described later in this chapter, it also shares with the Moon the likelihood of a violent birth.",
+            // TODO: this one is wrong but it might be a bug in the indexer not the executor.
+            "Mars is similar to Mercury and the Moon in that it has no atmosphere, it is heavily cratered, and it has a"
+        ]);
+
+    })
+
+    it("astronomy #2", async function() {
+
+        await assertQuestionAndAnswer("Contrast the mountains on Mars and Venus with those on Earth and the Moon.", [
+            "The mountains on Mars and Venus are much higher than those on Earth and the Moon.",
+            "On Mars, the mountains are volcanoes, produced by repeated eruptions of lava from the same vents. On Earth, the mountains are the result of compression and uplift of the surface. On the Moon and Mercury, the major mountains are ejecta thrown up by the large basin-forming impacts that took place billions of years ago.",
+            "The mountains on Mars and Venus are higher than those on Earth and the Moon."
+        ]);
+
+    })
+
+
+})
+
+
+describe("US history",async function(){
+    this.timeout(60000);
+
+    async function getUID() {
+
+        const app = FirebaseAdmin.app()
+
+        const auth = app.auth();
+        const user = await auth.getUserByEmail('burton@inputneuron.io')
+
+        if (! user) {
+            throw new Error("no user");
+        }
+
+        return user.uid;
+
+    }
+
+    async function executeQuestion(question: string) {
+
+        const uid = await getUID();
+
+        const response = await AnswerExecutor.exec({
+            uid,
+            question
+        });
+
+        console.log("answer: ", Arrays.first(response.answers))
+
+        console.log(response);
+
+        return response.answers[0];
+
+    }
+    async function assertQuestionAndAnswer(question: string, expectedAnswer: string | ReadonlyArray<string>) {
+
+        const answer = await executeQuestion(question);
+
+        if (typeof expectedAnswer === 'string') {
+            assert.equal(answer, expectedAnswer);
+        }
+
+        assert.ok(expectedAnswer.includes(answer), `Answer '${answer}' to question '${question}' was not expected: ` + JSON.stringify(expectedAnswer));
+
+    }
+
+        // US history chapter 1
     // 1. A 3. B 5. A 7. A 9. It was known that the Earth was round, so Columbus’s plan seemed plausible. The distance he would need to travel was not known, however, and he greatly underestimated the Earth’s circumference; therefore, he would have no way of recognizing when he had arrived at his destination. 11. D
 
     // questions start on page 43
@@ -303,7 +374,6 @@ xdescribe("AnswerExecutor", async function() {
         ]);
 
     })
-    //The lords owned the land; the knights gave military service to a lord and carried out his justice; the serfs worked the land in return for the protection from invaders within the walls of the lord's castle or city.
     it("US history chap 1 #8", async function() {
 
         await assertQuestionAndAnswer("How did European feudal society operate?", [
@@ -312,26 +382,127 @@ xdescribe("AnswerExecutor", async function() {
 
     })
 
-    it("astronomy #1", async function() {
+    it("US history chap 1 #9", async function() {
 
-        await assertQuestionAndAnswer("Compare Mars with Mercury and the Moon in terms of overall properties.  What are the similarities and differences?", [
-            "Mars is similar to Mercury and the Moon in that it has no atmosphere, and its surface is heavily cratered.",
-            "Mars is similar to Mercury and the Moon in many ways.  It has no atmosphere, and its surface is heavily cratered.  As described later in this chapter, it also shares with the Moon the likelihood of a violent birth.",
-            // TODO: this one is wrong but it might be a bug in the indexer not the executor.
-            "Mars is similar to Mercury and the Moon in that it has no atmosphere, it is heavily cratered, and it has a"
+        await assertQuestionAndAnswer("Which city became a leading center for Muslim scholarship and trade?", [
+            "timbuktu"
         ]);
 
     })
 
-    it("astronomy #2", async function() {
+    it("US history chap 2 #1", async function() {
 
-        await assertQuestionAndAnswer("Contrast the mountains on Mars and Venus with those on Earth and the Moon.", [
-            "The mountains on Mars and Venus are much higher than those on Earth and the Moon.",
-            "On Mars, the mountains are volcanoes, produced by repeated eruptions of lava from the same vents. On Earth, the mountains are the result of compression and uplift of the surface. On the Moon and Mercury, the major mountains are ejecta thrown up by the large basin-forming impacts that took place billions of years ago.",
-            "The mountains on Mars and Venus are higher than those on Earth and the Moon."
+        await assertQuestionAndAnswer("Which country initiated the era of Atlantic exploration?", [
+            "Portugal",
+            "Portugal initiated the era of Atlantic exploration in the 15th century"
         ]);
 
     })
 
+    it("US history chap 2 #2", async function() {
 
-})
+        await assertQuestionAndAnswer("Which country established the first colonies in the Americas?", [
+            "Spain",
+            "The Spanish were among the first Europeans to explore the New World and the first to settle in what is now the United State"
+        ]);
+
+    })
+
+    it("US history chap 2 #3", async function() {
+
+        await assertQuestionAndAnswer("Where did Christopher Columbus first land?", [
+            "The Bahamas"
+        ]);
+
+    })
+
+    it("US history chap 2 #4", async function() {
+
+        await assertQuestionAndAnswer("Why did the authors of probanzas de méritos choose to write in the way that they did?", [
+            "The Spanish explorers hoped to find cities of gold, so they made their discoveries sound as wonderful as possible",
+            "To convince the Spanish crown to fund more voyages"
+        ]);
+
+    })
+    xit("US history chap 2 #5", async function() {
+        // this book gives the impression that the protestant reformation began in Spain, it didn't it was 
+        // intoduced by Martin Luthor in 1517 in GERMANY!
+        // this book is making me question what the hell are they teaching americans about history over there
+        await assertQuestionAndAnswer("Where did the Protestant Reformation begin?", [
+            "Wittenberg, Germany",
+            "Wittenberg, Germany, on October 31, 1517",
+            "Germany",
+        ]);
+
+    })
+
+    it("US history chap 2 #6", async function() {
+
+        await assertQuestionAndAnswer("What was the chief goal of the Puritans?", [
+            "To eliminate any traces of Catholicism from the church of England.",
+            "The eliminatation of Catholicism",
+            "To purify the Church of England of Roman Catholic practices"
+        ]);
+
+    })
+
+    it("US history chap 2 #8", async function() {
+
+        await assertQuestionAndAnswer("Why didn’t England make stronger attempts to colonize the New World before the late sixteenth to early seventeenth century?", [
+            "English attention was turned to internal struggles and the encroaching Catholic menace to Scotland and Ireland"
+        ]);
+
+    })
+
+    it("US history chap 2 #9", async function() {
+
+        await assertQuestionAndAnswer("What was the main goal of the French in colonizing the Americas?", [
+            "Trading, especially for furs",
+            "To create trading posts for the fur trade"
+        ]);
+
+    })
+
+    it("US history chap 2 #11", async function() {
+
+        await assertQuestionAndAnswer("How could Spaniards obtain encomiendas?", [
+            "By serving the Spanish crown",
+            "By conquering territory in the name of the Spanish Crown"
+        ]);
+
+    })
+
+    it("US history chap 2 #13", async function() {
+
+        await assertQuestionAndAnswer("Why did diseases like smallpox affect Native Americans so badly?", [
+            "Native Americans had no immunity to European diseases",
+            "The immunity system of native americans was not ready for European diseases"
+        ]);
+
+    })
+
+    it("US history chap 3 #2", async function() {
+
+        await assertQuestionAndAnswer("Why did the Spanish build Castillo de San Marcos?", [
+            "To defend against imperial challengers"
+        ]);
+
+    })
+
+    it("US history chap 3 #3", async function() {
+
+        await assertQuestionAndAnswer("How did the Pueblo attempt to maintain their autonomy in the face of Spanish settlement?", [
+            "Through revolt"
+        ]);
+
+    })
+
+    it("US history chap 3 #4", async function() {
+
+        await assertQuestionAndAnswer("What was patroonship?", [
+            "A Dutch system of granting tracts of land in New Netherland to encourage colonization",
+            "A system of granting tracts of land in New Netherland"
+        ]);
+
+    })
+});
