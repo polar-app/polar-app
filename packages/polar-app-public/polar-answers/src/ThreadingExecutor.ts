@@ -6,6 +6,9 @@ import {ESRequests} from "./ESRequests";
 import {ESAnswersIndexNames} from "./ESAnswersIndexNames";
 import {ESShingleWriter} from "./ESShingleWriter";
 
+// the max docs we can send to OpenAI is 200 so we should initially fetch like
+// 600, which is a 3x overhead, then group them so we can collapse them, and
+// then re-score..
 export namespace ThreadingExecutor {
 
     export interface IThreadingRequestForContext {

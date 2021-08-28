@@ -1,0 +1,43 @@
+{
+  "index_patterns": ["ai_ft_digest_*"],
+  "settings": {
+    "number_of_shards": 1
+  },
+  "mappings": {
+    "properties" : {
+      "docID" : {
+        "type" : "text",
+        "fields" : {
+          "keyword" : {
+            "type" : "keyword",
+            "ignore_above" : 150000
+          }
+        }
+      },
+      "id" : {
+        "type" : "text",
+        "fields" : {
+          "keyword" : {
+            "type" : "keyword",
+            "ignore_above" : 150000
+          }
+        }
+      },
+      "idx" : {
+        "type" : "long"
+      },
+      "pageNum" : {
+        "type" : "long"
+      },
+      "text" : {
+        "type" : "text",
+        "fields" : {
+          "keyword" : {
+            "type" : "keyword",
+            "ignore_above" : 150000
+          }
+        }
+      }
+    }
+  }
+}

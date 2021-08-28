@@ -267,7 +267,8 @@ xdescribe("AnswerExecutor", async function() {
                 "The mountains on Mars and Venus are much higher than those on Earth and the Moon.",
                 "On Mars, the mountains are volcanoes, produced by repeated eruptions of lava from the same vents. On Earth, the mountains are the result of compression and uplift of the surface. On the Moon and Mercury, the major mountains are ejecta thrown up by the large basin-forming impacts that took place billions of years ago.",
                 "The mountains on Mars and Venus are higher than those on Earth and the Moon.",
-                "The mountains on Mars and Venus are the result of compression and uplift of the surface.  On Earth, this crustal compression results from collisions of one continental plate with another."
+                "The mountains on Mars and Venus are the result of compression and uplift of the surface.  On Earth, this crustal compression results from collisions of one continental plate with another.",
+                "The mountains on Mars and Venus are the result of compression and uplift of the surface.  On Earth, this crustal compression results from collisions of one continental plate with another.  The mountains on the terrestrial planets owe their origins to different processes.  On the surfaces of solid worlds, mountains can result from impacts, volcanism, or uplift.  The label “sea level” refers only to Earth, of course, since the other two planets don’t have oceans.  Mauna Loa and Mt.  Everest are on Earth, Olympus Mons is on Mars, and the Maxwell"
             ]);
 
         })
