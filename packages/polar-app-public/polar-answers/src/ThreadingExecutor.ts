@@ -52,12 +52,18 @@ export namespace ThreadingExecutor {
             switch (request.type) {
 
                 case "context":
+                    // return {
+                    //     "query_string": {
+                    //         "query": request.identifiers.map(current => `id:${current}`).join(" OR "),
+                    //         "default_field": "id"
+                    //     }
+                    // };
+
                     return {
-                        "query_string": {
-                            "query": request.identifiers.map(current => `id:${current}`).join(" OR "),
-                            "default_field": "id"
-                        }
-                    };
+                        "query": {
+                            "terms": { "docID": [ request.identifiers ] }
+                        },
+                    }
 
                 case "doc":
                     return {
@@ -73,15 +79,16 @@ export namespace ThreadingExecutor {
 
         function createAggregations() {
             return {
-                "foo": {
-                    "significant_terms": { "field": "text" }
+                "significant_terms_text": {
+                    "significant_text": { "field": "text" }
                 }
             };
         }
 
         const query = {
+            "size: ": 0, // we only care about aggregation count
             "query": createQuery(),
-            // "aggregations": createAggregations()
+            "aggregations": createAggregations()
         };
 
         console.log("FIXME: query: ", JSON.stringify(query, null, '  '));
