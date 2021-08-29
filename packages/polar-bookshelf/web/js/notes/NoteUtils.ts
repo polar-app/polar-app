@@ -30,7 +30,7 @@ export const focusFirstChild = (blocksStore: IBlocksStore, id: BlockIDStr) => {
     const root = blocksStore.getBlock(id);
     if (root) {
         const getFirstChildID = (): BlockIDStr => {
-            if (root.content.type !== "document") {
+            if (root.content.type === "document") {
                 return root.itemsAsArray[0];
             }
             return root.itemsAsArray[0] || blocksStore.createNewBlock(root.id, { asChild: true }).id;
