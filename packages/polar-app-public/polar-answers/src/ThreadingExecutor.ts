@@ -1,14 +1,14 @@
-/**
- * Executor to execute threading requests.
- */
 import {IDStr, UserIDStr} from "polar-shared/src/util/Strings";
 import {ESRequests} from "./ESRequests";
 import {ESAnswersIndexNames} from "./ESAnswersIndexNames";
-import {ESShingleWriter} from "./ESShingleWriter";
 
 // the max docs we can send to OpenAI is 200 so we should initially fetch like
 // 600, which is a 3x overhead, then group them so we can collapse them, and
 // then re-score..
+
+/**
+ * Executor to execute threading requests.
+ */
 export namespace ThreadingExecutor {
 
     export interface IThreadingRequestForContext {
@@ -88,13 +88,17 @@ export namespace ThreadingExecutor {
         function createAggregations() {
             return {
                 "significant_terms_text": {
-                    "significant_text": { "field": "text" }
+                    "significant_text": {
+                        // "size": 100,
+                        "field": "text"
+                    }
                 }
             };
         }
 
         const query = {
-            "size: ": 0, // we only care about aggregation count
+            // "size: ": 0, // we only care about aggregation count
+            "size": 0,
             "query": createQuery(),
             "aggregations": createAggregations()
         };
@@ -111,4 +115,3 @@ export namespace ThreadingExecutor {
     }
 
 }
-
