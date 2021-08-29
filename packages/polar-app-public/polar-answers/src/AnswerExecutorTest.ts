@@ -34,7 +34,7 @@ xdescribe("AnswerExecutor", async function() {
 
         console.log("answer: ", Arrays.first(response.answers))
 
-        console.log(response);
+        console.log("response: " + JSON.stringify(response, null, '  '));
 
         return response.answers[0];
 

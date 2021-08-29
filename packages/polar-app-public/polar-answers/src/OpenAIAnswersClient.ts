@@ -84,6 +84,8 @@ export namespace OpenAIAnswersClient {
     export interface ISelectedDocument {
         readonly document: number;
         readonly text: string;
+        readonly object: string;
+        readonly score: number;
     }
 
     export interface IResponse {
