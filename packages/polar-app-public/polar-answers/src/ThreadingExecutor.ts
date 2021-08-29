@@ -59,6 +59,9 @@ export namespace ThreadingExecutor {
                     //     }
                     // };
 
+                    // TODO: for context we have to jump to OTHER parts of the
+                    // same document or different documents.
+
                     return {
                         "query": {
                             "terms": { "docID": [ request.identifiers ] }
@@ -66,6 +69,11 @@ export namespace ThreadingExecutor {
                     }
 
                 case "doc":
+
+                    // TODO: docs is a bit harder as it reads in ALL the terms
+                    // into memory plus we do not have too many docs right now
+                    // to compare it to.
+
                     return {
                         "query_string": {
                             "query": request.docIDs.map(current => `docID:${current}`).join(" OR "),
