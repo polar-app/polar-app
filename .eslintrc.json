@@ -208,5 +208,5 @@
     // "use-isnan": "error",
     // "valid-typeof": "off"
   },
-  "ignorePatterns": ["dist", "node_modules", "examples", "scripts", "*.d.ts", "*.js"]
+  "ignorePatterns": ["dist", "node_modules", "examples", "scripts", "*.d.ts", "*.js", "web/js", "apps"]
 }
