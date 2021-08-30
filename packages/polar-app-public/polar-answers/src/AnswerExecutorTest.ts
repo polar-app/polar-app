@@ -4,7 +4,7 @@ import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import { Arrays } from "polar-shared/src/util/Arrays";
 import {Mappers} from "polar-shared/src/util/Mapper";
 
-xdescribe("AnswerExecutor", async function() {
+describe("AnswerExecutor", async function() {
 
     this.timeout(600000);
 
@@ -74,7 +74,7 @@ xdescribe("AnswerExecutor", async function() {
 
     }
 
-    describe("basic", () => {
+    xdescribe("basic", () => {
 
         // TODO: this fails now with 'Sera drawn between 7 and 17 days after a second dose of' for some reason.
         xit("covid 1", async function() {
@@ -543,7 +543,7 @@ xdescribe("AnswerExecutor", async function() {
         })
     });
 
-    xdescribe("Astronomy", async function(){
+    describe("Astronomy", async function(){
         // Chapter 2
         it("astronomy Chapter 2 #1", async function() {
             await assertQuestionAndAnswer("What fraction of the sky can be seen from the North Pole?", [
@@ -654,32 +654,38 @@ xdescribe("AnswerExecutor", async function() {
         })
         it("astronomy Chapter 4 #5", async function() {
             await assertQuestionAndAnswer("What is the phase of the Moon during a total solar eclipse?", [
-            
+                "new moon",
+                "when the moon passes directly between the sun and Earth",
+                "A solar eclipse can only take place at the phase of new moon"
             ]);
         })
         it("astronomy Chapter 4 #6", async function() {
-            await assertQuestionAndAnswer("Explain the origin of the leap year. Why is it necessary?", [
-            
+            await assertQuestionAndAnswer("Why is the leap year necessary?", [
+                "to help synchronize the calendar year with the solar year",
+                "The leap year is necessary to make the average length of the year in the Julian calendar 365.25 days."
             ]);
         })
         it("astronomy Chapter 4 #7", async function() {
-            await assertQuestionAndAnswer("Explain why the year 1800 was not a leap year, even though years divisible by four are normally considered to be leap years.", [
-            
+            await assertQuestionAndAnswer("Why the year 1800 was not a leap year?", [
+                "a century year cannot be a leap year unless it is divisible by 400",
+                "because a century year cannot be a leap year unless it is divisible by 400",
+                "Only century years divisible by 400 would be leap years"
             ]);
         })
         it("astronomy Chapter 4 #8", async function() {
             await assertQuestionAndAnswer("Why don’t lunar eclipses happen during every full moon?", [
-            
+                "because the Moon's orbit is tilted five degrees from Earth's orbit around the Sun",
+                "Because the moon's orbit around Earth lies in a slightly different plane than Earth's orbit around the sun",
+                "the Moon is sufficiently above or below the ecliptic plane to avoid an eclipse"
             ]);
         })
         it("astronomy Chapter 4 #9", async function() {
-            await assertQuestionAndAnswer("Explain how tidal forces are causing Earth to slow down.", [
-            
-            ]);
-        })
-        it("astronomy Chapter 4 #10", async function() {
-            await assertQuestionAndAnswer("Why do the heights of the tides change over the course of a month?", [
-            
+            await assertQuestionAndAnswer("Why some places have very small tides while in other places huge tides?", [
+                "the presence of land masses stopping the flow of water",
+                "the friction in the oceans and between oceans and the ocean floors",
+                "the rotation of Earth",
+                "the wind",
+                "the variable depth of the ocean."
             ]);
         })
     })
