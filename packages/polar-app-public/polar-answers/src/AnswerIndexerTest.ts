@@ -4,11 +4,11 @@ import {AnswerIndexer} from "./AnswerIndexer";
 
 xdescribe("AnswerIndexer", async function() {
 
-    this.timeout(300000);
+    this.timeout(30000000);
 
-    it("basic", async function() {
+    async function doIndexDoc(path: string, docID: string) {
 
-        const url = FilePaths.toURL("/Users/burton/projects/polar-app/packages/polar-app-public/polar-answers/data/two-doses-covid-vaccine.pdf");
+        const url = FilePaths.toURL(path);
 
         const app = FirebaseAdmin.app()
 
@@ -20,10 +20,25 @@ xdescribe("AnswerIndexer", async function() {
         }
 
         await AnswerIndexer.doIndex({
-            docID: '2345',
+            docID,
             uid: user.uid,
             url
         })
+
+        console.log("Done.  Finished importing docID: " + docID);
+
+    }
+
+    it("basic", async function() {
+
+        // await doIndexDoc("data/bigtable.pdf", '1234')
+        // await doIndexDoc("data/two-doses-covid-vaccine.pdf", '2345')
+
+        // await doIndexDoc("/Users/burton/us-history.pdf", '3456')
+        // await doIndexDoc("/Users/burton/western-civ-2.pdf", '5678')
+        // await doIndexDoc("/Users/burton/western-civ-3.pdf", '6789')
+        await doIndexDoc("/Users/burton/history-in-the-making-united-states.pdf", '78910')
+
 
     });
 
