@@ -1,14 +1,17 @@
 import { FilePaths } from "polar-shared/src/util/FilePaths";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {AnswerIndexer} from "./AnswerIndexer";
+import {PageNumber} from "polar-shared/src/metadata/IPageMeta";
 
 xdescribe("AnswerIndexer", async function() {
 
     this.timeout(30000000);
 
-    async function doIndexDoc(path: string, docID: string) {
+    interface IOpts {
+        readonly skipPages?: ReadonlyArray<PageNumber>;
+    }
 
-        const url = FilePaths.toURL(path);
+    async function getUserID() {
 
         const app = FirebaseAdmin.app()
 
@@ -19,10 +22,21 @@ xdescribe("AnswerIndexer", async function() {
             throw new Error("No user");
         }
 
+        return user.uid;
+
+    }
+
+    async function doIndexDoc(path: string, docID: string, opts: IOpts = {}) {
+
+        const url = FilePaths.toURL(path);
+
+        const uid = await getUserID();
+
         await AnswerIndexer.doIndex({
             docID,
-            uid: user.uid,
-            url
+            uid,
+            url,
+            skipPages: opts.skipPages
         })
 
         console.log(`Done.  Finished importing docID: ${docID}: ${path}`);
@@ -44,7 +58,9 @@ xdescribe("AnswerIndexer", async function() {
 
     it("doc 3", async function() {
 
-        await doIndexDoc("/Users/burton/us-history.pdf", '3456')
+        // skipPages, 43, 44
+
+        await doIndexDoc("/Users/burton/us-history-clean.pdf", '3456');
 
     });
 

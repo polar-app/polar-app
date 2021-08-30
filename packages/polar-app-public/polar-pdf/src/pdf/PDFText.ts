@@ -43,6 +43,7 @@ export namespace PDFText {
 
             if (skipPages.includes(pageNum)) {
                 // skip this page and don't index any text.
+                console.log("Skipping page: " + pageNum);
                 continue;
             }
 
