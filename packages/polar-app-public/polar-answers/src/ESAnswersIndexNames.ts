@@ -7,7 +7,7 @@ import {Base16} from "polar-shared/src/util/Base16";
  */
 export namespace ESAnswersIndexNames {
 
-    const PREFIX = 'answers_ft_digest_';
+    const PREFIX = 'ai_ft_digest';
 
     /**
      * Compute the index name for a user.
@@ -15,7 +15,7 @@ export namespace ESAnswersIndexNames {
      * @param id The namespace ID.
      */
     export function createForUserNotes(uid: string, id: NamespaceIDStr) {
-        return PREFIX + Base16.encode(uid) + '_notes_' +  + '_' + id;
+        return PREFIX + '_notes_' + Base16.encode(uid)  + '_' + id;
     }
 
     /**
@@ -23,7 +23,7 @@ export namespace ESAnswersIndexNames {
      * @param uid The UID that owns this index.
      */
     export function createForUserDocs(uid: string) {
-        return PREFIX + Base16.encode(uid) + '_docs';
+        return PREFIX + '_docs_' + Base16.encode(uid);
     }
 
 }

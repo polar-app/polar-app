@@ -6,6 +6,7 @@ import {ISibling} from "polar-shared/src/util/Tuples";
 import {Numbers} from "polar-shared/src/util/Numbers";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {PageNumber} from "polar-shared/src/metadata/IPageMeta";
 
 export namespace PDFText {
 
@@ -13,18 +14,22 @@ export namespace PDFText {
     import IPDFTextWord = PDFTextWordMerger.IPDFTextWord;
 
     export interface IPDFTextContent {
-        readonly pageNum: number;
+        readonly pageNum: PageNumber;
         readonly extract: ReadonlyArray<ReadonlyArray<IPDFTextWord>>;
         readonly viewport: PageViewport;
     }
 
     export interface IOpts {
-        readonly maxPages?: number;
+        readonly maxPages?: PageNumber;
+
+        readonly skipPages?: ReadonlyArray<PageNumber>
     }
 
     export async function getText(docPathOrURL: PathOrURLStr,
                                   callback: (content: IPDFTextContent) => Promise<void>,
                                   opts: IOpts = {}) {
+
+        const skipPages = opts.skipPages || [];
 
         const docURL = await URLs.toURL(docPathOrURL);
 
@@ -35,6 +40,12 @@ export namespace PDFText {
         const numPages = Math.min(doc.numPages, opts.maxPages || Number.MAX_VALUE)
 
         for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+
+            if (skipPages.includes(pageNum)) {
+                // skip this page and don't index any text.
+                console.log("Skipping page: " + pageNum);
+                continue;
+            }
 
             const page = await doc.getPage(pageNum);
             const viewport = page.getViewport({scale: 1.0});
