@@ -47,18 +47,15 @@ async function getUserInput(property: string): Promise<string> {
     }); 
 }
 
-async function updateScripts() {
-    let packagej : PackageJson = readFile('package.json');
-    console.log(packagej.scripts?.eslint);
+async function updateScripts(force: boolean) {
+    console.log('nay');
 }
 
-// ! Workflow
 /**
  * @returns void
  */
-async function createNewModule(): Promise<void> {
-    updateScripts();
-    // console.log(process.argv.slice(2).pop());
+ async function createNewModule(): Promise<void> {
+    console.log('yay');
     // // ~ Get user input
     // const packageName = await getUserInput("Package Name: ");
     // const packageDescription = await getUserInput("Package Description: ");
@@ -91,5 +88,26 @@ async function createNewModule(): Promise<void> {
     // console.log("Package Created Successfully");
 }
 
+// ! Workflow
+async function workFlow() {
+    // ~ Extract Cli Arguments
+    const cliargs = process.argv.slice(2);
 
-export default createNewModule();
+    // ~ Check Proper Arguments
+    // ~ Incase of forced update
+    if (cliargs.length === 2 && cliargs.includes('--update') && cliargs.includes('--force')){
+        updateScripts(true);
+    }
+
+    // ~ Incase of simple update
+    else if (cliargs.length === 1 && cliargs[0] === '--update') { updateScripts(false); }
+
+    // ~ Incase of just create
+    else if (cliargs.length === 0) { createNewModule(); }
+    
+    // ~ any other void arguments
+    else { console.log('Sorry wrong Argument !!'); }
+
+}
+
+export default workFlow();
