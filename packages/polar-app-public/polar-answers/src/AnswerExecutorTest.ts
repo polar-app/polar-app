@@ -4,7 +4,7 @@ import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import { Arrays } from "polar-shared/src/util/Arrays";
 import {Mappers} from "polar-shared/src/util/Mapper";
 
-xdescribe("AnswerExecutor", async function() {
+describe("AnswerExecutor", async function() {
 
     this.timeout(600000);
 
@@ -74,7 +74,7 @@ xdescribe("AnswerExecutor", async function() {
 
     }
 
-    describe("basic", () => {
+    xdescribe("basic", () => {
 
         // TODO: this fails now with 'Sera drawn between 7 and 17 days after a second dose of' for some reason.
         xit("covid 1", async function() {
@@ -275,7 +275,7 @@ xdescribe("AnswerExecutor", async function() {
 
     });
 
-    describe("US history",async function() {
+    xdescribe("US history",async function() {
 
         it("US history chap 1 #1", async function() {
 
@@ -587,6 +587,152 @@ xdescribe("AnswerExecutor", async function() {
         })
     });
 
+    describe("Astronomy", async function(){
+        // Chapter 2
+        it("astronomy Chapter 2 #1", async function() {
+            await assertQuestionAndAnswer("What fraction of the sky can be seen from the North Pole?", [
+                "Approximately 50% like anywhere else on the planet.",
+                "Only half the sky can be seen from the North Pole.",
+                "Only half the sky can be seen from the North Pole, and that half does not change throughout the year."
+            ]);
+        })
+        it("astronomy Chapter 2 #2", async function() {
+            await assertQuestionAndAnswer("How quickly we can learn about events in the universe?", [
+                "As soon as the light from that universe reaches us",
+                "Information about the universe comes to us almost exclusively through various forms of light, and all such light travels at the speed of light"
+            ]);
+        })
+        it("astronomy Chapter 2 #3", async function() {
+            await assertQuestionAndAnswer("The Sun was once thought to be a planet. Explain why.", [
+                "In the geocentric system, all of the objects that moved in the sky relative to the fixed stars were considered to be “wanderers” and the Sun was no exception, so it was classified as a planet.",
+                "It was so because of the geocentric model, it was thought that the sun was just an object like other planets orbiting the earth",
+            ]);
+        })
+        it("astronomy Chapter 2 #4", async function() {
+            await assertQuestionAndAnswer("How far is the nearest galaxy from the sun?", [
+                "75,000 light-years from the Sun",
+                "75,000 light-years",
+                "75,000 light-years from the Sun in the direction of the constellation Sagittarius"
+            ]);
+        })
+        it("astronomy Chapter 2 #5", async function() {
+            await assertQuestionAndAnswer("What is an asterism?", [
+                "A prominent pattern or group of stars, typically having a popular name but smaller than a constellation.",
+                "Some people use the term asterism to denote an especially noticeable star pattern within a constellation"
+            ]);
+        })
+        it("astronomy Chapter 2 #6", async function() {
+            await assertQuestionAndAnswer("Give at least one of Aristotle's arguments why he considered the earth to be round", [
+                "First is the fact that as the Moon enters or emerges from Earth’s shadow during an eclipse of the Moon, the shape of the shadow seen on the Moon is always round",
+                "Travelers who go south a significant distance are able to observe stars that are not visible farther north",
+            ]);
+        })
+        it("astronomy Chapter 2 #7", async function() {
+            await assertQuestionAndAnswer("How are the zodiacal constellations different from the other constellations?", [
+                "Zodiac constellations are the constellations which give the zodiac signs to people. Constellations are groups of stars that form a specific pattern and are recognized by mythological figures and have names attributed to them.",
+                "Zodiac constellations are those through which the Sun appears to travel during the year"
+            ]);
+        })
+
+        // Chapter 3
+        it("astronomy Chapter 3 #1", async function() {
+            await assertQuestionAndAnswer("What is th orbital speed?", [
+                "the speed with which each planet moves along its ellipse",
+                "Kepler’s second law deals with the speed with which each planet moves along its ellipse, also known as its orbital speed."
+            ]);
+        })
+        it("astronomy Chapter 3 #2", async function() {
+            await assertQuestionAndAnswer("What's Newton's first law?", [
+                "Every object will continue to be in a state of rest or move at a constant speed in a straight line unless it is compelled to change by an outside force.",
+                "Unless it is compelled to change by an outside force, every object will continue to be in a state of rest or move at a constant speed"
+            ]);
+        })
+        it("astronomy Chapter 3 #3", async function() {
+            await assertQuestionAndAnswer("Which major planet has the largest semimajor axis?", [
+                "Jupiter",
+                "Jupiter, The Solar System's Largest Planet"
+            ]);
+        })
+        it("astronomy Chapter 3 #4", async function() {
+            await assertQuestionAndAnswer("Which major planet has the largest average orbital speed around the Sun?", [
+                "Mercury"
+            ]);
+        })
+        it("astronomy Chapter 3 #6", async function() {
+            await assertQuestionAndAnswer("Which major planet has the largest eccentricity?", [
+                "Mercury"
+            ]);
+        })
+        it("astronomy Chapter 3 #7", async function() {
+            await assertQuestionAndAnswer("What is angular momentum?", [
+                "a measure of the rotation of a body as it revolves around some fixed point",
+                "The angular momentum of an object is defined as the product of its mass, its velocity, and its distance from the fixed point around which it revolves."
+            ]);
+        })
+
+        // Chapter 4
+        it("astronomy Chapter 4 #1", async function() {
+            await assertQuestionAndAnswer("Why does longitude have no meaning at the North and South Poles?", [
+                "All longitude lines meet at the pole",
+                "All longitude lines meet at the poles; therefore, they have no defined longitude."
+            ]);
+        })
+        it("astronomy Chapter 4 #2", async function() {
+            await assertQuestionAndAnswer("What are the main advantage and disadvantage of apparent solar time?", [
+                "The main advantage is that we can tell the exact time with a sundial (assuming it's sunny). The disadvantage is that every locality has its own time."
+            ]);
+        })
+        it("astronomy Chapter 4 #3", async function() {
+            await assertQuestionAndAnswer("What's the rotation period of Earth?", [
+                "One day",
+                "1 day",
+                "A single day",
+                "1.00 day"
+            ]);
+        })
+        it("astronomy Chapter 4 #4", async function() {
+            await assertQuestionAndAnswer("Why is it difficult to construct a practical calendar based on the Moon’s cycle of phases?", [
+                "Because the period required by the moon to complete its cycle of phases is 29.5306 days",
+                "Because it's not a whole number"
+            ]);
+        })
+        it("astronomy Chapter 4 #5", async function() {
+            await assertQuestionAndAnswer("What is the phase of the Moon during a total solar eclipse?", [
+                "new moon",
+                "when the moon passes directly between the sun and Earth",
+                "A solar eclipse can only take place at the phase of new moon"
+            ]);
+        })
+        it("astronomy Chapter 4 #6", async function() {
+            await assertQuestionAndAnswer("Why is the leap year necessary?", [
+                "to help synchronize the calendar year with the solar year",
+                "The leap year is necessary to make the average length of the year in the Julian calendar 365.25 days."
+            ]);
+        })
+        it("astronomy Chapter 4 #7", async function() {
+            await assertQuestionAndAnswer("Why the year 1800 was not a leap year?", [
+                "a century year cannot be a leap year unless it is divisible by 400",
+                "because a century year cannot be a leap year unless it is divisible by 400",
+                "Only century years divisible by 400 would be leap years"
+            ]);
+        })
+        it("astronomy Chapter 4 #8", async function() {
+            await assertQuestionAndAnswer("Why don’t lunar eclipses happen during every full moon?", [
+                "because the Moon's orbit is tilted five degrees from Earth's orbit around the Sun",
+                "Because the moon's orbit around Earth lies in a slightly different plane than Earth's orbit around the sun",
+                "the Moon is sufficiently above or below the ecliptic plane to avoid an eclipse"
+            ]);
+        })
+        it("astronomy Chapter 4 #9", async function() {
+            await assertQuestionAndAnswer("Why some places have very small tides while in other places huge tides?", [
+                "the presence of land masses stopping the flow of water",
+                "the friction in the oceans and between oceans and the ocean floors",
+                "the rotation of Earth",
+                "the wind",
+                "the variable depth of the ocean."
+            ]);
+        })
+    })
 })
 
 
