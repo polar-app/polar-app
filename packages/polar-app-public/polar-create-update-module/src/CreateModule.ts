@@ -47,7 +47,7 @@ async function getUserInput(property: string): Promise<string> {
     }); 
 }
 
-async function updateScripts(force: boolean) {
+async function updateScripts(force: boolean): Promise<void> {
     console.log('nay');
 }
 
@@ -55,37 +55,36 @@ async function updateScripts(force: boolean) {
  * @returns void
  */
  async function createNewModule(): Promise<void> {
-    console.log('yay');
-    // // ~ Get user input
-    // const packageName = await getUserInput("Package Name: ");
-    // const packageDescription = await getUserInput("Package Description: ");
+    // ~ Get user input
+    const packageName = await getUserInput("Package Name: ");
+    const packageDescription = await getUserInput("Package Description: ");
 
-    // // ~ Check if package Already Exists
-    // if(fs.existsSync(`../${packageName}`)) { 
-    //     console.log("Package Already Exists");
-    //     return;
-    // }
+    // ~ Check if package Already Exists
+    if(fs.existsSync(`../${packageName}`)) { 
+        console.log("Package Already Exists");
+        return;
+    }
 
-    // // ~ Extract file contents
-    // const packageJsonFile = readFile('package.json');
-    // const tsconfig = readFile('tsconfig.json');
+    // ~ Extract file contents
+    const packageJsonFile = readFile('package.json');
+    const tsconfig = readFile('tsconfig.json');
 
-    // // ~ Apply User Input to Package.json
-    // packageJsonFile.name = packageName;
-    // packageJsonFile.description = packageDescription;
+    // ~ Apply User Input to Package.json
+    packageJsonFile.name = packageName;
+    packageJsonFile.description = packageDescription;
 
-    // // ~ Stringfy File data to write
-    // let packageFile = JSON.stringify(packageJsonFile, null, 2);
-    // let tsconfigFile = JSON.stringify(tsconfig, null, 2);
+    // ~ Stringfy File data to write
+    let packageFile = JSON.stringify(packageJsonFile, null, 2);
+    let tsconfigFile = JSON.stringify(tsconfig, null, 2);
 
-    // // ~ Create Directory & Copy Over files
-    // await fs.promises.mkdir(`../${packageName}`);
-    // await fs.promises.mkdir(`../${packageName}/src`);
-    // await fs.promises.writeFile(`../${packageName}/package.json`, packageFile);
-    // await fs.promises.writeFile(`../${packageName}/tsconfig.json`, tsconfigFile);
+    // ~ Create Directory & Copy Over files
+    await fs.promises.mkdir(`../${packageName}`);
+    await fs.promises.mkdir(`../${packageName}/src`);
+    await fs.promises.writeFile(`../${packageName}/package.json`, packageFile);
+    await fs.promises.writeFile(`../${packageName}/tsconfig.json`, tsconfigFile);
 
-    // // ~ Return Success Message
-    // console.log("Package Created Successfully");
+    // ~ Return Success Message
+    console.log("Package Created Successfully");
 }
 
 // ! Workflow
