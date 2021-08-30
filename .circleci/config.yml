@@ -96,7 +96,7 @@ commands:
       # ! Compile all Typescript Packages
       - run:
           name: Lerna Compile
-          command: npx lerna run compile
+          command: npx lerna run compile --no-bail
 
       # ? Debug step for checking if there are any duplicate packages
       - run:
