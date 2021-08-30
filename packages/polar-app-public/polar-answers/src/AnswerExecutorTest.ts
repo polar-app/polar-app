@@ -1,21 +1,20 @@
 import {assert} from 'chai';
 import {AnswerExecutor} from "./AnswerExecutor";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
-import { Arrays } from "polar-shared/src/util/Arrays";
+import {Arrays} from "polar-shared/src/util/Arrays";
 import {Mappers} from "polar-shared/src/util/Mapper";
 
-xdescribe("AnswerExecutor", async function() {
+xdescribe("AnswerExecutor", async function () {
 
     this.timeout(600000);
 
-    async function getUID() {
+    const app = FirebaseAdmin.app()
 
-        const app = FirebaseAdmin.app()
-
+    async function getUID(forEmail = 'burton@inputneuron.io') {
         const auth = app.auth();
-        const user = await auth.getUserByEmail('burton@inputneuron.io')
+        const user = await auth.getUserByEmail(forEmail)
 
-        if (! user) {
+        if (!user) {
             throw new Error("no user");
         }
 
@@ -23,9 +22,9 @@ xdescribe("AnswerExecutor", async function() {
 
     }
 
-    async function executeQuestion(question: string) {
+    async function executeQuestion(question: string, forEmail = 'burton@inputneuron.io') {
 
-        const uid = await getUID();
+        const uid = await getUID(forEmail);
 
         const response = await AnswerExecutor.exec({
             uid,
@@ -56,7 +55,7 @@ xdescribe("AnswerExecutor", async function() {
                 .map(current => current.trim())
                 .map(current => {
                     if (current.endsWith(".")) {
-                        return current.substring(0, current.length -1);
+                        return current.substring(0, current.length - 1);
                     }
                     return current;
                 })
@@ -70,14 +69,14 @@ xdescribe("AnswerExecutor", async function() {
         }
 
         assert.ok(expectedAnswer.map(canonicalize).includes(canonicalize(answer)),
-            `Answer '${answer}' to question '${question}' was not expected: ` + JSON.stringify(expectedAnswer));
+            `Answer '${answer}' to question '${question}' was not expected. Expected answers: ` + JSON.stringify(expectedAnswer));
 
     }
 
     xdescribe("basic", () => {
 
         // TODO: this fails now with 'Sera drawn between 7 and 17 days after a second dose of' for some reason.
-        xit("covid 1", async function() {
+        xit("covid 1", async function () {
 
             const answer = await executeQuestion("What happened after a single dose of BNT162b2 vaccine?");
 
@@ -85,7 +84,7 @@ xdescribe("AnswerExecutor", async function() {
 
         });
 
-        xit("covid 2", async function() {
+        xit("covid 2", async function () {
             // TODO: should work
 
             const answer = await executeQuestion("What do two doses of SARS-CoV-2 vaccination induce?");
@@ -94,7 +93,7 @@ xdescribe("AnswerExecutor", async function() {
 
         });
 
-        xit("covid 3", async function() {
+        xit("covid 3", async function () {
 
             const answer = await executeQuestion("What neutralized the prototype B virus?");
 
@@ -119,7 +118,7 @@ xdescribe("AnswerExecutor", async function() {
         });
 
 
-        it("bigtable 1", async function() {
+        xit("bigtable 1", async function () {
 
             const answer = await executeQuestion("Is Bigtable relational?");
 
@@ -127,7 +126,7 @@ xdescribe("AnswerExecutor", async function() {
 
         });
 
-        it("bigtable single-row transactions", async function() {
+        xit("bigtable single-row transactions", async function () {
 
             const answer = await executeQuestion("Does Bigtable support single-row transactions?");
 
@@ -136,7 +135,7 @@ xdescribe("AnswerExecutor", async function() {
         });
 
 
-        it("bigtable general transactions", async function() {
+        xit("bigtable general transactions", async function () {
 
             const answer = await executeQuestion("Does Bigtable support general transactions?");
 
@@ -144,7 +143,7 @@ xdescribe("AnswerExecutor", async function() {
 
         });
 
-        xit("TODO: bigtable type of transactions", async function() {
+        xit("TODO: bigtable type of transactions", async function () {
 
             // TODO: not supported yet. I need to extend examples and examples_context here
 
@@ -154,7 +153,7 @@ xdescribe("AnswerExecutor", async function() {
 
         });
 
-        it("bigtable unknown 1", async function() {
+        it("bigtable unknown 1", async function () {
 
             const answer = await executeQuestion("Is Bigtable a foobar?");
 
@@ -162,7 +161,7 @@ xdescribe("AnswerExecutor", async function() {
 
         });
 
-        it("bigtable store logs ", async function() {
+        it("bigtable store logs ", async function () {
 
             // The shingle system is extracting this like (from page 3):
             //
@@ -196,7 +195,7 @@ xdescribe("AnswerExecutor", async function() {
         })
 
 
-        it("bigtable cluster mgmt system ", async function() {
+        it("bigtable cluster mgmt system ", async function () {
 
             // When a master is started by the cluster management system, it needs
             // to discover the current tablet assignments before it can change
@@ -229,7 +228,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("bigtable GA 1", async function() {
+        it("bigtable GA 1", async function () {
 
             // NOTE this test might be overfit because we provide it as an example to the OpenAI client
 
@@ -240,7 +239,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("bigtable GA 2", async function() {
+        it("bigtable GA 2", async function () {
 
             // NOTE this test might be overfit because we provide it as an example to the OpenAI client
 
@@ -250,7 +249,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("astronomy #1", async function() {
+        it("astronomy #1", async function () {
 
             await assertQuestionAndAnswer("Compare Mars with Mercury and the Moon in terms of overall properties.  What are the similarities and differences?", [
                 "Mars is similar to Mercury and the Moon in that it has no atmosphere, and its surface is heavily cratered.",
@@ -261,7 +260,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("astronomy #2", async function() {
+        it("astronomy #2", async function () {
 
             await assertQuestionAndAnswer("Contrast the mountains on Mars and Venus with those on Earth and the Moon.", [
                 "The mountains on Mars and Venus are much higher than those on Earth and the Moon.",
@@ -275,9 +274,9 @@ xdescribe("AnswerExecutor", async function() {
 
     });
 
-    xdescribe("US history",async function() {
+    xdescribe("US history", async function () {
 
-        it("US history chap 1 #1", async function() {
+        it("US history chap 1 #1", async function () {
 
             await assertQuestionAndAnswer("Which native peoples built homes in cliff dwellings that still exist?", [
                 "Anasazi",
@@ -286,7 +285,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("US history chap 1 #2", async function() {
+        it("US history chap 1 #2", async function () {
 
             await assertQuestionAndAnswer("Which culture developed the first writing system in the Western Hemisphere?", [
                 "Olmec",
@@ -295,7 +294,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("US history chap 1 #3", async function() {
+        it("US history chap 1 #3", async function () {
 
             await assertQuestionAndAnswer("Which culture developed a road system rivaling that of the Romans?", [
                 "Inca",
@@ -304,7 +303,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("US history chap 1 #4", async function() {
+        it("US history chap 1 #4", async function () {
 
             await assertQuestionAndAnswer("What were the major differences between the societies of the Aztec, Inca, and Maya and the Native peoples of North America?", [
                 "North American Indians were fewer in number, more widely dispersed, and did not have the population size or organized social structures of the Maya, Aztec, or Inca societies.",
@@ -316,7 +315,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("US history chap 1 #5", async function() {
+        it("US history chap 1 #5", async function () {
 
             await assertQuestionAndAnswer("What was the series of attempts by Christian armies to retake the Holy Lands from Muslims was known as?", [
                 "The Crusades."
@@ -324,7 +323,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("US history chap 1 #6", async function() {
+        it("US history chap 1 #6", async function () {
 
             // TODO not sure about this one.  Need to review.
             await assertQuestionAndAnswer("Which city became wealthy by trading with the East?", [
@@ -333,7 +332,7 @@ xdescribe("AnswerExecutor", async function() {
             ]);
 
         })
-        it("US history chap 1 #7", async function() {
+        it("US history chap 1 #7", async function () {
 
             await assertQuestionAndAnswer("In 1492, the Spanish forced what two religious groups to either convert or leave.", [
                 "Muslims and Jews",
@@ -341,7 +340,7 @@ xdescribe("AnswerExecutor", async function() {
             ]);
 
         })
-        it("US history chap 1 #8", async function() {
+        it("US history chap 1 #8", async function () {
 
             await assertQuestionAndAnswer("How did European feudal society operate?", [
                 "Nobility held lands from the Crown in exchange for military service",
@@ -353,7 +352,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("US history chap 1 #9", async function() {
+        it("US history chap 1 #9", async function () {
 
             await assertQuestionAndAnswer("Which city became a leading center for Muslim scholarship and trade?", [
                 "timbuktu",
@@ -362,7 +361,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("US history chap 2 #1", async function() {
+        it("US history chap 2 #1", async function () {
 
             await assertQuestionAndAnswer("Which country initiated the era of Atlantic exploration?", [
                 "Portugal",
@@ -371,7 +370,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("US history chap 2 #2", async function() {
+        it("US history chap 2 #2", async function () {
 
             // TODO: this might be wrong. It's also answering England which is arguably true.
             await assertQuestionAndAnswer("Which country established the first colonies in the Americas?", [
@@ -382,7 +381,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("US history chap 2 #3", async function() {
+        it("US history chap 2 #3", async function () {
 
             await assertQuestionAndAnswer("Where did Christopher Columbus first land?", [
                 "The Bahamas",
@@ -392,7 +391,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("US history chap 2 #4", async function() {
+        it("US history chap 2 #4", async function () {
 
             await assertQuestionAndAnswer("Why did the authors of probanzas de méritos choose to write in the way that they did?", [
                 "To convince the Spanish crown to fund more voyages",
@@ -400,7 +399,7 @@ xdescribe("AnswerExecutor", async function() {
             ]);
 
         })
-        xit("US history chap 2 #5", async function() {
+        xit("US history chap 2 #5", async function () {
             // this book gives the impression that the protestant reformation began in Spain, it didn't it was
             // intoduced by Martin Luthor in 1517 in GERMANY!
             // this book is making me question what the hell are they teaching americans about history over there
@@ -412,7 +411,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("US history chap 2 #6", async function() {
+        it("US history chap 2 #6", async function () {
 
             // TODO: it's giving this answer which might be wrong:
             // to achieve a lasting peace with the Catholic nations of Spain and France
@@ -427,7 +426,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("US history chap 2 #8", async function() {
+        it("US history chap 2 #8", async function () {
 
             await assertQuestionAndAnswer("Why didn’t England make stronger attempts to colonize the New World before the late sixteenth to early seventeenth century?", [
                 "English attention was turned to internal struggles and the encroaching Catholic menace to Scotland and Ireland",
@@ -437,7 +436,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("US history chap 2 #9", async function() {
+        it("US history chap 2 #9", async function () {
 
             await assertQuestionAndAnswer("What was the main goal of the French in colonizing the Americas?", [
                 "Trading, especially for furs",
@@ -448,7 +447,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("US history chap 2 #11", async function() {
+        it("US history chap 2 #11", async function () {
 
             // TODO not sure about this one.  The word encomiendas might be the
             // beginning of a chapter... not just plain text.
@@ -479,7 +478,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("US history chap 2 #13", async function() {
+        it("US history chap 2 #13", async function () {
 
             await assertQuestionAndAnswer("Why did diseases like smallpox affect Native Americans so badly?", [
                 "Native Americans had no immunity to European diseases",
@@ -490,7 +489,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("US history chap 3 #2", async function() {
+        it("US history chap 3 #2", async function () {
 
             await assertQuestionAndAnswer("Why did the Spanish build Castillo de San Marcos?", [
                 "To defend against imperial challengers",
@@ -500,7 +499,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("US history chap 3 #3", async function() {
+        it("US history chap 3 #3", async function () {
 
             await assertQuestionAndAnswer("How did the Pueblo attempt to maintain their autonomy in the face of Spanish settlement?", [
                 "Through revolt",
@@ -509,7 +508,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("US history chap 3 #4", async function() {
+        it("US history chap 3 #4", async function () {
 
             await assertQuestionAndAnswer("What was patroonship?", [
                 "A Dutch system of granting tracts of land in New Netherland to encourage colonization",
@@ -522,14 +521,14 @@ xdescribe("AnswerExecutor", async function() {
 
         })
         //
-        it("US history chap 3 #5", async function() {
+        it("US history chap 3 #5", async function () {
 
             await assertQuestionAndAnswer("Which religious order joined the French settlement in Canada and tried to convert the natives to Christianity?", [
                 "Jesuits"
             ]);
 
         })
-        it("US history chap 3 #7", async function() {
+        it("US history chap 3 #7", async function () {
 
             await assertQuestionAndAnswer("What was the most lucrative product of the Chesapeake colonies?", [
                 "tobacco",
@@ -539,7 +538,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("US history chap 3 #8", async function() {
+        it("US history chap 3 #8", async function () {
 
             await assertQuestionAndAnswer("What was the primary cause of Bacon’s Rebellion ?", [
                 "former indentured servants wanted more opportunities to expand their territory",
@@ -550,7 +549,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("US history chap 3 #9", async function() {
+        it("US history chap 3 #9", async function () {
 
             await assertQuestionAndAnswer("The founders of the Plymouth colony were?", [
                 "Puritans",
@@ -562,7 +561,7 @@ xdescribe("AnswerExecutor", async function() {
 
         })
 
-        it("US history chap 3 #12", async function() {
+        it("US history chap 3 #12", async function () {
 
             await assertQuestionAndAnswer("What was the Middle Passage?", [
                 "The transatlantic journey that enslaved Africans made to America",
@@ -574,7 +573,7 @@ xdescribe("AnswerExecutor", async function() {
             ]);
 
         })
-        it("US history chap 3 #14", async function() {
+        it("US history chap 3 #14", async function () {
 
             await assertQuestionAndAnswer("How did European muskets change life for native peoples in the Americas?", [
                 "Tribes with ties to Europeans had a distinct advantage in wars",
@@ -587,7 +586,7 @@ xdescribe("AnswerExecutor", async function() {
         })
     });
 
-    describe("Astronomy", async function(){
+    xdescribe("Astronomy", async function(){
         // Chapter 2
         it("astronomy Chapter 2 #1", async function() {
             await assertQuestionAndAnswer("What fraction of the sky can be seen from the North Pole?", [
@@ -733,6 +732,49 @@ xdescribe("AnswerExecutor", async function() {
             ]);
         })
     })
+    xdescribe('Elmer Candy Corporation', async () => {
+        it("Who founded the Elmer Candy Corporation?", async function () {
+            await assertQuestionAndAnswer("Who founded the Elmer Candy Corporation?", [
+                "Christopher Henry Miller"
+            ]);
+        })
+
+        it("When did the Elmer brothers came up with cornmeal based cheese curl?", async function () {
+            await assertQuestionAndAnswer("When did the Elmer brothers came up with cornmeal based cheese curl?", [
+                "In 1936."
+            ]);
+        })
+
+        it('When was the CheeWees trademark registered?', async () => {
+            await assertQuestionAndAnswer("When was the CheeWees trademark registered?", [
+                "__UNKNOWN__"
+            ]);
+        })
+        it('president of Elmer Candy Corporation', async () => {
+            await assertQuestionAndAnswer("president of Elmer Candy Corporation", [
+                "Robert Nelson"
+            ]);
+        })
+    });
+
+    xdescribe('Visa Policy of Venezuela', async () => {
+        it("Which are the visa exempt countries for entry in Venezuela?", async function () {
+            // @TODO the right answer is a list of ~60 jurisdictions where "All European Union citizens"
+            // @TODO is the first element of the list. OpenAI thinks it's the only right answer though. Figure out why.
+            await assertQuestionAndAnswer("Which are the visa exempt countries for entry in Venezuela?", [
+                'All European Union citizens',
+                'Andorra',
+                'Antigua and Barbuda'
+                // and ~60 more...
+            ]);
+        })
+
+        it("How long is the Visa exemption for Venezuela for holders of passports from Turkey?", async function () {
+            await assertQuestionAndAnswer("How long is the Visa exemption for Venezuela for holders of passports from Turkey?", [
+                '30 days'
+            ]);
+        })
+    });
 })
 
 

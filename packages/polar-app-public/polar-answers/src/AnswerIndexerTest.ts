@@ -1,19 +1,20 @@
-import { FilePaths } from "polar-shared/src/util/FilePaths";
+import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {AnswerIndexer} from "./AnswerIndexer";
+import * as path from "path";
 import {PageNumber} from "polar-shared/src/metadata/IPageMeta";
 
 xdescribe("AnswerIndexer", async function() {
 
     this.timeout(30000000);
 
+    const app = FirebaseAdmin.app()
+
     interface IOpts {
         readonly skipPages?: ReadonlyArray<PageNumber>;
     }
 
     async function getUserID() {
-
-        const app = FirebaseAdmin.app()
 
         const auth = app.auth();
         const user = await auth.getUserByEmail('burton@inputneuron.io')
@@ -27,6 +28,7 @@ xdescribe("AnswerIndexer", async function() {
     }
 
     async function doIndexDoc(path: string, docID: string, opts: IOpts = {}) {
+        console.log(`Indexing document from path ${path} with docID ${docID} inside ES index`);
 
         const url = FilePaths.toURL(path);
 
@@ -43,10 +45,10 @@ xdescribe("AnswerIndexer", async function() {
 
     }
 
-    it("basic", async function() {
+    xit("basic", async function () {
 
-        await doIndexDoc("/Users/burton/projects/polar-app/packages/polar-app-public/polar-answers/data/bigtable.pdf", '1234')
-        await doIndexDoc("/Users/burton/projects/polar-app/packages/polar-app-public/polar-answers/data/two-doses-covid-vaccine.pdf", '2345')
+        // await doIndexDoc("data/bigtable.pdf", '1234')
+        // await doIndexDoc("data/two-doses-covid-vaccine.pdf", '2345')
 
         // await doIndexDoc("/Users/burton/us-history.pdf", '3456')
         // await doIndexDoc("/Users/burton/astronomy.pdf", '4567')
@@ -87,6 +89,21 @@ xdescribe("AnswerIndexer", async function() {
 
         await doIndexDoc("/Users/burton/history-in-the-making-united-states.pdf", '78910')
 
+
     });
+
+    it('Index Elmer_Candy_Corporation.pdf', async () => {
+        await doIndexDoc(
+            path.resolve(__dirname, '../data/Elmer_Candy_Corporation.pdf'),
+            '78911',
+        )
+    })
+
+    it('index Visa_policy_of_Venezuela.pdf', async () => {
+        await doIndexDoc(
+            path.resolve(__dirname, '../data/Visa_policy_of_Venezuela.pdf'),
+            '78912',
+        )
+    })
 
 })
