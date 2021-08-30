@@ -1,4 +1,3 @@
-import { existsSync } from 'fs';
 import fs from 'fs';
 import * as readline from 'readline';
 
@@ -47,17 +46,37 @@ async function getUserInput(property: string): Promise<string> {
     }); 
 }
 
+/**
+ * updateScripts
+ * @param force boolean
+ * @returns void
+ */
 async function updateScripts(force: boolean): Promise<void> {
-    console.log('nay');
+    await fs.promises.readFile('package.json').then(data =>{
+        let content = JSON.parse(data.toString('utf-8'));
+        if (force) {
+            content.scripts.test = 'mocha --timeout 20000 --exit src/**/*Test.js';
+            content.scripts.eslint = 'figlet ${npm_package_name} && eslint -c ../../../.eslintrc.json .';
+            content.scripts.compile = 'yarn run eslint && tsc';
+        }
+        else
+        {
+            if (content.scripts.test) { content.scripts.test = 'mocha --timeout 20000 --exit src/**/*Test.js'; }
+            if (content.scripts.eslint) { content.scripts.eslint = 'figlet ${npm_package_name} && eslint -c ../../../.eslintrc.json .'; }
+            if (content.scripts.compile) { content.scripts.compile = 'yarn run eslint && tsc'; }
+        }
+        fs.promises.writeFile('package.json', JSON.stringify(content, null, 2));
+    });
 }
 
 /**
+ * createNewModule
  * @returns void
  */
  async function createNewModule(): Promise<void> {
     // ~ Get user input
-    const packageName = await getUserInput("Package Name: ");
-    const packageDescription = await getUserInput("Package Description: ");
+    const packageName: string = await getUserInput("Package Name: ");
+    const packageDescription: string = await getUserInput("Package Description: ");
 
     // ~ Check if package Already Exists
     if(fs.existsSync(`../${packageName}`)) { 
@@ -66,22 +85,18 @@ async function updateScripts(force: boolean): Promise<void> {
     }
 
     // ~ Extract file contents
-    const packageJsonFile = readFile('package.json');
-    const tsconfig = readFile('tsconfig.json');
+    const packageJsonFile: PackageJson = readFile('package.json');
+    const tsconfig: object = readFile('tsconfig.json');
 
     // ~ Apply User Input to Package.json
     packageJsonFile.name = packageName;
     packageJsonFile.description = packageDescription;
 
-    // ~ Stringfy File data to write
-    let packageFile = JSON.stringify(packageJsonFile, null, 2);
-    let tsconfigFile = JSON.stringify(tsconfig, null, 2);
-
     // ~ Create Directory & Copy Over files
     await fs.promises.mkdir(`../${packageName}`);
     await fs.promises.mkdir(`../${packageName}/src`);
-    await fs.promises.writeFile(`../${packageName}/package.json`, packageFile);
-    await fs.promises.writeFile(`../${packageName}/tsconfig.json`, tsconfigFile);
+    await fs.promises.writeFile(`../${packageName}/package.json`, JSON.stringify(packageJsonFile, null, 2));
+    await fs.promises.writeFile(`../${packageName}/tsconfig.json`, JSON.stringify(tsconfig, null, 2));
 
     // ~ Return Success Message
     console.log("Package Created Successfully");
