@@ -89,24 +89,21 @@ async function updateScripts(force: boolean) {
 }
 
 // ! Workflow
-async function workFlow() {
-    // ~ Extract Cli Arguments
-    const cliargs = process.argv.slice(2);
+async function workFlow(): Promise<void> {
+    // ~ Extract Cli Flags
+    const cliargs: Array<string> = process.argv.slice(2);
 
-    // ~ Check Proper Arguments
-    // ~ Incase of forced update
-    if (cliargs.length === 2 && cliargs.includes('--update') && cliargs.includes('--force')){
-        updateScripts(true);
-    }
+    // ~ Incase of update & create (--update --force)
+    if (cliargs.length === 2 && cliargs.includes('--update') && cliargs.includes('--force')){ updateScripts(true); }
 
-    // ~ Incase of simple update
+    // ~ Incase of update only (--update)
     else if (cliargs.length === 1 && cliargs[0] === '--update') { updateScripts(false); }
 
-    // ~ Incase of just create
+    // ~ Incase of just create (no cli flags)
     else if (cliargs.length === 0) { createNewModule(); }
     
-    // ~ any other void arguments
-    else { console.log('Sorry wrong Argument !!'); }
+    // ~ any other incorrect flag
+    else { console.log('Sorry Wrong Flag !!'); }
 
 }
 
