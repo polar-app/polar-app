@@ -4,7 +4,7 @@ import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import { Arrays } from "polar-shared/src/util/Arrays";
 import {Mappers} from "polar-shared/src/util/Mapper";
 
-describe("AnswerExecutor", async function() {
+xdescribe("AnswerExecutor", async function() {
 
     this.timeout(600000);
 
