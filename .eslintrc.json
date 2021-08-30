@@ -11,7 +11,8 @@
   },
   "rules": {
     "@typescript-eslint/no-namespace": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "error",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "no-use-before-define": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "error",
     "curly": "error",
