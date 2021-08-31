@@ -10,13 +10,13 @@ import {BlockContentEditable} from "../../contenteditable/BlockContentEditable";
 import {BlockAnnotationAction, BlockAnnotationActionsWrapper, useSharedAnnotationBlockActions} from "./BlockAnnotationActions";
 import {Flashcards} from "../../../metadata/Flashcards";
 import CachedIcon from '@material-ui/icons/Cached';
-import {useAnnotationBlockManager} from "../../NoteUtils";
 import {AnnotationContentType, IFlashcardAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {ITextConverters} from "../../../annotation_sidebar/DocAnnotations";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {Refs} from "polar-shared/src/metadata/Refs";
 import {Texts} from "polar-shared/src/metadata/Texts";
 import {TextType} from "polar-shared/src/metadata/TextType";
+import {useAnnotationBlockManager} from "../../HighlightNotesUtils";
 
 interface IProps extends BlockEditorGenericProps {
     readonly annotation: FlashcardAnnotationContent;
