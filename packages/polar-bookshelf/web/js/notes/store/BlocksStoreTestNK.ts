@@ -25,9 +25,11 @@ import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {BlockTextContentUtils} from "../NoteUtils";
 import {DateContent} from "../content/DateContent";
-import {DOMBlocks} from "../contenteditable/DOMBlocks";
-import {IBlocksStore} from "./IBlocksStore";
-import {CursorPositions} from "../contenteditable/CursorPositions";
+import {PagemarkType} from "polar-shared/src/metadata/PagemarkType";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {Texts} from "polar-shared/src/metadata/Texts";
+import {TextType} from "polar-shared/src/metadata/TextType";
+import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 
 function assertTextBlock(content: BlockContent): asserts content is MarkdownContent | NameContent {
 
@@ -208,7 +210,6 @@ describe('BlocksStore', function() {
         assertJSON(store, {
             "_expanded": {},
             "_hasSnapshot": false,
-            "_indexByDocumentID": {},
             "_index": {
                 "102": {
                     "_content": {
@@ -511,7 +512,7 @@ describe('BlocksStore', function() {
                         "_mutator": DeviceIDManager.TEST_DEVICE_ID,
                         "_type": 'name',
                     },
-                    "_items":  PositionalArrays.create([
+                    "_items": PositionalArrays.create([
                         '114image',
                         '115',
                     ]),
@@ -555,7 +556,144 @@ describe('BlocksStore', function() {
                     },
                     "_items": {}, 
                     "_mutation": 0,
-                }
+                },
+                "2020document": {
+                    "_id": '2020document',
+                    "_nspace": "ns101",
+                    "_uid": "123",
+                    "_parents": [],
+                    "_root": '2020document',
+                    "_created": "2012-03-02T11:38:49.321Z",
+                    "_updated": "2012-03-02T11:38:49.321Z",
+                    "_content": {
+                        "_type": 'document',
+                        "_docInfo": {
+                            "flagged": false,
+                            "nrPages": 55,
+                            "archived": false,
+                            "progress": 55,
+                            "properties": {},
+                            "attachments": {},
+                            "fingerprint": '2020document',
+                            "pagemarkType": PagemarkType.SINGLE_COLUMN,
+                            "title": "Potato document",
+                        },
+                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    },
+                    "_items": PositionalArrays.create([
+                        '2021text',
+                        '2022area',
+                    ]), 
+                    "_mutation": 0,
+                },
+                "2021text": {
+                    "_id": '2021text',
+                    "_nspace": 'ns101',
+                    "_uid": '123',
+                    "_parent": '2020document',
+                    "_parents": ['2020document'],
+                    "_root": '2020document',
+                    "_created": "2012-03-02T11:38:49.321Z",
+                    "_updated": "2012-03-02T11:38:49.321Z",
+                    "_content": {
+                        "_type": AnnotationContentType.TEXT_HIGHLIGHT,
+                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                        "_docID": '2020document',
+                        "_pageNum": 15,
+                        "_value": {
+                            "created": "2012-03-02T11:38:49.321Z",
+                            "id": '15',
+                            "guid": '15',
+                            "text": Texts.create('text highlight content', TextType.MARKDOWN),
+                            "notes": {},
+                            "rects": {},
+                            "images": {},
+                            "questions": {},
+                            "flashcards": {},
+                            "lastUpdated": "2012-03-02T11:38:49.321Z",
+                            "textSelections": {},
+                        }
+                    },
+                    "_items": {}, 
+                    "_mutation": 0,
+                },
+                "2022area": {
+                    "_id": '2022area',
+                    "_nspace": 'ns101',
+                    "_uid": '123',
+                    "_parent": '2020document',
+                    "_parents": ['2020document'],
+                    "_root": '2020document',
+                    "_created": "2012-03-02T11:38:49.321Z",
+                    "_updated": "2012-03-02T11:38:49.321Z",
+                    "_content": {
+                        "_type": AnnotationContentType.AREA_HIGHLIGHT,
+                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                        "_docID": '2020document',
+                        "_pageNum": 15,
+                        "_value": {
+                            "created": "2012-03-02T11:38:49.321Z",
+                            "id": '15',
+                            "guid": '15',
+                            "notes": {},
+                            "rects": {},
+                            "images": {},
+                            "questions": {},
+                            "flashcards": {},
+                            "lastUpdated": "2012-03-02T11:38:49.321Z",
+                        }
+                    },
+                    "_items": PositionalArrays.create(['2023flashcard', '2024']), 
+                    "_mutation": 0,
+                },
+                "2023flashcard": {
+                    "_id": '2023flashcard',
+                    "_nspace": "ns101",
+                    "_uid": "123",
+                    "_parent": '2022area',
+                    "_parents": ['2020document', '2022area'],
+                    "_root": '2020document',
+                    "_created": "2012-03-02T11:38:49.321Z",
+                    "_updated": "2012-03-02T11:38:49.321Z",
+                    "_content": {
+                        "_type": AnnotationContentType.FLASHCARD,
+                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                        "_docID": '2020document',
+                        "_pageNum": 15,
+                        "_value": {
+                            "created": "2012-03-02T11:38:49.321Z",
+                            "id": '15',
+                            "guid": '15',
+                            "lastUpdated": "2012-03-02T11:38:49.321Z",
+                            "type": FlashcardType.BASIC_FRONT_BACK,
+                            "fields": {
+                                "front": Texts.create('front', TextType.MARKDOWN),
+                                "back": Texts.create('back', TextType.MARKDOWN),
+                            },
+                            "archetype": 'whatever'
+                        }
+                    },
+                    "_items": {}, 
+                    "_mutation": 0,
+                },
+                "2024": {
+                    "_id": '2024',
+                    "_nspace": 'ns101',
+                    "_uid": '123',
+                    "_parent": '2022area',
+                    "_parents": ['2020document', '2022area'],
+                    "_root": '2020document',
+                    "_created": "2012-03-02T11:38:49.321Z",
+                    "_updated": "2012-03-02T11:38:49.321Z",
+                    "_content": {
+                        "_type": 'markdown',
+                        "_data": 'Annotation markdown child',
+                        "_links": [],
+                        "_mutator": DeviceIDManager.TEST_DEVICE_ID,
+                    },
+                    "_items": {},
+                    "_mutation": 0,
+                },
             },
             "_indexByName": {
                 "canada": "109",
@@ -564,6 +702,10 @@ describe('BlocksStore', function() {
                 "winston churchill": "112",
                 "world war ii": "102",
                 "image parent": "113",
+                "potato document": "2020document",
+            },
+            "_indexByDocumentID": {
+                "2020document": "2020document",
             },
             "_activeBlocksIndex": {},
             "_reverse": {
@@ -970,6 +1112,36 @@ describe('BlocksStore', function() {
             assert.equal(indentResult[0].error!, 'no-parent');
         });
 
+        it("should not allow unindenting a child of an annotation", () => {
+            const unIndentResult = store.unIndentBlock('2020document', '2024');
+
+            assert.equal(unIndentResult[0].error!, 'grandparent-is-document');
+        });
+
+        it("Should not allow unindenting a highlight block", () => {
+            const unIndentResult = store.unIndentBlock('2020document', '2022area');
+
+            assert.equal(unIndentResult[0].error!, 'no-parent-block-parent');
+        });
+
+        it("Should not allow indenting text highlight blocks", () => {
+            const indentResult = store.indentBlock('2020document', '2021text');
+
+            assert.equal(indentResult[0].error!, 'annotation-block');
+        });
+
+        it("Should not allow indenting area highlight blocks", () => {
+            const indentResult = store.indentBlock('2020document', '2022area');
+
+            assert.equal(indentResult[0].error!, 'annotation-block');
+        });
+
+        it("Should not allow indenting flashcard blocks", () => {
+            const indentResult = store.indentBlock('2020document', '2023flashcard');
+
+            assert.equal(indentResult[0].error!, 'annotation-block');
+        });
+
         it("should work with multiple blocks selected and update the parents of nested children", () => {
             store = createStore();
             store.computeLinearTree(root).forEach(block => store.expanded[block] = true);
@@ -1114,6 +1286,11 @@ describe('BlocksStore', function() {
             "113",
             "114image",
             "115",
+            "2020document",
+            "2021text",
+            "2022area",
+            "2023flashcard",
+            "2024",
         ]), "The store index should have the correct blocks");
 
         assertJSON(Object.keys(store.indexByName), [
@@ -1123,6 +1300,7 @@ describe('BlocksStore', function() {
             "germany",
             "winston churchill",
             "image parent",
+            "potato document",
         ]);
 
         assertJSON(Arrays.first(Object.values(store.index))?.toJSON(), {
