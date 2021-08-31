@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
-    "compile": "tsc"
+    "compile": "tsc",
+    "compile:watch": "tsc --watch"
   },
   "keywords": [],
   "author": "",
