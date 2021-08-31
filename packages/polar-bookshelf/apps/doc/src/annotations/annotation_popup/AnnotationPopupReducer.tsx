@@ -1,10 +1,23 @@
+import {TextHighlightAnnotationContent} from "../../../../../web/js/notes/content/AnnotationContent";
+import {Block} from "../../../../../web/js/notes/store/Block";
 import {AutoFlashcardHandlerState} from "../../../../../web/js/annotation_sidebar/AutoFlashcardHook";
 import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
 import {ActiveSelectionEvent} from "../../../../../web/js/ui/popup/ActiveSelections";
 import {AnnotationPopupActionEnum} from "./AnnotationPopupContext";
 
+
+export type IDocMetaAnnotation = {
+    type: 'docMeta';
+    annotation: IDocAnnotation;
+};
+
+export type IBlockAnnotation = {
+    type: 'block',
+    annotation: Block<TextHighlightAnnotationContent>
+};
+
 type IAnnotationPopupState = {
-    annotation?: IDocAnnotation;
+    annotation?: IDocMetaAnnotation | IBlockAnnotation;
     selectionEvent?: ActiveSelectionEvent;
     type?: "selection" | "annotation";
     annotationId?: string;
@@ -13,7 +26,7 @@ type IAnnotationPopupState = {
     aiFlashcardStatus: AutoFlashcardHandlerState;
 };
 
-type Action<K, T = undefined> = {
+type Action<K, T> = {
     type: K;
     payload: T;
 };
@@ -32,11 +45,11 @@ export const DEFAULT_STATE: IAnnotationPopupState = {
 };
 
 type ISelectionCreatedAction  = Action<typeof ACTIONS.SELECTION_CREATED, ActiveSelectionEvent>;
-type ISelectionDestroyed      = Action<typeof ACTIONS.SELECTION_DESTROYED>
+type ISelectionDestroyed      = Action<typeof ACTIONS.SELECTION_DESTROYED, undefined>
 type IActionToggledAction     = Action<typeof ACTIONS.ACTION_TOGGLED, AnnotationPopupActionEnum | undefined>;
-type IAnnotationSetAction     = Action<typeof ACTIONS.ANNOTATION_SET, IDocAnnotation | undefined>;
+type IAnnotationSetAction     = Action<typeof ACTIONS.ANNOTATION_SET, IBlockAnnotation | IDocMetaAnnotation | undefined>;
 type IUpdateAIFlashcardStatus = Action<typeof ACTIONS.UPDATE_AI_FLASHCARD_STATUS, AutoFlashcardHandlerState>;
-type IResetAction             = Action<typeof ACTIONS.RESET>;
+type IResetAction             = Action<typeof ACTIONS.RESET, undefined>;
 
 
 type IAnnotationPopupReducerActions = 
@@ -68,26 +81,32 @@ export const reducer: IAnnotationPopupReducer = (state = {...DEFAULT_STATE}, act
             return {...state, activeAction: action.payload, pendingAction: action.payload};
         }
     case ACTIONS.ANNOTATION_SET:
+        const id = action.payload
+                ? (action.payload.type === "docMeta"
+                    ? action.payload.annotation.guid
+                    : action.payload.annotation.content.value.guid)
+                : undefined;
         if (state.pendingAction) {
             return {
                 ...DEFAULT_STATE,
                 annotation: action.payload,
                 type: "annotation",
                 activeAction: state.pendingAction,
-                annotationId: action.payload?.guid,
+                annotationId: id,
             };
-        } else if (action.payload && action.payload.guid !== state.annotationId) {
+        } else if (action.payload) {
             return {
                 ...DEFAULT_STATE,
+                activeAction: state.activeAction,
                 type: "annotation",
                 annotation: action.payload,
-                annotationId: action.payload?.guid,
+                annotationId: id,
             };
         } else {
             return {
                 ...state,
                 annotation: action.payload,
-                annotationId: action.payload?.guid,
+                annotationId: id,
             };
         }
     case ACTIONS.UPDATE_AI_FLASHCARD_STATUS:

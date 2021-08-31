@@ -52,7 +52,7 @@ import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers
 import {IFlashcard} from "polar-shared/src/metadata/IFlashcard";
 import {IComment} from "polar-shared/src/metadata/IComment";
 import {MarkdownContent} from "../../../web/js/notes/content/MarkdownContent";
-import {DocAnnotations, ITextConverters} from "../../../web/js/annotation_sidebar/DocAnnotations";
+import {DocAnnotations} from "../../../web/js/annotation_sidebar/DocAnnotations";
 import {DocFileResolvers} from "../../../web/js/datastore/DocFileResolvers";
 import {usePersistenceLayerContext} from "../../repository/js/persistence_layer/PersistenceLayerApp";
 import {DocAnnotationLoader2} from "../../../web/js/annotation_sidebar/DocAnnotationLoader2";
