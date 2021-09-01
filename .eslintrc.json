@@ -25,8 +25,6 @@
     "import/no-cycle": "error",
     "import/no-absolute-path": "error"
     // "import/order": "error",
-    // this isn't working yet because it does not seem to properly
-    // handle method call parameters..
     // "indent": ["error", 4, {
     //     "FunctionDeclaration": {
     //         "parameters": "off"

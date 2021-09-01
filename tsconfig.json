@@ -32,10 +32,7 @@
       "*": ["node_modules/*"]
     }
   },
-  "references": [
-    {
-      "path": "packages/**/*"
-    }
-  ],
+  "types": ["mocha", "reflect-metadata"],
+  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules", "dist", "*.d.ts", "*.js", "cdk.out"]
 }
