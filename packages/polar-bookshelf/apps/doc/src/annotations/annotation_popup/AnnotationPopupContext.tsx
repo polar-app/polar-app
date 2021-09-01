@@ -255,6 +255,7 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
     ]);
 
     React.useEffect(() => {
+
         if (activeHighlight) {
             if (activeHighlight.type === 'docMeta') {
                 const annotation = toAnnotation(docMeta, activeHighlight);
@@ -263,10 +264,12 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
                     return;
                 }
 
-                dispatch({
-                    type: ACTIONS.ANNOTATION_SET,
-                    payload: { type: 'docMeta', annotation }
-                });
+                setTimeout(() => {
+                    dispatch({
+                        type: ACTIONS.ANNOTATION_SET,
+                        payload: { type: 'docMeta', annotation }
+                    });
+                }, 50);
             } else {
                 return autorun(() => {
                     const annotation = getBlock(activeHighlight.highlightID, AnnotationContentType.TEXT_HIGHLIGHT);
@@ -275,10 +278,12 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
                         return;
                     }
 
-                    dispatch({
-                        type: ACTIONS.ANNOTATION_SET,
-                        payload: { type: 'block', annotation },
-                    });
+                    setTimeout(() => {
+                        dispatch({
+                            type: ACTIONS.ANNOTATION_SET,
+                            payload: { type: 'block', annotation },
+                        });
+                    }, 50);
                 });
             }
         } else {
@@ -294,6 +299,7 @@ export const AnnotationPopupProvider: React.FC<IAnnotationPopupProviderProps> = 
         const targets = computeTargets(fileType, docViewerElementsRef.current.getDocViewerElement);
         const handleSelection: ActiveSelectionListener = (event) => {
             dispatch({ type: ACTIONS.RESET, payload: undefined });
+
             if (textHighlightColorRef.current) {
                 if (event.type === "created") {
                     handleCreateAnnotation(textHighlightColorRef.current, event);
