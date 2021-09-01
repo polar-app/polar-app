@@ -6,6 +6,7 @@ import React from "react";
 import {useHistory} from "react-router";
 import {RoutePathnames} from "../../apps/repository/RoutePathnames";
 import {useDialogManager} from "../../mui/dialogs/MUIDialogControllers";
+import {NameContent} from "../content/NameContent";
 import {useBlocksStore} from "../store/BlocksStore";
 
 export const CreateNote = () => {
@@ -19,10 +20,10 @@ export const CreateNote = () => {
             autoFocus: true,
             onCancel: NULL_FUNCTION,
             onDone: (text) => {
-                const content: INameContent = {
+                const content = new NameContent({
                     type: 'name',
                     data: text,
-                };
+                });
                 const id = blocksStore.createNewNamedBlock({ content });
                 history.push(RoutePathnames.NOTE(id));
             }

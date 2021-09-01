@@ -9,15 +9,16 @@ import {CursorPositions} from "./CursorPositions";
 import {IPasteImageData, usePasteHandler } from '../clipboard/PasteHandlers';
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {useMutationObserver} from '../../../../web/js/hooks/ReactHooks';
-import {MarkdownContent} from '../content/MarkdownContent';
 import {BlockEditorGenericProps} from '../BlockEditor';
 import {IBlockContentStructure} from '../HTMLToBlocks';
 import {useBlocksTreeStore} from '../BlocksTree';
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {IImageContent} from "polar-blocks/src/blocks/content/IImageContent";
-import {getNamedContentName, useNamedBlocks} from '../NoteUtils';
+import {BlockTextContentUtils, useNamedBlocks} from '../NoteUtils';
 import {ContentEditables} from '../ContentEditables';
 import {useSideNavStore} from '../../sidenav/SideNavStore';
+import {BlockPredicates} from '../store/BlockPredicates';
+import {DOMBlocks} from './DOMBlocks';
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed
@@ -26,6 +27,8 @@ const ENABLE_CURSOR_RESET_TRACE = false;
 
 interface IProps extends BlockEditorGenericProps {
     readonly content: HTMLStr;
+
+    readonly canHaveLinks?: boolean;
 
     readonly onChange: (content: HTMLStr) => void;
 
@@ -93,7 +96,7 @@ export const BlockContentEditable = (props: IProps) => {
 
     const noteLinkActions = React.useMemo(() => {
         return namedBlocks.map((block) => {
-            const name = getNamedContentName(block.content);
+            const name = BlockTextContentUtils.getTextContentMarkdown(block.content);
             return {
                 id: name,
                 text: name,
@@ -206,40 +209,48 @@ export const BlockContentEditable = (props: IProps) => {
 
     useHandleLinkDeletion({ elem: divRef.current, blockID: props.id });
 
+    const contentEditableInner = (
+        <NoteFormatPopper onUpdated={updateMarkdownFromEditable} id={props.id}>
+            <div ref={handleRef}
+                 onPaste={handlePaste}
+                 onClick={props.onClick}
+                 onMouseDown={props.onMouseDown}
+                 contentEditable={true}
+                 spellCheck={props.spellCheck}
+                 data-id={props.id}
+                 className={props.className}
+                 id={`${DOMBlocks.BLOCK_ID_PREFIX}${props.id}`}
+                 style={{
+                     outline: 'none',
+                     whiteSpace: 'pre-wrap',
+                     wordBreak: 'break-word',
+                     ...props.style
+                 }}
+                 dangerouslySetInnerHTML={{__html: content}}/>
+        </NoteFormatPopper>
+    );
+
     return (
         <NoteContentEditableElementContext.Provider value={divRef}>
 
             <div onKeyDown={props.onKeyDown}
                  onKeyUp={handleKeyUp}>
 
-                <BlockAction id={props.id}
-                             trigger="[["
-                             actionsProvider={createNoteActionsProvider}
-                             onAction={(id) => ({
-                                type: 'link-to-block',
-                                target: id
-                            })}>
+                {props.canHaveLinks
+                    ? (
+                        <BlockAction id={props.id}
+                                     trigger="[["
+                                     actionsProvider={createNoteActionsProvider}
+                                     onAction={(id) => ({
+                                        type: 'link-to-block',
+                                        target: id
+                                    })}>
 
-                    <NoteFormatPopper onUpdated={updateMarkdownFromEditable} id={props.id}>
-                        <div ref={handleRef}
-                             onPaste={handlePaste}
-                             onClick={props.onClick}
-                             onMouseDown={props.onMouseDown}
-                             contentEditable={true}
-                             spellCheck={props.spellCheck}
-                             data-id={props.id}
-                             className={props.className}
-                             id={`${DOMBlocks.BLOCK_ID_PREFIX}${props.id}`}
-                             style={{
-                                 outline: 'none',
-                                 whiteSpace: 'pre-wrap',
-                                 wordBreak: 'break-word',
-                                 ...props.style
-                             }}
-                             dangerouslySetInnerHTML={{__html: content}}/>
-                    </NoteFormatPopper>
+                            {contentEditableInner}
 
-                </BlockAction>
+                        </BlockAction>
+                    ) : contentEditableInner
+                }
 
             </div>
 
@@ -309,10 +320,9 @@ const useHandleLinkDeletion = ({ blockID, elem }: IUseHandleLinkDeletionOpts) =>
             for (let removedLink of removedLinks) {
                 const block = blocksTreeStore.getBlock(blockID);
                 const linkedBlock = blocksTreeStore.getBlockByName(removedLink.getAttribute('href')!.slice(1));
-                if (block && linkedBlock && block.content.type === 'markdown') {
-                    const newContent = new MarkdownContent(block.content.toJSON());
-                    newContent.removeLink(linkedBlock.id);
-                    blocksTreeStore.setBlockContent(blockID, newContent);
+                if (block && linkedBlock && BlockPredicates.canHaveLinks(block)) {
+                    block.content.removeLink(linkedBlock.id);
+                    blocksTreeStore.setBlockContent(blockID, block.content);
                 }
             }
         }
@@ -321,80 +331,3 @@ const useHandleLinkDeletion = ({ blockID, elem }: IUseHandleLinkDeletionOpts) =>
         config: mutationObserverConfig
     })
 };
-
-export namespace DOMBlocks {
-    export type MarkdownStyle = 'bold' | 'italic';
-    export const BLOCK_ID_PREFIX = 'block-';
-
-    export const getBlockHTMLID = (id: BlockIDStr) => `${BLOCK_ID_PREFIX}${id}`;
-
-    export const getBlockElement = (id: BlockIDStr) =>
-        document.querySelector<HTMLDivElement>(`#${getBlockHTMLID(id)}`);
-
-    export function isBlockElement(node: Node): node is HTMLElement {
-        if (node.nodeType === Node.ELEMENT_NODE) {
-            const element = node as HTMLElement;
-            if (element.id && element.id.startsWith(BLOCK_ID_PREFIX)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    export function getSiblingID(id: BlockIDStr, delta: 'next' | 'prev'): string | null {
-        const currBlockElem = getBlockElement(id);
-        if (currBlockElem) {
-            const newActiveBlockElem = findSiblingBlock(currBlockElem, delta);
-            if (newActiveBlockElem && newActiveBlockElem.dataset.id) {
-                return newActiveBlockElem.dataset.id;
-            }
-        }
-        return null;
-    }
-
-    export function findSiblingBlock(node: Node, delta: 'next' | 'prev'): HTMLElement | null {
-        const sibling = delta === 'next'
-                ? node.nextSibling
-                : node.previousSibling;
-
-        if (! sibling) {
-            if (node.parentElement) {
-                return findSiblingBlock(node.parentElement, delta);
-            }
-            return null;
-        }
-
-        if (sibling.nodeType === Node.ELEMENT_NODE) {
-            const siblingElem = sibling as HTMLElement;
-            const elements = siblingElem.querySelectorAll<HTMLDivElement>(`[id^="${BLOCK_ID_PREFIX}"]`);
-            if (elements.length > 0) {
-                const idx = delta === 'next' ? 0 : elements.length - 1;
-                return elements[idx];
-            }
-        }
-
-        if (isBlockElement(sibling)) {
-            return sibling;
-        }
-
-        return findSiblingBlock(sibling, delta);
-    }
-
-    export function applyStyleToBlock(id: BlockIDStr, style: MarkdownStyle) {
-        const blockElem = getBlockElement(id);
-        if (! blockElem) {
-            return;
-        }
-        const firstChild = blockElem.firstChild;
-        const lastChild = blockElem.lastChild;
-        const selection = document.getSelection();
-        if (selection && firstChild && lastChild) {
-            const range = new Range();
-            range.setStartBefore(firstChild);
-            range.setEndAfter(lastChild);
-            selection.removeAllRanges();
-            selection.addRange(range);
-            document.execCommand(style, false);
-        }
-    }
-}

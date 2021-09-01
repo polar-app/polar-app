@@ -1,6 +1,6 @@
 {
   "name": "polar-google-cloud-language",
-  "version": "2.1.97",
+  "version": "2.1.99",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -17,8 +17,8 @@
     "@types/mocha": "=8.2.2",
     "chai": "4.2.0",
     "mocha": "=9.0.0",
-    "polar-shared": "^2.1.97",
-    "polar-test": "^2.1.97",
+    "polar-shared": "^2.1.99",
+    "polar-test": "^2.1.99",
     "tslint": "6.1.2",
     "typescript": "=4.2.3"
   },

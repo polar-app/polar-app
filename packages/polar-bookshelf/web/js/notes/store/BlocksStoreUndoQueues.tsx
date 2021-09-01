@@ -78,7 +78,6 @@ export namespace BlocksStoreUndoQueues {
                     result = redoDelegate();
                 } catch (e) {
                     console.error('BlocksUndoQueue: action', e);
-                    alert('BlocksUndoQueue: action failed: check the console for more details');
                 }
                 undoCapture.capture();
                 captured = true;

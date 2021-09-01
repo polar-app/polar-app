@@ -1,12 +1,7 @@
-import {IBlockLink} from "../IBlock";
 import {IBaseContent} from "./IBaseContent";
+import {IHasLinksContent} from "./IHasLinksContent";
 
-export interface IMarkdownContent extends IBaseContent {
+export interface IMarkdownContent extends IBaseContent, IHasLinksContent {
     readonly type: 'markdown';
     readonly data: string;
-
-    /**
-     * The linked wiki references to other notes.
-     */
-    readonly links: ReadonlyArray<IBlockLink>;
 }

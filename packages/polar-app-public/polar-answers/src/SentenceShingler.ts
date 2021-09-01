@@ -5,7 +5,6 @@ import {GCLSentenceSplitter} from "polar-google-cloud-language/src/GCLSentenceSp
 export namespace SentenceShingler {
 
     export interface ISentenceShingle {
-        readonly idx: number;
         readonly text: string;
     }
 
@@ -15,15 +14,14 @@ export namespace SentenceShingler {
 
         const result = [];
 
-        let idx = 0;
         for(let offset = 0; offset < sentences.length; offset = offset + jump) {
             const end = offset + width;
             const slice = sentences.slice(offset, end);
-            result.push({
-                idx: idx++,
+            const shingle: ISentenceShingle = {
                 text: slice.join("  ")
-            });
+            }
 
+            result.push(shingle);
         }
 
         return result;
