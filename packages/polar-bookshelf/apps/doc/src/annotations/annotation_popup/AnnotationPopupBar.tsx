@@ -1,7 +1,6 @@
 import React from "react";
 import clsx from "clsx";
 import {Box, CircularProgress, Divider, useTheme} from "@material-ui/core";
-import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
 import NoteIcon from "@material-ui/icons/Note";
 import FlashOnIcon from "@material-ui/icons/FlashOn";
 import EditIcon from "@material-ui/icons/Edit";
@@ -14,14 +13,14 @@ import {MUIButtonBar} from "../../../../../web/js/mui/MUIButtonBar";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import {MUIDropdownCaret} from "../../../../../web/js/mui/MUIDropdownCaret";
 import {useAnnotationPopupStyles} from "./AnnotationPopup";
-import {AnnotationPopupActionEnum, getAnnotationData, useAnnotationPopup} from "./AnnotationPopupContext";
+import {AnnotationPopupActionEnum, useAnnotationPopup} from "./AnnotationPopupContext";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import {SelectedContents} from "../../../../../web/js/highlights/text/selection/SelectedContents";
 import {useDocViewerContext} from "../../renderers/DocRenderer";
 import {AnnotationTypes} from "../../../../../web/js/metadata/AnnotationTypes";
 import {Clipboards} from "../../../../../web/js/util/system/clipboard/Clipboards";
 import {ITextConverters} from "../../../../../web/js/annotation_sidebar/DocAnnotations";
-import {AnnotationType} from "../../../../../../polar-app-public/polar-shared/src/metadata/AnnotationType";
+import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 
 export const useCopyAnnotation = () => {
     const {annotation, selectionEvent} = useAnnotationPopup();

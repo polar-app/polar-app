@@ -7,8 +7,8 @@ import {IAnnotationPopupActionProps} from "../AnnotationPopupActions";
 import {ITextConverters} from "../../../../../../web/js/annotation_sidebar/DocAnnotations";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {useAnnotationBlockManager} from "../../../../../../web/js/notes/HighlightNotesUtils";
-import {Texts} from "../../../../../../../polar-app-public/polar-shared/src/metadata/Texts";
-import {TextType} from "../../../../../../../polar-app-public/polar-shared/src/metadata/TextType";
+import {Texts} from "polar-shared/src/metadata/Texts";
+import {TextType} from "polar-shared/src/metadata/TextType";
 
 type EditAnnotationForm = {
     body: string;

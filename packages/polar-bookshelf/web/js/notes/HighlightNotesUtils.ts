@@ -9,10 +9,10 @@ import {BlockPredicates} from "./store/BlockPredicates";
 import {useBlocksStore} from "./store/BlocksStore";
 import {IBlocksStore} from "./store/IBlocksStore";
 import {autorun} from "mobx";
-import {FlashcardType} from "../../../../polar-app-public/polar-shared/src/metadata/FlashcardType";
+import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {Flashcards} from "../metadata/Flashcards";
-import {Refs} from "../../../../polar-app-public/polar-shared/src/metadata/Refs";
-import {AnnotationType} from "../../../../polar-app-public/polar-shared/src/metadata/AnnotationType";
+import {Refs} from "polar-shared/src/metadata/Refs";
+import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 
 type IHighlightContentType = AnnotationContentType.AREA_HIGHLIGHT | AnnotationContentType.TEXT_HIGHLIGHT;
 

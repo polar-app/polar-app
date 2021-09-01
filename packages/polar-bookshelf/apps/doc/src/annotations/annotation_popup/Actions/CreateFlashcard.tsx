@@ -9,7 +9,7 @@ import {FlashcardTypeSelector} from "../../../../../../web/js/annotation_sidebar
 import {getDefaultFlashcardType} from "../../../../../../web/js/annotation_sidebar/child_annotations/flashcards/flashcard_input/FlashcardInput";
 import {IAnnotationPopupActionProps, IBlockAnnotationProps, IDocMetaAnnotationProps} from "../AnnotationPopupActions";
 import {ITextConverters} from "../../../../../../web/js/annotation_sidebar/DocAnnotations";
-import {AnnotationType} from "../../../../../../../polar-app-public/polar-shared/src/metadata/AnnotationType";
+import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {useAnnotationBlockManager} from "../../../../../../web/js/notes/HighlightNotesUtils";
 
 type BasicFrontBackForm = {

@@ -11,14 +11,12 @@ import {AnnotationLinks} from "../../../annotation_sidebar/AnnotationLinks";
 import DeleteIcon from "@material-ui/icons/Delete";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 import FlashOnIcon from "@material-ui/icons/FlashOn";
-import {AnnotationContentType, IFlashcardAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {ITextConverters} from "../../../annotation_sidebar/DocAnnotations";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
-import {Flashcards} from "../../../metadata/Flashcards";
-import {Refs} from "polar-shared/src/metadata/Refs";
 import {BlockPredicates} from "../../store/BlockPredicates";
 import {useAnnotationBlockManager} from "../../HighlightNotesUtils";
-import {FlashcardType} from "../../../../../../polar-app-public/polar-shared/src/metadata/FlashcardType";
+import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 
 export const useStyles = makeStyles(() =>
     createStyles({
