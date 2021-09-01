@@ -10352,10 +10352,10 @@ eol@^0.9.1:
   resolved "https://verdaccio.getpolarized.io/eol/-/eol-0.9.1.tgz#f701912f504074be35c6117a5c4ade49cd547acd"
   integrity sha512-Ds/TEoZjwggRoz/Q2O7SE3i4Jm66mqTDfmdHdq/7DKVk3bro9Q8h6WdXKdPqFLMoqxrDK5SVRzHVPOS6uuGtrg==
 
-epubjs@=0.3.89-polar.16:
-  version "0.3.89-polar.16"
-  resolved "https://verdaccio.getpolarized.io/epubjs/-/epubjs-0.3.89-polar.16.tgz#942949379b819196ab7be6814979630eae54c5ff"
-  integrity sha512-D0J35W6OMqDbZWnriZwAQo0qVbKEOcO/1/yscZdLnqlglv2qBseDp4zoWPL3dW/Q/dWNLU1AYlRWRtE5FidKRA==
+epubjs@=0.3.89-polar.19:
+  version "0.3.89-polar.19"
+  resolved "https://verdaccio.getpolarized.io/epubjs/-/epubjs-0.3.89-polar.19.tgz#2ea5c3c6e95ee9cb368147a450f92dd7a332b90b"
+  integrity sha512-a6uWVH3sNFER64pNWfFYijn+JEnWEYutCQxBX58s+Esj2Wkb65UR5MgAnyEZHb4pAUqL7T7+yu5U3HDs875iTw==
   dependencies:
     core-js "^3.6.5"
     event-emitter "^0.3.5"
@@ -11347,6 +11347,11 @@ fast-url-parser@^1.1.3:
   integrity sha1-9K8+qfNNiicc9YrSs3WfQx8LMY0=
   dependencies:
     punycode "^1.3.2"
+
+fast-xml-parser@^3.19.0:
+  version "3.19.0"
+  resolved "https://verdaccio.getpolarized.io/fast-xml-parser/-/fast-xml-parser-3.19.0.tgz#cb637ec3f3999f51406dd8ff0e6fc4d83e520d01"
+  integrity sha512-4pXwmBplsCPv8FOY1WRakF970TjNGnGnfbOnLqjlYvMiF1SR3yOHyxMR/YCXpPTOspNF5gwudqktIP4VsWkvBg==
 
 fastest-levenshtein@^1.0.12:
   version "1.0.12"
@@ -18061,6 +18066,11 @@ node-sass@=4.14.1:
     sass-graph "2.2.5"
     stdout-stream "^1.4.0"
     "true-case-path" "^1.0.2"
+
+node-stream-zip@^1.14.0:
+  version "1.14.0"
+  resolved "https://verdaccio.getpolarized.io/node-stream-zip/-/node-stream-zip-1.14.0.tgz#fdf9b86d10d55c1e50aa1be4fea88bae256c4eba"
+  integrity sha512-SKXyiBy9DBemsPHf/piHT00Y+iPK+zwru1G6+8UdOBzITnmmPMHYBMV6M1znyzyhDhUFQW0HEmbGiPqtp51M6Q==
 
 noms@0.0.0:
   version "0.0.0"

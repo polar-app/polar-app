@@ -1,6 +1,6 @@
 {
   "name": "polar-shared",
-  "version": "2.1.99",
+  "version": "2.1.101",
   "description": "",
   "scripts": {
     "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
@@ -28,7 +28,7 @@
     "@types/uuid": "3.4.5",
     "chai": "4.2.0",
     "mocha": "=9.0.0",
-    "polar-test": "^2.1.99",
+    "polar-test": "^2.1.101",
     "tslint": "6.1.2",
     "typescript": "=4.2.3",
     "wait-for-expect": "3.0.1"
