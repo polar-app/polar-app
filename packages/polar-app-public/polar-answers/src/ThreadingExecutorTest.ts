@@ -1,7 +1,7 @@
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {ThreadingExecutor} from "./ThreadingExecutor";
 
-describe("ThreadingExecutor", async function() {
+xdescribe("ThreadingExecutor", async function() {
 
     this.timeout(30000000);
 

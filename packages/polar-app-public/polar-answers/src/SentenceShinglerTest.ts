@@ -11,15 +11,12 @@ describe("SentenceShingler", async function() {
 
         assertJSON(shingles, [
             {
-                "idx": 0,
                 "text": "This is the first sentence.  This is the second sentence.  This is the third sentence.  This is the 4th."
             },
             {
-                "idx": 1,
                 "text": "This is the third sentence.  This is the 4th.  This is the 5th sentence.  This is the 6th sentence."
             },
             {
-                "idx": 2,
                 "text": "This is the 5th sentence.  This is the 6th sentence."
             }
         ])
