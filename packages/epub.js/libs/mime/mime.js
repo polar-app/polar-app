@@ -164,6 +164,9 @@ var defaultValue = "text/plain";//"application/octet-stream";
 
 function lookup(filename) {
 	return filename && mimeTypes[filename.split(".").pop().toLowerCase()] || defaultValue;
-};
+}
 
-export default { lookup };
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.lookup = lookup;
+
+// export default { lookup };
