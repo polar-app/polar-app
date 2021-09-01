@@ -98,10 +98,6 @@ commands:
           name: Lerna Compile
           command: npx lerna run compile
 
-      - run:
-          name: Run Tests
-          command: npx lerna run test
-
       # ? Debug step for checking if there are any duplicate packages
       - run:
           name: DEBUG(Check if duplicate packages with different versions exist)
@@ -153,6 +149,22 @@ jobs:
             export CHROME_BIN='/usr/bin/chromium'
             yarn run webpack
             yarn run karma
+
+  # @ Run tests
+  test:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor>>
+    description: "Run our karma tests in the browser."
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: test
+          command: |
+            cd /home/circleci/project
+            npx lerna run test
 
   # @ Build polar chrome extension
   build-chrome-extension:
@@ -300,6 +312,12 @@ workflows:
           executor: large
           requires:
             - setting-up
+
+      - test:
+          executor: large
+          requires:
+            - setting-up
+
 
       # @ Build Polar app
       - build-polar-app:
