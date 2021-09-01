@@ -1,8 +1,38 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "declaration": true
+    "incremental": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noImplicitThis": false,
+    "alwaysStrict": true,
+    "listEmittedFiles": false,
+    "noImplicitReturns": true,
+    "removeComments": true,
+    "strictFunctionTypes": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "target": "ES2015",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowJs": false,
+    "stripInternal": true,
+    "checkJs": false,
+    "jsx": "react",
+    "esModuleInterop": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "lib": ["es2019", "dom"],
+    "paths": {
+      "*": ["node_modules/*"]
+    }
   },
   "types": ["mocha", "reflect-metadata"],
-  "include": ["test/sandbox/**/*", "scripts/**/*", "web/**/*", "apps/**/*"]
+  "include": ["**/*.ts", "**/*.tsx", "test/sandbox/**/*", "scripts/**/*", "web/**/*", "apps/**/*"],
+  "exclude": ["node_modules", "dist", "*.d.ts", "*.js", "cdk.out"]
 }
