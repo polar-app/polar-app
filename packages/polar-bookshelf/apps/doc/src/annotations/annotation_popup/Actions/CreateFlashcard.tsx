@@ -65,7 +65,7 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
             });
             dialogs.snackbar({ message: "Flashcard created successfully!" });
             clear();
-        }, [createFlashcard, annotation, dialogs]);
+        }, [createFlashcard, annotation]);
 
         return (
             <SimpleInputForm<ClozeForm | BasicFrontBackForm>
@@ -97,7 +97,7 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
 
             dialogs.snackbar({ message: "Flashcard created successfully!" });
             clear();
-        }, [annotation, flashcardType, createFlashcard]);
+        }, [annotation, createFlashcard]);
 
         return (
             <SimpleInputForm<ClozeForm | BasicFrontBackForm>

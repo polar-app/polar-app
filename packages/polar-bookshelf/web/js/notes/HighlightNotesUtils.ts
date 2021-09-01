@@ -173,8 +173,7 @@ export const useAnnotationBlockManager = () => {
 
             blocksStore.createNewBlock(highlightBlock.id, { asChild: true, content });
         }
-    }, [blocksStore]);
+    }, [blocksStore, getBlock]);
 
     return { create, update, remove, getBlock, createFlashcard };
 };
-    

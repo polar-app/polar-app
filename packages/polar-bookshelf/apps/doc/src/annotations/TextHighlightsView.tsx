@@ -7,7 +7,6 @@ import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 import {useHighlightBlocks} from "../../../../web/js/notes/HighlightNotesUtils";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../DocViewer";
-import {memoForwardRef} from "../../../../web/js/react/ReactUtils";
 import {PageAnnotations} from "./PageAnnotations";
 
 interface ITextHighlightsViewRendererProps {
