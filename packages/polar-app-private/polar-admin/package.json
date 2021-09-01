@@ -5,8 +5,9 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "eslint": "figlet ${npm_package_name} && eslint -c ../../../.eslintrc.json .",
-    "compile": "yarn run eslint && tsc"
+    "eslint": "figlet ${npm_package_name} && eslint -c ./.eslintrc.json .",
+    "eslint-fix": "eslint -c ./.eslintrc.json . --fix",
+    "compile": "tsc"
   },
   "author": "",
   "license": "ISC",
