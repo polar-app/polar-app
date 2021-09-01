@@ -1,6 +1,6 @@
 {
   "name": "polar-hooks",
-  "version": "2.1.98",
+  "version": "2.1.99",
   "description": "Performs HTTP auth for us using a token scheme",
   "main": "index.js",
   "private": true,
@@ -22,9 +22,9 @@
     "@types/escape-html": "0.0.20",
     "@types/uuid": "3.4.5",
     "escape-html": "^1.0.3",
-    "polar-backend-shared": "^2.1.98",
-    "polar-firebase": "^2.1.98",
-    "polar-webapp-dist": "^2.1.98",
+    "polar-backend-shared": "^2.1.99",
+    "polar-firebase": "^2.1.99",
+    "polar-webapp-dist": "^2.1.99",
     "uuid": "3.3.3"
   }
 }

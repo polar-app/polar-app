@@ -10,6 +10,7 @@ export namespace AnswerExecutor {
     import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
     import IAnswerDocument = OpenAIAnswersClient.IAnswerDocument;
     import IAnswerDigestRecord = ESShingleWriter.IAnswerDigestRecord;
+    import ISelectedDocument = OpenAIAnswersClient.ISelectedDocument;
 
     export interface IExecOpts {
         readonly uid: UserIDStr;
@@ -18,6 +19,17 @@ export namespace AnswerExecutor {
 
     export interface IAnswer extends OpenAIAnswersClient.IResponse {
         readonly question: string;
+        readonly selected_documents: ReadonlyArray<ISelectedDocumentWithRecord<IAnswerDigestRecord>>;
+
+    }
+
+    export interface ISelectedDocumentWithRecord<R>  extends ISelectedDocument {
+
+        /**
+         * The original record for this document
+         */
+        readonly record: R;
+
     }
 
     export const EXAMPLES_CONTEXT: string =
@@ -39,9 +51,9 @@ export namespace AnswerExecutor {
 
     export const MAX_TOKENS = 250;
 
-    export const SEARCH_MODEL = 'curie';
+    export const SEARCH_MODEL = 'ada';
 
-    export const MODEL = 'davinci';
+    export const MODEL = 'ada';
 
     export const TEMPERATURE = 0;
 
@@ -55,6 +67,8 @@ export namespace AnswerExecutor {
 
         // run this query on the digest ...
         const index = ESAnswersIndexNames.createForUserDocs(uid);
+
+        // TODO make this into a generic search client and don't hard code the ES query here.
 
         // TODO this has to be hard coded and we only submit docs that would be
         // applicable to the answer API and we would need a way to easily
@@ -75,23 +89,19 @@ export namespace AnswerExecutor {
         const requestURL = `/${index}/_search`;
         const esResponse: IElasticSearchResponse<IAnswerDigestRecord> = await ESRequests.doPost(requestURL, query);
 
-        function toDocument(doc: IAnswerDigestRecord): IAnswerDocument {
+        // I believe the non-deterministic results you see might be caused by
+        // the order in which the documents selected by the Answers endpoint are
+        // inserted into the final completion prompt (Answers endpoint is
+        // indeed Search+Completions under the hood).
+        //
+        // To confirm this hypothesis, I would pass return_prompt = True for
+        // each API call and see how the final prompt differs between calls.
 
-            return {
-                text: doc.text,
-                // TODO: do we need the ID of the document from ES
-                metadata: {
-                    docID: doc.docID,
-                    idx: doc.idx,
-                    pageNum: doc.pageNum
-                }
+        // the array of digest records so that we can map from the
+        // selected_documents AFTER the request is executed.
+        const records = esResponse.hits.hits.map(current => current._source);
 
-            }
-
-        }
-
-        // const documents = esResponse.hits.hits.map(current => toDocument(current._source));
-        const documents = esResponse.hits.hits.map(current => current._source.text);
+        const documents = records.map(current => current.text.replace(/\n/g, ' '));
 
         // TODO how do we compute documents which have no known answer?
 
@@ -115,14 +125,25 @@ export namespace AnswerExecutor {
             n: N,
             temperature: TEMPERATURE,
             return_metadata: RETURN_METADATA,
-            logprobs: 10,
+            // logprobs: 10,
         }
 
         const answerResponse = await OpenAIAnswersClient.exec(request);
 
+        function convertToSelectedDocumentWithRecord(doc: ISelectedDocument): ISelectedDocumentWithRecord<IAnswerDigestRecord> {
+            return {
+                document: doc.document,
+                text: doc.text,
+                object: doc.object,
+                score: doc.score,
+                record: records[doc.document]
+            }
+        }
+
         return {
             question,
-            ...answerResponse
+            selected_documents: answerResponse.selected_documents.map(convertToSelectedDocumentWithRecord),
+            answers: answerResponse.answers,
         }
 
     }

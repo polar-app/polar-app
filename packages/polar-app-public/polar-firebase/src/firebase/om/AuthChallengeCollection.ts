@@ -38,7 +38,7 @@ export namespace AuthChallengeCollection {
             created: ISODateTimeStrings.create()
         }
 
-        ref.set(value);
+        await ref.set(value);
 
     }
 
