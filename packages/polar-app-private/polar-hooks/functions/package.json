@@ -44,6 +44,7 @@
     "mailgun.js": "=3.3.0",
     "node-fetch": "=2.6.1",
     "polar-accounts": "^2.1.98",
+    "polar-answers": "^2.1.98",
     "polar-backend-api": "^2.1.98",
     "polar-backend-shared": "^2.1.98",
     "polar-block-permissions": "^2.1.98",
