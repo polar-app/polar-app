@@ -98,6 +98,10 @@ commands:
           name: Lerna Compile
           command: npx lerna run compile
 
+      - run:
+          name: Run Tests
+          command: npx lerna run test
+
       # ? Debug step for checking if there are any duplicate packages
       - run:
           name: DEBUG(Check if duplicate packages with different versions exist)
