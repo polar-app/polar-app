@@ -18,6 +18,7 @@ import {BlockTextContentUtils, useNamedBlocks} from '../NoteUtils';
 import {ContentEditables} from '../ContentEditables';
 import {useSideNavStore} from '../../sidenav/SideNavStore';
 import {BlockPredicates} from '../store/BlockPredicates';
+import {DOMBlocks} from './DOMBlocks';
 
 // NOT we don't need this yet as we haven't turned on collaboration but at some point
 // this will be needed
@@ -34,7 +35,6 @@ interface IProps extends BlockEditorGenericProps {
     readonly onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
 
     readonly spellCheck?: boolean;
-
 }
 
 const NoteContentEditableElementContext = React.createContext<React.RefObject<HTMLElement | null>>({current: null});
@@ -331,80 +331,3 @@ const useHandleLinkDeletion = ({ blockID, elem }: IUseHandleLinkDeletionOpts) =>
         config: mutationObserverConfig
     })
 };
-
-export namespace DOMBlocks {
-    export type MarkdownStyle = 'bold' | 'italic';
-    export const BLOCK_ID_PREFIX = 'block-';
-
-    export const getBlockHTMLID = (id: BlockIDStr) => `${BLOCK_ID_PREFIX}${id}`;
-
-    export const getBlockElement = (id: BlockIDStr) =>
-        document.querySelector<HTMLDivElement>(`#${getBlockHTMLID(id)}`);
-
-    export function isBlockElement(node: Node): node is HTMLElement {
-        if (node.nodeType === Node.ELEMENT_NODE) {
-            const element = node as HTMLElement;
-            if (element.id && element.id.startsWith(BLOCK_ID_PREFIX)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    export function getSiblingID(id: BlockIDStr, delta: 'next' | 'prev'): string | null {
-        const currBlockElem = getBlockElement(id);
-        if (currBlockElem) {
-            const newActiveBlockElem = findSiblingBlock(currBlockElem, delta);
-            if (newActiveBlockElem && newActiveBlockElem.dataset.id) {
-                return newActiveBlockElem.dataset.id;
-            }
-        }
-        return null;
-    }
-
-    export function findSiblingBlock(node: Node, delta: 'next' | 'prev'): HTMLElement | null {
-        const sibling = delta === 'next'
-                ? node.nextSibling
-                : node.previousSibling;
-
-        if (! sibling) {
-            if (node.parentElement) {
-                return findSiblingBlock(node.parentElement, delta);
-            }
-            return null;
-        }
-
-        if (sibling.nodeType === Node.ELEMENT_NODE) {
-            const siblingElem = sibling as HTMLElement;
-            const elements = siblingElem.querySelectorAll<HTMLDivElement>(`[id^="${BLOCK_ID_PREFIX}"]`);
-            if (elements.length > 0) {
-                const idx = delta === 'next' ? 0 : elements.length - 1;
-                return elements[idx];
-            }
-        }
-
-        if (isBlockElement(sibling)) {
-            return sibling;
-        }
-
-        return findSiblingBlock(sibling, delta);
-    }
-
-    export function applyStyleToBlock(id: BlockIDStr, style: MarkdownStyle) {
-        const blockElem = getBlockElement(id);
-        if (! blockElem) {
-            return;
-        }
-        const firstChild = blockElem.firstChild;
-        const lastChild = blockElem.lastChild;
-        const selection = document.getSelection();
-        if (selection && firstChild && lastChild) {
-            const range = new Range();
-            range.setStartBefore(firstChild);
-            range.setEndAfter(lastChild);
-            selection.removeAllRanges();
-            selection.addRange(range);
-            document.execCommand(style, false);
-        }
-    }
-}

@@ -150,6 +150,22 @@ jobs:
             yarn run webpack
             yarn run karma
 
+  # @ Run tests
+  test:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor>>
+    description: "Run our karma tests in the browser."
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: test
+          command: |
+            cd /home/circleci/project
+            npx lerna run test
+
   # @ Build polar chrome extension
   build-chrome-extension:
     parameters:
@@ -296,6 +312,12 @@ workflows:
           executor: large
           requires:
             - setting-up
+
+      - test:
+          executor: large
+          requires:
+            - setting-up
+
 
       # @ Build Polar app
       - build-polar-app:

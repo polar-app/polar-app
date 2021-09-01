@@ -1,6 +1,6 @@
 import {assert} from "chai";
 import {Asserts} from "polar-shared/src/Asserts";
-import {DOMBlocks} from "./BlockContentEditable";
+import {DOMBlocks} from "./DOMBlocks";
 
 
 describe('DOMBlocks', () => {

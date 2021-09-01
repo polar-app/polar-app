@@ -1,7 +1,7 @@
 import React from "react";
 import {NoteNavigation} from "./NoteNavigation";
 import {observer} from "mobx-react-lite"
-import {BlockContentEditable, DOMBlocks, useUpdateCursorPosition} from "./contenteditable/BlockContentEditable";
+import {BlockContentEditable, useUpdateCursorPosition} from "./contenteditable/BlockContentEditable";
 import {MarkdownStr} from "polar-shared/src/util/Strings";
 import {BlockImageContent} from "./blocks/BlockImageContent";
 import {useBlockKeyDownHandler} from "./contenteditable/BlockKeyboardHandlers";
@@ -13,12 +13,12 @@ import {NameContent} from "./content/NameContent";
 import {debounce} from "throttle-debounce";
 import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 import {MarkdownContentConverter} from "./MarkdownContentConverter";
-import {Block} from "./store/Block";
 import {useLinkNavigationClickHandler, BlockTextContentUtils} from "./NoteUtils";
 import {BlockDocumentContent} from "./blocks/BlockDocumentContent";
 import {BlockAnnotationContent} from "./blocks/BlockAnnotationContent/BlockAnnotationContent";
 import {BlockPredicates} from "./store/BlockPredicates";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {DOMBlocks} from "./contenteditable/DOMBlocks";
 
 export interface BlockEditorGenericProps {
     readonly id: BlockIDStr;
@@ -207,6 +207,7 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
                 className={className}
                 style={style}
                 annotation={content}
+                onClick={onClick}
                 onChange={handleBlockContentChange}
                 onKeyDown={onKeyDown}
                 innerRef={ref}
