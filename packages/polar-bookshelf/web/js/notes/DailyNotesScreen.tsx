@@ -52,7 +52,7 @@ export const DailyNotesScreen: React.FC = () => {
             if (todaysBlock) {
                 return todaysBlock.id;
             }
-            const content: IDateContent = { type: 'date', data: dateContent.data, format: 'YYYY-MM-DD' };
+            const content = new DateContent({ type: 'date', data: dateContent.data, format: 'YYYY-MM-DD' });
             return blocksStore.createNewNamedBlock({ content });
         };
         const todaysBlockID = getTodaysBlockID();

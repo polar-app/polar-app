@@ -15,7 +15,6 @@ import {AnnotationContentType, IFlashcardAnnotationContent} from "polar-blocks/s
 import {ITextConverters} from "../../../annotation_sidebar/DocAnnotations";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {Refs} from "polar-shared/src/metadata/Refs";
-import {useBlocksTreeStore} from "../../BlocksTree";
 import {Texts} from "polar-shared/src/metadata/Texts";
 import {TextType} from "polar-shared/src/metadata/TextType";
 
@@ -129,7 +128,6 @@ const FrontBackFlashcard: React.FC<IFlashcardProps> = (props) => {
     const { front, back } = React.useMemo(() => Flashcards.convertFieldsToMap(fields, 'MARKDOWN'), [fields]);
     const backRef = React.useRef<HTMLDivElement>(null);
     const { update, getBlock } = useAnnotationBlockManager();
-    const blocksTreeStore = useBlocksTreeStore();
 
     const handleChange = React.useCallback((type: 'front' | 'back') => (markdown: MarkdownStr) => {
         const block = getBlock(id, AnnotationContentType.FLASHCARD);
@@ -171,7 +169,6 @@ const ClozeFlashcard: React.FC<IFlashcardProps> = (props) => {
     const { flashcard, id } = props;
     const { fields, created } = flashcard;
     const { text } = React.useMemo(() => Flashcards.convertFieldsToMap(fields, 'MARKDOWN'), [fields]);
-    const blocksTreeStore = useBlocksTreeStore();
     const { update, getBlock } = useAnnotationBlockManager();
 
     const handleChange = React.useCallback((markdown: MarkdownStr) => {

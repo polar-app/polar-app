@@ -14,7 +14,7 @@ import {Numbers} from "polar-shared/src/util/Numbers";
 import {CursorPositions} from "../contenteditable/CursorPositions";
 import {useBlocksStoreContext} from "./BlockStoreContextProvider";
 import {IBlocksStore} from "./IBlocksStore";
-import {BlockPredicates} from "./BlockPredicates";
+import {BlockPredicates, TextContent} from "./BlockPredicates";
 import {MarkdownContent} from "../content/MarkdownContent";
 import {NameContent} from "../content/NameContent";
 import {ImageContent} from "../content/ImageContent";
@@ -31,8 +31,8 @@ import {WikiLinksToMarkdown} from "../WikiLinksToMarkdown";
 import {IBlockExpandCollectionSnapshot, useBlockExpandCollectionSnapshots} from "../persistence/BlockExpandCollectionSnapshots";
 import {BlockExpandPersistenceWriter, useBlockExpandPersistenceWriter} from "../persistence/BlockExpandWriters";
 import {IBlockContentStructure} from "../HTMLToBlocks";
-import {DOMBlocks} from "../contenteditable/BlockContentEditable";
-import {BlockIDStr, IBlock, IBlockContent, IBlockLink, IBlockNamedContent, NamespaceIDStr, UIDStr} from "polar-blocks/src/blocks/IBlock";
+import {DOMBlocks} from "../contenteditable/DOMBlocks";
+import {BlockIDStr, IBlock, IBlockContent, IBlockLink, NamespaceIDStr, UIDStr} from "polar-blocks/src/blocks/IBlock";
 import {IBaseBlockContent} from "polar-blocks/src/blocks/content/IBaseBlockContent";
 import {WriteController, WriteFileProgress} from "../../datastore/Datastore";
 import {ProgressTrackerManager} from "../../datastore/FirebaseCloudStorage";
@@ -41,12 +41,8 @@ import {ContentEditableWhitespace} from "../ContentEditableWhitespace";
 import {MarkdownContentConverter} from "../MarkdownContentConverter";
 import {DeviceIDManager} from "polar-shared/src/util/DeviceIDManager";
 import {DocumentContent} from "../content/DocumentContent";
-import {AnnotationContent} from "../content/AnnotationContent";
-import {INameContent} from "polar-blocks/src/blocks/content/INameContent";
-import {getNamedContentName} from "../NoteUtils";
-import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
-import {ITextConverters} from "../../annotation_sidebar/DocAnnotations";
-import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
+import {AnnotationContent, AnnotationContentTypeMap} from "../content/AnnotationContent";
+import {BlockTextContentUtils} from "../NoteUtils";
 
 export const ENABLE_UNDO_TRACING = false;
 
@@ -68,9 +64,17 @@ export type BlockContent = (MarkdownContent
                             | DocumentContent
                             | AnnotationContent) & IBaseBlockContent;
 
+export interface BlockContentMap extends AnnotationContentTypeMap {
+    'markdown': MarkdownContent,
+    'name': NameContent,
+    'image': ImageContent,
+    'date': DateContent,
+    'document': DocumentContent,
+};
+
 export type BlockType = BlockContent['type'];
 
-export type NamedBlock = Block<NameContent | DateContent | DocumentContent>;
+export type NamedContent = NameContent | DateContent | DocumentContent;
 
 /**
  * A offset into the content of a not where we should place the cursor.
@@ -150,6 +154,8 @@ export interface IBlockMerge {
 export interface NavOpts {
     readonly shiftKey: boolean;
 
+    readonly pos?: NavPosition;
+
     /*
      * This is used to determine whether roots should be treated as expanded, which is usually the case
      * Except for when dealing with the references of a note which can be collapsed.
@@ -189,9 +195,9 @@ export interface ICreatedBlock {
     readonly parent: BlockIDStr;
 }
 
-export type DoIndentResult = IMutation<'no-block' | 'no-parent' | 'no-parent-block' | 'no-sibling', BlockIDStr>;
+export type DoIndentResult = IMutation<'no-block' | 'no-parent' | 'annotation-block' | 'no-parent-block' | 'no-sibling', BlockIDStr>;
 
-export type DoUnIndentResult = IMutation<'no-block' | 'no-parent' | 'no-parent-block' | 'no-parent-block-parent' | 'no-parent-block-parent-block', BlockIDStr>
+export type DoUnIndentResult = IMutation<'no-block' | 'no-parent' | 'grandparent-is-document' | 'no-parent-block' | 'no-parent-block-parent' | 'no-parent-block-parent-block', BlockIDStr>
 
 /**
  * The active block and the position it should be set to once it's made active.
@@ -241,7 +247,7 @@ export interface IDoDeleteOpts {
 }
 
 interface ICreateNewNamedBlockBase {
-    readonly content: IBlockNamedContent;
+    readonly content: NamedContent;
 }
 
 export interface ICreateNewNamedBlockOptsBasic extends ICreateNewNamedBlockBase {
@@ -362,8 +368,8 @@ export class BlocksStore implements IBlocksStore {
      * Get all the nodes by name.
      */
     getNamedBlocks(): ReadonlyArray<string> {
-        const blocks = this.idsToBlocks(Object.values(this._indexByName)) as ReadonlyArray<NamedBlock>;
-        return blocks.map(block => getNamedContentName(block.content));
+        const blocks = this.idsToBlocks(Object.values(this._indexByName)) as ReadonlyArray<Block<NamedContent>>;
+        return blocks.map(block => BlockTextContentUtils.getTextContentMarkdown(block.content));
     }
 
     @computed get reverse() {
@@ -494,7 +500,7 @@ export class BlocksStore implements IBlocksStore {
             this._index[blockData.id] = block;
 
             if (BlockPredicates.isNamedBlock(block)) {
-                const name = getNamedContentName(block.content).toLowerCase();
+                const name = BlockTextContentUtils.getTextContentMarkdown(block.content).toLowerCase();
                 this._indexByName[name] = block.id;
             }
 
@@ -502,9 +508,9 @@ export class BlocksStore implements IBlocksStore {
                 this._indexByDocumentID[block.content.docInfo.fingerprint] = block.id;
             }
 
-            if (block.content.type === "markdown") {
+            if (BlockPredicates.canHaveLinks(block)) {
 
-                if (existingBlock && existingBlock.content.type === "markdown") {
+                if (existingBlock && BlockPredicates.canHaveLinks(existingBlock)) {
                     for (const link of existingBlock.content.links) {
                         this._reverse.remove(link.id, block.id);
                     }
@@ -584,26 +590,6 @@ export class BlocksStore implements IBlocksStore {
 
     public getBlock(id: BlockIDStr): Readonly<Block> | undefined {
         return this._index[id];
-    }
-
-    public getBlockContentData(id: BlockIDStr): string | undefined {
-
-        const block = this.getBlock(id);
-
-        if (! block) {
-            return "";
-        }
-
-        if (BlockPredicates.isTextBlock(block)) {
-            return block.content.data;
-        }
-
-        if (block.content.type === AnnotationContentType.TEXT_HIGHLIGHT) {
-            const highlight = block.content.value;
-            return ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, highlight).text;
-        }
-
-        return "";
     }
 
     public getParent(id: BlockIDStr): Block | undefined {
@@ -802,7 +788,6 @@ export class BlocksStore implements IBlocksStore {
 
     @action public doNav(root: BlockIDStr,
                          delta: 'prev' | 'next',
-                         pos: NavPosition,
                          opts: NavOpts): boolean {
 
         const {shiftKey, autoExpandRoot} = opts;
@@ -810,6 +795,15 @@ export class BlocksStore implements IBlocksStore {
         if (this._active === undefined) {
             console.warn("No currently active node");
             return false;
+        }
+
+        if (! shiftKey) {
+            this.clearSelected('doNav');
+            const newBlockID = DOMBlocks.nav(delta, opts.pos);
+            if (newBlockID) {
+                this.setActive(newBlockID);
+            }
+            return true;
         }
 
         const items = this.computeLinearTree(root, {
@@ -830,27 +824,9 @@ export class BlocksStore implements IBlocksStore {
         const activeIndex = childIndex + deltaIndex;
         const newActive = items[activeIndex];
 
-        if (! newActive && ! shiftKey) {
-            // There's no block that we can navigate to in the current block tree
-            // so use the dom to find the next/prev block
-            const siblingID = DOMBlocks.getSiblingID(this._active.id, delta);
-            if (siblingID) {
-                this.clearSelected('doNav');
-                this.setActiveWithPosition(siblingID, pos);
-            } else {
-                // if we still can't find a sibling then just go to the start/end of the current block (depending on the nav direction)
-                this.setActiveWithPosition(this._active.id, delta === 'prev' ? 'start' : 'end');
-            }
-            return true;
-        }
-
         // If we don't have any active blocks in the current tree and shift is held down and we already have a selection then just skip
         // This is sort of a special case because lets say the cursor is at the first/last block and we're trying to select it.
         // We want to allow selecting it but after that if try to navigate down for example and there's no more blocks then just skip.
-        if (! newActive && shiftKey && this.hasSelected()) {
-            return true;
-        }
-        
         if (! newActive && shiftKey && this.hasSelected()) {
             return true;
         }
@@ -881,18 +857,18 @@ export class BlocksStore implements IBlocksStore {
             this.clearSelected('doNav');
         }
 
-        this.setActiveWithPosition(newActive, pos);
+        this.setActiveWithPosition(newActive, delta === 'next' ? 'end' : 'start');
 
         return true;
 
     }
 
-    public navPrev(root: BlockIDStr, pos: NavPosition, opts: NavOpts) {
-        return this.doNav(root, 'prev', pos, opts);
+    public navPrev(root: BlockIDStr, opts: NavOpts) {
+        return this.doNav(root, 'prev', opts);
     }
 
-    public navNext(root: BlockIDStr, pos: NavPosition, opts: NavOpts) {
-        return this.doNav(root, 'next', pos, opts);
+    public navNext(root: BlockIDStr, opts: NavOpts) {
+        return this.doNav(root, 'next', opts);
     }
 
     /**
@@ -1245,7 +1221,7 @@ export class BlocksStore implements IBlocksStore {
         // based on the name as the name can change.
         const newBlockID = opts.newBlockID || Hashcodes.createRandomID();
 
-        const existingBlock = this.getBlockByName(getNamedContentName(opts.content));
+        const existingBlock = this.getBlockByName(BlockTextContentUtils.getTextContentMarkdown(opts.content));
 
         if (existingBlock) {
             return existingBlock.id;
@@ -1381,9 +1357,10 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
-    @action public createLinkToBlock<C extends IBlockContent = IBlockContent>(sourceBlockID: BlockIDStr,
-                                                                              targetName: BlockNameStr,
-                                                                              content: MarkdownStr) {
+    @action public createLinkToBlock(sourceBlockID: BlockIDStr,
+                                     targetName: BlockNameStr,
+                                     content: MarkdownStr) {
+
         // if the existing target block exists, use that block name.
         const targetBlock = this.getBlockByName(targetName);
 
@@ -1402,15 +1379,15 @@ export class BlocksStore implements IBlocksStore {
                 throw new Error("Unable to find block: " + sourceBlockID);
             }
 
-            if (sourceBlock.content.type !== 'markdown' ) {
-                throw new Error("Source block not markdown: " + sourceBlock.content.type);
+            if (! BlockPredicates.canHaveLinks(sourceBlock)) {
+                throw new Error("Source block does not support links: " + sourceBlock.content.type);
             }
 
             // create the new block - the sourceID is used for the ref to compute the nspace.
-            const targetBlockContent: INameContent = {
+            const targetBlockContent = new NameContent({
                 type: 'name',
                 data: targetName,
-            };
+            });
             const targetBlockID = this.doCreateNewNamedBlock({
                 newBlockID: targetID,
                 nspace: sourceBlock.nspace,
@@ -1419,13 +1396,8 @@ export class BlocksStore implements IBlocksStore {
             const blockContent = sourceBlock.content;
 
             sourceBlock.withMutation(() => {
-
-                const newContent = new MarkdownContent({
-                    ...blockContent.toJSON(),
-                    data: content,
-                });
-                newContent.addLink({id: targetBlockID, text: targetName});
-                sourceBlock.setContent(newContent);
+                blockContent.addLink({id: targetBlockID, text: targetName});
+                sourceBlock.setContent(BlockTextContentUtils.updateTextContentMarkdown(sourceBlock.content, content));
             })
 
             this.doPut([sourceBlock]);
@@ -1452,14 +1424,14 @@ export class BlocksStore implements IBlocksStore {
     @action public styleSelectedBlocks(style: DOMBlocks.MarkdownStyle): void {
         const selectedIDs = this.selectedIDs();
         const ids = selectedIDs.flatMap(id => this.computeLinearTree(id, { includeInitial: true }));
-        const markdownBlocks = this.idsToBlocks(ids).filter(BlockPredicates.isEditableBlock);
+        const textBlocks = this.idsToBlocks(ids).filter(BlockPredicates.isTextBlock);
 
-        if (markdownBlocks.length === 0) {
+        if (textBlocks.length === 0) {
             return;
         }
 
 
-        const applyStyle = (style: DOMBlocks.MarkdownStyle) => (block: Block<MarkdownContent>) => {
+        const applyStyle = (style: DOMBlocks.MarkdownStyle) => (block: Block<TextContent>) => {
             DOMBlocks.applyStyleToBlock(block.id, style);
             const blockElem = DOMBlocks.getBlockElement(block.id);
             if (blockElem) {
@@ -1475,10 +1447,10 @@ export class BlocksStore implements IBlocksStore {
         };
 
         const redo = () => {
-            markdownBlocks.forEach(applyStyle(style));
+            textBlocks.forEach(applyStyle(style));
         };
 
-        return this.doUndoPush('styleSelectedBlocks', markdownBlocks.map(({id}) => id), redo);
+        return this.doUndoPush('styleSelectedBlocks', textBlocks.map(({ id }) => id), redo);
     }
 
     /**
@@ -1738,9 +1710,7 @@ export class BlocksStore implements IBlocksStore {
     }
 
     /**
-     * A block is only indentable if it has a parent and we are not the first
-     * child in that parent. IE it must have a previous sibling so that we can
-     * be
+     * @deprecated Redundant code (same as isUnIndentable)
      */
     public isIndentable(root: BlockIDStr, id: BlockIDStr): boolean {
 
@@ -1765,6 +1735,9 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
+    /**
+     * @deprecated Selections do this by default
+     */
     private computeSelectedIndentableBlockIDs(root: BlockIDStr): ReadonlyArray<BlockIDStr> {
 
         const selectedRoots = this.computeSelectedRoots();
@@ -1787,14 +1760,8 @@ export class BlocksStore implements IBlocksStore {
         }
 
         const computeTargetIdentifiers = () => {
-
-            if (this.hasSelected()) {
-                return this.computeSelectedIndentableBlockIDs(root);
-            } else {
-                return [id];
-            }
-
-        }
+            return this.hasSelected() ? this.selectedIDs() : [id];
+        };
 
         const targetIdentifiers = computeTargetIdentifiers();
 
@@ -1820,6 +1787,10 @@ export class BlocksStore implements IBlocksStore {
             if (! parentBlock) {
                 console.warn("No parent block for id: " + block.parent);
                 return {error: 'no-parent-block'};
+            }
+
+            if (BlockPredicates.isAnnotationBlock(block)) {
+                return {error: 'annotation-block'};
             }
 
             const parentItems = (parentBlock.itemsAsArray || []);
@@ -1883,6 +1854,9 @@ export class BlocksStore implements IBlocksStore {
 
     }
 
+    /**
+     * @deprecated This code is kind of redundant because we're doing the same checks inside of indentBlock/unIndentBlock
+     */
     public isUnIndentable(root: BlockIDStr, id: BlockIDStr) {
 
         const block = this.getBlock(id);
@@ -1900,10 +1874,22 @@ export class BlocksStore implements IBlocksStore {
             return false;
         }
 
+        const parent = this.getBlock(block.parent);
+        
+        // If the parent is an annotation then we can't unindent
+        // Because the parent of that annotation is a document which only allows annotations beneath it
+        if (! parent || BlockPredicates.isAnnotationHighlightBlock(parent)) {
+            return false;
+        }
+
         return true;
 
     }
 
+
+    /**
+     * @deprecated Selections do this by default now.
+     */
     private computeSelectedUnIndentableBlockIDs(root: BlockIDStr): ReadonlyArray<BlockIDStr> {
 
         const selectedRoots = this.computeSelectedRoots();
@@ -1919,13 +1905,7 @@ export class BlocksStore implements IBlocksStore {
         }
 
         const computeTargetIdentifiers = () => {
-
-            if (this.hasSelected()) {
-                return this.computeSelectedUnIndentableBlockIDs(root);
-            } else {
-                return [id];
-            }
-
+            return this.hasSelected() ? this.selectedIDs() : [id];
         };
 
         const targetIdentifiers = computeTargetIdentifiers();
@@ -1955,6 +1935,10 @@ export class BlocksStore implements IBlocksStore {
 
             if (! parentBlock) {
                 return {error: 'no-parent-block'};
+            }
+            
+            if (BlockPredicates.isAnnotationHighlightBlock(parentBlock)) {
+                return {error: 'grandparent-is-document'};
             }
 
             if (! parentBlock.parent || block.parent === root) {
@@ -2009,7 +1993,7 @@ export class BlocksStore implements IBlocksStore {
         const block = this._index[id];
 
         if (BlockPredicates.isTextBlock(block)) {
-            return block?.content.data.trim() === '';
+            return BlockTextContentUtils.getTextContentMarkdown(block.content).trim() === '';
         }
 
         return false;
@@ -2137,7 +2121,7 @@ export class BlocksStore implements IBlocksStore {
 
                     // *** delete the block from name index by name.
                     if (BlockPredicates.isNamedBlock(block)) {
-                        const name = getNamedContentName(block.content);
+                        const name = BlockTextContentUtils.getTextContentMarkdown(block.content);
                         delete this._indexByName[name.toLowerCase()];
                     }
 
@@ -2257,7 +2241,7 @@ export class BlocksStore implements IBlocksStore {
 
         const parentBlock = this.getBlock(block.parent);
 
-        if (! parentBlock) {
+        if (! parentBlock || BlockPredicates.isAnnotationBlock(parentBlock)) {
             return false;
         }
 

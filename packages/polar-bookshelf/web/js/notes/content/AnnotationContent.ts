@@ -79,6 +79,7 @@ abstract class AnnotationContentBase<T extends IAnnotationContent> implements IA
     }
 }
 
+
 export class TextHighlightAnnotationContent extends AnnotationContentBase<ITextHighlightAnnotationContent> {}
 
 export class AreaHighlightAnnotationContent extends AnnotationContentBase<IAreaHighlightAnnotationContent> {}

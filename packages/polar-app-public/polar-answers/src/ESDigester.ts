@@ -13,7 +13,6 @@ export namespace ESDigester {
 
     export interface IAttachment {
         readonly content_type: string;
-        // FIXME this is the main content we want.
         readonly content: string;
     }
 
@@ -21,12 +20,6 @@ export namespace ESDigester {
         // we dont care about this data
         readonly data: string;
         readonly attachment: IAttachment;
-    }
-
-    export interface IDigestDocument {
-        readonly idx: number;
-        readonly text: string;
-
     }
 
     async function doGetExtract(id: string): Promise<IElasticResponse<IExtract>> {

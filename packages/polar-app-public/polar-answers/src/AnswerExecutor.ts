@@ -1,14 +1,16 @@
 import {ESRequests} from "./ESRequests";
-import {ESDigester} from "./ESDigester";
 import {OpenAIAnswersClient} from "./OpenAIAnswersClient";
 import {ESAnswersIndexNames} from "./ESAnswersIndexNames";
 import { UserIDStr } from "polar-shared/src/util/Strings";
+import {ESShingleWriter} from "./ESShingleWriter";
 
 export namespace AnswerExecutor {
 
-    import IDigestDocument = ESDigester.IDigestDocument;
     import QuestionAnswerPair = OpenAIAnswersClient.QuestionAnswerPair;
     import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
+    import IAnswerDocument = OpenAIAnswersClient.IAnswerDocument;
+    import IAnswerDigestRecord = ESShingleWriter.IAnswerDigestRecord;
+    import ISelectedDocument = OpenAIAnswersClient.ISelectedDocument;
 
     export interface IExecOpts {
         readonly uid: UserIDStr;
@@ -17,7 +19,47 @@ export namespace AnswerExecutor {
 
     export interface IAnswer extends OpenAIAnswersClient.IResponse {
         readonly question: string;
+        readonly selected_documents: ReadonlyArray<ISelectedDocumentWithRecord<IAnswerDigestRecord>>;
+
     }
+
+    export interface ISelectedDocumentWithRecord<R>  extends ISelectedDocument {
+
+        /**
+         * The original record for this document
+         */
+        readonly record: R;
+
+    }
+
+    export const EXAMPLES_CONTEXT: string =
+        [
+            "In 2017, U.S. life expectancy was 78.6 years.",
+            'Google Analytics is a service that helps webmasters analyze traffic patterns at their web sites.  It provides aggregate statistics, such as the number of unique visitors per day and the page views per URL per day, as well as site-tracking reports, such as the percentage of users that made a purchase, given that they earlier viewed a specific page.  To enable the service, webmasters embed a small JavaScript program in their web pages. '
+        ].join("  ");
+
+    export const EXAMPLES: ReadonlyArray<QuestionAnswerPair> = [
+        ["What is human life expectancy in the United States?", "78 years."],
+        ["Who is the President of Xexptronica", "__UNKNOWN__"],
+        ["What do dinosaurs capilate?", "__UNKNOWN__"],
+        ["Is foo a bar?", "__UNKNOWN__"],
+        ["What is Google Analytics", "Google Analytics is a service that helps webmasters analyze patterns at their web sites."],
+        ["What does Google Analytics provide?", "It provides aggregate statistics, such as the number of unique visitors per day and the page views per URL per day."]
+    ];
+
+    export const STOP = ["\n", "<|endoftext|>"];
+
+    export const MAX_TOKENS = 250;
+
+    export const SEARCH_MODEL = 'curie';
+
+    export const MODEL = 'davinci';
+
+    export const TEMPERATURE = 0;
+
+    export const RETURN_METADATA = true;
+
+    export const N = 10;
 
     export async function exec(opts: IExecOpts): Promise<IAnswer> {
 
@@ -26,9 +68,12 @@ export namespace AnswerExecutor {
         // run this query on the digest ...
         const index = ESAnswersIndexNames.createForUserDocs(uid);
 
-        // FIXME this has to be hard coded and we only submit docs that would be
+        // TODO make this into a generic search client and don't hard code the ES query here.
+
+        // TODO this has to be hard coded and we only submit docs that would be
         // applicable to the answer API and we would need a way to easily
-        // calculate the short head of the result set
+        // calculate the short head of the result set.  The OpenAI Answers API
+        // only allows 200 documents so we might just want to hard code this.
         const size = 100;
 
         const query = {
@@ -41,45 +86,56 @@ export namespace AnswerExecutor {
             size
         };
 
-        const esResponse: IElasticSearchResponse<IDigestDocument> = await ESRequests.doPost(`/${index}/_search`, query);
+        const requestURL = `/${index}/_search`;
+        const esResponse: IElasticSearchResponse<IAnswerDigestRecord> = await ESRequests.doPost(requestURL, query);
 
-        console.log("ES response", JSON.stringify(esResponse, null, "  "));
+        // the array of digest records so that we can map from the
+        // selected_documents AFTER the request is executed.
+        const records = esResponse.hits.hits.map(current => current._source);
 
-        // tslint:disable-next-line:variable-name
-        const max_tokens=35
+        const documents = records.map(current => current.text);
 
-        // tslint:disable-next-line:variable-name
-        const search_model='curie';
-        const model = 'davinci';
+        // TODO how do we compute documents which have no known answer?
 
-        // tslint:disable-next-line:variable-name
-        const examples_context="In 2017, U.S. life expectancy was 78.6 years.";
-
-        const examples: ReadonlyArray<QuestionAnswerPair>= [
-            ["What is human life expectancy in the United States?", "78 years."]
-        ];
-
-        const stop = ["\n", "<|endoftext|>"];
-
-        const documents = esResponse.hits.hits.map(current => current._source.text);
+        // Assuming your temperature is already at 0 (making the API less likely
+        // to confabulate), you can show the API how to say "Unknown" using
+        // examples and examples_context. For instance, one example could be
+        // "Who invented Cottage Cheese?", "Unknown" Another example could be
+        // "When was the first Olympics?", "Unknown" Of course, you'll want
+        // examples that are answered by the examples_context as well. Does this
+        // make sense?
 
         const request: OpenAIAnswersClient.IRequest = {
-            search_model,
-            model,
+            search_model: SEARCH_MODEL,
+            model: MODEL,
             question,
-            examples_context,
-            examples,
-            max_tokens,
-            stop,
+            examples_context: EXAMPLES_CONTEXT,
+            examples: EXAMPLES,
+            max_tokens: MAX_TOKENS,
+            stop: STOP,
             documents,
-            n: 10
+            n: N,
+            temperature: TEMPERATURE,
+            return_metadata: RETURN_METADATA,
+            // logprobs: 10,
         }
 
         const answerResponse = await OpenAIAnswersClient.exec(request);
 
+        function convertToSelectedDocumentWithRecord(doc: ISelectedDocument): ISelectedDocumentWithRecord<IAnswerDigestRecord> {
+            return {
+                document: doc.document,
+                text: doc.text,
+                object: doc.object,
+                score: doc.score,
+                record: records[doc.document]
+            }
+        }
+
         return {
             question,
-            ...answerResponse
+            selected_documents: answerResponse.selected_documents.map(convertToSelectedDocumentWithRecord),
+            answers: answerResponse.answers,
         }
 
     }

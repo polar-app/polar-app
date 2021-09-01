@@ -2,6 +2,7 @@ import {IDStr, URLStr, UserIDStr} from "polar-shared/src/util/Strings";
 import {PDFText} from "polar-pdf/src/pdf/PDFText";
 import {SentenceShingler} from "./SentenceShingler";
 import {ESShingleWriter} from "./ESShingleWriter";
+import {PageNumber} from "polar-shared/src/metadata/IPageMeta";
 
 export namespace AnswerIndexer {
 
@@ -9,27 +10,35 @@ export namespace AnswerIndexer {
         readonly docID: IDStr;
         readonly url: URLStr;
         readonly uid: UserIDStr;
+        readonly skipPages?: ReadonlyArray<PageNumber>;
     }
 
     export async function doIndex(opts: IndexOpts) {
 
         const {uid, docID} = opts;
 
+        const writer = ESShingleWriter.create({uid});
+
         await PDFText.getText(opts.url, async pdfTextContent => {
 
-            const {extract, pageNum} = pdfTextContent;
+                const {extract, pageNum} = pdfTextContent;
 
-            const content = extract.map(current => current.map(word => word.str).join(" ")).join("\n");
+                console.log("Indexing text on page: " + pageNum)
 
-            // now build the sentence shingles over this...
+                const content = extract.map(current => current.map(word => word.str).join(" ")).join("\n");
 
-            const shingles = await SentenceShingler.computeShinglesFromContent(content);
+                // now build the sentence shingles over this...
 
-            for(const shingle of shingles) {
-                await ESShingleWriter.write({docID, uid, pageNum, shingle});
-            }
+                const shingles = await SentenceShingler.computeShinglesFromContent(content);
 
-        });
+                for(const shingle of shingles) {
+                    await writer.write({docID, pageNum, shingle});
+                }
+
+            },
+            {
+                skipPages: opts.skipPages
+            });
 
     }
 
