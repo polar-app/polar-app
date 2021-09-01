@@ -10,7 +10,8 @@
     "dist-macos": "npx webpack && electron-builder --config=electron-builder.yml --macos dmg zip --publish always",
     "dist-win": "npx webpack && ./build/dist-win.sh",
     "verify-electron-version": "./scripts/verify-electron-version",
-    "eslint": "figlet ${npm_package_name} && eslint -c ../../../.eslintrc.json ."
+    "eslint": "figlet ${npm_package_name} && eslint -c ./.eslintrc.json .",
+    "eslint-fix": "eslint -c ./.eslintrc.json . --fix"
   },
   "repository": "https://github.com/burtonator/polar-app-public",
   "keywords": [
