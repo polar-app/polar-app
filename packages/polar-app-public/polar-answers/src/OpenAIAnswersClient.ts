@@ -79,6 +79,13 @@ export namespace OpenAIAnswersClient {
          */
         readonly return_metadata?: boolean;
 
+        /**
+         * If set to true, the returned JSON will include a "prompt" field
+         * containing the final prompt that was used to request a completion.
+         * This is mainly useful for debugging purposes.
+         */
+        readonly return_prompt?: boolean;
+
     }
 
     export interface ISelectedDocument {
