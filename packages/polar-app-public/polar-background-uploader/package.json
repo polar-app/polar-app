@@ -4,8 +4,9 @@
   "description": "Provides an API for searching 3rd party APIs",
   "main": "index.js",
   "scripts": {
-    "eslint": "figlet ${npm_package_name} && eslint -c ../../../.eslintrc.json .",
-    "compile": "yarn run eslint && tsc"
+    "eslint": "figlet ${npm_package_name} && eslint -c ./.eslintrc.json .",
+    "eslint-fix": "eslint -c ./.eslintrc.json . --fix",
+    "compile": "tsc"
   },
   "keywords": [],
   "author": "",
