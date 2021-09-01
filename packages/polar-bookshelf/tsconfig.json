@@ -10,8 +10,7 @@
     "noImplicitReturns": true,
     "removeComments": true,
     "strictFunctionTypes": true,
-    "inlineSourceMap": true,
-    "inlineSources": true,
+    "sourceMap": true,
     "target": "ES2015",
     "module": "commonjs",
     "moduleResolution": "node",
@@ -27,12 +26,12 @@
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
-    "lib": ["es2019", "dom"],
     "paths": {
       "*": ["node_modules/*"]
-    }
+    },
+    "lib": ["es2019", "es2020.string", "dom"],
+    "skipLibCheck": true
   },
-  "types": ["mocha", "reflect-metadata"],
-  "include": ["**/*.ts", "**/*.tsx", "test/sandbox/**/*", "scripts/**/*", "web/**/*", "apps/**/*"],
-  "exclude": ["node_modules", "dist", "*.d.ts", "*.js", "cdk.out"]
+  "include": ["test/sandbox/**/*", "scripts/**/*", "web/**/*", "apps/**/*"],
+  "exclude": ["node_modules/**"]
 }
