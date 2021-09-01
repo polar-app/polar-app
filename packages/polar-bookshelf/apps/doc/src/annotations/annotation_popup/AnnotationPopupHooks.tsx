@@ -276,6 +276,7 @@ export const useAnnotationPopupPositionUpdater = (
     }, [boundsElement, scrollElement, updatePosition, ref]);
 
     useResizeObserver(updatePosition, {current: boundsElement || null});
+    useResizeObserver(updatePosition, ref);
 
     return ref;
 };
