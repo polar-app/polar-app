@@ -22,7 +22,7 @@
     "test": "mocha -p --timeout 60000 --exit 'web/js/**/*Test.js' 'apps/**/*Test.js' 'web/js/**/*TestN.js' 'apps/**/*TestN.js' 'web/js/**/*TestNK.js' 'apps/**/*TestNK.js'",
     "__test": "scripts/test.sh",
     "tslint": "tslint --project tsconfig.json --config tslint.yaml",
-    "eslint": "figlet ${npm_package_name} && eslint -c ../../.eslintrc.json .",
+    "eslint": "figlet ${npm_package_name} && eslint -c ./.eslintrc.json .",
     "webpack": "rm -rf dist/public && rm -rf .webpack-cache-loader && rm -rf .terser-webpack-plugin/ && mkdir -p dist/public && node --max_old_space_size=4096 node_modules/.bin/webpack --config=webpack.config.js && pwd && ls -al dist/public && echo 'Webpack built successfully'",
     "webpack-serve": "node --max_old_space_size=4096 node_modules/.bin/webpack serve",
     "find-unhandled-promises": "yarn run tslint | grep 'Promises must be handled appropriately' | grep -v 'web/test' ; true",
