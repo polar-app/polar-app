@@ -1,5 +1,6 @@
 import {ESCredentials} from "./ESCredentials";
 import {Fetches} from "polar-shared/src/util/Fetch";
+import {ESSecrets} from "./ESSecrets";
 
 export namespace ESRequests {
 
@@ -21,6 +22,8 @@ export namespace ESRequests {
     }
 
     export async function doPut(url: string, body: object) {
+
+        ESSecrets.init();
 
         const credentials = ESCredentials.get();
 
@@ -45,6 +48,8 @@ export namespace ESRequests {
 
     export async function doPost(url: string, body: object) {
 
+        ESSecrets.init();
+
         const credentials = ESCredentials.get();
 
         const authorization = Buffer.from(`${credentials.user}:${credentials.pass}`).toString('base64');
@@ -66,6 +71,8 @@ export namespace ESRequests {
 
     }
     export async function doGet(url: string): Promise<any> {
+
+        ESSecrets.init();
 
         const credentials = ESCredentials.get();
 
