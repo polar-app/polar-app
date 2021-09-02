@@ -4,7 +4,6 @@
   "description": "Testing code for Firebase shared across multiple modules",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "eslint": "eslint -c ./.eslintrc.json .",
     "eslint-fix": "eslint -c ./.eslintrc.json . --fix",
     "compile": "tsc"
