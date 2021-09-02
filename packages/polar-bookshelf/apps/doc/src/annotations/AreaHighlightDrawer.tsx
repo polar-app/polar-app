@@ -9,6 +9,9 @@ import {ILTRect} from 'polar-shared/src/util/rects/ILTRect';
 import {useDocViewerCallbacks, useDocViewerStore} from '../DocViewerStore';
 import {useDocViewerElementsContext} from '../renderers/DocViewerElementsContext';
 import {useRefWithUpdates} from "../../../../web/js/hooks/ReactHooks";
+import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../DocViewer";
+import {useDocViewerContext} from "../renderers/DocRenderer";
+import {useCreateBlockAreaHighlight} from "../../../../web/js/notes/HighlightNotesUtils";
 
 const useAreaHighlightCreatorStyles = makeStyles(() =>
     createStyles({
@@ -25,7 +28,10 @@ export const AreaHighlightCreator: React.FC = () => {
     const {onAreaHighlightCreated} = useAreaHighlightHooks();
     const {setAreaHighlightMode} = useDocViewerCallbacks();
     const docViewerElements = useDocViewerElementsContext();
+    const {docScale, docMeta} = useDocViewerStore(['docScale', 'docMeta']);
     const classes = useAreaHighlightCreatorStyles();
+    const {fileType} = useDocViewerContext();
+    const createBlockAreaHighlight = useCreateBlockAreaHighlight();
 
     React.useEffect(() => {
         const viewerContainer = docViewerElements.getDocViewerElement().querySelector("#viewerContainer");
@@ -34,17 +40,35 @@ export const AreaHighlightCreator: React.FC = () => {
         }
     }, [areaHighlightMode, docViewerElements, classes]);
 
-    const createAreaHighlight = React.useCallback(({ rect, pageNum }) => {
-        onAreaHighlightCreated({ pageNum, rectWithinPageElement: rect });
+    const createAreaHighlight: IUsePDFRectangleDrawerCallback = React.useCallback(({ rect, pageNum }) => {
+        if (NEW_NOTES_ANNOTATION_BAR_ENABLED) {
+            if (! docMeta || ! docScale) {
+                return;
+            }
+
+            const docViewerElement = docViewerElements.getDocViewerElement();
+            createBlockAreaHighlight({
+                rect,
+                pageNum,
+                fileType,
+                docScale,
+                fingerprint: docMeta.docInfo.fingerprint,
+                docViewerElement,
+            }).catch(console.error);
+
+        } else {
+            onAreaHighlightCreated({ pageNum, rectWithinPageElement: rect });
+        }
         setAreaHighlightMode(false);
-    }, [onAreaHighlightCreated, setAreaHighlightMode])
+    }, [onAreaHighlightCreated, setAreaHighlightMode, createBlockAreaHighlight, docScale, docMeta, docViewerElements])
 
     usePDFRectangleDrawer(createAreaHighlight, { enabled: areaHighlightMode });
 
     return null;
 };
 
-type IUsePDFRectangleDrawerCallback = (data: { pageNum: number, rect: ILTRect }) => void;
+type IUsePDFRectangleDrawerData = { pageNum: number, rect: ILTRect };
+type IUsePDFRectangleDrawerCallback = (data: IUsePDFRectangleDrawerData) => void;
 type IUsePDFRectangleDrawerOpts = {
     threshold?: IPoint;
     enabled?: boolean;

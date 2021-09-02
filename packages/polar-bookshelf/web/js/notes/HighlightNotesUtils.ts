@@ -13,6 +13,12 @@ import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {Flashcards} from "../metadata/Flashcards";
 import {Refs} from "polar-shared/src/metadata/Refs";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
+import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
+import {FileType} from "../apps/main/file_loaders/FileType";
+import {IDocScale} from "../../../apps/doc/src/DocViewerStore";
+import {BlockAreaHighlight} from "./BlockAreaHighlight";
+import {useFirebaseCloudStorage} from "../datastore/FirebaseCloudStorage";
+import {Backend} from "polar-shared/src/datastore/Backend";
 
 type IHighlightContentType = AnnotationContentType.AREA_HIGHLIGHT | AnnotationContentType.TEXT_HIGHLIGHT;
 
@@ -176,4 +182,65 @@ export const useAnnotationBlockManager = () => {
     }, [blocksStore, getBlock]);
 
     return { create, update, remove, getBlock, createFlashcard };
+};
+
+type ICreateBlockAreaHighlightOpts = {
+    rect: ILTRect,
+    pageNum: number,
+    docViewerElement: HTMLElement,
+    fileType: FileType,
+    fingerprint: string,
+    docScale: IDocScale
+};
+
+export const useCreateBlockAreaHighlight = () => {
+    const {create, getBlock, update} = useAnnotationBlockManager();
+    const cloudStorage = useFirebaseCloudStorage();
+
+    return React.useCallback(async (opts: ICreateBlockAreaHighlightOpts) => {
+        const {
+            fingerprint,
+            rect,
+            docScale,
+            docViewerElement,
+            pageNum,
+            fileType
+        } = opts;
+
+        const { content, screenshot } = await BlockAreaHighlight.create({
+            fingerprint,
+            docScale,
+            fileType,
+            rect,
+            pageNum,
+            docViewerElement,
+        });
+    
+        const blockID = create(fingerprint, content);
+
+        if (blockID) {
+            const { id, ext } = await BlockAreaHighlight.persistScreenshot(cloudStorage, screenshot);
+            const name = `${id}.${ext}`;
+
+            const block = getBlock(blockID, AnnotationContentType.AREA_HIGHLIGHT);
+            if (! block) {
+                return;
+            }
+
+            const contentJSON = block.content.toJSON();
+            update(blockID, {
+                ...contentJSON,
+                value: {
+                    ...contentJSON.value,
+                    image: {
+                        type: screenshot.type,
+                        width: screenshot.width,
+                        height: screenshot.height,
+                        src: { name: name, backend: Backend.IMAGE },
+                        id,
+                    }
+                },
+            });
+        }
+    }, [create, update, getBlock, cloudStorage]);
 };

@@ -2,14 +2,12 @@ import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
 import {AnnotationRects} from "../../../../web/js/metadata/AnnotationRects";
 import {AreaHighlights} from "../../../../web/js/metadata/AreaHighlights";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
-import {IPoint} from "../../../../web/js/Point";
 import {IDocScale} from "../DocViewerStore";
 import {Screenshots} from "../../../../web/js/screenshots/Screenshots";
 import {ICapturedScreenshot} from "../../../../web/js/screenshots/Screenshot";
 import {Position} from "polar-shared/src/metadata/IBaseHighlight";
 import {FileType} from "../../../../web/js/apps/main/file_loaders/FileType";
 import {Preconditions} from "polar-shared/src/Preconditions";
-import {IRect} from "polar-shared/src/util/rects/IRect";
 
 export namespace AreaHighlightRenderers {
 
