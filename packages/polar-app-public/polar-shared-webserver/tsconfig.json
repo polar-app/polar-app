@@ -27,7 +27,7 @@
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
-    "lib": ["es2019", "dom"],
+    "lib": ["es2019", "es2020.string", "dom"],
     "paths": {
       "*": ["node_modules/*"]
     }
