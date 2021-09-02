@@ -46,7 +46,11 @@ export class Billing {
         this.purchaseUpdateSubscription = RNIap.purchaseUpdatedListener((purchase: RNIap.InAppPurchase | RNIap.SubscriptionPurchase | RNIap.ProductPurchase) => {
             console.log(new Date().toISOString());
             console.log('purchaseUpdatedListener', purchase);
-            this.handlePurchase(purchase).then()
+            this.handlePurchase(purchase)
+                .then()
+                .catch(reason => {
+                    Alert.alert(reason);
+                })
         });
 
         this.purchaseErrorSubscription = RNIap.purchaseErrorListener((error: RNIap.PurchaseError) => {
