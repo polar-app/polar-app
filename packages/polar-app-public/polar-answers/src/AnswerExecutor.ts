@@ -8,7 +8,6 @@ export namespace AnswerExecutor {
 
     import QuestionAnswerPair = OpenAIAnswersClient.QuestionAnswerPair;
     import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
-    import IAnswerDocument = OpenAIAnswersClient.IAnswerDocument;
     import IAnswerDigestRecord = ESShingleWriter.IAnswerDigestRecord;
     import ISelectedDocument = OpenAIAnswersClient.ISelectedDocument;
 
@@ -51,9 +50,9 @@ export namespace AnswerExecutor {
 
     export const MAX_TOKENS = 250;
 
-    export const SEARCH_MODEL = 'curie';
+    export const SEARCH_MODEL = 'ada';
 
-    export const MODEL = 'davinci';
+    export const MODEL = 'ada';
 
     export const TEMPERATURE = 0;
 
@@ -89,11 +88,19 @@ export namespace AnswerExecutor {
         const requestURL = `/${index}/_search`;
         const esResponse: IElasticSearchResponse<IAnswerDigestRecord> = await ESRequests.doPost(requestURL, query);
 
+        // I believe the non-deterministic results you see might be caused by
+        // the order in which the documents selected by the Answers endpoint are
+        // inserted into the final completion prompt (Answers endpoint is
+        // indeed Search+Completions under the hood).
+        //
+        // To confirm this hypothesis, I would pass return_prompt = True for
+        // each API call and see how the final prompt differs between calls.
+
         // the array of digest records so that we can map from the
         // selected_documents AFTER the request is executed.
         const records = esResponse.hits.hits.map(current => current._source);
 
-        const documents = records.map(current => current.text);
+        const documents = records.map(current => current.text.replace(/\n/g, ' '));
 
         // TODO how do we compute documents which have no known answer?
 
