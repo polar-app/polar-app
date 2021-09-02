@@ -8,7 +8,7 @@
     "node": "14"
   },
   "scripts": {
-    "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
+    "_test": "mocha --timeout 20000 --exit '**/**/*Test.js'",
     "eslint": "eslint -c ../../../../.eslintrc.json .",
     "compile": "tsc",
     "compile:watch": "npx tsc --watch",
