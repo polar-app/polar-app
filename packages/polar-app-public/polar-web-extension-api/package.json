@@ -3,8 +3,8 @@
   "version": "2.1.101",
   "description": "Provides just the basic API that we can use in both the frontend and backend for API requests and responses.",
   "main": "index.js",
+  "comment": "test command isn't here because the tests should be run with karma as they use some browser APIs",
   "scripts": {
-    "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "eslint": "eslint -c ./.eslintrc.json .",
     "eslint-fix": "eslint -c ./.eslintrc.json . --fix",
     "compile": "tsc",
