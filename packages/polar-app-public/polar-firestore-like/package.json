@@ -1,6 +1,6 @@
 {
   "name": "polar-firestore-like",
-  "version": "2.1.101",
+  "version": "2.1.102",
   "description": "Firestore interfaces so that we can use both the client and admin SDK and mock the firestore interfaces.",
   "main": "index.js",
   "scripts": {
@@ -15,12 +15,12 @@
     "@types/mocha": "=8.2.2",
     "chai": "4.2.0",
     "mocha": "=9.0.0",
-    "polar-test": "^2.1.101",
+    "polar-test": "^2.1.102",
     "tslint": "6.1.2",
     "typescript": "=4.2.3"
   },
   "dependencies": {
-    "polar-shared": "^2.1.101"
+    "polar-shared": "^2.1.102"
   },
   "peerDependencies": {
     "firebase": "=8.8.1",
