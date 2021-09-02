@@ -9,5 +9,5 @@ export type Account = {
     interval: "month",
     customer: Customer,
     lastModified: string,
-    expiresAt: string,
+    expiresAt?: string,
 };

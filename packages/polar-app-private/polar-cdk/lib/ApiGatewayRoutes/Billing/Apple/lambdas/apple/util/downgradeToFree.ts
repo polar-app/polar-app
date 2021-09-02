@@ -1,12 +1,11 @@
-import getFirebaseAdminApp from "../../../../../shared/getFirebaseAdminApp";
+import {Firebase} from "polar-admin/Firebase";
 
 export default async function downgradeToFree(email: any) {
-    const firebaseAdminApp = getFirebaseAdminApp();
 
     // Find the User from the Firebase Authentication service
-    const user = await firebaseAdminApp.auth().getUserByEmail(email);
+    const user = await Firebase.getApp().auth().getUserByEmail(email);
 
-    const ref = firebaseAdminApp.firestore()
+    const ref = Firebase.getApp().firestore()
         .collection('account')
         .doc(user.uid);
 
