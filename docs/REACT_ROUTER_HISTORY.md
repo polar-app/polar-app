@@ -40,6 +40,6 @@ so when we press the back button for example, we would not close the app (as it
 would be if we didn't change the url) but would simply go back to the previous
 window/ cancel the operation.
 
-# Replace behavior ( history.repalce() ):
+# Replace behavior ( history.replace() ):
 
 In this case, we would not push anything to the stack and it would remain with the same length, but the last element (url) in the stack would be replace with a new one.
