@@ -60,7 +60,15 @@ export const AreaHighlightCreator: React.FC = () => {
             onAreaHighlightCreated({ pageNum, rectWithinPageElement: rect });
         }
         setAreaHighlightMode(false);
-    }, [onAreaHighlightCreated, setAreaHighlightMode, createBlockAreaHighlight, docScale, docMeta, docViewerElements])
+    }, [
+        onAreaHighlightCreated,
+        setAreaHighlightMode,
+        createBlockAreaHighlight,
+        docScale,
+        docMeta,
+        docViewerElements,
+        fileType,
+    ])
 
     usePDFRectangleDrawer(createAreaHighlight, { enabled: areaHighlightMode });
 
