@@ -4,7 +4,7 @@
   "description": "Basic internal NPM commands which extend NPM functionality",
   "main": "index.js",
   "scripts": {
-    "eslint": "figlet ${npm_package_name} && eslint -c ./.eslintrc.json .",
+    "eslint": "eslint -c ./.eslintrc.json .",
     "eslint-fix": "eslint -c ./.eslintrc.json . --fix",
     "compile": "tsc"
   },

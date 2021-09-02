@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
-    "eslint": "figlet ${npm_package_name} && eslint -c ./.eslintrc.json .",
+    "eslint": "eslint -c ./.eslintrc.json .",
     "eslint-fix": "eslint -c ./.eslintrc.json . --fix",
     "compile": "tsc",
     "compile:watch": "tsc --watch"

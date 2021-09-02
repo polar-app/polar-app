@@ -4,7 +4,7 @@
   "description": "Provides just the basic API that we can use in both the frontend and backend for API requests and responses.",
   "main": "index.js",
   "scripts": {
-    "eslint": "figlet ${npm_package_name} && eslint -c ./.eslintrc.json .",
+    "eslint": "eslint -c ./.eslintrc.json .",
     "eslint-fix": "eslint -c ./.eslintrc.json . --fix",
     "compile": "tsc"
   },

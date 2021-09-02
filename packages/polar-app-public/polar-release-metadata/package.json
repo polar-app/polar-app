@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
-    "eslint": "figlet ${npm_package_name} && eslint -c ./.eslintrc.json .",
+    "eslint": "eslint -c ./.eslintrc.json .",
     "eslint-fix": "eslint -c ./.eslintrc.json . --fix",
     "compile": "tsc && yarn run generate-release-metadata",
     "build": "node src/ReleaseMetadataGenerator.js ../../polar-site/_posts/",

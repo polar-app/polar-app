@@ -46,7 +46,7 @@ commands:
       # ! Install Required Linux Binary (libvips is needed by sharp which is needed by gatsby)
       - run:
           name: Required Linux packages
-          command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt update -y && sudo apt install libvips libvips-dev pngquant figlet -y; fi
+          command: if [ "$OSTYPE" = 'linux-gnu' ]; then sudo apt update -y && sudo apt install libvips libvips-dev pngquant -y; fi
 
       # ? Debug Step for Node/Npm/Yarn/Lerna/Firebase Versions
       - run:
@@ -317,7 +317,6 @@ workflows:
           executor: large
           requires:
             - setting-up
-
 
       # @ Build Polar app
       - build-polar-app:
