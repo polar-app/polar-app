@@ -186,22 +186,6 @@ export class FlashcardInputForCloze extends React.Component<IProps, IState> {
         });
 
     }
-    //
-    // private onCancel(): void {
-    //
-    //     if (this.props.onCancel) {
-    //         this.props.onCancel();
-    //     }
-    //
-    //     this.reset();
-    //
-    // }
-    //
-    // private reset(): void {
-    //     this.fields = {text: ""};
-    // }
-
-
 }
 
 interface IProps {

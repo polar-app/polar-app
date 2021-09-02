@@ -8,7 +8,6 @@ export namespace AnswerExecutor {
 
     import QuestionAnswerPair = OpenAIAnswersClient.QuestionAnswerPair;
     import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
-    import IAnswerDocument = OpenAIAnswersClient.IAnswerDocument;
     import IAnswerDigestRecord = ESShingleWriter.IAnswerDigestRecord;
     import ISelectedDocument = OpenAIAnswersClient.ISelectedDocument;
 

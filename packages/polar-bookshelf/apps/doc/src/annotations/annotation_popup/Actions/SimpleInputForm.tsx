@@ -25,7 +25,7 @@ export type FormState<T extends FieldValues = FieldValues> = {
     [K in keyof T]: T[K]
 };
 
-export type InputOption<T> = { placeholder?: string, initialValue?: T, rows?: number };
+export type InputOption<T> = { placeholder?: string, initialValue?: T, rows?: number, ref?: React.Ref<HTMLInputElement> };
 
 export type InputOptions<T extends FieldValues = FieldValues> = {
     [K in keyof T]: InputOption<T[K]>;
@@ -89,6 +89,7 @@ export function SimpleInputForm<
                                 multiline
                                 autoFocus={i === 0}
                                 name={key}
+                                inputRef={inputs[key].ref}
                                 variant="outlined"
                                 rows={inputs[key].rows || 2}
                                 rowsMax={5}
