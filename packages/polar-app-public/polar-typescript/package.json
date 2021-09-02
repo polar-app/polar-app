@@ -2,10 +2,6 @@
   "name": "polar-typescript",
   "version": "2.1.101",
   "description": "Typescript support and all dependent packages",
-  "scripts": {
-    "test": "echo",
-    "compile": "echo"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",

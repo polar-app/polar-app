@@ -3,10 +3,6 @@
   "version": "2.1.101",
   "description": "Empty package to just test NPM registry usage.",
   "main": "index.js",
-  "scripts": {
-    "test": "echo no test",
-    "compile": "echo noop"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",

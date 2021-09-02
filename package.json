@@ -30,7 +30,6 @@
     "eslint": "lerna run eslint --no-bail",
     "compile": "lerna run compile",
     "publish": "lerna exec --no-private -- yarn publish --no-bail",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "set-registry-verdaccio": "rm -f ~/.npmrc && cat .npmrc > ~/.npmrc",
     "lerna-run-dist": "lerna run --concurrency=1 --parallel=false --stream dist",
     "lerna-run-test": "lerna run --concurrency=1 --parallel=false test",
