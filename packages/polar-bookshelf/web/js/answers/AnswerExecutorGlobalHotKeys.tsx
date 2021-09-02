@@ -4,7 +4,7 @@ import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import { MUIDialog } from '../ui/dialogs/MUIDialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {DialogContent, TextField} from "@material-ui/core";
+import {DialogContent, LinearProgress, TextField} from "@material-ui/core";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
 
 const globalKeyMap = keyMapWithGroup({
@@ -32,7 +32,11 @@ const globalKeyMap = keyMapWithGroup({
     }
 });
 
-const AnswerExecutorDialog = () => {
+interface IAnswerExecutorDialogProps {
+    readonly onClose: () => void;
+}
+
+const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
 
     interface IAnswerResponse {
         readonly answer: string;
@@ -40,16 +44,26 @@ const AnswerExecutorDialog = () => {
 
     const questionRef = React.useRef("");
     const [answer, setAnswer] = React.useState<IAnswerResponse | undefined>();
+    const [waiting, setWaiting] = React.useState(false);
 
     const executeRequest = React.useCallback((question: string) => {
 
         async function doExec() {
 
             console.log("Asking question: " + question);
-            const answer: IAnswerResponse = await JSONRPC.exec('AnswerExecutor', {question});
-            console.log("FIXME: got answer: ", answer);
 
-            setAnswer(answer);
+            try {
+                setWaiting(true);
+
+                const answer: IAnswerResponse = await JSONRPC.exec('AnswerExecutor', {question});
+
+                console.log("FIXME: got answer: ", answer);
+
+                setAnswer(answer);
+
+            } finally {
+                setWaiting(false);
+            }
 
         }
 
@@ -67,7 +81,13 @@ const AnswerExecutorDialog = () => {
     }, [executeRequest])
 
     return (
-        <MUIDialog open={true} maxWidth="md">
+        <MUIDialog open={true} maxWidth="lg" onClose={props.onClose}>
+
+            <div style={{height: '5px'}}>
+                {waiting && (
+                        <LinearProgress variant="indeterminate"/>
+                )}
+            </div>
 
             <DialogTitle>Ask AI</DialogTitle>
             <DialogContent>
@@ -75,7 +95,11 @@ const AnswerExecutorDialog = () => {
                            autoFocus={true}
                            onChange={event => questionRef.current = event.currentTarget.value}
                            onKeyUp={handleKeyUp}
-                           style={{margin: '10px', width: '400px'}}/>
+                           style={{
+                               margin: '10px',
+                               width: '400px',
+                               fontSize: '2.0rem'
+                           }}/>
 
                 {answer && (
                     <div>{answer.answer}</div>
@@ -100,7 +124,8 @@ export const AnswerExecutorGlobalHotKeys = React.memo(function AnswerExecutorGlo
 
     return (
         <>
-            {open && <AnswerExecutorDialog/>}
+            {open && <AnswerExecutorDialog onClose={() => setOpen(false)}/>}
+
             <GlobalKeyboardShortcuts
                 keyMap={globalKeyMap}
                 handlerMap={globalKeyHandlers}/>
