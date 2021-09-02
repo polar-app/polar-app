@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {GlobalKeyboardShortcuts, keyMapWithGroup} from '../keyboard_shortcuts/GlobalKeyboardShortcuts';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
-import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 import { MUIDialog } from '../ui/dialogs/MUIDialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {DialogContent, LinearProgress, TextField} from "@material-ui/core";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
+import {FeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
 
 const globalKeyMap = keyMapWithGroup({
     group: "Answers",
@@ -120,16 +120,16 @@ export const AnswerExecutorGlobalHotKeys = React.memo(function AnswerExecutorGlo
         ANSWER_EXECUTOR: () => setOpen(true),
     };
 
-    // TODO: only if the answers feature toggle is enabled.
-
     return (
-        <>
-            {open && <AnswerExecutorDialog onClose={() => setOpen(false)}/>}
+        <FeatureToggle featureName='answers'>
+            <>
+                {open && <AnswerExecutorDialog onClose={() => setOpen(false)}/>}
 
-            <GlobalKeyboardShortcuts
-                keyMap={globalKeyMap}
-                handlerMap={globalKeyHandlers}/>
-        </>
+                <GlobalKeyboardShortcuts
+                    keyMap={globalKeyMap}
+                    handlerMap={globalKeyHandlers}/>
+            </>
+        </FeatureToggle>
     );
 
 });
