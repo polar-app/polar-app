@@ -98,13 +98,13 @@ export const DocRepoScreen2 = React.memo(() => {
                 <DeviceRouter handheld={<devices.PhoneAndTablet/>}
                               desktop={<devices.Desktop/>}/>
 
-                <FixedNav.Footer>
+                {/* <FixedNav.Footer>
 
                     <DeviceRouter.Handheld>
                         <AddContent.Handheld/>
                     </DeviceRouter.Handheld>
 
-                </FixedNav.Footer>
+                </FixedNav.Footer> */}
 
             </FixedNav>
 

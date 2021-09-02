@@ -69,7 +69,7 @@ export const DocRepoTableToolbar = React.memo(function DocRepoTableToolbar() {
         <Paper square
                className={classes.root}>
 
-                <SidenavTrigger />
+                {Devices.isDesktop() && <SidenavTrigger />}
                 <div style={{
                          display: 'flex',
                          flexGrow: 1
