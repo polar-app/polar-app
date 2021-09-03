@@ -1,6 +1,6 @@
 {
   "name": "polar-assets",
-  "version": "2.1.101",
+  "version": "2.1.102",
   "description": "",
   "devDependencies": {
     "@types/sharp": "^0.25.0"

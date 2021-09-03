@@ -3,7 +3,7 @@ import {ESShingleWriter} from "./ESShingleWriter";
 import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
 import IAnswerDigestRecord = ESShingleWriter.IAnswerDigestRecord;
 
-xdescribe("ESRequests", async function() {
+describe("ESRequests", async function() {
 
     it("basic", async function() {
 
