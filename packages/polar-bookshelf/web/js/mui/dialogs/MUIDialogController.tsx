@@ -1,6 +1,5 @@
 import {Callback1, NULL_FUNCTION, Callback} from "polar-shared/src/util/Functions";
 import React, {useState} from "react";
-import isEqual from "react-fast-compare";
 import {
     AlertType,
     ConfirmDialog,
@@ -133,7 +132,8 @@ const DialogHost = (props: DialogHostProps) => {
 
         const prompt = (promptDialogProps: PromptDialogProps) => {
             registerDialogElement(<PromptDialog key={createKey()}
-                                                {...promptDialogProps}/>);
+                                                {...promptDialogProps}
+                                                id={`${iter}`}/>);
             doIncr();
         };
 
