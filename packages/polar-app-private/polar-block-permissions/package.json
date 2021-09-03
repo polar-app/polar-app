@@ -1,6 +1,6 @@
 {
   "name": "polar-block-permissions",
-  "version": "2.1.102",
+  "version": "2.1.103",
   "description": "Code to connect to firebase as an admin user",
   "main": "index.js",
   "scripts": {
@@ -17,10 +17,10 @@
     "@types/mocha": "=8.2.2",
     "chai": "4.2.0",
     "mocha": "=9.0.0",
-    "polar-firebase-admin": "^2.1.102",
-    "polar-firebase-browser": "^2.1.102",
-    "polar-firebase-test": "^2.1.102",
-    "polar-test": "^2.1.102",
+    "polar-firebase-admin": "^2.1.103",
+    "polar-firebase-browser": "^2.1.103",
+    "polar-firebase-test": "^2.1.103",
+    "polar-test": "^2.1.103",
     "tslint": "6.1.2",
     "typescript": "=4.2.3"
   },
