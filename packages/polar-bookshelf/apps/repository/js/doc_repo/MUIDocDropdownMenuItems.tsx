@@ -26,6 +26,9 @@ import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import BallotIcon from '@material-ui/icons/Ballot';
 import {useDocMetadataEditorForSelected} from "./doc_metadata_editor/DocMetadataEditorHook";
 import LaunchIcon from '@material-ui/icons/Launch';
+import { FeatureToggle } from '../persistence_layer/PrefsContext2';
+import AddIcon from '@material-ui/icons/Add';
+import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
 
 // NOTE that this CAN NOT be a functional component as it breaks MUI menu
 // component.
@@ -55,24 +58,31 @@ function useErrorDialog() {
 
 }
 
-export function useDocumentDownloadHandler() {
+export interface IDocumentDownloadURL {
+    readonly name: string;
+    readonly url: string;
+}
+
+export function useDocumentDownloadURLCalculator() {
 
     const {selectedProvider} = useDocRepoCallbacks();
     const {persistenceLayerProvider} = usePersistenceContext();
     const errorDialog = useErrorDialog();
 
-    return React.useCallback(() => {
+    return React.useCallback((): IDocumentDownloadURL | undefined => {
+
         const selected = selectedProvider();
         const repoDocInfo = Arrays.first(selected);
 
-        if (! repoDocInfo) {
+        if (!repoDocInfo) {
 
             // no selected doc
             errorDialog({
                 title: "No document selected",
                 subtitle: "There is no document selected to download.",
             });
-            return;
+
+            return undefined;
 
         }
 
@@ -80,21 +90,42 @@ export function useDocumentDownloadHandler() {
 
         const fileRef = BackendFileRefs.toBackendFileRef(Either.ofRight(repoDocInfo.docInfo));
 
-        if (! fileRef) {
+        if (!fileRef) {
 
             errorDialog({
                 title: "No document attached to file.",
                 subtitle: "The document you're trying to save doesn't have an attachment (EPUB or PDF).",
             });
 
-            return;
+            return undefined;
+
         }
 
         const {url} = persistenceLayer.getFile(Backend.STASH, fileRef);
 
-        FileSavers.saveAs(url, fileRef.name);
+        return {url, name: fileRef.name};
 
     }, [selectedProvider, errorDialog, persistenceLayerProvider]);
+
+}
+
+export function useDocumentDownloadHandler() {
+
+    const documentDownloadURLCalculator = useDocumentDownloadURLCalculator();
+
+    return React.useCallback(() => {
+
+        const download = documentDownloadURLCalculator();
+
+        if (download) {
+
+            const {url, name} = download;
+
+            FileSavers.saveAs(url, name);
+
+        }
+
+    }, [documentDownloadURLCalculator]);
 
 }
 
@@ -155,7 +186,34 @@ const UpdateDocMetadataMenuItem = deepMemo(function UpdateDocMetadataMenuItem() 
             <ListItemText primary="Update Metadata"/>
         </MenuItem>
     );
+
 });
+
+function useIndexForAIHandler() {
+
+    const documentDownloadURLCalculator = useDocumentDownloadURLCalculator();
+
+    return React.useCallback(() => {
+
+        const download = documentDownloadURLCalculator();;
+
+        if (download) {
+
+            const {url} = download;
+
+            if (! url.toLowerCase().endsWith('.pdf')) {
+                console.warn("Skip document index. Not PDF: " + url);
+                return;
+            }
+
+            JSONRPC.exec("AnswerIndexer", {url})
+                .catch(err => console.error("Could not index document for AI: " + url, err));
+
+        }
+
+    }, [documentDownloadURLCalculator]);
+
+}
 
 export const MUIDocDropdownMenuItems = React.memo(function MUIDocDropdownMenuItems() {
 
@@ -165,6 +223,8 @@ export const MUIDocDropdownMenuItems = React.memo(function MUIDocDropdownMenuIte
 
     const documentDownloadHandler = useDocumentDownloadHandler();
     const jsonDownloadHandler = useJSONDownloadHandler();
+
+    const indexForAIHandler = useIndexForAIHandler();
 
     // if (selected.length === 0) {
     //     // there's nothing to render now...
@@ -184,6 +244,16 @@ export const MUIDocDropdownMenuItems = React.memo(function MUIDocDropdownMenuIte
                     </ListItemIcon>
                     <ListItemText primary="Open Document"/>
                 </MenuItem>}
+
+            {isSingle &&
+                <FeatureToggle featureName='answers'>
+                    <MenuItem onClick={indexForAIHandler}>
+                        <ListItemIcon>
+                            <AddIcon fontSize="small"/>
+                        </ListItemIcon>
+                        <ListItemText primary="Index for AI"/>
+                    </MenuItem>
+                </FeatureToggle>}
 
             <MenuItem onClick={callbacks.onTagged}>
                 <ListItemIcon>
