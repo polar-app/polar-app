@@ -1,4 +1,5 @@
 import {Fetches} from "polar-shared/src/util/Fetch";
+import {OpenAISecrets} from "./OpenAISecrets";
 
 export namespace OpenAIAnswersClient {
 
@@ -101,6 +102,8 @@ export namespace OpenAIAnswersClient {
     }
 
     export async function exec(request: IRequest): Promise<IResponse> {
+
+        OpenAISecrets.init();
 
         const url = 'https://api.openai.com/v1/answers'
 
