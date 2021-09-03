@@ -10389,10 +10389,10 @@ eol@^0.9.1:
   resolved "https://verdaccio.getpolarized.io/eol/-/eol-0.9.1.tgz#f701912f504074be35c6117a5c4ade49cd547acd"
   integrity sha512-Ds/TEoZjwggRoz/Q2O7SE3i4Jm66mqTDfmdHdq/7DKVk3bro9Q8h6WdXKdPqFLMoqxrDK5SVRzHVPOS6uuGtrg==
 
-epubjs@=0.3.89-polar.19:
-  version "0.3.89-polar.19"
-  resolved "https://verdaccio.getpolarized.io/epubjs/-/epubjs-0.3.89-polar.19.tgz#2ea5c3c6e95ee9cb368147a450f92dd7a332b90b"
-  integrity sha512-a6uWVH3sNFER64pNWfFYijn+JEnWEYutCQxBX58s+Esj2Wkb65UR5MgAnyEZHb4pAUqL7T7+yu5U3HDs875iTw==
+epubjs@=0.3.89-polar.16:
+  version "0.3.89-polar.16"
+  resolved "https://verdaccio.getpolarized.io/epubjs/-/epubjs-0.3.89-polar.16.tgz#942949379b819196ab7be6814979630eae54c5ff"
+  integrity sha512-D0J35W6OMqDbZWnriZwAQo0qVbKEOcO/1/yscZdLnqlglv2qBseDp4zoWPL3dW/Q/dWNLU1AYlRWRtE5FidKRA==
   dependencies:
     core-js "^3.6.5"
     event-emitter "^0.3.5"

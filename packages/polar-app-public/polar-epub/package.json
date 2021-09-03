@@ -19,7 +19,7 @@
     "typescript": "=4.2.3"
   },
   "dependencies": {
-    "epubjs": "=0.3.89-polar.19",
+    "epubjs": "=0.3.89-polar.16",
     "fast-xml-parser": "^3.19.0",
     "node-stream-zip": "^1.14.0",
     "polar-shared": "^2.1.103"
