@@ -3,7 +3,7 @@ import {OpenAISecrets} from "./OpenAISecrets";
 
 export namespace OpenAIAnswersClient {
 
-    type AIModel = 'ada' | 'babbage' | 'curie' | 'davinci';
+    export type AIModel = 'ada' | 'babbage' | 'curie' | 'davinci';
 
     export type QuestionAnswerPair = [string, string];
 
@@ -99,6 +99,8 @@ export namespace OpenAIAnswersClient {
     export interface IResponse {
         readonly answers: ReadonlyArray<string>;
         readonly selected_documents: ReadonlyArray<ISelectedDocument>;
+        readonly search_model: AIModel;
+        readonly model: AIModel;
     }
 
     export async function exec(request: IRequest): Promise<IResponse> {
