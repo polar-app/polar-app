@@ -6,6 +6,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import {DialogContent, LinearProgress, TextField} from "@material-ui/core";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
 import {FeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
+import { Arrays } from 'polar-shared/src/util/Arrays';
 
 const globalKeyMap = keyMapWithGroup({
     group: "Answers",
@@ -39,11 +40,11 @@ interface IAnswerExecutorDialogProps {
 const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
 
     interface IAnswerResponse {
-        readonly answer: string;
+        readonly answers: ReadonlyArray<string>;
     }
 
     const questionRef = React.useRef("");
-    const [answer, setAnswer] = React.useState<IAnswerResponse | undefined>();
+    const [answerResponse, setAnswerResponse] = React.useState<IAnswerResponse | undefined>();
     const [waiting, setWaiting] = React.useState(false);
 
     const executeRequest = React.useCallback((question: string) => {
@@ -55,11 +56,11 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
             try {
                 setWaiting(true);
 
-                const answer: IAnswerResponse = await JSONRPC.exec('AnswerExecutor', {question});
+                const answer: IAnswerResponse = await JSONRPC.exec('AnswerExecutor', {question, model: 'curie', search_model: 'curie'});
 
-                console.log("FIXME: got answer: ", answer);
+                console.log("Got answer: ", answer);
 
-                setAnswer(answer);
+                setAnswerResponse(answer);
 
             } finally {
                 setWaiting(false);
@@ -81,7 +82,9 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
     }, [executeRequest])
 
     return (
-        <MUIDialog open={true} maxWidth="lg" onClose={props.onClose}>
+        <MUIDialog open={true}
+                   maxWidth="lg"
+                   onClose={props.onClose}>
 
             <div style={{height: '5px'}}>
                 {waiting && (
@@ -90,19 +93,32 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
             </div>
 
             <DialogTitle>Ask AI</DialogTitle>
-            <DialogContent>
+            <DialogContent style={{
+                               display: 'flex',
+                               flexDirection: 'column',
+                               width: '650px',
+                           }}>
+
                 <TextField label="Ask a question... "
                            autoFocus={true}
                            onChange={event => questionRef.current = event.currentTarget.value}
                            onKeyUp={handleKeyUp}
                            style={{
-                               margin: '10px',
-                               width: '400px',
+                               marginTop: '10px',
+                               marginBottom: '10px',
+                               flexGrow: 1,
                                fontSize: '2.0rem'
                            }}/>
 
-                {answer && (
-                    <div>{answer.answer}</div>
+                {answerResponse && answerResponse.answers.length > 0 && (
+                    <p style={{
+                           fontSize: '2.0rem',
+                           overflow: 'auto'
+                       }}>
+
+                        {Arrays.first(answerResponse.answers)}
+
+                    </p>
                 )}
 
             </DialogContent>
