@@ -61,6 +61,7 @@ function useErrorDialog() {
 export interface IDocumentDownloadURL {
     readonly name: string;
     readonly url: string;
+    readonly docID: string;
 }
 
 export function useDocumentDownloadURLCalculator() {
@@ -103,7 +104,7 @@ export function useDocumentDownloadURLCalculator() {
 
         const {url} = persistenceLayer.getFile(Backend.STASH, fileRef);
 
-        return {url, name: fileRef.name};
+        return {url, name: fileRef.name, docID: repoDocInfo.fingerprint};
 
     }, [selectedProvider, errorDialog, persistenceLayerProvider]);
 
@@ -199,14 +200,14 @@ function useIndexForAIHandler() {
 
         if (download) {
 
-            const {url} = download;
+            const {url, docID} = download;
 
             if (! url.toLowerCase().endsWith('.pdf')) {
                 console.warn("Skip document index. Not PDF: " + url);
                 return;
             }
 
-            JSONRPC.exec("AnswerIndexer", {url})
+            JSONRPC.exec("AnswerIndexer", {url, docID})
                 .catch(err => console.error("Could not index document for AI: " + url, err));
 
         }

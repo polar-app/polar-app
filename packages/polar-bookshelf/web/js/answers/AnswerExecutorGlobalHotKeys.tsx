@@ -83,7 +83,8 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
 
     return (
         <MUIDialog open={true}
-                   maxWidth="lg"
+                   maxWidth="md"
+                   fullWidth={true}
                    onClose={props.onClose}>
 
             <div style={{height: '5px'}}>
@@ -96,18 +97,22 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
             <DialogContent style={{
                                display: 'flex',
                                flexDirection: 'column',
-                               width: '650px',
                            }}>
 
                 <TextField label="Ask a question... "
+                           placeholder="What would you like to know?"
                            autoFocus={true}
                            onChange={event => questionRef.current = event.currentTarget.value}
                            onKeyUp={handleKeyUp}
+                           InputProps={{
+                               style: {
+                                   fontSize: '2.0rem'
+                               }
+                           }}
                            style={{
                                marginTop: '10px',
                                marginBottom: '10px',
                                flexGrow: 1,
-                               fontSize: '2.0rem'
                            }}/>
 
                 {answerResponse && answerResponse.answers.length > 0 && (
