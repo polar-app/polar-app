@@ -35,7 +35,7 @@ function readFile(name: string): PackageJson {
  */
 async function getUserInput(property: string): Promise<string> {
     return new Promise((resolve) => {
-        let terminal: readline.Interface = readline.createInterface({
+        const terminal: readline.Interface = readline.createInterface({
             input: process.stdin,
             output: process.stdout
         });
@@ -58,9 +58,7 @@ async function updateScripts(force: boolean): Promise<void> {
             content.scripts.test = 'mocha --timeout 20000 --exit src/**/*Test.js';
             content.scripts.eslint = 'figlet ${npm_package_name} && eslint -c ../../../.eslintrc.json .';
             content.scripts.compile = 'yarn run eslint && tsc';
-        }
-        else
-        {
+        } else {
             if (content.scripts.test) { content.scripts.test = 'mocha --timeout 20000 --exit src/**/*Test.js'; }
             if (content.scripts.eslint) { content.scripts.eslint = 'figlet ${npm_package_name} && eslint -c ../../../.eslintrc.json .'; }
             if (content.scripts.compile) { content.scripts.compile = 'yarn run eslint && tsc'; }
