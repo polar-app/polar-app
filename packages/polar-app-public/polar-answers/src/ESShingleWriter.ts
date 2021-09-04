@@ -2,6 +2,8 @@ import {ESRequests} from "./ESRequests";
 import {SentenceShingler} from "./SentenceShingler";
 import {IDStr, UserIDStr} from "polar-shared/src/util/Strings";
 import {ESAnswersIndexNames} from "./ESAnswersIndexNames";
+import {IAnswerDigestRecord} from "polar-answers-api/src/IAnswerDigestRecord";
+import {ShingleID} from "polar-answers-api/src/ShingleID";
 
 export namespace ESShingleWriter {
 
@@ -17,18 +19,6 @@ export namespace ESShingleWriter {
         readonly shingle: ISentenceShingle;
     }
 
-    /**
-     * The ID for a shingle which contains docID,and idx.
-     */
-    export type ShingleID = string;
-
-    export interface IAnswerDigestRecord {
-        readonly id: ShingleID;
-        readonly docID: IDStr;
-        readonly idx: number;
-        readonly pageNum: number;
-        readonly text: string;
-    }
 
     export interface IESShingleWriter {
 

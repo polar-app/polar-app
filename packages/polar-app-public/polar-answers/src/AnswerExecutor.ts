@@ -2,41 +2,22 @@ import {ESRequests} from "./ESRequests";
 import {OpenAIAnswersClient} from "./OpenAIAnswersClient";
 import {ESAnswersIndexNames} from "./ESAnswersIndexNames";
 import { UserIDStr } from "polar-shared/src/util/Strings";
-import {ESShingleWriter} from "./ESShingleWriter";
+import {IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorRequest";
+import {
+    IAnswerExecutorResponse,
+    ISelectedDocumentWithRecord,
+    ITimings
+} from "polar-answers-api/src/IAnswerExecutorResponse";
+import {IAnswerDigestRecord} from "polar-answers-api/src/IAnswerDigestRecord";
+import {ISelectedDocument} from "polar-answers-api/src/ISelectedDocument";
 
 export namespace AnswerExecutor {
 
     import QuestionAnswerPair = OpenAIAnswersClient.QuestionAnswerPair;
     import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
-    import IAnswerDigestRecord = ESShingleWriter.IAnswerDigestRecord;
-    import ISelectedDocument = OpenAIAnswersClient.ISelectedDocument;
-    import AIModel = OpenAIAnswersClient.AIModel;
 
-    export interface IExecOpts {
+    export interface IExecOpts extends IAnswerExecutorRequest {
         readonly uid: UserIDStr;
-        readonly question: string;
-        readonly search_model?: AIModel;
-        readonly model?: AIModel;
-    }
-
-    export interface ITimings {
-        readonly elasticsearch: number;
-        readonly openai: number;
-    }
-
-    export interface IAnswer extends OpenAIAnswersClient.IResponse {
-        readonly question: string;
-        readonly selected_documents: ReadonlyArray<ISelectedDocumentWithRecord<IAnswerDigestRecord>>;
-        readonly timings: ITimings;
-    }
-
-    export interface ISelectedDocumentWithRecord<R>  extends ISelectedDocument {
-
-        /**
-         * The original record for this document
-         */
-        readonly record: R;
-
     }
 
     export const EXAMPLES_CONTEXT: string =
@@ -85,7 +66,7 @@ export namespace AnswerExecutor {
 
     }
 
-    export async function exec(opts: IExecOpts): Promise<IAnswer> {
+    export async function exec(opts: IExecOpts): Promise<IAnswerExecutorResponse> {
 
         const {question, uid} = opts;
 

@@ -1,9 +1,9 @@
+import { AIModel } from "polar-answers-api/src/AIModel";
 import {Fetches} from "polar-shared/src/util/Fetch";
 import {OpenAISecrets} from "./OpenAISecrets";
+import {ISelectedDocument} from "polar-answers-api/src/ISelectedDocument";
 
 export namespace OpenAIAnswersClient {
-
-    export type AIModel = 'ada' | 'babbage' | 'curie' | 'davinci';
 
     export type QuestionAnswerPair = [string, string];
 
@@ -87,13 +87,6 @@ export namespace OpenAIAnswersClient {
          */
         readonly return_prompt?: boolean;
 
-    }
-
-    export interface ISelectedDocument {
-        readonly document: number;
-        readonly text: string;
-        readonly object: string;
-        readonly score: number;
     }
 
     export interface IResponse {
