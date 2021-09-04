@@ -1,4 +1,5 @@
 {
+  "eslint.workingDirectories": [{ "mode": "auto" }],
   "colorize.include": ["**/*.json", ""],
   "better-comments.tags": [
     {
