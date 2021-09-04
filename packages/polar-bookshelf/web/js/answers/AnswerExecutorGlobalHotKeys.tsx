@@ -3,12 +3,13 @@ import {GlobalKeyboardShortcuts, keyMapWithGroup} from '../keyboard_shortcuts/Gl
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import { MUIDialog } from '../ui/dialogs/MUIDialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {DialogContent, LinearProgress, TextField} from "@material-ui/core";
+import {Box, DialogContent, LinearProgress, Tab, Tabs, TextField, useTheme} from "@material-ui/core";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
 import {FeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
 import { Arrays } from 'polar-shared/src/util/Arrays';
-import {IAnswerExecutorResponse} from "polar-answers-api/src/IAnswerExecutorResponse";
+import {IAnswerExecutorResponse, ISelectedDocumentWithRecord} from "polar-answers-api/src/IAnswerExecutorResponse";
 import {IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorRequest";
+import {IAnswerDigestRecord} from "polar-answers-api/src/IAnswerDigestRecord";
 
 const globalKeyMap = keyMapWithGroup({
     group: "Answers",
@@ -39,6 +40,99 @@ interface IAnswerExecutorDialogProps {
     readonly onClose: () => void;
 }
 
+interface SelectedDocumentProps {
+    readonly doc: ISelectedDocumentWithRecord<IAnswerDigestRecord>
+}
+
+const SelectedDocument = (props: SelectedDocumentProps) => {
+
+    return (
+        <>
+            <p style={{
+                   fontSize: '2.0rem',
+                   overflow: 'auto'
+               }}>
+
+                {props.doc.record.text}
+
+            </p>
+            <p>score: {props.doc.score}</p>
+            <p>docID: {props.doc.record.docID}</p>
+        </>
+    );
+
+}
+
+interface TabPanelProps {
+    readonly index: number;
+    readonly tabIndex: number;
+    readonly children: JSX.Element;
+}
+
+const TabPanel = (props: TabPanelProps) => {
+
+    if (props.index === props.tabIndex) {
+        return (
+            <Box mt={1} mb={1}>
+                {props.children}
+            </Box>
+        );
+    }
+
+    return null;
+
+}
+
+interface AnswerResponseProps {
+    readonly answerResponse: IAnswerExecutorResponse;
+}
+
+const AnswerResponse = (props: AnswerResponseProps) => {
+
+    const [tabIndex, setTabIndex] = React.useState(0);
+
+    const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+        setTabIndex(newValue);
+    };
+
+    return (
+        <>
+            <Tabs indicatorColor="primary"
+                  textColor="primary"
+                  centered
+                  value={tabIndex}
+                  onChange={handleChange}>
+                <Tab label="Answer"/>
+                <Tab label="Context" />
+            </Tabs>
+
+            <div style={{overflow: 'auto'}}>
+                <TabPanel index={0} tabIndex={tabIndex}>
+                    <>
+                        {props.answerResponse.answers.length > 0 && (
+                            <p style={{
+                                fontSize: '2.0rem',
+                                overflow: 'auto'
+                            }}>
+
+                                {Arrays.first(props.answerResponse.answers)}
+
+                            </p>)}
+                    </>
+                </TabPanel>
+                <TabPanel index={1} tabIndex={tabIndex}>
+                    <>
+                        {[...props.answerResponse.selected_documents].sort((a,b) => b.score - a.score)
+                                                                     .map((current, idx) => (
+                            <SelectedDocument key={idx} doc={current}/>))}
+                    </>
+                </TabPanel>
+            </div>
+
+        </>
+    );
+}
+
 const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
 
     const questionRef = React.useRef("");
@@ -52,6 +146,7 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
             console.log("Asking question: " + question);
 
             try {
+                setAnswerResponse(undefined);
                 setWaiting(true);
 
                 const request: IAnswerExecutorRequest = {
@@ -117,15 +212,12 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
                                flexGrow: 1,
                            }}/>
 
-                {answerResponse && answerResponse.answers.length > 0 && (
-                    <p style={{
-                           fontSize: '2.0rem',
-                           overflow: 'auto'
-                       }}>
+                {answerResponse && (
+                    <>
 
-                        {Arrays.first(answerResponse.answers)}
+                        <AnswerResponse key={questionRef.current} answerResponse={answerResponse}/>
 
-                    </p>
+                    </>
                 )}
 
             </DialogContent>
