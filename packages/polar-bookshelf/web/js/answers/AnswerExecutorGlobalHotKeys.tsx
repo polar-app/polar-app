@@ -7,6 +7,8 @@ import {DialogContent, LinearProgress, TextField} from "@material-ui/core";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
 import {FeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
 import { Arrays } from 'polar-shared/src/util/Arrays';
+import {IAnswerExecutorResponse} from "polar-answers-api/src/IAnswerExecutorResponse";
+import {IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorRequest";
 
 const globalKeyMap = keyMapWithGroup({
     group: "Answers",
@@ -39,12 +41,8 @@ interface IAnswerExecutorDialogProps {
 
 const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
 
-    interface IAnswerResponse {
-        readonly answers: ReadonlyArray<string>;
-    }
-
     const questionRef = React.useRef("");
-    const [answerResponse, setAnswerResponse] = React.useState<IAnswerResponse | undefined>();
+    const [answerResponse, setAnswerResponse] = React.useState<IAnswerExecutorResponse | undefined>();
     const [waiting, setWaiting] = React.useState(false);
 
     const executeRequest = React.useCallback((question: string) => {
@@ -56,7 +54,11 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
             try {
                 setWaiting(true);
 
-                const answer: IAnswerResponse = await JSONRPC.exec('AnswerExecutor', {question, model: 'curie', search_model: 'curie'});
+                const request: IAnswerExecutorRequest = {
+                    question, model: 'curie', search_model: 'curie'
+                };
+
+                const answer: IAnswerExecutorResponse = await JSONRPC.exec('AnswerExecutor', request);
 
                 console.log("Got answer: ", answer);
 
