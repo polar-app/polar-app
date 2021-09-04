@@ -10,16 +10,24 @@ export namespace AnswerExecutor {
     import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
     import IAnswerDigestRecord = ESShingleWriter.IAnswerDigestRecord;
     import ISelectedDocument = OpenAIAnswersClient.ISelectedDocument;
+    import AIModel = OpenAIAnswersClient.AIModel;
 
     export interface IExecOpts {
         readonly uid: UserIDStr;
         readonly question: string;
+        readonly search_model?: AIModel;
+        readonly model?: AIModel;
+    }
+
+    export interface ITimings {
+        readonly elasticsearch: number;
+        readonly openai: number;
     }
 
     export interface IAnswer extends OpenAIAnswersClient.IResponse {
         readonly question: string;
         readonly selected_documents: ReadonlyArray<ISelectedDocumentWithRecord<IAnswerDigestRecord>>;
-
+        readonly timings: ITimings;
     }
 
     export interface ISelectedDocumentWithRecord<R>  extends ISelectedDocument {
@@ -60,6 +68,23 @@ export namespace AnswerExecutor {
 
     export const N = 10;
 
+    export interface ResultWithDuration<V> {
+        readonly value: V;
+        readonly duration: number;
+    }
+
+    export async function executeWithDuration<V>(delegate: () => Promise<V>): Promise<ResultWithDuration<V>> {
+
+        const before = Date.now();
+        const value = await delegate();
+        const after = Date.now();
+
+        const duration = after - before;
+
+        return {value, duration};
+
+    }
+
     export async function exec(opts: IExecOpts): Promise<IAnswer> {
 
         const {question, uid} = opts;
@@ -86,7 +111,11 @@ export namespace AnswerExecutor {
         };
 
         const requestURL = `/${index}/_search`;
-        const esResponse: IElasticSearchResponse<IAnswerDigestRecord> = await ESRequests.doPost(requestURL, query);
+
+        const esResponseWithDuration
+            = await executeWithDuration<IElasticSearchResponse<IAnswerDigestRecord>>(() => ESRequests.doPost(requestURL, query));
+
+        const esResponse = esResponseWithDuration.value;
 
         // I believe the non-deterministic results you see might be caused by
         // the order in which the documents selected by the Answers endpoint are
@@ -112,9 +141,13 @@ export namespace AnswerExecutor {
         // examples that are answered by the examples_context as well. Does this
         // make sense?
 
+        // tslint:disable-next-line:variable-name
+        const search_model = opts.search_model || SEARCH_MODEL;
+        const model = opts.model || MODEL;
+
         const request: OpenAIAnswersClient.IRequest = {
-            search_model: SEARCH_MODEL,
-            model: MODEL,
+            search_model,
+            model,
             question,
             examples_context: EXAMPLES_CONTEXT,
             examples: EXAMPLES,
@@ -127,7 +160,8 @@ export namespace AnswerExecutor {
             // logprobs: 10,
         }
 
-        const answerResponse = await OpenAIAnswersClient.exec(request);
+        const answerResponseWithDuration = await executeWithDuration(() => OpenAIAnswersClient.exec(request));
+        const answerResponse = answerResponseWithDuration.value;
 
         function convertToSelectedDocumentWithRecord(doc: ISelectedDocument): ISelectedDocumentWithRecord<IAnswerDigestRecord> {
             return {
@@ -139,10 +173,18 @@ export namespace AnswerExecutor {
             }
         }
 
+        const timings: ITimings = {
+            elasticsearch: esResponseWithDuration.duration,
+            openai: answerResponseWithDuration.duration
+        }
+
         return {
             question,
             selected_documents: answerResponse.selected_documents.map(convertToSelectedDocumentWithRecord),
             answers: answerResponse.answers,
+            model,
+            search_model,
+            timings
         }
 
     }

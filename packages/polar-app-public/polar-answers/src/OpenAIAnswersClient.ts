@@ -1,8 +1,9 @@
 import {Fetches} from "polar-shared/src/util/Fetch";
+import {OpenAISecrets} from "./OpenAISecrets";
 
 export namespace OpenAIAnswersClient {
 
-    type AIModel = 'ada' | 'babbage' | 'curie' | 'davinci';
+    export type AIModel = 'ada' | 'babbage' | 'curie' | 'davinci';
 
     export type QuestionAnswerPair = [string, string];
 
@@ -98,9 +99,13 @@ export namespace OpenAIAnswersClient {
     export interface IResponse {
         readonly answers: ReadonlyArray<string>;
         readonly selected_documents: ReadonlyArray<ISelectedDocument>;
+        readonly search_model: AIModel;
+        readonly model: AIModel;
     }
 
     export async function exec(request: IRequest): Promise<IResponse> {
+
+        OpenAISecrets.init();
 
         const url = 'https://api.openai.com/v1/answers'
 

@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme: Theme) =>
             color: theme.palette.text.secondary,
         },
         textField: {
-            width: 'fit-content',
             maxWidth: '100vh',
         },
         description: {
