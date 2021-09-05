@@ -24,6 +24,10 @@ type KeyboardEventHandlerPredicate = (event: KeyboardEvent, keyBuffer: IRingBuff
 
 // this pattern applies to ALL of our key bindings to to things like
 // shift+command as TWO meta actions can be triggered.
+//
+// FIXME: I think the solution here is to only keep the queue on multiple chars
+// but then we STILL have the same issue with two or three keyboard shortcut
+// options.
 
 function createPredicateUsingArray(keys: ReadonlyArray<string>): KeyboardEventHandlerPredicate {
 
@@ -197,6 +201,10 @@ export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
             keyBuffer.push(event.key);
         }
 
+    }, [activeRef, keyBuffer]);
+
+    const handleKeyUp = React.useCallback((event: KeyboardEvent) => {
+
         for (const [shortcut, seq, predicate] of keyToHandlers.current) {
 
             const { ignorable = true } = shortcut;
@@ -221,14 +229,17 @@ export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
 
         }
 
-    }, [activeRef, keyBuffer, keyToHandlers]);
+    }, [keyBuffer, keyToHandlers]);
+
 
     React.useEffect(() => {
 
         window.addEventListener('keydown', handleKeyDown)
+        window.addEventListener('keyup', handleKeyUp)
 
         return () => {
             window.removeEventListener('keydown', handleKeyDown)
+            window.removeEventListener('keyup', handleKeyUp)
         }
 
     }, [handleKeyDown])
