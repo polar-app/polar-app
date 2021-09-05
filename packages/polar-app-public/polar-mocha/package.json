@@ -1,6 +1,6 @@
 {
   "name": "polar-mocha",
-  "version": "2.1.98",
+  "version": "2.1.104",
   "description": "Basic mocha dependencies and utilities.",
   "scripts": {
     "test": "echo",

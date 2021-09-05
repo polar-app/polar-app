@@ -8,16 +8,35 @@ export namespace AnswerExecutor {
 
     import QuestionAnswerPair = OpenAIAnswersClient.QuestionAnswerPair;
     import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
-    import IAnswerDocument = OpenAIAnswersClient.IAnswerDocument;
     import IAnswerDigestRecord = ESShingleWriter.IAnswerDigestRecord;
+    import ISelectedDocument = OpenAIAnswersClient.ISelectedDocument;
+    import AIModel = OpenAIAnswersClient.AIModel;
 
     export interface IExecOpts {
         readonly uid: UserIDStr;
         readonly question: string;
+        readonly search_model?: AIModel;
+        readonly model?: AIModel;
+    }
+
+    export interface ITimings {
+        readonly elasticsearch: number;
+        readonly openai: number;
     }
 
     export interface IAnswer extends OpenAIAnswersClient.IResponse {
         readonly question: string;
+        readonly selected_documents: ReadonlyArray<ISelectedDocumentWithRecord<IAnswerDigestRecord>>;
+        readonly timings: ITimings;
+    }
+
+    export interface ISelectedDocumentWithRecord<R>  extends ISelectedDocument {
+
+        /**
+         * The original record for this document
+         */
+        readonly record: R;
+
     }
 
     export const EXAMPLES_CONTEXT: string =
@@ -39,9 +58,9 @@ export namespace AnswerExecutor {
 
     export const MAX_TOKENS = 250;
 
-    export const SEARCH_MODEL = 'curie';
+    export const SEARCH_MODEL = 'ada';
 
-    export const MODEL = 'davinci';
+    export const MODEL = 'ada';
 
     export const TEMPERATURE = 0;
 
@@ -49,12 +68,31 @@ export namespace AnswerExecutor {
 
     export const N = 10;
 
+    export interface ResultWithDuration<V> {
+        readonly value: V;
+        readonly duration: number;
+    }
+
+    export async function executeWithDuration<V>(delegate: () => Promise<V>): Promise<ResultWithDuration<V>> {
+
+        const before = Date.now();
+        const value = await delegate();
+        const after = Date.now();
+
+        const duration = after - before;
+
+        return {value, duration};
+
+    }
+
     export async function exec(opts: IExecOpts): Promise<IAnswer> {
 
         const {question, uid} = opts;
 
         // run this query on the digest ...
         const index = ESAnswersIndexNames.createForUserDocs(uid);
+
+        // TODO make this into a generic search client and don't hard code the ES query here.
 
         // TODO this has to be hard coded and we only submit docs that would be
         // applicable to the answer API and we would need a way to easily
@@ -73,25 +111,25 @@ export namespace AnswerExecutor {
         };
 
         const requestURL = `/${index}/_search`;
-        const esResponse: IElasticSearchResponse<IAnswerDigestRecord> = await ESRequests.doPost(requestURL, query);
 
-        function toDocument(doc: IAnswerDigestRecord): IAnswerDocument {
+        const esResponseWithDuration
+            = await executeWithDuration<IElasticSearchResponse<IAnswerDigestRecord>>(() => ESRequests.doPost(requestURL, query));
 
-            return {
-                text: doc.text,
-                // TODO: do we need the ID of the document from ES
-                metadata: {
-                    docID: doc.docID,
-                    idx: doc.idx,
-                    pageNum: doc.pageNum
-                }
+        const esResponse = esResponseWithDuration.value;
 
-            }
+        // I believe the non-deterministic results you see might be caused by
+        // the order in which the documents selected by the Answers endpoint are
+        // inserted into the final completion prompt (Answers endpoint is
+        // indeed Search+Completions under the hood).
+        //
+        // To confirm this hypothesis, I would pass return_prompt = True for
+        // each API call and see how the final prompt differs between calls.
 
-        }
+        // the array of digest records so that we can map from the
+        // selected_documents AFTER the request is executed.
+        const records = esResponse.hits.hits.map(current => current._source);
 
-        // const documents = esResponse.hits.hits.map(current => toDocument(current._source));
-        const documents = esResponse.hits.hits.map(current => current._source.text);
+        const documents = records.map(current => current.text.replace(/\n/g, ' '));
 
         // TODO how do we compute documents which have no known answer?
 
@@ -103,9 +141,13 @@ export namespace AnswerExecutor {
         // examples that are answered by the examples_context as well. Does this
         // make sense?
 
+        // tslint:disable-next-line:variable-name
+        const search_model = opts.search_model || SEARCH_MODEL;
+        const model = opts.model || MODEL;
+
         const request: OpenAIAnswersClient.IRequest = {
-            search_model: SEARCH_MODEL,
-            model: MODEL,
+            search_model,
+            model,
             question,
             examples_context: EXAMPLES_CONTEXT,
             examples: EXAMPLES,
@@ -115,14 +157,34 @@ export namespace AnswerExecutor {
             n: N,
             temperature: TEMPERATURE,
             return_metadata: RETURN_METADATA,
-            logprobs: 10,
+            // logprobs: 10,
         }
 
-        const answerResponse = await OpenAIAnswersClient.exec(request);
+        const answerResponseWithDuration = await executeWithDuration(() => OpenAIAnswersClient.exec(request));
+        const answerResponse = answerResponseWithDuration.value;
+
+        function convertToSelectedDocumentWithRecord(doc: ISelectedDocument): ISelectedDocumentWithRecord<IAnswerDigestRecord> {
+            return {
+                document: doc.document,
+                text: doc.text,
+                object: doc.object,
+                score: doc.score,
+                record: records[doc.document]
+            }
+        }
+
+        const timings: ITimings = {
+            elasticsearch: esResponseWithDuration.duration,
+            openai: answerResponseWithDuration.duration
+        }
 
         return {
             question,
-            ...answerResponse
+            selected_documents: answerResponse.selected_documents.map(convertToSelectedDocumentWithRecord),
+            answers: answerResponse.answers,
+            model,
+            search_model,
+            timings
         }
 
     }

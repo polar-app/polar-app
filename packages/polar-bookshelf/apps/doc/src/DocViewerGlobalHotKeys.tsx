@@ -171,11 +171,10 @@ const globalKeyMap = keyMapWithGroup({
             sequences: [
                 {
                     keys: 'shift+A',
-                    platforms: ['macos', 'linux', 'windows'
-                    ]
+                    platforms: ['macos', 'linux', 'windows']
                 }
             ]
-        }
+        },
     }
 });
 

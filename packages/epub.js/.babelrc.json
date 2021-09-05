@@ -5,7 +5,7 @@
 			"corejs": 3,
 			"useBuiltIns": "usage",
 			"bugfixes": true,
-			"modules": "auto"
+			"modules": "commonjs"
 		}]
 	]
 }

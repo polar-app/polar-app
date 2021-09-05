@@ -1,8 +1,9 @@
 import {Fetches} from "polar-shared/src/util/Fetch";
+import {OpenAISecrets} from "./OpenAISecrets";
 
 export namespace OpenAIAnswersClient {
 
-    type AIModel = 'ada' | 'babbage' | 'curie' | 'davinci';
+    export type AIModel = 'ada' | 'babbage' | 'curie' | 'davinci';
 
     export type QuestionAnswerPair = [string, string];
 
@@ -79,19 +80,32 @@ export namespace OpenAIAnswersClient {
          */
         readonly return_metadata?: boolean;
 
+        /**
+         * If set to true, the returned JSON will include a "prompt" field
+         * containing the final prompt that was used to request a completion.
+         * This is mainly useful for debugging purposes.
+         */
+        readonly return_prompt?: boolean;
+
     }
 
     export interface ISelectedDocument {
         readonly document: number;
         readonly text: string;
+        readonly object: string;
+        readonly score: number;
     }
 
     export interface IResponse {
         readonly answers: ReadonlyArray<string>;
         readonly selected_documents: ReadonlyArray<ISelectedDocument>;
+        readonly search_model: AIModel;
+        readonly model: AIModel;
     }
 
     export async function exec(request: IRequest): Promise<IResponse> {
+
+        OpenAISecrets.init();
 
         const url = 'https://api.openai.com/v1/answers'
 

@@ -1,7 +1,7 @@
-import getFirebaseAdminApp from "../../../../../shared/getFirebaseAdminApp";
+import {Firebase} from "polar-admin/Firebase";
 
 export default async function findEmailFromTransactionId(originalTransactionId: string) {
-    const ref = getFirebaseAdminApp()
+    const ref = Firebase.getApp()
         .firestore()
         .collection('apple_iap_subscription_to_email_map')
         .doc(originalTransactionId);
