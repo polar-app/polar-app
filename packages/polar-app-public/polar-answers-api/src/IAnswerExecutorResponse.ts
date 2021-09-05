@@ -1,4 +1,4 @@
-import { ISelectedDocument } from "./ISelectedDocument";
+import {ISelectedDocument} from "./ISelectedDocument";
 import {IAnswerDigestRecord} from "./IAnswerDigestRecord";
 import {IOpenAIAnswersResponse} from "./IOpenAIAnswersResponse";
 
@@ -31,7 +31,13 @@ export interface IAnswerExecutorResponse extends IOpenAIAnswersResponse {
     readonly timings: ITimings;
 }
 
-export interface IAnswerExecutorError {
+export type IAnswerExecutorError = IAnswerExecutorErrorFailed | IAnswerExecutorErrorNoAnswer;
+
+export interface IAnswerExecutorErrorFailed {
     readonly error: 'failed';
     readonly message: string;
+}
+
+export interface IAnswerExecutorErrorNoAnswer {
+    readonly error: 'no-answer';
 }

@@ -131,6 +131,11 @@ export class ArrayStream<T> {
         return new ArrayStream<T>(values);
     }
 
+    public tail(limit: number): ArrayStream<T> {
+        const values = Arrays.tail(this.values, limit);
+        return new ArrayStream<T>(values);
+    }
+
     public sort(compareFn: (a: T, b: T) => number): ArrayStream<T> {
         const values = [...this.values].sort((a, b) => compareFn(a, b));
         return new ArrayStream<T>(values);

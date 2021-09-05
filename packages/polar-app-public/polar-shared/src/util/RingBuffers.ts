@@ -1,3 +1,6 @@
+/**
+ * Implements a fixed capacity ring buffer.
+ */
 export namespace RingBuffers {
 
     /**
@@ -12,6 +15,11 @@ export namespace RingBuffers {
         peek: () => T | undefined;
         size: () => number;
         length: () => number;
+
+        /**
+         * Reset the buffer to the default.
+         */
+        reset: () => void;
         toArray: () => ReadonlyArray<T>;
     }
 
@@ -29,25 +37,32 @@ export namespace RingBuffers {
      */
     export function create<T>(maxLength: number): IRingBuffer<T> {
 
-        let pointer = 0;
-        const buffer: Holder<T>[] = [];
-        let _size: number = 0;
+        let _buffer: Holder<T>[] = [];
 
-        function push(value: T){
-            pointer = (pointer + 1) % maxLength;
-            buffer[pointer] = {value};
-            _size = Math.min(_size + 1, maxLength)
+        function push(value: T) {
+
+            if (_buffer.length >= maxLength) {
+                _buffer.shift();
+            }
+
+            _buffer.push({value});
+
         }
 
         function fetch(delta: RingDelta): T | undefined {
 
-            const tmp = Math.abs((pointer - delta) % maxLength);
+            const idx = _buffer.length - 1 + delta;
 
-            const holder = buffer[tmp];
+            if (idx >= 0 && idx < _buffer.length) {
 
-            if (holder !== undefined) {
-                return holder.value;
+                const holder = _buffer[idx];
+
+                if (holder !== undefined) {
+                    return holder.value;
+                }
+
             }
+
 
             return undefined;
 
@@ -62,7 +77,7 @@ export namespace RingBuffers {
         }
 
         function size(): number {
-            return _size;
+            return _buffer.length;
         }
 
         function length(): number {
@@ -70,18 +85,14 @@ export namespace RingBuffers {
         }
 
         function toArray(): ReadonlyArray<T> {
-
-            const result: T[] = [];
-
-            for (let delta = (_size - 1) * -1; delta <= 0; ++delta) {
-                result.push(fetch(delta)!);
-            }
-
-            return result;
-
+            return _buffer.map(current => current.value);
         }
 
-        return {push, fetch, prev, peek, size, length, toArray}
+        function reset(): void {
+            _buffer = [];
+        }
+
+        return {push, fetch, prev, peek, size, length, toArray, reset}
 
     }
 
