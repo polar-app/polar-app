@@ -4,12 +4,14 @@ import {ESAnswersIndexNames} from "./ESAnswersIndexNames";
 import {UserIDStr} from "polar-shared/src/util/Strings";
 import {IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorRequest";
 import {
+    IAnswerExecutorError,
     IAnswerExecutorResponse,
     ISelectedDocumentWithRecord,
     ITimings
 } from "polar-answers-api/src/IAnswerExecutorResponse";
 import {IAnswerDigestRecord} from "polar-answers-api/src/IAnswerDigestRecord";
 import {ISelectedDocument} from "polar-answers-api/src/ISelectedDocument";
+import {Arrays} from "polar-shared/src/util/Arrays";
 
 export namespace AnswerExecutor {
 
@@ -70,7 +72,7 @@ export namespace AnswerExecutor {
 
     }
 
-    export async function exec(opts: IExecOpts): Promise<IAnswerExecutorResponse> {
+    export async function exec(opts: IExecOpts): Promise<IAnswerExecutorResponse | IAnswerExecutorError> {
 
         const {question, uid} = opts;
 
@@ -195,6 +197,16 @@ export namespace AnswerExecutor {
 
         const answerResponseWithDuration = await executeWithDuration(() => OpenAIAnswersClient.exec(request));
         const answerResponse = answerResponseWithDuration.value;
+
+        const primaryAnswer = Arrays.first(answerResponse.answers);
+
+        if (primaryAnswer === NO_ANSWER_CODE) {
+
+            return {
+                error: 'no-answer'
+            }
+
+        }
 
         function convertToSelectedDocumentWithRecord(doc: ISelectedDocument): ISelectedDocumentWithRecord<IAnswerDigestRecord> {
             return {

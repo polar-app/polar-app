@@ -7,7 +7,11 @@ import {Box, Checkbox, DialogContent, FormControlLabel, LinearProgress, Tab, Tab
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
 import {FeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {Arrays} from 'polar-shared/src/util/Arrays';
-import {IAnswerExecutorResponse, ISelectedDocumentWithRecord} from "polar-answers-api/src/IAnswerExecutorResponse";
+import {
+    IAnswerExecutorError,
+    IAnswerExecutorResponse,
+    ISelectedDocumentWithRecord
+} from "polar-answers-api/src/IAnswerExecutorResponse";
 import {IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorRequest";
 import {IAnswerDigestRecord} from "polar-answers-api/src/IAnswerDigestRecord";
 
@@ -89,7 +93,7 @@ const TabPanel = (props: TabPanelProps) => {
 }
 
 interface AnswerResponseProps {
-    readonly answerResponse: IAnswerExecutorResponse;
+    readonly answerResponse: IAnswerExecutorResponse | IAnswerExecutorError;
 }
 
 const AnswerResponse = (props: AnswerResponseProps) => {
@@ -99,6 +103,18 @@ const AnswerResponse = (props: AnswerResponseProps) => {
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setTabIndex(newValue);
     };
+
+    function isErrorNoAnswer(value: any): value is IAnswerExecutorError {
+        return value.error === 'no-answer';
+    }
+
+    if (isErrorNoAnswer(props.answerResponse)) {
+        return (
+            <Box mt={1} mb={1} color='error'>
+                Honestly, no idea.  We're stumped.
+            </Box>
+        );
+    }
 
     return (
         <>
@@ -141,7 +157,7 @@ const AnswerResponse = (props: AnswerResponseProps) => {
 const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
 
     const questionRef = React.useRef("");
-    const [answerResponse, setAnswerResponse] = React.useState<IAnswerExecutorResponse | undefined>();
+    const [answerResponse, setAnswerResponse] = React.useState<IAnswerExecutorResponse | IAnswerExecutorError | undefined>();
     const [waiting, setWaiting] = React.useState(false);
     const [executeWithoutDocuments, setExecuteWithoutDocuments] = React.useState(false);
 
@@ -174,7 +190,7 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
                     documents
                 };
 
-                const answer: IAnswerExecutorResponse = await JSONRPC.exec('AnswerExecutor', request);
+                const answer: IAnswerExecutorResponse | IAnswerExecutorError = await JSONRPC.exec('AnswerExecutor', request);
 
                 console.log("Got answer: ", answer);
 
