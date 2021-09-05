@@ -3,8 +3,11 @@
   "version": "2.1.97",
   "description": "A module to create polar-modules",
   "scripts": {
+    "test": "if [ -z $(find . -name '**Test.js') ]; then echo 'No tests found'; else yarn run mocha; fi;",
+    "mocha": "mocha --timeout 20000 --exit '**/**/*Test.js'",
     "eslint": "eslint -c ./.eslintrc.json .",
-    "compile": "yarn run eslint && tsc"
+    "eslintfix": "eslint -c ./.eslintrc.json . --fix",
+    "compile": "tsc"
   },
   "author": "Polar",
   "license": "ISC"
