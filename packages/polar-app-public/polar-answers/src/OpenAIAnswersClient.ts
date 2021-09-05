@@ -2,6 +2,7 @@ import { AIModel } from "polar-answers-api/src/AIModel";
 import {Fetches} from "polar-shared/src/util/Fetch";
 import {OpenAISecrets} from "./OpenAISecrets";
 import {ISelectedDocument} from "polar-answers-api/src/ISelectedDocument";
+import {IOpenAIAnswersResponse} from "polar-answers-api/src/IOpenAIAnswersResponse";
 
 export namespace OpenAIAnswersClient {
 
@@ -84,14 +85,7 @@ export namespace OpenAIAnswersClient {
 
     }
 
-    export interface IResponse {
-        readonly answers: ReadonlyArray<string>;
-        readonly selected_documents: ReadonlyArray<ISelectedDocument>;
-        readonly search_model: AIModel;
-        readonly model: AIModel;
-    }
-
-    export async function exec(request: IRequest): Promise<IResponse> {
+    export async function exec(request: IRequest): Promise<IOpenAIAnswersResponse> {
 
         OpenAISecrets.init();
 

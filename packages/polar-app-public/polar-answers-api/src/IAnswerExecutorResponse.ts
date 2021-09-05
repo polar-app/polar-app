@@ -1,6 +1,6 @@
-import {OpenAIAnswersClient} from "polar-answers/src/OpenAIAnswersClient";
 import { ISelectedDocument } from "./ISelectedDocument";
 import {IAnswerDigestRecord} from "./IAnswerDigestRecord";
+import {IOpenAIAnswersResponse} from "./IOpenAIAnswersResponse";
 
 export interface ITimings {
 
@@ -25,7 +25,7 @@ export interface ISelectedDocumentWithRecord<R>  extends ISelectedDocument {
 
 }
 
-export interface IAnswerExecutorResponse extends OpenAIAnswersClient.IResponse {
+export interface IAnswerExecutorResponse extends IOpenAIAnswersResponse {
     readonly question: string;
     readonly selected_documents: ReadonlyArray<ISelectedDocumentWithRecord<IAnswerDigestRecord>>;
     readonly timings: ITimings;
