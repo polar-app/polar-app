@@ -211,6 +211,7 @@ function useIndexForAIHandler() {
                 });
 
                 return;
+
             }
 
             JSONRPC.exec("AnswerIndexer", {url, docID})

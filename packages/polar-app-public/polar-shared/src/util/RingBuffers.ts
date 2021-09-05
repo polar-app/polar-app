@@ -39,7 +39,7 @@ export namespace RingBuffers {
 
         let _buffer: Holder<T>[] = [];
 
-        function push(value: T){
+        function push(value: T) {
 
             if (_buffer.length >= maxLength) {
                 _buffer.shift();
@@ -57,9 +57,9 @@ export namespace RingBuffers {
 
                 const holder = _buffer[idx];
 
-            if (holder !== undefined) {
-                return holder.value;
-            }
+                if (holder !== undefined) {
+                    return holder.value;
+                }
 
             }
 
@@ -86,7 +86,7 @@ export namespace RingBuffers {
 
         function toArray(): ReadonlyArray<T> {
             return _buffer.map(current => current.value);
-            }
+        }
 
         function reset(): void {
             _buffer = [];
