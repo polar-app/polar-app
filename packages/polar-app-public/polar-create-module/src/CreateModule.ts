@@ -65,7 +65,11 @@ async function updateScripts(): Promise<void> {
     content.scripts.compile = "tsc";
 
     // ~ Update Package.Json File
-    fs.promises.writeFile('package.json', JSON.stringify(content, null, 2));
+    await fs.promises.writeFile('package.json', JSON.stringify(content, null, 2));
+
+    // ~ copy over other files
+    await fs.promises.copyFile('/polar-app/packages/polar-app-public/polar-create-module/.eslintrc.json', './.eslintrc.json');
+    await fs.promises.copyFile('/polar-app/packages/polar-app-public/polar-create-module/tsconfig.json', './tsconfig.json');
 }
 
 /**
@@ -108,10 +112,10 @@ async function workFlow(): Promise<void> {
     const cliargs: Array<string> = process.argv.slice(2);
 
     // ~ Incase of update only (--update)
-    if (cliargs.length === 1 && cliargs[0] === '--update') { updateScripts(); }
+    if (cliargs.length === 1 && cliargs[0] === '--update') { await updateScripts(); }
 
     // ~ Incase of just create (no cli flags)
-    else if (cliargs.length === 0) { createNewModule(); }
+    else if (cliargs.length === 0) { await createNewModule(); }
     
     // ~ any other incorrect flag
     else { console.log('Sorry Wrong Flag !!'); }
