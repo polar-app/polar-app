@@ -1,3 +1,6 @@
+/**
+ * Implements a fixed capacity ring buffer.
+ */
 export namespace RingBuffers {
 
     /**
@@ -34,25 +37,32 @@ export namespace RingBuffers {
      */
     export function create<T>(maxLength: number): IRingBuffer<T> {
 
-        let _pointer = 0;
         let _buffer: Holder<T>[] = [];
-        let _size: number = 0;
 
-        function push(value: T){
-            _pointer = (_pointer + 1) % maxLength;
-            _buffer[_pointer] = {value};
-            _size = Math.min(_size + 1, maxLength)
+        function push(value: T) {
+
+            if (_buffer.length >= maxLength) {
+                _buffer.shift();
+            }
+
+            _buffer.push({value});
+
         }
 
         function fetch(delta: RingDelta): T | undefined {
 
-            const tmp = Math.abs((_pointer - delta) % maxLength);
+            const idx = _buffer.length - 1 + delta;
 
-            const holder = _buffer[tmp];
+            if (idx >= 0 && idx < _buffer.length) {
 
-            if (holder !== undefined) {
-                return holder.value;
+                const holder = _buffer[idx];
+
+                if (holder !== undefined) {
+                    return holder.value;
+                }
+
             }
+
 
             return undefined;
 
@@ -67,7 +77,7 @@ export namespace RingBuffers {
         }
 
         function size(): number {
-            return _size;
+            return _buffer.length;
         }
 
         function length(): number {
@@ -75,21 +85,11 @@ export namespace RingBuffers {
         }
 
         function toArray(): ReadonlyArray<T> {
-
-            const result: T[] = [];
-
-            for (let delta = (_size - 1) * -1; delta <= 0; ++delta) {
-                result.push(fetch(delta)!);
-            }
-
-            return result;
-
+            return _buffer.map(current => current.value);
         }
 
         function reset(): void {
-            _pointer = 0;
             _buffer = [];
-            _size = 0;
         }
 
         return {push, fetch, prev, peek, size, length, toArray, reset}

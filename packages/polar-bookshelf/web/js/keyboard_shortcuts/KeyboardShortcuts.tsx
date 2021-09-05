@@ -178,17 +178,13 @@ export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
             return;
         }
 
-        if (event.key) {
-            console.log("FIXME handleKeyDown: adding key to keyBuffer " + event.key);
-            console.log("FIXME handleKeyDown: keyBuffer is now: ", keyBuffer.toArray())
-            keyBuffer.push(event.key);
+        if (event.repeat) {
+            return;
         }
 
-    }, [activeRef, keyBuffer]);
-
-    const handleKeyUp = React.useCallback((event: KeyboardEvent) => {
-
-        console.log("FIXME handleKeyUp: keyBuffer is: ", keyBuffer.toArray())
+        if (event.key) {
+            keyBuffer.push(event.key);
+        }
 
         for (const [shortcut, seq, predicate] of keyToHandlers.current) {
 
@@ -214,19 +210,17 @@ export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
 
         }
 
-    }, [keyBuffer, keyToHandlers]);
+    }, [activeRef, keyBuffer, keyToHandlers]);
 
     React.useEffect(() => {
 
         window.addEventListener('keydown', handleKeyDown)
-        window.addEventListener('keyup', handleKeyUp)
 
         return () => {
             window.removeEventListener('keydown', handleKeyDown)
-            window.removeEventListener('keyup', handleKeyUp)
         }
 
-    }, [handleKeyDown, handleKeyUp])
+    }, [handleKeyDown])
 
     return null;
 
