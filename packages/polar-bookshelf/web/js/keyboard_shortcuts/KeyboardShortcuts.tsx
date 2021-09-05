@@ -8,11 +8,9 @@ import {
 } from "./KeyboardShortcutsStore";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {useRefProvider, useRefWithUpdates} from '../hooks/ReactHooks';
-import {RingBuffers} from "polar-shared/src/util/RingBuffers";
-import deepEqual from "deep-equal";
-import IRingBuffer = RingBuffers.IRingBuffer;
+import {SetArrays} from 'polar-shared/src/util/SetArrays';
 
-type KeyboardEventHandlerPredicate = (event: KeyboardEvent, keyBuffer: IRingBuffer<string>) => boolean;
+type KeyboardEventHandlerPredicate = (event: KeyboardEvent, activeKeys: ReadonlyArray<string>) => boolean;
 
 // FIXME: we have a problem where if we have two key bindings like:
 
@@ -33,7 +31,7 @@ function createPredicateUsingArray(keys: ReadonlyArray<string>): KeyboardEventHa
 
     // TODO: there's a bug here in that if the user is doing ctrl+h but we are typing
     // ctrl+shift+h then we will match.
-    return (event: KeyboardEvent, keyBuffer: IRingBuffer<string>) => {
+    return (event: KeyboardEvent, activeKeys: ReadonlyArray<string>) => {
 
         const canonicalizeKey = (key: string) => {
 
@@ -51,15 +49,11 @@ function createPredicateUsingArray(keys: ReadonlyArray<string>): KeyboardEventHa
 
         }
 
-        const pressed = arrayStream(keyBuffer.toArray())
-                            .filterPresent()
-                            .tail(keys.length)
+        const pressed = arrayStream(activeKeys)
                             .map(current => canonicalizeKey(current))
                             .collect()
 
-        // console.log("FIXME: keys vs pressed: ", keys, pressed);
-
-        return deepEqual(keys, pressed);
+        return SetArrays.equal(keys, pressed);
 
     }
 
@@ -184,7 +178,11 @@ export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
     // we can just make it fixed to '3' and read the last '3' keys and compare
     // them after every keyup.
 
-    const keyBuffer = React.useMemo(() => RingBuffers.create<string>(4), []);
+    interface IActiveKeys {
+        [key: string]: boolean;
+    }
+
+    const activeKeysMap: IActiveKeys = React.useMemo(() => ({}), []);
 
     const handleKeyDown = React.useCallback((event: KeyboardEvent) => {
 
@@ -197,19 +195,15 @@ export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
             return;
         }
 
-        if (event.key) {
-            keyBuffer.push(event.key);
-        }
+        activeKeysMap[event.key] = true;
 
-    }, [activeRef, keyBuffer]);
-
-    const handleKeyUp = React.useCallback((event: KeyboardEvent) => {
+        const activeKeys = Object.keys(activeKeysMap);
 
         for (const [shortcut, seq, predicate] of keyToHandlers.current) {
 
             const { ignorable = true } = shortcut;
 
-            if (predicate(event, keyBuffer)) {
+            if (predicate(event, activeKeys)) {
 
                 if (ignorable && isIgnorableKeyboardEvent(event)) {
                     return;
@@ -220,16 +214,20 @@ export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
 
                 console.log("Executing handler for sequence: " , seq);
 
-                keyBuffer.reset();
-
-                setTimeout(() => shortcut.handler(event, keyBuffer), 1);
+                setTimeout(() => shortcut.handler(event, activeKeys), 1);
                 break;
 
             }
 
         }
 
-    }, [keyBuffer, keyToHandlers]);
+    }, [activeRef, activeKeysMap, keyToHandlers]);
+
+    const handleKeyUp = React.useCallback((event: KeyboardEvent) => {
+
+        delete activeKeysMap[event.key];
+
+    }, [activeKeysMap]);
 
 
     React.useEffect(() => {
@@ -242,7 +240,7 @@ export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
             window.removeEventListener('keyup', handleKeyUp)
         }
 
-    }, [handleKeyDown])
+    }, [handleKeyDown, handleKeyUp])
 
     return null;
 
