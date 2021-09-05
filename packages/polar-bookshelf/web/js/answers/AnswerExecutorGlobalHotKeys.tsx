@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {GlobalKeyboardShortcuts, keyMapWithGroup} from '../keyboard_shortcuts/GlobalKeyboardShortcuts';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
-import { MUIDialog } from '../ui/dialogs/MUIDialog';
+import {MUIDialog} from '../ui/dialogs/MUIDialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {Box, DialogContent, LinearProgress, Tab, Tabs, TextField, useTheme} from "@material-ui/core";
+import {Box, Checkbox, DialogContent, FormControlLabel, LinearProgress, Tab, Tabs, TextField} from "@material-ui/core";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
 import {FeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
-import { Arrays } from 'polar-shared/src/util/Arrays';
+import {Arrays} from 'polar-shared/src/util/Arrays';
 import {IAnswerExecutorResponse, ISelectedDocumentWithRecord} from "polar-answers-api/src/IAnswerExecutorResponse";
 import {IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorRequest";
 import {IAnswerDigestRecord} from "polar-answers-api/src/IAnswerDigestRecord";
@@ -143,10 +143,11 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
     const questionRef = React.useRef("");
     const [answerResponse, setAnswerResponse] = React.useState<IAnswerExecutorResponse | undefined>();
     const [waiting, setWaiting] = React.useState(false);
+    const [executeWithoutDocuments, setExecuteWithoutDocuments] = React.useState(false);
 
     // TODO
     //
-    // - show the models...
+    // - show the models in one of the tabs
     // - try to fit the dialog to the screen
     // - run the same query but don't send documents... this way we can compare it to OpenAI directly.
     // - show ES and OpenAI timings along with the models in a dedicate tab
@@ -160,11 +161,17 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
             console.log("Asking question: " + question);
 
             try {
+
                 setAnswerResponse(undefined);
                 setWaiting(true);
 
+                const documents = executeWithoutDocuments ? [] : undefined;
+
                 const request: IAnswerExecutorRequest = {
-                    question, model: 'curie', search_model: 'curie'
+                    question,
+                    model: 'curie',
+                    search_model: 'curie',
+                    documents
                 };
 
                 const answer: IAnswerExecutorResponse = await JSONRPC.exec('AnswerExecutor', request);
@@ -182,7 +189,7 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
         doExec()
             .catch(err => console.error("Unable to answer question: " + question, err));
 
-    }, [])
+    }, [executeWithoutDocuments])
 
     const handleKeyUp = React.useCallback((event: React.KeyboardEvent) => {
 
@@ -225,6 +232,17 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
                                marginBottom: '10px',
                                flexGrow: 1,
                            }}/>
+
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={executeWithoutDocuments}
+                            onChange={(event, checked) => setExecuteWithoutDocuments(checked)}
+                            name="executeWithoutDocuments"
+                        />
+                    }
+                    label="Execute without documents"
+                />
 
                 {answerResponse && (
                     <>
