@@ -9,12 +9,14 @@ interface PackageJson {
     author: string;
     license: string;
     scripts?: Scripts;
-    devdependencies?: object;
+    devdependencies?: Record<string, unknown>;
 }
 interface Scripts {
     test?: string;
-    eslint: string;
-    compile: string;
+    mocha?: string;
+    eslint?: string;
+    eslintfix: string;
+    compile?: string;
 }
 
 // ? Helper Functions
@@ -48,28 +50,27 @@ async function getUserInput(property: string): Promise<string> {
 
 /**
  * updateScripts
- * @param force boolean
  * @returns void
  */
-async function updateScripts(force: boolean): Promise<void> {
-    await fs.promises.readFile('package.json').then(data =>{
-        let content = JSON.parse(data.toString('utf-8'));
-        if (force) {
-            content.scripts.test = 'mocha --timeout 20000 --exit src/**/*Test.js';
-            content.scripts.eslint = 'figlet ${npm_package_name} && eslint -c ../../../.eslintrc.json .';
-            content.scripts.compile = 'yarn run eslint && tsc';
-        } else {
-            if (content.scripts.test) { content.scripts.test = 'mocha --timeout 20000 --exit src/**/*Test.js'; }
-            if (content.scripts.eslint) { content.scripts.eslint = 'figlet ${npm_package_name} && eslint -c ../../../.eslintrc.json .'; }
-            if (content.scripts.compile) { content.scripts.compile = 'yarn run eslint && tsc'; }
-        }
-        fs.promises.writeFile('package.json', JSON.stringify(content, null, 2));
-    });
+async function updateScripts(): Promise<void> {
+    // ~ Read and parse Package.json
+    const data = await fs.promises.readFile('package.json');
+    const content = JSON.parse(data.toString('utf-8'));
+
+    // ~ Update Scripts
+    content.scripts.test = "if [ -z $(find . -name '**Test.js') ]; then echo 'No Tests Found!!'; else yarn run mocha; fi;";
+    content.scripts.mocha = "mocha --timeout 20000 --exit **/**/*Test.js"
+    content.scripts.eslint = "eslint -c ./.eslintrc.json .";
+    content.scripts.eslintfix = "eslint -c ./.eslintrc.json . --fix";
+    content.scripts.compile = "tsc";
+
+    // ~ Update Package.Json File
+    fs.promises.writeFile('package.json', JSON.stringify(content, null, 2));
 }
 
 /**
  * createNewModule
- * @returns void
+ * @returns Promise<void>
  */
  async function createNewModule(): Promise<void> {
     // ~ Get user input
@@ -84,7 +85,6 @@ async function updateScripts(force: boolean): Promise<void> {
 
     // ~ Extract file contents
     const packageJsonFile: PackageJson = readFile('package.json');
-    const tsconfig: object = readFile('tsconfig.json');
 
     // ~ Apply User Input to Package.json
     packageJsonFile.name = packageName;
@@ -94,7 +94,9 @@ async function updateScripts(force: boolean): Promise<void> {
     await fs.promises.mkdir(`../${packageName}`);
     await fs.promises.mkdir(`../${packageName}/src`);
     await fs.promises.writeFile(`../${packageName}/package.json`, JSON.stringify(packageJsonFile, null, 2));
-    await fs.promises.writeFile(`../${packageName}/tsconfig.json`, JSON.stringify(tsconfig, null, 2));
+    await fs.promises.copyFile('./tsconfig.json', `../${packageName}/tsconfig.json`);
+    await fs.promises.copyFile('./.eslintrc.json', `../${packageName}/.eslintrc.json`);
+    
 
     // ~ Return Success Message
     console.log("Package Created Successfully");
@@ -105,11 +107,8 @@ async function workFlow(): Promise<void> {
     // ~ Extract Cli Flags
     const cliargs: Array<string> = process.argv.slice(2);
 
-    // ~ Incase of update & create (--update --force)
-    if (cliargs.length === 2 && cliargs.includes('--update') && cliargs.includes('--force')){ updateScripts(true); }
-
     // ~ Incase of update only (--update)
-    else if (cliargs.length === 1 && cliargs[0] === '--update') { updateScripts(false); }
+    if (cliargs.length === 1 && cliargs[0] === '--update') { updateScripts(); }
 
     // ~ Incase of just create (no cli flags)
     else if (cliargs.length === 0) { createNewModule(); }
