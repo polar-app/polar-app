@@ -30,3 +30,8 @@ export interface IAnswerExecutorResponse extends IOpenAIAnswersResponse {
     readonly selected_documents: ReadonlyArray<ISelectedDocumentWithRecord<IAnswerDigestRecord>>;
     readonly timings: ITimings;
 }
+
+export interface IAnswerExecutorError {
+    readonly error: 'failed';
+    readonly message: string;
+}

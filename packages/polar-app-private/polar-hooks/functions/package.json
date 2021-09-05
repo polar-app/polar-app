@@ -56,6 +56,7 @@
     "polar-react": "^2.1.104",
     "polar-search": "^2.1.104",
     "polar-search-api": "^2.1.104",
+    "polar-answers-api": "^2.1.104",
     "polar-sentry-cloud-functions": "^2.1.104",
     "polar-shared": "^2.1.104",
     "polar-shared-webserver": "^2.1.104",
