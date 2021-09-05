@@ -165,6 +165,7 @@
     "path-to-regexp": "^3.0.0",
     "pdfjs-dist": "=2.8.250-polar.3",
     "polar-accounts": "^2.1.104",
+    "polar-answers-api": "^2.1.104",
     "polar-assets": "^2.1.104",
     "polar-backend-api": "^2.1.104",
     "polar-backend-shared": "^2.1.104",
