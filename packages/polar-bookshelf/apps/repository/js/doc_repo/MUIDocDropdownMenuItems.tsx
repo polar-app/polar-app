@@ -26,7 +26,7 @@ import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import BallotIcon from '@material-ui/icons/Ballot';
 import {useDocMetadataEditorForSelected} from "./doc_metadata_editor/DocMetadataEditorHook";
 import LaunchIcon from '@material-ui/icons/Launch';
-import { FeatureToggle } from '../persistence_layer/PrefsContext2';
+import {FeatureToggle} from '../persistence_layer/PrefsContext2';
 import AddIcon from '@material-ui/icons/Add';
 import {JSONRPC} from "../../../../web/js/datastore/sharing/rpc/JSONRPC";
 
@@ -193,6 +193,7 @@ const UpdateDocMetadataMenuItem = deepMemo(function UpdateDocMetadataMenuItem() 
 function useIndexForAIHandler() {
 
     const documentDownloadURLCalculator = useDocumentDownloadURLCalculator();
+    const errorDialog = useErrorDialog();
 
     return React.useCallback(() => {
 
@@ -203,7 +204,12 @@ function useIndexForAIHandler() {
             const {url, docID} = download;
 
             if (! url.toLowerCase().endsWith('.pdf')) {
-                console.warn("Skip document index. Not PDF: " + url);
+
+                errorDialog({
+                    title: "Only PDF documents supported",
+                    subtitle: "Skipping document  as we currently only support PDF documents: "
+                });
+
                 return;
             }
 
@@ -212,7 +218,7 @@ function useIndexForAIHandler() {
 
         }
 
-    }, [documentDownloadURLCalculator]);
+    }, [documentDownloadURLCalculator, errorDialog]);
 
 }
 
