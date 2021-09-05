@@ -1,8 +1,7 @@
-import {useActiveKeyboardShortcutsCallbacks, useActiveKeyboardShortcutsStore} from "./ActiveKeyboardShortcutsStore";
-import {IKeyboardShortcutWithHandler, useKeyboardShortcutsStore} from "../keyboard_shortcuts/KeyboardShortcutsStore";
+import {IKeyboardShortcutWithHandler} from "../keyboard_shortcuts/KeyboardShortcutsStore";
 import * as React from "react";
 import {deepMemo} from "../react/ReactUtils";
-import {GlobalKeyboardShortcuts, KeyMap} from "../keyboard_shortcuts/GlobalKeyboardShortcuts";
+import {KeyMap} from "../keyboard_shortcuts/GlobalKeyboardShortcuts";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -59,40 +58,40 @@ export const ActiveKeyboardShortcutsDialog = deepMemo(function ActiveKeyboardSho
 
 });
 
-
-export const ActiveKeyboardShortcuts2 = deepMemo(() => {
-
-    const {showActiveShortcuts} = useActiveKeyboardShortcutsStore(['showActiveShortcuts']);
-    const {setShowActiveShortcuts} = useActiveKeyboardShortcutsCallbacks();
-
-    const handleClose = React.useCallback(() => {
-        setShowActiveShortcuts(false);
-    }, [setShowActiveShortcuts]);
-
-    const handleExecute = React.useCallback((event: React.MouseEvent | React.KeyboardEvent,
-                                             shortcut: IKeyboardShortcutWithHandler) => {
-        handleClose();
-        shortcut.handler(event);
-
-    }, [handleClose]);
-
-    const handlers = {
-        SHOW_ALL_HOTKEYS: () => setShowActiveShortcuts(true)
-    };
-
-    // FIXME: setFilter and setIndex undefined on mount...
-
-    return (
-        <>
-            <GlobalKeyboardShortcuts keyMap={keyMap}
-                                     handlerMap={handlers}/>
-
-            {showActiveShortcuts && <ActiveKeyboardShortcutsDialog onClose={handleClose}
-                                                                   onExecute={handleExecute}/>}
-
-        </>
-    );
-
-});
+//
+// export const ActiveKeyboardShortcuts2 = deepMemo(() => {
+//
+//     const {showActiveShortcuts} = useActiveKeyboardShortcutsStore(['showActiveShortcuts']);
+//     const {setShowActiveShortcuts} = useActiveKeyboardShortcutsCallbacks();
+//
+//     const handleClose = React.useCallback(() => {
+//         setShowActiveShortcuts(false);
+//     }, [setShowActiveShortcuts]);
+//
+//     const handleExecute = React.useCallback((event: React.MouseEvent | React.KeyboardEvent,
+//                                              shortcut: IKeyboardShortcutWithHandler) => {
+//         handleClose();
+//         shortcut.handler(event);
+//
+//     }, [handleClose]);
+//
+//     const handlers = {
+//         SHOW_ALL_HOTKEYS: () => setShowActiveShortcuts(true)
+//     };
+//
+//     // FIXME: setFilter and setIndex undefined on mount...
+//
+//     return (
+//         <>
+//             <GlobalKeyboardShortcuts keyMap={keyMap}
+//                                      handlerMap={handlers}/>
+//
+//             {showActiveShortcuts && <ActiveKeyboardShortcutsDialog onClose={handleClose}
+//                                                                    onExecute={handleExecute}/>}
+//
+//         </>
+//     );
+//
+// });
 
 

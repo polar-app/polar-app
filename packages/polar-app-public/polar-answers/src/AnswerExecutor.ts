@@ -1,7 +1,7 @@
 import {ESRequests} from "./ESRequests";
 import {OpenAIAnswersClient} from "./OpenAIAnswersClient";
 import {ESAnswersIndexNames} from "./ESAnswersIndexNames";
-import { UserIDStr } from "polar-shared/src/util/Strings";
+import {UserIDStr} from "polar-shared/src/util/Strings";
 import {IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorRequest";
 import {
     IAnswerExecutorResponse,
@@ -26,13 +26,17 @@ export namespace AnswerExecutor {
             'Google Analytics is a service that helps webmasters analyze traffic patterns at their web sites.  It provides aggregate statistics, such as the number of unique visitors per day and the page views per URL per day, as well as site-tracking reports, such as the percentage of users that made a purchase, given that they earlier viewed a specific page.  To enable the service, webmasters embed a small JavaScript program in their web pages. '
         ].join("  ");
 
+    const NO_ANSWER_CODE = '__UNKNOWN__'
+
+    // TODO: add stop words...
+
     export const EXAMPLES: ReadonlyArray<QuestionAnswerPair> = [
         ["What is human life expectancy in the United States?", "78 years."],
-        ["Who is the President of Xexptronica", "__UNKNOWN__"],
-        ["What do dinosaurs capilate?", "__UNKNOWN__"],
-        ["Is foo a bar?", "__UNKNOWN__"],
         ["What is Google Analytics", "Google Analytics is a service that helps webmasters analyze patterns at their web sites."],
-        ["What does Google Analytics provide?", "It provides aggregate statistics, such as the number of unique visitors per day and the page views per URL per day."]
+        ["What does Google Analytics provide?", "It provides aggregate statistics, such as the number of unique visitors per day and the page views per URL per day."],
+        ["Who is the President of Xexptronica", NO_ANSWER_CODE],
+        ["What do dinosaurs capilate?", NO_ANSWER_CODE],
+        ["Is foo a bar?", NO_ANSWER_CODE],
     ];
 
     export const STOP = ["\n", "<|endoftext|>"];
@@ -69,6 +73,8 @@ export namespace AnswerExecutor {
     export async function exec(opts: IExecOpts): Promise<IAnswerExecutorResponse> {
 
         const {question, uid} = opts;
+
+        // FIXME: is the right ansewr the FIRST or LAST?
 
         interface DocumentResults {
             readonly duration: number;

@@ -3,46 +3,51 @@ import {deepMemo} from "../react/ReactUtils";
 import {
     IKeyboardShortcutWithHandler,
     KeyBinding,
-    KeyboardShortcutEventHandler,
-    useKeyboardShortcutsStore,
-    KeyboardEventHandlerUsingPredicate
+    KeyboardEventHandlerUsingPredicate,
+    useKeyboardShortcutsStore
 } from "./KeyboardShortcutsStore";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {useComponentWillUnmount} from "../hooks/ReactLifecycleHooks";
 import {useRefProvider, useRefWithUpdates} from '../hooks/ReactHooks';
+import {RingBuffers} from "polar-shared/src/util/RingBuffers";
+import deepEqual from "deep-equal";
+import IRingBuffer = RingBuffers.IRingBuffer;
 
-type KeyboardEventHandlerPredicate = (event: KeyboardEvent) => boolean;
+type KeyboardEventHandlerPredicate = (event: KeyboardEvent, keyBuffer: IRingBuffer<string>) => boolean;
+
 function createPredicateUsingArray(keys: ReadonlyArray<string>): KeyboardEventHandlerPredicate {
+
     // TODO: there's a bug here in that if the user is doing ctrl+h but we are typing
     // ctrl+shift+h then we will match.
-    return (event) => {
+    return (event: KeyboardEvent, keyBuffer: IRingBuffer<string>) => {
 
-        function matchesModifier(key: string) {
+        const canonicalizeKey = (key: string) => {
 
-            if (key === 'ctrl' && event.ctrlKey) {
-                return true;
-            }
-            if (key === 'command' && event.metaKey) {
-                return true;
-            }
-            if (key === 'alt' && event.altKey) {
-                return true;
-            }
-            if (key === 'shift' && event.shiftKey) {
-                return true;
-            }
+            const lower = key.toLowerCase();
 
-            return event.key === key;
+            switch(lower) {
+
+                case 'meta':
+                    return 'command';
+
+                default:
+                    return lower;
+
+            }
 
         }
 
-        for(const current of keys) {
-            if (! matchesModifier(current)) {
-                return false;
-            }
-        }
-        return true;
+        const pressed = arrayStream(keyBuffer.toArray())
+                            .filterPresent()
+                            .tail(keys.length)
+                            .map(current => canonicalizeKey(current))
+                            .collect()
+
+        // console.log("FIXME: keys vs pressed: ", keys, pressed);
+
+        return deepEqual(keys, pressed);
+
     }
+
 }
 
 function createPredicate(sequence: KeyBinding): KeyboardEventHandlerUsingPredicate {
@@ -63,7 +68,10 @@ function createPredicate(sequence: KeyBinding): KeyboardEventHandlerUsingPredica
         const keys = sequence.keys.split('+');
 
         switch (keys.length) {
-            case 1: case 2: case 3: case 4:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
                 return createPredicateUsingArray(keys);
             default:
                 throw new Error("Too many keys for event: " + keys.length);
@@ -72,6 +80,7 @@ function createPredicate(sequence: KeyBinding): KeyboardEventHandlerUsingPredica
     }
 
     return createPredicate();
+
 }
 
 function isIgnorableKeyboardEvent(event: KeyboardEvent): boolean {
@@ -131,6 +140,37 @@ export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
 
     const keyToHandlers = useRefProvider(() =>  computeKeyToHandlers());
 
+    // TODO: I do not actually think this will work because we have to keep
+    // track fo keydown and keyup events and only execute a handler when it gets
+    // back down to zero and then compare ALL the keys in the interim.
+    //
+    // This probably NEVER actually worked unfortunately.
+    //
+    // For example let's say we have to test for command+a+i
+    //
+    // We will get the following events
+
+    // keydown: command
+    // keydown: a
+    // keydown: i
+    // keyup: i
+    // keyup: a
+    // keyup: command
+
+    // we have to evaluate on the LAST keyup... when our stack gets down to zero
+    // and THEN compare if that's a valid key binding.
+    //
+    // very upset that I didn't see this before because it would have been
+    // better/easier to not build a state machine for this.
+    //
+    // ANOTHER way to implement this COULD be to just keep persist ring buffer,
+    // without keeping a queue length, and then just push to it for every keydown.
+    //
+    // we can just make it fixed to '3' and read the last '3' keys and compare
+    // them after every keyup.
+
+    const keyBuffer = React.useMemo(() => RingBuffers.create<string>(4), []);
+
     const handleKeyDown = React.useCallback((event: KeyboardEvent) => {
 
         if (! activeRef.current) {
@@ -138,10 +178,23 @@ export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
             return;
         }
 
+        if (event.key) {
+            console.log("FIXME handleKeyDown: adding key to keyBuffer " + event.key);
+            console.log("FIXME handleKeyDown: keyBuffer is now: ", keyBuffer.toArray())
+            keyBuffer.push(event.key);
+        }
+
+    }, [activeRef, keyBuffer]);
+
+    const handleKeyUp = React.useCallback((event: KeyboardEvent) => {
+
+        console.log("FIXME handleKeyUp: keyBuffer is: ", keyBuffer.toArray())
+
         for (const [shortcut, seq, predicate] of keyToHandlers.current) {
+
             const { ignorable = true } = shortcut;
 
-            if (predicate(event)) {
+            if (predicate(event, keyBuffer)) {
 
                 if (ignorable && isIgnorableKeyboardEvent(event)) {
                     return;
@@ -150,24 +203,30 @@ export const KeyboardShortcuts = deepMemo(function KeyboardShortcuts() {
                 event.stopPropagation();
                 event.preventDefault();
 
-                console.log("Executing handler for sequence: " + seq);
-                setTimeout(() => shortcut.handler(event), 1);
+                console.log("Executing handler for sequence: " , seq);
+
+                keyBuffer.reset();
+
+                setTimeout(() => shortcut.handler(event, keyBuffer), 1);
                 break;
+
             }
 
         }
 
-    }, [activeRef, keyToHandlers]);
+    }, [keyBuffer, keyToHandlers]);
 
     React.useEffect(() => {
 
         window.addEventListener('keydown', handleKeyDown)
+        window.addEventListener('keyup', handleKeyUp)
 
         return () => {
             window.removeEventListener('keydown', handleKeyDown)
+            window.removeEventListener('keyup', handleKeyUp)
         }
 
-    }, [handleKeyDown])
+    }, [handleKeyDown, handleKeyUp])
 
     return null;
 

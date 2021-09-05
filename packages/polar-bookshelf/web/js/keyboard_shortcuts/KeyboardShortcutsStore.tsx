@@ -2,15 +2,17 @@ import React from 'react';
 import {Provider} from "polar-shared/src/util/Providers";
 import {createObservableStore, SetStore} from "../react/store/ObservableStore";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {RingBuffers} from "polar-shared/src/util/RingBuffers";
+import IRingBuffer = RingBuffers.IRingBuffer;
 
 export interface IKeyboardShortcutEvent {
     preventDefault: () => void;
     stopPropagation: () => void;
 }
 
-export type KeyboardShortcutEventHandler = (event: IKeyboardShortcutEvent) => void;
+export type KeyboardShortcutEventHandler = (event: KeyboardEvent, keyBuffer: IRingBuffer<string>) => void;
 
-export type KeyboardEventHandlerUsingPredicate = (event: KeyboardEvent) => boolean;
+export type KeyboardEventHandlerUsingPredicate = (event: KeyboardEvent, keyBuffer: IRingBuffer<string>) => boolean;
 
 export type KeyBindingArray2 = readonly [string, string];
 export type KeyBindingArray1 = readonly [string];

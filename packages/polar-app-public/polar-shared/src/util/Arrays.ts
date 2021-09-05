@@ -33,7 +33,7 @@ export interface IndexedValue<V> {
 export namespace Arrays {
 
     // FIXME scan implementation..
-    
+
     export function toIndexed<V>(values: ReadonlyArray<V>): ReadonlyArray<IndexedValue<V>> {
 
         const result = [];
@@ -242,7 +242,7 @@ export namespace Arrays {
     /**
      * Get up to `limit` values from the given input.
      */
-    export function head<T>(input: ReadonlyArray<T>, limit: number): T[] {
+    export function head<T>(input: ReadonlyArray<T>, limit: number): ReadonlyArray<T> {
 
         // adjust the limit so we never fetch too many values.
         limit = Math.min(limit, input.length);
@@ -250,7 +250,22 @@ export namespace Arrays {
         const result: T[] = [];
 
         for (let idx = 0; idx < limit; ++idx) {
-            result[idx] = input[idx];
+            result.push(input[idx]);
+        }
+
+        return result;
+
+    }
+
+    export function tail<T>(input: ReadonlyArray<T>, limit: number): ReadonlyArray<T> {
+
+        // adjust the limit so we never fetch too many values.
+        limit = Math.min(limit, input.length);
+
+        const result: T[] = [];
+
+        for (let idx = input.length - limit; idx < input.length; ++idx) {
+            result.push(input[idx]);
         }
 
         return result;

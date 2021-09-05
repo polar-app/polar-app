@@ -12,6 +12,11 @@ export namespace RingBuffers {
         peek: () => T | undefined;
         size: () => number;
         length: () => number;
+
+        /**
+         * Reset the buffer to the default.
+         */
+        reset: () => void;
         toArray: () => ReadonlyArray<T>;
     }
 
@@ -29,21 +34,21 @@ export namespace RingBuffers {
      */
     export function create<T>(maxLength: number): IRingBuffer<T> {
 
-        let pointer = 0;
-        const buffer: Holder<T>[] = [];
+        let _pointer = 0;
+        let _buffer: Holder<T>[] = [];
         let _size: number = 0;
 
         function push(value: T){
-            pointer = (pointer + 1) % maxLength;
-            buffer[pointer] = {value};
+            _pointer = (_pointer + 1) % maxLength;
+            _buffer[_pointer] = {value};
             _size = Math.min(_size + 1, maxLength)
         }
 
         function fetch(delta: RingDelta): T | undefined {
 
-            const tmp = Math.abs((pointer - delta) % maxLength);
+            const tmp = Math.abs((_pointer - delta) % maxLength);
 
-            const holder = buffer[tmp];
+            const holder = _buffer[tmp];
 
             if (holder !== undefined) {
                 return holder.value;
@@ -81,7 +86,13 @@ export namespace RingBuffers {
 
         }
 
-        return {push, fetch, prev, peek, size, length, toArray}
+        function reset(): void {
+            _pointer = 0;
+            _buffer = [];
+            _size = 0;
+        }
+
+        return {push, fetch, prev, peek, size, length, toArray, reset}
 
     }
 

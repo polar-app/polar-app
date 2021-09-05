@@ -44,5 +44,33 @@ describe('Arrays', function() {
 
     });
 
+    describe('head', function() {
+
+        it("basic", function () {
+            assert.deepEqual(Arrays.head([], 0), []);
+            assert.deepEqual(Arrays.head([], 1), []);
+            assert.deepEqual(Arrays.head(['a'], 1), ['a']);
+            assert.deepEqual(Arrays.head(['a'], 2), ['a']);
+            assert.deepEqual(Arrays.head(['a', 'b'], 2), ['a', 'b']);
+            assert.deepEqual(Arrays.head(['a', 'b', 'c'], 2), ['a', 'b']);
+        });
+
+    });
+
+    describe('tail', function() {
+
+        it("basic", function () {
+            assert.deepEqual(Arrays.tail([], 0), []);
+            assert.equal(Arrays.tail([], 1).length, 0);
+            assert.deepEqual(Arrays.tail([], 1), []);
+            assert.deepEqual(Arrays.tail(['a'], 1), ['a']);
+            assert.deepEqual(Arrays.tail(['a'], 2), ['a']);
+            assert.deepEqual(Arrays.tail(['a', 'b'], 2), ['a', 'b']);
+            assert.deepEqual(Arrays.tail(['a', 'b', 'c'], 2), ['b', 'c']);
+            assert.deepEqual(Arrays.tail(['a', 'b', 'c'], 10), ['a', 'b', 'c']);
+        });
+
+    });
+
 
 });
