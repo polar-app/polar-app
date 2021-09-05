@@ -22,11 +22,11 @@ const globalKeyMap = keyMapWithGroup({
             description: "Ask a question from the AI system and receive an answer.",
             sequences: [
                 {
-                    keys: 'command+a+i',
+                    keys: 'command+i',
                     platforms: ['macos']
                 },
                 {
-                    keys: 'ctrl+a+i',
+                    keys: 'ctrl+i',
                     platforms: ['windows', 'linux']
                 }
 
