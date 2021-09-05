@@ -3,8 +3,17 @@ import { ISelectedDocument } from "./ISelectedDocument";
 import {IAnswerDigestRecord} from "./IAnswerDigestRecord";
 
 export interface ITimings {
-    readonly elasticsearch: number;
+
+    /**
+     * The amount of time it took to compute the documents to query over.
+     */
+    readonly documents: number;
+
+    /**
+     * The amount of time it took to query against OpenAI.
+     */
     readonly openai: number;
+
 }
 
 export interface ISelectedDocumentWithRecord<R>  extends ISelectedDocument {

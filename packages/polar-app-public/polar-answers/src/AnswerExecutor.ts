@@ -70,47 +70,93 @@ export namespace AnswerExecutor {
 
         const {question, uid} = opts;
 
-        // run this query on the digest ...
-        const index = ESAnswersIndexNames.createForUserDocs(uid);
+        interface DocumentResults {
+            readonly duration: number;
+            readonly records: ReadonlyArray<IAnswerDigestRecord>;
+            readonly documents: ReadonlyArray<string>
+        }
 
-        // TODO make this into a generic search client and don't hard code the ES query here.
+        async function computeDocuments() {
 
-        // TODO this has to be hard coded and we only submit docs that would be
-        // applicable to the answer API and we would need a way to easily
-        // calculate the short head of the result set.  The OpenAI Answers API
-        // only allows 200 documents so we might just want to hard code this.
-        const size = 100;
+            if (opts.documents) {
+                return computeDocumentsFromOpts();
+            }
 
-        const query = {
-            "query": {
-                "query_string": {
-                    "query": question,
-                    "default_field": "text"
-                }
-            },
-            size
-        };
+            return computeDocumentsFromES();
 
-        const requestURL = `/${index}/_search`;
+        }
 
-        const esResponseWithDuration
-            = await executeWithDuration<IElasticSearchResponse<IAnswerDigestRecord>>(() => ESRequests.doPost(requestURL, query));
+        async function computeDocumentsFromOpts(): Promise<DocumentResults> {
 
-        const esResponse = esResponseWithDuration.value;
+            const documents = opts.documents || [];
 
-        // I believe the non-deterministic results you see might be caused by
-        // the order in which the documents selected by the Answers endpoint are
-        // inserted into the final completion prompt (Answers endpoint is
-        // indeed Search+Completions under the hood).
-        //
-        // To confirm this hypothesis, I would pass return_prompt = True for
-        // each API call and see how the final prompt differs between calls.
+            return {
+                duration: 0,
+                documents,
+                records: documents.map((current, idx) => {
+                    return {
+                        type: 'none',
+                        text: current,
+                        idx
+                    }
+                })
+            };
 
-        // the array of digest records so that we can map from the
-        // selected_documents AFTER the request is executed.
-        const records = esResponse.hits.hits.map(current => current._source);
+        }
 
-        const documents = records.map(current => current.text.replace(/\n/g, ' '));
+        async function computeDocumentsFromES(): Promise<DocumentResults> {
+
+            // TODO make this into a generic search client and don't hard code the ES query here.
+
+            // run this query on the digest ...
+            const index = ESAnswersIndexNames.createForUserDocs(uid);
+
+            // TODO this has to be hard coded and we only submit docs that would be
+            // applicable to the answer API and we would need a way to easily
+            // calculate the short head of the result set.  The OpenAI Answers API
+            // only allows 200 documents so we might just want to hard code this.
+            const size = 100;
+
+            const query = {
+                "query": {
+                    "query_string": {
+                        "query": question,
+                        "default_field": "text"
+                    }
+                },
+                size
+            };
+
+            const requestURL = `/${index}/_search`;
+
+            const esResponseWithDuration
+                = await executeWithDuration<IElasticSearchResponse<IAnswerDigestRecord>>(() => ESRequests.doPost(requestURL, query));
+
+            const esResponse = esResponseWithDuration.value;
+
+            // I believe the non-deterministic results you see might be caused by
+            // the order in which the documents selected by the Answers endpoint are
+            // inserted into the final completion prompt (Answers endpoint is
+            // indeed Search+Completions under the hood).
+            //
+            // To confirm this hypothesis, I would pass return_prompt = True for
+            // each API call and see how the final prompt differs between calls.
+
+            // the array of digest records so that we can map from the
+            // selected_documents AFTER the request is executed.
+            const records = esResponse.hits.hits.map(current => current._source);
+
+            const documents = records.map(current => current.text.replace(/\n/g, ' '));
+
+            return {
+                duration: esResponseWithDuration.duration,
+                documents,
+                records
+            };
+
+        }
+
+        const {duration, documents, records} = await computeDocuments();
 
         // TODO how do we compute documents which have no known answer?
 
@@ -155,7 +201,7 @@ export namespace AnswerExecutor {
         }
 
         const timings: ITimings = {
-            elasticsearch: esResponseWithDuration.duration,
+            documents: duration,
             openai: answerResponseWithDuration.duration
         }
 

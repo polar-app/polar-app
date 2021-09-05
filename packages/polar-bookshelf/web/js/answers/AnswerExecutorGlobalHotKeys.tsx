@@ -57,7 +57,12 @@ const SelectedDocument = (props: SelectedDocumentProps) => {
 
             </p>
             <p>score: {props.doc.score}</p>
-            <p>docID: {props.doc.record.docID}</p>
+
+            {props.doc.record.type === 'pdf' && (
+                <>
+                    <p>docID: {props.doc.record.docID}</p>
+                </>
+            )}
         </>
     );
 
@@ -138,6 +143,15 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
     const questionRef = React.useRef("");
     const [answerResponse, setAnswerResponse] = React.useState<IAnswerExecutorResponse | undefined>();
     const [waiting, setWaiting] = React.useState(false);
+
+    // TODO
+    //
+    // - show the models...
+    // - try to fit the dialog to the screen
+    // - run the same query but don't send documents... this way we can compare it to OpenAI directly.
+    // - show ES and OpenAI timings along with the models in a dedicate tab
+    // - "Ask" button to the right of the question text
+    // - docLoader to load the document by docID
 
     const executeRequest = React.useCallback((question: string) => {
 
