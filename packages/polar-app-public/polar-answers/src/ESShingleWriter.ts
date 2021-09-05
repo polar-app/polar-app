@@ -44,7 +44,9 @@ export namespace ESShingleWriter {
 
             console.log("Writing shingleID: " + id);
 
+            // TODO: this will have to be updated for EPUB and not hard code to the PDF type.
             const record: IAnswerDigestRecord = {
+                type: 'pdf',
                 id,
                 docID, pageNum,
                 idx,
