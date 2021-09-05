@@ -14,6 +14,17 @@ import IRingBuffer = RingBuffers.IRingBuffer;
 
 type KeyboardEventHandlerPredicate = (event: KeyboardEvent, keyBuffer: IRingBuffer<string>) => boolean;
 
+// FIXME: we have a problem where if we have two key bindings like:
+
+// command+a+i
+// a
+
+// ... then it's possible that 'a' can be executed before 'command+a+i' because
+// it's not really aware that 'command' is being held which is a modifier.
+
+// this pattern applies to ALL of our key bindings to to things like
+// shift+command as TWO meta actions can be triggered.
+
 function createPredicateUsingArray(keys: ReadonlyArray<string>): KeyboardEventHandlerPredicate {
 
     // TODO: there's a bug here in that if the user is doing ctrl+h but we are typing
