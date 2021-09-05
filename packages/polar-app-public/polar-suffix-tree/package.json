@@ -1,6 +1,6 @@
 {
   "name": "polar-suffix-tree",
-  "version": "2.1.106",
+  "version": "2.1.107",
   "description": "",
   "scripts": {
     "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
@@ -14,7 +14,7 @@
     "@types/mocha": "=8.2.2",
     "chai": "4.2.0",
     "mocha": "=9.0.0",
-    "polar-test": "^2.1.106",
+    "polar-test": "^2.1.107",
     "tslint": "6.1.2",
     "typescript": "=4.2.3"
   },
