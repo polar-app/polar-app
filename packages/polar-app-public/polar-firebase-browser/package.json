@@ -1,6 +1,6 @@
 {
   "name": "polar-firebase-browser",
-  "version": "2.1.105",
+  "version": "2.1.106",
   "description": "Code to connect to firebase as an admin user",
   "main": "index.js",
   "scripts": {
@@ -16,15 +16,15 @@
     "@types/mocha": "=8.2.2",
     "chai": "4.2.0",
     "mocha": "=9.0.0",
-    "polar-test": "^2.1.105",
+    "polar-test": "^2.1.106",
     "tslint": "6.1.2",
     "typescript": "=4.2.3"
   },
   "dependencies": {
     "firebase": "=8.8.1",
-    "polar-firebase-test": "^2.1.105",
-    "polar-firestore-like": "^2.1.105",
-    "polar-shared": "^2.1.105",
-    "polar-snapshot-cache": "^2.1.105"
+    "polar-firebase-test": "^2.1.106",
+    "polar-firestore-like": "^2.1.106",
+    "polar-shared": "^2.1.106",
+    "polar-snapshot-cache": "^2.1.106"
   }
 }
