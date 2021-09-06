@@ -1,6 +1,6 @@
 {
   "name": "polar-create-module",
-  "version": "2.1.104",
+  "version": "2.1.107",
   "description": "A module to create polar-modules",
   "scripts": {
     "test": "if [ -z $(find . -name '**Test.js') ]; then echo 'No Tests Found!!'; else yarn run mocha; fi;",
