@@ -193,7 +193,7 @@ const DialogHost = (props: DialogHostProps) => {
             dialog,
             taskbar,
             select
-        };
+        }; 
 
         // WARN: not sure if this is the appropriate way to do this but we need
         // to have this run after the component renders and this way it can
