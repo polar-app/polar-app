@@ -1,16 +1,12 @@
+import { AIModel } from "polar-answers-api/src/AIModel";
 import {Fetches} from "polar-shared/src/util/Fetch";
 import {OpenAISecrets} from "./OpenAISecrets";
+import {ISelectedDocument} from "polar-answers-api/src/ISelectedDocument";
+import {IOpenAIAnswersResponse} from "polar-answers-api/src/IOpenAIAnswersResponse";
 
 export namespace OpenAIAnswersClient {
 
-    type AIModel = 'ada' | 'babbage' | 'curie' | 'davinci';
-
     export type QuestionAnswerPair = [string, string];
-
-    export interface IAnswerDocument {
-        readonly text: string;
-        readonly metadata: {[key: string]: string |  number};
-    }
 
     export interface IRequest {
 
@@ -34,7 +30,7 @@ export namespace OpenAIAnswersClient {
          * be derived. If this is an empty list, the question will be answered
          * based on the question-answer examples.
          */
-        readonly documents: ReadonlyArray<string | IAnswerDocument>;
+        readonly documents: ReadonlyArray<string>;
 
         /**
          * ID of the engine to use for Search.
@@ -89,19 +85,7 @@ export namespace OpenAIAnswersClient {
 
     }
 
-    export interface ISelectedDocument {
-        readonly document: number;
-        readonly text: string;
-        readonly object: string;
-        readonly score: number;
-    }
-
-    export interface IResponse {
-        readonly answers: ReadonlyArray<string>;
-        readonly selected_documents: ReadonlyArray<ISelectedDocument>;
-    }
-
-    export async function exec(request: IRequest): Promise<IResponse> {
+    export async function exec(request: IRequest): Promise<IOpenAIAnswersResponse> {
 
         OpenAISecrets.init();
 
