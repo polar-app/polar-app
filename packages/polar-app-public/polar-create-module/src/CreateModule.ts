@@ -2,7 +2,7 @@ import fs from 'fs';
 import * as readline from 'readline';
 
 // & Interfaces
-interface PackageJson {
+interface IPackageManifest {
     name: string;
     version: string;
     description: string;
@@ -17,7 +17,7 @@ interface Scripts {
     test?: string;
     mocha?: string;
     eslint?: string;
-    eslintfix: string;
+    eslintfix?: string;
     compile?: string;
 }
 
@@ -46,7 +46,12 @@ async function updateScripts(): Promise<void> {
 
         // ~ Read and parse Package.json
         const data = await fs.promises.readFile('package.json');
-        const content = JSON.parse(data.toString('utf-8'));
+        const content: IPackageManifest = JSON.parse(data.toString('utf-8'));
+
+        if (! content.scripts) {
+            // it's possible that there aren't any scripts.
+            content.scripts = {};
+        }
 
         // ~ Update Scripts
         content.scripts.test = "if [ -z $(find src -name '**Test.js') ]; then echo 'No tests'; else yarn run mocha; fi;";
