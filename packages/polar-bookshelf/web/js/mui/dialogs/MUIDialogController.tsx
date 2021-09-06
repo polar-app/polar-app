@@ -145,7 +145,7 @@ const DialogHost = (props: DialogHostProps) => {
         };
 
         const snackbar = function(snackbarProps: SnackbarDialogProps) {
-            registerDialogElement(<SnackbarDialog key={createKey()} id={`${iter}`}
+            registerDialogElement(<SnackbarDialog key={createKey()}
                                                   {...snackbarProps}/>);
             doIncr();
         };

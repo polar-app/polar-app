@@ -110,12 +110,12 @@ export const ConfirmDialog = deepMemo(function ConfirmDialog(props: ConfirmDialo
     const onCancel = props.onCancel || NULL_FUNCTION;
 
     React.useEffect(() => {
-        history.push({hash: `#prompt-${props.id}`});
+        history.push({hash: `#confirm-${props.id}`});
     }, [history, props.id])
 
     React.useEffect(() => {
 
-        setOpen(location.hash === `#prompt-${props.id}`);
+        setOpen(location.hash === `#confirm-${props.id}`);
 
     }, [history, location, props.id, open]);
 

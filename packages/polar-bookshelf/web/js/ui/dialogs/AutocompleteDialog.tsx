@@ -56,12 +56,12 @@ export function AutocompleteDialog<T>(props: AutocompleteDialogPropsWithID<T>) {
     });
 
     React.useEffect(() => {
-        history.push({hash: `#prompt-${props.id}`});
+        history.push({hash: `#autocomplete-${props.id}`});
     }, [history, props.id])
 
     React.useEffect(() => {
 
-        const open = location.hash === `#prompt-${props.id}`;
+        const open = location.hash === `#autocomplete-${props.id}`;
         setState({open});
 
     }, [history, location, props.id, state.open]);
