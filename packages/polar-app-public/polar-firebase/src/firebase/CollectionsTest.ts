@@ -11,15 +11,11 @@ describe('Collections', function() {
 
         assertJSON(arr0, ['asdf']);
 
-        const arr1: FirestoreArray = {
-            1: 'asdf'
-        };
+        const arr1: FirestoreArray = [ 'asdf' ];
 
         assertJSON(arr1, ['asdf']);
 
-        interface MyArray<T> extends ReadonlyArray<T> {
-
-        }
+        type MyArray<T> = ReadonlyArray<T>
 
         interface MyDict {
             readonly [key: number]: string;
@@ -27,13 +23,9 @@ describe('Collections', function() {
 
         const bar0: string[] = ['foo'];
         const bar1: MyArray<string> = ['foo'];
-        const bar2: MyDict = ['foo'];
 
         bar0.includes('foo');
         bar1.includes('foo');
-
-        // NOTE: this should NOT compile
-        // bar2.includes('foo');
 
     });
 
