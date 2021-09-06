@@ -36,7 +36,7 @@ async function getUserInput(property: string): Promise<string> {
 
 export function createJSONDataFile(obj: any) {
 
-    return `// THIS FILE IS AUTO-GENERATED, DO NOT EDIT\n\n` + JSON.stringify(obj, null, "  ");
+    return `// THIS FILE IS AUTO-GENERATED, DO NOT EDIT\n` + JSON.stringify(obj, null, "  ");
 
 }
 
