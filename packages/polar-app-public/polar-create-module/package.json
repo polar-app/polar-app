@@ -1,13 +1,18 @@
 {
   "name": "polar-create-module",
-  "version": "2.1.104",
+  "version": "2.1.107",
   "description": "A module to create polar-modules",
   "scripts": {
     "test": "if [ -z $(find . -name '**Test.js') ]; then echo 'No Tests Found!!'; else yarn run mocha; fi;",
     "mocha": "mocha --timeout 20000 --exit **/**/*Test.js",
     "eslint": "eslint -c ./.eslintrc.json .",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix",
-    "compile": "tsc"
+    "compile": "tsc",
+    "build": "echo '#!/usr/bin/env node' > ./bin/polar-create-module && cat src/CreateModule.js >> ./bin/polar-create-module",
+    "publish": "yarn run build"
+  },
+  "bin": {
+    "polar-create-module": "./bin/polar-create-module"
   },
   "author": "Polar",
   "license": "ISC"

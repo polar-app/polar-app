@@ -57,7 +57,8 @@
     "find-broken-imports": "find . -type f -name \"*.ts\" ! -path '*/node_modules/*' |xargs grep import |grep -E \"[\\\"'](\\.\\./)+polar\"\n",
     "find-package-versions": "lerna exec --concurrency=1 --parallel=false --no-private -- jq -r .dependencies package.json  |grep -Eo '^  [^,]+' | sort",
     "find-package-versions-conflicting": "yarn run find-package-versions | uniq | grep -Eo '^[^:]+' |uniq -c |sort |grep -Ev '^[ ]+1 '",
-    "bootstrap-with-link": "lerna bootstrap --ci && find node_modules -type l -name 'polar*' -exec rm '{}' ';' && npx lerna link"
+    "bootstrap-with-link": "lerna bootstrap --ci && find node_modules -type l -name 'polar*' -exec rm '{}' ';' && npx lerna link",
+    "update-modules": "lerna exec -- node $(pwd)/packages/polar-app-public/polar-create-module/src/CreateModule.js --update"
   },
   "deprecated": {},
   "keywords": [],
