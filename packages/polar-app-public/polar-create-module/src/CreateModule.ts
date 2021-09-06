@@ -2,6 +2,7 @@ import fs from 'fs';
 import * as readline from 'readline';
 import {ESLint} from "./configs/ESLint";
 import {TSConfig} from "./configs/TSConfig";
+import {Package} from "./configs/Package";
 
 // & Interfaces
 interface PackageJson {
@@ -14,6 +15,7 @@ interface PackageJson {
     devDependencies?: Record<string, unknown>;
     dependencies?: Record<string, unknown>;
 }
+
 interface Scripts {
     test?: string;
     mocha?: string;
@@ -22,22 +24,6 @@ interface Scripts {
     compile?: string;
 }
 
-// ? Helper Functions
-/**
- * readFile
- * @param name string
- * @returns JSON
- */
-function readFile(name: string): PackageJson {
-    const data: Buffer = fs.readFileSync(name);
-    return JSON.parse(data.toString('utf-8'));
-}
-
-/**
- * getUserInput
- * @param name string
- * @returns string
- */
 async function getUserInput(property: string): Promise<string> {
     return new Promise((resolve) => {
         const terminal: readline.Interface = readline.createInterface({
@@ -57,10 +43,6 @@ export function createJSONDataFile(obj: any) {
 
 }
 
-/**
- * updateScripts
- * @returns void
- */
 async function updateScripts(): Promise<void> {
 
     async function updatePackageJSON() {
@@ -89,37 +71,16 @@ async function updateScripts(): Promise<void> {
 
 }
 
-/**
- * createNewModule
- * @returns Promise<void>
- */
- async function createNewModule(): Promise<void> {
+async function createNewModule(): Promise<void> {
 
-    // ~ Get user input
     const packageName: string = await getUserInput("Package Name: ");
     const packageDescription: string = await getUserInput("Package Description: ");
 
-    // ~ Check if package Already Exists
-
-    // if(fs.existsSync(`../${packageName}`)) {
-    //     console.log("Package Already Exists: " + packageName);
-    //     process.exit(1);
-    //     return;
-    // }
-
-    // ~ Extract file contents
-    const packageJsonFile: PackageJson = readFile('package.json');
-
-    // ~ Apply User Input to Package.json
-    packageJsonFile.name = packageName;
-    packageJsonFile.description = packageDescription;
-
-    // ~ Create Directory & Copy Over files
-    await fs.promises.mkdir(`../${packageName}`);
     await fs.promises.mkdir(`../${packageName}/src`);
-    await fs.promises.writeFile(`../${packageName}/package.json`, JSON.stringify(packageJsonFile, null, 2));
-    await fs.promises.copyFile('./tsconfig.json', `../${packageName}/tsconfig.json`);
-    await fs.promises.copyFile('./.eslintrc.json', `../${packageName}/.eslintrc.json`);
+
+    await fs.promises.writeFile('package.json', JSON.stringify(Package.createV0(packageName, packageDescription), null, '  '));
+    await fs.promises.writeFile('.eslintrc.json', createJSONDataFile(ESLint.createV0()));
+    await fs.promises.writeFile('tsconfig.json', createJSONDataFile(TSConfig.createV0()));
 
 
     // ~ Return Success Message
@@ -127,7 +88,6 @@ async function updateScripts(): Promise<void> {
 
 }
 
-// ! Workflow
 async function workFlow(): Promise<void> {
 
     // ~ Extract Cli Flags

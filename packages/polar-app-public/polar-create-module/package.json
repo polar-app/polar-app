@@ -7,7 +7,12 @@
     "mocha": "mocha --timeout 20000 --exit **/**/*Test.js",
     "eslint": "eslint -c ./.eslintrc.json .",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix",
-    "compile": "tsc"
+    "compile": "tsc",
+    "build": "echo '#!/usr/bin/env node' > ./bin/polar-create-module && cat src/CreateModule.js >> ./bin/polar-create-module",
+    "publish": "yarn run build"
+  },
+  "bin": {
+    "polar-create-module": "./src/CreateModule.js"
   },
   "author": "Polar",
   "license": "ISC"
