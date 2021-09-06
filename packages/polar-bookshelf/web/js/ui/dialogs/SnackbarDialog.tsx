@@ -3,6 +3,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
 import {CloseIcon} from "../icons/FixedWidthIcons";
 import {deepMemo} from "../../react/ReactUtils";
+import { useHistory, useLocation } from "react-router-dom";
 
 export interface SnackbarDialogProps {
     readonly type?: 'info' | 'success' | 'warning' | 'error';
@@ -15,15 +16,34 @@ export interface SnackbarDialogProps {
     readonly action?: React.ReactNode;
 
 }
+export interface SnackbarDialogPropsWithID extends SnackbarDialogProps {
+    readonly id: string;
+}
 
-export const SnackbarDialog = deepMemo(function SnackbarDialog(props: SnackbarDialogProps) {
+export const SnackbarDialog = deepMemo(function SnackbarDialog(props: SnackbarDialogPropsWithID) {
     const [open, setOpen] = React.useState(true);
 
+    const location = useLocation();
+    const history = useHistory();
+
+    React.useEffect(() => {
+        history.push({hash: `#prompt-${props.id}`});
+    }, [history, props.id])
+
+    React.useEffect(() => {
+
+        setOpen(location.hash === `#prompt-${props.id}`);
+
+    }, [history, location, props.id, open]);
+    
     const handleClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
 
         if (reason === 'clickaway') {
             return;
         }
+        
+        // this happens on Escape and clickaway...
+        history.replace({hash: ''});
 
         setOpen(false);
     };

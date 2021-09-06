@@ -11,6 +11,7 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import {InputCompleteListener} from "../../mui/complete_listeners/InputCompleteListener";
 import {WithDeactivatedKeyboardShortcuts} from "../../keyboard_shortcuts/WithDeactivatedKeyboardShortcuts";
 import {MUIDialog} from "./MUIDialog";
+import { useHistory, useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -35,23 +36,42 @@ export interface AutocompleteDialogProps<T> extends MUICreatableAutocompleteProp
     readonly onDone: (values: ReadonlyArray<T>) => void;
 
 }
+export interface AutocompleteDialogPropsWithID<T> extends AutocompleteDialogProps<T>{
+    readonly id: string;
+}
 
 interface IState {
     readonly open: boolean;
     readonly validationError?: string;
 }
 
-export function AutocompleteDialog<T>(props: AutocompleteDialogProps<T>) {
+export function AutocompleteDialog<T>(props: AutocompleteDialogPropsWithID<T>) {
 
     const classes = useStyles();
+    const location = useLocation();
+    const history = useHistory();
 
     const [state, setState] = React.useState<IState>({
         open: true
     });
 
+    React.useEffect(() => {
+        history.push({hash: `#prompt-${props.id}`});
+    }, [history, props.id])
+
+    React.useEffect(() => {
+
+        const open = location.hash === `#prompt-${props.id}`;
+        setState({open});
+
+    }, [history, location, props.id, state.open]);
+
     const activeRef = React.useRef(false);
 
     const closeDialog = () => {
+        // this happens on Escape and clickaway...
+        history.replace({hash: ''});
+        
         setState({open: false});
     };
 

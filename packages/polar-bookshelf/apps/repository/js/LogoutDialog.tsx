@@ -24,7 +24,7 @@ export const LogoutDialog = () => {
     console.log("Asking user if they want to logout");
 
     return (
-        <ConfirmDialog type='danger'
+        <ConfirmDialog type='danger' id={'#logout'}
                        title="Are you sure you want to logout?"
                        subtitle="Just wanted to double check. Are you sure you want to logout?"
                        onCancel={handleClose}

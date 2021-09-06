@@ -13,6 +13,7 @@ import {MUIDialog} from "./MUIDialog";
 import {deepMemo} from "../../react/ReactUtils";
 import { ClassNameMap } from '@material-ui/styles';
 import { DialogClassKey } from '@material-ui/core';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -93,20 +94,39 @@ export interface ConfirmDialogProps {
     readonly inputCompletionType?: InputCompletionType;
 
 }
+export interface ConfirmDialogPropsWithID extends ConfirmDialogProps{
+    readonly id: string;
+}
 
-export const ConfirmDialog = deepMemo(function ConfirmDialog(props: ConfirmDialogProps) {
+export const ConfirmDialog = deepMemo(function ConfirmDialog(props: ConfirmDialogPropsWithID) {
 
     const [open, setOpen] = React.useState(true);
 
     const classes = useStyles();
 
+    const location = useLocation();
+    const history = useHistory();
+
     const onCancel = props.onCancel || NULL_FUNCTION;
+
+    React.useEffect(() => {
+        history.push({hash: `#prompt-${props.id}`});
+    }, [history, props.id])
+
+    React.useEffect(() => {
+
+        setOpen(location.hash === `#prompt-${props.id}`);
+
+    }, [history, location, props.id, open]);
 
     const handleClose = React.useCallback((event: any, reason: 'backdropClick' | 'escapeKeyDown' | undefined) => {
 
         if (reason !== undefined) {
             onCancel();
         }
+
+        // this happens on Escape and clickaway...
+        history.replace({hash: ''});
 
         setOpen(false);
     }, [onCancel]);

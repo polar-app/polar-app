@@ -118,7 +118,7 @@ const DialogHost = (props: DialogHostProps) => {
         }
 
         const confirm = (confirmDialogProps: ConfirmDialogProps) => {
-            registerDialogElement(<ConfirmDialog key={createKey()}
+            registerDialogElement(<ConfirmDialog key={createKey()} id={`${iter}`}
                                                  {...confirmDialogProps}/>);
             doIncr();
         };
@@ -126,6 +126,7 @@ const DialogHost = (props: DialogHostProps) => {
         const dialog = (confirmDialogProps: IDialogProps) => {
             registerDialogElement(<ConfirmDialog key={createKey()}
                                                  subtitle={confirmDialogProps.body}
+                                                 id={`${iter}`}
                                                  {...confirmDialogProps}/>);
             doIncr();
         };
@@ -138,13 +139,13 @@ const DialogHost = (props: DialogHostProps) => {
         };
 
         const autocomplete = function<T>(autocompleteProps: AutocompleteDialogProps<T>) {
-            registerDialogElement(<AutocompleteDialog key={createKey()}
+            registerDialogElement(<AutocompleteDialog key={createKey()} id={`${iter}`}
                                                       {...autocompleteProps}/>);
             doIncr();
         };
 
         const snackbar = function(snackbarProps: SnackbarDialogProps) {
-            registerDialogElement(<SnackbarDialog key={createKey()}
+            registerDialogElement(<SnackbarDialog key={createKey()} id={`${iter}`}
                                                   {...snackbarProps}/>);
             doIncr();
         };
