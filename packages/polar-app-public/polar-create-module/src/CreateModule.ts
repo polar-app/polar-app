@@ -79,9 +79,9 @@ async function createNewModule(): Promise<void> {
     await fs.promises.mkdir(`../${packageName}/src`);
 
     await fs.promises.writeFile('package.json', JSON.stringify(Package.createV0(packageName, packageDescription), null, '  '));
-    await fs.promises.writeFile('.eslintrc.json', createJSONDataFile(ESLint.createV0()));
-    await fs.promises.writeFile('tsconfig.json', createJSONDataFile(TSConfig.createV0()));
 
+    // now we have to upgrade it so that the logic is shared
+    await updateScripts();
 
     // ~ Return Success Message
     console.log("Package Created Successfully");
