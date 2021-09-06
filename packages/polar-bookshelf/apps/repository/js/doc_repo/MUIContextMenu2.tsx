@@ -303,25 +303,23 @@ export const useContextMenuHook = (handleClose: () => void) => {
 
     const history = useHistory();
 
-    const handleCloseWithReplace = React.useCallback(() => {
-        handleClose();
-        history.replace('/');
-    }, [history, handleClose])
-    
     React.useEffect(()=>{
         history.push({hash:`#prompt-${Date.now()}`})
     },[]);
     React.useEffect(()=>{
-        window.addEventListener("popstate", handleCloseWithReplace);        
+        window.addEventListener("popstate", handleClose);        
         return () => {
-            window.removeEventListener("popstate", handleCloseWithReplace);
+            window.removeEventListener("popstate", handleClose);
         };
-    },[handleCloseWithReplace]);
+    },[handleClose]);
 }
 
 export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContextMenuProps) {
 
+    const history = useHistory();
+
     const handleClose = React.useCallback(() => {
+        history.replace('/');
         props.handleClose();
     }, [props])
 
