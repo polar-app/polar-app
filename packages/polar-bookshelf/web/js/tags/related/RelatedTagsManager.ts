@@ -1,9 +1,6 @@
 import {Dictionaries} from "polar-shared/src/util/Dictionaries";
 import {Arrays} from "polar-shared/src/util/Arrays";
-import {
-    RelatedOptionsCalculator,
-    ValueAutocompleteOption
-} from "../../mui/autocomplete/MUICreatableAutocomplete";
+import {RelatedOptionsCalculator, ValueAutocompleteOption} from "../../mui/autocomplete/MUICreatableAutocomplete";
 import {Tag, Tags} from "polar-shared/src/tags/Tags";
 import {LocalRelatedTagsStore} from "./LocalRelatedTagsStore";
 import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
@@ -173,7 +170,7 @@ export class RelatedTagsManager {
             .sort((hit0, hit1) => hit1.hits - hit0.hits);
 
 
-        return Arrays.head(tagHitsDesc, limit);
+        return [...Arrays.head(tagHitsDesc, limit)];
 
     }
 
