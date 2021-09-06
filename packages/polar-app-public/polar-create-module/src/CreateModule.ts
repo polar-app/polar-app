@@ -78,6 +78,9 @@ async function updateScripts(): Promise<void> {
     'tsconfig.json',
     createJSONDataFile(TSConfig.createV0())
   );
+  if (fs.existsSync('tslint.yaml')) {
+    await fs.promises.rm('tslint.yaml');
+  }
 }
 
 async function createNewModule(): Promise<void> {
