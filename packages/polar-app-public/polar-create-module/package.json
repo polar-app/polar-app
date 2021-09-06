@@ -12,7 +12,7 @@
     "publish": "yarn run build"
   },
   "bin": {
-    "polar-create-module": "./src/CreateModule.js"
+    "polar-create-module": "./bin/polar-create-module"
   },
   "author": "Polar",
   "license": "ISC"
