@@ -1,13 +1,9 @@
 {
   "name": "polar-bookshelf-secrets",
-  "version": "2.1.103",
+  "version": "2.1.107",
   "description": "",
   "main": "index.js",
   "private": true,
-  "scripts": {
-    "compile": "echo nothing to compile",
-    "dist": "echo noop"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/burtonator/polar-bookshelf-secrets.git"

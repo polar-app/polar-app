@@ -1,7 +1,6 @@
 import {ESRequests} from "./ESRequests";
-import {ESShingleWriter} from "./ESShingleWriter";
 import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
-import IAnswerDigestRecord = ESShingleWriter.IAnswerDigestRecord;
+import {IAnswerDigestRecord} from "polar-answers-api/src/IAnswerDigestRecord";
 
 describe("ESRequests", async function() {
 

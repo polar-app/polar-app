@@ -1,16 +1,13 @@
-import {IDStr, URLStr, UserIDStr} from "polar-shared/src/util/Strings";
+import {UserIDStr} from "polar-shared/src/util/Strings";
 import {PDFText} from "polar-pdf/src/pdf/PDFText";
 import {SentenceShingler} from "./SentenceShingler";
 import {ESShingleWriter} from "./ESShingleWriter";
-import {PageNumber} from "polar-shared/src/metadata/IPageMeta";
+import {IAnswerIndexerRequest} from "polar-answers-api/src/IAnswerIndexerRequest";
 
 export namespace AnswerIndexer {
 
-    export interface IndexOpts {
-        readonly docID: IDStr;
-        readonly url: URLStr;
+    export interface IndexOpts extends IAnswerIndexerRequest {
         readonly uid: UserIDStr;
-        readonly skipPages?: ReadonlyArray<PageNumber>;
     }
 
     export async function doIndex(opts: IndexOpts) {

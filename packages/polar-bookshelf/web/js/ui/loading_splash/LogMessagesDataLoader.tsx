@@ -27,7 +27,7 @@ export class LogMessagesDataLoader extends React.Component<IProps, IState> {
                     msg: event.msg
                 });
 
-                buffer = Arrays.head(buffer, 3);
+                buffer = [...Arrays.head(buffer, 3)];
 
                 const logData: LogData = {
                     messages: [...buffer]

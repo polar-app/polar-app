@@ -1,16 +1,18 @@
 {
     "compilerOptions": {
 
+        "declaration": true,
         "strict": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
         "noImplicitThis": false,
         "alwaysStrict": true,
-        "listEmittedFiles": true,
+        "listEmittedFiles": false,
         "noImplicitReturns": true,
         "removeComments": true,
         "strictFunctionTypes": true,
-        "sourceMap": true,
+        "inlineSourceMap": true,
+        "inlineSources": true,
         "target": "ES2015",
         "module": "commonjs",
         "moduleResolution": "node",
@@ -37,9 +39,8 @@
 
     },
     "include": [
-        "index.ts"
+        "src/**/*"
     ],
     "exclude": [
-
     ]
 }

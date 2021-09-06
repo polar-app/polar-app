@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import Readability from "readability";
 
-describe('Readability', function() {
+xdescribe('Readability', function() {
 
     it("basic", function() {
 
