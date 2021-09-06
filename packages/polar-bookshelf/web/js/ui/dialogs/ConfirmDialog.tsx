@@ -129,7 +129,7 @@ export const ConfirmDialog = deepMemo(function ConfirmDialog(props: ConfirmDialo
         history.replace({hash: ''});
 
         setOpen(false);
-    }, [onCancel]);
+    }, [onCancel, history]);
 
     const handleCancel = React.useCallback(() => {
         setOpen(false);

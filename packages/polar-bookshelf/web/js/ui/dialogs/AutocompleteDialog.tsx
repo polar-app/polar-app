@@ -68,12 +68,12 @@ export function AutocompleteDialog<T>(props: AutocompleteDialogPropsWithID<T>) {
 
     const activeRef = React.useRef(false);
 
-    const closeDialog = () => {
+    const closeDialog =  React.useCallback(() => {
         // this happens on Escape and clickaway...
         history.replace({hash: ''});
         
         setState({open: false});
-    };
+    },[history]);
 
     const handleCancel = () => {
         props.onCancel();

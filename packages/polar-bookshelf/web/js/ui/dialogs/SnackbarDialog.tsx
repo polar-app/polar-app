@@ -36,7 +36,7 @@ export const SnackbarDialog = deepMemo(function SnackbarDialog(props: SnackbarDi
 
     }, [history, location, props.id, open]);
     
-    const handleClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
+    const handleClose =  React.useCallback((event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
 
         if (reason === 'clickaway') {
             return;
@@ -46,7 +46,7 @@ export const SnackbarDialog = deepMemo(function SnackbarDialog(props: SnackbarDi
         history.replace({hash: ''});
 
         setOpen(false);
-    };
+    },[history]);
 
     const Action = () => (
         <IconButton size="small" aria-label="close" color="inherit"
