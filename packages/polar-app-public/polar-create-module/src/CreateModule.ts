@@ -34,7 +34,7 @@ async function getUserInput(property: string): Promise<string> {
   });
 }
 
-export function createJSONDataFile(obj: any) {
+export function createJSONDataFile(obj: Record<string, unknown>) {
   return (
     `// THIS FILE IS AUTO-GENERATED, DO NOT EDIT\n` +
     JSON.stringify(obj, null, 2)
