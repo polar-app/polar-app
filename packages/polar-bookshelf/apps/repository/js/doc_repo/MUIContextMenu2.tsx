@@ -305,7 +305,7 @@ export const useContextMenuHook = (handleClose: () => void) => {
 
     const handleCloseWithReplace = React.useCallback((event) => {
         if(event.keyCode === 27 || event.type=='popstate' ) {
-            history.replace('');
+            history.goBack();
             handleClose();
         }
     }, [history, handleClose]);
@@ -315,12 +315,9 @@ export const useContextMenuHook = (handleClose: () => void) => {
     },[history]);
     React.useEffect(()=>{
         document.addEventListener("keydown", handleCloseWithReplace);
-        // document.addEventListener("keyup", handleCloseWithReplace);
         window.addEventListener("popstate", handleCloseWithReplace);        
         return () => {
             window.removeEventListener("popstate", handleCloseWithReplace);
-            // document.removeEventListener("keydown", handleCloseWithReplace);
-            // document.removeEventListener("keyup", handleCloseWithReplace);
         };
     },[handleCloseWithReplace]);
 }
