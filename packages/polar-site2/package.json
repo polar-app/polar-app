@@ -17,12 +17,7 @@
     "serve": "gatsby serve --port=8000",
     "clean": "gatsby clean && find src/pages/images -name '*.jsx' -exec rm '{}' ';'",
     "get-release": "curl -s https://api.github.com/repos/burtonator/polar-bookshelf/releases/latest |jq -r .name | xargs printf \"export const POLAR_RELEASE = '%s';\n\" > src/components/release.ts",
-    "prebuild": "yarn run get-release",
-    "test": "if [ -z $(find src -name '**Test.js') ]; then echo 'No tests'; else yarn run mocha; fi;",
-    "mocha": "mocha --timeout 20000 --exit **/**/*Test.js",
-    "eslint": "eslint -c ./.eslintrc.json .",
-    "eslintfix": "eslint -c ./.eslintrc.json . --fix",
-    "compile": "tsc"
+    "prebuild": "yarn run get-release"
   },
   "dependencies": {
     "@material-ui/core": "=4.11.3",
