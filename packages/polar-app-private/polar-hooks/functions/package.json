@@ -14,7 +14,7 @@
     "compile": "tsc",
     "compile:watch": "npx tsc --watch",
     "dist": "yarn run compile",
-    "mocha": "mocha --timeout 20000 --exit **/**/*Test.js",
+    "mocha": "mocha --timeout 20000 --exit './{,!(node_modules)/**}/*Test.js'",
     "eslint": "eslint -c ./.eslintrc.json .",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix"
   },

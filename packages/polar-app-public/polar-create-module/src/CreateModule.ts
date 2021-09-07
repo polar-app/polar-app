@@ -83,7 +83,7 @@ async function updateScripts(): Promise<void> {
 
         if (conf.typescript !== 'disabled') {
 
-            pkg.scripts.mocha = "mocha --timeout 20000 --exit **/**/*Test.js"
+            pkg.scripts.mocha = "mocha --timeout 20000 --exit './{,!(node_modules)/**}/*Test.js'"
             pkg.scripts.eslint = "eslint -c ./.eslintrc.json .";
             pkg.scripts.eslintfix = "eslint -c ./.eslintrc.json . --fix";
             pkg.scripts.test = "if [ -z \"$(find src -name '**Test.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;";

@@ -29,7 +29,7 @@
     "serve": "node scripts/serve.js",
     "karma": "../../node_modules/karma/bin/karma start",
     "karma:dev": "../../node_modules/karma/bin/karma start --browsers Chrome --singleRun false",
-    "mocha": "mocha --timeout 20000 --exit **/**/*Test.js",
+    "mocha": "mocha --timeout 20000 --exit './{,!(node_modules)/**}/*Test.js'",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix"
   },
   "repository": "https://github.com/burtonator/polar-bookshelf",

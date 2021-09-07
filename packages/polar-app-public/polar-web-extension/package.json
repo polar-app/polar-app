@@ -9,7 +9,7 @@
     "compile": "tsc",
     "webpack": "npx webpack --config=webpack.config.js",
     "dist": "unset NODE_ENV && unset WEBPACK_TARGET && yarn run clean && yarn run webpack && ./dist.sh",
-    "mocha": "mocha --timeout 20000 --exit **/**/*Test.js",
+    "mocha": "mocha --timeout 20000 --exit './{,!(node_modules)/**}/*Test.js'",
     "eslint": "eslint -c ./.eslintrc.json .",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix"
   },

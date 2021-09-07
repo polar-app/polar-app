@@ -11,7 +11,7 @@
     "dist-win": "npx webpack && ./build/dist-win.sh",
     "verify-electron-version": "./scripts/verify-electron-version",
     "test": "if [ -z \"$(find src -name '**Test.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;",
-    "mocha": "mocha --timeout 20000 --exit **/**/*Test.js",
+    "mocha": "mocha --timeout 20000 --exit './{,!(node_modules)/**}/*Test.js'",
     "eslint": "eslint -c ./.eslintrc.json .",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix",
     "compile": "tsc"
