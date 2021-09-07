@@ -1,6 +1,7 @@
+// THIS FILE IS AUTO-GENERATED, DO NOT EDIT
 {
   "compilerOptions": {
-
+    "incremental": true,
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -10,9 +11,10 @@
     "noImplicitReturns": true,
     "removeComments": true,
     "strictFunctionTypes": true,
-    "sourceMap": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
     "target": "ES2015",
-    "module": "ES2015",
+    "module": "commonjs",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -26,14 +28,31 @@
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
+    "lib": [
+      "es2019",
+      "es2020.string",
+      "dom"
+    ],
     "paths": {
-      "*": ["node_modules/*"]
+      "*": [
+        "node_modules/*"
+      ]
     },
-    "lib": ["es2019", "dom"]
+    "skipLibCheck": true
   },
+  "types": [
+    "mocha",
+    "reflect-metadata"
+  ],
   "include": [
-    "src/**/*"
+    "**/*.ts",
+    "**/*.tsx"
   ],
   "exclude": [
+    "node_modules/**",
+    "dist",
+    "*.d.ts",
+    "*.js",
+    "cdk.out"
   ]
 }

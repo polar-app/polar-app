@@ -5,3 +5,5 @@ lerna-debug.log
 
 # Ignore IntelliJ related configuration
 *.iml
+
+tsconfig.tsbuildinfo

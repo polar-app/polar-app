@@ -43,7 +43,7 @@ describe('Universities', function() {
                 .filter(current => current.length > 1)
                 .collect();
 
-        console.log(JSON.stringify(dupes, null, '  '));
+        // console.log(JSON.stringify(dupes, null, '  '));
         assert.equal(dupes.length, 0);
 
     });
@@ -72,7 +72,7 @@ describe('Universities', function() {
             const tuple = Universities.toTuple(university);
             const tupleWithDomain = [...tuple];
             const json = JSON.stringify(tupleWithDomain);
-            console.log(`${json},`);
+            // console.log(`${json},`);
         }
 
     });

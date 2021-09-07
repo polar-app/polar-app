@@ -14,5 +14,7 @@
   "bugs": {
     "url": "https://github.com/burtonator/polar-bookshelf-secrets/issues"
   },
-  "homepage": "https://github.com/burtonator/polar-bookshelf-secrets#readme"
+  "homepage": "https://github.com/burtonator/polar-bookshelf-secrets#readme",
+  "scripts": {},
+  "devDependencies": {}
 }
