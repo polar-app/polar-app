@@ -1,6 +1,6 @@
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {FirebaseTestingUsers} from "polar-firebase-test/src/firebase/FirebaseTestingUsers";
-import {canonicalizeUpdated, getUserIDByEmail} from "./BlockPermissionsTest";
+import {canonicalizeUpdated, getUserIDByEmail} from "./BlockPermissionsTestK";
 import {NSpaces} from "./NSpaces";
 import {NSpaceCollection} from "polar-firebase/src/firebase/om/NSpaceCollection";
 import {BlockPermissionCollection} from "polar-firebase/src/firebase/om/BlockPermissionCollection";
