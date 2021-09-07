@@ -83,8 +83,8 @@ async function updateScripts(): Promise<void> {
             pkg.scripts.mocha = "mocha --timeout 20000 --exit './{,!(node_modules)/**}/*Test.js'"
             pkg.scripts.eslint = "eslint -c ./.eslintrc.json .";
             pkg.scripts.eslintfix = "eslint -c ./.eslintrc.json . --fix";
-            pkg.scripts.test = "RESULT=$(find . -name '**Test.js' -not -path 'node_modules/*') && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;";
-            pkg.scripts.compile = "RESULT=$(find -name '*.ts' -not -path './node_modules/*' -not -name '*.d.ts*') && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;";
+            pkg.scripts.test = "RESULT=\"$(find . -name '**Test.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;";
+            pkg.scripts.compile = "RESULT=\"$(find -name '*.ts' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;";
             pkg.scripts.tsc = 'tsc';
 
             pkg.devDependencies['polar-eslint'] = `^${pkg.version}`;
