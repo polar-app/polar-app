@@ -4,7 +4,7 @@
   "description": "Provides an API for searching 3rd party APIs",
   "main": "index.js",
   "scripts": {
-    "test": "if [ -z $(find src -name '**Test.js') ]; then echo 'No tests'; else yarn run mocha; fi;",
+    "test": "if [ -z \"$(find src -name '**Test.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;",
     "compile": "tsc",
     "mocha": "mocha --timeout 20000 --exit **/**/*Test.js",
     "eslint": "eslint -c ./.eslintrc.json .",

@@ -86,7 +86,7 @@ async function updateScripts(): Promise<void> {
             pkg.scripts.mocha = "mocha --timeout 20000 --exit **/**/*Test.js"
             pkg.scripts.eslint = "eslint -c ./.eslintrc.json .";
             pkg.scripts.eslintfix = "eslint -c ./.eslintrc.json . --fix";
-            pkg.scripts.test = "if [ -z $(find src -name '**Test.js') ]; then echo 'No tests'; else yarn run mocha; fi;";
+            pkg.scripts.test = "if [ -z \"$(find src -name '**Test.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;";
             pkg.scripts.compile = "tsc";
 
             pkg.devDependencies['polar-eslint'] = `^${pkg.version}`;

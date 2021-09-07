@@ -4,7 +4,7 @@
   "description": "Provides support for parsing and working with markdown",
   "main": "index.js",
   "scripts": {
-    "test": "if [ -z $(find src -name '**Test.js') ]; then echo 'No tests'; else yarn run mocha; fi;",
+    "test": "if [ -z \"$(find src -name '**Test.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;",
     "_compile": "yarn run tsc && yarn run generate-release-metadata",
     "compile": "tsc",
     "_build": "node src/ReleaseMetadataGenerator.js ../../polar-site/_posts/",

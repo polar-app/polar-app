@@ -4,7 +4,7 @@
   "description": "Basic code to dump the browser DOM to a JSON object that we can use within Polar",
   "main": "index.js",
   "scripts": {
-    "test": "if [ -z $(find src -name '**Test.js') ]; then echo 'No tests'; else yarn run mocha; fi;",
+    "test": "if [ -z \"$(find src -name '**Test.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;",
     "compile": "tsc",
     "mocha": "mocha --timeout 20000 --exit **/**/*Test.js",
     "eslint": "eslint -c ./.eslintrc.json .",

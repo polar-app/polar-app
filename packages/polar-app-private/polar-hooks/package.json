@@ -17,7 +17,7 @@
     "dist-release": "yarn run dist-release-init && yarn run dist-release-main-webapp",
     "compile": "tsc",
     "dist": "echo noop",
-    "test": "if [ -z $(find src -name '**Test.js') ]; then echo 'No tests'; else yarn run mocha; fi;",
+    "test": "if [ -z \"$(find src -name '**Test.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;",
     "mocha": "mocha --timeout 20000 --exit **/**/*Test.js",
     "eslint": "eslint -c ./.eslintrc.json .",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix"
