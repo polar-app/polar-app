@@ -1,5 +1,6 @@
 import fs from 'fs';
 import * as readline from 'readline';
+import {Files} from "polar-shared/src/util/Files";
 
 // & Interfaces
 interface IPackageManifest {
@@ -21,6 +22,12 @@ interface Scripts {
     compile?: string;
 }
 
+interface ICreateModuleConfig {
+
+    readonly typescript?: 'disabled';
+
+}
+
 async function getUserInput(property: string): Promise<string> {
     return new Promise((resolve) => {
         const terminal: readline.Interface = readline.createInterface({
@@ -40,9 +47,24 @@ export function createJSONDataFile(obj: any) {
 
 }
 
+export async function readCreateModuleConfig(): Promise<ICreateModuleConfig> {
+
+    const path = ".polar-create-module.json";
+
+    if (await Files.existsAsync(path)) {
+        const buff = await Files.readFileAsync(path)
+        return JSON.parse(buff.toString('utf-8'));
+    }
+
+    return {};
+
+}
+
 async function updateScripts(): Promise<void> {
 
     async function updatePackageJSON() {
+
+        const conf = await readCreateModuleConfig();
 
         // ~ Read and parse Package.json
         const data = await fs.promises.readFile('package.json');
@@ -54,11 +76,20 @@ async function updateScripts(): Promise<void> {
         }
 
         // ~ Update Scripts
-        content.scripts.test = "if [ -z $(find src -name '**Test.js') ]; then echo 'No tests'; else yarn run mocha; fi;";
-        content.scripts.mocha = "mocha --timeout 20000 --exit **/**/*Test.js"
-        content.scripts.eslint = "eslint -c ./.eslintrc.json .";
-        content.scripts.eslintfix = "eslint -c ./.eslintrc.json . --fix";
-        content.scripts.compile = "tsc";
+
+        if (conf.typescript !== 'disabled') {
+            content.scripts.mocha = "mocha --timeout 20000 --exit **/**/*Test.js"
+            content.scripts.eslint = "eslint -c ./.eslintrc.json .";
+            content.scripts.eslintfix = "eslint -c ./.eslintrc.json . --fix";
+            content.scripts.test = "if [ -z $(find src -name '**Test.js') ]; then echo 'No tests'; else yarn run mocha; fi;";
+            content.scripts.compile = "tsc";
+        } else {
+            delete content.scripts.test;
+            delete content.scripts.test;
+            delete content.scripts.test;
+            delete content.scripts.test;
+            delete content.scripts.compile;
+        }
 
         // ~ Update Package.Json File
         await fs.promises.writeFile('package.json', JSON.stringify(content, null, 2));

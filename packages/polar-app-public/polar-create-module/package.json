@@ -14,6 +14,9 @@
   "bin": {
     "polar-create-module": "./bin/polar-create-module"
   },
+  "dependencies": {
+    "polar-shared": "^2.1.107"
+  },
   "author": "Polar",
   "license": "ISC"
 }
