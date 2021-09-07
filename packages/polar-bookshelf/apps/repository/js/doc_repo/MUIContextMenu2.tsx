@@ -303,18 +303,24 @@ export const useContextMenuHook = (handleClose: () => void) => {
 
     const history = useHistory();
 
-    const handleCloseWithReplace = React.useCallback(() => {
-        handleClose();
-        history.replace('/');
-    }, [history, handleClose])
+    const handleCloseWithReplace = React.useCallback((event) => {
+        if(event.keyCode === 27 || event.type=='popstate' ) {
+            history.replace('');
+            handleClose();
+        }
+    }, [history, handleClose]);
     
     React.useEffect(()=>{
         history.push({hash:`#prompt-${Date.now()}`})
     },[]);
     React.useEffect(()=>{
+        document.addEventListener("keydown", handleCloseWithReplace);
+        // document.addEventListener("keyup", handleCloseWithReplace);
         window.addEventListener("popstate", handleCloseWithReplace);        
         return () => {
             window.removeEventListener("popstate", handleCloseWithReplace);
+            // document.removeEventListener("keydown", handleCloseWithReplace);
+            // document.removeEventListener("keyup", handleCloseWithReplace);
         };
     },[handleCloseWithReplace]);
 }
