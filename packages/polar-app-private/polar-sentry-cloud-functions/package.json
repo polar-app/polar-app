@@ -4,10 +4,8 @@
   "description": "Wrapper code for wrapping cloud functions witih sentry.",
   "main": "index.js",
   "scripts": {
-    "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "test": "echo noop",
-    "compile": "tsc",
-    "dist": "echo noop"
+    "compile": "tsc"
   },
   "keywords": [],
   "author": "",

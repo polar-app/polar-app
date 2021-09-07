@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
-    "compile": "tsc",
-    "dist": "echo noop"
+    "compile": "tsc"
   },
   "keywords": [],
   "author": "",

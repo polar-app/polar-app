@@ -4,7 +4,6 @@
   "description": "Blocks infra and main interfaces that can be used on the frontend and backend.",
   "main": "index.js",
   "scripts": {
-    "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "test": "echo noop",
     "compile": "tsc"
   },

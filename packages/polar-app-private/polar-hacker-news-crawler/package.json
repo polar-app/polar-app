@@ -6,8 +6,7 @@
   "private": true,
   "scripts": {
     "test": "echo noop",
-    "compile": "tsc",
-    "dist": "echo noop"
+    "compile": "tsc"
   },
   "keywords": [],
   "author": "",

@@ -3,7 +3,6 @@
   "version": "2.1.107",
   "description": "https://github.com/yeoman/generator-chrome-extension",
   "scripts": {
-    "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "test": "echo no tests",
     "clean": "rm -rf .webpack-cache-loader && rm -rf .terser-webpack-plugin && rm -rf dist && rm -rf polar-web-extension.zip",
     "compile": "tsc",

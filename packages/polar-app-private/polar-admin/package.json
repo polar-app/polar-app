@@ -6,8 +6,7 @@
   "private": true,
   "scripts": {
     "test": "echo no tests",
-    "compile": "npx tsc",
-    "dist": "echo noop"
+    "compile": "npx tsc"
   },
   "author": "",
   "license": "ISC",

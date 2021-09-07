@@ -4,7 +4,6 @@
   "description": "Testing code for Firebase shared across multiple modules",
   "main": "index.js",
   "scripts": {
-    "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "compile": "tsc"
   },
   "keywords": [],

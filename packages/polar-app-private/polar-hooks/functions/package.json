@@ -8,8 +8,6 @@
     "node": "14"
   },
   "scripts": {
-    "tslint": "tslint --project tsconfig.json --config tslint.yaml",
-    "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "test": "echo no tests",
     "compile": "npx tsc",
     "compile:watch": "npx tsc --watch",

@@ -4,10 +4,8 @@
   "description": "Loads up doc preview URLs into be queued for processing",
   "main": "index.js",
   "scripts": {
-    "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "test": "echo noop",
-    "compile": "tsc",
-    "dist": "echo noop"
+    "compile": "tsc"
   },
   "keywords": [],
   "author": "",

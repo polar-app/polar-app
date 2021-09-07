@@ -15,8 +15,7 @@
     "dist-release-main-webapp": "echo Pushing to target ${FIREBASE_HOSTING_TARGET} && firebase use polar-32b0f && firebase target:clear hosting app.getpolarized.io && firebase target:apply hosting app.getpolarized.io ${FIREBASE_HOSTING_TARGET} && firebase deploy --only hosting,storage,firestore && yarn rur firebase-deploy-functions",
     "dist-release-init": "(cd functions && yarn install)",
     "dist-release": "yarn run dist-release-init && yarn run dist-release-main-webapp",
-    "compile": "echo nothing to compile",
-    "dist": "echo noop"
+    "compile": "echo nothing to compile"
   },
   "dependencies": {
     "@types/escape-html": "0.0.20",
