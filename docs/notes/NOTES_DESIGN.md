@@ -1,5 +1,19 @@
+### [Go Home](./NOTES.md#table-of-contents)
 
-# Overview
+<div align="center">
+
+# Notes Design
+
+</div>
+
+
+## Table of Contents
+1. [Overview](#overview)
+
+<br />
+<hr />
+
+### Overview
 
 The notes system uses is a hierarchical tree structure composed of pages which,
 when combined forms a [graph](https://en.wikipedia.org/wiki/Graph)
@@ -11,7 +25,7 @@ A page is a [tree](https://en.wikipedia.org/wiki/Tree_(graph_theory)) which
 means it has no cycles back to the root and all children are descendants of the
 parent.
 
-# Persistence and Concurrency
+### Persistence and Concurrency
 
 When we discuss concurrency here we're talking about the concurrency of multi-person edits.
 
@@ -53,7 +67,7 @@ The tradeoffs here involve:
   add this on top in the future if necessary using Firestore cloud push of events to the
   client showing which users are editing which notes.
   
-## LSeq
+### LSeq
 
 LSeq (or linear sequences) is used to maintain the 'items' structure.
 
@@ -161,6 +175,7 @@ Example of multiple users updating content:
 
 
 **User B**
+
 ```json
 {
     "content": {
