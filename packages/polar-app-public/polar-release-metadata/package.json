@@ -4,13 +4,16 @@
   "description": "Provides support for parsing and working with markdown",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
+    "test": "if [ -z $(find src -name '**Test.js') ]; then echo 'No tests'; else yarn run mocha; fi;",
     "_compile": "yarn run tsc && yarn run generate-release-metadata",
-    "compile": "yarn run tsc",
+    "compile": "tsc",
     "_build": "node src/ReleaseMetadataGenerator.js ../../polar-site/_posts/",
     "build": "echo noop",
     "tsc": "tsc",
-    "generate-release-metadata": "node src/ReleaseMetadataGenerator.js ../../polar-site/_posts/ > src/release-metadata.json"
+    "generate-release-metadata": "node src/ReleaseMetadataGenerator.js ../../polar-site/_posts/ > src/release-metadata.json",
+    "mocha": "mocha --timeout 20000 --exit **/**/*Test.js",
+    "eslint": "eslint -c ./.eslintrc.json .",
+    "eslintfix": "eslint -c ./.eslintrc.json . --fix"
   },
   "keywords": [],
   "author": "",

@@ -5,9 +5,12 @@
   "main": "index.js",
   "scripts": {
     "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
-    "test": "echo noop",
+    "test": "if [ -z $(find src -name '**Test.js') ]; then echo 'No tests'; else yarn run mocha; fi;",
     "compile": "tsc",
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js",
+    "mocha": "mocha --timeout 20000 --exit **/**/*Test.js",
+    "eslint": "eslint -c ./.eslintrc.json .",
+    "eslintfix": "eslint -c ./.eslintrc.json . --fix"
   },
   "keywords": [],
   "author": "",

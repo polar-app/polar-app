@@ -5,8 +5,12 @@
   "main": "index.js",
   "scripts": {
     "dist": "rm -rf public && mkdir -p public && cd ../../polar-bookshelf && yarn run build-webapp && cp -rp dist/public/* ../polar-app-private/polar-webapp-dist/public",
-    "compile": "echo nothing to compile",
-    "prepublishOnly": "yarn run dist"
+    "compile": "tsc",
+    "prepublishOnly": "yarn run dist",
+    "test": "if [ -z $(find src -name '**Test.js') ]; then echo 'No tests'; else yarn run mocha; fi;",
+    "mocha": "mocha --timeout 20000 --exit **/**/*Test.js",
+    "eslint": "eslint -c ./.eslintrc.json .",
+    "eslintfix": "eslint -c ./.eslintrc.json . --fix"
   },
   "keywords": [],
   "author": "",

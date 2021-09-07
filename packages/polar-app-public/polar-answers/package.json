@@ -3,9 +3,12 @@
   "version": "2.1.107",
   "description": "",
   "scripts": {
-    "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
+    "test": "if [ -z $(find src -name '**Test.js') ]; then echo 'No tests'; else yarn run mocha; fi;",
     "compile": "tsc",
-    "compile:watch": "tsc --watch"
+    "compile:watch": "tsc --watch",
+    "mocha": "mocha --timeout 20000 --exit **/**/*Test.js",
+    "eslint": "eslint -c ./.eslintrc.json .",
+    "eslintfix": "eslint -c ./.eslintrc.json . --fix"
   },
   "keywords": [],
   "author": "",

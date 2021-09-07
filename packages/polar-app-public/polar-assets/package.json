@@ -3,9 +3,12 @@
   "version": "2.1.107",
   "description": "",
   "scripts": {
-    "test": "echo no tests",
-    "compile": "true",
-    "dist": "echo noop"
+    "test": "if [ -z $(find src -name '**Test.js') ]; then echo 'No tests'; else yarn run mocha; fi;",
+    "compile": "tsc",
+    "dist": "echo noop",
+    "mocha": "mocha --timeout 20000 --exit **/**/*Test.js",
+    "eslint": "eslint -c ./.eslintrc.json .",
+    "eslintfix": "eslint -c ./.eslintrc.json . --fix"
   },
   "devDependencies": {
     "@types/sharp": "^0.25.0"

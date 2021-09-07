@@ -10,10 +10,13 @@
   "scripts": {
     "tslint": "tslint --project tsconfig.json --config tslint.yaml",
     "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
-    "test": "echo no tests",
-    "compile": "npx tsc",
+    "test": "if [ -z $(find src -name '**Test.js') ]; then echo 'No tests'; else yarn run mocha; fi;",
+    "compile": "tsc",
     "compile:watch": "npx tsc --watch",
-    "dist": "yarn run compile"
+    "dist": "yarn run compile",
+    "mocha": "mocha --timeout 20000 --exit **/**/*Test.js",
+    "eslint": "eslint -c ./.eslintrc.json .",
+    "eslintfix": "eslint -c ./.eslintrc.json . --fix"
   },
   "dependencies": {
     "@amplitude/node": "^1.1.0",

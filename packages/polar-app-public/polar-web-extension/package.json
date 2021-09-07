@@ -4,11 +4,14 @@
   "description": "https://github.com/yeoman/generator-chrome-extension",
   "scripts": {
     "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
-    "test": "echo no tests",
+    "test": "if [ -z $(find src -name '**Test.js') ]; then echo 'No tests'; else yarn run mocha; fi;",
     "clean": "rm -rf .webpack-cache-loader && rm -rf .terser-webpack-plugin && rm -rf dist && rm -rf polar-web-extension.zip",
     "compile": "tsc",
     "webpack": "npx webpack --config=webpack.config.js",
-    "dist": "unset NODE_ENV && unset WEBPACK_TARGET && yarn run clean && yarn run webpack && ./dist.sh"
+    "dist": "unset NODE_ENV && unset WEBPACK_TARGET && yarn run clean && yarn run webpack && ./dist.sh",
+    "mocha": "mocha --timeout 20000 --exit **/**/*Test.js",
+    "eslint": "eslint -c ./.eslintrc.json .",
+    "eslintfix": "eslint -c ./.eslintrc.json . --fix"
   },
   "author": "",
   "license": "ISC",
