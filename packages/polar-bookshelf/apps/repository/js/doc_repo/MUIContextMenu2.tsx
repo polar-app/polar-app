@@ -8,7 +8,6 @@ import { observer } from "mobx-react-lite"
 import {Devices} from 'polar-shared/src/util/Devices';
 import { makeStyles } from "@material-ui/core";
 import {useHistory} from "react-router-dom";
-import { useContextMenu } from "./MUIContextMenu";
 
 export namespace MouseEvents {
     export function fromNativeEvent(event: MouseEvent): IMouseEvent {
@@ -327,11 +326,8 @@ export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContext
     const history = useHistory();
 
     const handleClose = React.useCallback(() => {
-        history.replace('/');
         props.handleClose();
-    }, [history, props])
-
-    useContextMenuHook(handleClose);
+    }, [props])
 
     useContextMenuHook(handleClose);
 
