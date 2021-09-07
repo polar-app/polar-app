@@ -68,31 +68,43 @@ async function updateScripts(): Promise<void> {
 
         // ~ Read and parse Package.json
         const data = await fs.promises.readFile('package.json');
-        const content: IPackageManifest = JSON.parse(data.toString('utf-8'));
+        const pkg: IPackageManifest = JSON.parse(data.toString('utf-8'));
 
-        if (! content.scripts) {
+        if (! pkg.scripts) {
             // it's possible that there aren't any scripts.
-            content.scripts = {};
+            pkg.scripts = {};
         }
 
         // ~ Update Scripts
 
+        if (! pkg.devDependencies) {
+            pkg.devDependencies = {};
+        }
+
         if (conf.typescript !== 'disabled') {
-            content.scripts.mocha = "mocha --timeout 20000 --exit **/**/*Test.js"
-            content.scripts.eslint = "eslint -c ./.eslintrc.json .";
-            content.scripts.eslintfix = "eslint -c ./.eslintrc.json . --fix";
-            content.scripts.test = "if [ -z $(find src -name '**Test.js') ]; then echo 'No tests'; else yarn run mocha; fi;";
-            content.scripts.compile = "tsc";
+            pkg.scripts.mocha = "mocha --timeout 20000 --exit **/**/*Test.js"
+            pkg.scripts.eslint = "eslint -c ./.eslintrc.json .";
+            pkg.scripts.eslintfix = "eslint -c ./.eslintrc.json . --fix";
+            pkg.scripts.test = "if [ -z $(find src -name '**Test.js') ]; then echo 'No tests'; else yarn run mocha; fi;";
+            pkg.scripts.compile = "tsc";
+
+            pkg.devDependencies['polar-eslint'] = `^${pkg.version}`;
+            pkg.devDependencies['polar-typescript'] = `^${pkg.version}`;
+
         } else {
-            delete content.scripts.mocha;
-            delete content.scripts.eslint;
-            delete content.scripts.eslintfix;
-            delete content.scripts.test;
-            delete content.scripts.compile;
+            delete pkg.scripts.mocha;
+            delete pkg.scripts.eslint;
+            delete pkg.scripts.eslintfix;
+            delete pkg.scripts.test;
+            delete pkg.scripts.compile;
+
+            delete pkg.devDependencies['polar-eslint'];
+            delete pkg.devDependencies['polar-typescript'];
+
         }
 
         // ~ Update Package.Json File
-        await fs.promises.writeFile('package.json', JSON.stringify(content, null, 2));
+        await fs.promises.writeFile('package.json', JSON.stringify(pkg, null, 2));
 
     }
 

@@ -7,5 +7,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "types": "index"
+  "types": "index",
+  "devDependencies": {}
 }

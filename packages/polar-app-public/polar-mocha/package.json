@@ -9,5 +9,6 @@
   "dependencies": {
     "@types/mocha": "=8.2.2",
     "mocha": "=9.0.0"
-  }
+  },
+  "devDependencies": {}
 }

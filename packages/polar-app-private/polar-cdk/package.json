@@ -20,7 +20,9 @@
     "esbuild": "^0.12.19",
     "firebase-admin": "=9.11.0",
     "ts-node": "^10.2.0",
-    "typescript": "=4.2.3"
+    "typescript": "=4.2.3",
+    "polar-eslint": "^2.1.107",
+    "polar-typescript": "^2.1.107"
   },
   "dependencies": {
     "@aws-cdk/aws-apigateway": "^1.117.0",

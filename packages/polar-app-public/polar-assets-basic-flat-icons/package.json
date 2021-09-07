@@ -19,5 +19,6 @@
   "files": [
     "**/*.svg",
     "package.json"
-  ]
+  ],
+  "devDependencies": {}
 }

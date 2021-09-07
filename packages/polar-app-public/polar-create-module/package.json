@@ -18,5 +18,9 @@
     "polar-shared": "^2.1.107"
   },
   "author": "Polar",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "polar-eslint": "^2.1.107",
+    "polar-typescript": "^2.1.107"
+  }
 }
