@@ -53,7 +53,7 @@ export namespace AnswerExecutor {
 
     export const RETURN_METADATA = true;
 
-    export const N = 10;
+    export const N = 1;
 
     export interface ResultWithDuration<V> {
         readonly value: V;
