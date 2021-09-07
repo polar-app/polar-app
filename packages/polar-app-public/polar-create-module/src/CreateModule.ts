@@ -55,7 +55,7 @@ async function updateScripts(): Promise<void> {
 
     // ~ Update Scripts
     content.scripts.test =
-      "if [ -z $(find . -name '**Test.js -not -path './node_modules/*') ]; then echo 'No tests'; else yarn run mocha; fi;";
+      "if [ -z $(find . -name '**Test.js' -not -path 'node_modules/*') ]; then echo 'No tests'; else yarn run mocha; fi;";
     content.scripts.mocha = 'mocha --timeout 20000 --exit **/**/*Test.js';
     content.scripts.eslint = 'eslint -c ./.eslintrc.json .';
     content.scripts.eslintfix = 'eslint -c ./.eslintrc.json . --fix';
