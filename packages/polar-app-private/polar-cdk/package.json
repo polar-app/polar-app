@@ -29,6 +29,10 @@
     "@types/node-fetch": "2.5.7",
     "firebase": "=8.8.1",
     "node-fetch": "=2.6.1",
-    "source-map-support": "=0.5.19"
+    "source-map-support": "=0.5.19",
+    "polar-firebase": "^2.1.107",
+    "polar-accounts": "^2.1.107",
+    "polar-admin": "^2.1.107",
+    "polar-hooks-functions": "^2.1.107"
   }
 }

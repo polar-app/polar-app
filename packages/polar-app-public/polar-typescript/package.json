@@ -2,13 +2,7 @@
   "name": "polar-typescript",
   "version": "2.1.107",
   "description": "Typescript support and all dependent packages",
-  "scripts": {
-    "test": "if [ -z $(find src -name '**Test.js') ]; then echo 'No tests'; else yarn run mocha; fi;",
-    "compile": "tsc",
-    "mocha": "mocha --timeout 20000 --exit **/**/*Test.js",
-    "eslint": "eslint -c ./.eslintrc.json .",
-    "eslintfix": "eslint -c ./.eslintrc.json . --fix"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
