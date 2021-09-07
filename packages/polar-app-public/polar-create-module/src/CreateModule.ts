@@ -62,9 +62,9 @@ export async function readCreateModuleConfig(): Promise<ICreateModuleConfig> {
 
 async function updateScripts(): Promise<void> {
 
-    async function updatePackageJSON() {
+    const conf = await readCreateModuleConfig();
 
-        const conf = await readCreateModuleConfig();
+    async function updatePackageJSON() {
 
         // ~ Read and parse Package.json
         const data = await fs.promises.readFile('package.json');
@@ -84,9 +84,9 @@ async function updateScripts(): Promise<void> {
             content.scripts.test = "if [ -z $(find src -name '**Test.js') ]; then echo 'No tests'; else yarn run mocha; fi;";
             content.scripts.compile = "tsc";
         } else {
-            delete content.scripts.test;
-            delete content.scripts.test;
-            delete content.scripts.test;
+            delete content.scripts.mocha;
+            delete content.scripts.eslint;
+            delete content.scripts.eslintfix;
             delete content.scripts.test;
             delete content.scripts.compile;
         }
@@ -99,8 +99,13 @@ async function updateScripts(): Promise<void> {
     await updatePackageJSON();
 
     // ~ copy over other files
-    await fs.promises.writeFile('.eslintrc.json', createJSONDataFile(ESLint.createV0()));
-    await fs.promises.writeFile('tsconfig.json', createJSONDataFile(TSConfig.createV0()));
+    if (conf.typescript !== 'disabled') {
+        await fs.promises.writeFile('.eslintrc.json', createJSONDataFile(ESLint.createV0()));
+        await fs.promises.writeFile('tsconfig.json', createJSONDataFile(TSConfig.createV0()));
+    } else {
+        await Files.deleteAsync('.eslintrc.json');
+        await Files.deleteAsync('tsconfig.json');
+    }
 
 }
 
