@@ -312,7 +312,7 @@ export const useContextMenuHook = (handleClose: () => void) => {
     
     React.useEffect(()=>{
         history.push({hash:`#prompt-${Date.now()}`})
-    },[]);
+    },[history]);
     React.useEffect(()=>{
         document.addEventListener("keydown", handleCloseWithReplace);
         // document.addEventListener("keyup", handleCloseWithReplace);
