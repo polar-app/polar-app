@@ -8,7 +8,7 @@ import { observer } from "mobx-react-lite"
 import {Devices} from 'polar-shared/src/util/Devices';
 import { makeStyles } from "@material-ui/core";
 import {useHistory} from "react-router-dom";
-import {useContextMenuHook} from "polar-bookshelf/web/js/mui/useContextMenuHook";
+import {useContextMenuHook} from "../../../../web/js/mui/hooks/useContextMenuHook";
 
 export namespace MouseEvents {
     export function fromNativeEvent(event: MouseEvent): IMouseEvent {
