@@ -327,9 +327,14 @@ export const useContextMenuHook = (handleClose: () => void) => {
 
 export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContextMenuProps) {
 
+    const history = useHistory();
+
     const handleClose = React.useCallback(() => {
+        history.replace('/');
         props.handleClose();
-    }, [props])
+    }, [history, props])
+
+    useContextMenuHook(handleClose);
 
     useContextMenuHook(handleClose);
 
