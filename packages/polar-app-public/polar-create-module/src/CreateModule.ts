@@ -20,12 +20,11 @@ interface Scripts {
     eslint?: string;
     eslintfix?: string;
     compile?: string;
+    tsc?: string;
 }
 
 interface ICreateModuleConfig {
-
     readonly typescript?: 'disabled';
-
 }
 
 async function getUserInput(property: string): Promise<string> {
@@ -42,9 +41,7 @@ async function getUserInput(property: string): Promise<string> {
 }
 
 export function createJSONDataFile(obj: any) {
-
-    return `// THIS FILE IS AUTO-GENERATED, DO NOT EDIT\n` + JSON.stringify(obj, null, "  ");
-
+    return `// THIS FILE IS AUTO-GENERATED, DO NOT EDIT\n` + JSON.stringify(obj, null, 2);
 }
 
 export async function readCreateModuleConfig(): Promise<ICreateModuleConfig> {
@@ -86,8 +83,9 @@ async function updateScripts(): Promise<void> {
             pkg.scripts.mocha = "mocha --timeout 20000 --exit './{,!(node_modules)/**}/*Test.js'"
             pkg.scripts.eslint = "eslint -c ./.eslintrc.json .";
             pkg.scripts.eslintfix = "eslint -c ./.eslintrc.json . --fix";
-            pkg.scripts.test = "if [ -z \"$(find src -name '**Test.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;";
-            pkg.scripts.compile = "tsc";
+            pkg.scripts.test = "RESULT=$(find . -name '**Test.js' -not -path 'node_modules/*') && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;";
+            pkg.scripts.compile = "RESULT=$(find -name '*.ts' -not -path './node_modules/*' -not -name '*.d.ts*') && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;";
+            pkg.scripts.tsc = 'tsc';
 
             pkg.devDependencies['polar-eslint'] = `^${pkg.version}`;
             pkg.devDependencies['polar-typescript'] = `^${pkg.version}`;
@@ -118,6 +116,9 @@ async function updateScripts(): Promise<void> {
     } else {
         await Files.deleteAsync('.eslintrc.json');
         await Files.deleteAsync('tsconfig.json');
+    }
+    if (fs.existsSync('tslint.yaml')) {
+        await fs.promises.rm('tslint.yaml');
     }
 
 }
@@ -158,8 +159,7 @@ async function workFlow(): Promise<void> {
 
 }
 
-workFlow()
-    .catch(err => console.error("ERROR: Unable to create module: ", err));
+workFlow().catch(err => console.error("ERROR: Unable to create module: ", err));
 
 export namespace ESLint {
 
