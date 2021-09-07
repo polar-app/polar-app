@@ -389,6 +389,7 @@ export namespace TSConfig {
         allowSyntheticDefaultImports: true,
         baseUrl: '.',
         lib: ['es2019', 'es2020.string', 'dom'],
+        skipLibCheck: true,
         paths: {
           '*': ['node_modules/*'],
         },
