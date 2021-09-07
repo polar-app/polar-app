@@ -366,7 +366,8 @@ export namespace TSConfig {
                 "lib": ["es2019", "es2020.string", "dom"],
                 "paths": {
                     "*": ["node_modules/*"]
-                }
+                },
+                "skipLibCheck": true
             },
             "types": ["mocha", "reflect-metadata"],
             "include": ["**/*.ts", "**/*.tsx"],
