@@ -1,7 +1,6 @@
-import { AIModel } from "polar-answers-api/src/AIModel";
+import {AIModel} from "polar-answers-api/src/AIModel";
 import {Fetches} from "polar-shared/src/util/Fetch";
 import {OpenAISecrets} from "./OpenAISecrets";
-import {ISelectedDocument} from "polar-answers-api/src/ISelectedDocument";
 import {IOpenAIAnswersResponse} from "polar-answers-api/src/IOpenAIAnswersResponse";
 
 export namespace OpenAIAnswersClient {
