@@ -467,9 +467,7 @@ xdescribe('Files', function() {
 
         });
 
-
     });
-
 
 });
 
