@@ -19,6 +19,7 @@ interface Scripts {
   eslint?: string;
   eslintfix?: string;
   compile?: string;
+  tsc?: string;
 }
 
 async function getUserInput(property: string): Promise<string> {
@@ -54,11 +55,13 @@ async function updateScripts(): Promise<void> {
 
     // ~ Update Scripts
     content.scripts.test =
-      "if [ -z $(find src -name '**Test.js') ]; then echo 'No tests'; else yarn run mocha; fi;";
+      "if [ -z $(find . -name '**Test.js -not -path './node_modules/*') ]; then echo 'No tests'; else yarn run mocha; fi;";
     content.scripts.mocha = 'mocha --timeout 20000 --exit **/**/*Test.js';
     content.scripts.eslint = 'eslint -c ./.eslintrc.json .';
     content.scripts.eslintfix = 'eslint -c ./.eslintrc.json . --fix';
-    content.scripts.compile = 'tsc';
+    content.scripts.compile =
+      "if [ -z $(find -name '*.ts' -not -path './node_modules/*' -not -name '*.d.ts*') ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;";
+    content.scripts.tsc = 'tsc';
 
     // ~ Update Package.Json File
     await fs.promises.writeFile(
