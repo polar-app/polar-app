@@ -82,6 +82,7 @@ async function updateScripts(): Promise<void> {
         }
 
         if (conf.typescript !== 'disabled') {
+
             pkg.scripts.mocha = "mocha --timeout 20000 --exit **/**/*Test.js"
             pkg.scripts.eslint = "eslint -c ./.eslintrc.json .";
             pkg.scripts.eslintfix = "eslint -c ./.eslintrc.json . --fix";

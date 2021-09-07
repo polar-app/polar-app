@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {Files, FileHandle} from './Files';
+import {FileHandle, Files} from './Files';
 import {FilePaths} from './FilePaths';
 import os from "os";
 import {TestingFiles} from "../test/TestingFiles";
@@ -26,16 +26,16 @@ describe('Files', function() {
             await Files.removeDirectoryRecursivelyAsync(tmpdir);
         });
 
-        xit("Test with non-existant directory", async function() {
-
-            const path = FilePaths.join(tmpdir, 'non-existent-directory-path');
-            const targetPath = FilePaths.join(tmpdir, 'non-existent-directory-path.new');
-
-            assert.throws(async () => {
-                await Files.createDirectorySnapshot(path, targetPath);
-            });
-
-        });
+        // xit("Test with non-existant directory", async function() {
+        //
+        //     const path = FilePaths.join(tmpdir, 'non-existent-directory-path');
+        //     const targetPath = FilePaths.join(tmpdir, 'non-existent-directory-path.new');
+        //
+        //     assert.throws(async () => {
+        //         await Files.createDirectorySnapshot(path, targetPath);
+        //     });
+        //
+        // });
 
 
         it("Test with empty dir", async function() {
@@ -80,7 +80,7 @@ describe('Files', function() {
 
         it("Test with nested dirs", async function() {
 
-            const path = FilePaths.join(tmpdir, 'dir-with-one-file');
+            const path = FilePaths.join(tmpdir, 'dir-with-nested-dirs');
             const targetPath = FilePaths.join(tmpdir, 'dir-with-one-file.new');
 
             await Files.mkdirAsync(path);
