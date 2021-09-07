@@ -64,20 +64,28 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
 
     const clozeRef = React.useRef<HTMLInputElement>(null);
 
-    const [inputs, setInputs]= React.useState<FormTypes>(() => {
-        const { text = "" } = ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, annotationData);
-
+    const getInputsForType = React.useCallback((flashcardType: FlashcardType, initialValue: string) => {
         if (flashcardType === FlashcardType.CLOZE) {
             return {
-                text: { placeholder: "Cloze text", rows: 3, initialValue: text, ref: clozeRef},
+                text: { placeholder: "Cloze text", rows: 3, initialValue, ref: clozeRef},
             };
         } else {
             return {
                 front: { placeholder: "Front", rows: 2 },
-                back: { placeholder: "Back", rows: 2, initialValue: text },
+                back: { placeholder: "Back", rows: 2, initialValue },
             };
         }
+    }, []);
+
+    const [inputs, setInputs]= React.useState<FormTypes>(() => {
+        const { text = "" } = ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, annotationData);
+        return getInputsForType(flashcardType, text);
     });
+
+    React.useEffect(() => {
+        const { text = "" } = ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, annotationData);
+        setInputs(getInputsForType(flashcardType, text));
+    }, [flashcardType, setInputs, annotationData]);
 
     const onClozeDelete = React.useCallback(() => {
         const elem = clozeRef.current;
