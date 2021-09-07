@@ -81,7 +81,7 @@ describe('Files', function() {
         it("Test with nested dirs", async function() {
 
             const path = FilePaths.join(tmpdir, 'dir-with-nested-dirs');
-            const targetPath = FilePaths.join(tmpdir, 'dir-with-one-file.new');
+            const targetPath = FilePaths.join(tmpdir, 'dir-with-nested-dirs.new');
 
             await Files.mkdirAsync(path);
             await Files.writeFileAsync(FilePaths.join(path, 'hello.txt'), 'hello');
