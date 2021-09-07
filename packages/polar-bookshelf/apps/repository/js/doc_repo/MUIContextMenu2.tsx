@@ -8,6 +8,7 @@ import { observer } from "mobx-react-lite"
 import {Devices} from 'polar-shared/src/util/Devices';
 import { makeStyles } from "@material-ui/core";
 import {useHistory} from "react-router-dom";
+import {useContextMenuHook} from "polar-bookshelf/web/js/mui/hooks/commonHooks"
 
 export namespace MouseEvents {
     export function fromNativeEvent(event: MouseEvent): IMouseEvent {
@@ -296,29 +297,6 @@ interface MUIContextMenuProps {
 
     readonly children: React.ReactFragment | JSX.Element;
 
-}
-
-export const useContextMenuHook = (handleClose: () => void) => {
-
-    const history = useHistory();
-
-    const handleCloseWithReplace = React.useCallback((event) => {
-        if(event.keyCode === 27 || event.type=='popstate' ) {
-            history.goBack();
-            handleClose();
-        }
-    }, [history, handleClose]);
-    
-    React.useEffect(()=>{
-        history.push({hash:`#prompt-${Date.now()}`})
-    },[history]);
-    React.useEffect(()=>{
-        document.addEventListener("keydown", handleCloseWithReplace);
-        window.addEventListener("popstate", handleCloseWithReplace);        
-        return () => {
-            window.removeEventListener("popstate", handleCloseWithReplace);
-        };
-    },[handleCloseWithReplace]);
 }
 
 export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContextMenuProps) {
