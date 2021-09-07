@@ -55,12 +55,12 @@ async function updateScripts(): Promise<void> {
 
     // ~ Update Scripts
     content.scripts.test =
-      "if [ -z $(find . -name '**Test.js' -not -path 'node_modules/*') ]; then echo 'No tests'; else yarn run mocha; fi;";
+      "RESULT=$(find . -name '**Test.js' -not -path 'node_modules/*') && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;";
     content.scripts.mocha = 'mocha --timeout 20000 --exit **/**/*Test.js';
     content.scripts.eslint = 'eslint -c ./.eslintrc.json .';
     content.scripts.eslintfix = 'eslint -c ./.eslintrc.json . --fix';
     content.scripts.compile =
-      "if [ -z $(find -name '*.ts' -not -path './node_modules/*' -not -name '*.d.ts*') ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;";
+      "RESULT=$(find -name '*.ts' -not -path './node_modules/*' -not -name '*.d.ts*') && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;";
     content.scripts.tsc = 'tsc';
 
     // ~ Update Package.Json File
