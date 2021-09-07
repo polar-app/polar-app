@@ -16,15 +16,17 @@ describe('Files', function() {
     describe('createDirectorySnapshot', function() {
 
         let tmpdir: string = FilePaths.join(os.tmpdir(), 'none');
+        let idx: number = 0;
 
         beforeEach(async () => {
-            tmpdir = FilePaths.join(os.tmpdir(), 'createDirectorySnapshot');
+            // create a throwaway dir each time
+            tmpdir = FilePaths.join(os.tmpdir(), '' + Date.now() + idx++);
             await Files.createDirAsync(tmpdir);
         });
-
-        afterEach(async () => {
-            await Files.removeDirectoryRecursivelyAsync(tmpdir);
-        });
+        //
+        // afterEach(async () => {
+        //     await Files.removeDirectoryRecursivelyAsync(tmpdir);
+        // });
 
         // xit("Test with non-existant directory", async function() {
         //
