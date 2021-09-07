@@ -85,7 +85,7 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
     React.useEffect(() => {
         const { text = "" } = ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, annotationData);
         setInputs(getInputsForType(flashcardType, text));
-    }, [flashcardType, setInputs, annotationData]);
+    }, [flashcardType, setInputs, annotationData, getInputsForType]);
 
     const onClozeDelete = React.useCallback(() => {
         const elem = clozeRef.current;
