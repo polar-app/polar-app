@@ -1,6 +1,6 @@
 import {HTMLStr} from 'polar-shared/src/util/Strings';
 import React from 'react';
-import {IActiveBlock} from '../store/BlocksStore';
+import {IActiveBlock, useBlocksStore} from '../store/BlocksStore';
 import {createActionsProvider} from "../../mui/action_menu/ActionStore";
 import {NoteFormatPopper} from "../NoteFormatPopper";
 import {BlockContentCanonicalizer} from "./BlockContentCanonicalizer";
@@ -298,7 +298,7 @@ type IUseHandleLinkDeletionOpts = {
 
 const useHandleLinkDeletion = ({ blockID, elem }: IUseHandleLinkDeletionOpts) => {
     const mutationObserverConfig = React.useMemo(() => ({ childList: true }), []);
-    const blocksTreeStore = useBlocksTreeStore();
+    const blocksStore = useBlocksStore();
 
     useMutationObserver((mutations) => {
         const isElement = (node: Node): node is Element => node.nodeType === Node.ELEMENT_NODE;
@@ -318,11 +318,11 @@ const useHandleLinkDeletion = ({ blockID, elem }: IUseHandleLinkDeletionOpts) =>
             const removedLinks = removed.filter((elem) => !added.some(compareLinks(elem)));
 
             for (let removedLink of removedLinks) {
-                const block = blocksTreeStore.getBlock(blockID);
-                const linkedBlock = blocksTreeStore.getBlockByName(removedLink.getAttribute('href')!.slice(1));
+                const block = blocksStore.getBlockForMutation(blockID);
+                const linkedBlock = blocksStore.getBlockByName(removedLink.getAttribute('href')!.slice(1));
                 if (block && linkedBlock && BlockPredicates.canHaveLinks(block)) {
                     block.content.removeLink(linkedBlock.id);
-                    blocksTreeStore.setBlockContent(blockID, block.content);
+                    blocksStore.setBlockContent(blockID, block.content);
                 }
             }
         }
