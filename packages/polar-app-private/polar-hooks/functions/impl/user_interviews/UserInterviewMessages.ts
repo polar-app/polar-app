@@ -54,6 +54,10 @@ export interface UserInterviewMessageFactory {
 
 export class StandardUserInterviewMessageFactory implements UserInterviewMessageFactory {
 
+    constructor(private readonly messageOpts: MessageOpts) {
+
+    }
+
     public create(): UserInterviewMessage {
         const subject = this.computeMailSubject();
         const body = this.computeMailBody();
