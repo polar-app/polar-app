@@ -197,6 +197,12 @@ export namespace ESLint {
                 "import/no-cycle": "error",
                 "import/no-absolute-path": "error",
                 "no-inner-declarations": "off",
+
+                // burton: this should be off because Typescript supports
+                // zero-code property initialization so it looks like the
+                // constructor has no body when in reality it's defining
+                // properties.
+                "no-useless-constructor": "off",
                 // "import/order": "error",
                 // "indent": ["error", 4, {
                 //     "FunctionDeclaration": {
