@@ -4,6 +4,7 @@ import {
     MUIDocDropdownMenuItems
 } from "./MUIDocDropdownMenuItems";
 import isEqual from "react-fast-compare";
+import {useContextMenuHook} from "../../../../web/js/mui/hooks/useContextMenuHook";
 
 export type ContextMenuHandler = (event: React.MouseEvent<HTMLElement>) => void;
 
@@ -49,6 +50,8 @@ export class MUIDocContextMenu extends React.Component<IProps, IState> {
                 mouseY: undefined
             });
         };
+        
+        useContextMenuHook(handleClose);
 
         function handleContextMenu(event: React.MouseEvent) {
             // needed so that you can't bring up a native context menu on a context
@@ -65,7 +68,6 @@ export class MUIDocContextMenu extends React.Component<IProps, IState> {
                         keepMounted
                         open={this.state.mouseX !== undefined}
                         onClose={() => handleClose()}
-                        onClick={() => handleClose()}
                         onContextMenu={handleContextMenu}
                         anchorReference="anchorPosition"
                         anchorPosition={{

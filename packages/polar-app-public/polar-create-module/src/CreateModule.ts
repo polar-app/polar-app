@@ -20,12 +20,12 @@ interface Scripts {
     eslint?: string;
     eslintfix?: string;
     compile?: string;
+    tsc?: string;
 }
 
 interface ICreateModuleConfig {
-
     readonly typescript?: 'disabled';
-
+    readonly noTests?: true;
 }
 
 async function getUserInput(property: string): Promise<string> {
@@ -42,9 +42,7 @@ async function getUserInput(property: string): Promise<string> {
 }
 
 export function createJSONDataFile(obj: any) {
-
-    return `// THIS FILE IS AUTO-GENERATED, DO NOT EDIT\n` + JSON.stringify(obj, null, "  ");
-
+    return `// THIS FILE IS AUTO-GENERATED, DO NOT EDIT\n` + JSON.stringify(obj, null, 2);
 }
 
 export async function readCreateModuleConfig(): Promise<ICreateModuleConfig> {
@@ -83,11 +81,19 @@ async function updateScripts(): Promise<void> {
 
         if (conf.typescript !== 'disabled') {
 
-            pkg.scripts.mocha = "mocha --timeout 20000 --exit './{,!(node_modules)/**}/*Test.js'"
+            // TODO we have to crank up --jobs to that we operate in parallel but some of our tests fail in this
+            // scenario because they use cloud resources which act as mutex / shared state and the tests will
+            // clash with one another.
+            pkg.scripts.mocha = "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'"
             pkg.scripts.eslint = "eslint -c ./.eslintrc.json .";
             pkg.scripts.eslintfix = "eslint -c ./.eslintrc.json . --fix";
-            pkg.scripts.test = "if [ -z \"$(find src -name '**Test.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;";
-            pkg.scripts.compile = "tsc";
+            pkg.scripts.test = "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;";
+            pkg.scripts.compile = "RESULT=\"$(find -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;";
+            pkg.scripts.tsc = 'tsc';
+
+            if (conf.noTests) {
+                pkg.scripts.test = "echo no tests";
+            }
 
             pkg.devDependencies['polar-eslint'] = `^${pkg.version}`;
             pkg.devDependencies['polar-typescript'] = `^${pkg.version}`;
@@ -118,6 +124,9 @@ async function updateScripts(): Promise<void> {
     } else {
         await Files.deleteAsync('.eslintrc.json');
         await Files.deleteAsync('tsconfig.json');
+    }
+    if (fs.existsSync('tslint.yaml')) {
+        await fs.promises.rm('tslint.yaml');
     }
 
 }
@@ -158,8 +167,7 @@ async function workFlow(): Promise<void> {
 
 }
 
-workFlow()
-    .catch(err => console.error("ERROR: Unable to create module: ", err));
+workFlow().catch(err => console.error("ERROR: Unable to create module: ", err));
 
 export namespace ESLint {
 
@@ -190,7 +198,14 @@ export namespace ESLint {
                 "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
                 "import/newline-after-import": "error",
                 "import/no-cycle": "error",
-                "import/no-absolute-path": "error"
+                "import/no-absolute-path": "error",
+                "no-inner-declarations": "off",
+
+                // burton: this should be off because Typescript supports
+                // zero-code property initialization so it looks like the
+                // constructor has no body when in reality it's defining
+                // properties.
+                "no-useless-constructor": "off",
                 // "import/order": "error",
                 // "indent": ["error", 4, {
                 //     "FunctionDeclaration": {

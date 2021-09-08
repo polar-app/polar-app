@@ -15,12 +15,13 @@
     "dist-release-main-webapp": "echo Pushing to target ${FIREBASE_HOSTING_TARGET} && firebase use polar-32b0f && firebase target:clear hosting app.getpolarized.io && firebase target:apply hosting app.getpolarized.io ${FIREBASE_HOSTING_TARGET} && firebase deploy --only hosting,storage,firestore && yarn rur firebase-deploy-functions",
     "dist-release-init": "(cd functions && yarn install)",
     "dist-release": "yarn run dist-release-init && yarn run dist-release-main-webapp",
-    "compile": "tsc",
+    "compile": "RESULT=\"$(find -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;",
     "dist": "echo noop",
-    "test": "if [ -z \"$(find src -name '**Test.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;",
-    "mocha": "mocha --timeout 20000 --exit './{,!(node_modules)/**}/*Test.js'",
+    "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
+    "mocha": "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
     "eslint": "eslint -c ./.eslintrc.json .",
-    "eslintfix": "eslint -c ./.eslintrc.json . --fix"
+    "eslintfix": "eslint -c ./.eslintrc.json . --fix",
+    "tsc": "tsc"
   },
   "dependencies": {
     "@types/escape-html": "0.0.20",

@@ -1,10 +1,10 @@
 import {StripeCreateSessions} from "./StripeCreateSessions";
 import {Billing} from "polar-accounts/src/Billing";
-import IStripeSession = StripeCreateSessions.IStripeSession;
 import {assert} from 'chai';
 import {StripeTesting} from "./StripeTesting";
+import IStripeSession = StripeCreateSessions.IStripeSession;
 
-describe('StripeCreateSessions', function() {
+xdescribe('StripeCreateSessions', function() {
 
     it("basic", async function() {
 

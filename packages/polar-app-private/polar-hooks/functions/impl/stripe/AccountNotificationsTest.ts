@@ -3,7 +3,7 @@ import {Billing} from "polar-accounts/src/Billing";
 import V2PlanFree = Billing.V2PlanFree;
 import V2PlanPlus = Billing.V2PlanPlus;
 
-describe('AccountNotifications', function() {
+xdescribe('AccountNotifications', function() {
 
     it("basic #1", async function() {
 

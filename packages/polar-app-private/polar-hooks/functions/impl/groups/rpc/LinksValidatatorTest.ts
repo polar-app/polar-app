@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import {LinksValidator} from "./LinksValidator";
 
-describe('LinksValidator', async function() {
+describe('LinksValidator', function() {
 
     it("basic", async function() {
 
