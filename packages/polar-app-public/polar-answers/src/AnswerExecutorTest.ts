@@ -286,7 +286,7 @@ xdescribe("AnswerExecutor", function () {
 
     });
 
-    xdescribe("US history", function () {
+    describe("US history", function () {
 
         it("US history chap 1 #1", async function () {
 
@@ -551,7 +551,8 @@ xdescribe("AnswerExecutor", function () {
         it("US history chap 3 #5", async function () {
 
             await assertQuestionAndAnswer("Which religious order joined the French settlement in Canada and tried to convert the natives to Christianity?", [
-                "Jesuits"
+                "Jesuits",
+                "The Jesuits."
             ]);
 
         })
@@ -573,7 +574,8 @@ xdescribe("AnswerExecutor", function () {
                 "Bacon and his followers, who saw all Native peoples as an obstacle to their access to land, pursued a policy of extermination",
                 "Bacon’s Rebellion was caused by the English settlers’ desire for more land.",
                 "Bacon’s Rebellion was caused by the Virginia government’s Indian policy.",
-                "Bacon’s Rebellion stemmed from a small dispute between a Virginia land owner and the Doeg, but its causes ran much deeper."
+                "Bacon’s Rebellion stemmed from a small dispute between a Virginia land owner and the Doeg, but its causes ran much deeper.",
+                "The primary cause of Bacon’s Rebellion was the governor’s attempt to force the Indians to move to the west side of the James River."
             ]);
 
         })
@@ -617,7 +619,7 @@ xdescribe("AnswerExecutor", function () {
         })
     });
 
-    xdescribe("Astronomy", function(){
+    describe("Astronomy", function(){
         // Chapter 2
         it("astronomy Chapter 2 #1", async function() {
             await assertQuestionAndAnswer("What fraction of the sky can be seen from the North Pole?", [
