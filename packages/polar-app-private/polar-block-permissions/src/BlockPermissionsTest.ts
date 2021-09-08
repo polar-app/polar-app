@@ -180,9 +180,7 @@ describe("BlockPermissions", function() {
             "updated": "xxx"
         });
 
-
     });
-
 
     it('change permissions on a namespace, not a page', async function() {
 

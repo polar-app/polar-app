@@ -84,7 +84,10 @@ async function updateScripts(): Promise<void> {
 
         if (conf.typescript !== 'disabled') {
 
-            pkg.scripts.mocha = "mocha -p --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'"
+            // TODO we have to crank up --jobs to that we operate in parallel but some of our tests fail in this
+            // scenario because they use cloud resources which act as mutex / shared state and the tests will
+            // clash with one another.
+            pkg.scripts.mocha = "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'"
             pkg.scripts.eslint = "eslint -c ./.eslintrc.json .";
             pkg.scripts.eslintfix = "eslint -c ./.eslintrc.json . --fix";
             pkg.scripts.test = "if [ -z \"$(find . -name '*Test.js' -o -name '*TestN.js' -o -name '*TestNK.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;";

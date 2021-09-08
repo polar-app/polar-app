@@ -11,7 +11,7 @@
     "build": "echo noop",
     "tsc": "tsc",
     "generate-release-metadata": "node src/ReleaseMetadataGenerator.js ../../polar-site/_posts/ > src/release-metadata.json",
-    "mocha": "mocha -p --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
+    "mocha": "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
     "eslint": "eslint -c ./.eslintrc.json .",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix"
   },

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "if [ -z \"$(find . -name '*Test.js' -o -name '*TestN.js' -o -name '*TestNK.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;",
     "compile": "tsc",
-    "mocha": "mocha -p --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
+    "mocha": "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
     "eslint": "eslint -c ./.eslintrc.json .",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix"
   },
