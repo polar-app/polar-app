@@ -1,9 +1,6 @@
-import {assert} from 'chai';
-import {StripePlanIDs} from "./StripePlanIDs";
-import { assertJSON } from 'polar-test/src/test/Assertions';
-import { StripeUtils } from './StripeUtils';
+import {StripeUtils} from './StripeUtils';
 
-describe('StripeUtils', async function() {
+describe('StripeUtils', function() {
 
     xit("basic", async function() {
 

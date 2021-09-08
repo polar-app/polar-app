@@ -1,9 +1,11 @@
 import * as admin from 'firebase-admin';
 import {StorageOptions} from '@google-cloud/storage';
 import {FirebaseConfig} from './FirebaseConfig';
-import {DocPreviewCollection} from "polar-firebase/src/firebase/om/DocPreviewCollection";
+import {FirebaseAdminSecrets} from "./FirebaseAdminSecrets";
 
 let app: admin.app.App;
+
+FirebaseAdminSecrets.init();
 
 export class FirebaseAdmin {
 
