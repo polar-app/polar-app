@@ -3,7 +3,7 @@ import './JSDOMForPDFThumbnailer';
 import {PDFThumbnailer} from "./PDFThumbnailer";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
-xdescribe('PDFThumbnailer', async function() {
+xdescribe('PDFThumbnailer', function() {
 
     this.timeout(999999);
 

@@ -1,8 +1,8 @@
 import {assert} from 'chai';
 import {StripePlanIDs} from "./StripePlanIDs";
-import { assertJSON } from 'polar-test/src/test/Assertions';
+import {assertJSON} from 'polar-test/src/test/Assertions';
 
-describe('StripePlanIDs', function() {
+xdescribe('StripePlanIDs', function() {
 
     it("toAccountPlan", async function() {
         // assertJSON(StripePlanIDs.toSubscription('test', StripeYearPlanID.BRONZE), {"interval": "year", "plan": "bronze" });

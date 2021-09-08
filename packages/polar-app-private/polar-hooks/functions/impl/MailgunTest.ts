@@ -1,6 +1,6 @@
 import {Mailgun} from "./Mailgun";
 
-describe('Mailgun', function() {
+xdescribe('Mailgun', function() {
 
     it("basic", async function() {
 
