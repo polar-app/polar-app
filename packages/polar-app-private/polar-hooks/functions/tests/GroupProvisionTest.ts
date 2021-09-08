@@ -10,7 +10,7 @@ const FIREBASE_USER2 = "getpolarized.test+test1@gmail.com";
 
 process.env.POLAR_TEST_PROJECT = "polar-test2";
 
-xdescribe('GroupProvision', async function() {
+xdescribe('GroupProvision', function() {
 
     before(async function () {
 
