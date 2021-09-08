@@ -5,8 +5,11 @@
   "main": "index.js",
   "scripts": {
     "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
-    "test": "echo noop",
-    "compile": "tsc"
+    "test": "if [ -z \"$(find src -name '**Test.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;",
+    "compile": "tsc",
+    "mocha": "mocha --timeout 20000 --exit './{,!(node_modules)/**}/*Test.js'",
+    "eslint": "eslint -c ./.eslintrc.json .",
+    "eslintfix": "eslint -c ./.eslintrc.json . --fix"
   },
   "keywords": [],
   "author": "",
@@ -14,7 +17,9 @@
   "devDependencies": {
     "@types/diff": "4.0.2",
     "tslint": "6.1.2",
-    "typescript": "=4.2.3"
+    "typescript": "=4.2.3",
+    "polar-eslint": "^2.1.107",
+    "polar-typescript": "^2.1.107"
   },
   "dependencies": {
     "@types/node": "=14.14.35",

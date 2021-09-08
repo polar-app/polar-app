@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "yarn run mocha",
-    "mocha": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
+    "test": "if [ -z \"$(find src -name '**Test.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;",
+    "mocha": "mocha --timeout 20000 --exit './{,!(node_modules)/**}/*Test.js'",
     "karma": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
-    "compile": "tsc"
+    "compile": "tsc",
+    "eslint": "eslint -c ./.eslintrc.json .",
+    "eslintfix": "eslint -c ./.eslintrc.json . --fix"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +22,9 @@
     "polar-shared": "^2.1.107",
     "polar-test": "^2.1.107",
     "tslint": "6.1.2",
-    "typescript": "=4.2.3"
+    "typescript": "=4.2.3",
+    "polar-eslint": "^2.1.107",
+    "polar-typescript": "^2.1.107"
   },
   "dependencies": {
     "@google-cloud/language": "=4.2.5"

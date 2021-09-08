@@ -3,9 +3,8 @@
   "version": "2.1.107",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo no test"
-  },
+  "scripts": {},
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {}
 }

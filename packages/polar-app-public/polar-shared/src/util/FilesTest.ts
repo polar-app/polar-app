@@ -1,41 +1,45 @@
 import {assert} from 'chai';
-import {Files, FileHandle} from './Files';
+import {FileHandle, Files} from './Files';
 import {FilePaths} from './FilePaths';
 import os from "os";
 import {TestingFiles} from "../test/TestingFiles";
 
-describe('Files', function() {
+xdescribe('Files', function() {
+
+    let tmpdir: string = FilePaths.join(os.tmpdir(), 'none');
+    let idx: number = 0;
+
+    beforeEach(() => {
+        const now = Date.now();
+        const iter = ++idx;
+        tmpdir = FilePaths.join(os.tmpdir(), `${now}-${iter}`);
+        Files.createDirSync(tmpdir);
+    });
 
     describe('atomic writes', async function() {
 
-        const tmp = FilePaths.join(os.tmpdir(), 'files-atomic-write.txt');
+        const tmp = FilePaths.join(tmpdir, 'files-atomic-write.txt');
         await Files.writeFileAsync(tmp, 'this is the data', {atomic: true});
 
     });
 
     describe('createDirectorySnapshot', function() {
 
-        let tmpdir: string = FilePaths.join(os.tmpdir(), 'none');
+        //
+        // afterEach(async () => {
+        //     await Files.removeDirectoryRecursivelyAsync(tmpdir);
+        // });
 
-        beforeEach(async () => {
-            tmpdir = FilePaths.join(os.tmpdir(), 'createDirectorySnapshot');
-            await Files.createDirAsync(tmpdir);
-        });
-
-        afterEach(async () => {
-            await Files.removeDirectoryRecursivelyAsync(tmpdir);
-        });
-
-        xit("Test with non-existant directory", async function() {
-
-            const path = FilePaths.join(tmpdir, 'non-existent-directory-path');
-            const targetPath = FilePaths.join(tmpdir, 'non-existent-directory-path.new');
-
-            assert.throws(async () => {
-                await Files.createDirectorySnapshot(path, targetPath);
-            });
-
-        });
+        // xit("Test with non-existant directory", async function() {
+        //
+        //     const path = FilePaths.join(tmpdir, 'non-existent-directory-path');
+        //     const targetPath = FilePaths.join(tmpdir, 'non-existent-directory-path.new');
+        //
+        //     assert.throws(async () => {
+        //         await Files.createDirectorySnapshot(path, targetPath);
+        //     });
+        //
+        // });
 
 
         it("Test with empty dir", async function() {
@@ -80,8 +84,8 @@ describe('Files', function() {
 
         it("Test with nested dirs", async function() {
 
-            const path = FilePaths.join(tmpdir, 'dir-with-one-file');
-            const targetPath = FilePaths.join(tmpdir, 'dir-with-one-file.new');
+            const path = FilePaths.join(tmpdir, 'dir-with-nested-dirs');
+            const targetPath = FilePaths.join(tmpdir, 'dir-with-nested-dirs.new');
 
             await Files.mkdirAsync(path);
             await Files.writeFileAsync(FilePaths.join(path, 'hello.txt'), 'hello');
@@ -106,8 +110,6 @@ describe('Files', function() {
 
 
     describe('removeDirectoryRecursivelyAsync', function() {
-
-        const tmpdir: string = os.tmpdir();
 
         it("Test with non-existant directory", async function() {
 
@@ -162,7 +164,7 @@ describe('Files', function() {
 
         it("Test with nested dirs", async function() {
 
-            const path = FilePaths.join(tmpdir, 'dir-with-one-file');
+            const path = FilePaths.join(tmpdir, 'dir-with-nested-dirs');
 
             await Files.mkdirAsync(path);
             await Files.writeFileAsync(FilePaths.join(path, 'hello.txt'), 'hello');
@@ -184,7 +186,6 @@ describe('Files', function() {
 
 
     describe('integrated', function() {
-        const tmpdir: string = os.tmpdir();
 
         it("Test delete with missing parent dirs", async function() {
 
@@ -198,8 +199,6 @@ describe('Files', function() {
     });
 
     describe('renameAsync', function() {
-
-        const tmpdir: string = os.tmpdir();
 
         it("basic", async function() {
 
@@ -243,7 +242,6 @@ describe('Files', function() {
     });
 
     describe('writeFileAsync', function() {
-        const tmpdir: string = os.tmpdir();
 
         it("basic", async function() {
 
@@ -286,7 +284,6 @@ describe('Files', function() {
     });
 
     describe('readFileAsync', function() {
-        const tmpdir: string = os.tmpdir();
 
         it("basic", async function() {
 
@@ -325,8 +322,6 @@ describe('Files', function() {
 
     describe('readdirAsync', function() {
 
-        const tmpdir: string = os.tmpdir();
-
         it("basic", async function() {
 
             const filename = "write-file-async.txt";
@@ -343,8 +338,6 @@ describe('Files', function() {
     });
 
     describe('statAsync', function() {
-
-        const tmpdir: string = os.tmpdir();
 
         it("basic", async function() {
 
@@ -379,8 +372,6 @@ describe('Files', function() {
 
     describe('createDirAsync', function() {
 
-        const tmpdir: string = os.tmpdir();
-
         it("basic", async function() {
 
             const path = FilePaths.join(tmpdir, 'test-createDirAsync.dir');
@@ -410,7 +401,6 @@ describe('Files', function() {
     });
 
     describe('mkdirAsync', function() {
-        const tmpdir: string = os.tmpdir();
 
         xit("nested", async function() {
 
@@ -477,9 +467,7 @@ describe('Files', function() {
 
         });
 
-
     });
-
 
 });
 
