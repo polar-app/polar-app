@@ -1,9 +1,7 @@
 import {FirebaseAdmin} from 'polar-firebase-admin/src/FirebaseAdmin';
-import {GroupProvisionRequest} from '../impl/groups/GroupProvisionFunction';
-import {GroupProvisionFunctions} from '../impl/groups/GroupProvisionFunction';
+import {GroupProvisionFunctions, GroupProvisionRequest} from '../impl/groups/GroupProvisionFunction';
 import {IDUsers} from '../impl/util/IDUsers';
-import {GroupJoinFunctions} from '../impl/groups/GroupJoinFunction';
-import {GroupJoinRequest} from '../impl/groups/GroupJoinFunction';
+import {GroupJoinFunctions, GroupJoinRequest} from '../impl/groups/GroupJoinFunction';
 import {GroupIDStr} from '../impl/groups/db/Groups';
 import {UserRefs} from '../impl/groups/db/UserRefs';
 

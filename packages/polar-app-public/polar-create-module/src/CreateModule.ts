@@ -195,7 +195,8 @@ export namespace ESLint {
                 "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
                 "import/newline-after-import": "error",
                 "import/no-cycle": "error",
-                "import/no-absolute-path": "error"
+                "import/no-absolute-path": "error",
+                "no-inner-declarations": "off",
                 // "import/order": "error",
                 // "indent": ["error", 4, {
                 //     "FunctionDeclaration": {

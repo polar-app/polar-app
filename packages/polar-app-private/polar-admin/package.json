@@ -5,7 +5,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "test": "echo no tests",
+    "test": "if [ -z \"$(find . -name '*Test.js' -o -name '*TestN.js' -o -name '*TestNK.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;",
     "compile": "tsc",
     "dist": "echo noop",
     "mocha": "mocha -p --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
