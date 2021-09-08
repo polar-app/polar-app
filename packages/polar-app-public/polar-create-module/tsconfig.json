@@ -1,4 +1,4 @@
-// THIS FILE IS AUTO GENERATED, DO NOT EDIT
+// THIS FILE IS AUTO-GENERATED, DO NOT EDIT
 {
   "compilerOptions": {
     "incremental": true,
@@ -28,12 +28,31 @@
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
-    "lib": ["es2019", "es2020.string", "dom"],
+    "lib": [
+      "es2019",
+      "es2020.string",
+      "dom"
+    ],
     "paths": {
-      "*": ["node_modules/*"]
-    }
+      "*": [
+        "node_modules/*"
+      ]
+    },
+    "skipLibCheck": true
   },
-  "types": ["mocha", "reflect-metadata"],
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "dist", "*.d.ts", "*.js", "cdk.out"]
+  "types": [
+    "mocha",
+    "reflect-metadata"
+  ],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules/**",
+    "dist",
+    "*.d.ts",
+    "*.js",
+    "cdk.out"
+  ]
 }

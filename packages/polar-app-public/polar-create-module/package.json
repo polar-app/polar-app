@@ -3,8 +3,8 @@
   "version": "2.1.107",
   "description": "A module to create polar-modules",
   "scripts": {
-    "test": "if [ -z $(find . -name '**Test.js') ]; then echo 'No Tests Found!!'; else yarn run mocha; fi;",
-    "mocha": "mocha --timeout 20000 --exit **/**/*Test.js",
+    "test": "if [ -z \"$(find src -name '**Test.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;",
+    "mocha": "mocha --timeout 20000 --exit './{,!(node_modules)/**}/*Test.js'",
     "eslint": "eslint -c ./.eslintrc.json .",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix",
     "compile": "tsc",
@@ -14,6 +14,13 @@
   "bin": {
     "polar-create-module": "./bin/polar-create-module"
   },
+  "dependencies": {
+    "polar-shared": "^2.1.107"
+  },
   "author": "Polar",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "polar-eslint": "^2.1.107",
+    "polar-typescript": "^2.1.107"
+  }
 }
