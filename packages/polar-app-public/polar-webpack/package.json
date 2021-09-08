@@ -1,11 +1,8 @@
 {
   "name": "polar-webpack",
-  "version": "2.1.99",
+  "version": "2.1.107",
   "description": "Basic webpack dependencies and utilities.",
-  "scripts": {
-    "test": "echo",
-    "compile": "echo"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -35,5 +32,6 @@
     "webpack-merge": "=5.2.0",
     "workbox-webpack-plugin": "=6.1.2",
     "worker-loader": "=3.0.5"
-  }
+  },
+  "devDependencies": {}
 }

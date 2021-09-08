@@ -10,7 +10,7 @@ import V2PlanPro = Billing.V2PlanPro;
 const email = "getpolarized.test+test@gmail.com";
 process.env.STRIPE_TEST = 'true';
 
-describe('Stripe', function() {
+xdescribe('Stripe', function() {
 
     it("basic", async function() {
         this.timeout(60000);

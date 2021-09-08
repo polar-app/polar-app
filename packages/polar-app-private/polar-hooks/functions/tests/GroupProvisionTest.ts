@@ -1,9 +1,7 @@
 import {FirebaseAdmin} from 'polar-firebase-admin/src/FirebaseAdmin';
-import {GroupProvisionRequest} from '../impl/groups/GroupProvisionFunction';
-import {GroupProvisionFunctions} from '../impl/groups/GroupProvisionFunction';
+import {GroupProvisionFunctions, GroupProvisionRequest} from '../impl/groups/GroupProvisionFunction';
 import {IDUsers} from '../impl/util/IDUsers';
-import {GroupJoinFunctions} from '../impl/groups/GroupJoinFunction';
-import {GroupJoinRequest} from '../impl/groups/GroupJoinFunction';
+import {GroupJoinFunctions, GroupJoinRequest} from '../impl/groups/GroupJoinFunction';
 import {GroupIDStr} from '../impl/groups/db/Groups';
 import {UserRefs} from '../impl/groups/db/UserRefs';
 
@@ -12,7 +10,7 @@ const FIREBASE_USER2 = "getpolarized.test+test1@gmail.com";
 
 process.env.POLAR_TEST_PROJECT = "polar-test2";
 
-xdescribe('GroupProvision', async function() {
+xdescribe('GroupProvision', function() {
 
     before(async function () {
 

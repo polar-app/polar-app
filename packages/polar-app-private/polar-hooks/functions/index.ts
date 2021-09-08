@@ -36,7 +36,8 @@ import {SSRFunction} from "./impl/ssr/SSRFunction";
 import {BlockPermissionFunction} from "./impl/blocks/BlockPermissionFunction";
 import {NSpaceCreateFunctions} from "./impl/blocks/NSpaceCreateFunctions";
 import {NSpaceCreateFunction} from "./impl/blocks/NSpaceFunction";
-import {DocumentIndexer} from "./impl/ai/DocumentIndexer";
+import {AnswerIndexerFunction} from "./impl/ai/AnswerIndexerFunction";
+import {AnswerExecutorFunction} from "./impl/ai/AnswerExecutorFunction";
 
 // import {DocPreviewFunction} from "./impl/docs/DocPreviewFunctions";
 // import {DocPreviewSitemapFunction} from "./impl/sitemaps/DocPreviewSitemapFunction";
@@ -82,4 +83,5 @@ exports.AppstoreServerNotification = AppstoreServerNotification;
 exports.SSRFunction = SSRFunction;
 exports.BlockPermissionFunction = BlockPermissionFunction;
 exports.NSpaceCreateFunction = NSpaceCreateFunction
-exports.DocumentIndexer = DocumentIndexer
+exports.AnswerIndexer = AnswerIndexerFunction
+exports.AnswerExecutor = AnswerExecutorFunction;

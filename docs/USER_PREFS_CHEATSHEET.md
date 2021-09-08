@@ -1,5 +1,7 @@
 We need an easy way to have user prefs and feature toggles.  
 
+A feature toggle is a way to opt-in to new functionality without having to turn off our old functionality.
+
 Right now we have the following hooks and components
 
 usePrefsContext()

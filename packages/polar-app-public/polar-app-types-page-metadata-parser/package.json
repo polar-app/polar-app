@@ -1,14 +1,12 @@
 {
   "name": "@types/page-metadata-parser",
-  "version": "2.1.99",
+  "version": "2.1.107",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo nothing to test",
-    "compile": "echo nothing to compile"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "types": "index"
+  "types": "index",
+  "devDependencies": {}
 }

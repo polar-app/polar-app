@@ -2,3 +2,6 @@
 node_modules
 *.js
 *.d.ts
+
+tsconfig.tsbuildinfo
+.webpack-cache-loader

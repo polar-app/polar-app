@@ -1,14 +1,14 @@
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {Lazy} from "../util/Lazy";
 import {StripeChangePlans} from "./StripeChangePlans";
-import { Billing } from "polar-accounts/src/Billing";
+import {Billing} from "polar-accounts/src/Billing";
 import {StripeCustomers} from "./StripeCustomers";
 import {StripeUtils} from "./StripeUtils";
-import { Stripe } from "stripe";
+import {Stripe} from "stripe";
 
 const firebaseProvider = Lazy.create(() => FirebaseAdmin.app());
 
-describe('StripeChangePlans', function() {
+xdescribe('StripeChangePlans', function() {
 
     this.timeout(30000);
     it("basic", async function() {

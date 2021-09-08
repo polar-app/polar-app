@@ -1,6 +1,4 @@
-import {assert} from 'chai';
-import {Mailchimp} from './Mailchimp';
-import {Mandrill, EmailAddress} from "./Mandrill";
+import {EmailAddress, Mandrill} from "./Mandrill";
 
 describe('Mandrill', function() {
 

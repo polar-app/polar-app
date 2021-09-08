@@ -3,9 +3,26 @@ import {RingBuffers} from "./RingBuffers";
 
 describe('RingBuffers', function() {
 
+    describe('toArray', () => {
+
+        it("0", function() {
+            const ringBuffer = RingBuffers.create<string>(2);
+            assert.deepEqual(ringBuffer.toArray(), []);
+        });
+
+        it("1", function() {
+            const ringBuffer = RingBuffers.create<string>(2);
+            ringBuffer.push('a');
+            assert.deepEqual(ringBuffer.toArray(), ['a']);
+            assert.deepEqual(ringBuffer.toArray().length, 1);
+        });
+
+    });
+
     describe('basic', function() {
 
-        it("basic", function() {
+
+        it("extensive tests", function() {
 
             const ringBuffer = RingBuffers.create<string>(2);
             assert.isUndefined(ringBuffer.prev());

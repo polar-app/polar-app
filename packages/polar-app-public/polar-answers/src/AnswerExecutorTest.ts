@@ -3,8 +3,9 @@ import {AnswerExecutor} from "./AnswerExecutor";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Mappers} from "polar-shared/src/util/Mapper";
+import {IAnswerExecutorError} from "polar-answers-api/src/IAnswerExecutorResponse";
 
-xdescribe("AnswerExecutor", async function () {
+xdescribe("AnswerExecutor", function () {
 
     this.timeout(600000);
 
@@ -31,11 +32,21 @@ xdescribe("AnswerExecutor", async function () {
             question
         });
 
-        console.log("answer: ", Arrays.first(response.answers))
+        function isError(value: any): value is IAnswerExecutorError {
+            return value.error;
+        }
 
-        console.log("response: " + JSON.stringify(response, null, '  '));
+        if (! isError(response)) {
 
-        return response.answers[0];
+            console.log("answer: ", Arrays.first(response.answers))
+
+            console.log("response: " + JSON.stringify(response, null, '  '));
+
+            return response.answers[0];
+
+        } else {
+            throw new Error(response.error);
+        }
 
     }
 
@@ -275,7 +286,7 @@ xdescribe("AnswerExecutor", async function () {
 
     });
 
-    xdescribe("US history", async function () {
+    xdescribe("US history", function () {
 
         it("US history chap 1 #1", async function () {
 
@@ -606,7 +617,7 @@ xdescribe("AnswerExecutor", async function () {
         })
     });
 
-    xdescribe("Astronomy", async function(){
+    xdescribe("Astronomy", function(){
         // Chapter 2
         it("astronomy Chapter 2 #1", async function() {
             await assertQuestionAndAnswer("What fraction of the sky can be seen from the North Pole?", [
@@ -773,7 +784,7 @@ xdescribe("AnswerExecutor", async function () {
             ]);
         })
     })
-    xdescribe('Elmer Candy Corporation', async () => {
+    xdescribe('Elmer Candy Corporation', () => {
         it("Who founded the Elmer Candy Corporation?", async function () {
             await assertQuestionAndAnswer("Who founded the Elmer Candy Corporation?", [
                 "Christopher Henry Miller"
@@ -798,7 +809,7 @@ xdescribe("AnswerExecutor", async function () {
         })
     });
 
-    xdescribe('Visa Policy of Venezuela', async () => {
+    xdescribe('Visa Policy of Venezuela', () => {
         it("Which are the visa exempt countries for entry in Venezuela?", async function () {
             // @TODO the right answer is a list of ~60 jurisdictions where "All European Union citizens"
             // @TODO is the first element of the list. OpenAI thinks it's the only right answer though. Figure out why.
