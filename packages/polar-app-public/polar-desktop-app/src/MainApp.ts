@@ -41,7 +41,7 @@ namespace AppListeners {
 
     export function registerSecondInstance() {
 
-        app.on('second-instance', async (event, commandLine) => {
+        app.on('second-instance', (event, commandLine) => {
 
             console.log("Someone opened a second instance with commandLine args: ", commandLine);
 
@@ -98,7 +98,7 @@ namespace AppListeners {
 
     export function registerActivate() {
 
-        app.on('activate', async function() {
+        app.on('activate', function() {
 
             // On OS X it's common to re-create a window in the app when the
             // dock icon is clicked and there are no other windows open. The
