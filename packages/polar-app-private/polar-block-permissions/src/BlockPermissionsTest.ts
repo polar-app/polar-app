@@ -15,23 +15,31 @@ import {BlockPermissionMap} from "polar-firebase/src/firebase/om/IBlockPermissio
 import {FirebaseBrowserTesting} from "polar-firebase-browser/src/firebase/FirebaseBrowserTesting";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 import {assert} from 'chai';
-import {Asserts} from "polar-shared/src/Asserts";
 
 // TODO: more tests
 //
 // - multiple users
 // - compute the effective permissions when namespaces and page permissions are set in both situations
-// - remove someone from permissions and make so those are removed.
 
 describe("BlockPermissions", function() {
 
     this.timeout(10000);
 
+    interface CreateBlockIDOpts {
+        readonly key: string;
+        readonly uid: string;
+    }
+
+    async function createBlockID(opts: CreateBlockIDOpts) {
+        const r = Math.random() * 10000;
+        return Hashcodes.createID({uid: opts.uid, key: opts.key, r});
+    }
+
     it("basic with empty permissions", async function() {
 
         const firestore = FirestoreAdmin.getInstance();
         const uid = await getUserIDByEmail(FirebaseTestingUsers.FIREBASE_USER);
-        const blockID = Hashcodes.createID({uid, key: '0x0001'});
+        const blockID = await createBlockID({uid, key: '0x0001'});
         const block = createFakePageBlock(blockID, uid);
 
         await doCleanup(uid, blockID, undefined, [uid]);
@@ -52,7 +60,7 @@ describe("BlockPermissions", function() {
 
         const firestore = FirestoreAdmin.getInstance();
         const uid = await getUserIDByEmail(FirebaseTestingUsers.FIREBASE_USER);
-        const blockID = Hashcodes.createID({uid, key: '0x0001'});
+        const blockID = await createBlockID({uid, key: '0x0001'});
         const block = createFakePageBlock(blockID, uid);
         const user0 = await getUserIDByEmail(FirebaseTestingUsers.FIREBASE_USER1);
 
@@ -74,7 +82,7 @@ describe("BlockPermissions", function() {
         const blockPermission = await BlockPermissionCollection.get(firestore, block.id)
 
         assertJSON(canonicalizeUpdated(blockPermission), {
-            "id": "12TthmtosP",
+            "id": blockID,
             "permissions": {
                 "rgLitBszZKagk0Q5C5hBccYKVMd2": {
                     "access": "read",
@@ -107,7 +115,7 @@ describe("BlockPermissions", function() {
 
         const firestore = FirestoreAdmin.getInstance();
         const uid = await getUserIDByEmail(FirebaseTestingUsers.FIREBASE_USER);
-        const blockID = Hashcodes.createID({uid, key: '0x0001'});
+        const blockID = await createBlockID({uid, key: '0x0001'});
         const block = createFakePageBlock(blockID, uid);
         const user0 = await getUserIDByEmail(FirebaseTestingUsers.FIREBASE_USER1);
 
@@ -124,7 +132,7 @@ describe("BlockPermissions", function() {
         });
 
         assertJSON(canonicalizeUpdated(await BlockPermissionCollection.get(firestore, block.id)), {
-            "id": "12TthmtosP",
+            "id": blockID,
             "permissions": {
                 "rgLitBszZKagk0Q5C5hBccYKVMd2": {
                     "access": "read",
@@ -145,7 +153,7 @@ describe("BlockPermissions", function() {
         });
 
         assertJSON(canonicalizeUpdated(await BlockPermissionCollection.get(firestore, block.id)), {
-            "id": "12TthmtosP",
+            "id": blockID,
             "permissions": {
                 "rgLitBszZKagk0Q5C5hBccYKVMd2": {
                     "access": "write",
@@ -280,7 +288,7 @@ describe("BlockPermissions", function() {
 
             const namespaceID = uidA;
 
-            const blockID = Hashcodes.createID({uid: uidA, key: '0x0001'});
+            const blockID = await createBlockID({uid: uidA, key: '0x0001'});
 
             await doCleanup(uidA, blockID, namespaceID, [uidA, uidB]);
 

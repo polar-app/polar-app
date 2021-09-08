@@ -34,7 +34,8 @@
     "import/newline-after-import": "error",
     "import/no-cycle": "error",
     "import/no-absolute-path": "error",
-    "no-inner-declarations": "off"
+    "no-inner-declarations": "off",
+    "no-useless-constructor": "off"
   },
   "ignorePatterns": [
     "dist",
