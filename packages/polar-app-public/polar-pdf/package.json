@@ -4,8 +4,8 @@
   "description": "Provides support for parsing and working with PDFs.",
   "main": "index.js",
   "scripts": {
-    "test": "if [ -z \"$(find src -name '**Test.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;",
-    "mocha": "mocha --timeout 20000 --exit './{,!(node_modules)/**}/*Test.js'",
+    "test": "if [ -z \"$(find . -name '*Test.js' -o -name '*TestN.js' -o -name '*TestNK.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;",
+    "mocha": "mocha -p --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
     "karma": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
     "compile": "tsc",
     "eslint": "eslint -c ./.eslintrc.json .",
@@ -17,9 +17,9 @@
   "devDependencies": {
     "@types/chai": "4.2.11",
     "@types/jsdom": "=16.12.13",
-    "@types/mocha": "=8.2.2",
+    "@types/mocha": "=9.0.0",
     "chai": "4.2.0",
-    "mocha": "=9.0.0",
+    "mocha": "=9.1.1",
     "polar-karma": "^2.1.107",
     "polar-webpack": "^2.1.107",
     "tslint": "6.1.2",

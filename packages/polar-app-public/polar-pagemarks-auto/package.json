@@ -4,9 +4,9 @@
   "description": "Computes pagemarks within a parent while it scrolls.",
   "main": "index.js",
   "scripts": {
-    "test": "if [ -z \"$(find src -name '**Test.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;",
+    "test": "if [ -z \"$(find . -name '*Test.js' -o -name '*TestN.js' -o -name '*TestNK.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;",
     "compile": "tsc",
-    "mocha": "mocha --timeout 20000 --exit './{,!(node_modules)/**}/*Test.js'",
+    "mocha": "mocha -p --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
     "eslint": "eslint -c ./.eslintrc.json .",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix"
   },
@@ -15,9 +15,9 @@
   "license": "ISC",
   "devDependencies": {
     "@types/chai": "4.2.11",
-    "@types/mocha": "=8.2.2",
+    "@types/mocha": "=9.0.0",
     "chai": "4.2.0",
-    "mocha": "=9.0.0",
+    "mocha": "=9.1.1",
     "tslint": "6.1.2",
     "typescript": "=4.2.3",
     "polar-eslint": "^2.1.107",

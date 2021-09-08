@@ -25,6 +25,7 @@ interface Scripts {
 interface ICreateModuleConfig {
 
     readonly typescript?: 'disabled';
+    readonly noTests?: true;
 
 }
 
@@ -83,11 +84,15 @@ async function updateScripts(): Promise<void> {
 
         if (conf.typescript !== 'disabled') {
 
-            pkg.scripts.mocha = "mocha --timeout 20000 --exit './{,!(node_modules)/**}/*Test.js'"
+            pkg.scripts.mocha = "mocha -p --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'"
             pkg.scripts.eslint = "eslint -c ./.eslintrc.json .";
             pkg.scripts.eslintfix = "eslint -c ./.eslintrc.json . --fix";
-            pkg.scripts.test = "if [ -z \"$(find src -name '**Test.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;";
+            pkg.scripts.test = "if [ -z \"$(find . -name '*Test.js' -o -name '*TestN.js' -o -name '*TestNK.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;";
             pkg.scripts.compile = "tsc";
+
+            if (conf.noTests) {
+                pkg.scripts.test = "echo no tests";
+            }
 
             pkg.devDependencies['polar-eslint'] = `^${pkg.version}`;
             pkg.devDependencies['polar-typescript'] = `^${pkg.version}`;
