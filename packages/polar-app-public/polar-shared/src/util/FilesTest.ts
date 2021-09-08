@@ -16,7 +16,7 @@ xdescribe('Files', function() {
         Files.createDirSync(tmpdir);
     });
 
-    describe('atomic writes', async function() {
+    it('atomic writes', async function() {
 
         const tmp = FilePaths.join(tmpdir, 'files-atomic-write.txt');
         await Files.writeFileAsync(tmp, 'this is the data', {atomic: true});

@@ -8,7 +8,7 @@ import EXAMPLES = AnswerExecutor.EXAMPLES;
 import MAX_TOKENS = AnswerExecutor.MAX_TOKENS;
 import STOP = AnswerExecutor.STOP;
 
-xdescribe("OpenAIAnswersClient", async function() {
+xdescribe("OpenAIAnswersClient", function() {
 
     this.timeout(30000);
 

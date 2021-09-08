@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import {Mailchimp} from './Mailchimp';
 
-describe('Mailchimp', function() {
+xdescribe('Mailchimp', function() {
 
     it("basic", async function() {
 

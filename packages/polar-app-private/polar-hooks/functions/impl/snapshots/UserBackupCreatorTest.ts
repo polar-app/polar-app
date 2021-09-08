@@ -4,7 +4,7 @@ import {UserBackupCreator} from "./UserBackupCreator";
 
 const firebaseProvider = Lazy.create(() => FirebaseAdmin.app());
 
-describe('ArchiveStreams', function () {
+xdescribe('UserBackupCreator', function () {
 
     it("basic", async function () {
 
