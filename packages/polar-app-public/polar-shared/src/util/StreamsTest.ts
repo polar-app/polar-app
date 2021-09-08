@@ -78,7 +78,7 @@ describe('StreamsTest', function() {
 
     });
 
-    describe("LineSplitter", async function() {
+    describe("LineSplitter", function() {
 
         it("basic 1", async function() {
 

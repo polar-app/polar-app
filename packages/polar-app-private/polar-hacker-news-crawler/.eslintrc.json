@@ -33,7 +33,9 @@
     "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
     "import/newline-after-import": "error",
     "import/no-cycle": "error",
-    "import/no-absolute-path": "error"
+    "import/no-absolute-path": "error",
+    "no-inner-declarations": "off",
+    "no-useless-constructor": "off"
   },
   "ignorePatterns": [
     "dist",

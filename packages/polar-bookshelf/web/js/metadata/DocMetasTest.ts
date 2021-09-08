@@ -9,13 +9,16 @@ import {TextHighlights} from './TextHighlights';
 import {Pagemarks} from './Pagemarks';
 import {IDocMeta} from "polar-shared/src/metadata/IDocMeta";
 
-TestingTime.freeze();
-
 describe('DocMetas', function() {
 
     beforeEach(function() {
+        TestingTime.freeze();
         Pagemarks.sequences.id = 0;
         Pagemarks.sequences.batch = 0;
+    });
+
+    afterEach(() => {
+        TestingTime.unfreeze();
     });
 
     describe('deserialize/serialize strategies', function () {
