@@ -1,7 +1,6 @@
 import {assert} from 'chai';
 import {BrowserFilePaths, FilePaths} from './FilePaths';
 import {Files} from './Files';
-import {Platforms} from "./Platforms";
 
 describe('FilePaths', function() {
 
@@ -105,7 +104,7 @@ describe('FilePaths', function() {
 
     });
 
-    xdescribe('File URLs', async function() {
+    xdescribe('File URLs', function() {
 
         // xit('Test file URL', async function() {
         //
@@ -129,7 +128,7 @@ describe('FilePaths', function() {
 
     });
 
-    describe('toURL', async function() {
+    describe('toURL', function() {
 
         it('spaces and special chars but still valid.', async function() {
 

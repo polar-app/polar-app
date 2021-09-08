@@ -1,7 +1,7 @@
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
-import { ThreadingExecutorUsingMLT } from "./ThreadingExecutorUsingMLT";
+import {ThreadingExecutorUsingMLT} from "./ThreadingExecutorUsingMLT";
 
-xdescribe("ThreadingExecutorUsingMLT", async function() {
+xdescribe("ThreadingExecutorUsingMLT", function() {
 
     this.timeout(30000000);
 

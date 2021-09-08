@@ -28,7 +28,7 @@ export namespace ESShingleWriter {
 
     export function create(opts: ICreateOpts): IESShingleWriter {
 
-        let idx: number = 0;
+        let idx = 0;
 
         // TODO write this to support bulk indexing with a sync() method
 
