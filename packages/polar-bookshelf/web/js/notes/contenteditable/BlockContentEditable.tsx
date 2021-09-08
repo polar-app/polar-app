@@ -179,7 +179,12 @@ export const BlockContentEditable = (props: IProps) => {
                 const active = blocksTreeStore.active;
                 const isActive = active && active.id === props.id;
 
-                // Remove the cursor from the block if it's not active to prevent it from being reset to the start when innerHTML is set
+                /**
+                 * Remove the cursor from the block if it's not active to prevent it from being reset to the start when innerHTML is set
+                 * 
+                 * This is because of when we split the content of a block
+                 * the cursor gets reset to the start in that block before getting transferred to the new one.
+                 */
                 if (! isActive) {
                     div.blur();
                 }
