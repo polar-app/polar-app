@@ -4,10 +4,9 @@ import Menu from "@material-ui/core/Menu";
 import {IPoint} from "../../../../web/js/Point";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {createContextMenuStore} from "./MUIContextMenuStore";
-import { observer } from "mobx-react-lite"
+import {observer} from "mobx-react-lite"
 import {Devices} from 'polar-shared/src/util/Devices';
-import { makeStyles } from "@material-ui/core";
-import {useHistory} from "react-router-dom";
+import {makeStyles} from "@material-ui/core";
 import {useContextMenuHook} from "../../../../web/js/mui/hooks/useContextMenuHook";
 
 export namespace MouseEvents {
@@ -300,7 +299,7 @@ interface MUIContextMenuProps {
 }
 
 export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContextMenuProps) {
-    
+
     const handleClose = React.useCallback(() => {
         props.handleClose();
     }, [props])
