@@ -6,10 +6,10 @@
     "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "test": "RESULT=\"$(find . -name '**Test.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
     "clean": "rm -rf .webpack-cache-loader && rm -rf .terser-webpack-plugin && rm -rf dist && rm -rf polar-web-extension.zip",
-    "compile": "RESULT=\"$(find -name '*.ts' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;",
+    "compile": "RESULT=\"$(find -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;",
     "webpack": "npx webpack --config=webpack.config.js",
     "dist": "unset NODE_ENV && unset WEBPACK_TARGET && yarn run clean && yarn run webpack && ./dist.sh",
-    "mocha": "mocha --timeout 20000 --exit './{,!(node_modules)/**}/*Test.js'",
+    "mocha": "mocha --timeout 20000 --exit -p './{,!(node_modules)/**}/*Test.js'",
     "eslint": "eslint -c ./.eslintrc.json .",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix",
     "tsc": "tsc"

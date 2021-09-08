@@ -4,10 +4,10 @@
   "description": "A module to create polar-modules",
   "scripts": {
     "test": "RESULT=\"$(find . -name '**Test.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
-    "mocha": "mocha --timeout 20000 --exit './{,!(node_modules)/**}/*Test.js'",
+    "mocha": "mocha --timeout 20000 --exit -p './{,!(node_modules)/**}/*Test.js'",
     "eslint": "eslint -c ./.eslintrc.json .",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix",
-    "compile": "RESULT=\"$(find -name '*.ts' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;",
+    "compile": "RESULT=\"$(find -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;",
     "build": "echo '#!/usr/bin/env node' > ./bin/polar-create-module && cat src/CreateModule.js >> ./bin/polar-create-module",
     "publish": "yarn run build",
     "tsc": "tsc"

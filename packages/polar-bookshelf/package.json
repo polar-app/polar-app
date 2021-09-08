@@ -14,7 +14,7 @@
     "dist-webapp": "yarn run setup-dist-default && yarn run compile && yarn run publish-webapp",
     "dist": "yarn run build-webapp",
     "dist-prepare": "",
-    "compile": "RESULT=\"$(find -name '*.ts' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;",
+    "compile": "RESULT=\"$(find -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;",
     "compile-watch": "tsc --watch",
     "test-mocha": "npx mocha --exit --log-timer-events --recursive 'web/js/**/*Test.js'",
     "_test": "./scripts/test-runner.sh",
@@ -29,7 +29,7 @@
     "serve": "node scripts/serve.js",
     "karma": "../../node_modules/karma/bin/karma start",
     "karma:dev": "../../node_modules/karma/bin/karma start --browsers Chrome --singleRun false",
-    "mocha": "mocha --timeout 20000 --exit './{,!(node_modules)/**}/*Test.js'",
+    "mocha": "mocha --timeout 20000 --exit -p './{,!(node_modules)/**}/*Test.js'",
     "eslintfix": "eslint -c ./.eslintrc.json . --fix",
     "tsc": "tsc"
   },
