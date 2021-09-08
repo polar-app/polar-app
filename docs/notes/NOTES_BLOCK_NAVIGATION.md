@@ -22,14 +22,14 @@ This page contains information on how the navigation between separate blocks is 
 
 The way we keep track of the currently focused block is by using the `active` property in `BlocksStore` which is a mobx observable.
 
-The `BlockEditor` React component listens to changes to this property and focuses its *contenteditable* div when it matches the id of block that's being rendered (Refer to [keeping track of the active block](#keeping-track-of-the-active-block) for more info)
+The `BlockEditor` React component listens to changes to this property and focuses its *contenteditable* div when it matches the id of the block that's being rendered (Refer to [keeping track of the active block](#keeping-track-of-the-active-block) for more info)
 
 However 
 
 ## Keeping track of the active block
 As mentioned in [overview](#overview). The way we keep track of the active block is by using a **mobx observable property** in `BlocksStore` to which `BlockEditor` components (which render blocks) listen to for changes, and focuses the rendered block accordingly if the id matches.
 
-The `active` proeprty has the following structure
+The `active` property has the following structure
 
 ```ts
 type IActiveBlock = {
@@ -52,7 +52,7 @@ The way this works is that every time we wanna navigate to an adjacent block we 
 
 1. Grab the *ID* of the *currently active* block by using `BlocksStore.active`.
 2. Grab `BlocksStore.root` (which contains the ID of the root block that is currently being shown on screen) and build an array of all the *expanded* children by doing a *pre-order graph traversal* of the root block by using `BlocksStore.computeLinearTree` (refer to [notes design](./NOTES_DESIGN.md) for more info on the way blocks are stored).
-3. Find the *id* the of the *current block* within the array.
+3. Find the *id* of the *current block* within the array.
 4. Get the next/prev item (depending on the direction) and update `BlocksStore.active` with the new *block ID*.
 
 This worked fine for a while. but then we had to support navigating between the main note area and its references using the keyboard. Check screenshot below
@@ -74,15 +74,15 @@ Steps to navigate to an adjacent block.
 This was a lot better than V1 because now we can navigate between a note and its references seamlessly, and this also allowed us navigate between multiple notes that are shown on the same page.
 
 ### V3 (Relying on the DOM)
-One issue came up when we started adding annotation block contents to notes is that *flashcards* (specifically front/back flashcards) have *2 editable areas* (front & back) which are associated with the same block ID.
+One issue that came up when we started adding annotation block contents to notes is that *flashcards* (specifically front/back flashcards) have *2 editable areas* (front & back) which are associated with the same block ID.
 This meant that we can't rely on `BlocksStore.active` to focus blocks. Because we wouldn't know which editable area we're trying to focus.
 
-The steps to navigate between blocks is pretty similar to V2, but the last step is different.
+The steps to navigate between blocks are pretty similar to V2, but the last step is different.
 Instead of updating `BlocksStore.active` and letting mobx notify the associated component which in turn does the actual cursor update, we now focus the block immediately by using its DOM element, and we also update `BlocksStore.active` but without setting `active.pos` (because we don't want the component to update the cursor)
 
 One question one may have is that why do we still update `BlocksStore.active`. it's because selections still use this (refer to the [Selections](#selections) section for more info)
 
-**Note:** If we try to navigate down/up and there's no more blocks, we just send the cursor to the start/end of the current block (depending on the direction of the navigation).
+**Note:** If we try to navigate down/up and there're no more blocks, we just send the cursor to the start/end of the current block (depending on the direction of the navigation).
 
 ## Selections
 
@@ -112,7 +112,7 @@ Unlike [navigation](#navigation) which relies on the DOM. Selections are perform
 **Note:** If you want more info on `IActiveBlock` refer to [Keeping track of the active block](#keeping-track-of-the-active-block).
 
 Another difference from navigation is that selections are constrained by the root (which is stored in `selectedAnchor`).
-That means we cannot select blocks that from multiple roots (notes). Check screenshot below.
+That means we cannot select blocks that are from different roots (notes). Check screenshot below.
 
 ![](./assets/simple-notes-selection.png)
 

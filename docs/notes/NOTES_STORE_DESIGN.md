@@ -43,7 +43,7 @@ It also integrates with our blocks undo/redo system by pushing entries to it whe
 
 Keeping track of the root block (that is currently shown on screen) is necessary to perform actions like unindenting, splitting or merging blocks.
 
-For example let say we have the following note structure
+For example, let's say we have the following note structure
 
 ```
 - Mouse
@@ -52,11 +52,11 @@ For example let say we have the following note structure
 ```
 
 As you can see in the above example `Mouse` is the root block, and there can only be one **root** block in a **note**.
-Lets say we want to *unindent* the `Mice eat cheese` block, well we can't because where would it be transffered to.
+Letl's say we want to *unindent* the `Mice eat cheese` block, well we can't because where would it be transffered to.
 The `Mouse` block doesn't have a parent (which is one way of knowing that its children cannot be unindented).
 
 Our notes system however also supports viewing parts of a note, aside from viewing entire notes.
-This is where one issue arises. Lets say we have the following (which is a part of the previous note)
+This is where one issue arises. Let's say we have the following (which is a part of the previous note)
 
 ```
 - Mice eat cheese
@@ -65,16 +65,16 @@ This is where one issue arises. Lets say we have the following (which is a part 
 
 Right here it's technically possible and okay to unindent the `Cheese has holes` block because it would become a child of the `Mouse` block if we did. But that's not good in terms of UX because the block would simply disappear (since we're only viewing the `Mice eat cheese` tree).
 
-That's why we need to keep track of the currently visible root, so we can prevent the user from unindenting its children, or even creating sibling blocks (Because they wouldn't be visible on screen).
+That's why we need to keep track of the currently visible root, so we can prevent the user from unindenting its children, or even creating sibling blocks (Because they wouldn't be visible on-screen).
 
 **Solutions**
-In the first version the way this issue was solved is by adding a `root` *observable* property to `BlocksStore* which stores the *ID* of the root block that is currently visible on the screen.
+In the first version, the way this issue was solved is by adding a `root` *observable* property to `BlocksStore* which stores the *ID* of the root block that is currently visible on the screen.
 
 I'm pretty sure you've already spotted a problem with this approach. What if we want to show multiple roots on screen at the same time, which is the case.
 
-In our single note viewer we have to show the the note including its references which are separate root blocks, another example is our daily notes page.
+In our single note viewer, we have to show the note including its references which are separate root blocks, another example is our daily notes page.
 
-So this is where we had to completely remove the `root` property and instead pass a custom root to the methods that require a root block in order to do their job (eg: unindenting, splitting & merging).
+So this is where we had to completely remove the `root` property and instead pass a custom root to the methods that require a root block to do their job (eg: unindenting, splitting & merging).
 
 As an example, this is the function definition of the `unIndentBlock` method in `BlocksStore` which does exactly what the name implies.
 ```ts
@@ -82,13 +82,13 @@ public unIndentBlock(root: BlockIDStr, id: BlockIDStr): ReadonlyArray<DoUnIndent
 ```
 As you can see it accepts a root block.
 
-This particular solution was fine at first but it was kind of ugly, because now you have to pass a `root` argument to most *methods* in `BlocksStore`.
+This particular solution was fine at first but it was kind of ugly because now you have to pass a `root` argument to most *methods* in `BlocksStore`.
 
 Meet `BlocksTreeStore` which is a wrapper of `BlocksStore` that provides the root automatically for us.
-One catch though. You still have to give it a root when initializing it, which is currently being done in a hook `useBlocksTreeStore` that gets the root through **React's** *context* api.
+One catch though. You still have to give it a root when initializing it, which is currently being done in a hook `useBlocksTreeStore` that gets the root through **React's** *context* API.
 
 Example:
-Lets say we want to render our `Mice eat cheese` subtree.
+Let's say we want to render our `Mice eat cheese` subtree.
 Now we can do something like this.
 
 ```ts
