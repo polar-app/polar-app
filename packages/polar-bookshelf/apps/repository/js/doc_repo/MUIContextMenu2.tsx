@@ -301,8 +301,6 @@ interface MUIContextMenuProps {
 
 export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContextMenuProps) {
 
-    const history = useHistory();
-
     const handleClose = React.useCallback(() => {
         props.handleClose();
     }, [props])
