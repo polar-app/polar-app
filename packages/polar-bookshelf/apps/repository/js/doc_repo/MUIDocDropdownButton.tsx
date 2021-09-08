@@ -5,7 +5,6 @@ import grey from "@material-ui/core/colors/grey";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import {Callback1} from "polar-shared/src/util/Functions";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
-import {useContextMenuHook} from "../../../../web/js/mui/hooks/useContextMenuHook";
 
 interface IProps {
     readonly onClick: Callback1<React.MouseEvent>;
@@ -34,9 +33,6 @@ export const MUIDocDropdownButton = deepMemo(function MUIDocDropdownButton(props
             anchorEl: null
         });
     };
-
-    useContextMenuHook(handleClose);
-
     const {anchorEl} = state;
 
     return (

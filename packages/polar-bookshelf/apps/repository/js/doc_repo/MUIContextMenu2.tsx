@@ -300,12 +300,12 @@ interface MUIContextMenuProps {
 }
 
 export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContextMenuProps) {
-
+    
     const handleClose = React.useCallback(() => {
         props.handleClose();
     }, [props])
 
-    useContextMenuHook(handleClose);
+    const handleCloseFromHook = useContextMenuHook(handleClose);
 
     const handleContextMenu = React.useCallback((event: React.MouseEvent) => {
         // needed so that you can't bring up a native context menu on a context
@@ -337,8 +337,7 @@ export const MUIContextMenu = deepMemo(function MUIContextMenu(props: MUIContext
             anchorEl={props.anchorEl}
             open={true}
             style={{padding:0}}
-            onClose={handleClose}
-            onClick={handleClose}
+            onClose={handleCloseFromHook}
             BackdropProps={backdrops}
             onContextMenu={handleContextMenu}
             anchorReference="anchorPosition"

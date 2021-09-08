@@ -13,7 +13,7 @@ interface IProps {
 export const DocRepoDropdownMenu = deepMemo(function DocRepoDropdownMenu(props: IProps) {
     const {anchorEl} = props;
 
-    useContextMenuHook(props.onClose);
+    const handleCloseFromHook = useContextMenuHook(props.onClose);
     
     return (
         <Menu
@@ -24,8 +24,7 @@ export const DocRepoDropdownMenu = deepMemo(function DocRepoDropdownMenu(props: 
             anchorOrigin={{vertical: "bottom", horizontal: "center"}}
             transformOrigin={{vertical: "top", horizontal: "center"}}
             open={Boolean(anchorEl)}
-            onClose={() => props.onClose()}
-            onClick={() => props.onClose()}>
+            onClose={() => handleCloseFromHook()}>
 
             <MUIDocDropdownMenuItems/>
 

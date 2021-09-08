@@ -68,7 +68,6 @@ export class MUIDocContextMenu extends React.Component<IProps, IState> {
                         keepMounted
                         open={this.state.mouseX !== undefined}
                         onClose={() => handleClose()}
-                        onClick={() => handleClose()}
                         onContextMenu={handleContextMenu}
                         anchorReference="anchorPosition"
                         anchorPosition={{

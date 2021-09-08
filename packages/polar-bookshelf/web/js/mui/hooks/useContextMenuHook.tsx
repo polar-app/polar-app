@@ -1,25 +1,33 @@
+import { Devices } from 'polar-shared/src/util/Devices';
 import React from 'react';
-import {useHistory} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 
 export const useContextMenuHook = (handleClose: () => void) => {
 
     const history = useHistory();
-
-    const handleCloseWithReplace = React.useCallback((event) => {
-        if(event.keyCode === 27 || event.type=='popstate' ) {
-            history.goBack();
-            handleClose();
-        }
-    }, [history, handleClose]);
+    const location = useLocation();
+    
+    const ref = React.useRef(false);
+    const hash = React.useMemo(() => `#contextmenu${Date.now()}`, []);
     
     React.useEffect(()=>{
-        history.push({hash:`#prompt-${Date.now()}`})
+        // insert hash to url when opening the context menu
+        !Devices.isDesktop() && history.push({hash:hash})
     },[history]);
-    React.useEffect(()=>{
-        document.addEventListener("keydown", handleCloseWithReplace);
-        window.addEventListener("popstate", handleCloseWithReplace);        
-        return () => {
-            window.removeEventListener("popstate", handleCloseWithReplace);
-        };
-    },[handleCloseWithReplace]);
+
+    React.useEffect(() => {
+        if (location.hash === hash && !ref.current) {
+            ref.current = true;
+        }
+        if (location.hash !== hash && ref.current && !Devices.isDesktop()){
+            handleClose();
+        }
+    }, [location.hash, hash]);
+
+    const handleCloseWithGoBack = React.useCallback(() => {
+        handleClose();
+        history.goBack();
+    }, [history])
+
+    return Devices.isDesktop()? handleClose : handleCloseWithGoBack;
 }
