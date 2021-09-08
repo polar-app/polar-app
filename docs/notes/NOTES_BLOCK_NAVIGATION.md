@@ -112,7 +112,7 @@ Unlike [navigation](#navigation) which relies on the DOM. Selections are perform
 **Note:** If you want more info on `IActiveBlock` refer to [Keeping track of the active block](#keeping-track-of-the-active-block).
 
 Another difference from navigation is that selections are constrained by the root (which is stored in `selectedAnchor`).
-That means we cannot select blocks that belong to multiple roots (notes). Check screenshot below.
+That means we cannot select blocks that from multiple roots (notes). Check screenshot below.
 
 ![](./assets/simple-notes-selection.png)
 
