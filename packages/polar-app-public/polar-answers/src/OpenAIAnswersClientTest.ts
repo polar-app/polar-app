@@ -1,12 +1,12 @@
 import {OpenAIAnswersClient} from "./OpenAIAnswersClient";
 import {AnswerExecutor} from "./AnswerExecutor";
+import {assert} from "chai";
 import SEARCH_MODEL = AnswerExecutor.SEARCH_MODEL;
 import MODEL = AnswerExecutor.MODEL;
 import EXAMPLES_CONTEXT = AnswerExecutor.EXAMPLES_CONTEXT;
 import EXAMPLES = AnswerExecutor.EXAMPLES;
 import MAX_TOKENS = AnswerExecutor.MAX_TOKENS;
 import STOP = AnswerExecutor.STOP;
-import {assert} from "chai";
 
 xdescribe("OpenAIAnswersClient", async function() {
 
@@ -59,6 +59,35 @@ xdescribe("OpenAIAnswersClient", async function() {
             });
 
         });
+
+        it("with N = 1", async function() {
+
+            const question = "Who run's the Space Program?";
+
+            const documents: ReadonlyArray<string> = [
+                "NASA runs the space program."
+            ];
+
+            const request: OpenAIAnswersClient.IRequest = {
+                search_model: SEARCH_MODEL,
+                model: MODEL,
+                question,
+                examples_context: EXAMPLES_CONTEXT,
+                examples: EXAMPLES,
+                max_tokens: MAX_TOKENS,
+                stop: STOP,
+                documents,
+                n: 1,
+                temperature: 0
+            }
+
+            const answerResponse = await OpenAIAnswersClient.exec(request);
+
+            assert.equal(answerResponse.answers.length, 1);
+            assert.equal(answerResponse.answers[0], "NASA.");
+
+        });
+
 
     });
 

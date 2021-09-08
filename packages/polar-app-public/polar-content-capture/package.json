@@ -4,8 +4,11 @@
   "description": "Basic code to dump the browser DOM to a JSON object that we can use within Polar",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
-    "compile": "tsc"
+    "test": "if [ -z \"$(find src -name '**Test.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;",
+    "compile": "tsc",
+    "mocha": "mocha --timeout 20000 --exit './{,!(node_modules)/**}/*Test.js'",
+    "eslint": "eslint -c ./.eslintrc.json .",
+    "eslintfix": "eslint -c ./.eslintrc.json . --fix"
   },
   "keywords": [],
   "author": "",
@@ -21,7 +24,9 @@
     "polar-test": "^2.1.107",
     "tslint": "6.1.2",
     "typescript": "=4.2.3",
-    "wait-for-expect": "3.0.1"
+    "wait-for-expect": "3.0.1",
+    "polar-eslint": "^2.1.107",
+    "polar-typescript": "^2.1.107"
   },
   "dependencies": {
     "jszip": "=3.5.0",

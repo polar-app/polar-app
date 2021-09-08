@@ -5,7 +5,12 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "cdk": "cdk"
+    "cdk": "cdk",
+    "test": "if [ -z \"$(find src -name '**Test.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;",
+    "mocha": "mocha --timeout 20000 --exit './{,!(node_modules)/**}/*Test.js'",
+    "eslint": "eslint -c ./.eslintrc.json .",
+    "eslintfix": "eslint -c ./.eslintrc.json . --fix",
+    "compile": "tsc"
   },
   "devDependencies": {
     "@aws-cdk/assert": "^1.117.0",
@@ -15,7 +20,9 @@
     "esbuild": "^0.12.19",
     "firebase-admin": "=9.11.0",
     "ts-node": "^10.2.0",
-    "typescript": "=4.2.3"
+    "typescript": "=4.2.3",
+    "polar-eslint": "^2.1.107",
+    "polar-typescript": "^2.1.107"
   },
   "dependencies": {
     "@aws-cdk/aws-apigateway": "^1.117.0",
@@ -24,6 +31,10 @@
     "@types/node-fetch": "2.5.7",
     "firebase": "=8.8.1",
     "node-fetch": "=2.6.1",
-    "source-map-support": "=0.5.19"
+    "source-map-support": "=0.5.19",
+    "polar-firebase": "^2.1.107",
+    "polar-accounts": "^2.1.107",
+    "polar-admin": "^2.1.107",
+    "polar-hooks-functions": "^2.1.107"
   }
 }

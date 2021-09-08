@@ -2,15 +2,13 @@
   "name": "polar-mocha",
   "version": "2.1.107",
   "description": "Basic mocha dependencies and utilities.",
-  "scripts": {
-    "test": "echo",
-    "compile": "echo"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@types/mocha": "=8.2.2",
     "mocha": "=9.0.0"
-  }
+  },
+  "devDependencies": {}
 }
