@@ -14,3 +14,4 @@
 1. [Design](./NOTES_DESIGN.md)
 2. [Store Design](./NOTES_STORE_DESIGN.md)
 3. [Block Navigation](./NOTES_BLOCK_NAVIGATION.md)
+4. [Content Editable](./NOTES_CONTENTEDITABLE.md)
