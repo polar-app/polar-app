@@ -14,12 +14,12 @@
     "dist-webapp": "yarn run setup-dist-default && yarn run compile && yarn run publish-webapp",
     "dist": "yarn run build-webapp",
     "dist-prepare": "",
-    "compile": "tsc",
+    "compile": "RESULT=\"$(find -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;",
     "compile-watch": "tsc --watch",
     "test-mocha": "npx mocha --exit --log-timer-events --recursive 'web/js/**/*Test.js'",
     "_test": "./scripts/test-runner.sh",
     "___test": "mocha --timeout 20000 --exit 'web/js/**/*Test.js' 'apps/**/*Test.js'",
-    "test": "if [ -z \"$(find . -name '*Test.js' -o -name '*TestN.js' -o -name '*TestNK.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;",
+    "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
     "__test": "scripts/test.sh",
     "tslint": "tslint --project tsconfig.json --config tslint.yaml",
     "eslint": "eslint -c ./.eslintrc.json .",
@@ -30,7 +30,8 @@
     "karma": "../../node_modules/karma/bin/karma start",
     "karma:dev": "../../node_modules/karma/bin/karma start --browsers Chrome --singleRun false",
     "mocha": "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
-    "eslintfix": "eslint -c ./.eslintrc.json . --fix"
+    "eslintfix": "eslint -c ./.eslintrc.json . --fix",
+    "tsc": "tsc"
   },
   "repository": "https://github.com/burtonator/polar-bookshelf",
   "keywords": [

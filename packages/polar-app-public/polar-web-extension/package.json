@@ -4,14 +4,15 @@
   "description": "https://github.com/yeoman/generator-chrome-extension",
   "scripts": {
     "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
-    "test": "if [ -z \"$(find . -name '*Test.js' -o -name '*TestN.js' -o -name '*TestNK.js')\" ]; then echo 'No tests'; else yarn run mocha; fi;",
+    "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
     "clean": "rm -rf .webpack-cache-loader && rm -rf .terser-webpack-plugin && rm -rf dist && rm -rf polar-web-extension.zip",
-    "compile": "tsc",
+    "compile": "RESULT=\"$(find -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;",
     "webpack": "npx webpack --config=webpack.config.js",
     "dist": "unset NODE_ENV && unset WEBPACK_TARGET && yarn run clean && yarn run webpack && ./dist.sh",
     "mocha": "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
     "eslint": "eslint -c ./.eslintrc.json .",
-    "eslintfix": "eslint -c ./.eslintrc.json . --fix"
+    "eslintfix": "eslint -c ./.eslintrc.json . --fix",
+    "tsc": "tsc"
   },
   "author": "",
   "license": "ISC",
