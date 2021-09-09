@@ -34,7 +34,6 @@
     "polar-blocks": "^2.1.107",
     "polar-firebase": "^2.1.107",
     "polar-firestore-like": "^2.1.107",
-    "polar-shared": "^2.1.107",
-    "polar-test": "^2.1.107"
+    "polar-shared": "^2.1.107"
   }
 }

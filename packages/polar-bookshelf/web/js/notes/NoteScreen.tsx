@@ -10,13 +10,12 @@ import {NoteStyle} from "./NoteStyle";
 import {NoteSelectionHandler} from "./NoteSelectionHandler";
 import {ActionMenuPopup} from "../mui/action_menu/ActionMenuPopup";
 import {ActionMenuStoreProvider} from "../mui/action_menu/ActionStore";
-import {NotesToolbar} from "./NotesToolbar";
 import {createStyles, makeStyles} from "@material-ui/core";
 import {NoteRepoScreen} from './NoteRepoScreen';
 import {DailyNotesScreen} from './DailyNotesScreen';
 import {SingleNoteScreen} from './SingleNoteScreen';
 import {SideCar} from '../sidenav/SideNav';
-import { RoutePathnames } from '../apps/repository/RoutePathnames';
+import {RoutePathnames} from '../apps/repository/RoutePathnames';
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -38,7 +37,6 @@ export const NoteProviders: React.FC = ({ children }) => {
             <NoteSelectionHandler style={{ height: '100%' }}>
                 <NoteStyle>
                     <MUIBrowserLinkStyle className={classes.noteOuter}>
-                        <NotesToolbar />
                         {children}
                         <ActionMenuPopup />
                     </MUIBrowserLinkStyle>

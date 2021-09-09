@@ -57,7 +57,8 @@ const AnnotationPopupContents = React.forwardRef<HTMLDivElement>((_, ref) => {
     const classes = useAnnotationPopupStyles();
     return (
         <div
-            className={clsx(classes.outer, { ["flipped"]: IS_HANDHELD })} ref={ref}
+            ref={ref}
+            className={clsx(classes.outer, { ["flipped"]: IS_HANDHELD })}
             // Abort all events to prevent accidentally triggering selection events
             // when interacting with the annotation bar
             onMouseDown={stopPropagation}
