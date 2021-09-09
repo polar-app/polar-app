@@ -142,6 +142,9 @@ export namespace AnswerExecutor {
 
             const esResponse = esResponseWithDuration.value;
 
+            // TODO: record the TOTAL number of documents found by ES.  For
+            // something like 'planet' we would have to re-rank.
+
             // I believe the non-deterministic results you see might be caused by
             // the order in which the documents selected by the Answers endpoint are
             // inserted into the final completion prompt (Answers endpoint is
