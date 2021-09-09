@@ -1,34 +1,26 @@
 import React from 'react';
-import {useHistory} from "react-router-dom";
-import {ConfirmDialog} from "../../../web/js/ui/dialogs/ConfirmDialog";
 import {useLogoutCallback} from "../../../web/js/accounts/AccountHooks";
+import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers";
 
 export const LogoutDialog = () => {
 
-    const history = useHistory();
     const doLogout = useLogoutCallback();
 
-    function goBack() {
-        history.replace({hash: ""});
-    }
+    const dialogManager = useDialogManager();
 
-    function handleClose() {
-        goBack();
-    }
-
-    function handleLogout() {
-        goBack();
+    const handleLogout = React.useCallback(() => {
         doLogout();
-    }
+    }, []);
 
     console.log("Asking user if they want to logout");
 
-    return (
-        <ConfirmDialog type='danger' id={'#logout'}
-                       title="Are you sure you want to logout?"
-                       subtitle="Just wanted to double check. Are you sure you want to logout?"
-                       onCancel={handleClose}
-                       onAccept={handleLogout}/>
-    )
+    React.useEffect(() => {
+        dialogManager.confirm({
+            type: 'danger',
+            title: "Are you sure you want to logout?",
+            subtitle: "Just wanted to double check. Are you sure you want to logout?",
+            onAccept: handleLogout
+        });
+    }, [dialogManager]);
 
 }

@@ -11,9 +11,9 @@ import {InputCompleteListener, InputCompletionType} from "../../mui/complete_lis
 import {WithDeactivatedKeyboardShortcuts} from "../../keyboard_shortcuts/WithDeactivatedKeyboardShortcuts";
 import {MUIDialog} from "./MUIDialog";
 import {deepMemo} from "../../react/ReactUtils";
-import { ClassNameMap } from '@material-ui/styles';
-import { DialogClassKey } from '@material-ui/core';
-import { useHistory, useLocation } from 'react-router-dom';
+import {ClassNameMap} from '@material-ui/styles';
+import {DialogClassKey} from '@material-ui/core';
+import {useHistory, useLocation} from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -119,7 +119,9 @@ export const ConfirmDialog = deepMemo(function ConfirmDialog(props: ConfirmDialo
 
     }, [history, location, props.id, open]);
 
-    const handleClose = React.useCallback((event: any, reason: 'backdropClick' | 'escapeKeyDown' | undefined) => {
+    type DismissReason = 'backdropClick' | 'escapeKeyDown' | 'cancel' | undefined;
+
+    const doDismiss = React.useCallback((reason: DismissReason) => {
 
         if (reason !== undefined) {
             onCancel();
@@ -129,12 +131,20 @@ export const ConfirmDialog = deepMemo(function ConfirmDialog(props: ConfirmDialo
         history.replace({hash: ''});
 
         setOpen(false);
-    }, [onCancel, history]);
+
+    }, [onCancel, history, setOpen]);
+
+    const handleClose = React.useCallback((event: any, reason: DismissReason) => {
+
+        doDismiss(reason);
+
+    }, [onCancel]);
 
     const handleCancel = React.useCallback(() => {
-        setOpen(false);
-        onCancel();
-    }, [onCancel]);
+
+        doDismiss('cancel');
+
+    }, [doDismiss]);
 
     const handleAccept = React.useCallback(() => {
         setOpen(false);
