@@ -14,7 +14,6 @@ const MAX_DOCS_PER_REQUEST = 200;
  */
 export namespace OpenAISearchReRanker {
 
-
     import IOpenAISearchDoc = OpenAISearchClient.IOpenAISearchDoc;
 
     export async function exec(model: AIModel,
