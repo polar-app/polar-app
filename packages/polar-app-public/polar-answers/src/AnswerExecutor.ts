@@ -12,6 +12,7 @@ import {
 import {IAnswerDigestRecord} from "polar-answers-api/src/IAnswerDigestRecord";
 import {ISelectedDocument} from "polar-answers-api/src/ISelectedDocument";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 
 export namespace AnswerExecutor {
 
@@ -75,8 +76,6 @@ export namespace AnswerExecutor {
     export async function exec(opts: IExecOpts): Promise<IAnswerExecutorResponse | IAnswerExecutorError> {
 
         const {question, uid} = opts;
-
-        // FIXME: is the right ansewr the FIRST or LAST?
 
         interface DocumentResults {
             readonly duration: number;
@@ -177,6 +176,7 @@ export namespace AnswerExecutor {
         // make sense?
 
         // tslint:disable-next-line:variable-name
+        // eslint-disable-next-line camelcase
         const search_model = opts.search_model || SEARCH_MODEL;
         const model = opts.model || MODEL;
 
@@ -218,12 +218,15 @@ export namespace AnswerExecutor {
             }
         }
 
+        const id = Hashcodes.createRandomID2().substring(0, 10);
+
         const timings: ITimings = {
             documents: duration,
             openai: answerResponseWithDuration.duration
         }
 
         return {
+            id,
             question,
             selected_documents: answerResponse.selected_documents.map(convertToSelectedDocumentWithRecord),
             answers: answerResponse.answers,
