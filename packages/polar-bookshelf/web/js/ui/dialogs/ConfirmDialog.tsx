@@ -11,8 +11,9 @@ import {InputCompleteListener, InputCompletionType} from "../../mui/complete_lis
 import {WithDeactivatedKeyboardShortcuts} from "../../keyboard_shortcuts/WithDeactivatedKeyboardShortcuts";
 import {MUIDialog} from "./MUIDialog";
 import {deepMemo} from "../../react/ReactUtils";
-import { ClassNameMap } from '@material-ui/styles';
-import { DialogClassKey } from '@material-ui/core';
+import {ClassNameMap} from '@material-ui/styles';
+import {DialogClassKey} from '@material-ui/core';
+import {useHistory, useLocation} from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -93,28 +94,57 @@ export interface ConfirmDialogProps {
     readonly inputCompletionType?: InputCompletionType;
 
 }
+export interface ConfirmDialogPropsWithID extends ConfirmDialogProps{
+    readonly id: string;
+}
 
-export const ConfirmDialog = deepMemo(function ConfirmDialog(props: ConfirmDialogProps) {
+export const ConfirmDialog = deepMemo(function ConfirmDialog(props: ConfirmDialogPropsWithID) {
 
     const [open, setOpen] = React.useState(true);
 
     const classes = useStyles();
 
+    const location = useLocation();
+    const history = useHistory();
+
     const onCancel = props.onCancel || NULL_FUNCTION;
 
-    const handleClose = React.useCallback((event: any, reason: 'backdropClick' | 'escapeKeyDown' | undefined) => {
+    React.useEffect(() => {
+        history.push({hash: `#confirm-${props.id}`});
+    }, [history, props.id])
+
+    React.useEffect(() => {
+
+        setOpen(location.hash === `#confirm-${props.id}`);
+
+    }, [history, location, props.id, open]);
+
+    type DismissReason = 'backdropClick' | 'escapeKeyDown' | 'cancel' | undefined;
+
+    const doDismiss = React.useCallback((reason: DismissReason) => {
 
         if (reason !== undefined) {
             onCancel();
         }
 
+        // this happens on Escape and clickaway...
+        history.replace({hash: ''});
+
         setOpen(false);
+
+    }, [onCancel, history, setOpen]);
+
+    const handleClose = React.useCallback((event: any, reason: DismissReason) => {
+
+        doDismiss(reason);
+
     }, [onCancel]);
 
     const handleCancel = React.useCallback(() => {
-        setOpen(false);
-        onCancel();
-    }, [onCancel]);
+
+        doDismiss('cancel');
+
+    }, [doDismiss]);
 
     const handleAccept = React.useCallback(() => {
         setOpen(false);
