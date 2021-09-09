@@ -14,25 +14,43 @@ const MAX_DOCS_PER_REQUEST = 200;
  */
 export namespace OpenAISearchReRanker {
 
-    import IOpenAISearchDoc = OpenAISearchClient.IOpenAISearchDoc;
+    export interface IRecordWithScore<R> {
+        readonly record: R;
+        readonly score: number;
+    }
 
-    export async function exec(model: AIModel,
-                               query: string,
-                               documents: ReadonlyArray<string>): Promise<ReadonlyArray<IOpenAISearchDoc>> {
+    export async function exec<V>(model: AIModel,
+                                  query: string,
+                                  records: ReadonlyArray<V>,
+                                  toText: (value: V) => string): Promise<ReadonlyArray<IRecordWithScore<V>>> {
 
-        const batches = Arrays.createBatches(documents, MAX_DOCS_PER_REQUEST);
+        const batches = Arrays.createBatches(records, MAX_DOCS_PER_REQUEST);
 
-        const requests = batches.map(current => {
-            return OpenAISearchClient.exec(model, {
-                documents: current,
-                query
-            })
+
+        const requests = batches.map((records) => {
+
+            return async (): Promise<ReadonlyArray<IRecordWithScore<V>>> => {
+
+                const documents = records.map(current => toText(current));
+
+                const response = await OpenAISearchClient.exec(model, {
+                    documents,
+                    query
+                });
+
+                return response.data.map((current): IRecordWithScore<V> => {
+                    const record = records[current.document];
+                    const score = current.score;
+                    return {record, score};
+                });
+
+            }
+
         })
 
-        const responses = await Promise.all(requests);
+        const responses = await Promise.all(requests.map(current => current()));
 
         return arrayStream(responses)
-            .map(current => current.data)
             .flatMap(current => current)
             // now sort descending by score
             .sort((a, b) => b.score - a.score)

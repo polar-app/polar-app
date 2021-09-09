@@ -13,6 +13,7 @@ import {IAnswerDigestRecord} from "polar-answers-api/src/IAnswerDigestRecord";
 import {ISelectedDocument} from "polar-answers-api/src/ISelectedDocument";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {OpenAISearchReRanker} from "./OpenAISearchReRanker";
 
 export namespace AnswerExecutor {
 
@@ -80,7 +81,7 @@ export namespace AnswerExecutor {
         interface DocumentResults {
             readonly duration: number;
             readonly records: ReadonlyArray<IAnswerDigestRecord>;
-            readonly documents: ReadonlyArray<string>
+            // readonly documents: ReadonlyArray<string>
         }
 
         async function computeDocuments() {
@@ -99,7 +100,6 @@ export namespace AnswerExecutor {
 
             return {
                 duration: 0,
-                documents,
                 records: documents.map((current, idx) => {
                     return {
                         type: 'none',
@@ -124,6 +124,8 @@ export namespace AnswerExecutor {
             // only allows 200 documents so we might just want to hard code this.
             const size = opts.rerank_elasticseach_size || 100;
 
+            console.log("Running search with size: " + size);
+
             const query = {
                 "query": {
                     "query_string": {
@@ -141,33 +143,43 @@ export namespace AnswerExecutor {
 
             const esResponse = esResponseWithDuration.value;
 
-            // I believe the non-deterministic results you see might be caused by
-            // the order in which the documents selected by the Answers endpoint are
-            // inserted into the final completion prompt (Answers endpoint is
-            // indeed Search+Completions under the hood).
-            //
-            // To confirm this hypothesis, I would pass return_prompt = True for
-            // each API call and see how the final prompt differs between calls.
+            async function computeRecords() {
 
-            // FIXME have to take the ES results, then rerank them
+                const hits = esResponse.hits.hits.map(current => current._source);
 
-            // the array of digest records so that we can map from the
-            // selected_documents AFTER the request is executed.
-            const records = esResponse.hits.hits.map(current => current._source);
+                // TODO: do this in the indexer, not the executor? this way we can
+                // same some CPU time during execution.
 
-            // TODO: do this in the indexer, not the executor? this way we can
-            // same some CPU time during execution.
-            const documents = records.map(current => current.text.replace(/\n/g, ' '));
+                if (opts.rerank_elasticseach) {
+
+                    const reranked =
+                        await OpenAISearchReRanker.exec(opts.rerank_elasticseach_model || 'ada',
+                                                        opts.question,
+                                                        hits,
+                                                        hit => hit.text);
+
+                    return reranked.map(current => current.record);
+
+                } else {
+                    // the array of digest records so that we can map from the
+                    // selected_documents AFTER the request is executed.
+                    return hits;
+                }
+
+            }
+
+            const records = await computeRecords();
 
             return {
                 duration: esResponseWithDuration.duration,
-                documents,
                 records
             };
 
         }
 
-        const {duration, documents, records} = await computeDocuments();
+        const {duration, records} = await computeDocuments();
+
+        const documents = records.map(current => current.text.replace(/\n/g, ' '));
 
         // TODO how do we compute documents which have no known answer?
 
