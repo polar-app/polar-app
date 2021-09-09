@@ -1,6 +1,6 @@
 {
   "name": "polar-lang-classifier",
-  "version": "2.1.107",
+  "version": "2.1.108",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -19,10 +19,10 @@
     "@types/mocha": "=9.0.0",
     "chai": "4.2.0",
     "mocha": "=9.1.1",
+    "polar-eslint": "^2.1.108",
+    "polar-typescript": "^2.1.108",
     "tslint": "6.1.2",
-    "typescript": "=4.2.3",
-    "polar-eslint": "^2.1.107",
-    "polar-typescript": "^2.1.107"
+    "typescript": "=4.2.3"
   },
   "dependencies": {
     "node-nlp": "=4.22.1"
