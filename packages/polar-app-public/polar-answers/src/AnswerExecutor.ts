@@ -122,7 +122,7 @@ export namespace AnswerExecutor {
             // applicable to the answer API and we would need a way to easily
             // calculate the short head of the result set.  The OpenAI Answers API
             // only allows 200 documents so we might just want to hard code this.
-            const size = 100;
+            const size = opts.rerank_elasticseach_size || 100;
 
             const query = {
                 "query": {
@@ -149,10 +149,14 @@ export namespace AnswerExecutor {
             // To confirm this hypothesis, I would pass return_prompt = True for
             // each API call and see how the final prompt differs between calls.
 
+            // FIXME have to take the ES results, then rerank them
+
             // the array of digest records so that we can map from the
             // selected_documents AFTER the request is executed.
             const records = esResponse.hits.hits.map(current => current._source);
 
+            // TODO: do this in the indexer, not the executor? this way we can
+            // same some CPU time during execution.
             const documents = records.map(current => current.text.replace(/\n/g, ' '));
 
             return {
