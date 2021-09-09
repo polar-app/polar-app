@@ -3,6 +3,7 @@ import Menu from '@material-ui/core/Menu';
 import {MUIDocDropdownMenuItems} from './MUIDocDropdownMenuItems';
 import {Callback} from "polar-shared/src/util/Functions";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
+import {useContextMenuHook} from "../../../../web/js/mui/hooks/useContextMenuHook";
 
 interface IProps {
     readonly anchorEl: HTMLElement;
@@ -12,6 +13,8 @@ interface IProps {
 export const DocRepoDropdownMenu = deepMemo(function DocRepoDropdownMenu(props: IProps) {
     const {anchorEl} = props;
 
+    const handleCloseFromHook = useContextMenuHook(props.onClose);
+    
     return (
         <Menu
             id="doc-dropdown-menu"
@@ -21,8 +24,7 @@ export const DocRepoDropdownMenu = deepMemo(function DocRepoDropdownMenu(props: 
             anchorOrigin={{vertical: "bottom", horizontal: "center"}}
             transformOrigin={{vertical: "top", horizontal: "center"}}
             open={Boolean(anchorEl)}
-            onClose={() => props.onClose()}
-            onClick={() => props.onClose()}>
+            onClose={() => handleCloseFromHook()}>
 
             <MUIDocDropdownMenuItems/>
 

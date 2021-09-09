@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import {getMetadata} from "page-metadata-parser";
 
-describe('Page Metadata', function() {
+xdescribe('Page Metadata', function() {
 
     it("basic", function() {
 

@@ -80,20 +80,24 @@ export const handler = async (event: {
 
             console.log('User bought product', productId);
 
-            const changePlanSucceeded = await changePlanForEmail({
-                email,
-                productId,
-                customerId: activeReceipt.original_transaction_id,
-                expiresAt: parseInt(activeReceipt.expires_date_ms) / 1000,
-            });
+            try {
 
-            if (!changePlanSucceeded) {
+                await changePlanForEmail({
+                    email,
+                    productId,
+                    customerId: activeReceipt.original_transaction_id,
+                    expiresAt: parseInt(activeReceipt.expires_date_ms) / 1000,
+                });
+
+            } catch(e) {
+
                 const error = "Failed to change user's plan due to an internal error";
                 console.error(error);
                 return {
                     statusCode: 500,
                     body: JSON.stringify({error}),
                 }
+
             }
 
             return {

@@ -1,11 +1,8 @@
 {
   "name": "polar-react",
-  "version": "2.1.103",
+  "version": "2.1.107",
   "description": "Basic React dependencies and utilities.",
-  "scripts": {
-    "test": "echo",
-    "compile": "echo"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -14,5 +11,6 @@
     "@types/react-dom": "=16.9.8",
     "react": "=16.14.0",
     "react-dom": "=16.14.0"
-  }
+  },
+  "devDependencies": {}
 }

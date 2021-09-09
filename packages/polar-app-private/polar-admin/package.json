@@ -1,19 +1,25 @@
 {
   "name": "polar-admin",
-  "version": "2.1.103",
+  "version": "2.1.107",
   "description": "",
   "main": "index.js",
   "private": true,
   "scripts": {
-    "test": "echo no tests",
-    "compile": "npx tsc",
-    "dist": "echo noop"
+    "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
+    "compile": "RESULT=\"$(find -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;",
+    "dist": "echo noop",
+    "mocha": "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
+    "eslint": "eslint -c ./.eslintrc.json .",
+    "eslintfix": "eslint -c ./.eslintrc.json . --fix",
+    "tsc": "tsc"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "firebase-tools": "=9.16.0",
-    "typescript": "=4.2.3"
+    "typescript": "=4.2.3",
+    "polar-eslint": "^2.1.107",
+    "polar-typescript": "^2.1.107"
   },
   "dependencies": {
     "@google-cloud/firestore": "=4.13.2",

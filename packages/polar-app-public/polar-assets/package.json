@@ -1,10 +1,8 @@
 {
   "name": "polar-assets",
-  "version": "2.1.103",
+  "version": "2.1.107",
   "description": "",
   "scripts": {
-    "test": "echo no tests",
-    "compile": "true",
     "dist": "echo noop"
   },
   "devDependencies": {
