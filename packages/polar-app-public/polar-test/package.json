@@ -1,6 +1,6 @@
 {
   "name": "polar-test",
-  "version": "2.1.108",
+  "version": "2.1.109",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -17,8 +17,8 @@
   "license": "ISC",
   "devDependencies": {
     "@types/diff": "4.0.2",
-    "polar-eslint": "^2.1.108",
-    "polar-typescript": "^2.1.108",
+    "polar-eslint": "^2.1.109",
+    "polar-typescript": "^2.1.109",
     "tslint": "6.1.2",
     "typescript": "=4.2.3"
   },

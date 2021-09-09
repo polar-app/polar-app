@@ -1,6 +1,6 @@
 {
   "name": "polar-pdf",
-  "version": "2.1.108",
+  "version": "2.1.109",
   "description": "Provides support for parsing and working with PDFs.",
   "main": "index.js",
   "scripts": {
@@ -21,10 +21,10 @@
     "@types/mocha": "=9.0.0",
     "chai": "4.2.0",
     "mocha": "=9.1.1",
-    "polar-eslint": "^2.1.108",
-    "polar-karma": "^2.1.108",
-    "polar-typescript": "^2.1.108",
-    "polar-webpack": "^2.1.108",
+    "polar-eslint": "^2.1.109",
+    "polar-karma": "^2.1.109",
+    "polar-typescript": "^2.1.109",
+    "polar-webpack": "^2.1.109",
     "tslint": "6.1.2",
     "typescript": "=4.2.3"
   },
@@ -34,8 +34,8 @@
     "canvas": "=2.8.0",
     "jsdom": "=16.7.0",
     "pdfjs-dist": "=2.8.250-polar.3",
-    "polar-shared": "^2.1.108",
-    "polar-test": "^2.1.108"
+    "polar-shared": "^2.1.109",
+    "polar-test": "^2.1.109"
   },
   "files": [
     "**/*.js",
