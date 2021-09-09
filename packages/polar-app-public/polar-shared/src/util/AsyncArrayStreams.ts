@@ -4,8 +4,6 @@ type AsyncMapper<T, V> = (value: T) => Promise<V>;
 
 type Mapper<T, V> = AsyncMapper<T, V> | SyncMapper<T, V>;
 
-
-
 type SyncPredicate<T> = (value: T) => boolean;
 
 type AsyncPredicate<T> = (value: T) => Promise<boolean>;

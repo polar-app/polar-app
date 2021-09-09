@@ -26,6 +26,10 @@ export interface ISelectedDocumentWithRecord<R>  extends ISelectedDocument {
 }
 
 export interface IAnswerExecutorResponse extends IOpenAIAnswersResponse {
+    /**
+     * Unique ID for this response which can be used when flagging results for good/bad
+     */
+    readonly id: string;
     readonly question: string;
     readonly selected_documents: ReadonlyArray<ISelectedDocumentWithRecord<IAnswerDigestRecord>>;
     readonly timings: ITimings;

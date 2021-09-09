@@ -1,13 +1,12 @@
 import {AIModel} from "polar-answers-api/src/AIModel";
-import {Fetches} from "polar-shared/src/util/Fetch";
-import {OpenAISecrets} from "./OpenAISecrets";
 import {IOpenAIAnswersResponse} from "polar-answers-api/src/IOpenAIAnswersResponse";
+import {OpenAIRequests} from "./OpenAIRequests";
 
 export namespace OpenAIAnswersClient {
 
     export type QuestionAnswerPair = [string, string];
 
-    export interface IRequest {
+    export interface IOpenAIAnswersRequest {
 
         readonly model: AIModel;
 
@@ -22,6 +21,7 @@ export namespace OpenAIAnswersClient {
          */
         readonly examples: ReadonlyArray<QuestionAnswerPair>;
 
+        // eslint-disable-next-line camelcase
         readonly examples_context: string;
 
         /**
@@ -36,6 +36,7 @@ export namespace OpenAIAnswersClient {
          *
          * Defaults to ada
          */
+        // eslint-disable-next-line camelcase
         readonly search_model?: AIModel;
 
         /**
@@ -60,6 +61,7 @@ export namespace OpenAIAnswersClient {
         /**
          * The maximum number of tokens allowed for the generated answer
          */
+        // eslint-disable-next-line camelcase
         readonly max_tokens?: number;
 
         /**
@@ -73,6 +75,7 @@ export namespace OpenAIAnswersClient {
          * A special boolean flag for showing metadata. If set to true, each
          * document entry in the returned JSON will contain a "metadata" field.
          */
+        // eslint-disable-next-line camelcase
         readonly return_metadata?: boolean;
 
         /**
@@ -80,36 +83,14 @@ export namespace OpenAIAnswersClient {
          * containing the final prompt that was used to request a completion.
          * This is mainly useful for debugging purposes.
          */
+        // eslint-disable-next-line camelcase
         readonly return_prompt?: boolean;
 
     }
 
-    export async function exec(request: IRequest): Promise<IOpenAIAnswersResponse> {
-
-        OpenAISecrets.init();
-
+    export async function exec(request: IOpenAIAnswersRequest): Promise<IOpenAIAnswersResponse> {
         const url = 'https://api.openai.com/v1/answers'
-
-        const apiKey = process.env.OPENAI_API_KEY;
-
-        if (! apiKey) {
-            throw new Error("No OPENAI_API_KEY in environment");
-        }
-
-        const response = await Fetches.fetch(url, {
-            method: 'POST',
-            body: JSON.stringify(request),
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`
-            }
-        })
-
-        if (response.ok) {
-            return await response.json();
-        }
-
-        throw new Error(`Invalid response: ${response.status}: ${response.statusText}`);
+        return OpenAIRequests.exec(url, request);
     }
 
 }
