@@ -183,9 +183,11 @@ describe('BlocksStore', () => {
     describe('selection (navPrev)', () => {
         it("Should create a selection range properly when shift is true", () => {
             const root = '102';
+            store.computeLinearTree(root, {includeInitial: true})
+                .forEach(block => store.expanded[block] = true);
+            HTMLBlockUtils.popuplateHTML(store);
+            HTMLBlockUtils.focusBlock(store, '105', 'end');
 
-            store.computeLinearTree('102').forEach(block => store.expanded[block] = true);
-            store.setActive('105');
             store.navPrev(root, {shiftKey: true, autoExpandRoot: true});
             assert.deepEqual(store.selected, { '105': true });
             store.navPrev(root, {shiftKey: true, autoExpandRoot: true});
@@ -200,9 +202,8 @@ describe('BlocksStore', () => {
     describe('selection (navNext)', () => {
         it("Should work with single blocks that have no siblings", () => {
             const root = '112';
+            store.computeLinearTree(root).forEach(block => store.expand(block));
 
-            store.computeLinearTree(root)
-                .forEach(block => store.expand(block));
             store.setActive(root);
             store.navNext(root, {shiftKey: true, autoExpandRoot: true});
             
@@ -210,10 +211,12 @@ describe('BlocksStore', () => {
         });
         it("Should create a selection range properly when shift is true", () => {
             const root = '102';
-
-            store.computeLinearTree(root)
+            store.computeLinearTree(root, {includeInitial: true})
                 .forEach(block => store.expand(block));
-            store.setActive('104');
+
+            HTMLBlockUtils.popuplateHTML(store);
+            HTMLBlockUtils.focusBlock(store, '104', 'end');
+
             store.navNext(root, {shiftKey: true, autoExpandRoot: true});
             store.navNext(root, {shiftKey: true, autoExpandRoot: true});
             store.navNext(root, {shiftKey: true, autoExpandRoot: true});
@@ -224,7 +227,7 @@ describe('BlocksStore', () => {
 
     describe('styleSelectedBlocks', () => {
         it('should style selected blocks properly', () => {
-            store.computeLinearTree('109', { includeInitial: true })
+            store.computeLinearTree('109', {includeInitial: true})
                 .forEach(block => store.expand(block));
             store.selected['109'] = true;
             HTMLBlockUtils.popuplateHTML(store);

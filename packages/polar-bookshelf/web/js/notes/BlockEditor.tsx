@@ -100,9 +100,7 @@ const NoteEditorInner = observer(function BlockEditorInner(props: IProps) {
             const active = blocksTreeStore.active;
             if (ref.current) {
                 if (active && active.id === id) {
-                    if (active.pos !== undefined) {
-                        updateCursorPosition(ref.current, active)
-                    }
+                    updateCursorPosition(ref.current, active)
                 } else {
                     ContentEditables.insertEmptySpacer(ref.current);
                 }

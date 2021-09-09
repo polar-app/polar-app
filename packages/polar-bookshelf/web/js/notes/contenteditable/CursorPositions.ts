@@ -44,7 +44,7 @@ export namespace CursorPositions {
     }
 
     /*
-     * This is used to focus stuff that isn't focusable aka contentEditable=false
+     * This is used to focus stuff that isn't focusable contentEditable=false elements for example.
      *
      * We just create an empty text node after the contentEditable=false node and focus that instead.
      */
