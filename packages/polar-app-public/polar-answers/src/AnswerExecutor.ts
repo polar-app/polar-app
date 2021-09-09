@@ -180,7 +180,7 @@ export namespace AnswerExecutor {
         const search_model = opts.search_model || SEARCH_MODEL;
         const model = opts.model || MODEL;
 
-        const request: OpenAIAnswersClient.IRequest = {
+        const request: OpenAIAnswersClient.IOpenAIAnswersRequest = {
             search_model,
             model,
             question,
