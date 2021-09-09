@@ -125,9 +125,6 @@ const Annotations = React.memo(function Annotations() {
 
 });
 
-/**
- * Second version of the sidebar that is more react-ish...
- */
 export const AnnotationSidebar2 = React.memo(function AnnotationSidebar2() {
 
     return (

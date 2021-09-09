@@ -120,7 +120,7 @@ export class Texts {
 
     }
 
-    public static isText(text: any | undefined): boolean {
+    public static isText(text: string | Text): text is Text {
 
         if (text && typeof text === 'object') {
             return isPresent(text.MARKDOWN) || isPresent(text.HTML) || isPresent(text.TEXT);

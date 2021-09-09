@@ -1,13 +1,10 @@
 import React from "react";
 import {DOMTextIndex} from "polar-dom-text-search/src/DOMTextIndex";
-import {AnnotationTypes} from "../../../../../web/js/metadata/AnnotationTypes";
-import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
 import {IDocScale, useDocViewerStore} from "../../DocViewerStore";
 import {IDocViewerElements, useDocViewerElementsContext} from "../../renderers/DocViewerElementsContext";
 import {TextHighlightMerger} from "../../text_highlighter/TextHighlightMerger";
 import {Point} from "../../../../../web/js/Point";
 import {Highlights} from "../../../../../web/js/dom_highlighter/Highlights";
-import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {ActiveSelectionEvent} from "../../../../../web/js/ui/popup/ActiveSelections";
 import {useDocViewerContext} from "../../renderers/DocRenderer";
 import {Elements} from "../../../../../web/js/util/Elements";
@@ -17,20 +14,24 @@ import {useRefWithUpdates} from "../../../../../web/js/hooks/ReactHooks";
 import {Texts} from "polar-shared/src/metadata/Texts";
 import {rangeConstrain} from "../AreaHighlightDrawer";
 import {useResizeObserver} from "../../renderers/pdf/PinchToZoomHooks";
+import {IBlockAnnotation, IDocMetaAnnotation} from "./AnnotationPopupReducer";
+import {getAnnotationData} from "./AnnotationPopupContext";
+import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 
 export type ActiveHighlightData = {
-    highlightID: string;
-    type: AnnotationType.TEXT_HIGHLIGHT | AnnotationType.AREA_HIGHLIGHT;
-    pageNum: number;
+    highlightID: string,
+    type: (IDocMetaAnnotation | IBlockAnnotation)['type'],
+    pageNum: number,
 };
 
 namespace AnnotationPositionCalculator {
     export function getAnnotationEPUBPosition(
-        annotation: IDocAnnotation,
+        annotation: IDocMetaAnnotation | IBlockAnnotation,
         domTextIndex: DOMTextIndex,
         docViewerElements: IDocViewerElements,
     ): ILTRect | undefined {
-        const annotationObject = annotation.original;
+        const {annotation: annotationObject} = getAnnotationData(annotation);
+        const textHighlight = annotationObject as ITextHighlight;
         const epubDocument = docViewerElements
             .getDocViewerElement()
             .querySelector("iframe")
@@ -42,12 +43,11 @@ namespace AnnotationPositionCalculator {
             ?.contentDocument
             ?.defaultView;
         if (
-            AnnotationTypes.isTextHighlight(annotationObject, annotation.annotationType) &&
-            annotation.text &&
+            textHighlight.text &&
             epubDocument &&
             html
         ) {
-            const hit = domTextIndex.find(Texts.toText(annotationObject.text) || "", {caseInsensitive: true});
+            const hit = domTextIndex.find(Texts.toText(textHighlight.text) || "", {caseInsensitive: true});
             if (hit) {
                 const positions = Highlights
                     .toHighlightViewportPositions(hit.regions)
@@ -128,48 +128,43 @@ namespace AnnotationPositionCalculator {
     }
 
     export function getAnnotationPDFPosition(
-        annotation: IDocAnnotation,
+        annotation: IDocMetaAnnotation | IBlockAnnotation,
         docViewerElements: IDocViewerElements,
         docScale: IDocScale
     ): ILTRect | undefined {
-        const annotationObject = annotation.original;
-        if (
-            AnnotationTypes.isTextHighlight(annotationObject, annotation.annotationType)
-        ) {
-            const pageElem = docViewerElements.getPageElementForPage(annotation.pageNum);
-            const docViewerElem = docViewerElements.getDocViewerElement();
-            const viewerElem = docViewerElem
-                .querySelector<HTMLDivElement>("#viewer");
-            const rects = Object.values(annotationObject.rects);
-            if (!pageElem || !viewerElem || !docViewerElem || !rects.length) {
-                return;
-            }
-            const pageStyles = window.getComputedStyle(pageElem);
-            const border = {
-                top: +pageStyles.borderTopWidth.slice(0, -2),
-                left: +pageStyles.borderLeftWidth.slice(0, -2),
-                bottom: +pageStyles.borderBottomWidth.slice(0, -2),
-                right: +pageStyles.borderRightWidth.slice(0, -2),
-            };
-            const pageRect = pageElem.getBoundingClientRect();
-            const viewerRect = viewerElem.getBoundingClientRect();
-            const rect = rects.reduce(TextHighlightMerger.mergeRects);
-            const scale = docScale.scaleValue;
-
-            return {
-                left: rect.left * scale + pageRect.left - viewerRect.left + border.left, 
-                top: rect.top * scale + pageRect.top - viewerRect.top + border.top,
-                width: rect.width * scale,
-                height: rect.height * scale,
-            };
+        const {pageNum, annotation: annotationObject} = getAnnotationData(annotation);
+        const rects = Object.values((annotationObject as ITextHighlight).rects);
+        const pageElem = docViewerElements.getPageElementForPage(pageNum);
+        const docViewerElem = docViewerElements.getDocViewerElement();
+        const viewerElem = docViewerElem
+            .querySelector<HTMLDivElement>("#viewer");
+        if (!pageElem || !viewerElem || !docViewerElem || !rects.length) {
+            return;
         }
-        return;
+        const pageStyles = window.getComputedStyle(pageElem);
+        const border = {
+            top: +pageStyles.borderTopWidth.slice(0, -2),
+            left: +pageStyles.borderLeftWidth.slice(0, -2),
+            bottom: +pageStyles.borderBottomWidth.slice(0, -2),
+            right: +pageStyles.borderRightWidth.slice(0, -2),
+        };
+        const pageRect = pageElem.getBoundingClientRect();
+        const viewerRect = viewerElem.getBoundingClientRect();
+        const rect = rects.reduce(TextHighlightMerger.mergeRects);
+        const scale = docScale.scaleValue;
+
+        return {
+            left: rect.left * scale + pageRect.left - viewerRect.left + border.left, 
+            top: rect.top * scale + pageRect.top - viewerRect.top + border.top,
+            width: rect.width * scale,
+            height: rect.height * scale,
+        };
     }
 }
 
 type IUsePopupBarPositionOpts = {
     selectionEvent?: ActiveSelectionEvent;
-    annotation?: IDocAnnotation;
+    annotation?: IDocMetaAnnotation | IBlockAnnotation;
 };
 export const usePopupBarPosition = (opts: IUsePopupBarPositionOpts): ILTRect | undefined => {
     const {selectionEvent, annotation} = opts;
@@ -281,6 +276,7 @@ export const useAnnotationPopupPositionUpdater = (
     }, [boundsElement, scrollElement, updatePosition, ref]);
 
     useResizeObserver(updatePosition, {current: boundsElement || null});
+    useResizeObserver(updatePosition, ref);
 
     return ref;
 };

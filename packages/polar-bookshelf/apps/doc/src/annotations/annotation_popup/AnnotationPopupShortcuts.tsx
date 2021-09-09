@@ -3,11 +3,13 @@ import {MAIN_HIGHLIGHT_COLORS} from "../../../../../web/js/ui/ColorMenu";
 import {useRefWithUpdates} from "../../../../../web/js/hooks/ReactHooks";
 import {GlobalKeyboardShortcuts, HandlerMap, keyMapWithGroup} from "../../../../../web/js/keyboard_shortcuts/GlobalKeyboardShortcuts";
 import {AnnotationPopupActionEnum, useAnnotationPopup} from "./AnnotationPopupContext";
-import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
 import {useAnnotationMutationsContext} from "../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {ColorStr} from "../../../../../web/js/ui/colors/ColorSelectorBox";
 import {usePersistentRouteContext} from "../../../../../web/js/apps/repository/PersistentRoute";
 import {useCopyAnnotation} from "./AnnotationPopupBar";
+import {IBlockAnnotation, IDocMetaAnnotation} from "./AnnotationPopupReducer";
+import {IBlockAnnotationProps, IDocMetaAnnotationProps} from "./AnnotationPopupActions";
+import {useAnnotationBlockManager} from "../../../../../web/js/notes/HighlightNotesUtils";
 
 export const ANNOTATION_COLOR_SHORTCUT_KEYS = ["1", "2", "3", "4", "5", "6"];
 
@@ -114,23 +116,49 @@ const keyToColor = (key: string): ColorStr | undefined => {
 };
 
 type IHighlightColorShortcuts = {
-    annotation: IDocAnnotation;
+    annotation: IDocMetaAnnotation | IBlockAnnotation;
 };
+
 const HighlightColorShortcuts: React.FC<IHighlightColorShortcuts> = ({ annotation }) => {
-    const annotationMutations = useAnnotationMutationsContext();
-    const handleColor = annotationMutations.createColorCallback({selected: [annotation]});
-    const handleColorChangeRef = useRefWithUpdates(({key}: KeyboardEvent) => {
-        const color = keyToColor(key);
-        if (color && color !== annotation.color) {
-            handleColor({ color });
-        }
-    });
 
-    const handlers = React.useMemo<HandlerMap>(() => ({
-        CHANGE_COLOR: e => handleColorChangeRef.current(e as KeyboardEvent),
-    }), [handleColorChangeRef]);
+    const DocMetaColorChanger: React.FC<IDocMetaAnnotationProps> = ({ annotation }) => {
+        const annotationMutations = useAnnotationMutationsContext();
+        const handleColor = annotationMutations.createColorCallback({ selected: [annotation] });
+        const handleColorChangeRef = useRefWithUpdates(({ key }: KeyboardEvent) => {
+            const color = keyToColor(key);
+            if (color && color !== annotation.color) {
+                handleColor({ color });
+            }
+        });
 
-    return <GlobalKeyboardShortcuts keyMap={annotationBarColorsKeyMap} handlerMap={handlers}/>;
+        const handlers = React.useMemo<HandlerMap>(() => ({
+            CHANGE_COLOR: e => handleColorChangeRef.current(e as KeyboardEvent),
+        }), [handleColorChangeRef]);
+        return <GlobalKeyboardShortcuts keyMap={annotationBarColorsKeyMap} handlerMap={handlers}/>;
+    };
+
+    const BlockColorChanger: React.FC<IBlockAnnotationProps> = ({ annotation }) => {
+        const { update } = useAnnotationBlockManager();
+        const handleColorChangeRef = useRefWithUpdates(({ key }: KeyboardEvent) => {
+            const color = keyToColor(key);
+            if (color && color !== annotation.content.value.color) {
+                const contentJSON = annotation.content.toJSON();
+                update(annotation.id, {
+                    ...contentJSON,
+                    value: { ...contentJSON.value, color }
+                });
+            }
+        });
+
+        const handlers = React.useMemo<HandlerMap>(() => ({
+            CHANGE_COLOR: e => handleColorChangeRef.current(e as KeyboardEvent),
+        }), [handleColorChangeRef]);
+        return <GlobalKeyboardShortcuts keyMap={annotationBarColorsKeyMap} handlerMap={handlers}/>;
+    };
+
+    return annotation.type === 'docMeta'
+        ? <DocMetaColorChanger annotation={annotation.annotation} />
+        : <BlockColorChanger annotation={annotation.annotation} />;
 };
 
 const SelectionColorShortcuts: React.FC = () => {

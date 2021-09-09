@@ -1,6 +1,6 @@
 {
   "name": "polar-npm",
-  "version": "2.1.107",
+  "version": "2.1.108",
   "description": "Basic internal NPM commands which extend NPM functionality",
   "main": "index.js",
   "scripts": {
@@ -22,13 +22,13 @@
   "devDependencies": {
     "@types/node": "=14.14.35",
     "@types/pdfjs-dist": "2.1.71-polar.2",
+    "polar-eslint": "^2.1.108",
+    "polar-typescript": "^2.1.108",
     "tslint": "6.1.2",
-    "typescript": "=4.2.3",
-    "polar-eslint": "^2.1.107",
-    "polar-typescript": "^2.1.107"
+    "typescript": "=4.2.3"
   },
   "dependencies": {
-    "polar-shared": "^2.1.107"
+    "polar-shared": "^2.1.108"
   },
   "files": [
     "**/*.js",
