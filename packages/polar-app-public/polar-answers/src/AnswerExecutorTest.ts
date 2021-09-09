@@ -29,7 +29,9 @@ xdescribe("AnswerExecutor", function () {
 
         const response = await AnswerExecutor.exec({
             uid,
-            question
+            question,
+            rerank_elasticsearch: true,
+            filter_stopwords: true
         });
 
         function isError(value: any): value is IAnswerExecutorError {

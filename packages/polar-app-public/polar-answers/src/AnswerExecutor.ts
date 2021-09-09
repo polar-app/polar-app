@@ -14,7 +14,9 @@ import {ISelectedDocument} from "polar-answers-api/src/ISelectedDocument";
 import {Arrays} from "polar-shared/src/util/Arrays";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {OpenAISearchReRanker} from "./OpenAISearchReRanker";
+import {Stopwords} from "polar-shared/src/util/Stopwords";
 
+const MAX_DOCUMENTS = 200;
 export namespace AnswerExecutor {
 
     import QuestionAnswerPair = OpenAIAnswersClient.QuestionAnswerPair;
@@ -122,14 +124,28 @@ export namespace AnswerExecutor {
             // applicable to the answer API and we would need a way to easily
             // calculate the short head of the result set.  The OpenAI Answers API
             // only allows 200 documents so we might just want to hard code this.
-            const size = opts.rerank_elasticseach_size || 100;
+            const size = opts.rerank_elasticsearch ? (opts.rerank_elasticsearch_size || 10000) : 100;
 
             console.log("Running search with size: " + size);
+
+            function computeQueryTextFromQuestion() {
+                const doFilterStopwords = opts.filter_stopwords || true;
+
+                if (doFilterStopwords) {
+                    const words = opts.question.split(/[ \t]+/);
+                    const stopwords = Stopwords.words('en');
+                    return Stopwords.removeStopwords(words, stopwords).join(" ");
+                } else {
+                    return opts.question;
+                }
+            }
+
+            const queryText = computeQueryTextFromQuestion();
 
             const query = {
                 "query": {
                     "query_string": {
-                        "query": question,
+                        "query": queryText,
                         "default_field": "text"
                     }
                 },
@@ -150,15 +166,17 @@ export namespace AnswerExecutor {
                 // TODO: do this in the indexer, not the executor? this way we can
                 // same some CPU time during execution.
 
-                if (opts.rerank_elasticseach) {
+                if (opts.rerank_elasticsearch) {
+
+                    console.log("Re-ranking N ES results via OpenAI: " + hits.length)
 
                     const reranked =
-                        await OpenAISearchReRanker.exec(opts.rerank_elasticseach_model || 'ada',
+                        await OpenAISearchReRanker.exec(opts.rerank_elasticsearch_model || 'ada',
                                                         opts.question,
                                                         hits,
                                                         hit => hit.text);
 
-                    return reranked.map(current => current.record);
+                    return Arrays.head(reranked.map(current => current.record), MAX_DOCUMENTS);
 
                 } else {
                     // the array of digest records so that we can map from the
@@ -234,7 +252,7 @@ export namespace AnswerExecutor {
             }
         }
 
-        const id = Hashcodes.createRandomID2().substring(0, 10);
+        const id = Hashcodes.createRandomID();
 
         const timings: ITimings = {
             documents: duration,
