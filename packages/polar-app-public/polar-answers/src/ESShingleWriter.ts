@@ -25,6 +25,8 @@ export namespace ESShingleWriter {
     export interface IESShingleWriter {
 
         readonly write: (opts: IWriteOpts) => Promise<void>
+        // noop
+        readonly sync: () => Promise<void>;
 
     }
 
@@ -61,9 +63,13 @@ export namespace ESShingleWriter {
 
         }
 
+        async function sync() {
+            // noop
+        }
+
         console.log("Created ESShingleWriter for " + indexName);
 
-        return {write};
+        return {write, sync};
 
     }
 
@@ -75,7 +81,7 @@ export namespace ESShingleWriter {
     /**
      * Create a writer that does batch writes.
      */
-    export function createBatcher(opts: ICreateBatcherOpts): IESShingleWriter {
+    export function createBatcher(opts: ICreateBatcherOpts) {
 
         // https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html
 
@@ -87,17 +93,25 @@ export namespace ESShingleWriter {
 
         async function handleBatch(records: ReadonlyArray<IAnswerDigestRecord>) {
 
+            console.log("Writing batch of N records: " + records.length);
+
             interface IIndexOp {
                 readonly _index: string;
                 readonly _id: string;
             }
 
-            function createIndexOp(record: IAnswerDigestRecord): IIndexOp {
+            interface IIndexAction {
+                readonly index: IIndexOp;
+            }
+
+            function createIndexOp(record: IAnswerDigestRecord): IIndexAction {
 
                 return {
-                    _index: indexName,
-                    _id: record.id
-                }
+                    index: {
+                        _index: indexName,
+                        _id: record.id
+                    }
+                };
 
             }
 
@@ -105,7 +119,7 @@ export namespace ESShingleWriter {
                 return record;
             }
 
-            type BulkWriteTuple = [IIndexOp, IAnswerDigestRecord];
+            type BulkWriteTuple = [IIndexAction, IAnswerDigestRecord];
 
             function toBulkWriteTuple(record: IAnswerDigestRecord): BulkWriteTuple {
                 return [
@@ -117,9 +131,14 @@ export namespace ESShingleWriter {
             const writes = arrayStream(records)
                 .map(current => toBulkWriteTuple(current))
                 .flatMap(current => current)
+                .map(current => JSON.stringify(current))
                 .collect();
 
-            await ESRequests.doPut(`/_bulk`, writes);
+            const body = writes.join("\n");
+
+            console.log("FIXME: \n" + body);
+
+            await ESRequests.doPost(`/_bulk`, body);
 
         }
 
@@ -156,3 +175,4 @@ export namespace ESShingleWriter {
     }
 
 }
+

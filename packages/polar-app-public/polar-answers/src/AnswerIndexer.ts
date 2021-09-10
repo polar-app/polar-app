@@ -15,6 +15,7 @@ export namespace AnswerIndexer {
         const {uid, docID} = opts;
 
         const writer = ESShingleWriter.create({uid});
+        // const writer = ESShingleWriter.createBatcher({uid, type: 'pdf'});
 
         await PDFText.getText(opts.url, async pdfTextContent => {
 
@@ -37,6 +38,9 @@ export namespace AnswerIndexer {
                 skipPages: opts.skipPages
             });
 
+        await writer.sync();
+
     }
 
 }
+
