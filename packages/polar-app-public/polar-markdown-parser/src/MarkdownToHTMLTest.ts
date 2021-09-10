@@ -1,6 +1,6 @@
 import {MarkdownToHTML} from "./MarkdownToHTML";
-import markdown2html = MarkdownToHTML.markdown2html;
 import {assert} from 'chai';
+import markdown2html = MarkdownToHTML.markdown2html;
 
 describe('MarkdownToHTML', function() {
 
@@ -20,7 +20,7 @@ describe('MarkdownToHTML', function() {
 
     it('special chars', () => {
 
-        const ignored = ["\"", "&", "'", "<", , ">"];
+        const ignored = ["\"", "&", "'", "<", ">"];
 
         for( let i = 33; i <= 126; i++){
             const ch = String.fromCharCode( i );
