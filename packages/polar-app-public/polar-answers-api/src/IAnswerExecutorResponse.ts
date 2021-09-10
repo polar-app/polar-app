@@ -31,6 +31,7 @@ export interface IAnswerExecutorResponse extends IOpenAIAnswersResponse {
      */
     readonly id: string;
     readonly question: string;
+    // eslint-disable-next-line camelcase
     readonly selected_documents: ReadonlyArray<ISelectedDocumentWithRecord<IAnswerDigestRecord>>;
     readonly timings: ITimings;
 }
