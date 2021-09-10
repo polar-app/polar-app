@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import twitter_txt from 'twitter-text';
 import {isPresent} from '../Preconditions';
 import {Optional} from '../util/ts/Optional';

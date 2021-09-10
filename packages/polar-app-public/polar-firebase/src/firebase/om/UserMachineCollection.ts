@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import {Platforms, PlatformStr} from "polar-shared/src/util/Platforms";
 import { UserIDStr, CollectionNameStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";

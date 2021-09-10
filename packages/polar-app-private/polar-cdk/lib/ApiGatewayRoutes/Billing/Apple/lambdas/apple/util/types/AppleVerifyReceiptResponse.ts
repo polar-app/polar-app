@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 export interface AppleVerifyReceiptResponse {
     status?: number, // returned only on error
     environment: "Sandbox",

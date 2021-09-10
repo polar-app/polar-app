@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import {ExpressFunctions} from "../util/ExpressFunctions";
 import {Lazy} from "../util/Lazy";
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";

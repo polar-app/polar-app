@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import {Fetches} from "polar-shared/src/util/Fetch";
 
 const KEY = "1wn8QiClhFH5gCrElLqaNQ";

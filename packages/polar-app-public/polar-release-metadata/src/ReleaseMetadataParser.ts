@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import {PathStr} from "polar-shared/src/util/Strings";
 import {Files} from "polar-shared/src/util/Files";
 import {FilePaths} from "polar-shared/src/util/FilePaths";

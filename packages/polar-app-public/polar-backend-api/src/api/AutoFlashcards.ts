@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 export namespace AutoFlashcards {
 
     export interface AutoFlashcardRequest {

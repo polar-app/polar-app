@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import {Fetches} from "polar-shared/src/util/Fetch";
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;

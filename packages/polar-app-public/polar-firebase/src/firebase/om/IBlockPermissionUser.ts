@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import {BlockPermissionUserIDStr} from "./IBlockPermissionEntry";
 import {BlockIDStr, NamespaceIDStr} from "polar-blocks/src/blocks/IBlock";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";

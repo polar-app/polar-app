@@ -1,4 +1,4 @@
-
+/* eslint-disable camelcase */
 const pkg: any = require("../../package.json");
 
 export class Version {

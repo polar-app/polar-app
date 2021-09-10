@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import {DOIStr, JSONStr, URLStr} from "polar-shared/src/util/Strings";
 import {
     ISODateString,

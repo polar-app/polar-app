@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import {GPTCompletions} from "./GPTCompletions";
 import {assertJSON, equalsJSON} from "polar-test/src/test/Assertions";
 import { AutoFlashcards } from 'polar-backend-api/src/api/AutoFlashcards';

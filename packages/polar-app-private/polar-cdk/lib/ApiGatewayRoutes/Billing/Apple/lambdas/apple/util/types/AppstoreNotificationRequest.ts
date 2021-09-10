@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import {NOTIFICATION_TYPE} from "./NOTIFICATION_TYPE";
 
 export interface AppstoreNotificationRequest {

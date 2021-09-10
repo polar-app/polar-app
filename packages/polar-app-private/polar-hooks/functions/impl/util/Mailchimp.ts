@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import {Fetches} from 'polar-shared/src/util/Fetch';
 import {Base64} from 'polar-shared/src/util/Base64';
 import {HashcodeAlgorithms} from 'polar-shared/src/util/HashcodeAlgorithms';

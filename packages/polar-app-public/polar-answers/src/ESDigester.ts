@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import {ESRequests} from "./ESRequests";
 import {ISibling, Tuples} from "polar-shared/src/util/Tuples";
 import {GCLSentenceSplitter} from "polar-google-cloud-language/src/GCLSentenceSplitter";

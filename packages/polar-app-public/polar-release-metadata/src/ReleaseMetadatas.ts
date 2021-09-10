@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import {VersionStr} from "polar-shared/src/util/Version";
 import {HTMLStr, URLStr} from "polar-shared/src/util/Strings";
 import * as semver from 'semver';

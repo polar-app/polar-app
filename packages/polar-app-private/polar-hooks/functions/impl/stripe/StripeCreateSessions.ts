@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import {StripeCustomers} from "./StripeCustomers";
 import {Billing} from "polar-accounts/src/Billing";
 import {StripeMode, StripeUtils} from "./StripeUtils";

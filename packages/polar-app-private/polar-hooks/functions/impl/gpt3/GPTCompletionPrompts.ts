@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 export namespace GPTCompletionPrompts {
 
     const standard = `

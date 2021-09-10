@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import {search} from "polar-search-api/src/api/search/Search";
 import {ISODateYearString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Fetches} from "polar-shared/src/util/Fetch";

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import {ISelectedDocument} from "./ISelectedDocument";
 import {IAnswerDigestRecord} from "./IAnswerDigestRecord";
 import {IOpenAIAnswersResponse} from "./IOpenAIAnswersResponse";

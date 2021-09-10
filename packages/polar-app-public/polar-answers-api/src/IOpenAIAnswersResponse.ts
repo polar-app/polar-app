@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import {ISelectedDocument} from "./ISelectedDocument";
 import {AIModel} from "./AIModel";
 

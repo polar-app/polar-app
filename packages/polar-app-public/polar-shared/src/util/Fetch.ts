@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import {Request, Response, BodyInit} from 'node-fetch';
 
 import {default as node_fetch} from 'node-fetch';
