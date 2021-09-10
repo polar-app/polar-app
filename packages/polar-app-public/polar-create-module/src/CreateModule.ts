@@ -1,5 +1,6 @@
 import fs from 'fs';
 import * as readline from 'readline';
+import {Files} from "polar-shared/src/util/Files";
 
 // & Interfaces
 interface IPackageManifest {
@@ -19,6 +20,12 @@ interface Scripts {
     eslint?: string;
     eslintfix?: string;
     compile?: string;
+    tsc?: string;
+}
+
+interface ICreateModuleConfig {
+    readonly typescript?: 'disabled';
+    readonly noTests?: true;
 }
 
 async function getUserInput(property: string): Promise<string> {
@@ -35,41 +42,92 @@ async function getUserInput(property: string): Promise<string> {
 }
 
 export function createJSONDataFile(obj: any) {
+    return `// THIS FILE IS AUTO-GENERATED, DO NOT EDIT\n` + JSON.stringify(obj, null, 2);
+}
 
-    return `// THIS FILE IS AUTO-GENERATED, DO NOT EDIT\n` + JSON.stringify(obj, null, "  ");
+export async function readCreateModuleConfig(): Promise<ICreateModuleConfig> {
+
+    const path = ".polar-create-module.json";
+
+    if (await Files.existsAsync(path)) {
+        const buff = await Files.readFileAsync(path)
+        return JSON.parse(buff.toString('utf-8'));
+    }
+
+    return {};
 
 }
 
 async function updateScripts(): Promise<void> {
 
+    const conf = await readCreateModuleConfig();
+
     async function updatePackageJSON() {
 
         // ~ Read and parse Package.json
         const data = await fs.promises.readFile('package.json');
-        const content: IPackageManifest = JSON.parse(data.toString('utf-8'));
+        const pkg: IPackageManifest = JSON.parse(data.toString('utf-8'));
 
-        if (! content.scripts) {
+        if (! pkg.scripts) {
             // it's possible that there aren't any scripts.
-            content.scripts = {};
+            pkg.scripts = {};
         }
 
         // ~ Update Scripts
-        content.scripts.test = "if [ -z $(find src -name '**Test.js') ]; then echo 'No tests'; else yarn run mocha; fi;";
-        content.scripts.mocha = "mocha --timeout 20000 --exit **/**/*Test.js"
-        content.scripts.eslint = "eslint -c ./.eslintrc.json .";
-        content.scripts.eslintfix = "eslint -c ./.eslintrc.json . --fix";
-        content.scripts.compile = "tsc";
+
+        if (! pkg.devDependencies) {
+            pkg.devDependencies = {};
+        }
+
+        if (conf.typescript !== 'disabled') {
+
+            // TODO we have to crank up --jobs to that we operate in parallel but some of our tests fail in this
+            // scenario because they use cloud resources which act as mutex / shared state and the tests will
+            // clash with one another.
+            pkg.scripts.mocha = "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'"
+            pkg.scripts.eslint = "eslint -c ./.eslintrc.json .";
+            pkg.scripts.eslintfix = "eslint -c ./.eslintrc.json . --fix";
+            pkg.scripts.test = "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;";
+            pkg.scripts.compile = "RESULT=\"$(find -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;";
+            pkg.scripts.tsc = 'tsc';
+
+            if (conf.noTests) {
+                pkg.scripts.test = "echo no tests";
+            }
+
+            pkg.devDependencies['polar-eslint'] = `^${pkg.version}`;
+            pkg.devDependencies['polar-typescript'] = `^${pkg.version}`;
+
+        } else {
+            delete pkg.scripts.mocha;
+            delete pkg.scripts.eslint;
+            delete pkg.scripts.eslintfix;
+            delete pkg.scripts.test;
+            delete pkg.scripts.compile;
+
+            delete pkg.devDependencies['polar-eslint'];
+            delete pkg.devDependencies['polar-typescript'];
+
+        }
 
         // ~ Update Package.Json File
-        await fs.promises.writeFile('package.json', JSON.stringify(content, null, 2));
+        await fs.promises.writeFile('package.json', JSON.stringify(pkg, null, 2));
 
     }
 
     await updatePackageJSON();
 
     // ~ copy over other files
-    await fs.promises.writeFile('.eslintrc.json', createJSONDataFile(ESLint.createV0()));
-    await fs.promises.writeFile('tsconfig.json', createJSONDataFile(TSConfig.createV0()));
+    if (conf.typescript !== 'disabled') {
+        await fs.promises.writeFile('.eslintrc.json', createJSONDataFile(ESLint.createV0()));
+        await fs.promises.writeFile('tsconfig.json', createJSONDataFile(TSConfig.createV0()));
+    } else {
+        await Files.deleteAsync('.eslintrc.json');
+        await Files.deleteAsync('tsconfig.json');
+    }
+    if (fs.existsSync('tslint.yaml')) {
+        await fs.promises.rm('tslint.yaml');
+    }
 
 }
 
@@ -109,8 +167,7 @@ async function workFlow(): Promise<void> {
 
 }
 
-workFlow()
-    .catch(err => console.error("ERROR: Unable to create module: ", err));
+workFlow().catch(err => console.error("ERROR: Unable to create module: ", err));
 
 export namespace ESLint {
 
@@ -141,7 +198,14 @@ export namespace ESLint {
                 "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
                 "import/newline-after-import": "error",
                 "import/no-cycle": "error",
-                "import/no-absolute-path": "error"
+                "import/no-absolute-path": "error",
+                "no-inner-declarations": "off",
+
+                // burton: this should be off because Typescript supports
+                // zero-code property initialization so it looks like the
+                // constructor has no body when in reality it's defining
+                // properties.
+                "no-useless-constructor": "off",
                 // "import/order": "error",
                 // "indent": ["error", 4, {
                 //     "FunctionDeclaration": {
@@ -366,11 +430,21 @@ export namespace TSConfig {
                 "lib": ["es2019", "es2020.string", "dom"],
                 "paths": {
                     "*": ["node_modules/*"]
-                }
+                },
+                "skipLibCheck": true
             },
             "types": ["mocha", "reflect-metadata"],
-            "include": ["**/*.ts", "**/*.tsx"],
-            "exclude": ["node_modules", "dist", "*.d.ts", "*.js", "cdk.out"]
+            "include": [
+                "**/*.ts",
+                "**/*.tsx"
+            ],
+            "exclude": [
+                "node_modules/**",
+                "dist",
+                "*.d.ts",
+                "*.js",
+                "cdk.out"
+            ]
         }
     }
 }
@@ -393,3 +467,4 @@ export namespace Package {
 
     }
 }
+

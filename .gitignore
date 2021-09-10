@@ -2,6 +2,10 @@ node_modules
 lerna-debug.log
 .idea
 .cache
+tsconfig.tsbuildinfo
 
 # Ignore IntelliJ related configuration
 *.iml
+
+tsconfig.tsbuildinfo
+.webpack-cache-loader

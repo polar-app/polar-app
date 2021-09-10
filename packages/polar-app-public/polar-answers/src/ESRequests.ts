@@ -18,6 +18,10 @@ export namespace ESRequests {
     }
 
     export interface IElasticSearchResponse<T> {
+        /**
+         * The duration of this request.
+         */
+        readonly took: number;
         readonly hits: IElasticSearchHits<T>;
     }
 

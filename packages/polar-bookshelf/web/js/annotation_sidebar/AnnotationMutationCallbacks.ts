@@ -423,8 +423,14 @@ export function useAnnotationMutationCallbacksFactory(): AnnotationMutationCallb
             onTagged,
         };
 
-    },
-    [dialogs, persistenceLayerContext, docMetaLookupContext, tagsContext, repoDocMetaManager, log]);
+    }, [
+        dialogs,
+        persistenceLayerContext,
+        docMetaLookupContext,
+        tagsContext,
+        repoDocMetaManager,
+        log,
+    ]);
 
 }
 

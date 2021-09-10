@@ -19,6 +19,7 @@ interface ChangePlanConfig {
 }
 
 export default async function changePlanForEmail(changePlanConfig: ChangePlanConfig) {
+
     const email = changePlanConfig.email;
 
     const customer: Customer = {
@@ -35,4 +36,5 @@ export default async function changePlanForEmail(changePlanConfig: ChangePlanCon
         : undefined;
 
     await Accounts.changePlanViaEmail(email, customer, plan, interval, expiresAt);
+
 }

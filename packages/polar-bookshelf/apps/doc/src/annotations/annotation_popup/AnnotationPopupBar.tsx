@@ -1,7 +1,6 @@
 import React from "react";
 import clsx from "clsx";
 import {Box, CircularProgress, Divider, useTheme} from "@material-ui/core";
-import {IDocAnnotation} from "../../../../../web/js/annotation_sidebar/DocAnnotation";
 import NoteIcon from "@material-ui/icons/Note";
 import FlashOnIcon from "@material-ui/icons/FlashOn";
 import EditIcon from "@material-ui/icons/Edit";
@@ -20,6 +19,8 @@ import {SelectedContents} from "../../../../../web/js/highlights/text/selection/
 import {useDocViewerContext} from "../../renderers/DocRenderer";
 import {AnnotationTypes} from "../../../../../web/js/metadata/AnnotationTypes";
 import {Clipboards} from "../../../../../web/js/util/system/clipboard/Clipboards";
+import {ITextConverters} from "../../../../../web/js/annotation_sidebar/DocAnnotations";
+import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 
 export const useCopyAnnotation = () => {
     const {annotation, selectionEvent} = useAnnotationPopup();
@@ -27,9 +28,15 @@ export const useCopyAnnotation = () => {
 
     return React.useCallback(() => {
         if (annotation) {
-            const annotationOriginal = annotation.original;
-            if (AnnotationTypes.isTextHighlight(annotationOriginal, annotation.annotationType)) {
-                Clipboards.writeText(annotation.text || "");
+            if (annotation.type === 'docMeta') {
+                const annotationOriginal = annotation.annotation.original;
+                if (AnnotationTypes.isTextHighlight(annotationOriginal, annotation.annotation.annotationType)) {
+                    Clipboards.writeText(annotation.annotation.text || "");
+                }
+            } else {
+                const { text = "" } = ITextConverters
+                    .create(AnnotationType.TEXT_HIGHLIGHT, annotation.annotation.content.value);
+                Clipboards.writeText(text);
             }
         } else if (selectionEvent) {
             const selectedContent = SelectedContents.computeFromSelection(selectionEvent.selection, {
@@ -57,7 +64,6 @@ export const AnnotationPopupBar: React.FC = () => {
         >
             <MUIButtonBar>
                 <ColorChanger
-                    annotation={annotation}
                     isOpen={activeAction === AnnotationPopupActionEnum.CHANGE_COLOR}
                     onToggle={toggleAction(AnnotationPopupActionEnum.CHANGE_COLOR)}
                 />
@@ -107,11 +113,22 @@ export const AnnotationPopupBar: React.FC = () => {
 type IColorChangerProps = {
     onToggle: () => void;
     isOpen: boolean;
-    annotation?: IDocAnnotation;
     active?: boolean;
 }
 
-const ColorChanger: React.FC<IColorChangerProps> = ({ onToggle, isOpen, annotation }) => {
+const ColorChanger: React.FC<IColorChangerProps> = ({ onToggle, isOpen }) => {
+    const { annotation } = useAnnotationPopup();
+
+    const color = React.useMemo<string | undefined>(() => {
+        if (! annotation) {
+            return undefined;
+        }
+
+        return annotation.type === 'docMeta'
+            ? annotation.annotation.color
+            : annotation.annotation.content.value.color;
+    }, [annotation]);
+
     return (
         <Box
             display="flex"
@@ -125,7 +142,7 @@ const ColorChanger: React.FC<IColorChangerProps> = ({ onToggle, isOpen, annotati
                 size="small"
                 onClick={NULL_FUNCTION}
             >
-                <PaletteIcon style={annotation ? { color: annotation.color } : {}} />
+                <PaletteIcon style={color ? { color } : {}} />
             </StandardIconButton>
             <MUIDropdownCaret style={{ transform: `rotate(${isOpen ? 0 : Math.PI}rad)` }} />
         </Box>

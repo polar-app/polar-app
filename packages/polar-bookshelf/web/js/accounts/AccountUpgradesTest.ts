@@ -1,18 +1,24 @@
 import {assert} from 'chai';
 import {AccountUpgrades, AccountUsage} from "./AccountUpgrades";
-import { TestingTime } from 'polar-shared/src/test/TestingTime';
-import { Plans } from 'polar-accounts/src/Plans';
+import {TestingTime} from 'polar-shared/src/test/TestingTime';
+import {Plans} from 'polar-accounts/src/Plans';
 import {Billing} from "polar-accounts/src/Billing";
-import { assertJSON } from '../test/Assertions';
+import {assertJSON} from '../test/Assertions';
+import {Bytes} from "polar-shared/src/util/Bytes";
 import V2Plan = Billing.V2Plan;
 import V2PlanFree = Billing.V2PlanFree;
-import {Bytes} from "polar-shared/src/util/Bytes";
 import isV2Grandfathered = AccountUpgrades.isV2Grandfathered;
 import IRequiredPlan = AccountUpgrades.IRequiredPlan;
 
-TestingTime.freeze()
-
 describe('AccountUpgrades', function() {
+
+    beforeEach(() => {
+        TestingTime.freeze()
+    });
+
+    afterEach(() => {
+        TestingTime.unfreeze()
+    });
 
     it("isV2Grandfathered", function() {
         assert.isTrue(isV2Grandfathered('2012-03-02T11:38:49.321Z'));

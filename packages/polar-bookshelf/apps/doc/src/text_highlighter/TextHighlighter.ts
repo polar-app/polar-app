@@ -16,7 +16,7 @@ const log = Logger.create()
 
 export namespace TextHighlighter {
 
-    interface ICreatedTextHighlight {
+    export interface ICreatedTextHighlight {
         readonly docMeta: IDocMeta;
         readonly pageMeta: IPageMeta;
         readonly textHighlight: ITextHighlight;

@@ -8,17 +8,17 @@ import EXAMPLES = AnswerExecutor.EXAMPLES;
 import MAX_TOKENS = AnswerExecutor.MAX_TOKENS;
 import STOP = AnswerExecutor.STOP;
 
-xdescribe("OpenAIAnswersClient", async function() {
+xdescribe("OpenAIAnswersClient", function() {
 
     this.timeout(30000);
 
     describe("with no docs", () => {
 
-        async function assertQuestionAndAnswer(question: string, expectedAnswer: string, opts: Partial<OpenAIAnswersClient.IRequest> = {}) {
+        async function assertQuestionAndAnswer(question: string, expectedAnswer: string, opts: Partial<OpenAIAnswersClient.IOpenAIAnswersRequest> = {}) {
 
             const documents = opts.documents || [];
 
-            const request: OpenAIAnswersClient.IRequest = {
+            const request: OpenAIAnswersClient.IOpenAIAnswersRequest = {
                 search_model: SEARCH_MODEL,
                 model: MODEL,
                 question,
@@ -68,7 +68,7 @@ xdescribe("OpenAIAnswersClient", async function() {
                 "NASA runs the space program."
             ];
 
-            const request: OpenAIAnswersClient.IRequest = {
+            const request: OpenAIAnswersClient.IOpenAIAnswersRequest = {
                 search_model: SEARCH_MODEL,
                 model: MODEL,
                 question,

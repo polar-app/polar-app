@@ -5,7 +5,7 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {Mappers} from "polar-shared/src/util/Mapper";
 import {IAnswerExecutorError} from "polar-answers-api/src/IAnswerExecutorResponse";
 
-xdescribe("AnswerExecutor", async function () {
+xdescribe("AnswerExecutor", function () {
 
     this.timeout(600000);
 
@@ -29,7 +29,9 @@ xdescribe("AnswerExecutor", async function () {
 
         const response = await AnswerExecutor.exec({
             uid,
-            question
+            question,
+            rerank_elasticsearch: true,
+            filter_stopwords: true
         });
 
         function isError(value: any): value is IAnswerExecutorError {
@@ -286,7 +288,7 @@ xdescribe("AnswerExecutor", async function () {
 
     });
 
-    xdescribe("US history", async function () {
+    describe("US history", function () {
 
         it("US history chap 1 #1", async function () {
 
@@ -551,7 +553,8 @@ xdescribe("AnswerExecutor", async function () {
         it("US history chap 3 #5", async function () {
 
             await assertQuestionAndAnswer("Which religious order joined the French settlement in Canada and tried to convert the natives to Christianity?", [
-                "Jesuits"
+                "Jesuits",
+                "The Jesuits."
             ]);
 
         })
@@ -573,7 +576,8 @@ xdescribe("AnswerExecutor", async function () {
                 "Bacon and his followers, who saw all Native peoples as an obstacle to their access to land, pursued a policy of extermination",
                 "Bacon’s Rebellion was caused by the English settlers’ desire for more land.",
                 "Bacon’s Rebellion was caused by the Virginia government’s Indian policy.",
-                "Bacon’s Rebellion stemmed from a small dispute between a Virginia land owner and the Doeg, but its causes ran much deeper."
+                "Bacon’s Rebellion stemmed from a small dispute between a Virginia land owner and the Doeg, but its causes ran much deeper.",
+                "The primary cause of Bacon’s Rebellion was the governor’s attempt to force the Indians to move to the west side of the James River."
             ]);
 
         })
@@ -617,7 +621,7 @@ xdescribe("AnswerExecutor", async function () {
         })
     });
 
-    xdescribe("Astronomy", async function(){
+    describe("Astronomy", function(){
         // Chapter 2
         it("astronomy Chapter 2 #1", async function() {
             await assertQuestionAndAnswer("What fraction of the sky can be seen from the North Pole?", [
@@ -784,7 +788,7 @@ xdescribe("AnswerExecutor", async function () {
             ]);
         })
     })
-    xdescribe('Elmer Candy Corporation', async () => {
+    xdescribe('Elmer Candy Corporation', () => {
         it("Who founded the Elmer Candy Corporation?", async function () {
             await assertQuestionAndAnswer("Who founded the Elmer Candy Corporation?", [
                 "Christopher Henry Miller"
@@ -809,7 +813,7 @@ xdescribe("AnswerExecutor", async function () {
         })
     });
 
-    xdescribe('Visa Policy of Venezuela', async () => {
+    xdescribe('Visa Policy of Venezuela', () => {
         it("Which are the visa exempt countries for entry in Venezuela?", async function () {
             // @TODO the right answer is a list of ~60 jurisdictions where "All European Union citizens"
             // @TODO is the first element of the list. OpenAI thinks it's the only right answer though. Figure out why.

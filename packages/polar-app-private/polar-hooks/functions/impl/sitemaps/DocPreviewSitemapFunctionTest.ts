@@ -2,7 +2,7 @@ import {DocPreviewCollection} from "polar-firebase/src/firebase/om/DocPreviewCol
 import {FirebaseAdmin} from "polar-firebase-admin/src/FirebaseAdmin";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
-describe('DocPreviewSitemapFunction', function() {
+xdescribe('DocPreviewSitemapFunction', function() {
 
     it("basic", async function() {
 

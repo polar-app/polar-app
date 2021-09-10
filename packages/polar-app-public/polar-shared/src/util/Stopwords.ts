@@ -16,4 +16,8 @@ export namespace Stopwords {
         return stopwords[lang];
     }
 
+    export function removeStopwords(words: ReadonlyArray<string>, stops: ReadonlyArray<string>) {
+        return stopwords.removeStopwords([...words], [...stops]);
+    }
+
 }

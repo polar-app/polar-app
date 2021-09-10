@@ -3,7 +3,7 @@ import {StripeTesting} from "./StripeTesting";
 import {StripeUtils} from "./StripeUtils";
 import {StripePlanIDs} from "./StripePlanIDs";
 
-describe('StripeWebhooks', function() {
+xdescribe('StripeWebhooks', function() {
 
     it("basic", async function() {
         this.timeout(60000);

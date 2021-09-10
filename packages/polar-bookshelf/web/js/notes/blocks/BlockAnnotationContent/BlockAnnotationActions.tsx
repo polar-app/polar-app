@@ -3,7 +3,6 @@ import {createStyles, debounce, Grow, Popper, ClickAwayListener, makeStyles, Box
 import {ColorStr} from "../../../ui/colors/ColorSelectorBox";
 import {ColorMenu} from "../../../ui/ColorMenu";
 import {useHistory} from "react-router";
-import {useAnnotationBlockManager} from "../../NoteUtils";
 import {useBlocksTreeStore} from "../../BlocksTree";
 import {AnnotationPtrs} from "../../../annotation_sidebar/AnnotationPtrs";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
@@ -12,12 +11,12 @@ import {AnnotationLinks} from "../../../annotation_sidebar/AnnotationLinks";
 import DeleteIcon from "@material-ui/icons/Delete";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 import FlashOnIcon from "@material-ui/icons/FlashOn";
-import {AnnotationContentType, IFlashcardAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
+import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {ITextConverters} from "../../../annotation_sidebar/DocAnnotations";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
-import {Flashcards} from "../../../metadata/Flashcards";
-import {Refs} from "polar-shared/src/metadata/Refs";
 import {BlockPredicates} from "../../store/BlockPredicates";
+import {useAnnotationBlockManager} from "../../HighlightNotesUtils";
+import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 
 export const useStyles = makeStyles(() =>
     createStyles({
@@ -182,7 +181,7 @@ type ISharedActionMap = {
 export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockActionsOpts): React.ReactElement[] => {
     const { annotation, id, actions = ['createFlashcard',  'changeColor', 'remove', 'open'] } = opts;
     const blocksTreeStore = useBlocksTreeStore();
-    const { update, getBlock } = useAnnotationBlockManager();
+    const { update, getBlock, createFlashcard } = useAnnotationBlockManager();
     const history = useHistory();
 
     const handleDelete = React.useCallback(() => {
@@ -212,20 +211,8 @@ export const useSharedAnnotationBlockActions = (opts: IUseSharedAnnotationBlockA
             ? ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, annotation.value).text || ''
             : '';
 
-        const content: IFlashcardAnnotationContent = {
-            type: AnnotationContentType.FLASHCARD,
-            docID: annotation.docID,
-            pageNum: annotation.pageNum,
-            value: Flashcards.createFrontBack('', back, Refs.create(
-                annotation.value.id,
-                AnnotationContentType.TEXT_HIGHLIGHT
-                    ? 'text-highlight'
-                    : 'area-highlight'
-            ), 'MARKDOWN'),
-        };
-
-        blocksTreeStore.createNewBlock(id, { asChild: true, content });
-    }, [blocksTreeStore, id, annotation]);
+        createFlashcard(id, { type: FlashcardType.BASIC_FRONT_BACK, front: '', back });
+    }, [id, annotation, createFlashcard]);
 
     const color = annotation.type === AnnotationContentType.TEXT_HIGHLIGHT
                   || annotation.type === AnnotationContentType.AREA_HIGHLIGHT ? annotation.value.color : '';

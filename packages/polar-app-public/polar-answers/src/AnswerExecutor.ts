@@ -12,7 +12,11 @@ import {
 import {IAnswerDigestRecord} from "polar-answers-api/src/IAnswerDigestRecord";
 import {ISelectedDocument} from "polar-answers-api/src/ISelectedDocument";
 import {Arrays} from "polar-shared/src/util/Arrays";
+import {Hashcodes} from "polar-shared/src/util/Hashcodes";
+import {OpenAISearchReRanker} from "./OpenAISearchReRanker";
+import {Stopwords} from "polar-shared/src/util/Stopwords";
 
+const MAX_DOCUMENTS = 200;
 export namespace AnswerExecutor {
 
     import QuestionAnswerPair = OpenAIAnswersClient.QuestionAnswerPair;
@@ -76,12 +80,10 @@ export namespace AnswerExecutor {
 
         const {question, uid} = opts;
 
-        // FIXME: is the right ansewr the FIRST or LAST?
-
         interface DocumentResults {
             readonly duration: number;
             readonly records: ReadonlyArray<IAnswerDigestRecord>;
-            readonly documents: ReadonlyArray<string>
+            // readonly documents: ReadonlyArray<string>
         }
 
         async function computeDocuments() {
@@ -100,7 +102,6 @@ export namespace AnswerExecutor {
 
             return {
                 duration: 0,
-                documents,
                 records: documents.map((current, idx) => {
                     return {
                         type: 'none',
@@ -123,12 +124,28 @@ export namespace AnswerExecutor {
             // applicable to the answer API and we would need a way to easily
             // calculate the short head of the result set.  The OpenAI Answers API
             // only allows 200 documents so we might just want to hard code this.
-            const size = 100;
+            const size = opts.rerank_elasticsearch ? (opts.rerank_elasticsearch_size || 10000) : 100;
+
+            console.log("Running search with size: " + size);
+
+            function computeQueryTextFromQuestion() {
+                const doFilterStopwords = opts.filter_stopwords || true;
+
+                if (doFilterStopwords) {
+                    const words = opts.question.split(/[ \t]+/);
+                    const stopwords = Stopwords.words('en');
+                    return Stopwords.removeStopwords(words, stopwords).join(" ");
+                } else {
+                    return opts.question;
+                }
+            }
+
+            const queryText = computeQueryTextFromQuestion();
 
             const query = {
                 "query": {
                     "query_string": {
-                        "query": question,
+                        "query": queryText,
                         "default_field": "text"
                     }
                 },
@@ -142,29 +159,45 @@ export namespace AnswerExecutor {
 
             const esResponse = esResponseWithDuration.value;
 
-            // I believe the non-deterministic results you see might be caused by
-            // the order in which the documents selected by the Answers endpoint are
-            // inserted into the final completion prompt (Answers endpoint is
-            // indeed Search+Completions under the hood).
-            //
-            // To confirm this hypothesis, I would pass return_prompt = True for
-            // each API call and see how the final prompt differs between calls.
+            async function computeRecords() {
 
-            // the array of digest records so that we can map from the
-            // selected_documents AFTER the request is executed.
-            const records = esResponse.hits.hits.map(current => current._source);
+                const hits = esResponse.hits.hits.map(current => current._source);
 
-            const documents = records.map(current => current.text.replace(/\n/g, ' '));
+                // TODO: do this in the indexer, not the executor? this way we can
+                // same some CPU time during execution.
+
+                if (opts.rerank_elasticsearch) {
+
+                    console.log("Re-ranking N ES results via OpenAI: " + hits.length)
+
+                    const reranked =
+                        await OpenAISearchReRanker.exec(opts.rerank_elasticsearch_model || 'ada',
+                                                        opts.question,
+                                                        hits,
+                                                        hit => hit.text);
+
+                    return Arrays.head(reranked.map(current => current.record), MAX_DOCUMENTS);
+
+                } else {
+                    // the array of digest records so that we can map from the
+                    // selected_documents AFTER the request is executed.
+                    return hits;
+                }
+
+            }
+
+            const records = await computeRecords();
 
             return {
                 duration: esResponseWithDuration.duration,
-                documents,
                 records
             };
 
         }
 
-        const {duration, documents, records} = await computeDocuments();
+        const {duration, records} = await computeDocuments();
+
+        const documents = records.map(current => current.text.replace(/\n/g, ' '));
 
         // TODO how do we compute documents which have no known answer?
 
@@ -177,10 +210,11 @@ export namespace AnswerExecutor {
         // make sense?
 
         // tslint:disable-next-line:variable-name
+        // eslint-disable-next-line camelcase
         const search_model = opts.search_model || SEARCH_MODEL;
         const model = opts.model || MODEL;
 
-        const request: OpenAIAnswersClient.IRequest = {
+        const request: OpenAIAnswersClient.IOpenAIAnswersRequest = {
             search_model,
             model,
             question,
@@ -218,12 +252,15 @@ export namespace AnswerExecutor {
             }
         }
 
+        const id = Hashcodes.createRandomID();
+
         const timings: ITimings = {
             documents: duration,
             openai: answerResponseWithDuration.duration
         }
 
         return {
+            id,
             question,
             selected_documents: answerResponse.selected_documents.map(convertToSelectedDocumentWithRecord),
             answers: answerResponse.answers,

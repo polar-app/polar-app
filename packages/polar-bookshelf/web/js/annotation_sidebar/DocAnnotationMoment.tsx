@@ -1,4 +1,5 @@
 import * as React from 'react';
+import clsx from "clsx";
 import Moment from 'react-moment';
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -18,6 +19,8 @@ const useStyles = makeStyles((theme) =>
 
 interface IProps {
     readonly created: ISODateTimeString;
+    readonly style?: React.CSSProperties;
+    readonly className?: string; 
 }
 
 /**
@@ -26,15 +29,16 @@ interface IProps {
 export const DocAnnotationMoment = React.memo(function DocAnnotationMoment(props: IProps) {
 
     const classes = useStyles();
+    const {created, style, className = ""} = props;
 
     return (
-        <div className={classes.root}>
+        <div style={style} className={clsx(classes.root, className)}>
             <Moment style={{
                         fontSize: '12px'
                     }}
                     withTitle={true}
                     titleFormat="D MMM YYYY hh:MM A" fromNow>
-                {props.created}
+                {created}
             </Moment>
         </div>
     );

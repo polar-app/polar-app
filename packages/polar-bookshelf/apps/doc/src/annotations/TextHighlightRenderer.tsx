@@ -7,13 +7,14 @@ import {TextHighlightRendererStatic} from "./TextHighlightRendererStatic";
 import {TextHighlightRendererDynamic} from "./TextHighlightRendererDynamic";
 import {PageAnnotation} from "./PageAnnotations";
 import {useDocViewerCallbacks} from "../DocViewerStore";
-import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 
 interface IProps {
+    readonly id: string;
     readonly fingerprint: IDStr;
     readonly pageNum: number;
     readonly pageAnnotation: PageAnnotation<ITextHighlight>;
     readonly container: HTMLElement,
+    readonly type: 'block' | 'docMeta';
 }
 
 export const TextHighlightRenderer = memoForwardRef((props: IProps) => {
@@ -23,9 +24,9 @@ export const TextHighlightRenderer = memoForwardRef((props: IProps) => {
 
     const handleClick: React.EventHandler<React.MouseEvent> = () => {
         setActiveHighlight({
-            highlightID: props.pageAnnotation.annotation.guid,
+            highlightID: props.id,
             pageNum: props.pageNum,
-            type: AnnotationType.TEXT_HIGHLIGHT,
+            type: props.type,
         });
     };
 

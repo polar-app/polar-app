@@ -1,11 +1,17 @@
 {
   "name": "polar-cdk",
-  "version": "2.1.107",
+  "version": "2.1.110",
   "private": true,
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "cdk": "cdk"
+    "cdk": "cdk",
+    "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
+    "mocha": "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
+    "eslint": "eslint -c ./.eslintrc.json .",
+    "eslintfix": "eslint -c ./.eslintrc.json . --fix",
+    "compile": "RESULT=\"$(find -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;",
+    "tsc": "tsc"
   },
   "devDependencies": {
     "@aws-cdk/assert": "^1.117.0",
@@ -14,6 +20,8 @@
     "aws-cdk": "^1.117.0",
     "esbuild": "^0.12.19",
     "firebase-admin": "=9.11.0",
+    "polar-eslint": "^2.1.110",
+    "polar-typescript": "^2.1.110",
     "ts-node": "^10.2.0",
     "typescript": "=4.2.3"
   },
@@ -24,6 +32,10 @@
     "@types/node-fetch": "2.5.7",
     "firebase": "=8.8.1",
     "node-fetch": "=2.6.1",
+    "polar-accounts": "^2.1.110",
+    "polar-admin": "^2.1.110",
+    "polar-firebase": "^2.1.110",
+    "polar-hooks-functions": "^2.1.110",
     "source-map-support": "=0.5.19"
   }
 }

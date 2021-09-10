@@ -143,11 +143,10 @@ export const TaskbarDialog = deepMemo(function TaskbarDialog(props: TaskbarDialo
                 )}
 
                 {cancelRequested && (
-                    <ConfirmDialog title="Are you sure you wish to cancel?"
+                    <ConfirmDialog title="Are you sure you wish to cancel?" id={Date.now().toString()}
                                    subtitle="This will cancel all pending tasks"
                                    type="danger"
                                    onAccept={doCancel}/>)}
-
             </>
         );
     }
