@@ -153,7 +153,7 @@ export class DocAnnotations {
 
             const visibility = docMetaRecordHolder ? docMetaRecordHolder.visibility : Visibility.PRIVATE;
 
-            const baseDocAnnotations = await BaseDocAnnotations.toDocAnnotations(uid, profileID, docMeta, visibility);
+            const baseDocAnnotations = BaseDocAnnotations.toDocAnnotations(uid, profileID, docMeta, visibility);
 
             return {
                 docMetaRecordHolder,
@@ -170,7 +170,7 @@ export class DocAnnotations {
         const toDocRepresentationRecords = async (documentSnapshot: IDocumentSnapshot): Promise<DocRepresentationRecords> => {
 
             const docRepresentation = await toDocRepresentation(documentSnapshot);
-            const  docAnnotationRecords = await computeDocAnnotationRecords(docRepresentation);
+            const  docAnnotationRecords = computeDocAnnotationRecords(docRepresentation);
             return {...docRepresentation, docAnnotationRecords};
 
         };

@@ -100,6 +100,6 @@ export class ArchiveWritable extends Writable {
         }
         this.output.once('finish', finishCB)
         this.output.once('error', errorCB)
-        this.archive.finalize()
+        return this.archive.finalize()
     }
 }

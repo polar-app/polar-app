@@ -17,4 +17,5 @@ export const SSRFunction = ExpressFunctions.createHook('SSRFunction', async (req
         res.send(await SSRServer.render());
     }
 
+    return;
 });

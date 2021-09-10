@@ -83,7 +83,7 @@ async function handleExtensionActivated() {
     const authenticated = await requireAuth();
 
     if (authenticated) {
-        await injectContentScript();
+        injectContentScript();
     }
 
     window.close();

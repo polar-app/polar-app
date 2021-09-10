@@ -142,7 +142,7 @@ export const DocPreviewFunction = functions.https.onRequest(async (req, res) => 
 
     const urlHash = DocPreviewHashcodes.urlHash(parsedURL.target);
 
-    const firestore = await FirestoreAdmin.getInstance();
+    const firestore = FirestoreAdmin.getInstance();
 
     const docPreview = await DocPreviewCollection.get(firestore, urlHash);
 

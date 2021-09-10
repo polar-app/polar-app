@@ -47,7 +47,7 @@ class DesktopAppPinger {
             // now continually ping in the background
             setTimeout(() => this.update(), DesktopAppPinger.UPDATE_TIMEOUT);
         }
-
+        return;
     }
 
     /**

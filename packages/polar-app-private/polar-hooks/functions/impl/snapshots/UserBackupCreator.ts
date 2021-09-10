@@ -161,6 +161,7 @@ export namespace UserBackupCreator {
             objectMode: true,
             highWaterMark: 1,
             transform(firebaseObject, encoding, callback) {
+                // tslint:disable-next-line:no-unsafe-any
                 (async () => { // wrap in a self executing async block
 
                     const id = firebaseObject.id;
