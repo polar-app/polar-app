@@ -19,7 +19,7 @@ export namespace Batcher {
     }
 
     export function create<T>(delegate: (records: ReadonlyArray<T>) => Promise<void>,
-                              interval: number = 50): IBatcher<T> {
+                              interval = 50): IBatcher<T> {
 
         let buff: T[] = []
 

@@ -67,97 +67,92 @@ export namespace ESShingleWriter {
 
     }
 
+    export interface ICreateBatcherOpts {
+        readonly uid: UserIDStr;
+        readonly type: 'pdf';
+    }
+
     /**
      * Create a writer that does batch writes.
      */
-    export function createBatcher(opts: ICreateOpts): IESShingleWriter {
+    export function createBatcher(opts: ICreateBatcherOpts): IESShingleWriter {
+
+        // https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html
 
         let idx = 0;
 
-        // TODO write this to support bulk indexing with a sync() method
-
-        // curl -X DELETE "localhost:9200/my-index-000001?pretty"
-
         const indexName = ESAnswersIndexNames.createForUserDocs(opts.uid)
 
-        // FIXME: i don't like how this idx is being incremented.
+        const {type} = opts;
 
-        async function handleBatch(records: ReadonlyArray<IWriteOpts>) {
+        async function handleBatch(records: ReadonlyArray<IAnswerDigestRecord>) {
 
             interface IIndexOp {
                 readonly _index: string;
                 readonly _id: string;
             }
 
-            function createID(opts: IWriteOpts) {
-                const {docID} = opts;
-                const id: ShingleID = `${docID}:${idx}`;
-                return id;
-            }
-
-            function createIndexOp(opts: IWriteOpts): IIndexOp {
-
-                const id = createID(opts);
+            function createIndexOp(record: IAnswerDigestRecord): IIndexOp {
 
                 return {
                     _index: indexName,
-                    _id: id
+                    _id: record.id
                 }
 
             }
 
-            function createIndexDigestRecord(opts: IWriteOpts): IAnswerDigestRecord {
-
-                const {docID, shingle, pageNum} = opts;
-
-                const id = createID(opts);
-
-                return {
-                    type: 'pdf',
-                    id,
-                    docID, pageNum,
-                    idx,
-                    text: shingle.text
-                };
-
+            function createIndexDigestRecord(record: IAnswerDigestRecord): IAnswerDigestRecord {
+                return record;
             }
 
-            type RawRecordArray = ReadonlyArray<IIndexOp | IAnswerDigestRecord>
+            type BulkWriteTuple = [IIndexOp, IAnswerDigestRecord];
 
-            arrayStream()
+            function toBulkWriteTuple(record: IAnswerDigestRecord): BulkWriteTuple {
+                return [
+                    createIndexOp(record),
+                    createIndexDigestRecord(record)
+                ];
+            }
+
+            const writes = arrayStream(records)
+                .map(current => toBulkWriteTuple(current))
+                .flatMap(current => current)
+                .collect();
+
+            await ESRequests.doPut(`/_bulk`, writes);
 
         }
 
-        const batcher = Batcher.create<IWriteOpts>(handleBatch)
+        const batcher = Batcher.create<IAnswerDigestRecord>(handleBatch)
 
-        // https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html
+        function createID(opts: IWriteOpts) {
+            const {docID} = opts;
+            const id: ShingleID = `${docID}:${idx}`;
+            return id;
+        }
 
         async function write(opts: IWriteOpts) {
 
+            const id = createID(opts);
+
             const {docID, shingle, pageNum} = opts;
 
-            const id: ShingleID = `${docID}:${idx}`;
-
-            console.log("Writing shingleID: " + id);
-
-            // TODO: this will have to be updated for EPUB and not hard code to the PDF type.
-            const record: IAnswerDigestRecord = {
-                type: 'pdf',
+            const record = {
                 id,
-                docID, pageNum,
+                type,
                 idx,
+                docID, pageNum,
                 text: shingle.text
             };
 
-            await ESRequests.doPut(`/${indexName}/_doc/${id}`, record);
+            await batcher.write(record)
 
             ++idx;
 
         }
 
-        return batcher;
+        return {...batcher, write};
 
     }
-
 
 }
