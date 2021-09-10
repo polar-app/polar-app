@@ -4,6 +4,8 @@ import {IDStr, UserIDStr} from "polar-shared/src/util/Strings";
 import {ESAnswersIndexNames} from "./ESAnswersIndexNames";
 import {IAnswerDigestRecord} from "polar-answers-api/src/IAnswerDigestRecord";
 import {ShingleID} from "polar-answers-api/src/ShingleID";
+import {Batcher} from "polar-shared/src/util/Batcher";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 
 export namespace ESShingleWriter {
 
@@ -23,6 +25,8 @@ export namespace ESShingleWriter {
     export interface IESShingleWriter {
 
         readonly write: (opts: IWriteOpts) => Promise<void>
+        // noop
+        readonly sync: () => Promise<void>;
 
     }
 
@@ -59,11 +63,116 @@ export namespace ESShingleWriter {
 
         }
 
+        async function sync() {
+            // noop
+        }
+
         console.log("Created ESShingleWriter for " + indexName);
 
-        return {write};
+        return {write, sync};
 
     }
 
+    export interface ICreateBatcherOpts {
+        readonly uid: UserIDStr;
+        readonly type: 'pdf';
+    }
+
+    /**
+     * Create a writer that does batch writes.
+     */
+    export function createBatcher(opts: ICreateBatcherOpts) {
+
+        // https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html
+
+        let idx = 0;
+
+        const indexName = ESAnswersIndexNames.createForUserDocs(opts.uid)
+
+        const {type} = opts;
+
+        async function handleBatch(records: ReadonlyArray<IAnswerDigestRecord>) {
+
+            console.log("Writing batch of N records: " + records.length);
+
+            interface IIndexOp {
+                readonly _index: string;
+                readonly _id: string;
+            }
+
+            interface IIndexAction {
+                readonly index: IIndexOp;
+            }
+
+            function createIndexOp(record: IAnswerDigestRecord): IIndexAction {
+
+                return {
+                    index: {
+                        _index: indexName,
+                        _id: record.id
+                    }
+                };
+
+            }
+
+            function createIndexDigestRecord(record: IAnswerDigestRecord): IAnswerDigestRecord {
+                return record;
+            }
+
+            type BulkWriteTuple = [IIndexAction, IAnswerDigestRecord];
+
+            function toBulkWriteTuple(record: IAnswerDigestRecord): BulkWriteTuple {
+                return [
+                    createIndexOp(record),
+                    createIndexDigestRecord(record)
+                ];
+            }
+
+            const writes = arrayStream(records)
+                .map(current => toBulkWriteTuple(current))
+                .flatMap(current => current)
+                .map(current => JSON.stringify(current))
+                .collect();
+
+            const body = writes.join("\n");
+
+            console.log("FIXME: \n" + body);
+
+            await ESRequests.doPost(`/_bulk`, body);
+
+        }
+
+        const batcher = Batcher.create<IAnswerDigestRecord>(handleBatch)
+
+        function createID(opts: IWriteOpts) {
+            const {docID} = opts;
+            const id: ShingleID = `${docID}:${idx}`;
+            return id;
+        }
+
+        async function write(opts: IWriteOpts) {
+
+            const id = createID(opts);
+
+            const {docID, shingle, pageNum} = opts;
+
+            const record = {
+                id,
+                type,
+                idx,
+                docID, pageNum,
+                text: shingle.text
+            };
+
+            await batcher.write(record)
+
+            ++idx;
+
+        }
+
+        return {...batcher, write};
+
+    }
 
 }
+

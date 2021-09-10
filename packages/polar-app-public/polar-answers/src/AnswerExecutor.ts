@@ -104,6 +104,7 @@ export namespace AnswerExecutor {
                 duration: 0,
                 records: documents.map((current, idx) => {
                     return {
+                        id: `${idx}`,
                         type: 'none',
                         text: current,
                         idx
@@ -152,7 +153,7 @@ export namespace AnswerExecutor {
                 size
             };
 
-            const requestURL = `/${index}/_search`;
+            const requestURL = `/${index}*/_search?allow_no_indices=true`;
 
             const esResponseWithDuration
                 = await executeWithDuration<IElasticSearchResponse<IAnswerDigestRecord>>(() => ESRequests.doPost(requestURL, query));

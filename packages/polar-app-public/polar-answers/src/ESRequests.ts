@@ -50,7 +50,7 @@ export namespace ESRequests {
 
     }
 
-    export async function doPost(url: string, body: object) {
+    export async function doPost(url: string, body: Record<string, unknown> | string) {
 
         ESSecrets.init();
 
@@ -60,7 +60,7 @@ export namespace ESRequests {
 
         const response = await Fetches.fetch(`${credentials.endpoint}${url}`, {
             method: 'POST',
-            body: JSON.stringify(body),
+            body: typeof body === 'string' ? body : JSON.stringify(body),
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Basic ${authorization}`
