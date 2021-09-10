@@ -64,7 +64,7 @@ describe('MarkdownContentConverter', function() {
 
     });
 
-    it('Should not collapse whitespace when converting', () => {
+    it('Should not collapse edge whitespace when converting', () => {
         const data = `    <a contenteditable="false" href="#polar">polar</a>     '    world    `;
         const markdown = MarkdownContentConverter.toMarkdown(data);
         assert.equal(markdown, `    [[polar]]     '    world    `);
