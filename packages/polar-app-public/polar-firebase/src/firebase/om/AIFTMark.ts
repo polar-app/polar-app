@@ -20,7 +20,7 @@ export namespace AIFTMark {
 
     export async function write<SM = unknown>(firestore: IFirestore<SM>, id: IDStr, mark: Mark) {
 
-        const collection = await firestore.collection(COLLECTION_NAME)
+        const collection = firestore.collection(COLLECTION_NAME)
         const ref = collection.doc(id);
 
         const value: IAIFTMark = {
@@ -33,7 +33,7 @@ export namespace AIFTMark {
 
     export async function get<SM = unknown>(firestore: IFirestore<SM>, id: IDStr): Promise<IAIFTMark | undefined> {
 
-        const collection = await firestore.collection(COLLECTION_NAME)
+        const collection = firestore.collection(COLLECTION_NAME)
         const ref = collection.doc(id);
 
         const snap = await ref.get();

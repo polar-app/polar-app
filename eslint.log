@@ -1,6 +1,6 @@
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
-Done in 9.91s.
+Done in 8.25s.
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
 
@@ -9,7 +9,7 @@ $ eslint -c ./.eslintrc.json .
 
 ✖ 1 problem (0 errors, 1 warning)
 
-Done in 9.91s.
+Done in 8.40s.
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
 
@@ -55,7 +55,7 @@ $ eslint -c ./.eslintrc.json .
 
 ✖ 12 problems (0 errors, 12 warnings)
 
-Done in 10.12s.
+Done in 9.42s.
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
 
@@ -99,6 +99,34 @@ info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this comm
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
 
+/home/hadiabu/polar-app/packages/polar-app-public/polar-images/src/ImageResolutions.ts
+   7:1   error    Expected 1 empty line after require statement not followed by another require  import/newline-after-import
+   8:1   error    Import in body of module; reorder to top                                       import/first
+  12:22  error    An empty interface is equivalent to `{}`                                       @typescript-eslint/no-empty-interface
+  26:57  warning  Unexpected any. Specify a different type                                       @typescript-eslint/no-explicit-any
+  27:57  warning  Unexpected any. Specify a different type                                       @typescript-eslint/no-explicit-any
+
+✖ 5 problems (3 errors, 2 warnings)
+  2 errors and 0 warnings potentially fixable with the `--fix` option.
+
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+yarn run v1.22.11
+$ eslint -c ./.eslintrc.json .
+Done in 10.55s.
+yarn run v1.22.11
+$ eslint -c ./.eslintrc.json .
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-browsers/src/Browsers.ts
+  16:26  warning  Forbidden non-null assertion                                      @typescript-eslint/no-non-null-assertion
+  34:18  error    An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-interface
+
+✖ 2 problems (1 error, 1 warning)
+  1 error and 0 warnings potentially fixable with the `--fix` option.
+
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+yarn run v1.22.11
+$ eslint -c ./.eslintrc.json .
+
 /home/hadiabu/polar-app/packages/polar-app-public/polar-suffix-tree/src/GeneralizedSuffixTree.ts
   119:17  error    Expected literal to be on the right side of ==   yoda
   194:13  error    Expected literal to be on the right side of ==   yoda
@@ -124,38 +152,10 @@ $ eslint -c ./.eslintrc.json .
 info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
-Done in 9.52s.
+Done in 11.57s.
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-browsers/src/Browsers.ts
-  16:26  warning  Forbidden non-null assertion                                      @typescript-eslint/no-non-null-assertion
-  34:18  error    An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-interface
-
-✖ 2 problems (1 error, 1 warning)
-  1 error and 0 warnings potentially fixable with the `--fix` option.
-
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-yarn run v1.22.11
-$ eslint -c ./.eslintrc.json .
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-images/src/ImageResolutions.ts
-   7:1   error    Expected 1 empty line after require statement not followed by another require  import/newline-after-import
-   8:1   error    Import in body of module; reorder to top                                       import/first
-  12:22  error    An empty interface is equivalent to `{}`                                       @typescript-eslint/no-empty-interface
-  26:57  warning  Unexpected any. Specify a different type                                       @typescript-eslint/no-explicit-any
-  27:57  warning  Unexpected any. Specify a different type                                       @typescript-eslint/no-explicit-any
-
-✖ 5 problems (3 errors, 2 warnings)
-  2 errors and 0 warnings potentially fixable with the `--fix` option.
-
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-yarn run v1.22.11
-$ eslint -c ./.eslintrc.json .
-Done in 10.28s.
-yarn run v1.22.11
-$ eslint -c ./.eslintrc.json .
-Done in 10.72s.
+Done in 12.41s.
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
 
@@ -432,7 +432,7 @@ Consider using `Record<string, unknown>` instead, as it allows you to more easil
 
 /home/hadiabu/polar-app/packages/polar-app-public/polar-shared/src/util/Files.ts
   400:13  error    Type boolean trivially inferred from a boolean literal, remove type annotation  @typescript-eslint/no-inferrable-types
-  436:21  error    Unexpected `await` of a non-Promise (non-"Thenable") value                      @typescript-eslint/await-thenable
+  436:21  error    Expected an assignment or function call and instead saw an expression           no-unused-expressions
   445:40  warning  Forbidden non-null assertion                                                    @typescript-eslint/no-non-null-assertion
   679:79  warning  Forbidden non-null assertion                                                    @typescript-eslint/no-non-null-assertion
   757:37  warning  Unexpected any. Specify a different type                                        @typescript-eslint/no-explicit-any
@@ -659,8 +659,6 @@ Consider using `Record<string, unknown>` instead, as it allows you to more easil
   215:27  warning  Unexpected any. Specify a different type                                        @typescript-eslint/no-explicit-any
 
 /home/hadiabu/polar-app/packages/polar-app-public/polar-shared/src/util/StreamsTest.ts
-  26:24  error  Unexpected `await` of a non-Promise (non-"Thenable") value                                   @typescript-eslint/await-thenable
-  32:32  error  Unexpected `await` of a non-Promise (non-"Thenable") value                                   @typescript-eslint/await-thenable
   52:22  error  'new Buffer()' was deprecated since v6.0.0. Use 'Buffer.alloc()' or 'Buffer.from()' instead  node/no-deprecated-api
 
 /home/hadiabu/polar-app/packages/polar-app-public/polar-shared/src/util/Strings.ts
@@ -742,39 +740,34 @@ If you are expecting the function to accept certain arguments, you should explic
 /home/hadiabu/polar-app/packages/polar-app-public/polar-shared/src/util/ts/OptionalTest.ts
   129:19  warning  'mapped' is assigned a value but never used  @typescript-eslint/no-unused-vars
 
-✖ 379 problems (136 errors, 243 warnings)
+✖ 377 problems (134 errors, 243 warnings)
   76 errors and 0 warnings potentially fixable with the `--fix` option.
 
 info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-blocks/src/blocks/content/IAnnotationContent.ts
-   7:9   warning  'IHasLinksContent' is defined but never used                      @typescript-eslint/no-unused-vars
-  48:18  error    An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-interface
-  52:18  error    An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-interface
-  56:18  error    An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-interface
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-blocks/src/blocks/content/IBaseBlockContent.ts
-  6:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-
-✖ 5 problems (3 errors, 2 warnings)
-  3 errors and 0 warnings potentially fixable with the `--fix` option.
-
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-yarn run v1.22.11
-$ eslint -c ./.eslintrc.json .
-Done in 14.20s.
+Done in 13.33s.
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
 
-/home/hadiabu/polar-app/packages/polar-app-public/polar-background-uploader/src/BackgroundUploader.ts
-   88:10  warning  'registerResumeHandler' is defined but never used  @typescript-eslint/no-unused-vars
-   94:46  error    Unexpected empty arrow function                    @typescript-eslint/no-empty-function
-  194:18  warning  'doResume' is defined but never used               @typescript-eslint/no-unused-vars
-  222:56  warning  Forbidden non-null assertion                       @typescript-eslint/no-non-null-assertion
+/home/hadiabu/polar-app/packages/polar-app-private/polar-hacker-news-crawler/src/DiskCache.ts
+   9:42  error  Type string trivially inferred from a string literal, remove type annotation  @typescript-eslint/no-inferrable-types
+  56:45  error  Type string trivially inferred from a string literal, remove type annotation  @typescript-eslint/no-inferrable-types
 
-✖ 4 problems (1 error, 3 warnings)
+/home/hadiabu/polar-app/packages/polar-app-private/polar-hacker-news-crawler/src/HackerNewsContents.ts
+  44:26  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  44:26  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  45:27  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  45:27  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  59:35  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  59:35  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  78:38  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+
+/home/hadiabu/polar-app/packages/polar-app-private/polar-hacker-news-crawler/src/Wayback.ts
+  36:14  error  Identifier 'archived_snapshots' is not in camel case  camelcase
+
+✖ 10 problems (3 errors, 7 warnings)
+  2 errors and 0 warnings potentially fixable with the `--fix` option.
 
 info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
 yarn run v1.22.11
@@ -801,7 +794,19 @@ $ eslint -c ./.eslintrc.json .
 
 ✖ 1 problem (0 errors, 1 warning)
 
-Done in 15.04s.
+Done in 15.88s.
+yarn run v1.22.11
+$ eslint -c ./.eslintrc.json .
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-background-uploader/src/BackgroundUploader.ts
+   88:10  warning  'registerResumeHandler' is defined but never used  @typescript-eslint/no-unused-vars
+   94:46  error    Unexpected empty arrow function                    @typescript-eslint/no-empty-function
+  194:18  warning  'doResume' is defined but never used               @typescript-eslint/no-unused-vars
+  222:56  warning  Forbidden non-null assertion                       @typescript-eslint/no-non-null-assertion
+
+✖ 4 problems (1 error, 3 warnings)
+
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
 
@@ -811,29 +816,6 @@ $ eslint -c ./.eslintrc.json .
 
 ✖ 2 problems (1 error, 1 warning)
   1 error and 0 warnings potentially fixable with the `--fix` option.
-
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-yarn run v1.22.11
-$ eslint -c ./.eslintrc.json .
-
-/home/hadiabu/polar-app/packages/polar-app-private/polar-hacker-news-crawler/src/DiskCache.ts
-   9:42  error  Type string trivially inferred from a string literal, remove type annotation  @typescript-eslint/no-inferrable-types
-  56:45  error  Type string trivially inferred from a string literal, remove type annotation  @typescript-eslint/no-inferrable-types
-
-/home/hadiabu/polar-app/packages/polar-app-private/polar-hacker-news-crawler/src/HackerNewsContents.ts
-  44:26  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
-  44:26  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
-  45:27  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
-  45:27  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
-  59:35  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
-  59:35  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
-  78:38  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
-
-/home/hadiabu/polar-app/packages/polar-app-private/polar-hacker-news-crawler/src/Wayback.ts
-  36:14  error  Identifier 'archived_snapshots' is not in camel case  camelcase
-
-✖ 10 problems (3 errors, 7 warnings)
-  2 errors and 0 warnings potentially fixable with the `--fix` option.
 
 info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
 yarn run v1.22.11
@@ -883,12 +865,19 @@ info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this comm
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
 
-/home/hadiabu/polar-app/packages/polar-app-public/polar-epub/src/EPUBMetadata.ts
-  27:61  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+/home/hadiabu/polar-app/packages/polar-app-public/polar-blocks/src/blocks/content/IAnnotationContent.ts
+   7:9   warning  'IHasLinksContent' is defined but never used                      @typescript-eslint/no-unused-vars
+  48:18  error    An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-interface
+  52:18  error    An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-interface
+  56:18  error    An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-interface
 
-✖ 1 problem (0 errors, 1 warning)
+/home/hadiabu/polar-app/packages/polar-app-public/polar-blocks/src/blocks/content/IBaseBlockContent.ts
+  6:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
 
-Done in 17.41s.
+✖ 5 problems (3 errors, 2 warnings)
+  3 errors and 0 warnings potentially fixable with the `--fix` option.
+
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
 
@@ -985,7 +974,45 @@ $ eslint -c ./.eslintrc.json .
 info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
-Done in 11.99s.
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-epub/src/EPUBMetadata.ts
+  27:61  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 1 problem (0 errors, 1 warning)
+
+Done in 18.63s.
+yarn run v1.22.11
+$ eslint -c ./.eslintrc.json .
+Done in 14.47s.
+yarn run v1.22.11
+$ eslint -c ./.eslintrc.json .
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-npm/src/npm-dump-dependencies.ts
+  41:51  warning  'type' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-npm/src/npm-stagnant.ts
+   6:24  error    Require statement not part of import statement  @typescript-eslint/no-var-requires
+  54:20  warning  'prefix' is assigned a value but never used     @typescript-eslint/no-unused-vars
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-npm/src/npm-upgrade-pkg.ts
+  44:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  48:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  50:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  76:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 7 problems (1 error, 6 warnings)
+
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+yarn run v1.22.11
+$ eslint -c ./.eslintrc.json .
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-google-cloud-language/src/GCLSentenceSplitter.ts
+   1:8   warning  'path' is defined but never used          @typescript-eslint/no-unused-vars
+  28:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 2 problems (0 errors, 2 warnings)
+
+Done in 15.29s.
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
 
@@ -1011,25 +1038,6 @@ info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this comm
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
 
-/home/hadiabu/polar-app/packages/polar-app-public/polar-npm/src/npm-dump-dependencies.ts
-  41:51  warning  'type' is defined but never used  @typescript-eslint/no-unused-vars
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-npm/src/npm-stagnant.ts
-   6:24  error    Require statement not part of import statement  @typescript-eslint/no-var-requires
-  54:20  warning  'prefix' is assigned a value but never used     @typescript-eslint/no-unused-vars
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-npm/src/npm-upgrade-pkg.ts
-  44:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-  48:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-  50:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-  76:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-
-✖ 7 problems (1 error, 6 warnings)
-
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-yarn run v1.22.11
-$ eslint -c ./.eslintrc.json .
-
 /home/hadiabu/polar-app/packages/polar-app-public/polar-page-metadata-parser/src/PageMetadata.ts
   21:18  error  An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-interface
 
@@ -1041,91 +1049,6 @@ $ eslint -c ./.eslintrc.json .
 
 ✖ 3 problems (2 errors, 1 warning)
   2 errors and 0 warnings potentially fixable with the `--fix` option.
-
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-yarn run v1.22.11
-$ eslint -c ./.eslintrc.json .
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-google-cloud-language/src/GCLSentenceSplitter.ts
-   1:8   warning  'path' is defined but never used          @typescript-eslint/no-unused-vars
-  28:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-
-✖ 2 problems (0 errors, 2 warnings)
-
-Done in 14.17s.
-yarn run v1.22.11
-$ eslint -c ./.eslintrc.json .
-Done in 12.22s.
-yarn run v1.22.11
-$ eslint -c ./.eslintrc.json .
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-pagemarks-auto/src/AutoPagemarker.ts
-  249:21  error    Unexpected lexical declaration in case block  no-case-declarations
-  249:27  warning  'height' is assigned a value but never used   @typescript-eslint/no-unused-vars
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-pagemarks-auto/src/AutoPagemarkerTest.ts
-   60:46  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
-   62:23  error    Type number trivially inferred from a number literal, remove type annotation  @typescript-eslint/no-inferrable-types
-   69:43  error    Arrow function should not return assignment                                   no-return-assign
-   71:43  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
-   80:29  warning  Forbidden non-null assertion                                                  @typescript-eslint/no-non-null-assertion
-  295:15  warning  'height' is assigned a value but never used                                   @typescript-eslint/no-unused-vars
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-pagemarks-auto/src/Scrollers.ts
-  52:9   warning  Forbidden non-null assertion       @typescript-eslint/no-non-null-assertion
-  52:48  warning  'event' is defined but never used  @typescript-eslint/no-unused-vars
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-pagemarks-auto/src/TaskThrottler.ts
-  28:17  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-pagemarks-auto/src/ViewVisibilityCalculator.ts
-  22:18  error  An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-interface
-
-✖ 12 problems (4 errors, 8 warnings)
-  2 errors and 0 warnings potentially fixable with the `--fix` option.
-
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-yarn run v1.22.11
-$ eslint -c ./.eslintrc.json .
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-pdf/src/pdf/DOIs.ts
-  13:32  error  Type string trivially inferred from a string literal, remove type annotation  @typescript-eslint/no-inferrable-types
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-pdf/src/pdf/JSDOMForPDFThumbnailer.ts
-  5:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-  6:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-  7:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-  8:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-  9:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-pdf/src/pdf/PDFMetadata.ts
-   62:15  warning  'isPath' is assigned a value but never used    @typescript-eslint/no-unused-vars
-  118:15  warning  'filename' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  132:38  warning  Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-pdf/src/pdf/PDFMetadataTest.ts
-   39:19  warning  'url' is assigned a value but never used                                      @typescript-eslint/no-unused-vars
-  189:13  error    Type number trivially inferred from a number literal, remove type annotation  @typescript-eslint/no-inferrable-types
-  257:47  warning  Forbidden non-null assertion                                                  @typescript-eslint/no-non-null-assertion
-  265:47  warning  Forbidden non-null assertion                                                  @typescript-eslint/no-non-null-assertion
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-pdf/src/pdf/PDFModernTextLayers.ts
-   7:7   warning  'log' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  23:27  warning  'enabled' is defined but never used       @typescript-eslint/no-unused-vars
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-pdf/src/pdf/PDFText.ts
-    3:23  warning  'TextContent' is defined but never used                                       @typescript-eslint/no-unused-vars
-    3:36  warning  'Transform' is defined but never used                                         @typescript-eslint/no-unused-vars
-   82:19  error    Unexpected literal in error position of callback                              node/no-callback-literal
-  138:17  error    Type number trivially inferred from a number literal, remove type annotation  @typescript-eslint/no-inferrable-types
-  146:27  error    Comparing to itself is potentially pointless                                  no-self-compare
-  164:27  warning  Forbidden non-null assertion                                                  @typescript-eslint/no-non-null-assertion
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-pdf/src/pdf/PDFTitleExtractor.ts
-  32:21  error  Type boolean trivially inferred from a boolean literal, remove type annotation  @typescript-eslint/no-inferrable-types
-
-✖ 22 problems (6 errors, 16 warnings)
-  4 errors and 0 warnings potentially fixable with the `--fix` option.
 
 info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
 yarn run v1.22.11
@@ -1224,7 +1147,82 @@ Consider using `Record<string, unknown>` instead, as it allows you to more easil
 info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
-Done in 11.30s.
+Done in 15.71s.
+yarn run v1.22.11
+$ eslint -c ./.eslintrc.json .
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-pagemarks-auto/src/AutoPagemarker.ts
+  249:21  error    Unexpected lexical declaration in case block  no-case-declarations
+  249:27  warning  'height' is assigned a value but never used   @typescript-eslint/no-unused-vars
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-pagemarks-auto/src/AutoPagemarkerTest.ts
+   60:46  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+   62:23  error    Type number trivially inferred from a number literal, remove type annotation  @typescript-eslint/no-inferrable-types
+   69:43  error    Arrow function should not return assignment                                   no-return-assign
+   71:43  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+   80:29  warning  Forbidden non-null assertion                                                  @typescript-eslint/no-non-null-assertion
+  295:15  warning  'height' is assigned a value but never used                                   @typescript-eslint/no-unused-vars
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-pagemarks-auto/src/Scrollers.ts
+  52:9   warning  Forbidden non-null assertion       @typescript-eslint/no-non-null-assertion
+  52:48  warning  'event' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-pagemarks-auto/src/TaskThrottler.ts
+  28:17  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-pagemarks-auto/src/ViewVisibilityCalculator.ts
+  22:18  error  An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-interface
+
+✖ 12 problems (4 errors, 8 warnings)
+  2 errors and 0 warnings potentially fixable with the `--fix` option.
+
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+yarn run v1.22.11
+$ eslint -c ./.eslintrc.json .
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-pdf/src/pdf/DOIs.ts
+  13:32  error  Type string trivially inferred from a string literal, remove type annotation  @typescript-eslint/no-inferrable-types
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-pdf/src/pdf/JSDOMForPDFThumbnailer.ts
+  5:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  6:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  7:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  9:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-pdf/src/pdf/PDFMetadata.ts
+   62:15  warning  'isPath' is assigned a value but never used    @typescript-eslint/no-unused-vars
+  118:15  warning  'filename' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  132:38  warning  Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-pdf/src/pdf/PDFMetadataTest.ts
+   39:19  warning  'url' is assigned a value but never used                                      @typescript-eslint/no-unused-vars
+  189:13  error    Type number trivially inferred from a number literal, remove type annotation  @typescript-eslint/no-inferrable-types
+  257:47  warning  Forbidden non-null assertion                                                  @typescript-eslint/no-non-null-assertion
+  265:47  warning  Forbidden non-null assertion                                                  @typescript-eslint/no-non-null-assertion
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-pdf/src/pdf/PDFModernTextLayers.ts
+   7:7   warning  'log' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  23:27  warning  'enabled' is defined but never used       @typescript-eslint/no-unused-vars
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-pdf/src/pdf/PDFText.ts
+    3:23  warning  'TextContent' is defined but never used                                       @typescript-eslint/no-unused-vars
+    3:36  warning  'Transform' is defined but never used                                         @typescript-eslint/no-unused-vars
+   82:19  error    Unexpected literal in error position of callback                              node/no-callback-literal
+  138:17  error    Type number trivially inferred from a number literal, remove type annotation  @typescript-eslint/no-inferrable-types
+  146:27  error    Comparing to itself is potentially pointless                                  no-self-compare
+  164:27  warning  Forbidden non-null assertion                                                  @typescript-eslint/no-non-null-assertion
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-pdf/src/pdf/PDFTitleExtractor.ts
+  32:21  error  Type boolean trivially inferred from a boolean literal, remove type annotation  @typescript-eslint/no-inferrable-types
+
+✖ 22 problems (6 errors, 16 warnings)
+  4 errors and 0 warnings potentially fixable with the `--fix` option.
+
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+yarn run v1.22.11
+$ eslint -c ./.eslintrc.json .
+Done in 13.60s.
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
 
@@ -1234,6 +1232,67 @@ $ eslint -c ./.eslintrc.json .
 
 ✖ 2 problems (1 error, 1 warning)
   1 error and 0 warnings potentially fixable with the `--fix` option.
+
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+yarn run v1.22.11
+$ eslint -c ./.eslintrc.json .
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-webapp-links/src/docs/AddURLs.ts
+  9:37  error  Unnecessary escape character: \.  no-useless-escape
+  9:51  error  Unnecessary escape character: \.  no-useless-escape
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-webapp-links/src/docs/DocPreviewURLs.ts
+    2:9   warning  'Slugs' is defined but never used         @typescript-eslint/no-unused-vars
+   58:37  error    Unnecessary escape character: \.          no-useless-escape
+   58:51  error    Unnecessary escape character: \.          no-useless-escape
+  123:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-webapp-links/src/docs/PreviewViewerURLs.ts
+  15:29  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  33:29  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  37:50  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  42:53  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+
+✖ 10 problems (4 errors, 6 warnings)
+
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+yarn run v1.22.11
+$ eslint -c ./.eslintrc.json .
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-text-highlighter/src/TextHighlighterTest.ts
+  3:28  error  Unexpected empty function  @typescript-eslint/no-empty-function
+
+✖ 1 problem (1 error, 0 warnings)
+
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+yarn run v1.22.11
+$ eslint -c ./.eslintrc.json .
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension-api/src/ChromeStoreURLs.ts
+  5:13  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension-api/src/DocCachesTestK.ts
+   9:5   error  Unexpected var, use let or const instead            no-var
+  10:5   error  Unexpected var, use let or const instead            no-var
+  11:11  error  Unexpected var, use let or const instead            no-var
+  22:9   error  'elapsed' is never reassigned. Use 'const' instead  prefer-const
+  32:9   error  'elapsed' is never reassigned. Use 'const' instead  prefer-const
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension-api/src/WebExtensionPresenceClient.ts
+  35:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension-api/src/WebExtensions.ts
+   19:71  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   19:85  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   26:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   43:50  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   43:64  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  113:65  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  113:79  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  117:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 15 problems (5 errors, 10 warnings)
+  5 errors and 0 warnings potentially fixable with the `--fix` option.
 
 info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
 yarn run v1.22.11
@@ -1278,70 +1337,6 @@ info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this comm
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
 
-/home/hadiabu/polar-app/packages/polar-app-public/polar-text-highlighter/src/TextHighlighterTest.ts
-  3:28  error  Unexpected empty function  @typescript-eslint/no-empty-function
-
-✖ 1 problem (1 error, 0 warnings)
-
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-yarn run v1.22.11
-$ eslint -c ./.eslintrc.json .
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension-api/src/ChromeStoreURLs.ts
-  5:13  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension-api/src/DocCaches.ts
-  146:40  error  Unexpected `await` of a non-Promise (non-"Thenable") value  @typescript-eslint/await-thenable
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension-api/src/DocCachesTestK.ts
-   9:5   error  Unexpected var, use let or const instead            no-var
-  10:5   error  Unexpected var, use let or const instead            no-var
-  11:11  error  Unexpected var, use let or const instead            no-var
-  22:9   error  'elapsed' is never reassigned. Use 'const' instead  prefer-const
-  32:9   error  'elapsed' is never reassigned. Use 'const' instead  prefer-const
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension-api/src/WebExtensionPresenceClient.ts
-  35:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension-api/src/WebExtensions.ts
-   19:71  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-   19:85  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-   26:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-   43:50  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-   43:64  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-  113:65  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-  113:79  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-  117:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-
-✖ 16 problems (6 errors, 10 warnings)
-  5 errors and 0 warnings potentially fixable with the `--fix` option.
-
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-yarn run v1.22.11
-$ eslint -c ./.eslintrc.json .
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-webapp-links/src/docs/AddURLs.ts
-  9:37  error  Unnecessary escape character: \.  no-useless-escape
-  9:51  error  Unnecessary escape character: \.  no-useless-escape
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-webapp-links/src/docs/DocPreviewURLs.ts
-    2:9   warning  'Slugs' is defined but never used         @typescript-eslint/no-unused-vars
-   58:37  error    Unnecessary escape character: \.          no-useless-escape
-   58:51  error    Unnecessary escape character: \.          no-useless-escape
-  123:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-webapp-links/src/docs/PreviewViewerURLs.ts
-  15:29  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
-  33:29  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
-  37:50  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
-  42:53  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
-
-✖ 10 problems (4 errors, 6 warnings)
-
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-yarn run v1.22.11
-$ eslint -c ./.eslintrc.json .
-
 /home/hadiabu/polar-app/packages/polar-app-private/polar-thumbnail/src/thumbnail/ThumbnailGenerator.ts
   7:34  warning  'url' is defined but never used  @typescript-eslint/no-unused-vars
 
@@ -1349,39 +1344,6 @@ $ eslint -c ./.eslintrc.json .
   13:38  error  Require statement not part of import statement  @typescript-eslint/no-var-requires
 
 ✖ 2 problems (1 error, 1 warning)
-
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-yarn run v1.22.11
-$ eslint -c ./.eslintrc.json .
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-search/src/search/arxiv/ARXIVSearchEngine.ts
-  199:27  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
-  202:27  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-search/src/search/fatcat/FatcatSearchEngine.ts
-   87:18  error  Identifier 'work_id' is not in camel case         camelcase
-   88:18  error  Identifier 'container_id' is not in camel case    camelcase
-   91:18  error  Identifier 'ext_ids' is not in camel case         camelcase
-   92:18  error  Identifier 'release_year' is not in camel case    camelcase
-  101:18  error  Identifier 'raw_name' is not in camel case        camelcase
-  108:18  error  Identifier 'wikipedia_quid' is not in camel case  camelcase
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-search/src/search/unpaywall/Unpaywall.ts
-  11:18  error  Identifier 'doi_url' is not in camel case                         camelcase
-  15:18  error  Identifier 'z_authors' is not in camel case                       camelcase
-  16:18  error  Identifier 'published_date' is not in camel case                  camelcase
-  17:18  error  Identifier 'oa_locations' is not in camel case                    camelcase
-  20:22  error  An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-interface
-  30:18  error  Identifier 'is_best' is not in camel case                         camelcase
-  31:18  error  Identifier 'url_for_landing_page' is not in camel case            camelcase
-  32:18  error  Identifier 'url_for_pdf' is not in camel case                     camelcase
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-search/src/search/unpaywall/UnpaywallSearchEngineTest.ts
-   12:20  error    Unexpected `await` of a non-Promise (non-"Thenable") value  @typescript-eslint/await-thenable
-  118:17  warning  Unexpected any. Specify a different type                    @typescript-eslint/no-explicit-any
-
-✖ 18 problems (15 errors, 3 warnings)
-  1 error and 0 warnings potentially fixable with the `--fix` option.
 
 info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
 yarn run v1.22.11
@@ -1477,7 +1439,39 @@ $ eslint -c ./.eslintrc.json .
 info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
-Done in 8.04s.
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-search/src/search/arxiv/ARXIVSearchEngine.ts
+  199:27  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+  202:27  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-search/src/search/fatcat/FatcatSearchEngine.ts
+   87:18  error  Identifier 'work_id' is not in camel case         camelcase
+   88:18  error  Identifier 'container_id' is not in camel case    camelcase
+   91:18  error  Identifier 'ext_ids' is not in camel case         camelcase
+   92:18  error  Identifier 'release_year' is not in camel case    camelcase
+  101:18  error  Identifier 'raw_name' is not in camel case        camelcase
+  108:18  error  Identifier 'wikipedia_quid' is not in camel case  camelcase
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-search/src/search/unpaywall/Unpaywall.ts
+  11:18  error  Identifier 'doi_url' is not in camel case                         camelcase
+  15:18  error  Identifier 'z_authors' is not in camel case                       camelcase
+  16:18  error  Identifier 'published_date' is not in camel case                  camelcase
+  17:18  error  Identifier 'oa_locations' is not in camel case                    camelcase
+  20:22  error  An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-interface
+  30:18  error  Identifier 'is_best' is not in camel case                         camelcase
+  31:18  error  Identifier 'url_for_landing_page' is not in camel case            camelcase
+  32:18  error  Identifier 'url_for_pdf' is not in camel case                     camelcase
+
+/home/hadiabu/polar-app/packages/polar-app-public/polar-search/src/search/unpaywall/UnpaywallSearchEngineTest.ts
+  118:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 17 problems (14 errors, 3 warnings)
+  1 error and 0 warnings potentially fixable with the `--fix` option.
+
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+yarn run v1.22.11
+$ eslint -c ./.eslintrc.json .
+Done in 10.27s.
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
 
@@ -1560,14 +1554,6 @@ Consider using `Record<string, unknown>` instead, as it allows you to more easil
    9:28  warning  'Providers' is defined but never used          @typescript-eslint/no-unused-vars
   94:18  warning  Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
 
-/home/hadiabu/polar-app/packages/polar-app-public/polar-firebase/src/firebase/om/AIFTMark.ts
-  23:28  error  Unexpected `await` of a non-Promise (non-"Thenable") value  @typescript-eslint/await-thenable
-  36:28  error  Unexpected `await` of a non-Promise (non-"Thenable") value  @typescript-eslint/await-thenable
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-firebase/src/firebase/om/AuthChallengeCollection.ts
-  32:28  error  Unexpected `await` of a non-Promise (non-"Thenable") value  @typescript-eslint/await-thenable
-  51:28  error  Unexpected `await` of a non-Promise (non-"Thenable") value  @typescript-eslint/await-thenable
-
 /home/hadiabu/polar-app/packages/polar-app-public/polar-firebase/src/firebase/om/DocPreviewCollection.ts
   13:63  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
 
@@ -1610,13 +1596,13 @@ Consider using `Record<string, unknown>` instead, as it allows you to more easil
   6:16  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
   6:39  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
 
-✖ 53 problems (18 errors, 35 warnings)
+✖ 49 problems (14 errors, 35 warnings)
   6 errors and 0 warnings potentially fixable with the `--fix` option.
 
 info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
-Done in 5.36s.
+Done in 6.58s.
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
 
@@ -1653,7 +1639,7 @@ $ eslint -c ./.eslintrc.json .
 
 ✖ 5 problems (0 errors, 5 warnings)
 
-Done in 5.94s.
+Done in 6.72s.
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
 
@@ -2026,9 +2012,8 @@ Consider using `Record<string, unknown>` instead, as it allows you to more easil
   18:21  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
 
 /home/hadiabu/polar-app/packages/polar-app-private/polar-hooks/functions/impl/ssr/SSRFunction.ts
-   4:71  error  Promise returned in function argument where a void return was expected  @typescript-eslint/no-misused-promises
-   7:21  error  ["__session"] is better written in dot notation                         dot-notation
-  20:5   error  Unnecessary return statement                                            no-useless-return
+  4:71  error  Promise returned in function argument where a void return was expected  @typescript-eslint/no-misused-promises
+  7:21  error  ["__session"] is better written in dot notation                         dot-notation
 
 /home/hadiabu/polar-app/packages/polar-app-private/polar-hooks/functions/impl/ssr/SSRServer.tsx
    2:8   warning  'path' is defined but never used                @typescript-eslint/no-unused-vars
@@ -2218,8 +2203,8 @@ Consider using `Record<string, unknown>` instead, as it allows you to more easil
   21:30  error    Expected error to be handled                                                  node/handle-callback-err
   21:31  warning  'err' is defined but never used                                               @typescript-eslint/no-unused-vars
 
-✖ 262 problems (106 errors, 156 warnings)
-  44 errors and 0 warnings potentially fixable with the `--fix` option.
+✖ 261 problems (105 errors, 156 warnings)
+  43 errors and 0 warnings potentially fixable with the `--fix` option.
 
 info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
 yarn run v1.22.11
@@ -2231,7 +2216,7 @@ $ eslint -c ./.eslintrc.json .
 
 ✖ 2 problems (0 errors, 2 warnings)
 
-Done in 19.83s.
+Done in 22.54s.
 yarn run v1.22.11
 $ eslint -c ./.eslintrc.json .
 
@@ -2516,9 +2501,8 @@ Consider using `Record<string, unknown>` instead, as it allows you to more easil
   18:21  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
 
 /home/hadiabu/polar-app/packages/polar-app-private/polar-hooks/functions/impl/ssr/SSRFunction.ts
-   4:71  error  Promise returned in function argument where a void return was expected  @typescript-eslint/no-misused-promises
-   7:21  error  ["__session"] is better written in dot notation                         dot-notation
-  20:5   error  Unnecessary return statement                                            no-useless-return
+  4:71  error  Promise returned in function argument where a void return was expected  @typescript-eslint/no-misused-promises
+  7:21  error  ["__session"] is better written in dot notation                         dot-notation
 
 /home/hadiabu/polar-app/packages/polar-app-private/polar-hooks/functions/impl/ssr/SSRServer.tsx
    2:8   warning  'path' is defined but never used                @typescript-eslint/no-unused-vars
@@ -2708,193 +2692,7 @@ Consider using `Record<string, unknown>` instead, as it allows you to more easil
   21:30  error    Expected error to be handled                                                  node/handle-callback-err
   21:31  warning  'err' is defined but never used                                               @typescript-eslint/no-unused-vars
 
-✖ 262 problems (106 errors, 156 warnings)
-  44 errors and 0 warnings potentially fixable with the `--fix` option.
-
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-yarn run v1.22.11
-$ eslint -c ./.eslintrc.json .
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-desktop-app/src/LegacyDatastores.ts
-  5:1   error    Unexpected var, use let or const instead  no-var
-  5:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-desktop-app/src/MainAppBrowserWindowFactory.ts
-  90:29  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
-  90:81  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-desktop-app/src/MainAppMenus.ts
-  1:9   warning  'app' is defined but never used             @typescript-eslint/no-unused-vars
-  6:15  warning  'isMac' is assigned a value but never used  @typescript-eslint/no-unused-vars
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-desktop-app/src/main.ts
-   53:13  error    Unexpected literal in error position of callback  node/no-callback-literal
-   85:9   error    Unexpected literal in error position of callback  node/no-callback-literal
-  118:15  warning  'windows' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-desktop-app/src/updates/Updates.ts
-   35:9   error    Type boolean trivially inferred from a boolean literal, remove type annotation  @typescript-eslint/no-inferrable-types
-   37:9   error    Type boolean trivially inferred from a boolean literal, remove type annotation  @typescript-eslint/no-inferrable-types
-  122:48  warning  'info' is defined but never used                                                @typescript-eslint/no-unused-vars
-  141:45  warning  'info' is defined but never used                                                @typescript-eslint/no-unused-vars
-  164:27  warning  'appUpdate' is assigned a value but never used                                  @typescript-eslint/no-unused-vars
-  214:21  warning  Forbidden non-null assertion                                                    @typescript-eslint/no-non-null-assertion
-
-✖ 15 problems (5 errors, 10 warnings)
-  3 errors and 0 warnings potentially fixable with the `--fix` option.
-
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-yarn run v1.22.11
-$ eslint -c ./.eslintrc.json .
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension/src/BrowserScreenshotHandler.ts
-  105:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension/src/ExtensionInstallHandler.ts
-  21:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension/src/capture/SelectionCapture.ts
-  14:30  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension/src/captured/CapturedContentEPUBGenerator.ts
-  149:33  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension/src/chrome/ActiveTabs.ts
-   5:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-  10:37  warning  Forbidden non-null assertion              @typescript-eslint/no-non-null-assertion
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension/src/chrome/Tabs.ts
-  79:16  warning  'id' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  81:28  warning  Forbidden non-null assertion             @typescript-eslint/no-non-null-assertion
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension/src/content.ts
-  118:9  error  Unnecessary return statement  no-useless-return
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension/src/legacy/DesktopAppPinger.ts
-   6:7   warning  'DesktopAppPinger' is defined but never used                                  @typescript-eslint/no-unused-vars
-  14:5   error    Type number trivially inferred from a number literal, remove type annotation  @typescript-eslint/no-inferrable-types
-  48:24  error    Promise returned in function argument where a void return was expected        @typescript-eslint/no-misused-promises
-  50:9   error    Unnecessary return statement                                                  no-useless-return
-  88:11  warning  'PingResponse' is defined but never used                                      @typescript-eslint/no-unused-vars
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension/src/legacy/ImportContentAPI.ts
-  12:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension/src/legacy/autohandler/AutoPDFHandler.ts
-    4:8   warning  'BlockingResponse' is defined but never used  @typescript-eslint/no-unused-vars
-    6:8   warning  'RequestFilter' is defined but never used     @typescript-eslint/no-unused-vars
-  201:10  warning  'hasCorrectOrigin' is defined but never used  @typescript-eslint/no-unused-vars
-  275:11  warning  Unexpected any. Specify a different type      @typescript-eslint/no-explicit-any
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension/src/legacy/autohandler/HttpHeaders.ts
-   2:8   warning  'WebRequestBodyDetails' is defined but never used                 @typescript-eslint/no-unused-vars
-   3:8   warning  'WebNavigationParentedCallbackDetails' is defined but never used  @typescript-eslint/no-unused-vars
-   5:7   warning  'HttpHeaders' is defined but never used                           @typescript-eslint/no-unused-vars
-  39:98  warning  Unexpected any. Specify a different type                          @typescript-eslint/no-explicit-any
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension/src/popup.ts
-   8:10  warning  'loadLinkInNewTab' is defined but never used       @typescript-eslint/no-unused-vars
-  12:10  warning  'closeWindowAfterDelay' is defined but never used  @typescript-eslint/no-unused-vars
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension/src/services/PHZMigrationHandler.ts
-  32:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-  33:31  warning  'sender' is defined but never used        @typescript-eslint/no-unused-vars
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension/src/services/SaveToPolarHandler.ts
-    4:9   warning  'ReadabilityCapture' is defined but never used  @typescript-eslint/no-unused-vars
-   76:17  error    Unsafe usage of ReturnStatement                 no-unsafe-finally
-  156:64  warning  'sendResponse' is defined but never used        @typescript-eslint/no-unused-vars
-  169:21  error    Unexpected lexical declaration in case block    no-case-declarations
-  171:21  error    Unexpected lexical declaration in case block    no-case-declarations
-  172:21  error    Unexpected lexical declaration in case block    no-case-declarations
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension/src/services/WebExtensionPresenceHandler.ts
-   7:5   error    Expected 1 empty line after import statement not followed by another import  import/newline-after-import
-   8:51  warning  Unexpected any. Specify a different type                                     @typescript-eslint/no-explicit-any
-  55:40  warning  Unexpected any. Specify a different type                                     @typescript-eslint/no-explicit-any
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension/src/ui/capture/CaptureApp.tsx
-  8:69  warning  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension/src/ui/capture/CaptureRoot.tsx
-  21:7  warning  'useStyles' is assigned a value but never used  @typescript-eslint/no-unused-vars
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension/src/ui/capture/PreviewContent.tsx
-   7:31  warning  'theme' is defined but never used                             @typescript-eslint/no-unused-vars
-  47:18  error    Expected exception block, space or tab after '/*' in comment  spaced-comment
-  47:18  error    Expected space or tab before '*/' in comment                  spaced-comment
-  51:18  error    Expected exception block, space or tab after '/*' in comment  spaced-comment
-  51:18  error    Expected space or tab before '*/' in comment                  spaced-comment
-  52:18  error    Expected space or tab before '*/' in comment                  spaced-comment
-  53:18  error    Expected space or tab before '*/' in comment                  spaced-comment
-  54:18  error    Expected space or tab before '*/' in comment                  spaced-comment
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension/src/ui/capture/SaveToPolarProgressListener.tsx
-  23:8  error  React Hook React.useCallback has missing dependencies: 'handler' and 'type'. Either include them or remove the dependency array. If 'handler' changes too often, find the parent component that defines it and wrap that definition in useCallback  react-hooks/exhaustive-deps
-
-/home/hadiabu/polar-app/packages/polar-app-public/polar-web-extension/src/ui/login/LoginApp.tsx
-   5:31  warning  'RouteProps' is defined but never used  @typescript-eslint/no-unused-vars
-  39:13  warning  Forbidden non-null assertion            @typescript-eslint/no-non-null-assertion
-
-✖ 49 problems (17 errors, 32 warnings)
-  11 errors and 0 warnings potentially fixable with the `--fix` option.
-
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-yarn run v1.22.11
-$ eslint -c ./.eslintrc.json .
-
-/home/hadiabu/polar-app/packages/polar-app-private/polar-cdk/bin/polar-aws-cdk-demo.ts
-  13:1  error  Do not use 'new' for side effects  no-new
-
-/home/hadiabu/polar-app/packages/polar-app-private/polar-cdk/lib/ApiGatewayRoutes/ApiGatewayRoutes.ts
-  12:9  error  Do not use 'new' for side effects  no-new
-
-/home/hadiabu/polar-app/packages/polar-app-private/polar-cdk/lib/ApiGatewayRoutes/Billing/Apple/lambdas/apple/appstore-notification.ts
-  24:13  error  Unexpected lexical declaration in case block  no-case-declarations
-  37:13  error  Unexpected lexical declaration in case block  no-case-declarations
-  55:13  error  Unexpected lexical declaration in case block  no-case-declarations
-  79:13  error  Unexpected lexical declaration in case block  no-case-declarations
-
-/home/hadiabu/polar-app/packages/polar-app-private/polar-cdk/lib/ApiGatewayRoutes/Billing/Apple/lambdas/apple/util/downgradeToFree.ts
-  3:54  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-
-/home/hadiabu/polar-app/packages/polar-app-private/polar-cdk/lib/ApiGatewayRoutes/Billing/Apple/lambdas/apple/util/link-email-to-receipt.ts
-  5:27  warning  Forbidden non-null assertion       @typescript-eslint/no-non-null-assertion
-  5:59  warning  'value' is defined but never used  @typescript-eslint/no-unused-vars
-
-/home/hadiabu/polar-app/packages/polar-app-private/polar-cdk/lib/ApiGatewayRoutes/Billing/Apple/lambdas/apple/util/types/AppleVerifyReceiptResponse.ts
-   7:5  error  Identifier 'latest_receipt_info' is not in camel case      camelcase
-   8:9  error  Identifier 'product_id' is not in camel case               camelcase
-   9:9  error  Identifier 'transaction_id' is not in camel case           camelcase
-  10:9  error  Identifier 'original_transaction_id' is not in camel case  camelcase
-  11:9  error  Identifier 'purchase_date_ms' is not in camel case         camelcase
-  12:9  error  Identifier 'expire_date_ms' is not in camel case           camelcase
-  13:9  error  Identifier 'in_app_ownership_type' is not in camel case    camelcase
-  19:9  error  Identifier 'web_order_line_item_id' is not in camel case   camelcase
-
-/home/hadiabu/polar-app/packages/polar-app-private/polar-cdk/lib/ApiGatewayRoutes/Billing/Apple/lambdas/apple/util/types/AppstoreNotificationRequest.ts
-   4:5   error  Identifier 'notification_type' is not in camel case          camelcase
-   5:5   error  Identifier 'unified_receipt' is not in camel case            camelcase
-   6:9   error  Identifier 'latest_receipt_info' is not in camel case        camelcase
-   9:13  error  Identifier 'expires_date_ms' is not in camel case            camelcase
-  13:13  error  Identifier 'is_upgraded' is not in camel case                camelcase
-  20:13  error  Identifier 'original_purchase_date_ms' is not in camel case  camelcase
-  23:13  error  Identifier 'original_transaction_id' is not in camel case    camelcase
-  28:13  error  Identifier 'product_id' is not in camel case                 camelcase
-  33:13  error  Identifier 'purchase_date_ms' is not in camel case           camelcase
-  37:13  error  Identifier 'web_order_line_item_id' is not in camel case     camelcase
-  40:5   error  Identifier 'auto_renew_product_id' is not in camel case      camelcase
-
-/home/hadiabu/polar-app/packages/polar-app-private/polar-cdk/lib/ApiGatewayRoutes/Billing/Apple/lambdas/apple/util/verify-receipt.ts
-  1:20  error  Use default import syntax to import 'fetch'  import/no-named-default
-
-/home/hadiabu/polar-app/packages/polar-app-private/polar-cdk/lib/ApiGatewayRoutes/Billing/Billing.ts
-  13:9  error  Do not use 'new' for side effects  no-new
-  17:9  error  Do not use 'new' for side effects  no-new
-
-/home/hadiabu/polar-app/packages/polar-app-private/polar-cdk/lib/PolarInfrastructure.ts
-  15:9  error  Do not use 'new' for side effects  no-new
-
-✖ 32 problems (29 errors, 3 warnings)
+✖ 261 problems (105 errors, 156 warnings)
+  43 errors and 0 warnings potentially fixable with the `--fix` option.
 
 info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
