@@ -14,6 +14,7 @@ import {
 } from "polar-answers-api/src/IAnswerExecutorResponse";
 import {IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorRequest";
 import {IAnswerDigestRecord} from "polar-answers-api/src/IAnswerDigestRecord";
+import {useAnalytics} from "../analytics/Analytics";
 
 const globalKeyMap = keyMapWithGroup({
     group: "Answers",
@@ -92,6 +93,14 @@ const TabPanel = (props: TabPanelProps) => {
 
 }
 
+function answerIsError(value: any): value is IAnswerExecutorError {
+    return value.error === 'no-answer' || value.error === 'failed';
+}
+
+function answerIsErrorNoAnswer(value: any): value is IAnswerExecutorError {
+    return value.error === 'no-answer';
+}
+
 interface AnswerResponseProps {
     readonly answerResponse: IAnswerExecutorResponse | IAnswerExecutorError;
 }
@@ -104,11 +113,7 @@ const AnswerResponse = (props: AnswerResponseProps) => {
         setTabIndex(newValue);
     };
 
-    function isErrorNoAnswer(value: any): value is IAnswerExecutorError {
-        return value.error === 'no-answer';
-    }
-
-    if (isErrorNoAnswer(props.answerResponse)) {
+    if (answerIsErrorNoAnswer(props.answerResponse)) {
         return (
             <Box mt={1} mb={1} color='error'>
                 Honestly, no idea.  We're stumped.
@@ -154,12 +159,39 @@ const AnswerResponse = (props: AnswerResponseProps) => {
     );
 }
 
+function useAnswerExecutorClient() {
+
+    const analytics = useAnalytics();
+
+    return React.useCallback(async (request: IAnswerExecutorRequest) => {
+
+        try {
+
+            // TODO: what if we're offline?
+
+            const response: IAnswerExecutorResponse | IAnswerExecutorError = await JSONRPC.exec('AnswerExecutor', request);
+
+            analytics.event2('ai-answer-executed', {
+                error: answerIsError(response)
+            });
+
+            return response;
+
+        } catch (e) {
+            throw e;
+        }
+
+    }, []);
+
+}
+
 const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
 
     const questionRef = React.useRef("");
     const [answerResponse, setAnswerResponse] = React.useState<IAnswerExecutorResponse | IAnswerExecutorError | undefined>();
     const [waiting, setWaiting] = React.useState(false);
     const [executeWithoutDocuments, setExecuteWithoutDocuments] = React.useState(false);
+    const answerExecutorClient = useAnswerExecutorClient();
 
     // TODO
     //
@@ -190,7 +222,7 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
                     documents
                 };
 
-                const answer: IAnswerExecutorResponse | IAnswerExecutorError = await JSONRPC.exec('AnswerExecutor', request);
+                const answer = await answerExecutorClient(request);
 
                 console.log("Got answer: ", answer);
 
