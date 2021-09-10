@@ -463,11 +463,14 @@ function useCallbacksFactory(storeProvider: Provider<IFolderSidebarStore>,
             const store = storeProvider();
 
             const isFolder = (tag: Tag) => tag.id.startsWith('/');
-            const tags = selected.flatMap(item => (
-                isFolder(item)
-                    ? store.tags.filter(sitem => sitem.id.startsWith(item.id))
-                    : [item]
-            ));
+            const tags = selected.flatMap(item => {
+                if (isFolder(item)) {
+                    const subfolders = store.tags.filter(sitem => sitem.id.startsWith(`${item.id}/`));
+                    return [item, ...subfolders];
+                }
+
+                return [item];
+            });
 
             const doAsync = async () => {
                 setStore({ ...store, isProcessing: true });
