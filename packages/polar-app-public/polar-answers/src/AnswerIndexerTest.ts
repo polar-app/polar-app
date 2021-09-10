@@ -4,7 +4,7 @@ import {AnswerIndexer} from "./AnswerIndexer";
 import * as path from "path";
 import {PageNumber} from "polar-shared/src/metadata/IPageMeta";
 
-describe("AnswerIndexer", function() {
+xdescribe("AnswerIndexer", function() {
 
     this.timeout(30000000);
 
