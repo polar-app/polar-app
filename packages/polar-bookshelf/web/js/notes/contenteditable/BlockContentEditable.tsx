@@ -176,8 +176,9 @@ export const BlockContentEditable = (props: IProps) => {
 
             const div = divRef.current;
             if (div && ENABLE_CURSOR_RESET) {
-                const active = blocksTreeStore.active;
-                const isActive = active && active.id === props.id;
+                const focusedBlock = DOMBlocks.getFocusedBlock();
+                const isActive = focusedBlock && focusedBlock === div;
+                const currPosition = blocksTreeStore.cursorOffsetCapture();
 
                 /**
                  * Remove the cursor from the block if it's not active to prevent it from being reset to the start when innerHTML is set
@@ -192,8 +193,8 @@ export const BlockContentEditable = (props: IProps) => {
                 div.innerHTML = MarkdownContentConverter.toHTML(props.content);
                 ContentEditables.insertEmptySpacer(div);
 
-                if (active && isActive) {
-                    updateCursorPosition(div, {...active}, true);
+                if (isActive && focusedBlock && currPosition) {
+                    updateCursorPosition(focusedBlock, currPosition, true);
                 }
 
             }
