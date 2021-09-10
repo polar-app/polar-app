@@ -165,23 +165,31 @@ function useAnswerExecutorClient() {
 
     return React.useCallback(async (request: IAnswerExecutorRequest) => {
 
-        try {
+        // TODO: what if we're offline?
 
-            // TODO: what if we're offline?
+        try {
 
             const response: IAnswerExecutorResponse | IAnswerExecutorError = await JSONRPC.exec('AnswerExecutor', request);
 
             analytics.event2('ai-answer-executed', {
-                error: answerIsError(response)
+                error: answerIsError(response) ? response.error : 'none'
             });
 
             return response;
 
         } catch (e) {
+
+            analytics.event2('ai-answer-failed', {
+                error: 'exception',
+                message: e.message
+            });
+
             throw e;
+
         }
 
-    }, []);
+
+    }, [analytics]);
 
 }
 
