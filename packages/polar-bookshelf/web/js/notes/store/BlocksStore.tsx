@@ -796,13 +796,17 @@ export class BlocksStore implements IBlocksStore {
             console.warn("No currently active node");
             return false;
         }
-
-        if (! shiftKey) {
-            this.clearSelected('doNav');
+        
+        const DoDOMNav = () => {
             const newBlockID = DOMBlocks.nav(delta, opts.pos);
             if (newBlockID) {
                 this.setActive(newBlockID);
             }
+        };
+
+        if (! shiftKey) {
+            this.clearSelected('doNav');
+            DoDOMNav();
             return true;
         }
 
@@ -857,7 +861,7 @@ export class BlocksStore implements IBlocksStore {
             this.clearSelected('doNav');
         }
 
-        this.setActiveWithPosition(newActive, delta === 'next' ? 'end' : 'start');
+        DoDOMNav();        
 
         return true;
 

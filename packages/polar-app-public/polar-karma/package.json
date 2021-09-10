@@ -1,6 +1,6 @@
 {
   "name": "polar-karma",
-  "version": "2.1.107",
+  "version": "2.1.110",
   "description": "Basic webpack dependencies and utilities.",
   "scripts": {},
   "keywords": [],
@@ -20,6 +20,5 @@
     "karma-typescript-es6-transform": "=5.5.1",
     "karma-webpack": "=5.0.0",
     "puppeteer": "=9.1.1"
-  },
-  "devDependencies": {}
+  }
 }

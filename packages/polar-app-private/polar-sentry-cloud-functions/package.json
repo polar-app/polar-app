@@ -1,6 +1,6 @@
 {
   "name": "polar-sentry-cloud-functions",
-  "version": "2.1.107",
+  "version": "2.1.110",
   "description": "Wrapper code for wrapping cloud functions witih sentry.",
   "main": "index.js",
   "scripts": {
@@ -21,11 +21,11 @@
     "@types/mocha": "=9.0.0",
     "chai": "4.2.0",
     "mocha": "=9.1.1",
-    "polar-test": "^2.1.107",
+    "polar-eslint": "^2.1.110",
+    "polar-test": "^2.1.110",
+    "polar-typescript": "^2.1.110",
     "tslint": "6.1.2",
-    "typescript": "=4.2.3",
-    "polar-eslint": "^2.1.107",
-    "polar-typescript": "^2.1.107"
+    "typescript": "=4.2.3"
   },
   "dependencies": {
     "@google-cloud/functions-framework": "=1.7.1",

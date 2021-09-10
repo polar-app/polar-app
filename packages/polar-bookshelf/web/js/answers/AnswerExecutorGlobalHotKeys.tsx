@@ -219,6 +219,12 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
         <MUIDialog open={true}
                    maxWidth="md"
                    fullWidth={true}
+                   PaperProps={{
+                       style: {
+                           position: 'absolute',
+                           top: '0'
+                       }
+                   }}
                    onClose={props.onClose}>
 
             <div style={{height: '5px'}}>

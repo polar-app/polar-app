@@ -1,6 +1,6 @@
 {
   "name": "polar-firebase-admin",
-  "version": "2.1.107",
+  "version": "2.1.110",
   "description": "Code to connect to firebase as an admin user",
   "main": "index.js",
   "scripts": {
@@ -21,17 +21,17 @@
     "@types/mocha": "=9.0.0",
     "chai": "4.2.0",
     "mocha": "=9.1.1",
-    "polar-test": "^2.1.107",
+    "polar-eslint": "^2.1.110",
+    "polar-test": "^2.1.110",
+    "polar-typescript": "^2.1.110",
     "tslint": "6.1.2",
-    "typescript": "=4.2.3",
-    "polar-eslint": "^2.1.107",
-    "polar-typescript": "^2.1.107"
+    "typescript": "=4.2.3"
   },
   "dependencies": {
     "@google-cloud/storage": "=5.8.5",
     "firebase-admin": "=9.11.0",
-    "polar-firebase": "^2.1.107",
-    "polar-firestore-like": "^2.1.107",
-    "polar-shared": "^2.1.107"
+    "polar-firebase": "^2.1.110",
+    "polar-firestore-like": "^2.1.110",
+    "polar-shared": "^2.1.110"
   }
 }

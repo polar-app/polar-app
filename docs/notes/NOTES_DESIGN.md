@@ -1,5 +1,57 @@
+##### [ᐊ Go Home](./NOTES.md#table-of-contents)
 
-# Overview
+
+<div align="center">
+
+# Notes Design
+
+</div>
+
+
+## Table of Contents
+1. [Overview](#overview)
+2. [Persistence and Concurrency](#persistence-and-concurrency)
+3. [LSeq](#lseq)
+4. [Firestore Persistence](#firestore-persistence)
+5. [Undo/Redo](#undo--redo)
+6. [Undo Diff Computation](#undo-diff-computation)
+7. [Undo and Persistence Cooperation](#undo-and-persistence-cooperation)
+    1. [Writes](#writes)
+    2. [Updates](#updates)
+8. [Sharing](#sharing)
+    1. [Model](#model)
+    2. [Default Namespace](#default-namespace)
+9. [Applying Permissions to Firebase Rules](#applying-permissions-to-firebase-rules)
+10. [Effective Permissions](#effective-permissions)
+11. [Users Reading Snapshot Data](#users-reading-snapshot-data)
+    1. [Reading Snapshot Data](#reading-snapshot-data)
+    2. [Secure Permissions Changes via ChangeBlockPermission Cloud Function](#secure-permissions-changes-via-changeblockpermission-cloud-function)
+        1. [Groups and Other Advanced Permissions](#groups-and-other-advanced-permissions)
+    3. [Ranking Blocks and Comments](#ranking-blocks-and-comments)
+    4. [Reset of Page Permissions](#reset-of-page-permissions)
+12. [Schema](#schema)
+    1. [High Level List of Tables and What They Store](#high-level-list-of-tables-and-what-they-store)
+    2. [org](#org)
+        1. [Main Operations](#main-operations)
+        2. [Schema](#org-schema)
+    3. [org_user](#org_user)
+    3. [nspace](#nspace)
+    3. [nspace_user](#nspace_user)
+    3. [block_permission](#block_permission)
+    4. [block_permission_user](#block_permission_user)
+    5. [notes_permission_web](#notes_permission_web)
+    6. [user_nspace](#user_nspace)
+13. [SEO/SSR](#seo--ssr)
+14. [Firebase Rules](#firebase-rules)
+    1. [Block Rules](#block-rules)
+    2. [Limitations](#limitations)
+    3. [External Notes & Documentation](#external-notes--documentation)
+15. [TODO](#todo)
+
+<br />
+<hr />
+
+## Overview
 
 The notes system uses is a hierarchical tree structure composed of pages which,
 when combined forms a [graph](https://en.wikipedia.org/wiki/Graph)
@@ -11,7 +63,7 @@ A page is a [tree](https://en.wikipedia.org/wiki/Tree_(graph_theory)) which
 means it has no cycles back to the root and all children are descendants of the
 parent.
 
-# Persistence and Concurrency
+## Persistence and Concurrency
 
 When we discuss concurrency here we're talking about the concurrency of multi-person edits.
 
@@ -116,7 +168,7 @@ We would have to:
 
 All of this has to be done in a Firestore transaction. 
  
-# Undo / Redo
+## Undo / Redo
 
 The undo/redo system in the blocks store uses a general / global Undo/Redo queue that is
 available as a context.
@@ -161,6 +213,7 @@ Example of multiple users updating content:
 
 
 **User B**
+
 ```json
 {
     "content": {
@@ -178,9 +231,9 @@ This is done by using a `mutator` field which holds a unique device identifier, 
 to match the device id of the person that did the change.
 
 
-# Undo and Persistence Cooperation
+## Undo and Persistence Cooperation
 
-## Writes
+### Writes
 
 On write, the persistence layer is given a set of blocks that have been mutated
 as before/after pairs.
@@ -191,7 +244,7 @@ It could be a normal 'forward' operation or an undo operation.
 The persistence layer is just given an array of these before/after pairs and 
 it then mutates these according to a Firestore persistence layer implementation.
 
-## Updates
+### Updates
 
 Updates to the data are done via Firestore snapshots.  We use the 'docChanges' field
 to figure out what has changed, then we do a doPut() on the store directly which 
@@ -200,7 +253,7 @@ updates the UI.
 The 'mutation' is changed on the block to allow the UI to know that data has changes 
 when trying to do undo/redo operations.
 
-# Sharing
+## Sharing
 
 Thie sharing model is extensible and allows us to implement a basic v1 with an
 initial form of sharing now, and a more complicated, "enterprise-ready" sharing
@@ -212,7 +265,7 @@ namespaces created by other users as they will not collide.
 A link to a named note is actually a link to the ```id``` with just an alias for it 
 stored in the text.  This way we support cross-namespace linking.
 
-## Model
+### Model
 
 We support the following general permissions model:
 
@@ -297,13 +350,13 @@ We support the following general permissions model:
         - only allow users from @example.com domain
         - require two-factor auth
         
-# Default Namespace
+### Default Namespace
 
 The default namespace MUST be computed at random and we must look it up because otherwise
 there could be collisions based on the uid or profile renaming.  It would be nicer to compute
 from a constant but there IS no constant.
 
-# Applying Permissions to Firebase Rules
+## Applying Permissions to Firebase Rules
 
 FIXME:
 The ```notes_permission``` table stores the underlying permissions structure and
@@ -311,7 +364,7 @@ rules.  These are applied, and an effective* permissions system is then computed
 and saved into ```user_block_permission``` table which we then lookup during
 Firebase security rules during read/write.
 
-# Effective Permissions
+## Effective Permissions
 
 Page level permissions override namespace level permissions.  
 
@@ -340,7 +393,7 @@ If the user selects the same permissions that would normally be inherited from
 the namespace they can just be removed from the page level and probably SHOULD
 for performance reasons.
 
-# Users Reading Snapshot Data
+## Users Reading Snapshot Data
 
 In order for the user to get the data they have access to, the
 ```user_block_permission``` table ALSO has needs to keep the effective
@@ -350,7 +403,7 @@ a snapshot to start reading ANY of that data.
 Additionally, in the UI, we have to show that the user can not write some fields
 and might need some sort of UI treatment for that.    
     
-## Reading Snapshot Data
+### Reading Snapshot Data
 
 Firestore supports an IN clause so that we can read from ANY namespace to which
 the user has permissions.
@@ -359,7 +412,7 @@ This will scale well with the Firestore cache performance issues we're seeing.
 The only issue is we have to have two snapshots, one for the pages and one for
 the namespaces.
 
-## Secure Permissions Changes via ChangeBlockPermission Cloud Function
+### Secure Permissions Changes via ChangeBlockPermission Cloud Function
 
 All permissions changes are mediated by the ```ChangeBlockPermission``` cloud
 function.
@@ -371,14 +424,14 @@ This also mutates ```user_block_permission``` for the user so that they have the
 right values there which the user can't actually mutate directly because it
 belongs to other users.
 
-### Groups and Other Advanced Permissions
+#### Groups and Other Advanced Permissions
 
 The ```ChangeBlockPermission``` function can take arbitrary rules like only
 accept users from the organization that have been given a tag and then apply
 them that way.  This way a subset of the users is computed and only their
 ```user_block_permission``` is changed. 
 
-## Ranking Blocks and Comments
+### Ranking Blocks and Comments
 
 This system needs to have support for both ranking blocks and sorting them, and
 a link to a comment thread.
@@ -395,7 +448,7 @@ sort of 'ranking' we can support both ranking for comments but also ranking for
 regular notes so users could have things like voting systems like reddit but
 also with rich discussion.
 
-## Reset of Page Permissions
+### Reset of Page Permissions
 
 A user might want to reset all page permissions or find out which ones have
 customer permissions other than those inherited from the namespace.
@@ -404,12 +457,12 @@ The ```block_permission``` table keeps track of the namespace that this block is
 stored along with the page so we can always fine pages in a namespace that have
 custom permissions.
 
-# Schema
+## Schema
 
 This is a minimal and proposed schema. There might be other fields in the future
 like a photoURL, etc.
 
-## High level list of tables and what they store:
+### High level list of tables and what they store:
 
 Note that these tables are NOT specific to the block system necessarily because
 I want to try to unify doc_meta and doc_info and make these root page block
@@ -467,16 +520,16 @@ There are essentially two types of public access:
 - authenticated users - These are users that the user doesn't explicitly give permissions too other than 'public' but authenticated users 
                         have the ability to comment + write (not just read). 
 
-## org
+### org
 
 Metadata about an organization.  This is not mutable directly and must be changed via a 
 cloud function.
 
-### main operations
+#### Main Operations
 
 - for a user, get their namespaces.
 
-### schema
+<h4 id="org-schema">Schema</h4>
 
 ```text
 org {
@@ -503,7 +556,7 @@ org {
 }
 ```
 
-## org_user
+### org_user
 
 Denormalized list of organizations a user is a member of.  The user can not work
 with this data directly and it's computed via a cloud function to mediate
@@ -516,7 +569,7 @@ org_user {
 }
 ```
 
-## nspace 
+### nspace 
 
 Keeps track of all the namespaces in the system.   Note that a namespace does
 NOT have a UID because it can belong to an organization.
@@ -564,7 +617,7 @@ nspace {
 }
 ```
 
-## nspace_user
+### nspace_user
 
 Allows a user to list the organizations to which they below AND to assert
 permissions on reading them.
@@ -580,7 +633,7 @@ nspace_user {
 # FIXME each permission object should have a base set of properties that gets normalized out...
 # writers, commenters, readers, and a set of permissions for SEO too (when that comes online) 
 
-## block_permission
+### block_permission
 
 Holds the permission that the user has set for notes... 
 
@@ -631,7 +684,7 @@ block_permission_log
 
 ```
 
-## block_permission_user
+### block_permission_user
 
 Each user can get their own permissions to with they were granted by reading
 from ```block_permission_user``` collection for the user.
@@ -655,7 +708,7 @@ FIXME the user_block_permission would be for the USER not for the web. we would
 need some structure for this so that SEO content can easily determine if it's
 public.
 
-## notes_permission_web
+### notes_permission_web
 
 Table for web content so that we can lookup via block ID to see if the content is public 
 and what the permissions are
@@ -669,7 +722,7 @@ block_permission_web
     permission: 'ro' | 'rw'
 ```
 
-## user_nspace 
+### user_nspace 
 
 FIXME: this is nspace_user
 FIXME: do we need this?
@@ -683,14 +736,14 @@ user_nspace:
     uid: UIDStr
     nspaces: []
 
-# SEO / SSR
+## SEO / SSR
 
 SSR request would have to look at the URL, see if the note is shared with 'web'
 or if the nspace is shared with the web. and then allow/deny the request
 accordingly.  We'd have to be careful of the block embeds though because they'd
 be in security context.
 
-# Firebase Rules
+## Firebase Rules
 I think it would be better to have the rules for updating this structure in a
 trigger because they're somewhat complex.
 
@@ -716,7 +769,7 @@ match /block/{document=**} {
 
 ```
 
-## block rules
+### block rules
 
 Rules for writing blocks should be straight forward if we basically allow a write if ANY of the parents 
 give write access to the current uid.  We keep the 'parents' as an array of all the parents. 
@@ -729,14 +782,14 @@ Something like
 allow write if block.nspace == get(/databases/$(database)/documents/block_permission/$(resource.data.groupID));
 ``` 
 
-# Limitations:
+### Limitations:
 
 - All permission change operations have to be done via a cloud function due to needing to mutate data structures 
   the user granting the permission does not own.
 
-## Allowing the client to read their *local* permissions so they can determine WHAT they can read/write
+**Allowing the client to read their *local* permissions so they can determine WHAT they can read/write**
 
-# External Notes + Documentation 
+### External Notes + Documentation 
 
 - these are limits to the security rules:
 
