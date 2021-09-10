@@ -16,8 +16,9 @@ describe("ESRequests", function() {
             size: 10
         };
 
-        const url = '/answers_ft_digest_545445733244727031386635397a6645633050336966426f62503932_docs/_search';
+        const url = '/answers_ft_digest_545445733244727031386635397a6645633050336966426f62503932_docs*/_search?allow_no_indices=true';
 
+        // FIXME: it's returning 404 so maybe we fake the results?
         const esResponse: IElasticSearchResponse<IAnswerDigestRecord> = await ESRequests.doPost(url, query);
 
         console.log("response: ", JSON.stringify(esResponse, null, "  "));
