@@ -1,0 +1,30 @@
+// allow reads on resources that aren't present.  This is critical because if
+// we do not have this rule then when a user tries to read a document that
+// does not exist then they will get a "permission failed" error/exception.
+// We also need to do this FIRST so that no other rule is evaluated since
+// they might result in null pointer exceptions when trying to read the data
+// property on a record that does not exist.
+
+allow delete, read: if resource == null || resource.data == null;
+
+// *** updates for default nspace - nspace is the same as their uid (default namespace)
+
+// write new objects
+allow write: if (resource == null || resource.data == null) && request.auth.uid == request.resource.data.nspace;
+
+// read or delete but only when the uid is the nspace
+allow read, delete: if request.auth.uid == resource.data.nspace;
+
+// write of existing objects if the nspace is correct
+allow write: if request.auth.uid == request.resource.data.nspace && resource.data.nspace == request.resource.data.nspace;
+
+// *** updates when the data is in block_permission_user
+
+// allow writes of new data.
+allow write: if (resource == null || resource.data == null) && hasBlockPermissionWrite(request.resource.data.root, request.resource.data.nspace);
+
+// allow update of existing objects.
+allow write: if hasBlockPermissionWrite(request.resource.data.root, request.resource.data.nspace);
+
+// allow reads...
+allow read: if hasBlockPermissionRead(request.resource.data.root, request.resource.data.nspace);

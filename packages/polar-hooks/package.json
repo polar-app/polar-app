@@ -1,0 +1,39 @@
+{
+  "name": "polar-hooks",
+  "version": "2.1.111",
+  "description": "Performs HTTP auth for us using a token scheme",
+  "main": "index.js",
+  "private": true,
+  "repository": "git@github.com:burtonator/polar-proxy.git",
+  "author": "burton@getpolarized.io",
+  "license": "MIT",
+  "scripts": {
+    "emulator": "firebase emulators:start",
+    "firebase-deploy-functions": "./sbin/firebase-deploy-functions",
+    "dist-release-polar-cors": "firebase use polar-cors && yarn run firebase-deploy-functions",
+    "dist-release-polar-cors-beta": "firebase use polar-cors-beta && yarn run firebase-deploy-functions",
+    "dist-release-main-webapp": "echo Pushing to target ${FIREBASE_HOSTING_TARGET} && firebase use polar-32b0f && firebase target:clear hosting app.getpolarized.io && firebase target:apply hosting app.getpolarized.io ${FIREBASE_HOSTING_TARGET} && firebase deploy --only hosting,storage,firestore && yarn rur firebase-deploy-functions",
+    "dist-release-init": "(cd functions && yarn install)",
+    "dist-release": "yarn run dist-release-init && yarn run dist-release-main-webapp",
+    "compile": "RESULT=\"$(find -name '*.ts' -o -name '*.tsx' -not -path './node_modules/*' -not -name '*.d.ts*')\" && if [ -z \"$RESULT\" ]; then echo 'Nothing to Compile'; else yarn run tsc; fi;",
+    "dist": "echo noop",
+    "test": "RESULT=\"$(find . -name '**Test.js' -o -name '**TestN.js' -o -name '**TestNK.js' -not -path 'node_modules/*')\" && if [ -z \"$RESULT\" ]; then echo 'No tests'; else yarn run mocha; fi;",
+    "mocha": "mocha -p --jobs=1 --timeout 60000 --exit './{,!(node_modules)/**}/*Test.js' './{,!(node_modules)/**}/*TestN.js' './{,!(node_modules)/**}/*TestNK.js'",
+    "eslint": "eslint -c ./.eslintrc.json .",
+    "eslintfix": "eslint -c ./.eslintrc.json . --fix",
+    "tsc": "tsc"
+  },
+  "dependencies": {
+    "@types/escape-html": "0.0.20",
+    "@types/uuid": "3.4.5",
+    "escape-html": "^1.0.3",
+    "polar-backend-shared": "^2.1.111",
+    "polar-firebase": "^2.1.111",
+    "polar-webapp-dist": "^2.1.111",
+    "uuid": "3.3.3"
+  },
+  "devDependencies": {
+    "polar-eslint": "^2.1.111",
+    "polar-typescript": "^2.1.111"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "polar-32b0f": {
+      "hosting": {
+        "app.getpolarized.io": [
+          "polar-beta"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "staging": "polar-32b0f"
+  }
+}

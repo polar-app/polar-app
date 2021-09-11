@@ -1,0 +1,8 @@
+
+// a user should be able to read their own block_permission_user table to see
+// what they can read but they should NOT be able to perform any type of
+// mutation on it and this needs to be mediated via a cloud function.
+
+allow read: if resource == null || resource.data == null;
+
+allow read: if request.auth.uid == resource.data.uid;
