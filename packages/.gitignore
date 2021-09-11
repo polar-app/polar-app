@@ -4,3 +4,4 @@
 *.d.ts
 *.js.map
 !karma.conf.js
+**/tsconfig.tsbuildinfo
