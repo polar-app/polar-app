@@ -1,5 +1,5 @@
 import * as admin from 'firebase-admin';
-import {Heartbeat} from "../../polar-app-public/polar-firebase/src/firebase/om/HeartbeatCollection";
+import {Heartbeat} from "polar-firebase/src/firebase/om/HeartbeatCollection";
 
 const serviceAccount: admin.ServiceAccount = {
     projectId: "polar-32b0f",

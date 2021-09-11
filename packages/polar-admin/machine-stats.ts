@@ -1,5 +1,5 @@
 import * as admin from 'firebase-admin';
-import {TimeDurations} from "../../polar-app-public/polar-shared/src/util/TimeDurations";
+import {TimeDurations} from "polar-shared/src/util/TimeDurations";
 
 const serviceAccount: admin.ServiceAccount = {
     projectId: "polar-32b0f",

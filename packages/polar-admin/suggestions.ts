@@ -1,5 +1,5 @@
 import * as admin from 'firebase-admin';
-import {VersionStr} from "../../polar-app-public/polar-shared/src/util/Version";
+import {VersionStr} from "polar-shared/src/util/Version";
 
 const serviceAccount: admin.ServiceAccount = {
     projectId: "polar-32b0f",

@@ -23,6 +23,8 @@
   },
   "dependencies": {
     "@google-cloud/firestore": "=4.13.2",
-    "firebase-admin": "=9.11.0"
+    "firebase-admin": "=9.11.0",
+    "polar-firebase": "^2.1.111",
+    "polar-shared": "^2.1.111"
   }
 }
