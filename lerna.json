@@ -1,11 +1,7 @@
 {
   "packages": [
-    "packages/polar-app-private/*",
-    "packages/polar-app-private/polar-hooks/functions",
-    "packages/polar-app-public/*",
-    "packages/polar-bookshelf",
-    "packages/polar-bookshelf-secrets",
-    "packages/polar-site2"
+    "packages/*",
+    "packages/polar-hooks/functions"
   ],
   "version": "2.1.111",
   "concurrency": 10,
