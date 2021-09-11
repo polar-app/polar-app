@@ -16,7 +16,8 @@ export namespace Debouncers {
     export function create(callback: Callback,
                            opts: DebouncerOpts = {interval: 100}): DebouncerCallback {
 
-        let timeout: number | undefined;
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        let timeout: object | number | undefined;
 
         return () => {
 
@@ -41,7 +42,8 @@ export namespace Debouncers {
     export function create1<T>(callback: Callback1<T>,
                                opts: DebouncerOpts = {interval: 100}): Callback1<T> {
 
-        let timeout: number | undefined;
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        let timeout: object | number | undefined;
 
         return (value) => {
 
