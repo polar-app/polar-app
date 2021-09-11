@@ -16,7 +16,7 @@ export namespace Debouncers {
     export function create(callback: Callback,
                            opts: DebouncerOpts = {interval: 100}): DebouncerCallback {
 
-        let timeout: object | undefined;
+        let timeout: number | undefined;
 
         return () => {
 
@@ -41,7 +41,7 @@ export namespace Debouncers {
     export function create1<T>(callback: Callback1<T>,
                                opts: DebouncerOpts = {interval: 100}): Callback1<T> {
 
-        let timeout: object | undefined;
+        let timeout: number | undefined;
 
         return (value) => {
 
