@@ -12,9 +12,9 @@ import {StoreCaches} from "polar-snapshot-cache/src/StoreCaches";
 import {Analytics} from "../analytics/Analytics";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
-export namespace AccountActions {
+type StripeMode = 'test' | 'live';
 
-    type StripeMode = 'test' | 'live';
+export namespace AccountActions {
 
     export async function logout() {
 
