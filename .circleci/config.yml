@@ -234,12 +234,13 @@ jobs:
           name: Deploy to Firebase Hosting & Cloud Functions
           no_output_timeout: 120m
           command: |
-            source packages/polar-bookshelf-secrets/credentials.sh
-            yarn run set-registry-verdaccio
             export FIREBASE_HOSTING_TARGET=<< parameters.firebase_hosting_target >>
-            (cd packages/polar-app-private/polar-hooks/functions && rm -rf node_modules && yarn install)
-            (cd packages/polar-app-private/polar-hooks/functions && echo Pushing to target ${FIREBASE_HOSTING_TARGET} && firebase use polar-32b0f && firebase target:clear hosting app.getpolarized.io && firebase target:apply hosting app.getpolarized.io ${FIREBASE_HOSTING_TARGET} && firebase deploy --only hosting,storage,firestore)
-            (cd packages/polar-app-private/polar-hooks/ && time firebase deploy --only functions)
+            mv /home/circleci/project/packages/polar-app-private/polar-hooks/ /home/circleci/
+            rm -rf /home/circleci/project
+            cd /home/circleci/polar-hooks
+            rm -rf node_modules && yarn install
+            echo Pushing to target ${FIREBASE_HOSTING_TARGET} && firebase use polar-32b0f && firebase target:clear hosting app.getpolarized.io && firebase target:apply hosting app.getpolarized.io ${FIREBASE_HOSTING_TARGET} && firebase deploy --only hosting,storage,firestore
+            time firebase deploy --only functions
 
   # @ Build getpolarized.io Website
   build-polar-site:
@@ -317,7 +318,6 @@ workflows:
           executor: large
           requires:
             - setting-up
-
 
       # @ Build Polar app
       - build-polar-app:
