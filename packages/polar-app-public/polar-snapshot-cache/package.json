@@ -1,6 +1,6 @@
 {
   "name": "polar-snapshot-cache",
-  "version": "2.1.111",
+  "version": "2.1.112",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -20,17 +20,17 @@
     "@types/mocha": "=9.0.0",
     "chai": "4.2.0",
     "mocha": "=9.1.1",
-    "polar-eslint": "^2.1.111",
-    "polar-karma": "^2.1.111",
-    "polar-test": "^2.1.111",
-    "polar-typescript": "^2.1.111",
+    "polar-eslint": "^2.1.112",
+    "polar-karma": "^2.1.112",
+    "polar-test": "^2.1.112",
+    "polar-typescript": "^2.1.112",
     "tslint": "6.1.2",
     "typescript": "=4.2.3"
   },
   "dependencies": {
     "idb-keyval": "=5.0.4",
-    "polar-firestore-like": "^2.1.111",
-    "polar-shared": "^2.1.111"
+    "polar-firestore-like": "^2.1.112",
+    "polar-shared": "^2.1.112"
   },
   "files": [
     "**/*.js",
