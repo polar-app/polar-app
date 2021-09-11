@@ -1,7 +1,0 @@
-// only allow people to read the permissions if they have ANY permission to this page or namespace
-
-allow read: if request.auth.uid == resource.data.nspace;
-allow read: if request.auth.uid == request.resource.data.nspace && resource.data.nspace == request.resource.data.nspace;
-
-allow read: if hasBlockPermissionWrite(request.resource.data.root, request.resource.data.nspace);
-allow read: if hasBlockPermissionRead(request.resource.data.root, request.resource.data.nspace);
