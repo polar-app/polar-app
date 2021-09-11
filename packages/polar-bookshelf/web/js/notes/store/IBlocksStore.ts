@@ -146,4 +146,7 @@ export interface IBlocksStore {
     nextSibling(id: BlockIDStr): BlockIDStr | undefined;
 
     styleSelectedBlocks(style: DOMBlocks.MarkdownStyle): void;
+
+    cursorOffsetCapture(): IActiveBlock | undefined;
+    cursorOffsetRestore(active: IActiveBlock | undefined): void;
 }

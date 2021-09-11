@@ -239,4 +239,12 @@ export class BlocksTreeStore {
     styleSelectedBlocks(style: DOMBlocks.MarkdownStyle): void {
         return this.blocksStore.styleSelectedBlocks(style);
     }
+
+    cursorOffsetCapture() {
+        return this.blocksStore.cursorOffsetCapture();
+    }
+
+    cursorOffsetRestore(active: IActiveBlock | undefined) {
+        return this.blocksStore.cursorOffsetRestore(active);
+    }
 }

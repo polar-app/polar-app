@@ -1681,16 +1681,17 @@ export class BlocksStore implements IBlocksStore {
     }
 
     public cursorOffsetCapture(): IActiveBlock | undefined {
-        if (this._active) {
+        const focusedBlock = DOMBlocks.getFocusedBlock();
 
-            const id = this._active.id;
-            const contentEditableRoot = DOMBlocks.getBlockElement(id);
+        if (focusedBlock) {
 
-            if (contentEditableRoot) {
-                const pos = CursorPositions.computeCurrentOffset(contentEditableRoot);
+            const focusedBlockID = DOMBlocks.getBlockID(focusedBlock);
+
+            if (focusedBlockID) {
+                const pos = CursorPositions.computeCurrentOffset(focusedBlock);
 
                 return {
-                    id,
+                    id: focusedBlockID,
                     pos,
                     nonce: ActiveBlockNonces.create()
                 };
@@ -1701,7 +1702,7 @@ export class BlocksStore implements IBlocksStore {
         return this._active;
     }
 
-    @action private cursorOffsetRestore(active: IActiveBlock | undefined) {
+    public cursorOffsetRestore(active: IActiveBlock | undefined) {
 
         if (active?.id) {
 
