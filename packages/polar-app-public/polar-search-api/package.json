@@ -1,6 +1,6 @@
 {
   "name": "polar-search-api",
-  "version": "2.1.115",
+  "version": "2.1.116",
   "description": "Provides just the basic API that we can use in both the frontend and backend for API requests and responses.",
   "main": "index.js",
   "scripts": {
@@ -20,14 +20,14 @@
     "@types/mocha": "=9.0.0",
     "chai": "4.2.0",
     "mocha": "=9.1.1",
-    "polar-eslint": "^2.1.115",
-    "polar-test": "^2.1.115",
-    "polar-typescript": "^2.1.115",
+    "polar-eslint": "^2.1.116",
+    "polar-test": "^2.1.116",
+    "polar-typescript": "^2.1.116",
     "tslint": "6.1.2",
     "typescript": "=4.2.3"
   },
   "dependencies": {
-    "polar-shared": "^2.1.115"
+    "polar-shared": "^2.1.116"
   },
   "files": [
     "**/*.js",
