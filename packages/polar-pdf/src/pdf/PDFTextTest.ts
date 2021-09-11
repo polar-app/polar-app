@@ -1,8 +1,8 @@
 import {PDFText, PDFTextWordMerger} from "./PDFText";
-import IPDFTextContent = PDFText.IPDFTextContent;
 import {assert} from 'chai';
+import {assertJSON} from "polar-test/src/test/Assertions";
+import IPDFTextContent = PDFText.IPDFTextContent;
 import IPDFTextWord = PDFTextWordMerger.IPDFTextWord;
-import { assertJSON } from "polar-test/src/test/Assertions";
 
 // TODO:
 //
@@ -73,7 +73,7 @@ describe('PDFText', function() {
         // the document where the hit is indexed and I don't want an in-elegant solution
         // here.
 
-        await PDFText.getText('../../../packages/polar-bookshelf/docs/examples/pdf/bigtable.pdf', dumpTextContent, {maxPages: 1});
+        await PDFText.getText('../../packages/polar-bookshelf/docs/examples/pdf/bigtable.pdf', dumpTextContent, {maxPages: 1});
 
     });
 
