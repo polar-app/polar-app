@@ -1,6 +1,6 @@
 {
   "name": "polar-admin",
-  "version": "2.1.114",
+  "version": "2.1.115",
   "description": "",
   "main": "index.js",
   "private": true,
@@ -17,8 +17,8 @@
   "license": "ISC",
   "devDependencies": {
     "firebase-tools": "=9.16.0",
-    "polar-eslint": "^2.1.114",
-    "polar-typescript": "^2.1.114",
+    "polar-eslint": "^2.1.115",
+    "polar-typescript": "^2.1.115",
     "typescript": "=4.2.3"
   },
   "dependencies": {
