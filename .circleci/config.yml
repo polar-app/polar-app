@@ -239,7 +239,7 @@ jobs:
             mv /home/circleci/project/packages/polar-app-private/polar-hooks/ /home/circleci/
             rm -rf /home/circleci/project
             cd /home/circleci/polar-hooks
-            rm -rf node_modules && yarn install
+            rm -rf node_modules && rm -rf functions/node_modules && yarn install && (cd functions && yarn install)
             time firebase deploy --only functions
 
   # @ Build getpolarized.io Website
