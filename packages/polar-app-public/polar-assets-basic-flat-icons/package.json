@@ -1,6 +1,6 @@
 {
   "name": "polar-assets-basic-flat-icons",
-  "version": "2.1.113",
+  "version": "2.1.114",
   "description": "",
   "scripts": {
     "dist": "echo noop"
