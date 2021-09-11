@@ -5,7 +5,6 @@ import {Billing} from "polar-accounts/src/Billing";
 import firebase from 'firebase/app'
 import 'firebase/auth';
 import {LoginURLs} from "../apps/viewer/LoginURLs";
-import {StripeMode} from "../../../../polar-app-private/polar-hooks/functions/impl/stripe/StripeUtils";
 import {StripeUtils} from "../../../apps/repository/js/stripe/StripeUtils";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
 import {IStripeCreateCustomerPortalResponse} from "polar-backend-api/src/api/stripe/StripeCreateCustomerPortal";
@@ -14,6 +13,8 @@ import {Analytics} from "../analytics/Analytics";
 import {FirestoreBrowserClient} from "polar-firebase-browser/src/firebase/FirestoreBrowserClient";
 
 export namespace AccountActions {
+
+    type StripeMode = 'test' | 'live';
 
     export async function logout() {
 
