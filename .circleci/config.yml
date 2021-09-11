@@ -234,9 +234,6 @@ jobs:
           name: Deploy to Firebase Hosting & Cloud Functions
           no_output_timeout: 120m
           command: |
-            source packages/polar-bookshelf-secrets/credentials.sh
-            yarn run set-registry-verdaccio
-            npm config set always-auth true
             export FIREBASE_HOSTING_TARGET=<< parameters.firebase_hosting_target >>
             (cd /home/circleci/project/packages/polar-app-private/polar-hooks && echo Pushing to target ${FIREBASE_HOSTING_TARGET} && firebase use polar-32b0f && firebase target:clear hosting app.getpolarized.io && firebase target:apply hosting app.getpolarized.io ${FIREBASE_HOSTING_TARGET} && firebase deploy --only hosting,storage,firestore)
             mv /home/circleci/project/packages/polar-app-private/polar-hooks/ /home/circleci/
