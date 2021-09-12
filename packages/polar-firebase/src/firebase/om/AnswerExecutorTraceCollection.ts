@@ -1,6 +1,7 @@
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {IDStr} from "polar-shared/src/util/Strings";
 import {IAnswerExecutorTrace} from "polar-answers-api/src/IAnswerExecutorTrace";
+import {IAnswerExecutorTraceUpdate} from "polar-answers-api/src/IAnswerExecutorTraceUpdate";
 
 /**
  * Keeps marks for our AI full-text index so that we can mark records with
@@ -20,12 +21,12 @@ export namespace AnswerExecutorTraceCollection {
 
     }
 
-    export async function update<SM = unknown>(firestore: IFirestore<SM>, id: IDStr, trace: Pick<IAnswerExecutorTrace, 'vote' | 'expectation'>) {
+    export async function update<SM = unknown>(firestore: IFirestore<SM>, id: IDStr, update: IAnswerExecutorTraceUpdate) {
 
         const collection = firestore.collection(COLLECTION_NAME)
         const ref = collection.doc(id);
 
-        await ref.update(trace);
+        await ref.update(update);
 
     }
 

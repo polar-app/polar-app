@@ -224,13 +224,10 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
                 setAnswerResponse(undefined);
                 setWaiting(true);
 
-                const documents = executeWithoutDocuments ? [] : undefined;
-
                 const request: IAnswerExecutorRequest = {
                     question,
                     model: 'curie',
-                    search_model: 'curie',
-                    documents
+                    search_model: 'curie'
                 };
 
                 const answer = await answerExecutorClient(request);
