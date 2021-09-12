@@ -2,6 +2,7 @@ import {IAnswerExecutorRequest} from "./IAnswerExecutorRequest";
 import {IDStr, UserIDStr} from "polar-shared/src/util/Strings";
 import {IOpenAIAnswersResponse} from "./IOpenAIAnswersResponse";
 import {IAnswerDigestRecord} from "./IAnswerDigestRecord";
+import {IOpenAIAnswersRequest} from "./IOpenAIAnswersRequest";
 
 export interface IAnswerExecutorTrace extends IAnswerExecutorRequest {
 
@@ -35,7 +36,6 @@ export interface IAnswerExecutorTrace extends IAnswerExecutorRequest {
  * Allows us to update and specify the vote data.
  */
 export interface IAnswerExecutorTraceWithFeedback extends IAnswerExecutorTrace {
-    readonly type: 'trace-with-vote';
     readonly vote: 'up' | 'down';
     readonly expectation: string;
 }

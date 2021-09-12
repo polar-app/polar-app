@@ -1,6 +1,7 @@
 import {OpenAIAnswersClient} from "./OpenAIAnswersClient";
 import {AnswerExecutor} from "./AnswerExecutor";
 import {assert} from "chai";
+import {IOpenAIAnswersRequest} from "polar-answers-api/src/IOpenAIAnswersRequest";
 import SEARCH_MODEL = AnswerExecutor.SEARCH_MODEL;
 import MODEL = AnswerExecutor.MODEL;
 import EXAMPLES_CONTEXT = AnswerExecutor.EXAMPLES_CONTEXT;
@@ -14,11 +15,11 @@ xdescribe("OpenAIAnswersClient", function() {
 
     describe("with no docs", () => {
 
-        async function assertQuestionAndAnswer(question: string, expectedAnswer: string, opts: Partial<OpenAIAnswersClient.IOpenAIAnswersRequest> = {}) {
+        async function assertQuestionAndAnswer(question: string, expectedAnswer: string, opts: Partial<IOpenAIAnswersRequest> = {}) {
 
             const documents = opts.documents || [];
 
-            const request: OpenAIAnswersClient.IOpenAIAnswersRequest = {
+            const request: IOpenAIAnswersRequest = {
                 search_model: SEARCH_MODEL,
                 model: MODEL,
                 question,
@@ -68,7 +69,7 @@ xdescribe("OpenAIAnswersClient", function() {
                 "NASA runs the space program."
             ];
 
-            const request: OpenAIAnswersClient.IOpenAIAnswersRequest = {
+            const request: IOpenAIAnswersRequest = {
                 search_model: SEARCH_MODEL,
                 model: MODEL,
                 question,

@@ -15,11 +15,11 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {OpenAISearchReRanker} from "./OpenAISearchReRanker";
 import {Stopwords} from "polar-shared/src/util/Stopwords";
+import {IOpenAIAnswersRequest, QuestionAnswerPair} from "polar-answers-api/src/IOpenAIAnswersRequest";
 
 const MAX_DOCUMENTS = 200;
 export namespace AnswerExecutor {
 
-    import QuestionAnswerPair = OpenAIAnswersClient.QuestionAnswerPair;
     import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
 
     export interface IAnswerExecutorRequestWithUID extends IAnswerExecutorRequest {
@@ -224,7 +224,7 @@ export namespace AnswerExecutor {
         const model = request.model || MODEL;
 
         // TODO: trace this...
-        const request: OpenAIAnswersClient.IOpenAIAnswersRequest = {
+        const answersRequest: IOpenAIAnswersRequest = {
             search_model,
             model,
             question,
@@ -240,7 +240,7 @@ export namespace AnswerExecutor {
         }
 
         // TODO: trace this.
-        const answerResponseWithDuration = await executeWithDuration(() => OpenAIAnswersClient.exec(request));
+        const answerResponseWithDuration = await executeWithDuration(() => OpenAIAnswersClient.exec(answersRequest));
         const answerResponse = answerResponseWithDuration.value;
 
         const primaryAnswer = Arrays.first(answerResponse.answers);
