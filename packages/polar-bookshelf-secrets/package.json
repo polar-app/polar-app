@@ -1,6 +1,6 @@
 {
   "name": "polar-bookshelf-secrets",
-  "version": "2.1.110",
+  "version": "2.1.117",
   "description": "",
   "main": "index.js",
   "private": true,
@@ -15,5 +15,6 @@
     "url": "https://github.com/burtonator/polar-bookshelf-secrets/issues"
   },
   "homepage": "https://github.com/burtonator/polar-bookshelf-secrets#readme",
-  "scripts": {}
+  "scripts": {},
+  "devDependencies": {}
 }
