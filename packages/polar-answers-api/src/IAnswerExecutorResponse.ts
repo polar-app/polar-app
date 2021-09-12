@@ -2,17 +2,25 @@ import {ISelectedDocument} from "./ISelectedDocument";
 import {IAnswerDigestRecord} from "./IAnswerDigestRecord";
 import {IOpenAIAnswersResponse} from "./IOpenAIAnswersResponse";
 
-export interface ITimings {
+export interface IAnswerExecutorTimings {
 
     /**
-     * The amount of time it took to compute the documents to query over.
+     * The amount of time it took to fetch the base documents from Elasticsearch.
      */
-    readonly documents: number;
+    readonly elasticsearch: number;
+
+    /**
+     * The amount of time it takes to compute the OpenAI re-rank or undefined if we're not re-ranking
+     * everything.
+     */
+    // eslint-disable-next-line camelcase
+    readonly openai_rerank: number | undefined;
 
     /**
      * The amount of time it took to query against OpenAI.
      */
-    readonly openai: number;
+    // eslint-disable-next-line camelcase
+    readonly openai_answer: number;
 
 }
 
@@ -33,7 +41,7 @@ export interface IAnswerExecutorResponse extends IOpenAIAnswersResponse {
     readonly question: string;
     // eslint-disable-next-line camelcase
     readonly selected_documents: ReadonlyArray<ISelectedDocumentWithRecord<IAnswerDigestRecord>>;
-    readonly timings: ITimings;
+    readonly timings: IAnswerExecutorTimings;
 }
 
 export type IAnswerExecutorError = IAnswerExecutorErrorFailed | IAnswerExecutorErrorNoAnswer;

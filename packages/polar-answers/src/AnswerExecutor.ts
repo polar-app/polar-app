@@ -6,8 +6,8 @@ import {IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorReque
 import {
     IAnswerExecutorError,
     IAnswerExecutorResponse,
-    ISelectedDocumentWithRecord,
-    ITimings
+    IAnswerExecutorTimings,
+    ISelectedDocumentWithRecord
 } from "polar-answers-api/src/IAnswerExecutorResponse";
 import {IAnswerDigestRecord} from "polar-answers-api/src/IAnswerDigestRecord";
 import {ISelectedDocument} from "polar-answers-api/src/ISelectedDocument";
@@ -16,6 +16,9 @@ import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {OpenAISearchReRanker} from "./OpenAISearchReRanker";
 import {Stopwords} from "polar-shared/src/util/Stopwords";
 import {IOpenAIAnswersRequest, QuestionAnswerPair} from "polar-answers-api/src/IOpenAIAnswersRequest";
+import {IElasticsearchQuery} from "polar-answers-api/src/IElasticsearchQuery";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {IAnswerExecutorTrace} from "polar-answers-api/src/IAnswerExecutorTrace";
 
 const MAX_DOCUMENTS = 200;
 export namespace AnswerExecutor {
@@ -64,15 +67,22 @@ export namespace AnswerExecutor {
         readonly duration: number;
     }
 
-    export async function executeWithDuration<V>(delegate: () => Promise<V>): Promise<ResultWithDuration<V>> {
+    export type ResultWithDurationTuple<V> = [V, number];
+
+    export async function executeWithDuration<V>(delegate: (() => Promise<V>) | Promise<V>): Promise<ResultWithDurationTuple<V>> {
 
         const before = Date.now();
-        const value = await delegate();
+
+        const value =
+            typeof delegate === 'function' ?
+                await delegate() :
+                await delegate;
+
         const after = Date.now();
 
         const duration = after - before;
 
-        return {value, duration};
+        return [value, duration];
 
     }
 
@@ -80,43 +90,55 @@ export namespace AnswerExecutor {
 
         const {question, uid} = request;
 
-        interface DocumentResults {
-            readonly duration: number;
+        interface ESDocumentResultsBase {
+
+            // eslint-disable-next-line camelcase
+            readonly elasticsearch_query: IElasticsearchQuery;
+
+            // eslint-disable-next-line camelcase
+            readonly elasticsearch_records: ReadonlyArray<IAnswerDigestRecord>;
+
+            // eslint-disable-next-line camelcase
+            readonly elasticsearch_duration: number;
+
+            // eslint-disable-next-line camelcase
+            readonly elasticsearch_url: string;
+
+            /**
+             * The resulting records.
+             */
             readonly records: ReadonlyArray<IAnswerDigestRecord>;
-            // readonly documents: ReadonlyArray<string>
+
         }
+
+        interface ESDocumentResultsWithoutRerank extends ESDocumentResultsBase {
+            // eslint-disable-next-line camelcase
+            readonly openai_reranked_records: undefined;
+
+            // eslint-disable-next-line camelcase
+            readonly openai_reranked_duration: undefined;
+
+        }
+
+        interface ESDocumentResultsWithRerank extends ESDocumentResultsBase {
+
+            // eslint-disable-next-line camelcase
+            readonly openai_reranked_records: ReadonlyArray<IAnswerDigestRecord>;
+
+            // eslint-disable-next-line camelcase
+            readonly openai_reranked_duration: number;
+
+        }
+
+        type ESDocumentResults = ESDocumentResultsWithoutRerank | ESDocumentResultsWithRerank;
 
         // TODO: trace ALL opts given...
 
         async function computeDocuments() {
-
-            if (request.documents) {
-                return computeDocumentsFromOpts();
-            }
-
             return computeDocumentsFromES();
-
         }
 
-        async function computeDocumentsFromOpts(): Promise<DocumentResults> {
-
-            const documents = request.documents || [];
-
-            return {
-                duration: 0,
-                records: documents.map((current, idx) => {
-                    return {
-                        id: `${idx}`,
-                        type: 'none',
-                        text: current,
-                        idx
-                    }
-                })
-            };
-
-        }
-
-        async function computeDocumentsFromES(): Promise<DocumentResults> {
+        async function computeDocumentsFromES(): Promise<ESDocumentResults> {
 
             // TODO make this into a generic search client and don't hard code the ES query here.
 
@@ -147,7 +169,8 @@ export namespace AnswerExecutor {
             const queryText = computeQueryTextFromQuestion();
 
             // TODO: trace the query
-            const query = {
+            // eslint-disable-next-line camelcase
+            const elasticsearch_query: IElasticsearchQuery = {
                 "query": {
                     "query_string": {
                         "query": queryText,
@@ -158,53 +181,75 @@ export namespace AnswerExecutor {
             };
 
             // TODO: trace the requestURL
-            const requestURL = `/${index}*/_search?allow_no_indices=true`;
-
-            const esResponseWithDuration
-                = await executeWithDuration<IElasticSearchResponse<IAnswerDigestRecord>>(() => ESRequests.doPost(requestURL, query));
+            // eslint-disable-next-line camelcase
+            const elasticsearch_url = `/${index}*/_search?allow_no_indices=true`;
 
             // TODO: trace the esResponse
-            const esResponse = esResponseWithDuration.value;
+            // eslint-disable-next-line camelcase
+            const [esResponse, elasticsearch_duration]
+                = await executeWithDuration<IElasticSearchResponse<IAnswerDigestRecord>>(ESRequests.doPost(elasticsearch_url, elasticsearch_query));
 
-            async function computeRecords() {
+            // eslint-disable-next-line camelcase
+            const elasticsearch_records = esResponse.hits.hits.map(current => current._source);
 
-                const hits = esResponse.hits.hits.map(current => current._source);
+            // TODO: do this in the indexer, not the executor? this way we can
+            // same some CPU time during execution.
 
-                // TODO: do this in the indexer, not the executor? this way we can
-                // same some CPU time during execution.
+            if (request.rerank_elasticsearch) {
 
-                if (request.rerank_elasticsearch) {
+                console.log("Re-ranking N ES results via OpenAI: " + elasticsearch_records.length)
 
-                    console.log("Re-ranking N ES results via OpenAI: " + hits.length)
+                // TODO: trace the latency of the rerank too..
 
+                // TODO: trace the ranked
+                // eslint-disable-next-line camelcase
+                const [openai_reranked_records_with_score, openai_reranked_duration] =
+                    await executeWithDuration(OpenAISearchReRanker.exec(request.rerank_elasticsearch_model || 'ada',
+                                                                        request.question,
+                                                                        elasticsearch_records,
+                                                                        hit => hit.text));
 
-                    // TODO: trace the ranked
-                    const reranked =
-                        await OpenAISearchReRanker.exec(request.rerank_elasticsearch_model || 'ada',
-                                                        request.question,
-                                                        hits,
-                                                        hit => hit.text);
+                // eslint-disable-next-line camelcase
+                const openai_reranked_records = arrayStream(openai_reranked_records_with_score)
+                    .map(current => current.record)
+                    .collect();
 
-                    return Arrays.head(reranked.map(current => current.record), MAX_DOCUMENTS);
+                // eslint-disable-next-line camelcase
+                const records = arrayStream(openai_reranked_records)
+                    .head(MAX_DOCUMENTS)
+                    .collect();
 
-                } else {
-                    // the array of digest records so that we can map from the
-                    // selected_documents AFTER the request is executed.
-                    return hits;
-                }
+                return <ESDocumentResultsWithRerank> {
+                    elasticsearch_query,
+                    elasticsearch_records,
+                    elasticsearch_duration,
+                    elasticsearch_url,
+                    openai_reranked_records,
+                    openai_reranked_duration,
+                    records
+                };
+
+            } else {
+                // the array of digest records so that we can map from the
+                // selected_documents AFTER the request is executed.
+
+                // eslint-disable-next-line camelcase
+                return <ESDocumentResultsWithoutRerank> {
+                    elasticsearch_query,
+                    elasticsearch_records,
+                    elasticsearch_duration,
+                    elasticsearch_url,
+                    openai_reranked_records: undefined,
+                    openai_reranked_duration: undefined,
+                    records
+                };
 
             }
 
-            const records = await computeRecords();
-
-            return {
-                duration: esResponseWithDuration.duration,
-                records
-            };
-
         }
 
-        const {duration, records} = await computeDocuments();
+        const computedDocuments = await computeDocuments();
+        const {records} = computedDocuments;
 
         const documents = records.map(current => current.text.replace(/\n/g, ' '));
 
@@ -224,7 +269,8 @@ export namespace AnswerExecutor {
         const model = request.model || MODEL;
 
         // TODO: trace this...
-        const answersRequest: IOpenAIAnswersRequest = {
+        // eslint-disable-next-line camelcase
+        const openai_answers_request: IOpenAIAnswersRequest = {
             search_model,
             model,
             question,
@@ -240,10 +286,10 @@ export namespace AnswerExecutor {
         }
 
         // TODO: trace this.
-        const answerResponseWithDuration = await executeWithDuration(() => OpenAIAnswersClient.exec(answersRequest));
-        const answerResponse = answerResponseWithDuration.value;
+        // eslint-disable-next-line camelcase
+        const [openai_answers_response, openai_answer_duration] = await executeWithDuration(OpenAIAnswersClient.exec(openai_answers_request));
 
-        const primaryAnswer = Arrays.first(answerResponse.answers);
+        const primaryAnswer = Arrays.first(openai_answers_response.answers);
 
         if (primaryAnswer === NO_ANSWER_CODE) {
 
@@ -265,17 +311,29 @@ export namespace AnswerExecutor {
 
         const id = Hashcodes.createRandomID();
 
-        const timings: ITimings = {
-            documents: duration,
-            openai: answerResponseWithDuration.duration
+        const timings: IAnswerExecutorTimings = {
+            elasticsearch: computedDocuments.elasticsearch_duration,
+            openai_rerank: computedDocuments.openai_reranked_duration,
+            openai_answer: openai_answer_duration
         }
 
-        // TODO: trace this too...
+        const trace: IAnswerExecutorTrace = {
+            id,
+            type: 'trace',
+            ...request,
+            elasticsearch_query: computedDocuments.elasticsearch_query,
+            elasticsearch_url: computedDocuments.elasticsearch_url,
+            elasticsearch_records: computedDocuments.elasticsearch_records,
+            openai_answers_request: openai_answers_request,
+            openai_answers_response: openai_answers_response,
+            timings
+        }
+
         return {
             id,
             question,
-            selected_documents: answerResponse.selected_documents.map(convertToSelectedDocumentWithRecord),
-            answers: answerResponse.answers,
+            selected_documents: openai_answers_response.selected_documents.map(convertToSelectedDocumentWithRecord),
+            answers: openai_answers_response.answers,
             model,
             search_model,
             timings

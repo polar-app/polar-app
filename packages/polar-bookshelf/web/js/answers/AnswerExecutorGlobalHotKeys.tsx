@@ -3,17 +3,7 @@ import {GlobalKeyboardShortcuts, keyMapWithGroup} from '../keyboard_shortcuts/Gl
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import {MUIDialog} from '../ui/dialogs/MUIDialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {
-    Box,
-    Checkbox,
-    DialogContent,
-    FormControlLabel,
-    LinearProgress,
-    Tab,
-    Tabs,
-    TextField,
-    Typography
-} from "@material-ui/core";
+import {Box, DialogContent, LinearProgress, Tab, Tabs, TextField, Typography} from "@material-ui/core";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
 import {FeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {Arrays} from 'polar-shared/src/util/Arrays';
@@ -308,16 +298,16 @@ const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
                                flexGrow: 1,
                            }}/>
 
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={executeWithoutDocuments}
-                            onChange={(event, checked) => setExecuteWithoutDocuments(checked)}
-                            name="executeWithoutDocuments"
-                        />
-                    }
-                    label="Execute without documents"
-                />
+                {/*<FormControlLabel*/}
+                {/*    control={*/}
+                {/*        <Checkbox*/}
+                {/*            checked={executeWithoutDocuments}*/}
+                {/*            onChange={(event, checked) => setExecuteWithoutDocuments(checked)}*/}
+                {/*            name="executeWithoutDocuments"*/}
+                {/*        />*/}
+                {/*    }*/}
+                {/*    label="Execute without documents"*/}
+                {/*/>*/}
 
                 {answerResponse && (
                     <>
