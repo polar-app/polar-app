@@ -6,8 +6,8 @@ import {IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorReque
 import {
     IAnswerExecutorError,
     IAnswerExecutorResponse,
-    ISelectedDocumentWithRecord,
-    ITimings
+    IAnswerExecutorTimings,
+    ISelectedDocumentWithRecord
 } from "polar-answers-api/src/IAnswerExecutorResponse";
 import {IAnswerDigestRecord} from "polar-answers-api/src/IAnswerDigestRecord";
 import {ISelectedDocument} from "polar-answers-api/src/ISelectedDocument";
@@ -15,14 +15,19 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {Hashcodes} from "polar-shared/src/util/Hashcodes";
 import {OpenAISearchReRanker} from "./OpenAISearchReRanker";
 import {Stopwords} from "polar-shared/src/util/Stopwords";
+import {IOpenAIAnswersRequest, QuestionAnswerPair} from "polar-answers-api/src/IOpenAIAnswersRequest";
+import {IElasticsearchQuery} from "polar-answers-api/src/IElasticsearchQuery";
+import {arrayStream} from "polar-shared/src/util/ArrayStreams";
+import {IAnswerExecutorTrace} from "polar-answers-api/src/IAnswerExecutorTrace";
+import {AnswerExecutorTraceCollection} from "../../polar-firebase/src/firebase/om/AnswerExecutorTraceCollection";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 const MAX_DOCUMENTS = 200;
 export namespace AnswerExecutor {
 
-    import QuestionAnswerPair = OpenAIAnswersClient.QuestionAnswerPair;
     import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
 
-    export interface IExecOpts extends IAnswerExecutorRequest {
+    export interface IAnswerExecutorRequestWithUID extends IAnswerExecutorRequest {
         readonly uid: UserIDStr;
     }
 
@@ -64,60 +69,82 @@ export namespace AnswerExecutor {
         readonly duration: number;
     }
 
-    export async function executeWithDuration<V>(delegate: () => Promise<V>): Promise<ResultWithDuration<V>> {
+    export type ResultWithDurationTuple<V> = [V, number];
+
+    export async function executeWithDuration<V>(delegate: (() => Promise<V>) | Promise<V>): Promise<ResultWithDurationTuple<V>> {
 
         const before = Date.now();
-        const value = await delegate();
+
+        const value =
+            typeof delegate === 'function' ?
+                await delegate() :
+                await delegate;
+
         const after = Date.now();
 
         const duration = after - before;
 
-        return {value, duration};
+        return [value, duration];
 
     }
 
-    export async function exec(opts: IExecOpts): Promise<IAnswerExecutorResponse | IAnswerExecutorError> {
+    export async function exec(request: IAnswerExecutorRequestWithUID): Promise<IAnswerExecutorResponse | IAnswerExecutorError> {
 
-        const {question, uid} = opts;
+        const {question, uid} = request;
 
-        interface DocumentResults {
-            readonly duration: number;
+        interface ESDocumentResultsBase {
+
+            // eslint-disable-next-line camelcase
+            readonly elasticsearch_query: IElasticsearchQuery;
+
+            // eslint-disable-next-line camelcase
+            readonly elasticsearch_records: ReadonlyArray<IAnswerDigestRecord>;
+
+            // eslint-disable-next-line camelcase
+            readonly elasticsearch_duration: number;
+
+            // eslint-disable-next-line camelcase
+            readonly elasticsearch_url: string;
+
+            /**
+             * The resulting records.
+             */
             readonly records: ReadonlyArray<IAnswerDigestRecord>;
-            // readonly documents: ReadonlyArray<string>
+
         }
+
+        interface ESDocumentResultsWithoutRerank extends ESDocumentResultsBase {
+            // eslint-disable-next-line camelcase
+            readonly openai_reranked_records: undefined;
+
+            // eslint-disable-next-line camelcase
+            readonly openai_reranked_duration: undefined;
+
+        }
+
+        interface ESDocumentResultsWithRerank extends ESDocumentResultsBase {
+
+            // eslint-disable-next-line camelcase
+            readonly openai_reranked_records: ReadonlyArray<IAnswerDigestRecord>;
+
+            // eslint-disable-next-line camelcase
+            readonly openai_reranked_duration: number;
+
+        }
+
+        type ESDocumentResults = ESDocumentResultsWithoutRerank | ESDocumentResultsWithRerank;
+
+        // TODO: trace ALL opts given...
 
         async function computeDocuments() {
-
-            if (opts.documents) {
-                return computeDocumentsFromOpts();
-            }
-
             return computeDocumentsFromES();
-
         }
 
-        async function computeDocumentsFromOpts(): Promise<DocumentResults> {
-
-            const documents = opts.documents || [];
-
-            return {
-                duration: 0,
-                records: documents.map((current, idx) => {
-                    return {
-                        id: `${idx}`,
-                        type: 'none',
-                        text: current,
-                        idx
-                    }
-                })
-            };
-
-        }
-
-        async function computeDocumentsFromES(): Promise<DocumentResults> {
+        async function computeDocumentsFromES(): Promise<ESDocumentResults> {
 
             // TODO make this into a generic search client and don't hard code the ES query here.
 
+            // TODO: trace the index used
             // run this query on the digest ...
             const index = ESAnswersIndexNames.createForUserDocs(uid);
 
@@ -125,25 +152,27 @@ export namespace AnswerExecutor {
             // applicable to the answer API and we would need a way to easily
             // calculate the short head of the result set.  The OpenAI Answers API
             // only allows 200 documents so we might just want to hard code this.
-            const size = opts.rerank_elasticsearch ? (opts.rerank_elasticsearch_size || 10000) : 100;
+            const size = request.rerank_elasticsearch ? (request.rerank_elasticsearch_size || 10000) : 100;
 
             console.log("Running search with size: " + size);
 
             function computeQueryTextFromQuestion() {
-                const doFilterStopwords = opts.filter_stopwords || true;
+                const doFilterStopwords = request.filter_stopwords || true;
 
                 if (doFilterStopwords) {
-                    const words = opts.question.split(/[ \t]+/);
+                    const words = request.question.split(/[ \t]+/);
                     const stopwords = Stopwords.words('en');
                     return Stopwords.removeStopwords(words, stopwords).join(" ");
                 } else {
-                    return opts.question;
+                    return request.question;
                 }
             }
 
             const queryText = computeQueryTextFromQuestion();
 
-            const query = {
+            // TODO: trace the query
+            // eslint-disable-next-line camelcase
+            const elasticsearch_query: IElasticsearchQuery = {
                 "query": {
                     "query_string": {
                         "query": queryText,
@@ -153,50 +182,76 @@ export namespace AnswerExecutor {
                 size
             };
 
-            const requestURL = `/${index}*/_search?allow_no_indices=true`;
+            // TODO: trace the requestURL
+            // eslint-disable-next-line camelcase
+            const elasticsearch_url = `/${index}*/_search?allow_no_indices=true`;
 
-            const esResponseWithDuration
-                = await executeWithDuration<IElasticSearchResponse<IAnswerDigestRecord>>(() => ESRequests.doPost(requestURL, query));
+            // TODO: trace the esResponse
+            // eslint-disable-next-line camelcase
+            const [esResponse, elasticsearch_duration]
+                = await executeWithDuration<IElasticSearchResponse<IAnswerDigestRecord>>(ESRequests.doPost(elasticsearch_url, elasticsearch_query));
 
-            const esResponse = esResponseWithDuration.value;
+            // eslint-disable-next-line camelcase
+            const elasticsearch_records = esResponse.hits.hits.map(current => current._source);
 
-            async function computeRecords() {
+            // TODO: do this in the indexer, not the executor? this way we can
+            // same some CPU time during execution.
 
-                const hits = esResponse.hits.hits.map(current => current._source);
+            if (request.rerank_elasticsearch) {
 
-                // TODO: do this in the indexer, not the executor? this way we can
-                // same some CPU time during execution.
+                console.log("Re-ranking N ES results via OpenAI: " + elasticsearch_records.length)
 
-                if (opts.rerank_elasticsearch) {
+                // TODO: trace the latency of the rerank too..
 
-                    console.log("Re-ranking N ES results via OpenAI: " + hits.length)
+                // TODO: trace the ranked
+                // eslint-disable-next-line camelcase
+                const [openai_reranked_records_with_score, openai_reranked_duration] =
+                    await executeWithDuration(OpenAISearchReRanker.exec(request.rerank_elasticsearch_model || 'ada',
+                                                                        request.question,
+                                                                        elasticsearch_records,
+                                                                        hit => hit.text));
 
-                    const reranked =
-                        await OpenAISearchReRanker.exec(opts.rerank_elasticsearch_model || 'ada',
-                                                        opts.question,
-                                                        hits,
-                                                        hit => hit.text);
+                // eslint-disable-next-line camelcase
+                const openai_reranked_records = arrayStream(openai_reranked_records_with_score)
+                    .map(current => current.record)
+                    .collect();
 
-                    return Arrays.head(reranked.map(current => current.record), MAX_DOCUMENTS);
+                // eslint-disable-next-line camelcase
+                const records = arrayStream(openai_reranked_records)
+                    .head(MAX_DOCUMENTS)
+                    .collect();
 
-                } else {
-                    // the array of digest records so that we can map from the
-                    // selected_documents AFTER the request is executed.
-                    return hits;
-                }
+                return <ESDocumentResultsWithRerank> {
+                    elasticsearch_query,
+                    elasticsearch_records,
+                    elasticsearch_duration,
+                    elasticsearch_url,
+                    openai_reranked_records,
+                    openai_reranked_duration,
+                    records
+                };
+
+            } else {
+                // the array of digest records so that we can map from the
+                // selected_documents AFTER the request is executed.
+
+                // eslint-disable-next-line camelcase
+                return <ESDocumentResultsWithoutRerank> {
+                    elasticsearch_query,
+                    elasticsearch_records,
+                    elasticsearch_duration,
+                    elasticsearch_url,
+                    openai_reranked_records: undefined,
+                    openai_reranked_duration: undefined,
+                    records
+                };
 
             }
 
-            const records = await computeRecords();
-
-            return {
-                duration: esResponseWithDuration.duration,
-                records
-            };
-
         }
 
-        const {duration, records} = await computeDocuments();
+        const computedDocuments = await computeDocuments();
+        const {records} = computedDocuments;
 
         const documents = records.map(current => current.text.replace(/\n/g, ' '));
 
@@ -212,10 +267,12 @@ export namespace AnswerExecutor {
 
         // tslint:disable-next-line:variable-name
         // eslint-disable-next-line camelcase
-        const search_model = opts.search_model || SEARCH_MODEL;
-        const model = opts.model || MODEL;
+        const search_model = request.search_model || SEARCH_MODEL;
+        const model = request.model || MODEL;
 
-        const request: OpenAIAnswersClient.IOpenAIAnswersRequest = {
+        // TODO: trace this...
+        // eslint-disable-next-line camelcase
+        const openai_answers_request: IOpenAIAnswersRequest = {
             search_model,
             model,
             question,
@@ -230,10 +287,11 @@ export namespace AnswerExecutor {
             // logprobs: 10,
         }
 
-        const answerResponseWithDuration = await executeWithDuration(() => OpenAIAnswersClient.exec(request));
-        const answerResponse = answerResponseWithDuration.value;
+        // TODO: trace this.
+        // eslint-disable-next-line camelcase
+        const [openai_answers_response, openai_answer_duration] = await executeWithDuration(OpenAIAnswersClient.exec(openai_answers_request));
 
-        const primaryAnswer = Arrays.first(answerResponse.answers);
+        const primaryAnswer = Arrays.first(openai_answers_response.answers);
 
         if (primaryAnswer === NO_ANSWER_CODE) {
 
@@ -255,16 +313,39 @@ export namespace AnswerExecutor {
 
         const id = Hashcodes.createRandomID();
 
-        const timings: ITimings = {
-            documents: duration,
-            openai: answerResponseWithDuration.duration
+        const timings: IAnswerExecutorTimings = {
+            elasticsearch: computedDocuments.elasticsearch_duration,
+            openai_rerank: computedDocuments.openai_reranked_duration,
+            openai_answer: openai_answer_duration
         }
+
+        async function doTrace() {
+
+            const firestore = FirestoreAdmin.getInstance();
+
+            const trace: IAnswerExecutorTrace = {
+                id,
+                type: 'trace',
+                ...request,
+                elasticsearch_query: computedDocuments.elasticsearch_query,
+                elasticsearch_url: computedDocuments.elasticsearch_url,
+                elasticsearch_records: computedDocuments.elasticsearch_records,
+                openai_answers_request: openai_answers_request,
+                openai_answers_response: openai_answers_response,
+                timings
+            }
+
+            await AnswerExecutorTraceCollection.set(firestore, id, trace);
+
+        }
+
+        // await doTrace();
 
         return {
             id,
             question,
-            selected_documents: answerResponse.selected_documents.map(convertToSelectedDocumentWithRecord),
-            answers: answerResponse.answers,
+            selected_documents: openai_answers_response.selected_documents.map(convertToSelectedDocumentWithRecord),
+            answers: openai_answers_response.answers,
             model,
             search_model,
             timings

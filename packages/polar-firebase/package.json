@@ -29,6 +29,7 @@
   "dependencies": {
     "polar-accounts": "^2.1.117",
     "polar-blocks": "^2.1.117",
+    "polar-answers-api": "^2.1.117",
     "polar-firestore-like": "^2.1.117",
     "polar-shared": "^2.1.117",
     "polar-spaced-repetition-api": "^2.1.117"

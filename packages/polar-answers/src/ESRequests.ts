@@ -1,6 +1,7 @@
 import {ESCredentials} from "./ESCredentials";
 import {Fetches} from "polar-shared/src/util/Fetch";
 import {ESSecrets} from "./ESSecrets";
+import {IElasticsearchQuery} from "polar-answers-api/src/IElasticsearchQuery";
 
 export namespace ESRequests {
 
@@ -50,7 +51,7 @@ export namespace ESRequests {
 
     }
 
-    export async function doPost(url: string, body: Record<string, unknown> | string) {
+    export async function doPost(url: string, body: Record<string, unknown> | string | IElasticsearchQuery) {
 
         ESSecrets.init();
 

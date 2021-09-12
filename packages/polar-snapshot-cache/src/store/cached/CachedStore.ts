@@ -37,6 +37,7 @@ import {IQuerySnapshot, IQuerySnapshotClient} from "polar-firestore-like/src/IQu
 import {IDocumentChange} from "polar-firestore-like/src/IDocumentChange";
 import {IWriteBatchClient} from "polar-firestore-like/src/IWriteBatch";
 import {ISnapshotMetadata} from "polar-firestore-like/src/ISnapshotMetadata";
+import {TUpdateData} from "../TUpdateData";
 
 export namespace CachedStore {
 
@@ -265,6 +266,10 @@ export namespace CachedStore {
                     return this.getter(options);
                 }
 
+                public async update(data: TUpdateData): Promise<void> {
+                    throw new Error("Not implemented");
+                }
+
                 public async set(data: TDocumentData): Promise<void> {
 
                     this.writeToCache({
@@ -317,6 +322,7 @@ export namespace CachedStore {
                 public onSnapshot(onNext: (snapshot: IDocumentSnapshotClient) => void,
                                   onError?: (error: IFirestoreError) => void,
                                   onCompletion?: () => void): SnapshotUnsubscriber;
+
                 public onSnapshot(options: ISnapshotListenOptions,
                                   onNext: (snapshot: IDocumentSnapshot<ISnapshotMetadata>) => void,
                                   onError?: (error: IFirestoreError) => void,
@@ -359,6 +365,7 @@ export namespace CachedStore {
             function doc(documentPath?: string): IDocumentReferenceClient {
 
                 const _doc = _collection.doc(documentPath);
+
                 return new DocumentReference(_doc.id, _collection, _doc, )
 
             }
