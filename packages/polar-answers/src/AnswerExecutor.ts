@@ -22,7 +22,7 @@ export namespace AnswerExecutor {
     import QuestionAnswerPair = OpenAIAnswersClient.QuestionAnswerPair;
     import IElasticSearchResponse = ESRequests.IElasticSearchResponse;
 
-    export interface IExecOpts extends IAnswerExecutorRequest {
+    export interface IAnswerExecutorRequestWithUID extends IAnswerExecutorRequest {
         readonly uid: UserIDStr;
     }
 
@@ -76,9 +76,9 @@ export namespace AnswerExecutor {
 
     }
 
-    export async function exec(opts: IExecOpts): Promise<IAnswerExecutorResponse | IAnswerExecutorError> {
+    export async function exec(request: IAnswerExecutorRequestWithUID): Promise<IAnswerExecutorResponse | IAnswerExecutorError> {
 
-        const {question, uid} = opts;
+        const {question, uid} = request;
 
         interface DocumentResults {
             readonly duration: number;
@@ -86,9 +86,11 @@ export namespace AnswerExecutor {
             // readonly documents: ReadonlyArray<string>
         }
 
+        // TODO: trace ALL opts given...
+
         async function computeDocuments() {
 
-            if (opts.documents) {
+            if (request.documents) {
                 return computeDocumentsFromOpts();
             }
 
@@ -98,7 +100,7 @@ export namespace AnswerExecutor {
 
         async function computeDocumentsFromOpts(): Promise<DocumentResults> {
 
-            const documents = opts.documents || [];
+            const documents = request.documents || [];
 
             return {
                 duration: 0,
@@ -118,6 +120,7 @@ export namespace AnswerExecutor {
 
             // TODO make this into a generic search client and don't hard code the ES query here.
 
+            // TODO: trace the index used
             // run this query on the digest ...
             const index = ESAnswersIndexNames.createForUserDocs(uid);
 
@@ -125,24 +128,25 @@ export namespace AnswerExecutor {
             // applicable to the answer API and we would need a way to easily
             // calculate the short head of the result set.  The OpenAI Answers API
             // only allows 200 documents so we might just want to hard code this.
-            const size = opts.rerank_elasticsearch ? (opts.rerank_elasticsearch_size || 10000) : 100;
+            const size = request.rerank_elasticsearch ? (request.rerank_elasticsearch_size || 10000) : 100;
 
             console.log("Running search with size: " + size);
 
             function computeQueryTextFromQuestion() {
-                const doFilterStopwords = opts.filter_stopwords || true;
+                const doFilterStopwords = request.filter_stopwords || true;
 
                 if (doFilterStopwords) {
-                    const words = opts.question.split(/[ \t]+/);
+                    const words = request.question.split(/[ \t]+/);
                     const stopwords = Stopwords.words('en');
                     return Stopwords.removeStopwords(words, stopwords).join(" ");
                 } else {
-                    return opts.question;
+                    return request.question;
                 }
             }
 
             const queryText = computeQueryTextFromQuestion();
 
+            // TODO: trace the query
             const query = {
                 "query": {
                     "query_string": {
@@ -153,11 +157,13 @@ export namespace AnswerExecutor {
                 size
             };
 
+            // TODO: trace the requestURL
             const requestURL = `/${index}*/_search?allow_no_indices=true`;
 
             const esResponseWithDuration
                 = await executeWithDuration<IElasticSearchResponse<IAnswerDigestRecord>>(() => ESRequests.doPost(requestURL, query));
 
+            // TODO: trace the esResponse
             const esResponse = esResponseWithDuration.value;
 
             async function computeRecords() {
@@ -167,13 +173,15 @@ export namespace AnswerExecutor {
                 // TODO: do this in the indexer, not the executor? this way we can
                 // same some CPU time during execution.
 
-                if (opts.rerank_elasticsearch) {
+                if (request.rerank_elasticsearch) {
 
                     console.log("Re-ranking N ES results via OpenAI: " + hits.length)
 
+
+                    // TODO: trace the ranked
                     const reranked =
-                        await OpenAISearchReRanker.exec(opts.rerank_elasticsearch_model || 'ada',
-                                                        opts.question,
+                        await OpenAISearchReRanker.exec(request.rerank_elasticsearch_model || 'ada',
+                                                        request.question,
                                                         hits,
                                                         hit => hit.text);
 
@@ -212,9 +220,10 @@ export namespace AnswerExecutor {
 
         // tslint:disable-next-line:variable-name
         // eslint-disable-next-line camelcase
-        const search_model = opts.search_model || SEARCH_MODEL;
-        const model = opts.model || MODEL;
+        const search_model = request.search_model || SEARCH_MODEL;
+        const model = request.model || MODEL;
 
+        // TODO: trace this...
         const request: OpenAIAnswersClient.IOpenAIAnswersRequest = {
             search_model,
             model,
@@ -230,6 +239,7 @@ export namespace AnswerExecutor {
             // logprobs: 10,
         }
 
+        // TODO: trace this.
         const answerResponseWithDuration = await executeWithDuration(() => OpenAIAnswersClient.exec(request));
         const answerResponse = answerResponseWithDuration.value;
 
@@ -260,6 +270,7 @@ export namespace AnswerExecutor {
             openai: answerResponseWithDuration.duration
         }
 
+        // TODO: trace this too...
         return {
             id,
             question,
