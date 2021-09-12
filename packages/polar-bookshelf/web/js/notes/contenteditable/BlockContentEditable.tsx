@@ -57,6 +57,15 @@ export const BlockContentEditable = (props: IProps) => {
 
     const updateCursorPosition = useUpdateCursorPosition();
 
+    const getCurrentContent = React.useCallback(() => {
+        if (! divRef.current) {
+            throw new Error("No element");
+        }
+
+        const div = BlockContentCanonicalizer.canonicalizeElement(divRef.current);
+        return div.innerHTML;
+    }, [divRef]);
+
     const onPasteImage = React.useCallback((image: IPasteImageData) => {
         console.log("Got paste: ", image);
 
@@ -77,19 +86,47 @@ export const BlockContentEditable = (props: IProps) => {
         blocksTreeStore.insertFromBlockContentStructure(blocks);
     }, [blocksTreeStore]);
 
-    const onPasteHTML = React.useCallback((html) => {
-        document.execCommand("insertHTML", false, html);
-    }, []);
+    const onPasteHTML = React.useCallback((html: HTMLStr) => document.execCommand("insertHTML", false, html), []);
 
-    const onPasteError = React.useCallback((err: Error) => {
-        console.error("Got paste error: ", err);
-    }, []);
+    const onPasteError = React.useCallback((err: Error) => console.error("Got paste error: ", err), []);
+
+    const onPasteText = React.useCallback((text: string) => {
+        document.execCommand("insertHTML", false, text);
+
+        /*
+         * This is mainly done so that when links are pasted they get converted into anchor tags and immediately reflected onto the UI
+         *
+         * Usually we don't need to update the contentEditable div with new data once it arrives
+         * unless it's coming from somewhere else (another user) because the user is the one changing 
+         * the content of the contentEditable div, so we know that the data from the store will match
+         * the data in the contentEditable div.
+         * 
+         * But here we have to do it because MarkdownContentConverter.toHTML uses the `marked` package
+         * which converts links into anchor tags automatically.
+         */
+        const newContent = MarkdownContentConverter.toMarkdown(getCurrentContent());
+
+        props.onChange(newContent);
+
+        const div = divRef.current;
+
+        if (div) {
+            const focusedBlock = DOMBlocks.getFocusedBlock();
+            const currPosition = blocksTreeStore.cursorOffsetCapture();
+
+            if (focusedBlock && currPosition) {
+                div.innerHTML = MarkdownContentConverter.toHTML(newContent);
+                updateCursorPosition(focusedBlock, currPosition, true);
+            }
+        }
+    }, [divRef, getCurrentContent]);
 
     const handlePaste = usePasteHandler({
         onPasteImage,
         onPasteError,
         onPasteBlocks,
         onPasteHTML,
+        onPasteText,
         id: props.id,
     });
     const namedBlocks = useNamedBlocks();
@@ -113,18 +150,7 @@ export const BlockContentEditable = (props: IProps) => {
             return;
         }
 
-        function computeNewContent() {
-
-            if (! divRef.current) {
-                throw new Error("No element");
-            }
-
-            const div = BlockContentCanonicalizer.canonicalizeElement(divRef.current);
-            return div.innerHTML;
-
-        }
-
-        const newContent = MarkdownContentConverter.toMarkdown(computeNewContent());
+        const newContent = MarkdownContentConverter.toMarkdown(getCurrentContent());
 
         if (newContent === contentRef.current) {
             // there was no change so skip this.
@@ -176,8 +202,9 @@ export const BlockContentEditable = (props: IProps) => {
 
             const div = divRef.current;
             if (div && ENABLE_CURSOR_RESET) {
-                const active = blocksTreeStore.active;
-                const isActive = active && active.id === props.id;
+                const focusedBlock = DOMBlocks.getFocusedBlock();
+                const isActive = focusedBlock && focusedBlock === div;
+                const currPosition = blocksTreeStore.cursorOffsetCapture();
 
                 /**
                  * Remove the cursor from the block if it's not active to prevent it from being reset to the start when innerHTML is set
@@ -192,8 +219,8 @@ export const BlockContentEditable = (props: IProps) => {
                 div.innerHTML = MarkdownContentConverter.toHTML(props.content);
                 ContentEditables.insertEmptySpacer(div);
 
-                if (active && isActive) {
-                    updateCursorPosition(div, {...active}, true);
+                if (isActive && focusedBlock && currPosition) {
+                    updateCursorPosition(focusedBlock, currPosition, true);
                 }
 
             }
