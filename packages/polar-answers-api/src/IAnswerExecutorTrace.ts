@@ -34,12 +34,15 @@ export interface IAnswerExecutorTrace extends IAnswerExecutorRequest {
 
     readonly timings: IAnswerExecutorTimings;
 
-}
+    /**
+     * The users vote on the answer...
+     */
+    readonly vote?: 'up' | 'down';
 
-/**
- * Allows us to update and specify the vote data.
- */
-export interface IAnswerExecutorTraceWithFeedback extends IAnswerExecutorTrace {
-    readonly vote: 'up' | 'down';
-    readonly expectation: string;
+    /**
+     * When a user votes, this is just a free-form string explanation of what
+     * they think the issue was.
+     */
+    readonly expectation?: string;
+
 }
