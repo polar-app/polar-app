@@ -1,4 +1,4 @@
-import { IDocumentSnapshot } from "./IDocumentSnapshot";
+import {IDocumentSnapshot} from "./IDocumentSnapshot";
 import {IGetOptions} from "./IGetOptions";
 import {ICollectionReference} from "./ICollectionReference";
 import {ISnapshotListenOptions} from "./ISnapshotListenOptions";
@@ -6,6 +6,7 @@ import {SnapshotUnsubscriber} from "polar-shared/src/util/Snapshots";
 import {IFirestoreError} from "./IFirestoreError";
 import {TDocumentData} from "./TDocumentData";
 import {ISnapshotMetadata} from "./ISnapshotMetadata";
+import {TUpdateData} from "./TUpdateData";
 
 export interface IDocumentSnapshotObserver<SM> {
     readonly next?: (snapshot: IDocumentSnapshot<SM>) => void;
@@ -13,6 +14,7 @@ export interface IDocumentSnapshotObserver<SM> {
     readonly complete?: () => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IDocumentSnapshotObserverClient extends IDocumentSnapshotObserver<ISnapshotMetadata> {
 
 }
@@ -39,6 +41,7 @@ export interface IDocumentReference<SM> {
     create(data: TDocumentData): Promise<void>;
     get(options?: IGetOptions): Promise<IDocumentSnapshot<SM>>;
     set(data: TDocumentData): Promise<void>;
+    update(data: TUpdateData /* , precondition?: Precondition */): Promise<void>;
     delete(): Promise<void>;
 
     onSnapshot(observer: IDocumentSnapshotObserver<SM>): SnapshotUnsubscriber;
@@ -55,6 +58,7 @@ export interface IDocumentReference<SM> {
 
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IDocumentReferenceClient extends IDocumentReference<ISnapshotMetadata> {
 
 }

@@ -1,5 +1,6 @@
 import {IFirestore} from "polar-firestore-like/src/IFirestore";
 import {IDStr} from "polar-shared/src/util/Strings";
+import {IAnswerExecutorTrace} from "polar-answers-api/src/IAnswerExecutorTrace";
 
 /**
  * Keeps marks for our AI full-text index so that we can mark records with
@@ -10,27 +11,21 @@ export namespace AnswerExecutorTraceCollection {
 
     const COLLECTION_NAME = 'answer_executor_trace';
 
-    export interface IAnswerRating {
-
-        readonly id: IDStr;
-        readonly uid: string;
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        readonly request: any;
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        readonly response: any;
-
-        readonly status: 'good' | 'bad';
-
-    }
-
-    export async function write<SM = unknown>(firestore: IFirestore<SM>, id: IDStr, rating: IAnswerRating) {
+    export async function set<SM = unknown>(firestore: IFirestore<SM>, id: IDStr, trace: IAnswerExecutorTrace) {
 
         const collection = firestore.collection(COLLECTION_NAME)
         const ref = collection.doc(id);
 
-        await ref.set(rating);
+        await ref.set(trace);
+
+    }
+
+    export async function update<SM = unknown>(firestore: IFirestore<SM>, id: IDStr, trace: Pick<IAnswerExecutorTrace, 'vote' | 'expectation'>) {
+
+        const collection = firestore.collection(COLLECTION_NAME)
+        const ref = collection.doc(id);
+
+        await ref.update(trace);
 
     }
 
