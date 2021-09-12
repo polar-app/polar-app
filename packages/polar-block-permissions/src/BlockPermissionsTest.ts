@@ -23,7 +23,7 @@ import {assert} from 'chai';
 
 describe("BlockPermissions", function() {
 
-    this.timeout(10000);
+    this.timeout(60000);
 
     interface CreateBlockIDOpts {
         readonly key: string;
