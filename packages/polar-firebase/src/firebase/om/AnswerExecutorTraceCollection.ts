@@ -6,9 +6,9 @@ import {IDStr} from "polar-shared/src/util/Strings";
  * metadata for custom handling outside of ES
  *
  */
-export namespace AnswerRatingCollection {
+export namespace AnswerExecutorTraceCollection {
 
-    const COLLECTION_NAME = 'answer_Rating';
+    const COLLECTION_NAME = 'answer_executor_trace';
 
     export interface IAnswerRating {
 
