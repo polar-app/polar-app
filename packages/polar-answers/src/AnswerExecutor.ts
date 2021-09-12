@@ -19,6 +19,8 @@ import {IOpenAIAnswersRequest, QuestionAnswerPair} from "polar-answers-api/src/I
 import {IElasticsearchQuery} from "polar-answers-api/src/IElasticsearchQuery";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
 import {IAnswerExecutorTrace} from "polar-answers-api/src/IAnswerExecutorTrace";
+import {AnswerExecutorTraceCollection} from "../../polar-firebase/src/firebase/om/AnswerExecutorTraceCollection";
+import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 
 const MAX_DOCUMENTS = 200;
 export namespace AnswerExecutor {
@@ -317,17 +319,27 @@ export namespace AnswerExecutor {
             openai_answer: openai_answer_duration
         }
 
-        const trace: IAnswerExecutorTrace = {
-            id,
-            type: 'trace',
-            ...request,
-            elasticsearch_query: computedDocuments.elasticsearch_query,
-            elasticsearch_url: computedDocuments.elasticsearch_url,
-            elasticsearch_records: computedDocuments.elasticsearch_records,
-            openai_answers_request: openai_answers_request,
-            openai_answers_response: openai_answers_response,
-            timings
+        async function doTrace() {
+
+            const firestore = FirestoreAdmin.getInstance();
+
+            const trace: IAnswerExecutorTrace = {
+                id,
+                type: 'trace',
+                ...request,
+                elasticsearch_query: computedDocuments.elasticsearch_query,
+                elasticsearch_url: computedDocuments.elasticsearch_url,
+                elasticsearch_records: computedDocuments.elasticsearch_records,
+                openai_answers_request: openai_answers_request,
+                openai_answers_response: openai_answers_response,
+                timings
+            }
+
+            await AnswerExecutorTraceCollection.set(firestore, id, trace);
+
         }
+
+        // await doTrace();
 
         return {
             id,
