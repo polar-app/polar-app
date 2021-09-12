@@ -4,7 +4,7 @@ import {Interstitial as InterstitialType} from "./store/BlocksStore";
 import CancelIcon from '@material-ui/icons/Cancel';
 import {MiddleDot} from "./MiddleDot";
 import {NoteButton} from "./NoteButton";
-import {NULL_FUNCTION} from "../../../../polar-app-public/polar-shared/src/util/Functions";
+import {NULL_FUNCTION} from "polar-shared/src/util/Functions";
 
 type IInterstitialProps = {
     interstitial: InterstitialType;
@@ -41,7 +41,7 @@ const useImageInterstitialStyles = makeStyles(() =>
         overlayInner: {
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center', 
+            alignItems: 'center',
         }
     }),
 );
