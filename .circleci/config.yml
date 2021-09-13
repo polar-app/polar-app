@@ -102,9 +102,9 @@ commands:
       - run:
           name: DEBUG(Check if duplicate packages with different versions exist)
           command: |
-            DUPLICATES=$(lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-app-public/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d)
+            DUPLICATES=$(lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d)
             echo -e "\n\n $DUPLICATES \n\n"
-            lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-app-public/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d | if [ $(wc -l) -gt "0" ]; then echo -e '\n\n\033[1mPLEASE FIX DUPLICATE PACKAGES WITH DIFFERENT VERSIONS\033[0m' && exit 1; fi
+            lerna exec --concurrency=1 --parallel=false --no-bail -- node /home/circleci/project/packages/polar-npm/src/npm-dump-dependencies.js | sort | uniq | tr " " "\n" | sed '/[0-9]/d' | sed -r '/^\s*$/d' | uniq -d | if [ $(wc -l) -gt "0" ]; then echo -e '\n\n\033[1mPLEASE FIX DUPLICATE PACKAGES WITH DIFFERENT VERSIONS\033[0m' && exit 1; fi
 
       # ! Save Cache
       - save_cache:
@@ -179,7 +179,7 @@ jobs:
       - run:
           name: Build
           command: |
-            cd /home/circleci/project/packages/polar-app-public/polar-web-extension/
+            cd /home/circleci/project/packages/polar-web-extension/
             export POLAR_EXTENSION_TYPE=PROD
             yarn run dist
 
@@ -229,17 +229,18 @@ jobs:
             lerna run test
             yarn run dist-validate-env
             lerna exec --concurrency=1 --parallel=false --no-private  --no-bail -- yarn publish --verbose
-            (cd packages/polar-app-private/polar-webapp-dist && yarn run dist)
+            (cd packages/polar-webapp-dist && yarn run dist)
       - run:
           name: Deploy to Firebase Hosting & Cloud Functions
           no_output_timeout: 120m
           command: |
-            source packages/polar-bookshelf-secrets/credentials.sh
-            yarn run set-registry-verdaccio
             export FIREBASE_HOSTING_TARGET=<< parameters.firebase_hosting_target >>
-            (cd packages/polar-app-private/polar-hooks/functions && rm -rf node_modules && npm install)
-            (cd packages/polar-app-private/polar-hooks/functions && echo Pushing to target ${FIREBASE_HOSTING_TARGET} && firebase use polar-32b0f && firebase target:clear hosting app.getpolarized.io && firebase target:apply hosting app.getpolarized.io ${FIREBASE_HOSTING_TARGET} && firebase deploy --only hosting,storage,firestore)
-            (cd packages/polar-app-private/polar-hooks/ && time firebase deploy --only functions)
+            (cd /home/circleci/project/packages/polar-hooks && echo Pushing to target ${FIREBASE_HOSTING_TARGET} && firebase use polar-32b0f && firebase target:clear hosting app.getpolarized.io && firebase target:apply hosting app.getpolarized.io ${FIREBASE_HOSTING_TARGET} && firebase deploy --only hosting,storage,firestore)
+            mv /home/circleci/project/packages/polar-hooks/ /home/circleci/
+            rm -rf /home/circleci/project
+            cd /home/circleci/polar-hooks
+            rm -rf node_modules && rm -rf functions/node_modules && yarn install && (cd functions && yarn install)
+            time firebase deploy --only functions
 
   # @ Build getpolarized.io Website
   build-polar-site:
@@ -317,7 +318,6 @@ workflows:
           executor: large
           requires:
             - setting-up
-
 
       # @ Build Polar app
       - build-polar-app:

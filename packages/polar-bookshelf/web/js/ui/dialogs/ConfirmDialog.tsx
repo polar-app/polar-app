@@ -119,10 +119,9 @@ export const ConfirmDialog = deepMemo(function ConfirmDialog(props: ConfirmDialo
 
     }, [history, location, props.id, open]);
 
-    type DismissReason = 'backdropClick' | 'escapeKeyDown' | 'cancel' | undefined;
+    type DismissReason = 'backdropClick' | 'escapeKeyDown' | 'cancel' | 'accept' | undefined;
 
     const doDismiss = React.useCallback((reason: DismissReason) => {
-
         if (reason !== undefined) {
             onCancel();
         }
@@ -147,7 +146,7 @@ export const ConfirmDialog = deepMemo(function ConfirmDialog(props: ConfirmDialo
     }, [doDismiss]);
 
     const handleAccept = React.useCallback(() => {
-        setOpen(false);
+        doDismiss('accept');
         props.onAccept();
     }, [props]);
 
