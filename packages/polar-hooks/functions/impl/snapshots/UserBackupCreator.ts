@@ -161,6 +161,7 @@ export namespace UserBackupCreator {
             objectMode: true,
             highWaterMark: 1,
             transform(firebaseObject, encoding, callback) {
+                // i'm not sure how to prevent this error
                 (async () => { // wrap in a self executing async block
 
                     const id = firebaseObject.id;

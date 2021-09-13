@@ -41,7 +41,7 @@ export namespace AccountNotifications {
                 html: body
             })
 
-            AmplitudeBackendAnalytics.event2('AccountNotification.changePlan', {
+            await AmplitudeBackendAnalytics.event2('AccountNotification.changePlan', {
                 plan_level: to.plan.level,
                 plan_interval: to.interval
             }, user);

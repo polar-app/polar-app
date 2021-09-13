@@ -361,8 +361,8 @@ xdescribe('Files', function() {
 
         xit("missing file", async function() {
 
-            assert.throw(async function() {
-                await Files.statAsync(FilePaths.createTempName('invalid-file-name'));
+            assert.throw(() => {
+                Files.statAsync(FilePaths.createTempName('invalid-file-name')).catch(e=>console.error(e));
             });
 
         });
@@ -460,7 +460,7 @@ xdescribe('Files', function() {
 
                 assert.ok(false, "This should not have worked");
 
-            } catch (e) {
+            } catch (e: any) {
                 assert.equal(e.code, "EEXIST");
                 assert.ok(e.message.indexOf("EEXIST:") === 0);
             }

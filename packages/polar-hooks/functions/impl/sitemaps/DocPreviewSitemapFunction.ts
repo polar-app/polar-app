@@ -77,7 +77,7 @@ export const DocPreviewSitemapFunction = functions.https.onRequest((req, resp) =
         resp.write(`<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`);
 
         const opts = parseListOpts();
-        const firestore =  await FirestoreAdmin.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         console.log("Using list opts: ", opts);
         const docPreviews = await DocPreviewCollection.list(firestore, opts);
