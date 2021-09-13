@@ -20,6 +20,7 @@ import {
     IAnswerExecutorTraceUpdateError,
     IAnswerExecutorTraceUpdateResponse
 } from "polar-answers-api/src/IAnswerExecutorTraceUpdateResponse";
+import {IRPCError} from "polar-shared/src/util/IRPCError";
 
 const globalKeyMap = keyMapWithGroup({
     group: "Answers",
@@ -206,8 +207,8 @@ function useAnswerExecutorClient() {
  * @param methodName The RPC to call.
  * @param toEvent Convert the request to an analytics event
  */
-function useRPC<REQ, RES, E>(methodName: string,
-                             toEvent: (request: REQ) => Record<string, string | number>) {
+function useRPC<REQ, RES, E extends IRPCError>(methodName: string,
+                                               toEvent: (request: REQ) => Record<string, string | number>) {
 
     const analytics = useAnalytics();
 
@@ -219,17 +220,28 @@ function useRPC<REQ, RES, E>(methodName: string,
 
             const response: RES | E = await JSONRPC.exec(methodName, request);
 
-            analytics.event2(methodName, toEvent(request));
+            function isError(response: RES | E): response is E {
+                return (response as any).error === true;
+            }
 
-            // TODO if an 'E' is returned we do not track it because we don't have a standard
-            // error code right now.
+            if (isError(response)) {
+
+                analytics.event2(methodName, {
+                    error: true,
+                    code: response.code
+                });
+
+            } else {
+                analytics.event2(methodName, toEvent(request));
+            }
 
             return response;
 
         } catch (e) {
 
-            analytics.event2('ai-answer-executor-trace-update-failed', {
-                error: 'exception',
+            analytics.event2(methodName, {
+                error: true,
+                code: 'exception',
                 message: e.message
             });
 
