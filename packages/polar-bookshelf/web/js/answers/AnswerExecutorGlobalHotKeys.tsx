@@ -113,12 +113,6 @@ interface AnswerResponseProps {
 
 const AnswerResponse = (props: AnswerResponseProps) => {
 
-    const [tabIndex, setTabIndex] = React.useState(0);
-
-    const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-        setTabIndex(newValue);
-    };
-
     if (answerIsError(props.answerResponse)) {
         return (
             <Box mt={1} mb={1} color='error.main'>
