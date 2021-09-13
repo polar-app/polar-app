@@ -3,7 +3,7 @@ import {GlobalKeyboardShortcuts, keyMapWithGroup} from '../keyboard_shortcuts/Gl
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import {MUIDialog} from '../ui/dialogs/MUIDialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {Box, DialogContent, LinearProgress, TextField, Typography} from "@material-ui/core";
+import {Box, DialogContent, IconButton, LinearProgress, TextField, Typography} from "@material-ui/core";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
 import {FeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {Arrays} from 'polar-shared/src/util/Arrays';
@@ -21,6 +21,8 @@ import {
     IAnswerExecutorTraceUpdateResponse
 } from "polar-answers-api/src/IAnswerExecutorTraceUpdateResponse";
 import {IRPCError} from "polar-shared/src/util/IRPCError";
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 
 const globalKeyMap = keyMapWithGroup({
     group: "Answers",
@@ -107,9 +109,33 @@ function answerIsErrorNoAnswer(value: any): value is IAnswerExecutorError {
     return value.error === 'no-answer';
 }
 
+interface AnswerFeedbackProps {
+    readonly id: string;
+}
+
+const AnswerFeedback = (props: AnswerFeedbackProps) => {
+
+    return (
+        <Box style={{
+                 display: 'flex',
+                 alignItems: 'flex-end'
+             }}>
+            <IconButton>
+                <ThumbUpIcon/>
+            </IconButton>
+            <IconButton>
+                <ThumbDownIcon/>
+            </IconButton>
+        </Box>
+    )
+
+}
+
+
 interface AnswerResponseProps {
     readonly answerResponse: IAnswerExecutorResponse | IAnswerExecutorError;
 }
+
 
 const AnswerResponse = (props: AnswerResponseProps) => {
 
@@ -144,6 +170,9 @@ const AnswerResponse = (props: AnswerResponseProps) => {
                             {Arrays.first(props.answerResponse.answers)}
 
                         </p>
+
+                        <AnswerFeedback id={props.answerResponse.id}/>
+
                     </>)}
 
                 {props.answerResponse.selected_documents.length > 0 && (
