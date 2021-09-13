@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import {StripeCustomers} from "./StripeCustomers";
 import {Billing} from "polar-accounts/src/Billing";
 import {StripeMode, StripeUtils} from "./StripeUtils";
@@ -7,6 +6,7 @@ import {StripePlanIDs} from "./StripePlanIDs";
 export namespace StripeCreateSessions {
 
     interface CustomerParamsWithEmail {
+        // eslint-disable-next-line camelcase
         readonly customer_email: string;
     }
 
@@ -43,6 +43,7 @@ export namespace StripeCreateSessions {
         function createPlanParams(): any {
             switch (mode) {
                 case "subscription":
+                    // eslint-disable-next-line camelcase
                     return {
                         allow_promotion_codes: true,
                         subscription_data: {
@@ -64,6 +65,7 @@ export namespace StripeCreateSessions {
         const planID = StripePlanIDs.fromSubscription(stripeMode, plan, interval);
 
         // TODO in stripe 8.109.0 we have to use 'any' here because the typescript interface doesn't work.
+        // eslint-disable-next-line camelcase
         const createOpts: any = {
             payment_method_types: ['card'],
             ...customerParams,

@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import {CacheFetches} from "./CacheFetches";
 
 interface ArchivedSnapshot {
@@ -12,28 +11,12 @@ interface ArchivedSnapshots {
     readonly closest: ArchivedSnapshot;
 }
 
-/*
-
-    {
-      "timestamp": "20060101",
-      "archived_snapshots": {
-        "closest": {
-          "status": "200",
-          "available": true,
-          "url": "http://web.archive.org/web/20060101064348/http://www.example.com:80/",
-          "timestamp": "20060101064348"
-        }
-      },
-      "url": "example.com"
-    }
-
- */
 interface WaybackResponse {
 
     readonly timestamp: string;
 
     readonly url: string;
-
+    // eslint-disable-next-line camelcase
     readonly archived_snapshots: ArchivedSnapshots;
 
 }

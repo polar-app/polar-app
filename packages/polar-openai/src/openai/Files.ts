@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import {Fetches} from "polar-shared/src/util/Fetch";
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
@@ -18,6 +17,7 @@ export namespace Files {
         readonly id: string;
         readonly object: 'file',
         readonly bytes: number;
+        // eslint-disable-next-line camelcase
         readonly created_at: number;
         readonly filename: "string";
     }

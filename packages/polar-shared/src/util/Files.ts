@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import fs, {PathLike, Stats} from "fs";
 import {promisify} from 'util';
 import {Logger} from '../logger/Logger';

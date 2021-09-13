@@ -5,6 +5,7 @@ export interface IElasticsearchQueryStringQueryFields {
 }
 
 export interface IElasticsearchQueryStringQuery {
+    // eslint-disable-next-line camelcase
     readonly query_string: IElasticsearchQueryStringQueryFields;
 }
 

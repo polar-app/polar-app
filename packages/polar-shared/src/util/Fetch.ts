@@ -1,6 +1,5 @@
-/* eslint-disable camelcase */
 import {Request, Response, BodyInit} from 'node-fetch';
-
+// eslint-disable-next-line camelcase
 import {default as node_fetch} from 'node-fetch';
 import {Optional} from "./ts/Optional";
 import { ProgressListener } from './ProgressTracker';

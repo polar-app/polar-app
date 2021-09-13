@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import {DOIStr, JSONStr, URLStr} from "polar-shared/src/util/Strings";
 import {
     ISODateString,
@@ -54,8 +53,6 @@ export class UnpaywallDocPreviewsLoader {
 
     public static async load() {
 
-        const app = FirebaseAdmin.app();
-
         const args = parseArgs();
 
         const data = await Files.readFileAsync(args.path);
@@ -77,20 +74,20 @@ export class UnpaywallDocPreviewsLoader {
             if (! doc) {
                 return undefined;
             }
-
+            // eslint-disable-next-line camelcase
             if (doc.oa_locations.length === 0) {
                 // console.log("No open access locations (skipping): ", doc);
                 return undefined;
             }
 
             const computeURLToPDF = (): URLStr | undefined => {
-
+                // eslint-disable-next-line camelcase
                 const locations = doc.oa_locations.filter(current => isPresent(current.url_for_pdf));
 
                 if (locations.length === 0) {
                     return undefined;
                 }
-
+                // eslint-disable-next-line camelcase
                 return locations[0].url_for_pdf || undefined;
 
             };
@@ -103,7 +100,7 @@ export class UnpaywallDocPreviewsLoader {
             }
 
             const urlHash = DocPreviewHashcodes.urlHash(url);
-
+            // eslint-disable-next-line camelcase
             const docPreview: DocPreviewUncached = {
                 id: urlHash,
                 cached: false,
@@ -169,12 +166,16 @@ export namespace Unpaywall {
 
     export interface Doc {
         readonly doi: DOIStr;
+        // eslint-disable-next-line camelcase
         readonly doi_url: URLStr;
         readonly updated: string;
         readonly title: string;
         readonly publisher: string;
+        // eslint-disable-next-line camelcase
         readonly z_authors: ReadonlyArray<Author>;
+        // eslint-disable-next-line camelcase
         readonly published_date: ISODateTimeString | ISODateString;
+        // eslint-disable-next-line camelcase
         readonly oa_locations: ReadonlyArray<Location>;
     }
 
@@ -185,8 +186,11 @@ export namespace Unpaywall {
 
     export interface Location {
         readonly updated: ISODateTimeString;
+        // eslint-disable-next-line camelcase
         readonly is_best: boolean;
+        // eslint-disable-next-line camelcase
         readonly url_for_landing_page: URLStr;
+        // eslint-disable-next-line camelcase
         readonly url_for_pdf: URLStr | null;
     }
 

@@ -265,7 +265,6 @@ export namespace AnswerExecutor {
         // examples that are answered by the examples_context as well. Does this
         // make sense?
 
-        // tslint:disable-next-line:variable-name
         // eslint-disable-next-line camelcase
         const search_model = request.search_model || SEARCH_MODEL;
         const model = request.model || MODEL;

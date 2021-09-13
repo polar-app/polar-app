@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import {DOIStr, JSONStr, URLStr} from "polar-shared/src/util/Strings";
 import {
     ISODateString,
@@ -39,14 +38,14 @@ export class DocPreviewsLoader {
         const toDocPreview = (json: JSONStr): DocPreviewUncached | undefined => {
 
             const doc: Unpaywall.Doc = JSON.parse(json);
-
+            // eslint-disable-next-line camelcase
             if (doc.oa_locations.length === 0) {
                 console.warn("No open access locations (skipping).");
                 return undefined;
             }
 
             // TODO: authors
-
+            // eslint-disable-next-line camelcase
             const url = doc.oa_locations[0].url_for_pdf;
 
             if (url === null) {
@@ -55,7 +54,7 @@ export class DocPreviewsLoader {
             }
 
             const urlHash = DocPreviewHashcodes.urlHash(url);
-
+            // eslint-disable-next-line camelcase
             const docPreview: DocPreviewUncached = {
                 id: urlHash,
                 cached: false,
@@ -112,12 +111,16 @@ export namespace Unpaywall {
 
     export interface Doc {
         readonly doi: DOIStr;
+        // eslint-disable-next-line camelcase
         readonly doi_url: URLStr;
         readonly updated: string;
         readonly title: string;
         readonly publisher: string;
+        // eslint-disable-next-line camelcase
         readonly z_authors: ReadonlyArray<Author>;
+        // eslint-disable-next-line camelcase
         readonly published_date: ISODateTimeString | ISODateString;
+        // eslint-disable-next-line camelcase
         readonly oa_locations: ReadonlyArray<Location>;
     }
 
@@ -128,8 +131,11 @@ export namespace Unpaywall {
 
     export interface Location {
         readonly updated: ISODateTimeString;
+        // eslint-disable-next-line camelcase
         readonly is_best: boolean;
+        // eslint-disable-next-line camelcase
         readonly url_for_landing_page: URLStr;
+        // eslint-disable-next-line camelcase
         readonly url_for_pdf: URLStr | null;
     }
 

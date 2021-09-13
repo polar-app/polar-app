@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import {Fetches} from 'polar-shared/src/util/Fetch';
 import {Base64} from 'polar-shared/src/util/Base64';
 import {HashcodeAlgorithms} from 'polar-shared/src/util/HashcodeAlgorithms';
@@ -64,8 +63,6 @@ export class Mailchimp {
         if (response.status >= 300) {
             throw new Error("Failed request: " + response.status + ": " + response.statusText);
         }
-
-        return;
 
     }
 
@@ -156,8 +153,9 @@ export class Mailchimp {
 export type MailchimpHttpMethod = 'GET' | 'PATCH' |  'DELETE' | 'POST' | 'PUT';
 
 export interface MailchimpSubscription {
-
+    // eslint-disable-next-line camelcase
     readonly email_address: string;
+    // eslint-disable-next-line camelcase
     readonly merge_fields: MergeFields;
 
 }

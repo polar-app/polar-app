@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import {Platforms, PlatformStr} from "polar-shared/src/util/Platforms";
 import { UserIDStr, CollectionNameStr} from "polar-shared/src/util/Strings";
 import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
@@ -48,6 +47,7 @@ export interface UserMachineInit {
 }
 
 export interface UserMachine extends UserMachineInit {
+    // eslint-disable-next-line camelcase
     readonly user_id: UserIDStr;
     readonly lastUpdated: ISODateTimeString;
     readonly created: ISODateTimeString;

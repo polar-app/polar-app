@@ -1,7 +1,7 @@
-/* eslint-disable camelcase */
 export namespace AutoFlashcards {
 
     export interface AutoFlashcardRequest {
+        // eslint-disable-next-line camelcase
         readonly query_text: string;
     }
 

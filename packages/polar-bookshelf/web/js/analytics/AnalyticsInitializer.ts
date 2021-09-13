@@ -38,7 +38,7 @@ export namespace AnalyticsInitializer {
 
             const doUserEmailDomain = () => {
 
-                // tslint:disable-next-line:variable-name
+                // eslint-disable-next-line camelcase
                 const user_email_domain = Emails.toDomain(user.email!) || "";
 
                 Analytics.traits({
@@ -51,13 +51,13 @@ export namespace AnalyticsInitializer {
 
                 if (user.metadata.creationTime) {
 
-                    // tslint:disable-next-line:variable-name
+                    // eslint-disable-next-line camelcase
                     const user_created_week = ISODateTimeStrings.toPartialWeek(user.metadata.creationTime)!;
 
-                    // tslint:disable-next-line:variable-name
+                    // eslint-disable-next-line camelcase
                     const user_created_month = ISODateTimeStrings.toPartialMonth(user.metadata.creationTime)!;
 
-                    // tslint:disable-next-line:variable-name
+                    // eslint-disable-next-line camelcase
                     const user_created_day = ISODateTimeStrings.toPartialDay(user.metadata.creationTime)!;
 
                     Analytics.traits({

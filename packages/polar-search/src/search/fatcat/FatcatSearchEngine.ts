@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import {search} from "polar-search-api/src/api/search/Search";
 import {ISODateYearString} from "polar-shared/src/metadata/ISODateTimeStrings";
 import {Fetches} from "polar-shared/src/util/Fetch";
@@ -85,11 +84,15 @@ export namespace fatcat {
 
     export interface Response {
         readonly publisher: string;
+        // eslint-disable-next-line camelcase
         readonly work_id: string;
+        // eslint-disable-next-line camelcase
         readonly container_id: string;
         readonly title: string;
         readonly contribs: ReadonlyArray<Contrib>;
+        // eslint-disable-next-line camelcase
         readonly ext_ids: ExtIDs;
+        // eslint-disable-next-line camelcase
         readonly release_year: ISODateYearString;
         readonly language: string;
         readonly volume: string;
@@ -99,6 +102,7 @@ export namespace fatcat {
     export type ContribRole = 'author' | string;
 
     export interface Contrib {
+        // eslint-disable-next-line camelcase
         readonly raw_name: string;
         readonly role: ContribRole;
     }
@@ -106,6 +110,7 @@ export namespace fatcat {
     export interface ExtIDs {
         readonly doi?: DOIStr;
         readonly pmid?: string;
+        // eslint-disable-next-line camelcase
         readonly wikipedia_quid?: string;
     }
 

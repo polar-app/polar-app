@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import {VersionStr} from "polar-shared/src/util/Version";
 import {HTMLStr, URLStr} from "polar-shared/src/util/Strings";
 import * as semver from 'semver';
@@ -43,7 +42,9 @@ export interface ReleaseMetadata {
      */
     readonly id: VersionStr;
     readonly title: string;
+    // eslint-disable-next-line camelcase
     readonly large_image: URLStr | undefined;
+    // eslint-disable-next-line camelcase
     readonly video_embed: URLStr | undefined;
     readonly release: VersionStr;
     readonly html: HTMLStr;

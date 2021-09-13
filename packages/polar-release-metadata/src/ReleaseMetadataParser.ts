@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import {PathStr} from "polar-shared/src/util/Strings";
 import {Files} from "polar-shared/src/util/Files";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
@@ -38,9 +37,9 @@ export class ReleaseMetadataParser {
             }
 
             const title = Preconditions.assertPresent(getFrontStr('title'), 'title');
-            // tslint:disable-next-line:variable-name
+            // eslint-disable-next-line camelcase
             const video_embed = getFrontStr('video_embed');
-            // tslint:disable-next-line:variable-name
+            // eslint-disable-next-line camelcase
             const large_image = getFrontStr('large_image');
 
 

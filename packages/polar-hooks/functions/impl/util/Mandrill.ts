@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import {Fetches} from "polar-shared/src/util/Fetch";
 
 const KEY = "1wn8QiClhFH5gCrElLqaNQ";
@@ -28,14 +27,14 @@ export class Mandrill {
 
         const url = 'https://mandrillapp.com/api/1.0/messages/send-template.json';
 
-        // tslint:disable-next-line:variable-name
+        // eslint-disable-next-line camelcase
         const global_merge_vars = Object.entries(globalMergeVars).map(entry => {
             return {
                 name: entry[0],
                 content: entry[1]
             };
         });
-
+        // eslint-disable-next-line camelcase
         const body = {
             key: KEY,
             template_name: templateName,
@@ -84,5 +83,6 @@ export type MandrillSendResults = ReadonlyArray<MandrillSendResult>;
 export interface MandrillSendResult {
     readonly email: string;
     readonly status: 'sent' | 'rejected';
+    // eslint-disable-next-line camelcase
     readonly reject_reason: string;
 }

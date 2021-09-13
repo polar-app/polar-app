@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import {ESRequests} from "./ESRequests";
 import {ISibling, Tuples} from "polar-shared/src/util/Tuples";
 import {GCLSentenceSplitter} from "polar-google-cloud-language/src/GCLSentenceSplitter";
@@ -13,6 +12,7 @@ export namespace ESDigester {
     import IElasticResponse = ESRequests.IElasticResponse;
 
     export interface IAttachment {
+        // eslint-disable-next-line camelcase
         readonly content_type: string;
         readonly content: string;
     }
