@@ -13,9 +13,9 @@ export namespace AmplitudeBackendAnalytics {
         return client;
     }
 
-    export function event2(event: string, data?: any, user?: IUser): void {
+    export async function event2(event: string, data?: any, user?: IUser): Promise<void> {
         const standardEventProperties = createStandardEventsProperties();
-        client.logEvent({
+        await client.logEvent({
             event_type: event,
             user_id: user?.uid,
             event_properties: {

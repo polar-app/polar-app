@@ -27,7 +27,7 @@ export class PHZWriter extends AbstractPHZWriter {
      */
     public async close(): Promise<void> {
 
-        super.close();
+        await super.close();
 
         return new Promise((resolve, reject) => {
 

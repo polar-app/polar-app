@@ -111,7 +111,7 @@ function handleError(err: Error) {
 
 }
 
-app.on('ready', async () => {
+app.on('ready', () => {
 
     if (!hasSingleInstanceLock) {
 

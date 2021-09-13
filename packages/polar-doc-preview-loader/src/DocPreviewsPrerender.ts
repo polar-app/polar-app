@@ -11,7 +11,7 @@ export class DocPreviewsPrerender {
 
     public static async load() {
 
-        const firestore = await FirestoreAdmin.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         const rawDocPreviews = await DocPreviewCollection.list(firestore, {size: DEFAULT_LIMIT});
         const docPreviews = Arrays.shuffle(...rawDocPreviews);

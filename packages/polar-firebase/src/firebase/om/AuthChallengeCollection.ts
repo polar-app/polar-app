@@ -29,7 +29,7 @@ export namespace AuthChallengeCollection {
 
         const id = Hashcodes.createID(email);
 
-        const collection = await firestore.collection(COLLECTION_NAME)
+        const collection = firestore.collection(COLLECTION_NAME)
         const ref = collection.doc(id);
 
         const value: IAuthChallenge2 = {
@@ -48,7 +48,7 @@ export namespace AuthChallengeCollection {
 
         const hashcode = Hashcodes.createID(email);
 
-        const collection = await firestore.collection(COLLECTION_NAME)
+        const collection = firestore.collection(COLLECTION_NAME)
         const ref = collection.doc(hashcode);
 
         const snapshot = await ref.get();

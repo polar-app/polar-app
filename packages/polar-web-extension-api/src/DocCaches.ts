@@ -143,7 +143,7 @@ export namespace DocCachesFactory {
                 return undefined;
             }
 
-            const docCacheDescriptor = await getDocCacheDescriptor();
+            const docCacheDescriptor = getDocCacheDescriptor();
 
             if (! docCacheDescriptor) {
                 return undefined;

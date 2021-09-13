@@ -433,7 +433,7 @@ export class Files {
 
                 if (mutex) {
                     // we have to first wait for the current one.
-                    await mutex;
+                    mutex;
                 } else {
                     break;
                 }

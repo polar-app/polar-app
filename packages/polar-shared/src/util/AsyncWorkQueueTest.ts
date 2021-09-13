@@ -113,7 +113,7 @@ describe('AsyncWorkQueue', function() {
         const asyncWorkQueue = new AsyncWorkQueue(work, 2);
         const executionPromise = asyncWorkQueue.execute();
 
-        await waitForExpect(async () => {
+        await waitForExpect(() => {
             assert.equal(asyncWorkQueue.getExecuting(), 2);
         });
 
@@ -121,13 +121,13 @@ describe('AsyncWorkQueue', function() {
 
         latches[0].resolve(true);
 
-        await waitForExpect(async () => {
+        await waitForExpect(() => {
             assert.equal(asyncWorkQueue.getExecuting(), 1);
         });
 
         latches[1].resolve(true);
 
-        await waitForExpect(async () => {
+        await waitForExpect(() => {
             assert.equal(asyncWorkQueue.getExecuting(), 0);
         });
 
@@ -166,7 +166,7 @@ describe('AsyncWorkQueue', function() {
         const asyncWorkQueue = new AsyncWorkQueue(work, 2);
         const executionPromise = asyncWorkQueue.execute();
 
-        await waitForExpect(async () => {
+        await waitForExpect(() => {
             assert.equal(asyncWorkQueue.getExecuting(), 2);
         });
 
@@ -175,7 +175,7 @@ describe('AsyncWorkQueue', function() {
         latches[0].resolve(true);
         latches[1].resolve(true);
 
-        await waitForExpect(async () => {
+        await waitForExpect(() => {
             assert.equal(asyncWorkQueue.getCompleted(), 2);
             assert.equal(asyncWorkQueue.getExecuting(), 1);
         });
@@ -183,7 +183,7 @@ describe('AsyncWorkQueue', function() {
 
         latches[2].resolve(true);
 
-        await waitForExpect(async () => {
+        await waitForExpect(() => {
             assert.equal(asyncWorkQueue.getCompleted(), 3);
             assert.equal(asyncWorkQueue.getExecuting(), 2);
         });
@@ -191,7 +191,7 @@ describe('AsyncWorkQueue', function() {
         latches[3].resolve(true);
         latches[4].resolve(true);
 
-        await waitForExpect(async () => {
+        await waitForExpect(() => {
             assert.equal(asyncWorkQueue.getCompleted(), 5);
             assert.equal(asyncWorkQueue.getExecuting(), 0);
         });
@@ -230,7 +230,7 @@ describe('AsyncWorkQueue', function() {
         const asyncWorkQueue = new AsyncWorkQueue(work, 10);
         const executionPromise = asyncWorkQueue.execute();
 
-        await waitForExpect(async () => {
+        await waitForExpect(() => {
             assert.equal(concurrency, 10);
             assert.equal(asyncWorkQueue.getExecuting(), 10);
         });

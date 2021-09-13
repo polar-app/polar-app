@@ -29,7 +29,7 @@ export class ImportContentAPI {
             };
 
             xrequest.onerror = () => {
-                reject("Request failed to: " + url);
+                reject(new Error("Request failed to: " + url));
             };
 
             xrequest.setRequestHeader("Content-Type", "application/json; charset=utf-8");

@@ -9,7 +9,7 @@ describe('UnpaywallSearchEngine', function() {
         const response: Unpaywall.Response = RESPONSE;
         const res = await UnpaywallSearchEngine.handleResponse(response);
 
-        assertJSON(await res, {
+        assertJSON(res, {
             "entries": [
                 {
                     "authors": [
