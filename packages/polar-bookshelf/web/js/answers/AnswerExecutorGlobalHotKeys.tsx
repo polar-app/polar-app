@@ -15,6 +15,11 @@ import {
 import {IAnswerExecutorRequest} from "polar-answers-api/src/IAnswerExecutorRequest";
 import {IAnswerDigestRecord} from "polar-answers-api/src/IAnswerDigestRecord";
 import {useAnalytics} from "../analytics/Analytics";
+import {IAnswerExecutorTraceUpdate} from "polar-answers-api/src/IAnswerExecutorTraceUpdate";
+import {
+    IAnswerExecutorTraceUpdateError,
+    IAnswerExecutorTraceUpdateResponse
+} from "polar-answers-api/src/IAnswerExecutorTraceUpdateResponse";
 
 const globalKeyMap = keyMapWithGroup({
     group: "Answers",
@@ -174,7 +179,7 @@ function useAnswerExecutorClient() {
 
             const response: IAnswerExecutorResponse | IAnswerExecutorError = await JSONRPC.exec('AnswerExecutor', request);
 
-            analytics.event2('ai-answer-executed', {
+            analytics.event2('ai-answer-executor', {
                 error: answerIsError(response) ? response.error : 'none'
             });
 
@@ -182,7 +187,7 @@ function useAnswerExecutorClient() {
 
         } catch (e) {
 
-            analytics.event2('ai-answer-failed', {
+            analytics.event2('ai-answer-executor-failed', {
                 error: 'exception',
                 message: e.message
             });
@@ -195,6 +200,82 @@ function useAnswerExecutorClient() {
     }, [analytics]);
 
 }
+
+/**
+ * Create a simple RPC binding
+ * @param methodName The RPC to call.
+ * @param toEvent Convert the request to an analytics event
+ */
+function useRPC<REQ, RES, E>(methodName: string,
+                             toEvent: (request: REQ) => Record<string, string | number>) {
+
+    const analytics = useAnalytics();
+
+    return React.useCallback(async (request: REQ) => {
+
+        // TODO: what if we're offline?
+
+        try {
+
+            const response: RES | E = await JSONRPC.exec(methodName, request);
+
+            analytics.event2(methodName, toEvent(request));
+
+            // TODO if an 'E' is returned we do not track it because we don't have a standard
+            // error code right now.
+
+            return response;
+
+        } catch (e) {
+
+            analytics.event2('ai-answer-executor-trace-update-failed', {
+                error: 'exception',
+                message: e.message
+            });
+
+            throw e;
+
+        }
+
+
+    }, [analytics]);
+
+}
+
+function useAnswerExecutorTraceUpdateClient() {
+
+    const analytics = useAnalytics();
+
+    return React.useCallback(async (request: IAnswerExecutorTraceUpdate) => {
+
+        // TODO: what if we're offline?
+
+        try {
+
+            const response: IAnswerExecutorTraceUpdateResponse | IAnswerExecutorTraceUpdateError = await JSONRPC.exec('AnswerExecutorTraceUpdate', request);
+
+            analytics.event2('ai-answer-executor-trace-update', {
+                vote: request.vote
+            });
+
+            return response;
+
+        } catch (e) {
+
+            analytics.event2('ai-answer-executor-trace-update-failed', {
+                error: 'exception',
+                message: e.message
+            });
+
+            throw e;
+
+        }
+
+
+    }, [analytics]);
+
+}
+
 
 const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
 
