@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import RNFS from 'react-native-fs';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, BackHandler, StyleSheet, View} from 'react-native';
 import WebView from 'react-native-webview';
 // @ts-ignore
 import StaticServer from 'react-native-static-server';
@@ -16,6 +16,8 @@ export class InAppLiteServer extends Component<Props, State> {
 
     // A reference to the WebView component, populated after first render
     webview: WebView | undefined = undefined;
+
+    private canGoBack: boolean = false;
 
     constructor(props: any) {
         super(props);
@@ -35,6 +37,17 @@ export class InAppLiteServer extends Component<Props, State> {
     }
 
     componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', () => {
+            if (this.canGoBack) {
+                alert('can go back');
+                console.log('haswebview', this.webview);
+                this.webview?.injectJavaScript('window.history.back()');
+                return true;
+            }
+            alert('can not go back');
+            return false;
+        });
+
         if (!useEmbeddedServer) {
             return;
         }
@@ -112,6 +125,10 @@ export class InAppLiteServer extends Component<Props, State> {
                     default:
                         throw Error('Switch case not implemented: ' + dataPayload.action);
                 }
+            }}
+            onNavigationStateChange={(navState) => {
+                console.log('navState', navState);
+                this.canGoBack = navState.canGoBack;
             }}
         />;
     }
