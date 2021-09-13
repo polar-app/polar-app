@@ -3,7 +3,7 @@ import {GlobalKeyboardShortcuts, keyMapWithGroup} from '../keyboard_shortcuts/Gl
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import {MUIDialog} from '../ui/dialogs/MUIDialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {Box, DialogContent, LinearProgress, Tab, Tabs, TextField, Typography} from "@material-ui/core";
+import {Box, DialogContent, LinearProgress, TextField, Typography} from "@material-ui/core";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
 import {FeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {Arrays} from 'polar-shared/src/util/Arrays';
@@ -131,37 +131,34 @@ const AnswerResponse = (props: AnswerResponseProps) => {
 
     return (
         <>
-
-            <Tabs indicatorColor="primary"
-                  textColor="primary"
-                  centered
-                  value={tabIndex}
-                  onChange={handleChange}>
-                <Tab label="Answer"/>
-                <Tab label="Context" />
-            </Tabs>
-
             <div style={{overflow: 'auto'}}>
-                <TabPanel index={0} tabIndex={tabIndex}>
-                    <>
-                        {props.answerResponse.answers.length > 0 && (
-                            <p style={{
-                                fontSize: '2.0rem',
-                                overflow: 'auto'
-                            }}>
 
-                                {Arrays.first(props.answerResponse.answers)}
+                <Box mt={1} mb={1} color="text.secondary">
+                    <Typography variant="h6">
+                        Answer:
+                    </Typography>
+                </Box>
 
-                            </p>)}
-                    </>
-                </TabPanel>
-                <TabPanel index={1} tabIndex={tabIndex}>
-                    <>
-                        {[...props.answerResponse.selected_documents].sort((a,b) => b.score - a.score)
-                                                                     .map((current, idx) => (
-                            <SelectedDocument key={idx} doc={current}/>))}
-                    </>
-                </TabPanel>
+                {props.answerResponse.answers.length > 0 && (
+                    <p style={{
+                        fontSize: '2.0rem',
+                        overflow: 'auto'
+                    }}>
+
+                        {Arrays.first(props.answerResponse.answers)}
+
+                    </p>)}
+
+                <Box mt={1} mb={1} color="text.secondary">
+                    <Typography variant="h6">
+                        Relevant text extracts:
+                    </Typography>
+                </Box>
+
+                {[...props.answerResponse.selected_documents].sort((a,b) => b.score - a.score)
+                    .map((current, idx) => (
+                        <SelectedDocument key={idx} doc={current}/>))}
+
             </div>
 
         </>
