@@ -307,7 +307,8 @@ export namespace AnswerExecutor {
         if (primaryAnswer === NO_ANSWER_CODE) {
 
             return {
-                error: 'no-answer'
+                error: true,
+                code: 'no-answer'
             }
 
         }

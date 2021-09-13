@@ -22,8 +22,10 @@ export interface IAnswerExecutorTraceMinimal extends IAnswerExecutorRequest {
 
     readonly docIDs: ReadonlyArray<IDStr>;
 
+    // eslint-disable-next-line camelcase
     readonly elasticsearch_indexes: ReadonlyArray<string>;
 
+    // eslint-disable-next-line camelcase
     readonly elasticsearch_hits: number;
 
     // eslint-disable-next-line camelcase
