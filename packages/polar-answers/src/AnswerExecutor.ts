@@ -352,7 +352,7 @@ export namespace AnswerExecutor {
 
         }
 
-        // await doTrace();
+        await doTrace();
 
         return {
             id,
