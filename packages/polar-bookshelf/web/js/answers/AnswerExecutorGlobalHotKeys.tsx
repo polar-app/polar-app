@@ -174,8 +174,8 @@ const AnswerResponse = (props: AnswerResponseProps) => {
  * @param methodName The RPC to call.
  * @param toEvent Convert the request to an analytics event
  */
-function useRPC<REQ, RES, E extends IRPCError>(methodName: string,
-                                               toEvent: (request: REQ) => Record<string, string | number>) {
+function useRPC<REQ, RES, E extends IRPCError<string>>(methodName: string,
+                                                                toEvent: (request: REQ) => Record<string, string | number>) {
 
     const analytics = useAnalytics();
 
