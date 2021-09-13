@@ -15,6 +15,7 @@ export interface IPasteHandlerOpts {
     readonly onPasteBlocks: (blocks: ReadonlyArray<IBlockContentStructure>) => void; 
     readonly onPasteError: (err: Error) => void;
     readonly onPasteHTML: (html: HTMLStr) => void;
+    readonly onPasteText: (text: string) => void;
     readonly id: BlockIDStr;
 }
 
@@ -38,6 +39,11 @@ interface IPasteItemForHTML {
     readonly dataTransferItem: DataTransferItem;
 }
 
+interface IPasteItemForText {
+    readonly kind: 'text';
+    readonly dataTransferItem: DataTransferItem;
+}
+
 interface IPasteItemForUnknown {
     readonly kind: 'unknown';
     readonly type: string;
@@ -52,6 +58,7 @@ export type PasteItem =
     IPasteItemForImage |
     IPasteItemForHTML |
     IPasteItemForPolarBlocks |
+    IPasteItemForText |
     IPasteItemForUnknown;
 
 function toPasteItem(item: DataTransferItem): PasteItem {
@@ -72,6 +79,12 @@ function toPasteItem(item: DataTransferItem): PasteItem {
         case 'text/html':
             return {
                 kind: 'html',
+                dataTransferItem: item,
+            };
+
+        case 'text/plain':
+            return {
+                kind: 'text',
                 dataTransferItem: item,
             };
 
@@ -125,7 +138,7 @@ const executePasteHandlers = async (
  */
 export function usePasteHandler(opts: IPasteHandlerOpts) {
 
-    const { onPasteImage, onPasteBlocks, onPasteError, onPasteHTML, id } = opts;
+    const { onPasteImage, onPasteBlocks, onPasteError, onPasteText, onPasteHTML, id } = opts;
     const uploadHandler = useUploadHandler();
 
     return React.useCallback((event: React.ClipboardEvent) => {
@@ -190,8 +203,20 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
             }
         }
 
+        async function extractText() {
+            const pasteItem = getPasteItem(pasteItems, 'text');
+
+            if (pasteItem) {
+                const getString = (): Promise<string> => new Promise((resolve) => (
+                    pasteItem.dataTransferItem.getAsString(resolve)
+                ));
+
+                onPasteText(await getString());
+            }
+        }
+
         const canBeHandled = pasteItems
-            .some(item => ~['html', 'image', 'polarblocks'].indexOf(item.kind));
+            .some(item => ~['html', 'image', 'polarblocks', 'text'].indexOf(item.kind));
 
         if (canBeHandled) {
             event.preventDefault();
@@ -201,6 +226,7 @@ export function usePasteHandler(opts: IPasteHandlerOpts) {
                     {type: 'polarblocks', handler: extractPolarBlocks},
                     {type: 'image', handler: extractImage},
                     {type: 'html', handler: extractHTML},
+                    {type: 'text', handler: extractText},
                 ],
                 onPasteError,
             ).catch(e => console.log(e));

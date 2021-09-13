@@ -1,13 +1,13 @@
 import React from "react";
 import {useBlocksTreeStore} from "./BlocksTree";
-import {BlockIDStr} from "../../../../polar-app-public/polar-blocks/src/blocks/IBlock";
+import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {ImageContent} from "./content/ImageContent";
 import {UploadedFile, useUploadHandler} from "./UploadHandler";
 
 const getBlockContent = (uploadedFile: UploadedFile) => {
     const {type, url} = uploadedFile;
     switch (type) {
-        case 'image': 
+        case 'image':
             const {width, height} = uploadedFile;
             return new ImageContent({
                 type: 'image',
@@ -48,7 +48,7 @@ export const useDragDropHandler = ({ id, isRoot }: IUseDragDropHandlerOpts) => {
         return 'bottom';
 
     }, [isRoot]);
-    
+
     const onDragStart = React.useCallback((event: React.DragEvent) => {
         blocksTreeStore.setDropSource(id);
     }, [id, blocksTreeStore]);
@@ -122,7 +122,7 @@ export const useDragDropHandler = ({ id, isRoot }: IUseDragDropHandlerOpts) => {
                 blocksTreeStore.createNewBlock(target, { content: getBlockContent(upload), asChild });
             }
         };
-        
+
         for (const file of Array.from(files)) {
             uploadHandler({ file, target: dropTarget })
                 .then(handleUploadedFile)

@@ -1,3 +1,0 @@
-[submodule "packages/pdf.js/test/ttx/fonttools-code"]
-	path = packages/pdf.js/test/ttx/fonttools-code
-	url = https://github.com/behdad/fonttools.git

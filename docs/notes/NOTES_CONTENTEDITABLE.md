@@ -50,22 +50,3 @@ What we're currently doing as a solution to this issue is that right before sett
 1. Save the *current position* of the *cursor*.
 2. Update the block's content by setting `innerHTML`.
 3. *Restore* the old *position* of the *cursor* that we *saved* earlier.
-
-**Issues**
-
-One issue is that we currently have with this is that the cursor freaks out when dealing with circular references in notes.
-
-To create a circular reference you can insert a link in a child block that references the parent (check screenshot below).
-
-![](./assets/notes-circular-reference.png)
-
-What happens here is that when we try to change the content of a block that is shown in 2 different places,
-we have to update the content of the same block in the second place, which means we have to set `innerHTML` on the second one which also means that we have to save/restore the position of the cursor.
-
-So you end up with a cursor that keeps alternating between 2 different `contenteditable` divs.
-
-Two possible solutions to this.
-1. Find a way to differentiate between updates coming from our store and updates coming from somewhere else (through collaboration).
-    - If an update is coming from our store we don't save/restore our cursor position.
-    - If an update is coming from somewhere else we have to save/restore our cursor position.
-2. Save a reference to the *DOM elements* of blocks inside of `BlocksStore.active` so that when we want to focus a block we check if the *DOM elements* match (the one in the component that renders the block vs the one coming from `BlocksStore.active`) and only update the cursor if they match.

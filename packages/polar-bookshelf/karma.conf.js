@@ -22,6 +22,19 @@ module.exports = (config) => {
         // browsers: ['Chrome'],
         browsers: ['ChromeHeadless'],
 
+        customHeaders: [
+            {
+                match: '.*',
+                name: 'Cross-Origin-Opener-Policy',
+                value: 'same-origin'
+            },
+            {
+                match: '.*',
+                name: 'Cross-Origin-Embedder-Policy',
+                value: 'require-corp',
+            }
+        ],
+
         // make sure to include webpack as a framework
         frameworks: ['mocha', 'webpack'],
 

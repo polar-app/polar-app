@@ -1,8 +1,8 @@
 import {URLStr} from "page-metadata-parser";
 import React from "react";
-import {Backend} from "../../../../polar-app-public/polar-shared/src/datastore/Backend";
-import {Visibility} from "../../../../polar-app-public/polar-shared/src/datastore/Visibility";
-import {Images} from "../../../../polar-app-public/polar-shared/src/util/Images";
+import {Backend} from "polar-shared/src/datastore/Backend";
+import {Visibility} from "polar-shared/src/datastore/Visibility";
+import {Images} from "polar-shared/src/util/Images";
 import {WriteController, WriteFileProgress} from "../datastore/Datastore";
 import {ProgressTrackerManager, useFirebaseCloudStorage} from "../datastore/FirebaseCloudStorage";
 import {useBlocksTreeStore} from "./BlocksTree";
@@ -83,7 +83,7 @@ export const useUploadHandler = (): (opts: IUseUploadHandlerOpts) => Promise<Upl
         }
 
         const progressTracker = new ProgressTrackerManager<WriteFileProgress>();
-            
+
         const cleanup = () => {
             if (['image'].indexOf(uploadFile.type) > -1) {
                 URL.revokeObjectURL(uploadFile.blobURL);

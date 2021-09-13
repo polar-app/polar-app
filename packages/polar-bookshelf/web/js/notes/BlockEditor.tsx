@@ -76,7 +76,7 @@ const useBlockContentUpdater = ({ id }: IUseBlockContentUpdaterOpts) => {
         if (content.type === 'name') {
             handleRename(content, data);
         } else if (content.type !== AnnotationContentType.FLASHCARD) {
-            const newContent = BlockTextContentUtils.updateTextContentMarkdown(content, data)
+            const newContent = BlockTextContentUtils.updateTextContentMarkdown(content, data);
             blocksTreeStore.setBlockContent(block.id, newContent);
         }
     }, [id, handleRename, blocksTreeStore]);
