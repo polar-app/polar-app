@@ -168,39 +168,6 @@ const AnswerResponse = (props: AnswerResponseProps) => {
     );
 }
 
-function useAnswerExecutorClient() {
-
-    const analytics = useAnalytics();
-
-    return React.useCallback(async (request: IAnswerExecutorRequest) => {
-
-        // TODO: what if we're offline?
-
-        try {
-
-            const response: IAnswerExecutorResponse | IAnswerExecutorError = await JSONRPC.exec('AnswerExecutor', request);
-
-            analytics.event2('ai-answer-executor', {
-                error: answerIsError(response) ? response.error : 'none'
-            });
-
-            return response;
-
-        } catch (e) {
-
-            analytics.event2('ai-answer-executor-failed', {
-                error: 'exception',
-                message: e.message
-            });
-
-            throw e;
-
-        }
-
-
-    }, [analytics]);
-
-}
 
 /**
  * Create a simple RPC binding
@@ -256,38 +223,19 @@ function useRPC<REQ, RES, E extends IRPCError>(methodName: string,
 
 function useAnswerExecutorTraceUpdateClient() {
 
-    const analytics = useAnalytics();
-
-    return React.useCallback(async (request: IAnswerExecutorTraceUpdate) => {
-
-        // TODO: what if we're offline?
-
-        try {
-
-            const response: IAnswerExecutorTraceUpdateResponse | IAnswerExecutorTraceUpdateError = await JSONRPC.exec('AnswerExecutorTraceUpdate', request);
-
-            analytics.event2('ai-answer-executor-trace-update', {
-                vote: request.vote
-            });
-
-            return response;
-
-        } catch (e) {
-
-            analytics.event2('ai-answer-executor-trace-update-failed', {
-                error: 'exception',
-                message: e.message
-            });
-
-            throw e;
-
-        }
-
-
-    }, [analytics]);
+    return useRPC<IAnswerExecutorTraceUpdate, IAnswerExecutorTraceUpdateResponse, IAnswerExecutorTraceUpdateError>('AnswerExecutorTraceUpdate', (req) => ({
+        vote: req.vote
+    }));
 
 }
 
+
+function useAnswerExecutorClient() {
+
+    return useRPC<IAnswerExecutorRequest, IAnswerExecutorResponse, IAnswerExecutorError>('AnswerExecutor', (req) => ({
+    }));
+
+}
 
 const AnswerExecutorDialog = (props: IAnswerExecutorDialogProps) => {
 
