@@ -18,9 +18,10 @@ import {Stopwords} from "polar-shared/src/util/Stopwords";
 import {IOpenAIAnswersRequest, QuestionAnswerPair} from "polar-answers-api/src/IOpenAIAnswersRequest";
 import {IElasticsearchQuery} from "polar-answers-api/src/IElasticsearchQuery";
 import {arrayStream} from "polar-shared/src/util/ArrayStreams";
-import {IAnswerExecutorTrace} from "polar-answers-api/src/IAnswerExecutorTrace";
+import {IAnswerExecutorTraceMinimal} from "polar-answers-api/src/IAnswerExecutorTrace";
 import {AnswerExecutorTraceCollection} from "../../polar-firebase/src/firebase/om/AnswerExecutorTraceCollection";
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
+import {AnswerExecutorTracer} from "./AnswerExecutorTracer";
 
 const MAX_DOCUMENTS = 200;
 export namespace AnswerExecutor {
@@ -104,7 +105,13 @@ export namespace AnswerExecutor {
             readonly elasticsearch_duration: number;
 
             // eslint-disable-next-line camelcase
+            readonly elasticsearch_indexes: ReadonlyArray<string>;
+
+            // eslint-disable-next-line camelcase
             readonly elasticsearch_url: string;
+
+            // eslint-disable-next-line camelcase
+            readonly elasticsearch_hits: number;
 
             /**
              * The resulting records.
@@ -225,6 +232,8 @@ export namespace AnswerExecutor {
                     elasticsearch_query,
                     elasticsearch_records,
                     elasticsearch_duration,
+                    elasticsearch_hits: elasticsearch_records.length,
+                    elasticsearch_indexes: [index],
                     elasticsearch_url,
                     openai_reranked_records,
                     openai_reranked_duration,
@@ -240,6 +249,8 @@ export namespace AnswerExecutor {
                     elasticsearch_query,
                     elasticsearch_records,
                     elasticsearch_duration,
+                    elasticsearch_hits: elasticsearch_records.length,
+                    elasticsearch_indexes: [index],
                     elasticsearch_url,
                     openai_reranked_records: undefined,
                     openai_reranked_duration: undefined,
@@ -323,15 +334,17 @@ export namespace AnswerExecutor {
 
             const firestore = FirestoreAdmin.getInstance();
 
-            const trace: IAnswerExecutorTrace = {
+            const trace: IAnswerExecutorTraceMinimal = {
                 id,
-                type: 'trace',
+                type: 'trace-minimal',
                 ...request,
                 elasticsearch_query: computedDocuments.elasticsearch_query,
                 elasticsearch_url: computedDocuments.elasticsearch_url,
-                elasticsearch_records: computedDocuments.elasticsearch_records,
+                elasticsearch_indexes: computedDocuments.elasticsearch_indexes,
+                elasticsearch_hits: computedDocuments.elasticsearch_hits,
                 openai_answers_request: openai_answers_request,
                 openai_answers_response: openai_answers_response,
+                docIDs: AnswerExecutorTracer.computeUniqueDocIDs(computedDocuments.elasticsearch_records),
                 timings
             }
 
@@ -339,7 +352,7 @@ export namespace AnswerExecutor {
 
         }
 
-        // await doTrace();
+        await doTrace();
 
         return {
             id,
