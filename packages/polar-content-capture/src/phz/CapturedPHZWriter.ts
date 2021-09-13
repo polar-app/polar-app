@@ -28,7 +28,7 @@ export class CapturedPHZWriter {
 
         // now work with each resource
 
-        await forOwnKeys(captured.capturedDocuments, async (url: string, capturedDocument: CapturedDoc) => {
+        await forOwnKeys(captured.capturedDocuments,(url: string, capturedDocument: CapturedDoc): void => {
 
             const contentType =
                 Optional.of(capturedDocument.contentType)
@@ -38,7 +38,7 @@ export class CapturedPHZWriter {
             resource.title = capturedDocument.title;
             resource.docTypeFormat = capturedDocument.docTypeFormat;
 
-            await phzWriter.writeResource(resource, capturedDocument.content, capturedDocument.url);
+            phzWriter.writeResource(resource, capturedDocument.content, capturedDocument.url).catch(e=>console.log(e));
 
         });
 
