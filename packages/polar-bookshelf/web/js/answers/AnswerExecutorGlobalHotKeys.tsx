@@ -133,31 +133,38 @@ const AnswerResponse = (props: AnswerResponseProps) => {
         <>
             <div style={{overflow: 'auto'}}>
 
-                <Box mt={1} mb={1} color="text.secondary">
-                    <Typography variant="h6">
-                        Answer:
-                    </Typography>
-                </Box>
-
                 {props.answerResponse.answers.length > 0 && (
-                    <p style={{
-                        fontSize: '2.0rem',
-                        overflow: 'auto'
-                    }}>
+                    <>
 
-                        {Arrays.first(props.answerResponse.answers)}
+                        <Box mt={1} mb={1} color="text.secondary">
+                            <Typography variant="h6">
+                                Answer:
+                            </Typography>
+                        </Box>
 
-                    </p>)}
+                        <p style={{
+                            fontSize: '2.0rem',
+                            overflow: 'auto'
+                        }}>
 
-                <Box mt={1} mb={1} color="text.secondary">
-                    <Typography variant="h6">
-                        Relevant text extracts:
-                    </Typography>
-                </Box>
+                            {Arrays.first(props.answerResponse.answers)}
 
-                {[...props.answerResponse.selected_documents].sort((a,b) => b.score - a.score)
-                    .map((current, idx) => (
-                        <SelectedDocument key={idx} doc={current}/>))}
+                        </p>
+                    </>)}
+
+                {props.answerResponse.selected_documents.length > 0 && (
+                    <>
+                        <Box mt={1} mb={1} color="text.secondary">
+                            <Typography variant="h6">
+                                Relevant text extracts:
+                            </Typography>
+                        </Box>
+
+                        {[...props.answerResponse.selected_documents].sort((a,b) => b.score - a.score)
+                            .map((current, idx) => (
+                                <SelectedDocument key={idx} doc={current}/>))}
+
+                    </>)}
 
             </div>
 
