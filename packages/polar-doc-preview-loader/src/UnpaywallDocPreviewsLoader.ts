@@ -137,7 +137,7 @@ export class UnpaywallDocPreviewsLoader {
 
         let processed: number = 0;
 
-        const firestore = await FirestoreAdmin.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         for (const docPreview of docPreviews) {
 

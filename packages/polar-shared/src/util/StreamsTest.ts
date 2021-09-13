@@ -23,13 +23,13 @@ describe('StreamsTest', function() {
         const stat = await Files.statAsync(path);
         assert.equal(stat.size, len);
 
-        const stream = await Files.createReadStream(path);
+        const stream = Files.createReadStream(path);
 
         const init = {id: 'test', total: stat.size};
 
         const callbacks: number[] = [];
 
-        const progressStream = await Streams.toProgressStream(stream, init, (progress) => {
+        const progressStream = Streams.toProgressStream(stream, init, (progress) => {
             console.log("completed: ", progress.completed);
             callbacks.push(progress.completed);
         });

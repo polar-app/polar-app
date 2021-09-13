@@ -45,9 +45,10 @@ class DesktopAppPinger {
             this.state = 'inactive';
         } finally {
             // now continually ping in the background
-            setTimeout(() => this.update(), DesktopAppPinger.UPDATE_TIMEOUT);
+            setTimeout(() => {this.update().catch((error: Error) => {
+                console.error(error);
+              })}, DesktopAppPinger.UPDATE_TIMEOUT);
         }
-
     }
 
     /**

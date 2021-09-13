@@ -104,7 +104,7 @@ export namespace StripeWebhooks {
 
             await doSendNotifications();
 
-        } catch (e) {
+        } catch (e: any) {
             const msg = "Could not send notifications: ";
             console.error(msg, e);
 
@@ -160,7 +160,7 @@ export namespace StripeWebhooks {
                 from_plan_interval: from.interval,
                 to_plan_level: to.plan.level,
                 to_plan_interval: to.interval
-            }, user);
+            }, user).catch(e=>{console.log(e)});
 
         }
 
@@ -168,7 +168,7 @@ export namespace StripeWebhooks {
 
             await doSendAnalytics();
 
-        } catch (e) {
+        } catch (e: any) {
             const msg = "Could not send notifications: ";
             console.error(msg, e);
 

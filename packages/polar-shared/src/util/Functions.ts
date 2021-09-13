@@ -93,7 +93,7 @@ export class Functions {
 
             if (dict.hasOwnProperty(key)) {
                 const value = dict[key];
-                await callback(key, value);
+                callback(key, value);
             }
 
         }

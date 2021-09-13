@@ -8,7 +8,7 @@ xdescribe('DocPreviewSitemapFunction', function() {
 
         FirebaseAdmin.app();
 
-        const firestore = await FirestoreAdmin.getInstance();
+        const firestore = FirestoreAdmin.getInstance();
 
         const docPreviews = await DocPreviewCollection.list(firestore, {size: 50000});
 
