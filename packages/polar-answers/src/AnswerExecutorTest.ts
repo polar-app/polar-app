@@ -5,7 +5,7 @@ import {Arrays} from "polar-shared/src/util/Arrays";
 import {Mappers} from "polar-shared/src/util/Mapper";
 import {IAnswerExecutorError} from "polar-answers-api/src/IAnswerExecutorResponse";
 
-xdescribe("AnswerExecutor", function () {
+describe("AnswerExecutor", function () {
 
     this.timeout(600000);
 
