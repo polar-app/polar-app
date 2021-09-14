@@ -24,19 +24,19 @@ export namespace GCLAnalyzeSyntax {
 
     }
 
-    export type PartOfSpeechTag = 'NOUN' | 'VERB';
+    export type PartOfSpeechTag = 'NOUN' | 'VERB' | 'ADJ';
 
     export interface IText {
         readonly content: string;
         readonly beginOffset: number;
     }
 
-    export async function extractPOS(content: string, pos: PartOfSpeechTag): Promise<ReadonlyArray<IText>> {
+    export async function extractPOS(content: string, pos: ReadonlyArray<PartOfSpeechTag>): Promise<ReadonlyArray<IText>> {
 
         const analysis = await analyzeSyntax(content);
 
         return arrayStream((analysis.tokens || []))
-            .filter(current => current.partOfSpeech?.tag === pos)
+            .filter(current => [...pos as ReadonlyArray<string>].includes(current.partOfSpeech?.tag as string))
             .filter(current => isPresent(current.text) && isPresent(current.text?.content))
             .map((current): IText => {
                 return {

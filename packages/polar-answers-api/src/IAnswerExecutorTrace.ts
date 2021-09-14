@@ -5,10 +5,13 @@ import {IAnswerDigestRecord} from "./IAnswerDigestRecord";
 import {IOpenAIAnswersRequest} from "./IOpenAIAnswersRequest";
 import {IElasticsearchQuery} from "./IElasticsearchQuery";
 import {IAnswerExecutorTimings} from "./IAnswerExecutorResponse";
+import {ISODateTimeString} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 export interface IAnswerExecutorTraceMinimal extends IAnswerExecutorRequest {
 
     readonly id: IDStr;
+
+    readonly created: ISODateTimeString;
 
     readonly type: 'trace-minimal';
 
@@ -39,18 +42,20 @@ export interface IAnswerExecutorTraceMinimal extends IAnswerExecutorRequest {
     /**
      * The users vote on the answer...
      */
-    readonly vote?: 'up' | 'down';
+    readonly vote: 'up' | 'down' | undefined;
 
     /**
      * When a user votes, this is just a free-form string explanation of what
      * they think the issue was.
      */
-    readonly expectation?: string;
+    readonly expectation: string | undefined;
 
 }
 export interface IAnswerExecutorTraceExtended extends IAnswerExecutorRequest {
 
     readonly id: IDStr;
+
+    readonly created: ISODateTimeString;
 
     readonly type: 'trace-extended';
 
@@ -79,13 +84,13 @@ export interface IAnswerExecutorTraceExtended extends IAnswerExecutorRequest {
     /**
      * The users vote on the answer...
      */
-    readonly vote?: 'up' | 'down';
+    readonly vote: 'up' | 'down' | undefined;
 
     /**
      * When a user votes, this is just a free-form string explanation of what
      * they think the issue was.
      */
-    readonly expectation?: string;
+    readonly expectation: string | undefined;
 
 }
 

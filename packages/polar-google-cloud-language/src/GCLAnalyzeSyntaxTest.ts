@@ -2,6 +2,17 @@ import {GCLAnalyzeSyntax} from "./GCLAnalyzeSyntax";
 import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe("GCLAnalyzeSyntax", function() {
+
+    it("highest", async function() {
+        const analysis = await GCLAnalyzeSyntax.analyzeSyntax("What is the highest mountain on mars?");
+        console.log(JSON.stringify(analysis, null, '  '));
+    });
+
+    it("fastest", async function() {
+        const analysis = await GCLAnalyzeSyntax.analyzeSyntax("Who is the fastest runner on earth?");
+        console.log(JSON.stringify(analysis, null, '  '));
+    });
+
     it("basic", async function() {
 
         const analysis = await GCLAnalyzeSyntax.analyzeSyntax("Barack Obama was a US President");
@@ -176,7 +187,7 @@ describe("GCLAnalyzeSyntax", function() {
 
     it("extractPOS", async function() {
 
-        const analysis = await GCLAnalyzeSyntax.extractPOS("Barack Obama was a US President", 'NOUN');
+        const analysis = await GCLAnalyzeSyntax.extractPOS("Barack Obama was a US President", ['NOUN']);
         console.log(JSON.stringify(analysis, null, '  '));
 
         assertJSON(JSON.stringify(analysis, null, '  '), [
