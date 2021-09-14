@@ -30,7 +30,8 @@ describe("AnswerExecutor", function () {
             uid,
             question,
             model: 'ada',
-            search_model: 'ada'
+            search_model: 'ada',
+            documents_limit: 1
         });
 
         function isError(value: any): value is IAnswerExecutorError {
