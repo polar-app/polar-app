@@ -30,7 +30,7 @@ xdescribe("AnswerExecutor", function () {
         const response = await AnswerExecutor.exec({
             uid,
             question,
-            rerank_elasticsearch: true,
+            // rerank_elasticsearch: true,
             filter_stopwords: true
         });
 

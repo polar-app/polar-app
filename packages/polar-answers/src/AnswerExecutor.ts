@@ -241,8 +241,10 @@ export namespace AnswerExecutor {
                 };
 
             } else {
-                // the array of digest records so that we can map from the
-                // selected_documents AFTER the request is executed.
+
+                const records = arrayStream(elasticsearch_records)
+                    .head(MAX_DOCUMENTS)
+                    .collect();
 
                 // eslint-disable-next-line camelcase
                 return <ESDocumentResultsWithoutRerank> {
