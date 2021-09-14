@@ -55,7 +55,7 @@ import {Initializers} from './Initializers';
 import {DocumentRoutes} from './DocumentRoutes';
 import {EnableFeatureToggle} from "./EnableFeatureToggle";
 import {SideNav, useSidenavWidth} from '../../sidenav/SideNav';
-import {BottomNav} from "../bottomNav/BottomNav";
+import {MUIBottomNavigation} from "../../mui/MUIBottomNavigation";
 import {DocRepoScreen2} from '../../../../apps/repository/js/doc_repo/DocRepoScreen2';
 import {DocRepoSidebarTagStore} from '../../../../apps/repository/js/doc_repo/DocRepoSidebarTagStore';
 import {Devices} from 'polar-shared/src/util/Devices';
@@ -337,7 +337,7 @@ export const RepositoryApp = React.memo(function RepositoryApp(props: IProps) {
                                 <SideNav />
                             </DeviceRouters.Desktop>                             
                             <DeviceRouters.NotDesktop>
-                                <BottomNav/>   
+                                <MUIBottomNavigation/>   
                             </DeviceRouters.NotDesktop>           
                             <Intercom />
 
