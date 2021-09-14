@@ -3,7 +3,7 @@ import {GlobalKeyboardShortcuts, keyMapWithGroup} from '../keyboard_shortcuts/Gl
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import {MUIDialog} from '../ui/dialogs/MUIDialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {Box, DialogContent, IconButton, LinearProgress, TextField, Typography} from "@material-ui/core";
+import {Box, DialogContent, LinearProgress, TextField, Typography} from "@material-ui/core";
 import {JSONRPC} from "../datastore/sharing/rpc/JSONRPC";
 import {FeatureToggle} from "../../../apps/repository/js/persistence_layer/PrefsContext2";
 import {Arrays} from 'polar-shared/src/util/Arrays';
@@ -23,6 +23,8 @@ import {
 import {IRPCError} from "polar-shared/src/util/IRPCError";
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import {MUILoadingIconButton} from "../mui/MUILoadingIconButton";
+import {useDialogManager} from "../mui/dialogs/MUIDialogControllers";
 
 const globalKeyMap = keyMapWithGroup({
     group: "Answers",
@@ -115,27 +117,53 @@ interface AnswerFeedbackProps {
 
 const AnswerFeedback = (props: AnswerFeedbackProps) => {
 
+    const answerExecutorTraceUpdateClient = useAnswerExecutorTraceUpdateClient();
+
+    const [voted, setVoted] = React.useState(false);
+
+    const doVote = React.useCallback(async (vote: 'up' | 'down') => {
+
+        await answerExecutorTraceUpdateClient({id: props.id, vote, expectation: ''})
+
+        setVoted(true);
+
+    }, [answerExecutorTraceUpdateClient]);
+
+    const handleDone = React.useCallback(() => {
+        setVoted(true);
+    }, [doVote]);
+
+    const handleError = React.useCallback((err: Error) => {
+        console.error("Unable to handle vote: ", err);
+    }, [doVote]);
+
     return (
-        <Box style={{
+        <Box color="text.secondary"
+             style={{
                  display: 'flex',
-                 alignItems: 'flex-end'
+                 justifyContent: 'flex-end'
              }}>
-            <IconButton>
-                <ThumbUpIcon/>
-            </IconButton>
-            <IconButton>
-                <ThumbDownIcon/>
-            </IconButton>
+
+            <MUILoadingIconButton disabled={voted}
+                                  icon={<ThumbUpIcon/>}
+                                  onDone={handleDone}
+                                  onError={handleError}
+                                  onClick={async () => doVote('up')}/>
+
+            <MUILoadingIconButton disabled={voted}
+                                  icon={<ThumbDownIcon/>}
+                                  onDone={handleDone}
+                                  onError={handleError}
+                                  onClick={async () => doVote('down')}/>
+
         </Box>
-    )
+    );
 
 }
-
 
 interface AnswerResponseProps {
     readonly answerResponse: IAnswerExecutorResponse | IAnswerExecutorError;
 }
-
 
 const AnswerResponse = (props: AnswerResponseProps) => {
 
@@ -205,6 +233,7 @@ function useRPC<REQ, RES, E extends IRPCError<string>>(methodName: string,
                                                                 toEvent: (request: REQ) => Record<string, string | number>) {
 
     const analytics = useAnalytics();
+    const dialogManager = useDialogManager();
 
     return React.useCallback(async (request: REQ) => {
 
@@ -223,6 +252,11 @@ function useRPC<REQ, RES, E extends IRPCError<string>>(methodName: string,
                 analytics.event2(methodName, {
                     error: true,
                     code: response.code
+                });
+
+                dialogManager.snackbar({
+                    type: 'error',
+                    message: `The request failed: ${(response as any).message || response.code}`
                 });
 
             } else {
