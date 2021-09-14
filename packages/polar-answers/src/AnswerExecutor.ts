@@ -23,6 +23,7 @@ import {AnswerExecutorTraceCollection} from "../../polar-firebase/src/firebase/o
 import {FirestoreAdmin} from "polar-firebase-admin/src/FirestoreAdmin";
 import {AnswerExecutorTracer} from "./AnswerExecutorTracer";
 import {GCLAnalyzeSyntax} from "polar-google-cloud-language/src/GCLAnalyzeSyntax";
+import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
 
 const MAX_DOCUMENTS = 200;
 const DEFAULT_FILTER_QUESTION = true;
@@ -354,6 +355,7 @@ export namespace AnswerExecutor {
 
             const trace: IAnswerExecutorTraceMinimal = {
                 id,
+                created: ISODateTimeStrings.create(),
                 type: 'trace-minimal',
                 ...request,
                 elasticsearch_query: computedDocuments.elasticsearch_query,
@@ -363,7 +365,9 @@ export namespace AnswerExecutor {
                 openai_answers_request: openai_answers_request,
                 openai_answers_response: openai_answers_response,
                 docIDs: AnswerExecutorTracer.computeUniqueDocIDs(computedDocuments.elasticsearch_records),
-                timings
+                timings,
+                vote: undefined,
+                expectation: undefined
             }
 
             await AnswerExecutorTraceCollection.set(firestore, id, trace);

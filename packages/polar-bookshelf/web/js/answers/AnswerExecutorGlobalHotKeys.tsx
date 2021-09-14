@@ -285,7 +285,7 @@ function useRPC<REQ, RES, E extends IRPCError<string>>(methodName: string,
 function useAnswerExecutorTraceUpdateClient() {
 
     return useRPC<IAnswerExecutorTraceUpdate, IAnswerExecutorTraceUpdateResponse, IAnswerExecutorTraceUpdateError>('AnswerExecutorTraceUpdate', (req) => ({
-        vote: req.vote
+        vote: req.vote!
     }));
 
 }

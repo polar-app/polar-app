@@ -12,16 +12,19 @@ export namespace AnswerExecutorTraceCollection {
 
     const COLLECTION_NAME = 'answer_executor_trace';
 
-    interface IRecordHolder {
-        readonly id: IDStr;
+    interface IRecordHolder extends Required<Pick<IAnswerExecutorTrace, 'id' | 'vote' | 'created' | 'type' | 'timings' | 'uid'>> {
         readonly data: JSONStr;
     }
-
 
     function createRecord(trace: IAnswerExecutorTrace) {
 
         const record: IRecordHolder = {
             id: trace.id,
+            vote: trace.vote,
+            created: trace.created,
+            type: trace.type,
+            timings: trace.timings,
+            uid: trace.uid,
             data: JSON.stringify(trace)
         }
 
