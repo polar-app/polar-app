@@ -36,7 +36,7 @@ export const MUILoadingIconButton = (props: MUILoadingIconButtonProps) => {
     if (state === 'loading') {
         return (
             <IconButton>
-                <CircularProgress size={30}/>
+                <CircularProgress size={25}/>
             </IconButton>
         );
     }
