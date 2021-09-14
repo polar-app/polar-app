@@ -1,5 +1,5 @@
 import {GCLAnalyzeSyntax} from "./GCLAnalyzeSyntax";
-import {assertJSON} from "polar-bookshelf/web/js/test/Assertions";
+import {assertJSON} from "polar-test/src/test/Assertions";
 
 describe("GCLAnalyzeSyntax", function() {
     it("basic", async function() {
