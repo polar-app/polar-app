@@ -2,7 +2,7 @@ import React from "react";
 import {AnnotationContentType, IAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {ISODateTimeStrings} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {AnnotationContentBase, AnnotationContentTypeMap, FlashcardAnnotationContent} from "./content/AnnotationContent";
+import {AnnotationContentBase, AnnotationContentTypeMap, AreaHighlightAnnotationContent, FlashcardAnnotationContent} from "./content/AnnotationContent";
 import {DocumentContent} from "./content/DocumentContent";
 import {Block} from "./store/Block";
 import {BlockPredicates} from "./store/BlockPredicates";
@@ -19,6 +19,7 @@ import {IDocScale} from "../../../apps/doc/src/DocViewerStore";
 import {BlockAreaHighlight} from "./BlockAreaHighlight";
 import {useFirebaseCloudStorage} from "../datastore/FirebaseCloudStorage";
 import {Backend} from "polar-shared/src/datastore/Backend";
+import {DocIDStr} from "polar-shared/src/util/Strings";
 
 type IHighlightContentType = AnnotationContentType.AREA_HIGHLIGHT | AnnotationContentType.TEXT_HIGHLIGHT;
 
@@ -184,28 +185,71 @@ export const useAnnotationBlockManager = () => {
     return { create, update, remove, getBlock, createFlashcard };
 };
 
-type ICreateBlockAreaHighlightOpts = {
+type IBlockAreaHighlightOpts = {
     rect: ILTRect,
     pageNum: number,
     docViewerElement: HTMLElement,
     fileType: FileType,
-    fingerprint: string,
-    docScale: IDocScale
+    docScale: IDocScale,
 };
 
-export const useCreateBlockAreaHighlight = () => {
-    const {create, getBlock, update} = useAnnotationBlockManager();
-    const cloudStorage = useFirebaseCloudStorage();
+type ICreateBlockAreaHighlightOpts = IBlockAreaHighlightOpts & {
+    type: 'create',
+    docID: DocIDStr,
+};
 
-    return React.useCallback(async (opts: ICreateBlockAreaHighlightOpts) => {
+type IUpdateBlockAreaHighlightOpts = IBlockAreaHighlightOpts & {
+    type: 'update',
+    blockID: BlockIDStr,
+};
+
+export const useBlockAreaHighlight = () => {
+    const {create: createAnnotationBlock, getBlock, update: updateAnnotationBlock} = useAnnotationBlockManager();
+    const cloudStorage = useFirebaseCloudStorage();
+    const blocksStore = useBlocksStore();
+
+    const save = React.useCallback(async (opts: ICreateBlockAreaHighlightOpts | IUpdateBlockAreaHighlightOpts): Promise<string | undefined> => {
         const {
-            fingerprint,
             rect,
             docScale,
             docViewerElement,
             pageNum,
-            fileType
+            fileType,
         } = opts;
+
+        const getFingerprint = (): string | null => {
+            if (opts.type === 'create') {
+                return opts.docID;
+            } else {
+                const block = getBlock(opts.blockID, AnnotationContentType.AREA_HIGHLIGHT);
+
+                if (! block ) {
+                    return null;
+                }
+
+                const root = blocksStore.getBlock(block.root);
+
+                if (root && root.content.type === 'document') {
+                    return root.content.docInfo.fingerprint;
+                }
+            }
+            
+            return null;
+        };
+
+        const getBlockID = (fingerprint: DocIDStr, content: AreaHighlightAnnotationContent): string | undefined => {
+            if (opts.type === 'create') {
+                return createAnnotationBlock(fingerprint, content);
+            } else {
+                return opts.blockID;
+            }
+        };
+
+        const fingerprint = getFingerprint();
+        
+        if (! fingerprint) {
+            return;
+        }
 
         const { content, screenshot } = await BlockAreaHighlight.create({
             fingerprint,
@@ -216,7 +260,8 @@ export const useCreateBlockAreaHighlight = () => {
             docViewerElement,
         });
     
-        const blockID = create(fingerprint, content);
+
+        const blockID = getBlockID(fingerprint, content);
 
         if (blockID) {
             const { id, ext } = await BlockAreaHighlight.persistScreenshot(cloudStorage, screenshot);
@@ -228,7 +273,7 @@ export const useCreateBlockAreaHighlight = () => {
             }
 
             const contentJSON = block.content.toJSON();
-            update(blockID, {
+            updateAnnotationBlock(blockID, {
                 ...contentJSON,
                 value: {
                     ...contentJSON.value,
@@ -238,9 +283,36 @@ export const useCreateBlockAreaHighlight = () => {
                         height: screenshot.height,
                         src: { name: name, backend: Backend.IMAGE },
                         id,
-                    }
+                    },
                 },
             });
+            return blockID;
         }
-    }, [create, update, getBlock, cloudStorage]);
+
+        return undefined;
+    }, [
+        createAnnotationBlock,
+        updateAnnotationBlock,
+        getBlock,
+        cloudStorage,
+        blocksStore
+    ]);
+
+    const create = React.useCallback((docID: DocIDStr, opts: IBlockAreaHighlightOpts) => {
+        return save({
+            ...opts,
+            docID,
+            type: 'create',
+        });
+    }, [save]);
+
+    const update = React.useCallback((blockID: BlockIDStr, opts: IBlockAreaHighlightOpts) => {
+        return save({
+            ...opts,
+            blockID,
+            type: 'update',
+        });
+    }, [save]);
+
+    return { create, update };
 };

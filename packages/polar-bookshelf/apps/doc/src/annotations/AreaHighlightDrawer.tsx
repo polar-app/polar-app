@@ -11,7 +11,7 @@ import {useDocViewerElementsContext} from '../renderers/DocViewerElementsContext
 import {useRefWithUpdates} from "../../../../web/js/hooks/ReactHooks";
 import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../DocViewer";
 import {useDocViewerContext} from "../renderers/DocRenderer";
-import {useCreateBlockAreaHighlight} from "../../../../web/js/notes/HighlightNotesUtils";
+import {useBlockAreaHighlight} from "../../../../web/js/notes/HighlightNotesUtils";
 
 const useAreaHighlightCreatorStyles = makeStyles(() =>
     createStyles({
@@ -31,7 +31,7 @@ export const AreaHighlightCreator: React.FC = () => {
     const {docScale, docMeta} = useDocViewerStore(['docScale', 'docMeta']);
     const classes = useAreaHighlightCreatorStyles();
     const {fileType} = useDocViewerContext();
-    const createBlockAreaHighlight = useCreateBlockAreaHighlight();
+    const {create: createBlockAreaHighlight} = useBlockAreaHighlight();
 
     React.useEffect(() => {
         const viewerContainer = docViewerElements.getDocViewerElement().querySelector("#viewerContainer");
@@ -47,12 +47,11 @@ export const AreaHighlightCreator: React.FC = () => {
             }
 
             const docViewerElement = docViewerElements.getDocViewerElement();
-            createBlockAreaHighlight({
+            createBlockAreaHighlight(docMeta.docInfo.fingerprint, {
                 rect,
                 pageNum,
                 fileType,
                 docScale,
-                fingerprint: docMeta.docInfo.fingerprint,
                 docViewerElement,
             }).catch(console.error);
 

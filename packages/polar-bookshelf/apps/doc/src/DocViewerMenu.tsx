@@ -46,7 +46,7 @@ import {AnnotationPtrs} from "../../../web/js/annotation_sidebar/AnnotationPtrs"
 import {useDocViewerElementsContext} from "./renderers/DocViewerElementsContext";
 import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "./DocViewer";
 import {ILTRect} from "polar-shared/src/util/rects/ILTRect";
-import {useCreateBlockAreaHighlight} from "../../../web/js/notes/HighlightNotesUtils";
+import {useBlockAreaHighlight} from "../../../web/js/notes/HighlightNotesUtils";
 import {useDocViewerContext} from "./renderers/DocRenderer";
 import {useBlocksStore} from "../../../web/js/notes/store/BlocksStore";
 
@@ -368,7 +368,7 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
     const dialogManager = useDialogManager();
     const jumpToAnnotationHandler = useJumpToAnnotationHandler();
     const docViewerElements = useDocViewerElementsContext();
-    const createBlockAreaHighlight = useCreateBlockAreaHighlight();
+    const {create: createBlockAreaHighlight} = useBlockAreaHighlight();
     const {fileType} = useDocViewerContext();
     const blocksStore = useBlocksStore();
 
@@ -461,12 +461,11 @@ export const DocViewerMenu = (props: MenuComponentProps<IDocViewerContextMenuOri
             }
 
             const docViewerElement = docViewerElements.getDocViewerElement();
-            createBlockAreaHighlight({
+            createBlockAreaHighlight(docMeta.docInfo.fingerprint, {
                 rect,
                 pageNum,
                 fileType,
                 docScale,
-                fingerprint: docMeta.docInfo.fingerprint,
                 docViewerElement,
             }).catch(console.error);
 

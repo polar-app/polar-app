@@ -17,6 +17,9 @@ import {IDocMetas} from "polar-shared/src/metadata/IDocMetas";
 import {useDocViewerElementsContext} from "../renderers/DocViewerElementsContext";
 import {deepMemo} from "../../../../web/js/react/ReactUtils";
 import {IBlockAreaHighlight} from "polar-blocks/src/annotations/IBlockAreaHighlight";
+import {NEW_NOTES_ANNOTATION_BAR_ENABLED} from "../DocViewer";
+import {useBlockAreaHighlight} from "../../../../web/js/notes/HighlightNotesUtils";
+import {useDocViewerContext} from "../renderers/DocRenderer";
 
 interface IProps {
     readonly fingerprint: IDStr;
@@ -32,6 +35,9 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
     const {docMeta, docScale} = useDocViewerStore(['docMeta', 'docScale']);
     const {onAreaHighlightUpdated} = useAreaHighlightHooks();
     const docViewerElementsContext = useDocViewerElementsContext();
+    const {update: updateBlockAreaHighlight} = useBlockAreaHighlight();
+    const {fileType} = useDocViewerContext();
+    const docViewerElements = useDocViewerElementsContext();
 
     const pageElement = docViewerElementsContext.getPageElementForPage(pageNum);
 
@@ -90,16 +96,34 @@ export const AreaHighlightRenderer = deepMemo(function AreaHighlightRenderer(pro
     const handleRegionResize = React.useCallback((overlayRect: ILTRect) => {
 
         // get the most recent area highlight as since this is using state
-        // we have can have a stale highlight.
+        // we can have a stale highlight.
+        
+        if (NEW_NOTES_ANNOTATION_BAR_ENABLED && docScale) {
+            const docViewerElement = docViewerElements.getDocViewerElement();
 
-        const pageMeta = IDocMetas.getPageMeta(docMeta!, pageNum);
-        const areaHighlight = (pageMeta.areaHighlights || {})[id];
+            updateBlockAreaHighlight(id, {
+                rect: overlayRect,
+                pageNum,
+                docScale,
+                fileType,
+                docViewerElement,
+            });
+        } else {
+            const pageMeta = IDocMetas.getPageMeta(docMeta!, pageNum);
+            const areaHighlight = (pageMeta.areaHighlights || {})[id];
 
-        onAreaHighlightUpdated({areaHighlight, pageNum, overlayRect});
+            onAreaHighlightUpdated({areaHighlight, pageNum, overlayRect});
+        }
 
         return undefined;
-
-    }, [docMeta, pageNum, id, onAreaHighlightUpdated]);
+    }, [
+        docMeta,
+        pageNum,
+        id,
+        onAreaHighlightUpdated,
+        updateBlockAreaHighlight,
+        docViewerElements,
+    ]);
 
     const toReactPortal = React.useCallback((rect: IRect, container: HTMLElement) => {
 
