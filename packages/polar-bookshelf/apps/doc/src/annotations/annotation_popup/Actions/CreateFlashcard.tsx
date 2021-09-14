@@ -1,5 +1,5 @@
 import React from "react";
-import {getAnnotationData, useAnnotationPopup} from "../AnnotationPopupContext";
+import {getTextHighlightText, useAnnotationPopup} from "../AnnotationPopupContext";
 import {useAnnotationMutationsContext} from "../../../../../../web/js/annotation_sidebar/AnnotationMutationsContext";
 import {useDialogManager} from "../../../../../../web/js/mui/dialogs/MUIDialogControllers";
 import {SimpleInputForm, InputOptions} from "./SimpleInputForm";
@@ -8,8 +8,6 @@ import {FlashcardType} from "polar-shared/src/metadata/FlashcardType";
 import {FlashcardTypeSelector} from "../../../../../../web/js/annotation_sidebar/child_annotations/flashcards/flashcard_input/FlashcardTypeSelector";
 import {getDefaultFlashcardType} from "../../../../../../web/js/annotation_sidebar/child_annotations/flashcards/flashcard_input/FlashcardInput";
 import {IAnnotationPopupActionProps, IBlockAnnotationProps, IDocMetaAnnotationProps} from "../AnnotationPopupActions";
-import {ITextConverters} from "../../../../../../web/js/annotation_sidebar/DocAnnotations";
-import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {useAnnotationBlockManager} from "../../../../../../web/js/notes/HighlightNotesUtils";
 import {MUITooltip} from "../../../../../../web/js/mui/MUITooltip";
 import IconButton from "@material-ui/core/IconButton";
@@ -60,8 +58,6 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
     const annotationMutations = useAnnotationMutationsContext();
     const dialogs = useDialogManager();
     const [flashcardType, setFlashcardType] = React.useState<CreatableFlashcardType>(() => getDefaultFlashcardType());
-    const { annotation: annotationData } = React.useMemo(() => getAnnotationData(annotation), [annotation]);
-
     const clozeRef = React.useRef<HTMLInputElement>(null);
 
     const getInputsForType = React.useCallback((flashcardType: FlashcardType, initialValue: string) => {
@@ -77,15 +73,15 @@ export const CreateFlashcard: React.FC<IAnnotationPopupActionProps> = (props) =>
         }
     }, []);
 
-    const [inputs, setInputs]= React.useState<FormTypes>(() => {
-        const { text = "" } = ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, annotationData);
+    const [inputs, setInputs] = React.useState<FormTypes>(() => {
+        const text = getTextHighlightText(annotation);
         return getInputsForType(flashcardType, text);
     });
 
     React.useEffect(() => {
-        const { text = "" } = ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, annotationData);
+        const text = getTextHighlightText(annotation);
         setInputs(getInputsForType(flashcardType, text));
-    }, [flashcardType, setInputs, annotationData, getInputsForType]);
+    }, [flashcardType, setInputs, annotation, getInputsForType]);
 
     const onClozeDelete = React.useCallback(() => {
         const elem = clozeRef.current;

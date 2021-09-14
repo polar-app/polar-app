@@ -45,7 +45,7 @@ import {BlockIDStr} from "polar-blocks/src/blocks/IBlock";
 import {ITextHighlight} from "polar-shared/src/metadata/ITextHighlight";
 import {IAreaHighlight} from "polar-shared/src/metadata/IAreaHighlight";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
-import {AnnotationContent, AreaHighlightAnnotationContent, FlashcardAnnotationContent, TextHighlightAnnotationContent} from "../../../web/js/notes/content/AnnotationContent";
+import {AnnotationContent, AreaHighlightAnnotationContent, FlashcardAnnotationContent} from "../../../web/js/notes/content/AnnotationContent";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {LocalStorageFeatureToggles} from "polar-shared/src/util/LocalStorageFeatureToggles";
 import {useDialogManager} from "../../../web/js/mui/dialogs/MUIDialogControllers";
@@ -59,8 +59,7 @@ import {DocAnnotationLoader2} from "../../../web/js/annotation_sidebar/DocAnnota
 import {IDocAnnotationRef} from "../../../web/js/annotation_sidebar/DocAnnotation";
 import {Texts} from "polar-shared/src/metadata/Texts";
 import {TextType} from "polar-shared/src/metadata/TextType";
-import {Text} from "polar-shared/src/metadata/Text";
-import {MarkdownContentConverter} from "../../../web/js/notes/MarkdownContentConverter";
+import {AnnotationBlockMigrator} from "./AnnotationBlockMigrator";
 
 
 export const NEW_NOTES_ANNOTATION_BAR_ENABLED = LocalStorageFeatureToggles.get('notes.docs-integration');
@@ -391,27 +390,16 @@ const useDocumentBlockMigrator = () => {
         };
 
         const migrateAnnotation = (id: BlockIDStr, annotation: IDocAnnotationRef): BlockIDStr | undefined => {
-            const toMarkdownText = (text: Text | string) => {
-                const str = Texts.isText(text) ? (Texts.toHTML(text) || '') : text;
-                return Texts.create(MarkdownContentConverter.toMarkdown(str), TextType.MARKDOWN);
-            };
 
             const getContent = (): AnnotationContent | MarkdownContent | undefined => {
                 switch (annotation.annotationType) {
                     case AnnotationType.TEXT_HIGHLIGHT:
-                        const textHighlight = annotation.original as ITextHighlight;
-                        return new TextHighlightAnnotationContent({
-                            type: AnnotationContentType.TEXT_HIGHLIGHT,
-                            pageNum: annotation.pageNum,
-                            docID: fingerprint,
-                            value: {
-                                ...textHighlight,
-                                text: toMarkdownText(textHighlight.text),
-                                revisedText: textHighlight.revisedText
-                                    ? toMarkdownText(textHighlight.revisedText || '')
-                                    : undefined,
-                            },
-                        });
+                        return AnnotationBlockMigrator
+                            .migrateTextHighlight(
+                                annotation.original as ITextHighlight,
+                                annotation.pageNum,
+                                fingerprint
+                            );
                     case AnnotationType.AREA_HIGHLIGHT:
                         return new AreaHighlightAnnotationContent({
                             type: AnnotationContentType.AREA_HIGHLIGHT,
@@ -423,7 +411,7 @@ const useDocumentBlockMigrator = () => {
                         const flashcard = annotation.original as IFlashcard;
                         const fields = Object.entries(flashcard.fields)
                             .reduce<typeof flashcard.fields>((fields, [key, value]) =>
-                                ({ ...fields, [key]: toMarkdownText(value) }), {});
+                                ({ ...fields, [key]: Texts.create(AnnotationBlockMigrator.textToMarkdown(value), TextType.MARKDOWN) }), {});
                         return new FlashcardAnnotationContent({
                             type: AnnotationContentType.FLASHCARD,
                             docID: fingerprint,
@@ -434,7 +422,7 @@ const useDocumentBlockMigrator = () => {
                         return new MarkdownContent({
                             type: 'markdown',
                             links: [],
-                            data: toMarkdownText((annotation.original as IComment).content).MARKDOWN || '',
+                            data: AnnotationBlockMigrator.textToMarkdown((annotation.original as IComment).content),
                         });
                     default:
                         return undefined;

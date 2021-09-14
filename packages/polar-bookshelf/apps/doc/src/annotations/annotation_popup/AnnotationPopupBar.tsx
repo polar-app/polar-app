@@ -21,6 +21,7 @@ import {AnnotationTypes} from "../../../../../web/js/metadata/AnnotationTypes";
 import {Clipboards} from "../../../../../web/js/util/system/clipboard/Clipboards";
 import {ITextConverters} from "../../../../../web/js/annotation_sidebar/DocAnnotations";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
+import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
 
 export const useCopyAnnotation = () => {
     const {annotation, selectionEvent} = useAnnotationPopup();
@@ -34,9 +35,7 @@ export const useCopyAnnotation = () => {
                     Clipboards.writeText(annotation.annotation.text || "");
                 }
             } else {
-                const { text = "" } = ITextConverters
-                    .create(AnnotationType.TEXT_HIGHLIGHT, annotation.annotation.content.value);
-                Clipboards.writeText(text);
+                Clipboards.writeText(BlockTextHighlights.toText(annotation.annotation.content.value));
             }
         } else if (selectionEvent) {
             const selectedContent = SelectedContents.computeFromSelection(selectionEvent.selection, {

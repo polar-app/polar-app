@@ -148,7 +148,7 @@ export const useAnnotationBlockManager = () => {
         if (highlightBlock && BlockPredicates.isAnnotationHighlightBlock(highlightBlock)) {
             const getFlashcard = () => {
                 const ref = Refs.createFromAnnotationType(
-                    highlightBlock.content.value.id,
+                    highlightBlock.id,
                     AnnotationContentType.TEXT_HIGHLIGHT === highlightBlock.content.type
                         ? AnnotationType.TEXT_HIGHLIGHT
                         : AnnotationType.AREA_HIGHLIGHT

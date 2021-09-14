@@ -11,12 +11,11 @@ import {BlockAnnotationAction, BlockAnnotationActionsWrapper, useSharedAnnotatio
 import {Flashcards} from "../../../metadata/Flashcards";
 import CachedIcon from '@material-ui/icons/Cached';
 import {AnnotationContentType, IFlashcardAnnotationContent} from "polar-blocks/src/blocks/content/IAnnotationContent";
-import {ITextConverters} from "../../../annotation_sidebar/DocAnnotations";
-import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {Refs} from "polar-shared/src/metadata/Refs";
 import {Texts} from "polar-shared/src/metadata/Texts";
 import {TextType} from "polar-shared/src/metadata/TextType";
 import {useAnnotationBlockManager} from "../../HighlightNotesUtils";
+import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
 
 interface IProps extends BlockEditorGenericProps {
     readonly annotation: FlashcardAnnotationContent;
@@ -66,7 +65,7 @@ export const BlockFlashcardAnnotationContent: React.FC<IProps> = (props) => {
 
             if (parent.content.type === AnnotationContentType.TEXT_HIGHLIGHT) {
                 const highlight = parent.content.toJSON().value;
-                return ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, highlight).text || '';
+                return BlockTextHighlights.toText(highlight);
             }
 
             return '';

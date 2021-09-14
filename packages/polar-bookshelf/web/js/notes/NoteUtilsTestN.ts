@@ -1,4 +1,5 @@
 import {assert} from "chai";
+import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
 import {AnnotationContentType} from "polar-blocks/src/blocks/content/IAnnotationContent";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
 import {Refs} from "polar-shared/src/metadata/Refs";
@@ -37,16 +38,8 @@ describe('BlockTextContentUtils', () => {
         pageNum: 11,
         value: {
             text: 'hello world',
-            id: 'id',
-            guid: 'id',
-            notes: {},
             rects: {},
-            images: {},
-            created: 'date',
-            questions: {},
-            flashcards: {},
-            lastUpdated: 'date',
-            textSelections: {}, 
+            color: 'red',
         },
     });
 
@@ -95,7 +88,7 @@ describe('BlockTextContentUtils', () => {
                 ...JSONContent,
                 value: {
                     ...JSONContent.value,
-                    revisedText: Texts.create('Text', TextType.MARKDOWN)
+                    revisedText: 'Text',
                 }
             }));
         });
@@ -147,7 +140,7 @@ describe('BlockTextContentUtils', () => {
         });
 
         it('Should be able to get the text content of text annotation block contents', () => {
-            const text = ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, textHighlight.value).text || '';
+            const text = BlockTextHighlights.toText(textHighlight.value);
             assert.deepEqual(BlockTextContentUtils.getTextContentMarkdown(textHighlight), text);
         });
 

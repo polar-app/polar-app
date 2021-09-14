@@ -23,6 +23,7 @@ import {Texts} from "polar-shared/src/metadata/Texts";
 import {TextType} from "polar-shared/src/metadata/TextType";
 import {ITextConverters} from "../annotation_sidebar/DocAnnotations";
 import {AnnotationType} from "polar-shared/src/metadata/AnnotationType";
+import {BlockTextHighlights} from "polar-blocks/src/annotations/BlockTextHighlights";
 
 
 export const useNamedBlocks = () => {
@@ -217,7 +218,7 @@ export namespace BlockTextContentUtils {
                     ...textHighlightContent,
                     value: {
                         ...textHighlightContent.value,
-                        revisedText: Texts.create(markdown, TextType.MARKDOWN),
+                        revisedText: markdown,
                     }
                 });
         }
@@ -232,7 +233,7 @@ export namespace BlockTextContentUtils {
             case 'document':
                 return DocInfos.bestTitle(content.docInfo);
             case AnnotationContentType.TEXT_HIGHLIGHT:
-                return ITextConverters.create(AnnotationType.TEXT_HIGHLIGHT, content.value).text || '';
+                return BlockTextHighlights.toText(content.value);
             case AnnotationContentType.FLASHCARD:
                 return ITextConverters.create(AnnotationType.FLASHCARD, content.value).text || '';
         }
